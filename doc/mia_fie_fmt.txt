@@ -1,0 +1,259 @@
+-COMMON_STRUCTS
+string{ 
+  size:byte
+  data:byte[this.size]
+}
+date:ushort #int(VCL_TDateTime_float or VCL_TDate)
+price:string # of digits w or wo decimal separator (int or float)
+stringlist:{
+	size:ushort
+	strings:string[this.size]
+}
+-COMMON_STRUCTS_END
+
+-MIA_FILE
+version:string
+[somedate:date, someotherdate:date  # 2 more dates for version 3.0]
+savedate:date
+buildplan:BUILDPLAN
+bildings:BUILDINGS
+male_names:RABNAMELIST
+female_names:RABNAMELIST
+translist:TRANS_LIST
+zone_list:stringlist
+breed_list:stringlist
+rabbits:LISTRAB
+-MIA_FILE_END
+
+
+--BUILDPLAN
+#Array while depth!=0
+depth:byte
+if (this.depth!=0)
+	name:string
+--BUILDPLAN_END
+
+--BUILDINGS
+count:ushort
+minifarms:array[this.count] MINIFARM
+
+---MINIFARM
+id:short
+upper:TIER
+haslower:bytebool
+if (this.haslower)
+	lower:TIER
+
+----TIER
+type:byte #enum TIER { NO_TIER,T_FEMALE,T_DFEMALE,T_COMPLEX,T_JURTA,T_QUARTA,T_VERTEP,T_BARIN,T_CABIN,MAX_TIER_TYPE };
+repair:bytebool
+notes:string
+#case of type
+if (this.type==0 || this.type==9) #NO_TIER or MAX_TIER_TYPE
+	#EMPTY
+if (this.type==1) #T_FEMALE
+	busy:bytebool
+	heater:char
+	nest:char
+if (this.type==2) #T_DFEMALE
+	busy:bytebool[2]
+	heater:char[2]
+	nest:char[2] 
+if (this.type==3) #T_COMPLEX enum COMPLEX_AREAS { GNEZD_VUGUL,OTS_1,OTS_2,MAX_COMPLEX };
+	busy:bytebool[3]  #MAX_COMPLEX busy for gnezd_vugul,ots_1,ots_2
+	heater:char
+	nest:char
+if (this.type==4) #T_JURTA
+	busy:bytebool[2]  #0-smallvugul  1-bigvugul
+	heater:char
+	nest:char
+	nest_with_big:bytebool  #nest connected with bigvugul
+if (this.type==5) #T_QUARTA
+	busy:bytebool[4]
+	delims:bytebool[3] #DELIMS count = QUARTA_SECTIONS-1
+if (this.type==6) #T_VERTEP
+	busy:bytebool[2]
+if (this.type==7) #T_BARIN
+	busy:bytebool[2]
+	delim:bytebool
+if (this.type==8) #T_CABIN
+	busy:bytebool[2]
+	heater:char
+	nest:char
+----TIER_END
+---MINIFARM_END
+--BUILDINGS_END
+
+--RABNAMELIST
+count:ushort
+names:array[this.count] RABNAME
+
+---RABNAME
+key:ushort  // Уникальный ключ каждого имени ( > 365); 0 - вакантно; 1 - 365 - срок блокипрвки
+surkey:ushort  // Неблокирующий ключ для фамилий. Уникален для каждого имени
+name:string
+surname:string	
+---RABNAME_END
+--RABNAMELIST_END
+
+
+--TRANS_LIST
+count:long
+items:array[this.count] of TRANS
+
+---TRANS
+#enum X_TYPE{
+#0	MEAT_SOLD, // Проданные тушки      | Реализация мяса	 | 1				|
+#1	SKIN_SOLD, // Проданные шкурки     | Реализация шкурок | 1				|
+#2	RABBITS, 	 // Закупка/продажа живых| Наличие тушек 		 | 0				|BodyList
+#3	FEED,      // Корма                | Закупка кормов      1
+#4	OTHER,     // Прочие               | Прочее            | 1				|
+#5	MEAT,      // Наличие  тушек       | Реализация мяса	 | 					|
+#6	SKIN,    	 // Непроданная шкурка   | Наличие шкурок		 | 					|
+#7  USED_FEED, // Корморасход
+#8  OTSEV,     // Отсев
+#	MAX_XTYPE};
+transfertype:byte  #X_TYPE
+notes:string
+when:date
+units:ulong #count
+#case of type:
+if (this.type==2) #RABBITS
+	is_sold:bytebool  #buyed/sold flag
+	age:ushort
+	name:string
+	breed:ushort
+	weight:ushort
+	partner:string
+	price:price
+if (this.type==6) #SKIN
+	age:ushort
+	murderdate:date
+	sex:bytebool
+	breed:ushort
+	skintype:byte #enum SKIN_TYPE { SK_UNKNOWN,LUXURY,I,II,III,IV,MAX_SKIN };
+	rabname:string
+	address:string
+if (this.type==5) #MEAT
+	age:ushort
+	murderdate:date
+	brutto:ushort
+	netto:ushort
+	rabname:string
+	address:string
+if (this.type==0) #MEAT_SOLD
+	age:ushort
+	weight:ulong
+	partner:string
+	price:price
+if (this.type==1) #SKIN_SOLD
+	age:ushort
+	skintype:byte ##look upper
+	partner:string
+	price:price
+if (this.type==4) #OTHER
+	is_sold:bytebool
+if (this.type==3) #FEED
+	age:ushort
+	name:string
+	weight:ulong
+	kind:string
+	partner:string
+	price:price
+if (this.type==7) #USED_FEED
+	age:ushort
+	name:string
+	weight:ulong
+	kind:string
+if (this.type==8) #OTSEV
+	is_sold:bytebool
+	age:ushort
+	weight:ulong
+	partner:string
+	kind:string
+	price:price
+---TRANS_END
+--TRANS_LIST_END
+
+
+--LISTRAB
+count:ushort
+rabbits:RABBIT[this.count]
+
+---RABBIT
+sex:byte #enum SEX 		 { SEX_VOID,MALE,FEMALE,MAX_SEX };
+bon:BON
+number:ushort
+unique_PRIMARY:ushort   # {PRIMARY,SECONDARY,MAX_UNIQUES} unique[MAX_UNIQUES]; // Список уникальный порядковых номеров кролика. Присваивается при составлении зоотехплана
+name_key:ushort
+sur_key:ushort  #last name
+path_key:ushort  #second name
+notes:string
+butcher:bytebool	// Готовая продукция
+risk:bytebool		// Принадлежит к группе риска
+okrol_num:byte		// Номер окрола, от которого родился
+where:ushort		// | Номер минифермы, где живет
+tier:byte			// | Тип яруса проживания #enum TIER { NO_TIER,T_FEMALE,T_DFEMALE,T_COMPLEX,T_JURTA,T_QUARTA,T_VERTEP,T_BARIN,T_CABIN,MAX_TIER_TYPE };
+tier_id:byte		// | 0 - одноярусная, 1 - нижний ярус, 2 - верхний ярус #enum TIER_ID { SINGLE_TIER,LOWER_TIER,UPPER_TIER };
+area:char			// | Список номеров секций, где живёт
+rate:char			// Рейтинг
+group:uchar			// Число кроликов в единой группе.
+breed:ubyte			// Порода
+multi:byte			// Забракован (1), вакцинирован (2)
+zone:ushort			// Номер зоны прибытия (по сути, генетический номер, если нет других номеров) #union on death_date
+weight:WEIGHTLIST	#// Для новой версии
+born_date:date		// Дата рождения
+genesis_count:ushort
+genesis:ushort[this.genesis_count]
+#switch sex
+if (this.sex==1)  #MALE
+	last_fuck:date	// Дата последней случки
+	status:char		// Мальчик, Кандидат, Производитель
+if (this.sex==2)  #FEMALE	// Подсосные уходят вместе с матерью
+	child_counts:byte	// 0 - нет, 1 ?без детей) - предокросмотр/грелка. С детьми -  Число произведённых подсчётов крольчат
+	borns:byte		// Сколько раз рожала
+	ev_date:date	// Дата последнией случки, вязки или кука (случка - для невесты, вязки/кука - для штатной)
+	last_okrol:date	// Дата последнего окрола
+	ev_type:byte	#enum F_EVENT { NO_EVENT,SLUCHKA,VYAZKA,KUK }; 				// События для самок
+	lost_babies:byte	// Число потерянных крольчат, не отразившееся на рейтинге
+	overall_babies:ushort	// Сколько всего крольчат родила
+	suckers:LISTRAB		#same structure pointer  // Крольчата на подсосе. может быть несколько разноцветных групп
+	fuckers:LISTFUCK	// Партнёры по последней случке
+	worker:string		// Фамилия ответственного за случку
+	no_kuk:bytebool		// Не куковать
+	no_lact:bytebool	// Потеряла лактацию
+
+----BON
+#enum BON { B_UNKNOWN,B_THIRD,B_SECOND,B_FIRST,B_ELITE,MAX_BON };
+weight:byte   #BON // Вес
+body:byte   #BON // Телосложение
+hair:byte   #BON // Густота покрова
+color:byte   #BON // Окраска покрова
+manual:bytebool	// Установленная или унаследованная классность
+----BON_END
+
+----WEIGHTLIST
+count:ushort
+weights:long[this.count]	#weight=(date<<16) | ushort_weight
+----WEIGHTLIST_END
+
+----LISTFUCK
+count:ushort
+fuckers:FUCKER[this.count]
+
+-----FUCKER
+live:bytebool
+if (live!=0)  #if (live)
+	name_key:ushort
+if (live==0)  #else
+	genesis_count:ushort
+	genesis:ushort[this.genesis_count]
+	name:string
+breed:ushort
+fucks:ushort
+children:ushort
+my_fuck_is_last:bytebool
+-----FUCKER_END
+----LISTFUCK_END
+---RABBIT_END
+--LISTRAB_END
