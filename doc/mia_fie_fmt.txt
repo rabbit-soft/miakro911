@@ -89,7 +89,7 @@ count:ushort
 names:array[this.count] RABNAME
 
 ---RABNAME
-key:ushort  // Уникальный ключ каждого имени ( > 365); 0 - вакантно; 1 - 365 - срок блокипрвки
+key:ushort  // Уникальный ключ каждого имени ( > 365); 0 - вакантно; 1 - 365 - срок блокировки
 surkey:ushort  // Неблокирующий ключ для фамилий. Уникален для каждого имени
 name:string
 surname:string	
