@@ -23,6 +23,7 @@ namespace mia_conv
         public MFStringList breed_list = new MFStringList("breed_list", 7);
         public MFRabbits rabbits = null;
         public MFFilterForm filterform = new MFFilterForm("FilterForm", 9);
+        public MFTransForm transform = new MFTransForm("TransForm", 10);
         CheckedListBox clb1 = null;
         
 
@@ -40,6 +41,7 @@ namespace mia_conv
             l1.Add(breed_list);
             l1.Add(rabbits);
             l1.Add(filterform);
+            l1.Add(transform);
         }
 
         public void objread(IMFCommon obj, BinaryReader br,TextBox log)

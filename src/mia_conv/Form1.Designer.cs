@@ -93,7 +93,8 @@ namespace mia_conv
             "Список зон",
             "Список пород",
             "Кролики",
-            "Форма фильтров"});
+            "Форма фильтров",
+            "Форма трансферов"});
             this.clb1.Location = new System.Drawing.Point(12, 61);
             this.clb1.Name = "clb1";
             this.clb1.Size = new System.Drawing.Size(136, 184);

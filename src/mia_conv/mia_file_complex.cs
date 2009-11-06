@@ -57,7 +57,7 @@ namespace mia_conv
     class Tier
     {
 //       enum TierType { NO_TIER,T_FEMALE,T_DFEMALE,T_COMPLEX,T_JURTA,T_QUARTA,T_VERTEP,T_BARIN,T_CABIN,MAX_TIER_TYPE };
-        private String[] tierNames={"NO_TIER","FEMALE","DFEMALE","COMPLEX","JURTA","QUARTA","VARTEP","BARIN","CABIN","MAX_TIER_TYPE"};
+        private String[] tierNames={"NO_TIER","FEMALE","DFEMALE","COMPLEX","JURTA","QUARTA","VERTEP","BARIN","CABIN","MAX_TIER_TYPE"};
         private Byte[] tierBusyCount={0,1,2,3,2,4,2,2,2,0};
         private Byte[] tierHeaterCount={0,1,2,1,1,0,0,0,1,0};
         private Byte[] tierNestCount={0,1,2,1,1,0,0,0,1,0};
@@ -268,7 +268,7 @@ namespace mia_conv
                 case 'n': if (create) name = new MFString("name"); obj = name; break;
                 case 'b': if (create) breed = new MFUShort("breed"); obj = breed; break;
                 case 'k': if (create) kind = new MFString("kind"); obj = kind; break;
-                case 'm': if (create) murder = new MFDate("nurder"); obj = murder; break;
+                case 'm': if (create) murder = new MFDate("murder"); obj = murder; break;
                 case 'B': if (create) brutto = new MFUShort("brutto"); obj = brutto; break;
                 case 'N': if (create) netto = new MFUShort("netto"); obj = netto; break;
                 case 'A': if (create) address = new MFString("address"); obj = address; break;
@@ -384,5 +384,64 @@ namespace mia_conv
             str += combo.log() + "\r\n";
             return str + "-=FilterForm_End=-";
         } 
+    }
+
+    class MFTransForm : MFCommon, IMFCommon
+    {
+        public int valcount = 364;
+        public int skincount = 6;
+        public List<ulong> values = new List<ulong>();
+        public List<MFString> skinnames = new List<MFString>();
+        public MFString pricePerKilo = new MFString("PricePerKilo");
+        public MFString feedPrice = new MFString("FeedPrice");
+        public MFStringList skinBuyers=new MFStringList("SkinBuyers");
+        public MFStringList bodyBuyers = new MFStringList("BodyBuyers");
+        public MFStringList rabbitPartner = new MFStringList("RabbitPartner");
+        public MFStringList feedPartner = new MFStringList("FeedPartner");
+        public MFStringList kind = new MFStringList("Kind");
+        public MFStringList otherPartner = new MFStringList("OtherPartner");
+        public MFStringList feedType = new MFStringList("FeedType");
+        public MFStringList otherKind = new MFStringList("OtherKind");
+        public MFStringList otherProduct = new MFStringList("OtherProduct");
+        public MFStringList usedFeedType = new MFStringList("UsedFeedType");
+        public MFStringList usedFeedSpec = new MFStringList("UsedFeedSpec");
+        public MFStringList otsevBuyer = new MFStringList("OtsevBuyer");
+        public MFTransForm(String name, int li) : base(name, li) { }
+        public MFTransForm(String name) : base(name) { }
+        public void read(BinaryReader br, float ver)
+        {
+            for (int i = 0; i < valcount; i++)
+                values.Add(br.ReadUInt32());
+            for (int i = 0; i < skincount; i++)
+                skinnames.Add(new MFString(br, ver));
+            pricePerKilo.read(br, ver);
+            feedPrice.read(br, ver);
+            skinBuyers.read(br, ver);
+            bodyBuyers.read(br, ver);
+            rabbitPartner.read(br, ver);
+            feedPartner.read(br, ver);
+            kind.read(br, ver);
+            otherPartner.read(br, ver);
+            feedType.read(br, ver);
+            otherKind.read(br, ver);
+            otherProduct.read(br, ver);
+            usedFeedType.read(br, ver);
+            usedFeedSpec.read(br, ver);
+            otsevBuyer.read(br, ver);
+        }
+        public override String strval()
+        {
+            String str = "-=TransFrom=-\r\nvalues=";
+            for (int i=0;i<valcount;i++)
+                str+=values[i].ToString()+" ";
+            str+="\r\nskinnames=";
+            for (int i=0;i<skincount;i++)
+                str+=skinnames[i].log();
+            str+="\r\n"+pricePerKilo.log()+"\r\n"+feedPrice.log()+"\r\n";
+            str+=skinBuyers.log()+"\r\n"+bodyBuyers.log()+"\r\n"+rabbitPartner.log()+"\r\n"+feedPartner.log()+"\r\n";
+            str+=kind.log()+"\r\n"+otherPartner.log()+"\r\n"+feedType.log()+"\r\n"+otherKind.log()+"\r\n";
+            str+=otherProduct.log()+"\r\n"+usedFeedType.log()+"\r\n"+usedFeedSpec.log()+"\r\n"+otsevBuyer.log()+"\r\n";
+            return str + "-=TransForm_End=-";
+        }
     }
 }
