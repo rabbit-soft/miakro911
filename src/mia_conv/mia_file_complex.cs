@@ -389,7 +389,7 @@ namespace mia_conv
     class MFTransForm : MFCommon, IMFCommon
     {
         public int valcount = 364;
-        public int skincount = 6;
+        public int skincount = 5;
         public List<ulong> values = new List<ulong>();
         public List<MFString> skinnames = new List<MFString>();
         public MFString pricePerKilo = new MFString("PricePerKilo");
@@ -425,9 +425,12 @@ namespace mia_conv
             feedType.read(br, ver);
             otherKind.read(br, ver);
             otherProduct.read(br, ver);
-            usedFeedType.read(br, ver);
-            usedFeedSpec.read(br, ver);
-            otsevBuyer.read(br, ver);
+            if (ver > 3.9)
+            {
+                usedFeedType.read(br, ver);
+                usedFeedSpec.read(br, ver);
+                otsevBuyer.read(br, ver);
+            }
         }
         public override String strval()
         {

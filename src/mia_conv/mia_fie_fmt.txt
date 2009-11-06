@@ -294,7 +294,7 @@ value:int[34]  #MAX_FCONTROLS
 #  91*4=364
 values_array:ulong[364]
 #enum SKIN_TYPE { SK_UNKNOWN,LUXURY,I,II,III,IV,MAX_SKIN };
-SkinNames:string[6]  #MAX_SKIN
+SkinNames:string[5]  #MAX_SKIN-1
 PricePerKilo:string
 FeedPrice:string
 SkinBuyers:stringlist
