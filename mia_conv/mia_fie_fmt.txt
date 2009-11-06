@@ -23,6 +23,7 @@ translist:TRANS_LIST
 zone_list:stringlist
 breed_list:stringlist
 rabbits:LISTRAB
+FilterForm:FILTERFORM
 -MIA_FILE_END
 
 
@@ -89,7 +90,7 @@ count:ushort
 names:array[this.count] RABNAME
 
 ---RABNAME
-key:ushort  // Уникальный ключ каждого имени ( > 365); 0 - вакантно; 1 - 365 - срок блокировки
+key:ushort  // Уникальный ключ каждого имени ( > 365); 0 - вакантно; 1 - 365 - срок блокипрвки
 surkey:ushort  // Неблокирующий ключ для фамилий. Уникален для каждого имени
 name:string
 surname:string	
@@ -257,3 +258,24 @@ my_fuck_is_last:bytebool
 ----LISTFUCK_END
 ---RABBIT_END
 --LISTRAB_END
+
+--FILTERFORM
+filters:FILTERLIST
+combo:stringlist
+
+---FILTERLIST
+ lookat:int
+ max:ushort
+ filters:FILTER[max]
+ 
+----FILTER
+#
+#enum CTRLS { ALL_ENABLED,MALES_ENABLED,FEMALES_ENABLED,NOSEX_ENABLED,BOYS_ENABLED,CANDIDATES_ENABLED,FATHERS_ENABLED,
+#	GIRLS_ENABLED,BRIDES_ENABLED,PERVO_ENABLED,MOTHERS_ENABLED,FEMALES_BAD,MALES_BAD,SUKROL,KUKU,FAMILY,WORKS_ENABLED,
+#	FROM_AGE,TILL_AGE,USE_FROM_WEIGHT,FROM_WEIGHT,USE_TILL_WEIGHT,TILL_WEIGHT,FROM_SUKROL,TILL_SUKROL,
+#	B_ALL_ENABLED,B_FREE,B_BUSY,B_SELRABBITS,B_MALE,B_FEMALE,B_OTHER,B_NESTS,B_HEATERS,
+#	MAX_FCONTROLS };
+value:int[34]  #MAX_FCONTROLS
+----FILTER_END
+---FILTERLIST_END
+--FILTERFORM_END
