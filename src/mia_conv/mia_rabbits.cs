@@ -5,28 +5,6 @@ using System.IO;
 
 namespace mia_conv
 {
-    class DBG
-    {
-        public static void dbg(String s)
-        {
-            Console.WriteLine(s);
-        }
-        public static void dbg1(String s)
-        {
-            //dbg(s);
-        }
-        public static void dbg2(String s)
-        {
-            //dbg(s);
-        }
-        public static void dbg2(String s,BinaryReader br)
-        {
-
-            //dbg(s+" "+String.Format("@{0:X}",br.BaseStream.Position));
-        }
-
-    }
-
     class Bon
     {
         public MFByte weight = new MFByte("weight");
@@ -337,7 +315,7 @@ namespace mia_conv
         public List<Rabbit> rabbits = new List<Rabbit>();
         private MFRabNames nmales = null;
         private MFRabNames nfemales = null;
-        public MFRabbits(String name, MFRabNames males, MFRabNames females) : base("name") { nmales = males; nfemales = females; }
+        public MFRabbits(String name, MFRabNames males, MFRabNames females) : base(name) { nmales = males; nfemales = females; }
         public MFRabbits(String name, int li, MFRabNames males, MFRabNames females) : base(name, li) { nmales = males; nfemales = females;}
 
         public void read(BinaryReader br, float ver)

@@ -2,8 +2,6 @@
 #Hack of .mia file format
 #
 
-
-
 -COMMON_STRUCTS
 string{ 
   size:byte
@@ -14,6 +12,15 @@ price:string # of digits w or wo decimal separator (int or float)
 stringlist:{
 	size:ushort
 	strings:string[this.size]
+}
+listview{
+ size:int
+ items:LISTITEM[this.size]
+-LISTITEM
+caption:string
+subitemcnt:byte
+subitems:string[this.subitemcnt]
+-LISTITEM_END
 }
 -COMMON_STRUCTS_END
 
@@ -31,8 +38,14 @@ breed_list:stringlist
 rabbits:LISTRAB
 FilterForm:FILTERFORM
 TransForm:TRANSFORM
+ParamForm:PARAMFORM
+ZooForm:ZOOFORM
+GraphForm:GRAPHFORM		#v>3.0
+ArchiveForm:ARCHIVEFORM #v>3.9
+thisfarm:string			#v>4.3
+farmid:string			#v>4.3
+weightlist:WEIGHTLIST   #v>5.0
 -MIA_FILE_END
-
 
 --BUILDPLAN
 #Array while depth!=0
@@ -310,3 +323,179 @@ UsedFeedType:stringlist
 UsedFeedSpec:stringlist
 OtsevBuyer:stringlist
 --TRANSFORM_END
+
+--PARAMFORM
+pervonest:uchar
+kukunest:uchar
+mothernest:uchar
+heater:uchar
+okrol:uchar
+kuk:uchar
+pravka_1:uchar
+count_2:uchar
+count_3:uchar
+endkuku:uchar
+vacc:uchar
+vudvorenie:uchar
+countsuckers:uchar
+vyazkamother:uchar
+vyazkapervo:uchar
+rasselboys:uchar
+killfemales:uchar
+killbrides:uchar
+killboys:uchar
+max_age_diff:uchar 			// Максимальная разница в возрасте между совместно проживающими крольчатами
+automode:bytebool     	    // Автопересчёт сроков забоя невест и мальчиков
+rescopies:uchar
+tab_abbr:bytebool          // Сокращения в таблицах
+double_sur:bytebool				// Двойные фамилии
+heterosis:bytebool 				// Разрешить межпородное скрещивание
+inbreeding:bytebool 				// Разрешить инбридинг
+report_full_addr:bytebool  // Полные адреса минифнрм в отчётах
+!!!SOME_OPTION:byte
+use_from:bytebool
+use_till:bytebool
+from:ushort
+till:ushort
+from_heater:ushort 			// Дата начала установки грелок
+till_heater:ushort			// Дата окончания установки грелок
+h_from_checked:bytebool 		// Помечена дата "от"
+h_till_checked:bytebool 		// Помечена дата "до"
+show_tier_types:bytebool
+show_area_types:bytebool;
+sluchka_filter:char
+today:ushort
+otsad_boys_mother:uchar
+otsad_boys_pervo:uchar
+zoo_bits:ulong
+job_grouping:bytebool
+name_show:bytebool
+ignore_last_fuck:bytebool
+partners_limit:bytebool
+limit_value:uchar
+sec_ignore:bytebool
+auto_kuk:bytebool      		// Автопометка групп для системы кукушек
+jurta_sync:bytebool     	// Резервировано
+make_brides:uchar	  	// Возведение в невесты
+sell_mothers_with_babies:bytebool
+imm_age_diff:uchar 		// Максимальная разница в возрасте при экстренных пересадках
+arctime:ushort
+lost_days:ushort				// Сохранять информацию о списаниях
+use_feed_spec:bytebool   // Раздельный вывод по разным спецификациям кормов
+auto_arc:bytebool        // Автоархивация данных об ушедших в расход производителях
+no_kuk:bytebool          // Запрет кука после подсадки крольчат
+no_gen_mix:bytebool      // Запрет пересадок с генетическим смешением
+holost_punish:char   // Штрафной балл за прохолостание
+imm_heater:char      // Когда включается грелка
+rotation:bytebool        // Вращение диаграмм
+rot_speed:bytebool       // Частота вращения в миллисекундах
+no_jurta_kuk:bytebool    // Запрет куков в юртах
+shed_scale:char
+show_gen_tree:bytebool
+show_young_gen_tree:bytebool
+gen_tree_width:ushort
+young_gen_tree_width:ushort
+show_numbers:bytebool  		 // Показывать номера кроликов
+averfeed:uchar  				 // Среднесуточный корморасход
+number_before_name:bytebool // Номера перед именами  #v>6.1
+reserved:uchar[99];			#v>6.1
+newconf:NEWCONFIG			#v>5.1
+jobcnt:uchar					#=MAX_JOBS
+jobs:JOB[this.jobcnt]
+
+---NEWCONFIG
+next_svid:int
+svid_remark_cnt:int
+svid_remarks:string[this.svid_remark_cnt]
+svid_head:string
+svid_farm:string
+reserved:char[100]
+subscriber:SUBSCRIBER[5]  #MAX_SUBSCRIPBE = 5
+
+----SUBSCRIBER
+on:bytebool
+job:string
+name:string
+-----SUBSCRIBER_END
+---NEWCONFIG_END
+
+---JOB
+s1:string
+s2:string
+---JOB_END
+--PARAMFORM_END
+
+--ZOOFORM
+itemcnt:int			// Число строк в зоотехплане
+if (itemcnt!=0)
+	zoodate:date	// Дата зоотехплана
+	donorcnt:ushort 
+	donors:DONOR[this.donorcnt]
+	zoocount:ushort
+	zoojob:ZOOJOB[this.zoocount]
+	memolines:int						#v>5.1
+	memostr:string[this.memolines]		#v>5.1
+
+---DONOR
+unique:ushort	// Или мать, или сирота
+acccount:ushort
+acceptors:ACCEPTOR[this.acccount]
+surplus:uchar	// Избыток крольчат
+immediate:uchar	// Немедленная отсадка этого количества крольчат
+
+----ACCEPTOR
+unique:ushort	// Это - мать
+lack:uchar		// Нехватка подсосных
+hybrid:bytebool 		 // Гибридизация в результате смешения групп
+new_group:bytebool		 // Будет новая группа
+gendiff:int  		 // Кол-во несхожих номеров
+distance:int 		 // Расстояние пересадки
+donor_best:ushort; 	  // unique группа крольчат донора, наиболее подходящая для пересадки
+acceptor_best:ushort; // unique группы крольчат акцептора, наиболее подходящая для пересадки
+----ACCEPTOR_END
+---DONOR_END	
+	
+---ZOOJOB
+caption:string
+subcount:uchar
+subitems:string[this.subcount]
+jobtype:uchar
+jobuniquer:uchar
+uniquescnt:uchar
+uniques:ushort[this.uniquescnt]
+---ZOOJOB_END	
+--ZOOFORM_END
+
+--GRAPHFORM
+reasonlist:listview
+workers:listview
+listlist:listview
+--GRAPHFORM_END
+
+--ARCHIVEFORM
+size:int
+arcplans:ARCPLAN[this.size]
+if (ver<5.1)
+	dead:listview #v<=5.1
+else
+	dead:LISTRAB  #v>5.1
+
+---ARCPLAN
+apdate:date
+workcount:int
+arcworks:stringlist[this.worksize]
+---ARCPLAN_END
+--ARCHIVEFORM_END
+
+--WEIGHTLIST
+count:byte
+weighters:WEIGHTER[this.count]
+laston:byte
+lastpos:ushort
+
+---WEIGHTER
+on:byte
+start:ushort
+interval:ushort
+---WEIGHTER_END
+--WEIGHTLIST_END

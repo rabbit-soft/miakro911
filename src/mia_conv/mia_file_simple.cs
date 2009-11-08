@@ -6,6 +6,27 @@ using System.IO;
 
 namespace mia_conv
 {
+    class DBG
+    {
+        public static void dbg(String s)
+        {
+            Console.WriteLine(s);
+        }
+        public static void dbg1(String s){//dbg(s);
+        }
+        public static void dbg2(String s){//dbg(s);
+        }
+        public static void dbg2(String s, BinaryReader br)
+        {
+
+            //dbg(s+" "+String.Format("@{0:X}",br.BaseStream.Position));
+        }
+        public static void dbg3(String s) { dbg(s); }
+
+
+    }
+
+
     interface IMFCommon
     {
         void read(BinaryReader stream,float ver);
@@ -99,6 +120,12 @@ namespace mia_conv
         }
     }
 
+    class MFChar : MFInt, IMFCommon
+    {
+        public MFChar(String name) : base(name) { }
+        public MFChar(String name, int li) : base(2, name, li) { }
+        public override void read(BinaryReader br, float ver) { val = br.ReadInt16(); }
+    }
     class MFByte : MFUInt, IMFCommon
     {
         public MFByte(String name) : base(name) { }
@@ -146,6 +173,7 @@ namespace mia_conv
         public List<MFString> strings= new List<MFString>();
         public MFStringList(String name):base(name){}
         public MFStringList(String name, int li) : base(name, li) { }
+        public MFStringList(BinaryReader br, float ver) : base("") { read(br, ver); }
         public void read(BinaryReader br, float ver)
         {
             count.read(br, ver);
@@ -161,6 +189,58 @@ namespace mia_conv
                 str += String.Format("s{0:d}{1:s}\r\n", i, strings[i].log());
             str += "-=string_list_end=-";
             return str;
+        }
+    }
+
+    class MFListItem:MFCommon,IMFCommon
+    {
+        public MFString caption = new MFString("caption");
+        public MFByte subitems = new MFByte("subitems");
+        public List<MFString> subs = new List<MFString>();
+        public MFListItem() : base("li") { }
+        public MFListItem(BinaryReader br, float ver):base("li") 
+        {
+            read(br, ver);
+        }
+        public void read(BinaryReader br,float ver)
+        {
+            caption.read(br,ver);
+            subitems.read(br, ver);
+            for (int i = 0; i < (int)subitems.value(); i++)
+                subs.Add(new MFString(br, ver));
+        }
+        public override string strval()
+        {
+            String str = caption.log() + " " + subitems.log() + " ";
+            for (int i = 0; i < (int)subitems.value(); i++)
+                str += "s"+i.ToString()+"="+subs[i].value() + " ";
+            return str;
+        }
+
+    }
+
+    class MFListView : MFCommon, IMFCommon
+    {
+        public MFInt size = new MFInt("size");
+        public List<MFListItem> items = new List<MFListItem>();
+        public MFListView(String name, int li) : base(name, li) { }
+        public MFListView(String name) : base(name) { }
+        public void read(BinaryReader br, float ver)
+        {
+            size.read(br,ver);
+            for (int i = 0; i < size.value(); i++)
+                items.Add(new MFListItem(br, ver));
+
+        }
+        public override String strval()
+        {
+            String str = "-=ListView=-\r\n";
+            str += size.log() + "\r\n";
+            for (int i = 0; i < size.value(); i++)
+            {
+                str += "item" + i.ToString() + "=" + items[i].log() + "\r\n";
+            }
+            return str + "-=ListView_End=-";
         }
     }
 

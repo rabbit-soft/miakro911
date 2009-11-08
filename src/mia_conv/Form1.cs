@@ -15,7 +15,6 @@ namespace mia_conv
         public Form1()
         {
             InitializeComponent();
-            mia = new MiaFile(clb1);
             for (int i = 0; i < clb1.Items.Count; i++)
                 clb1.SetItemChecked(i, false);
             clb1.SetItemChecked(clb1.Items.Count-1, true);
@@ -33,12 +32,17 @@ namespace mia_conv
 
         private void button2_Click(object sender, EventArgs e)
         {
+            mia = new MiaFile(clb1);
             mia.LoadFromFile(tb1.Text, log);
         }
 
-        private void clb1_SelectedIndexChanged(object sender, EventArgs e)
-        {
 
+        private void dateTimePicker1_CloseUp(object sender, EventArgs e)
+        {
+            DateTime dt = dateTimePicker1.Value;
+            DateTime dt2 = new DateTime(1899, 12, 30);
+            TimeSpan sp = dt - dt2;
+            MessageBox.Show("Days=" + String.Format("{0:d}({0:X})", sp.Days));
         }
     }
 }

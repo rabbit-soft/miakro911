@@ -24,12 +24,20 @@ namespace mia_conv
         public MFRabbits rabbits = null;
         public MFFilterForm filterform = new MFFilterForm("FilterForm", 9);
         public MFTransForm transform = new MFTransForm("TransForm", 10);
+        public MFParamForm paramform = new MFParamForm("ParamForm", 11);
+        public MFZooForm zooform = new MFZooForm("ZooForm", 12);
+        public MFGraphForm graphform = new MFGraphForm("GraphForm", 13);
+        public MFArchiveForm arcform =null;
+        public MFString thisfarm = new MFString("thisfarm", 15);
+        public MFString farmid = new MFString("farmid", 15);
+        public MFWeightList wlist = new MFWeightList("WeightList", 16);
         CheckedListBox clb1 = null;
         
 
         public MiaFile(CheckedListBox lb)
         {
             rabbits = new MFRabbits("AllRabbits", 8, male_names, female_names);
+            arcform= new MFArchiveForm("ArchiveForm", 14,male_names,female_names);
             clb1 = lb;
             l1.Add(date);
             l1.Add(buildPlan);
@@ -42,6 +50,8 @@ namespace mia_conv
             l1.Add(rabbits);
             l1.Add(filterform);
             l1.Add(transform);
+            l1.Add(paramform);
+            l1.Add(zooform);
         }
 
         public void objread(IMFCommon obj, BinaryReader br,TextBox log)
@@ -73,6 +83,10 @@ namespace mia_conv
                 objread(date, fs, log);
                 objread(date, fs, log);
             }
+            if (dver > 3.0) l1.Add(graphform);
+            if (dver > 3.9) l1.Add(arcform);
+            if (dver > 4.3) { l1.Add(thisfarm); l1.Add(farmid); }
+            if (dver > 5.1) l1.Add(wlist);
             readobjs(l1, fs, log);
             log.Text += String.Format("\r\nREAD ENDS AT FILEPOS {0:d} ({0:X}) OF {1:d} ({1:X})",sfs.Position,sfs.Length);
             fs.Close();

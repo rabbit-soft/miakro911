@@ -35,6 +35,7 @@ namespace mia_conv
             this.button2 = new System.Windows.Forms.Button();
             this.clb1 = new System.Windows.Forms.CheckedListBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.SuspendLayout();
             // 
             // tb1
@@ -62,7 +63,7 @@ namespace mia_conv
             // 
             // log
             // 
-            this.log.Location = new System.Drawing.Point(12, 263);
+            this.log.Location = new System.Drawing.Point(12, 318);
             this.log.Multiline = true;
             this.log.Name = "log";
             this.log.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -94,27 +95,42 @@ namespace mia_conv
             "Список пород",
             "Кролики",
             "Форма фильтров",
-            "Форма трансферов"});
-            this.clb1.Location = new System.Drawing.Point(12, 61);
+            "Форма трансферов",
+            "Форма параметров",
+            "Форма зоотехплана",
+            "Форма графов",
+            "Архивная форма",
+            "Строки названий фермы",
+            "График взвешиваний"});
+            this.clb1.Location = new System.Drawing.Point(12, 53);
             this.clb1.Name = "clb1";
-            this.clb1.Size = new System.Drawing.Size(136, 184);
+            this.clb1.Size = new System.Drawing.Size(158, 259);
             this.clb1.TabIndex = 5;
-            this.clb1.SelectedIndexChanged += new System.EventHandler(this.clb1_SelectedIndexChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(51, 45);
+            this.label1.Location = new System.Drawing.Point(56, 37);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 6;
             this.label1.Text = "Логи";
             // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Location = new System.Drawing.Point(447, 61);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePicker1.TabIndex = 7;
+            this.dateTimePicker1.Visible = false;
+            this.dateTimePicker1.CloseUp += new System.EventHandler(this.dateTimePicker1_CloseUp);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(792, 619);
+            this.ClientSize = new System.Drawing.Size(792, 674);
+            this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.clb1);
             this.Controls.Add(this.button2);
@@ -137,6 +153,7 @@ namespace mia_conv
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.CheckedListBox clb1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
     }
 }
 
