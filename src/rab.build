@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project name="rabnet" default="build" basedir=".">
+	<description>rabnet project makefile</description>
+	<target name="build" depends="clear,buildall" description="Full build"/>
+	<target name="clear" description="Clear build directories">
+		<delete dir="./../bin"/>
+	</target>
+	<target name="prepare" description="Make build directories">
+		<mkdir dir="./../bin"/>
+	</target>
+	<target name="buildall" depends="prepare,miaconv,rabnet" description="Build all projects"/>
+	<target name="miaconv" description="Make mia converter project">
+		<csc target="exe" output="./../bin/mia_conv.exe">
+			<sources>
+				<includes name="./mia_conv/*.cs"/>
+			</sources>
+		</csc>
+	</target>
+	
+	<target name="rabnet" description="make rabneat application" depends="rabnet_engine,rabnet_gui"/>
+	
+	<target name="rabnet_engine">
+		<csc target="library" output="./../bin/rn.engine.dll">
+			<sources>
+				<includes name="./rabnet/engine/*.cs"/>
+			</sources>
+		</csc>
+	</target>
+	
+	<target name="rabnet_gui">
+		<csc target="exe" output="./../bin/rabnet.exe">
+			<sources>
+				<includes name="./rabnet/gui/*.cs"/>
+			</sources>
+		</csc>
+	</target>
+</project>
