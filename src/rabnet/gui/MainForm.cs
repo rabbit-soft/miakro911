@@ -18,5 +18,20 @@ namespace rabnet
             log.Debug("Program started");
         }
 
+        private void ExitMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void ChangeFarmMenuItem_Click(object sender, EventArgs e)
+        {
+            (new LoginForm()).ShowDialog();
+        }
+
+        private void MainForm_Activated(object sender, EventArgs e)
+        {
+            Text = Engine.get().farmName();
+        }
+
     }
 }

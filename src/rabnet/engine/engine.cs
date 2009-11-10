@@ -12,6 +12,8 @@ namespace rabnet
         private IRabNetDataLayer data=null;
         private ILog log = null;
         private int uid = 0;
+        private String uname;
+        private String farmname;
         public RabNetEngine()
         {
             log4net.Config.XmlConfigurator.Configure();
@@ -41,11 +43,17 @@ namespace rabnet
         {
             return data;
         }
-        public int setUid(String name,String password)
+        public int setUid(String name,String password,String farmName)
         {
             uid = db().checkUser(name, password);
-            log.DebugFormat("check uid {0:d}", uid);
+            log.DebugFormat("check uid {0:d} for farm {1:s}", uid,farmName);
+            if (uid != 0)
+            {
+                uname = name;
+                farmname = farmName;
+            }
             return uid;
         }
+        public String farmName(){return uname+"@"+farmname;}
     }
 }

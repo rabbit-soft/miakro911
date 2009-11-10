@@ -62,7 +62,7 @@ namespace rabnet
 
         private void button2_Click(object sender, EventArgs e)
         {
-            int uid=Engine.get().setUid(comboBox2.Text, textBox1.Text);
+            int uid=Engine.get().setUid(comboBox2.Text, textBox1.Text,comboBox1.Text);
             if (uid != 0)
             {
                 DialogResult = DialogResult.OK;
