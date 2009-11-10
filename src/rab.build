@@ -4,13 +4,13 @@
 	<!-- properties defines !-->
 	<property name="bin_dir" value="./../bin" />
 	<property name="log4net.lib" value="log4net.dll" />
-	<property name="log4net.path" value="C:/dev/dotNet/log4net" />
-	<property name="log4net.ass" value="${log4net.path}/bin/net/2.0/release/${log4net.lib}" />
+	<property name="log4net.path" value="./party3d" />
+	<property name="log4net.ass" value="${log4net.path}/${log4net.lib}" />
 	<property name="log4net.use" value="${bin_dir}/${log4net.lib}" />
 	
 	<property name="mysql.lib" value="MySql.Data.dll" />
-	<property name="mysql.path" value="C:/dev/dotNet/mysqlcon" />
-	<property name="mysql.ass" value="${mysql.path}/Assemblies/${mysql.lib}" />
+	<property name="mysql.path" value="./party3d" />
+	<property name="mysql.ass" value="${mysql.path}/${mysql.lib}" />
 	<property name="mysql.use" value="${bin_dir}/${mysql.lib}" />
 	
 	<!-- TARGETS !-->
@@ -34,6 +34,9 @@
 			<sources>
 				<include name="./mia_conv/*.cs"/>
 			</sources>
+			<references>
+				<include name="${mysql.use}"/>
+			</references>
 		</csc>
 	</target>
 	
