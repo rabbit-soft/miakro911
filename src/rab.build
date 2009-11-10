@@ -10,9 +10,9 @@
 	</target>
 	<target name="buildall" depends="prepare,miaconv,rabnet" description="Build all projects"/>
 	<target name="miaconv" description="Make mia converter project">
-		<csc target="exe" output="./../bin/mia_conv.exe">
+		<csc target="winexe" output="./../bin/mia_conv.exe">
 			<sources>
-				<includes name="./mia_conv/*.cs"/>
+				<include name="./mia_conv/*.cs"/>
 			</sources>
 		</csc>
 	</target>
@@ -22,15 +22,15 @@
 	<target name="rabnet_engine">
 		<csc target="library" output="./../bin/rn.engine.dll">
 			<sources>
-				<includes name="./rabnet/engine/*.cs"/>
+				<include name="./rabnet/engine/*.cs"/>
 			</sources>
 		</csc>
 	</target>
 	
 	<target name="rabnet_gui">
-		<csc target="exe" output="./../bin/rabnet.exe">
+		<csc target="winexe" output="./../bin/rabnet.exe">
 			<sources>
-				<includes name="./rabnet/gui/*.cs"/>
+				<include name="./rabnet/gui/*.cs"/>
 			</sources>
 		</csc>
 	</target>

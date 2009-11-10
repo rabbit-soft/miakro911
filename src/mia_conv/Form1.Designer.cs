@@ -36,6 +36,10 @@ namespace mia_conv
             this.clb1 = new System.Windows.Forms.CheckedListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.dataSet1 = new System.Data.DataSet();
+            this.mySqlConnection1 = new MySql.Data.MySqlClient.MySqlConnection();
+            this.mySqlDataAdapter1 = new MySql.Data.MySqlClient.MySqlDataAdapter();
+            ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).BeginInit();
             this.SuspendLayout();
             // 
             // tb1
@@ -125,6 +129,17 @@ namespace mia_conv
             this.dateTimePicker1.Visible = false;
             this.dateTimePicker1.CloseUp += new System.EventHandler(this.dateTimePicker1_CloseUp);
             // 
+            // dataSet1
+            // 
+            this.dataSet1.DataSetName = "NewDataSet";
+            // 
+            // mySqlDataAdapter1
+            // 
+            this.mySqlDataAdapter1.DeleteCommand = null;
+            this.mySqlDataAdapter1.InsertCommand = null;
+            this.mySqlDataAdapter1.SelectCommand = null;
+            this.mySqlDataAdapter1.UpdateCommand = null;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -139,6 +154,7 @@ namespace mia_conv
             this.Controls.Add(this.tb1);
             this.Name = "Form1";
             this.Text = "Mia file to DB converter";
+            ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -154,6 +170,9 @@ namespace mia_conv
         private System.Windows.Forms.CheckedListBox clb1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Data.DataSet dataSet1;
+        private MySql.Data.MySqlClient.MySqlConnection mySqlConnection1;
+        private MySql.Data.MySqlClient.MySqlDataAdapter mySqlDataAdapter1;
     }
 }
 
