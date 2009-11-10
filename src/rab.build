@@ -1,37 +1,93 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <project name="rabnet" default="build" basedir=".">
 	<description>rabnet project makefile</description>
+	<!-- properties defines !-->
+	<property name="bin_dir" value="./../bin" />
+	<property name="log4net.lib" value="log4net.dll" />
+	<property name="log4net.path" value="C:/dev/dotNet/log4net" />
+	<property name="log4net.ass" value="${log4net.path}/bin/net/2.0/release/${log4net.lib}" />
+	<property name="log4net.use" value="${bin_dir}/${log4net.lib}" />
+	
+	<property name="mysql.lib" value="MySql.Data.dll" />
+	<property name="mysql.path" value="C:/dev/dotNet/mysqlcon" />
+	<property name="mysql.ass" value="${mysql.path}/Assemblies/${mysql.lib}" />
+	<property name="mysql.use" value="${bin_dir}/${mysql.lib}" />
+	
+	<!-- TARGETS !-->
+	
 	<target name="build" depends="clear,buildall" description="Full build"/>
+	
 	<target name="clear" description="Clear build directories">
-		<delete dir="./../bin"/>
+		<delete dir="${bin_dir}" />
 	</target>
+	
 	<target name="prepare" description="Make build directories">
-		<mkdir dir="./../bin"/>
+		<mkdir dir="${bin_dir}"/>
+		<copy file="${log4net.ass}" tofile="${log4net.use}" />
+		<copy file="${mysql.ass}" tofile="${mysql.use}" />
 	</target>
+
 	<target name="buildall" depends="prepare,miaconv,rabnet" description="Build all projects"/>
+	
 	<target name="miaconv" description="Make mia converter project">
-		<csc target="winexe" output="./../bin/mia_conv.exe">
+		<csc target="winexe" output="${bin_dir}/mia_conv.exe">
 			<sources>
 				<include name="./mia_conv/*.cs"/>
 			</sources>
 		</csc>
 	</target>
 	
-	<target name="rabnet" description="make rabneat application" depends="rabnet_engine,rabnet_gui"/>
+	<target name="rabnet" description="make rabneat application" depends="db.mysql,db.miafile,engine,gui"/>
 	
-	<target name="rabnet_engine">
-		<csc target="library" output="./../bin/rn.engine.dll">
+	<target name="db.mysql" description="mysql data layer">
+		<csc target="library" output="${bin_dir}/db.mysql.dll">
+			<sources>
+				<include name="./rabnet/db.mysql/*.cs"/>
+			</sources>
+			<references>
+				<include name="${log4net.use}"/>
+				<include name="${mysql.use}"/>
+			</references>
+		</csc>
+	</target>
+	
+	<target name="db.miafile" description="mia_file data layer">
+		<csc target="library" output="${bin_dir}/db.miafile.dll">
+			<sources>
+				<include name="./rabnet/db.miafile/*.cs"/>
+			</sources>
+			<references>
+				<include name="${log4net.use}"/>
+				<include name="${bin_dir}/db.mysql.dll" />
+			</references>
+		</csc>
+	</target>
+	
+	<target name="engine" description="engine">
+		<csc target="library" output="${bin_dir}/engine.dll">
 			<sources>
 				<include name="./rabnet/engine/*.cs"/>
 			</sources>
+			<references>
+				<include name="${log4net.use}"/>
+				<include name="${bin_dir}/db.mysql.dll" />
+				<include name="${bin_dir}/db.miafile.dll" />
+			</references>
 		</csc>
 	</target>
 	
-	<target name="rabnet_gui">
-		<csc target="winexe" output="./../bin/rabnet.exe">
+	<target name="gui" description="rabnet gui">
+		<csc target="winexe" output="${bin_dir}/rabnet.exe">
 			<sources>
 				<include name="./rabnet/gui/*.cs"/>
 			</sources>
+			<references>
+				<include name="${log4net.use}"/>
+				<include name="${bin_dir}/db.mysql.dll" />
+				<include name="${bin_dir}/engine.dll" />
+			</references>
 		</csc>
+		<copy file="./rabnet/gui/app.config" tofile="${bin_dir}/rabnet.exe.config" />
 	</target>
+	
 </project>
