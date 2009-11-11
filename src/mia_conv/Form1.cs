@@ -40,6 +40,7 @@ namespace mia_conv
         {
             mia = new MiaFile(clb1);
             mia.LoadFromFile(tb1.Text, log);
+            button3.Enabled = true;
         }
 
 
@@ -53,7 +54,20 @@ namespace mia_conv
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            groupBox2.Enabled = checkBox1.Checked;
+            groupBox2.Enabled = dbnew.Checked;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            MDCreator crt = new MDCreator(log);
+            if (crt.prepare(dbnew.Checked, textHost.Text, textUser.Text, textPassword.Text, textDB.Text, textRoot.Text, textRootPswd.Text))
+            {
+                crt.oldid = oldid.Checked;
+                crt.mia = mia;
+                crt.setUsers(udata);
+                crt.fillAll();
+                crt.finish();
+            }
         }
     }
 }

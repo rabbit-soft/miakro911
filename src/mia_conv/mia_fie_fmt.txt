@@ -469,7 +469,7 @@ uniques:ushort[this.uniquescnt]
 --GRAPHFORM
 reasonlist:listview
 workers:listview
-listlist:listview
+lostlist:listview
 --GRAPHFORM_END
 
 --ARCHIVEFORM

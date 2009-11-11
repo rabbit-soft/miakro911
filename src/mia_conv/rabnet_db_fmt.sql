@@ -6,6 +6,16 @@ u_password VARCHAR(50),
 KEY(u_name)
 );
 
+DROP TABLE IF EXISTS options;
+CREATE TABLE options(
+	o_name VARCHAR(30) NOT NULL default '',
+	o_subname VARCHAR(30) NOT NULL default '',
+	o_uid INTEGER UNSIGNED NOT NULL default 0,
+	o_value TEXT NOT NULL default '',
+	KEY(o_name,o_subname),
+	KEY(o_uid)
+);
+
 DROP TABLE IF EXISTS breeds;
 CREATE TABLE breeds(
 	b_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -16,19 +26,21 @@ CREATE TABLE breeds(
 DROP TABLE IF EXISTS names;
 CREATE TABLE names(
 	n_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	n_sex BOOL UNSIGNED NOT NULL DEFAULT 0, 
+	n_sex BOOL NOT NULL DEFAULT 0, 
 	n_name VARCHAR(50) NOT NULL,
 	n_surname VARCHAR(50) NOT NULL,
+	n_use INTEGER UNSIGNED NOT NULL default 0,
 	n_block_date DATETIME DEFAULT NULL,
 	KEY(n_sex),
 	KEY(n_name),
+	KEY(n_use),
 	KEY(n_block_date)
 );
 
 DROP TABLE IF EXISTS tiers;
 CREATE TABLE tiers(
 	t_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	t_type enum{'female','dfemale','complex','jurta','quarta','vertep','barin','cabin'} NOT NULL,
+	t_type ENUM('female','dfemale','complex','jurta','quarta','vertep','barin','cabin') NOT NULL,
 	t_repair BOOL NOT NULL default 0,
 	t_notes TEXT NOT NULL default '',
 	t_busy1 INTEGER UNSIGNED NOT NULL default 0,
@@ -71,5 +83,6 @@ CREATE TABLE zones(
 
 
 
-##TEST DATA
+##TEST_DATA do not remove this line
+
 INSERT INTO users(u_name,u_password) VALUES('john',MD5(''));

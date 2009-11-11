@@ -63,6 +63,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="MDCreator.cs" />
     <Compile Include="mia_file.cs" />
     <Compile Include="mia_file_complex.cs" />
     <Compile Include="mia_file_simple.cs" />
@@ -77,11 +78,7 @@
     <Content Include="mia_fie_fmt.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="rabnet_db_fmt.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
+    <EmbeddedResource Include="rabnet_db_fmt.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

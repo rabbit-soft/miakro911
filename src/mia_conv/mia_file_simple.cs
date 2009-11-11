@@ -39,6 +39,7 @@ namespace mia_conv
     {
         protected String name;
         private int lind = 0;
+        public int tag = 0;
         public MFCommon(String sname) : this(sname, -1) { }
         public MFCommon(String sname,int li)
         {

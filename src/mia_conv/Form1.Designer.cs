@@ -38,25 +38,25 @@ namespace mia_conv
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.textHost = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.oldid = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.userNew = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.textRootPswd = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.textRoot = new System.Windows.Forms.TextBox();
+            this.dbnew = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textPassword = new System.Windows.Forms.TextBox();
+            this.textUser = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textDB = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox3.SuspendLayout();
@@ -153,19 +153,19 @@ namespace mia_conv
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.textBox6);
+            this.groupBox1.Controls.Add(this.textHost);
             this.groupBox1.Controls.Add(this.dataGridView1);
             this.groupBox1.Controls.Add(this.groupBox3);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.button3);
             this.groupBox1.Controls.Add(this.groupBox2);
-            this.groupBox1.Controls.Add(this.checkBox1);
+            this.groupBox1.Controls.Add(this.dbnew);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.textBox3);
-            this.groupBox1.Controls.Add(this.textBox2);
+            this.groupBox1.Controls.Add(this.textPassword);
+            this.groupBox1.Controls.Add(this.textUser);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.textDB);
             this.groupBox1.Location = new System.Drawing.Point(176, 37);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(603, 274);
@@ -182,13 +182,13 @@ namespace mia_conv
             this.label8.TabIndex = 13;
             this.label8.Text = "Хост";
             // 
-            // textBox6
+            // textHost
             // 
-            this.textBox6.Location = new System.Drawing.Point(92, 16);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(100, 20);
-            this.textBox6.TabIndex = 12;
-            this.textBox6.Text = "localhost";
+            this.textHost.Location = new System.Drawing.Point(92, 16);
+            this.textHost.Name = "textHost";
+            this.textHost.Size = new System.Drawing.Size(100, 20);
+            this.textHost.TabIndex = 12;
+            this.textHost.Text = "localhost";
             // 
             // dataGridView1
             // 
@@ -202,7 +202,7 @@ namespace mia_conv
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.checkBox3);
+            this.groupBox3.Controls.Add(this.oldid);
             this.groupBox3.Location = new System.Drawing.Point(198, 16);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(200, 251);
@@ -210,15 +210,15 @@ namespace mia_conv
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Параметры";
             // 
-            // checkBox3
+            // oldid
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(6, 19);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(78, 17);
-            this.checkBox3.TabIndex = 0;
-            this.checkBox3.Text = "Старые ID";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.oldid.AutoSize = true;
+            this.oldid.Location = new System.Drawing.Point(6, 19);
+            this.oldid.Name = "oldid";
+            this.oldid.Size = new System.Drawing.Size(78, 17);
+            this.oldid.TabIndex = 0;
+            this.oldid.Text = "Старые ID";
+            this.oldid.UseVisualStyleBackColor = true;
             // 
             // label7
             // 
@@ -231,20 +231,22 @@ namespace mia_conv
             // 
             // button3
             // 
+            this.button3.Enabled = false;
             this.button3.Location = new System.Drawing.Point(522, 245);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 7;
             this.button3.Text = "Перенести";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.checkBox2);
+            this.groupBox2.Controls.Add(this.userNew);
             this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Controls.Add(this.textBox5);
+            this.groupBox2.Controls.Add(this.textRootPswd);
             this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Controls.Add(this.textBox4);
+            this.groupBox2.Controls.Add(this.textRoot);
             this.groupBox2.Enabled = false;
             this.groupBox2.Location = new System.Drawing.Point(9, 158);
             this.groupBox2.Name = "groupBox2";
@@ -253,15 +255,15 @@ namespace mia_conv
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Создать новую";
             // 
-            // checkBox2
+            // userNew
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(35, 82);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(142, 17);
-            this.checkBox2.TabIndex = 5;
-            this.checkBox2.Text = "Создать пользователя";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.userNew.AutoSize = true;
+            this.userNew.Location = new System.Drawing.Point(35, 82);
+            this.userNew.Name = "userNew";
+            this.userNew.Size = new System.Drawing.Size(142, 17);
+            this.userNew.TabIndex = 5;
+            this.userNew.Text = "Создать пользователя";
+            this.userNew.UseVisualStyleBackColor = true;
             // 
             // label6
             // 
@@ -272,12 +274,12 @@ namespace mia_conv
             this.label6.TabIndex = 4;
             this.label6.Text = "Пароль";
             // 
-            // textBox5
+            // textRootPswd
             // 
-            this.textBox5.Location = new System.Drawing.Point(95, 56);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(82, 20);
-            this.textBox5.TabIndex = 3;
+            this.textRootPswd.Location = new System.Drawing.Point(95, 56);
+            this.textRootPswd.Name = "textRootPswd";
+            this.textRootPswd.Size = new System.Drawing.Size(82, 20);
+            this.textRootPswd.TabIndex = 3;
             // 
             // label5
             // 
@@ -288,24 +290,24 @@ namespace mia_conv
             this.label5.TabIndex = 2;
             this.label5.Text = "Администратор";
             // 
-            // textBox4
+            // textRoot
             // 
-            this.textBox4.Location = new System.Drawing.Point(95, 30);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(82, 20);
-            this.textBox4.TabIndex = 0;
-            this.textBox4.Text = "root";
+            this.textRoot.Location = new System.Drawing.Point(95, 30);
+            this.textRoot.Name = "textRoot";
+            this.textRoot.Size = new System.Drawing.Size(82, 20);
+            this.textRoot.TabIndex = 0;
+            this.textRoot.Text = "root";
             // 
-            // checkBox1
+            // dbnew
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(6, 135);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(121, 17);
-            this.checkBox1.TabIndex = 1;
-            this.checkBox1.Text = "Создать новую БД";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.dbnew.AutoSize = true;
+            this.dbnew.Location = new System.Drawing.Point(6, 135);
+            this.dbnew.Name = "dbnew";
+            this.dbnew.Size = new System.Drawing.Size(121, 17);
+            this.dbnew.TabIndex = 1;
+            this.dbnew.Text = "Создать новую БД";
+            this.dbnew.UseVisualStyleBackColor = true;
+            this.dbnew.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // label4
             // 
@@ -325,21 +327,21 @@ namespace mia_conv
             this.label3.TabIndex = 4;
             this.label3.Text = "Пользователь";
             // 
-            // textBox3
+            // textPassword
             // 
-            this.textBox3.Location = new System.Drawing.Point(92, 95);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 20);
-            this.textBox3.TabIndex = 3;
-            this.textBox3.Text = "krol";
+            this.textPassword.Location = new System.Drawing.Point(92, 95);
+            this.textPassword.Name = "textPassword";
+            this.textPassword.Size = new System.Drawing.Size(100, 20);
+            this.textPassword.TabIndex = 3;
+            this.textPassword.Text = "krol";
             // 
-            // textBox2
+            // textUser
             // 
-            this.textBox2.Location = new System.Drawing.Point(92, 69);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 2;
-            this.textBox2.Text = "kroliki";
+            this.textUser.Location = new System.Drawing.Point(92, 69);
+            this.textUser.Name = "textUser";
+            this.textUser.Size = new System.Drawing.Size(100, 20);
+            this.textUser.TabIndex = 2;
+            this.textUser.Text = "kroliki";
             // 
             // label2
             // 
@@ -350,13 +352,13 @@ namespace mia_conv
             this.label2.TabIndex = 1;
             this.label2.Text = "Имя БД";
             // 
-            // textBox1
+            // textDB
             // 
-            this.textBox1.Location = new System.Drawing.Point(92, 43);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.Text = "kroliki";
+            this.textDB.Location = new System.Drawing.Point(92, 43);
+            this.textDB.Name = "textDB";
+            this.textDB.Size = new System.Drawing.Size(100, 20);
+            this.textDB.TabIndex = 0;
+            this.textDB.Text = "kroliki";
             // 
             // Form1
             // 
@@ -397,25 +399,25 @@ namespace mia_conv
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textDB;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox userNew;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox textRootPswd;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.TextBox textRoot;
+        private System.Windows.Forms.CheckBox dbnew;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textPassword;
+        private System.Windows.Forms.TextBox textUser;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.TextBox textHost;
+        private System.Windows.Forms.CheckBox oldid;
     }
 }
 
