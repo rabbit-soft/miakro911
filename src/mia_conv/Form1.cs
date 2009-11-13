@@ -62,7 +62,7 @@ namespace mia_conv
             MDCreator crt = new MDCreator(log);
             if (crt.prepare(dbnew.Checked, textHost.Text, textUser.Text, textPassword.Text, textDB.Text, textRoot.Text, textRootPswd.Text))
             {
-                crt.oldid = oldid.Checked;
+                //crt.oldid = oldid.Checked;
                 crt.mia = mia;
                 crt.setUsers(udata);
                 crt.fillAll();

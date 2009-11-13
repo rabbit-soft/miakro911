@@ -41,7 +41,6 @@ namespace mia_conv
             this.textHost = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.oldid = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -59,7 +58,6 @@ namespace mia_conv
             this.textDB = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -202,23 +200,12 @@ namespace mia_conv
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.oldid);
             this.groupBox3.Location = new System.Drawing.Point(198, 16);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(200, 251);
             this.groupBox3.TabIndex = 10;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Параметры";
-            // 
-            // oldid
-            // 
-            this.oldid.AutoSize = true;
-            this.oldid.Location = new System.Drawing.Point(6, 19);
-            this.oldid.Name = "oldid";
-            this.oldid.Size = new System.Drawing.Size(78, 17);
-            this.oldid.TabIndex = 0;
-            this.oldid.Text = "Старые ID";
-            this.oldid.UseVisualStyleBackColor = true;
             // 
             // label7
             // 
@@ -378,8 +365,6 @@ namespace mia_conv
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -417,7 +402,6 @@ namespace mia_conv
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox textHost;
-        private System.Windows.Forms.CheckBox oldid;
     }
 }
 
