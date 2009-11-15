@@ -62,11 +62,15 @@ namespace mia_conv
             MDCreator crt = new MDCreator(log);
             if (crt.prepare(dbnew.Checked, textHost.Text, textUser.Text, textPassword.Text, textDB.Text, textRoot.Text, textRootPswd.Text))
             {
+                button2.Enabled = false;
+                button3.Enabled = false;
                 //crt.oldid = oldid.Checked;
                 crt.mia = mia;
                 crt.setUsers(udata);
                 crt.fillAll();
                 crt.finish();
+                button2.Enabled = true;
+                button3.Enabled = true;
             }
         }
     }

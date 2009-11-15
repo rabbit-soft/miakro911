@@ -182,7 +182,7 @@ namespace mia_conv
         public MFByte tier = new MFByte("tier");
         public MFByte tier_id = new MFByte("tier_id");
         public MFByte area = new MFByte("area");
-        public MFByte rate = new MFByte("rate");
+        public MFSByte rate = new MFSByte("rate");
         public MFByte group = new MFByte("group");
         public MFByte breed = new MFByte("breed");
         public MFByte multi = new MFByte("multi");

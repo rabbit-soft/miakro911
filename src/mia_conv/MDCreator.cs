@@ -9,7 +9,7 @@ using System.Text;
 
 namespace mia_conv
 {
-    class MDCreator
+    partial class MDCreator
     {
         private TextBox log=null;
         public MySqlConnection sql = null;
@@ -94,6 +94,12 @@ namespace mia_conv
             fillZones();
             fillBuildings();
             fillTransfers();
+            fillRabbits();
+            fillTransForm();
+            fillOptions();
+            fillZooForm();
+            fillGraphForm();
+            fillArcForm();
         }
 
         public void fillBreeds()
@@ -156,46 +162,48 @@ namespace mia_conv
 
         public int savetier(Tier tr)
         {
+            Application.DoEvents();
             String tp = "unk";
             int b1=0,b2=0,b3=0,b4=0;
-            int heater=0;
-            int nest=0;
-            int delims=0;
+            String heater="00";
+            String nest="00";
+            String delims="000";
+            String d = "D1";
             switch (tr.type)
             {
                 case 0: tp = "none";
                     break;
                 case 1: tp = "female";
                     b1 = tr.busies[0];
-                    heater = tr.heaters[0];
-                    nest = tr.nests[0];
+                    heater = tr.heaters[0].ToString(d);
+                    nest = tr.nests[0].ToString(d);
                     break;
                 case 2: tp = "dfemale";
                     b1 = tr.busies[0];
                     b2 = tr.busies[1];
-                    heater = (tr.heaters[0] & 0x01) | ((tr.heaters[1]&0x01) << 1);
-                    nest = (tr.nests[0] & 0x01) | ((tr.nests[1] & 0x01) << 1);
+                    heater = tr.heaters[0].ToString(d)+tr.heaters[1].ToString(d);
+                    nest = tr.nests[0].ToString(d)+tr.nests[1].ToString(d);
                     break;
                 case 3: tp = "complex";
                     b1 = tr.busies[0];
                     b2 = tr.busies[1];
                     b3 = tr.busies[2];
-                    heater = tr.heaters[0];
-                    nest = tr.nests[0];
+                    heater = tr.heaters[0].ToString(d);
+                    nest = tr.nests[0].ToString(d);
                     break;
                 case 4: tp = "jurta";
                     b1 = tr.busies[0];
                     b2 = tr.busies[1];
-                    heater = tr.heaters[0];
-                    nest = tr.nests[0];
-                    delims = tr.nest_wbig;
+                    heater = tr.heaters[0].ToString(d);
+                    nest = tr.nests[0].ToString(d);
+                    delims = tr.nest_wbig.ToString(d);
                     break;
                 case 5: tp = "quarta";
                     b1 = tr.busies[0];
                     b2 = tr.busies[1];
                     b3 = tr.busies[2];
                     b4 = tr.busies[3];
-                    delims = (tr.delims[0] & 0x01) | ((tr.delims[1] & 0x01) << 1) | ((tr.delims[2] & 0x01) << 2);
+                    delims = tr.delims[0].ToString(d)+tr.delims[1].ToString(d)+tr.delims[2].ToString(d);
                     break;
                 case 6: tp = "vertep";
                     b1 = tr.busies[0];
@@ -204,17 +212,17 @@ namespace mia_conv
                 case 7: tp = "barin";
                     b1 = tr.busies[0];
                     b2 = tr.busies[1];
-                    delims = tr.delims[0];
+                    delims = tr.delims[0].ToString(d);
                     break;
                 case 8: tp = "cabin";
                     b1 = tr.busies[0];
                     b2 = tr.busies[1];
-                    heater = tr.heaters[0];
-                    nest = tr.nests[0];
+                    heater = tr.heaters[0].ToString(d);
+                    nest = tr.nests[0].ToString(d);
                     break;
             }
             c.CommandText=String.Format("INSERT INTO tiers(t_type,t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4,t_heater,t_nest,t_delims) "+
-                "VALUES('{0:s}',{1:d},'{2:s}',{3:d},{4:d},{5:d},{6:d},{7:d},{8:d},{9:d});",
+                "VALUES('{0:s}',{1:d},'{2:s}',{3:d},{4:d},{5:d},{6:d},'{7:s}','{8:s}','{9:s}');",
                 tp,tr.repair,tr.notes.value(),b1,b2,b3,b4,heater,nest,delims);
             c.ExecuteNonQuery();
             return (int)c.LastInsertedId;
@@ -249,7 +257,8 @@ namespace mia_conv
             int maxid = 0;
             foreach (MiniFarm fm in mia.builds.minifarms)
             {
-                int upp=savetier(fm.upper);
+                Application.DoEvents();
+                int upp = savetier(fm.upper);
                 int low = 0;
                 if (fm.id > maxid)
                     maxid = fm.id;
@@ -331,6 +340,7 @@ namespace mia_conv
             debug("fill transfers");
             foreach (Trans t in mia.trans_table.transes)
             {
+                Application.DoEvents();
                 String add = "";
                 String cmd= "INSERT INTO transfers(t_notes,t_date,t_units,t_type";
                 String vals = String.Format("VALUES('{0:s}',{1:s},{2:d},",t.notes.value(),convdt(t.when.value()),t.units.value());
@@ -392,6 +402,221 @@ namespace mia_conv
                 c.CommandText = cmd + ") " + vals + ");";
                 c.ExecuteNonQuery();
             }
+        }
+
+        public void setOption(String name, String subname, String value)
+        {
+            c.CommandText = "INSERT INTO options(o_name,o_subname,o_uid,o_value) VALUES('" + name + "','" + subname + "',0,'" + value + "');";
+            c.ExecuteNonQuery();
+        }
+        public void setOption(String name,String subname,int value)
+        {
+            setOption(name, subname, value.ToString());
+        }
+        public void setOption(String name, String subname, float value)
+        {
+            setOption(name,subname,value.ToString());
+        }
+
+        public void setCatList(MFStringList lst, String type, String flag)
+        {
+            for (int i = 0; i < lst.strings.Count; i++)
+            {
+                for (int j = 0; j < flag.Length;j++ )
+                    getCatalogValue(type, flag[j], lst.strings[i].value());
+            }
+        }
+
+        public void fillTransForm()
+        {
+            debug("fill transform");
+            for (int i=0;i<mia.transform.skinnames.Count;i++)
+                setOption("price","skin"+i.ToString(),mia.transform.skinnames[i].value());
+            setOption("price", "meat", mia.transform.pricePerKilo.value());
+            setOption("price", "feed", mia.transform.feedPrice.value());
+            setCatList(mia.transform.skinBuyers, "partner", "s");
+            setCatList(mia.transform.bodyBuyers, "partner", "m");
+            setCatList(mia.transform.rabbitPartner, "partner", "rR");
+            setCatList(mia.transform.feedPartner, "partner", "f");
+            setCatList(mia.transform.kind, "kind", "x");
+            setCatList(mia.transform.otherPartner, "partner", "oO");
+            setCatList(mia.transform.feedType, "name", "f");
+            setCatList(mia.transform.otherKind, "kind", "oO");
+            setCatList(mia.transform.otherProduct, "name", "oO");
+            setCatList(mia.transform.usedFeedType, "name", "f");
+            setCatList(mia.transform.usedFeedSpec, "kind", "f");
+            setCatList(mia.transform.otsevBuyer, "partner", "x");
+        }
+
+        public int getUniqueRabbit(int unique)
+        {
+            if (unique == 0) return 0;
+            c.CommandText = "SELECT r_id FROM rabbits WHERE r_unique=" + unique.ToString() + ";";
+            MySqlDataReader rd = c.ExecuteReader();
+            rd.Read();
+            int res = rd.GetInt32(0);
+            rd.Close();
+            return res;
+        }
+
+        public void fillZooForm()
+        {
+            debug("fill ZooForm");
+            DateTime dt = mia.zooform.zoodate.value();
+            String memo="";
+            for (int i = 0; i < mia.zooform.strings.Count; i++)
+            {
+                memo += mia.zooform.strings[i].value() + "\r\n";
+            }
+            c.CommandText = "INSERT INTO zooplans(z_date,z_memo) VALUES("+convdt(dt)+",'"+MySqlHelper.EscapeString(memo)+"');";
+            c.ExecuteNonQuery();
+            for (int i = 0; i < mia.zooform.donors.Count; i++)
+            {
+                Application.DoEvents();
+                Donor d = mia.zooform.donors[i];
+                c.CommandText=String.Format("INSERT INTO zooplans(z_date,z_job,z_rabbit,z_address,z_address2) VALUES({0:s},666,{1:d},{2:d},{3:d});",
+                    convdt(dt),getUniqueRabbit((int)d.unique.value()),d.surplus.value(),d.immediate.value());
+                c.ExecuteNonQuery();
+                int did=(int)c.LastInsertedId;
+                for (int j = 0; j < d.acc.Count; j++)
+                {
+                    Acceptor a = d.acc[j];
+                    c.CommandText=String.Format("INSERT INTO zooacceptors(z_id,z_rabbit,z_lack,z_hybrid,z_new_group,z_gendiff,z_distance,z_best_donor,z_best_acceptor) "+
+                        "VALUES({0:d},{1:d},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d},{8:d});",did,getUniqueRabbit((int)a.unique.value()),
+                        a.lack.value(),a.hybrid.value(),a.newgroup.value(),a.gendiff.value(),a.distance.value(),
+                        getUniqueRabbit((int)a.donor_best.value()),getUniqueRabbit((int)a.acceptor_best.value()));
+                    c.ExecuteNonQuery();
+                }
+            }
+            for (int i = 0; i < mia.zooform.zoojobs.Count; i++)
+            {
+                Application.DoEvents();
+                ZooJob j = mia.zooform.zoojobs[i];
+                c.CommandText = String.Format("INSERT INTO zooplans(z_date,z_job,z_level,z_rabbit,z_notes) "+
+                    "VALUES({0:s},{1:d},{2:s},{3:d},'{4:s}');",convdt(dt),j.type.value()+1,j.caption.value(),
+                    getUniqueRabbit(j.uniques[0]),((j.subcount.value()>=7)?j.subs[6].value():""));
+                c.ExecuteNonQuery();
+                int jid = (int)c.LastInsertedId;
+                for (int k = 1; k < (int)j.uniquescnt.value(); k++)
+                {
+                    String field="z_rabbit2";
+                    if (k==2) field="z_address";
+                    if (k==3) field="z_address2";
+                    c.CommandText = String.Format("UPDATE zooplans SET {1:s}={2:d} WHERE z_id={0:d};",jid,
+                        field,j.uniques[k]);
+                    c.ExecuteNonQuery();
+                }
+            }
+
+        }
+
+        public int getWorker(String name,bool insert)
+        {
+            if (name == "") name = "undefined";
+            c.CommandText = "SELECT w_id FROM workers WHERE w_name='"+name+"';";
+            MySqlDataReader rd = c.ExecuteReader();
+            int res=0;
+            if (rd.HasRows)
+            {
+                rd.Read();
+                res = rd.GetInt32(0);
+                rd.Close();
+            }
+            else
+            {
+                rd.Close();
+                if (!insert)
+                    return 0;
+                c.CommandText = "INSERT INTO workers(w_name) VALUES('" + name + "');";
+                c.ExecuteNonQuery();
+                res = (int)c.LastInsertedId;
+            }
+            return res;
+        }
+        public int getReason(String name)
+        {
+            c.CommandText = "SELECT d_id FROM dropreasons WHERE d_name='"+name+"'";
+            MySqlDataReader rd = c.ExecuteReader();
+            if (!rd.HasRows)
+            {
+                rd.Close();
+                return 0;
+            }
+            rd.Read();
+            int res = rd.GetInt32(0);
+            rd.Close();
+            return res;
+        }
+
+        public void fillGraphForm()
+        {
+            debug("fill GraphForm");
+            for (int i = 0; i < mia.graphform.workers.size.value(); i++)
+            {
+                Application.DoEvents();
+                MFListItem li = mia.graphform.workers.items[i];
+                int wid = getWorker(li.caption.value(),true);
+                int rate = int.Parse(li.subs[0].value());
+                c.CommandText = "UPDATE workers SET w_rate=" + rate.ToString() + " WHERE w_id=" + wid.ToString() + ";";
+                c.ExecuteNonQuery();
+            }
+            for (int i = 0; i < mia.graphform.reasons.size.value(); i++)
+            {
+                Application.DoEvents();
+                MFListItem li = mia.graphform.reasons.items[i];
+                c.CommandText = String.Format("INSERT INTO dropreasons(d_name,d_rate) VALUES('{0:s}',{1:s});",
+                    li.caption.value(),li.subs[0].value());
+                c.ExecuteNonQuery();
+            }
+            for (int i = 0; i < mia.graphform.lost.size.value(); i++)
+            {
+                Application.DoEvents();
+                MFListItem li = mia.graphform.lost.items[i];
+                String sex = "void";
+                if (li.subs[2].value() == "м") sex = "male";
+                if (li.subs[2].value() == "ж") sex = "female";
+                int weight = 0;
+                try
+                {
+                    weight=int.Parse(li.subs[5].value());
+                }catch(Exception ex)
+                {
+                    weight=0;
+                }
+
+                c.CommandText = String.Format("INSERT INTO drops(d_date,d_name,d_address,d_sex,d_state,d_age,d_weight,d_notes,d_reason,d_worker) "+
+                    "VALUES({0:s},'{1:s}','{2:s}','{3:s}','{4:s}',{5:d},{6:d},'{7:s}',{8:d},{9:d});",
+                    convdt(li.caption.value()),li.subs[0].value(),li.subs[1].value(),sex,li.subs[3].value(),
+                    int.Parse(li.subs[4].value()),weight,(li.subitems.value()>=9?li.subs[8].value():""),
+                    getReason(li.subs[6].value()),getWorker(li.subs[7].value(),false)
+                    );
+                c.ExecuteNonQuery();
+            }
+        }
+
+        public void fillArcForm()
+        {
+            debug("fill ArcForm");
+            foreach (ArcPlan p in mia.arcform.plans)
+            {
+                DateTime dt=p.date.value();
+                foreach (MFStringList sl in p.works)
+                {
+                    String cmd = "INSERT INTO archive(a_date,a_level,a_job,a_address,a_name,a_age";
+                    String vals=String.Format("VALUES({0:s},{1:d},'{2:s}','{3:s}','{4:s}',{5:d}",
+                        convdt(dt),int.Parse(sl.strings[0].value()),sl.strings[1].value(),sl.strings[2].value(),
+                        sl.strings[3].value(),int.Parse(sl.strings[4].value()));
+                    if (sl.count.value() > 5)
+                    {cmd += ",a_partners";vals += ",'" + sl.strings[5].value()+"'";}
+                    if (sl.count.value() > 6)
+                    { cmd += ",a_addresses"; vals += ",'" + sl.strings[6].value() + "'"; }
+                    if (sl.count.value() > 7)
+                    { cmd += ",a_notes"; vals += ",'" + sl.strings[7].value() + "'"; }
+                    c.CommandText = cmd + ") " + vals + ");";
+                    c.ExecuteNonQuery();
+                }
+            }
+            fillDead();
         }
 
     }

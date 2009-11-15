@@ -127,6 +127,13 @@ namespace mia_conv
         public MFChar(String name, int li) : base(2, name, li) { }
         public override void read(BinaryReader br, float ver) { val = br.ReadInt16(); }
     }
+    class MFSByte:MFInt,IMFCommon
+    {
+        public MFSByte(String name) : base(name) { }
+        public MFSByte(String name, int li) : base(1, name, li) { }
+        public override void read(BinaryReader br, float ver) { val = br.ReadSByte(); }
+    }
+
     class MFByte : MFUInt, IMFCommon
     {
         public MFByte(String name) : base(name) { }

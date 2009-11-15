@@ -44,7 +44,6 @@ namespace mia_conv
             this.label7 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.userNew = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
             this.textRootPswd = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -229,7 +228,6 @@ namespace mia_conv
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.userNew);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.textRootPswd);
             this.groupBox2.Controls.Add(this.label5);
@@ -241,16 +239,6 @@ namespace mia_conv
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Создать новую";
-            // 
-            // userNew
-            // 
-            this.userNew.AutoSize = true;
-            this.userNew.Location = new System.Drawing.Point(35, 82);
-            this.userNew.Name = "userNew";
-            this.userNew.Size = new System.Drawing.Size(142, 17);
-            this.userNew.TabIndex = 5;
-            this.userNew.Text = "Создать пользователя";
-            this.userNew.UseVisualStyleBackColor = true;
             // 
             // label6
             // 
@@ -386,7 +374,6 @@ namespace mia_conv
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textDB;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.CheckBox userNew;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textRootPswd;
         private System.Windows.Forms.Label label5;
