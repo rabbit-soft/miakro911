@@ -26,6 +26,9 @@ namespace rabnet
         {
             close();
         }
+
+        #region IRabNetDataLayer Members
+
         public void close()
         {
             if (sql != null)
@@ -40,6 +43,12 @@ namespace rabnet
             log.Debug("init from string "+connectionString);
             sql = new MySqlConnection(connectionString);
             sql.Open();
+        }
+        public int exec(String cmd)
+        {
+            log.Debug("exec query:" + cmd);
+            MySqlCommand c = new MySqlCommand(cmd, sql);
+            return c.ExecuteNonQuery();
         }
         public MySqlDataReader reader(String cmd)
         {
@@ -68,5 +77,22 @@ namespace rabnet
             return res;
         }
 
+        public string getOption(string name, string subname, uint uid)
+        {
+            MySqlDataReader rd=reader(String.Format("SELECT o_value FROM options WHERE o_name='{0:s}' AND o_subname='{1:s}' AND (o_uid={2:d} OR o_uid=0) ORDER BY o_uid DESC;",
+                name,subname,uid));
+            string res="";
+            if (rd.Read())
+                res=rd.GetString(0);
+            rd.Close();
+            return res;
+        }
+
+        public void setOption(string name, string subname, uint uid, string value)
+        {
+            
+        }
+
+        #endregion
     }
 }

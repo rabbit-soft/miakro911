@@ -14,6 +14,8 @@ namespace rabnet
         void close();
         List<String> getUsers();
         int checkUser(String name, String password);
+        String getOption(String name, String subname, uint uid);
+        void setOption(String name, String subname, uint uid, String value);
     }
 
 }

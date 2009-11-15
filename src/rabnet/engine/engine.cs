@@ -14,6 +14,7 @@ namespace rabnet
         private int uid = 0;
         private String uname;
         private String farmname;
+        private Options opts=null;
         public RabNetEngine()
         {
             log4net.Config.XmlConfigurator.Configure();
@@ -55,5 +56,12 @@ namespace rabnet
             return uid;
         }
         public String farmName(){return uname+"@"+farmname;}
+        public int uId() { return uid; }
+        public Options options()
+        {
+            if (opts==null)
+                opts = new Options(this);
+            return opts;
+        }
     }
 }
