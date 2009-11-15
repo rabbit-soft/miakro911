@@ -46,5 +46,71 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public string getOption(string name, string subname, uint uid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void setOption(string name, string subname, uint uid, string value)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IRabNetDataLayer Members
+
+        void IRabNetDataLayer.init(string connectionString)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.close()
+        {
+            throw new NotImplementedException();
+        }
+
+        List<string> IRabNetDataLayer.getUsers()
+        {
+            throw new NotImplementedException();
+        }
+
+        int IRabNetDataLayer.checkUser(string name, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        string IRabNetDataLayer.getOption(string name, string subname, uint uid)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.setOption(string name, string subname, uint uid, string value)
+        {
+            throw new NotImplementedException();
+        }
+
+        DateTime IRabNetDataLayer.now()
+        {
+            return DateTime.Now;
+        }
+
+
+        public IDataGetter getBuildings(string filters)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public IDataGetter getRabbits(string filters)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

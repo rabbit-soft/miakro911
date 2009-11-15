@@ -90,7 +90,29 @@ namespace rabnet
 
         public void setOption(string name, string subname, uint uid, string value)
         {
-            
+            exec(String.Format("DELETE FROM options WHERE o_name='{0:s}' AND o_subname='{1:s}' AND o_uid={2:d};",
+                name,subname,uid));
+            exec(String.Format("INSET INTO options(o_name,o_subname,o_uid,o_value) VALUES('{0:s}','{1:s}',{2:d},'{3:s}');",
+                name,subname,uid,value));
+        }
+
+        public DateTime now()
+        {
+            MySqlDataReader rd = reader("SELECT NOW();");
+            rd.Read();
+            DateTime res = rd.GetDateTime(0);
+            rd.Close();
+            return res;
+        }
+
+        public IDataGetter getRabbits(string filters)
+        {
+            return new Rabbits(sql, filters);
+        }
+
+        public IDataGetter getBuildings(string filters)
+        {
+            return new Buildings(sql, filters);
         }
 
         #endregion

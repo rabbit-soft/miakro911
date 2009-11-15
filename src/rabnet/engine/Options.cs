@@ -6,8 +6,8 @@ namespace rabnet
 {
     public class Options
     {
-        enum OPT_ID { GENESIS, INBREEDING };
-        enum OPT_LEVEL {FARM,USER};
+        public enum OPT_ID { GENESIS, INBREEDING };
+        public enum OPT_LEVEL {FARM,USER};
         public class ExOptionNotFound:ApplicationException
         {
             public ExOptionNotFound(OPT_ID id) : base("Option " + id.ToString() + " not found int option list") { }
