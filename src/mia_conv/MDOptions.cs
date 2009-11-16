@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace mia_conv
 {
@@ -34,13 +32,17 @@ namespace mia_conv
             setOption("opt","max_age_diff",p.max_age_diff.value());
             setOption("opt","automode",p.automode.value());
             setOption("opt","rescopies",p.rescopies.value());
+             */
             setOption("opt","tab_abbr",p.tab_abbr.value());
             setOption("opt","double_sur",p.double_sur.value());
             setOption("opt","heterosis",p.heterosis.value());
             setOption("opt","inbreeding",p.inbreeding.value());
+            /*
             setOption("opt","report_full_addr",p.report_full_addr.value());
+             */
             setOption("opt","show_tier_types",p.show_tier_types.value());
             setOption("opt","show_area_types",p.show_area_types.value());
+            /*
             setOption("opt","sluchka_filter",p.sluchka_filter.value());
             setOption("opt","otsad_boys_mother",p.otsad_boys_mother.value());
             setOption("opt","otsad_boys_pervo",p.otsad_boys_pervo.value());

@@ -5,7 +5,6 @@ using MySql.Data.MySqlClient;
 using System.Windows.Forms;
 using System.Data;
 using System.IO;
-using System.Text;
 
 namespace mia_conv
 {
