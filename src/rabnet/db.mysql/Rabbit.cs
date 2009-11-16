@@ -37,7 +37,7 @@ namespace rabnet
         }
         public override string getQuery()
         {
-            return String.Format("SELECT r_id,r_name,r_surname,r_secname,r_sex FROM rabbits,names, WHERE r_parent=0;");
+            return String.Format("SELECT r_id,r_name,r_surname,r_secname,r_sex FROM rabbits WHERE r_parent=0;");
         }
         public override string countQuery()
         {

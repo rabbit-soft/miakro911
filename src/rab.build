@@ -84,6 +84,9 @@
 			<sources>
 				<include name="./rabnet/gui/*.cs"/>
 			</sources>
+			<resources>
+				<include name="./rabnet/gui/RabStatusBar.resx"/>
+			</resources>
 			<references>
 				<include name="${log4net.use}"/>
 				<include name="${bin_dir}/db.mysql.dll" />
