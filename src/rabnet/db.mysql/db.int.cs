@@ -45,7 +45,10 @@ namespace rabnet
         String getOption(String name, String subname, uint uid);
         void setOption(String name, String subname, uint uid, String value);
         DateTime now();
-        //DATA PRCEDURES
+        String getFilterNames(String type);
+        String getFilter(String type, String name);
+        String setFilter(String type, String name, String filter);
+        //DATA PROCEDURES
         IDataGetter getRabbits(String filters);
         IDataGetter getBuildings(String filters);
 

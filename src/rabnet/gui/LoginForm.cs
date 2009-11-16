@@ -26,12 +26,14 @@ namespace rabnet
         {
             ConfigurationManager.GetSection("rabnetds");
             foreach (RabnetConfigHandler.dataSource ds in RabnetConfigHandler.ds)
+            {
                 comboBox1.Items.Add(ds.name);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
+                if (ds.def)
+                {
+                    comboBox1.SelectedIndex = comboBox1.Items.Count - 1;
+                    comboBox1_SelectedIndexChanged(null, null);
+                }
+            }
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -45,7 +47,17 @@ namespace rabnet
             if (usrs != null)
             {
                 foreach (String s in usrs)
+                {
                     comboBox2.Items.Add(s);
+                    if (xs.defuser != "" && xs.defuser == s)
+                    {
+                        comboBox2.SelectedIndex = comboBox2.Items.Count - 1;
+                        if (xs.defpassword != "")
+                        {
+                            textBox1.Text = xs.defpassword;
+                        }
+                    }
+                }
                 comboBox2.Enabled = true;
                 textBox1.Enabled = true;
             }

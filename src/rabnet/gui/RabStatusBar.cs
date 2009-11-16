@@ -12,7 +12,8 @@ namespace rabnet
     {
         private ToolStripProgressBar pb = new ToolStripProgressBar();
         private ToolStripButton btn = new ToolStripButton();
-        private List<ToolStripLabel> labels=new List<ToolStripLabel>();
+        private ToolStripButton filt = new ToolStripButton();
+        private List<ToolStripLabel> labels = new List<ToolStripLabel>();
         private int btnStatus=0;
         public event EventHandler stopClick;
         public event EventHandler refreshClick;
@@ -38,7 +39,29 @@ namespace rabnet
         }
         public delegate void RSBItemEventHandler(object sender, RSBItemEvent e);
         public event RSBItemEventHandler itemGet;
-
+        private Panel fpan;
+        public Panel filterPanel
+        {
+            get
+            {
+                return fpan;
+            }
+            set
+            {
+                fpan = value;
+                if (fpan != null)
+                {
+                    filt.Visible = true;
+                    if (!DesignMode)
+                        fpan.Visible = false;
+                    fpan.BorderStyle = BorderStyle.FixedSingle;
+                }
+                else
+                {
+                    filt.Visible = false;
+                }
+            }
+        }
         public RabStatusBar()
         {
             InitializeComponent();
@@ -49,6 +72,9 @@ namespace rabnet
             Items.Add(pb);
             Items.Add(btn);
             btn.Image = imageList1.Images[1];
+            filt.Image = imageList1.Images[2];
+            filt.Visible = false;
+            Items.Add(filt);
             Items.Add(new ToolStripSeparator());
             Items.Add(labels[1]);
             Items.Add(new ToolStripSeparator());
@@ -59,11 +85,17 @@ namespace rabnet
             Items.Add(labels[4]);
             btnStatus=0;
             btn.Click += new EventHandler(this.OnBtnClick);
+            filt.Click += new EventHandler(this.OnFiltClick);
         }
 
         public void setText(int item,String text)
         {
             labels[item].Text=text;
+        }
+        public void run()
+        {
+            if (btnStatus==0)
+                btn.PerformClick();
         }
         public void initProgress(int min,int max)
         {
@@ -109,8 +141,7 @@ namespace rabnet
                     refreshClick(this, null);
                 if (prepareGet!=null)
                 {
-                    IDataGetter gt = prepareGet(this, null);
-                    DataThread.get4run().Run(gt, this, this.OnItem);
+                    DataThread.get4run().Run(prepareGet(this, null), this, this.OnItem);
                 }
             }
             else
@@ -123,6 +154,41 @@ namespace rabnet
         {
             if (itemGet != null)
                 itemGet(this, new RSBItemEvent(sender as IData));
+        }
+        public void filterHide()
+        {
+            if (fpan != null)
+            {
+                fpan.Visible = false;
+                filt.Checked = false;
+                run();
+            }
+        }
+        public void filterShow()
+        {
+            if (fpan != null)
+            {
+                if (btnStatus != 0)
+                    DataThread.get().stop();
+                fpan.Left = filt.Bounds.Left;
+                fpan.Top = Top - fpan.Height;
+                fpan.Visible = true;
+                filt.Checked = true;
+            }
+        }
+        public void filterSwitch()
+        {
+            filt.PerformClick();
+        }
+        private void OnFiltClick(object sender, EventArgs e)
+        {
+            if (fpan!=null)
+            {
+                if (fpan.Visible)
+                    filterHide();
+                else
+                    filterShow();
+            }
         }
 
     }

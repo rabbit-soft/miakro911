@@ -50,6 +50,7 @@
             // 
             // rabStatusBar1
             // 
+            this.rabStatusBar1.filterPanel = null;
             this.rabStatusBar1.Location = new System.Drawing.Point(0, 470);
             this.rabStatusBar1.Name = "rabStatusBar1";
             this.rabStatusBar1.Size = new System.Drawing.Size(785, 23);
@@ -66,7 +67,9 @@
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.rabStatusBar1);
             this.Name = "BuildingsForm";
-            this.Text = "BuildingsForm";
+            this.Text = "Постройки";
+            this.Activated += new System.EventHandler(this.BuildingsForm_Activated);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BuildingsForm_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

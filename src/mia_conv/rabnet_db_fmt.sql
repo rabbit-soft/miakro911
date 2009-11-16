@@ -340,6 +340,14 @@ CREATE TABLE dead(
 	KEY(d_date)
 );
 
+DROP TABLE IF EXISTS filters;
+CREATE TABLE filters(
+	f_type VARCHAR(30) NOT NULL,
+	f_name VARCHAR(30) NOT NULL,
+	f_filter TEXT,
+	KEY(f_type),
+	KEY(f_name)
+);
 
 ##TEST_DATA do not remove this line
 

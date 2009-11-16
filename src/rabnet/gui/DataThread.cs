@@ -22,6 +22,17 @@ namespace rabnet
             th.stop();
             return th;
         }
+        public static IRabNetDataLayer getdbsafe()
+        {
+            return getdbsafe(true);
+        }
+        public static IRabNetDataLayer getdbsafe(bool stopproc)
+        {
+            if (!stopproc && DataThread.get().IsWorking())
+                return null;
+            DataThread.get4run();
+            return Engine.get().db();
+        }
         private int status=0;
         private RabStatusBar sb = null;
         private IDataGetter gt = null;
@@ -147,6 +158,10 @@ namespace rabnet
             {
                 return gt.getCount();
             }
+        }
+        public bool IsWorking()
+        {
+            return (getStatus() != 0);
         }
     }
 }

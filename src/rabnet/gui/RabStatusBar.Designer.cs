@@ -39,6 +39,7 @@
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList1.Images.SetKeyName(0, "cancel.png");
             this.imageList1.Images.SetKeyName(1, "refresh.png");
+            this.imageList1.Images.SetKeyName(2, "funnel.png");
             this.ResumeLayout(false);
 
         }

@@ -35,5 +35,16 @@ namespace rabnet
             li.SubItems.Add(b.name());
             li.SubItems.Add(b.type());
         }
+
+        private void BuildingsForm_Activated(object sender, EventArgs e)
+        {
+            rabStatusBar1.run();
+        }
+
+        private void BuildingsForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel=true;
+            Hide();
+        }
     }
 }

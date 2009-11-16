@@ -115,6 +115,21 @@ namespace rabnet
             return new Buildings(sql, filters);
         }
 
+        public string getFilterNames(string type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string getFilter(string type, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string setFilter(string type, string name, string filter)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }
