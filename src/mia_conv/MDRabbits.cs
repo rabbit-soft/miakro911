@@ -136,7 +136,7 @@ namespace mia_conv
                     genesis=makeGenesis(f.genesis);
                 }
                 c.CommandText = String.Format("INSERT INTO fuckers(f_rabid,f_live,f_link,f_genesis,f_breed,f_fucks,f_children,f_lastfuck) " +
-                    "VALUES({0:d},{1:d},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d});",crab,f.live.value(),link,genesis,f.breed.value()+1,f.fucks.value(),
+                    "VALUES({0:d},{1:d},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d});",crab,f.live.value(),link,genesis,findbreed((int)f.breed.value()),f.fucks.value(),
                     f.children.value(),f.my_fuck_is_last.value());
                 c.ExecuteNonQuery();
             }
@@ -167,7 +167,7 @@ namespace mia_conv
                 flags += "00";
             vals += String.Format(",{0:d},{1:d},{2:d},{3:d}",r.where.value(),r.tier_id.value(),tier,r.area.value());
             vals += String.Format(",{0:d},{1:d},{2:d},'{3:s}',{4:d}", r.rate.value(), r.group.value(),
-                r.breed.value(),flags,r.zone.value());
+                findbreed((int)r.breed.value()),flags,r.zone.value());
             int status=0;
             String lfo="NULL";
             if (r.sex.value()==1) {

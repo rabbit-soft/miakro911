@@ -275,6 +275,8 @@ namespace mia_conv
         public String convdt(String dt)
         {
             String[] dmy=dt.Split('.');
+            if (dmy[2] == "1899" && dmy[1] == "12" && dmy[0] == "30")
+                return "NULL";
             return String.Format("'{0:S4}-{1:S2}-{2:S2}'",dmy[2],dmy[1],dmy[0]);
         }
         public String convdt(DateTime dt)
