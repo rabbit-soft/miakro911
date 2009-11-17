@@ -65,6 +65,7 @@ namespace rabnet
         public RabStatusBar()
         {
             InitializeComponent();
+            RenderMode = ToolStripRenderMode.Professional;
             for (int i=0;i<5;i++)
                 labels.Add(new ToolStripLabel());
             Items.Add(labels[0]);

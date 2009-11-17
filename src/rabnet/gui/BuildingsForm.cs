@@ -45,5 +45,10 @@ namespace rabnet
             e.Cancel=true;
             Hide();
         }
+
+        private void BuildingsForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

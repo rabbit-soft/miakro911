@@ -55,6 +55,8 @@ namespace rabnet
         {
             if (e.data==null)
             {
+//                timer1.Stop();
+//                timer1.Start();
                 listView1.ListViewItemSorter = cs;
                 listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
                 listView1.Show();
@@ -113,13 +115,18 @@ namespace rabnet
             rabStatusBar1.filterSwitch();
         }
 
+        private void MakeShowForm(Form f)
+        {
+            f.Visible = true;
+            if (f.Visible)
+                f.BringToFront();
+            if (f.WindowState == FormWindowState.Minimized)
+                f.WindowState = FormWindowState.Normal;
+        }
+
         private void постройкиToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (buildings == null)
-                buildings = new BuildingsForm();
-            buildings.Visible = !buildings.Visible;
-            if (buildings.Visible)
-                buildings.BringToFront();
+            MakeShowForm(buildings);
         }
 
 
@@ -155,7 +162,7 @@ namespace rabnet
             if (cbPregFrom.Checked)
                 f["pf"] = nudPregFrom.Value.ToString();
             if (cbPregTo.Checked)
-                f["Pf"] = nudPregFrom.Value.ToString();
+                f["Pf"] = nudPregTo.Value.ToString();
             if (tbName.Text != "")
                 f["nm"] = tbName.Text;
             return f;
@@ -346,6 +353,11 @@ namespace rabnet
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Engine.opt().setOption(Options.OPT_ID.RAB_FILTER, getFilters().toString());
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            rabStatusBar1.run();
         }
 
 

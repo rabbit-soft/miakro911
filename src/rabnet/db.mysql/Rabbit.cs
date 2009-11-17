@@ -286,7 +286,9 @@ r_tier_id,
 t_type,
 t_delims,
 r_children,
-r_notes
+r_notes,
+r_born,
+r_event_date
 FROM rabbits,tiers WHERE r_parent=0 AND r_tier=t_id ORDER BY CONCAT(name,surname)) c"+makeWhere()+";");
         }
         public override string countQuery()

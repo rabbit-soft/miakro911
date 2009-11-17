@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.фермаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.сменитьФермуToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -127,6 +128,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.rabStatusBar1 = new rabnet.RabStatusBar();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -653,6 +655,11 @@
             // nudPregTo
             // 
             this.nudPregTo.Enabled = false;
+            this.nudPregTo.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.nudPregTo.Location = new System.Drawing.Point(206, 16);
             this.nudPregTo.Maximum = new decimal(new int[] {
             10000,
@@ -661,7 +668,7 @@
             0});
             this.nudPregTo.Name = "nudPregTo";
             this.nudPregTo.Size = new System.Drawing.Size(42, 20);
-            this.nudPregTo.TabIndex = 7;
+            this.nudPregTo.TabIndex = 5;
             this.nudPregTo.Value = new decimal(new int[] {
             100,
             0,
@@ -672,6 +679,11 @@
             // nudPregFrom
             // 
             this.nudPregFrom.Enabled = false;
+            this.nudPregFrom.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.nudPregFrom.Location = new System.Drawing.Point(206, 39);
             this.nudPregFrom.Maximum = new decimal(new int[] {
             10000,
@@ -680,7 +692,7 @@
             0});
             this.nudPregFrom.Name = "nudPregFrom";
             this.nudPregFrom.Size = new System.Drawing.Size(42, 20);
-            this.nudPregFrom.TabIndex = 5;
+            this.nudPregFrom.TabIndex = 7;
             this.nudPregFrom.Value = new decimal(new int[] {
             200,
             0,
@@ -1001,6 +1013,11 @@
             // nudDateTo
             // 
             this.nudDateTo.Enabled = false;
+            this.nudDateTo.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.nudDateTo.Location = new System.Drawing.Point(135, 15);
             this.nudDateTo.Maximum = new decimal(new int[] {
             10000,
@@ -1042,6 +1059,11 @@
             // nudDateFrom
             // 
             this.nudDateFrom.Enabled = false;
+            this.nudDateFrom.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.nudDateFrom.Location = new System.Drawing.Point(135, 38);
             this.nudDateFrom.Maximum = new decimal(new int[] {
             10000,
@@ -1160,6 +1182,11 @@
             this.splitContainer1.Size = new System.Drawing.Size(908, 488);
             this.splitContainer1.SplitterDistance = 763;
             this.splitContainer1.TabIndex = 10;
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 60000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // rabStatusBar1
             // 
@@ -1322,6 +1349,7 @@
         private System.Windows.Forms.ComboBox cobKuk;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox tbName;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

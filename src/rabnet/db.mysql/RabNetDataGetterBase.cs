@@ -11,6 +11,7 @@ namespace rabnet
     {
         private ILog log = log4net.LogManager.GetLogger(typeof(RabNetDataGetterBase));
         protected int count;
+
         protected int citem=0;
         protected MySqlConnection sql;
         protected MySqlDataReader rd;
