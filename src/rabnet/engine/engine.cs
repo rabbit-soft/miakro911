@@ -10,6 +10,7 @@ namespace rabnet
     public class RabNetEngine
     {
         private IRabNetDataLayer data=null;
+        private IRabNetDataLayer data2 = null;
         private ILog log = null;
         private int uid = 0;
         private String uname;
@@ -31,10 +32,12 @@ namespace rabnet
             if (dbext == "db.mysql")
             {
                 data = new RabNetDbMySql(param);
+                data2 = new RabNetDbMySql(param);
             }
             else if (dbext == "db.miafile")
             {
                 data = new RabNetDBMiaFile(param);
+                data2 = data;
             }else{
                 throw new ExDBDriverNotFoud(dbext);
             }
@@ -44,7 +47,11 @@ namespace rabnet
         {
             return data;
         }
-        public int setUid(String name,String password,String farmName)
+        public IRabNetDataLayer db2()
+        {
+            return data2;
+        }
+        public int setUid(String name, String password, String farmName)
         {
             uid = db().checkUser(name, password);
             log.DebugFormat("check uid {0:d} for farm {1:s}", uid,farmName);

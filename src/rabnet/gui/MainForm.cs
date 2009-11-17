@@ -33,7 +33,13 @@ namespace rabnet
         {
             listView1.Items.Clear();
             listView1.Hide();
-            return Engine.get().db().getRabbits("");
+            Filters flt = new Filters();
+            Options op=Engine.opt();
+            flt["shr"] = op.getOption(Options.OPT_ID.SHORT_NAMES);
+            flt["sht"] = op.getOption(Options.OPT_ID.SHOW_TIER_TYPE);
+            flt["sho"] = op.getOption(Options.OPT_ID.SHOW_TIER_SEC);
+            flt["dbl"] = op.getOption(Options.OPT_ID.DBL_SURNAME);
+            return DataThread.db().getRabbits(flt);
         }
 
         private void rabStatusBar1_itemGet(object sender, RabStatusBar.RSBItemEvent e)
@@ -44,22 +50,38 @@ namespace rabnet
                 return;
             }
             IRabbit rab = (e.data as IRabbit);
-            ListViewItem li = listView1.Items.Add(rab.id().ToString());
-            li.SubItems.Add(rab.name());
-            li.SubItems.Add(rab.surname());
-            li.SubItems.Add(rab.secname());
+            ListViewItem li = listView1.Items.Add(rab.name());
+            li.Tag = rab.id();
             li.SubItems.Add(rab.sex());
+            li.SubItems.Add(rab.age().ToString());
+            li.SubItems.Add(rab.breed());
+            li.SubItems.Add(rab.weight());
+            li.SubItems.Add(rab.status());
+            li.SubItems.Add(rab.bgp());
+            li.SubItems.Add(rab.N());
+            li.SubItems.Add(rab.average()==0?"":rab.average().ToString());
+            li.SubItems.Add(rab.rate().ToString());
+            li.SubItems.Add(rab.cls());
+            li.SubItems.Add(rab.address());
+            li.SubItems.Add(rab.notes());
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            rabStatusBar1.setText(0, DataThread.getdbsafe(false).now().ToShortDateString());
-            rabStatusBar1.run();
+            rabStatusBar1.setText(0, Engine.db().now().ToShortDateString());
             Text = Engine.get().farmName();
             dtpDateFrom.Value = DateTime.Today.Subtract(new TimeSpan((int)nudDateFrom.Value, 0, 0, 0));
             dtpDateTo.Value = DateTime.Today.Subtract(new TimeSpan((int)nudDateTo.Value, 0, 0, 0));
             dtpPregFrom.Value = DateTime.Today.Subtract(new TimeSpan((int)nudPregFrom.Value, 0, 0, 0));
             dtpPregTo.Value = DateTime.Today.Subtract(new TimeSpan((int)nudPregTo.Value, 0, 0, 0));
+            Options op = Engine.opt();
+            showTierTMenuItem.Checked = (op.getIntOption(Options.OPT_ID.SHOW_TIER_TYPE) == 1);
+            showTierSMenuItem.Checked = (op.getIntOption(Options.OPT_ID.SHOW_TIER_SEC) == 1);
+            shortNamesMenuItem.Checked = (op.getIntOption(Options.OPT_ID.SHORT_NAMES) == 1);
+            dblSurMenuItem.Checked = (op.getIntOption(Options.OPT_ID.DBL_SURNAME) == 1);
+            geterosisMenuItem.Checked = (op.getIntOption(Options.OPT_ID.GETEROSIS) == 1);
+            inbreedingMenuItem.Checked = (op.getIntOption(Options.OPT_ID.INBREEDING) == 1);
+            rabStatusBar1.run();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -90,7 +112,7 @@ namespace rabnet
         {
         }
 
-        #region filter_form_process
+  #region filter_form_process
 
         private void cbDateFrom_CheckedChanged(object sender, EventArgs e)
         {
@@ -173,7 +195,19 @@ namespace rabnet
         }
         #endregion
 
-
+        private void showTierTMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            bool reshow = true;
+            Options.OPT_ID id=Options.OPT_ID.SHOW_TIER_TYPE;
+            if (sender == showTierSMenuItem)id = Options.OPT_ID.SHOW_TIER_SEC;
+            if (sender == dblSurMenuItem) id = Options.OPT_ID.DBL_SURNAME;
+            if (sender == shortNamesMenuItem) id = Options.OPT_ID.SHORT_NAMES;
+            if (sender == geterosisMenuItem) { id = Options.OPT_ID.GETEROSIS; reshow = false; }
+            if (sender == inbreedingMenuItem) { id = Options.OPT_ID.INBREEDING; reshow = false; }
+            Engine.opt().setOption(id, ((sender as ToolStripMenuItem).Checked ? 1 : 0));
+            if (reshow)
+                rabStatusBar1.run();
+        }
 
 
 

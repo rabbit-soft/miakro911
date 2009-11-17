@@ -18,7 +18,7 @@ namespace rabnet
             ILog log = LogManager.GetLogger(typeof(Program));
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            try
+//            try
             {
                 LoginForm lf = new LoginForm();
                 if (lf.ShowDialog() == DialogResult.OK)
@@ -26,11 +26,12 @@ namespace rabnet
                     Application.Run(new MainForm());
                 }
             }
-            catch (Exception ex)
-            {
-                log.Fatal("General fault exception", ex);
-                throw ex;
-            }
+            /*            catch (Exception ex)
+                        {
+                            log.Fatal("General fault exception", ex);
+                            throw ex;
+                        }
+            */
         }
     }
 }

@@ -62,5 +62,17 @@ namespace rabnet
                 eng = new RabNetEngine();
             return eng;
         }
+        public static IRabNetDataLayer db()
+        {
+            return get().db();
+        }
+        public static IRabNetDataLayer db2()
+        {
+            return get().db2();
+        }
+        public static Options opt()
+        {
+            return get().options();
+        }
     }
 }

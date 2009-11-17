@@ -151,9 +151,9 @@ CREATE TABLE rabbits(
 	r_zone INTEGER UNSIGNED NOT NULL DEFAULT 0,
 	r_born DATETIME,
 	r_genesis INTEGER UNSIGNED NOT NULL,
-	r_status TINYINT UNSIGNED NOT NULL DEFAULT 0,   #boy-status/girl-child_counts
+	r_status TINYINT UNSIGNED NOT NULL DEFAULT 0,   #boy-status/girl-borns
 	r_last_fuck_okrol DATETIME,
-	r_borns TINYINT UNSIGNED,
+	r_children TINYINT UNSIGNED,
 	r_event ENUM('none','sluchka','vyazka','kuk'),
 	r_event_date DATETIME,
 	r_lost_babies INTEGER UNSIGNED,

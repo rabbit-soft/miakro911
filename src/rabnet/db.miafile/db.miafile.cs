@@ -116,17 +116,27 @@ namespace rabnet
         #region IRabNetDataLayer Members
 
 
-        public string getFilterNames(string type)
+        string[] IRabNetDataLayer.getFilterNames(string type)
         {
             throw new NotImplementedException();
         }
 
-        public string getFilter(string type, string name)
+        Filters IRabNetDataLayer.getFilter(string type, string name)
         {
             throw new NotImplementedException();
         }
 
-        public string setFilter(string type, string name, string filter)
+        public void setFilter(string type, string name, Filters filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IDataGetter getRabbits(Filters filters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IDataGetter getBuildings(Filters filters)
         {
             throw new NotImplementedException();
         }

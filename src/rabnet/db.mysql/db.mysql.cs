@@ -92,7 +92,7 @@ namespace rabnet
         {
             exec(String.Format("DELETE FROM options WHERE o_name='{0:s}' AND o_subname='{1:s}' AND o_uid={2:d};",
                 name,subname,uid));
-            exec(String.Format("INSET INTO options(o_name,o_subname,o_uid,o_value) VALUES('{0:s}','{1:s}',{2:d},'{3:s}');",
+            exec(String.Format("INSERT INTO options(o_name,o_subname,o_uid,o_value) VALUES('{0:s}','{1:s}',{2:d},'{3:s}');",
                 name,subname,uid,value));
         }
 
@@ -105,29 +105,41 @@ namespace rabnet
             return res;
         }
 
-        public IDataGetter getRabbits(string filters)
+        public IDataGetter getRabbits(Filters filters)
         {
             return new Rabbits(sql, filters);
         }
 
-        public IDataGetter getBuildings(string filters)
+        public IDataGetter getBuildings(Filters filters)
         {
             return new Buildings(sql, filters);
         }
 
-        public string getFilterNames(string type)
+        public String[] getFilterNames(string type)
         {
-            throw new NotImplementedException();
+            MySqlDataReader rd = reader("SELECT f_name FROM filters WHERE f_type='"+type+"';");
+            List<String> nms=new List<string>();
+            while (rd.Read())
+                nms.Add(rd.GetString(0));
+            rd.Close();
+            return nms.ToArray();
         }
 
-        public string getFilter(string type, string name)
+        public Filters getFilter(string type, string name)
         {
-            throw new NotImplementedException();
+            MySqlDataReader rd = reader("SELECT f_filter FROM filters WHERE f_type='"+type+"' AND f_name='"+name+"';");
+            Filters f = new Filters();
+            if (rd.Read())
+                f.fromString(rd.GetString(0));
+            rd.Close();
+            return f;
         }
 
-        public string setFilter(string type, string name, string filter)
+        public void setFilter(string type, string name, Filters filter)
         {
-            throw new NotImplementedException();
+            exec("DELETE FROM filters WHERE f_type='"+type+"' AND f_name='"+name+"';");
+            exec(String.Format("INSET INTO filters(f_type,f_name,f_filter) VALUES('{0:s}','{1:s}','{2:s}');",
+                type,name,filter.toString()));
         }
 
         #endregion

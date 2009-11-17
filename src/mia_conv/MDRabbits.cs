@@ -14,7 +14,8 @@ namespace mia_conv
         {
             if (sex==0)
                 return 0;
-            int res=0;
+            if (key == 0) return 0;
+            int res = 0;
             MFRabNames rn = (sex == 1 ? mia.male_names : mia.female_names);
             for (int i=0;(i<rn.rabnames.Count) && (res==0);i++)
             {
@@ -175,13 +176,13 @@ namespace mia_conv
                 lfo=convdt(r.lastfuck.value());
             }
             if (r.sex.value()==2) {
-                status=(int)r.female.child_count.value();
+                status=(int)r.female.borns.value();
                 lfo=convdt(r.female.last_okrol.value());
             }
             vals += String.Format(",{0:s},{1:d},{2:s},{3:d}", convdt(r.borndate.value()), status, lfo,makeGenesis(r.genesis));
             if (r.sex.value() == 2)
             {
-                cmd += ",r_borns,r_event,r_event_date,r_lost_babies,r_overall_babies,r_worker";
+                cmd += ",r_children,r_event,r_event_date,r_lost_babies,r_overall_babies,r_worker";
                 String ev="none";
                 switch (r.female.ev_type.value())
                 {
@@ -189,7 +190,7 @@ namespace mia_conv
                     case 2:ev="vyazka";break;
                     case 3:ev="kuk";break;
                 }
-                vals+=String.Format(",{0:d},'{1:s}',{2:s},{3:d},{4:d},{5:d}",r.female.borns.value(),ev,
+                vals+=String.Format(",{0:d},'{1:s}',{2:s},{3:d},{4:d},{5:d}",r.female.child_count.value(),ev,
                     convdt(r.female.ev_date.value()),r.female.lost_babies.value(),r.female.overall_babies.value(),
                     makeWorker(r.female.worker.value()));
             }

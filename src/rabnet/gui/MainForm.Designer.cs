@@ -50,16 +50,16 @@
             this.именаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.породыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.настройкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.показыватьТипыЯрусовToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.пказыватьОтделенияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.сокращенияВТаблицахToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.двойныеФамилииToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showTierTMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showTierSMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.shortNamesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dblSurMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.номерПередИменемToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.показыватьНомераToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
-            this.разрешенГетерозисToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.разрешенИнбридингToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.geterosisMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.inbreedingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.справкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.оПрограммеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.listView1 = new System.Windows.Forms.ListView();
@@ -321,43 +321,51 @@
             // настройкиToolStripMenuItem
             // 
             this.настройкиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.показыватьТипыЯрусовToolStripMenuItem,
-            this.пказыватьОтделенияToolStripMenuItem,
-            this.сокращенияВТаблицахToolStripMenuItem,
-            this.двойныеФамилииToolStripMenuItem,
+            this.showTierTMenuItem,
+            this.showTierSMenuItem,
+            this.shortNamesMenuItem,
+            this.dblSurMenuItem,
             this.toolStripMenuItem4,
             this.номерПередИменемToolStripMenuItem,
             this.показыватьНомераToolStripMenuItem,
             this.toolStripMenuItem5,
-            this.разрешенГетерозисToolStripMenuItem,
-            this.разрешенИнбридингToolStripMenuItem});
+            this.geterosisMenuItem,
+            this.inbreedingMenuItem});
             this.настройкиToolStripMenuItem.Name = "настройкиToolStripMenuItem";
             this.настройкиToolStripMenuItem.Size = new System.Drawing.Size(73, 20);
             this.настройкиToolStripMenuItem.Text = "Настройки";
             // 
-            // показыватьТипыЯрусовToolStripMenuItem
+            // showTierTMenuItem
             // 
-            this.показыватьТипыЯрусовToolStripMenuItem.Name = "показыватьТипыЯрусовToolStripMenuItem";
-            this.показыватьТипыЯрусовToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
-            this.показыватьТипыЯрусовToolStripMenuItem.Text = "Показывать типы ярусов";
+            this.showTierTMenuItem.CheckOnClick = true;
+            this.showTierTMenuItem.Name = "showTierTMenuItem";
+            this.showTierTMenuItem.Size = new System.Drawing.Size(228, 22);
+            this.showTierTMenuItem.Text = "Показывать типы ярусов";
+            this.showTierTMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
-            // пказыватьОтделенияToolStripMenuItem
+            // showTierSMenuItem
             // 
-            this.пказыватьОтделенияToolStripMenuItem.Name = "пказыватьОтделенияToolStripMenuItem";
-            this.пказыватьОтделенияToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
-            this.пказыватьОтделенияToolStripMenuItem.Text = "Пказывать типы отделений";
+            this.showTierSMenuItem.CheckOnClick = true;
+            this.showTierSMenuItem.Name = "showTierSMenuItem";
+            this.showTierSMenuItem.Size = new System.Drawing.Size(228, 22);
+            this.showTierSMenuItem.Text = "Пказывать типы отделений";
+            this.showTierSMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
-            // сокращенияВТаблицахToolStripMenuItem
+            // shortNamesMenuItem
             // 
-            this.сокращенияВТаблицахToolStripMenuItem.Name = "сокращенияВТаблицахToolStripMenuItem";
-            this.сокращенияВТаблицахToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
-            this.сокращенияВТаблицахToolStripMenuItem.Text = "Сокращения в таблицах";
+            this.shortNamesMenuItem.CheckOnClick = true;
+            this.shortNamesMenuItem.Name = "shortNamesMenuItem";
+            this.shortNamesMenuItem.Size = new System.Drawing.Size(228, 22);
+            this.shortNamesMenuItem.Text = "Сокращения в таблицах";
+            this.shortNamesMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
-            // двойныеФамилииToolStripMenuItem
+            // dblSurMenuItem
             // 
-            this.двойныеФамилииToolStripMenuItem.Name = "двойныеФамилииToolStripMenuItem";
-            this.двойныеФамилииToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
-            this.двойныеФамилииToolStripMenuItem.Text = "Двойные фамилии";
+            this.dblSurMenuItem.CheckOnClick = true;
+            this.dblSurMenuItem.Name = "dblSurMenuItem";
+            this.dblSurMenuItem.Size = new System.Drawing.Size(228, 22);
+            this.dblSurMenuItem.Text = "Двойные фамилии";
+            this.dblSurMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
             // toolStripMenuItem4
             // 
@@ -381,17 +389,21 @@
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
             this.toolStripMenuItem5.Size = new System.Drawing.Size(225, 6);
             // 
-            // разрешенГетерозисToolStripMenuItem
+            // geterosisMenuItem
             // 
-            this.разрешенГетерозисToolStripMenuItem.Name = "разрешенГетерозисToolStripMenuItem";
-            this.разрешенГетерозисToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
-            this.разрешенГетерозисToolStripMenuItem.Text = "Разрешен гетерозис";
+            this.geterosisMenuItem.CheckOnClick = true;
+            this.geterosisMenuItem.Name = "geterosisMenuItem";
+            this.geterosisMenuItem.Size = new System.Drawing.Size(228, 22);
+            this.geterosisMenuItem.Text = "Разрешен гетерозис";
+            this.geterosisMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
-            // разрешенИнбридингToolStripMenuItem
+            // inbreedingMenuItem
             // 
-            this.разрешенИнбридингToolStripMenuItem.Name = "разрешенИнбридингToolStripMenuItem";
-            this.разрешенИнбридингToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
-            this.разрешенИнбридингToolStripMenuItem.Text = "Разрешен инбридинг";
+            this.inbreedingMenuItem.CheckOnClick = true;
+            this.inbreedingMenuItem.Name = "inbreedingMenuItem";
+            this.inbreedingMenuItem.Size = new System.Drawing.Size(228, 22);
+            this.inbreedingMenuItem.Text = "Разрешен инбридинг";
+            this.inbreedingMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
             // справкаToolStripMenuItem
             // 
@@ -427,6 +439,7 @@
             this.columnHeader11,
             this.columnHeader12,
             this.columnHeader13});
+            this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(3, 3);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(673, 482);
@@ -437,12 +450,12 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "Имя";
-            this.columnHeader1.Width = 112;
+            this.columnHeader1.Width = 122;
             // 
             // columnHeader2
             // 
             this.columnHeader2.Text = "Пол";
-            this.columnHeader2.Width = 38;
+            this.columnHeader2.Width = 41;
             // 
             // columnHeader3
             // 
@@ -457,7 +470,7 @@
             // columnHeader5
             // 
             this.columnHeader5.Text = "Вес";
-            this.columnHeader5.Width = 48;
+            this.columnHeader5.Width = 39;
             // 
             // columnHeader6
             // 
@@ -487,11 +500,12 @@
             // columnHeader11
             // 
             this.columnHeader11.Text = "Класс";
-            this.columnHeader11.Width = 47;
+            this.columnHeader11.Width = 41;
             // 
             // columnHeader12
             // 
             this.columnHeader12.Text = "Адрес";
+            this.columnHeader12.Width = 90;
             // 
             // columnHeader13
             // 
@@ -1234,16 +1248,16 @@
         private System.Windows.Forms.ToolStripMenuItem породыToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem настройкиToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem справкаToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem показыватьТипыЯрусовToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem пказыватьОтделенияToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem сокращенияВТаблицахToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem двойныеФамилииToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showTierTMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showTierSMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem shortNamesMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dblSurMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem номерПередИменемToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem показыватьНомераToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
-        private System.Windows.Forms.ToolStripMenuItem разрешенГетерозисToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem разрешенИнбридингToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem geterosisMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem inbreedingMenuItem;
         private System.Windows.Forms.ToolStripMenuItem оПрограммеToolStripMenuItem;
         private RabStatusBar rabStatusBar1;
         private System.Windows.Forms.ListView listView1;

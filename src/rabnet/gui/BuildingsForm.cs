@@ -19,7 +19,7 @@ namespace rabnet
         {
             listView1.Items.Clear();
             listView1.Hide();
-            return Engine.get().db().getBuildings("");
+            return DataThread.db().getBuildings(new Filters());
         }
 
         private void rabStatusBar1_itemGet(object sender, RabStatusBar.RSBItemEvent e)

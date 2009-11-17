@@ -6,7 +6,7 @@ namespace rabnet
 {
     public class Options
     {
-        public enum OPT_ID { GENESIS, INBREEDING };
+        public enum OPT_ID { GETEROSIS, INBREEDING ,SHORT_NAMES, DBL_SURNAME, SHOW_TIER_TYPE,SHOW_TIER_SEC};
         public enum OPT_LEVEL {FARM,USER};
         public class ExOptionNotFound:ApplicationException
         {
@@ -26,8 +26,12 @@ namespace rabnet
         };
         private static String defNameSpace="opt";
         private RabNetEngine eng;
-        private Option[] optlist = {new Option(OPT_ID.GENESIS,OPT_LEVEL.FARM,"genesis"), 
+        private Option[] optlist = {new Option(OPT_ID.GETEROSIS,OPT_LEVEL.FARM,"heterosis"), 
                                    new Option(OPT_ID.INBREEDING,OPT_LEVEL.FARM,"inbreeding"), 
+                                   new Option(OPT_ID.SHORT_NAMES,OPT_LEVEL.USER,"short_names"), 
+                                   new Option(OPT_ID.DBL_SURNAME,OPT_LEVEL.USER,"dbl_surname"), 
+                                   new Option(OPT_ID.SHOW_TIER_TYPE,OPT_LEVEL.USER,"sh_tier_t"), 
+                                   new Option(OPT_ID.SHOW_TIER_SEC,OPT_LEVEL.USER,"sh_tier_s"), 
                                    };
         public Options(RabNetEngine eng)
         {
