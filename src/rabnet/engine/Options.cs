@@ -6,7 +6,8 @@ namespace rabnet
 {
     public class Options
     {
-        public enum OPT_ID { GETEROSIS, INBREEDING ,SHORT_NAMES, DBL_SURNAME, SHOW_TIER_TYPE,SHOW_TIER_SEC};
+        public enum OPT_ID { GETEROSIS, INBREEDING ,SHORT_NAMES, DBL_SURNAME, SHOW_TIER_TYPE,SHOW_TIER_SEC,RAB_FILTER,
+                 SHOW_NUMBERS};
         public enum OPT_LEVEL {FARM,USER};
         public class ExOptionNotFound:ApplicationException
         {
@@ -32,6 +33,9 @@ namespace rabnet
                                    new Option(OPT_ID.DBL_SURNAME,OPT_LEVEL.USER,"dbl_surname"), 
                                    new Option(OPT_ID.SHOW_TIER_TYPE,OPT_LEVEL.USER,"sh_tier_t"), 
                                    new Option(OPT_ID.SHOW_TIER_SEC,OPT_LEVEL.USER,"sh_tier_s"), 
+                                   new Option(OPT_ID.RAB_FILTER,OPT_LEVEL.USER,"rab_filter"), 
+                                   new Option(OPT_ID.RAB_FILTER,OPT_LEVEL.USER,"rab_filter"), 
+                                   new Option(OPT_ID.SHOW_NUMBERS,OPT_LEVEL.USER,"sh_num"), 
                                    };
         public Options(RabNetEngine eng)
         {
@@ -44,11 +48,21 @@ namespace rabnet
         }
         public int getIntOption(String name, String subname, uint uid)
         {
-            return int.Parse(getOption(name,subname,uid));
+            return int.Parse(getOption(name, subname, uid));
         }
         public double getFloatOption(String name, String subname, uint uid)
         {
             return float.Parse(getOption(name, subname, uid));
+        }
+        public int safeIntOption(String name, String subname, uint uid,int def)
+        {
+            int res = def;
+            try
+            {
+                res=int.Parse(getOption(name, subname, uid));
+            }
+            catch (FormatException e){}
+            return res;
         }
 
         public void setOption(String name, String subname, uint uid, String value)
@@ -84,6 +98,15 @@ namespace rabnet
         {
             return getFloatOption(name,subname,getUidOfLevel(level));
         }
+        public int safeIntOption(String name, String subname, OPT_LEVEL level,int def)
+        {
+            return safeIntOption(name, subname, getUidOfLevel(level),def);
+        }
+        public int safeIntOption(String name, String subname, OPT_LEVEL level)
+        {
+            return safeIntOption(name, subname, getUidOfLevel(level), 0);
+        }
+
         public void setOption(String name, String subname, OPT_LEVEL level, String value)
         {
             setOption(name, subname, getUidOfLevel(level), value);
@@ -119,6 +142,16 @@ namespace rabnet
             Option op = getOptionById(id);
             return getFloatOption(name, op.name, op.level);
         }
+        public int safeIntOption(String name, OPT_ID id, int def)
+        {
+            Option op = getOptionById(id);
+            return safeIntOption(name, op.name, op.level,def);
+        }
+        public int safeIntOption(String name, OPT_ID id)
+        {
+            Option op = getOptionById(id);
+            return safeIntOption(name, op.name, op.level);
+        }
         public void setOption(String name,OPT_ID id,String value)
         {
             Option op=getOptionById(id);
@@ -147,6 +180,14 @@ namespace rabnet
         public double getFloatOption(OPT_ID id)
         {
             return getFloatOption(defNameSpace, id);
+        }
+        public int safeIntOption(OPT_ID id, int def)
+        {
+            return safeIntOption(defNameSpace, id, def);
+        }
+        public int safeIntOption(OPT_ID id)
+        {
+            return safeIntOption(defNameSpace, id);
         }
         public void setOption(OPT_ID id, String value)
         {

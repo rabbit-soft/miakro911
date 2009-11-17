@@ -55,6 +55,7 @@
     <Compile Include="BuildingsForm.Designer.cs">
       <DependentUpon>BuildingsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ColumnSorter.cs" />
     <Compile Include="DataThread.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="MainForm.cs">

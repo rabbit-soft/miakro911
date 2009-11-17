@@ -48,7 +48,7 @@ namespace rabnet
         {
             Rabbit r=new Rabbit(rd.GetInt32(0));
             r.fname = "";
-            if (options.safeBool("nums", false))
+            if (options.safeBool("num"))
                 r.fname = r.fid.ToString()+" ";
             bool shr = options.safeBool("shr");
             String nm=rd.GetString("name");
@@ -149,11 +149,113 @@ namespace rabnet
             return r;
         }
 
+        private String addwhere(String str,String adder)
+        {
+            if (str!="") str+=" AND ";
+            str+=adder;
+            return str;
+        }
+        private String addwhereOr(String str, String adder)
+        {
+            if (str != "") str += " OR ";
+            str += adder;
+            return str;
+        }
+
         public String makeWhere()
         {
             String res = "";
-
-            return res;
+            if (options.ContainsKey("sx"))
+            {
+                String sres="";
+                if (options["sx"].Contains("m"))
+                    sres = "r_sex='male'";
+                if (options["sx"].Contains("f"))
+                    sres=addwhereOr(sres, "r_sex='female'");
+                if (options["sx"].Contains("v"))
+                    sres=addwhereOr(sres, "r_sex='void'");
+                res = "("+sres+")";
+            }
+            if (options.ContainsKey("dt"))
+                    res = addwhere(res,"(r_born>=NOW()-INTERVAL " + options["dt"] + " DAY)");
+            if (options.ContainsKey("Dt"))
+                res = addwhere(res,"(r_born<=NOW()-INTERVAL " + options["Dt"] + " DAY)");
+            if (options.ContainsKey("wg"))
+                res = addwhere(res,"(weight>=" + options["wg"] + ")");
+            if (options.ContainsKey("Wg"))
+                res = addwhere(res, "(weight<=" + options["Wg"] + ")");
+            if (options.ContainsKey("mt") && options.safeValue("sx", "m").Contains("m"))
+            {
+                String stat = "";
+                if (options["mt"].Contains("b"))
+                    stat = "r_status=0";
+                if (options["mt"].Contains("c"))
+                    stat = addwhereOr(stat,"r_status=1");
+                if (options["mt"].Contains("p"))
+                    stat = addwhereOr(stat, "r_status=2");
+                res = addwhere(res,"(r_sex!='male' OR (r_sex='male' AND ("+stat+")))");
+            }
+            if (options.ContainsKey("ft") && options.safeValue("sx", "f").Contains("f"))
+            {
+                String stat = "";
+                if (options["ft"].Contains("g"))
+                    stat = "r_born>(NOW()-INTERVAL 122 DAYS)";
+                if (options["ft"].Contains("b"))
+                    stat = addwhereOr(stat, "(r_born<=(NOW()-INTERVAL 122 DAYS) AND r_status=0)");
+                if (options["ft"].Contains("f"))
+                    stat = addwhereOr(stat, "r_status=1");
+                if (options["ft"].Contains("s"))
+                    stat = addwhereOr(stat, "r_status>1");
+                res = addwhere(res, "(r_sex!='female OR ('r_sex='female' AND (" + stat + ")))");
+            }
+            if (options.ContainsKey("ms") && options.safeValue("sx", "m").Contains("m"))
+            {
+                String stat = "";
+                if (options["ms"] == "1")
+                    stat = "SUBSTR(r_flags,1,1)='0' AND SUBSTR(r_flags,3,1)!='1'";
+                if (options["ms"] == "2")
+                    stat = "SUBSTR(r_flags,3,1)='1'";
+                if (options["ms"] == "3")
+                    stat = "SUBSTR(r_flags,1,1)='1'";
+                res = addwhere(res, "(r_sex!='male' OR (r_sex='male' AND " + stat + "))");
+            }
+            if (options.ContainsKey("fs") && options.safeValue("sx", "f").Contains("f"))
+            {
+                String stat = "";
+                if (options["fs"] == "1")
+                    stat = "SUBSTR(r_flags,1,1)='0' AND SUBSTR(r_flags,3,1)!='1'";
+                if (options["fs"] == "2")
+                    stat = "SUBSTR(r_flags,3,1)='1'";
+                if (options["fs"] == "3")
+                    stat = "SUBSTR(r_flags,1,1)='1'";
+                res = addwhere(res, "(r_sex!='female' OR (r_sex='female' AND " + stat + "))");
+            }
+            if (options.ContainsKey("ku") && options.safeValue("sx", "f").Contains("f"))
+                res = addwhere(res,"(r_sex!='female' OR (r_sex='female' AND SUBSTR(r_flags,4,1)="+(int.Parse(options["ku"])+1).ToString()+"))");
+            if (options.ContainsKey("nm"))
+                res = addwhere(res,"(CONCAT(name,surname) like '%" + options["nm"] + "%')");
+            if (options.ContainsKey("pr") && options.safeValue("sx", "f").Contains("f"))
+            {
+                String stat = "";
+                if (options["pr"] == "1")
+                    stat = "r_event_date IS NULL";
+                if (options["pr"] == "2")
+                {
+                    
+                    if (options.ContainsKey("pf") || options.ContainsKey("pf"))
+                    {
+                        if (options.ContainsKey("pf"))
+                            stat = "(r_event_date>=NOW()-INTERVAL "+options["pf"]+" DAY)";
+                        if (options.ContainsKey("Pf"))
+                            stat = addwhere(stat, "(r_event_date<=NOW()-INTERVAL " + options["Pf"] + " DAY)");
+                    }
+                    else
+                        stat = "r_event_date IS NOT NULL";
+                }
+                res=addwhere(res,"(r_sex!='female' OR (r_sex='female' AND ("+stat+")))");
+            }
+            if (res == "") return "";
+            return " WHERE "+res;
         }
 
         public override string getQuery()
@@ -161,7 +263,7 @@ namespace rabnet
             String fld = "b_name";
             if (options.safeBool("shr"))
                 fld = "b_short_name";
-            return String.Format(@"SELECT r_id, 
+            return String.Format(@" SELECT * FROM (SELECT r_id, 
 COALESCE((SELECT n_name FROM names WHERE n_id=r_name),'') name,
 COALESCE((SELECT n_surname FROM names WHERE n_id=r_surname),'') surname,
 COALESCE((SELECT n_surname FROM names WHERE n_id=r_secname),'') secname,
@@ -185,11 +287,17 @@ t_type,
 t_delims,
 r_children,
 r_notes
-FROM rabbits,tiers WHERE r_parent=0 AND r_tier=t_id ORDER BY CONCAT(name,surname);");
+FROM rabbits,tiers WHERE r_parent=0 AND r_tier=t_id ORDER BY CONCAT(name,surname)) c"+makeWhere()+";");
         }
         public override string countQuery()
         {
-            return "SELECT COUNT(*) FROM rabbits WHERE r_parent=0;";
+            return @"SELECT COUNT(*) FROM (SELECT r_sex,r_born,
+COALESCE((SELECT n_name FROM names WHERE n_id=r_name),'') name,
+COALESCE((SELECT n_surname FROM names WHERE n_id=r_surname),'') surname,
+COALESCE((SELECT n_surname FROM names WHERE n_id=r_secname),'') secname,
+(SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight,
+r_status,r_flags,r_event_date
+ FROM rabbits WHERE r_parent=0) c"+makeWhere()+";";
         }
     }
 }

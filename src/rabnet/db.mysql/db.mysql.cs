@@ -138,7 +138,7 @@ namespace rabnet
         public void setFilter(string type, string name, Filters filter)
         {
             exec("DELETE FROM filters WHERE f_type='"+type+"' AND f_name='"+name+"';");
-            exec(String.Format("INSET INTO filters(f_type,f_name,f_filter) VALUES('{0:s}','{1:s}','{2:s}');",
+            exec(String.Format("INSERT INTO filters(f_type,f_name,f_filter) VALUES('{0:s}','{1:s}','{2:s}');",
                 type,name,filter.toString()));
         }
 

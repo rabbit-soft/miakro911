@@ -10,6 +10,15 @@ namespace rabnet
                 return def;
             return this[key];
         }
+        public Filters() : base() { }
+        public Filters(String s):base()
+        {
+            fromString(s);
+        }
+        public static Filters makeFromString(String s)
+        {
+            return new Filters(s);
+        }
         public String safeValue(String key){return safeValue(key,"");}
         public int safeInt(String key, int def){return int.Parse(safeValue(key, def.ToString()));}
         public int safeInt(String key) { return safeInt(key, 0); }
@@ -33,11 +42,14 @@ namespace rabnet
             this.Clear();
             foreach(string s in str.Split(';'))
             {
-                String[] kv = s.Split('=');
-                kv[1].Replace("\\1", "=");
-                kv[1].Replace("\\2", ";");
-                kv[1].Replace("\\\\", "\\");
-                this[kv[0]] = kv[1];
+                if (s != "")
+                {
+                    String[] kv = s.Split('=');
+                    kv[1].Replace("\\1", "=");
+                    kv[1].Replace("\\2", ";");
+                    kv[1].Replace("\\\\", "\\");
+                    this[kv[0]] = kv[1];
+                }
             }
         }
     } 

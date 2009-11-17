@@ -72,7 +72,9 @@ namespace mia_conv
             setOption("opt","show_young_gen_tree",p.show_young_gen_tree.value());
             setOption("opt","gen_tree_width",p.gen_tree_width.value());
             setOption("opt","young_gen_tree_width",p.young_gen_tree_width.value());
-            setOption("opt","show_numbers",p.show_numbers.value());
+             */
+            setOption("opt","sh_num",p.show_numbers.value());
+            /*
             setOption("opt","averfeed",p.averfeed.value());
             setOption("opt","number_before_name",p.number_before_name.value());
              * */

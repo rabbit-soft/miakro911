@@ -14,9 +14,13 @@ namespace rabnet
         private BuildingsForm buildings = new BuildingsForm();
         protected static readonly ILog log = LogManager.GetLogger(typeof(MainForm));
         private bool manflag=false;
+        private static String rabfil = "rabbits";
+        private ListViewColumnSorter cs = null;
         public MainForm()
         {
             InitializeComponent();
+            cs = new ListViewColumnSorter(listView1,new int[]{2,9});
+            listView1.ListViewItemSorter = null;// new ListViewColumnSorter(listView1);
             log.Debug("Program started");
         }
 
@@ -34,19 +38,24 @@ namespace rabnet
         {
             listView1.Items.Clear();
             listView1.Hide();
-            Filters flt = new Filters();
+            Filters flt = getFilters();
             Options op=Engine.opt();
             flt["shr"] = op.getOption(Options.OPT_ID.SHORT_NAMES);
             flt["sht"] = op.getOption(Options.OPT_ID.SHOW_TIER_TYPE);
             flt["sho"] = op.getOption(Options.OPT_ID.SHOW_TIER_SEC);
             flt["dbl"] = op.getOption(Options.OPT_ID.DBL_SURNAME);
-            return DataThread.db().getRabbits(flt);
+            flt["num"] = op.getOption(Options.OPT_ID.SHOW_NUMBERS);
+            listView1.ListViewItemSorter = null;
+            IDataGetter dg=DataThread.db().getRabbits(flt);
+            rabStatusBar1.setText(1, dg.getCount().ToString() + " items");
+            return dg;
         }
 
         private void rabStatusBar1_itemGet(object sender, RabStatusBar.RSBItemEvent e)
         {
             if (e.data==null)
             {
+                listView1.ListViewItemSorter = cs;
                 listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
                 listView1.Show();
                 return;
@@ -84,6 +93,12 @@ namespace rabnet
             dblSurMenuItem.Checked = (op.getIntOption(Options.OPT_ID.DBL_SURNAME) == 1);
             geterosisMenuItem.Checked = (op.getIntOption(Options.OPT_ID.GETEROSIS) == 1);
             inbreedingMenuItem.Checked = (op.getIntOption(Options.OPT_ID.INBREEDING) == 1);
+            shNumMenuItem.Checked = (op.getIntOption(Options.OPT_ID.SHOW_NUMBERS) == 1);
+            clearFilters();
+            loadFilters();
+            String s = Engine.opt().getOption(Options.OPT_ID.RAB_FILTER);
+            if (s!="")
+                setFilters(Filters.makeFromString(s));
             rabStatusBar1.run();
             manflag = false;
         }
@@ -107,17 +122,107 @@ namespace rabnet
                 buildings.BringToFront();
         }
 
-        public String filterTostring()
-        {
-            return "";
-        }
-
-        public void filterFromString()
-        {
-        }
 
   #region filter_form_process
 
+        public Filters getFilters()
+        {
+            Filters f = new Filters();
+            if (!cbSexFemale.Checked || !cbSexMale.Checked || !cbSexVoid.Checked)
+                f["sx"] = String.Format("{0:s}{1:s}{2:s}", cbSexMale.Checked ? "m" : "", cbSexFemale.Checked ? "f" : "", cbSexVoid.Checked ? "v" : "");
+            if (f.safeValue("sx")== "") f.Remove("sx");
+            if (cbDateFrom.Checked) f["dt"] = nudDateFrom.Value.ToString();
+            if (cbDateTo.Checked) f["Dt"] = nudDateTo.Value.ToString();
+            if (cbWeightFrom.Checked) f["wg"] = nudWeightFrom.Value.ToString();
+            if (cbWeightTo.Checked) f["Wg"] = nudWeightTo.Value.ToString();
+            if (cobWorks.SelectedIndex != 0) f["wr"] = cobWorks.SelectedIndex.ToString();
+            if (!cbMaleBoy.Checked || !cbMaleCandidate.Checked || !cbMaleProducer.Checked)
+                f["mt"] = String.Format("{0:s}{1:s}{2:s}", cbMaleBoy.Checked ? "b" : "", cbMaleCandidate.Checked ? "c" : "", cbMaleProducer.Checked ? "p" : "");
+            if (f.safeValue("mt") == "") f.Remove("mt");
+            if (!cbFemaleGirl.Checked || !cbFemaleBride.Checked || !cbFemaleFirst.Checked || !cbFemaleState.Checked)
+                f["ft"] = String.Format("{0:s}{1:s}{2:s}{3:s}", cbFemaleGirl.Checked ? "g" : "", cbFemaleBride.Checked ? "b" : "", cbFemaleFirst.Checked ? "f" : "", cbFemaleState.Checked ? "s" : "");
+            if (f.safeValue("ft") == "") f.Remove("ft");
+            if (cobMaleState.SelectedIndex != 0)
+                f["ms"] = cobMaleState.SelectedIndex.ToString();
+            if (cobFemaleState.SelectedIndex != 0)
+                f["fs"] = cobFemaleState.SelectedIndex.ToString();
+            if (cobPregnant.SelectedIndex != 0)
+                f["pr"] = cobPregnant.SelectedIndex.ToString();
+            if (cobFamily.SelectedIndex != 0)
+                f["fm"] = cobPregnant.SelectedIndex.ToString();
+            if (cobKuk.SelectedIndex != 0)
+                f["ku"] = cobPregnant.SelectedIndex.ToString();
+            if (cbPregFrom.Checked)
+                f["pf"] = nudPregFrom.Value.ToString();
+            if (cbPregTo.Checked)
+                f["Pf"] = nudPregFrom.Value.ToString();
+            if (tbName.Text != "")
+                f["nm"] = tbName.Text;
+            return f;
+        }
+
+        public void setFilters(Filters f)
+        {
+            clearFilters();
+            cbSexMale.Checked = f.safeValue("sx", "mfv").Contains("m");
+            cbSexFemale.Checked = f.safeValue("sx", "mfv").Contains("f");
+            cbSexVoid.Checked = f.safeValue("sx", "mfv").Contains("v");
+            cbDateFrom.Checked = f.ContainsKey("dt"); cbDateFrom_CheckedChanged(null, null);
+            if (cbDateFrom.Checked)
+            { nudDateFrom.Value = f.safeInt("dt", 200); nudDateFrom_ValueChanged(null, null); }
+            cbDateTo.Checked = f.ContainsKey("Dt"); cbDateTo_CheckedChanged(null, null);
+            if (cbDateTo.Checked)
+            { nudDateTo.Value = f.safeInt("Dt", 100); nudDateTo_ValueChanged(null, null); }
+            cbWeightFrom.Checked = f.ContainsKey("wg"); cbWeightFrom_CheckedChanged(null, null);
+            if (cbWeightFrom.Checked) nudWeightFrom.Value = f.safeInt("wg", 1000);
+            cbWeightTo.Checked = f.ContainsKey("Wg"); cbWeightTo_CheckedChanged(null, null);
+            if (cbWeightTo.Checked) nudWeightTo.Value = f.safeInt("Wg", 5000);
+            cobWorks.SelectedIndex = f.safeInt("wr");
+            cbMaleBoy.Checked = f.safeValue("mt", "bcp").Contains("b");
+            cbMaleCandidate.Checked = f.safeValue("mt", "bcp").Contains("c");
+            cbMaleProducer.Checked = f.safeValue("mt", "bcp").Contains("p");
+            cbFemaleGirl.Checked = f.safeValue("ft", "gbfs").Contains("g");
+            cbFemaleBride.Checked = f.safeValue("ft", "gbfs").Contains("b");
+            cbFemaleFirst.Checked = f.safeValue("ft", "gbfs").Contains("f");
+            cbFemaleState.Checked = f.safeValue("ft", "gbfs").Contains("s");
+            cobMaleState.SelectedIndex = f.safeInt("ms");
+            cobFemaleState.SelectedIndex = f.safeInt("fs");
+            cobPregnant.SelectedIndex = f.safeInt("pr");
+            cobFamily.SelectedIndex = f.safeInt("fm");
+            cobKuk.SelectedIndex = f.safeInt("ku");
+            cbPregFrom.Checked = f.ContainsKey("pf"); cbPregFrom_CheckedChanged(null, null);
+            cbPregTo.Checked = f.ContainsKey("Pf"); cbPregTo_CheckedChanged(null, null);
+            if (cbPregFrom.Checked)
+            { nudPregFrom.Value = f.safeInt("pf", 200); nudPregFrom_ValueChanged(null, null); }
+            if (cbPregTo.Checked)
+            { nudPregTo.Value = f.safeInt("Pf", 100); nudPregTo_ValueChanged(null, null); }
+            tbName.Text = f.safeValue("nm");
+        }
+        public void clearFilters()
+        {
+            cbSexFemale.Checked = cbSexMale.Checked = cbSexVoid.Checked = true;
+            cbDateFrom.Checked = cbDateTo.Checked = false;
+            cbDateFrom_CheckedChanged(null, null); cbDateTo_CheckedChanged(null, null);
+            cbWeightFrom.Checked = cbWeightTo.Checked = false;
+            cbWeightFrom_CheckedChanged(null, null); cbWeightTo_CheckedChanged(null, null);
+            cobWorks.SelectedIndex = 0;
+            cbMaleBoy.Checked = cbMaleCandidate.Checked = cbMaleProducer.Checked = true;
+            cobMaleState.SelectedIndex = cobFemaleState.SelectedIndex = cobFamily.SelectedIndex = 0;
+            cobKuk.SelectedIndex = 0; cobPregnant.SelectedIndex = 0;
+            cbPregFrom.Checked = cbPregTo.Checked = false;
+            cbPregTo_CheckedChanged(null, null); cbPregFrom_CheckedChanged(null, null);
+            cbFemaleBride.Checked = cbFemaleFirst.Checked = cbFemaleGirl.Checked = cbFemaleState.Checked = true;
+            cbFilter.Text = "";
+            tbName.Text = "";
+        }
+        public void loadFilters()
+        {
+            cbFilter.Items.Clear();
+            cbFilter.Items.Add("Очистить");
+            foreach (String s in Engine.db().getFilterNames(rabfil))
+                cbFilter.Items.Add(s);
+            cbFilter.Text = "";
+        }
         private void cbDateFrom_CheckedChanged(object sender, EventArgs e)
         {
             dtpDateFrom.Enabled = nudDateFrom.Enabled = cbDateFrom.Checked;
@@ -210,14 +315,38 @@ namespace rabnet
             if (sender == shortNamesMenuItem) id = Options.OPT_ID.SHORT_NAMES;
             if (sender == geterosisMenuItem) { id = Options.OPT_ID.GETEROSIS; reshow = false; }
             if (sender == inbreedingMenuItem) { id = Options.OPT_ID.INBREEDING; reshow = false; }
+            if (sender == shNumMenuItem) id = Options.OPT_ID.SHOW_NUMBERS;
             Engine.opt().setOption(id, ((sender as ToolStripMenuItem).Checked ? 1 : 0));
             if (reshow)
                 rabStatusBar1.run();
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (cbFilter.Text == "" || cbFilter.SelectedIndex==0)
+                return;
+            Engine.db().setFilter(rabfil, cbFilter.Text, getFilters());
+            loadFilters();
+        }
 
+        private void cbFilter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbFilter.SelectedIndex == 0)
+            {
+                clearFilters();
+                cbFilter.SelectedIndex = -1;
+                cbFilter.Text = "";
+            }
+            if (cbFilter.Text == "")
+                return;
+            setFilters(Engine.db().getFilter(rabfil,cbFilter.Text));
+            cbFilter.Text = "";
+        }
 
-
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Engine.opt().setOption(Options.OPT_ID.RAB_FILTER, getFilters().toString());
+        }
 
 
     }

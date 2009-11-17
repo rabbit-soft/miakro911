@@ -55,8 +55,7 @@
             this.shortNamesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dblSurMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
-            this.номерПередИменемToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.показыватьНомераToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.shNumMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
             this.geterosisMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inbreedingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -78,9 +77,9 @@
             this.columnHeader13 = new System.Windows.Forms.ColumnHeader();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tbName = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.comboBox7 = new System.Windows.Forms.ComboBox();
+            this.cbFilter = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -326,8 +325,7 @@
             this.shortNamesMenuItem,
             this.dblSurMenuItem,
             this.toolStripMenuItem4,
-            this.номерПередИменемToolStripMenuItem,
-            this.показыватьНомераToolStripMenuItem,
+            this.shNumMenuItem,
             this.toolStripMenuItem5,
             this.geterosisMenuItem,
             this.inbreedingMenuItem});
@@ -372,17 +370,13 @@
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
             this.toolStripMenuItem4.Size = new System.Drawing.Size(225, 6);
             // 
-            // номерПередИменемToolStripMenuItem
+            // shNumMenuItem
             // 
-            this.номерПередИменемToolStripMenuItem.Name = "номерПередИменемToolStripMenuItem";
-            this.номерПередИменемToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
-            this.номерПередИменемToolStripMenuItem.Text = "Номер перед именем";
-            // 
-            // показыватьНомераToolStripMenuItem
-            // 
-            this.показыватьНомераToolStripMenuItem.Name = "показыватьНомераToolStripMenuItem";
-            this.показыватьНомераToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
-            this.показыватьНомераToolStripMenuItem.Text = "Показывать номера";
+            this.shNumMenuItem.CheckOnClick = true;
+            this.shNumMenuItem.Name = "shNumMenuItem";
+            this.shNumMenuItem.Size = new System.Drawing.Size(228, 22);
+            this.shNumMenuItem.Text = "Показывать номера";
+            this.shNumMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
             // toolStripMenuItem5
             // 
@@ -470,7 +464,7 @@
             // columnHeader5
             // 
             this.columnHeader5.Text = "Вес";
-            this.columnHeader5.Width = 39;
+            this.columnHeader5.Width = 38;
             // 
             // columnHeader6
             // 
@@ -516,9 +510,9 @@
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.label6);
-            this.panel1.Controls.Add(this.textBox1);
+            this.panel1.Controls.Add(this.tbName);
             this.panel1.Controls.Add(this.button1);
-            this.panel1.Controls.Add(this.comboBox7);
+            this.panel1.Controls.Add(this.cbFilter);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.groupBox6);
             this.panel1.Controls.Add(this.groupBox5);
@@ -541,12 +535,12 @@
             this.label6.TabIndex = 13;
             this.label6.Text = "Имя";
             // 
-            // textBox1
+            // tbName
             // 
-            this.textBox1.Location = new System.Drawing.Point(46, 235);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(163, 20);
-            this.textBox1.TabIndex = 12;
+            this.tbName.Location = new System.Drawing.Point(46, 235);
+            this.tbName.Name = "tbName";
+            this.tbName.Size = new System.Drawing.Size(163, 20);
+            this.tbName.TabIndex = 12;
             // 
             // button1
             // 
@@ -556,16 +550,16 @@
             this.button1.TabIndex = 11;
             this.button1.Text = "Сохранить";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // comboBox7
+            // cbFilter
             // 
-            this.comboBox7.FormattingEnabled = true;
-            this.comboBox7.Items.AddRange(new object[] {
-            "Отключить"});
-            this.comboBox7.Location = new System.Drawing.Point(258, 270);
-            this.comboBox7.Name = "comboBox7";
-            this.comboBox7.Size = new System.Drawing.Size(170, 21);
-            this.comboBox7.TabIndex = 10;
+            this.cbFilter.FormattingEnabled = true;
+            this.cbFilter.Location = new System.Drawing.Point(258, 270);
+            this.cbFilter.Name = "cbFilter";
+            this.cbFilter.Size = new System.Drawing.Size(170, 21);
+            this.cbFilter.TabIndex = 10;
+            this.cbFilter.SelectedIndexChanged += new System.EventHandler(this.cbFilter_SelectedIndexChanged);
             // 
             // label5
             // 
@@ -659,7 +653,7 @@
             // nudPregTo
             // 
             this.nudPregTo.Enabled = false;
-            this.nudPregTo.Location = new System.Drawing.Point(208, 39);
+            this.nudPregTo.Location = new System.Drawing.Point(206, 16);
             this.nudPregTo.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -669,7 +663,7 @@
             this.nudPregTo.Size = new System.Drawing.Size(42, 20);
             this.nudPregTo.TabIndex = 7;
             this.nudPregTo.Value = new decimal(new int[] {
-            200,
+            100,
             0,
             0,
             0});
@@ -678,7 +672,7 @@
             // nudPregFrom
             // 
             this.nudPregFrom.Enabled = false;
-            this.nudPregFrom.Location = new System.Drawing.Point(208, 16);
+            this.nudPregFrom.Location = new System.Drawing.Point(206, 39);
             this.nudPregFrom.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -688,7 +682,7 @@
             this.nudPregFrom.Size = new System.Drawing.Size(42, 20);
             this.nudPregFrom.TabIndex = 5;
             this.nudPregFrom.Value = new decimal(new int[] {
-            100,
+            200,
             0,
             0,
             0});
@@ -1007,7 +1001,7 @@
             // nudDateTo
             // 
             this.nudDateTo.Enabled = false;
-            this.nudDateTo.Location = new System.Drawing.Point(136, 38);
+            this.nudDateTo.Location = new System.Drawing.Point(135, 15);
             this.nudDateTo.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -1015,9 +1009,9 @@
             0});
             this.nudDateTo.Name = "nudDateTo";
             this.nudDateTo.Size = new System.Drawing.Size(44, 20);
-            this.nudDateTo.TabIndex = 5;
+            this.nudDateTo.TabIndex = 2;
             this.nudDateTo.Value = new decimal(new int[] {
-            200,
+            100,
             0,
             0,
             0});
@@ -1048,7 +1042,7 @@
             // nudDateFrom
             // 
             this.nudDateFrom.Enabled = false;
-            this.nudDateFrom.Location = new System.Drawing.Point(136, 15);
+            this.nudDateFrom.Location = new System.Drawing.Point(135, 38);
             this.nudDateFrom.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -1056,9 +1050,9 @@
             0});
             this.nudDateFrom.Name = "nudDateFrom";
             this.nudDateFrom.Size = new System.Drawing.Size(44, 20);
-            this.nudDateFrom.TabIndex = 2;
+            this.nudDateFrom.TabIndex = 5;
             this.nudDateFrom.Value = new decimal(new int[] {
-            100,
+            200,
             0,
             0,
             0});
@@ -1194,6 +1188,7 @@
             this.Text = "Form1";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -1255,8 +1250,7 @@
         private System.Windows.Forms.ToolStripMenuItem shortNamesMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dblSurMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
-        private System.Windows.Forms.ToolStripMenuItem номерПередИменемToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem показыватьНомераToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem shNumMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
         private System.Windows.Forms.ToolStripMenuItem geterosisMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inbreedingMenuItem;
@@ -1320,14 +1314,14 @@
         private System.Windows.Forms.CheckBox cbPregFrom;
         private System.Windows.Forms.ComboBox cobPregnant;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ComboBox comboBox7;
+        private System.Windows.Forms.ComboBox cbFilter;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cobFamily;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cobKuk;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tbName;
     }
 }
 
