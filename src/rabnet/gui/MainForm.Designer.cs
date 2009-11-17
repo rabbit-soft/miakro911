@@ -442,7 +442,7 @@
             this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(3, 3);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(673, 482);
+            this.listView1.Size = new System.Drawing.Size(757, 482);
             this.listView1.TabIndex = 6;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -1145,9 +1145,8 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.treeView1.Location = new System.Drawing.Point(3, 3);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(219, 482);
+            this.treeView1.Size = new System.Drawing.Size(135, 482);
             this.treeView1.TabIndex = 9;
-            this.treeView1.Visible = false;
             // 
             // splitContainer1
             // 
@@ -1165,14 +1164,16 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.treeView1);
             this.splitContainer1.Size = new System.Drawing.Size(908, 488);
-            this.splitContainer1.SplitterDistance = 679;
+            this.splitContainer1.SplitterDistance = 763;
             this.splitContainer1.TabIndex = 10;
             // 
             // rabStatusBar1
             // 
             this.rabStatusBar1.filterPanel = this.panel1;
+            this.rabStatusBar1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
             this.rabStatusBar1.Location = new System.Drawing.Point(0, 518);
             this.rabStatusBar1.Name = "rabStatusBar1";
+            this.rabStatusBar1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.rabStatusBar1.Size = new System.Drawing.Size(932, 23);
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
@@ -1191,6 +1192,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "Form1";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

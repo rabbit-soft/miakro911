@@ -13,6 +13,7 @@ namespace rabnet
     {
         private BuildingsForm buildings = new BuildingsForm();
         protected static readonly ILog log = LogManager.GetLogger(typeof(MainForm));
+        private bool manflag=false;
         public MainForm()
         {
             InitializeComponent();
@@ -46,6 +47,7 @@ namespace rabnet
         {
             if (e.data==null)
             {
+                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
                 listView1.Show();
                 return;
             }
@@ -68,6 +70,7 @@ namespace rabnet
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            manflag = true;
             rabStatusBar1.setText(0, Engine.db().now().ToShortDateString());
             Text = Engine.get().farmName();
             dtpDateFrom.Value = DateTime.Today.Subtract(new TimeSpan((int)nudDateFrom.Value, 0, 0, 0));
@@ -82,6 +85,7 @@ namespace rabnet
             geterosisMenuItem.Checked = (op.getIntOption(Options.OPT_ID.GETEROSIS) == 1);
             inbreedingMenuItem.Checked = (op.getIntOption(Options.OPT_ID.INBREEDING) == 1);
             rabStatusBar1.run();
+            manflag = false;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -197,6 +201,8 @@ namespace rabnet
 
         private void showTierTMenuItem_CheckedChanged(object sender, EventArgs e)
         {
+            if (manflag)
+                return;
             bool reshow = true;
             Options.OPT_ID id=Options.OPT_ID.SHOW_TIER_TYPE;
             if (sender == showTierSMenuItem)id = Options.OPT_ID.SHOW_TIER_SEC;
