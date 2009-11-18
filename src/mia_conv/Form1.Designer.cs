@@ -350,6 +350,7 @@ namespace mia_conv
             this.Controls.Add(this.tb1);
             this.Name = "Form1";
             this.Text = "Mia file to DB converter";
+            this.Activated += new System.EventHandler(this.Form1_Activated);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

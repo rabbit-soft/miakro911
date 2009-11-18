@@ -12,6 +12,7 @@
 	<property name="mysql.path" value="./party3d" />
 	<property name="mysql.ass" value="${mysql.path}/${mysql.lib}" />
 	<property name="mysql.use" value="${bin_dir}/${mysql.lib}" />
+	<property name="data_dir" value="./../data" />
 	
 	<!-- TARGETS !-->
 	
@@ -27,17 +28,22 @@
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
 	</target>
 
-	<target name="buildall" depends="prepare,miaconv,rabnet" description="Build all projects"/>
+	<target name="buildall" depends="prepare,miaconv,rabnet,filldata" description="Build all projects"/>
 	
 	<target name="miaconv" description="Make mia converter project">
+		<copy file="./mia_conv/rabnet_db_fmt.sql" tofile="./mia_conv/mia_conv.rabnet_db_fmt.sql"/>
 		<csc target="winexe" output="${bin_dir}/mia_conv.exe">
 			<sources>
 				<include name="./mia_conv/*.cs"/>
 			</sources>
+			<resources>
+				<include name="./mia_conv/mia_conv.rabnet_db_fmt.sql"/>
+			</resources>
 			<references>
 				<include name="${mysql.use}"/>
 			</references>
 		</csc>
+		<delete file="./mia_conv/mia_conv.rabnet_db_fmt.sql"/>
 	</target>
 	
 	<target name="rabnet" description="make rabneat application" depends="db.mysql,db.miafile,engine,gui"/>
@@ -94,6 +100,30 @@
 			</references>
 		</csc>
 		<copy file="./rabnet/gui/app.config" tofile="${bin_dir}/rabnet.exe.config" />
+	</target>
+	
+	<target name="filldata" description="filling developer databases">
+		<unzip zipfile="${data_dir}/Farm_30.zip" todir="${data_dir}" />
+		<exec program="${bin_dir}/mia_conv.exe">
+			<arg value="..\data\Farm 3_0.mia" />
+			<arg value="localhost;krol30;kroliki;krol;root;;" />
+			<arg value="зоотехник;" />
+		</exec>
+		<delete file="${data_dir}/Farm 3_0.mia" />
+		<unzip zipfile="${data_dir}/Farm_main.zip" todir="${data_dir}" />
+		<exec program="${bin_dir}/mia_conv.exe">
+			<arg value="..\data\Farm.mia" />
+			<arg value="localhost;kroliki;kroliki;krol;root;;" />
+			<arg value="зоотехник;" />
+		</exec>
+		<delete file="${data_dir}/Farm.mia" />
+		<unzip zipfile="${data_dir}/Farm_last.zip" todir="${data_dir}" />
+		<exec program="${bin_dir}/mia_conv.exe">
+			<arg value="..\data\Farm.mia" />
+			<arg value="localhost;krol_last;kroliki;krol;root;;" />
+			<arg value="зоотехник;" />
+		</exec>
+		<delete file="${data_dir}/Farm.mia" />
 	</target>
 	
 </project>

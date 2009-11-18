@@ -12,6 +12,7 @@ namespace mia_conv
     {
         private MiaFile mia=null;
         public DataTable udata=new DataTable();
+        private bool auto=false;
         public Form1()
         {
             udata.Columns.Add("Пользователь",typeof(String));
@@ -24,6 +25,32 @@ namespace mia_conv
             for (int i = 0; i < clb1.Items.Count; i++)
                 clb1.SetItemChecked(i, false);
             clb1.SetItemChecked(clb1.Items.Count-1, true);
+
+        }
+        public Form1(bool automode,String file,String h,String db,String u,String p,String r,String rp,String usrs):this()
+        {
+            auto = automode;
+            if (auto)
+            {
+                Text += " - AUTOMODE do not touch";
+                tb1.Text = file;
+                textHost.Text = h;
+                textDB.Text = db;
+                textUser.Text = u;
+                textPassword.Text = p;
+                if (r != "")
+                {
+                    dbnew.Checked = true;
+                    textRoot.Text = r;
+                    textRootPswd.Text = rp;
+                }
+                udata.Clear();
+                String[] us = usrs.Split(';');
+                for (int i = 0; i < us.Length / 2; i++)
+                {
+                    udata.Rows.Add(us[i * 2], us[i * 2 + 1]);
+                }
+            }
 
         }
 
@@ -71,6 +98,17 @@ namespace mia_conv
                 crt.finish();
                 button2.Enabled = true;
                 button3.Enabled = true;
+            }
+        }
+
+        private void Form1_Activated(object sender, EventArgs e)
+        {
+            if (auto)
+            {
+                button2.Enabled = true;
+                button2.PerformClick();
+                button3.PerformClick();
+                Close();
             }
         }
     }
