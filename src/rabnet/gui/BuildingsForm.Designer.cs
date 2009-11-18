@@ -32,9 +32,14 @@
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
-            this.rabStatusBar1 = new rabnet.RabStatusBar();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
+            this.rabStatusBar1 = new rabnet.RabStatusBar();
+            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -48,25 +53,31 @@
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
-            this.columnHeader3});
+            this.columnHeader3,
+            this.columnHeader4,
+            this.columnHeader5,
+            this.columnHeader6,
+            this.columnHeader7,
+            this.columnHeader8});
             this.listView1.Location = new System.Drawing.Point(3, 3);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(680, 449);
             this.listView1.TabIndex = 1;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
-            // rabStatusBar1
+            // columnHeader1
             // 
-            this.rabStatusBar1.filterPanel = null;
-            this.rabStatusBar1.Location = new System.Drawing.Point(0, 470);
-            this.rabStatusBar1.Name = "rabStatusBar1";
-            this.rabStatusBar1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.rabStatusBar1.Size = new System.Drawing.Size(853, 23);
-            this.rabStatusBar1.TabIndex = 0;
-            this.rabStatusBar1.Text = "rabStatusBar1";
-            this.rabStatusBar1.itemGet += new rabnet.RabStatusBar.RSBItemEventHandler(this.rabStatusBar1_itemGet);
-            this.rabStatusBar1.prepareGet += new rabnet.RabStatusBar.RSBPrepareEventHandler(this.rabStatusBar1_prepareGet);
+            this.columnHeader1.Text = "№";
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Ярус";
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Отделения";
             // 
             // splitContainer1
             // 
@@ -97,6 +108,38 @@
             this.treeView1.Size = new System.Drawing.Size(133, 449);
             this.treeView1.TabIndex = 0;
             // 
+            // rabStatusBar1
+            // 
+            this.rabStatusBar1.filterPanel = null;
+            this.rabStatusBar1.Location = new System.Drawing.Point(0, 470);
+            this.rabStatusBar1.Name = "rabStatusBar1";
+            this.rabStatusBar1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.rabStatusBar1.Size = new System.Drawing.Size(853, 23);
+            this.rabStatusBar1.TabIndex = 0;
+            this.rabStatusBar1.Text = "rabStatusBar1";
+            this.rabStatusBar1.itemGet += new rabnet.RabStatusBar.RSBItemEventHandler(this.rabStatusBar1_itemGet);
+            this.rabStatusBar1.prepareGet += new rabnet.RabStatusBar.RSBPrepareEventHandler(this.rabStatusBar1_prepareGet);
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Статус";
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Гнездо";
+            // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "Грелка";
+            // 
+            // columnHeader7
+            // 
+            this.columnHeader7.Text = "Адрес";
+            // 
+            // columnHeader8
+            // 
+            this.columnHeader8.Text = "Заметки";
+            // 
             // BuildingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -126,5 +169,10 @@
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.ColumnHeader columnHeader6;
+        private System.Windows.Forms.ColumnHeader columnHeader7;
+        private System.Windows.Forms.ColumnHeader columnHeader8;
     }
 }
