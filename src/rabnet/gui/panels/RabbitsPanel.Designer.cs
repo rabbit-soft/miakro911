@@ -43,7 +43,9 @@
             this.columnHeader11 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader12 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader13 = new System.Windows.Forms.ColumnHeader();
+            this.genTree = new System.Windows.Forms.TreeView();
             this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,6 +58,10 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.listView1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.genTree);
             this.splitContainer1.Size = new System.Drawing.Size(853, 550);
             this.splitContainer1.SplitterDistance = 709;
             this.splitContainer1.TabIndex = 0;
@@ -87,6 +93,7 @@
             this.listView1.TabIndex = 7;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
             // columnHeader1
             // 
@@ -153,6 +160,16 @@
             this.columnHeader13.Text = "Заметки";
             this.columnHeader13.Width = 64;
             // 
+            // genTree
+            // 
+            this.genTree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.genTree.Location = new System.Drawing.Point(3, 3);
+            this.genTree.Name = "genTree";
+            this.genTree.Size = new System.Drawing.Size(134, 544);
+            this.genTree.TabIndex = 0;
+            // 
             // RabbitsPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -161,6 +178,7 @@
             this.Name = "RabbitsPanel";
             this.Size = new System.Drawing.Size(853, 550);
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -183,5 +201,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader11;
         private System.Windows.Forms.ColumnHeader columnHeader12;
         private System.Windows.Forms.ColumnHeader columnHeader13;
+        private System.Windows.Forms.TreeView genTree;
     }
 }

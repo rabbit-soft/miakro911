@@ -91,8 +91,28 @@ namespace rabnet
     public interface IBuilding : IData
     {
         int id();
-        string name();
+        int farm();
+        int tier_id();
+        string sname();
         string type();
+        int itype();
+        int ibusy(int id);
+        string busy(int id);
+        int areas();
+        int nests(int id);
+        int heaters();
+        string notes();
+    }
+
+    public class TreeData
+    {
+        public String caption;
+        public TreeData[] items;
+        public TreeData(){}
+        public TreeData(String text):this()
+        {
+            caption = text;
+        }
     }
 
     public interface IRabNetDataLayer
@@ -111,7 +131,8 @@ namespace rabnet
         //DATA PROCEDURES
         IDataGetter getRabbits(Filters filters);
         IDataGetter getBuildings(Filters filters);
-
+        TreeData rabbitGenTree(int rabbit);
+        TreeData buildingsTree();
 
     }
 

@@ -1,13 +1,17 @@
-﻿using System;
+﻿//#define GLOBCATCH
+
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using log4net;
 using log4net.Config;
 
+
 namespace rabnet
 {
     static class Program
     {
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -18,20 +22,28 @@ namespace rabnet
             ILog log = LogManager.GetLogger(typeof(Program));
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-//            try
+#if (GLOBCATCH)
+            try
             {
+#endif
                 LoginForm lf = new LoginForm();
-                if (lf.ShowDialog() == DialogResult.OK)
+                LoginForm.stop = false;
+                while (!LoginForm.stop)
                 {
-                    Application.Run(new MainForm());
+                    if (lf.ShowDialog() == DialogResult.OK)
+                    {
+                        LoginForm.stop = true;
+                        Application.Run(new MainForm());
+                    }
                 }
+#if (GLOBCATCH)
             }
-            /*            catch (Exception ex)
+                        catch (Exception ex)
                         {
                             log.Fatal("General fault exception", ex);
                             throw ex;
                         }
-            */
-        }
+#endif
+         }
     }
 }

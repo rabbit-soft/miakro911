@@ -61,7 +61,7 @@ namespace rabnet
             {
                 res=int.Parse(getOption(name, subname, uid));
             }
-            catch (FormatException e){}
+            catch (FormatException ){}
             return res;
         }
 

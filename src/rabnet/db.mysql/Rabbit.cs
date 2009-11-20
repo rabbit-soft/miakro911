@@ -130,19 +130,7 @@ namespace rabnet
             if (flg[0] != '0') r.fbgp += "ГП";
             if (flg[1] != '0') r.fbgp = "<" + r.fbgp + ">";
             r.frate = rd.GetInt32("r_rate");
-            Char fbon = '5';
-            String bon=rd.GetString("r_bon");
-            for (int i = 1; i < bon.Length; i++)
-                if (bon[i] < fbon) fbon = bon[i];
-            switch (fbon)
-            {
-                case '0': r.fcls = shr ? "-" : "Нет"; break;
-                case '1': r.fcls = "III";  break;
-                case '2': r.fcls = "II"; break;
-                case '3': r.fcls = "I"; break;
-                case '4': r.fcls = shr ? "Э" : "Элита"; break;
-
-            }
+            r.fcls=Rabbits.getBon(rd.GetString("r_bon"),shr);
             r.fnotes = rd.GetString("r_notes");
             r.faddress = Buildings.fullRName(rd.GetInt32("r_farm"), rd.GetInt32("r_tier_id"), rd.GetInt32("r_area"),
                 rd.GetString("t_type"), rd.GetString("t_delims"), shr, options.safeBool("sht"), options.safeBool("sho"));
@@ -206,7 +194,7 @@ namespace rabnet
                     stat = addwhereOr(stat, "r_status=1");
                 if (options["ft"].Contains("s"))
                     stat = addwhereOr(stat, "r_status>1");
-                res = addwhere(res, "(r_sex!='female OR ('r_sex='female' AND (" + stat + ")))");
+                res = addwhere(res, "(r_sex!='female' OR (r_sex='female' AND (" + stat + ")))");
             }
             if (options.ContainsKey("ms") && options.safeValue("sx", "m").Contains("m"))
             {
@@ -301,5 +289,56 @@ COALESCE((SELECT n_surname FROM names WHERE n_id=r_secname),'') secname,
 r_status,r_flags,r_event_date
  FROM rabbits WHERE r_parent=0) c"+makeWhere()+";";
         }
+
+
+        public static String getBon(String bon,bool shr)
+        {
+            Char fbon='5';
+            for (int i = 1; i < bon.Length; i++)
+                if (bon[i] < fbon) fbon = bon[i];
+            switch (fbon)
+            {
+                case '1': return "III";
+                case '2': return "II";
+                case '3': return "I";
+                case '4': return (shr ? "Э" : "Элита");
+            }
+            return (shr ? "-" : "Нет");
+        }
+
+
+        public static TreeData getRabbitGen(int rabbit,MySqlConnection con)
+        {
+            if (rabbit==0)
+                return null;
+            MySqlCommand cmd = new MySqlCommand(@"SELECT
+COALESCE((SELECT n_name FROM names WHERE n_id=r_name),'') name,
+(SELECT n_use FROM names WHERE n_id=r_surname) mother,
+(SELECT n_use FROM names WHERE n_id=r_secname) father,
+r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString()+";",con);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            TreeData res = new TreeData();
+            if (rd.Read())
+            {
+                res.caption = rd.GetString(0) + "," + rd.GetInt32(4).ToString() + "," + Rabbits.getBon(rd.GetString("r_bon"), true);
+                int mom=rd.IsDBNull(1)?0:rd.GetInt32(1);
+                int dad = rd.IsDBNull(2) ? 0 : rd.GetInt32(2);
+                rd.Close();
+                TreeData m = getRabbitGen(mom, con);
+                TreeData d = getRabbitGen(dad, con);
+                if (m == null)
+                {
+                    m = d;
+                    d = null;
+                }
+                if (m != null)
+                {
+                   res.items = new TreeData[] {m,d};
+                }
+            }
+            rd.Close();
+            return res;
+        }
+
     }
 }

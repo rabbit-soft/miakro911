@@ -142,5 +142,25 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public TreeData rabbitGenTree(int rabbit)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public TreeData buildingsTree()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

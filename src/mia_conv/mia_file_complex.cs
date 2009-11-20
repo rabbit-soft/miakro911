@@ -30,7 +30,14 @@ namespace mia_conv
                 }
                 else
                 {
-                    curnode.Parent.Parent.Nodes.Add(nd);
+                    int dd = predepth - depth;
+                    TreeNode snd = curnode.Parent;
+                    while (dd > 0)
+                    {
+                        snd = snd.Parent;
+                        dd--;
+                    }
+                    snd.Nodes.Add(nd);
                 }
                 curnode = nd;
                 predepth = depth;

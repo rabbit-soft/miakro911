@@ -16,6 +16,8 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                for (int i = 0; i < panels.Length; i++)
+                    panels[i] = null;
             }
             base.Dispose(disposing);
         }
@@ -388,6 +390,7 @@
             this.Text = "Form1";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);

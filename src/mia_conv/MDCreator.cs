@@ -243,13 +243,12 @@ namespace mia_conv
             for (int i = 0; i < nd.Nodes.Count; i++)
             {
                 String nm = nd.Nodes[i].Text;
-                int fid = 0;
-                try
+                int fid=0;
+                if (int.TryParse(nm, out fid))
                 {
-                    fid = int.Parse(nm);
-                    nm = "farm "+fid.ToString();
+                    nm = "farm " + fid.ToString();
                 }
-                catch(FormatException ex)
+                else
                 {
                     fid = 0;
                 }
@@ -588,15 +587,10 @@ namespace mia_conv
                 if (li.subs[2].value() == "м") sex = "male";
                 if (li.subs[2].value() == "ж") sex = "female";
                 int weight = 0;
-                try
-                {
-                    weight=int.Parse(li.subs[5].value());
-                }catch(Exception ex)
+                if (!int.TryParse(li.subs[5].value(),out weight))
                 {
                     weight=0;
-                }
-
-                c.CommandText = String.Format("INSERT INTO drops(d_date,d_name,d_address,d_sex,d_state,d_age,d_weight,d_notes,d_reason,d_worker) "+
+                }                c.CommandText = String.Format("INSERT INTO drops(d_date,d_name,d_address,d_sex,d_state,d_age,d_weight,d_notes,d_reason,d_worker) "+
                     "VALUES({0:s},'{1:s}','{2:s}','{3:s}','{4:s}',{5:d},{6:d},'{7:s}',{8:d},{9:d});",
                     convdt(li.caption.value()),li.subs[0].value(),li.subs[1].value(),sex,li.subs[3].value(),
                     int.Parse(li.subs[4].value()),weight,(li.subitems.value()>=9?li.subs[8].value():""),

@@ -761,7 +761,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox tbName;
         private System.Windows.Forms.Button button1;

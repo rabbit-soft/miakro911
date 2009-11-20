@@ -12,8 +12,7 @@ namespace rabnet
 {
     public partial class LoginForm : Form
     {
-
-
+        public static bool stop = true;
         protected static readonly ILog log = LogManager.GetLogger(typeof(LoginForm));
         public LoginForm()
         {

@@ -26,8 +26,6 @@ namespace rabnet
             curpanel = panels[0];
             tabControl1.SelectedIndex = 0;
             tabControl1_SelectedIndexChanged(null, null);
-
-//            curpanel.activate();
         }
 
         private void ExitMenuItem_Click(object sender, EventArgs e)
@@ -37,7 +35,8 @@ namespace rabnet
 
         private void ChangeFarmMenuItem_Click(object sender, EventArgs e)
         {
-            (new LoginForm()).ShowDialog();
+            LoginForm.stop = false;
+            Close();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -86,6 +85,12 @@ namespace rabnet
             curpanel = panels[tabControl1.SelectedIndex];
             panel1.Controls.Add(curpanel);
             curpanel.activate();
+        }
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            for (int i = 0; i < panels.Length; i++)
+                panels[i].close();
         }
 
     }

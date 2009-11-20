@@ -61,5 +61,34 @@ namespace rabnet
             li.SubItems.Add(rab.notes());
         }
 
+        private void insertNode(TreeNode nd,TreeData data)
+        {
+            if (data.items!=null)
+            for (int i = 0; i < data.items.Length; i++)
+                if (data.items[i] != null)
+                {
+                    TreeNode n = nd.Nodes.Add(data.items[i].caption);
+                    insertNode(n, data.items[i]);
+                }
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1)
+                return;
+            if (genTree.Nodes.Count>0)
+                genTree.Nodes[0].ForeColor = Color.Gray;
+            if (genTree.Nodes.Count > 10)
+                genTree.Nodes.RemoveAt(10);
+            TreeData dt = Engine.db().rabbitGenTree((int)listView1.SelectedItems[0].Tag);
+            if (dt!=null)
+            {
+                TreeNode tn = genTree.Nodes.Insert(0, dt.caption);
+                tn.ForeColor = Color.Blue;
+                insertNode(tn, dt);
+                tn.ExpandAll();
+            }
+        }
+
     }
 }

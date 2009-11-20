@@ -28,7 +28,7 @@ namespace rabnet
 
         protected virtual void InitializeComponent(){}
 
-        ~FilterPanel()
+        public virtual void close()
         {
             Engine.opt().setOption(opid, getFilters().toString());
         }

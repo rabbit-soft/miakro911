@@ -7,18 +7,78 @@ namespace rabnet
 {
     class Building:IBuilding
     {
-        int sid;
-        string sname;
-        string stype;
-        public Building(int id,string name,string type)
+        public int fid;
+        public int ffarm;
+        public int ftid;
+        public int fsecs;
+        public String[] fareas;
+        public Building(int id,int farm,int tier_id)
         {
-            sid = id;
-            sname = name;
-            stype = type;
+            fid = id;
+            ffarm = farm;
+            ftid = tier_id;
+            //fsecs=secs;
         }
-        public int id() { return sid; }
-        public string name() { return sname; }
-        public string type() { return stype; }
+        #region IBuilding Members
+        public int id(){return fid;}
+        public int farm(){return ffarm;}
+        public int tier_id(){return ftid;}
+        public string sname()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string type()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int itype()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int busy(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        string IBuilding.busy(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int areas()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int nests(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int heaters()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string notes()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IBuilding Members
+
+
+        public int ibusy(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 
     class Buildings : RabNetDataGetterBase
@@ -112,17 +172,62 @@ namespace rabnet
 
         public override IData nextItem()
         {
-            return new Building(rd.GetInt32(0), rd.GetString(1), rd.GetString(2));
+            int id=rd.GetInt32(0);
+            int farm = rd.GetInt32(3);
+            int tid = 0;
+            if (!rd.IsDBNull(2))
+            {
+                if (rd.GetInt32(1) == id)
+                    tid = 1;
+                else tid = 2;
+            }
+            Building b=new Building(rd.GetInt32(0), farm, tid);
+            bool shr = options.safeBool("shr");
+
+            return b;
         }
 
         public override string getQuery()
         {
-            return "SELECT m_id,t_id,t_type FROM minifarms,tiers WHERE m_upper=t_id OR m_lower=t_id";
+            return "SELECT t_id,m_upper,m_lower,m_id,t_type,t_delims,t_nest,t_heater,t_repair,t_notes FROM minifarms,tiers WHERE m_upper=t_id OR m_lower=t_id";
         }
 
         public override string countQuery()
         {
             return "SELECT COUNT(t_id) FROM minifarms,tiers WHERE m_upper=t_id OR m_lower=t_id;";
         }
+
+        public static TreeData getTree(int parent,MySqlConnection con,TreeData par)
+        {
+            MySqlCommand cmd = new MySqlCommand(@"SELECT b_id,b_name,b_farm FROM buildings WHERE b_parent="+parent.ToString()+";", con);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            TreeData res=par;
+            if (par == null)
+            {
+                res = new TreeData();
+                res.caption = "farm";
+            }
+            List<TreeData> lst = new List<TreeData>();
+            while (rd.Read())
+            {
+                int id=rd.GetInt32(0);
+                String nm=rd.GetString(1);
+                int frm=rd.GetInt32(2);
+                TreeData dt=new TreeData(id.ToString() + ":" + frm.ToString() + ":" + nm);
+                lst.Add(dt);
+            }
+            rd.Close();
+            if (lst.Count > 0)
+            {
+                foreach (TreeData td in lst)
+                {
+                    int id=int.Parse(td.caption.Split(':')[0]);
+                    getTree(id, con, td);
+                }
+                res.items = lst.ToArray();
+            }
+            return res;
+        }
+
     }
 }

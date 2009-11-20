@@ -19,6 +19,11 @@ namespace rabnet
             rsb=sb;
             this.fp=fp;
         }
+        public virtual void close()
+        {
+            if (fp != null)
+                fp.close();
+        }
         public RabNetPanel(RabStatusBar sb):this(sb,null){}
         protected virtual void InitializeComponent() { }
         public virtual void activate()

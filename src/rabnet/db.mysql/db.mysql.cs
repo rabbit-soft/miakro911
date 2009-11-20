@@ -142,6 +142,16 @@ namespace rabnet
                 type,name,filter.toString()));
         }
 
+        public TreeData rabbitGenTree(int rabbit)
+        {
+            return Rabbits.getRabbitGen(rabbit,sql);
+        }
+
+        public TreeData buildingsTree()
+        {
+            return Buildings.getTree(0, sql, null);
+        }
+
         #endregion
     }
 }
