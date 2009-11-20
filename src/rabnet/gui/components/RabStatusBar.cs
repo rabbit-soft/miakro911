@@ -39,8 +39,8 @@ namespace rabnet
         }
         public delegate void RSBItemEventHandler(object sender, RSBItemEvent e);
         public event RSBItemEventHandler itemGet;
-        private Panel fpan;
-        public Panel filterPanel
+        private UserControl fpan;
+        public UserControl filterPanel
         {
             get
             {
@@ -160,6 +160,7 @@ namespace rabnet
         {
             if (fpan != null)
             {
+                Parent.Controls.Remove(fpan);
                 fpan.Visible = false;
                 filt.Checked = false;
                 run();
@@ -169,12 +170,14 @@ namespace rabnet
         {
             if (fpan != null)
             {
+                Parent.Controls.Add(fpan);
                 if (btnStatus != 0)
                     DataThread.get().stop();
                 fpan.Left = filt.Bounds.Left;
                 fpan.Top = Top - fpan.Height;
                 fpan.Visible = true;
                 filt.Checked = true;
+                fpan.BringToFront();
             }
         }
         public void filterSwitch()

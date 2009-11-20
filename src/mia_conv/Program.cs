@@ -9,7 +9,7 @@ namespace mia_conv
 
         static String usage()
         {
-            return @"usage: mia_conv file.mia dbparams users
+            return @"usage: mia_conv file.mia dbparams users [script_file]
 dbparams: host;database;user;password;[root;root_password] - use root;root_password to create new database
 users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
 ";
@@ -28,6 +28,7 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
             String root = "";
             String rpswd = "";
             String users = "";
+            String scr = "";
             bool auto = false;
             if (args.Length >= 1)
             {
@@ -73,11 +74,13 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
                         return;
                     }
                 }
+                if (args.Length>3)
+                    scr=args[3];
                 auto = true;
             }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1(auto,file,host,db,user,pswd,root,rpswd,users));
+            Application.Run(new Form1(auto,file,host,db,user,pswd,root,rpswd,users,scr));
         }
     }
 }

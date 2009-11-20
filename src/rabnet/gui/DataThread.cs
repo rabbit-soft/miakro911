@@ -99,6 +99,8 @@ namespace rabnet
         {
             while (getStatus() != 0) { stop(); Thread.Sleep(100); }
             gt = getter;
+            if (gt==null)
+                return;
             this.sb = sb;
             this.onitem = onItem;
             is_stop = false;

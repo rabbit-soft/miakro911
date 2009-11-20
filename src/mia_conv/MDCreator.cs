@@ -64,8 +64,19 @@ namespace mia_conv
             return true;
         }
 
-        public void finish()
+        public void finish(String sqlfile)
         {
+            if (sqlfile != "")
+            {
+                StreamReader rd = new StreamReader(new FileStream(sqlfile, FileMode.Open), Encoding.ASCII);
+                String sq = rd.ReadToEnd();
+                rd.Close();
+                if (sq.Trim() != "")
+                {
+                    MySqlCommand cmd = new MySqlCommand(sq, sql);
+                    cmd.ExecuteNonQuery();
+                }
+            }
             sql.Close();
         }
 

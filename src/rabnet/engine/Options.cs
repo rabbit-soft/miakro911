@@ -6,7 +6,7 @@ namespace rabnet
 {
     public class Options
     {
-        public enum OPT_ID { GETEROSIS, INBREEDING ,SHORT_NAMES, DBL_SURNAME, SHOW_TIER_TYPE,SHOW_TIER_SEC,RAB_FILTER,
+        public enum OPT_ID {NONE, GETEROSIS, INBREEDING ,SHORT_NAMES, DBL_SURNAME, SHOW_TIER_TYPE,SHOW_TIER_SEC,RAB_FILTER,
                  SHOW_NUMBERS};
         public enum OPT_LEVEL {FARM,USER};
         public class ExOptionNotFound:ApplicationException

@@ -27,7 +27,7 @@ namespace mia_conv
             clb1.SetItemChecked(clb1.Items.Count-1, true);
 
         }
-        public Form1(bool automode,String file,String h,String db,String u,String p,String r,String rp,String usrs):this()
+        public Form1(bool automode,String file,String h,String db,String u,String p,String r,String rp,String usrs,String scr):this()
         {
             auto = automode;
             if (auto)
@@ -50,6 +50,7 @@ namespace mia_conv
                 {
                     udata.Rows.Add(us[i * 2], us[i * 2 + 1]);
                 }
+                textBox1.Text = scr;
             }
 
         }
@@ -95,7 +96,7 @@ namespace mia_conv
                 crt.mia = mia;
                 crt.setUsers(udata);
                 crt.fillAll();
-                crt.finish();
+                crt.finish(textBox1.Text);
                 button2.Enabled = true;
                 button3.Enabled = true;
             }
@@ -110,6 +111,12 @@ namespace mia_conv
                 button3.PerformClick();
                 Close();
             }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (ofd2.ShowDialog()==DialogResult.OK)
+                textBox1.Text=ofd2.FileName;
         }
     }
 }

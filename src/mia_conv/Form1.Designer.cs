@@ -55,6 +55,10 @@ namespace mia_conv
             this.textUser = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.textDB = new System.Windows.Forms.TextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.button4 = new System.Windows.Forms.Button();
+            this.ofd2 = new System.Windows.Forms.OpenFileDialog();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -85,7 +89,7 @@ namespace mia_conv
             // 
             // log
             // 
-            this.log.Location = new System.Drawing.Point(12, 318);
+            this.log.Location = new System.Drawing.Point(12, 345);
             this.log.Multiline = true;
             this.log.Name = "log";
             this.log.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -149,6 +153,9 @@ namespace mia_conv
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Controls.Add(this.button4);
+            this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.textHost);
             this.groupBox1.Controls.Add(this.dataGridView1);
@@ -165,7 +172,7 @@ namespace mia_conv
             this.groupBox1.Controls.Add(this.textDB);
             this.groupBox1.Location = new System.Drawing.Point(176, 37);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(603, 274);
+            this.groupBox1.Size = new System.Drawing.Size(603, 302);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "База Данных";
@@ -194,7 +201,7 @@ namespace mia_conv
             this.dataGridView1.Location = new System.Drawing.Point(404, 32);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(192, 204);
+            this.dataGridView1.Size = new System.Drawing.Size(192, 235);
             this.dataGridView1.TabIndex = 11;
             // 
             // groupBox3
@@ -218,7 +225,7 @@ namespace mia_conv
             // button3
             // 
             this.button3.Enabled = false;
-            this.button3.Location = new System.Drawing.Point(522, 245);
+            this.button3.Location = new System.Drawing.Point(521, 272);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 7;
@@ -335,11 +342,42 @@ namespace mia_conv
             this.textDB.TabIndex = 0;
             this.textDB.Text = "kroliki";
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(58, 274);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(413, 20);
+            this.textBox1.TabIndex = 9;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(9, 277);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(43, 13);
+            this.label9.TabIndex = 10;
+            this.label9.Text = "Скрипт";
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(475, 273);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(26, 22);
+            this.button4.TabIndex = 11;
+            this.button4.Text = "...";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // ofd2
+            // 
+            this.ofd2.FileName = "openFileDialog1";
+            this.ofd2.Filter = "SQL files(*.sql)|*.sql";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(792, 674);
+            this.ClientSize = new System.Drawing.Size(792, 701);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.label1);
@@ -390,6 +428,10 @@ namespace mia_conv
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox textHost;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.OpenFileDialog ofd2;
     }
 }
 
