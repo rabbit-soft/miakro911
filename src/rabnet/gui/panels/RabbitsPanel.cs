@@ -39,7 +39,7 @@ namespace rabnet
         {
             if (data == null)
             {
-                listView1.ListViewItemSorter = cs;
+                listView1.ListViewItemSorter = cs.Clear();
                 listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
                 listView1.Show();
                 return;
@@ -87,6 +87,7 @@ namespace rabnet
                 tn.ForeColor = Color.Blue;
                 insertNode(tn, dt);
                 tn.ExpandAll();
+                tn.EnsureVisible();
             }
         }
 

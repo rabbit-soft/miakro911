@@ -10,6 +10,7 @@ namespace rabnet
 {
     public partial class BuildingsPanel : RabNetPanel
     {
+        private bool manual = true;
         public BuildingsPanel(): base(){}
         public BuildingsPanel(RabStatusBar sb):base(sb,null)
         {
@@ -41,6 +42,7 @@ namespace rabnet
             n.Expand();
             f = new Filters();
             f["shr"] = Engine.opt().getOption(Options.OPT_ID.SHORT_NAMES);
+            f["dbl"] = Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
             listView1.Hide();
             listView1.Items.Clear();
             listView1.ListViewItemSorter = null;
@@ -53,13 +55,138 @@ namespace rabnet
         {
             if (data==null)
             {
-                listView1.ListViewItemSorter=cs;
+                listView1.ListViewItemSorter=cs.Clear();
                 listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
                 listView1.Show();
+                return;
             }
             IBuilding b = data as IBuilding;
-            ListViewItem it = listView1.Items.Add(b.id().ToString());
+            string prevnm="";
+            for (int i = 0; i < b.secs(); i++)
+            {
+                if (b.id() == 92)
+                {
+                    String.Format("");
+                }
+                if (b.area(i) != prevnm)
+                {
+                    ListViewItem it = listView1.Items.Add(b.farm().ToString() + b.area(i));
+                    prevnm = b.area(i);
+                    it.Tag = b.id().ToString();
+                    it.SubItems.Add(b.type());
+                    it.SubItems.Add(b.dep(i));
+                    String stat = "unk";
+                    if (b.repair()) stat = "ремонт";
+                    else
+                    {
+                        if (b.busy(i) == 0) stat = "-";
+                        else
+                            stat = b.use(i);
+                    }
+                    it.SubItems.Add(stat);
+                    String nst = "";
+                    String htr = "";
+                    if (b.nest_heater_count() > 0)
+                    {
+                        int nid = 0;
+                        if (b.nest_heater_count() > 1)
+                            nid = i;
+                        nst = (b.nest()[nid] == '1') ? "да" : "нет";
+                        htr = (b.heater()[nid] == '0' ? "нет" : (b.heater()[nid] == '1' ? "выкл" : "вкл"));
+                        if (b.itype() == "jurta")
+                            if ((b.delims()[0] == '1' && i == 0) || (b.delims()[0] == '0' && i == 1))
+                            {
+                                nst = "";
+                                htr = "";
+                            }
+                        if (b.itype()=="complex")
+                            if (i != 0)
+                            {
+                                nst = "";
+                                htr = "";
+                            }
+                    }
+                    it.SubItems.Add(nst);
+                    it.SubItems.Add(htr);
+                    it.SubItems.Add(getAddress(b.farm()));
+                    it.SubItems.Add(b.notes());
+                    it.Tag = b;
+                }
+            }
+        }
 
+        private String getAddress(int ifid)
+        {
+            String res = "";
+            TreeNode nd = searchFarm(ifid, treeView1.Nodes[0]);
+            if (nd!=null)
+            {
+                res = nd.Text;
+                while (nd != treeView1.Nodes[0])
+                {
+                    nd = nd.Parent;
+                    if (nd != treeView1.Nodes[0])
+                        res = nd.Text + "/" + res;
+                }
+            }
+            return res;
+        }
+        
+        private TreeNode searchFarm(int ifid,TreeNode nd)
+        {
+            String[] s = (nd.Tag as string).Split(':');
+            if (int.Parse(s[1]) == ifid)
+            {
+                return nd;
+            }
+            foreach (TreeNode n in nd.Nodes)
+            {
+                TreeNode res = searchFarm(ifid, n);
+                if (res != null)
+                    return res;
+            }
+            return null;
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count<1)
+                return;
+            if (listView1.SelectedItems[0] == null)
+                return;
+            if (!manual)
+                return;
+            ListViewItem li = listView1.SelectedItems[0];
+            IBuilding b = li.Tag as IBuilding;
+            TreeNode tr = treeView1.Nodes[0];
+            tr.Collapse(false);
+            tr.Expand();
+            manual = false;
+            treeView1.SelectedNode = searchFarm(b.farm(), tr);
+            if (treeView1.SelectedNode != null) treeView1.SelectedNode.Expand();
+            manual = true;
+        }
+
+        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (treeView1.SelectedNode==null)
+                return;
+            if (manual)
+            {
+                int farm = int.Parse((treeView1.SelectedNode.Tag as String).Split(':')[1]);
+                manual = false;
+                listView1.SelectedItems.Clear();
+                for (int i = 0; i < listView1.Items.Count; i++)
+                {
+                    IBuilding b = listView1.Items[i].Tag as IBuilding;
+                    if (b.farm() == farm)
+                    {
+                        listView1.Items[i].Selected = true;
+                        listView1.Items[i].EnsureVisible();
+                    }
+                }
+                manual = true;
+            }
         }
 
     }

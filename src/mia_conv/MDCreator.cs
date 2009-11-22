@@ -41,6 +41,8 @@ namespace mia_conv
             debug("database created\r\nMaking db user");
             cmd.CommandText = "GRANT ALL ON " + db + ".* TO " + user + "@localhost IDENTIFIED BY '" + pswd + "';";
             cmd.ExecuteNonQuery();
+            cmd.CommandText = "SET GLOBAL log_bin_trust_function_creators=1;";
+            cmd.ExecuteNonQuery();
             sql.Close();
             sql = null;
             return true;
@@ -55,12 +57,16 @@ namespace mia_conv
             sql.Open();
             c = new MySqlCommand("SET CHARACTER SET utf8;", sql);
             c.ExecuteNonQuery();
-            StreamReader stm=new StreamReader(this.GetType().Assembly.GetManifestResourceStream("mia_conv.rabnet_db_fmt.sql"),Encoding.ASCII);
+            StreamReader stm=new StreamReader(this.GetType().Assembly.GetManifestResourceStream("mia_conv.rabnet_db_fmt.sql"),Encoding.UTF8);
             String cmd = stm.ReadToEnd();
             stm.Close();
             cmd=cmd.Remove(cmd.IndexOf("##TEST_DATA"));
-            c.CommandText = cmd;
+            String[] cmds = cmd.Split(new string[] { "#DELIMITER |" }, StringSplitOptions.RemoveEmptyEntries);
+            c.CommandText = cmds[0];
             c.ExecuteNonQuery();
+            MySqlScript scr=new MySqlScript(sql,cmds[1]);
+            scr.Delimiter="|";
+            scr.Execute();
             return true;
         }
 

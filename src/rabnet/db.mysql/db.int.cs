@@ -93,15 +93,20 @@ namespace rabnet
         int id();
         int farm();
         int tier_id();
-        string sname();
+        string delims();
         string type();
-        int itype();
-        int ibusy(int id);
-        string busy(int id);
-        int areas();
-        int nests(int id);
-        int heaters();
+        string itype();
         string notes();
+        bool repair();
+        int secs();
+        string area(int id);
+        string dep(int id);
+        int nest_heater_count();
+        int busy(int id);
+        string use(int id);
+        string nest();
+        string heater();
+        string address();
     }
 
     public class TreeData
@@ -133,7 +138,7 @@ namespace rabnet
         IDataGetter getBuildings(Filters filters);
         TreeData rabbitGenTree(int rabbit);
         TreeData buildingsTree();
-
+        IDataGetter getYoungers(Filters filters);
     }
 
 }

@@ -86,6 +86,7 @@
             this.columnHeader11,
             this.columnHeader12,
             this.columnHeader13});
+            this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(3, 3);
             this.listView1.Name = "listView1";

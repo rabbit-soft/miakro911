@@ -56,6 +56,7 @@
     <Compile Include="db.mysql.cs" />
     <Compile Include="Rabbit.cs" />
     <Compile Include="RabNetDataGetterBase.cs" />
+    <Compile Include="Youngers.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

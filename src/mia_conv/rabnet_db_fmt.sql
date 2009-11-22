@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS users;
+﻿DROP TABLE IF EXISTS users;
 CREATE TABLE users(
 u_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 u_name VARCHAR(50),
@@ -348,6 +348,42 @@ CREATE TABLE filters(
 	KEY(f_type),
 	KEY(f_name)
 );
+
+#DELIMITER |
+DROP FUNCTION IF EXISTS rabname |
+CREATE FUNCTION rabname (rid INTEGER UNSIGNED ,sur INTEGER) RETURNS CHAR(150)
+BEGIN
+  DECLARE n,sr,sc,sx CHAR(50);
+  DECLARE res CHAR(150);
+  DECLARE c INT;
+  IF(rid=0) THEN
+    return '';
+  END IF;
+  SELECT
+  (SELECT n_name FROM names WHERE n_id=r_name) name,
+  (SELECT n_surname FROM names WHERE n_id=r_surname) surname,
+  (SELECT n_surname FROM names WHERE n_id=r_secname) secname,
+  r_group,r_sex INTO n,sr,sc,c,sx FROM rabbits WHERE r_id=rid;
+  SET res=n;
+  IF (sur>0) THEN
+    SET res=CONCAT_WS(' ',res,sr);
+    if (c>1) then
+      SET res=CONCAT(res,'ы');
+    else
+      if (sx='female') then SET res=CONCAT(res,'а'); end if;
+    end if;
+  END IF;
+  IF (sur>1 AND NOT sc IS NULL) THEN
+    SET res=CONCAT_WS('-',res,sc);
+    if (c>1) then
+      SET res=CONCAT(res,'ы');
+    else
+      if (sx='female') then SET res=CONCAT(res,'а'); end if;
+    end if;
+  END IF;
+  RETURN(res);
+END |
+#DELIMITER ;
 
 ##TEST_DATA do not remove this line
 

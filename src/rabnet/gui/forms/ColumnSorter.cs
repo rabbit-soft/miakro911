@@ -23,6 +23,11 @@ namespace rabnet
             lv.ColumnClick += new ColumnClickEventHandler(this.OnColumnClick);
         }
 
+        public ListViewColumnSorter Clear()
+        {
+            Order = SortOrder.None;
+            return this;
+        }
         private void OnColumnClick(object sender, ColumnClickEventArgs e)
         {
             if (e.Column == SortColumn)

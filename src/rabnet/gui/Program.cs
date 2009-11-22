@@ -30,9 +30,9 @@ namespace rabnet
                 LoginForm.stop = false;
                 while (!LoginForm.stop)
                 {
+                    LoginForm.stop = true;
                     if (lf.ShowDialog() == DialogResult.OK)
                     {
-                        LoginForm.stop = true;
                         Application.Run(new MainForm());
                     }
                 }

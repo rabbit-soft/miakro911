@@ -73,7 +73,10 @@ namespace rabnet
                 sb.Invoke(d, new object[] { progress });
             }else{
                 sb.progress(progress);
-                onitem(gt.getNextItem(), null);
+                IData it = gt.getNextItem();
+                onitem(it, null);
+                if (it == null)
+                    setStop(true);
             }
         }
         public void setRelease()

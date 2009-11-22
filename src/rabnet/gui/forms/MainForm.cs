@@ -80,6 +80,7 @@ namespace rabnet
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            DataThread.get().stop();
             curpanel.deactivate();
             panel1.Controls.Remove(curpanel);
             curpanel = panels[tabControl1.SelectedIndex];

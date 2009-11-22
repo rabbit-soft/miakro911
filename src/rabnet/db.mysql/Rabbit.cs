@@ -52,9 +52,9 @@ namespace rabnet
                 r.fname = r.fid.ToString()+" ";
             bool shr = options.safeBool("shr");
             String nm=rd.GetString("name");
-            r.fname += nm;
-            String sun=rd.GetString("surname");
-            String sen=rd.GetString("secname");
+            r.fname = nm;
+            //String sun=rd.GetString("surname");
+            //String sen=rd.GetString("secname");
             String sx = rd.GetString("r_sex");
             r.fage = rd.GetInt32("age");
             r.fN = "-";
@@ -62,29 +62,15 @@ namespace rabnet
             r.faverage = 0;
             if (rd.GetInt32("r_group") > 1)
                 r.fN = "[" + rd.GetString("r_group") + "]";
+            r.fsex = getRSex(sx);
             if (sx == "void")
             {
                 r.fstatus = shr ? "Пдс" : "Подсосные";
-                r.fstatus = shr ? "Гнд" : "Гнездовые";
-                r.fsex = "?";
-                if (sun != "")
-                {
-                    if (nm != "") r.fname += " ";
-                    r.fname += sun + "ы";
-                    if (options.safeBool("dbl") && sen!="")
-                        r.fname += "-" + sen + "ы";
-                }
+                if (Buildings.hasnest(rd.GetString("t_type"),rd.GetInt32("r_area"),rd.GetString("t_nest")))
+                    r.fstatus = shr ? "Гнд" : "Гнездовые";
             }
             else if (sx == "male")
             {
-                r.fsex = "м";
-                if (sun != "")
-                {
-                    if (nm != "") r.fname += " ";
-                    r.fname += sun + (cnt > 1 ? "ы" : "");
-                    if (options.safeBool("dbl") && sen!="")
-                        r.fname += "-" + sen + (cnt > 1 ? "ы" : "");
-                }
                 switch (rd.GetInt32("r_status"))
                 {
                     case 0: r.fstatus = shr?"Мал":"мальчик"; break;
@@ -94,17 +80,9 @@ namespace rabnet
             }
             else
             {
-                r.fsex = "ж";
-                if (!rd.IsDBNull(6))
-                if (rd.GetInt32(6) != 0)
+                if (!rd.IsDBNull(4))
+                if (rd.GetInt32("sukr") != 0)
                     r.fsex = "C-" + rd.GetInt32(6).ToString();
-                if (sun != "")
-                {
-                    if (nm != "") r.fname += " ";
-                    r.fname += sun + (cnt>1?"ы":"a");
-                    if (options.safeBool("dbl") && sen!="")
-                        r.fname += "-" + sen + (cnt > 1 ? "ы" : "a");
-                }
                 if (r.fage < 122)
                     r.fstatus = shr ? "Дев" : "Девочка";
                 else
@@ -113,16 +91,16 @@ namespace rabnet
                     r.fstatus = shr ? "Прк" : "Первокролка";
                 if (rd.GetInt32("r_status") > 1)
                     r.fstatus = shr ? "Штн" : "Штатная";
-                if (!rd.IsDBNull(14))
+                if (!rd.IsDBNull(12))
                 {
                     r.fN = "+" + rd.GetString("suckers");
                     r.faverage = rd.GetInt32("aage");
                 }
             }
             if (nm == "")
-                r.fname += "-" + rd.GetInt32(4).ToString();
-            r.fbreed = rd.GetString(9);
-            r.fweight = rd.IsDBNull(10) ? "?" : rd.GetString(10);
+                r.fname += "-" + rd.GetString("r_okrol").ToString();
+            r.fbreed = rd.GetString("breed");
+            r.fweight = rd.IsDBNull(8) ? "?" : rd.GetString("weight");
             String flg = rd.GetString("r_flags");
             r.fbgp = "";
             if (flg[2] == '1') r.fbgp += "Б";
@@ -221,7 +199,7 @@ namespace rabnet
             if (options.ContainsKey("ku") && options.safeValue("sx", "f").Contains("f"))
                 res = addwhere(res,"(r_sex!='female' OR (r_sex='female' AND SUBSTR(r_flags,4,1)="+(int.Parse(options["ku"])+1).ToString()+"))");
             if (options.ContainsKey("nm"))
-                res = addwhere(res,"(CONCAT(name,surname) like '%" + options["nm"] + "%')");
+                res = addwhere(res,"(name like '%" + options["nm"] + "%')");
             if (options.ContainsKey("pr") && options.safeValue("sx", "f").Contains("f"))
             {
                 String stat = "";
@@ -248,13 +226,15 @@ namespace rabnet
 
         public override string getQuery()
         {
+/*            COALESCE((SELECT n_name FROM names WHERE n_id=r_name),'') name,
+COALESCE((SELECT n_surname FROM names WHERE n_id=r_surname),'') surname,
+COALESCE((SELECT n_surname FROM names WHERE n_id=r_secname),'') secname,
+*/
             String fld = "b_name";
             if (options.safeBool("shr"))
                 fld = "b_short_name";
             return String.Format(@" SELECT * FROM (SELECT r_id, 
-COALESCE((SELECT n_name FROM names WHERE n_id=r_name),'') name,
-COALESCE((SELECT n_surname FROM names WHERE n_id=r_surname),'') surname,
-COALESCE((SELECT n_surname FROM names WHERE n_id=r_secname),'') secname,
+rabname(r_id,"+(options.safeBool("dbl")?"2":"1")+@") name,
 r_okrol,r_sex,
 TO_DAYS(NOW())-TO_DAYS(r_event_date) sukr,
 r_event,
@@ -273,18 +253,17 @@ r_area,
 r_tier_id,
 t_type,
 t_delims,
+t_nest,
 r_children,
 r_notes,
 r_born,
 r_event_date
-FROM rabbits,tiers WHERE r_parent=0 AND r_tier=t_id ORDER BY CONCAT(name,surname)) c"+makeWhere()+";");
+FROM rabbits,tiers WHERE r_parent=0 AND r_tier=t_id ORDER BY name) c"+makeWhere()+";");
         }
         public override string countQuery()
         {
             return @"SELECT COUNT(*) FROM (SELECT r_sex,r_born,
-COALESCE((SELECT n_name FROM names WHERE n_id=r_name),'') name,
-COALESCE((SELECT n_surname FROM names WHERE n_id=r_surname),'') surname,
-COALESCE((SELECT n_surname FROM names WHERE n_id=r_secname),'') secname,
+rabname(r_id,2) name,
 (SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight,
 r_status,r_flags,r_event_date
  FROM rabbits WHERE r_parent=0) c"+makeWhere()+";";
@@ -312,7 +291,7 @@ r_status,r_flags,r_event_date
             if (rabbit==0)
                 return null;
             MySqlCommand cmd = new MySqlCommand(@"SELECT
-COALESCE((SELECT n_name FROM names WHERE n_id=r_name),'') name,
+rabname(r_id,1) name,
 (SELECT n_use FROM names WHERE n_id=r_surname) mother,
 (SELECT n_use FROM names WHERE n_id=r_secname) father,
 r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString()+";",con);
@@ -337,6 +316,14 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
                 }
             }
             rd.Close();
+            return res;
+        }
+
+        public static String getRSex(String sx)
+        {
+            String res = "?";
+            if (sx == "male") res = "м";
+            if (sx == "female") res = "ж";
             return res;
         }
 

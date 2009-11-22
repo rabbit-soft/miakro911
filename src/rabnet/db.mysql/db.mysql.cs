@@ -152,6 +152,12 @@ namespace rabnet
             return Buildings.getTree(0, sql, null);
         }
 
+
+        public IDataGetter getYoungers(Filters filters)
+        {
+            return new Youngers(sql, filters);
+        }
+
         #endregion
     }
 }
