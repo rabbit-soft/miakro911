@@ -600,7 +600,7 @@ namespace mia_conv
             int cnt = (int)mia.graphform.lost.size.value();
             for (int i = 0; i < mia.graphform.lost.size.value(); i++)
             {
-                mia.setpb(cnt / 100 * i);
+                mia.setpb(100 *i/ cnt);
                 Application.DoEvents();
                 MFListItem li = mia.graphform.lost.items[i];
                 String sex = "void";

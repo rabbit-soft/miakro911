@@ -227,7 +227,7 @@ namespace mia_conv
             foreach (Rabbit r in mia.rabbits.rabbits)
             {
                 i++;
-                mia.setpb(cnt/100*i);
+                mia.setpb(100*i/cnt);
                 fillRabbit(r,0,false);
             }
             debug("normalizing fuckers");

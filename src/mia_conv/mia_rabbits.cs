@@ -328,7 +328,7 @@ namespace mia_conv
             for (int i = 0; i < (int)count.value(); i++)
             {
                 if (mf != null)
-                    mf.setpb(100 / cnt * i);
+                    mf.setpb(100*i/cnt);
                 rabbits.Add(new Rabbit(br, ver, nmales, nfemales));
             }
         }

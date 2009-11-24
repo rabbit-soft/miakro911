@@ -33,7 +33,7 @@ namespace mia_conv
         public MFWeightList wlist = new MFWeightList("WeightList", 16);
         CheckedListBox clb1 = null;
         ProgressBar pb = null;
-        
+        private int pval;
 
         public MiaFile(CheckedListBox lb,ProgressBar pb)
         {
@@ -106,12 +106,21 @@ namespace mia_conv
             clb1.Tag = pb.Value;
             pb.Tag = 100 / of;
             pb.Refresh();
+            pval = pb.Value;
+            Application.DoEvents();
         }
 
         public void setpb(int p)
         {
-            pb.Value = (int)clb1.Tag + ((int)pb.Tag / 100 * p);
+            int val=(int)clb1.Tag + ((int)pb.Tag*p/100);
+            if (val>100) 
+                val=100;
+            if (pval == val)
+                return;
+            pb.Value = val;
             pb.Refresh();
+            pval = pb.Value;
+            Application.DoEvents();
         }
     }
 }
