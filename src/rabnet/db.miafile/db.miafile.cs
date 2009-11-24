@@ -167,5 +167,50 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public int[] getTiers(int farm)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IBuilding getBuilding(int tier)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public Breeds getBreeds()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public IDataGetter getNames(Filters filters)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public IDataGetter zooTeh(Filters f)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

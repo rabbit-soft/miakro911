@@ -232,7 +232,7 @@ CREATE TABLE jobs(
 DROP TABLE IF EXISTS zooplans;
 CREATE TABLE zooplans(
 	z_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	z_done BOOL NOT NULL default 0,
+	z_done INTEGER NOT NULL default 0,
 	z_date DATETIME NOT NULL,
 	z_job INTEGER UNSIGNED NOT NULL default 0,
 	z_level INTEGER UNSIGNED NOT NULL default 0,
@@ -243,12 +243,14 @@ CREATE TABLE zooplans(
 	z_flags VARCHAR(50),
 	z_notes TEXT,
 	z_memo TEXT,
+	z_user INTEGER UNSIGNED NOT NULL DEFAULT 0,
 	KEY(z_done),
 	KEY(z_date),
 	KEY(z_job),
 	KEY(z_level),
 	KEY(z_rabbit),
-	KEY(z_address)
+	KEY(z_address),
+	KEY(z_user)
 );
 
 DROP TABLE IF EXISTS zooacceptors;
@@ -381,6 +383,18 @@ BEGIN
       if (sx='female') then SET res=CONCAT(res,'а'); end if;
     end if;
   END IF;
+  RETURN(res);
+END |
+
+DROP FUNCTION IF EXISTS rabplace |
+CREATE FUNCTION rabplace(rid INTEGER UNSIGNED) RETURNS char(150) CHARSET cp1251
+BEGIN
+  DECLARE res VARCHAR(150);
+  DECLARE i1,i2,i3,s1,s2 VARCHAR(20);
+  SELECT r_farm,r_tier_id,r_area,t_type,t_delims
+  INTO i1,i2,i3,s1,s2
+  FROM rabbits,tiers WHERE r_id=rid AND t_id=r_tier;
+  SET res=CONCAT_WS(',',i1,i2,i3,s1,s2);
   RETURN(res);
 END |
 #DELIMITER ;

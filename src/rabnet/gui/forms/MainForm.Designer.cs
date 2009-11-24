@@ -45,8 +45,8 @@
             this.внеплановыеПересадкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.архивToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.именаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.породыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.namesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.breedsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.настройкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showTierTMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showTierSMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,8 +65,8 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.rabStatusBar1 = new rabnet.RabStatusBar();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.rabStatusBar1 = new rabnet.RabStatusBar();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -126,8 +126,8 @@
             this.внеплановыеПересадкиToolStripMenuItem,
             this.архивToolStripMenuItem,
             this.toolStripMenuItem2,
-            this.именаToolStripMenuItem,
-            this.породыToolStripMenuItem});
+            this.namesMenuItem,
+            this.breedsMenuItem});
             this.видToolStripMenuItem.Name = "видToolStripMenuItem";
             this.видToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
             this.видToolStripMenuItem.Text = "Вид";
@@ -187,19 +187,21 @@
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(255, 6);
             // 
-            // именаToolStripMenuItem
+            // namesMenuItem
             // 
-            this.именаToolStripMenuItem.Name = "именаToolStripMenuItem";
-            this.именаToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.K)));
-            this.именаToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
-            this.именаToolStripMenuItem.Text = "Имена";
+            this.namesMenuItem.Name = "namesMenuItem";
+            this.namesMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.K)));
+            this.namesMenuItem.Size = new System.Drawing.Size(258, 22);
+            this.namesMenuItem.Text = "Имена";
+            this.namesMenuItem.Click += new System.EventHandler(this.namesMenuItem_Click);
             // 
-            // породыToolStripMenuItem
+            // breedsMenuItem
             // 
-            this.породыToolStripMenuItem.Name = "породыToolStripMenuItem";
-            this.породыToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-            this.породыToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
-            this.породыToolStripMenuItem.Text = "Породы";
+            this.breedsMenuItem.Name = "breedsMenuItem";
+            this.breedsMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
+            this.breedsMenuItem.Size = new System.Drawing.Size(258, 22);
+            this.breedsMenuItem.Text = "Породы";
+            this.breedsMenuItem.Click += new System.EventHandler(this.breedsMenuItem_Click);
             // 
             // настройкиToolStripMenuItem
             // 
@@ -296,6 +298,7 @@
             this.оПрограммеToolStripMenuItem.Name = "оПрограммеToolStripMenuItem";
             this.оПрограммеToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.оПрограммеToolStripMenuItem.Text = "О программе ...";
+            this.оПрограммеToolStripMenuItem.Click += new System.EventHandler(this.оПрограммеToolStripMenuItem_Click);
             // 
             // timer1
             // 
@@ -355,6 +358,16 @@
             this.tabPage4.Text = "Зоотехплан";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Location = new System.Drawing.Point(4, 55);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(906, 423);
+            this.panel1.TabIndex = 7;
+            // 
             // rabStatusBar1
             // 
             this.rabStatusBar1.filterPanel = null;
@@ -365,16 +378,6 @@
             this.rabStatusBar1.Size = new System.Drawing.Size(914, 23);
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
-            // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Location = new System.Drawing.Point(4, 55);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(906, 423);
-            this.panel1.TabIndex = 7;
             // 
             // MainForm
             // 
@@ -415,8 +418,8 @@
         private System.Windows.Forms.ToolStripMenuItem внеплановыеПересадкиToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem архивToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem именаToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem породыToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem namesMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem breedsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem настройкиToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem справкаToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showTierTMenuItem;

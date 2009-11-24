@@ -158,6 +158,39 @@ namespace rabnet
             return new Youngers(sql, filters);
         }
 
+        public int[] getTiers(int farm)
+        {
+            if (farm == 0)
+                return new int[] { 0, 0 };
+            MySqlDataReader rd = reader("SELECT m_upper,m_lower FROM minifarms WHERE m_id=" + farm.ToString() + ";");
+            rd.Read();
+            int[] trs = new int[] { rd.GetInt32(0), rd.GetInt32(1) };
+            rd.Close();
+            return trs;
+        }
+
+        public IBuilding getBuilding(int tier)
+        {
+            if (tier == 0)
+                return null;
+            return Buildings.getTier(tier, sql);
+        }
+
+        public Breeds getBreeds()
+        {
+            return new Breeds(sql);
+        }
+
+        public IDataGetter getNames(Filters filters)
+        {
+            return new Names(sql, filters);
+        }
+
+        public IDataGetter zooTeh(Filters f)
+        {
+            return new ZooTeh(sql,f);
+        }
+
         #endregion
     }
 }

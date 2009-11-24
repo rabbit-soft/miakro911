@@ -5,6 +5,27 @@ using MySql.Data.MySqlClient;
 
 namespace rabnet
 {
+    public interface IBuilding : IData
+    {
+        int id();
+        int farm();
+        int tier_id();
+        string delims();
+        string type();
+        string itype();
+        string notes();
+        bool repair();
+        int secs();
+        string area(int id);
+        string dep(int id);
+        int nest_heater_count();
+        int busy(int id);
+        string use(int id);
+        string nest();
+        string heater();
+        string address();
+    }
+
     class Building:IBuilding
     {
         public int fid;
@@ -176,49 +197,64 @@ namespace rabnet
             return res;
         }
 
+        public static String fullPlaceName(String rabplace,bool shr,bool sht,bool sho)
+        {
+            String[] dts = rabplace.Split(',');
+            return fullRName(int.Parse(dts[0]),int.Parse(dts[1]),int.Parse(dts[2]),dts[3],dts[4],shr,sht,sho);
+        }
+        public static String fullPlaceName(String rabplace)
+        {
+            return fullPlaceName(rabplace, false, false, false);
+        }
+
         public Buildings(MySqlConnection sql, Filters filters):base(sql,filters)
         {
+        }
+
+        public static IBuilding getBuilding(MySqlDataReader rd,bool shr)
+        {
+            int id = rd.GetInt32(0);
+            int farm = rd.GetInt32(3);
+            int tid = 0;
+            if (rd.GetInt32(2) != 0)
+            {
+                if (rd.GetInt32(1) == id)
+                    tid = 1;
+                else tid = 2;
+            }
+            String tp = rd.GetString("t_type");
+            String dl = rd.GetString("t_delims");
+            int scs = getRSecCount(tp);
+            Building b = new Building(id, farm, tid, tp, getRName(tp, shr), dl,
+                rd.GetString("t_notes"), (rd.GetInt32("t_repair") == 0 ? false : true), scs);
+            List<string> ars = new List<string>();
+            List<string> deps = new List<string>();
+            List<int> bus = new List<int>();
+            List<String> uses = new List<string>();
+            for (int i = 0; i < b.secs(); i++)
+            {
+                ars.Add((tid == 0 ? "" : (tid == 1 ? "^" : "-")) + getRSec(tp, i, dl));
+                deps.Add(getRDescr(tp, shr, i, dl));
+                bus.Add(rd.GetInt32("t_busy" + (i + 1).ToString()));
+                uses.Add(rd.GetString("r" + (i + 1).ToString()));
+            }
+            b.fareas = ars.ToArray();
+            b.fbusies = bus.ToArray();
+            b.fdeps = deps.ToArray();
+            b.fuses = uses.ToArray();
+            b.fnhcount = getRNHCount(tp);
+            b.fnests = rd.GetString("t_nest");
+            b.fheaters = rd.GetString("t_heater");
+            b.faddress = "";
+            return b;
         }
 
         public override IData nextItem()
         {
             try
             {
-                int id = rd.GetInt32(0);
-                int farm = rd.GetInt32(3);
-                int tid = 0;
-                if (rd.GetInt32(2)!=0)
-                {
-                    if (rd.GetInt32(1) == id)
-                        tid = 1;
-                    else tid = 2;
-                }
-                String tp = rd.GetString("t_type");
                 bool shr = options.safeBool("shr");
-                String dl = rd.GetString("t_delims");
-                int scs = getRSecCount(tp);
-                Building b = new Building(id, farm, tid, tp, getRName(tp, shr), dl,
-                    rd.GetString("t_notes"), (rd.GetInt32("t_repair") == 0 ? false : true), scs);
-                List<string> ars = new List<string>();
-                List<string> deps = new List<string>();
-                List<int> bus = new List<int>();
-                List<String> uses = new List<string>();
-                for (int i = 0; i < b.secs(); i++)
-                {
-                    ars.Add((tid==0?"":(tid==1?"^":"-"))+getRSec(tp, i, dl));
-                    deps.Add(getRDescr(tp, shr, i, dl));
-                    bus.Add(rd.GetInt32("t_busy" + (i + 1).ToString()));
-                    uses.Add(rd.GetString("r"+(i+1).ToString()));
-                }
-                b.fareas = ars.ToArray();
-                b.fbusies = bus.ToArray();
-                b.fdeps = deps.ToArray();
-                b.fuses = uses.ToArray();
-                b.fnhcount = getRNHCount(tp);
-                b.fnests = rd.GetString("t_nest");
-                b.fheaters = rd.GetString("t_heater");
-                b.faddress = "";
-                return b;
+                return getBuilding(rd, shr);
             }
             catch (Exception ex)
             {
@@ -275,5 +311,21 @@ FROM minifarms,tiers WHERE m_upper=t_id OR m_lower=t_id ORDER BY m_id";
             return res;
         }
 
+
+        public static IBuilding getTier(int tier,MySqlConnection con)
+        {
+            MySqlCommand cmd=new MySqlCommand(@"SELECT t_id,m_upper,m_lower,m_id,t_type,t_delims,t_nest,t_heater,
+t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4,
+rabname(t_busy1,1) r1, rabname(t_busy2,1) r2,rabname(t_busy3,1) r3,rabname(t_busy4,1) r4
+FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) and t_id="+tier.ToString()+";",con);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            IBuilding b=null;
+            if (rd.Read())
+            {
+                b = getBuilding(rd, false);
+            }
+            rd.Close();
+            return b;
+        }
     }
 }

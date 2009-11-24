@@ -167,13 +167,40 @@ namespace rabnet
             manual = true;
         }
 
+        private FarmDrawer.DrawTier tierFromBuilding(IBuilding b)
+        {
+            List<string> rabs=new List<string>();
+            for (int i=0;i<b.secs();i++)
+                    rabs.Add(b.use(i));
+            return new FarmDrawer.DrawTier(b.itype(),b.delims(),b.nest(),b.heater(),rabs.ToArray(),b.repair());
+        }
+
+        private void DrawFarm(int farm)
+        {
+            int[] tiers=Engine.db().getTiers(farm);
+            FarmDrawer.DrawTier t1 = tierFromBuilding(Engine.db().getBuilding(tiers[0]));
+            FarmDrawer.DrawTier t2=null;
+            if (tiers[1]!=0)
+                t2=tierFromBuilding(Engine.db().getBuilding(tiers[1]));
+            farmDrawer1.setFarm(farm,t1,t2);
+        }
+
+
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if (treeView1.SelectedNode==null)
+            if (treeView1.SelectedNode == null)
+            {
+                farmDrawer1.setFarm(0, null, null);
                 return;
+            }
+            int farm = int.Parse((treeView1.SelectedNode.Tag as String).Split(':')[1]);
+            if (farm == 0)
+            {
+                farmDrawer1.setFarm(0, null, null);
+                return;
+            }
             if (manual)
             {
-                int farm = int.Parse((treeView1.SelectedNode.Tag as String).Split(':')[1]);
                 manual = false;
                 listView1.SelectedItems.Clear();
                 for (int i = 0; i < listView1.Items.Count; i++)
@@ -187,6 +214,7 @@ namespace rabnet
                 }
                 manual = true;
             }
+            DrawFarm(farm);
         }
 
     }

@@ -94,5 +94,20 @@ namespace rabnet
                 panels[i].close();
         }
 
+        private void оПрограммеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new AboutForm().ShowDialog();
+        }
+
+        private void breedsMenuItem_Click(object sender, EventArgs e)
+        {
+            new CatalogForm(CatalogForm.CatalogType.BREEDS).ShowDialog();
+        }
+
+        private void namesMenuItem_Click(object sender, EventArgs e)
+        {
+            new NamesForm().ShowDialog();
+        }
+
     }
 }

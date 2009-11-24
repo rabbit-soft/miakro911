@@ -5,8 +5,26 @@ using MySql.Data.MySqlClient;
 
 namespace rabnet
 {
-    class Rabbit:IRabbit
+    public interface IRabbit : IData
     {
+        int id();
+        String name();
+        String sex();
+        int age();
+        String breed();
+        String weight();
+        String status();
+        String bgp();
+        String N();
+        int average();
+        int rate();
+        String cls();
+        String address();
+        String notes();
+    }
+
+
+    class Rabbit:IRabbit{
         public int fid;
         public String fname;
         public String fsex;
@@ -115,13 +133,13 @@ namespace rabnet
             return r;
         }
 
-        private String addwhere(String str,String adder)
+        public static String addwhere(String str,String adder)
         {
             if (str!="") str+=" AND ";
             str+=adder;
             return str;
         }
-        private String addwhereOr(String str, String adder)
+        public static String addwhereOr(String str, String adder)
         {
             if (str != "") str += " OR ";
             str += adder;
