@@ -105,17 +105,29 @@ namespace mia_conv
 
         public void fillAll()
         {
+            mia.setpbpart(0, 11);
             fillBreeds();
+            mia.setpbpart(1, 11);
             fillNames();
+            mia.setpbpart(2, 11);
             fillZones();
+            mia.setpbpart(3, 11);
             fillBuildings();
+            mia.setpbpart(4, 11);
             fillTransfers();
+            mia.setpbpart(5, 11);
             fillRabbits();
+            mia.setpbpart(6, 11);
             fillTransForm();
+            mia.setpbpart(7, 11);
             fillOptions();
+            mia.setpbpart(8, 11);
             fillZooForm();
+            mia.setpbpart(9, 11);
             fillGraphForm();
+            mia.setpbpart(10, 11);
             fillArcForm();
+            mia.setpbpart(11, 11);
         }
 
         public void fillBreeds()
@@ -585,8 +597,10 @@ namespace mia_conv
                     li.caption.value(),li.subs[0].value());
                 c.ExecuteNonQuery();
             }
+            int cnt = (int)mia.graphform.lost.size.value();
             for (int i = 0; i < mia.graphform.lost.size.value(); i++)
             {
+                mia.setpb(cnt / 100 * i);
                 Application.DoEvents();
                 MFListItem li = mia.graphform.lost.items[i];
                 String sex = "void";

@@ -774,7 +774,7 @@ namespace mia_conv
         public float dver = 0;
         public MFArchiveForm(String name, int li, MFRabNames males, MFRabNames females) : base(name, li)
         {
-            dead = new MFRabbits("dead", males, females);
+            dead = new MFRabbits("dead", males, females,null);
         }
         public void read(BinaryReader br, float ver)
         {

@@ -90,6 +90,7 @@ namespace mia_conv
             MDCreator crt = new MDCreator(log);
             try
             {
+                pb.Value = 0;
                 if (crt.prepare(dbnew.Checked, textHost.Text, textUser.Text, textPassword.Text, textDB.Text, textRoot.Text, textRootPswd.Text))
                 {
                     button2.Enabled = false;
@@ -99,6 +100,7 @@ namespace mia_conv
                     crt.setUsers(udata);
                     crt.fillAll();
                     crt.finish(textBox1.Text);
+                    pb.Value = 0;
                     button2.Enabled = true;
                     button3.Enabled = true;
                 }

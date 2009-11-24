@@ -110,7 +110,7 @@ namespace mia_conv
         {
             nmales = males;
             nfemales = females;
-            suckers=new MFRabbits("suckers",nmales,nfemales);
+            suckers=new MFRabbits("suckers",nmales,nfemales,null);
             read(br, ver);
         }
         public void read(BinaryReader br, float ver)
@@ -315,15 +315,24 @@ namespace mia_conv
         public List<Rabbit> rabbits = new List<Rabbit>();
         private MFRabNames nmales = null;
         private MFRabNames nfemales = null;
-        public MFRabbits(String name, MFRabNames males, MFRabNames females) : base(name) { nmales = males; nfemales = females; }
-        public MFRabbits(String name, int li, MFRabNames males, MFRabNames females) : base(name, li) { nmales = males; nfemales = females;}
+        private MiaFile mf = null;
+        public MFRabbits(String name, MFRabNames males, MFRabNames females,MiaFile mf) : base(name)
+        { nmales = males; nfemales = females; this.mf = mf; }
+        public MFRabbits(String name, int li, MFRabNames males, MFRabNames females,MiaFile mf) : base(name, li)
+        { nmales = males; nfemales = females; this.mf = mf; }
 
         public void read(BinaryReader br, float ver)
         {
             count.read(br, ver);
+            int cnt = (int)count.value();
             for (int i = 0; i < (int)count.value(); i++)
-                rabbits.Add(new Rabbit(br, ver,nmales,nfemales));
+            {
+                if (mf != null)
+                    mf.setpb(100 / cnt * i);
+                rabbits.Add(new Rabbit(br, ver, nmales, nfemales));
+            }
         }
+
 
         public override String strval()
         {

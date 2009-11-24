@@ -39,7 +39,7 @@ namespace mia_conv
         {
             this.pb = pb;
             pb.Value = 0;
-            rabbits = new MFRabbits("AllRabbits", 8, male_names, female_names);
+            rabbits = new MFRabbits("AllRabbits", 8, male_names, female_names,this);
             arcform= new MFArchiveForm("ArchiveForm", 14,male_names,female_names);
             clb1 = lb;
             l1.Add(date);
