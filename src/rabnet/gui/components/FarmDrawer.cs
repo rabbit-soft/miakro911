@@ -37,49 +37,49 @@ namespace rabnet
                 switch (type)
                 {
                     case "female":
-                        drawPart(0,1,"",rbs[0],nests[0]=='1',int.Parse(""+heaters[0]),null);
+                        drawPart(0,1,"",rbs[0],nests[0],heaters[0],null);
                         break;
                     case "dfemale":
-                        drawPart(0,0.5,"а",rbs[0],nests[0]=='1',int.Parse(""+heaters[0]),null);
-                        drawPart(0.5,0.5,"б",rbs[1],nests[1]=='1',int.Parse(""+heaters[1]),null);
+                        drawPart(0,0.5,"а",rbs[0],nests[0],heaters[0],null);
+                        drawPart(0.5,0.5,"б",rbs[1],nests[1],heaters[1],null);
                         break;
                     case "complex":
-                        drawPart(0, 0.5, "а", rbs[0], nests[0] == '1', int.Parse("" + heaters[0]), null);
-                        drawPart(0.5, 0.25, "б", rbs[1], false, 0, null);
-                        drawPart(0.75, 0.25, "в", rbs[2], false, 0, null);
+                        drawPart(0, 0.5, "а", rbs[0], nests[0], heaters[0], null);
+                        drawPart(0.5, 0.25, "б", rbs[1], 'N', 'N', null);
+                        drawPart(0.75, 0.25, "в", rbs[2], 'N', 'N', null);
                         break;
                     case "jurta":
                         bool fst = delims[0] == '1';
                         if (fst)
                         {
-                            drawPart(0, 0.25, "а", rbs[0], false, 0, null);
-                            drawPart(0.25, 0.75, "б", rbs[1], nests[0] == '1', int.Parse("" + heaters[0]), new double[]{0.62});
+                            drawPart(0, 0.25, "а", rbs[0], 'N', 'N', null);
+                            drawPart(0.25, 0.75, "б", rbs[1], nests[0], heaters[0], new double[]{0.62});
                         }
                         else
                         {
-                            drawPart(0, 0.62, "а", rbs[0], nests[0] == '1', int.Parse("" + heaters[0]), new double[] { 0.25 });
-                            drawPart(0.62, 0.38, "б", rbs[1], false, 0, null);
+                            drawPart(0, 0.62, "а", rbs[0], nests[0], heaters[0], new double[] { 0.25 });
+                            drawPart(0.62, 0.38, "б", rbs[1], 'N', 'N', null);
                         }
                         break;
                     case "quarta":
                         drawQuarta();
                         break;
                     case "vertep":
-                        drawPart(0, 0.5, "а", rbs[0], false, 0, null);
-                        drawPart(0.5, 0.5, "б", rbs[1], false, 0, null);
+                        drawPart(0, 0.5, "а", rbs[0], 'N', 'N', null);
+                        drawPart(0.5, 0.5, "б", rbs[1], 'N', 'N', null);
                         break;
                     case "barin":
                         if (delims[0] == '1')
                         {
-                            drawPart(0, 0.5, "а", rbs[0], false, 0, null);
-                            drawPart(0.5, 0.5, "б", rbs[1], false, 0, null);
+                            drawPart(0, 0.5, "а", rbs[0], 'N', 'N', null);
+                            drawPart(0.5, 0.5, "б", rbs[1], 'N', 'N', null);
                         }
                         else
-                            drawPart(0, 1, "аб", rbs[0], false, 0, new double[]{ 0.5});
+                            drawPart(0, 1, "аб", rbs[0], 'N', 'N', new double[]{ 0.5});
                         break;
                     case "cabin":
-                        drawPart(0, 0.65, "а", rbs[0], nests[0]=='1', int.Parse(""+heaters[0]), null);
-                        drawPart(0.65, 0.35, "б", rbs[1], false, 0, null);
+                        drawPart(0, 0.65, "а", rbs[0], nests[0], heaters[0], null);
+                        drawPart(0.65, 0.35, "б", rbs[1], 'N', 'N', null);
                         break;
                 }
             }
@@ -95,7 +95,7 @@ namespace rabnet
                 {
                     if (delims[i] == '1')
                     {
-                        drawPart(start, x, nm, rbs[i], false, 0, dl.ToArray());
+                        drawPart(start, x, nm, rbs[i], 'N', 'N', dl.ToArray());
                         i++;
                         start += x;
                         nm = ""+names[i];
@@ -109,9 +109,9 @@ namespace rabnet
                         nm += names[i];
                     }
                 }
-                drawPart(start, x, nm, rbs[i], false, 0, dl.ToArray());
+                drawPart(start, x, nm, rbs[i], 'N', 'N', dl.ToArray());
             }
-            public void drawPart(double start,double sz,String area,String rabbit,bool nest,int heater,double[] fd)
+            public void drawPart(double start,double sz,String area,String rabbit,Char nest,Char heater,double[] fd)
             {
                 Rectangle rct = r;
                 rct.Width = (int)Math.Round(r.Width * sz);
@@ -134,15 +134,27 @@ namespace rabnet
                 nrct.Width = rct.Width / 2;
                 Rectangle hrct=nrct;
                 hrct.Offset(rct.Width / 2, 0);
-                if (nest)
+                if (nest!='N')
                 {
-                    g.FillRectangle(Brushes.Gold,nrct);
-                    FarmDrawer.drawtext("гнездо",nrct,10,g,false);
+                    g.FillRectangle(nest=='1'?Brushes.Gold:Brushes.Silver,nrct);
+                    FarmDrawer.drawtext("гнездо"+(nest=='1'?"":":нет"),nrct,10,g,false);
                 }
-                if (heater > 0)
+                if (heater !='N')
                 {
-                    g.FillRectangle(heater==1?Brushes.Blue:Brushes.Red,hrct);
-                    FarmDrawer.drawtext("грелка:"+(heater==1?"вкл":"выкл"),hrct,10,g,false);
+                    Brush b = Brushes.Silver;
+                    String stat = "Нет";
+                    if (heater == '1')
+                    {
+                        b = Brushes.Blue;
+                        stat = "Выкл";
+                    }
+                    if (heater == '2')
+                    {
+                        b = Brushes.Red;
+                        stat = "Вкл";
+                    }
+                    g.FillRectangle(b, hrct);
+                    FarmDrawer.drawtext("грелка:"+stat,hrct,10,g,false);
                 }
 
             }

@@ -222,8 +222,12 @@ namespace mia_conv
         public void fillRabbits()
         {
             debug("fill rabbits");
+            int cnt=mia.rabbits.rabbits.Count;
+            int i=0;
             foreach (Rabbit r in mia.rabbits.rabbits)
             {
+                i++;
+                mia.setpb(cnt/100*i);
                 fillRabbit(r,0,false);
             }
             debug("normalizing fuckers");

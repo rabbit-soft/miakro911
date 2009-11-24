@@ -66,7 +66,7 @@ namespace mia_conv
 
         private void button2_Click(object sender, EventArgs e)
         {
-            mia = new MiaFile(clb1);
+            mia = new MiaFile(clb1,pb);
             mia.LoadFromFile(tb1.Text, log);
             button3.Enabled = true;
         }
@@ -88,15 +88,24 @@ namespace mia_conv
         private void button3_Click(object sender, EventArgs e)
         {
             MDCreator crt = new MDCreator(log);
-            if (crt.prepare(dbnew.Checked, textHost.Text, textUser.Text, textPassword.Text, textDB.Text, textRoot.Text, textRootPswd.Text))
+            try
             {
-                button2.Enabled = false;
-                button3.Enabled = false;
-                //crt.oldid = oldid.Checked;
-                crt.mia = mia;
-                crt.setUsers(udata);
-                crt.fillAll();
-                crt.finish(textBox1.Text);
+                if (crt.prepare(dbnew.Checked, textHost.Text, textUser.Text, textPassword.Text, textDB.Text, textRoot.Text, textRootPswd.Text))
+                {
+                    button2.Enabled = false;
+                    button3.Enabled = false;
+                    //crt.oldid = oldid.Checked;
+                    crt.mia = mia;
+                    crt.setUsers(udata);
+                    crt.fillAll();
+                    crt.finish(textBox1.Text);
+                    button2.Enabled = true;
+                    button3.Enabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка. Программа вызвала исключение: "+ex.GetType().ToString()+"\r\n"+ex.Message);
                 button2.Enabled = true;
                 button3.Enabled = true;
             }

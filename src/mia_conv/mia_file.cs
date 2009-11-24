@@ -32,10 +32,13 @@ namespace mia_conv
         public MFString farmid = new MFString("farmid", 15);
         public MFWeightList wlist = new MFWeightList("WeightList", 16);
         CheckedListBox clb1 = null;
+        ProgressBar pb = null;
         
 
-        public MiaFile(CheckedListBox lb)
+        public MiaFile(CheckedListBox lb,ProgressBar pb)
         {
+            this.pb = pb;
+            pb.Value = 0;
             rabbits = new MFRabbits("AllRabbits", 8, male_names, female_names);
             arcform= new MFArchiveForm("ArchiveForm", 14,male_names,female_names);
             clb1 = lb;
@@ -67,7 +70,11 @@ namespace mia_conv
         public void readobjs(List<IMFCommon> objs, BinaryReader br, TextBox log)
         {
             for (int i = 0; i < objs.Count; i++)
-                objread(objs[i],br,log);
+            {
+                setpbpart(i, objs.Count);
+                objread(objs[i], br, log);
+            }
+            pb.Value = 0;
         }
 
         public void LoadFromFile(String filename, TextBox log)
@@ -91,6 +98,20 @@ namespace mia_conv
             log.Text += String.Format("\r\nREAD ENDS AT FILEPOS {0:d} ({0:X}) OF {1:d} ({1:X})",sfs.Position,sfs.Length);
             fs.Close();
             sfs.Close();
+        }
+
+        public void setpbpart(int part,int of)
+        {
+            pb.Value = 100 / of * part;
+            clb1.Tag = pb.Value;
+            pb.Tag = 100 / of;
+            pb.Refresh();
+        }
+
+        public void setpb(int p)
+        {
+            pb.Value = (int)clb1.Tag + ((int)pb.Tag / 100 * p);
+            pb.Refresh();
         }
     }
 }

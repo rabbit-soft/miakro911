@@ -233,12 +233,23 @@ namespace mia_conv
         public List<MFListItem> items = new List<MFListItem>();
         public MFListView(String name, int li) : base(name, li) { }
         public MFListView(String name) : base(name) { }
-        public void read(BinaryReader br, float ver)
+        public void read(BinaryReader br, float ver,MiaFile mf)
         {
             size.read(br,ver);
+            int cnt=(int)size.value();
             for (int i = 0; i < size.value(); i++)
+            {
+                if (mf != null)
+                {
+                    mf.setpb(cnt / 100 * i);
+                }
                 items.Add(new MFListItem(br, ver));
+            }
 
+        }
+        public void read(BinaryReader br, float ver)
+        {
+            read(br, ver, null);
         }
         public override String strval()
         {
