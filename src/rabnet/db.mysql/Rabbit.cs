@@ -100,7 +100,7 @@ namespace rabnet
             {
                 if (!rd.IsDBNull(4))
                 if (rd.GetInt32("sukr") != 0)
-                    r.fsex = "C-" + rd.GetInt32(6).ToString();
+                    r.fsex = "C-" + rd.GetInt32("sukr").ToString();
                 if (r.fage < 122)
                     r.fstatus = shr ? "Дев" : "Девочка";
                 else
