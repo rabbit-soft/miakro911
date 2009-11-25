@@ -28,6 +28,7 @@
         /// </summary>
         protected override void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
@@ -43,10 +44,25 @@
             this.columnHeader11 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader12 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader13 = new System.Windows.Forms.ColumnHeader();
+            this.actMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.newRab = new System.Windows.Forms.ToolStripMenuItem();
+            this.makeBon = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.forFemale = new System.Windows.Forms.ToolStripMenuItem();
+            this.forMale = new System.Windows.Forms.ToolStripMenuItem();
+            this.forVoid = new System.Windows.Forms.ToolStripMenuItem();
+            this.forEveryone = new System.Windows.Forms.ToolStripMenuItem();
+            this.forNobody = new System.Windows.Forms.ToolStripMenuItem();
             this.genTree = new System.Windows.Forms.TreeView();
+            this.forManySex = new System.Windows.Forms.ToolStripMenuItem();
+            this.forOne = new System.Windows.Forms.ToolStripMenuItem();
+            this.forMany = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.actMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -71,7 +87,6 @@
             this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.listView1.CheckBoxes = true;
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
@@ -86,6 +101,7 @@
             this.columnHeader11,
             this.columnHeader12,
             this.columnHeader13});
+            this.listView1.ContextMenuStrip = this.actMenu;
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(3, 3);
@@ -161,6 +177,72 @@
             this.columnHeader13.Text = "Заметки";
             this.columnHeader13.Width = 64;
             // 
+            // actMenu
+            // 
+            this.actMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newRab,
+            this.makeBon,
+            this.toolStripMenuItem1,
+            this.forFemale,
+            this.forMale,
+            this.forVoid,
+            this.forManySex,
+            this.toolStripMenuItem2,
+            this.forEveryone,
+            this.forNobody,
+            this.toolStripMenuItem3,
+            this.forOne,
+            this.forMany});
+            this.actMenu.Name = "actMenu";
+            this.actMenu.Size = new System.Drawing.Size(165, 264);
+            // 
+            // newRab
+            // 
+            this.newRab.Name = "newRab";
+            this.newRab.Size = new System.Drawing.Size(164, 22);
+            this.newRab.Text = "Привоз";
+            // 
+            // makeBon
+            // 
+            this.makeBon.Name = "makeBon";
+            this.makeBon.Size = new System.Drawing.Size(164, 22);
+            this.makeBon.Text = "Ботинировка";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(161, 6);
+            // 
+            // forFemale
+            // 
+            this.forFemale.Name = "forFemale";
+            this.forFemale.Size = new System.Drawing.Size(164, 22);
+            this.forFemale.Text = "для самки";
+            // 
+            // forMale
+            // 
+            this.forMale.Name = "forMale";
+            this.forMale.Size = new System.Drawing.Size(164, 22);
+            this.forMale.Text = "для самца";
+            // 
+            // forVoid
+            // 
+            this.forVoid.Name = "forVoid";
+            this.forVoid.Size = new System.Drawing.Size(164, 22);
+            this.forVoid.Text = "для бесполых";
+            // 
+            // forEveryone
+            // 
+            this.forEveryone.Name = "forEveryone";
+            this.forEveryone.Size = new System.Drawing.Size(164, 22);
+            this.forEveryone.Text = "для всех";
+            // 
+            // forNobody
+            // 
+            this.forNobody.Name = "forNobody";
+            this.forNobody.Size = new System.Drawing.Size(164, 22);
+            this.forNobody.Text = "для никого";
+            // 
             // genTree
             // 
             this.genTree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
@@ -170,6 +252,34 @@
             this.genTree.Name = "genTree";
             this.genTree.Size = new System.Drawing.Size(134, 544);
             this.genTree.TabIndex = 0;
+            // 
+            // forManySex
+            // 
+            this.forManySex.Name = "forManySex";
+            this.forManySex.Size = new System.Drawing.Size(164, 22);
+            this.forManySex.Text = "для смешанных";
+            // 
+            // forOne
+            // 
+            this.forOne.Name = "forOne";
+            this.forOne.Size = new System.Drawing.Size(164, 22);
+            this.forOne.Text = "для одного";
+            // 
+            // forMany
+            // 
+            this.forMany.Name = "forMany";
+            this.forMany.Size = new System.Drawing.Size(164, 22);
+            this.forMany.Text = "для многих";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(161, 6);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(161, 6);
             // 
             // RabbitsPanel
             // 
@@ -181,6 +291,7 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
+            this.actMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -203,5 +314,19 @@
         private System.Windows.Forms.ColumnHeader columnHeader12;
         private System.Windows.Forms.ColumnHeader columnHeader13;
         private System.Windows.Forms.TreeView genTree;
+        private System.Windows.Forms.ContextMenuStrip actMenu;
+        private System.Windows.Forms.ToolStripMenuItem newRab;
+        private System.Windows.Forms.ToolStripMenuItem makeBon;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem forFemale;
+        private System.Windows.Forms.ToolStripMenuItem forMale;
+        private System.Windows.Forms.ToolStripMenuItem forVoid;
+        private System.Windows.Forms.ToolStripMenuItem forEveryone;
+        private System.Windows.Forms.ToolStripMenuItem forNobody;
+        private System.Windows.Forms.ToolStripMenuItem forManySex;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem forOne;
+        private System.Windows.Forms.ToolStripMenuItem forMany;
     }
 }

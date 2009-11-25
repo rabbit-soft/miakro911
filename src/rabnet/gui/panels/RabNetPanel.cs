@@ -62,5 +62,10 @@ namespace rabnet
             return null;
         }
 
+        public virtual ContextMenuStrip getMenu()
+        {
+            return null;
+        }
+
     }
 }

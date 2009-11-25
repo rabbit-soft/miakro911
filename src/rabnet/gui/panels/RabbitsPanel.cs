@@ -74,9 +74,29 @@ namespace rabnet
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count != 1)
+            if (listView1.SelectedItems.Count <1)
+            {
+                setMenu(-1,false);
                 return;
-            if (genTree.Nodes.Count>0)
+            }
+            string sx = "";
+            for (int i = 0; i < listView1.SelectedItems.Count;i++ )
+            {
+                String s = listView1.SelectedItems[i].SubItems[1].Text;
+                if (s[0] == 'С' || s[0]=='C') s = "ж";
+                if (!sx.Contains(s))
+                    sx += s;
+            }
+            int isx=3;
+            if (sx=="?") isx=0;
+            if (sx=="м") isx=1;
+            if (sx=="ж") isx=2;
+            setMenu(isx, listView1.SelectedItems.Count != 1);
+            if (listView1.SelectedItems.Count != 1)
+            {
+                return;
+            }
+            if (genTree.Nodes.Count > 0)
                 genTree.Nodes[0].ForeColor = Color.Gray;
             if (genTree.Nodes.Count > 10)
                 genTree.Nodes.RemoveAt(10);
@@ -90,6 +110,37 @@ namespace rabnet
                 tn.EnsureVisible();
             }
         }
+
+        private void setMenu(int sex,bool multi)
+        {
+            makeBon.Visible = forMale.Visible = forFemale.Visible = forVoid.Visible = forEveryone.Visible = false;
+            forManySex.Visible = false;
+            forMany.Visible = forOne.Visible = false;
+            forNobody.Visible = true;
+            if (sex < 0) return;
+            forNobody.Visible = false;
+            forEveryone.Visible = makeBon.Visible = true;
+            if (sex == 0)
+                forVoid.Visible = true;
+            else if (sex == 1)
+                forMale.Visible = true;
+            else if (sex == 2)
+                forFemale.Visible = true;
+            else if (sex == 3)
+                forManySex.Visible = true;
+            if (multi) 
+                forMany.Visible = true;
+            else
+                forOne.Visible = true;
+        }
+
+        public override ContextMenuStrip getMenu()
+        {
+            setMenu(-1,false);
+            return actMenu;
+        }
+
+
 
     }
 }

@@ -85,6 +85,7 @@ namespace rabnet
             panel1.Controls.Remove(curpanel);
             curpanel = panels[tabControl1.SelectedIndex];
             panel1.Controls.Add(curpanel);
+            actMenuItem.DropDown = curpanel.getMenu();
             curpanel.activate();
         }
 
