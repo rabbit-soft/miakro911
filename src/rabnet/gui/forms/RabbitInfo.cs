@@ -17,9 +17,21 @@ namespace rabnet
         private Catalog surnames = null;
         private Catalog secnames = null;
         private RabNetEngRabbit rab = null;
+        private TabPage malePage;
+        private TabPage femalePage;
+        private TabPage okrolPage;
+        private TabPage suckersPage;
+        private TabPage weightPage;
         public RabbitInfo()
         {
             InitializeComponent();
+            malePage = tabControl1.TabPages[1];
+            femalePage = tabControl1.TabPages[2];
+            okrolPage = tabControl1.TabPages[3];
+            suckersPage = tabControl1.TabPages[4];
+            weightPage = tabControl1.TabPages[5];
+            for (int i = 0; i < 5;i++ )
+                tabControl1.TabPages.RemoveAt(1);
         }
         public RabbitInfo(int id)
             : this()
@@ -52,14 +64,21 @@ namespace rabnet
             label4.Text = "М.Фам:" + secname.Text;
             bdate.Value = rab.born.Date;
             bdate_ValueChanged(null, null);
+            notes.Text = rab.notes;
         }
 
         private void updateMale()
         {
+            tabControl1.TabPages.Add(malePage);
+            tabControl1.TabPages.Add(weightPage);
         }
 
         private void updateFemale()
         {
+            tabControl1.TabPages.Add(femalePage);
+            tabControl1.TabPages.Add(okrolPage);
+            tabControl1.TabPages.Add(suckersPage);
+            tabControl1.TabPages.Add(weightPage);
         }
 
         private void FillList(ComboBox cb,Catalog c,int key)

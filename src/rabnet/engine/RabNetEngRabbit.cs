@@ -84,6 +84,11 @@ namespace rabnet
             get { return rab.zone; }
             set { rab.zone = value; }
         }
+        public String notes
+        {
+            get { return rab.notes; }
+            set { rab.notes = value; }
+        }
         public String address { get { return rab.address; } }
     }
 }

@@ -365,7 +365,8 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
         public int group;
         public int breed;
         public int zone;
-        public OneRabbit(int id,string sx,DateTime bd,int rt,string flg,int nm,int sur,int sec,string adr,int grp,int brd,int zn)
+        public String notes;
+        public OneRabbit(int id,string sx,DateTime bd,int rt,string flg,int nm,int sur,int sec,string adr,int grp,int brd,int zn,String nts)
         {
             this.id=id;
             sex=RabbitSex.VOID;
@@ -379,10 +380,11 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             spec = flg[2] == '2';
             surname = sur;
             secname = sec;
-            address = adr;
+            address = Buildings.fullPlaceName(adr,false,true,true);
             group = grp;
             breed = brd;
             zone = zn;
+            notes = nts;
         }
     }
 
@@ -392,7 +394,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
         {
             MySqlCommand cmd = new MySqlCommand(@"SELECT r_id,r_sex,r_born,r_flags,r_breed,r_zone,
 r_name,r_surname,r_secname,
-rabplace(r_id) address,r_group,
+rabplace(r_id) address,r_group,r_notes,
 r_rate
 FROM rabbits WHERE r_id=" + rid.ToString()+";",con);
             MySqlDataReader rd = cmd.ExecuteReader();
@@ -403,7 +405,8 @@ FROM rabbits WHERE r_id=" + rid.ToString()+";",con);
             }
             OneRabbit r=new OneRabbit(rd.GetInt32("r_id"),rd.GetString("r_sex"),rd.GetDateTime("r_born"),rd.GetInt32("r_rate"),
                 rd.GetString("r_flags"),rd.GetInt32("r_name"),rd.GetInt32("r_surname"),rd.GetInt32("r_secname"),
-                rd.GetString("address"),rd.GetInt32("r_group"),rd.GetInt32("r_breed"),rd.GetInt32("r_zone"));
+                rd.GetString("address"),rd.GetInt32("r_group"),rd.GetInt32("r_breed"),rd.GetInt32("r_zone"),
+                rd.GetString("r_notes"));
 
             rd.Close();
             return r;
