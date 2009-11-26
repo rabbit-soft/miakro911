@@ -5,7 +5,14 @@ using System.Text;
 
 namespace rabnet
 {
-    public class Breeds
+    public interface IBreeds
+    {
+        CatalogData getBreeds();
+        void ChangeBreed(int id,String name,String sname);
+        int AddBreed(String name, String sname);
+    }
+
+    public class Breeds:IBreeds
     {
         private MySqlConnection sql = null;
         public Breeds(MySqlConnection sql)

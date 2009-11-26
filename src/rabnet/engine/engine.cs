@@ -70,5 +70,10 @@ namespace rabnet
                 opts = new Options(this);
             return opts;
         }
+
+        public RabNetEngRabbit getRabbit(int id)
+        {
+            return new RabNetEngRabbit(id, db());
+        }
     }
 }

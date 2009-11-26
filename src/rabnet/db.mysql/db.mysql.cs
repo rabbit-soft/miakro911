@@ -176,11 +176,6 @@ namespace rabnet
             return Buildings.getTier(tier, sql);
         }
 
-        public Breeds getBreeds()
-        {
-            return new Breeds(sql);
-        }
-
         public IDataGetter getNames(Filters filters)
         {
             return new Names(sql, filters);
@@ -190,6 +185,26 @@ namespace rabnet
         {
             return new ZooTeh(sql,f);
         }
+
+
+        IBreeds IRabNetDataLayer.getBreeds()
+        {
+            return new Breeds(sql);
+        }
+
+        public OneRabbit getRabbit(int rid)
+        {
+            return RabbitGetter.GetRabbit(sql, rid);
+        }
+        public void setRabbit(OneRabbit r)
+        {
+            RabbitGetter.SetRabbit(sql,r);
+        }
+        public ICatalogs catalogs()
+        {
+            return new Catalogs(sql);
+        }
+
 
         #endregion
     }

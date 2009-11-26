@@ -10,6 +10,7 @@ namespace rabnet
 {
     public partial class RabbitsPanel : RabNetPanel
     {
+        private bool manual = true;
         public RabbitsPanel():base()
         {
         }
@@ -74,13 +75,15 @@ namespace rabnet
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (!manual)
+                return;
             if (listView1.SelectedItems.Count <1)
             {
-                setMenu(-1,false);
+                setMenu(-1,0);
                 return;
             }
             string sx = "";
-            for (int i = 0; i < listView1.SelectedItems.Count;i++ )
+            for (int i = 0; i < listView1.SelectedItems.Count && sx.Length<2;i++ )
             {
                 String s = listView1.SelectedItems[i].SubItems[1].Text;
                 if (s[0] == 'С' || s[0]=='C') s = "ж";
@@ -91,7 +94,7 @@ namespace rabnet
             if (sx=="?") isx=0;
             if (sx=="м") isx=1;
             if (sx=="ж") isx=2;
-            setMenu(isx, listView1.SelectedItems.Count != 1);
+            setMenu(isx, listView1.SelectedItems.Count);
             if (listView1.SelectedItems.Count != 1)
             {
                 return;
@@ -111,33 +114,36 @@ namespace rabnet
             }
         }
 
-        private void setMenu(int sex,bool multi)
+        private void setMenu(int sex,int multi)
         {
-            makeBon.Visible = forMale.Visible = forFemale.Visible = forVoid.Visible = forEveryone.Visible = false;
-            forManySex.Visible = false;
-            forMany.Visible = forOne.Visible = false;
-            forNobody.Visible = true;
+            makeBon.Visible = passportMenuItem.Visible=false;
             if (sex < 0) return;
-            forNobody.Visible = false;
-            forEveryone.Visible = makeBon.Visible = true;
-            if (sex == 0)
-                forVoid.Visible = true;
-            else if (sex == 1)
-                forMale.Visible = true;
-            else if (sex == 2)
-                forFemale.Visible = true;
-            else if (sex == 3)
-                forManySex.Visible = true;
-            if (multi) 
-                forMany.Visible = true;
-            else
-                forOne.Visible = true;
+            makeBon.Visible = true;
+            if (sex != 3 && multi == 1)
+            {
+                passportMenuItem.Visible = true;
+            }
         }
 
         public override ContextMenuStrip getMenu()
         {
-            setMenu(-1,false);
+            setMenu(-1,0);
             return actMenu;
+        }
+
+        private void SelectAllMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem li in listView1.Items)
+                li.Selected=true;
+            listView1.Show();
+        }
+
+        private void passportMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1)
+                return;
+            RabbitInfo ri = new RabbitInfo((int)listView1.SelectedItems[0].Tag);
+            ri.ShowDialog();
         }
 
 

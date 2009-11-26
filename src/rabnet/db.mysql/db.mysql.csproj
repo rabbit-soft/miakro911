@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Breeds.cs" />
     <Compile Include="Building.cs" />
+    <Compile Include="Catalogs.cs" />
     <Compile Include="db.int.cs" />
     <Compile Include="db.mysql.cs" />
     <Compile Include="Filters.cs" />

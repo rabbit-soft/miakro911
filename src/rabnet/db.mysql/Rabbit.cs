@@ -346,4 +346,68 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
         }
 
     }
+
+    public class OneRabbit
+    {
+        public enum RabbitSex{VOID,MALE,FEMALE};
+        public RabbitSex sex;
+        public DateTime born;
+        public int rate;
+        public int id;
+        public bool defect;
+        public bool gp;
+        public bool gr;
+        public bool spec;
+        public int name;
+        public int surname;
+        public int secname;
+        public string address;
+        public int group;
+        public int breed;
+        public OneRabbit(int id,string sx,DateTime bd,int rt,string flg,int nm,int sur,int sec,string adr,int grp,int brd)
+        {
+            this.id=id;
+            sex=RabbitSex.VOID;
+            if (sx=="male") sex=RabbitSex.MALE;
+            if (sx == "female") sex = RabbitSex.FEMALE;
+            born = bd;
+            rate = rt;
+            name = nm;
+            gp = flg[0] == '1';
+            defect = flg[2] == '1';
+            spec = flg[2] == '2';
+            surname = sur;
+            secname = sec;
+            address = adr;
+            group = grp;
+            breed = brd;
+        }
+    }
+
+    public class RabbitGetter
+    {
+        public static OneRabbit GetRabbit(MySqlConnection con, int rid)
+        {
+            MySqlCommand cmd = new MySqlCommand(@"SELECT r_id,r_sex,r_born,r_flags,r_breed,r_zone,
+r_name,r_surname,r_secname,
+rabplace(r_id) address,r_group,r_rate,
+FROM rabbits WHERE r_id=" + rid.ToString()+";",con);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            if (!rd.Read())
+            {
+                rd.Close();
+                return null;
+            }
+            OneRabbit r=new OneRabbit(rd.GetInt32("r_id"),rd.GetString("r_sex"),rd.GetDateTime("r_born"),rd.GetInt32("r_rate"),
+                rd.GetString("r_flags"),rd.GetInt32("r_name"),rd.GetInt32("r_surname"),rd.GetInt32("r_secname"),
+                rd.GetString("address"),rd.GetInt32("r_group"),rd.GetInt32("r_breed"));
+
+            rd.Close();
+            return r;
+        }
+
+        public static void SetRabbit(MySqlConnection con, OneRabbit r)
+        {
+        }
+    }
 }

@@ -48,17 +48,10 @@
             this.newRab = new System.Windows.Forms.ToolStripMenuItem();
             this.makeBon = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.forFemale = new System.Windows.Forms.ToolStripMenuItem();
-            this.forMale = new System.Windows.Forms.ToolStripMenuItem();
-            this.forVoid = new System.Windows.Forms.ToolStripMenuItem();
-            this.forEveryone = new System.Windows.Forms.ToolStripMenuItem();
-            this.forNobody = new System.Windows.Forms.ToolStripMenuItem();
+            this.SelectAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.genTree = new System.Windows.Forms.TreeView();
-            this.forManySex = new System.Windows.Forms.ToolStripMenuItem();
-            this.forOne = new System.Windows.Forms.ToolStripMenuItem();
-            this.forMany = new System.Windows.Forms.ToolStripMenuItem();
+            this.passportMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -183,65 +176,36 @@
             this.newRab,
             this.makeBon,
             this.toolStripMenuItem1,
-            this.forFemale,
-            this.forMale,
-            this.forVoid,
-            this.forManySex,
+            this.passportMenuItem,
             this.toolStripMenuItem2,
-            this.forEveryone,
-            this.forNobody,
-            this.toolStripMenuItem3,
-            this.forOne,
-            this.forMany});
+            this.SelectAllMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(165, 264);
+            this.actMenu.Size = new System.Drawing.Size(195, 126);
             // 
             // newRab
             // 
             this.newRab.Name = "newRab";
-            this.newRab.Size = new System.Drawing.Size(164, 22);
+            this.newRab.Size = new System.Drawing.Size(194, 22);
             this.newRab.Text = "Привоз";
             // 
             // makeBon
             // 
             this.makeBon.Name = "makeBon";
-            this.makeBon.Size = new System.Drawing.Size(164, 22);
+            this.makeBon.Size = new System.Drawing.Size(194, 22);
             this.makeBon.Text = "Ботинировка";
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(161, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(191, 6);
             // 
-            // forFemale
+            // SelectAllMenuItem
             // 
-            this.forFemale.Name = "forFemale";
-            this.forFemale.Size = new System.Drawing.Size(164, 22);
-            this.forFemale.Text = "для самки";
-            // 
-            // forMale
-            // 
-            this.forMale.Name = "forMale";
-            this.forMale.Size = new System.Drawing.Size(164, 22);
-            this.forMale.Text = "для самца";
-            // 
-            // forVoid
-            // 
-            this.forVoid.Name = "forVoid";
-            this.forVoid.Size = new System.Drawing.Size(164, 22);
-            this.forVoid.Text = "для бесполых";
-            // 
-            // forEveryone
-            // 
-            this.forEveryone.Name = "forEveryone";
-            this.forEveryone.Size = new System.Drawing.Size(164, 22);
-            this.forEveryone.Text = "для всех";
-            // 
-            // forNobody
-            // 
-            this.forNobody.Name = "forNobody";
-            this.forNobody.Size = new System.Drawing.Size(164, 22);
-            this.forNobody.Text = "для никого";
+            this.SelectAllMenuItem.Name = "SelectAllMenuItem";
+            this.SelectAllMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
+            this.SelectAllMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.SelectAllMenuItem.Text = "Выбрать всех";
+            this.SelectAllMenuItem.Click += new System.EventHandler(this.SelectAllMenuItem_Click);
             // 
             // genTree
             // 
@@ -253,33 +217,17 @@
             this.genTree.Size = new System.Drawing.Size(134, 544);
             this.genTree.TabIndex = 0;
             // 
-            // forManySex
+            // passportMenuItem
             // 
-            this.forManySex.Name = "forManySex";
-            this.forManySex.Size = new System.Drawing.Size(164, 22);
-            this.forManySex.Text = "для смешанных";
-            // 
-            // forOne
-            // 
-            this.forOne.Name = "forOne";
-            this.forOne.Size = new System.Drawing.Size(164, 22);
-            this.forOne.Text = "для одного";
-            // 
-            // forMany
-            // 
-            this.forMany.Name = "forMany";
-            this.forMany.Size = new System.Drawing.Size(164, 22);
-            this.forMany.Text = "для многих";
+            this.passportMenuItem.Name = "passportMenuItem";
+            this.passportMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.passportMenuItem.Text = "Паспорт";
+            this.passportMenuItem.Click += new System.EventHandler(this.passportMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(161, 6);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(161, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(191, 6);
             // 
             // RabbitsPanel
             // 
@@ -318,15 +266,8 @@
         private System.Windows.Forms.ToolStripMenuItem newRab;
         private System.Windows.Forms.ToolStripMenuItem makeBon;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem forFemale;
-        private System.Windows.Forms.ToolStripMenuItem forMale;
-        private System.Windows.Forms.ToolStripMenuItem forVoid;
-        private System.Windows.Forms.ToolStripMenuItem forEveryone;
-        private System.Windows.Forms.ToolStripMenuItem forNobody;
-        private System.Windows.Forms.ToolStripMenuItem forManySex;
+        private System.Windows.Forms.ToolStripMenuItem SelectAllMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem passportMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
-        private System.Windows.Forms.ToolStripMenuItem forOne;
-        private System.Windows.Forms.ToolStripMenuItem forMany;
     }
 }

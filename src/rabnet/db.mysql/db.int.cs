@@ -40,9 +40,12 @@ namespace rabnet
         IDataGetter getYoungers(Filters filters);
         int[] getTiers(int farm);
         IBuilding getBuilding(int tier);
-        Breeds getBreeds();
+        IBreeds getBreeds();
         IDataGetter getNames(Filters filters);
         IDataGetter zooTeh(Filters f);
+        OneRabbit getRabbit(int rid);
+        void setRabbit(OneRabbit r);
+        ICatalogs catalogs();
     }
 
 }

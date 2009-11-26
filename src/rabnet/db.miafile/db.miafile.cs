@@ -212,5 +212,30 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        IBreeds IRabNetDataLayer.getBreeds()
+        {
+            throw new NotImplementedException();
+        }
+
+        public OneRabbit getRabbit(int rid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void setRabbit(OneRabbit r)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICatalogs catalogs()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }
