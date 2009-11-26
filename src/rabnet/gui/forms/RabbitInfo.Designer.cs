@@ -75,6 +75,13 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
+            this.maleStatus = new System.Windows.Forms.ComboBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.lastFuck = new System.Windows.Forms.DateTimePicker();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
+            this.lastFuckNever = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.TabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -84,6 +91,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.age)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rate)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -170,6 +179,7 @@
             this.zone.Name = "zone";
             this.zone.Size = new System.Drawing.Size(121, 21);
             this.zone.TabIndex = 16;
+            this.zone.SelectedIndexChanged += new System.EventHandler(this.zone_SelectedIndexChanged);
             // 
             // label15
             // 
@@ -227,6 +237,7 @@
             this.button4.TabIndex = 3;
             this.button4.Text = "-";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button3
             // 
@@ -236,6 +247,7 @@
             this.button3.TabIndex = 2;
             this.button3.Text = "+";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // numericUpDown3
             // 
@@ -435,6 +447,9 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.groupBox4);
+            this.tabPage2.Controls.Add(this.label16);
+            this.tabPage2.Controls.Add(this.maleStatus);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Size = new System.Drawing.Size(506, 275);
@@ -570,6 +585,80 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
+            // maleStatus
+            // 
+            this.maleStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.maleStatus.FormattingEnabled = true;
+            this.maleStatus.Items.AddRange(new object[] {
+            "Мальчик",
+            "Кандидат",
+            "Производитель"});
+            this.maleStatus.Location = new System.Drawing.Point(67, 24);
+            this.maleStatus.Name = "maleStatus";
+            this.maleStatus.Size = new System.Drawing.Size(121, 21);
+            this.maleStatus.TabIndex = 0;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(20, 27);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(41, 13);
+            this.label16.TabIndex = 1;
+            this.label16.Text = "Статус";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.lastFuckNever);
+            this.groupBox4.Controls.Add(this.button7);
+            this.groupBox4.Controls.Add(this.button6);
+            this.groupBox4.Controls.Add(this.lastFuck);
+            this.groupBox4.Location = new System.Drawing.Point(23, 57);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(165, 138);
+            this.groupBox4.TabIndex = 2;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Когда сработал";
+            // 
+            // lastFuck
+            // 
+            this.lastFuck.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.lastFuck.Location = new System.Drawing.Point(17, 51);
+            this.lastFuck.Name = "lastFuck";
+            this.lastFuck.Size = new System.Drawing.Size(121, 20);
+            this.lastFuck.TabIndex = 0;
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(17, 77);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(75, 23);
+            this.button6.TabIndex = 1;
+            this.button6.Text = "Сегодня";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(17, 106);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(75, 23);
+            this.button7.TabIndex = 2;
+            this.button7.Text = "Вчера";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // lastFuckNever
+            // 
+            this.lastFuckNever.AutoSize = true;
+            this.lastFuckNever.Location = new System.Drawing.Point(18, 26);
+            this.lastFuckNever.Name = "lastFuckNever";
+            this.lastFuckNever.Size = new System.Drawing.Size(69, 17);
+            this.lastFuckNever.TabIndex = 4;
+            this.lastFuckNever.Text = "Никогда";
+            this.lastFuckNever.UseVisualStyleBackColor = true;
+            this.lastFuckNever.CheckedChanged += new System.EventHandler(this.lastFuckNever_CheckedChanged);
+            // 
             // RabbitInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -605,6 +694,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.rate)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -659,5 +752,12 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.CheckBox lastFuckNever;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.DateTimePicker lastFuck;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.ComboBox maleStatus;
     }
 }

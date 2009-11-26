@@ -92,7 +92,7 @@ namespace rabnet
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count!=1)
+            if (listView1.SelectedItems.Count != 1 || listView1.SelectedItems[0]==null)
                 return;
             button1.Enabled = button2.Enabled = true;
             textBox1.Text = listView1.SelectedItems[0].SubItems[0].Text;

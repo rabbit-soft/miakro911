@@ -22,6 +22,7 @@ namespace rabnet
         private TabPage okrolPage;
         private TabPage suckersPage;
         private TabPage weightPage;
+        private int curzone = 0;
         public RabbitInfo()
         {
             InitializeComponent();
@@ -30,7 +31,7 @@ namespace rabnet
             okrolPage = tabControl1.TabPages[3];
             suckersPage = tabControl1.TabPages[4];
             weightPage = tabControl1.TabPages[5];
-            for (int i = 0; i < 5;i++ )
+            while(tabControl1.TabPages.Count>1)
                 tabControl1.TabPages.RemoveAt(1);
         }
         public RabbitInfo(int id)
@@ -65,12 +66,24 @@ namespace rabnet
             bdate.Value = rab.born.Date;
             bdate_ValueChanged(null, null);
             notes.Text = rab.notes;
+            String[] gns = rab.genom.Split(' ');
+            gens.Items.Clear();
+            foreach (string s in gns)
+                addgen(int.Parse(s));
         }
 
         private void updateMale()
         {
             tabControl1.TabPages.Add(malePage);
             tabControl1.TabPages.Add(weightPage);
+            maleStatus.SelectedIndex = rab.status;
+            lastFuckNever.Checked = rab.last_fuck_okrol == DateTime.MinValue;
+            lastFuckNever_CheckedChanged(null, null);
+            if (!lastFuckNever.Checked)
+            {
+                lastFuck.Value = rab.last_fuck_okrol;
+            }
+            label7.Text = "Статус:" + maleStatus.Text;
         }
 
         private void updateFemale()
@@ -116,9 +129,14 @@ namespace rabnet
             secnames = cts.getSurNames(1, end);
             FillList(surname, surnames, rab.surname);
             FillList(secname, secnames, rab.secname);
-            if (sx!=0 && rab.group==1)
+            fillNames(sx);
+        }
+
+        private void fillNames(int sx)
+        {
+            if (sx != 0 && rab.group == 1)
             {
-                names = cts.getFreeNames(sx, rab.name);
+                names = Engine.db().catalogs().getFreeNames(sx, rab.wasname);
                 FillList(name, names, rab.name);
                 if (rab.name == 0)
                     name.Enabled = true;
@@ -127,19 +145,62 @@ namespace rabnet
 
         private void updateData()
         {
+            while (tabControl1.TabPages.Count > 1)
+                tabControl1.TabPages.RemoveAt(1);
             if (rid == 0)
                 return;
             rab=Engine.get().getRabbit(rid);
             fillCatalogs(0);
             updateStd();
+            if (rab.sex == OneRabbit.RabbitSex.VOID)
+                label7.Text = "Статус:" + (rab.status == 1 ? "Гнездовые" : "Подсосные");
             if (rab.sex == OneRabbit.RabbitSex.MALE)
                 updateMale();
             if (rab.sex == OneRabbit.RabbitSex.FEMALE)
                 updateFemale();
         }
 
+        private int getCatValue(Catalog c,string value)
+        {
+            if (value == "")
+                return 0;
+            foreach (int k in c.Keys)
+                if (c[k] == value)
+                    return k;
+            return 0;
+        }
+
         private void applyData()
         {
+            rab.production = gp.Checked;
+            rab.realization = gr.Checked;
+            rab.defect = defect.Checked;
+            rab.spec = spec.Checked;
+            rab.rate = (int)rate.Value;
+            rab.name = getCatValue(names, name.Text);
+            rab.surname = getCatValue(surnames, surname.Text);
+            rab.secname = getCatValue(secnames, secname.Text);
+            rab.breed = getCatValue(breeds, breed.Text);
+            rab.zone = getCatValue(zones, zone.Text);
+            curzone = rab.zone;
+            rab.born = bdate.Value.Date;
+            rab.group = (int)group.Value;
+            String gns = "";
+            for (int i = 0; i < gens.Items.Count;i++ )
+                gns += ((int)gens.Items[i]).ToString() + " ";
+            rab.genom=gns.Trim();
+            if (rab.sex == OneRabbit.RabbitSex.MALE)
+            {
+                rab.status = maleStatus.SelectedIndex;
+                if (lastFuckNever.Checked)
+                    rab.last_fuck_okrol = DateTime.MinValue;
+                else
+                    rab.last_fuck_okrol = lastFuck.Value;
+            }
+            if (rab.sex == OneRabbit.RabbitSex.FEMALE)
+            {
+            }
+            rab.commit();
         }
 
         private void checkBox5_CheckedChanged(object sender, EventArgs e)
@@ -157,6 +218,8 @@ namespace rabnet
             name.Enabled=groupBox2.Enabled = checkBox5.Checked;
             if (rab.group > 1 || rab.sex==OneRabbit.RabbitSex.VOID)
                 name.Enabled = false;
+            if (!checkBox5.Checked && rab.group==1 && rab.sex!=OneRabbit.RabbitSex.VOID)
+                name.Enabled = true;
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -178,6 +241,57 @@ namespace rabnet
         private void age_ValueChanged(object sender, EventArgs e)
         {
             bdate.Value = DateTime.Today.Subtract(new TimeSpan((int)age.Value, 0, 0, 0));
+        }
+
+        private void lastFuckNever_CheckedChanged(object sender, EventArgs e)
+        {
+            lastFuck.Enabled = !lastFuckNever.Checked;
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            lastFuckNever.Checked = false;
+            lastFuck.Enabled = true;
+            lastFuck.Value = DateTime.Today;
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            lastFuckNever.Checked = false;
+            lastFuck.Enabled = true;
+            lastFuck.Value = DateTime.Today.Subtract(new TimeSpan(1,0,0,0));
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (gens.SelectedIndex > -1)
+                gens.Items.RemoveAt(gens.SelectedIndex);
+        }
+
+        private void addgen(int gen)
+        {
+            int pos = 0;
+            for (int i = 0; i < gens.Items.Count; i++)
+            {
+                if ((int)gens.Items[i] == gen)
+                    return;
+                if ((int)gens.Items[i] < gen)
+                    pos++;
+            }
+            gens.Items.Insert(pos, gen);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            addgen((int)numericUpDown3.Value);
+        }
+
+        private void zone_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            gens.Items.Remove(curzone);
+            curzone = getCatValue(zones, zone.Text);
+            if (curzone != 0)
+                addgen(curzone);
         }
     }
 }

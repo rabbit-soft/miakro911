@@ -359,6 +359,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
         public bool gr;
         public bool spec;
         public int name;
+        public int wasname;
         public int surname;
         public int secname;
         public string address;
@@ -366,15 +367,19 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
         public int breed;
         public int zone;
         public String notes;
-        public OneRabbit(int id,string sx,DateTime bd,int rt,string flg,int nm,int sur,int sec,string adr,int grp,int brd,int zn,String nts)
+        public string gens;
+        public int status;
+        public DateTime lastfuckokrol;
+        public OneRabbit(int id,string sx,DateTime bd,int rt,string flg,int nm,int sur,int sec,string adr,int grp,int brd,int zn,String nts,String gn,int st,DateTime lfo)
         {
             this.id=id;
             sex=RabbitSex.VOID;
-            if (sx=="male") sex=RabbitSex.MALE;
+            if (sx == "male") sex = RabbitSex.MALE;
             if (sx == "female") sex = RabbitSex.FEMALE;
             born = bd;
             rate = rt;
             name = nm;
+            wasname = name;
             gp = flg[0] == '1';
             defect = flg[2] == '1';
             spec = flg[2] == '2';
@@ -385,6 +390,10 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             breed = brd;
             zone = zn;
             notes = nts;
+            gens = gn;
+            status = st;
+            if (sx == "void") status = Buildings.hasnest(adr) ? 1 : 0;
+            lastfuckokrol = lfo;
         }
     }
 
@@ -392,9 +401,11 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
     {
         public static OneRabbit GetRabbit(MySqlConnection con, int rid)
         {
-            MySqlCommand cmd = new MySqlCommand(@"SELECT r_id,r_sex,r_born,r_flags,r_breed,r_zone,
+            MySqlCommand cmd = new MySqlCommand(@"SELECT r_id,r_last_fuck_okrol,r_sex,r_born,r_flags,r_breed,r_zone,
 r_name,r_surname,r_secname,
 rabplace(r_id) address,r_group,r_notes,
+(SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=r_genesis) genom,
+r_status,
 r_rate
 FROM rabbits WHERE r_id=" + rid.ToString()+";",con);
             MySqlDataReader rd = cmd.ExecuteReader();
@@ -406,7 +417,8 @@ FROM rabbits WHERE r_id=" + rid.ToString()+";",con);
             OneRabbit r=new OneRabbit(rd.GetInt32("r_id"),rd.GetString("r_sex"),rd.GetDateTime("r_born"),rd.GetInt32("r_rate"),
                 rd.GetString("r_flags"),rd.GetInt32("r_name"),rd.GetInt32("r_surname"),rd.GetInt32("r_secname"),
                 rd.GetString("address"),rd.GetInt32("r_group"),rd.GetInt32("r_breed"),rd.GetInt32("r_zone"),
-                rd.GetString("r_notes"));
+                rd.GetString("r_notes"),rd.GetString("genom"),rd.GetInt32("r_status"),
+                rd.IsDBNull(1)?DateTime.MinValue:rd.GetDateTime("r_last_fuck_okrol"));
 
             rd.Close();
             return r;
@@ -414,6 +426,28 @@ FROM rabbits WHERE r_id=" + rid.ToString()+";",con);
 
         public static void SetRabbit(MySqlConnection con, OneRabbit r)
         {
+            String flags = String.Format("{0:D1}{1:D1}{2:D1}{3:D1}{4:D1}", r.gp ? 1 : 0, 0, r.spec ? 2 : (r.defect ? 1 : 0), 0, 0);
+            String qry=String.Format(@"UPDATE rabbits SET 
+r_name={0:d},r_surname={1:d},r_secname={2:d},r_breed={3:d},r_zone={4:d},r_group={5:d},r_notes='{6:s}',
+r_flags='{7:d}',r_rate={8:d},r_born={9:s}",r.name,r.surname,r.secname,r.breed,r.zone,r.group,r.notes,flags,r.rate,
+                                          DBHelper.DateToMyString(r.born));
+            if (r.sex != OneRabbit.RabbitSex.VOID)
+            {
+                qry += String.Format(",r_status={0:d},r_last_fuck_okrol={1:s}",r.status,DBHelper.DateToMyString(r.lastfuckokrol));
+            }
+            qry+=String.Format(" WHERE r_id={0:d};",r.id);
+            MySqlCommand cmd = new MySqlCommand(qry, con);
+            cmd.ExecuteNonQuery();
+            int gen=DBHelper.makeGenesis(con,r.gens);
+            cmd.CommandText = "UPDATE rabbits SET r_genesis=" + gen.ToString() + " WHERE r_id=" + r.id.ToString() + ";";
+            cmd.ExecuteNonQuery();
+            if (r.wasname != r.name)
+            {
+                cmd.CommandText = "UPDATE names SET n_use=0,n_block_date=NULL WHERE n_id="+r.wasname.ToString()+";";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText="UPDATE names SET n_use="+r.id.ToString()+" WHERE n_id="+r.name.ToString()+";";
+                cmd.ExecuteNonQuery();
+            }
         }
     }
 }

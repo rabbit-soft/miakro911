@@ -18,6 +18,7 @@ namespace rabnet
         public void commit()
         {
             dl.setRabbit(rab);
+            rab=dl.getRabbit(id);
         }
         public OneRabbit.RabbitSex sex
         {
@@ -89,6 +90,22 @@ namespace rabnet
             get { return rab.notes; }
             set { rab.notes = value; }
         }
+        public int status
+        {
+            get { return rab.status; }
+            set { rab.status = value; }
+        }
+        public DateTime last_fuck_okrol
+        {
+            get { return rab.lastfuckokrol; }
+            set { rab.lastfuckokrol = value; }
+        }
+        public String genom
+        {
+            get { return rab.gens; }
+            set { rab.gens = value; }
+        }
+        public int wasname { get { return rab.wasname; } }
         public String address { get { return rab.address; } }
     }
 }

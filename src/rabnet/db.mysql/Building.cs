@@ -207,6 +207,12 @@ namespace rabnet
             return fullPlaceName(rabplace, false, false, false);
         }
 
+        public static bool hasnest(String rabplace)
+        {
+            String[] dts = rabplace.Split(',');
+            return hasnest(dts[3], int.Parse(dts[2]), dts[5]);
+        }
+
         public Buildings(MySqlConnection sql, Filters filters):base(sql,filters)
         {
         }

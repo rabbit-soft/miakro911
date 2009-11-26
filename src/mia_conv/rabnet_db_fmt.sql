@@ -390,11 +390,11 @@ DROP FUNCTION IF EXISTS rabplace |
 CREATE FUNCTION rabplace(rid INTEGER UNSIGNED) RETURNS char(150) CHARSET cp1251
 BEGIN
   DECLARE res VARCHAR(150);
-  DECLARE i1,i2,i3,s1,s2 VARCHAR(20);
-  SELECT r_farm,r_tier_id,r_area,t_type,t_delims
-  INTO i1,i2,i3,s1,s2
+  DECLARE i1,i2,i3,s1,s2,s3 VARCHAR(20);
+  SELECT r_farm,r_tier_id,r_area,t_type,t_delims,t_nest
+  INTO i1,i2,i3,s1,s2,s3
   FROM rabbits,tiers WHERE r_id=rid AND t_id=r_tier;
-  SET res=CONCAT_WS(',',i1,i2,i3,s1,s2);
+  SET res=CONCAT_WS(',',i1,i2,i3,s1,s2,s3);
   RETURN(res);
 END |
 #DELIMITER ;
