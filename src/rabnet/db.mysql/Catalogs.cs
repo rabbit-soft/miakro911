@@ -11,6 +11,8 @@ namespace rabnet
         Catalog getBreeds();
         Catalog getNames(int sex);
         Catalog getSurNames(int sex, String ends);
+        Catalog getZones();
+        Catalog getFreeNames(int sex, int plusid);
     }
 
     public class Catalogs:ICatalogs
@@ -52,7 +54,22 @@ namespace rabnet
                 where = " WHERE n_sex='male'";
             if (sex == 2)
                 where = " WHERE n_sex='female'";
-            return stdCatalog("SELECT n_id,n_surname+'" + ends + "' FROM names"+where+" ORDER BY n_surname;");
+            return stdCatalog("SELECT n_id,CONCAT(n_surname,'" + ends + "') FROM names"+where+" ORDER BY n_surname;");
+        }
+        public Catalog getZones()
+        {
+            return stdCatalog("SELECT z_id,z_name FROM zones;");
+        }
+
+        public Catalog getFreeNames(int sex,int plusid)
+        {
+            if (sex==0) sex=1;
+            String where = "";
+            if (sex == 1)
+                where = " WHERE n_sex='male'";
+            if (sex == 2)
+                where = " WHERE n_sex='female'";
+            return stdCatalog("SELECT n_id,n_name FROM names" + where + " AND (n_id=" + plusid.ToString() + " OR (n_use=0 AND n_block_date IS NULL));");
         }
 
     }

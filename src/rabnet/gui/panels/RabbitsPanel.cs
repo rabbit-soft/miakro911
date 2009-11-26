@@ -146,6 +146,11 @@ namespace rabnet
             ri.ShowDialog();
         }
 
+        private void listView1_DoubleClick(object sender, EventArgs e)
+        {
+            passportMenuItem.PerformClick();
+        }
+
 
 
     }

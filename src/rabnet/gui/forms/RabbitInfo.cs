@@ -12,13 +12,17 @@ namespace rabnet
     {
         private int rid = 0;
         private Catalog breeds = null;
+        private Catalog zones = null;
+        private Catalog names = null;
+        private Catalog surnames = null;
+        private Catalog secnames = null;
         private RabNetEngRabbit rab = null;
         public RabbitInfo()
         {
             InitializeComponent();
         }
         public RabbitInfo(int id)
-            : base()
+            : this()
         {
             rid = id;
         }
@@ -42,7 +46,12 @@ namespace rabnet
             spec.Checked = rab.spec;
             rate.Value = rab.rate;
             group.Value = rab.group;
-
+            label5.Text = "Адрес:" + rab.address;
+            label2.Text = "Имя:" + name.Text;
+            label3.Text = "Ж.Фам:" + surname.Text;
+            label4.Text = "М.Фам:" + secname.Text;
+            bdate.Value = rab.born.Date;
+            bdate_ValueChanged(null, null);
         }
 
         private void updateMale()
@@ -53,14 +62,48 @@ namespace rabnet
         {
         }
 
+        private void FillList(ComboBox cb,Catalog c,int key)
+        {
+            cb.Items.Clear();
+            cb.Items.Add("");
+            cb.SelectedIndex = 0;
+            foreach (int k in c.Keys)
+            {
+                int id = cb.Items.Add(c[k]);
+                if (key == k)
+                    cb.SelectedIndex = id;
+            }
+        }
+
         private void fillCatalogs(int what)
         {
             ICatalogs cts = Engine.db().catalogs();
             breeds = cts.getBreeds();
-            breed.Items.Clear();
-            breed.Items.Add("");
-            foreach (int key in breeds.Keys)
-                breed.Items.Add(breeds[key]);
+            FillList(breed,breeds,rab.breed);
+            zones = cts.getZones();
+            FillList(zone, zones, rab.zone);
+            int sx=0;
+            String end="";
+            if (rab.sex==OneRabbit.RabbitSex.MALE)
+                sx=1;
+            if (rab.sex==OneRabbit.RabbitSex.FEMALE)
+            {
+                end="а";
+                sx=2;
+            }
+            if (rab.group>1)
+                end="ы";
+            surnames = cts.getSurNames(2, end);
+            secnames = cts.getSurNames(1, end);
+            FillList(surname, surnames, rab.surname);
+            FillList(secname, secnames, rab.secname);
+            if (sx!=0 && rab.group==1)
+            {
+                names = cts.getFreeNames(sx, rab.name);
+                FillList(name, names, rab.name);
+                if (rab.name == 0)
+                    name.Enabled = true;
+            }
         }
 
         private void updateData()
@@ -68,6 +111,7 @@ namespace rabnet
             if (rid == 0)
                 return;
             rab=Engine.get().getRabbit(rid);
+            fillCatalogs(0);
             updateStd();
             if (rab.sex == OneRabbit.RabbitSex.MALE)
                 updateMale();
@@ -91,7 +135,9 @@ namespace rabnet
                     checkBox5.Checked=false;
                     return;
                 }
-            groupBox2.Enabled = checkBox5.Checked;
+            name.Enabled=groupBox2.Enabled = checkBox5.Checked;
+            if (rab.group > 1 || rab.sex==OneRabbit.RabbitSex.VOID)
+                name.Enabled = false;
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -102,13 +148,17 @@ namespace rabnet
 
         private void RabbitInfo_Load(object sender, EventArgs e)
         {
-            fillCatalogs(0);
             updateData();
         }
 
-        private void numericUpDown4_ValueChanged(object sender, EventArgs e)
+        private void bdate_ValueChanged(object sender, EventArgs e)
         {
+            age.Value = (DateTime.Now.Date - bdate.Value.Date).Days;
+        }
 
+        private void age_ValueChanged(object sender, EventArgs e)
+        {
+            bdate.Value = DateTime.Today.Subtract(new TimeSpan((int)age.Value, 0, 0, 0));
         }
     }
 }

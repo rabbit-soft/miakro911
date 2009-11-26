@@ -48,10 +48,10 @@
             this.newRab = new System.Windows.Forms.ToolStripMenuItem();
             this.makeBon = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.SelectAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.genTree = new System.Windows.Forms.TreeView();
             this.passportMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.SelectAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.genTree = new System.Windows.Forms.TreeView();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -104,6 +104,7 @@
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            this.listView1.DoubleClick += new System.EventHandler(this.listView1_DoubleClick);
             // 
             // columnHeader1
             // 
@@ -180,7 +181,7 @@
             this.toolStripMenuItem2,
             this.SelectAllMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(195, 126);
+            this.actMenu.Size = new System.Drawing.Size(195, 104);
             // 
             // newRab
             // 
@@ -199,6 +200,18 @@
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(191, 6);
             // 
+            // passportMenuItem
+            // 
+            this.passportMenuItem.Name = "passportMenuItem";
+            this.passportMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.passportMenuItem.Text = "Паспорт";
+            this.passportMenuItem.Click += new System.EventHandler(this.passportMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(191, 6);
+            // 
             // SelectAllMenuItem
             // 
             this.SelectAllMenuItem.Name = "SelectAllMenuItem";
@@ -216,18 +229,6 @@
             this.genTree.Name = "genTree";
             this.genTree.Size = new System.Drawing.Size(134, 544);
             this.genTree.TabIndex = 0;
-            // 
-            // passportMenuItem
-            // 
-            this.passportMenuItem.Name = "passportMenuItem";
-            this.passportMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.passportMenuItem.Text = "Паспорт";
-            this.passportMenuItem.Click += new System.EventHandler(this.passportMenuItem_Click);
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(191, 6);
             // 
             // RabbitsPanel
             // 

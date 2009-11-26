@@ -79,6 +79,11 @@ namespace rabnet
             get { return rab.breed;}
             set {rab.breed=value;}
         }
+        public int zone
+        {
+            get { return rab.zone; }
+            set { rab.zone = value; }
+        }
         public String address { get { return rab.address; } }
     }
 }
