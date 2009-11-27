@@ -16,6 +16,7 @@ namespace rabnet
         private String uname;
         private String farmname;
         private Options opts=null;
+        private RabNetLogs logger = null;
         public RabNetEngine()
         {
             log4net.Config.XmlConfigurator.Configure();
@@ -73,7 +74,25 @@ namespace rabnet
 
         public RabNetEngRabbit getRabbit(int id)
         {
-            return new RabNetEngRabbit(id, db());
+            return new RabNetEngRabbit(id, this);
+        }
+
+        public RabNetLogs logs()
+        {
+            if (logger == null)
+                logger = new RabNetLogs(this);
+            return logger;
+        }
+
+        public void setInbreeding(bool on)
+        {
+            logs().log(on ? RabNetLogs.LogType.INBREEDING_ON: RabNetLogs.LogType.INBREEDING_OFF);
+            options().setOption(Options.OPT_ID.INBREEDING, on ? 1 : 0);
+        }
+        public void setGeterosis(bool on)
+        {
+            logs().log(on ? RabNetLogs.LogType.GETEROSIS_ON : RabNetLogs.LogType.GETEROSIS_OFF);
+            options().setOption(Options.OPT_ID.GETEROSIS, on ? 1 : 0);
         }
     }
 }

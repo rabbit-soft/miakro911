@@ -731,12 +731,15 @@ namespace mia_conv
         public MFListView reasons = new MFListView("reasons");
         public MFListView workers = new MFListView("workers");
         public MFListView lost = new MFListView("lost");
-        public MFGraphForm(String name, int li) : base(name, li) { }
+        private MiaFile mf;
+        public MFGraphForm(String name, int li,MiaFile mf) : base(name, li) {
+            this.mf = mf;
+        }
         public void read(BinaryReader br, float ver)
         {
             reasons.read(br, ver);
             workers.read(br, ver);
-            lost.read(br, ver);
+            lost.read(br, ver,mf);
         }
         public override string strval()
         {

@@ -206,6 +206,12 @@ namespace rabnet
         }
 
 
+        public void RabNetLog(int type, int user, string text)
+        {
+            exec(String.Format("INSERT INTO logs(l_date,l_type,l_user,l_params) VALUES(NOW(),{0:d},{1:d},'{2:s}');",
+                type,user,text));
+        }
+
         #endregion
     }
 }

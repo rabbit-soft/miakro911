@@ -46,6 +46,7 @@ namespace rabnet
         OneRabbit getRabbit(int rid);
         void setRabbit(OneRabbit r);
         ICatalogs catalogs();
+        void RabNetLog(int type, int user, String text);
     }
 
 }

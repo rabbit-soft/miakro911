@@ -237,5 +237,15 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public void RabNetLog(int type, int user, string text)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

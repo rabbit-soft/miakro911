@@ -26,6 +26,16 @@ namespace mia_conv
             }
             return res;
         }
+        public int rabbyname(int nid)
+        {
+            c.CommandText="SELECT r_id FROM rabbits WHERE r_name="+nid.ToString()+";";
+            MySqlDataReader rd = c.ExecuteReader();
+            int res = 0;
+            if (rd.Read())
+                res = rd.GetInt32(0);
+            rd.Close();
+            return res;
+        }
 
         public int getTier(int farm, int level)
         {
@@ -119,40 +129,63 @@ namespace mia_conv
             }
         }
 
+        private int findDead(String name,int breed,List<ushort> genesis)
+        {
+            c.CommandText = "SELECT r_id FROM dead,names WHERE r_name=n_id AND n_name='"+name+"';";
+            MySqlDataReader rd = c.ExecuteReader();
+            int res = 0;
+            if (rd.Read())
+            {
+                res = rd.GetInt32(0);
+                rd.Close();
+                int gen=makeGenesis(genesis);
+                c.CommandText = String.Format("UPDATE dead SET r_breed={0:d},r_genesis={1:d} WHERE r_id={2:d};",
+                    findbreed(breed), gen, res);
+                c.ExecuteNonQuery();
+            }
+            else
+                rd.Close();
+            return res;
+
+        }
+
         public void fillRabFuckers(Rabbit r, int crab)
         {
             foreach (Fucker f in r.female.fuckers)
             {
-                int genesis=0;
-                int link=0;
-                if (f.live.value()==1)
+                if (f.fucks.value() > 0)
                 {
-                    link=getNameId((ushort)f.name_key.value(),1);
-                }else{
-                    c.CommandText="SELECT n_id FROM names WHERE n_sex='male' AND n_name='"+f.name.value()+"';";
-                    MySqlDataReader rd=c.ExecuteReader();
-                    rd.Read();
-                    link=rd.GetInt32(0);
-                    rd.Close();
-                    genesis=makeGenesis(f.genesis);
+                    int link = 0;
+                    int dead = 0;
+                    if (f.live.value() == 1)
+                    {
+                        link = getNameId((ushort)f.name_key.value(), 1);
+                        //link = rabbyname(link);
+                        dead = 1;
+                    }
+                    else
+                    {
+                        link = findDead(f.name.value(), (int)f.breed.value(), f.genesis);
+                    }
+                    c.CommandText = String.Format(@"INSERT INTO fucks(f_rabid,f_partner,f_times,f_last,f_children,f_dead) 
+VALUES({0:d},{1:d},{2:d},{3:d},{4:d},{5:d});", 
+                         crab, link, f.fucks.value(), f.my_fuck_is_last.value(), f.children.value(),dead);
+                    c.ExecuteNonQuery();
                 }
-                c.CommandText = String.Format("INSERT INTO fuckers(f_rabid,f_live,f_link,f_genesis,f_breed,f_fucks,f_children,f_lastfuck) " +
-                    "VALUES({0:d},{1:d},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d});",crab,f.live.value(),link,genesis,findbreed((int)f.breed.value()),f.fucks.value(),
-                    f.children.value(),f.my_fuck_is_last.value());
-                c.ExecuteNonQuery();
             }
+            
         }
 
         public void fillRabbit(Rabbit r,int parent,bool dead)
         {
             Application.DoEvents();
-            String cmd = "INSERT INTO "+(dead?"dead":"rabbits")+"(r_sex,r_parent,r_bon,r_number,r_unique,r_name,r_surname," +
+            String cmd = "INSERT INTO " + (dead ? "dead" : "rabbits") + "(r_sex,r_parent,r_bon,r_name,r_surname," + //r_number,r_unique,
                 "r_secname,r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,"+
                 "r_born,r_status,r_last_fuck_okrol,r_genesis";
             String sex = "void";
             if (r.sex.value() == 1) sex = "male"; if (r.sex.value() == 2) sex = "female";
             String bon = String.Format("{0:D1}{1:D1}{2:D1}{3:D1}{4:D1}", r.bon.manual.value(), r.bon.weight.value(), r.bon.body.value(), r.bon.hair.value(), r.bon.color.value());
-            String vals=String.Format("VALUES('{0:s}',{1:d},'{2:s}',{3:d},{4:d}",sex,parent,bon,r.number.value(),r.unique.value());
+            String vals = String.Format("VALUES('{0:s}',{1:d},'{2:s}'", sex, parent, bon);//,{3:d},{4:d}  ,r.number.value(),r.unique.value());
             int name = getNameId((ushort)r.namekey.value(), (ushort)r.sex.value());
             int surname = getNameId((ushort)r.surkey.value(), 2);
             int secname = getNameId((ushort)r.pathkey.value(), 1);
@@ -182,7 +215,7 @@ namespace mia_conv
             vals += String.Format(",{0:s},{1:d},{2:s},{3:d}", convdt(r.borndate.value()), status, lfo,makeGenesis(r.genesis));
             if (r.sex.value() == 2)
             {
-                cmd += ",r_children,r_event,r_event_date,r_lost_babies,r_overall_babies,r_worker";
+                cmd += ",r_children,r_event,r_event_date,r_lost_babies,r_overall_babies,r_borns";//,r_worker";
                 String ev="none";
                 switch (r.female.ev_type.value())
                 {
@@ -191,12 +224,14 @@ namespace mia_conv
                     case 3:ev="kuk";break;
                 }
                 vals+=String.Format(",{0:d},'{1:s}',{2:s},{3:d},{4:d},{5:d}",r.female.child_count.value(),ev,
-                    convdt(r.female.ev_date.value()),r.female.lost_babies.value(),r.female.overall_babies.value(),
-                    makeWorker(r.female.worker.value()));
+                    convdt(r.female.ev_date.value()), r.female.lost_babies.value(), r.female.overall_babies.value(),
+                    r.female.borns.value());//,  ,{5:d}
+                    //makeWorker(r.female.worker.value()));  //
             }
             c.CommandText = cmd + ") " + vals + ");";
             c.ExecuteNonQuery();
             int crab = (int)c.LastInsertedId;
+            r.notes.tag = crab;
             curRabbit = crab + 1;
             if (dead)
                 return;
@@ -213,10 +248,19 @@ namespace mia_conv
 
         public void normalizeFuckers()
         {
-            c.CommandText = "UPDATE fuckers SET f_link=(SELECT n_use FROM names WHERE n_id=fuckers.f_link) WHERE f_live=1;";
+            
+            c.CommandText = "UPDATE fucks SET f_partner=(SELECT n_use FROM names WHERE n_id=fucks.f_partner),f_dead=0 WHERE f_dead=1;";
             c.ExecuteNonQuery();
-            c.CommandText = "UPDATE fuckers SET f_genesis=(SELECT r_genesis FROM rabbits WHERE r_id=fuckers.f_link) WHERE f_live=1";
+            c.CommandText = "UPDATE rabbits SET r_mother=(SELECT COALESCE(n_use,0) FROM names WHERE n_id=rabbits.r_surname AND n_sex='female') WHERE r_mother=0;";
             c.ExecuteNonQuery();
+            c.CommandText = "UPDATE rabbits SET r_father=(SELECT COALESCE(n_use,0) FROM names WHERE n_id=rabbits.r_secname AND n_sex='male') WHERE r_father=0;";
+            c.ExecuteNonQuery();
+            /*
+            c.CommandText = "UPDATE rabbits SET r_mother=(SELECT COALESCE(r_id,0) FROM dead WHERE dead.r_name=rabbits.r_surname AND dead.r_sex='female' LIMIT 1) WHERE r_mother=0;";
+            c.ExecuteNonQuery();
+            c.CommandText = "UPDATE rabbits SET r_father=(SELECT COALESCE(r_id,0) FROM dead WHERE dead.r_name=rabbits.r_secname AND dead.r_sex='male' LIMIT 1) WHERE r_father=0;";
+            c.ExecuteNonQuery();
+            */
         }
 
         public void fillRabbits()

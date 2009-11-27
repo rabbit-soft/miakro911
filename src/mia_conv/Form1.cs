@@ -1,3 +1,4 @@
+//#define NOCATCH
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +14,7 @@ namespace mia_conv
         private MiaFile mia=null;
         public DataTable udata=new DataTable();
         private bool auto=false;
+        private bool executed=false;
         public Form1()
         {
             udata.Columns.Add("Пользователь",typeof(String));
@@ -88,7 +90,9 @@ namespace mia_conv
         private void button3_Click(object sender, EventArgs e)
         {
             MDCreator crt = new MDCreator(log);
+#if !NOCATCH 
             try
+#endif
             {
                 pb.Value = 0;
                 if (crt.prepare(dbnew.Checked, textHost.Text, textUser.Text, textPassword.Text, textDB.Text, textRoot.Text, textRootPswd.Text))
@@ -105,16 +109,21 @@ namespace mia_conv
                     button3.Enabled = true;
                 }
             }
+#if !NOCATCH 
             catch (Exception ex)
             {
                 MessageBox.Show("Ошибка. Программа вызвала исключение: "+ex.GetType().ToString()+"\r\n"+ex.Message);
                 button2.Enabled = true;
                 button3.Enabled = true;
             }
+#endif
         }
 
         private void Form1_Activated(object sender, EventArgs e)
         {
+            if (executed)
+                return;
+            executed = true;
             if (auto)
             {
                 button2.Enabled = true;

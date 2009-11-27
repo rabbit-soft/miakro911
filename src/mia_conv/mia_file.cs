@@ -26,7 +26,7 @@ namespace mia_conv
         public MFTransForm transform = new MFTransForm("TransForm", 10);
         public MFParamForm paramform = new MFParamForm("ParamForm", 11);
         public MFZooForm zooform = new MFZooForm("ZooForm", 12);
-        public MFGraphForm graphform = new MFGraphForm("GraphForm", 13);
+        public MFGraphForm graphform = null;
         public MFArchiveForm arcform =null;
         public MFString thisfarm = new MFString("thisfarm", 15);
         public MFString farmid = new MFString("farmid", 15);
@@ -39,6 +39,7 @@ namespace mia_conv
         {
             this.pb = pb;
             pb.Value = 0;
+            graphform = new MFGraphForm("GraphForm", 13,this);
             rabbits = new MFRabbits("AllRabbits", 8, male_names, female_names,this);
             arcform= new MFArchiveForm("ArchiveForm", 14,male_names,female_names);
             clb1 = lb;
@@ -65,6 +66,8 @@ namespace mia_conv
                 log.Text += obj.log() + "\r\n";
             if (obj.logindex()==-2)
                 log.Text += obj.log() + "\r\n";
+            log.Select(log.Text.Length, 0);
+            log.ScrollToCaret();
         }
 
         public void readobjs(List<IMFCommon> objs, BinaryReader br, TextBox log)

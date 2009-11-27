@@ -8,17 +8,17 @@ namespace rabnet
     {
         private int id;
         private OneRabbit rab = null;
-        private IRabNetDataLayer dl=null;
-        public RabNetEngRabbit(int rid,IRabNetDataLayer dl)
+        private RabNetEngine eng=null;
+        public RabNetEngRabbit(int rid,RabNetEngine dl)
         {
             id = rid;
-            this.dl = dl;
-            rab = dl.getRabbit(rid);
+            eng = dl;
+            rab = eng.db().getRabbit(rid);
         }
         public void commit()
         {
-            dl.setRabbit(rab);
-            rab=dl.getRabbit(id);
+            eng.db().setRabbit(rab);
+            rab=eng.db().getRabbit(id);
         }
         public OneRabbit.RabbitSex sex
         {

@@ -48,6 +48,7 @@
     <Compile Include="engine.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="RabNetEngRabbit.cs" />
+    <Compile Include="RabNetLogs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\db.miafile\db.miafile.csproj">

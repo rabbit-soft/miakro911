@@ -23,6 +23,8 @@ namespace mia_conv
         public void debug(String str)
         {
             log.Text += str + "\r\n";
+            log.Select(log.Text.Length, 0);
+            log.ScrollToCaret();
         }
         public void debug(Exception ex)
         {
@@ -105,29 +107,27 @@ namespace mia_conv
 
         public void fillAll()
         {
-            mia.setpbpart(0, 11);
+            mia.setpbpart(0, 8);
             fillBreeds();
-            mia.setpbpart(1, 11);
             fillNames();
-            mia.setpbpart(2, 11);
+            mia.setpbpart(1, 8);
             fillZones();
-            mia.setpbpart(3, 11);
+            mia.setpbpart(2, 8);
             fillBuildings();
-            mia.setpbpart(4, 11);
+            mia.setpbpart(3, 8);
             fillTransfers();
-            mia.setpbpart(5, 11);
+            mia.setpbpart(4, 8);
+            fillDeadFromLost();
+            mia.setpbpart(5, 8);
             fillRabbits();
-            mia.setpbpart(6, 11);
+            mia.setpbpart(6, 8);
             fillTransForm();
-            mia.setpbpart(7, 11);
             fillOptions();
-            mia.setpbpart(8, 11);
+            mia.setpbpart(7, 8);
             fillZooForm();
-            mia.setpbpart(9, 11);
             fillGraphForm();
-            mia.setpbpart(10, 11);
             fillArcForm();
-            mia.setpbpart(11, 11);
+            mia.setpbpart(8, 8);
         }
 
         public void fillBreeds()
@@ -359,6 +359,26 @@ namespace mia_conv
             rd.Close();
             return res;
         }
+
+        public uint findsurname(string sur, String sex, int cnt, int tp)
+        {
+            if (sur == "") return 0;
+            if (cnt > 1) sur=sur.TrimEnd('ы');
+            if (cnt == 1 && sex == "female") sur = sur.TrimEnd('а');
+            String sx = "male";
+            if (tp==2) sx="female";
+            c.CommandText = "SELECT n_id FROM names WHERE n_surname='" + sur + "' AND n_sex='" + sx + "';";
+            MySqlDataReader rd = c.ExecuteReader();
+            if (!rd.Read())
+            {
+                rd.Close();
+                return 0;
+            }
+            uint res = rd.GetUInt32(0);
+            rd.Close();
+            return res;
+        }
+
         public int findbreed(int breed)
         {
             return breed + 1;
@@ -480,12 +500,19 @@ namespace mia_conv
         public int getUniqueRabbit(int unique)
         {
             if (unique == 0) return 0;
-            c.CommandText = "SELECT r_id FROM rabbits WHERE r_unique=" + unique.ToString() + ";";
+            /*c.CommandText = "SELECT r_id FROM rabbits WHERE r_unique=" + unique.ToString() + ";";
             MySqlDataReader rd = c.ExecuteReader();
             rd.Read();
             int res = rd.GetInt32(0);
             rd.Close();
             return res;
+             * */
+            foreach (Rabbit r in mia.rabbits.rabbits)
+            {
+                if ((int)r.unique.value() == unique)
+                    return r.notes.tag;
+            }
+            return 0;
         }
 
         public void fillZooForm()
@@ -564,7 +591,8 @@ namespace mia_conv
         }
         public int getReason(String name)
         {
-            c.CommandText = "SELECT d_id FROM dropreasons WHERE d_name='"+name+"'";
+            if (name == "") return 0;
+            c.CommandText = "SELECT d_id FROM deadreasons WHERE d_name='"+name+"'";
             MySqlDataReader rd = c.ExecuteReader();
             if (!rd.HasRows)
             {
@@ -575,6 +603,92 @@ namespace mia_conv
             int res = rd.GetInt32(0);
             rd.Close();
             return res;
+        }
+
+        public void fillDeadFromLost()
+        {
+            debug("filling Dead Rabbits From Lost List");
+            for (int i = 0; i < mia.graphform.reasons.size.value(); i++)
+            {
+                Application.DoEvents();
+                MFListItem li = mia.graphform.reasons.items[i];
+                c.CommandText = String.Format("INSERT INTO deadreasons(d_name,d_rate) VALUES('{0:s}',{1:s});",
+                    li.caption.value(),li.subs[0].value());
+                c.ExecuteNonQuery();
+            }
+            int cnt = (int)mia.graphform.lost.size.value();
+            for (int i = 0; i < mia.graphform.lost.size.value(); i++)
+            {
+                mia.setpb(100 *i/ cnt);
+                Application.DoEvents();
+                MFListItem li = mia.graphform.lost.items[i];
+                String sex = "void";
+                if (li.subs[2].value() == "м") sex = "male";
+                if (li.subs[2].value() == "ж") sex = "female";
+                int weight = 0;
+                if (!int.TryParse(li.subs[5].value(),out weight))
+                {
+                    weight=0;
+                }
+                String ddt = li.caption.value();
+                String[] names = li.subs[0].value().Split(' ');
+                String address = li.subs[1].value();
+                String stat = li.subs[3].value();
+                int age = int.Parse(li.subs[4].value());
+                int group = 1;
+                String notes = "";
+                if (li.subitems.value() >= 9)
+                    notes = li.subs[8].value();
+                int reason = getReason(li.subs[6].value());
+                if (names[names.Length - 1].Length>0)
+                if (names[names.Length - 1].Trim()[0] == '[')
+                {
+                    String grp = names[names.Length - 1].Trim();
+                    grp=grp.Replace("[", "").Replace("]","");
+                    group = int.Parse(grp);
+                    names[names.Length - 1] = "";
+                }
+                String nm = names[0];
+                String xx = "";
+                uint nid = findname(nm, ref xx);
+                if (nid != 0)
+                {
+                    nm = "";
+                    if (names.Length>1)
+                        nm = names[1];
+                }
+
+                uint suid = 0;uint seid = 0;
+                String[] nms = nm.Split('-');
+                if (nms.Length>0)
+                if (nms[0].Trim()!="")
+                    suid = findsurname(nms[0].Trim(), sex, group, 2);
+                if (nms.Length > 1 && nms[1].Trim() != "")
+                    seid = findsurname(nms[1].Trim(), sex, group, 1);
+                int farm = 0;
+                int tier = 0;
+                int tier_id = 0;
+                int area = 0;
+                string sa = "";
+                int j=0;
+                while (address[j] >= '0' && address[j] <= '9'){sa += address[j];j++;}
+                if (sa != "")
+                {
+                    farm = int.Parse(sa);
+                    if (address[j] == '^') { tier_id = 1; j++; }
+                    if (address[j] == '-') { tier_id = 2; j++; }
+                    if (address[j] == 'б') area = 1;
+                    if (address[j] == 'в') area = 2;
+                    if (address[j] == 'г') area = 3;
+                }
+                c.CommandText = String.Format(@"INSERT INTO rabbits(r_sex,r_name,r_surname,r_secname,r_notes,r_group,r_born,r_farm,r_tier_id,r_tier,r_area) 
+VALUES('{0:s}',{1:d},{2:d},{3:d},'{4:s}',{5:d},{6:s}-INTERVAL {7:d} DAY,{8:d},{9:d},{10:d},{11:d});",
+                                  sex,nid,suid,seid,notes,group,convdt(ddt),age,farm,tier_id,tier,area);
+                c.ExecuteNonQuery();
+                uint lid = (uint)c.LastInsertedId;
+                c.CommandText = "CALL killRabbitDate("+lid.ToString()+","+reason.ToString()+",'списан из старой программы',"+convdt(ddt)+");";
+                c.ExecuteNonQuery();
+            }
         }
 
         public void fillGraphForm()
@@ -589,14 +703,7 @@ namespace mia_conv
                 c.CommandText = "UPDATE workers SET w_rate=" + rate.ToString() + " WHERE w_id=" + wid.ToString() + ";";
                 c.ExecuteNonQuery();
             }
-            for (int i = 0; i < mia.graphform.reasons.size.value(); i++)
-            {
-                Application.DoEvents();
-                MFListItem li = mia.graphform.reasons.items[i];
-                c.CommandText = String.Format("INSERT INTO dropreasons(d_name,d_rate) VALUES('{0:s}',{1:s});",
-                    li.caption.value(),li.subs[0].value());
-                c.ExecuteNonQuery();
-            }
+            /*
             int cnt = (int)mia.graphform.lost.size.value();
             for (int i = 0; i < mia.graphform.lost.size.value(); i++)
             {
@@ -618,6 +725,7 @@ namespace mia_conv
                     );
                 c.ExecuteNonQuery();
             }
+             * */ 
         }
 
         public void fillArcForm()

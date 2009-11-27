@@ -3,6 +3,7 @@ CREATE TABLE users(
 u_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 u_name VARCHAR(50),
 u_password VARCHAR(50),
+u_group enum('admin','zootech','genetik','worker') NOT NULL DEFAULT 'admin',
 KEY(u_name)
 );
 
@@ -131,10 +132,10 @@ DROP TABLE IF EXISTS rabbits;
 CREATE TABLE rabbits(
 	r_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	r_parent INTEGER UNSIGNED NOT NULL default 0, #group devision
+	r_mother INTEGER UNSIGNED NOT NULL DEFAULT 0,
+	r_father INTEGER UNSIGNED NOT NULL DEFAULT 0,
 	r_sex ENUM('male','female','void') NOT NULL,
 	r_bon VARCHAR(5) NOT NULL DEFAULT '10000',
-	r_number INTEGER UNSIGNED NOT NULL DEFAULT 0,  #hz number
-	r_unique INTEGER UNSIGNED NOT NULL default 0,	#hz number 2
 	r_name INTEGER UNSIGNED NOT NULL default 0,
 	r_surname INTEGER UNSIGNED NOT NULL default 0,
 	r_secname INTEGER UNSIGNED NOT NULL default 0,
@@ -153,15 +154,16 @@ CREATE TABLE rabbits(
 	r_genesis INTEGER UNSIGNED NOT NULL,
 	r_status TINYINT UNSIGNED NOT NULL DEFAULT 0,   #boy-status/girl-borns
 	r_last_fuck_okrol DATETIME,
+	r_borns TINYINT UNSIGNED,
 	r_children TINYINT UNSIGNED,
 	r_event ENUM('none','sluchka','vyazka','kuk'),
 	r_event_date DATETIME,
 	r_lost_babies INTEGER UNSIGNED,
 	r_overall_babies INTEGER UNSIGNED,
-	r_worker INTEGER UNSIGNED,
-	KEY(r_parent),	KEY(r_number),
+	KEY(r_parent),
+	KEY(r_mother),
+	KEY(r_father),
 	KEY(r_sex),
-	KEY(r_unique),
 	KEY(r_name),KEY(r_surname),KEY(r_secname),
 	KEY(r_farm),KEY(r_tier),
 	KEY(r_group),
@@ -172,19 +174,26 @@ CREATE TABLE rabbits(
 	
 );
 
-DROP TABLE IF EXISTS fuckers;
-CREATE TABLE fuckers(
+DROP TABLE IF EXISTS fucks;
+CREATE TABLE fucks(
+	f_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	f_rabid INTEGER UNSIGNED NOT NULL,
-	f_live BOOL NOT NULL DEFAULT 1,
-	f_link INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	f_genesis INTEGER UNSIGNED NOT NULL,
-	f_breed INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	f_fucks INTEGER UNSIGNED NOT NULL DEFAULT 0,
+	f_date DATETIME DEFAULT NULL,
+	f_last BOOL NOT NULL DEFAULT 0,
+	f_type enum('sluchka','vyazka','kuk') NOT NULL default 'vyazka',
+	f_partner INTEGER UNSIGNED NOT NULL,
+	f_times INTEGER UNSIGNED NOT NULL DEFAULT 1,
+	f_state enum('sukrol','proholost','okrol') NOT NULL default 'okrol',
+	f_end_date DATETIME DEFAULT NULL,
 	f_children INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	f_lastfuck BOOL NOT NULL DEFAULT 0,
-	KEY(f_rabid),
-	KEY(f_live),
-	KEY(f_link)
+	f_dead INTEGER UNSIGNED NOT NULL DEFAULT 0,
+	f_worker INTEGER UNSIGNED NOT NULL DEFAULT 0,
+	KEY(f_date),
+	KEY(f_last),
+	KEY(f_state),
+	KEY(f_type),
+	KEY(f_children),
+	KEY(f_dead)
 );
 
 DROP TABLE IF EXISTS workers;
@@ -267,28 +276,6 @@ CREATE TABLE zooacceptors(
 	KEY(z_id)
 );
 
-DROP TABLE IF EXISTS dropreasons;
-CREATE TABLE dropreasons(
-	d_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	d_name VARCHAR(50) NOT NULL,
-	d_rate INTEGER NOT NULL default 0
-);
-
-DROP TABLE IF EXISTS drops;
-CREATE TABLE drops(
-	d_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	d_date DATETIME NOT NULL,
-	d_name VARCHAR(100) NOT NULL,
-	d_address VARCHAR(50) NOT NULL,
-	d_sex ENUM('void','male','female') NOT NULL,
-	d_state VARCHAR(10) NOT NULL,
-	d_age INTEGER UNSIGNED NOT NULL default 0,
-	d_weight INTEGER UNSIGNED NOT NULL default 0,
-	d_notes TEXT,
-	d_reason INTEGER UNSIGNED NOT NULL default 0,
-	d_worker INTEGER UNSIGNED NOT NULL default 0,
-	KEY(d_date)
-);
 
 DROP TABLE IF EXISTS archive;
 CREATE TABLE archive(
@@ -305,16 +292,24 @@ CREATE TABLE archive(
 	KEY(a_date)
 );
 
+DROP TABLE IF EXISTS deadreasons;
+CREATE TABLE deadreasons(
+	d_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	d_name VARCHAR(50) NOT NULL,
+	d_rate INTEGER NOT NULL default 0
+);
 
 DROP TABLE IF EXISTS dead;
 CREATE TABLE dead(
 	d_date DATETIME NOT NULL,
-	r_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	d_reason INTEGER UNSIGNED NOT NULL DEFAULT 0,
+	d_notes TEXT,
+	r_id INTEGER UNSIGNED NOT NULL PRIMARY KEY,
 	r_parent INTEGER UNSIGNED NOT NULL default 0,
+	r_father INTEGER UNSIGNED NOT NULL default 0,
+	r_mother INTEGER UNSIGNED NOT NULL default 0,
 	r_sex ENUM('male','female','void') NOT NULL,
 	r_bon VARCHAR(5) NOT NULL DEFAULT '10000',
-	r_number INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	r_unique INTEGER UNSIGNED NOT NULL default 0,
 	r_name INTEGER UNSIGNED NOT NULL default 0,
 	r_surname INTEGER UNSIGNED NOT NULL default 0,
 	r_secname INTEGER UNSIGNED NOT NULL default 0,
@@ -334,12 +329,11 @@ CREATE TABLE dead(
 	r_status TINYINT UNSIGNED NOT NULL DEFAULT 0,
 	r_last_fuck_okrol DATETIME,
 	r_borns TINYINT UNSIGNED,
-	r_event ENUM('none','sluchka','vyazka','kuk'),
-	r_event_date DATETIME,
 	r_lost_babies INTEGER UNSIGNED,
 	r_overall_babies INTEGER UNSIGNED,
-	r_worker INTEGER UNSIGNED,
-	KEY(d_date)
+	KEY(d_date),
+	KEY(d_reason),
+	KEY(r_id)
 );
 
 DROP TABLE IF EXISTS filters;
@@ -350,6 +344,34 @@ CREATE TABLE filters(
 	KEY(f_type),
 	KEY(f_name)
 );
+
+
+DROP TABLE IF EXISTS logs;
+CREATE TABLE logs(
+	l_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	l_date DATETIME NOT NULL,
+	l_type INTEGER UNSIGNED NOT NULL,
+	l_user INTEGER UNSIGNED NOT NULL,
+	l_param TEXT,
+	KEY(l_date),
+	KEY(l_type)
+);
+
+
+#views
+DROP VIEW IF EXISTS allrabbits;
+CREATE VIEW allrabbits AS
+  (SELECT r_id,r_sex,r_bon,r_name,r_surname,r_secname,
+ r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,
+ r_born,r_genesis,r_status,r_last_fuck_okrol,r_borns,r_lost_babies,r_overall_babies,
+ NULL,0,'' FROM rabbits)
+UNION
+  (SELECT r_id,r_sex,r_bon,r_name,r_surname,r_secname,
+ r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,
+ r_born,r_genesis,r_status,r_last_fuck_okrol,r_borns,r_lost_babies,r_overall_babies,
+ d_date,d_reason,d_notes FROM dead);
+
+
 
 #DELIMITER |
 DROP FUNCTION IF EXISTS rabname |
@@ -387,7 +409,7 @@ BEGIN
 END |
 
 DROP FUNCTION IF EXISTS rabplace |
-CREATE FUNCTION rabplace(rid INTEGER UNSIGNED) RETURNS char(150) CHARSET cp1251
+CREATE FUNCTION rabplace(rid INTEGER UNSIGNED) RETURNS char(150)
 BEGIN
   DECLARE res VARCHAR(150);
   DECLARE i1,i2,i3,s1,s2,s3 VARCHAR(20);
@@ -396,6 +418,26 @@ BEGIN
   FROM rabbits,tiers WHERE r_id=rid AND t_id=r_tier;
   SET res=CONCAT_WS(',',i1,i2,i3,s1,s2,s3);
   RETURN(res);
+END |
+
+DROP PROCEDURE IF EXISTS killRabbitDate |
+CREATE PROCEDURE killRabbitDate (rid INTEGER UNSIGNED,reason INTEGER UNSIGNED,notes TEXT,ddate DATETIME)
+BEGIN
+  INSERT INTO dead(d_date,d_reason,d_notes,r_id,r_sex,r_bon,r_name,r_surname,r_secname,
+ r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,
+ r_born,r_genesis,r_status,r_last_fuck_okrol,r_borns,r_lost_babies,r_overall_babies)
+SELECT ddate,reason,notes,r_id,r_sex,r_bon,r_name,r_surname,r_secname,
+ r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,
+ r_born,r_genesis,r_status,r_last_fuck_okrol,r_borns,r_lost_babies,r_overall_babies
+FROM rabbits WHERE r_id=rid;
+DELETE FROM rabbits WHERE r_id=rid;
+END |
+
+
+DROP PROCEDURE IF EXISTS killRabbit |
+CREATE PROCEDURE killRabbit (rid INTEGER UNSIGNED,reason INTEGER UNSIGNED,notes TEXT)
+BEGIN
+  CALL killRabbitDate(rid,reason,notes,NOW());
 END |
 #DELIMITER ;
 
