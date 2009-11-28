@@ -28,7 +28,7 @@
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
 	</target>
 
-	<target name="buildall" depends="prepare,miaconv,rabnet,filldata" description="Build all projects"/>
+	<target name="buildall" depends="prepare,miaconv,rabnet" description="Build all projects"/>
 	
 	<target name="miaconv" description="Make mia converter project">
 		<copy file="./mia_conv/rabnet_db_fmt.sql" tofile="./mia_conv/mia_conv.rabnet_db_fmt.sql"/>
@@ -106,7 +106,7 @@
 		<copy file="./rabnet/gui/app.config" tofile="${bin_dir}/rabnet.exe.config" />
 	</target>
 	
-	<target name="filldata" description="filling developer databases">
+	<target name="filldata" depends="build" description="filling developer databases">
 		<unzip zipfile="${data_dir}/Farm_30.zip" todir="${data_dir}" />
 		<exec program="${bin_dir}/mia_conv.exe">
 			<arg value="..\data\Farm 3_0.mia" />

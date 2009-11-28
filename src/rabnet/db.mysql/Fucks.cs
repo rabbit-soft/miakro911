@@ -1,0 +1,74 @@
+﻿using System;
+using System.Collections.Generic;
+using MySql.Data.MySqlClient;
+using System.Text;
+
+namespace rabnet
+{
+    public class Fucks
+    {
+        public class Fuck
+        {
+            public String partner;
+            public int partnerid;
+            public int times;
+            public DateTime when;
+            public String type;
+            public DateTime enddate;
+            public String status;
+            public int children;
+            public int dead;
+            public int breed;
+            public String rgenom;
+            public Fuck(String p, int pid, int tms, DateTime s, DateTime e, String st, int ch, int dd, 
+                int brd, String gen,String tp)
+            {
+                partner = p;partnerid = pid;
+                times = tms;
+                when = s;enddate = e;
+                type = "нет";
+                if (tp == "vyazka") type = "вязка";
+                if (tp == "sluchka") type = "случка";
+                if (tp == "kuk") type = "кук";
+                status = "сукрольна";
+                if (st == "okrol") status = "окрол";
+                if (st == "proholost") status = "прохолостание";
+                children = ch; dead = dd;
+                breed = brd;
+                rgenom = gen;
+            }
+        }
+        public List<Fuck> fucks=new List<Fuck>();
+        public void addFuck(String p,int pid,int tms,DateTime s,DateTime e,String st,int ch,int dd,
+            int brd,String gen,String tp)
+        {
+            fucks.Add(new Fuck(p,pid,tms,s,e,st,ch,dd,brd,gen,tp));
+        }
+    }
+
+    public class FucksGetter
+    {
+        public static Fucks GetFucks(MySqlConnection sql,int rabbit)
+        {
+            MySqlCommand cmd=new MySqlCommand(@"SELECT f_id,f_date,f_partner,f_times,f_state,f_date,f_end_date,f_children,f_dead,f_type,
+rabname(f_partner,2) partner,
+(SELECT r_breed FROM rabbits WHERE r_id=f_partner) breed,
+(SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=(SELECT r_genesis FROM rabbits WHERE r_id=f_partner)) genom
+FROM fucks WHERE f_rabid=" + rabbit.ToString()+" ORDER BY f_date;",sql);
+            MySqlDataReader rd=cmd.ExecuteReader();
+            Fucks f=new Fucks();
+            while(rd.Read())
+            {
+                f.addFuck(rd.GetString("partner"),rd.GetInt32("f_partner"),rd.GetInt32("f_times"),
+                    rd.IsDBNull(5)?DateTime.MinValue:rd.GetDateTime("f_date"),
+                    rd.IsDBNull(6)?DateTime.MinValue:rd.GetDateTime("f_end_date"),
+                    rd.GetString("f_state"),rd.GetInt32("f_children"),rd.GetInt32("f_dead"),
+                    rd.GetInt32("breed"),rd.GetString("genom"),rd.GetString("f_type")
+                    );
+
+            }
+            rd.Close();
+            return f;
+        }
+    }
+}

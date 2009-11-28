@@ -58,6 +58,7 @@
     <Compile Include="db.mysql.cs" />
     <Compile Include="DBHelper.cs" />
     <Compile Include="Filters.cs" />
+    <Compile Include="Fucks.cs" />
     <Compile Include="Names.cs" />
     <Compile Include="Rabbit.cs" />
     <Compile Include="RabNetDataGetterBase.cs" />

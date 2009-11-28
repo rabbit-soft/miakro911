@@ -370,7 +370,15 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
         public string gens;
         public int status;
         public DateTime lastfuckokrol;
-        public OneRabbit(int id,string sx,DateTime bd,int rt,string flg,int nm,int sur,int sec,string adr,int grp,int brd,int zn,String nts,String gn,int st,DateTime lfo)
+        public bool nolact;
+        public bool nokuk;
+        public DateTime evdate;
+        public int evtype;
+        public int babies;
+        public int lost;
+        public int okrols;
+        public OneRabbit(int id,string sx,DateTime bd,int rt,string flg,int nm,int sur,int sec,string adr,int grp,int brd,int zn,String nts,
+            String gn,int st,DateTime lfo,String evt,DateTime evd,int ob,int lb,int brn)
         {
             this.id=id;
             sex=RabbitSex.VOID;
@@ -383,6 +391,8 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             gp = flg[0] == '1';
             defect = flg[2] == '1';
             spec = flg[2] == '2';
+            nokuk = flg[3] == '1';
+            nolact = flg[4] == '1';
             surname = sur;
             secname = sec;
             address = Buildings.fullPlaceName(adr,false,true,true);
@@ -394,6 +404,14 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             status = st;
             if (sx == "void") status = Buildings.hasnest(adr) ? 1 : 0;
             lastfuckokrol = lfo;
+            evtype = 0;
+            if (evt == "sluchka") evtype = 1;
+            if (evt == "vyazka") evtype = 2;
+            if (evt == "kuk") evtype = 3;
+            evdate = evd;
+            babies = ob;
+            lost = lb;
+            okrols=brn;
         }
     }
 
@@ -401,8 +419,8 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
     {
         public static OneRabbit GetRabbit(MySqlConnection con, int rid)
         {
-            MySqlCommand cmd = new MySqlCommand(@"SELECT r_id,r_last_fuck_okrol,r_sex,r_born,r_flags,r_breed,r_zone,
-r_name,r_surname,r_secname,
+            MySqlCommand cmd = new MySqlCommand(@"SELECT r_id,r_last_fuck_okrol,r_event_date,r_event,r_overall_babies,r_lost_babies,r_borns,
+r_sex,r_born,r_flags,r_breed,r_zone,r_name,r_surname,r_secname,
 rabplace(r_id) address,r_group,r_notes,
 (SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=r_genesis) genom,
 r_status,
@@ -418,8 +436,10 @@ FROM rabbits WHERE r_id=" + rid.ToString()+";",con);
                 rd.GetString("r_flags"),rd.GetInt32("r_name"),rd.GetInt32("r_surname"),rd.GetInt32("r_secname"),
                 rd.GetString("address"),rd.GetInt32("r_group"),rd.GetInt32("r_breed"),rd.GetInt32("r_zone"),
                 rd.GetString("r_notes"),rd.GetString("genom"),rd.GetInt32("r_status"),
-                rd.IsDBNull(1)?DateTime.MinValue:rd.GetDateTime("r_last_fuck_okrol"));
-
+                rd.IsDBNull(1)?DateTime.MinValue:rd.GetDateTime("r_last_fuck_okrol"),
+                rd.IsDBNull(3)?"none":rd.GetString("r_event"),rd.IsDBNull(2)?DateTime.MinValue:rd.GetDateTime("r_event_date"),
+                rd.IsDBNull(4) ? 0 : rd.GetInt32("r_overall_babies"), rd.IsDBNull(5) ? 0 : rd.GetInt32("r_lost_babies"),
+                rd.IsDBNull(6)?0:rd.GetInt32("r_borns"));
             rd.Close();
             return r;
         }

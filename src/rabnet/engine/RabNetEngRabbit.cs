@@ -105,6 +105,34 @@ namespace rabnet
             get { return rab.gens; }
             set { rab.gens = value; }
         }
+        public bool nolact
+        {
+            get { return rab.nolact; }
+            set { rab.nolact = value; }
+        }
+        public bool nokuk
+        {
+            get { return rab.nokuk; }
+            set { rab.nokuk = value; }
+        }
+        public int babies
+        {
+            get { return rab.babies; }
+            set { rab.babies = value; }
+        }
+        public int lost
+        {
+            get { return rab.lost; }
+            set { rab.lost = value; }
+        }
+        public int okrols
+        {
+            get { return rab.okrols; }
+            set { rab.okrols = value; }
+        }
+        public int rid { get { return rab.id; } }
+        public int evtype{get { return rab.evtype; }}
+        public DateTime evdate { get { return rab.evdate; } }
         public int wasname { get { return rab.wasname; } }
         public String address { get { return rab.address; } }
     }

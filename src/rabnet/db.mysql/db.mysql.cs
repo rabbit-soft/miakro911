@@ -212,6 +212,11 @@ namespace rabnet
                 type,user,text));
         }
 
+        public Fucks getFucks(int rabbit)
+        {
+            return FucksGetter.GetFucks(sql, rabbit);
+        }
+
         #endregion
     }
 }

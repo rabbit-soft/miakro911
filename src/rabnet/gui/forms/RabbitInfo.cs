@@ -92,6 +92,45 @@ namespace rabnet
             tabControl1.TabPages.Add(okrolPage);
             tabControl1.TabPages.Add(suckersPage);
             tabControl1.TabPages.Add(weightPage);
+            nokuk.Checked = rab.nokuk;
+            nolact.Checked = rab.nolact;
+            okrolCount.Value = rab.status;
+            if (rab.last_fuck_okrol == DateTime.MinValue)
+            {
+                okrolDate.Enabled = false;
+                okrolDays.Enabled = false;
+            }
+            else
+                okrolDate.Value = rab.last_fuck_okrol;
+            sukr.Checked=(rab.evdate != DateTime.MinValue);
+            sukrType.SelectedIndex = 0;
+            button8.Enabled = button9.Enabled = button10.Enabled = false;
+            if (sukr.Checked)
+            {
+                sukrType.SelectedIndex = rab.evtype;
+                sukrDate.Value = rab.evdate.Date;
+                sukrDays.Value = (DateTime.Now.Date - sukrDate.Value.Date).Days;
+                button9.Enabled = button10.Enabled=true;
+            }
+            else
+                button8.Enabled = true;
+            overallBab.Value = rab.babies;
+            deadBab.Value = rab.lost;
+            okrolCount.Value = rab.okrols;
+            fucks.Items.Clear();
+            foreach (Fucks.Fuck f in Engine.db().getFucks(rab.rid).fucks)
+            {
+                ListViewItem li = fucks.Items.Add(f.when == DateTime.MinValue ? "" : f.when.ToShortDateString());
+                li.SubItems.Add(f.type);
+                li.SubItems.Add(f.partner);
+                li.SubItems.Add(f.status);
+                li.SubItems.Add(f.enddate == DateTime.MinValue ? "" : f.enddate.ToShortDateString());
+                li.SubItems.Add(f.children.ToString());
+                li.SubItems.Add(f.dead.ToString());
+                li.SubItems.Add(f.breed == rab.breed ? "-" : "Да");
+                li.SubItems.Add(RabNetEngHelper.genesis(f.rgenom, rab.genom) ? "Да" : "-");
+            }
+            fucks.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
         private void FillList(ComboBox cb,Catalog c,int key)
@@ -293,5 +332,16 @@ namespace rabnet
             if (curzone != 0)
                 addgen(curzone);
         }
+
+        private void okrolDate_ValueChanged(object sender, EventArgs e)
+        {
+            okrolDays.Value = (DateTime.Now.Date - okrolDate.Value.Date).Days;
+        }
+
+        private void okrolDays_ValueChanged(object sender, EventArgs e)
+        {
+            okrolDate.Value = DateTime.Today.Subtract(new TimeSpan((int)okrolDays.Value, 0, 0, 0));
+        }
+
     }
 }

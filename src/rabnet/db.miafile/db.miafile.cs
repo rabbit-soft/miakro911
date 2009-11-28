@@ -247,5 +247,15 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public Fucks getFucks(int rabbit)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

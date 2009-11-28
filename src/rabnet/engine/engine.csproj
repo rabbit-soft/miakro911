@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="engine.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="RabNetEngRabbit.cs" />
     <Compile Include="RabNetLogs.cs" />
