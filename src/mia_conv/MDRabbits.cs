@@ -149,11 +149,11 @@ namespace mia_conv
 
         }
 
-        public void fillRabFuckers(Rabbit r, int crab)
+        public void fillRabFuckers(Rabbit r, int crab,bool sukrol)
         {
             foreach (Fucker f in r.female.fuckers)
             {
-                if (f.fucks.value() > 0)
+                if (f.fucks.value() > 0 || (f.my_fuck_is_last.value()==1 && sukrol))
                 {
                     int link = 0;
                     int dead = 0;
@@ -167,9 +167,12 @@ namespace mia_conv
                     {
                         link = findDead(f.name.value(), (int)f.breed.value(), f.genesis);
                     }
-                    c.CommandText = String.Format(@"INSERT INTO fucks(f_rabid,f_partner,f_times,f_last,f_children,f_dead) 
-VALUES({0:d},{1:d},{2:d},{3:d},{4:d},{5:d});", 
-                         crab, link, f.fucks.value(), f.my_fuck_is_last.value(), f.children.value(),dead);
+                    String state = "okrol";
+                    if (f.my_fuck_is_last.value() == 1 && sukrol)
+                        state = "sukrol";
+                    c.CommandText = String.Format(@"INSERT INTO fucks(f_rabid,f_partner,f_times,f_children,f_dead,f_state) 
+VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}');", 
+                      crab, link, (int)f.fucks.value()+(sukrol?1:0),f.children.value(),dead,state);
                     c.ExecuteNonQuery();
                 }
             }
@@ -212,10 +215,11 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},{5:d});",
                 status=(int)r.female.borns.value();
                 lfo=convdt(r.female.last_okrol.value());
             }
+            bool sukrol = false;
             vals += String.Format(",{0:s},{1:d},{2:s},{3:d}", convdt(r.borndate.value()), status, lfo,makeGenesis(r.genesis));
             if (r.sex.value() == 2)
             {
-                cmd += ",r_children,r_event,r_event_date,r_lost_babies,r_overall_babies,r_borns";//,r_worker";
+                cmd += ",r_event,r_event_date,r_lost_babies,r_overall_babies";//,r_worker";,r_children
                 String ev="none";
                 switch (r.female.ev_type.value())
                 {
@@ -223,10 +227,11 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},{5:d});",
                     case 2:ev="vyazka";break;
                     case 3:ev="kuk";break;
                 }
-                vals+=String.Format(",{0:d},'{1:s}',{2:s},{3:d},{4:d},{5:d}",r.female.child_count.value(),ev,
-                    convdt(r.female.ev_date.value()), r.female.lost_babies.value(), r.female.overall_babies.value(),
-                    r.female.borns.value());//,  ,{5:d}
-                    //makeWorker(r.female.worker.value()));  //
+                String edt=convdt(r.female.ev_date.value());
+                sukrol = (edt != "NULL");
+                vals+=String.Format(",'{0:s}',{1:s},{2:d},{3:d}",ev,
+                    edt, r.female.lost_babies.value(), r.female.overall_babies.value());//,  ,{5:d},{0:d}
+                //makeWorker(r.female.worker.value()));  //r.female.child_count.value(),
             }
             c.CommandText = cmd + ") " + vals + ");";
             c.ExecuteNonQuery();
@@ -238,7 +243,7 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},{5:d});",
             fillRabWeight(r, crab);
             if (r.sex.value() == 2)
             {
-                fillRabFuckers(r, crab);
+                fillRabFuckers(r, crab, sukrol);
                 foreach (Rabbit xr in r.female.suckers.rabbits)
                 {
                     fillRabbit(xr, crab, false);

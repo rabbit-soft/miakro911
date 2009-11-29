@@ -44,14 +44,15 @@
             this.columnHeader11 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader12 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader13 = new System.Windows.Forms.ColumnHeader();
-            this.actMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.genTree = new System.Windows.Forms.TreeView();
+            this.passportMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newRab = new System.Windows.Forms.ToolStripMenuItem();
             this.makeBon = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.passportMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.SelectAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.genTree = new System.Windows.Forms.TreeView();
+            this.actMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.proholostMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -171,17 +172,23 @@
             this.columnHeader13.Text = "Заметки";
             this.columnHeader13.Width = 64;
             // 
-            // actMenu
+            // genTree
             // 
-            this.actMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newRab,
-            this.makeBon,
-            this.toolStripMenuItem1,
-            this.passportMenuItem,
-            this.toolStripMenuItem2,
-            this.SelectAllMenuItem});
-            this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(195, 104);
+            this.genTree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.genTree.Location = new System.Drawing.Point(3, 3);
+            this.genTree.Name = "genTree";
+            this.genTree.Size = new System.Drawing.Size(134, 544);
+            this.genTree.TabIndex = 0;
+            // 
+            // passportMenuItem
+            // 
+            this.passportMenuItem.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.passportMenuItem.Name = "passportMenuItem";
+            this.passportMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.passportMenuItem.Text = "Паспорт";
+            this.passportMenuItem.Click += new System.EventHandler(this.passportMenuItem_Click);
             // 
             // newRab
             // 
@@ -194,18 +201,7 @@
             this.makeBon.Name = "makeBon";
             this.makeBon.Size = new System.Drawing.Size(194, 22);
             this.makeBon.Text = "Ботинировка";
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(191, 6);
-            // 
-            // passportMenuItem
-            // 
-            this.passportMenuItem.Name = "passportMenuItem";
-            this.passportMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.passportMenuItem.Text = "Паспорт";
-            this.passportMenuItem.Click += new System.EventHandler(this.passportMenuItem_Click);
+            this.makeBon.Click += new System.EventHandler(this.makeBon_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -220,15 +216,30 @@
             this.SelectAllMenuItem.Text = "Выбрать всех";
             this.SelectAllMenuItem.Click += new System.EventHandler(this.SelectAllMenuItem_Click);
             // 
-            // genTree
+            // actMenu
             // 
-            this.genTree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.genTree.Location = new System.Drawing.Point(3, 3);
-            this.genTree.Name = "genTree";
-            this.genTree.Size = new System.Drawing.Size(134, 544);
-            this.genTree.TabIndex = 0;
+            this.actMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.passportMenuItem,
+            this.newRab,
+            this.makeBon,
+            this.toolStripMenuItem1,
+            this.proholostMenuItem,
+            this.toolStripMenuItem2,
+            this.SelectAllMenuItem});
+            this.actMenu.Name = "actMenu";
+            this.actMenu.Size = new System.Drawing.Size(195, 148);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(191, 6);
+            // 
+            // proholostMenuItem
+            // 
+            this.proholostMenuItem.Name = "proholostMenuItem";
+            this.proholostMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.proholostMenuItem.Text = "Прохолостание";
+            this.proholostMenuItem.Click += new System.EventHandler(this.proholostMenuItem_Click);
             // 
             // RabbitsPanel
             // 
@@ -264,11 +275,12 @@
         private System.Windows.Forms.ColumnHeader columnHeader13;
         private System.Windows.Forms.TreeView genTree;
         private System.Windows.Forms.ContextMenuStrip actMenu;
+        private System.Windows.Forms.ToolStripMenuItem passportMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newRab;
         private System.Windows.Forms.ToolStripMenuItem makeBon;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem SelectAllMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem passportMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem proholostMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem SelectAllMenuItem;
     }
 }

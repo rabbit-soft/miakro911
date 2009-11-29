@@ -49,6 +49,10 @@ namespace rabnet
         void RabNetLog(int type, int user, String text);
         Fucks getFucks(int rabbit);
         Fucks allFuckers(int female);
+        void setBon(int rabbit,String bon);
+        void makeFuck(int female, int male,DateTime date);
+        void makeProholost(int female, DateTime when);
+        void makeOkrol(int female, DateTime when, int children, int dead);
     }
 
 }

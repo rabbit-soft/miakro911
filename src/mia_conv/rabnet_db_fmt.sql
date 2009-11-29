@@ -154,8 +154,7 @@ CREATE TABLE rabbits(
 	r_genesis INTEGER UNSIGNED NOT NULL,
 	r_status TINYINT UNSIGNED NOT NULL DEFAULT 0,   #boy-status/girl-borns
 	r_last_fuck_okrol DATETIME,
-	r_borns TINYINT UNSIGNED,
-	r_children TINYINT UNSIGNED,
+#	r_children TINYINT UNSIGNED,
 	r_event ENUM('none','sluchka','vyazka','kuk'),
 	r_event_date DATETIME,
 	r_lost_babies INTEGER UNSIGNED,
@@ -179,7 +178,6 @@ CREATE TABLE fucks(
 	f_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	f_rabid INTEGER UNSIGNED NOT NULL,
 	f_date DATETIME DEFAULT NULL,
-	f_last BOOL NOT NULL DEFAULT 0,
 	f_type enum('sluchka','vyazka','kuk') NOT NULL default 'vyazka',
 	f_partner INTEGER UNSIGNED NOT NULL,
 	f_times INTEGER UNSIGNED NOT NULL DEFAULT 1,
@@ -191,7 +189,6 @@ CREATE TABLE fucks(
 	f_worker INTEGER UNSIGNED NOT NULL DEFAULT 0,
 	f_notes TEXT NOT NULL default '',
 	KEY(f_date),
-	KEY(f_last),
 	KEY(f_state),
 	KEY(f_type),
 	KEY(f_children),
@@ -330,7 +327,6 @@ CREATE TABLE dead(
 	r_genesis INTEGER UNSIGNED NOT NULL,
 	r_status TINYINT UNSIGNED NOT NULL DEFAULT 0,
 	r_last_fuck_okrol DATETIME,
-	r_borns TINYINT UNSIGNED,
 	r_lost_babies INTEGER UNSIGNED,
 	r_overall_babies INTEGER UNSIGNED,
 	KEY(d_date),
@@ -365,12 +361,12 @@ DROP VIEW IF EXISTS allrabbits;
 CREATE VIEW allrabbits AS
   (SELECT r_id,r_sex,r_bon,r_name,r_surname,r_secname,
  r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,
- r_born,r_genesis,r_status,r_last_fuck_okrol,r_borns,r_lost_babies,r_overall_babies,
+ r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies,
  NULL,0,'' FROM rabbits)
 UNION
   (SELECT r_id,r_sex,r_bon,r_name,r_surname,r_secname,
  r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,
- r_born,r_genesis,r_status,r_last_fuck_okrol,r_borns,r_lost_babies,r_overall_babies,
+ r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies,
  d_date,d_reason,d_notes FROM dead);
 
 
@@ -427,10 +423,10 @@ CREATE PROCEDURE killRabbitDate (rid INTEGER UNSIGNED,reason INTEGER UNSIGNED,no
 BEGIN
   INSERT INTO dead(d_date,d_reason,d_notes,r_id,r_sex,r_bon,r_name,r_surname,r_secname,
  r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,
- r_born,r_genesis,r_status,r_last_fuck_okrol,r_borns,r_lost_babies,r_overall_babies)
+ r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies)
 SELECT ddate,reason,notes,r_id,r_sex,r_bon,r_name,r_surname,r_secname,
  r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,
- r_born,r_genesis,r_status,r_last_fuck_okrol,r_borns,r_lost_babies,r_overall_babies
+ r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies
 FROM rabbits WHERE r_id=rid;
 DELETE FROM rabbits WHERE r_id=rid;
 END |

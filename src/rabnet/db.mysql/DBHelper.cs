@@ -43,5 +43,58 @@ namespace rabnet
             }
             return res;
         }
+
+        public static String get_genesis(MySqlConnection sql,int rabid)
+        {
+            MySqlCommand cmd = new MySqlCommand("SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=(SELECT r_genesis FROM rabbits WHERE r_id="+rabid.ToString()+");", sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            String res = "";
+            if (rd.Read())
+                res = rd.GetString(0);
+            rd.Close();
+            return res;
+        }
+
+        public static String combine_genesis(String g1, String g2)
+        {
+            String res = "";
+            string[] s1 = g1.Split(' ');
+            string[] s2 = g2.Split(' ');
+            List<int> gn = new List<int>();
+            foreach (string s in s1)
+            {
+                int g=int.Parse(s);int pos=0;
+                for (int i=0;i<gn.Count && pos>-1;i++){if (g == gn[i])pos = -1;if (g < gn[i])pos++;}
+                if (pos > -1) gn.Insert(pos, g);
+            }
+            foreach (string s in s2)
+            {
+                int g = int.Parse(s); int pos = 0;
+                for (int i = 0; i < gn.Count && pos > -1; i++) { if (g == gn[i])pos = -1; if (g < gn[i])pos++; }
+                if (pos > -1) gn.Insert(pos, g);
+            }
+            foreach (int i in gn)
+                res += i.ToString() + " ";
+            return res.Trim();
+        }
+        public static String combine_genesis(MySqlConnection sql,int r1, int r2)
+        {
+            return combine_genesis(get_genesis(sql,r1),get_genesis(sql,r2));
+        }
+        public static int makeCommonGenesis(MySqlConnection sql, int r1, int r2)
+        {
+            return makeGenesis(sql, combine_genesis(sql, r1, r2));
+        }
+        public static int makeCommonGenesis(MySqlConnection sql, String g1, String g2)
+        {
+            return makeGenesis(sql, combine_genesis(g1,g2));
+        }
+        public static String commonBon(String b1, String b2)
+        {
+            string res = "0";
+            for (int i = 1; i < 5; i++)
+                res+= b1[i] < b2[i] ? b1[i] : b2[i];
+            return res;
+        }
     }
 }

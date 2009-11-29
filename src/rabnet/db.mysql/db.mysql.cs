@@ -222,6 +222,26 @@ namespace rabnet
             return FucksGetter.AllFuckers(sql, female);
         }
 
+        public void setBon(int rabbit, string bon)
+        {
+            RabbitGetter.setBon(sql, rabbit, bon);
+        }
+
+        public void makeFuck(int female, int male, DateTime date)
+        {
+            RabbitGetter.makeFuck(sql, female, male, date);
+        }
+
+        public void makeProholost(int female, DateTime when)
+        {
+            RabbitGetter.MakeProholost(sql, female, when);
+        }
+
+        public void makeOkrol(int female, DateTime when, int children, int dead)
+        {
+            RabbitGetter.MakeOkrol(sql, female, when, children, dead);
+        }
+
         #endregion
     }
 }

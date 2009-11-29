@@ -76,6 +76,12 @@
     <Compile Include="forms\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="forms\BonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\BonForm.Designer.cs">
+      <DependentUpon>BonForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="forms\CatalogForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -114,6 +120,18 @@
     </Compile>
     <Compile Include="forms\NamesForm.Designer.cs">
       <DependentUpon>NamesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\OkrolForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\OkrolForm.Designer.cs">
+      <DependentUpon>OkrolForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Proholost.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\Proholost.Designer.cs">
+      <DependentUpon>Proholost.cs</DependentUpon>
     </Compile>
     <Compile Include="forms\RabbitInfo.cs">
       <SubType>Form</SubType>
@@ -167,6 +185,9 @@
     <EmbeddedResource Include="forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="forms\BonForm.resx">
+      <DependentUpon>BonForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="forms\CatalogForm.resx">
       <DependentUpon>CatalogForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -184,6 +205,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\NamesForm.resx">
       <DependentUpon>NamesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\OkrolForm.resx">
+      <DependentUpon>OkrolForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\Proholost.resx">
+      <DependentUpon>Proholost.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\RabbitInfo.resx">
       <DependentUpon>RabbitInfo.cs</DependentUpon>

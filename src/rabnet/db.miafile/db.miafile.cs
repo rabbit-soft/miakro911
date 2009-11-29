@@ -267,5 +267,35 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public void setBon(int rabbit, string bon)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public void makeFuck(int female, int male, DateTime date)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void makeProholost(int female, DateTime when)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void makeOkrol(int female, DateTime when, int children, int dead)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

@@ -51,6 +51,15 @@ namespace rabnet
             Close();
         }
 
+        private String getbon(char bon)
+        {
+            if (bon == '1') return "III";
+            if (bon == '2') return "II";
+            if (bon == '3') return "I";
+            if (bon == '4') return "Элита";
+            return "Нет";
+        }
+
         private void updateStd()
         {
             defect.Checked = rab.defect;
@@ -69,6 +78,10 @@ namespace rabnet
             gens.Items.Clear();
             foreach (string s in gns)
                 addgen(int.Parse(s));
+            label11.Text = "Вес:" + getbon(rab.bon[1]);
+            label12.Text = "Телосложение:" + getbon(rab.bon[2]);
+            label18.Text = "Шкура:" + getbon(rab.bon[3]);
+            label17.Text = "Окраска:" + getbon(rab.bon[4]);
         }
 
         private void updateMale()
@@ -120,7 +133,7 @@ namespace rabnet
                 button8.Enabled = true;
             overallBab.Value = rab.babies;
             deadBab.Value = rab.lost;
-            okrolCount.Value = rab.okrols;
+            okrolCount.Value = rab.status;
             fucks.Items.Clear();
             foreach (Fucks.Fuck f in Engine.db().getFucks(rab.rid).fucks)
             {
@@ -189,6 +202,7 @@ namespace rabnet
 
         private void updateData()
         {
+            int idx = tabControl1.SelectedIndex;
             while (tabControl1.TabPages.Count > 1)
                 tabControl1.TabPages.RemoveAt(1);
             if (rid == 0)
@@ -202,6 +216,7 @@ namespace rabnet
                 updateMale();
             if (rab.sex == OneRabbit.RabbitSex.FEMALE)
                 updateFemale();
+            tabControl1.SelectedIndex = idx;
         }
 
         private int getCatValue(Catalog c,string value)
@@ -350,16 +365,43 @@ namespace rabnet
             (new GenomView(rab.breed, f.breed, rab.genom, f.rgenom, nm, f.partner)).ShowDialog();
         }
 
+        private void button13_Click(object sender, EventArgs e)
+        {
+            (new BonForm(rab.rid)).ShowDialog();
+            updateData();
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            (new Proholost(rab.rid)).ShowDialog();
+            updateData();
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            (new OkrolForm(rab.rid)).ShowDialog();
+            updateData();
+        }
+
         private void button8_Click(object sender, EventArgs e)
         {
             (new MakeFuck(rab.rid)).ShowDialog();
+            updateData();
         }
 
         private void button12_Click(object sender, EventArgs e)
         {
-            int r2=(fucks.SelectedItems[0].Tag as Fucks.Fuck).partnerid;
-            (new MakeFuck(rab.rid, r2)).ShowDialog();
+            Fucks.Fuck f = fucks.SelectedItems[0].Tag as Fucks.Fuck;
+            (new MakeFuck(rab.rid,f.partnerid)).ShowDialog();
+            updateData();
         }
+
+        private void fucks_DoubleClick(object sender, EventArgs e)
+        {
+            if (fucks.SelectedItems.Count == 1)
+                button11.PerformClick();
+        }
+
 
     }
 }

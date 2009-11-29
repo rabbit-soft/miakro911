@@ -272,7 +272,6 @@ r_tier_id,
 t_type,
 t_delims,
 t_nest,
-r_children,
 r_notes,
 r_born,
 r_event_date
@@ -376,11 +375,12 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
         public int evtype;
         public int babies;
         public int lost;
-        public int okrols;
         public String fullname;
         public String breedname;
+        public String bon;
         public OneRabbit(int id,string sx,DateTime bd,int rt,string flg,int nm,int sur,int sec,string adr,int grp,int brd,int zn,String nts,
-            String gn,int st,DateTime lfo,String evt,DateTime evd,int ob,int lb,int brn,String fnm,String bnm)
+            String gn,int st,DateTime lfo,String evt,DateTime evd,int ob,int lb,String fnm,String bnm,
+            String bon)
         {
             this.id=id;
             sex=RabbitSex.VOID;
@@ -403,6 +403,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             zone = zn;
             notes = nts;
             gens = gn;
+            this.bon = bon;
             status = st;
             if (sx == "void") status = Buildings.hasnest(adr) ? 1 : 0;
             lastfuckokrol = lfo;
@@ -410,7 +411,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             if (evt == "sluchka") evtype = 1;
             if (evt == "vyazka") evtype = 2;
             if (evt == "kuk") evtype = 3;
-            evdate = evd;babies = ob;lost = lb;okrols=brn;
+            evdate = evd;babies = ob;lost = lb;
             fullname = fnm; breedname = bnm;
         }
     }
@@ -419,14 +420,13 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
     {
         public static OneRabbit GetRabbit(MySqlConnection con, int rid)
         {
-            MySqlCommand cmd = new MySqlCommand(@"SELECT r_id,r_last_fuck_okrol,r_event_date,r_event,r_overall_babies,r_lost_babies,r_borns,
+            MySqlCommand cmd = new MySqlCommand(@"SELECT r_id,r_last_fuck_okrol,r_event_date,r_event,r_overall_babies,r_lost_babies,
 r_sex,r_born,r_flags,r_breed,r_zone,r_name,r_surname,r_secname,
 rabplace(r_id) address,r_group,r_notes,
 rabname(r_id,2) fullname,
 (SELECT b_name FROM breeds WHERE b_id=r_breed) breedname,
 (SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=r_genesis) genom,
-r_status,
-r_rate
+r_status,r_rate,r_bon
 FROM rabbits WHERE r_id=" + rid.ToString()+";",con);
             MySqlDataReader rd = cmd.ExecuteReader();
             if (!rd.Read())
@@ -441,7 +441,8 @@ FROM rabbits WHERE r_id=" + rid.ToString()+";",con);
                 rd.IsDBNull(1)?DateTime.MinValue:rd.GetDateTime("r_last_fuck_okrol"),
                 rd.IsDBNull(3)?"none":rd.GetString("r_event"),rd.IsDBNull(2)?DateTime.MinValue:rd.GetDateTime("r_event_date"),
                 rd.IsDBNull(4) ? 0 : rd.GetInt32("r_overall_babies"), rd.IsDBNull(5) ? 0 : rd.GetInt32("r_lost_babies"),
-                rd.IsDBNull(6)?0:rd.GetInt32("r_borns"),rd.GetString("fullname"),rd.GetString("breedname"));
+                rd.GetString("fullname"),rd.GetString("breedname"),
+                rd.GetString("r_bon"));
             rd.Close();
             return r;
         }
@@ -469,6 +470,75 @@ r_flags='{7:d}',r_rate={8:d},r_born={9:s}",r.name,r.surname,r.secname,r.breed,r.
                 cmd.ExecuteNonQuery();
                 cmd.CommandText="UPDATE names SET n_use="+r.id.ToString()+" WHERE n_id="+r.name.ToString()+";";
                 cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void setBon(MySqlConnection sql, int rabbit, String bon)
+        {
+            MySqlCommand cmd = new MySqlCommand("UPDATE rabbits SET r_bon='"+bon+"' WHERE r_id="+rabbit.ToString()+";", sql);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void makeFuck(MySqlConnection sql, int female, int male, DateTime date)
+        {
+            OneRabbit f = GetRabbit(sql,female);
+            String type = "sluchka";
+            if (f.status > 0)
+                type = "vyazka";
+            MySqlCommand cmd = new MySqlCommand(String.Format("UPDATE fucks SET f_last=0 WHERE f_rabid={0:d};",female), sql);
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = String.Format(@"INSERT INTO fucks(f_rabid,f_date,f_partner,f_state,f_type,f_last) 
+VALUES({0:d},{1:s},{2:d},'sukrol','{3:s}',1);",female,DBHelper.DateToMyString(date),male,type);
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date={0:s},r_event='{1:s}' WHERE r_id={2:d};",
+                DBHelper.DateToMyString(date),type,female);
+            cmd.ExecuteNonQuery();
+            cmd.CommandText=String.Format("UPDATE rabbits SET r_last_fuck_okrol={0:s} WHERE r_id={1:d};",
+                DBHelper.DateToMyString(date), male);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void MakeProholost(MySqlConnection sql, int rabbit, DateTime date)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE fucks SET f_state='proholost',f_end_date={0:s} WHERE f_state='sukrol' AND f_rabid={1:d};",
+                DBHelper.DateToMyString(date),rabbit), sql);
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date=NULL,r_event='none' WHERE r_id={0:d};",rabbit);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static int WhosChildren(MySqlConnection sql, int rabbit)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT f_partner FROM fucks WHERE f_state='sukrol' AND f_rabid={0:d};",rabbit), sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            int res = 0;
+            if (rd.Read())
+                res = rd.GetInt32(0);
+            rd.Close();
+            return res;
+        }
+        
+        public static void MakeOkrol(MySqlConnection sql, int rabbit, DateTime date, int children, int dead)
+        {
+            int father = WhosChildren(sql, rabbit);
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE fucks SET f_state='okrol',f_end_date={0:s},
+f_children={1:d},f_dead={2:d} WHERE f_rabid={3:d} AND f_state='sukrol';",
+                       DBHelper.DateToMyString(date),children,dead,rabbit),sql);
+            cmd.CommandText = String.Format(@"UPDATE rabbits SET r_event_date=NULL,r_event='none',
+r_status=r_status+1,r_last_fuck_okrol={1:s} WHERE r_id={0:d};", rabbit,DBHelper.DateToMyString(date));
+            cmd.ExecuteNonQuery();
+            if (children>0)
+            {
+                OneRabbit fml = GetRabbit(sql, rabbit);
+                OneRabbit ml = GetRabbit(sql, father);
+                int brd=1;
+                if (fml.breed==ml.breed)
+                    brd=fml.breed;
+                cmd.CommandText = String.Format(@"INSERT INTO rabbits(r_parent,r_mother,r_father,r_born,r_sex,r_group,
+r_bon,r_genesis,r_name,r_surname,r_secname,r_breed) 
+VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d});",
+                      rabbit,rabbit,father,DBHelper.DateToMyString(date),children,DBHelper.commonBon(fml.bon,ml.bon),
+                      DBHelper.makeCommonGenesis(sql,fml.gens,ml.gens),fml.name,ml.name,brd);
             }
         }
     }

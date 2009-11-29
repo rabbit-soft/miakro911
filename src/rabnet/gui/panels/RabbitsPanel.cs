@@ -86,7 +86,8 @@ namespace rabnet
             for (int i = 0; i < listView1.SelectedItems.Count && sx.Length<2;i++ )
             {
                 String s = listView1.SelectedItems[i].SubItems[1].Text;
-                if (s[0] == 'С' || s[0]=='C') s = "ж";
+                if (s[0] == 'С' || s[0] == 'C')
+                    s = "S";
                 if (!sx.Contains(s))
                     sx += s;
             }
@@ -94,6 +95,7 @@ namespace rabnet
             if (sx=="?") isx=0;
             if (sx=="м") isx=1;
             if (sx=="ж") isx=2;
+            if (sx == "S") isx = 4;
             setMenu(isx, listView1.SelectedItems.Count);
             if (listView1.SelectedItems.Count != 1)
             {
@@ -116,13 +118,15 @@ namespace rabnet
 
         private void setMenu(int sex,int multi)
         {
-            makeBon.Visible = passportMenuItem.Visible=false;
+            makeBon.Visible = passportMenuItem.Visible=proholostMenuItem.Visible=false;
             if (sex < 0) return;
             makeBon.Visible = true;
             if (sex != 3 && multi == 1)
             {
                 passportMenuItem.Visible = true;
             }
+            if (sex == 4)
+                proholostMenuItem.Visible = true;
         }
 
         public override ContextMenuStrip getMenu()
@@ -144,11 +148,30 @@ namespace rabnet
                 return;
             RabbitInfo ri = new RabbitInfo((int)listView1.SelectedItems[0].Tag);
             ri.ShowDialog();
+            rsb.run();
         }
 
         private void listView1_DoubleClick(object sender, EventArgs e)
         {
             passportMenuItem.PerformClick();
+        }
+
+        private void makeBon_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count!=1)
+                return;
+            int rid=(int)listView1.SelectedItems[0].Tag;
+            (new BonForm(rid)).ShowDialog();
+            rsb.run();
+        }
+
+        private void proholostMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1)
+                return;
+            int rid = (int)listView1.SelectedItems[0].Tag;
+            (new Proholost(rid)).ShowDialog();
+            rsb.run();
         }
 
 

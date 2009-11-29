@@ -13,11 +13,16 @@ namespace rabnet
         private RabNetEngRabbit rab1 = null;
         private Catalog brds;
         private int rtosel=0;
+        bool manual = true;
         public MakeFuck()
         {
             InitializeComponent();
             dateDays1.DateValue = DateTime.Now;
             brds = Engine.db().catalogs().getBreeds();
+            manual = false;
+            cbHeter.Checked=(Engine.opt().getIntOption(Options.OPT_ID.GETEROSIS)==1);
+            cbInbreed.Checked = (Engine.opt().getIntOption(Options.OPT_ID.INBREEDING) == 1);
+            manual = true;
         }
         public MakeFuck(int r1)
             : this(r1,0)
@@ -28,7 +33,7 @@ namespace rabnet
         {
             rab1 = Engine.get().getRabbit(r1);
             label1.Text = rab1.fullName;
-            label2.Text = rab1.breeName;
+            label2.Text = rab1.breedName;
             rtosel = r2;
             fillTable();
         }
@@ -37,8 +42,14 @@ namespace rabnet
         {
             listView1.Items.Clear();
             Fucks fs = Engine.db().allFuckers(rab1.rid);
+            
             foreach (Fucks.Fuck f in fs.fucks)
             {
+                bool inbr=(f.breed != rab1.breed);
+                bool heter=RabNetEngHelper.geterosis(rab1.genom,f.rgenom);
+                if ((!inbr || cbInbreed.Checked) && (!heter || cbHeter.Checked) &&
+                    (f.dead>1 || cbCand.Checked) || f.partnerid==rtosel)
+                {
                 ListViewItem li = listView1.Items.Add(f.partner);
                 li.Tag = f;
                 String stat="Мальчик";
@@ -50,11 +61,13 @@ namespace rabnet
                 li.SubItems.Add(brds[f.breed]);
                 li.SubItems.Add(f.times.ToString());
                 li.SubItems.Add(f.children.ToString());
-                li.SubItems.Add(f.breed == rab1.breed ? "-" : "ДА");
-                li.SubItems.Add(RabNetEngHelper.geterosis(rab1.genom,f.rgenom)? "ДА" : "-");
+                li.SubItems.Add(inbr ? "ДА":"-");
+                li.SubItems.Add(heter? "ДА" : "-");
                 if (rtosel == f.partnerid)
                     li.Selected = true;
+                }
             }
+            listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -66,6 +79,38 @@ namespace rabnet
         {
             int r2 = (listView1.SelectedItems[0].Tag as Fucks.Fuck).partnerid;
             (new GenomView(rab1.rid, r2)).ShowDialog();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int r2 = (listView1.SelectedItems[0].Tag as Fucks.Fuck).partnerid;
+                rab1.FuckIt(r2, dateDays1.DateValue);
+                Close();
+            }
+            catch (ApplicationException ex)
+            {
+                MessageBox.Show("Порграмма вызвала исключение " + ex.GetType().ToString() + ": " + ex.Message);
+            }
+        }
+
+        private void cbCand_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!manual)
+                return;
+            fillTable();
+        }
+
+        private void listView1_DoubleClick(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count==1)
+                button3.PerformClick();
         }
 
     }
