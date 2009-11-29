@@ -135,5 +135,7 @@ namespace rabnet
         public DateTime evdate { get { return rab.evdate; } }
         public int wasname { get { return rab.wasname; } }
         public String address { get { return rab.address; } }
+        public String fullName { get { return rab.fullname; } }
+        public String breeName { get { return rab.breedname; } }
     }
 }

@@ -217,6 +217,11 @@ namespace rabnet
             return FucksGetter.GetFucks(sql, rabbit);
         }
 
+        public Fucks allFuckers(int female)
+        {
+            return FucksGetter.AllFuckers(sql, female);
+        }
+
         #endregion
     }
 }

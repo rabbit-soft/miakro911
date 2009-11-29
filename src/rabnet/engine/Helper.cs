@@ -6,7 +6,7 @@ namespace rabnet
 {
     public class RabNetEngHelper
     {
-        public static bool genesis(String g1,String g2)
+        public static bool geterosis(String g1,String g2)
         {
             string[] g1s=g1.Split(' ');
             string[] g2s=g2.Split(' ');

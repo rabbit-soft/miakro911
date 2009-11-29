@@ -49,6 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="components\DateDays.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\DateDays.Designer.cs">
+      <DependentUpon>DateDays.cs</DependentUpon>
+    </Compile>
     <Compile Include="components\FarmDrawer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -79,6 +85,12 @@
     <Compile Include="forms\ColumnSorter.cs" />
     <Compile Include="DataThread.cs" />
     <Compile Include="Engine.cs" />
+    <Compile Include="forms\GenomView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\GenomView.Designer.cs">
+      <DependentUpon>GenomView.cs</DependentUpon>
+    </Compile>
     <Compile Include="forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,6 +102,12 @@
     </Compile>
     <Compile Include="forms\LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\MakeFuck.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\MakeFuck.Designer.cs">
+      <DependentUpon>MakeFuck.cs</DependentUpon>
     </Compile>
     <Compile Include="forms\NamesForm.cs">
       <SubType>Form</SubType>
@@ -137,6 +155,9 @@
     <Compile Include="components\RabStatusBar.Designer.cs">
       <DependentUpon>RabStatusBar.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="components\DateDays.resx">
+      <DependentUpon>DateDays.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="components\FarmDrawer.resx">
       <DependentUpon>FarmDrawer.cs</DependentUpon>
     </EmbeddedResource>
@@ -149,11 +170,17 @@
     <EmbeddedResource Include="forms\CatalogForm.resx">
       <DependentUpon>CatalogForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="forms\GenomView.resx">
+      <DependentUpon>GenomView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\MakeFuck.resx">
+      <DependentUpon>MakeFuck.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\NamesForm.resx">
       <DependentUpon>NamesForm.cs</DependentUpon>

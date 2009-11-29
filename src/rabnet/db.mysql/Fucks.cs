@@ -70,5 +70,25 @@ FROM fucks WHERE f_rabid=" + rabbit.ToString()+" ORDER BY f_date;",sql);
             rd.Close();
             return f;
         }
+
+        public static Fucks AllFuckers(MySqlConnection sql, int female)
+        {
+            MySqlCommand cmd = new MySqlCommand(@"SELECT r_id,rabname(r_id,2) fullname,r_status,
+r_breed,
+(SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=r_genesis) genom,
+(SELECT SUM(f_times) FROM fucks WHERE f_partner=r_id AND f_rabid="+female.ToString()+@") fucks,
+(SELECT SUM(f_children) FROM fucks WHERE f_partner=r_id AND f_rabid=" + female.ToString() + @") children
+FROM rabbits WHERE r_sex='male' AND r_status>0;", sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            Fucks f = new Fucks();
+            while (rd.Read())
+            {
+                f.addFuck(rd.GetString("fullname"), rd.GetInt32("r_id"), rd.IsDBNull(5)?0:rd.GetInt32("fucks"), DateTime.MinValue,
+                    DateTime.MinValue, "", rd.IsDBNull(6) ? 0 : rd.GetInt32("children"), rd.GetInt32("r_status"), rd.GetInt32("r_breed"),
+                    rd.GetString("genom"), "");
+            }
+            rd.Close();
+            return f;
+        }
     }
 }

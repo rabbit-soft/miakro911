@@ -257,5 +257,15 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public Fucks allFuckers(int female)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

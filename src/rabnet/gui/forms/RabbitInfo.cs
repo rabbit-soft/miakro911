@@ -63,8 +63,7 @@ namespace rabnet
             label2.Text = "Имя:" + name.Text;
             label3.Text = "Ж.Фам:" + surname.Text;
             label4.Text = "М.Фам:" + secname.Text;
-            bdate.Value = rab.born.Date;
-            bdate_ValueChanged(null, null);
+            bdate.DateValue = rab.born.Date;
             notes.Text = rab.notes;
             String[] gns = rab.genom.Split(' ');
             gens.Items.Clear();
@@ -95,21 +94,26 @@ namespace rabnet
             nokuk.Checked = rab.nokuk;
             nolact.Checked = rab.nolact;
             okrolCount.Value = rab.status;
+            label7.Text = "Девочка";
+            if (bdate.DaysValue>=30)
+                label7.Text = "Невеста";
+            if (rab.status==1)
+                label7.Text = "Первокролка";
+            if (rab.status >1)
+                label7.Text = "Штатная";
             if (rab.last_fuck_okrol == DateTime.MinValue)
             {
-                okrolDate.Enabled = false;
-                okrolDays.Enabled = false;
+                okrolDd.Enabled = false;
             }
             else
-                okrolDate.Value = rab.last_fuck_okrol;
+                okrolDd.DateValue = rab.last_fuck_okrol;
             sukr.Checked=(rab.evdate != DateTime.MinValue);
             sukrType.SelectedIndex = 0;
             button8.Enabled = button9.Enabled = button10.Enabled = false;
             if (sukr.Checked)
             {
                 sukrType.SelectedIndex = rab.evtype;
-                sukrDate.Value = rab.evdate.Date;
-                sukrDays.Value = (DateTime.Now.Date - sukrDate.Value.Date).Days;
+                sukrDd.DateValue = rab.evdate.Date;
                 button9.Enabled = button10.Enabled=true;
             }
             else
@@ -128,7 +132,8 @@ namespace rabnet
                 li.SubItems.Add(f.children.ToString());
                 li.SubItems.Add(f.dead.ToString());
                 li.SubItems.Add(f.breed == rab.breed ? "-" : "Да");
-                li.SubItems.Add(RabNetEngHelper.genesis(f.rgenom, rab.genom) ? "Да" : "-");
+                li.SubItems.Add(RabNetEngHelper.geterosis(f.rgenom, rab.genom) ? "Да" : "-");
+                li.Tag = f;
             }
             fucks.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
@@ -222,7 +227,7 @@ namespace rabnet
             rab.breed = getCatValue(breeds, breed.Text);
             rab.zone = getCatValue(zones, zone.Text);
             curzone = rab.zone;
-            rab.born = bdate.Value.Date;
+            rab.born = bdate.DateValue.Date;
             rab.group = (int)group.Value;
             String gns = "";
             for (int i = 0; i < gens.Items.Count;i++ )
@@ -270,16 +275,6 @@ namespace rabnet
         private void RabbitInfo_Load(object sender, EventArgs e)
         {
             updateData();
-        }
-
-        private void bdate_ValueChanged(object sender, EventArgs e)
-        {
-            age.Value = (DateTime.Now.Date - bdate.Value.Date).Days;
-        }
-
-        private void age_ValueChanged(object sender, EventArgs e)
-        {
-            bdate.Value = DateTime.Today.Subtract(new TimeSpan((int)age.Value, 0, 0, 0));
         }
 
         private void lastFuckNever_CheckedChanged(object sender, EventArgs e)
@@ -333,14 +328,37 @@ namespace rabnet
                 addgen(curzone);
         }
 
-        private void okrolDate_ValueChanged(object sender, EventArgs e)
+        private void fucks_SelectedIndexChanged(object sender, EventArgs e)
         {
-            okrolDays.Value = (DateTime.Now.Date - okrolDate.Value.Date).Days;
+            if (fucks.SelectedItems.Count == 1)
+            {
+                button11.Enabled = true;
+                button12.Enabled = !sukr.Checked;
+            }
+            else
+                button11.Enabled = button12.Enabled = false;
         }
 
-        private void okrolDays_ValueChanged(object sender, EventArgs e)
+        private void button11_Click(object sender, EventArgs e)
         {
-            okrolDate.Value = DateTime.Today.Subtract(new TimeSpan((int)okrolDays.Value, 0, 0, 0));
+            Fucks.Fuck f=fucks.SelectedItems[0].Tag as Fucks.Fuck;
+            String nm=label2.Text.Split(':')[1];
+            if (label3.Text!="")
+                nm += " " + label3.Text.Split(':')[1];
+            if (label4.Text!="")
+                nm += "-" + label4.Text.Split(':')[1];
+            (new GenomView(rab.breed, f.breed, rab.genom, f.rgenom, nm, f.partner)).ShowDialog();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            (new MakeFuck(rab.rid)).ShowDialog();
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            int r2=(fucks.SelectedItems[0].Tag as Fucks.Fuck).partnerid;
+            (new MakeFuck(rab.rid, r2)).ShowDialog();
         }
 
     }

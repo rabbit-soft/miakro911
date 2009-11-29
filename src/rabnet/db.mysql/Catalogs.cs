@@ -5,6 +5,11 @@ using System.Text;
 
 namespace rabnet
 {
+    public class Catalog : Dictionary<int, string>
+    {
+
+    }
+
     public interface ICatalogs
     {
         Catalog stdCatalog(String data);

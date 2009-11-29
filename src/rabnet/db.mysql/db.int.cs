@@ -48,6 +48,7 @@ namespace rabnet
         ICatalogs catalogs();
         void RabNetLog(int type, int user, String text);
         Fucks getFucks(int rabbit);
+        Fucks allFuckers(int female);
     }
 
 }

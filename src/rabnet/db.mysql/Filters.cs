@@ -28,11 +28,6 @@ namespace rabnet
         public Row[] data;
     }
 
-    public class Catalog:Dictionary<int,string>
-    {
-
-    }
-
     public class Filters : Dictionary<String, String>
     {
         public string safeValue(String key, String def)
