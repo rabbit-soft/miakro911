@@ -56,7 +56,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 40);
+            this.label2.Location = new System.Drawing.Point(12, 33);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(34, 13);
             this.label2.TabIndex = 2;
@@ -64,7 +64,7 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(53, 38);
+            this.numericUpDown1.Location = new System.Drawing.Point(53, 31);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -85,7 +85,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dateTimePicker1);
             this.Name = "DateDays";
-            this.Size = new System.Drawing.Size(152, 68);
+            this.Size = new System.Drawing.Size(152, 60);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

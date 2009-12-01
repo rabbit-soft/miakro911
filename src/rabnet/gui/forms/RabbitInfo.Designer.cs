@@ -30,6 +30,12 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.TabPage1 = new System.Windows.Forms.TabPage();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.button13 = new System.Windows.Forms.Button();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             this.name = new System.Windows.Forms.ComboBox();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -107,17 +113,23 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.button13 = new System.Windows.Forms.Button();
+            this.button14 = new System.Windows.Forms.Button();
+            this.button15 = new System.Windows.Forms.Button();
+            this.button16 = new System.Windows.Forms.Button();
+            this.suckers = new System.Windows.Forms.ListView();
+            this.columnHeader10 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader11 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader12 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader13 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader14 = new System.Windows.Forms.ColumnHeader();
             this.bdate = new rabnet.components.DateDays();
             this.okrolDd = new rabnet.components.DateDays();
             this.sukrDd = new rabnet.components.DateDays();
+            this.label22 = new System.Windows.Forms.Label();
+            this.button17 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.TabPage1.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.group)).BeginInit();
             this.groupBox3.SuspendLayout();
@@ -134,7 +146,6 @@
             this.groupBox5.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.tabPage6.SuspendLayout();
-            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -148,11 +159,13 @@
             this.tabControl1.Location = new System.Drawing.Point(8, 56);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(514, 301);
+            this.tabControl1.Size = new System.Drawing.Size(514, 331);
             this.tabControl1.TabIndex = 0;
             // 
             // TabPage1
             // 
+            this.TabPage1.Controls.Add(this.button17);
+            this.TabPage1.Controls.Add(this.label22);
             this.TabPage1.Controls.Add(this.groupBox7);
             this.TabPage1.Controls.Add(this.name);
             this.TabPage1.Controls.Add(this.checkBox5);
@@ -163,17 +176,77 @@
             this.TabPage1.Location = new System.Drawing.Point(4, 22);
             this.TabPage1.Name = "TabPage1";
             this.TabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage1.Size = new System.Drawing.Size(506, 275);
+            this.TabPage1.Size = new System.Drawing.Size(506, 305);
             this.TabPage1.TabIndex = 0;
             this.TabPage1.Text = "Основное";
             this.TabPage1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.button13);
+            this.groupBox7.Controls.Add(this.label18);
+            this.groupBox7.Controls.Add(this.label17);
+            this.groupBox7.Controls.Add(this.label12);
+            this.groupBox7.Controls.Add(this.label11);
+            this.groupBox7.Location = new System.Drawing.Point(6, 114);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(144, 155);
+            this.groupBox7.TabIndex = 5;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Бонитировка";
+            // 
+            // button13
+            // 
+            this.button13.Location = new System.Drawing.Point(17, 121);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(106, 23);
+            this.button13.TabIndex = 4;
+            this.button13.Text = "Бониторовка";
+            this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.button13_Click);
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(14, 74);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(46, 13);
+            this.label18.TabIndex = 3;
+            this.label18.Text = "Густота";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(14, 97);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(51, 13);
+            this.label17.TabIndex = 2;
+            this.label17.Text = "Окраска";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(14, 51);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(82, 13);
+            this.label12.TabIndex = 1;
+            this.label12.Text = "Телосложение";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(14, 28);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(26, 13);
+            this.label11.TabIndex = 0;
+            this.label11.Text = "Вес";
             // 
             // name
             // 
             this.name.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.name.Enabled = false;
             this.name.FormattingEnabled = true;
-            this.name.Location = new System.Drawing.Point(236, 23);
+            this.name.Location = new System.Drawing.Point(216, 23);
             this.name.Name = "name";
             this.name.Size = new System.Drawing.Size(121, 21);
             this.name.TabIndex = 0;
@@ -181,7 +254,7 @@
             // checkBox5
             // 
             this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(190, 1);
+            this.checkBox5.Location = new System.Drawing.Point(170, 1);
             this.checkBox5.Name = "checkBox5";
             this.checkBox5.Size = new System.Drawing.Size(77, 17);
             this.checkBox5.TabIndex = 4;
@@ -191,6 +264,9 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.button16);
+            this.groupBox2.Controls.Add(this.button15);
+            this.groupBox2.Controls.Add(this.button14);
             this.groupBox2.Controls.Add(this.bdate);
             this.groupBox2.Controls.Add(this.zone);
             this.groupBox2.Controls.Add(this.label15);
@@ -205,9 +281,9 @@
             this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Enabled = false;
-            this.groupBox2.Location = new System.Drawing.Point(177, 3);
+            this.groupBox2.Location = new System.Drawing.Point(157, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(323, 267);
+            this.groupBox2.Size = new System.Drawing.Size(343, 267);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "                        ";
@@ -246,6 +322,7 @@
             0,
             0,
             0});
+            this.group.ValueChanged += new System.EventHandler(this.group_ValueChanged);
             // 
             // label14
             // 
@@ -262,16 +339,16 @@
             this.groupBox3.Controls.Add(this.button3);
             this.groupBox3.Controls.Add(this.numericUpDown3);
             this.groupBox3.Controls.Add(this.gens);
-            this.groupBox3.Location = new System.Drawing.Point(187, 19);
+            this.groupBox3.Location = new System.Drawing.Point(228, 19);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(127, 236);
+            this.groupBox3.Size = new System.Drawing.Size(109, 236);
             this.groupBox3.TabIndex = 12;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Гены";
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(87, 179);
+            this.button4.Location = new System.Drawing.Point(69, 179);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(29, 23);
             this.button4.TabIndex = 3;
@@ -281,7 +358,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(87, 205);
+            this.button3.Location = new System.Drawing.Point(69, 205);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(29, 23);
             this.button3.TabIndex = 2;
@@ -291,17 +368,17 @@
             // 
             // numericUpDown3
             // 
-            this.numericUpDown3.Location = new System.Drawing.Point(11, 208);
+            this.numericUpDown3.Location = new System.Drawing.Point(9, 208);
             this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(70, 20);
+            this.numericUpDown3.Size = new System.Drawing.Size(54, 20);
             this.numericUpDown3.TabIndex = 1;
             // 
             // gens
             // 
             this.gens.FormattingEnabled = true;
-            this.gens.Location = new System.Drawing.Point(11, 17);
+            this.gens.Location = new System.Drawing.Point(9, 17);
             this.gens.Name = "gens";
-            this.gens.Size = new System.Drawing.Size(105, 160);
+            this.gens.Size = new System.Drawing.Size(89, 160);
             this.gens.TabIndex = 0;
             // 
             // label13
@@ -389,7 +466,7 @@
             0,
             -2147483648});
             this.rate.Name = "rate";
-            this.rate.Size = new System.Drawing.Size(91, 20);
+            this.rate.Size = new System.Drawing.Size(90, 20);
             this.rate.TabIndex = 1;
             // 
             // groupBox1
@@ -400,7 +477,7 @@
             this.groupBox1.Controls.Add(this.defect);
             this.groupBox1.Location = new System.Drawing.Point(6, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(165, 66);
+            this.groupBox1.Size = new System.Drawing.Size(145, 66);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Флаги";
@@ -408,7 +485,7 @@
             // spec
             // 
             this.spec.AutoSize = true;
-            this.spec.Location = new System.Drawing.Point(78, 42);
+            this.spec.Location = new System.Drawing.Point(68, 40);
             this.spec.Name = "spec";
             this.spec.Size = new System.Drawing.Size(76, 17);
             this.spec.TabIndex = 3;
@@ -428,7 +505,7 @@
             // gp
             // 
             this.gp.AutoSize = true;
-            this.gp.Location = new System.Drawing.Point(78, 19);
+            this.gp.Location = new System.Drawing.Point(68, 17);
             this.gp.Name = "gp";
             this.gp.Size = new System.Drawing.Size(45, 17);
             this.gp.TabIndex = 1;
@@ -809,6 +886,7 @@
             // 
             // tabPage6
             // 
+            this.tabPage6.Controls.Add(this.suckers);
             this.tabPage6.Controls.Add(this.listView2);
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
@@ -836,7 +914,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(366, 452);
+            this.button1.Location = new System.Drawing.Point(443, 482);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -846,7 +924,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(285, 452);
+            this.button2.Location = new System.Drawing.Point(281, 482);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
@@ -856,7 +934,7 @@
             // 
             // notes
             // 
-            this.notes.Location = new System.Drawing.Point(8, 376);
+            this.notes.Location = new System.Drawing.Point(8, 406);
             this.notes.Multiline = true;
             this.notes.Name = "notes";
             this.notes.Size = new System.Drawing.Size(510, 59);
@@ -865,7 +943,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 360);
+            this.label1.Location = new System.Drawing.Point(9, 390);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(51, 13);
             this.label1.TabIndex = 4;
@@ -918,7 +996,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(447, 452);
+            this.button5.Location = new System.Drawing.Point(362, 482);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 23);
             this.button5.TabIndex = 10;
@@ -926,71 +1004,79 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // groupBox7
+            // button14
             // 
-            this.groupBox7.Controls.Add(this.button13);
-            this.groupBox7.Controls.Add(this.label18);
-            this.groupBox7.Controls.Add(this.label17);
-            this.groupBox7.Controls.Add(this.label12);
-            this.groupBox7.Controls.Add(this.label11);
-            this.groupBox7.Location = new System.Drawing.Point(6, 114);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(164, 155);
-            this.groupBox7.TabIndex = 5;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Бонитировка";
+            this.button14.Location = new System.Drawing.Point(187, 204);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(25, 22);
+            this.button14.TabIndex = 18;
+            this.button14.Text = "...";
+            this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
             // 
-            // label11
+            // button15
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(14, 28);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(26, 13);
-            this.label11.TabIndex = 0;
-            this.label11.Text = "Вес";
+            this.button15.Location = new System.Drawing.Point(187, 234);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(25, 22);
+            this.button15.TabIndex = 19;
+            this.button15.Text = "...";
+            this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.button15_Click);
             // 
-            // label12
+            // button16
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(14, 51);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(82, 13);
-            this.label12.TabIndex = 1;
-            this.label12.Text = "Телосложение";
+            this.button16.Location = new System.Drawing.Point(187, 20);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(25, 22);
+            this.button16.TabIndex = 20;
+            this.button16.Text = "...";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
-            // label17
+            // suckers
             // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(14, 97);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(51, 13);
-            this.label17.TabIndex = 2;
-            this.label17.Text = "Окраска";
+            this.suckers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader10,
+            this.columnHeader11,
+            this.columnHeader12,
+            this.columnHeader13,
+            this.columnHeader14});
+            this.suckers.FullRowSelect = true;
+            this.suckers.GridLines = true;
+            this.suckers.Location = new System.Drawing.Point(3, 3);
+            this.suckers.MultiSelect = false;
+            this.suckers.Name = "suckers";
+            this.suckers.Size = new System.Drawing.Size(500, 198);
+            this.suckers.TabIndex = 1;
+            this.suckers.UseCompatibleStateImageBehavior = false;
+            this.suckers.View = System.Windows.Forms.View.Details;
             // 
-            // label18
+            // columnHeader10
             // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(14, 74);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(46, 13);
-            this.label18.TabIndex = 3;
-            this.label18.Text = "Густота";
+            this.columnHeader10.Text = "Имя";
             // 
-            // button13
+            // columnHeader11
             // 
-            this.button13.Location = new System.Drawing.Point(17, 121);
-            this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(106, 23);
-            this.button13.TabIndex = 4;
-            this.button13.Text = "Бониторовка";
-            this.button13.UseVisualStyleBackColor = true;
-            this.button13.Click += new System.EventHandler(this.button13_Click);
+            this.columnHeader11.Text = "Количество";
+            // 
+            // columnHeader12
+            // 
+            this.columnHeader12.Text = "Возраст";
+            // 
+            // columnHeader13
+            // 
+            this.columnHeader13.Text = "Пол";
+            // 
+            // columnHeader14
+            // 
+            this.columnHeader14.Text = "Порода";
             // 
             // bdate
             // 
             this.bdate.AutoSize = true;
             this.bdate.DateText = "Дата рожд.";
-            this.bdate.DateValue = new System.DateTime(2009, 11, 29, 0, 0, 0, 0);
+            this.bdate.DateValue = new System.DateTime(2009, 12, 1, 0, 0, 0, 0);
             this.bdate.DaysText = "Возраст";
             this.bdate.DaysValue = 0;
             this.bdate.Location = new System.Drawing.Point(13, 111);
@@ -1005,7 +1091,7 @@
             // 
             this.okrolDd.AutoSize = true;
             this.okrolDd.DateText = "Дата";
-            this.okrolDd.DateValue = new System.DateTime(2009, 11, 29, 0, 0, 0, 0);
+            this.okrolDd.DateValue = new System.DateTime(2009, 12, 1, 0, 0, 0, 0);
             this.okrolDd.DaysText = "Срок";
             this.okrolDd.DaysValue = 0;
             this.okrolDd.Location = new System.Drawing.Point(8, 61);
@@ -1020,7 +1106,7 @@
             // 
             this.sukrDd.AutoSize = true;
             this.sukrDd.DateText = "Дата";
-            this.sukrDd.DateValue = new System.DateTime(2009, 11, 29, 0, 0, 0, 0);
+            this.sukrDd.DateValue = new System.DateTime(2009, 12, 1, 0, 0, 0, 0);
             this.sukrDd.DaysText = "Срок";
             this.sukrDd.DaysValue = 0;
             this.sukrDd.Location = new System.Drawing.Point(0, 46);
@@ -1031,11 +1117,29 @@
             this.sukrDd.Step = 1;
             this.sukrDd.TabIndex = 5;
             // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(154, 284);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(38, 13);
+            this.label22.TabIndex = 6;
+            this.label22.Text = "Адрес";
+            // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(410, 279);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(90, 23);
+            this.button17.TabIndex = 7;
+            this.button17.Text = "Переселить";
+            this.button17.UseVisualStyleBackColor = true;
+            // 
             // RabbitInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(530, 490);
+            this.ClientSize = new System.Drawing.Size(530, 521);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label5);
@@ -1057,6 +1161,8 @@
             this.tabControl1.ResumeLayout(false);
             this.TabPage1.ResumeLayout(false);
             this.TabPage1.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.group)).EndInit();
@@ -1080,8 +1186,6 @@
             this.groupBox5.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage6.ResumeLayout(false);
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1177,5 +1281,16 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.Button button16;
+        private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.Button button14;
+        private System.Windows.Forms.ListView suckers;
+        private System.Windows.Forms.ColumnHeader columnHeader10;
+        private System.Windows.Forms.ColumnHeader columnHeader11;
+        private System.Windows.Forms.ColumnHeader columnHeader12;
+        private System.Windows.Forms.ColumnHeader columnHeader13;
+        private System.Windows.Forms.ColumnHeader columnHeader14;
+        private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.Label label22;
     }
 }

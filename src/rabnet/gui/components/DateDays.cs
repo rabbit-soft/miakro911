@@ -19,7 +19,7 @@ namespace rabnet.components
             dateTimePicker1.Value = DateTime.Now.Date;
         }
 
-        private DDPosition pos;
+        private DDPosition pos=DDPosition.LABELS_LR;
         public DDPosition position{
             get { return pos; }
             set

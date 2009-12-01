@@ -91,6 +91,7 @@ namespace rabnet
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            DataThread.get().stop();
             for (int i = 0; i < panels.Length; i++)
                 panels[i].close();
         }
@@ -108,6 +109,11 @@ namespace rabnet
         private void namesMenuItem_Click(object sender, EventArgs e)
         {
             new NamesForm().ShowDialog();
+        }
+
+        private void зоныToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new CatalogForm(CatalogForm.CatalogType.ZONES).ShowDialog();
         }
 
     }

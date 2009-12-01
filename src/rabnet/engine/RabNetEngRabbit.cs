@@ -40,8 +40,19 @@ namespace rabnet
             eng = dl;
             rab = eng.db().getRabbit(rid);
         }
+        public RabNetEngRabbit(RabNetEngine dl,OneRabbit.RabbitSex sx)
+        {
+            id = 0;
+            eng = dl;
+            String s="void";
+            if (sx==OneRabbit.RabbitSex.FEMALE) s="female";
+            if (sx==OneRabbit.RabbitSex.MALE) s="male";
+            rab = new OneRabbit(0, s, DateTime.Now, 0, "00000", 0, 0, 0, "", 1, 1, 0, "", "", 0, DateTime.MinValue, "", DateTime.MinValue, 0, 0, "", "", "00000");
+        }
         public void commit()
         {
+            if (id == 0)
+                return;
             eng.db().setRabbit(rab);
             rab=eng.db().getRabbit(id);
         }
@@ -155,7 +166,10 @@ namespace rabnet
         public DateTime evdate { get { return rab.evdate; } }
         public int wasname { get { return rab.wasname; } }
         public String address { get { return rab.address; } }
-        public String fullName { get { return rab.fullname; } }
+        public String fullName { get {
+            if (id == 0)
+                return eng.db().makeName(name, surname, secname, group, sex);
+            return rab.fullname; } }
         public String breedName { get { return rab.breedname; } }
         public String bon { get { return rab.bon; } }
         public int age { get { return (DateTime.Now.Date - born.Date).Days; } }

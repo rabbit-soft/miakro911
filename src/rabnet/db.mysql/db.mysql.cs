@@ -242,6 +242,21 @@ namespace rabnet
             RabbitGetter.MakeOkrol(sql, female, when, children, dead);
         }
 
+        public IZones getZones()
+        {
+            return new Zones(sql);
+        }
+
+        public string makeName(int nm, int sur, int sec, int grp, OneRabbit.RabbitSex sex)
+        {
+            return RabbitGetter.makeName(sql, nm, sur, sec, grp, sex);
+        }
+
+        public Younger[] getSuckers(int mom)
+        {
+            return Youngers.getSuckers(sql, mom);
+        }
+
         #endregion
     }
 }

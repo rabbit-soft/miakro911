@@ -47,6 +47,7 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.namesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.breedsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.actMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.настройкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showTierTMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showTierSMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,7 +68,7 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
-            this.actMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.зоныToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -129,7 +130,8 @@
             this.архивToolStripMenuItem,
             this.toolStripMenuItem2,
             this.namesMenuItem,
-            this.breedsMenuItem});
+            this.breedsMenuItem,
+            this.зоныToolStripMenuItem});
             this.видToolStripMenuItem.Name = "видToolStripMenuItem";
             this.видToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
             this.видToolStripMenuItem.Text = "Вид";
@@ -204,6 +206,12 @@
             this.breedsMenuItem.Size = new System.Drawing.Size(258, 22);
             this.breedsMenuItem.Text = "Породы";
             this.breedsMenuItem.Click += new System.EventHandler(this.breedsMenuItem_Click);
+            // 
+            // actMenuItem
+            // 
+            this.actMenuItem.Name = "actMenuItem";
+            this.actMenuItem.Size = new System.Drawing.Size(68, 20);
+            this.actMenuItem.Text = "Действия";
             // 
             // настройкиToolStripMenuItem
             // 
@@ -381,11 +389,12 @@
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
             // 
-            // actMenuItem
+            // зоныToolStripMenuItem
             // 
-            this.actMenuItem.Name = "actMenuItem";
-            this.actMenuItem.Size = new System.Drawing.Size(68, 20);
-            this.actMenuItem.Text = "Действия";
+            this.зоныToolStripMenuItem.Name = "зоныToolStripMenuItem";
+            this.зоныToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
+            this.зоныToolStripMenuItem.Text = "Зоны";
+            this.зоныToolStripMenuItem.Click += new System.EventHandler(this.зоныToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -449,6 +458,7 @@
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ToolStripMenuItem actMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem зоныToolStripMenuItem;
     }
 }
 

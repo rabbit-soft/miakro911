@@ -63,5 +63,6 @@ namespace rabnet
         {
             return "SELECT COUNT(*) FROM names"+makeWhereClause()+";";
         }
+
     }
 }

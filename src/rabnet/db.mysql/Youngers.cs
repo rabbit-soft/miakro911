@@ -58,17 +58,22 @@ namespace rabnet
         {
         }
 
-        public override IData nextItem()
+        public static IData getYounger(MySqlDataReader rd, bool shr, bool sht,bool sho)
         {
-            bool shr=options.safeBool("shr");
             Younger y = new Younger(rd.GetInt32("r_id"), rd.GetString("name"),
                 Rabbits.getRSex(rd.GetString("r_sex")), rd.GetInt32("age"), rd.GetString("breed"),
                 Rabbits.getBon(rd.GetString("r_bon"), shr), rd.GetInt32("r_group"), rd.GetString("r_notes"));
             y.fneighbours = rd.GetInt32("neighbours");
             y.mom = rd.GetString("parent");
             y.momid = rd.GetInt32("r_parent");
-            y.faddress = Buildings.fullPlaceName(rd.GetString("rplace"), shr, options.safeBool("sht"), options.safeBool("sho"));
+            y.faddress = Buildings.fullPlaceName(rd.GetString("rplace"), shr,sht,sho);
             return y;
+        }
+
+        public override IData nextItem()
+        {
+            bool shr=options.safeBool("shr");
+            return getYounger(rd, shr, options.safeBool("sht"), options.safeBool("sho"));
         }
 
         public override string getQuery()
@@ -90,5 +95,25 @@ FROM rabbits,tiers WHERE r_parent!=0 AND r_tier=t_id ORDER BY name;";
         {
             return "SELECT COUNT(*) FROM rabbits WHERE r_parent!=0;";
         }
+
+        public static Younger[] getSuckers(MySqlConnection sql, int id)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT r_id,
+rabname(r_id,2) name,r_group,r_sex,
+(SELECT b_name FROM breeds WHERE b_id=r_breed) breed,
+r_parent,
+rabname(r_parent,2) parent,
+r_notes,TO_DAYS(NOW())-TO_DAYS(r_born) age,r_bon,
+(SELECT SUM(rg.r_group)-rabbits.r_group FROM rabbits rg WHERE rg.r_parent=rabbits.r_parent) neighbours,
+rabplace(r_parent) rplace
+FROM rabbits,tiers WHERE r_parent={0:d} AND r_tier=t_id ORDER BY name;",id), sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            List<Younger> y = new List<Younger>();
+            while(rd.Read())
+                y.Add(getYounger(rd,false,false,false) as Younger);
+            rd.Close();
+            return y.ToArray();
+        }
+
     }
 }

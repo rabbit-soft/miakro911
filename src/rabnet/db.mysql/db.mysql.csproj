@@ -63,6 +63,7 @@
     <Compile Include="Rabbit.cs" />
     <Compile Include="RabNetDataGetterBase.cs" />
     <Compile Include="Youngers.cs" />
+    <Compile Include="Zones.cs" />
     <Compile Include="ZooTeh.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

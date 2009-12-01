@@ -297,5 +297,35 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public IZones getZones()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public string makeName(int nm, int sur, int sec, int grp, OneRabbit.RabbitSex sex)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public Younger[] getSuckers(int mom)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

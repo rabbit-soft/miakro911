@@ -174,6 +174,12 @@ namespace rabnet
             rsb.run();
         }
 
+        private void newRab_Click(object sender, EventArgs e)
+        {
+            (new IncomeForm()).ShowDialog();
+            rsb.run();
+        }
+
 
 
     }

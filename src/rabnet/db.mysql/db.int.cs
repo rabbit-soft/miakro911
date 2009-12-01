@@ -41,6 +41,7 @@ namespace rabnet
         int[] getTiers(int farm);
         IBuilding getBuilding(int tier);
         IBreeds getBreeds();
+        IZones getZones();
         IDataGetter getNames(Filters filters);
         IDataGetter zooTeh(Filters f);
         OneRabbit getRabbit(int rid);
@@ -53,6 +54,8 @@ namespace rabnet
         void makeFuck(int female, int male,DateTime date);
         void makeProholost(int female, DateTime when);
         void makeOkrol(int female, DateTime when, int children, int dead);
+        String makeName(int nm, int sur, int sec,int grp, OneRabbit.RabbitSex sex);
+        Younger[] getSuckers(int mom);
     }
 
 }

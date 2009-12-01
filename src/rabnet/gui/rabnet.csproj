@@ -97,6 +97,12 @@
     <Compile Include="forms\GenomView.Designer.cs">
       <DependentUpon>GenomView.cs</DependentUpon>
     </Compile>
+    <Compile Include="forms\IncomeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\IncomeForm.Designer.cs">
+      <DependentUpon>IncomeForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -138,6 +144,12 @@
     </Compile>
     <Compile Include="forms\RabbitInfo.Designer.cs">
       <DependentUpon>RabbitInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ReplaceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\ReplaceForm.Designer.cs">
+      <DependentUpon>ReplaceForm.cs</DependentUpon>
     </Compile>
     <Compile Include="panels\BuildingsPanel.cs">
       <SubType>UserControl</SubType>
@@ -194,6 +206,9 @@
     <EmbeddedResource Include="forms\GenomView.resx">
       <DependentUpon>GenomView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="forms\IncomeForm.resx">
+      <DependentUpon>IncomeForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -214,6 +229,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\RabbitInfo.resx">
       <DependentUpon>RabbitInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\ReplaceForm.resx">
+      <DependentUpon>ReplaceForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="panels\BuildingsPanel.resx">
       <DependentUpon>BuildingsPanel.cs</DependentUpon>

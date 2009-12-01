@@ -397,7 +397,10 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             nolact = flg[4] == '1';
             surname = sur;
             secname = sec;
-            address = Buildings.fullPlaceName(adr,false,true,true);
+            if (adr == "")
+                address = "Бомж";
+            else
+                address = Buildings.fullPlaceName(adr,false,true,true);
             group = grp;
             breed = brd;
             zone = zn;
@@ -525,7 +528,9 @@ VALUES({0:d},{1:s},{2:d},'sukrol','{3:s}',1);",female,DBHelper.DateToMyString(da
 f_children={1:d},f_dead={2:d} WHERE f_rabid={3:d} AND f_state='sukrol';",
                        DBHelper.DateToMyString(date),children,dead,rabbit),sql);
             cmd.CommandText = String.Format(@"UPDATE rabbits SET r_event_date=NULL,r_event='none',
-r_status=r_status+1,r_last_fuck_okrol={1:s} WHERE r_id={0:d};", rabbit,DBHelper.DateToMyString(date));
+r_status=r_status+1,r_last_fuck_okrol={1:s},r_overall_babies=COALESCE(r_overall_babies+{2:d},1),
+r_lost_babies=COALESCE(r_lost_babies+{3:d},1) WHERE r_id={0:d};", 
+                rabbit,DBHelper.DateToMyString(date),children,dead);
             cmd.ExecuteNonQuery();
             if (children>0)
             {
@@ -540,6 +545,36 @@ VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d});"
                       rabbit,rabbit,father,DBHelper.DateToMyString(date),children,DBHelper.commonBon(fml.bon,ml.bon),
                       DBHelper.makeCommonGenesis(sql,fml.gens,ml.gens),fml.name,ml.name,brd);
             }
+        }
+
+        public static String makeName(MySqlConnection con,int nm,int sur,int sec,int grp,OneRabbit.RabbitSex sex)
+        {
+            MySqlCommand cmd=new MySqlCommand(String.Format(@"SELECT
+(SELECT CONCAT(n_name,' ') FROM names WHERE n_id={0:d}) name,
+(SELECT n_surname FROM names WHERE n_id={1:d}) surname,
+(SELECT n_surname FROM names WHERE n_id={2:d}) secname;
+",nm,sur,sec),con);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            String res = "";
+            if (rd.Read())
+            {
+                res = rd.IsDBNull(0)?"":rd.GetString(0);
+                String ssur = rd.IsDBNull(1) ? "" : rd.GetString(1);
+                String ssec = rd.IsDBNull(2) ? "" : rd.GetString(2);
+                if (grp>1)
+                {
+                    if (ssur!="") ssur+='ы';
+                    if (ssec!="") ssec+='ы';
+                }else if (sex==OneRabbit.RabbitSex.FEMALE){
+                    if (ssur!="") ssur+='а';
+                    if (ssec!="") ssec+='а';
+                }
+                res += ssur;
+                if (ssec != "")
+                    res += "-"+ssec;
+            }
+            rd.Close();
+            return res;
         }
     }
 }

@@ -23,6 +23,7 @@ namespace rabnet
         private TabPage suckersPage;
         private TabPage weightPage;
         private int curzone = 0;
+        bool manual = true;
         public RabbitInfo()
         {
             InitializeComponent();
@@ -39,6 +40,13 @@ namespace rabnet
         {
             rid = id;
         }
+        public RabbitInfo(RabNetEngRabbit r)
+            : this()
+        {
+            rid = 0;
+            rab = r;
+        }
+
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -68,7 +76,7 @@ namespace rabnet
             spec.Checked = rab.spec;
             rate.Value = rab.rate;
             group.Value = rab.group;
-            label5.Text = "Адрес:" + rab.address;
+            label5.Text = label22.Text="Адрес:" + rab.address;
             label2.Text = "Имя:" + name.Text;
             label3.Text = "Ж.Фам:" + surname.Text;
             label4.Text = "М.Фам:" + secname.Text;
@@ -77,7 +85,8 @@ namespace rabnet
             String[] gns = rab.genom.Split(' ');
             gens.Items.Clear();
             foreach (string s in gns)
-                addgen(int.Parse(s));
+                if (s!="")
+                    addgen(int.Parse(s));
             label11.Text = "Вес:" + getbon(rab.bon[1]);
             label12.Text = "Телосложение:" + getbon(rab.bon[2]);
             label18.Text = "Шкура:" + getbon(rab.bon[3]);
@@ -95,7 +104,7 @@ namespace rabnet
             {
                 lastFuck.Value = rab.last_fuck_okrol;
             }
-            label7.Text = "Статус:" + maleStatus.Text;
+            label7.Text = "Статус: " + maleStatus.Text;
         }
 
         private void updateFemale()
@@ -107,13 +116,13 @@ namespace rabnet
             nokuk.Checked = rab.nokuk;
             nolact.Checked = rab.nolact;
             okrolCount.Value = rab.status;
-            label7.Text = "Девочка";
+            label7.Text = "Статус: Девочка";
             if (bdate.DaysValue>=30)
-                label7.Text = "Невеста";
+                label7.Text = "Статус: Невеста";
             if (rab.status==1)
-                label7.Text = "Первокролка";
+                label7.Text = "Статус: Первокролка";
             if (rab.status >1)
-                label7.Text = "Штатная";
+                label7.Text = "Статус: Штатная";
             if (rab.last_fuck_okrol == DateTime.MinValue)
             {
                 okrolDd.Enabled = false;
@@ -135,6 +144,7 @@ namespace rabnet
             deadBab.Value = rab.lost;
             okrolCount.Value = rab.status;
             fucks.Items.Clear();
+            if (rid>0)
             foreach (Fucks.Fuck f in Engine.db().getFucks(rab.rid).fucks)
             {
                 ListViewItem li = fucks.Items.Add(f.when == DateTime.MinValue ? "" : f.when.ToShortDateString());
@@ -149,6 +159,17 @@ namespace rabnet
                 li.Tag = f;
             }
             fucks.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            suckers.Items.Clear();
+            if (rid>0)
+            foreach (Younger y in Engine.db().getSuckers(rab.rid))
+            {
+                ListViewItem li=suckers.Items.Add(y.name());
+                li.SubItems.Add(y.N());
+                li.SubItems.Add(y.age().ToString());
+                li.SubItems.Add(y.sex());
+                li.SubItems.Add(y.breed());
+            }
+            suckers.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
         private void FillList(ComboBox cb,Catalog c,int key)
@@ -200,14 +221,24 @@ namespace rabnet
             }
         }
 
+        private void UpdateNew()
+        {
+            manual = false;
+            checkBox5.Checked = true;
+            checkBox5.Enabled = false; 
+            groupBox2.Enabled = true;
+            button8.Enabled = false;
+            groupBox5.Enabled = groupBox6.Enabled = true;
+            manual = true;
+        }
+
         private void updateData()
         {
             int idx = tabControl1.SelectedIndex;
             while (tabControl1.TabPages.Count > 1)
                 tabControl1.TabPages.RemoveAt(1);
-            if (rid == 0)
-                return;
-            rab=Engine.get().getRabbit(rid);
+            if (rid!=0)
+                rab=Engine.get().getRabbit(rid);
             fillCatalogs(0);
             updateStd();
             if (rab.sex == OneRabbit.RabbitSex.VOID)
@@ -217,6 +248,8 @@ namespace rabnet
             if (rab.sex == OneRabbit.RabbitSex.FEMALE)
                 updateFemale();
             tabControl1.SelectedIndex = idx;
+            if (rid == 0)
+                UpdateNew();
         }
 
         private int getCatValue(Catalog c,string value)
@@ -267,7 +300,8 @@ namespace rabnet
             String CHANGE_ERR=@"Вы пытаетесь изменить статичные данные.
 эти типа плохо... и тд... и тп... 
 Изменить?";
-            if (checkBox5.Checked)
+            if (manual)
+                if (checkBox5.Checked)
                 if (MessageBox.Show(CHANGE_ERR,"Изменить данные?",
                     MessageBoxButtons.YesNo,MessageBoxIcon.Warning)!=DialogResult.Yes)
                 {
@@ -400,6 +434,41 @@ namespace rabnet
         {
             if (fucks.SelectedItems.Count == 1)
                 button11.PerformClick();
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            (new CatalogForm(CatalogForm.CatalogType.BREEDS)).ShowDialog();
+            fillCatalogs(0);
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            (new CatalogForm(CatalogForm.CatalogType.ZONES)).ShowDialog();
+            fillCatalogs(0);
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            (new NamesForm()).ShowDialog();
+            fillCatalogs(0);
+        }
+
+        private void group_ValueChanged(object sender, EventArgs e)
+        {
+            if (group.Value == 1)
+            {
+                name.Enabled = false;
+                fillCatalogs(0);
+                manual = false;
+                checkBox5_CheckedChanged(null, null);
+                manual = true;
+            }
+            else
+            {
+                name.Enabled = false;
+                name.Text = "";
+            }
         }
 
 
