@@ -337,5 +337,20 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public void replaceRabbit(int rid, int farm, int tier_id, int sec)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void replaceYounger(int yid, int farm, int tier_id, int sec)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

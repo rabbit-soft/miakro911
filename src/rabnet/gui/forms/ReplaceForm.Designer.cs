@@ -67,6 +67,7 @@
             this.button1.TabIndex = 1;
             this.button1.Text = "Пересадить";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -204,6 +205,8 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ReplaceForm";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.Text = "Пересадки";
             this.Load += new System.EventHandler(this.ReplaceForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

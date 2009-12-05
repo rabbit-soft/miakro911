@@ -604,5 +604,88 @@ VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d});"
             rd.Close();
             return res;
         }
+
+        public static void freeTier(MySqlConnection sql,int rabbit)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT r_id,r_farm,r_tier,r_tier_id,
+r_area,t_busy1,t_busy2,t_busy3,t_busy4,m_upper,m_lower,m_id FROM rabbits,tiers,minifarms WHERE r_id={0:d} AND r_tier_id=t_id AND m_id=r_farm", rabbit), sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            int tr = 0; int sc = 0;
+            if (rd.Read())
+            {
+                tr = rd.GetInt32("r_tier");
+                sc = rd.GetInt32("r_area");
+                int bs = rd.GetInt32("t_busy" + (sc + 1).ToString());
+                if (bs != rabbit)
+                    tr = 0;
+            }
+            rd.Close();
+            if (tr != 0)
+            {
+                cmd.CommandText = String.Format("UPDATE tiers SET r_busy{0:d}=0 WHERE t_id={1:d};", sc + 1, tr);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void placeRabbit(MySqlConnection sql, int rabbit, int farm, int tier_id, int sec)
+        {
+            MySqlCommand cmd = new MySqlCommand("", sql);
+            cmd.CommandText = String.Format("SELECT {0:s} FROM minifarms WHERE m_id={1:d};", tier_id == 2 ? "m_lower" : "m_upper", farm);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            rd.Read();
+            int ntr = rd.GetInt32(0);
+            rd.Close();
+            cmd.CommandText = String.Format(@"UPDATE rabbits SET r_farm={0:d},r_tier_id={1:d},r_area={2:d},r_tier={3:d} 
+WHERE r_id={4:d};", farm, tier_id, sec, ntr,rabbit);
+            cmd.ExecuteNonQuery();
+            if (farm!=0)
+                cmd.CommandText = String.Format("UPDATE tiers SET t_busy{0:d}={1:d} WHERE t_id={2:d};", sec + 1, rabbit, ntr);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void removeParent(MySqlConnection sql,int rabbit)
+        {
+            MySqlCommand cmd = new MySqlCommand("UPDATE rabbits SET r_parent=0 WHERE r_id="+rabbit.ToString()+";",sql);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void replaceYounger(MySqlConnection sql, int rabbit, int farm, int tier_id, int sec)
+        {
+            removeParent(sql, rabbit);
+            placeRabbit(sql, rabbit, farm, tier_id, sec);
+        }
+
+        public static void setRabbitSex(MySqlConnection sql, int rabbit, OneRabbit.RabbitSex sex)
+        {
+            string sx = "void";
+            if (sex == OneRabbit.RabbitSex.FEMALE) sx = "female";
+            if (sex == OneRabbit.RabbitSex.MALE) sx = "male";
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE rabbits SET r_sex='{0:s}' WHERE r_id={1:d};",sx,rabbit), sql);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static int cloneRabbit(MySqlConnection sql,int rabbit,int count,int farm,int tier_id,int sec,OneRabbit.RabbitSex sex,int mom)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"INSERT INTO rabbits
+(r_parent,r_father,r_mother,r_name,r_surname,r_secname,r_sex,r_bon,r_okrol,r_breed,r_rate,r_group,
+r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date) SELECT 
+{1:d},r_father,r_mother,0,r_surname,r_secname,r_sex,r_bon,r_okrol,r_breed,r_rate,{2:d},
+r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date
+FROM rabbits WHERE r_id={0:d};",rabbit,mom,count), sql);
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_group=r_group-{0:d} WHERE r_id={1:d};",count,rabbit);
+            int nid = (int)cmd.LastInsertedId;
+            if (sex != OneRabbit.RabbitSex.VOID)
+                setRabbitSex(sql, rabbit, sex);
+            if (mom == 0 && farm != 0)
+                placeRabbit(sql, nid, farm, tier_id, sec);
+            return nid;
+        }
+
+        public static void replaceRabbit(MySqlConnection sql, int rabbit, int farm, int tier_id, int sec)
+        {
+            freeTier(sql, rabbit);
+            placeRabbit(sql, rabbit, farm, tier_id, sec);
+        }
     }
 }

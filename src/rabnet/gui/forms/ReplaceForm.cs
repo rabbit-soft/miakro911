@@ -15,6 +15,8 @@ namespace rabnet
         private DataTable ds = new DataTable();
         private DataGridViewComboBoxColumn cbc = new DataGridViewComboBoxColumn();
         private Building[] bs = null;
+        public enum Action { NONE,CHANGE}
+        private Action action = Action.NONE;
         public ReplaceForm()
         {
             InitializeComponent();
@@ -35,6 +37,10 @@ namespace rabnet
         public void addRabbit(int id)
         {
             rbs.Add(Engine.get().getRabbit(id));
+        }
+        public void setAction(Action act)
+        {
+            action = act;
         }
 
         public bool myrab(int i)
@@ -128,7 +134,9 @@ namespace rabnet
                 int st = checkEmpty(val, rid);
                 if (st == 1) status = "жилобмен";
                 if (st == 2) { err = true; status = "занято"; }
-                DataRow rw=ds.Rows.Add(r.fullName, r.group, r.address, val, status,rid,-1,0);
+                DataRow rw=ds.Rows.Add(r.fullName, r.group, r.address, val, status,rid,-1);
+                if (action == Action.CHANGE && dataGridView1.SelectedRows.Count < 2)
+                    dataGridView1.Rows[dataGridView1.Rows.Count - 1].Selected = true;
                 if (err)   rw.RowError = "занято";
                 int yid = 0;
                 foreach (OneRabbit y in r.youngers)
@@ -142,13 +150,19 @@ namespace rabnet
                     st = checkEmpty(val, rid);
                     if (st == 1) status = "жилобмен";
                     if (st == 2) { err = true; status = "занято"; }
-                    rw=ds.Rows.Add(y.fullname, y.group, r.address, val, status, rid, yid,0);
+                    rw=ds.Rows.Add(y.fullname, y.group, r.address, val, status, rid, yid);
                     if (err)
                         rw.RowError = "занято";
                     yid++;
                 }
             }
             dataGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+            if (action == Action.CHANGE)
+            {
+                action = Action.NONE;
+                if (dataGridView1.SelectedRows.Count == 2)
+                    button4.PerformClick();
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -281,6 +295,47 @@ namespace rabnet
         private void button7_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private int[] getAddress(String s)
+        {
+            if (s == "бомж")
+                return new int[] { 0, 0, 0 };
+            for (int i = 0; i < bs.Length; i++)
+                for (int j = 0; j < bs[i].secs();j++ )
+                    if (bs[i].fullname[j] == s)
+                    {
+                        return new int[]{bs[i].farm(),bs[i].tier_id(),j};
+                    }
+            return null;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                foreach (RabNetEngRabbit r in rbs)
+                {
+                    if (r.tag != "")
+                    {
+                        int[] adr = getAddress(r.tag);
+                        if (adr != null) 
+                            r.replaceRabbit(adr[0],adr[1],adr[2]);
+                    }
+                    foreach(OneRabbit y in r.youngers)
+                        if (y.tag != "")
+                        {
+                            int[] adr = getAddress(y.tag);
+                            if (adr != null)
+                                r.ReplaceYounger(y.id, adr[0], adr[1], adr[2]);
+                        }
+                }
+                Close();
+            }
+            catch (ApplicationException ex)
+            {
+                MessageBox.Show("Error "+ex.GetType().ToString()+":"+ex.Message);
+            }
         }
 
     }

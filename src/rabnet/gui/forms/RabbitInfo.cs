@@ -471,6 +471,13 @@ namespace rabnet
             }
         }
 
+        private void button17_Click(object sender, EventArgs e)
+        {
+            ReplaceForm rpf = new ReplaceForm();
+            rpf.addRabbit(rab.rid);
+            rpf.ShowDialog();
+        }
+
 
     }
 }

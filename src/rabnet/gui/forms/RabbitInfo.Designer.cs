@@ -30,6 +30,8 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.TabPage1 = new System.Windows.Forms.TabPage();
+            this.button17 = new System.Windows.Forms.Button();
+            this.label22 = new System.Windows.Forms.Label();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.button13 = new System.Windows.Forms.Button();
             this.label18 = new System.Windows.Forms.Label();
@@ -39,6 +41,9 @@
             this.name = new System.Windows.Forms.ComboBox();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button16 = new System.Windows.Forms.Button();
+            this.button15 = new System.Windows.Forms.Button();
+            this.button14 = new System.Windows.Forms.Button();
             this.zone = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
             this.group = new System.Windows.Forms.NumericUpDown();
@@ -101,6 +106,12 @@
             this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader9 = new System.Windows.Forms.ColumnHeader();
             this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.suckers = new System.Windows.Forms.ListView();
+            this.columnHeader10 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader11 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader12 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader13 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader14 = new System.Windows.Forms.ColumnHeader();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -112,17 +123,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
-            this.button14 = new System.Windows.Forms.Button();
-            this.button15 = new System.Windows.Forms.Button();
-            this.button16 = new System.Windows.Forms.Button();
-            this.suckers = new System.Windows.Forms.ListView();
-            this.columnHeader10 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader11 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader12 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader13 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader14 = new System.Windows.Forms.ColumnHeader();
-            this.label22 = new System.Windows.Forms.Label();
-            this.button17 = new System.Windows.Forms.Button();
             this.bdate = new rabnet.components.DateDays();
             this.okrolDd = new rabnet.components.DateDays();
             this.sukrDd = new rabnet.components.DateDays();
@@ -179,6 +179,25 @@
             this.TabPage1.TabIndex = 0;
             this.TabPage1.Text = "Основное";
             this.TabPage1.UseVisualStyleBackColor = true;
+            // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(410, 279);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(90, 23);
+            this.button17.TabIndex = 7;
+            this.button17.Text = "Переселить";
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(154, 284);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(38, 13);
+            this.label22.TabIndex = 6;
+            this.label22.Text = "Адрес";
             // 
             // groupBox7
             // 
@@ -286,6 +305,36 @@
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "                        ";
+            // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(187, 20);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(25, 22);
+            this.button16.TabIndex = 20;
+            this.button16.Text = "...";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
+            // 
+            // button15
+            // 
+            this.button15.Location = new System.Drawing.Point(187, 234);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(25, 22);
+            this.button15.TabIndex = 19;
+            this.button15.Text = "...";
+            this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.button15_Click);
+            // 
+            // button14
+            // 
+            this.button14.Location = new System.Drawing.Point(187, 204);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(25, 22);
+            this.button14.TabIndex = 18;
+            this.button14.Text = "...";
+            this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
             // 
             // zone
             // 
@@ -893,6 +942,44 @@
             this.tabPage6.Text = "Подсосные";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
+            // suckers
+            // 
+            this.suckers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader10,
+            this.columnHeader11,
+            this.columnHeader12,
+            this.columnHeader13,
+            this.columnHeader14});
+            this.suckers.FullRowSelect = true;
+            this.suckers.GridLines = true;
+            this.suckers.Location = new System.Drawing.Point(3, 3);
+            this.suckers.MultiSelect = false;
+            this.suckers.Name = "suckers";
+            this.suckers.Size = new System.Drawing.Size(500, 265);
+            this.suckers.TabIndex = 1;
+            this.suckers.UseCompatibleStateImageBehavior = false;
+            this.suckers.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader10
+            // 
+            this.columnHeader10.Text = "Имя";
+            // 
+            // columnHeader11
+            // 
+            this.columnHeader11.Text = "Количество";
+            // 
+            // columnHeader12
+            // 
+            this.columnHeader12.Text = "Возраст";
+            // 
+            // columnHeader13
+            // 
+            this.columnHeader13.Text = "Пол";
+            // 
+            // columnHeader14
+            // 
+            this.columnHeader14.Text = "Порода";
+            // 
             // tabPage5
             // 
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
@@ -994,97 +1081,11 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // button14
-            // 
-            this.button14.Location = new System.Drawing.Point(187, 204);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(25, 22);
-            this.button14.TabIndex = 18;
-            this.button14.Text = "...";
-            this.button14.UseVisualStyleBackColor = true;
-            this.button14.Click += new System.EventHandler(this.button14_Click);
-            // 
-            // button15
-            // 
-            this.button15.Location = new System.Drawing.Point(187, 234);
-            this.button15.Name = "button15";
-            this.button15.Size = new System.Drawing.Size(25, 22);
-            this.button15.TabIndex = 19;
-            this.button15.Text = "...";
-            this.button15.UseVisualStyleBackColor = true;
-            this.button15.Click += new System.EventHandler(this.button15_Click);
-            // 
-            // button16
-            // 
-            this.button16.Location = new System.Drawing.Point(187, 20);
-            this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(25, 22);
-            this.button16.TabIndex = 20;
-            this.button16.Text = "...";
-            this.button16.UseVisualStyleBackColor = true;
-            this.button16.Click += new System.EventHandler(this.button16_Click);
-            // 
-            // suckers
-            // 
-            this.suckers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader10,
-            this.columnHeader11,
-            this.columnHeader12,
-            this.columnHeader13,
-            this.columnHeader14});
-            this.suckers.FullRowSelect = true;
-            this.suckers.GridLines = true;
-            this.suckers.Location = new System.Drawing.Point(3, 3);
-            this.suckers.MultiSelect = false;
-            this.suckers.Name = "suckers";
-            this.suckers.Size = new System.Drawing.Size(500, 265);
-            this.suckers.TabIndex = 1;
-            this.suckers.UseCompatibleStateImageBehavior = false;
-            this.suckers.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader10
-            // 
-            this.columnHeader10.Text = "Имя";
-            // 
-            // columnHeader11
-            // 
-            this.columnHeader11.Text = "Количество";
-            // 
-            // columnHeader12
-            // 
-            this.columnHeader12.Text = "Возраст";
-            // 
-            // columnHeader13
-            // 
-            this.columnHeader13.Text = "Пол";
-            // 
-            // columnHeader14
-            // 
-            this.columnHeader14.Text = "Порода";
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(154, 284);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(38, 13);
-            this.label22.TabIndex = 6;
-            this.label22.Text = "Адрес";
-            // 
-            // button17
-            // 
-            this.button17.Location = new System.Drawing.Point(410, 279);
-            this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(90, 23);
-            this.button17.TabIndex = 7;
-            this.button17.Text = "Переселить";
-            this.button17.UseVisualStyleBackColor = true;
-            // 
             // bdate
             // 
             this.bdate.AutoSize = true;
             this.bdate.DateText = "Дата рожд.";
-            this.bdate.DateValue = new System.DateTime(2009, 12, 1, 0, 0, 0, 0);
+            this.bdate.DateValue = new System.DateTime(2009, 12, 5, 0, 0, 0, 0);
             this.bdate.DaysText = "Возраст";
             this.bdate.DaysValue = 0;
             this.bdate.Location = new System.Drawing.Point(13, 111);
@@ -1099,7 +1100,7 @@
             // 
             this.okrolDd.AutoSize = true;
             this.okrolDd.DateText = "Дата";
-            this.okrolDd.DateValue = new System.DateTime(2009, 12, 1, 0, 0, 0, 0);
+            this.okrolDd.DateValue = new System.DateTime(2009, 12, 5, 0, 0, 0, 0);
             this.okrolDd.DaysText = "Срок";
             this.okrolDd.DaysValue = 0;
             this.okrolDd.Location = new System.Drawing.Point(8, 61);
@@ -1114,7 +1115,7 @@
             // 
             this.sukrDd.AutoSize = true;
             this.sukrDd.DateText = "Дата";
-            this.sukrDd.DateValue = new System.DateTime(2009, 12, 1, 0, 0, 0, 0);
+            this.sukrDd.DateValue = new System.DateTime(2009, 12, 5, 0, 0, 0, 0);
             this.sukrDd.DaysText = "Срок";
             this.sukrDd.DaysValue = 0;
             this.sukrDd.Location = new System.Drawing.Point(0, 46);

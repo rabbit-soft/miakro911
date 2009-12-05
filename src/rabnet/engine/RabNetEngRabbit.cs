@@ -229,5 +229,17 @@ namespace rabnet
                 throw new ExBadDate(when);
             eng.db().makeOkrol(this.id, when, children, dead);
         }
+
+        public void replaceRabbit(int farm,int tier_id,int sec)
+        {
+            if (rid == 0)
+                tag = String.Format("{0:d}|{1:d}|{2:d}", farm, tier_id, sec);
+            else
+                eng.db().replaceRabbit(rid, farm, tier_id, sec);
+        }
+        public void ReplaceYounger(int yid, int farm, int tier, int sec)
+        {
+            eng.db().replaceYounger(yid, farm, tier, sec);
+        }
     }
 }

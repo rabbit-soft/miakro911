@@ -192,7 +192,7 @@ namespace mia_conv
         {
             Application.DoEvents();
             String tp = "unk";
-            int b1=0,b2=0,b3=0,b4=0;
+            String b1="NULL",b2="NULL",b3="NULL",b4="NULL";
             String heater="00";
             String nest="00";
             String delims="000";
@@ -202,56 +202,56 @@ namespace mia_conv
                 case 0: tp = "none";
                     break;
                 case 1: tp = "female";
-                    b1 = tr.busies[0];
+                    b1 = "'"+tr.busies[0].ToString()+"'";
                     heater = tr.heaters[0].ToString(d);
                     nest = tr.nests[0].ToString(d);
                     break;
                 case 2: tp = "dfemale";
-                    b1 = tr.busies[0];
-                    b2 = tr.busies[1];
+                    b1 = "'" + tr.busies[0].ToString() + "'";
+                    b2 = "'" + tr.busies[1].ToString() + "'";
                     heater = tr.heaters[0].ToString(d)+tr.heaters[1].ToString(d);
                     nest = tr.nests[0].ToString(d)+tr.nests[1].ToString(d);
                     break;
                 case 3: tp = "complex";
-                    b1 = tr.busies[0];
-                    b2 = tr.busies[1];
-                    b3 = tr.busies[2];
+                    b1 = "'" + tr.busies[0].ToString() + "'";
+                    b2 = "'" + tr.busies[1].ToString() + "'";
+                    b3 = "'" + tr.busies[2].ToString() + "'";
                     heater = tr.heaters[0].ToString(d);
                     nest = tr.nests[0].ToString(d);
                     break;
                 case 4: tp = "jurta";
-                    b1 = tr.busies[0];
-                    b2 = tr.busies[1];
+                    b1 = "'" + tr.busies[0].ToString() + "'";
+                    b2 = "'" + tr.busies[1].ToString() + "'";
                     heater = tr.heaters[0].ToString(d);
                     nest = tr.nests[0].ToString(d);
                     delims = tr.nest_wbig.ToString(d);
                     break;
                 case 5: tp = "quarta";
-                    b1 = tr.busies[0];
-                    b2 = tr.busies[1];
-                    b3 = tr.busies[2];
-                    b4 = tr.busies[3];
+                    b1 = "'" + tr.busies[0].ToString() + "'";
+                    b2 = "'" + tr.busies[1].ToString() + "'";
+                    b3 = "'" + tr.busies[2].ToString() + "'";
+                    b4 = "'" + tr.busies[3].ToString() + "'";
                     delims = tr.delims[0].ToString(d)+tr.delims[1].ToString(d)+tr.delims[2].ToString(d);
                     break;
                 case 6: tp = "vertep";
-                    b1 = tr.busies[0];
-                    b2 = tr.busies[1];
+                    b1 = "'" + tr.busies[0].ToString() + "'";
+                    b2 = "'" + tr.busies[1].ToString() + "'";
                     break;
                 case 7: tp = "barin";
-                    b1 = tr.busies[0];
-                    b2 = tr.busies[1];
+                    b1 = "'" + tr.busies[0].ToString() + "'";
+                    b2 = "'" + tr.busies[1].ToString() + "'";
                     delims = tr.delims[0].ToString(d);
                     break;
                 case 8: tp = "cabin";
-                    b1 = tr.busies[0];
-                    b2 = tr.busies[1];
+                    b1 = "'" + tr.busies[0].ToString() + "'";
+                    b2 = "'" + tr.busies[1].ToString() + "'";
                     heater = tr.heaters[0].ToString(d);
                     nest = tr.nests[0].ToString(d);
                     break;
             }
-            c.CommandText = String.Format("INSERT INTO tiers(t_type,t_repair,t_notes,t_heater,t_nest,t_delims) " +  //t_busy1,t_busy2,t_busy3,t_busy4,
-                "VALUES('{0:s}',{1:d},'{2:s}','{3:s}','{4:s}','{5:s}');", //{3:d},{4:d},{5:d},{6:d},
-                tp, tr.repair, tr.notes.value(), heater, nest, delims); //b1,b2,b3,b4,
+            c.CommandText = String.Format("INSERT INTO tiers(t_type,t_repair,t_notes,t_heater,t_nest,t_delims,t_busy1,t_busy2,t_busy3,t_busy4) " + 
+                "VALUES('{0:s}',{1:d},'{2:s}','{3:s}','{4:s}','{5:s}',{6:s},{7:s},{8:s},{9:s});", //{3:d},{4:d},{5:d},{6:d},
+                tp, tr.repair, tr.notes.value(), heater, nest, delims,b1,b2,b3,b4); //b1,b2,b3,b4,
             c.ExecuteNonQuery();
             return (int)c.LastInsertedId;
         }

@@ -262,6 +262,15 @@ namespace rabnet
             return Buildings.getFreeBuildings(sql, f);
         }
 
+        public void replaceRabbit(int rid, int farm, int tier_id, int sec)
+        {
+            RabbitGetter.replaceRabbit(sql, rid, farm, tier_id, sec);
+        }
+        public void replaceYounger(int rid, int farm, int tier_id, int sec)
+        {
+            RabbitGetter.replaceYounger(sql, rid, farm, tier_id, sec);
+        }
+
         #endregion
     }
 }
