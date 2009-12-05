@@ -12,7 +12,8 @@ namespace rabnet
     {
         private bool manual = true;
         public BuildingsPanel(): base(){}
-        public BuildingsPanel(RabStatusBar sb):base(sb,null)
+
+        public BuildingsPanel(RabStatusBar bsb):base(bsb, new BuildingsFilter(bsb))
         {
             cs = new ListViewColumnSorter(listView1, new int[] { });
             listView1.ListViewItemSorter = null;

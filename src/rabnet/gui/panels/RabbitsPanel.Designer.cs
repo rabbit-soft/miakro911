@@ -188,6 +188,7 @@
             this.SelectAllMenuItem});
             this.actMenu.Name = "actMenu";
             this.actMenu.Size = new System.Drawing.Size(201, 192);
+            this.actMenu.Opening += new System.ComponentModel.CancelEventHandler(this.actMenu_Opening);
             // 
             // passportMenuItem
             // 
