@@ -37,32 +37,43 @@ namespace rabnet
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            RabnetConfigHandler.dataSource xs = RabnetConfigHandler.ds[comboBox1.SelectedIndex];
-            Engine.get().initEngine(xs.type, xs.param);
-            comboBox2.Items.Clear();
-            comboBox2.Enabled = false;
-            textBox1.Enabled = false;
-            List<String> usrs = Engine.get().db().getUsers();
-            if (usrs != null)
+            if (comboBox1.SelectedIndex < 0)
+                return;
+            try
             {
-                foreach (String s in usrs)
+                RabnetConfigHandler.dataSource xs = RabnetConfigHandler.ds[comboBox1.SelectedIndex];
+                Engine.get().initEngine(xs.type, xs.param);
+                comboBox2.Items.Clear();
+                comboBox2.Enabled = false;
+                textBox1.Enabled = false;
+                List<String> usrs = Engine.get().db().getUsers();
+                if (usrs != null)
                 {
-                    comboBox2.Items.Add(s);
-                    if (xs.defuser != "" && xs.defuser == s)
+                    foreach (String s in usrs)
                     {
-                        comboBox2.SelectedIndex = comboBox2.Items.Count - 1;
-                        if (xs.defpassword != "")
+                        comboBox2.Items.Add(s);
+                        if (xs.defuser != "" && xs.defuser == s)
                         {
-                            textBox1.Text = xs.defpassword;
+                            comboBox2.SelectedIndex = comboBox2.Items.Count - 1;
+                            if (xs.defpassword != "")
+                            {
+                                textBox1.Text = xs.defpassword;
+                            }
                         }
                     }
+                    comboBox2.Enabled = true;
+                    textBox1.Enabled = true;
                 }
-                comboBox2.Enabled = true;
-                textBox1.Enabled = true;
+                else
+                {
+                    button2.Enabled = true;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                button2.Enabled = true;
+                comboBox2.SelectedIndex = comboBox1.SelectedIndex = -1;
+                comboBox1.Text=comboBox2.Text=textBox1.Text = "";
+                MessageBox.Show("Ошибка подключения " + ex.GetType().ToString() + ": " + ex.Message,"Ошибка подключения");
             }
         }
 

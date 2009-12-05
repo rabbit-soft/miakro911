@@ -61,6 +61,12 @@
     <Compile Include="components\FarmDrawer.Designer.cs">
       <DependentUpon>FarmDrawer.cs</DependentUpon>
     </Compile>
+    <Compile Include="filters\BuildingsFilter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="filters\BuildingsFilter.Designer.cs">
+      <DependentUpon>BuildingsFilter.cs</DependentUpon>
+    </Compile>
     <Compile Include="filters\FilterPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -190,6 +196,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="components\FarmDrawer.resx">
       <DependentUpon>FarmDrawer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="filters\BuildingsFilter.resx">
+      <DependentUpon>BuildingsFilter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="filters\RabbitsFilter.resx">
       <DependentUpon>RabbitsFilter.cs</DependentUpon>

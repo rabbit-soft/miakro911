@@ -57,6 +57,19 @@ namespace rabnet
             }
             return nextItem();
         }
+        public static String addWhereAnd(String str, String adder)
+        {
+            if (str != "") str += " AND ";
+            str += adder;
+            return str;
+        }
+        public static String addWhereOr(String str, String adder)
+        {
+            if (str != "") str += " OR ";
+            str += adder;
+            return str;
+        }
+
     }
 
 }
