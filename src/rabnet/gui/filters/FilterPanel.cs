@@ -40,7 +40,8 @@ namespace rabnet
 
         public virtual Filters getFilters() { return null; }
         public virtual void setFilters(Filters f){}
-        public virtual void loadFilters() {
+        public virtual void loadFilters() 
+        {
             if (fs!=null)
                 fs.Items.Clear();
             fs.Items.Add("Очистить");
