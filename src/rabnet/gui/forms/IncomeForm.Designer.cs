@@ -35,6 +35,7 @@
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -44,7 +45,6 @@
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
-            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
             this.SuspendLayout();
             // 
             // zones
@@ -101,6 +101,10 @@
             // columnHeader4
             // 
             this.columnHeader4.Text = "Порода";
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Адрес";
             // 
             // button1
             // 
@@ -193,10 +197,6 @@
             this.button9.Text = "Поселить";
             this.button9.UseVisualStyleBackColor = true;
             // 
-            // columnHeader5
-            // 
-            this.columnHeader5.Text = "Адрес";
-            // 
             // IncomeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -218,6 +218,8 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "IncomeForm";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.Text = "Привоз";
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -719,6 +719,7 @@
             this.checkBox4.TabIndex = 9;
             this.checkBox4.Text = "окролы";
             this.checkBox4.UseVisualStyleBackColor = true;
+            this.checkBox4.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
             // 
             // groupBox6
             // 
@@ -739,6 +740,7 @@
             this.okrolCount.Name = "okrolCount";
             this.okrolCount.Size = new System.Drawing.Size(77, 20);
             this.okrolCount.TabIndex = 1;
+            this.okrolCount.ValueChanged += new System.EventHandler(this.okrolCount_ValueChanged);
             // 
             // label21
             // 
@@ -1107,7 +1109,7 @@
             this.okrolDd.Maximum = 100000;
             this.okrolDd.Name = "okrolDd";
             this.okrolDd.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
-            this.okrolDd.Size = new System.Drawing.Size(136, 61);
+            this.okrolDd.Size = new System.Drawing.Size(136, 48);
             this.okrolDd.Step = 1;
             this.okrolDd.TabIndex = 2;
             // 

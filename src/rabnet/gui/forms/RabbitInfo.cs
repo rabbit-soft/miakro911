@@ -123,7 +123,7 @@ namespace rabnet
                 label7.Text = "Статус: Первокролка";
             if (rab.status >1)
                 label7.Text = "Статус: Штатная";
-            if (rab.last_fuck_okrol == DateTime.MinValue)
+            if (rab.status<1)
             {
                 okrolDd.Enabled = false;
             }
@@ -277,6 +277,7 @@ namespace rabnet
             curzone = rab.zone;
             rab.born = bdate.DateValue.Date;
             rab.group = (int)group.Value;
+            rab.notes = notes.Text;
             String gns = "";
             for (int i = 0; i < gens.Items.Count;i++ )
                 gns += ((int)gens.Items[i]).ToString() + " ";
@@ -291,19 +292,35 @@ namespace rabnet
             }
             if (rab.sex == OneRabbit.RabbitSex.FEMALE)
             {
+                rab.status = (int)okrolCount.Value;
+                if (rab.status<1)
+                    rab.last_fuck_okrol = DateTime.MinValue;
+                else
+                    rab.last_fuck_okrol = okrolDd.DateValue;
+                rab.nokuk = nokuk.Checked;
+                rab.nolact = nolact.Checked;
+                rab.babies = (int)overallBab.Value;
+                rab.lost = (int)deadBab.Value;
             }
             rab.commit();
         }
 
-        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        private bool warnme()
         {
-            String CHANGE_ERR=@"Вы пытаетесь изменить статичные данные.
+            String CHANGE_ERR = @"Вы пытаетесь изменить статичные данные.
 эти типа плохо... и тд... и тп... 
 Изменить?";
+            if (!manual)
+                return true;
+            return MessageBox.Show(CHANGE_ERR, "Изменить данные?",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes;
+        }
+
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
             if (manual)
-                if (checkBox5.Checked)
-                if (MessageBox.Show(CHANGE_ERR,"Изменить данные?",
-                    MessageBoxButtons.YesNo,MessageBoxIcon.Warning)!=DialogResult.Yes)
+            if (checkBox5.Checked)
+                if (!warnme())
                 {
                     checkBox5.Checked=false;
                     return;
@@ -311,7 +328,7 @@ namespace rabnet
             name.Enabled=groupBox2.Enabled = checkBox5.Checked;
             if (rab.group > 1 || rab.sex==OneRabbit.RabbitSex.VOID)
                 name.Enabled = false;
-            if (!checkBox5.Checked && rab.group==1 && rab.sex!=OneRabbit.RabbitSex.VOID)
+            if (!checkBox5.Checked && rab.group==1 && rab.sex!=OneRabbit.RabbitSex.VOID && rab.name==0)
                 name.Enabled = true;
         }
 
@@ -476,6 +493,24 @@ namespace rabnet
             ReplaceForm rpf = new ReplaceForm();
             rpf.addRabbit(rab.rid);
             rpf.ShowDialog();
+            updateData();
+        }
+
+        private void checkBox4_CheckedChanged(object sender, EventArgs e)
+        {
+            groupBox6.Enabled = false;
+            if (checkBox4.Checked)
+                if (!warnme())
+                {
+                    checkBox4.Checked = false;
+                    return;
+                }
+            groupBox6.Enabled = checkBox4.Checked;
+        }
+
+        private void okrolCount_ValueChanged(object sender, EventArgs e)
+        {
+            okrolDd.Enabled = (okrolCount.Value!=0);
         }
 
 
