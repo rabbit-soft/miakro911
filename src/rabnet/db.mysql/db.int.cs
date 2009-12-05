@@ -39,7 +39,7 @@ namespace rabnet
         TreeData buildingsTree();
         IDataGetter getYoungers(Filters filters);
         int[] getTiers(int farm);
-        IBuilding getBuilding(int tier);
+        Building getBuilding(int tier);
         IBreeds getBreeds();
         IZones getZones();
         IDataGetter getNames(Filters filters);
@@ -56,6 +56,7 @@ namespace rabnet
         void makeOkrol(int female, DateTime when, int children, int dead);
         String makeName(int nm, int sur, int sec,int grp, OneRabbit.RabbitSex sex);
         Younger[] getSuckers(int mom);
+        Building[] getFreeBuilding(Filters f);
     }
 
 }

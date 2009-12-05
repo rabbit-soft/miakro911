@@ -194,7 +194,8 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}');",
             int secname = getNameId((ushort)r.pathkey.value(), 1);
             vals += String.Format(",{0:d},{1:d},{2:d},'{3:s}',{4:d}", name, surname, secname,r.notes.value(),r.okrol_num.value());
             int tier=getTier((int)r.where.value(),(int)r.tier_id.value());
-            settieruser(tier,(int)r.area.value(),curRabbit);
+            if (parent==0)
+                settieruser(tier,(int)r.area.value(),curRabbit);
             if (name != 0)
                 setnameuser(name, curRabbit);
             String flags = String.Format("{0:D1}{1:D1}{2:D1}",r.butcher.value(),r.risk.value(),r.multi.value());

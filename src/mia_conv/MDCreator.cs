@@ -249,9 +249,9 @@ namespace mia_conv
                     nest = tr.nests[0].ToString(d);
                     break;
             }
-            c.CommandText=String.Format("INSERT INTO tiers(t_type,t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4,t_heater,t_nest,t_delims) "+
-                "VALUES('{0:s}',{1:d},'{2:s}',{3:d},{4:d},{5:d},{6:d},'{7:s}','{8:s}','{9:s}');",
-                tp,tr.repair,tr.notes.value(),b1,b2,b3,b4,heater,nest,delims);
+            c.CommandText = String.Format("INSERT INTO tiers(t_type,t_repair,t_notes,t_heater,t_nest,t_delims) " +  //t_busy1,t_busy2,t_busy3,t_busy4,
+                "VALUES('{0:s}',{1:d},'{2:s}','{3:s}','{4:s}','{5:s}');", //{3:d},{4:d},{5:d},{6:d},
+                tp, tr.repair, tr.notes.value(), heater, nest, delims); //b1,b2,b3,b4,
             c.ExecuteNonQuery();
             return (int)c.LastInsertedId;
         }

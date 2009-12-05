@@ -176,7 +176,7 @@ namespace rabnet
             throw new NotImplementedException();
         }
 
-        public IBuilding getBuilding(int tier)
+        public Building getBuilding(int tier)
         {
             throw new NotImplementedException();
         }
@@ -322,6 +322,16 @@ namespace rabnet
 
 
         public Younger[] getSuckers(int mom)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public Building[] getFreeBuilding(Filters f)
         {
             throw new NotImplementedException();
         }

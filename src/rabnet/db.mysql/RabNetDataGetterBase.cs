@@ -9,7 +9,7 @@ namespace rabnet
 {
     abstract class RabNetDataGetterBase : IDataGetter
     {
-        protected ILog log = log4net.LogManager.GetLogger(typeof(RabNetDataGetterBase));
+        protected static ILog log = log4net.LogManager.GetLogger(typeof(RabNetDataGetterBase));
         protected int count;
 
         protected int citem=0;

@@ -161,6 +161,11 @@ namespace rabnet
             get { return rab.lost; }
             set { rab.lost = value; }
         }
+        public string tag
+        {
+            get { return rab.tag; }
+            set { rab.tag = value; }
+        }
         public int rid { get { return rab.id; } }
         public int evtype{get { return rab.evtype; }}
         public DateTime evdate { get { return rab.evdate; } }
@@ -173,9 +178,19 @@ namespace rabnet
         public String breedName { get { return rab.breedname; } }
         public String bon { get { return rab.bon; } }
         public int age { get { return (DateTime.Now.Date - born.Date).Days; } }
+        public int youngcount { get {
+            int c = 0;
+            foreach (OneRabbit r in youngers)
+                c += r.group;
+            return c;
+        } }
+        public OneRabbit[] youngers { get { return rab.youngers; } }
         public void setBon(String bon)
         {
-            eng.db().setBon(id, bon);
+            if (rid == 0)
+                rab.bon = bon;
+            else
+                eng.db().setBon(id, bon);
         }
         public void FuckIt(int otherrab,DateTime when)
         {

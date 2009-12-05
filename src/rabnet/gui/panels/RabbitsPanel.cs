@@ -119,8 +119,11 @@ namespace rabnet
         private void setMenu(int sex,int multi)
         {
             makeBon.Visible = passportMenuItem.Visible=proholostMenuItem.Visible=false;
+            replaceMenuItem.Visible = false;
             if (sex < 0) return;
-            makeBon.Visible = true;
+            replaceMenuItem.Visible = true;
+            if (multi==1)
+                makeBon.Visible = true;
             if (sex != 3 && multi == 1)
             {
                 passportMenuItem.Visible = true;
@@ -178,6 +181,16 @@ namespace rabnet
         {
             (new IncomeForm()).ShowDialog();
             rsb.run();
+        }
+
+        private void replaceMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count < 1)
+                return;
+            ReplaceForm rpf = new ReplaceForm();
+            foreach (ListViewItem li in listView1.SelectedItems)
+                rpf.addRabbit((int)li.Tag);
+            rpf.ShowDialog();
         }
 
 

@@ -44,10 +44,10 @@ CREATE TABLE tiers(
 	t_type ENUM('none','female','dfemale','complex','jurta','quarta','vertep','barin','cabin') NOT NULL,
 	t_repair BOOL NOT NULL default 0,
 	t_notes TEXT NOT NULL default '',
-	t_busy1 INTEGER UNSIGNED NOT NULL default 0,
-	t_busy2 INTEGER UNSIGNED NOT NULL default 0,
-	t_busy3 INTEGER UNSIGNED NOT NULL default 0,
-	t_busy4 INTEGER UNSIGNED NOT NULL default 0,
+	t_busy1 INTEGER UNSIGNED NULL default 0,
+	t_busy2 INTEGER UNSIGNED NULL default 0,
+	t_busy3 INTEGER UNSIGNED NULL default 0,
+	t_busy4 INTEGER UNSIGNED NULL default 0,
 	t_delims VARCHAR(3) NOT NULL default '000',
 	t_heater VARCHAR(2) NOT NULL default '00',
 	t_nest VARCHAR(2) NOT NULL default '00',
@@ -355,6 +355,12 @@ CREATE TABLE logs(
 	KEY(l_type)
 );
 
+#DATA
+
+UPDATE tiers SET t_busy2=NULL,t_busy3=NULL,t_busy4=NULL WHERE t_type='female';
+UPDATE tiers SET t_busy3=NULL,t_busy4=NULL WHERE t_type='dfemale' OR t_type='jurta' OR t_type='vertep' OR t_type='barin' OR t_type='cabin';
+UPDATE tiers SET t_busy4=NULL WHERE t_type='complex';
+
 
 #views
 DROP VIEW IF EXISTS allrabbits;
@@ -378,7 +384,7 @@ BEGIN
   DECLARE n,sr,sc,sx CHAR(50);
   DECLARE res CHAR(150);
   DECLARE c INT;
-  IF(rid=0) THEN
+  IF(rid=0 OR rid IS NULL) THEN
     return '';
   END IF;
   SELECT

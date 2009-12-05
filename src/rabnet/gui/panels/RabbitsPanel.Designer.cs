@@ -49,6 +49,7 @@
             this.newRab = new System.Windows.Forms.ToolStripMenuItem();
             this.makeBon = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.replaceMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.proholostMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.SelectAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -179,56 +180,64 @@
             this.newRab,
             this.makeBon,
             this.toolStripMenuItem1,
+            this.replaceMenuItem,
             this.proholostMenuItem,
             this.toolStripMenuItem2,
             this.SelectAllMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(195, 148);
+            this.actMenu.Size = new System.Drawing.Size(201, 170);
             // 
             // passportMenuItem
             // 
             this.passportMenuItem.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.passportMenuItem.Name = "passportMenuItem";
-            this.passportMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.passportMenuItem.Size = new System.Drawing.Size(200, 22);
             this.passportMenuItem.Text = "Паспорт";
             this.passportMenuItem.Click += new System.EventHandler(this.passportMenuItem_Click);
             // 
             // newRab
             // 
             this.newRab.Name = "newRab";
-            this.newRab.Size = new System.Drawing.Size(194, 22);
+            this.newRab.Size = new System.Drawing.Size(200, 22);
             this.newRab.Text = "Привоз";
             this.newRab.Click += new System.EventHandler(this.newRab_Click);
             // 
             // makeBon
             // 
             this.makeBon.Name = "makeBon";
-            this.makeBon.Size = new System.Drawing.Size(194, 22);
+            this.makeBon.Size = new System.Drawing.Size(200, 22);
             this.makeBon.Text = "Ботинировка";
             this.makeBon.Click += new System.EventHandler(this.makeBon_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(191, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(197, 6);
+            // 
+            // replaceMenuItem
+            // 
+            this.replaceMenuItem.Name = "replaceMenuItem";
+            this.replaceMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.replaceMenuItem.Text = "Пересадить/Отсадить";
+            this.replaceMenuItem.Click += new System.EventHandler(this.replaceMenuItem_Click);
             // 
             // proholostMenuItem
             // 
             this.proholostMenuItem.Name = "proholostMenuItem";
-            this.proholostMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.proholostMenuItem.Size = new System.Drawing.Size(200, 22);
             this.proholostMenuItem.Text = "Прохолостание";
             this.proholostMenuItem.Click += new System.EventHandler(this.proholostMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(191, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(197, 6);
             // 
             // SelectAllMenuItem
             // 
             this.SelectAllMenuItem.Name = "SelectAllMenuItem";
             this.SelectAllMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.SelectAllMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.SelectAllMenuItem.Size = new System.Drawing.Size(200, 22);
             this.SelectAllMenuItem.Text = "Выбрать всех";
             this.SelectAllMenuItem.Click += new System.EventHandler(this.SelectAllMenuItem_Click);
             // 
@@ -283,5 +292,6 @@
         private System.Windows.Forms.ToolStripMenuItem proholostMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem SelectAllMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem replaceMenuItem;
     }
 }

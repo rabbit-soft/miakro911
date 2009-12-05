@@ -5,28 +5,7 @@ using MySql.Data.MySqlClient;
 
 namespace rabnet
 {
-    public interface IBuilding : IData
-    {
-        int id();
-        int farm();
-        int tier_id();
-        string delims();
-        string type();
-        string itype();
-        string notes();
-        bool repair();
-        int secs();
-        string area(int id);
-        string dep(int id);
-        int nest_heater_count();
-        int busy(int id);
-        string use(int id);
-        string nest();
-        string heater();
-        string address();
-    }
-
-    class Building:IBuilding
+    public class Building:IData
     {
         public int fid;
         public int ffarm;
@@ -45,6 +24,7 @@ namespace rabnet
         public string[] fuses;
         public int[] fbusies;
         public int fnhcount;
+        public string[] fullname=new string[4];
         public Building(int id,int farm,int tier_id,string type,string typeloc,string delims,string notes,bool repair,int seccnt)
         {
             fid = id;
@@ -56,6 +36,8 @@ namespace rabnet
             fnotes = notes;
             frepair = repair;
             fsecs = seccnt;
+            for (int i = 0; i < fsecs;i++ )
+                fullname[i] = Buildings.fullRName(ffarm, ftid, i, ftype, fdelims, false, true, true);
         }
         #region IBuilding Members
         public int id(){return fid;}
@@ -221,7 +203,7 @@ namespace rabnet
         {
         }
 
-        public static IBuilding getBuilding(MySqlDataReader rd,bool shr)
+        public static Building getBuilding(MySqlDataReader rd,bool shr,bool rabbits)
         {
             int id = rd.GetInt32(0);
             int farm = rd.GetInt32(3);
@@ -245,8 +227,12 @@ namespace rabnet
             {
                 ars.Add((tid == 0 ? "" : (tid == 1 ? "^" : "-")) + getRSec(tp, i, dl));
                 deps.Add(getRDescr(tp, shr, i, dl));
-                bus.Add(rd.GetInt32("t_busy" + (i + 1).ToString()));
-                uses.Add(rd.GetString("r" + (i + 1).ToString()));
+                int rn = (rd.IsDBNull(10+i) ? -1 : rd.GetInt32("t_busy" + (i + 1).ToString()));
+                bus.Add(rn);
+                if (rabbits)
+                    uses.Add(rd.GetString("r" + (i + 1).ToString()));
+                else
+                    uses.Add("");
             }
             b.fareas = ars.ToArray();
             b.fbusies = bus.ToArray();
@@ -264,7 +250,7 @@ namespace rabnet
             try
             {
                 bool shr = options.safeBool("shr");
-                return getBuilding(rd, shr);
+                return getBuilding(rd, shr,true);
             }
             catch (Exception ex)
             {
@@ -322,20 +308,44 @@ FROM minifarms,tiers WHERE m_upper=t_id OR m_lower=t_id ORDER BY m_id";
         }
 
 
-        public static IBuilding getTier(int tier,MySqlConnection con)
+        public static Building getTier(int tier,MySqlConnection con)
         {
             MySqlCommand cmd=new MySqlCommand(@"SELECT t_id,m_upper,m_lower,m_id,t_type,t_delims,t_nest,t_heater,
 t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4,
 rabname(t_busy1,1) r1, rabname(t_busy2,1) r2,rabname(t_busy3,1) r3,rabname(t_busy4,1) r4
 FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) and t_id="+tier.ToString()+";",con);
             MySqlDataReader rd = cmd.ExecuteReader();
-            IBuilding b=null;
+            Building b=null;
             if (rd.Read())
-            {
-                b = getBuilding(rd, false);
-            }
+                b = getBuilding(rd, false,true);
             rd.Close();
             return b;
+        }
+
+        public static Building[] getFreeBuildings(MySqlConnection sql,Filters f)
+        {
+            List<Building> bld = new List<Building>();
+            String type="";
+            if (f.safeValue("tp") != "")
+                type = "t_type='" + f.safeValue("tp") + "' AND ";
+            String busy = "(("+type+"(t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0))";
+            if (f.safeInt("rcnt") > 0)
+                for (int i = 0; i < f.safeInt("rcnt"); i++)
+                {
+                    int r=f.safeInt("r"+i.ToString());
+                    if (r > 0)
+                        busy += String.Format(" OR (t_busy1={0:d} OR t_busy2={0:d} OR t_busy3={0:d} OR t_busy4={0:d})", r);
+                }
+            busy += ")";
+            MySqlCommand cmd = new MySqlCommand(@"SELECT t_id,m_upper,m_lower,m_id,t_type,t_delims,t_nest,t_heater,
+t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4 FROM minifarms,tiers WHERE
+(m_upper=t_id OR m_lower=t_id) AND t_repair=0 AND "+busy+";", sql);
+            log.Debug("free Buildings cmd:"+cmd.CommandText);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            while (rd.Read())
+                bld.Add(getBuilding(rd,false,false) as Building);
+            rd.Close();
+            return bld.ToArray();
         }
     }
 }

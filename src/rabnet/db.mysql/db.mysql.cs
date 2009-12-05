@@ -169,7 +169,7 @@ namespace rabnet
             return trs;
         }
 
-        public IBuilding getBuilding(int tier)
+        public Building getBuilding(int tier)
         {
             if (tier == 0)
                 return null;
@@ -255,6 +255,11 @@ namespace rabnet
         public Younger[] getSuckers(int mom)
         {
             return Youngers.getSuckers(sql, mom);
+        }
+
+        public Building[] getFreeBuilding(Filters f)
+        {
+            return Buildings.getFreeBuildings(sql, f);
         }
 
         #endregion

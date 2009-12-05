@@ -60,7 +60,7 @@ namespace rabnet
                 listView1.Show();
                 return;
             }
-            IBuilding b = data as IBuilding;
+            Building b = data as Building;
             string prevnm="";
             for (int i = 0; i < b.secs(); i++)
             {
@@ -157,7 +157,7 @@ namespace rabnet
             if (!manual)
                 return;
             ListViewItem li = listView1.SelectedItems[0];
-            IBuilding b = li.Tag as IBuilding;
+            Building b = li.Tag as Building;
             TreeNode tr = treeView1.Nodes[0];
             tr.Collapse(false);
             tr.Expand();
@@ -167,7 +167,7 @@ namespace rabnet
             manual = true;
         }
 
-        private FarmDrawer.DrawTier tierFromBuilding(IBuilding b)
+        private FarmDrawer.DrawTier tierFromBuilding(Building b)
         {
             List<string> rabs=new List<string>();
             for (int i=0;i<b.secs();i++)
@@ -205,7 +205,7 @@ namespace rabnet
                 listView1.SelectedItems.Clear();
                 for (int i = 0; i < listView1.Items.Count; i++)
                 {
-                    IBuilding b = listView1.Items[i].Tag as IBuilding;
+                    Building b = listView1.Items[i].Tag as Building;
                     if (b.farm() == farm)
                     {
                         listView1.Items[i].Selected = true;

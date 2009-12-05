@@ -101,7 +101,6 @@
             this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader9 = new System.Windows.Forms.ColumnHeader();
             this.tabPage6 = new System.Windows.Forms.TabPage();
-            this.listView2 = new System.Windows.Forms.ListView();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -122,11 +121,11 @@
             this.columnHeader12 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader13 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader14 = new System.Windows.Forms.ColumnHeader();
+            this.label22 = new System.Windows.Forms.Label();
+            this.button17 = new System.Windows.Forms.Button();
             this.bdate = new rabnet.components.DateDays();
             this.okrolDd = new rabnet.components.DateDays();
             this.sukrDd = new rabnet.components.DateDays();
-            this.label22 = new System.Windows.Forms.Label();
-            this.button17 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.TabPage1.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -529,7 +528,7 @@
             this.tabPage2.Controls.Add(this.maleStatus);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(506, 275);
+            this.tabPage2.Size = new System.Drawing.Size(506, 305);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Самец";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -624,7 +623,7 @@
             this.tabPage3.Controls.Add(this.nolact);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(506, 275);
+            this.tabPage3.Size = new System.Drawing.Size(506, 305);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Самка";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -797,7 +796,7 @@
             this.tabPage4.Controls.Add(this.fucks);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(506, 275);
+            this.tabPage4.Size = new System.Drawing.Size(506, 305);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Случки/Окролы";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -805,7 +804,7 @@
             // button12
             // 
             this.button12.Enabled = false;
-            this.button12.Location = new System.Drawing.Point(84, 241);
+            this.button12.Location = new System.Drawing.Point(84, 279);
             this.button12.Name = "button12";
             this.button12.Size = new System.Drawing.Size(75, 23);
             this.button12.TabIndex = 2;
@@ -816,7 +815,7 @@
             // button11
             // 
             this.button11.Enabled = false;
-            this.button11.Location = new System.Drawing.Point(3, 241);
+            this.button11.Location = new System.Drawing.Point(3, 279);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(75, 23);
             this.button11.TabIndex = 1;
@@ -841,7 +840,7 @@
             this.fucks.Location = new System.Drawing.Point(3, 3);
             this.fucks.MultiSelect = false;
             this.fucks.Name = "fucks";
-            this.fucks.Size = new System.Drawing.Size(500, 232);
+            this.fucks.Size = new System.Drawing.Size(500, 270);
             this.fucks.TabIndex = 0;
             this.fucks.UseCompatibleStateImageBehavior = false;
             this.fucks.View = System.Windows.Forms.View.Details;
@@ -887,27 +886,18 @@
             // tabPage6
             // 
             this.tabPage6.Controls.Add(this.suckers);
-            this.tabPage6.Controls.Add(this.listView2);
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Size = new System.Drawing.Size(506, 275);
+            this.tabPage6.Size = new System.Drawing.Size(506, 305);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Подсосные";
             this.tabPage6.UseVisualStyleBackColor = true;
-            // 
-            // listView2
-            // 
-            this.listView2.Location = new System.Drawing.Point(3, 3);
-            this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(500, 234);
-            this.listView2.TabIndex = 0;
-            this.listView2.UseCompatibleStateImageBehavior = false;
             // 
             // tabPage5
             // 
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(506, 275);
+            this.tabPage5.Size = new System.Drawing.Size(506, 305);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Вес";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -1047,7 +1037,7 @@
             this.suckers.Location = new System.Drawing.Point(3, 3);
             this.suckers.MultiSelect = false;
             this.suckers.Name = "suckers";
-            this.suckers.Size = new System.Drawing.Size(500, 198);
+            this.suckers.Size = new System.Drawing.Size(500, 265);
             this.suckers.TabIndex = 1;
             this.suckers.UseCompatibleStateImageBehavior = false;
             this.suckers.View = System.Windows.Forms.View.Details;
@@ -1071,6 +1061,24 @@
             // columnHeader14
             // 
             this.columnHeader14.Text = "Порода";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(154, 284);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(38, 13);
+            this.label22.TabIndex = 6;
+            this.label22.Text = "Адрес";
+            // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(410, 279);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(90, 23);
+            this.button17.TabIndex = 7;
+            this.button17.Text = "Переселить";
+            this.button17.UseVisualStyleBackColor = true;
             // 
             // bdate
             // 
@@ -1116,24 +1124,6 @@
             this.sukrDd.Size = new System.Drawing.Size(136, 51);
             this.sukrDd.Step = 1;
             this.sukrDd.TabIndex = 5;
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(154, 284);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(38, 13);
-            this.label22.TabIndex = 6;
-            this.label22.Text = "Адрес";
-            // 
-            // button17
-            // 
-            this.button17.Location = new System.Drawing.Point(410, 279);
-            this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(90, 23);
-            this.button17.TabIndex = 7;
-            this.button17.Text = "Переселить";
-            this.button17.UseVisualStyleBackColor = true;
             // 
             // RabbitInfo
             // 
@@ -1271,7 +1261,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader8;
         private System.Windows.Forms.ColumnHeader columnHeader9;
         private System.Windows.Forms.Button button12;
-        private System.Windows.Forms.ListView listView2;
         private rabnet.components.DateDays bdate;
         private rabnet.components.DateDays okrolDd;
         private rabnet.components.DateDays sukrDd;
