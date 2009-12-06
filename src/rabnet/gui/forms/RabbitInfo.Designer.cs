@@ -126,6 +126,7 @@
             this.bdate = new rabnet.components.DateDays();
             this.okrolDd = new rabnet.components.DateDays();
             this.sukrDd = new rabnet.components.DateDays();
+            this.columnHeader15 = new System.Windows.Forms.ColumnHeader();
             this.tabControl1.SuspendLayout();
             this.TabPage1.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -885,7 +886,8 @@
             this.columnHeader6,
             this.columnHeader7,
             this.columnHeader8,
-            this.columnHeader9});
+            this.columnHeader9,
+            this.columnHeader15});
             this.fucks.FullRowSelect = true;
             this.fucks.GridLines = true;
             this.fucks.Location = new System.Drawing.Point(3, 3);
@@ -928,11 +930,11 @@
             // 
             // columnHeader8
             // 
-            this.columnHeader8.Text = "Инбридинг";
+            this.columnHeader8.Text = "Затоптала";
             // 
             // columnHeader9
             // 
-            this.columnHeader9.Text = "Гетерозис";
+            this.columnHeader9.Text = "Инбридинг";
             // 
             // tabPage6
             // 
@@ -1087,7 +1089,7 @@
             // 
             this.bdate.AutoSize = true;
             this.bdate.DateText = "Дата рожд.";
-            this.bdate.DateValue = new System.DateTime(2009, 12, 5, 0, 0, 0, 0);
+            this.bdate.DateValue = new System.DateTime(2009, 12, 6, 0, 0, 0, 0);
             this.bdate.DaysText = "Возраст";
             this.bdate.DaysValue = 0;
             this.bdate.Location = new System.Drawing.Point(13, 111);
@@ -1102,7 +1104,7 @@
             // 
             this.okrolDd.AutoSize = true;
             this.okrolDd.DateText = "Дата";
-            this.okrolDd.DateValue = new System.DateTime(2009, 12, 5, 0, 0, 0, 0);
+            this.okrolDd.DateValue = new System.DateTime(2009, 12, 6, 0, 0, 0, 0);
             this.okrolDd.DaysText = "Срок";
             this.okrolDd.DaysValue = 0;
             this.okrolDd.Location = new System.Drawing.Point(8, 61);
@@ -1117,7 +1119,7 @@
             // 
             this.sukrDd.AutoSize = true;
             this.sukrDd.DateText = "Дата";
-            this.sukrDd.DateValue = new System.DateTime(2009, 12, 5, 0, 0, 0, 0);
+            this.sukrDd.DateValue = new System.DateTime(2009, 12, 6, 0, 0, 0, 0);
             this.sukrDd.DaysText = "Срок";
             this.sukrDd.DaysValue = 0;
             this.sukrDd.Location = new System.Drawing.Point(0, 46);
@@ -1127,6 +1129,10 @@
             this.sukrDd.Size = new System.Drawing.Size(136, 51);
             this.sukrDd.Step = 1;
             this.sukrDd.TabIndex = 5;
+            // 
+            // columnHeader15
+            // 
+            this.columnHeader15.Text = "Гетерозис";
             // 
             // RabbitInfo
             // 
@@ -1284,5 +1290,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader14;
         private System.Windows.Forms.Button button17;
         private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.ColumnHeader columnHeader15;
     }
 }

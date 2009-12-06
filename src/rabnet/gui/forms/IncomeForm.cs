@@ -115,6 +115,55 @@ namespace rabnet
             Update();
         }
 
+        private void button9_Click(object sender, EventArgs e)
+        {
+            ReplaceForm rpf = new ReplaceForm();
+            foreach (RabNetEngRabbit r in rbs)
+                rpf.addRabbit(r);
+            rpf.ShowDialog();
+            Update();
+        }
+
+        private bool isMom(RabNetEngRabbit r1)
+        {
+            return (r1.sex == OneRabbit.RabbitSex.FEMALE && r1.status > 0);
+        }
+
+        private void commit(RabNetEngRabbit r1)
+        {
+            if (r1.tag != "done")
+                r1.newCommit();
+            r1.tag = "done";
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                foreach (RabNetEngRabbit r in rbs)
+                {
+                    foreach (RabNetEngRabbit r2 in rbs)
+                    {
+                        if (r2 != r && r2.newAddress == r.newAddress)
+                        {
+                            RabNetEngRabbit mom=r;
+                            RabNetEngRabbit chl = r2;
+                            if (isMom(r2)) { chl = r; mom = r2; }
+                            commit(mom);
+                            chl.mom=mom.rid;
+                            commit(chl);
+                        }
+                    }
+                    commit(r);
+                }
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка " + ex.ToString());
+            }
+        }
+
 
     }
 

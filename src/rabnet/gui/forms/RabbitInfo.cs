@@ -154,6 +154,7 @@ namespace rabnet
                 li.SubItems.Add(f.enddate == DateTime.MinValue ? "" : f.enddate.ToShortDateString());
                 li.SubItems.Add(f.children.ToString());
                 li.SubItems.Add(f.dead.ToString());
+                li.SubItems.Add(f.killed.ToString());
                 li.SubItems.Add(f.breed == rab.breed ? "-" : "Да");
                 li.SubItems.Add(RabNetEngHelper.geterosis(f.rgenom, rab.genom) ? "Да" : "-");
                 li.Tag = f;
@@ -491,7 +492,7 @@ namespace rabnet
         private void button17_Click(object sender, EventArgs e)
         {
             ReplaceForm rpf = new ReplaceForm();
-            rpf.addRabbit(rab.rid);
+            rpf.addRabbit(rab);
             rpf.ShowDialog();
             updateData();
         }

@@ -86,12 +86,10 @@ namespace rabnet
 
         public void setInbreeding(bool on)
         {
-            logs().log(on ? RabNetLogs.LogType.INBREEDING_ON: RabNetLogs.LogType.INBREEDING_OFF);
             options().setOption(Options.OPT_ID.INBREEDING, on ? 1 : 0);
         }
         public void setGeterosis(bool on)
         {
-            logs().log(on ? RabNetLogs.LogType.GETEROSIS_ON : RabNetLogs.LogType.GETEROSIS_OFF);
             options().setOption(Options.OPT_ID.GETEROSIS, on ? 1 : 0);
         }
     }

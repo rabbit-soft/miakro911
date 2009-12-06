@@ -337,6 +337,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
     public class OneRabbit
     {
         public enum RabbitSex{VOID,MALE,FEMALE};
+        public static string NullAddress = "бомж";
         public RabbitSex sex;
         public DateTime born;
         public int rate;
@@ -368,6 +369,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
         public String bon;
         public OneRabbit[] youngers;
         public string tag;
+        public string nuaddr;
         public OneRabbit(int id,string sx,DateTime bd,int rt,string flg,int nm,int sur,int sec,string adr,int grp,int brd,int zn,String nts,
             String gn,int st,DateTime lfo,String evt,DateTime evd,int ob,int lb,String fnm,String bnm,
             String bon)
@@ -389,9 +391,9 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             surname = sur;
             secname = sec;
             if (adr == "")
-                address = "Бомж";
+                address = NullAddress;
             else
-                address = Buildings.fullPlaceName(adr,false,true,true);
+                address = Buildings.fullPlaceName(adr, false, true, true);
             group = grp;
             breed = brd;
             zone = zn;
@@ -407,6 +409,13 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             if (evt == "kuk") evtype = 3;
             evdate = evd;babies = ob;lost = lb;
             fullname = fnm; breedname = bnm;
+        }
+        public static String SexToString(RabbitSex s)
+        {
+            String res = "void";
+            if (s == RabbitSex.FEMALE) res = "female";
+            if (s == RabbitSex.MALE) res = "male";
+            return res;
         }
     }
 
@@ -468,7 +477,7 @@ FROM rabbits WHERE r_parent=" + mom.ToString() + ";", con);
 
         public static void SetRabbit(MySqlConnection con, OneRabbit r)
         {
-            String flags = String.Format("{0:D1}{1:D1}{2:D1}{3:D1}{4:D1}", r.gp ? 1 : 0, 0, r.spec ? 2 : (r.defect ? 1 : 0), 0, 0);
+            String flags = String.Format("{0:D1}{1:D1}{2:D1}{3:D1}{4:D1}", r.gp ? 1 : 0, 0, r.spec ? 2 : (r.defect ? 1 : 0), r.nokuk?1:0, r.nolact?1:0);
             String qry=String.Format(@"UPDATE rabbits SET 
 r_name={0:d},r_surname={1:d},r_secname={2:d},r_breed={3:d},r_zone={4:d},r_group={5:d},r_notes='{6:s}',
 r_flags='{7:d}',r_rate={8:d},r_born={9:s}",r.name,r.surname,r.secname,r.breed,r.zone,r.group,r.notes,flags,r.rate,
@@ -476,6 +485,12 @@ r_flags='{7:d}',r_rate={8:d},r_born={9:s}",r.name,r.surname,r.secname,r.breed,r.
             if (r.sex != OneRabbit.RabbitSex.VOID)
             {
                 qry += String.Format(",r_status={0:d},r_last_fuck_okrol={1:s}",r.status,DBHelper.DateToMyString(r.lastfuckokrol));
+            }
+            if (r.sex == OneRabbit.RabbitSex.FEMALE)
+            {
+                String ev="none";
+                if (r.evtype==1) ev="sluchka";if (r.evtype==2) ev="vyazka";if (r.evtype==2) ev="kuk";
+                qry += String.Format(",r_event='{0:s}',r_event_date={1:s},r_lost_babies={2:d},r_overall_babies={3:d}", ev, DBHelper.DateToMyString(r.evdate), r.babies, r.lost);
             }
             qry+=String.Format(" WHERE r_id={0:d};",r.id);
             MySqlCommand cmd = new MySqlCommand(qry, con);
@@ -617,6 +632,8 @@ r_area,t_busy1,t_busy2,t_busy3,t_busy4,m_upper,m_lower,m_id FROM rabbits,tiers,m
 
         public static void placeRabbit(MySqlConnection sql, int rabbit, int farm, int tier_id, int sec)
         {
+            if (farm == 0)
+                return;
             MySqlCommand cmd = new MySqlCommand("", sql);
             cmd.CommandText = String.Format("SELECT {0:s} FROM minifarms WHERE m_id={1:d};", tier_id == 2 ? "m_lower" : "m_upper", farm);
             MySqlDataReader rd = cmd.ExecuteReader();
@@ -645,10 +662,7 @@ WHERE r_id={4:d};", farm, tier_id, sec, ntr,rabbit);
 
         public static void setRabbitSex(MySqlConnection sql, int rabbit, OneRabbit.RabbitSex sex)
         {
-            string sx = "void";
-            if (sex == OneRabbit.RabbitSex.FEMALE) sx = "female";
-            if (sex == OneRabbit.RabbitSex.MALE) sx = "male";
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE rabbits SET r_sex='{0:s}' WHERE r_id={1:d};",sx,rabbit), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE rabbits SET r_sex='{0:s}' WHERE r_id={1:d};",OneRabbit.SexToString(sex),rabbit), sql);
             cmd.ExecuteNonQuery();
         }
 
@@ -674,6 +688,21 @@ FROM rabbits WHERE r_id={0:d};",rabbit,mom,count), sql);
         {
             freeTier(sql, rabbit);
             placeRabbit(sql, rabbit, farm, tier_id, sec);
+        }
+
+        public static int newRabbit(MySqlConnection sql,OneRabbit r,int mom)
+        {
+            String qry=String.Format(@"INSERT INTO rabbits(r_sex,r_parent) VALUES('{0:s}',{1:d});",OneRabbit.SexToString(r.sex),mom);
+            MySqlCommand cmd = new MySqlCommand(qry,sql);
+            cmd.ExecuteNonQuery();
+            int res = (int)cmd.LastInsertedId;
+            SetRabbit(sql, r);
+            if (mom==0 && r.nuaddr != "" && r.nuaddr!=OneRabbit.NullAddress)
+            {
+                String[] adr = r.nuaddr.Split('|');
+                placeRabbit(sql, res, int.Parse(adr[0]), int.Parse(adr[1]), int.Parse(adr[2]));
+            }
+            return res;
         }
     }
 }

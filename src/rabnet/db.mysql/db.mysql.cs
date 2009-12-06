@@ -206,10 +206,9 @@ namespace rabnet
         }
 
 
-        public void RabNetLog(int type, int user, string text)
+        public void RabNetLog(int type, int user, int r1,int r2,string a1,string a2,string text)
         {
-            exec(String.Format("INSERT INTO logs(l_date,l_type,l_user,l_params) VALUES(NOW(),{0:d},{1:d},'{2:s}');",
-                type,user,text));
+            Logs.addLog(sql,type,user,r1,r2,a1,a2,text);
         }
 
         public Fucks getFucks(int rabbit)
@@ -269,6 +268,16 @@ namespace rabnet
         public void replaceYounger(int rid, int farm, int tier_id, int sec)
         {
             RabbitGetter.replaceYounger(sql, rid, farm, tier_id, sec);
+        }
+
+        public int newRabbit(OneRabbit r, int mom)
+        {
+            return RabbitGetter.newRabbit(sql, r, mom);
+        }
+
+        public LogList getLogs(Filters f)
+        {
+            return (new Logs(sql).getLogs(f));
         }
 
         #endregion

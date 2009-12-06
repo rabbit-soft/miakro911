@@ -38,6 +38,10 @@ namespace rabnet
         {
             rbs.Add(Engine.get().getRabbit(id));
         }
+        public void addRabbit(RabNetEngRabbit r)
+        {
+            rbs.Add(r);
+        }
         public void setAction(Action act)
         {
             action = act;
@@ -75,7 +79,7 @@ namespace rabnet
             }
             bs = Engine.db().getFreeBuilding(f);
             cbc.Items.Clear();
-            cbc.Items.Add("бомж");
+            cbc.Items.Add(OneRabbit.NullAddress);
             foreach (Building b in bs)
             {
                 for (int i = 0; i < b.secs(); i++)
@@ -88,6 +92,8 @@ namespace rabnet
 
         public int checkEmpty(string address,int rid)
         {
+            if (address == OneRabbit.NullAddress)
+                return 0;
             int state=0;
             for (int i = 0; i < rbs.Count && state==0; i++)
                 if (i != rid)
@@ -320,7 +326,7 @@ namespace rabnet
                     {
                         int[] adr = getAddress(r.tag);
                         if (adr != null) 
-                            r.replaceRabbit(adr[0],adr[1],adr[2]);
+                            r.replaceRabbit(adr[0],adr[1],adr[2],r.tag);
                     }
                     foreach(OneRabbit y in r.youngers)
                         if (y.tag != "")
@@ -334,8 +340,14 @@ namespace rabnet
             }
             catch (ApplicationException ex)
             {
-                MessageBox.Show("Error "+ex.GetType().ToString()+":"+ex.Message);
+                MessageBox.Show("Ошибка "+ex.GetType().ToString()+":"+ex.Message);
             }
+        }
+
+        private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            e.ThrowException=false;
+            dataGridView1.Rows[e.RowIndex].ErrorText = e.ColumnIndex.ToString()+":"+e.Exception.Message;
         }
 
     }

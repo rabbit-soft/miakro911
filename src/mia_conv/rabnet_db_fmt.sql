@@ -186,6 +186,7 @@ CREATE TABLE fucks(
 	f_end_date DATETIME DEFAULT NULL,
 	f_children INTEGER UNSIGNED NOT NULL DEFAULT 0,
 	f_dead INTEGER UNSIGNED NOT NULL DEFAULT 0,
+	f_killed INTEGER UNSIGNED NOT NULL DEFAULT 0,
 	f_worker INTEGER UNSIGNED NOT NULL DEFAULT 0,
 	f_notes TEXT NOT NULL default '',
 	KEY(f_date),
@@ -343,6 +344,13 @@ CREATE TABLE filters(
 	KEY(f_name)
 );
 
+DROP TABLE IF EXISTS logtypes;
+CREATE TABLE logtypes(
+	l_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	l_name VARCHAR(30) NOT NULL,
+	l_params VARCHAR(50) NOT NULL DEFAULT '',
+	KEY(l_name)
+);
 
 DROP TABLE IF EXISTS logs;
 CREATE TABLE logs(
@@ -350,7 +358,15 @@ CREATE TABLE logs(
 	l_date DATETIME NOT NULL,
 	l_type INTEGER UNSIGNED NOT NULL,
 	l_user INTEGER UNSIGNED NOT NULL,
+	l_rabbit INTEGER UNSIGNED,
+	l_address VARCHAR(50) NOT NULL DEFAULT '',
+	l_rabbit2 INTEGER UNSIGNED,
+	l_address2 VARCHAR(50) NOT NULL DEFAULT '',
 	l_param TEXT,
+	KEY(l_rabbit),
+	KEY(l_rabbit2),
+	KEY(l_address),
+	KEY(l_address2),
 	KEY(l_date),
 	KEY(l_type)
 );
@@ -360,6 +376,10 @@ CREATE TABLE logs(
 UPDATE tiers SET t_busy2=NULL,t_busy3=NULL,t_busy4=NULL WHERE t_type='female';
 UPDATE tiers SET t_busy3=NULL,t_busy4=NULL WHERE t_type='dfemale' OR t_type='jurta' OR t_type='vertep' OR t_type='barin' OR t_type='cabin';
 UPDATE tiers SET t_busy4=NULL WHERE t_type='complex';
+INSERT INTO logtypes(l_name,l_params) VALUES
+('привоз','r'),
+('пересадка','ra')
+;
 
 
 #views

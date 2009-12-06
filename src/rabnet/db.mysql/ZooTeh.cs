@@ -17,7 +17,8 @@ namespace rabnet
         public int level;
         public string address;
         public int age;
-        public ZooTehItem(int id,string name,string r,int ir,int res,string nts,int l,DateTime dt,String adr,int age)
+        public int type;
+        public ZooTehItem(int type,int id,string name,string r,int ir,int res,string nts,int l,DateTime dt,String adr,int age)
         {
             this.id = id;
             job = name;
@@ -40,7 +41,7 @@ namespace rabnet
 
         public override IData nextItem()
         {
-            return new ZooTehItem(rd.GetInt32("z_id"), rd.GetString("work"), rd.GetString("rname"), rd.GetInt32("z_rabbit"),
+            return new ZooTehItem(0,rd.GetInt32("z_id"), rd.GetString("work"), rd.GetString("rname"), rd.GetInt32("z_rabbit"),
                 rd.GetInt32("z_done"), rd.GetString("z_notes"), rd.GetInt32("z_level"), rd.GetDateTime("z_date"),
                 Buildings.fullPlaceName(rd.GetString("rplace")),rd.GetInt32("age"));
         }

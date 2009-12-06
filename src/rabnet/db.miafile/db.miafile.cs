@@ -352,5 +352,35 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public int newRabbit(OneRabbit r, int mom)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public void RabNetLog(int type, int user, int r1, int r2, string a1, string a2, string text)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public LogList getLogs(Filters f)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

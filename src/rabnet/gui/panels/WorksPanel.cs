@@ -26,6 +26,7 @@ namespace rabnet
             listView1.ListViewItemSorter=null;
             IDataGetter gt = DataThread.db().zooTeh(f);
             rsb.setText(1, gt.getCount().ToString() + " items");
+            fillLogs();
             return gt;
         }
 
@@ -49,6 +50,20 @@ namespace rabnet
             li.SubItems.Add(z.notes);
             li.SubItems.Add(z.dt.ToShortDateString());
             li.SubItems.Add(z.done.ToString());
+        }
+
+        private void fillLogs()
+        {
+            Filters f=new Filters();
+            listView2.Items.Clear();
+            foreach (LogList.OneLog l in Engine.db().getLogs(f).logs)
+            {
+                ListViewItem li = listView2.Items.Add(l.date.ToShortDateString() + " " + l.date.ToShortTimeString());
+                li.SubItems.Add(l.work);
+                li.SubItems.Add(l.prms);
+                li.SubItems.Add(l.user);
+            }
+            listView2.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
     }

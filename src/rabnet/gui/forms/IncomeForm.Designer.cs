@@ -165,6 +165,7 @@
             this.button6.TabIndex = 8;
             this.button6.Text = "Привоз";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button7
             // 
@@ -196,6 +197,7 @@
             this.button9.TabIndex = 11;
             this.button9.Text = "Поселить";
             this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // IncomeForm
             // 

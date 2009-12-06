@@ -16,6 +16,8 @@ namespace rabnet
 
         public static int makeGenesis(MySqlConnection  sql,String gens)
         {
+            if (gens == "")
+                return 0;
             MySqlCommand c = new MySqlCommand("", sql);
             c.CommandText = "SELECT g_id FROM genesis WHERE g_key=MD5('" + gens + "');";
             MySqlDataReader rd = c.ExecuteReader();

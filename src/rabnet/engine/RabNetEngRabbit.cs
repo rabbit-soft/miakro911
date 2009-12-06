@@ -34,6 +34,7 @@ namespace rabnet
         private int id;
         private OneRabbit rab = null;
         private RabNetEngine eng=null;
+        public int mom = 0;
         public RabNetEngRabbit(int rid,RabNetEngine dl)
         {
             id = rid;
@@ -48,10 +49,19 @@ namespace rabnet
             if (sx==OneRabbit.RabbitSex.FEMALE) s="female";
             if (sx==OneRabbit.RabbitSex.MALE) s="male";
             rab = new OneRabbit(0, s, DateTime.Now, 0, "00000", 0, 0, 0, "", 1, 1, 0, "", "", 0, DateTime.MinValue, "", DateTime.MinValue, 0, 0, "", "", "00000");
+            rab.youngers=new OneRabbit[0];
+        }
+        public void newCommit()
+        {
+            if (id != 0)
+                return;
+            id = eng.db().newRabbit(rab, mom);
+            rab.id = id;
+            eng.logs().log(RabNetLogs.LogType.INCOME, id);
         }
         public void commit()
         {
-            if (id == 0)
+            if (rid == 0)
                 return;
             eng.db().setRabbit(rab);
             rab=eng.db().getRabbit(id);
@@ -171,7 +181,11 @@ namespace rabnet
         public DateTime evdate { get { return rab.evdate; } }
         public int wasname { get { return rab.wasname; } }
         public String address { get { return rab.address; } }
-        public String fullName { get {
+        public String newAddress { get { return rab.nuaddr; } }
+        public String fullName
+        {
+            get
+            {
             if (id == 0)
                 return eng.db().makeName(name, surname, secname, group, sex);
             return rab.fullname; } }
@@ -230,16 +244,26 @@ namespace rabnet
             eng.db().makeOkrol(this.id, when, children, dead);
         }
 
-        public void replaceRabbit(int farm,int tier_id,int sec)
+        public void replaceRabbit(int farm,int tier_id,int sec,string address)
         {
             if (rid == 0)
-                tag = String.Format("{0:d}|{1:d}|{2:d}", farm, tier_id, sec);
+            {
+                rab.address = address;
+                rab.nuaddr = String.Format("{0:d}|{1:d}|{2:d}", farm, tier_id, sec);
+            }
             else
+            {
+                eng.logs().log(RabNetLogs.LogType.REPLACE, rid, rab.address);
                 eng.db().replaceRabbit(rid, farm, tier_id, sec);
+            }
+            rab.tag = "";
         }
         public void ReplaceYounger(int yid, int farm, int tier, int sec)
         {
             eng.db().replaceYounger(yid, farm, tier, sec);
+            foreach (OneRabbit y in youngers)
+                if (y.id == yid)
+                    y.tag = "";
         }
     }
 }

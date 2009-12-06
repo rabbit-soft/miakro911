@@ -59,6 +59,7 @@
     <Compile Include="DBHelper.cs" />
     <Compile Include="Filters.cs" />
     <Compile Include="Fucks.cs" />
+    <Compile Include="Logs.cs" />
     <Compile Include="Names.cs" />
     <Compile Include="Rabbit.cs" />
     <Compile Include="RabNetDataGetterBase.cs" />

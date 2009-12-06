@@ -47,7 +47,7 @@ namespace rabnet
         OneRabbit getRabbit(int rid);
         void setRabbit(OneRabbit r);
         ICatalogs catalogs();
-        void RabNetLog(int type, int user, String text);
+        void RabNetLog(int type, int user, int r1,int r2,string a1,string a2,String text);
         Fucks getFucks(int rabbit);
         Fucks allFuckers(int female);
         void setBon(int rabbit,String bon);
@@ -59,6 +59,8 @@ namespace rabnet
         Building[] getFreeBuilding(Filters f);
         void replaceRabbit(int rid, int farm, int tier_id, int sec);
         void replaceYounger(int yid, int farm, int tier_id, int sec);
+        int newRabbit(OneRabbit r,int mom);
+        LogList getLogs(Filters f);
     }
 
 }
