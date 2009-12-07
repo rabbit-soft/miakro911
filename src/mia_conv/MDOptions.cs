@@ -9,12 +9,12 @@ namespace mia_conv
         {
             debug("fill Options");
             MFParamForm p = mia.paramform;
+            setOption("opt", "okrol", p.okrol.value());
             /* //OPTIONS
             setOption("opt","pervonest",p.pervonest.value());
             setOption("opt","kukunest",p.kukunest.value());
             setOption("opt","mothernest",p.mothernest.value());
             setOption("opt","heater",p.heater.value());
-            setOption("opt","okrol",p.okrol.value());
             setOption("opt","kuk",p.kuk.value());
             setOption("opt","pravka_1",p.pravka_1.value());
             setOption("opt","count_2",p.count_2.value());

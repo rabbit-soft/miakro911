@@ -47,6 +47,7 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.namesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.breedsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.зоныToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.actMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.настройкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showTierTMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,7 +69,8 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
-            this.зоныToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.paramsMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -164,6 +166,7 @@
             this.параметрыToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
             this.параметрыToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
             this.параметрыToolStripMenuItem.Text = "Параметры";
+            this.параметрыToolStripMenuItem.Click += new System.EventHandler(this.paramsMenuItem1_Click);
             // 
             // забоиПривесыСписанияToolStripMenuItem
             // 
@@ -207,6 +210,13 @@
             this.breedsMenuItem.Text = "Породы";
             this.breedsMenuItem.Click += new System.EventHandler(this.breedsMenuItem_Click);
             // 
+            // зоныToolStripMenuItem
+            // 
+            this.зоныToolStripMenuItem.Name = "зоныToolStripMenuItem";
+            this.зоныToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
+            this.зоныToolStripMenuItem.Text = "Зоны";
+            this.зоныToolStripMenuItem.Click += new System.EventHandler(this.зоныToolStripMenuItem_Click);
+            // 
             // actMenuItem
             // 
             this.actMenuItem.Name = "actMenuItem";
@@ -224,7 +234,9 @@
             this.shNumMenuItem,
             this.toolStripMenuItem5,
             this.geterosisMenuItem,
-            this.inbreedingMenuItem});
+            this.inbreedingMenuItem,
+            this.toolStripMenuItem3,
+            this.paramsMenuItem1});
             this.настройкиToolStripMenuItem.Name = "настройкиToolStripMenuItem";
             this.настройкиToolStripMenuItem.Size = new System.Drawing.Size(73, 20);
             this.настройкиToolStripMenuItem.Text = "Настройки";
@@ -389,12 +401,18 @@
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
             // 
-            // зоныToolStripMenuItem
+            // toolStripMenuItem3
             // 
-            this.зоныToolStripMenuItem.Name = "зоныToolStripMenuItem";
-            this.зоныToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
-            this.зоныToolStripMenuItem.Text = "Зоны";
-            this.зоныToolStripMenuItem.Click += new System.EventHandler(this.зоныToolStripMenuItem_Click);
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(225, 6);
+            // 
+            // paramsMenuItem1
+            // 
+            this.paramsMenuItem1.Name = "paramsMenuItem1";
+            this.paramsMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+            this.paramsMenuItem1.Size = new System.Drawing.Size(228, 22);
+            this.paramsMenuItem1.Text = "Параметры ...";
+            this.paramsMenuItem1.Click += new System.EventHandler(this.paramsMenuItem1_Click);
             // 
             // MainForm
             // 
@@ -459,6 +477,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ToolStripMenuItem actMenuItem;
         private System.Windows.Forms.ToolStripMenuItem зоныToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem paramsMenuItem1;
     }
 }
 

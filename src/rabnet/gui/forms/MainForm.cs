@@ -116,5 +116,10 @@ namespace rabnet
             new CatalogForm(CatalogForm.CatalogType.ZONES).ShowDialog();
         }
 
+        private void paramsMenuItem1_Click(object sender, EventArgs e)
+        {
+            (new OptionsForm()).ShowDialog();
+        }
+
     }
 }

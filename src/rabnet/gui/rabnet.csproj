@@ -154,6 +154,12 @@
     <Compile Include="forms\OkrolForm.Designer.cs">
       <DependentUpon>OkrolForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="forms\OptionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\OptionsForm.Designer.cs">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="forms\Proholost.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -248,6 +254,9 @@
     <EmbeddedResource Include="forms\OkrolForm.resx">
       <DependentUpon>OkrolForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="forms\OptionsForm.resx">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="forms\Proholost.resx">
       <DependentUpon>Proholost.cs</DependentUpon>
     </EmbeddedResource>
@@ -287,9 +296,6 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework Client Profile</ProductName>
@@ -320,6 +326,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
