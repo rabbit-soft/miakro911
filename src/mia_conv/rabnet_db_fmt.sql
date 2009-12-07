@@ -12,7 +12,7 @@ CREATE TABLE options(
 	o_name VARCHAR(30) NOT NULL default '',
 	o_subname VARCHAR(30) NOT NULL default '',
 	o_uid INTEGER UNSIGNED NOT NULL default 0,
-	o_value TEXT NOT NULL default '',
+	o_value TEXT NOT NULL,
 	KEY(o_name,o_subname),
 	KEY(o_uid)
 );
@@ -43,7 +43,7 @@ CREATE TABLE tiers(
 	t_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	t_type ENUM('none','female','dfemale','complex','jurta','quarta','vertep','barin','cabin') NOT NULL,
 	t_repair BOOL NOT NULL default 0,
-	t_notes TEXT NOT NULL default '',
+	t_notes TEXT NOT NULL,
 	t_busy1 INTEGER UNSIGNED NULL default 0,
 	t_busy2 INTEGER UNSIGNED NULL default 0,
 	t_busy3 INTEGER UNSIGNED NULL default 0,
@@ -95,7 +95,7 @@ CREATE TABLE catalogs(
  c_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
  c_type ENUM('partner','kind','name') NOT NULL,
  c_name VARCHAR(50) NOT NULL default '',
- c_value TEXT NOT NULL default '',
+ c_value TEXT NOT NULL,
  c_flags VARCHAR(30) NOT NULL default '',
  KEY(c_type),
  KEY(c_name),
@@ -107,7 +107,7 @@ DROP TABLE IF EXISTS transfers;
 CREATE TABLE transfers(
 t_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 t_type ENUM('rabbits','meat','skin','feed','feed_use','otsev','other') NOT NULL,
-t_notes TEXT NOT NULL DEFAULT '',
+t_notes TEXT NOT NULL,
 t_date DATETIME NOT NULL,
 t_units INTEGER UNSIGNED NOT NULL DEFAULT 1,
 t_sold BOOL NOT NULL DEFAULT 0,
@@ -139,7 +139,7 @@ CREATE TABLE rabbits(
 	r_name INTEGER UNSIGNED NOT NULL default 0,
 	r_surname INTEGER UNSIGNED NOT NULL default 0,
 	r_secname INTEGER UNSIGNED NOT NULL default 0,
-	r_notes TEXT NOT NULL DEFAULT '',
+	r_notes TEXT NOT NULL,
 	r_okrol INTEGER UNSIGNED NOT NULL default 0,
 	r_farm INTEGER UNSIGNED NOT NULL DEFAULT 0,
 	r_tier INTEGER UNSIGNED NOT NULL DEFAULT 0,
@@ -188,7 +188,7 @@ CREATE TABLE fucks(
 	f_dead INTEGER UNSIGNED NOT NULL DEFAULT 0,
 	f_killed INTEGER UNSIGNED NOT NULL DEFAULT 0,
 	f_worker INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	f_notes TEXT NOT NULL default '',
+	f_notes TEXT NOT NULL ,
 	KEY(f_date),
 	KEY(f_state),
 	KEY(f_type),
@@ -208,7 +208,7 @@ CREATE TABLE workers(
 DROP TABLE IF EXISTS genesis;
 CREATE TABLE genesis(
 	g_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	g_notes TEXT NOT NULL default '',
+	g_notes TEXT NOT NULL,
 	g_key VARCHAR(50),
 	KEY(g_id),
 	KEY(g_key)
@@ -313,7 +313,7 @@ CREATE TABLE dead(
 	r_name INTEGER UNSIGNED NOT NULL default 0,
 	r_surname INTEGER UNSIGNED NOT NULL default 0,
 	r_secname INTEGER UNSIGNED NOT NULL default 0,
-	r_notes TEXT NOT NULL DEFAULT '',
+	r_notes TEXT NOT NULL,
 	r_okrol INTEGER UNSIGNED NOT NULL default 0,
 	r_farm INTEGER UNSIGNED NOT NULL DEFAULT 0,
 	r_tier INTEGER UNSIGNED NOT NULL DEFAULT 0,
@@ -348,7 +348,7 @@ DROP TABLE IF EXISTS logtypes;
 CREATE TABLE logtypes(
 	l_type INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	l_name VARCHAR(30) NOT NULL,
-	l_params TEXT NOT NULL DEFAULT '',
+	l_params TEXT NOT NULL,
 	KEY(l_name)
 );
 
