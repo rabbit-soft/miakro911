@@ -6,7 +6,7 @@ namespace rabnet
 {
     public class RabNetLogs
     {
-        public enum LogType {INCOME,REPLACE};
+        public enum LogType {NONE,INCOME,REPLACE,BON,RENAME,FUCK,OKROL,PROHOLOST,RAB_CHANGE};
         private RabNetEngine eng; 
         public RabNetLogs(RabNetEngine eng)
         {

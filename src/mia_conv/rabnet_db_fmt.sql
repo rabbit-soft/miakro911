@@ -346,9 +346,9 @@ CREATE TABLE filters(
 
 DROP TABLE IF EXISTS logtypes;
 CREATE TABLE logtypes(
-	l_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	l_type INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	l_name VARCHAR(30) NOT NULL,
-	l_params VARCHAR(50) NOT NULL DEFAULT '',
+	l_params TEXT NOT NULL DEFAULT '',
 	KEY(l_name)
 );
 
@@ -377,8 +377,14 @@ UPDATE tiers SET t_busy2=NULL,t_busy3=NULL,t_busy4=NULL WHERE t_type='female';
 UPDATE tiers SET t_busy3=NULL,t_busy4=NULL WHERE t_type='dfemale' OR t_type='jurta' OR t_type='vertep' OR t_type='barin' OR t_type='cabin';
 UPDATE tiers SET t_busy4=NULL WHERE t_type='complex';
 INSERT INTO logtypes(l_name,l_params) VALUES
-('привоз','r'),
-('пересадка','ra')
+('привоз','$r в $p'),
+('пересадка','$r из $a в $p'),
+('бонитировка','$r - $t'),
+('переименование','$r (было $t)'),
+('вязка','$r c $R'),
+('окрол','$r $t'),
+('прохолостание','$r'),
+('изменения паспорта','$r')
 ;
 
 

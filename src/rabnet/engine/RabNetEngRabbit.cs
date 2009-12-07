@@ -63,6 +63,10 @@ namespace rabnet
         {
             if (rid == 0)
                 return;
+            if (rab.wasname != rab.name)
+                eng.logs().log(RabNetLogs.LogType.RENAME,rid,0,"","",eng.db().makeName(rab.wasname,0,0,1,rab.sex));
+            else
+                eng.logs().log(RabNetLogs.LogType.RAB_CHANGE, rid);
             eng.db().setRabbit(rab);
             rab=eng.db().getRabbit(id);
         }
@@ -204,7 +208,10 @@ namespace rabnet
             if (rid == 0)
                 rab.bon = bon;
             else
+            {
+                eng.logs().log(RabNetLogs.LogType.BON, rid, 0, "", "", bon);
                 eng.db().setBon(id, bon);
+            }
         }
         public void FuckIt(int otherrab,DateTime when)
         {
@@ -221,6 +228,7 @@ namespace rabnet
                 throw new ExNotFucker(f);
             if (when > DateTime.Now)
                 throw new ExBadDate(when);
+            eng.logs().log(RabNetLogs.LogType.FUCK, rid, otherrab, "", "");
             eng.db().makeFuck(this.id, f.rid, when.Date);
         }
         public void ProholostIt(DateTime when)
@@ -231,6 +239,7 @@ namespace rabnet
                 throw new ExNotFucked(this);
             if (when > DateTime.Now)
                 throw new ExBadDate(when);
+            eng.logs().log(RabNetLogs.LogType.PROHOLOST, rid);
             eng.db().makeProholost(this.id, when);
         }
         public void OkrolIt(DateTime when, int children, int dead)
@@ -241,6 +250,7 @@ namespace rabnet
                 throw new ExNotFucked(this);
             if (when > DateTime.Now)
                 throw new ExBadDate(when);
+            eng.logs().log(RabNetLogs.LogType.OKROL, rid,0,"","",String.Format("живых {0:d}, мертвых {1:d}",children,dead));
             eng.db().makeOkrol(this.id, when, children, dead);
         }
 

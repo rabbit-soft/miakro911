@@ -442,7 +442,7 @@ r_sex,r_born,r_flags,r_breed,r_zone,r_name,r_surname,r_secname,
 rabplace(r_id) address,r_group,r_notes,
 rabname(r_id,2) fullname,
 (SELECT b_name FROM breeds WHERE b_id=r_breed) breedname,
-(SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=r_genesis) genom,
+(SELECT COALESCE(GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' '),'') FROM genoms WHERE g_id=r_genesis) genom,
 r_status,r_rate,r_bon
 FROM rabbits WHERE r_id=" + rid.ToString()+";",con);
             MySqlDataReader rd = cmd.ExecuteReader();
@@ -695,14 +695,14 @@ FROM rabbits WHERE r_id={0:d};",rabbit,mom,count), sql);
             String qry=String.Format(@"INSERT INTO rabbits(r_sex,r_parent) VALUES('{0:s}',{1:d});",OneRabbit.SexToString(r.sex),mom);
             MySqlCommand cmd = new MySqlCommand(qry,sql);
             cmd.ExecuteNonQuery();
-            int res = (int)cmd.LastInsertedId;
+            r.id= (int)cmd.LastInsertedId;
             SetRabbit(sql, r);
             if (mom==0 && r.nuaddr != "" && r.nuaddr!=OneRabbit.NullAddress)
             {
                 String[] adr = r.nuaddr.Split('|');
-                placeRabbit(sql, res, int.Parse(adr[0]), int.Parse(adr[1]), int.Parse(adr[2]));
+                placeRabbit(sql, r.id, int.Parse(adr[0]), int.Parse(adr[1]), int.Parse(adr[2]));
             }
-            return res;
+            return r.id;
         }
     }
 }
