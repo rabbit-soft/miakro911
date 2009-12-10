@@ -17,6 +17,7 @@ namespace rabnet
         private String farmname;
         private Options opts=null;
         private RabNetLogs logger = null;
+        private RabEngZooTeh zooteh = null;
         public RabNetEngine()
         {
             log4net.Config.XmlConfigurator.Configure();
@@ -91,6 +92,12 @@ namespace rabnet
         public void setGeterosis(bool on)
         {
             options().setOption(Options.OPT_ID.GETEROSIS, on ? 1 : 0);
+        }
+        public RabEngZooTeh zoo()
+        {
+            if (zooteh == null)
+                zooteh = new RabEngZooTeh(this);
+            return zooteh;
         }
     }
 }

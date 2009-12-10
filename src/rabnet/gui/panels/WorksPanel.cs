@@ -20,6 +20,26 @@ namespace rabnet
 
         protected override IDataGetter onPrepare(Filters f)
         {
+            listView1.Items.Clear();
+            foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan())
+            {
+                ListViewItem li = listView1.Items.Add(j.days.ToString());
+                li.SubItems.Add(j.job);
+                li.SubItems.Add(j.address);
+                li.SubItems.Add(j.name);
+                li.SubItems.Add(j.age.ToString());
+                li.SubItems.Add(j.names);
+                li.SubItems.Add(j.addresses);
+                li.SubItems.Add(j.comment);
+                li.Tag = j;
+            }
+            listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            fillLogs();
+            DataThread.get().stop();
+            return null;
+        }
+/*        protected override IDataGetter onPrepare(Filters f)
+        {
             f = new Filters();
             listView1.Hide();
             listView1.Items.Clear();
@@ -29,9 +49,10 @@ namespace rabnet
             fillLogs();
             return gt;
         }
-
+*/
         protected override void onItem(IData data)
         {
+            /*
             if (data == null)
             {
             //    listView1.ListViewItemSorter = cs.Clear();
@@ -50,6 +71,7 @@ namespace rabnet
             li.SubItems.Add(z.notes);
             li.SubItems.Add(z.dt.ToShortDateString());
             li.SubItems.Add(z.done.ToString());
+             * */
         }
 
         private void fillLogs()
@@ -64,6 +86,64 @@ namespace rabnet
                 li.SubItems.Add(l.user);
             }
             listView2.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+        }
+
+        public override ContextMenuStrip getMenu()
+        {
+            setMenu(JobType.NONE);
+            return actMenu;
+        }
+
+        public void setMenu(JobType type)
+        {
+            okrolMenuItem.Visible = false;
+            switch (type)
+            {
+                case JobType.OKROL:
+                    okrolMenuItem.Visible = true;
+                    break;
+            }
+        }
+
+        private ZootehJob getCurJob()
+        {
+            if (listView1.SelectedItems.Count != 1)
+                return null;
+            return  (listView1.SelectedItems[0].Tag) as ZootehJob;
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1)
+            {
+                setMenu(JobType.NONE);
+                return;
+            }
+            setMenu(getCurJob().type);
+        }
+
+        private void makeJob()
+        {
+            ZootehJob job = getCurJob();
+            if (job == null)
+                return;
+            switch (job.type)
+            {
+                case JobType.OKROL:
+                    (new OkrolForm(job.id)).ShowDialog();
+                    break;
+            }
+            rsb.run();
+        }
+
+        private void okrolMenuItem_Click(object sender, EventArgs e)
+        {
+            makeJob();
+        }
+
+        private void listView1_DoubleClick(object sender, EventArgs e)
+        {
+            makeJob();
         }
 
     }

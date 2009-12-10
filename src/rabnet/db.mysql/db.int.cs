@@ -61,6 +61,7 @@ namespace rabnet
         void replaceYounger(int yid, int farm, int tier_id, int sec);
         int newRabbit(OneRabbit r,int mom);
         LogList getLogs(Filters f);
+        ZooJobItem[] getOkrols(int days);
     }
 
 }

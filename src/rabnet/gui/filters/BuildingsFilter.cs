@@ -54,7 +54,7 @@ namespace rabnet
 
         private void btnAll_Click(object sender, EventArgs e)
         {
-            kvartaBox.Checked = urtaBox.Checked = barinBox.Checked = vertepBox.Checked = krolBox.Checked = dvukrolBox.Checked = komplexBox.Checked = hizhinaBox.Checked = true;
+            //kvartaBox.Checked = urtaBox.Checked = barinBox.Checked = vertepBox.Checked = krolBox.Checked = dvukrolBox.Checked = komplexBox.Checked = hizhinaBox.Checked = true;
         }
     }
 }

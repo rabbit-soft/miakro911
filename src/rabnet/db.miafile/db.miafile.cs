@@ -382,5 +382,15 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public ZooJobItem[] getOkrols(int days)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

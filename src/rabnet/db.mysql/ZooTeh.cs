@@ -5,6 +5,30 @@ using System.Text;
 
 namespace rabnet
 {
+    public class ZooJobItem
+    {
+        public int type;
+        public int id;
+        public String name;
+        public int age;
+        public String place;
+        public int status;
+        public DateTime date;
+        public int[] i = new int[10];
+        public string[] s = new string[10];
+        public ZooJobItem()
+        {
+        }
+        public ZooJobItem Okrol(int id,String nm,String place,int age,int srok,int status)
+        {
+            type = 1; name = nm; place = Buildings.fullPlaceName(place);
+            this.age = age; this.status = status;
+            this.id = id;
+            i[0] = srok;
+            return this;
+        }
+    }
+    /*
     public class ZooTehItem:IData
     {
         public DateTime dt;
@@ -61,5 +85,34 @@ z_notes FROM zooplans WHERE z_done=0 AND z_rabbit IS NOT NULL;";
         {
             return "SELECT COUNT(*) FROM zooplans WHERE z_done=0  AND z_rabbit IS NOT NULL;";
         }
+    }
+    */
+    class ZooTehGetter
+    {
+        private MySqlConnection sql;
+        public ZooTehGetter(MySqlConnection sql)
+        {
+            this.sql = sql;
+        }
+        
+        public MySqlDataReader reader(String qry)
+        {
+            MySqlCommand cmd=new MySqlCommand(qry,sql);
+            return cmd.ExecuteReader();
+        }
+
+        public ZooJobItem[] getOkrols(int days)
+        {
+            MySqlDataReader rd=reader(String.Format(@"SELECT r_id,rabname(r_id,2) name,rabplace(r_id) place,
+(TO_DAYS(NOW())-TO_DAYS(r_event_date)) srok,r_status,(TO_DAYS(NOW())-TO_DAYS(r_born)) age
+FROM rabbits WHERE r_sex='female' AND (TO_DAYS(NOW())-TO_DAYS(r_event_date))>={0:d} ORDER BY srok DESC;", days));
+            List<ZooJobItem> res=new List<ZooJobItem>();
+            while (rd.Read())
+                res.Add(new ZooJobItem().Okrol(rd.GetInt32("r_id"),rd.GetString("name"),
+                    rd.GetString("place"),rd.GetInt32("age"),rd.GetInt32("srok"),rd.GetInt32("r_status")));
+            rd.Close();
+            return res.ToArray();
+        }
+
     }
 }

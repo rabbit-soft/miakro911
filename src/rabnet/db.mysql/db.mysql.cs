@@ -183,7 +183,8 @@ namespace rabnet
 
         public IDataGetter zooTeh(Filters f)
         {
-            return new ZooTeh(sql,f);
+            //TODO:remove item
+            return null;// new ZooTeh(sql, f);
         }
 
 
@@ -278,6 +279,11 @@ namespace rabnet
         public LogList getLogs(Filters f)
         {
             return (new Logs(sql).getLogs(f));
+        }
+
+        public ZooJobItem[] getOkrols(int days)
+        {
+            return new ZooTehGetter(sql).getOkrols(days);
         }
 
         #endregion
