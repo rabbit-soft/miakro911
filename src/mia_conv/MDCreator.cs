@@ -264,7 +264,7 @@ namespace mia_conv
                 int fid=0;
                 if (int.TryParse(nm, out fid))
                 {
-                    nm = "farm " + fid.ToString();
+                    nm = "Ферма " + fid.ToString();
                 }
                 else
                 {
