@@ -287,6 +287,7 @@ namespace mia_conv
             // 
             this.textRootPswd.Location = new System.Drawing.Point(95, 56);
             this.textRootPswd.Name = "textRootPswd";
+            this.textRootPswd.PasswordChar = '*';
             this.textRootPswd.Size = new System.Drawing.Size(82, 20);
             this.textRootPswd.TabIndex = 3;
             // 
@@ -395,6 +396,7 @@ namespace mia_conv
             this.Controls.Add(this.log);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tb1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
             this.Text = "Mia file to DB converter";
             this.Activated += new System.EventHandler(this.Form1_Activated);
