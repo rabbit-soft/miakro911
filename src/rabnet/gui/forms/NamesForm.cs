@@ -95,8 +95,15 @@ namespace rabnet
             if (listView1.SelectedItems.Count != 1 || listView1.SelectedItems[0]==null)
                 return;
             button1.Enabled = button2.Enabled = true;
-            textBox1.Text = listView1.SelectedItems[0].SubItems[0].Text;
-            textBox2.Text = listView1.SelectedItems[0].SubItems[1].Text;
+            try
+            {
+                textBox1.Text = listView1.SelectedItems[0].SubItems[0].Text;
+                textBox2.Text = listView1.SelectedItems[0].SubItems[1].Text;
+            }
+            catch (ArgumentOutOfRangeException ext)
+            {
+                return;
+            }
             if (listView1.SelectedItems[0].SubItems[2].Text == "м")
                 comboBox1.SelectedIndex = 1;
             else
@@ -117,8 +124,7 @@ namespace rabnet
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            if (manual)
-                rabStatusBar1.run();
+
         }
     }
 }
