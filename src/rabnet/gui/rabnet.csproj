@@ -64,6 +64,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="components\BuildingControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\BuildingControl.Designer.cs">
+      <DependentUpon>BuildingControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="components\DateDays.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -212,6 +218,9 @@
     <Compile Include="components\RabStatusBar.Designer.cs">
       <DependentUpon>RabStatusBar.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="components\BuildingControl.resx">
+      <DependentUpon>BuildingControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="components\DateDays.resx">
       <DependentUpon>DateDays.cs</DependentUpon>
     </EmbeddedResource>

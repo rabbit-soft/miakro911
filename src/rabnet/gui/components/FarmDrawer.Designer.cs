@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.bc1 = new rabnet.BuildingControl();
+            this.bc2 = new rabnet.BuildingControl();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -36,12 +38,55 @@
             // 
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Location = new System.Drawing.Point(146, 3);
+            this.pictureBox1.Location = new System.Drawing.Point(225, 3);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(499, 216);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
+            // 
+            // bc1
+            // 
+            this.bc1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.bc1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.bc1.delim = false;
+            this.bc1.delim1 = false;
+            this.bc1.delim2 = false;
+            this.bc1.delim3 = false;
+            this.bc1.heater = -1;
+            this.bc1.heater2 = -1;
+            this.bc1.Location = new System.Drawing.Point(-1, 45);
+            this.bc1.Name = "bc1";
+            this.bc1.nest = false;
+            this.bc1.nest2 = false;
+            this.bc1.repair = false;
+            this.bc1.Size = new System.Drawing.Size(227, 82);
+            this.bc1.TabIndex = 1;
+            this.bc1.vigul = false;
+            this.bc1.Visible = false;
+            // 
+            // bc2
+            // 
+            this.bc2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.bc2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.bc2.delim = false;
+            this.bc2.delim1 = false;
+            this.bc2.delim2 = false;
+            this.bc2.delim3 = false;
+            this.bc2.heater = -1;
+            this.bc2.heater2 = -1;
+            this.bc2.Location = new System.Drawing.Point(-1, 133);
+            this.bc2.Name = "bc2";
+            this.bc2.nest = false;
+            this.bc2.nest2 = false;
+            this.bc2.repair = false;
+            this.bc2.Size = new System.Drawing.Size(227, 82);
+            this.bc2.TabIndex = 2;
+            this.bc2.vigul = false;
+            this.bc2.Visible = false;
             // 
             // FarmDrawer
             // 
@@ -49,8 +94,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.bc1);
+            this.Controls.Add(this.bc2);
             this.Name = "FarmDrawer";
-            this.Size = new System.Drawing.Size(648, 222);
+            this.Size = new System.Drawing.Size(727, 222);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FarmDrawer_Paint);
             this.Resize += new System.EventHandler(this.FarmDrawer_Resize);
             this.Move += new System.EventHandler(this.FarmDrawer_Move);
@@ -62,5 +109,7 @@
         #endregion
 
         private System.Windows.Forms.PictureBox pictureBox1;
+        private BuildingControl bc1;
+        private BuildingControl bc2;
     }
 }

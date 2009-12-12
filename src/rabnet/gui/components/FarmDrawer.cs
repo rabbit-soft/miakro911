@@ -20,9 +20,11 @@ namespace rabnet
             private Graphics g;
             private Rectangle r;
             private bool repair;
+            private int id = 0;
             private Font f = new Font("Arial", 8);
-            public DrawTier(String type,String delims,String nests,String heaters,String[] rabbits,bool repair)
+            public DrawTier(int id,String type,String delims,String nests,String heaters,String[] rabbits,bool repair)
             {
+                this.id = id;
                 this.repair=repair;
                 this.type = type;
                 this.delims = delims;
@@ -30,23 +32,59 @@ namespace rabnet
                 rbs=rabbits;
                 this.heaters = heaters;
             }
-            public void draw(Graphics g, Rectangle r)
+
+            private void setNest(BuildingControl p, char nest, char heater, bool second)
+            {
+                if (second)
+                    p.nest2 = (nest == '1');
+                else
+                    p.nest = (nest == '1');
+                int htr = 2;
+                if (heater == '0') htr = 0;
+                if (heater == '1') htr = 1;
+                if (second)
+                    p.heater2 = htr;
+                else
+                    p.heater = htr;
+            }
+            private void setVigul(BuildingControl p,char delim)
+            {
+                p.vigul = (delim == '1');
+            }
+            private void setDelim(BuildingControl p, char delim)
+            {
+                p.delim = (delim == '1');
+            }
+            private void setDelims(BuildingControl p, string delims)
+            {
+                p.delim1 = (delims[0] == '1');
+                p.delim2 = (delims[1] == '1');
+                p.delim3 = (delims[2] == '1');
+            }
+
+            public void draw(Graphics g, Rectangle r,BuildingControl p)
             {
                 this.g=g;
                 this.r=r;
+                p.setType(type);
+                p.repair = repair;
                 switch (type)
                 {
                     case "female":
                         drawPart(0,1,"",rbs[0],nests[0],heaters[0],null);
+                        setNest(p, nests[0], heaters[0], false);
                         break;
                     case "dfemale":
                         drawPart(0,0.5,"а",rbs[0],nests[0],heaters[0],null);
                         drawPart(0.5,0.5,"б",rbs[1],nests[1],heaters[1],null);
+                        setNest(p, nests[0], heaters[0], false);
+                        setNest(p, nests[1], heaters[1], true);
                         break;
                     case "complex":
                         drawPart(0, 0.5, "а", rbs[0], nests[0], heaters[0], null);
                         drawPart(0.5, 0.25, "б", rbs[1], 'N', 'N', null);
                         drawPart(0.75, 0.25, "в", rbs[2], 'N', 'N', null);
+                        setNest(p, nests[0], heaters[0], false);
                         break;
                     case "jurta":
                         bool fst = delims[0] == '1';
@@ -60,9 +98,12 @@ namespace rabnet
                             drawPart(0, 0.62, "а", rbs[0], nests[0], heaters[0], new double[] { 0.25 });
                             drawPart(0.62, 0.38, "б", rbs[1], 'N', 'N', null);
                         }
+                        setNest(p, nests[0], heaters[0], false);
+                        setVigul(p, delims[0]);
                         break;
                     case "quarta":
                         drawQuarta();
+                        setDelims(p, delims);
                         break;
                     case "vertep":
                         drawPart(0, 0.5, "а", rbs[0], 'N', 'N', null);
@@ -76,10 +117,12 @@ namespace rabnet
                         }
                         else
                             drawPart(0, 1, "аб", rbs[0], 'N', 'N', new double[]{ 0.5});
+                        setDelim(p, delims[0]);
                         break;
                     case "cabin":
                         drawPart(0, 0.65, "а", rbs[0], nests[0], heaters[0], null);
                         drawPart(0.65, 0.35, "б", rbs[1], 'N', 'N', null);
+                        setNest(p,nests[0], heaters[0], false);
                         break;
                 }
             }
@@ -148,7 +191,7 @@ namespace rabnet
                         b = Brushes.Blue;
                         stat = "Выкл";
                     }
-                    if (heater == '2')
+                    if (heater == '3')
                     {
                         b = Brushes.Red;
                         stat = "Вкл";
@@ -156,7 +199,6 @@ namespace rabnet
                     g.FillRectangle(b, hrct);
                     FarmDrawer.drawtext("грелка:"+stat,hrct,10,g,false);
                 }
-
             }
         }
 
@@ -173,6 +215,7 @@ namespace rabnet
             this.t1=t1;
             this.t2 = t2;
             this.id = id;
+            bc1.Visible = bc2.Visible = false;
             Refresh();
         }
 
@@ -215,11 +258,18 @@ namespace rabnet
             });
             drawtext(id.ToString(), r1, 12, g,true);
             g.DrawRectangle(new Pen(Color.Black, 2), r2[0]);
-            t1.draw(g, r2[0]);
+            
+            bc1.Top = r2[0].Top+pictureBox1.Top+1;
+            bc1.Height = r2[0].Height;
+            bc2.Top = r2[0].Bottom+2;
+            bc2.Height = r2[0].Height;
+            t1.draw(g, r2[0], bc1);
+            bc1.Visible = true;
             if (t2 != null)
             {
                 g.DrawRectangle(new Pen(Color.Black, 2), r2[1]);
-                t2.draw(g, r2[1]);
+                t2.draw(g, r2[1],bc2);
+                bc2.Visible = true;
             }
         }
 
@@ -236,6 +286,11 @@ namespace rabnet
         private void FarmDrawer_Paint(object sender, PaintEventArgs e)
         {
             pictureBox1.Refresh();
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

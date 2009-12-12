@@ -60,7 +60,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.treeView1);
             this.splitContainer1.Size = new System.Drawing.Size(842, 539);
-            this.splitContainer1.SplitterDistance = 643;
+            this.splitContainer1.SplitterDistance = 654;
             this.splitContainer1.TabIndex = 0;
             // 
             // farmDrawer1
@@ -70,7 +70,7 @@
             this.farmDrawer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.farmDrawer1.Location = new System.Drawing.Point(3, 0);
             this.farmDrawer1.Name = "farmDrawer1";
-            this.farmDrawer1.Size = new System.Drawing.Size(637, 215);
+            this.farmDrawer1.Size = new System.Drawing.Size(648, 215);
             this.farmDrawer1.TabIndex = 4;
             // 
             // listView1
@@ -92,7 +92,7 @@
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(3, 221);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(637, 315);
+            this.listView1.Size = new System.Drawing.Size(648, 315);
             this.listView1.TabIndex = 3;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -139,7 +139,7 @@
             this.treeView1.HideSelection = false;
             this.treeView1.Location = new System.Drawing.Point(3, 3);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(189, 533);
+            this.treeView1.Size = new System.Drawing.Size(178, 533);
             this.treeView1.TabIndex = 0;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             // 

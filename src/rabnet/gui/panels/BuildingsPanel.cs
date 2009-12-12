@@ -173,7 +173,7 @@ namespace rabnet
             List<string> rabs=new List<string>();
             for (int i=0;i<b.secs();i++)
                     rabs.Add(b.use(i));
-            return new FarmDrawer.DrawTier(b.itype(),b.delims(),b.nest(),b.heater(),rabs.ToArray(),b.repair());
+            return new FarmDrawer.DrawTier(b.id(),b.itype(),b.delims(),b.nest(),b.heater(),rabs.ToArray(),b.repair());
         }
 
         private void DrawFarm(int farm)
