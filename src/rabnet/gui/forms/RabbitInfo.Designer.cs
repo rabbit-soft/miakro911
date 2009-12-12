@@ -345,7 +345,7 @@
             this.bdate.DaysText = "Возраст";
             this.bdate.DaysValue = 0;
             this.bdate.Location = new System.Drawing.Point(13, 111);
-            this.bdate.Maximum = 100000;
+            this.bdate.Maximum = 5000;
             this.bdate.Name = "bdate";
             this.bdate.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
             this.bdate.Size = new System.Drawing.Size(168, 50);
@@ -374,6 +374,11 @@
             // group
             // 
             this.group.Location = new System.Drawing.Point(60, 178);
+            this.group.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
             this.group.Minimum = new decimal(new int[] {
             1,
             0,
@@ -435,7 +440,7 @@
             // 
             this.numericUpDown3.Location = new System.Drawing.Point(9, 208);
             this.numericUpDown3.Maximum = new decimal(new int[] {
-            100000,
+            1000,
             0,
             0,
             0});
@@ -765,7 +770,7 @@
             this.okrolDd.DaysText = "Срок";
             this.okrolDd.DaysValue = 0;
             this.okrolDd.Location = new System.Drawing.Point(8, 61);
-            this.okrolDd.Maximum = 100000;
+            this.okrolDd.Maximum = 100;
             this.okrolDd.Name = "okrolDd";
             this.okrolDd.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
             this.okrolDd.Size = new System.Drawing.Size(136, 48);
@@ -842,7 +847,7 @@
             this.sukrDd.DaysText = "Срок";
             this.sukrDd.DaysValue = 0;
             this.sukrDd.Location = new System.Drawing.Point(0, 46);
-            this.sukrDd.Maximum = 100000;
+            this.sukrDd.Maximum = 100;
             this.sukrDd.Name = "sukrDd";
             this.sukrDd.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
             this.sukrDd.Size = new System.Drawing.Size(136, 51);

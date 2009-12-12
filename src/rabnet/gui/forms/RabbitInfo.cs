@@ -514,6 +514,12 @@ namespace rabnet
             okrolDd.Enabled = (okrolCount.Value!=0);
         }
 
+        private void bdate_Load(object sender, EventArgs e)
+        {
+
+        }
+
+
 
     }
 }
