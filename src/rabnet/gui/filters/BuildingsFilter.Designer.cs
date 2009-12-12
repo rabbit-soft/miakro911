@@ -28,84 +28,37 @@
         /// </summary>
         protected override void InitializeComponent()
         {
-            this.enableBox = new System.Windows.Forms.CheckBox();
-            this.statusGroup = new System.Windows.Forms.GroupBox();
-            this.busyBox = new System.Windows.Forms.CheckBox();
-            this.freeBox = new System.Windows.Forms.CheckBox();
             this.farmGroup = new System.Windows.Forms.GroupBox();
             this.kvartaBox = new System.Windows.Forms.CheckBox();
             this.urtaBox = new System.Windows.Forms.CheckBox();
             this.vertepBox = new System.Windows.Forms.CheckBox();
-            this.filterGroup = new System.Windows.Forms.GroupBox();
-            this.gnezdoGroup = new System.Windows.Forms.GroupBox();
-            this.grelkaGroup = new System.Windows.Forms.GroupBox();
-            this.radioGnezdo1 = new System.Windows.Forms.RadioButton();
-            this.radioGnezdo2 = new System.Windows.Forms.RadioButton();
-            this.radioGnezdo3 = new System.Windows.Forms.RadioButton();
-            this.radioGrelka1 = new System.Windows.Forms.RadioButton();
-            this.radioGrelka2 = new System.Windows.Forms.RadioButton();
-            this.radioGrelka3 = new System.Windows.Forms.RadioButton();
-            this.radioGrelka4 = new System.Windows.Forms.RadioButton();
-            this.radioGrelka5 = new System.Windows.Forms.RadioButton();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.barinBox = new System.Windows.Forms.CheckBox();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.checkAllButton = new System.Windows.Forms.Button();
-            this.statusGroup.SuspendLayout();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cbFarm = new System.Windows.Forms.ComboBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.farmGroup.SuspendLayout();
-            this.filterGroup.SuspendLayout();
-            this.gnezdoGroup.SuspendLayout();
-            this.grelkaGroup.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // enableBox
-            // 
-            this.enableBox.AutoSize = true;
-            this.enableBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.enableBox.Location = new System.Drawing.Point(15, 15);
-            this.enableBox.Name = "enableBox";
-            this.enableBox.Size = new System.Drawing.Size(92, 20);
-            this.enableBox.TabIndex = 0;
-            this.enableBox.Text = "Включен";
-            this.enableBox.UseVisualStyleBackColor = true;
-            // 
-            // statusGroup
-            // 
-            this.statusGroup.Controls.Add(this.busyBox);
-            this.statusGroup.Controls.Add(this.freeBox);
-            this.statusGroup.Location = new System.Drawing.Point(5, 20);
-            this.statusGroup.Name = "statusGroup";
-            this.statusGroup.Size = new System.Drawing.Size(102, 68);
-            this.statusGroup.TabIndex = 1;
-            this.statusGroup.TabStop = false;
-            this.statusGroup.Text = "Статус";
-            // 
-            // busyBox
-            // 
-            this.busyBox.AutoSize = true;
-            this.busyBox.Location = new System.Drawing.Point(6, 42);
-            this.busyBox.Name = "busyBox";
-            this.busyBox.Size = new System.Drawing.Size(70, 17);
-            this.busyBox.TabIndex = 1;
-            this.busyBox.Text = "Занятые";
-            this.busyBox.UseVisualStyleBackColor = true;
-            // 
-            // freeBox
-            // 
-            this.freeBox.AutoSize = true;
-            this.freeBox.Location = new System.Drawing.Point(6, 19);
-            this.freeBox.Name = "freeBox";
-            this.freeBox.Size = new System.Drawing.Size(83, 17);
-            this.freeBox.TabIndex = 0;
-            this.freeBox.Text = "Свободные";
-            this.freeBox.UseVisualStyleBackColor = true;
             // 
             // farmGroup
             // 
+            this.farmGroup.Controls.Add(this.button1);
+            this.farmGroup.Controls.Add(this.checkBox5);
+            this.farmGroup.Controls.Add(this.barinBox);
+            this.farmGroup.Controls.Add(this.checkBox3);
+            this.farmGroup.Controls.Add(this.checkBox2);
+            this.farmGroup.Controls.Add(this.checkBox1);
             this.farmGroup.Controls.Add(this.kvartaBox);
             this.farmGroup.Controls.Add(this.urtaBox);
             this.farmGroup.Controls.Add(this.vertepBox);
-            this.farmGroup.Location = new System.Drawing.Point(5, 94);
+            this.farmGroup.Location = new System.Drawing.Point(130, 3);
             this.farmGroup.Name = "farmGroup";
-            this.farmGroup.Size = new System.Drawing.Size(102, 94);
+            this.farmGroup.Size = new System.Drawing.Size(176, 141);
             this.farmGroup.TabIndex = 2;
             this.farmGroup.TabStop = false;
             this.farmGroup.Text = "Тип Фермы";
@@ -142,170 +95,123 @@
             this.vertepBox.Text = "Вертеп";
             this.vertepBox.UseVisualStyleBackColor = true;
             // 
-            // filterGroup
+            // checkBox1
             // 
-            this.filterGroup.Controls.Add(this.checkAllButton);
-            this.filterGroup.Controls.Add(this.button1);
-            this.filterGroup.Controls.Add(this.grelkaGroup);
-            this.filterGroup.Controls.Add(this.gnezdoGroup);
-            this.filterGroup.Controls.Add(this.statusGroup);
-            this.filterGroup.Controls.Add(this.farmGroup);
-            this.filterGroup.Location = new System.Drawing.Point(15, 40);
-            this.filterGroup.Name = "filterGroup";
-            this.filterGroup.Size = new System.Drawing.Size(250, 270);
-            this.filterGroup.TabIndex = 2;
-            this.filterGroup.TabStop = false;
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(74, 88);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(65, 17);
+            this.checkBox1.TabIndex = 4;
+            this.checkBox1.Text = "Хижина";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // gnezdoGroup
+            // checkBox2
             // 
-            this.gnezdoGroup.Controls.Add(this.radioGnezdo3);
-            this.gnezdoGroup.Controls.Add(this.radioGnezdo2);
-            this.gnezdoGroup.Controls.Add(this.radioGnezdo1);
-            this.gnezdoGroup.Location = new System.Drawing.Point(113, 20);
-            this.gnezdoGroup.Name = "gnezdoGroup";
-            this.gnezdoGroup.Size = new System.Drawing.Size(129, 94);
-            this.gnezdoGroup.TabIndex = 3;
-            this.gnezdoGroup.TabStop = false;
-            this.gnezdoGroup.Text = "Гнездовья";
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(74, 65);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(97, 17);
+            this.checkBox2.TabIndex = 5;
+            this.checkBox2.Text = "Комплексный";
+            this.checkBox2.UseVisualStyleBackColor = true;
             // 
-            // grelkaGroup
+            // checkBox3
             // 
-            this.grelkaGroup.Controls.Add(this.radioGrelka5);
-            this.grelkaGroup.Controls.Add(this.radioGrelka4);
-            this.grelkaGroup.Controls.Add(this.radioGrelka3);
-            this.grelkaGroup.Controls.Add(this.radioGrelka2);
-            this.grelkaGroup.Controls.Add(this.radioGrelka1);
-            this.grelkaGroup.Location = new System.Drawing.Point(113, 120);
-            this.grelkaGroup.Name = "grelkaGroup";
-            this.grelkaGroup.Size = new System.Drawing.Size(129, 142);
-            this.grelkaGroup.TabIndex = 0;
-            this.grelkaGroup.TabStop = false;
-            this.grelkaGroup.Text = "Грелка";
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(74, 42);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(104, 17);
+            this.checkBox3.TabIndex = 6;
+            this.checkBox3.Text = "Двукрольчихин";
+            this.checkBox3.UseVisualStyleBackColor = true;
             // 
-            // radioGnezdo1
+            // barinBox
             // 
-            this.radioGnezdo1.AutoSize = true;
-            this.radioGnezdo1.Location = new System.Drawing.Point(6, 19);
-            this.radioGnezdo1.Name = "radioGnezdo1";
-            this.radioGnezdo1.Size = new System.Drawing.Size(71, 17);
-            this.radioGnezdo1.TabIndex = 0;
-            this.radioGnezdo1.TabStop = true;
-            this.radioGnezdo1.Text = "Неважно";
-            this.radioGnezdo1.UseVisualStyleBackColor = true;
+            this.barinBox.AutoSize = true;
+            this.barinBox.Location = new System.Drawing.Point(6, 88);
+            this.barinBox.Name = "barinBox";
+            this.barinBox.Size = new System.Drawing.Size(57, 17);
+            this.barinBox.TabIndex = 7;
+            this.barinBox.Text = "Барин";
+            this.barinBox.UseVisualStyleBackColor = true;
             // 
-            // radioGnezdo2
+            // checkBox5
             // 
-            this.radioGnezdo2.AutoSize = true;
-            this.radioGnezdo2.Location = new System.Drawing.Point(6, 42);
-            this.radioGnezdo2.Name = "radioGnezdo2";
-            this.radioGnezdo2.Size = new System.Drawing.Size(94, 17);
-            this.radioGnezdo2.TabIndex = 1;
-            this.radioGnezdo2.TabStop = true;
-            this.radioGnezdo2.Text = "Установлены";
-            this.radioGnezdo2.UseVisualStyleBackColor = true;
-            // 
-            // radioGnezdo3
-            // 
-            this.radioGnezdo3.AutoSize = true;
-            this.radioGnezdo3.Location = new System.Drawing.Point(6, 65);
-            this.radioGnezdo3.Name = "radioGnezdo3";
-            this.radioGnezdo3.Size = new System.Drawing.Size(108, 17);
-            this.radioGnezdo3.TabIndex = 2;
-            this.radioGnezdo3.TabStop = true;
-            this.radioGnezdo3.Text = "Не установлены";
-            this.radioGnezdo3.UseVisualStyleBackColor = true;
-            // 
-            // radioGrelka1
-            // 
-            this.radioGrelka1.AutoSize = true;
-            this.radioGrelka1.Location = new System.Drawing.Point(7, 20);
-            this.radioGrelka1.Name = "radioGrelka1";
-            this.radioGrelka1.Size = new System.Drawing.Size(71, 17);
-            this.radioGrelka1.TabIndex = 0;
-            this.radioGrelka1.TabStop = true;
-            this.radioGrelka1.Text = "Неважно";
-            this.radioGrelka1.UseVisualStyleBackColor = true;
-            // 
-            // radioGrelka2
-            // 
-            this.radioGrelka2.AutoSize = true;
-            this.radioGrelka2.Location = new System.Drawing.Point(7, 43);
-            this.radioGrelka2.Name = "radioGrelka2";
-            this.radioGrelka2.Size = new System.Drawing.Size(87, 17);
-            this.radioGrelka2.TabIndex = 1;
-            this.radioGrelka2.TabStop = true;
-            this.radioGrelka2.Text = "Отсутствует";
-            this.radioGrelka2.UseVisualStyleBackColor = true;
-            // 
-            // radioGrelka3
-            // 
-            this.radioGrelka3.AutoSize = true;
-            this.radioGrelka3.Location = new System.Drawing.Point(6, 66);
-            this.radioGrelka3.Name = "radioGrelka3";
-            this.radioGrelka3.Size = new System.Drawing.Size(92, 17);
-            this.radioGrelka3.TabIndex = 2;
-            this.radioGrelka3.TabStop = true;
-            this.radioGrelka3.Text = "Установлена";
-            this.radioGrelka3.UseVisualStyleBackColor = true;
-            // 
-            // radioGrelka4
-            // 
-            this.radioGrelka4.AutoSize = true;
-            this.radioGrelka4.Location = new System.Drawing.Point(6, 89);
-            this.radioGrelka4.Name = "radioGrelka4";
-            this.radioGrelka4.Size = new System.Drawing.Size(83, 17);
-            this.radioGrelka4.TabIndex = 3;
-            this.radioGrelka4.TabStop = true;
-            this.radioGrelka4.Text = "Выключена";
-            this.radioGrelka4.UseVisualStyleBackColor = true;
-            // 
-            // radioGrelka5
-            // 
-            this.radioGrelka5.AutoSize = true;
-            this.radioGrelka5.Location = new System.Drawing.Point(6, 112);
-            this.radioGrelka5.Name = "radioGrelka5";
-            this.radioGrelka5.Size = new System.Drawing.Size(75, 17);
-            this.radioGrelka5.TabIndex = 4;
-            this.radioGrelka5.TabStop = true;
-            this.radioGrelka5.Text = "Включена";
-            this.radioGrelka5.UseVisualStyleBackColor = true;
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Location = new System.Drawing.Point(74, 19);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(85, 17);
+            this.checkBox5.TabIndex = 8;
+            this.checkBox5.Text = "Крольчихин";
+            this.checkBox5.UseVisualStyleBackColor = true;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(17, 239);
+            this.button1.Location = new System.Drawing.Point(25, 111);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Применить";
+            this.button1.Size = new System.Drawing.Size(114, 23);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "Выбрать все";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // checkAllButton
+            // label1
             // 
-            this.checkAllButton.Location = new System.Drawing.Point(5, 194);
-            this.checkAllButton.Name = "checkAllButton";
-            this.checkAllButton.Size = new System.Drawing.Size(102, 23);
-            this.checkAllButton.TabIndex = 5;
-            this.checkAllButton.Text = "Выбрать все";
-            this.checkAllButton.UseVisualStyleBackColor = true;
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(3, 3);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(53, 16);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Фермы";
+            // 
+            // cbFarm
+            // 
+            this.cbFarm.FormattingEnabled = true;
+            this.cbFarm.Items.AddRange(new object[] {
+            "Все",
+            "Занятые",
+            "Свободные"});
+            this.cbFarm.Location = new System.Drawing.Point(3, 18);
+            this.cbFarm.Name = "cbFarm";
+            this.cbFarm.Size = new System.Drawing.Size(121, 21);
+            this.cbFarm.TabIndex = 11;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Неважно",
+            "Отсутствует",
+            "Установлена"});
+            this.comboBox1.Location = new System.Drawing.Point(3, 64);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 12;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.Location = new System.Drawing.Point(3, 46);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(78, 16);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "Гнездовье";
             // 
             // BuildingsFilter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Controls.Add(this.filterGroup);
-            this.Controls.Add(this.enableBox);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cbFarm);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.farmGroup);
             this.Name = "BuildingsFilter";
-            this.Size = new System.Drawing.Size(270, 320);
-            this.statusGroup.ResumeLayout(false);
-            this.statusGroup.PerformLayout();
+            this.Size = new System.Drawing.Size(320, 190);
             this.farmGroup.ResumeLayout(false);
             this.farmGroup.PerformLayout();
-            this.filterGroup.ResumeLayout(false);
-            this.gnezdoGroup.ResumeLayout(false);
-            this.gnezdoGroup.PerformLayout();
-            this.grelkaGroup.ResumeLayout(false);
-            this.grelkaGroup.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -313,26 +219,19 @@
 
         #endregion
 
-        private System.Windows.Forms.CheckBox enableBox;
-        private System.Windows.Forms.GroupBox statusGroup;
-        private System.Windows.Forms.CheckBox busyBox;
-        private System.Windows.Forms.CheckBox freeBox;
         private System.Windows.Forms.GroupBox farmGroup;
         private System.Windows.Forms.CheckBox kvartaBox;
         private System.Windows.Forms.CheckBox urtaBox;
         private System.Windows.Forms.CheckBox vertepBox;
-        private System.Windows.Forms.GroupBox filterGroup;
-        private System.Windows.Forms.GroupBox grelkaGroup;
-        private System.Windows.Forms.GroupBox gnezdoGroup;
-        private System.Windows.Forms.RadioButton radioGnezdo3;
-        private System.Windows.Forms.RadioButton radioGnezdo2;
-        private System.Windows.Forms.RadioButton radioGnezdo1;
-        private System.Windows.Forms.RadioButton radioGrelka5;
-        private System.Windows.Forms.RadioButton radioGrelka4;
-        private System.Windows.Forms.RadioButton radioGrelka3;
-        private System.Windows.Forms.RadioButton radioGrelka2;
-        private System.Windows.Forms.RadioButton radioGrelka1;
-        private System.Windows.Forms.Button checkAllButton;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox checkBox5;
+        private System.Windows.Forms.CheckBox barinBox;
+        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox cbFarm;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label2;
     }
 }
