@@ -29,30 +29,35 @@
         protected override void InitializeComponent()
         {
             this.farmGroup = new System.Windows.Forms.GroupBox();
+            this.btnAll = new System.Windows.Forms.Button();
+            this.krolBox = new System.Windows.Forms.CheckBox();
+            this.barinBox = new System.Windows.Forms.CheckBox();
+            this.dvukrolBox = new System.Windows.Forms.CheckBox();
+            this.komplexBox = new System.Windows.Forms.CheckBox();
+            this.hizhinaBox = new System.Windows.Forms.CheckBox();
             this.kvartaBox = new System.Windows.Forms.CheckBox();
             this.urtaBox = new System.Windows.Forms.CheckBox();
             this.vertepBox = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.barinBox = new System.Windows.Forms.CheckBox();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.cbFarm = new System.Windows.Forms.ComboBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbGnezdo = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.сиПкудлф = new System.Windows.Forms.ComboBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.saveBox = new System.Windows.Forms.ComboBox();
+            this.gotovo = new System.Windows.Forms.Button();
             this.farmGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // farmGroup
             // 
-            this.farmGroup.Controls.Add(this.button1);
-            this.farmGroup.Controls.Add(this.checkBox5);
+            this.farmGroup.Controls.Add(this.btnAll);
+            this.farmGroup.Controls.Add(this.krolBox);
             this.farmGroup.Controls.Add(this.barinBox);
-            this.farmGroup.Controls.Add(this.checkBox3);
-            this.farmGroup.Controls.Add(this.checkBox2);
-            this.farmGroup.Controls.Add(this.checkBox1);
+            this.farmGroup.Controls.Add(this.dvukrolBox);
+            this.farmGroup.Controls.Add(this.komplexBox);
+            this.farmGroup.Controls.Add(this.hizhinaBox);
             this.farmGroup.Controls.Add(this.kvartaBox);
             this.farmGroup.Controls.Add(this.urtaBox);
             this.farmGroup.Controls.Add(this.vertepBox);
@@ -63,6 +68,66 @@
             this.farmGroup.TabStop = false;
             this.farmGroup.Text = "Тип Фермы";
             this.farmGroup.Enter += new System.EventHandler(this.groupBox2_Enter);
+            // 
+            // btnAll
+            // 
+            this.btnAll.Location = new System.Drawing.Point(25, 111);
+            this.btnAll.Name = "btnAll";
+            this.btnAll.Size = new System.Drawing.Size(114, 23);
+            this.btnAll.TabIndex = 9;
+            this.btnAll.Text = "Выбрать все";
+            this.btnAll.UseVisualStyleBackColor = true;
+            this.btnAll.Click += new System.EventHandler(this.btnAll_Click);
+            // 
+            // krolBox
+            // 
+            this.krolBox.AutoSize = true;
+            this.krolBox.Location = new System.Drawing.Point(74, 19);
+            this.krolBox.Name = "krolBox";
+            this.krolBox.Size = new System.Drawing.Size(85, 17);
+            this.krolBox.TabIndex = 8;
+            this.krolBox.Text = "Крольчихин";
+            this.krolBox.UseVisualStyleBackColor = true;
+            // 
+            // barinBox
+            // 
+            this.barinBox.AutoSize = true;
+            this.barinBox.Location = new System.Drawing.Point(6, 88);
+            this.barinBox.Name = "barinBox";
+            this.barinBox.Size = new System.Drawing.Size(57, 17);
+            this.barinBox.TabIndex = 7;
+            this.barinBox.Text = "Барин";
+            this.barinBox.UseVisualStyleBackColor = true;
+            // 
+            // dvukrolBox
+            // 
+            this.dvukrolBox.AutoSize = true;
+            this.dvukrolBox.Location = new System.Drawing.Point(74, 42);
+            this.dvukrolBox.Name = "dvukrolBox";
+            this.dvukrolBox.Size = new System.Drawing.Size(104, 17);
+            this.dvukrolBox.TabIndex = 6;
+            this.dvukrolBox.Text = "Двукрольчихин";
+            this.dvukrolBox.UseVisualStyleBackColor = true;
+            // 
+            // komplexBox
+            // 
+            this.komplexBox.AutoSize = true;
+            this.komplexBox.Location = new System.Drawing.Point(74, 65);
+            this.komplexBox.Name = "komplexBox";
+            this.komplexBox.Size = new System.Drawing.Size(97, 17);
+            this.komplexBox.TabIndex = 5;
+            this.komplexBox.Text = "Комплексный";
+            this.komplexBox.UseVisualStyleBackColor = true;
+            // 
+            // hizhinaBox
+            // 
+            this.hizhinaBox.AutoSize = true;
+            this.hizhinaBox.Location = new System.Drawing.Point(74, 88);
+            this.hizhinaBox.Name = "hizhinaBox";
+            this.hizhinaBox.Size = new System.Drawing.Size(65, 17);
+            this.hizhinaBox.TabIndex = 4;
+            this.hizhinaBox.Text = "Хижина";
+            this.hizhinaBox.UseVisualStyleBackColor = true;
             // 
             // kvartaBox
             // 
@@ -95,65 +160,6 @@
             this.vertepBox.Text = "Вертеп";
             this.vertepBox.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(74, 88);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(65, 17);
-            this.checkBox1.TabIndex = 4;
-            this.checkBox1.Text = "Хижина";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(74, 65);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(97, 17);
-            this.checkBox2.TabIndex = 5;
-            this.checkBox2.Text = "Комплексный";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(74, 42);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(104, 17);
-            this.checkBox3.TabIndex = 6;
-            this.checkBox3.Text = "Двукрольчихин";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            // 
-            // barinBox
-            // 
-            this.barinBox.AutoSize = true;
-            this.barinBox.Location = new System.Drawing.Point(6, 88);
-            this.barinBox.Name = "barinBox";
-            this.barinBox.Size = new System.Drawing.Size(57, 17);
-            this.barinBox.TabIndex = 7;
-            this.barinBox.Text = "Барин";
-            this.barinBox.UseVisualStyleBackColor = true;
-            // 
-            // checkBox5
-            // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(74, 19);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(85, 17);
-            this.checkBox5.TabIndex = 8;
-            this.checkBox5.Text = "Крольчихин";
-            this.checkBox5.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(25, 111);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(114, 23);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "Выбрать все";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -171,22 +177,22 @@
             "Все",
             "Занятые",
             "Свободные"});
-            this.cbFarm.Location = new System.Drawing.Point(3, 18);
+            this.cbFarm.Location = new System.Drawing.Point(3, 22);
             this.cbFarm.Name = "cbFarm";
             this.cbFarm.Size = new System.Drawing.Size(121, 21);
             this.cbFarm.TabIndex = 11;
             // 
-            // comboBox1
+            // cbGnezdo
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.cbGnezdo.FormattingEnabled = true;
+            this.cbGnezdo.Items.AddRange(new object[] {
             "Неважно",
-            "Отсутствует",
-            "Установлена"});
-            this.comboBox1.Location = new System.Drawing.Point(3, 64);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 12;
+            "Отсутствуют",
+            "Установлены"});
+            this.cbGnezdo.Location = new System.Drawing.Point(3, 65);
+            this.cbGnezdo.Name = "cbGnezdo";
+            this.cbGnezdo.Size = new System.Drawing.Size(121, 21);
+            this.cbGnezdo.TabIndex = 12;
             // 
             // label2
             // 
@@ -198,18 +204,73 @@
             this.label2.TabIndex = 13;
             this.label2.Text = "Гнездовье";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label3.Location = new System.Drawing.Point(3, 89);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(54, 16);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "Грелка";
+            // 
+            // сиПкудлф
+            // 
+            this.сиПкудлф.FormattingEnabled = true;
+            this.сиПкудлф.Items.AddRange(new object[] {
+            "Неважно",
+            "Установлены",
+            "Отсутствуют",
+            "Выключены",
+            "Включены"});
+            this.сиПкудлф.Location = new System.Drawing.Point(3, 108);
+            this.сиПкудлф.Name = "сиПкудлф";
+            this.сиПкудлф.Size = new System.Drawing.Size(121, 21);
+            this.сиПкудлф.TabIndex = 15;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(231, 150);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 16;
+            this.button1.Text = "Сохранить";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // saveBox
+            // 
+            this.saveBox.FormattingEnabled = true;
+            this.saveBox.Location = new System.Drawing.Point(104, 152);
+            this.saveBox.Name = "saveBox";
+            this.saveBox.Size = new System.Drawing.Size(121, 21);
+            this.saveBox.TabIndex = 17;
+            // 
+            // gotovo
+            // 
+            this.gotovo.Location = new System.Drawing.Point(3, 150);
+            this.gotovo.Name = "gotovo";
+            this.gotovo.Size = new System.Drawing.Size(54, 23);
+            this.gotovo.TabIndex = 18;
+            this.gotovo.Text = "Готово";
+            this.gotovo.UseVisualStyleBackColor = true;
+            // 
             // BuildingsFilter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.gotovo);
+            this.Controls.Add(this.saveBox);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.сиПкудлф);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cbGnezdo);
             this.Controls.Add(this.cbFarm);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.farmGroup);
             this.Name = "BuildingsFilter";
-            this.Size = new System.Drawing.Size(320, 190);
+            this.Size = new System.Drawing.Size(310, 178);
             this.farmGroup.ResumeLayout(false);
             this.farmGroup.PerformLayout();
             this.ResumeLayout(false);
@@ -223,15 +284,20 @@
         private System.Windows.Forms.CheckBox kvartaBox;
         private System.Windows.Forms.CheckBox urtaBox;
         private System.Windows.Forms.CheckBox vertepBox;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.CheckBox checkBox5;
+        private System.Windows.Forms.Button btnAll;
+        private System.Windows.Forms.CheckBox krolBox;
         private System.Windows.Forms.CheckBox barinBox;
-        private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox dvukrolBox;
+        private System.Windows.Forms.CheckBox komplexBox;
+        private System.Windows.Forms.CheckBox hizhinaBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cbFarm;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cbGnezdo;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox сиПкудлф;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ComboBox saveBox;
+        private System.Windows.Forms.Button gotovo;
     }
 }
