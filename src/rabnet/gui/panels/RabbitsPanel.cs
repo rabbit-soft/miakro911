@@ -101,6 +101,17 @@ namespace rabnet
             {
                 return;
             }
+            
+            for (int ind = 0; ind < genTree.Nodes.Count; ind++)
+            {
+                int len = genTree.Nodes[ind].Text.IndexOf(",");
+                string str = genTree.Nodes[ind].Text.Remove(len);
+                if (listView1.SelectedItems[0].SubItems[0].Text.StartsWith(str))
+                {
+                    genTree.Nodes.RemoveAt(ind);
+                    break;
+                }
+            }
             if (genTree.Nodes.Count > 0)
                 genTree.Nodes[0].ForeColor = Color.Gray;
             if (genTree.Nodes.Count > 10)
