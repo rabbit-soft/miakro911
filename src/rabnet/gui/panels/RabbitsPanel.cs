@@ -108,6 +108,7 @@ namespace rabnet
                 string str = genTree.Nodes[ind].Text.Remove(len);
                 if (listView1.SelectedItems[0].SubItems[0].Text.StartsWith(str))
                 {
+                    if (ind == 0) return;
                     genTree.Nodes.RemoveAt(ind);
                     break;
                 }
