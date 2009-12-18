@@ -43,7 +43,7 @@
             this.cbGnezdo = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.сиПкудлф = new System.Windows.Forms.ComboBox();
+            this.cbGrelka = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
             this.saveBox = new System.Windows.Forms.ComboBox();
             this.gotovo = new System.Windows.Forms.Button();
@@ -67,14 +67,13 @@
             this.farmGroup.TabIndex = 2;
             this.farmGroup.TabStop = false;
             this.farmGroup.Text = "Тип Фермы";
-            this.farmGroup.Enter += new System.EventHandler(this.groupBox2_Enter);
             // 
             // btnAll
             // 
             this.btnAll.Location = new System.Drawing.Point(25, 111);
             this.btnAll.Name = "btnAll";
             this.btnAll.Size = new System.Drawing.Size(114, 23);
-            this.btnAll.TabIndex = 9;
+            this.btnAll.TabIndex = 11;
             this.btnAll.Text = "Выбрать все";
             this.btnAll.UseVisualStyleBackColor = true;
             this.btnAll.Click += new System.EventHandler(this.btnAll_Click);
@@ -85,7 +84,7 @@
             this.krolBox.Location = new System.Drawing.Point(74, 19);
             this.krolBox.Name = "krolBox";
             this.krolBox.Size = new System.Drawing.Size(85, 17);
-            this.krolBox.TabIndex = 8;
+            this.krolBox.TabIndex = 7;
             this.krolBox.Text = "Крольчихин";
             this.krolBox.UseVisualStyleBackColor = true;
             // 
@@ -95,7 +94,7 @@
             this.barinBox.Location = new System.Drawing.Point(6, 88);
             this.barinBox.Name = "barinBox";
             this.barinBox.Size = new System.Drawing.Size(57, 17);
-            this.barinBox.TabIndex = 7;
+            this.barinBox.TabIndex = 6;
             this.barinBox.Text = "Барин";
             this.barinBox.UseVisualStyleBackColor = true;
             // 
@@ -105,7 +104,7 @@
             this.dvukrolBox.Location = new System.Drawing.Point(74, 42);
             this.dvukrolBox.Name = "dvukrolBox";
             this.dvukrolBox.Size = new System.Drawing.Size(104, 17);
-            this.dvukrolBox.TabIndex = 6;
+            this.dvukrolBox.TabIndex = 8;
             this.dvukrolBox.Text = "Двукрольчихин";
             this.dvukrolBox.UseVisualStyleBackColor = true;
             // 
@@ -115,7 +114,7 @@
             this.komplexBox.Location = new System.Drawing.Point(74, 65);
             this.komplexBox.Name = "komplexBox";
             this.komplexBox.Size = new System.Drawing.Size(97, 17);
-            this.komplexBox.TabIndex = 5;
+            this.komplexBox.TabIndex = 9;
             this.komplexBox.Text = "Комплексный";
             this.komplexBox.UseVisualStyleBackColor = true;
             // 
@@ -125,7 +124,7 @@
             this.hizhinaBox.Location = new System.Drawing.Point(74, 88);
             this.hizhinaBox.Name = "hizhinaBox";
             this.hizhinaBox.Size = new System.Drawing.Size(65, 17);
-            this.hizhinaBox.TabIndex = 4;
+            this.hizhinaBox.TabIndex = 10;
             this.hizhinaBox.Text = "Хижина";
             this.hizhinaBox.UseVisualStyleBackColor = true;
             // 
@@ -135,10 +134,9 @@
             this.kvartaBox.Location = new System.Drawing.Point(6, 65);
             this.kvartaBox.Name = "kvartaBox";
             this.kvartaBox.Size = new System.Drawing.Size(62, 17);
-            this.kvartaBox.TabIndex = 3;
+            this.kvartaBox.TabIndex = 5;
             this.kvartaBox.Text = "Кварта";
             this.kvartaBox.UseVisualStyleBackColor = true;
-            this.kvartaBox.CheckedChanged += new System.EventHandler(this.kvartaBox_CheckedChanged);
             // 
             // urtaBox
             // 
@@ -146,7 +144,7 @@
             this.urtaBox.Location = new System.Drawing.Point(6, 42);
             this.urtaBox.Name = "urtaBox";
             this.urtaBox.Size = new System.Drawing.Size(52, 17);
-            this.urtaBox.TabIndex = 1;
+            this.urtaBox.TabIndex = 4;
             this.urtaBox.Text = "Юрта";
             this.urtaBox.UseVisualStyleBackColor = true;
             // 
@@ -156,7 +154,7 @@
             this.vertepBox.Location = new System.Drawing.Point(6, 19);
             this.vertepBox.Name = "vertepBox";
             this.vertepBox.Size = new System.Drawing.Size(62, 17);
-            this.vertepBox.TabIndex = 0;
+            this.vertepBox.TabIndex = 3;
             this.vertepBox.Text = "Вертеп";
             this.vertepBox.UseVisualStyleBackColor = true;
             // 
@@ -172,27 +170,31 @@
             // 
             // cbFarm
             // 
+            this.cbFarm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbFarm.FormattingEnabled = true;
             this.cbFarm.Items.AddRange(new object[] {
             "Все",
             "Занятые",
             "Свободные"});
             this.cbFarm.Location = new System.Drawing.Point(3, 22);
+            this.cbFarm.MaxDropDownItems = 3;
             this.cbFarm.Name = "cbFarm";
             this.cbFarm.Size = new System.Drawing.Size(121, 21);
-            this.cbFarm.TabIndex = 11;
+            this.cbFarm.TabIndex = 0;
             // 
             // cbGnezdo
             // 
+            this.cbGnezdo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbGnezdo.FormattingEnabled = true;
             this.cbGnezdo.Items.AddRange(new object[] {
             "Неважно",
             "Отсутствуют",
             "Установлены"});
             this.cbGnezdo.Location = new System.Drawing.Point(3, 65);
+            this.cbGnezdo.MaxDropDownItems = 3;
             this.cbGnezdo.Name = "cbGnezdo";
             this.cbGnezdo.Size = new System.Drawing.Size(121, 21);
-            this.cbGnezdo.TabIndex = 12;
+            this.cbGnezdo.TabIndex = 1;
             // 
             // label2
             // 
@@ -214,26 +216,28 @@
             this.label3.TabIndex = 14;
             this.label3.Text = "Грелка";
             // 
-            // сиПкудлф
+            // cbGrelka
             // 
-            this.сиПкудлф.FormattingEnabled = true;
-            this.сиПкудлф.Items.AddRange(new object[] {
+            this.cbGrelka.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbGrelka.FormattingEnabled = true;
+            this.cbGrelka.Items.AddRange(new object[] {
             "Неважно",
             "Установлены",
             "Отсутствуют",
             "Выключены",
             "Включены"});
-            this.сиПкудлф.Location = new System.Drawing.Point(3, 108);
-            this.сиПкудлф.Name = "сиПкудлф";
-            this.сиПкудлф.Size = new System.Drawing.Size(121, 21);
-            this.сиПкудлф.TabIndex = 15;
+            this.cbGrelka.Location = new System.Drawing.Point(3, 108);
+            this.cbGrelka.MaxDropDownItems = 5;
+            this.cbGrelka.Name = "cbGrelka";
+            this.cbGrelka.Size = new System.Drawing.Size(121, 21);
+            this.cbGrelka.TabIndex = 2;
             // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(231, 150);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 16;
+            this.button1.TabIndex = 14;
             this.button1.Text = "Сохранить";
             this.button1.UseVisualStyleBackColor = true;
             // 
@@ -243,14 +247,14 @@
             this.saveBox.Location = new System.Drawing.Point(104, 152);
             this.saveBox.Name = "saveBox";
             this.saveBox.Size = new System.Drawing.Size(121, 21);
-            this.saveBox.TabIndex = 17;
+            this.saveBox.TabIndex = 13;
             // 
             // gotovo
             // 
             this.gotovo.Location = new System.Drawing.Point(3, 150);
             this.gotovo.Name = "gotovo";
             this.gotovo.Size = new System.Drawing.Size(54, 23);
-            this.gotovo.TabIndex = 18;
+            this.gotovo.TabIndex = 12;
             this.gotovo.Text = "Готово";
             this.gotovo.UseVisualStyleBackColor = true;
             // 
@@ -262,14 +266,17 @@
             this.Controls.Add(this.gotovo);
             this.Controls.Add(this.saveBox);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.сиПкудлф);
+            this.Controls.Add(this.cbGrelka);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.cbGnezdo);
             this.Controls.Add(this.cbFarm);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.farmGroup);
+            this.FilterCombo = this.saveBox;
+            this.HideBtn = this.gotovo;
             this.Name = "BuildingsFilter";
+            this.SaveButton = this.button1;
             this.Size = new System.Drawing.Size(310, 178);
             this.farmGroup.ResumeLayout(false);
             this.farmGroup.PerformLayout();
@@ -295,7 +302,7 @@
         private System.Windows.Forms.ComboBox cbGnezdo;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox сиПкудлф;
+        private System.Windows.Forms.ComboBox cbGrelka;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ComboBox saveBox;
         private System.Windows.Forms.Button gotovo;
