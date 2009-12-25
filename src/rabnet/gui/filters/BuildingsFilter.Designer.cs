@@ -222,8 +222,8 @@
             this.cbGrelka.FormattingEnabled = true;
             this.cbGrelka.Items.AddRange(new object[] {
             "Неважно",
-            "Установлены",
             "Отсутствуют",
+            "Установлены",
             "Выключены",
             "Включены"});
             this.cbGrelka.Location = new System.Drawing.Point(3, 108);
