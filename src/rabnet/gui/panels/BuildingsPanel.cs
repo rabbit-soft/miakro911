@@ -41,14 +41,13 @@ namespace rabnet
             TreeNode n=makenode(null,"Ферма",Engine.db().buildingsTree());
             n.Tag="0:0";
             n.Expand();
-            f = new Filters();
             f["shr"] = Engine.opt().getOption(Options.OPT_ID.SHORT_NAMES);
             f["dbl"] = Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
             listView1.Hide();
             listView1.Items.Clear();
             listView1.ListViewItemSorter = null;
             IDataGetter dg = DataThread.db().getBuildings(f);
-            rsb.setText(1, dg.getCount().ToString() + " items");
+            rsb.setText(1, dg.getCount().ToString() + " МИНИфермы");
             return dg;
         }
 
