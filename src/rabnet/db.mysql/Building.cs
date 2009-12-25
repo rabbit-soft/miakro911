@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using MySql.Data.MySqlClient;
+using System.Windows.Forms;
 
 namespace rabnet
 {
@@ -199,9 +200,7 @@ namespace rabnet
             return hasnest(dts[3], int.Parse(dts[2]), dts[5]);
         }
 
-        public Buildings(MySqlConnection sql, Filters filters):base(sql,filters)
-        {
-        }
+        public Buildings(MySqlConnection sql, Filters filters):base(sql,filters){}
 
         public static Building getBuilding(MySqlDataReader rd,bool shr,bool rabbits)
         {
@@ -259,6 +258,57 @@ namespace rabnet
             }
         }
 
+        public String makeWhere()
+        {
+            
+            String res = "";
+            if (options.ContainsKey("frm"))
+            {               
+                String sres = "";
+                if (options["frm"] == "1")
+                    sres = "t_busy1<>0 OR t_busy2<>0 OR t_busy3<>0 OR t_busy4<>0";
+                else sres = "t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0";
+                res = "("+sres+")" ;                
+            }
+
+            if (options.ContainsKey("yar"))
+            {
+                String sres = "";
+                if (options.safeValue("yar").Contains("v")) sres = addWhereOr(sres, "t_type='vertep'");
+                if (options.safeValue("yar").Contains("u")) sres = addWhereOr(sres, "t_type='jurta'");
+                if (options.safeValue("yar").Contains("q")) sres = addWhereOr(sres, "t_type='quarta'");
+                if (options.safeValue("yar").Contains("b")) sres = addWhereOr(sres, "t_type='barin'");
+                if (options.safeValue("yar").Contains("k")) sres = addWhereOr(sres, "t_type='female'");
+                if (options.safeValue("yar").Contains("d")) sres = addWhereOr(sres, "t_type='dfemale'");
+                if (options.safeValue("yar").Contains("x")) sres = addWhereOr(sres, "t_type='complex'");
+                if (options.safeValue("yar").Contains("h")) sres = addWhereOr(sres, "t_type='cabin'");
+                res = addWhereAnd(res, "(" + sres + ")");
+            }
+
+            if (options.ContainsKey("grlk"))
+            {
+                String sres = "";
+                if (options["grlk"] == "1") sres = "t_heater='0' OR t_heater='00'";
+                if (options["grlk"] == "2") sres = "t_heater='1' OR t_heater='3'";
+                if (options["grlk"] == "3") sres = "t_heater='1'";
+                if (options["grlk"] == "4") sres = "t_heater='3'";
+                res = addWhereAnd(res, "(" + sres + ")");
+            }
+
+            if (options.ContainsKey("gnzd"))
+            {
+                String sres = "";
+                if (options["gnzd"] == "1") 
+                    sres = "t_nest<>'1'";
+                else sres = "t_nest='1'";
+                res = addWhereAnd(res, "(" + sres + ")");
+            }
+
+            if(res !="") res= "AND "+res;
+            
+            return res;
+
+        }
         public override string getQuery()
         {
             string nm = "1";
@@ -267,12 +317,14 @@ namespace rabnet
             return @"SELECT t_id,m_upper,m_lower,m_id,t_type,t_delims,t_nest,t_heater,
 t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4,
 rabname(t_busy1," + nm + @") r1, rabname(t_busy2," + nm + @") r2,rabname(t_busy3," + nm + @") r3,rabname(t_busy4," + nm + @") r4
-FROM minifarms,tiers WHERE m_upper=t_id OR m_lower=t_id ORDER BY m_id";
+FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) "+makeWhere()+"ORDER BY m_id;";
         }
+
+       
 
         public override string countQuery()
         {
-            return "SELECT COUNT(t_id) FROM minifarms,tiers WHERE m_upper=t_id OR m_lower=t_id;";
+            return "SELECT COUNT(t_id) FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id)" + makeWhere() + ";";
         }
 
         public static TreeData getTree(int parent,MySqlConnection con,TreeData par)
@@ -347,5 +399,6 @@ t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4 FROM minifarms,tiers WHERE
             rd.Close();
             return bld.ToArray();
         }
+
     }
 }
