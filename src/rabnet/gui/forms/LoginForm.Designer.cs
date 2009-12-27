@@ -112,7 +112,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 8;
-            this.button1.Text = "Отмена";
+            this.button1.Text = "Выход";
             this.button1.UseVisualStyleBackColor = true;
             // 
             // LoginForm
