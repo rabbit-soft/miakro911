@@ -121,5 +121,17 @@ namespace rabnet
             (new OptionsForm()).ShowDialog();
         }
 
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult dlr = MessageBox.Show("Вы уверены что хотите Выйти?","Выход",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+            if (dlr == DialogResult.No)
+            {
+                if (LoginForm.stop == false) LoginForm.stop = true;
+                e.Cancel = true;
+            }   
+        }
+
+
+
     }
 }
