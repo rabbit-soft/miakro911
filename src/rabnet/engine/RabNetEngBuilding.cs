@@ -14,7 +14,13 @@ namespace engine
         }
         public int tid{get{return id;}}
 
-        public void setHeater(int id,
+        public void setNest(bool value)
+        {
+        }
+        public void setNest2(bool value)
+        {
+        }
+
 
     }
 }
