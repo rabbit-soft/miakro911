@@ -221,7 +221,21 @@ namespace rabnet
         {
             try
             {
-
+                RabNetEngBuilding b = Engine.get().getBuilding(e.tier);
+                switch (e.type)
+                {
+                    case BuildingControl.BCEvent.EVTYPE.REPAIR: b.setRepair(e.val()); break;
+                    case BuildingControl.BCEvent.EVTYPE.NEST: b.setNest(e.val()); break;
+                    case BuildingControl.BCEvent.EVTYPE.NEST2: b.setNest2(e.val()); break;
+                    case BuildingControl.BCEvent.EVTYPE.HEATER: b.setHeater(e.value); break;
+                    case BuildingControl.BCEvent.EVTYPE.HEATER2: b.setHeater2(e.value); break;
+                    case BuildingControl.BCEvent.EVTYPE.DELIM: b.setDelim(e.val()); break;
+                    case BuildingControl.BCEvent.EVTYPE.DELIM1: b.setDelim1(e.val()); break;
+                    case BuildingControl.BCEvent.EVTYPE.DELIM2: b.setDelim2(e.val()); break;
+                    case BuildingControl.BCEvent.EVTYPE.DELIM3: b.setDelim3(e.val()); break;
+                    case BuildingControl.BCEvent.EVTYPE.VIGUL: b.setVigul(e.value); break;
+                }
+                DrawFarm(e.farm);
             }
             catch (ApplicationException ex)
             {

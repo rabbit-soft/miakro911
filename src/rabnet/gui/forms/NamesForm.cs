@@ -100,7 +100,7 @@ namespace rabnet
                 textBox1.Text = listView1.SelectedItems[0].SubItems[0].Text;
                 textBox2.Text = listView1.SelectedItems[0].SubItems[1].Text;
             }
-            catch (ArgumentOutOfRangeException ext)
+            catch (ArgumentOutOfRangeException )
             {
                 return;
             }

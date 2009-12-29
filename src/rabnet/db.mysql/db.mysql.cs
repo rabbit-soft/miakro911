@@ -286,6 +286,11 @@ namespace rabnet
             return new ZooTehGetter(sql).getOkrols(days);
         }
 
+        public void updateBuilding(Building b)
+        {
+            Buildings.updateBuilding(b, sql);
+        }
+
         #endregion
     }
 }

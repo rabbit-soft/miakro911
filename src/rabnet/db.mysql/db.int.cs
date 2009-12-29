@@ -62,6 +62,7 @@ namespace rabnet
         int newRabbit(OneRabbit r,int mom);
         LogList getLogs(Filters f);
         ZooJobItem[] getOkrols(int days);
+        void updateBuilding(Building b);
     }
 
 }

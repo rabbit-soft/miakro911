@@ -10,6 +10,7 @@ namespace rabnet
 {
     public partial class FarmDrawer : UserControl
     {
+        private bool manual=false;
         public class DrawTier
         {
             private String type;
@@ -224,7 +225,9 @@ namespace rabnet
             e.Graphics.Clear(Color.White);
             if (t1!=null)
             {
+                manual = true;
                 drawHouse(e.Graphics,e.ClipRectangle);
+                manual = false;
             }
         }
 
@@ -293,11 +296,12 @@ namespace rabnet
 
         private void bc_ValueChanged(object sender, BuildingControl.BCEvent e)
         {
+            if (manual)
+                return;
             e.farm = id;
-            e.tier = (sender == t1 ? t1.id : t2.id);
+            e.tier = (sender == bc1 ? t1.id : t2.id);
             if (ValueChanged != null)
                 ValueChanged(this, e);
-            pictureBox1.Refresh();
         }
 
     }

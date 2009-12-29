@@ -392,5 +392,15 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public void updateBuilding(Building b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

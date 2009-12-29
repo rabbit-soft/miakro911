@@ -400,5 +400,12 @@ t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4 FROM minifarms,tiers WHERE
             return bld.ToArray();
         }
 
+        public static void updateBuilding(Building b,MySqlConnection sql)
+        {
+            MySqlCommand cmd=new MySqlCommand(String.Format(@"UPDATE tiers SET t_repair={1:d},t_delims='{2:s}',t_heater='{3:s}',t_nest='{4:s}' WHERE t_id={0:d};",
+                b.fid,b.frepair?1:0,b.fdelims,b.fheaters,b.fnests),sql);
+            cmd.ExecuteNonQuery();
+        }
+
     }
 }

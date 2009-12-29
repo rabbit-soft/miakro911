@@ -99,5 +99,10 @@ namespace rabnet
                 zooteh = new RabEngZooTeh(this);
             return zooteh;
         }
+
+        public RabNetEngBuilding getBuilding(int tier)
+        {
+            return new RabNetEngBuilding(tier, this);
+        }
     }
 }
