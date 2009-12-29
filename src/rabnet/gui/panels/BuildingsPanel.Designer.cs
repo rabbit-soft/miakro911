@@ -72,6 +72,7 @@
             this.farmDrawer1.Name = "farmDrawer1";
             this.farmDrawer1.Size = new System.Drawing.Size(648, 215);
             this.farmDrawer1.TabIndex = 4;
+            this.farmDrawer1.ValueChanged += new rabnet.FarmDrawer.FDEventHandler(this.farmDrawer1_ValueChanged);
             // 
             // listView1
             // 

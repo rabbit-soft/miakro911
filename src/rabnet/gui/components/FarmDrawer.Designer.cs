@@ -43,7 +43,6 @@
             this.pictureBox1.Size = new System.Drawing.Size(499, 216);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
             // 
             // bc1
@@ -66,6 +65,7 @@
             this.bc1.TabIndex = 1;
             this.bc1.vigul = false;
             this.bc1.Visible = false;
+            this.bc1.ValueChanged += new rabnet.BuildingControl.BCEventHandler(this.bc_ValueChanged);
             // 
             // bc2
             // 
@@ -87,6 +87,7 @@
             this.bc2.TabIndex = 2;
             this.bc2.vigul = false;
             this.bc2.Visible = false;
+            this.bc2.ValueChanged += new rabnet.BuildingControl.BCEventHandler(this.bc_ValueChanged);
             // 
             // FarmDrawer
             // 

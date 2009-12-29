@@ -36,14 +36,14 @@
             this.cbHeater2 = new System.Windows.Forms.ComboBox();
             this.grNest = new System.Windows.Forms.GroupBox();
             this.grVigul = new System.Windows.Forms.GroupBox();
-            this.grNest2 = new System.Windows.Forms.GroupBox();
             this.cbVigul = new System.Windows.Forms.ComboBox();
+            this.grNest2 = new System.Windows.Forms.GroupBox();
             this.grDelims = new System.Windows.Forms.GroupBox();
-            this.cbDelim1 = new System.Windows.Forms.CheckBox();
-            this.cbDelim2 = new System.Windows.Forms.CheckBox();
-            this.cbDelim3 = new System.Windows.Forms.CheckBox();
             this.grDelim = new System.Windows.Forms.GroupBox();
             this.cbDelim = new System.Windows.Forms.CheckBox();
+            this.cbDelim3 = new System.Windows.Forms.CheckBox();
+            this.cbDelim2 = new System.Windows.Forms.CheckBox();
+            this.cbDelim1 = new System.Windows.Forms.CheckBox();
             this.grNest.SuspendLayout();
             this.grVigul.SuspendLayout();
             this.grNest2.SuspendLayout();
@@ -60,6 +60,7 @@
             this.cbRepair.TabIndex = 0;
             this.cbRepair.Text = "ремонт";
             this.cbRepair.UseVisualStyleBackColor = true;
+            this.cbRepair.CheckedChanged += new System.EventHandler(this.makeCBEvent);
             // 
             // cbNest
             // 
@@ -70,6 +71,7 @@
             this.cbNest.TabIndex = 1;
             this.cbNest.Text = "гнездовье";
             this.cbNest.UseVisualStyleBackColor = true;
+            this.cbNest.CheckedChanged += new System.EventHandler(this.makeCBEvent);
             // 
             // label1
             // 
@@ -92,6 +94,7 @@
             this.cbHeater.Name = "cbHeater";
             this.cbHeater.Size = new System.Drawing.Size(61, 21);
             this.cbHeater.TabIndex = 3;
+            this.cbHeater.SelectedIndexChanged += new System.EventHandler(this.makeComboEvent);
             // 
             // cbNest2
             // 
@@ -102,6 +105,7 @@
             this.cbNest2.TabIndex = 4;
             this.cbNest2.Text = "гнездовье";
             this.cbNest2.UseVisualStyleBackColor = true;
+            this.cbNest2.CheckedChanged += new System.EventHandler(this.makeCBEvent);
             // 
             // cbHeater2
             // 
@@ -115,6 +119,7 @@
             this.cbHeater2.Name = "cbHeater2";
             this.cbHeater2.Size = new System.Drawing.Size(61, 21);
             this.cbHeater2.TabIndex = 5;
+            this.cbHeater2.SelectedIndexChanged += new System.EventHandler(this.makeComboEvent);
             // 
             // grNest
             // 
@@ -140,18 +145,6 @@
             this.grVigul.Text = "выгул";
             this.grVigul.Visible = false;
             // 
-            // grNest2
-            // 
-            this.grNest2.Controls.Add(this.cbNest2);
-            this.grNest2.Controls.Add(this.cbHeater2);
-            this.grNest2.Location = new System.Drawing.Point(130, 21);
-            this.grNest2.Name = "grNest2";
-            this.grNest2.Size = new System.Drawing.Size(94, 59);
-            this.grNest2.TabIndex = 8;
-            this.grNest2.TabStop = false;
-            this.grNest2.Text = "гнездовье-Б";
-            this.grNest2.Visible = false;
-            // 
             // cbVigul
             // 
             this.cbVigul.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -163,6 +156,19 @@
             this.cbVigul.Name = "cbVigul";
             this.cbVigul.Size = new System.Drawing.Size(82, 21);
             this.cbVigul.TabIndex = 0;
+            this.cbVigul.SelectedIndexChanged += new System.EventHandler(this.makeComboEvent);
+            // 
+            // grNest2
+            // 
+            this.grNest2.Controls.Add(this.cbNest2);
+            this.grNest2.Controls.Add(this.cbHeater2);
+            this.grNest2.Location = new System.Drawing.Point(130, 21);
+            this.grNest2.Name = "grNest2";
+            this.grNest2.Size = new System.Drawing.Size(94, 59);
+            this.grNest2.TabIndex = 8;
+            this.grNest2.TabStop = false;
+            this.grNest2.Text = "гнездовье-Б";
+            this.grNest2.Visible = false;
             // 
             // grDelims
             // 
@@ -177,36 +183,6 @@
             this.grDelims.TabStop = false;
             this.grDelims.Text = "перегородки";
             this.grDelims.Visible = false;
-            // 
-            // cbDelim1
-            // 
-            this.cbDelim1.AutoSize = true;
-            this.cbDelim1.Location = new System.Drawing.Point(23, 25);
-            this.cbDelim1.Name = "cbDelim1";
-            this.cbDelim1.Size = new System.Drawing.Size(42, 17);
-            this.cbDelim1.TabIndex = 0;
-            this.cbDelim1.Text = "А|Б";
-            this.cbDelim1.UseVisualStyleBackColor = true;
-            // 
-            // cbDelim2
-            // 
-            this.cbDelim2.AutoSize = true;
-            this.cbDelim2.Location = new System.Drawing.Point(91, 25);
-            this.cbDelim2.Name = "cbDelim2";
-            this.cbDelim2.Size = new System.Drawing.Size(42, 17);
-            this.cbDelim2.TabIndex = 1;
-            this.cbDelim2.Text = "Б|В";
-            this.cbDelim2.UseVisualStyleBackColor = true;
-            // 
-            // cbDelim3
-            // 
-            this.cbDelim3.AutoSize = true;
-            this.cbDelim3.Location = new System.Drawing.Point(156, 25);
-            this.cbDelim3.Name = "cbDelim3";
-            this.cbDelim3.Size = new System.Drawing.Size(41, 17);
-            this.cbDelim3.TabIndex = 2;
-            this.cbDelim3.Text = "В|Г";
-            this.cbDelim3.UseVisualStyleBackColor = true;
             // 
             // grDelim
             // 
@@ -228,6 +204,40 @@
             this.cbDelim.TabIndex = 0;
             this.cbDelim.Text = "перегородка";
             this.cbDelim.UseVisualStyleBackColor = true;
+            this.cbDelim.CheckedChanged += new System.EventHandler(this.makeCBEvent);
+            // 
+            // cbDelim3
+            // 
+            this.cbDelim3.AutoSize = true;
+            this.cbDelim3.Location = new System.Drawing.Point(156, 25);
+            this.cbDelim3.Name = "cbDelim3";
+            this.cbDelim3.Size = new System.Drawing.Size(41, 17);
+            this.cbDelim3.TabIndex = 2;
+            this.cbDelim3.Text = "В|Г";
+            this.cbDelim3.UseVisualStyleBackColor = true;
+            this.cbDelim3.CheckedChanged += new System.EventHandler(this.makeCBEvent);
+            // 
+            // cbDelim2
+            // 
+            this.cbDelim2.AutoSize = true;
+            this.cbDelim2.Location = new System.Drawing.Point(91, 25);
+            this.cbDelim2.Name = "cbDelim2";
+            this.cbDelim2.Size = new System.Drawing.Size(42, 17);
+            this.cbDelim2.TabIndex = 1;
+            this.cbDelim2.Text = "Б|В";
+            this.cbDelim2.UseVisualStyleBackColor = true;
+            this.cbDelim2.CheckedChanged += new System.EventHandler(this.makeCBEvent);
+            // 
+            // cbDelim1
+            // 
+            this.cbDelim1.AutoSize = true;
+            this.cbDelim1.Location = new System.Drawing.Point(23, 25);
+            this.cbDelim1.Name = "cbDelim1";
+            this.cbDelim1.Size = new System.Drawing.Size(42, 17);
+            this.cbDelim1.TabIndex = 0;
+            this.cbDelim1.Text = "А|Б";
+            this.cbDelim1.UseVisualStyleBackColor = true;
+            this.cbDelim1.CheckedChanged += new System.EventHandler(this.makeCBEvent);
             // 
             // BuildingControl
             // 

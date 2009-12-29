@@ -20,7 +20,7 @@ namespace rabnet
             private Graphics g;
             private Rectangle r;
             private bool repair;
-            private int id = 0;
+            public int id = 0;
             private Font f = new Font("Arial", 8);
             public DrawTier(int id,String type,String delims,String nests,String heaters,String[] rabbits,bool repair)
             {
@@ -288,9 +288,17 @@ namespace rabnet
             pictureBox1.Refresh();
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
+        public delegate void FDEventHandler(object sender, BuildingControl.BCEvent e);
+        public event FDEventHandler ValueChanged = null;
 
+        private void bc_ValueChanged(object sender, BuildingControl.BCEvent e)
+        {
+            e.farm = id;
+            e.tier = (sender == t1 ? t1.id : t2.id);
+            if (ValueChanged != null)
+                ValueChanged(this, e);
+            pictureBox1.Refresh();
         }
+
     }
 }

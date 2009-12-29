@@ -48,6 +48,7 @@
     <Compile Include="engine.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Options.cs" />
+    <Compile Include="RabNetEngBuilding.cs" />
     <Compile Include="RabNetEngRabbit.cs" />
     <Compile Include="RabNetLogs.cs" />
     <Compile Include="ZooTeh.cs" />

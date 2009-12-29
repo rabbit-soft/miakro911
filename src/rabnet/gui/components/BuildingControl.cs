@@ -86,5 +86,52 @@ namespace rabnet
             }
         }
 
+        public class BCEvent : EventArgs
+        {
+            public enum EVTYPE{REPAIR,NEST,NEST2,HEATER,HEATER2,DELIM,DELIM1,DELIM2,DELIM3,VIGUL};
+            public int value;
+            public EVTYPE type;
+            public int farm;
+            public int tier;
+            public BCEvent(EVTYPE type,int val)
+            {
+                this.type=type;
+                value=val;
+            }
+            public BCEvent(EVTYPE type,bool val):this(type,val?1:0){}
+            public bool val()
+            {
+                return value==1;
+            }
+        }
+        public delegate void BCEventHandler(object sender, BCEvent e);
+        public event BCEventHandler ValueChanged=null;
+
+        private void makeCBEvent(object sender, EventArgs e)
+        {
+            if (ValueChanged == null) return;
+            CheckBox cb=sender as CheckBox;
+            BCEvent.EVTYPE type=BCEvent.EVTYPE.REPAIR;
+            if (cb == cbRepair) type=BCEvent.EVTYPE.REPAIR;
+            if (cb == cbNest) type = BCEvent.EVTYPE.NEST;
+            if (cb == cbNest2) type = BCEvent.EVTYPE.NEST2;
+            if (cb == cbDelim) type = BCEvent.EVTYPE.DELIM;
+            if (cb == cbDelim1) type = BCEvent.EVTYPE.DELIM1;
+            if (cb == cbDelim2) type = BCEvent.EVTYPE.DELIM2;
+            if (cb == cbDelim3) type = BCEvent.EVTYPE.DELIM3;
+            ValueChanged(this,new BCEvent(type,cb.Checked));
+        }
+
+        private void makeComboEvent(object sender, EventArgs e)
+        {
+            if (ValueChanged == null) return;
+            ComboBox cb = sender as ComboBox;
+            BCEvent.EVTYPE type = BCEvent.EVTYPE.HEATER;
+            if (cb == cbHeater) type = BCEvent.EVTYPE.HEATER;
+            if (cb == cbHeater2) type = BCEvent.EVTYPE.HEATER2;
+            if (cb == cbVigul) type = BCEvent.EVTYPE.VIGUL;
+            ValueChanged(this, new BCEvent(type, cb.SelectedIndex));
+        }
+
     }
 }

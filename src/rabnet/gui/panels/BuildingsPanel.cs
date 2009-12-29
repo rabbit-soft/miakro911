@@ -217,5 +217,17 @@ namespace rabnet
             DrawFarm(farm);
         }
 
+        private void farmDrawer1_ValueChanged(object sender, BuildingControl.BCEvent e)
+        {
+            try
+            {
+
+            }
+            catch (ApplicationException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
     }
 }
