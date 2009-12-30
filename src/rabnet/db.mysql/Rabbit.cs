@@ -171,9 +171,9 @@ namespace rabnet
             {
                 String stat = "";
                 if (options["ft"].Contains("g"))
-                    stat = "r_born>(NOW()-INTERVAL 122 DAYS)";
+                    stat = "r_born>(NOW()-INTERVAL 122 DAY)";
                 if (options["ft"].Contains("b"))
-                    stat = addWhereOr(stat, "(r_born<=(NOW()-INTERVAL 122 DAYS) AND r_status=0)");
+                    stat = addWhereOr(stat, "(r_born<=(NOW()-INTERVAL 122 DAY) AND r_status=0)");
                 if (options["ft"].Contains("f"))
                     stat = addWhereOr(stat, "r_status=1");
                 if (options["ft"].Contains("s"))
