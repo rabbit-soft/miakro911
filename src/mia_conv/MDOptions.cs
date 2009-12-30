@@ -10,18 +10,18 @@ namespace mia_conv
             debug("fill Options");
             MFParamForm p = mia.paramform;
             setOption("opt", "okrol", p.okrol.value());
+            setOption("opt", "vudvor", p.vudvorenie.value());
+            setOption("opt", "count1", p.pravka_1.value());
+            setOption("opt", "count2", p.count_2.value());
+            setOption("opt", "count3", p.count_3.value());
             /* //OPTIONS
             setOption("opt","pervonest",p.pervonest.value());
             setOption("opt","kukunest",p.kukunest.value());
             setOption("opt","mothernest",p.mothernest.value());
             setOption("opt","heater",p.heater.value());
             setOption("opt","kuk",p.kuk.value());
-            setOption("opt","pravka_1",p.pravka_1.value());
-            setOption("opt","count_2",p.count_2.value());
-            setOption("opt","count_3",p.count_3.value());
             setOption("opt","endkuku",p.endkuku.value());
             setOption("opt","vacc",p.vacc.value());
-            setOption("opt","vudvorenie",p.vudvorenie.value());
             setOption("opt","countsuckers",p.countsuckers.value());
             setOption("opt","vyazkamother",p.vyazkamother.value());
             setOption("opt","vyazkapervo",p.vyazkapervo.value());

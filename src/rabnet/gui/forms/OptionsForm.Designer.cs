@@ -32,7 +32,19 @@
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.nudVudvor = new System.Windows.Forms.NumericUpDown();
+            this.nudCount1 = new System.Windows.Forms.NumericUpDown();
+            this.nudCount2 = new System.Windows.Forms.NumericUpDown();
+            this.nudCount3 = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.nudOkrol)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudVudvor)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCount1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCount2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCount3)).BeginInit();
             this.SuspendLayout();
             // 
             // nudOkrol
@@ -81,11 +93,103 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(159, 83);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(70, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Выдворение";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(123, 109);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(106, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Подсчет гнездовых";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(107, 135);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(122, 13);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "2-й подсчет гнездовых";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(107, 161);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(122, 13);
+            this.label5.TabIndex = 7;
+            this.label5.Text = "3-й подсчет гнездовых";
+            // 
+            // nudVudvor
+            // 
+            this.nudVudvor.Location = new System.Drawing.Point(252, 81);
+            this.nudVudvor.Name = "nudVudvor";
+            this.nudVudvor.Size = new System.Drawing.Size(74, 20);
+            this.nudVudvor.TabIndex = 8;
+            this.nudVudvor.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            // 
+            // nudCount1
+            // 
+            this.nudCount1.Location = new System.Drawing.Point(252, 107);
+            this.nudCount1.Name = "nudCount1";
+            this.nudCount1.Size = new System.Drawing.Size(74, 20);
+            this.nudCount1.TabIndex = 9;
+            this.nudCount1.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            // 
+            // nudCount2
+            // 
+            this.nudCount2.Location = new System.Drawing.Point(252, 133);
+            this.nudCount2.Name = "nudCount2";
+            this.nudCount2.Size = new System.Drawing.Size(74, 20);
+            this.nudCount2.TabIndex = 10;
+            this.nudCount2.Value = new decimal(new int[] {
+            6,
+            0,
+            0,
+            0});
+            // 
+            // nudCount3
+            // 
+            this.nudCount3.Location = new System.Drawing.Point(252, 159);
+            this.nudCount3.Name = "nudCount3";
+            this.nudCount3.Size = new System.Drawing.Size(74, 20);
+            this.nudCount3.TabIndex = 11;
+            this.nudCount3.Value = new decimal(new int[] {
+            13,
+            0,
+            0,
+            0});
+            // 
             // OptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(410, 402);
+            this.Controls.Add(this.nudCount3);
+            this.Controls.Add(this.nudCount2);
+            this.Controls.Add(this.nudCount1);
+            this.Controls.Add(this.nudVudvor);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
@@ -99,6 +203,10 @@
             this.Text = "Параметры";
             this.Load += new System.EventHandler(this.OptionsForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.nudOkrol)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudVudvor)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCount1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCount2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCount3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -110,5 +218,13 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.NumericUpDown nudVudvor;
+        private System.Windows.Forms.NumericUpDown nudCount1;
+        private System.Windows.Forms.NumericUpDown nudCount2;
+        private System.Windows.Forms.NumericUpDown nudCount3;
     }
 }

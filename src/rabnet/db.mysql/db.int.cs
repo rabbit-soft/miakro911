@@ -63,6 +63,7 @@ namespace rabnet
         LogList getLogs(Filters f);
         ZooJobItem[] getOkrols(int days);
         void updateBuilding(Building b);
+        ZooJobItem[] getVudvors(int days);
     }
 
 }

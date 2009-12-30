@@ -4,7 +4,7 @@ using System.Text;
 
 namespace rabnet
 {
-    public enum JobType {NONE, OKROL };
+    public enum JobType {NONE, OKROL, VUDVOR };
     
     public class ZootehJob:IData
     {
@@ -19,6 +19,7 @@ namespace rabnet
         public string names="";
         public string addresses="";
         public int id=0;
+        public int id2;
         public ZootehJob()
         {
         }
@@ -34,6 +35,14 @@ namespace rabnet
             comment = "окрол " + stat.ToString();
             return this;
         }
+        public ZootehJob Vudvor(int id,String nm,String ad,int stat,int age,int srok,int id2)
+        {
+            type = JobType.VUDVOR; job = "Выдворение";
+            days = srok; name = nm; address = ad;
+            this.age = age; this.id = id;
+            this.id2=id2;
+            return this;
+        }
     }
 
     public class JobHolder:List<ZootehJob>{}
@@ -46,10 +55,11 @@ namespace rabnet
             this.eng = eng;
         }
 
-        public ZootehJob[] makeZooTehPlan()
+        public ZootehJob[] makeZooTehPlan(Filters f)
         {
             JobHolder zjobs = new JobHolder();
             getOkrols(zjobs);
+            getVudvors(zjobs);
             return zjobs.ToArray();
         }
 
@@ -59,6 +69,13 @@ namespace rabnet
             ZooJobItem[] jobs=eng.db().getOkrols(days);
             foreach(ZooJobItem z in jobs)
                 jh.Add(new ZootehJob().Okrol(z.id,z.name,z.place,z.status+1,z.age,z.i[0]-days));
+        }
+        public void getVudvors(JobHolder jh)
+        {
+            int days = eng.options().getIntOption(Options.OPT_ID.VUDVOR);
+            ZooJobItem[] jobs = eng.db().getVudvors(days);
+            foreach (ZooJobItem z in jobs)
+                jh.Add(new ZootehJob().Vudvor(z.id, z.name, z.place, z.status + 1, z.age, z.i[0] - days,z.i[1]));
         }
     }
 }

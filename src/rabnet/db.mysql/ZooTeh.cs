@@ -21,10 +21,21 @@ namespace rabnet
         }
         public ZooJobItem Okrol(int id,String nm,String place,int age,int srok,int status)
         {
-            type = 1; name = nm; place = Buildings.fullPlaceName(place);
+            type = 1; name = nm; this.place = Buildings.fullPlaceName(place);
             this.age = age; this.status = status;
             this.id = id;
             i[0] = srok;
+            return this;
+        }
+        public ZooJobItem Vudvor(int id, String nm, String place, int age, int srok, int status,int area,string tt,string dlm)
+        {
+            type = 2; name = nm; this.place = Buildings.fullPlaceName(place);
+            this.age = age; this.status = status;
+            this.id = id;
+            i[0] = srok;
+            i[1] = area;
+            if (i[1] == 1 && tt == "jurta")
+                i[1] = 0;
             return this;
         }
     }
@@ -110,6 +121,25 @@ FROM rabbits WHERE r_sex='female' AND (TO_DAYS(NOW())-TO_DAYS(r_event_date))>={0
             while (rd.Read())
                 res.Add(new ZooJobItem().Okrol(rd.GetInt32("r_id"),rd.GetString("name"),
                     rd.GetString("place"),rd.GetInt32("age"),rd.GetInt32("srok"),rd.GetInt32("r_status")));
+            rd.Close();
+            return res.ToArray();
+        }
+
+        public ZooJobItem[] getVudvors(int days)
+        {
+            MySqlDataReader rd = reader(String.Format(@"SELECT r_id,rabname(r_id,2) name,rabplace(r_id) place,r_tier,r_area,r_event_date,
+(TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol)) srok,r_status,(TO_DAYS(NOW())-TO_DAYS(r_born)) age,
+t_nest,t_id,t_busy1,t_busy2,t_delims,t_type
+FROM rabbits,tiers
+WHERE t_id=r_tier AND r_event_date IS NULL AND
+r_sex='female' AND (TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol))>={0:d} AND
+((t_busy1=r_id AND t_nest like '1%')OR(t_busy2=r_tier_id AND t_nest like '%1'))
+ORDER BY srok DESC;", days));
+            List<ZooJobItem> res = new List<ZooJobItem>();
+            while (rd.Read())
+                res.Add(new ZooJobItem().Vudvor(rd.GetInt32("t_id"), rd.GetString("name"),
+                    rd.GetString("place"), rd.GetInt32("age"), rd.GetInt32("srok"), rd.GetInt32("r_status"),
+                    rd.GetInt32("r_area"),rd.GetString("t_type"),rd.GetString("t_delims")));
             rd.Close();
             return res.ToArray();
         }

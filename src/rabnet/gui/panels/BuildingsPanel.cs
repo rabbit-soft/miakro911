@@ -235,12 +235,12 @@ namespace rabnet
                     case BuildingControl.BCEvent.EVTYPE.DELIM3: b.setDelim3(e.val()); break;
                     case BuildingControl.BCEvent.EVTYPE.VIGUL: b.setVigul(e.value); break;
                 }
-                DrawFarm(e.farm);
             }
             catch (ApplicationException ex)
             {
                 MessageBox.Show(ex.Message);
             }
+            DrawFarm(e.farm);
         }
 
     }

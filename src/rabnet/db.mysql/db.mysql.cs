@@ -291,6 +291,11 @@ namespace rabnet
             Buildings.updateBuilding(b, sql);
         }
 
+        public ZooJobItem[] getVudvors(int days)
+        {
+            return new ZooTehGetter(sql).getVudvors(days);
+        }
+
         #endregion
     }
 }

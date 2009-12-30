@@ -64,7 +64,10 @@ namespace rabnet
                 li.SubItems.Add(inbr ? "ДА":"-");
                 li.SubItems.Add(heter? "ДА" : "-");
                 if (rtosel == f.partnerid)
+                 {
                     li.Selected = true;
+                    li.EnsureVisible();
+                 }
                 }
             }
             listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);

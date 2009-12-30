@@ -402,5 +402,15 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public ZooJobItem[] getVudvors(int days)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

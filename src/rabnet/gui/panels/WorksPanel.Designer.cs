@@ -48,6 +48,7 @@
             this.columnHeader15 = new System.Windows.Forms.ColumnHeader();
             this.actMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.okrolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.vudvorMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -182,9 +183,10 @@
             // actMenu
             // 
             this.actMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.okrolMenuItem});
+            this.okrolMenuItem,
+            this.vudvorMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(162, 26);
+            this.actMenu.Size = new System.Drawing.Size(162, 70);
             // 
             // okrolMenuItem
             // 
@@ -192,6 +194,13 @@
             this.okrolMenuItem.Size = new System.Drawing.Size(161, 22);
             this.okrolMenuItem.Text = "Принять окрол";
             this.okrolMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
+            // 
+            // vudvorMenuItem
+            // 
+            this.vudvorMenuItem.Name = "vudvorMenuItem";
+            this.vudvorMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.vudvorMenuItem.Text = "Выдворение";
+            this.vudvorMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // WorksPanel
             // 
@@ -229,6 +238,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader15;
         private System.Windows.Forms.ContextMenuStrip actMenu;
         private System.Windows.Forms.ToolStripMenuItem okrolMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem vudvorMenuItem;
 
     }
 }

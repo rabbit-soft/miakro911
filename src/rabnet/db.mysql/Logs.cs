@@ -60,7 +60,7 @@ rabname(logs.l_rabbit2,2) r2,
 rabplace(logs.l_rabbit) place,
 rabplace(logs.l_rabbit2) place2
 FROM logs,logtypes,users WHERE
-logtypes.l_type=logs.l_type AND logs.l_user=users.u_id LIMIT {0:d};", limit);
+logtypes.l_type=logs.l_type AND logs.l_user=users.u_id ORDER BY date DESC LIMIT {0:d};", limit);
             MySqlCommand cmd = new MySqlCommand(qry, sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             LogList ll = new LogList();

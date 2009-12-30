@@ -21,7 +21,7 @@ namespace rabnet
         protected override IDataGetter onPrepare(Filters f)
         {
             listView1.Items.Clear();
-            foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan())
+            foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f))
             {
                 ListViewItem li = listView1.Items.Add(j.days.ToString());
                 li.SubItems.Add(j.job);
@@ -97,11 +97,11 @@ namespace rabnet
         public void setMenu(JobType type)
         {
             okrolMenuItem.Visible = false;
+            vudvorMenuItem.Visible = false;
             switch (type)
             {
-                case JobType.OKROL:
-                    okrolMenuItem.Visible = true;
-                    break;
+                case JobType.OKROL: okrolMenuItem.Visible = true; break;
+                case JobType.VUDVOR: vudvorMenuItem.Visible = true; break;
             }
         }
 
@@ -131,6 +131,13 @@ namespace rabnet
             {
                 case JobType.OKROL:
                     (new OkrolForm(job.id)).ShowDialog();
+                    break;
+                case JobType.VUDVOR:
+                    RabNetEngBuilding b = Engine.get().getBuilding(job.id);
+                    if (job.id2 == 0)
+                        b.setNest(false);
+                    else
+                        b.setNest2(false);
                     break;
             }
             rsb.run();

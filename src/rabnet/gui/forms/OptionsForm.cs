@@ -17,12 +17,22 @@ namespace rabnet
 
         private void load()
         {
-            nudOkrol.Value = Engine.opt().getIntOption(Options.OPT_ID.OKROL);
+            Options o=Engine.opt();
+            nudOkrol.Value = o.getIntOption(Options.OPT_ID.OKROL);
+            nudVudvor.Value = o.getIntOption(Options.OPT_ID.VUDVOR);
+            nudCount1.Value = o.getIntOption(Options.OPT_ID.COUNT1);
+            nudCount2.Value = o.getIntOption(Options.OPT_ID.COUNT2);
+            nudCount3.Value = o.getIntOption(Options.OPT_ID.COUNT3);
         }
 
         private void save()
         {
-            Engine.opt().setOption(Options.OPT_ID.OKROL, (int)nudOkrol.Value);
+            Options o = Engine.opt();
+            o.setOption(Options.OPT_ID.OKROL, (int)nudOkrol.Value);
+            o.setOption(Options.OPT_ID.VUDVOR, (int)nudVudvor.Value);
+            o.setOption(Options.OPT_ID.COUNT1, (int)nudCount1.Value);
+            o.setOption(Options.OPT_ID.COUNT2, (int)nudCount2.Value);
+            o.setOption(Options.OPT_ID.COUNT3, (int)nudCount3.Value);
         }
             
 
