@@ -12,23 +12,39 @@ namespace rabnet
     {
         ListViewColumnSorter cs = null;
         private bool manual = true;
+        string originName, originSurname = null;
         string[] btext = new string[] {"Добавить","Изменить" };
+
+        public NamesForm(byte sex)
+        {
+            initNameForm();
+            if (sex == 0) tabControl1.SelectedIndex = 0; else tabControl1.SelectedIndex = 1;
+        }
+
         public NamesForm()
+        {
+            initNameForm();
+        }
+
+        private void initNameForm()
         {
             InitializeComponent();
             cs = new ListViewColumnSorter(listView1, new int[] { });
             manual = false;
-            comboBox1.SelectedIndex = 0;
             comboBox2.SelectedIndex = 0;
             manual = true;
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void load()
         {
-            if (button1.Enabled)
-                return;
-            if (manual)
-                rabStatusBar1.run();
+            textBox1.Clear();
+            textBox2.Clear();
+            button1.Text = btext[0];
+            this.originName = this.originSurname = null;
+            button1.Enabled = button2.Enabled = false;
+            button3.Hide();
+            comboBox2.Focus();
+            rabStatusBar1.run();
         }
 
         private IDataGetter rabStatusBar1_prepareGet(object sender, EventArgs e)
@@ -37,14 +53,11 @@ namespace rabnet
             listView1.Hide();
             listView1.ListViewItemSorter = null;
             Filters f=new Filters();
-            if (comboBox1.SelectedIndex!=0)
-                f["sex"] = comboBox1.SelectedIndex.ToString();
+            if (tabControl1.SelectedIndex == 0) f["sex"] = "1"; else f["sex"] = "2";         
             if (comboBox2.SelectedIndex!=0)
                 f["state"] = comboBox2.SelectedIndex.ToString();
-            if (textBox1.Text != "")
-                f["name"] = textBox1.Text;
             IDataGetter gt = DataThread.db().getNames(f);
-            rabStatusBar1.setText(1, gt.getCount().ToString() + " items");
+            rabStatusBar1.setText(1, gt.getCount().ToString() + " имен");
             return gt;
         }
 
@@ -60,21 +73,7 @@ namespace rabnet
                 listView1.ListViewItemSorter = cs.Clear();
                 listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
                 listView1.Show();
-/*                if (listView1.Items.Count == 0 && comboBox1.SelectedIndex==0 && comboBox2.SelectedIndex==0 && textBox1.Text!="")
-                {
-                    button1.Enabled = button2.Enabled = true;
-                    textBox2.Text = makeSurname(textBox1.Text);
-                    comboBox1.SelectedIndex = 1;
-                    comboBox2.Enabled = false;
-                }
-                if (listView1.Items.Count != 0 && textBox1.Text != "" && button1.Enabled)
-                {
-                    textBox2.Text = "";
-                    button1.Enabled = button2.Enabled = false;
-                    comboBox2.Enabled = true;
-                    comboBox1.SelectedIndex = 0;
-                }
-*/                return;
+                return;
             }
             rabnet.Name nm=(e.data as rabnet.Name);
             ListViewItem li = listView1.Items.Add(nm.name);
@@ -87,7 +86,7 @@ namespace rabnet
 
         private void NamesForm_Activated(object sender, EventArgs e)
         {
-            rabStatusBar1.run();
+            load();
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -97,34 +96,69 @@ namespace rabnet
             button1.Enabled = button2.Enabled = true;
             try
             {
-                textBox1.Text = listView1.SelectedItems[0].SubItems[0].Text;
-                textBox2.Text = listView1.SelectedItems[0].SubItems[1].Text;
+                this.originName = textBox1.Text = listView1.SelectedItems[0].SubItems[0].Text;
+                this.originSurname = textBox2.Text = listView1.SelectedItems[0].SubItems[1].Text;
             }
             catch (ArgumentOutOfRangeException )
             {
                 return;
             }
-            if (listView1.SelectedItems[0].SubItems[2].Text == "м")
-                comboBox1.SelectedIndex = 1;
-            else
-                comboBox1.SelectedIndex = 2;
-            comboBox1.Enabled = comboBox2.Enabled=false;
             button1.Text = btext[1];
+            button3.Visible = true;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            textBox1.Text = textBox2.Text = "";
-            comboBox1.SelectedIndex = comboBox2.SelectedIndex = 0;
+            if (button1.Text == btext[1]) listView1.SelectedItems.Clear();
+            textBox1.Clear();
+            textBox2.Clear();
             button1.Text = btext[0];
-            comboBox1.Enabled = comboBox2.Enabled = true;
-            listView1.SelectedItems.Clear();
+            this.originName = this.originSurname = null;
             button1.Enabled = button2.Enabled = false;
+            button3.Hide();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (button1.Text == btext[0])
+            {
+                string sx="male";
+                if (tabControl1.SelectedIndex == 1) sx = "female";
+                byte result = Engine.get().db().addName(sx, textBox1.Text, textBox2.Text);
+                checkResult(result);    
+            }
+            else
+            {
+                Engine.get().db().changeName(this.originName, this.originSurname, textBox1.Text, textBox2.Text);                 
+            }
+            load();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
+            
+            if (textBox1.Text != "" && textBox2.Text != "") button1.Enabled = true; else button1.Enabled = false;
+            if (textBox1.Text != "" || textBox2.Text != "") button2.Enabled = true; else button2.Enabled = false;
+        }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            byte result = Engine.get().db().deleteName(textBox1.Text);
+            checkResult(result);
+            load();
+        }
+
+        private void checkResult(byte result)
+        {
+            string str = "";
+            switch (result)
+            {
+                case 1: str = "Проблема связи с Базой Данных"; break;
+                case 2: str = "Добавляемое имя уже существует"; break;
+                case 3: str = "Удаляемого имени не существует"; break;
+                case 4: str = "Нельзя удалить занятое имя"; break;    
+            }
+            if (str != "") MessageBox.Show(str);
         }
     }
 }

@@ -296,6 +296,69 @@ namespace rabnet
             return new ZooTehGetter(sql).getVudvors(days);
         }
 
+        public byte addName(string sex, string name, string surname)
+        {
+            MySqlDataReader rd = reader("SELECT COUNT(*) FROM names WHERE n_name='"+name+"';");
+            byte result = 0;
+            if (rd.Read())
+            {
+                if (rd.GetInt32(0) == 0)
+                {
+                    rd.Close();
+                    exec("INSERT INTO names(n_sex,n_name,n_surname,n_block_date) VALUES('" + sex + "','" + name + "','" + surname + "',DATE(NOW()));");
+                    return 0;
+                }
+                else
+                {
+                    rd.Close();
+                    return 2;
+                }
+            }
+            else
+            {
+                rd.Close();
+                return 1;
+            }           
+        }
+
+        public byte deleteName(string name)
+        {
+            MySqlDataReader rd = reader("SELECT n_name,n_use FROM names WHERE n_name='" + name + "';");
+            if (rd.Read())
+            {
+                if (rd.GetInt16(1) == 0)
+                {
+                    rd.Close();
+                    exec("DELETE FROM names WHERE n_name='" + name + "';");
+                    return 0;
+                }
+                else
+                {
+                    rd.Close();
+                    return 4;
+                }
+            }
+            else
+            {               
+                rd.Close();
+                return 3;
+            }            
+        }
+
+        public void changeName(string orgName, string orgSurname, string name, string surname)
+        {
+            exec("UPDATE names SET n_name='"+name +"',n_surname='"+surname+"' WHERE n_name='"+orgName+"' AND n_surname='"+orgSurname+"';");
+        }
+
         #endregion
     }
 }
+
+/*
+result - переменная принимающая значение номера ошибки
+0 - все прошло успешно
+1 - проблемы прочтения rd.read()
+2 - добавляемое имя уже существует
+3 - удаляемого имени не существует
+4 - нельзя удалить имя ибо оно занято
+ */

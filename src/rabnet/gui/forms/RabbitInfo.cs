@@ -468,7 +468,9 @@ namespace rabnet
 
         private void button16_Click(object sender, EventArgs e)
         {
-            (new NamesForm()).ShowDialog();
+            byte sex;
+            if (tabControl1.TabPages[1].Text == "Самец") sex = 0; else sex = 1; 
+            (new NamesForm(sex)).ShowDialog();
             fillCatalogs(0);
         }
 

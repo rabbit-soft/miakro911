@@ -47,8 +47,8 @@ namespace rabnet
                 w = "n_sex='" + (options.safeInt("sex")==1?"male":"female") + "'";
             if (options.safeInt("state") != 0)
                 w = Rabbits.addWhereAnd(w, "n_use" + (options.safeInt("state")==1?"":"!") + "=0");
-            if (options.safeValue("name") != "")
-                w = Rabbits.addWhereAnd(w, "n_name like '"+options.safeValue("name")+"%'");
+         // if (options.safeValue("name") != "")
+         //   w = Rabbits.addWhereAnd(w, "n_name like '"+options.safeValue("name")+"%'");
             if (w != "")
                 w = " WHERE " + w + " ";
             return w;

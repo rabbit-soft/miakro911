@@ -35,7 +35,7 @@ namespace rabnet
                                    new Option(OPT_ID.SHOW_TIER_SEC,OPT_LEVEL.USER,"sh_tier_s"), 
                                    new Option(OPT_ID.RAB_FILTER,OPT_LEVEL.USER,"rab_filter"), 
                                    new Option(OPT_ID.SHOW_NUMBERS,OPT_LEVEL.USER,"sh_num"),
-                                   new Option(OPT_ID.BUILD_FILTER,OPT_LEVEL.USER,"build_filter"), 
+                                   new Option(OPT_ID.BUILD_FILTER,OPT_LEVEL.USER,"build_filter"),
                                    new Option(OPT_ID.OKROL,OPT_LEVEL.FARM,"okrol"), 
                                    new Option(OPT_ID.VUDVOR,OPT_LEVEL.FARM,"vudvor"), 
                                    new Option(OPT_ID.COUNT1,OPT_LEVEL.FARM,"count1"), 
