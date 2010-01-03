@@ -416,11 +416,6 @@ namespace rabnet
             throw new NotImplementedException();
         }
 
-        public byte deleteName(string name)
-        {
-            throw new NotImplementedException();
-        }
-
         public void changeName(string orgName, string orgSurname, string name, string surname)
         {
             throw new NotImplementedException();
