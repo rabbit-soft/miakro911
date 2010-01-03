@@ -33,7 +33,7 @@ CREATE TABLE names(
 	n_use INTEGER UNSIGNED NOT NULL default 0,
 	n_block_date DATETIME DEFAULT NULL,
 	KEY(n_sex),
-	KEY(n_name),
+	UNIQUE(n_name),
 	KEY(n_use),
 	KEY(n_block_date)
 );

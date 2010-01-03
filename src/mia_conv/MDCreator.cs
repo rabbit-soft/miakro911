@@ -154,8 +154,20 @@ namespace mia_conv
                     use=String.Format("{0:d}",nm.key.value());
                 c.CommandText=String.Format("INSERT INTO names(n_sex,n_name,n_surname,n_use,n_block_date) VALUES('{0:s}','{1:s}','{2:s}',{3:s},{4:s});",
                     sex?"male":"female",nm.name.value(),nm.surname.value(),use,xdt);
-                c.ExecuteNonQuery();
-                nm.key.tag = (int)c.LastInsertedId;
+                try
+                {
+                    c.ExecuteNonQuery();
+                    nm.key.tag = (int)c.LastInsertedId;
+                }
+                catch (Exception ex)
+                {
+                    debug("MYSQL Exception on name "+nm.name.value()+"("+nm.key.value().ToString()+"): " + ex.Message);
+                    c.CommandText = "SELECT n_id FROM names WHERE n_name='" + nm.name.value() + "';";
+                    MySqlDataReader rd=c.ExecuteReader();
+                    rd.Read();
+                    nm.key.tag = (int)rd.GetInt32(0);
+                    rd.Close();
+                }
         }
 
         public void fillNames()
