@@ -65,7 +65,6 @@ namespace rabnet
         void updateBuilding(Building b);
         ZooJobItem[] getVudvors(int days);
         byte addName(string sex, string name, string surname);
-        byte deleteName(string name);
         void changeName(string orgName, string orgSurname, string name, string surname);
     }
 
