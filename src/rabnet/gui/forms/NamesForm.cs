@@ -42,7 +42,6 @@ namespace rabnet
             button1.Text = btext[0];
             this.originName = this.originSurname = null;
             button1.Enabled = button2.Enabled = false;
-            button3.Hide();
             comboBox2.Focus();
             rabStatusBar1.run();
         }
@@ -104,7 +103,6 @@ namespace rabnet
                 return;
             }
             button1.Text = btext[1];
-            button3.Visible = true;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -115,7 +113,6 @@ namespace rabnet
             button1.Text = btext[0];
             this.originName = this.originSurname = null;
             button1.Enabled = button2.Enabled = false;
-            button3.Hide();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -139,13 +136,6 @@ namespace rabnet
             
             if (textBox1.Text != "" && textBox2.Text != "") button1.Enabled = true; else button1.Enabled = false;
             if (textBox1.Text != "" || textBox2.Text != "") button2.Enabled = true; else button2.Enabled = false;
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            byte result = Engine.get().db().deleteName(textBox1.Text);
-            checkResult(result);
-            load();
         }
 
         private void checkResult(byte result)
