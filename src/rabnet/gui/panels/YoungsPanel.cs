@@ -75,8 +75,21 @@ namespace rabnet
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            
             if (listView1.SelectedItems.Count != 1)
                 return;
+
+            for (int ind = 0; ind < genTree.Nodes.Count; ind++)
+            {
+                int len = genTree.Nodes[ind].Text.IndexOf(",");
+                string str = genTree.Nodes[ind].Text.Remove(len);
+                if (listView1.SelectedItems[0].SubItems[0].Text.StartsWith(str))
+                {
+                    if (ind == 0) return;
+                    genTree.Nodes.RemoveAt(ind);
+                    break;
+                }
+            }
             if (genTree.Nodes.Count > 0)
                 genTree.Nodes[0].ForeColor = Color.Gray;
             if (genTree.Nodes.Count > 10)
