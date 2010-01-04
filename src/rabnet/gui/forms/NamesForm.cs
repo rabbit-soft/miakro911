@@ -11,7 +11,7 @@ namespace rabnet
     public partial class NamesForm : Form
     {
         ListViewColumnSorter cs = null;
-        private bool manual = true;
+//        private bool manual=true;
         string originName, originSurname = null;
         string[] btext = new string[] {"Добавить","Изменить" };
 
@@ -30,9 +30,9 @@ namespace rabnet
         {
             InitializeComponent();
             cs = new ListViewColumnSorter(listView1, new int[] { });
-            manual = false;
+//            manual = false;
             comboBox2.SelectedIndex = 0;
-            manual = true;
+//            /manual = true;
         }
 
         private void load()

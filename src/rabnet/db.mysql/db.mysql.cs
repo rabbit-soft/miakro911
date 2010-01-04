@@ -299,7 +299,7 @@ namespace rabnet
         public byte addName(string sex, string name, string surname)
         {
             MySqlDataReader rd = reader("SELECT COUNT(*) FROM names WHERE n_name='" + name + "';");
-            byte result = 0;
+//            byte result = 0;
             if (rd.Read())
             {
                 if (rd.GetInt32(0) == 0)
