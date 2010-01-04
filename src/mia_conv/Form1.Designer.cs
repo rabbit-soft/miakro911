@@ -93,6 +93,7 @@ namespace mia_conv
             this.log.Location = new System.Drawing.Point(12, 345);
             this.log.Multiline = true;
             this.log.Name = "log";
+            this.log.ReadOnly = true;
             this.log.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.log.Size = new System.Drawing.Size(768, 331);
             this.log.TabIndex = 2;

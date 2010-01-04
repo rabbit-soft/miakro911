@@ -56,7 +56,15 @@ namespace mia_conv
                 if (!createDB(root,rpswd,db,host,user,password))
                     return false;
             sql = new MySqlConnection("host=" + host + ";uid=" + user + ";pwd=" + password + ";database=" + db+";charset=utf8");
-            sql.Open();
+            try
+            {
+                sql.Open();
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка при подключении к БД");
+                return false;
+            }
             c = new MySqlCommand("SET CHARACTER SET utf8;", sql);
             c.ExecuteNonQuery();
             StreamReader stm=new StreamReader(this.GetType().Assembly.GetManifestResourceStream("mia_conv.rabnet_db_fmt.sql"),Encoding.UTF8);
