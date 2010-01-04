@@ -23,9 +23,9 @@ namespace rabnet
             if (cbFarm.SelectedIndex != 0) f["frm"] = cbFarm.SelectedIndex.ToString();
             if (cbGnezdo.SelectedIndex != 0) f["gnzd"] = cbGnezdo.SelectedIndex.ToString();
             if (cbGrelka.SelectedIndex != 0) f["grlk"] = cbGrelka.SelectedIndex.ToString();
-            if (!vertepBox.Checked || !urtaBox.Checked || !kvartaBox.Checked || !barinBox.Checked || !krolBox.Checked || !dvukrolBox.Checked || !komplexBox.Checked || !hizhinaBox.Checked)
+            if (vertepBox.Checked || urtaBox.Checked || kvartaBox.Checked || barinBox.Checked || krolBox.Checked || dvukrolBox.Checked || komplexBox.Checked || hizhinaBox.Checked)
             {
-                f["yar"] = string.Format("{0}{1}{2}{3}{4}{5}{6}{7}",vertepBox.Checked ? "v" : "",
+                f["yar"] = string.Format("{0}{1}{2}{3}{4}{5}{6}{7}", vertepBox.Checked ? "v" : "",
                     urtaBox.Checked ? "u" : "", kvartaBox.Checked ? "q" : "", barinBox.Checked ? "b" : "", krolBox.Checked ? "k" : "", dvukrolBox.Checked ? "d" : "", komplexBox.Checked ? "x" : "", hizhinaBox.Checked ? "h" : "");
             }
             return f;
