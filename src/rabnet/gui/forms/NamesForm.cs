@@ -79,7 +79,14 @@ namespace rabnet
             li.Tag = nm.id;
             li.SubItems.Add(nm.surname);
             li.SubItems.Add(nm.sex);
-            li.SubItems.Add(nm.use != 0 ? "занято" : "свободно");
+            string state="занято";
+            if (nm.use==0)
+            {
+                state = "свободно";
+                if (nm.td != DateTime.MinValue)
+                    state = "освобождается";
+            }
+            li.SubItems.Add(state);
             li.SubItems.Add((nm.use!=0 || nm.td==DateTime.MinValue)?"-":nm.td.ToShortDateString());
         }
 

@@ -705,9 +705,26 @@ FROM rabbits WHERE r_id={0:d};",rabbit,mom,count), sql);
             return r.id;
         }
 
+        public static void freeName(MySqlConnection sql, int rid)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT r_name FROM rabbits WHERE r_id={0:d};",
+                rid), sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            int nm = 0;
+            if (rd.Read())
+                nm = rd.GetInt32(0);
+            rd.Close();
+            if (nm>0)
+            {
+                cmd.CommandText = String.Format(@"UPDATE names SET n_use=0,n_block_date=NOW()+INTERVAL 1 YEAR WHERE n_id={0:d};",nm);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public static void killRabbit(MySqlConnection sql, int rid, DateTime when, int reason, string notes)
         {
             freeTier(sql, rid);
+            freeName(sql, rid);
             MySqlCommand cmd = new MySqlCommand(String.Format("UPDATE rabbits SET r_parent=0 WHERE r_parent={0:d};"
                 , rid), sql);
             cmd.ExecuteNonQuery();

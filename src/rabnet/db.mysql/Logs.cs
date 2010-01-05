@@ -55,8 +55,8 @@ namespace rabnet
             String qry=String.Format(@"SELECT logs.l_date date,logtypes.l_name name,users.u_name user,logtypes.l_params params,
 logs.l_rabbit rabbit,logs.l_rabbit2 rabbit2,logs.l_address address,logs.l_address2 address2,
 logs.l_param param,
-rabname(logs.l_rabbit,2) r1,
-rabname(logs.l_rabbit2,2) r2,
+allname(logs.l_rabbit,2) r1,
+allname(logs.l_rabbit2,2) r2,
 rabplace(logs.l_rabbit) place,
 rabplace(logs.l_rabbit2) place2
 FROM logs,logtypes,users WHERE

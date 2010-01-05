@@ -26,8 +26,8 @@ namespace rabnet
         public void addRabbit(RabNetEngRabbit r)
         {
             rbs.Add(r);
-            for (int i = 0; i < r.youngcount; i++)
-                addRabbit(r.youngers[i].id);
+            foreach (OneRabbit or in r.youngers)
+                addRabbit(or.id);
             update();
         }
 
