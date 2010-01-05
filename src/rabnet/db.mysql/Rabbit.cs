@@ -708,8 +708,11 @@ FROM rabbits WHERE r_id={0:d};",rabbit,mom,count), sql);
         public static void killRabbit(MySqlConnection sql, int rid, DateTime when, int reason, string notes)
         {
             freeTier(sql, rid);
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"CALL killRabbitDate({0:d},{1:d},'{2:s}',{3:s});",
-                rid,reason,notes,DBHelper.DateToMyString(when)), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format("UPDATE rabbits SET r_parent=0 WHERE r_parent={0:d};"
+                , rid), sql);
+            cmd.ExecuteNonQuery();
+            cmd.CommandText=String.Format(@"CALL killRabbitDate({0:d},{1:d},'{2:s}',{3:s});",
+                rid,reason,notes,DBHelper.DateToMyString(when));
             cmd.ExecuteNonQuery();
         }
 
