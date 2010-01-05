@@ -132,7 +132,9 @@ namespace rabnet
         {
             makeBon.Visible = passportMenuItem.Visible=proholostMenuItem.Visible=false;
             replaceMenuItem.Visible = placeChMenuItem.Visible= false;
+            KillMenuItem.Visible = false;
             if (sex < 0) return;
+            KillMenuItem.Visible = true;
             replaceMenuItem.Visible = true;
             if (multi==1)
                 makeBon.Visible = true;
@@ -217,6 +219,17 @@ namespace rabnet
             rpf.addRabbit((int)listView1.SelectedItems[1].Tag);
             rpf.setAction(ReplaceForm.Action.CHANGE);
             rpf.ShowDialog();
+            rsb.run();
+        }
+
+        private void KillMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count < 1)
+                return;
+            KillForm f = new KillForm();
+            foreach (ListViewItem li in listView1.SelectedItems)
+                f.addRabbit((int)li.Tag);
+            f.ShowDialog();
             rsb.run();
         }
 

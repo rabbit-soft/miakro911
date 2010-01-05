@@ -625,7 +625,7 @@ r_area,t_busy1,t_busy2,t_busy3,t_busy4,m_upper,m_lower,m_id FROM rabbits,tiers,m
             rd.Close();
             if (tr != 0)
             {
-                cmd.CommandText = String.Format("UPDATE tiers SET r_busy{0:d}=0 WHERE t_id={1:d};", sc + 1, tr);
+                cmd.CommandText = String.Format("UPDATE tiers SET t_busy{0:d}=0 WHERE t_id={1:d};", sc + 1, tr);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -704,5 +704,14 @@ FROM rabbits WHERE r_id={0:d};",rabbit,mom,count), sql);
             }
             return r.id;
         }
+
+        public static void killRabbit(MySqlConnection sql, int rid, DateTime when, int reason, string notes)
+        {
+            freeTier(sql, rid);
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"CALL killRabbitDate({0:d},{1:d},'{2:s}',{3:s});",
+                rid,reason,notes,DBHelper.DateToMyString(when)), sql);
+            cmd.ExecuteNonQuery();
+        }
+
     }
 }

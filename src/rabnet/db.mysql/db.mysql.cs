@@ -306,6 +306,12 @@ namespace rabnet
             Names.changeName(sql, orgName, name, surname);
             
         }
+
+        public void killRabbit(int id, DateTime when, int reason, string notes)
+        {
+            RabbitGetter.killRabbit(sql, id, when, reason, notes);
+        }
+
         #endregion
     }
 }

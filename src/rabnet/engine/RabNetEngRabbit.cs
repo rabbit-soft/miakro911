@@ -275,5 +275,11 @@ namespace rabnet
                 if (y.id == yid)
                     y.tag = "";
         }
+
+        public void killIt(DateTime when, int reason, string notes)
+        {
+            eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, rid, address);
+            eng.db().killRabbit(id, when, reason, notes);
+        }
     }
 }

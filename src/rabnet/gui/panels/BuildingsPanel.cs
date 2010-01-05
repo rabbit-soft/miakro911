@@ -243,5 +243,50 @@ namespace rabnet
             DrawFarm(e.farm);
         }
 
+        public override ContextMenuStrip getMenu()
+        {
+            return actMenu;
+        }
+
+        private void killMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count < 1)
+                return;
+            Building b=null;
+            KillForm f = new KillForm();
+            foreach (ListViewItem li in listView1.SelectedItems)
+            {
+                Building b2 = li.Tag as Building;
+                if (b2 != b)
+                {
+                    b = b2;
+                    for (int i = 0; i < b.secs(); i++)
+                        f.addRabbit(b.busy(i));
+                }
+            }
+            f.ShowDialog();
+            rsb.run();
+        }
+
+        private void replaceMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count < 1)
+                return;
+            Building b = null;
+            ReplaceForm f = new ReplaceForm();
+            foreach (ListViewItem li in listView1.SelectedItems)
+            {
+                Building b2 = li.Tag as Building;
+                if (b2 != b)
+                {
+                    b = b2;
+                    for (int i = 0; i < b.secs(); i++)
+                        f.addRabbit(b.busy(i));
+                }
+            }
+            f.ShowDialog();
+            rsb.run();
+        }
+
     }
 }

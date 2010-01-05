@@ -427,5 +427,15 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public void killRabbit(int id, DateTime when, int reason, string notes)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

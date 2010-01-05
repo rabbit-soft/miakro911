@@ -66,6 +66,7 @@ namespace rabnet
         ZooJobItem[] getVudvors(int days);
         void addName(OneRabbit.RabbitSex sex, string name, string surname);
         void changeName(string orgName, string name, string surname);
+        void killRabbit(int id,DateTime when,int reason,string notes);
     }
 
 }

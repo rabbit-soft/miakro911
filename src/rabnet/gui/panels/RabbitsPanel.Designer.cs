@@ -50,11 +50,12 @@
             this.makeBon = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.replaceMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.placeChMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.proholostMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.SelectAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.genTree = new System.Windows.Forms.TreeView();
-            this.placeChMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.KillMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -181,13 +182,14 @@
             this.newRab,
             this.makeBon,
             this.toolStripMenuItem1,
+            this.KillMenuItem,
             this.replaceMenuItem,
             this.placeChMenuItem,
             this.proholostMenuItem,
             this.toolStripMenuItem2,
             this.SelectAllMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(201, 192);
+            this.actMenu.Size = new System.Drawing.Size(201, 214);
             // 
             // passportMenuItem
             // 
@@ -223,6 +225,13 @@
             this.replaceMenuItem.Text = "Пересадить/Отсадить";
             this.replaceMenuItem.Click += new System.EventHandler(this.replaceMenuItem_Click);
             // 
+            // placeChMenuItem
+            // 
+            this.placeChMenuItem.Name = "placeChMenuItem";
+            this.placeChMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.placeChMenuItem.Text = "Жилобмен";
+            this.placeChMenuItem.Click += new System.EventHandler(this.placeChMenuItem_Click);
+            // 
             // proholostMenuItem
             // 
             this.proholostMenuItem.Name = "proholostMenuItem";
@@ -253,12 +262,12 @@
             this.genTree.Size = new System.Drawing.Size(134, 544);
             this.genTree.TabIndex = 0;
             // 
-            // placeChMenuItem
+            // KillMenuItem
             // 
-            this.placeChMenuItem.Name = "placeChMenuItem";
-            this.placeChMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.placeChMenuItem.Text = "Жилобмен";
-            this.placeChMenuItem.Click += new System.EventHandler(this.placeChMenuItem_Click);
+            this.KillMenuItem.Name = "KillMenuItem";
+            this.KillMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.KillMenuItem.Text = "Списание";
+            this.KillMenuItem.Click += new System.EventHandler(this.KillMenuItem_Click);
             // 
             // RabbitsPanel
             // 
@@ -303,5 +312,6 @@
         private System.Windows.Forms.ToolStripMenuItem SelectAllMenuItem;
         private System.Windows.Forms.ToolStripMenuItem replaceMenuItem;
         private System.Windows.Forms.ToolStripMenuItem placeChMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem KillMenuItem;
     }
 }

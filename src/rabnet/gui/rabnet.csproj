@@ -133,6 +133,12 @@
     <Compile Include="forms\IncomeForm.Designer.cs">
       <DependentUpon>IncomeForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="forms\KillForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\KillForm.Designer.cs">
+      <DependentUpon>KillForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -250,6 +256,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\IncomeForm.resx">
       <DependentUpon>IncomeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\KillForm.resx">
+      <DependentUpon>KillForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

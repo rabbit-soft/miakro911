@@ -28,6 +28,7 @@
         /// </summary>
         protected override void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.farmDrawer1 = new rabnet.FarmDrawer();
             this.listView1 = new System.Windows.Forms.ListView();
@@ -40,9 +41,13 @@
             this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
             this.treeView1 = new System.Windows.Forms.TreeView();
+            this.actMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.replaceMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.killMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.actMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -88,6 +93,7 @@
             this.columnHeader6,
             this.columnHeader7,
             this.columnHeader8});
+            this.listView1.ContextMenuStrip = this.actMenu;
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.HideSelection = false;
@@ -144,6 +150,28 @@
             this.treeView1.TabIndex = 0;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             // 
+            // actMenu
+            // 
+            this.actMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.replaceMenuItem,
+            this.killMenuItem});
+            this.actMenu.Name = "actMenu";
+            this.actMenu.Size = new System.Drawing.Size(138, 48);
+            // 
+            // replaceMenuItem
+            // 
+            this.replaceMenuItem.Name = "replaceMenuItem";
+            this.replaceMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.replaceMenuItem.Text = "Расселить";
+            this.replaceMenuItem.Click += new System.EventHandler(this.replaceMenuItem_Click);
+            // 
+            // killMenuItem
+            // 
+            this.killMenuItem.Name = "killMenuItem";
+            this.killMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.killMenuItem.Text = "Списать";
+            this.killMenuItem.Click += new System.EventHandler(this.killMenuItem_Click);
+            // 
             // BuildingsPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -154,6 +182,7 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
+            this.actMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -172,6 +201,9 @@
         private System.Windows.Forms.ColumnHeader columnHeader6;
         private System.Windows.Forms.ColumnHeader columnHeader7;
         private System.Windows.Forms.ColumnHeader columnHeader8;
+        private System.Windows.Forms.ContextMenuStrip actMenu;
+        private System.Windows.Forms.ToolStripMenuItem replaceMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem killMenuItem;
 
 
 
