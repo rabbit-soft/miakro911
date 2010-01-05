@@ -411,12 +411,17 @@ namespace rabnet
             throw new NotImplementedException();
         }
 
-        public byte addName(string sex, string name, string surname)
+        #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public void addName(OneRabbit.RabbitSex sex, string name, string surname)
         {
             throw new NotImplementedException();
         }
 
-        public void changeName(string orgName, string orgSurname, string name, string surname)
+        public void changeName(string orgName, string name, string surname)
         {
             throw new NotImplementedException();
         }

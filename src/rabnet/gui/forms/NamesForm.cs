@@ -80,7 +80,7 @@ namespace rabnet
             li.SubItems.Add(nm.surname);
             li.SubItems.Add(nm.sex);
             li.SubItems.Add(nm.use != 0 ? "занято" : "свободно");
-            li.SubItems.Add(nm.use!=0?"-":nm.td.ToShortDateString());
+            li.SubItems.Add((nm.use!=0 || nm.td==DateTime.MinValue)?"-":nm.td.ToShortDateString());
         }
 
         private void NamesForm_Activated(object sender, EventArgs e)
@@ -117,16 +117,22 @@ namespace rabnet
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (button1.Text == btext[0])
+            try
             {
-                string sx="male";
-                if (tabControl1.SelectedIndex == 1) sx = "female";
-                byte result = Engine.get().db().addName(sx, textBox1.Text, textBox2.Text);
-                checkResult(result);    
+                if (button1.Text == btext[0])
+                {
+                    OneRabbit.RabbitSex sx = OneRabbit.RabbitSex.MALE;
+                    if (tabControl1.SelectedIndex == 1) sx = OneRabbit.RabbitSex.FEMALE;
+                    Engine.get().db().addName(sx, textBox1.Text, textBox2.Text);
+                }
+                else
+                {
+                    Engine.get().db().changeName(this.originName, textBox1.Text, textBox2.Text);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Engine.get().db().changeName(this.originName, this.originSurname, textBox1.Text, textBox2.Text);                 
+                MessageBox.Show("Ошибка:" + ex.GetType().ToString() + " " + ex.Message);
             }
             load();
         }
@@ -138,17 +144,5 @@ namespace rabnet
             if (textBox1.Text != "" || textBox2.Text != "") button2.Enabled = true; else button2.Enabled = false;
         }
 
-        private void checkResult(byte result)
-        {
-            string str = "";
-            switch (result)
-            {
-                case 1: str = "Проблема связи с Базой Данных"; break;
-                case 2: str = "Добавляемое имя уже существует"; break;
-                case 3: str = "Удаляемого имени не существует"; break;
-                case 4: str = "Нельзя удалить занятое имя"; break;    
-            }
-            if (str != "") MessageBox.Show(str);
-        }
     }
 }

@@ -64,8 +64,8 @@ namespace rabnet
         ZooJobItem[] getOkrols(int days);
         void updateBuilding(Building b);
         ZooJobItem[] getVudvors(int days);
-        byte addName(string sex, string name, string surname);
-        void changeName(string orgName, string orgSurname, string name, string surname);
+        void addName(OneRabbit.RabbitSex sex, string name, string surname);
+        void changeName(string orgName, string name, string surname);
     }
 
 }

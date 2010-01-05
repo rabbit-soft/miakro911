@@ -64,5 +64,18 @@ namespace rabnet
             return "SELECT COUNT(*) FROM names"+makeWhereClause()+";";
         }
 
+        public static void addName(MySqlConnection sql, OneRabbit.RabbitSex sex, String name, String surname)
+        {
+            MySqlCommand cmd=new MySqlCommand(String.Format(@"INSERT INTO names(n_sex,n_name,n_surname,n_block_date) 
+VALUES('{0:s}','{1:s}','{2:s}',NULL)",(sex==OneRabbit.RabbitSex.FEMALE)?"female":"male",name,surname),sql);
+            cmd.ExecuteNonQuery();
+        }
+        public static void changeName(MySqlConnection sql, string orgName, string name, string surname)
+        {
+            MySqlCommand cmd=new MySqlCommand(String.Format(@"UPDATE names SET n_name='{0:s}',n_surname='{1:s}' 
+WHERE n_name='{2:s}';",name,surname,orgName),sql);
+            cmd.ExecuteNonQuery();
+        }
+
     }
 }

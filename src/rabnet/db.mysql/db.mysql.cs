@@ -296,44 +296,16 @@ namespace rabnet
             return new ZooTehGetter(sql).getVudvors(days);
         }
 
-        public byte addName(string sex, string name, string surname)
+        public void addName(OneRabbit.RabbitSex sex, string name, string surname)
         {
-            MySqlDataReader rd = reader("SELECT COUNT(*) FROM names WHERE n_name='" + name + "';");
-//            byte result = 0;
-            if (rd.Read())
-            {
-                if (rd.GetInt32(0) == 0)
-                {
-                    rd.Close();
-                    exec("INSERT INTO names(n_sex,n_name,n_surname,n_block_date) VALUES('" + sex + "','" + name + "','" + surname + "',DATE(NOW()));");
-                    return 0;
-                }
-                else
-                {
-                    rd.Close();
-                    return 2;
-                }
-            }
-            else
-            {
-                rd.Close();
-                return 1;
-            }
+            Names.addName(sql, sex, name, surname);
         }
 
-        public void changeName(string orgName, string orgSurname, string name, string surname)
+        public void changeName(string orgName, string name, string surname)
         {
-            exec("UPDATE names SET n_name='" + name + "',n_surname='" + surname + "' WHERE n_name='" + orgName + "' AND n_surname='" + orgSurname + "';");
+            Names.changeName(sql, orgName, name, surname);
+            
         }
         #endregion
     }
 }
-
-/*
-result - переменная принимающая значение номера ошибки
-0 - все прошло успешно
-1 - проблемы прочтения rd.read()
-2 - добавляемое имя уже существует
-3 - удаляемого имени не существует
-4 - нельзя удалить имя ибо оно занято
- */
