@@ -72,5 +72,10 @@ namespace rabnet
             setAllFarms();
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Hide();
+        }
+
     }
 }
