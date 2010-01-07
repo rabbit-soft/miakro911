@@ -10,6 +10,8 @@ namespace rabnet
 {
     public partial class RabbitsFilter : FilterPanel
     {
+        private Catalog breeds = null;
+
         public RabbitsFilter(RabStatusBar sb):base(sb,"rabbits",Options.OPT_ID.RAB_FILTER)
         {
             //InitializeComponent();
@@ -51,6 +53,8 @@ namespace rabnet
                 f["Pf"] = nudPregTo.Value.ToString();
             if (tbName.Text != "")
                 f["nm"] = tbName.Text;
+            if (cobBreeds.SelectedIndex != 0)
+                f["br"] = cobBreeds.SelectedIndex.ToString();
             return f;
         }
 
@@ -90,6 +94,7 @@ namespace rabnet
             if (cbPregTo.Checked)
             { nudPregTo.Value = f.safeInt("Pf", 20); nudPregTo_ValueChanged(null, null); }
             tbName.Text = f.safeValue("nm");
+            cobBreeds.SelectedIndex = f.safeInt("br", 0);
         }
         public override void clearFilters()
         {
@@ -107,6 +112,7 @@ namespace rabnet
             cbFemaleBride.Checked = cbFemaleFirst.Checked = cbFemaleGirl.Checked = cbFemaleState.Checked = true;
             cbFilter.Text = "";
             tbName.Text = "";
+            cobBreeds.SelectedIndex = 0;
         }
         
 
@@ -160,7 +166,7 @@ namespace rabnet
 
         private void cbDateTo_CheckedChanged(object sender, EventArgs e)
         {
-            dtpDateFrom.Enabled = nudDateTo.Enabled = cbDateTo.Checked;
+            dtpDateTo.Enabled = nudDateTo.Enabled = cbDateTo.Checked;
             if (!cbDateTo.Checked)
             {
                 nudDateFrom.Maximum = 5000;
@@ -176,7 +182,7 @@ namespace rabnet
         }
         private void cbDateFrom_CheckedChanged(object sender, EventArgs e)
         {
-            dtpDateTo.Enabled = nudDateFrom.Enabled = cbDateFrom.Checked;
+            dtpDateFrom.Enabled = nudDateFrom.Enabled = cbDateFrom.Checked;
             if (!cbDateFrom.Checked)
             {
                 nudDateTo.Minimum = 60;
@@ -190,34 +196,47 @@ namespace rabnet
                 nudDateFrom.Maximum = nudDateTo.Value;
             }
         }
-        private void dtpDateFrom_ValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                nudDateTo.Value = (DateTime.Today - dtpDateFrom.Value).Days;
-            }
-            catch (ArgumentOutOfRangeException ext)
-            {
-                nudDateTo.Value = nudDateFrom.Value;
-                MessageBox.Show(ext.Message);
-            }
-        }
         private void dtpDateTo_ValueChanged(object sender, EventArgs e)
         {
-            try
+            int number;
+            number = (DateTime.Today - dtpDateTo.Value).Days;
+            if (number < nudDateTo.Minimum)
             {
-                nudDateFrom.Value = (DateTime.Today - dtpDateTo.Value).Days;
+                nudDateTo.Value = nudDateTo.Minimum;
+                dtpDateTo.Value = DateTime.Today.Subtract(new TimeSpan((int)nudDateTo.Minimum, 0, 0, 0));
             }
-            catch(ArgumentOutOfRangeException ex)
+            else if (number > nudDateTo.Maximum)
             {
-                nudDateFrom.Value = nudDateFrom.Minimum;
-                MessageBox.Show(ex.Message);
+                nudDateTo.Value = nudDateTo.Maximum;
+                dtpDateTo.Value = DateTime.Today.Subtract(new TimeSpan((int)nudDateTo.Maximum, 0, 0, 0));
             }
-            
+            else
+            {
+                nudDateTo.Value = number;
+            } 
+        }
+        private void dtpDateFrom_ValueChanged(object sender, EventArgs e)
+        {
+                int number;
+                number = (DateTime.Today - dtpDateFrom.Value).Days;
+                if (number < nudDateFrom.Minimum)
+                {
+                    nudDateFrom.Value = nudDateFrom.Minimum;
+                    dtpDateFrom.Value = DateTime.Today.Subtract(new TimeSpan((int)nudDateFrom.Minimum, 0, 0, 0));
+                }
+                else if (number > nudDateFrom.Maximum)
+                {
+                    nudDateFrom.Value = nudDateFrom.Maximum;
+                    dtpDateFrom.Value = DateTime.Today.Subtract(new TimeSpan((int)nudDateFrom.Maximum, 0, 0, 0));
+                }
+                else
+                {
+                    nudDateFrom.Value = number;
+                }            
         }
         private void nudDateFrom_ValueChanged(object sender, EventArgs e)
         {
-            dtpDateTo.Value = DateTime.Today.Subtract(new TimeSpan((int)nudDateFrom.Value, 0, 0, 0));
+            dtpDateFrom.Value = DateTime.Today.Subtract(new TimeSpan((int)nudDateFrom.Value, 0, 0, 0));
             if (cbDateTo.Checked)
                 nudDateTo.Minimum = nudDateFrom.Value;
             else nudDateFrom.Maximum = 5000;
@@ -225,7 +244,7 @@ namespace rabnet
         }
         private void nudDateTo_ValueChanged(object sender, EventArgs e)
         {
-            dtpDateFrom.Value = DateTime.Today.Subtract(new TimeSpan((int)nudDateTo.Value, 0, 0, 0));
+            dtpDateTo.Value = DateTime.Today.Subtract(new TimeSpan((int)nudDateTo.Value, 0, 0, 0));
             if (cbDateFrom.Checked)
                 nudDateFrom.Maximum = nudDateTo.Value;
             else nudDateTo.Minimum = 60;
@@ -286,27 +305,41 @@ namespace rabnet
         }       
         private void dtpPregFrom_ValueChanged(object sender, EventArgs e)
         {
-            try
+            int number;
+            number = (DateTime.Today - dtpPregFrom.Value).Days;
+            if (number < nudPregFrom.Minimum)
             {
-                nudPregFrom.Value = (DateTime.Today - dtpPregFrom.Value).Days;
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {               
                 nudPregFrom.Value = nudPregFrom.Minimum;
-                MessageBox.Show(ex.Message);
+                dtpPregFrom.Value = DateTime.Today.Subtract(new TimeSpan((int)nudPregFrom.Minimum, 0, 0, 0));
             }
+            else if (number > nudPregFrom.Maximum)
+            {
+                nudPregFrom.Value = nudPregFrom.Maximum;
+                dtpPregFrom.Value = DateTime.Today.Subtract(new TimeSpan((int)nudPregFrom.Maximum, 0, 0, 0));
+            }
+            else
+            {
+                nudPregFrom.Value = number;
+            } 
         }
         private void dtpPregTo_ValueChanged(object sender, EventArgs e)
         {
-            try
+            int number;
+            number = (DateTime.Today - dtpPregTo.Value).Days;
+            if (number < nudPregTo.Minimum)
             {
-                nudPregTo.Value = (DateTime.Today - dtpPregTo.Value).Days;
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {               
                 nudPregTo.Value = nudPregTo.Minimum;
-                MessageBox.Show(ex.Message);
+                dtpPregTo.Value = DateTime.Today.Subtract(new TimeSpan((int)nudPregTo.Minimum, 0, 0, 0));
             }
+            else if (number > nudPregTo.Maximum)
+            {
+                nudPregTo.Value = nudPregTo.Maximum;
+                dtpPregTo.Value = DateTime.Today.Subtract(new TimeSpan((int)nudPregTo.Maximum, 0, 0, 0));
+            }
+            else
+            {
+                nudPregTo.Value = number;
+            } 
         }
         private void cobPregnant_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -318,6 +351,19 @@ namespace rabnet
         }
 
         #endregion
+
+        private void RabbitsFilter_Load(object sender, EventArgs e)
+        {
+            ICatalogs cts = Engine.db().catalogs();
+            breeds = cts.getBreeds();
+            cobBreeds.Items.Clear();
+            cobBreeds.Items.Add("--ВСЕ--");
+            cobBreeds.SelectedIndex = 0;
+            foreach (int k in breeds.Keys)
+            {
+                cobBreeds.Items.Add(breeds[k]);
+            }
+        }
 
     }
 }
