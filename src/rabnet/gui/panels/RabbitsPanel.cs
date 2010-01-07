@@ -166,8 +166,8 @@ namespace rabnet
             if (listView1.SelectedItems.Count != 1)
                 return;
             RabbitInfo ri = new RabbitInfo((int)listView1.SelectedItems[0].Tag);
-            ri.ShowDialog();
-            rsb.run();
+            if (ri.ShowDialog() != DialogResult.Abort)
+                rsb.run();
         }
 
         private void listView1_DoubleClick(object sender, EventArgs e)
