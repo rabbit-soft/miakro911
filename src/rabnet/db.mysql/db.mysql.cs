@@ -303,8 +303,7 @@ namespace rabnet
 
         public void changeName(string orgName, string name, string surname)
         {
-            Names.changeName(sql, orgName, name, surname);
-            
+            Names.changeName(sql, orgName, name, surname);            
         }
 
         public void killRabbit(int id, DateTime when, int reason, string notes)

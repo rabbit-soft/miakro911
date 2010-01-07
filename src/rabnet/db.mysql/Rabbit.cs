@@ -226,6 +226,8 @@ namespace rabnet
                 }
                 res=addWhereAnd(res,"(r_sex!='female' OR (r_sex='female' AND ("+stat+")))");
             }
+            if (options.ContainsKey("br"))
+                res = addWhereAnd(res, "(r_breed=" + options["br"] + ")");
             if (res == "") return "";
             return " WHERE "+res;
         }
@@ -262,7 +264,8 @@ t_delims,
 t_nest,
 r_notes,
 r_born,
-r_event_date
+r_event_date,
+r_breed
 FROM rabbits,tiers WHERE r_parent=0 AND r_tier=t_id ORDER BY name) c"+makeWhere()+";");
         }
         public override string countQuery()
@@ -270,7 +273,7 @@ FROM rabbits,tiers WHERE r_parent=0 AND r_tier=t_id ORDER BY name) c"+makeWhere(
             return @"SELECT COUNT(*) FROM (SELECT r_sex,r_born,
 rabname(r_id,2) name,
 (SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight,
-r_status,r_flags,r_event_date
+r_status,r_flags,r_event_date,r_breed
  FROM rabbits WHERE r_parent=0) c"+makeWhere()+";";
         }
 
@@ -596,9 +599,11 @@ VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d});"
                 {
                     if (ssur!="") ssur+='ы';
                     if (ssec!="") ssec+='ы';
-                }else if (sex==OneRabbit.RabbitSex.FEMALE){
-                    if (ssur!="") ssur+='а';
-                    if (ssec!="") ssec+='а';
+                }
+                else if (sex==OneRabbit.RabbitSex.FEMALE)
+                {
+                    if (ssur != "") ssur += 'а';
+                    if (ssec != "") ssec += 'а';
                 }
                 res += ssur;
                 if (ssec != "")

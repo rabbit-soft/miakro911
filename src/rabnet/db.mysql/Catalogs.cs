@@ -41,7 +41,7 @@ namespace rabnet
         }
         public Catalog getBreeds()
         {
-            return stdCatalog("SELECT b_id,b_name FROM breeds ORDER BY b_name;");
+            return stdCatalog("SELECT b_id,b_name FROM breeds;");
         }
         public Catalog getNames(int sex)
         {
