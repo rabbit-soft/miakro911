@@ -32,7 +32,7 @@ namespace rabnet
             flt["num"] = op.getOption(Options.OPT_ID.SHOW_NUMBERS);
             listView1.ListViewItemSorter = null;
             IDataGetter dg = DataThread.db().getRabbits(flt);
-            rsb.setText(1, dg.getCount().ToString() + " items");
+            rsb.setText(1, dg.getCount().ToString() + " записей");
             return dg;
         }
 
