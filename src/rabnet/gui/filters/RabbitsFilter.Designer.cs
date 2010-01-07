@@ -77,8 +77,11 @@
             this.cbSexFemale = new System.Windows.Forms.CheckBox();
             this.cbSexMale = new System.Windows.Forms.CheckBox();
             this.button2 = new System.Windows.Forms.Button();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.cobBreeds = new System.Windows.Forms.ComboBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPregFrom)).BeginInit();
@@ -93,27 +96,29 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudDateTo)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox8.SuspendLayout();
+            this.groupBox9.SuspendLayout();
             this.SuspendLayout();
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(288, 235);
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label6.Location = new System.Drawing.Point(6, 10);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(29, 13);
+            this.label6.Size = new System.Drawing.Size(107, 15);
             this.label6.TabIndex = 13;
-            this.label6.Text = "Имя";
+            this.label6.Text = "Содержит строку";
             // 
             // tbName
             // 
-            this.tbName.Location = new System.Drawing.Point(323, 233);
+            this.tbName.Location = new System.Drawing.Point(119, 10);
             this.tbName.Name = "tbName";
             this.tbName.Size = new System.Drawing.Size(100, 20);
             this.tbName.TabIndex = 12;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(429, 259);
+            this.button1.Location = new System.Drawing.Point(429, 260);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 11;
@@ -150,7 +155,7 @@
             this.groupBox6.Controls.Add(this.cbFemaleFirst);
             this.groupBox6.Controls.Add(this.cbFemaleBride);
             this.groupBox6.Controls.Add(this.cbFemaleGirl);
-            this.groupBox6.Location = new System.Drawing.Point(144, 84);
+            this.groupBox6.Location = new System.Drawing.Point(144, 112);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(366, 145);
             this.groupBox6.TabIndex = 8;
@@ -384,7 +389,7 @@
             this.groupBox5.Controls.Add(this.cbMaleProducer);
             this.groupBox5.Controls.Add(this.cbMaleCandidate);
             this.groupBox5.Controls.Add(this.cbMaleBoy);
-            this.groupBox5.Location = new System.Drawing.Point(3, 84);
+            this.groupBox5.Location = new System.Drawing.Point(3, 112);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(139, 145);
             this.groupBox5.TabIndex = 7;
@@ -447,7 +452,7 @@
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.cobWorks);
-            this.groupBox4.Location = new System.Drawing.Point(391, 3);
+            this.groupBox4.Location = new System.Drawing.Point(391, 31);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(119, 75);
             this.groupBox4.TabIndex = 6;
@@ -473,7 +478,7 @@
             this.groupBox3.Controls.Add(this.nudWeightFrom);
             this.groupBox3.Controls.Add(this.cbWeightTo);
             this.groupBox3.Controls.Add(this.cbWeightFrom);
-            this.groupBox3.Location = new System.Drawing.Point(283, 3);
+            this.groupBox3.Location = new System.Drawing.Point(283, 31);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(106, 75);
             this.groupBox3.TabIndex = 5;
@@ -570,7 +575,7 @@
             this.groupBox2.Controls.Add(this.nudDateTo);
             this.groupBox2.Controls.Add(this.cbDateTo);
             this.groupBox2.Controls.Add(this.dtpDateTo);
-            this.groupBox2.Location = new System.Drawing.Point(97, 3);
+            this.groupBox2.Location = new System.Drawing.Point(97, 31);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(185, 75);
             this.groupBox2.TabIndex = 4;
@@ -684,7 +689,7 @@
             this.groupBox1.Controls.Add(this.cbSexVoid);
             this.groupBox1.Controls.Add(this.cbSexFemale);
             this.groupBox1.Controls.Add(this.cbSexMale);
-            this.groupBox1.Location = new System.Drawing.Point(3, 3);
+            this.groupBox1.Location = new System.Drawing.Point(3, 31);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(93, 75);
             this.groupBox1.TabIndex = 3;
@@ -723,22 +728,12 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(6, 252);
+            this.button2.Location = new System.Drawing.Point(3, 260);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(53, 23);
+            this.button2.Size = new System.Drawing.Size(30, 23);
             this.button2.TabIndex = 1;
-            this.button2.Text = "Готово";
+            this.button2.Text = "OK";
             this.button2.UseVisualStyleBackColor = true;
-            // 
-            // groupBox8
-            // 
-            this.groupBox8.Controls.Add(this.cobBreeds);
-            this.groupBox8.Location = new System.Drawing.Point(88, 235);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(164, 47);
-            this.groupBox8.TabIndex = 16;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "Порода";
             // 
             // cobBreeds
             // 
@@ -746,17 +741,57 @@
             this.cobBreeds.FormattingEnabled = true;
             this.cobBreeds.Items.AddRange(new object[] {
             "-=ВСЕ=-"});
-            this.cobBreeds.Location = new System.Drawing.Point(6, 19);
+            this.cobBreeds.Location = new System.Drawing.Point(63, 10);
             this.cobBreeds.Name = "cobBreeds";
             this.cobBreeds.Size = new System.Drawing.Size(150, 21);
             this.cobBreeds.TabIndex = 15;
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(482, 3);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(30, 23);
+            this.button3.TabIndex = 18;
+            this.button3.Text = "X";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label7.Location = new System.Drawing.Point(6, 11);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(51, 15);
+            this.label7.TabIndex = 19;
+            this.label7.Text = "Порода";
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.cobBreeds);
+            this.groupBox8.Controls.Add(this.label7);
+            this.groupBox8.Location = new System.Drawing.Point(3, -2);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(223, 34);
+            this.groupBox8.TabIndex = 20;
+            this.groupBox8.TabStop = false;
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.label6);
+            this.groupBox9.Controls.Add(this.tbName);
+            this.groupBox9.Location = new System.Drawing.Point(240, -2);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(230, 34);
+            this.groupBox9.TabIndex = 20;
+            this.groupBox9.TabStop = false;
+            // 
             // RabbitsFilter
             // 
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.groupBox9);
             this.Controls.Add(this.groupBox8);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.tbName);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.cbFilter);
             this.Controls.Add(this.label5);
@@ -772,7 +807,6 @@
             this.Name = "RabbitsFilter";
             this.SaveButton = this.button1;
             this.Size = new System.Drawing.Size(515, 290);
-            this.Load += new System.EventHandler(this.RabbitsFilter_Load);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.groupBox7.ResumeLayout(false);
@@ -793,6 +827,9 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -849,8 +886,11 @@
         private System.Windows.Forms.NumericUpDown nudPregFrom;
         private System.Windows.Forms.DateTimePicker dtpPregTo;
         private System.Windows.Forms.CheckBox cbPregTo;
-        private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.ComboBox cobBreeds;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.GroupBox groupBox9;
 
     }
 }
