@@ -10,8 +10,6 @@ namespace rabnet
 {
     public partial class RabbitsFilter : FilterPanel
     {
-        private Catalog breeds = null;
-
         public RabbitsFilter(RabStatusBar sb):base(sb,"rabbits",Options.OPT_ID.RAB_FILTER)
         {
             //InitializeComponent();
@@ -19,6 +17,19 @@ namespace rabnet
         public RabbitsFilter() : base() { }
 
         #region filter_form_process
+
+        private void fillBreeds()
+        {
+            ICatalogs cts = Engine.db().catalogs();
+            Catalog breeds = cts.getBreeds();
+            cobBreeds.Items.Clear();
+            cobBreeds.Items.Add("--ВСЕ--");
+            cobBreeds.SelectedIndex = 0;
+            foreach (int k in breeds.Keys)
+            {
+                cobBreeds.Items.Add(breeds[k]);
+            }
+        }
 
         public override Filters getFilters()
         {
@@ -61,6 +72,7 @@ namespace rabnet
         public override void setFilters(Filters f)
         {
             clearFilters();
+            fillBreeds();
             cbSexMale.Checked = f.safeValue("sx", "mfv").Contains("m");
             cbSexFemale.Checked = f.safeValue("sx", "mfv").Contains("f");
             cbSexVoid.Checked = f.safeValue("sx", "mfv").Contains("v");
@@ -94,7 +106,7 @@ namespace rabnet
             if (cbPregTo.Checked)
             { nudPregTo.Value = f.safeInt("Pf", 20); nudPregTo_ValueChanged(null, null); }
             tbName.Text = f.safeValue("nm");
-            cobBreeds.SelectedIndex = f.safeInt("br", 0);
+            cobBreeds.SelectedIndex = f.safeInt("br",0);
         }
         public override void clearFilters()
         {
@@ -352,17 +364,11 @@ namespace rabnet
 
         #endregion
 
-        private void RabbitsFilter_Load(object sender, EventArgs e)
+
+
+        private void button3_Click(object sender, EventArgs e)
         {
-            ICatalogs cts = Engine.db().catalogs();
-            breeds = cts.getBreeds();
-            cobBreeds.Items.Clear();
-            cobBreeds.Items.Add("--ВСЕ--");
-            cobBreeds.SelectedIndex = 0;
-            foreach (int k in breeds.Keys)
-            {
-                cobBreeds.Items.Add(breeds[k]);
-            }
+            Hide();
         }
 
     }
