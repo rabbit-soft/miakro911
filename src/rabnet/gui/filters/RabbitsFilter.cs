@@ -24,8 +24,8 @@ namespace rabnet
             if (!cbSexFemale.Checked || !cbSexMale.Checked || !cbSexVoid.Checked)
                 f["sx"] = String.Format("{0:s}{1:s}{2:s}", cbSexMale.Checked ? "m" : "", cbSexFemale.Checked ? "f" : "", cbSexVoid.Checked ? "v" : "");
             if (f.safeValue("sx") == "") f.Remove("sx");
-            if (cbDateFrom.Checked) f["dt"] = nudDateFrom.Value.ToString();
-            if (cbDateTo.Checked) f["Dt"] = nudDateTo.Value.ToString();
+            if (cbDateTo.Checked) f["dt"] = nudDateTo.Value.ToString();
+            if (cbDateFrom.Checked) f["Dt"] = nudDateFrom.Value.ToString();
             if (cbWeightFrom.Checked) f["wg"] = nudWeightFrom.Value.ToString();
             if (cbWeightTo.Checked) f["Wg"] = nudWeightTo.Value.ToString();
             if (cobWorks.SelectedIndex != 0) f["wr"] = cobWorks.SelectedIndex.ToString();
@@ -60,12 +60,12 @@ namespace rabnet
             cbSexMale.Checked = f.safeValue("sx", "mfv").Contains("m");
             cbSexFemale.Checked = f.safeValue("sx", "mfv").Contains("f");
             cbSexVoid.Checked = f.safeValue("sx", "mfv").Contains("v");
-            cbDateFrom.Checked = f.ContainsKey("dt"); cbDateFrom_CheckedChanged(null, null);
-            if (cbDateFrom.Checked)
-            { nudDateFrom.Value = f.safeInt("dt", 200); nudDateFrom_ValueChanged(null, null); }
-            cbDateTo.Checked = f.ContainsKey("Dt"); cbDateTo_CheckedChanged(null, null);
+            cbDateTo.Checked = f.ContainsKey("dt"); cbDateFrom_CheckedChanged(null, null);
             if (cbDateTo.Checked)
-            { nudDateTo.Value = f.safeInt("Dt", 100); nudDateTo_ValueChanged(null, null); }
+            { nudDateTo.Value = f.safeInt("dt", 100); nudDateFrom_ValueChanged(null, null); }
+            cbDateFrom.Checked = f.ContainsKey("Dt"); cbDateTo_CheckedChanged(null, null);
+            if (cbDateFrom.Checked)
+            { nudDateFrom.Value = f.safeInt("Dt", 60); nudDateTo_ValueChanged(null, null); }
             cbWeightFrom.Checked = f.ContainsKey("wg"); cbWeightFrom_CheckedChanged(null, null);
             if (cbWeightFrom.Checked) nudWeightFrom.Value = f.safeInt("wg", 1000);
             cbWeightTo.Checked = f.ContainsKey("Wg"); cbWeightTo_CheckedChanged(null, null);
@@ -86,15 +86,15 @@ namespace rabnet
             cbPregFrom.Checked = f.ContainsKey("pf"); cbPregFrom_CheckedChanged(null, null);
             cbPregTo.Checked = f.ContainsKey("Pf"); cbPregTo_CheckedChanged(null, null);
             if (cbPregFrom.Checked)
-            { nudPregFrom.Value = f.safeInt("pf", 200); nudPregFrom_ValueChanged(null, null); }
+            { nudPregFrom.Value = f.safeInt("pf", 10); nudPregFrom_ValueChanged(null, null); }
             if (cbPregTo.Checked)
-            { nudPregTo.Value = f.safeInt("Pf", 100); nudPregTo_ValueChanged(null, null); }
+            { nudPregTo.Value = f.safeInt("Pf", 20); nudPregTo_ValueChanged(null, null); }
             tbName.Text = f.safeValue("nm");
         }
         public override void clearFilters()
         {
             cbSexFemale.Checked = cbSexMale.Checked = cbSexVoid.Checked = true;
-            cbDateFrom.Checked = cbDateTo.Checked = false;
+            cbDateTo.Checked = cbDateFrom.Checked = false;
             cbDateFrom_CheckedChanged(null, null); cbDateTo_CheckedChanged(null, null);
             cbWeightFrom.Checked = cbWeightTo.Checked = false;
             cbWeightFrom_CheckedChanged(null, null); cbWeightTo_CheckedChanged(null, null);
@@ -108,60 +108,206 @@ namespace rabnet
             cbFilter.Text = "";
             tbName.Text = "";
         }
-        private void cbDateFrom_CheckedChanged(object sender, EventArgs e)
-        {
-            dtpDateFrom.Enabled = nudDateFrom.Enabled = cbDateFrom.Checked;
-        }
-
-        private void cbDateTo_CheckedChanged(object sender, EventArgs e)
-        {
-            dtpDateTo.Enabled = nudDateTo.Enabled = cbDateTo.Checked;
-        }
+        
 
         private void cbWeightFrom_CheckedChanged(object sender, EventArgs e)
         {
             nudWeightFrom.Enabled = cbWeightFrom.Checked;
+            if (!cbWeightFrom.Checked)
+            {
+                nudWeightTo.Minimum = 100;
+                return;
+            }
+            if (cbWeightTo.Checked)
+            {
+                if (nudWeightFrom.Value > nudWeightTo.Value)
+                    nudWeightFrom.Value = nudWeightTo.Value;
+                nudWeightTo.Minimum = nudWeightFrom.Value;
+                nudWeightFrom.Maximum = nudWeightTo.Value;
+            }
         }
-
         private void cbWeightTo_CheckedChanged(object sender, EventArgs e)
         {
             nudWeightTo.Enabled = cbWeightTo.Checked;
+            if (!cbWeightTo.Checked)
+            {
+                nudWeightFrom.Maximum = 20000;
+                return;
+            }
+            if (cbWeightFrom.Checked)
+            {
+                if (nudWeightTo.Value < nudWeightFrom.Value)
+                    nudWeightTo.Value = nudWeightFrom.Value;
+                nudWeightFrom.Maximum = nudWeightTo.Value;
+                nudWeightTo.Minimum = nudWeightFrom.Value;
+            }
+            
         }
-
-        private void nudDateFrom_ValueChanged(object sender, EventArgs e)
+        private void nudWeightTo_ValueChanged(object sender, EventArgs e)
         {
-            dtpDateFrom.Value = DateTime.Today.Subtract(new TimeSpan((int)nudDateFrom.Value, 0, 0, 0));
+            if (cbWeightFrom.Checked)
+                nudWeightFrom.Maximum = nudWeightTo.Value;
+            else
+                nudWeightTo.Minimum = 100;
+        }
+        private void nudWeightFrom_ValueChanged(object sender, EventArgs e)
+        {
+            if (cbWeightTo.Checked)
+                nudWeightTo.Minimum = nudWeightFrom.Value;
+            else
+                nudWeightTo.Maximum = 20000;
         }
 
+        private void cbDateTo_CheckedChanged(object sender, EventArgs e)
+        {
+            dtpDateFrom.Enabled = nudDateTo.Enabled = cbDateTo.Checked;
+            if (!cbDateTo.Checked)
+            {
+                nudDateFrom.Maximum = 5000;
+                return;
+            }
+            if (cbDateFrom.Checked)
+            {
+                if (nudDateTo.Value < nudDateFrom.Value)
+                    nudDateTo.Value = nudDateFrom.Value;
+                nudDateFrom.Maximum = nudDateTo.Value;
+                nudDateTo.Minimum = nudDateFrom.Value;
+            }
+        }
+        private void cbDateFrom_CheckedChanged(object sender, EventArgs e)
+        {
+            dtpDateTo.Enabled = nudDateFrom.Enabled = cbDateFrom.Checked;
+            if (!cbDateFrom.Checked)
+            {
+                nudDateTo.Minimum = 60;
+                return;
+            }
+            if (cbDateTo.Checked)
+            {
+                if (nudDateFrom.Value > nudDateTo.Value)
+                    nudDateFrom.Value = nudDateTo.Value;
+                nudDateTo.Minimum = nudDateFrom.Value;
+                nudDateFrom.Maximum = nudDateTo.Value;
+            }
+        }
         private void dtpDateFrom_ValueChanged(object sender, EventArgs e)
         {
-            nudDateFrom.Value = (DateTime.Today - dtpDateFrom.Value).Days;
+            try
+            {
+                nudDateTo.Value = (DateTime.Today - dtpDateFrom.Value).Days;
+            }
+            catch (ArgumentOutOfRangeException ext)
+            {
+                nudDateTo.Value = nudDateFrom.Value;
+                MessageBox.Show(ext.Message);
+            }
         }
-
         private void dtpDateTo_ValueChanged(object sender, EventArgs e)
         {
-            nudDateTo.Value = (DateTime.Today - dtpDateTo.Value).Days;
+            try
+            {
+                nudDateFrom.Value = (DateTime.Today - dtpDateTo.Value).Days;
+            }
+            catch(ArgumentOutOfRangeException ex)
+            {
+                nudDateFrom.Value = nudDateFrom.Minimum;
+                MessageBox.Show(ex.Message);
+            }
+            
         }
+        private void nudDateFrom_ValueChanged(object sender, EventArgs e)
+        {
+            dtpDateTo.Value = DateTime.Today.Subtract(new TimeSpan((int)nudDateFrom.Value, 0, 0, 0));
+            if (cbDateTo.Checked)
+                nudDateTo.Minimum = nudDateFrom.Value;
+            else nudDateFrom.Maximum = 5000;
 
+        }
         private void nudDateTo_ValueChanged(object sender, EventArgs e)
         {
-            dtpDateTo.Value = DateTime.Today.Subtract(new TimeSpan((int)nudDateTo.Value, 0, 0, 0));
+            dtpDateFrom.Value = DateTime.Today.Subtract(new TimeSpan((int)nudDateTo.Value, 0, 0, 0));
+            if (cbDateFrom.Checked)
+                nudDateFrom.Maximum = nudDateTo.Value;
+            else nudDateTo.Minimum = 60;
+
         }
 
         private void cbPregFrom_CheckedChanged(object sender, EventArgs e)
         {
             dtpPregFrom.Enabled = nudPregFrom.Enabled = cbPregFrom.Checked;
-            if (cbPregFrom.Checked)
+            if (!cbPregFrom.Checked)
+            {
+                nudPregTo.Minimum = 0;
+                if (!cbPregTo.Checked) cobPregnant.SelectedIndex = 0;
+                return;
+            }
+            if (cbPregTo.Checked)
+            {
                 cobPregnant.SelectedIndex = 2;
+                if (nudPregFrom.Value > nudPregTo.Value)
+                    nudPregFrom.Value = nudPregTo.Value;
+                nudPregTo.Minimum = nudPregFrom.Value;
+                nudPregFrom.Maximum = nudPregTo.Value;
+            }
         }
-
         private void cbPregTo_CheckedChanged(object sender, EventArgs e)
         {
             dtpPregTo.Enabled = nudPregTo.Enabled = cbPregTo.Checked;
-            if (cbPregTo.Checked)
+            if (!cbPregTo.Checked)
+            {
+                nudPregFrom.Maximum = 40;
+                if (!cbPregFrom.Checked) cobPregnant.SelectedIndex = 0;
+                return;
+            }
+            if (cbPregFrom.Checked)
+            {
                 cobPregnant.SelectedIndex = 2;
+                if (nudPregTo.Value < nudPregFrom.Value)
+                    nudPregTo.Value = nudPregFrom.Value;
+                nudPregFrom.Maximum = nudPregTo.Value;
+                nudPregTo.Minimum = nudPregFrom.Value;
+            }
         }
-
+        private void nudPregFrom_ValueChanged(object sender, EventArgs e)
+        {
+            dtpPregFrom.Value = DateTime.Today.Subtract(new TimeSpan((int)nudPregFrom.Value, 0, 0, 0));
+            if (cbPregTo.Checked)
+                nudPregTo.Minimum = nudPregFrom.Value;
+            else
+                nudPregTo.Maximum = 40;            
+        }
+        private void nudPregTo_ValueChanged(object sender, EventArgs e)
+        {
+            dtpPregTo.Value = DateTime.Today.Subtract(new TimeSpan((int)nudPregTo.Value, 0, 0, 0));
+            if (cbPregFrom.Checked)
+                nudPregFrom.Maximum = nudPregTo.Value;
+            else
+                nudPregTo.Minimum = 0;
+        }       
+        private void dtpPregFrom_ValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                nudPregFrom.Value = (DateTime.Today - dtpPregFrom.Value).Days;
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {               
+                nudPregFrom.Value = nudPregFrom.Minimum;
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void dtpPregTo_ValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                nudPregTo.Value = (DateTime.Today - dtpPregTo.Value).Days;
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {               
+                nudPregTo.Value = nudPregTo.Minimum;
+                MessageBox.Show(ex.Message);
+            }
+        }
         private void cobPregnant_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cobPregnant.SelectedIndex != 2)
@@ -169,23 +315,6 @@ namespace rabnet
                 cbPregTo.Checked = dtpPregTo.Enabled = nudPregTo.Enabled = false;
                 cbPregFrom.Checked = dtpPregFrom.Enabled = nudPregFrom.Enabled = false;
             }
-        }
-
-        private void nudPregFrom_ValueChanged(object sender, EventArgs e)
-        {
-            dtpPregFrom.Value = DateTime.Today.Subtract(new TimeSpan((int)nudPregFrom.Value, 0, 0, 0));
-        }
-        private void dtpPregFrom_ValueChanged(object sender, EventArgs e)
-        {
-            nudPregFrom.Value = (DateTime.Today - dtpPregFrom.Value).Days;
-        }
-        private void dtpPregTo_ValueChanged(object sender, EventArgs e)
-        {
-            nudPregTo.Value = (DateTime.Today - dtpPregTo.Value).Days;
-        }
-        private void nudPregTo_ValueChanged(object sender, EventArgs e)
-        {
-            dtpPregTo.Value = DateTime.Today.Subtract(new TimeSpan((int)nudPregTo.Value, 0, 0, 0));
         }
 
         #endregion
