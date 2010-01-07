@@ -39,11 +39,11 @@
             this.label3 = new System.Windows.Forms.Label();
             this.cobKuk = new System.Windows.Forms.ComboBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.nudPregTo = new System.Windows.Forms.NumericUpDown();
             this.nudPregFrom = new System.Windows.Forms.NumericUpDown();
             this.dtpPregTo = new System.Windows.Forms.DateTimePicker();
-            this.dtpPregFrom = new System.Windows.Forms.DateTimePicker();
             this.cbPregTo = new System.Windows.Forms.CheckBox();
+            this.nudPregTo = new System.Windows.Forms.NumericUpDown();
+            this.dtpPregFrom = new System.Windows.Forms.DateTimePicker();
             this.cbPregFrom = new System.Windows.Forms.CheckBox();
             this.cobPregnant = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -66,11 +66,11 @@
             this.cbWeightTo = new System.Windows.Forms.CheckBox();
             this.cbWeightFrom = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.nudDateTo = new System.Windows.Forms.NumericUpDown();
-            this.dtpDateTo = new System.Windows.Forms.DateTimePicker();
-            this.cbDateTo = new System.Windows.Forms.CheckBox();
             this.nudDateFrom = new System.Windows.Forms.NumericUpDown();
+            this.dtpDateTo = new System.Windows.Forms.DateTimePicker();
             this.cbDateFrom = new System.Windows.Forms.CheckBox();
+            this.nudDateTo = new System.Windows.Forms.NumericUpDown();
+            this.cbDateTo = new System.Windows.Forms.CheckBox();
             this.dtpDateFrom = new System.Windows.Forms.DateTimePicker();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cbSexVoid = new System.Windows.Forms.CheckBox();
@@ -79,16 +79,16 @@
             this.button2 = new System.Windows.Forms.Button();
             this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudPregTo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPregFrom)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPregTo)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudWeightTo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWeightFrom)).BeginInit();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudDateTo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDateFrom)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDateTo)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -200,11 +200,11 @@
             // 
             // groupBox7
             // 
-            this.groupBox7.Controls.Add(this.nudPregTo);
             this.groupBox7.Controls.Add(this.nudPregFrom);
             this.groupBox7.Controls.Add(this.dtpPregTo);
-            this.groupBox7.Controls.Add(this.dtpPregFrom);
             this.groupBox7.Controls.Add(this.cbPregTo);
+            this.groupBox7.Controls.Add(this.nudPregTo);
+            this.groupBox7.Controls.Add(this.dtpPregFrom);
             this.groupBox7.Controls.Add(this.cbPregFrom);
             this.groupBox7.Controls.Add(this.cobPregnant);
             this.groupBox7.Location = new System.Drawing.Point(108, 12);
@@ -214,90 +214,80 @@
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Сукрольность";
             // 
-            // nudPregTo
-            // 
-            this.nudPregTo.Enabled = false;
-            this.nudPregTo.Increment = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.nudPregTo.Location = new System.Drawing.Point(206, 16);
-            this.nudPregTo.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.nudPregTo.Name = "nudPregTo";
-            this.nudPregTo.Size = new System.Drawing.Size(42, 20);
-            this.nudPregTo.TabIndex = 5;
-            this.nudPregTo.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.nudPregTo.ValueChanged += new System.EventHandler(this.nudPregFrom_ValueChanged);
-            // 
             // nudPregFrom
             // 
             this.nudPregFrom.Enabled = false;
-            this.nudPregFrom.Increment = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.nudPregFrom.Location = new System.Drawing.Point(206, 39);
+            this.nudPregFrom.Location = new System.Drawing.Point(210, 42);
             this.nudPregFrom.Maximum = new decimal(new int[] {
-            10000,
+            40,
             0,
             0,
             0});
             this.nudPregFrom.Name = "nudPregFrom";
-            this.nudPregFrom.Size = new System.Drawing.Size(42, 20);
-            this.nudPregFrom.TabIndex = 7;
+            this.nudPregFrom.Size = new System.Drawing.Size(38, 20);
+            this.nudPregFrom.TabIndex = 10;
             this.nudPregFrom.Value = new decimal(new int[] {
-            200,
+            10,
             0,
             0,
             0});
-            this.nudPregFrom.ValueChanged += new System.EventHandler(this.nudPregTo_ValueChanged);
+            this.nudPregFrom.ValueChanged += new System.EventHandler(this.nudPregFrom_ValueChanged);
             // 
             // dtpPregTo
             // 
             this.dtpPregTo.Enabled = false;
             this.dtpPregTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpPregTo.Location = new System.Drawing.Point(125, 39);
+            this.dtpPregTo.Location = new System.Drawing.Point(126, 16);
             this.dtpPregTo.Name = "dtpPregTo";
             this.dtpPregTo.Size = new System.Drawing.Size(79, 20);
-            this.dtpPregTo.TabIndex = 4;
+            this.dtpPregTo.TabIndex = 9;
             this.dtpPregTo.ValueChanged += new System.EventHandler(this.dtpPregTo_ValueChanged);
+            // 
+            // cbPregTo
+            // 
+            this.cbPregTo.AutoSize = true;
+            this.cbPregTo.Location = new System.Drawing.Point(79, 19);
+            this.cbPregTo.Name = "cbPregTo";
+            this.cbPregTo.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.cbPregTo.Size = new System.Drawing.Size(41, 17);
+            this.cbPregTo.TabIndex = 8;
+            this.cbPregTo.Text = "До";
+            this.cbPregTo.UseVisualStyleBackColor = true;
+            this.cbPregTo.CheckedChanged += new System.EventHandler(this.cbPregTo_CheckedChanged);
+            // 
+            // nudPregTo
+            // 
+            this.nudPregTo.Enabled = false;
+            this.nudPregTo.Location = new System.Drawing.Point(210, 16);
+            this.nudPregTo.Maximum = new decimal(new int[] {
+            40,
+            0,
+            0,
+            0});
+            this.nudPregTo.Name = "nudPregTo";
+            this.nudPregTo.Size = new System.Drawing.Size(38, 20);
+            this.nudPregTo.TabIndex = 5;
+            this.nudPregTo.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.nudPregTo.ValueChanged += new System.EventHandler(this.nudPregTo_ValueChanged);
             // 
             // dtpPregFrom
             // 
             this.dtpPregFrom.Enabled = false;
             this.dtpPregFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpPregFrom.Location = new System.Drawing.Point(125, 16);
+            this.dtpPregFrom.Location = new System.Drawing.Point(126, 42);
             this.dtpPregFrom.Name = "dtpPregFrom";
             this.dtpPregFrom.Size = new System.Drawing.Size(79, 20);
             this.dtpPregFrom.TabIndex = 3;
             this.dtpPregFrom.ValueChanged += new System.EventHandler(this.dtpPregFrom_ValueChanged);
             // 
-            // cbPregTo
-            // 
-            this.cbPregTo.AutoSize = true;
-            this.cbPregTo.Location = new System.Drawing.Point(78, 42);
-            this.cbPregTo.Name = "cbPregTo";
-            this.cbPregTo.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.cbPregTo.Size = new System.Drawing.Size(41, 17);
-            this.cbPregTo.TabIndex = 2;
-            this.cbPregTo.Text = "До";
-            this.cbPregTo.UseVisualStyleBackColor = true;
-            this.cbPregTo.CheckedChanged += new System.EventHandler(this.cbPregTo_CheckedChanged);
-            // 
             // cbPregFrom
             // 
             this.cbPregFrom.AutoSize = true;
-            this.cbPregFrom.Location = new System.Drawing.Point(80, 19);
+            this.cbPregFrom.Location = new System.Drawing.Point(81, 44);
             this.cbPregFrom.Name = "cbPregFrom";
             this.cbPregFrom.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.cbPregFrom.Size = new System.Drawing.Size(39, 17);
@@ -454,9 +444,9 @@
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.cobWorks);
-            this.groupBox4.Location = new System.Drawing.Point(386, 3);
+            this.groupBox4.Location = new System.Drawing.Point(391, 3);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(124, 75);
+            this.groupBox4.Size = new System.Drawing.Size(119, 75);
             this.groupBox4.TabIndex = 6;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Плановые работы";
@@ -471,7 +461,7 @@
             "Нет"});
             this.cobWorks.Location = new System.Drawing.Point(6, 31);
             this.cobWorks.Name = "cobWorks";
-            this.cobWorks.Size = new System.Drawing.Size(115, 21);
+            this.cobWorks.Size = new System.Drawing.Size(107, 21);
             this.cobWorks.TabIndex = 0;
             // 
             // groupBox3
@@ -482,7 +472,7 @@
             this.groupBox3.Controls.Add(this.cbWeightFrom);
             this.groupBox3.Location = new System.Drawing.Point(283, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(102, 75);
+            this.groupBox3.Size = new System.Drawing.Size(106, 75);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Вес";
@@ -495,20 +485,26 @@
             0,
             0,
             0});
-            this.nudWeightTo.Location = new System.Drawing.Point(51, 38);
+            this.nudWeightTo.Location = new System.Drawing.Point(50, 15);
             this.nudWeightTo.Maximum = new decimal(new int[] {
-            100000,
+            20000,
+            0,
+            0,
+            0});
+            this.nudWeightTo.Minimum = new decimal(new int[] {
+            100,
             0,
             0,
             0});
             this.nudWeightTo.Name = "nudWeightTo";
-            this.nudWeightTo.Size = new System.Drawing.Size(46, 20);
+            this.nudWeightTo.Size = new System.Drawing.Size(50, 20);
             this.nudWeightTo.TabIndex = 3;
             this.nudWeightTo.Value = new decimal(new int[] {
             5000,
             0,
             0,
             0});
+            this.nudWeightTo.ValueChanged += new System.EventHandler(this.nudWeightTo_ValueChanged);
             // 
             // nudWeightFrom
             // 
@@ -518,25 +514,31 @@
             0,
             0,
             0});
-            this.nudWeightFrom.Location = new System.Drawing.Point(51, 15);
+            this.nudWeightFrom.Location = new System.Drawing.Point(50, 40);
             this.nudWeightFrom.Maximum = new decimal(new int[] {
-            100000,
+            20000,
+            0,
+            0,
+            0});
+            this.nudWeightFrom.Minimum = new decimal(new int[] {
+            100,
             0,
             0,
             0});
             this.nudWeightFrom.Name = "nudWeightFrom";
-            this.nudWeightFrom.Size = new System.Drawing.Size(46, 20);
+            this.nudWeightFrom.Size = new System.Drawing.Size(50, 20);
             this.nudWeightFrom.TabIndex = 2;
             this.nudWeightFrom.Value = new decimal(new int[] {
             1000,
             0,
             0,
             0});
+            this.nudWeightFrom.ValueChanged += new System.EventHandler(this.nudWeightFrom_ValueChanged);
             // 
             // cbWeightTo
             // 
             this.cbWeightTo.AutoSize = true;
-            this.cbWeightTo.Location = new System.Drawing.Point(4, 41);
+            this.cbWeightTo.Location = new System.Drawing.Point(3, 18);
             this.cbWeightTo.Name = "cbWeightTo";
             this.cbWeightTo.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.cbWeightTo.Size = new System.Drawing.Size(41, 17);
@@ -548,7 +550,7 @@
             // cbWeightFrom
             // 
             this.cbWeightFrom.AutoSize = true;
-            this.cbWeightFrom.Location = new System.Drawing.Point(6, 18);
+            this.cbWeightFrom.Location = new System.Drawing.Point(5, 43);
             this.cbWeightFrom.Name = "cbWeightFrom";
             this.cbWeightFrom.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.cbWeightFrom.Size = new System.Drawing.Size(39, 17);
@@ -559,11 +561,11 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.nudDateTo);
-            this.groupBox2.Controls.Add(this.dtpDateTo);
-            this.groupBox2.Controls.Add(this.cbDateTo);
             this.groupBox2.Controls.Add(this.nudDateFrom);
+            this.groupBox2.Controls.Add(this.dtpDateTo);
             this.groupBox2.Controls.Add(this.cbDateFrom);
+            this.groupBox2.Controls.Add(this.nudDateTo);
+            this.groupBox2.Controls.Add(this.cbDateTo);
             this.groupBox2.Controls.Add(this.dtpDateFrom);
             this.groupBox2.Location = new System.Drawing.Point(97, 3);
             this.groupBox2.Name = "groupBox2";
@@ -571,6 +573,57 @@
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Дата рождения/Возраст";
+            // 
+            // nudDateFrom
+            // 
+            this.nudDateFrom.Enabled = false;
+            this.nudDateFrom.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nudDateFrom.Location = new System.Drawing.Point(135, 40);
+            this.nudDateFrom.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.nudDateFrom.Minimum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.nudDateFrom.Name = "nudDateFrom";
+            this.nudDateFrom.Size = new System.Drawing.Size(44, 20);
+            this.nudDateFrom.TabIndex = 2;
+            this.nudDateFrom.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.nudDateFrom.ValueChanged += new System.EventHandler(this.nudDateFrom_ValueChanged);
+            // 
+            // dtpDateTo
+            // 
+            this.dtpDateTo.Enabled = false;
+            this.dtpDateTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpDateTo.Location = new System.Drawing.Point(50, 40);
+            this.dtpDateTo.Name = "dtpDateTo";
+            this.dtpDateTo.Size = new System.Drawing.Size(79, 20);
+            this.dtpDateTo.TabIndex = 4;
+            this.dtpDateTo.ValueChanged += new System.EventHandler(this.dtpDateTo_ValueChanged);
+            // 
+            // cbDateFrom
+            // 
+            this.cbDateFrom.AutoSize = true;
+            this.cbDateFrom.Location = new System.Drawing.Point(5, 43);
+            this.cbDateFrom.Name = "cbDateFrom";
+            this.cbDateFrom.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.cbDateFrom.Size = new System.Drawing.Size(39, 17);
+            this.cbDateFrom.TabIndex = 3;
+            this.cbDateFrom.Text = "От";
+            this.cbDateFrom.UseVisualStyleBackColor = true;
+            this.cbDateFrom.CheckedChanged += new System.EventHandler(this.cbDateFrom_CheckedChanged);
             // 
             // nudDateTo
             // 
@@ -582,83 +635,42 @@
             0});
             this.nudDateTo.Location = new System.Drawing.Point(135, 15);
             this.nudDateTo.Maximum = new decimal(new int[] {
-            10000,
+            5000,
+            0,
+            0,
+            0});
+            this.nudDateTo.Minimum = new decimal(new int[] {
+            60,
             0,
             0,
             0});
             this.nudDateTo.Name = "nudDateTo";
             this.nudDateTo.Size = new System.Drawing.Size(44, 20);
-            this.nudDateTo.TabIndex = 2;
+            this.nudDateTo.TabIndex = 5;
             this.nudDateTo.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.nudDateTo.ValueChanged += new System.EventHandler(this.nudDateFrom_ValueChanged);
-            // 
-            // dtpDateTo
-            // 
-            this.dtpDateTo.Enabled = false;
-            this.dtpDateTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpDateTo.Location = new System.Drawing.Point(51, 38);
-            this.dtpDateTo.Name = "dtpDateTo";
-            this.dtpDateTo.Size = new System.Drawing.Size(79, 20);
-            this.dtpDateTo.TabIndex = 4;
-            this.dtpDateTo.ValueChanged += new System.EventHandler(this.dtpDateTo_ValueChanged);
-            // 
-            // cbDateTo
-            // 
-            this.cbDateTo.AutoSize = true;
-            this.cbDateTo.Location = new System.Drawing.Point(4, 41);
-            this.cbDateTo.Name = "cbDateTo";
-            this.cbDateTo.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.cbDateTo.Size = new System.Drawing.Size(41, 17);
-            this.cbDateTo.TabIndex = 3;
-            this.cbDateTo.Text = "До";
-            this.cbDateTo.UseVisualStyleBackColor = true;
-            this.cbDateTo.CheckedChanged += new System.EventHandler(this.cbDateTo_CheckedChanged);
-            // 
-            // nudDateFrom
-            // 
-            this.nudDateFrom.Enabled = false;
-            this.nudDateFrom.Increment = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.nudDateFrom.Location = new System.Drawing.Point(135, 38);
-            this.nudDateFrom.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.nudDateFrom.Name = "nudDateFrom";
-            this.nudDateFrom.Size = new System.Drawing.Size(44, 20);
-            this.nudDateFrom.TabIndex = 5;
-            this.nudDateFrom.Value = new decimal(new int[] {
             200,
             0,
             0,
             0});
-            this.nudDateFrom.ValueChanged += new System.EventHandler(this.nudDateTo_ValueChanged);
+            this.nudDateTo.ValueChanged += new System.EventHandler(this.nudDateTo_ValueChanged);
             // 
-            // cbDateFrom
+            // cbDateTo
             // 
-            this.cbDateFrom.AutoSize = true;
-            this.cbDateFrom.Location = new System.Drawing.Point(6, 18);
-            this.cbDateFrom.Name = "cbDateFrom";
-            this.cbDateFrom.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.cbDateFrom.Size = new System.Drawing.Size(39, 17);
-            this.cbDateFrom.TabIndex = 1;
-            this.cbDateFrom.Text = "От";
-            this.cbDateFrom.UseVisualStyleBackColor = true;
-            this.cbDateFrom.CheckedChanged += new System.EventHandler(this.cbDateFrom_CheckedChanged);
+            this.cbDateTo.AutoSize = true;
+            this.cbDateTo.Location = new System.Drawing.Point(3, 18);
+            this.cbDateTo.Name = "cbDateTo";
+            this.cbDateTo.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.cbDateTo.Size = new System.Drawing.Size(41, 17);
+            this.cbDateTo.TabIndex = 1;
+            this.cbDateTo.Text = "До";
+            this.cbDateTo.UseVisualStyleBackColor = true;
+            this.cbDateTo.CheckedChanged += new System.EventHandler(this.cbDateTo_CheckedChanged);
             // 
             // dtpDateFrom
             // 
             this.dtpDateFrom.Enabled = false;
             this.dtpDateFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpDateFrom.Location = new System.Drawing.Point(51, 15);
+            this.dtpDateFrom.Location = new System.Drawing.Point(50, 15);
             this.dtpDateFrom.Name = "dtpDateFrom";
             this.dtpDateFrom.Size = new System.Drawing.Size(79, 20);
             this.dtpDateFrom.TabIndex = 0;
@@ -739,8 +751,8 @@
             this.groupBox6.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudPregTo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPregFrom)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPregTo)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
@@ -750,8 +762,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudWeightFrom)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudDateTo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDateFrom)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDateTo)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -773,10 +785,7 @@
         private System.Windows.Forms.ComboBox cobKuk;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.NumericUpDown nudPregTo;
-        private System.Windows.Forms.NumericUpDown nudPregFrom;
-        private System.Windows.Forms.DateTimePicker dtpPregTo;
         private System.Windows.Forms.DateTimePicker dtpPregFrom;
-        private System.Windows.Forms.CheckBox cbPregTo;
         private System.Windows.Forms.CheckBox cbPregFrom;
         private System.Windows.Forms.ComboBox cobPregnant;
         private System.Windows.Forms.Label label2;
@@ -799,17 +808,20 @@
         private System.Windows.Forms.CheckBox cbWeightTo;
         private System.Windows.Forms.CheckBox cbWeightFrom;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.NumericUpDown nudDateTo;
-        private System.Windows.Forms.DateTimePicker dtpDateTo;
-        private System.Windows.Forms.CheckBox cbDateTo;
         private System.Windows.Forms.NumericUpDown nudDateFrom;
+        private System.Windows.Forms.DateTimePicker dtpDateTo;
         private System.Windows.Forms.CheckBox cbDateFrom;
+        private System.Windows.Forms.NumericUpDown nudDateTo;
+        private System.Windows.Forms.CheckBox cbDateTo;
         private System.Windows.Forms.DateTimePicker dtpDateFrom;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox cbSexVoid;
         private System.Windows.Forms.CheckBox cbSexFemale;
         private System.Windows.Forms.CheckBox cbSexMale;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.NumericUpDown nudPregFrom;
+        private System.Windows.Forms.DateTimePicker dtpPregTo;
+        private System.Windows.Forms.CheckBox cbPregTo;
 
     }
 }
