@@ -67,16 +67,18 @@
             this.cbWeightFrom = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.nudDateFrom = new System.Windows.Forms.NumericUpDown();
-            this.dtpDateTo = new System.Windows.Forms.DateTimePicker();
+            this.dtpDateFrom = new System.Windows.Forms.DateTimePicker();
             this.cbDateFrom = new System.Windows.Forms.CheckBox();
             this.nudDateTo = new System.Windows.Forms.NumericUpDown();
             this.cbDateTo = new System.Windows.Forms.CheckBox();
-            this.dtpDateFrom = new System.Windows.Forms.DateTimePicker();
+            this.dtpDateTo = new System.Windows.Forms.DateTimePicker();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cbSexVoid = new System.Windows.Forms.CheckBox();
             this.cbSexFemale = new System.Windows.Forms.CheckBox();
             this.cbSexMale = new System.Windows.Forms.CheckBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.cobBreeds = new System.Windows.Forms.ComboBox();
             this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPregFrom)).BeginInit();
@@ -90,12 +92,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudDateFrom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDateTo)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.groupBox8.SuspendLayout();
             this.SuspendLayout();
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(11, 238);
+            this.label6.Location = new System.Drawing.Point(288, 235);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(29, 13);
             this.label6.TabIndex = 13;
@@ -103,14 +106,14 @@
             // 
             // tbName
             // 
-            this.tbName.Location = new System.Drawing.Point(46, 235);
+            this.tbName.Location = new System.Drawing.Point(323, 233);
             this.tbName.Name = "tbName";
-            this.tbName.Size = new System.Drawing.Size(163, 20);
+            this.tbName.Size = new System.Drawing.Size(100, 20);
             this.tbName.TabIndex = 12;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(434, 268);
+            this.button1.Location = new System.Drawing.Point(429, 259);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 11;
@@ -120,15 +123,15 @@
             // cbFilter
             // 
             this.cbFilter.FormattingEnabled = true;
-            this.cbFilter.Location = new System.Drawing.Point(258, 270);
+            this.cbFilter.Location = new System.Drawing.Point(323, 261);
             this.cbFilter.Name = "cbFilter";
-            this.cbFilter.Size = new System.Drawing.Size(170, 21);
+            this.cbFilter.Size = new System.Drawing.Size(100, 21);
             this.cbFilter.TabIndex = 10;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(205, 273);
+            this.label5.Location = new System.Drawing.Point(270, 264);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(47, 13);
             this.label5.TabIndex = 9;
@@ -562,11 +565,11 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.nudDateFrom);
-            this.groupBox2.Controls.Add(this.dtpDateTo);
+            this.groupBox2.Controls.Add(this.dtpDateFrom);
             this.groupBox2.Controls.Add(this.cbDateFrom);
             this.groupBox2.Controls.Add(this.nudDateTo);
             this.groupBox2.Controls.Add(this.cbDateTo);
-            this.groupBox2.Controls.Add(this.dtpDateFrom);
+            this.groupBox2.Controls.Add(this.dtpDateTo);
             this.groupBox2.Location = new System.Drawing.Point(97, 3);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(185, 75);
@@ -603,15 +606,15 @@
             0});
             this.nudDateFrom.ValueChanged += new System.EventHandler(this.nudDateFrom_ValueChanged);
             // 
-            // dtpDateTo
+            // dtpDateFrom
             // 
-            this.dtpDateTo.Enabled = false;
-            this.dtpDateTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpDateTo.Location = new System.Drawing.Point(50, 40);
-            this.dtpDateTo.Name = "dtpDateTo";
-            this.dtpDateTo.Size = new System.Drawing.Size(79, 20);
-            this.dtpDateTo.TabIndex = 4;
-            this.dtpDateTo.ValueChanged += new System.EventHandler(this.dtpDateTo_ValueChanged);
+            this.dtpDateFrom.Enabled = false;
+            this.dtpDateFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpDateFrom.Location = new System.Drawing.Point(50, 40);
+            this.dtpDateFrom.Name = "dtpDateFrom";
+            this.dtpDateFrom.Size = new System.Drawing.Size(79, 20);
+            this.dtpDateFrom.TabIndex = 4;
+            this.dtpDateFrom.ValueChanged += new System.EventHandler(this.dtpDateFrom_ValueChanged);
             // 
             // cbDateFrom
             // 
@@ -666,15 +669,15 @@
             this.cbDateTo.UseVisualStyleBackColor = true;
             this.cbDateTo.CheckedChanged += new System.EventHandler(this.cbDateTo_CheckedChanged);
             // 
-            // dtpDateFrom
+            // dtpDateTo
             // 
-            this.dtpDateFrom.Enabled = false;
-            this.dtpDateFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpDateFrom.Location = new System.Drawing.Point(50, 15);
-            this.dtpDateFrom.Name = "dtpDateFrom";
-            this.dtpDateFrom.Size = new System.Drawing.Size(79, 20);
-            this.dtpDateFrom.TabIndex = 0;
-            this.dtpDateFrom.ValueChanged += new System.EventHandler(this.dtpDateFrom_ValueChanged);
+            this.dtpDateTo.Enabled = false;
+            this.dtpDateTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpDateTo.Location = new System.Drawing.Point(50, 15);
+            this.dtpDateTo.Name = "dtpDateTo";
+            this.dtpDateTo.Size = new System.Drawing.Size(79, 20);
+            this.dtpDateTo.TabIndex = 0;
+            this.dtpDateTo.ValueChanged += new System.EventHandler(this.dtpDateTo_ValueChanged);
             // 
             // groupBox1
             // 
@@ -720,16 +723,38 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(3, 270);
+            this.button2.Location = new System.Drawing.Point(6, 252);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(53, 23);
             this.button2.TabIndex = 1;
             this.button2.Text = "Готово";
             this.button2.UseVisualStyleBackColor = true;
             // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.cobBreeds);
+            this.groupBox8.Location = new System.Drawing.Point(88, 235);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(164, 47);
+            this.groupBox8.TabIndex = 16;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Порода";
+            // 
+            // cobBreeds
+            // 
+            this.cobBreeds.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cobBreeds.FormattingEnabled = true;
+            this.cobBreeds.Items.AddRange(new object[] {
+            "-=ВСЕ=-"});
+            this.cobBreeds.Location = new System.Drawing.Point(6, 19);
+            this.cobBreeds.Name = "cobBreeds";
+            this.cobBreeds.Size = new System.Drawing.Size(150, 21);
+            this.cobBreeds.TabIndex = 15;
+            // 
             // RabbitsFilter
             // 
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.tbName);
             this.Controls.Add(this.button1);
@@ -746,7 +771,8 @@
             this.HideBtn = this.button2;
             this.Name = "RabbitsFilter";
             this.SaveButton = this.button1;
-            this.Size = new System.Drawing.Size(515, 298);
+            this.Size = new System.Drawing.Size(515, 290);
+            this.Load += new System.EventHandler(this.RabbitsFilter_Load);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.groupBox7.ResumeLayout(false);
@@ -766,6 +792,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudDateTo)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox8.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -809,11 +836,11 @@
         private System.Windows.Forms.CheckBox cbWeightFrom;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.NumericUpDown nudDateFrom;
-        private System.Windows.Forms.DateTimePicker dtpDateTo;
+        private System.Windows.Forms.DateTimePicker dtpDateFrom;
         private System.Windows.Forms.CheckBox cbDateFrom;
         private System.Windows.Forms.NumericUpDown nudDateTo;
         private System.Windows.Forms.CheckBox cbDateTo;
-        private System.Windows.Forms.DateTimePicker dtpDateFrom;
+        private System.Windows.Forms.DateTimePicker dtpDateTo;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox cbSexVoid;
         private System.Windows.Forms.CheckBox cbSexFemale;
@@ -822,6 +849,8 @@
         private System.Windows.Forms.NumericUpDown nudPregFrom;
         private System.Windows.Forms.DateTimePicker dtpPregTo;
         private System.Windows.Forms.CheckBox cbPregTo;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.ComboBox cobBreeds;
 
     }
 }
