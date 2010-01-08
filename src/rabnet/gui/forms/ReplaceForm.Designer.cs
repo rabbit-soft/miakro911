@@ -41,8 +41,8 @@
             this.button7 = new System.Windows.Forms.Button();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button8 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -76,6 +76,7 @@
             // 
             // button2
             // 
+            this.button2.DialogResult = System.Windows.Forms.DialogResult.Abort;
             this.button2.Location = new System.Drawing.Point(658, 397);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
@@ -203,15 +204,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Объединить";
             // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(6, 31);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(107, 23);
-            this.button8.TabIndex = 0;
-            this.button8.Text = "Подсадить";
-            this.button8.UseVisualStyleBackColor = true;
-            // 
             // button9
             // 
             this.button9.Location = new System.Drawing.Point(6, 60);
@@ -220,6 +212,15 @@
             this.button9.TabIndex = 1;
             this.button9.Text = "Объединить";
             this.button9.UseVisualStyleBackColor = true;
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(6, 31);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(107, 23);
+            this.button8.TabIndex = 0;
+            this.button8.Text = "Подсадить";
+            this.button8.UseVisualStyleBackColor = true;
             // 
             // ReplaceForm
             // 

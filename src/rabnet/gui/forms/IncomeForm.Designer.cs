@@ -169,6 +169,7 @@
             // 
             // button7
             // 
+            this.button7.DialogResult = System.Windows.Forms.DialogResult.Abort;
             this.button7.Location = new System.Drawing.Point(473, 298);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(75, 23);
