@@ -180,8 +180,8 @@ namespace rabnet
             if (listView1.SelectedItems.Count!=1)
                 return;
             int rid=(int)listView1.SelectedItems[0].Tag;
-            (new BonForm(rid)).ShowDialog();
-            rsb.run();
+            if( (new BonForm(rid)).ShowDialog() != DialogResult.Abort)
+                rsb.run();
         }
 
         private void proholostMenuItem_Click(object sender, EventArgs e)
@@ -189,14 +189,14 @@ namespace rabnet
             if (listView1.SelectedItems.Count != 1)
                 return;
             int rid = (int)listView1.SelectedItems[0].Tag;
-            (new Proholost(rid)).ShowDialog();
-            rsb.run();
+            if((new Proholost(rid)).ShowDialog() !=DialogResult.Abort)
+                rsb.run();
         }
 
         private void newRab_Click(object sender, EventArgs e)
         {
-            (new IncomeForm()).ShowDialog();
-            rsb.run();
+            if((new IncomeForm()).ShowDialog() != DialogResult.Abort)
+                rsb.run();
         }
 
         private void replaceMenuItem_Click(object sender, EventArgs e)
@@ -206,8 +206,8 @@ namespace rabnet
             ReplaceForm rpf = new ReplaceForm();
             foreach (ListViewItem li in listView1.SelectedItems)
                 rpf.addRabbit((int)li.Tag);
-            rpf.ShowDialog();
-            rsb.run();
+            if(rpf.ShowDialog() != DialogResult.Abort)
+                rsb.run();
         }
 
         private void placeChMenuItem_Click(object sender, EventArgs e)
@@ -218,8 +218,8 @@ namespace rabnet
             rpf.addRabbit((int)listView1.SelectedItems[0].Tag);
             rpf.addRabbit((int)listView1.SelectedItems[1].Tag);
             rpf.setAction(ReplaceForm.Action.CHANGE);
-            rpf.ShowDialog();
-            rsb.run();
+            if (rpf.ShowDialog() != DialogResult.Abort)
+                rsb.run();
         }
 
         private void KillMenuItem_Click(object sender, EventArgs e)
@@ -229,11 +229,9 @@ namespace rabnet
             KillForm f = new KillForm();
             foreach (ListViewItem li in listView1.SelectedItems)
                 f.addRabbit((int)li.Tag);
-            f.ShowDialog();
-            rsb.run();
+            if(f.ShowDialog() != DialogResult.Abort)
+                rsb.run();
         }
-
-
 
     }
 }
