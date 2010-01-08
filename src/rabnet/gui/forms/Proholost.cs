@@ -32,6 +32,7 @@ namespace rabnet
             try
             {
                 r1.ProholostIt(dateDays1.DateValue);
+                Close();
             }
             catch (ApplicationException ex)
             {
