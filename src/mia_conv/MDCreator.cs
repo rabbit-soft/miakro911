@@ -132,7 +132,7 @@ namespace mia_conv
             fillTransForm();
             fillOptions();
             mia.setpbpart(7, 8);
-            fillZooForm();
+            //fillZooForm();
             fillGraphForm();
             fillArcForm();
             mia.setpbpart(8, 8);
@@ -145,12 +145,12 @@ namespace mia_conv
             for (int i = 0; i < ls.Count / 3;i++ )
             {
                 c.CommandText = String.Format("INSERT INTO breeds(b_id,b_name,b_short_name) VALUES({2:d},'{0:s}','{1:s}');",
-                    ls[i * 3].value(), ls[i * 3 + 1].value(), int.Parse(ls[i * 3 + 2].value())+1);
+                    ls[i * 3].value(), ls[i * 3 + 1].value(), i+1);
                 c.ExecuteNonQuery();
                 ls[i * 3].tag = (int)c.LastInsertedId;
             }
         }
-
+        
         public void insName(RabName nm,bool sex)
         {
 
