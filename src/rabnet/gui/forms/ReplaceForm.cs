@@ -21,7 +21,7 @@ namespace rabnet
         {
             InitializeComponent();
             ds.Columns.Add("Имя", typeof(string));
-            ds.Columns.Add("Группа", typeof(int));
+            ds.Columns.Add("Количество", typeof(int));
             ds.Columns.Add("Старый адрес", typeof(string));
             ds.Columns.Add("Новый адрес", typeof(string));
             ds.Columns.Add("Статус", typeof(string));

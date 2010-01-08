@@ -360,7 +360,7 @@
             // 
             this.group.Location = new System.Drawing.Point(60, 178);
             this.group.Maximum = new decimal(new int[] {
-            1000,
+            20,
             0,
             0,
             0});
@@ -384,9 +384,9 @@
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(12, 180);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(42, 13);
+            this.label14.Size = new System.Drawing.Size(41, 13);
             this.label14.TabIndex = 13;
-            this.label14.Text = "Группа";
+            this.label14.Text = "Кол-во";
             // 
             // groupBox3
             // 
