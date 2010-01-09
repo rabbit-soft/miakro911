@@ -35,16 +35,24 @@ namespace mia_conv
         {
             debug("Creating database "+db);
             sql = new MySqlConnection("server=" + host + ";userId=" + root + ";password=" + rpswd + ";database=mysql");
-            sql.Open();
-            MySqlCommand cmd = new MySqlCommand("DROP DATABASE IF EXISTS "+db+";", sql);
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = "CREATE DATABASE " + db + " DEFAULT CHARACTER SET CP1251;";
-            cmd.ExecuteNonQuery();
-            debug("database created\r\nMaking db user");
-            cmd.CommandText = "GRANT ALL ON " + db + ".* TO " + user + " IDENTIFIED BY '" + pswd + "';";
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = "SET GLOBAL log_bin_trust_function_creators=1;";
-            cmd.ExecuteNonQuery();
+            try
+            {
+                sql.Open();
+                MySqlCommand cmd = new MySqlCommand("DROP DATABASE IF EXISTS " + db + ";", sql);
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "CREATE DATABASE " + db + " DEFAULT CHARACTER SET CP1251;";
+                cmd.ExecuteNonQuery();
+                debug("database created\r\nMaking db user");
+                cmd.CommandText = "GRANT ALL ON " + db + ".* TO " + user + " IDENTIFIED BY '" + pswd + "';";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "SET GLOBAL log_bin_trust_function_creators=1;";
+                cmd.ExecuteNonQuery();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;    
+            }
             sql.Close();
             sql = null;
             return true;
@@ -60,9 +68,9 @@ namespace mia_conv
             {
                 sql.Open();
             }
-            catch
+            catch(Exception ex)
             {
-                MessageBox.Show("Ошибка при подключении к БД");
+                MessageBox.Show(ex.Message);
                 return false;
             }
             c = new MySqlCommand("SET CHARACTER SET utf8;", sql);
