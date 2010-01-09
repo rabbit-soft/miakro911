@@ -278,7 +278,7 @@ namespace rabnet
 
         public void killIt(DateTime when, int reason, string notes)
         {
-            eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, rid, address);
+            eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, rid, 0,address,"",fullName);
             eng.db().killRabbit(id, when, reason, notes);
         }
     }
