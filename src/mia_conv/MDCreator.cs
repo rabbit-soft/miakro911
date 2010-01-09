@@ -157,7 +157,7 @@ namespace mia_conv
                 c.CommandText = String.Format("INSERT INTO breeds(b_id,b_name,b_short_name) VALUES({2:d},'{0:s}','{1:s}');",
                     ls[i * 3].value(), ls[i * 3 + 1].value(), i+1);
                 c.ExecuteNonQuery();
-                ls[i * 3].tag = (int)c.LastInsertedId;
+                ls[i * 3 + 2].tag = i + 1;// (int)c.LastInsertedId;
             }
         }
         
@@ -411,9 +411,11 @@ namespace mia_conv
 
         public int findbreed(int breed)
         {
-            if (breed + 1 > maxbreed)
-                breed = 0;
-            return breed + 1;
+            List<MFString> ls = mia.breed_list.strings;
+            for (int i = 0; i < ls.Count / 3; i++)
+                if (int.Parse(ls[i * 3 + 2].value()) == breed)
+                    return i+1;
+            return 1;
         }
 
         public void fillTransfers()
@@ -464,7 +466,7 @@ namespace mia_conv
                     case 6:
                         cmd += ",t_sold,t_age,t_mdate,t_sex,t_breed,t_kind,t_name,t_str";
                         vals += String.Format("'skin',0,{0:d},{1:s},{2:d},{3:d},{4:d},{5:d},'{6:s}'",t.age.value(),
-                            convdt(t.murder.value()),t.sex.value(),t.breed.value(),t.skintype.value(),
+                            convdt(t.murder.value()),t.sex.value(),findbreed((int)t.breed.value()),t.skintype.value(),
                             findname(t.name.value(),ref add),add+" "+t.address.value());
                         break;
                     case 7:
