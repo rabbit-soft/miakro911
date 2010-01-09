@@ -15,6 +15,7 @@ namespace mia_conv
         public MySqlCommand c=null;
         public bool oldid=false;
         public MiaFile mia=null;
+        private int maxbreed = 0;
         public MDCreator(TextBox logger)
         {
             log=logger;
@@ -150,7 +151,8 @@ namespace mia_conv
         {
             debug("filling breeds");
             List<MFString> ls=mia.breed_list.strings;
-            for (int i = 0; i < ls.Count / 3;i++ )
+            maxbreed = ls.Count / 3;
+            for (int i = 0; i < maxbreed;i++ )
             {
                 c.CommandText = String.Format("INSERT INTO breeds(b_id,b_name,b_short_name) VALUES({2:d},'{0:s}','{1:s}');",
                     ls[i * 3].value(), ls[i * 3 + 1].value(), i+1);
@@ -409,6 +411,8 @@ namespace mia_conv
 
         public int findbreed(int breed)
         {
+            if (breed + 1 > maxbreed)
+                breed = 0;
             return breed + 1;
         }
 
