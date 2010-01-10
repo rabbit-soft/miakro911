@@ -411,6 +411,7 @@ namespace mia_conv
 
         public int findbreed(int breed)
         {
+            return breed + 1;
             List<MFString> ls = mia.breed_list.strings;
             for (int i = 0; i < ls.Count / 3; i++)
                 if (int.Parse(ls[i * 3 + 2].value()) == breed)
