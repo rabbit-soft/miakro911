@@ -10,7 +10,7 @@ namespace mia_conv
     partial class MDCreator
     {
         private int curRabbit=1;
-        public int getNameId(ushort key, ushort sex)
+        public int getNameId(ushort key, ushort sex,bool name)
         {
             if (sex==0)
                 return 0;
@@ -19,10 +19,16 @@ namespace mia_conv
             MFRabNames rn = (sex == 1 ? mia.male_names : mia.female_names);
             for (int i=0;(i<rn.rabnames.Count) && (res==0);i++)
             {
-                if (rn.rabnames[i].key.value()==key)
-                    res=rn.rabnames[i].key.tag;
-                if (rn.rabnames[i].surkey.value()==key)
-                    res=rn.rabnames[i].key.tag;
+                if (name)
+                {
+                    if (rn.rabnames[i].key.value() == key)
+                        res = rn.rabnames[i].key.tag;
+                }
+                else
+                {
+                    if (rn.rabnames[i].surkey.value() == key)
+                        res = rn.rabnames[i].key.tag;
+                }
             }
             return res;
         }
@@ -159,7 +165,7 @@ namespace mia_conv
                     int dead = 0;
                     if (f.live.value() == 1)
                     {
-                        link = getNameId((ushort)f.name_key.value(), 1);
+                        link = getNameId((ushort)f.name_key.value(), 1,true);
                         //link = rabbyname(link);
                         dead = 1;
                     }
@@ -189,9 +195,9 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}');",
             if (r.sex.value() == 1) sex = "male"; if (r.sex.value() == 2) sex = "female";
             String bon = String.Format("{0:D1}{1:D1}{2:D1}{3:D1}{4:D1}", r.bon.manual.value(), r.bon.weight.value(), r.bon.body.value(), r.bon.hair.value(), r.bon.color.value());
             String vals = String.Format("VALUES('{0:s}',{1:d},'{2:s}'", sex, parent, bon);//,{3:d},{4:d}  ,r.number.value(),r.unique.value());
-            int name = getNameId((ushort)r.namekey.value(), (ushort)r.sex.value());
-            int surname = getNameId((ushort)r.surkey.value(), 2);
-            int secname = getNameId((ushort)r.pathkey.value(), 1);
+            int name = getNameId((ushort)r.namekey.value(), (ushort)r.sex.value(),true);
+            int surname = getNameId((ushort)r.surkey.value(), 2,false);
+            int secname = getNameId((ushort)r.pathkey.value(), 1,false);
             vals += String.Format(",{0:d},{1:d},{2:d},'{3:s}',{4:d}", name, surname, secname,r.notes.value(),r.okrol_num.value());
             int tier=getTier((int)r.where.value(),(int)r.tier_id.value());
             if (parent==0)
