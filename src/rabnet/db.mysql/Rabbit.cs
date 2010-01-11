@@ -115,8 +115,8 @@ namespace rabnet
                     r.faverage = rd.GetInt32("aage");
                 }
             }
-            if (nm == "")
-                r.fname += "-" + rd.GetString("r_okrol").ToString();
+            //if (nm == "")
+            //    r.fname += "-" + rd.GetString("r_okrol").ToString();
             r.fbreed = rd.GetString("breed");
             r.fweight = rd.IsDBNull(8) ? "?" : rd.GetString("weight");
             String flg = rd.GetString("r_flags");

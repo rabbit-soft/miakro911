@@ -416,7 +416,7 @@ UNION
 DROP FUNCTION IF EXISTS rabname |
 CREATE FUNCTION rabname (rid INTEGER UNSIGNED ,sur INTEGER) RETURNS CHAR(150)
 BEGIN
-  DECLARE n,sr,sc,sx CHAR(50);
+  DECLARE n,sr,sc,sx,ok CHAR(50);
   DECLARE res CHAR(150);
   DECLARE c INT;
   IF(rid=0 OR rid IS NULL) THEN
@@ -426,13 +426,17 @@ BEGIN
   (SELECT n_name FROM names WHERE n_id=r_name) name,
   (SELECT n_surname FROM names WHERE n_id=r_surname) surname,
   (SELECT n_surname FROM names WHERE n_id=r_secname) secname,
-  r_group,r_sex INTO n,sr,sc,c,sx FROM rabbits WHERE r_id=rid;
+  r_group,r_sex,r_okrol INTO n,sr,sc,c,sx,ok FROM rabbits WHERE r_id=rid;
   SET res='';
   IF (n IS NOT NULL) THEN
 	SET res=n;
   END IF;
   IF (sur>0 AND NOT sr IS NULL) THEN
-    SET res=CONCAT_WS(' ',res,sr);
+	IF (res='') THEN
+		SET res=sr;
+	ELSE
+		SET res=CONCAT_WS(' ',res,sr);
+	END IF;
     if (c>1) then
       SET res=CONCAT(res,'ы');
     else
@@ -446,6 +450,9 @@ BEGIN
     else
       if (sx='female') then SET res=CONCAT(res,'а'); end if;
     end if;
+  END IF;
+  IF(n IS NULL) THEN
+	SET res=CONCAT_WS('-',res,ok);
   END IF;
   RETURN(res);
 END |
