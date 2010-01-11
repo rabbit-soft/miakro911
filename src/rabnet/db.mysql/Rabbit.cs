@@ -561,6 +561,7 @@ VALUES({0:d},{1:s},{2:d},'sukrol','{3:s}',1);",female,DBHelper.DateToMyString(da
             MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE fucks SET f_state='okrol',f_end_date={0:s},
 f_children={1:d},f_dead={2:d} WHERE f_rabid={3:d} AND f_state='sukrol';",
                        DBHelper.DateToMyString(date),children,dead,rabbit),sql);
+            cmd.ExecuteNonQuery();
             cmd.CommandText = String.Format(@"UPDATE rabbits SET r_event_date=NULL,r_event='none',
 r_status=r_status+1,r_last_fuck_okrol={1:s},r_overall_babies=COALESCE(r_overall_babies+{2:d},1),
 r_lost_babies=COALESCE(r_lost_babies+{3:d},1) WHERE r_id={0:d};", 
@@ -573,11 +574,14 @@ r_lost_babies=COALESCE(r_lost_babies+{3:d},1) WHERE r_id={0:d};",
                 int brd=1;
                 if (fml.breed==ml.breed)
                     brd=fml.breed;
+                int rate = fml.rate < ml.rate ? fml.rate : ml.rate;
+                int okrol = fml.status;
                 cmd.CommandText = String.Format(@"INSERT INTO rabbits(r_parent,r_mother,r_father,r_born,r_sex,r_group,
-r_bon,r_genesis,r_name,r_surname,r_secname,r_breed) 
-VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d});",
+r_bon,r_genesis,r_name,r_surname,r_secname,r_breed,r_okrol,r_rate) 
+VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d},{10:d},{11:d});",
                       rabbit,rabbit,father,DBHelper.DateToMyString(date),children,DBHelper.commonBon(fml.bon,ml.bon),
-                      DBHelper.makeCommonGenesis(sql,fml.gens,ml.gens),fml.name,ml.name,brd);
+                      DBHelper.makeCommonGenesis(sql,fml.gens,ml.gens),fml.name,ml.name,brd,okrol,rate);
+                cmd.ExecuteNonQuery();
             }
         }
 

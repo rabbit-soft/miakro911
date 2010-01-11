@@ -91,11 +91,11 @@
             // 
             // columnHeader6
             // 
-            this.columnHeader6.Text = "Инбридинг";
+            this.columnHeader6.Text = "Гетерозис";
             // 
             // columnHeader7
             // 
-            this.columnHeader7.Text = "Гетерозис";
+            this.columnHeader7.Text = "Инбридинг";
             // 
             // label1
             // 
@@ -185,7 +185,7 @@
             // 
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2009, 11, 29, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2010, 1, 11, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
             this.dateDays1.Location = new System.Drawing.Point(485, 328);

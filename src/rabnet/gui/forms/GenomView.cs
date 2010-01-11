@@ -76,7 +76,7 @@ namespace rabnet
                     i.ForeColor = bcolor;
                 if (i2!=null)
                     i2.ForeColor = bcolor;
-                label11.Text = "Гетерозис: ДА";
+                label11.Text = "Инбридинг: ДА";
                 label11.ForeColor = bcolor;
             }
 
@@ -91,7 +91,7 @@ namespace rabnet
             label7.Text = MakeChildName(n1, n2);
             if (b1 != b2)
             {
-                label10.Text = "Инбридинг: ДА";
+                label10.Text = "Гетерозис: ДА";
                 label10.ForeColor = Color.Red;
                 label9.Text = "Гибрид";
             }

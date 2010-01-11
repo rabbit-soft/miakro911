@@ -88,7 +88,7 @@ rabname(r_parent," + (options.safeBool("dbl") ? "2" : "1") + @") parent,
 r_notes,TO_DAYS(NOW())-TO_DAYS(r_born) age,r_bon,
 (SELECT SUM(rg.r_group)-rabbits.r_group FROM rabbits rg WHERE rg.r_parent=rabbits.r_parent) neighbours,
 rabplace(r_parent) rplace
-FROM rabbits,tiers WHERE r_parent!=0 AND r_tier=t_id ORDER BY name;";
+FROM rabbits WHERE r_parent!=0 ORDER BY name;";
         }
 
         public override string countQuery()
@@ -106,7 +106,7 @@ rabname(r_parent,2) parent,
 r_notes,TO_DAYS(NOW())-TO_DAYS(r_born) age,r_bon,
 (SELECT SUM(rg.r_group)-rabbits.r_group FROM rabbits rg WHERE rg.r_parent=rabbits.r_parent) neighbours,
 rabplace(r_parent) rplace
-FROM rabbits,tiers WHERE r_parent={0:d} AND r_tier=t_id ORDER BY name;",id), sql);
+FROM rabbits WHERE r_parent={0:d} ORDER BY name;",id), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             List<Younger> y = new List<Younger>();
             while(rd.Read())

@@ -213,18 +213,18 @@
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(15, 343);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(85, 13);
+            this.label10.Size = new System.Drawing.Size(83, 13);
             this.label10.TabIndex = 4;
-            this.label10.Text = "Инбридинг: нет";
+            this.label10.Text = "Гетерозис: нет";
             // 
             // label11
             // 
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(124, 343);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(83, 13);
+            this.label11.Size = new System.Drawing.Size(85, 13);
             this.label11.TabIndex = 5;
-            this.label11.Text = "Гетерозис: нет";
+            this.label11.Text = "Инбридинг: нет";
             // 
             // GenomView
             // 

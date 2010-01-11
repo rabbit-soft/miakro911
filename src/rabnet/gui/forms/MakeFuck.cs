@@ -45,8 +45,8 @@ namespace rabnet
             
             foreach (Fucks.Fuck f in fs.fucks)
             {
-                bool inbr=(f.breed != rab1.breed);
-                bool heter=RabNetEngHelper.geterosis(rab1.genom,f.rgenom);
+                bool heter=(f.breed != rab1.breed);
+                bool inbr=RabNetEngHelper.inbreeding(rab1.genom,f.rgenom);
                 if ((!inbr || cbInbreed.Checked) && (!heter || cbHeter.Checked) &&
                     (f.dead>1 || cbCand.Checked) || f.partnerid==rtosel)
                 {
@@ -61,8 +61,8 @@ namespace rabnet
                 li.SubItems.Add(brds[f.breed]);
                 li.SubItems.Add(f.times.ToString());
                 li.SubItems.Add(f.children.ToString());
-                li.SubItems.Add(inbr ? "ДА":"-");
                 li.SubItems.Add(heter? "ДА" : "-");
+                li.SubItems.Add(inbr ? "ДА" : "-");
                 if (rtosel == f.partnerid)
                  {
                     li.Selected = true;
