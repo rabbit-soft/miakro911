@@ -52,13 +52,13 @@
             this.KillMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.replaceMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.placeChMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fuckMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.proholostMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.okrolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.countKidsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.SelectAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.genTree = new System.Windows.Forms.TreeView();
-            this.okrolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fuckMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -216,7 +216,7 @@
             // 
             this.makeBon.Name = "makeBon";
             this.makeBon.Size = new System.Drawing.Size(200, 22);
-            this.makeBon.Text = "Ботинировка";
+            this.makeBon.Text = "Бонитировка";
             this.makeBon.Click += new System.EventHandler(this.makeBon_Click);
             // 
             // toolStripMenuItem1
@@ -245,12 +245,26 @@
             this.placeChMenuItem.Text = "Жилобмен";
             this.placeChMenuItem.Click += new System.EventHandler(this.placeChMenuItem_Click);
             // 
+            // fuckMenuItem
+            // 
+            this.fuckMenuItem.Name = "fuckMenuItem";
+            this.fuckMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.fuckMenuItem.Text = "Случка";
+            this.fuckMenuItem.Click += new System.EventHandler(this.fuckMenuItem_Click);
+            // 
             // proholostMenuItem
             // 
             this.proholostMenuItem.Name = "proholostMenuItem";
             this.proholostMenuItem.Size = new System.Drawing.Size(200, 22);
             this.proholostMenuItem.Text = "Прохолостание";
             this.proholostMenuItem.Click += new System.EventHandler(this.proholostMenuItem_Click);
+            // 
+            // okrolMenuItem
+            // 
+            this.okrolMenuItem.Name = "okrolMenuItem";
+            this.okrolMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.okrolMenuItem.Text = "Окрол";
+            this.okrolMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // countKidsMenuItem
             // 
@@ -281,20 +295,6 @@
             this.genTree.Name = "genTree";
             this.genTree.Size = new System.Drawing.Size(134, 544);
             this.genTree.TabIndex = 0;
-            // 
-            // okrolMenuItem
-            // 
-            this.okrolMenuItem.Name = "okrolMenuItem";
-            this.okrolMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.okrolMenuItem.Text = "Окрол";
-            this.okrolMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
-            // 
-            // fuckMenuItem
-            // 
-            this.fuckMenuItem.Name = "fuckMenuItem";
-            this.fuckMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.fuckMenuItem.Text = "Случка";
-            this.fuckMenuItem.Click += new System.EventHandler(this.fuckMenuItem_Click);
             // 
             // RabbitsPanel
             // 

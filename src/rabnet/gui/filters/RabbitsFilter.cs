@@ -13,9 +13,8 @@ namespace rabnet
         public RabbitsFilter(RabStatusBar sb):base(sb,"rabbits",Options.OPT_ID.RAB_FILTER)
         {
             //InitializeComponent();
-            fillBreeds();
         }
-        public RabbitsFilter() : base() { fillBreeds(); }
+        public RabbitsFilter() : base() {}
 
         #region filter_form_process
 
@@ -110,6 +109,7 @@ namespace rabnet
         }
         public override void clearFilters()
         {
+            fillBreeds();
             cbSexFemale.Checked = cbSexMale.Checked = cbSexVoid.Checked = true;
             cbDateTo.Checked = cbDateFrom.Checked = false;
             cbDateFrom_CheckedChanged(null, null); cbDateTo_CheckedChanged(null, null);
@@ -363,8 +363,6 @@ namespace rabnet
         }
 
         #endregion
-
-
 
         private void button3_Click(object sender, EventArgs e)
         {

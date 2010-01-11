@@ -257,8 +257,8 @@ namespace rabnet
         {
             if (listView1.SelectedItems.Count != 1)
                 return;
-            (new OkrolForm((int)listView1.SelectedItems[0].Tag)).ShowDialog();
-            rsb.run();
+            if ((new OkrolForm((int)listView1.SelectedItems[0].Tag)).ShowDialog() != DialogResult.Abort)
+                rsb.run();
         }
 
         private void fuckMenuItem_Click(object sender, EventArgs e)
