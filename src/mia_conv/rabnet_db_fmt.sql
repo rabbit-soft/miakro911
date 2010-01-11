@@ -426,7 +426,10 @@ BEGIN
   (SELECT n_surname FROM names WHERE n_id=r_surname) surname,
   (SELECT n_surname FROM names WHERE n_id=r_secname) secname,
   r_group,r_sex INTO n,sr,sc,c,sx FROM rabbits WHERE r_id=rid;
-  SET res=n;
+  SET res='';
+  IF (n IS NOT NULL) THEN
+	SET res=n;
+  END IF;
   IF (sur>0 AND NOT sr IS NULL) THEN
     SET res=CONCAT_WS(' ',res,sr);
     if (c>1) then
