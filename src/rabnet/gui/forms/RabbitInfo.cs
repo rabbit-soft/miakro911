@@ -95,20 +95,29 @@ namespace rabnet
 
         private void updateMale()
         {
-            tabControl1.TabPages.Add(malePage);
-            tabControl1.TabPages.Add(weightPage);
             maleStatus.SelectedIndex = rab.status;
+            label7.Text = "Статус: " + maleStatus.Text;
+            if (rab.group != 1) return;
+            tabControl1.TabPages.Add(malePage);
+            tabControl1.TabPages.Add(weightPage);           
             lastFuckNever.Checked = rab.last_fuck_okrol == DateTime.MinValue;
             lastFuckNever_CheckedChanged(null, null);
             if (!lastFuckNever.Checked)
             {
                 lastFuck.Value = rab.last_fuck_okrol;
             }
-            label7.Text = "Статус: " + maleStatus.Text;
         }
 
         private void updateFemale()
         {
+            label7.Text = "Статус: Девочка";
+            if (bdate.DaysValue >= 122)
+                label7.Text = "Статус: Невеста";
+            if (rab.status == 1)
+                label7.Text = "Статус: Первокролка";
+            if (rab.status > 1)
+                label7.Text = "Статус: Штатная";
+            if (rab.group != 1) return;
             tabControl1.TabPages.Add(femalePage);
             tabControl1.TabPages.Add(okrolPage);
             tabControl1.TabPages.Add(suckersPage);
@@ -116,13 +125,6 @@ namespace rabnet
             nokuk.Checked = rab.nokuk;
             nolact.Checked = rab.nolact;
             okrolCount.Value = rab.status;
-            label7.Text = "Статус: Девочка";
-            if (bdate.DaysValue>=30)
-                label7.Text = "Статус: Невеста";
-            if (rab.status==1)
-                label7.Text = "Статус: Первокролка";
-            if (rab.status >1)
-                label7.Text = "Статус: Штатная";
             if (rab.status<1)
             {
                 okrolDd.Enabled = false;
