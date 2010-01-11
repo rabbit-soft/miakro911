@@ -34,7 +34,7 @@ namespace rabnet
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             int c = r.youngcount;
-            int x = c - (int)(numericUpDown1.Value + numericUpDown2.Value);
+            int x = c - (int)(numericUpDown1.Value + numericUpDown2.Value)+(int)numericUpDown3.Value;
             textBox1.Text = x.ToString();
             numericUpDown2.Maximum = c - numericUpDown1.Value;
             numericUpDown1.Maximum = c - numericUpDown2.Value;
@@ -44,5 +44,6 @@ namespace rabnet
         {
             Close();
         }
+
     }
 }

@@ -136,6 +136,8 @@ namespace rabnet
             makeBon.Visible = passportMenuItem.Visible=proholostMenuItem.Visible=false;
             replaceMenuItem.Visible = placeChMenuItem.Visible= false;
             KillMenuItem.Visible = countKidsMenuItem.Visible=false;
+            okrolMenuItem.Visible = fuckMenuItem.Visible= false;
+
             if (sex < 0) return;
             KillMenuItem.Visible = true;
             replaceMenuItem.Visible = true;
@@ -148,8 +150,13 @@ namespace rabnet
             {
                 passportMenuItem.Visible = true;
             }
+            if (sex == 2 && multi == 1)
+                fuckMenuItem.Visible = true;
             if (sex == 4)
+            {
                 proholostMenuItem.Visible = true;
+                okrolMenuItem.Visible = true;
+            }
         }
 
         public override ContextMenuStrip getMenu()
@@ -243,6 +250,23 @@ namespace rabnet
                 return;
             CountKids f = new CountKids((int)listView1.SelectedItems[0].Tag);
             f.ShowDialog();
+            rsb.run();
+        }
+
+        private void okrolMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1)
+                return;
+            (new OkrolForm((int)listView1.SelectedItems[0].Tag)).ShowDialog();
+            rsb.run();
+        }
+
+        private void fuckMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1)
+                return;
+            (new MakeFuck((int)listView1.SelectedItems[0].Tag)).ShowDialog();
+            rsb.run();
         }
 
     }
