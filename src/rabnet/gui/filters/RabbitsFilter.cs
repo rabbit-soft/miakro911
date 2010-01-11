@@ -13,8 +13,9 @@ namespace rabnet
         public RabbitsFilter(RabStatusBar sb):base(sb,"rabbits",Options.OPT_ID.RAB_FILTER)
         {
             //InitializeComponent();
+            fillBreeds();
         }
-        public RabbitsFilter() : base() { }
+        public RabbitsFilter() : base() { fillBreeds(); }
 
         #region filter_form_process
 
@@ -72,7 +73,6 @@ namespace rabnet
         public override void setFilters(Filters f)
         {
             clearFilters();
-            fillBreeds();
             cbSexMale.Checked = f.safeValue("sx", "mfv").Contains("m");
             cbSexFemale.Checked = f.safeValue("sx", "mfv").Contains("f");
             cbSexVoid.Checked = f.safeValue("sx", "mfv").Contains("v");
