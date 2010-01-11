@@ -420,19 +420,22 @@ namespace rabnet
 
         private void button13_Click(object sender, EventArgs e)
         {
-            (new BonForm(rab.rid)).ShowDialog();
+            if((new BonForm(rab.rid)).ShowDialog() != DialogResult.Abort)
+                button2.Enabled = false;
             updateData();
         }
 
         private void button10_Click(object sender, EventArgs e)
         {
-            (new Proholost(rab.rid)).ShowDialog();
+            if((new Proholost(rab.rid)).ShowDialog() != DialogResult.Abort)
+                button2.Enabled = false;
             updateData();
         }
 
         private void button9_Click(object sender, EventArgs e)
         {
-            (new OkrolForm(rab.rid)).ShowDialog();
+            if((new OkrolForm(rab.rid)).ShowDialog() != DialogResult.Abort)
+                button2.Enabled = false;
             updateData();
         }
 
