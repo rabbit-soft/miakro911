@@ -49,13 +49,14 @@
             this.newRab = new System.Windows.Forms.ToolStripMenuItem();
             this.makeBon = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.KillMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.replaceMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.placeChMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.proholostMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.SelectAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.genTree = new System.Windows.Forms.TreeView();
-            this.KillMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.countKidsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -186,10 +187,11 @@
             this.replaceMenuItem,
             this.placeChMenuItem,
             this.proholostMenuItem,
+            this.countKidsMenuItem,
             this.toolStripMenuItem2,
             this.SelectAllMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(201, 214);
+            this.actMenu.Size = new System.Drawing.Size(201, 236);
             // 
             // passportMenuItem
             // 
@@ -217,6 +219,13 @@
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(197, 6);
+            // 
+            // KillMenuItem
+            // 
+            this.KillMenuItem.Name = "KillMenuItem";
+            this.KillMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.KillMenuItem.Text = "Списание";
+            this.KillMenuItem.Click += new System.EventHandler(this.KillMenuItem_Click);
             // 
             // replaceMenuItem
             // 
@@ -262,12 +271,12 @@
             this.genTree.Size = new System.Drawing.Size(134, 544);
             this.genTree.TabIndex = 0;
             // 
-            // KillMenuItem
+            // countKidsMenuItem
             // 
-            this.KillMenuItem.Name = "KillMenuItem";
-            this.KillMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.KillMenuItem.Text = "Списание";
-            this.KillMenuItem.Click += new System.EventHandler(this.KillMenuItem_Click);
+            this.countKidsMenuItem.Name = "countKidsMenuItem";
+            this.countKidsMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.countKidsMenuItem.Text = "Подсчет гнездовых";
+            this.countKidsMenuItem.Click += new System.EventHandler(this.countKidsMenuItem_Click);
             // 
             // RabbitsPanel
             // 
@@ -313,5 +322,6 @@
         private System.Windows.Forms.ToolStripMenuItem replaceMenuItem;
         private System.Windows.Forms.ToolStripMenuItem placeChMenuItem;
         private System.Windows.Forms.ToolStripMenuItem KillMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem countKidsMenuItem;
     }
 }

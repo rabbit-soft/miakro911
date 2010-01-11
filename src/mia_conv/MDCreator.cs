@@ -411,6 +411,8 @@ namespace mia_conv
 
         public int findbreed(int breed)
         {
+            if (breed > maxbreed)
+                breed = 0;
             return breed + 1;
             /* UNDONE: GOOD BREED
             List<MFString> ls = mia.breed_list.strings;

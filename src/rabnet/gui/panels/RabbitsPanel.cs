@@ -79,7 +79,7 @@ namespace rabnet
                 return;
             if (listView1.SelectedItems.Count <1)
             {
-                setMenu(-1,0);
+                setMenu(-1,0,false);
                 return;
             }
             string sx = "";
@@ -96,7 +96,10 @@ namespace rabnet
             if (sx=="м") isx=1;
             if (sx=="ж") isx=2;
             if (sx == "S") isx = 4;
-            setMenu(isx, listView1.SelectedItems.Count);
+            bool kids = false;
+            if (listView1.SelectedItems.Count == 1 && listView1.SelectedItems[0].SubItems[7].Text[0] == '+')
+                kids = true;
+            setMenu(isx, listView1.SelectedItems.Count,kids);
             if (listView1.SelectedItems.Count != 1)
             {
                 return;
@@ -128,14 +131,15 @@ namespace rabnet
             }
         }
 
-        private void setMenu(int sex,int multi)
+        private void setMenu(int sex,int multi,bool kids)
         {
             makeBon.Visible = passportMenuItem.Visible=proholostMenuItem.Visible=false;
             replaceMenuItem.Visible = placeChMenuItem.Visible= false;
-            KillMenuItem.Visible = false;
+            KillMenuItem.Visible = countKidsMenuItem.Visible=false;
             if (sex < 0) return;
             KillMenuItem.Visible = true;
             replaceMenuItem.Visible = true;
+            countKidsMenuItem.Visible = kids;
             if (multi==1)
                 makeBon.Visible = true;
             if (multi == 2)
@@ -150,7 +154,7 @@ namespace rabnet
 
         public override ContextMenuStrip getMenu()
         {
-            setMenu(-1,0);
+            setMenu(-1,0,false);
             return actMenu;
         }
 
@@ -231,6 +235,14 @@ namespace rabnet
                 f.addRabbit((int)li.Tag);
             if(f.ShowDialog() != DialogResult.Abort)
                 rsb.run();
+        }
+
+        private void countKidsMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1)
+                return;
+            CountKids f = new CountKids((int)listView1.SelectedItems[0].Tag);
+            f.ShowDialog();
         }
 
     }

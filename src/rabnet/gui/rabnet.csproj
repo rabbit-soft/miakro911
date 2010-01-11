@@ -121,6 +121,12 @@
     <Compile Include="forms\ColumnSorter.cs" />
     <Compile Include="DataThread.cs" />
     <Compile Include="Engine.cs" />
+    <Compile Include="forms\CountKids.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\CountKids.Designer.cs">
+      <DependentUpon>CountKids.cs</DependentUpon>
+    </Compile>
     <Compile Include="forms\GenomView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -250,6 +256,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\CatalogForm.resx">
       <DependentUpon>CatalogForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\CountKids.resx">
+      <DependentUpon>CountKids.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\GenomView.resx">
       <DependentUpon>GenomView.cs</DependentUpon>
