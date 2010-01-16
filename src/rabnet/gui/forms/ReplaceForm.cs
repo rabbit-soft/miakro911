@@ -57,6 +57,7 @@ namespace rabnet
                 int idx = list.IndexOf(fromrp);
                 list.Insert(idx + 1, this);
                 fromrp.children.Add(this);
+                younger = false;
             }
             public void clear()
             {
@@ -84,7 +85,7 @@ namespace rabnet
                             r.address = curaddress;
                 }
             }
-            public bool replaced { get { return curaddress == address; } }
+            public bool replaced { get { return curaddress != address; } }
             public string status
             {
                 get
@@ -401,7 +402,7 @@ namespace rabnet
                 if (r.younger)
                     par.ReplaceYounger(rb.rid, a[0], a[1], a[2]);
                 else
-                    rb.replaceRabbit(a[0], a[1], a[2], r.address);
+                    rb.replaceRabbit(a[0], a[1], a[2], r.curaddress);
             }
             if (r.nusex != r.sex)
                 rb.setSex(r.nusex);

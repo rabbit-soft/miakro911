@@ -274,12 +274,23 @@ namespace rabnet
             foreach (OneRabbit y in youngers)
                 if (y.id == yid)
                     y.tag = "";
+            OneRabbit r = eng.db().getRabbit(yid);
+            eng.logs().log(RabNetLogs.LogType.REPLACE, yid, "отсадили в "+r.address);
         }
 
-        public void killIt(DateTime when, int reason, string notes)
+        public void killIt(DateTime when, int reason, string notes,int count)
         {
-            eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, rid, 0,address,"",fullName);
-            eng.db().killRabbit(id, when, reason, notes);
+            if (count == group)
+            {
+                eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, rid, 0, address, "", fullName+String.Format(" ({0:d})",group));
+                eng.db().killRabbit(id, when, reason, notes);
+            }
+            else
+            {
+                int nid = clone(count, 0, 0, 0);
+                RabNetEngRabbit nr = new RabNetEngRabbit(nid, eng);
+                nr.killIt(when, reason, notes, count);
+            }
         }
 
         public void CountKids(int dead,int killed,int added,int atall,int age)
@@ -292,12 +303,15 @@ namespace rabnet
 
         public void setSex(OneRabbit.RabbitSex sex)
         {
+            eng.logs().log(RabNetLogs.LogType.SET_SEX, id, 0, "", "", OneRabbit.SexToRU(sex));
             eng.db().setRabbitSex(id, sex);
         }
 
         public int clone(int count,int farm,int tier,int sec)
         {
-           return eng.db().cloneRabbit(id, count, farm, tier, sec, OneRabbit.RabbitSex.VOID, 0);
+           int nid=eng.db().cloneRabbit(id, count, farm, tier, sec, OneRabbit.RabbitSex.VOID, 0);
+           eng.logs().log(RabNetLogs.LogType.CLONE_GROUP, id, nid, "", "", String.Format("{0:d} и {1:d}",group-count,count));
+           return nid;
         }
 
     }

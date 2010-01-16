@@ -7,7 +7,8 @@ namespace rabnet
     public class RabNetLogs
     {
         public enum LogType {NONE,INCOME,REPLACE,BON,RENAME,FUCK,OKROL,PROHOLOST,RAB_CHANGE,NEST_ON,NEST_OFF,
-            HEATER_OUT,HEATER_OFF,HEATER_ON,REPAIR_ON,REPAIR_OFF,RABBIT_KILLED,COUNT_KIDS};
+            HEATER_OUT,HEATER_OFF,HEATER_ON,REPAIR_ON,REPAIR_OFF,RABBIT_KILLED,COUNT_KIDS,
+            SET_SEX,CLONE_GROUP};
         private RabNetEngine eng; 
         public RabNetLogs(RabNetEngine eng)
         {

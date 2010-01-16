@@ -690,8 +690,9 @@ r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date)
 r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date
 FROM rabbits WHERE r_id={0:d};",rabbit,mom,count), sql);
             cmd.ExecuteNonQuery();
-            cmd.CommandText = String.Format("UPDATE rabbits SET r_group=r_group-{0:d} WHERE r_id={1:d};",count,rabbit);
             int nid = (int)cmd.LastInsertedId;
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_group=r_group-{0:d} WHERE r_id={1:d};", count, rabbit);
+            cmd.ExecuteNonQuery();
             if (sex != OneRabbit.RabbitSex.VOID)
                 setRabbitSex(sql, rabbit, sex);
             if (mom == 0 && farm != 0)

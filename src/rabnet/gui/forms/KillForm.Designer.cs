@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dateDays1 = new rabnet.components.DateDays();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -39,25 +38,14 @@
             this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
-            this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
+            this.dateDays1 = new rabnet.components.DateDays();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // dateDays1
-            // 
-            this.dateDays1.AutoSize = true;
-            this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2010, 1, 8, 0, 0, 0, 0);
-            this.dateDays1.DaysText = "Дней";
-            this.dateDays1.DaysValue = 0;
-            this.dateDays1.Location = new System.Drawing.Point(12, 12);
-            this.dateDays1.Maximum = 100000;
-            this.dateDays1.Name = "dateDays1";
-            this.dateDays1.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
-            this.dateDays1.Size = new System.Drawing.Size(146, 54);
-            this.dateDays1.Step = 1;
-            this.dateDays1.TabIndex = 0;
             // 
             // comboBox1
             // 
@@ -99,12 +87,15 @@
             this.columnHeader2,
             this.columnHeader3,
             this.columnHeader4,
-            this.columnHeader5});
+            this.columnHeader5,
+            this.columnHeader6});
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
+            this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(12, 61);
+            this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(578, 283);
+            this.listView1.Size = new System.Drawing.Size(506, 283);
             this.listView1.TabIndex = 5;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -130,17 +121,6 @@
             // 
             this.columnHeader5.Text = "Количество";
             // 
-            // button1
-            // 
-            this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(596, 61);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(28, 23);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "-";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(542, 356);
@@ -162,14 +142,52 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "Списать";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Enabled = false;
+            this.numericUpDown1.Location = new System.Drawing.Point(524, 81);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(100, 20);
+            this.numericUpDown1.TabIndex = 9;
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(526, 62);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(49, 13);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Списать";
+            // 
+            // dateDays1
+            // 
+            this.dateDays1.AutoSize = true;
+            this.dateDays1.DateText = "Дата";
+            this.dateDays1.DateValue = new System.DateTime(2010, 1, 16, 0, 0, 0, 0);
+            this.dateDays1.DaysText = "Дней";
+            this.dateDays1.DaysValue = 0;
+            this.dateDays1.Location = new System.Drawing.Point(12, 12);
+            this.dateDays1.Maximum = 100000;
+            this.dateDays1.Name = "dateDays1";
+            this.dateDays1.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
+            this.dateDays1.Size = new System.Drawing.Size(146, 54);
+            this.dateDays1.Step = 1;
+            this.dateDays1.TabIndex = 0;
+            // 
             // KillForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(629, 391);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBox1);
@@ -184,6 +202,7 @@
             this.ShowInTaskbar = false;
             this.Text = "Списание";
             this.Load += new System.EventHandler(this.KillForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -202,8 +221,10 @@
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.ColumnHeader columnHeader5;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.ColumnHeader columnHeader6;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Label label3;
     }
 }

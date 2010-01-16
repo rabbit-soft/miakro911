@@ -45,6 +45,7 @@ namespace rabnet
                 li.SubItems.Add(sex);
                 li.SubItems.Add(r.age.ToString());
                 li.SubItems.Add(r.group.ToString());
+                li.SubItems.Add(r.group.ToString());
             }
             listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
@@ -56,23 +57,17 @@ namespace rabnet
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            button1.Enabled = (listView1.SelectedItems.Count > 0);
+            numericUpDown1.Enabled=false;
+            if (listView1.SelectedItems.Count ==1)
+            {
+                numericUpDown1.Maximum = int.Parse(listView1.SelectedItems[0].SubItems[4].Text);
+                numericUpDown1.Value = int.Parse(listView1.SelectedItems[0].SubItems[5].Text);
+                numericUpDown1.Enabled = true;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem li in listView1.SelectedItems)
-            {
-                int j = 0;
-                while(j<rbs.Count)
-                {
-                    if (rbs[j].rid == (int)li.Tag)
-                        rbs.RemoveAt(j);
-                    else
-                        j++;
-                }
-            }
-            update();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -82,11 +77,23 @@ namespace rabnet
 
         private void button2_Click(object sender, EventArgs e)
         {
+            int i=0;
             foreach (RabNetEngRabbit r in rbs)
             {
-                r.killIt(dateDays1.DateValue,/*comboBox1.SelectedIndex*/0, textBox1.Text);
+                int cnt = int.Parse(listView1.Items[i].SubItems[5].Text);
+                if (cnt != 0)
+                {
+                    r.killIt(dateDays1.DateValue,/*comboBox1.SelectedIndex*/0, textBox1.Text,cnt);
+                }
+                i++;
             }
             Close();
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1) return;
+            listView1.SelectedItems[0].SubItems[5].Text = numericUpDown1.Value.ToString();
         }
     }
 }
