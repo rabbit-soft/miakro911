@@ -54,16 +54,20 @@ namespace rabnet
                 fromrp.nucount -= count;
                 int idx = list.IndexOf(fromrp);
                 list.Insert(idx + 1, this);
+                fromrp.children.Add(this);
             }
             public void clear()
             {
                 nuaddress = "";
+                foreach (RP r in list)
+                    if (r.parent == id)
+                        r.address = address;
                 while (children.Count > 0)
                 {
                     RP f = children[0];
                     f.clear();
                     children.RemoveAt(0);
-                    list.Remove(children[0]);
+                    list.Remove(f);
                 }
                 nucount = count;
                 nusex = sex;
@@ -75,7 +79,7 @@ namespace rabnet
                 set{ if (value==address || value=="") nuaddress=""; else nuaddress=value;
                     foreach (RP r in list)
                         if (r.parent == id)
-                            r.address = address;
+                            r.address = curaddress;
                 }
             }
             public bool replaced { get { return curaddress == address; } }
@@ -99,14 +103,16 @@ namespace rabnet
                         res += ",разбиение";
                     if (nucount > count)
                         res += ",объединение";
+                    if (sex != nusex)
+                        res += ",пол-" + OneRabbit.SexToRU(nusex);
                     return res;
                 }
             }
 
-            public void splitGroup(int num)
+            public RP splitGroup(int num)
             {
-                if (num<1 || num>=nucount) return;
-                new RP(this, num);
+                if (num<1 || num>=nucount) return null;
+                return new RP(this, num);
             }
         };
         private List<RabNetEngRabbit> rbs = new List<RabNetEngRabbit>();
@@ -236,7 +242,7 @@ namespace rabnet
                 bool b = busy(r);
                 if (b)
                     stat += ",ЗАНЯТО";
-                DataRow rw = ds.Rows.Add(r.name, OneRabbit.SexToRU(r.sex) ,r.nucount, r.address, r.curaddress, stat);
+                DataRow rw = ds.Rows.Add(r.name, OneRabbit.SexToRU(r.nusex) ,r.nucount, r.address, r.curaddress, stat);
                 if (action == Action.CHANGE && dataGridView1.SelectedRows.Count < 2)
                     dataGridView1.Rows[dataGridView1.Rows.Count - 1].Selected = true;
                 if (b)
@@ -371,6 +377,24 @@ namespace rabnet
         {
             e.ThrowException=false;
             dataGridView1.Rows[e.RowIndex].ErrorText = e.ColumnIndex.ToString()+":"+e.Exception.Message;
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count != 1) return;
+            for (int i = 0; i < rp().count-1;i++)
+                rp().splitGroup(1);
+            update();
+
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count != 1) return;
+            RP nrp=rp().splitGroup((int)numericUpDown1.Value);
+            rp().nusex = OneRabbit.RabbitSex.FEMALE;
+            nrp.nusex = OneRabbit.RabbitSex.MALE;
+            update();
         }
 
     }
