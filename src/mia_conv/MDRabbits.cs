@@ -159,7 +159,7 @@ namespace mia_conv
         {
             foreach (Fucker f in r.female.fuckers)
             {
-                if (f.fucks.value() > 0 || (f.my_fuck_is_last.value()==1 && sukrol))
+                if (f.fucks.value() > 0 || f.my_fuck_is_last.value()==1)
                 {
                     int link = 0;
                     int dead = 0;
@@ -176,9 +176,10 @@ namespace mia_conv
                     String state = "okrol";
                     if (f.my_fuck_is_last.value() == 1 && sukrol)
                         state = "sukrol";
-                    c.CommandText = String.Format(@"INSERT INTO fucks(f_rabid,f_partner,f_times,f_children,f_dead,f_state) 
-VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}');", 
-                      crab, link, (int)f.fucks.value()+(sukrol?1:0),f.children.value(),dead,state);
+                    c.CommandText = String.Format(@"INSERT INTO fucks(f_rabid,f_partner,f_times,f_children,f_dead,f_state,f_last) 
+VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d});", 
+                      crab, link, (int)f.fucks.value()+(sukrol?1:0),f.children.value(),dead,state,
+                      f.my_fuck_is_last.value());
                     c.ExecuteNonQuery();
                 }
             }

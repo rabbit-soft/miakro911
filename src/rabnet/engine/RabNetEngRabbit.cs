@@ -281,5 +281,13 @@ namespace rabnet
             eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, rid, 0,address,"",fullName);
             eng.db().killRabbit(id, when, reason, notes);
         }
+
+        public void CountKids(int dead,int killed,int added,int atall,int age)
+        {
+            if (sex != OneRabbit.RabbitSex.FEMALE)
+                throw new ExNotFemale(this);
+            eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, rid, 0, "", "", String.Format("возраст {0:d} всего {1:d}(умерло {2:d},притоптано {3:d}, подсажено{4:d})",age,atall,dead,killed,added));
+            eng.db().countKids(id, dead, killed, added);
+        }
     }
 }

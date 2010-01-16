@@ -437,5 +437,20 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public void countKids(int rid, int dead, int killed, int added)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ZooJobItem[] getCounts(int days)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

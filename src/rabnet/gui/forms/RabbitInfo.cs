@@ -157,6 +157,7 @@ namespace rabnet
                 li.SubItems.Add(f.children.ToString());
                 li.SubItems.Add(f.dead.ToString());
                 li.SubItems.Add(f.killed.ToString());
+                li.SubItems.Add(f.added.ToString());
                 li.SubItems.Add(f.breed == rab.breed ? "-" : "Да");
                 li.SubItems.Add(RabNetEngHelper.inbreeding(f.rgenom, rab.genom) ? "Да" : "-");
                 li.Tag = f;

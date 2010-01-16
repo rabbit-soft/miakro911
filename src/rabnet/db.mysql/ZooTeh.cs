@@ -38,6 +38,13 @@ namespace rabnet
                 i[1] = 0;
             return this;
         }
+        public ZooJobItem Counts(int id, String nm, String place, int age)
+        {
+            type = 2; name = nm; this.place = Buildings.fullPlaceName(place);
+            this.age = age; this.status = 0;
+            this.id = id;
+            return this;
+        }
     }
     /*
     public class ZooTehItem:IData
@@ -140,6 +147,19 @@ ORDER BY srok DESC;", days));
                 res.Add(new ZooJobItem().Vudvor(rd.GetInt32("t_id"), rd.GetString("name"),
                     rd.GetString("place"), rd.GetInt32("age"), rd.GetInt32("srok"), rd.GetInt32("r_status"),
                     rd.GetInt32("r_area"),rd.GetString("t_type"),rd.GetString("t_delims")));
+            rd.Close();
+            return res.ToArray();
+        }
+
+        public ZooJobItem[] getCounts(int days)
+        {
+            MySqlDataReader rd = reader(String.Format(@"SELECT r_parent,rabname(r_parent,2) name,rabplace(r_parent) place 
+FROM rabbits WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)={0:d} AND
+r_parent NOT IN (SELECT l_rabbit FROM logs WHERE l_type=17 AND DATE(l_date)=DATE(NOW()));", days));
+            List<ZooJobItem> res = new List<ZooJobItem>();
+            while (rd.Read())
+                res.Add(new ZooJobItem().Counts(rd.GetInt32("r_parent"),rd.GetString("name"),
+                    rd.GetString("place"),days));
             rd.Close();
             return res.ToArray();
         }

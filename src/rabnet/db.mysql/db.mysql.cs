@@ -311,6 +311,16 @@ namespace rabnet
             RabbitGetter.killRabbit(sql, id, when, reason, notes);
         }
 
+        public void countKids(int rid, int dead, int killed, int added)
+        {
+            RabbitGetter.countKids(sql, rid, dead, killed, added);
+        }
+
+        public ZooJobItem[] getCounts(int days)
+        {
+            return new ZooTehGetter(sql).getCounts(days);
+        }
+
         #endregion
     }
 }

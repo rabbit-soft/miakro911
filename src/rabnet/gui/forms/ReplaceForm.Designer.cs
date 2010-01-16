@@ -38,6 +38,7 @@
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button10 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -155,16 +156,26 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.button10);
             this.groupBox1.Controls.Add(this.button7);
             this.groupBox1.Controls.Add(this.numericUpDown1);
             this.groupBox1.Controls.Add(this.button6);
             this.groupBox1.Enabled = false;
             this.groupBox1.Location = new System.Drawing.Point(831, 97);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(119, 112);
+            this.groupBox1.Size = new System.Drawing.Size(119, 152);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Рассадить группу";
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(6, 102);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(107, 44);
+            this.button10.TabIndex = 11;
+            this.button10.Text = "Отсадить Мальчиков";
+            this.button10.UseVisualStyleBackColor = true;
             // 
             // button7
             // 
@@ -197,7 +208,8 @@
             // 
             this.groupBox2.Controls.Add(this.button9);
             this.groupBox2.Controls.Add(this.button8);
-            this.groupBox2.Location = new System.Drawing.Point(831, 215);
+            this.groupBox2.Enabled = false;
+            this.groupBox2.Location = new System.Drawing.Point(831, 255);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(119, 99);
             this.groupBox2.TabIndex = 10;
@@ -271,6 +283,7 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button10;
 
     }
 }

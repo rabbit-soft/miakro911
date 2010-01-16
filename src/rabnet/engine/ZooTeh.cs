@@ -4,7 +4,7 @@ using System.Text;
 
 namespace rabnet
 {
-    public enum JobType {NONE, OKROL, VUDVOR };
+    public enum JobType {NONE, OKROL, VUDVOR, COUNT_KIDS };
     
     public class ZootehJob:IData
     {
@@ -43,6 +43,14 @@ namespace rabnet
             this.id2=id2;
             return this;
         }
+        public ZootehJob Counts(int id, String nm, String ad, int age)
+        {
+            type = JobType.COUNT_KIDS; job = "Подсчет гнездовых";
+            days = 0; name = nm; address = ad;
+            this.age = age; this.id = id;
+            comment = "возраст " + age.ToString();
+            return this;
+        }
     }
 
     public class JobHolder:List<ZootehJob>{}
@@ -60,6 +68,7 @@ namespace rabnet
             JobHolder zjobs = new JobHolder();
             getOkrols(zjobs);
             getVudvors(zjobs);
+            getCounts(zjobs);
             return zjobs.ToArray();
         }
 
@@ -76,6 +85,19 @@ namespace rabnet
             ZooJobItem[] jobs = eng.db().getVudvors(days);
             foreach (ZooJobItem z in jobs)
                 jh.Add(new ZootehJob().Vudvor(z.id, z.name, z.place, z.status + 1, z.age, z.i[0] - days,z.i[1]));
+        }
+        public void getCounts(JobHolder jh)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Options.OPT_ID cnt = Options.OPT_ID.COUNT1;
+                if (i == 1) cnt = Options.OPT_ID.COUNT2;
+                if (i == 2) cnt = Options.OPT_ID.COUNT3;
+                int days = eng.options().getIntOption(cnt);
+                ZooJobItem[] jobs = eng.db().getCounts(days);
+                foreach (ZooJobItem z in jobs)
+                    jh.Add(new ZootehJob().Counts(z.id, z.name, z.place, z.age));
+            }
         }
     }
 }

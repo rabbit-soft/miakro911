@@ -96,12 +96,13 @@ namespace rabnet
 
         public void setMenu(JobType type)
         {
-            okrolMenuItem.Visible = false;
-            vudvorMenuItem.Visible = false;
+            okrolMenuItem.Visible = vudvorMenuItem.Visible = false;
+            countsMenuItem.Visible = false;
             switch (type)
             {
                 case JobType.OKROL: okrolMenuItem.Visible = true; break;
                 case JobType.VUDVOR: vudvorMenuItem.Visible = true; break;
+                case JobType.COUNT_KIDS: countsMenuItem.Visible = true; break;
             }
         }
 
@@ -138,6 +139,9 @@ namespace rabnet
                         b.setNest(false);
                     else
                         b.setNest2(false);
+                    break;
+                case JobType.COUNT_KIDS:
+                    (new CountKids(job.id)).ShowDialog();
                     break;
             }
             rsb.run();

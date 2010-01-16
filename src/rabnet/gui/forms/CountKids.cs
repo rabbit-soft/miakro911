@@ -26,7 +26,7 @@ namespace rabnet
         private void CountKids_Load(object sender, EventArgs e)
         {
             label1.Text = r.fullName;
-            label2.Text = (DateTime.Now - r.youngers[0].born).Days.ToString();
+            label2.Text = "Возраст:"+(DateTime.Now - r.youngers[0].born).Days.ToString();
             textBox1.Text = r.youngcount.ToString();
             numericUpDown2.Maximum = numericUpDown1.Maximum = r.youngcount;
         }
@@ -43,6 +43,20 @@ namespace rabnet
         private void button2_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                r.CountKids((int)numericUpDown1.Value, (int)numericUpDown2.Value, (int)numericUpDown3.Value,
+                    int.Parse(textBox1.Text), (DateTime.Now - r.youngers[0].born).Days);
+                Close();
+            }
+            catch (ApplicationException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
     }

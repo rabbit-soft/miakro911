@@ -10,8 +10,19 @@ namespace rabnet
 {
     public partial class ReplaceForm : Form
     {
+        struct RGroup {
+            public int id;
+            public int count;
+            public string tag;
+            public RGroup(int id, int count, string tag)
+            {
+                this.id = id;
+                this.count = count;
+                this.tag = tag;
+            }
+        }
         private List<RabNetEngRabbit> rbs = new List<RabNetEngRabbit>();
-        private List<RabNetEngRabbit> nrbs = new List<RabNetEngRabbit>();
+        private List<RGroup> grp = new List<RGroup>();
         private DataTable ds = new DataTable();
         private DataGridViewComboBoxColumn cbc = new DataGridViewComboBoxColumn();
         private Building[] bs = null;
@@ -113,6 +124,15 @@ namespace rabnet
             return state;
         }
 
+        public int getcount(int id, int count)
+        {
+            int cnt=count;
+            foreach (RGroup g in grp)
+                if (g.id == id)
+                    cnt -= g.count;
+            return cnt;
+        }
+
         public void update(bool reget)
         {
             ds.Rows.Clear();
@@ -140,10 +160,16 @@ namespace rabnet
                 int st = checkEmpty(val, rid);
                 if (st == 1) status = "жилобмен";
                 if (st == 2) { err = true; status = "занято"; }
-                DataRow rw=ds.Rows.Add(r.fullName, r.group, r.address, val, status,rid,-1);
+                DataRow rw=ds.Rows.Add(r.fullName, getcount(r.rid,r.group), r.address, val, status,rid,-1);
                 if (action == Action.CHANGE && dataGridView1.SelectedRows.Count < 2)
                     dataGridView1.Rows[dataGridView1.Rows.Count - 1].Selected = true;
                 if (err)   rw.RowError = "занято";
+                foreach (RGroup g in grp)
+                    if (g.id == r.rid)
+                    {
+                        status = "разбиение группы";
+                        rw = ds.Rows.Add(r.fullName, g.count, r.address, g.tag, status, rid, -1);
+                    }
                 int yid = 0;
                 foreach (OneRabbit y in r.youngers)
                 {
@@ -156,9 +182,15 @@ namespace rabnet
                     st = checkEmpty(val, rid);
                     if (st == 1) status = "жилобмен";
                     if (st == 2) { err = true; status = "занято"; }
-                    rw=ds.Rows.Add(y.fullname, y.group, r.address, val, status, rid, yid);
+                    rw=ds.Rows.Add(y.fullname, getcount(y.id,y.group), r.address, val, status, rid, yid);
                     if (err)
                         rw.RowError = "занято";
+                    foreach (RGroup g in grp)
+                        if (g.id == r.rid)
+                        {
+                            status = "разбиение группы";
+                            rw = ds.Rows.Add(r.fullName, g.count, r.address, g.tag, status, rid, -1);
+                        }
                     yid++;
                 }
             }
@@ -282,6 +314,8 @@ namespace rabnet
         {
             button4.Enabled = (dataGridView1.SelectedRows.Count == 2);
             button5.Enabled = (dataGridView1.SelectedRows.Count >0);
+            groupBox1.Enabled = false;
+            groupBox2.Enabled = false;
             if (dataGridView1.SelectedRows.Count == 1)
             {
                 int cnt=getCount(dataGridView1.SelectedRows[0].Index);
@@ -298,9 +332,21 @@ namespace rabnet
             update(false);
         }
 
+        private void mkGroup(int idx,int count)
+        {
+            DataRow rw = ds.Rows[idx];
+            int r = (int)rw[5];
+            int y=(int)rw[6];
+            int id = rbs[r].rid;
+            if (y != -1) id = rbs[r].youngers[y].id;
+            grp.Add(new RGroup(id, count, getCurAddr(idx)));
+            update(false);
+        }
+
         private void button7_Click(object sender, EventArgs e)
         {
-
+            if (dataGridView1.SelectedRows.Count != 1) return;
+            mkGroup(dataGridView1.SelectedRows[0].Index, (int)numericUpDown1.Value);
         }
 
         private int[] getAddress(String s)

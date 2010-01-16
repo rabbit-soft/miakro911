@@ -19,10 +19,11 @@ namespace rabnet
             public int children;
             public int dead;
             public int killed;
+            public int added;
             public int breed;
             public String rgenom;
             public Fuck(String p, int pid, int tms, DateTime s, DateTime e, String st, int ch, int dd, 
-                int brd, String gen,String tp,int kl)
+                int brd, String gen,String tp,int kl,int add)
             {
                 partner = p;partnerid = pid;
                 times = tms;
@@ -36,15 +37,16 @@ namespace rabnet
                 if (st == "proholost") status = "прохолостание";
                 children = ch; dead = dd;
                 killed=kl;
+                added = add;
                 breed = brd;
                 rgenom = gen;
             }
         }
         public List<Fuck> fucks=new List<Fuck>();
         public void addFuck(String p,int pid,int tms,DateTime s,DateTime e,String st,int ch,int dd,
-            int brd,String gen,String tp,int kl)
+            int brd,String gen,String tp,int kl,int add)
         {
-            fucks.Add(new Fuck(p,pid,tms,s,e,st,ch,dd,brd,gen,tp,kl));
+            fucks.Add(new Fuck(p,pid,tms,s,e,st,ch,dd,brd,gen,tp,kl,add));
         }
     }
 
@@ -56,7 +58,7 @@ namespace rabnet
 rabname(f_partner,2) partner,
 (SELECT r_breed FROM rabbits WHERE r_id=f_partner) breed,
 (SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=(SELECT r_genesis FROM rabbits WHERE r_id=f_partner)) genom,
-f_killed
+f_killed,f_added
 FROM fucks WHERE f_rabid=" + rabbit.ToString()+" ORDER BY f_date;",sql);
             MySqlDataReader rd=cmd.ExecuteReader();
             Fucks f=new Fucks();
@@ -67,7 +69,7 @@ FROM fucks WHERE f_rabid=" + rabbit.ToString()+" ORDER BY f_date;",sql);
                     rd.IsDBNull(6)?DateTime.MinValue:rd.GetDateTime("f_end_date"),
                     rd.GetString("f_state"),rd.GetInt32("f_children"),rd.GetInt32("f_dead"),
                     rd.GetInt32("breed"),rd.GetString("genom"),rd.GetString("f_type"),
-                    rd.GetInt32("f_killed")
+                    rd.GetInt32("f_killed"),rd.GetInt32("f_added")
                     );
 
             }
@@ -89,7 +91,7 @@ FROM rabbits WHERE r_sex='male' AND r_status>0;", sql);
             {
                 f.addFuck(rd.GetString("fullname"), rd.GetInt32("r_id"), rd.IsDBNull(5)?0:rd.GetInt32("fucks"), DateTime.MinValue,
                     DateTime.MinValue, "", rd.IsDBNull(6) ? 0 : rd.GetInt32("children"), rd.GetInt32("r_status"), rd.GetInt32("r_breed"),
-                    rd.GetString("genom"), "",0);
+                    rd.GetString("genom"), "",0,0);
             }
             rd.Close();
             return f;
