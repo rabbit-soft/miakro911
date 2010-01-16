@@ -420,6 +420,12 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             if (s == RabbitSex.MALE) res = "male";
             return res;
         }
+        public static String SexToRU(RabbitSex s)
+        {
+            if (s == RabbitSex.FEMALE) return "ж";
+            if (s == RabbitSex.MALE) return "м";
+            return "?";
+        }
     }
 
     public class RabbitGetter
