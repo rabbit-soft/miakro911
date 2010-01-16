@@ -60,68 +60,17 @@ namespace rabnet
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region IRabNetDataLayer Members
-
-        void IRabNetDataLayer.init(string connectionString)
+        public DateTime now()
         {
             throw new NotImplementedException();
         }
 
-        void IRabNetDataLayer.close()
+        public string[] getFilterNames(string type)
         {
             throw new NotImplementedException();
         }
 
-        List<string> IRabNetDataLayer.getUsers()
-        {
-            throw new NotImplementedException();
-        }
-
-        int IRabNetDataLayer.checkUser(string name, string password)
-        {
-            throw new NotImplementedException();
-        }
-
-        string IRabNetDataLayer.getOption(string name, string subname, uint uid)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IRabNetDataLayer.setOption(string name, string subname, uint uid, string value)
-        {
-            throw new NotImplementedException();
-        }
-
-        DateTime IRabNetDataLayer.now()
-        {
-            return DateTime.Now;
-        }
-
-
-        public IDataGetter getBuildings(string filters)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public IDataGetter getRabbits(string filters)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IRabNetDataLayer Members
-
-
-        string[] IRabNetDataLayer.getFilterNames(string type)
-        {
-            throw new NotImplementedException();
-        }
-
-        Filters IRabNetDataLayer.getFilter(string type, string name)
+        public Filters getFilter(string type, string name)
         {
             throw new NotImplementedException();
         }
@@ -141,20 +90,10 @@ namespace rabnet
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region IRabNetDataLayer Members
-
-
         public TreeData rabbitGenTree(int rabbit)
         {
             throw new NotImplementedException();
         }
-
-        #endregion
-
-        #region IRabNetDataLayer Members
-
 
         public TreeData buildingsTree()
         {
@@ -166,11 +105,6 @@ namespace rabnet
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region IRabNetDataLayer Members
-
-
         public int[] getTiers(int farm)
         {
             throw new NotImplementedException();
@@ -181,42 +115,22 @@ namespace rabnet
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region IRabNetDataLayer Members
-
-
-        public Breeds getBreeds()
+        public IBreeds getBreeds()
         {
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region IRabNetDataLayer Members
-
+        public IZones getZones()
+        {
+            throw new NotImplementedException();
+        }
 
         public IDataGetter getNames(Filters filters)
         {
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region IRabNetDataLayer Members
-
-
         public IDataGetter zooTeh(Filters f)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IRabNetDataLayer Members
-
-
-        IBreeds IRabNetDataLayer.getBreeds()
         {
             throw new NotImplementedException();
         }
@@ -236,50 +150,25 @@ namespace rabnet
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region IRabNetDataLayer Members
-
-
-        public void RabNetLog(int type, int user, string text)
+        public void RabNetLog(int type, int user, int r1, int r2, string a1, string a2, string text)
         {
             throw new NotImplementedException();
         }
-
-        #endregion
-
-        #region IRabNetDataLayer Members
-
 
         public Fucks getFucks(int rabbit)
         {
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region IRabNetDataLayer Members
-
-
         public Fucks allFuckers(int female)
         {
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region IRabNetDataLayer Members
-
-
         public void setBon(int rabbit, string bon)
         {
             throw new NotImplementedException();
         }
-
-        #endregion
-
-        #region IRabNetDataLayer Members
-
 
         public void makeFuck(int female, int male, DateTime date)
         {
@@ -296,50 +185,20 @@ namespace rabnet
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region IRabNetDataLayer Members
-
-
-        public IZones getZones()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IRabNetDataLayer Members
-
-
         public string makeName(int nm, int sur, int sec, int grp, OneRabbit.RabbitSex sex)
         {
             throw new NotImplementedException();
         }
-
-        #endregion
-
-        #region IRabNetDataLayer Members
-
 
         public Younger[] getSuckers(int mom)
         {
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region IRabNetDataLayer Members
-
-
         public Building[] getFreeBuilding(Filters f)
         {
             throw new NotImplementedException();
         }
-
-        #endregion
-
-        #region IRabNetDataLayer Members
-
 
         public void replaceRabbit(int rid, int farm, int tier_id, int sec)
         {
@@ -351,70 +210,30 @@ namespace rabnet
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region IRabNetDataLayer Members
-
-
         public int newRabbit(OneRabbit r, int mom)
         {
             throw new NotImplementedException();
         }
-
-        #endregion
-
-        #region IRabNetDataLayer Members
-
-
-        public void RabNetLog(int type, int user, int r1, int r2, string a1, string a2, string text)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IRabNetDataLayer Members
-
 
         public LogList getLogs(Filters f)
         {
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region IRabNetDataLayer Members
-
-
         public ZooJobItem[] getOkrols(int days)
         {
             throw new NotImplementedException();
         }
-
-        #endregion
-
-        #region IRabNetDataLayer Members
-
 
         public void updateBuilding(Building b)
         {
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region IRabNetDataLayer Members
-
-
         public ZooJobItem[] getVudvors(int days)
         {
             throw new NotImplementedException();
         }
-
-        #endregion
-
-        #region IRabNetDataLayer Members
-
 
         public void addName(OneRabbit.RabbitSex sex, string name, string surname)
         {
@@ -426,20 +245,10 @@ namespace rabnet
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region IRabNetDataLayer Members
-
-
         public void killRabbit(int id, DateTime when, int reason, string notes)
         {
             throw new NotImplementedException();
         }
-
-        #endregion
-
-        #region IRabNetDataLayer Members
-
 
         public void countKids(int rid, int dead, int killed, int added)
         {
@@ -447,6 +256,16 @@ namespace rabnet
         }
 
         public ZooJobItem[] getCounts(int days)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void setRabbitSex(int rid, OneRabbit.RabbitSex sex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int cloneRabbit(int rid, int count, int farm, int tier, int sec, OneRabbit.RabbitSex sex, int mom)
         {
             throw new NotImplementedException();
         }

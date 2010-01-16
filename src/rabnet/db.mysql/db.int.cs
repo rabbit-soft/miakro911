@@ -69,6 +69,8 @@ namespace rabnet
         void killRabbit(int id,DateTime when,int reason,string notes);
         void countKids(int rid, int dead, int killed, int added);
         ZooJobItem[] getCounts(int days);
+        void setRabbitSex(int rid,OneRabbit.RabbitSex sex);
+        int cloneRabbit(int rid, int count, int farm, int tier, int sec, OneRabbit.RabbitSex sex, int mom);
     }
 
 }

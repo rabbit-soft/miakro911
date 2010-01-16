@@ -321,6 +321,16 @@ namespace rabnet
             return new ZooTehGetter(sql).getCounts(days);
         }
 
+        public void setRabbitSex(int rid, OneRabbit.RabbitSex sex)
+        {
+            RabbitGetter.setRabbitSex(sql, rid, sex);
+        }
+
+        public int cloneRabbit(int rid, int count, int farm, int tier, int sec, OneRabbit.RabbitSex sex, int mom)
+        {
+            return RabbitGetter.cloneRabbit(sql, rid, count, farm, tier, sec, sex, mom);
+        }
+
         #endregion
     }
 }

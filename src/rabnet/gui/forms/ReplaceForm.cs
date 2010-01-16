@@ -16,6 +16,7 @@ namespace rabnet
         class RP
         {
             public int id;
+            public bool saved = false;
             public string name;
             public int parent=0;
             public int nuparent=0;
@@ -52,6 +53,7 @@ namespace rabnet
             {
                 madefrom = fromrp;
                 fromrp.nucount -= count;
+                nusex = fromrp.nusex;
                 int idx = list.IndexOf(fromrp);
                 list.Insert(idx + 1, this);
                 fromrp.children.Add(this);
@@ -361,18 +363,6 @@ namespace rabnet
             return null;
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Close();
-            }
-            catch (ApplicationException ex)
-            {
-                MessageBox.Show("Ошибка "+ex.GetType().ToString()+":"+ex.Message);
-            }
-        }
-
         private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             e.ThrowException=false;
@@ -395,6 +385,48 @@ namespace rabnet
             rp().nusex = OneRabbit.RabbitSex.FEMALE;
             nrp.nusex = OneRabbit.RabbitSex.MALE;
             update();
+        }
+
+        private void commitRabbit(RP r,int id)
+        {
+            if (r.saved)
+                return;
+            RabNetEngRabbit rb = Engine.get().getRabbit(id==0?r.id:id);
+            RabNetEngRabbit par = null;
+            if (r.younger)
+                par = Engine.get().getRabbit(r.parent);
+            if (r.replaced)
+            {
+                int[] a = getAddress(r.curaddress);
+                if (r.younger)
+                    par.ReplaceYounger(rb.rid, a[0], a[1], a[2]);
+                else
+                    rb.replaceRabbit(a[0], a[1], a[2], r.address);
+            }
+            if (r.nusex != r.sex)
+                rb.setSex(r.nusex);
+            if (r.children.Count > 0)
+                foreach (RP c in r.children)
+                {
+                    int[] a=getAddress(r.curaddress);
+                    int cid = rb.clone(c.count, a[0],a[1],a[2]);
+                    commitRabbit(c, cid);
+                }
+            r.saved = true;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                foreach (RP r in rs)
+                    commitRabbit(r,0);
+                Close();
+            }
+            catch (ApplicationException ex)
+            {
+                MessageBox.Show("Ошибка " + ex.GetType().ToString() + ":" + ex.Message);
+            }
         }
 
     }

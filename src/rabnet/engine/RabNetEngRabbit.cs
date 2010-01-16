@@ -289,5 +289,16 @@ namespace rabnet
             eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, rid, 0, "", "", String.Format("возраст {0:d} всего {1:d}(умерло {2:d},притоптано {3:d}, подсажено{4:d})",age,atall,dead,killed,added));
             eng.db().countKids(id, dead, killed, added);
         }
+
+        public void setSex(OneRabbit.RabbitSex sex)
+        {
+            eng.db().setRabbitSex(id, sex);
+        }
+
+        public int clone(int count,int farm,int tier,int sec)
+        {
+           return eng.db().cloneRabbit(id, count, farm, tier, sec, OneRabbit.RabbitSex.VOID, 0);
+        }
+
     }
 }
