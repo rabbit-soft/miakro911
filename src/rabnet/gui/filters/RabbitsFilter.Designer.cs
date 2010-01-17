@@ -102,18 +102,18 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label6.Location = new System.Drawing.Point(6, 10);
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label6.Location = new System.Drawing.Point(6, 13);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(107, 15);
+            this.label6.Size = new System.Drawing.Size(94, 13);
             this.label6.TabIndex = 13;
             this.label6.Text = "Содержит строку";
             // 
             // tbName
             // 
-            this.tbName.Location = new System.Drawing.Point(119, 10);
+            this.tbName.Location = new System.Drawing.Point(110, 10);
             this.tbName.Name = "tbName";
-            this.tbName.Size = new System.Drawing.Size(100, 20);
+            this.tbName.Size = new System.Drawing.Size(110, 20);
             this.tbName.TabIndex = 12;
             // 
             // button1
@@ -597,7 +597,7 @@
             0,
             0});
             this.nudDateFrom.Minimum = new decimal(new int[] {
-            60,
+            30,
             0,
             0,
             0});
@@ -730,9 +730,9 @@
             // 
             this.button2.Location = new System.Drawing.Point(3, 260);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(30, 23);
+            this.button2.Size = new System.Drawing.Size(57, 23);
             this.button2.TabIndex = 1;
-            this.button2.Text = "OK";
+            this.button2.Text = "Готово";
             this.button2.UseVisualStyleBackColor = true;
             // 
             // cobBreeds
@@ -741,7 +741,7 @@
             this.cobBreeds.FormattingEnabled = true;
             this.cobBreeds.Items.AddRange(new object[] {
             "-=ВСЕ=-"});
-            this.cobBreeds.Location = new System.Drawing.Point(63, 10);
+            this.cobBreeds.Location = new System.Drawing.Point(60, 10);
             this.cobBreeds.Name = "cobBreeds";
             this.cobBreeds.Size = new System.Drawing.Size(150, 21);
             this.cobBreeds.TabIndex = 15;
@@ -759,10 +759,10 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label7.Location = new System.Drawing.Point(6, 11);
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label7.Location = new System.Drawing.Point(8, 13);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(51, 15);
+            this.label7.Size = new System.Drawing.Size(45, 13);
             this.label7.TabIndex = 19;
             this.label7.Text = "Порода";
             // 
