@@ -23,6 +23,7 @@ namespace rabnet
             nudCount1.Value = o.getIntOption(Options.OPT_ID.COUNT1);
             nudCount2.Value = o.getIntOption(Options.OPT_ID.COUNT2);
             nudCount3.Value = o.getIntOption(Options.OPT_ID.COUNT3);
+            nudBrides.Value = o.getIntOption(Options.OPT_ID.MAKE_BRIDE);
         }
 
         private void save()
@@ -33,6 +34,7 @@ namespace rabnet
             o.setOption(Options.OPT_ID.COUNT1, (int)nudCount1.Value);
             o.setOption(Options.OPT_ID.COUNT2, (int)nudCount2.Value);
             o.setOption(Options.OPT_ID.COUNT3, (int)nudCount3.Value);
+            o.setOption(Options.OPT_ID.MAKE_BRIDE, (int)nudBrides.Value);
         }
             
 

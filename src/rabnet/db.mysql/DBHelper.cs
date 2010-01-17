@@ -98,5 +98,10 @@ namespace rabnet
                 res+= b1[i] < b2[i] ? b1[i] : b2[i];
             return res;
         }
+
+        public static String escape(String str)
+        {
+            return MySqlHelper.EscapeString(str);
+        }
     }
 }

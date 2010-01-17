@@ -71,6 +71,7 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
+            this.usersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -93,6 +94,7 @@
             // 
             this.фермаToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.сменитьФермуToolStripMenuItem,
+            this.usersMenuItem,
             this.toolStripMenuItem1,
             this.выходToolStripMenuItem});
             this.фермаToolStripMenuItem.Name = "фермаToolStripMenuItem";
@@ -414,6 +416,13 @@
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
             // 
+            // usersMenuItem
+            // 
+            this.usersMenuItem.Name = "usersMenuItem";
+            this.usersMenuItem.Size = new System.Drawing.Size(293, 22);
+            this.usersMenuItem.Text = "Пользователи";
+            this.usersMenuItem.Click += new System.EventHandler(this.usersMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -480,6 +489,7 @@
         private System.Windows.Forms.ToolStripMenuItem зоныToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem paramsMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem usersMenuItem;
     }
 }
 

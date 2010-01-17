@@ -14,6 +14,7 @@ namespace mia_conv
             setOption("opt", "count1", p.pravka_1.value());
             setOption("opt", "count2", p.count_2.value());
             setOption("opt", "count3", p.count_3.value());
+            setOption("opt", "bride", p.make_brides.value());
             /* //OPTIONS
             setOption("opt","pervonest",p.pervonest.value());
             setOption("opt","kukunest",p.kukunest.value());
@@ -55,7 +56,6 @@ namespace mia_conv
             setOption("opt","sec_ignore",p.sec_ignore.value());
             setOption("opt","auto_kuk",p.auto_kuk.value());
             setOption("opt","jurta_sync",p.jurta_sync.value());
-            setOption("opt","make_brides",p.make_brides.value());
             setOption("opt","sell_mothers_with_babies",p.sell_mothers_with_babies.value());
             setOption("opt","imm_age_diff",p.imm_age_diff.value());
             setOption("opt","arctime",p.arctime.value());

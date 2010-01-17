@@ -15,6 +15,7 @@ namespace rabnet
     public interface IDataGetter
     {
         int getCount();
+        int getCount2();
         void stop();
         IData getNextItem();
     }
@@ -24,7 +25,7 @@ namespace rabnet
         void init(String connectionString);
         void close();
         //ENVIRONMENT
-        List<String> getUsers();
+        List<String> getUsers(bool wgroup,int uid);
         int checkUser(String name, String password);
         String getOption(String name, String subname, uint uid);
         void setOption(String name, String subname, uint uid, String value);
@@ -71,6 +72,11 @@ namespace rabnet
         ZooJobItem[] getCounts(int days);
         void setRabbitSex(int rid,OneRabbit.RabbitSex sex);
         int cloneRabbit(int rid, int count, int farm, int tier, int sec, OneRabbit.RabbitSex sex, int mom);
+        string userGroup(int uid);
+        void deleteUser(int uid);
+        void changeUser(int uid, string name, int group, string password, bool chpass);
+        bool hasUser(string name);
+        int addUser(string name, int group, string password);
     }
 
 }

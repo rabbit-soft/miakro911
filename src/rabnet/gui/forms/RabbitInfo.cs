@@ -23,6 +23,7 @@ namespace rabnet
         private TabPage suckersPage;
         private TabPage weightPage;
         private int curzone = 0;
+        private int mkbrides = 122;
         bool manual = true;
         public RabbitInfo()
         {
@@ -34,6 +35,7 @@ namespace rabnet
             weightPage = tabControl1.TabPages[5];
             while(tabControl1.TabPages.Count>1)
                 tabControl1.TabPages.RemoveAt(1);
+            mkbrides = Engine.get().brideAge();
         }
         public RabbitInfo(int id)
             : this()
@@ -111,7 +113,7 @@ namespace rabnet
         private void updateFemale()
         {
             label7.Text = "Статус: Девочка";
-            if (bdate.DaysValue >= 122)
+            if (bdate.DaysValue >= mkbrides)
                 label7.Text = "Статус: Невеста";
             if (rab.status == 1)
                 label7.Text = "Статус: Первокролка";

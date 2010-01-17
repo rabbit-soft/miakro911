@@ -63,6 +63,7 @@
     <Compile Include="Names.cs" />
     <Compile Include="Rabbit.cs" />
     <Compile Include="RabNetDataGetterBase.cs" />
+    <Compile Include="Users.cs" />
     <Compile Include="Youngers.cs" />
     <Compile Include="Zones.cs" />
     <Compile Include="ZooTeh.cs" />

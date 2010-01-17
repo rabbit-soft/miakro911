@@ -90,7 +90,7 @@ namespace rabnet
             {
                 get
                 {
-                    string res = "остается";
+                    string res = nucount>1?"остаются":"остается";
                     if (curaddress != address)
                     {
                         if (younger)

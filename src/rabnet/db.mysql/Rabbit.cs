@@ -101,7 +101,7 @@ namespace rabnet
                 if (!rd.IsDBNull(4))
                 if (rd.GetInt32("sukr") != 0)
                     r.fsex = "C-" + rd.GetInt32("sukr").ToString();
-                if (r.fage < 122)
+                if (r.fage < options.safeInt("brd", 122))
                     r.fstatus = shr ? "Дев" : "Девочка";
                 else
                     r.fstatus = shr ? "Нвс" : "Невеста";
@@ -270,8 +270,8 @@ FROM rabbits,tiers WHERE r_parent=0 AND r_tier=t_id ORDER BY name) c"+makeWhere(
         }
         public override string countQuery()
         {
-            return @"SELECT COUNT(*) FROM (SELECT r_sex,r_born,
-rabname(r_id,2) name,
+            return @"SELECT COUNT(*),SUM(r_group) FROM (SELECT r_sex,r_born,
+rabname(r_id,2) name,r_group,
 (SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight,
 r_status,r_flags,r_event_date,r_breed
  FROM rabbits WHERE r_parent=0) c"+makeWhere()+";";

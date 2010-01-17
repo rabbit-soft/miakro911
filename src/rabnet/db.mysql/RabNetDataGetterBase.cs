@@ -11,7 +11,7 @@ namespace rabnet
     {
         protected static ILog log = log4net.LogManager.GetLogger(typeof(RabNetDataGetterBase));
         protected int count;
-
+        protected int count2;
         protected int citem=0;
         protected MySqlConnection sql;
         protected MySqlDataReader rd;
@@ -30,6 +30,9 @@ namespace rabnet
             rd = cmd.ExecuteReader();
             rd.Read();
             count = (int)rd.GetInt32(0);
+            count2 = 0;
+            if (rd.FieldCount > 1)
+                count2 = rd.GetInt32(1);
             rd.Close();
             cmd.CommandText = getQuery();
             Debug("d_query:" + cmd.CommandText);
@@ -39,6 +42,10 @@ namespace rabnet
         {
             Debug("count = "+count.ToString());
             return count;
+        }
+        public int getCount2()
+        {
+            return count2;
         }
         public void stop()
         {

@@ -41,6 +41,7 @@ namespace rabnet
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            usersMenuItem.Visible = Engine.get().isAdmin();
             manflag = true;
             rabStatusBar1.setText(0, Engine.db().now().ToShortDateString());
             Text = Engine.get().farmName();
@@ -129,6 +130,12 @@ namespace rabnet
                 if (LoginForm.stop == false) LoginForm.stop = true;
                 e.Cancel = true;
             }   
+        }
+
+        private void usersMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!Engine.get().isAdmin()) return;
+            new UserForm().ShowDialog();
         }
 
     }

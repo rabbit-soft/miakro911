@@ -45,7 +45,7 @@
             this.comboBox1.Location = new System.Drawing.Point(12, 25);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(277, 21);
-            this.comboBox1.TabIndex = 0;
+            this.comboBox1.TabIndex = 1;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // label1
@@ -73,7 +73,7 @@
             this.comboBox2.Location = new System.Drawing.Point(12, 65);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(277, 21);
-            this.comboBox2.TabIndex = 3;
+            this.comboBox2.TabIndex = 2;
             this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
             // label3
@@ -90,9 +90,10 @@
             this.textBox1.Enabled = false;
             this.textBox1.Location = new System.Drawing.Point(12, 105);
             this.textBox1.Name = "textBox1";
-            this.textBox1.PasswordChar = '*';
             this.textBox1.Size = new System.Drawing.Size(277, 20);
-            this.textBox1.TabIndex = 5;
+            this.textBox1.TabIndex = 0;
+            this.textBox1.UseSystemPasswordChar = true;
+            this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             // 
             // button2
             // 
@@ -138,6 +139,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Выберите Базу Данных";
             this.TopMost = true;
+            this.Load += new System.EventHandler(this.LoginForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

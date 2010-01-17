@@ -18,12 +18,12 @@ namespace rabnet
         {
             InitializeComponent();
             log.Debug("inited");
-            readConfig();
         }
 
         public void readConfig()
         {
             ConfigurationManager.GetSection("rabnetds");
+            comboBox1.Items.Clear();
             foreach (RabnetConfigHandler.dataSource ds in RabnetConfigHandler.ds)
             {
                 comboBox1.Items.Add(ds.name);
@@ -39,6 +39,7 @@ namespace rabnet
         {
             if (comboBox1.SelectedIndex < 0)
                 return;
+            comboBox2.Focus();
             try
             {
                 RabnetConfigHandler.dataSource xs = RabnetConfigHandler.ds[comboBox1.SelectedIndex];
@@ -46,9 +47,11 @@ namespace rabnet
                 comboBox2.Items.Clear();
                 comboBox2.Enabled = false;
                 textBox1.Enabled = false;
-                List<String> usrs = Engine.get().db().getUsers();
+                List<String> usrs = Engine.db().getUsers(false,0);
                 if (usrs != null)
                 {
+                    comboBox2.Enabled = true;
+                    textBox1.Enabled = true;
                     foreach (String s in usrs)
                     {
                         comboBox2.Items.Add(s);
@@ -59,10 +62,10 @@ namespace rabnet
                             {
                                 textBox1.Text = xs.defpassword;
                             }
+                            textBox1.Focus();
+                            textBox1.SelectAll();
                         }
                     }
-                    comboBox2.Enabled = true;
-                    textBox1.Enabled = true;
                 }
                 else
                 {
@@ -73,6 +76,7 @@ namespace rabnet
             {
                 comboBox2.SelectedIndex = comboBox1.SelectedIndex = -1;
                 comboBox1.Text=comboBox2.Text=textBox1.Text = "";
+                comboBox1.Focus();
                 MessageBox.Show("Ошибка подключения " + ex.GetType().ToString() + ": " + ex.Message,"Ошибка подключения");
             }
         }
@@ -80,6 +84,8 @@ namespace rabnet
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             button2.Enabled=(comboBox2.Text!="");
+            textBox1.Text = "";
+            textBox1.Focus();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -92,6 +98,19 @@ namespace rabnet
             }
             MessageBox.Show("Неверное имя пользователя или пароль");
 
+        }
+
+        private void LoginForm_Load(object sender, EventArgs e)
+        {
+            readConfig();
+            textBox1.SelectAll();
+            textBox1.Focus();
+        }
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                button2.PerformClick();
         }
     }
 }

@@ -35,7 +35,7 @@ namespace rabnet
             close();
             fs = new FileStream(connectionString, FileMode.Open, FileAccess.ReadWrite);
         }
-        public List<String> getUsers()
+        public List<String> getUsers(bool wgroup,int uid)
         {
             return null;
         }
@@ -266,6 +266,31 @@ namespace rabnet
         }
 
         public int cloneRabbit(int rid, int count, int farm, int tier, int sec, OneRabbit.RabbitSex sex, int mom)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string userGroup(int uid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void deleteUser(int uid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void changeUser(int uid, string name, int group, string password, bool chpass)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool hasUser(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int addUser(string name, int group, string password)
         {
             throw new NotImplementedException();
         }

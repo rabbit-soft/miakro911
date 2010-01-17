@@ -127,6 +127,12 @@
     <Compile Include="forms\CountKids.Designer.cs">
       <DependentUpon>CountKids.cs</DependentUpon>
     </Compile>
+    <Compile Include="forms\DeadForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\DeadForm.Designer.cs">
+      <DependentUpon>DeadForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="forms\GenomView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -199,6 +205,18 @@
     <Compile Include="forms\ReplaceForm.Designer.cs">
       <DependentUpon>ReplaceForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="forms\UserForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\UserForm.Designer.cs">
+      <DependentUpon>UserForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\UserInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\UserInfoForm.Designer.cs">
+      <DependentUpon>UserInfoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="panels\BuildingsPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -260,6 +278,9 @@
     <EmbeddedResource Include="forms\CountKids.resx">
       <DependentUpon>CountKids.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="forms\DeadForm.resx">
+      <DependentUpon>DeadForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="forms\GenomView.resx">
       <DependentUpon>GenomView.cs</DependentUpon>
     </EmbeddedResource>
@@ -295,6 +316,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\ReplaceForm.resx">
       <DependentUpon>ReplaceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\UserForm.resx">
+      <DependentUpon>UserForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\UserInfoForm.resx">
+      <DependentUpon>UserInfoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="panels\BuildingsPanel.resx">
       <DependentUpon>BuildingsPanel.cs</DependentUpon>

@@ -217,7 +217,7 @@ namespace rabnet
         {
             if (sex != OneRabbit.RabbitSex.FEMALE)
                 throw new ExNotFemale(this);
-            if (age<30)
+            if (age<eng.brideAge())
                 throw new ExNotFucker(this);
             if (evdate != DateTime.MinValue)
                 throw new ExAlreadyFucked(this);

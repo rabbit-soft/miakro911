@@ -40,11 +40,14 @@
             this.nudCount1 = new System.Windows.Forms.NumericUpDown();
             this.nudCount2 = new System.Windows.Forms.NumericUpDown();
             this.nudCount3 = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.nudBrides = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.nudOkrol)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudVudvor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCount1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCount2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCount3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudBrides)).BeginInit();
             this.SuspendLayout();
             // 
             // nudOkrol
@@ -177,11 +180,39 @@
             0,
             0});
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(106, 188);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(123, 13);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "Возведение в невесты";
+            // 
+            // nudBrides
+            // 
+            this.nudBrides.Location = new System.Drawing.Point(252, 186);
+            this.nudBrides.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nudBrides.Name = "nudBrides";
+            this.nudBrides.Size = new System.Drawing.Size(74, 20);
+            this.nudBrides.TabIndex = 13;
+            this.nudBrides.Value = new decimal(new int[] {
+            122,
+            0,
+            0,
+            0});
+            // 
             // OptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(410, 402);
+            this.Controls.Add(this.nudBrides);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.nudCount3);
             this.Controls.Add(this.nudCount2);
             this.Controls.Add(this.nudCount1);
@@ -207,6 +238,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudCount1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCount2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCount3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudBrides)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -226,5 +258,7 @@
         private System.Windows.Forms.NumericUpDown nudCount1;
         private System.Windows.Forms.NumericUpDown nudCount2;
         private System.Windows.Forms.NumericUpDown nudCount3;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown nudBrides;
     }
 }

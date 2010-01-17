@@ -57,24 +57,14 @@ namespace rabnet
             return c.ExecuteReader();
         }
 
-        public List<String> getUsers()
+        public List<String> getUsers(bool wgroup,int uid)
         {
-            MySqlDataReader rd = reader("SELECT u_name FROM users;");
-            List<String> res=new List<string>();
-            while (rd.Read())
-                res.Add(rd.GetString(0));
-            rd.Close();
-            return res;
+            return new Users(sql).getUsers(wgroup,uid);
         }
 
         public int checkUser(string name, string password)
         {
-            MySqlDataReader rd = reader("SELECT u_id FROM users WHERE u_name='" + name + "' AND u_password=MD5('" + password + "');");
-            int res = 0;
-            if (rd.Read())
-                res = rd.GetInt32(0);
-            rd.Close();
-            return res;
+            return new Users(sql).checkUser(name, password);
         }
 
         public string getOption(string name, string subname, uint uid)
@@ -329,6 +319,31 @@ namespace rabnet
         public int cloneRabbit(int rid, int count, int farm, int tier, int sec, OneRabbit.RabbitSex sex, int mom)
         {
             return RabbitGetter.cloneRabbit(sql, rid, count, farm, tier, sec, sex, mom);
+        }
+
+        public string userGroup(int uid)
+        {
+            return new Users(sql).getUserGroup(uid);
+        }
+
+        public void deleteUser(int uid)
+        {
+            new Users(sql).deleteUser(uid);
+        }
+
+        public void changeUser(int uid, string name, int group, string password, bool chpass)
+        {
+            new Users(sql).updateUser(uid, name, group, password, chpass);
+        }
+
+        public bool hasUser(string name)
+        {
+            return new Users(sql).hasUser(name);
+        }
+
+        public int addUser(string name, int group, string password)
+        {
+            return new Users(sql).addUser(name, group, password);
         }
 
         #endregion

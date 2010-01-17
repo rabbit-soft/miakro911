@@ -13,6 +13,7 @@ namespace rabnet
         private IRabNetDataLayer data2 = null;
         private ILog log = null;
         private int uid = 0;
+        private string group = "none";
         private String uname;
         private String farmname;
         private Options opts=null;
@@ -59,6 +60,7 @@ namespace rabnet
             log.DebugFormat("check uid {0:d} for farm {1:s}", uid,farmName);
             if (uid != 0)
             {
+                group = db().userGroup(uid);
                 uname = name;
                 farmname = farmName;
             }
@@ -103,6 +105,47 @@ namespace rabnet
         public RabNetEngBuilding getBuilding(int tier)
         {
             return new RabNetEngBuilding(tier, this);
+        }
+
+        public int brideAge()
+        {
+            return options().getIntOption(Options.OPT_ID.MAKE_BRIDE);
+        }
+
+        public bool isAdmin()
+        {
+            return group == "admin";
+        }
+
+        public void delUser(int uid)
+        {
+            if (uid == uId())
+                throw new ApplicationException("Нельзя удалить себя.");
+            if (!isAdmin())
+                throw new ApplicationException("Нет прав доступа.");
+            db().deleteUser(uid);            
+        }
+
+        public void updateUser(int uid, string name, int group, string password, bool chpass)
+        {
+            if (uid == uId() && group != 0)
+                throw new ApplicationException("Нельзя сменить группу администратора.");
+            if (name == "")
+                throw new ApplicationException("Пустое имя.");
+            if (!isAdmin())
+                throw new ApplicationException("Нет прав доступа.");
+            db().changeUser(uid, name, group, password, chpass);
+        }
+
+        public void addUser(string name, int group, string password)
+        {
+            if (name == "")
+                throw new ApplicationException("Пустое имя.");
+            if (db().hasUser(name))
+                throw new ApplicationException("Пользователь уже существует.");
+            if (!isAdmin())
+                throw new ApplicationException("Нет прав доступа.");
+            db().addUser(name, group, password);
         }
     }
 }
