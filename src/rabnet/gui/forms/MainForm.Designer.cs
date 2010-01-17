@@ -70,8 +70,8 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.rabStatusBar1 = new rabnet.RabStatusBar();
             this.usersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rabStatusBar1 = new rabnet.RabStatusBar();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -176,6 +176,7 @@
             this.забоиПривесыСписанияToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
             this.забоиПривесыСписанияToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
             this.забоиПривесыСписанияToolStripMenuItem.Text = "Забои, привесы, списания";
+            this.забоиПривесыСписанияToolStripMenuItem.Click += new System.EventHandler(this.забоиПривесыСписанияToolStripMenuItem_Click);
             // 
             // внеплановыеПересадкиToolStripMenuItem
             // 
@@ -405,6 +406,13 @@
             this.panel1.Size = new System.Drawing.Size(906, 423);
             this.panel1.TabIndex = 7;
             // 
+            // usersMenuItem
+            // 
+            this.usersMenuItem.Name = "usersMenuItem";
+            this.usersMenuItem.Size = new System.Drawing.Size(293, 22);
+            this.usersMenuItem.Text = "Пользователи";
+            this.usersMenuItem.Click += new System.EventHandler(this.usersMenuItem_Click);
+            // 
             // rabStatusBar1
             // 
             this.rabStatusBar1.filterPanel = null;
@@ -415,13 +423,6 @@
             this.rabStatusBar1.Size = new System.Drawing.Size(914, 23);
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
-            // 
-            // usersMenuItem
-            // 
-            this.usersMenuItem.Name = "usersMenuItem";
-            this.usersMenuItem.Size = new System.Drawing.Size(293, 22);
-            this.usersMenuItem.Text = "Пользователи";
-            this.usersMenuItem.Click += new System.EventHandler(this.usersMenuItem_Click);
             // 
             // MainForm
             // 

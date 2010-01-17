@@ -77,6 +77,7 @@ namespace rabnet
         void changeUser(int uid, string name, int group, string password, bool chpass);
         bool hasUser(string name);
         int addUser(string name, int group, string password);
+        IDataGetter getDead(Filters filters);
     }
 
 }

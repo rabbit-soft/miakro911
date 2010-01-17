@@ -32,7 +32,7 @@ namespace rabnet
             count = (int)rd.GetInt32(0);
             count2 = 0;
             if (rd.FieldCount > 1)
-                count2 = rd.GetInt32(1);
+                count2 = rd.IsDBNull(1)?0:rd.GetInt32(1);
             rd.Close();
             cmd.CommandText = getQuery();
             Debug("d_query:" + cmd.CommandText);

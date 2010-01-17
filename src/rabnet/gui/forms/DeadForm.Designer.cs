@@ -28,30 +28,99 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.rabStatusBar1 = new rabnet.RabStatusBar();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
+            this.rsb = new rabnet.RabStatusBar();
             this.SuspendLayout();
             // 
-            // rabStatusBar1
+            // listView1
             // 
-            this.rabStatusBar1.filterPanel = null;
-            this.rabStatusBar1.Location = new System.Drawing.Point(0, 404);
-            this.rabStatusBar1.Name = "rabStatusBar1";
-            this.rabStatusBar1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.rabStatusBar1.Size = new System.Drawing.Size(725, 23);
-            this.rabStatusBar1.TabIndex = 0;
-            this.rabStatusBar1.Text = "rabStatusBar1";
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3,
+            this.columnHeader4,
+            this.columnHeader5,
+            this.columnHeader6,
+            this.columnHeader7,
+            this.columnHeader8});
+            this.listView1.FullRowSelect = true;
+            this.listView1.GridLines = true;
+            this.listView1.Location = new System.Drawing.Point(12, 12);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(754, 448);
+            this.listView1.TabIndex = 1;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Имя";
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Дата Списания";
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Возраст";
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Группа";
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Порода";
+            // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "Адрес";
+            this.columnHeader6.Width = 104;
+            // 
+            // columnHeader7
+            // 
+            this.columnHeader7.Text = "Причина списания";
+            // 
+            // columnHeader8
+            // 
+            this.columnHeader8.Text = "Заметки";
+            // 
+            // rsb
+            // 
+            this.rsb.filterPanel = null;
+            this.rsb.Location = new System.Drawing.Point(0, 463);
+            this.rsb.Name = "rsb";
+            this.rsb.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.rsb.Size = new System.Drawing.Size(778, 23);
+            this.rsb.TabIndex = 0;
+            this.rsb.Text = "rabStatusBar1";
+            this.rsb.itemGet += new rabnet.RabStatusBar.RSBItemEventHandler(this.rsb_itemGet);
+            this.rsb.prepareGet += new rabnet.RabStatusBar.RSBPrepareEventHandler(this.rsb_prepareGet);
             // 
             // DeadForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(725, 427);
-            this.Controls.Add(this.rabStatusBar1);
+            this.ClientSize = new System.Drawing.Size(778, 486);
+            this.Controls.Add(this.listView1);
+            this.Controls.Add(this.rsb);
             this.MinimizeBox = false;
             this.Name = "DeadForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Списания";
+            this.Activated += new System.EventHandler(this.DeadForm_Activated);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -59,6 +128,15 @@
 
         #endregion
 
-        private RabStatusBar rabStatusBar1;
+        private RabStatusBar rsb;
+        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.ColumnHeader columnHeader6;
+        private System.Windows.Forms.ColumnHeader columnHeader7;
+        private System.Windows.Forms.ColumnHeader columnHeader8;
     }
 }

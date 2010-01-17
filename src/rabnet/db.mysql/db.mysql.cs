@@ -346,6 +346,11 @@ namespace rabnet
             return new Users(sql).addUser(name, group, password);
         }
 
+        public IDataGetter getDead(Filters filters)
+        {
+            return new Deads(sql, filters);
+        }
+
         #endregion
     }
 }

@@ -295,6 +295,11 @@ namespace rabnet
             throw new NotImplementedException();
         }
 
+        public IDataGetter getDead(Filters filters)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

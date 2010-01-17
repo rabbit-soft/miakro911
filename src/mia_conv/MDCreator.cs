@@ -720,12 +720,12 @@ namespace mia_conv
                     if (address[j] == 'в') area = 2;
                     if (address[j] == 'г') area = 3;
                 }
-                c.CommandText = String.Format(@"INSERT INTO rabbits(r_sex,r_name,r_surname,r_secname,r_notes,r_group,r_born,r_farm,r_tier_id,r_tier,r_area) 
-VALUES('{0:s}',{1:d},{2:d},{3:d},'{4:s}',{5:d},{6:s}-INTERVAL {7:d} DAY,{8:d},{9:d},{10:d},{11:d});",
+                c.CommandText = String.Format(@"INSERT INTO rabbits(r_sex,r_name,r_surname,r_secname,r_notes,r_group,r_born,r_farm,r_tier_id,r_tier,r_area,r_breed) 
+VALUES('{0:s}',{1:d},{2:d},{3:d},'{4:s}',{5:d},{6:s}-INTERVAL {7:d} DAY,{8:d},{9:d},{10:d},{11:d},1);",
                                   sex,nid,suid,seid,notes,group,convdt(ddt),age,farm,tier_id,tier,area);
                 c.ExecuteNonQuery();
                 uint lid = (uint)c.LastInsertedId;
-                c.CommandText = "CALL killRabbitDate("+lid.ToString()+","+reason.ToString()+",'списан из старой программы',"+convdt(ddt)+");";
+                c.CommandText = "CALL killRabbitDate("+lid.ToString()+",1,'',"+convdt(ddt)+");";
                 c.ExecuteNonQuery();
             }
         }

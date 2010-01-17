@@ -138,5 +138,10 @@ namespace rabnet
             new UserForm().ShowDialog();
         }
 
+        private void забоиПривесыСписанияToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new DeadForm().ShowDialog();
+        }
+
     }
 }

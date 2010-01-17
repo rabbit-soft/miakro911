@@ -91,6 +91,12 @@
     <Compile Include="filters\BuildingsFilter.Designer.cs">
       <DependentUpon>BuildingsFilter.cs</DependentUpon>
     </Compile>
+    <Compile Include="filters\DeadFilter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="filters\DeadFilter.Designer.cs">
+      <DependentUpon>DeadFilter.cs</DependentUpon>
+    </Compile>
     <Compile Include="filters\FilterPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -262,6 +268,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="filters\BuildingsFilter.resx">
       <DependentUpon>BuildingsFilter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="filters\DeadFilter.resx">
+      <DependentUpon>DeadFilter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="filters\RabbitsFilter.resx">
       <DependentUpon>RabbitsFilter.cs</DependentUpon>

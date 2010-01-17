@@ -332,9 +332,18 @@ CREATE TABLE dead(
 	r_last_fuck_okrol DATETIME,
 	r_lost_babies INTEGER UNSIGNED,
 	r_overall_babies INTEGER UNSIGNED,
+	UNIQUE(r_id),
+	KEY(r_parent),
+	KEY(r_sex),
+	KEY(r_name),KEY(r_surname),KEY(r_secname),
+	KEY(r_farm),KEY(r_tier),
+	KEY(r_group),
+	KEY(r_breed),
+	KEY(r_zone),
+	KEY(r_status),
+	KEY(r_born),
 	KEY(d_date),
-	KEY(d_reason),
-	KEY(r_id)
+	KEY(d_reason)
 );
 
 DROP TABLE IF EXISTS filters;
@@ -375,9 +384,12 @@ CREATE TABLE logs(
 
 #DATA
 
+INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','1');
+
 UPDATE tiers SET t_busy2=NULL,t_busy3=NULL,t_busy4=NULL WHERE t_type='female';
 UPDATE tiers SET t_busy3=NULL,t_busy4=NULL WHERE t_type='dfemale' OR t_type='jurta' OR t_type='vertep' OR t_type='barin' OR t_type='cabin';
 UPDATE tiers SET t_busy4=NULL WHERE t_type='complex';
+INSERT INTO deadreasons(d_name) VALUES('Списан из старой программы');
 INSERT INTO logtypes(l_name,l_params) VALUES
 ('привоз','$r в $p'),
 ('пересадка','$r из $a в $p'),
@@ -461,6 +473,71 @@ BEGIN
   RETURN(res);
 END |
 
+DROP FUNCTION IF EXISTS deadname |
+CREATE FUNCTION deadname (rid INTEGER UNSIGNED ,sur INTEGER) RETURNS CHAR(150)
+BEGIN
+  DECLARE n,sr,sc,sx,ok CHAR(50);
+  DECLARE res CHAR(150);
+  DECLARE c INT;
+  IF(rid=0 OR rid IS NULL) THEN
+    return '';
+  END IF;
+  SELECT
+  (SELECT n_name FROM names WHERE n_id=r_name) name,
+  (SELECT n_surname FROM names WHERE n_id=r_surname) surname,
+  (SELECT n_surname FROM names WHERE n_id=r_secname) secname,
+  r_group,r_sex,r_okrol INTO n,sr,sc,c,sx,ok FROM dead WHERE r_id=rid;
+  SET res='';
+  IF (n IS NOT NULL) THEN
+	SET res=n;
+  END IF;
+  IF (sur>0 AND NOT sr IS NULL) THEN
+	IF (res='') THEN
+		SET res=sr;
+	ELSE
+		SET res=CONCAT_WS(' ',res,sr);
+	END IF;
+    if (c>1) then
+      SET res=CONCAT(res,'ы');
+    else
+      if (sx='female') then SET res=CONCAT(res,'а'); end if;
+    end if;
+  END IF;
+  IF (sur>1 AND NOT sc IS NULL) THEN
+    SET res=CONCAT_WS('-',res,sc);
+    if (c>1) then
+      SET res=CONCAT(res,'ы');
+    else
+      if (sx='female') then SET res=CONCAT(res,'а'); end if;
+    end if;
+  END IF;
+  IF(n IS NULL) THEN
+	SET res=CONCAT_WS('-',res,ok);
+  END IF;
+  RETURN(res);
+END |
+
+
+DROP FUNCTION IF EXISTS isdead |
+CREATE FUNCTION isdead(rid INTEGER UNSIGNED) RETURNS BOOL
+BEGIN
+	DECLARE cnt INTEGER UNSIGNED;
+	SELECT COUNT(r_id) INTO cnt FROM rabbits WHERE r_id=rid;
+	IF (cnt=0) THEN
+		RETURN(1);
+	END IF;
+	RETURN(0);
+END |
+
+DROP FUNCTION IF EXISTS anyname |
+CREATE FUNCTION anyname(rid INTEGER UNSIGNED, sur INTEGER) RETURNS CHAR(150)
+BEGIN
+	IF (isdead(rid)) THEN
+		RETURN(deadname(rid,sur));
+	END IF;
+	RETURN(rabname(rid,sur));
+END |
+
 DROP FUNCTION IF EXISTS rabplace |
 CREATE FUNCTION rabplace(rid INTEGER UNSIGNED) RETURNS char(150)
 BEGIN
@@ -469,6 +546,18 @@ BEGIN
   SELECT r_farm,r_tier_id,r_area,t_type,t_delims,t_nest
   INTO i1,i2,i3,s1,s2,s3
   FROM rabbits,tiers WHERE r_id=rid AND t_id=r_tier;
+  SET res=CONCAT_WS(',',i1,i2,i3,s1,s2,s3);
+  RETURN(res);
+END |
+
+DROP FUNCTION IF EXISTS deadplace |
+CREATE FUNCTION deadplace(rid INTEGER UNSIGNED) RETURNS char(150)
+BEGIN
+  DECLARE res VARCHAR(150);
+  DECLARE i1,i2,i3,s1,s2,s3 VARCHAR(20);
+  SELECT r_farm,r_tier_id,r_area,t_type,t_delims,t_nest
+  INTO i1,i2,i3,s1,s2,s3
+  FROM dead,tiers,minifarms WHERE r_id=rid AND ((m_upper=t_id AND r_tier_id<>1) OR (m_lower=t_id AND r_tier_id=1)) AND m_id=r_farm;
   SET res=CONCAT_WS(',',i1,i2,i3,s1,s2,s3);
   RETURN(res);
 END |
@@ -492,6 +581,22 @@ CREATE PROCEDURE killRabbit (rid INTEGER UNSIGNED,reason INTEGER UNSIGNED,notes 
 BEGIN
   CALL killRabbitDate(rid,reason,notes,NOW());
 END |
+
+
+DROP PROCEDURE IF EXISTS ressurectRabbit |
+CREATE PROCEDURE resurrectRabbit(rid INTEGER UNSIGNED)
+BEGIN
+	INSERT INTO rabbits(r_id,r_sex,r_bon,r_name,r_surname,r_secname,
+ r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,
+ r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies,r_tier)
+ SELECT r_id,r_sex,r_bon,r_name,r_surname,r_secname,
+ r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,
+ r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies,
+ (SELECT t_id FROM tiers,minifarms WHERE m_id=r_farm AND ((m_upper=t_id AND r_tier_id<>1)OR(m_lower=t_id AND r_rier_id=1)))
+ FROM dead WHERE r_id=rid;
+ DELETE FROM dead WHERE r_id=rid;
+END |
+
 #DELIMITER ;
 
 ##TEST_DATA do not remove this line
