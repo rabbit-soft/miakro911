@@ -66,6 +66,11 @@
             // 
             // nudMax
             // 
+            this.nudMax.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             this.nudMax.Location = new System.Drawing.Point(142, 231);
             this.nudMax.Maximum = new decimal(new int[] {
             10000,

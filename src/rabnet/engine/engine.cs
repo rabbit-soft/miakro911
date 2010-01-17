@@ -147,5 +147,10 @@ namespace rabnet
                 throw new ApplicationException("Нет прав доступа.");
             db().addUser(name, group, password);
         }
+
+        public void resurrect(int rid)
+        {
+            db().resurrect(rid);
+        }
     }
 }

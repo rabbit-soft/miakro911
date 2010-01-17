@@ -300,6 +300,11 @@ namespace rabnet
             throw new NotImplementedException();
         }
 
+        public void resurrect(int rid)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

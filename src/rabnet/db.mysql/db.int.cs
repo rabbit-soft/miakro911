@@ -78,6 +78,7 @@ namespace rabnet
         bool hasUser(string name);
         int addUser(string name, int group, string password);
         IDataGetter getDead(Filters filters);
+        void resurrect(int rid);
     }
 
 }

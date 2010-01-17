@@ -141,6 +141,7 @@ namespace rabnet
         private void забоиПривесыСписанияToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new DeadForm().ShowDialog();
+            rabStatusBar1.run();
         }
 
     }

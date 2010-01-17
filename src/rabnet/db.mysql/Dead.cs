@@ -46,7 +46,7 @@ namespace rabnet
         {
             string wh = "";
             if (options.safeValue("nm") != "")
-                wh = addWhereAnd(wh, "rabname(r_id,2) like '%"+options.safeValue("nm")+"%'");
+                wh = addWhereAnd(wh, "deadname(r_id,2) like '%"+options.safeValue("nm")+"%'");
             if (wh == "")
                 return "";
             return " WHERE "+wh;
@@ -60,13 +60,44 @@ TO_DAYS(d_date)-TO_DAYS(r_born) age,d_date,
 (SELECT b_name FROM breeds WHERE b_id=dead.r_breed) breed,
 (SELECT d_name FROM deadreasons WHERE d_id=dead.d_reason) reason,
 d_notes,r_group
-FROM dead{0:s} LIMIT {1:d};", makeWhere(),max);
+FROM dead{0:s} ORDER BY d_date DESC LIMIT {1:d};", makeWhere(),max);
         }
 
         public override string countQuery()
         {
             return String.Format(@"SELECT COUNT(*) FROM (SELECT r_id,deadname(r_id,2),d_date,TO_DAYS(d_date)-TO_DAYS(r_born) age 
 FROM dead{0:s} LIMIT {1:d}) c;", makeWhere(), options.safeInt("max", 1000));
+        }
+    }
+
+    class DeadHelper
+    {
+        private MySqlConnection sql=null;
+        public DeadHelper(MySqlConnection sql)
+        {
+            this.sql = sql;
+        }
+
+        public void resurrect(int rabbit)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"CALL resurrectRabbit({0:d});",rabbit), sql);
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = String.Format("SELECT r_id,r_name,r_tier,r_farm,r_tier_id,r_area FROM rabbits WHERE r_id={0:d}",rabbit);
+            MySqlDataReader rd=cmd.ExecuteReader();
+            int name = 0;
+            int tid = 0;
+            int sec = 0;
+            if (rd.Read())
+            {
+                name = rd.GetInt32("r_name");
+                tid = rd.GetInt32("r_tier");
+                sec = rd.GetInt32("r_area");
+            }
+            rd.Close();
+            cmd.CommandText = String.Format(@"UPDATE names SET n_use={0:d},n_block_date=NULL WHERE n_id={0:d};",name);
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = String.Format(@"UPDATE tiers SET t_busy{0:d}={1:d} WHERE t_id={2:d};",sec+1,rabbit,tid);
+            cmd.ExecuteNonQuery();
         }
     }
 }

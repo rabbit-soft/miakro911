@@ -351,6 +351,11 @@ namespace rabnet
             return new Deads(sql, filters);
         }
 
+        public void resurrect(int rid)
+        {
+            new DeadHelper(sql).resurrect(rid);
+        }
+
         #endregion
     }
 }

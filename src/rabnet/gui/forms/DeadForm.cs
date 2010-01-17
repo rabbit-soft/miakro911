@@ -56,5 +56,15 @@ namespace rabnet
         {
             rsb.run();
         }
+
+        private void восстановитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem li in listView1.SelectedItems)
+            {
+                int rid = (int)li.Tag;
+                Engine.get().resurrect(rid);
+            }
+            rsb.run();
+        }
     }
 }

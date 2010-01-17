@@ -567,10 +567,10 @@ CREATE PROCEDURE killRabbitDate (rid INTEGER UNSIGNED,reason INTEGER UNSIGNED,no
 BEGIN
   INSERT INTO dead(d_date,d_reason,d_notes,r_id,r_sex,r_bon,r_name,r_surname,r_secname,
  r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,
- r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies)
+ r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies,r_parent,r_father,r_mother)
 SELECT ddate,reason,notes,r_id,r_sex,r_bon,r_name,r_surname,r_secname,
  r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,
- r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies
+ r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies,r_parent,r_father,r_mother
 FROM rabbits WHERE r_id=rid;
 DELETE FROM rabbits WHERE r_id=rid;
 END |
@@ -588,11 +588,11 @@ CREATE PROCEDURE resurrectRabbit(rid INTEGER UNSIGNED)
 BEGIN
 	INSERT INTO rabbits(r_id,r_sex,r_bon,r_name,r_surname,r_secname,
  r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,
- r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies,r_tier)
+ r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies,r_parent,r_father,r_mother)
  SELECT r_id,r_sex,r_bon,r_name,r_surname,r_secname,
  r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,
  r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies,
- (SELECT t_id FROM tiers,minifarms WHERE m_id=r_farm AND ((m_upper=t_id AND r_tier_id<>1)OR(m_lower=t_id AND r_rier_id=1)))
+ r_parent,r_father,r_mother
  FROM dead WHERE r_id=rid;
  DELETE FROM dead WHERE r_id=rid;
 END |

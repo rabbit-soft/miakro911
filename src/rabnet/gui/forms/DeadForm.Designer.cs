@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
@@ -37,7 +38,10 @@
             this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.восстановитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rsb = new rabnet.RabStatusBar();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // listView1
@@ -54,6 +58,7 @@
             this.columnHeader6,
             this.columnHeader7,
             this.columnHeader8});
+            this.listView1.ContextMenuStrip = this.contextMenuStrip1;
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(12, 12);
@@ -96,6 +101,20 @@
             // 
             this.columnHeader8.Text = "Заметки";
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.восстановитьToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(156, 48);
+            // 
+            // восстановитьToolStripMenuItem
+            // 
+            this.восстановитьToolStripMenuItem.Name = "восстановитьToolStripMenuItem";
+            this.восстановитьToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.восстановитьToolStripMenuItem.Text = "Восстановить";
+            this.восстановитьToolStripMenuItem.Click += new System.EventHandler(this.восстановитьToolStripMenuItem_Click);
+            // 
             // rsb
             // 
             this.rsb.filterPanel = null;
@@ -121,6 +140,7 @@
             this.ShowInTaskbar = false;
             this.Text = "Списания";
             this.Activated += new System.EventHandler(this.DeadForm_Activated);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -138,5 +158,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader6;
         private System.Windows.Forms.ColumnHeader columnHeader7;
         private System.Windows.Forms.ColumnHeader columnHeader8;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem восстановитьToolStripMenuItem;
     }
 }
