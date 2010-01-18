@@ -583,7 +583,7 @@ BEGIN
 END |
 
 
-DROP PROCEDURE IF EXISTS ressurectRabbit |
+DROP PROCEDURE IF EXISTS resurrectRabbit |
 CREATE PROCEDURE resurrectRabbit(rid INTEGER UNSIGNED)
 BEGIN
 	INSERT INTO rabbits(r_id,r_sex,r_bon,r_name,r_surname,r_secname,
