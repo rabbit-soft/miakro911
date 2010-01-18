@@ -34,16 +34,13 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.фермаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.сменитьФермуToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.usersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.видToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.учетToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.блокнотToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.фильтрToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.параметрыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.забоиПривесыСписанияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.внеплановыеПересадкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.архивToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.namesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.breedsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,7 +67,6 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.usersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -109,6 +105,13 @@
             this.сменитьФермуToolStripMenuItem.Text = "Сменить ферму/пользователя ...";
             this.сменитьФермуToolStripMenuItem.Click += new System.EventHandler(this.ChangeFarmMenuItem_Click);
             // 
+            // usersMenuItem
+            // 
+            this.usersMenuItem.Name = "usersMenuItem";
+            this.usersMenuItem.Size = new System.Drawing.Size(293, 22);
+            this.usersMenuItem.Text = "Пользователи";
+            this.usersMenuItem.Click += new System.EventHandler(this.usersMenuItem_Click);
+            // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
@@ -125,13 +128,9 @@
             // видToolStripMenuItem
             // 
             this.видToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.учетToolStripMenuItem,
-            this.блокнотToolStripMenuItem,
             this.фильтрToolStripMenuItem,
             this.параметрыToolStripMenuItem,
             this.забоиПривесыСписанияToolStripMenuItem,
-            this.внеплановыеПересадкиToolStripMenuItem,
-            this.архивToolStripMenuItem,
             this.toolStripMenuItem2,
             this.namesMenuItem,
             this.breedsMenuItem,
@@ -139,20 +138,6 @@
             this.видToolStripMenuItem.Name = "видToolStripMenuItem";
             this.видToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
             this.видToolStripMenuItem.Text = "Вид";
-            // 
-            // учетToolStripMenuItem
-            // 
-            this.учетToolStripMenuItem.Name = "учетToolStripMenuItem";
-            this.учетToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F4;
-            this.учетToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
-            this.учетToolStripMenuItem.Text = "Учет";
-            // 
-            // блокнотToolStripMenuItem
-            // 
-            this.блокнотToolStripMenuItem.Name = "блокнотToolStripMenuItem";
-            this.блокнотToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
-            this.блокнотToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
-            this.блокнотToolStripMenuItem.Text = "Блокнот";
             // 
             // фильтрToolStripMenuItem
             // 
@@ -177,20 +162,6 @@
             this.забоиПривесыСписанияToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
             this.забоиПривесыСписанияToolStripMenuItem.Text = "Забои, привесы, списания";
             this.забоиПривесыСписанияToolStripMenuItem.Click += new System.EventHandler(this.забоиПривесыСписанияToolStripMenuItem_Click);
-            // 
-            // внеплановыеПересадкиToolStripMenuItem
-            // 
-            this.внеплановыеПересадкиToolStripMenuItem.Name = "внеплановыеПересадкиToolStripMenuItem";
-            this.внеплановыеПересадкиToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-            this.внеплановыеПересадкиToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
-            this.внеплановыеПересадкиToolStripMenuItem.Text = "Внеплановые пересадки";
-            // 
-            // архивToolStripMenuItem
-            // 
-            this.архивToolStripMenuItem.Name = "архивToolStripMenuItem";
-            this.архивToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F3)));
-            this.архивToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
-            this.архивToolStripMenuItem.Text = "Архив";
             // 
             // toolStripMenuItem2
             // 
@@ -406,13 +377,6 @@
             this.panel1.Size = new System.Drawing.Size(906, 423);
             this.panel1.TabIndex = 7;
             // 
-            // usersMenuItem
-            // 
-            this.usersMenuItem.Name = "usersMenuItem";
-            this.usersMenuItem.Size = new System.Drawing.Size(293, 22);
-            this.usersMenuItem.Text = "Пользователи";
-            this.usersMenuItem.Click += new System.EventHandler(this.usersMenuItem_Click);
-            // 
             // rabStatusBar1
             // 
             this.rabStatusBar1.filterPanel = null;
@@ -456,13 +420,9 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem выходToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem видToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem учетToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem блокнотToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem фильтрToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem параметрыToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem забоиПривесыСписанияToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem внеплановыеПересадкиToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem архивToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem namesMenuItem;
         private System.Windows.Forms.ToolStripMenuItem breedsMenuItem;

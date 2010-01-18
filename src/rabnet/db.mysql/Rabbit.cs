@@ -84,7 +84,7 @@ namespace rabnet
             if (sx == "void")
             {
                 r.fstatus = shr ? "Пдс" : "Подсосные";
-                if (Buildings.hasnest(rd.GetString("t_type"),rd.GetInt32("r_area"),rd.GetString("t_nest")))
+                if (Buildings.hasnest(rd.GetString("place")))
                     r.fstatus = shr ? "Гнд" : "Гнездовые";
             }
             else if (sx == "male")
@@ -99,8 +99,7 @@ namespace rabnet
             else
             {
                 if (!rd.IsDBNull(4))
-                if (rd.GetInt32("sukr") != 0)
-                    r.fsex = "C-" + rd.GetInt32("sukr").ToString();
+                   r.fsex = "C-" + rd.GetInt32("sukr").ToString();
                 if (r.fage < options.safeInt("brd", 122))
                     r.fstatus = shr ? "Дев" : "Девочка";
                 else
@@ -128,8 +127,9 @@ namespace rabnet
             r.frate = rd.GetInt32("r_rate");
             r.fcls=Rabbits.getBon(rd.GetString("r_bon"),shr);
             r.fnotes = rd.GetString("r_notes");
-            r.faddress = Buildings.fullRName(rd.GetInt32("r_farm"), rd.GetInt32("r_tier_id"), rd.GetInt32("r_area"),
-                rd.GetString("t_type"), rd.GetString("t_delims"), shr, options.safeBool("sht"), options.safeBool("sho"));
+            r.faddress = Buildings.fullPlaceName(rd.GetString("place"), shr, options.safeBool("sht"), options.safeBool("sho"));
+//                Buildings.fullRName(rd.GetInt32("r_farm"), rd.GetInt32("r_tier_id"), rd.GetInt32("r_area"),
+  //              rd.GetString("t_type"), rd.GetString("t_delims"), shr, options.safeBool("sht"), options.safeBool("sho"));
             return r;
         }
 
@@ -256,18 +256,21 @@ r_group,
 (SELECT AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) aage,
 r_rate,
 r_bon,
-r_farm,
-r_area,
-r_tier_id,
-t_type,
-t_delims,
-t_nest,
+rabplace(r_id) place,
 r_notes,
 r_born,
 r_event_date,
 r_breed
-FROM rabbits,tiers WHERE r_parent=0 AND r_tier=t_id ORDER BY name) c"+makeWhere()+";");
+FROM rabbits WHERE r_parent=0 ORDER BY name) c"+makeWhere()+";");
         }
+        /*
+        r_farm,
+        r_area,
+        r_tier_id,
+        t_type,
+        t_delims,
+        t_nest,
+        */
         public override string countQuery()
         {
             return @"SELECT COUNT(*),SUM(r_group) FROM (SELECT r_sex,r_born,

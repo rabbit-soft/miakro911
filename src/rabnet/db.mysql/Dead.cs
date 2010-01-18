@@ -86,17 +86,57 @@ FROM dead{0:s} LIMIT {1:d}) c;", makeWhere(), options.safeInt("max", 1000));
             MySqlDataReader rd=cmd.ExecuteReader();
             int name = 0;
             int tid = 0;
+            int fid = 0;
+            int lev = 0;
             int sec = 0;
             if (rd.Read())
             {
                 name = rd.GetInt32("r_name");
                 tid = rd.GetInt32("r_tier");
                 sec = rd.GetInt32("r_area");
+                fid = rd.GetInt32("r_farm");
+                lev = rd.GetInt32("r_tier_id");
             }
             rd.Close();
-            cmd.CommandText = String.Format(@"UPDATE names SET n_use={0:d},n_block_date=NULL WHERE n_id={0:d};",name);
+            if (name != 0)
+            {
+                cmd.CommandText = String.Format("SELECT n_use FROM names WHERE n_id={0:d};",name);
+                rd = cmd.ExecuteReader();
+                if (rd.Read())
+                {
+                    if (rd.GetInt32("n_use") != 0)
+                        name = 0;
+                }
+                else name = 0;
+                rd.Close();
+            }
+            if (fid != 0)
+            {
+                cmd.CommandText = String.Format(@"SELECT t_id,t_busy{0:d} FROM tiers,minifarms WHERE 
+m_id={2:d} AND ((t_id=m_upper AND {1:d}<>1)OR(t_id=m_lower AND {1:d}=1));",sec+1,lev,fid);
+                rd = cmd.ExecuteReader();
+                if (rd.Read())
+                {
+                    tid = rd.GetInt32(0);
+                    if (rd.GetInt32(1) != 0)
+                        fid = 0;
+                }
+                else fid = 0;
+                rd.Close();
+            }
+            if (name != 0)
+                cmd.CommandText = String.Format(@"UPDATE names SET n_use={0:d},n_block_date=NULL WHERE n_id={0:d};", name);
+            else
+                cmd.CommandText = String.Format(@"UPDATE rabbits SET r_name=0 WHERE r_id={0:d};",rabbit);
             cmd.ExecuteNonQuery();
-            cmd.CommandText = String.Format(@"UPDATE tiers SET t_busy{0:d}={1:d} WHERE t_id={2:d};",sec+1,rabbit,tid);
+            if (fid != 0)
+            {
+                cmd.CommandText = String.Format(@"UPDATE tiers SET t_busy{0:d}={1:d} WHERE t_id={2:d};", sec + 1, rabbit, tid);
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = String.Format(@"UPDATE rabbits SET r_tier={0:d} WHERE r_id={1:d};",tid,rabbit);
+            }
+            else
+                cmd.CommandText = String.Format(@"UPDATE rabbits SET r_farm=0,r_tier_id=0,r_area=0,r_tier=0 WHERE r_id={0:d};",rabbit);
             cmd.ExecuteNonQuery();
         }
     }
