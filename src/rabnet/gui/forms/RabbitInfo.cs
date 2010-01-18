@@ -119,9 +119,9 @@ namespace rabnet
                 label7.Text = "Статус: Первокролка";
             if (rab.status > 1)
                 label7.Text = "Статус: Штатная";
-            if (rab.group != 1) return;
-            tabControl1.TabPages.Add(femalePage);
             tabControl1.TabPages.Add(okrolPage);
+            if (rab.group != 1) return;
+            tabControl1.TabPages.Add(femalePage);           
             tabControl1.TabPages.Add(suckersPage);
             tabControl1.TabPages.Add(weightPage);
             nokuk.Checked = rab.nokuk;
