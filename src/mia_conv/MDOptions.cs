@@ -15,11 +15,11 @@ namespace mia_conv
             setOption("opt", "count2", p.count_2.value());
             setOption("opt", "count3", p.count_3.value());
             setOption("opt", "bride", p.make_brides.value());
+            setOption("opt", "preokrol", p.heater.value());
             /* //OPTIONS
             setOption("opt","pervonest",p.pervonest.value());
             setOption("opt","kukunest",p.kukunest.value());
             setOption("opt","mothernest",p.mothernest.value());
-            setOption("opt","heater",p.heater.value());
             setOption("opt","kuk",p.kuk.value());
             setOption("opt","endkuku",p.endkuku.value());
             setOption("opt","vacc",p.vacc.value());

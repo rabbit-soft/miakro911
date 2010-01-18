@@ -45,6 +45,14 @@ namespace rabnet
             this.id = id;
             return this;
         }
+        public ZooJobItem Preokrol(int id, String nm, String place, int age, int srok)
+        {
+            type = 1; name = nm; this.place = Buildings.fullPlaceName(place);
+            this.age = age;
+            this.id = id;
+            i[0] = srok;
+            return this;
+        }
     }
     /*
     public class ZooTehItem:IData
@@ -160,6 +168,20 @@ r_parent NOT IN (SELECT l_rabbit FROM logs WHERE l_type=17 AND DATE(l_date)=DATE
             while (rd.Read())
                 res.Add(new ZooJobItem().Counts(rd.GetInt32("r_parent"),rd.GetString("name"),
                     rd.GetString("place"),days));
+            rd.Close();
+            return res.ToArray();
+        }
+
+        public ZooJobItem[] getPreokrols(int days)
+        {
+            MySqlDataReader rd = reader(String.Format(@"SELECT r_id,rabname(r_id,2) name,rabplace(r_id) place,
+(TO_DAYS(NOW())-TO_DAYS(r_event_date)) srok,r_status,(TO_DAYS(NOW())-TO_DAYS(r_born)) age
+FROM rabbits WHERE r_sex='female' AND (TO_DAYS(NOW())-TO_DAYS(r_event_date))>={0:d} AND
+r_id NOT IN (SELECT l_rabbit FROM logs WHERE l_type=21 AND DATE(l_date)>=DATE(rabbits.r_event_date)) ORDER BY srok DESC;", days));
+            List<ZooJobItem> res = new List<ZooJobItem>();
+            while (rd.Read())
+                res.Add(new ZooJobItem().Preokrol(rd.GetInt32("r_id"), rd.GetString("name"),
+                    rd.GetString("place"), rd.GetInt32("age"), rd.GetInt32("srok")));
             rd.Close();
             return res.ToArray();
         }

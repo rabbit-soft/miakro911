@@ -50,6 +50,7 @@
             this.okrolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vudvorMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.countsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.preokrolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -186,30 +187,38 @@
             this.actMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.okrolMenuItem,
             this.vudvorMenuItem,
-            this.countsMenuItem});
+            this.countsMenuItem,
+            this.preokrolMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(187, 92);
+            this.actMenu.Size = new System.Drawing.Size(206, 114);
             // 
             // okrolMenuItem
             // 
             this.okrolMenuItem.Name = "okrolMenuItem";
-            this.okrolMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.okrolMenuItem.Size = new System.Drawing.Size(205, 22);
             this.okrolMenuItem.Text = "Принять окрол";
             this.okrolMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // vudvorMenuItem
             // 
             this.vudvorMenuItem.Name = "vudvorMenuItem";
-            this.vudvorMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.vudvorMenuItem.Size = new System.Drawing.Size(205, 22);
             this.vudvorMenuItem.Text = "Выдворение";
             this.vudvorMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // countsMenuItem
             // 
             this.countsMenuItem.Name = "countsMenuItem";
-            this.countsMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.countsMenuItem.Size = new System.Drawing.Size(205, 22);
             this.countsMenuItem.Text = "Подсчет гнездовых";
             this.countsMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
+            // 
+            // preokrolMenuItem
+            // 
+            this.preokrolMenuItem.Name = "preokrolMenuItem";
+            this.preokrolMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.preokrolMenuItem.Text = "Предокрольный осмотр";
+            this.preokrolMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // WorksPanel
             // 
@@ -249,6 +258,7 @@
         private System.Windows.Forms.ToolStripMenuItem okrolMenuItem;
         private System.Windows.Forms.ToolStripMenuItem vudvorMenuItem;
         private System.Windows.Forms.ToolStripMenuItem countsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem preokrolMenuItem;
 
     }
 }

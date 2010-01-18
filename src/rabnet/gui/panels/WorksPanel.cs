@@ -12,7 +12,7 @@ namespace rabnet
     {
         public WorksPanel():base(){}
         public WorksPanel(RabStatusBar sb)
-            : base(sb, null)
+            : base(sb, new ZootehFilter(sb))
         {
             cs = new ListViewColumnSorter(listView1, new int[] {});
             listView1.ListViewItemSorter = null;
@@ -97,12 +97,13 @@ namespace rabnet
         public void setMenu(JobType type)
         {
             okrolMenuItem.Visible = vudvorMenuItem.Visible = false;
-            countsMenuItem.Visible = false;
+            countsMenuItem.Visible = preokrolMenuItem.Visible= false;
             switch (type)
             {
                 case JobType.OKROL: okrolMenuItem.Visible = true; break;
                 case JobType.VUDVOR: vudvorMenuItem.Visible = true; break;
                 case JobType.COUNT_KIDS: countsMenuItem.Visible = true; break;
+                case JobType.PRE_OKROL: preokrolMenuItem.Visible = true; break;
             }
         }
 
@@ -142,6 +143,9 @@ namespace rabnet
                     break;
                 case JobType.COUNT_KIDS:
                     (new CountKids(job.id)).ShowDialog();
+                    break;
+                case JobType.PRE_OKROL:
+                    Engine.get().preOkrol(job.id);
                     break;
             }
             rsb.run();

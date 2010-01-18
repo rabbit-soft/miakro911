@@ -305,6 +305,11 @@ namespace rabnet
             throw new NotImplementedException();
         }
 
+        public ZooJobItem[] getPreokrols(int days)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

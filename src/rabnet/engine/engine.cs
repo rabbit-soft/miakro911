@@ -150,7 +150,13 @@ namespace rabnet
 
         public void resurrect(int rid)
         {
+            logs().log(RabNetLogs.LogType.RESURRECT, rid);
             db().resurrect(rid);
+        }
+
+        public void preOkrol(int rid)
+        {
+            logs().log(RabNetLogs.LogType.PREOKROL, rid);
         }
     }
 }

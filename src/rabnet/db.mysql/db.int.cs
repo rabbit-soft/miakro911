@@ -79,6 +79,7 @@ namespace rabnet
         int addUser(string name, int group, string password);
         IDataGetter getDead(Filters filters);
         void resurrect(int rid);
+        ZooJobItem[] getPreokrols(int days);
     }
 
 }

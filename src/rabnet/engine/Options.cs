@@ -7,7 +7,7 @@ namespace rabnet
     public class Options
     {
         public enum OPT_ID {NONE, GETEROSIS, INBREEDING ,SHORT_NAMES, DBL_SURNAME, SHOW_TIER_TYPE,SHOW_TIER_SEC,RAB_FILTER,
-                 SHOW_NUMBERS,BUILD_FILTER,OKROL,VUDVOR,COUNT1,COUNT2,COUNT3,MAKE_BRIDE,DEAD_FILTER};
+                 SHOW_NUMBERS,BUILD_FILTER,OKROL,VUDVOR,COUNT1,COUNT2,COUNT3,MAKE_BRIDE,DEAD_FILTER,PRE_OKROL,ZOO_FILTER};
         public enum OPT_LEVEL {FARM,USER};
         public class ExOptionNotFound:ApplicationException
         {
@@ -43,6 +43,8 @@ namespace rabnet
                                    new Option(OPT_ID.COUNT3,OPT_LEVEL.FARM,"count3"), 
                                    new Option(OPT_ID.MAKE_BRIDE,OPT_LEVEL.FARM,"bride"), 
                                    new Option(OPT_ID.DEAD_FILTER,OPT_LEVEL.USER,"dead_filter"), 
+                                   new Option(OPT_ID.PRE_OKROL,OPT_LEVEL.FARM,"preokrol"), 
+                                   new Option(OPT_ID.ZOO_FILTER,OPT_LEVEL.USER,"zoo_filter"), 
                                    };
         public Options(RabNetEngine eng)
         {

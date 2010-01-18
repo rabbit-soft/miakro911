@@ -356,6 +356,11 @@ namespace rabnet
             new DeadHelper(sql).resurrect(rid);
         }
 
+        public ZooJobItem[] getPreokrols(int days)
+        {
+            return new ZooTehGetter(sql).getPreokrols(days);
+        }
+
         #endregion
     }
 }

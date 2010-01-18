@@ -106,6 +106,12 @@
     <Compile Include="filters\RabbitsFilter.Designer.cs">
       <DependentUpon>RabbitsFilter.cs</DependentUpon>
     </Compile>
+    <Compile Include="filters\ZootehFilter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="filters\ZootehFilter.Designer.cs">
+      <DependentUpon>ZootehFilter.cs</DependentUpon>
+    </Compile>
     <Compile Include="forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -274,6 +280,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="filters\RabbitsFilter.resx">
       <DependentUpon>RabbitsFilter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="filters\ZootehFilter.resx">
+      <DependentUpon>ZootehFilter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>

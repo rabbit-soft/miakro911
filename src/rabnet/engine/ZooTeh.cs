@@ -4,7 +4,7 @@ using System.Text;
 
 namespace rabnet
 {
-    public enum JobType {NONE, OKROL, VUDVOR, COUNT_KIDS };
+    public enum JobType {NONE, OKROL, VUDVOR, COUNT_KIDS, PRE_OKROL };
     
     public class ZootehJob:IData
     {
@@ -51,6 +51,13 @@ namespace rabnet
             comment = "возраст " + age.ToString();
             return this;
         }
+        public ZootehJob Preokrol(int id, String nm, String ad, int age, int srok)
+        {
+            type = JobType.PRE_OKROL; job = "Предокрольный осмотр";
+            days = srok; name = nm; address = ad;
+            this.age = age; this.id = id;
+            return this;
+        }
     }
 
     public class JobHolder:List<ZootehJob>{}
@@ -66,9 +73,14 @@ namespace rabnet
         public ZootehJob[] makeZooTehPlan(Filters f)
         {
             JobHolder zjobs = new JobHolder();
-            getOkrols(zjobs);
-            getVudvors(zjobs);
-            getCounts(zjobs);
+            if (f.safeValue("act","O").Contains("O"))
+                getOkrols(zjobs);
+            if (f.safeValue("act", "V").Contains("V"))
+                getVudvors(zjobs);
+            if (f.safeValue("act", "C").Contains("C"))
+                getCounts(zjobs);
+            if (f.safeValue("act", "P").Contains("P"))
+                getPreokrols(zjobs);
             return zjobs.ToArray();
         }
 
@@ -98,6 +110,14 @@ namespace rabnet
                 foreach (ZooJobItem z in jobs)
                     jh.Add(new ZootehJob().Counts(z.id, z.name, z.place, z.age));
             }
+        }
+
+        public void getPreokrols(JobHolder jh)
+        {
+            int days = eng.options().getIntOption(Options.OPT_ID.PRE_OKROL);
+            ZooJobItem[] jobs = eng.db().getPreokrols(days);
+            foreach(ZooJobItem z in jobs)
+                jh.Add(new ZootehJob().Preokrol(z.id,z.name,z.place,z.age,z.i[0]));
         }
     }
 }

@@ -42,12 +42,15 @@
             this.nudCount3 = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.nudBrides = new System.Windows.Forms.NumericUpDown();
+            this.nudPreokrol = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudOkrol)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudVudvor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCount1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCount2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCount3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudBrides)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPreokrol)).BeginInit();
             this.SuspendLayout();
             // 
             // nudOkrol
@@ -206,11 +209,34 @@
             0,
             0});
             // 
+            // nudPreokrol
+            // 
+            this.nudPreokrol.Location = new System.Drawing.Point(252, 212);
+            this.nudPreokrol.Name = "nudPreokrol";
+            this.nudPreokrol.Size = new System.Drawing.Size(74, 20);
+            this.nudPreokrol.TabIndex = 14;
+            this.nudPreokrol.Value = new decimal(new int[] {
+            21,
+            0,
+            0,
+            0});
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(100, 214);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(129, 13);
+            this.label7.TabIndex = 15;
+            this.label7.Text = "Предокрольный осмотр";
+            // 
             // OptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(410, 402);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.nudPreokrol);
             this.Controls.Add(this.nudBrides);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.nudCount3);
@@ -239,6 +265,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudCount2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCount3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudBrides)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPreokrol)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -260,5 +287,7 @@
         private System.Windows.Forms.NumericUpDown nudCount3;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.NumericUpDown nudBrides;
+        private System.Windows.Forms.NumericUpDown nudPreokrol;
+        private System.Windows.Forms.Label label7;
     }
 }
