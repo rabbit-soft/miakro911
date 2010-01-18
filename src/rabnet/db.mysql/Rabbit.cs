@@ -214,12 +214,12 @@ namespace rabnet
                 if (options["pr"] == "2")
                 {
                     
-                    if (options.ContainsKey("pf") || options.ContainsKey("pf"))
+                    if (options.ContainsKey("pf") || options.ContainsKey("Pf"))
                     {
                         if (options.ContainsKey("pf"))
-                            stat = "(r_event_date>=NOW()-INTERVAL "+options["pf"]+" DAY)";
+                            stat = "(r_event_date<=NOW()-INTERVAL "+options["pf"]+" DAY)";
                         if (options.ContainsKey("Pf"))
-                            stat = addWhereAnd(stat, "(r_event_date<=NOW()-INTERVAL " + options["Pf"] + " DAY)");
+                            stat = addWhereAnd(stat, "(r_event_date>=NOW()-INTERVAL " + options["Pf"] + " DAY)");
                     }
                     else
                         stat = "r_event_date IS NOT NULL";
