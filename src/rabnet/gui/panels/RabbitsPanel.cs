@@ -145,11 +145,11 @@ namespace rabnet
             replaceMenuItem.Visible = placeChMenuItem.Visible= false;
             KillMenuItem.Visible = countKidsMenuItem.Visible=false;
             okrolMenuItem.Visible = fuckMenuItem.Visible= false;
-
+            boysoutMenuItem.Visible = false;
             if (sex < 0) return;
             KillMenuItem.Visible = true;
             replaceMenuItem.Visible = true;
-            countKidsMenuItem.Visible = kids;
+            countKidsMenuItem.Visible = boysoutMenuItem.Visible=kids;
             if (multi==1)
                 makeBon.Visible = true;
             if (multi == 2)
@@ -275,6 +275,17 @@ namespace rabnet
                 return;
             (new MakeFuck((int)listView1.SelectedItems[0].Tag)).ShowDialog();
             rsb.run();
+        }
+
+        private void boysoutMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1)
+                return;
+            ReplaceForm rpf = new ReplaceForm();
+            rpf.addRabbit((int)listView1.SelectedItems[0].Tag);
+            rpf.setAction(ReplaceForm.Action.BOYSOUT);
+            if (rpf.ShowDialog() != DialogResult.Abort)
+                rsb.run();
         }
 
     }

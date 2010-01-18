@@ -183,7 +183,7 @@ namespace rabnet
         public static String fullPlaceName(String rabplace,bool shr,bool sht,bool sho)
         {
             if (rabplace == "")
-                return "";
+                return OneRabbit.NullAddress;
             String[] dts = rabplace.Split(',');
             return fullRName(int.Parse(dts[0]),int.Parse(dts[1]),int.Parse(dts[2]),dts[3],dts[4],shr,sht,sho);
         }

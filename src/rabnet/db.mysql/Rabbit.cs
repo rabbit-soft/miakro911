@@ -651,7 +651,11 @@ r_area,t_busy1,t_busy2,t_busy3,t_busy4,m_upper,m_lower,m_id FROM rabbits,tiers,m
         public static void placeRabbit(MySqlConnection sql, int rabbit, int farm, int tier_id, int sec)
         {
             if (farm == 0)
+            {
+                MySqlCommand c = new MySqlCommand(String.Format("UPDATE rabbits SET r_farm=0,r_tier=0,r_tier_id=0,r_area=0 WHERE r_id={0:d};",rabbit), sql);
+                c.ExecuteNonQuery();
                 return;
+            }
             MySqlCommand cmd = new MySqlCommand("", sql);
             cmd.CommandText = String.Format("SELECT {0:s} FROM minifarms WHERE m_id={1:d};", tier_id == 2 ? "m_lower" : "m_upper", farm);
             MySqlDataReader rd = cmd.ExecuteReader();

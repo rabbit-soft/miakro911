@@ -17,7 +17,7 @@ namespace rabnet
         {
             public int id;
             public bool saved = false;
-            public string name;
+            public string sname;
             public int parent=0;
             public int nuparent=0;
             public int count;
@@ -35,7 +35,7 @@ namespace rabnet
             {
                 this.list = list;
                 this.id = id;
-                this.name = name;
+                sname = name;
                 this.address = address;
                 this.count = count;
                 nucount = count;
@@ -86,6 +86,7 @@ namespace rabnet
                 }
             }
             public bool replaced { get { return curaddress != address; } }
+            public string name { get { return (younger?" - ":"")+sname; } set { sname = value; } }
             public string status
             {
                 get
@@ -123,8 +124,10 @@ namespace rabnet
         private DataTable ds = new DataTable();
         private DataGridViewComboBoxColumn cbc = new DataGridViewComboBoxColumn();
         private Building[] bs = null;
-        public enum Action { NONE,CHANGE}
+        public enum Action { NONE,CHANGE,BOYSOUT}
         private Action action = Action.NONE;
+        private bool globalError=false;
+        private bool noboys = false;
         public ReplaceForm()
         {
             InitializeComponent();
@@ -155,7 +158,7 @@ namespace rabnet
             {
                 rs.Add(new RP(rs,r.rid, r.fullName, r.address, r.group, r.sex));
                 foreach (OneRabbit y in r.youngers)
-                    rs.Add(new RP(rs,y.id, " - "+y.fullname, r.address, y.group, y.sex, r.rid));
+                    rs.Add(new RP(rs,y.id, y.fullname, r.address, y.group, y.sex, r.rid));
             }
         }
         public void setAction(Action act)
@@ -174,6 +177,7 @@ namespace rabnet
         private bool busy(RP id)
         {
             bool res=false;
+            if (id.curaddress == OneRabbit.NullAddress) return false;
             foreach (RP r in rs)
             {
                 if (r.curaddress == id.curaddress && r != id)
@@ -229,6 +233,7 @@ namespace rabnet
         public void update(){update(false);}
         public void update(bool reget)
         {
+            globalError = false;
             ds.Rows.Clear();
             if (reget)
             {
@@ -244,10 +249,17 @@ namespace rabnet
                 string stat = r.status;
                 bool b = busy(r);
                 if (b)
+                {
+                    globalError = true;
                     stat += ",ЗАНЯТО";
+                }
                 DataRow rw = ds.Rows.Add(r.name, OneRabbit.SexToRU(r.nusex) ,r.nucount, r.address, r.curaddress, stat);
                 if (action == Action.CHANGE && dataGridView1.SelectedRows.Count < 2)
                     dataGridView1.Rows[dataGridView1.Rows.Count - 1].Selected = true;
+                if (action == Action.BOYSOUT)
+                {
+                    dataGridView1.Rows[dataGridView1.Rows.Count - 1].Selected = r.younger;
+                }
                 if (b)
                     rw.RowError = "занято";
             }
@@ -257,6 +269,11 @@ namespace rabnet
                 action = Action.NONE;
                 if (dataGridView1.SelectedRows.Count == 2)
                     button4.PerformClick();
+            }
+            if (action == Action.BOYSOUT)
+            {
+//                action = Action.NONE;
+                button7.Enabled = button4.Enabled = button6.Enabled=noboys;
             }
         }
 
@@ -304,6 +321,8 @@ namespace rabnet
         private void button3_Click(object sender, EventArgs e)
         {
             clear();
+            button7.Enabled = button6.Enabled = (action != Action.BOYSOUT);
+            noboys = false;
             update();
         }
 
@@ -334,6 +353,7 @@ namespace rabnet
                 groupBox1.Enabled = (cnt > 1);
                 if (cnt > 1)
                     numericUpDown1.Maximum = cnt-1;
+                button10.Enabled = button11.Enabled = rp().nusex == OneRabbit.RabbitSex.VOID;
             }
         }
 
@@ -341,6 +361,8 @@ namespace rabnet
         {
             for (int i = 0; i < dataGridView1.SelectedRows.Count;i++)
                 rp(dataGridView1.SelectedRows[i].Index).clear();
+            button7.Enabled=button6.Enabled=(action!=Action.BOYSOUT);
+            noboys = false;
             update();
         }
 
@@ -385,6 +407,8 @@ namespace rabnet
             RP nrp=rp().splitGroup((int)numericUpDown1.Value);
             rp().nusex = OneRabbit.RabbitSex.FEMALE;
             nrp.nusex = OneRabbit.RabbitSex.MALE;
+            noboys = true;
+            button7.Enabled = button6.Enabled = true;
             update();
         }
 
@@ -420,6 +444,8 @@ namespace rabnet
         {
             try
             {
+                if (globalError)
+                    throw new ApplicationException("Секция для пересадки занята");
                 foreach (RP r in rs)
                     commitRabbit(r,0);
                 Close();
@@ -427,6 +453,26 @@ namespace rabnet
             catch (ApplicationException ex)
             {
                 MessageBox.Show("Ошибка " + ex.GetType().ToString() + ":" + ex.Message);
+            }
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count != 1) return;
+            rp().nusex = OneRabbit.RabbitSex.FEMALE;
+            update();
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            foreach (RP r in rs)
+            {
+                if (r.replaced && busy(r))
+                {
+                    for (int i=0;i<cbc.Items.Count;i++)
+                        if ((string)cbc.Items[i]!=r.address)
+                            r.curaddress=(string)cbc.Items[i];
+                }
             }
         }
 

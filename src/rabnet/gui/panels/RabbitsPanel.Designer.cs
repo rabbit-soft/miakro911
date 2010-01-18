@@ -59,6 +59,7 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.SelectAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.genTree = new System.Windows.Forms.TreeView();
+            this.boysoutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -187,6 +188,7 @@
             this.toolStripMenuItem1,
             this.KillMenuItem,
             this.replaceMenuItem,
+            this.boysoutMenuItem,
             this.placeChMenuItem,
             this.fuckMenuItem,
             this.proholostMenuItem,
@@ -195,7 +197,7 @@
             this.toolStripMenuItem2,
             this.SelectAllMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(201, 280);
+            this.actMenu.Size = new System.Drawing.Size(201, 302);
             // 
             // passportMenuItem
             // 
@@ -296,6 +298,13 @@
             this.genTree.Size = new System.Drawing.Size(134, 544);
             this.genTree.TabIndex = 0;
             // 
+            // boysoutMenuItem
+            // 
+            this.boysoutMenuItem.Name = "boysoutMenuItem";
+            this.boysoutMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.boysoutMenuItem.Text = "Отсадить мальчиков";
+            this.boysoutMenuItem.Click += new System.EventHandler(this.boysoutMenuItem_Click);
+            // 
             // RabbitsPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -343,5 +352,6 @@
         private System.Windows.Forms.ToolStripMenuItem countKidsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fuckMenuItem;
         private System.Windows.Forms.ToolStripMenuItem okrolMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem boysoutMenuItem;
     }
 }
