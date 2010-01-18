@@ -109,6 +109,7 @@
             this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader9 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader15 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader16 = new System.Windows.Forms.ColumnHeader();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.suckers = new System.Windows.Forms.ListView();
             this.columnHeader10 = new System.Windows.Forms.ColumnHeader();
@@ -127,7 +128,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
-            this.columnHeader16 = new System.Windows.Forms.ColumnHeader();
             this.tabControl1.SuspendLayout();
             this.TabPage1.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -342,7 +342,7 @@
             // 
             this.bdate.AutoSize = true;
             this.bdate.DateText = "Дата рожд.";
-            this.bdate.DateValue = new System.DateTime(2010, 1, 16, 0, 0, 0, 0);
+            this.bdate.DateValue = new System.DateTime(2010, 1, 18, 0, 0, 0, 0);
             this.bdate.DaysText = "Возраст";
             this.bdate.DaysValue = 0;
             this.bdate.Location = new System.Drawing.Point(13, 111);
@@ -767,7 +767,7 @@
             // 
             this.okrolDd.AutoSize = true;
             this.okrolDd.DateText = "Дата";
-            this.okrolDd.DateValue = new System.DateTime(2010, 1, 16, 0, 0, 0, 0);
+            this.okrolDd.DateValue = new System.DateTime(2010, 1, 18, 0, 0, 0, 0);
             this.okrolDd.DaysText = "Срок";
             this.okrolDd.DaysValue = 0;
             this.okrolDd.Location = new System.Drawing.Point(8, 61);
@@ -798,6 +798,11 @@
             // deadBab
             // 
             this.deadBab.Location = new System.Drawing.Point(13, 131);
+            this.deadBab.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
             this.deadBab.Name = "deadBab";
             this.deadBab.Size = new System.Drawing.Size(81, 20);
             this.deadBab.TabIndex = 7;
@@ -814,6 +819,11 @@
             // overallBab
             // 
             this.overallBab.Location = new System.Drawing.Point(13, 88);
+            this.overallBab.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
             this.overallBab.Name = "overallBab";
             this.overallBab.Size = new System.Drawing.Size(81, 20);
             this.overallBab.TabIndex = 5;
@@ -844,7 +854,7 @@
             // 
             this.sukrDd.AutoSize = true;
             this.sukrDd.DateText = "Дата";
-            this.sukrDd.DateValue = new System.DateTime(2010, 1, 16, 0, 0, 0, 0);
+            this.sukrDd.DateValue = new System.DateTime(2010, 1, 18, 0, 0, 0, 0);
             this.sukrDd.DaysText = "Срок";
             this.sukrDd.DaysValue = 0;
             this.sukrDd.Location = new System.Drawing.Point(0, 46);
@@ -999,6 +1009,10 @@
             // 
             this.columnHeader15.Text = "Гетерозис";
             // 
+            // columnHeader16
+            // 
+            this.columnHeader16.Text = "Инбридинг";
+            // 
             // tabPage6
             // 
             this.tabPage6.Controls.Add(this.suckers);
@@ -1149,10 +1163,6 @@
             this.button5.Text = "Применить";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
-            // columnHeader16
-            // 
-            this.columnHeader16.Text = "Инбридинг";
             // 
             // RabbitInfo
             // 
