@@ -24,9 +24,9 @@ namespace rabnet
             : this()
         {
             this.xml = xml;
-            string fn=Path.GetDirectoryName(Application.ExecutablePath)+"/"+fileName+".rdl";
-            if (!File.Exists(fn))
-                fn = Path.GetDirectoryName(Application.ExecutablePath) + "/reports/" + fileName + ".rdl";
+            string fn = Path.GetDirectoryName(Application.ExecutablePath) + "/reports/" + fileName + ".rdl";
+            //string fn = Path.GetDirectoryName(Application.ExecutablePath) + "/" + fileName + ".rdl";
+            //if (!File.Exists(fn))
             rdlViewer1.SourceFile = fn;
             rdlViewer1.Report.DataSets["Data"].SetData(xml);
             rdlViewer1.Rebuild();
@@ -84,8 +84,7 @@ namespace rabnet
             pd.PrinterSettings.ToPage = pd.PrinterSettings.MaximumPage=rdlViewer1.PageCount;
             pd.DefaultPageSettings.Landscape=(rdlViewer1.PageWidth>rdlViewer1.PageHeight);
             PrintDialog dlg = new PrintDialog();
-            dlg.AllowCurrentPage = true;
-            dlg.AllowSelection = dlg.AllowSomePages=true;
+            dlg.AllowSelection=dlg.AllowSomePages=true;
             dlg.Document = pd;
             if (options)
                 if (dlg.ShowDialog() != DialogResult.OK)
