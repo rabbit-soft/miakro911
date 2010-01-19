@@ -14,6 +14,7 @@ namespace rabnet
     public partial class ReportViewForm : Form
     {
         private string rname="Отчет";
+        private XmlDocument xml = null;
         public ReportViewForm()
         {
             InitializeComponent();
@@ -22,9 +23,10 @@ namespace rabnet
         public ReportViewForm(String reportname, String fileName, XmlDocument xml)
             : this()
         {
-            string fn="./"+fileName+".rdl";
+            this.xml = xml;
+            string fn=Path.GetDirectoryName(Application.ExecutablePath)+"/"+fileName+".rdl";
             if (!File.Exists(fn))
-                fn="./reports/" + fileName + ".rdl";
+                fn = Path.GetDirectoryName(Application.ExecutablePath) + "/reports/" + fileName + ".rdl";
             rdlViewer1.SourceFile = fn;
             rdlViewer1.Report.DataSets["Data"].SetData(xml);
             rdlViewer1.Rebuild();
@@ -38,6 +40,7 @@ namespace rabnet
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
+            rdlViewer1.Report.DataSets["Data"].SetData(xml);
             sfd.FileName=rname;
 	        if (sfd.ShowDialog(this) != DialogResult.OK)
 		        return;
