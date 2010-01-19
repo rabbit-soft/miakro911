@@ -465,15 +465,17 @@ namespace rabnet
 
         private void button12_Click(object sender, EventArgs e)
         {
-            foreach (RP r in rs)
-            {
-                if (r.replaced && busy(r))
+                for (int j = rs.Count - 1; j >= 0;j-- )
                 {
-                    for (int i=0;i<cbc.Items.Count;i++)
-                        if ((string)cbc.Items[i]!=r.address)
-                            r.curaddress=(string)cbc.Items[i];
+                    RP r = rs[j];
+                    if (busy(r))
+                    {
+                        for (int i = 1; i < cbc.Items.Count && busy(r); i++)
+                            if ((string)cbc.Items[i] != r.address)
+                                r.curaddress = (string)cbc.Items[i];
+                    }
                 }
-            }
+            update();
         }
 
     }
