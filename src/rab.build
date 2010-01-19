@@ -12,6 +12,15 @@
 	<property name="mysql.path" value="./party3d" />
 	<property name="mysql.ass" value="${mysql.path}/${mysql.lib}" />
 	<property name="mysql.use" value="${bin_dir}/${mysql.lib}" />
+	
+	<property name="rep.lib" value="RdlViewer.dll" />
+	<property name="rep.path" value="./party3d" />
+	<property name="rep.ass" value="${rep.path}/${rep.lib}" />
+	<property name="rep.use" value="${bin_dir}/${rep.lib}" />
+	<property name="repeng.lib" value="RdlEngine.dll" />
+	<property name="repeng.ass" value="${rep.path}/${repeng.lib}" />
+	<property name="repeng.use" value="${bin_dir}/${repeng.lib}" />
+	
 	<property name="data_dir" value="./../data" />
 	
 	<!-- TARGETS !-->
@@ -24,8 +33,16 @@
 	
 	<target name="prepare" description="Make build directories">
 		<mkdir dir="${bin_dir}"/>
+		<mkdir dir="${bin_dir}/reports"/>
 		<copy file="${log4net.ass}" tofile="${log4net.use}" />
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
+		<copy file="${rep.ass}" tofile="${rep.use}" />
+		<copy file="${repeng.ass}" tofile="${repeng.use}" />
+		<copy todir="${bin_dir}/reports">
+			<fileset basedir="./rabnet/gui/reports">
+				<include name="*.rdl"/>
+			</fileset>
+		</copy>
 	</target>
 
 	<target name="buildall" depends="prepare,miaconv,rabnet" description="Build all projects"/>
@@ -99,6 +116,8 @@
 			</resources>
 			<references>
 				<include name="${log4net.use}"/>
+				<include name="${rep.use}"/>
+				<include name="${repeng.use}"/>
 				<include name="${bin_dir}/db.mysql.dll" />
 				<include name="${bin_dir}/engine.dll" />
 			</references>

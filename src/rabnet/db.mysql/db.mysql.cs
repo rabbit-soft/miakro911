@@ -6,6 +6,7 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 using log4net;
 using log4net.Config;
+using System.Xml;
 
 namespace rabnet
 {
@@ -369,6 +370,11 @@ namespace rabnet
         public void combineGroups(int rabfrom, int rabto)
         {
             RabbitGetter.combineGroups(sql, rabfrom, rabto);
+        }
+
+        public XmlDocument makeReport(ReportType.Type type, Filters f)
+        {
+            return Reports.makeReport(sql, type, f);
         }
 
         #endregion

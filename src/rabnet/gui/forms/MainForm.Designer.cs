@@ -68,6 +68,8 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
+            this.отчетыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.тестовыйToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -78,6 +80,7 @@
             this.фермаToolStripMenuItem,
             this.видToolStripMenuItem,
             this.actMenuItem,
+            this.отчетыToolStripMenuItem,
             this.настройкиToolStripMenuItem,
             this.справкаToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -388,6 +391,21 @@
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
             // 
+            // отчетыToolStripMenuItem
+            // 
+            this.отчетыToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.тестовыйToolStripMenuItem});
+            this.отчетыToolStripMenuItem.Name = "отчетыToolStripMenuItem";
+            this.отчетыToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+            this.отчетыToolStripMenuItem.Text = "Отчеты";
+            // 
+            // тестовыйToolStripMenuItem
+            // 
+            this.тестовыйToolStripMenuItem.Name = "тестовыйToolStripMenuItem";
+            this.тестовыйToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.тестовыйToolStripMenuItem.Text = "Тестовый";
+            this.тестовыйToolStripMenuItem.Click += new System.EventHandler(this.тестовыйToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -451,6 +469,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem paramsMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem usersMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem отчетыToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem тестовыйToolStripMenuItem;
     }
 }
 

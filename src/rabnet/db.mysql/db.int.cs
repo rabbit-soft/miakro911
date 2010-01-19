@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Xml;
 
 namespace rabnet
 {
@@ -82,6 +83,7 @@ namespace rabnet
         ZooJobItem[] getPreokrols(int days);
         void placeSucker(int sucker, int mother);
         void combineGroups(int rabfrom, int rabto);
+        XmlDocument makeReport(ReportType.Type type, Filters f);
     }
 
 }

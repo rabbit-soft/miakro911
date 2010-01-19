@@ -321,5 +321,15 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public System.Xml.XmlDocument makeReport(ReportType.Type type, Filters f)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

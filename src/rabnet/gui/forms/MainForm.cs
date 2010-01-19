@@ -146,5 +146,10 @@ namespace rabnet
             rabStatusBar1.run();
         }
 
+        private void тестовыйToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            (new ReportViewForm("Тестовый отчет","test", Engine.get().db().makeReport(ReportType.Type.TEST, null))).ShowDialog();
+        }
+
     }
 }

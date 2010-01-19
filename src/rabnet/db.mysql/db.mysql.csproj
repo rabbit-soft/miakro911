@@ -64,6 +64,7 @@
     <Compile Include="Names.cs" />
     <Compile Include="Rabbit.cs" />
     <Compile Include="RabNetDataGetterBase.cs" />
+    <Compile Include="Reports.cs" />
     <Compile Include="Users.cs" />
     <Compile Include="Youngers.cs" />
     <Compile Include="Zones.cs" />
