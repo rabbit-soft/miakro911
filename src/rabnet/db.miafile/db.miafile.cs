@@ -310,6 +310,16 @@ namespace rabnet
             throw new NotImplementedException();
         }
 
+        public void placeSucker(int sucker, int mother)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void combineGroups(int rabfrom, int rabto)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

@@ -767,5 +767,36 @@ f_dead=f_dead+{0:d},f_killed=f_killed+{1:d},f_added=f_added+{2:d} WHERE f_rabid=
             cmd.ExecuteNonQuery();
         }
 
+        public static void placeSucker(MySqlConnection sql, int sucker, int mother)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT r_parent FROM rabbits WHERE r_id={0:d};",sucker), sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            int oldmom = 0;
+            if (rd.Read())
+                oldmom = rd.GetInt32(0);
+            rd.Close();
+            if (oldmom == 0)
+            {
+                freeTier(sql, sucker);
+                placeRabbit(sql, sucker, 0, 0, 0);
+            }
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_parent={0:d} WHERE r_id={1:d};",mother,sucker);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void combineGroups(MySqlConnection sql, int rabfrom, int rabto)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT r_group FROM rabbits WHERE r_id={0:d};",rabfrom),sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            int cnt = 0;
+            if (rd.Read())
+                cnt = rd.GetInt32(0);
+            rd.Close();
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_group=r_group+{0:d} WHERE r_id={1:d};", cnt, rabto);
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = String.Format("CALL killRabbit({0:d},1,'{1:d}');",rabfrom,rabto);
+            cmd.ExecuteNonQuery();
+        }
+
     }
 }

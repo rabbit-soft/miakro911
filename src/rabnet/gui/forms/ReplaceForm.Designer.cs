@@ -38,14 +38,15 @@
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button11 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button9 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
-            this.button11 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
+            this.button13 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -129,7 +130,7 @@
             // button4
             // 
             this.button4.Enabled = false;
-            this.button4.Location = new System.Drawing.Point(829, 135);
+            this.button4.Location = new System.Drawing.Point(830, 108);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(120, 23);
             this.button4.TabIndex = 6;
@@ -165,12 +166,22 @@
             this.groupBox1.Controls.Add(this.numericUpDown1);
             this.groupBox1.Controls.Add(this.button6);
             this.groupBox1.Enabled = false;
-            this.groupBox1.Location = new System.Drawing.Point(831, 164);
+            this.groupBox1.Location = new System.Drawing.Point(831, 137);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(119, 178);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Рассадить группу";
+            // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(6, 152);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(107, 23);
+            this.button11.TabIndex = 12;
+            this.button11.Text = "Все девочки";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
             // button10
             // 
@@ -211,12 +222,13 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.button13);
             this.groupBox2.Controls.Add(this.button9);
             this.groupBox2.Controls.Add(this.button8);
             this.groupBox2.Enabled = false;
-            this.groupBox2.Location = new System.Drawing.Point(830, 348);
+            this.groupBox2.Location = new System.Drawing.Point(831, 321);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(119, 77);
+            this.groupBox2.Size = new System.Drawing.Size(119, 104);
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Объединить";
@@ -227,8 +239,9 @@
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(108, 23);
             this.button9.TabIndex = 1;
-            this.button9.Text = "Объединить";
+            this.button9.Text = "Объединить верх";
             this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // button8
             // 
@@ -238,16 +251,7 @@
             this.button8.TabIndex = 0;
             this.button8.Text = "Подсадить";
             this.button8.UseVisualStyleBackColor = true;
-            // 
-            // button11
-            // 
-            this.button11.Location = new System.Drawing.Point(6, 152);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(107, 23);
-            this.button11.TabIndex = 12;
-            this.button11.Text = "Все девочки";
-            this.button11.UseVisualStyleBackColor = true;
-            this.button11.Click += new System.EventHandler(this.button11_Click);
+            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // button12
             // 
@@ -258,6 +262,16 @@
             this.button12.Text = "Автоматически";
             this.button12.UseVisualStyleBackColor = true;
             this.button12.Click += new System.EventHandler(this.button12_Click);
+            // 
+            // button13
+            // 
+            this.button13.Location = new System.Drawing.Point(6, 75);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(107, 23);
+            this.button13.TabIndex = 2;
+            this.button13.Text = "Объединить низ";
+            this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.button9_Click);
             // 
             // ReplaceForm
             // 
@@ -312,6 +326,7 @@
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.Button button13;
 
     }
 }

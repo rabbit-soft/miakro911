@@ -390,6 +390,7 @@ UPDATE tiers SET t_busy2=NULL,t_busy3=NULL,t_busy4=NULL WHERE t_type='female';
 UPDATE tiers SET t_busy3=NULL,t_busy4=NULL WHERE t_type='dfemale' OR t_type='jurta' OR t_type='vertep' OR t_type='barin' OR t_type='cabin';
 UPDATE tiers SET t_busy4=NULL WHERE t_type='complex';
 INSERT INTO deadreasons(d_name) VALUES('Списан из старой программы');
+INSERT INTO deadreasons(d_name) VALUES('объединение');
 INSERT INTO logtypes(l_name,l_params) VALUES
 ('привоз','$r в $p'),
 ('пересадка','$r из $a в $p'),
@@ -411,7 +412,9 @@ INSERT INTO logtypes(l_name,l_params) VALUES
 ('изменили пол','$r $t'),
 ('разбили группу','$r $t'),
 ('восстановление списанного','$r ($p)'),
-('предокрольный осмотр','$r ($p)')
+('предокрольный осмотр','$r ($p)'),
+('объединение групп','$r ($p) $t'),
+('подсадка','$r к $R($P)')
 ;
 
 

@@ -80,6 +80,8 @@ namespace rabnet
         IDataGetter getDead(Filters filters);
         void resurrect(int rid);
         ZooJobItem[] getPreokrols(int days);
+        void placeSucker(int sucker, int mother);
+        void combineGroups(int rabfrom, int rabto);
     }
 
 }

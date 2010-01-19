@@ -314,5 +314,17 @@ namespace rabnet
            return nid;
         }
 
+        public void combineWidth(int rabto)
+        {
+            eng.logs().log(RabNetLogs.LogType.COMBINE, rabto, 0, "", "", "+ "+fullName+" ["+group.ToString()+"]");
+            eng.db().combineGroups(id, rabto);
+        }
+
+        public void placeSuckerTo(int mother)
+        {
+            eng.logs().log(RabNetLogs.LogType.PLACE_SUCK, id, mother, "", "");
+            eng.db().placeSucker(id, mother);
+        }
+
     }
 }

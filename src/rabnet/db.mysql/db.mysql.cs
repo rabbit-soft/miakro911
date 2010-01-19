@@ -361,6 +361,16 @@ namespace rabnet
             return new ZooTehGetter(sql).getPreokrols(days);
         }
 
+        public void placeSucker(int sucker, int mother)
+        {
+            RabbitGetter.placeSucker(sql, sucker, mother);
+        }
+
+        public void combineGroups(int rabfrom, int rabto)
+        {
+            RabbitGetter.combineGroups(sql, rabfrom, rabto);
+        }
+
         #endregion
     }
 }

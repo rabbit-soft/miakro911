@@ -25,6 +25,7 @@ namespace rabnet
             nudCount3.Value = o.getIntOption(Options.OPT_ID.COUNT3);
             nudBrides.Value = o.getIntOption(Options.OPT_ID.MAKE_BRIDE);
             nudPreokrol.Value = o.getIntOption(Options.OPT_ID.PRE_OKROL);
+            nudCombine.Value = o.getIntOption(Options.OPT_ID.COMBINE_AGE);
         }
 
         private void save()
@@ -37,6 +38,7 @@ namespace rabnet
             o.setOption(Options.OPT_ID.COUNT3, (int)nudCount3.Value);
             o.setOption(Options.OPT_ID.MAKE_BRIDE, (int)nudBrides.Value);
             o.setOption(Options.OPT_ID.PRE_OKROL, (int)nudPreokrol.Value);
+            o.setOption(Options.OPT_ID.COMBINE_AGE, (int)nudCombine.Value);
         }
             
 

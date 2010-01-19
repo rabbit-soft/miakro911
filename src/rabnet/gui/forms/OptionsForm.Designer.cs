@@ -44,6 +44,8 @@
             this.nudBrides = new System.Windows.Forms.NumericUpDown();
             this.nudPreokrol = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.nudCombine = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.nudOkrol)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudVudvor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCount1)).BeginInit();
@@ -51,6 +53,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudCount3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudBrides)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPreokrol)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCombine)).BeginInit();
             this.SuspendLayout();
             // 
             // nudOkrol
@@ -230,11 +233,34 @@
             this.label7.TabIndex = 15;
             this.label7.Text = "Предокрольный осмотр";
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(27, 240);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(219, 13);
+            this.label8.TabIndex = 16;
+            this.label8.Text = "Разница в возрасте объединяемых групп";
+            // 
+            // nudCombine
+            // 
+            this.nudCombine.Location = new System.Drawing.Point(252, 238);
+            this.nudCombine.Name = "nudCombine";
+            this.nudCombine.Size = new System.Drawing.Size(74, 20);
+            this.nudCombine.TabIndex = 17;
+            this.nudCombine.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            // 
             // OptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(410, 402);
+            this.Controls.Add(this.nudCombine);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.nudPreokrol);
             this.Controls.Add(this.nudBrides);
@@ -266,6 +292,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudCount3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudBrides)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPreokrol)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCombine)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -289,5 +316,7 @@
         private System.Windows.Forms.NumericUpDown nudBrides;
         private System.Windows.Forms.NumericUpDown nudPreokrol;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.NumericUpDown nudCombine;
     }
 }

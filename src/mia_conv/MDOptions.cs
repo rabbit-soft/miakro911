@@ -16,6 +16,7 @@ namespace mia_conv
             setOption("opt", "count3", p.count_3.value());
             setOption("opt", "bride", p.make_brides.value());
             setOption("opt", "preokrol", p.heater.value());
+            setOption("opt", "combage", 3);
             /* //OPTIONS
             setOption("opt","pervonest",p.pervonest.value());
             setOption("opt","kukunest",p.kukunest.value());
