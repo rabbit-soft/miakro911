@@ -76,16 +76,27 @@ namespace rabnet
         private void print(bool options)
         {
             PrintDocument pd=new PrintDocument();
-
+            pd.DocumentName = rname;
+            pd.PrinterSettings.FromPage = pd.PrinterSettings.MinimumPage= 1;
+            pd.PrinterSettings.ToPage = pd.PrinterSettings.MaximumPage=rdlViewer1.PageCount;
+            pd.DefaultPageSettings.Landscape=(rdlViewer1.PageWidth>rdlViewer1.PageHeight);
             PrintDialog dlg = new PrintDialog();
             dlg.AllowCurrentPage = true;
-            dlg.AllowSelection = true;
-            dlg.AllowSomePages = true;
+            dlg.AllowSelection = dlg.AllowSomePages=true;
             dlg.Document = pd;
             if (options)
                 if (dlg.ShowDialog() != DialogResult.OK)
                     return;
-            rdlViewer1.Print(pd);
+            try
+            {
+                if (options && (pd.PrinterSettings.PrintRange == PrintRange.Selection))
+                    pd.PrinterSettings.FromPage = rdlViewer1.PageCurrent;
+                rdlViewer1.Print(pd);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка печати: "+ex.Message);
+            }
         }
     }
 }

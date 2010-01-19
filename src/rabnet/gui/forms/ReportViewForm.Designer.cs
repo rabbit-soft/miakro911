@@ -59,7 +59,7 @@
             this.rdlViewer1.HighlightItemColor = System.Drawing.Color.Aqua;
             this.rdlViewer1.HighlightPageItem = null;
             this.rdlViewer1.HighlightText = null;
-            this.rdlViewer1.Location = new System.Drawing.Point(0, 52);
+            this.rdlViewer1.Location = new System.Drawing.Point(12, 52);
             this.rdlViewer1.Name = "rdlViewer1";
             this.rdlViewer1.PageCurrent = 1;
             this.rdlViewer1.Parameters = null;
@@ -69,13 +69,13 @@
             this.rdlViewer1.ShowFindPanel = false;
             this.rdlViewer1.ShowParameterPanel = false;
             this.rdlViewer1.ShowWaitDialog = true;
-            this.rdlViewer1.Size = new System.Drawing.Size(787, 429);
+            this.rdlViewer1.Size = new System.Drawing.Size(763, 418);
             this.rdlViewer1.SourceFile = null;
             this.rdlViewer1.SourceRdl = null;
             this.rdlViewer1.TabIndex = 0;
             this.rdlViewer1.Text = "rdlViewer1";
             this.rdlViewer1.UseTrueMargins = true;
-            this.rdlViewer1.Zoom = 0.9138739F;
+            this.rdlViewer1.Zoom = 0.8853894F;
             this.rdlViewer1.ZoomMode = fyiReporting.RdlViewer.ZoomEnum.FitWidth;
             // 
             // toolStrip1
