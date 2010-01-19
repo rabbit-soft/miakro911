@@ -98,5 +98,49 @@ namespace rabnet
                 MessageBox.Show("Ошибка печати: "+ex.Message);
             }
         }
+
+        private void pageScaleMenuItem_Click(object sender, EventArgs e)
+        {
+            rdlViewer1.ZoomMode = fyiReporting.RdlViewer.ZoomEnum.FitPage;
+            scaleBtn.Text = pageScaleMenuItem.Text;
+        }
+
+        private void widthScaleMenuItem_Click(object sender, EventArgs e)
+        {
+            rdlViewer1.ZoomMode = fyiReporting.RdlViewer.ZoomEnum.FitWidth;
+            scaleBtn.Text = widthScaleMenuItem.Text;
+        }
+
+        private void zoom(double value)
+        {
+            rdlViewer1.Zoom = (float)value;
+            rdlViewer1.ZoomMode = fyiReporting.RdlViewer.ZoomEnum.UseZoom;
+            scaleBtn.Text = String.Format("{0:d}%", (int)(value * 100));
+        }
+        
+        private void toolStripMenuItem4_Click(object sender, EventArgs e)
+        {
+            zoom(1.5);
+        }
+
+        private void toolStripMenuItem10_Click(object sender, EventArgs e)
+        {
+            zoom(0.5);
+        }
+
+        private void toolStripMenuItem6_Click(object sender, EventArgs e)
+        {
+            zoom(1);
+        }
+
+        private void toolStripMenuItem12_Click(object sender, EventArgs e)
+        {
+            zoom(2);
+        }
+
+        private void ReportViewForm_Load(object sender, EventArgs e)
+        {
+            WindowState = FormWindowState.Maximized;
+        }
     }
 }

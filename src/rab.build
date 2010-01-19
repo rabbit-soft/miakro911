@@ -113,6 +113,7 @@
 			</sources>
 			<resources>
 				<include name="./rabnet/gui/components/RabStatusBar.resx"/>
+				<include name="./rabnet/gui/forms/ReportViewForm.resx"/>
 			</resources>
 			<references>
 				<include name="${log4net.use}"/>
