@@ -337,9 +337,8 @@
             // 
             // sfd
             // 
-            this.sfd.Filter = "Файл PDF (*.pdf)|*.pdf|Файл XML (*.xml)|*.xml|Файл HTML (*.html)|*.html|Файл CSV " +
-                "(*.csv)|*.csv|Файл RTF (*.rtf)|*.rtf|Файл TIF (*.tif)|*.tif|Файл Excel (*.xlsx)|" +
-                "*.xlsx|Файл MHT (*.mht)|*.mht";
+            this.sfd.Filter = "Файл HTML (*.html)|*.html|Файл XML (*.xml)|*.xml|Файл CSV (*.csv)|*.csv|Файл RTF " +
+                "(*.rtf)|*.rtf|Файл TIF (*.tif)|*.tif|Файл MHT (*.mht)|*.mht";
             // 
             // ReportViewForm
             // 
