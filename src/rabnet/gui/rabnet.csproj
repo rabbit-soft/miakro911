@@ -277,11 +277,6 @@
     <Compile Include="components\RabStatusBar.Designer.cs">
       <DependentUpon>RabStatusBar.cs</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="components\BuildingControl.resx">
       <DependentUpon>BuildingControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -377,10 +372,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="panels\YoungsPanel.resx">
       <DependentUpon>YoungsPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
