@@ -75,7 +75,7 @@ namespace rabnet
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+            setMenu();
             if (listView1.SelectedItems.Count != 1)
                 return;
 
@@ -103,6 +103,24 @@ namespace rabnet
                 tn.ExpandAll();
                 tn.EnsureVisible();
             }
+        }
+
+        public override ContextMenuStrip getMenu()
+        {
+            setMenu();
+            return actMenu;
+        }
+
+        public void setMenu()
+        {
+            replaceYoungersMenuItem.Visible = listView1.SelectedItems.Count == 1;
+        }
+
+        private void replaceYoungersMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1) return;
+            new ReplaceYoungersForm((int)listView1.SelectedItems[0].Tag).ShowDialog();
+            rsb.run();
         }
 
 

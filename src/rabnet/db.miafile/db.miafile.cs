@@ -331,5 +331,15 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public Rabbit[] getMothers(int age, int agediff)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

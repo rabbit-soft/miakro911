@@ -24,7 +24,7 @@ namespace rabnet
     }
 
 
-    class Rabbit:IRabbit{
+    public class Rabbit:IRabbit{
         public int fid;
         public String fname;
         public String fsex;
@@ -429,6 +429,10 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             if (s == RabbitSex.MALE) return "м";
             return "?";
         }
+        public int age()
+        {
+            return (DateTime.Now-born).Days;
+        }
     }
 
     public class RabbitGetter
@@ -796,6 +800,33 @@ f_dead=f_dead+{0:d},f_killed=f_killed+{1:d},f_added=f_added+{2:d} WHERE f_rabid=
             cmd.ExecuteNonQuery();
             cmd.CommandText = String.Format("CALL killRabbit({0:d},1,'{1:d}');",rabfrom,rabto);
             cmd.ExecuteNonQuery();
+        }
+
+        public static Rabbit[] getMothers(MySqlConnection sql,int age,int agediff)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT * FROM (SELECT r_id,TO_DAYS(NOW())-TO_DAYS(r_born) age,r_status,
+(SELECT b_name FROM breeds WHERE b_id=r_breed) breed,r_rate,rabname(r_id,2) name,
+(SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) suckers,
+(SELECT AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) aage,
+r_born
+FROM rabbits WHERE r_sex='female' AND r_group=1 AND r_status>0) c WHERE suckers>0 AND ABS(aage-{0:d})<={1:d};
+",age,agediff),sql);
+            List<Rabbit> rbs=new List<Rabbit>();
+            MySqlDataReader rd = cmd.ExecuteReader();
+            while (rd.Read())
+            {
+                Rabbit r = new Rabbit(rd.GetInt32("r_id"));
+                r.fname = rd.GetString("name");
+                r.fbreed = rd.GetString("breed");
+                r.frate = rd.GetInt32("r_rate");
+                r.fage = rd.GetInt32("age");
+                r.faverage = rd.GetInt32("aage");
+                r.fN = rd.GetString("suckers");
+                r.fstatus = rd.GetInt32("r_status")==1?"Первокролка":"Штатная";
+                rbs.Add(r);
+            }
+            rd.Close();
+            return rbs.ToArray();
         }
 
     }

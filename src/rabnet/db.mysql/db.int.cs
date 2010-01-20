@@ -84,6 +84,7 @@ namespace rabnet
         void placeSucker(int sucker, int mother);
         void combineGroups(int rabfrom, int rabto);
         XmlDocument makeReport(ReportType.Type type, Filters f);
+        Rabbit[] getMothers(int age,int agediff);
     }
 
 }

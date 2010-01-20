@@ -377,6 +377,11 @@ namespace rabnet
             return Reports.makeReport(sql, type, f);
         }
 
+        public Rabbit[] getMothers(int age, int agediff)
+        {
+            return RabbitGetter.getMothers(sql, age, agediff);
+        }
+
         #endregion
     }
 }

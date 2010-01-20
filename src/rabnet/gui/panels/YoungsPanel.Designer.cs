@@ -28,9 +28,9 @@
         /// </summary>
         protected override void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.listView1 = new System.Windows.Forms.ListView();
-            this.genTree = new System.Windows.Forms.TreeView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
@@ -43,9 +43,13 @@
             this.columnHeader10 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader11 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader12 = new System.Windows.Forms.ColumnHeader();
+            this.genTree = new System.Windows.Forms.TreeView();
+            this.actMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.replaceYoungersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.actMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -83,6 +87,7 @@
             this.columnHeader10,
             this.columnHeader11,
             this.columnHeader12});
+            this.listView1.ContextMenuStrip = this.actMenu;
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(3, 3);
@@ -92,16 +97,6 @@
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
-            // 
-            // genTree
-            // 
-            this.genTree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.genTree.Location = new System.Drawing.Point(3, 3);
-            this.genTree.Name = "genTree";
-            this.genTree.Size = new System.Drawing.Size(160, 534);
-            this.genTree.TabIndex = 0;
             // 
             // columnHeader1
             // 
@@ -151,6 +146,30 @@
             // 
             this.columnHeader12.Text = "Заметки";
             // 
+            // genTree
+            // 
+            this.genTree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.genTree.Location = new System.Drawing.Point(3, 3);
+            this.genTree.Name = "genTree";
+            this.genTree.Size = new System.Drawing.Size(160, 534);
+            this.genTree.TabIndex = 0;
+            // 
+            // actMenu
+            // 
+            this.actMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.replaceYoungersMenuItem});
+            this.actMenu.Name = "actMenu";
+            this.actMenu.Size = new System.Drawing.Size(188, 48);
+            // 
+            // replaceYoungersMenuItem
+            // 
+            this.replaceYoungersMenuItem.Name = "replaceYoungersMenuItem";
+            this.replaceYoungersMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.replaceYoungersMenuItem.Text = "Отсадить молодняк";
+            this.replaceYoungersMenuItem.Click += new System.EventHandler(this.replaceYoungersMenuItem_Click);
+            // 
             // YoungsPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -161,6 +180,7 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
+            this.actMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -182,6 +202,8 @@
         private System.Windows.Forms.ColumnHeader columnHeader10;
         private System.Windows.Forms.ColumnHeader columnHeader11;
         private System.Windows.Forms.ColumnHeader columnHeader12;
+        private System.Windows.Forms.ContextMenuStrip actMenu;
+        private System.Windows.Forms.ToolStripMenuItem replaceYoungersMenuItem;
 
     }
 }

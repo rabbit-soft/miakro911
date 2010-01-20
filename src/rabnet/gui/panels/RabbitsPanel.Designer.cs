@@ -51,6 +51,7 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.KillMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.replaceMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.boysoutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.placeChMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fuckMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.proholostMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,7 +60,7 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.SelectAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.genTree = new System.Windows.Forms.TreeView();
-            this.boysoutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.replaceYoungersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -189,6 +190,7 @@
             this.KillMenuItem,
             this.replaceMenuItem,
             this.boysoutMenuItem,
+            this.replaceYoungersMenuItem,
             this.placeChMenuItem,
             this.fuckMenuItem,
             this.proholostMenuItem,
@@ -197,7 +199,7 @@
             this.toolStripMenuItem2,
             this.SelectAllMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(201, 302);
+            this.actMenu.Size = new System.Drawing.Size(201, 324);
             // 
             // passportMenuItem
             // 
@@ -239,6 +241,13 @@
             this.replaceMenuItem.Size = new System.Drawing.Size(200, 22);
             this.replaceMenuItem.Text = "Пересадить/Отсадить";
             this.replaceMenuItem.Click += new System.EventHandler(this.replaceMenuItem_Click);
+            // 
+            // boysoutMenuItem
+            // 
+            this.boysoutMenuItem.Name = "boysoutMenuItem";
+            this.boysoutMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.boysoutMenuItem.Text = "Отсадить мальчиков";
+            this.boysoutMenuItem.Click += new System.EventHandler(this.boysoutMenuItem_Click);
             // 
             // placeChMenuItem
             // 
@@ -298,12 +307,12 @@
             this.genTree.Size = new System.Drawing.Size(134, 544);
             this.genTree.TabIndex = 0;
             // 
-            // boysoutMenuItem
+            // replaceYoungersMenuItem
             // 
-            this.boysoutMenuItem.Name = "boysoutMenuItem";
-            this.boysoutMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.boysoutMenuItem.Text = "Отсадить мальчиков";
-            this.boysoutMenuItem.Click += new System.EventHandler(this.boysoutMenuItem_Click);
+            this.replaceYoungersMenuItem.Name = "replaceYoungersMenuItem";
+            this.replaceYoungersMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.replaceYoungersMenuItem.Text = "Отсадить молодняк";
+            this.replaceYoungersMenuItem.Click += new System.EventHandler(this.replaceYoungersMenuItem_Click);
             // 
             // RabbitsPanel
             // 
@@ -353,5 +362,6 @@
         private System.Windows.Forms.ToolStripMenuItem fuckMenuItem;
         private System.Windows.Forms.ToolStripMenuItem okrolMenuItem;
         private System.Windows.Forms.ToolStripMenuItem boysoutMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem replaceYoungersMenuItem;
     }
 }
