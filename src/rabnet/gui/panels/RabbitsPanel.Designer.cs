@@ -52,6 +52,7 @@
             this.KillMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.replaceMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.boysoutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.replaceYoungersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.placeChMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fuckMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.proholostMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,7 +61,6 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.SelectAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.genTree = new System.Windows.Forms.TreeView();
-            this.replaceYoungersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -247,7 +247,15 @@
             this.boysoutMenuItem.Name = "boysoutMenuItem";
             this.boysoutMenuItem.Size = new System.Drawing.Size(200, 22);
             this.boysoutMenuItem.Text = "Отсадить мальчиков";
+            this.boysoutMenuItem.Visible = false;
             this.boysoutMenuItem.Click += new System.EventHandler(this.boysoutMenuItem_Click);
+            // 
+            // replaceYoungersMenuItem
+            // 
+            this.replaceYoungersMenuItem.Name = "replaceYoungersMenuItem";
+            this.replaceYoungersMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.replaceYoungersMenuItem.Text = "Отсадить молодняк";
+            this.replaceYoungersMenuItem.Click += new System.EventHandler(this.replaceYoungersMenuItem_Click);
             // 
             // placeChMenuItem
             // 
@@ -306,13 +314,6 @@
             this.genTree.Name = "genTree";
             this.genTree.Size = new System.Drawing.Size(134, 544);
             this.genTree.TabIndex = 0;
-            // 
-            // replaceYoungersMenuItem
-            // 
-            this.replaceYoungersMenuItem.Name = "replaceYoungersMenuItem";
-            this.replaceYoungersMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.replaceYoungersMenuItem.Text = "Отсадить молодняк";
-            this.replaceYoungersMenuItem.Click += new System.EventHandler(this.replaceYoungersMenuItem_Click);
             // 
             // RabbitsPanel
             // 

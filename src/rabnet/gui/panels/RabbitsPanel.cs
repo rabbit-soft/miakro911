@@ -149,7 +149,8 @@ namespace rabnet
             if (sex < 0) return;
             KillMenuItem.Visible = true;
             replaceMenuItem.Visible = true;
-            countKidsMenuItem.Visible = boysoutMenuItem.Visible=replaceYoungersMenuItem.Visible =kids;
+            countKidsMenuItem.Visible = replaceYoungersMenuItem.Visible = kids;
+                // boysoutMenuItem.Visible=
             if (multi==1)
                 makeBon.Visible = true;
             if (multi == 2)

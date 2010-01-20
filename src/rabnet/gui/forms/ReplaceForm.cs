@@ -202,6 +202,8 @@ namespace rabnet
                             res = false;
                         if (id.placeto != null && (r.younger && id.placeto.id == r.parent))
                             res = false;
+                        if (r.parent == id.parent && r.parent != 0)
+                            res = false;
                     }
                 }
             }
