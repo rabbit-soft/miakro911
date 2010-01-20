@@ -168,7 +168,7 @@ namespace rabnet
             {
                 rs.Add(new RP(rs,r.rid, r.fullName, r.address, r.group, r.sex,r.age));
                 foreach (OneRabbit y in r.youngers)
-                    rs.Add(new RP(rs,y.id, y.fullname, r.address, y.group, y.sex,r.age, r.rid));
+                    rs.Add(new RP(rs,y.id, y.fullname, r.address, y.group, y.sex,(DateTime.Now-y.born).Days, r.rid));
             }
         }
         public void setAction(Action act)
@@ -198,7 +198,9 @@ namespace rabnet
                     {
                         if (r.placewith == id || id.placewith == r) res=false;
                         if(r.placeto == id || id.placeto == r) res=false;
-                        if ((id.younger && r.placeto.id == id.parent) || (r.younger && id.placeto.id == r.parent))
+                        if (r.placeto!=null && (id.younger && r.placeto.id == id.parent))
+                            res = false;
+                        if (id.placeto != null && (r.younger && id.placeto.id == r.parent))
                             res = false;
                     }
                 }
