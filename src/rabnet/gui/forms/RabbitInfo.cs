@@ -181,14 +181,18 @@ namespace rabnet
         private void FillList(ComboBox cb,Catalog c,int key)
         {
             cb.Items.Clear();
-            cb.Items.Add("");
-            cb.SelectedIndex = 0;
+            if (cb != breed)
+            {
+                cb.Items.Add("");
+                cb.SelectedIndex = 0;
+            }
             foreach (int k in c.Keys)
             {
                 int id = cb.Items.Add(c[k]);
                 if (key == k)
                     cb.SelectedIndex = id;
             }
+            if (cb.SelectedIndex < 0) cb.SelectedIndex = 0;
         }
 
         private void fillCatalogs(int what)
@@ -309,6 +313,13 @@ namespace rabnet
                 rab.lost = (int)deadBab.Value;
             }
             rab.commit();
+            String ex = "";
+            if (name.Text == "" && surname.Text == "" && secname.Text == "")
+                ex = "У кролика нет имени!\n";
+            if (rab.address == OneRabbit.NullAddress)
+                ex += "У кролика нет места жительства!";
+            if (ex != "")
+                MessageBox.Show(ex);
         }
 
         private bool warnme()

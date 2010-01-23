@@ -342,7 +342,7 @@
             // 
             this.bdate.AutoSize = true;
             this.bdate.DateText = "Дата рожд.";
-            this.bdate.DateValue = new System.DateTime(2010, 1, 18, 0, 0, 0, 0);
+            this.bdate.DateValue = new System.DateTime(2010, 1, 23, 0, 0, 0, 0);
             this.bdate.DaysText = "Возраст";
             this.bdate.DaysValue = 0;
             this.bdate.Location = new System.Drawing.Point(13, 111);
@@ -470,7 +470,7 @@
             // 
             this.breed.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.breed.FormattingEnabled = true;
-            this.breed.Location = new System.Drawing.Point(60, 204);
+            this.breed.Location = new System.Drawing.Point(59, 205);
             this.breed.Name = "breed";
             this.breed.Size = new System.Drawing.Size(121, 21);
             this.breed.TabIndex = 10;
@@ -767,7 +767,7 @@
             // 
             this.okrolDd.AutoSize = true;
             this.okrolDd.DateText = "Дата";
-            this.okrolDd.DateValue = new System.DateTime(2010, 1, 18, 0, 0, 0, 0);
+            this.okrolDd.DateValue = new System.DateTime(2010, 1, 23, 0, 0, 0, 0);
             this.okrolDd.DaysText = "Срок";
             this.okrolDd.DaysValue = 0;
             this.okrolDd.Location = new System.Drawing.Point(8, 61);
@@ -854,7 +854,7 @@
             // 
             this.sukrDd.AutoSize = true;
             this.sukrDd.DateText = "Дата";
-            this.sukrDd.DateValue = new System.DateTime(2010, 1, 18, 0, 0, 0, 0);
+            this.sukrDd.DateValue = new System.DateTime(2010, 1, 23, 0, 0, 0, 0);
             this.sukrDd.DaysText = "Срок";
             this.sukrDd.DaysValue = 0;
             this.sukrDd.Location = new System.Drawing.Point(0, 46);
