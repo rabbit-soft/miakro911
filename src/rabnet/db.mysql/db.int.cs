@@ -86,6 +86,8 @@ namespace rabnet
         XmlDocument makeReport(ReportType.Type type, Filters f);
         Rabbit[] getMothers(int age,int agediff);
         ZooJobItem[] getBoysGirlsOut(int days,OneRabbit.RabbitSex sex);
+        String[] logNames();
+        ZooJobItem[] getZooFuck(int days1, int days2);
     }
 
 }

@@ -387,6 +387,16 @@ namespace rabnet
             return new ZooTehGetter(sql).getBoysGirlsOut(days, sex);
         }
 
+        public string[] logNames()
+        {
+            return new Logs(sql).logNames();
+        }
+
+        public ZooJobItem[] getZooFuck(int days1, int days2)
+        {
+            return new ZooTehGetter(sql).getFucks(days1, days2);
+        }
+
         #endregion
     }
 }

@@ -28,6 +28,8 @@ namespace rabnet
             nudCombine.Value = o.getIntOption(Options.OPT_ID.COMBINE_AGE);
             nudBoysOut.Value = o.getIntOption(Options.OPT_ID.BOYS_OUT);
             nudGirlsOut.Value = o.getIntOption(Options.OPT_ID.GIRLS_OUT);
+            nudStateFuck.Value = o.getIntOption(Options.OPT_ID.STATE_FUCK);
+            nudFirstFuck.Value = o.getIntOption(Options.OPT_ID.FIRST_FUCK);
         }
 
         private void save()
@@ -43,6 +45,8 @@ namespace rabnet
             o.setOption(Options.OPT_ID.COMBINE_AGE, (int)nudCombine.Value);
             o.setOption(Options.OPT_ID.BOYS_OUT, (int)nudBoysOut.Value);
             o.setOption(Options.OPT_ID.GIRLS_OUT, (int)nudGirlsOut.Value);
+            o.setOption(Options.OPT_ID.STATE_FUCK, (int)nudStateFuck.Value);
+            o.setOption(Options.OPT_ID.FIRST_FUCK, (int)nudFirstFuck.Value);
         }
             
 

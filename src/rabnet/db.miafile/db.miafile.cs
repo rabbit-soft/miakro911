@@ -351,5 +351,20 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public string[] logNames()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ZooJobItem[] getZooFuck(int days1, int days2)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

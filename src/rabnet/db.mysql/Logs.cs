@@ -88,5 +88,16 @@ logtypes.l_type=logs.l_type AND logs.l_user=users.u_id ORDER BY date DESC LIMIT 
             rd.Close();
             return ll;
         }
+
+        public String[] logNames()
+        {
+            MySqlCommand cmd = new MySqlCommand("SELECT l_name FROM logtypes ORDER BY l_type ASC;", sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            List<String> res = new List<string>();
+            while (rd.Read())
+                res.Add(rd.GetString(0));
+            rd.Close();
+            return res.ToArray();
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace rabnet
         private Options.OPT_ID opid=Options.OPT_ID.NONE;
         public FilterPanel(RabStatusBar rsb,String name,Options.OPT_ID opid):this()
         {
+            initAgain();
             fname = name;
             this.opid=opid;
             this.rsb = rsb;
@@ -27,6 +28,7 @@ namespace rabnet
         }
 
         protected virtual void InitializeComponent(){}
+        protected virtual void initAgain(){}
 
         public virtual void close()
         {

@@ -31,24 +31,26 @@
             this.cbFilters = new System.Windows.Forms.ComboBox();
             this.saveBtn = new System.Windows.Forms.Button();
             this.okBtn = new System.Windows.Forms.Button();
-            this.cbOkrol = new System.Windows.Forms.CheckBox();
-            this.cbVudvor = new System.Windows.Forms.CheckBox();
-            this.cbCount = new System.Windows.Forms.CheckBox();
-            this.cbPreokrol = new System.Windows.Forms.CheckBox();
-            this.cbReplace = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lbZoo = new System.Windows.Forms.CheckedListBox();
+            this.lbLogs = new System.Windows.Forms.CheckedListBox();
+            this.nudLogLim = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.nudLogLim)).BeginInit();
             this.SuspendLayout();
             // 
             // cbFilters
             // 
             this.cbFilters.FormattingEnabled = true;
-            this.cbFilters.Location = new System.Drawing.Point(239, 255);
+            this.cbFilters.Location = new System.Drawing.Point(239, 273);
             this.cbFilters.Name = "cbFilters";
             this.cbFilters.Size = new System.Drawing.Size(121, 21);
             this.cbFilters.TabIndex = 0;
             // 
             // saveBtn
             // 
-            this.saveBtn.Location = new System.Drawing.Point(366, 253);
+            this.saveBtn.Location = new System.Drawing.Point(366, 273);
             this.saveBtn.Name = "saveBtn";
             this.saveBtn.Size = new System.Drawing.Size(75, 23);
             this.saveBtn.TabIndex = 1;
@@ -57,72 +59,94 @@
             // 
             // okBtn
             // 
-            this.okBtn.Location = new System.Drawing.Point(29, 255);
+            this.okBtn.Location = new System.Drawing.Point(31, 273);
             this.okBtn.Name = "okBtn";
             this.okBtn.Size = new System.Drawing.Size(75, 23);
             this.okBtn.TabIndex = 2;
             this.okBtn.Text = "Готово";
             this.okBtn.UseVisualStyleBackColor = true;
             // 
-            // cbOkrol
+            // label1
             // 
-            this.cbOkrol.AutoSize = true;
-            this.cbOkrol.Location = new System.Drawing.Point(21, 16);
-            this.cbOkrol.Name = "cbOkrol";
-            this.cbOkrol.Size = new System.Drawing.Size(58, 17);
-            this.cbOkrol.TabIndex = 3;
-            this.cbOkrol.Text = "Окрол";
-            this.cbOkrol.UseVisualStyleBackColor = true;
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(302, 10);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(58, 13);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "События";
             // 
-            // cbVudvor
+            // label2
             // 
-            this.cbVudvor.AutoSize = true;
-            this.cbVudvor.Location = new System.Drawing.Point(21, 39);
-            this.cbVudvor.Name = "cbVudvor";
-            this.cbVudvor.Size = new System.Drawing.Size(89, 17);
-            this.cbVudvor.TabIndex = 4;
-            this.cbVudvor.Text = "Выдворение";
-            this.cbVudvor.UseVisualStyleBackColor = true;
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.Location = new System.Drawing.Point(28, 10);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(76, 13);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Зоотехплан";
             // 
-            // cbCount
+            // lbZoo
             // 
-            this.cbCount.AutoSize = true;
-            this.cbCount.Location = new System.Drawing.Point(21, 62);
-            this.cbCount.Name = "cbCount";
-            this.cbCount.Size = new System.Drawing.Size(125, 17);
-            this.cbCount.TabIndex = 5;
-            this.cbCount.Text = "Подсчет гнездовых";
-            this.cbCount.UseVisualStyleBackColor = true;
+            this.lbZoo.CheckOnClick = true;
+            this.lbZoo.FormattingEnabled = true;
+            this.lbZoo.Items.AddRange(new object[] {
+            "Окрол",
+            "Выдворение",
+            "Подсчет гнездовых",
+            "Предокрольный осмотр",
+            "Отсадки",
+            "Случка"});
+            this.lbZoo.Location = new System.Drawing.Point(12, 26);
+            this.lbZoo.Name = "lbZoo";
+            this.lbZoo.Size = new System.Drawing.Size(167, 214);
+            this.lbZoo.TabIndex = 12;
             // 
-            // cbPreokrol
+            // lbLogs
             // 
-            this.cbPreokrol.AutoSize = true;
-            this.cbPreokrol.Location = new System.Drawing.Point(21, 85);
-            this.cbPreokrol.Name = "cbPreokrol";
-            this.cbPreokrol.Size = new System.Drawing.Size(148, 17);
-            this.cbPreokrol.TabIndex = 6;
-            this.cbPreokrol.Text = "Предокрольный осмотр";
-            this.cbPreokrol.UseVisualStyleBackColor = true;
+            this.lbLogs.CheckOnClick = true;
+            this.lbLogs.FormattingEnabled = true;
+            this.lbLogs.Location = new System.Drawing.Point(239, 26);
+            this.lbLogs.Name = "lbLogs";
+            this.lbLogs.Size = new System.Drawing.Size(202, 214);
+            this.lbLogs.TabIndex = 13;
             // 
-            // cbReplace
+            // nudLogLim
             // 
-            this.cbReplace.AutoSize = true;
-            this.cbReplace.Location = new System.Drawing.Point(21, 108);
-            this.cbReplace.Name = "cbReplace";
-            this.cbReplace.Size = new System.Drawing.Size(67, 17);
-            this.cbReplace.TabIndex = 7;
-            this.cbReplace.Text = "отсадки";
-            this.cbReplace.UseVisualStyleBackColor = true;
+            this.nudLogLim.Location = new System.Drawing.Point(366, 246);
+            this.nudLogLim.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nudLogLim.Name = "nudLogLim";
+            this.nudLogLim.Size = new System.Drawing.Size(75, 20);
+            this.nudLogLim.TabIndex = 14;
+            this.nudLogLim.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(262, 248);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(98, 13);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "Количество строк";
             // 
             // ZootehFilter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.cbReplace);
-            this.Controls.Add(this.cbPreokrol);
-            this.Controls.Add(this.cbCount);
-            this.Controls.Add(this.cbVudvor);
-            this.Controls.Add(this.cbOkrol);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.nudLogLim);
+            this.Controls.Add(this.lbLogs);
+            this.Controls.Add(this.lbZoo);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.okBtn);
             this.Controls.Add(this.saveBtn);
             this.Controls.Add(this.cbFilters);
@@ -131,6 +155,7 @@
             this.Name = "ZootehFilter";
             this.SaveButton = this.saveBtn;
             this.Size = new System.Drawing.Size(454, 299);
+            ((System.ComponentModel.ISupportInitialize)(this.nudLogLim)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -141,10 +166,11 @@
         private System.Windows.Forms.ComboBox cbFilters;
         private System.Windows.Forms.Button saveBtn;
         private System.Windows.Forms.Button okBtn;
-        private System.Windows.Forms.CheckBox cbOkrol;
-        private System.Windows.Forms.CheckBox cbVudvor;
-        private System.Windows.Forms.CheckBox cbCount;
-        private System.Windows.Forms.CheckBox cbPreokrol;
-        private System.Windows.Forms.CheckBox cbReplace;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckedListBox lbZoo;
+        private System.Windows.Forms.CheckedListBox lbLogs;
+        private System.Windows.Forms.NumericUpDown nudLogLim;
+        private System.Windows.Forms.Label label3;
     }
 }

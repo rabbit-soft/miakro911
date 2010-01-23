@@ -10,9 +10,18 @@ namespace rabnet
 {
     public partial class ZootehFilter : FilterPanel
     {
+        String itemFlags = "OVCPRF";
         public ZootehFilter(RabStatusBar sb):base(sb,"zooteh",Options.OPT_ID.ZOO_FILTER)
         {
             //InitializeComponent();
+        }
+
+        protected override void initAgain()
+        {
+            lbLogs.Items.Clear();
+            String[] lg = Engine.db().logNames();
+            for (int i = 0; i < lg.Length; i++)
+                lbLogs.Items.Add(lg[i]);
         }
 
     #region FilterPanel overrides
@@ -20,28 +29,59 @@ namespace rabnet
         public override Filters getFilters()
         {
             Filters f = new Filters();
-            if (!cbCount.Checked || !cbOkrol.Checked || !cbVudvor.Checked || !cbPreokrol.Checked)
+            f["act"]="";
+            bool ac = true;
+            for (int i = 0; i < lbZoo.Items.Count; i++)
             {
-                f["act"] = "" + (cbOkrol.Checked ? "O" : "") + (cbVudvor.Checked ? "V" : "") + (cbCount.Checked ? "C" : "") + (cbPreokrol.Checked ? "P" : "")+
-                    (cbReplace.Checked ? "R" : "");
-                if (f["act"] == "") f.Remove("act");
+                if (lbZoo.GetItemChecked(i)) 
+                    f["act"] += itemFlags[i];
+                else 
+                    ac = false;
+                    
             }
+            if (f["act"] == "" || ac) f.Remove("act");
+            ac = true;
+            f["lgs"] = "";
+            for (int i = 0; i < lbLogs.Items.Count; i++)
+            {
+                if (lbLogs.GetItemChecked(i))
+                    f["lgs"] += "," + i.ToString();
+                else
+                    ac = false;
+            }
+            f["lgs"] = f["lgs"].Trim(',');
+            if (f["lgs"] == "" || ac) f.Remove("lgs");
+            if (nudLogLim.Value != 100)
+                    f["lim"] = nudLogLim.Value.ToString();
             return f;
+        }
+
+        private bool hasnum(string[] nums,int num)
+        {
+            if (nums.Length == 1 && nums[0]=="0") return true;
+            foreach (String nm in nums)
+                if (int.Parse(nm)==num)
+                    return true;
+            return false;
         }
 
         public override void setFilters(Filters f)
         {
-            cbOkrol.Checked = f.safeValue("act", "O").Contains("O");
-            cbVudvor.Checked = f.safeValue("act", "V").Contains("V");
-            cbCount.Checked = f.safeValue("act", "C").Contains("C");
-            cbPreokrol.Checked = f.safeValue("act", "P").Contains("P");
-            cbReplace.Checked = f.safeValue("act", "R").Contains("R");
+            for (int i=0;i<lbZoo.Items.Count;i++)
+                lbZoo.SetItemChecked(i,f.safeValue("act",itemFlags).Contains(""+itemFlags[i]));
+            String[] nums=f.safeValue("lgs","0").Split(',');
+            for (int i=0;i<lbLogs.Items.Count;i++)
+                lbLogs.SetItemChecked(i,hasnum(nums,i));
+            nudLogLim.Value=f.safeInt("lim",100);
         }
 
         public override void clearFilters()
         {
-            cbOkrol.Checked = cbVudvor.Checked = cbCount.Checked = cbPreokrol.Checked = true;
-            cbReplace.Checked = true;
+            for (int i = 0; i < lbZoo.Items.Count; i++)
+                lbZoo.SetItemChecked(i, true);
+            for (int i = 0; i < lbLogs.Items.Count; i++)
+                lbLogs.SetItemChecked(i, true);
+            nudLogLim.Value = 100;
         }
     #endregion
 

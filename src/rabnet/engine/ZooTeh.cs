@@ -4,8 +4,8 @@ using System.Text;
 
 namespace rabnet
 {
-    public enum JobType {NONE, OKROL, VUDVOR, COUNT_KIDS, PRE_OKROL ,BOYS_OUT,GIRLS_OUT};
-    
+    public enum JobType {NONE, OKROL, VUDVOR, COUNT_KIDS, PRE_OKROL ,BOYS_OUT,GIRLS_OUT,FUCK};
+
     public class ZootehJob:IData
     {
         public JobType type = JobType.OKROL;
@@ -67,6 +67,14 @@ namespace rabnet
             this.age = age;
             return this;
         }
+        public ZootehJob Fuck(int id, String nm, String ad, int age, int srok)
+        {
+            type = JobType.FUCK; job = "Случка";
+            this.id = id; days = srok;
+            name = nm; address = ad;
+            this.age = age;
+            return this;
+        }
     }
 
     public class JobHolder:List<ZootehJob>{}
@@ -92,6 +100,8 @@ namespace rabnet
                 getPreokrols(zjobs);
             if (f.safeValue("act", "R").Contains("R"))
                 getBoysGirlsOut(zjobs);
+            if (f.safeValue("act", "F").Contains("F"))
+                getFucks(zjobs);
             return zjobs.ToArray();
         }
 
@@ -141,6 +151,15 @@ namespace rabnet
             jobs = eng.db().getBoysGirlsOut(days, OneRabbit.RabbitSex.FEMALE);
             foreach (ZooJobItem z in jobs)
                 jh.Add(new ZootehJob().BoysGirlsOut(z.id, z.name, z.place, z.age, z.i[0], false));
+        }
+
+        public void getFucks(JobHolder jh)
+        {
+            int days1 = eng.options().getIntOption(Options.OPT_ID.STATE_FUCK);
+            int days2 = eng.options().getIntOption(Options.OPT_ID.FIRST_FUCK);
+            ZooJobItem[] jobs = eng.db().getZooFuck(days1, days2);
+            foreach (ZooJobItem z in jobs)
+                jh.Add(new ZootehJob().Fuck(z.id, z.name, z.place, z.age, z.i[0]));
         }
     }
 }

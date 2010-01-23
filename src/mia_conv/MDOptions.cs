@@ -19,7 +19,9 @@ namespace mia_conv
             setOption("opt", "combage", 3);
             setOption("opt", "girlsout", 100);
             setOption("opt", "boysout", p.otsad_boys_mother.value());
-//            setOption("opt", "otsad_boys_pervo", p.otsad_boys_pervo.value());
+            setOption("opt", "statefuck", p.vyazkamother.value());
+            setOption("opt", "firstfuck", p.vyazkapervo.value());
+            //            setOption("opt", "otsad_boys_pervo", p.otsad_boys_pervo.value());
             /* //OPTIONS
             setOption("opt","pervonest",p.pervonest.value());
             setOption("opt","kukunest",p.kukunest.value());
@@ -28,8 +30,6 @@ namespace mia_conv
             setOption("opt","endkuku",p.endkuku.value());
             setOption("opt","vacc",p.vacc.value());
             setOption("opt","countsuckers",p.countsuckers.value());
-            setOption("opt","vyazkamother",p.vyazkamother.value());
-            setOption("opt","vyazkapervo",p.vyazkapervo.value());
             setOption("opt","killfemales",p.killfemales.value());
             setOption("opt","killbrides",p.killbrides.value());
             setOption("opt","killboys",p.killboys.value());

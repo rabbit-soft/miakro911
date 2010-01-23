@@ -208,5 +208,17 @@ FROM rabbits WHERE r_parent<>0 AND {0:s} AND (TO_DAYS(NOW())-TO_DAYS(r_born))>={
             return res.ToArray();
         }
 
+        public ZooJobItem[] getFucks(int days1, int days2)
+        {
+            List<ZooJobItem> res = new List<ZooJobItem>();
+            /*
+            while (rd.Read())
+                res.Add(new ZooJobItem().BoysGirlsOut(rd.GetInt32("r_parent"), rd.GetString("name"),
+                    rd.GetString("place"), rd.GetInt32("age"), rd.GetInt32("age") - days));
+            rd.Close();
+             * */
+            return res.ToArray();
+        }
+
     }
 }

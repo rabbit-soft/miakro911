@@ -50,6 +50,10 @@
             this.nudGirlsOut = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.nudStateFuck = new System.Windows.Forms.NumericUpDown();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.nudFirstFuck = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.nudOkrol)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudVudvor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCount1)).BeginInit();
@@ -60,6 +64,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudCombine)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudBoysOut)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudGirlsOut)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudStateFuck)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudFirstFuck)).BeginInit();
             this.SuspendLayout();
             // 
             // nudOkrol
@@ -90,7 +96,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(323, 367);
+            this.button1.Location = new System.Drawing.Point(323, 444);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 2;
@@ -100,7 +106,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(242, 367);
+            this.button2.Location = new System.Drawing.Point(242, 444);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 3;
@@ -312,11 +318,67 @@
             this.label10.TabIndex = 21;
             this.label10.Text = "Отсадка девочек";
             // 
+            // nudStateFuck
+            // 
+            this.nudStateFuck.Location = new System.Drawing.Point(252, 316);
+            this.nudStateFuck.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nudStateFuck.Name = "nudStateFuck";
+            this.nudStateFuck.Size = new System.Drawing.Size(74, 20);
+            this.nudStateFuck.TabIndex = 22;
+            this.nudStateFuck.Value = new decimal(new int[] {
+            80,
+            0,
+            0,
+            0});
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(146, 318);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(83, 13);
+            this.label11.TabIndex = 23;
+            this.label11.Text = "Вязка штатной";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(121, 345);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(107, 13);
+            this.label12.TabIndex = 24;
+            this.label12.Text = "Вязка первокролки";
+            // 
+            // nudFirstFuck
+            // 
+            this.nudFirstFuck.Location = new System.Drawing.Point(252, 343);
+            this.nudFirstFuck.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nudFirstFuck.Name = "nudFirstFuck";
+            this.nudFirstFuck.Size = new System.Drawing.Size(74, 20);
+            this.nudFirstFuck.TabIndex = 25;
+            this.nudFirstFuck.Value = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            // 
             // OptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(410, 402);
+            this.ClientSize = new System.Drawing.Size(410, 479);
+            this.Controls.Add(this.nudFirstFuck);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.nudStateFuck);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.nudGirlsOut);
@@ -357,6 +419,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudCombine)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudBoysOut)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudGirlsOut)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudStateFuck)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudFirstFuck)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -386,5 +450,9 @@
         private System.Windows.Forms.NumericUpDown nudGirlsOut;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.NumericUpDown nudStateFuck;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.NumericUpDown nudFirstFuck;
     }
 }
