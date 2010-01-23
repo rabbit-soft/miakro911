@@ -88,7 +88,7 @@ namespace rabnet
                 get { return nuaddress==""?address:nuaddress;} 
                 set{ if (value==address || value=="") nuaddress=""; else nuaddress=value;
                     foreach (RP r in list)
-                        if (r.parent == id)
+                        if (r.parent == id && r!=this)
                             r.address = curaddress;
                 }
             }
@@ -122,6 +122,7 @@ namespace rabnet
 
             public RP splitGroup(int num)
             {
+                if (id == 0) return null;
                 if (num<1 || num>=nucount) return null;
                 return new RP(this, num);
             }
@@ -385,6 +386,7 @@ namespace rabnet
                 {
                     button9.Enabled = button13.Enabled=true;
                 }
+                button9.Enabled = button13.Enabled = (r1.id != 0 && r2.id != 0);
             }
             if (dataGridView1.SelectedRows.Count == 1)
             {
@@ -393,6 +395,7 @@ namespace rabnet
                 if (cnt > 1)
                     numericUpDown1.Maximum = cnt-1;
                 button10.Enabled = button11.Enabled = rp().nusex == OneRabbit.RabbitSex.VOID;
+                groupBox1.Enabled = (rp().id != 0);
             }
         }
 
@@ -455,6 +458,13 @@ namespace rabnet
         {
             if (r.saved)
                 return;
+            if (r.id == 0)
+            {
+                int[] a = getAddress(r.curaddress);
+                rbs[rs.IndexOf(r)].replaceRabbit(a[0], a[1], a[2], r.curaddress);
+                r.saved = true;
+                return;
+            }
             RabNetEngRabbit rb = Engine.get().getRabbit(id==0?r.id:id);
             RabNetEngRabbit par = null;
             if (r.younger)
