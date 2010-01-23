@@ -49,6 +49,16 @@ namespace rabnet
             cmd.ExecuteNonQuery();
         }
 
+        public String makeWhere(Filters f)
+        {
+            if (f.safeValue("lgs") == "") return "";
+            String res = " AND (";
+            String[] tps = f.safeValue("lgs", "").Split(',');
+            for (int i = 0; i < tps.Length-1; i++)
+                res += "logs.l_type=" + tps[i]+" OR ";
+            return res+"logs.l_type="+tps[tps.Length-1]+")";
+        }
+
         public LogList getLogs(Filters f)
         {
             int limit = f.safeInt("lim",100);
@@ -60,7 +70,7 @@ rabname(logs.l_rabbit2,2) r2,
 rabplace(logs.l_rabbit) place,
 rabplace(logs.l_rabbit2) place2
 FROM logs,logtypes,users WHERE
-logtypes.l_type=logs.l_type AND logs.l_user=users.u_id ORDER BY date DESC LIMIT {0:d};", limit);
+logtypes.l_type=logs.l_type AND logs.l_user=users.u_id{1:s} ORDER BY date DESC LIMIT {0:d};", limit,makeWhere(f));
             MySqlCommand cmd = new MySqlCommand(qry, sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             LogList ll = new LogList();

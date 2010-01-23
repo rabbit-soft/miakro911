@@ -40,14 +40,14 @@ namespace rabnet
         }
         public ZooJobItem Counts(int id, String nm, String place, int age)
         {
-            type = 2; name = nm; this.place = Buildings.fullPlaceName(place);
+            type = 3; name = nm; this.place = Buildings.fullPlaceName(place);
             this.age = age; this.status = 0;
             this.id = id;
             return this;
         }
         public ZooJobItem Preokrol(int id, String nm, String place, int age, int srok)
         {
-            type = 1; name = nm; this.place = Buildings.fullPlaceName(place);
+            type = 4; name = nm; this.place = Buildings.fullPlaceName(place);
             this.age = age;
             this.id = id;
             i[0] = srok;
@@ -55,7 +55,15 @@ namespace rabnet
         }
         public ZooJobItem BoysGirlsOut(int id, String nm, String place, int age, int srok)
         {
-            type = 1; name = nm; this.place = Buildings.fullPlaceName(place);
+            type = 5; name = nm; this.place = Buildings.fullPlaceName(place);
+            this.age = age;
+            this.id = id;
+            i[0] = srok;
+            return this;
+        }
+        public ZooJobItem Fuck(int id, String nm, String place, int age, int srok)
+        {
+            type = 6; name = nm; this.place = Buildings.fullPlaceName(place);
             this.age = age;
             this.id = id;
             i[0] = srok;
@@ -210,6 +218,9 @@ FROM rabbits WHERE r_parent<>0 AND {0:s} AND (TO_DAYS(NOW())-TO_DAYS(r_born))>={
 
         public ZooJobItem[] getFucks(int days1, int days2)
         {
+            MySqlDataReader rd = reader(String.Format(@"SELECT r_id,rabname(r_id,2) name,rabplace(r_id) place
+TO_DAYS(NOW())-TO_DAYS(r_born) age
+FROM rabbits WHERE r_sex='female' AND "));
             List<ZooJobItem> res = new List<ZooJobItem>();
             /*
             while (rd.Read())

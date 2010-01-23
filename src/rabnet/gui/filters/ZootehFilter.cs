@@ -45,7 +45,7 @@ namespace rabnet
             for (int i = 0; i < lbLogs.Items.Count; i++)
             {
                 if (lbLogs.GetItemChecked(i))
-                    f["lgs"] += "," + i.ToString();
+                    f["lgs"] += "," + (i+1).ToString();
                 else
                     ac = false;
             }
@@ -71,7 +71,7 @@ namespace rabnet
                 lbZoo.SetItemChecked(i,f.safeValue("act",itemFlags).Contains(""+itemFlags[i]));
             String[] nums=f.safeValue("lgs","0").Split(',');
             for (int i=0;i<lbLogs.Items.Count;i++)
-                lbLogs.SetItemChecked(i,hasnum(nums,i));
+                lbLogs.SetItemChecked(i,hasnum(nums,i+1));
             nudLogLim.Value=f.safeInt("lim",100);
         }
 

@@ -34,7 +34,7 @@ namespace rabnet
                 li.Tag = j;
             }
             listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            fillLogs();
+            fillLogs(f);
             DataThread.get().stop();
             return null;
         }
@@ -74,9 +74,9 @@ namespace rabnet
              * */
         }
 
-        private void fillLogs()
+        private void fillLogs(Filters f)
         {
-            Filters f=new Filters();
+            //Filters f=new Filters();
             listView2.Items.Clear();
             foreach (LogList.OneLog l in Engine.db().getLogs(f).logs)
             {
