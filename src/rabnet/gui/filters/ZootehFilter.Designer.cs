@@ -35,6 +35,7 @@
             this.cbVudvor = new System.Windows.Forms.CheckBox();
             this.cbCount = new System.Windows.Forms.CheckBox();
             this.cbPreokrol = new System.Windows.Forms.CheckBox();
+            this.cbReplace = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // cbFilters
@@ -103,10 +104,21 @@
             this.cbPreokrol.Text = "Предокрольный осмотр";
             this.cbPreokrol.UseVisualStyleBackColor = true;
             // 
+            // cbReplace
+            // 
+            this.cbReplace.AutoSize = true;
+            this.cbReplace.Location = new System.Drawing.Point(21, 108);
+            this.cbReplace.Name = "cbReplace";
+            this.cbReplace.Size = new System.Drawing.Size(67, 17);
+            this.cbReplace.TabIndex = 7;
+            this.cbReplace.Text = "отсадки";
+            this.cbReplace.UseVisualStyleBackColor = true;
+            // 
             // ZootehFilter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.cbReplace);
             this.Controls.Add(this.cbPreokrol);
             this.Controls.Add(this.cbCount);
             this.Controls.Add(this.cbVudvor);
@@ -133,5 +145,6 @@
         private System.Windows.Forms.CheckBox cbVudvor;
         private System.Windows.Forms.CheckBox cbCount;
         private System.Windows.Forms.CheckBox cbPreokrol;
+        private System.Windows.Forms.CheckBox cbReplace;
     }
 }

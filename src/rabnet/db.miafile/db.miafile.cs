@@ -341,5 +341,15 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public ZooJobItem[] getBoysGirlsOut(int days, OneRabbit.RabbitSex sex)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

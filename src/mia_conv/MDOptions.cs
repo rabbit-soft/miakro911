@@ -17,6 +17,9 @@ namespace mia_conv
             setOption("opt", "bride", p.make_brides.value());
             setOption("opt", "preokrol", p.heater.value());
             setOption("opt", "combage", 3);
+            setOption("opt", "girlsout", 100);
+            setOption("opt", "boysout", p.otsad_boys_mother.value());
+//            setOption("opt", "otsad_boys_pervo", p.otsad_boys_pervo.value());
             /* //OPTIONS
             setOption("opt","pervonest",p.pervonest.value());
             setOption("opt","kukunest",p.kukunest.value());
@@ -27,7 +30,6 @@ namespace mia_conv
             setOption("opt","countsuckers",p.countsuckers.value());
             setOption("opt","vyazkamother",p.vyazkamother.value());
             setOption("opt","vyazkapervo",p.vyazkapervo.value());
-            setOption("opt","rasselboys",p.rasselboys.value());
             setOption("opt","killfemales",p.killfemales.value());
             setOption("opt","killbrides",p.killbrides.value());
             setOption("opt","killboys",p.killboys.value());
@@ -46,8 +48,6 @@ namespace mia_conv
             setOption("opt","sh_tier_s",p.show_area_types.value());
             /*
             setOption("opt","sluchka_filter",p.sluchka_filter.value());
-            setOption("opt","otsad_boys_mother",p.otsad_boys_mother.value());
-            setOption("opt","otsad_boys_pervo",p.otsad_boys_pervo.value());
             setOption("opt","zoo_bits",p.zoo_bits.value());
             setOption("opt","job_grouping",p.job_grouping.value());
             setOption("opt","name_show",p.name_show.value());

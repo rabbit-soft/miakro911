@@ -53,6 +53,14 @@ namespace rabnet
             i[0] = srok;
             return this;
         }
+        public ZooJobItem BoysGirlsOut(int id, String nm, String place, int age, int srok)
+        {
+            type = 1; name = nm; this.place = Buildings.fullPlaceName(place);
+            this.age = age;
+            this.id = id;
+            i[0] = srok;
+            return this;
+        }
     }
     /*
     public class ZooTehItem:IData
@@ -183,6 +191,18 @@ r_id NOT IN (SELECT l_rabbit FROM logs WHERE l_type=21 AND DATE(l_date)>=DATE(ra
                 res.Add(new ZooJobItem().Preokrol(rd.GetInt32("r_id"), rd.GetString("name"),
                     rd.GetString("place"), rd.GetInt32("age"), rd.GetInt32("srok")));
             rd.Close();
+            return res.ToArray();
+        }
+
+        public ZooJobItem[] getBoysGirlsOut(int days, OneRabbit.RabbitSex sex)
+        {
+            List<ZooJobItem> res = new List<ZooJobItem>();
+            /*
+            while (rd.Read())
+                res.Add(new ZooJobItem().Preokrol(rd.GetInt32("r_id"), rd.GetString("name"),
+                    rd.GetString("place"), rd.GetInt32("age"), rd.GetInt32("srok")));
+            rd.Close();
+             * */
             return res.ToArray();
         }
 

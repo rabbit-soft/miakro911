@@ -4,7 +4,7 @@ using System.Text;
 
 namespace rabnet
 {
-    public enum JobType {NONE, OKROL, VUDVOR, COUNT_KIDS, PRE_OKROL };
+    public enum JobType {NONE, OKROL, VUDVOR, COUNT_KIDS, PRE_OKROL ,BOYS_OUT,GIRLS_OUT};
     
     public class ZootehJob:IData
     {
@@ -58,6 +58,15 @@ namespace rabnet
             this.age = age; this.id = id;
             return this;
         }
+        public ZootehJob BoysGirlsOut(int id, String nm, String ad, int age, int srok,bool boys)
+        {
+            type = boys ? JobType.BOYS_OUT : JobType.GIRLS_OUT;
+            job = "Отсадка " + (boys ? "мальчиков" : "девочек");
+            this.id = id;days = srok;
+            name = nm; address = ad;
+            this.age = age;
+            return this;
+        }
     }
 
     public class JobHolder:List<ZootehJob>{}
@@ -81,6 +90,8 @@ namespace rabnet
                 getCounts(zjobs);
             if (f.safeValue("act", "P").Contains("P"))
                 getPreokrols(zjobs);
+            if (f.safeValue("act", "R").Contains("R"))
+                getBoysGirlsOut(zjobs);
             return zjobs.ToArray();
         }
 
@@ -118,6 +129,18 @@ namespace rabnet
             ZooJobItem[] jobs = eng.db().getPreokrols(days);
             foreach(ZooJobItem z in jobs)
                 jh.Add(new ZootehJob().Preokrol(z.id,z.name,z.place,z.age,z.i[0]));
+        }
+
+        public void getBoysGirlsOut(JobHolder jh)
+        {
+            int days = eng.options().getIntOption(Options.OPT_ID.BOYS_OUT);
+            ZooJobItem[] jobs = eng.db().getBoysGirlsOut(days, OneRabbit.RabbitSex.MALE);
+            foreach (ZooJobItem z in jobs)
+                jh.Add(new ZootehJob().BoysGirlsOut(z.id, z.name, z.place, z.age, z.i[0],true));
+            days = eng.options().getIntOption(Options.OPT_ID.GIRLS_OUT);
+            jobs = eng.db().getBoysGirlsOut(days, OneRabbit.RabbitSex.FEMALE);
+            foreach (ZooJobItem z in jobs)
+                jh.Add(new ZootehJob().BoysGirlsOut(z.id, z.name, z.place, z.age, z.i[0], false));
         }
     }
 }

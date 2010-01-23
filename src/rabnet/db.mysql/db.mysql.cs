@@ -382,6 +382,11 @@ namespace rabnet
             return RabbitGetter.getMothers(sql, age, agediff);
         }
 
+        public ZooJobItem[] getBoysGirlsOut(int days, OneRabbit.RabbitSex sex)
+        {
+            return new ZooTehGetter(sql).getBoysGirlsOut(days, sex);
+        }
+
         #endregion
     }
 }

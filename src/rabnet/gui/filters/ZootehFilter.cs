@@ -34,11 +34,13 @@ namespace rabnet
             cbVudvor.Checked = f.safeValue("act", "V").Contains("V");
             cbCount.Checked = f.safeValue("act", "C").Contains("C");
             cbPreokrol.Checked = f.safeValue("act", "P").Contains("P");
+            cbReplace.Checked = f.safeValue("act", "R").Contains("R");
         }
 
         public override void clearFilters()
         {
             cbOkrol.Checked = cbVudvor.Checked = cbCount.Checked = cbPreokrol.Checked = true;
+            cbReplace.Checked = true;
         }
     #endregion
 

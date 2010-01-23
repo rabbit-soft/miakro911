@@ -46,6 +46,10 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.nudCombine = new System.Windows.Forms.NumericUpDown();
+            this.nudBoysOut = new System.Windows.Forms.NumericUpDown();
+            this.nudGirlsOut = new System.Windows.Forms.NumericUpDown();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudOkrol)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudVudvor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCount1)).BeginInit();
@@ -54,6 +58,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudBrides)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPreokrol)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCombine)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudBoysOut)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudGirlsOut)).BeginInit();
             this.SuspendLayout();
             // 
             // nudOkrol
@@ -236,7 +242,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(27, 240);
+            this.label8.Location = new System.Drawing.Point(12, 240);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(219, 13);
             this.label8.TabIndex = 16;
@@ -254,11 +260,67 @@
             0,
             0});
             // 
+            // nudBoysOut
+            // 
+            this.nudBoysOut.Location = new System.Drawing.Point(252, 264);
+            this.nudBoysOut.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nudBoysOut.Name = "nudBoysOut";
+            this.nudBoysOut.Size = new System.Drawing.Size(74, 20);
+            this.nudBoysOut.TabIndex = 18;
+            this.nudBoysOut.Value = new decimal(new int[] {
+            80,
+            0,
+            0,
+            0});
+            // 
+            // nudGirlsOut
+            // 
+            this.nudGirlsOut.Location = new System.Drawing.Point(252, 290);
+            this.nudGirlsOut.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nudGirlsOut.Name = "nudGirlsOut";
+            this.nudGirlsOut.Size = new System.Drawing.Size(74, 20);
+            this.nudGirlsOut.TabIndex = 19;
+            this.nudGirlsOut.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(121, 266);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(108, 13);
+            this.label9.TabIndex = 20;
+            this.label9.Text = "Отсадка мальчиков";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(135, 292);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(94, 13);
+            this.label10.TabIndex = 21;
+            this.label10.Text = "Отсадка девочек";
+            // 
             // OptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(410, 402);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.nudGirlsOut);
+            this.Controls.Add(this.nudBoysOut);
             this.Controls.Add(this.nudCombine);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
@@ -293,6 +355,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudBrides)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPreokrol)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCombine)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudBoysOut)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudGirlsOut)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -318,5 +382,9 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.NumericUpDown nudCombine;
+        private System.Windows.Forms.NumericUpDown nudBoysOut;
+        private System.Windows.Forms.NumericUpDown nudGirlsOut;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
     }
 }
