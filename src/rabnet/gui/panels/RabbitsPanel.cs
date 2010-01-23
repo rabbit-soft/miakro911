@@ -186,7 +186,7 @@ namespace rabnet
             if (listView1.SelectedItems.Count != 1)
                 return;
             RabbitInfo ri = new RabbitInfo((int)listView1.SelectedItems[0].Tag);
-            if (ri.ShowDialog() != DialogResult.Abort)
+            if (ri.ShowDialog() == DialogResult.OK)
                 rsb.run();
         }
 
@@ -200,7 +200,7 @@ namespace rabnet
             if (listView1.SelectedItems.Count!=1)
                 return;
             int rid=(int)listView1.SelectedItems[0].Tag;
-            if( (new BonForm(rid)).ShowDialog() != DialogResult.Abort)
+            if( (new BonForm(rid)).ShowDialog() == DialogResult.OK)
                 rsb.run();
         }
 
@@ -209,13 +209,13 @@ namespace rabnet
             if (listView1.SelectedItems.Count != 1)
                 return;
             int rid = (int)listView1.SelectedItems[0].Tag;
-            if((new Proholost(rid)).ShowDialog() !=DialogResult.Abort)
+            if((new Proholost(rid)).ShowDialog() == DialogResult.OK)
                 rsb.run();
         }
 
         private void newRab_Click(object sender, EventArgs e)
         {
-            if((new IncomeForm()).ShowDialog() != DialogResult.Abort)
+            if((new IncomeForm()).ShowDialog() == DialogResult.OK)
                 rsb.run();
         }
 
@@ -226,7 +226,7 @@ namespace rabnet
             ReplaceForm rpf = new ReplaceForm();
             foreach (ListViewItem li in listView1.SelectedItems)
                 rpf.addRabbit((int)li.Tag);
-            if(rpf.ShowDialog() != DialogResult.Abort)
+            if(rpf.ShowDialog() == DialogResult.OK)
                 rsb.run();
         }
 
@@ -238,7 +238,7 @@ namespace rabnet
             rpf.addRabbit((int)listView1.SelectedItems[0].Tag);
             rpf.addRabbit((int)listView1.SelectedItems[1].Tag);
             rpf.setAction(ReplaceForm.Action.CHANGE);
-            if (rpf.ShowDialog() != DialogResult.Abort)
+            if (rpf.ShowDialog() == DialogResult.OK)
                 rsb.run();
         }
 
@@ -249,7 +249,7 @@ namespace rabnet
             KillForm f = new KillForm();
             foreach (ListViewItem li in listView1.SelectedItems)
                 f.addRabbit((int)li.Tag);
-            if(f.ShowDialog() != DialogResult.Abort)
+            if(f.ShowDialog() == DialogResult.OK)
                 rsb.run();
         }
 
@@ -258,15 +258,15 @@ namespace rabnet
             if (listView1.SelectedItems.Count != 1)
                 return;
             CountKids f = new CountKids((int)listView1.SelectedItems[0].Tag);
-            f.ShowDialog();
-            rsb.run();
+            if (f.ShowDialog() == DialogResult.OK)
+                rsb.run();
         }
 
         private void okrolMenuItem_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count != 1)
                 return;
-            if ((new OkrolForm((int)listView1.SelectedItems[0].Tag)).ShowDialog() != DialogResult.Abort)
+            if ((new OkrolForm((int)listView1.SelectedItems[0].Tag)).ShowDialog() == DialogResult.OK)
                 rsb.run();
         }
 
@@ -274,8 +274,8 @@ namespace rabnet
         {
             if (listView1.SelectedItems.Count != 1)
                 return;
-            (new MakeFuck((int)listView1.SelectedItems[0].Tag)).ShowDialog();
-            rsb.run();
+            if((new MakeFuck((int)listView1.SelectedItems[0].Tag)).ShowDialog() == DialogResult.OK)
+                rsb.run();
         }
 
         private void boysoutMenuItem_Click(object sender, EventArgs e)
@@ -285,7 +285,7 @@ namespace rabnet
             ReplaceForm rpf = new ReplaceForm();
             rpf.addRabbit((int)listView1.SelectedItems[0].Tag);
             rpf.setAction(ReplaceForm.Action.BOYSOUT);
-            if (rpf.ShowDialog() != DialogResult.Abort)
+            if (rpf.ShowDialog() == DialogResult.OK)
                 rsb.run();
         }
 
@@ -294,8 +294,8 @@ namespace rabnet
             if (listView1.SelectedItems.Count != 1) return;
             RabNetEngRabbit r = Engine.get().getRabbit((int)listView1.SelectedItems[0].Tag);
             if (r.youngcount<1) return;
-            (new ReplaceYoungersForm(r.youngers[0].id)).ShowDialog();
-            rsb.run();
+            if((new ReplaceYoungersForm(r.youngers[0].id)).ShowDialog() == DialogResult.OK)
+                rsb.run();
         }
 
     }

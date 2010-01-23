@@ -53,6 +53,7 @@ namespace rabnet
             toolTip.SetToolTip(button4,"Удалить выбранный номер гена");
             toolTip.SetToolTip(button3,"Добавить номер гена");
             toolTip.SetToolTip(checkBox5,"Изменить данные вручную");
+            toolTip.SetToolTip(button9, "Принять окрол");
         }
 
         public RabbitInfo(int id)
@@ -373,7 +374,6 @@ namespace rabnet
 
         private void button5_Click(object sender, EventArgs e)
         {
-            button2.DialogResult = DialogResult.None;
             applyData();
             updateData();
         }

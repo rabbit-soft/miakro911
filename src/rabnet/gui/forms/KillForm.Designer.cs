@@ -38,9 +38,9 @@
             this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.dateDays1 = new rabnet.components.DateDays();
@@ -121,8 +121,13 @@
             // 
             this.columnHeader5.Text = "Количество";
             // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "Списать";
+            // 
             // button2
             // 
+            this.button2.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button2.Location = new System.Drawing.Point(542, 356);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
@@ -133,7 +138,6 @@
             // 
             // button3
             // 
-            this.button3.DialogResult = System.Windows.Forms.DialogResult.Abort;
             this.button3.Location = new System.Drawing.Point(461, 356);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
@@ -141,10 +145,6 @@
             this.button3.Text = "Отмена";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // columnHeader6
-            // 
-            this.columnHeader6.Text = "Списать";
             // 
             // numericUpDown1
             // 
@@ -168,7 +168,7 @@
             // 
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2010, 1, 16, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2010, 1, 24, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
             this.dateDays1.Location = new System.Drawing.Point(12, 12);

@@ -43,10 +43,10 @@
             this.button7 = new System.Windows.Forms.Button();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button13 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
-            this.button13 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -70,6 +70,7 @@
             // 
             // button1
             // 
+            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button1.Location = new System.Drawing.Point(739, 431);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(85, 23);
@@ -233,6 +234,16 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Объединить";
             // 
+            // button13
+            // 
+            this.button13.Location = new System.Drawing.Point(6, 75);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(107, 23);
+            this.button13.TabIndex = 2;
+            this.button13.Text = "Объединить низ";
+            this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.button9_Click);
+            // 
             // button9
             // 
             this.button9.Location = new System.Drawing.Point(5, 48);
@@ -262,16 +273,6 @@
             this.button12.Text = "Автоматически";
             this.button12.UseVisualStyleBackColor = true;
             this.button12.Click += new System.EventHandler(this.button12_Click);
-            // 
-            // button13
-            // 
-            this.button13.Location = new System.Drawing.Point(6, 75);
-            this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(107, 23);
-            this.button13.TabIndex = 2;
-            this.button13.Text = "Объединить низ";
-            this.button13.UseVisualStyleBackColor = true;
-            this.button13.Click += new System.EventHandler(this.button9_Click);
             // 
             // ReplaceForm
             // 

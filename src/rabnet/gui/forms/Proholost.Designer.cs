@@ -48,7 +48,7 @@
             // 
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2010, 1, 11, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2010, 1, 24, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
             this.dateDays1.Location = new System.Drawing.Point(15, 46);
@@ -61,6 +61,7 @@
             // 
             // button1
             // 
+            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button1.Location = new System.Drawing.Point(94, 131);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(99, 23);
