@@ -190,7 +190,7 @@ namespace rabnet
             if (id.curaddress == OneRabbit.NullAddress) return false;
             foreach (RP r in rs)
             {
-                if (r.curaddress == id.curaddress && r != id)
+                if (r.curaddress == id.curaddress && r != id && !res)
                 {
                     if (!(id.younger && id.parent==r.id) && !(r.younger && r.parent==id.id))
                         res=true;
@@ -520,7 +520,7 @@ namespace rabnet
 
         private void button12_Click(object sender, EventArgs e)
         {
-                for (int j = rs.Count - 1; j >= 0;j-- )
+                for (int j = rs.Count - 1; j > 0;j-- )
                 {
                     RP r = rs[j];
                     if (busy(r))

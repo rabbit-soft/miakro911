@@ -98,12 +98,15 @@ namespace rabnet
         {
             okrolMenuItem.Visible = vudvorMenuItem.Visible = false;
             countsMenuItem.Visible = preokrolMenuItem.Visible= false;
+            boysOutMenuItem.Visible = girlsOutMenuItem.Visible = false;
             switch (type)
             {
                 case JobType.OKROL: okrolMenuItem.Visible = true; break;
                 case JobType.VUDVOR: vudvorMenuItem.Visible = true; break;
                 case JobType.COUNT_KIDS: countsMenuItem.Visible = true; break;
                 case JobType.PRE_OKROL: preokrolMenuItem.Visible = true; break;
+                case JobType.BOYS_OUT: boysOutMenuItem.Visible = true; break;
+                case JobType.GIRLS_OUT: girlsOutMenuItem.Visible = true; break;
             }
         }
 
@@ -146,6 +149,14 @@ namespace rabnet
                     break;
                 case JobType.PRE_OKROL:
                     Engine.get().preOkrol(job.id);
+                    break;
+                case JobType.BOYS_OUT:
+                case JobType.GIRLS_OUT:
+                    ReplaceForm rf = new ReplaceForm();
+                    rf.addRabbit(job.id);
+                    if (job.type==JobType.BOYS_OUT)
+                        rf.setAction(ReplaceForm.Action.BOYSOUT);
+                    rf.ShowDialog();
                     break;
             }
             rsb.run();

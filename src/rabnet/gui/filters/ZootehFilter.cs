@@ -22,7 +22,8 @@ namespace rabnet
             Filters f = new Filters();
             if (!cbCount.Checked || !cbOkrol.Checked || !cbVudvor.Checked || !cbPreokrol.Checked)
             {
-                f["act"] = "" + (cbOkrol.Checked ? "O" : "") + (cbVudvor.Checked ? "V" : "") + (cbCount.Checked ? "C" : "") + (cbPreokrol.Checked ? "P" : "");
+                f["act"] = "" + (cbOkrol.Checked ? "O" : "") + (cbVudvor.Checked ? "V" : "") + (cbCount.Checked ? "C" : "") + (cbPreokrol.Checked ? "P" : "")+
+                    (cbReplace.Checked ? "R" : "");
                 if (f["act"] == "") f.Remove("act");
             }
             return f;

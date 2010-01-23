@@ -256,7 +256,7 @@ namespace rabnet
 
         public void replaceRabbit(int farm,int tier_id,int sec,string address)
         {
-            if (rid == 0)
+            if (id == 0)
             {
                 rab.address = address;
                 rab.nuaddr = String.Format("{0:d}|{1:d}|{2:d}", farm, tier_id, sec);

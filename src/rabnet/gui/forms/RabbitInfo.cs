@@ -58,7 +58,18 @@ namespace rabnet
         private void button1_Click(object sender, EventArgs e)
         {
             button5.PerformClick();
-            Close();
+            String ex = "";
+            if (name.Text == "" && surname.Text == "" && secname.Text == "")
+                ex = "У кролика нет имени!\n";
+            if (rab.address == OneRabbit.NullAddress)
+                ex += "У кролика нет места жительства!\n";
+            if (ex != "")
+            {
+                ex += "Продолжить?";
+                if (MessageBox.Show(this, ex, "Не введены данные", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    Close();
+            }else
+                Close();
         }
 
         private String getbon(char bon)
@@ -313,13 +324,6 @@ namespace rabnet
                 rab.lost = (int)deadBab.Value;
             }
             rab.commit();
-            String ex = "";
-            if (name.Text == "" && surname.Text == "" && secname.Text == "")
-                ex = "У кролика нет имени!\n";
-            if (rab.address == OneRabbit.NullAddress)
-                ex += "У кролика нет места жительства!";
-            if (ex != "")
-                MessageBox.Show(ex);
         }
 
         private bool warnme()

@@ -51,7 +51,7 @@ namespace rabnet
             fillZones();
         }
 
-        private void Update(bool plast)
+        private void update(bool plast)
         {
             listView1.Items.Clear();
             for (int i = 0; i < rbs.Count; i++)
@@ -79,19 +79,19 @@ namespace rabnet
         private void button1_Click(object sender, EventArgs e)
         {
             rbs.Add(new RabNetEngRabbit(Engine.get(),OneRabbit.RabbitSex.MALE));
-            Update(true);
+            update(true);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             rbs.Add(new RabNetEngRabbit(Engine.get(), OneRabbit.RabbitSex.FEMALE));
-            Update(true);
+            update(true);
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             rbs.Add(new RabNetEngRabbit(Engine.get(), OneRabbit.RabbitSex.VOID));
-            Update(true);
+            update(true);
         }
 
         private void button8_Click(object sender, EventArgs e)
@@ -99,7 +99,7 @@ namespace rabnet
             if (listView1.SelectedItems.Count != 1)
                 return;
             (new RabbitInfo(listView1.SelectedItems[0].Tag as RabNetEngRabbit)).ShowDialog();
-            Update(false);
+            update(false);
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -111,8 +111,15 @@ namespace rabnet
         {
             if (listView1.SelectedItems.Count != 1)
                 return;
-            rbs.Remove(listView1.SelectedItems[0].Tag as RabNetEngRabbit);
-            Update();
+            int i=0;
+            while (i < rbs.Count)
+            {
+                if (rbs[i] == (RabNetEngRabbit)listView1.SelectedItems[0].Tag)
+                    rbs.RemoveAt(i);
+                else i++;
+            }
+//            rbs.Remove(listView1.SelectedItems[0].Tag as RabNetEngRabbit);
+            update(false);
         }
 
         private void button9_Click(object sender, EventArgs e)
@@ -121,7 +128,7 @@ namespace rabnet
             foreach (RabNetEngRabbit r in rbs)
                 rpf.addRabbit(r);
             rpf.ShowDialog();
-            Update();
+            update(false);
         }
 
         private bool isMom(RabNetEngRabbit r1)

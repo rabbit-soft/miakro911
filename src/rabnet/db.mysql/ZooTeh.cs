@@ -196,13 +196,15 @@ r_id NOT IN (SELECT l_rabbit FROM logs WHERE l_type=21 AND DATE(l_date)>=DATE(ra
 
         public ZooJobItem[] getBoysGirlsOut(int days, OneRabbit.RabbitSex sex)
         {
+            MySqlDataReader rd=reader(String.Format(@"SELECT r_parent,rabname(r_parent,2) name ,rabplace(r_parent) place, 
+TO_DAYS(NOW())-TO_DAYS(r_born) age 
+FROM rabbits WHERE r_parent<>0 AND {0:s} AND (TO_DAYS(NOW())-TO_DAYS(r_born))>={1:d} ORDER BY age DESC;",
+                  (sex==OneRabbit.RabbitSex.FEMALE?"r_sex='female'":"(r_sex='male' OR r_sex='void')"),days));
             List<ZooJobItem> res = new List<ZooJobItem>();
-            /*
             while (rd.Read())
-                res.Add(new ZooJobItem().Preokrol(rd.GetInt32("r_id"), rd.GetString("name"),
-                    rd.GetString("place"), rd.GetInt32("age"), rd.GetInt32("srok")));
+                res.Add(new ZooJobItem().BoysGirlsOut(rd.GetInt32("r_parent"), rd.GetString("name"),
+                    rd.GetString("place"), rd.GetInt32("age"), rd.GetInt32("age")-days));
             rd.Close();
-             * */
             return res.ToArray();
         }
 

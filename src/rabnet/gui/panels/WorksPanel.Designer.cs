@@ -51,6 +51,8 @@
             this.vudvorMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.countsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.preokrolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.boysOutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.girlsOutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -188,9 +190,11 @@
             this.okrolMenuItem,
             this.vudvorMenuItem,
             this.countsMenuItem,
-            this.preokrolMenuItem});
+            this.preokrolMenuItem,
+            this.boysOutMenuItem,
+            this.girlsOutMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(206, 114);
+            this.actMenu.Size = new System.Drawing.Size(206, 158);
             // 
             // okrolMenuItem
             // 
@@ -219,6 +223,20 @@
             this.preokrolMenuItem.Size = new System.Drawing.Size(205, 22);
             this.preokrolMenuItem.Text = "Предокрольный осмотр";
             this.preokrolMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
+            // 
+            // boysOutMenuItem
+            // 
+            this.boysOutMenuItem.Name = "boysOutMenuItem";
+            this.boysOutMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.boysOutMenuItem.Text = "Отсадить мальчиков";
+            this.boysOutMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
+            // 
+            // girlsOutMenuItem
+            // 
+            this.girlsOutMenuItem.Name = "girlsOutMenuItem";
+            this.girlsOutMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.girlsOutMenuItem.Text = "Отсадить девочек";
+            this.girlsOutMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // WorksPanel
             // 
@@ -259,6 +277,8 @@
         private System.Windows.Forms.ToolStripMenuItem vudvorMenuItem;
         private System.Windows.Forms.ToolStripMenuItem countsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem preokrolMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem boysOutMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem girlsOutMenuItem;
 
     }
 }
