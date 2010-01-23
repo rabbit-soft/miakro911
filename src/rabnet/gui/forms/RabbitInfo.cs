@@ -28,6 +28,7 @@ namespace rabnet
         public RabbitInfo()
         {
             InitializeComponent();
+            initialHints();            
             malePage = tabControl1.TabPages[1];
             femalePage = tabControl1.TabPages[2];
             okrolPage = tabControl1.TabPages[3];
@@ -37,6 +38,23 @@ namespace rabnet
                 tabControl1.TabPages.RemoveAt(1);
             mkbrides = Engine.get().brideAge();
         }
+
+        private void initialHints()
+        {
+            ToolTip toolTip = new ToolTip();
+            //MessageBox.Show(toolTip.InitialDelay.ToString());
+            toolTip.InitialDelay = 1000;
+            toolTip.SetToolTip(button13, "Определение классности");
+            toolTip.SetToolTip(group, "Количество кроликов в клетке");
+            toolTip.SetToolTip(button16,"Показать все имена");
+            toolTip.SetToolTip(button14,"Показать все породы");
+            toolTip.SetToolTip(button15,"Показать все местности");
+            toolTip.SetToolTip(button17,"Показать окно пересадок");
+            toolTip.SetToolTip(button4,"Удалить выбранный номер гена");
+            toolTip.SetToolTip(button3,"Добавить номер гена");
+            toolTip.SetToolTip(checkBox5,"Изменить данные вручную");
+        }
+
         public RabbitInfo(int id)
             : this()
         {
@@ -539,13 +557,6 @@ namespace rabnet
         {
             okrolDd.Enabled = (okrolCount.Value!=0);
         }
-
-        private void bdate_Load(object sender, EventArgs e)
-        {
-
-        }
-
-
 
     }
 }
