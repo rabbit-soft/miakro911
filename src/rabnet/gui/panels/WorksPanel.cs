@@ -5,11 +5,13 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace rabnet
 {
     public partial class WorksPanel : RabNetPanel
     {
+        private DateTime repdate=DateTime.Now;
         public WorksPanel():base(){}
         public WorksPanel(RabStatusBar sb)
             : base(sb, new ZootehFilter(sb))
@@ -21,6 +23,7 @@ namespace rabnet
         protected override IDataGetter onPrepare(Filters f)
         {
             listView1.Items.Clear();
+            repdate = DateTime.Now;
             foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f))
             {
                 ListViewItem li = listView1.Items.Add(j.days.ToString());
@@ -175,6 +178,57 @@ namespace rabnet
         private void listView1_DoubleClick(object sender, EventArgs e)
         {
             makeJob();
+        }
+
+        private int getFuckerId(String f,List<String> lst)
+        {
+            for (int i = 0; i < lst.Count; i++)
+                if (lst[i] == f) return i;
+            lst.Add(f);
+            return lst.Count - 1;
+        }
+
+        private void печатьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<String> fuckers = new List<string>();
+            XmlDocument rep=new XmlDocument();
+            rep.AppendChild(rep.CreateElement("Rows")).AppendChild(rep.CreateElement("Row")).AppendChild(rep.CreateElement("date")).AppendChild(rep.CreateTextNode(repdate.ToLongDateString()+" "+repdate.ToLongTimeString()));
+            XmlDocument xml = new XmlDocument();
+            XmlDocument fucks = new XmlDocument();
+            XmlElement root = xml.CreateElement("Rows");
+            xml.AppendChild(root);
+            XmlElement fuck = fucks.CreateElement("Rows");
+            fucks.AppendChild(fuck);
+            XmlElement rw;
+            for (int i = 0; i < listView1.Items.Count; i++)
+            {
+                ListViewItem li = listView1.Items[i];
+                ZootehJob j=(ZootehJob)li.Tag;
+                rw = xml.CreateElement("Row");
+                rw.AppendChild(xml.CreateElement("type")).AppendChild(xml.CreateTextNode(((int)j.type).ToString()));
+                rw.AppendChild(xml.CreateElement("days")).AppendChild(xml.CreateTextNode(j.days.ToString()));
+                rw.AppendChild(xml.CreateElement("name")).AppendChild(xml.CreateTextNode(j.job));
+                rw.AppendChild(xml.CreateElement("rabbit")).AppendChild(xml.CreateTextNode(j.name));
+                rw.AppendChild(xml.CreateElement("address")).AppendChild(xml.CreateTextNode(j.address));
+                rw.AppendChild(xml.CreateElement("comment")).AppendChild(xml.CreateTextNode(j.comment));
+                if (j.type == JobType.FUCK)
+                {
+                    int id = getFuckerId(j.names, fuckers);
+                    rw.AppendChild(xml.CreateElement("fuckers")).AppendChild(xml.CreateTextNode("см. "+id.ToString()));
+                }
+                else
+                    rw.AppendChild(xml.CreateElement("fuckers")).AppendChild(xml.CreateTextNode(""));
+                root.AppendChild(rw);
+            }
+            for (int i = 0; i < fuckers.Count; i++)
+            {
+                rw = fucks.CreateElement("Row");
+                rw.AppendChild(fucks.CreateElement("id")).AppendChild(fucks.CreateTextNode((i + 1).ToString()));
+                rw.AppendChild(fucks.CreateElement("names")).AppendChild(fucks.CreateTextNode(fuckers[i]));
+                fuck.AppendChild(rw);
+            }
+            new ReportViewForm("Зоотехплан " + repdate.ToLongDateString() + " " + repdate.ToLongTimeString(), "zooteh", 
+                new XmlDocument[]{xml,rep,fucks}).ShowDialog();
         }
 
     }
