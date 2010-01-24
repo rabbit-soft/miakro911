@@ -53,6 +53,7 @@
             this.preokrolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.boysOutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.girlsOutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fuckMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -192,9 +193,10 @@
             this.countsMenuItem,
             this.preokrolMenuItem,
             this.boysOutMenuItem,
-            this.girlsOutMenuItem});
+            this.girlsOutMenuItem,
+            this.fuckMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(206, 158);
+            this.actMenu.Size = new System.Drawing.Size(206, 180);
             // 
             // okrolMenuItem
             // 
@@ -238,6 +240,13 @@
             this.girlsOutMenuItem.Text = "Отсадить девочек";
             this.girlsOutMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
+            // fuckMenuItem
+            // 
+            this.fuckMenuItem.Name = "fuckMenuItem";
+            this.fuckMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.fuckMenuItem.Text = "Случить";
+            this.fuckMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
+            // 
             // WorksPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -279,6 +288,7 @@
         private System.Windows.Forms.ToolStripMenuItem preokrolMenuItem;
         private System.Windows.Forms.ToolStripMenuItem boysOutMenuItem;
         private System.Windows.Forms.ToolStripMenuItem girlsOutMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fuckMenuItem;
 
     }
 }

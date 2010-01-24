@@ -14,6 +14,7 @@ namespace rabnet
         private Catalog brds;
         private int rtosel=0;
         bool manual = true;
+        int malewait = 0;
         public MakeFuck()
         {
             InitializeComponent();
@@ -22,6 +23,7 @@ namespace rabnet
             manual = false;
             cbHeter.Checked=(Engine.opt().getIntOption(Options.OPT_ID.GETEROSIS)==1);
             cbInbreed.Checked = (Engine.opt().getIntOption(Options.OPT_ID.INBREEDING) == 1);
+            malewait = Engine.opt().getIntOption(Options.OPT_ID.MALE_WAIT);
             manual = true;
         }
         public MakeFuck(int r1)
@@ -41,16 +43,17 @@ namespace rabnet
         private void fillTable()
         {
             listView1.Items.Clear();
-            int malewait = Engine.opt().getIntOption(Options.OPT_ID.MALE_WAIT);
             Fucks fs = Engine.db().allFuckers(rab1.rid,cbHeter.Checked,cbInbreed.Checked,malewait);
             
             foreach (Fucks.Fuck f in fs.fucks)
             {
                 bool heter=(f.breed != rab1.breed);
                 bool inbr=RabNetEngHelper.inbreeding(rab1.genom,f.rgenom);
+                /*
                 if ((!inbr || cbInbreed.Checked) && (!heter || cbHeter.Checked) &&
                     (f.dead>1 || cbCand.Checked) || f.partnerid==rtosel)
                 {
+                 */
                 ListViewItem li = listView1.Items.Add(f.partner);
                 li.Tag = f;
                 String stat="Мальчик";
@@ -69,7 +72,7 @@ namespace rabnet
                     li.Selected = true;
                     li.EnsureVisible();
                  }
-                }
+                //}
             }
             listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }

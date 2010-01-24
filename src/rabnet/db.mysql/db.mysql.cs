@@ -392,9 +392,9 @@ namespace rabnet
             return new Logs(sql).logNames();
         }
 
-        public ZooJobItem[] getZooFuck(int statedays, int firstdays,int brideage)
+        public ZooJobItem[] getZooFuck(int statedays, int firstdays,int brideage,int malewait,bool heter,bool inbr)
         {
-            return new ZooTehGetter(sql).getFucks(statedays, firstdays,brideage);
+            return new ZooTehGetter(sql).getFucks(statedays, firstdays,brideage,malewait,heter,inbr);
         }
 
         #endregion

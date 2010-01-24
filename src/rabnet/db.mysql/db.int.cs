@@ -87,7 +87,7 @@ namespace rabnet
         Rabbit[] getMothers(int age,int agediff);
         ZooJobItem[] getBoysGirlsOut(int days,OneRabbit.RabbitSex sex);
         String[] logNames();
-        ZooJobItem[] getZooFuck(int statedays, int firstdays,int brideage);
+        ZooJobItem[] getZooFuck(int statedays, int firstdays,int brideage,int malewait,bool heterosis,bool inbreeding);
     }
 
 }

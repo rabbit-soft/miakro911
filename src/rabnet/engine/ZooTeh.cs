@@ -67,7 +67,7 @@ namespace rabnet
             this.age = age;
             return this;
         }
-        public ZootehJob Fuck(int id, String nm, String ad, int age, int srok,int status)
+        public ZootehJob Fuck(int id, String nm, String ad, int age, int srok,int status,String boys)
         {
             type = JobType.FUCK; job = "Случка";
             this.id = id; days = srok;
@@ -78,6 +78,7 @@ namespace rabnet
                 comment = "Первокролка";
             if (status > 1)
                 comment = "Штатная";
+            names = boys;
             return this;
         }
     }
@@ -162,9 +163,21 @@ namespace rabnet
         {
             int days1 = eng.options().getIntOption(Options.OPT_ID.STATE_FUCK);
             int days2 = eng.options().getIntOption(Options.OPT_ID.FIRST_FUCK);
-            ZooJobItem[] jobs = eng.db().getZooFuck(days1, days2,eng.brideAge());
+            bool heter = eng.options().getIntOption(Options.OPT_ID.GETEROSIS) == 1;
+            bool inbr = eng.options().getIntOption(Options.OPT_ID.INBREEDING) == 1;
+            int malewait = eng.options().getIntOption(Options.OPT_ID.MALE_WAIT);
+            ZooJobItem[] jobs = eng.db().getZooFuck(days1, days2, eng.brideAge(),malewait,heter,inbr);
             foreach (ZooJobItem z in jobs)
-                jh.Add(new ZootehJob().Fuck(z.id, z.name, z.place, z.age, z.i[0],z.status));
+            {
+                /*
+                Fucks f=eng.db().allFuckers(z.id, heter, inbr, malewait);
+                String boys="";
+                foreach (Fucks.Fuck ff in f.fucks)
+                    boys += ff.partner.Trim()+",";
+                boys.Trim(',');
+                 * */
+                jh.Add(new ZootehJob().Fuck(z.id, z.name, z.place, z.age, z.i[0], z.status,z.names));
+            }
         }
     }
 }

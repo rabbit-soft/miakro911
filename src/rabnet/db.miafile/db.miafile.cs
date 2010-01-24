@@ -689,7 +689,7 @@ namespace rabnet
             throw new NotImplementedException();
         }
 
-        ZooJobItem[] IRabNetDataLayer.getZooFuck(int statedays, int firstdays, int brideage)
+        ZooJobItem[] IRabNetDataLayer.getZooFuck(int statedays, int firstdays, int brideage,int malewait,bool heter,bool inbr)
         {
             throw new NotImplementedException();
         }

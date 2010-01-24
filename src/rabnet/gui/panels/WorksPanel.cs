@@ -107,6 +107,7 @@ namespace rabnet
                 case JobType.PRE_OKROL: preokrolMenuItem.Visible = true; break;
                 case JobType.BOYS_OUT: boysOutMenuItem.Visible = true; break;
                 case JobType.GIRLS_OUT: girlsOutMenuItem.Visible = true; break;
+                case JobType.FUCK: fuckMenuItem.Visible = true; break;
             }
         }
 
@@ -157,6 +158,9 @@ namespace rabnet
                     if (job.type==JobType.BOYS_OUT)
                         rf.setAction(ReplaceForm.Action.BOYSOUT);
                     rf.ShowDialog();
+                    break;
+                case JobType.FUCK:
+                    (new MakeFuck(job.id)).ShowDialog();
                     break;
             }
             rsb.run();

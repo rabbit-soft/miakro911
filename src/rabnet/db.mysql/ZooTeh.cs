@@ -14,6 +14,7 @@ namespace rabnet
         public String place;
         public int status;
         public DateTime date;
+        public string names;
         public int[] i = new int[10];
         public string[] s = new string[10];
         public ZooJobItem()
@@ -61,10 +62,11 @@ namespace rabnet
             i[0] = srok;
             return this;
         }
-        public ZooJobItem Fuck(int id, String nm, String place, int age, int srok,int status)
+        public ZooJobItem Fuck(int id, String nm, String place, int age, int srok,int status,string boys)
         {
             type = 6; name = nm; this.place = Buildings.fullPlaceName(place);
-            this.age = age; this.status = status;            this.id = id;
+            this.age = age; this.status = status;this.id = id;
+            names = boys;
             i[0] = srok;
             return this;
         }
@@ -215,16 +217,23 @@ FROM rabbits WHERE r_parent<>0 AND {0:s} AND (TO_DAYS(NOW())-TO_DAYS(r_born))>={
             return res.ToArray();
         }
 
-        public ZooJobItem[] getFucks(int statedays, int firstdays,int brideage)
+        public ZooJobItem[] getFucks(int statedays, int firstdays,int brideage,int malewait,bool heterosis,bool inbreeding)
         {
             MySqlDataReader rd = reader(String.Format(@"SELECT * FROM (SELECT r_id,rabname(r_id,2) name,rabplace(r_id) place,
 TO_DAYS(NOW())-TO_DAYS(r_born) age,
 (SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) suckers,
 r_status,
-TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol) fromokrol
+TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol) fromokrol,
+(SELECT GROUP_CONCAT(rabname(r5.r_id,0) ORDER BY rabname(r5.r_id,0) SEPARATOR ',') FROM rabbits r5
+WHERE r5.r_sex='male' AND r_status>0 AND 
+(r5.r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r5.r_last_fuck_okrol)>={3:d}){4:s}{5:s}) partners
 FROM rabbits WHERE r_sex='female' AND r_event_date IS NULL ) c 
 WHERE age>{0:d} AND (r_status=0 OR (r_status=1 AND (suckers=0 OR fromokrol>={1:d})) OR (r_status>1 AND (suckers=0 OR fromokrol>={2:d})));",
-    brideage,firstdays,statedays));
+    brideage,firstdays,statedays,malewait,
+(heterosis ? "" : String.Format(" AND r5.r_breed=rabbits.r_breed")),
+(inbreeding ? "" : String.Format(@" AND (SELECT COUNT(g_genom) FROM genoms WHERE g_id=rabbits.r_genesis AND g_genom IN 
+(SELECT g2.g_genom FROM genoms g2 WHERE g2.g_id=r5.r_genesis))=0"))
+    ));
             List<ZooJobItem> res = new List<ZooJobItem>();
             while (rd.Read())
             {
@@ -242,7 +251,7 @@ WHERE age>{0:d} AND (r_status=0 OR (r_status=1 AND (suckers=0 OR fromokrol>={1:d
                     else srok = fromok;
                 }
                 res.Add(new ZooJobItem().Fuck(rd.GetInt32("r_id"), rd.GetString("name"),
-                    rd.GetString("place"), age, srok, state));
+                    rd.GetString("place"), age, srok, state,rd.IsDBNull(7)?"":rd.GetString("partners")));
             }
             rd.Close();
             return res.ToArray();
