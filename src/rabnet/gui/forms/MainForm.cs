@@ -126,6 +126,8 @@ namespace rabnet
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (Engine.opt().getIntOption(Options.OPT_ID.CONFIRM_EXIT) == 0)
+                return;
             DialogResult dlr = MessageBox.Show("Вы уверены что хотите Выйти?","Выход",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
             if (dlr == DialogResult.No)
             {

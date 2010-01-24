@@ -10,6 +10,7 @@ namespace rabnet
 {
     public partial class YoungsPanel : RabNetPanel
     {
+        private int gentree = 10;
         public YoungsPanel():base()
         {
         }
@@ -22,6 +23,7 @@ namespace rabnet
 
         protected override IDataGetter onPrepare(Filters f)
         {
+            gentree = Engine.opt().getIntOption(Options.OPT_ID.GEN_TREE);
             f = new Filters();
             listView1.Items.Clear();
             listView1.Hide();
@@ -92,8 +94,8 @@ namespace rabnet
             }
             if (genTree.Nodes.Count > 0)
                 genTree.Nodes[0].ForeColor = Color.Gray;
-            if (genTree.Nodes.Count > 10)
-                genTree.Nodes.RemoveAt(10);
+            if (genTree.Nodes.Count > gentree)
+                genTree.Nodes.RemoveAt(gentree);
             TreeData dt = Engine.db().rabbitGenTree((int)listView1.SelectedItems[0].Tag);
             if (dt != null)
             {

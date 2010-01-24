@@ -22,6 +22,8 @@ namespace mia_conv
             setOption("opt", "boysout", p.otsad_boys_mother.value());
             setOption("opt", "statefuck", p.vyazkamother.value());
             setOption("opt", "firstfuck", p.vyazkapervo.value());
+            setOption("opt", "gentree", 10);
+            setOption("opt", "confirmexit", 0);
             //            setOption("opt", "otsad_boys_pervo", p.otsad_boys_pervo.value());
             /* //OPTIONS
             setOption("opt","pervonest",p.pervonest.value());

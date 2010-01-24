@@ -30,6 +30,10 @@ namespace rabnet
             nudGirlsOut.Value = o.getIntOption(Options.OPT_ID.GIRLS_OUT);
             nudStateFuck.Value = o.getIntOption(Options.OPT_ID.STATE_FUCK);
             nudFirstFuck.Value = o.getIntOption(Options.OPT_ID.FIRST_FUCK);
+            nudMaleWait.Value = o.getIntOption(Options.OPT_ID.MALE_WAIT);
+            //view
+            nudGenTree.Value = o.getIntOption(Options.OPT_ID.GEN_TREE);
+            cbConfirmExit.Checked = o.getIntOption(Options.OPT_ID.CONFIRM_EXIT) == 1;
         }
 
         private void save()
@@ -47,6 +51,10 @@ namespace rabnet
             o.setOption(Options.OPT_ID.GIRLS_OUT, (int)nudGirlsOut.Value);
             o.setOption(Options.OPT_ID.STATE_FUCK, (int)nudStateFuck.Value);
             o.setOption(Options.OPT_ID.FIRST_FUCK, (int)nudFirstFuck.Value);
+            o.setOption(Options.OPT_ID.MALE_WAIT, (int)nudMaleWait.Value);
+            //view
+            o.setOption(Options.OPT_ID.GEN_TREE, (int)nudGenTree.Value);
+            o.setOption(Options.OPT_ID.CONFIRM_EXIT, cbConfirmExit.Checked ? 1 : 0);
         }
             
 

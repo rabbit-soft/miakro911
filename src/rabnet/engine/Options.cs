@@ -8,7 +8,7 @@ namespace rabnet
     {
         public enum OPT_ID {NONE, GETEROSIS, INBREEDING ,SHORT_NAMES, DBL_SURNAME, SHOW_TIER_TYPE,SHOW_TIER_SEC,RAB_FILTER,
             SHOW_NUMBERS,BUILD_FILTER,OKROL,VUDVOR,COUNT1,COUNT2,COUNT3,MAKE_BRIDE,DEAD_FILTER,PRE_OKROL,ZOO_FILTER,
-            COMBINE_AGE,BOYS_OUT,GIRLS_OUT,STATE_FUCK,FIRST_FUCK,MALE_WAIT};
+            COMBINE_AGE,BOYS_OUT,GIRLS_OUT,STATE_FUCK,FIRST_FUCK,MALE_WAIT,GEN_TREE,CONFIRM_EXIT};
         public enum OPT_LEVEL {FARM,USER};
         public class ExOptionNotFound:ApplicationException
         {
@@ -52,6 +52,8 @@ namespace rabnet
                                    new Option(OPT_ID.STATE_FUCK,OPT_LEVEL.FARM,"statefuck"), 
                                    new Option(OPT_ID.FIRST_FUCK,OPT_LEVEL.FARM,"firstfuck"), 
                                    new Option(OPT_ID.MALE_WAIT,OPT_LEVEL.FARM,"malewait"), 
+                                   new Option(OPT_ID.GEN_TREE,OPT_LEVEL.USER,"gentree"), 
+                                   new Option(OPT_ID.CONFIRM_EXIT,OPT_LEVEL.USER,"confirmexit"), 
                                    };
         public Options(RabNetEngine eng)
         {
