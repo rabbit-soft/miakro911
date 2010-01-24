@@ -99,6 +99,7 @@ namespace rabnet
             okrolMenuItem.Visible = vudvorMenuItem.Visible = false;
             countsMenuItem.Visible = preokrolMenuItem.Visible= false;
             boysOutMenuItem.Visible = girlsOutMenuItem.Visible = false;
+            fuckMenuItem.Visible = false;
             switch (type)
             {
                 case JobType.OKROL: okrolMenuItem.Visible = true; break;
