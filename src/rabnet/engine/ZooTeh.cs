@@ -67,12 +67,17 @@ namespace rabnet
             this.age = age;
             return this;
         }
-        public ZootehJob Fuck(int id, String nm, String ad, int age, int srok)
+        public ZootehJob Fuck(int id, String nm, String ad, int age, int srok,int status)
         {
             type = JobType.FUCK; job = "Случка";
             this.id = id; days = srok;
             name = nm; address = ad;
             this.age = age;
+            comment = "Невеста";
+            if (status > 0)
+                comment = "Первокролка";
+            if (status > 1)
+                comment = "Штатная";
             return this;
         }
     }
@@ -157,9 +162,9 @@ namespace rabnet
         {
             int days1 = eng.options().getIntOption(Options.OPT_ID.STATE_FUCK);
             int days2 = eng.options().getIntOption(Options.OPT_ID.FIRST_FUCK);
-            ZooJobItem[] jobs = eng.db().getZooFuck(days1, days2);
+            ZooJobItem[] jobs = eng.db().getZooFuck(days1, days2,eng.brideAge());
             foreach (ZooJobItem z in jobs)
-                jh.Add(new ZootehJob().Fuck(z.id, z.name, z.place, z.age, z.i[0]));
+                jh.Add(new ZootehJob().Fuck(z.id, z.name, z.place, z.age, z.i[0],z.status));
         }
     }
 }

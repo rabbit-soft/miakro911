@@ -57,7 +57,7 @@ namespace rabnet
             li.SubItems.Add(rab.status());
             li.SubItems.Add(rab.bgp());
             li.SubItems.Add(rab.N());
-            li.SubItems.Add(rab.average() == 0 ? "" : rab.average().ToString());
+            li.SubItems.Add(rab.average() == -1 ? "" : rab.average().ToString());
             li.SubItems.Add(rab.rate().ToString());
             li.SubItems.Add(rab.cls());
             li.SubItems.Add(rab.address());

@@ -216,6 +216,8 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "MakeFuck";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.Text = "Случить";
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -17,6 +17,7 @@ namespace mia_conv
             setOption("opt", "bride", p.make_brides.value());
             setOption("opt", "preokrol", p.heater.value());
             setOption("opt", "combage", 3);
+            setOption("opt", "malewait", 2);
             setOption("opt", "girlsout", 100);
             setOption("opt", "boysout", p.otsad_boys_mother.value());
             setOption("opt", "statefuck", p.vyazkamother.value());

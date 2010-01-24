@@ -61,11 +61,10 @@ namespace rabnet
             i[0] = srok;
             return this;
         }
-        public ZooJobItem Fuck(int id, String nm, String place, int age, int srok)
+        public ZooJobItem Fuck(int id, String nm, String place, int age, int srok,int status)
         {
             type = 6; name = nm; this.place = Buildings.fullPlaceName(place);
-            this.age = age;
-            this.id = id;
+            this.age = age; this.status = status;            this.id = id;
             i[0] = srok;
             return this;
         }
@@ -216,18 +215,36 @@ FROM rabbits WHERE r_parent<>0 AND {0:s} AND (TO_DAYS(NOW())-TO_DAYS(r_born))>={
             return res.ToArray();
         }
 
-        public ZooJobItem[] getFucks(int days1, int days2)
+        public ZooJobItem[] getFucks(int statedays, int firstdays,int brideage)
         {
-            MySqlDataReader rd = reader(String.Format(@"SELECT r_id,rabname(r_id,2) name,rabplace(r_id) place
-TO_DAYS(NOW())-TO_DAYS(r_born) age
-FROM rabbits WHERE r_sex='female' AND "));
+            MySqlDataReader rd = reader(String.Format(@"SELECT * FROM (SELECT r_id,rabname(r_id,2) name,rabplace(r_id) place,
+TO_DAYS(NOW())-TO_DAYS(r_born) age,
+(SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) suckers,
+r_status,
+TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol) fromokrol
+FROM rabbits WHERE r_sex='female' AND r_event_date IS NULL ) c 
+WHERE age>{0:d} AND (r_status=0 OR (r_status=1 AND (suckers=0 OR fromokrol>={1:d})) OR (r_status>1 AND (suckers=0 OR fromokrol>={2:d})));",
+    brideage,firstdays,statedays));
             List<ZooJobItem> res = new List<ZooJobItem>();
-            /*
             while (rd.Read())
-                res.Add(new ZooJobItem().BoysGirlsOut(rd.GetInt32("r_parent"), rd.GetString("name"),
-                    rd.GetString("place"), rd.GetInt32("age"), rd.GetInt32("age") - days));
+            {
+                int age = rd.GetInt32("age");
+                int state = rd.GetInt32("r_status");
+                int fromok = rd.IsDBNull(6)?0:rd.GetInt32("fromokrol");
+                int suck = rd.IsDBNull(4)?0:rd.GetInt32("suckers");
+                int srok = 0;
+                if (state == 0)
+                    srok = age - brideage;
+                if (state > 0)
+                {
+                    if (suck > 0)
+                        srok = fromok - (state == 1 ? firstdays : statedays);
+                    else srok = fromok;
+                }
+                res.Add(new ZooJobItem().Fuck(rd.GetInt32("r_id"), rd.GetString("name"),
+                    rd.GetString("place"), age, srok, state));
+            }
             rd.Close();
-             * */
             return res.ToArray();
         }
 

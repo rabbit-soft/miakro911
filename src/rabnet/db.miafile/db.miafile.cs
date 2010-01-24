@@ -360,7 +360,336 @@ namespace rabnet
             throw new NotImplementedException();
         }
 
-        public ZooJobItem[] getZooFuck(int days1, int days2)
+        public ZooJobItem[] getZooFuck(int statedays, int firstdays,int brideage)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public Fucks allFuckers(int female, bool geterosis, bool inbreeding, int malewait)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IRabNetDataLayer Members
+
+        void IRabNetDataLayer.init(string connectionString)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.close()
+        {
+            throw new NotImplementedException();
+        }
+
+        List<string> IRabNetDataLayer.getUsers(bool wgroup, int uid)
+        {
+            throw new NotImplementedException();
+        }
+
+        int IRabNetDataLayer.checkUser(string name, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        string IRabNetDataLayer.getOption(string name, string subname, uint uid)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.setOption(string name, string subname, uint uid, string value)
+        {
+            throw new NotImplementedException();
+        }
+
+        DateTime IRabNetDataLayer.now()
+        {
+            throw new NotImplementedException();
+        }
+
+        string[] IRabNetDataLayer.getFilterNames(string type)
+        {
+            throw new NotImplementedException();
+        }
+
+        Filters IRabNetDataLayer.getFilter(string type, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.setFilter(string type, string name, Filters filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        IDataGetter IRabNetDataLayer.getRabbits(Filters filters)
+        {
+            throw new NotImplementedException();
+        }
+
+        IDataGetter IRabNetDataLayer.getBuildings(Filters filters)
+        {
+            throw new NotImplementedException();
+        }
+
+        TreeData IRabNetDataLayer.rabbitGenTree(int rabbit)
+        {
+            throw new NotImplementedException();
+        }
+
+        TreeData IRabNetDataLayer.buildingsTree()
+        {
+            throw new NotImplementedException();
+        }
+
+        IDataGetter IRabNetDataLayer.getYoungers(Filters filters)
+        {
+            throw new NotImplementedException();
+        }
+
+        int[] IRabNetDataLayer.getTiers(int farm)
+        {
+            throw new NotImplementedException();
+        }
+
+        Building IRabNetDataLayer.getBuilding(int tier)
+        {
+            throw new NotImplementedException();
+        }
+
+        IBreeds IRabNetDataLayer.getBreeds()
+        {
+            throw new NotImplementedException();
+        }
+
+        IZones IRabNetDataLayer.getZones()
+        {
+            throw new NotImplementedException();
+        }
+
+        IDataGetter IRabNetDataLayer.getNames(Filters filters)
+        {
+            throw new NotImplementedException();
+        }
+
+        IDataGetter IRabNetDataLayer.zooTeh(Filters f)
+        {
+            throw new NotImplementedException();
+        }
+
+        OneRabbit IRabNetDataLayer.getRabbit(int rid)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.setRabbit(OneRabbit r)
+        {
+            throw new NotImplementedException();
+        }
+
+        ICatalogs IRabNetDataLayer.catalogs()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.RabNetLog(int type, int user, int r1, int r2, string a1, string a2, string text)
+        {
+            throw new NotImplementedException();
+        }
+
+        Fucks IRabNetDataLayer.getFucks(int rabbit)
+        {
+            throw new NotImplementedException();
+        }
+
+        Fucks IRabNetDataLayer.allFuckers(int female, bool geterosis, bool inbreeding, int malewait)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.setBon(int rabbit, string bon)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.makeFuck(int female, int male, DateTime date)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.makeProholost(int female, DateTime when)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.makeOkrol(int female, DateTime when, int children, int dead)
+        {
+            throw new NotImplementedException();
+        }
+
+        string IRabNetDataLayer.makeName(int nm, int sur, int sec, int grp, OneRabbit.RabbitSex sex)
+        {
+            throw new NotImplementedException();
+        }
+
+        Younger[] IRabNetDataLayer.getSuckers(int mom)
+        {
+            throw new NotImplementedException();
+        }
+
+        Building[] IRabNetDataLayer.getFreeBuilding(Filters f)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.replaceRabbit(int rid, int farm, int tier_id, int sec)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.replaceYounger(int yid, int farm, int tier_id, int sec)
+        {
+            throw new NotImplementedException();
+        }
+
+        int IRabNetDataLayer.newRabbit(OneRabbit r, int mom)
+        {
+            throw new NotImplementedException();
+        }
+
+        LogList IRabNetDataLayer.getLogs(Filters f)
+        {
+            throw new NotImplementedException();
+        }
+
+        ZooJobItem[] IRabNetDataLayer.getOkrols(int days)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.updateBuilding(Building b)
+        {
+            throw new NotImplementedException();
+        }
+
+        ZooJobItem[] IRabNetDataLayer.getVudvors(int days)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.addName(OneRabbit.RabbitSex sex, string name, string surname)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.changeName(string orgName, string name, string surname)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.killRabbit(int id, DateTime when, int reason, string notes)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.countKids(int rid, int dead, int killed, int added)
+        {
+            throw new NotImplementedException();
+        }
+
+        ZooJobItem[] IRabNetDataLayer.getCounts(int days)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.setRabbitSex(int rid, OneRabbit.RabbitSex sex)
+        {
+            throw new NotImplementedException();
+        }
+
+        int IRabNetDataLayer.cloneRabbit(int rid, int count, int farm, int tier, int sec, OneRabbit.RabbitSex sex, int mom)
+        {
+            throw new NotImplementedException();
+        }
+
+        string IRabNetDataLayer.userGroup(int uid)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.deleteUser(int uid)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.changeUser(int uid, string name, int group, string password, bool chpass)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IRabNetDataLayer.hasUser(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        int IRabNetDataLayer.addUser(string name, int group, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        IDataGetter IRabNetDataLayer.getDead(Filters filters)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.resurrect(int rid)
+        {
+            throw new NotImplementedException();
+        }
+
+        ZooJobItem[] IRabNetDataLayer.getPreokrols(int days)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.placeSucker(int sucker, int mother)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRabNetDataLayer.combineGroups(int rabfrom, int rabto)
+        {
+            throw new NotImplementedException();
+        }
+
+        System.Xml.XmlDocument IRabNetDataLayer.makeReport(ReportType.Type type, Filters f)
+        {
+            throw new NotImplementedException();
+        }
+
+        Rabbit[] IRabNetDataLayer.getMothers(int age, int agediff)
+        {
+            throw new NotImplementedException();
+        }
+
+        ZooJobItem[] IRabNetDataLayer.getBoysGirlsOut(int days, OneRabbit.RabbitSex sex)
+        {
+            throw new NotImplementedException();
+        }
+
+        string[] IRabNetDataLayer.logNames()
+        {
+            throw new NotImplementedException();
+        }
+
+        ZooJobItem[] IRabNetDataLayer.getZooFuck(int statedays, int firstdays, int brideage)
         {
             throw new NotImplementedException();
         }

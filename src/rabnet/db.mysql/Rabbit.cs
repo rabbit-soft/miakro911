@@ -113,6 +113,8 @@ namespace rabnet
                     r.fN = "+" + rd.GetString("suckers");
                     r.faverage = rd.GetInt32("aage");
                 }
+                else
+                    r.faverage = -1;
             }
             //if (nm == "")
             //    r.fname += "-" + rd.GetString("r_okrol").ToString();

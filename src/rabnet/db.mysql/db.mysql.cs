@@ -208,9 +208,9 @@ namespace rabnet
             return FucksGetter.GetFucks(sql, rabbit);
         }
 
-        public Fucks allFuckers(int female)
+        public Fucks allFuckers(int female,bool geterosis,bool inbreeding,int malewait)
         {
-            return FucksGetter.AllFuckers(sql, female);
+            return FucksGetter.AllFuckers(sql, female,geterosis,inbreeding,malewait);
         }
 
         public void setBon(int rabbit, string bon)
@@ -392,9 +392,9 @@ namespace rabnet
             return new Logs(sql).logNames();
         }
 
-        public ZooJobItem[] getZooFuck(int days1, int days2)
+        public ZooJobItem[] getZooFuck(int statedays, int firstdays,int brideage)
         {
-            return new ZooTehGetter(sql).getFucks(days1, days2);
+            return new ZooTehGetter(sql).getFucks(statedays, firstdays,brideage);
         }
 
         #endregion

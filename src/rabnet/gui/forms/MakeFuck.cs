@@ -41,7 +41,8 @@ namespace rabnet
         private void fillTable()
         {
             listView1.Items.Clear();
-            Fucks fs = Engine.db().allFuckers(rab1.rid);
+            int malewait = Engine.opt().getIntOption(Options.OPT_ID.MALE_WAIT);
+            Fucks fs = Engine.db().allFuckers(rab1.rid,cbHeter.Checked,cbInbreed.Checked,malewait);
             
             foreach (Fucks.Fuck f in fs.fucks)
             {

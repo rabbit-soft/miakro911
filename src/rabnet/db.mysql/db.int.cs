@@ -51,7 +51,7 @@ namespace rabnet
         ICatalogs catalogs();
         void RabNetLog(int type, int user, int r1,int r2,string a1,string a2,String text);
         Fucks getFucks(int rabbit);
-        Fucks allFuckers(int female);
+        Fucks allFuckers(int female,bool geterosis,bool inbreeding,int malewait);
         void setBon(int rabbit,String bon);
         void makeFuck(int female, int male,DateTime date);
         void makeProholost(int female, DateTime when);
@@ -87,7 +87,7 @@ namespace rabnet
         Rabbit[] getMothers(int age,int agediff);
         ZooJobItem[] getBoysGirlsOut(int days,OneRabbit.RabbitSex sex);
         String[] logNames();
-        ZooJobItem[] getZooFuck(int days1, int days2);
+        ZooJobItem[] getZooFuck(int statedays, int firstdays,int brideage);
     }
 
 }
