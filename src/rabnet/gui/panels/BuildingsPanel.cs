@@ -37,8 +37,10 @@ namespace rabnet
 
         protected override IDataGetter onPrepare(Filters f)
         {
+            manual = false;
             treeView1.Nodes.Clear();
             TreeNode n=makenode(null,"Ферма",Engine.db().buildingsTree());
+            manual = true;
             n.Tag="0:0";
             n.Expand();
             f["shr"] = Engine.opt().getOption(Options.OPT_ID.SHORT_NAMES);
@@ -64,12 +66,15 @@ namespace rabnet
             string prevnm="";
             for (int i = 0; i < b.secs(); i++)
             {
+                /*
                 if (b.id() == 92)
                 {
                     String.Format("");
                 }
+                 * */
                 if (b.area(i) != prevnm)
                 {
+                    manual = false;
                     ListViewItem it = listView1.Items.Add(b.farm().ToString() + b.area(i));
                     prevnm = b.area(i);
                     it.Tag = b.id().ToString();
@@ -111,6 +116,7 @@ namespace rabnet
                     it.SubItems.Add(getAddress(b.farm()));
                     it.SubItems.Add(b.notes());
                     it.Tag = b;
+                    manual = true;
                 }
             }
         }
@@ -183,6 +189,7 @@ namespace rabnet
             if (tiers[1]!=0)
                 t2=tierFromBuilding(Engine.db().getBuilding(tiers[1]));
             farmDrawer1.setFarm(farm,t1,t2);
+            updateMenu();
         }
 
 
@@ -197,6 +204,7 @@ namespace rabnet
             if (farm == 0)
             {
                 farmDrawer1.setFarm(0, null, null);
+                updateMenu();
                 return;
             }
             if (manual)
@@ -236,6 +244,13 @@ namespace rabnet
                     case BuildingControl.BCEvent.EVTYPE.VIGUL: b.setVigul(e.value); break;
                 }
             }
+            catch (RabNetEngBuilding.ExFarmNotEmpty ex)
+            {
+                if (MessageBox.Show(this, ex.Message + ". Расселить ферму?", "Ферма не пуста", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    replaceMenuItem.PerformClick();
+                }
+            }
             catch (ApplicationException ex)
             {
                 MessageBox.Show(ex.Message);
@@ -246,6 +261,23 @@ namespace rabnet
         public override ContextMenuStrip getMenu()
         {
             return actMenu;
+        }
+
+        public void updateMenu()
+        {
+            killMenuItem.Visible = replaceMenuItem.Visible = false;
+            addBuildingMenuItem.Visible = addFarmMenuItem.Visible = false;
+            changeFarmMenuItem.Visible = deleteBuildingMenuItem.Visible = false;
+            if (listView1.Focused)
+            {
+                killMenuItem.Visible = replaceMenuItem.Visible = (listView1.SelectedItems.Count > 0);
+            }
+            else if (treeView1.Focused && treeView1.SelectedNode!=null)
+            {
+                addBuildingMenuItem.Visible = addFarmMenuItem.Visible = !isFarm();
+                changeFarmMenuItem.Visible = isFarm();
+                deleteBuildingMenuItem.Visible = true;
+            }
         }
 
         private void killMenuItem_Click(object sender, EventArgs e)
@@ -286,6 +318,69 @@ namespace rabnet
             }
             f.ShowDialog();
             rsb.run();
+        }
+
+        private bool isFarm(TreeNode tn){return farmNum(tn)!=0;}
+        private bool isFarm(){return isFarm(treeView1.SelectedNode);}
+        private int farmNum(TreeNode tn){return int.Parse((tn.Tag as String).Split(':')[1]);}
+        private int farmNum(){return farmNum(treeView1.SelectedNode);}
+        private int buildNum(TreeNode tn){return int.Parse((tn.Tag as String).Split(':')[0]);}
+        private int buildNum() { return buildNum(treeView1.SelectedNode); }
+
+        private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+                treeView1.SelectedNode = e.Node;
+        }
+
+        private void treeView1_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            treeView1.DoDragDrop(e.Item, DragDropEffects.Move);
+        }
+
+        private void treeView1_DragOver_1(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(TreeNode)))
+                e.Effect = DragDropEffects.Move;
+        }
+
+        private void treeView1_DragDrop(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(typeof(TreeNode))) return;
+            TreeNode child=e.Data.GetData(typeof(TreeNode)) as TreeNode;
+            Point px=treeView1.PointToClient(new Point(e.X,e.Y));
+            TreeNode newpar = treeView1.GetNodeAt(px);
+            if (newpar == null || child==null) return;
+            if (child == treeView1.Nodes[0]) return;
+            if (isFarm(newpar)) return;
+            if (MessageBox.Show(this, "Переместить " + child.Text + " в " + newpar.Text + "?", "Перемещение", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                int bid = buildNum(child);
+                int to = buildNum(newpar);
+                Engine.db().replaceBuilding(bid, to);
+                rsb.run();
+            }
+        }
+
+        private void treeView1_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
+        {
+            if (!manual) return;
+            if (e.Node == treeView1.Nodes[0])
+            {
+                e.CancelEdit = true;
+                return;
+            }
+            if (e.Node.Text != e.Label)
+            {
+                Engine.db().setBuildingName(buildNum(e.Node), e.Label);
+                e.CancelEdit = false;
+            }
+           // rsb.run();
+        }
+
+        private void actMenu_Opening(object sender, CancelEventArgs e)
+        {
+
         }
 
     }

@@ -407,5 +407,184 @@ t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4 FROM minifarms,tiers WHERE
             cmd.ExecuteNonQuery();
         }
 
+        public static void setBuildingName(MySqlConnection sql, int bid, String name)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE buildings SET b_name='{0:s}' WHERE b_id={1:d};",
+                name,bid), sql);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void addBuilding(MySqlConnection sql, int parent, String name,int farm)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"INSERT INTO buildings(b_name,b_parent,b_level,b_farm) VALUES(
+'{0:s}',{1:d},{3:s},{2:d});",name,parent,farm,(parent==0?"0":String.Format("(SELECT b2.b_level+1 FROM buildings b2 WHERE b2.b_id={0:d})",parent))), sql);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void setLevel(MySqlConnection sql,int bid,int level)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE buildings SET b_level={0:d} WHERE b_id={1:d};",level,bid), sql);
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = String.Format(@"SELECT b_id FROM buildings WHERE b_parent={0:d};",bid);
+            List<int> bs = new List<int>();
+            MySqlDataReader rd = cmd.ExecuteReader();
+            while (rd.Read())
+                bs.Add(rd.GetInt32(0));
+            rd.Close();
+            foreach (int b in bs)
+                setLevel(sql, b, level + 1);
+        }
+
+        public static void replaceBuilding(MySqlConnection sql, int bid, int toBuilding)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT b_level FROM buildings WHERE b_id={0:d};",toBuilding), sql);
+            MySqlDataReader rd;
+            //TODO: here
+            int level = 0;
+            if (toBuilding != 0)
+            {
+                rd = cmd.ExecuteReader();
+                if (rd.Read())
+                    level = rd.GetInt32(0)+1;
+                rd.Close();
+            }
+            cmd.CommandText = String.Format(@"UPDATE building SET b_parent={0:d} WHERE b_id={1:d};",toBuilding,bid);
+            cmd.ExecuteNonQuery();
+            setLevel(sql, bid, level );
+        }
+        public static void deleteBuilding(MySqlConnection sql, int bid)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT COUNT(b_id) FROM buildings WHERE b_parent={0:d};",bid), sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            int cnt = 1;
+            if (rd.Read())
+                cnt = rd.GetInt32(0);
+            rd.Close();
+            if (cnt == 0)
+            {
+                cmd.CommandText = String.Format("DELETE FROM buildings WHERE b_id={0:d};",bid);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public static int addNewTier(MySqlConnection sql, String type)
+        {
+            if (type == "none") return 0;
+            String hn = "00";
+            String delims = "000";
+            if (type == "quarta") delims = "111"; if (type == "barin") delims = "100";
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"INSERT INTO tiers(t_type,t_delims,t_heater,t_nest) 
+VALUES('{0:s}','{1:s}','{2:s}','{2:s}');",type,delims,hn), sql);
+            cmd.ExecuteNonQuery();
+            return (int)cmd.LastInsertedId;
+        }
+
+        public static void changeTierType(MySqlConnection sql, int tid, String type)
+        {
+            String hn = "00";
+            String delims = "000";
+            if (type == "quarta") delims = "111"; if (type == "barin") delims = "100";
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE tiers SET t_type='{0:s}',
+t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}' WHERE t_id={3:d};", type, delims, hn,tid), sql);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static int addFarm(MySqlConnection sql,int parent,String uppertype, String lowertype, String name,int id)
+        {
+            int t1 = addNewTier(sql,uppertype);
+            int t2 = addNewTier(sql, lowertype);
+            int res = 0;
+            MySqlCommand cmd =new MySqlCommand(String.Format("INSERT INTO minifarms(m_upper,m_lower{2:s}) VALUES({0:d},{1:d}{3:s});",
+                t1,t2,(id==0?"":",m_id"),(id==0?"":String.Format(",{0:d}",id))),sql);
+            cmd.ExecuteNonQuery();
+            res = (int)cmd.LastInsertedId;
+            addBuilding(sql, parent, (name!=""?name:String.Format("ферма {0:d}",res)), res);
+            return res;
+        }
+
+        public static bool hasRabbits(MySqlConnection sql,int tid)
+        {
+            if (tid == 0) return false;
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT t_busy1,t_busy2,t_busy3,t_busy4 
+FROM tiers WHERE t_id={0:d};",tid), sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            bool busy = true;
+            if (rd.Read())
+            {
+                busy = false;
+                if (rd.GetInt32(0) != 0) busy = true;
+                if (!rd.IsDBNull(1) && rd.GetInt32(1) != 0) busy = true;
+                if (!rd.IsDBNull(2) && rd.GetInt32(3) != 0) busy = true;
+                if (!rd.IsDBNull(3) && rd.GetInt32(4) != 0) busy = true;
+            }
+            return busy;
+        }
+
+        public static int[] getTiersFromFarm(MySqlConnection sql, int fid)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT m_upper,m_lower FROM minifarms 
+WHERE m_id={0:d};", fid), sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            int t1 = 0, t2 = 0;
+            if (rd.Read())
+            {
+                t1 = rd.GetInt32(0);
+                t2 = rd.GetInt32(1);
+            }
+            rd.Close();
+            return new int[] {t1,t2};
+        }
+
+        public static void changeFarm(MySqlConnection sql, int fid, String uppertype, String lowertype)
+        {
+            int[] t = getTiersFromFarm(sql, fid);
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT t_type FROM tiers WHERE t_id={0:d};",t[0]),sql);
+            String t1 = "none";
+            String t2 = "none";
+            MySqlDataReader rd = cmd.ExecuteReader();
+            if (rd.Read())t1 = rd.GetString(0);
+            rd.Close();
+            if (t[1] != 0)
+            {
+                cmd.CommandText = String.Format(@"SELECT t_type FROM tiers WHERE t_id={0:d};",t[1]);
+                rd = cmd.ExecuteReader();
+                if (rd.Read()) t2 = rd.GetString(0);
+                rd.Close();
+            }
+            if (t1 != uppertype && !hasRabbits(sql, t[0]))
+                changeTierType(sql, t[0], uppertype);
+            if (t2 != lowertype && !hasRabbits(sql,t[1]))
+            {
+                if (lowertype == "none")
+                {
+                    cmd.CommandText = String.Format("DELETE FROM tiers WHERE t_id={0:d};",t[1]);
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText=String.Format("UPDATE minifarms SET m_lower=0 WHERE m_id={0:d};",fid);
+                    cmd.ExecuteNonQuery();
+                }
+                else if (t2 == "none")
+                {
+                    int nid = addNewTier(sql, lowertype);
+                    cmd.CommandText = String.Format("UPDATE minifarms SET m_lower={0:d} WHERE m_id={1:d};",nid,fid);
+                    cmd.ExecuteNonQuery();
+                }
+                else changeTierType(sql, t[1], lowertype);
+            }
+        }
+
+        public static void deleteFarm(MySqlConnection sql,int fid)
+        {
+            int[] t = getTiersFromFarm(sql, fid);
+            if (!hasRabbits(sql,t[0]) && !hasRabbits(sql,t[1]))
+            {
+                MySqlCommand cmd = new MySqlCommand(String.Format(@"DELETE FROM tiers WHERE t_id={0:d} OR t_id={1:d};",t[0],t[1]), sql);
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = String.Format("DELETE FROM minifarms WHERE m_id={0:d};",fid);
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = String.Format("DELETE FROM buildings WHERE b_farm={0:d};", fid);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+
     }
 }

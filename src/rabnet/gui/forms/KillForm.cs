@@ -11,6 +11,7 @@ namespace rabnet
     public partial class KillForm : Form
     {
         private List<RabNetEngRabbit> rbs = new List<RabNetEngRabbit>();
+        private List<int> youngers = new List<int>();
         public KillForm()
         {
             InitializeComponent();
@@ -26,8 +27,13 @@ namespace rabnet
         public void addRabbit(RabNetEngRabbit r)
         {
             rbs.Add(r);
+            int id = rbs.Count - 1;
+            r.tag = r.address;
             foreach (OneRabbit or in r.youngers)
+            {
                 addRabbit(or.id);
+                rbs[rbs.Count - 1].tag = r.address;
+            }
             update();
         }
 
@@ -38,7 +44,7 @@ namespace rabnet
             {
                 ListViewItem li = listView1.Items.Add(r.fullName);
                 li.Tag=r.rid;
-                li.SubItems.Add(r.address);
+                li.SubItems.Add(r.tag);
                 String sex = "?";
                 if (r.sex == OneRabbit.RabbitSex.FEMALE) sex = "Ж";
                 if (r.sex == OneRabbit.RabbitSex.MALE) sex = "М";

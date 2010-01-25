@@ -40,10 +40,14 @@
             this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
-            this.treeView1 = new System.Windows.Forms.TreeView();
             this.actMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.replaceMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.killMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addFarmMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addBuildingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeFarmMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.deleteBuildingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -138,39 +142,76 @@
             // 
             this.columnHeader8.Text = "Заметки";
             // 
-            // treeView1
-            // 
-            this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.treeView1.HideSelection = false;
-            this.treeView1.Location = new System.Drawing.Point(3, 3);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(178, 533);
-            this.treeView1.TabIndex = 0;
-            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
-            // 
             // actMenu
             // 
             this.actMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.replaceMenuItem,
-            this.killMenuItem});
+            this.killMenuItem,
+            this.addFarmMenuItem,
+            this.addBuildingMenuItem,
+            this.changeFarmMenuItem,
+            this.deleteBuildingMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(138, 48);
+            this.actMenu.Size = new System.Drawing.Size(195, 158);
+            this.actMenu.Opening += new System.ComponentModel.CancelEventHandler(this.actMenu_Opening);
             // 
             // replaceMenuItem
             // 
             this.replaceMenuItem.Name = "replaceMenuItem";
-            this.replaceMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.replaceMenuItem.Size = new System.Drawing.Size(194, 22);
             this.replaceMenuItem.Text = "Расселить";
             this.replaceMenuItem.Click += new System.EventHandler(this.replaceMenuItem_Click);
             // 
             // killMenuItem
             // 
             this.killMenuItem.Name = "killMenuItem";
-            this.killMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.killMenuItem.Size = new System.Drawing.Size(194, 22);
             this.killMenuItem.Text = "Списать";
             this.killMenuItem.Click += new System.EventHandler(this.killMenuItem_Click);
+            // 
+            // addFarmMenuItem
+            // 
+            this.addFarmMenuItem.Name = "addFarmMenuItem";
+            this.addFarmMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.addFarmMenuItem.Text = "Добавить миниферму";
+            // 
+            // addBuildingMenuItem
+            // 
+            this.addBuildingMenuItem.Name = "addBuildingMenuItem";
+            this.addBuildingMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.addBuildingMenuItem.Text = "Добавить блок(шед)";
+            // 
+            // changeFarmMenuItem
+            // 
+            this.changeFarmMenuItem.Name = "changeFarmMenuItem";
+            this.changeFarmMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.changeFarmMenuItem.Text = "Изменить миниферму";
+            // 
+            // treeView1
+            // 
+            this.treeView1.AllowDrop = true;
+            this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeView1.ContextMenuStrip = this.actMenu;
+            this.treeView1.HideSelection = false;
+            this.treeView1.LabelEdit = true;
+            this.treeView1.Location = new System.Drawing.Point(3, 3);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(178, 533);
+            this.treeView1.TabIndex = 0;
+            this.treeView1.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.treeView1_AfterLabelEdit);
+            this.treeView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView1_DragDrop);
+            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
+            this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
+            this.treeView1.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.treeView1_ItemDrag);
+            this.treeView1.DragOver += new System.Windows.Forms.DragEventHandler(this.treeView1_DragOver_1);
+            // 
+            // deleteBuildingMenuItem
+            // 
+            this.deleteBuildingMenuItem.Name = "deleteBuildingMenuItem";
+            this.deleteBuildingMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.deleteBuildingMenuItem.Text = "Удалить строение";
             // 
             // BuildingsPanel
             // 
@@ -204,6 +245,10 @@
         private System.Windows.Forms.ContextMenuStrip actMenu;
         private System.Windows.Forms.ToolStripMenuItem replaceMenuItem;
         private System.Windows.Forms.ToolStripMenuItem killMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addFarmMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addBuildingMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem changeFarmMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteBuildingMenuItem;
 
 
 

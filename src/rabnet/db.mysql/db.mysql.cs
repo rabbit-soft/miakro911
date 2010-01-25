@@ -397,6 +397,41 @@ namespace rabnet
             return new ZooTehGetter(sql).getFucks(statedays, firstdays,brideage,malewait,heter,inbr);
         }
 
+        public void setBuildingName(int bid, string name)
+        {
+            Buildings.setBuildingName(sql, bid, name);
+        }
+
+        public void addBuilding(int parent, string name)
+        {
+            Buildings.addBuilding(sql, parent, name, 0);
+        }
+
+        public void replaceBuilding(int bid, int toBuilding)
+        {
+            Buildings.replaceBuilding(sql, bid, toBuilding);
+        }
+
+        public void deleteBuilding(int bid)
+        {
+            Buildings.deleteBuilding(sql, bid);
+        }
+
+        public int addFarm(int parent, string uppertype, string lowertype, string name, int id)
+        {
+            return Buildings.addFarm(sql, parent, uppertype, lowertype, name, id);
+        }
+
+        public void changeFarm(int fid, string uppertype, string lowertype)
+        {
+            Buildings.changeFarm(sql, fid, uppertype, lowertype);
+        }
+
+        public void deleteFarm(int fid)
+        {
+            Buildings.deleteFarm(sql, fid);
+        }
+
         #endregion
     }
 }

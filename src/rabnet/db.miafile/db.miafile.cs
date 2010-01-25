@@ -695,5 +695,45 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public void setBuildingName(int bid, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void addBuilding(int parent, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void replaceBuilding(int bid, int toBuilding)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void deleteBuilding(int bid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int addFarm(int parent, string uppertype, string lowertype, string name, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void changeFarm(int fid, string uppertype, string lowertype)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void deleteFarm(int fid)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

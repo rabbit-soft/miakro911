@@ -6,11 +6,11 @@ namespace rabnet
 {
     public class RabNetEngBuilding
     {
-        class ExBadBuildingType : ApplicationException
+        public class ExBadBuildingType : ApplicationException
         {
             public ExBadBuildingType() : base("Неверный тип минифермы.") { }
         }
-        class ExFarmNotEmpty : ApplicationException
+        public class ExFarmNotEmpty : ApplicationException
         {
             public ExFarmNotEmpty() : base("Ферма не пуста") { }
         }

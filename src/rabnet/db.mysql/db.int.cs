@@ -88,6 +88,13 @@ namespace rabnet
         ZooJobItem[] getBoysGirlsOut(int days,OneRabbit.RabbitSex sex);
         String[] logNames();
         ZooJobItem[] getZooFuck(int statedays, int firstdays,int brideage,int malewait,bool heterosis,bool inbreeding);
+        void setBuildingName(int bid,String name);
+        void addBuilding(int parent, String name);
+        void replaceBuilding(int bid, int toBuilding);
+        void deleteBuilding(int bid);
+        int addFarm(int parent,String uppertype, String lowertype,String name,int id);
+        void changeFarm(int fid,String uppertype,String lowertype);
+        void deleteFarm(int fid);
     }
 
 }
