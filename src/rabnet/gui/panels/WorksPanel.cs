@@ -151,14 +151,14 @@ namespace rabnet
                     Engine.get().preOkrol(job.id);
                     break;
                 case JobType.BOYS_OUT:
+
                 case JobType.GIRLS_OUT:
                     ReplaceForm rf = new ReplaceForm();
                     rf.addRabbit(job.id);
                     if (job.type==JobType.BOYS_OUT)
                         rf.setAction(ReplaceForm.Action.BOYSOUT);
-                    rf.ShowDialog();
-                    break;
-                                   
+                    if (rf.ShowDialog() == DialogResult.OK) dialog = false;
+                    break;                                   
                 case JobType.COUNT_KIDS:
                     if((new CountKids(job.id)).ShowDialog() !=DialogResult.OK)dialog=false;
                     break;

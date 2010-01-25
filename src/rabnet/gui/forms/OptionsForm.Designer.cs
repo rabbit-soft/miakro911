@@ -56,36 +56,36 @@
             this.nudFirstFuck = new System.Windows.Forms.NumericUpDown();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.nudMaleWait = new System.Windows.Forms.NumericUpDown();
+            this.label26 = new System.Windows.Forms.Label();
+            this.numericUpDown12 = new System.Windows.Forms.NumericUpDown();
             this.label13 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label23 = new System.Windows.Forms.Label();
+            this.numericUpDown11 = new System.Windows.Forms.NumericUpDown();
             this.label14 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
+            this.numericUpDown10 = new System.Windows.Forms.NumericUpDown();
             this.label17 = new System.Windows.Forms.Label();
+            this.numericUpDown9 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown8 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
+            this.label20 = new System.Windows.Forms.Label();
             this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
+            this.label19 = new System.Windows.Forms.Label();
             this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
             this.label18 = new System.Windows.Forms.Label();
             this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.numericUpDown8 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown9 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown10 = new System.Windows.Forms.NumericUpDown();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
-            this.numericUpDown11 = new System.Windows.Forms.NumericUpDown();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.numericUpDown12 = new System.Windows.Forms.NumericUpDown();
-            this.cbConfirmExit = new System.Windows.Forms.CheckBox();
-            this.label25 = new System.Windows.Forms.Label();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.nudGenTree = new System.Windows.Forms.NumericUpDown();
-            this.label26 = new System.Windows.Forms.Label();
-            this.nudMaleWait = new System.Windows.Forms.NumericUpDown();
+            this.label25 = new System.Windows.Forms.Label();
+            this.cbConfirmExit = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudOkrol)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudVudvor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCount1)).BeginInit();
@@ -100,21 +100,21 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudFirstFuck)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMaleWait)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown11)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown11)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown12)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
+            this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudGenTree)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudMaleWait)).BeginInit();
             this.SuspendLayout();
             // 
             // nudOkrol
@@ -490,18 +490,56 @@
             this.tabPage1.Text = "Зоотехнические сроки";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
+            // nudMaleWait
             // 
-            this.tabPage2.Controls.Add(this.nudGenTree);
-            this.tabPage2.Controls.Add(this.label25);
-            this.tabPage2.Controls.Add(this.cbConfirmExit);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(378, 410);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Вид";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.nudMaleWait.Location = new System.Drawing.Point(255, 321);
+            this.nudMaleWait.Name = "nudMaleWait";
+            this.nudMaleWait.Size = new System.Drawing.Size(74, 20);
+            this.nudMaleWait.TabIndex = 27;
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(88, 323);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(144, 13);
+            this.label26.TabIndex = 26;
+            this.label26.Text = "Отдых самца после случки";
+            // 
+            // numericUpDown12
+            // 
+            this.numericUpDown12.Location = new System.Drawing.Point(255, 294);
+            this.numericUpDown12.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDown12.Name = "numericUpDown12";
+            this.numericUpDown12.Size = new System.Drawing.Size(74, 20);
+            this.numericUpDown12.TabIndex = 25;
+            this.numericUpDown12.Value = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(193, 8);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(39, 13);
+            this.label13.TabIndex = 1;
+            this.label13.Text = "Окрол";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(124, 296);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(107, 13);
+            this.label24.TabIndex = 24;
+            this.label24.Text = "Вязка первокролки";
             // 
             // numericUpDown1
             // 
@@ -520,14 +558,31 @@
             0,
             0});
             // 
-            // label13
+            // label23
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(193, 8);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(39, 13);
-            this.label13.TabIndex = 1;
-            this.label13.Text = "Окрол";
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(149, 269);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(83, 13);
+            this.label23.TabIndex = 23;
+            this.label23.Text = "Вязка штатной";
+            // 
+            // numericUpDown11
+            // 
+            this.numericUpDown11.Location = new System.Drawing.Point(255, 267);
+            this.numericUpDown11.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDown11.Name = "numericUpDown11";
+            this.numericUpDown11.Size = new System.Drawing.Size(74, 20);
+            this.numericUpDown11.TabIndex = 22;
+            this.numericUpDown11.Value = new decimal(new int[] {
+            80,
+            0,
+            0,
+            0});
             // 
             // label14
             // 
@@ -538,6 +593,15 @@
             this.label14.TabIndex = 4;
             this.label14.Text = "Выдворение";
             // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(138, 243);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(94, 13);
+            this.label22.TabIndex = 21;
+            this.label22.Text = "Отсадка девочек";
+            // 
             // label15
             // 
             this.label15.AutoSize = true;
@@ -546,6 +610,15 @@
             this.label15.Size = new System.Drawing.Size(106, 13);
             this.label15.TabIndex = 5;
             this.label15.Text = "Подсчет гнездовых";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(124, 217);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(108, 13);
+            this.label21.TabIndex = 20;
+            this.label21.Text = "Отсадка мальчиков";
             // 
             // label16
             // 
@@ -556,6 +629,23 @@
             this.label16.TabIndex = 6;
             this.label16.Text = "2-й подсчет гнездовых";
             // 
+            // numericUpDown10
+            // 
+            this.numericUpDown10.Location = new System.Drawing.Point(255, 241);
+            this.numericUpDown10.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDown10.Name = "numericUpDown10";
+            this.numericUpDown10.Size = new System.Drawing.Size(74, 20);
+            this.numericUpDown10.TabIndex = 19;
+            this.numericUpDown10.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
             // label17
             // 
             this.label17.AutoSize = true;
@@ -565,6 +655,23 @@
             this.label17.TabIndex = 7;
             this.label17.Text = "3-й подсчет гнездовых";
             // 
+            // numericUpDown9
+            // 
+            this.numericUpDown9.Location = new System.Drawing.Point(255, 215);
+            this.numericUpDown9.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDown9.Name = "numericUpDown9";
+            this.numericUpDown9.Size = new System.Drawing.Size(74, 20);
+            this.numericUpDown9.TabIndex = 18;
+            this.numericUpDown9.Value = new decimal(new int[] {
+            80,
+            0,
+            0,
+            0});
+            // 
             // numericUpDown2
             // 
             this.numericUpDown2.Location = new System.Drawing.Point(255, 32);
@@ -573,6 +680,18 @@
             this.numericUpDown2.TabIndex = 8;
             this.numericUpDown2.Value = new decimal(new int[] {
             20,
+            0,
+            0,
+            0});
+            // 
+            // numericUpDown8
+            // 
+            this.numericUpDown8.Location = new System.Drawing.Point(255, 189);
+            this.numericUpDown8.Name = "numericUpDown8";
+            this.numericUpDown8.Size = new System.Drawing.Size(74, 20);
+            this.numericUpDown8.TabIndex = 17;
+            this.numericUpDown8.Value = new decimal(new int[] {
+            3,
             0,
             0,
             0});
@@ -589,6 +708,15 @@
             0,
             0});
             // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(15, 191);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(219, 13);
+            this.label20.TabIndex = 16;
+            this.label20.Text = "Разница в возрасте объединяемых групп";
+            // 
             // numericUpDown4
             // 
             this.numericUpDown4.Location = new System.Drawing.Point(255, 84);
@@ -601,6 +729,15 @@
             0,
             0});
             // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(103, 165);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(129, 13);
+            this.label19.TabIndex = 15;
+            this.label19.Text = "Предокрольный осмотр";
+            // 
             // numericUpDown5
             // 
             this.numericUpDown5.Location = new System.Drawing.Point(255, 110);
@@ -609,6 +746,18 @@
             this.numericUpDown5.TabIndex = 11;
             this.numericUpDown5.Value = new decimal(new int[] {
             13,
+            0,
+            0,
+            0});
+            // 
+            // numericUpDown7
+            // 
+            this.numericUpDown7.Location = new System.Drawing.Point(255, 163);
+            this.numericUpDown7.Name = "numericUpDown7";
+            this.numericUpDown7.Size = new System.Drawing.Size(74, 20);
+            this.numericUpDown7.TabIndex = 14;
+            this.numericUpDown7.Value = new decimal(new int[] {
+            21,
             0,
             0,
             0});
@@ -639,161 +788,35 @@
             0,
             0});
             // 
-            // numericUpDown7
+            // tabPage2
             // 
-            this.numericUpDown7.Location = new System.Drawing.Point(255, 163);
-            this.numericUpDown7.Name = "numericUpDown7";
-            this.numericUpDown7.Size = new System.Drawing.Size(74, 20);
-            this.numericUpDown7.TabIndex = 14;
-            this.numericUpDown7.Value = new decimal(new int[] {
-            21,
+            this.tabPage2.Controls.Add(this.nudGenTree);
+            this.tabPage2.Controls.Add(this.label25);
+            this.tabPage2.Controls.Add(this.cbConfirmExit);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(378, 410);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Вид";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // nudGenTree
+            // 
+            this.nudGenTree.Location = new System.Drawing.Point(226, 33);
+            this.nudGenTree.Minimum = new decimal(new int[] {
+            1,
             0,
             0,
             0});
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(103, 165);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(129, 13);
-            this.label19.TabIndex = 15;
-            this.label19.Text = "Предокрольный осмотр";
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(15, 191);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(219, 13);
-            this.label20.TabIndex = 16;
-            this.label20.Text = "Разница в возрасте объединяемых групп";
-            // 
-            // numericUpDown8
-            // 
-            this.numericUpDown8.Location = new System.Drawing.Point(255, 189);
-            this.numericUpDown8.Name = "numericUpDown8";
-            this.numericUpDown8.Size = new System.Drawing.Size(74, 20);
-            this.numericUpDown8.TabIndex = 17;
-            this.numericUpDown8.Value = new decimal(new int[] {
-            3,
+            this.nudGenTree.Name = "nudGenTree";
+            this.nudGenTree.Size = new System.Drawing.Size(75, 20);
+            this.nudGenTree.TabIndex = 2;
+            this.nudGenTree.Value = new decimal(new int[] {
+            10,
             0,
             0,
             0});
-            // 
-            // numericUpDown9
-            // 
-            this.numericUpDown9.Location = new System.Drawing.Point(255, 215);
-            this.numericUpDown9.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDown9.Name = "numericUpDown9";
-            this.numericUpDown9.Size = new System.Drawing.Size(74, 20);
-            this.numericUpDown9.TabIndex = 18;
-            this.numericUpDown9.Value = new decimal(new int[] {
-            80,
-            0,
-            0,
-            0});
-            // 
-            // numericUpDown10
-            // 
-            this.numericUpDown10.Location = new System.Drawing.Point(255, 241);
-            this.numericUpDown10.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDown10.Name = "numericUpDown10";
-            this.numericUpDown10.Size = new System.Drawing.Size(74, 20);
-            this.numericUpDown10.TabIndex = 19;
-            this.numericUpDown10.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(124, 217);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(108, 13);
-            this.label21.TabIndex = 20;
-            this.label21.Text = "Отсадка мальчиков";
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(138, 243);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(94, 13);
-            this.label22.TabIndex = 21;
-            this.label22.Text = "Отсадка девочек";
-            // 
-            // numericUpDown11
-            // 
-            this.numericUpDown11.Location = new System.Drawing.Point(255, 267);
-            this.numericUpDown11.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDown11.Name = "numericUpDown11";
-            this.numericUpDown11.Size = new System.Drawing.Size(74, 20);
-            this.numericUpDown11.TabIndex = 22;
-            this.numericUpDown11.Value = new decimal(new int[] {
-            80,
-            0,
-            0,
-            0});
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(149, 269);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(83, 13);
-            this.label23.TabIndex = 23;
-            this.label23.Text = "Вязка штатной";
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(124, 296);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(107, 13);
-            this.label24.TabIndex = 24;
-            this.label24.Text = "Вязка первокролки";
-            // 
-            // numericUpDown12
-            // 
-            this.numericUpDown12.Location = new System.Drawing.Point(255, 294);
-            this.numericUpDown12.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDown12.Name = "numericUpDown12";
-            this.numericUpDown12.Size = new System.Drawing.Size(74, 20);
-            this.numericUpDown12.TabIndex = 25;
-            this.numericUpDown12.Value = new decimal(new int[] {
-            60,
-            0,
-            0,
-            0});
-            // 
-            // cbConfirmExit
-            // 
-            this.cbConfirmExit.AutoSize = true;
-            this.cbConfirmExit.Location = new System.Drawing.Point(25, 349);
-            this.cbConfirmExit.Name = "cbConfirmExit";
-            this.cbConfirmExit.Size = new System.Drawing.Size(224, 17);
-            this.cbConfirmExit.TabIndex = 0;
-            this.cbConfirmExit.Text = "Подтверждение выхода из программы";
-            this.cbConfirmExit.UseVisualStyleBackColor = true;
             // 
             // label25
             // 
@@ -804,33 +827,15 @@
             this.label25.TabIndex = 1;
             this.label25.Text = "Количество генетических деревьев";
             // 
-            // nudGenTree
+            // cbConfirmExit
             // 
-            this.nudGenTree.Location = new System.Drawing.Point(226, 33);
-            this.nudGenTree.Name = "nudGenTree";
-            this.nudGenTree.Size = new System.Drawing.Size(75, 20);
-            this.nudGenTree.TabIndex = 2;
-            this.nudGenTree.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(88, 323);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(144, 13);
-            this.label26.TabIndex = 26;
-            this.label26.Text = "Отдых самца после случки";
-            // 
-            // nudMaleWait
-            // 
-            this.nudMaleWait.Location = new System.Drawing.Point(255, 321);
-            this.nudMaleWait.Name = "nudMaleWait";
-            this.nudMaleWait.Size = new System.Drawing.Size(74, 20);
-            this.nudMaleWait.TabIndex = 27;
+            this.cbConfirmExit.AutoSize = true;
+            this.cbConfirmExit.Location = new System.Drawing.Point(25, 349);
+            this.cbConfirmExit.Name = "cbConfirmExit";
+            this.cbConfirmExit.Size = new System.Drawing.Size(224, 17);
+            this.cbConfirmExit.TabIndex = 0;
+            this.cbConfirmExit.Text = "Подтверждение выхода из программы";
+            this.cbConfirmExit.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 
@@ -863,22 +868,22 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMaleWait)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown11)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown11)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown12)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudGenTree)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudMaleWait)).EndInit();
             this.ResumeLayout(false);
 
         }

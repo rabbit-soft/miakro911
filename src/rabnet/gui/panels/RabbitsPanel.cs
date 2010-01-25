@@ -23,7 +23,7 @@ namespace rabnet
 
         protected override IDataGetter onPrepare(Filters flt)
         {
-            gentree = Engine.opt().getIntOption(Options.OPT_ID.GEN_TREE);
+            gentree = Engine.opt().getIntOption(Options.OPT_ID.GEN_TREE)-1;
             listView1.Items.Clear();
             listView1.Hide();
             Options op = Engine.opt();
