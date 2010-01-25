@@ -455,6 +455,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
 
         public static OneRabbit GetRabbit(MySqlConnection con, int rid)
         {
+            if (rid == 0) return null;
             MySqlCommand cmd = new MySqlCommand(@"SELECT r_id,r_last_fuck_okrol,r_event_date,r_event,r_overall_babies,r_lost_babies,
 r_sex,r_born,r_flags,r_breed,r_zone,r_name,r_surname,r_secname,
 rabplace(r_id) address,r_group,r_notes,
@@ -577,25 +578,39 @@ VALUES({0:d},{1:s},{2:d},'sukrol','{3:s}',1);",female,DBHelper.DateToMyString(da
 f_children={1:d},f_dead={2:d} WHERE f_rabid={3:d} AND f_state='sukrol';",
                        DBHelper.DateToMyString(date),children,dead,rabbit),sql);
             cmd.ExecuteNonQuery();
+            OneRabbit fml = GetRabbit(sql, rabbit);
+            OneRabbit ml = GetRabbit(sql, father);
+            int ratecom = 8;
+            if (fml.status > 0) ratecom = 10;
+            int rt = 0;
+            if (children > ratecom){while (children > ratecom){ratecom += 2;rt++;}}
+            else if (children < ratecom){while (children < ratecom) { ratecom -= 2; rt--; }}
+            if (rt != 0 && ml!=null)
+            {
+                cmd.CommandText = String.Format(@"UPDATE rabbits SET r_rate=r_rate+{0:d} WHERE r_id={1:d};",rt,ml.id);
+                cmd.ExecuteNonQuery();
+                ml.rate += rt;
+            }
+            if (children > 0 && date.Month > 8 && date.Month < 12)
+                rt += 2;
             cmd.CommandText = String.Format(@"UPDATE rabbits SET r_event_date=NULL,r_event='none',
 r_status=r_status+1,r_last_fuck_okrol={1:s},r_overall_babies=COALESCE(r_overall_babies+{2:d},1),
-r_lost_babies=COALESCE(r_lost_babies+{3:d},1) WHERE r_id={0:d};", 
-                rabbit,DBHelper.DateToMyString(date),children,dead);
+r_lost_babies=COALESCE(r_lost_babies+{3:d},1),r_rate=r_rate+{4:d} WHERE r_id={0:d};", 
+                rabbit,DBHelper.DateToMyString(date),children,dead,rt);
+            fml.rate += rt;
             cmd.ExecuteNonQuery();
             if (children>0)
             {
-                OneRabbit fml = GetRabbit(sql, rabbit);
-                OneRabbit ml = GetRabbit(sql, father);
                 int brd=1;
-                if (fml.breed==ml.breed)
+                if (ml!=null && fml.breed==ml.breed)
                     brd=fml.breed;
-                int rate = fml.rate < ml.rate ? fml.rate : ml.rate;
+                int rate = fml.rate + (ml==null?fml.rate:ml.rate)/2;
                 int okrol = fml.status;
                 cmd.CommandText = String.Format(@"INSERT INTO rabbits(r_parent,r_mother,r_father,r_born,r_sex,r_group,
 r_bon,r_genesis,r_name,r_surname,r_secname,r_breed,r_okrol,r_rate) 
 VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d},{10:d},{11:d});",
-                      rabbit,rabbit,father,DBHelper.DateToMyString(date),children,DBHelper.commonBon(fml.bon,ml.bon),
-                      DBHelper.makeCommonGenesis(sql,fml.gens,ml.gens),fml.name,ml.name,brd,okrol,rate);
+      rabbit,rabbit,father,DBHelper.DateToMyString(date),children,DBHelper.commonBon(fml.bon,ml!=null?ml.bon:fml.bon),
+      DBHelper.makeCommonGenesis(sql,fml.gens,(ml!=null?ml.gens:fml.gens)),fml.name,(ml!=null?ml.name:0),brd,okrol,rate);
                 cmd.ExecuteNonQuery();
             }
         }
