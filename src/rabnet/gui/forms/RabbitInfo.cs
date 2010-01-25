@@ -10,6 +10,7 @@ namespace rabnet
 {
     public partial class RabbitInfo : Form
     {
+        const String RABDEAD = "Списан";
         private int rid = 0;
         private Catalog breeds = null;
         private Catalog zones = null;
@@ -191,7 +192,10 @@ namespace rabnet
                 ListViewItem li = fucks.Items.Add(f.when == DateTime.MinValue ? "" : f.when.ToShortDateString());
                 li.SubItems.Add(f.type);
                 li.SubItems.Add(f.partner);
-                li.SubItems.Add(f.status);
+                if (f.isDead)
+                    li.SubItems.Add(RABDEAD);
+                else
+                    li.SubItems.Add(f.status);
                 li.SubItems.Add(f.enddate == DateTime.MinValue ? "" : f.enddate.ToShortDateString());
                 li.SubItems.Add(f.children.ToString());
                 li.SubItems.Add(f.dead.ToString());
@@ -445,8 +449,9 @@ namespace rabnet
         {
             if (fucks.SelectedItems.Count == 1)
             {
+                bool dead = (fucks.SelectedItems[0].SubItems[3].Text == RABDEAD);
                 button11.Enabled = true;
-                button12.Enabled = !sukr.Checked;
+                button12.Enabled = !sukr.Checked && !dead;
             }
             else
                 button11.Enabled = button12.Enabled = false;

@@ -22,8 +22,9 @@ namespace rabnet
             public int added;
             public int breed;
             public String rgenom;
+            public bool isDead;
             public Fuck(String p, int pid, int tms, DateTime s, DateTime e, String st, int ch, int dd, 
-                int brd, String gen,String tp,int kl,int add)
+                int brd, String gen,String tp,int kl,int add,bool isdead)
             {
                 partner = p;partnerid = pid;
                 times = tms;
@@ -36,6 +37,7 @@ namespace rabnet
                 if (st == "okrol") status = "окрол";
                 if (st == "proholost") status = "прохолостание";
                 children = ch; dead = dd;
+                isDead = isdead;
                 killed=kl;
                 added = add;
                 breed = brd;
@@ -44,9 +46,9 @@ namespace rabnet
         }
         public List<Fuck> fucks=new List<Fuck>();
         public void addFuck(String p,int pid,int tms,DateTime s,DateTime e,String st,int ch,int dd,
-            int brd,String gen,String tp,int kl,int add)
+            int brd,String gen,String tp,int kl,int add,bool dead)
         {
-            fucks.Add(new Fuck(p,pid,tms,s,e,st,ch,dd,brd,gen,tp,kl,add));
+            fucks.Add(new Fuck(p,pid,tms,s,e,st,ch,dd,brd,gen,tp,kl,add,dead));
         }
     }
 
@@ -54,12 +56,19 @@ namespace rabnet
     {
         public static Fucks GetFucks(MySqlConnection sql,int rabbit)
         {
-            MySqlCommand cmd=new MySqlCommand(@"SELECT f_id,f_date,f_partner,f_times,f_state,f_date,f_end_date,f_children,f_dead,f_type,
+            MySqlCommand cmd=new MySqlCommand(String.Format(@"(SELECT f_id,f_date,f_partner,f_times,f_state,f_date,f_end_date,f_children,f_dead,f_type,
+deadname(f_partner,2) partner,
+(SELECT r_breed FROM dead WHERE r_id=f_partner) breed,
+(SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=(SELECT r_genesis FROM dead WHERE r_id=f_partner)) genom,
+f_killed,f_added,1 dead
+FROM fucks WHERE f_rabid={0:d} AND isdead(f_partner)=1 ORDER BY f_date)
+UNION
+(SELECT f_id,f_date,f_partner,f_times,f_state,f_date,f_end_date,f_children,f_dead,f_type,
 rabname(f_partner,2) partner,
 (SELECT r_breed FROM rabbits WHERE r_id=f_partner) breed,
 (SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=(SELECT r_genesis FROM rabbits WHERE r_id=f_partner)) genom,
-f_killed,f_added
-FROM fucks WHERE f_rabid=" + rabbit.ToString()+" ORDER BY f_date;",sql);
+f_killed,f_added,0 dead
+FROM fucks WHERE f_rabid={0:d} AND isdead(f_partner)=0 ORDER BY f_date)",rabbit),sql);
             MySqlDataReader rd=cmd.ExecuteReader();
             Fucks f=new Fucks();
             while(rd.Read())
@@ -69,7 +78,7 @@ FROM fucks WHERE f_rabid=" + rabbit.ToString()+" ORDER BY f_date;",sql);
                     rd.IsDBNull(6)?DateTime.MinValue:rd.GetDateTime("f_end_date"),
                     rd.GetString("f_state"),rd.GetInt32("f_children"),rd.GetInt32("f_dead"),
                     rd.GetInt32("breed"),rd.GetString("genom"),rd.GetString("f_type"),
-                    rd.GetInt32("f_killed"),rd.GetInt32("f_added")
+                    rd.GetInt32("f_killed"),rd.GetInt32("f_added"),(rd.GetInt32("dead")==1)
                     );
 
             }
@@ -96,7 +105,7 @@ female,malewait,
             {
                 f.addFuck(rd.GetString("fullname"), rd.GetInt32("r_id"), rd.IsDBNull(5)?0:rd.GetInt32("fucks"), DateTime.MinValue,
                     DateTime.MinValue, "", rd.IsDBNull(6) ? 0 : rd.GetInt32("children"), rd.GetInt32("r_status"), rd.GetInt32("r_breed"),
-                    rd.GetString("genom"), "",0,0);
+                    rd.GetString("genom"), "",0,0,false);
             }
             rd.Close();
             return f;
