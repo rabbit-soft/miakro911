@@ -189,6 +189,12 @@
     <Compile Include="forms\MakeFuck.Designer.cs">
       <DependentUpon>MakeFuck.cs</DependentUpon>
     </Compile>
+    <Compile Include="forms\MiniFarmForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\MiniFarmForm.Designer.cs">
+      <DependentUpon>MiniFarmForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="forms\NamesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -336,6 +342,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\MakeFuck.resx">
       <DependentUpon>MakeFuck.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\MiniFarmForm.resx">
+      <DependentUpon>MiniFarmForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\NamesForm.resx">
       <DependentUpon>NamesForm.cs</DependentUpon>

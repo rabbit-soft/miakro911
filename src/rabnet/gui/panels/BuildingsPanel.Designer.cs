@@ -46,8 +46,9 @@
             this.addFarmMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addBuildingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeFarmMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.treeView1 = new System.Windows.Forms.TreeView();
             this.deleteBuildingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -108,6 +109,7 @@
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            this.listView1.Enter += new System.EventHandler(this.listView1_Enter);
             // 
             // columnHeader1
             // 
@@ -153,7 +155,6 @@
             this.deleteBuildingMenuItem});
             this.actMenu.Name = "actMenu";
             this.actMenu.Size = new System.Drawing.Size(195, 158);
-            this.actMenu.Opening += new System.ComponentModel.CancelEventHandler(this.actMenu_Opening);
             // 
             // replaceMenuItem
             // 
@@ -174,18 +175,28 @@
             this.addFarmMenuItem.Name = "addFarmMenuItem";
             this.addFarmMenuItem.Size = new System.Drawing.Size(194, 22);
             this.addFarmMenuItem.Text = "Добавить миниферму";
+            this.addFarmMenuItem.Click += new System.EventHandler(this.addFarmMenuItem_Click);
             // 
             // addBuildingMenuItem
             // 
             this.addBuildingMenuItem.Name = "addBuildingMenuItem";
             this.addBuildingMenuItem.Size = new System.Drawing.Size(194, 22);
             this.addBuildingMenuItem.Text = "Добавить блок(шед)";
+            this.addBuildingMenuItem.Click += new System.EventHandler(this.addBuildingMenuItem_Click);
             // 
             // changeFarmMenuItem
             // 
             this.changeFarmMenuItem.Name = "changeFarmMenuItem";
             this.changeFarmMenuItem.Size = new System.Drawing.Size(194, 22);
             this.changeFarmMenuItem.Text = "Изменить миниферму";
+            this.changeFarmMenuItem.Click += new System.EventHandler(this.changeFarmMenuItem_Click);
+            // 
+            // deleteBuildingMenuItem
+            // 
+            this.deleteBuildingMenuItem.Name = "deleteBuildingMenuItem";
+            this.deleteBuildingMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.deleteBuildingMenuItem.Text = "Удалить строение";
+            this.deleteBuildingMenuItem.Click += new System.EventHandler(this.deleteBuildingMenuItem_Click);
             // 
             // treeView1
             // 
@@ -201,17 +212,17 @@
             this.treeView1.Size = new System.Drawing.Size(178, 533);
             this.treeView1.TabIndex = 0;
             this.treeView1.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.treeView1_AfterLabelEdit);
+            this.treeView1.Enter += new System.EventHandler(this.treeView1_Enter);
             this.treeView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView1_DragDrop);
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
             this.treeView1.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.treeView1_ItemDrag);
             this.treeView1.DragOver += new System.Windows.Forms.DragEventHandler(this.treeView1_DragOver_1);
             // 
-            // deleteBuildingMenuItem
+            // timer1
             // 
-            this.deleteBuildingMenuItem.Name = "deleteBuildingMenuItem";
-            this.deleteBuildingMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.deleteBuildingMenuItem.Text = "Удалить строение";
+            this.timer1.Interval = 300;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // BuildingsPanel
             // 
@@ -249,6 +260,7 @@
         private System.Windows.Forms.ToolStripMenuItem addBuildingMenuItem;
         private System.Windows.Forms.ToolStripMenuItem changeFarmMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteBuildingMenuItem;
+        private System.Windows.Forms.Timer timer1;
 
 
 

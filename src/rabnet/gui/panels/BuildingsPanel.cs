@@ -11,6 +11,12 @@ namespace rabnet
     public partial class BuildingsPanel : RabNetPanel
     {
         private bool manual = true;
+        const String nuBuild = "Новое строение";
+        List<int> nofarms = new List<int>();
+        int nofarm = 1;
+        TreeNode nodeToAdd = null;
+        int action = 0;
+        int preBuilding = 0;
         public BuildingsPanel(): base(){}
 
         public BuildingsPanel(RabStatusBar bsb):base(bsb, new BuildingsFilter(bsb))
@@ -19,7 +25,24 @@ namespace rabnet
             listView1.ListViewItemSorter = null;
         }
 
-        private TreeNode makenode(TreeNode parent,String name,TreeData td)
+        private void addNoFarm(int farm)
+        {
+            if (farm==nofarm)
+            {
+                nofarm++;
+                return;
+            }
+            if (farm < nofarm)
+            {
+                nofarms.Remove(farm);
+                return;
+            }
+            for (int i = nofarm; i < farm; i++)
+                nofarms.Add(i);
+            nofarm = farm + 1;
+        }
+
+        private TreeNode makenode(TreeNode parent, String name, TreeData td)
         {
             TreeNode n=null;
             if (parent == null)
@@ -30,7 +53,15 @@ namespace rabnet
             for (int i = 0; i < td.items.Length; i++)
             {
                 String[] st = td.items[i].caption.Split(':');
-                (makenode(n, st[2], td.items[i])).Tag=st[0]+":"+st[1];
+                TreeNode child = makenode(n, st[2], td.items[i]);
+                child.Tag=st[0]+":"+st[1];
+                addNoFarm(int.Parse(st[1]));
+                if (int.Parse(st[0]) == preBuilding)
+                {
+                    treeView1.SelectedNode = child;
+                    treeView1.SelectedNode.Expand();
+                    //child.Expand();
+                }
             }
             return n;
         }
@@ -39,7 +70,10 @@ namespace rabnet
         {
             manual = false;
             treeView1.Nodes.Clear();
+            nofarms.Clear();
+            nofarm = 1;
             TreeNode n=makenode(null,"Ферма",Engine.db().buildingsTree());
+            nofarms.Add(nofarm);
             manual = true;
             n.Tag="0:0";
             n.Expand();
@@ -200,7 +234,8 @@ namespace rabnet
                 farmDrawer1.setFarm(0, null, null);
                 return;
             }
-            int farm = int.Parse((treeView1.SelectedNode.Tag as String).Split(':')[1]);
+            preBuilding = buildNum();
+            int farm = farmNum();
             if (farm == 0)
             {
                 farmDrawer1.setFarm(0, null, null);
@@ -293,6 +328,7 @@ namespace rabnet
                 {
                     b = b2;
                     for (int i = 0; i < b.secs(); i++)
+                        if (b.busy(i)!=0)
                         f.addRabbit(b.busy(i));
                 }
             }
@@ -313,7 +349,8 @@ namespace rabnet
                 {
                     b = b2;
                     for (int i = 0; i < b.secs(); i++)
-                        f.addRabbit(b.busy(i));
+                        if (b.busy(i)!=0)
+                            f.addRabbit(b.busy(i));
                 }
             }
             f.ShowDialog();
@@ -364,6 +401,18 @@ namespace rabnet
 
         private void treeView1_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
+            if (action != 0)
+            {
+                if (e.Label == null)
+                    treeView1.SelectedNode.Remove();
+                else
+                {
+                    Engine.db().addBuilding(buildNum(nodeToAdd),e.Label);
+                }
+                nodeToAdd = null;
+                action = 0;
+            }
+            if (e.Label == null) return;
             if (!manual) return;
             if (e.Node == treeView1.Nodes[0])
             {
@@ -375,12 +424,99 @@ namespace rabnet
                 Engine.db().setBuildingName(buildNum(e.Node), e.Label);
                 e.CancelEdit = false;
             }
-           // rsb.run();
+            timer1.Start();
         }
 
-        private void actMenu_Opening(object sender, CancelEventArgs e)
+        private bool askDelete()
         {
+            return (MessageBox.Show(this, "Удалить " + treeView1.SelectedNode.Text + "?", "Удаление",
+                MessageBoxButtons.YesNo) == DialogResult.Yes);
+        }
 
+        private void deleteBuildingMenuItem_Click(object sender, EventArgs e)
+        {
+            if (treeView1.SelectedNode == null) return;
+            if (isFarm())
+            {
+                int[] tiers = Engine.db().getTiers(farmNum());
+                bool candelete = true;
+                for (int i = 0; i < 2; i++)
+                    if (tiers[i]!=0)
+                    {
+                        Building b = Engine.db().getBuilding(tiers[i]);
+                        for (int j = 0; j < b.secs(); j++)
+                        {
+                            if (b.busy(j) != 0)
+                                candelete = false;
+                        }
+                    }
+                if (candelete && askDelete())
+                {
+                    preBuilding = buildNum(treeView1.SelectedNode.Parent);
+                    Engine.db().deleteFarm(farmNum());
+                    rsb.run();
+                }
+                else
+                    MessageBox.Show("Ферма не пуста.");
+            }
+            else
+            {
+                if (treeView1.SelectedNode.Nodes.Count > 0)
+                    MessageBox.Show("Имеются вложенные строения");
+                else if (askDelete())
+                {
+                    preBuilding = buildNum(treeView1.SelectedNode.Parent);
+                    Engine.db().deleteBuilding(buildNum());
+                    rsb.run();
+                }
+            }
+        }
+
+        private void addBuildingMenuItem_Click(object sender, EventArgs e)
+        {
+            if (treeView1.SelectedNode == null) return;
+            if (isFarm()) return;
+            nodeToAdd = treeView1.SelectedNode;
+            TreeNode nd=nodeToAdd.Nodes.Add(nuBuild);
+            manual = false;
+            action = 1;
+            nd.Tag = "0:0:new";
+            treeView1.SelectedNode = nd;
+            preBuilding = buildNum(nodeToAdd);
+            nd.BeginEdit();
+            manual = true;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            timer1.Stop();
+            rsb.run();
+        }
+
+        private void treeView1_Enter(object sender, EventArgs e)
+        {
+            updateMenu();
+        }
+
+        private void listView1_Enter(object sender, EventArgs e)
+        {
+            updateMenu();
+        }
+
+        private void addFarmMenuItem_Click(object sender, EventArgs e)
+        {
+            if (treeView1.SelectedNode == null) return;
+            if (isFarm()) return;
+            new MiniFarmForm(buildNum(), nofarms.ToArray()).ShowDialog();
+            rsb.run();
+        }
+
+        private void changeFarmMenuItem_Click(object sender, EventArgs e)
+        {
+            if (treeView1.SelectedNode == null) return;
+            if (!isFarm()) return;
+            new MiniFarmForm(farmNum()).ShowDialog();
+            rsb.run();
         }
 
     }
