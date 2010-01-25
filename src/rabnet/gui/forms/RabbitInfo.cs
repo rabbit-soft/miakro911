@@ -89,9 +89,13 @@ namespace rabnet
                 ex += "Продолжить?";
                 if (MessageBox.Show(this, ex, "Не введены данные", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     Close();
-            }else
+            }
+            else
+            {
+                this.DialogResult = button1.DialogResult;
                 Close();
-            MessageBox.Show(button1.DialogResult.ToString());
+            }
+            
         }
 
         private String getbon(char bon)
