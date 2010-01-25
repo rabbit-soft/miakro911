@@ -190,6 +190,7 @@ namespace rabnet
             RabbitInfo ri = new RabbitInfo((int)listView1.SelectedItems[0].Tag);
             if (ri.ShowDialog() == DialogResult.OK)
                 rsb.run();
+            else MessageBox.Show(ri.DialogResult.ToString());
         }
 
         private void listView1_DoubleClick(object sender, EventArgs e)

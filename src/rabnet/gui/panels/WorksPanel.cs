@@ -134,23 +134,18 @@ namespace rabnet
 
         private void makeJob()
         {
+            bool dialog = true;
             ZootehJob job = getCurJob();
             if (job == null)
                 return;
             switch (job.type)
-            {
-                case JobType.OKROL:
-                    (new OkrolForm(job.id)).ShowDialog();
-                    break;
+            {                
                 case JobType.VUDVOR:
                     RabNetEngBuilding b = Engine.get().getBuilding(job.id);
                     if (job.id2 == 0)
                         b.setNest(false);
                     else
                         b.setNest2(false);
-                    break;
-                case JobType.COUNT_KIDS:
-                    (new CountKids(job.id)).ShowDialog();
                     break;
                 case JobType.PRE_OKROL:
                     Engine.get().preOkrol(job.id);
@@ -163,11 +158,19 @@ namespace rabnet
                         rf.setAction(ReplaceForm.Action.BOYSOUT);
                     rf.ShowDialog();
                     break;
+                                   
+                case JobType.COUNT_KIDS:
+                    if((new CountKids(job.id)).ShowDialog() !=DialogResult.OK)dialog=false;
+                    break;
                 case JobType.FUCK:
-                    (new MakeFuck(job.id)).ShowDialog();
+                    if((new MakeFuck(job.id)).ShowDialog()!= DialogResult.OK)dialog=false;
+                    break;                                    
+                case JobType.OKROL:
+                    if ((new OkrolForm(job.id)).ShowDialog() != DialogResult.OK) dialog = false;
                     break;
             }
-            rsb.run();
+            if(dialog)
+                rsb.run();
         }
 
         private void okrolMenuItem_Click(object sender, EventArgs e)

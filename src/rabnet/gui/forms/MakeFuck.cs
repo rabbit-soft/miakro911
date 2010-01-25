@@ -18,6 +18,7 @@ namespace rabnet
         public MakeFuck()
         {
             InitializeComponent();
+            initialHints();
             dateDays1.DateValue = DateTime.Now;
             brds = Engine.db().catalogs().getBreeds();
             manual = false;
@@ -29,6 +30,13 @@ namespace rabnet
         public MakeFuck(int r1)
             : this(r1,0)
         {
+        }
+
+        private void initialHints()
+        {
+            ToolTip toolTip = new ToolTip();
+            toolTip.InitialDelay = 1000;
+            toolTip.SetToolTip(button3, "Показать гены выбранного самца");
         }
 
         public MakeFuck(int r1, int r2):this()

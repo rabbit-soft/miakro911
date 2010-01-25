@@ -82,7 +82,7 @@
             "Элита"});
             this.comboBox1.Location = new System.Drawing.Point(188, 64);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.Size = new System.Drawing.Size(80, 21);
             this.comboBox1.TabIndex = 3;
             // 
             // label4
@@ -115,7 +115,7 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(234, 209);
+            this.button1.Location = new System.Drawing.Point(192, 209);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 7;
@@ -126,7 +126,7 @@
             // button2
             // 
             this.button2.DialogResult = System.Windows.Forms.DialogResult.Abort;
-            this.button2.Location = new System.Drawing.Point(153, 209);
+            this.button2.Location = new System.Drawing.Point(111, 209);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 8;
@@ -146,7 +146,7 @@
             "Элита"});
             this.comboBox2.Location = new System.Drawing.Point(188, 88);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 21);
+            this.comboBox2.Size = new System.Drawing.Size(80, 21);
             this.comboBox2.TabIndex = 9;
             // 
             // comboBox3
@@ -161,7 +161,7 @@
             "Элита"});
             this.comboBox3.Location = new System.Drawing.Point(188, 113);
             this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(121, 21);
+            this.comboBox3.Size = new System.Drawing.Size(80, 21);
             this.comboBox3.TabIndex = 10;
             // 
             // comboBox4
@@ -176,7 +176,7 @@
             "Элита"});
             this.comboBox4.Location = new System.Drawing.Point(188, 138);
             this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(121, 21);
+            this.comboBox4.Size = new System.Drawing.Size(80, 21);
             this.comboBox4.TabIndex = 11;
             // 
             // label7
@@ -192,7 +192,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(321, 244);
+            this.ClientSize = new System.Drawing.Size(278, 244);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.comboBox4);
             this.Controls.Add(this.comboBox3);

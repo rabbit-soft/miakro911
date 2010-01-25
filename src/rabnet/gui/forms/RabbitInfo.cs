@@ -42,7 +42,7 @@ namespace rabnet
         private void initialHints()
         {
             ToolTip toolTip = new ToolTip();
-            //MessageBox.Show(toolTip.InitialDelay.ToString());
+            
             toolTip.InitialDelay = 1000;
             toolTip.SetToolTip(button13, "Определение классности");
             toolTip.SetToolTip(group, "Количество кроликов в клетке");
@@ -54,6 +54,8 @@ namespace rabnet
             toolTip.SetToolTip(button3,"Добавить номер гена");
             toolTip.SetToolTip(checkBox5,"Изменить данные вручную");
             toolTip.SetToolTip(button9, "Принять окрол");
+            toolTip.SetToolTip(gr, "Готов к реализации");
+            toolTip.SetToolTip(gp, "Готовая продукция");
         }
 
         public RabbitInfo(int id)
@@ -89,6 +91,7 @@ namespace rabnet
                     Close();
             }else
                 Close();
+            MessageBox.Show(button1.DialogResult.ToString());
         }
 
         private String getbon(char bon)

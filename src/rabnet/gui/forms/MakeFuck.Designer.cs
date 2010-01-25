@@ -49,6 +49,9 @@
             // 
             // listView1
             // 
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
@@ -62,7 +65,7 @@
             this.listView1.Location = new System.Drawing.Point(12, 37);
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(610, 285);
+            this.listView1.Size = new System.Drawing.Size(548, 231);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -109,17 +112,20 @@
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(308, 9);
+            this.label2.Location = new System.Drawing.Point(525, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 13);
             this.label2.TabIndex = 2;
             this.label2.Text = "label2";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(547, 385);
+            this.button1.Location = new System.Drawing.Point(485, 331);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 3;
@@ -129,7 +135,8 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(466, 385);
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button2.Location = new System.Drawing.Point(404, 331);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 4;
@@ -139,7 +146,8 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(15, 385);
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button3.Location = new System.Drawing.Point(15, 331);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 5;
@@ -149,8 +157,9 @@
             // 
             // cbHeter
             // 
+            this.cbHeter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbHeter.AutoSize = true;
-            this.cbHeter.Location = new System.Drawing.Point(386, 328);
+            this.cbHeter.Location = new System.Drawing.Point(115, 274);
             this.cbHeter.Name = "cbHeter";
             this.cbHeter.Size = new System.Drawing.Size(78, 17);
             this.cbHeter.TabIndex = 7;
@@ -160,8 +169,9 @@
             // 
             // cbInbreed
             // 
+            this.cbInbreed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbInbreed.AutoSize = true;
-            this.cbInbreed.Location = new System.Drawing.Point(386, 351);
+            this.cbInbreed.Location = new System.Drawing.Point(207, 274);
             this.cbInbreed.Name = "cbInbreed";
             this.cbInbreed.Size = new System.Drawing.Size(79, 17);
             this.cbInbreed.TabIndex = 8;
@@ -171,10 +181,11 @@
             // 
             // cbCand
             // 
+            this.cbCand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbCand.AutoSize = true;
             this.cbCand.Checked = true;
             this.cbCand.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbCand.Location = new System.Drawing.Point(286, 328);
+            this.cbCand.Location = new System.Drawing.Point(15, 274);
             this.cbCand.Name = "cbCand";
             this.cbCand.Size = new System.Drawing.Size(81, 17);
             this.cbCand.TabIndex = 9;
@@ -184,12 +195,13 @@
             // 
             // dateDays1
             // 
+            this.dateDays1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2010, 1, 24, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2010, 1, 25, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
-            this.dateDays1.Location = new System.Drawing.Point(485, 328);
+            this.dateDays1.Location = new System.Drawing.Point(423, 274);
             this.dateDays1.Maximum = 100000;
             this.dateDays1.Name = "dateDays1";
             this.dateDays1.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
@@ -201,7 +213,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(634, 420);
+            this.ClientSize = new System.Drawing.Size(572, 366);
             this.Controls.Add(this.cbCand);
             this.Controls.Add(this.cbInbreed);
             this.Controls.Add(this.cbHeter);
@@ -212,9 +224,9 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listView1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(450, 250);
             this.Name = "MakeFuck";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
