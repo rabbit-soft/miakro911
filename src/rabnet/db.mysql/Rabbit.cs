@@ -553,11 +553,17 @@ VALUES({0:d},{1:s},{2:d},'sukrol','{3:s}',1);",female,DBHelper.DateToMyString(da
 
         public static void MakeProholost(MySqlConnection sql, int rabbit, DateTime date)
         {
+            int male = WhosChildren(sql, rabbit);
             MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE fucks SET f_state='proholost',f_end_date={0:s} WHERE f_state='sukrol' AND f_rabid={1:d};",
                 DBHelper.DateToMyString(date),rabbit), sql);
             cmd.ExecuteNonQuery();
-            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date=NULL,r_event='none' WHERE r_id={0:d};",rabbit);
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date=NULL,r_event='none',r_rate=r_rate-1 WHERE r_id={0:d};",rabbit);
             cmd.ExecuteNonQuery();
+            if (male != 0)
+            {
+                cmd.CommandText = String.Format("UPDATE rabbits SET r_rate=r_rate-1 WHERE r_id={0:d};", male);
+                cmd.ExecuteNonQuery();
+            }
         }
 
         public static int WhosChildren(MySqlConnection sql, int rabbit)
@@ -780,7 +786,7 @@ FROM rabbits WHERE r_id={0:d};",rabbit,mom,count), sql);
         public static void countKids(MySqlConnection sql,int rid,int dead,int killed,int added)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE rabbits SET 
-r_group=r_group-{0:d}-{1:d}+{2:d} WHERE r_parent={3:d};",dead,killed,added,rid), sql);
+r_group=r_group-{0:d}-{1:d}+{2:d},r_rate=r_rate-{4:d} WHERE r_parent={3:d};",dead,killed,added,rid,killed*2), sql);
             cmd.ExecuteNonQuery();
             cmd.CommandText = String.Format(@"UPDATE fucks SET 
 f_dead=f_dead+{0:d},f_killed=f_killed+{1:d},f_added=f_added+{2:d} WHERE f_rabid={3:d} AND f_last=1;",

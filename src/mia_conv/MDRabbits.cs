@@ -211,7 +211,7 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d});",
             else
                 flags += "00";
             vals += String.Format(",{0:d},{1:d},{2:d},{3:d}",r.where.value(),r.tier_id.value(),tier,r.area.value());
-            vals += String.Format(",{0:d},{1:d},{2:d},'{3:s}',{4:d}", r.rate.value(), r.group.value(),
+            vals += String.Format(",{0:d},{1:d},{2:d},'{3:s}',{4:d}", 0/*r.rate.value()*/, r.group.value(),
                 findbreed((int)r.breed.value()),flags,r.zone.value());
             int status=0;
             String lfo="NULL";
