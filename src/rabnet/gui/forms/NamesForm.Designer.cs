@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
@@ -47,38 +46,8 @@
             this.tpMale = new System.Windows.Forms.TabPage();
             this.tpFemale = new System.Windows.Forms.TabPage();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.Location = new System.Drawing.Point(0, 25);
-            this.splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.listView1);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.button2);
-            this.splitContainer1.Panel2.Controls.Add(this.button1);
-            this.splitContainer1.Panel2.Controls.Add(this.label4);
-            this.splitContainer1.Panel2.Controls.Add(this.comboBox2);
-            this.splitContainer1.Panel2.Controls.Add(this.label2);
-            this.splitContainer1.Panel2.Controls.Add(this.textBox2);
-            this.splitContainer1.Panel2.Controls.Add(this.label1);
-            this.splitContainer1.Panel2.Controls.Add(this.textBox1);
-            this.splitContainer1.Panel2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.splitContainer1.Size = new System.Drawing.Size(743, 370);
-            this.splitContainer1.SplitterDistance = 561;
-            this.splitContainer1.TabIndex = 1;
             // 
             // listView1
             // 
@@ -93,9 +62,9 @@
             this.columnHeader5});
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
-            this.listView1.Location = new System.Drawing.Point(3, 3);
+            this.listView1.Location = new System.Drawing.Point(4, 28);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(555, 364);
+            this.listView1.Size = new System.Drawing.Size(425, 312);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -123,9 +92,10 @@
             // 
             // button2
             // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.Cursor = System.Windows.Forms.Cursors.Default;
             this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(6, 140);
+            this.button2.Location = new System.Drawing.Point(438, 159);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(70, 23);
             this.button2.TabIndex = 4;
@@ -135,8 +105,9 @@
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(6, 105);
+            this.button1.Location = new System.Drawing.Point(438, 124);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(70, 23);
             this.button1.TabIndex = 3;
@@ -146,9 +117,9 @@
             // 
             // label4
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 330);
+            this.label4.Location = new System.Drawing.Point(435, 303);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(105, 13);
             this.label4.TabIndex = 7;
@@ -156,14 +127,14 @@
             // 
             // comboBox2
             // 
-            this.comboBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.comboBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Items.AddRange(new object[] {
             "все",
             "свободные",
             "занятые"});
-            this.comboBox2.Location = new System.Drawing.Point(6, 346);
+            this.comboBox2.Location = new System.Drawing.Point(438, 319);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(120, 21);
             this.comboBox2.TabIndex = 5;
@@ -171,8 +142,9 @@
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 54);
+            this.label2.Location = new System.Drawing.Point(435, 73);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(56, 13);
             this.label2.TabIndex = 4;
@@ -180,7 +152,8 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(6, 70);
+            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox2.Location = new System.Drawing.Point(438, 89);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(120, 20);
             this.textBox2.TabIndex = 1;
@@ -188,8 +161,9 @@
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 9);
+            this.label1.Location = new System.Drawing.Point(435, 28);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(29, 13);
             this.label1.TabIndex = 2;
@@ -197,7 +171,8 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(6, 25);
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.Location = new System.Drawing.Point(438, 44);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(120, 20);
             this.textBox1.TabIndex = 0;
@@ -211,7 +186,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(743, 22);
+            this.tabControl1.Size = new System.Drawing.Size(572, 22);
             this.tabControl1.TabIndex = 1;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.NamesForm_Activated);
             // 
@@ -220,7 +195,7 @@
             this.tpMale.Location = new System.Drawing.Point(4, 22);
             this.tpMale.Name = "tpMale";
             this.tpMale.Padding = new System.Windows.Forms.Padding(3);
-            this.tpMale.Size = new System.Drawing.Size(735, 0);
+            this.tpMale.Size = new System.Drawing.Size(564, 0);
             this.tpMale.TabIndex = 0;
             this.tpMale.Text = "Мужские";
             this.tpMale.UseVisualStyleBackColor = true;
@@ -231,7 +206,7 @@
             this.tpFemale.Location = new System.Drawing.Point(4, 22);
             this.tpFemale.Name = "tpFemale";
             this.tpFemale.Padding = new System.Windows.Forms.Padding(3);
-            this.tpFemale.Size = new System.Drawing.Size(735, 0);
+            this.tpFemale.Size = new System.Drawing.Size(564, 0);
             this.tpFemale.TabIndex = 1;
             this.tpFemale.Text = "Женские";
             this.tpFemale.UseVisualStyleBackColor = true;
@@ -239,10 +214,10 @@
             // rabStatusBar1
             // 
             this.rabStatusBar1.filterPanel = null;
-            this.rabStatusBar1.Location = new System.Drawing.Point(0, 395);
+            this.rabStatusBar1.Location = new System.Drawing.Point(0, 343);
             this.rabStatusBar1.Name = "rabStatusBar1";
             this.rabStatusBar1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.rabStatusBar1.Size = new System.Drawing.Size(743, 23);
+            this.rabStatusBar1.Size = new System.Drawing.Size(572, 23);
             this.rabStatusBar1.TabIndex = 0;
             this.rabStatusBar1.Text = "rabStatusBar1";
             this.rabStatusBar1.itemGet += new rabnet.RabStatusBar.RSBItemEventHandler(this.rabStatusBar1_itemGet);
@@ -252,20 +227,25 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(743, 418);
+            this.ClientSize = new System.Drawing.Size(572, 366);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.comboBox2);
+            this.Controls.Add(this.listView1);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.rabStatusBar1);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.textBox1);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(500, 300);
             this.Name = "NamesForm";
             this.ShowInTaskbar = false;
             this.Text = "Справочник имен";
             this.Activated += new System.EventHandler(this.NamesForm_Activated);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
-            this.splitContainer1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -275,7 +255,6 @@
         #endregion
 
         private RabStatusBar rabStatusBar1;
-        private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
