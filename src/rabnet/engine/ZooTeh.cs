@@ -43,12 +43,12 @@ namespace rabnet
             this.id2=id2;
             return this;
         }
-        public ZootehJob Counts(int id, String nm, String ad, int age)
+        public ZootehJob Counts(int id, String nm, String ad, int age,int count)
         {
             type = JobType.COUNT_KIDS; job = "Подсчет гнездовых";
             days = 0; name = nm; address = ad;
             this.age = age; this.id = id;
-            comment = "возраст " + age.ToString();
+            comment = "количество " + count.ToString();
             return this;
         }
         public ZootehJob Preokrol(int id, String nm, String ad, int age, int srok)
@@ -135,7 +135,7 @@ namespace rabnet
                 int days = eng.options().getIntOption(cnt);
                 ZooJobItem[] jobs = eng.db().getCounts(days);
                 foreach (ZooJobItem z in jobs)
-                    jh.Add(new ZootehJob().Counts(z.id, z.name, z.place, z.age));
+                    jh.Add(new ZootehJob().Counts(z.id, z.name, z.place, z.age,z.i[0]));
             }
         }
 

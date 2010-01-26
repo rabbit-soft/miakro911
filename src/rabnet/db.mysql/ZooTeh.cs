@@ -39,11 +39,12 @@ namespace rabnet
                 i[1] = 0;
             return this;
         }
-        public ZooJobItem Counts(int id, String nm, String place, int age)
+        public ZooJobItem Counts(int id, String nm, String place, int age,int count)
         {
             type = 3; name = nm; this.place = Buildings.fullPlaceName(place);
             this.age = age; this.status = 0;
             this.id = id;
+            i[0] = count;
             return this;
         }
         public ZooJobItem Preokrol(int id, String nm, String place, int age, int srok)
@@ -178,13 +179,14 @@ ORDER BY srok DESC;", days));
 
         public ZooJobItem[] getCounts(int days)
         {
-            MySqlDataReader rd = reader(String.Format(@"SELECT r_parent,rabname(r_parent,2) name,rabplace(r_parent) place 
+            MySqlDataReader rd = reader(String.Format(@"SELECT r_parent,rabname(r_parent,2) name,
+rabplace(r_parent) place,r_group 
 FROM rabbits WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)={0:d} AND
 r_parent NOT IN (SELECT l_rabbit FROM logs WHERE l_type=17 AND DATE(l_date)=DATE(NOW()));", days));
             List<ZooJobItem> res = new List<ZooJobItem>();
             while (rd.Read())
                 res.Add(new ZooJobItem().Counts(rd.GetInt32("r_parent"),rd.GetString("name"),
-                    rd.GetString("place"),days));
+                    rd.GetString("place"),days,rd.GetInt32("r_group")));
             rd.Close();
             return res.ToArray();
         }
