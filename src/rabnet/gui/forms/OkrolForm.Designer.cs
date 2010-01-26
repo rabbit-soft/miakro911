@@ -75,7 +75,7 @@
             // 
             // button3
             // 
-            this.button3.DialogResult = System.Windows.Forms.DialogResult.Abort;
+            this.button3.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button3.Location = new System.Drawing.Point(15, 160);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
@@ -125,7 +125,7 @@
             // 
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2010, 1, 24, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2010, 1, 26, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
             this.dateDays1.Location = new System.Drawing.Point(96, 34);

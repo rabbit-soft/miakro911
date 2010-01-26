@@ -146,9 +146,11 @@ namespace rabnet
                         b.setNest(false);
                     else
                         b.setNest2(false);
+                    listView1.SelectedItems[0].Remove();
                     break;
                 case JobType.PRE_OKROL:
                     Engine.get().preOkrol(job.id);
+                    listView1.SelectedItems[0].Remove();
                     break;
                 case JobType.BOYS_OUT:
                 case JobType.GIRLS_OUT:

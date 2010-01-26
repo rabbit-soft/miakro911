@@ -103,7 +103,7 @@
 	</target>
 	
 	<target name="gui" description="rabnet gui">
-		<csc target="winexe" output="${bin_dir}/rabnet.exe">
+		<csc target="winexe" output="${bin_dir}/rabnet.exe" win32icon="./rabnet/gui/mialicon.ico">
 			<sources>
 				<include name="./rabnet/gui/*.cs"/>
 				<include name="./rabnet/gui/components/*.cs"/>
@@ -112,6 +112,7 @@
 				<include name="./rabnet/gui/forms/*.cs"/>
 			</sources>
 			<resources>
+				<include name="./rabnet/gui/forms/MainForm.resx"/>
 				<include name="./rabnet/gui/components/RabStatusBar.resx"/>
 				<include name="./rabnet/gui/forms/ReportViewForm.resx"/>
 			</resources>
