@@ -355,6 +355,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
         public bool gr;
         public bool spec;
         public bool risk;
+        public int parent;
         public int name;
         public int wasname;
         public int surname;
@@ -381,8 +382,9 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
         public string nuaddr;
         public OneRabbit(int id,string sx,DateTime bd,int rt,string flg,int nm,int sur,int sec,string adr,int grp,int brd,int zn,String nts,
             String gn,int st,DateTime lfo,String evt,DateTime evd,int ob,int lb,String fnm,String bnm,
-            String bon)
+            String bon,int parent)
         {
+            this.parent = parent;
             tag = "";
             this.id=id;
             sex=RabbitSex.VOID;
@@ -451,7 +453,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
                 rd.IsDBNull(3) ? "none" : rd.GetString("r_event"), rd.IsDBNull(2) ? DateTime.MinValue : rd.GetDateTime("r_event_date"),
                 rd.IsDBNull(4) ? 0 : rd.GetInt32("r_overall_babies"), rd.IsDBNull(5) ? 0 : rd.GetInt32("r_lost_babies"),
                 rd.GetString("fullname"), rd.GetString("breedname"),
-                rd.GetString("r_bon"));
+                rd.GetString("r_bon"),rd.GetInt32("r_parent"));
             return r;
         }
 
@@ -464,7 +466,7 @@ rabplace(r_id) address,r_group,r_notes,
 rabname(r_id,2) fullname,
 (SELECT b_name FROM breeds WHERE b_id=r_breed) breedname,
 (SELECT COALESCE(GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' '),'') FROM genoms WHERE g_id=r_genesis) genom,
-r_status,r_rate,r_bon
+r_status,r_rate,r_bon,r_parent
 FROM rabbits WHERE r_id=" + rid.ToString()+";",con);
             MySqlDataReader rd = cmd.ExecuteReader();
             if (!rd.Read())
@@ -486,7 +488,7 @@ rabplace(r_id) address,r_group,r_notes,
 rabname(r_id,2) fullname,
 (SELECT b_name FROM breeds WHERE b_id=r_breed) breedname,
 (SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=r_genesis) genom,
-r_status,r_rate,r_bon
+r_status,r_rate,r_bon,r_parent
 FROM rabbits WHERE r_parent=" + mom.ToString() + ";", con);
             List<OneRabbit> rbs = new List<OneRabbit>();
             MySqlDataReader rd = cmd.ExecuteReader();
@@ -834,7 +836,7 @@ f_dead=f_dead+{0:d},f_killed=f_killed+{1:d},f_added=f_added+{2:d} WHERE f_rabid=
 (SELECT b_name FROM breeds WHERE b_id=r_breed) breed,r_rate,rabname(r_id,2) name,
 (SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) suckers,
 (SELECT AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) aage,
-r_born
+r_born,rabplace(r_id) place
 FROM rabbits WHERE r_sex='female' AND r_group=1 AND r_status>0) c WHERE suckers>0 AND ABS(aage-{0:d})<={1:d};
 ",age,agediff),sql);
             List<Rabbit> rbs=new List<Rabbit>();
@@ -849,6 +851,7 @@ FROM rabbits WHERE r_sex='female' AND r_group=1 AND r_status>0) c WHERE suckers>
                 r.faverage = rd.GetInt32("aage");
                 r.fN = rd.GetString("suckers");
                 r.fstatus = rd.GetInt32("r_status")==1?"Первокролка":"Штатная";
+                r.faddress = Buildings.fullPlaceName(rd.GetString("place"), true, false, false);
                 rbs.Add(r);
             }
             rd.Close();

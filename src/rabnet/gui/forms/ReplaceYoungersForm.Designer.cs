@@ -43,6 +43,12 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
+            this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader9 = new System.Windows.Forms.ColumnHeader();
+            this.nudCount = new System.Windows.Forms.NumericUpDown();
+            this.nudRepl = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudRepl)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -85,17 +91,20 @@
             this.columnHeader4,
             this.columnHeader5,
             this.columnHeader6,
-            this.columnHeader7});
+            this.columnHeader7,
+            this.columnHeader8,
+            this.columnHeader9});
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(12, 59);
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(598, 265);
+            this.listView1.Size = new System.Drawing.Size(618, 265);
             this.listView1.TabIndex = 3;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
             // columnHeader1
             // 
@@ -122,7 +131,7 @@
             // 
             // columnHeader6
             // 
-            this.columnHeader6.Text = "Количество крольчат";
+            this.columnHeader6.Text = "Адрес";
             // 
             // columnHeader7
             // 
@@ -141,7 +150,7 @@
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(535, 330);
+            this.button1.Location = new System.Drawing.Point(636, 330);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 5;
@@ -152,7 +161,7 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(454, 330);
+            this.button2.Location = new System.Drawing.Point(555, 330);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 6;
@@ -163,17 +172,44 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(428, 9);
+            this.label5.Location = new System.Drawing.Point(453, 9);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(45, 13);
             this.label5.TabIndex = 7;
             this.label5.Text = "Порода";
             // 
+            // columnHeader8
+            // 
+            this.columnHeader8.Text = "Количество крольчат";
+            // 
+            // columnHeader9
+            // 
+            this.columnHeader9.Text = "Подсажено";
+            // 
+            // nudCount
+            // 
+            this.nudCount.Enabled = false;
+            this.nudCount.Location = new System.Drawing.Point(380, 7);
+            this.nudCount.Name = "nudCount";
+            this.nudCount.Size = new System.Drawing.Size(53, 20);
+            this.nudCount.TabIndex = 8;
+            // 
+            // nudRepl
+            // 
+            this.nudRepl.Enabled = false;
+            this.nudRepl.Location = new System.Drawing.Point(636, 59);
+            this.nudRepl.Name = "nudRepl";
+            this.nudRepl.Size = new System.Drawing.Size(75, 20);
+            this.nudRepl.TabIndex = 9;
+            this.nudRepl.ValueChanged += new System.EventHandler(this.nudRepl_ValueChanged);
+            // 
             // ReplaceYoungersForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(622, 365);
+            this.ClientSize = new System.Drawing.Size(719, 365);
+            this.Controls.Add(this.nudRepl);
+            this.Controls.Add(this.nudCount);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -190,6 +226,8 @@
             this.ShowInTaskbar = false;
             this.Text = "Отсадить молодняк";
             this.Load += new System.EventHandler(this.ReplaceYoungersForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.nudCount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudRepl)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -212,5 +250,9 @@
         private System.Windows.Forms.ColumnHeader columnHeader6;
         private System.Windows.Forms.ColumnHeader columnHeader7;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ColumnHeader columnHeader8;
+        private System.Windows.Forms.ColumnHeader columnHeader9;
+        private System.Windows.Forms.NumericUpDown nudCount;
+        private System.Windows.Forms.NumericUpDown nudRepl;
     }
 }

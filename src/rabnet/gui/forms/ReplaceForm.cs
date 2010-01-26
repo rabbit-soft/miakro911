@@ -113,9 +113,9 @@ namespace rabnet
                             res = "пересадка";
                         if (placeto != null)
                             res = "подсадка";
-                        if (placewith != null)
-                            res = "объединение";
                     }
+                    if (placewith != null)
+                        res = ",объединение";
                     if (nucount < count)
                         res += ",разбиение";
                     if (sex != nusex)
@@ -567,6 +567,7 @@ namespace rabnet
             RP r1 = rp(dataGridView1.SelectedRows[(sender == button9 ? 1 : 0)].Index);
             RP r2 = rp(dataGridView1.SelectedRows[(sender == button9 ? 0 : 1)].Index);
             r2.placewith = r1;
+            r1.placewith = null;
             r2.curaddress = r1.curaddress;
             update();
         }

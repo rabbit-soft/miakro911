@@ -48,7 +48,7 @@ namespace rabnet
             String s="void";
             if (sx==OneRabbit.RabbitSex.FEMALE) s="female";
             if (sx==OneRabbit.RabbitSex.MALE) s="male";
-            rab = new OneRabbit(0, s, DateTime.Now, 0, "00000", 0, 0, 0, "", 1, 1, 0, "", "", 0, DateTime.MinValue, "", DateTime.MinValue, 0, 0, "", "", "00000");
+            rab = new OneRabbit(0, s, DateTime.Now, 0, "00000", 0, 0, 0, "", 1, 1, 0, "", "", 0, DateTime.MinValue, "", DateTime.MinValue, 0, 0, "", "", "00000",0);
             rab.youngers=new OneRabbit[0];
         }
         public void newCommit()
@@ -180,6 +180,7 @@ namespace rabnet
             get { return rab.tag; }
             set { rab.tag = value; }
         }
+        public int parent { get { return rab.parent; } }
         public int rid { get { return rab.id; } }
         public int evtype{get { return rab.evtype; }}
         public DateTime evdate { get { return rab.evdate; } }
