@@ -134,7 +134,7 @@ namespace rabnet
 
         private void makeJob()
         {
-            bool dialog = true;
+            DialogResult res=DialogResult.Cancel;
             ZootehJob job = getCurJob();
             if (job == null)
                 return;
@@ -151,25 +151,24 @@ namespace rabnet
                     Engine.get().preOkrol(job.id);
                     break;
                 case JobType.BOYS_OUT:
-
                 case JobType.GIRLS_OUT:
                     ReplaceForm rf = new ReplaceForm();
                     rf.addRabbit(job.id);
                     if (job.type==JobType.BOYS_OUT)
                         rf.setAction(ReplaceForm.Action.BOYSOUT);
-                    if (rf.ShowDialog() == DialogResult.OK) dialog = false;
+                    res=rf.ShowDialog();
                     break;                                   
                 case JobType.COUNT_KIDS:
-                    if((new CountKids(job.id)).ShowDialog() !=DialogResult.OK)dialog=false;
+                    res=(new CountKids(job.id)).ShowDialog();
                     break;
                 case JobType.FUCK:
-                    if((new MakeFuck(job.id)).ShowDialog()!= DialogResult.OK)dialog=false;
+                    res=(new MakeFuck(job.id)).ShowDialog();
                     break;                                    
                 case JobType.OKROL:
-                    if ((new OkrolForm(job.id)).ShowDialog() != DialogResult.OK) dialog = false;
+                    res=(new OkrolForm(job.id)).ShowDialog();
                     break;
             }
-            if(dialog)
+            if(res!=DialogResult.Cancel)
                 rsb.run();
         }
 
