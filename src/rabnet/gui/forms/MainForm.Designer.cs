@@ -31,6 +31,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.фермаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.сменитьФермуToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,6 +47,8 @@
             this.breedsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.зоныToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.actMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.отчетыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.тестовыйToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.настройкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showTierTMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showTierSMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,8 +71,6 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
-            this.отчетыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.тестовыйToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -199,6 +200,21 @@
             this.actMenuItem.Name = "actMenuItem";
             this.actMenuItem.Size = new System.Drawing.Size(68, 20);
             this.actMenuItem.Text = "Действия";
+            // 
+            // отчетыToolStripMenuItem
+            // 
+            this.отчетыToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.тестовыйToolStripMenuItem});
+            this.отчетыToolStripMenuItem.Name = "отчетыToolStripMenuItem";
+            this.отчетыToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+            this.отчетыToolStripMenuItem.Text = "Отчеты";
+            // 
+            // тестовыйToolStripMenuItem
+            // 
+            this.тестовыйToolStripMenuItem.Name = "тестовыйToolStripMenuItem";
+            this.тестовыйToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.тестовыйToolStripMenuItem.Text = "Тестовый";
+            this.тестовыйToolStripMenuItem.Click += new System.EventHandler(this.тестовыйToolStripMenuItem_Click);
             // 
             // настройкиToolStripMenuItem
             // 
@@ -391,21 +407,6 @@
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
             // 
-            // отчетыToolStripMenuItem
-            // 
-            this.отчетыToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.тестовыйToolStripMenuItem});
-            this.отчетыToolStripMenuItem.Name = "отчетыToolStripMenuItem";
-            this.отчетыToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
-            this.отчетыToolStripMenuItem.Text = "Отчеты";
-            // 
-            // тестовыйToolStripMenuItem
-            // 
-            this.тестовыйToolStripMenuItem.Name = "тестовыйToolStripMenuItem";
-            this.тестовыйToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.тестовыйToolStripMenuItem.Text = "Тестовый";
-            this.тестовыйToolStripMenuItem.Click += new System.EventHandler(this.тестовыйToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -415,6 +416,7 @@
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.rabStatusBar1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "Form1";

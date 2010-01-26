@@ -129,7 +129,7 @@
             this.nudOkrol.Size = new System.Drawing.Size(74, 20);
             this.nudOkrol.TabIndex = 0;
             this.nudOkrol.Value = new decimal(new int[] {
-            30,
+            31,
             0,
             0,
             0});
@@ -518,7 +518,7 @@
             this.numericUpDown12.Size = new System.Drawing.Size(74, 20);
             this.numericUpDown12.TabIndex = 25;
             this.numericUpDown12.Value = new decimal(new int[] {
-            60,
+            80,
             0,
             0,
             0});
@@ -579,7 +579,7 @@
             this.numericUpDown11.Size = new System.Drawing.Size(74, 20);
             this.numericUpDown11.TabIndex = 22;
             this.numericUpDown11.Value = new decimal(new int[] {
-            80,
+            60,
             0,
             0,
             0});
@@ -757,7 +757,7 @@
             this.numericUpDown7.Size = new System.Drawing.Size(74, 20);
             this.numericUpDown7.TabIndex = 14;
             this.numericUpDown7.Value = new decimal(new int[] {
-            21,
+            27,
             0,
             0,
             0});
