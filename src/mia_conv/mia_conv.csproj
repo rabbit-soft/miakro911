@@ -18,7 +18,7 @@
     </UpgradeBackupLocation>
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
-    <ApplicationIcon>convIcon.ico</ApplicationIcon>
+    <ApplicationIcon>logo2.ico</ApplicationIcon>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -92,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="convIcon.ico" />
+    <Content Include="logo2.ico" />
     <Content Include="mia_fie_fmt.txt" />
   </ItemGroup>
   <ItemGroup>
