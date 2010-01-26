@@ -88,8 +88,12 @@ namespace rabnet
                 get { return nuaddress==""?address:nuaddress;} 
                 set{ if (value==address || value=="") nuaddress=""; else nuaddress=value;
                     foreach (RP r in list)
-                        if (r.parent == id && r!=this)
+                        if (r.parent == id && r != this)
+                        {
+                            String cur = r.address;
                             r.address = curaddress;
+                            r.curaddress = cur;
+                        }
                 }
             }
             public bool replaced { get { return curaddress != address; } }
