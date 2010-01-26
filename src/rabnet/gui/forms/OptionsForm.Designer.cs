@@ -535,11 +535,11 @@
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(124, 296);
+            this.label24.Location = new System.Drawing.Point(49, 296);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(107, 13);
+            this.label24.Size = new System.Drawing.Size(183, 13);
             this.label24.TabIndex = 24;
-            this.label24.Text = "Вязка первокролки";
+            this.label24.Text = "Вязка первокролки с подсосными";
             // 
             // numericUpDown1
             // 
@@ -561,11 +561,11 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(149, 269);
+            this.label23.Location = new System.Drawing.Point(73, 269);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(83, 13);
+            this.label23.Size = new System.Drawing.Size(159, 13);
             this.label23.TabIndex = 23;
-            this.label23.Text = "Вязка штатной";
+            this.label23.Text = "Вязка штатной с подсосными";
             // 
             // numericUpDown11
             // 

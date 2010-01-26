@@ -497,7 +497,7 @@ t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}' WHERE t_id={3:d};", type, delim
                 t1,t2,(id==0?"":",m_id"),(id==0?"":String.Format(",{0:d}",id))),sql);
             cmd.ExecuteNonQuery();
             res = (int)cmd.LastInsertedId;
-            addBuilding(sql, parent, (name!=""?name:String.Format("Ферма {0:d}",res)), res);
+            addBuilding(sql, parent, (name!=""?name:String.Format("№{0:d}",res)), res);
             return res;
         }
 
