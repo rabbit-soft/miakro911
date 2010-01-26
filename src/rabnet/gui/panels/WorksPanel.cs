@@ -102,6 +102,7 @@ namespace rabnet
             okrolMenuItem.Visible = vudvorMenuItem.Visible = false;
             countsMenuItem.Visible = preokrolMenuItem.Visible= false;
             boysOutMenuItem.Visible = girlsOutMenuItem.Visible = false;
+            vaccMenuItem.Visible = false;
             fuckMenuItem.Visible = false;
             switch (type)
             {
@@ -112,6 +113,7 @@ namespace rabnet
                 case JobType.BOYS_OUT: boysOutMenuItem.Visible = true; break;
                 case JobType.GIRLS_OUT: girlsOutMenuItem.Visible = true; break;
                 case JobType.FUCK: fuckMenuItem.Visible = true; break;
+                case JobType.VACC: vaccMenuItem.Visible = true; break;
             }
         }
 
@@ -168,6 +170,12 @@ namespace rabnet
                     break;                                    
                 case JobType.OKROL:
                     res=(new OkrolForm(job.id)).ShowDialog();
+                    break;
+                case JobType.VACC:
+                    RabNetEngRabbit r = Engine.get().getRabbit(job.id);
+                    r.spec = true;
+                    r.commit();
+                    listView1.SelectedItems[0].Remove();
                     break;
             }
             if(res!=DialogResult.Cancel)

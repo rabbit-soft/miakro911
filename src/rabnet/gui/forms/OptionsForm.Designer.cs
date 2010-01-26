@@ -86,6 +86,8 @@
             this.nudGenTree = new System.Windows.Forms.NumericUpDown();
             this.label25 = new System.Windows.Forms.Label();
             this.cbConfirmExit = new System.Windows.Forms.CheckBox();
+            this.label27 = new System.Windows.Forms.Label();
+            this.nudVacc = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.nudOkrol)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudVudvor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCount1)).BeginInit();
@@ -115,6 +117,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudGenTree)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudVacc)).BeginInit();
             this.SuspendLayout();
             // 
             // nudOkrol
@@ -146,7 +149,7 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(323, 444);
+            this.button1.Location = new System.Drawing.Point(323, 495);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 2;
@@ -156,7 +159,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(242, 444);
+            this.button2.Location = new System.Drawing.Point(242, 495);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 3;
@@ -427,11 +430,13 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(386, 436);
+            this.tabControl1.Size = new System.Drawing.Size(386, 487);
             this.tabControl1.TabIndex = 26;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.nudVacc);
+            this.tabPage1.Controls.Add(this.label27);
             this.tabPage1.Controls.Add(this.nudMaleWait);
             this.tabPage1.Controls.Add(this.label26);
             this.tabPage1.Controls.Add(this.numericUpDown12);
@@ -485,7 +490,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(378, 410);
+            this.tabPage1.Size = new System.Drawing.Size(378, 461);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Зоотехнические сроки";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -496,6 +501,11 @@
             this.nudMaleWait.Name = "nudMaleWait";
             this.nudMaleWait.Size = new System.Drawing.Size(74, 20);
             this.nudMaleWait.TabIndex = 27;
+            this.nudMaleWait.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             // 
             // label26
             // 
@@ -796,7 +806,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(378, 410);
+            this.tabPage2.Size = new System.Drawing.Size(378, 461);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Вид";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -837,11 +847,37 @@
             this.cbConfirmExit.Text = "Подтверждение выхода из программы";
             this.cbConfirmExit.UseVisualStyleBackColor = true;
             // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(174, 349);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(57, 13);
+            this.label27.TabIndex = 28;
+            this.label27.Text = "Прививка";
+            // 
+            // nudVacc
+            // 
+            this.nudVacc.Location = new System.Drawing.Point(255, 347);
+            this.nudVacc.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nudVacc.Name = "nudVacc";
+            this.nudVacc.Size = new System.Drawing.Size(74, 20);
+            this.nudVacc.TabIndex = 29;
+            this.nudVacc.Value = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            // 
             // OptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(410, 479);
+            this.ClientSize = new System.Drawing.Size(410, 530);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -884,6 +920,7 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudGenTree)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudVacc)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -948,5 +985,7 @@
         private System.Windows.Forms.CheckBox cbConfirmExit;
         private System.Windows.Forms.NumericUpDown nudMaleWait;
         private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.NumericUpDown nudVacc;
+        private System.Windows.Forms.Label label27;
     }
 }

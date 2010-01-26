@@ -24,6 +24,7 @@ namespace mia_conv
             setOption("opt", "firstfuck", p.vyazkapervo.value());
             setOption("opt", "gentree", 10);
             setOption("opt", "confirmexit", 0);
+            setOption("opt", "vacc", p.vacc.value());
             //            setOption("opt", "otsad_boys_pervo", p.otsad_boys_pervo.value());
             /* //OPTIONS
             setOption("opt","pervonest",p.pervonest.value());
@@ -31,7 +32,6 @@ namespace mia_conv
             setOption("opt","mothernest",p.mothernest.value());
             setOption("opt","kuk",p.kuk.value());
             setOption("opt","endkuku",p.endkuku.value());
-            setOption("opt","vacc",p.vacc.value());
             setOption("opt","countsuckers",p.countsuckers.value());
             setOption("opt","killfemales",p.killfemales.value());
             setOption("opt","killbrides",p.killbrides.value());

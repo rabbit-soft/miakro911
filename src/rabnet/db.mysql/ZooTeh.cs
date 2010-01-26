@@ -71,6 +71,13 @@ namespace rabnet
             i[0] = srok;
             return this;
         }
+        public ZooJobItem Vacc(int id, String nm, String place, int age, int srok)
+        {
+            type = 7; name = nm; this.place = Buildings.fullPlaceName(place);
+            this.age = age; this.id = id;
+            i[0] = srok;
+            return this;
+        }
     }
     /*
     public class ZooTehItem:IData
@@ -259,5 +266,17 @@ WHERE age>{0:d} AND (r_status=0 OR (r_status=1 AND (suckers=0 OR fromokrol>={1:d
             return res.ToArray();
         }
 
+        public ZooJobItem[] getVacc(int days)
+        {
+            MySqlDataReader rd = reader(String.Format(@"SELECT r_id,rabname(r_id,2) name,rabplace(r_id) place,
+(TO_DAYS(NOW())-TO_DAYS(r_born)) age
+FROM rabbits WHERE (r_flags like '__0__' OR r_flags like '__1__')  AND (TO_DAYS(NOW())-TO_DAYS(r_born))>={0:d} ORDER BY r_born DESC;", days));
+            List<ZooJobItem> res = new List<ZooJobItem>();
+            while (rd.Read())
+                res.Add(new ZooJobItem().Vacc(rd.GetInt32("r_id"), rd.GetString("name"),
+                    rd.GetString("place"), rd.GetInt32("age"), rd.GetInt32("age")-days));
+            rd.Close();
+            return res.ToArray();
+        }
     }
 }

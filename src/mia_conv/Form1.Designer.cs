@@ -28,6 +28,7 @@ namespace mia_conv
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tb1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
@@ -398,6 +399,7 @@ namespace mia_conv
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tb1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Mia file to DB converter";
             this.Activated += new System.EventHandler(this.Form1_Activated);

@@ -55,6 +55,7 @@
             this.girlsOutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fuckMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.печатьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.vaccMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -196,9 +197,10 @@
             this.boysOutMenuItem,
             this.girlsOutMenuItem,
             this.fuckMenuItem,
+            this.vaccMenuItem,
             this.печатьToolStripMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(206, 202);
+            this.actMenu.Size = new System.Drawing.Size(206, 224);
             // 
             // okrolMenuItem
             // 
@@ -256,6 +258,12 @@
             this.печатьToolStripMenuItem.Text = "Печать";
             this.печатьToolStripMenuItem.Click += new System.EventHandler(this.печатьToolStripMenuItem_Click);
             // 
+            // vaccMenuItem
+            // 
+            this.vaccMenuItem.Name = "vaccMenuItem";
+            this.vaccMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.vaccMenuItem.Text = "Пирить";
+            // 
             // WorksPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -299,6 +307,7 @@
         private System.Windows.Forms.ToolStripMenuItem girlsOutMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fuckMenuItem;
         private System.Windows.Forms.ToolStripMenuItem печатьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem vaccMenuItem;
 
     }
 }

@@ -10,7 +10,7 @@ namespace rabnet
 {
     public partial class ZootehFilter : FilterPanel
     {
-        String itemFlags = "OVCPRF";
+        String itemFlags = "OVCPRFv";
         public ZootehFilter(RabStatusBar sb):base(sb,"zooteh",Options.OPT_ID.ZOO_FILTER)
         {
             //InitializeComponent();

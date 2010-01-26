@@ -354,6 +354,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
         public bool gp;
         public bool gr;
         public bool spec;
+        public bool risk;
         public int name;
         public int wasname;
         public int surname;
@@ -392,10 +393,11 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             name = nm;
             wasname = name;
             gp = flg[0] == '1';
-            defect = flg[2] == '1';
-            spec = flg[2] == '2';
+            defect = flg[2] == '1' || flg[2]=='3';
+            spec = flg[2] == '2' || flg[2]=='3';
             nokuk = flg[3] == '1';
             nolact = flg[4] == '1';
+            risk = flg[4] == '1';
             surname = sur;
             secname = sec;
             if (adr == "")
@@ -496,7 +498,8 @@ FROM rabbits WHERE r_parent=" + mom.ToString() + ";", con);
 
         public static void SetRabbit(MySqlConnection con, OneRabbit r)
         {
-            String flags = String.Format("{0:D1}{1:D1}{2:D1}{3:D1}{4:D1}", r.gp ? 1 : 0, 0, r.spec ? 2 : (r.defect ? 1 : 0), r.nokuk?1:0, r.nolact?1:0);
+            int multi = ((r.spec ? 1 : 0) << 1) + (r.defect ? 1 : 0);
+            String flags = String.Format("{0:D1}{1:D1}{2:D1}{3:D1}{4:D1}", r.gp ? 1 : 0, r.risk?1:0, multi, r.nokuk?1:0, r.nolact?1:0);
             String qry=String.Format(@"UPDATE rabbits SET 
 r_name={0:d},r_surname={1:d},r_secname={2:d},r_breed={3:d},r_zone={4:d},r_group={5:d},r_notes='{6:s}',
 r_flags='{7:d}',r_rate={8:d},r_born={9:s}",r.name,r.surname,r.secname,r.breed,r.zone,r.group,r.notes,flags,r.rate,

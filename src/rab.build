@@ -49,12 +49,13 @@
 	
 	<target name="miaconv" description="Make mia converter project">
 		<copy file="./mia_conv/rabnet_db_fmt.sql" tofile="./mia_conv/mia_conv.rabnet_db_fmt.sql"/>
-		<csc target="winexe" output="${bin_dir}/mia_conv.exe">
+		<csc target="winexe" output="${bin_dir}/mia_conv.exe" win32icon="./mia_conv/convIcon.ico">
 			<sources>
 				<include name="./mia_conv/*.cs"/>
 			</sources>
 			<resources>
 				<include name="./mia_conv/mia_conv.rabnet_db_fmt.sql"/>
+				<include name="./mia_conv/Form1.resx"/>
 			</resources>
 			<references>
 				<include name="${mysql.use}"/>

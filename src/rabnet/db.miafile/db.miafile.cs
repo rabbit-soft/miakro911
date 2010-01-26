@@ -735,5 +735,15 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public ZooJobItem[] getVacc(int days)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

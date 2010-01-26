@@ -4,7 +4,7 @@ using System.Text;
 
 namespace rabnet
 {
-    public enum JobType {NONE, OKROL, VUDVOR, COUNT_KIDS, PRE_OKROL ,BOYS_OUT,GIRLS_OUT,FUCK};
+    public enum JobType {NONE, OKROL, VUDVOR, COUNT_KIDS, PRE_OKROL ,BOYS_OUT,GIRLS_OUT,FUCK,VACC};
 
     public class ZootehJob:IData
     {
@@ -81,6 +81,13 @@ namespace rabnet
             names = boys;
             return this;
         }
+        public ZootehJob Vacc(int id, String nm, String ad, int age, int srok)
+        {
+            type = JobType.VACC; job = "Прививка";
+            days = srok; name = nm; address = ad;
+            this.age = age; this.id = id;
+            return this;
+        }
     }
 
     public class JobHolder:List<ZootehJob>{}
@@ -108,6 +115,8 @@ namespace rabnet
                 getBoysGirlsOut(zjobs);
             if (f.safeValue("act", "F").Contains("F"))
                 getFucks(zjobs);
+            if (f.safeValue("act", "v").Contains("v"))
+                getVacc(zjobs);
             return zjobs.ToArray();
         }
 
@@ -179,5 +188,13 @@ namespace rabnet
                 jh.Add(new ZootehJob().Fuck(z.id, z.name, z.place, z.age, z.i[0], z.status,z.names));
             }
         }
+        public void getVacc(JobHolder jh)
+        {
+            int days = eng.options().getIntOption(Options.OPT_ID.VACC);
+            ZooJobItem[] jobs = eng.db().getVacc(days);
+            foreach (ZooJobItem z in jobs)
+                jh.Add(new ZootehJob().Vacc(z.id,z.name,z.place,z.age,z.i[0]));
+        }
+
     }
 }

@@ -95,6 +95,7 @@ namespace rabnet
         int addFarm(int parent,String uppertype, String lowertype,String name,int id);
         void changeFarm(int fid,String uppertype,String lowertype);
         void deleteFarm(int fid);
+        ZooJobItem[] getVacc(int days);
     }
 
 }

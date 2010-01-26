@@ -432,6 +432,11 @@ namespace rabnet
             Buildings.deleteFarm(sql, fid);
         }
 
+        public ZooJobItem[] getVacc(int days)
+        {
+            return new ZooTehGetter(sql).getVacc(days);
+        }
+
         #endregion
     }
 }

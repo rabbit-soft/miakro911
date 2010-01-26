@@ -96,7 +96,8 @@
             "Подсчет гнездовых",
             "Предокрольный осмотр",
             "Отсадки",
-            "Случка"});
+            "Случка",
+            "Прививка"});
             this.lbZoo.Location = new System.Drawing.Point(12, 26);
             this.lbZoo.Name = "lbZoo";
             this.lbZoo.Size = new System.Drawing.Size(167, 214);
