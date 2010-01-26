@@ -35,6 +35,7 @@ namespace rabnet
             //view
             nudGenTree.Value = o.getIntOption(Options.OPT_ID.GEN_TREE);
             cbConfirmExit.Checked = o.getIntOption(Options.OPT_ID.CONFIRM_EXIT) == 1;
+            cbConfirmKill.Checked = o.getIntOption(Options.OPT_ID.CONFIRM_KILL) == 1;
         }
 
         private void save()
@@ -57,6 +58,7 @@ namespace rabnet
             //view
             o.setOption(Options.OPT_ID.GEN_TREE, (int)nudGenTree.Value);
             o.setOption(Options.OPT_ID.CONFIRM_EXIT, cbConfirmExit.Checked ? 1 : 0);
+            o.setOption(Options.OPT_ID.CONFIRM_KILL, cbConfirmKill.Checked ? 1 : 0);
         }
             
 

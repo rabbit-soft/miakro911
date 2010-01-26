@@ -24,6 +24,7 @@ namespace mia_conv
             setOption("opt", "firstfuck", p.vyazkapervo.value());
             setOption("opt", "gentree", 10);
             setOption("opt", "confirmexit", 0);
+            setOption("opt", "confirmkill", 1);
             setOption("opt", "vacc", p.vacc.value());
             //            setOption("opt", "otsad_boys_pervo", p.otsad_boys_pervo.value());
             /* //OPTIONS

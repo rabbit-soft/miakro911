@@ -88,6 +88,7 @@
             this.cbConfirmExit = new System.Windows.Forms.CheckBox();
             this.label27 = new System.Windows.Forms.Label();
             this.nudVacc = new System.Windows.Forms.NumericUpDown();
+            this.cbConfirmKill = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudOkrol)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudVudvor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCount1)).BeginInit();
@@ -800,6 +801,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.cbConfirmKill);
             this.tabPage2.Controls.Add(this.nudGenTree);
             this.tabPage2.Controls.Add(this.label25);
             this.tabPage2.Controls.Add(this.cbConfirmExit);
@@ -840,7 +842,7 @@
             // cbConfirmExit
             // 
             this.cbConfirmExit.AutoSize = true;
-            this.cbConfirmExit.Location = new System.Drawing.Point(25, 349);
+            this.cbConfirmExit.Location = new System.Drawing.Point(25, 428);
             this.cbConfirmExit.Name = "cbConfirmExit";
             this.cbConfirmExit.Size = new System.Drawing.Size(224, 17);
             this.cbConfirmExit.TabIndex = 0;
@@ -872,6 +874,16 @@
             0,
             0,
             0});
+            // 
+            // cbConfirmKill
+            // 
+            this.cbConfirmKill.AutoSize = true;
+            this.cbConfirmKill.Location = new System.Drawing.Point(25, 405);
+            this.cbConfirmKill.Name = "cbConfirmKill";
+            this.cbConfirmKill.Size = new System.Drawing.Size(158, 17);
+            this.cbConfirmKill.TabIndex = 3;
+            this.cbConfirmKill.Text = "Подтверждение списания";
+            this.cbConfirmKill.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 
@@ -987,5 +999,6 @@
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.NumericUpDown nudVacc;
         private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.CheckBox cbConfirmKill;
     }
 }

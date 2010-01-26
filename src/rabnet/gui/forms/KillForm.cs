@@ -12,10 +12,12 @@ namespace rabnet
     {
         private List<RabNetEngRabbit> rbs = new List<RabNetEngRabbit>();
         private List<int> youngers = new List<int>();
+        bool confirm = true;
         public KillForm()
         {
             InitializeComponent();
             dateDays1.DateValue = DateTime.Now;
+            confirm = Engine.opt().getIntOption(Options.OPT_ID.CONFIRM_KILL) == 1;
             update();
         }
 
@@ -54,6 +56,7 @@ namespace rabnet
                 li.SubItems.Add(r.group.ToString());
             }
             listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            updateLabels();
         }
 
         private void KillForm_Load(object sender, EventArgs e)
@@ -64,11 +67,13 @@ namespace rabnet
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             numericUpDown1.Enabled=false;
+            button1.Enabled = false;
             if (listView1.SelectedItems.Count ==1)
             {
                 numericUpDown1.Maximum = int.Parse(listView1.SelectedItems[0].SubItems[4].Text);
                 numericUpDown1.Value = int.Parse(listView1.SelectedItems[0].SubItems[5].Text);
                 numericUpDown1.Enabled = true;
+                button1.Enabled = true;
             }
         }
 
@@ -81,9 +86,21 @@ namespace rabnet
             Close();
         }
 
+        private bool doConfirm()
+        {
+            if (!confirm) return true;
+            return MessageBox.Show(this,"Списать "+updateLabels().ToString()+" кроликов?","Подтверждение",
+                MessageBoxButtons.YesNo)==DialogResult.Yes; 
+        }
+
         private void button2_Click(object sender, EventArgs e)
         {
             int i=0;
+            if (!doConfirm())
+            {
+                DialogResult = DialogResult.None;
+                return;
+            }
             foreach (RabNetEngRabbit r in rbs)
             {
                 int cnt = int.Parse(listView1.Items[i].SubItems[5].Text);
@@ -100,6 +117,37 @@ namespace rabnet
         {
             if (listView1.SelectedItems.Count != 1) return;
             listView1.SelectedItems[0].SubItems[5].Text = numericUpDown1.Value.ToString();
+            updateLabels();
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count < 1) return;
+            int id=(int)listView1.SelectedItems[0].Tag;
+            foreach (RabNetEngRabbit r in rbs)
+            {
+                if (r.rid==id)
+                {
+                    rbs.Remove(r);
+                    update();
+                    return;
+                }
+            }
+        }
+
+        private int updateLabels()
+        {
+            int str = 0;
+            int cnt = 0;
+            for (int i = 0; i < listView1.Items.Count; i++)
+            {
+                int c = int.Parse(listView1.Items[i].SubItems[5].Text);
+                cnt += c;
+                str +=(c != 0 ? 1 : 0);
+            }
+            label4.Text = "Строк: " + str.ToString();
+            label5.Text = "Кроликов: " + cnt.ToString();
+            return cnt;
         }
     }
 }

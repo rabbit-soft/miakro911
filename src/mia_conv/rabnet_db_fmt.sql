@@ -570,13 +570,9 @@ CREATE FUNCTION deadplace(rid INTEGER UNSIGNED) RETURNS char(150)
 BEGIN
   DECLARE res VARCHAR(150);
   DECLARE i1,i2,i3,tid,s1,s2,s3 VARCHAR(20);
-  DECLARE par INTEGER UNSIGNED;
-  SELECT r_farm,r_tier_id,r_area,r_tier,r_parent
+  SELECT r_farm,r_tier_id,r_area,r_tier
   INTO i1,i2,i3,tid
   FROM dead WHERE r_id=rid;
-    IF (par<>0) THEN
-	RETURN(anyplace(par));
-  END IF;
   IF (tid=0 AND i1=0) THEN
     RETURN('');
   END IF;
@@ -587,15 +583,6 @@ BEGIN
   END IF;
   SET res=CONCAT_WS(',',i1,i2,i3,s1,s2,s3);
   RETURN(res);
-END |
-
-DROP FUNCTION IF EXISTS anyplace |
-CREATE FUNCTION anyplace(rid INTEGER UNSIGNED, sur INTEGER) RETURNS CHAR(150)
-BEGIN
-	IF (isdead(rid)) THEN
-		RETURN(deadplace(rid,sur));
-	END IF;
-	RETURN(rabplace(rid,sur));
 END |
 
 DROP PROCEDURE IF EXISTS killRabbitDate |
