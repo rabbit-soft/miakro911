@@ -93,14 +93,14 @@
             this.lbZoo.Items.AddRange(new object[] {
             "Окрол",
             "Выдворение",
-            "Подсчет гнездовых",
+            "Подсчет гнездовых/подсосных",
             "Предокрольный осмотр",
             "Отсадки",
             "Случка/Вязка",
             "Прививка"});
             this.lbZoo.Location = new System.Drawing.Point(12, 26);
             this.lbZoo.Name = "lbZoo";
-            this.lbZoo.Size = new System.Drawing.Size(167, 214);
+            this.lbZoo.Size = new System.Drawing.Size(191, 214);
             this.lbZoo.TabIndex = 12;
             // 
             // lbLogs

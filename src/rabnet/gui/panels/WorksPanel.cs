@@ -164,7 +164,7 @@ namespace rabnet
                     res=rf.ShowDialog();
                     break;                                   
                 case JobType.COUNT_KIDS:
-                    res=(new CountKids(job.id)).ShowDialog();
+                    res=(new CountKids(job.id,job.flag==1)).ShowDialog();
                     break;
                 case JobType.FUCK:
                     res=(new MakeFuck(job.id)).ShowDialog();

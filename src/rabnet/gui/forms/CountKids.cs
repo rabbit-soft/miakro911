@@ -16,11 +16,14 @@ namespace rabnet
             InitializeComponent();
         }
 
-        public CountKids(int id):this(Engine.get().getRabbit(id)){}
-
-        public CountKids(RabNetEngRabbit r):this()
+        public CountKids(int id):this(id,false){}
+        public CountKids(RabNetEngRabbit r):this(r,false){}
+        public CountKids(int id, bool suckers):this(Engine.get().getRabbit(id),suckers){}
+        public CountKids(RabNetEngRabbit r,bool suckers):this()
         {
             this.r = r;
+            if (suckers)
+                Text = "Подсчет подсосных";
         }
 
         private void CountKids_Load(object sender, EventArgs e)

@@ -46,6 +46,7 @@
             this.columnHeader12 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader13 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader15 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader14 = new System.Windows.Forms.ColumnHeader();
             this.actMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.okrolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vudvorMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,7 +57,6 @@
             this.fuckMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vaccMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.печатьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.columnHeader14 = new System.Windows.Forms.ColumnHeader();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -189,6 +189,10 @@
             // 
             this.columnHeader15.Text = "Адрес";
             // 
+            // columnHeader14
+            // 
+            this.columnHeader14.Text = "Пользователь";
+            // 
             // actMenu
             // 
             this.actMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -202,73 +206,69 @@
             this.vaccMenuItem,
             this.печатьToolStripMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(206, 202);
+            this.actMenu.Size = new System.Drawing.Size(246, 224);
             // 
             // okrolMenuItem
             // 
             this.okrolMenuItem.Name = "okrolMenuItem";
-            this.okrolMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.okrolMenuItem.Size = new System.Drawing.Size(246, 22);
             this.okrolMenuItem.Text = "Принять окрол";
             this.okrolMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // vudvorMenuItem
             // 
             this.vudvorMenuItem.Name = "vudvorMenuItem";
-            this.vudvorMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.vudvorMenuItem.Size = new System.Drawing.Size(246, 22);
             this.vudvorMenuItem.Text = "Выдворение";
             this.vudvorMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // countsMenuItem
             // 
             this.countsMenuItem.Name = "countsMenuItem";
-            this.countsMenuItem.Size = new System.Drawing.Size(205, 22);
-            this.countsMenuItem.Text = "Подсчет гнездовых";
+            this.countsMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.countsMenuItem.Text = "Подсчет гнездовых/подсосных";
             this.countsMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // preokrolMenuItem
             // 
             this.preokrolMenuItem.Name = "preokrolMenuItem";
-            this.preokrolMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.preokrolMenuItem.Size = new System.Drawing.Size(246, 22);
             this.preokrolMenuItem.Text = "Предокрольный осмотр";
             this.preokrolMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // boysOutMenuItem
             // 
             this.boysOutMenuItem.Name = "boysOutMenuItem";
-            this.boysOutMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.boysOutMenuItem.Size = new System.Drawing.Size(246, 22);
             this.boysOutMenuItem.Text = "Отсадить мальчиков";
             this.boysOutMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // girlsOutMenuItem
             // 
             this.girlsOutMenuItem.Name = "girlsOutMenuItem";
-            this.girlsOutMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.girlsOutMenuItem.Size = new System.Drawing.Size(246, 22);
             this.girlsOutMenuItem.Text = "Отсадить девочек";
             this.girlsOutMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // fuckMenuItem
             // 
             this.fuckMenuItem.Name = "fuckMenuItem";
-            this.fuckMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.fuckMenuItem.Size = new System.Drawing.Size(246, 22);
             this.fuckMenuItem.Text = "Случить";
             this.fuckMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // vaccMenuItem
             // 
             this.vaccMenuItem.Name = "vaccMenuItem";
-            this.vaccMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.vaccMenuItem.Size = new System.Drawing.Size(246, 22);
             this.vaccMenuItem.Text = "Пирить";
             // 
             // печатьToolStripMenuItem
             // 
             this.печатьToolStripMenuItem.Name = "печатьToolStripMenuItem";
-            this.печатьToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.печатьToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
             this.печатьToolStripMenuItem.Text = "Печать";
             this.печатьToolStripMenuItem.Click += new System.EventHandler(this.печатьToolStripMenuItem_Click);
-            // 
-            // columnHeader14
-            // 
-            this.columnHeader14.Text = "Пользователь";
             // 
             // WorksPanel
             // 
