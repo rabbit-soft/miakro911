@@ -14,62 +14,63 @@ namespace rabnet
         class OptionsHolder
         {
             public enum RUBOOL {Да,Нет};
-
+            private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt;
+            private RUBOOL ce, ck;
             [Category("Зоотехнические сроки"),DisplayName("Окрол"),
             Description("Время со случки(вязки) до окрола")]
-            public int okrol{get;set;}
+            public int okrol{ get {return ok;} set{ok=value;} }
             [Category("Зоотехнические сроки"),DisplayName("Выдворение"),
             Description("")]
-            public int vudvor { get; set; }
+            public int vudvor { get { return vud; } set { vud = value; } }
             [Category("Зоотехнические сроки"),DisplayName("Первый подсчет гнездовых"),
             Description("")]
-            public int count1{get;set;}
+            public int count1 { get { return c1; } set { c1=value;} }
             [Category("Зоотехнические сроки"),DisplayName("Второй подсчет гнездовых"),
             Description("")]
-            public int count2 { get; set; }
+            public int count2 { get { return c2; } set { c2 = value; } }
             [Category("Зоотехнические сроки"),DisplayName("Третий подсчет гнездовых"),
             Description("")]
-            public int count3 { get; set; }
+            public int count3 { get { return c3; } set { c3 = value; } }
             [Category("Зоотехнические сроки"),DisplayName("Возведение в невесты"),
             Description("")]
-            public int brides{get;set;}
+            public int brides { get { return br; } set { br = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Предокрольный осмотр"),
             Description("")]
-            public int preokrol { get; set; }
+            public int preokrol { get { return pok; } set { pok = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Объединение группы"),
             Description("Максимально допустимая разница в возрасте двую объединяемых групп")]
-            public int combine { get; set; }
+            public int combine { get { return com; } set { com = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Отсадка мальчиков"),
             Description("")]
-            public int boysOut { get; set; }
+            public int boysOut { get { return bo; } set { bo = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Отсадка девочек"),
             Description("")]
-            public int girlsOut { get; set; }
+            public int girlsOut { get { return go; } set { go = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Назначение штатной на вязку"),
             Description("")]
-            public int stateFuck { get; set; }
+            public int stateFuck { get { return sf; } set { sf = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Назначение первокролки на случку"),
             Description("")]
-            public int firstFuck { get; set; }
+            public int firstFuck { get { return ff; } set { ff = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Отдых самца"),
             Description("Сколько суток отдыхает отработавший самец")]
-            public int maleWait { get; set; }
+            public int maleWait { get { return mw; } set { mw = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Прививка"),
             Description("")]
-            public int vacc { get; set; }
+            public int vacc { get { return vac; } set { vac = value; } }
 
             [Category("Вид"),
             DisplayName("Подтверждение выхода"),
             Description("Спрашивать подтверждение закрытия программы")]
-            public RUBOOL confirmExit { get; set; }
+            public RUBOOL confirmExit { get { return ce; } set { ce = value; } }
             [Category("Вид"),
             DisplayName("Подтверждение списания"),
             Description("Спрашивать подтверждение при списании кроликов")]
-            public RUBOOL confirmKill { get; set; }
+            public RUBOOL confirmKill { get { return ck; } set { ck = value; } }
             [Category("Вид"), 
             DisplayName("Генетические деревья"),
             Description("Количество генетических деревьев")]
-            public int genTree { get; set; }
+            public int genTree { get { return gt; } set { gt = value; } }
 
             public int fromR(RUBOOL value)
             {
