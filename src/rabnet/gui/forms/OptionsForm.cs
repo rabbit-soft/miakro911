@@ -23,28 +23,28 @@ namespace rabnet
             Description("Удаление гнездовья из клетки")]
             public int vudvor { get { return vud; } set { vud = value; } }
             [Category("Зоотехнические сроки"),DisplayName("1й подсчет гнездовых"),
-            Description("Проверка изменения числа рожденных крольчат")]
+            Description("Проверка изменения числа рожденных крольчат в 1ый раз")]
             public int count1 { get { return c1; } set { c1=value;} }
             [Category("Зоотехнические сроки"),DisplayName("2й подсчет гнездовых"),
-            Description("")]
+            Description("Проверка изменения числа рожденных крольчат в 2ый раз")]
             public int count2 { get { return c2; } set { c2 = value; } }
             [Category("Зоотехнические сроки"),DisplayName("3й подсчет гнездовых"),
-            Description("")]
+            Description("Проверка изменения числа рожденных крольчат в 3ый раз")]
             public int count3 { get { return c3; } set { c3 = value; } }
             [Category("Зоотехнические сроки"),DisplayName("Возведение в невесты"),
-            Description("")]
+            Description("Присвоить самкам со статусом Девочка, статус Невеста, достигших указанного возраста")]
             public int brides { get { return br; } set { br = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Предокрольный осмотр"),
-            Description("")]
+            Description("Проверка перед окролом грелки, наличие пригодного сена и состояния крольчихи, в указанный срок")]
             public int preokrol { get { return pok; } set { pok = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Объединение группы"),
-            Description("Максимально допустимая разница в возрасте двую объединяемых групп гнездовых/подсосных крольчат")]
+            Description("Максимально допустимая разница в возрасте двух объединяемых групп гнездовых/подсосных крольчат")]
             public int combine { get { return com; } set { com = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Отсадка мальчиков"),
-            Description("")]
+            Description("Назначить пересадку мальчиков из клетки кормилицы, достигших указанного возраста")]
             public int boysOut { get { return bo; } set { bo = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Отсадка девочек"),
-            Description("")]
+            Description("Назначить пересдку девочек из клетки кормилицы, достигших указанного возраста")]
             public int girlsOut { get { return go; } set { go = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Назначение штатной на вязку"),
             Description("Назначить Штатную на вязку, если молодняк, сидящий с ней, достигает указанного возраста")]
@@ -56,7 +56,7 @@ namespace rabnet
             Description("Сколько суток отдыхает отработавший самец до назначения на работу")]
             public int maleWait { get { return mw; } set { mw = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Прививка"),
-            Description("")]
+            Description("Назначить на прививку молодняк, достикший указанного возраста")]
             public int vacc { get { return vac; } set { vac = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Подсчет подсосных"),
             Description("Возведение гнездовых крольчат в подсосных и подсчет их количества")]
