@@ -18,6 +18,7 @@ namespace rabnet
         Catalog getSurNames(int sex, String ends);
         Catalog getZones();
         Catalog getFreeNames(int sex, int plusid);
+        Catalog getDeadReasons();
     }
 
     public class Catalogs:ICatalogs
@@ -75,6 +76,11 @@ namespace rabnet
             if (sex == 2)
                 where = " WHERE n_sex='female'";
             return stdCatalog("SELECT n_id,n_name FROM names" + where + " AND (n_id=" + plusid.ToString() + " OR (n_use=0 AND n_block_date IS NULL));");
+        }
+
+        public Catalog getDeadReasons()
+        {
+            return stdCatalog("SELECT d_id,d_name FROM deadreasons WHERE d_id>2 ORDER BY d_id ASC;");
         }
 
     }

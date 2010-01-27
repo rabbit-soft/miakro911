@@ -43,19 +43,20 @@
             this.button3 = new System.Windows.Forms.Button();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
-            this.dateDays1 = new rabnet.components.DateDays();
             this.button1 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.dateDays1 = new rabnet.components.DateDays();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // comboBox1
             // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(215, 13);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.Size = new System.Drawing.Size(177, 21);
             this.comboBox1.TabIndex = 1;
             // 
             // label1
@@ -69,15 +70,15 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(431, 14);
+            this.textBox1.Location = new System.Drawing.Point(480, 13);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(129, 20);
+            this.textBox1.Size = new System.Drawing.Size(156, 20);
             this.textBox1.TabIndex = 3;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(349, 17);
+            this.label2.Location = new System.Drawing.Point(398, 16);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(76, 13);
             this.label2.TabIndex = 4;
@@ -101,7 +102,7 @@
             this.listView1.Location = new System.Drawing.Point(12, 61);
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(472, 258);
+            this.listView1.Size = new System.Drawing.Size(550, 258);
             this.listView1.TabIndex = 5;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -138,7 +139,7 @@
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button2.Location = new System.Drawing.Point(483, 331);
+            this.button2.Location = new System.Drawing.Point(561, 331);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 7;
@@ -149,7 +150,7 @@
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(402, 331);
+            this.button3.Location = new System.Drawing.Point(480, 331);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 8;
@@ -161,7 +162,7 @@
             // 
             this.numericUpDown1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numericUpDown1.Enabled = false;
-            this.numericUpDown1.Location = new System.Drawing.Point(490, 73);
+            this.numericUpDown1.Location = new System.Drawing.Point(568, 73);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(70, 20);
             this.numericUpDown1.TabIndex = 9;
@@ -171,32 +172,17 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(497, 57);
+            this.label3.Location = new System.Drawing.Point(575, 57);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(49, 13);
             this.label3.TabIndex = 10;
             this.label3.Text = "Списать";
             // 
-            // dateDays1
-            // 
-            this.dateDays1.AutoSize = true;
-            this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2010, 1, 27, 0, 0, 0, 0);
-            this.dateDays1.DaysText = "Дней";
-            this.dateDays1.DaysValue = 0;
-            this.dateDays1.Location = new System.Drawing.Point(12, 12);
-            this.dateDays1.Maximum = 100000;
-            this.dateDays1.Name = "dateDays1";
-            this.dateDays1.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
-            this.dateDays1.Size = new System.Drawing.Size(146, 54);
-            this.dateDays1.Step = 1;
-            this.dateDays1.TabIndex = 0;
-            // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(490, 99);
+            this.button1.Location = new System.Drawing.Point(568, 99);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(70, 35);
             this.button1.TabIndex = 11;
@@ -222,11 +208,26 @@
             this.label5.TabIndex = 13;
             this.label5.Text = "Количество: 0";
             // 
+            // dateDays1
+            // 
+            this.dateDays1.AutoSize = true;
+            this.dateDays1.DateText = "Дата";
+            this.dateDays1.DateValue = new System.DateTime(2010, 1, 27, 0, 0, 0, 0);
+            this.dateDays1.DaysText = "Дней";
+            this.dateDays1.DaysValue = 0;
+            this.dateDays1.Location = new System.Drawing.Point(12, 12);
+            this.dateDays1.Maximum = 100000;
+            this.dateDays1.Name = "dateDays1";
+            this.dateDays1.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
+            this.dateDays1.Size = new System.Drawing.Size(146, 54);
+            this.dateDays1.Step = 1;
+            this.dateDays1.TabIndex = 0;
+            // 
             // KillForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(572, 366);
+            this.ClientSize = new System.Drawing.Size(650, 366);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.button1);

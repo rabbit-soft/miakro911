@@ -389,8 +389,13 @@ INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','1');
 UPDATE tiers SET t_busy2=NULL,t_busy3=NULL,t_busy4=NULL WHERE t_type='female';
 UPDATE tiers SET t_busy3=NULL,t_busy4=NULL WHERE t_type='dfemale' OR t_type='jurta' OR t_type='vertep' OR t_type='barin' OR t_type='cabin';
 UPDATE tiers SET t_busy4=NULL WHERE t_type='complex';
-INSERT INTO deadreasons(d_name) VALUES('Списан из старой программы');
-INSERT INTO deadreasons(d_name) VALUES('объединение');
+INSERT INTO deadreasons(d_name) VALUES
+('Списан из старой программы'),
+('объединение'),
+('На убой'),
+('Продажа племенного поголовья'),
+('Естественный отход'),
+('Падеж');
 INSERT INTO logtypes(l_name,l_params) VALUES
 ('привоз','$r в $p'),
 ('пересадка','$r из $a в $p'),

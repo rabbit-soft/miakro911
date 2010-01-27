@@ -18,6 +18,10 @@ namespace rabnet
             InitializeComponent();
             dateDays1.DateValue = DateTime.Now;
             confirm = Engine.opt().getIntOption(Options.OPT_ID.CONFIRM_KILL) == 1;
+            Catalog c=Engine.db().catalogs().getDeadReasons();
+            comboBox1.Items.Add("");
+            for (int i = 0; i < c.Count; i++)
+                comboBox1.Items.Add(c[i+3]);
             update();
         }
 
@@ -106,7 +110,10 @@ namespace rabnet
                 int cnt = int.Parse(listView1.Items[i].SubItems[5].Text);
                 if (cnt != 0)
                 {
-                    r.killIt(dateDays1.DateValue,/*comboBox1.SelectedIndex*/0, textBox1.Text,cnt);
+                    int reason = 0;
+                    if (comboBox1.SelectedIndex > 0)
+                        reason = comboBox1.SelectedIndex + 2;
+                    r.killIt(dateDays1.DateValue,reason, textBox1.Text,cnt);
                 }
                 i++;
             }
