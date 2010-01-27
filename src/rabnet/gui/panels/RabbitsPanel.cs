@@ -83,6 +83,12 @@ namespace rabnet
             return (sd=="Девочка" || sd=="Дев");
         }
 
+        private bool isBride()
+        {
+            string sd = listView1.SelectedItems[0].SubItems[5].Text;
+            return (sd == "Невеста" || sd == "Нвс");
+        }
+
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!manual)
@@ -166,7 +172,10 @@ namespace rabnet
                 passportMenuItem.Visible = true;
             }
             if (sex == 2 && multi == 1)
+            {
                 fuckMenuItem.Visible = !isGirl();
+                fuckMenuItem.Text = isBride() ? "Случка" : "Вязка";
+            }
             if (sex == 4)
             {
                 proholostMenuItem.Visible = true;

@@ -176,10 +176,13 @@ namespace mia_conv
                     String state = "okrol";
                     if (f.my_fuck_is_last.value() == 1 && sukrol)
                         state = "sukrol";
-                    c.CommandText = String.Format(@"INSERT INTO fucks(f_rabid,f_partner,f_times,f_children,f_dead,f_state,f_last) 
-VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d});", 
+                    String type = "vyazka";
+                    if ((r.female.borns.value() == 0)||(r.female.borns.value()==1 && state!="sukrol") )
+                        type = "sluchka";
+                    c.CommandText = String.Format(@"INSERT INTO fucks(f_rabid,f_partner,f_times,f_children,f_dead,f_state,f_last,f_type) 
+VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d},'{7:d}');", 
                       crab, link, (int)f.fucks.value()+(sukrol?1:0),f.children.value(),dead,state,
-                      f.my_fuck_is_last.value());
+                      f.my_fuck_is_last.value(),type);
                     c.ExecuteNonQuery();
                 }
             }

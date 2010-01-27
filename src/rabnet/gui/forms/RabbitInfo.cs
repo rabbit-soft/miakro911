@@ -157,6 +157,12 @@ namespace rabnet
                 label7.Text = "Статус: Первокролка";
             if (rab.status > 1)
                 label7.Text = "Статус: Штатная";
+            if (rab.status > 0)
+            {
+                button8.Text = button12.Text = "Вязать";
+                if (rab.status>1)
+                    okrolPage.Text = "Вязки/Окролы";
+            }
             tabControl1.TabPages.Add(okrolPage);
             if (rab.group != 1) return;
             tabControl1.TabPages.Add(femalePage);           

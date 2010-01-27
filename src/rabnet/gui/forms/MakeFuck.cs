@@ -49,6 +49,8 @@ namespace rabnet
             label2.Text = rab1.breedName;
             rtosel = r2;
             fillTable();
+            if (rab1.status > 0)
+                Text = button1.Text = "Вязать";
         }
 
         private void fillTable()
