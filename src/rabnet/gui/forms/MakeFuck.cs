@@ -15,6 +15,7 @@ namespace rabnet
         private int rtosel=0;
         bool manual = true;
         int malewait = 0;
+        ListViewColumnSorter cs;
         public MakeFuck()
         {
             InitializeComponent();
@@ -26,6 +27,8 @@ namespace rabnet
             cbInbreed.Checked = (Engine.opt().getIntOption(Options.OPT_ID.INBREEDING) == 1);
             malewait = Engine.opt().getIntOption(Options.OPT_ID.MALE_WAIT);
             manual = true;
+            cs = new ListViewColumnSorter(listView1, new int[] { 3,4 });
+            listView1.ListViewItemSorter = cs;
         }
         public MakeFuck(int r1)
             : this(r1,0)
@@ -50,9 +53,10 @@ namespace rabnet
 
         private void fillTable()
         {
+            cs.Clear();
+            listView1.ListViewItemSorter = null;
             listView1.Items.Clear();
             Fucks fs = Engine.db().allFuckers(rab1.rid,cbHeter.Checked,cbInbreed.Checked,malewait);
-            
             foreach (Fucks.Fuck f in fs.fucks)
             {
                 bool heter=(f.breed != rab1.breed);
@@ -83,6 +87,7 @@ namespace rabnet
                 //}
             }
             listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            listView1.ListViewItemSorter = cs;
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
