@@ -17,7 +17,7 @@ namespace rabnet
         public YoungsPanel(RabStatusBar sb)
             : base(sb, null)
         {
-            cs = new ListViewColumnSorter(listView1, new int[] { 2, 9 });
+            cs = new ListViewColumnSorter(listView1, new int[] { 1,2, 9 });
             listView1.ListViewItemSorter = null;
         }
 
