@@ -93,6 +93,7 @@ namespace rabnet
         {
             if (!manual)
                 return;
+            makeSelectedCount();
             if (listView1.SelectedItems.Count <1)
             {
                 setMenu(-1,0,false);
@@ -191,9 +192,12 @@ namespace rabnet
 
         private void SelectAllMenuItem_Click(object sender, EventArgs e)
         {
+            manual = false;
             foreach (ListViewItem li in listView1.Items)
                 li.Selected=true;
             listView1.Show();
+            manual = true;
+            listView1_SelectedIndexChanged(null, null);
         }
 
         private void passportMenuItem_Click(object sender, EventArgs e)
@@ -311,6 +315,32 @@ namespace rabnet
             if (r.youngcount<1) return;
             if((new ReplaceYoungersForm(r.youngers[0].id)).ShowDialog() == DialogResult.OK)
                 rsb.run();
+        }
+
+        private void makeSelectedCount()
+        {
+            int rows = listView1.SelectedItems.Count;
+            int cnt = 0;
+            foreach (ListViewItem li in listView1.SelectedItems)
+            {
+                String s=li.SubItems[7].Text;
+                int c = 1;
+                if (s[0] == '+') c += int.Parse(s.Substring(1));
+                if (s[0] == '[') c = int.Parse(s.Substring(1, s.Length - 2));
+                cnt += c;
+            }
+            rsb.setText(3, String.Format("Выбрано {0:d} строк - {1:d} кроликов",rows,cnt));
+        }
+
+        private void listView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            manual = false;
+        }
+
+        private void listView1_MouseUp(object sender, MouseEventArgs e)
+        {
+            manual = true;
+            listView1_SelectedIndexChanged(null, null);
         }
 
     }

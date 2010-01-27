@@ -83,8 +83,8 @@ namespace rabnet
         {
             DataThread.get().stop();
             curpanel.deactivate();
-            rabStatusBar1.setText(1, "");
-            rabStatusBar1.setText(2, "");
+            for (int i = 1; i < 5;i++ )
+                rabStatusBar1.setText(i, "");
             panel1.Controls.Remove(curpanel);
             curpanel = panels[tabControl1.SelectedIndex];
             panel1.Controls.Add(curpanel);
