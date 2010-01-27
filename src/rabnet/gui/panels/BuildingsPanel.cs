@@ -109,7 +109,7 @@ namespace rabnet
                 if (b.area(i) != prevnm)
                 {
                     manual = false;
-                    ListViewItem it = listView1.Items.Add(b.farm().ToString() + b.area(i));
+                    ListViewItem it = listView1.Items.Add(String.Format("{0,4:d}",b.farm()) + b.area(i));
                     prevnm = b.area(i);
                     it.Tag = b.id().ToString();
                     it.SubItems.Add(b.type());
