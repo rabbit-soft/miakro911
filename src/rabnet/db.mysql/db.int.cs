@@ -80,7 +80,7 @@ namespace rabnet
         int addUser(string name, int group, string password);
         IDataGetter getDead(Filters filters);
         void resurrect(int rid);
-        ZooJobItem[] getPreokrols(int days);
+        ZooJobItem[] getPreokrols(int days,int okroldays);
         void placeSucker(int sucker, int mother);
         void combineGroups(int rabfrom, int rabto);
         XmlDocument makeReport(ReportType.Type type, Filters f);

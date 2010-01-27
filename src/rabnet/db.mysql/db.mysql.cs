@@ -357,9 +357,9 @@ namespace rabnet
             new DeadHelper(sql).resurrect(rid);
         }
 
-        public ZooJobItem[] getPreokrols(int days)
+        public ZooJobItem[] getPreokrols(int days,int okroldays)
         {
-            return new ZooTehGetter(sql).getPreokrols(days);
+            return new ZooTehGetter(sql).getPreokrols(days,okroldays);
         }
 
         public void placeSucker(int sucker, int mother)

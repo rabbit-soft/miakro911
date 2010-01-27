@@ -654,11 +654,6 @@ namespace rabnet
             throw new NotImplementedException();
         }
 
-        ZooJobItem[] IRabNetDataLayer.getPreokrols(int days)
-        {
-            throw new NotImplementedException();
-        }
-
         void IRabNetDataLayer.placeSucker(int sucker, int mother)
         {
             throw new NotImplementedException();
@@ -740,6 +735,16 @@ namespace rabnet
 
 
         public ZooJobItem[] getVacc(int days)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public ZooJobItem[] getPreokrols(int days, int okroldays)
         {
             throw new NotImplementedException();
         }

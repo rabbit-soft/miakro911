@@ -151,7 +151,8 @@ namespace rabnet
         public void getPreokrols(JobHolder jh)
         {
             int days = eng.options().getIntOption(Options.OPT_ID.PRE_OKROL);
-            ZooJobItem[] jobs = eng.db().getPreokrols(days);
+            int okroldays = eng.options().getIntOption(Options.OPT_ID.OKROL);
+            ZooJobItem[] jobs = eng.db().getPreokrols(days,okroldays);
             foreach(ZooJobItem z in jobs)
                 jh.Add(new ZootehJob().Preokrol(z.id,z.name,z.place,z.age,z.i[0]));
         }
