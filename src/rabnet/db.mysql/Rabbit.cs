@@ -548,10 +548,12 @@ r_flags='{7:d}',r_rate={8:d},r_born={9:s}",r.name,r.surname,r.secname,r.breed,r.
             cmd.CommandText = String.Format(@"INSERT INTO fucks(f_rabid,f_date,f_partner,f_state,f_type,f_last) 
 VALUES({0:d},{1:s},{2:d},'sukrol','{3:s}',1);",female,DBHelper.DateToMyString(date),male,type);
             cmd.ExecuteNonQuery();
-            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date={0:s},r_event='{1:s}' WHERE r_id={2:d};",
-                DBHelper.DateToMyString(date),type,female);
+//            cmd.CommandText = String.Format("SELECT r_status,TODAYS(r_last_fuck_okrol FROM rabbits WHERE r_id=");
+            int rate = 1;
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date={0:s},r_event='{1:s}',r_rate=r_rate+{3:d} WHERE r_id={2:d};",
+                DBHelper.DateToMyString(date),type,female,rate);
             cmd.ExecuteNonQuery();
-            cmd.CommandText=String.Format("UPDATE rabbits SET r_last_fuck_okrol={0:s} WHERE r_id={1:d};",
+            cmd.CommandText=String.Format("UPDATE rabbits SET r_last_fuck_okrol={0:s},r_rate=r_rate+1 WHERE r_id={1:d};",
                 DBHelper.DateToMyString(date), male);
             cmd.ExecuteNonQuery();
         }
@@ -562,11 +564,11 @@ VALUES({0:d},{1:s},{2:d},'sukrol','{3:s}',1);",female,DBHelper.DateToMyString(da
             MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE fucks SET f_state='proholost',f_end_date={0:s} WHERE f_state='sukrol' AND f_rabid={1:d};",
                 DBHelper.DateToMyString(date),rabbit), sql);
             cmd.ExecuteNonQuery();
-            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date=NULL,r_event='none',r_rate=r_rate-1 WHERE r_id={0:d};",rabbit);
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date=NULL,r_event='none',r_rate=r_rate-2 WHERE r_id={0:d};",rabbit);
             cmd.ExecuteNonQuery();
             if (male != 0)
             {
-                cmd.CommandText = String.Format("UPDATE rabbits SET r_rate=r_rate-1 WHERE r_id={0:d};", male);
+                cmd.CommandText = String.Format("UPDATE rabbits SET r_rate=r_rate-2 WHERE r_id={0:d};", male);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -591,17 +593,14 @@ f_children={1:d},f_dead={2:d} WHERE f_rabid={3:d} AND f_state='sukrol';",
             cmd.ExecuteNonQuery();
             OneRabbit fml = GetRabbit(sql, rabbit);
             OneRabbit ml = GetRabbit(sql, father);
-            int ratecom = 8;
-            if (fml.status > 0) ratecom = 10;
-            int rt = 0;
-            if (children > ratecom){while (children > ratecom){ratecom += 2;rt++;}}
-            else if (children < ratecom){while (children < ratecom) { ratecom -= 2; rt--; }}
+            int rt = children-8;
             if (rt != 0 && ml!=null)
             {
                 cmd.CommandText = String.Format(@"UPDATE rabbits SET r_rate=r_rate+{0:d} WHERE r_id={1:d};",rt,ml.id);
                 cmd.ExecuteNonQuery();
                 ml.rate += rt;
             }
+            rt -= dead;
             if (children > 0 && date.Month > 8 && date.Month < 12)
                 rt += 2;
             cmd.CommandText = String.Format(@"UPDATE rabbits SET r_event_date=NULL,r_event='none',
@@ -791,7 +790,7 @@ FROM rabbits WHERE r_id={0:d};",rabbit,mom,count), sql);
         public static void countKids(MySqlConnection sql,int rid,int dead,int killed,int added)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE rabbits SET 
-r_group=r_group-{0:d}-{1:d}+{2:d},r_rate=r_rate-{4:d} WHERE r_parent={3:d};",dead,killed,added,rid,killed*2), sql);
+r_group=r_group-{0:d}-{1:d}+{2:d},r_rate=r_rate-{4:d} WHERE r_parent={3:d};",dead,killed,added,rid,killed+dead), sql);
             cmd.ExecuteNonQuery();
             cmd.CommandText = String.Format(@"UPDATE fucks SET 
 f_dead=f_dead+{0:d},f_killed=f_killed+{1:d},f_added=f_added+{2:d} WHERE f_rabid={3:d} AND f_last=1;",
