@@ -121,7 +121,8 @@ namespace rabnet
 
         private void paramsMenuItem1_Click(object sender, EventArgs e)
         {
-            (new OptionsForm()).ShowDialog();
+            if ((new OptionsForm()).ShowDialog() == DialogResult.OK)
+                rabStatusBar1.run();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

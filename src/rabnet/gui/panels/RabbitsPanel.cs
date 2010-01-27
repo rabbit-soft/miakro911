@@ -114,7 +114,11 @@ namespace rabnet
             {
                 return;
             }
-            
+            if (gentree < 0)
+            {
+                genTree.Nodes.Clear();
+                return;
+            }
             for (int ind = 0; ind < genTree.Nodes.Count; ind++)
             {
                 int len = genTree.Nodes[ind].Text.IndexOf(",");

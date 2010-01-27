@@ -199,7 +199,7 @@
             this.toolStripMenuItem2,
             this.SelectAllMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(201, 324);
+            this.actMenu.Size = new System.Drawing.Size(201, 302);
             // 
             // passportMenuItem
             // 
@@ -282,7 +282,7 @@
             // 
             this.okrolMenuItem.Name = "okrolMenuItem";
             this.okrolMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.okrolMenuItem.Text = "Окрол";
+            this.okrolMenuItem.Text = "Принять окрол";
             this.okrolMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // countKidsMenuItem
