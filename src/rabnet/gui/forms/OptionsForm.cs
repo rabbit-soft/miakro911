@@ -14,7 +14,7 @@ namespace rabnet
         class OptionsHolder
         {
             public enum RUBOOL {Да,Нет};
-            private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt;
+            private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su;
             private RUBOOL ce, ck;
             [Category("Зоотехнические сроки"),DisplayName("Окрол"),
             Description("Время со случки(вязки) до окрола")]
@@ -58,6 +58,9 @@ namespace rabnet
             [Category("Зоотехнические сроки"), DisplayName("Прививка"),
             Description("")]
             public int vacc { get { return vac; } set { vac = value; } }
+            [Category("Зоотехнические сроки"), DisplayName("Подсчет подсосных"),
+            Description("Возведение гнездовых крольчат в подсосных и подсчет количества")]
+            public int suck { get { return su; } set { su = value; } }
 
             [Category("Вид"),
             DisplayName("Подтверждение выхода"),
@@ -107,6 +110,7 @@ namespace rabnet
                 firstFuck = o.getIntOption(Options.OPT_ID.FIRST_FUCK);
                 maleWait = o.getIntOption(Options.OPT_ID.MALE_WAIT);
                 vacc = o.getIntOption(Options.OPT_ID.VACC);
+                suck = o.getIntOption(Options.OPT_ID.SUCKERS);
                 //view
                 genTree = o.getIntOption(Options.OPT_ID.GEN_TREE);
                 confirmExit = toR(o.getIntOption(Options.OPT_ID.CONFIRM_EXIT));
@@ -129,6 +133,7 @@ namespace rabnet
                 o.setOption(Options.OPT_ID.FIRST_FUCK, firstFuck);
                 o.setOption(Options.OPT_ID.MALE_WAIT, maleWait);
                 o.setOption(Options.OPT_ID.VACC, vacc);
+                o.setOption(Options.OPT_ID.SUCKERS, suck);
                 //view
                 o.setOption(Options.OPT_ID.GEN_TREE, genTree);
                 o.setOption(Options.OPT_ID.CONFIRM_EXIT, fromR(confirmExit));
