@@ -11,6 +11,7 @@ namespace rabnet
     public partial class YoungsPanel : RabNetPanel
     {
         private int gentree = 10;
+        private bool manual = true;
         public YoungsPanel():base()
         {
         }
@@ -35,7 +36,8 @@ namespace rabnet
             f["num"] = op.getOption(Options.OPT_ID.SHOW_NUMBERS);
             listView1.ListViewItemSorter = null;
             IDataGetter dg = DataThread.db().getYoungers(f);
-            rsb.setText(1, dg.getCount().ToString() + " items");
+            rsb.setText(1, dg.getCount().ToString() + " строк");
+            rsb.setText(2, dg.getCount2().ToString() + " кроликов");
             return dg;
         }
 
@@ -77,7 +79,10 @@ namespace rabnet
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (!manual)
+                return;
             setMenu();
+            makeSelectedCount();
             if (listView1.SelectedItems.Count != 1)
                 return;
 
@@ -163,6 +168,39 @@ namespace rabnet
             if (new ReplaceYoungersForm((int)from.Tag, r.parent).ShowDialog() == DialogResult.OK)
                 rsb.run();
         }
+
+        private void makeSelectedCount()
+        {
+            int rows = listView1.SelectedItems.Count;
+            int cnt = 0;
+            foreach (ListViewItem li in listView1.SelectedItems)
+            {
+                int c = int.Parse(li.SubItems[1].Text);
+                cnt += c;
+            }
+            rsb.setText(3, String.Format("Выбрано {0:d} строк - {1:d} кроликов", rows, cnt));
+        }
+
+        private void selectAllMenuItem_Click(object sender, EventArgs e)
+        {
+            manual = false;
+            for (int i = 0; i < listView1.Items.Count; i++)
+                listView1.Items[i].Selected = true;
+            manual = true;
+            listView1_SelectedIndexChanged(null, null);
+        }
+
+        private void listView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            manual = false;
+        }
+
+        private void listView1_MouseUp(object sender, MouseEventArgs e)
+        {
+            manual = true;
+            listView1_SelectedIndexChanged(null, null);
+        }
+
 
 
     }

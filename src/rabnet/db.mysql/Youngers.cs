@@ -93,7 +93,7 @@ FROM rabbits WHERE r_parent!=0 ORDER BY name;";
 
         public override string countQuery()
         {
-            return "SELECT COUNT(*) FROM rabbits WHERE r_parent!=0;";
+            return "SELECT COUNT(*),SUM(r_group) FROM rabbits WHERE r_parent!=0;";
         }
 
         public static Younger[] getSuckers(MySqlConnection sql, int id)
