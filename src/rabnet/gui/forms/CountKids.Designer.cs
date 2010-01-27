@@ -152,9 +152,9 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(26, 169);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(65, 13);
+            this.label6.Size = new System.Drawing.Size(75, 13);
             this.label6.TabIndex = 11;
-            this.label6.Text = "Подсажено";
+            this.label6.Text = "Прибавилось";
             // 
             // CountKids
             // 

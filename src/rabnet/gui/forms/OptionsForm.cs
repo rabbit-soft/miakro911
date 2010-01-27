@@ -17,18 +17,18 @@ namespace rabnet
             private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su;
             private RUBOOL ce, ck;
             [Category("Зоотехнические сроки"),DisplayName("Окрол"),
-            Description("Время со случки(вязки) до окрола")]
+            Description("Время от случки(вязки) до окрола")]
             public int okrol{ get {return ok;} set{ok=value;} }
             [Category("Зоотехнические сроки"),DisplayName("Выдворение"),
-            Description("")]
+            Description("Удаление гнездовья из клетки")]
             public int vudvor { get { return vud; } set { vud = value; } }
-            [Category("Зоотехнические сроки"),DisplayName("Первый подсчет гнездовых"),
-            Description("")]
+            [Category("Зоотехнические сроки"),DisplayName("1й подсчет гнездовых"),
+            Description("Проверка изменения числа рожденных крольчат")]
             public int count1 { get { return c1; } set { c1=value;} }
-            [Category("Зоотехнические сроки"),DisplayName("Второй подсчет гнездовых"),
+            [Category("Зоотехнические сроки"),DisplayName("2й подсчет гнездовых"),
             Description("")]
             public int count2 { get { return c2; } set { c2 = value; } }
-            [Category("Зоотехнические сроки"),DisplayName("Третий подсчет гнездовых"),
+            [Category("Зоотехнические сроки"),DisplayName("3й подсчет гнездовых"),
             Description("")]
             public int count3 { get { return c3; } set { c3 = value; } }
             [Category("Зоотехнические сроки"),DisplayName("Возведение в невесты"),
@@ -38,7 +38,7 @@ namespace rabnet
             Description("")]
             public int preokrol { get { return pok; } set { pok = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Объединение группы"),
-            Description("Максимально допустимая разница в возрасте двую объединяемых групп")]
+            Description("Максимально допустимая разница в возрасте двую объединяемых групп гнездовых/подсосных крольчат")]
             public int combine { get { return com; } set { com = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Отсадка мальчиков"),
             Description("")]
@@ -47,19 +47,19 @@ namespace rabnet
             Description("")]
             public int girlsOut { get { return go; } set { go = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Назначение штатной на вязку"),
-            Description("")]
+            Description("Назначить Штатную на вязку, если молодняк, сидящий с ней, достигает указанного возраста")]
             public int stateFuck { get { return sf; } set { sf = value; } }
-            [Category("Зоотехнические сроки"), DisplayName("Назначение первокролки на случку"),
-            Description("")]
+            [Category("Зоотехнические сроки"), DisplayName("Назначение первокролки на вязку"),
+            Description("Назначить Перкокролку на вязку, если молодняк, сидящий с ней, достигает указанного возраста")]
             public int firstFuck { get { return ff; } set { ff = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Отдых самца"),
-            Description("Сколько суток отдыхает отработавший самец")]
+            Description("Сколько суток отдыхает отработавший самец до назначения на работу")]
             public int maleWait { get { return mw; } set { mw = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Прививка"),
             Description("")]
             public int vacc { get { return vac; } set { vac = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Подсчет подсосных"),
-            Description("Возведение гнездовых крольчат в подсосных и подсчет количества")]
+            Description("Возведение гнездовых крольчат в подсосных и подсчет их количества")]
             public int suck { get { return su; } set { su = value; } }
 
             [Category("Вид"),
@@ -72,7 +72,7 @@ namespace rabnet
             public RUBOOL confirmKill { get { return ck; } set { ck = value; } }
             [Category("Вид"), 
             DisplayName("Генетические деревья"),
-            Description("Количество генетических деревьев")]
+            Description("Количество показываемых генетических деревьев в Поголовье")]
             public int genTree { get { return gt; } set { gt = value; } }
 
             public int fromR(RUBOOL value)
