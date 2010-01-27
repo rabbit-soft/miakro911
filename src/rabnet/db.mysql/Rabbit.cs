@@ -84,7 +84,7 @@ namespace rabnet
             if (sx == "void")
             {
                 r.fstatus = shr ? "Пдс" : "Подсосные";
-                if (Buildings.hasnest(rd.GetString("place")))
+                if (r.fage<options.safeInt("suc",50))
                     r.fstatus = shr ? "Гнд" : "Гнездовые";
             }
             else if (sx == "male")
@@ -413,7 +413,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             gens = gn;
             this.bon = bon;
             status = st;
-            if (sx == "void") status = Buildings.hasnest(adr) ? 1 : 0;
+            if (sx == "void") status = age()<50?0:1;
             lastfuckokrol = lfo;
             evtype = 0;
             if (evt == "sluchka") evtype = 1;

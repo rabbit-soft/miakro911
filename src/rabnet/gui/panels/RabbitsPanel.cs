@@ -33,6 +33,7 @@ namespace rabnet
             flt["dbl"] = op.getOption(Options.OPT_ID.DBL_SURNAME);
             flt["num"] = op.getOption(Options.OPT_ID.SHOW_NUMBERS);
             flt["brd"] = op.getOption(Options.OPT_ID.MAKE_BRIDE);
+            flt["suc"] = op.getOption(Options.OPT_ID.SUCKERS);
             listView1.ListViewItemSorter = null;
             IDataGetter dg = DataThread.db().getRabbits(flt);
             rsb.setText(1, dg.getCount().ToString() + " записей");

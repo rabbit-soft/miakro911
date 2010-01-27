@@ -25,6 +25,7 @@ namespace rabnet
         private TabPage weightPage;
         private int curzone = 0;
         private int mkbrides = 122;
+        private int makesuck = 50;
         bool manual = true;
         public RabbitInfo()
         {
@@ -38,6 +39,7 @@ namespace rabnet
             while(tabControl1.TabPages.Count>1)
                 tabControl1.TabPages.RemoveAt(1);
             mkbrides = Engine.get().brideAge();
+            makesuck = Engine.opt().getIntOption(Options.OPT_ID.SUCKERS);
         }
 
         private void initialHints()
@@ -299,7 +301,7 @@ namespace rabnet
             fillCatalogs(0);
             updateStd();
             if (rab.sex == OneRabbit.RabbitSex.VOID)
-                label7.Text = "Статус:" + (rab.status == 1 ? "Гнездовые" : "Подсосные");
+                label7.Text = "Статус:" + (rab.age < makesuck? "Гнездовые" : "Подсосные");
             if (rab.sex == OneRabbit.RabbitSex.MALE)
                 updateMale();
             if (rab.sex == OneRabbit.RabbitSex.FEMALE)
