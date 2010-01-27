@@ -13,18 +13,20 @@ namespace rabnet
             public string user;
             public string work;
             public string prms;
-            public OneLog(DateTime dt,string usr,string wrk,string p)
+            public string address;
+            public OneLog(DateTime dt,string usr,string wrk,string p,string adr)
             {
                 date = dt;
                 user = usr;
                 work = wrk;
                 prms = p;
+                address = adr;
             }
         }
         public List<OneLog>logs=new List<OneLog>();
-        public void addLog(DateTime dt, string usr, string wrk, string p)
+        public void addLog(DateTime dt, string usr, string wrk, string p,string address)
         {
-            logs.Add(new OneLog(dt, usr, wrk, p));
+            logs.Add(new OneLog(dt, usr, wrk, p,address));
         }
     }
 
@@ -85,15 +87,18 @@ logtypes.l_type=logs.l_type AND logs.l_user=users.u_id{1:s} ORDER BY date DESC L
                     {
                         case 'r': prms += rd.GetString("r1"); break;
                         case 'R': prms += rd.GetString("r2"); break;
-                        case 'p': prms += Buildings.fullPlaceName(rd.GetString("place"), true, true, true); break;
-                        case 'P': prms += Buildings.fullPlaceName(rd.GetString("place2"), true, true, true); break;
+                        case 'p': prms += Buildings.fullPlaceName(rd.GetString("place"), true, false, false); break;
+                        case 'P': prms += Buildings.fullPlaceName(rd.GetString("place2"), true, false, false); break;
                         case 'a': prms += rd.GetString("address"); break;
                         case 'A': prms += rd.GetString("address2"); break;
                         case 't': prms += rd.GetString("param"); break;
                     }
                     np = np.Replace("$" + c, prms);
                 }
-                ll.addLog(rd.GetDateTime("date"), rd.GetString("user"), rd.GetString("name"), np);
+                String adr = rd.GetString("address");
+                if (adr=="")
+                    adr = Buildings.fullPlaceName(rd.GetString("place"), true, false, false);
+                ll.addLog(rd.GetDateTime("date"), rd.GetString("user"), rd.GetString("name"), np,adr);
             }
             rd.Close();
             return ll;

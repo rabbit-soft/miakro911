@@ -54,8 +54,9 @@
             this.boysOutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.girlsOutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fuckMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.печатьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vaccMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.печатьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.columnHeader14 = new System.Windows.Forms.ColumnHeader();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -159,7 +160,8 @@
             this.columnHeader11,
             this.columnHeader12,
             this.columnHeader13,
-            this.columnHeader15});
+            this.columnHeader15,
+            this.columnHeader14});
             this.listView2.ForeColor = System.Drawing.Color.Gray;
             this.listView2.FullRowSelect = true;
             this.listView2.GridLines = true;
@@ -185,7 +187,7 @@
             // 
             // columnHeader15
             // 
-            this.columnHeader15.Text = "Пользователь";
+            this.columnHeader15.Text = "Адрес";
             // 
             // actMenu
             // 
@@ -200,7 +202,7 @@
             this.vaccMenuItem,
             this.печатьToolStripMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(206, 224);
+            this.actMenu.Size = new System.Drawing.Size(206, 202);
             // 
             // okrolMenuItem
             // 
@@ -251,6 +253,12 @@
             this.fuckMenuItem.Text = "Случить";
             this.fuckMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
+            // vaccMenuItem
+            // 
+            this.vaccMenuItem.Name = "vaccMenuItem";
+            this.vaccMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.vaccMenuItem.Text = "Пирить";
+            // 
             // печатьToolStripMenuItem
             // 
             this.печатьToolStripMenuItem.Name = "печатьToolStripMenuItem";
@@ -258,11 +266,9 @@
             this.печатьToolStripMenuItem.Text = "Печать";
             this.печатьToolStripMenuItem.Click += new System.EventHandler(this.печатьToolStripMenuItem_Click);
             // 
-            // vaccMenuItem
+            // columnHeader14
             // 
-            this.vaccMenuItem.Name = "vaccMenuItem";
-            this.vaccMenuItem.Size = new System.Drawing.Size(205, 22);
-            this.vaccMenuItem.Text = "Пирить";
+            this.columnHeader14.Text = "Пользователь";
             // 
             // WorksPanel
             // 
@@ -308,6 +314,7 @@
         private System.Windows.Forms.ToolStripMenuItem fuckMenuItem;
         private System.Windows.Forms.ToolStripMenuItem печатьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem vaccMenuItem;
+        private System.Windows.Forms.ColumnHeader columnHeader14;
 
     }
 }
