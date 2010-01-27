@@ -125,6 +125,34 @@ namespace rabnet
             rsb.run();
         }
 
+        private void listView1_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 1)
+                listView1.DoDragDrop(e.Item, DragDropEffects.Link);
+        }
+
+        private void listView1_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(ListViewItem)))
+            {
+                e.Effect = DragDropEffects.Link;
+            }
+        }
+
+        private void listView1_DragDrop(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(typeof(ListViewItem))) return;
+            Point p=listView1.PointToClient(new Point(e.X,e.Y));
+            ListViewItem to = listView1.GetItemAt(p.X, p.Y);
+            if (to==null)
+                return;
+            ListViewItem from=e.Data.GetData(typeof(ListViewItem)) as ListViewItem;
+            if (from == null) return;
+            RabNetEngRabbit r = Engine.get().getRabbit((int)to.Tag);
+            if (new ReplaceYoungersForm((int)from.Tag, r.parent).ShowDialog() == DialogResult.OK)
+                rsb.run();
+        }
+
 
     }
 }

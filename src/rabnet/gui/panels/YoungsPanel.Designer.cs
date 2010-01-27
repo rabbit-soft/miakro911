@@ -43,9 +43,9 @@
             this.columnHeader10 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader11 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader12 = new System.Windows.Forms.ColumnHeader();
-            this.genTree = new System.Windows.Forms.TreeView();
             this.actMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.replaceYoungersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.genTree = new System.Windows.Forms.TreeView();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -71,6 +71,7 @@
             // 
             // listView1
             // 
+            this.listView1.AllowDrop = true;
             this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
@@ -97,6 +98,9 @@
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            this.listView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.listView1_DragDrop);
+            this.listView1.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.listView1_ItemDrag);
+            this.listView1.DragOver += new System.Windows.Forms.DragEventHandler(this.listView1_DragOver);
             // 
             // columnHeader1
             // 
@@ -146,6 +150,20 @@
             // 
             this.columnHeader12.Text = "Заметки";
             // 
+            // actMenu
+            // 
+            this.actMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.replaceYoungersMenuItem});
+            this.actMenu.Name = "actMenu";
+            this.actMenu.Size = new System.Drawing.Size(188, 26);
+            // 
+            // replaceYoungersMenuItem
+            // 
+            this.replaceYoungersMenuItem.Name = "replaceYoungersMenuItem";
+            this.replaceYoungersMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.replaceYoungersMenuItem.Text = "Отсадить молодняк";
+            this.replaceYoungersMenuItem.Click += new System.EventHandler(this.replaceYoungersMenuItem_Click);
+            // 
             // genTree
             // 
             this.genTree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
@@ -155,20 +173,6 @@
             this.genTree.Name = "genTree";
             this.genTree.Size = new System.Drawing.Size(160, 534);
             this.genTree.TabIndex = 0;
-            // 
-            // actMenu
-            // 
-            this.actMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.replaceYoungersMenuItem});
-            this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(188, 48);
-            // 
-            // replaceYoungersMenuItem
-            // 
-            this.replaceYoungersMenuItem.Name = "replaceYoungersMenuItem";
-            this.replaceYoungersMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.replaceYoungersMenuItem.Text = "Отсадить молодняк";
-            this.replaceYoungersMenuItem.Click += new System.EventHandler(this.replaceYoungersMenuItem_Click);
             // 
             // YoungsPanel
             // 

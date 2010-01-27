@@ -39,12 +39,12 @@
             this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader9 = new System.Windows.Forms.ColumnHeader();
             this.label4 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader9 = new System.Windows.Forms.ColumnHeader();
             this.nudCount = new System.Windows.Forms.NumericUpDown();
             this.nudRepl = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.nudCount)).BeginInit();
@@ -137,6 +137,14 @@
             // 
             this.columnHeader7.Text = "Возраст крольчат";
             // 
+            // columnHeader8
+            // 
+            this.columnHeader8.Text = "Количество крольчат";
+            // 
+            // columnHeader9
+            // 
+            this.columnHeader9.Text = "Подсажено";
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -161,6 +169,7 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button2.Location = new System.Drawing.Point(693, 406);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
@@ -177,14 +186,6 @@
             this.label5.Size = new System.Drawing.Size(45, 13);
             this.label5.TabIndex = 7;
             this.label5.Text = "Порода";
-            // 
-            // columnHeader8
-            // 
-            this.columnHeader8.Text = "Количество крольчат";
-            // 
-            // columnHeader9
-            // 
-            this.columnHeader9.Text = "Подсажено";
             // 
             // nudCount
             // 

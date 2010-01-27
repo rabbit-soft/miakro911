@@ -13,6 +13,7 @@ namespace rabnet
         const int REPLCOL = 8;
         private RabNetEngRabbit r = null;
         private ListViewColumnSorter cs = null;
+        private int selmom=0;
         public ReplaceYoungersForm()
         {
             InitializeComponent();
@@ -27,6 +28,10 @@ namespace rabnet
             label2.Text = "Возраст: " + r.age.ToString();
             nudCount.Value=nudCount.Maximum=r.group;
             label5.Text = "Порода: " + r.breedName;
+        }
+        public ReplaceYoungersForm(int rid,int selmom):this(rid)
+        {
+            this.selmom=selmom;
         }
 
         public void updateMothers()
@@ -44,13 +49,25 @@ namespace rabnet
                 li.SubItems.Add(rb.frate.ToString());
                 li.SubItems.Add(rb.faddress);
                 li.SubItems.Add(rb.faverage.ToString());
-                li.SubItems.Add(rb.fN);
-                li.SubItems.Add("");
+                if (selmom == rb.fid)
+                {
+                    li.SubItems.Add((int.Parse(rb.fN)+r.group).ToString());
+                    li.SubItems.Add(r.group.ToString());
+                    nudCount.Value = 0;
+                    li.Selected = true;
+                    li.EnsureVisible();
+                }
+                else
+                {
+                    li.SubItems.Add(rb.fN);
+                    li.SubItems.Add("");
+                }
                 li.Tag=rb.fid;
             }
+            String txt = listView1.Items[0].SubItems[REPLCOL].Text;
             listView1.Items[0].SubItems[REPLCOL].Text = "10";
             listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            listView1.Items[0].SubItems[REPLCOL].Text = "";
+            listView1.Items[0].SubItems[REPLCOL].Text = txt;
         }
 
         private void button2_Click(object sender, EventArgs e)
