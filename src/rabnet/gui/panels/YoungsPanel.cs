@@ -148,6 +148,17 @@ namespace rabnet
                 return;
             ListViewItem from=e.Data.GetData(typeof(ListViewItem)) as ListViewItem;
             if (from == null) return;
+            if (Math.Abs(int.Parse(to.SubItems[2].Text) - int.Parse(from.SubItems[2].Text)) >
+                Engine.opt().getIntOption(Options.OPT_ID.COMBINE_AGE))
+            {
+                if (MessageBox.Show(this, "Крольчата не подходят по возрасту.\nПоказать возможных кормилиц?",
+                    "Ошибка", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    if (new ReplaceYoungersForm((int)from.Tag).ShowDialog() == DialogResult.OK)
+                        rsb.run();
+                }
+                return;
+            }
             RabNetEngRabbit r = Engine.get().getRabbit((int)to.Tag);
             if (new ReplaceYoungersForm((int)from.Tag, r.parent).ShowDialog() == DialogResult.OK)
                 rsb.run();
