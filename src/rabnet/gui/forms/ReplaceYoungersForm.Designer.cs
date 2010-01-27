@@ -100,7 +100,7 @@
             this.listView1.Location = new System.Drawing.Point(12, 59);
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(618, 265);
+            this.listView1.Size = new System.Drawing.Size(756, 341);
             this.listView1.TabIndex = 3;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -150,7 +150,7 @@
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(636, 330);
+            this.button1.Location = new System.Drawing.Point(774, 406);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 5;
@@ -161,7 +161,7 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(555, 330);
+            this.button2.Location = new System.Drawing.Point(693, 406);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 6;
@@ -196,8 +196,9 @@
             // 
             // nudRepl
             // 
+            this.nudRepl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.nudRepl.Enabled = false;
-            this.nudRepl.Location = new System.Drawing.Point(636, 59);
+            this.nudRepl.Location = new System.Drawing.Point(774, 59);
             this.nudRepl.Name = "nudRepl";
             this.nudRepl.Size = new System.Drawing.Size(75, 20);
             this.nudRepl.TabIndex = 9;
@@ -207,7 +208,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(719, 365);
+            this.ClientSize = new System.Drawing.Size(857, 441);
             this.Controls.Add(this.nudRepl);
             this.Controls.Add(this.nudCount);
             this.Controls.Add(this.label5);
