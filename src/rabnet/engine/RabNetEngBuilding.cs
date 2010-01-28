@@ -63,7 +63,7 @@ namespace rabnet
         {
             if (b.fnests[1] == (value ? '1' : '0'))
                 return;
-            eng.logs().log(value ? RabNetLogs.LogType.NEST_ON : RabNetLogs.LogType.NEST_OFF, b.busy(1), b.smallname[1]);
+            eng.logs().log(value ? RabNetLogs.LogType.NEST_ON : RabNetLogs.LogType.NEST_OFF, b.busy(1),b.smallname[1]);
             b.fnests = b.fnests.Substring(0, 1) + (value ? '1' : '0');
             commit();
         }

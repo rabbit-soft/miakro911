@@ -111,6 +111,7 @@
 				<include name="./rabnet/gui/filters/*.cs"/>
 				<include name="./rabnet/gui/panels/*.cs"/>
 				<include name="./rabnet/gui/forms/*.cs"/>
+				<include name="./rabnet/gui/reports/*.cs"/>
 			</sources>
 			<resources>
 				<include name="./rabnet/gui/forms/MainForm.resx"/>

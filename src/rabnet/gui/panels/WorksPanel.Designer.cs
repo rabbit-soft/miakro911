@@ -56,8 +56,8 @@
             this.girlsOutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fuckMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vaccMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.печатьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setNestMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.печатьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -183,12 +183,13 @@
             // 
             // columnHeader13
             // 
-            this.columnHeader13.Text = "Параметры";
-            this.columnHeader13.Width = 326;
+            this.columnHeader13.Text = "Адрес";
+            this.columnHeader13.Width = 75;
             // 
             // columnHeader15
             // 
-            this.columnHeader15.Text = "Адрес";
+            this.columnHeader15.Text = "Параметры";
+            this.columnHeader15.Width = 342;
             // 
             // columnHeader14
             // 
@@ -208,7 +209,7 @@
             this.setNestMenuItem,
             this.печатьToolStripMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(246, 246);
+            this.actMenu.Size = new System.Drawing.Size(246, 224);
             // 
             // okrolMenuItem
             // 
@@ -265,19 +266,19 @@
             this.vaccMenuItem.Size = new System.Drawing.Size(245, 22);
             this.vaccMenuItem.Text = "Привить";
             // 
-            // печатьToolStripMenuItem
-            // 
-            this.печатьToolStripMenuItem.Name = "печатьToolStripMenuItem";
-            this.печатьToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
-            this.печатьToolStripMenuItem.Text = "Печать";
-            this.печатьToolStripMenuItem.Click += new System.EventHandler(this.печатьToolStripMenuItem_Click);
-            // 
             // setNestMenuItem
             // 
             this.setNestMenuItem.Name = "setNestMenuItem";
             this.setNestMenuItem.Size = new System.Drawing.Size(245, 22);
             this.setNestMenuItem.Text = "Установить гнездовье";
             this.setNestMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
+            // 
+            // печатьToolStripMenuItem
+            // 
+            this.печатьToolStripMenuItem.Name = "печатьToolStripMenuItem";
+            this.печатьToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.печатьToolStripMenuItem.Text = "Печать";
+            this.печатьToolStripMenuItem.Click += new System.EventHandler(this.печатьToolStripMenuItem_Click);
             // 
             // WorksPanel
             // 
