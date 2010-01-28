@@ -296,7 +296,7 @@ FROM rabbits WHERE (r_flags like '__0__' OR r_flags like '__1__')  AND (TO_DAYS(
 (TO_DAYS(NOW())-TO_DAYS(r_event_date)) sukr,
 (SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) children
 FROM rabbits WHERE r_sex='female' AND r_event_date IS NOT NULL) c 
-WHERE ((children=0 AND sukr>={0:d}) OR (children>0 AND sukr>={1:d})) AND
+WHERE ((children IS NULL AND sukr>={0:d}) OR (children>0 AND sukr>={1:d})) AND
 place NOT like '%,%,%,jurta,%,1' ORDER BY sukr DESC;", wochild,wchild));
             List<ZooJobItem> res = new List<ZooJobItem>();
             while (rd.Read())
@@ -304,7 +304,7 @@ place NOT like '%,%,%,jurta,%,1' ORDER BY sukr DESC;", wochild,wchild));
                 int child=rd.IsDBNull(5)?0:rd.GetInt32("children");
                 int sukr=rd.GetInt32("sukr");
                 res.Add(new ZooJobItem().SetNest(rd.GetInt32("r_id"), rd.GetString("name"),
-                    rd.GetString("place"), rd.GetInt32("age"),(child>0?sukr-wochild:sukr-wchild),sukr));
+                    rd.GetString("place"), rd.GetInt32("age"),(child>0?sukr-wchild:sukr-wochild),sukr));
             }
             rd.Close();
             return res.ToArray();
