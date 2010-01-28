@@ -85,8 +85,8 @@ namespace rabnet
             {
                 ListViewItem li = listView2.Items.Add(l.date.ToShortDateString() + " " + l.date.ToShortTimeString());
                 li.SubItems.Add(l.work);
-                li.SubItems.Add(l.prms);
                 li.SubItems.Add(l.address);
+                li.SubItems.Add(l.prms);
                 li.SubItems.Add(l.user);
             }
             listView2.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
