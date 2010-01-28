@@ -63,12 +63,13 @@ namespace rabnet
             i[0] = srok;
             return this;
         }
-        public ZooJobItem Fuck(int id, String nm, String place, int age, int srok,int status,string boys)
+        public ZooJobItem Fuck(int id, String nm, String place, int age, int srok,int status,string boys,int group)
         {
             type = 6; name = nm; this.place = Buildings.fullPlaceName(place);
             this.age = age; this.status = status;this.id = id;
             names = boys;
             i[0] = srok;
+            i[1] = group;
             return this;
         }
         public ZooJobItem Vacc(int id, String nm, String place, int age, int srok)
@@ -245,7 +246,8 @@ r_status,
 TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol) fromokrol,
 (SELECT GROUP_CONCAT(rabname(r5.r_id,0) ORDER BY rabname(r5.r_id,0) SEPARATOR ',') FROM rabbits r5
 WHERE r5.r_sex='male' AND r_status>0 AND 
-(r5.r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r5.r_last_fuck_okrol)>={3:d}){4:s}{5:s}) partners
+(r5.r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r5.r_last_fuck_okrol)>={3:d}){4:s}{5:s}) partners,
+r_group
 FROM rabbits WHERE r_sex='female' AND r_event_date IS NULL ) c 
 WHERE age>{0:d} AND (r_status=0 OR (r_status=1 AND (suckers=0 OR fromokrol>={1:d})) OR (r_status>1 AND (suckers=0 OR fromokrol>={2:d})));",
     brideage,firstdays,statedays,malewait,
@@ -270,7 +272,8 @@ WHERE age>{0:d} AND (r_status=0 OR (r_status=1 AND (suckers=0 OR fromokrol>={1:d
                     else srok = fromok;
                 }
                 res.Add(new ZooJobItem().Fuck(rd.GetInt32("r_id"), rd.GetString("name"),
-                    rd.GetString("place"), age, srok, state,rd.IsDBNull(7)?"":rd.GetString("partners")));
+                    rd.GetString("place"), age, srok, state,rd.IsDBNull(7)?"":rd.GetString("partners"),
+                    rd.GetInt32("r_group")));
             }
             rd.Close();
             return res.ToArray();

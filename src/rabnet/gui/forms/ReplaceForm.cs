@@ -131,12 +131,14 @@ namespace rabnet
                 return new RP(this, num);
             }
         };
+
+        private int girlout = 0;
         private List<RabNetEngRabbit> rbs = new List<RabNetEngRabbit>();
         private RPList rs = new RPList();
         private DataTable ds = new DataTable();
         private DataGridViewComboBoxColumn cbc = new DataGridViewComboBoxColumn();
         private Building[] bs = null;
-        public enum Action { NONE,CHANGE,BOYSOUT,SET_NEST}
+        public enum Action { NONE,CHANGE,BOYSOUT,SET_NEST,ONE_GIRL_OUT}
         private Action action = Action.NONE;
         private bool globalError=false;
         private bool noboys = false;
@@ -377,10 +379,10 @@ namespace rabnet
 
         private void dataGridView1_MultiSelectChanged(object sender, EventArgs e)
         {
-            button4.Enabled = (dataGridView1.SelectedRows.Count == 2);
+            button4.Enabled = (dataGridView1.SelectedRows.Count == 2 && action!=Action.ONE_GIRL_OUT);
             button5.Enabled = (dataGridView1.SelectedRows.Count >0);
             groupBox1.Enabled = groupBox2.Enabled = false;
-            if (dataGridView1.SelectedRows.Count == 2)
+            if (dataGridView1.SelectedRows.Count == 2 && action!=Action.ONE_GIRL_OUT)
             {
                 groupBox2.Enabled = true;
                 button8.Enabled = button9.Enabled = button13.Enabled=false;
@@ -404,6 +406,12 @@ namespace rabnet
                     numericUpDown1.Maximum = cnt-1;
                 button10.Enabled = button11.Enabled = rp().nusex == OneRabbit.RabbitSex.VOID;
                 groupBox1.Enabled = (rp().id != 0);
+                if (action == Action.ONE_GIRL_OUT)
+                {
+                    numericUpDown1.Value = numericUpDown1.Maximum = numericUpDown1.Minimum = 1;
+                    button10.Enabled = button11.Enabled = button4.Enabled = false;
+                    groupBox2.Enabled = false;
+                }
             }
         }
 
@@ -507,6 +515,8 @@ namespace rabnet
                     int[] a=getAddress(r.curaddress);
                     int cid = rb.clone(c.count, a[0],a[1],a[2]);
                     commitRabbit(c, cid,replaced);
+                    if (action == Action.ONE_GIRL_OUT && girlout == 0 && c.sex == OneRabbit.RabbitSex.FEMALE && c.count == 1)
+                        girlout = cid;
                 }
             r.saved = true;
         }
@@ -574,6 +584,11 @@ namespace rabnet
             r1.placewith = null;
             r2.curaddress = r1.curaddress;
             update();
+        }
+
+        public int getGirlOut()
+        {
+            return girlout;
         }
 
     }

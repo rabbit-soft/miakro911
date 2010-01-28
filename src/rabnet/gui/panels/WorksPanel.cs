@@ -168,7 +168,20 @@ namespace rabnet
                     res=(new CountKids(job.id,job.flag==1)).ShowDialog();
                     break;
                 case JobType.FUCK:
-                    res=(new MakeFuck(job.id)).ShowDialog();
+                    int id = job.id;
+                    if (job.flag > 1)
+                    {
+                        id = 0;
+                        rf = new ReplaceForm();
+                        rf.addRabbit(job.id);
+                        rf.setAction(ReplaceForm.Action.ONE_GIRL_OUT);
+                        res = rf.ShowDialog();
+                        if (res == DialogResult.OK)
+                            id = rf.getGirlOut();
+                        res = DialogResult.Cancel;
+                    }
+                    if (id!=0) 
+                        res=(new MakeFuck(id)).ShowDialog();
                     break;                                    
                 case JobType.OKROL:
                     res=(new OkrolForm(job.id)).ShowDialog();

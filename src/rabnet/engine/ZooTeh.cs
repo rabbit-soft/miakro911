@@ -69,7 +69,7 @@ namespace rabnet
             this.age = age;
             return this;
         }
-        public ZootehJob Fuck(int id, String nm, String ad, int age, int srok,int status,String boys)
+        public ZootehJob Fuck(int id, String nm, String ad, int age, int srok,int status,String boys,int group)
         {
             type = JobType.FUCK; job = status==0?"Случка":"Вязка";
             this.id = id; days = srok;
@@ -81,6 +81,7 @@ namespace rabnet
             if (status > 1)
                 comment = "Штатная";
             names = boys;
+            flag = group;
             return this;
         }
         public ZootehJob Vacc(int id, String nm, String ad, int age, int srok)
@@ -201,7 +202,7 @@ namespace rabnet
                     boys += ff.partner.Trim()+",";
                 boys.Trim(',');
                  * */
-                jh.Add(new ZootehJob().Fuck(z.id, z.name, z.place, z.age, z.i[0], z.status,z.names));
+                jh.Add(new ZootehJob().Fuck(z.id, z.name, z.place, z.age, z.i[0], z.status,z.names,z.i[1]));
             }
         }
         public void getVacc(JobHolder jh)
