@@ -79,7 +79,7 @@ namespace rabnet
             int cnt = rd.GetInt32("r_group");
             r.faverage = -1;
             if (rd.GetInt32("r_group") > 1)
-                r.fN = "[" + rd.GetString("r_group") + "]";
+                r.fN = "[" + String.Format("{0,2:s}",rd.GetString("r_group")) + "]";
             r.fsex = getRSex(sx);
             if (sx == "void")
             {
@@ -99,7 +99,7 @@ namespace rabnet
             else
             {
                 if (!rd.IsDBNull(4))
-                   r.fsex = "C-" + rd.GetInt32("sukr").ToString();
+                   r.fsex = "C-" + String.Format("{0,2:d}",rd.GetInt32("sukr"));
                 if (r.fage < options.safeInt("brd", 122))
                     r.fstatus = shr ? "Дев" : "Девочка";
                 else
@@ -110,7 +110,7 @@ namespace rabnet
                     r.fstatus = shr ? "Штн" : "Штатная";
                 if (!rd.IsDBNull(12))
                 {
-                    r.fN = "+" + rd.GetString("suckers");
+                    r.fN = "+" + String.Format("{0,2:s}",rd.GetString("suckers"));
                     r.faverage = rd.GetInt32("aage");
                 }
                 else
