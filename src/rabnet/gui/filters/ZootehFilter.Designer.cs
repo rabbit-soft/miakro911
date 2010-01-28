@@ -37,6 +37,7 @@
             this.lbLogs = new System.Windows.Forms.CheckedListBox();
             this.nudLogLim = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nudLogLim)).BeginInit();
             this.SuspendLayout();
             // 
@@ -59,7 +60,7 @@
             // 
             // okBtn
             // 
-            this.okBtn.Location = new System.Drawing.Point(31, 273);
+            this.okBtn.Location = new System.Drawing.Point(12, 273);
             this.okBtn.Name = "okBtn";
             this.okBtn.Size = new System.Drawing.Size(75, 23);
             this.okBtn.TabIndex = 2;
@@ -139,10 +140,21 @@
             this.label3.TabIndex = 15;
             this.label3.Text = "Количество строк";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(432, -3);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(22, 23);
+            this.button1.TabIndex = 16;
+            this.button1.Text = "X";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // ZootehFilter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.nudLogLim);
             this.Controls.Add(this.lbLogs);
@@ -174,5 +186,6 @@
         private System.Windows.Forms.CheckedListBox lbLogs;
         private System.Windows.Forms.NumericUpDown nudLogLim;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button button1;
     }
 }
