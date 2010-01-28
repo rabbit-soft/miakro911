@@ -173,9 +173,9 @@ namespace rabnet
             {
                 String stat = "";
                 if (options["ft"].Contains("g"))
-                    stat = "r_born>(NOW()-INTERVAL 122 DAY)";
+                    stat = "r_born>(NOW()-INTERVAL " + options["brd"] + " DAY)";
                 if (options["ft"].Contains("b"))
-                    stat = addWhereOr(stat, "(r_born<=(NOW()-INTERVAL 122 DAY) AND r_status=0)");
+                    stat = addWhereOr(stat, "(r_born<=(NOW()-INTERVAL "+options["brd"]+" DAY) AND r_status=0)");
                 if (options["ft"].Contains("f"))
                     stat = addWhereOr(stat, "r_status=1");
                 if (options["ft"].Contains("s"))
@@ -432,6 +432,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             evdate = evd;babies = ob;lost = lb;
             fullname = fnm; breedname = bnm;
         }
+
         public static String SexToString(RabbitSex s)
         {
             String res = "void";
