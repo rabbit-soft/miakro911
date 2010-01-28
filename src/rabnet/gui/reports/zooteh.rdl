@@ -13,11 +13,11 @@
   <BottomMargin>.25in</BottomMargin>
   <DataSets>
     <DataSet Name="Data">
-      <Query >
+      <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>Url=D:\Temp\zooteh.xml;RowsXPath=/report/zooteh/row</CommandText>
       </Query>
-      <Fields >
+      <Fields>
         <Field Name="type">
           <DataField>type</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -48,7 +48,7 @@
         </Field>
       </Fields>
     </DataSet>
-    <DataSet Name="Data2" >
+    <DataSet Name="Data2">
       <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>Url=D:\Temp\zooteh.xml;RowsXPath=/report/report
@@ -62,7 +62,7 @@
         </Field>
       </Fields>
     </DataSet>
-    <DataSet Name="Data3" >
+    <DataSet Name="Data3">
       <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>Url=D:\Temp\zooteh.xml;RowsXPath=/report/fuckers/row</CommandText>
@@ -93,8 +93,8 @@
           <BorderStyle>
             <Default>Solid</Default>
           </BorderStyle>
-          <BorderColor  />
-          <BorderWidth  />
+          <BorderColor />
+          <BorderWidth />
         </Style>
         <TableColumns>
           <TableColumn>
@@ -115,7 +115,7 @@
           <TableColumn>
             <Width>39.7pt</Width>
           </TableColumn>
-          <TableColumn >
+          <TableColumn>
             <Width>109.5pt</Width>
           </TableColumn>
         </TableColumns>
@@ -134,8 +134,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -150,8 +150,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -166,8 +166,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -182,8 +182,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -198,8 +198,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -214,13 +214,13 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
                 </TableCell>
-                <TableCell >
+                <TableCell>
                   <ReportItems>
                     <Textbox Name="Textbox17">
                       <Value>заметки</Value>
@@ -230,8 +230,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -270,8 +270,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -332,7 +332,7 @@
                     </Textbox>
                   </ReportItems>
                 </TableCell>
-                <TableCell >
+                <TableCell>
                   <ReportItems>
                     <Textbox Name="Textbox18">
                       <Value>
@@ -350,11 +350,11 @@
             </TableRow>
           </TableRows>
         </Details>
-        <KeepTogether >false</KeepTogether>
-        <Left >1.6pt</Left>
-        <Top >59.5pt</Top>
+        <KeepTogether>false</KeepTogether>
+        <Left>1.6pt</Left>
+        <Top>59.5pt</Top>
       </Table>
-      <Table Name="Table2" >
+      <Table Name="Table2">
         <DataSetName>Data2</DataSetName>
         <NoRows>Query returned no rows!</NoRows>
         <Style>
@@ -430,7 +430,7 @@
         <Left>198.5pt</Left>
         <Top>16.5pt</Top>
       </Table>
-      <Textbox Name="Textbox1" >
+      <Textbox Name="Textbox1">
         <Height>19.52pt</Height>
         <Width>94.83pt</Width>
         <Value>Зоотехплан</Value>
@@ -443,12 +443,12 @@
           <FontSize>14pt</FontSize>
         </Style>
       </Textbox>
-      <Textbox Name="Textbox12" >
-        <Height>18.01pt</Height>
-        <Width>72.27pt</Width>
-        <Value>Факеры</Value>
-        <Left>179.0pt</Left>
-        <Top>103.0pt</Top>
+      <Textbox Name="Textbox12">
+        <Height>20.27pt</Height>
+        <Width>181.30pt</Width>
+        <Value>Производители</Value>
+        <Left>94.7pt</Left>
+        <Top>102.2pt</Top>
         <Style>
           <BorderStyle />
           <BorderColor />
@@ -456,7 +456,7 @@
           <FontSize>14pt</FontSize>
         </Style>
       </Textbox>
-      <Table Name="Table3" >
+      <Table Name="Table3">
         <DataSetName>Data3</DataSetName>
         <NoRows>Query returned no rows!</NoRows>
         <Style>
@@ -567,16 +567,16 @@
         <Style>
           <FontSize>10pt</FontSize>
           <FontWeight>Normal</FontWeight>
-          <BorderStyle  />
-          <BorderColor  />
-          <BorderWidth  />
+          <BorderStyle />
+          <BorderColor />
+          <BorderWidth />
         </Style>
       </Textbox>
     </ReportItems>
     <PrintOnFirstPage>true</PrintOnFirstPage>
     <PrintOnLastPage>true</PrintOnLastPage>
   </PageFooter>
-  <DataSources >
+  <DataSources>
     <DataSource Name="DS1">
       <ConnectionProperties>
         <DataProvider>XML</DataProvider>

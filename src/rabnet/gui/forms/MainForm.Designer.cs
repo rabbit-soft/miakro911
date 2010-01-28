@@ -49,6 +49,10 @@
             this.actMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.отчетыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.тестовыйToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.породыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.списанияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.продуктивностьСоитияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.возрастИКоличествоToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.настройкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showTierTMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showTierSMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,10 +75,6 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
-            this.породыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.списанияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.продуктивностьСоитияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.возрастИКоличествоToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -223,6 +223,31 @@
             this.тестовыйToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
             this.тестовыйToolStripMenuItem.Text = "Тестовый";
             this.тестовыйToolStripMenuItem.Click += new System.EventHandler(this.тестовыйToolStripMenuItem_Click);
+            // 
+            // породыToolStripMenuItem
+            // 
+            this.породыToolStripMenuItem.Name = "породыToolStripMenuItem";
+            this.породыToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.породыToolStripMenuItem.Text = "Состав пород";
+            this.породыToolStripMenuItem.Click += new System.EventHandler(this.породыToolStripMenuItem_Click);
+            // 
+            // списанияToolStripMenuItem
+            // 
+            this.списанияToolStripMenuItem.Name = "списанияToolStripMenuItem";
+            this.списанияToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.списанияToolStripMenuItem.Text = "Списания";
+            // 
+            // продуктивностьСоитияToolStripMenuItem
+            // 
+            this.продуктивностьСоитияToolStripMenuItem.Name = "продуктивностьСоитияToolStripMenuItem";
+            this.продуктивностьСоитияToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.продуктивностьСоитияToolStripMenuItem.Text = "Продуктивность соития";
+            // 
+            // возрастИКоличествоToolStripMenuItem
+            // 
+            this.возрастИКоличествоToolStripMenuItem.Name = "возрастИКоличествоToolStripMenuItem";
+            this.возрастИКоличествоToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.возрастИКоличествоToolStripMenuItem.Text = "Возраст и количество";
             // 
             // настройкиToolStripMenuItem
             // 
@@ -414,31 +439,6 @@
             this.rabStatusBar1.Size = new System.Drawing.Size(914, 23);
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
-            // 
-            // породыToolStripMenuItem
-            // 
-            this.породыToolStripMenuItem.Name = "породыToolStripMenuItem";
-            this.породыToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
-            this.породыToolStripMenuItem.Text = "Породы";
-            this.породыToolStripMenuItem.Click += new System.EventHandler(this.породыToolStripMenuItem_Click);
-            // 
-            // списанияToolStripMenuItem
-            // 
-            this.списанияToolStripMenuItem.Name = "списанияToolStripMenuItem";
-            this.списанияToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
-            this.списанияToolStripMenuItem.Text = "Списания";
-            // 
-            // продуктивностьСоитияToolStripMenuItem
-            // 
-            this.продуктивностьСоитияToolStripMenuItem.Name = "продуктивностьСоитияToolStripMenuItem";
-            this.продуктивностьСоитияToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
-            this.продуктивностьСоитияToolStripMenuItem.Text = "Продуктивность соития";
-            // 
-            // возрастИКоличествоToolStripMenuItem
-            // 
-            this.возрастИКоличествоToolStripMenuItem.Name = "возрастИКоличествоToolStripMenuItem";
-            this.возрастИКоличествоToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
-            this.возрастИКоличествоToolStripMenuItem.Text = "Возраст и количество";
             // 
             // MainForm
             // 

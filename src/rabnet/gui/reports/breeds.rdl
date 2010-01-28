@@ -21,11 +21,11 @@
   <BottomMargin>.25in</BottomMargin>
   <DataSets>
     <DataSet Name="Data">
-      <Query >
+      <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText> Url=D:/breed.xml;RowsXPath=/Rows/Row</CommandText>
       </Query>
-      <Fields >
+      <Fields>
         <Field Name="br">
           <DataField>br</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -454,11 +454,11 @@
         <Top>50pt</Top>
       </Table>
       <Textbox Name="Textbox13">
-        <Height>28.29pt</Height>
-        <Width>264.25pt</Width>
-        <Value>Отчет по породам</Value>
-        <Left>190.0pt</Left>
-        <Top>6pt</Top>
+        <Height>32.82pt</Height>
+        <Width>399.01pt</Width>
+        <Value>Количественный состав пород</Value>
+        <Left>190.00pt</Left>
+        <Top>6.00pt</Top>
         <Style>
           <FontSize>20pt</FontSize>
         </Style>
