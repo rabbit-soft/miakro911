@@ -77,7 +77,7 @@ namespace rabnet
             r.fage = rd.GetInt32("age");
             r.fN = "-";
             int cnt = rd.GetInt32("r_group");
-            r.faverage = 0;
+            r.faverage = -1;
             if (rd.GetInt32("r_group") > 1)
                 r.fN = "[" + rd.GetString("r_group") + "]";
             r.fsex = getRSex(sx);
