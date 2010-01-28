@@ -180,6 +180,8 @@ namespace rabnet
             get { return rab.tag; }
             set { rab.tag = value; }
         }
+        public string smallAddress{get{return rab.smallAddress;}}
+        public string justAddress{get{return rab.justAddress;}}
         public int parent { get { return rab.parent; } }
         public int rid { get { return rab.id; } }
         public int evtype{get { return rab.evtype; }}
@@ -264,7 +266,7 @@ namespace rabnet
             }
             else
             {
-                eng.logs().log(RabNetLogs.LogType.REPLACE, rid, rab.address);
+                eng.logs().log(RabNetLogs.LogType.REPLACE, rid, rab.smallAddress);
                 eng.db().replaceRabbit(rid, farm, tier_id, sec);
             }
             rab.tag = "";
@@ -276,14 +278,14 @@ namespace rabnet
                 if (y.id == yid)
                     y.tag = "";
             OneRabbit r = eng.db().getRabbit(yid);
-            eng.logs().log(RabNetLogs.LogType.REPLACE, yid, "отсадили в "+r.address);
+            eng.logs().log(RabNetLogs.LogType.REPLACE, yid,r.smallAddress);
         }
 
         public void killIt(DateTime when, int reason, string notes,int count)
         {
             if (count == group)
             {
-                eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, rid, 0, address, "", fullName+String.Format(" ({0:d})",group));
+                eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, rid, 0, smallAddress, "", fullName+String.Format(" ({0:d})",group));
                 eng.db().killRabbit(id, when, reason, notes);
             }
             else

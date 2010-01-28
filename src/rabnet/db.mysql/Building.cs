@@ -26,6 +26,7 @@ namespace rabnet
         public int[] fbusies;
         public int fnhcount;
         public string[] fullname=new string[4];
+        public string[] smallname = new string[4];
         public Building(int id,int farm,int tier_id,string type,string typeloc,string delims,string notes,bool repair,int seccnt)
         {
             fid = id;
@@ -37,8 +38,11 @@ namespace rabnet
             fnotes = notes;
             frepair = repair;
             fsecs = seccnt;
-            for (int i = 0; i < fsecs;i++ )
+            for (int i = 0; i < fsecs; i++)
+            {
                 fullname[i] = Buildings.fullRName(ffarm, ftid, i, ftype, fdelims, false, true, true);
+                smallname[i] = Buildings.fullRName(ffarm, ftid, i, ftype, fdelims, true, false, false);
+            }
         }
         #region IBuilding Members
         public int id(){return fid;}

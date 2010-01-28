@@ -63,14 +63,14 @@ namespace rabnet
         void replaceYounger(int yid, int farm, int tier_id, int sec);
         int newRabbit(OneRabbit r,int mom);
         LogList getLogs(Filters f);
-        ZooJobItem[] getOkrols(int days);
+        ZooJobItem[] getOkrols(Filters f, int days);
         void updateBuilding(Building b);
-        ZooJobItem[] getVudvors(int days);
+        ZooJobItem[] getVudvors(Filters f, int days);
         void addName(OneRabbit.RabbitSex sex, string name, string surname);
         void changeName(string orgName, string name, string surname);
         void killRabbit(int id,DateTime when,int reason,string notes);
         void countKids(int rid, int dead, int killed, int added);
-        ZooJobItem[] getCounts(int days);
+        ZooJobItem[] getCounts(Filters f, int days);
         void setRabbitSex(int rid,OneRabbit.RabbitSex sex);
         int cloneRabbit(int rid, int count, int farm, int tier, int sec, OneRabbit.RabbitSex sex, int mom);
         string userGroup(int uid);
@@ -80,14 +80,14 @@ namespace rabnet
         int addUser(string name, int group, string password);
         IDataGetter getDead(Filters filters);
         void resurrect(int rid);
-        ZooJobItem[] getPreokrols(int days,int okroldays);
+        ZooJobItem[] getPreokrols(Filters f, int days, int okroldays);
         void placeSucker(int sucker, int mother);
         void combineGroups(int rabfrom, int rabto);
         XmlDocument makeReport(ReportType.Type type, Filters f);
         Rabbit[] getMothers(int age,int agediff);
-        ZooJobItem[] getBoysGirlsOut(int days,OneRabbit.RabbitSex sex);
+        ZooJobItem[] getBoysGirlsOut(Filters f, int days, OneRabbit.RabbitSex sex);
         String[] logNames();
-        ZooJobItem[] getZooFuck(int statedays, int firstdays,int brideage,int malewait,bool heterosis,bool inbreeding);
+        ZooJobItem[] getZooFuck(Filters f, int statedays, int firstdays, int brideage, int malewait, bool heterosis, bool inbreeding);
         void setBuildingName(int bid,String name);
         void addBuilding(int parent, String name);
         void replaceBuilding(int bid, int toBuilding);
@@ -95,7 +95,8 @@ namespace rabnet
         int addFarm(int parent,String uppertype, String lowertype,String name,int id);
         void changeFarm(int fid,String uppertype,String lowertype);
         void deleteFarm(int fid);
-        ZooJobItem[] getVacc(int days);
+        ZooJobItem[] getVacc(Filters f,int days);
+        ZooJobItem[] getSetNest(Filters f,int wochild,int wchild);
     }
 
 }

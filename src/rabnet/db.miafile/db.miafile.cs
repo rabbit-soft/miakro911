@@ -569,17 +569,7 @@ namespace rabnet
             throw new NotImplementedException();
         }
 
-        ZooJobItem[] IRabNetDataLayer.getOkrols(int days)
-        {
-            throw new NotImplementedException();
-        }
-
         void IRabNetDataLayer.updateBuilding(Building b)
-        {
-            throw new NotImplementedException();
-        }
-
-        ZooJobItem[] IRabNetDataLayer.getVudvors(int days)
         {
             throw new NotImplementedException();
         }
@@ -600,11 +590,6 @@ namespace rabnet
         }
 
         void IRabNetDataLayer.countKids(int rid, int dead, int killed, int added)
-        {
-            throw new NotImplementedException();
-        }
-
-        ZooJobItem[] IRabNetDataLayer.getCounts(int days)
         {
             throw new NotImplementedException();
         }
@@ -674,25 +659,10 @@ namespace rabnet
             throw new NotImplementedException();
         }
 
-        ZooJobItem[] IRabNetDataLayer.getBoysGirlsOut(int days, OneRabbit.RabbitSex sex)
-        {
-            throw new NotImplementedException();
-        }
-
         string[] IRabNetDataLayer.logNames()
         {
             throw new NotImplementedException();
         }
-
-        ZooJobItem[] IRabNetDataLayer.getZooFuck(int statedays, int firstdays, int brideage,int malewait,bool heter,bool inbr)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IRabNetDataLayer Members
-
 
         public void setBuildingName(int bid, string name)
         {
@@ -745,6 +715,51 @@ namespace rabnet
 
 
         public ZooJobItem[] getPreokrols(int days, int okroldays)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public ZooJobItem[] getOkrols(Filters f, int days)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ZooJobItem[] getVudvors(Filters f, int days)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ZooJobItem[] getCounts(Filters f, int days)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ZooJobItem[] getPreokrols(Filters f, int days, int okroldays)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ZooJobItem[] getBoysGirlsOut(Filters f, int days, OneRabbit.RabbitSex sex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ZooJobItem[] getZooFuck(Filters f, int statedays, int firstdays, int brideage, int malewait, bool heterosis, bool inbreeding)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ZooJobItem[] getVacc(Filters f, int days)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ZooJobItem[] getSetNest(Filters f, int wochild, int wchild)
         {
             throw new NotImplementedException();
         }

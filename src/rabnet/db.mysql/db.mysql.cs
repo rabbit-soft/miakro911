@@ -272,9 +272,9 @@ namespace rabnet
             return (new Logs(sql).getLogs(f));
         }
 
-        public ZooJobItem[] getOkrols(int days)
+        public ZooJobItem[] getOkrols(Filters f,int days)
         {
-            return new ZooTehGetter(sql).getOkrols(days);
+            return new ZooTehGetter(sql,f).getOkrols(days);
         }
 
         public void updateBuilding(Building b)
@@ -282,9 +282,9 @@ namespace rabnet
             Buildings.updateBuilding(b, sql);
         }
 
-        public ZooJobItem[] getVudvors(int days)
+        public ZooJobItem[] getVudvors(Filters f,int days)
         {
-            return new ZooTehGetter(sql).getVudvors(days);
+            return new ZooTehGetter(sql,f).getVudvors(days);
         }
 
         public void addName(OneRabbit.RabbitSex sex, string name, string surname)
@@ -307,9 +307,9 @@ namespace rabnet
             RabbitGetter.countKids(sql, rid, dead, killed, added);
         }
 
-        public ZooJobItem[] getCounts(int days)
+        public ZooJobItem[] getCounts(Filters f,int days)
         {
-            return new ZooTehGetter(sql).getCounts(days);
+            return new ZooTehGetter(sql,f).getCounts(days);
         }
 
         public void setRabbitSex(int rid, OneRabbit.RabbitSex sex)
@@ -357,9 +357,9 @@ namespace rabnet
             new DeadHelper(sql).resurrect(rid);
         }
 
-        public ZooJobItem[] getPreokrols(int days,int okroldays)
+        public ZooJobItem[] getPreokrols(Filters f,int days,int okroldays)
         {
-            return new ZooTehGetter(sql).getPreokrols(days,okroldays);
+            return new ZooTehGetter(sql,f).getPreokrols(days,okroldays);
         }
 
         public void placeSucker(int sucker, int mother)
@@ -382,9 +382,9 @@ namespace rabnet
             return RabbitGetter.getMothers(sql, age, agediff);
         }
 
-        public ZooJobItem[] getBoysGirlsOut(int days, OneRabbit.RabbitSex sex)
+        public ZooJobItem[] getBoysGirlsOut(Filters f,int days, OneRabbit.RabbitSex sex)
         {
-            return new ZooTehGetter(sql).getBoysGirlsOut(days, sex);
+            return new ZooTehGetter(sql,f).getBoysGirlsOut(days, sex);
         }
 
         public string[] logNames()
@@ -392,9 +392,9 @@ namespace rabnet
             return new Logs(sql).logNames();
         }
 
-        public ZooJobItem[] getZooFuck(int statedays, int firstdays,int brideage,int malewait,bool heter,bool inbr)
+        public ZooJobItem[] getZooFuck(Filters f,int statedays, int firstdays,int brideage,int malewait,bool heter,bool inbr)
         {
-            return new ZooTehGetter(sql).getFucks(statedays, firstdays,brideage,malewait,heter,inbr);
+            return new ZooTehGetter(sql,f).getFucks(statedays, firstdays,brideage,malewait,heter,inbr);
         }
 
         public void setBuildingName(int bid, string name)
@@ -432,9 +432,14 @@ namespace rabnet
             Buildings.deleteFarm(sql, fid);
         }
 
-        public ZooJobItem[] getVacc(int days)
+        public ZooJobItem[] getVacc(Filters f,int days)
         {
-            return new ZooTehGetter(sql).getVacc(days);
+            return new ZooTehGetter(sql,f).getVacc(days);
+        }
+
+        public ZooJobItem[] getSetNest(Filters f,int wochild, int wchild)
+        {
+            return new ZooTehGetter(sql,f).getSetNest(wochild, wchild);
         }
 
         #endregion

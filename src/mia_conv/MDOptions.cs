@@ -27,11 +27,11 @@ namespace mia_conv
             setOption("opt", "confirmexit", 0);
             setOption("opt", "confirmkill", 1);
             setOption("opt", "vacc", p.vacc.value());
+            setOption("opt", "nest", p.pervonest.value());
+//            setOption("opt", "kukunest", p.kukunest.value());
+            setOption("opt", "childnest", p.mothernest.value());
             //            setOption("opt", "otsad_boys_pervo", p.otsad_boys_pervo.value());
             /* //OPTIONS
-            setOption("opt","pervonest",p.pervonest.value());
-            setOption("opt","kukunest",p.kukunest.value());
-            setOption("opt","mothernest",p.mothernest.value());
             setOption("opt","kuk",p.kuk.value());
             setOption("opt","endkuku",p.endkuku.value());
             setOption("opt","killfemales",p.killfemales.value());

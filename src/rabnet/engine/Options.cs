@@ -11,7 +11,7 @@ namespace rabnet
             NONE, GETEROSIS, INBREEDING, SHORT_NAMES, DBL_SURNAME, SHOW_TIER_TYPE, SHOW_TIER_SEC, RAB_FILTER,
             SHOW_NUMBERS, BUILD_FILTER, OKROL, VUDVOR, COUNT1, COUNT2, COUNT3, MAKE_BRIDE, DEAD_FILTER, PRE_OKROL, 
             ZOO_FILTER, COMBINE_AGE, BOYS_OUT, GIRLS_OUT, STATE_FUCK, FIRST_FUCK, MALE_WAIT, GEN_TREE, CONFIRM_EXIT, 
-            VACC, CONFIRM_KILL, SUCKERS
+            VACC, CONFIRM_KILL, SUCKERS,NEST,CHILD_NEST
         }
         public enum OPT_LEVEL {FARM,USER};
         public class ExOptionNotFound:ApplicationException
@@ -61,6 +61,8 @@ namespace rabnet
                                    new Option(OPT_ID.VACC,OPT_LEVEL.FARM,"vacc"), 
                                    new Option(OPT_ID.CONFIRM_KILL,OPT_LEVEL.USER,"confirmkill"), 
                                    new Option(OPT_ID.SUCKERS,OPT_LEVEL.FARM,"suckers"), 
+                                   new Option(OPT_ID.NEST,OPT_LEVEL.FARM,"nest"), 
+                                   new Option(OPT_ID.CHILD_NEST,OPT_LEVEL.FARM,"childnest"), 
                                    };
         public Options(RabNetEngine eng)
         {

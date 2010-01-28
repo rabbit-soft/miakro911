@@ -106,6 +106,10 @@ namespace rabnet
         {
             return new RabNetEngBuilding(tier, this);
         }
+        public RabNetEngBuilding getBuilding(string place)
+        {
+            return RabNetEngBuilding.fromPlace(place, this);
+        }
 
         public int brideAge()
         {

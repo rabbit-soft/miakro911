@@ -78,6 +78,14 @@ namespace rabnet
             i[0] = srok;
             return this;
         }
+        public ZooJobItem SetNest(int id, String nm, String place, int age, int srok,int sukr)
+        {
+            type = 8; name = nm; this.place = Buildings.fullPlaceName(place);
+            this.age = age; this.id = id;
+            i[0] = srok;
+            i[1] = sukr;
+            return this;
+        }
     }
     /*
     public class ZooTehItem:IData
@@ -141,9 +149,11 @@ z_notes FROM zooplans WHERE z_done=0 AND z_rabbit IS NOT NULL;";
     class ZooTehGetter
     {
         private MySqlConnection sql;
-        public ZooTehGetter(MySqlConnection sql)
+        private Filters op;
+        public ZooTehGetter(MySqlConnection sql,Filters f)
         {
             this.sql = sql;
+            op = f;
         }
         
         public MySqlDataReader reader(String qry)
@@ -277,6 +287,28 @@ FROM rabbits WHERE (r_flags like '__0__' OR r_flags like '__1__')  AND (TO_DAYS(
                     rd.GetString("place"), rd.GetInt32("age"), rd.GetInt32("age")-days));
             rd.Close();
             return res.ToArray();
+        }
+
+        public ZooJobItem[] getSetNest(int wochild, int wchild)
+        {
+            MySqlDataReader rd = reader(String.Format(@"SELECT * FROM (SELECT r_id,rabname(r_id,2) name,rabplace(r_id) place,
+(TO_DAYS(NOW())-TO_DAYS(r_born)) age,
+(TO_DAYS(NOW())-TO_DAYS(r_event_date)) sukr,
+(SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) children
+FROM rabbits WHERE r_sex='female' AND r_event_date IS NOT NULL) c 
+WHERE ((children=0 AND sukr>={0:d}) OR (children>0 AND sukr>={1:d})) AND
+place NOT like '%,%,%,jurta,%,1' ORDER BY sukr DESC;", wochild,wchild));
+            List<ZooJobItem> res = new List<ZooJobItem>();
+            while (rd.Read())
+            {
+                int child=rd.IsDBNull(5)?0:rd.GetInt32("children");
+                int sukr=rd.GetInt32("sukr");
+                res.Add(new ZooJobItem().SetNest(rd.GetInt32("r_id"), rd.GetString("name"),
+                    rd.GetString("place"), rd.GetInt32("age"),(child>0?sukr-wochild:sukr-wchild),sukr));
+            }
+            rd.Close();
+            return res.ToArray();
+
         }
     }
 }

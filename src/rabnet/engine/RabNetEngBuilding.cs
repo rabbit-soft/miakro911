@@ -24,6 +24,12 @@ namespace rabnet
             this.eng = eng;
             b = eng.db().getBuilding(id);
         }
+        public static RabNetEngBuilding fromPlace(string place,RabNetEngine eng)
+        {
+            String[] p = place.Split(',');
+            int[] tiers = eng.db().getTiers(int.Parse(p[0]));
+            return new RabNetEngBuilding(tiers[(int.Parse(p[1])==1)?1:0],eng);
+        }
         public int tid{get{return id;}}
 
         public void commit()
@@ -49,7 +55,7 @@ namespace rabnet
         {
             if (b.fnests[0] == (value ? '1' : '0'))
                 return;
-            eng.logs().log(value ? RabNetLogs.LogType.NEST_ON : RabNetLogs.LogType.NEST_OFF, b.busy(0), b.fullname[0]);
+            eng.logs().log(value ? RabNetLogs.LogType.NEST_ON : RabNetLogs.LogType.NEST_OFF, b.busy(0), b.smallname[0]);
             b.fnests = (value ? "1" : "0")+b.fnests.Substring(1);
             commit();
         }
@@ -57,7 +63,7 @@ namespace rabnet
         {
             if (b.fnests[1] == (value ? '1' : '0'))
                 return;
-            eng.logs().log(value ? RabNetLogs.LogType.NEST_ON : RabNetLogs.LogType.NEST_OFF, b.busy(1), b.fullname[1]);
+            eng.logs().log(value ? RabNetLogs.LogType.NEST_ON : RabNetLogs.LogType.NEST_OFF, b.busy(1), b.smallname[1]);
             b.fnests = b.fnests.Substring(0, 1) + (value ? '1' : '0');
             commit();
         }
@@ -69,7 +75,7 @@ namespace rabnet
             RabNetLogs.LogType tp = RabNetLogs.LogType.HEATER_OUT;
             if (value == 1) tp = RabNetLogs.LogType.HEATER_OFF;
             if (value == 3) tp = RabNetLogs.LogType.HEATER_ON;
-            eng.logs().log(tp, b.busy(0), b.fullname[0]);
+            eng.logs().log(tp, b.busy(0), b.smallname[0]);
             b.fheaters = String.Format("{0:D1}",value) + b.fheaters.Substring(1);
             commit();
         }
@@ -81,7 +87,7 @@ namespace rabnet
             RabNetLogs.LogType tp = RabNetLogs.LogType.HEATER_OUT;
             if (value == 1) tp = RabNetLogs.LogType.HEATER_OFF;
             if (value == 3) tp = RabNetLogs.LogType.HEATER_ON;
-            eng.logs().log(tp, b.busy(1), b.fullname[1]);
+            eng.logs().log(tp, b.busy(1), b.smallname[1]);
             b.fheaters = b.fheaters.Substring(0, 1) + String.Format("{0:D1}", value);
             commit();
         }
@@ -108,6 +114,7 @@ namespace rabnet
             b.fdelims = b.fdelims.Substring(0,2)+(value ? "1" : "0");
             commit();
         }
+        public string type { get { return b.ftype; } }
 
     }
 }

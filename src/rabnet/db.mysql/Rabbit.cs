@@ -361,6 +361,8 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
         public int surname;
         public int secname;
         public string address;
+        public string justAddress;
+        public string smallAddress;
         public int group;
         public int breed;
         public int zone;
@@ -403,9 +405,17 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             surname = sur;
             secname = sec;
             if (adr == "")
+            {
+                justAddress = "";
+                smallAddress = NullAddress;
                 address = NullAddress;
+            }
             else
+            {
+                justAddress = adr;
                 address = Buildings.fullPlaceName(adr, false, true, true);
+                smallAddress = Buildings.fullPlaceName(adr, true, false, false);
+            }
             group = grp;
             breed = brd;
             zone = zn;

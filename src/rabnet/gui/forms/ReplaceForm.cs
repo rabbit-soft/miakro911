@@ -136,7 +136,7 @@ namespace rabnet
         private DataTable ds = new DataTable();
         private DataGridViewComboBoxColumn cbc = new DataGridViewComboBoxColumn();
         private Building[] bs = null;
-        public enum Action { NONE,CHANGE,BOYSOUT}
+        public enum Action { NONE,CHANGE,BOYSOUT,SET_NEST}
         private Action action = Action.NONE;
         private bool globalError=false;
         private bool noboys = false;
@@ -222,6 +222,10 @@ namespace rabnet
             for (int i=0;i<rbs.Count;i++)
                 f["r" + i.ToString()] = rbs[i].rid.ToString();
             String tp = "";
+            comboBox1.Tag = 1;
+            if (action == Action.SET_NEST)
+                comboBox1.SelectedIndex = 4;
+            comboBox1.Tag = 0;
             if (comboBox1.SelectedIndex != 0)
             {
                 switch (comboBox1.SelectedIndex)
