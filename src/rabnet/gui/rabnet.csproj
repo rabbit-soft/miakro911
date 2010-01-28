@@ -288,6 +288,12 @@
     <Compile Include="components\RabStatusBar.Designer.cs">
       <DependentUpon>RabStatusBar.cs</DependentUpon>
     </Compile>
+    <Compile Include="reports\FuckerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="reports\FuckerForm.Designer.cs">
+      <DependentUpon>FuckerForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="components\BuildingControl.resx">
       <DependentUpon>BuildingControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -390,6 +396,9 @@
     <EmbeddedResource Include="panels\YoungsPanel.resx">
       <DependentUpon>YoungsPanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="reports\FuckerForm.resx">
+      <DependentUpon>FuckerForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\db.mysql\db.mysql.csproj">
@@ -407,6 +416,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="reports\breeds.rdl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="reports\fucker.rdl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="reports\test.rdl">

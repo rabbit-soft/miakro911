@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using log4net;
+using System.Xml;
 
 namespace rabnet
 {
@@ -167,6 +168,20 @@ namespace rabnet
         {
             (new ReportViewForm("Статистика возрастного поголовья", "age", 
                 Engine.get().db().makeReport(ReportType.Type.AGE, null))).ShowDialog();
+        }
+
+        private void продуктивностьСоитияToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FuckerForm dlg=new FuckerForm();
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                Filters f = new Filters();
+                f["prt"] = dlg.getFucker().ToString();
+                f["dfr"] = dlg.getFromDate();
+                f["dto"] = dlg.getToDate();
+                (new ReportViewForm("Статистика продуктивности", "fucker",new XmlDocument[]{
+                    Engine.get().db().makeReport(ReportType.Type.FUCKER, f),dlg.getXml()})).ShowDialog();
+            }
         }
 
     }

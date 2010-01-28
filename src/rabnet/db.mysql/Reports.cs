@@ -8,7 +8,7 @@ namespace rabnet
 {
     public class ReportType
     {
-        public enum Type { TEST,BREEDS,AGE };
+        public enum Type { TEST,BREEDS,AGE,FUCKER };
     }
 
     public class Reports
@@ -49,6 +49,7 @@ namespace rabnet
                 case ReportType.Type.TEST:query=testQuery(f);break;
                 case ReportType.Type.BREEDS: query = breedsQuery(f); break;
                 case ReportType.Type.AGE: query = ageQuery(f); break;
+                case ReportType.Type.FUCKER: query = fuckerQuery(f); break;
             }
             return makeStdReportXml(query);
         }
@@ -93,6 +94,23 @@ from rabbits;",f.safeValue("brd","121"));
         private string ageQuery(Filters f)
         {
             return "SELECT (TO_DAYS(NOW())-TO_DAYS(r_born)) age,sum(r_group) cnt FROM rabbits GROUP BY age;";
+        }
+
+        private string fuckerQuery(Filters f)
+        {
+            int partner = f.safeInt("prt");
+            DateTime from=DateTime.Parse(f.safeValue("dfr",DateTime.Now.ToShortDateString()));
+            DateTime to=DateTime.Parse(f.safeValue("dto",DateTime.Now.ToShortDateString()));
+            return String.Format(@"(SELECT rabname(f_rabid,2) name,f_children,
+IF(f_type='vyazka','Вязка','случка') type,
+IF(f_state='proholost','Прохолостание','Окрол') state,
+DATE_FORMAT(f_date,'%d.%m.%Y') start,DATE_FORMAT(f_end_date,'%d.%m.%Y') stop 
+FROM fucks WHERE f_partner={0:d} AND f_end_date>={1:s} AND f_end_date<={2:s})
+union
+(SELECT 'Итого:',sum(f_children),'','','','' 
+FROM fucks WHERE f_partner={0:d} AND f_end_date>={1:s} AND f_end_date<={2:s}
+);",
+              partner,DBHelper.DateToMyString(from),DBHelper.DateToMyString(to));
         }
     }
 }

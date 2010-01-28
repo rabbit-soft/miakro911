@@ -243,6 +243,7 @@
             this.продуктивностьСоитияToolStripMenuItem.Name = "продуктивностьСоитияToolStripMenuItem";
             this.продуктивностьСоитияToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
             this.продуктивностьСоитияToolStripMenuItem.Text = "Продуктивность соития";
+            this.продуктивностьСоитияToolStripMenuItem.Click += new System.EventHandler(this.продуктивностьСоитияToolStripMenuItem_Click);
             // 
             // возрастИКоличествоToolStripMenuItem
             // 

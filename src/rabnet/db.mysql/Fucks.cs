@@ -68,7 +68,7 @@ rabname(f_partner,2) partner,
 (SELECT r_breed FROM rabbits WHERE r_id=f_partner) breed,
 (SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=(SELECT r_genesis FROM rabbits WHERE r_id=f_partner)) genom,
 f_killed,f_added,0 dead
-FROM fucks WHERE f_rabid={0:d} AND isdead(f_partner)=0 ORDER BY f_date)",rabbit),sql);
+FROM fucks WHERE f_rabid={0:d} AND isdead(f_partner)=0 ORDER BY f_date);",rabbit),sql);
             MySqlDataReader rd=cmd.ExecuteReader();
             Fucks f=new Fucks();
             while(rd.Read())
@@ -93,7 +93,7 @@ r_breed,
 (SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=r_genesis) genom,
 (SELECT SUM(f_times) FROM fucks WHERE f_partner=r_id AND f_rabid={0:d}) fucks,
 (SELECT SUM(f_children) FROM fucks WHERE f_partner=r_id AND f_rabid={0:d}) children
-FROM rabbits WHERE r_sex='male' AND r_status>0 AND (r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol)>={1:d}){2:s}{3:s};",
+FROM rabbits WHERE r_sex='male' AND r_status>0 AND (r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol)>={1:d}){2:s}{3:s} ORDER BY fullname;",
 female,malewait,
 (geterosis?"":String.Format(" AND r_breed=(SELECT r2.r_breed FROM rabbits r2 WHERE r_id={0:d})",female)),
 (inbreeding?"":String.Format(@" AND (SELECT COUNT(g_genom) FROM genoms WHERE g_id=r_genesis AND g_genom IN 
