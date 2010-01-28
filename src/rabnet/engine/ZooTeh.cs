@@ -91,12 +91,13 @@ namespace rabnet
             this.age = age; this.id = id;
             return this;
         }
-        public ZootehJob SetNest(int id, String nm, String ad, int age, int srok,int sukr)
+        public ZootehJob SetNest(int id, String nm, String ad, int age, int srok,int sukr,int children)
         {
             type = JobType.SET_NEST; job = "Установка гнездовья";
             days = srok; name = nm; address = ad;
             this.age = age; this.id = id;
             comment = "C-" + sukr.ToString();
+            if (children>0) comment+=" " + children.ToString() + " подсосных";
             return this;
         }
     }
@@ -219,7 +220,7 @@ namespace rabnet
             int wchild = eng.options().getIntOption(Options.OPT_ID.CHILD_NEST);
             ZooJobItem[] jobs = eng.db().getSetNest(f, wochild, wchild);
             foreach (ZooJobItem z in jobs)
-                jh.Add(new ZootehJob().SetNest(z.id, z.name, z.place, z.age, z.i[0],z.i[1]));
+                jh.Add(new ZootehJob().SetNest(z.id, z.name, z.place, z.age, z.i[0],z.i[1],z.i[2]));
         }
 
     }

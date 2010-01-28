@@ -79,12 +79,13 @@ namespace rabnet
             i[0] = srok;
             return this;
         }
-        public ZooJobItem SetNest(int id, String nm, String place, int age, int srok,int sukr)
+        public ZooJobItem SetNest(int id, String nm, String place, int age, int srok,int sukr,int children)
         {
             type = 8; name = nm; this.place = Buildings.fullPlaceName(place);
             this.age = age; this.id = id;
             i[0] = srok;
             i[1] = sukr;
+            i[2] = children;
             return this;
         }
     }
@@ -307,7 +308,7 @@ place NOT like '%,%,%,jurta,%,1' ORDER BY sukr DESC;", wochild,wchild));
                 int child=rd.IsDBNull(5)?0:rd.GetInt32("children");
                 int sukr=rd.GetInt32("sukr");
                 res.Add(new ZooJobItem().SetNest(rd.GetInt32("r_id"), rd.GetString("name"),
-                    rd.GetString("place"), rd.GetInt32("age"),(child>0?sukr-wchild:sukr-wochild),sukr));
+                    rd.GetString("place"), rd.GetInt32("age"), (child > 0 ? sukr - wchild : sukr - wochild), sukr, child));
             }
             rd.Close();
             return res.ToArray();
