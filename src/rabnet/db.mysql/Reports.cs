@@ -8,7 +8,7 @@ namespace rabnet
 {
     public class ReportType
     {
-        public enum Type { TEST };
+        public enum Type { TEST,BREEDS };
     }
 
     public class Reports
@@ -47,6 +47,7 @@ namespace rabnet
             switch (type)
             {
                 case ReportType.Type.TEST:query=testQuery(f);break;
+                case ReportType.Type.BREEDS: query = breedsQuery(f); break;
             }
             return makeStdReportXml(query);
         }
@@ -59,6 +60,21 @@ namespace rabnet
         private string testQuery(Filters f)
         {
             return "SELECT rabname(r_id,2) f1,(TO_DAYS(NOW())-TO_DAYS(r_born)) f2 FROM rabbits LIMIT 100;";
+        }
+
+        private string breedsQuery(Filters f)
+        {
+            return @"SELECT r_breed br,(SELECT b_name FROM breeds WHERE b_id=br) breed,
+(SELECT count(*) FROM rabbits WHERE r_sex='male' AND r_status=2 AND r_breed=br) fuck,
+(SELECT count(*) FROM rabbits WHERE r_sex='male' AND r_status=1 AND r_breed=br) kandidat,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=0 AND r_breed=br) boys,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status>=2 AND r_breed=br) state,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=1 AND r_breed=br) pervo,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=0 AND r_breed=br AND r_born<=(now()-INTERVAL 121 day)) nevest,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=0 AND r_breed=br and r_born>(now()-INTERVAL 121 day)) girl,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='void' AND r_breed=br) bezpolie,
+sum(r_group) vsego
+FROM rabbits GROUP BY r_breed;";
         }
     }
 }

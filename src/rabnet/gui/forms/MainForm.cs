@@ -154,5 +154,10 @@ namespace rabnet
             (new ReportViewForm("Тестовый отчет","test", Engine.get().db().makeReport(ReportType.Type.TEST, null))).ShowDialog();
         }
 
+        private void породыToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            (new ReportViewForm("Отчет по породам", "breeds", Engine.get().db().makeReport(ReportType.Type.BREEDS, null))).ShowDialog();
+        }
+
     }
 }

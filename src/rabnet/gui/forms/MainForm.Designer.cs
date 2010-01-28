@@ -71,6 +71,10 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
+            this.породыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.списанияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.продуктивностьСоитияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.возрастИКоличествоToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -204,7 +208,11 @@
             // отчетыToolStripMenuItem
             // 
             this.отчетыToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.тестовыйToolStripMenuItem});
+            this.тестовыйToolStripMenuItem,
+            this.породыToolStripMenuItem,
+            this.списанияToolStripMenuItem,
+            this.продуктивностьСоитияToolStripMenuItem,
+            this.возрастИКоличествоToolStripMenuItem});
             this.отчетыToolStripMenuItem.Name = "отчетыToolStripMenuItem";
             this.отчетыToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.отчетыToolStripMenuItem.Text = "Отчеты";
@@ -212,7 +220,7 @@
             // тестовыйToolStripMenuItem
             // 
             this.тестовыйToolStripMenuItem.Name = "тестовыйToolStripMenuItem";
-            this.тестовыйToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.тестовыйToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
             this.тестовыйToolStripMenuItem.Text = "Тестовый";
             this.тестовыйToolStripMenuItem.Click += new System.EventHandler(this.тестовыйToolStripMenuItem_Click);
             // 
@@ -407,6 +415,31 @@
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
             // 
+            // породыToolStripMenuItem
+            // 
+            this.породыToolStripMenuItem.Name = "породыToolStripMenuItem";
+            this.породыToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.породыToolStripMenuItem.Text = "Породы";
+            this.породыToolStripMenuItem.Click += new System.EventHandler(this.породыToolStripMenuItem_Click);
+            // 
+            // списанияToolStripMenuItem
+            // 
+            this.списанияToolStripMenuItem.Name = "списанияToolStripMenuItem";
+            this.списанияToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.списанияToolStripMenuItem.Text = "Списания";
+            // 
+            // продуктивностьСоитияToolStripMenuItem
+            // 
+            this.продуктивностьСоитияToolStripMenuItem.Name = "продуктивностьСоитияToolStripMenuItem";
+            this.продуктивностьСоитияToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.продуктивностьСоитияToolStripMenuItem.Text = "Продуктивность соития";
+            // 
+            // возрастИКоличествоToolStripMenuItem
+            // 
+            this.возрастИКоличествоToolStripMenuItem.Name = "возрастИКоличествоToolStripMenuItem";
+            this.возрастИКоличествоToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.возрастИКоличествоToolStripMenuItem.Text = "Возраст и количество";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -473,6 +506,10 @@
         private System.Windows.Forms.ToolStripMenuItem usersMenuItem;
         private System.Windows.Forms.ToolStripMenuItem отчетыToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem тестовыйToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem породыToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem списанияToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem продуктивностьСоитияToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem возрастИКоличествоToolStripMenuItem;
     }
 }
 
