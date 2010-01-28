@@ -8,7 +8,7 @@ namespace rabnet
 {
     public class ReportType
     {
-        public enum Type { TEST,BREEDS };
+        public enum Type { TEST,BREEDS,AGE };
     }
 
     public class Reports
@@ -48,6 +48,7 @@ namespace rabnet
             {
                 case ReportType.Type.TEST:query=testQuery(f);break;
                 case ReportType.Type.BREEDS: query = breedsQuery(f); break;
+                case ReportType.Type.AGE: query = ageQuery(f); break;
             }
             return makeStdReportXml(query);
         }
@@ -64,14 +65,14 @@ namespace rabnet
 
         private string breedsQuery(Filters f)
         {
-            return @"SELECT r_breed br,(SELECT b_name FROM breeds WHERE b_id=br) breed,
+            return String.Format(@"SELECT r_breed br,(SELECT b_name FROM breeds WHERE b_id=br) breed,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=2 AND r_breed=br) fuck,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=1 AND r_breed=br) kandidat,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=0 AND r_breed=br) boys,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status>=2 AND r_breed=br) state,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=1 AND r_breed=br) pervo,
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=0 AND r_breed=br AND r_born<=(now()-INTERVAL 121 day)) nevest,
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=0 AND r_breed=br and r_born>(now()-INTERVAL 121 day)) girl,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=0 AND r_breed=br AND r_born<=(now()-INTERVAL {0:s} day)) nevest,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=0 AND r_breed=br and r_born>(now()-INTERVAL {0:s} day)) girl,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='void' AND r_breed=br) bezpolie,
 sum(r_group) vsego
 FROM rabbits GROUP BY r_breed
@@ -82,11 +83,16 @@ select 'Итого','',(SELECT count(*) FROM rabbits WHERE r_sex='male' AND r_st
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=0) boys,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status>=2 ) state,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=1 ) pervo,
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=0 AND r_born<=(now()-INTERVAL 121 day)) nevest,
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=0 and r_born>(now()-INTERVAL 121 day)) girl,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=0 AND r_born<=(now()-INTERVAL {0:s} day)) nevest,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=0 and r_born>(now()-INTERVAL {0:s} day)) girl,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='void') bezpolie,
 sum(r_group) vsego
-from rabbits;";
+from rabbits;",f.safeValue("brd","121"));
+        }
+
+        private string ageQuery(Filters f)
+        {
+            return "SELECT (TO_DAYS(NOW())-TO_DAYS(r_born)) age,sum(r_group) cnt FROM rabbits GROUP BY age;";
         }
     }
 }

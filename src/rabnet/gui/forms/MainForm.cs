@@ -151,12 +151,22 @@ namespace rabnet
 
         private void тестовыйToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            (new ReportViewForm("Тестовый отчет","test", Engine.get().db().makeReport(ReportType.Type.TEST, null))).ShowDialog();
+            (new ReportViewForm("Тестовый отчет","test", 
+                Engine.get().db().makeReport(ReportType.Type.TEST, null))).ShowDialog();
         }
 
         private void породыToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            (new ReportViewForm("Отчет по породам", "breeds", Engine.get().db().makeReport(ReportType.Type.BREEDS, null))).ShowDialog();
+            Filters f = new Filters();
+            f["brd"] = Engine.get().brideAge().ToString();
+            (new ReportViewForm("Отчет по породам", "breeds", 
+                Engine.get().db().makeReport(ReportType.Type.BREEDS, f))).ShowDialog();
+        }
+
+        private void возрастИКоличествоToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            (new ReportViewForm("Статистика возрастного поголовья", "age", 
+                Engine.get().db().makeReport(ReportType.Type.AGE, null))).ShowDialog();
         }
 
     }

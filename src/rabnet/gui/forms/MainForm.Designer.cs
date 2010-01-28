@@ -222,6 +222,7 @@
             this.тестовыйToolStripMenuItem.Name = "тестовыйToolStripMenuItem";
             this.тестовыйToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
             this.тестовыйToolStripMenuItem.Text = "Тестовый";
+            this.тестовыйToolStripMenuItem.Visible = false;
             this.тестовыйToolStripMenuItem.Click += new System.EventHandler(this.тестовыйToolStripMenuItem_Click);
             // 
             // породыToolStripMenuItem
@@ -248,6 +249,7 @@
             this.возрастИКоличествоToolStripMenuItem.Name = "возрастИКоличествоToolStripMenuItem";
             this.возрастИКоличествоToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
             this.возрастИКоличествоToolStripMenuItem.Text = "Возраст и количество";
+            this.возрастИКоличествоToolStripMenuItem.Click += new System.EventHandler(this.возрастИКоличествоToolStripMenuItem_Click);
             // 
             // настройкиToolStripMenuItem
             // 
