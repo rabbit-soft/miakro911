@@ -192,7 +192,7 @@
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.Location = new System.Drawing.Point(12, 331);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(49, 13);
@@ -201,6 +201,7 @@
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(110, 331);
             this.label5.Name = "label5";
@@ -212,7 +213,7 @@
             // 
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2010, 1, 27, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2010, 1, 28, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
             this.dateDays1.Location = new System.Drawing.Point(12, 12);
