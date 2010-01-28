@@ -136,7 +136,7 @@ namespace rabnet
         private List<RabNetEngRabbit> rbs = new List<RabNetEngRabbit>();
         private RPList rs = new RPList();
         private DataTable ds = new DataTable();
-        private DataGridViewComboBoxColumn cbc = new DataGridViewComboBoxColumn();
+        private DataGridViewComboBoxColumn cbc = new DataGridViewComboBoxColumn();        
         private Building[] bs = null;
         public enum Action { NONE,CHANGE,BOYSOUT,SET_NEST,ONE_GIRL_OUT}
         private Action action = Action.NONE;
@@ -271,6 +271,7 @@ namespace rabnet
             {
                 getBuildings();
                 dataGridView1.Columns.RemoveAt(PLACEFIELD);
+                cbc.MaxDropDownItems = 20;
                 cbc.HeaderText = "Новый адрес";
                 cbc.DataPropertyName = "Новый адрес";
                 cbc.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
