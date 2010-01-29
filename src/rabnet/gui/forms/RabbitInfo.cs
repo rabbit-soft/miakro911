@@ -276,7 +276,7 @@ namespace rabnet
                 names = Engine.db().catalogs().getFreeNames(sx, rab.wasname);
                 FillList(name, names, rab.name);
                 if (rab.name == 0)
-                    name.Enabled = true;
+                    name.Enabled = button16.Enabled=true;
             }
         }
 
@@ -389,6 +389,7 @@ namespace rabnet
                 name.Enabled = false;
             if (!checkBox5.Checked && rab.group==1 && rab.sex!=OneRabbit.RabbitSex.VOID && rab.name==0)
                 name.Enabled = true;
+            button16.Enabled = name.Enabled;
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -551,6 +552,7 @@ namespace rabnet
                 name.Enabled = false;
                 name.Text = "";
             }
+            button16.Enabled = name.Enabled;
         }
 
         private void button17_Click(object sender, EventArgs e)

@@ -169,6 +169,7 @@
             this.TabPage1.Controls.Add(this.label22);
             this.TabPage1.Controls.Add(this.groupBox7);
             this.TabPage1.Controls.Add(this.name);
+            this.TabPage1.Controls.Add(this.button16);
             this.TabPage1.Controls.Add(this.checkBox5);
             this.TabPage1.Controls.Add(this.groupBox2);
             this.TabPage1.Controls.Add(this.label6);
@@ -285,7 +286,6 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.button16);
             this.groupBox2.Controls.Add(this.button15);
             this.groupBox2.Controls.Add(this.button14);
             this.groupBox2.Controls.Add(this.bdate);
@@ -311,7 +311,8 @@
             // 
             // button16
             // 
-            this.button16.Location = new System.Drawing.Point(187, 20);
+            this.button16.Enabled = false;
+            this.button16.Location = new System.Drawing.Point(343, 22);
             this.button16.Name = "button16";
             this.button16.Size = new System.Drawing.Size(25, 22);
             this.button16.TabIndex = 20;
