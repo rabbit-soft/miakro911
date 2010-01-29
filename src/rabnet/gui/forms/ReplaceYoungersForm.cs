@@ -17,7 +17,7 @@ namespace rabnet
         public ReplaceYoungersForm()
         {
             InitializeComponent();
-            cs = new ListViewColumnSorter(listView1, new int[] {1,4,6,7});
+            cs = new ListViewColumnSorter(listView1, new int[] {1,4,6,7},Options.OPT_ID.REPL_YOUNG_LIST);
             listView1.ListViewItemSorter = cs;
         }
 

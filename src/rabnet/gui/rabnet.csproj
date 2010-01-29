@@ -170,6 +170,7 @@
     <Compile Include="forms\KillForm.Designer.cs">
       <DependentUpon>KillForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="forms\ListViewSaver.cs" />
     <Compile Include="forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

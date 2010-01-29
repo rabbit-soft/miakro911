@@ -17,14 +17,12 @@ namespace rabnet
             InitializeComponent();
             fp = new DeadFilter(rsb);
             rsb.filterPanel = fp;
-            cs = new ListViewColumnSorter(listView1, new int[] { 2, 3 });
+            cs = new ListViewColumnSorter(listView1, new int[] { 2, 3 },Options.OPT_ID.DEAD_LIST);
         }
 
         private IDataGetter rsb_prepareGet(object sender, EventArgs e)
         {
-            listView1.Items.Clear();
-            listView1.Hide();
-            listView1.ListViewItemSorter = null;
+            cs.Prepare();
             Filters f = fp.getFilters();
             IDataGetter gt = DataThread.db().getDead(f);
             rsb.setText(1, gt.getCount().ToString() + " записей");
@@ -35,9 +33,7 @@ namespace rabnet
         {
             if (e.data == null)
             {
-                listView1.ListViewItemSorter = cs.Clear();
-                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                listView1.Show();
+                cs.Restore();
                 return;
             }
             Dead d = (e.data as Dead);

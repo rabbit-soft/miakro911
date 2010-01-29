@@ -18,7 +18,7 @@ namespace rabnet
         public YoungsPanel(RabStatusBar sb)
             : base(sb, null)
         {
-            cs = new ListViewColumnSorter(listView1, new int[] { 1,2, 9 });
+            cs = new ListViewColumnSorter(listView1, new int[] { 1,2, 9 },Options.OPT_ID.YOUNG_LIST);
             listView1.ListViewItemSorter = null;
         }
 
@@ -26,15 +26,13 @@ namespace rabnet
         {
             gentree = Engine.opt().getIntOption(Options.OPT_ID.GEN_TREE);
             f = new Filters();
-            listView1.Items.Clear();
-            listView1.Hide();
             Options op = Engine.opt();
             f["shr"] = op.getOption(Options.OPT_ID.SHORT_NAMES);
             f["sht"] = op.getOption(Options.OPT_ID.SHOW_TIER_TYPE);
             f["sho"] = op.getOption(Options.OPT_ID.SHOW_TIER_SEC);
             f["dbl"] = op.getOption(Options.OPT_ID.DBL_SURNAME);
             f["num"] = op.getOption(Options.OPT_ID.SHOW_NUMBERS);
-            listView1.ListViewItemSorter = null;
+            cs.Prepare();
             IDataGetter dg = DataThread.db().getYoungers(f);
             rsb.setText(1, dg.getCount().ToString() + " строк");
             rsb.setText(2, dg.getCount2().ToString() + " кроликов");
@@ -45,9 +43,7 @@ namespace rabnet
         {
             if (data == null)
             {
-                listView1.ListViewItemSorter = cs.Clear();
-                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                listView1.Show();
+                cs.Restore();
                 return;
             }
             IRabbit rab = (data as IRabbit);

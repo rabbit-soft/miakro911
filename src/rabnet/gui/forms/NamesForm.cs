@@ -29,7 +29,7 @@ namespace rabnet
         private void initNameForm()
         {
             InitializeComponent();
-            cs = new ListViewColumnSorter(listView1, new int[] { });
+            cs = new ListViewColumnSorter(listView1, new int[] { },Options.OPT_ID.NAMES_LIST);
 //            manual = false;
             comboBox2.SelectedIndex = 0;
 //            /manual = true;

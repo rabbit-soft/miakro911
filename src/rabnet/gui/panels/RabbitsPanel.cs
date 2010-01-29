@@ -17,15 +17,13 @@ namespace rabnet
         }
         public RabbitsPanel(RabStatusBar rsb):base(rsb,new RabbitsFilter(rsb))
         {
-            cs = new ListViewColumnSorter(listView1, new int[] { 2, 9 });
+            cs = new ListViewColumnSorter(listView1, new int[] { 2, 9 },Options.OPT_ID.RAB_LIST);
             listView1.ListViewItemSorter = null;
         }
 
         protected override IDataGetter onPrepare(Filters flt)
         {
             gentree = Engine.opt().getIntOption(Options.OPT_ID.GEN_TREE)-1;
-            listView1.Items.Clear();
-            listView1.Hide();
             Options op = Engine.opt();
             flt["shr"] = op.getOption(Options.OPT_ID.SHORT_NAMES);
             flt["sht"] = op.getOption(Options.OPT_ID.SHOW_TIER_TYPE);
@@ -34,7 +32,7 @@ namespace rabnet
             flt["num"] = op.getOption(Options.OPT_ID.SHOW_NUMBERS);
             flt["brd"] = op.getOption(Options.OPT_ID.MAKE_BRIDE);
             flt["suc"] = op.getOption(Options.OPT_ID.SUCKERS);
-            listView1.ListViewItemSorter = null;
+            cs.Prepare();
             IDataGetter dg = DataThread.db().getRabbits(flt);
             rsb.setText(1, dg.getCount().ToString() + " записей");
             rsb.setText(2, dg.getCount2().ToString() + " кроликов");
@@ -45,9 +43,7 @@ namespace rabnet
         {
             if (data == null)
             {
-                listView1.ListViewItemSorter = cs.Clear();
-                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                listView1.Show();
+                cs.Restore();
                 return;
             }
             IRabbit rab = (data as IRabbit);

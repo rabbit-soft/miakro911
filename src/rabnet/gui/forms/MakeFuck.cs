@@ -27,7 +27,7 @@ namespace rabnet
             cbInbreed.Checked = (Engine.opt().getIntOption(Options.OPT_ID.INBREEDING) == 1);
             malewait = Engine.opt().getIntOption(Options.OPT_ID.MALE_WAIT);
             manual = true;
-            cs = new ListViewColumnSorter(listView1, new int[] { 3,4 });
+            cs = new ListViewColumnSorter(listView1, new int[] { 3,4 },Options.OPT_ID.MAKE_FUCK_LIST);
             listView1.ListViewItemSorter = cs;
         }
         public MakeFuck(int r1)

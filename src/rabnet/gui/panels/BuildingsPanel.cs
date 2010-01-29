@@ -21,7 +21,7 @@ namespace rabnet
 
         public BuildingsPanel(RabStatusBar bsb):base(bsb, new BuildingsFilter(bsb))
         {
-            cs = new ListViewColumnSorter(listView1, new int[] { });
+            cs = new ListViewColumnSorter(listView1, new int[] { },Options.OPT_ID.BUILD_LIST);
             listView1.ListViewItemSorter = null;
         }
 
@@ -79,9 +79,7 @@ namespace rabnet
             n.Expand();
             f["shr"] = Engine.opt().getOption(Options.OPT_ID.SHORT_NAMES);
             f["dbl"] = Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
-            listView1.Hide();
-            listView1.Items.Clear();
-            listView1.ListViewItemSorter = null;
+            cs.Prepare();
             IDataGetter dg = DataThread.db().getBuildings(f);
             rsb.setText(1, dg.getCount().ToString() + " МИНИфермы");
             return dg;
@@ -91,9 +89,7 @@ namespace rabnet
         {
             if (data==null)
             {
-                listView1.ListViewItemSorter=cs.Clear();
-                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                listView1.Show();
+                cs.Restore();
                 return;
             }
             Building b = data as Building;

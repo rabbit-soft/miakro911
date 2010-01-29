@@ -16,7 +16,7 @@ namespace rabnet
         public WorksPanel(RabStatusBar sb)
             : base(sb, new ZootehFilter(sb))
         {
-            cs = new ListViewColumnSorter(listView1, new int[] {});
+            cs = new ListViewColumnSorter(listView1, new int[] {},Options.OPT_ID.NONE);
             listView1.ListViewItemSorter = null;
         }
 

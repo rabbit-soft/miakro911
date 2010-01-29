@@ -13,14 +13,36 @@ namespace rabnet
         CaseInsensitiveComparer ObjectCompare;
         private ListView lv = null;
         int[] intSorts = null;
-        public ListViewColumnSorter(ListView lv,int[] intsorts)
+        int selItem=0;
+        Options.OPT_ID option=Options.OPT_ID.NONE;
+        public ListViewColumnSorter(ListView lv,int[] intsorts,Options.OPT_ID op)
         {
             ColumnToSort = 0;
             OrderOfSort = SortOrder.None;
             ObjectCompare = new CaseInsensitiveComparer();
             this.intSorts = intsorts;
             this.lv = lv;
+            lv.ListViewItemSorter = this;
+            option = op;
             lv.ColumnClick += new ColumnClickEventHandler(this.OnColumnClick);
+            lv.ColumnWidthChanged += new ColumnWidthChangedEventHandler(this.OnColumnWidthChanged);
+            ListViewSaver.load(op, lv);
+        }
+
+        public void Prepare()
+        {
+            selItem = ListViewSaver.saveItem(lv);
+            lv.ListViewItemSorter = null;
+            lv.Items.Clear();
+            lv.Hide();
+        }
+        public void Restore()
+        {
+            lv.ListViewItemSorter = this;
+            lv.Sort();
+            ListViewSaver.loadItem(lv, selItem);
+            lv.Show();
+            lv.Focus();
         }
 
         public ListViewColumnSorter Clear()
@@ -46,6 +68,7 @@ namespace rabnet
                 SortColumn = e.Column;
                 Order = SortOrder.Ascending;
             }
+            ListViewSaver.save(option, lv);
             (sender as ListView).Sort();
         }
 
@@ -117,6 +140,12 @@ namespace rabnet
             {
                 return OrderOfSort;
             }
+        }
+
+        private void OnColumnWidthChanged(object sender, ColumnWidthChangedEventArgs e)
+        {
+            if (!lv.Focused) return;
+            ListViewSaver.save(option, lv);
         }
 
     }
