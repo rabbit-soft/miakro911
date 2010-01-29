@@ -30,6 +30,14 @@ namespace rabnet
         {
             public ExNotFucked(RabNetEngRabbit r) : base("Крольчиха " + r.fullName + " не сукрольна") { }
         }
+        public class ExNoName : ApplicationException
+        {
+            public ExNoName():base("У сукрольной крольчихи должно быть имя"){}
+        }
+        public class ExNotOne : ApplicationException
+        {
+            public ExNotOne(String action) : base("Нельзя "+action+" группу крольчих") { }
+        }
 
         private int id;
         private OneRabbit rab = null;
@@ -64,7 +72,11 @@ namespace rabnet
             if (rid == 0)
                 return;
             if (rab.wasname != rab.name)
-                eng.logs().log(RabNetLogs.LogType.RENAME,rid,0,"","",eng.db().makeName(rab.wasname,0,0,1,rab.sex));
+            {
+                if (group > 1)
+                    throw new ExNotOne("переименовать");
+                eng.logs().log(RabNetLogs.LogType.RENAME, rid, 0, "", "", eng.db().makeName(rab.wasname, 0, 0, 1, rab.sex));
+            }
             else
                 eng.logs().log(RabNetLogs.LogType.RAB_CHANGE, rid);
             eng.db().setRabbit(rab);
@@ -224,6 +236,8 @@ namespace rabnet
                 throw new ExNotFucker(this);
             if (evdate != DateTime.MinValue)
                 throw new ExAlreadyFucked(this);
+            if (name == 0) throw new ExNoName();
+            if (group > 1) throw new ExNotOne("случить");
             RabNetEngRabbit f = eng.getRabbit(otherrab);
             if (f.sex != OneRabbit.RabbitSex.MALE)
                 throw new ExNotMale(f);

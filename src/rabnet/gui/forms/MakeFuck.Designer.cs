@@ -45,6 +45,9 @@
             this.cbInbreed = new System.Windows.Forms.CheckBox();
             this.cbCand = new System.Windows.Forms.CheckBox();
             this.dateDays1 = new rabnet.components.DateDays();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.button4 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listView1
@@ -199,7 +202,7 @@
             this.dateDays1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2010, 1, 28, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2010, 1, 29, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
             this.dateDays1.Location = new System.Drawing.Point(423, 274);
@@ -210,11 +213,41 @@
             this.dateDays1.Step = 1;
             this.dateDays1.TabIndex = 6;
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(229, 6);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 10;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(194, 9);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(29, 13);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "Имя";
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(357, 6);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(25, 20);
+            this.button4.TabIndex = 12;
+            this.button4.Text = "...";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // MakeFuck
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(572, 366);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.cbCand);
             this.Controls.Add(this.cbInbreed);
             this.Controls.Add(this.cbHeter);
@@ -256,5 +289,8 @@
         private System.Windows.Forms.CheckBox cbHeter;
         private System.Windows.Forms.CheckBox cbInbreed;
         private System.Windows.Forms.CheckBox cbCand;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button button4;
     }
 }

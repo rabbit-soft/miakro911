@@ -16,6 +16,7 @@ namespace rabnet
         bool manual = true;
         int malewait = 0;
         ListViewColumnSorter cs;
+        Catalog names = null;
         public MakeFuck()
         {
             InitializeComponent();
@@ -42,6 +43,21 @@ namespace rabnet
             toolTip.SetToolTip(button3, "Показать гены выбранного самца");
         }
 
+        private void fillNames()
+        {
+            comboBox1.Items.Clear();
+            names = Engine.db().catalogs().getFreeNames(2, rab1.name);
+            comboBox1.Items.Add("");
+            comboBox1.SelectedIndex = 0;
+            foreach (int key in names.Keys)
+            {
+                comboBox1.Items.Add(names[key]);
+                if (key == rab1.name)
+                    comboBox1.SelectedIndex = comboBox1.Items.Count - 1;
+            }
+            comboBox1.Enabled = button4.Enabled = rab1.name == 0;
+        }
+
         public MakeFuck(int r1, int r2):this()
         {
             rab1 = Engine.get().getRabbit(r1);
@@ -51,6 +67,7 @@ namespace rabnet
             fillTable();
             if (rab1.status > 0)
                 Text = button1.Text = "Вязать";
+            fillNames();
         }
 
         private void fillTable()
@@ -112,13 +129,23 @@ namespace rabnet
         {
             try
             {
+                if (rab1.name == 0 && comboBox1.SelectedIndex!=0)
+                {
+                    foreach (int k in names.Keys)
+                        if (comboBox1.Text == names[k])
+                            rab1.name = k;
+                    rab1.commit();
+                }
+                if (listView1.SelectedItems.Count!=1)
+                    throw new ApplicationException("Выберите самца");
                 int r2 = (listView1.SelectedItems[0].Tag as Fucks.Fuck).partnerid;
                 rab1.FuckIt(r2, dateDays1.DateValue);
                 Close();
             }
             catch (ApplicationException ex)
             {
-                MessageBox.Show("Порграмма вызвала исключение " + ex.GetType().ToString() + ": " + ex.Message);
+                DialogResult = DialogResult.None;
+                MessageBox.Show("Ошибка: " + ex.Message);
             }
         }
 
@@ -133,6 +160,12 @@ namespace rabnet
         {
             if (listView1.SelectedItems.Count==1)
                 button3.PerformClick();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            new NamesForm(1).ShowDialog();
+            fillNames();
         }
 
     }

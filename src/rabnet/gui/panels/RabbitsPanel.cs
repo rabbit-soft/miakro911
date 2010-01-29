@@ -171,8 +171,8 @@ namespace rabnet
             }
             if (sex == 2 && multi == 1)
             {
-                fuckMenuItem.Visible = !isGirl();
                 fuckMenuItem.Text = isBride() ? "Случка" : "Вязка";
+                fuckMenuItem.Visible = !isGirl() && GroupCount()==1;
             }
             if (sex == 4)
             {
@@ -314,18 +314,28 @@ namespace rabnet
                 rsb.run();
         }
 
+        private int GroupCount()
+        {
+            String s = listView1.SelectedItems[0].SubItems[7].Text;
+            if (s[0] == '[') return int.Parse(s.Substring(1, s.Length - 2));
+            return 1;
+        }
+
+        private int selCount(int index)
+        {
+            String s = listView1.Items[index].SubItems[7].Text;
+            int c = 1;
+            if (s[0] == '+') c += int.Parse(s.Substring(1));
+            if (s[0] == '[') c = int.Parse(s.Substring(1, s.Length - 2));
+            return c;
+        }
+
         private void makeSelectedCount()
         {
             int rows = listView1.SelectedItems.Count;
             int cnt = 0;
             foreach (ListViewItem li in listView1.SelectedItems)
-            {
-                String s=li.SubItems[7].Text;
-                int c = 1;
-                if (s[0] == '+') c += int.Parse(s.Substring(1));
-                if (s[0] == '[') c = int.Parse(s.Substring(1, s.Length - 2));
-                cnt += c;
-            }
+                cnt += selCount(li.Index);
             rsb.setText(3, String.Format("Выбрано {0:d} строк - {1:d} кроликов",rows,cnt));
         }
 
