@@ -442,6 +442,11 @@ namespace rabnet
             return new ZooTehGetter(sql,f).getSetNest(wochild, wchild);
         }
 
+        public IDeadReasons getDeadReasons()
+        {
+            return new DeadReasons(sql);
+        }
+
         #endregion
     }
 }

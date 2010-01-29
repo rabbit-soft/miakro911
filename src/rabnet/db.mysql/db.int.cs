@@ -97,6 +97,7 @@ namespace rabnet
         void deleteFarm(int fid);
         ZooJobItem[] getVacc(Filters f,int days);
         ZooJobItem[] getSetNest(Filters f,int wochild,int wchild);
+        IDeadReasons getDeadReasons();
     }
 
 }

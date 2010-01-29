@@ -75,6 +75,7 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
+            this.причиныСпичанияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -142,7 +143,8 @@
             this.toolStripMenuItem2,
             this.namesMenuItem,
             this.breedsMenuItem,
-            this.зоныToolStripMenuItem});
+            this.зоныToolStripMenuItem,
+            this.причиныСпичанияToolStripMenuItem});
             this.видToolStripMenuItem.Name = "видToolStripMenuItem";
             this.видToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
             this.видToolStripMenuItem.Text = "Вид";
@@ -443,6 +445,13 @@
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
             // 
+            // причиныСпичанияToolStripMenuItem
+            // 
+            this.причиныСпичанияToolStripMenuItem.Name = "причиныСпичанияToolStripMenuItem";
+            this.причиныСпичанияToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
+            this.причиныСпичанияToolStripMenuItem.Text = "Причины списания";
+            this.причиныСпичанияToolStripMenuItem.Click += new System.EventHandler(this.причиныСпичанияToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -513,6 +522,7 @@
         private System.Windows.Forms.ToolStripMenuItem списанияToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem продуктивностьСоитияToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem возрастИКоличествоToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem причиныСпичанияToolStripMenuItem;
     }
 }
 

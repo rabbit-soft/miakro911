@@ -765,5 +765,15 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public IDeadReasons getDeadReasons()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

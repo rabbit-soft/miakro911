@@ -10,7 +10,7 @@ namespace rabnet
 {
     public partial class CatalogForm : Form
     {
-        public enum CatalogType { NONE, BREEDS, ZONES };
+        public enum CatalogType { NONE, BREEDS, ZONES, DEAD };
         private DataTable ds=new DataTable();
         private CatalogType cat = CatalogType.NONE;
         private bool manual = true;
@@ -29,6 +29,9 @@ namespace rabnet
                     break;
                 case CatalogType.ZONES:
                     Text = "Справочник Зон Прибытия";
+                    break;
+                case CatalogType.DEAD:
+                    Text = "Справочник причин списания";
                     break;
             }
             ds.RowChanged+=new DataRowChangeEventHandler(this.OnRowChange);
@@ -49,6 +52,9 @@ namespace rabnet
                     break;
                 case CatalogType.ZONES:
                     cd = Engine.db().getZones().getZones();
+                    break;
+                case CatalogType.DEAD:
+                    cd = Engine.db().getDeadReasons().getReasons();
                     break;
             }
             if (!update)
@@ -77,30 +83,31 @@ namespace rabnet
             {
                 case CatalogType.BREEDS:
                     if (e.Action==DataRowAction.Add)
-                    {
                         e.Row.ItemArray[2] = Engine.db().getBreeds().AddBreed(e.Row.ItemArray[0] as string,
                             e.Row.ItemArray[1] as string);
-                    }
                     else
                         Engine.db().getBreeds().ChangeBreed((int)e.Row.ItemArray[2], e.Row.ItemArray[0] as string,
                             e.Row.ItemArray[1] as string);
                     break;
                 case CatalogType.ZONES:
                     if (e.Action == DataRowAction.Add)
-                    {
                         e.Row.ItemArray[2] = Engine.db().getZones().AddZone((int)e.Row.ItemArray[0],
                             e.Row.ItemArray[1] as string, e.Row.ItemArray[2] as string);
-                    }
                     else
-                        Engine.db().getZones().ChangeZone((int)e.Row.ItemArray[3], e.Row.ItemArray[1] as string,
-                            e.Row.ItemArray[2] as string);
+                        Engine.db().getZones().ChangeZone((int)e.Row.ItemArray[3], (string)e.Row.ItemArray[1],(string)e.Row.ItemArray[2]);
+                    break;
+                case CatalogType.DEAD:
+                    if (e.Action == DataRowAction.Add)
+                        e.Row.ItemArray[1] = Engine.db().getDeadReasons().AddReason((string)e.Row.ItemArray[0]);
+                    else
+                        Engine.db().getDeadReasons().ChangeReason((int)e.Row.ItemArray[1],(string)e.Row.ItemArray[0]);
                     break;
             }
         }
 
         private void OnRowInsert(object sender,DataTableNewRowEventArgs e)
         {
-            e.Row.ItemArray[2]=-1;
+            //e.Row.ItemArray[2]=-1;
         }
 
     }

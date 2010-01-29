@@ -184,5 +184,10 @@ namespace rabnet
             }
         }
 
+        private void причиныСпичанияToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new CatalogForm(CatalogForm.CatalogType.DEAD).ShowDialog();
+        }
+
     }
 }

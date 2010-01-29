@@ -58,6 +58,7 @@
     <Compile Include="db.mysql.cs" />
     <Compile Include="DBHelper.cs" />
     <Compile Include="Dead.cs" />
+    <Compile Include="DeadReasons.cs" />
     <Compile Include="Filters.cs" />
     <Compile Include="Fucks.cs" />
     <Compile Include="Logs.cs" />
