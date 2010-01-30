@@ -301,6 +301,12 @@
     <Compile Include="reports\FuckerForm.Designer.cs">
       <DependentUpon>FuckerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="reports\PeriodForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="reports\PeriodForm.Designer.cs">
+      <DependentUpon>PeriodForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="components\BuildingControl.resx">
       <DependentUpon>BuildingControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -409,6 +415,9 @@
     <EmbeddedResource Include="reports\FuckerForm.resx">
       <DependentUpon>FuckerForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="reports\PeriodForm.resx">
+      <DependentUpon>PeriodForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\db.mysql\db.mysql.csproj">
@@ -426,6 +435,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="reports\breeds.rdl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="reports\dead.rdl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="reports\deadreason.rdl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="reports\fucker.rdl">

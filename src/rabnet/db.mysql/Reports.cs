@@ -8,12 +8,16 @@ namespace rabnet
 {
     public class ReportType
     {
-        public enum Type { TEST,BREEDS,AGE,FUCKER };
+        public enum Type { TEST,BREEDS,AGE,FUCKER,DEAD,DEADREASONS };
     }
 
     public class Reports
     {
         MySqlConnection sql = null;
+        private DateTime FROM = DateTime.Now;
+        private DateTime TO = DateTime.Now;
+        private String DFROM = "NOW()";
+        private String DTO = "NOW()";
         public Reports(MySqlConnection sql)
         {
             this.sql = sql;
@@ -50,6 +54,8 @@ namespace rabnet
                 case ReportType.Type.BREEDS: query = breedsQuery(f); break;
                 case ReportType.Type.AGE: query = ageQuery(f); break;
                 case ReportType.Type.FUCKER: query = fuckerQuery(f); break;
+                case ReportType.Type.DEAD: query = deadQuery(f); break;
+                case ReportType.Type.DEADREASONS: query = deadReasonsQuery(f); break;
             }
             return makeStdReportXml(query);
         }
@@ -96,11 +102,26 @@ from rabbits;",f.safeValue("brd","121"));
             return "SELECT (TO_DAYS(NOW())-TO_DAYS(r_born)) age,sum(r_group) cnt FROM rabbits GROUP BY age;";
         }
 
+        private DateTime[] getDates(Filters f)
+        {
+            DateTime dfrom = DateTime.Parse(f.safeValue("dfr", DateTime.Now.ToShortDateString()));
+            DateTime dto = DateTime.Parse(f.safeValue("dto", DateTime.Now.ToShortDateString()));
+            FROM=dfrom;
+            TO=dto;
+            DFROM=D(FROM);
+            DTO=D(TO);
+            return new DateTime[] { dfrom, dto };
+        }
+
+        public String D(DateTime date)
+        {
+            return DBHelper.DateToMyString(date);
+        }
+
         private string fuckerQuery(Filters f)
         {
             int partner = f.safeInt("prt");
-            DateTime from=DateTime.Parse(f.safeValue("dfr",DateTime.Now.ToShortDateString()));
-            DateTime to=DateTime.Parse(f.safeValue("dto",DateTime.Now.ToShortDateString()));
+            getDates(f);
             return String.Format(@"(SELECT rabname(f_rabid,2) name,f_children,
 IF(f_type='vyazka','Вязка','случка') type,
 IF(f_state='proholost','Прохолостание','Окрол') state,
@@ -110,7 +131,27 @@ union
 (SELECT 'Итого:',sum(f_children),'','','','' 
 FROM fucks WHERE f_partner={0:d} AND f_end_date>={1:s} AND f_end_date<={2:s}
 );",
-              partner,DBHelper.DateToMyString(from),DBHelper.DateToMyString(to));
+              partner,DFROM,DTO);
+        }
+
+        private String deadQuery(Filters f)
+        {
+            getDates(f);
+            return String.Format(@"(SELECT DATE_FORMAT(d_date,'%d.%m.%Y') date,deadname(r_id,2) name,r_group,
+(SELECT d_name FROM deadreasons WHERE d_id=d_reason) reason,d_notes FROM dead WHERE 
+d_date>={0:s} AND d_date<={1:s} ORDER BY d_date ASC)
+UNION ALL (SELECT 'Итого:','',SUM(r_group),'','' FROM dead WHERE 
+d_date>={0:s} AND d_date<={1:s});", DFROM, DTO);
+        }
+
+        private String deadReasonsQuery(Filters f)
+        {
+            getDates(f);
+            return String.Format(@"(SELECT SUM(r_group) grp,d_reason,
+(SELECT d_name FROM deadreasons WHERE d_reason=d_id) reason FROM dead WHERE
+d_date>={0:s} AND d_date<={1:s} GROUP BY d_reason)
+UNION 
+(SELECT SUM(r_group),0,'Итого' FROM dead WHERE d_date>={0:s} AND d_date<={1:s});", DFROM, DTO);
         }
     }
 }

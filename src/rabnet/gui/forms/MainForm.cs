@@ -189,5 +189,23 @@ namespace rabnet
             new CatalogForm(CatalogForm.CatalogType.DEAD).ShowDialog();
         }
 
+        private void списанияToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters f=new Filters();
+            XmlDocument dt=null;
+            if (PeriodForm.Run(f, PeriodForm.Preset.CUR_MONTH, ref dt) == DialogResult.OK)
+                (new ReportViewForm("Причины списаний", "deadreason", new XmlDocument[]{
+                    Engine.db().makeReport(ReportType.Type.DEADREASONS,f),dt})).ShowDialog();
+        }
+
+        private void списанияToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Filters f = new Filters();
+            XmlDocument dt = null;
+            if (PeriodForm.Run(f, PeriodForm.Preset.CUR_MONTH, ref dt) == DialogResult.OK)
+                (new ReportViewForm("Списания", "dead", new XmlDocument[]{
+                    Engine.db().makeReport(ReportType.Type.DEAD,f),dt})).ShowDialog();
+        }
+
     }
 }

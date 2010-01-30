@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReportViewForm));
             this.rdlViewer1 = new fyiReporting.RdlViewer.RdlViewer();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -60,6 +61,7 @@
             this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripMenuItem();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -340,6 +342,10 @@
             this.sfd.Filter = "Файл HTML (*.html)|*.html|Файл XML (*.xml)|*.xml|Файл CSV (*.csv)|*.csv|Файл RTF " +
                 "(*.rtf)|*.rtf|Файл TIF (*.tif)|*.tif|Файл MHT (*.mht)|*.mht";
             // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // ReportViewForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -396,5 +402,6 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem11;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem12;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.Timer timer1;
     }
 }

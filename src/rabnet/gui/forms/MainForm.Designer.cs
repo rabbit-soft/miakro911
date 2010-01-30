@@ -46,6 +46,7 @@
             this.namesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.breedsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.зоныToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.причиныСпичанияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.actMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.отчетыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.тестовыйToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,7 +76,7 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
-            this.причиныСпичанияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.списанияToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -201,6 +202,13 @@
             this.зоныToolStripMenuItem.Text = "Зоны";
             this.зоныToolStripMenuItem.Click += new System.EventHandler(this.зоныToolStripMenuItem_Click);
             // 
+            // причиныСпичанияToolStripMenuItem
+            // 
+            this.причиныСпичанияToolStripMenuItem.Name = "причиныСпичанияToolStripMenuItem";
+            this.причиныСпичанияToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
+            this.причиныСпичанияToolStripMenuItem.Text = "Причины списания";
+            this.причиныСпичанияToolStripMenuItem.Click += new System.EventHandler(this.причиныСпичанияToolStripMenuItem_Click);
+            // 
             // actMenuItem
             // 
             this.actMenuItem.Name = "actMenuItem";
@@ -212,9 +220,10 @@
             this.отчетыToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.тестовыйToolStripMenuItem,
             this.породыToolStripMenuItem,
-            this.списанияToolStripMenuItem,
             this.продуктивностьСоитияToolStripMenuItem,
-            this.возрастИКоличествоToolStripMenuItem});
+            this.возрастИКоличествоToolStripMenuItem,
+            this.списанияToolStripMenuItem,
+            this.списанияToolStripMenuItem1});
             this.отчетыToolStripMenuItem.Name = "отчетыToolStripMenuItem";
             this.отчетыToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.отчетыToolStripMenuItem.Text = "Отчеты";
@@ -238,7 +247,8 @@
             // 
             this.списанияToolStripMenuItem.Name = "списанияToolStripMenuItem";
             this.списанияToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
-            this.списанияToolStripMenuItem.Text = "Списания";
+            this.списанияToolStripMenuItem.Text = "Причины списания";
+            this.списанияToolStripMenuItem.Click += new System.EventHandler(this.списанияToolStripMenuItem_Click);
             // 
             // продуктивностьСоитияToolStripMenuItem
             // 
@@ -445,12 +455,12 @@
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
             // 
-            // причиныСпичанияToolStripMenuItem
+            // списанияToolStripMenuItem1
             // 
-            this.причиныСпичанияToolStripMenuItem.Name = "причиныСпичанияToolStripMenuItem";
-            this.причиныСпичанияToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
-            this.причиныСпичанияToolStripMenuItem.Text = "Причины списания";
-            this.причиныСпичанияToolStripMenuItem.Click += new System.EventHandler(this.причиныСпичанияToolStripMenuItem_Click);
+            this.списанияToolStripMenuItem1.Name = "списанияToolStripMenuItem1";
+            this.списанияToolStripMenuItem1.Size = new System.Drawing.Size(208, 22);
+            this.списанияToolStripMenuItem1.Text = "Списания";
+            this.списанияToolStripMenuItem1.Click += new System.EventHandler(this.списанияToolStripMenuItem1_Click);
             // 
             // MainForm
             // 
@@ -523,6 +533,7 @@
         private System.Windows.Forms.ToolStripMenuItem продуктивностьСоитияToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem возрастИКоличествоToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem причиныСпичанияToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem списанияToolStripMenuItem1;
     }
 }
 
