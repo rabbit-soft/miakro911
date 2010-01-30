@@ -15,7 +15,7 @@ namespace rabnet
         {
             public enum RUBOOL {Да,Нет};
             private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su,n,cn;
-            private RUBOOL ce, ck, uz,sp;
+            private RUBOOL ce, ck, uz,sp,tt;
             [Category("Зоотехнические сроки"),DisplayName("Окрол"),
             Description("Время от случки(вязки) до окрола")]
             public int okrol{ get {return ok;} set{ok=value;} }
@@ -88,6 +88,10 @@ namespace rabnet
             DisplayName("Показывать партнеров"),
             Description("")]
             public RUBOOL showPartners { get { return sp; } set { sp = value; } }
+            [Category("Вид"),
+            DisplayName("Показывать подсказки"),
+            Description("")]
+            public RUBOOL toolTips { get { return tt; } set { tt = value; } }
 
             public int fromR(RUBOOL value)
             {
@@ -133,6 +137,7 @@ namespace rabnet
                 confirmKill = toR(o.getIntOption(Options.OPT_ID.CONFIRM_KILL));
                 updateZoo = toR(o.getIntOption(Options.OPT_ID.UPDATE_ZOO));
                 showPartners = toR(o.getIntOption(Options.OPT_ID.FIND_PARTNERS));
+                toolTips = toR(o.getIntOption(Options.OPT_ID.TOOL_TIPS));
             }
             public void save()
             {
@@ -160,23 +165,25 @@ namespace rabnet
                 o.setOption(Options.OPT_ID.CONFIRM_KILL, fromR(confirmKill));
                 o.setOption(Options.OPT_ID.UPDATE_ZOO, fromR(updateZoo));
                 o.setOption(Options.OPT_ID.FIND_PARTNERS, fromR(showPartners));
+                o.setOption(Options.OPT_ID.TOOL_TIPS, fromR(toolTips));
             }
         }
 
-        private void MoveSplitter(PropertyGrid propertyGrid, int x)
+        private void MoveSplitter(PropertyGrid obj, int x)
         {
-            object propertyGridView =
-   typeof(PropertyGrid).InvokeMember("gridView", BindingFlags.GetField |
-   BindingFlags.NonPublic | BindingFlags.Instance, null, propertyGrid, null);
-            propertyGridView.GetType().InvokeMember("MoveSplitterTo",
-   BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance,
-   null, propertyGridView, new object[] { x });
+            object gridView = typeof(PropertyGrid).InvokeMember("gridView",
+BindingFlags.GetField |
+BindingFlags.NonPublic |
+BindingFlags.Instance, null, obj, null);
+            Type type = gridView.GetType();
+            MethodInfo method = type.GetMethod("MoveSplitterTo", BindingFlags.Instance| BindingFlags.Public | BindingFlags.NonPublic);
+            method.Invoke(gridView, new Object[] { x });
         }
         public OptionsForm()
         {
             InitializeComponent();
             pg.SelectedObject=OptionsHolder.make();
-            MoveSplitter(pg, 300);
+            MoveSplitter(pg, -100);
         }
 
         private void OptionsForm_Load(object sender, EventArgs e)

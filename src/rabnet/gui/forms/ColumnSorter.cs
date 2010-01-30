@@ -31,6 +31,8 @@ namespace rabnet
 
         public void Prepare()
         {
+            if (Engine.opt().getIntOption(Options.OPT_ID.TOOL_TIPS) == 1)
+                ToolTipForm.getForm().Show();
             selItem = ListViewSaver.saveItem(lv);
             lv.ListViewItemSorter = null;
             lv.Items.Clear();
@@ -43,6 +45,7 @@ namespace rabnet
             ListViewSaver.loadItem(lv, selItem);
             lv.Show();
             lv.Focus();
+            ToolTipForm.getForm().Hide();
         }
 
         public ListViewColumnSorter Clear()
