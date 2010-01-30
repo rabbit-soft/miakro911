@@ -381,7 +381,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
         public String bon;
         public OneRabbit[] youngers;
         public string tag;
-        public string nuaddr;
+        public string nuaddr="";
         public OneRabbit(int id,string sx,DateTime bd,int rt,string flg,int nm,int sur,int sec,string adr,int grp,int brd,int zn,String nts,
             String gn,int st,DateTime lfo,String evt,DateTime evd,int ob,int lb,String fnm,String bnm,
             String bon,int parent)

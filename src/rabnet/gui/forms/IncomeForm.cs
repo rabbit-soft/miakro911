@@ -162,8 +162,30 @@ namespace rabnet
 
         private void button6_Click(object sender, EventArgs e)
         {
-            try
+   //         try
             {
+                bool names = false;
+                bool addresses = false;
+                foreach (RabNetEngRabbit r in rbs)
+                {
+                    if (r.name == 0 && r.surname==0) names = true;
+                    if (r.address == OneRabbit.NullAddress)
+                        addresses = true;
+                }
+                String msg="";
+                if (names)
+                    msg = "У некоторых кроликов нет имени.\n";
+                if (addresses)
+                    msg += "У некоторых кроликов нет адреса.\n";
+                if (msg != "")
+                {
+                    msg += "Продолжить?";
+                    if (MessageBox.Show(this, msg, "Предупреждение", MessageBoxButtons.YesNo) == DialogResult.No)
+                    {
+                        DialogResult = DialogResult.None;
+                        return;
+                    }
+                }
                 foreach (RabNetEngRabbit r in rbs)
                 {
                     foreach (RabNetEngRabbit r2 in rbs)
@@ -182,11 +204,12 @@ namespace rabnet
                 }
                 Close();
             }
-            catch (Exception ex)
+/*            catch (Exception ex)
             {
                 MessageBox.Show("Ошибка " + ex.ToString());
             }
-        }
+  
+ */ }
 
 
     }
