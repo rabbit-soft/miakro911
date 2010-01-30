@@ -249,10 +249,10 @@ FROM rabbits WHERE r_parent<>0 AND {0:s} AND (TO_DAYS(NOW())-TO_DAYS(r_born))>={
 TO_DAYS(NOW())-TO_DAYS(r_born) age,
 (SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) suckers,
 r_status,
-TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol) fromokrol,
+TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol) fromokrol,"+(op.safeValue("prt")=="1"?@"
 (SELECT GROUP_CONCAT(rabname(r5.r_id,0) ORDER BY rabname(r5.r_id,0) SEPARATOR ',') FROM rabbits r5
 WHERE r5.r_sex='male' AND r_status>0 AND 
-(r5.r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r5.r_last_fuck_okrol)>={3:d}){4:s}{5:s}) partners,
+(r5.r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r5.r_last_fuck_okrol)>={3:d}){4:s}{5:s}) partners":"'' partners")+@",
 r_group,
 (SELECT {6:s} FROM breeds WHERE b_id=r_breed) breed
 FROM rabbits WHERE r_sex='female' AND r_event_date IS NULL ) c 

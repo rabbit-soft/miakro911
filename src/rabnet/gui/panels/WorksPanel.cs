@@ -18,8 +18,8 @@ namespace rabnet
         public WorksPanel(RabStatusBar sb)
             : base(sb, new ZootehFilter(sb))
         {
-            cs = new ListViewColumnSorter(listView1, new int[] {},Options.OPT_ID.NONE);
-            listView1.ListViewItemSorter = null;
+            cs = new ListViewColumnSorter(listView1, new int[] {0,},Options.OPT_ID.ZOO_LIST);
+            listView1.ListViewItemSorter = cs;
         }
 
         protected override IDataGetter onPrepare(Filters f)
@@ -29,6 +29,7 @@ namespace rabnet
                 int itm = -1;
                 if (listView1.SelectedItems.Count==1)
                     itm = listView1.SelectedItems[0].Index;
+                cs.Prepare();
                 listView1.Items.Clear();
                 repdate = DateTime.Now;
                 foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f))
@@ -43,8 +44,9 @@ namespace rabnet
                     li.SubItems.Add(j.comment);
                     li.Tag = j;
                 }
-                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                if (itm>-1 && listView1.Items.Count>itm)
+                //listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                cs.Restore();
+                if (itm > -1 && listView1.Items.Count > itm)
                 {
                     listView1.Items[itm].Selected = true;
                     listView1.Items[itm].EnsureVisible();

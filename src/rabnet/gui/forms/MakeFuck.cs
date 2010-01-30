@@ -72,9 +72,7 @@ namespace rabnet
 
         private void fillTable()
         {
-            cs.Clear();
-            listView1.ListViewItemSorter = null;
-            listView1.Items.Clear();
+            cs.Prepare();
             Fucks fs = Engine.db().allFuckers(rab1.rid,cbHeter.Checked,cbInbreed.Checked,malewait);
             foreach (Fucks.Fuck f in fs.fucks)
             {
@@ -105,8 +103,7 @@ namespace rabnet
                  }
                 //}
             }
-            listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            listView1.ListViewItemSorter = cs;
+            cs.Restore();
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)

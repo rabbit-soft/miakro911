@@ -120,6 +120,7 @@ namespace rabnet
             JobHolder zjobs = new JobHolder();
             f["shr"] = eng.options().getOption(Options.OPT_ID.SHORT_NAMES);
             f["dbl"] = eng.options().getOption(Options.OPT_ID.DBL_SURNAME);
+            f["prt"] = eng.options().getOption(Options.OPT_ID.FIND_PARTNERS);
             this.f = f;
             if (f.safeValue("act","O").Contains("O"))
                 getOkrols(zjobs);

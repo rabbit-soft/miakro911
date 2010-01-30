@@ -15,7 +15,7 @@ namespace rabnet
         {
             public enum RUBOOL {Да,Нет};
             private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su,n,cn;
-            private RUBOOL ce, ck, uz;
+            private RUBOOL ce, ck, uz,sp;
             [Category("Зоотехнические сроки"),DisplayName("Окрол"),
             Description("Время от случки(вязки) до окрола")]
             public int okrol{ get {return ok;} set{ok=value;} }
@@ -84,6 +84,10 @@ namespace rabnet
             DisplayName("Обновлять зоотехплан"),
             Description("")]
             public RUBOOL updateZoo { get { return uz; } set { uz = value; } }
+            [Category("Вид"),
+            DisplayName("Показывать партнеров"),
+            Description("")]
+            public RUBOOL showPartners { get { return sp; } set { sp = value; } }
 
             public int fromR(RUBOOL value)
             {
@@ -128,6 +132,7 @@ namespace rabnet
                 confirmExit = toR(o.getIntOption(Options.OPT_ID.CONFIRM_EXIT));
                 confirmKill = toR(o.getIntOption(Options.OPT_ID.CONFIRM_KILL));
                 updateZoo = toR(o.getIntOption(Options.OPT_ID.UPDATE_ZOO));
+                showPartners = toR(o.getIntOption(Options.OPT_ID.FIND_PARTNERS));
             }
             public void save()
             {
@@ -154,6 +159,7 @@ namespace rabnet
                 o.setOption(Options.OPT_ID.CONFIRM_EXIT, fromR(confirmExit));
                 o.setOption(Options.OPT_ID.CONFIRM_KILL, fromR(confirmKill));
                 o.setOption(Options.OPT_ID.UPDATE_ZOO, fromR(updateZoo));
+                o.setOption(Options.OPT_ID.FIND_PARTNERS, fromR(showPartners));
             }
         }
 

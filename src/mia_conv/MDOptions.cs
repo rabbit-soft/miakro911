@@ -30,6 +30,7 @@ namespace mia_conv
             setOption("opt", "nest", p.pervonest.value());
             setOption("opt", "childnest", p.mothernest.value());
             setOption("opt", "updatezoo", 1);
+            setOption("opt", "findpartner", 1);
             //            setOption("opt", "kukunest", p.kukunest.value());
             //            setOption("opt", "otsad_boys_pervo", p.otsad_boys_pervo.value());
             /* //OPTIONS
