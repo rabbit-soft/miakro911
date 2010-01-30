@@ -48,16 +48,9 @@ namespace rabnet
             if (!cbFemaleGirl.Checked || !cbFemaleBride.Checked || !cbFemaleFirst.Checked || !cbFemaleState.Checked)
                 f["ft"] = String.Format("{0:s}{1:s}{2:s}{3:s}", cbFemaleGirl.Checked ? "g" : "", cbFemaleBride.Checked ? "b" : "", cbFemaleFirst.Checked ? "f" : "", cbFemaleState.Checked ? "s" : "");
             if (f.safeValue("ft") == "") f.Remove("ft");
-            if (cobMaleState.SelectedIndex != 0)
-                f["ms"] = cobMaleState.SelectedIndex.ToString();
-            if (cobFemaleState.SelectedIndex != 0)
-                f["fs"] = cobFemaleState.SelectedIndex.ToString();
             if (cobPregnant.SelectedIndex != 0)
                 f["pr"] = cobPregnant.SelectedIndex.ToString();
-            if (cobFamily.SelectedIndex != 0)
-                f["fm"] = cobPregnant.SelectedIndex.ToString();
-            if (cobKuk.SelectedIndex != 0)
-                f["ku"] = cobPregnant.SelectedIndex.ToString();
+
             if (cbPregFrom.Checked)
                 f["pf"] = nudPregFrom.Value.ToString();
             if (cbPregTo.Checked)
@@ -92,12 +85,8 @@ namespace rabnet
             cbFemaleGirl.Checked = f.safeValue("ft", "gbfs").Contains("g");
             cbFemaleBride.Checked = f.safeValue("ft", "gbfs").Contains("b");
             cbFemaleFirst.Checked = f.safeValue("ft", "gbfs").Contains("f");
-            cbFemaleState.Checked = f.safeValue("ft", "gbfs").Contains("s");
-            cobMaleState.SelectedIndex = f.safeInt("ms");
-            cobFemaleState.SelectedIndex = f.safeInt("fs");
+            cbFemaleState.Checked = f.safeValue("ft", "gbfs").Contains("s");         
             cobPregnant.SelectedIndex = f.safeInt("pr");
-            cobFamily.SelectedIndex = f.safeInt("fm");
-            cobKuk.SelectedIndex = f.safeInt("ku");
             cbPregFrom.Checked = f.ContainsKey("pf"); cbPregFrom_CheckedChanged(null, null);
             cbPregTo.Checked = f.ContainsKey("Pf"); cbPregTo_CheckedChanged(null, null);
             if (cbPregFrom.Checked)
@@ -116,9 +105,8 @@ namespace rabnet
             cbWeightFrom.Checked = cbWeightTo.Checked = false;
             cbWeightFrom_CheckedChanged(null, null); cbWeightTo_CheckedChanged(null, null);
             cobWorks.SelectedIndex = 0;
-            cbMaleBoy.Checked = cbMaleCandidate.Checked = cbMaleProducer.Checked = true;
-            cobMaleState.SelectedIndex = cobFemaleState.SelectedIndex = cobFamily.SelectedIndex = 0;
-            cobKuk.SelectedIndex = 0; cobPregnant.SelectedIndex = 0;
+            cbMaleBoy.Checked = cbMaleCandidate.Checked = cbMaleProducer.Checked = true;          
+            cobPregnant.SelectedIndex = 0;
             cbPregFrom.Checked = cbPregTo.Checked = false;
             cbPregTo_CheckedChanged(null, null); cbPregFrom_CheckedChanged(null, null);
             cbFemaleBride.Checked = cbFemaleFirst.Checked = cbFemaleGirl.Checked = cbFemaleState.Checked = true;

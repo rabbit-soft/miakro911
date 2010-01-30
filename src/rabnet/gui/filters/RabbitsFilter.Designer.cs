@@ -34,10 +34,6 @@
             this.cbFilter = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.cobFamily = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.cobKuk = new System.Windows.Forms.ComboBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.nudPregFrom = new System.Windows.Forms.NumericUpDown();
             this.dtpPregTo = new System.Windows.Forms.DateTimePicker();
@@ -46,15 +42,11 @@
             this.dtpPregFrom = new System.Windows.Forms.DateTimePicker();
             this.cbPregFrom = new System.Windows.Forms.CheckBox();
             this.cobPregnant = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cobFemaleState = new System.Windows.Forms.ComboBox();
             this.cbFemaleState = new System.Windows.Forms.CheckBox();
             this.cbFemaleFirst = new System.Windows.Forms.CheckBox();
             this.cbFemaleBride = new System.Windows.Forms.CheckBox();
             this.cbFemaleGirl = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cobMaleState = new System.Windows.Forms.ComboBox();
             this.cbMaleProducer = new System.Windows.Forms.CheckBox();
             this.cbMaleCandidate = new System.Windows.Forms.CheckBox();
             this.cbMaleBoy = new System.Windows.Forms.CheckBox();
@@ -118,7 +110,8 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(429, 260);
+            this.button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.button1.Location = new System.Drawing.Point(429, 217);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 11;
@@ -127,16 +120,18 @@
             // 
             // cbFilter
             // 
+            this.cbFilter.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.cbFilter.FormattingEnabled = true;
-            this.cbFilter.Location = new System.Drawing.Point(323, 261);
+            this.cbFilter.Location = new System.Drawing.Point(323, 218);
             this.cbFilter.Name = "cbFilter";
             this.cbFilter.Size = new System.Drawing.Size(100, 21);
             this.cbFilter.TabIndex = 10;
             // 
             // label5
             // 
+            this.label5.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(270, 264);
+            this.label5.Location = new System.Drawing.Point(270, 221);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(47, 13);
             this.label5.TabIndex = 9;
@@ -144,67 +139,17 @@
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.label4);
-            this.groupBox6.Controls.Add(this.cobFamily);
-            this.groupBox6.Controls.Add(this.label3);
-            this.groupBox6.Controls.Add(this.cobKuk);
             this.groupBox6.Controls.Add(this.groupBox7);
-            this.groupBox6.Controls.Add(this.label2);
-            this.groupBox6.Controls.Add(this.cobFemaleState);
             this.groupBox6.Controls.Add(this.cbFemaleState);
             this.groupBox6.Controls.Add(this.cbFemaleFirst);
             this.groupBox6.Controls.Add(this.cbFemaleBride);
             this.groupBox6.Controls.Add(this.cbFemaleGirl);
             this.groupBox6.Location = new System.Drawing.Point(144, 112);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(366, 145);
+            this.groupBox6.Size = new System.Drawing.Size(366, 100);
             this.groupBox6.TabIndex = 8;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Статус самки";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(205, 99);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(40, 13);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "Семья";
-            // 
-            // cobFamily
-            // 
-            this.cobFamily.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cobFamily.FormattingEnabled = true;
-            this.cobFamily.Items.AddRange(new object[] {
-            "Неважно",
-            "Нет",
-            "Да"});
-            this.cobFamily.Location = new System.Drawing.Point(208, 115);
-            this.cobFamily.Name = "cobFamily";
-            this.cobFamily.Size = new System.Drawing.Size(94, 21);
-            this.cobFamily.TabIndex = 9;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(105, 99);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(50, 13);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "Кукушка";
-            // 
-            // cobKuk
-            // 
-            this.cobKuk.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cobKuk.FormattingEnabled = true;
-            this.cobKuk.Items.AddRange(new object[] {
-            "Неважно",
-            "Нет",
-            "Да"});
-            this.cobKuk.Location = new System.Drawing.Point(108, 115);
-            this.cobKuk.Name = "cobKuk";
-            this.cobKuk.Size = new System.Drawing.Size(94, 21);
-            this.cobKuk.TabIndex = 7;
             // 
             // groupBox7
             // 
@@ -319,29 +264,6 @@
             this.cobPregnant.TabIndex = 0;
             this.cobPregnant.SelectedIndexChanged += new System.EventHandler(this.cobPregnant_SelectedIndexChanged);
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 99);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(62, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Судимость";
-            // 
-            // cobFemaleState
-            // 
-            this.cobFemaleState.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cobFemaleState.FormattingEnabled = true;
-            this.cobFemaleState.Items.AddRange(new object[] {
-            "Неважно",
-            "Нет",
-            "Брак",
-            "Г/П"});
-            this.cobFemaleState.Location = new System.Drawing.Point(6, 115);
-            this.cobFemaleState.Name = "cobFemaleState";
-            this.cobFemaleState.Size = new System.Drawing.Size(94, 21);
-            this.cobFemaleState.TabIndex = 4;
-            // 
             // cbFemaleState
             // 
             this.cbFemaleState.AutoSize = true;
@@ -384,40 +306,15 @@
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.label1);
-            this.groupBox5.Controls.Add(this.cobMaleState);
             this.groupBox5.Controls.Add(this.cbMaleProducer);
             this.groupBox5.Controls.Add(this.cbMaleCandidate);
             this.groupBox5.Controls.Add(this.cbMaleBoy);
             this.groupBox5.Location = new System.Drawing.Point(3, 112);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(139, 145);
+            this.groupBox5.Size = new System.Drawing.Size(139, 100);
             this.groupBox5.TabIndex = 7;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Статус самца";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 99);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(62, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Судимость";
-            // 
-            // cobMaleState
-            // 
-            this.cobMaleState.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cobMaleState.FormattingEnabled = true;
-            this.cobMaleState.Items.AddRange(new object[] {
-            "Неважно",
-            "Нет",
-            "Бракованные",
-            "На реализацию"});
-            this.cobMaleState.Location = new System.Drawing.Point(11, 115);
-            this.cobMaleState.Name = "cobMaleState";
-            this.cobMaleState.Size = new System.Drawing.Size(122, 21);
-            this.cobMaleState.TabIndex = 3;
             // 
             // cbMaleProducer
             // 
@@ -728,7 +625,8 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(3, 260);
+            this.button2.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.button2.Location = new System.Drawing.Point(3, 217);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(57, 23);
             this.button2.TabIndex = 1;
@@ -807,7 +705,7 @@
             this.HideBtn = this.button2;
             this.Name = "RabbitsFilter";
             this.SaveButton = this.button1;
-            this.Size = new System.Drawing.Size(515, 290);
+            this.Size = new System.Drawing.Size(515, 247);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.groupBox7.ResumeLayout(false);
@@ -844,24 +742,16 @@
         private System.Windows.Forms.ComboBox cbFilter;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox cobFamily;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox cobKuk;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.NumericUpDown nudPregTo;
         private System.Windows.Forms.DateTimePicker dtpPregFrom;
         private System.Windows.Forms.CheckBox cbPregFrom;
         private System.Windows.Forms.ComboBox cobPregnant;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cobFemaleState;
         private System.Windows.Forms.CheckBox cbFemaleState;
         private System.Windows.Forms.CheckBox cbFemaleFirst;
         private System.Windows.Forms.CheckBox cbFemaleBride;
         private System.Windows.Forms.CheckBox cbFemaleGirl;
         private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox cobMaleState;
         private System.Windows.Forms.CheckBox cbMaleProducer;
         private System.Windows.Forms.CheckBox cbMaleCandidate;
         private System.Windows.Forms.CheckBox cbMaleBoy;
