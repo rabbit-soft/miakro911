@@ -90,11 +90,6 @@ namespace rabnet
             li.SubItems.Add((nm.use!=0 || nm.td==DateTime.MinValue)?"-":nm.td.ToShortDateString());
         }
 
-        private void NamesForm_Activated(object sender, EventArgs e)
-        {
-            load();
-        }
-
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count != 1 || listView1.SelectedItems[0]==null)
@@ -149,6 +144,11 @@ namespace rabnet
             
             if (textBox1.Text != "" && textBox2.Text != "") button1.Enabled = true; else button1.Enabled = false;
             if (textBox1.Text != "" || textBox2.Text != "") button2.Enabled = true; else button2.Enabled = false;
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            load();
         }
 
     }

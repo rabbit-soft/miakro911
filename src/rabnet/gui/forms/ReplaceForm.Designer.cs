@@ -47,6 +47,7 @@
             this.button9 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -171,6 +172,7 @@
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.button11);
             this.groupBox1.Controls.Add(this.button10);
             this.groupBox1.Controls.Add(this.button7);
@@ -200,30 +202,30 @@
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(107, 44);
             this.button10.TabIndex = 11;
-            this.button10.Text = "Отсадить Мальчиков";
+            this.button10.Text = "Отделить Мальчиков";
             this.button10.UseVisualStyleBackColor = true;
             this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(6, 45);
+            this.button7.Location = new System.Drawing.Point(6, 46);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(107, 23);
             this.button7.TabIndex = 10;
-            this.button7.Text = "Рассадить";
+            this.button7.Text = "Отделить";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(6, 19);
+            this.numericUpDown1.Location = new System.Drawing.Point(31, 19);
             this.numericUpDown1.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(107, 20);
+            this.numericUpDown1.Size = new System.Drawing.Size(80, 20);
             this.numericUpDown1.TabIndex = 9;
             this.numericUpDown1.Value = new decimal(new int[] {
             1,
@@ -286,6 +288,16 @@
             this.button12.UseVisualStyleBackColor = true;
             this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.Location = new System.Drawing.Point(8, 21);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(19, 16);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "N";
+            // 
             // ReplaceForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -308,10 +320,11 @@
             this.Name = "ReplaceForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.Text = "Пересадки";
+            this.Text = "План пересадок";
             this.Load += new System.EventHandler(this.ReplaceForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -340,6 +353,7 @@
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Button button12;
         private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.Label label2;
 
     }
 }

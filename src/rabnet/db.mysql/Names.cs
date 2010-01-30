@@ -46,7 +46,7 @@ namespace rabnet
             if (options.safeInt("sex") != 0)
                 w = "n_sex='" + (options.safeInt("sex")==1?"male":"female") + "'";
             if (options.safeInt("state") != 0)
-                w = Rabbits.addWhereAnd(w, "n_use" + (options.safeInt("state")==1?"":"!") + "=0");
+                w = Rabbits.addWhereAnd(w, "n_use" + (options.safeInt("state")==1?"":"!") + "=0 AND n_block_date IS NULL");
          // if (options.safeValue("name") != "")
          //   w = Rabbits.addWhereAnd(w, "n_name like '"+options.safeValue("name")+"%'");
             if (w != "")

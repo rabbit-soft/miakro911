@@ -13,9 +13,21 @@ namespace rabnet
         public UserForm()
         {
             InitializeComponent();
+            initialHints();
             update();
         }
 
+        private void initialHints()
+        {
+            ToolTip toolTip = new ToolTip();
+            toolTip.InitialDelay = 1000;
+
+            toolTip.SetToolTip(button1,"Изменить настройки выделенного пользователя");
+            toolTip.SetToolTip(button2,"Добавить нового пользователя");
+            toolTip.SetToolTip(button3,"Закрыть окно");
+            toolTip.SetToolTip(button4,"Сменить пароль выделенного пользователя");
+            toolTip.SetToolTip(button5,"Удалить выделенного пользователя");
+        }
         public void update()
         {
             if (!Engine.get().isAdmin())

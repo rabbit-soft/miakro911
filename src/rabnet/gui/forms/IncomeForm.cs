@@ -16,9 +16,26 @@ namespace rabnet
         public IncomeForm()
         {
             InitializeComponent();
+            initialHint();
             zns = Engine.db().catalogs().getZones();
             brd = Engine.db().catalogs().getBreeds();
             fillZones();
+        }
+
+        private void initialHint()
+        {
+            ToolTip toolTip = new ToolTip();
+            toolTip.InitialDelay = 1000;
+            toolTip.SetToolTip(button1,"Добавить привезенного самца");
+            toolTip.SetToolTip(button2,"Добавить привезенную самку");
+            toolTip.SetToolTip(button3,"Добавить привезенного кролика с неопределенным полом");
+            toolTip.SetToolTip(button4,"Удалить выделенную запись");
+            toolTip.SetToolTip(button5,"Показать справочник зон");
+            toolTip.SetToolTip(button6,"Добавить привезенных кроликов на ферму");
+            toolTip.SetToolTip(button7,"Отменить привоз кроликов. Закрыть окно");
+            toolTip.SetToolTip(button8,"Показать паспорт выделенного кролика");
+            toolTip.SetToolTip(button9,"Назначить адрес выделенному кролику");
+            toolTip.SetToolTip(zones,"Выбрать родину привезенных кроликов");
         }
 
         private void fillZones()

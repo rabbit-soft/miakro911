@@ -146,6 +146,7 @@ namespace rabnet
         public ReplaceForm()
         {
             InitializeComponent();
+            initialHints();
             ds.Columns.Add("Имя", typeof(string));
             ds.Columns.Add("Возраст", typeof(int));
             ds.Columns.Add("Пол", typeof(string));
@@ -592,5 +593,20 @@ namespace rabnet
             return girlout;
         }
 
+        private void initialHints()
+        {
+            ToolTip toolTip = new ToolTip();
+            toolTip.InitialDelay = 1000;
+            toolTip.SetToolTip(button1, "Выполнить план пересадок");
+            toolTip.SetToolTip(button2, "Закрыть окно.Не применять пересадки");
+            toolTip.SetToolTip(button3, "Отменить изменения для всех записей");
+            toolTip.SetToolTip(button4, "Поменять адресами 2 выбранные записи");
+            toolTip.SetToolTip(button5, "Отменить изменения для выделенной записи");
+            toolTip.SetToolTip(button6, "Разбить выделенную группу по одному");
+            toolTip.SetToolTip(button7, "Отделить от выбранной группы N-количество");
+            toolTip.SetToolTip(button10, "Отделить из выбранной группы безполых, N-количество Мальчиков,\nоставшаяся группа будет помечена как Девочки");
+            toolTip.SetToolTip(button11, "Пометить группу безполых как Девочки");
+                       
+        }
     }
 }

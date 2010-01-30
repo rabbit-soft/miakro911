@@ -16,6 +16,7 @@ namespace rabnet
         public KillForm()
         {
             InitializeComponent();
+            initialHints();
             dateDays1.DateValue = DateTime.Now;
             confirm = Engine.opt().getIntOption(Options.OPT_ID.CONFIRM_KILL) == 1;
             Catalog c=Engine.db().catalogs().getDeadReasons();
@@ -25,6 +26,18 @@ namespace rabnet
             update();
         }
 
+        private void initialHints()
+        {
+            ToolTip toolTip = new ToolTip();
+            toolTip.InitialDelay = 1000;
+
+            toolTip.SetToolTip(numericUpDown1, "Количество списываемых кроликов из выделенной записи");
+            toolTip.SetToolTip(button1,"Убрать выделенную запись из плана списаний");
+            toolTip.SetToolTip(button2,"Списать кроликов");
+            toolTip.SetToolTip(dateDays1,"Дата списания");
+            toolTip.SetToolTip(comboBox1,"Причина списания кроликов");
+            toolTip.SetToolTip(textBox1, "Здесь можно оставить любой коментарий по данному списанию");
+        }
         public void addRabbit(int id)
         {
             addRabbit(Engine.get().getRabbit(id));

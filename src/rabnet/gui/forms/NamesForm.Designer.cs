@@ -138,7 +138,7 @@
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(120, 21);
             this.comboBox2.TabIndex = 5;
-            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.NamesForm_Activated);
+            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -188,7 +188,7 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(572, 22);
             this.tabControl1.TabIndex = 1;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.NamesForm_Activated);
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tpMale
             // 
@@ -245,7 +245,6 @@
             this.Name = "NamesForm";
             this.ShowInTaskbar = false;
             this.Text = "Справочник имен";
-            this.Activated += new System.EventHandler(this.NamesForm_Activated);
             this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

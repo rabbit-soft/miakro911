@@ -164,9 +164,9 @@ namespace rabnet
                 button8.Text = button12.Text = "Вязать";
                 if (rab.status>1)
                     okrolPage.Text = "Вязки/Окролы";
-            }
-            tabControl1.TabPages.Add(okrolPage);
+            }            
             if (rab.group != 1) return;
+            tabControl1.TabPages.Add(okrolPage);
             tabControl1.TabPages.Add(femalePage);           
             tabControl1.TabPages.Add(suckersPage);
             tabControl1.TabPages.Add(weightPage);

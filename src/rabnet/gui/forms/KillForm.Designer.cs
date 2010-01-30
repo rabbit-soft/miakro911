@@ -163,7 +163,7 @@
             // 
             this.numericUpDown1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numericUpDown1.Enabled = false;
-            this.numericUpDown1.Location = new System.Drawing.Point(568, 73);
+            this.numericUpDown1.Location = new System.Drawing.Point(568, 180);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(70, 20);
             this.numericUpDown1.TabIndex = 9;
@@ -173,7 +173,7 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(575, 57);
+            this.label3.Location = new System.Drawing.Point(575, 164);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(49, 13);
             this.label3.TabIndex = 10;
@@ -183,11 +183,11 @@
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(566, 110);
+            this.button1.Location = new System.Drawing.Point(568, 61);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(70, 50);
+            this.button1.Size = new System.Drawing.Size(70, 34);
             this.button1.TabIndex = 11;
-            this.button1.Text = "не списывать\r\nстроку\r\n";
+            this.button1.Text = "не списывать";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
@@ -214,7 +214,7 @@
             // 
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2010, 1, 28, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2010, 1, 29, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
             this.dateDays1.Location = new System.Drawing.Point(12, 12);

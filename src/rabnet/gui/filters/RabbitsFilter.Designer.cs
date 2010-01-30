@@ -742,6 +742,7 @@
             this.cobBreeds.Items.AddRange(new object[] {
             "-=ВСЕ=-"});
             this.cobBreeds.Location = new System.Drawing.Point(60, 10);
+            this.cobBreeds.MaxDropDownItems = 12;
             this.cobBreeds.Name = "cobBreeds";
             this.cobBreeds.Size = new System.Drawing.Size(150, 21);
             this.cobBreeds.TabIndex = 15;
