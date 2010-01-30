@@ -289,7 +289,7 @@ namespace rabnet
                 if (j.type == JobType.FUCK)
                 {
                     int id = getFuckerId(j.names, fuckers);
-                    rw.AppendChild(xml.CreateElement("fuckers")).AppendChild(xml.CreateTextNode("см. "+id.ToString()));
+                    rw.AppendChild(xml.CreateElement("fuckers")).AppendChild(xml.CreateTextNode("см. "+(id+1).ToString()));
                 }
                 else
                     rw.AppendChild(xml.CreateElement("fuckers")).AppendChild(xml.CreateTextNode(""));
