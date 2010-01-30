@@ -31,7 +31,9 @@ namespace mia_conv
             setOption("opt", "childnest", p.mothernest.value());
             setOption("opt", "updatezoo", 1);
             setOption("opt", "findpartner", 1);
-            setOption("opt", "tooltips", 1);
+            setOption("opt", "nextsvid", p.next_svid.value());
+            setOption("opt", "svidhead", p.svid_head.value());
+            setOption("opt", "gendir", p.subscriber[0].name.value());
             //            setOption("opt", "kukunest", p.kukunest.value());
             //            setOption("opt", "otsad_boys_pervo", p.otsad_boys_pervo.value());
             /* //OPTIONS

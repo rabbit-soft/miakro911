@@ -14,8 +14,9 @@ namespace rabnet
         class OptionsHolder
         {
             public enum RUBOOL {Да,Нет};
-            private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su,n,cn;
-            private RUBOOL ce, ck, uz,sp,tt;
+            private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su,n,cn,tt;
+            private string gd, sh;
+            private RUBOOL ce, ck, uz,sp;
             [Category("Зоотехнические сроки"),DisplayName("Окрол"),
             Description("Время от случки(вязки) до окрола")]
             public int okrol{ get {return ok;} set{ok=value;} }
@@ -88,10 +89,19 @@ namespace rabnet
             DisplayName("Показывать партнеров"),
             Description("")]
             public RUBOOL showPartners { get { return sp; } set { sp = value; } }
-            [Category("Вид"),
-            DisplayName("Показывать подсказки"),
+
+            [Category("Племенные свидетельства"),
+            DisplayName("Номер следующего свидетельства"),
             Description("")]
-            public RUBOOL toolTips { get { return tt; } set { tt = value; } }
+            public int nextSvid { get { return tt; } set { tt = value; } }
+            [Category("Племенные свидетельства"),
+            DisplayName("Шапка"),
+            Description("")]
+            public string svidHead { get { return sh; } set { sh = value; } }
+            [Category("Племенные свидетельства"),
+            DisplayName("Генеральный директор"),
+            Description("")]
+            public string genDir { get { return gd; } set { gd = value; } }
 
             public int fromR(RUBOOL value)
             {
@@ -137,7 +147,10 @@ namespace rabnet
                 confirmKill = toR(o.getIntOption(Options.OPT_ID.CONFIRM_KILL));
                 updateZoo = toR(o.getIntOption(Options.OPT_ID.UPDATE_ZOO));
                 showPartners = toR(o.getIntOption(Options.OPT_ID.FIND_PARTNERS));
-                toolTips = toR(o.getIntOption(Options.OPT_ID.TOOL_TIPS));
+                //svid
+                nextSvid = o.getIntOption(Options.OPT_ID.NEXT_SVID);
+                svidHead = o.getOption(Options.OPT_ID.SVID_HEAD);
+                genDir = o.getOption(Options.OPT_ID.SVID_GEN_DIR);
             }
             public void save()
             {
@@ -165,7 +178,10 @@ namespace rabnet
                 o.setOption(Options.OPT_ID.CONFIRM_KILL, fromR(confirmKill));
                 o.setOption(Options.OPT_ID.UPDATE_ZOO, fromR(updateZoo));
                 o.setOption(Options.OPT_ID.FIND_PARTNERS, fromR(showPartners));
-                o.setOption(Options.OPT_ID.TOOL_TIPS, fromR(toolTips));
+                //svid
+                o.setOption(Options.OPT_ID.NEXT_SVID, nextSvid);
+                o.setOption(Options.OPT_ID.SVID_HEAD, svidHead);
+                o.setOption(Options.OPT_ID.SVID_GEN_DIR, genDir);
             }
         }
 
