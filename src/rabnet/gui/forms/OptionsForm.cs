@@ -15,7 +15,7 @@ namespace rabnet
         {
             public enum RUBOOL {Да,Нет};
             private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su,n,cn;
-            private RUBOOL ce, ck;
+            private RUBOOL ce, ck, uz;
             [Category("Зоотехнические сроки"),DisplayName("Окрол"),
             Description("Время от случки(вязки) до окрола")]
             public int okrol{ get {return ok;} set{ok=value;} }
@@ -80,6 +80,10 @@ namespace rabnet
             DisplayName("Генетические деревья"),
             Description("Количество показываемых генетических деревьев в Поголовье")]
             public int genTree { get { return gt; } set { gt = value; } }
+            [Category("Вид"),
+            DisplayName("Обновлять зоотехплан"),
+            Description("")]
+            public RUBOOL updateZoo { get { return uz; } set { uz = value; } }
 
             public int fromR(RUBOOL value)
             {
@@ -123,6 +127,7 @@ namespace rabnet
                 genTree = o.getIntOption(Options.OPT_ID.GEN_TREE);
                 confirmExit = toR(o.getIntOption(Options.OPT_ID.CONFIRM_EXIT));
                 confirmKill = toR(o.getIntOption(Options.OPT_ID.CONFIRM_KILL));
+                updateZoo = toR(o.getIntOption(Options.OPT_ID.UPDATE_ZOO));
             }
             public void save()
             {
@@ -148,6 +153,7 @@ namespace rabnet
                 o.setOption(Options.OPT_ID.GEN_TREE, genTree);
                 o.setOption(Options.OPT_ID.CONFIRM_EXIT, fromR(confirmExit));
                 o.setOption(Options.OPT_ID.CONFIRM_KILL, fromR(confirmKill));
+                o.setOption(Options.OPT_ID.UPDATE_ZOO, fromR(updateZoo));
             }
         }
 

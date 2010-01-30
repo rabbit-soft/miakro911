@@ -13,6 +13,8 @@ namespace rabnet
     {
         private DateTime repdate=DateTime.Now;
         public WorksPanel():base(){}
+        public int makeFlag = 0;
+        private bool fullUpdate=true;
         public WorksPanel(RabStatusBar sb)
             : base(sb, new ZootehFilter(sb))
         {
@@ -22,21 +24,33 @@ namespace rabnet
 
         protected override IDataGetter onPrepare(Filters f)
         {
-            listView1.Items.Clear();
-            repdate = DateTime.Now;
-            foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f))
+            if (fullUpdate)
             {
-                ListViewItem li = listView1.Items.Add(j.days.ToString());
-                li.SubItems.Add(j.job);
-                li.SubItems.Add(j.address);
-                li.SubItems.Add(j.name);
-                li.SubItems.Add(j.age.ToString());
-                li.SubItems.Add(j.names);
-                li.SubItems.Add(j.addresses);
-                li.SubItems.Add(j.comment);
-                li.Tag = j;
+                int itm = -1;
+                if (listView1.SelectedItems.Count==1)
+                    itm = listView1.SelectedItems[0].Index;
+                listView1.Items.Clear();
+                repdate = DateTime.Now;
+                foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f))
+                {
+                    ListViewItem li = listView1.Items.Add(j.days.ToString());
+                    li.SubItems.Add(j.job);
+                    li.SubItems.Add(j.address);
+                    li.SubItems.Add(j.name);
+                    li.SubItems.Add(j.age.ToString());
+                    li.SubItems.Add(j.names);
+                    li.SubItems.Add(j.addresses);
+                    li.SubItems.Add(j.comment);
+                    li.Tag = j;
+                }
+                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                if (itm>-1 && listView1.Items.Count>itm)
+                {
+                    listView1.Items[itm].Selected = true;
+                    listView1.Items[itm].EnsureVisible();
+                }
+                listView1.Focus();
             }
-            listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             fillLogs(f);
             DataThread.get().stop();
             return null;
@@ -104,12 +118,12 @@ namespace rabnet
             countsMenuItem.Visible = preokrolMenuItem.Visible= false;
             boysOutMenuItem.Visible = girlsOutMenuItem.Visible = false;
             vaccMenuItem.Visible = fuckMenuItem.Visible = false;
-            setNestMenuItem.Visible = false;
+            setNestMenuItem.Visible = countChangedMenuItem.Visible=false;
             switch (type)
             {
                 case JobType.OKROL: okrolMenuItem.Visible = true; break;
                 case JobType.VUDVOR: vudvorMenuItem.Visible = true; break;
-                case JobType.COUNT_KIDS: countsMenuItem.Visible = true; break;
+                case JobType.COUNT_KIDS: countChangedMenuItem.Visible=countsMenuItem.Visible = true; break;
                 case JobType.PRE_OKROL: preokrolMenuItem.Visible = true; break;
                 case JobType.BOYS_OUT: boysOutMenuItem.Visible = true; break;
                 case JobType.GIRLS_OUT: girlsOutMenuItem.Visible = true; break;
@@ -138,10 +152,12 @@ namespace rabnet
 
         private void makeJob()
         {
-            DialogResult res=DialogResult.Cancel;
+            DialogResult res=DialogResult.OK;
             ZootehJob job = getCurJob();
             if (job == null)
                 return;
+            fullUpdate = true;
+            bool needUpdate = Engine.opt().getIntOption(Options.OPT_ID.UPDATE_ZOO) == 1;
             switch (job.type)
             {                
                 case JobType.VUDVOR:
@@ -150,11 +166,11 @@ namespace rabnet
                         b.setNest(false);
                     else
                         b.setNest2(false);
-                    listView1.SelectedItems[0].Remove();
+                    needUpdate = false;
                     break;
                 case JobType.PRE_OKROL:
                     Engine.get().preOkrol(job.id);
-                    listView1.SelectedItems[0].Remove();
+                    needUpdate = false;
                     break;
                 case JobType.BOYS_OUT:
                 case JobType.GIRLS_OUT:
@@ -165,6 +181,12 @@ namespace rabnet
                     res=rf.ShowDialog();
                     break;                                   
                 case JobType.COUNT_KIDS:
+                    if (makeFlag == 0)
+                    {
+                        RabNetEngRabbit rr = Engine.get().getRabbit(job.id);
+                        rr.CountKids(0, 0, 0, rr.youngcount, rr.youngers[0].age());
+                        needUpdate = false;
+                    }else
                     res=(new CountKids(job.id,job.flag==1)).ShowDialog();
                     break;
                 case JobType.FUCK:
@@ -190,7 +212,7 @@ namespace rabnet
                     RabNetEngRabbit r = Engine.get().getRabbit(job.id);
                     r.spec = true;
                     r.commit();
-                    listView1.SelectedItems[0].Remove();
+                    needUpdate = false;
                     break;
                 case JobType.SET_NEST:
                     ReplaceForm f=new ReplaceForm();
@@ -210,12 +232,19 @@ namespace rabnet
                     }
                     break;
             }
-            if(res!=DialogResult.Cancel)
+            if (res != DialogResult.Cancel)
+            {
+                int idx = listView1.SelectedItems[0].Index;
+                listView1.SelectedItems[0].Remove();
+                listView1.Items[idx].Selected = true;
+                fullUpdate = needUpdate;
                 rsb.run();
+            }
         }
 
         private void okrolMenuItem_Click(object sender, EventArgs e)
         {
+            makeFlag = 0;
             makeJob();
         }
 
@@ -273,6 +302,12 @@ namespace rabnet
             }
             new ReportViewForm("Зоотехплан " + repdate.ToLongDateString() + " " + repdate.ToLongTimeString(), "zooteh", 
                 new XmlDocument[]{xml,rep,fucks}).ShowDialog();
+        }
+
+        private void countChangedMenuItem_Click(object sender, EventArgs e)
+        {
+            makeFlag = 1;
+            makeJob();
         }
 
     }

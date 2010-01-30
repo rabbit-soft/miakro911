@@ -21,12 +21,13 @@ namespace rabnet
         public int id=0;
         public int id2;
         public int flag = 0;
+        Filters f = null;
         public ZootehJob()
         {
         }
-        public ZootehJob(JobType type)
+        public ZootehJob(Filters f)
         {
-            this.type = type;
+            this.f = f;
         }
         public ZootehJob Okrol(int id,String nm,String ad,int stat,int age,int srok)
         {
@@ -69,17 +70,18 @@ namespace rabnet
             this.age = age;
             return this;
         }
-        public ZootehJob Fuck(int id, String nm, String ad, int age, int srok,int status,String boys,int group)
+        public ZootehJob Fuck(int id, String nm, String ad, int age, int srok,int status,String boys,int group,string breed)
         {
             type = JobType.FUCK; job = status==0?"Случка":"Вязка";
             this.id = id; days = srok;
             name = nm; address = ad;
             this.age = age;
-            comment = "Невеста";
+            comment = f.safeInt("shr")==1?"Нвс":"Невеста";
             if (status > 0)
-                comment = "Первокролка";
+                comment = f.safeInt("shr") == 1 ? "Прк" : "Первокролка";
             if (status > 1)
-                comment = "Штатная";
+                comment = f.safeInt("shr") == 1 ? "Штн" : "Штатная";
+            comment += "-" + breed;
             names = boys;
             flag = group;
             return this;
@@ -116,6 +118,8 @@ namespace rabnet
         public ZootehJob[] makeZooTehPlan(Filters f)
         {
             JobHolder zjobs = new JobHolder();
+            f["shr"] = eng.options().getOption(Options.OPT_ID.SHORT_NAMES);
+            f["dbl"] = eng.options().getOption(Options.OPT_ID.DBL_SURNAME);
             this.f = f;
             if (f.safeValue("act","O").Contains("O"))
                 getOkrols(zjobs);
@@ -203,7 +207,7 @@ namespace rabnet
                     boys += ff.partner.Trim()+",";
                 boys.Trim(',');
                  * */
-                jh.Add(new ZootehJob().Fuck(z.id, z.name, z.place, z.age, z.i[0], z.status,z.names,z.i[1]));
+                jh.Add(new ZootehJob(f).Fuck(z.id, z.name, z.place, z.age, z.i[0], z.status,z.names,z.i[1],z.s[0]));
             }
         }
         public void getVacc(JobHolder jh)

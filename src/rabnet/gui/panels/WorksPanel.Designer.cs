@@ -38,8 +38,6 @@
             this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader9 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader10 = new System.Windows.Forms.ColumnHeader();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.listView2 = new System.Windows.Forms.ListView();
             this.columnHeader11 = new System.Windows.Forms.ColumnHeader();
@@ -51,6 +49,7 @@
             this.okrolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vudvorMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.countsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.countChangedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.preokrolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.boysOutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.girlsOutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,11 +76,11 @@
             this.columnHeader5,
             this.columnHeader6,
             this.columnHeader7,
-            this.columnHeader8,
-            this.columnHeader9,
-            this.columnHeader10});
+            this.columnHeader8});
+            this.listView1.ContextMenuStrip = this.actMenu;
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
+            this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(3, 3);
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
@@ -114,23 +113,18 @@
             // 
             // columnHeader6
             // 
+            this.columnHeader6.DisplayIndex = 7;
             this.columnHeader6.Text = "Партнеры";
             // 
             // columnHeader7
             // 
+            this.columnHeader7.DisplayIndex = 5;
             this.columnHeader7.Text = "Адреса";
             // 
             // columnHeader8
             // 
+            this.columnHeader8.DisplayIndex = 6;
             this.columnHeader8.Text = "Заметки";
-            // 
-            // columnHeader9
-            // 
-            this.columnHeader9.Text = "Дата";
-            // 
-            // columnHeader10
-            // 
-            this.columnHeader10.Text = "Статус";
             // 
             // splitContainer1
             // 
@@ -201,6 +195,7 @@
             this.okrolMenuItem,
             this.vudvorMenuItem,
             this.countsMenuItem,
+            this.countChangedMenuItem,
             this.preokrolMenuItem,
             this.boysOutMenuItem,
             this.girlsOutMenuItem,
@@ -209,74 +204,81 @@
             this.setNestMenuItem,
             this.печатьToolStripMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(246, 224);
+            this.actMenu.Size = new System.Drawing.Size(258, 246);
             // 
             // okrolMenuItem
             // 
             this.okrolMenuItem.Name = "okrolMenuItem";
-            this.okrolMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.okrolMenuItem.Size = new System.Drawing.Size(257, 22);
             this.okrolMenuItem.Text = "Принять окрол";
             this.okrolMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // vudvorMenuItem
             // 
             this.vudvorMenuItem.Name = "vudvorMenuItem";
-            this.vudvorMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.vudvorMenuItem.Size = new System.Drawing.Size(257, 22);
             this.vudvorMenuItem.Text = "Выдворение";
             this.vudvorMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // countsMenuItem
             // 
             this.countsMenuItem.Name = "countsMenuItem";
-            this.countsMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.countsMenuItem.Size = new System.Drawing.Size(257, 22);
             this.countsMenuItem.Text = "Подсчет гнездовых/подсосных";
             this.countsMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
+            // 
+            // countChangedMenuItem
+            // 
+            this.countChangedMenuItem.Name = "countChangedMenuItem";
+            this.countChangedMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.countChangedMenuItem.Text = "Изменилось количество крольчат";
+            this.countChangedMenuItem.Click += new System.EventHandler(this.countChangedMenuItem_Click);
             // 
             // preokrolMenuItem
             // 
             this.preokrolMenuItem.Name = "preokrolMenuItem";
-            this.preokrolMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.preokrolMenuItem.Size = new System.Drawing.Size(257, 22);
             this.preokrolMenuItem.Text = "Предокрольный осмотр";
             this.preokrolMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // boysOutMenuItem
             // 
             this.boysOutMenuItem.Name = "boysOutMenuItem";
-            this.boysOutMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.boysOutMenuItem.Size = new System.Drawing.Size(257, 22);
             this.boysOutMenuItem.Text = "Отсадить мальчиков";
             this.boysOutMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // girlsOutMenuItem
             // 
             this.girlsOutMenuItem.Name = "girlsOutMenuItem";
-            this.girlsOutMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.girlsOutMenuItem.Size = new System.Drawing.Size(257, 22);
             this.girlsOutMenuItem.Text = "Отсадить девочек";
             this.girlsOutMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // fuckMenuItem
             // 
             this.fuckMenuItem.Name = "fuckMenuItem";
-            this.fuckMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.fuckMenuItem.Size = new System.Drawing.Size(257, 22);
             this.fuckMenuItem.Text = "Случить";
             this.fuckMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // vaccMenuItem
             // 
             this.vaccMenuItem.Name = "vaccMenuItem";
-            this.vaccMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.vaccMenuItem.Size = new System.Drawing.Size(257, 22);
             this.vaccMenuItem.Text = "Привить";
             // 
             // setNestMenuItem
             // 
             this.setNestMenuItem.Name = "setNestMenuItem";
-            this.setNestMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.setNestMenuItem.Size = new System.Drawing.Size(257, 22);
             this.setNestMenuItem.Text = "Установить гнездовье";
             this.setNestMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // печатьToolStripMenuItem
             // 
             this.печатьToolStripMenuItem.Name = "печатьToolStripMenuItem";
-            this.печатьToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.печатьToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
             this.печатьToolStripMenuItem.Text = "Печать";
             this.печатьToolStripMenuItem.Click += new System.EventHandler(this.печатьToolStripMenuItem_Click);
             // 
@@ -306,8 +308,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader6;
         private System.Windows.Forms.ColumnHeader columnHeader7;
         private System.Windows.Forms.ColumnHeader columnHeader8;
-        private System.Windows.Forms.ColumnHeader columnHeader9;
-        private System.Windows.Forms.ColumnHeader columnHeader10;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ListView listView2;
         private System.Windows.Forms.ColumnHeader columnHeader11;
@@ -326,6 +326,7 @@
         private System.Windows.Forms.ToolStripMenuItem vaccMenuItem;
         private System.Windows.Forms.ColumnHeader columnHeader14;
         private System.Windows.Forms.ToolStripMenuItem setNestMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem countChangedMenuItem;
 
     }
 }

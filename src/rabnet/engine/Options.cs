@@ -12,7 +12,7 @@ namespace rabnet
             SHOW_NUMBERS, BUILD_FILTER, OKROL, VUDVOR, COUNT1, COUNT2, COUNT3, MAKE_BRIDE, DEAD_FILTER, PRE_OKROL, 
             ZOO_FILTER, COMBINE_AGE, BOYS_OUT, GIRLS_OUT, STATE_FUCK, FIRST_FUCK, MALE_WAIT, GEN_TREE, CONFIRM_EXIT, 
             VACC, CONFIRM_KILL, SUCKERS,NEST,CHILD_NEST,RAB_LIST,BUILD_LIST,YOUNG_LIST,DEAD_LIST,REPL_YOUNG_LIST,
-            MAKE_FUCK_LIST,NAMES_LIST
+            MAKE_FUCK_LIST,NAMES_LIST,UPDATE_ZOO
         }
         public enum OPT_LEVEL {FARM,USER};
         public class ExOptionNotFound:ApplicationException
@@ -71,6 +71,7 @@ namespace rabnet
                                    new Option(OPT_ID.REPL_YOUNG_LIST,OPT_LEVEL.USER,"ryounglist"), 
                                    new Option(OPT_ID.MAKE_FUCK_LIST,OPT_LEVEL.USER,"mfucklist"), 
                                    new Option(OPT_ID.NAMES_LIST,OPT_LEVEL.USER,"namelist"), 
+                                   new Option(OPT_ID.UPDATE_ZOO,OPT_LEVEL.USER,"updatezoo"), 
                                    };
         public Options(RabNetEngine eng)
         {
