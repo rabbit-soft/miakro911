@@ -600,6 +600,12 @@ namespace rabnet
 
         private void button18_Click(object sender, EventArgs e)
         {
+            foreach(ListViewItem li in weightList.Items)
+                if (DateTime.Parse(li.SubItems[0].Text).Date == dateWeight.Value.Date)
+                {
+                    MessageBox.Show("Кролик уже взсешен "+li.SubItems[0].Text);
+                    return;
+                }
             Engine.db().addWeight(rab.rid, (int)nudWeight.Value, dateWeight.Value.Date);
             updateData();
         }
