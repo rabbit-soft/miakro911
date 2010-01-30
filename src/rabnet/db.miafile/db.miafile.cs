@@ -775,5 +775,25 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public string[] getWeights(int rabbit)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void addWeight(int rabbit, int weight, DateTime date)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void deleteWeight(int rabbit, DateTime date)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

@@ -40,6 +40,7 @@ namespace rabnet
                 tabControl1.TabPages.RemoveAt(1);
             mkbrides = Engine.get().brideAge();
             makesuck = Engine.opt().getIntOption(Options.OPT_ID.SUCKERS);
+            dateWeight.Value = DateTime.Now.Date;
         }
 
         private void initialHints()
@@ -136,6 +137,10 @@ namespace rabnet
             label12.Text = "Телосложение:" + getbon(rab.bon[2]);
             label18.Text = "Шкура:" + getbon(rab.bon[3]);
             label17.Text = "Окраска:" + getbon(rab.bon[4]);
+            weightList.Items.Clear();
+            String[] wgh = Engine.db().getWeights(rab.rid);
+            for (int i = 0; i < wgh.Length / 2; i++)
+                weightList.Items.Add(wgh[i * 2]).SubItems.Add(wgh[i*2+1]);
         }
 
         private void updateMale()
@@ -581,6 +586,30 @@ namespace rabnet
         private void okrolCount_ValueChanged(object sender, EventArgs e)
         {
             okrolDd.Enabled = (okrolCount.Value!=0);
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            button19.Enabled = weightList.SelectedItems.Count == 1;
+        }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+            Engine.db().addWeight(rab.rid, (int)nudWeight.Value, dateWeight.Value.Date);
+            updateData();
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            if (weightList.SelectedItems.Count != 1) return;
+            DateTime dt = DateTime.Parse(weightList.SelectedItems[0].SubItems[0].Text);
+            Engine.db().deleteWeight(rab.rid, dt.Date);
+            updateData();
         }
 
     }

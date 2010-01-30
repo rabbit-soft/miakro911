@@ -67,6 +67,7 @@
     <Compile Include="RabNetDataGetterBase.cs" />
     <Compile Include="Reports.cs" />
     <Compile Include="Users.cs" />
+    <Compile Include="Weight.cs" />
     <Compile Include="Youngers.cs" />
     <Compile Include="Zones.cs" />
     <Compile Include="ZooTeh.cs" />

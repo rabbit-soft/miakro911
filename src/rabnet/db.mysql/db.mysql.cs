@@ -447,6 +447,21 @@ namespace rabnet
             return new DeadReasons(sql);
         }
 
+        public string[] getWeights(int rabbit)
+        {
+            return new Weight(sql).getWeights(rabbit);
+        }
+
+        public void addWeight(int rabbit, int weight, DateTime date)
+        {
+            new Weight(sql).addWeight(rabbit, weight, date);
+        }
+
+        public void deleteWeight(int rabbit, DateTime date)
+        {
+            new Weight(sql).deleteWeight(rabbit, date);
+        }
+
         #endregion
     }
 }

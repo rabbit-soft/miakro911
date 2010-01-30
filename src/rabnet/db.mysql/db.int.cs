@@ -98,6 +98,9 @@ namespace rabnet
         ZooJobItem[] getVacc(Filters f,int days);
         ZooJobItem[] getSetNest(Filters f,int wochild,int wchild);
         IDeadReasons getDeadReasons();
+        String[] getWeights(int rabbit);
+        void addWeight(int rabbit, int weight, DateTime date);
+        void deleteWeight(int rabbit, DateTime date);
     }
 
 }
