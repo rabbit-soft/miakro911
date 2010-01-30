@@ -14,6 +14,17 @@ namespace rabnet
         public OkrolForm()
         {
             InitializeComponent();
+            initialHint();
+        }
+
+        private void initialHint()
+        {
+            ToolTip toolTip = new ToolTip();
+            toolTip.InitialDelay = 1000;
+            toolTip.SetToolTip(dateDays1, "Дата принятия окрола");
+            toolTip.SetToolTip(button1, "Отметить принятие окрола");
+            toolTip.SetToolTip(button2, "Отметить прохолостание крольчихи");
+            toolTip.SetToolTip(button3, "Отменить принятие окрола. Закрыть окно");
         }
 
         public OkrolForm(int r1):this()

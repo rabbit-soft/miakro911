@@ -14,6 +14,15 @@ namespace rabnet
         public Proholost()
         {
             InitializeComponent();
+            initialHints();
+        }
+
+        private void initialHints()
+        {
+            ToolTip toolTip = new ToolTip();
+            toolTip.InitialDelay = 1000;
+            toolTip.SetToolTip(button1,"Отметить прохолостание крольчихи");
+            toolTip.SetToolTip(button2, "Закрыть окно");
         }
 
         public Proholost(int r):this()
