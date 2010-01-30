@@ -247,7 +247,8 @@ namespace rabnet
             {
                 int idx = listView1.SelectedItems[0].Index;
                 listView1.SelectedItems[0].Remove();
-                listView1.Items[idx].Selected = true;
+                if (idx<listView1.Items.Count)
+                    listView1.Items[idx].Selected = true;
                 fullUpdate = needUpdate;
                 rsb.run();
             }
@@ -261,6 +262,7 @@ namespace rabnet
 
         private void listView1_DoubleClick(object sender, EventArgs e)
         {
+            makeFlag = 0;
             makeJob();
         }
 
