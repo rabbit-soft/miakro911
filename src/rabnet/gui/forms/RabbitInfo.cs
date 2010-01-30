@@ -47,6 +47,9 @@ namespace rabnet
             ToolTip toolTip = new ToolTip();
             
             toolTip.InitialDelay = 1000;
+            toolTip.SetToolTip(button11, "Показать генетику выделенного самца");
+            toolTip.SetToolTip(button12, "Выбрать партнера для соития");
+            toolTip.SetToolTip(overallBab, "Сколько родила живых крольчат вообщем");
             toolTip.SetToolTip(button13, "Определение классности");
             toolTip.SetToolTip(group, "Количество кроликов в клетке");
             toolTip.SetToolTip(button16,"Показать все имена");
