@@ -133,7 +133,9 @@ namespace rabnet
             if (f.safeValue("act", "R").Contains("R"))
                 getBoysGirlsOut(zjobs);
             if (f.safeValue("act", "F").Contains("F"))
-                getFucks(zjobs);
+                getFucks(zjobs,0);
+            if (f.safeValue("act", "f").Contains("f"))
+                getFucks(zjobs, 1);
             if (f.safeValue("act", "v").Contains("v"))
                 getVacc(zjobs);
             if (f.safeValue("act", "N").Contains("N"))
@@ -191,23 +193,16 @@ namespace rabnet
                 jh.Add(new ZootehJob().BoysGirlsOut(z.id, z.name, z.place, z.age, z.i[0], false));
         }
 
-        public void getFucks(JobHolder jh)
+        public void getFucks(JobHolder jh,int type)
         {
             int days1 = eng.options().getIntOption(Options.OPT_ID.STATE_FUCK);
             int days2 = eng.options().getIntOption(Options.OPT_ID.FIRST_FUCK);
             bool heter = eng.options().getIntOption(Options.OPT_ID.GETEROSIS) == 1;
             bool inbr = eng.options().getIntOption(Options.OPT_ID.INBREEDING) == 1;
             int malewait = eng.options().getIntOption(Options.OPT_ID.MALE_WAIT);
-            ZooJobItem[] jobs = eng.db().getZooFuck(f, days1, days2, eng.brideAge(), malewait, heter, inbr);
+            ZooJobItem[] jobs = eng.db().getZooFuck(f, days1, days2, eng.brideAge(), malewait, heter, inbr, type);
             foreach (ZooJobItem z in jobs)
             {
-                /*
-                Fucks f=eng.db().allFuckers(z.id, heter, inbr, malewait);
-                String boys="";
-                foreach (Fucks.Fuck ff in f.fucks)
-                    boys += ff.partner.Trim()+",";
-                boys.Trim(',');
-                 * */
                 jh.Add(new ZootehJob(f).Fuck(z.id, z.name, z.place, z.age, z.i[0], z.status,z.names,z.i[1],z.s[0]));
             }
         }

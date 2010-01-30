@@ -116,6 +116,10 @@ namespace rabnet
 
         public void setMenu(JobType type)
         {
+            setMenu(type, null);
+        }
+        public void setMenu(JobType type,ZootehJob job)
+        {
             okrolMenuItem.Visible = vudvorMenuItem.Visible = false;
             countsMenuItem.Visible = preokrolMenuItem.Visible= false;
             boysOutMenuItem.Visible = girlsOutMenuItem.Visible = false;
@@ -129,7 +133,12 @@ namespace rabnet
                 case JobType.PRE_OKROL: preokrolMenuItem.Visible = true; break;
                 case JobType.BOYS_OUT: boysOutMenuItem.Visible = true; break;
                 case JobType.GIRLS_OUT: girlsOutMenuItem.Visible = true; break;
-                case JobType.FUCK: fuckMenuItem.Visible = true; break;
+                case JobType.FUCK: fuckMenuItem.Visible = true;
+                    if (job.job == "Случка")
+                        fuckMenuItem.Text = "Случить";
+                    else
+                        fuckMenuItem.Text = "Вязать";
+                    break;
                 case JobType.VACC: vaccMenuItem.Visible = true; break;
                 case JobType.SET_NEST: vaccMenuItem.Visible = true; break;
             }
@@ -149,7 +158,7 @@ namespace rabnet
                 setMenu(JobType.NONE);
                 return;
             }
-            setMenu(getCurJob().type);
+            setMenu(getCurJob().type,getCurJob());
         }
 
         private void makeJob()

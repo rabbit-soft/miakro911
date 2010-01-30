@@ -243,7 +243,7 @@ FROM rabbits WHERE r_parent<>0 AND {0:s} AND (TO_DAYS(NOW())-TO_DAYS(r_born))>={
             return res.ToArray();
         }
 
-        public ZooJobItem[] getFucks(int statedays, int firstdays,int brideage,int malewait,bool heterosis,bool inbreeding)
+        public ZooJobItem[] getFucks(int statedays, int firstdays,int brideage,int malewait,bool heterosis,bool inbreeding,int type)
         {
             MySqlDataReader rd = reader(String.Format(@"SELECT * FROM (SELECT r_id,rabname(r_id,{7:d}) name,rabplace(r_id) place,
 TO_DAYS(NOW())-TO_DAYS(r_born) age,
@@ -255,14 +255,15 @@ WHERE r5.r_sex='male' AND r_status>0 AND
 (r5.r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r5.r_last_fuck_okrol)>={3:d}){4:s}{5:s}) partners":"'' partners")+@",
 r_group,
 (SELECT {6:s} FROM breeds WHERE b_id=r_breed) breed
-FROM rabbits WHERE r_sex='female' AND r_event_date IS NULL ) c 
+FROM rabbits WHERE r_sex='female' AND r_event_date IS NULL AND r_status{8:s}) c 
 WHERE age>{0:d} AND (r_status=0 OR (r_status=1 AND (suckers=0 OR fromokrol>={1:d})) OR (r_status>1 AND (suckers=0 OR fromokrol>={2:d}))) 
 ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;",
     brideage,firstdays,statedays,malewait,
 (heterosis ? "" : String.Format(" AND r5.r_breed=rabbits.r_breed")),
 (inbreeding ? "" : String.Format(@" AND (SELECT COUNT(g_genom) FROM genoms WHERE g_id=rabbits.r_genesis AND g_genom IN 
 (SELECT g2.g_genom FROM genoms g2 WHERE g2.g_id=r5.r_genesis))=0")),
-(op.safeInt("shr")==0?"b_name":"b_short_name"),op.safeInt("dbl")+1
+(op.safeInt("shr")==0?"b_name":"b_short_name"),op.safeInt("dbl")+1,
+(type==1?">0":"=0")
     ));
             List<ZooJobItem> res = new List<ZooJobItem>();
             while (rd.Read())

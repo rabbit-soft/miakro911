@@ -87,7 +87,7 @@ namespace rabnet
         Rabbit[] getMothers(int age,int agediff);
         ZooJobItem[] getBoysGirlsOut(Filters f, int days, OneRabbit.RabbitSex sex);
         String[] logNames();
-        ZooJobItem[] getZooFuck(Filters f, int statedays, int firstdays, int brideage, int malewait, bool heterosis, bool inbreeding);
+        ZooJobItem[] getZooFuck(Filters f, int statedays, int firstdays, int brideage, int malewait, bool heterosis, bool inbreeding,int type);
         void setBuildingName(int bid,String name);
         void addBuilding(int parent, String name);
         void replaceBuilding(int bid, int toBuilding);
