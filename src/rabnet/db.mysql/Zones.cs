@@ -12,7 +12,7 @@ namespace rabnet
         int AddZone(int id,String name, String sname);
     }
 
-    public class Zones : IZones
+    class Zones : IZones
     {
         private MySqlConnection sql = null;
         public Zones(MySqlConnection sql)

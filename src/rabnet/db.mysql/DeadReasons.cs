@@ -12,7 +12,7 @@ namespace rabnet
         int AddReason(String name);
     }
 
-    public class DeadReasons : IDeadReasons
+    class DeadReasons : IDeadReasons
     {
         private MySqlConnection sql = null;
         public DeadReasons(MySqlConnection sql)

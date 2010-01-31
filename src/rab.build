@@ -145,6 +145,10 @@
 		<copy file="./rabnet/gui/app.config" tofile="${bin_dir}/rabnet.exe.config" />
 	</target>
 	
+	<target name="obfuscate" description="Binary Obfuscation">
+		
+	</target>
+	
 	
 	<!-- FILL DATA!-->
 	<target name="filldata" depends="build" description="filling developer databases">

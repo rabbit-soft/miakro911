@@ -52,7 +52,7 @@ namespace rabnet
         }
     }
 
-    public class FucksGetter
+    class FucksGetter
     {
         public static Fucks GetFucks(MySqlConnection sql,int rabbit)
         {

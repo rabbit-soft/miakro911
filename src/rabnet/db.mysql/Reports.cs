@@ -11,7 +11,7 @@ namespace rabnet
         public enum Type { TEST,BREEDS,AGE,FUCKER,DEAD,DEADREASONS };
     }
 
-    public class Reports
+    class Reports
     {
         MySqlConnection sql = null;
         private DateTime FROM = DateTime.Now;

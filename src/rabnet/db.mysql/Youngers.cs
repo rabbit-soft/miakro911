@@ -5,7 +5,7 @@ using System.Text;
 
 namespace rabnet
 {
-    public class Younger : IRabbit
+    public class Younger : IData
     {
         public int fid;
         public String fname;
@@ -31,24 +31,6 @@ namespace rabnet
             fnotes = notes;
             fcount = count;
         }
-        #region IRabbit Members
-
-        public int id(){return fid;}
-        public string name() { return fname; }
-        public string sex() { return fsex; }
-        public int age() { return fage; }
-        public string breed() { return fbreed; }
-        public string weight(){return fe;}
-        public string status() { return mom; }
-        public string bgp() { return fe; }
-        public string N() { return fcount.ToString(); }
-        public int average() { return fneighbours; }
-        public int rate() { return momid; }
-        public string cls() { return fcls; }
-        public string address() { return faddress; }
-        public string notes() { return fnotes; }
-
-        #endregion
     }
 
     class Youngers:RabNetDataGetterBase

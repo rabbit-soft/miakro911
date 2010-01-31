@@ -21,7 +21,7 @@ namespace rabnet
         Catalog getDeadReasons();
     }
 
-    public class Catalogs:ICatalogs
+    class Catalogs:ICatalogs
     {
         private MySqlConnection con;
         public Catalogs(MySqlConnection sql)

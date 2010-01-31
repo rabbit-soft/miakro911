@@ -228,11 +228,11 @@ namespace rabnet
             if (rid>0)
             foreach (Younger y in Engine.db().getSuckers(rab.rid))
             {
-                ListViewItem li=suckers.Items.Add(y.name());
-                li.SubItems.Add(y.N());
-                li.SubItems.Add(y.age().ToString());
-                li.SubItems.Add(y.sex());
-                li.SubItems.Add(y.breed());
+                ListViewItem li=suckers.Items.Add(y.fname);
+                li.SubItems.Add(y.fcount.ToString());
+                li.SubItems.Add(y.fage.ToString());
+                li.SubItems.Add(y.fsex);
+                li.SubItems.Add(y.fbreed);
             }
             suckers.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }

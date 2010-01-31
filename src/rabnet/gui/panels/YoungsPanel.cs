@@ -46,20 +46,20 @@ namespace rabnet
                 cs.Restore();
                 return;
             }
-            IRabbit rab = (data as IRabbit);
-            ListViewItem li = listView1.Items.Add(rab.name());
-            li.Tag = rab.id();
-            li.SubItems.Add(rab.N());
-            li.SubItems.Add(rab.age().ToString());
+            Younger rab = (data as Younger);
+            ListViewItem li = listView1.Items.Add(rab.fname);
+            li.Tag = rab.fid;
+            li.SubItems.Add(rab.fcount.ToString());
+            li.SubItems.Add(rab.fage.ToString());
             li.SubItems.Add("");
-            li.SubItems.Add(rab.sex());
-            li.SubItems.Add(rab.breed());
-            li.SubItems.Add(rab.address());
-            li.SubItems.Add(rab.cls());
-            li.SubItems.Add(rab.status());
-            li.SubItems.Add(rab.average()==0?"-":rab.average().ToString());
+            li.SubItems.Add(rab.fsex);
+            li.SubItems.Add(rab.fbreed);
+            li.SubItems.Add(rab.faddress);
+            li.SubItems.Add(rab.fcls);
+            li.SubItems.Add(rab.mom);
+            li.SubItems.Add(rab.fneighbours==0?"-":rab.fneighbours.ToString());
             li.SubItems.Add("");
-            li.SubItems.Add(rab.notes());
+            li.SubItems.Add(rab.fnotes);
         }
 
         private void insertNode(TreeNode nd, TreeData data)

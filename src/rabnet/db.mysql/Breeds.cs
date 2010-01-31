@@ -12,7 +12,7 @@ namespace rabnet
         int AddBreed(String name, String sname);
     }
 
-    public class Breeds:IBreeds
+    class Breeds:IBreeds
     {
         private MySqlConnection sql = null;
         public Breeds(MySqlConnection sql)

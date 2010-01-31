@@ -5,26 +5,7 @@ using MySql.Data.MySqlClient;
 
 namespace rabnet
 {
-    public interface IRabbit : IData
-    {
-        int id();
-        String name();
-        String sex();
-        int age();
-        String breed();
-        String weight();
-        String status();
-        String bgp();
-        String N();
-        int average();
-        int rate();
-        String cls();
-        String address();
-        String notes();
-    }
-
-
-    public class Rabbit:IRabbit{
+    public class Rabbit:IData{
         public int fid;
         public String fname;
         public String fsex;
@@ -43,20 +24,6 @@ namespace rabnet
         {
             fid=id;
         }
-        int IRabbit.id(){return fid;}
-        string IRabbit.name() { return fname; }
-        string IRabbit.sex() { return fsex; }
-        int IRabbit.age() { return fage; }
-        string IRabbit.breed() { return fbreed; }
-        string IRabbit.weight() { return fweight; }
-        string IRabbit.status() { return fstatus; }
-        string IRabbit.bgp() { return fbgp; }
-        string IRabbit.N() { return fN; }
-        int IRabbit.average() { return faverage; }
-        int IRabbit.rate() { return frate; }
-        string IRabbit.cls() { return fcls; }
-        string IRabbit.address() { return faddress; }
-        string IRabbit.notes() { return fnotes; }
     }
 
     class Rabbits:RabNetDataGetterBase
@@ -452,7 +419,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
         }
     }
 
-    public class RabbitGetter
+    class RabbitGetter
     {
         public static OneRabbit fillRabbit(MySqlDataReader rd)
         {
