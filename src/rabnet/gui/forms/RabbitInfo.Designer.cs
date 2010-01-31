@@ -118,6 +118,13 @@
             this.columnHeader13 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader14 = new System.Windows.Forms.ColumnHeader();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.button19 = new System.Windows.Forms.Button();
+            this.button18 = new System.Windows.Forms.Button();
+            this.nudWeight = new System.Windows.Forms.NumericUpDown();
+            this.dateWeight = new System.Windows.Forms.DateTimePicker();
+            this.weightList = new System.Windows.Forms.ListView();
+            this.columnHeader17 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader18 = new System.Windows.Forms.ColumnHeader();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.notes = new System.Windows.Forms.TextBox();
@@ -128,13 +135,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
-            this.weightList = new System.Windows.Forms.ListView();
-            this.columnHeader17 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader18 = new System.Windows.Forms.ColumnHeader();
-            this.dateWeight = new System.Windows.Forms.DateTimePicker();
-            this.nudWeight = new System.Windows.Forms.NumericUpDown();
-            this.button18 = new System.Windows.Forms.Button();
-            this.button19 = new System.Windows.Forms.Button();
+            this.sex = new System.Windows.Forms.ComboBox();
+            this.label23 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.TabPage1.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -174,6 +176,8 @@
             // 
             // TabPage1
             // 
+            this.TabPage1.Controls.Add(this.sex);
+            this.TabPage1.Controls.Add(this.label23);
             this.TabPage1.Controls.Add(this.button17);
             this.TabPage1.Controls.Add(this.label22);
             this.TabPage1.Controls.Add(this.groupBox7);
@@ -353,7 +357,7 @@
             // 
             this.bdate.AutoSize = true;
             this.bdate.DateText = "Дата рожд.";
-            this.bdate.DateValue = new System.DateTime(2010, 1, 30, 0, 0, 0, 0);
+            this.bdate.DateValue = new System.DateTime(2010, 1, 31, 0, 0, 0, 0);
             this.bdate.DaysText = "Возраст";
             this.bdate.DaysValue = 0;
             this.bdate.Location = new System.Drawing.Point(13, 111);
@@ -780,7 +784,7 @@
             // 
             this.okrolDd.AutoSize = true;
             this.okrolDd.DateText = "Дата";
-            this.okrolDd.DateValue = new System.DateTime(2010, 1, 30, 0, 0, 0, 0);
+            this.okrolDd.DateValue = new System.DateTime(2010, 1, 31, 0, 0, 0, 0);
             this.okrolDd.DaysText = "Срок";
             this.okrolDd.DaysValue = 0;
             this.okrolDd.Location = new System.Drawing.Point(8, 61);
@@ -867,7 +871,7 @@
             // 
             this.sukrDd.AutoSize = true;
             this.sukrDd.DateText = "Дата";
-            this.sukrDd.DateValue = new System.DateTime(2010, 1, 30, 0, 0, 0, 0);
+            this.sukrDd.DateValue = new System.DateTime(2010, 1, 31, 0, 0, 0, 0);
             this.sukrDd.DaysText = "Срок";
             this.sukrDd.DaysValue = 0;
             this.sukrDd.Location = new System.Drawing.Point(0, 46);
@@ -1088,6 +1092,82 @@
             this.tabPage5.Text = "Вес";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
+            // button19
+            // 
+            this.button19.Location = new System.Drawing.Point(428, 272);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(75, 23);
+            this.button19.TabIndex = 4;
+            this.button19.Text = "Удалить";
+            this.button19.UseVisualStyleBackColor = true;
+            this.button19.Click += new System.EventHandler(this.button19_Click);
+            // 
+            // button18
+            // 
+            this.button18.Location = new System.Drawing.Point(250, 272);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(75, 23);
+            this.button18.TabIndex = 3;
+            this.button18.Text = "Взвесить";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
+            // 
+            // nudWeight
+            // 
+            this.nudWeight.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.nudWeight.Location = new System.Drawing.Point(139, 273);
+            this.nudWeight.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.nudWeight.Name = "nudWeight";
+            this.nudWeight.Size = new System.Drawing.Size(105, 20);
+            this.nudWeight.TabIndex = 2;
+            this.nudWeight.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            // 
+            // dateWeight
+            // 
+            this.dateWeight.Location = new System.Drawing.Point(3, 273);
+            this.dateWeight.Name = "dateWeight";
+            this.dateWeight.Size = new System.Drawing.Size(129, 20);
+            this.dateWeight.TabIndex = 1;
+            this.dateWeight.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
+            // 
+            // weightList
+            // 
+            this.weightList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader17,
+            this.columnHeader18});
+            this.weightList.FullRowSelect = true;
+            this.weightList.GridLines = true;
+            this.weightList.Location = new System.Drawing.Point(3, 3);
+            this.weightList.MultiSelect = false;
+            this.weightList.Name = "weightList";
+            this.weightList.Size = new System.Drawing.Size(500, 255);
+            this.weightList.TabIndex = 0;
+            this.weightList.UseCompatibleStateImageBehavior = false;
+            this.weightList.View = System.Windows.Forms.View.Details;
+            this.weightList.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            // 
+            // columnHeader17
+            // 
+            this.columnHeader17.Text = "Дата";
+            this.columnHeader17.Width = 126;
+            // 
+            // columnHeader18
+            // 
+            this.columnHeader18.Text = "Вес";
+            this.columnHeader18.Width = 100;
+            // 
             // button1
             // 
             this.button1.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
@@ -1182,81 +1262,28 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // weightList
+            // sex
             // 
-            this.weightList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader17,
-            this.columnHeader18});
-            this.weightList.FullRowSelect = true;
-            this.weightList.GridLines = true;
-            this.weightList.Location = new System.Drawing.Point(3, 3);
-            this.weightList.MultiSelect = false;
-            this.weightList.Name = "weightList";
-            this.weightList.Size = new System.Drawing.Size(500, 255);
-            this.weightList.TabIndex = 0;
-            this.weightList.UseCompatibleStateImageBehavior = false;
-            this.weightList.View = System.Windows.Forms.View.Details;
-            this.weightList.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            this.sex.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.sex.FormattingEnabled = true;
+            this.sex.Items.AddRange(new object[] {
+            "?",
+            "м",
+            "ж"});
+            this.sex.Location = new System.Drawing.Point(37, 276);
+            this.sex.Name = "sex";
+            this.sex.Size = new System.Drawing.Size(55, 21);
+            this.sex.TabIndex = 11;
+            this.sex.SelectedIndexChanged += new System.EventHandler(this.sex_SelectedIndexChanged);
             // 
-            // columnHeader17
+            // label23
             // 
-            this.columnHeader17.Text = "Дата";
-            this.columnHeader17.Width = 126;
-            // 
-            // columnHeader18
-            // 
-            this.columnHeader18.Text = "Вес";
-            this.columnHeader18.Width = 100;
-            // 
-            // dateWeight
-            // 
-            this.dateWeight.Location = new System.Drawing.Point(3, 273);
-            this.dateWeight.Name = "dateWeight";
-            this.dateWeight.Size = new System.Drawing.Size(129, 20);
-            this.dateWeight.TabIndex = 1;
-            this.dateWeight.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
-            // 
-            // nudWeight
-            // 
-            this.nudWeight.Increment = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.nudWeight.Location = new System.Drawing.Point(139, 273);
-            this.nudWeight.Maximum = new decimal(new int[] {
-            1000000,
-            0,
-            0,
-            0});
-            this.nudWeight.Name = "nudWeight";
-            this.nudWeight.Size = new System.Drawing.Size(105, 20);
-            this.nudWeight.TabIndex = 2;
-            this.nudWeight.Value = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            // 
-            // button18
-            // 
-            this.button18.Location = new System.Drawing.Point(250, 272);
-            this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(75, 23);
-            this.button18.TabIndex = 3;
-            this.button18.Text = "Взвесить";
-            this.button18.UseVisualStyleBackColor = true;
-            this.button18.Click += new System.EventHandler(this.button18_Click);
-            // 
-            // button19
-            // 
-            this.button19.Location = new System.Drawing.Point(428, 272);
-            this.button19.Name = "button19";
-            this.button19.Size = new System.Drawing.Size(75, 23);
-            this.button19.TabIndex = 4;
-            this.button19.Text = "Удалить";
-            this.button19.UseVisualStyleBackColor = true;
-            this.button19.Click += new System.EventHandler(this.button19_Click);
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(6, 279);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(25, 13);
+            this.label23.TabIndex = 12;
+            this.label23.Text = "пол";
             // 
             // RabbitInfo
             // 
@@ -1425,5 +1452,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader18;
         private System.Windows.Forms.Button button18;
         private System.Windows.Forms.Button button19;
+        private System.Windows.Forms.ComboBox sex;
+        private System.Windows.Forms.Label label23;
     }
 }

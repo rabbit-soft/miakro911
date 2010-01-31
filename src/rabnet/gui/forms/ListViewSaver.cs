@@ -57,6 +57,7 @@ namespace rabnet
         public static void loadItem(ListView lv,int item)
         {
             if (item==-1) return;
+            if (lv.Items.Count <= item) return;
             lv.Items[item].Selected=true;
             lv.Items[item].EnsureVisible();
         }

@@ -145,6 +145,7 @@ namespace rabnet
 
         private void updateMale()
         {
+            setSex(1);
             maleStatus.SelectedIndex = rab.status;
             label7.Text = "Статус: " + maleStatus.Text;
             if (rab.group != 1) return;
@@ -160,6 +161,7 @@ namespace rabnet
 
         private void updateFemale()
         {
+            setSex(2);
             label7.Text = "Статус: Девочка";
             if (bdate.DaysValue >= mkbrides)
                 label7.Text = "Статус: Невеста";
@@ -309,12 +311,16 @@ namespace rabnet
             fillCatalogs(0);
             updateStd();
             if (rab.sex == OneRabbit.RabbitSex.VOID)
-                label7.Text = "Статус:" + (rab.age < makesuck? "Гнездовые" : "Подсосные");
+            {
+                setSex(0);
+                label7.Text = "Статус:" + (rab.age < makesuck ? "Гнездовые" : "Подсосные");
+            }
             if (rab.sex == OneRabbit.RabbitSex.MALE)
                 updateMale();
             if (rab.sex == OneRabbit.RabbitSex.FEMALE)
                 updateFemale();
             tabControl1.SelectedIndex = idx;
+            sex.Enabled = (rab.name == 0 && rab.last_fuck_okrol == DateTime.MinValue);
             if (rid == 0)
                 UpdateNew();
         }
@@ -616,6 +622,31 @@ namespace rabnet
             DateTime dt = DateTime.Parse(weightList.SelectedItems[0].SubItems[0].Text);
             Engine.db().deleteWeight(rab.rid, dt.Date);
             updateData();
+        }
+
+        private void sex_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!manual) return;
+            if (MessageBox.Show(this, "Сменить пол?", "Смена пола", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                OneRabbit.RabbitSex sx=OneRabbit.RabbitSex.VOID;
+                if (sex.SelectedIndex==1) sx=OneRabbit.RabbitSex.MALE;
+                if (sex.SelectedIndex==2) sx=OneRabbit.RabbitSex.FEMALE;
+                rab.setSex(sx);
+                updateData();
+            }
+            else
+            {
+                if (rab.sex == OneRabbit.RabbitSex.VOID) setSex(0);
+                if (rab.sex == OneRabbit.RabbitSex.MALE) setSex(1);
+                if (rab.sex == OneRabbit.RabbitSex.FEMALE) setSex(2);
+            }
+        }
+        void setSex(int s)
+        {
+            manual = false;
+            sex.SelectedIndex = s;
+            manual = true;
         }
 
     }
