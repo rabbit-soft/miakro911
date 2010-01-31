@@ -46,6 +46,9 @@ namespace rabnet
             manflag = true;
             rabStatusBar1.setText(0, Engine.db().now().ToShortDateString());
             Text = Engine.get().farmName();
+#if TRIAL
+            Text+=" - Демо версия";
+#endif
             Options op = Engine.opt();
             showTierTMenuItem.Checked = (op.getIntOption(Options.OPT_ID.SHOW_TIER_TYPE) == 1);
             showTierSMenuItem.Checked = (op.getIntOption(Options.OPT_ID.SHOW_TIER_SEC) == 1);
