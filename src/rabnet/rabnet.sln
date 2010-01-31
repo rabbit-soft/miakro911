@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "engine", "engine\engine.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "db.mysql", "db.mysql\db.mysql.csproj", "{B20A34DB-0FCD-4CFA-858E-16803387FF4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "db.miafile", "db.miafile\db.miafile.csproj", "{E1FDB4AD-FF04-4750-A3D9-3EB11108FD6C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,10 +31,6 @@ Global
 		{B20A34DB-0FCD-4CFA-858E-16803387FF4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B20A34DB-0FCD-4CFA-858E-16803387FF4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B20A34DB-0FCD-4CFA-858E-16803387FF4F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E1FDB4AD-FF04-4750-A3D9-3EB11108FD6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E1FDB4AD-FF04-4750-A3D9-3EB11108FD6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E1FDB4AD-FF04-4750-A3D9-3EB11108FD6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E1FDB4AD-FF04-4750-A3D9-3EB11108FD6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,6 +10,7 @@ namespace rabnet
 {
     public partial class OptionsForm : Form
     {
+        [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
         class OptionsHolder
         {
             public enum RUBOOL {Да,Нет};

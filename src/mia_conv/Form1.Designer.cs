@@ -61,21 +61,23 @@ namespace mia_conv
             this.textDB = new System.Windows.Forms.TextBox();
             this.ofd2 = new System.Windows.Forms.OpenFileDialog();
             this.pb = new System.Windows.Forms.ProgressBar();
+            this.label10 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tb1
             // 
-            this.tb1.Location = new System.Drawing.Point(12, 10);
+            this.tb1.Location = new System.Drawing.Point(89, 9);
             this.tb1.Name = "tb1";
-            this.tb1.Size = new System.Drawing.Size(635, 20);
+            this.tb1.Size = new System.Drawing.Size(438, 20);
             this.tb1.TabIndex = 0;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(653, 8);
+            this.button1.Location = new System.Drawing.Point(533, 7);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(24, 23);
             this.button1.TabIndex = 1;
@@ -91,18 +93,19 @@ namespace mia_conv
             // 
             // log
             // 
-            this.log.Location = new System.Drawing.Point(12, 345);
+            this.log.Location = new System.Drawing.Point(61, 212);
             this.log.Multiline = true;
             this.log.Name = "log";
             this.log.ReadOnly = true;
             this.log.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.log.Size = new System.Drawing.Size(768, 331);
+            this.log.Size = new System.Drawing.Size(96, 23);
             this.log.TabIndex = 2;
+            this.log.Visible = false;
             // 
             // button2
             // 
             this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(683, 8);
+            this.button2.Location = new System.Drawing.Point(570, 7);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(45, 23);
             this.button2.TabIndex = 4;
@@ -131,25 +134,27 @@ namespace mia_conv
             "Архивная форма",
             "Строки названий фермы",
             "График взвешиваний"});
-            this.clb1.Location = new System.Drawing.Point(12, 53);
+            this.clb1.Location = new System.Drawing.Point(61, 187);
             this.clb1.Name = "clb1";
-            this.clb1.Size = new System.Drawing.Size(158, 259);
+            this.clb1.Size = new System.Drawing.Size(63, 19);
             this.clb1.TabIndex = 5;
+            this.clb1.Visible = false;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(56, 37);
+            this.label1.Location = new System.Drawing.Point(58, 161);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 6;
             this.label1.Text = "Логи";
+            this.label1.Visible = false;
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(24, -3);
+            this.dateTimePicker1.Location = new System.Drawing.Point(61, 138);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePicker1.Size = new System.Drawing.Size(62, 20);
             this.dateTimePicker1.TabIndex = 7;
             this.dateTimePicker1.Visible = false;
             this.dateTimePicker1.CloseUp += new System.EventHandler(this.dateTimePicker1_CloseUp);
@@ -173,7 +178,7 @@ namespace mia_conv
             this.groupBox1.Controls.Add(this.textUser);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.textDB);
-            this.groupBox1.Location = new System.Drawing.Point(176, 37);
+            this.groupBox1.Location = new System.Drawing.Point(12, 37);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(603, 302);
             this.groupBox1.TabIndex = 8;
@@ -188,6 +193,7 @@ namespace mia_conv
             this.label9.Size = new System.Drawing.Size(43, 13);
             this.label9.TabIndex = 10;
             this.label9.Text = "Скрипт";
+            this.label9.Visible = false;
             // 
             // button4
             // 
@@ -197,6 +203,7 @@ namespace mia_conv
             this.button4.TabIndex = 11;
             this.button4.Text = "...";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Visible = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // textBox1
@@ -205,6 +212,7 @@ namespace mia_conv
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(413, 20);
             this.textBox1.TabIndex = 9;
+            this.textBox1.Visible = false;
             // 
             // label8
             // 
@@ -235,6 +243,10 @@ namespace mia_conv
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.log);
+            this.groupBox3.Controls.Add(this.clb1);
+            this.groupBox3.Controls.Add(this.label1);
+            this.groupBox3.Controls.Add(this.dateTimePicker1);
             this.groupBox3.Location = new System.Drawing.Point(198, 16);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(200, 251);
@@ -379,33 +391,41 @@ namespace mia_conv
             // 
             // pb
             // 
-            this.pb.Location = new System.Drawing.Point(12, 682);
+            this.pb.Location = new System.Drawing.Point(12, 345);
             this.pb.Name = "pb";
-            this.pb.Size = new System.Drawing.Size(767, 16);
+            this.pb.Size = new System.Drawing.Size(603, 16);
             this.pb.TabIndex = 9;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(12, 12);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(75, 13);
+            this.label10.TabIndex = 10;
+            this.label10.Text = "Файл фермы";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(792, 701);
+            this.ClientSize = new System.Drawing.Size(627, 370);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.pb);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.dateTimePicker1);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.clb1);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.log);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tb1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Mia file to DB converter";
+            this.Text = "Импорт фермы";
             this.Activated += new System.EventHandler(this.Form1_Activated);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -447,6 +467,7 @@ namespace mia_conv
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.OpenFileDialog ofd2;
         private System.Windows.Forms.ProgressBar pb;
+        private System.Windows.Forms.Label label10;
     }
 }
 

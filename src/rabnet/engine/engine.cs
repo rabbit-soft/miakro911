@@ -40,11 +40,13 @@ namespace rabnet
                 data = new RabNetDbMySql(param);
                 data2 = new RabNetDbMySql(param);
             }
+            /*
             else if (dbext == "db.miafile")
             {
                 data = new RabNetDBMiaFile(param);
                 data2 = data;
-            }else{
+            }*/
+            else{
                 throw new ExDBDriverNotFoud(dbext);
             }
             int ver = options().getIntOption("db", "version", Options.OPT_LEVEL.FARM);

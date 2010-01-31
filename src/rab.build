@@ -91,7 +91,7 @@
 		<delete file="./mia_conv/mia_conv.rabnet_db_fmt.sql"/>
 	</target>
 	
-	<target name="rabnet" description="make rabnet application" depends="db.mysql,db.miafile,engine,gui"/>
+	<target name="rabnet" description="make rabnet application" depends="db.mysql,engine,gui"/>
 	
 	<target name="db.mysql" description="mysql data layer">
 		<csc target="library" output="${bin_dir}/db.mysql.dll" define="${istrial}">
@@ -101,18 +101,6 @@
 			<references>
 				<include name="${log4net.use}"/>
 				<include name="${mysql.use}"/>
-			</references>
-		</csc>
-	</target>
-	
-	<target name="db.miafile" description="mia_file data layer">
-		<csc target="library" output="${bin_dir}/db.miafile.dll" define="${istrial}">
-			<sources>
-				<include name="./rabnet/db.miafile/*.cs"/>
-			</sources>
-			<references>
-				<include name="${log4net.use}"/>
-				<include name="${bin_dir}/db.mysql.dll" />
 			</references>
 		</csc>
 	</target>

@@ -35,6 +35,7 @@ namespace mia_conv
         int logindex();
     }
 
+    [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
     class MFCommon
     {
         protected String name;
