@@ -81,7 +81,7 @@ namespace rabnet
                 comment = f.safeInt("shr") == 1 ? "Прк" : "Первокролка";
             if (status > 1)
                 comment = f.safeInt("shr") == 1 ? "Штн" : "Штатная";
-            comment += "-" + breed;
+            comment = breed +" - "+comment;
             names = boys;
             flag = group;
             return this;

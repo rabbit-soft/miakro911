@@ -63,10 +63,10 @@ namespace rabnet
             Description("Возведение гнездовых крольчат в подсосных и подсчет их количества")]
             public int suck { get { return su; } set { su = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Установка гнездовья"),
-            Description("")]
+            Description("Пересадить крольчиху в Юрту(А)")]
             public int nest { get { return n; } set { n = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Установка гнездовья при молодняке"),
-            Description("")]
+            Description("Пересадить крольчиху в Юрту(А) если у нее есть подсосные")]
             public int childnest { get { return cn; } set { cn = value; } }
 
             [Category("Вид"),
@@ -83,11 +83,11 @@ namespace rabnet
             public int genTree { get { return gt; } set { gt = value; } }
             [Category("Вид"),
             DisplayName("Обновлять зоотехплан"),
-            Description("")]
+            Description("Будет ли обновляться зоотех план после отметки работы.Внимание!!!:Не стоит включать опцию при работе по сети нескольких человек")]
             public RUBOOL updateZoo { get { return uz; } set { uz = value; } }
             [Category("Вид"),
             DisplayName("Показывать партнеров"),
-            Description("")]
+            Description("Подбирать в Зоотехплане возможных патнеров для Случек и Вязок")]
             public RUBOOL showPartners { get { return sp; } set { sp = value; } }
 
             [Category("Племенные свидетельства"),
@@ -96,11 +96,11 @@ namespace rabnet
             public int nextSvid { get { return tt; } set { tt = value; } }
             [Category("Племенные свидетельства"),
             DisplayName("Шапка"),
-            Description("")]
+            Description("Текст  находяшийся в \"Шапке\" племенного свидетельства")]
             public string svidHead { get { return sh; } set { sh = value; } }
             [Category("Племенные свидетельства"),
             DisplayName("Генеральный директор"),
-            Description("")]
+            Description("Иницияалы Генерального директора предприятия, отображаемые в конце племенного свидетельства")]
             public string genDir { get { return gd; } set { gd = value; } }
 
             public int fromR(RUBOOL value)

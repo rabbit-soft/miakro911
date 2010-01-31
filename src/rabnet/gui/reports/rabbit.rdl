@@ -367,14 +367,14 @@
           </TableRows>
         </Details>
         <Left>145.1pt</Left>
-        <Top>13.9pt</Top>
+        <Top>10.0pt</Top>
       </Table>
       <Textbox Name="Textbox2">
         <Height>24.80pt</Height>
         <Width>313.17pt</Width>
         <Value>Племенное свидетельство №</Value>
         <Left>90.1pt</Left>
-        <Top>51.3pt</Top>
+        <Top>40.0pt</Top>
         <Style>
           <BorderStyle />
           <BorderColor />
@@ -426,8 +426,8 @@
             </TableRow>
           </TableRows>
         </Details>
-        <Left>399.6pt</Left>
-        <Top>52.7pt</Top>
+        <Left>394.2pt</Left>
+        <Top>40.3pt</Top>
       </Table>
       <Table Name="Table3">
         <DataSetName>Data</DataSetName>
@@ -447,7 +447,7 @@
         <Details>
           <TableRows>
             <TableRow>
-              <Height>23.3pt</Height>
+              <Height>25.1pt</Height>
               <TableCells>
                 <TableCell>
                   <ReportItems>
@@ -476,8 +476,8 @@
             </TableRow>
           </TableRows>
         </Details>
-        <Left>68.0pt</Left>
-        <Top>91.4pt</Top>
+        <Left>62.5pt</Left>
+        <Top>78.0pt</Top>
       </Table>
       <Table Name="Table4">
         <DataSetName>Data</DataSetName>
@@ -859,7 +859,7 @@
               </TableCells>
             </TableRow>
             <TableRow>
-              <Height>15.9pt</Height>
+              <Height>23.9pt</Height>
               <TableCells>
                 <TableCell>
                   <ReportItems>
@@ -888,7 +888,7 @@
           </TableRows>
         </Details>
         <Left>7.9pt</Left>
-        <Top>163.5pt</Top>
+        <Top>150.5pt</Top>
       </Table>
       <Table Name="Table5">
         <DataSetName>Data</DataSetName>
@@ -933,8 +933,8 @@
             </TableRow>
           </TableRows>
         </Details>
-        <Left>188.9pt</Left>
-        <Top>131.4pt</Top>
+        <Left>188.1pt</Left>
+        <Top>118.1pt</Top>
       </Table>
       <Textbox Name="Textbox16">
         <Height>13.51pt</Height>
@@ -1158,7 +1158,7 @@
         <Width>42.17pt</Width>
         <Value>Мать</Value>
         <Left>119.1pt</Left>
-        <Top>323.5pt</Top>
+        <Top>324pt</Top>
         <Style>
           <BorderStyle />
           <BorderColor />
@@ -1378,8 +1378,8 @@
         <Height>15.75pt</Height>
         <Width>36.93pt</Width>
         <Value>Отец</Value>
-        <Left>403.5pt</Left>
-        <Top>326.1pt</Top>
+        <Left>403.50pt</Left>
+        <Top>324pt</Top>
         <Style>
           <BorderStyle />
           <BorderColor />
@@ -1416,13 +1416,13 @@
             </Style>
             <TableColumns>
               <TableColumn>
-                <Width>146.9pt</Width>
+                <Width>208.0pt</Width>
               </TableColumn>
             </TableColumns>
             <Details>
               <TableRows>
                 <TableRow>
-                  <Height>12 pt</Height>
+                  <Height>14.4pt</Height>
                   <TableCells>
                     <TableCell>
                       <ReportItems>
@@ -1449,8 +1449,8 @@
                 </TableRow>
               </TableRows>
             </Details>
-            <Left>55.3pt</Left>
-            <Top>69.1pt</Top>
+            <Left>55pt</Left>
+            <Top>70pt</Top>
           </Table>
           <Table Name="Table11">
             <DataSetName>Data2</DataSetName>
@@ -1673,8 +1673,8 @@
                 </TableRow>
               </TableRows>
             </Details>
-            <Left>5.1pt</Left>
-            <Top>87.7pt</Top>
+            <Left>7pt</Left>
+            <Top>88pt</Top>
           </Table>
           <Textbox Name="Textbox68">
             <Height>18.00pt</Height>
@@ -2351,7 +2351,7 @@
               </TableRows>
             </Details>
             <Left>16.8pt</Left>
-            <Top>29.4pt</Top>
+            <Top>27pt</Top>
             <Visibility>
             </Visibility>
           </Table>
@@ -2362,16 +2362,18 @@
               <BorderStyle>
                 <Default>Solid</Default>
               </BorderStyle>
+              <BorderColor  />
+              <BorderWidth  />
             </Style>
             <TableColumns>
               <TableColumn>
-                <Width>146.9pt</Width>
+                <Width>178.2pt</Width>
               </TableColumn>
             </TableColumns>
             <Details>
               <TableRows>
                 <TableRow>
-                  <Height>11.2pt</Height>
+                  <Height>15.1pt</Height>
                   <TableCells>
                     <TableCell>
                       <ReportItems>
@@ -2398,8 +2400,8 @@
                 </TableRow>
               </TableRows>
             </Details>
-            <Left>66.4pt</Left>
-            <Top>70.6pt</Top>
+            <Left>55pt</Left>
+            <Top>70pt</Top>
           </Table>
           <Table Name="Table12" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
             <DataSetName>Data3</DataSetName>
@@ -2622,8 +2624,8 @@
                 </TableRow>
               </TableRows>
             </Details>
-            <Left>6.6pt</Left>
-            <Top>87.5pt</Top>
+            <Left>7pt</Left>
+            <Top>88pt</Top>
           </Table>
           <Textbox Name="Textbox70">
             <Height>18.00pt</Height>
@@ -3413,7 +3415,7 @@
         </Style>
         <TableColumns>
           <TableColumn>
-            <Width>211.1pt</Width>
+            <Width>169.4pt</Width>
           </TableColumn>
           <TableColumn>
             <Width>1in</Width>
@@ -3517,7 +3519,7 @@
           </TableRows>
         </Details>
         <Left>8.9pt</Left>
-        <Top>704.1pt</Top>
+        <Top>690.1pt</Top>
       </Table>
     </ReportItems>
     <Height>746.3pt</Height>

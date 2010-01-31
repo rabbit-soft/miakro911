@@ -21,11 +21,11 @@
   <BottomMargin>.25in</BottomMargin>
   <DataSets>
     <DataSet Name="Data">
-      <Query >
+      <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>Url=d:\temp\dead.xml;RowsXPath=/Rows/Row</CommandText>
       </Query>
-      <Fields >
+      <Fields>
         <Field Name="date">
           <DataField>date</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -48,7 +48,7 @@
         </Field>
       </Fields>
     </DataSet>
-    <DataSet Name="Data2" >
+    <DataSet Name="Data2">
       <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>Url=d:\temp\dead.xml;RowsXPath=/Rows/Row</CommandText>
@@ -82,19 +82,19 @@
         </Style>
         <TableColumns>
           <TableColumn>
-            <Width>66.9pt</Width>
+            <Width>68.4pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>125.4pt</Width>
+            <Width>149.1pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>1in</Width>
+            <Width>48.6pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>1in</Width>
+            <Width>156.2pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>1in</Width>
+            <Width>153.5pt</Width>
           </TableColumn>
         </TableColumns>
         <Header>
@@ -112,8 +112,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -128,8 +128,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -144,8 +144,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -160,8 +160,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -176,8 +176,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -202,8 +202,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -268,10 +268,10 @@
             </TableRow>
           </TableRows>
         </Details>
-        <Left >3.3pt</Left>
-        <Top >42.1pt</Top>
+        <Left>3.3pt</Left>
+        <Top>42.1pt</Top>
       </Table>
-      <Textbox Name="Textbox1" >
+      <Textbox Name="Textbox1">
         <Height>18.03pt</Height>
         <Width>85.07pt</Width>
         <Value>Списанные</Value>
@@ -284,7 +284,7 @@
           <FontSize>14pt</FontSize>
         </Style>
       </Textbox>
-      <Table Name="Table2" >
+      <Table Name="Table2">
         <DataSetName>Data2</DataSetName>
         <NoRows>Query returned no rows!</NoRows>
         <Style>
