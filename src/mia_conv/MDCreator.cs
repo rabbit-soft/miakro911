@@ -23,6 +23,7 @@ namespace mia_conv
 
         public void debug(String str)
         {
+            if (log == null) return;
             log.Text += str + "\r\n";
             log.Select(log.Text.Length, 0);
             log.ScrollToCaret();
@@ -32,7 +33,29 @@ namespace mia_conv
             debug("Error:"+ex.GetType().ToString()+":"+ex.Message);
         }
 
-        public bool createDB(String root,String rpswd,String db,String host,String user,String pswd)
+        public static void DropDb(String root,String rpswd,String db,String host)
+        {
+            MySqlConnection sql = new MySqlConnection("server=" + host + ";userId=" + root + ";password=" + rpswd + ";database=mysql");
+            try
+            {
+                sql.Open();
+                MySqlCommand cmd = new MySqlCommand("DROP DATABASE IF EXISTS " + db + ";", sql);
+                cmd.ExecuteNonQuery();
+            }catch(Exception)
+            {
+            }
+        }
+
+        public static bool hasDB(String root, String rpswd, String db, String host)
+        {
+            MySqlConnection sql = new MySqlConnection("server=" + host + ";userId=" + root + ";password=" + rpswd + ";database="+db);
+            try{sql.Open();}
+            catch (Exception){return false;}
+            sql.Close();
+            return true;
+        }
+
+        public bool createDB(String root,String rpswd,String db,String host,String user,String pswd,bool throwing)
         {
             debug("Creating database "+db);
             sql = new MySqlConnection("server=" + host + ";userId=" + root + ";password=" + rpswd + ";database=mysql");
@@ -51,6 +74,7 @@ namespace mia_conv
             }
             catch(Exception ex)
             {
+                if (throwing) throw ex;
                 MessageBox.Show(ex.Message);
                 return false;    
             }
@@ -59,10 +83,10 @@ namespace mia_conv
             return true;
         }
 
-        public bool prepare(bool nudb, String host, String user, String password, String db,String root, String rpswd)
+        public bool prepare(bool nudb, String host, String user, String password, String db,String root, String rpswd,bool throwing)
         {
             if (nudb)
-                if (!createDB(root,rpswd,db,host,user,password))
+                if (!createDB(root,rpswd,db,host,user,password,throwing))
                     return false;
             sql = new MySqlConnection("host=" + host + ";uid=" + user + ";pwd=" + password + ";database=" + db+";charset=utf8");
             try
@@ -71,6 +95,7 @@ namespace mia_conv
             }
             catch(Exception ex)
             {
+                if (throwing) throw ex;
                 MessageBox.Show(ex.Message);
                 return false;
             }
@@ -79,7 +104,7 @@ namespace mia_conv
             StreamReader stm=new StreamReader(this.GetType().Assembly.GetManifestResourceStream("mia_conv.rabnet_db_fmt.sql"),Encoding.UTF8);
             String cmd = stm.ReadToEnd();
             stm.Close();
-            cmd=cmd.Remove(cmd.IndexOf("##TEST_DATA"));
+            //cmd=cmd.Remove(cmd.IndexOf("##TEST_DATA"));
             String[] cmds = cmd.Split(new string[] { "#DELIMITER |" }, StringSplitOptions.RemoveEmptyEntries);
             c.CommandText = cmds[0];
             c.ExecuteNonQuery();
@@ -118,6 +143,15 @@ namespace mia_conv
             {
                 debug("adding user " + rw.ItemArray[0]);
                 c.CommandText = String.Format("INSERT INTO users(u_name,u_password) VALUES('{0:s}',MD5('{1:s}'));",rw.ItemArray[0] as String,rw.ItemArray[1]);
+                c.ExecuteNonQuery();
+            }
+        }
+        public void setUsers(String[] usrs)
+        {
+            for (int i = 0; i < usrs.Length / 2;i++ )
+            {
+                debug("adding user " + usrs[i*2]);
+                c.CommandText = String.Format("INSERT INTO users(u_name,u_password) VALUES('{0:s}',MD5('{1:s}'));", usrs[i*2], usrs[i*2+1]);
                 c.ExecuteNonQuery();
             }
         }
@@ -344,6 +378,8 @@ namespace mia_conv
 
         public int getCatalogValue(String type,Char flag,String value)
         {
+            return 0;
+            /*
             c.CommandText = "SELECT c_id,c_flags FROM catalogs WHERE c_type='"+type+"' AND c_value='"+value+"'";
             MySqlDataReader rd = c.ExecuteReader();
             int res = 0;
@@ -371,6 +407,7 @@ namespace mia_conv
                 res = (int)c.LastInsertedId;
             }
             return res;
+             * */
         }
 
         public uint findname(String name,ref String addNm)
@@ -414,7 +451,7 @@ namespace mia_conv
             if (breed > maxbreed)
                 breed = 0;
             return breed + 1;
-            /* UNDONE: GOOD BREED
+            /* 
             List<MFString> ls = mia.breed_list.strings;
             for (int i = 0; i < ls.Count / 3; i++)
                 if (int.Parse(ls[i * 3 + 2].value()) == breed)
@@ -425,6 +462,8 @@ namespace mia_conv
 
         public void fillTransfers()
         {
+            return;
+            /*
             debug("fill transfers");
             foreach (Trans t in mia.trans_table.transes)
             {
@@ -490,6 +529,7 @@ namespace mia_conv
                 c.CommandText = cmd + ") " + vals + ");";
                 c.ExecuteNonQuery();
             }
+             * */
         }
 
         public void setOption(String name, String subname, String value)
@@ -607,6 +647,8 @@ namespace mia_conv
 
         public int getWorker(String name,bool insert)
         {
+            return 0;
+            /*
             if (name == "") name = "undefined";
             c.CommandText = "SELECT w_id FROM workers WHERE w_name='"+name+"';";
             MySqlDataReader rd = c.ExecuteReader();
@@ -627,6 +669,7 @@ namespace mia_conv
                 res = (int)c.LastInsertedId;
             }
             return res;
+             * */
         }
         public int getReason(String name)
         {
@@ -732,6 +775,7 @@ VALUES('{0:s}',{1:d},{2:d},{3:d},'{4:s}',{5:d},{6:s}-INTERVAL {7:d} DAY,{8:d},{9
 
         public void fillGraphForm()
         {
+            /*
             debug("fill GraphForm");
             for (int i = 0; i < mia.graphform.workers.size.value(); i++)
             {
@@ -742,6 +786,7 @@ VALUES('{0:s}',{1:d},{2:d},{3:d},'{4:s}',{5:d},{6:s}-INTERVAL {7:d} DAY,{8:d},{9
                 c.CommandText = "UPDATE workers SET w_rate=" + rate.ToString() + " WHERE w_id=" + wid.ToString() + ";";
                 c.ExecuteNonQuery();
             }
+             * */
             /*
             int cnt = (int)mia.graphform.lost.size.value();
             for (int i = 0; i < mia.graphform.lost.size.value(); i++)
@@ -767,6 +812,73 @@ VALUES('{0:s}',{1:d},{2:d},{3:d},'{4:s}',{5:d},{6:s}-INTERVAL {7:d} DAY,{8:d},{9
              * */ 
         }
 
+        public int jobid(string name)
+        {
+            switch (name.ToLower())
+            {
+                case "вселить":
+                case "всел": return 1;
+                case "случить":
+                case "сл": return 5;
+                case "вязать":
+                case "вязк": return 5;
+                case "кук": return 0;
+                case "устан. гнезда":
+                case "гнзд": return 9;
+                case "уст. гнезда.грелки":
+                case "гнгр": return 9;
+                case "отсадка девочек":
+                case "отде": return 2;
+                case "включить грелку":
+                case "вкгр": return 12;
+                case "предокросмотр":
+                case "прок": return 21;
+                case "принять окрол":
+                case "окрл": return 6;
+                case "подсчет гнездовых":
+                case "подсчёт гнездовых":
+                case "счгн": return 17;
+                case "подсчет подсосных":
+                case "подсчёт подсосных":
+                case "счпс": return 17;
+                case "выдворение":
+                case "выдв": return 10;
+                case "отсадка мальчиков":
+                case "отма": return 2;
+                case "рассел. мальчиков":
+                case "рсма": return 2;
+                case "чистка гнезда":
+                case "чигн": return 0;
+                case "пересадка крольчат":
+                case "пекр": return 2;
+                case "рассадка":
+                case "расс": return 2;
+            }
+            return 0;
+        }
+
+        public void fillJobs(MFStringList arc,DateTime date)
+        {
+            string adr = arc.strings[2].value();
+            string nm = arc.strings[3].value();
+            int jid=jobid(arc.strings[1].value());
+            MySqlCommand cmd = new MySqlCommand(@"SELECT r_id FROM rabbits,names WHERE r_name=n_id AND n_name='"+nm+"';", sql);
+            int r = 0;
+            MySqlDataReader rd = cmd.ExecuteReader();
+            if (rd.Read())
+                r = rd.GetInt32(0);
+            rd.Close();
+            if (r == 0)
+                cmd.CommandText = "SELECT r_id FROM dead,names WHERE r_name=n_id AND n_name='" + nm + "';";
+            rd = cmd.ExecuteReader();
+            if (rd.Read())
+                r = rd.GetInt32(0);
+            rd.Close();
+            cmd.CommandText = String.Format(@"INSERT INTO logs(l_date,l_type,l_user,l_rabbit,l_address) 
+VALUES({0:s},{1:d},0,{2:d},'{3:s}');",convdt(date),jid,r,adr);
+            cmd.ExecuteNonQuery();
+        }
+
         public void fillArcForm()
         {
             debug("fill ArcForm");
@@ -775,6 +887,8 @@ VALUES('{0:s}',{1:d},{2:d},{3:d},'{4:s}',{5:d},{6:s}-INTERVAL {7:d} DAY,{8:d},{9
                 DateTime dt=p.date.value();
                 foreach (MFStringList sl in p.works)
                 {
+                    fillJobs(sl, dt);
+                    /*
                     String cmd = "INSERT INTO archive(a_date,a_level,a_job,a_address,a_name,a_age";
                     String vals=String.Format("VALUES({0:s},{1:d},'{2:s}','{3:s}','{4:s}',{5:d}",
                         convdt(dt),int.Parse(sl.strings[0].value()),sl.strings[1].value(),sl.strings[2].value(),
@@ -787,6 +901,7 @@ VALUES('{0:s}',{1:d},{2:d},{3:d},'{4:s}',{5:d},{6:s}-INTERVAL {7:d} DAY,{8:d},{9
                     { cmd += ",a_notes"; vals += ",'" + sl.strings[7].value() + "'"; }
                     c.CommandText = cmd + ") " + vals + ");";
                     c.ExecuteNonQuery();
+                     * */
                 }
             }
             fillDead();

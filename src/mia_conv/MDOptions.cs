@@ -33,7 +33,10 @@ namespace mia_conv
             setOption("opt", "findpartner", 1);
             setOption("opt", "nextsvid", p.next_svid.value());
             setOption("opt", "svidhead", p.svid_head.value());
-            setOption("opt", "gendir", p.subscriber[0].name.value());
+            if (p.subscriber.Count>0)
+                setOption("opt", "gendir", p.subscriber[0].name.value());
+            else
+                setOption("opt", "gendir", "");
             //            setOption("opt", "kukunest", p.kukunest.value());
             //            setOption("opt", "otsad_boys_pervo", p.otsad_boys_pervo.value());
             /* //OPTIONS
@@ -99,12 +102,13 @@ namespace mia_conv
             }
             setOption("weighter", "last", (mia.wlist.laston.value()==0?0:mia.wlist.lastpos.value()));
              * */
-
+            /*
             for (int i = 0; i < p.jobs.Count; i++)
             {
                 c.CommandText = "INSERT INTO jobs(j_name,j_short_name) VALUES('" + p.jobs[i].job.value() + "','" + p.jobs[i].name.value() + "');";
                 c.ExecuteNonQuery();
             }
+             * */
         }
     }
 }

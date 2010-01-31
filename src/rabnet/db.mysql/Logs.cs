@@ -67,12 +67,12 @@ namespace rabnet
             String qry=String.Format(@"SELECT logs.l_date date,logtypes.l_name name,users.u_name user,logtypes.l_params params,
 logs.l_rabbit rabbit,logs.l_rabbit2 rabbit2,logs.l_address address,logs.l_address2 address2,
 logs.l_param param,
-rabname(logs.l_rabbit,2) r1,
-rabname(logs.l_rabbit2,2) r2,
+anyname(logs.l_rabbit,2) r1,
+anyname(logs.l_rabbit2,2) r2,
 rabplace(logs.l_rabbit) place,
 rabplace(logs.l_rabbit2) place2
 FROM logs,logtypes,users WHERE
-logtypes.l_type=logs.l_type AND logs.l_user=users.u_id{1:s} ORDER BY date DESC LIMIT {0:d};", limit,makeWhere(f));
+logtypes.l_type=logs.l_type AND (logs.l_user=users.u_id OR logs.l_user=0){1:s} ORDER BY date DESC LIMIT {0:d};", limit,makeWhere(f));
             MySqlCommand cmd = new MySqlCommand(qry, sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             LogList ll = new LogList();
@@ -91,14 +91,14 @@ logtypes.l_type=logs.l_type AND logs.l_user=users.u_id{1:s} ORDER BY date DESC L
                         case 'P': prms += Buildings.fullPlaceName(rd.GetString("place2"), true, false, false); break;
                         case 'a': prms += rd.GetString("address"); break;
                         case 'A': prms += rd.GetString("address2"); break;
-                        case 't': prms += rd.GetString("param"); break;
+                        case 't': prms += rd.IsDBNull(8)?"":rd.GetString("param"); break;
                     }
                     np = np.Replace("$" + c, prms);
                 }
                 String adr = rd.GetString("address");
                 if (adr=="")
                     adr = Buildings.fullPlaceName(rd.GetString("place"), true, false, false);
-                ll.addLog(rd.GetDateTime("date"), rd.GetString("user"), rd.GetString("name"), np,adr);
+                ll.addLog(rd.GetDateTime("date"), rd.IsDBNull(2)?"":rd.GetString("user"), rd.GetString("name"), np,adr);
             }
             rd.Close();
             return ll;

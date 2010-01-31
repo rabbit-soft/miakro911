@@ -95,7 +95,7 @@ namespace mia_conv
 #endif
             {
                 pb.Value = 0;
-                if (crt.prepare(dbnew.Checked, textHost.Text, textUser.Text, textPassword.Text, textDB.Text, textRoot.Text, textRootPswd.Text))
+                if (crt.prepare(dbnew.Checked, textHost.Text, textUser.Text, textPassword.Text, textDB.Text, textRoot.Text, textRootPswd.Text,false))
                 {
                     button2.Enabled = false;
                     button3.Enabled = false;

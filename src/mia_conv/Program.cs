@@ -38,6 +38,16 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
                     return;
                 }
                 file = args[0];
+                if (file == "nudb")
+                {
+                    nudb(args);
+                    return;
+                }
+                if (file == "dropdb")
+                {
+                    dropdb(args);
+                    return;
+                }
                 if (!System.IO.File.Exists(file))
                 {
                     MessageBox.Show("Mia File Not exists "+file+"\r\n"+usage());
@@ -81,6 +91,41 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1(auto,file,host,db,user,pswd,root,rpswd,users,scr));
+        }
+
+        static void nudb(string[] args)
+        {
+            String[] dbpar = args[1].Split(';');
+                string host = dbpar[0];
+                string db = dbpar[1];
+                string user = dbpar[2];
+                string pswd = dbpar[3];
+                string root = dbpar[4];
+                string rpswd = dbpar[5];
+            String[] us = args[2].Split(';');
+            {
+                if (us.Length < 2)
+                    throw new ApplicationException("expected one user");
+                if (us.Length % 2 != 0)
+                    throw new ApplicationException("Every user must have password");
+            }
+            if (MDCreator.hasDB(root, rpswd, db, host))
+                throw new ApplicationException("Already has db");
+            MDCreator cr = new MDCreator(null);
+            cr.prepare(true, host, user, pswd, db, root, rpswd, true);
+            cr.setUsers(us);
+            return;
+        }
+
+        static void dropdb(string[] args)
+        {
+            String[] dbpar = args[1].Split(';');
+            string host = dbpar[0];
+            string db = dbpar[1];
+            string root = dbpar[4];
+            string rpswd = dbpar[5];
+            MDCreator.DropDb(root, rpswd, db, host);
+            return;
         }
     }
 }

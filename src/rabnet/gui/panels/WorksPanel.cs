@@ -40,11 +40,9 @@ namespace rabnet
                     li.SubItems.Add(j.name);
                     li.SubItems.Add(j.age.ToString());
                     li.SubItems.Add(j.names);
-                    li.SubItems.Add(j.addresses);
                     li.SubItems.Add(j.comment);
                     li.Tag = j;
                 }
-                //listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
                 cs.Restore();
                 if (itm > -1 && listView1.Items.Count > itm)
                 {
@@ -57,45 +55,13 @@ namespace rabnet
             DataThread.get().stop();
             return null;
         }
-/*        protected override IDataGetter onPrepare(Filters f)
-        {
-            f = new Filters();
-            listView1.Hide();
-            listView1.Items.Clear();
-            listView1.ListViewItemSorter=null;
-            IDataGetter gt = DataThread.db().zooTeh(f);
-            rsb.setText(1, gt.getCount().ToString() + " items");
-            fillLogs();
-            return gt;
-        }
-*/
+
         protected override void onItem(IData data)
         {
-            /*
-            if (data == null)
-            {
-            //    listView1.ListViewItemSorter = cs.Clear();
-                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                listView1.Show();
-                return;
-            }
-            ZooTehItem z = (data as ZooTehItem);
-            ListViewItem li = listView1.Items.Add(z.level.ToString());
-            li.SubItems.Add(z.job);
-            li.SubItems.Add(z.address);
-            li.SubItems.Add(z.rabbit);
-            li.SubItems.Add(z.age.ToString());
-            li.SubItems.Add("");
-            li.SubItems.Add("");
-            li.SubItems.Add(z.notes);
-            li.SubItems.Add(z.dt.ToShortDateString());
-            li.SubItems.Add(z.done.ToString());
-             * */
         }
 
         private void fillLogs(Filters f)
         {
-            //Filters f=new Filters();
             listView2.Items.Clear();
             foreach (LogList.OneLog l in Engine.db().getLogs(f).logs)
             {
@@ -313,8 +279,15 @@ namespace rabnet
                 rw.AppendChild(fucks.CreateElement("names")).AppendChild(fucks.CreateTextNode(fuckers[i]));
                 fuck.AppendChild(rw);
             }
-            new ReportViewForm("Зоотехплан " + repdate.ToLongDateString() + " " + repdate.ToLongTimeString(), "zooteh", 
-                new XmlDocument[]{xml,rep,fucks}).ShowDialog();
+            XmlDocument[] xmls=new XmlDocument[]{xml,rep,fucks};
+            String plan = "zooteh";
+            if (fuckers.Count==0)
+            {
+                plan += "_nofuck";
+                xmls = new XmlDocument[] { xml, rep };
+            }
+            new ReportViewForm("Зоотехплан " + repdate.ToLongDateString() + " " + repdate.ToLongTimeString(), plan, 
+                xmls).ShowDialog();
         }
 
         private void countChangedMenuItem_Click(object sender, EventArgs e)

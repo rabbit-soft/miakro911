@@ -17,6 +17,15 @@ CREATE TABLE options(
 	KEY(o_uid)
 );
 
+DROP TABLE IF EXISTS filters;
+CREATE TABLE filters(
+	f_type VARCHAR(30) NOT NULL,
+	f_name VARCHAR(30) NOT NULL,
+	f_filter TEXT,
+	KEY(f_type),
+	KEY(f_name)
+);
+
 DROP TABLE IF EXISTS breeds;
 CREATE TABLE breeds(
 	b_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -90,44 +99,6 @@ CREATE TABLE zones(
 	z_short_name VARCHAR(4) NOT NULL
 );
 
-DROP TABLE IF EXISTS catalogs;
-CREATE TABLE catalogs(
- c_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
- c_type ENUM('partner','kind','name') NOT NULL,
- c_name VARCHAR(50) NOT NULL default '',
- c_value TEXT NOT NULL,
- c_flags VARCHAR(30) NOT NULL default '',
- KEY(c_type),
- KEY(c_name),
- key(c_flags)
-);
-
-
-DROP TABLE IF EXISTS transfers;
-CREATE TABLE transfers(
-t_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-t_type ENUM('rabbits','meat','skin','feed','feed_use','otsev','other') NOT NULL,
-t_notes TEXT NOT NULL,
-t_date DATETIME NOT NULL,
-t_units INTEGER UNSIGNED NOT NULL DEFAULT 1,
-t_sold BOOL NOT NULL DEFAULT 0,
-t_age INTEGER UNSIGNED,
-t_weight INTEGER UNSIGNED,
-t_weight2 INTEGER UNSIGNED,
-t_price DOUBLE,
-t_partner INTEGER UNSIGNED,
-t_mdate DATETIME,
-t_sex TINYINT UNSIGNED,
-t_breed INTEGER UNSIGNED,
-t_kind INTEGER UNSIGNED,
-t_name INTEGER UNSIGNED,
-t_rabbit INTEGER UNSIGNED,
-t_str TEXT,
-KEY(t_type),
-KEY(t_date),
-KEY(t_sold)
-);
-
 DROP TABLE IF EXISTS rabbits;
 CREATE TABLE rabbits(
 	r_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -154,7 +125,6 @@ CREATE TABLE rabbits(
 	r_genesis INTEGER UNSIGNED NOT NULL,
 	r_status TINYINT UNSIGNED NOT NULL DEFAULT 0,   #boy-status/girl-borns
 	r_last_fuck_okrol DATETIME,
-#	r_children TINYINT UNSIGNED,
 	r_event ENUM('none','sluchka','vyazka','kuk'),
 	r_event_date DATETIME,
 	r_lost_babies INTEGER UNSIGNED,
@@ -198,15 +168,6 @@ CREATE TABLE fucks(
 	KEY(f_dead)
 );
 
-DROP TABLE IF EXISTS workers;
-CREATE TABLE workers(
-	w_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	w_name VARCHAR(50) NOT NULL,
-	w_spec VARCHAR(30) NOT NULL default '',
-	w_rate INTEGER NOT NULL default 0,
-	w_notes TEXT
-);
-
 DROP TABLE IF EXISTS genesis;
 CREATE TABLE genesis(
 	g_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -231,67 +192,6 @@ CREATE TABLE weights(
 	w_date DATETIME NOT NULL,
 	w_weight INTEGER UNSIGNED NOT NULL,
 	KEY(w_rabid)
-);
-
-DROP TABLE IF EXISTS jobs;
-CREATE TABLE jobs(
-	j_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	j_name VARCHAR(50) NOT NULL,
-	j_short_name VARCHAR(4) NOT NULL
-);
-
-DROP TABLE IF EXISTS zooplans;
-CREATE TABLE zooplans(
-	z_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	z_done INTEGER NOT NULL default 0,
-	z_date DATETIME NOT NULL,
-	z_job INTEGER UNSIGNED NOT NULL default 0,
-	z_level INTEGER UNSIGNED NOT NULL default 0,
-	z_rabbit INTEGER UNSIGNED,
-	z_rabbit2 INTEGER UNSIGNED,
-	z_address INTEGER UNSIGNED,
-	z_address2 INTEGER UNSIGNED,
-	z_flags VARCHAR(50),
-	z_notes TEXT,
-	z_memo TEXT,
-	z_user INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	KEY(z_done),
-	KEY(z_date),
-	KEY(z_job),
-	KEY(z_level),
-	KEY(z_rabbit),
-	KEY(z_address),
-	KEY(z_user)
-);
-
-DROP TABLE IF EXISTS zooacceptors;
-CREATE TABLE zooacceptors(
-	z_id INTEGER UNSIGNED NOT NULL,
-	z_rabbit INTEGER UNSIGNED,
-	z_lack INTEGER,
-	z_hybrid BOOL,
-	z_new_group BOOL,
-	z_gendiff INTEGER,
-	z_distance INTEGER,
-	z_best_donor INTEGER UNSIGNED,
-	z_best_acceptor INTEGER UNSIGNED,
-	KEY(z_id)
-);
-
-
-DROP TABLE IF EXISTS archive;
-CREATE TABLE archive(
-	a_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	a_date DATETIME NOT NULL,
-	a_level INTEGER,
-	a_job VARCHAR(50),
-	a_address VARCHAR(100),
-	a_name VARCHAR(50),
-	a_age INTEGER UNSIGNED,
-	a_partners VARCHAR(100),
-	a_addresses VARCHAR(100),
-	a_notes TEXT,
-	KEY(a_date)
 );
 
 DROP TABLE IF EXISTS deadreasons;
@@ -346,15 +246,6 @@ CREATE TABLE dead(
 	KEY(d_reason)
 );
 
-DROP TABLE IF EXISTS filters;
-CREATE TABLE filters(
-	f_type VARCHAR(30) NOT NULL,
-	f_name VARCHAR(30) NOT NULL,
-	f_filter TEXT,
-	KEY(f_type),
-	KEY(f_name)
-);
-
 DROP TABLE IF EXISTS logtypes;
 CREATE TABLE logtypes(
 	l_type INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -385,6 +276,39 @@ CREATE TABLE logs(
 #DATA
 
 INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','1');
+INSERT INTO options(o_name,o_subname,o_value) VALUES
+('opt', 'okrol', 30),
+('opt', 'vudvor', 30),
+('opt', 'count1', 3),
+('opt', 'count2', 6),
+('opt', 'count3', 13),
+('opt', 'bride', 121),
+('opt', 'preokrol', 27),
+('opt', 'combage', 3),
+('opt', 'malewait', 2),
+('opt', 'girlsout', 100),
+('opt', 'suckers', 50),
+('opt', 'boysout', 80),
+('opt', 'statefuck', 80),
+('opt', 'firstfuck', 60),
+('opt', 'gentree', 10),
+('opt', 'confirmexit', 0),
+('opt', 'confirmkill', 1),
+('opt', 'vacc', 45),
+('opt', 'nest', 16),
+('opt', 'childnest', 21),
+('opt', 'updatezoo', 1),
+('opt', 'findpartner', 1),
+('opt', 'nextsvid', 1),
+('opt', 'svidhead', ''),
+('opt', 'gendir', ''),
+('opt','short_names',0),
+('opt','dbl_surname',1),
+('opt','heterosis',0),
+('opt','inbreeding',0),
+('opt','sh_tier_t',1),
+('opt','sh_tier_s',0),
+('opt','sh_num',0);
 
 UPDATE tiers SET t_busy2=NULL,t_busy3=NULL,t_busy4=NULL WHERE t_type='female';
 UPDATE tiers SET t_busy3=NULL,t_busy4=NULL WHERE t_type='dfemale' OR t_type='jurta' OR t_type='vertep' OR t_type='barin' OR t_type='cabin';
@@ -435,7 +359,6 @@ UNION
  r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,
  r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies,
  d_date,d_reason,d_notes FROM dead);
-
 
 
 #DELIMITER |
@@ -626,7 +549,3 @@ BEGIN
 END |
 
 #DELIMITER ;
-
-##TEST_DATA do not remove this line
-
-INSERT INTO users(u_name,u_password) VALUES('john',MD5(''));
