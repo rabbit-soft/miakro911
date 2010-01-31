@@ -37,7 +37,7 @@
             // 
             this.button1.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(323, 495);
+            this.button1.Location = new System.Drawing.Point(366, 495);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 2;
@@ -47,7 +47,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(242, 495);
+            this.button2.Location = new System.Drawing.Point(285, 495);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 3;
@@ -57,16 +57,19 @@
             // 
             // pg
             // 
+            this.pg.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.pg.Location = new System.Drawing.Point(12, 12);
             this.pg.Name = "pg";
-            this.pg.Size = new System.Drawing.Size(386, 477);
+            this.pg.Size = new System.Drawing.Size(429, 477);
             this.pg.TabIndex = 4;
             // 
             // OptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(403, 530);
+            this.ClientSize = new System.Drawing.Size(446, 530);
             this.Controls.Add(this.pg);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);

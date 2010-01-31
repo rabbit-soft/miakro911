@@ -534,7 +534,7 @@ namespace mia_conv
 
         public void setOption(String name, String subname, String value)
         {
-            c.CommandText = "INSERT INTO options(o_name,o_subname,o_uid,o_value) VALUES('" + name + "','" + subname + "',0,'" + value + "');";
+            c.CommandText = "UPDATE options SET o_value='"+value+"' WHERE o_name='" + name + "' AND o_subname='" + subname + "';";
             c.ExecuteNonQuery();
         }
         public void setOption(String name,String subname,int value)
@@ -557,6 +557,7 @@ namespace mia_conv
 
         public void fillTransForm()
         {
+            /*
             debug("fill transform");
             for (int i=0;i<mia.transform.skinnames.Count;i++)
                 setOption("price","skin"+i.ToString(),mia.transform.skinnames[i].value());
@@ -574,6 +575,7 @@ namespace mia_conv
             setCatList(mia.transform.usedFeedType, "name", "f");
             setCatList(mia.transform.usedFeedSpec, "kind", "f");
             setCatList(mia.transform.otsevBuyer, "partner", "x");
+             * */
         }
 
         public int getUniqueRabbit(int unique)

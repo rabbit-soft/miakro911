@@ -5,7 +5,6 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using System.Reflection;
 
 namespace rabnet
 {
@@ -185,21 +184,11 @@ namespace rabnet
             }
         }
 
-        private void MoveSplitter(PropertyGrid obj, int x)
-        {
-            object gridView = typeof(PropertyGrid).InvokeMember("gridView",
-BindingFlags.GetField |
-BindingFlags.NonPublic |
-BindingFlags.Instance, null, obj, null);
-            Type type = gridView.GetType();
-            MethodInfo method = type.GetMethod("MoveSplitterTo", BindingFlags.Instance| BindingFlags.Public | BindingFlags.NonPublic);
-            method.Invoke(gridView, new Object[] { x });
-        }
         public OptionsForm()
         {
             InitializeComponent();
             pg.SelectedObject=OptionsHolder.make();
-            MoveSplitter(pg, -100);
+//            MoveSplitter(pg, -100);
         }
 
         private void OptionsForm_Load(object sender, EventArgs e)

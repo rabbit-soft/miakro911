@@ -134,6 +134,7 @@
 		<csc target="winexe" output="${bin_dir}/rabnet.exe" win32icon="./rabnet/gui/mialicon.ico" define="${istrial}">
 			<sources>
 				<include name="./rabnet/gui/*.cs"/>
+				<include name="./rabnet/gui/Properties/*.cs"/>
 				<include name="./rabnet/gui/components/*.cs"/>
 				<include name="./rabnet/gui/filters/*.cs"/>
 				<include name="./rabnet/gui/panels/*.cs"/>
@@ -141,7 +142,7 @@
 				<include name="./rabnet/gui/reports/*.cs"/>
 			</sources>
 			<resources>
-				<include name="./rabnet/gui/forms/MainForm.resx"/>
+				<include name="./rabnet/gui/forms/*.resx"/>
 				<include name="./rabnet/gui/components/RabStatusBar.resx"/>
 				<include name="./rabnet/gui/forms/ReportViewForm.resx"/>
 			</resources>
