@@ -413,5 +413,20 @@ namespace rabnet
         }
 
         #endregion
+
+        #region IRabNetDataLayer Members
+
+
+        public OneRabbit[] getParents(int rabbit, int age)
+        {
+            throw new NotImplementedException();
+        }
+
+        public OneRabbit getLiveDeadRabbit(int rabbit)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

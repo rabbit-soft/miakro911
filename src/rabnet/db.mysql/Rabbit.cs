@@ -868,5 +868,78 @@ FROM rabbits WHERE r_sex='female' AND r_group=1 AND r_status>0) c WHERE suckers>
             return rbs.ToArray();
         }
 
+        public static int getRabByName(MySqlConnection sql,int name,int agebefore)
+        {
+            if (name==0) return 0;
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT r_id FROM rabbits WHERE r_name={0:d} AND TO_DAYS(NOW())-TO_DAYS(r_born)>{1:d};",name,agebefore), sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            int id = 0;
+            if (rd.Read())
+                id = rd.GetInt32(0);
+            rd.Close();
+            if (id == 0)
+            {
+                cmd.CommandText = String.Format(@"SELECT r_id,TO_DAYS(NOW())-TO_DAYS(r_born) age FROM dead 
+WHERE r_name={0:d} AND TO_DAYS(NOW())-TO_DAYS(r_born)>{1:d} AND 
+TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d}+1000 ORDER BY age ASC;",name,agebefore);
+                rd = cmd.ExecuteReader();
+                if (rd.Read())
+                    id = rd.GetInt32(0);
+                rd.Close();
+            }
+            return id;
+        }
+
+        public static OneRabbit getLiveDeadRabbit(MySqlConnection sql, int rabbit)
+        {
+            if (rabbit == 0) return null;
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT isdead({0:d});",rabbit), sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            bool dead=false;
+            if (rd.Read())
+                dead = rd.GetBoolean(0);
+            rd.Close();
+            cmd.CommandText = String.Format(@"SELECT r_id,r_name,r_surname,r_secname,
+{0:s}name(r_id,0) name,{0:s}place(r_id) place,r_bon,
+(SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight,
+(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id) weight_date,
+(SELECT TO_DAYS(MAX(w_date))-TO_DAYS(r_born) FROM weights WHERE w_rabid=r_id) weight_age,
+r_overall_babies,r_okrol,r_sex,
+(SELECT TO_DAYS({1:s})-TO_DAYS(r_born)) age,r_born
+FROM {2:s} WHERE r_id={3:d};", (dead ? "dead" : "rab"), (dead ? "d_date" : "NOW()"), (dead ? "dead" : "rabbits"),rabbit);
+            rd = cmd.ExecuteReader();
+            if (!rd.Read())
+            {
+                rd.Close();
+                return null;
+            }
+            OneRabbit r = new OneRabbit(rabbit, rd.GetString("r_sex"), rd.GetDateTime("r_born"), rd.IsDBNull(7) ? 0 : rd.GetInt32("weight"),
+                "00000", 0, 0, 0, rd.GetString("place"), 1, rd.GetInt32("r_okrol"), dead?1:0, "", "", rd.GetInt32("age"), DateTime.MinValue, "", rd.IsDBNull(8) ? DateTime.MinValue : rd.GetDateTime("weight_date"),
+                rd.IsDBNull(10) ? 0 : rd.GetInt32("r_overall_babies"), rd.IsDBNull(9) ? 0 : rd.GetInt32("weight_age"),
+                rd.GetString("name"), "", rd.GetString("r_bon"), 0);
+            rd.Close();
+            return r;
+        }
+
+        public static OneRabbit[] getParents(MySqlConnection sql,int rabbit,int age)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT r_mother,r_father,r_surname,r_secname FROM rabbits WHERE r_id={0:d}",rabbit),sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            int mom=0, pap=0, mname=0, pname=0;
+            if (rd.Read())
+            {
+                mom = rd.GetInt32(0);
+                pap = rd.GetInt32(1);
+                mname = rd.GetInt32(2);
+                pname = rd.GetInt32(3);
+            }
+            rd.Close();
+            if (mom == 0)
+                mom = getRabByName(sql, mname, age);
+            if (pap == 0)
+                pap = getRabByName(sql, pname, age);
+            return new OneRabbit[] {getLiveDeadRabbit(sql,mom),getLiveDeadRabbit(sql,pap) };
+        }
+
     }
 }

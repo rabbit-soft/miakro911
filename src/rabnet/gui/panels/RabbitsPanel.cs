@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace rabnet
 {
@@ -158,6 +159,7 @@ namespace rabnet
             KillMenuItem.Visible = countKidsMenuItem.Visible=false;
             okrolMenuItem.Visible = fuckMenuItem.Visible= false;
             boysoutMenuItem.Visible = replaceYoungersMenuItem.Visible= false;
+            svidMenuItem.Visible = false;
             if (sex < 0) return;
             KillMenuItem.Visible = true;
             replaceMenuItem.Visible = true;
@@ -175,6 +177,10 @@ namespace rabnet
             {
                 fuckMenuItem.Text = isBride() ? "Случка" : "Вязка";
                 fuckMenuItem.Visible = !isGirl() && GroupCount()==1;
+            }
+            if ((sex == 1 || sex == 2 || sex==4) && multi == 1)
+            {
+                svidMenuItem.Visible = true;
             }
             if (sex == 4)
             {
@@ -350,6 +356,110 @@ namespace rabnet
         {
             manual = true;
             listView1_SelectedIndexChanged(null, null);
+        }
+
+        private String getBon(String b)
+        {
+            if (b.Length == 1)
+            {
+                switch (b)
+                {
+                    case "1": return "III";
+                    case "2": return "II";
+                    case "3": return "I";
+                    case "4": return "Элита";
+                }
+                return "Нет";
+            }
+            string minbon="5";
+            for (int i = 1; i<b.Length; i++)
+                if (b[i] < minbon[0])
+                    minbon = "" + b[i];
+            return getBon(minbon);
+        }
+
+        private XmlDocument rabToXml(RabNetEngRabbit er, OneRabbit or)
+        {
+            XmlDocument doc = new XmlDocument();
+            XmlElement rw=doc.CreateElement("Row");
+            doc.AppendChild(doc.CreateElement("Rows")).AppendChild(rw);
+            if (er != null)
+            {
+                or = Engine.db().getLiveDeadRabbit(er.rid);
+                rw.AppendChild(doc.CreateElement("header")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.SVID_HEAD)));
+                rw.AppendChild(doc.CreateElement("num")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.NEXT_SVID)));
+                rw.AppendChild(doc.CreateElement("date")).AppendChild(doc.CreateTextNode(DateTime.Now.Date.ToShortDateString()));
+                rw.AppendChild(doc.CreateElement("director")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.SVID_GEN_DIR)));
+                Catalog zones = Engine.db().catalogs().getZones();
+                rw.AppendChild(doc.CreateElement("sex")).AppendChild(doc.CreateTextNode(er.sex==OneRabbit.RabbitSex.MALE?"male":"female"));
+                rw.AppendChild(doc.CreateElement("class")).AppendChild(doc.CreateTextNode(getBon(er.bon)));
+                rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(er.fullName));
+                rw.AppendChild(doc.CreateElement("breed")).AppendChild(doc.CreateTextNode(er.breedName));
+                rw.AppendChild(doc.CreateElement("born_place")).AppendChild(doc.CreateTextNode(zones.ContainsKey(er.zone)?zones[er.zone]:"-"));
+                rw.AppendChild(doc.CreateElement("born_date")).AppendChild(doc.CreateTextNode(er.born.ToShortDateString()));
+                rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(er.age.ToString()));
+                rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(er.smallAddress));
+                rw.AppendChild(doc.CreateElement("weight")).AppendChild(doc.CreateTextNode(or.rate.ToString()));
+                rw.AppendChild(doc.CreateElement("weight_date")).AppendChild(doc.CreateTextNode(or.evdate.Date.ToShortDateString()));
+                rw.AppendChild(doc.CreateElement("weight_age")).AppendChild(doc.CreateTextNode(or.lost.ToString()));
+                rw.AppendChild(doc.CreateElement("born")).AppendChild(doc.CreateTextNode(or.babies.ToString()));
+                rw.AppendChild(doc.CreateElement("okrol")).AppendChild(doc.CreateTextNode(or.breed.ToString()));
+                rw.AppendChild(doc.CreateElement("genom")).AppendChild(doc.CreateTextNode(er.genom.Replace(' ',',')));
+                rw.AppendChild(doc.CreateElement("wclass")).AppendChild(doc.CreateTextNode(getBon("" + er.bon[1])));
+                rw.AppendChild(doc.CreateElement("bclass")).AppendChild(doc.CreateTextNode(getBon("" + er.bon[2])));
+                rw.AppendChild(doc.CreateElement("hclass")).AppendChild(doc.CreateTextNode(getBon("" + er.bon[3])));
+                rw.AppendChild(doc.CreateElement("cclass")).AppendChild(doc.CreateTextNode(getBon("" + er.bon[4])));
+            }
+            else if (or != null)
+            {
+                rw.AppendChild(doc.CreateElement("sex")).AppendChild(doc.CreateTextNode(or.sex==OneRabbit.RabbitSex.MALE?"male":"female"));
+                rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(or.status.ToString()+(or.zone==1?"(списан)":"")));
+                rw.AppendChild(doc.CreateElement("weight")).AppendChild(doc.CreateTextNode(or.rate.ToString()));
+                rw.AppendChild(doc.CreateElement("class")).AppendChild(doc.CreateTextNode(getBon(or.bon)));
+                rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(or.fullname));
+                rw.AppendChild(doc.CreateElement("wclass")).AppendChild(doc.CreateTextNode(getBon(""+or.bon[1])));
+                rw.AppendChild(doc.CreateElement("bclass")).AppendChild(doc.CreateTextNode(getBon("" + or.bon[2])));
+                rw.AppendChild(doc.CreateElement("hclass")).AppendChild(doc.CreateTextNode(getBon("" + or.bon[3])));
+                rw.AppendChild(doc.CreateElement("cclass")).AppendChild(doc.CreateTextNode(getBon("" + or.bon[4])));
+            }
+            else
+            {
+                rw.AppendChild(doc.CreateElement("sex")).AppendChild(doc.CreateTextNode("none"));
+                rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(""));
+                rw.AppendChild(doc.CreateElement("weight")).AppendChild(doc.CreateTextNode(""));
+                rw.AppendChild(doc.CreateElement("class")).AppendChild(doc.CreateTextNode(""));
+                rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(""));
+                rw.AppendChild(doc.CreateElement("wclass")).AppendChild(doc.CreateTextNode(""));
+                rw.AppendChild(doc.CreateElement("bclass")).AppendChild(doc.CreateTextNode(""));
+                rw.AppendChild(doc.CreateElement("hclass")).AppendChild(doc.CreateTextNode(""));
+                rw.AppendChild(doc.CreateElement("cclass")).AppendChild(doc.CreateTextNode(""));
+            }
+            return doc;
+        }
+
+        private void svidMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1) return;
+            XmlDocument[] docs=new XmlDocument[7];
+            RabNetEngRabbit r=Engine.get().getRabbit((int)listView1.SelectedItems[0].Tag);
+            docs[0]=rabToXml(r,null);
+            OneRabbit[] p1 = Engine.db().getParents(r.rid, r.age);
+            docs[1] = rabToXml(null, p1[0]);
+            docs[2] = rabToXml(null, p1[1]);
+            OneRabbit[] p2;
+            if (p1[0] != null)
+                p2 = Engine.db().getParents(p1[0].id, p1[0].age());
+            else
+                p2 = new OneRabbit[] { null, null };
+            docs[3] = rabToXml(null, p2[0]);
+            docs[4] = rabToXml(null, p2[1]);
+            if (p1[1] != null)
+                p2 = Engine.db().getParents(p1[1].id, p1[1].age());
+            else
+                p2 = new OneRabbit[] { null, null };
+            docs[5] = rabToXml(null, p2[0]);
+            docs[6] = rabToXml(null, p2[1]);
+            new ReportViewForm("Племенное свидетельство", "rabbit", docs).ShowDialog();
         }
 
     }

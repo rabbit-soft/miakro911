@@ -101,6 +101,8 @@ namespace rabnet
         String[] getWeights(int rabbit);
         void addWeight(int rabbit, int weight, DateTime date);
         void deleteWeight(int rabbit, DateTime date);
+        OneRabbit[] getParents(int rabbit,int age);
+        OneRabbit getLiveDeadRabbit(int rabbit);
     }
 
 }

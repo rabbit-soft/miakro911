@@ -462,6 +462,16 @@ namespace rabnet
             new Weight(sql).deleteWeight(rabbit, date);
         }
 
+        public OneRabbit[] getParents(int rabbit, int age)
+        {
+            return RabbitGetter.getParents(sql, rabbit, age);
+        }
+
+        public OneRabbit getLiveDeadRabbit(int rabbit)
+        {
+            return RabbitGetter.getLiveDeadRabbit(sql,rabbit);
+        }
+
         #endregion
     }
 }
