@@ -162,7 +162,7 @@ namespace rabnet
 
         private void button6_Click(object sender, EventArgs e)
         {
-   //         try
+            try
             {
                 bool names = false;
                 bool addresses = false;
@@ -204,12 +204,12 @@ namespace rabnet
                 }
                 Close();
             }
-/*            catch (Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Ошибка " + ex.ToString());
             }
   
- */ }
+  }
 
 
     }
