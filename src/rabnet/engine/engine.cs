@@ -9,6 +9,7 @@ namespace rabnet
 {
     public class RabNetEngine
     {
+        const int NEED_DB_VERSION = 1;
         private IRabNetDataLayer data=null;
         private IRabNetDataLayer data2 = null;
         private ILog log = null;
@@ -28,10 +29,12 @@ namespace rabnet
         {
             if (data!=null)
             {
+                if (data2 == data) data2 = null;
                 data.close();
-                data = null;
+                if (data2 != null) data2.close();
+                data = data2 = null;
             }
-            log.Debug("initing engine data to "+dbext+" param="+param);
+            log.Debug("initing engine data to " + dbext + " param=" + param);
             if (dbext == "db.mysql")
             {
                 data = new RabNetDbMySql(param);
@@ -43,6 +46,15 @@ namespace rabnet
                 data2 = data;
             }else{
                 throw new ExDBDriverNotFoud(dbext);
+            }
+            int ver = options().getIntOption("db", "version", Options.OPT_LEVEL.FARM);
+            if (ver != NEED_DB_VERSION)
+            {
+                if (data2 == data) data2 = null;
+                if (data != null) data.close();
+                if (data2 != null) data2.close();
+                data = data2 = null;
+                throw new ExDBBadVersion(NEED_DB_VERSION, ver);
             }
             return data;
         }
