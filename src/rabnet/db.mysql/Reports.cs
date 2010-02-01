@@ -8,7 +8,7 @@ namespace rabnet
 {
     public class ReportType
     {
-        public enum Type { TEST,BREEDS,AGE,FUCKER,DEAD,DEADREASONS };
+        public enum Type { TEST,BREEDS,AGE,FUCKER,DEAD,DEADREASONS,REALIZE };
     }
 
     class Reports
@@ -35,8 +35,16 @@ namespace rabnet
                 XmlElement rw = xml.CreateElement("Row");
                 for (int i = 0; i < rd.FieldCount; i++)
                 {
-                    XmlElement f=xml.CreateElement(rd.GetName(i));
-                    f.AppendChild(xml.CreateTextNode(rd.IsDBNull(i) ? "" : rd.GetString(i)));
+                    String nm = rd.GetName(i);
+                    string vl = rd.IsDBNull(i) ? "" : rd.GetString(i);
+                    if (nm.Length>4)
+                    if (nm.Substring(0, 4) == "adr_")
+                    {
+                        nm = nm.Substring(4);
+                        vl = Buildings.fullPlaceName(vl, true, false, false);
+                    }
+                    XmlElement f=xml.CreateElement(nm);
+                    f.AppendChild(xml.CreateTextNode(vl));
                     rw.AppendChild(f);
                 }
                 root.AppendChild(rw);
@@ -56,6 +64,7 @@ namespace rabnet
                 case ReportType.Type.FUCKER: query = fuckerQuery(f); break;
                 case ReportType.Type.DEAD: query = deadQuery(f); break;
                 case ReportType.Type.DEADREASONS: query = deadReasonsQuery(f); break;
+                case ReportType.Type.REALIZE: query = Realize(f); break;
             }
             return makeStdReportXml(query);
         }
@@ -152,6 +161,17 @@ d_date>={0:s} AND d_date<={1:s});", DFROM, DTO);
 d_date>={0:s} AND d_date<={1:s} GROUP BY d_reason)
 UNION 
 (SELECT SUM(r_group),0,'Итого' FROM dead WHERE d_date>={0:s} AND d_date<={1:s});", DFROM, DTO);
+        }
+
+        private String Realize(Filters f)
+        {
+            int cnt = f.safeInt("cnt");
+            String where = "r_id=0";
+            for (int i = 0; i < cnt; i++)
+                where += " OR r_id=" + f.safeInt("r" + i.ToString()).ToString();
+            return String.Format(@"SELECT rabname(r_id,2) name,TO_DAYS(NOW())-TO_DAYS(r_born) age,
+(SELECT b_name FROM breeds WHERE b_id=r_breed) breed, rabplace(r_id) adr_adress,
+IF(r_sex='male','м',IF(r_sex='female','ж','?')) sex,r_notes comment FROM rabbits WHERE {0:s};",where);
         }
     }
 }

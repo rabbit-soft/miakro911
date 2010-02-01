@@ -159,9 +159,10 @@ namespace rabnet
             KillMenuItem.Visible = countKidsMenuItem.Visible=false;
             okrolMenuItem.Visible = fuckMenuItem.Visible= false;
             boysoutMenuItem.Visible = replaceYoungersMenuItem.Visible= false;
-            svidMenuItem.Visible = false;
+            svidMenuItem.Visible = realizeMenuItem.Visible= false;
             if (sex < 0) return;
             KillMenuItem.Visible = true;
+            realizeMenuItem.Visible = true;
             replaceMenuItem.Visible = true;
             countKidsMenuItem.Visible = replaceYoungersMenuItem.Visible = kids;
                 // boysoutMenuItem.Visible=
@@ -460,6 +461,16 @@ namespace rabnet
             docs[5] = rabToXml(null, p2[0]);
             docs[6] = rabToXml(null, p2[1]);
             new ReportViewForm("Племенное свидетельство", "rabbit", docs).ShowDialog();
+        }
+
+        private void realizeMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count < 1) return;
+            Filters f = new Filters();
+            f["cnt"] = listView1.SelectedItems.Count.ToString();
+            for (int i = 0; i < listView1.SelectedItems.Count; i++)
+                f["r" + i.ToString()] = ((int)listView1.SelectedItems[i].Tag).ToString();
+            new ReportViewForm("Кандидаты на реализацию", "realization", Engine.db().makeReport(ReportType.Type.REALIZE, f)).ShowDialog();
         }
 
     }
