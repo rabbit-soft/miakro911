@@ -72,8 +72,10 @@ namespace rabnet
         }
         public ZootehJob Fuck(int id, String nm, String ad, int age, int srok,int status,String boys,int group,string breed)
         {
-            type = JobType.FUCK; job = status==0?"Случка":"Вязка";
-            this.id = id; days = srok;
+            type = JobType.FUCK; 
+            job = status==0?"Случка":"Вязка";
+            this.id = id; 
+            days = srok;
             name = nm; address = ad;
             this.age = age;
             comment = f.safeInt("shr")==1?"Нвс":"Невеста";

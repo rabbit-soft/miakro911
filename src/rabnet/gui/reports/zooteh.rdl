@@ -98,25 +98,25 @@
         </Style>
         <TableColumns>
           <TableColumn>
-            <Width>26.8pt</Width>
+            <Width>30.8pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>99.8pt</Width>
+            <Width>105.3pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>186.2pt</Width>
+            <Width>160.7pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>47.7pt</Width>
+            <Width>37.3pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>70.4pt</Width>
+            <Width>90.9pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>39.7pt</Width>
+            <Width>41.0pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>109.5pt</Width>
+            <Width>113.1pt</Width>
           </TableColumn>
         </TableColumns>
         <Header>
@@ -256,6 +256,7 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
+                        <FontSize>8pt</FontSize>
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -272,6 +273,7 @@
                         <PaddingLeft>2pt</PaddingLeft>
                         <BorderColor />
                         <BorderWidth />
+                        <FontSize>8pt</FontSize>
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -286,6 +288,7 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
+                        <FontSize>8pt</FontSize>
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -300,6 +303,7 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
+                        <FontSize>8pt</FontSize>
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -314,6 +318,7 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
+                        <FontSize>8pt</FontSize>
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -328,6 +333,7 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
+                        <FontSize>8pt</FontSize>
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -342,6 +348,7 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
+                        <FontSize>8pt</FontSize>
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -352,7 +359,8 @@
         </Details>
         <KeepTogether>false</KeepTogether>
         <Left>1.6pt</Left>
-        <Top>59.5pt</Top>
+        <Top>50pt</Top>
+        <Height>10pt</Height>
       </Table>
       <Table Name="Table2">
         <DataSetName>Data2</DataSetName>
@@ -427,15 +435,15 @@
             </TableRow>
           </TableRows>
         </Details>
-        <Left>198.5pt</Left>
-        <Top>16.5pt</Top>
+        <Left>180pt</Left>
+        <Top>10pt</Top>
       </Table>
       <Textbox Name="Textbox1">
         <Height>19.52pt</Height>
         <Width>94.83pt</Width>
         <Value>Зоотехплан</Value>
-        <Left>94.10pt</Left>
-        <Top>20.80pt</Top>
+        <Left>80pt</Left>
+        <Top>10pt</Top>
         <Style>
           <BorderStyle />
           <BorderColor />
@@ -548,6 +556,7 @@
                         </BorderStyle>
                         <BorderColor />
                         <BorderWidth />
+                        <FontSize>8pt</FontSize>
                       </Style>
                       <Visibility>
                         <Hidden>
@@ -565,6 +574,7 @@
                         <BorderStyle>
                           <Default>Solid</Default>
                         </BorderStyle>
+                        <FontSize>8pt</FontSize>
                       </Style>
                     </Textbox>
                   </ReportItems>
