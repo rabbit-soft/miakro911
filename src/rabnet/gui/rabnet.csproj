@@ -152,6 +152,18 @@
     <Compile Include="forms\DeadForm.Designer.cs">
       <DependentUpon>DeadForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="forms\FarmChangeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\FarmChangeForm.Designer.cs">
+      <DependentUpon>FarmChangeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\FarmListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\FarmListForm.Designer.cs">
+      <DependentUpon>FarmListForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="forms\GenomView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -337,6 +349,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\DeadForm.resx">
       <DependentUpon>DeadForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\FarmListForm.resx">
+      <DependentUpon>FarmListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\GenomView.resx">
       <DependentUpon>GenomView.cs</DependentUpon>

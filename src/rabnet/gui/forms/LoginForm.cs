@@ -124,6 +124,7 @@ namespace rabnet
             public String name;
             public String type;
             public String param;
+            public bool visible;
             public bool def = false;
             public String defuser = "";
             public String defpassword = "";
@@ -159,6 +160,10 @@ namespace rabnet
                 }
             }
             return section;
+        }
+
+        public void save()
+        {
         }
     }
 }
