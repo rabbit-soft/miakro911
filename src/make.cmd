@@ -1,2 +1,2 @@
-nant
+nant obfuscate
 pause

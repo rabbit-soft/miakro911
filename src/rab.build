@@ -18,6 +18,7 @@
 	<property name="rep.ass" value="${rep.path}/${rep.lib}" />
 	<property name="repeng.lib" value="RdlEngine.dll" />
 	<property name="repeng.ass" value="${rep.path}/${repeng.lib}" />
+	<property name="obfuscator" value="Eazfuscator.NET.exe" />
 	<property name="istrial" value="" />
 	
 	<property name="data_dir" value="./../data" />
@@ -145,8 +146,19 @@
 		<copy file="./rabnet/gui/app.config" tofile="${bin_dir}/rabnet.exe.config" />
 	</target>
 	
-	<target name="obfuscate" description="Binary Obfuscation">
-		
+	<target name="obfuscate" depends="buildall" description="Binary Obfuscation">
+		<exec program="${obfuscator}">
+			<arg value="${root_bin}/release/db.mysql.dll" />
+			<arg value="${root_bin}/release/engine.dll" />
+			<arg value="${root_bin}/release/mia_conv.exe" />
+			<arg value="${root_bin}/release/rabnet.exe" />
+		</exec>
+		<exec program="${obfuscator}">
+			<arg value="${root_bin}/trial/db.mysql.dll" />
+			<arg value="${root_bin}/trial/engine.dll" />
+			<arg value="${root_bin}/trial/mia_conv.exe" />
+			<arg value="${root_bin}/trial/rabnet.exe" />
+		</exec>
 	</target>
 	
 	
