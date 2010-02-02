@@ -88,7 +88,7 @@
             this.rdlViewer1.SelectTool = false;
             this.rdlViewer1.ShowFindPanel = false;
             this.rdlViewer1.ShowParameterPanel = false;
-            this.rdlViewer1.ShowWaitDialog = true;
+            this.rdlViewer1.ShowWaitDialog = false;
             this.rdlViewer1.Size = new System.Drawing.Size(787, 418);
             this.rdlViewer1.SourceFile = null;
             this.rdlViewer1.SourceRdl = null;
