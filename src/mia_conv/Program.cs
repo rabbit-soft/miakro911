@@ -30,11 +30,13 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
             String users = "";
             String scr = "";
             bool auto = false;
+            Environment.ExitCode = 0;
             if (args.Length >= 1)
             {
                 if (args.Length<3)
                 {
                     MessageBox.Show(usage());
+                    Environment.ExitCode = 1;
                     return;
                 }
                 file = args[0];
@@ -51,6 +53,7 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
                 if (!System.IO.File.Exists(file))
                 {
                     MessageBox.Show("Mia File Not exists "+file+"\r\n"+usage());
+                    Environment.ExitCode = 1;
                     return;
                 }
                 String[] dbpar = args[1].Split(';');
@@ -68,6 +71,7 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
                 }catch(Exception ex)
                 {
                     MessageBox.Show("Error:" + ex.ToString() + ":" + ex.Message + "\r\n" + usage());
+                    Environment.ExitCode = 1;
                     return;
                 }
                 users = args[2];
@@ -76,11 +80,13 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
                     if (us.Length < 2)
                     {
                         MessageBox.Show("expected one user\r\n"+usage());
+                        Environment.ExitCode = 1;
                         return;
                     }
                     if (us.Length % 2 != 0)
                     {
                         MessageBox.Show("Every user must have password\r\n" + usage());
+                        Environment.ExitCode = 2;
                         return;
                     }
                 }
@@ -102,29 +108,43 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
                 string pswd = dbpar[3];
                 string root = dbpar[4];
                 string rpswd = dbpar[5];
+            Environment.ExitCode = 0;
             String[] us = args[2].Split(';');
+            if (us.Length < 2 || us.Length % 2 != 0)
             {
-                if (us.Length < 2)
-                    throw new ApplicationException("expected one user");
-                if (us.Length % 2 != 0)
-                    throw new ApplicationException("Every user must have password");
+                Environment.ExitCode = 1;
+                return;
             }
             if (MDCreator.hasDB(root, rpswd, db, host))
-                throw new ApplicationException("Already has db");
+                Environment.ExitCode = 1;
             MDCreator cr = new MDCreator(null);
-            cr.prepare(true, host, user, pswd, db, root, rpswd, true);
-            cr.setUsers(us);
+            try
+            {
+                cr.prepare(true, host, user, pswd, db, root, rpswd, true);
+                cr.setUsers(us);
+            }
+            catch (Exception)
+            {
+                Environment.ExitCode = 1;
+            }
             return;
         }
 
         static void dropdb(string[] args)
         {
+            Environment.ExitCode=0;
             String[] dbpar = args[1].Split(';');
             string host = dbpar[0];
             string db = dbpar[1];
             string root = dbpar[4];
             string rpswd = dbpar[5];
-            MDCreator.DropDb(root, rpswd, db, host);
+            try
+            {
+                MDCreator.DropDb(root, rpswd, db, host);
+            }catch(Exception)
+            {
+                Environment.ExitCode=1;
+            }
             return;
         }
     }

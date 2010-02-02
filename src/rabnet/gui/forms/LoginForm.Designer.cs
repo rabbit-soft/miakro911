@@ -126,7 +126,7 @@
             this.button3.TabIndex = 9;
             this.button3.Text = "Фермы...";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Visible = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // LoginForm
             // 
@@ -148,7 +148,6 @@
             this.MinimizeBox = false;
             this.Name = "LoginForm";
             this.ShowIcon = false;
-            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Выберите Базу Данных";
             this.TopMost = true;

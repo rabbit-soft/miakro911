@@ -350,6 +350,9 @@
     <EmbeddedResource Include="forms\DeadForm.resx">
       <DependentUpon>DeadForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="forms\FarmChangeForm.resx">
+      <DependentUpon>FarmChangeForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="forms\FarmListForm.resx">
       <DependentUpon>FarmListForm.cs</DependentUpon>
     </EmbeddedResource>

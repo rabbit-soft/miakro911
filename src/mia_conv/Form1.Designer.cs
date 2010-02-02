@@ -72,12 +72,12 @@ namespace mia_conv
             // 
             this.tb1.Location = new System.Drawing.Point(89, 9);
             this.tb1.Name = "tb1";
-            this.tb1.Size = new System.Drawing.Size(438, 20);
+            this.tb1.Size = new System.Drawing.Size(496, 20);
             this.tb1.TabIndex = 0;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(533, 7);
+            this.button1.Location = new System.Drawing.Point(591, 8);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(24, 23);
             this.button1.TabIndex = 1;
@@ -89,7 +89,7 @@ namespace mia_conv
             // 
             this.ofd.DefaultExt = "mia";
             this.ofd.FileName = "openFileDialog1";
-            this.ofd.Filter = "Mia files(*.mia)|*.mia";
+            this.ofd.Filter = "Ôאיכ פונלû(*.mia)|*.mia";
             // 
             // log
             // 
@@ -105,12 +105,13 @@ namespace mia_conv
             // button2
             // 
             this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(570, 7);
+            this.button2.Location = new System.Drawing.Point(78, 96);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(45, 23);
             this.button2.TabIndex = 4;
             this.button2.Text = "read";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Visible = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // clb1
@@ -246,6 +247,7 @@ namespace mia_conv
             this.groupBox3.Controls.Add(this.log);
             this.groupBox3.Controls.Add(this.clb1);
             this.groupBox3.Controls.Add(this.label1);
+            this.groupBox3.Controls.Add(this.button2);
             this.groupBox3.Controls.Add(this.dateTimePicker1);
             this.groupBox3.Location = new System.Drawing.Point(198, 16);
             this.groupBox3.Name = "groupBox3";
@@ -413,7 +415,6 @@ namespace mia_conv
             this.Controls.Add(this.label10);
             this.Controls.Add(this.pb);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tb1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;

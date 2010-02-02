@@ -34,7 +34,7 @@ namespace mia_conv
             auto = automode;
             if (auto)
             {
-                Text += " - AUTOMODE do not touch";
+                Text += " - Авто режим";
                 tb1.Text = file;
                 textHost.Text = h;
                 textDB.Text = db;
@@ -63,6 +63,8 @@ namespace mia_conv
             {
                 tb1.Text = ofd.FileName;
                 button2.Enabled = true;
+                button3.PerformClick();
+                Text = "Импорт фермы " + tb1.Text;
             }
         }
 
