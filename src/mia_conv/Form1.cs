@@ -15,6 +15,7 @@ namespace mia_conv
         public DataTable udata=new DataTable();
         private bool auto=false;
         private bool executed=false;
+        public bool quiet=false;
         public Form1()
         {
             udata.Columns.Add("Пользователь",typeof(String));
@@ -27,11 +28,12 @@ namespace mia_conv
             for (int i = 0; i < clb1.Items.Count; i++)
                 clb1.SetItemChecked(i, false);
             clb1.SetItemChecked(clb1.Items.Count-1, true);
-
+            Environment.ExitCode = 1;
         }
-        public Form1(bool automode,String file,String h,String db,String u,String p,String r,String rp,String usrs,String scr):this()
+        public Form1(int automode,String file,String h,String db,String u,String p,String r,String rp,String usrs,String scr):this()
         {
-            auto = automode;
+            auto = automode>0;
+            quiet = automode == 2;
             if (auto)
             {
                 Text += " - Авто режим";
@@ -63,7 +65,7 @@ namespace mia_conv
             {
                 tb1.Text = ofd.FileName;
                 button2.Enabled = true;
-                button3.PerformClick();
+                button2.PerformClick();
                 Text = "Импорт фермы " + tb1.Text;
             }
         }
@@ -97,7 +99,7 @@ namespace mia_conv
 #endif
             {
                 pb.Value = 0;
-                if (crt.prepare(dbnew.Checked, textHost.Text, textUser.Text, textPassword.Text, textDB.Text, textRoot.Text, textRootPswd.Text,false))
+                if (crt.prepare(dbnew.Checked, textHost.Text, textUser.Text, textPassword.Text, textDB.Text, textRoot.Text, textRootPswd.Text,false,quiet))
                 {
                     button2.Enabled = false;
                     button3.Enabled = false;
@@ -109,6 +111,7 @@ namespace mia_conv
                     pb.Value = 0;
                     button2.Enabled = true;
                     button3.Enabled = true;
+                    Environment.ExitCode = 0;
                 }
             }
 #if !NOCATCH 
@@ -128,6 +131,7 @@ namespace mia_conv
             executed = true;
             if (auto)
             {
+                dbnew.Checked=true;
                 button2.Enabled = true;
                 button2.PerformClick();
                 button3.PerformClick();

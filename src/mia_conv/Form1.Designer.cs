@@ -105,13 +105,12 @@ namespace mia_conv
             // button2
             // 
             this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(78, 96);
+            this.button2.Location = new System.Drawing.Point(658, 9);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(45, 23);
             this.button2.TabIndex = 4;
             this.button2.Text = "read";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Visible = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // clb1
@@ -247,7 +246,6 @@ namespace mia_conv
             this.groupBox3.Controls.Add(this.log);
             this.groupBox3.Controls.Add(this.clb1);
             this.groupBox3.Controls.Add(this.label1);
-            this.groupBox3.Controls.Add(this.button2);
             this.groupBox3.Controls.Add(this.dateTimePicker1);
             this.groupBox3.Location = new System.Drawing.Point(198, 16);
             this.groupBox3.Name = "groupBox3";
@@ -415,10 +413,12 @@ namespace mia_conv
             this.Controls.Add(this.label10);
             this.Controls.Add(this.pb);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tb1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Импорт фермы";
             this.Activated += new System.EventHandler(this.Form1_Activated);

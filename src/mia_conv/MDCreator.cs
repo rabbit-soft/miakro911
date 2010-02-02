@@ -55,12 +55,16 @@ namespace mia_conv
             return true;
         }
 
-        public bool createDB(String root,String rpswd,String db,String host,String user,String pswd,bool throwing)
+        public bool createDB(String root,String rpswd,String db,String host,String user,String pswd,bool throwing,bool quiet)
         {
             debug("Creating database "+db);
             sql = new MySqlConnection("server=" + host + ";userId=" + root + ";password=" + rpswd + ";database=mysql");
             try
             {
+                if (hasDB(root, rpswd, db, host) && !quiet)
+                    if (MessageBox.Show(null, "База данных " + db + " уже существует.\nЗаменить на новую?\nДанные старой фермы будут утеряны!",
+                        "БД существует", MessageBoxButtons.YesNoCancel) != DialogResult.Yes)
+                        return false;
                 sql.Open();
                 MySqlCommand cmd = new MySqlCommand("DROP DATABASE IF EXISTS " + db + ";", sql);
                 cmd.ExecuteNonQuery();
@@ -83,12 +87,20 @@ namespace mia_conv
             return true;
         }
 
-        public bool prepare(bool nudb, String host, String user, String password, String db,String root, String rpswd,bool throwing)
+        public bool prepare(bool nudb, String host, String user, String password, String db, String root, String rpswd, bool throwing)
+        {
+            return prepare(nudb, host, user, password, db, root, rpswd, throwing, false);
+        }
+        public bool prepare(bool nudb, String host, String user, String password, String db,String root, String rpswd,bool throwing,bool quiet)
         {
             if (nudb)
-                if (!createDB(root,rpswd,db,host,user,password,throwing))
+                if (!createDB(root,rpswd,db,host,user,password,throwing,quiet))
                     return false;
-            sql = new MySqlConnection("host=" + host + ";uid=" + user + ";pwd=" + password + ";database=" + db+";charset=utf8");
+            if (!nudb)
+                if (MessageBox.Show(null, "Данные старой фермы будут утеряны! Продолжить?",
+                    "БД существует", MessageBoxButtons.YesNoCancel) != DialogResult.Yes)
+                    return false;
+            sql = new MySqlConnection("host=" + host + ";uid=" + user + ";pwd=" + password + ";database=" + db + ";charset=utf8");
             try
             {
                 sql.Open();

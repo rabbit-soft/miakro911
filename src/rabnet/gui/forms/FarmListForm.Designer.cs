@@ -30,12 +30,12 @@
         {
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
             this.SuspendLayout();
             // 
             // listView1
@@ -65,6 +65,16 @@
             // 
             this.columnHeader1.Text = "Название";
             this.columnHeader1.Width = 157;
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Сохранять пароль";
+            this.columnHeader4.Width = 49;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "БД";
+            this.columnHeader5.Width = 195;
             // 
             // button1
             // 
@@ -107,16 +117,7 @@
             this.button4.TabIndex = 4;
             this.button4.Text = "Удалить";
             this.button4.UseVisualStyleBackColor = true;
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "Сохранять пароль";
-            this.columnHeader4.Width = 49;
-            // 
-            // columnHeader5
-            // 
-            this.columnHeader5.Text = "БД";
-            this.columnHeader5.Width = 195;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // FarmListForm
             // 

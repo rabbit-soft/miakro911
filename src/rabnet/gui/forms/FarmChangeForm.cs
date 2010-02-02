@@ -72,8 +72,9 @@ namespace rabnet
         private void button4_Click(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                if (runmia(openFileDialog1.FileName))
             {
-                runmia(openFileDialog1.FileName);
+                button1.PerformClick();
             }
         }
 
@@ -97,7 +98,8 @@ namespace rabnet
 
         private void button3_Click(object sender, EventArgs e)
         {
-            runmia("nudb");
+            if (runmia("nudb"))
+                button1.PerformClick();
         }
     }
 }

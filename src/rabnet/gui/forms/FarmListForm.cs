@@ -41,7 +41,7 @@ namespace rabnet
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            button3.Enabled = listView1.SelectedItems.Count == 1;
+            button4.Enabled=button3.Enabled = listView1.SelectedItems.Count == 1;
         }
 
         private void listView1_DoubleClick(object sender, EventArgs e)
@@ -59,6 +59,13 @@ namespace rabnet
         private void button2_Click(object sender, EventArgs e)
         {
             new FarmChangeForm(null).ShowDialog();
+            updateList();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1) return;
+            RabnetConfigHandler.ds.Remove((RabnetConfigHandler.dataSource)listView1.SelectedItems[0].Tag);
             updateList();
         }
     }

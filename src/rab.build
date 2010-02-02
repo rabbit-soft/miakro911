@@ -170,6 +170,7 @@
 			<arg value="localhost;krol30;kroliki;krol;root;;" />
 			<arg value="зоотехник;" />
 			<arg value="..\data\data_30.sql" />
+			<arg value="quiet" />
 		</exec>
 		<delete file="${data_dir}/Farm 3_0.mia" />
 		<unzip zipfile="${data_dir}/Farm_main.zip" todir="${data_dir}" />
@@ -178,6 +179,7 @@
 			<arg value="localhost;kroliki;kroliki;krol;root;;" />
 			<arg value="зоотехник;" />
 			<arg value="..\data\data_main.sql" />
+			<arg value="quiet" />
 		</exec>
 		<delete file="${data_dir}/Farm.mia" />
 		<unzip zipfile="${data_dir}/Farm_last.zip" todir="${data_dir}" />
@@ -186,6 +188,7 @@
 			<arg value="localhost;krol_last;kroliki;krol;root;;" />
 			<arg value="зоотехник;" />
 			<arg value="..\data\data_last.sql" />
+			<arg value="quiet" />
 		</exec>
 		<delete file="${data_dir}/Farm.mia" />
 	</target>

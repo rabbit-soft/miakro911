@@ -29,7 +29,7 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
             String rpswd = "";
             String users = "";
             String scr = "";
-            bool auto = false;
+            int auto = 0;
             Environment.ExitCode = 0;
             if (args.Length >= 1)
             {
@@ -92,7 +92,9 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
                 }
                 if (args.Length>3)
                     scr=args[3];
-                auto = true;
+                auto = 1;
+                if (args.Length > 4 && args[4] == "quiet")
+                    auto = 2;
             }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -116,7 +118,11 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
                 return;
             }
             if (MDCreator.hasDB(root, rpswd, db, host))
+            {
+                MessageBox.Show("База данных уже существует!");
                 Environment.ExitCode = 1;
+                return;
+            }
             MDCreator cr = new MDCreator(null);
             try
             {
