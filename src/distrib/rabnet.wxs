@@ -34,6 +34,7 @@
                             <File Id="realization.rdl" Source="$(var.ProjectDir)\reports\realization.rdl" Checksum="yes" />
                             <File Id="zooteh.rdl" Source="$(var.ProjectDir)\reports\zooteh.rdl" Checksum="yes" />
                             <File Id="zooteh_nofuck.rdl" Source="$(var.ProjectDir)\reports\zooteh_nofuck.rdl" Checksum="yes" />
+                            <RegistryValue Root="HKCU" Key="Software\TrustBox\RabNet" Name="reports" Type="integer" Value="1" KeyPath="yes" />
                         </Component>
                     </Directory>
                 </Directory>
@@ -41,15 +42,18 @@
             <Directory Id="ProgramMenuFolder" Name="ProgramsMenu">
                 <Directory Id="MenuDir" Name="Миакро">
                     <Component Id="MenuShortcuts" Guid="507B20FA-2868-4241-94D3-D8EDE75EAC9F">
-                        <Shortcut Id="rabnetShortcut" Name="Миакро rabnet" WorkingDirectory="RabbitsDir" Target="[RAbbitsDir]rabnet.exe" />
-                        <Shortcut Id="miaconvShortcut" Name="Импорт фермы" WorkingDirectory="RabbitsDir" Target="[RAbbitsDir]mia_conv.exe" />
+                        <Shortcut Id="rabnetShortcut" Name="Миакро rabnet" WorkingDirectory="RabbitsDir" Target="[RabbitsDir]rabnet.exe" />
+                        <Shortcut Id="miaconvShortcut" Name="Импорт фермы" WorkingDirectory="RabbitsDir" Target="[RabbitsDir]mia_conv.exe" />
                         <Shortcut Id="UninstallShortcut" Name="Удалить" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" />
+                        <RemoveFolder Id="MenuDir" On="uninstall" />
+                        <RegistryValue Root="HKCU" Key="Software\TrustBox\RabNet" Name="installed" Type="integer" Value="1" KeyPath="yes" />
                     </Component>
                 </Directory>
             </Directory>
             <Directory Id="DesktopFolder">
                 <Component Id="DesktopShortcuts" Guid="D7CA67CD-9F2B-43D6-B98A-C907BD09CE3D">
-                    <Shortcut Id="rabnetDesktopShortcut" Name="Миакро rabnet" WorkingDirectory="RabbitsDir" Target="[RAbbitsDir]rabnet.exe" />
+                    <Shortcut Id="rabnetDesktopShortcut" Name="Миакро rabnet" WorkingDirectory="RabbitsDir" Target="[RabbitsDir]rabnet.exe" />
+                    <RegistryValue Root="HKCU" Key="Software\TrustBox\RabNet" Name="desktop" Type="integer" Value="1" KeyPath="yes" />
                 </Component>
             </Directory>
         </Directory>
