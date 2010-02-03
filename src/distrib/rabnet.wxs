@@ -30,11 +30,10 @@
                             <File Id="dead.rdl" Source="$(var.ProjectDir)\reports\dead.rdl" Checksum="yes" />
                             <File Id="deadreason.rdl" Source="$(var.ProjectDir)\reports\deadreason.rdl" Checksum="yes" />
                             <File Id="fucker.rdl" Source="$(var.ProjectDir)\reports\fucker.rdl" Checksum="yes" />
-                            <File Id="rabbit.rdl" Source="$(var.ProjectDir)\reports\rabbit.rdl" Checksum="yes" />
+                            <File Id="rabbit.rdl" Source="$(var.ProjectDir)\reports\rabbit.rdl" Checksum="yes" KeyPath="yes" />
                             <File Id="realization.rdl" Source="$(var.ProjectDir)\reports\realization.rdl" Checksum="yes" />
                             <File Id="zooteh.rdl" Source="$(var.ProjectDir)\reports\zooteh.rdl" Checksum="yes" />
                             <File Id="zooteh_nofuck.rdl" Source="$(var.ProjectDir)\reports\zooteh_nofuck.rdl" Checksum="yes" />
-                            <RegistryValue Root="HKCU" Key="Software\TrustBox\RabNet" Name="reports" Type="integer" Value="1" KeyPath="yes" />
                         </Component>
                     </Directory>
                 </Directory>
