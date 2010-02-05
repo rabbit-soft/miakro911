@@ -6,7 +6,7 @@
 	<loadtasks assembly="${wix.dir}\Microsoft.Tools.WindowsInstallerXml.NAntTasks.dll" />
 	<description>rabnet project makefile</description>
 	<!-- properties defines !-->
-	<property name="version" value="1.0.0.0"/>
+	<property name="version" value="1.0"/>
 	<property name="root_bin" value="./../bin"/>
 	<property name="tools_dir" value="./../bin/tools" />
 	<property name="distrib_dir" value="./../bin/distrib" />
@@ -166,14 +166,13 @@
 		</exec>
 	</target>
 	
-	
 	<target name="one_distrib">
 		<mkdir dir="${root_bin}/distrib/obj"/>
 		<candle out="${root_bin}/distrib/obj/" rebuild="true"  extensions="WixUIExtension;WixUtilExtension"  warningsaserrors="true">
 		 <defines>
 			<define name="ProjectDir" value="${bin_dir}" />
 			<define name="Configuration" value="${dist_conf}" />
-			<define name="Version" value="${version}" />
+			<define name="Version" value="${version}.${minver}" />
 		</defines>
 		<sources basedir="./distrib">
 			<include name="rabnet.wxs" />
@@ -195,20 +194,26 @@
 		<property name="dist_type" value="rabnet"/>
 		<property name="bin_dir" value="${root_bin}\release"/>
 		<property name="dist_conf" value="minmal"/>
+		<property name="minver" value="120"/>
 		<call target="one_distrib"/>
-		<!--property name="dist_conf" value="mysql"/>
+		<property name="dist_conf" value="mysql"/>
+		<property name="minver" value="110"/>
 		<call target="one_distrib"/>
+		<property name="minver" value="100"/>
 		<property name="dist_conf" value="full"/>
 		<call target="one_distrib"/>
 		<property name="dist_type" value="rabnet_trial"/>
 		<property name="bin_dir" value="${root_bin}\trial"/>
 		<property name="dist_conf" value="minmal"/>
+		<property name="minver" value="20"/>
 		<call target="one_distrib"/>
 		<property name="dist_conf" value="mysql"/>
+		<property name="minver" value="10"/>
 		<call target="one_distrib"/>
 		<property name="dist_conf" value="full"/>
+		<property name="minver" value="0"/>
 		<call target="one_distrib"/>
-		<delete dir="${root_bin}/distrib/obj"/!-->
+		<delete dir="${root_bin}/distrib/obj"/>
 	</target>
 	
 	<!-- FILL DATA!-->
