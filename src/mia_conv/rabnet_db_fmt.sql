@@ -12,7 +12,7 @@ CREATE TABLE options(
 	o_name VARCHAR(30) NOT NULL default '',
 	o_subname VARCHAR(30) NOT NULL default '',
 	o_uid INTEGER UNSIGNED NOT NULL default 0,
-	o_value TEXT NOT NULL,
+	o_value TEXT ,
 	KEY(o_name,o_subname),
 	KEY(o_uid)
 );
@@ -52,7 +52,7 @@ CREATE TABLE tiers(
 	t_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	t_type ENUM('none','female','dfemale','complex','jurta','quarta','vertep','barin','cabin') NOT NULL,
 	t_repair BOOL NOT NULL default 0,
-	t_notes TEXT NOT NULL,
+	t_notes TEXT,
 	t_busy1 INTEGER UNSIGNED NULL default 0,
 	t_busy2 INTEGER UNSIGNED NULL default 0,
 	t_busy3 INTEGER UNSIGNED NULL default 0,
@@ -110,7 +110,7 @@ CREATE TABLE rabbits(
 	r_name INTEGER UNSIGNED NOT NULL default 0,
 	r_surname INTEGER UNSIGNED NOT NULL default 0,
 	r_secname INTEGER UNSIGNED NOT NULL default 0,
-	r_notes TEXT NOT NULL,
+	r_notes TEXT,
 	r_okrol INTEGER UNSIGNED NOT NULL default 0,
 	r_farm INTEGER UNSIGNED NOT NULL DEFAULT 0,
 	r_tier INTEGER UNSIGNED NOT NULL DEFAULT 0,
@@ -160,7 +160,7 @@ CREATE TABLE fucks(
 	f_added INTEGER NOT NULL DEFAULT 0,
 	f_last BOOL NOT NULL DEFAULT 0,
 	f_worker INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	f_notes TEXT NOT NULL ,
+	f_notes TEXT,
 	KEY(f_date),
 	KEY(f_state),
 	KEY(f_type),
@@ -171,7 +171,7 @@ CREATE TABLE fucks(
 DROP TABLE IF EXISTS genesis;
 CREATE TABLE genesis(
 	g_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	g_notes TEXT NOT NULL,
+	g_notes TEXT,
 	g_key VARCHAR(50),
 	KEY(g_id),
 	KEY(g_key)
@@ -215,7 +215,7 @@ CREATE TABLE dead(
 	r_name INTEGER UNSIGNED NOT NULL default 0,
 	r_surname INTEGER UNSIGNED NOT NULL default 0,
 	r_secname INTEGER UNSIGNED NOT NULL default 0,
-	r_notes TEXT NOT NULL,
+	r_notes TEXT,
 	r_okrol INTEGER UNSIGNED NOT NULL default 0,
 	r_farm INTEGER UNSIGNED NOT NULL DEFAULT 0,
 	r_tier INTEGER UNSIGNED NOT NULL DEFAULT 0,
@@ -227,7 +227,7 @@ CREATE TABLE dead(
 	r_flags VARCHAR(10) NOT NULL DEFAULT '000000',
 	r_zone INTEGER UNSIGNED NOT NULL DEFAULT 0,
 	r_born DATETIME,
-	r_genesis INTEGER UNSIGNED NOT NULL,
+	r_genesis INTEGER UNSIGNED NOT NULL DEFAULT 0,
 	r_status TINYINT UNSIGNED NOT NULL DEFAULT 0,
 	r_last_fuck_okrol DATETIME,
 	r_lost_babies INTEGER UNSIGNED,
@@ -250,7 +250,7 @@ DROP TABLE IF EXISTS logtypes;
 CREATE TABLE logtypes(
 	l_type INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	l_name VARCHAR(30) NOT NULL,
-	l_params TEXT NOT NULL,
+	l_params TEXT,
 	KEY(l_name)
 );
 
