@@ -28,6 +28,15 @@
 	
 	<property name="data_dir" value="./../data" />
 	
+	<property name="dotnetInstaller" value="install_dotnet.cmd"/>
+	<property name="mysqlInstaller" value="install_mysql.cmd"/>
+	<property name="dotnetInstallerSource" value="./distrib/3d_distrib/${dotnetInstaller}"/>
+	<property name="mysqlInstallerSource" value="./distrib/3d_distrib/${mysqlInstaller}"/>
+	<property name="installersPath" value=""/>
+	<property name="slash" value=""/>
+	<property name="dotnetInstallerDest" value="${installersPath}${slash}${dotnetInstaller}"/>
+	<property name="mysqlInstallerDest" value="${installersPath}${slash}${mysqlInstaller}"/>
+	
 	<!-- TARGETS !-->
 	
 	<target name="build" depends="clear,buildall" description="Full build"/>
@@ -168,17 +177,19 @@
 	
 	<target name="one_distrib">
 		<mkdir dir="${root_bin}/distrib/obj"/>
-		<candle out="${root_bin}/distrib/obj/" rebuild="true"  extensions="WixUIExtension;WixUtilExtension"  warningsaserrors="true">
+		<candle out="${root_bin}/distrib/obj/" rebuild="true"  extensions="WixUIExtension;WixUtilExtension;WiXNetFxExtension"  warningsaserrors="true">
 		 <defines>
 			<define name="ProjectDir" value="${bin_dir}" />
-			<define name="Configuration" value="${dist_conf}" />
+			<define name="NetInstaller" value="${dotnetInstallerDest}" />
+			<define name="MysqlInstaller" value="${mysqlInstallerDest}" />
 			<define name="Version" value="${version}.${minver}" />
 		</defines>
 		<sources basedir="./distrib">
 			<include name="rabnet.wxs" />
 		</sources>
 		</candle>
-		<light out="${root_bin}/distrib/${dist_type}_${version}_${dist_conf}.msi" warningsaserrors="true" suppressices="ICE57" cultures="ru-ru" extensions="WixUIExtension" rebuild="true" suppresspdb="true">
+		<light out="${root_bin}/distrib/${dist_type}_${version}.msi" warningsaserrors="true" 
+		  suppressices="ICE57" cultures="ru-ru" extensions="WixUIExtension;WiXNetFxExtension;WixUtilExtension" rebuild="true" suppresspdb="true">
 			<arg line="-fv" />
 			<sources basedir="${root_bin}/distrib/obj">
 				<include name="*.wixobj" />
@@ -191,26 +202,15 @@
 		<mkdir dir="${root_bin}"/>
 		<delete dir="${root_bin}/distrib"/>
 		<mkdir dir="${root_bin}/distrib"/>
+		<mkdir dir="${root_bin}/distrib/${installersPath}"/>
+		<copy file="${dotnetInstallerSource}" tofile="${root_bin}/distrib/${dotnetInstallerDest}"/>
+		<copy file="${mysqlInstallerSource}" tofile="${root_bin}/distrib/${mysqlInstallerDest}"/>
 		<property name="dist_type" value="rabnet"/>
 		<property name="bin_dir" value="${root_bin}\release"/>
-		<property name="dist_conf" value="minmal"/>
-		<property name="minver" value="120"/>
-		<call target="one_distrib"/>
-		<property name="dist_conf" value="mysql"/>
-		<property name="minver" value="110"/>
-		<call target="one_distrib"/>
-		<property name="minver" value="100"/>
-		<property name="dist_conf" value="full"/>
+		<property name="minver" value="1"/>
 		<call target="one_distrib"/>
 		<property name="dist_type" value="rabnet_trial"/>
 		<property name="bin_dir" value="${root_bin}\trial"/>
-		<property name="dist_conf" value="minmal"/>
-		<property name="minver" value="20"/>
-		<call target="one_distrib"/>
-		<property name="dist_conf" value="mysql"/>
-		<property name="minver" value="10"/>
-		<call target="one_distrib"/>
-		<property name="dist_conf" value="full"/>
 		<property name="minver" value="0"/>
 		<call target="one_distrib"/>
 		<delete dir="${root_bin}/distrib/obj"/>

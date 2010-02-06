@@ -14,12 +14,20 @@ xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
 			<UpgradeVersion Minimum="$(var.Version)" IncludeMinimum="no" OnlyDetect="yes" Property="NEWERVERSIONDETECTED"/>
 			<UpgradeVersion Minimum="0.0.0" IncludeMinimum="yes" Maximum="$(var.Version)" IncludeMaximum="no" Property="OLDERVERSIONBEINGUPGRADED"/>
 		</Upgrade>
+		<PropertyRef Id="NETFRAMEWORK20"/>
 		<Condition Message="Установлена более новая версия продукта">
 			<![CDATA[NOT NEWERVERSIONDETECTED]]>
 		</Condition>
+		<CustomAction Id='PropertyAssign' Property='NETINSTALLER' Value='[CURRENTDIRECTORY]\$(var.NetInstaller)' />
+		<CustomAction Id="SetupNETFX" Property="NETINSTALLER" ExeCommand=""/>
 		<InstallExecuteSequence>
 			<RemoveExistingProducts After="InstallInitialize" />
+			<Custom Action='PropertyAssign' After='RemoveExistingProducts'/>
+			<Custom Action='SetupNETFX' After='PropertyAssign'>NOT Installed AND NOT NETFRAMEWORK20</Custom>
 		</InstallExecuteSequence>
+		<!--Condition Message="Для работы программы необходим .NET Framework 2.0. Установите .NET Framework, а потом перезапустите утановку данного продукта">
+			<![CDATA[Installed OR NETFRAMEWORK20]]>
+		</Condition-->
         <Media Id="1" Cabinet="rabnet.cab" EmbedCab="yes" />
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFilesFolder" Name="PFiles">
