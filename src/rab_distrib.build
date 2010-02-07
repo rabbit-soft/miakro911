@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="rabnet_distrib" default="build" basedir=".">
+	<include buildfile="host_spec.include" />
+	<property name="distrib_dir" value="./../bin"/>
+
+	<target name="v0_1" description="Rabnet 0.1">
+		<property name="version" value="v0_1"/>
+		<call target="distrib"/>
+	</target>
+
+	<target name="clear" description="clear all distribs">
+		<delete dir="${distrib_dir}"/>
+	</target>
+
+	<target name="distrib" description="making Rabnet distrib">
+		<mkdir dir="${distrib_dir}"/>
+		<property name="vdir" value="${distrib_dir}/${version}"/>
+		<delete dir="${vdir}"/>
+		<mkdir dir="${vdir}"/>
+		<call target="svn_co"/>
+		<nant buildfile="${vdir}/src/rab.build" target="distrib">
+			<properties>
+				<property name="curdir" value="." />
+				<property name="host_spec_path" value="./../../src" />
+			</properties>
+		</nant>
+		<delete dir="${vdir}/src" />
+		<delete dir="${vdir}/.svn" />
+	</target>
+</project>
