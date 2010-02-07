@@ -1,2 +1,0 @@
-nant trial
-pause
