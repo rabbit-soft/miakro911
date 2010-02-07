@@ -267,10 +267,12 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d},'{7:d}');",
             
             c.CommandText = "UPDATE fucks SET f_partner=(SELECT n_use FROM names WHERE n_id=fucks.f_partner),f_dead=0 WHERE f_dead=1;";
             c.ExecuteNonQuery();
+            /*
             c.CommandText = "UPDATE rabbits SET r_mother=(SELECT COALESCE(n_use,0) FROM names WHERE n_id=rabbits.r_surname AND n_sex='female') WHERE r_mother=0;";
             c.ExecuteNonQuery();
             c.CommandText = "UPDATE rabbits SET r_father=(SELECT COALESCE(n_use,0) FROM names WHERE n_id=rabbits.r_secname AND n_sex='male') WHERE r_father=0;";
             c.ExecuteNonQuery();
+             * */
             /*
             c.CommandText = "UPDATE rabbits SET r_mother=(SELECT COALESCE(r_id,0) FROM dead WHERE dead.r_name=rabbits.r_surname AND dead.r_sex='female' LIMIT 1) WHERE r_mother=0;";
             c.ExecuteNonQuery();
