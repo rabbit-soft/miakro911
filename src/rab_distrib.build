@@ -3,6 +3,8 @@
 	<include buildfile="host_spec.include" />
 	<property name="distrib_dir" value="./../bin"/>
 
+	<target name="build" depends="v0_1"/>
+
 	<target name="v0_1" description="Rabnet 0.1">
 		<property name="version" value="v0_1"/>
 		<call target="distrib"/>
