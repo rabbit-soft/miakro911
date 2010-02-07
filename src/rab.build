@@ -90,7 +90,7 @@
 	</target>
 	
 
-	<target name="buildall" depends="release,trial" description="Build all projects"/>
+	<target name="buildall" depends="release,trial,tools" description="Build all projects"/>
 	<target name="compile" depends="miaconv,rabnet"/>
 	
 	<target name="miaconv" description="Make mia converter project">
@@ -216,7 +216,7 @@
 		</csc>
 	</target>
 	
-	<target name="distrib" depends="tools">
+	<target name="distrib" depends="obfuscate">
 		<mkdir dir="${root_bin}"/>
 		<delete dir="${root_bin}/distrib"/>
 		<mkdir dir="${root_bin}/distrib"/>
