@@ -8,26 +8,23 @@
 	<!-- properties defines !-->
 	<property name="version" value="1.0"/>
 	<property name="curdir" value="." overwrite="false"/>
+	<property name="host_spec_path" value="." overwrite="false"/>
+	<include buildfile="${host_spec_path}/host_spec.include"/>
 	<property name="root_bin" value="${curdir}/../bin"/>
 	<property name="tools_dir" value="${root_bin}/tools" />
 	<property name="distrib_dir" value="${root_bin}/distrib" />
 	<property name="log4net.lib" value="log4net.dll" />
-	<property name="log4net.path" value="${curdir}/party3d" />
 	<property name="log4net.ass" value="${log4net.path}/${log4net.lib}" />
 	
 	<property name="mysql.lib" value="MySql.Data.dll" />
-	<property name="mysql.path" value="${curdir}/party3d" />
 	<property name="mysql.ass" value="${mysql.path}/${mysql.lib}" />
 	
 	<property name="rep.lib" value="RdlViewer.dll" />
-	<property name="rep.path" value="${curdir}/party3d" />
 	<property name="rep.ass" value="${rep.path}/${rep.lib}" />
 	<property name="repeng.lib" value="RdlEngine.dll" />
 	<property name="repeng.ass" value="${rep.path}/${repeng.lib}" />
 	<property name="obfuscator" value="Eazfuscator.NET.exe" />
 	<property name="istrial" value="" />
-	
-	<property name="data_dir" value="${curdir}/../data" />
 	
 	<property name="dotnetInstaller" value="install_dotnet.cmd"/>
 	<property name="mysqlInstaller" value="install_mysql.cmd"/>

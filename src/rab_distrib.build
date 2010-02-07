@@ -21,6 +21,7 @@
 		<nant buildfile="${vdir}/src/rab.build" target="distrib">
 			<properties>
 				<property name="curdir" value="." />
+				<property name="host_spec_path" value="./../../src" />
 			</properties>
 		</nant>
 		<delete dir="${vdir}/src" />
