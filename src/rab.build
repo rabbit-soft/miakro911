@@ -216,7 +216,7 @@
 		</csc>
 	</target>
 	
-	<target name="distrib">
+	<target name="distrib" depends="obfuscate">
 		<mkdir dir="${root_bin}"/>
 		<delete dir="${root_bin}/distrib"/>
 		<mkdir dir="${root_bin}/distrib"/>
