@@ -1,2 +1,0 @@
-nant distrib
-pause
