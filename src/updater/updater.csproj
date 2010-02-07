@@ -63,7 +63,6 @@
       <DependentUpon>InstallForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="sql\2.sql" />
-    <EmbeddedResource Include="sql\3.sql" />
     <EmbeddedResource Include="UpdateForm.resx">
       <DependentUpon>UpdateForm.cs</DependentUpon>
     </EmbeddedResource>
