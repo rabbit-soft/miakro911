@@ -39,7 +39,7 @@
 	
 	<!-- TARGETS !-->
 	
-	<target name="build" depends="clear,buildall" description="Full build"/>
+	<target name="build" depends="clear,buildall,tools" description="Full build"/>
 	
 	<target name="clear" description="Clear build directories">
 		<delete dir="${root_bin}" />
@@ -82,12 +82,16 @@
 		<mkdir dir="${root_bin}"/>
 		<delete dir="${tools_dir}"/>
 		<mkdir dir="${tools_dir}"/>
+		<property name="bin_dir" value="${tools_dir}"/>
+		<property name="mysql.use" value="${bin_dir}/${mysql.lib}" />
+		<copy file="${mysql.ass}" tofile="${mysql.use}" />
+		<call target="updater"/>
+		<!--delete file=""${mysql.use}/-->
 	</target>
 	
 
 	<target name="buildall" depends="release,trial" description="Build all projects"/>
 	<target name="compile" depends="miaconv,rabnet"/>
-	
 	
 	<target name="miaconv" description="Make mia converter project">
 		<copy file="./mia_conv/rabnet_db_fmt.sql" tofile="./mia_conv/mia_conv.rabnet_db_fmt.sql"/>
@@ -196,6 +200,20 @@
 			</sources>
 		</light>
 		<delete dir="${root_bin}/distrib/obj"/>
+	</target>
+
+	<target name="updater" description="Make updater project">
+		<csc target="winexe" output="${tools_dir}/updater.exe">
+			<sources>
+				<include name="./updater/*.cs"/>
+			</sources>
+			<resources>
+				<include name="./updater/sql/*.sql"/>
+			</resources>
+			<references>
+				<include name="${mysql.use}"/>
+			</references>
+		</csc>
 	</target>
 	
 	<target name="distrib">

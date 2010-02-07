@@ -23,12 +23,16 @@
         <CustomAction Id="SetupNETFX" Property="NETINSTALLER" ExeCommand="" />
         <CustomAction Id="Property2Assign" Property="MYSQLINSTALLER" Value="[CURRENTDIRECTORY]\$(var.MysqlInstaller)" />
         <CustomAction Id="SetupMysql" Property="MYSQLINSTALLER" ExeCommand="" />
+        <CustomAction Id="Property3Assign" Property="RABNETUPDATER" Value="[RabbitsDir]updater.exe" />
+        <CustomAction Id="RabnetUpdate" Property="RABNETUPDATER" ExeCommand="" />
         <InstallExecuteSequence>
             <RemoveExistingProducts After="InstallInitialize" />
             <Custom Action="PropertyAssign" After="RemoveExistingProducts" />
             <Custom Action="Property2Assign" After="PropertyAssign" />
-            <Custom Action="SetupNETFX" After="Property2Assign">NOT Installed AND NOT NETFRAMEWORK20</Custom>
-            <Custom Action="SetupMysql" After="Property2Assign">NOT Installed AND (FARMHERE="yes") AND (NOT HASMYSQL="1")</Custom>
+            <Custom Action="Property3Assign" After="Property2Assign" />
+            <Custom Action="SetupNETFX" After="Property3Assign">NOT Installed AND NOT NETFRAMEWORK20</Custom>
+            <Custom Action="SetupMysql" After="Property3Assign">NOT Installed AND (FARMHERE="yes") AND (NOT HASMYSQL="1")</Custom>
+			<Custom Action="RabnetUpdate" After="InstallFinalize">NOT Installed</Custom>
         </InstallExecuteSequence>
         <!--Condition Message="Для работы программы необходим .NET Framework 2.0. Установите .NET Framework, а потом перезапустите утановку данного продукта">
 			<![CDATA[Installed OR NETFRAMEWORK20]]>
@@ -46,6 +50,7 @@
                         <File Id="Mysql.Data.dll" Source="$(var.ProjectDir)\Mysql.Data.dll" Checksum="yes" />
                         <File Id="RdlEngine.dll" Source="$(var.ProjectDir)\RdlEngine.dll" Checksum="yes" />
                         <File Id="RdlViewer.dll" Source="$(var.ProjectDir)\RdlViewer.dll" Checksum="yes" />
+                        <File Id="updater.exe" Source="$(var.ProjectDir)\..\tools\updater.exe" Checksum="yes" />
                     </Component>
                     <Directory Id="ReportsDir" Name="reports">
                         <Component Id="Reports" Guid="AF1369D3-6231-4FE8-8884-7ECDA59DE059">
