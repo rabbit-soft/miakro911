@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C# Express 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rabnet", "gui\rabnet.csproj", "{EFCCE992-8AB2-43AB-87DD-1BEC3E429345}"
+	ProjectSection(ProjectDependencies) = postProject
+		{241724AB-0674-41CF-A8AD-224EEC248E40} = {241724AB-0674-41CF-A8AD-224EEC248E40}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "engine", "engine\engine.csproj", "{241724AB-0674-41CF-A8AD-224EEC248E40}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B20A34DB-0FCD-4CFA-858E-16803387FF4F} = {B20A34DB-0FCD-4CFA-858E-16803387FF4F}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "db.mysql", "db.mysql\db.mysql.csproj", "{B20A34DB-0FCD-4CFA-858E-16803387FF4F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EFCCE992-8AB2-43AB-87DD-1BEC3E429345}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFCCE992-8AB2-43AB-87DD-1BEC3E429345}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFCCE992-8AB2-43AB-87DD-1BEC3E429345}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFCCE992-8AB2-43AB-87DD-1BEC3E429345}.Release|Any CPU.Build.0 = Release|Any CPU
+		{241724AB-0674-41CF-A8AD-224EEC248E40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{241724AB-0674-41CF-A8AD-224EEC248E40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{241724AB-0674-41CF-A8AD-224EEC248E40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{241724AB-0674-41CF-A8AD-224EEC248E40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B20A34DB-0FCD-4CFA-858E-16803387FF4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B20A34DB-0FCD-4CFA-858E-16803387FF4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B20A34DB-0FCD-4CFA-858E-16803387FF4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B20A34DB-0FCD-4CFA-858E-16803387FF4F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

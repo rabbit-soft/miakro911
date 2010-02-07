@@ -1,0 +1,268 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project name="rabnet" default="build" basedir=".">
+	<!-- WiX 3 folder -->
+	<property name="wix.dir" value="${path::combine(environment::get-variable('WIX'), 'bin')}" readonly="true" />
+	<!-- Load the WiX3 tasks -->
+	<loadtasks assembly="${wix.dir}\Microsoft.Tools.WindowsInstallerXml.NAntTasks.dll" />
+	<description>rabnet project makefile</description>
+	<!-- properties defines !-->
+	<property name="version" value="1.0"/>
+	<property name="root_bin" value="./../bin"/>
+	<property name="tools_dir" value="./../bin/tools" />
+	<property name="distrib_dir" value="./../bin/distrib" />
+	<property name="log4net.lib" value="log4net.dll" />
+	<property name="log4net.path" value="./party3d" />
+	<property name="log4net.ass" value="${log4net.path}/${log4net.lib}" />
+	
+	<property name="mysql.lib" value="MySql.Data.dll" />
+	<property name="mysql.path" value="./party3d" />
+	<property name="mysql.ass" value="${mysql.path}/${mysql.lib}" />
+	
+	<property name="rep.lib" value="RdlViewer.dll" />
+	<property name="rep.path" value="./party3d" />
+	<property name="rep.ass" value="${rep.path}/${rep.lib}" />
+	<property name="repeng.lib" value="RdlEngine.dll" />
+	<property name="repeng.ass" value="${rep.path}/${repeng.lib}" />
+	<property name="obfuscator" value="Eazfuscator.NET.exe" />
+	<property name="istrial" value="" />
+	
+	<property name="data_dir" value="./../data" />
+	
+	<property name="dotnetInstaller" value="install_dotnet.cmd"/>
+	<property name="mysqlInstaller" value="install_mysql.cmd"/>
+	<property name="dotnetInstallerSource" value="./distrib/3d_distrib/${dotnetInstaller}"/>
+	<property name="mysqlInstallerSource" value="./distrib/3d_distrib/${mysqlInstaller}"/>
+	<property name="installersPath" value=""/>
+	<property name="slash" value=""/>
+	<property name="dotnetInstallerDest" value="${installersPath}${slash}${dotnetInstaller}"/>
+	<property name="mysqlInstallerDest" value="${installersPath}${slash}${mysqlInstaller}"/>
+	
+	<!-- TARGETS !-->
+	
+	<target name="build" depends="clear,buildall,tools" description="Full build"/>
+	
+	<target name="clear" description="Clear build directories">
+		<delete dir="${root_bin}" />
+	</target>
+	
+	<target name="prepare_bin_dir">
+		<mkdir dir="${root_bin}"/>
+		<delete dir="${bin_dir}"/>
+		<mkdir dir="${bin_dir}"/>
+		<mkdir dir="${bin_dir}/reports"/>
+		<property name="log4net.use" value="${bin_dir}/${log4net.lib}" />
+		<property name="mysql.use" value="${bin_dir}/${mysql.lib}" />
+		<property name="rep.use" value="${bin_dir}/${rep.lib}" />
+		<property name="repeng.use" value="${bin_dir}/${repeng.lib}" />
+		<copy file="${log4net.ass}" tofile="${log4net.use}" />
+		<copy file="${mysql.ass}" tofile="${mysql.use}" />
+		<copy file="${rep.ass}" tofile="${rep.use}" />
+		<copy file="${repeng.ass}" tofile="${repeng.use}" />
+		<copy todir="${bin_dir}/reports">
+			<fileset basedir="./rabnet/gui/reports">
+				<include name="*.rdl"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	
+	<target name="release" description="Build RELEASE">
+		<property name="istrial" value="" />
+		<property name="bin_dir" value="${root_bin}/release"/>
+		<call target="prepare_bin_dir"/>
+		<call target="compile"/>
+	</target>
+	<target name="trial" description="Build TRIAL">
+		<property name="istrial" value="TRIAL" />
+		<property name="bin_dir" value="${root_bin}/trial"/>
+		<call target="prepare_bin_dir"/>
+		<call target="compile"/>
+	</target>
+	<target name="tools" description="Build TOOLS">
+		<mkdir dir="${root_bin}"/>
+		<delete dir="${tools_dir}"/>
+		<mkdir dir="${tools_dir}"/>
+		<property name="bin_dir" value="${tools_dir}"/>
+		<property name="mysql.use" value="${bin_dir}/${mysql.lib}" />
+		<copy file="${mysql.ass}" tofile="${mysql.use}" />
+		<call target="updater"/>
+		<!--delete file=""${mysql.use}/-->
+	</target>
+	
+
+	<target name="buildall" depends="release,trial,tools" description="Build all projects"/>
+	<target name="compile" depends="miaconv,rabnet"/>
+	
+	<target name="miaconv" description="Make mia converter project">
+		<copy file="./mia_conv/rabnet_db_fmt.sql" tofile="./mia_conv/mia_conv.rabnet_db_fmt.sql"/>
+		<csc target="winexe" output="${bin_dir}/mia_conv.exe" win32icon="./mia_conv/logo2.ico" define="${istrial}">
+			<sources>
+				<include name="./mia_conv/*.cs"/>
+			</sources>
+			<resources>
+				<include name="./mia_conv/mia_conv.rabnet_db_fmt.sql"/>
+				<include name="./mia_conv/Form1.resx"/>
+			</resources>
+			<references>
+				<include name="${mysql.use}"/>
+			</references>
+		</csc>
+		<delete file="./mia_conv/mia_conv.rabnet_db_fmt.sql"/>
+	</target>
+	
+	<target name="rabnet" description="make rabnet application" depends="db.mysql,engine,gui"/>
+	
+	<target name="db.mysql" description="mysql data layer">
+		<csc target="library" output="${bin_dir}/db.mysql.dll" define="${istrial}">
+			<sources>
+				<include name="./rabnet/db.mysql/*.cs"/>
+			</sources>
+			<references>
+				<include name="${log4net.use}"/>
+				<include name="${mysql.use}"/>
+			</references>
+		</csc>
+	</target>
+	
+	<target name="engine" description="engine">
+		<csc target="library" output="${bin_dir}/engine.dll" define="${istrial}">
+			<sources>
+				<include name="./rabnet/engine/*.cs"/>
+			</sources>
+			<references>
+				<include name="${log4net.use}"/>
+				<include name="${bin_dir}/db.mysql.dll" />
+				<include name="${bin_dir}/db.miafile.dll" />
+			</references>
+		</csc>
+	</target>
+	
+	<target name="gui" description="rabnet gui">
+		<csc target="winexe" output="${bin_dir}/rabnet.exe" win32icon="./rabnet/gui/mialicon.ico" define="${istrial}">
+			<sources>
+				<include name="./rabnet/gui/*.cs"/>
+				<include name="./rabnet/gui/Properties/*.cs"/>
+				<include name="./rabnet/gui/components/*.cs"/>
+				<include name="./rabnet/gui/filters/*.cs"/>
+				<include name="./rabnet/gui/panels/*.cs"/>
+				<include name="./rabnet/gui/forms/*.cs"/>
+				<include name="./rabnet/gui/reports/*.cs"/>
+			</sources>
+			<resources>
+				<include name="./rabnet/gui/forms/*.resx"/>
+				<include name="./rabnet/gui/components/RabStatusBar.resx"/>
+				<include name="./rabnet/gui/forms/ReportViewForm.resx"/>
+			</resources>
+			<references>
+				<include name="${log4net.use}"/>
+				<include name="${rep.use}"/>
+				<include name="${repeng.use}"/>
+				<include name="${bin_dir}/db.mysql.dll" />
+				<include name="${bin_dir}/engine.dll" />
+			</references>
+		</csc>
+		<copy file="./rabnet/gui/app.config" tofile="${bin_dir}/rabnet.exe.config" />
+	</target>
+	
+	<target name="obfuscate" depends="buildall" description="Binary Obfuscation">
+		<exec program="${obfuscator}">
+			<arg value="${root_bin}/release/db.mysql.dll" />
+			<arg value="${root_bin}/release/engine.dll" />
+			<arg value="${root_bin}/release/mia_conv.exe" />
+			<arg value="${root_bin}/release/rabnet.exe" />
+		</exec>
+		<exec program="${obfuscator}">
+			<arg value="${root_bin}/trial/db.mysql.dll" />
+			<arg value="${root_bin}/trial/engine.dll" />
+			<arg value="${root_bin}/trial/mia_conv.exe" />
+			<arg value="${root_bin}/trial/rabnet.exe" />
+		</exec>
+	</target>
+	
+	<target name="one_distrib">
+		<mkdir dir="${root_bin}/distrib/obj"/>
+		<candle out="${root_bin}/distrib/obj/" rebuild="true"  extensions="WixUIExtension;WixUtilExtension;WiXNetFxExtension"  warningsaserrors="true">
+		 <defines>
+			<define name="ProjectDir" value="${bin_dir}" />
+			<define name="NetInstaller" value="${dotnetInstallerDest}" />
+			<define name="MysqlInstaller" value="${mysqlInstallerDest}" />
+			<define name="Version" value="${version}.${minver}" />
+		</defines>
+		<sources basedir="./distrib">
+			<include name="rabnet.wxs" />
+		</sources>
+		</candle>
+		<light out="${root_bin}/distrib/${dist_type}_${version}.msi" warningsaserrors="true" 
+		  suppressices="ICE57" cultures="ru-ru" extensions="WixUIExtension;WiXNetFxExtension;WixUtilExtension" rebuild="true" suppresspdb="true">
+			<arg line="-fv" />
+			<sources basedir="${root_bin}/distrib/obj">
+				<include name="*.wixobj" />
+			</sources>
+		</light>
+		<delete dir="${root_bin}/distrib/obj"/>
+	</target>
+
+	<target name="updater" description="Make updater project">
+		<csc target="winexe" output="${tools_dir}/updater.exe">
+			<sources>
+				<include name="./updater/*.cs"/>
+			</sources>
+			<resources>
+				<include name="./updater/sql/*.sql"/>
+			</resources>
+			<references>
+				<include name="${mysql.use}"/>
+			</references>
+		</csc>
+	</target>
+	
+	<target name="distrib" depends="obfuscate">
+		<mkdir dir="${root_bin}"/>
+		<delete dir="${root_bin}/distrib"/>
+		<mkdir dir="${root_bin}/distrib"/>
+		<mkdir dir="${root_bin}/distrib/${installersPath}"/>
+		<copy file="${dotnetInstallerSource}" tofile="${root_bin}/distrib/${dotnetInstallerDest}"/>
+		<copy file="${mysqlInstallerSource}" tofile="${root_bin}/distrib/${mysqlInstallerDest}"/>
+		<property name="dist_type" value="rabnet"/>
+		<property name="bin_dir" value="${root_bin}\release"/>
+		<property name="minver" value="1"/>
+		<call target="one_distrib"/>
+		<property name="dist_type" value="rabnet_trial"/>
+		<property name="bin_dir" value="${root_bin}\trial"/>
+		<property name="minver" value="0"/>
+		<call target="one_distrib"/>
+		<delete dir="${root_bin}/distrib/obj"/>
+	</target>
+	
+	<!-- FILL DATA!-->
+	<target name="filldata" depends="build" description="filling developer databases">
+		<unzip zipfile="${data_dir}/Farm_30.zip" todir="${data_dir}" />
+		<exec program="${root_bin}/release/mia_conv.exe">
+			<arg value="..\data\Farm 3_0.mia" />
+			<arg value="localhost;krol30;kroliki;krol;root;;" />
+			<arg value="зоотехник;" />
+			<arg value="..\data\data_30.sql" />
+			<arg value="quiet" />
+		</exec>
+		<delete file="${data_dir}/Farm 3_0.mia" />
+		<unzip zipfile="${data_dir}/Farm_main.zip" todir="${data_dir}" />
+		<exec program="${root_bin}/release/mia_conv.exe">
+			<arg value="..\data\Farm.mia" />
+			<arg value="localhost;kroliki;kroliki;krol;root;;" />
+			<arg value="зоотехник;" />
+			<arg value="..\data\data_main.sql" />
+			<arg value="quiet" />
+		</exec>
+		<delete file="${data_dir}/Farm.mia" />
+		<unzip zipfile="${data_dir}/Farm_last.zip" todir="${data_dir}" />
+		<exec program="${root_bin}/release/mia_conv.exe">
+			<arg value="..\data\Farm.mia" />
+			<arg value="localhost;krol_last;kroliki;krol;root;;" />
+			<arg value="зоотехник;" />
+			<arg value="..\data\data_last.sql" />
+			<arg value="quiet" />
+		</exec>
+		<delete file="${data_dir}/Farm.mia" />
+	</target>
+	
+</project>
