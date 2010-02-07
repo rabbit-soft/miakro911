@@ -1,2 +1,2 @@
-nant release
+nant -buildfile:rab.build release
 pause

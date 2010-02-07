@@ -1,2 +1,2 @@
-nant filldata
+nant -buildfile:rab.build filldata
 pause

@@ -1,2 +1,2 @@
-nant
+nant -buildfile:rab.build
 pause

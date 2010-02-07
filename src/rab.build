@@ -7,31 +7,32 @@
 	<description>rabnet project makefile</description>
 	<!-- properties defines !-->
 	<property name="version" value="1.0"/>
-	<property name="root_bin" value="./../bin"/>
-	<property name="tools_dir" value="./../bin/tools" />
-	<property name="distrib_dir" value="./../bin/distrib" />
+	<property name="curdir" value="." overwrite="false"/>
+	<property name="root_bin" value="${curdir}/../bin"/>
+	<property name="tools_dir" value="${root_bin}/tools" />
+	<property name="distrib_dir" value="${root_bin}/distrib" />
 	<property name="log4net.lib" value="log4net.dll" />
-	<property name="log4net.path" value="./party3d" />
+	<property name="log4net.path" value="${curdir}/party3d" />
 	<property name="log4net.ass" value="${log4net.path}/${log4net.lib}" />
 	
 	<property name="mysql.lib" value="MySql.Data.dll" />
-	<property name="mysql.path" value="./party3d" />
+	<property name="mysql.path" value="${curdir}/party3d" />
 	<property name="mysql.ass" value="${mysql.path}/${mysql.lib}" />
 	
 	<property name="rep.lib" value="RdlViewer.dll" />
-	<property name="rep.path" value="./party3d" />
+	<property name="rep.path" value="${curdir}/party3d" />
 	<property name="rep.ass" value="${rep.path}/${rep.lib}" />
 	<property name="repeng.lib" value="RdlEngine.dll" />
 	<property name="repeng.ass" value="${rep.path}/${repeng.lib}" />
 	<property name="obfuscator" value="Eazfuscator.NET.exe" />
 	<property name="istrial" value="" />
 	
-	<property name="data_dir" value="./../data" />
+	<property name="data_dir" value="${curdir}/../data" />
 	
 	<property name="dotnetInstaller" value="install_dotnet.cmd"/>
 	<property name="mysqlInstaller" value="install_mysql.cmd"/>
-	<property name="dotnetInstallerSource" value="./distrib/3d_distrib/${dotnetInstaller}"/>
-	<property name="mysqlInstallerSource" value="./distrib/3d_distrib/${mysqlInstaller}"/>
+	<property name="dotnetInstallerSource" value="${curdir}/distrib/3d_distrib/${dotnetInstaller}"/>
+	<property name="mysqlInstallerSource" value="${curdir}/distrib/3d_distrib/${mysqlInstaller}"/>
 	<property name="installersPath" value=""/>
 	<property name="slash" value=""/>
 	<property name="dotnetInstallerDest" value="${installersPath}${slash}${dotnetInstaller}"/>
@@ -59,7 +60,7 @@
 		<copy file="${rep.ass}" tofile="${rep.use}" />
 		<copy file="${repeng.ass}" tofile="${repeng.use}" />
 		<copy todir="${bin_dir}/reports">
-			<fileset basedir="./rabnet/gui/reports">
+			<fileset basedir="${curdir}/rabnet/gui/reports">
 				<include name="*.rdl"/>
 			</fileset>
 		</copy>
@@ -94,20 +95,20 @@
 	<target name="compile" depends="miaconv,rabnet"/>
 	
 	<target name="miaconv" description="Make mia converter project">
-		<copy file="./mia_conv/rabnet_db_fmt.sql" tofile="./mia_conv/mia_conv.rabnet_db_fmt.sql"/>
-		<csc target="winexe" output="${bin_dir}/mia_conv.exe" win32icon="./mia_conv/logo2.ico" define="${istrial}">
+		<copy file="${curdir}/mia_conv/rabnet_db_fmt.sql" tofile="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
+		<csc target="winexe" output="${bin_dir}/mia_conv.exe" win32icon="${curdir}/mia_conv/logo2.ico" define="${istrial}">
 			<sources>
-				<include name="./mia_conv/*.cs"/>
+				<include name="${curdir}/mia_conv/*.cs"/>
 			</sources>
 			<resources>
-				<include name="./mia_conv/mia_conv.rabnet_db_fmt.sql"/>
-				<include name="./mia_conv/Form1.resx"/>
+				<include name="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
+				<include name="${curdir}/mia_conv/Form1.resx"/>
 			</resources>
 			<references>
 				<include name="${mysql.use}"/>
 			</references>
 		</csc>
-		<delete file="./mia_conv/mia_conv.rabnet_db_fmt.sql"/>
+		<delete file="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
 	</target>
 	
 	<target name="rabnet" description="make rabnet application" depends="db.mysql,engine,gui"/>
@@ -115,7 +116,7 @@
 	<target name="db.mysql" description="mysql data layer">
 		<csc target="library" output="${bin_dir}/db.mysql.dll" define="${istrial}">
 			<sources>
-				<include name="./rabnet/db.mysql/*.cs"/>
+				<include name="${curdir}/rabnet/db.mysql/*.cs"/>
 			</sources>
 			<references>
 				<include name="${log4net.use}"/>
@@ -127,7 +128,7 @@
 	<target name="engine" description="engine">
 		<csc target="library" output="${bin_dir}/engine.dll" define="${istrial}">
 			<sources>
-				<include name="./rabnet/engine/*.cs"/>
+				<include name="${curdir}/rabnet/engine/*.cs"/>
 			</sources>
 			<references>
 				<include name="${log4net.use}"/>
@@ -138,20 +139,20 @@
 	</target>
 	
 	<target name="gui" description="rabnet gui">
-		<csc target="winexe" output="${bin_dir}/rabnet.exe" win32icon="./rabnet/gui/mialicon.ico" define="${istrial}">
+		<csc target="winexe" output="${bin_dir}/rabnet.exe" win32icon="${curdir}/rabnet/gui/mialicon.ico" define="${istrial}">
 			<sources>
-				<include name="./rabnet/gui/*.cs"/>
-				<include name="./rabnet/gui/Properties/*.cs"/>
-				<include name="./rabnet/gui/components/*.cs"/>
-				<include name="./rabnet/gui/filters/*.cs"/>
-				<include name="./rabnet/gui/panels/*.cs"/>
-				<include name="./rabnet/gui/forms/*.cs"/>
-				<include name="./rabnet/gui/reports/*.cs"/>
+				<include name="${curdir}/rabnet/gui/*.cs"/>
+				<include name="${curdir}/rabnet/gui/Properties/*.cs"/>
+				<include name="${curdir}/rabnet/gui/components/*.cs"/>
+				<include name="${curdir}/rabnet/gui/filters/*.cs"/>
+				<include name="${curdir}/rabnet/gui/panels/*.cs"/>
+				<include name="${curdir}/rabnet/gui/forms/*.cs"/>
+				<include name="${curdir}/rabnet/gui/reports/*.cs"/>
 			</sources>
 			<resources>
-				<include name="./rabnet/gui/forms/*.resx"/>
-				<include name="./rabnet/gui/components/RabStatusBar.resx"/>
-				<include name="./rabnet/gui/forms/ReportViewForm.resx"/>
+				<include name="${curdir}/rabnet/gui/forms/*.resx"/>
+				<include name="${curdir}/rabnet/gui/components/RabStatusBar.resx"/>
+				<include name="${curdir}/rabnet/gui/forms/ReportViewForm.resx"/>
 			</resources>
 			<references>
 				<include name="${log4net.use}"/>
@@ -161,7 +162,7 @@
 				<include name="${bin_dir}/engine.dll" />
 			</references>
 		</csc>
-		<copy file="./rabnet/gui/app.config" tofile="${bin_dir}/rabnet.exe.config" />
+		<copy file="${curdir}/rabnet/gui/app.config" tofile="${bin_dir}/rabnet.exe.config" />
 	</target>
 	
 	<target name="obfuscate" depends="buildall" description="Binary Obfuscation">
@@ -188,7 +189,7 @@
 			<define name="MysqlInstaller" value="${mysqlInstallerDest}" />
 			<define name="Version" value="${version}.${minver}" />
 		</defines>
-		<sources basedir="./distrib">
+		<sources basedir="${curdir}/distrib">
 			<include name="rabnet.wxs" />
 		</sources>
 		</candle>
@@ -205,10 +206,10 @@
 	<target name="updater" description="Make updater project">
 		<csc target="winexe" output="${tools_dir}/updater.exe">
 			<sources>
-				<include name="./updater/*.cs"/>
+				<include name="${curdir}/updater/*.cs"/>
 			</sources>
 			<resources>
-				<include name="./updater/sql/*.sql"/>
+				<include name="${curdir}/updater/sql/*.sql"/>
 			</resources>
 			<references>
 				<include name="${mysql.use}"/>

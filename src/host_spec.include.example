@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="rabnet_distrib" default="build" basedir=".">
+	<property name="svnroot" value="svn+ssh://john@tb_rabbits/home/data/svn/rabbits/svnroot"/>
+
+	<target name="svn_co" description="Updating svn">
+		<exec program="tortoiseproc.exe">
+			<arg value="/command:checkout"/>
+			<arg value="/path:${vdir}"/>
+			<arg value="/svn:${svnroot}/${version}"/>
+		</exec>
+	</target>
+
+</project>

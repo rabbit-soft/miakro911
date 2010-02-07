@@ -1,2 +1,2 @@
-nant trial
+nant -buildfile:rab.build trial
 pause
