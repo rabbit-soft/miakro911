@@ -6,7 +6,7 @@
 		<exec program="tortoiseproc.exe">
 			<arg value="/command:checkout"/>
 			<arg value="/path:${vdir}"/>
-			<arg value="/svn:${svnroot}/${version}"/>
+			<arg value="/svn:${svnroot}/tags/${version}"/>
 		</exec>
 	</target>
 
