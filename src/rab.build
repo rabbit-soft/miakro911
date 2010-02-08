@@ -75,7 +75,7 @@
 		<property name="bin_dir" value="${root_bin}/trial"/>
 		<call target="prepare_bin_dir"/>
 		<call target="compile"/>
-		<property name="istrial" value="TRIAL CRACKED" />
+		<property name="istrial" value="TRIAL;CRACKED" />
 		<property name="bin_dir" value="${root_bin}/cracked"/>
 		<call target="prepare_bin_dir"/>
 		<call target="compile"/>
