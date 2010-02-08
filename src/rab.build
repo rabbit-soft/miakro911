@@ -278,4 +278,20 @@
 		<delete file="${data_dir}/Farm.mia" />
 	</target>
 	
+	<!-- RELEASES -->
+	<target name="version" description="making Rabnet distributed release">
+		<mkdir dir="${root_bin}"/>
+		<property name="vdir" value="${root_bin}/${rel}"/>
+		<delete dir="${vdir}"/>
+		<mkdir dir="${vdir}"/>
+		<call target="svn_co"/>
+		<nant buildfile="${vdir}/src/rab.build" target="distrib">
+			<properties>
+				<property name="curdir" value="." />
+				<property name="host_spec_path" value="./../../../src" />
+			</properties>
+		</nant>
+		<delete dir="${vdir}/src" />
+		<delete dir="${vdir}/.svn" />
+	</target>
 </project>
