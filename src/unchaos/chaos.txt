@@ -1,0 +1,99 @@
+        public static void makeChaos1(MySqlConnection sql)
+        {
+            MySqlCommand cmd = new MySqlCommand("SELECT o_value FROM options WHERE o_name='chaos';", sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            string chv = "";
+            if (rd.Read())
+                chv = rd.GetString(0);
+            rd.Close();
+            string code="abcdefg";
+            int id = new Random().Next(7);
+            chv += code[id];
+            if (chv == ""+code[id])
+                cmd.CommandText = String.Format("INSERT INTO options(o_name,o_subname,o_value) VALUES('chaos','keycode','{0:s}');",chv);
+            else
+                cmd.CommandText = String.Format("UPDATE options SET o_value='{0:s}' WHERE o_name='chaos';",chv);
+            cmd.ExecuteNonQuery();
+            int av = (id+18) * 3-17;
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_name=r_name+{0:d},r_surname=r_surname+{0:d},r_mother=r_mother+{0:d};",av);
+            cmd.ExecuteNonQuery();
+        }
+        public static void makeChaos2(MySqlConnection sql)
+        {
+            //String code="CDEFGH";
+            int id = new Random().Next(6);
+            int av = (id * 4) - (id % 3) + 12;
+            MySqlCommand cmd = new MySqlCommand(String.Format("UPDATE rabbits SET r_name=r_name+{0:d},r_farm=r_farm+{0:d};",id),sql);
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = "SELECT COUNT(*) FROM options WHERE o_name='chaos';";
+            MySqlDataReader rd = cmd.ExecuteReader();
+            bool haslink=false;
+            if (rd.Read())
+                if (rd.GetInt32(0) > 0) haslink = true;
+            rd.Close();
+            if (haslink)
+                cmd.CommandText = String.Format("UPDATE options SET o_value=CONCAT(o_value,'{0:s}') WHERE o_name='chaos';", "" + "CDEFGH"[id]);
+            else
+                cmd.CommandText = String.Format("INSERT INTO options(o_name,o_subname,o_value) VALUES('chaos','keycode','{0:s}');", "" + "CDEFGH"[id]);
+            cmd.ExecuteNonQuery();
+        }
+        public static void makeChaos3(MySqlConnection sql)
+        {
+            string code="2345678";
+            MySqlCommand cmd =new MySqlCommand("SELECT COUNT(*) FROM options WHERE o_name='chaos';",sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            int id = new Random().Next(code.Length);
+            int av=id;
+            bool haslink = false;
+            av++;
+            if (rd.Read())
+                if (rd.GetInt32(0) > 0) haslink = true;
+            av++;
+            av*=av;
+            rd.Close();
+            if (haslink)
+                cmd.CommandText = String.Format("UPDATE options SET o_value=CONCAT(o_value,'{0:s}') WHERE o_name='chaos';", "" + code[id]);
+            else
+                cmd.CommandText = String.Format("INSERT INTO options(o_name,o_subname,o_value) VALUES('chaos','keycode','{0:s}');", "" + code[id]);
+            cmd.ExecuteNonQuery();
+            av-=(av%4);
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_name=r_name+r_surname,r_surname=r_surname+{0:d},r_mother=r_mother+{0:d};",av);
+            cmd.ExecuteNonQuery();
+        }
+        public static void makeChaos4(MySqlConnection sql)
+        {
+            //string code="hijkl";
+            int id = new Random().Next(5);
+            MySqlCommand cmd = new MySqlCommand(String.Format("UPDATE rabbits SET r_name=r_name+r_name+{0:d},r_farm=r_farm+r_farm{0:d}",id), sql);
+            cmd.ExecuteNonQuery();
+            cmd.CommandText="SELECT o_value FROM options WHERE o_name='chaos';";
+            MySqlDataReader rd = cmd.ExecuteReader();
+            string chv = "";
+            if (rd.Read())
+                chv = rd.GetString(0);
+            rd.Close();
+            chv += "hijkl"[id];
+            if (chv == "" + "hijkl"[id])
+                cmd.CommandText = String.Format("INSERT INTO options(o_name,o_subname,o_value) VALUES('chaos','keycode','{0:s}');", chv);
+            else
+                cmd.CommandText = String.Format("UPDATE options SET o_value='{0:s}' WHERE o_name='chaos';", chv);
+            cmd.ExecuteNonQuery();
+        }
+        public static void makeChaos5(MySqlConnection sql)
+        {
+            MySqlCommand cmd = new MySqlCommand("SELECT * FROM options WHERE o_name='chaos';");
+            MySqlDataReader rd = cmd.ExecuteReader();
+            int id=((int)new Random().NextDouble()*100)%5;
+            string code = "xyzAB";
+            if (rd.Read())
+            {
+                rd.Close();
+                cmd.CommandText = String.Format("UPDATE options SET o_value=CONCAT(o_value,'{0:s}') WHERE o_name='chaos';",""+code[id]);
+            }else{
+                rd.Close();
+                cmd.CommandText = String.Format("INSERT INTO options (o_name,o_subname,o_value) VALUES('','','{0:s}');",""+code[id]);
+            }
+            int av = (id * 123) % 67;
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_parent=r_parent+r_name+{0:d},r_name=r_name+{0:d};",av);
+
+        }

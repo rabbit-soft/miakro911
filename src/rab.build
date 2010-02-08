@@ -75,6 +75,10 @@
 		<property name="bin_dir" value="${root_bin}/trial"/>
 		<call target="prepare_bin_dir"/>
 		<call target="compile"/>
+		<property name="istrial" value="TRIAL CRACKED" />
+		<property name="bin_dir" value="${root_bin}/cracked"/>
+		<call target="prepare_bin_dir"/>
+		<call target="compile"/>
 	</target>
 	<target name="tools" description="Build TOOLS">
 		<mkdir dir="${root_bin}"/>
@@ -84,6 +88,7 @@
 		<property name="mysql.use" value="${bin_dir}/${mysql.lib}" />
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
 		<call target="updater"/>
+		<call target="unchaos"/>
 		<!--delete file=""${mysql.use}/-->
 	</target>
 	
@@ -208,6 +213,16 @@
 			<resources>
 				<include name="${curdir}/updater/sql/*.sql"/>
 			</resources>
+			<references>
+				<include name="${mysql.use}"/>
+			</references>
+		</csc>
+	</target>
+	<target name="unchaos" description="Make unchaos tool">
+		<csc target="winexe" output="${tools_dir}/unchaos.exe">
+			<sources>
+				<include name="${curdir}/unchaos/*.cs"/>
+			</sources>
 			<references>
 				<include name="${mysql.use}"/>
 			</references>

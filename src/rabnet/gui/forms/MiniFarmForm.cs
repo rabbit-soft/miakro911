@@ -26,8 +26,15 @@ namespace rabnet
         {
             this.parent = parent;
             for (int i = 0; i < ids.Length; i++)
+#if TRIAL && !CRACKED
+                if (ids[i]<256)
+#endif
                 cbNum.Items.Add(ids[i].ToString());
             cbNum.SelectedIndex = cbNum.Items.Count - 1;
+#if TRIAL  && !CRACKED
+            if (cbNum.Items.Count == 0)
+                cbNum.Enabled=button1.Enabled=false;
+#endif
         }
         public MiniFarmForm(int id):this()
         {
@@ -115,6 +122,13 @@ namespace rabnet
             if (id == 0)
             {
                 int fid = int.Parse(cbNum.Text);
+#if TRIAL && !CRACKED
+                if (fid > 255)
+                {
+                    MessageBox.Show("В Демо версии нельзя сделать больше 255 ферм");
+                    return;
+                }
+#endif
                 Engine.db().addFarm(parent, getUpperType(), getLowerType(), "", fid);
                 Close();
             }

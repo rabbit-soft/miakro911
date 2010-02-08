@@ -5,10 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B20A34DB-0FCD-4CFA-858E-16803387FF4F}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>db.mysql</RootNamespace>
-    <AssemblyName>db.mysql</AssemblyName>
+    <ProjectGuid>{D8629616-B7CF-4B16-A6F2-180C21F60E9A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>unchaos</RootNamespace>
+    <AssemblyName>unchaos</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,47 +30,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\allineed\src\party3d\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="MySql.Data, Version=6.2.0.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\allineed\src\party3d\MySql.Data.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Breeds.cs" />
-    <Compile Include="Building.cs" />
-    <Compile Include="Catalogs.cs" />
-    <Compile Include="db.int.cs" />
-    <Compile Include="db.mysql.cs" />
-    <Compile Include="DBHelper.cs" />
-    <Compile Include="Dead.cs" />
-    <Compile Include="DeadReasons.cs" />
-    <Compile Include="Filters.cs" />
-    <Compile Include="Fucks.cs" />
-    <Compile Include="Logs.cs" />
-    <Compile Include="Names.cs" />
-    <Compile Include="Rabbit.cs" />
-    <Compile Include="RabNetDataGetterBase.cs" />
-    <Compile Include="Reports.cs" />
-    <Compile Include="Users.cs" />
-    <Compile Include="Weight.cs" />
-    <Compile Include="Youngers.cs" />
-    <Compile Include="Zones.cs" />
-    <Compile Include="ZooTeh.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="chaos.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

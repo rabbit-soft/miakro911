@@ -441,7 +441,7 @@ namespace rabnet
                 for (int j = 0; j < bs[i].secs();j++ )
                     if (bs[i].fullname[j] == s)
                     {
-                        return new int[]{bs[i].farm(),bs[i].tier_id(),j};
+                        return new int[]{(int)bs[i].farm(),bs[i].tier_id(),j};
                     }
             return null;
         }

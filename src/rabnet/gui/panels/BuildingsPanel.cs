@@ -27,6 +27,10 @@ namespace rabnet
 
         private void addNoFarm(int farm)
         {
+#if TRIAL && !CRACKED
+            if (farm>255)
+                return;
+#endif
             if (farm==nofarm)
             {
                 nofarm++;
@@ -198,7 +202,7 @@ namespace rabnet
             tr.Collapse(false);
             tr.Expand();
             manual = false;
-            treeView1.SelectedNode = searchFarm(b.farm(), tr);
+            treeView1.SelectedNode = searchFarm((int)b.farm(), tr);
             if (treeView1.SelectedNode != null) treeView1.SelectedNode.Expand();
             manual = true;
         }
@@ -245,7 +249,7 @@ namespace rabnet
                 for (int i = 0; i < listView1.Items.Count; i++)
                 {
                     Building b = listView1.Items[i].Tag as Building;
-                    if (b.farm() == farm)
+                    if ((int)b.farm() == farm)
                     {
                         listView1.Items[i].Selected = true;
                         listView1.Items[i].EnsureVisible();
