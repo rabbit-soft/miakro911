@@ -122,7 +122,7 @@ CREATE TABLE rabbits(
 	r_flags VARCHAR(10) NOT NULL DEFAULT '000000', #butcher | risk | multi(brak|vakcin) | nokuk | nolack
 	r_zone INTEGER UNSIGNED NOT NULL DEFAULT 0,
 	r_born DATETIME,
-	r_genesis INTEGER UNSIGNED NOT NULL,
+	r_genesis INTEGER UNSIGNED NOT NULL DEFAULT 0,
 	r_status TINYINT UNSIGNED NOT NULL DEFAULT 0,   #boy-status/girl-borns
 	r_last_fuck_okrol DATETIME,
 	r_event ENUM('none','sluchka','vyazka','kuk'),
