@@ -98,6 +98,7 @@ namespace rabnet
             }
             Building b = data as Building;
             string prevnm="";
+            int prevfarm = 0;
             for (int i = 0; i < b.secs(); i++)
             {
                 /*
@@ -106,10 +107,11 @@ namespace rabnet
                     String.Format("");
                 }
                  * */
-                if (b.area(i) != prevnm)
+                if (b.area(i) != prevnm || b.farm()!=prevfarm)
                 {
                     manual = false;
                     ListViewItem it = listView1.Items.Add(String.Format("{0,4:d}",b.farm()) + b.area(i));
+                    prevfarm = b.farm();
                     prevnm = b.area(i);
                     it.Tag = b.id().ToString();
                     it.SubItems.Add(b.type());
