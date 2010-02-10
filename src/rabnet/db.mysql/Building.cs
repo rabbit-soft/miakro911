@@ -443,7 +443,7 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) "+makeWhere()+"ORDER B
 
         public static TreeData getTree(int parent,MySqlConnection con,TreeData par)
         {
-            MySqlCommand cmd = new MySqlCommand(@"SELECT b_id,b_name,b_farm FROM buildings WHERE b_parent="+parent.ToString()+";", con);
+            MySqlCommand cmd = new MySqlCommand(@"SELECT b_id,b_name,b_farm FROM buildings WHERE b_parent="+parent.ToString()+" ORDER BY b_farm ASC;", con);
             MySqlDataReader rd = cmd.ExecuteReader();
             TreeData res=par;
             if (par == null)
