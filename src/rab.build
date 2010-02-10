@@ -267,7 +267,7 @@
 			<arg value="quiet" />
 		</exec>
 		<delete file="${data_dir}/Farm.mia" />
-		<unzip zipfile="${data_dir}/Farm_last.zip" todir="${data_dir}" />
+		<!--unzip zipfile="${data_dir}/Farm_last.zip" todir="${data_dir}" />
 		<exec program="${root_bin}/release/mia_conv.exe">
 			<arg value="${data_dir}\Farm.mia" />
 			<arg value="localhost;krol_last;kroliki;krol;root;;" />
@@ -275,7 +275,18 @@
 			<arg value="${data_dir}\data_last.sql" />
 			<arg value="quiet" />
 		</exec>
-		<delete file="${data_dir}/Farm.mia" />
+		<delete file="${data_dir}/Farm.mia" /-->
+		<unzip zipfile="${data_dir}/Farm_30.zip" todir="${data_dir}" />
+		<unzip zipfile="${data_dir}/farm_trial.zip" todir="${data_dir}" />
+		<exec program="${root_bin}/release/mia_conv.exe">
+			<arg value="${data_dir}\Farm 3_0.mia" />
+			<arg value="localhost;krol30;krol_trial;krol;root;;" />
+			<arg value="зоотехник;" />
+			<arg value="${data_dir}\farm_trial.sql" />
+			<arg value="quiet" />
+		</exec>
+		<delete file="${data_dir}/Farm 3_0.mia" />
+		<delete file="${data_dir}/Farm_trial.sql" />
 	</target>
 	
 	<!-- RELEASES -->

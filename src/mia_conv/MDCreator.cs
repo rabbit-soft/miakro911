@@ -135,8 +135,15 @@ namespace mia_conv
                 rd.Close();
                 if (sq.Trim() != "")
                 {
-                    MySqlCommand cmd = new MySqlCommand(sq, sql);
-                    cmd.ExecuteNonQuery();
+                    String[] cmds = sq.Split(new string[] { "#DELIMITER |" }, StringSplitOptions.RemoveEmptyEntries);
+                    c.CommandText = cmds[0];
+                    c.ExecuteNonQuery();
+                    if (cmds.Length > 1)
+                    {
+                        MySqlScript scr = new MySqlScript(sql, cmds[1]);
+                        scr.Delimiter = "|";
+                        scr.Execute();
+                    }
                 }
             }
             sql.Close();

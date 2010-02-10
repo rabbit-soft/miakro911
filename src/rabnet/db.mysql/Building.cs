@@ -283,7 +283,7 @@ namespace rabnet
         {
             int id = rd.GetInt32(0);
 #if TRIAL && !CRACKED
-            byte farm = rd.GetByte(3);
+            byte farm = Byte.Parse(rd.GetString(3));
 #else
             int farm = rd.GetInt32(3);
 #endif
@@ -457,7 +457,7 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) "+makeWhere()+"ORDER B
                 int id=rd.GetInt32(0);
                 String nm=rd.GetString(1);
 #if TRIAL && !CRACKED
-                byte frm = rd.GetByte(2);
+                byte frm = Byte.Parse(rd.GetString(2));
 #else
                 int frm = rd.GetInt32(2);
 #endif
@@ -576,9 +576,9 @@ t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4 FROM minifarms,tiers WHERE
 
         public static void addBuilding(MySqlConnection sql, int parent, String name,int farm)
         {
-
+            
 #if TRIAL && !CRACKED
-            byte frm = (byte)farm;
+            byte frm = byte.Parse(farm.ToString());
 #else
             int frm = farm;
 #endif
@@ -705,7 +705,7 @@ t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}' WHERE t_id={3:d};", type, delim
         public static int addFarm(MySqlConnection sql,int parent,String uppertype, String lowertype, String name,int id)
         {
 #if TRIAL && !CRACKED
-            byte frm = (byte)id;
+            byte frm = byte.Parse(id.ToString());
 #else
             int frm = id;
 #endif
