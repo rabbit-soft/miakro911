@@ -481,9 +481,9 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) "+makeWhere()+"ORDER B
         public static Building getTier(int tier,MySqlConnection con)
         {
             MySqlCommand cmd=new MySqlCommand(@"SELECT t_id,m_upper,m_lower,m_id,t_type,t_delims,t_nest,t_heater,
-t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4,
+t_repair,coalesce(t_notes,'') t_notes,t_busy1,t_busy2,t_busy3,t_busy4,
 rabname(t_busy1,1) r1, rabname(t_busy2,1) r2,rabname(t_busy3,1) r3,rabname(t_busy4,1) r4
-FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) and t_id="+tier.ToString()+";",con);
+FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) and t_id=" + tier.ToString()+";",con);
             MySqlDataReader rd = cmd.ExecuteReader();
             Building b=null;
             if (rd.Read())
@@ -686,8 +686,8 @@ t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4 FROM minifarms,tiers WHERE
             String hn = "00";
             String delims = "000";
             if (type == "quarta") delims = "111"; if (type == "barin") delims = "100";
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"INSERT INTO tiers(t_type,t_delims,t_heater,t_nest) 
-VALUES('{0:s}','{1:s}','{2:s}','{2:s}');",type,delims,hn), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"INSERT INTO tiers(t_type,t_delims,t_heater,t_nest,t_notes) 
+VALUES('{0:s}','{1:s}','{2:s}','{2:s}','');",type,delims,hn), sql);
             cmd.ExecuteNonQuery();
             return (int)cmd.LastInsertedId;
         }
