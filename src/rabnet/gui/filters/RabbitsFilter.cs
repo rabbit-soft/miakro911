@@ -357,5 +357,78 @@ namespace rabnet
             Hide();
         }
 
+        #region combobox_checked
+
+        private void cbSexFemale_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbSexFemale.CheckState == CheckState.Unchecked & cbSexMale.CheckState == CheckState.Unchecked & cbSexVoid.CheckState == CheckState.Unchecked)
+            {
+                cbSexFemale.CheckState = CheckState.Checked;
+                return;
+            }
+            if (cbSexFemale.CheckState == CheckState.Unchecked) groupBox6.Enabled = false;
+            else groupBox6.Enabled = true;
+        }
+
+        private void cbSexMale_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbSexFemale.CheckState == CheckState.Unchecked & cbSexMale.CheckState == CheckState.Unchecked & cbSexVoid.CheckState == CheckState.Unchecked)
+            {
+                cbSexMale.CheckState = CheckState.Checked;
+                return;
+            }
+            if (cbSexMale.CheckState == CheckState.Unchecked) groupBox5.Enabled = false;
+            else groupBox5.Enabled = true;
+
+        }
+
+        private void cbSexVoid_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbSexFemale.CheckState == CheckState.Unchecked & cbSexMale.CheckState == CheckState.Unchecked & cbSexVoid.CheckState == CheckState.Unchecked)
+            {
+                cbSexVoid.CheckState = CheckState.Checked;
+                return;
+            }
+        }     
+
+        private void cbFemaleGirl_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!cbFemaleBride.Checked & !cbFemaleFirst.Checked & !cbFemaleGirl.Checked & !cbFemaleState.Checked)
+                cbFemaleGirl.Checked = true;
+        }
+        private void cbFemaleBride_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!cbFemaleBride.Checked & !cbFemaleFirst.Checked & !cbFemaleGirl.Checked & !cbFemaleState.Checked)
+                cbFemaleBride.Checked = true;
+        }
+        private void cbFemaleFirst_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!cbFemaleBride.Checked & !cbFemaleFirst.Checked & !cbFemaleGirl.Checked & !cbFemaleState.Checked)
+                cbFemaleFirst.Checked = true;
+        }
+        private void cbFemaleState_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!cbFemaleBride.Checked & !cbFemaleFirst.Checked & !cbFemaleGirl.Checked & !cbFemaleState.Checked)
+                cbFemaleState.Checked = true;
+        }
+ 
+
+        private void cbMaleBoy_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!cbMaleBoy.Checked & !cbMaleCandidate.Checked & !cbMaleProducer.Checked)
+                cbMaleBoy.Checked = true;
+        }
+        private void cbMaleCandidate_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!cbMaleBoy.Checked & !cbMaleCandidate.Checked & !cbMaleProducer.Checked)
+                cbMaleCandidate.Checked = true;
+        }
+        private void cbMaleProducer_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!cbMaleBoy.Checked & !cbMaleCandidate.Checked & !cbMaleProducer.Checked)
+                cbMaleProducer.Checked = true;
+        }
+
+        #endregion
     }
 }

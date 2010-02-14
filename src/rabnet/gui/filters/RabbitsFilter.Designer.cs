@@ -273,6 +273,7 @@
             this.cbFemaleState.TabIndex = 3;
             this.cbFemaleState.Text = "Штатные";
             this.cbFemaleState.UseVisualStyleBackColor = true;
+            this.cbFemaleState.CheckedChanged += new System.EventHandler(this.cbFemaleState_CheckedChanged);
             // 
             // cbFemaleFirst
             // 
@@ -283,6 +284,7 @@
             this.cbFemaleFirst.TabIndex = 2;
             this.cbFemaleFirst.Text = "Первокролки";
             this.cbFemaleFirst.UseVisualStyleBackColor = true;
+            this.cbFemaleFirst.CheckedChanged += new System.EventHandler(this.cbFemaleFirst_CheckedChanged);
             // 
             // cbFemaleBride
             // 
@@ -293,6 +295,7 @@
             this.cbFemaleBride.TabIndex = 1;
             this.cbFemaleBride.Text = "Невесты";
             this.cbFemaleBride.UseVisualStyleBackColor = true;
+            this.cbFemaleBride.CheckedChanged += new System.EventHandler(this.cbFemaleBride_CheckedChanged);
             // 
             // cbFemaleGirl
             // 
@@ -303,6 +306,7 @@
             this.cbFemaleGirl.TabIndex = 0;
             this.cbFemaleGirl.Text = "Девочки";
             this.cbFemaleGirl.UseVisualStyleBackColor = true;
+            this.cbFemaleGirl.CheckedChanged += new System.EventHandler(this.cbFemaleGirl_CheckedChanged);
             // 
             // groupBox5
             // 
@@ -325,6 +329,7 @@
             this.cbMaleProducer.TabIndex = 2;
             this.cbMaleProducer.Text = "Производители";
             this.cbMaleProducer.UseVisualStyleBackColor = true;
+            this.cbMaleProducer.CheckedChanged += new System.EventHandler(this.cbMaleProducer_CheckedChanged);
             // 
             // cbMaleCandidate
             // 
@@ -335,6 +340,7 @@
             this.cbMaleCandidate.TabIndex = 1;
             this.cbMaleCandidate.Text = "Кандидаты";
             this.cbMaleCandidate.UseVisualStyleBackColor = true;
+            this.cbMaleCandidate.CheckedChanged += new System.EventHandler(this.cbMaleCandidate_CheckedChanged);
             // 
             // cbMaleBoy
             // 
@@ -345,6 +351,7 @@
             this.cbMaleBoy.TabIndex = 0;
             this.cbMaleBoy.Text = "Мальчики";
             this.cbMaleBoy.UseVisualStyleBackColor = true;
+            this.cbMaleBoy.CheckedChanged += new System.EventHandler(this.cbMaleBoy_CheckedChanged);
             // 
             // groupBox4
             // 
@@ -602,6 +609,7 @@
             this.cbSexVoid.TabIndex = 2;
             this.cbSexVoid.Text = "Бесполые";
             this.cbSexVoid.UseVisualStyleBackColor = true;
+            this.cbSexVoid.CheckedChanged += new System.EventHandler(this.cbSexVoid_CheckedChanged);
             // 
             // cbSexFemale
             // 
@@ -612,6 +620,7 @@
             this.cbSexFemale.TabIndex = 1;
             this.cbSexFemale.Text = "Самки";
             this.cbSexFemale.UseVisualStyleBackColor = true;
+            this.cbSexFemale.CheckedChanged += new System.EventHandler(this.cbSexFemale_CheckedChanged);
             // 
             // cbSexMale
             // 
@@ -622,6 +631,7 @@
             this.cbSexMale.TabIndex = 0;
             this.cbSexMale.Text = "Самцы";
             this.cbSexMale.UseVisualStyleBackColor = true;
+            this.cbSexMale.CheckedChanged += new System.EventHandler(this.cbSexMale_CheckedChanged);
             // 
             // button2
             // 
