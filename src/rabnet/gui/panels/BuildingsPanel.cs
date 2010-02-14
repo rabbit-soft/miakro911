@@ -334,8 +334,8 @@ namespace rabnet
                         f.addRabbit(b.busy(i));
                 }
             }
-            f.ShowDialog();
-            rsb.run();
+            if(f.ShowDialog() == DialogResult.OK)
+                rsb.run();
         }
 
         private void replaceMenuItem_Click(object sender, EventArgs e)
@@ -355,8 +355,8 @@ namespace rabnet
                             f.addRabbit(b.busy(i));
                 }
             }
-            f.ShowDialog();
-            rsb.run();
+            if(f.ShowDialog() == DialogResult.OK)
+                rsb.run();
         }
 
         private bool isFarm(TreeNode tn){return farmNum(tn)!=0;}
