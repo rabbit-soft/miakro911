@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 
 namespace rabnet
 {
@@ -22,8 +23,9 @@ namespace rabnet
             private Rectangle r;
             private bool repair;
             public int id = 0;
-            private Font f = new Font("Arial", 8);
-            public DrawTier(int id,String type,String delims,String nests,String heaters,String[] rabbits,bool repair)
+//            private Font f = new Font("Arial", 8);
+			private Font f = SystemFonts.DefaultFont;
+			public DrawTier(int id, String type, String delims, String nests, String heaters, String[] rabbits, bool repair)
             {
                 this.id = id;
                 this.repair=repair;
@@ -76,16 +78,21 @@ namespace rabnet
                         setNest(p, nests[0], heaters[0], false);
                         break;
                     case "dfemale":
-                        drawPart(0,0.5,"а",rbs[0],nests[0],heaters[0],null);
-                        drawPart(0.5,0.5,"б",rbs[1],nests[1],heaters[1],null);
-                        setNest(p, nests[0], heaters[0], false);
+                        drawPart(0, 0.5,"а",rbs[0],nests[0],heaters[0],null);
+                        drawPart(0.5, 0.5,"б",rbs[1],nests[1],heaters[1],null);
+						drawWall(0, 0.5);
+						drawWall(0.5, 0.5);
+						setNest(p, nests[0], heaters[0], false);
                         setNest(p, nests[1], heaters[1], true);
                         break;
                     case "complex":
                         drawPart(0, 0.5, "а", rbs[0], nests[0], heaters[0], null);
                         drawPart(0.5, 0.25, "б", rbs[1], 'N', 'N', null);
                         drawPart(0.75, 0.25, "в", rbs[2], 'N', 'N', null);
-                        setNest(p, nests[0], heaters[0], false);
+						drawWall(0, 0.5);
+						drawWall(0.5, 0.25);
+						drawWall(0.75, 0.25);
+						setNest(p, nests[0], heaters[0], false);
                         break;
                     case "jurta":
                         bool fst = delims[0] == '1';
@@ -93,12 +100,16 @@ namespace rabnet
                         {
                             drawPart(0, 0.25, "а", rbs[0], 'N', 'N', null);
                             drawPart(0.25, 0.75, "б", rbs[1], nests[0], heaters[0], new double[]{0.62});
-                        }
+							drawWall(0, 0.25);
+							drawWall(0.25, 0.75);
+						}
                         else
                         {
                             drawPart(0, 0.62, "а", rbs[0], nests[0], heaters[0], new double[] { 0.25 });
                             drawPart(0.62, 0.38, "б", rbs[1], 'N', 'N', null);
-                        }
+							drawWall(0, 0.62);
+							drawWall(0.62, 0.38);
+						}
                         setNest(p, nests[0], heaters[0], false);
                         setVigul(p, delims[0]);
                         break;
@@ -109,21 +120,30 @@ namespace rabnet
                     case "vertep":
                         drawPart(0, 0.5, "а", rbs[0], 'N', 'N', null);
                         drawPart(0.5, 0.5, "б", rbs[1], 'N', 'N', null);
-                        break;
+						drawWall(0, 0.5);
+						drawWall(0.5, 0.5);
+						break;
                     case "barin":
-                        if (delims[0] == '1')
-                        {
-                            drawPart(0, 0.5, "а", rbs[0], 'N', 'N', null);
-                            drawPart(0.5, 0.5, "б", rbs[1], 'N', 'N', null);
-                        }
-                        else
-                            drawPart(0, 1, "аб", rbs[0], 'N', 'N', new double[]{ 0.5});
-                        setDelim(p, delims[0]);
+						if (delims[0] == '1')
+						{
+							drawPart(0, 0.5, "а", rbs[0], 'N', 'N', null);
+							drawPart(0.5, 0.5, "б", rbs[1], 'N', 'N', null);
+							drawWall(0, 0.5);
+							drawWall(0.5, 0.5);
+						}
+						else
+						{
+							drawPart(0, 1, "аб", rbs[0], 'N', 'N', new double[] { 0.5 });
+							drawWall(0, 1);
+						}
+						setDelim(p, delims[0]);
                         break;
                     case "cabin":
                         drawPart(0, 0.65, "а", rbs[0], nests[0], heaters[0], null);
                         drawPart(0.65, 0.35, "б", rbs[1], 'N', 'N', null);
-                        setNest(p,nests[0], heaters[0], false);
+						drawWall(0, 0.65);
+						drawWall(0.65, 0.35);
+						setNest(p, nests[0], heaters[0], false);
                         break;
                 }
             }
@@ -155,27 +175,50 @@ namespace rabnet
                 }
                 drawPart(start, x, nm, rbs[i], 'N', 'N', dl.ToArray());
             }
+
+			public void drawWall(double start, double sz)
+			{
+				Point p1 = new Point();
+				Point p2 = new Point();
+				if ((start + sz < 1) && (start + sz > 0))
+				{
+					p1.X = (int)Math.Round(r.Width * sz) + (int)Math.Round(r.Width * start);
+					p1.Y = r.Top;
+					p2.X = p1.X;
+					p2.Y = r.Bottom;
+					g.DrawLine(Pens.Black, p1, p2);
+				}
+
+			}
+
             public void drawPart(double start,double sz,String area,String rabbit,Char nest,Char heater,double[] fd)
             {
                 Rectangle rct = r;
-                rct.Width = (int)Math.Round(r.Width * sz);
+				RectangleF rctF = r;
+				rct.Width = (int)Math.Round(r.Width * sz);
                 rct.Offset((int)Math.Round(r.Width * start), 0);
-                if (repair)
-                    g.FillRectangle(Brushes.Silver,rct);
-                else
-                    g.DrawRectangle(Pens.Black,rct);
-                if (fd != null && fd.Length>0)
-                    for (int i = 0; i < fd.Length; i++)
-                    {
-                        int xpos = (int)Math.Round(r.Width * fd[i]);
-                        g.DrawLine(Pens.Lavender,new Point(xpos,rct.Top),new Point(xpos,rct.Bottom));
-                    }
+				if (repair)
+				{
+					g.FillRectangle(Brushes.Silver, rct);
+				}
+				else
+				{
+					g.FillRectangle(Brushes.White, rct);
+				}
+				if (fd != null && fd.Length > 0)
+				{
+					for (int i = 0; i < fd.Length; i++)
+					{
+						int xpos = (int)Math.Round(r.Width * fd[i]);
+						g.DrawLine(Pens.Lavender, new Point(xpos, rct.Top + 1), new Point(xpos, rct.Bottom - 1));
+					}
+				}
                 g.DrawString(area, f, Brushes.Black, rct.X, rct.Y);
                 FarmDrawer.drawtext(rabbit, rct, 8, g,false);
                 Rectangle nrct=rct;
                 nrct.Height = (int)Math.Round(rct.Height * 0.2);
-                nrct.Offset(0, (int)Math.Round(rct.Height*0.8));
-                nrct.Width = rct.Width / 2;
+                nrct.Offset(0, (int)Math.Round(rct.Height * 0.8));
+                nrct.Width = rct.Width / 2+1;
                 Rectangle hrct=nrct;
                 hrct.Offset(rct.Width / 2, 0);
                 if (nest!='N')
@@ -200,6 +243,8 @@ namespace rabnet
                     g.FillRectangle(b, hrct);
                     FarmDrawer.drawtext("грелка:"+stat,hrct,10,g,false);
                 }
+				g.DrawLine(Pens.Black, new Point(rct.Left, rct.Top), new Point(rct.Right, rct.Top));
+				g.DrawLine(Pens.Black, new Point(rct.Right, rct.Bottom), new Point(rct.Left, rct.Bottom));
             }
         }
 
@@ -213,7 +258,7 @@ namespace rabnet
 
         public void setFarm(int id,DrawTier t1,DrawTier t2)
         {
-            this.t1=t1;
+            this.t1 = t1;
             this.t2 = t2;
             this.id = id;
             bc1.Visible = bc2.Visible = false;
@@ -222,7 +267,8 @@ namespace rabnet
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.Clear(Color.White);
+//			e.Graphics.Clear(Color.White);
+			e.Graphics.Clear(SystemColors.Control);
             if (t1!=null)
             {
                 manual = true;
@@ -236,9 +282,11 @@ namespace rabnet
             StringFormat sf=new StringFormat();
             sf.Alignment=StringAlignment.Center;
             sf.LineAlignment = bottom?StringAlignment.Far:StringAlignment.Center;
-            g.DrawString(text,new Font("Arial",sz),Brushes.Black,
-                new RectangleF(r.X,r.Y,r.Width,r.Height),sf);
-        }
+//			g.DrawString(text, new Font("Arial", sz), Brushes.Black,
+//				new RectangleF(r.X, r.Y, r.Width, r.Height), sf);
+			g.DrawString(text, new Font(SystemFonts.DefaultFont.Name, sz), Brushes.Black,
+				new RectangleF(r.X, r.Y, r.Width, r.Height), sf);
+		}
 
         private void drawHouse(Graphics g,Rectangle rect)
         {
@@ -246,31 +294,43 @@ namespace rabnet
             Rectangle[] r2=new Rectangle[]{rect,rect};
             r1.Height=(int)Math.Round(rect.Height*0.15);
             r2[0].Height=(int)Math.Round(rect.Height*0.85);
+			r2[0].Width -= 1;
             r2[0].Offset(0,r1.Height);
             r2[1]=r2[0];
             if (r2!=null)
             {
                 r2[0].Height=r2[0].Height/2;
                 r2[1].Height=r2[0].Height;
-                r2[1].Offset(0,r2[0].Height);
+                r2[1].Offset(0,r2[0].Height-1);
             }
-            g.DrawLines(new Pen(Color.Black), new Point[] {
+
+			g.SmoothingMode = SmoothingMode.HighQuality;
+			g.FillPolygon(Brushes.White, new Point[] {
                 new Point(r1.X,r1.Bottom),
                 new Point(r1.Right/2,r1.Y),
                 new Point(r1.Right,r1.Bottom)
             });
+			g.DrawLines(Pens.Black, new Point[] {
+                new Point(r1.X,r1.Bottom),
+                new Point(r1.Right/2,r1.Y),
+                new Point(r1.Right,r1.Bottom)
+            });
+			g.SmoothingMode = SmoothingMode.None;
+
             drawtext(id.ToString(), r1, 12, g,true);
-            g.DrawRectangle(new Pen(Color.Black, 2), r2[0]);
-            
-            bc1.Top = r2[0].Top+pictureBox1.Top+1;
-            bc1.Height = r2[0].Height;
-            bc2.Top = r2[0].Bottom+2;
-            bc2.Height = r2[0].Height;
+            g.DrawRectangle(new Pen(Color.Black, 1), r2[0]);
+
+			bc1.Top = r2[0].Top + pictureBox1.Top;// +1;
+            bc1.Height = r2[0].Height+1;
             t1.draw(g, r2[0], bc1);
-            bc1.Visible = true;
+			bc1.Visible = true;
             if (t2 != null)
             {
-                g.DrawRectangle(new Pen(Color.Black, 2), r2[1]);
+				bc2.Top = r2[1].Top + pictureBox1.Top;// +2;
+				bc2.Height = r2[1].Height+1;
+				r2[1].Offset(0,1);
+				r2[1].Height -= 1;
+				g.DrawRectangle(new Pen(Color.Black, 1), r2[1]);
                 t2.draw(g, r2[1],bc2);
                 bc2.Visible = true;
             }
@@ -302,7 +362,7 @@ namespace rabnet
             e.tier = (sender == bc1 ? t1.id : t2.id);
             if (ValueChanged != null)
                 ValueChanged(this, e);
-        }
+		}
 
     }
 }
