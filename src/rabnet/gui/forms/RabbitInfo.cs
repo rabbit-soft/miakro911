@@ -165,9 +165,9 @@ namespace rabnet
             label7.Text = "Статус: Девочка";
             if (bdate.DaysValue >= mkbrides)
                 label7.Text = "Статус: Невеста";
-            if (rab.status == 1)
+            if ((rab.status == 0 && rab.evdate!=DateTime.MinValue)||(rab.status==1 && rab.evdate==DateTime.MinValue))
                 label7.Text = "Статус: Первокролка";
-            if (rab.status > 1)
+            if (rab.status > 1 || (rab.status==1 && rab.evdate!=DateTime.MinValue))
                 label7.Text = "Статус: Штатная";
             if (rab.status > 0)
             {

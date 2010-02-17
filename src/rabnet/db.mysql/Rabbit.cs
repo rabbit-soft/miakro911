@@ -72,9 +72,9 @@ namespace rabnet
                     r.fstatus = shr ? "Дев" : "Девочка";
                 else
                     r.fstatus = shr ? "Нвс" : "Невеста";
-                if (rd.GetInt32("r_status") == 1)
+                if ((rd.GetInt32("r_status") == 1 && rd.IsDBNull(4))|| (rd.GetInt32("r_status") == 0 && !rd.IsDBNull(4)))
                     r.fstatus = shr ? "Прк" : "Первокролка";
-                if (rd.GetInt32("r_status") > 1)
+                if (rd.GetInt32("r_status") > 1 || (rd.GetInt32("r_status") == 1 && !rd.IsDBNull(4)))
                     r.fstatus = shr ? "Штн" : "Штатная";
                 if (!rd.IsDBNull(12))
                 {
@@ -143,11 +143,11 @@ namespace rabnet
                 if (options["ft"].Contains("g"))
                     stat = "r_born>(NOW()-INTERVAL " + options["brd"] + " DAY)";
                 if (options["ft"].Contains("b"))
-                    stat = addWhereOr(stat, "(r_born<=(NOW()-INTERVAL "+options["brd"]+" DAY) AND r_status=0)");
+                    stat = addWhereOr(stat, "(r_born<=(NOW()-INTERVAL "+options["brd"]+" DAY) AND (r_status=0 AND r_event_date IS NULL))");
                 if (options["ft"].Contains("f"))
-                    stat = addWhereOr(stat, "r_status=1");
+                    stat = addWhereOr(stat, "((r_status=0 AND r_event_date IS NOT NULL)OR(r_status=1 AND r_event_date IS NULL))");
                 if (options["ft"].Contains("s"))
-                    stat = addWhereOr(stat, "r_status>1");
+                    stat = addWhereOr(stat, "(r_status>1 OR (r_status=1 AND r_event_date IS NOT NULL))");
                 res = addWhereAnd(res, "(r_sex!='female' OR (r_sex='female' AND (" + stat + ")))");
             }
             if (options.ContainsKey("ms") && options.safeValue("sx", "m").Contains("m"))
@@ -829,8 +829,9 @@ f_dead=f_dead+{0:d},f_killed=f_killed+{1:d},f_added=f_added+{2:d} WHERE f_rabid=
 (SELECT b_name FROM breeds WHERE b_id=r_breed) breed,r_rate,rabname(r_id,2) name,
 (SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) suckers,
 (SELECT AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) aage,
-r_born,rabplace(r_id) place
-FROM rabbits WHERE r_sex='female' AND r_group=1 AND r_status>0) c WHERE suckers>0 AND ABS(aage-{0:d})<={1:d};
+r_born,rabplace(r_id) place,
+r_event_date
+FROM rabbits WHERE r_sex='female' AND r_group=1 AND (r_status>0 OR (r_status=0 AND r_event_date IS NOT NULL))) c WHERE suckers>0 AND ABS(aage-{0:d})<={1:d};
 ",age,agediff),sql);
             List<Rabbit> rbs=new List<Rabbit>();
             MySqlDataReader rd = cmd.ExecuteReader();
@@ -843,7 +844,7 @@ FROM rabbits WHERE r_sex='female' AND r_group=1 AND r_status>0) c WHERE suckers>
                 r.fage = rd.GetInt32("age");
                 r.faverage = rd.GetInt32("aage");
                 r.fN = rd.GetString("suckers");
-                r.fstatus = rd.GetInt32("r_status")==1?"Первокролка":"Штатная";
+                r.fstatus = ((rd.GetInt32("r_status") == 1 && rd.IsDBNull(9)) || (rd.GetInt32("r_status") == 0 && !rd.IsDBNull(9))) ? "Первокролка" : "Штатная";
                 r.faddress = Buildings.fullPlaceName(rd.GetString("place"), true, false, false);
                 rbs.Add(r);
             }
