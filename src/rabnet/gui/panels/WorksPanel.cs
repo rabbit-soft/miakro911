@@ -39,8 +39,9 @@ namespace rabnet
                     li.SubItems.Add(j.address);
                     li.SubItems.Add(j.name);
                     li.SubItems.Add(j.age.ToString());
-                    li.SubItems.Add(j.names);
+                    li.SubItems.Add(j.breed);
                     li.SubItems.Add(j.comment);
+                    li.SubItems.Add(j.names);
                     li.Tag = j;
                 }
                 cs.Restore();
@@ -263,6 +264,8 @@ namespace rabnet
                 rw.AppendChild(xml.CreateElement("rabbit")).AppendChild(xml.CreateTextNode(j.name));
                 rw.AppendChild(xml.CreateElement("address")).AppendChild(xml.CreateTextNode(j.address));
                 rw.AppendChild(xml.CreateElement("comment")).AppendChild(xml.CreateTextNode(j.comment));
+                rw.AppendChild(xml.CreateElement("breed")).AppendChild(xml.CreateTextNode(j.breed));
+                rw.AppendChild(xml.CreateElement("age")).AppendChild(xml.CreateTextNode(j.age.ToString()));
                 if (j.type == JobType.FUCK)
                 {
                     int id = getFuckerId(j.names, fuckers);

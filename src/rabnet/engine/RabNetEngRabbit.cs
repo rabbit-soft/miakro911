@@ -315,7 +315,15 @@ namespace rabnet
             if (sex != OneRabbit.RabbitSex.FEMALE)
                 throw new ExNotFemale(this);
             eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, rid, 0, "", "", String.Format("возраст {0:d} всего {1:d}(умерло {2:d},притоптано {3:d}, подсажено{4:d})",age,atall,dead,killed,added));
-            eng.db().countKids(id, dead, killed, added);
+            if (atall == 0)
+            {
+                foreach (OneRabbit y in rab.youngers)
+                {
+                    RabNetEngRabbit r = eng.getRabbit(y.id);
+                    r.killIt(DateTime.Now, 6, "при подсчете", y.group);
+                }
+            }else
+                eng.db().countKids(id, dead, killed, added);
         }
 
         public void setSex(OneRabbit.RabbitSex sex)

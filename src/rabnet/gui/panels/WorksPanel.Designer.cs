@@ -56,6 +56,7 @@
             this.columnHeader13 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader15 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader14 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
             this.actMenu.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -73,8 +74,9 @@
             this.columnHeader3,
             this.columnHeader4,
             this.columnHeader5,
-            this.columnHeader6,
-            this.columnHeader8});
+            this.columnHeader7,
+            this.columnHeader8,
+            this.columnHeader6});
             this.listView1.ContextMenuStrip = this.actMenu;
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
@@ -111,12 +113,10 @@
             // 
             // columnHeader6
             // 
-            this.columnHeader6.DisplayIndex = 6;
             this.columnHeader6.Text = "Партнеры";
             // 
             // columnHeader8
             // 
-            this.columnHeader8.DisplayIndex = 5;
             this.columnHeader8.Text = "Заметки";
             // 
             // actMenu
@@ -275,6 +275,10 @@
             // 
             this.columnHeader14.Text = "Пользователь";
             // 
+            // columnHeader7
+            // 
+            this.columnHeader7.Text = "Порода";
+            // 
             // WorksPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -319,6 +323,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader14;
         private System.Windows.Forms.ToolStripMenuItem setNestMenuItem;
         private System.Windows.Forms.ToolStripMenuItem countChangedMenuItem;
+        private System.Windows.Forms.ColumnHeader columnHeader7;
 
     }
 }
