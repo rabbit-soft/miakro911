@@ -392,6 +392,7 @@ namespace rabnet
             if (newpar == null || child==null) return;
             if (child == treeView1.Nodes[0]) return;
             if (isFarm(newpar)) return;
+            if (child == newpar) return;
             if (MessageBox.Show(this, "Переместить " + child.Text + " в " + newpar.Text + "?", "Перемещение", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 int bid = buildNum(child);
