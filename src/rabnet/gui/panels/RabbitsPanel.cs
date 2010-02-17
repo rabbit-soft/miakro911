@@ -13,12 +13,18 @@ namespace rabnet
     {
         private bool manual = true;
         private int gentree=10;
-        public RabbitsPanel():base()
+        const int NFIELD = 8;
+        const int STATUSFIELD = 6;
+        const int SEXFIELD = 2;
+        const int NAMEFIELD = 1;
+        const int SELECTEDFIELD = 0;
+        public RabbitsPanel()
+            : base()
         {
         }
         public RabbitsPanel(RabStatusBar rsb):base(rsb,new RabbitsFilter(rsb))
         {
-            cs = new ListViewColumnSorter(listView1, new int[] { 2, 9 },Options.OPT_ID.RAB_LIST);
+            cs = new ListViewColumnSorter(listView1, new int[] {0, 3, 10 },Options.OPT_ID.RAB_LIST);
             listView1.ListViewItemSorter = null;
         }
 
@@ -48,7 +54,9 @@ namespace rabnet
                 return;
             }
             Rabbit rab = (data as Rabbit);
-            ListViewItem li = listView1.Items.Add(rab.fname);
+            ListViewItem li = listView1.Items.Add("1");
+            li.Checked = false;
+            li.SubItems.Add(rab.fname);
             li.Tag = rab.fid;
             li.SubItems.Add(rab.fsex);
             li.SubItems.Add(rab.fage.ToString());
@@ -77,13 +85,13 @@ namespace rabnet
 
         private bool isGirl()
         {
-            string sd = listView1.SelectedItems[0].SubItems[5].Text;
+            string sd = listView1.SelectedItems[0].SubItems[STATUSFIELD].Text;
             return (sd=="Девочка" || sd=="Дев");
         }
 
         private bool isBride()
         {
-            string sd = listView1.SelectedItems[0].SubItems[5].Text;
+            string sd = listView1.SelectedItems[0].SubItems[STATUSFIELD].Text;
             return (sd == "Невеста" || sd == "Нвс");
         }
 
@@ -100,7 +108,7 @@ namespace rabnet
             string sx = "";
             for (int i = 0; i < listView1.SelectedItems.Count && sx.Length<2;i++ )
             {
-                String s = listView1.SelectedItems[i].SubItems[1].Text;
+                String s = listView1.SelectedItems[i].SubItems[SEXFIELD].Text;
                 if (s[0] == 'С' || s[0] == 'C')
                     s = "S";
                 if (!sx.Contains(s))
@@ -112,7 +120,7 @@ namespace rabnet
             if (sx=="ж") isx=2;
             if (sx == "S") isx = 4;
             bool kids = false;
-            if (listView1.SelectedItems.Count == 1 && listView1.SelectedItems[0].SubItems[7].Text[0] == '+')
+            if (listView1.SelectedItems.Count == 1 && listView1.SelectedItems[0].SubItems[NFIELD].Text[0] == '+')
                 kids = true;
             setMenu(isx, listView1.SelectedItems.Count,kids);
             if (listView1.SelectedItems.Count != 1)
@@ -130,7 +138,7 @@ namespace rabnet
                 len = genTree.Nodes[ind].Text.IndexOf("-");
                 if (len == -1) len = genTree.Nodes[ind].Text.IndexOf(",");
                 string str = genTree.Nodes[ind].Text.Remove(len);
-                if (listView1.SelectedItems[0].SubItems[0].Text.StartsWith(str))
+                if (listView1.SelectedItems[0].SubItems[NAMEFIELD].Text.StartsWith(str))
                 {
                     if (ind == 0) return;
                     genTree.Nodes.RemoveAt(ind);
@@ -272,7 +280,7 @@ namespace rabnet
             if (listView1.SelectedItems.Count < 1)
                 return;
             KillForm f = new KillForm();
-            foreach (ListViewItem li in listView1.SelectedItems)
+            foreach (ListViewItem li in listView1.CheckedItems)
                 f.addRabbit((int)li.Tag);
             if(f.ShowDialog() == DialogResult.OK)
                 rsb.run();
@@ -325,14 +333,14 @@ namespace rabnet
 
         private int GroupCount()
         {
-            String s = listView1.SelectedItems[0].SubItems[7].Text;
+            String s = listView1.SelectedItems[0].SubItems[NFIELD].Text;
             if (s[0] == '[') return int.Parse(s.Substring(1, s.Length - 2));
             return 1;
         }
 
         private int selCount(int index)
         {
-            String s = listView1.Items[index].SubItems[7].Text;
+            String s = listView1.Items[index].SubItems[NFIELD].Text;
             int c = 1;
             if (s[0] == '+') c += int.Parse(s.Substring(1));
             if (s[0] == '[') c = int.Parse(s.Substring(1, s.Length - 2));
@@ -471,6 +479,11 @@ namespace rabnet
             for (int i = 0; i < listView1.SelectedItems.Count; i++)
                 f["r" + i.ToString()] = ((int)listView1.SelectedItems[i].Tag).ToString();
             new ReportViewForm("Кандидаты на реализацию", "realization", Engine.db().makeReport(ReportType.Type.REALIZE, f)).ShowDialog();
+        }
+
+        private void listView1_ItemChecked(object sender, ItemCheckedEventArgs e)
+        {
+            e.Item.SubItems[SELECTEDFIELD].Text = e.Item.Checked ? "0" : "1";
         }
 
     }

@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.listView1 = new System.Windows.Forms.ListView();
+            this.columnHeader14 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
@@ -61,8 +62,8 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.SelectAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.svidMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.genTree = new System.Windows.Forms.TreeView();
             this.realizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.genTree = new System.Windows.Forms.TreeView();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -91,7 +92,9 @@
             this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.listView1.CheckBoxes = true;
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader14,
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3,
@@ -114,10 +117,15 @@
             this.listView1.TabIndex = 7;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.listView1_ItemChecked);
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             this.listView1.DoubleClick += new System.EventHandler(this.listView1_DoubleClick);
             this.listView1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseUp);
             this.listView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseDown);
+            // 
+            // columnHeader14
+            // 
+            this.columnHeader14.Text = "Выбор";
             // 
             // columnHeader1
             // 
@@ -205,7 +213,7 @@
             this.svidMenuItem,
             this.realizeMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(285, 368);
+            this.actMenu.Size = new System.Drawing.Size(285, 346);
             // 
             // passportMenuItem
             // 
@@ -318,6 +326,13 @@
             this.svidMenuItem.Text = "Племенное свидетельство";
             this.svidMenuItem.Click += new System.EventHandler(this.svidMenuItem_Click);
             // 
+            // realizeMenuItem
+            // 
+            this.realizeMenuItem.Name = "realizeMenuItem";
+            this.realizeMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.realizeMenuItem.Text = "Выбранные кандидаты на реализацию";
+            this.realizeMenuItem.Click += new System.EventHandler(this.realizeMenuItem_Click);
+            // 
             // genTree
             // 
             this.genTree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
@@ -327,13 +342,6 @@
             this.genTree.Name = "genTree";
             this.genTree.Size = new System.Drawing.Size(134, 544);
             this.genTree.TabIndex = 0;
-            // 
-            // realizeMenuItem
-            // 
-            this.realizeMenuItem.Name = "realizeMenuItem";
-            this.realizeMenuItem.Size = new System.Drawing.Size(284, 22);
-            this.realizeMenuItem.Text = "Выбранные кандидаты на реализацию";
-            this.realizeMenuItem.Click += new System.EventHandler(this.realizeMenuItem_Click);
             // 
             // RabbitsPanel
             // 
@@ -386,5 +394,6 @@
         private System.Windows.Forms.ToolStripMenuItem replaceYoungersMenuItem;
         private System.Windows.Forms.ToolStripMenuItem svidMenuItem;
         private System.Windows.Forms.ToolStripMenuItem realizeMenuItem;
+        private System.Windows.Forms.ColumnHeader columnHeader14;
     }
 }
