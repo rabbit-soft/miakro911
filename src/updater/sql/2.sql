@@ -10,3 +10,5 @@ ALTER TABLE dead MODIFY d_notes TEXT NULL;
 ALTER TABLE dead MODIFY r_notes TEXT NULL;
 ALTER TABLE logtypes MODIFY l_params TEXT NULL;
 ALTER TABLE logs MODIFY l_param TEXT NULL;
+
+DELETE FROM options WHERE o_subname='rablist' OR o_subname='zoolist';
