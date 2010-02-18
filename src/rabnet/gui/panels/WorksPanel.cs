@@ -15,6 +15,8 @@ namespace rabnet
         public WorksPanel():base(){}
         public int makeFlag = 0;
         private bool fullUpdate=true;
+        private Filters runF = null;
+        private int itm = -1;
         public WorksPanel(RabStatusBar sb)
             : base(sb, new ZootehFilter(sb))
         {
@@ -26,24 +28,46 @@ namespace rabnet
         {
             if (fullUpdate)
             {
-                int itm = -1;
-                if (listView1.SelectedItems.Count==1)
+                f["shr"] = Engine.opt().getOption(Options.OPT_ID.SHORT_NAMES);
+                f["dbl"] = Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
+                f["prt"] = Engine.opt().getOption(Options.OPT_ID.FIND_PARTNERS);
+                f["okrol"] = Engine.opt().getOption(Options.OPT_ID.OKROL);
+                f["preok"] = Engine.opt().getOption(Options.OPT_ID.PRE_OKROL);
+                f["vudvor"] = Engine.opt().getOption(Options.OPT_ID.VUDVOR);
+                f["count0"] = Engine.opt().getOption(Options.OPT_ID.COUNT1);
+                f["count1"] = Engine.opt().getOption(Options.OPT_ID.COUNT2);
+                f["count2"] = Engine.opt().getOption(Options.OPT_ID.COUNT3);
+                f["count3"] = Engine.opt().getOption(Options.OPT_ID.SUCKERS);
+                f["boysout"] = Engine.opt().getOption(Options.OPT_ID.BOYS_OUT);
+                f["girlsout"] = Engine.opt().getOption(Options.OPT_ID.GIRLS_OUT);
+                f["vacc"] = Engine.opt().getOption(Options.OPT_ID.VACC);
+                f["nest"] = Engine.opt().getOption(Options.OPT_ID.NEST);
+                f["cnest"] = Engine.opt().getOption(Options.OPT_ID.CHILD_NEST);
+                f["sfuck"] = Engine.opt().getOption(Options.OPT_ID.STATE_FUCK);
+                f["ffuck"] = Engine.opt().getOption(Options.OPT_ID.FIRST_FUCK);
+                f["heter"] = Engine.opt().getOption(Options.OPT_ID.GETEROSIS);
+                f["inbr"] = Engine.opt().getOption(Options.OPT_ID.INBREEDING);
+                f["mwait"] = Engine.opt().getOption(Options.OPT_ID.MALE_WAIT);
+
+                itm = -1;
+                if (listView1.SelectedItems.Count == 1)
                     itm = listView1.SelectedItems[0].Index;
                 cs.Prepare();
                 listView1.Items.Clear();
                 repdate = DateTime.Now;
-                foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f))
-                {
-                    ListViewItem li = listView1.Items.Add(j.days.ToString());
-                    li.SubItems.Add(j.job);
-                    li.SubItems.Add(j.address);
-                    li.SubItems.Add(j.name);
-                    li.SubItems.Add(j.age.ToString());
-                    li.SubItems.Add(j.breed);
-                    li.SubItems.Add(j.comment);
-                    li.SubItems.Add(j.names);
-                    li.Tag = j;
-                }
+            }
+            runF = f;
+            fillLogs(f);
+            DataThread.get().stop();
+            if (!fullUpdate) return null;
+            return DataThread.db().zooTeh(f);
+        }
+
+        protected override void onItem(IData data)
+        {
+            ZooTehNullItem it = data as ZooTehNullItem;
+            if (it == null)
+            {
                 cs.Restore();
                 if (itm > -1 && listView1.Items.Count > itm)
                 {
@@ -51,14 +75,21 @@ namespace rabnet
                     listView1.Items[itm].EnsureVisible();
                 }
                 listView1.Focus();
+                return;
             }
-            fillLogs(f);
-            DataThread.get().stop();
-            return null;
-        }
-
-        protected override void onItem(IData data)
-        {
+            Filters f = runF;
+            foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f,it.id))
+            {
+                ListViewItem li = listView1.Items.Add(j.days.ToString());
+                li.SubItems.Add(j.job);
+                li.SubItems.Add(j.address);
+                li.SubItems.Add(j.name);
+                li.SubItems.Add(j.age.ToString());
+                li.SubItems.Add(j.breed);
+                li.SubItems.Add(j.comment);
+                li.SubItems.Add(j.names);
+                li.Tag = j;
+            }
         }
 
         private void fillLogs(Filters f)

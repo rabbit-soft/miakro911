@@ -175,7 +175,7 @@ namespace rabnet
         public IDataGetter zooTeh(Filters f)
         {
             //TODO:remove item
-            return null;// new ZooTeh(sql, f);
+            return new ZooTehNullGetter();
         }
 
 

@@ -5,6 +5,42 @@ using System.Text;
 
 namespace rabnet
 {
+    public class ZooTehNullItem : IData
+    {
+        public int id = 0;
+        public ZooTehNullItem(int id) { this.id=id;}
+    }
+    public class ZooTehNullGetter : IDataGetter
+    {
+        #region IDataGetter Members
+        private int val;
+        const int ZOOTEHITEMS = 9;
+        public int getCount()
+        {
+            val = -1;
+            return ZOOTEHITEMS;
+        }
+
+        public int getCount2()
+        {
+            return 0;
+        }
+
+        public void stop()
+        {
+            
+        }
+
+        public IData getNextItem()
+        {
+            val++;
+            if (val > ZOOTEHITEMS) return null;
+            return new ZooTehNullItem(val);
+        }
+
+        #endregion
+    }
+
     public class ZooJobItem
     {
         public int type;
