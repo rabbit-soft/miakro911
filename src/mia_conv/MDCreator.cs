@@ -73,6 +73,8 @@ namespace mia_conv
                 debug("database created\r\nMaking db user");
                 cmd.CommandText = "GRANT ALL ON " + db + ".* TO " + user + " IDENTIFIED BY '" + pswd + "';";
                 cmd.ExecuteNonQuery();
+                cmd.CommandText = "GRANT ALL ON " + db + ".* TO " + user + "@'localhost' IDENTIFIED BY '" + pswd + "';";
+                cmd.ExecuteNonQuery();
                 cmd.CommandText = "SET GLOBAL log_bin_trust_function_creators=1;";
                 cmd.ExecuteNonQuery();
             }
