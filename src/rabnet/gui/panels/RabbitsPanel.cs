@@ -24,7 +24,7 @@ namespace rabnet
         }
         public RabbitsPanel(RabStatusBar rsb):base(rsb,new RabbitsFilter(rsb))
         {
-            cs = new ListViewColumnSorter(listView1, new int[] {0, 3, 10 },Options.OPT_ID.RAB_LIST);
+            cs = new ListViewColumnSorter(listView1, new int[] {3, 10 },Options.OPT_ID.RAB_LIST);
             listView1.ListViewItemSorter = null;
         }
 
@@ -54,7 +54,7 @@ namespace rabnet
                 return;
             }
             Rabbit rab = (data as Rabbit);
-            ListViewItem li = listView1.Items.Add("1");
+            ListViewItem li = listView1.Items.Add(" ");
             li.Checked = false;
             li.SubItems.Add(rab.fname);
             li.Tag = rab.fid;
@@ -483,7 +483,7 @@ namespace rabnet
 
         private void listView1_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
-            e.Item.SubItems[SELECTEDFIELD].Text = e.Item.Checked ? "0" : "1";
+            e.Item.SubItems[SELECTEDFIELD].Text = e.Item.Checked ? "" : " ";
         }
 
     }
