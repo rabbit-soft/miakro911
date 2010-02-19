@@ -211,7 +211,7 @@ namespace rabnet
             if (PeriodForm.Run(f, PeriodForm.Preset.CUR_MONTH, ref dt) == DialogResult.OK)
                 (new ReportViewForm("Списания", "dead", new XmlDocument[]{
                     Engine.db().makeReport(ReportType.Type.DEAD,f),dt})).ShowDialog();
-        }
+		}
 
     }
 }

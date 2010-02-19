@@ -25,5 +25,9 @@ namespace rabnet
         {
             return get().options();
         }
+		public static void set(RabNetEngine e)
+		{
+			eng = e;
+		}
     }
 }

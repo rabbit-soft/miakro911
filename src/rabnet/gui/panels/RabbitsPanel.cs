@@ -26,6 +26,7 @@ namespace rabnet
         {
             cs = new ListViewColumnSorter(listView1, new int[] {3, 10 },Options.OPT_ID.RAB_LIST);
             listView1.ListViewItemSorter = null;
+			GeneticsToolStripMenuItem.Enabled = GeneticsManagerSafe.GeneticsModuleTest();
         }
 
         protected override IDataGetter onPrepare(Filters flt)
@@ -485,6 +486,22 @@ namespace rabnet
         {
             e.Item.SubItems[SELECTEDFIELD].Text = e.Item.Checked ? "" : " ";
         }
+
+		private void GeneticsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (listView1.SelectedItems.Count < 1) return;
+			if (GeneticsManagerSafe.GeneticsModuleTest())
+			{
+				for (int i = 0; i < listView1.SelectedItems.Count; i++)
+				{
+					GeneticsManagerSafe.AddNewGenetics(((int)listView1.SelectedItems[i].Tag));
+				}
+			}
+			else
+			{
+				MessageBox.Show("Не найден модуль 'gui_genetics.dll'!\nПроверьте правильность установки программы.", "Модуль генетики", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
 
     }
 }
