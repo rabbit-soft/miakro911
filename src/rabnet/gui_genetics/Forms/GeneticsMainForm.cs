@@ -23,7 +23,7 @@ namespace rabnet
 			_RabbitID = id;
 			_Rabbit = Engine.db().getRabbit(id);
 
-			this.Text = string.Format("Родословная '{0} ({1:D})'", _Rabbit.fullname, _RabbitID);
+			this.Text = string.Format("Родословная '{0}' ({1:D})", _Rabbit.fullname, _RabbitID);
 
 			rabbitField1.DrawRabbit(_Rabbit);
 

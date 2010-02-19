@@ -369,7 +369,7 @@ namespace rabnet
 			return fres && mres;
 		}
 
-		public void RedrawMe()
+		public override void RedrawMe()
 		{
 			FemaleRabbit.RedrawMe();
 			MaleRabbit.RedrawMe();

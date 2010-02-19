@@ -113,7 +113,7 @@
 		<delete file="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
 	</target>
 	
-	<target name="rabnet" description="make rabnet application" depends="db.mysql,engine,gui"/>
+	<target name="rabnet" description="make rabnet application" depends="db.mysql,engine,gui_genetics,gui"/>
 	
 	<target name="db.mysql" description="mysql data layer">
 		<csc target="library" output="${bin_dir}/db.mysql.dll" define="${istrial}">
@@ -136,6 +136,29 @@
 				<include name="${log4net.use}"/>
 				<include name="${bin_dir}/db.mysql.dll" />
 				<include name="${bin_dir}/db.miafile.dll" />
+			</references>
+		</csc>
+	</target>
+
+	<target name="gui_genetics" description="rabnet gui genetics">
+		<csc target="library" output="${bin_dir}/gui_genetics.dll" define="${istrial}">
+			<sources>
+				<include name="${curdir}/rabnet/gui_genetics/*.cs"/>
+				<include name="${curdir}/rabnet/gui/Engine.cs"/>
+				<include name="${curdir}/rabnet/gui_genetics/Properties/*.cs"/>
+				<include name="${curdir}/rabnet/gui_genetics/Components/*.cs"/>
+				<include name="${curdir}/rabnet/gui_genetics/Forms/*.cs"/>
+			</sources>
+			<resources>
+				<include name="${curdir}/rabnet/gui_genetics/Forms/*.resx"/>
+				<include name="${curdir}/rabnet/gui_genetics/Components/*.resx"/>
+			</resources>
+			<references>
+				<include name="${log4net.use}"/>
+				<include name="${rep.use}"/>
+				<include name="${repeng.use}"/>
+				<include name="${bin_dir}/db.mysql.dll" />
+				<include name="${bin_dir}/engine.dll" />
 			</references>
 		</csc>
 	</target>
@@ -162,6 +185,7 @@
 				<include name="${repeng.use}"/>
 				<include name="${bin_dir}/db.mysql.dll" />
 				<include name="${bin_dir}/engine.dll" />
+				<include name="${bin_dir}/gui_genetics.dll" />
 			</references>
 		</csc>
 		<copy file="${curdir}/rabnet/gui/app.config" tofile="${bin_dir}/rabnet.exe.config" />
@@ -171,12 +195,14 @@
 		<exec program="${obfuscator}">
 			<arg value="${root_bin}/release/db.mysql.dll" />
 			<arg value="${root_bin}/release/engine.dll" />
+			<arg value="${root_bin}/release/gui_genetics.dll" />
 			<arg value="${root_bin}/release/mia_conv.exe" />
 			<arg value="${root_bin}/release/rabnet.exe" />
 		</exec>
 		<exec program="${obfuscator}">
 			<arg value="${root_bin}/trial/db.mysql.dll" />
 			<arg value="${root_bin}/trial/engine.dll" />
+			<arg value="${root_bin}/trial/gui_genetics.dll" />
 			<arg value="${root_bin}/trial/mia_conv.exe" />
 			<arg value="${root_bin}/trial/rabnet.exe" />
 		</exec>

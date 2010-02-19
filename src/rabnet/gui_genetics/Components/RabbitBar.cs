@@ -69,8 +69,8 @@ namespace rabnet
 			{
 				return false;
 			}
-			return true;
 			RedrawMe();
+			return true;
 		}
 		
 		private string _Genom = "";

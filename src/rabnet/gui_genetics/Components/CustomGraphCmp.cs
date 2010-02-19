@@ -77,7 +77,7 @@ namespace rabnet
 			ManagedBackBuffer.Render(Graph);
 		}
 
-		public void RedrawMe()
+		public virtual void RedrawMe()
 		{
 			InitBuffer();
 			ManagedBackBuffer.Render(Graph);
