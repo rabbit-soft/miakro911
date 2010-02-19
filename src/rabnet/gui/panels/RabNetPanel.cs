@@ -25,7 +25,17 @@ namespace rabnet
                 fp.close();
         }
         public RabNetPanel(RabStatusBar sb):this(sb,null){}
-        protected virtual void InitializeComponent() { }
+		protected virtual void InitializeComponent()
+		{
+			this.SuspendLayout();
+			// 
+			// RabNetPanel
+			// 
+			this.DoubleBuffered = true;
+			this.Name = "RabNetPanel";
+			this.ResumeLayout(false);
+
+}
         public virtual void activate()
         {
             rsb.filterPanel = fp;

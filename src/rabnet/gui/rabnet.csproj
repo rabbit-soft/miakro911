@@ -416,6 +416,9 @@
     <EmbeddedResource Include="components\RabStatusBar.resx">
       <DependentUpon>RabStatusBar.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="panels\RabNetPanel.resx">
+      <DependentUpon>RabNetPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="panels\WorksPanel.resx">
       <DependentUpon>WorksPanel.cs</DependentUpon>
     </EmbeddedResource>

@@ -201,11 +201,13 @@ namespace rabnet
             ListViewItem li = listView1.SelectedItems[0];
             Building b = li.Tag as Building;
             TreeNode tr = treeView1.Nodes[0];
-            tr.Collapse(false);
-            tr.Expand();
+			treeView1.BeginUpdate();
+			tr.Collapse(false);
+            //tr.Expand();
             manual = false;
             treeView1.SelectedNode = searchFarm((int)b.farm(), tr);
             if (treeView1.SelectedNode != null) treeView1.SelectedNode.Expand();
+			treeView1.EndUpdate();
             manual = true;
         }
 

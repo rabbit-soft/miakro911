@@ -36,8 +36,7 @@
 			// 
 			// pictureBox1
 			// 
-			this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
 			this.pictureBox1.Location = new System.Drawing.Point(227, 3);
 			this.pictureBox1.Name = "pictureBox1";
 			this.pictureBox1.Size = new System.Drawing.Size(500, 216);
@@ -47,8 +46,7 @@
 			// 
 			// bc2
 			// 
-			this.bc2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			this.bc2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
 			this.bc2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.bc2.delim = false;
 			this.bc2.delim1 = false;
@@ -69,8 +67,7 @@
 			// 
 			// bc1
 			// 
-			this.bc1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			this.bc1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
 			this.bc1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.bc1.delim = false;
 			this.bc1.delim1 = false;
@@ -97,6 +94,7 @@
 			this.Controls.Add(this.bc2);
 			this.Controls.Add(this.bc1);
 			this.Controls.Add(this.pictureBox1);
+			this.DoubleBuffered = true;
 			this.Name = "FarmDrawer";
 			this.Size = new System.Drawing.Size(730, 222);
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.FarmDrawer_Paint);

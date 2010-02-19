@@ -155,16 +155,19 @@ namespace rabnet
                 string names="абвг";
                 string nm="а";
                 List<double> dl=new List<double>();
+				Dictionary<double,double> wls=new Dictionary<double,double>();
+
                 while (i < 3)
                 {
                     if (delims[i] == '1')
                     {
                         drawPart(start, x, nm, rbs[i], 'N', 'N', dl.ToArray());
-                        i++;
+						wls.Add(start,x);
+						i++;
                         start += x;
                         nm = ""+names[i];
                         dl.Clear();
-                    }
+					}
                     else
                     {
                         i++;
@@ -174,7 +177,12 @@ namespace rabnet
                     }
                 }
                 drawPart(start, x, nm, rbs[i], 'N', 'N', dl.ToArray());
-            }
+				wls.Add(start, x);
+				foreach (KeyValuePair<double, double> wl in wls)
+				{
+					drawWall(wl.Key, wl.Value);
+				}
+			}
 
 			public void drawWall(double start, double sz)
 			{
