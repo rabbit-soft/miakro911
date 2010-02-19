@@ -13,11 +13,11 @@
   <BottomMargin>.25in</BottomMargin>
   <DataSets>
     <DataSet Name="Data">
-      <Query >
+      <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>Url=D:\Temp\zooteh.xml;RowsXPath=/report/zooteh/row</CommandText>
       </Query>
-      <Fields >
+      <Fields>
         <Field Name="type">
           <DataField>type</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -38,10 +38,6 @@
           <DataField>address</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="comment">
-          <DataField>comment</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="fuckers">
           <DataField>fuckers</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -57,11 +53,11 @@
       </Fields>
     </DataSet>
     <DataSet Name="Data2">
-      <Query >
+      <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>Url=D:\Temp\zooteh.xml;RowsXPath=/report/report</CommandText>
       </Query>
-      <Fields >
+      <Fields>
         <Field Name="date">
           <DataField>date</DataField>
           <TypeName>System.String</TypeName>
@@ -146,31 +142,28 @@
         </Style>
         <TableColumns>
           <TableColumn>
-            <Width>20.0pt</Width>
+            <Width>30pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>26.8pt</Width>
+            <Width>60pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>28.7pt</Width>
+            <Width>35pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>44.8pt</Width>
-          </TableColumn>
-          <TableColumn >
-            <Width>32.5pt</Width>
-          </TableColumn>
-          <TableColumn >
-            <Width>32.5pt</Width>
+            <Width>135pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>53.9pt</Width>
+            <Width>32pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>39.7pt</Width>
+            <Width>60pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>292.3pt</Width>
+            <Width>30pt</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>200pt</Width>
           </TableColumn>
         </TableColumns>
         <Header>
@@ -242,7 +235,7 @@
                     </Textbox>
                   </ReportItems>
                 </TableCell>
-                <TableCell >
+                <TableCell>
                   <ReportItems>
                     <Textbox Name="Textbox6">
                       <Value>возраст</Value>
@@ -258,27 +251,11 @@
                     </Textbox>
                   </ReportItems>
                 </TableCell>
-                <TableCell >
+                <TableCell>
                   <ReportItems>
                     <Textbox Name="Textbox7">
                       <Value>порода</Value>
                       <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
-                        <TextAlign>Center</TextAlign>
-                        <BorderStyle>
-                          <Default>Solid</Default>
-                        </BorderStyle>
-                        <FontWeight>Bold</FontWeight>
-                        <BorderColor />
-                        <BorderWidth />
-                      </Style>
-                    </Textbox>
-                  </ReportItems>
-                </TableCell>
-                <TableCell>
-                  <ReportItems>
-                    <Textbox Name="Textbox8">
-                      <Value>коментарий</Value>
-                      <Style>
                         <TextAlign>Center</TextAlign>
                         <BorderStyle>
                           <Default>Solid</Default>
@@ -330,7 +307,7 @@
         <Details>
           <TableRows>
             <TableRow>
-              <Height>28.9pt</Height>
+              <Height>23.5pt</Height>
               <TableCells>
                 <TableCell>
                   <ReportItems>
@@ -342,7 +319,7 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <FontSize>12pt</FontSize>
+                        <FontSize>10pt</FontSize>
                         <BorderColor />
                         <BorderWidth />
                       </Style>
@@ -361,7 +338,7 @@
                         <PaddingLeft>2pt</PaddingLeft>
                         <BorderColor />
                         <BorderWidth />
-                        <FontSize>12pt</FontSize>
+                        <FontSize>10pt</FontSize>
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -376,7 +353,7 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <FontSize>12pt</FontSize>
+                        <FontSize>10pt</FontSize>
                         <BorderColor />
                         <BorderWidth />
                       </Style>
@@ -393,39 +370,7 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <FontSize>12pt</FontSize>
-                        <BorderColor />
-                        <BorderWidth />
-                      </Style>
-                    </Textbox>
-                  </ReportItems>
-                </TableCell>
-                <TableCell >
-                  <ReportItems>
-                    <Textbox Name="Textbox17">
-                      <Value>=Fields!age.Value</Value>
-                      <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
-                        <BorderStyle>
-                          <Default>Solid</Default>
-                        </BorderStyle>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <FontSize>12pt</FontSize>
-                        <BorderColor />
-                        <BorderWidth />
-                      </Style>
-                    </Textbox>
-                  </ReportItems>
-                </TableCell>
-                <TableCell >
-                  <ReportItems>
-                    <Textbox Name="Textbox18">
-                      <Value>=Fields!breed.Value</Value>
-                      <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
-                        <BorderStyle>
-                          <Default>Solid</Default>
-                        </BorderStyle>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <FontSize>12pt</FontSize>
+                        <FontSize>10pt</FontSize>
                         <BorderColor />
                         <BorderWidth />
                       </Style>
@@ -434,15 +379,30 @@
                 </TableCell>
                 <TableCell>
                   <ReportItems>
-                    <Textbox Name="Textbox19">
-                      <Value>=Fields!comment.Value</Value>
-                      <CanGrow>true</CanGrow>
-                      <Style>
+                    <Textbox Name="Textbox17">
+                      <Value>=Fields!age.Value</Value>
+                      <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
                         <BorderStyle>
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <FontSize>12pt</FontSize>
+                        <FontSize>10pt</FontSize>
+                        <BorderColor />
+                        <BorderWidth />
+                      </Style>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox18">
+                      <Value>=Fields!breed.Value</Value>
+                      <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <FontSize>10pt</FontSize>
                         <BorderColor />
                         <BorderWidth />
                       </Style>
@@ -459,7 +419,7 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <FontSize>12pt</FontSize>
+                        <FontSize>10pt</FontSize>
                         <BorderColor />
                         <BorderWidth />
                       </Style>
@@ -476,7 +436,7 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <FontSize>8pt</FontSize>
+                        <FontSize>10pt</FontSize>
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -488,6 +448,7 @@
         <KeepTogether>false</KeepTogether>
         <Left>0.9pt</Left>
         <Top>47.3pt</Top>
+        <Height>100pt</Height>
       </Table>
     </ReportItems>
     <Height>104.1pt</Height>
@@ -525,7 +486,7 @@
       </ConnectionProperties>
     </DataSource>
   </DataSources>
-  <Code >Dim xdate As String
+  <Code>Dim xdate As String
 Function setDate(dt As String) As String
  xdate=dt
  return dt
