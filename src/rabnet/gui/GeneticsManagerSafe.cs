@@ -10,6 +10,8 @@ namespace rabnet
 	{
 		protected static readonly ILog log = LogManager.GetLogger(typeof(GeneticsManagerSafe));
 		private static Boolean _HasModule = false;
+	
+		[System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
 		public static Boolean GeneticsModuleTest()
 		{
 			log.Debug("Test assembly 'gui_genetics.dll' presence.");
