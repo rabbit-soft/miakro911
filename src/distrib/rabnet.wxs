@@ -25,7 +25,7 @@
 			<Custom Action="RabnetUpdate" After="InstallFinalize">NOT Installed</Custom>
 			<Custom Action="DeleteUpdater" After="RabnetUpdate">NOT Installed</Custom>
         </InstallExecuteSequence>
-        <Condition Message="Для работы программы необходим .NET Framework 2.0. Установите .NET Framework, а потом перезапустите утановку данного продукта">
+        <Condition Message="Для работы программы необходим .NET Framework 2.0 или более поздней версии, его можно получить на сайте www.microsoft.com .Установите .NET Framework, а потом перезапустите утановку данного продукта.">
 			<![CDATA[Installed OR NETFRAMEWORK20]]>
 		</Condition>
         <Media Id="1" Cabinet="rabnet.cab" EmbedCab="yes" />
