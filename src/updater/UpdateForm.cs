@@ -18,6 +18,7 @@ namespace updater
         private string filename="";
         private Dictionary<int, String> scr = new Dictionary<int, string>();
         private MySqlConnection sql = null;
+        public enum UpdateStatus { BEFORE, PROCS, AFTER }
         public UpdateForm()
         {
             InitializeComponent();
@@ -174,7 +175,6 @@ namespace updater
             }
             UpdateList();
         }
-        public enum UpdateStatus {BEFORE,PROCS,AFTER}
         private void OnUpdate(int tover,MySqlConnection con,UpdateStatus status)
         {
         }

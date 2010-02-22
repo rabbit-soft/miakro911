@@ -14,6 +14,7 @@
             <UpgradeVersion Minimum="0.0.0" IncludeMinimum="yes" Maximum="$(var.Version)" IncludeMaximum="no" Property="OLDERVERSIONBEINGUPGRADED" />
         </Upgrade>
         <PropertyRef Id="NETFRAMEWORK20" />
+		<Property Id="CMDEXE">cmd.exe</Property>
         <Condition Message="Установлена более новая версия продукта"><![CDATA[NOT NEWERVERSIONDETECTED]]></Condition>
         <CustomAction Id="Property3Assign" Property="RABNETUPDATER" Value="[RabbitsDir]updater.exe" />
         <CustomAction Id="RabnetUpdate" Property="RABNETUPDATER" ExeCommand="" />
@@ -24,9 +25,9 @@
 			<Custom Action="RabnetUpdate" After="InstallFinalize">NOT Installed</Custom>
 			<Custom Action="DeleteUpdater" After="RabnetUpdate">NOT Installed</Custom>
         </InstallExecuteSequence>
-        <!--Condition Message="Для работы программы необходим .NET Framework 2.0. Установите .NET Framework, а потом перезапустите утановку данного продукта">
+        <Condition Message="Для работы программы необходим .NET Framework 2.0. Установите .NET Framework, а потом перезапустите утановку данного продукта">
 			<![CDATA[Installed OR NETFRAMEWORK20]]>
-		</Condition-->
+		</Condition>
         <Media Id="1" Cabinet="rabnet.cab" EmbedCab="yes" />
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFilesFolder" Name="PFiles">
