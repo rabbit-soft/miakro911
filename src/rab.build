@@ -26,15 +26,6 @@
 	<property name="obfuscator" value="Eazfuscator.NET.exe" />
 	<property name="istrial" value="" />
 	
-	<property name="dotnetInstaller" value="install_dotnet.cmd"/>
-	<property name="mysqlInstaller" value="install_mysql.cmd"/>
-	<property name="dotnetInstallerSource" value="${curdir}/distrib/3d_distrib/${dotnetInstaller}"/>
-	<property name="mysqlInstallerSource" value="${curdir}/distrib/3d_distrib/${mysqlInstaller}"/>
-	<property name="installersPath" value=""/>
-	<property name="slash" value=""/>
-	<property name="dotnetInstallerDest" value="${installersPath}${slash}${dotnetInstaller}"/>
-	<property name="mysqlInstallerDest" value="${installersPath}${slash}${mysqlInstaller}"/>
-	
 	<!-- TARGETS !-->
 	
 	<target name="build" depends="clear,buildall,tools" description="Full build"/>
@@ -113,7 +104,8 @@
 		<delete file="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
 	</target>
 	
-	<target name="rabnet" description="make rabnet application" depends="db.mysql,engine,gui_genetics,gui"/>
+	<target name="rabnet" description="make rabnet application" depends="db.mysql,engine,gui"/>
+	<!--target name="rabnet" description="make rabnet application" depends="db.mysql,engine,gui_genetics,gui"/-->
 	
 	<target name="db.mysql" description="mysql data layer">
 		<csc target="library" output="${bin_dir}/db.mysql.dll" define="${istrial}">
@@ -195,14 +187,14 @@
 		<exec program="${obfuscator}">
 			<arg value="${root_bin}/release/db.mysql.dll" />
 			<arg value="${root_bin}/release/engine.dll" />
-			<arg value="${root_bin}/release/gui_genetics.dll" />
+			<!--arg value="${root_bin}/release/gui_genetics.dll" /-->
 			<arg value="${root_bin}/release/mia_conv.exe" />
 			<arg value="${root_bin}/release/rabnet.exe" />
 		</exec>
 		<exec program="${obfuscator}">
 			<arg value="${root_bin}/trial/db.mysql.dll" />
 			<arg value="${root_bin}/trial/engine.dll" />
-			<arg value="${root_bin}/trial/gui_genetics.dll" />
+			<!--arg value="${root_bin}/trial/gui_genetics.dll" /-->
 			<arg value="${root_bin}/trial/mia_conv.exe" />
 			<arg value="${root_bin}/trial/rabnet.exe" />
 		</exec>
@@ -213,8 +205,6 @@
 		<candle out="${root_bin}/distrib/obj/" rebuild="true"  extensions="WixUIExtension;WixUtilExtension;WiXNetFxExtension"  warningsaserrors="true">
 		 <defines>
 			<define name="ProjectDir" value="${bin_dir}" />
-			<define name="NetInstaller" value="${dotnetInstallerDest}" />
-			<define name="MysqlInstaller" value="${mysqlInstallerDest}" />
 			<define name="Version" value="${version}.${minver}" />
 		</defines>
 		<sources basedir="${curdir}/distrib">
@@ -255,13 +245,10 @@
 		</csc>
 	</target>
 	
-	<target name="distrib" depends="obfuscate">
+	<target name="distrib" depends="">
 		<mkdir dir="${root_bin}"/>
 		<delete dir="${root_bin}/distrib"/>
 		<mkdir dir="${root_bin}/distrib"/>
-		<mkdir dir="${root_bin}/distrib/${installersPath}"/>
-		<copy file="${dotnetInstallerSource}" tofile="${root_bin}/distrib/${dotnetInstallerDest}"/>
-		<copy file="${mysqlInstallerSource}" tofile="${root_bin}/distrib/${mysqlInstallerDest}"/>
 		<property name="dist_type" value="rabnet"/>
 		<property name="bin_dir" value="${root_bin}\release"/>
 		<property name="minver" value="1"/>

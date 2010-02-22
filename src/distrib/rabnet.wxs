@@ -8,32 +8,19 @@
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
     <Product Id="*" Language="1033" Manufacturer="Trustbox" Name="Rabnet $(var.Version)" Version="$(var.Version)" UpgradeCode="8F4BB748-14F8-47B7-8F35-C567F0A1B29A">
-        <Package Description="Rabnet $(var.Version)" InstallerVersion="310" Compressed="yes" />
+        <Package Description="Rabnet $(var.Version)" InstallerVersion="301" Compressed="yes" />
         <Upgrade Id="8F4BB748-14F8-47B7-8F35-C567F0A1B29A">
             <UpgradeVersion Minimum="$(var.Version)" IncludeMinimum="no" OnlyDetect="yes" Property="NEWERVERSIONDETECTED" />
             <UpgradeVersion Minimum="0.0.0" IncludeMinimum="yes" Maximum="$(var.Version)" IncludeMaximum="no" Property="OLDERVERSIONBEINGUPGRADED" />
         </Upgrade>
         <PropertyRef Id="NETFRAMEWORK20" />
-        <Property Id="FARMHERE" Value="yes" />
-		<Property Id='HASMYSQL'> 
-			<RegistrySearch Id='mysql' Root='HKCU' Key='SOFTWARE\TestInstall' Name='hasMysql' Type='raw' /> 
-		</Property> 
-		<Property Id="CMDEXE">cmd.exe</Property>
         <Condition Message="Установлена более новая версия продукта"><![CDATA[NOT NEWERVERSIONDETECTED]]></Condition>
-        <CustomAction Id="PropertyAssign" Property="NETINSTALLER" Value="[CURRENTDIRECTORY]\$(var.NetInstaller)" />
-        <CustomAction Id="SetupNETFX" Property="NETINSTALLER" ExeCommand="" />
-        <CustomAction Id="Property2Assign" Property="MYSQLINSTALLER" Value="[CURRENTDIRECTORY]\$(var.MysqlInstaller)" />
-        <CustomAction Id="SetupMysql" Property="MYSQLINSTALLER" ExeCommand="" />
         <CustomAction Id="Property3Assign" Property="RABNETUPDATER" Value="[RabbitsDir]updater.exe" />
         <CustomAction Id="RabnetUpdate" Property="RABNETUPDATER" ExeCommand="" />
         <CustomAction Id="DeleteUpdater" Property="CMDEXE" ExeCommand="/C del &quot;[RABNETUPDATER]&quot;" />
         <InstallExecuteSequence>
             <RemoveExistingProducts After="InstallInitialize" />
-            <Custom Action="PropertyAssign" After="RemoveExistingProducts" />
-            <Custom Action="Property2Assign" After="PropertyAssign" />
-            <Custom Action="Property3Assign" After="Property2Assign" />
-            <Custom Action="SetupNETFX" After="Property3Assign">NOT Installed AND NOT NETFRAMEWORK20</Custom>
-            <Custom Action="SetupMysql" After="Property3Assign">NOT Installed AND (FARMHERE="yes") AND (NOT HASMYSQL="1")</Custom>
+            <Custom Action="Property3Assign" After="RemoveExistingProducts" />
 			<Custom Action="RabnetUpdate" After="InstallFinalize">NOT Installed</Custom>
 			<Custom Action="DeleteUpdater" After="RabnetUpdate">NOT Installed</Custom>
         </InstallExecuteSequence>
@@ -95,34 +82,5 @@
             <ComponentRef Id="DesktopShortcuts" />
         </Feature>
         <UIRef Id="WixUI_Minimal" />
-        <UI>
-			<TextStyle Id="DlgFontBold8" FaceName="Tahoma" Size="8" Bold="yes" />
-            <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="SelectFarmType">1</Publish>
-            <Dialog Id="SelectFarmType" Width="370" Height="270" Title="Установка rabnet">
-                <Control Type="PushButton" Id="next" Width="56" Height="17" X="236" Y="243" Text="Далее">
-                    <Publish Event="SpawnDialog" Value="ProgressDlg">
-                    </Publish>
-                </Control>
-                <Control Type="PushButton" Id="cancel" Width="56" Height="17" X="304" Y="243" Text="Отмена">
-                    <Publish Event="SpawnDialog" Value="CancelDlg" />
-                </Control>
-                <Control Type="PushButton" Id="back" Width="56" Height="17" X="180" Y="243" Text="Назад">
-                    <Publish Event="NewDialog" Value="WelcomeDlg" />
-                </Control>
-                <Control Type="Line" Id="bl" Width="370" Height="2" X="0" Y="234" />
-                <Control Type="Bitmap" Id="btop" Width="370" Height="44" X="0" Y="0" Text="!(loc.LicenseAgreementDlgBannerBitmap)" />
-                <Control Type="Text" Id="t1" Width="154" Height="17" X="101" Y="71" Text="Выберите место расположения фермы" Transparent="yes" />
-                <Control Type="RadioButtonGroup" Property="FARMHERE" Id="rg1" Width="230" Height="42" X="94" Y="146">
-                    <RadioButtonGroup Property="FARMHERE">
-                        <RadioButton Text="Ферма расположена на этом компьютере (необходимо наличие mysqld)" Height="22" Value="yes" Width="200" X="0" Y="0" />
-                        <RadioButton Text="Ферма расположена на другом компьютере в сети" Height="17" Value="no" Width="250" X="0" Y="25" />
-                    </RadioButtonGroup>
-                </Control>
-                <Control Type="Line" Id="tl" Width="370" Height="2" X="0" Y="44" />
-                <Control Type="Text" Id="title" Width="214" Height="15" X="34" Y="15" Transparent="yes">
-                    <Text>{&amp;DlgFontBold8}Установка rabnet</Text>
-                </Control>
-            </Dialog>
-        </UI>
     </Product>
 </Wix>

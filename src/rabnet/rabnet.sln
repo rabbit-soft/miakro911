@@ -1,8 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+# Visual C# Express 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rabnet", "gui\rabnet.csproj", "{EFCCE992-8AB2-43AB-87DD-1BEC3E429345}"
 	ProjectSection(ProjectDependencies) = postProject
+		{A835C727-1EB1-490D-BEBC-5C88F382330B} = {A835C727-1EB1-490D-BEBC-5C88F382330B}
 		{241724AB-0674-41CF-A8AD-224EEC248E40} = {241724AB-0674-41CF-A8AD-224EEC248E40}
 	EndProjectSection
 EndProject
