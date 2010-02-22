@@ -50,7 +50,7 @@ namespace updater
         private void button3_Click(object sender, EventArgs e)
         {
             groupBox2.Visible = !groupBox2.Visible;
-            Height = (groupBox2.Visible ? 430 : 293);
+            Height = (groupBox2.Visible ? 450 : 310);
             button3.Text = "Расширенный режим " + (groupBox2.Visible ? "<<" : ">>");
         }
 
@@ -104,6 +104,10 @@ namespace updater
         {
             try{
                 TopMost = false;
+                if (radioButton4.Checked)
+                {
+                    Close();
+                }
                 if (tbName.Text == "")
                     throw new ApplicationException("Введите название фермы");
                 if (radioButton2.Checked && tbComp.Text=="")
@@ -113,7 +117,8 @@ namespace updater
                 if (radioButton1.Checked)
                 {
                     runmia("nudb");
-                }else if (radioButton3.Checked)
+                }
+                else if (radioButton3.Checked)
                 {
                     runmia(tbFile.Text);
                 }
