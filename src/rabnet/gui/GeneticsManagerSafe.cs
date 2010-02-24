@@ -5,7 +5,6 @@ using log4net;
 
 namespace rabnet
 {
-    /*
 	class GeneticsManagerSafe
 	{
 		protected static readonly ILog log = LogManager.GetLogger(typeof(GeneticsManagerSafe));
@@ -26,19 +25,30 @@ namespace rabnet
 			}
 			log.Debug("Assembly 'gui_genetics.dll' is present.");
 			_HasModule = true;
-			InitGeneticsManager();
 			return true;
 		}
 
-		private static void InitGeneticsManager()
-		{
-			GeneticsManager.LinkEngine(Engine.get());
-		}
 
 		public static int MaxFormsCount
 		{
-			get { return GeneticsManager.MaxFormsCount; }
-			set { GeneticsManager.MaxFormsCount = value; }
+			get
+			{
+				if (_HasModule)
+				{
+					return GeneticsManager.MaxFormsCount;
+				}
+				else
+				{
+					return 0;
+				}
+			}
+			set
+			{
+				if (_HasModule)
+				{
+					GeneticsManager.MaxFormsCount = value;
+				}
+			}
 		}
 
 		public static Boolean AddNewGenetics(int rab_id)
@@ -53,5 +63,4 @@ namespace rabnet
 			}
 		}
 	}
-     * */
 }

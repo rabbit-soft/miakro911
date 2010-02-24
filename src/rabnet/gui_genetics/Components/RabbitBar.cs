@@ -17,6 +17,11 @@ namespace rabnet
 	{
 
 
+		private Graphics _GenomeGr;
+		private int _GenomeHash;
+
+		
+
 		private RabbitPair _ParentPair;
 		public void SetParentPair(RabbitPair p)
 		{
@@ -167,13 +172,13 @@ namespace rabnet
 			return valid;
 		}
 
-		private void DrawColorBar(Point point,Size size, double k)
+		private void DrawColorBar(Graphics gr, Point point, Size size, double k)
 		{
 			Pen pen = new Pen(Color.Black);
 			Pen penGr = new Pen(Color.DarkGray);
 			SolidBrush brush = new SolidBrush(Color.White);
 
-			ManagedBackBuffer.Graphics.FillRectangle(brush,new Rectangle(point,size));
+			gr.FillRectangle(brush,new Rectangle(point,size));
 
 
 			var rk = k - 50;
@@ -201,14 +206,14 @@ namespace rabnet
 
 			brush = new SolidBrush(Color.FromArgb(255,255-r,g,0));
 			
-			ManagedBackBuffer.Graphics.FillRectangle(brush,new Rectangle(point,new Size((int)(size.Width * k / 100), size.Height)));
+			gr.FillRectangle(brush,new Rectangle(point,new Size((int)(size.Width * k / 100), size.Height)));
 
 
 
-			ManagedBackBuffer.Graphics.DrawLine(penGr, point, new Point(point.X + size.Width, point.Y));
-			ManagedBackBuffer.Graphics.DrawLine(penGr, point, new Point(point.X, point.Y + size.Height));
-			ManagedBackBuffer.Graphics.DrawLine(penGr, new Point(point.X,point.Y + size.Height), new Point(point.X + size.Width, point.Y + size.Height));
-			ManagedBackBuffer.Graphics.DrawLine(penGr, new Point(point.X + size.Width,point.Y), new Point(point.X + size.Width, point.Y + size.Height));
+			gr.DrawLine(penGr, point, new Point(point.X + size.Width, point.Y));
+			gr.DrawLine(penGr, point, new Point(point.X, point.Y + size.Height));
+			gr.DrawLine(penGr, new Point(point.X,point.Y + size.Height), new Point(point.X + size.Width, point.Y + size.Height));
+			gr.DrawLine(penGr, new Point(point.X + size.Width,point.Y), new Point(point.X + size.Width, point.Y + size.Height));
 
 
 		}
@@ -317,7 +322,7 @@ namespace rabnet
 			return res;
 		}
 
-		private void DrawGenom(Point point, Size size,Boolean ordered)
+		private void DrawGenom(Graphics gr, Point point, Size size,Boolean ordered)
 		{
 			string[] genoms = { };
 
@@ -329,6 +334,10 @@ namespace rabnet
 			{
 				genoms = _GenomArr;
 			}
+
+			return;
+
+			//genoms.GetHashCode
 
 			Color cl= new Color();
 
@@ -351,29 +360,30 @@ namespace rabnet
 					}
 					SolidBrush brush = new SolidBrush(cl);
 
-					ManagedBackBuffer.Graphics.FillRectangle(brush, new RectangleF(point.X+cgl,point.Y+0,gl,size.Height));
+					gr.FillRectangle(brush, new RectangleF(point.X+cgl,point.Y+0,gl,size.Height));
 					
 					cgl = cgl + gl;
 					 
 				}
 			}
+
 		}
 
 
-		public override void DrawingProc()
+		public override void DrawingProc(Graphics g)
 		{
 			Pen pen = new Pen(Color.Black);
 			Pen penGr = new Pen(Color.DarkGray);
 
 			Brush textbrush = SystemBrushes.ControlText;
-//ManagedBackBuffer.Graphics.DrawEllipse(pen, new Rectangle(10, 10, 10, 10));
+//g.DrawEllipse(pen, new Rectangle(10, 10, 10, 10));
 
-//			ManagedBackBuffer.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-//			ManagedBackBuffer.Graphics.SmoothingMode = SmoothingMode.None;
+//			g.SmoothingMode = SmoothingMode.AntiAlias;
+//			g.SmoothingMode = SmoothingMode.None;
 
 			string pripl = Math.Round(_PlodK, 2).ToString();
 
-			SizeF priplsize = ManagedBackBuffer.Graphics.MeasureString(pripl, SystemFonts.DefaultFont);
+			SizeF priplsize = g.MeasureString(pripl, SystemFonts.DefaultFont);
 
 //			RectangleF priplrect = new RectangleF(0, 0, priplsize.Width, priplsize.Height);
 
@@ -393,24 +403,24 @@ namespace rabnet
 				if (_Gender == 1) // Male
 				{
 
-					DrawGenom(new Point(1, (int)(this.Height / 2)), new Size(this.Width - 2, (int)(this.Height / 2)), _OrderedGenom);
+					DrawGenom(g, new Point(1, (int)(this.Height / 2)), new Size(this.Width - 2, (int)(this.Height / 2)), _OrderedGenom);
 
-					ManagedBackBuffer.Graphics.DrawLine(pen, new Point(0, this.Height - 1), new Point(this.Width - 1, this.Height - 1));
-					ManagedBackBuffer.Graphics.DrawLine(pen, new Point(this.Width - 1, (int)(this.Height / 2)), new Point(this.Width - 1, this.Height - 1));
-					ManagedBackBuffer.Graphics.DrawLine(pen, new Point(0, (int)(this.Height / 2)), new Point(0, this.Height - 1));
+					g.DrawLine(pen, new Point(0, this.Height - 1), new Point(this.Width - 1, this.Height - 1));
+					g.DrawLine(pen, new Point(this.Width - 1, (int)(this.Height / 2)), new Point(this.Width - 1, this.Height - 1));
+					g.DrawLine(pen, new Point(0, (int)(this.Height / 2)), new Point(0, this.Height - 1));
 
-					ManagedBackBuffer.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-					ManagedBackBuffer.Graphics.DrawArc(pen, 0, 0, this.Height - 1, this.Height - 1, 180, 90);
-					ManagedBackBuffer.Graphics.DrawArc(pen, this.Width - this.Height, 0, this.Height-1, this.Height-1, 270, 90);
-					ManagedBackBuffer.Graphics.SmoothingMode = SmoothingMode.None;
+					g.SmoothingMode = SmoothingMode.AntiAlias;
+					g.DrawArc(pen, 0, 0, this.Height - 1, this.Height - 1, 180, 90);
+					g.DrawArc(pen, this.Width - this.Height, 0, this.Height-1, this.Height-1, 270, 90);
+					g.SmoothingMode = SmoothingMode.None;
 
-					ManagedBackBuffer.Graphics.DrawLine(pen, new Point((int)(this.Height / 2), 0), new Point(this.Width - (int)(this.Height / 2) - 1, 0));
+					g.DrawLine(pen, new Point((int)(this.Height / 2), 0), new Point(this.Width - (int)(this.Height / 2) - 1, 0));
 					
-					ManagedBackBuffer.Graphics.DrawLine(penGr, new Point((int)(this.Width / 3), 1), new Point((int)(this.Width / 3), (int)(this.Height / 2)));
+					g.DrawLine(penGr, new Point((int)(this.Width / 3), 1), new Point((int)(this.Width / 3), (int)(this.Height / 2)));
 
-					DrawColorBar(new Point((int)(this.Width / 3) + 2, 2), new Size((int)((this.Width / 3 * 2) - (this.Height / 2 * 0.65)) - 5, (int)(this.Height / 2) - 4), _RodK);
+					DrawColorBar(g, new Point((int)(this.Width / 3) + 2, 2), new Size((int)((this.Width / 3 * 2) - (this.Height / 2 * 0.65)) - 5, (int)(this.Height / 2) - 4), _RodK);
 
-					ManagedBackBuffer.Graphics.DrawString(pripl, SystemFonts.DefaultFont, textbrush, new RectangleF(((this.Width / 3) - priplsize.Width) / 2, ((this.Height / 2 - 1) - priplsize.Height)/2, priplsize.Width, priplsize.Height));
+					g.DrawString(pripl, SystemFonts.DefaultFont, textbrush, new RectangleF(((this.Width / 3) - priplsize.Width) / 2, ((this.Height / 2 - 1) - priplsize.Height)/2, priplsize.Width, priplsize.Height));
 					p.AddLine(new Point(0, this.Height - 1), new Point(this.Width - 1, this.Height - 1));
 					p.AddLine(new Point(this.Width - 1, this.Height - 1), new Point(this.Width - 1, (int)(this.Height / 2)));
 					p.AddArc(0, 0, this.Height - 1, this.Height - 1, 180, 90);
@@ -421,24 +431,24 @@ namespace rabnet
 				}
 				else if (_Gender == 2) //Female
 				{
-					DrawGenom(new Point(1, 0), new Size(this.Width - 2, (int)(this.Height / 2)), _OrderedGenom);
+					DrawGenom(g, new Point(1, 0), new Size(this.Width - 2, (int)(this.Height / 2)), _OrderedGenom);
 
-					ManagedBackBuffer.Graphics.DrawLine(pen, new Point((int)(this.Height / 2), this.Height - 1), new Point(this.Width - (int)(this.Height / 2) - 1, this.Height - 1));
-					ManagedBackBuffer.Graphics.DrawLine(pen, new Point(this.Width - 1, 0), new Point(this.Width - 1, (int)(this.Height / 2)));
-					ManagedBackBuffer.Graphics.DrawLine(pen, new Point(0, 0), new Point(0, (int)(this.Height / 2)));
+					g.DrawLine(pen, new Point((int)(this.Height / 2), this.Height - 1), new Point(this.Width - (int)(this.Height / 2) - 1, this.Height - 1));
+					g.DrawLine(pen, new Point(this.Width - 1, 0), new Point(this.Width - 1, (int)(this.Height / 2)));
+					g.DrawLine(pen, new Point(0, 0), new Point(0, (int)(this.Height / 2)));
 
-					ManagedBackBuffer.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-					ManagedBackBuffer.Graphics.DrawArc(pen, 0, 0, this.Height - 1, this.Height - 1, 90, 90);
-					ManagedBackBuffer.Graphics.DrawArc(pen, this.Width - this.Height, 0, this.Height-1, this.Height-1, 0, 90);
-					ManagedBackBuffer.Graphics.SmoothingMode = SmoothingMode.None;
+					g.SmoothingMode = SmoothingMode.AntiAlias;
+					g.DrawArc(pen, 0, 0, this.Height - 1, this.Height - 1, 90, 90);
+					g.DrawArc(pen, this.Width - this.Height, 0, this.Height-1, this.Height-1, 0, 90);
+					g.SmoothingMode = SmoothingMode.None;
 
-					ManagedBackBuffer.Graphics.DrawLine(pen, new Point(0, 0), new Point(this.Width - 1, 0));
+					g.DrawLine(pen, new Point(0, 0), new Point(this.Width - 1, 0));
 
-					ManagedBackBuffer.Graphics.DrawLine(penGr, new Point((int)(this.Width / 3), (int)(this.Height / 2)), new Point((int)(this.Width / 3), this.Height-2));
+					g.DrawLine(penGr, new Point((int)(this.Width / 3), (int)(this.Height / 2)), new Point((int)(this.Width / 3), this.Height-2));
 
-					DrawColorBar(new Point((int)(this.Width / 3) + 2, (int)(this.Height / 2) + 2), new Size((int)((this.Width / 3 * 2) - (this.Height / 2 * 0.65)) - 5, (int)(this.Height / 2) - 5), _RodK);
+					DrawColorBar(g, new Point((int)(this.Width / 3) + 2, (int)(this.Height / 2) + 2), new Size((int)((this.Width / 3 * 2) - (this.Height / 2 * 0.65)) - 5, (int)(this.Height / 2) - 5), _RodK);
 
-					ManagedBackBuffer.Graphics.DrawString(pripl, SystemFonts.DefaultFont, textbrush, new RectangleF(((this.Width / 3) - priplsize.Width) / 2, ((this.Height / 2 - 1) - priplsize.Height) / 2 + (this.Height / 2), priplsize.Width, priplsize.Height + (this.Height / 2)));
+					g.DrawString(pripl, SystemFonts.DefaultFont, textbrush, new RectangleF(((this.Width / 3) - priplsize.Width) / 2, ((this.Height / 2 - 1) - priplsize.Height) / 2 + (this.Height / 2), priplsize.Width, priplsize.Height + (this.Height / 2)));
 
 					p.AddLine(new Point((int)(this.Height / 2), this.Height - 1), new Point(this.Width - (int)(this.Height / 2) - 1, this.Height - 1));
 					p.AddArc(this.Width - this.Height, 0, this.Height - 1, this.Height - 1, 0, 90);
@@ -452,23 +462,23 @@ namespace rabnet
 			}
 			else //Unknown gender;
 			{
-				DrawGenom(new Point(1, 0), new Size(this.Width - 2, (int)(this.Height / 2)), _OrderedGenom);
+				DrawGenom(g, new Point(1, 0), new Size(this.Width - 2, (int)(this.Height / 2)), _OrderedGenom);
 
-				ManagedBackBuffer.Graphics.DrawLine(pen, new Point(0, 0), new Point(0, this.Height - 1));
-				ManagedBackBuffer.Graphics.DrawLine(pen, new Point(0, 0), new Point(this.Width - 1, 0));
-				ManagedBackBuffer.Graphics.DrawLine(pen, new Point(this.Width - 1, 0), new Point(this.Width - 1, this.Height - 1));
-				ManagedBackBuffer.Graphics.DrawLine(pen, new Point(0, this.Height - 1), new Point(this.Width - 1, this.Height - 1));
+				g.DrawLine(pen, new Point(0, 0), new Point(0, this.Height - 1));
+				g.DrawLine(pen, new Point(0, 0), new Point(this.Width - 1, 0));
+				g.DrawLine(pen, new Point(this.Width - 1, 0), new Point(this.Width - 1, this.Height - 1));
+				g.DrawLine(pen, new Point(0, this.Height - 1), new Point(this.Width - 1, this.Height - 1));
 
-				ManagedBackBuffer.Graphics.DrawLine(penGr, new Point((int)(this.Width / 3), (int)(this.Height / 2)), new Point((int)(this.Width / 3), this.Height - 2));
+				g.DrawLine(penGr, new Point((int)(this.Width / 3), (int)(this.Height / 2)), new Point((int)(this.Width / 3), this.Height - 2));
 
-				DrawColorBar(new Point((int)(this.Width / 3) + 2, (int)(this.Height / 2) + 2), new Size((int)((this.Width / 3 * 2) - (this.Height / 2 * 0.65)) - 5, (int)(this.Height / 2) - 5), _RodK);
+				DrawColorBar(g, new Point((int)(this.Width / 3) + 2, (int)(this.Height / 2) + 2), new Size((int)((this.Width / 3 * 2) - (this.Height / 2 * 0.65)) - 5, (int)(this.Height / 2) - 5), _RodK);
 
-				ManagedBackBuffer.Graphics.DrawString(pripl, SystemFonts.DefaultFont, textbrush, new RectangleF(((this.Width / 3) - priplsize.Width) / 2, ((this.Height / 2 - 1) - priplsize.Height) / 2 + (this.Height / 2), priplsize.Width, priplsize.Height + (this.Height / 2)));
+				g.DrawString(pripl, SystemFonts.DefaultFont, textbrush, new RectangleF(((this.Width / 3) - priplsize.Width) / 2, ((this.Height / 2 - 1) - priplsize.Height) / 2 + (this.Height / 2), priplsize.Width, priplsize.Height + (this.Height / 2)));
 
 				p.AddRectangle(new Rectangle(0,0,this.Width,this.Height));
 
 			}
-			ManagedBackBuffer.Graphics.DrawLine(pen, new Point(0, (int)(this.Height / 2)), new Point(this.Width - 1, (int)(this.Height / 2)));
+			g.DrawLine(pen, new Point(0, (int)(this.Height / 2)), new Point(this.Width - 1, (int)(this.Height / 2)));
 
 
 			p.CloseFigure();
@@ -477,28 +487,28 @@ namespace rabnet
 			{
 				Color cl = Color.FromArgb(100,SystemColors.MenuHighlight);
 				SolidBrush brush = new SolidBrush(cl);
-				ManagedBackBuffer.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-				ManagedBackBuffer.Graphics.FillPath(brush, p);
-				ManagedBackBuffer.Graphics.SmoothingMode = SmoothingMode.None;
+				g.SmoothingMode = SmoothingMode.AntiAlias;
+				g.FillPath(brush, p);
+				g.SmoothingMode = SmoothingMode.None;
 				//				pen = new Pen(Color.Red,2);
 //				pen.Thickness = 1;
 			} else if (_Highlight)
 			{
 				Color cl = Color.FromArgb(50, SystemColors.ControlText);
 				SolidBrush brush = new SolidBrush(cl);
-				ManagedBackBuffer.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-				ManagedBackBuffer.Graphics.FillPath(brush, p);
-				ManagedBackBuffer.Graphics.SmoothingMode = SmoothingMode.None;
+				g.SmoothingMode = SmoothingMode.AntiAlias;
+				g.FillPath(brush, p);
+				g.SmoothingMode = SmoothingMode.None;
 				//				pen = new Pen(Color.Red,2);
 				//				pen.Thickness = 1;
 			}
 
 
 /*
-			ManagedBackBuffer.Graphics.DrawLine(pen, new Point(1, 1), new Point(1, this.Height - 2));
-			ManagedBackBuffer.Graphics.DrawLine(pen, new Point(1, 1), new Point(this.Width - 2, 1));
-			ManagedBackBuffer.Graphics.DrawLine(pen, new Point(this.Width - 2, 1), new Point(this.Width - 2, this.Height - 2));
-			ManagedBackBuffer.Graphics.DrawLine(pen, new Point(1, this.Height - 2), new Point(this.Width - 2, this.Height - 2));
+			g.DrawLine(pen, new Point(1, 1), new Point(1, this.Height - 2));
+			g.DrawLine(pen, new Point(1, 1), new Point(this.Width - 2, 1));
+			g.DrawLine(pen, new Point(this.Width - 2, 1), new Point(this.Width - 2, this.Height - 2));
+			g.DrawLine(pen, new Point(1, this.Height - 2), new Point(this.Width - 2, this.Height - 2));
 */
 		}
 
@@ -508,9 +518,12 @@ namespace rabnet
 		{
 			_Active = true;
 			RedrawMe();
-			if (_ParentPair != null)
+			if (this._RabbitID != 0)
 			{
-				_ParentPair.SearchFromChild(this._RabbitID,1);
+				if (_ParentPair != null)
+				{
+					_ParentPair.SearchFromChild(this._RabbitID, 1);
+				}
 			}
 		}
 
@@ -518,9 +531,12 @@ namespace rabnet
 		{
 			_Active = false;
 			RedrawMe();
-			if (_ParentPair != null)
+			if (this._RabbitID != 0)
 			{
-				_ParentPair.SearchFromChild(this._RabbitID, 2);
+				if (_ParentPair != null)
+				{
+					_ParentPair.SearchFromChild(this._RabbitID, 2);
+				}
 			}
 		}
 

@@ -20,6 +20,7 @@ namespace rabnet
 		private float _arroww = 8;
 		private Boolean _start = false;
 		private Boolean _end = true;
+		private Graphics gr;
 
 		public ArrowImg()
 		{
@@ -86,69 +87,71 @@ namespace rabnet
 			set { this.Height = (int)(value + _arroww); }
 		}
 
-		public override void DrawingProc()
+		public override void DrawingProc(Graphics g)
 		{
 			Pen pen = new Pen(Color.Black);
 			Pen penGr = new Pen(Color.DarkGray);
 
 			SolidBrush brush = new SolidBrush(Color.Black);
 
+
+
 			if (_left)
 			{
-				ManagedBackBuffer.Graphics.DrawLine(pen, this.Width - 1, _top + _arroww / 2, _arroww / 2, _top + _arroww / 2);
+				g.DrawLine(pen, this.Width - 1, _top + _arroww / 2, _arroww / 2, _top + _arroww / 2);
 
-				ManagedBackBuffer.Graphics.DrawLine(pen, _arroww / 2, _top + _arroww / 2, _arroww / 2, this.Height - 1);
+				g.DrawLine(pen, _arroww / 2, _top + _arroww / 2, _arroww / 2, this.Height - 1);
 
 				if (_end)
 				{
-					ManagedBackBuffer.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-					ManagedBackBuffer.Graphics.FillPolygon(brush, new PointF[] {	new PointF(_arroww / 2, this.Height - 1), 
+					g.SmoothingMode = SmoothingMode.AntiAlias;
+					g.FillPolygon(brush, new PointF[] {	new PointF(_arroww / 2, this.Height - 1), 
 																					new PointF(0, this.Height - 1 - _arrowh), 
 																					new PointF(_arroww, this.Height - 1 - _arrowh) });
-					ManagedBackBuffer.Graphics.SmoothingMode = SmoothingMode.None;
+					g.SmoothingMode = SmoothingMode.None;
 				}
 
 				if (_start)
 				{
-					ManagedBackBuffer.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-					ManagedBackBuffer.Graphics.FillPolygon(brush, new PointF[] {	new PointF(this.Width, _top + _arroww / 2),
+					g.SmoothingMode = SmoothingMode.AntiAlias;
+					g.FillPolygon(brush, new PointF[] {	new PointF(this.Width, _top + _arroww / 2),
 																					new PointF(this.Width - _arrowh, _top), 
 																					new PointF(this.Width - _arrowh, _top + _arroww)});
-					ManagedBackBuffer.Graphics.SmoothingMode = SmoothingMode.None;
+					g.SmoothingMode = SmoothingMode.None;
 				}
 
 			}
 			if (_right)
 			{
-				ManagedBackBuffer.Graphics.DrawLine(pen, this.Width - 1 - _arroww / 2, _top + _arroww / 2, 0, _top + _arroww / 2);
+				g.DrawLine(pen, this.Width - 1 - _arroww / 2, _top + _arroww / 2, 0, _top + _arroww / 2);
 
-				ManagedBackBuffer.Graphics.DrawLine(pen, this.Width - 1 - _arroww / 2, _top + _arroww / 2, this.Width - 1 - _arroww / 2, this.Height - 1);
+				g.DrawLine(pen, this.Width - 1 - _arroww / 2, _top + _arroww / 2, this.Width - 1 - _arroww / 2, this.Height - 1);
 
 				if (_end)
 				{
-					ManagedBackBuffer.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-					ManagedBackBuffer.Graphics.FillPolygon(brush, new PointF[] {	new PointF(this.Width - 1 - _arroww / 2, this.Height - 1), 
+					g.SmoothingMode = SmoothingMode.AntiAlias;
+					g.FillPolygon(brush, new PointF[] {	new PointF(this.Width - 1 - _arroww / 2, this.Height - 1), 
 																					new PointF(this.Width - 1 - _arroww, this.Height - 1 - _arrowh), 
 																					new PointF(this.Width - 1, this.Height - 1 - _arrowh) });
-					ManagedBackBuffer.Graphics.SmoothingMode = SmoothingMode.None;
+					g.SmoothingMode = SmoothingMode.None;
 				}
 
 				if (_start)
 				{
-					ManagedBackBuffer.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-					ManagedBackBuffer.Graphics.FillPolygon(brush, new PointF[] {	new PointF(0, _top + _arroww / 2),
+					g.SmoothingMode = SmoothingMode.AntiAlias;
+					g.FillPolygon(brush, new PointF[] {	new PointF(0, _top + _arroww / 2),
 																					new PointF(_arrowh, _top), 
 																					new PointF(_arrowh, _top + _arroww)});
-					ManagedBackBuffer.Graphics.SmoothingMode = SmoothingMode.None;
+					g.SmoothingMode = SmoothingMode.None;
 				}
 
 			}
 
 
-//			ManagedBackBuffer.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+			//			g.SmoothingMode = SmoothingMode.AntiAlias;
 
 
-//			ManagedBackBuffer.Graphics.SmoothingMode = SmoothingMode.None;
+			//			g.SmoothingMode = SmoothingMode.None;
 		}
 
 		protected override void OnSizeChanged(EventArgs e)

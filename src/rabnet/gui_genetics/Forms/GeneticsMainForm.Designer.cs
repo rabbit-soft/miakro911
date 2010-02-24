@@ -31,9 +31,10 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GeneticsMainForm));
 			this.label1 = new System.Windows.Forms.Label();
 			this.button1 = new System.Windows.Forms.Button();
+			this.rabbitField1 = new rabnet.Components.RabbitField();
 			this.rabbitBar1 = new rabnet.RabbitBar();
 			this.rabbitPair1 = new rabnet.RabbitPair();
-			this.rabbitField1 = new rabnet.Components.RabbitField();
+			this.button2 = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -54,6 +55,18 @@
 			this.button1.Text = "button1";
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.button1_Click);
+			// 
+			// rabbitField1
+			// 
+			this.rabbitField1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+						| System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.rabbitField1.AutoScroll = true;
+			this.rabbitField1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.rabbitField1.Location = new System.Drawing.Point(6, 12);
+			this.rabbitField1.Name = "rabbitField1";
+			this.rabbitField1.Size = new System.Drawing.Size(1178, 396);
+			this.rabbitField1.TabIndex = 4;
 			// 
 			// rabbitBar1
 			// 
@@ -84,19 +97,22 @@
 			this.rabbitPair1.Size = new System.Drawing.Size(150, 83);
 			this.rabbitPair1.TabIndex = 2;
 			// 
-			// rabbitField1
+			// button2
 			// 
-			this.rabbitField1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.rabbitField1.Location = new System.Drawing.Point(75, 12);
-			this.rabbitField1.Name = "rabbitField1";
-			this.rabbitField1.Size = new System.Drawing.Size(738, 396);
-			this.rabbitField1.TabIndex = 4;
+			this.button2.Location = new System.Drawing.Point(691, 435);
+			this.button2.Name = "button2";
+			this.button2.Size = new System.Drawing.Size(75, 23);
+			this.button2.TabIndex = 5;
+			this.button2.Text = "button2";
+			this.button2.UseVisualStyleBackColor = true;
+			this.button2.Click += new System.EventHandler(this.button2_Click);
 			// 
 			// GeneticsMainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1196, 533);
+			this.Controls.Add(this.button2);
 			this.Controls.Add(this.rabbitField1);
 			this.Controls.Add(this.rabbitBar1);
 			this.Controls.Add(this.rabbitPair1);
@@ -119,5 +135,6 @@
 		private RabbitPair rabbitPair1;
 		private RabbitBar rabbitBar1;
 		private rabnet.Components.RabbitField rabbitField1;
+		private System.Windows.Forms.Button button2;
 	}
 }

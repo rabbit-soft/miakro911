@@ -15,11 +15,8 @@ namespace rabnet
 	public partial class CustomGraphCmp : UserControl
 	{
 		private Graphics Graph;
-		const BufferedGraphics NO_MANAGED_BACK_BUFFER = null;
-		private BufferedGraphicsContext GraphicManager;
-		protected BufferedGraphics ManagedBackBuffer;
 
-		public virtual void DrawingProc()
+		public virtual void DrawingProc(Graphics g)
 		{
 		}
 
@@ -27,12 +24,12 @@ namespace rabnet
 		{
 			InitializeComponent();
 
+			this.SetStyle(
+			 ControlStyles.UserPaint |
+			 ControlStyles.AllPaintingInWmPaint |
+			 ControlStyles.OptimizedDoubleBuffer, true);
+
 			Graph = CreateGraphics();
-			Application.ApplicationExit += new EventHandler(MemoryCleanup);
-			SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-			GraphicManager = BufferedGraphicsManager.Current;
-			GraphicManager.MaximumBuffer = new Size(this.Width + 1, this.Height + 1);
-			ManagedBackBuffer = GraphicManager.Allocate(this.CreateGraphics(), ClientRectangle);
 			InitBuffer();
 		}
 
@@ -40,47 +37,25 @@ namespace rabnet
 		{
 			SolidBrush BgBrush = new SolidBrush(this.BackColor);
 			//SolidBrush BgBrush = new SolidBrush(Color.Pink);
-			ManagedBackBuffer.Graphics.FillRectangle(BgBrush, new Rectangle(0, 0, this.Width, this.Height));
-			DrawingProc();
+			Graph.FillRectangle(BgBrush, new Rectangle(0, 0, this.Width, this.Height));
+			DrawingProc(Graph);
 		}
 
-		private void MemoryCleanup(object sender, EventArgs e)
-		{
-			// clean up the memory
-
-			if (ManagedBackBuffer != NO_MANAGED_BACK_BUFFER)
-				ManagedBackBuffer.Dispose();
-		}
 
 		protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
 		{
 			// Draw On ManagedBackBuffer.Graphics;
 			//Debug.WriteLine(count++);
 			//base.OnPaint(e);
-			ManagedBackBuffer.Render(Graph);
-		}
-
-		private void CustomGraphCmp_Resize(object sender, EventArgs e)
-		{
-			if (ManagedBackBuffer != NO_MANAGED_BACK_BUFFER)
-				ManagedBackBuffer.Dispose();
-
-
-			GraphicManager.MaximumBuffer =
-				  new Size(this.Width + 1, this.Height + 1);
-
-			ManagedBackBuffer =
-				GraphicManager.Allocate(this.CreateGraphics(),
-												ClientRectangle);
-			InitBuffer();
-			//base.OnPaint(e);
-			ManagedBackBuffer.Render(Graph);
+//			InitBuffer();
+			SolidBrush BgBrush = new SolidBrush(this.BackColor);
+			e.Graphics.FillRectangle(BgBrush, new Rectangle(0, 0, this.Width, this.Height));
+			DrawingProc(e.Graphics);
 		}
 
 		public virtual void RedrawMe()
 		{
 			InitBuffer();
-			ManagedBackBuffer.Render(Graph);
 		}
 
 		protected override void OnSizeChanged(EventArgs e)
@@ -97,6 +72,11 @@ namespace rabnet
 			}
 			this.Size = new Size(w, h);
 			base.OnSizeChanged(e);
+			if (Graph != null)
+			{
+				Graph.Dispose();
+				Graph = CreateGraphics();
+			}
 		}
 
 	}

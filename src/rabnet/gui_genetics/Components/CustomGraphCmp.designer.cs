@@ -37,7 +37,6 @@
 			this.BackColor = System.Drawing.SystemColors.Control;
 			this.Name = "CustomGraphCmp";
 			this.Size = new System.Drawing.Size(31, 33);
-			this.Resize += new System.EventHandler(this.CustomGraphCmp_Resize);
 			this.ResumeLayout(false);
 
 		}

@@ -25,7 +25,6 @@ namespace rabnet
 
 			this.Text = string.Format("Родословная '{0}' ({1:D})", _Rabbit.fullname, _RabbitID);
 
-			rabbitField1.DrawRabbit(_Rabbit);
 
 		}
 
@@ -48,6 +47,11 @@ namespace rabnet
 			{
 				GeneticsManager.RemoveForm(_RabbitID);
 			}
+		}
+
+		private void button2_Click(object sender, EventArgs e)
+		{
+			rabbitField1.DrawRabbit(_Rabbit);
 		}
 	}
 }

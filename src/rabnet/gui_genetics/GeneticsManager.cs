@@ -47,11 +47,6 @@ namespace rabnet
 
 		}
 
-		public static void LinkEngine(RabNetEngine e)
-		{
-			Engine.set(e);
-		}
-
 		private static int _MaxFormsCount = 10;
 		public static int MaxFormsCount
 		{

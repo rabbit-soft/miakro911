@@ -9,8 +9,44 @@ using System.Windows.Forms;
 
 namespace rabnet
 {
-	public partial class RabbitPair : CustomGraphCmp
+	public partial class RabbitPair : UserControl
 	{
+
+		private OneRabbit _mom;
+		private OneRabbit _dad;
+		private Size _MySize;
+		private Rectangle _MyRect;
+		private int _MyCenter;
+		private Boolean _Debug = true;
+
+		public void SetMom(OneRabbit r)
+		{
+			if (r != null)
+			{
+				_mom = r;
+				FemaleRabbit.RabbitID = r.id;
+			}
+		}
+
+		public void SetDad(OneRabbit r)
+		{
+			if (r != null)
+			{
+				_dad = r;
+				MaleRabbit.RabbitID = r.id;
+			}
+		}
+
+		public OneRabbit GetMom()
+		{
+			return _mom;
+		}
+
+		public OneRabbit GetDad()
+		{
+			return _dad;
+		}
+
 		
 		public double FemalePlodK
 		{
@@ -251,26 +287,38 @@ namespace rabnet
 
 			if (_TreeChildFPair != null)
 			{
-				l = (int)(_TreeChildFPair.Left + (_TreeChildFPair.Width / 2) - (_TreeChildFSize.Width / 2));
-				b = (int)(_TreeChildFPair.Bottom);
+				l = (int)(_TreeChildFPair.Left + (_TreeChildFPair.Width / 2) - _TreeChildFCenter);
+				b = (int)(_TreeChildFPair.Top + _TreeChildFSize.Height);
 				c = (int)(this.Left - l + this.Width / 2);
 			}
 			if (_TreeChildMPair != null)
 			{
-				r = (int)(_TreeChildMPair.Left + (_TreeChildMPair.Width / 2) + (_TreeChildMSize.Width / 2));
-				b = (int)(_TreeChildMPair.Bottom);
+				r = (int)(_TreeChildMPair.Left + (_TreeChildMPair.Width / 2) + (_TreeChildMSize.Width -_TreeChildMCenter));
+				b = (int)(_TreeChildMPair.Top + _TreeChildMSize.Height);
 				c = (int)(this.Width / 2);
 			}
 			if ((_TreeChildFPair != null) && (_TreeChildMPair != null))
 			{
-				b = Math.Max((int)(_TreeChildFPair.Bottom), (int)(_TreeChildMPair.Bottom));
+				b = Math.Max((int)(_TreeChildFPair.Top + _TreeChildFSize.Height), (int)(_TreeChildMPair.Top + _TreeChildMSize.Height));
 				c = (int)((r - l) / 2);
 			}
 			Size s = new Size(r - l, b - t);
+			_MySize = s;
+			_MyRect = new Rectangle(l, t, r - l, b - t);
+			_MyCenter = c;
 			if (_TreeParentPair != null)
 			{
 				_TreeParentPair.TreeChildSizeUpdate(this._TreeGenderSide, s, c);
 			}
+		}
+
+		public Size GetSize(){
+			return _MySize;
+		}
+
+		public int GetCenter()
+		{
+			return _MyCenter;
 		}
 
 		public void ReplaceGenomeColors(Dictionary<int, Color> gcs)
@@ -296,11 +344,13 @@ namespace rabnet
 		public void SetTreeChildFPair(RabbitPair p)
 		{
 			_TreeChildFPair = p;
+
 			_TreeFArrow = new ArrowImg();
 			_TreeFArrow.Location = new Point(0, 0);
 			_TreeFArrow.SetLeft();
 			_TreeFArrow.SetBothEnds();
-			_ParentControl.Controls.Add(_TreeFArrow);
+			//_ParentControl.Controls.Add(_TreeFArrow);
+
 			p.SetTreeGenderSide(2);
 			p.SetTreeParentPair(this);
 			p.ReplaceGenomeColors(FemaleRabbit.GetGenomColors());
@@ -311,11 +361,13 @@ namespace rabnet
 		public void SetTreeChildMPair(RabbitPair p)
 		{
 			_TreeChildMPair = p;
+
 			_TreeMArrow = new ArrowImg();
 			_TreeMArrow.Location = new Point(0, 0);
 			_TreeMArrow.SetRight();
 			_TreeMArrow.SetBothEnds();
-			_ParentControl.Controls.Add(_TreeMArrow);
+			//_ParentControl.Controls.Add(_TreeMArrow);
+
 			p.SetTreeGenderSide(1);
 			p.SetTreeParentPair(this);
 			p.ReplaceGenomeColors(MaleRabbit.GetGenomColors());
@@ -369,7 +421,7 @@ namespace rabnet
 			return fres && mres;
 		}
 
-		public override void RedrawMe()
+		public void RedrawMe()
 		{
 			FemaleRabbit.RedrawMe();
 			MaleRabbit.RedrawMe();
@@ -379,6 +431,9 @@ namespace rabnet
 		public RabbitPair()
 		{
 			InitializeComponent();
+			_MyCenter = (int)(this.Width / 2);
+			_MySize = this.Size;
+			_MyRect = new Rectangle(this.Location, _MySize);
 			MaleRabbit.SetParentPair(this);
 			FemaleRabbit.SetParentPair(this);
 
@@ -388,6 +443,10 @@ namespace rabnet
 		{
 			UpdateChildMPos();
 			UpdateChildFPos();
+			if ((_TreeChildFPair == null) && (_TreeChildMPair == null))
+			{
+				ReportMySize();
+			}
 		}
 
 		public void SearchFromChild(int rid, int cmd)
@@ -403,6 +462,23 @@ namespace rabnet
 			if (_TreeChildMPair != null)
 			{
 				this._TreeChildMPair.SearchDown(rid, cmd);
+			}
+			if (_Debug)
+			{
+				Graphics g = _ParentControl.CreateGraphics();
+				if (cmd == 1)
+				{
+					//				_ParentControl.Invalidate();
+					g.DrawRectangle(Pens.Aqua, _MyRect);
+				}
+				if (cmd == 2)
+				{
+					g.DrawRectangle(Pens.Purple, _MyRect);
+					g.DrawLine(Pens.Red, this.Left + (int)(this.Width / 2) + _TreeChildMCenter + 20, this.Top, this.Left + (int)(this.Width / 2) + _TreeChildMCenter + 20, this.Bottom + 20);
+					g.DrawLine(Pens.Red, this.Left + (int)(this.Width / 2) - _TreeChildFSize.Width + _TreeChildFCenter - 20, this.Top, this.Left + (int)(this.Width / 2) - _TreeChildFSize.Width + _TreeChildFCenter - 20, this.Bottom + 20);
+					g.DrawLine(Pens.Green, _MyRect.Left + _MyCenter, this.Top, _MyRect.Left + _MyCenter, this.Top-20);
+				}
+				g.Dispose();
 			}
 		}
 
