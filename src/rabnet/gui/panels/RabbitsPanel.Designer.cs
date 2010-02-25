@@ -63,9 +63,9 @@
 			this.SelectAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.svidMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.realizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.GeneticsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.genTree = new System.Windows.Forms.TreeView();
-			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -113,6 +113,7 @@
 			this.listView1.ContextMenuStrip = this.actMenu;
 			this.listView1.FullRowSelect = true;
 			this.listView1.GridLines = true;
+			this.listView1.HideSelection = false;
 			this.listView1.Location = new System.Drawing.Point(3, 3);
 			this.listView1.Name = "listView1";
 			this.listView1.Size = new System.Drawing.Size(703, 544);
@@ -217,7 +218,7 @@
             this.toolStripSeparator1,
             this.GeneticsToolStripMenuItem});
 			this.actMenu.Name = "actMenu";
-			this.actMenu.Size = new System.Drawing.Size(285, 396);
+			this.actMenu.Size = new System.Drawing.Size(285, 374);
 			// 
 			// passportMenuItem
 			// 
@@ -337,6 +338,11 @@
 			this.realizeMenuItem.Text = "Выбранные кандидаты на реализацию";
 			this.realizeMenuItem.Click += new System.EventHandler(this.realizeMenuItem_Click);
 			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(281, 6);
+			// 
 			// GeneticsToolStripMenuItem
 			// 
 			this.GeneticsToolStripMenuItem.Name = "GeneticsToolStripMenuItem";
@@ -353,11 +359,6 @@
 			this.genTree.Name = "genTree";
 			this.genTree.Size = new System.Drawing.Size(134, 544);
 			this.genTree.TabIndex = 0;
-			// 
-			// toolStripSeparator1
-			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(281, 6);
 			// 
 			// RabbitsPanel
 			// 

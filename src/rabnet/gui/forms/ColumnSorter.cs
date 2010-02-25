@@ -24,7 +24,11 @@ namespace rabnet
             this.lv = lv;
             lv.ListViewItemSorter = this;
             option = op;
-            lv.ColumnClick += new ColumnClickEventHandler(this.OnColumnClick);
+			for (int i = 0; i < lv.Columns.Count; i++)
+			{
+				lv.Columns[i].AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
+			}
+			lv.ColumnClick += new ColumnClickEventHandler(this.OnColumnClick);
             lv.ColumnWidthChanged += new ColumnWidthChangedEventHandler(this.OnColumnWidthChanged);
             ListViewSaver.load(op, lv);
         }

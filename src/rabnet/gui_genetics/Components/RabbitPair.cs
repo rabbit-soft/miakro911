@@ -219,6 +219,7 @@ namespace rabnet
 		{
 			log.Debug("p 1");
 			_TreeParentPair = p;
+			PlaceMe();
 			log.Debug(string.Format("p 2 ({0:d})",this._id));
 			ReportMySize();
 			log.Debug("p 3");
@@ -259,6 +260,23 @@ namespace rabnet
 			}
 		}
 
+		private void PlaceMe()
+		{
+			CalcMySize();
+			if (_TreeGenderSide == 2)
+			{
+				this.Top = _TreeParentPair.Top + _TreeParentPair.Height + 10;
+				this.Left = _TreeParentPair.Left + (int)(_TreeParentPair.Width / 2) - this.Width + _MyCenter - (int)(this.Width / 2) - 20;
+			}
+
+			if (_TreeGenderSide == 1)
+			{
+				this.Top = _TreeParentPair.Top + _TreeParentPair.Height + 10;
+				this.Left = _TreeParentPair.Left + (int)(_TreeParentPair.Width / 2) + _MyCenter - (int)(this.Width / 2) + 20;
+			}
+			//ReportMySize();
+		}
+
 		private Size _TreeChildFSize;
 		private Size _TreeChildMSize;
 		private int _TreeChildFCenter;
@@ -270,14 +288,16 @@ namespace rabnet
 			{
 				_TreeChildMSize = s;
 				_TreeChildMCenter = c;
-				UpdateChildMPos();
+//				UpdateChildMPos();
 			}
 			if (g==2)
 			{
 				_TreeChildFSize = s;
 				_TreeChildFCenter = c;
-				UpdateChildFPos();
+//				UpdateChildFPos();
 			}
+			CalcMySize();
+			PlaceMe();
 			ReportMySize();
 		}
 
@@ -313,10 +333,10 @@ namespace rabnet
 			
 			if (_TreeParentPair != null)
 			{
-				if ((s != _MySize) || (c != _MyCenter))
-				{
+//				if ((s != _MySize) || (c != _MyCenter))
+//				{
 					_TreeParentPair.TreeChildSizeUpdate(this._TreeGenderSide, s, c);
-				}
+//				}
 			}
 		
 			_MySize = s;
@@ -495,13 +515,13 @@ namespace rabnet
 
 		private void RabbitPair_LocationChanged(object sender, EventArgs e)
 		{
-			UpdateChildMPos();
-			UpdateChildFPos();
+//			UpdateChildMPos();
+//			UpdateChildFPos();
 			if ((_TreeChildFPair == null) && (_TreeChildMPair == null))
 			{
 				ReportMySize();
 			}
-			//CalcMySize();
+			CalcMySize();
 		}
 
 		public void SearchFromChild(int rid, int cmd)

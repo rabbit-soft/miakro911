@@ -33,7 +33,7 @@ namespace rabnet
 
 		private Boolean _OrderedGenom = false;
 		/// <summary>
-		/// Tells to class if genom must be ordered.
+		/// Tells class if genom must be ordered.
 		/// </summary>
 		public Boolean OrderedGenom
 		{

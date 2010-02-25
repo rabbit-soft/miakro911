@@ -14,12 +14,10 @@ namespace rabnet
 		private float _arroww = 8;
 		private Boolean _start = false;
 		private Boolean _end = true;
-		private Graphics gr;
 
 		public ArrowImg()
 		{
 			InitializeComponent();
-			//_right = true;
 		}
 
 		public void SetBothEnds()
