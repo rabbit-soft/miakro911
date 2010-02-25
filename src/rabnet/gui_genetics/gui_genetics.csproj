@@ -64,12 +64,6 @@
     <Compile Include="Components\CustomGraphCmp.designer.cs">
       <DependentUpon>CustomGraphCmp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Components\CustomGraphCmpEx.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Components\CustomGraphCmpEx.designer.cs">
-      <DependentUpon>CustomGraphCmpEx.cs</DependentUpon>
-    </Compile>
     <Compile Include="Components\RabbitBar.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -113,9 +107,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Components\CustomGraphCmp.resx">
       <DependentUpon>CustomGraphCmp.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Components\CustomGraphCmpEx.resx">
-      <DependentUpon>CustomGraphCmpEx.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\RabbitBar.resx">
       <DependentUpon>RabbitBar.cs</DependentUpon>

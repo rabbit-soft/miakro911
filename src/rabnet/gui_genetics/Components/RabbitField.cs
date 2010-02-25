@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using log4net;
 
@@ -45,9 +40,11 @@ namespace rabnet.Components
 			rp.SetMom(fr);
 			rp.SetDad(mr);
 
+			rp._id = cnt;
+
 			this.Controls.Add(rp);
 			rp.SetParentControl(this);
-			GetPairData(rp, ref cnt);
+			GetPairData(rp, ref cnt, ref prnts);
 
 			CenterTree();
 
@@ -59,7 +56,7 @@ namespace rabnet.Components
 //			_RabbitPairs[0].Left = _RabbitPairs[0].GetSize().Width / 2;
 		}
 
-		public void GetPairData(RabbitPair mrp, ref int c)
+		public void GetPairData(RabbitPair mrp, ref int c, ref OneRabbit[] prnts)
 		{
 
 			log.Debug(string.Format("Getting data for rabbit pair. (cnt:{0:d})",c));
@@ -69,15 +66,22 @@ namespace rabnet.Components
 			label1.Invalidate();
 			if (mrp.GetMom() != null)
 			{
-				OneRabbit[] prnts = Engine.db().getParents(mrp.GetMom().id, 0);
+				log.Debug(string.Format("Rabbit pair #{0:d} has mom.", c));
+				prnts = Engine.db().getParents(mrp.GetMom().id, 0);
+				log.Debug(string.Format("#{0:d} 1", c));
+				//				OneRabbit[] prnts = Engine.db().getParents(mrp.GetMom().id, 0);
 
 				OneRabbit fr = prnts[0];
+				log.Debug(string.Format("#{0:d} 2", c));
 
 				OneRabbit mr = prnts[1];
+				log.Debug(string.Format("#{0:d} 3", c));
+
 
 				c++;
 
 				RabbitPair rp = new RabbitPair();
+				rp._id = c;
 
 				_RabbitPairs.Add(c, rp);
 
@@ -89,34 +93,55 @@ namespace rabnet.Components
 				this.Controls.Add(rp);
 				//this.Invalidate();
 
+				log.Debug(string.Format("Getting parents for rabbit pair #{0:d} mom.", c));
 
-				GetPairData(rp, ref c);
+
+				GetPairData(rp, ref c,ref prnts);
+				log.Debug(string.Format("Getting parents for rabbit pair #{0:d} mom.... Done", c));
 
 			}
 
 			if (mrp.GetDad() != null)
 			{
-				OneRabbit[] prnts = Engine.db().getParents(mrp.GetDad().id, 0);
+				log.Debug(string.Format("Rabbit pair #{0:d} has dad.", c));
+				prnts = Engine.db().getParents(mrp.GetDad().id, 0);
+				log.Debug(string.Format("#{0:d} 1", c));
+				//				OneRabbit[] prnts = Engine.db().getParents(mrp.GetDad().id, 0);
 
 				OneRabbit fr = prnts[0];
+				log.Debug(string.Format("#{0:d} 2", c));
 
 				OneRabbit mr = prnts[1];
+				log.Debug(string.Format("#{0:d} 3", c));
+
+//				log.Debug(prnts.ToString());
 
 				c++;
 
 				RabbitPair rp = new RabbitPair();
+				rp._id = c;
+
+				log.Debug(string.Format("#{0:d} 4", c));
 
 				_RabbitPairs.Add(c, rp);
+				log.Debug(string.Format("#{0:d} 5", c));
 
 				rp.SetMom(fr);
+				log.Debug(string.Format("#{0:d} 6", c));
 				rp.SetDad(mr);
+				log.Debug(string.Format("#{0:d} 7", c));
 
 				rp.SetParentControl(this);
+				log.Debug(string.Format("#{0:d} 8", c));
 				mrp.SetTreeChildMPair(rp);
+				log.Debug(string.Format("#{0:d} 9", c));
 				this.Controls.Add(rp);
 				//this.Invalidate();
 
-				GetPairData(rp, ref c);
+				log.Debug(string.Format("Getting parents for rabbit pair #{0:d} dad.", c));
+	
+				GetPairData(rp, ref c, ref prnts);
+				log.Debug(string.Format("Getting parents for rabbit pair #{0:d} dad.... Done", c));
 
 			}
 

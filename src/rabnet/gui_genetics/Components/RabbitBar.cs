@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 
 namespace rabnet
@@ -350,14 +345,14 @@ namespace rabnet
 				foreach (string g in genoms)
 				{
 
-					try
-					{
-						cl = _GenomColors[Convert.ToInt32(g)];
-					}
+/*					try
+					{*/
+//						cl = _GenomColors[Convert.ToInt32(g)];
+/*					}
 					catch (KeyNotFoundException)
-					{
+					{*/
 						cl = Color.White;
-					}
+/*					}*/
 					SolidBrush brush = new SolidBrush(cl);
 
 					gr.FillRectangle(brush, new RectangleF(point.X+cgl,point.Y+0,gl,size.Height));
