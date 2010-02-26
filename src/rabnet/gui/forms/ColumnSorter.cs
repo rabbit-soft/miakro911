@@ -87,8 +87,11 @@ namespace rabnet
             for (int i = 0; i < intSorts.Length;i++ )
                 if (intSorts[i] == ColumnToSort)
                 {
-                    int i1 = int.Parse(listviewX.SubItems[ColumnToSort].Text);
-                    int i2 = int.Parse(listviewY.SubItems[ColumnToSort].Text);
+                    int i1, i2;
+                    if (listviewX.SubItems[ColumnToSort].Text == "-") i1= 0;
+                        else i1 = int.Parse(listviewX.SubItems[ColumnToSort].Text);
+                    if (listviewY.SubItems[ColumnToSort].Text == "-") i2 = 0;
+                        else i2 = int.Parse(listviewY.SubItems[ColumnToSort].Text);
                     compareResult=i1 - i2;
                     if (OrderOfSort == SortOrder.Ascending)
                     {
