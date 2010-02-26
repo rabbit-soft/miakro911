@@ -133,6 +133,7 @@ namespace rabnet
                 genTree.Nodes.Clear();
                 return;
             }
+            //проверка дерева кроликов на совпадения
             for (int ind = 0; ind < genTree.Nodes.Count; ind++)
             {
                 int len ;
@@ -151,13 +152,20 @@ namespace rabnet
             while (genTree.Nodes.Count > gentree)
                 genTree.Nodes.RemoveAt(gentree);
             TreeData dt = Engine.db().rabbitGenTree((int)listView1.SelectedItems[0].Tag);
-            if (dt!=null)
+            if (dt != null & dt.caption != null)
             {
                 TreeNode tn = genTree.Nodes.Insert(0, dt.caption);
                 tn.ForeColor = Color.Blue;
                 insertNode(tn, dt);
                 tn.ExpandAll();
                 tn.EnsureVisible();
+            }
+            else
+            {
+                MessageBox.Show(@"Не возможно найти информацию по данной записи.
+Возможно данного кролика списал другой сетевой пользователь программы.
+Во избежании проблем, придется обновить Лист поголовья", "Не могу найти запись");
+                rsb.run();
             }
         }
 

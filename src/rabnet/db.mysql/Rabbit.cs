@@ -714,9 +714,9 @@ WHERE r_id={4:d};", farm, tier_id, sec, ntr,rabbit);
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"INSERT INTO rabbits
 (r_parent,r_father,r_mother,r_name,r_surname,r_secname,r_sex,r_bon,r_okrol,r_breed,r_rate,r_group,
-r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date) SELECT 
+r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date,r_notes) SELECT 
 {1:d},r_father,r_mother,0,r_surname,r_secname,r_sex,r_bon,r_okrol,r_breed,r_rate,{2:d},
-r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date
+r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date,r_notes
 FROM rabbits WHERE r_id={0:d};",rabbit,mom,count), sql);
             cmd.ExecuteNonQuery();
             int nid = (int)cmd.LastInsertedId;
@@ -725,7 +725,7 @@ FROM rabbits WHERE r_id={0:d};",rabbit,mom,count), sql);
             if (sex != OneRabbit.RabbitSex.VOID)
                 setRabbitSex(sql, rabbit, sex);
             if (mom == 0 && farm != 0)
-                placeRabbit(sql, nid, farm, tier_id, sec);
+                placeRabbit(sql, nid, farm, tier_id, sec);            
             return nid;
         }
 
