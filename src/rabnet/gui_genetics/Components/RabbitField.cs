@@ -8,6 +8,7 @@ namespace rabnet.Components
 	public partial class RabbitField : UserControl
 	{
 		protected static readonly ILog log = LogManager.GetLogger(typeof(RabbitField));
+
 		private OneRabbit _RootRabbitData;
 		private RabbitBar _RootRabbit;
 		private Dictionary<int, RabbitPair> _RabbitPairs = new Dictionary<int, RabbitPair>();
@@ -52,7 +53,8 @@ namespace rabnet.Components
 
 		public void CenterTree()
 		{
-			_RabbitPairs[0].Left = _RabbitPairs[0].GetSize().Width;//_RabbitPairs[0].GetCenter()+(int)(_RabbitPairs[0].Width/2);
+//			_RabbitPairs[0].SearchDown(0, 3);
+//			_RabbitPairs[0].Left = _RabbitPairs[0].GetSize().Width+500;//_RabbitPairs[0].GetCenter()+(int)(_RabbitPairs[0].Width/2);
 //			_RabbitPairs[0].Left = _RabbitPairs[0].GetSize().Width / 2;
 		}
 
