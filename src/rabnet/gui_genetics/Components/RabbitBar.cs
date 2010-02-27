@@ -167,7 +167,7 @@ namespace rabnet
 			return valid;
 		}
 
-		private void DrawColorBar(Graphics gr, Point point, Size size, double k)
+		private void DrawColorBar(Graphics gr, Point point, Size size, float k)
 		{
 			Pen pen = new Pen(Color.Black);
 			Pen penGr = new Pen(Color.DarkGray);
@@ -176,8 +176,8 @@ namespace rabnet
 			gr.FillRectangle(brush,new Rectangle(point,size));
 
 
-			var rk = k - 50;
-			var gk = k;
+			float rk = k - 50;
+			float gk = k;
 			if (rk < 0)
 			{
 				rk = 0;
@@ -195,8 +195,8 @@ namespace rabnet
 				gk = 50;
 			}
 
-			var r = (int)(255 * rk / 50);
-			var g = (int)(255 * gk / 50);
+			int r = (int)(255 * rk / 50);
+			int g = (int)(255 * gk / 50);
 
 
 			brush = new SolidBrush(Color.FromArgb(255,255-r,g,0));
