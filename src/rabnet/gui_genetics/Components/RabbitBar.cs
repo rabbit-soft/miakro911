@@ -117,8 +117,8 @@ namespace rabnet
 			}
 		}
 
-		private double _PlodK = 0;
-		public double PlodK
+		private float _PlodK = 0;
+		public float PlodK
 		{
 			get { return _PlodK; }
 			set 
@@ -128,8 +128,8 @@ namespace rabnet
 			} 
 		}
 
-		private double _RodK = 0;
-		public double RodK
+		private float _RodK = 0;
+		public float RodK
 		{
 			get { return _RodK; }
 			set
