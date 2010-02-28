@@ -84,7 +84,7 @@ namespace rabnet
 
             for (int ind = 0; ind < genTree.Nodes.Count; ind++)
             {
-                int len = genTree.Nodes[ind].Text.IndexOf(",");
+                int len = genTree.Nodes[ind].Text.IndexOf("-");
                 string str = genTree.Nodes[ind].Text.Remove(len);
                 if (listView1.SelectedItems[0].SubItems[0].Text.StartsWith(str))
                 {
