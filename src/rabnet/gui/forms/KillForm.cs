@@ -13,6 +13,7 @@ namespace rabnet
         private List<RabNetEngRabbit> rbs = new List<RabNetEngRabbit>();
         private List<int> youngers = new List<int>();
         bool confirm = true;
+        private ListViewColumnSorter cs = null;
         public KillForm()
         {
             InitializeComponent();
@@ -23,6 +24,7 @@ namespace rabnet
             comboBox1.Items.Add("");
             for (int i = 0; i < c.Count; i++)
                 comboBox1.Items.Add(c[i+3]);
+            cs = new ListViewColumnSorter(listView1, new int[] { 3, 4, 5 }, Options.OPT_ID.KILL_LIST);
             update();
         }
 
@@ -67,6 +69,7 @@ namespace rabnet
 
         public void update()
         {
+            cs.Prepare();
             listView1.Items.Clear();
             foreach (RabNetEngRabbit r in rbs)
             {
@@ -81,7 +84,8 @@ namespace rabnet
                 li.SubItems.Add(r.group.ToString());
                 li.SubItems.Add(r.group.ToString());
             }
-            listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            //listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            cs.Restore();
             updateLabels();
         }
 

@@ -147,6 +147,7 @@ namespace rabnet
         {
             setSex(1);
             maleStatus.SelectedIndex = rab.status;
+            maleStatus.Enabled = rab.age > 100 && rab.name != 0;
             label7.Text = "Статус: " + maleStatus.Text;
             if (rab.group != 1) return;
             tabControl1.TabPages.Add(malePage);

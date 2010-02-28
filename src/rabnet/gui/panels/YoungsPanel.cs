@@ -18,7 +18,7 @@ namespace rabnet
         public YoungsPanel(RabStatusBar sb)
             : base(sb, null)
         {
-            cs = new ListViewColumnSorter(listView1, new int[] { 1,2, 9 },Options.OPT_ID.YOUNG_LIST);
+            cs = new ListViewColumnSorter(listView1, new int[] { 1,2, 8 },Options.OPT_ID.YOUNG_LIST);
             listView1.ListViewItemSorter = null;
         }
 
@@ -51,15 +51,12 @@ namespace rabnet
             li.Tag = rab.fid;
             li.SubItems.Add(rab.fcount.ToString());
             li.SubItems.Add(rab.fage.ToString());
-            li.SubItems.Add("");
             li.SubItems.Add(rab.fsex);
             li.SubItems.Add(rab.fbreed);
             li.SubItems.Add(rab.faddress);
             li.SubItems.Add(rab.fcls);
             li.SubItems.Add(rab.mom);
             li.SubItems.Add(rab.fneighbours==0?"-":rab.fneighbours.ToString());
-            li.SubItems.Add("");
-            li.SubItems.Add(rab.fnotes);
         }
 
         private void insertNode(TreeNode nd, TreeData data)

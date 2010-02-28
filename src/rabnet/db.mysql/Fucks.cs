@@ -112,7 +112,7 @@ female,malewait,
             {
                 f.addFuck(rd.GetString("fullname"), rd.GetInt32("r_id"), rd.IsDBNull(5)?0:rd.GetInt32("fucks"), DateTime.MinValue,
                     DateTime.MinValue, "", rd.IsDBNull(6) ? 0 : rd.GetInt32("children"), rd.GetInt32("r_status"), rd.GetInt32("r_breed"),
-                    rd.GetString("genom"), "",0,0,false);
+                    rd.IsDBNull(4)?"":rd.GetString("genom"), "",0,0,false);
             }
             rd.Close();
             return f;
