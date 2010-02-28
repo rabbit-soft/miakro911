@@ -78,7 +78,7 @@ FROM fucks WHERE f_rabid={0:d} AND isdead(f_partner)=0 ORDER BY f_date);",rabbit
                     rd.IsDBNull(5)?DateTime.MinValue:rd.GetDateTime("f_date"),
                     rd.IsDBNull(6)?DateTime.MinValue:rd.GetDateTime("f_end_date"),
                     rd.GetString("f_state"),rd.GetInt32("f_children"),rd.GetInt32("f_dead"),
-                    rd.GetInt32("breed"),rd.GetString("genom"),rd.GetString("f_type"),
+                    rd.GetInt32("breed"),rd.IsDBNull(12)?"":rd.GetString("genom"),rd.GetString("f_type"),
                     rd.GetInt32("f_killed"),rd.GetInt32("f_added"),(rd.GetInt32("dead")==1)
                     );
 
