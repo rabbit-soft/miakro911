@@ -40,7 +40,16 @@ namespace rabnet
         }
         public void addRabbit(int id)
         {
-            addRabbit(Engine.get().getRabbit(id));
+            //try
+            {
+                addRabbit(Engine.get().getRabbit(id));
+            }
+            /*
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+             * */
         }
 
         public void addRabbit(RabNetEngRabbit r)
@@ -112,25 +121,32 @@ namespace rabnet
 
         private void button2_Click(object sender, EventArgs e)
         {
-            int i=0;
-            if (!doConfirm())
+            try
             {
-                DialogResult = DialogResult.None;
-                return;
-            }
-            foreach (RabNetEngRabbit r in rbs)
-            {
-                int cnt = int.Parse(listView1.Items[i].SubItems[5].Text);
-                if (cnt != 0)
+                int i = 0;
+                if (!doConfirm())
                 {
-                    int reason = 0;
-                    if (comboBox1.SelectedIndex > 0)
-                        reason = comboBox1.SelectedIndex + 2;
-                    r.killIt(dateDays1.DateValue,reason, textBox1.Text,cnt);
+                    DialogResult = DialogResult.None;
+                    return;
                 }
-                i++;
+                foreach (RabNetEngRabbit r in rbs)
+                {
+                    int cnt = int.Parse(listView1.Items[i].SubItems[5].Text);
+                    if (cnt != 0)
+                    {
+                        int reason = 0;
+                        if (comboBox1.SelectedIndex > 0)
+                            reason = comboBox1.SelectedIndex + 2;
+                        r.killIt(dateDays1.DateValue, reason, textBox1.Text, cnt);
+                    }
+                    i++;
+                }
+                Close();
             }
-            Close();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)

@@ -19,6 +19,8 @@ namespace rabnet
             initialHint();
             zns = Engine.db().catalogs().getZones();
             brd = Engine.db().catalogs().getBreeds();
+            if (brd.Count == 0)
+                throw new ApplicationException("Справочник пород пуст");
             fillZones();
         }
 
@@ -190,7 +192,7 @@ namespace rabnet
                 {
                     foreach (RabNetEngRabbit r2 in rbs)
                     {
-                        if (r2 != r && r2.newAddress == r.newAddress)
+                        if (r2 != r && r2.newAddress == r.newAddress && r.newAddress!="")
                         {
                             RabNetEngRabbit mom=r;
                             RabNetEngRabbit chl = r2;

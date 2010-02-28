@@ -427,7 +427,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             OneRabbit r = new OneRabbit(rd.GetInt32("r_id"), rd.GetString("r_sex"), rd.GetDateTime("r_born"), rd.GetInt32("r_rate"),
                 rd.GetString("r_flags"), rd.GetInt32("r_name"), rd.GetInt32("r_surname"), rd.GetInt32("r_secname"),
                 rd.GetString("address"), rd.GetInt32("r_group"), rd.GetInt32("r_breed"), rd.GetInt32("r_zone"),
-                rd.GetString("r_notes"), rd.GetString("genom"), rd.GetInt32("r_status"),
+                rd.IsDBNull(16)?"":rd.GetString("r_notes"), rd.IsDBNull(19)?"":rd.GetString("genom"), rd.GetInt32("r_status"),
                 rd.IsDBNull(1) ? DateTime.MinValue : rd.GetDateTime("r_last_fuck_okrol"),
                 rd.IsDBNull(3) ? "none" : rd.GetString("r_event"), rd.IsDBNull(2) ? DateTime.MinValue : rd.GetDateTime("r_event_date"),
                 rd.IsDBNull(4) ? 0 : rd.GetInt32("r_overall_babies"), rd.IsDBNull(5) ? 0 : rd.GetInt32("r_lost_babies"),

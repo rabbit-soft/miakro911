@@ -257,8 +257,15 @@ namespace rabnet
 
         private void newRab_Click(object sender, EventArgs e)
         {
-            if((new IncomeForm()).ShowDialog() == DialogResult.OK)
-                rsb.run();
+            try
+            {
+                if ((new IncomeForm()).ShowDialog() == DialogResult.OK)
+                    rsb.run();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void replaceMenuItem_Click(object sender, EventArgs e)

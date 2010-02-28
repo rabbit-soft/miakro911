@@ -38,6 +38,14 @@ namespace rabnet
         {
             public ExNotOne(String action) : base("Нельзя "+action+" группу крольчих") { }
         }
+        public class ExBadCount : ApplicationException
+        {
+            public ExBadCount():base("Неверное количество."){}
+        }
+        public class ExNoRabbit : ApplicationException
+        {
+            public ExNoRabbit() : base("Кролик не существует.") { }
+        }
 
         private int id;
         private OneRabbit rab = null;
@@ -48,6 +56,8 @@ namespace rabnet
             id = rid;
             eng = dl;
             rab = eng.db().getRabbit(rid);
+            if (rab == null)
+                throw new ExNoRabbit();
         }
         public RabNetEngRabbit(RabNetEngine dl,OneRabbit.RabbitSex sx)
         {
@@ -334,6 +344,7 @@ namespace rabnet
 
         public int clone(int count,int farm,int tier,int sec)
         {
+            if (group<count) throw new ExBadCount();
            int nid=eng.db().cloneRabbit(id, count, farm, tier, sec, OneRabbit.RabbitSex.VOID, 0);
            eng.logs().log(RabNetLogs.LogType.CLONE_GROUP, id, nid, "", "", String.Format("{0:d} и {1:d}",group-count,count));
            return nid;
