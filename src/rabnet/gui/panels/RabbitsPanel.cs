@@ -18,6 +18,7 @@ namespace rabnet
         const int SEXFIELD = 2;
         const int NAMEFIELD = 1;
         const int SELECTEDFIELD = 0;
+        private bool multiselect = false;
         public RabbitsPanel()
             : base()
         {
@@ -98,6 +99,8 @@ namespace rabnet
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            foreach (ListViewItem li in listView1.CheckedItems)
+                li.Selected = true;
             if (!manual)
                 return;
             makeSelectedCount();
@@ -270,10 +273,10 @@ namespace rabnet
 
         private void replaceMenuItem_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count < 1)
+            if (listView1.CheckedItems.Count < 1)
                 return;
             ReplaceForm rpf = new ReplaceForm();
-            foreach (ListViewItem li in listView1.SelectedItems)
+            foreach (ListViewItem li in listView1.CheckedItems)
                 rpf.addRabbit((int)li.Tag);
             if(rpf.ShowDialog() == DialogResult.OK)
                 rsb.run();
@@ -380,6 +383,13 @@ namespace rabnet
         private void listView1_MouseUp(object sender, MouseEventArgs e)
         {
             manual = true;
+            if (e.Button == MouseButtons.Right || multiselect)
+            {
+                foreach (ListViewItem li in listView1.SelectedItems)
+                    li.Checked = true;
+                foreach (ListViewItem li in listView1.SelectedItems)
+                    if (!li.Checked) li.Selected = false;
+            }
             listView1_SelectedIndexChanged(null, null);
         }
 
@@ -489,17 +499,18 @@ namespace rabnet
 
         private void realizeMenuItem_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count < 1) return;
+            if (listView1.CheckedItems.Count < 1) return;
             Filters f = new Filters();
-            f["cnt"] = listView1.SelectedItems.Count.ToString();
-            for (int i = 0; i < listView1.SelectedItems.Count; i++)
-                f["r" + i.ToString()] = ((int)listView1.SelectedItems[i].Tag).ToString();
+            f["cnt"] = listView1.CheckedItems.Count.ToString();
+            for (int i = 0; i < listView1.CheckedItems.Count; i++)
+                f["r" + i.ToString()] = ((int)listView1.CheckedItems[i].Tag).ToString();
             new ReportViewForm("Кандидаты на реализацию", "realization", Engine.db().makeReport(ReportType.Type.REALIZE, f)).ShowDialog();
         }
 
         private void listView1_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
             e.Item.SubItems[SELECTEDFIELD].Text = e.Item.Checked ? "" : " ";
+            e.Item.Selected = e.Item.Checked;
         }
 
 		private void GeneticsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -518,6 +529,24 @@ namespace rabnet
 				MessageBox.Show("Не найден модуль 'gui_genetics.dll'!\nПроверьте правильность установки программы.", "Модуль генетики", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
+
+        private void listView1_KeyDown(object sender, KeyEventArgs e)
+        {
+            multiselect = (e.Control || e.Shift);
+        }
+
+        private void listView1_KeyUp(object sender, KeyEventArgs e)
+        {
+            multiselect = (e.Control || e.Shift);
+        }
+
+        private void снятьВыделениеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem li in listView1.SelectedItems)
+                li.Checked = li.Selected = false;
+            foreach (ListViewItem li in listView1.CheckedItems)
+                li.Checked = li.Selected = false;
+        }
 
     }
 }
