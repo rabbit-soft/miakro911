@@ -91,18 +91,24 @@ namespace rabnet
                     if (listviewX.SubItems[ColumnToSort].Text.IndexOf(".") != -1 & listviewX.SubItems[ColumnToSort].Text.IndexOf(".") != -1)
                     {
                         i1 = int.Parse(listviewX.SubItems[ColumnToSort].Text.Substring(0, 2));
-                        i1 += int.Parse(listviewX.SubItems[ColumnToSort].Text.Substring(3, 2)) * 12;
-                        i1 += (int.Parse(listviewX.SubItems[ColumnToSort].Text.Substring(6, 4)) - 1970) * 365;
+                        i1 += addDaysByMonth(int.Parse(listviewX.SubItems[ColumnToSort].Text.Substring(3, 2)),int.Parse(listviewX.SubItems[ColumnToSort].Text.Substring(6, 4)));
+                        i1 += (int.Parse(listviewX.SubItems[ColumnToSort].Text.Substring(6, 4)) - 1980) * 365;
                         i2 = int.Parse(listviewY.SubItems[ColumnToSort].Text.Substring(0, 2));
-                        i2 += int.Parse(listviewY.SubItems[ColumnToSort].Text.Substring(3, 2)) * 12;
-                        i2 += (int.Parse(listviewY.SubItems[ColumnToSort].Text.Substring(6, 4)) - 1970) * 365;
+                        i2 += addDaysByMonth( int.Parse(listviewY.SubItems[ColumnToSort].Text.Substring(3, 2)),int.Parse(listviewY.SubItems[ColumnToSort].Text.Substring(6, 4)));
+                        i2 += (int.Parse(listviewY.SubItems[ColumnToSort].Text.Substring(6, 4)) - 1980) * 365;
                     }
                     else
                     {
-                        if (listviewX.SubItems[ColumnToSort].Text == "-") i1 = 0;
-                        else i1 = int.Parse(listviewX.SubItems[ColumnToSort].Text);
-                        if (listviewY.SubItems[ColumnToSort].Text == "-") i2 = 0;
-                        else i2 = int.Parse(listviewY.SubItems[ColumnToSort].Text);
+                        if (listviewX.SubItems[ColumnToSort].Text == "-" & listviewY.SubItems[ColumnToSort].Text == "-")
+                        {
+                            i1 = 0;
+                            i2 = 0;
+                        }
+                        else
+                        {
+                            i1 = int.Parse(listviewX.SubItems[ColumnToSort].Text);
+                            i2 = int.Parse(listviewY.SubItems[ColumnToSort].Text);
+                        }
                     }
                     compareResult=i1 - i2;
                     if (OrderOfSort == SortOrder.Ascending)
@@ -148,7 +154,6 @@ namespace rabnet
             }
         }
 
-
         public SortOrder Order
         {
             set
@@ -165,6 +170,29 @@ namespace rabnet
         {
             if (!lv.Focused) return;
             ListViewSaver.save(option, lv);
+        }
+
+        private int addDaysByMonth(int month,int year)
+        {
+            int february;
+            if (year % 4 == 0) february = 29;
+                else february = 28;
+            switch (month)
+            {
+                case 1: return 0;
+                case 2: return 31;
+                case 3: return 31 + february;
+                case 4: return 31 + february + 31;
+                case 5: return 31 + february + 31 + 30;
+                case 6: return 31 + february + 31 + 30 + 31;
+                case 7: return 31 + february + 31 + 30 + 31 + 30;
+                case 8: return 31 + february + 31 + 30 + 31 + 30 + 31;
+                case 9: return 31 + february + 31 + 30 + 31 + 30 + 31 + 31;
+                case 10: return 31 + february + 31 + 30 + 31 + 30 + 31 + 31 + 30;
+                case 11: return 31 + february + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31;
+                case 12: return 31 + february + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30;
+                default: return 0;
+            }
         }
 
     }
