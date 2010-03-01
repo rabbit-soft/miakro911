@@ -76,9 +76,9 @@
 			this.rabbitBar1.Location = new System.Drawing.Point(196, 481);
 			this.rabbitBar1.Name = "rabbitBar1";
 			this.rabbitBar1.OrderedGenom = false;
-			this.rabbitBar1.PlodK = 0;
+			this.rabbitBar1.PlodK = 0F;
 			this.rabbitBar1.RabbitID = 0;
-			this.rabbitBar1.RodK = 0;
+			this.rabbitBar1.RodK = 0F;
 			this.rabbitBar1.Size = new System.Drawing.Size(150, 40);
 			this.rabbitBar1.TabIndex = 3;
 			// 
@@ -86,12 +86,12 @@
 			// 
 			this.rabbitPair1.BackColor = System.Drawing.SystemColors.Control;
 			this.rabbitPair1.FemaleGenom = "0";
-			this.rabbitPair1.FemalePlodK = 0;
-			this.rabbitPair1.FemaleRodK = 0;
+			this.rabbitPair1.FemalePlodK = 0F;
+			this.rabbitPair1.FemaleRodK = 0F;
 			this.rabbitPair1.Location = new System.Drawing.Point(408, 438);
 			this.rabbitPair1.MaleGenom = "0";
-			this.rabbitPair1.MalePlodK = 0;
-			this.rabbitPair1.MaleRodK = 0;
+			this.rabbitPair1.MalePlodK = 0F;
+			this.rabbitPair1.MaleRodK = 0F;
 			this.rabbitPair1.Name = "rabbitPair1";
 			this.rabbitPair1.OrderedGenom = false;
 			this.rabbitPair1.Size = new System.Drawing.Size(150, 83);
@@ -99,6 +99,7 @@
 			// 
 			// button2
 			// 
+			this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.button2.Location = new System.Drawing.Point(691, 435);
 			this.button2.Name = "button2";
 			this.button2.Size = new System.Drawing.Size(75, 23);

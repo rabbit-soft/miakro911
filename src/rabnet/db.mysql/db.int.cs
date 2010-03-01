@@ -109,6 +109,8 @@ namespace rabnet
         void deleteWeight(int rabbit, DateTime date);
         OneRabbit[] getParents(int rabbit,int age);
         OneRabbit getLiveDeadRabbit(int rabbit);
+
+		RabbitGen getRabbitGen(int rid);
     }
 
 }

@@ -330,7 +330,7 @@ namespace rabnet
 				genoms = _GenomArr;
 			}
 
-			return;
+//			return;
 
 			//genoms.GetHashCode
 
@@ -345,14 +345,14 @@ namespace rabnet
 				foreach (string g in genoms)
 				{
 
-/*					try
-					{*/
-//						cl = _GenomColors[Convert.ToInt32(g)];
-/*					}
-					catch (KeyNotFoundException)
-					{*/
+					if (_GenomColors.ContainsKey(Convert.ToInt32(g)))
+					{
+						cl = _GenomColors[Convert.ToInt32(g)];
+					}
+					else
+					{
 						cl = Color.White;
-/*					}*/
+					}
 					SolidBrush brush = new SolidBrush(cl);
 
 					gr.FillRectangle(brush, new RectangleF(point.X+cgl,point.Y+0,gl,size.Height));

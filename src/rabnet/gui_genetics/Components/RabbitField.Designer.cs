@@ -29,6 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.label1 = new System.Windows.Forms.Label();
+			this.RabbitsHolder = new System.Windows.Forms.Panel();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -40,16 +41,28 @@
 			this.label1.TabIndex = 0;
 			this.label1.Text = "label1";
 			// 
+			// RabbitsHolder
+			// 
+			this.RabbitsHolder.Location = new System.Drawing.Point(184, 76);
+			this.RabbitsHolder.Name = "RabbitsHolder";
+			this.RabbitsHolder.Size = new System.Drawing.Size(307, 228);
+			this.RabbitsHolder.TabIndex = 5;
+			this.RabbitsHolder.Visible = false;
+			// 
 			// RabbitField
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoScroll = true;
 			this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.Controls.Add(this.RabbitsHolder);
 			this.Controls.Add(this.label1);
 			this.DoubleBuffered = true;
 			this.Name = "RabbitField";
 			this.Size = new System.Drawing.Size(636, 407);
+			this.Scroll += new System.Windows.Forms.ScrollEventHandler(this.RabbitField_Scroll);
+			this.Resize += new System.EventHandler(this.RabbitField_Resize);
+			this.SizeChanged += new System.EventHandler(this.RabbitField_SizeChanged);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -58,5 +71,6 @@
 		#endregion
 
 		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Panel RabbitsHolder;
 	}
 }

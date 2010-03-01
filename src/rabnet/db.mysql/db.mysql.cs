@@ -472,6 +472,11 @@ namespace rabnet
             return RabbitGetter.getLiveDeadRabbit(sql,rabbit);
         }
 
+		public RabbitGen getRabbitGen(int rid)
+		{
+			return RabbitGenGetter.GetRabbit(sql, rid);
+		}
+
         #endregion
     }
 }

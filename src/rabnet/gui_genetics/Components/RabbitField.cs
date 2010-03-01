@@ -32,6 +32,8 @@ namespace rabnet.Components
 
 			_RabbitPairs.Add(cnt, rp);
 
+			RabbitGen rabb = Engine.db().getRabbitGen(_RootRabbitData.id);
+
 			OneRabbit[] prnts = Engine.db().getParents(_RootRabbitData.id, 0);
 
 			OneRabbit fr=prnts[0];
@@ -43,19 +45,54 @@ namespace rabnet.Components
 
 			rp._id = cnt;
 
-			this.Controls.Add(rp);
-			rp.SetParentControl(this);
+			RabbitsHolder.SuspendLayout();
+
+			RabbitsHolder.Controls.Add(rp);
+			rp.SetParentControl(RabbitsHolder);
 			GetPairData(rp, ref cnt, ref prnts);
 
 			CenterTree();
+			CenterHolder();
+			RabbitsHolder.Visible = true;
+//			this.ScrollControlIntoView(_RabbitPairs[0]);
+			RabbitsHolder.ResumeLayout();
+			//RabbitsHolder.AutoScrollMinSize
 
+		}
+
+		public void CenterHolder()
+		{
+			int l = (int)((this.Width - RabbitsHolder.Width) / 2);
+			if (l < 0)
+			{
+				l = 0;
+			}
+			RabbitsHolder.Left = l;
+			RabbitsHolder.Top = 0;
 		}
 
 		public void CenterTree()
 		{
-//			_RabbitPairs[0].SearchDown(0, 3);
-//			_RabbitPairs[0].Left = _RabbitPairs[0].GetSize().Width+500;//_RabbitPairs[0].GetCenter()+(int)(_RabbitPairs[0].Width/2);
-//			_RabbitPairs[0].Left = _RabbitPairs[0].GetSize().Width / 2;
+
+			if (_RabbitPairs.Count == 0)
+			{
+				return;
+			}
+			if (_RabbitPairs[0] == null)
+			{
+				return;
+			}
+
+			int c=0;
+
+			Rectangle r=new Rectangle();
+
+			_RabbitPairs[0].OrganizePos(ref r, ref c);
+
+			_RabbitPairs[0].SetNewLocation(c - (int)(_RabbitPairs[0].Width / 2),0);
+
+			RabbitsHolder.Width = r.Width;
+			RabbitsHolder.Height = r.Height;
 		}
 
 		public void GetPairData(RabbitPair mrp, ref int c, ref OneRabbit[] prnts)
@@ -63,23 +100,14 @@ namespace rabnet.Components
 
 			log.Debug(string.Format("Getting data for rabbit pair. (cnt:{0:d})",c));
 
-			//CenterTree();
 			label1.Text = c.ToString();
 			label1.Invalidate();
 			if (mrp.GetMom() != null)
 			{
 				log.Debug(string.Format("Rabbit pair #{0:d} has mom.", c));
 				prnts = Engine.db().getParents(mrp.GetMom().id, 0);
-				log.Debug(string.Format("#{0:d} 1", c));
-				//				OneRabbit[] prnts = Engine.db().getParents(mrp.GetMom().id, 0);
-
 				OneRabbit fr = prnts[0];
-				log.Debug(string.Format("#{0:d} 2", c));
-
 				OneRabbit mr = prnts[1];
-				log.Debug(string.Format("#{0:d} 3", c));
-
-
 				c++;
 
 				RabbitPair rp = new RabbitPair();
@@ -90,10 +118,9 @@ namespace rabnet.Components
 				rp.SetMom(fr);
 				rp.SetDad(mr);
 
-				rp.SetParentControl(this);
+				rp.SetParentControl(RabbitsHolder);
 				mrp.SetTreeChildFPair(rp);
-				this.Controls.Add(rp);
-				//this.Invalidate();
+				RabbitsHolder.Controls.Add(rp);
 
 				log.Debug(string.Format("Getting parents for rabbit pair #{0:d} mom.", c));
 
@@ -107,38 +134,19 @@ namespace rabnet.Components
 			{
 				log.Debug(string.Format("Rabbit pair #{0:d} has dad.", c));
 				prnts = Engine.db().getParents(mrp.GetDad().id, 0);
-				log.Debug(string.Format("#{0:d} 1", c));
-				//				OneRabbit[] prnts = Engine.db().getParents(mrp.GetDad().id, 0);
-
 				OneRabbit fr = prnts[0];
-				log.Debug(string.Format("#{0:d} 2", c));
-
 				OneRabbit mr = prnts[1];
-				log.Debug(string.Format("#{0:d} 3", c));
-
-//				log.Debug(prnts.ToString());
 
 				c++;
 
 				RabbitPair rp = new RabbitPair();
 				rp._id = c;
-
-				log.Debug(string.Format("#{0:d} 4", c));
-
 				_RabbitPairs.Add(c, rp);
-				log.Debug(string.Format("#{0:d} 5", c));
-
 				rp.SetMom(fr);
-				log.Debug(string.Format("#{0:d} 6", c));
 				rp.SetDad(mr);
-				log.Debug(string.Format("#{0:d} 7", c));
-
-				rp.SetParentControl(this);
-				log.Debug(string.Format("#{0:d} 8", c));
+				rp.SetParentControl(RabbitsHolder);
 				mrp.SetTreeChildMPair(rp);
-				log.Debug(string.Format("#{0:d} 9", c));
-				this.Controls.Add(rp);
-				//this.Invalidate();
+				RabbitsHolder.Controls.Add(rp);
 
 				log.Debug(string.Format("Getting parents for rabbit pair #{0:d} dad.", c));
 	
@@ -147,6 +155,20 @@ namespace rabnet.Components
 
 			}
 
+		}
+
+		private void RabbitField_SizeChanged(object sender, System.EventArgs e)
+		{
+		}
+
+		private void RabbitField_Resize(object sender, System.EventArgs e)
+		{
+			CenterHolder();
+
+		}
+
+		private void RabbitField_Scroll(object sender, ScrollEventArgs e)
+		{
 		}
 	}
 }

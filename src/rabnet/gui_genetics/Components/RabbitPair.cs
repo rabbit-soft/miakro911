@@ -13,7 +13,7 @@ namespace rabnet
 
 		private OneRabbit _mom;
 		private OneRabbit _dad;
-		private Size _MySize;
+//		private Size _MySize;
 		private Rectangle _MyRect;
 		private int _MyCenter;
 		private Boolean _Debug = true;
@@ -24,8 +24,8 @@ namespace rabnet
 		{
 			InitializeComponent();
 			_MyCenter = (int)(this.Width / 2);
-			_MySize = this.Size;
-			_MyRect = new Rectangle(this.Location, _MySize);
+//			_MySize = this.Size;
+			_MyRect = new Rectangle(this.Location, this.Size);
 			MaleRabbit.SetParentPair(this);
 			FemaleRabbit.SetParentPair(this);
 
@@ -293,19 +293,17 @@ namespace rabnet
 			}
 		}
 
-		public void OrganizePos(ref Point loc, ref Size size, ref int center)
+		public void OrganizePos(ref Rectangle rect, ref int center)
 		{
 			if ((_TreeChildFPair == null) && (_TreeChildMPair == null))
 			{
-				loc = this.Location;
-				size = this.Size;
+				rect = new Rectangle(this.Location, this.Size);
 				center = (int)(this.Width / 2.0);
 				return;
 			}
 
-			Size csize = new Size();
+			Rectangle crect = new Rectangle();
 			int ccent = 0;
-			Point cloc = new Point();
 
 			int t = this.Top;
 			int b = this.Bottom;
@@ -314,67 +312,97 @@ namespace rabnet
 
 			if (_TreeChildFPair != null)
 			{
-				_TreeChildFPair.OrganizePos(ref cloc, ref csize, ref ccent);
-				PlaceFemale(csize, ccent);
-				b = Math.Max(b, cloc.Y + csize.Height);
-				l = Math.Min(l, cloc.X);
-
-				Rectangle a = new Rectangle();
-				//a.
+				_TreeChildFPair.OrganizePos(ref crect, ref ccent);
+				PlaceFemale(ref crect, ccent);
+				b = Math.Max(b, crect.Bottom);
+				l = Math.Min(l, crect.Left);
 			}
 
-			if (_TreeChildFPair != null)
+			if (_TreeChildMPair != null)
 			{
-				_TreeChildFPair.OrganizePos(ref cloc, ref csize, ref ccent);
-				PlaceFemale(csize, ccent);
-				b = Math.Max(b, cloc.Y + csize.Height);
-				l = Math.Min(l, cloc.X);
+				_TreeChildMPair.OrganizePos(ref crect, ref ccent);
+				PlaceMale(ref crect, ccent);
+				b = Math.Max(b, crect.Bottom);
+				r = Math.Max(r, crect.Right);
 			}
 
+			rect.X = l;
+			rect.Y = t;
+			rect.Height = b - t;
+			rect.Width = r - l;
+
+			center = this.Left - l + (int)(this.Width / 2);
+
+			_MyRect = rect;
+			_MyCenter = center;
+
+			Graphics g = _ParentControl.CreateGraphics();
+			g.DrawRectangle(Pens.Purple, _MyRect);
+			g.DrawLine(Pens.Green, _MyRect.Left + _MyCenter, this.Top, _MyRect.Left + _MyCenter, this.Top - 20);
 
 		}
 
-		public void PlaceFemale(Size size, int center)
+		public void PlaceFemale(ref Rectangle rect, int center)
 		{
 			int t = this.Top + this.Height + 10;
-			int l = this.Left + (int)(this.Width / 2) - size.Width + center - (int)(_TreeChildFPair.Width / 2) - 20;
-			_TreeChildFPair.SetNewLocation(l, t);
+			int l = this.Left + (int)(this.Width / 2) - rect.Width + center - (int)(_TreeChildFPair.Width / 2) - 20;
+			int dx = l - _TreeChildFPair.Left;
+			int dy = t - _TreeChildFPair.Top;
+			_TreeChildFPair.MoveBy(dx, dy);
+			UpdateFArrowPos();
+			rect.Offset(dx, dy);
+//			_TreeChildFPair.SetNewLocation(l, t);
 		}
 
-		public void PlaceMale(Size size, int center)
+		public void PlaceMale(ref Rectangle rect, int center)
 		{
 			int t = this.Top + this.Height + 10;
 			int l = this.Left + (int)(this.Width / 2) + center - (int)(_TreeChildMPair.Width / 2) + 20;
-			_TreeChildMPair.SetNewLocation(l, t);
+			int dx = l - _TreeChildMPair.Left;
+			int dy = t - _TreeChildMPair.Top;
+			_TreeChildMPair.MoveBy(dx, dy);
+			UpdateMArrowPos();
+			rect.Offset(dx, dy);
+//			_TreeChildMPair.SetNewLocation(l, t);
 		}
 
 		public void SetNewLocation(int left, int top)
 		{
-			int dx = this.Left - left;
-			int dy = this.Top - top;
+			int dx = left - this.Left;
+			int dy = top - this.Top;
 
+			MoveBy(dx, dy);
+
+/*
 			if (_TreeChildFPair != null)
 			{
-				_TreeChildFPair.Move(dx, dy);
+				_TreeChildFPair.MoveBy(dx, dy);
 			}
 			if (_TreeChildMPair != null)
 			{
-				_TreeChildMPair.Move(dx, dy);
+				_TreeChildMPair.MoveBy(dx, dy);
 			}
+ */
 		}
 
-		public void Move(int dx, int dy)
+		public void MoveBy(int dx, int dy)
 		{
-			this.Left = this.Left - dx;
-			this.Top = this.Top - dy;
+			this.Left = this.Left + dx;
+			this.Top = this.Top + dy;
+			_MyRect.Offset(dx, dy);
 			if (_TreeChildFPair != null)
 			{
-				_TreeChildFPair.Move(dx, dy);
+				_TreeChildFPair.MoveBy(dx, dy);
+				UpdateFArrowPos();
 			}
 			if (_TreeChildMPair != null)
 			{
-				_TreeChildMPair.Move(dx, dy);
+				_TreeChildMPair.MoveBy(dx, dy);
+				UpdateMArrowPos();
 			}
+//			Graphics g = _ParentControl.CreateGraphics();
+//			g.DrawRectangle(Pens.Purple, _MyRect);
+//			g.DrawLine(Pens.Green, _MyRect.Left + _MyCenter, this.Top, _MyRect.Left + _MyCenter, this.Top - 20);
 		}
 		
 		
@@ -576,7 +604,7 @@ namespace rabnet
 			_TreeFArrow.Location = new Point(0, 0);
 			_TreeFArrow.SetLeft();
 			_TreeFArrow.SetBothEnds();
-//			_ParentControl.Controls.Add(_TreeFArrow);
+			_ParentControl.Controls.Add(_TreeFArrow);
 
 			p.SetTreeGenderSide(2);
 			p.SetTreeParentPair(this);
@@ -598,7 +626,7 @@ namespace rabnet
 			_TreeMArrow.SetRight();
 			log.Debug("5");
 			_TreeMArrow.SetBothEnds();
-//			_ParentControl.Controls.Add(_TreeMArrow);
+			_ParentControl.Controls.Add(_TreeMArrow);
 
 			log.Debug("6");
 			p.SetTreeGenderSide(1);
@@ -679,15 +707,15 @@ namespace rabnet
 				Graphics g = _ParentControl.CreateGraphics();
 				if (cmd == 1)
 				{
-					//				_ParentControl.Invalidate();
-					g.DrawRectangle(Pens.Aqua, _MyRect);
+//					//				_ParentControl.Invalidate();
+//					g.DrawRectangle(Pens.Aqua, _MyRect);
 				}
 				if (cmd == 2)
 				{
-					g.DrawRectangle(Pens.Purple, _MyRect);
-//					g.DrawLine(Pens.Red, this.Left + (int)(this.Width / 2) + _TreeChildMCenter + 20, this.Top, this.Left + (int)(this.Width / 2) + _TreeChildMCenter + 20, this.Bottom + 20);
-//					g.DrawLine(Pens.Red, this.Left + (int)(this.Width / 2) - _TreeChildFSize.Width + _TreeChildFCenter - 20, this.Top, this.Left + (int)(this.Width / 2) - _TreeChildFSize.Width + _TreeChildFCenter - 20, this.Bottom + 20);
-					g.DrawLine(Pens.Green, _MyRect.Left + _MyCenter, this.Top, _MyRect.Left + _MyCenter, this.Top-20);
+//					g.DrawRectangle(Pens.Purple, _MyRect);
+////					g.DrawLine(Pens.Red, this.Left + (int)(this.Width / 2) + _TreeChildMCenter + 20, this.Top, this.Left + (int)(this.Width / 2) + _TreeChildMCenter + 20, this.Bottom + 20);
+////					g.DrawLine(Pens.Red, this.Left + (int)(this.Width / 2) - _TreeChildFSize.Width + _TreeChildFCenter - 20, this.Top, this.Left + (int)(this.Width / 2) - _TreeChildFSize.Width + _TreeChildFCenter - 20, this.Bottom + 20);
+//					g.DrawLine(Pens.Green, _MyRect.Left + _MyCenter, this.Top, _MyRect.Left + _MyCenter, this.Top-20);
 				}
 				g.Dispose();
 			}
