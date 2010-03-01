@@ -103,6 +103,7 @@ namespace rabnet
                 return;
             manual = false;
             foreach (ListViewItem li in listView1.CheckedItems)
+                if (!li.Selected)
                 li.Selected = true;
             manual = true;
             makeSelectedCount();
