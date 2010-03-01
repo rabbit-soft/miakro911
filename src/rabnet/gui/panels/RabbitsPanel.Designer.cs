@@ -223,7 +223,8 @@
             this.toolStripSeparator1,
             this.GeneticsToolStripMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(285, 396);
+            this.actMenu.Size = new System.Drawing.Size(285, 418);
+            this.actMenu.Opening += new System.ComponentModel.CancelEventHandler(this.actMenu_Opening);
             // 
             // passportMenuItem
             // 

@@ -99,47 +99,19 @@ namespace rabnet
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            foreach (ListViewItem li in listView1.CheckedItems)
-                li.Selected = true;
             if (!manual)
                 return;
+            manual = false;
+            foreach (ListViewItem li in listView1.CheckedItems)
+                li.Selected = true;
+            manual = true;
             makeSelectedCount();
-            if (listView1.SelectedItems.Count <1)
-            {
-                setMenu(-1,0,false);
+            if (listView1.SelectedItems.Count < 1)
                 return;
-            }
-            string sx = "";
-            for (int i = 0; i < listView1.SelectedItems.Count && sx.Length<2;i++ )
-            {
-                String s = listView1.SelectedItems[i].SubItems[SEXFIELD].Text;
-                if (s[0] == 'С' || s[0] == 'C')
-                    s = "S";
-                if (!sx.Contains(s))
-                    sx += s;
-            }
-            int isx=3;
-            if (sx=="?") isx=0;
-            if (sx=="м") isx=1;
-            if (sx=="ж") isx=2;
-            if (sx == "S") isx = 4;
-            bool kids = false;
-            if (listView1.SelectedItems.Count == 1 && listView1.SelectedItems[0].SubItems[NFIELD].Text[0] == '+')
-                kids = true;
-            setMenu(isx, listView1.SelectedItems.Count,kids);
-            if (listView1.SelectedItems.Count != 1)
-            {
-                return;
-            }
-            if (gentree < 0)
-            {
-                genTree.Nodes.Clear();
-                return;
-            }
             //проверка дерева кроликов на совпадения
             for (int ind = 0; ind < genTree.Nodes.Count; ind++)
             {
-                int len ;
+                int len;
                 len = genTree.Nodes[ind].Text.IndexOf("-");
                 if (len == -1) len = genTree.Nodes[ind].Text.IndexOf(",");
                 string str = genTree.Nodes[ind].Text.Remove(len);
@@ -382,7 +354,7 @@ namespace rabnet
 
         private void listView1_MouseUp(object sender, MouseEventArgs e)
         {
-            manual = true;
+            manual = false;
             if (e.Button == MouseButtons.Right || multiselect)
             {
                 foreach (ListViewItem li in listView1.SelectedItems)
@@ -390,6 +362,7 @@ namespace rabnet
                 foreach (ListViewItem li in listView1.SelectedItems)
                     if (!li.Checked) li.Selected = false;
             }
+            manual = true;
             listView1_SelectedIndexChanged(null, null);
         }
 
@@ -542,10 +515,48 @@ namespace rabnet
 
         private void снятьВыделениеToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            manual = false;
             foreach (ListViewItem li in listView1.SelectedItems)
                 li.Checked = li.Selected = false;
             foreach (ListViewItem li in listView1.CheckedItems)
                 li.Checked = li.Selected = false;
+            manual = true;
+        }
+
+        private void actMenu_Opening(object sender, CancelEventArgs e)
+        {
+            if (listView1.SelectedItems.Count < 1)
+            {
+                setMenu(-1, 0, false);
+                return;
+            }
+            string sx = "";
+            for (int i = 0; i < listView1.SelectedItems.Count && sx.Length < 2; i++)
+            {
+                String s = listView1.SelectedItems[i].SubItems[SEXFIELD].Text;
+                if (s[0] == 'С' || s[0] == 'C')
+                    s = "S";
+                if (!sx.Contains(s))
+                    sx += s;
+            }
+            int isx = 3;
+            if (sx == "?") isx = 0;
+            if (sx == "м") isx = 1;
+            if (sx == "ж") isx = 2;
+            if (sx == "S") isx = 4;
+            bool kids = false;
+            if (listView1.SelectedItems.Count == 1 && listView1.SelectedItems[0].SubItems[NFIELD].Text[0] == '+')
+                kids = true;
+            setMenu(isx, listView1.SelectedItems.Count, kids);
+            if (listView1.SelectedItems.Count != 1)
+            {
+                return;
+            }
+            if (gentree < 0)
+            {
+                genTree.Nodes.Clear();
+                return;
+            }
         }
 
     }
