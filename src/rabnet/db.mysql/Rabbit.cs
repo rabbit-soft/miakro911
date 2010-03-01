@@ -527,8 +527,8 @@ r_flags='{7:d}',r_rate={8:d},r_born={9:s}",r.name,r.surname,r.secname,r.breed,r.
 #endif
             MySqlCommand cmd = new MySqlCommand(String.Format("UPDATE fucks SET f_last=0 WHERE f_rabid={0:d};",female), sql);
             cmd.ExecuteNonQuery();
-            cmd.CommandText = String.Format(@"INSERT INTO fucks(f_rabid,f_date,f_partner,f_state,f_type,f_last) 
-VALUES({0:d},{1:s},{2:d},'sukrol','{3:s}',1);",female,DBHelper.DateToMyString(date),male,type);
+            cmd.CommandText = String.Format(@"INSERT INTO fucks(f_rabid,f_date,f_partner,f_state,f_type,f_last,f_notes) 
+VALUES({0:d},{1:s},{2:d},'sukrol','{3:s}',1,'');",female,DBHelper.DateToMyString(date),male,type);
             cmd.ExecuteNonQuery();
 //            cmd.CommandText = String.Format("SELECT r_status,TODAYS(r_last_fuck_okrol FROM rabbits WHERE r_id=");
             int rate = 1;
