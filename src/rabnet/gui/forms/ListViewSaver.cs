@@ -39,7 +39,14 @@ namespace rabnet
             if (lv.ListViewItemSorter!=null && cls.Length>i)
             {
                 ListViewColumnSorter cs=lv.ListViewItemSorter as ListViewColumnSorter;
-                cs.SortColumn=int.Parse(cls[i]);
+                int sc = int.Parse(cls[i]);
+                if (sc >= lv.Columns.Count)
+                {
+                    cs.Order = SortOrder.None;
+                    cs.SortColumn = 0;
+                    return;
+                }
+                cs.SortColumn = sc;
                 int so=int.Parse(cls[i+1]);
                 cs.Order=SortOrder.None;
                 if (so==1) cs.Order=SortOrder.Ascending;
