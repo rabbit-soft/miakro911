@@ -179,7 +179,7 @@
 			</sources>
 			<resources>
 				<include name="${curdir}/rabnet/gui/forms/*.resx"/>
-				<include name="${curdir}/rabnet/gui/components/RabStatusBar.resx"/>
+				<include name="${curdir}/rabnet/gui/components/*.resx"/>
 				<include name="${curdir}/rabnet/gui/forms/ReportViewForm.resx"/>
 			</resources>
 			<references>

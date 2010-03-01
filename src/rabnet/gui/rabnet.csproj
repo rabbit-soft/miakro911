@@ -74,6 +74,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="components\ImageHolder.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\ImageHolder.Designer.cs">
+      <DependentUpon>ImageHolder.cs</DependentUpon>
+    </Compile>
     <Compile Include="GeneticsManagerSafe.cs" />
     <Compile Include="components\BuildingControl.cs">
       <SubType>UserControl</SubType>
@@ -322,6 +328,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="components\FarmDrawer.resx">
       <DependentUpon>FarmDrawer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="components\ImageHolder.resx">
+      <DependentUpon>ImageHolder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="filters\BuildingsFilter.resx">
       <DependentUpon>BuildingsFilter.cs</DependentUpon>

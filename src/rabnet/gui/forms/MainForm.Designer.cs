@@ -533,7 +533,7 @@
         private System.Windows.Forms.ToolStripMenuItem продуктивностьСоитияToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem возрастИКоличествоToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem причиныСпичанияToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem списанияToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem списанияToolStripMenuItem1;
     }
 }
 

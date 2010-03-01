@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using System.Collections;
+using System.Drawing;
 
 namespace rabnet
 {
@@ -30,6 +31,9 @@ namespace rabnet
 			}
 			lv.ColumnClick += new ColumnClickEventHandler(this.OnColumnClick);
             lv.ColumnWidthChanged += new ColumnWidthChangedEventHandler(this.OnColumnWidthChanged);
+            lv.DrawColumnHeader += new DrawListViewColumnHeaderEventHandler(this.OnDrawHeader);
+            lv.DrawItem += new DrawListViewItemEventHandler(this.OnDrawItem);
+            lv.DrawSubItem += new DrawListViewSubItemEventHandler(this.OnDrawSubItem);
             ListViewSaver.load(op, lv);
         }
 
@@ -59,13 +63,9 @@ namespace rabnet
             if (e.Column == SortColumn)
             {
                 if (Order == SortOrder.Ascending)
-                {
                     Order = SortOrder.Descending;
-                }
                 else
-                {
                     Order = SortOrder.Ascending;
-                }
             }
             else
             {
@@ -74,6 +74,7 @@ namespace rabnet
             }
             ListViewSaver.save(option, lv);
             (sender as ListView).Sort();
+            lv.Refresh();
         }
 
         public int Compare(object x, object y)
@@ -195,5 +196,28 @@ namespace rabnet
             }
         }
 
+        private void OnDrawHeader(object sender, DrawListViewColumnHeaderEventArgs e)
+        {
+            e.DrawBackground();
+            e.DrawText();
+            if (SortColumn != e.ColumnIndex) return;
+            if (OrderOfSort == SortOrder.None) return;
+            Image img=null;
+            if (OrderOfSort == SortOrder.Ascending)
+                img = ImageHolder.get().getImage(0);
+            else
+                img = ImageHolder.get().getImage(1);
+            Rectangle rect=new Rectangle(e.Bounds.Right-16,e.Bounds.Bottom-16,11,11);
+            e.Graphics.DrawImage(img, rect);
+        }
+        private void OnDrawItem(object sender, DrawListViewItemEventArgs e)
+        {
+            e.DrawDefault = true;
+        }
+
+        private void OnDrawSubItem(object sender, DrawListViewSubItemEventArgs e)
+        {
+            e.DrawDefault = true;
+        }
     }
 }

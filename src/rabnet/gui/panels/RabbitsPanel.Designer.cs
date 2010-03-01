@@ -61,12 +61,12 @@
             this.countKidsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.SelectAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.снятьВыделениеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.svidMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.realizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.GeneticsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.genTree = new System.Windows.Forms.TreeView();
-            this.снятьВыделениеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -117,6 +117,7 @@
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(3, 3);
             this.listView1.Name = "listView1";
+            this.listView1.OwnerDraw = true;
             this.listView1.Size = new System.Drawing.Size(703, 544);
             this.listView1.TabIndex = 7;
             this.listView1.UseCompatibleStateImageBehavior = false;
@@ -222,7 +223,7 @@
             this.toolStripSeparator1,
             this.GeneticsToolStripMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(285, 418);
+            this.actMenu.Size = new System.Drawing.Size(285, 396);
             // 
             // passportMenuItem
             // 
@@ -328,6 +329,13 @@
             this.SelectAllMenuItem.Text = "Выбрать всех";
             this.SelectAllMenuItem.Click += new System.EventHandler(this.SelectAllMenuItem_Click);
             // 
+            // снятьВыделениеToolStripMenuItem
+            // 
+            this.снятьВыделениеToolStripMenuItem.Name = "снятьВыделениеToolStripMenuItem";
+            this.снятьВыделениеToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.снятьВыделениеToolStripMenuItem.Text = "Снять выделение";
+            this.снятьВыделениеToolStripMenuItem.Click += new System.EventHandler(this.снятьВыделениеToolStripMenuItem_Click);
+            // 
             // svidMenuItem
             // 
             this.svidMenuItem.Name = "svidMenuItem";
@@ -363,13 +371,6 @@
             this.genTree.Name = "genTree";
             this.genTree.Size = new System.Drawing.Size(134, 544);
             this.genTree.TabIndex = 0;
-            // 
-            // снятьВыделениеToolStripMenuItem
-            // 
-            this.снятьВыделениеToolStripMenuItem.Name = "снятьВыделениеToolStripMenuItem";
-            this.снятьВыделениеToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
-            this.снятьВыделениеToolStripMenuItem.Text = "Снять выделение";
-            this.снятьВыделениеToolStripMenuItem.Click += new System.EventHandler(this.снятьВыделениеToolStripMenuItem_Click);
             // 
             // RabbitsPanel
             // 

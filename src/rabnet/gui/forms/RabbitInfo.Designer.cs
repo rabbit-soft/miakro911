@@ -30,6 +30,8 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.TabPage1 = new System.Windows.Forms.TabPage();
+            this.sex = new System.Windows.Forms.ComboBox();
+            this.label23 = new System.Windows.Forms.Label();
             this.button17 = new System.Windows.Forms.Button();
             this.label22 = new System.Windows.Forms.Label();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -135,8 +137,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
-            this.sex = new System.Windows.Forms.ComboBox();
-            this.label23 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.TabPage1.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -195,6 +195,29 @@
             this.TabPage1.TabIndex = 0;
             this.TabPage1.Text = "Основное";
             this.TabPage1.UseVisualStyleBackColor = true;
+            // 
+            // sex
+            // 
+            this.sex.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.sex.FormattingEnabled = true;
+            this.sex.Items.AddRange(new object[] {
+            "?",
+            "м",
+            "ж"});
+            this.sex.Location = new System.Drawing.Point(37, 276);
+            this.sex.Name = "sex";
+            this.sex.Size = new System.Drawing.Size(55, 21);
+            this.sex.TabIndex = 11;
+            this.sex.SelectedIndexChanged += new System.EventHandler(this.sex_SelectedIndexChanged);
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(6, 279);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(25, 13);
+            this.label23.TabIndex = 12;
+            this.label23.Text = "пол";
             // 
             // button17
             // 
@@ -357,7 +380,7 @@
             // 
             this.bdate.AutoSize = true;
             this.bdate.DateText = "Дата рожд.";
-            this.bdate.DateValue = new System.DateTime(2010, 1, 31, 0, 0, 0, 0);
+            this.bdate.DateValue = new System.DateTime(2010, 3, 1, 0, 0, 0, 0);
             this.bdate.DaysText = "Возраст";
             this.bdate.DaysValue = 0;
             this.bdate.Location = new System.Drawing.Point(13, 111);
@@ -784,7 +807,7 @@
             // 
             this.okrolDd.AutoSize = true;
             this.okrolDd.DateText = "Дата";
-            this.okrolDd.DateValue = new System.DateTime(2010, 1, 31, 0, 0, 0, 0);
+            this.okrolDd.DateValue = new System.DateTime(2010, 3, 1, 0, 0, 0, 0);
             this.okrolDd.DaysText = "Срок";
             this.okrolDd.DaysValue = 0;
             this.okrolDd.Location = new System.Drawing.Point(8, 61);
@@ -871,7 +894,7 @@
             // 
             this.sukrDd.AutoSize = true;
             this.sukrDd.DateText = "Дата";
-            this.sukrDd.DateValue = new System.DateTime(2010, 1, 31, 0, 0, 0, 0);
+            this.sukrDd.DateValue = new System.DateTime(2010, 3, 1, 0, 0, 0, 0);
             this.sukrDd.DaysText = "Срок";
             this.sukrDd.DaysValue = 0;
             this.sukrDd.Location = new System.Drawing.Point(0, 46);
@@ -1261,29 +1284,6 @@
             this.button5.Text = "Применить";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
-            // sex
-            // 
-            this.sex.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.sex.FormattingEnabled = true;
-            this.sex.Items.AddRange(new object[] {
-            "?",
-            "м",
-            "ж"});
-            this.sex.Location = new System.Drawing.Point(37, 276);
-            this.sex.Name = "sex";
-            this.sex.Size = new System.Drawing.Size(55, 21);
-            this.sex.TabIndex = 11;
-            this.sex.SelectedIndexChanged += new System.EventHandler(this.sex_SelectedIndexChanged);
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(6, 279);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(25, 13);
-            this.label23.TabIndex = 12;
-            this.label23.Text = "пол";
             // 
             // RabbitInfo
             // 
