@@ -17,7 +17,7 @@ namespace rabnet
             InitializeComponent();
             fp = new DeadFilter(rsb);
             rsb.filterPanel = fp;
-            cs = new ListViewColumnSorter(listView1, new int[] { 1,2, 3 },Options.OPT_ID.DEAD_LIST);
+            cs = new ListViewColumnSorter(listView1, new int[] { 2, 3 },Options.OPT_ID.DEAD_LIST);
         }
 
         private IDataGetter rsb_prepareGet(object sender, EventArgs e)
