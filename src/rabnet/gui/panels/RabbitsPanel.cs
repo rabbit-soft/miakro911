@@ -13,11 +13,10 @@ namespace rabnet
     {
         private bool manual = true;
         private int gentree=10;
-        const int NFIELD = 8;
-        const int STATUSFIELD = 6;
-        const int SEXFIELD = 2;
-        const int NAMEFIELD = 1;
-        const int SELECTEDFIELD = 0;
+        const int NFIELD = 7;
+        const int STATUSFIELD = 5;
+        const int SEXFIELD = 1;
+        const int NAMEFIELD = 0;
         private bool multiselect = false;
         public RabbitsPanel()
             : base()
@@ -25,7 +24,7 @@ namespace rabnet
         }
         public RabbitsPanel(RabStatusBar rsb):base(rsb,new RabbitsFilter(rsb))
         {
-            cs = new ListViewColumnSorter(listView1, new int[] {3, 10 },Options.OPT_ID.RAB_LIST);
+            cs = new ListViewColumnSorter(listView1, new int[] {2, 9 },Options.OPT_ID.RAB_LIST);
             listView1.ListViewItemSorter = null;
 			GeneticsToolStripMenuItem.Enabled = GeneticsManagerSafe.GeneticsModuleTest();
         }
@@ -56,9 +55,7 @@ namespace rabnet
                 return;
             }
             Rabbit rab = (data as Rabbit);
-            ListViewItem li = listView1.Items.Add(" ");
-            li.Checked = false;
-            li.SubItems.Add(rab.fname);
+            ListViewItem li = listView1.Items.Add(rab.fname);
             li.Tag = rab.fid;
             li.SubItems.Add(rab.fsex);
             li.SubItems.Add(rab.fage.ToString());
@@ -72,7 +69,6 @@ namespace rabnet
             li.SubItems.Add(rab.fcls);
             li.SubItems.Add(rab.faddress);
             li.SubItems.Add(rab.fnotes);
-
 			cs.SemiReady();
         }
 
@@ -103,14 +99,16 @@ namespace rabnet
         {
             if (!manual)
                 return;
-            manual = false;
-            foreach (ListViewItem li in listView1.CheckedItems)
-                if (!li.Selected)
-                li.Selected = true;
-            manual = true;
             makeSelectedCount();
-            if (listView1.SelectedItems.Count < 1)
+            if (listView1.SelectedItems.Count != 1)
+            {
                 return;
+            }
+            if (gentree < 0)
+            {
+                genTree.Nodes.Clear();
+                return;
+            }
             //проверка дерева кроликов на совпадения
             if (listView1.SelectedItems[0].SubItems[1].Text.IndexOf("-") == 0) return;
             for (int ind = 0; ind < genTree.Nodes.Count; ind++)
@@ -252,10 +250,10 @@ namespace rabnet
 
         private void replaceMenuItem_Click(object sender, EventArgs e)
         {
-            if (listView1.CheckedItems.Count < 1)
+            if (listView1.SelectedItems.Count < 1)
                 return;
             ReplaceForm rpf = new ReplaceForm();
-            foreach (ListViewItem li in listView1.CheckedItems)
+            foreach (ListViewItem li in listView1.SelectedItems)
                 rpf.addRabbit((int)li.Tag);
             if(rpf.ShowDialog() == DialogResult.OK)
                 rsb.run();
@@ -278,7 +276,7 @@ namespace rabnet
             if (listView1.SelectedItems.Count < 1)
                 return;
             KillForm f = new KillForm();
-            foreach (ListViewItem li in listView1.CheckedItems)
+            foreach (ListViewItem li in listView1.SelectedItems)
                 f.addRabbit((int)li.Tag);
             if(f.ShowDialog() == DialogResult.OK)
                 rsb.run();
@@ -361,14 +359,6 @@ namespace rabnet
 
         private void listView1_MouseUp(object sender, MouseEventArgs e)
         {
-            manual = false;
-            if (e.Button == MouseButtons.Right || multiselect)
-            {
-                foreach (ListViewItem li in listView1.SelectedItems)
-                    li.Checked = true;
-                foreach (ListViewItem li in listView1.SelectedItems)
-                    if (!li.Checked) li.Selected = false;
-            }
             manual = true;
             listView1_SelectedIndexChanged(null, null);
         }
@@ -479,18 +469,12 @@ namespace rabnet
 
         private void realizeMenuItem_Click(object sender, EventArgs e)
         {
-            if (listView1.CheckedItems.Count < 1) return;
+            if (listView1.SelectedItems.Count < 1) return;
             Filters f = new Filters();
-            f["cnt"] = listView1.CheckedItems.Count.ToString();
-            for (int i = 0; i < listView1.CheckedItems.Count; i++)
-                f["r" + i.ToString()] = ((int)listView1.CheckedItems[i].Tag).ToString();
+            f["cnt"] = listView1.SelectedItems.Count.ToString();
+            for (int i = 0; i < listView1.SelectedItems.Count; i++)
+                f["r" + i.ToString()] = ((int)listView1.SelectedItems[i].Tag).ToString();
             new ReportViewForm("Кандидаты на реализацию", "realization", Engine.db().makeReport(ReportType.Type.REALIZE, f)).ShowDialog();
-        }
-
-        private void listView1_ItemChecked(object sender, ItemCheckedEventArgs e)
-        {
-            e.Item.SubItems[SELECTEDFIELD].Text = e.Item.Checked ? "" : " ";
-            e.Item.Selected = e.Item.Checked;
         }
 
 		private void GeneticsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -509,26 +493,6 @@ namespace rabnet
 				MessageBox.Show("Не найден модуль 'gui_genetics.dll'!\nПроверьте правильность установки программы.", "Модуль генетики", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
-
-        private void listView1_KeyDown(object sender, KeyEventArgs e)
-        {
-            multiselect = (e.Control || e.Shift);
-        }
-
-        private void listView1_KeyUp(object sender, KeyEventArgs e)
-        {
-            multiselect = (e.Control || e.Shift);
-        }
-
-        private void снятьВыделениеToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            manual = false;
-            foreach (ListViewItem li in listView1.SelectedItems)
-                li.Checked = li.Selected = false;
-            foreach (ListViewItem li in listView1.CheckedItems)
-                li.Checked = li.Selected = false;
-            manual = true;
-        }
 
         private void actMenu_Opening(object sender, CancelEventArgs e)
         {
@@ -555,15 +519,6 @@ namespace rabnet
             if (listView1.SelectedItems.Count == 1 && listView1.SelectedItems[0].SubItems[NFIELD].Text[0] == '+')
                 kids = true;
             setMenu(isx, listView1.SelectedItems.Count, kids);
-            if (listView1.SelectedItems.Count != 1)
-            {
-                return;
-            }
-            if (gentree < 0)
-            {
-                genTree.Nodes.Clear();
-                return;
-            }
         }
 
     }
