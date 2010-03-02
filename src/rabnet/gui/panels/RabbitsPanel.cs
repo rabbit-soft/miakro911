@@ -110,11 +110,15 @@ namespace rabnet
             if (listView1.SelectedItems.Count < 1)
                 return;
             //проверка дерева кроликов на совпадения
+            if (listView1.SelectedItems[0].SubItems[1].Text.IndexOf("-") == 0) return;
             for (int ind = 0; ind < genTree.Nodes.Count; ind++)
             {
                 int len;
                 len = genTree.Nodes[ind].Text.IndexOf("-");
-                if (len == -1) len = genTree.Nodes[ind].Text.IndexOf(",");
+                if (len == -1)
+                    len = genTree.Nodes[ind].Text.IndexOf(",");
+                else if (genTree.Nodes[ind].Text.IndexOf(",") < len)
+                    len = genTree.Nodes[ind].Text.IndexOf(",");
                 string str = genTree.Nodes[ind].Text.Remove(len);
                 if (listView1.SelectedItems[0].SubItems[NAMEFIELD].Text.StartsWith(str))
                 {
@@ -128,7 +132,7 @@ namespace rabnet
             while (genTree.Nodes.Count > gentree)
                 genTree.Nodes.RemoveAt(gentree);
             TreeData dt = Engine.db().rabbitGenTree((int)listView1.SelectedItems[0].Tag);
-            if (dt != null & dt.caption != null)
+            if (dt != null && dt.caption != null)
             {
                 TreeNode tn = genTree.Nodes.Insert(0, dt.caption);
                 tn.ForeColor = Color.Blue;
