@@ -90,6 +90,8 @@ namespace rabnet
                 li.SubItems.Add(j.names);
                 li.Tag = j;
             }
+
+			cs.SemiReady();
         }
 
         private void fillLogs(Filters f)

@@ -31,10 +31,10 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GeneticsMainForm));
 			this.label1 = new System.Windows.Forms.Label();
 			this.button1 = new System.Windows.Forms.Button();
+			this.button2 = new System.Windows.Forms.Button();
 			this.rabbitField1 = new rabnet.Components.RabbitField();
 			this.rabbitBar1 = new rabnet.RabbitBar();
 			this.rabbitPair1 = new rabnet.RabbitPair();
-			this.button2 = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -55,6 +55,17 @@
 			this.button1.Text = "button1";
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.button1_Click);
+			// 
+			// button2
+			// 
+			this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.button2.Location = new System.Drawing.Point(691, 435);
+			this.button2.Name = "button2";
+			this.button2.Size = new System.Drawing.Size(75, 23);
+			this.button2.TabIndex = 5;
+			this.button2.Text = "button2";
+			this.button2.UseVisualStyleBackColor = true;
+			this.button2.Click += new System.EventHandler(this.button2_Click);
 			// 
 			// rabbitField1
 			// 
@@ -97,17 +108,6 @@
 			this.rabbitPair1.Size = new System.Drawing.Size(150, 83);
 			this.rabbitPair1.TabIndex = 2;
 			// 
-			// button2
-			// 
-			this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.button2.Location = new System.Drawing.Point(691, 435);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(75, 23);
-			this.button2.TabIndex = 5;
-			this.button2.Text = "button2";
-			this.button2.UseVisualStyleBackColor = true;
-			this.button2.Click += new System.EventHandler(this.button2_Click);
-			// 
 			// GeneticsMainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -123,6 +123,8 @@
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "GeneticsMainForm";
 			this.Text = "Родословная";
+			this.Load += new System.EventHandler(this.GeneticsMainForm_Load);
+			this.Shown += new System.EventHandler(this.GeneticsMainForm_Shown);
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GeneticsMainForm_FormClosing);
 			this.ResumeLayout(false);
 			this.PerformLayout();

@@ -57,7 +57,9 @@ namespace rabnet
             li.SubItems.Add(rab.fcls);
             li.SubItems.Add(rab.mom);
             li.SubItems.Add(rab.fneighbours==0?"-":rab.fneighbours.ToString());
-        }
+
+			cs.SemiReady();
+		}
 
         private void insertNode(TreeNode nd, TreeData data)
         {

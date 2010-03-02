@@ -11,6 +11,13 @@ namespace rabnet
 	public partial class RabbitBar : CustomGraphCmp
 	{
 
+		public Color _ForeColor = SystemColors.Control;
+
+		public Color ForeColor
+		{
+			get { return _ForeColor; }
+			set { _ForeColor = value; }
+		}
 
 		private Graphics _GenomeGr;
 		private int _GenomeHash;
@@ -371,16 +378,11 @@ namespace rabnet
 			Pen penGr = new Pen(Color.DarkGray);
 
 			Brush textbrush = SystemBrushes.ControlText;
-//g.DrawEllipse(pen, new Rectangle(10, 10, 10, 10));
-
-//			g.SmoothingMode = SmoothingMode.AntiAlias;
-//			g.SmoothingMode = SmoothingMode.None;
 
 			string pripl = Math.Round(_PlodK, 2).ToString();
 
 			SizeF priplsize = g.MeasureString(pripl, SystemFonts.DefaultFont);
 
-//			RectangleF priplrect = new RectangleF(0, 0, priplsize.Width, priplsize.Height);
 
 			if (priplsize.Width > this.Width / 3)
 			{
@@ -391,7 +393,41 @@ namespace rabnet
 			GraphicsPath p = new GraphicsPath();
 
 			p.StartFigure();
-			
+
+			if (_Gender > 0)
+			{
+				if (_Gender == 1) // Male
+				{
+					p.AddLine(new Point(0, this.Height - 1), new Point(this.Width - 1, this.Height - 1));
+					p.AddLine(new Point(this.Width - 1, this.Height - 1), new Point(this.Width - 1, (int)(this.Height / 2)));
+					p.AddArc(0, 0, this.Height - 1, this.Height - 1, 180, 90);
+					p.AddLine(new Point((int)(this.Height / 2), 0), new Point(this.Width - (int)(this.Height / 2) - 1, 0));
+					p.AddArc(this.Width - this.Height, 0, this.Height - 1, this.Height - 1, 270, 90);
+					p.AddLine(new Point(0, (int)(this.Height / 2)), new Point(0, this.Height - 1));
+				}
+				else if (_Gender == 2) //Female
+				{
+					p.AddLine(new Point((int)(this.Height / 2), this.Height - 1), new Point(this.Width - (int)(this.Height / 2) - 1, this.Height - 1));
+					p.AddArc(this.Width - this.Height, 0, this.Height - 1, this.Height - 1, 90, -90);
+					p.AddLine(new Point(this.Width - 1, (int)(this.Height / 2)), new Point(this.Width - 1, 0));
+					p.AddLine(new Point(0, 0), new Point(this.Width - 1, 0));
+					p.AddLine(new Point(0, 0), new Point(0, (int)(this.Height / 2)));
+					p.AddArc(0, 0, this.Height - 1, this.Height - 1, 180, -90);
+				}
+			}
+			else //Unknown gender;
+			{
+				p.AddRectangle(new Rectangle(0, 0, this.Width, this.Height));
+			}
+
+			p.CloseFigure();
+
+			Color cl = Color.FromArgb(255, _ForeColor);
+			SolidBrush brush = new SolidBrush(cl);
+			g.SmoothingMode = SmoothingMode.AntiAlias;
+			g.FillPath(brush, p);
+			g.SmoothingMode = SmoothingMode.None;
+
 
 			if (_Gender > 0)
 			{
@@ -416,13 +452,6 @@ namespace rabnet
 					DrawColorBar(g, new Point((int)(this.Width / 3) + 2, 2), new Size((int)((this.Width / 3 * 2) - (this.Height / 2 * 0.65)) - 5, (int)(this.Height / 2) - 4), _RodK);
 
 					g.DrawString(pripl, SystemFonts.DefaultFont, textbrush, new RectangleF(((this.Width / 3) - priplsize.Width) / 2, ((this.Height / 2 - 1) - priplsize.Height)/2, priplsize.Width, priplsize.Height));
-					p.AddLine(new Point(0, this.Height - 1), new Point(this.Width - 1, this.Height - 1));
-					p.AddLine(new Point(this.Width - 1, this.Height - 1), new Point(this.Width - 1, (int)(this.Height / 2)));
-					p.AddArc(0, 0, this.Height - 1, this.Height - 1, 180, 90);
-					p.AddLine(new Point((int)(this.Height / 2), 0), new Point(this.Width - (int)(this.Height / 2) - 1, 0));
-					p.AddArc(this.Width - this.Height, 0, this.Height - 1, this.Height - 1, 270, 90);
-					p.AddLine(new Point(0, (int)(this.Height / 2)), new Point(0, this.Height - 1));
-
 				}
 				else if (_Gender == 2) //Female
 				{
@@ -445,14 +474,6 @@ namespace rabnet
 
 					g.DrawString(pripl, SystemFonts.DefaultFont, textbrush, new RectangleF(((this.Width / 3) - priplsize.Width) / 2, ((this.Height / 2 - 1) - priplsize.Height) / 2 + (this.Height / 2), priplsize.Width, priplsize.Height + (this.Height / 2)));
 
-					p.AddLine(new Point((int)(this.Height / 2), this.Height - 1), new Point(this.Width - (int)(this.Height / 2) - 1, this.Height - 1));
-					p.AddArc(this.Width - this.Height, 0, this.Height - 1, this.Height - 1, 0, 90);
-					p.AddLine(new Point(this.Width - 1, (int)(this.Height / 2)), new Point(this.Width - 1, 0));
-					p.AddLine(new Point(0, 0), new Point(this.Width - 1, 0));
-					p.AddLine(new Point(0, 0), new Point(0, (int)(this.Height / 2)));
-					p.AddArc(0, 0, this.Height - 1, this.Height - 1, 90, 90);
-
-	
 				}
 			}
 			else //Unknown gender;
@@ -470,41 +491,29 @@ namespace rabnet
 
 				g.DrawString(pripl, SystemFonts.DefaultFont, textbrush, new RectangleF(((this.Width / 3) - priplsize.Width) / 2, ((this.Height / 2 - 1) - priplsize.Height) / 2 + (this.Height / 2), priplsize.Width, priplsize.Height + (this.Height / 2)));
 
-				p.AddRectangle(new Rectangle(0,0,this.Width,this.Height));
 
 			}
 			g.DrawLine(pen, new Point(0, (int)(this.Height / 2)), new Point(this.Width - 1, (int)(this.Height / 2)));
 
 
-			p.CloseFigure();
 
 			if (_Active)
 			{
-				Color cl = Color.FromArgb(100,SystemColors.MenuHighlight);
-				SolidBrush brush = new SolidBrush(cl);
+				cl = Color.FromArgb(100,SystemColors.MenuHighlight);
+				brush = new SolidBrush(cl);
 				g.SmoothingMode = SmoothingMode.AntiAlias;
 				g.FillPath(brush, p);
 				g.SmoothingMode = SmoothingMode.None;
 				//				pen = new Pen(Color.Red,2);
-//				pen.Thickness = 1;
 			} else if (_Highlight)
 			{
-				Color cl = Color.FromArgb(50, SystemColors.ControlText);
-				SolidBrush brush = new SolidBrush(cl);
+				cl = Color.FromArgb(50, SystemColors.ControlText);
+				brush = new SolidBrush(cl);
 				g.SmoothingMode = SmoothingMode.AntiAlias;
 				g.FillPath(brush, p);
 				g.SmoothingMode = SmoothingMode.None;
-				//				pen = new Pen(Color.Red,2);
-				//				pen.Thickness = 1;
 			}
 
-
-/*
-			g.DrawLine(pen, new Point(1, 1), new Point(1, this.Height - 2));
-			g.DrawLine(pen, new Point(1, 1), new Point(this.Width - 2, 1));
-			g.DrawLine(pen, new Point(this.Width - 2, 1), new Point(this.Width - 2, this.Height - 2));
-			g.DrawLine(pen, new Point(1, this.Height - 2), new Point(this.Width - 2, this.Height - 2));
-*/
 		}
 
 		private Boolean _Active = false;

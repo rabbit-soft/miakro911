@@ -66,7 +66,6 @@
 			this.Controls.Add(this.MaleRabbit);
 			this.Name = "RabbitPair";
 			this.Size = new System.Drawing.Size(150, 83);
-			this.LocationChanged += new System.EventHandler(this.RabbitPair_LocationChanged);
 			this.ResumeLayout(false);
 
 		}

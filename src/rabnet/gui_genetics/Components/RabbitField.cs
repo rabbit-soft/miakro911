@@ -20,6 +20,8 @@ namespace rabnet.Components
 
 		public void DrawRabbit(OneRabbit rbt)
 		{
+			ProgressPanel.Visible = true;
+			RabbitsHolder.Visible = false;
 			_RootRabbitData = rbt;
 
 			_RootRabbit = new RabbitBar();
@@ -29,6 +31,8 @@ namespace rabnet.Components
 			rp.Location = new Point(1000, 100);
 
 			int cnt = 0;
+
+			_RabbitPairs.Clear();
 
 			_RabbitPairs.Add(cnt, rp);
 
@@ -47,12 +51,13 @@ namespace rabnet.Components
 
 			RabbitsHolder.SuspendLayout();
 
-			RabbitsHolder.Controls.Add(rp);
+//			RabbitsHolder.Controls.Add(rp);
 			rp.SetParentControl(RabbitsHolder);
 			GetPairData(rp, ref cnt, ref prnts);
 
 			CenterTree();
 			CenterHolder();
+			ProgressPanel.Visible = false;
 			RabbitsHolder.Visible = true;
 //			this.ScrollControlIntoView(_RabbitPairs[0]);
 			RabbitsHolder.ResumeLayout();
@@ -100,8 +105,8 @@ namespace rabnet.Components
 
 			log.Debug(string.Format("Getting data for rabbit pair. (cnt:{0:d})",c));
 
-			label1.Text = c.ToString();
-			label1.Invalidate();
+			Application.DoEvents();
+
 			if (mrp.GetMom() != null)
 			{
 				log.Debug(string.Format("Rabbit pair #{0:d} has mom.", c));
@@ -120,7 +125,8 @@ namespace rabnet.Components
 
 				rp.SetParentControl(RabbitsHolder);
 				mrp.SetTreeChildFPair(rp);
-				RabbitsHolder.Controls.Add(rp);
+				
+				//RabbitsHolder.Controls.Add(rp);
 
 				log.Debug(string.Format("Getting parents for rabbit pair #{0:d} mom.", c));
 
@@ -146,7 +152,8 @@ namespace rabnet.Components
 				rp.SetDad(mr);
 				rp.SetParentControl(RabbitsHolder);
 				mrp.SetTreeChildMPair(rp);
-				RabbitsHolder.Controls.Add(rp);
+				
+				//RabbitsHolder.Controls.Add(rp);
 
 				log.Debug(string.Format("Getting parents for rabbit pair #{0:d} dad.", c));
 	
@@ -164,7 +171,8 @@ namespace rabnet.Components
 		private void RabbitField_Resize(object sender, System.EventArgs e)
 		{
 			CenterHolder();
-
+			ProgressPanel.Left = (int)((this.Width - ProgressPanel.Width)/2);
+			ProgressPanel.Top = (int)((this.Height - ProgressPanel.Height)/2);
 		}
 
 		private void RabbitField_Scroll(object sender, ScrollEventArgs e)

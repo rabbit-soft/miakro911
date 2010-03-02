@@ -47,5 +47,14 @@ namespace rabnet
 		{
 			rabbitField1.DrawRabbit(_Rabbit);
 		}
+
+		private void GeneticsMainForm_Load(object sender, EventArgs e)
+		{
+		}
+
+		private void GeneticsMainForm_Shown(object sender, EventArgs e)
+		{
+			rabbitField1.DrawRabbit(_Rabbit);
+		}
 	}
 }

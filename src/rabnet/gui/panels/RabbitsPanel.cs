@@ -72,6 +72,8 @@ namespace rabnet
             li.SubItems.Add(rab.fcls);
             li.SubItems.Add(rab.faddress);
             li.SubItems.Add(rab.fnotes);
+
+			cs.SemiReady();
         }
 
         private void insertNode(TreeNode nd,TreeData data)

@@ -10,43 +10,48 @@ namespace rabnet
 		public enum RabbitSex { VOID, MALE, FEMALE };
 		public RabbitSex sex;
 		public int rid;
+		public int r_mother;
+		public int r_father;
 		public string name;
 		public string surname;
 		public string secname;
 		public string t;
-		public string fullname()
+		public string fullname
 		{
-			string n = name;
-			string surn = surname;
-			string secn = secname;
-			if (sex == RabbitSex.FEMALE)
+			get
 			{
-				if (surn != "")
+				string n = name;
+				string surn = surname;
+				string secn = secname;
+				if (sex == RabbitSex.FEMALE)
 				{
-					surn += "a";
+					if (surn != "")
+					{
+						surn += "a";
+					}
+					if (secn != "")
+					{
+						secn += "a";
+					}
 				}
-				if (secn != "")
-				{
-					secn += "a";
-				}
-			}
 
-			if ((secn != "") && (surn != ""))
-			{
-				n += " " + surn + "-" + secn;
-			}
-			else
-			{
-				if (secn != "")
+				if ((secn != "") && (surn != ""))
 				{
-					n += " " + secn;
+					n += " " + surn + "-" + secn;
 				}
-				if (surn != "")
+				else
 				{
-					n += " " + surn;
+					if (secn != "")
+					{
+						n += " " + secn;
+					}
+					if (surn != "")
+					{
+						n += " " + surn;
+					}
 				}
+				return n;
 			}
-			return n;
 		}
 	}
 	
@@ -85,7 +90,10 @@ namespace rabnet
 				r.name = rd.IsDBNull(3) ? "" : rd.GetString("name");
 				r.surname = rd.IsDBNull(4) ? "" : rd.GetString("surname");
 				r.secname = rd.IsDBNull(5) ? "" : rd.GetString("secname");
-				r.t = r.fullname();
+				r.r_father = rd.GetInt32("r_father");
+				r.r_mother = rd.GetInt32("r_mother");
+
+				r.t = r.fullname;
 				//				f.addFuck(rd.GetString("partner"), rd.GetInt32("f_partner"), rd.GetInt32("f_times"),
 				//					rd.IsDBNull(5) ? DateTime.MinValue : rd.GetDateTime("f_date"),
 				//					rd.IsDBNull(6) ? DateTime.MinValue : rd.GetDateTime("f_end_date"),
@@ -101,9 +109,6 @@ namespace rabnet
 				r = null;
 			}
 			rd.Close();
-#if TRIAL
-            Buildings.checkFarms3(sql);
-#endif
 			return r;
 		}
 	}

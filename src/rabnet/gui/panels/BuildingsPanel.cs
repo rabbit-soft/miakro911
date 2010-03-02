@@ -155,6 +155,8 @@ namespace rabnet
                     manual = true;
                 }
             }
+
+			cs.SemiReady();
         }
 
         private String getAddress(int ifid)

@@ -42,16 +42,32 @@ namespace rabnet
             selItem = ListViewSaver.saveItem(lv);
             lv.ListViewItemSorter = null;
             lv.Items.Clear();
-            lv.Hide();
+            //lv.Hide();
+//			lv.Refresh();
+			lv.BeginUpdate();
+//			lv.SuspendLayout();
         }
         public void Restore()
         {
             lv.ListViewItemSorter = this;
             lv.Sort();
             ListViewSaver.loadItem(lv, selItem);
-            lv.Show();
+            //lv.Show();
+//			lv.ResumeLayout();
+			lv.EndUpdate();
             lv.Focus();
         }
+
+		public void SemiReady()
+		{
+//			if (lv.Items.Count % 100 == 0)
+//			{
+//				lv.EndUpdate();
+//				lv.Refresh();
+//				lv.BeginUpdate();
+//			}
+//			lv.Refresh();
+		}
 
         public ListViewColumnSorter Clear()
         {
