@@ -61,6 +61,14 @@ namespace rabnet
 
         private String makeSurname(String nm)
         {
+            string[] soglas = new string[] {"ц","к","н","г","ш","щ","з","х","ф","в","п","р","л","д","ж","ч","с","м","т","б"};
+            string[] glas = new string[] { "у","а","э","и","я","ь"};
+            if (nm.EndsWith("ъ")) nm = nm.Remove(nm.Length - 1);
+            for (int i = 0; i < soglas.Length; i++)
+                if (nm.EndsWith(soglas[i])) return nm + "ов";
+            for (int i = 0; i < glas.Length; i++)
+                if (nm.EndsWith(glas[i])) return nm.Remove(nm.Length-1)+"ин";
+            
             return nm;
         }
 
@@ -143,7 +151,7 @@ namespace rabnet
             
             if (textBox1.Text != "" && textBox2.Text != "") button1.Enabled = true; else button1.Enabled = false;
             if (textBox1.Text != "" || textBox2.Text != "") button2.Enabled = true; else button2.Enabled = false;
-            //if (textBox1.Text.Length ==1 & textBox1.Text[0].)
+            textBox2.Text = makeSurname(textBox1.Text);
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
