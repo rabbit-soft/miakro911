@@ -110,7 +110,7 @@ namespace rabnet
                 return;
             }
             //проверка дерева кроликов на совпадения
-            if (listView1.SelectedItems[0].SubItems[1].Text.IndexOf("-") == 0) return;
+            if (listView1.SelectedItems[0].SubItems[0].Text.IndexOf("-") == 0) return;
             for (int ind = 0; ind < genTree.Nodes.Count; ind++)
             {
                 int len;

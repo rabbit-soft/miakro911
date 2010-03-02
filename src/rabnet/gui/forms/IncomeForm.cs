@@ -20,7 +20,9 @@ namespace rabnet
             zns = Engine.db().catalogs().getZones();
             brd = Engine.db().catalogs().getBreeds();
             if (brd.Count == 0)
-                throw new ApplicationException("Справочник пород пуст");
+                throw new ApplicationException(@"Справочник пород пуст
+Добавьте породу в форме Пород (Вид->Породы)
+и попытайтесь снова");
             fillZones();
         }
 

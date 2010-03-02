@@ -124,10 +124,9 @@ namespace rabnet
                     }
                 }
             
-            if (listviewX.SubItems[ColumnToSort].Text.IndexOf(".") != -1 && listviewY.SubItems[ColumnToSort].Text.IndexOf(".") != -1)
+            DateTime dt1,dt2;
+            if (DateTime.TryParse(listviewX.SubItems[ColumnToSort].Text, out dt1) && DateTime.TryParse(listviewY.SubItems[ColumnToSort].Text,out dt2))
             {
-                DateTime dt1 = DateTime.Parse(listviewX.SubItems[ColumnToSort].Text);
-                DateTime dt2 = DateTime.Parse(listviewY.SubItems[ColumnToSort].Text);
                 compareResult = DateTime.Compare(dt1, dt2);
             }
             else
