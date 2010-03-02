@@ -24,7 +24,7 @@ namespace rabnet
             comboBox1.Items.Add("");
             for (int i = 0; i < c.Count; i++)
                 comboBox1.Items.Add(c[i+3]);
-            cs = new ListViewColumnSorter(listView1, new int[] { 3, 4, 5 }, Options.OPT_ID.KILL_LIST);
+            cs = new ListViewColumnSorter(listView1, new int[] { 4, 5 }, Options.OPT_ID.KILL_LIST);
             update();
         }
 

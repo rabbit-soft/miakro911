@@ -11,7 +11,7 @@ namespace rabnet
     public partial class NamesForm : Form
     {
         ListViewColumnSorter cs = null;
-//        private bool manual=true;
+//      private bool manual=true;
         string originName, originSurname = null;
         string[] btext = new string[] {"Добавить","Изменить" };
 
@@ -19,20 +19,19 @@ namespace rabnet
         {
             initNameForm();
             if (sex == 0) tabControl1.SelectedIndex = 0; else tabControl1.SelectedIndex = 1;
+            comboBox2.SelectedIndex = 1;
         }
 
         public NamesForm()
         {
             initNameForm();
+            comboBox2.SelectedIndex = 0;
         }
 
         private void initNameForm()
         {
             InitializeComponent();
             cs = new ListViewColumnSorter(listView1, new int[] { },Options.OPT_ID.NAMES_LIST);
-//            manual = false;
-            comboBox2.SelectedIndex = 0;
-//            /manual = true;
         }
 
         private void load()
@@ -144,6 +143,7 @@ namespace rabnet
             
             if (textBox1.Text != "" && textBox2.Text != "") button1.Enabled = true; else button1.Enabled = false;
             if (textBox1.Text != "" || textBox2.Text != "") button2.Enabled = true; else button2.Enabled = false;
+            //if (textBox1.Text.Length ==1 & textBox1.Text[0].)
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
