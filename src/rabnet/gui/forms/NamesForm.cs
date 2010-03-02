@@ -151,6 +151,7 @@ namespace rabnet
             
             if (textBox1.Text != "" && textBox2.Text != "") button1.Enabled = true; else button1.Enabled = false;
             if (textBox1.Text != "" || textBox2.Text != "") button2.Enabled = true; else button2.Enabled = false;
+            if ((sender as TextBox).Name == textBox2.Name) return;
             textBox2.Text = makeSurname(textBox1.Text);
         }
 
