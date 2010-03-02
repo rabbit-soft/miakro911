@@ -11,18 +11,13 @@ namespace rabnet
 	public partial class RabbitBar : CustomGraphCmp
 	{
 
-		public Color _ForeColor = SystemColors.Control;
+		public Color _FgColor = SystemColors.Control;
 
-		public Color ForeColor
+		public Color FgColor
 		{
-			get { return _ForeColor; }
-			set { _ForeColor = value; }
+			get { return _FgColor; }
+			set { _FgColor = value; }
 		}
-
-		private Graphics _GenomeGr;
-		private int _GenomeHash;
-
-		
 
 		private RabbitPair _ParentPair;
 		public void SetParentPair(RabbitPair p)
@@ -422,7 +417,7 @@ namespace rabnet
 
 			p.CloseFigure();
 
-			Color cl = Color.FromArgb(255, _ForeColor);
+			Color cl = Color.FromArgb(255, _FgColor);
 			SolidBrush brush = new SolidBrush(cl);
 			g.SmoothingMode = SmoothingMode.AntiAlias;
 			g.FillPath(brush, p);

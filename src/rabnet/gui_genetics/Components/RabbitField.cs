@@ -38,14 +38,12 @@ namespace rabnet.Components
 
 			RabbitGen rabb = Engine.db().getRabbitGen(_RootRabbitData.id);
 
-			OneRabbit[] prnts = Engine.db().getParents(_RootRabbitData.id, 0);
+			RabbitGen rabbF = Engine.db().getRabbitGen(rabb.r_father);
 
-			OneRabbit fr=prnts[0];
+			RabbitGen rabbM = Engine.db().getRabbitGen(rabb.r_mother);
 
-			OneRabbit mr=prnts[1];
-
-			rp.SetMom(fr);
-			rp.SetDad(mr);
+			rp.SetMom(rabbM);
+			rp.SetDad(rabbF);
 
 			rp._id = cnt;
 
@@ -53,7 +51,7 @@ namespace rabnet.Components
 
 //			RabbitsHolder.Controls.Add(rp);
 			rp.SetParentControl(RabbitsHolder);
-			GetPairData(rp, ref cnt, ref prnts);
+			GetPairData(rp, ref cnt);
 
 			CenterTree();
 			CenterHolder();
@@ -100,19 +98,22 @@ namespace rabnet.Components
 			RabbitsHolder.Height = r.Height;
 		}
 
-		public void GetPairData(RabbitPair mrp, ref int c, ref OneRabbit[] prnts)
+		public void GetPairData(RabbitPair mrp, ref int c)
 		{
 
 			log.Debug(string.Format("Getting data for rabbit pair. (cnt:{0:d})",c));
 
 			Application.DoEvents();
 
+
 			if (mrp.GetMom() != null)
 			{
 				log.Debug(string.Format("Rabbit pair #{0:d} has mom.", c));
-				prnts = Engine.db().getParents(mrp.GetMom().id, 0);
-				OneRabbit fr = prnts[0];
-				OneRabbit mr = prnts[1];
+
+				RabbitGen rabbM = Engine.db().getRabbitGen(mrp.GetMom().r_mother);
+
+				RabbitGen rabbF = Engine.db().getRabbitGen(mrp.GetMom().r_father);
+
 				c++;
 
 				RabbitPair rp = new RabbitPair();
@@ -120,8 +121,8 @@ namespace rabnet.Components
 
 				_RabbitPairs.Add(c, rp);
 
-				rp.SetMom(fr);
-				rp.SetDad(mr);
+				rp.SetMom(rabbM);
+				rp.SetDad(rabbF);
 
 				rp.SetParentControl(RabbitsHolder);
 				mrp.SetTreeChildFPair(rp);
@@ -131,7 +132,7 @@ namespace rabnet.Components
 				log.Debug(string.Format("Getting parents for rabbit pair #{0:d} mom.", c));
 
 
-				GetPairData(rp, ref c,ref prnts);
+				GetPairData(rp, ref c);
 				log.Debug(string.Format("Getting parents for rabbit pair #{0:d} mom.... Done", c));
 
 			}
@@ -139,17 +140,20 @@ namespace rabnet.Components
 			if (mrp.GetDad() != null)
 			{
 				log.Debug(string.Format("Rabbit pair #{0:d} has dad.", c));
-				prnts = Engine.db().getParents(mrp.GetDad().id, 0);
-				OneRabbit fr = prnts[0];
-				OneRabbit mr = prnts[1];
+
+				RabbitGen rabbM = Engine.db().getRabbitGen(mrp.GetDad().r_mother);
+
+				RabbitGen rabbF = Engine.db().getRabbitGen(mrp.GetDad().r_father);
 
 				c++;
 
 				RabbitPair rp = new RabbitPair();
 				rp._id = c;
 				_RabbitPairs.Add(c, rp);
-				rp.SetMom(fr);
-				rp.SetDad(mr);
+	
+				rp.SetMom(rabbM);
+				rp.SetDad(rabbF);
+
 				rp.SetParentControl(RabbitsHolder);
 				mrp.SetTreeChildMPair(rp);
 				
@@ -157,7 +161,7 @@ namespace rabnet.Components
 
 				log.Debug(string.Format("Getting parents for rabbit pair #{0:d} dad.", c));
 	
-				GetPairData(rp, ref c, ref prnts);
+				GetPairData(rp, ref c);
 				log.Debug(string.Format("Getting parents for rabbit pair #{0:d} dad.... Done", c));
 
 			}

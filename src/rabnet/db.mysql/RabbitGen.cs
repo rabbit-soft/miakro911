@@ -16,6 +16,8 @@ namespace rabnet
 		public string surname;
 		public string secname;
 		public string t;
+		public float PriplodK;
+		public float RodK;
 		public string fullname
 		{
 			get
@@ -92,24 +94,80 @@ namespace rabnet
 				r.secname = rd.IsDBNull(5) ? "" : rd.GetString("secname");
 				r.r_father = rd.GetInt32("r_father");
 				r.r_mother = rd.GetInt32("r_mother");
-
-				r.t = r.fullname;
-				//				f.addFuck(rd.GetString("partner"), rd.GetInt32("f_partner"), rd.GetInt32("f_times"),
-				//					rd.IsDBNull(5) ? DateTime.MinValue : rd.GetDateTime("f_date"),
-				//					rd.IsDBNull(6) ? DateTime.MinValue : rd.GetDateTime("f_end_date"),
-				//					rd.GetString("f_state"), rd.GetInt32("f_children"), rd.GetInt32("f_dead"),
-				//					rd.GetInt32("breed"), rd.IsDBNull(12) ? "" : rd.GetString("genom"), rd.GetString("f_type"),
-				//					rd.GetInt32("f_killed"), rd.GetInt32("f_added"), (rd.GetInt32("dead") == 1)
-				//					);
-
-
 			}
 			else
 			{
 				r = null;
 			}
 			rd.Close();
+			if (r != null)
+			{
+				getRabbitPriplodK(sql, ref r);
+				getRabbitRodK(sql, ref r);
+			}
 			return r;
+		}
+
+		public static void getRabbitPriplodK(MySqlConnection sql, ref RabbitGen rabbit)
+		{
+			string f = "f_rabid";
+			if (rabbit.sex == RabbitGen.RabbitSex.MALE)
+			{
+				f = "f_partner";
+			}
+
+
+			MySqlCommand cmd = new MySqlCommand(String.Format(@"	SELECT coalesce(sum(f_children)/(sum(f_times)-(	select count(f_state) 
+																													from fucks 
+																													where	{1}={0:d} 
+																															and f_state='sukrol')),0) k  
+																	FROM fucks 
+																	where {1}={0:d};", rabbit.rid, f), sql);
+			MySqlDataReader rd = cmd.ExecuteReader();
+			if (rd.Read())
+			{
+				rabbit.PriplodK = rd.GetFloat("k");
+
+			}
+			rd.Close();
+		}
+		
+		public static void getRabbitRodK(MySqlConnection sql, ref RabbitGen rabbit)
+		{
+			if (rabbit.sex == RabbitGen.RabbitSex.FEMALE)
+			{
+				MySqlCommand cmd = new MySqlCommand(String.Format(@"	select coalesce((sum(f_children)-sum(f_killed)+sum(f_added))/(sum(f_children)+sum(f_added)),0) k
+																		from fucks 
+																		where f_rabid={0:d};", rabbit.rid), sql);
+				MySqlDataReader rd = cmd.ExecuteReader();
+				if (rd.Read())
+				{
+					rabbit.RodK = rd.GetFloat("k");
+				}
+				rd.Close();
+			}
+			if (rabbit.sex == RabbitGen.RabbitSex.MALE)
+			{
+				MySqlCommand cmd = new MySqlCommand(String.Format(@"	select	(select count(f_state) from fucks where f_partner={0:d} and f_state='okrol' and f_times=1) o,
+																				(select count(f_state) from fucks where f_partner={0:d} and f_state='proholost' and f_times=1) p;", rabbit.rid), sql);
+				MySqlDataReader rd = cmd.ExecuteReader();
+				if (rd.Read())
+				{
+					float o = rd.GetFloat("o");
+					float p = rd.GetFloat("p");
+					if (p + 0 == 0)
+					{
+						rabbit.RodK = 0;
+					}
+					else
+					{
+						rabbit.RodK = o / (o + p);
+					}
+				}
+				rd.Close();
+			}
+
+
 		}
 	}
 }

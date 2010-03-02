@@ -11,8 +11,8 @@ namespace rabnet
 
 		protected static readonly ILog log = LogManager.GetLogger(typeof(RabbitPair));
 
-		private OneRabbit _mom;
-		private OneRabbit _dad;
+		private RabbitGen _mom;
+		private RabbitGen _dad;
 		private Rectangle _MyRect;
 		private int _MyCenter;
 		private Boolean _Debug = true;
@@ -31,30 +31,34 @@ namespace rabnet
 
 		#region Genome Data Part
 
-		public void SetMom(OneRabbit r)
+		public void SetMom(RabbitGen r)
 		{
 			if (r != null)
 			{
 				_mom = r;
-				FemaleRabbit.RabbitID = r.id;
+				FemaleRabbit.RabbitID = r.rid;
+				FemaleRabbit.RodK = r.RodK;
+				FemaleRabbit.PlodK = r.PriplodK;
 			}
 		}
 
-		public void SetDad(OneRabbit r)
+		public void SetDad(RabbitGen r)
 		{
 			if (r != null)
 			{
 				_dad = r;
-				MaleRabbit.RabbitID = r.id;
+				MaleRabbit.RabbitID = r.rid;
+				MaleRabbit.RodK = r.RodK;
+				MaleRabbit.PlodK = r.PriplodK;
 			}
 		}
 
-		public OneRabbit GetMom()
+		public RabbitGen GetMom()
 		{
 			return _mom;
 		}
 
-		public OneRabbit GetDad()
+		public RabbitGen GetDad()
 		{
 			return _dad;
 		}
