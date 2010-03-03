@@ -174,9 +174,9 @@ namespace rabnet
             rs.Clear();
             foreach (RabNetEngRabbit r in rbs)
             {
-                rs.Add(new RP(rs,r.rid, r.fullName, r.smallAddress, r.group, r.sex,r.age));
+                rs.Add(new RP(rs,r.rid, r.fullName, r.medAddress, r.group, r.sex,r.age));
                 foreach (OneRabbit y in r.youngers)
-                    rs.Add(new RP(rs,y.id, y.fullname, r.smallAddress, y.group, y.sex,(DateTime.Now-y.born).Days, r.rid));
+                    rs.Add(new RP(rs,y.id, y.fullname, r.medAddress, y.group, y.sex,(DateTime.Now-y.born).Days, r.rid));
             }
         }
         public void setAction(Action act)
@@ -252,7 +252,7 @@ namespace rabnet
                 for (int i = 0; i < b.secs(); i++)
                 {
                     if (b.busy(i)==0 || myrab(b.busy(i)))
-                        cbc.Items.Add(b.smallname[i]);
+                        cbc.Items.Add(b.medname[i]);
                 }
             }
             foreach (RP r in rs)
@@ -439,7 +439,7 @@ namespace rabnet
                 return new int[] { 0, 0, 0 };
             for (int i = 0; i < bs.Length; i++)
                 for (int j = 0; j < bs[i].secs();j++ )
-                    if (bs[i].smallname[j] == s)
+                    if (bs[i].medname[j] == s)
                     {
                         return new int[]{(int)bs[i].farm(),bs[i].tier_id(),j};
                     }

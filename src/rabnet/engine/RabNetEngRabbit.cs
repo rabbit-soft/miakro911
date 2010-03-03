@@ -204,6 +204,7 @@ namespace rabnet
         }
         public string smallAddress{get{return rab.smallAddress;}}
         public string justAddress{get{return rab.justAddress;}}
+        public string medAddress { get { return rab.medAddress; } }
         public int parent { get { return rab.parent; } }
         public int rid { get { return rab.id; } }
         public int evtype{get { return rab.evtype; }}

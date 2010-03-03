@@ -418,6 +418,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
         {
             return (DateTime.Now-born).Days;
         }
+        public string medAddress{get{return Buildings.fullPlaceName(justAddress, false, true, false);}}
     }
 
     class RabbitGetter

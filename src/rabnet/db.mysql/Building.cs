@@ -34,6 +34,7 @@ namespace rabnet
         public int fnhcount;
         public string[] fullname=new string[4];
         public string[] smallname = new string[4];
+        public string[] medname = new string[4];
 #if TRIAL && !CRACKED
         public Building(int id, byte farm, int tier_id, string type, string typeloc, string delims, string notes, bool repair, int seccnt)
 #else
@@ -53,6 +54,7 @@ namespace rabnet
             {
                 fullname[i] = Buildings.fullRName(ffarm, ftid, i, ftype, fdelims, false, true, true);
                 smallname[i] = Buildings.fullRName(ffarm, ftid, i, ftype, fdelims, true, false, false);
+                medname[i] = Buildings.fullRName(ffarm, ftid, i, ftype, fdelims, false, true, false);
             }
         }
         #region IBuilding Members
