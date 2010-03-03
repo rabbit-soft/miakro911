@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using System.Collections;
 
 namespace rabnet
 {
@@ -23,6 +24,7 @@ namespace rabnet
         {
             cs = new ListViewColumnSorter(listView1, new int[] { },Options.OPT_ID.BUILD_LIST);
             listView1.ListViewItemSorter = null;
+            treeView1.TreeViewNodeSorter = new TVNodeSorter();
         }
 
         private void addNoFarm(int farm)
@@ -78,6 +80,7 @@ namespace rabnet
             nofarm = 1;
             TreeNode n=makenode(null,"Ферма",Engine.db().buildingsTree());
             nofarms.Add(nofarm);
+            treeView1.Sort();
             manual = true;
             n.Tag="0:0";
             n.Expand();
@@ -527,4 +530,33 @@ namespace rabnet
         }
 
     }
+
+    public class TVNodeSorter : IComparer
+    {
+        public string strpart(string str)
+        {
+            int i = str.Length - 1;
+            while (Char.IsDigit(str[i]))
+                i--;
+            i++;
+            return str.Substring(0, i);
+        }
+        public int Compare(object x, object y)
+        {
+            string s1 = (x as TreeNode).Text;
+            string s2 = (y as TreeNode).Text;
+            string ss1 = strpart(s1);
+            string ss2 = strpart(s2);
+            if (ss1 != ss2)
+            {
+                if (ss2[0] == '№') return -1;
+                if (ss1[0] == '№') return 1;
+                return String.Compare(s1, s2);
+            }
+            int i1 = int.Parse(s1.Substring(ss1.Length));
+            int i2 = int.Parse(s2.Substring(ss2.Length));
+            return i1 - i2;
+        }
+    }
+
 }
