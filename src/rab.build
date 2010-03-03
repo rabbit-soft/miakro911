@@ -172,6 +172,9 @@
 				<include name="${curdir}/rabnet/gui/*.cs"/>
 				<include name="${curdir}/rabnet/gui/Properties/*.cs"/>
 				<include name="${curdir}/rabnet/gui/components/*.cs"/>
+				<include name="${curdir}/rabnet/gui/components/Pickers/*.cs"/>
+				<include name="${curdir}/rabnet/gui/components/Pickers/ComboBoxAppearance/*.cs"/>
+				<include name="${curdir}/rabnet/gui/components/ColorPickerColumn/*.cs"/>
 				<include name="${curdir}/rabnet/gui/filters/*.cs"/>
 				<include name="${curdir}/rabnet/gui/panels/*.cs"/>
 				<include name="${curdir}/rabnet/gui/forms/*.cs"/>
@@ -181,6 +184,7 @@
 				<include name="${curdir}/rabnet/gui/forms/*.resx"/>
 				<include name="${curdir}/rabnet/gui/components/*.resx"/>
 				<include name="${curdir}/rabnet/gui/forms/ReportViewForm.resx"/>
+				<include name="${curdir}/rabnet/gui/components/ColorPickerColumn/*.resx"/>
 			</resources>
 			<references>
 				<include name="${log4net.use}"/>

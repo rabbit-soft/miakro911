@@ -23,7 +23,7 @@ namespace rabnet
         public CatalogData getBreeds()
         {
             CatalogData cd = new CatalogData();
-            cd.colnames = new String[] {"порода","сокращение" };
+            cd.colnames = new String[] {"порода","сокращение","#color#Цвет" };
             MySqlCommand cmd = new MySqlCommand("SELECT b_id,b_name,b_short_name FROM breeds ORDER BY b_id;", sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             List<CatalogData.Row> rws = new List<CatalogData.Row>();
@@ -31,7 +31,7 @@ namespace rabnet
             {
                 CatalogData.Row rw = new CatalogData.Row();
                 rw.key=rd.GetInt32(0);
-                rw.data = new String[] {rd.GetString(1),rd.GetString(2)};
+				rw.data = new String[] { rd.GetString(1), rd.GetString(2), "FFFF0000" };
                 rws.Add(rw);
             }
             rd.Close();

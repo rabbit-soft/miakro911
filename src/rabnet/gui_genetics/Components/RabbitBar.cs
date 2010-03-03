@@ -177,6 +177,9 @@ namespace rabnet
 
 			gr.FillRectangle(brush,new Rectangle(point,size));
 
+			string txt = Math.Round(k, 2).ToString();
+
+			k = k * 100;
 
 			float rk = k - 50;
 			float gk = k;
@@ -211,6 +214,18 @@ namespace rabnet
 			gr.DrawLine(penGr, point, new Point(point.X, point.Y + size.Height));
 			gr.DrawLine(penGr, new Point(point.X,point.Y + size.Height), new Point(point.X + size.Width, point.Y + size.Height));
 			gr.DrawLine(penGr, new Point(point.X + size.Width,point.Y), new Point(point.X + size.Width, point.Y + size.Height));
+
+
+			SizeF txtsize = gr.MeasureString(txt, SystemFonts.DefaultFont);
+
+
+			if (txtsize.Width > size.Width)
+			{
+				txtsize.Width = size.Width;
+			}
+
+
+			gr.DrawString(txt, SystemFonts.DefaultFont, Brushes.Black, new RectangleF((size.Width - txtsize.Width) / 2 + point.X, (size.Height - txtsize.Height) / 2 + point.Y, txtsize.Width, txtsize.Height));
 
 
 		}
