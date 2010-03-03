@@ -11,7 +11,7 @@ namespace rabnet
     public partial class NamesForm : Form
     {
         ListViewColumnSorter cs = null;
-//      private bool manual=true;
+        private bool manual=true;
         string originName, originSurname = null;
         string[] btext = new string[] {"Добавить","Изменить" };
 
@@ -135,7 +135,25 @@ namespace rabnet
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            
+            if (!manual) return;
+            manual = false;
+            String txt = textBox1.Text;
+            int i = 0;
+            while (i < txt.Length)
+            {
+                if (i==0 && Char.IsLower(txt[0])) txt=Char.ToUpper(txt[0])+txt.Substring(1);
+                if (i!=0 && Char.IsUpper(txt[i])) txt=txt.Substring(0,i)+Char.ToLower(txt[i])+txt.Substring(i+1);
+                if (txt[i]<'А' || txt[i]>'я')
+                    txt=txt.Remove(i,1);
+                else
+                    i++;
+            }
+            if (txt != textBox1.Text)
+            {
+                textBox1.Text = txt;
+                textBox1.SelectionStart = txt.Length;
+            }
+            manual = true;
             if (textBox1.Text != "" && textBox2.Text != "") button1.Enabled = true; else button1.Enabled = false;
             if (textBox1.Text != "" || textBox2.Text != "") button2.Enabled = true; else button2.Enabled = false;
             if ((sender as TextBox).Name == textBox2.Name) return;
