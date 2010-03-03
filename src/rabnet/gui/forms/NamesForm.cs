@@ -41,7 +41,6 @@ namespace rabnet
             button1.Text = btext[0];
             this.originName = this.originSurname = null;
             button1.Enabled = button2.Enabled = false;
-            comboBox2.Focus();
             rabStatusBar1.run();
         }
 
@@ -57,19 +56,6 @@ namespace rabnet
             IDataGetter gt = DataThread.db().getNames(f);
             rabStatusBar1.setText(1, gt.getCount().ToString() + " имен");
             return gt;
-        }
-
-        private String makeSurname(String nm)
-        {
-            string[] soglas = new string[] {"ц","к","н","г","ш","щ","з","х","ф","в","п","р","л","д","ж","ч","с","м","т","б"};
-            string[] glas = new string[] { "у","а","э","и","я","ь"};
-            if (nm.EndsWith("ъ")) nm = nm.Remove(nm.Length - 1);
-            for (int i = 0; i < soglas.Length; i++)
-                if (nm.EndsWith(soglas[i])) return nm + "ов";
-            for (int i = 0; i < glas.Length; i++)
-                if (nm.EndsWith(glas[i])) return nm.Remove(nm.Length-1)+"ин";
-            
-            return nm;
         }
 
         private void rabStatusBar1_itemGet(object sender, RabStatusBar.RSBItemEvent e)
@@ -132,17 +118,18 @@ namespace rabnet
                 {
                     OneRabbit.RabbitSex sx = OneRabbit.RabbitSex.MALE;
                     if (tabControl1.SelectedIndex == 1) sx = OneRabbit.RabbitSex.FEMALE;
-                    Engine.get().db().addName(sx, textBox1.Text, textBox2.Text);
+                    Engine.get().db().addName(sx, textBox1.Text.Trim(), textBox2.Text.Trim());
                 }
                 else
                 {
-                    Engine.get().db().changeName(this.originName, textBox1.Text, textBox2.Text);
+                    Engine.get().db().changeName(this.originName, textBox1.Text.Trim(), textBox2.Text.Trim());
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка:" + ex.GetType().ToString() + " " + ex.Message);
+                MessageBox.Show("Ошибка: Данное имя уже существует");   
             }
+
             load();
         }
 
@@ -152,7 +139,24 @@ namespace rabnet
             if (textBox1.Text != "" && textBox2.Text != "") button1.Enabled = true; else button1.Enabled = false;
             if (textBox1.Text != "" || textBox2.Text != "") button2.Enabled = true; else button2.Enabled = false;
             if ((sender as TextBox).Name == textBox2.Name) return;
-            textBox2.Text = makeSurname(textBox1.Text);
+            textBox2.Text = makeSurname(textBox1.Text);            
+        }
+
+        private String makeSurname(String nm)
+        {
+            if (nm == "") return nm;
+            if (nm.EndsWith("ъ")) nm = nm.Remove(nm.Length - 1);
+            if (nm.EndsWith("ь") || nm.EndsWith("ч") || nm.EndsWith("ш")) return nm.Remove(nm.Length - 1) + "ев";
+            string[] soglas = new string[] { "ц", "к", "н", "г", "щ", "з", "х", "ф", "в", "п", "р", "л", "д", "ж", "с", "м", "т", "б" };
+            for (int i = 0; i < soglas.Length; i++)
+                if (nm.EndsWith(soglas[i])) return nm + "ов";
+            string[] glas = new string[] { "у", "а", "э", "и", "я", "й", "е", "ю", "ы", "о" };
+            for (int i = 0; i < glas.Length; i++)
+                if (nm.EndsWith(glas[i])) 
+                    if(nm.Length >0)return nm.Remove(nm.Length - 1) + "ин";
+                    else return nm + "ин";
+
+            return nm;
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
