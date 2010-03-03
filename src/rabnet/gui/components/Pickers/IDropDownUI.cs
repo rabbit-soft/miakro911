@@ -23,6 +23,8 @@ namespace Pickers
     /// <summary>
     /// Provides an interface to construct custom drop-down UI for the <see cref="PickerBase&lt;T,U&gt;"/> control.
     /// </summary>
+    
+    [System.Reflection.Obfuscation(Exclude=true,ApplyToMembers=true)]
     public interface IDropDownUI
     {
         /// <summary>
