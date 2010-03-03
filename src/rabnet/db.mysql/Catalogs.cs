@@ -69,13 +69,15 @@ namespace rabnet
 
         public Catalog getFreeNames(int sex,int plusid)
         {
+            MySqlCommand cmd = new MySqlCommand("UPDATE names SET n_block_date=NULL WHERE n_use=0 AND n_block_date<NOW();", con);
+            cmd.ExecuteNonQuery();
             if (sex==0) sex=1;
             String where = "";
             if (sex == 1)
                 where = " WHERE n_sex='male'";
             if (sex == 2)
                 where = " WHERE n_sex='female'";
-            return stdCatalog("SELECT n_id,n_name FROM names" + where + " AND (n_id=" + plusid.ToString() + " OR (n_use=0 AND n_block_date IS NULL));");
+            return stdCatalog("SELECT n_id,n_name FROM names" + where + " AND (n_id=" + plusid.ToString() + " OR (n_use=0 AND n_block_date IS NULL)) ORDER BY n_name;");
         }
 
         public Catalog getDeadReasons()

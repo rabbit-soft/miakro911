@@ -32,7 +32,9 @@ namespace rabnet
     class Names:RabNetDataGetterBase
     {
 
-        public Names(MySqlConnection sql, Filters opts) : base(sql, opts) { }
+        public Names(MySqlConnection sql, Filters opts) : base(sql, opts) 
+        {
+        }
 
         public override IData nextItem()
         {
@@ -65,7 +67,9 @@ namespace rabnet
 
         public override string countQuery()
         {
-            return "SELECT COUNT(*) FROM names"+makeWhereClause()+";";
+            MySqlCommand cmd = new MySqlCommand("UPDATE names SET n_block_date=NULL WHERE n_use=0 AND n_block_date<NOW();", sql);
+            cmd.ExecuteNonQuery();
+            return "SELECT COUNT(*) FROM names" + makeWhereClause() + ";";
         }
 
         public static void addName(MySqlConnection sql, OneRabbit.RabbitSex sex, String name, String surname)
