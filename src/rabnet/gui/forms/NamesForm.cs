@@ -125,7 +125,7 @@ namespace rabnet
                     Engine.get().db().changeName(this.originName, textBox1.Text.Trim(), textBox2.Text.Trim());
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 MessageBox.Show("Ошибка: Данное имя уже существует");   
             }

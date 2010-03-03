@@ -17,7 +17,6 @@ namespace rabnet
         const int STATUSFIELD = 5;
         const int SEXFIELD = 1;
         const int NAMEFIELD = 0;
-        private bool multiselect = false;
         public RabbitsPanel()
             : base()
         {

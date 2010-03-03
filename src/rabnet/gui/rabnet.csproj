@@ -83,12 +83,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="components\ColorPickerColumn\IDropDownDisplayAdapte.cs" />
-    <Compile Include="components\ImageHolder.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="components\ImageHolder.Designer.cs">
-      <DependentUpon>ImageHolder.cs</DependentUpon>
-    </Compile>
     <Compile Include="components\Pickers\CheckButtonDisplayAdapter.cs" />
     <Compile Include="components\Pickers\ColorPicker.cs">
       <SubType>Component</SubType>
@@ -194,7 +188,8 @@
     <Compile Include="forms\CatalogForm.Designer.cs">
       <DependentUpon>CatalogForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="forms\ColumnSorter.cs" />
+    <Compile Include="forms\ColumnSorter.cs">
+    </Compile>
     <Compile Include="DataThread.cs" />
     <Compile Include="forms\CountKids.cs">
       <SubType>Form</SubType>
@@ -378,9 +373,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="components\FarmDrawer.resx">
       <DependentUpon>FarmDrawer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="components\ImageHolder.resx">
-      <DependentUpon>ImageHolder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="filters\BuildingsFilter.resx">
       <DependentUpon>BuildingsFilter.cs</DependentUpon>

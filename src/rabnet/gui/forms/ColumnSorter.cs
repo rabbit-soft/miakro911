@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Collections;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace rabnet
 {
@@ -187,9 +188,9 @@ namespace rabnet
             if (OrderOfSort == SortOrder.None) return;
             Image img=null;
             if (OrderOfSort == SortOrder.Ascending)
-                img = ImageHolder.get().getImage(0);
+                img = ArrowDrawer.get().getImage(0);
             else
-                img = ImageHolder.get().getImage(1);
+                img = ArrowDrawer.get().getImage(1);
             Rectangle rect=new Rectangle(e.Bounds.Right-16,e.Bounds.Bottom-16,11,11);
             e.Graphics.DrawImage(img, rect);
         }
@@ -202,6 +203,54 @@ namespace rabnet
         private void OnDrawSubItem(object sender, DrawListViewSubItemEventArgs e)
         {
             e.DrawDefault = true;
+        }
+    }
+
+    public class ArrowDrawer
+    {
+        Bitmap _ArrowDown;
+        Bitmap _ArrowUp;
+
+        public ArrowDrawer()
+        {
+            DrawArrows();
+        }
+
+        private void DrawArrows()
+        {
+            Graphics g;
+            _ArrowDown = new Bitmap(11, 11);
+            g = Graphics.FromImage(_ArrowDown);
+            g.SmoothingMode = SmoothingMode.HighQuality;
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.DrawPolygon(SystemPens.ControlDark, new Point[] { new Point(9, 3), new Point(5, 7), new Point(1, 3) });
+            g.FillPolygon(SystemBrushes.ControlDark, new Point[] { new Point(9, 3), new Point(5, 7), new Point(1, 3) });
+            g.Dispose();
+
+            _ArrowUp = new Bitmap(11, 11);
+            g = Graphics.FromImage(_ArrowUp);
+            g.SmoothingMode = SmoothingMode.HighQuality;
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.DrawPolygon(SystemPens.ControlDark, new Point[] { new Point(5, 3), new Point(9, 7), new Point(1, 7) });
+            g.FillPolygon(SystemBrushes.ControlDark, new Point[] { new Point(5, 3), new Point(9, 7), new Point(1, 7) });
+            g.Dispose();
+        }
+
+        private static ArrowDrawer obj = null;
+        public static ArrowDrawer get()
+        {
+            if (obj == null)
+                obj = new ArrowDrawer();
+            return obj;
+        }
+
+        public Image getImage(int index)
+        {
+            if (index == 0)
+            {
+                return _ArrowDown;
+            }
+            return _ArrowUp;
         }
     }
 }
