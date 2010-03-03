@@ -86,8 +86,8 @@ namespace rabnet
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=1 AND r_breed=br) kandidat,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=0 AND r_breed=br) boys,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status>=2 AND r_breed=br) state,
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=1 AND r_breed=br) pervo,
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=0 AND r_breed=br AND r_born<=(now()-INTERVAL {0:s} day)) nevest,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND ((r_status=0 AND r_event_date IS NOT NULL)OR(r_status=1 AND r_event_date IS NULL)) AND r_breed=br) pervo,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND (r_status=0 AND r_event_date IS NULL) AND r_breed=br AND r_born<=(now()-INTERVAL {0:s} day)) nevest,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=0 AND r_breed=br and r_born>(now()-INTERVAL {0:s} day)) girl,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='void' AND r_breed=br) bezpolie,
 sum(r_group) vsego
@@ -98,12 +98,12 @@ select 'Итого','',(SELECT count(*) FROM rabbits WHERE r_sex='male' AND r_st
 (SELECT count(*) FROM rabbits WHERE r_sex='male' AND r_status=1) kandidat,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=0) boys,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status>=2 ) state,
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=1 ) pervo,
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=0 AND r_born<=(now()-INTERVAL {0:s} day)) nevest,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND ((r_status=0 AND r_event_date IS NOT NULL)OR(r_status=1 AND r_event_date IS NULL))) pervo,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND (r_status=0 AND r_event_date IS NULL) AND r_born<=(now()-INTERVAL {0:s} day)) nevest,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=0 and r_born>(now()-INTERVAL {0:s} day)) girl,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='void') bezpolie,
 sum(r_group) vsego
-from rabbits;",f.safeValue("brd","121"));
+from rabbits;", f.safeValue("brd","121"));
         }
 
         private string ageQuery(Filters f)
