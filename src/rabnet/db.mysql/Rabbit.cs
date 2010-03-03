@@ -645,16 +645,18 @@ VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d},{1
             return res;
         }
 
-        public static void freeTier(MySqlConnection sql,int rabbit)
+        public static int[] freeTier(MySqlConnection sql,int rabbit)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT r_id,r_farm,r_tier,r_tier_id,
 r_area,t_busy1,t_busy2,t_busy3,t_busy4,m_upper,m_lower,m_id FROM rabbits,tiers,minifarms WHERE r_id={0:d} AND r_tier=t_id AND m_id=r_farm", rabbit), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
-            int tr = 0; int sc = 0;
+            int tr = 0; int sc = 0; int frm = 0; int tid = 0; 
             if (rd.Read())
             {
                 tr = rd.GetInt32("r_tier");
                 sc = rd.GetInt32("r_area");
+                frm = rd.GetInt32("r_farm");
+                tid = rd.GetInt32("r_tier_id");
                 int bs = rd.GetInt32("t_busy" + (sc + 1).ToString());
                 if (bs != rabbit)
                     tr = 0;
@@ -665,6 +667,7 @@ r_area,t_busy1,t_busy2,t_busy3,t_busy4,m_upper,m_lower,m_id FROM rabbits,tiers,m
                 cmd.CommandText = String.Format("UPDATE tiers SET t_busy{0:d}=0 WHERE t_id={1:d};", sc + 1, tr);
                 cmd.ExecuteNonQuery();
             }
+            return new int[] { frm, tid, sc };
         }
 
         public static void placeRabbit(MySqlConnection sql, int rabbit, int farm, int tier_id, int sec)
@@ -771,10 +774,23 @@ FROM rabbits WHERE r_id={0:d};",rabbit,mom,count), sql);
 
         public static void killRabbit(MySqlConnection sql, int rid, DateTime when, int reason, string notes)
         {
-            freeTier(sql, rid);
+            int[] place=freeTier(sql, rid);
             freeName(sql, rid);
-            MySqlCommand cmd = new MySqlCommand(String.Format("UPDATE rabbits SET r_parent=0 WHERE r_parent={0:d};"
-                , rid), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT r_id FROM rabbits WHERE r_parent={0:d} LIMIT 1;",rid),sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            if (rd.Read())
+            {
+                int c1=rd.GetInt32(0);
+                rd.Close();
+                if (c1 != 0)
+                {
+                    placeRabbit(sql, c1, place[0], place[1], place[2]);
+                    cmd.CommandText = String.Format("UPDATE rabbits SET r_parent=0 WHERE r_id={0:d};",c1);
+                    cmd.ExecuteNonQuery();
+                }
+            }else
+                rd.Close();
+            cmd.CommandText=String.Format("UPDATE rabbits SET r_parent=0,r_farm=0,r_tier_id=0,r_tier=0,r_area=0 WHERE r_parent={0:d};", rid);
             cmd.ExecuteNonQuery();
             cmd.CommandText=String.Format(@"CALL killRabbitDate({0:d},{1:d},'{2:s}',{3:s});",
                 rid,reason,notes,DBHelper.DateToMyString(when));
