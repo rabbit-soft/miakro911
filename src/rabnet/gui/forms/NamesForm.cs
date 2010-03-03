@@ -146,7 +146,8 @@ namespace rabnet
         {
             if (nm == "") return nm;
             if (nm.EndsWith("ъ")) nm = nm.Remove(nm.Length - 1);
-            if (nm.EndsWith("ь") || nm.EndsWith("ч") || nm.EndsWith("ш")) return nm.Remove(nm.Length - 1) + "ев";
+            if (nm.EndsWith("ь")) return nm.Remove(nm.Length - 1) + "ев";
+            if (nm.EndsWith("ч") || nm.EndsWith("ш")) return nm + "ев";
             string[] soglas = new string[] { "ц", "к", "н", "г", "щ", "з", "х", "ф", "в", "п", "р", "л", "д", "ж", "с", "м", "т", "б" };
             for (int i = 0; i < soglas.Length; i++)
                 if (nm.EndsWith(soglas[i])) return nm + "ов";

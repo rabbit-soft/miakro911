@@ -514,7 +514,7 @@ namespace rabnet
             if (r.children.Count > 0)
                 foreach (RP c in r.children)
                 {
-                    int[] a=getAddress(r.curaddress);
+                    int[] a=getAddress(c.curaddress);
                     int cid = rb.clone(c.count, a[0],a[1],a[2]);
                     commitRabbit(c, cid,replaced);
                     if (action == Action.ONE_GIRL_OUT && girlout == 0 && c.sex == OneRabbit.RabbitSex.FEMALE && c.count == 1)
