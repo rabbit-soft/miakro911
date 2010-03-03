@@ -15,6 +15,7 @@ namespace rabnet
     {
         private string rname="Отчет";
         private XmlDocument[] xmls = null;
+        public bool printed = false;
         public ReportViewForm()
         {
             InitializeComponent();
@@ -105,6 +106,7 @@ namespace rabnet
                 if (options && (pd.PrinterSettings.PrintRange == PrintRange.Selection))
                     pd.PrinterSettings.FromPage = rdlViewer1.PageCurrent;
                 rdlViewer1.Print(pd);
+                printed = true;
             }
             catch (Exception ex)
             {

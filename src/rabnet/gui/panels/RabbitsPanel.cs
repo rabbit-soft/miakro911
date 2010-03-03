@@ -463,7 +463,13 @@ namespace rabnet
                 p2 = new OneRabbit[] { null, null };
             docs[5] = rabToXml(null, p2[0]);
             docs[6] = rabToXml(null, p2[1]);
-            new ReportViewForm("Племенное свидетельство", "rabbit", docs).ShowDialog();
+            ReportViewForm rf = new ReportViewForm("Племенное свидетельство", "rabbit", docs);
+            rf.ShowDialog();
+            if (rf.printed)
+            {
+                int num = Engine.opt().getIntOption(Options.OPT_ID.NEXT_SVID);
+                Engine.opt().setOption(Options.OPT_ID.NEXT_SVID, num + 1);
+            }
         }
 
         private void realizeMenuItem_Click(object sender, EventArgs e)
