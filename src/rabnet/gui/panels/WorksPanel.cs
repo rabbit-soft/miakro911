@@ -59,7 +59,11 @@ namespace rabnet
             runF = f;
             fillLogs(f);
             DataThread.get().stop();
-            if (!fullUpdate) return null;
+            if (!fullUpdate)
+            {
+                fullUpdate = true;
+                return null;
+            }
             return DataThread.db().zooTeh(f);
         }
 

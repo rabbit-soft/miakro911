@@ -307,9 +307,9 @@ namespace rabnet
             RabbitGetter.countKids(sql, rid, dead, killed, added);
         }
 
-        public ZooJobItem[] getCounts(Filters f,int days)
+        public ZooJobItem[] getCounts(Filters f,int days,int next)
         {
-            return new ZooTehGetter(sql,f).getCounts(days);
+            return new ZooTehGetter(sql,f).getCounts(days,next);
         }
 
         public void setRabbitSex(int rid, OneRabbit.RabbitSex sex)

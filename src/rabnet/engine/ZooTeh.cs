@@ -46,10 +46,10 @@ namespace rabnet
             this.id2=id2;
             return this;
         }
-        public ZootehJob Counts(int id, String nm, String ad, int age,int count,bool suckers,String br)
+        public ZootehJob Counts(int id, String nm, String ad, int age,int count,bool suckers,String br,int srok)
         {
             type = JobType.COUNT_KIDS; job = (f.safeInt("shr") == 0 ? "Подсчет " : "Сч") + (suckers ? (f.safeInt("shr") == 0 ? "подсосных" : "Пс") : (f.safeInt("shr") == 0 ? "гнездовых" : "Гн"));
-            days = 0; name = nm; address = ad;
+            days = srok; name = nm; address = ad;
             this.age = age; this.id = id; breed = br;
             flag = suckers ? 1 : 0;
             comment = (f.safeInt("shr")==0?"количество ":"колво:") + count.ToString();
@@ -162,9 +162,10 @@ namespace rabnet
             for (int i = 0; i < 4; i++)
             {
                 int days = f.safeInt("count" + i.ToString());
-                ZooJobItem[] jobs = eng.db2().getCounts(f, days);
+                int next = i==3?-1:f.safeInt("count" + (i+1).ToString());
+                ZooJobItem[] jobs = eng.db2().getCounts(f, days,next);
                 foreach (ZooJobItem z in jobs)
-                    jh.Add(new ZootehJob(f).Counts(z.id, z.name, z.place, z.age,z.i[0],i==3,z.breed));
+                    jh.Add(new ZootehJob(f).Counts(z.id, z.name, z.place, z.age,z.i[0],i==3,z.breed,z.i[1]));
             }
         }
 
