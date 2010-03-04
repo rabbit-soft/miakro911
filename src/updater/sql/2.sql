@@ -12,7 +12,8 @@ ALTER TABLE dead MODIFY r_notes TEXT NULL;
 ALTER TABLE logtypes MODIFY l_params TEXT NULL;
 ALTER TABLE logs MODIFY l_param TEXT NULL;
 
-
 DELETE FROM options WHERE o_subname='rablist' OR o_subname='zoolist';
 
 ALTER TABLE breeds add b_color VARCHAR(100) NOT NULL default "White";
+
+INSERT INTO options(o_name,o_subname,o_value) VALUES ('opt','short_zoo',1);

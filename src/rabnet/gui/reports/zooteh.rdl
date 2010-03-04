@@ -13,11 +13,11 @@
   <BottomMargin>.25in</BottomMargin>
   <DataSets>
     <DataSet Name="Data">
-      <Query>
+      <Query >
         <DataSourceName>DS1</DataSourceName>
         <CommandText>Url=D:\Temp\zooteh.xml;RowsXPath=/report/zooteh/row</CommandText>
       </Query>
-      <Fields>
+      <Fields >
         <Field Name="type">
           <DataField>type</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -38,8 +38,8 @@
           <DataField>address</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="fuckers">
-          <DataField>fuckers</DataField>
+        <Field Name="comment">
+          <DataField>comment</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="breed">
@@ -84,7 +84,7 @@
     </DataSet>
   </DataSets>
   <PageHeader>
-    <Height>0.0pt</Height>
+    <Height>29.3pt</Height>
     <PrintOnFirstPage>true</PrintOnFirstPage>
     <PrintOnLastPage>true</PrintOnLastPage>
   </PageHeader>
@@ -429,7 +429,7 @@
                 <TableCell>
                   <ReportItems>
                     <Textbox Name="Textbox24">
-                      <Value>партнеры</Value>
+                      <Value>доп.инфо</Value>
                       <Style>
                         <TextAlign>Center</TextAlign>
                         <BorderStyle>
@@ -571,7 +571,7 @@
                 <TableCell>
                   <ReportItems>
                     <Textbox Name="Textbox32">
-                      <Value>=Fields!fuckers.Value</Value>
+                      <Value>=Fields!comment.Value</Value>
                       <CanGrow>true</CanGrow>
                       <Style>
                         <BorderStyle>

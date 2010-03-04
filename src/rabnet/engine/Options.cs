@@ -13,7 +13,7 @@ namespace rabnet
             ZOO_FILTER, COMBINE_AGE, BOYS_OUT, GIRLS_OUT, STATE_FUCK, FIRST_FUCK, MALE_WAIT, GEN_TREE, CONFIRM_EXIT, 
             VACC, CONFIRM_KILL, SUCKERS,NEST,CHILD_NEST,RAB_LIST,BUILD_LIST,YOUNG_LIST,DEAD_LIST,REPL_YOUNG_LIST,
             MAKE_FUCK_LIST,NAMES_LIST,UPDATE_ZOO,ZOO_LIST,FIND_PARTNERS,NEXT_SVID,SVID_HEAD,SVID_GEN_DIR,
-            KILL_LIST
+            KILL_LIST,SHORT_ZOO
         }
         public enum OPT_LEVEL {FARM,USER};
         public class ExOptionNotFound:ApplicationException
@@ -79,6 +79,7 @@ namespace rabnet
                                    new Option(OPT_ID.SVID_HEAD,OPT_LEVEL.FARM,"svidhead"), 
                                    new Option(OPT_ID.SVID_GEN_DIR,OPT_LEVEL.FARM,"gendir"), 
                                    new Option(OPT_ID.KILL_LIST,OPT_LEVEL.USER,"killlist"), 
+                                   new Option(OPT_ID.SHORT_ZOO,OPT_LEVEL.USER,"short_zoo"), 
                                    };
         public Options(RabNetEngine eng)
         {

@@ -77,6 +77,7 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
+            this.shortZooMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -277,6 +278,7 @@
             this.showTierTMenuItem,
             this.showTierSMenuItem,
             this.shortNamesMenuItem,
+            this.shortZooMenuItem,
             this.dblSurMenuItem,
             this.toolStripMenuItem4,
             this.shNumMenuItem,
@@ -462,6 +464,14 @@
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
             // 
+            // shortZooMenuItem
+            // 
+            this.shortZooMenuItem.CheckOnClick = true;
+            this.shortZooMenuItem.Name = "shortZooMenuItem";
+            this.shortZooMenuItem.Size = new System.Drawing.Size(228, 22);
+            this.shortZooMenuItem.Text = "Сокращения в зоотехплане";
+            this.shortZooMenuItem.Click += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -534,6 +544,7 @@
         private System.Windows.Forms.ToolStripMenuItem возрастИКоличествоToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem причиныСпичанияToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem списанияToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem shortZooMenuItem;
     }
 }
 

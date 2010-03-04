@@ -60,6 +60,7 @@ namespace rabnet
             geterosisMenuItem.Checked = (op.getIntOption(Options.OPT_ID.GETEROSIS) == 1);
             inbreedingMenuItem.Checked = (op.getIntOption(Options.OPT_ID.INBREEDING) == 1);
             shNumMenuItem.Checked = (op.getIntOption(Options.OPT_ID.SHOW_NUMBERS) == 1);
+            shortZooMenuItem.Checked = (op.getIntOption(Options.OPT_ID.SHORT_ZOO) == 1);
             //rabStatusBar1.run();
             manflag = false;
         }
@@ -81,6 +82,7 @@ namespace rabnet
             if (sender == geterosisMenuItem) { id = Options.OPT_ID.GETEROSIS; reshow = false; }
             if (sender == inbreedingMenuItem) { id = Options.OPT_ID.INBREEDING; reshow = false; }
             if (sender == shNumMenuItem) id = Options.OPT_ID.SHOW_NUMBERS;
+            if (sender == shortZooMenuItem) id = Options.OPT_ID.SHORT_ZOO;
             Engine.opt().setOption(id, ((sender as ToolStripMenuItem).Checked ? 1 : 0));
             if (reshow)
                 rabStatusBar1.run();

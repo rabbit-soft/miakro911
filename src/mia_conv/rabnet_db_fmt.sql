@@ -309,7 +309,8 @@ INSERT INTO options(o_name,o_subname,o_value) VALUES
 ('opt','inbreeding',0),
 ('opt','sh_tier_t',1),
 ('opt','sh_tier_s',0),
-('opt','sh_num',0);
+('opt','sh_num',0),
+('opt','short_zoo',1);
 
 UPDATE tiers SET t_busy2=NULL,t_busy3=NULL,t_busy4=NULL WHERE t_type='female';
 UPDATE tiers SET t_busy3=NULL,t_busy4=NULL WHERE t_type='dfemale' OR t_type='jurta' OR t_type='vertep' OR t_type='barin' OR t_type='cabin';

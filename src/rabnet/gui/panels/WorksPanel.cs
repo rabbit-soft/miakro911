@@ -28,7 +28,7 @@ namespace rabnet
         {
             if (fullUpdate)
             {
-                f["shr"] = Engine.opt().getOption(Options.OPT_ID.SHORT_NAMES);
+                f["shr"] = Engine.opt().getOption(Options.OPT_ID.SHORT_ZOO);
                 f["dbl"] = Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
                 f["prt"] = Engine.opt().getOption(Options.OPT_ID.FIND_PARTNERS);
                 f["okrol"] = Engine.opt().getOption(Options.OPT_ID.OKROL);
@@ -300,16 +300,16 @@ namespace rabnet
                 rw.AppendChild(xml.CreateElement("name")).AppendChild(xml.CreateTextNode(j.job));
                 rw.AppendChild(xml.CreateElement("rabbit")).AppendChild(xml.CreateTextNode(j.name));
                 rw.AppendChild(xml.CreateElement("address")).AppendChild(xml.CreateTextNode(j.address));
-                rw.AppendChild(xml.CreateElement("comment")).AppendChild(xml.CreateTextNode(j.comment));
+                //rw.AppendChild(xml.CreateElement("comment")).AppendChild(xml.CreateTextNode(""));
                 rw.AppendChild(xml.CreateElement("breed")).AppendChild(xml.CreateTextNode(j.breed));
                 rw.AppendChild(xml.CreateElement("age")).AppendChild(xml.CreateTextNode(j.age.ToString()));
                 if (j.type == JobType.FUCK)
                 {
                     int id = getFuckerId(j.names, fuckers);
-                    rw.AppendChild(xml.CreateElement("fuckers")).AppendChild(xml.CreateTextNode("см. "+(id+1).ToString()));
+                    rw.AppendChild(xml.CreateElement("comment")).AppendChild(xml.CreateTextNode("см. "+(id+1).ToString()));
                 }
                 else
-                    rw.AppendChild(xml.CreateElement("fuckers")).AppendChild(xml.CreateTextNode(""));
+                    rw.AppendChild(xml.CreateElement("comment")).AppendChild(xml.CreateTextNode(j.comment));
                 root.AppendChild(rw);
             }
             for (int i = 0; i < fuckers.Count; i++)
