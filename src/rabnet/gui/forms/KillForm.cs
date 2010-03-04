@@ -62,7 +62,7 @@ namespace rabnet
                 addRabbit(or.id);
                 rbs[rbs.Count - 1].tag = r.address;
             }
-            update();
+            //update();
         }
 
         public void update()
