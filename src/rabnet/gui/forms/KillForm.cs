@@ -42,16 +42,14 @@ namespace rabnet
         }
         public void addRabbit(int id)
         {
-            //try
+            try
             {
                 addRabbit(Engine.get().getRabbit(id));
             }
-            /*
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-             * */
         }
 
         public void addRabbit(RabNetEngRabbit r)
