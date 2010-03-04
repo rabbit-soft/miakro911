@@ -8,7 +8,7 @@ namespace rabnet
 {
     public class ReportType
     {
-        public enum Type { TEST,BREEDS,AGE,FUCKER,DEAD,DEADREASONS,REALIZE };
+        public enum Type { TEST,BREEDS,AGE,FUCKER,DEAD,DEADREASONS,REALIZE,USER_OKROLS };
     }
 
     class Reports
@@ -65,6 +65,7 @@ namespace rabnet
                 case ReportType.Type.DEAD: query = deadQuery(f); break;
                 case ReportType.Type.DEADREASONS: query = deadReasonsQuery(f); break;
                 case ReportType.Type.REALIZE: query = Realize(f); break;
+                case ReportType.Type.USER_OKROLS: query = UserOkrols(f); break;
             }
             return makeStdReportXml(query);
         }
@@ -173,6 +174,16 @@ UNION
 (SELECT b_name FROM breeds WHERE b_id=r_breed) breed, rabplace(r_id) adr_adress,
 IF(r_sex='male','м',IF(r_sex='female','ж','?')) sex,'' comment,
 r_group FROM rabbits WHERE {0:s} ORDER BY r_farm,r_tier_id,r_area;",where);
+        }
+
+        private String UserOkrols(Filters f)
+        {
+            getDates(f);
+            int user = f.safeInt("user");
+            return String.Format(@"SELECT rabname(f_partner,0) name,DATE_FORMAT(f_end_date,'%d.%m.%Y') dt,
+IF (f_state='okrol',f_children,IF(f_state='proholost','п','-')) state 
+FROM fucks,logs WHERE l_rabbit=f_rabid AND l_type=5 AND l_user={2:d} AND DATE(l_date)=DATE(f_date)
+AND f_end_date>={0:s} AND f_end_date<={1:s} ORDER BY name,dt;",DFROM,DTO,user);
         }
     }
 }

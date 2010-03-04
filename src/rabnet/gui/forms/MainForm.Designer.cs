@@ -76,8 +76,9 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.rabStatusBar1 = new rabnet.RabStatusBar();
             this.shortZooMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rabStatusBar1 = new rabnet.RabStatusBar();
+            this.окролыПоПользователямToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -224,7 +225,8 @@
             this.продуктивностьСоитияToolStripMenuItem,
             this.возрастИКоличествоToolStripMenuItem,
             this.списанияToolStripMenuItem,
-            this.списанияToolStripMenuItem1});
+            this.списанияToolStripMenuItem1,
+            this.окролыПоПользователямToolStripMenuItem});
             this.отчетыToolStripMenuItem.Name = "отчетыToolStripMenuItem";
             this.отчетыToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.отчетыToolStripMenuItem.Text = "Отчеты";
@@ -232,7 +234,7 @@
             // тестовыйToolStripMenuItem
             // 
             this.тестовыйToolStripMenuItem.Name = "тестовыйToolStripMenuItem";
-            this.тестовыйToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.тестовыйToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
             this.тестовыйToolStripMenuItem.Text = "Тестовый";
             this.тестовыйToolStripMenuItem.Visible = false;
             this.тестовыйToolStripMenuItem.Click += new System.EventHandler(this.тестовыйToolStripMenuItem_Click);
@@ -240,35 +242,35 @@
             // породыToolStripMenuItem
             // 
             this.породыToolStripMenuItem.Name = "породыToolStripMenuItem";
-            this.породыToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.породыToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
             this.породыToolStripMenuItem.Text = "Состав пород";
             this.породыToolStripMenuItem.Click += new System.EventHandler(this.породыToolStripMenuItem_Click);
             // 
             // продуктивностьСоитияToolStripMenuItem
             // 
             this.продуктивностьСоитияToolStripMenuItem.Name = "продуктивностьСоитияToolStripMenuItem";
-            this.продуктивностьСоитияToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.продуктивностьСоитияToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
             this.продуктивностьСоитияToolStripMenuItem.Text = "Продуктивность соития";
             this.продуктивностьСоитияToolStripMenuItem.Click += new System.EventHandler(this.продуктивностьСоитияToolStripMenuItem_Click);
             // 
             // возрастИКоличествоToolStripMenuItem
             // 
             this.возрастИКоличествоToolStripMenuItem.Name = "возрастИКоличествоToolStripMenuItem";
-            this.возрастИКоличествоToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.возрастИКоличествоToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
             this.возрастИКоличествоToolStripMenuItem.Text = "Возраст и количество";
             this.возрастИКоличествоToolStripMenuItem.Click += new System.EventHandler(this.возрастИКоличествоToolStripMenuItem_Click);
             // 
             // списанияToolStripMenuItem
             // 
             this.списанияToolStripMenuItem.Name = "списанияToolStripMenuItem";
-            this.списанияToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.списанияToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
             this.списанияToolStripMenuItem.Text = "Причины списания";
             this.списанияToolStripMenuItem.Click += new System.EventHandler(this.списанияToolStripMenuItem_Click);
             // 
             // списанияToolStripMenuItem1
             // 
             this.списанияToolStripMenuItem1.Name = "списанияToolStripMenuItem1";
-            this.списанияToolStripMenuItem1.Size = new System.Drawing.Size(208, 22);
+            this.списанияToolStripMenuItem1.Size = new System.Drawing.Size(220, 22);
             this.списанияToolStripMenuItem1.Text = "Списания";
             this.списанияToolStripMenuItem1.Click += new System.EventHandler(this.списанияToolStripMenuItem1_Click);
             // 
@@ -453,6 +455,14 @@
             this.panel1.Size = new System.Drawing.Size(906, 423);
             this.panel1.TabIndex = 7;
             // 
+            // shortZooMenuItem
+            // 
+            this.shortZooMenuItem.CheckOnClick = true;
+            this.shortZooMenuItem.Name = "shortZooMenuItem";
+            this.shortZooMenuItem.Size = new System.Drawing.Size(228, 22);
+            this.shortZooMenuItem.Text = "Сокращения в зоотехплане";
+            this.shortZooMenuItem.Click += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
+            // 
             // rabStatusBar1
             // 
             this.rabStatusBar1.filterPanel = null;
@@ -464,13 +474,12 @@
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
             // 
-            // shortZooMenuItem
+            // окролыПоПользователямToolStripMenuItem
             // 
-            this.shortZooMenuItem.CheckOnClick = true;
-            this.shortZooMenuItem.Name = "shortZooMenuItem";
-            this.shortZooMenuItem.Size = new System.Drawing.Size(228, 22);
-            this.shortZooMenuItem.Text = "Сокращения в зоотехплане";
-            this.shortZooMenuItem.Click += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
+            this.окролыПоПользователямToolStripMenuItem.Name = "окролыПоПользователямToolStripMenuItem";
+            this.окролыПоПользователямToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.окролыПоПользователямToolStripMenuItem.Text = "Окролы по пользователям";
+            this.окролыПоПользователямToolStripMenuItem.Click += new System.EventHandler(this.окролыПоПользователямToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -545,6 +554,7 @@
         private System.Windows.Forms.ToolStripMenuItem причиныСпичанияToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem списанияToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem shortZooMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem окролыПоПользователямToolStripMenuItem;
     }
 }
 

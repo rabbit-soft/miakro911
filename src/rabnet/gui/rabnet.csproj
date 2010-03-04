@@ -318,6 +318,12 @@
     <Compile Include="reports\FuckerForm.Designer.cs">
       <DependentUpon>FuckerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="reports\OkrolUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="reports\OkrolUser.Designer.cs">
+      <DependentUpon>OkrolUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="reports\PeriodForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -435,6 +441,9 @@
     <EmbeddedResource Include="reports\FuckerForm.resx">
       <DependentUpon>FuckerForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="reports\OkrolUser.resx">
+      <DependentUpon>OkrolUser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="reports\PeriodForm.resx">
       <DependentUpon>PeriodForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -472,6 +481,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="reports\fucker.rdl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="reports\okrol_user.rdl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="reports\rabbit.rdl">

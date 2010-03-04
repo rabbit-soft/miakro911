@@ -215,5 +215,19 @@ namespace rabnet
                     Engine.db().makeReport(ReportType.Type.DEAD,f),dt})).ShowDialog();
 		}
 
+        private void окролыПоПользователямToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OkrolUser dlg = new OkrolUser();
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                Filters f = new Filters();
+                f["user"] = dlg.getUser().ToString();
+                f["dfr"] = dlg.getFromDate();
+                f["dto"] = dlg.getToDate();
+                (new ReportViewForm("Окролы по пользователям", "okrol_user", new XmlDocument[]{
+                    Engine.get().db().makeReport(ReportType.Type.USER_OKROLS, f)})).ShowDialog();
+            }
+        }
+
     }
 }
