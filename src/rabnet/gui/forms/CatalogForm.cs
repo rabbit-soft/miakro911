@@ -94,7 +94,7 @@ namespace rabnet
 					if (cd.colnames[i].Contains("#color#"))
 					{
 //						ds.Columns.Add(cd.colnames[i]);
-						ColorPickerColumn2 colColorPick = new ColorPickerColumn2();
+						ColorPickerColumn colColorPick = new ColorPickerColumn();
 						colColorPick.Name = cd.colnames[i];
 						dataGridView1.Columns.Add(colColorPick);
 					}

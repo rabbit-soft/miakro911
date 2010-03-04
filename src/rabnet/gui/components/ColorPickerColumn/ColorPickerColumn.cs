@@ -8,9 +8,10 @@ using Pickers;
 
 namespace ColorPickerCombo
 {
-    public class ColorPickerColumn2 : DataGridViewColumn
+	[System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
+	public class ColorPickerColumn : DataGridViewColumn
     {
-        public ColorPickerColumn2():base(new ColorPickerCell())
+        public ColorPickerColumn():base(new ColorPickerCell())
         {
         
         }
@@ -34,7 +35,8 @@ namespace ColorPickerCombo
         }
     }
 
-    public class ColorPickerCell : DataGridViewTextBoxCell 
+	[System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
+	public class ColorPickerCell : DataGridViewTextBoxCell 
     {
         ColorPickerControl _ColorPicker;
         public ColorPickerCell()
@@ -150,7 +152,8 @@ namespace ColorPickerCombo
         }
     }
 
-    class ColorPickerControl : ColorPicker , IDataGridViewEditingControl
+	[System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
+	class ColorPickerControl : ColorPicker, IDataGridViewEditingControl
     {
         DataGridView dataGridView;
         private bool valueChanged = false;
