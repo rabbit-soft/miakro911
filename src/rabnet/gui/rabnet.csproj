@@ -51,6 +51,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\allineed\src\party3d\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Pickers, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\allineed\src\party3d\Pickers.dll</HintPath>
+    </Reference>
     <Reference Include="RdlEngine, Version=4.1.0.0, Culture=neutral, PublicKeyToken=98d963a3ed6bf418, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\allineed\src\party3d\RdlEngine.dll</HintPath>
@@ -83,47 +87,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="components\ColorPickerColumn\IDropDownDisplayAdapte.cs" />
-    <Compile Include="components\Pickers\CheckButtonDisplayAdapter.cs" />
-    <Compile Include="components\Pickers\ColorPicker.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="components\Pickers\ComboBoxAppearance\ComboBoxDisplayAdapter.cs" />
-    <Compile Include="components\Pickers\ComboBoxAppearance\ComboBoxDisplayBase.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="components\Pickers\ComboBoxAppearance\ComboBoxDisplayType.cs" />
-    <Compile Include="components\Pickers\ComboBoxAppearance\EditableComboBoxDisplay.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="components\Pickers\ComboBoxAppearance\ReadonlyComboBoxDisplay.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="components\Pickers\ContentAlignmentPicker.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="components\Pickers\DockStylePicker.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="components\Pickers\DropDownForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="components\Pickers\Formatter.cs" />
-    <Compile Include="components\Pickers\IDropDownUI.cs" />
-    <Compile Include="components\Pickers\IPickerControl.cs" />
-    <Compile Include="components\Pickers\IPickerDisplayAdapter.cs" />
-    <Compile Include="components\Pickers\ISyncDropDownUI.cs" />
-    <Compile Include="components\Pickers\NativeMethods.cs" />
-    <Compile Include="components\Pickers\PickerAppearance.cs" />
-    <Compile Include="components\Pickers\PickerBase.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="components\Pickers\PickerDisplayAdapterBase.cs" />
-    <Compile Include="components\Pickers\SvcPickerBase.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="components\Pickers\SvcPickerBaseUI.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="GeneticsManagerSafe.cs" />
     <Compile Include="components\BuildingControl.cs">
       <SubType>UserControl</SubType>

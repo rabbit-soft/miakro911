@@ -9,7 +9,8 @@ using ColorPickerCombo;
 
 namespace rabnet
 {
-    public partial class CatalogForm : Form
+	[System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
+	public partial class CatalogForm : Form
     {
         public enum CatalogType { NONE, BREEDS, ZONES, DEAD };
         private DataTable ds=new DataTable();

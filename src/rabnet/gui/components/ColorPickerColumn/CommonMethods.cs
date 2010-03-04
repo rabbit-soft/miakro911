@@ -6,7 +6,8 @@ using System.Windows.Forms;
 
 namespace ColorPickerCombo
 {
-    public class CalendarColumn : DataGridViewColumn
+	[System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
+	public class CalendarColumn : DataGridViewColumn
     {
         public CalendarColumn()
             : base(new CalendarCell())
@@ -32,7 +33,8 @@ namespace ColorPickerCombo
         }
     }
 
-    public class CalendarCell : DataGridViewTextBoxCell
+	[System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
+	public class CalendarCell : DataGridViewTextBoxCell
     {
 
         public CalendarCell()
@@ -81,7 +83,8 @@ namespace ColorPickerCombo
         }
     }
 
-    class CalendarEditingControl : DateTimePicker, IDataGridViewEditingControl
+	[System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
+	class CalendarEditingControl : DateTimePicker, IDataGridViewEditingControl
     {
         DataGridView dataGridView;
         private bool valueChanged = false;

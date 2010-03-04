@@ -1,0 +1,108 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9F02BE5E-50CC-487D-9092-2EE15E952B08}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Pickers</RootNamespace>
+    <AssemblyName>Pickers</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Pickers.xml</DocumentationFile>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CheckButtonDisplayAdapter.cs" />
+    <Compile Include="ColorPicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ComboBoxAppearance\ComboBoxDisplayAdapter.cs" />
+    <Compile Include="ComboBoxAppearance\ComboBoxDisplayType.cs" />
+    <Compile Include="ComboBoxAppearance\ComboBoxDisplayBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ComboBoxAppearance\EditableComboBoxDisplay.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ComboBoxAppearance\ReadonlyComboBoxDisplay.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Formatter.cs" />
+    <Compile Include="IPickerControl.cs" />
+    <Compile Include="IPickerDisplayAdapter.cs" />
+    <Compile Include="ISyncDropDownUI.cs" />
+    <Compile Include="PickerAppearance.cs" />
+    <Compile Include="PickerDisplayAdapterBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ContentAlignmentPicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DockStylePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DropDownForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SvcPickerBaseUI.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IDropDownUI.cs" />
+    <Compile Include="NativeMethods.cs" />
+    <Compile Include="PickerBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SvcPickerBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DocContent.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SvcPickerBaseUI.resx">
+      <DependentUpon>SvcPickerBaseUI.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

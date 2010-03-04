@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+* ===============================================================================
+* THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
+* ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+* THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+* PARTICULAR PURPOSE.
+* 
+* (C) MSI 2007. All Rights Reserved.
+*
+* Portions of this code have been ported from Palo Mraz's ColorPicker 
+* in VB.NET to C#. All these portions © 2003-2004 LaMarvin.
+* For more information, see http://www.codeproject.com/vb/net/a_colorpicker.asp
+* and http://www.codeproject.com/vb/net/colorpicker2_cp.asp
+*
+* For questions/comments, please contact me at msafderiqbal@hotmail.com.
+* ===============================================================================
+-->
+<docContent>
+  <member name="PickerBase">
+    <remarks>
+      <c>PickerBase</c> provides the functionality for managing the appearance of the
+      control and displaying the drop-down specified by <c>U</c> parameter, so that this code is not written 
+      over and over again in every picker class.
+      <para>
+		  For more information on how to inherit a picker from <c>PickerBase</c>, see the
+		  <hLink url="Article.htm">Pickers Library introduction</hLink>.
+		  </para>
+		</remarks>
+	</member>
+	<member name="PickerBase.ShowDropDown">
+		<remarks>
+		<b>Note to Inheritors:</b><!--nbsp--><!--nbsp--><!--nbsp-->This method does not need to be implemented by 
+		the derived class because it fully implemented by the base class itself. It does the real work of displaying
+		the drop-down for user selection, but you only need to provide the picker's value type and the drop-down UI
+		in the class declaration through type parameters. For more information, see the
+		<see cref="PickerBase&lt;T,U&gt;" /> class.
+		<para>
+      <b>Important Note:</b><!--nbsp--><!--nbsp--><!--nbsp--><see cref="SvcPickerBase&lt;T,E&gt;" /> class
+      overrides this method because the mechanism of displaying the drop-down. For more information, see the
+      <see cref="SvcPickerBase&lt;T,E&gt;" /> class.
+    </para>
+		</remarks>
+	</member>
+  <member name="PickerBase.InitializeDropDownControl">
+    <remarks>
+      <note to="Inheritors">
+        This method provides the picker a chance to do some initializtion on the drop-down control after
+        the value has been set on the control (just like the <see cref="IDropDownUI.SetSelectedValue" /> method, 
+        which, apart from setting the value, gives the drop-down control the same chance).
+        Subclasses can override this method to do custom initialization of any controls in the DropDownUI 
+        before they are displayed to the user.
+      </note>
+    </remarks>
+  </member>
+	<member name="PickerBase.PreferredHeight">
+		<remarks>
+		The preferred height is the minimum height needed to accommodate the displayed text with the assigned 
+		<see cref="System.Drawing.Font" /> applied.
+		</remarks>
+	</member>
+	<member name="PickerBase.OnValueChanged">
+		<remarks>
+		Raising an event invokes the event handler through a delegate. For more information, see
+		<kLink keyword="raising events">Raising an Event</kLink>.
+		<para>
+		The <c>OnValueChanged</c> method also allows derived classes to handle the event without attaching a 
+		delegate. This is the preferred technique for handling the event in a derived class.
+		</para>
+		<para>
+		<b>Notes to Inheritors:</b>  When overriding <c>OnValueChanged</c> in a derived class, be sure 
+		to call the base class's <c>OnValueChanged</c> method so that registered delegates receive the event.
+		Also, if you dont call the base class method, the control will not be redrawn and text wont be changed.
+		</para>
+		</remarks>
+	</member>
+	<member name="PickerBase.ValueChanged">
+		<remarks>
+		You can create an event handler for this event to determine when the selected value in the 
+		picker has been changed.
+		</remarks>
+	</member>
+	<member name="SvcPickerBase">
+    <remarks>
+      <c>PickerBase</c> provides the functionality for displaying the drop-down UI provided by the <c>UITypeEditor</c>
+      specified by <c>E</c> parameter, so that this code is not written over and over again in every picker class.
+      <para>
+        For more information on how to inherit a picker from <c>PickerBase</c>, see the
+        <hLink url="Article.htm">Pickers Library introduction</hLink>.
+      </para>
+    </remarks>
+  </member>
+  <member name="SvcPickerBase.ShowDropDown">
+    <remarks>
+      <b>Issue</b><!--nbsp--><!--nbsp--><!--nbsp-->If your type editor requires the <see cref="System.ComponentModel.ITypeDescriptorContext" />
+		  to be passed to it, then you might have to do override this method and do additional work.
+		</remarks>
+	</member>
+  <member name="ColorPicker">
+		<remarks>This color picker displays the same drop-down color picker used in Windows Forms PropertyGrid.</remarks>
+	</member>
+  <member name="ColorPicker.FormatValue">
+    <remarks>
+      If <c>value</c> is a named color (a system color or a web color), the name of the color is returned. Otherwise, an uppercase string 
+      containing the hexadecimal representation of the RGB values of the color is returned.
+    </remarks>
+  </member>
+	<member name="DockStylePicker">
+		<remarks>This dock style picker displays the same drop-down dock style picker used in Windows Forms PropertyGrid.</remarks>
+	</member>
+  <member name="IDropDownUI.GetSelectedValue">
+    <remarks>
+      The <see cref="PickerBase&lt;T,U&gt;"/> class uses this method to retrive user's selection from the drop-down UI.
+      For more information, see <see cref="PickerBase&lt;T,U&gt;.ShowDropDown"/> method.
+    </remarks>
+  </member>
+  <member name="IDropDownUI.SetSelectedValue">
+    <remarks>
+      The <see cref="PickerBase&lt;T,U&gt;"/> class uses this method to set the initial selection in the drop-down UI
+      before displaying it. For more information, see <see cref="PickerBase&lt;T,U&gt;.ShowDropDown"/>  method.
+      <note to="Implementers">
+        This method should also perform the necessary initialization after the selection of the inital value. It should
+        properly display the initial value in the interface.
+      </note>
+    </remarks>
+  </member>
+  <member name="IDropDownUI.CloseDropDownHolder">
+    <remarks>
+      The <see cref="PickerBase&lt;T,U&gt;"/> class uses this event to close the drop-down UI after user's selection.
+      For more information, see <see cref="PickerBase&lt;T,U&gt;.ShowDropDown"/>  method.
+    </remarks>
+  </member>
+</docContent>

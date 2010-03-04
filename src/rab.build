@@ -25,6 +25,9 @@
 	<property name="repeng.lib" value="RdlEngine.dll" />
 	<property name="repeng.ass" value="${rep.path}/${repeng.lib}" />
 	<property name="obfuscator" value="Eazfuscator.NET.exe" />
+
+	<property name="obfuscated" value="" />
+
 	<property name="istrial" value="" />
 	
 	<property name="nant.settings.currentframework" value="net-2.0" />
@@ -66,7 +69,7 @@
 	</target>
 	<target name="release_zip" description="Zip RELEASE">
 		<property name="bin_dir" value="${root_bin}/release"/>
-		<zip zipfile="${root_bin}/release.rev.${revision}.zip" failonerror="false">
+		<zip zipfile="${root_bin}/release.rev.${revision}${obfuscated}.zip" failonerror="false">
 			<fileset basedir="${bin_dir}">
 				<include name="**/*"/>
 			</fileset>
@@ -116,8 +119,17 @@
 	</target>
 	
 	<!--target name="rabnet" description="make rabnet application" depends="db.mysql,engine,gui"/-->
-	<target name="rabnet" description="make rabnet application" depends="db.mysql,engine,gui_genetics,gui"/>
+	<target name="rabnet" description="make rabnet application" depends="pickers,db.mysql,engine,gui_genetics,gui"/>
 	
+	<target name="pickers" description="pickers library for rabnet">
+		<csc target="library" output="${bin_dir}/Pickers.dll" define="${istrial}">
+			<sources>
+				<include name="${curdir}/libs/pickers/*.cs"/>
+				<include name="${curdir}/libs/pickers/ComboBoxAppearance/*.cs"/>
+			</sources>
+		</csc>
+	</target>
+
 	<target name="db.mysql" description="mysql data layer">
 		<csc target="library" output="${bin_dir}/db.mysql.dll" define="${istrial}">
 			<sources>
@@ -190,6 +202,7 @@
 				<include name="${log4net.use}"/>
 				<include name="${rep.use}"/>
 				<include name="${repeng.use}"/>
+				<include name="${bin_dir}/Pickers.dll" />
 				<include name="${bin_dir}/db.mysql.dll" />
 				<include name="${bin_dir}/engine.dll" />
 				<include name="${bin_dir}/gui_genetics.dll" />
@@ -213,6 +226,7 @@
 			<arg value="${root_bin}/trial/mia_conv.exe" />
 			<arg value="${root_bin}/trial/rabnet.exe" />
 		</exec>
+		<property name="obfuscated" value=".ob" />
 		<call target="release_zip"/>
 	</target>
 	

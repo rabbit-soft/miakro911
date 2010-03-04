@@ -20,7 +20,8 @@ namespace ColorPickerCombo
 
     // Defines contract used by the ColorPicker control to use any other suitable control
     // for rendering its appearance and interacting with the user.
-    public interface IDropDownDisplayAdapter
+	[System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
+	public interface IDropDownDisplayAdapter
     {
 
         // The current color. The ColorPicker doesn't store the color value itself; it uses
