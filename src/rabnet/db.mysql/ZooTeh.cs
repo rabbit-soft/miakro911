@@ -301,13 +301,14 @@ ORDER BY r_born DESC,0+LEFT(place,LOCATE(',',place)) ASC;", days));
 
         public ZooJobItem[] getSetNest(int wochild, int wchild)
         {
-            MySqlDataReader rd = reader(String.Format(@"SELECT * FROM (SELECT r_id,rabname(r_id," + getnm() + @") name,rabplace(r_id) place,
+             string query = String.Format(@"SELECT * FROM (SELECT r_id,rabname(r_id," + getnm() + @") name,rabplace(r_id) place,
 (TO_DAYS(NOW())-TO_DAYS(r_born)) age,
 (TO_DAYS(NOW())-TO_DAYS(r_event_date)) sukr,
 (SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) children," + brd() + @" 
 FROM rabbits WHERE r_sex='female' AND r_event_date IS NOT NULL) c 
 WHERE (((children IS NULL AND sukr>={0:d}) OR (children>0 AND sukr>={1:d}))) AND
-place NOT like '%,%,%,jurta,%,1' ORDER BY sukr DESC,0+LEFT(place,LOCATE(',',place)) ASC;", wochild, wchild));
+place NOT like '%,%,0,jurta,%,1' ORDER BY sukr DESC,0+LEFT(place,LOCATE(',',place)) ASC;", wochild, wchild);
+             MySqlDataReader rd = reader(query);
             List<ZooJobItem> res = new List<ZooJobItem>();
             while (rd.Read())
             {
@@ -316,7 +317,7 @@ place NOT like '%,%,%,jurta,%,1' ORDER BY sukr DESC,0+LEFT(place,LOCATE(',',plac
                 res.Add(new ZooJobItem().SetNest(rd.GetInt32("r_id"), rd.GetString("name"),
                     rd.GetString("place"), rd.GetInt32("age"), (child > 0 ? sukr - wchild : sukr - wochild), sukr, child,rd.GetString("breed")));
             }
-            rd.Close();
+           rd.Close();
             return res.ToArray();
 
         }
