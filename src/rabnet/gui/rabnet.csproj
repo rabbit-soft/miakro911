@@ -51,10 +51,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\allineed\src\party3d\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Pickers, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\release\Pickers.dll</HintPath>
-    </Reference>
     <Reference Include="RdlEngine, Version=4.1.0.0, Culture=neutral, PublicKeyToken=98d963a3ed6bf418, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\allineed\src\party3d\RdlEngine.dll</HintPath>
@@ -444,6 +440,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\libs\pickers\Pickers.csproj">
+      <Project>{9F02BE5E-50CC-487D-9092-2EE15E952B08}</Project>
+      <Name>Pickers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\db.mysql\db.mysql.csproj">
       <Project>{B20A34DB-0FCD-4CFA-858E-16803387FF4F}</Project>
       <Name>db.mysql</Name>

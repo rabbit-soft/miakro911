@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual C# Express 2008
+# Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rabnet", "gui\rabnet.csproj", "{EFCCE992-8AB2-43AB-87DD-1BEC3E429345}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A835C727-1EB1-490D-BEBC-5C88F382330B} = {A835C727-1EB1-490D-BEBC-5C88F382330B}
@@ -15,6 +15,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "db.mysql", "db.mysql\db.mysql.csproj", "{B20A34DB-0FCD-4CFA-858E-16803387FF4F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gui_genetics", "gui_genetics\gui_genetics.csproj", "{A835C727-1EB1-490D-BEBC-5C88F382330B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pickers", "..\libs\pickers\Pickers.csproj", "{9F02BE5E-50CC-487D-9092-2EE15E952B08}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +40,10 @@ Global
 		{A835C727-1EB1-490D-BEBC-5C88F382330B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A835C727-1EB1-490D-BEBC-5C88F382330B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A835C727-1EB1-490D-BEBC-5C88F382330B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F02BE5E-50CC-487D-9092-2EE15E952B08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F02BE5E-50CC-487D-9092-2EE15E952B08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F02BE5E-50CC-487D-9092-2EE15E952B08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F02BE5E-50CC-487D-9092-2EE15E952B08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
