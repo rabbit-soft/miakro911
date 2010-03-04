@@ -66,15 +66,17 @@ namespace rabnet
             breed = br;
             return this;
         }
-        public ZooJobItem Vudvor(int id, String nm, String place, int age, int srok, int status,int area,string tt,string dlm,String br)
+        public ZooJobItem Vudvor(int id, String nm, String place, int age, int srok, int status,int area,string tt,string dlm,String br,int suckers)
         {
             type = 2; name = nm; this.place = Buildings.fullPlaceName(place);
             this.age = age; this.status = status;
             this.id = id; breed = br;
+            i[2] = suckers;
             i[0] = srok;
             i[1] = area;
             if (i[1] == 1 && tt == "jurta")
                 i[1] = 0;
+
             return this;
         }
         public ZooJobItem Counts(int id, String nm, String place, int age,int count,String br,int srok)
@@ -181,7 +183,8 @@ FROM rabbits WHERE r_sex='female' AND (TO_DAYS(NOW())-TO_DAYS(r_event_date))>={0
         {
             MySqlDataReader rd = reader(String.Format(@"SELECT r_id,rabname(r_id," + getnm() + @") name,rabplace(r_id) place,r_tier,r_area,r_event_date,
 (TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol)) srok,r_status,(TO_DAYS(NOW())-TO_DAYS(r_born)) age,
-t_nest,t_id,t_busy1,t_busy2,t_delims,t_type," + brd() + @" 
+t_nest,t_id,t_busy1,t_busy2,t_delims,t_type," + brd() + @",
+(SELECT SUM(r3.r_group) FROM rabbits r3 WHERE r3.r_parent=rabbits.r_id) suckers
 FROM rabbits,tiers
 WHERE t_id=r_tier AND r_event_date IS NULL AND
 r_sex='female' AND (TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol))>={0:d} AND
@@ -191,7 +194,7 @@ ORDER BY srok DESC,0+LEFT(place,LOCATE(',',place)) ASC;", days));
             while (rd.Read())
                 res.Add(new ZooJobItem().Vudvor(rd.GetInt32("t_id"), rd.GetString("name"),
                     rd.GetString("place"), rd.GetInt32("age"), rd.GetInt32("srok"), rd.GetInt32("r_status"),
-                    rd.GetInt32("r_area"),rd.GetString("t_type"),rd.GetString("t_delims"),rd.GetString("breed")));
+                    rd.GetInt32("r_area"),rd.GetString("t_type"),rd.GetString("t_delims"),rd.GetString("breed"),rd.GetInt32("suckers")));
             rd.Close();
             return res.ToArray();
         }
@@ -199,7 +202,8 @@ ORDER BY srok DESC,0+LEFT(place,LOCATE(',',place)) ASC;", days));
         public ZooJobItem[] getCounts(int days,int next)
         {
             MySqlDataReader rd = reader(String.Format(@"SELECT r_parent,rabname(r_parent," + getnm() + @") name,
-rabplace(r_parent) place,r_group,TO_DAYS(NOW())-TO_DAYS(r_born) age," 
+rabplace(r_parent) place,r_group,
+(SELECT TO_DAYS(NOW())-TO_DAYS(r3.r_born) FROM rabbits r3 WHERE r3.r_id=rabbits.r_parent) age," 
 + brd("(SELECT r7.r_breed FROM rabbits r7 WHERE r7.r_id=rabbits.r_parent)") + @",
 TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d} srok
 FROM rabbits WHERE r_parent<>0 AND (TO_DAYS(NOW())-TO_DAYS(r_born)>={0:d}{1:s}) AND

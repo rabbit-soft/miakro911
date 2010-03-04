@@ -118,7 +118,7 @@
             // 
             // columnHeader8
             // 
-            this.columnHeader8.Text = "Заметки";
+            this.columnHeader8.Text = "Доп.Инф.";
             // 
             // columnHeader6
             // 

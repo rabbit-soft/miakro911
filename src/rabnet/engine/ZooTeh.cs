@@ -35,15 +35,16 @@ namespace rabnet
             type=JobType.OKROL; job=f.safeInt("shr")==0?"Принять окрол":"Окрл";
             days = srok; name = nm; address = ad;
             this.age = age; this.id = id; breed = br;
-            comment = "окрол " + stat.ToString();
+            comment = (f.safeInt("shr")==0?"окрол ":"№") + stat.ToString();
             return this;
         }
-        public ZootehJob Vudvor(int id,String nm,String ad,int stat,int age,int srok,int id2,String br)
+        public ZootehJob Vudvor(int id,String nm,String ad,int stat,int age,int srok,int id2,String br,int suckers)
         {
             type = JobType.VUDVOR; job = f.safeInt("shr")==0?"Выдворение":"Выдв";
             days = srok; name = nm; address = ad;
             this.age = age; this.id = id; breed = br;
             this.id2=id2;
+            comment = (f.safeInt("shr") == 0 ? "подсосных" : "+") + suckers.ToString();
             return this;
         }
         public ZootehJob Counts(int id, String nm, String ad, int age,int count,bool suckers,String br,int srok)
@@ -52,7 +53,7 @@ namespace rabnet
             days = srok; name = nm; address = ad;
             this.age = age; this.id = id; breed = br;
             flag = suckers ? 1 : 0;
-            comment = (f.safeInt("shr")==0?"количество ":"колво:") + count.ToString();
+            comment = (f.safeInt("shr")==0?"количество ":"+") + count.ToString();
             return this;
         }
         public ZootehJob Preokrol(int id, String nm, String ad, int age, int srok,String br)
@@ -102,7 +103,7 @@ namespace rabnet
             days = srok; name = nm; address = ad;
             this.age = age; this.id = id; breed = br;
             comment = "C-" + sukr.ToString();
-            if (children>0) comment+=" " + children.ToString() + (f.safeInt("shr")==0?" подсосных":"пдс");
+            if (children>0) comment+=" " +(f.safeInt("shr")==0?" подсосных":"+")+ children.ToString();
             return this;
         }
     }
@@ -155,7 +156,7 @@ namespace rabnet
             int days = f.safeInt("vudvor");
             ZooJobItem[] jobs = eng.db2().getVudvors(f, days);
             foreach (ZooJobItem z in jobs)
-                jh.Add(new ZootehJob(f).Vudvor(z.id, z.name, z.place, z.status + 1, z.age, z.i[0] - days,z.i[1],z.breed));
+                jh.Add(new ZootehJob(f).Vudvor(z.id, z.name, z.place, z.status + 1, z.age, z.i[0] - days,z.i[1],z.breed,z.i[2]));
         }
         public void getCounts(JobHolder jh)
         {
