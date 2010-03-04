@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using MySql.Data.MySqlClient;
+using System.Drawing;
 
 namespace rabnet
 {
@@ -16,7 +17,8 @@ namespace rabnet
 		public string surname;
 		public string secname;
 		public string breed_color_name;
-		public string breed_color;
+		public Color breed_color;
+		public int breed;
 		public string t;
 		public float PriplodK;
 		public float RodK;
@@ -99,6 +101,18 @@ namespace rabnet
 				r.secname = rd.IsDBNull(5) ? "" : rd.GetString("secname"); //5
 				r.breed_color_name = rd.IsDBNull(6) ? "" : rd.GetString("b_color"); //5
 
+				int res;
+
+				if (int.TryParse(r.breed_color_name, System.Globalization.NumberStyles.HexNumber, null, out res))
+				{
+					r.breed_color = Color.FromArgb(res);
+				}
+				else
+				{
+					r.breed_color = Color.FromName(r.breed_color_name);
+				}
+				r.breed = rd.GetInt32("r_breed"); //6
+
 			}
 			else
 			{
@@ -173,6 +187,33 @@ namespace rabnet
 			}
 
 
+		}
+		public static Dictionary<int, Color> getBreedColors(MySqlConnection sql)
+		{
+			Dictionary<int, Color> Dict = new Dictionary<int, Color>();
+			Color cl;
+			string cl_name;
+			MySqlCommand cmd = new MySqlCommand(@"	select b_id, b_color from breeds;", sql);
+			MySqlDataReader rd = cmd.ExecuteReader();
+			while (rd.Read())
+			{
+
+				cl_name = rd.IsDBNull(1) ? "" : rd.GetString("b_color");
+
+				int res;
+
+				if (int.TryParse(cl_name, System.Globalization.NumberStyles.HexNumber, null, out res))
+				{
+					cl = Color.FromArgb(res);
+				}
+				else
+				{
+					cl = Color.FromName(cl_name);
+				}
+				Dict.Add(rd.GetInt32(0), cl);
+			}
+			rd.Close();
+			return Dict;
 		}
 	}
 }

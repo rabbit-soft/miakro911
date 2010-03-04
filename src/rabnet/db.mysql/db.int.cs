@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using System.Drawing;
 
 namespace rabnet
 {
@@ -111,6 +112,7 @@ namespace rabnet
         OneRabbit getLiveDeadRabbit(int rabbit);
 
 		RabbitGen getRabbitGen(int rid);
+		Dictionary<int, Color> getBreedColors();
     }
 
 }

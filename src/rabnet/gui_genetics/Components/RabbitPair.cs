@@ -39,6 +39,11 @@ namespace rabnet
 				FemaleRabbit.RabbitID = r.rid;
 				FemaleRabbit.RodK = r.RodK;
 				FemaleRabbit.PlodK = r.PriplodK;
+				FemaleRabbit.Genom = r.breed.ToString();
+				if (_TreeParentPair != null)
+				{
+					_TreeParentPair.RefreshGenom();
+				}
 			}
 		}
 
@@ -50,6 +55,11 @@ namespace rabnet
 				MaleRabbit.RabbitID = r.rid;
 				MaleRabbit.RodK = r.RodK;
 				MaleRabbit.PlodK = r.PriplodK;
+				MaleRabbit.Genom = r.breed.ToString();
+				if (_TreeParentPair != null)
+				{
+					_TreeParentPair.RefreshGenom();
+				}
 			}
 		}
 

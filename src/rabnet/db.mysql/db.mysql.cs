@@ -7,6 +7,7 @@ using MySql.Data.MySqlClient;
 using log4net;
 using log4net.Config;
 using System.Xml;
+using System.Drawing;
 
 namespace rabnet
 {
@@ -477,6 +478,10 @@ namespace rabnet
 			return RabbitGenGetter.GetRabbit(sql, rid);
 		}
 
-        #endregion
+		public Dictionary<int, Color> getBreedColors()
+		{
+			return RabbitGenGetter.getBreedColors(sql);
+		}
+		#endregion
     }
 }

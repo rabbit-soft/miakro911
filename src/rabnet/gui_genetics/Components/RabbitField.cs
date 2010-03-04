@@ -36,6 +36,8 @@ namespace rabnet.Components
 
 			_RabbitPairs.Add(cnt, rp);
 
+			rp.ReplaceGenomeColors(Engine.db().getBreedColors());
+
 			RabbitGen rabb = Engine.db().getRabbitGen(_RootRabbitData.id);
 
 			RabbitGen rabbF = Engine.db().getRabbitGen(rabb.r_father);
@@ -59,6 +61,8 @@ namespace rabnet.Components
 			RabbitsHolder.Visible = true;
 //			this.ScrollControlIntoView(_RabbitPairs[0]);
 			RabbitsHolder.ResumeLayout();
+//			_RabbitPairs[0].SetRabbitsGenoms("1", "2");
+//			_RabbitPairs[2].SetRabbitsGenoms("1", "2");
 			//RabbitsHolder.AutoScrollMinSize
 
 		}
@@ -121,12 +125,12 @@ namespace rabnet.Components
 
 				_RabbitPairs.Add(c, rp);
 
-				rp.SetMom(rabbM);
-				rp.SetDad(rabbF);
 
 				rp.SetParentControl(RabbitsHolder);
 				mrp.SetTreeChildFPair(rp);
-				
+
+				rp.SetMom(rabbM);
+				rp.SetDad(rabbF);
 				//RabbitsHolder.Controls.Add(rp);
 
 				log.Debug(string.Format("Getting parents for rabbit pair #{0:d} mom.", c));
@@ -151,12 +155,12 @@ namespace rabnet.Components
 				rp._id = c;
 				_RabbitPairs.Add(c, rp);
 	
+				rp.SetParentControl(RabbitsHolder);
+				mrp.SetTreeChildMPair(rp);
+
 				rp.SetMom(rabbM);
 				rp.SetDad(rabbF);
 
-				rp.SetParentControl(RabbitsHolder);
-				mrp.SetTreeChildMPair(rp);
-				
 				//RabbitsHolder.Controls.Add(rp);
 
 				log.Debug(string.Format("Getting parents for rabbit pair #{0:d} dad.", c));
