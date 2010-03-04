@@ -13,11 +13,11 @@
   <BottomMargin>.25in</BottomMargin>
   <DataSets>
     <DataSet Name="Data">
-      <Query >
+      <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>Url=D:\Temp\zooteh.xml;RowsXPath=/report/zooteh/row</CommandText>
       </Query>
-      <Fields >
+      <Fields>
         <Field Name="type">
           <DataField>type</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -142,7 +142,7 @@
         </Style>
         <TableColumns>
           <TableColumn>
-            <Width>30pt</Width>
+            <Width>20pt</Width>
           </TableColumn>
           <TableColumn>
             <Width>60pt</Width>
@@ -154,13 +154,13 @@
             <Width>135pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>32pt</Width>
+            <Width>35pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>60pt</Width>
+            <Width>45pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>30pt</Width>
+            <Width>50pt</Width>
           </TableColumn>
           <TableColumn>
             <Width>200pt</Width>
@@ -174,7 +174,7 @@
                 <TableCell>
                   <ReportItems>
                     <Textbox Name="Textbox2">
-                      <Value>!</Value>
+                      <Value>( ! ) </Value>
                       <Style>
                         <TextAlign>Center</TextAlign>
                         <BorderStyle>
@@ -307,7 +307,7 @@
         <Details>
           <TableRows>
             <TableRow>
-              <Height>23.5pt</Height>
+              <Height>16pt</Height>
               <TableCells>
                 <TableCell>
                   <ReportItems>

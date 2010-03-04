@@ -58,17 +58,20 @@
     </DataSet>
   </DataSets>
   <PageHeader>
-    <Height>.5in</Height>
+    <Height>29.8pt</Height>
     <ReportItems>
       <Textbox Name="Textbox1">
-        <Top>.1in</Top>
-        <Left>.1in</Left>
-        <Width>6in</Width>
-        <Height>.25in</Height>
-        <Value>realization</Value>
+        <Top>2.3pt</Top>
+        <Left>106.1pt</Left>
+        <Width>213.71pt</Width>
+        <Height>19.56pt</Height>
+        <Value>Кандидаты на реализацию</Value>
         <Style>
           <FontSize>15pt</FontSize>
           <FontWeight>Bold</FontWeight>
+          <BorderStyle />
+          <BorderColor />
+          <BorderWidth />
         </Style>
       </Textbox>
     </ReportItems>
@@ -87,7 +90,7 @@
         </Style>
         <TableColumns>
           <TableColumn>
-            <Width>178.3pt</Width>
+            <Width>149.7pt</Width>
           </TableColumn>
           <TableColumn>
             <Width>32.3pt</Width>
@@ -105,13 +108,13 @@
             <Width>46.3pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>120.1pt</Width>
+            <Width>159.7pt</Width>
           </TableColumn>
         </TableColumns>
         <Header>
           <TableRows>
             <TableRow>
-              <Height>12pt</Height>
+              <Height>12.8pt</Height>
               <TableCells>
                 <TableCell>
                   <ReportItems>
@@ -221,7 +224,7 @@
         <Details>
           <TableRows>
             <TableRow>
-              <Height>12pt</Height>
+              <Height>23.8pt</Height>
               <TableCells>
                 <TableCell>
                   <ReportItems>
@@ -329,7 +332,7 @@
         <Footer>
           <TableRows>
             <TableRow>
-              <Height>12pt</Height>
+              <Height>14.4pt</Height>
               <TableCells>
                 <TableCell>
                   <ReportItems>
@@ -340,9 +343,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <BorderColor  />
-                        <BorderWidth  />
-                        <FontWeight >Bold</FontWeight>
+                        <BorderColor />
+                        <BorderWidth />
+                        <FontWeight>Bold</FontWeight>
                       </Style>
                       <CanGrow>false</CanGrow>
                     </Textbox>
@@ -415,7 +418,7 @@
                         <PaddingLeft>2pt</PaddingLeft>
                         <BorderColor />
                         <BorderWidth />
-                        <FontWeight >Bold</FontWeight>
+                        <FontWeight>Bold</FontWeight>
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -440,7 +443,7 @@
         </Footer>
       </Table>
     </ReportItems>
-    <Height>36pt</Height>
+    <Height>57.8pt</Height>
     <Columns>1</Columns>
   </Body>
   <PageFooter>

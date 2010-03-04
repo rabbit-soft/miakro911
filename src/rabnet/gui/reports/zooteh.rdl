@@ -13,11 +13,11 @@
   <BottomMargin>.25in</BottomMargin>
   <DataSets>
     <DataSet Name="Data">
-      <Query >
+      <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>Url=D:\Temp\zooteh.xml;RowsXPath=/report/zooteh/row</CommandText>
       </Query>
-      <Fields >
+      <Fields>
         <Field Name="type">
           <DataField>type</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -132,15 +132,15 @@
             </TableRow>
           </TableRows>
         </Details>
-        <Left>180pt</Left>
-        <Top>10pt</Top>
+        <Left>181.6pt</Left>
+        <Top>19.9pt</Top>
       </Table>
       <Textbox Name="Textbox1">
         <Height>19.52pt</Height>
         <Width>94.83pt</Width>
         <Value>Зоотехплан</Value>
-        <Left>80pt</Left>
-        <Top>10pt</Top>
+        <Left>81.6pt</Left>
+        <Top>19.9pt</Top>
         <Style>
           <BorderStyle />
           <BorderColor />
@@ -301,7 +301,7 @@
         </Style>
         <TableColumns>
           <TableColumn>
-            <Width>30pt</Width>
+            <Width>20pt</Width>
           </TableColumn>
           <TableColumn>
             <Width>60pt</Width>
@@ -313,13 +313,13 @@
             <Width>135pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>32pt</Width>
+            <Width>35pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>60pt</Width>
+            <Width>45pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>30pt</Width>
+            <Width>50pt</Width>
           </TableColumn>
           <TableColumn>
             <Width>200pt</Width>
@@ -333,7 +333,7 @@
                 <TableCell>
                   <ReportItems>
                     <Textbox Name="Textbox12">
-                      <Value>!</Value>
+                      <Value>( ! )</Value>
                       <Style>
                         <TextAlign>Center</TextAlign>
                         <BorderStyle>
@@ -466,7 +466,7 @@
         <Details>
           <TableRows>
             <TableRow>
-              <Height>28.9pt</Height>
+              <Height>16pt</Height>
               <TableCells>
                 <TableCell>
                   <ReportItems>
@@ -596,6 +596,8 @@
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
                         <FontSize>10pt</FontSize>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
