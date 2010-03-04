@@ -131,8 +131,9 @@ namespace rabnet
                     DialogResult = DialogResult.None;
                     return;
                 }
-                foreach (RabNetEngRabbit r in rbs)
+                foreach (ListViewItem li in listView1.Items)
                 {
+                    RabNetEngRabbit r = Engine.get().getRabbit((int)li.Tag);
                     int cnt = int.Parse(listView1.Items[i].SubItems[5].Text);
                     if (cnt != 0)
                     {
