@@ -291,23 +291,34 @@
       </Table>
     </ReportItems>
     <Height>36pt</Height>
+    <Columns >1</Columns>
   </Body>
   <PageFooter>
     <Height>14pt</Height>
     <ReportItems>
       <Textbox Name="Textbox8">
-        <Top>1pt</Top>
-        <Left>10pt</Left>
-        <Height>12pt</Height>
-        <Width>3in</Width>
-        <Value>=Globals!PageNumber + ' of ' + Globals!TotalPages</Value>
+        <Top>1.00pt</Top>
+        <Left>10.00pt</Left>
+        <Height>19.50pt</Height>
+        <Width>374.12pt</Width>
+        <Value>=Globals!PageNumber + ' из ' + Globals!TotalPages+'  '+Code.getDateTime()</Value>
         <Style>
           <FontSize>10pt</FontSize>
           <FontWeight>Normal</FontWeight>
+          <BorderStyle  />
+          <BorderColor  />
+          <BorderWidth  />
         </Style>
       </Textbox>
     </ReportItems>
     <PrintOnFirstPage>true</PrintOnFirstPage>
     <PrintOnLastPage>true</PrintOnLastPage>
   </PageFooter>
+  <DataElementName >Report</DataElementName>
+  <DataElementStyle >AttributeNormal</DataElementStyle>
+  <Code >
+Function getDateTime() As DateTime
+  Dim x as DateTime
+  return x.Now()
+End Function</Code>
 </Report>
