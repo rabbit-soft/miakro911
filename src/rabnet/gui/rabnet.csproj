@@ -51,9 +51,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\allineed\src\party3d\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Pickers, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Pickers, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\allineed\src\party3d\Pickers.dll</HintPath>
+      <HintPath>..\..\..\bin\release\Pickers.dll</HintPath>
     </Reference>
     <Reference Include="RdlEngine, Version=4.1.0.0, Culture=neutral, PublicKeyToken=98d963a3ed6bf418, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
