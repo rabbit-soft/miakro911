@@ -13,7 +13,8 @@ namespace rabnet
         [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
         class OptionsHolder
         {
-            public enum RUBOOL {Да,Нет};
+            [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
+            public enum RUBOOL { Да, Нет };
             private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su,n,cn,tt;
             private string gd, sh;
             private RUBOOL ce, ck, uz,sp;
