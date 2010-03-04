@@ -171,7 +171,8 @@ UNION
                 where += " OR r_id=" + f.safeInt("r" + i.ToString()).ToString();
             return String.Format(@"SELECT rabname(r_id,2) name,TO_DAYS(NOW())-TO_DAYS(r_born) age,
 (SELECT b_name FROM breeds WHERE b_id=r_breed) breed, rabplace(r_id) adr_adress,
-IF(r_sex='male','м',IF(r_sex='female','ж','?')) sex,'' comment FROM rabbits WHERE {0:s} ORDER BY r_farm,r_tier_id,r_area;",where);
+IF(r_sex='male','м',IF(r_sex='female','ж','?')) sex,'' comment,
+r_group FROM rabbits WHERE {0:s} ORDER BY r_farm,r_tier_id,r_area;",where);
         }
     }
 }
