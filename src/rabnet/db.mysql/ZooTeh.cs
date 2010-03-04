@@ -145,10 +145,15 @@ namespace rabnet
             return cmd.ExecuteReader();
         }
 
+        public String getnm(int def)
+        {
+            return op.safeInt("dbl")==1?"2":def.ToString();
+        }
         public String getnm()
         {
-            return op.safeInt("dbl")==1?"2":"1";
+            return getnm(0);
         }
+
         public String brd(String fld)
         {
             return String.Format("(SELECT {0:s} FROM breeds WHERE b_id={1:s}) breed", op.safeInt("shr") == 1 ? "b_short_name" : "b_name",fld);
@@ -242,7 +247,7 @@ FROM rabbits WHERE r_parent<>0 AND {0:s} AND (TO_DAYS(NOW())-TO_DAYS(r_born))>={
 
         public ZooJobItem[] getFucks(int statedays, int firstdays,int brideage,int malewait,bool heterosis,bool inbreeding,int type)
         {
-            MySqlDataReader rd = reader(String.Format(@"SELECT * FROM (SELECT r_id,rabname(r_id," + getnm() + @") name,rabplace(r_id) place,
+            MySqlDataReader rd = reader(String.Format(@"SELECT * FROM (SELECT r_id,rabname(r_id," + getnm(1) + @") name,rabplace(r_id) place,
 TO_DAYS(NOW())-TO_DAYS(r_born) age,
 (SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) suckers,
 r_status,
