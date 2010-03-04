@@ -199,7 +199,7 @@ rabplace(r_parent) place,r_group,TO_DAYS(NOW())-TO_DAYS(r_born) age,"
 TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d} srok
 FROM rabbits WHERE r_parent<>0 AND (TO_DAYS(NOW())-TO_DAYS(r_born)>={0:d}{1:s}) AND
 r_parent NOT IN (SELECT l_rabbit FROM logs WHERE l_type=17 AND (DATE(l_date)<=DATE(NOW()) AND 
-DATE(l_date)>=DATE(NOW()-(TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d})))) ORDER BY age DESC,
+DATE(l_date)>=DATE(NOW()- INTERVAL (TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d}) DAY))) ORDER BY age DESC,
 0+LEFT(place,LOCATE(',',place)) ASC;", days, 
    next==-1?"":String.Format(" AND TO_DAYS(NOW())-TO_DAYS(r_born)<{0:d}", next)));
             List<ZooJobItem> res = new List<ZooJobItem>();
