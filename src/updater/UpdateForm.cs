@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -62,7 +61,8 @@ namespace updater
 
         public void UpdateList()
         {
-            int needcount=0;
+			button1.Enabled = false;
+			int needcount = 0;
             button1.Enabled = button2.Enabled = false;
             status("Проверка версий баз данных");
             lv.Items.Clear();
@@ -120,6 +120,7 @@ namespace updater
                 status("Обновления не требуются");
                 button2.Enabled = true;
             }
+			button1.Enabled = true;
         }
 
         private void UpdateForm_Shown(object sender, EventArgs e)
@@ -133,6 +134,7 @@ namespace updater
 
         private void button1_Click(object sender, EventArgs e)
         {
+			button1.Enabled = false;
             foreach (ListViewItem li in lv.Items)
             if ((int)li.Tag == 0)
             {
@@ -174,9 +176,11 @@ namespace updater
                 }
             }
             UpdateList();
-        }
+			button1.Enabled = true;
+		}
         private void OnUpdate(int tover,MySqlConnection con,UpdateStatus status)
         {
+			Application.DoEvents();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -184,6 +188,11 @@ namespace updater
             result = 0;
             Close();
         }
+
+		private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+		{
+
+		}
 
     }
 }

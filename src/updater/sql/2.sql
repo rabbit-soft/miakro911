@@ -14,3 +14,5 @@ ALTER TABLE logs MODIFY l_param TEXT NULL;
 
 
 DELETE FROM options WHERE o_subname='rablist' OR o_subname='zoolist';
+
+ALTER TABLE breeds add b_color VARCHAR(100) NOT NULL default "White";
