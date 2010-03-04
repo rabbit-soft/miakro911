@@ -157,6 +157,8 @@ namespace rabnet
 
         private void OnRowChange(object sender, DataRowChangeEventArgs e)
         {
+
+/*
             if (!manual)
                 return;
             switch (cat)
@@ -183,6 +185,7 @@ namespace rabnet
                         Engine.db().getDeadReasons().ChangeReason((int)e.Row.ItemArray[1],(string)e.Row.ItemArray[0]);
                     break;
             }
+ */
         }
 
         private void OnRowInsert(object sender,DataTableNewRowEventArgs e)
@@ -212,7 +215,12 @@ namespace rabnet
 						{
 							col1 = dataGridView1.Rows[e.RowIndex].Cells[1].Value.ToString();
 						}
-						dataGridView1.Rows[e.RowIndex].Cells[3].Value = Engine.db().getBreeds().AddBreed(col0,col1);
+						string col2 = "";
+						if (dataGridView1.Rows[e.RowIndex].Cells[2].Value != null)
+						{
+							col2 = ((Color)(dataGridView1.Rows[e.RowIndex].Cells[2].Value)).Name;
+						}
+						dataGridView1.Rows[e.RowIndex].Cells[3].Value = Engine.db().getBreeds().AddBreed(col0, col1, col2);
 					}
 					else
 					{
@@ -226,7 +234,12 @@ namespace rabnet
 						{
 							col1 = dataGridView1.Rows[e.RowIndex].Cells[1].Value.ToString();
 						}
-						Engine.db().getBreeds().ChangeBreed(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[3].Value), col0, col1);
+						string col2 = "";
+						if (dataGridView1.Rows[e.RowIndex].Cells[2].Value != null)
+						{
+							col2 = ((Color)(dataGridView1.Rows[e.RowIndex].Cells[2].Value)).Name;
+						}
+						Engine.db().getBreeds().ChangeBreed(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[3].Value), col0, col1, col2);
 					}
 					break;
 				case CatalogType.ZONES:

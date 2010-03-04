@@ -15,6 +15,8 @@ namespace rabnet
 		public string name;
 		public string surname;
 		public string secname;
+		public string breed_color_name;
+		public string breed_color;
 		public string t;
 		public float PriplodK;
 		public float RodK;
@@ -67,6 +69,7 @@ namespace rabnet
 																		(select n_name from names where n_id=r_name) name, 
 																		(select n_surname from names where n_id=r_surname) surname, 
 																		(select n_surname from names where n_id=r_secname) secname,
+																		(select b_color from breeds where b_id=r_breed) b_color,
 																		r_breed
 																from rabbits
 																where r_id={0:d}
@@ -78,7 +81,9 @@ namespace rabnet
 
 			if (rd.Read())
 			{
-				string sx=rd.GetString("r_sex");
+				r.r_father = rd.GetInt32("r_father"); //0
+				r.r_mother = rd.GetInt32("r_mother"); //1
+				string sx = rd.GetString("r_sex"); //2
 				r.sex=RabbitGen.RabbitSex.VOID;
 				if (sx == "male")
 				{
@@ -89,11 +94,11 @@ namespace rabnet
 					r.sex = RabbitGen.RabbitSex.FEMALE;
 				}
 
-				r.name = rd.IsDBNull(3) ? "" : rd.GetString("name");
-				r.surname = rd.IsDBNull(4) ? "" : rd.GetString("surname");
-				r.secname = rd.IsDBNull(5) ? "" : rd.GetString("secname");
-				r.r_father = rd.GetInt32("r_father");
-				r.r_mother = rd.GetInt32("r_mother");
+				r.name = rd.IsDBNull(3) ? "" : rd.GetString("name"); //3
+				r.surname = rd.IsDBNull(4) ? "" : rd.GetString("surname"); //4
+				r.secname = rd.IsDBNull(5) ? "" : rd.GetString("secname"); //5
+				r.breed_color_name = rd.IsDBNull(6) ? "" : rd.GetString("b_color"); //5
+
 			}
 			else
 			{
