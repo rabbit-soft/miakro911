@@ -354,10 +354,10 @@
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.rdlViewer1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.MinimizeBox = false;
             this.Name = "ReportViewForm";
-            this.ShowIcon = false;
             this.Text = "Отчет";
             this.Load += new System.EventHandler(this.ReportViewForm_Load);
             this.toolStrip1.ResumeLayout(false);
