@@ -20,7 +20,7 @@ namespace rabnet
             private RUBOOL ce, ck, uz,sp;
             [Category("Зоотехнические сроки"),DisplayName("Окрол"),
             Description("Время от случки(вязки) до окрола")]
-            public int okrol{ get {return ok;} set{ok=value;} }
+			public int okrol { get { return ok; } set { ok = value; } }
             [Category("Зоотехнические сроки"),DisplayName("Выдворение"),
             Description("Удаление гнездовья из клетки")]
             public int vudvor { get { return vud; } set { vud = value; } }
@@ -84,7 +84,7 @@ namespace rabnet
             public int genTree { get { return gt; } set { gt = value; } }
             [Category("Вид"),
             DisplayName("Обновлять зоотехплан"),
-            Description("Будет ли обновляться зоотех план после отметки работы.Внимание!!!:Не стоит включать опцию при работе по сети нескольких человек")]
+            Description("Будет ли обновляться зоотех план после отметки работы. Внимание!!! Не стоит выключать опцию при работе по сети нескольких человек")]
             public RUBOOL updateZoo { get { return uz; } set { uz = value; } }
             [Category("Вид"),
             DisplayName("Показывать партнеров"),
@@ -190,6 +190,8 @@ namespace rabnet
         {
             InitializeComponent();
             pg.SelectedObject=OptionsHolder.make();
+			this.AcceptButton = button1;
+
 //            MoveSplitter(pg, -100);
         }
 
