@@ -60,7 +60,7 @@ namespace rabnet
             geterosisMenuItem.Checked = (op.getIntOption(Options.OPT_ID.GETEROSIS) == 1);
             inbreedingMenuItem.Checked = (op.getIntOption(Options.OPT_ID.INBREEDING) == 1);
             shNumMenuItem.Checked = (op.getIntOption(Options.OPT_ID.SHOW_NUMBERS) == 1);
-            shortZooMenuItem.Checked = (op.getIntOption(Options.OPT_ID.SHORT_ZOO) == 1);
+            shortZooMenuItem.Checked = (op.safeIntOption(Options.OPT_ID.SHORT_ZOO,1) == 1);
             //rabStatusBar1.run();
             manflag = false;
         }

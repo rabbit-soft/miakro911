@@ -102,8 +102,8 @@ namespace rabnet
         {
             int res = def;
             String s = getOption(name, subname, uid);
-            if (!int.TryParse(s,out def)) return def;
-            return def;
+            if (!int.TryParse(s,out res)) return def;
+            return res;
         }
 
         public void setOption(String name, String subname, uint uid, String value)
