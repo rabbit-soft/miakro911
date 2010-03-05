@@ -121,6 +121,7 @@
                       </BorderStyle>
                       <BorderColor />
                       <BorderWidth />
+                      <FontWeight>Bold</FontWeight>
                     </Style>
                   </Textbox>
                 </ReportItems>

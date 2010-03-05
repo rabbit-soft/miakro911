@@ -60,7 +60,7 @@ namespace rabnet
         Fucks getFucks(int rabbit);
         Fucks allFuckers(int female,bool geterosis,bool inbreeding,int malewait);
         void setBon(int rabbit,String bon);
-        void makeFuck(int female, int male,DateTime date);
+        void makeFuck(int female, int male,DateTime date,int worker);
         void makeProholost(int female, DateTime when);
         void makeOkrol(int female, DateTime when, int children, int dead);
         String makeName(int nm, int sur, int sec,int grp, OneRabbit.RabbitSex sex);

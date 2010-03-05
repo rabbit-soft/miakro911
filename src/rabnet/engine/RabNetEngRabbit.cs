@@ -257,7 +257,7 @@ namespace rabnet
             if (when > DateTime.Now)
                 throw new ExBadDate(when);
             eng.logs().log(RabNetLogs.LogType.FUCK, rid, otherrab, "", "");
-            eng.db().makeFuck(this.id, f.rid, when.Date);
+            eng.db().makeFuck(this.id, f.rid, when.Date,eng.uId());
         }
         public void ProholostIt(DateTime when)
         {

@@ -219,9 +219,9 @@ namespace rabnet
             RabbitGetter.setBon(sql, rabbit, bon);
         }
 
-        public void makeFuck(int female, int male, DateTime date)
+        public void makeFuck(int female, int male, DateTime date,int worker)
         {
-            RabbitGetter.makeFuck(sql, female, male, date);
+            RabbitGetter.makeFuck(sql, female, male, date,worker);
         }
 
         public void makeProholost(int female, DateTime when)
