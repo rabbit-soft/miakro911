@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using log4net;
+using System;
 
 namespace rabnet.Components
 {
@@ -11,11 +12,26 @@ namespace rabnet.Components
 
 		private OneRabbit _RootRabbitData;
 		private RabbitBar _RootRabbit;
+		private RabbitPair _RootRabbitPair;
 		private Dictionary<int, RabbitPair> _RabbitPairs = new Dictionary<int, RabbitPair>();
 
 		public RabbitField()
 		{
 			InitializeComponent();
+		}
+
+		private Boolean _OrderedGenom = false;
+		public Boolean OrderedGenom
+		{
+			get { return _OrderedGenom; }
+			set
+			{
+				_OrderedGenom = value;
+				if (_RootRabbitPair != null)
+				{
+					_RootRabbitPair.OrderedGenom = value;
+				}
+			}
 		}
 
 		public void DrawRabbit(OneRabbit rbt)
@@ -28,6 +44,7 @@ namespace rabnet.Components
 			this.Controls.Add(_RootRabbit);
 
 			RabbitPair rp = new RabbitPair();
+			_RootRabbitPair = rp;
 			rp.Location = new Point(1000, 100);
 
 			int cnt = 0;

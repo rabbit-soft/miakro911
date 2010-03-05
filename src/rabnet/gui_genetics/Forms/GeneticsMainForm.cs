@@ -56,5 +56,10 @@ namespace rabnet
 		{
 			rabbitField1.DrawRabbit(_Rabbit);
 		}
+
+		private void button3_Click(object sender, EventArgs e)
+		{
+			rabbitField1.OrderedGenom = !rabbitField1.OrderedGenom;
+		}
 	}
 }

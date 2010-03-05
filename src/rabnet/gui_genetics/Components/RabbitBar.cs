@@ -11,7 +11,7 @@ namespace rabnet
 	public partial class RabbitBar : CustomGraphCmp
 	{
 
-		public Boolean _Exists = false;
+		private Boolean _Exists = false;
 		public Boolean Exists
 		{
 			get { return _Exists; }
@@ -23,7 +23,7 @@ namespace rabnet
 			}
 		}
 
-		public Color _FgColor = SystemColors.Control;
+		private Color _FgColor = SystemColors.Control;
 		public Color FgColor
 		{
 			get { return _FgColor; }
@@ -45,6 +45,7 @@ namespace rabnet
 			{
 				_RabbitID = value;
 				label1.Text = value.ToString();
+				RabToolTip.SetToolTip(this, value.ToString());
 			}
 		}
 
@@ -184,6 +185,9 @@ namespace rabnet
 		public RabbitBar()
 		{
 			InitializeComponent();
+			label1.Visible = false;
+			label2.Visible = false;
+			label3.Visible = false;
 		}
 
 		private Boolean CheckGenom(string g)
@@ -422,10 +426,6 @@ namespace rabnet
 		public override void DrawingProc(Graphics g)
 		{
 			Pen pen = new Pen(Color.Black);
-			if (!_Exists)
-			{
-				pen = new Pen(FgColor);
-			}
 			Pen penGr = new Pen(Color.DarkGray);
 
 			Brush textbrush = SystemBrushes.ControlText;
@@ -475,6 +475,19 @@ namespace rabnet
 
 			Color cl = Color.FromArgb(255, _FgColor);
 			SolidBrush brush = new SolidBrush(cl);
+
+			if (!_Exists)
+			{
+				cl = Color.FromArgb(50, _FgColor);
+				Pen lp=new Pen(_FgColor);
+				brush = new SolidBrush(cl);
+				g.SmoothingMode = SmoothingMode.AntiAlias;
+				g.FillPath(brush, p);
+				g.DrawPath(lp, p);
+				g.SmoothingMode = SmoothingMode.None;
+				return;
+			}
+
 			g.SmoothingMode = SmoothingMode.AntiAlias;
 			g.FillPath(brush, p);
 			g.SmoothingMode = SmoothingMode.None;
@@ -483,11 +496,7 @@ namespace rabnet
 			{
 				if (_Gender == 1) // Male
 				{
-					if (_Exists)
-					{
-
-						DrawGenom(g, new Point(1, (int)(this.Height / 2)), new Size(this.Width - 2, (int)(this.Height / 2)), _OrderedGenom);
-					}
+					DrawGenom(g, new Point(1, (int)(this.Height / 2)), new Size(this.Width - 2, (int)(this.Height / 2)), _OrderedGenom);
 
 					g.DrawLine(pen, new Point(0, this.Height - 1), new Point(this.Width - 1, this.Height - 1));
 					g.DrawLine(pen, new Point(this.Width - 1, (int)(this.Height / 2)), new Point(this.Width - 1, this.Height - 1));
@@ -495,26 +504,20 @@ namespace rabnet
 
 					g.SmoothingMode = SmoothingMode.AntiAlias;
 					g.DrawArc(pen, 0, 0, this.Height - 1, this.Height - 1, 180, 90);
-					g.DrawArc(pen, this.Width - this.Height, 0, this.Height-1, this.Height-1, 270, 90);
+					g.DrawArc(pen, this.Width - this.Height, 0, this.Height - 1, this.Height - 1, 270, 90);
 					g.SmoothingMode = SmoothingMode.None;
 
 					g.DrawLine(pen, new Point((int)(this.Height / 2), 0), new Point(this.Width - (int)(this.Height / 2) - 1, 0));
-					
+
 					g.DrawLine(penGr, new Point((int)(this.Width / 3), 1), new Point((int)(this.Width / 3), (int)(this.Height / 2)));
 
-					if (_Exists)
-					{
-						DrawColorBar(g, new Point((int)(this.Width / 3) + 2, 2), new Size((int)((this.Width / 3 * 2) - (this.Height / 2 * 0.65)) - 5, (int)(this.Height / 2) - 4), _RodK);
+					DrawColorBar(g, new Point((int)(this.Width / 3) + 2, 2), new Size((int)((this.Width / 3 * 2) - (this.Height / 2 * 0.65)) - 5, (int)(this.Height / 2) - 4), _RodK);
 
-						g.DrawString(pripl, SystemFonts.DefaultFont, textbrush, new RectangleF(((this.Width / 3) - priplsize.Width) / 2, ((this.Height / 2 - 1) - priplsize.Height) / 2, priplsize.Width, priplsize.Height));
-					}
+					g.DrawString(pripl, SystemFonts.DefaultFont, textbrush, new RectangleF(((this.Width / 3) - priplsize.Width) / 2, ((this.Height / 2 - 1) - priplsize.Height) / 2, priplsize.Width, priplsize.Height));
 				}
 				else if (_Gender == 2) //Female
 				{
-					if (_Exists)
-					{
-						DrawGenom(g, new Point(1, 0), new Size(this.Width - 2, (int)(this.Height / 2)), _OrderedGenom);
-					}
+					DrawGenom(g, new Point(1, 0), new Size(this.Width - 2, (int)(this.Height / 2)), _OrderedGenom);
 
 					g.DrawLine(pen, new Point((int)(this.Height / 2), this.Height - 1), new Point(this.Width - (int)(this.Height / 2) - 1, this.Height - 1));
 					g.DrawLine(pen, new Point(this.Width - 1, 0), new Point(this.Width - 1, (int)(this.Height / 2)));
@@ -522,28 +525,22 @@ namespace rabnet
 
 					g.SmoothingMode = SmoothingMode.AntiAlias;
 					g.DrawArc(pen, 0, 0, this.Height - 1, this.Height - 1, 90, 90);
-					g.DrawArc(pen, this.Width - this.Height, 0, this.Height-1, this.Height-1, 0, 90);
+					g.DrawArc(pen, this.Width - this.Height, 0, this.Height - 1, this.Height - 1, 0, 90);
 					g.SmoothingMode = SmoothingMode.None;
 
 					g.DrawLine(pen, new Point(0, 0), new Point(this.Width - 1, 0));
 
-					g.DrawLine(penGr, new Point((int)(this.Width / 3), (int)(this.Height / 2)), new Point((int)(this.Width / 3), this.Height-2));
+					g.DrawLine(penGr, new Point((int)(this.Width / 3), (int)(this.Height / 2)), new Point((int)(this.Width / 3), this.Height - 2));
 
-					if (_Exists)
-					{
-						DrawColorBar(g, new Point((int)(this.Width / 3) + 2, (int)(this.Height / 2) + 2), new Size((int)((this.Width / 3 * 2) - (this.Height / 2 * 0.65)) - 5, (int)(this.Height / 2) - 5), _RodK);
+					DrawColorBar(g, new Point((int)(this.Width / 3) + 2, (int)(this.Height / 2) + 2), new Size((int)((this.Width / 3 * 2) - (this.Height / 2 * 0.65)) - 5, (int)(this.Height / 2) - 5), _RodK);
 
-						g.DrawString(pripl, SystemFonts.DefaultFont, textbrush, new RectangleF(((this.Width / 3) - priplsize.Width) / 2, ((this.Height / 2 - 1) - priplsize.Height) / 2 + (this.Height / 2), priplsize.Width, priplsize.Height + (this.Height / 2)));
-					}
+					g.DrawString(pripl, SystemFonts.DefaultFont, textbrush, new RectangleF(((this.Width / 3) - priplsize.Width) / 2, ((this.Height / 2 - 1) - priplsize.Height) / 2 + (this.Height / 2), priplsize.Width, priplsize.Height + (this.Height / 2)));
 
 				}
 			}
 			else //Unknown gender;
 			{
-				if (_Exists)
-				{
-					DrawGenom(g, new Point(1, 0), new Size(this.Width - 2, (int)(this.Height / 2)), _OrderedGenom);
-				}
+				DrawGenom(g, new Point(1, 0), new Size(this.Width - 2, (int)(this.Height / 2)), _OrderedGenom);
 
 				g.DrawLine(pen, new Point(0, 0), new Point(0, this.Height - 1));
 				g.DrawLine(pen, new Point(0, 0), new Point(this.Width - 1, 0));
@@ -552,27 +549,14 @@ namespace rabnet
 
 				g.DrawLine(penGr, new Point((int)(this.Width / 3), (int)(this.Height / 2)), new Point((int)(this.Width / 3), this.Height - 2));
 
-				if (_Exists)
-				{
-					DrawColorBar(g, new Point((int)(this.Width / 3) + 2, (int)(this.Height / 2) + 2), new Size((int)((this.Width / 3 * 2) - (this.Height / 2 * 0.65)) - 5, (int)(this.Height / 2) - 5), _RodK);
+				DrawColorBar(g, new Point((int)(this.Width / 3) + 2, (int)(this.Height / 2) + 2), new Size((int)((this.Width / 3 * 2) - (this.Height / 2 * 0.65)) - 5, (int)(this.Height / 2) - 5), _RodK);
 
-					g.DrawString(pripl, SystemFonts.DefaultFont, textbrush, new RectangleF(((this.Width / 3) - priplsize.Width) / 2, ((this.Height / 2 - 1) - priplsize.Height) / 2 + (this.Height / 2), priplsize.Width, priplsize.Height + (this.Height / 2)));
-				}
+				g.DrawString(pripl, SystemFonts.DefaultFont, textbrush, new RectangleF(((this.Width / 3) - priplsize.Width) / 2, ((this.Height / 2 - 1) - priplsize.Height) / 2 + (this.Height / 2), priplsize.Width, priplsize.Height + (this.Height / 2)));
 
 
 			}
 			g.DrawLine(pen, new Point(0, (int)(this.Height / 2)), new Point(this.Width - 1, (int)(this.Height / 2)));
 
-
-			if (!_Exists)
-			{
-				cl = Color.FromArgb(50, Color.Gray);
-				brush = new SolidBrush(cl);
-				g.SmoothingMode = SmoothingMode.AntiAlias;
-				//g.FillPath(brush, p);
-				g.SmoothingMode = SmoothingMode.None;
-				return;
-			}
 
 			if (_Active)
 			{
