@@ -211,6 +211,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "BonForm";
+            this.ShowInTaskbar = false;
             this.Text = "Бонитировка";
             this.ResumeLayout(false);
             this.PerformLayout();
