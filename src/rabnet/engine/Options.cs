@@ -92,35 +92,18 @@ namespace rabnet
         }
         public int getIntOption(String name, String subname, uint uid)
         {
-			try
-			{
 				return int.Parse(getOption(name, subname, uid));
-			}
-			catch
-			{
-				return 0;
-			}
         }
         public double getFloatOption(String name, String subname, uint uid)
         {
-			try
-			{
 				return float.Parse(getOption(name, subname, uid));
-			}
-			catch
-			{
-				return 0;
-			}
         }
         public int safeIntOption(String name, String subname, uint uid,int def)
         {
             int res = def;
-            try
-            {
-                res=int.Parse(getOption(name, subname, uid));
-            }
-            catch (FormatException ){}
-            return res;
+            String s = getOption(name, subname, uid);
+            if (!int.TryParse(s,out def)) return def;
+            return def;
         }
 
         public void setOption(String name, String subname, uint uid, String value)
