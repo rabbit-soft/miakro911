@@ -65,6 +65,10 @@ namespace rabnet
 	{
 		public static RabbitGen GetRabbit(MySqlConnection sql, int rid)
 		{
+			if (rid == 0)
+			{
+				return null;
+			}
 			MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT	r_mother, 
 																		r_father, 
 																		r_sex, 
@@ -118,6 +122,7 @@ namespace rabnet
 			{
 				r = null;
 			}
+//			rd.HasRows
 			rd.Close();
 			if (r != null)
 			{

@@ -35,6 +35,7 @@ namespace rabnet
             lv.DrawColumnHeader += new DrawListViewColumnHeaderEventHandler(this.OnDrawHeader);
             lv.DrawItem += new DrawListViewItemEventHandler(this.OnDrawItem);
             lv.DrawSubItem += new DrawListViewSubItemEventHandler(this.OnDrawSubItem);
+//			lv.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
             ListViewSaver.load(op, lv);
         }
 
@@ -50,7 +51,9 @@ namespace rabnet
         }
         public void Restore()
         {
-            lv.ListViewItemSorter = this;
+			lv.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+			ListViewSaver.load(option, lv);
+			lv.ListViewItemSorter = this;
             lv.Sort();
             ListViewSaver.loadItem(lv, selItem);
             //lv.Show();

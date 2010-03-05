@@ -118,26 +118,34 @@ namespace rabnet.Components
 
 				RabbitGen rabbF = Engine.db().getRabbitGen(mrp.GetMom().r_father);
 
-				c++;
+				if ((rabbM != null) || (rabbF != null))
+				{
 
-				RabbitPair rp = new RabbitPair();
-				rp._id = c;
+					c++;
 
-				_RabbitPairs.Add(c, rp);
+					RabbitPair rp = new RabbitPair();
+					rp._id = c;
 
-
-				rp.SetParentControl(RabbitsHolder);
-				mrp.SetTreeChildFPair(rp);
-
-				rp.SetMom(rabbM);
-				rp.SetDad(rabbF);
-				//RabbitsHolder.Controls.Add(rp);
-
-				log.Debug(string.Format("Getting parents for rabbit pair #{0:d} mom.", c));
+					_RabbitPairs.Add(c, rp);
 
 
-				GetPairData(rp, ref c);
-				log.Debug(string.Format("Getting parents for rabbit pair #{0:d} mom.... Done", c));
+					rp.SetParentControl(RabbitsHolder);
+					mrp.SetTreeChildFPair(rp);
+
+					rp.SetMom(rabbM);
+					rp.SetDad(rabbF);
+					//RabbitsHolder.Controls.Add(rp);
+
+					log.Debug(string.Format("Getting parents for rabbit pair #{0:d} mom.", c));
+
+
+					GetPairData(rp, ref c);
+					log.Debug(string.Format("Getting parents for rabbit pair #{0:d} mom.... Done", c));
+				}
+				else
+				{
+					log.Debug(string.Format("There's no parents :(", c));
+				}
 
 			}
 
@@ -149,24 +157,31 @@ namespace rabnet.Components
 
 				RabbitGen rabbF = Engine.db().getRabbitGen(mrp.GetDad().r_father);
 
-				c++;
+				if ((rabbM != null) || (rabbF != null))
+				{
+					c++;
 
-				RabbitPair rp = new RabbitPair();
-				rp._id = c;
-				_RabbitPairs.Add(c, rp);
-	
-				rp.SetParentControl(RabbitsHolder);
-				mrp.SetTreeChildMPair(rp);
+					RabbitPair rp = new RabbitPair();
+					rp._id = c;
+					_RabbitPairs.Add(c, rp);
 
-				rp.SetMom(rabbM);
-				rp.SetDad(rabbF);
+					rp.SetParentControl(RabbitsHolder);
+					mrp.SetTreeChildMPair(rp);
 
-				//RabbitsHolder.Controls.Add(rp);
+					rp.SetMom(rabbM);
+					rp.SetDad(rabbF);
 
-				log.Debug(string.Format("Getting parents for rabbit pair #{0:d} dad.", c));
-	
-				GetPairData(rp, ref c);
-				log.Debug(string.Format("Getting parents for rabbit pair #{0:d} dad.... Done", c));
+					//RabbitsHolder.Controls.Add(rp);
+
+					log.Debug(string.Format("Getting parents for rabbit pair #{0:d} dad.", c));
+
+					GetPairData(rp, ref c);
+					log.Debug(string.Format("Getting parents for rabbit pair #{0:d} dad.... Done", c));
+				}
+				else
+				{
+					log.Debug(string.Format("There's no parents :(", c));
+				}
 
 			}
 

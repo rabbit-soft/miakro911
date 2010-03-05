@@ -36,10 +36,13 @@ namespace rabnet
 			if (r != null)
 			{
 				_mom = r;
+				FemaleRabbit.Exists = true;
 				FemaleRabbit.RabbitID = r.rid;
 				FemaleRabbit.RodK = r.RodK;
 				FemaleRabbit.PlodK = r.PriplodK;
 				FemaleRabbit.Genom = r.breed.ToString();
+				FemaleRabbit.RabbitDad = r.r_father;
+				FemaleRabbit.RabbitMom = r.r_mother;
 				if (_TreeParentPair != null)
 				{
 					_TreeParentPair.RefreshGenom();
@@ -52,10 +55,13 @@ namespace rabnet
 			if (r != null)
 			{
 				_dad = r;
+				MaleRabbit.Exists = true;
 				MaleRabbit.RabbitID = r.rid;
 				MaleRabbit.RodK = r.RodK;
 				MaleRabbit.PlodK = r.PriplodK;
 				MaleRabbit.Genom = r.breed.ToString();
+				MaleRabbit.RabbitDad = r.r_father;
+				MaleRabbit.RabbitMom = r.r_mother;
 				if (_TreeParentPair != null)
 				{
 					_TreeParentPair.RefreshGenom();
@@ -121,12 +127,12 @@ namespace rabnet
 
 		public string MaleGenom
 		{
-			get { return MaleRabbit.Genom; }
+			get { return MaleRabbit.Exists ? MaleRabbit.Genom : ""; }
 			set { MaleRabbit.Genom = value; }
 		}
 		public string FemaleGenom
 		{
-			get { return FemaleRabbit.Genom; }
+			get { return FemaleRabbit.Exists ? FemaleRabbit.Genom : ""; }
 			set { FemaleRabbit.Genom = value; }
 		}
 
@@ -137,6 +143,14 @@ namespace rabnet
 
 		private string ConcatGenoms(string gfemale, string gmale)
 		{
+			if (gmale == "")
+			{
+				return gfemale;
+			}
+			if (gfemale == "")
+			{
+				return gmale;
+			}
 			string[] gsfemale = gfemale.Split(new Char[] { ';' });
 			string[] gsmale = gmale.Split(new Char[] { ';' });
 
@@ -227,6 +241,7 @@ namespace rabnet
 			}
 		}
 
+		/*
 		public Boolean AddGenomeColor(int id, Color color)
 		{
 			Boolean fres = FemaleRabbit.AddGenomeColor(id, color);
@@ -245,6 +260,8 @@ namespace rabnet
 			return fres && mres;
 		}
 
+		 */
+	
 		public void ReplaceGenomeColors(Dictionary<int, Color> gcs)
 		{
 			FemaleRabbit.ReplaceGenomeColors(gcs);
@@ -257,10 +274,10 @@ namespace rabnet
 			{
 				_TreeChildMPair.ReplaceGenomeColors(gcs);
 			}
-			if (_TreeParentPair != null)
-			{
-				_TreeParentPair.RefreshGenom();
-			}
+//			if (_TreeParentPair != null)
+//			{
+//				_TreeParentPair.RefreshGenom();
+//			}
 		}
 
 		#endregion
