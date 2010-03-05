@@ -53,6 +53,7 @@ namespace rabnet
 		{
 			_GenomColors.Clear();
 			_GenomColors = new Dictionary<int, Color>(gcs);
+			
 			RedrawMe();
 		}
 
