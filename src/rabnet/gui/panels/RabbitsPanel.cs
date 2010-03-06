@@ -156,7 +156,9 @@ namespace rabnet
             okrolMenuItem.Visible = fuckMenuItem.Visible= false;
             boysoutMenuItem.Visible = replaceYoungersMenuItem.Visible= false;
             svidMenuItem.Visible = realizeMenuItem.Visible= false;
+            plemMenuItem.Visible = false;
             if (sex < 0) return;
+            plemMenuItem.Visible = true;
             KillMenuItem.Visible = true;
             realizeMenuItem.Visible = true;
             replaceMenuItem.Visible = true;
@@ -213,6 +215,8 @@ namespace rabnet
 
         private void listView1_DoubleClick(object sender, EventArgs e)
         {
+            listView1_SelectedIndexChanged(null, null);
+            actMenu_Opening(null, null);
             passportMenuItem.PerformClick();
         }
 
@@ -384,18 +388,35 @@ namespace rabnet
 
         private XmlDocument rabToXml(RabNetEngRabbit er, OneRabbit or)
         {
-            XmlDocument doc = new XmlDocument();
+            return rabToXml(er, or, null);
+        }
+        private XmlDocument rabToXml(RabNetEngRabbit er, OneRabbit or, XmlDocument hasdoc)
+        {
+
+            XmlDocument doc = null;
+            if (hasdoc == null)
+            {
+                doc = new XmlDocument();
+                doc.AppendChild(doc.CreateElement("Rows"));
+            }
+            else
+                doc = hasdoc;
             XmlElement rw=doc.CreateElement("Row");
-            doc.AppendChild(doc.CreateElement("Rows")).AppendChild(rw);
+            doc.DocumentElement.AppendChild(rw);
             if (er != null)
             {
                 or = Engine.db().getLiveDeadRabbit(er.rid);
-                rw.AppendChild(doc.CreateElement("header")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.SVID_HEAD)));
-                rw.AppendChild(doc.CreateElement("num")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.NEXT_SVID)));
-                rw.AppendChild(doc.CreateElement("date")).AppendChild(doc.CreateTextNode(DateTime.Now.Date.ToShortDateString()));
-                rw.AppendChild(doc.CreateElement("director")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.SVID_GEN_DIR)));
+                if (hasdoc==null)
+                {
+                    rw.AppendChild(doc.CreateElement("header")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.SVID_HEAD)));
+                    rw.AppendChild(doc.CreateElement("num")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.NEXT_SVID)));
+                    rw.AppendChild(doc.CreateElement("date")).AppendChild(doc.CreateTextNode(DateTime.Now.Date.ToShortDateString()));
+                    rw.AppendChild(doc.CreateElement("director")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.SVID_GEN_DIR)));
+                }else{
+                    rw.AppendChild(doc.CreateElement("group")).AppendChild(doc.CreateTextNode(er.group.ToString()));
+                }
                 Catalog zones = Engine.db().catalogs().getZones();
-                rw.AppendChild(doc.CreateElement("sex")).AppendChild(doc.CreateTextNode(er.sex==OneRabbit.RabbitSex.MALE?"male":"female"));
+                rw.AppendChild(doc.CreateElement("sex")).AppendChild(doc.CreateTextNode(er.sex==OneRabbit.RabbitSex.MALE?"male":(er.sex==OneRabbit.RabbitSex.FEMALE?"female":"void")));
                 rw.AppendChild(doc.CreateElement("class")).AppendChild(doc.CreateTextNode(getBon(er.bon)));
                 rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(er.fullName));
                 rw.AppendChild(doc.CreateElement("breed")).AppendChild(doc.CreateTextNode(er.breedName));
@@ -524,6 +545,28 @@ namespace rabnet
             if (listView1.SelectedItems.Count == 1 && listView1.SelectedItems[0].SubItems[NFIELD].Text[0] == '+')
                 kids = true;
             setMenu(isx, listView1.SelectedItems.Count, kids);
+        }
+
+        private void plemMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count < 1) return;
+            XmlDocument doc = new XmlDocument();
+            doc.AppendChild(doc.CreateElement("Rows"));
+            string brd = "";
+            foreach (ListViewItem li in listView1.SelectedItems)
+            {
+                RabNetEngRabbit r = Engine.get().getRabbit((int)li.Tag);
+                if (brd == "")
+                    brd = r.breedName;
+                if (r.breedName != brd)
+                    brd = "none";
+                rabToXml(r, null, doc);
+            }
+            XmlDocument doc2 = new XmlDocument();
+            XmlElement rw = (XmlElement)doc2.AppendChild(doc2.CreateElement("Rows")).AppendChild(doc2.CreateElement("Row"));
+            rw.AppendChild(doc2.CreateElement("date")).AppendChild(doc2.CreateTextNode(DateTime.Now.Date.ToShortDateString()+" "+DateTime.Now.ToLongTimeString()));
+            rw.AppendChild(doc2.CreateElement("breed")).AppendChild(doc2.CreateTextNode(brd));
+            new ReportViewForm("Племенной список", "plem", new XmlDocument[] { doc, doc2 }).ShowDialog();
         }
 
     }
