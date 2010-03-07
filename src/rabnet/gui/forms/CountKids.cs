@@ -11,6 +11,7 @@ namespace rabnet
     public partial class CountKids : Form
     {
         private RabNetEngRabbit r = null;
+        private int grp=0;
         public CountKids()
         {
             InitializeComponent();
@@ -25,18 +26,23 @@ namespace rabnet
             if (suckers)
                 Text = "Подсчет подсосных";
         }
-
+        public void setGrp(int grp)
+        {
+            this.grp=grp;
+        }
         private void CountKids_Load(object sender, EventArgs e)
         {
             label1.Text = r.fullName;
-            label2.Text = "Возраст:"+(DateTime.Now - r.youngers[0].born).Days.ToString();
-            textBox1.Text = r.youngcount.ToString();
-            numericUpDown2.Maximum = numericUpDown1.Maximum = r.youngcount;
+            comboBox1.Items.Clear();
+            for (int i = 0; i < r.youngers.Length; i++)
+                comboBox1.Items.Add(r.youngers[i].fullname + "(" + r.youngers[i].group+")");
+            comboBox1.SelectedIndex = grp;
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            int c = r.youngcount;
+            int s = comboBox1.SelectedIndex;
+            int c = r.youngers[s].group;
             int x = c - (int)(numericUpDown1.Value + numericUpDown2.Value)+(int)numericUpDown3.Value;
             textBox1.Text = x.ToString();
             numericUpDown2.Maximum = c - numericUpDown1.Value;
@@ -52,14 +58,25 @@ namespace rabnet
         {
             try
             {
+                int i = comboBox1.SelectedIndex;
                 r.CountKids((int)numericUpDown1.Value, (int)numericUpDown2.Value, (int)numericUpDown3.Value,
-                    int.Parse(textBox1.Text), (DateTime.Now - r.youngers[0].born).Days);
+                    int.Parse(textBox1.Text), r.youngers[i].age(),i);
                 Close();
             }
             catch (ApplicationException ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int i = comboBox1.SelectedIndex;
+            label2.Text = "Возраст:" + r.youngers[i].age().ToString();
+            textBox1.Text = r.youngers[i].group.ToString();
+            numericUpDown2.Value = numericUpDown1.Value=numericUpDown3.Value= 0;
+            numericUpDown2.Maximum = numericUpDown1.Maximum = r.youngers[i].group;
+
         }
 
     }

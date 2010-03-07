@@ -79,13 +79,14 @@ namespace rabnet
 
             return this;
         }
-        public ZooJobItem Counts(int id, String nm, String place, int age,int count,String br,int srok)
+        public ZooJobItem Counts(int id, String nm, String place, int age,int count,String br,int srok,int yid)
         {
             type = 3; name = nm; this.place = Buildings.fullPlaceName(place);
             this.age = age; this.status = 0;
             this.id = id; breed = br;
             i[0] = count;
             i[1] = srok;
+            i[2] = yid;
             return this;
         }
         public ZooJobItem Preokrol(int id, String nm, String place, int age, int srok,string br)
@@ -205,7 +206,7 @@ ORDER BY srok DESC,0+LEFT(place,LOCATE(',',place)) ASC;", days));
 rabplace(r_parent) place,r_group,
 (SELECT TO_DAYS(NOW())-TO_DAYS(r3.r_born) FROM rabbits r3 WHERE r3.r_id=rabbits.r_parent) age," 
 + brd("(SELECT r7.r_breed FROM rabbits r7 WHERE r7.r_id=rabbits.r_parent)") + @",
-TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d} srok
+TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d} srok,r_id
 FROM rabbits WHERE r_parent<>0 AND (TO_DAYS(NOW())-TO_DAYS(r_born)>={0:d}{1:s}) AND
 r_parent NOT IN (SELECT l_rabbit FROM logs WHERE l_type=17 AND (DATE(l_date)<=DATE(NOW()) AND 
 DATE(l_date)>=DATE(NOW()- INTERVAL (TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d}) DAY))) ORDER BY age DESC,
@@ -214,7 +215,7 @@ DATE(l_date)>=DATE(NOW()- INTERVAL (TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d}) DAY)))
             List<ZooJobItem> res = new List<ZooJobItem>();
             while (rd.Read())
                 res.Add(new ZooJobItem().Counts(rd.GetInt32("r_parent"),rd.GetString("name"),
-                    rd.GetString("place"),rd.GetInt32("age"),rd.GetInt32("r_group"),rd.GetString("breed"),rd.GetInt32("srok")));
+                    rd.GetString("place"),rd.GetInt32("age"),rd.GetInt32("r_group"),rd.GetString("breed"),rd.GetInt32("srok"),rd.GetInt32("r_id")));
             rd.Close();
             return res.ToArray();
         }

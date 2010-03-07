@@ -303,9 +303,9 @@ namespace rabnet
             RabbitGetter.killRabbit(sql, id, when, reason, notes);
         }
 
-        public void countKids(int rid, int dead, int killed, int added)
+        public void countKids(int rid, int dead, int killed, int added,int yid)
         {
-            RabbitGetter.countKids(sql, rid, dead, killed, added);
+            RabbitGetter.countKids(sql, rid, dead, killed, added, yid);
         }
 
         public ZooJobItem[] getCounts(Filters f,int days,int next)

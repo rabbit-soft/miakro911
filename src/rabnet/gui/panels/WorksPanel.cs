@@ -196,13 +196,22 @@ namespace rabnet
                     res=rf.ShowDialog();
                     break;                                   
                 case JobType.COUNT_KIDS:
+                    RabNetEngRabbit rrr = Engine.get().getRabbit(job.id);
+                    CountKids ck;
+                    int id2 = 0;
+                    for (int i = 0; i < rrr.youngers.Length; i++)
+                        if (rrr.youngers[i].id == job.id2) id2 = i;
                     if (makeFlag == 0)
                     {
-                        RabNetEngRabbit rr = Engine.get().getRabbit(job.id);
-                        rr.CountKids(0, 0, 0, rr.youngcount, rr.youngers[0].age());
+                        rrr.CountKids(0, 0, 0, rrr.youngers[id2].group, rrr.youngers[id2].age(), 0);
                         needUpdate = false;
-                    }else
-                    res=(new CountKids(job.id,job.flag==1)).ShowDialog();
+                    }
+                    else
+                    {
+                        ck = new CountKids(job.id, job.flag == 1);
+                        ck.setGrp(id2);
+                        res = ck.ShowDialog();
+                    }
                     break;
                 case JobType.FUCK:
                     int id = job.id;

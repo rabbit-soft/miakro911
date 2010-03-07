@@ -76,7 +76,7 @@ namespace rabnet
         void addName(OneRabbit.RabbitSex sex, string name, string surname);
         void changeName(string orgName, string name, string surname);
         void killRabbit(int id,DateTime when,int reason,string notes);
-        void countKids(int rid, int dead, int killed, int added);
+        void countKids(int rid, int dead, int killed, int added,int yid);
         ZooJobItem[] getCounts(Filters f, int days,int next);
         void setRabbitSex(int rid,OneRabbit.RabbitSex sex);
         int cloneRabbit(int rid, int count, int farm, int tier, int sec, OneRabbit.RabbitSex sex, int mom);
