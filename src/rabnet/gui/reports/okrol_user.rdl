@@ -6,14 +6,6 @@
   </Author>
   <PageHeight>8.5in</PageHeight>
   <PageWidth>11in</PageWidth>
-  <DataSources>
-    <DataSource Name="DS1">
-      <ConnectionProperties>
-        <DataProvider>XML</DataProvider>
-        <ConnectString>Server=(local)\VSDotNet;DataBase=Northwind;Integrated Security=SSPI;Connect Timeout=5</ConnectString>
-      </ConnectionProperties>
-    </DataSource>
-  </DataSources>
   <Width>10in</Width>
   <TopMargin>.25in</TopMargin>
   <LeftMargin>.25in</LeftMargin>
@@ -21,11 +13,11 @@
   <BottomMargin>.25in</BottomMargin>
   <DataSets>
     <DataSet Name="Data">
-      <Query >
+      <Query>
         <DataSourceName>DS1</DataSourceName>
-        <CommandText>url=c:\temp\test.xml;RowsXPath=/Rows/Row</CommandText>
+        <CommandText>url=C:/Temp/test.xml;RowsXPath=/Rows/Row</CommandText>
       </Query>
-      <Fields >
+      <Fields>
         <Field Name="name">
           <DataField>name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -48,7 +40,7 @@
   </PageHeader>
   <Body>
     <Height>143.9pt</Height>
-    <ReportItems >
+    <ReportItems>
       <Textbox Name="Textbox7" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
         <Top>0.0pt</Top>
         <Left>0.1pt</Left>
@@ -58,9 +50,9 @@
         <Style>
           <FontSize>15pt</FontSize>
           <FontWeight>Bold</FontWeight>
-          <BorderStyle  />
-          <BorderColor  />
-          <BorderWidth  />
+          <BorderStyle />
+          <BorderColor />
+          <BorderWidth />
         </Style>
       </Textbox>
       <Matrix Name="Matrix1">
@@ -70,6 +62,8 @@
           <BorderStyle>
             <Default>Solid</Default>
           </BorderStyle>
+          <BorderColor />
+          <BorderWidth />
         </Style>
         <Corner>
           <ReportItems>
@@ -131,7 +125,7 @@
         </ColumnGroupings>
         <RowGroupings>
           <RowGrouping>
-            <Width>45.2pt</Width>
+            <Width>1in</Width>
             <DynamicRows>
               <Grouping Name="DynamicRowsGroup1">
                 <GroupExpressions>
@@ -148,12 +142,27 @@
                   </Style>
                 </Textbox>
               </ReportItems>
+              <Subtotal>
+                <ReportItems>
+                  <Textbox Name="Textbox6">
+                    <Value>итого</Value>
+                    <Style>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor />
+                      <BorderWidth />
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </Textbox>
+                </ReportItems>
+              </Subtotal>
             </DynamicRows>
           </RowGrouping>
         </RowGroupings>
         <MatrixColumns>
           <MatrixColumn>
-            <Width>30.7pt</Width>
+            <Width>30.5pt</Width>
           </MatrixColumn>
         </MatrixColumns>
         <MatrixRows>
@@ -162,15 +171,14 @@
             <MatrixCells>
               <MatrixCell>
                 <ReportItems>
-                  <Textbox Name="Textbox6">
-                    <Value>=Fields!state.Value</Value>
+                  <Textbox Name="Textbox8">
+                    <Value>=iif(Fields!state.Value='0','п',iif(Fields!state.Value='0.0','-',iif(Sum(Fields!state.Value)=0,'',Sum(Fields!state.Value))))</Value>
                     <Style>
                       <BorderStyle>
                         <Default>Solid</Default>
                       </BorderStyle>
                       <BorderColor />
                       <BorderWidth />
-                      <TextAlign>Center</TextAlign>
                     </Style>
                   </Textbox>
                 </ReportItems>
@@ -178,11 +186,11 @@
             </MatrixCells>
           </MatrixRow>
         </MatrixRows>
-        <Left>1.0pt</Left>
-        <Top>22.1pt</Top>
+        <Left>0.8pt</Left>
+        <Top>25.1pt</Top>
       </Matrix>
     </ReportItems>
-    <Columns >1</Columns>
+    <Columns>1</Columns>
   </Body>
   <PageFooter>
     <Height>14pt</Height>
@@ -202,6 +210,16 @@
     <PrintOnFirstPage>true</PrintOnFirstPage>
     <PrintOnLastPage>true</PrintOnLastPage>
   </PageFooter>
-  <DataElementName >Report</DataElementName>
-  <DataElementStyle >AttributeNormal</DataElementStyle>
+  <DataElementName>Report</DataElementName>
+  <DataElementStyle>AttributeNormal</DataElementStyle>
+  <DataSources>
+    <DataSource Name="DS1">
+      <ConnectionProperties>
+        <DataProvider>XML</DataProvider>
+        <ConnectString>
+        </ConnectString>
+        <IntegratedSecurity>false</IntegratedSecurity>
+      </ConnectionProperties>
+    </DataSource>
+  </DataSources>
 </Report>

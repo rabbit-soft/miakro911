@@ -73,11 +73,11 @@
       </Fields>
     </DataSet>
     <DataSet Name="Data2">
-      <Query >
+      <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>url=C:/Temp/plem.xml;RowsXPath=/Rows/NUROWS/Row</CommandText>
       </Query>
-      <Fields >
+      <Fields>
         <Field Name="date">
           <DataField>date</DataField>
           <TypeName>System.String</TypeName>

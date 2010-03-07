@@ -58,7 +58,7 @@ namespace rabnet
             String[] tps = f.safeValue("lgs", "").Split(',');
             for (int i = 0; i < tps.Length-1; i++)
                 res += "logs.l_type=" + tps[i]+" OR ";
-            return res+"logs.l_type="+tps[tps.Length-1]+")";
+            return " WHERE "+res+"logs.l_type="+tps[tps.Length-1]+")";
         }
 
         public LogList getLogs(Filters f)
@@ -71,8 +71,8 @@ anyname(logs.l_rabbit,2) r1,
 anyname(logs.l_rabbit2,2) r2,
 rabplace(logs.l_rabbit) place,
 rabplace(logs.l_rabbit2) place2
-FROM logs,logtypes,users WHERE
-logtypes.l_type=logs.l_type AND (logs.l_user=users.u_id OR logs.l_user=0){1:s} ORDER BY date DESC LIMIT {0:d};", limit,makeWhere(f));
+FROM logs LEFT JOIN logtypes ON logs.l_type=logtypes.l_type LEFT JOIN users ON l_user=u_id {1:s} 
+ORDER BY date DESC LIMIT {0:d};", limit,makeWhere(f));
             MySqlCommand cmd = new MySqlCommand(qry, sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             LogList ll = new LogList();
