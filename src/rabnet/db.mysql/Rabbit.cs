@@ -609,7 +609,7 @@ r_lost_babies=COALESCE(r_lost_babies+{3:d},1),r_rate=r_rate+{4:d} WHERE r_id={0:
 r_bon,r_genesis,r_name,r_surname,r_secname,r_breed,r_okrol,r_rate,r_notes) 
 VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d},{10:d},{11:d},'');",
       rabbit,rabbit,father,DBHelper.DateToMyString(date),children,DBHelper.commonBon(fml.bon,ml!=null?ml.bon:fml.bon),
-      DBHelper.makeCommonGenesis(sql,fml.gens,(ml!=null?ml.gens:fml.gens)),fml.name,(ml!=null?ml.name:0),brd,okrol,rate);
+      DBHelper.makeCommonGenesis(sql,fml.gens,(ml!=null?ml.gens:fml.gens),fml.zone),fml.name,(ml!=null?ml.name:0),brd,okrol,rate);
                 cmd.ExecuteNonQuery();
             }
         }

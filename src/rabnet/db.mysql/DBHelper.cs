@@ -87,8 +87,10 @@ namespace rabnet
         {
             return makeGenesis(sql, combine_genesis(sql, r1, r2));
         }
-        public static int makeCommonGenesis(MySqlConnection sql, String g1, String g2)
+        public static int makeCommonGenesis(MySqlConnection sql, String g1, String g2,int zonegen)
         {
+            if (g1 == "") g1 = zonegen.ToString();
+            if (g2 == "") g2 = g1;
             return makeGenesis(sql, combine_genesis(g1,g2));
         }
         public static String commonBon(String b1, String b2)

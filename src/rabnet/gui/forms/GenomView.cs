@@ -99,8 +99,10 @@ namespace rabnet
                 label9.Text = label2.Text;
             String[] g1s = g1.Split(' ');
             String[] g2s = g2.Split(' ');
+            if (g1!="")
             foreach (string gen in g1s)
                 addGen(listView1, gen, g2s);
+            if (g2!="")
             foreach (string gen in g2s)
                 addGen(listView2,gen,g1s);
         }
