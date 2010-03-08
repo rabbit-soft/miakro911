@@ -73,17 +73,21 @@
       </Fields>
     </DataSet>
     <DataSet Name="Data2">
-      <Query>
+      <Query >
         <DataSourceName>DS1</DataSourceName>
         <CommandText>url=C:/Temp/plem.xml;RowsXPath=/Rows/NUROWS/Row</CommandText>
       </Query>
-      <Fields>
+      <Fields >
         <Field Name="date">
           <DataField>date</DataField>
           <TypeName>System.String</TypeName>
         </Field>
         <Field Name="breed">
           <DataField>breed</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="count">
+          <DataField>count</DataField>
           <TypeName>System.String</TypeName>
         </Field>
       </Fields>
@@ -95,7 +99,7 @@
     <PrintOnLastPage>true</PrintOnLastPage>
   </PageHeader>
   <Body>
-    <Height>94.4pt</Height>
+    <Height>138.1pt</Height>
     <ReportItems>
       <Table Name="Table1">
         <DataSetName>Data</DataSetName>
@@ -525,19 +529,51 @@
         <Left>68.9pt</Left>
         <Top>5.9pt</Top>
       </Table>
-      <Textbox Name="Textbox25">
-        <Height>12.75pt</Height>
-        <Width>156.62pt</Width>
-        <Value>='Всего '+Code.getCount()+' кроликов.'</Value>
-        <Left>175.8pt</Left>
-        <Top>74.4pt</Top>
+      <Table Name="Table3" >
+        <DataSetName>Data2</DataSetName>
+        <NoRows>Query returned no rows!</NoRows>
         <Style>
-          <BorderStyle />
-          <BorderColor />
-          <BorderWidth />
-          <FontWeight>Bold</FontWeight>
+          <BorderStyle>
+            <Default>Solid</Default>
+          </BorderStyle>
         </Style>
-      </Textbox>
+        <TableColumns>
+          <TableColumn>
+            <Width>215.8pt</Width>
+          </TableColumn>
+        </TableColumns>
+        <Details>
+          <TableRows>
+            <TableRow>
+              <Height>12 pt</Height>
+              <TableCells>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox26">
+                      <Value>='Всего '+Fields!count.Value+' кроликов.'</Value>
+                      <CanGrow>true</CanGrow>
+                      <Style>
+                        <BorderStyle>
+                          <Default>None</Default>
+                          <Left>None</Left>
+                          <Right>None</Right>
+                          <Top>None</Top>
+                          <Bottom>None</Bottom>
+                        </BorderStyle>
+                        <BorderColor />
+                        <BorderWidth />
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+              </TableCells>
+            </TableRow>
+          </TableRows>
+        </Details>
+        <Left>97.3pt</Left>
+        <Top>82.0pt</Top>
+      </Table>
     </ReportItems>
     <Columns>1</Columns>
   </Body>
@@ -565,7 +601,6 @@
   <DataElementName>Report</DataElementName>
   <DataElementStyle>AttributeNormal</DataElementStyle>
   <Code>Dim dt As String
-Dim cnt As Integer
 
 Function setDate(d As String) As String
  dt=d
@@ -580,12 +615,8 @@ Function rabCount(c As String) As String
   Dim cc as Integer
   cc=int(c)
   If cc&lt;2 then cc=1 
-  cnt=cnt+cc
   if cc=1 then return ""
   return "["+str(cc)+"]"
 End Function
-
-Function getCount() As String
-  return str(cnt/2)
-End Function</Code>
+</Code>
 </Report>

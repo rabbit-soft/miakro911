@@ -552,10 +552,12 @@ namespace rabnet
             if (listView1.SelectedItems.Count < 1) return;
             XmlDocument doc = new XmlDocument();
             doc.AppendChild(doc.CreateElement("Rows"));
+            int cnt = 0;
             string brd = "";
             foreach (ListViewItem li in listView1.SelectedItems)
             {
                 RabNetEngRabbit r = Engine.get().getRabbit((int)li.Tag);
+                cnt += r.group;
                 if (brd == "")
                     brd = r.breedName;
                 if (r.breedName != brd)
@@ -566,6 +568,7 @@ namespace rabnet
             XmlElement rw = (XmlElement)doc2.AppendChild(doc2.CreateElement("Rows")).AppendChild(doc2.CreateElement("Row"));
             rw.AppendChild(doc2.CreateElement("date")).AppendChild(doc2.CreateTextNode(DateTime.Now.Date.ToShortDateString()+" "+DateTime.Now.ToLongTimeString()));
             rw.AppendChild(doc2.CreateElement("breed")).AppendChild(doc2.CreateTextNode(brd));
+            rw.AppendChild(doc2.CreateElement("count")).AppendChild(doc2.CreateTextNode(cnt.ToString()));
             new ReportViewForm("Племенной список", "plem", new XmlDocument[] { doc, doc2 }).ShowDialog();
         }
 
