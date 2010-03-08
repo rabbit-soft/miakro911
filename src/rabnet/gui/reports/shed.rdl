@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <Description>
+  </Description>
+  <Author>
+  </Author>
+  <PageHeight>11in</PageHeight>
+  <PageWidth>8.5in</PageWidth>
+  <Width>7.5in</Width>
+  <TopMargin>.25in</TopMargin>
+  <LeftMargin>.25in</LeftMargin>
+  <RightMargin>.25in</RightMargin>
+  <BottomMargin>.25in</BottomMargin>
+  <DataSets>
+    <DataSet Name="Data">
+      <Query >
+        <DataSourceName>DS1</DataSourceName>
+        <CommandText>url=c:/temp/shed.xml;RowsXPath=/Rows/Row</CommandText>
+      </Query>
+      <Fields >
+        <Field Name="name">
+          <DataField>name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="type">
+          <DataField>type</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="value">
+          <DataField>value</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="Data2" >
+      <Query>
+        <DataSourceName>DS1</DataSourceName>
+        <CommandText>url=c:/temp/test.xml;RowsXPath=/Rows/Row</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="date">
+          <DataField>date</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="address">
+          <DataField>address</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <PageHeader>
+    <Height>0.0pt</Height>
+    <PrintOnFirstPage>true</PrintOnFirstPage>
+    <PrintOnLastPage>true</PrintOnLastPage>
+  </PageHeader>
+  <Body>
+    <Height>371.0pt</Height>
+    <ReportItems>
+      <Chart Name="Chart1">
+        <Height>283.67pt</Height>
+        <Width>576.60pt</Width>
+        <DataSetName>Data</DataSetName>
+        <NoRows>Query returned no rows!</NoRows>
+        <Style>
+          <BorderStyle>
+            <Default>Solid</Default>
+          </BorderStyle>
+          <BackgroundColor>White</BackgroundColor>
+          <BackgroundGradientType>None</BackgroundGradientType>
+          <BackgroundGradientEndColor>White</BackgroundGradientEndColor>
+          <BorderColor />
+          <BorderWidth />
+        </Style>
+        <Type>Column</Type>
+        <Subtype>Plain</Subtype>
+        <CategoryGroupings>
+          <CategoryGrouping>
+            <DynamicCategories>
+              <Grouping Name="DynamicCategoriesGroup1">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!name.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+            </DynamicCategories>
+          </CategoryGrouping>
+        </CategoryGroupings>
+        <CategoryAxis>
+          <Axis>
+            <Visible>true</Visible>
+            <MajorTickMarks>Inside</MajorTickMarks>
+            <MajorGridLines>
+              <ShowGridLines>true</ShowGridLines>
+              <Style>
+                <BorderStyle>
+                  <Default>Solid</Default>
+                </BorderStyle>
+              </Style>
+            </MajorGridLines>
+            <MinorGridLines>
+              <ShowGridLines>true</ShowGridLines>
+              <Style>
+                <BorderStyle>
+                  <Default>Solid</Default>
+                </BorderStyle>
+              </Style>
+            </MinorGridLines>
+            <Title>
+              <Caption>
+              </Caption>
+            </Title>
+            <Scalar>false</Scalar>
+            <Interlaced>false</Interlaced>
+            <LogScale>true</LogScale>
+            <Style>
+              <FontSize>9pt</FontSize>
+              <BorderStyle />
+              <BorderColor />
+              <BorderWidth />
+            </Style>
+          </Axis>
+        </CategoryAxis>
+        <SeriesGroupings>
+          <SeriesGrouping>
+            <DynamicSeries>
+              <Grouping Name="DynamicSeriesGroup1">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!type.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Label>=Fields!type.Value</Label>
+            </DynamicSeries>
+          </SeriesGrouping>
+        </SeriesGroupings>
+        <ChartData>
+          <ChartSeries>
+            <DataPoints>
+              <DataPoint>
+                <DataValues>
+                  <DataValue>
+                    <Value>=Sum(Fields!value.Value)</Value>
+                  </DataValue>
+                </DataValues>
+                <DataLabel>
+                  <Value>=Fields!value.Value</Value>
+                  <Visible>True</Visible>
+                </DataLabel>
+              </DataPoint>
+            </DataPoints>
+          </ChartSeries>
+        </ChartData>
+        <ValueAxis>
+          <Axis>
+            <Visible>true</Visible>
+            <MajorTickMarks>Inside</MajorTickMarks>
+            <MajorGridLines>
+              <ShowGridLines>true</ShowGridLines>
+              <Style>
+                <BorderStyle>
+                  <Default>Solid</Default>
+                </BorderStyle>
+                <FontSize>8pt</FontSize>
+              </Style>
+            </MajorGridLines>
+            <MinorGridLines>
+              <ShowGridLines>true</ShowGridLines>
+              <Style>
+                <BorderStyle>
+                  <Default>Solid</Default>
+                </BorderStyle>
+              </Style>
+            </MinorGridLines>
+            <Title>
+              <Caption>
+              </Caption>
+              <Style>
+                <WritingMode>tb-rl</WritingMode>
+              </Style>
+            </Title>
+            <Scalar>true</Scalar>
+            <Interlaced>true</Interlaced>
+            <LogScale>true</LogScale>
+            <Style>
+              <BorderStyle />
+              <BorderColor />
+              <BorderWidth />
+            </Style>
+            <MinorTickMarks>None</MinorTickMarks>
+            <MajorInterval>
+            </MajorInterval>
+            <Margin>false</Margin>
+            <MinorInterval>
+            </MinorInterval>
+          </Axis>
+        </ValueAxis>
+        <Legend>
+          <Style>
+            <BorderStyle>
+              <Default>Solid</Default>
+            </BorderStyle>
+            <PaddingLeft>5pt</PaddingLeft>
+            <FontSize>8pt</FontSize>
+            <BackgroundColor>White</BackgroundColor>
+            <BorderColor />
+            <BorderWidth />
+          </Style>
+          <Visible>true</Visible>
+          <Position>RightCenter</Position>
+        </Legend>
+        <Title>
+          <Style>
+            <FontWeight>Bold</FontWeight>
+            <FontSize>14pt</FontSize>
+            <TextAlign>Center</TextAlign>
+          </Style>
+          <Caption>
+          </Caption>
+        </Title>
+        <Left>5.30pt</Left>
+        <Top>64.30pt</Top>
+        <PointWidth>70</PointWidth>
+        <Palette>Excel</Palette>
+        <fyi:RenderAsVector xmlns:fyi="http://www.fyireporting.com/schemas">False</fyi:RenderAsVector>
+        <ChartElementOutput>Output</ChartElementOutput>
+        <fyi:Tooltip xmlns:fyi="http://www.fyireporting.com/schemas">False</fyi:Tooltip>
+        <fyi:TooltipYFormat xmlns:fyi="http://www.fyireporting.com/schemas">
+        </fyi:TooltipYFormat>
+        <fyi:TooltipX xmlns:fyi="http://www.fyireporting.com/schemas">False</fyi:TooltipX>
+      </Chart>
+      <Table Name="Table1" >
+        <DataSetName>Data2</DataSetName>
+        <NoRows>Query returned no rows!</NoRows>
+        <Style>
+          <BorderStyle>
+            <Default>Solid</Default>
+          </BorderStyle>
+        </Style>
+        <TableColumns>
+          <TableColumn>
+            <Width>535.7pt</Width>
+          </TableColumn>
+        </TableColumns>
+        <Details>
+          <TableRows>
+            <TableRow>
+              <Height>21.5pt</Height>
+              <TableCells>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox2">
+                      <Value>='Шедовый отчет по '+iif(Fields!address.Value='farm','ферме','адресу '+Fields!address.Value)+' на '+Fields!date.Value</Value>
+                      <CanGrow>true</CanGrow>
+                      <Style>
+                        <BorderStyle>
+                          <Default>None</Default>
+                          <Left>None</Left>
+                          <Right>None</Right>
+                          <Top>None</Top>
+                          <Bottom>None</Bottom>
+                        </BorderStyle>
+                        <BorderColor />
+                        <BorderWidth />
+                        <FontSize>16pt</FontSize>
+                      </Style>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+              </TableCells>
+            </TableRow>
+          </TableRows>
+        </Details>
+        <Left>1.4pt</Left>
+        <Top>14.3pt</Top>
+      </Table>
+    </ReportItems>
+  </Body>
+  <PageFooter>
+    <Height>14pt</Height>
+    <ReportItems>
+      <Textbox Name="Textbox5">
+        <Top>1pt</Top>
+        <Left>10pt</Left>
+        <Height>12pt</Height>
+        <Width>3in</Width>
+        <Value>=Globals!PageNumber + ' of ' + Globals!TotalPages</Value>
+        <Style>
+          <FontSize>10pt</FontSize>
+          <FontWeight>Normal</FontWeight>
+        </Style>
+      </Textbox>
+    </ReportItems>
+    <PrintOnFirstPage>true</PrintOnFirstPage>
+    <PrintOnLastPage>true</PrintOnLastPage>
+  </PageFooter>
+  <DataSources >
+    <DataSource Name="DS1">
+      <ConnectionProperties>
+        <DataProvider>XML</DataProvider>
+        <ConnectString>
+        </ConnectString>
+        <IntegratedSecurity>false</IntegratedSecurity>
+      </ConnectionProperties>
+    </DataSource>
+  </DataSources>
+</Report>

@@ -35,7 +35,7 @@ namespace rabnet
             label1.Text = r.fullName;
             comboBox1.Items.Clear();
             for (int i = 0; i < r.youngers.Length; i++)
-                comboBox1.Items.Add(r.youngers[i].fullname + "(" + r.youngers[i].group+")");
+                comboBox1.Items.Add(r.youngers[i].fullname + " (" + r.youngers[i].group+")");
             comboBox1.SelectedIndex = grp;
         }
 

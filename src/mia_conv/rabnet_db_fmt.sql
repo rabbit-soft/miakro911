@@ -550,4 +550,17 @@ BEGIN
  DELETE FROM dead WHERE r_id=rid;
 END |
 
+DROP FUNCTION IF EXISTS inBuilding |
+CREATE FUNCTION inBuilding(building INTEGER UNSIGNED,farm INTEGER UNSIGNED) RETURNS BOOL
+BEGIN
+  DECLARE cid INTEGER UNSIGNED;
+  IF (farm=0) THEN return 0; END IF;
+  SELECT b_id INTO cid FROM buildings WHERE b_farm=farm;
+  while cid<>0 DO
+    SELECT b_parent INTO cid FROM buildings WHERE b_id=cid;
+    IF cid=building THEN return 1; END IF;
+  end while;
+  return 0;
+END |
+
 #DELIMITER ;

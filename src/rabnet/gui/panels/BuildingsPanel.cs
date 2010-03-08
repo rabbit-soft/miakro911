@@ -6,6 +6,7 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using System.Collections;
+using System.Xml;
 
 namespace rabnet
 {
@@ -162,10 +163,11 @@ namespace rabnet
 			cs.SemiReady();
         }
 
-        private String getAddress(int ifid)
+        private String getAddress(int ifid){return getAddress(ifid, -1);}
+        private String getAddress(int ifid,int bid)
         {
             String res = "";
-            TreeNode nd = searchFarm(ifid, treeView1.Nodes[0]);
+            TreeNode nd = searchFarm(ifid,bid, treeView1.Nodes[0]);
             if (nd!=null)
             {
                 res = nd.Text;
@@ -178,17 +180,21 @@ namespace rabnet
             }
             return res;
         }
-        
-        private TreeNode searchFarm(int ifid,TreeNode nd)
+
+        private TreeNode searchFarm(int ifid, TreeNode nd)
+        {
+            return searchFarm(ifid, -1, nd);
+        }
+        private TreeNode searchFarm(int ifid,int bid,TreeNode nd)
         {
             String[] s = (nd.Tag as string).Split(':');
-            if (int.Parse(s[1]) == ifid)
+            if (int.Parse(s[1]) == ifid || int.Parse(s[0])==bid)
             {
                 return nd;
             }
             foreach (TreeNode n in nd.Nodes)
             {
-                TreeNode res = searchFarm(ifid, n);
+                TreeNode res = searchFarm(ifid,bid, n);
                 if (res != null)
                     return res;
             }
@@ -312,6 +318,7 @@ namespace rabnet
             killMenuItem.Visible = replaceMenuItem.Visible = false;
             addBuildingMenuItem.Visible = addFarmMenuItem.Visible = false;
             changeFarmMenuItem.Visible = deleteBuildingMenuItem.Visible = false;
+            shedReportMenuItem.Visible = false;
             if (listView1.Focused)
             {
                 killMenuItem.Visible = replaceMenuItem.Visible = (listView1.SelectedItems.Count > 0);
@@ -321,6 +328,7 @@ namespace rabnet
                 addBuildingMenuItem.Visible = addFarmMenuItem.Visible = !isFarm();
                 changeFarmMenuItem.Visible = isFarm();
                 deleteBuildingMenuItem.Visible = true;
+                shedReportMenuItem.Visible = !isFarm();
             }
         }
 
@@ -527,6 +535,23 @@ namespace rabnet
             if (!isFarm()) return;
             new MiniFarmForm(farmNum()).ShowDialog();
             rsb.run();
+        }
+
+        private void shedReportMenuItem_Click(object sender, EventArgs e)
+        {
+            if (treeView1.SelectedNode==null) return;
+            if (isFarm()) return;
+            Filters f = new Filters();
+            int bid=buildNum();
+            f["bld"] = bid.ToString();
+            f["suck"] = Engine.opt().getOption(Options.OPT_ID.SUCKERS);
+            XmlDocument doc = new XmlDocument();
+            XmlElement rw = (XmlElement)doc.AppendChild(doc.CreateElement("Rows")).AppendChild(doc.CreateElement("Row"));
+            rw.AppendChild(doc.CreateElement("date")).AppendChild(doc.CreateTextNode(DateTime.Now.ToShortDateString()+" "+DateTime.Now.ToLongTimeString()));
+            String ad = bid == 0 ? "farm" : getAddress(-1, bid);
+            rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(ad));
+            new ReportViewForm("Шедовый отчет", "shed", new XmlDocument[]{
+                Engine.db().makeReport(ReportType.Type.SHED,f),doc}).ShowDialog();
         }
 
     }

@@ -47,6 +47,8 @@
             this.addBuildingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeFarmMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteBuildingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.shedReportMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.splitContainer1.Panel1.SuspendLayout();
@@ -153,9 +155,11 @@
             this.addFarmMenuItem,
             this.addBuildingMenuItem,
             this.changeFarmMenuItem,
-            this.deleteBuildingMenuItem});
+            this.deleteBuildingMenuItem,
+            this.toolStripMenuItem1,
+            this.shedReportMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(195, 136);
+            this.actMenu.Size = new System.Drawing.Size(195, 186);
             // 
             // replaceMenuItem
             // 
@@ -198,6 +202,18 @@
             this.deleteBuildingMenuItem.Size = new System.Drawing.Size(194, 22);
             this.deleteBuildingMenuItem.Text = "Удалить строение";
             this.deleteBuildingMenuItem.Click += new System.EventHandler(this.deleteBuildingMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(191, 6);
+            // 
+            // shedReportMenuItem
+            // 
+            this.shedReportMenuItem.Name = "shedReportMenuItem";
+            this.shedReportMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.shedReportMenuItem.Text = "Шедовый отчет";
+            this.shedReportMenuItem.Click += new System.EventHandler(this.shedReportMenuItem_Click);
             // 
             // treeView1
             // 
@@ -262,6 +278,8 @@
         private System.Windows.Forms.ToolStripMenuItem changeFarmMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteBuildingMenuItem;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem shedReportMenuItem;
 
 
 

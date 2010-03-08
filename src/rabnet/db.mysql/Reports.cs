@@ -8,7 +8,7 @@ namespace rabnet
 {
     public class ReportType
     {
-        public enum Type { TEST,BREEDS,AGE,FUCKER,DEAD,DEADREASONS,REALIZE,USER_OKROLS };
+        public enum Type { TEST,BREEDS,AGE,FUCKER,DEAD,DEADREASONS,REALIZE,USER_OKROLS,SHED };
     }
 
     class Reports
@@ -66,6 +66,7 @@ namespace rabnet
                 case ReportType.Type.DEADREASONS: query = deadReasonsQuery(f); break;
                 case ReportType.Type.REALIZE: query = Realize(f); break;
                 case ReportType.Type.USER_OKROLS: query = UserOkrols(f); break;
+                case ReportType.Type.SHED: return ShedReport(f);
             }
             return makeStdReportXml(query);
         }
@@ -185,6 +186,100 @@ IF (f_state='okrol',f_children,IF(f_state='proholost','0','0.0')) state
 FROM fucks WHERE (f_worker={2:d} OR 
 (SELECT l_user FROM logs WHERE l_rabbit=f_rabid AND l_type=5 AND l_user={2:d} AND DATE(l_date)=DATE(f_date) LIMIT 1)={2:d})
 AND f_end_date>={0:s} AND f_end_date<={1:s} ORDER BY name,dt;", DFROM, DTO, user);
+        }
+
+        private String getValue(String query)
+        {
+            MySqlCommand cmd = new MySqlCommand(query, sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            String res = "";
+            if (rd.Read())
+                res = rd.GetString(0);
+            rd.Close();
+            return res;
+        }
+
+        private int getInt32(String query)
+        {
+            return int.Parse(getValue(query));
+        }
+
+        private int getBuildCount(String type,int bid)
+        {
+            return getInt32(String.Format(@"SELECT COUNT(t_id) FROM tiers,minifarms WHERE
+(t_id=m_upper OR t_id=m_lower) AND inBuilding({0:d},m_id){1:s};",bid,
+                                                                type==""?"":" AND t_type='"+type+"'"));
+        }
+
+        private int round(double d)
+        {
+            return (int)Math.Round(d);
+        }
+
+        private void addShedRows(XmlDocument doc,String type, int ideal, int real)
+        {
+            XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
+            rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(type));
+            rw.AppendChild(doc.CreateElement("type")).AppendChild(doc.CreateTextNode("идеал"));
+            rw.AppendChild(doc.CreateElement("value")).AppendChild(doc.CreateTextNode(ideal.ToString()));
+            rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
+            rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(type));
+            rw.AppendChild(doc.CreateElement("type")).AppendChild(doc.CreateTextNode("реально"));
+            rw.AppendChild(doc.CreateElement("value")).AppendChild(doc.CreateTextNode(real.ToString()));
+        }
+
+        private XmlDocument ShedReport(Filters f)
+        {
+            double per_vertep = 3.2;
+            double per_female = 6;
+            double pregn_per_tier = 0.3114;
+            double feed_girls_per_tier = 0.6;
+            double feed_boys_per_tier = 2.0;
+            double unkn_sucks_per_tier = 2.7;
+            int bid = f.safeInt("bld");
+            int suck = f.safeInt("suck", 50);
+            XmlDocument doc = new XmlDocument();
+            doc.AppendChild(doc.CreateElement("Rows"));
+            int alltiers = getBuildCount("", bid);
+            int fem = getBuildCount("female", bid);
+            int dfe = getBuildCount("dfemale", bid);
+            int com = getBuildCount("complex", bid);
+            int jur = getBuildCount("jurta", bid);
+            int qua = getBuildCount("quarta", bid);
+            int ver = getBuildCount("vertep", bid);
+            int bar = getBuildCount("barin", bid);
+            int cab = getBuildCount("cabin", bid);
+            int ideal=round(per_vertep*(ver+bar+4*qua+2*com+cab/2)+per_female* (2 * (dfe + jur) + fem + com + cab));
+            int real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE (r_parent=0 AND inBuilding({0:d},r_farm))OR
+(r_parent!=0 AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent)));",bid));
+            addShedRows(doc, "  все", ideal, real);
+            ideal = fem + 2 * (dfe + jur) + com;
+            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE r_sex='female' AND 
+(r_status>0 OR r_event_date IS NOT NULL) AND inBuilding({0:d},r_farm);",bid));
+            addShedRows(doc, "  крольчихи", ideal, real);
+            ideal = round(ideal*pregn_per_tier);
+            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE r_sex='female' AND 
+r_event_date IS NOT NULL AND inBuilding({0:d},r_farm);", bid));
+            addShedRows(doc, "  сукрольные", ideal, real);
+            ideal = round(alltiers * feed_girls_per_tier);
+            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits,tiers WHERE r_tier=t_id AND 
+(t_type='quarta' OR (r_area=1 AND (t_type='complex' OR t_type='cabin'))) AND r_parent=0 AND r_sex='female'
+AND r_status=0 AND r_event_date IS NULL AND inBuilding({0:d},r_farm);",bid));
+            addShedRows(doc, " Д.откорм", ideal, real);
+            ideal = round(alltiers * feed_boys_per_tier);
+            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits,tiers WHERE r_tier=t_id AND 
+(t_type='quarta' OR (r_area=1 AND (t_type='complex' OR t_type='cabin'))) AND r_parent=0 AND r_sex='male'
+AND r_status=0 AND inBuilding({0:d},r_farm);", bid));
+            addShedRows(doc, " М.откорм", ideal, real);
+            ideal = round(unkn_sucks_per_tier * alltiers);
+            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)>={1:d} 
+AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent));", bid, suck));
+            addShedRows(doc, " подсосные", ideal, real);
+            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d} 
+AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent));", bid, suck));
+            ideal = real;
+            addShedRows(doc, "гнездовые", ideal, real);
+            return doc;
         }
     }
 }
