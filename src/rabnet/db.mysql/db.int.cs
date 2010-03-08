@@ -110,6 +110,7 @@ namespace rabnet
         void deleteWeight(int rabbit, DateTime date);
         OneRabbit[] getParents(int rabbit,int age);
         OneRabbit getLiveDeadRabbit(int rabbit);
+        double[] getMaleChildrenProd(int male);
 
 		RabbitGen getRabbitGen(int rid);
 		Dictionary<int, Color> getBreedColors();

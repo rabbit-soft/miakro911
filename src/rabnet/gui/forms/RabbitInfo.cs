@@ -158,6 +158,9 @@ namespace rabnet
             {
                 lastFuck.Value = rab.last_fuck_okrol;
             }
+            double[] d = Engine.db().getMaleChildrenProd(rab.rid);
+            maleKids.Text = String.Format("Количество крольчат: {0:f0}",d[0]);
+            maleProd.Text = String.Format("Продуктивность соития: {0:f5}",d[1]);
         }
 
         private void updateFemale()

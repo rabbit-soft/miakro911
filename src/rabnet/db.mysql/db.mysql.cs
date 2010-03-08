@@ -482,6 +482,12 @@ namespace rabnet
 		{
 			return RabbitGenGetter.getBreedColors(sql);
 		}
-		#endregion
+
+        public double[] getMaleChildrenProd(int male)
+        {
+            return FucksGetter.getMaleChildrenProd(sql, male);
+        }
+
+        #endregion
     }
 }

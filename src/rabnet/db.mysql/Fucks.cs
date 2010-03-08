@@ -117,5 +117,27 @@ female,malewait,
             rd.Close();
             return f;
         }
+
+        public static double[] getMaleChildrenProd(MySqlConnection sql, int rabid)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT SUM(f_children) FROM fucks WHERE f_partner={0:d};",rabid), sql);
+            int ch = 0;
+            int ok = 0;
+            double prod = 0;
+            MySqlDataReader rd = cmd.ExecuteReader();
+            if (rd.Read())
+                if (!rd.IsDBNull(0))
+                    ch = rd.GetInt32(0);
+            rd.Close();
+            cmd.CommandText = String.Format(@"SELECT COUNT(f_partner) FROM fucks WHERE f_partner={0:d} AND f_state='okrol'",rabid);
+            rd = cmd.ExecuteReader();
+            if (rd.Read())
+                if (!rd.IsDBNull(0))
+                    ok = rd.GetInt32(0);
+            rd.Close();
+            if (ok != 0)
+                prod = (double)ch / ok;
+            return new double[] {ch, prod};
+        }
     }
 }
