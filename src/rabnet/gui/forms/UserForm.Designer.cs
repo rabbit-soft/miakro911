@@ -90,12 +90,13 @@
             // button3
             // 
             this.button3.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.button3.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button3.Location = new System.Drawing.Point(400, 291);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 3;
             this.button3.Text = "Закрыть";
-            this.button3.UseVisualStyleBackColor = false;
+            this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
@@ -124,6 +125,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.button3;
             this.ClientSize = new System.Drawing.Size(487, 325);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);

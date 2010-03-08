@@ -165,7 +165,7 @@
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 5;
             this.button1.Text = "Отсадить";
-            this.button1.UseVisualStyleBackColor = false;
+            this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
@@ -209,8 +209,10 @@
             // 
             // ReplaceYoungersForm
             // 
+            this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.button2;
             this.ClientSize = new System.Drawing.Size(857, 441);
             this.Controls.Add(this.nudRepl);
             this.Controls.Add(this.nudCount);

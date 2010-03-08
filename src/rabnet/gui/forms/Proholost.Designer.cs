@@ -48,7 +48,7 @@
             // 
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2010, 1, 28, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2010, 3, 6, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
             this.dateDays1.Location = new System.Drawing.Point(15, 46);
@@ -68,7 +68,7 @@
             this.button1.Size = new System.Drawing.Size(99, 23);
             this.button1.TabIndex = 2;
             this.button1.Text = "Прохолостание";
-            this.button1.UseVisualStyleBackColor = false;
+            this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
@@ -84,8 +84,10 @@
             // 
             // Proholost
             // 
+            this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.button2;
             this.ClientSize = new System.Drawing.Size(205, 166);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);

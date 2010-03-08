@@ -54,12 +54,13 @@
             // button1
             // 
             this.button1.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button1.Location = new System.Drawing.Point(408, 338);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
             this.button1.Text = "Закрыть";
-            this.button1.UseVisualStyleBackColor = false;
+            this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // groupBox1
@@ -231,6 +232,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.button1;
             this.ClientSize = new System.Drawing.Size(497, 369);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);

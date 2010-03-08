@@ -174,12 +174,13 @@
             this.button6.Size = new System.Drawing.Size(75, 23);
             this.button6.TabIndex = 8;
             this.button6.Text = "Привоз";
-            this.button6.UseVisualStyleBackColor = false;
+            this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button7
             // 
             this.button7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button7.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button7.Location = new System.Drawing.Point(406, 331);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(75, 23);
@@ -214,8 +215,10 @@
             // 
             // IncomeForm
             // 
+            this.AcceptButton = this.button6;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.button7;
             this.ClientSize = new System.Drawing.Size(574, 366);
             this.Controls.Add(this.button9);
             this.Controls.Add(this.button8);

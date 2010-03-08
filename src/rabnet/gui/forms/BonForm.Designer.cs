@@ -121,7 +121,7 @@
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 7;
             this.button1.Text = "Готово";
-            this.button1.UseVisualStyleBackColor = false;
+            this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
@@ -191,8 +191,10 @@
             // 
             // BonForm
             // 
+            this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.button2;
             this.ClientSize = new System.Drawing.Size(278, 244);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.comboBox4);

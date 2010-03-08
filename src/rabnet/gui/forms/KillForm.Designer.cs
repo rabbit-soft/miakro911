@@ -146,12 +146,13 @@
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 7;
             this.button2.Text = "Списать";
-            this.button2.UseVisualStyleBackColor = false;
+            this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button3.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button3.Location = new System.Drawing.Point(480, 331);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
@@ -215,7 +216,7 @@
             // 
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2010, 3, 1, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2010, 3, 6, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
             this.dateDays1.Location = new System.Drawing.Point(12, 12);
@@ -228,8 +229,10 @@
             // 
             // KillForm
             // 
+            this.AcceptButton = this.button2;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.button3;
             this.ClientSize = new System.Drawing.Size(650, 366);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
