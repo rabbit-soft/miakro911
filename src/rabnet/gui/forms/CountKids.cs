@@ -72,7 +72,7 @@ namespace rabnet
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             int i = comboBox1.SelectedIndex;
-            label2.Text = "Возраст:" + r.youngers[i].age().ToString();
+            label2.Text = "Возраст:" + r.youngers[i].age().ToString() +"\nПорода:"+r.breedName.ToString();
             textBox1.Text = r.youngers[i].group.ToString();
             numericUpDown2.Value = numericUpDown1.Value=numericUpDown3.Value= 0;
             numericUpDown2.Maximum = numericUpDown1.Maximum = r.youngers[i].group;
