@@ -344,6 +344,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
         public int evtype;
         public int babies;
         public int lost;
+		public int weight_age;
         public String fullname;
         public String breedname;
         public String bon;
@@ -352,7 +353,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
         public string nuaddr="";
         public OneRabbit(int id,string sx,DateTime bd,int rt,string flg,int nm,int sur,int sec,string adr,int grp,int brd,int zn,String nts,
             String gn,int st,DateTime lfo,String evt,DateTime evd,int ob,int lb,String fnm,String bnm,
-            String bon,int parent)
+			String bon, int parent, int wa)
         {
             this.parent = parent;
             tag = "";
@@ -399,6 +400,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             if (evt == "kuk") evtype = 3;
             evdate = evd;babies = ob;lost = lb;
             fullname = fnm; breedname = bnm;
+			weight_age = wa;
         }
 
         public static String SexToString(RabbitSex s)
@@ -433,7 +435,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
                 rd.IsDBNull(3) ? "none" : rd.GetString("r_event"), rd.IsDBNull(2) ? DateTime.MinValue : rd.GetDateTime("r_event_date"),
                 rd.IsDBNull(4) ? 0 : rd.GetInt32("r_overall_babies"), rd.IsDBNull(5) ? 0 : rd.GetInt32("r_lost_babies"),
                 rd.GetString("fullname"), rd.GetString("breedname"),
-                rd.GetString("r_bon"),rd.GetInt32("r_parent"));
+                rd.GetString("r_bon"),rd.GetInt32("r_parent"),0);
             return r;
         }
 
@@ -900,14 +902,23 @@ TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d}+1000 ORDER BY age ASC;",name,agebefore);
             if (rd.Read())
                 dead = rd.GetBoolean(0);
             rd.Close();
-            cmd.CommandText = String.Format(@"SELECT r_id,r_name,r_surname,r_secname,
-{0:s}name(r_id,0) name,{0:s}place(r_id) place,r_bon,
-(SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight,
-(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id) weight_date,
-(SELECT TO_DAYS(MAX(w_date))-TO_DAYS(r_born) FROM weights WHERE w_rabid=r_id) weight_age,
-r_overall_babies,r_okrol,r_sex,
-(SELECT TO_DAYS({1:s})-TO_DAYS(r_born)) age,r_born
-FROM {2:s} WHERE r_id={3:d};", (dead ? "dead" : "rab"), (dead ? "d_date" : "NOW()"), (dead ? "dead" : "rabbits"),rabbit);
+            cmd.CommandText = String.Format(@"SELECT 	r_id,
+														r_name,
+														r_surname,
+														r_secname,
+														{0:s}name(r_id,0) name,
+														{0:s}place(r_id) place,
+														r_bon,
+														(SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight,
+														(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id) weight_date,
+														(SELECT TO_DAYS(MAX(w_date))-TO_DAYS(r_born) FROM weights WHERE w_rabid=r_id) weight_age,
+														r_overall_babies,
+														r_okrol,
+														r_sex,
+														(SELECT TO_DAYS({1:s})-TO_DAYS(r_born)) age,
+														r_born, 
+														r_lost_babies
+											FROM {2:s} WHERE r_id={3:d};", (dead ? "dead" : "rab"), (dead ? "d_date" : "NOW()"), (dead ? "dead" : "rabbits"),rabbit);
             rd = cmd.ExecuteReader();
             if (!rd.Read())
             {
@@ -916,8 +927,8 @@ FROM {2:s} WHERE r_id={3:d};", (dead ? "dead" : "rab"), (dead ? "d_date" : "NOW(
             }
             OneRabbit r = new OneRabbit(rabbit, rd.GetString("r_sex"), rd.GetDateTime("r_born"), rd.IsDBNull(7) ? 0 : rd.GetInt32("weight"),
                 "00000", 0, 0, 0, rd.GetString("place"), 1, rd.GetInt32("r_okrol"), dead?1:0, "", "", rd.GetInt32("age"), DateTime.MinValue, "", rd.IsDBNull(8) ? DateTime.MinValue : rd.GetDateTime("weight_date"),
-                rd.IsDBNull(10) ? 0 : rd.GetInt32("r_overall_babies"), rd.IsDBNull(9) ? 0 : rd.GetInt32("weight_age"),
-                rd.GetString("name"), "", rd.GetString("r_bon"), 0);
+				rd.IsDBNull(10) ? 0 : rd.GetInt32("r_overall_babies"), rd.IsDBNull(15) ? 0 : rd.GetInt32("r_lost_babies"),
+				rd.GetString("name"), "", rd.GetString("r_bon"), 0, rd.IsDBNull(9) ? 0 : rd.GetInt32("weight_age"));
             rd.Close();
             return r;
         }

@@ -19,6 +19,7 @@ namespace rabnet
 		public string breed_color_name;
 		public Color breed_color;
 		public int breed;
+		public Boolean IsDead;
 		public string t;
 		public float PriplodK;
 		public float RodK;
@@ -69,6 +70,7 @@ namespace rabnet
 			{
 				return null;
 			}
+			Boolean IsDead = false;
 			MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT	r_mother, 
 																		r_father, 
 																		r_sex, 
@@ -81,6 +83,25 @@ namespace rabnet
 																where r_id={0:d}
 																limit 1;", rid), sql);
 			MySqlDataReader rd = cmd.ExecuteReader();
+
+			if (!rd.HasRows)
+			{
+				IsDead = true;
+				rd.Close();
+				rd.Dispose();
+				cmd = new MySqlCommand(String.Format(@"SELECT	r_mother, 
+																r_father, 
+																r_sex, 
+																(select n_name from names where n_id=r_name) name, 
+																(select n_surname from names where n_id=r_surname) surname, 
+																(select n_surname from names where n_id=r_secname) secname,
+																(select b_color from breeds where b_id=r_breed) b_color,
+																r_breed
+														from dead
+														where r_id={0:d}
+														limit 1;", rid), sql);
+				rd = cmd.ExecuteReader();
+			}
 
 			RabbitGen r = new RabbitGen();
 			r.rid = rid;
@@ -104,6 +125,8 @@ namespace rabnet
 				r.surname = rd.IsDBNull(4) ? "" : rd.GetString("surname"); //4
 				r.secname = rd.IsDBNull(5) ? "" : rd.GetString("secname"); //5
 				r.breed_color_name = rd.IsDBNull(6) ? "" : rd.GetString("b_color"); //5
+
+				r.IsDead = IsDead;
 
 				int res;
 

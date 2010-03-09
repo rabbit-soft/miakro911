@@ -20,7 +20,6 @@ namespace rabnet
         {
             InitializeComponent();
             log.Debug("inited");
-			this.AcceptButton = button2;
         }
 
         public void readConfig()

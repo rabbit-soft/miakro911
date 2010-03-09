@@ -66,7 +66,7 @@ namespace rabnet
             String s="void";
             if (sx==OneRabbit.RabbitSex.FEMALE) s="female";
             if (sx==OneRabbit.RabbitSex.MALE) s="male";
-            rab = new OneRabbit(0, s, DateTime.Now, 0, "00000", 0, 0, 0, "", 1, 1, 0, "", "", 0, DateTime.MinValue, "", DateTime.MinValue, 0, 0, "", "", "00000",0);
+            rab = new OneRabbit(0, s, DateTime.Now, 0, "00000", 0, 0, 0, "", 1, 1, 0, "", "", 0, DateTime.MinValue, "", DateTime.MinValue, 0, 0, "", "", "00000",0,0);
             rab.youngers=new OneRabbit[0];
         }
         public void newCommit()
