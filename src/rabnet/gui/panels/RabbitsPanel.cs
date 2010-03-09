@@ -23,7 +23,7 @@ namespace rabnet
         }
         public RabbitsPanel(RabStatusBar rsb):base(rsb,new RabbitsFilter(rsb))
         {
-            cs = new ListViewColumnSorter(listView1, new int[] {2, 9 },Options.OPT_ID.RAB_LIST);
+            cs = new ListViewColumnSorter(listView1, new int[] {2,8,9 },Options.OPT_ID.RAB_LIST);
             listView1.ListViewItemSorter = null;
 			GeneticsToolStripMenuItem.Enabled = GeneticsManagerSafe.GeneticsModuleTest();
         }
