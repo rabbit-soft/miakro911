@@ -32,7 +32,7 @@ namespace rabnet
         }
         public ZootehJob Okrol(int id,String nm,String ad,int stat,int age,int srok,String br)
         {
-            type=JobType.OKROL; job=f.safeInt("shr")==0?"Принять окрол":"Окрол";
+            type = JobType.OKROL; job = "Принять окрол";//f.safeInt("shr")==0?"Принять окрол":"Окрол";
             days = srok; name = nm; address = ad;
             this.age = age; this.id = id; breed = br;
             comment = (f.safeInt("shr")==0?"окрол ":"№") + stat.ToString();
@@ -40,7 +40,7 @@ namespace rabnet
         }
         public ZootehJob Vudvor(int id,String nm,String ad,int stat,int age,int srok,int id2,String br,int suckers)
         {
-            type = JobType.VUDVOR; job = f.safeInt("shr")==0?"Выдворение":"Выдв";
+            type = JobType.VUDVOR; job = "Выдворение";//f.safeInt("shr")==0?"Выдворение":"Выдв";
             days = srok; name = nm; address = ad;
             this.age = age; this.id = id; breed = br;
             this.id2=id2;
@@ -49,7 +49,7 @@ namespace rabnet
         }
         public ZootehJob Counts(int id, String nm, String ad, int age,int count,bool suckers,String br,int srok,int yid)
         {
-            type = JobType.COUNT_KIDS; job = (f.safeInt("shr") == 0 ? "Подсчет " : "Подсч") + (suckers ? (f.safeInt("shr") == 0 ? "подсосных" : "Подс") : (f.safeInt("shr") == 0 ? "гнездовых" : "Гнез"));
+            type = JobType.COUNT_KIDS; job = /*(f.safeInt("shr") == 0 ? "Подсчет " : "Подсчет ")*/"Подсчет " + (suckers ? /*(f.safeInt("shr") == 0 ? "подсосных" : "подсосных")*/ "подсосных": /*(f.safeInt("shr") == 0 ? "гнездовых" : "Гнез")*/"гнездовых");
             days = srok; name = nm; address = ad;
             this.age = age; this.id = id; breed = br;
             flag = suckers ? 1 : 0;
@@ -59,7 +59,7 @@ namespace rabnet
         }
         public ZootehJob Preokrol(int id, String nm, String ad, int age, int srok,String br)
         {
-            type = JobType.PRE_OKROL; job = f.safeInt("shr")==0?"Предокрольный осмотр":"ПредОсм";
+            type = JobType.PRE_OKROL; job = f.safeInt("shr")==0?"Предокрольный осмотр":"ПредОкрОс";
             days = srok; name = nm; address = ad;
             this.age = age; this.id = id; breed = br;
             return this;
@@ -75,8 +75,8 @@ namespace rabnet
         }
         public ZootehJob Fuck(int id, String nm, String ad, int age, int srok,int status,String boys,int group,string breed)
         {
-            type = JobType.FUCK; 
-            job = status==0?(f.safeInt("shr")==0?"Случка":"Случ"):(f.safeInt("shr")==0?"Вязка":"Вязк");
+            type = JobType.FUCK;
+            job = status == 0 ? "Случка" : "Вязка";//status==0?(f.safeInt("shr")==0?"Случка":"Случ"):(f.safeInt("shr")==0?"Вязка":"Вязк");
             this.id = id; 
             days = srok;
             name = nm; address = ad; this.breed = breed;
@@ -93,14 +93,14 @@ namespace rabnet
         }
         public ZootehJob Vacc(int id, String nm, String ad, int age, int srok,String br)
         {
-            type = JobType.VACC; job = f.safeInt("shr")==0?"Прививка":"Прив";
+            type = JobType.VACC; job = "Прививка";//f.safeInt("shr")==0?"Прививка":"Прив";
             days = srok; name = nm; address = ad;
             this.age = age; this.id = id; breed = br;
             return this;
         }
         public ZootehJob SetNest(int id, String nm, String ad, int age, int srok,int sukr,int children,String br)
         {
-            type = JobType.SET_NEST; job = f.safeInt("shr")==0?"Установка гнездовья":"УстГнезд";
+            type = JobType.SET_NEST; job = f.safeInt("shr")==0?"Установка гнездовья":"Устан. Гнезда";
             days = srok; name = nm; address = ad;
             this.age = age; this.id = id; breed = br;
             comment = "C-" + sukr.ToString();
