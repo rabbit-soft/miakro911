@@ -118,6 +118,7 @@ namespace rabnet
 				}
 				if (sx == "female")
 				{
+
 					r.sex = RabbitGen.RabbitSex.FEMALE;
 				}
 
