@@ -58,21 +58,37 @@ namespace rabnet
             XmlDocument doc = makeStdReportXml(query);
             XmlNodeList lst = doc.ChildNodes[0].ChildNodes;
             Dictionary<String,int> sums=new Dictionary<String,int>();
+            Dictionary<String, int> cnts = new Dictionary<String, int>();
             foreach (XmlNode nd in lst)
             {
                 String nm = nd.FirstChild.FirstChild.Value;
                 String v=nd.FirstChild.NextSibling.NextSibling.FirstChild.Value;
                 int s=0;
-                if (v!="п" && v!="-") s+=int.Parse(v);
+                int cnt = 0;
+                if (v != "п" && v != "-")
+                {
+                    s += int.Parse(v);
+                    cnt += 1;
+                }
                 if (sums.ContainsKey(nm)) sums[nm] += s;
                 else sums.Add(nm, s);
+                if (cnts.ContainsKey(nm)) cnts[nm] += cnt;
+                else cnts.Add(nm,cnt);
+                                
             }
             foreach (String k in sums.Keys)
             {
                 XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
                 rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(k));
-                rw.AppendChild(doc.CreateElement("dt")).AppendChild(doc.CreateTextNode("сумма"));
+                rw.AppendChild(doc.CreateElement("dt")).AppendChild(doc.CreateTextNode("C"));
                 rw.AppendChild(doc.CreateElement("state")).AppendChild(doc.CreateTextNode(sums[k].ToString()));
+            }
+            foreach (String k in cnts.Keys)
+            {
+                XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
+                rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(k));
+                rw.AppendChild(doc.CreateElement("dt")).AppendChild(doc.CreateTextNode("К"));
+                rw.AppendChild(doc.CreateElement("state")).AppendChild(doc.CreateTextNode(cnts[k].ToString()));
             }
             sums.Clear();
             foreach (XmlNode nd in lst)
