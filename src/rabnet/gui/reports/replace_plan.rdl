@@ -166,6 +166,10 @@
                         <Direction>LTR</Direction>
                         <WritingMode>lr-tb</WritingMode>
                         <TextAlign>Right</TextAlign>
+                        <BorderColor  />
+                        <BorderWidth >
+                          <Bottom>2pt</Bottom>
+                        </BorderWidth>
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -184,6 +188,10 @@
                         <FontSize>16pt</FontSize>
                         <VerticalAlign>Middle</VerticalAlign>
                         <TextAlign>General</TextAlign>
+                        <BorderColor  />
+                        <BorderWidth >
+                          <Bottom>2pt</Bottom>
+                        </BorderWidth>
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -199,6 +207,10 @@
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
                         <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor  />
+                        <BorderWidth >
+                          <Bottom>2pt</Bottom>
+                        </BorderWidth>
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -213,6 +225,10 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
+                        <BorderColor  />
+                        <BorderWidth >
+                          <Bottom>2pt</Bottom>
+                        </BorderWidth>
                       </Style>
                     </Textbox>
                   </ReportItems>

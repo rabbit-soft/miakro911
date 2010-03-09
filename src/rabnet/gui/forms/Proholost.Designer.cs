@@ -48,10 +48,10 @@
             // 
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2010, 3, 6, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2010, 3, 10, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
-            this.dateDays1.Location = new System.Drawing.Point(15, 46);
+            this.dateDays1.Location = new System.Drawing.Point(29, 46);
             this.dateDays1.Maximum = 100000;
             this.dateDays1.Name = "dateDays1";
             this.dateDays1.position = rabnet.components.DateDays.DDPosition.LABELS_LR;

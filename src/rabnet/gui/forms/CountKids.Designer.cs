@@ -70,7 +70,7 @@
             this.numericUpDown1.Location = new System.Drawing.Point(118, 127);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(70, 20);
-            this.numericUpDown1.TabIndex = 2;
+            this.numericUpDown1.TabIndex = 3;
             this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // textBox1
@@ -79,7 +79,7 @@
             this.textBox1.Location = new System.Drawing.Point(118, 101);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(70, 20);
-            this.textBox1.TabIndex = 3;
+            this.textBox1.TabIndex = 2;
             // 
             // numericUpDown2
             // 
@@ -124,7 +124,7 @@
             this.button1.Location = new System.Drawing.Point(127, 234);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 8;
+            this.button1.TabIndex = 6;
             this.button1.Text = "Подсчет";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -133,10 +133,10 @@
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(15, 234);
+            this.button2.Location = new System.Drawing.Point(46, 234);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 9;
+            this.button2.TabIndex = 7;
             this.button2.Text = "Отмена";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -146,7 +146,7 @@
             this.numericUpDown3.Location = new System.Drawing.Point(118, 195);
             this.numericUpDown3.Name = "numericUpDown3";
             this.numericUpDown3.Size = new System.Drawing.Size(70, 20);
-            this.numericUpDown3.TabIndex = 10;
+            this.numericUpDown3.TabIndex = 5;
             this.numericUpDown3.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // label6
@@ -165,7 +165,7 @@
             this.comboBox1.Location = new System.Drawing.Point(14, 34);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(188, 21);
-            this.comboBox1.TabIndex = 12;
+            this.comboBox1.TabIndex = 1;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // CountKids
