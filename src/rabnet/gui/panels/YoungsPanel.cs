@@ -207,8 +207,8 @@ namespace rabnet
             foreach (ListViewItem li in listView1.SelectedItems)
             {
                 XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
-                rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(li.SubItems[0].Text));
                 rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(li.SubItems[2].Text));
+                rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(li.SubItems[5].Text.Remove(li.SubItems[5].Text.IndexOf("["))));
                 rw.AppendChild(doc.CreateElement("count")).AppendChild(doc.CreateTextNode(li.SubItems[1].Text));
             }
             new ReportViewForm("План пересадок", "replace_plan", doc).ShowDialog();
