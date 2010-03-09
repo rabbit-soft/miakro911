@@ -54,9 +54,9 @@ namespace rabnet
         public String makeWhere(Filters f)
         {
             if (f.safeValue("lgs") == "") return "";
-            String res = " AND (";
+            String res = "";
             String[] tps = f.safeValue("lgs", "").Split(',');
-            for (int i = 0; i < tps.Length-1; i++)
+            for (int i = 0; i <= tps.Length-1; i++)
                 res += "logs.l_type=" + tps[i]+" OR ";
             return " WHERE "+res+"logs.l_type="+tps[tps.Length-1]+")";
         }
