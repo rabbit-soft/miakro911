@@ -45,6 +45,7 @@ namespace rabnet
             log.Debug("init from string "+connectionString);
             sql = new MySqlConnection(connectionString);
             sql.Open();
+            new Users(sql).checktb();
         }
         public int exec(String cmd)
         {

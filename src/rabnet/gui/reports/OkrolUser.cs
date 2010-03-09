@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace rabnet
 {
@@ -44,5 +45,15 @@ namespace rabnet
             return dtpTo.Value.ToShortDateString();
         }
 
+        public XmlDocument getXml()
+        {
+            XmlDocument doc = new XmlDocument();
+            XmlElement row = doc.CreateElement("Row");
+            doc.AppendChild(doc.CreateElement("Rows")).AppendChild(row);
+            row.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(comboBox1.Text));
+            row.AppendChild(doc.CreateElement("from")).AppendChild(doc.CreateTextNode(dtpFrom.Value.ToShortDateString()));
+            row.AppendChild(doc.CreateElement("to")).AppendChild(doc.CreateTextNode(dtpTo.Value.ToShortDateString()));
+            return doc;
+        }
     }
 }

@@ -53,6 +53,47 @@ namespace rabnet
             return xml;
         }
 
+        private XmlDocument UserOkrolRpt(String query)
+        {
+            XmlDocument doc = makeStdReportXml(query);
+            XmlNodeList lst = doc.ChildNodes[0].ChildNodes;
+            Dictionary<String,int> sums=new Dictionary<String,int>();
+            foreach (XmlNode nd in lst)
+            {
+                String nm = nd.FirstChild.FirstChild.Value;
+                String v=nd.FirstChild.NextSibling.NextSibling.FirstChild.Value;
+                int s=0;
+                if (v!="п" && v!="-") s+=int.Parse(v);
+                if (sums.ContainsKey(nm)) sums[nm] += s;
+                else sums.Add(nm, s);
+            }
+            foreach (String k in sums.Keys)
+            {
+                XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
+                rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(k));
+                rw.AppendChild(doc.CreateElement("dt")).AppendChild(doc.CreateTextNode("сумма"));
+                rw.AppendChild(doc.CreateElement("state")).AppendChild(doc.CreateTextNode(sums[k].ToString()));
+            }
+            sums.Clear();
+            foreach (XmlNode nd in lst)
+            {
+                String nm = nd.FirstChild.NextSibling.FirstChild.Value;
+                String v = nd.FirstChild.NextSibling.NextSibling.FirstChild.Value;
+                int s = 0;
+                if (v != "п" && v != "-") s += int.Parse(v);
+                if (sums.ContainsKey(nm)) sums[nm] += s;
+                else sums.Add(nm, s);
+            }
+            foreach (String k in sums.Keys)
+            {
+                XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
+                rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode("итого"));
+                rw.AppendChild(doc.CreateElement("dt")).AppendChild(doc.CreateTextNode(k));
+                rw.AppendChild(doc.CreateElement("state")).AppendChild(doc.CreateTextNode(sums[k].ToString()));
+            }
+            return doc;
+        }
+
         public XmlDocument makeReport(ReportType.Type type, Filters f)
         {
             String query="";
@@ -65,7 +106,7 @@ namespace rabnet
                 case ReportType.Type.DEAD: query = deadQuery(f); break;
                 case ReportType.Type.DEADREASONS: query = deadReasonsQuery(f); break;
                 case ReportType.Type.REALIZE: query = Realize(f); break;
-                case ReportType.Type.USER_OKROLS: query = UserOkrols(f); break;
+                case ReportType.Type.USER_OKROLS: return UserOkrolRpt(UserOkrols(f));
                 case ReportType.Type.SHED: return ShedReport(f);
             }
             return makeStdReportXml(query);
@@ -181,8 +222,8 @@ r_group FROM rabbits WHERE {0:s} ORDER BY r_farm,r_tier_id,r_area;",where);
         {
             getDates(f);
             int user = f.safeInt("user");
-            return String.Format(@"SELECT rabname(f_partner,0) name,DATE_FORMAT(f_end_date,'%d.%m.%Y') dt,
-IF (f_state='okrol',f_children,IF(f_state='proholost','0','0.0')) state 
+            return String.Format(@"SELECT CONCAT(' ',rabname(f_partner,0)) name,DATE_FORMAT(f_end_date,'%d.%m.%Y') dt,
+IF (f_state='okrol',f_children,IF(f_state='proholost','п','-')) state 
 FROM fucks WHERE (f_worker={2:d} OR 
 (SELECT l_user FROM logs WHERE l_rabbit=f_rabid AND l_type=5 AND l_user={2:d} AND DATE(l_date)=DATE(f_date) LIMIT 1)={2:d})
 AND f_end_date>={0:s} AND f_end_date<={1:s} ORDER BY name,dt;", DFROM, DTO, user);

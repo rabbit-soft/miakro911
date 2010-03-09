@@ -13,11 +13,11 @@
   <BottomMargin>.25in</BottomMargin>
   <DataSets>
     <DataSet Name="Data">
-      <Query>
+      <Query >
         <DataSourceName>DS1</DataSourceName>
         <CommandText>url=C:/Temp/test.xml;RowsXPath=/Rows/Row</CommandText>
       </Query>
-      <Fields>
+      <Fields >
         <Field Name="name">
           <DataField>name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -32,6 +32,26 @@
         </Field>
       </Fields>
     </DataSet>
+    <DataSet Name="Data2" >
+      <Query>
+        <DataSourceName>DS1</DataSourceName>
+        <CommandText>url=c:/temp/test.xml;RowsXPath=/Rows/Rows2/Row</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="name">
+          <DataField>name</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="from">
+          <DataField>from</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="to">
+          <DataField>to</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
   </DataSets>
   <PageHeader>
     <Height>0.0pt</Height>
@@ -39,7 +59,7 @@
     <PrintOnLastPage>true</PrintOnLastPage>
   </PageHeader>
   <Body>
-    <Height>143.9pt</Height>
+    <Height>91.4pt</Height>
     <ReportItems>
       <Textbox Name="Textbox7" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
         <Top>0.0pt</Top>
@@ -55,15 +75,13 @@
           <BorderWidth />
         </Style>
       </Textbox>
-      <Matrix Name="Matrix1">
+      <Matrix Name="Matrix1" >
         <DataSetName>Data</DataSetName>
         <NoRows>Query returned no rows!</NoRows>
         <Style>
           <BorderStyle>
             <Default>Solid</Default>
           </BorderStyle>
-          <BorderColor />
-          <BorderWidth />
         </Style>
         <Corner>
           <ReportItems>
@@ -105,27 +123,12 @@
                   </Style>
                 </Textbox>
               </ReportItems>
-              <Subtotal>
-                <ReportItems>
-                  <Textbox Name="Textbox3">
-                    <Value>сумма</Value>
-                    <Style>
-                      <BorderStyle>
-                        <Default>Solid</Default>
-                      </BorderStyle>
-                      <BorderColor />
-                      <BorderWidth />
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </Textbox>
-                </ReportItems>
-              </Subtotal>
             </DynamicColumns>
           </ColumnGrouping>
         </ColumnGroupings>
         <RowGroupings>
           <RowGrouping>
-            <Width>1in</Width>
+            <Width>76.2pt</Width>
             <DynamicRows>
               <Grouping Name="DynamicRowsGroup1">
                 <GroupExpressions>
@@ -133,7 +136,7 @@
                 </GroupExpressions>
               </Grouping>
               <ReportItems>
-                <Textbox Name="Textbox4">
+                <Textbox Name="Textbox3">
                   <Value>=Fields!name.Value</Value>
                   <Style>
                     <BorderStyle>
@@ -142,27 +145,12 @@
                   </Style>
                 </Textbox>
               </ReportItems>
-              <Subtotal>
-                <ReportItems>
-                  <Textbox Name="Textbox6">
-                    <Value>итого</Value>
-                    <Style>
-                      <BorderStyle>
-                        <Default>Solid</Default>
-                      </BorderStyle>
-                      <BorderColor />
-                      <BorderWidth />
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </Textbox>
-                </ReportItems>
-              </Subtotal>
             </DynamicRows>
           </RowGrouping>
         </RowGroupings>
         <MatrixColumns>
           <MatrixColumn>
-            <Width>30.5pt</Width>
+            <Width>26.2pt</Width>
           </MatrixColumn>
         </MatrixColumns>
         <MatrixRows>
@@ -171,8 +159,8 @@
             <MatrixCells>
               <MatrixCell>
                 <ReportItems>
-                  <Textbox Name="Textbox8">
-                    <Value>=iif(Fields!state.Value='0','п',iif(Fields!state.Value='0.0','-',iif(Sum(Fields!state.Value)=0,'',Sum(Fields!state.Value))))</Value>
+                  <Textbox Name="Textbox4">
+                    <Value>=Fields!state.Value</Value>
                     <Style>
                       <BorderStyle>
                         <Default>Solid</Default>
@@ -186,9 +174,144 @@
             </MatrixCells>
           </MatrixRow>
         </MatrixRows>
-        <Left>0.8pt</Left>
-        <Top>25.1pt</Top>
+        <Left>1.3pt</Left>
+        <Top>50.4pt</Top>
       </Matrix>
+      <Table Name="Table1" >
+        <DataSetName>Data2</DataSetName>
+        <NoRows>Query returned no rows!</NoRows>
+        <Style>
+          <BorderStyle>
+            <Default>Solid</Default>
+          </BorderStyle>
+        </Style>
+        <TableColumns>
+          <TableColumn>
+            <Width>125.9pt</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>11.1pt</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>69.6pt</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>21.2pt</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>110.5pt</Width>
+          </TableColumn>
+        </TableColumns>
+        <Details>
+          <TableRows>
+            <TableRow>
+              <Height>15.2pt</Height>
+              <TableCells>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox10">
+                      <Value>=Fields!name.Value</Value>
+                      <CanGrow>true</CanGrow>
+                      <Style>
+                        <BorderStyle>
+                          <Default>None</Default>
+                          <Left>None</Left>
+                          <Right>None</Right>
+                          <Top>None</Top>
+                          <Bottom>None</Bottom>
+                        </BorderStyle>
+                        <BorderColor />
+                        <BorderWidth />
+                        <FontSize>12pt</FontSize>
+                      </Style>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox13">
+                      <Value>c</Value>
+                      <Style>
+                        <BorderStyle>
+                          <Default>None</Default>
+                          <Left>None</Left>
+                          <Right>None</Right>
+                          <Top>None</Top>
+                          <Bottom>None</Bottom>
+                        </BorderStyle>
+                        <BorderColor />
+                        <BorderWidth />
+                        <FontSize>12pt</FontSize>
+                      </Style>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox11">
+                      <Value>=Fields!from.Value</Value>
+                      <CanGrow>true</CanGrow>
+                      <Style>
+                        <BorderStyle>
+                          <Default>None</Default>
+                          <Left>None</Left>
+                          <Right>None</Right>
+                          <Top>None</Top>
+                          <Bottom>None</Bottom>
+                        </BorderStyle>
+                        <BorderColor />
+                        <BorderWidth />
+                        <FontSize>12pt</FontSize>
+                      </Style>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox14">
+                      <Value>по</Value>
+                      <Style>
+                        <BorderStyle>
+                          <Default>None</Default>
+                          <Left>None</Left>
+                          <Right>None</Right>
+                          <Top>None</Top>
+                          <Bottom>None</Bottom>
+                        </BorderStyle>
+                        <BorderColor />
+                        <BorderWidth />
+                        <FontSize>12pt</FontSize>
+                      </Style>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox12">
+                      <Value>=Fields!to.Value</Value>
+                      <CanGrow>true</CanGrow>
+                      <Style>
+                        <BorderStyle>
+                          <Default>None</Default>
+                          <Left>None</Left>
+                          <Right>None</Right>
+                          <Top>None</Top>
+                          <Bottom>None</Bottom>
+                        </BorderStyle>
+                        <BorderColor />
+                        <BorderWidth />
+                        <FontSize>12pt</FontSize>
+                      </Style>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+              </TableCells>
+            </TableRow>
+          </TableRows>
+        </Details>
+        <Left>9.2pt</Left>
+        <Top>22.0pt</Top>
+      </Table>
     </ReportItems>
     <Columns>1</Columns>
   </Body>

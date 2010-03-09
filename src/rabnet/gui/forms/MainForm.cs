@@ -225,7 +225,7 @@ namespace rabnet
                 f["dfr"] = dlg.getFromDate();
                 f["dto"] = dlg.getToDate();
                 (new ReportViewForm("Окролы по пользователям", "okrol_user", new XmlDocument[]{
-                    Engine.get().db().makeReport(ReportType.Type.USER_OKROLS, f)})).ShowDialog();
+                    Engine.get().db().makeReport(ReportType.Type.USER_OKROLS, f),dlg.getXml()})).ShowDialog();
             }
         }
 
