@@ -13,11 +13,11 @@
   <BottomMargin>.25in</BottomMargin>
   <DataSets>
     <DataSet Name="Data">
-      <Query >
+      <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>url=C:/Temp/test.xml;RowsXPath=/Rows/Row</CommandText>
       </Query>
-      <Fields >
+      <Fields>
         <Field Name="name">
           <DataField>name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -32,7 +32,7 @@
         </Field>
       </Fields>
     </DataSet>
-    <DataSet Name="Data2" >
+    <DataSet Name="Data2">
       <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>url=c:/temp/test.xml;RowsXPath=/Rows/Rows2/Row</CommandText>
@@ -75,7 +75,7 @@
           <BorderWidth />
         </Style>
       </Textbox>
-      <Matrix Name="Matrix1" >
+      <Matrix Name="Matrix1">
         <DataSetName>Data</DataSetName>
         <NoRows>Query returned no rows!</NoRows>
         <Style>
@@ -150,7 +150,7 @@
         </RowGroupings>
         <MatrixColumns>
           <MatrixColumn>
-            <Width>26.2pt</Width>
+            <Width>31.5pt</Width>
           </MatrixColumn>
         </MatrixColumns>
         <MatrixRows>
@@ -177,7 +177,7 @@
         <Left>1.3pt</Left>
         <Top>50.4pt</Top>
       </Matrix>
-      <Table Name="Table1" >
+      <Table Name="Table1">
         <DataSetName>Data2</DataSetName>
         <NoRows>Query returned no rows!</NoRows>
         <Style>

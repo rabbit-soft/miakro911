@@ -53,6 +53,50 @@ namespace rabnet
             return xml;
         }
 
+        private XmlDocument makeRabOfDate(XmlDocument doc_in)
+        {
+            XmlDocument dok_out = new XmlDocument();
+            dok_out.AppendChild(dok_out.CreateElement("Rows"));
+            XmlNodeList lst = doc_in.ChildNodes[0].ChildNodes;
+            string name = "";
+            string dt = "";
+            int state = 0;
+            foreach (XmlNode nd in lst)
+            {
+                if (name == "" && dt == "")
+                {
+                    name = nd.FirstChild.FirstChild.Value;
+                    dt = nd.FirstChild.NextSibling.FirstChild.Value;
+                    state = nd.FirstChild.NextSibling.NextSibling.FirstChild.Value == "п" ? state = 0 : state = int.Parse(nd.FirstChild.NextSibling.NextSibling.FirstChild.Value);
+                    continue;
+                }
+                
+                if (nd.FirstChild.FirstChild.Value == name && nd.FirstChild.NextSibling.FirstChild.Value == dt)
+                {
+                    if (nd.FirstChild.NextSibling.NextSibling.FirstChild.Value == "п")
+                    {
+                        state += 0;
+                        continue;
+                    }
+                    state += int.Parse(nd.FirstChild.NextSibling.NextSibling.FirstChild.Value);
+                    continue;
+                }
+                else 
+                {
+                    XmlElement el = (XmlElement)dok_out.DocumentElement.AppendChild(dok_out.CreateElement("Row"));
+                    el.AppendChild(dok_out.CreateElement("name")).AppendChild(dok_out.CreateTextNode(name));
+                    el.AppendChild(dok_out.CreateElement("dt")).AppendChild(dok_out.CreateTextNode(dt));
+                    el.AppendChild(dok_out.CreateElement("state")).AppendChild(dok_out.CreateTextNode(state.ToString()));
+
+                    name = nd.FirstChild.FirstChild.Value;
+                    dt = nd.FirstChild.NextSibling.FirstChild.Value;
+                    state = nd.FirstChild.NextSibling.NextSibling.FirstChild.Value == "п" ? state = 0 : state = int.Parse(nd.FirstChild.NextSibling.NextSibling.FirstChild.Value);
+                }
+                 
+            }
+            return dok_out;
+        }
+
         private XmlDocument UserOkrolRpt(String query)
         {
             XmlDocument doc = makeStdReportXml(query);
@@ -76,6 +120,7 @@ namespace rabnet
                 else cnts.Add(nm,cnt);
                                 
             }
+            doc = makeRabOfDate(doc);
             foreach (String k in sums.Keys)
             {
                 XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
@@ -288,11 +333,11 @@ AND f_end_date>={0:s} AND f_end_date<={1:s} ORDER BY name,dt;", DFROM, DTO, user
         private XmlDocument ShedReport(Filters f)
         {
             double per_vertep = 3.2;
-            double per_female = 6;
-            double pregn_per_tier = 0.3114;
-            double feed_girls_per_tier = 0.6;
-            double feed_boys_per_tier = 2.0;
-            double unkn_sucks_per_tier = 2.7;
+            double per_female = 6;              
+            double pregn_per_tier = 0.3114;     
+            double feed_girls_per_tier = 0.6;   
+            double feed_boys_per_tier = 2.0;    
+            double unkn_sucks_per_tier = 2.7;   
             int bid = f.safeInt("bld");
             int suck = f.safeInt("suck", 50);
             XmlDocument doc = new XmlDocument();
