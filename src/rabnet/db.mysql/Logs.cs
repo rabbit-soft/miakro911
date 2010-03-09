@@ -58,7 +58,7 @@ namespace rabnet
             String[] tps = f.safeValue("lgs", "").Split(',');
             for (int i = 0; i <= tps.Length-1; i++)
                 res += "logs.l_type=" + tps[i]+" OR ";
-            return " WHERE "+res+"logs.l_type="+tps[tps.Length-1]+")";
+            return " WHERE ("+res+"logs.l_type="+tps[tps.Length-1]+")";
         }
 
         public LogList getLogs(Filters f)
