@@ -29,7 +29,7 @@ namespace rabnet
             if (fullUpdate)
             {
                 f["shr"] = Engine.opt().safeIntOption(Options.OPT_ID.SHORT_ZOO, 1).ToString();
-                f["dbl"] = f["shr"];//Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
+                f["dbl"] = f["shr"]=="1"?"0":"1";//Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
                 f["prt"] = Engine.opt().getOption(Options.OPT_ID.FIND_PARTNERS);
                 f["okrol"] = Engine.opt().getOption(Options.OPT_ID.OKROL);
                 f["preok"] = Engine.opt().getOption(Options.OPT_ID.PRE_OKROL);
