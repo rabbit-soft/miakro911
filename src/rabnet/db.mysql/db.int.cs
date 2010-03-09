@@ -111,6 +111,8 @@ namespace rabnet
         OneRabbit[] getParents(int rabbit,int age);
         OneRabbit getLiveDeadRabbit(int rabbit);
         double[] getMaleChildrenProd(int male);
+        void changeFucker(int fid, int fucker);
+        void changeWorker(int fid, int worker);
 
 		RabbitGen getRabbitGen(int rid);
 		Dictionary<int, Color> getBreedColors();

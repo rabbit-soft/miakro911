@@ -46,7 +46,6 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button15 = new System.Windows.Forms.Button();
             this.button14 = new System.Windows.Forms.Button();
-            this.bdate = new rabnet.components.DateDays();
             this.zone = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
             this.group = new System.Windows.Forms.NumericUpDown();
@@ -71,6 +70,8 @@
             this.gp = new System.Windows.Forms.CheckBox();
             this.defect = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.maleProd = new System.Windows.Forms.Label();
+            this.maleKids = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.lastFuckNever = new System.Windows.Forms.CheckBox();
             this.button7 = new System.Windows.Forms.Button();
@@ -84,7 +85,6 @@
             this.button8 = new System.Windows.Forms.Button();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.okrolDd = new rabnet.components.DateDays();
             this.okrolCount = new System.Windows.Forms.NumericUpDown();
             this.label21 = new System.Windows.Forms.Label();
             this.deadBab = new System.Windows.Forms.NumericUpDown();
@@ -92,7 +92,6 @@
             this.overallBab = new System.Windows.Forms.NumericUpDown();
             this.label19 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.sukrDd = new rabnet.components.DateDays();
             this.sukrType = new System.Windows.Forms.ComboBox();
             this.sukr = new System.Windows.Forms.CheckBox();
             this.nokuk = new System.Windows.Forms.CheckBox();
@@ -137,8 +136,12 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
-            this.maleKids = new System.Windows.Forms.Label();
-            this.maleProd = new System.Windows.Forms.Label();
+            this.columnHeader19 = new System.Windows.Forms.ColumnHeader();
+            this.changeFucker = new System.Windows.Forms.Button();
+            this.changeWorker = new System.Windows.Forms.Button();
+            this.bdate = new rabnet.components.DateDays();
+            this.okrolDd = new rabnet.components.DateDays();
+            this.sukrDd = new rabnet.components.DateDays();
             this.tabControl1.SuspendLayout();
             this.TabPage1.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -377,21 +380,6 @@
             this.button14.Text = "...";
             this.button14.UseVisualStyleBackColor = true;
             this.button14.Click += new System.EventHandler(this.button14_Click);
-            // 
-            // bdate
-            // 
-            this.bdate.AutoSize = true;
-            this.bdate.DateText = "Дата рожд.";
-            this.bdate.DateValue = new System.DateTime(2010, 3, 8, 0, 0, 0, 0);
-            this.bdate.DaysText = "Возраст";
-            this.bdate.DaysValue = 0;
-            this.bdate.Location = new System.Drawing.Point(13, 111);
-            this.bdate.Maximum = 5000;
-            this.bdate.Name = "bdate";
-            this.bdate.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
-            this.bdate.Size = new System.Drawing.Size(168, 50);
-            this.bdate.Step = 1;
-            this.bdate.TabIndex = 17;
             // 
             // zone
             // 
@@ -655,6 +643,24 @@
             this.tabPage2.Text = "Самец";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // maleProd
+            // 
+            this.maleProd.AutoSize = true;
+            this.maleProd.Location = new System.Drawing.Point(40, 258);
+            this.maleProd.Name = "maleProd";
+            this.maleProd.Size = new System.Drawing.Size(131, 13);
+            this.maleProd.TabIndex = 4;
+            this.maleProd.Text = "Продуктивность соития:";
+            // 
+            // maleKids
+            // 
+            this.maleKids.AutoSize = true;
+            this.maleKids.Location = new System.Drawing.Point(40, 232);
+            this.maleKids.Name = "maleKids";
+            this.maleKids.Size = new System.Drawing.Size(118, 13);
+            this.maleKids.TabIndex = 3;
+            this.maleKids.Text = "Количество крольчат:";
+            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.lastFuckNever);
@@ -807,21 +813,6 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "окролы";
             // 
-            // okrolDd
-            // 
-            this.okrolDd.AutoSize = true;
-            this.okrolDd.DateText = "Дата";
-            this.okrolDd.DateValue = new System.DateTime(2010, 3, 8, 0, 0, 0, 0);
-            this.okrolDd.DaysText = "Срок";
-            this.okrolDd.DaysValue = 0;
-            this.okrolDd.Location = new System.Drawing.Point(8, 61);
-            this.okrolDd.Maximum = 10000;
-            this.okrolDd.Name = "okrolDd";
-            this.okrolDd.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
-            this.okrolDd.Size = new System.Drawing.Size(136, 48);
-            this.okrolDd.Step = 1;
-            this.okrolDd.TabIndex = 2;
-            // 
             // okrolCount
             // 
             this.okrolCount.Location = new System.Drawing.Point(61, 23);
@@ -894,21 +885,6 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "сукрольность";
             // 
-            // sukrDd
-            // 
-            this.sukrDd.AutoSize = true;
-            this.sukrDd.DateText = "Дата";
-            this.sukrDd.DateValue = new System.DateTime(2010, 3, 8, 0, 0, 0, 0);
-            this.sukrDd.DaysText = "Срок";
-            this.sukrDd.DaysValue = 0;
-            this.sukrDd.Location = new System.Drawing.Point(0, 46);
-            this.sukrDd.Maximum = 10000;
-            this.sukrDd.Name = "sukrDd";
-            this.sukrDd.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
-            this.sukrDd.Size = new System.Drawing.Size(136, 51);
-            this.sukrDd.Step = 1;
-            this.sukrDd.TabIndex = 5;
-            // 
             // sukrType
             // 
             this.sukrType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -955,6 +931,8 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.changeWorker);
+            this.tabPage4.Controls.Add(this.changeFucker);
             this.tabPage4.Controls.Add(this.button12);
             this.tabPage4.Controls.Add(this.button11);
             this.tabPage4.Controls.Add(this.fucks);
@@ -1000,7 +978,8 @@
             this.columnHeader8,
             this.columnHeader9,
             this.columnHeader15,
-            this.columnHeader16});
+            this.columnHeader16,
+            this.columnHeader19});
             this.fucks.FullRowSelect = true;
             this.fucks.GridLines = true;
             this.fucks.Location = new System.Drawing.Point(3, 3);
@@ -1290,23 +1269,75 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // maleKids
+            // columnHeader19
             // 
-            this.maleKids.AutoSize = true;
-            this.maleKids.Location = new System.Drawing.Point(40, 232);
-            this.maleKids.Name = "maleKids";
-            this.maleKids.Size = new System.Drawing.Size(118, 13);
-            this.maleKids.TabIndex = 3;
-            this.maleKids.Text = "Количество крольчат:";
+            this.columnHeader19.Text = "работник";
             // 
-            // maleProd
+            // changeFucker
             // 
-            this.maleProd.AutoSize = true;
-            this.maleProd.Location = new System.Drawing.Point(40, 258);
-            this.maleProd.Name = "maleProd";
-            this.maleProd.Size = new System.Drawing.Size(131, 13);
-            this.maleProd.TabIndex = 4;
-            this.maleProd.Text = "Продуктивность соития:";
+            this.changeFucker.Enabled = false;
+            this.changeFucker.Location = new System.Drawing.Point(165, 279);
+            this.changeFucker.Name = "changeFucker";
+            this.changeFucker.Size = new System.Drawing.Size(116, 23);
+            this.changeFucker.TabIndex = 3;
+            this.changeFucker.Text = "Изменить партнера";
+            this.changeFucker.UseVisualStyleBackColor = true;
+            this.changeFucker.Click += new System.EventHandler(this.changeFucker_Click);
+            // 
+            // changeWorker
+            // 
+            this.changeWorker.Location = new System.Drawing.Point(287, 279);
+            this.changeWorker.Name = "changeWorker";
+            this.changeWorker.Size = new System.Drawing.Size(123, 23);
+            this.changeWorker.TabIndex = 4;
+            this.changeWorker.Text = "Изменить работника";
+            this.changeWorker.UseVisualStyleBackColor = true;
+            this.changeWorker.Click += new System.EventHandler(this.changeWorker_Click);
+            // 
+            // bdate
+            // 
+            this.bdate.AutoSize = true;
+            this.bdate.DateText = "Дата рожд.";
+            this.bdate.DateValue = new System.DateTime(2010, 3, 9, 0, 0, 0, 0);
+            this.bdate.DaysText = "Возраст";
+            this.bdate.DaysValue = 0;
+            this.bdate.Location = new System.Drawing.Point(13, 111);
+            this.bdate.Maximum = 5000;
+            this.bdate.Name = "bdate";
+            this.bdate.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
+            this.bdate.Size = new System.Drawing.Size(168, 50);
+            this.bdate.Step = 1;
+            this.bdate.TabIndex = 17;
+            // 
+            // okrolDd
+            // 
+            this.okrolDd.AutoSize = true;
+            this.okrolDd.DateText = "Дата";
+            this.okrolDd.DateValue = new System.DateTime(2010, 3, 9, 0, 0, 0, 0);
+            this.okrolDd.DaysText = "Срок";
+            this.okrolDd.DaysValue = 0;
+            this.okrolDd.Location = new System.Drawing.Point(8, 61);
+            this.okrolDd.Maximum = 10000;
+            this.okrolDd.Name = "okrolDd";
+            this.okrolDd.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
+            this.okrolDd.Size = new System.Drawing.Size(136, 48);
+            this.okrolDd.Step = 1;
+            this.okrolDd.TabIndex = 2;
+            // 
+            // sukrDd
+            // 
+            this.sukrDd.AutoSize = true;
+            this.sukrDd.DateText = "Дата";
+            this.sukrDd.DateValue = new System.DateTime(2010, 3, 9, 0, 0, 0, 0);
+            this.sukrDd.DaysText = "Срок";
+            this.sukrDd.DaysValue = 0;
+            this.sukrDd.Location = new System.Drawing.Point(0, 46);
+            this.sukrDd.Maximum = 10000;
+            this.sukrDd.Name = "sukrDd";
+            this.sukrDd.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
+            this.sukrDd.Size = new System.Drawing.Size(136, 51);
+            this.sukrDd.Step = 1;
+            this.sukrDd.TabIndex = 5;
             // 
             // RabbitInfo
             // 
@@ -1481,5 +1512,8 @@
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label maleProd;
         private System.Windows.Forms.Label maleKids;
+        private System.Windows.Forms.ColumnHeader columnHeader19;
+        private System.Windows.Forms.Button changeFucker;
+        private System.Windows.Forms.Button changeWorker;
     }
 }

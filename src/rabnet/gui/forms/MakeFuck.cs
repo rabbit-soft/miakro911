@@ -17,6 +17,8 @@ namespace rabnet
         int malewait = 0;
         ListViewColumnSorter cs;
         Catalog names = null;
+        int selected = 0;
+        int action = 0;
         public MakeFuck()
         {
             InitializeComponent();
@@ -68,6 +70,10 @@ namespace rabnet
             if (rab1.status > 0)
                 Text = button1.Text = "Вязать";
             fillNames();
+        }
+        public MakeFuck(int r1, int r2, int action):this(r1,r2)
+        {
+            this.action = action;
         }
 
         private void fillTable()
@@ -136,7 +142,9 @@ namespace rabnet
                 if (listView1.SelectedItems.Count!=1)
                     throw new ApplicationException("Выберите самца");
                 int r2 = (listView1.SelectedItems[0].Tag as Fucks.Fuck).partnerid;
-                rab1.FuckIt(r2, dateDays1.DateValue);
+                selected = r2;
+                if (action==0)
+                    rab1.FuckIt(r2, dateDays1.DateValue);
                 Close();
             }
             catch (ApplicationException ex)
@@ -164,6 +172,8 @@ namespace rabnet
             new NamesForm(1).ShowDialog();
             fillNames();
         }
+
+        public int SelectedFucker { get { return selected; } }
 
     }
 }

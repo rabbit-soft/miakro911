@@ -489,6 +489,16 @@ namespace rabnet
             return FucksGetter.getMaleChildrenProd(sql, male);
         }
 
+        public void changeFucker(int fid, int fucker)
+        {
+            FucksGetter.changeFucker(sql,fid, fucker);
+        }
+
+        public void changeWorker(int fid, int worker)
+        {
+            FucksGetter.changeWorker(sql,fid, worker);
+        }
+
         #endregion
     }
 }

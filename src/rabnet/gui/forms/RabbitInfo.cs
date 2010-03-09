@@ -225,8 +225,10 @@ namespace rabnet
                 li.SubItems.Add(f.added.ToString());
                 li.SubItems.Add(f.breed == rab.breed ? "-" : "Да");
                 li.SubItems.Add(RabNetEngHelper.inbreeding(f.rgenom, rab.genom) ? "Да" : "-");
+                li.SubItems.Add(f.worker);
                 li.Tag = f;
             }
+            changeFucker.Enabled = false;
             fucks.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             suckers.Items.Clear();
             if (rid>0)
@@ -474,11 +476,13 @@ namespace rabnet
 
         private void fucks_SelectedIndexChanged(object sender, EventArgs e)
         {
+            changeFucker.Enabled = false;
             if (fucks.SelectedItems.Count == 1)
             {
                 bool dead = (fucks.SelectedItems[0].SubItems[3].Text == RABDEAD);
                 button11.Enabled = true;
                 button12.Enabled = !sukr.Checked && !dead;
+                changeFucker.Enabled=fucks.SelectedItems[0].SubItems[3].Text=="сукрольна";
             }
             else
                 button11.Enabled = button12.Enabled = false;
@@ -651,6 +655,26 @@ namespace rabnet
             manual = false;
             sex.SelectedIndex = s;
             manual = true;
+        }
+
+        private void changeFucker_Click(object sender, EventArgs e)
+        {
+            if (fucks.SelectedItems.Count!=1) return;
+            Fucks.Fuck f = fucks.SelectedItems[0].Tag as Fucks.Fuck;
+            MakeFuck mf = new MakeFuck(rab.rid, f.partnerid, 1);
+            if (mf.ShowDialog() == DialogResult.OK && mf.SelectedFucker!=f.id)
+                Engine.db().changeFucker(f.id, mf.SelectedFucker);
+            updateData();
+        }
+
+        private void changeWorker_Click(object sender, EventArgs e)
+        {
+            if (fucks.SelectedItems.Count != 1) return;
+            Fucks.Fuck f = fucks.SelectedItems[0].Tag as Fucks.Fuck;
+            SelectUserForm sf = new SelectUserForm(f.worker);
+            if (sf.ShowDialog() == DialogResult.OK && sf.SelectedUser!=0 && sf.SelectedUserName!=f.worker)
+                Engine.db().changeWorker(f.id, sf.SelectedUser);
+            updateData();
         }
 
     }
