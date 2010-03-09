@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace rabnet
 {
@@ -115,7 +116,9 @@ namespace rabnet
 
         public void setMenu()
         {
-            replaceYoungersMenuItem.Visible = listView1.SelectedItems.Count == 1;
+            int cnt=listView1.SelectedItems.Count;
+            replaceYoungersMenuItem.Visible = cnt == 1;
+            replacePlanMenuItem.Visible = cnt > 0;
         }
 
         private void replaceYoungersMenuItem_Click(object sender, EventArgs e)
@@ -194,6 +197,21 @@ namespace rabnet
         {
             manual = true;
             listView1_SelectedIndexChanged(null, null);
+        }
+
+        private void replacePlanMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count < 1) return;
+            XmlDocument doc = new XmlDocument();
+            doc.AppendChild(doc.CreateElement("Rows"));
+            foreach (ListViewItem li in listView1.SelectedItems)
+            {
+                XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
+                rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(li.SubItems[0].Text));
+                rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(li.SubItems[2].Text));
+                rw.AppendChild(doc.CreateElement("count")).AppendChild(doc.CreateTextNode(li.SubItems[1].Text));
+            }
+            new ReportViewForm("План пересадок", "replace_plan", doc).ShowDialog();
         }
 
 

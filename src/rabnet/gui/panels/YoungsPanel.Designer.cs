@@ -45,6 +45,7 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.selectAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.genTree = new System.Windows.Forms.TreeView();
+            this.replacePlanMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -142,10 +143,11 @@
             // 
             this.actMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.replaceYoungersMenuItem,
+            this.replacePlanMenuItem,
             this.toolStripMenuItem1,
             this.selectAllMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(189, 54);
+            this.actMenu.Size = new System.Drawing.Size(189, 98);
             // 
             // replaceYoungersMenuItem
             // 
@@ -176,6 +178,13 @@
             this.genTree.Name = "genTree";
             this.genTree.Size = new System.Drawing.Size(160, 534);
             this.genTree.TabIndex = 0;
+            // 
+            // replacePlanMenuItem
+            // 
+            this.replacePlanMenuItem.Name = "replacePlanMenuItem";
+            this.replacePlanMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.replacePlanMenuItem.Text = "План пересадок";
+            this.replacePlanMenuItem.Click += new System.EventHandler(this.replacePlanMenuItem_Click);
             // 
             // YoungsPanel
             // 
@@ -210,6 +219,7 @@
         private System.Windows.Forms.ToolStripMenuItem replaceYoungersMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem selectAllMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem replacePlanMenuItem;
 
     }
 }
