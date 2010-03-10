@@ -11,6 +11,17 @@ namespace rabnet
 	public partial class RabbitBar : CustomGraphCmp
 	{
 
+		private RabbitGen _Rabbit;
+		public RabbitGen Rabbit
+		{
+			get { return _Rabbit; }
+			set
+			{
+				_Rabbit = value;
+				UpdateTooltip();
+			}
+		}
+
 		private Boolean _Exists = false;
 		public Boolean Exists
 		{
@@ -45,7 +56,7 @@ namespace rabnet
 			{
 				_RabbitID = value;
 				label1.Text = value.ToString();
-				RabToolTip.SetToolTip(this, value.ToString());
+				UpdateTooltip();
 			}
 		}
 
@@ -64,6 +75,56 @@ namespace rabnet
 			set
 			{
 				label3.Text = value.ToString();
+			}
+		}
+
+		private void UpdateTooltip()
+		{
+			string tt = "";
+			string ttl = "";
+			Boolean dead = false;
+			if (_Rabbit != null)
+			{
+				string sex = "-";
+				if (_Rabbit.sex == RabbitGen.RabbitSex.MALE)
+				{
+					sex = "мужской";
+				}
+				if (_Rabbit.sex == RabbitGen.RabbitSex.FEMALE)
+				{
+					sex = "женский";
+				}
+				tt = string.Format(@"Номер: {0:d}
+Пол: {1}
+Порода: {2}
+Приплод: {3:f2}
+Родительские качества: {4:f2}", _Rabbit.rid, sex, _Rabbit.breed_name, _Rabbit.PriplodK, _Rabbit.RodK);
+				ttl = _Rabbit.fullname;
+				
+				dead = _Rabbit.IsDead;
+
+				if (dead)
+				{
+					if (_Rabbit.sex == RabbitGen.RabbitSex.FEMALE)
+					{
+						ttl += " (умерла)";
+					}
+					else
+					{
+						ttl += " (умер)";
+					}
+				}
+
+			}
+			RabToolTip.ToolTipTitle = ttl;
+			RabToolTip.SetToolTip(this, tt);
+			if (dead)
+			{
+				RabToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
+			}
+			else
+			{
+				RabToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.None;
 			}
 		}
 

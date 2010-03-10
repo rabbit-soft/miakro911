@@ -43,6 +43,7 @@ namespace rabnet
 				FemaleRabbit.Genom = r.breed.ToString();
 				FemaleRabbit.RabbitDad = r.r_father;
 				FemaleRabbit.RabbitMom = r.r_mother;
+				FemaleRabbit.Rabbit = r;
 				if (_TreeParentPair != null)
 				{
 					_TreeParentPair.RefreshGenom();
@@ -62,6 +63,7 @@ namespace rabnet
 				MaleRabbit.Genom = r.breed.ToString();
 				MaleRabbit.RabbitDad = r.r_father;
 				MaleRabbit.RabbitMom = r.r_mother;
+				MaleRabbit.Rabbit = r;
 				if (_TreeParentPair != null)
 				{
 					_TreeParentPair.RefreshGenom();

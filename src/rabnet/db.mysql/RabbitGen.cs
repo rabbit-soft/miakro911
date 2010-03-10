@@ -19,6 +19,7 @@ namespace rabnet
 		public string breed_color_name;
 		public Color breed_color;
 		public int breed;
+		public string breed_name;
 		public Boolean IsDead;
 		public string t;
 		public float PriplodK;
@@ -78,7 +79,8 @@ namespace rabnet
 																		(select n_surname from names where n_id=r_surname) surname, 
 																		(select n_surname from names where n_id=r_secname) secname,
 																		(select b_color from breeds where b_id=r_breed) b_color,
-																		r_breed
+																		r_breed,
+																		(select b_name from breeds where b_id=r_breed) b_name
 																from rabbits
 																where r_id={0:d}
 																limit 1;", rid), sql);
@@ -96,7 +98,8 @@ namespace rabnet
 																(select n_surname from names where n_id=r_surname) surname, 
 																(select n_surname from names where n_id=r_secname) secname,
 																(select b_color from breeds where b_id=r_breed) b_color,
-																r_breed
+																r_breed,
+																(select b_name from breeds where b_id=r_breed) b_name
 														from dead
 														where r_id={0:d}
 														limit 1;", rid), sql);
@@ -140,6 +143,7 @@ namespace rabnet
 					r.breed_color = Color.FromName(r.breed_color_name);
 				}
 				r.breed = rd.GetInt32("r_breed"); //6
+				r.breed_name = rd.IsDBNull(7) ? "" : rd.GetString("b_name"); //7
 
 			}
 			else
