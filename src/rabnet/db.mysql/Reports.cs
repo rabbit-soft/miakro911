@@ -91,8 +91,7 @@ namespace rabnet
                     name = nd.FirstChild.FirstChild.Value;
                     dt = nd.FirstChild.NextSibling.FirstChild.Value;
                     state = nd.FirstChild.NextSibling.NextSibling.FirstChild.Value == "п" ? state = 0 : state = int.Parse(nd.FirstChild.NextSibling.NextSibling.FirstChild.Value);
-                }
-                 
+                }                
             }
             return dok_out;
         }
@@ -120,7 +119,7 @@ namespace rabnet
                 else cnts.Add(nm,cnt);
                                 
             }
-            doc = makeRabOfDate(doc);
+            //doc = makeRabOfDate(doc);
             foreach (String k in sums.Keys)
             {
                 XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));

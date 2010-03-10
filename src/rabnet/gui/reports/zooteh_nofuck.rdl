@@ -145,13 +145,13 @@
             <Width>20pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>60pt</Width>
+            <Width>80pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>35pt</Width>
+            <Width>50pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>135pt</Width>
+            <Width>90pt</Width>
           </TableColumn>
           <TableColumn>
             <Width>35pt</Width>
@@ -163,7 +163,7 @@
             <Width>50pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>200pt</Width>
+            <Width>210pt</Width>
           </TableColumn>
         </TableColumns>
         <Header>
@@ -307,7 +307,7 @@
         <Details>
           <TableRows>
             <TableRow>
-              <Height>16pt</Height>
+              <Height>20pt</Height>
               <TableCells>
                 <TableCell>
                   <ReportItems>
@@ -338,7 +338,8 @@
                         <PaddingLeft>2pt</PaddingLeft>
                         <BorderColor />
                         <BorderWidth />
-                        <FontSize>10pt</FontSize>
+                        <FontSize>11pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -356,6 +357,7 @@
                         <FontSize>10pt</FontSize>
                         <BorderColor />
                         <BorderWidth />
+                        <FontWeight>Bold</FontWeight>
                       </Style>
                     </Textbox>
                   </ReportItems>
