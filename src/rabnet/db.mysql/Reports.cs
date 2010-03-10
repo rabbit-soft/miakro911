@@ -91,8 +91,12 @@ namespace rabnet
                     name = nd.FirstChild.FirstChild.Value;
                     dt = nd.FirstChild.NextSibling.FirstChild.Value;
                     state = nd.FirstChild.NextSibling.NextSibling.FirstChild.Value == "п" ? state = 0 : state = int.Parse(nd.FirstChild.NextSibling.NextSibling.FirstChild.Value);
-                }                
+                }               
             }
+            XmlElement el2 = (XmlElement)dok_out.DocumentElement.AppendChild(dok_out.CreateElement("Row"));
+            el2.AppendChild(dok_out.CreateElement("name")).AppendChild(dok_out.CreateTextNode(name));
+            el2.AppendChild(dok_out.CreateElement("dt")).AppendChild(dok_out.CreateTextNode(dt));
+            el2.AppendChild(dok_out.CreateElement("state")).AppendChild(dok_out.CreateTextNode(state.ToString()));
             return dok_out;
         }
 
@@ -119,7 +123,8 @@ namespace rabnet
                 else cnts.Add(nm,cnt);
                                 
             }
-            //doc = makeRabOfDate(doc);
+            doc = makeRabOfDate(doc);
+            lst = doc.ChildNodes[0].ChildNodes;
             foreach (String k in sums.Keys)
             {
                 XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
