@@ -156,7 +156,7 @@ namespace rabnet
             okrolMenuItem.Visible = fuckMenuItem.Visible= false;
             boysoutMenuItem.Visible = replaceYoungersMenuItem.Visible= false;
             svidMenuItem.Visible = realizeMenuItem.Visible= false;
-            plemMenuItem.Visible = false;
+            plemMenuItem.Visible = replacePlanMenuItem.Visible= false;
             if (sex < 0) return;
             plemMenuItem.Visible = true;
             KillMenuItem.Visible = true;
@@ -186,6 +186,8 @@ namespace rabnet
                 proholostMenuItem.Visible = true;
                 okrolMenuItem.Visible = true;
             }
+            if (multi > 1 || (multi==1 && listView1.SelectedItems[0].SubItems[NFIELD].Text[0]=='['))
+                replacePlanMenuItem.Visible=true;
         }
 
         public override ContextMenuStrip getMenu()
@@ -570,6 +572,28 @@ namespace rabnet
             rw.AppendChild(doc2.CreateElement("breed")).AppendChild(doc2.CreateTextNode(brd));
             rw.AppendChild(doc2.CreateElement("count")).AppendChild(doc2.CreateTextNode(cnt.ToString()));
             new ReportViewForm("Племенной список", "plem", new XmlDocument[] { doc, doc2 }).ShowDialog();
+        }
+
+        private void replacePlanMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count < 1) return;
+            XmlDocument doc = new XmlDocument();
+            doc.AppendChild(doc.CreateElement("Rows"));
+            foreach (ListViewItem li in listView1.SelectedItems)
+            {
+                XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
+                rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(li.SubItems[2].Text));
+                String cn=li.SubItems[11].Text;
+                if (cn.IndexOf('[') > -1)
+                    cn = cn.Remove(cn.IndexOf('['));
+                rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(cn));
+                cn=li.SubItems[NFIELD].Text;
+                if (cn[0]=='[')
+                    cn=int.Parse(cn.Substring(1,cn.Length-2)).ToString();
+                if (cn == "-") cn = "1";
+                rw.AppendChild(doc.CreateElement("count")).AppendChild(doc.CreateTextNode(cn));
+            }
+            new ReportViewForm("План пересадок", "replace_plan", doc).ShowDialog();
         }
 
     }

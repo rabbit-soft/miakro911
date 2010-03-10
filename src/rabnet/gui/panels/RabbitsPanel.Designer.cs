@@ -61,11 +61,12 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.SelectAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.svidMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.plemMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.realizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.GeneticsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.genTree = new System.Windows.Forms.TreeView();
-            this.plemMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.replacePlanMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -210,10 +211,11 @@
             this.svidMenuItem,
             this.plemMenuItem,
             this.realizeMenuItem,
+            this.replacePlanMenuItem,
             this.toolStripSeparator1,
             this.GeneticsToolStripMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(285, 418);
+            this.actMenu.Size = new System.Drawing.Size(285, 440);
             this.actMenu.Opening += new System.ComponentModel.CancelEventHandler(this.actMenu_Opening);
             // 
             // passportMenuItem
@@ -327,6 +329,13 @@
             this.svidMenuItem.Text = "Племенное свидетельство";
             this.svidMenuItem.Click += new System.EventHandler(this.svidMenuItem_Click);
             // 
+            // plemMenuItem
+            // 
+            this.plemMenuItem.Name = "plemMenuItem";
+            this.plemMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.plemMenuItem.Text = "Племенной список";
+            this.plemMenuItem.Click += new System.EventHandler(this.plemMenuItem_Click);
+            // 
             // realizeMenuItem
             // 
             this.realizeMenuItem.Name = "realizeMenuItem";
@@ -356,12 +365,12 @@
             this.genTree.Size = new System.Drawing.Size(134, 544);
             this.genTree.TabIndex = 1;
             // 
-            // plemMenuItem
+            // replacePlanMenuItem
             // 
-            this.plemMenuItem.Name = "plemMenuItem";
-            this.plemMenuItem.Size = new System.Drawing.Size(284, 22);
-            this.plemMenuItem.Text = "Племенной список";
-            this.plemMenuItem.Click += new System.EventHandler(this.plemMenuItem_Click);
+            this.replacePlanMenuItem.Name = "replacePlanMenuItem";
+            this.replacePlanMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.replacePlanMenuItem.Text = "План пересадок";
+            this.replacePlanMenuItem.Click += new System.EventHandler(this.replacePlanMenuItem_Click);
             // 
             // RabbitsPanel
             // 
@@ -417,5 +426,6 @@
 		private System.Windows.Forms.ToolStripMenuItem GeneticsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem plemMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem replacePlanMenuItem;
     }
 }
