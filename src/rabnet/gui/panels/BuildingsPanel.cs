@@ -328,7 +328,7 @@ namespace rabnet
                 addBuildingMenuItem.Visible = addFarmMenuItem.Visible = !isFarm();
                 changeFarmMenuItem.Visible = isFarm();
                 deleteBuildingMenuItem.Visible = true;
-                shedReportMenuItem.Visible = !isFarm();
+                shedReportMenuItem.Visible = emptyRevMenuItem.Visible=!isFarm();
             }
         }
 
@@ -537,6 +537,16 @@ namespace rabnet
             rsb.run();
         }
 
+        private XmlDocument getBuildDoc(int bid)
+        {
+            XmlDocument doc = new XmlDocument();
+            XmlElement rw = (XmlElement)doc.AppendChild(doc.CreateElement("Rows")).AppendChild(doc.CreateElement("Row"));
+            rw.AppendChild(doc.CreateElement("date")).AppendChild(doc.CreateTextNode(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString()));
+            String ad = bid == 0 ? "farm" : getAddress(-1, bid);
+            rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(ad));
+            return doc;
+        }
+
         private void shedReportMenuItem_Click(object sender, EventArgs e)
         {
             if (treeView1.SelectedNode==null) return;
@@ -545,13 +555,19 @@ namespace rabnet
             int bid=buildNum();
             f["bld"] = bid.ToString();
             f["suck"] = Engine.opt().getOption(Options.OPT_ID.SUCKERS);
-            XmlDocument doc = new XmlDocument();
-            XmlElement rw = (XmlElement)doc.AppendChild(doc.CreateElement("Rows")).AppendChild(doc.CreateElement("Row"));
-            rw.AppendChild(doc.CreateElement("date")).AppendChild(doc.CreateTextNode(DateTime.Now.ToShortDateString()+" "+DateTime.Now.ToLongTimeString()));
-            String ad = bid == 0 ? "farm" : getAddress(-1, bid);
-            rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(ad));
             new ReportViewForm("Шедовый отчет", "shed", new XmlDocument[]{
-                Engine.db().makeReport(ReportType.Type.SHED,f),doc}).ShowDialog();
+                Engine.db().makeReport(ReportType.Type.SHED,f),getBuildDoc(bid)}).ShowDialog();
+        }
+
+        private void emptyRevMenuItem_Click(object sender, EventArgs e)
+        {
+            if (treeView1.SelectedNode == null) return;
+            if (isFarm()) return;
+            Filters f = new Filters();
+            int bid = buildNum();
+            f["bld"] = bid.ToString();
+            new ReportViewForm("Ревизия свободных клеток", "empty_rev", new XmlDocument[]{
+                Engine.db().makeReport(ReportType.Type.REVISION,f),getBuildDoc(bid)}).ShowDialog();
         }
 
     }
