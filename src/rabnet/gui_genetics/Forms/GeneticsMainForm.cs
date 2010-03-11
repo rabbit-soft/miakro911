@@ -6,7 +6,7 @@ namespace rabnet
 	public partial class GeneticsMainForm : Form
 	{
 		private int _RabbitID;
-		private OneRabbit _Rabbit;
+		private RabbitGen _Rabbit;
 
 		public GeneticsMainForm()
 		{
@@ -15,11 +15,9 @@ namespace rabnet
 		public void SetID(int id)
 		{
 			_RabbitID = id;
-			_Rabbit = Engine.db().getRabbit(id);
+			_Rabbit = Engine.db().getRabbitGen(id);
 
-			this.Text = string.Format("Родословная '{0}' ({1:D})", _Rabbit.fullname, _RabbitID);
-
-
+			this.Text = string.Format("Родословная '{0}' ({1:D})", _Rabbit.fullname, _Rabbit.rid);
 		}
 
 		private Boolean _BatchClose = false;
@@ -30,11 +28,6 @@ namespace rabnet
 		}
 
 
-		private void button1_Click(object sender, EventArgs e)
-		{
-			GeneticsManager.CloseAllForms();
-		}
-
 		private void GeneticsMainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			if (!_BatchClose)
@@ -43,23 +36,26 @@ namespace rabnet
 			}
 		}
 
-		private void button2_Click(object sender, EventArgs e)
-		{
-			rabbitField1.DrawRabbit(_Rabbit);
-		}
-
-		private void GeneticsMainForm_Load(object sender, EventArgs e)
-		{
-		}
-
 		private void GeneticsMainForm_Shown(object sender, EventArgs e)
 		{
+			checkBox1.Enabled = false;
+			button1.Enabled = false;
+
 			rabbitField1.DrawRabbit(_Rabbit);
+
+			checkBox1.Enabled = true;
+			button1.Enabled = true;
 		}
 
-		private void button3_Click(object sender, EventArgs e)
+		private void button1_Click(object sender, EventArgs e)
 		{
-			rabbitField1.OrderedGenom = !rabbitField1.OrderedGenom;
+			GeneticsManager.CloseAllForms();
 		}
+
+		private void checkBox1_CheckedChanged(object sender, EventArgs e)
+		{
+			rabbitField1.OrderedGenom = checkBox1.Checked;
+		}
+
 	}
 }

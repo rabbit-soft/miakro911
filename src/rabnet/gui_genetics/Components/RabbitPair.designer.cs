@@ -35,28 +35,28 @@
 			// MaleRabbit
 			// 
 			this.MaleRabbit.BackColor = System.Drawing.SystemColors.Control;
-			this.MaleRabbit.Gender = 1;
+			this.MaleRabbit.FgColor = System.Drawing.SystemColors.Control;
+			this.MaleRabbit.ForcedGender = 1;
 			this.MaleRabbit.Genom = "0";
 			this.MaleRabbit.Location = new System.Drawing.Point(0, 0);
 			this.MaleRabbit.Name = "MaleRabbit";
 			this.MaleRabbit.OrderedGenom = false;
-			this.MaleRabbit.PlodK = 0;
-			this.MaleRabbit.RodK = 0;
 			this.MaleRabbit.Size = new System.Drawing.Size(150, 40);
 			this.MaleRabbit.TabIndex = 0;
+			this.MaleRabbit.TabStop = false;
 			// 
 			// FemaleRabbit
 			// 
 			this.FemaleRabbit.BackColor = System.Drawing.SystemColors.Control;
-			this.FemaleRabbit.Gender = 2;
+			this.FemaleRabbit.FgColor = System.Drawing.SystemColors.Control;
+			this.FemaleRabbit.ForcedGender = 2;
 			this.FemaleRabbit.Genom = "0";
 			this.FemaleRabbit.Location = new System.Drawing.Point(0, 43);
 			this.FemaleRabbit.Name = "FemaleRabbit";
 			this.FemaleRabbit.OrderedGenom = false;
-			this.FemaleRabbit.PlodK = 0;
-			this.FemaleRabbit.RodK = 0;
 			this.FemaleRabbit.Size = new System.Drawing.Size(150, 40);
 			this.FemaleRabbit.TabIndex = 1;
+			this.FemaleRabbit.TabStop = false;
 			// 
 			// RabbitPair
 			// 

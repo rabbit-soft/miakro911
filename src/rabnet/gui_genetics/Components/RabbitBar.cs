@@ -11,28 +11,32 @@ namespace rabnet
 	public partial class RabbitBar : CustomGraphCmp
 	{
 
-		private RabbitGen _Rabbit;
-		public RabbitGen Rabbit
+		private Boolean _Duplicated = false;
+
+		private int _ForcedGender = 0;
+		public int ForcedGender 
 		{
-			get { return _Rabbit; }
-			set
-			{
-				_Rabbit = value;
-				UpdateTooltip();
-			}
+			get { return _ForcedGender; }
+			set { _ForcedGender = value; }
+		}
+
+		private RabbitGen _Rabbit;
+		public void SetRabbit(RabbitGen rab){
+			_Rabbit=rab;
+			UpdateTooltip();
+			_Exists = true;
+			TabStop = true;
+			label1.Text = rab.rid.ToString();
+			label2.Text = rab.r_father.ToString();
+			label3.Text = rab.r_mother.ToString();
+			RedrawMe();
+		}
+		public RabbitGen GetRabbit()
+		{
+			return _Rabbit; 
 		}
 
 		private Boolean _Exists = false;
-		public Boolean Exists
-		{
-			get { return _Exists; }
-			set
-			{
-				_Exists = value;
-				TabStop = value;
-				RedrawMe();
-			}
-		}
 
 		private Color _FgColor = SystemColors.Control;
 		public Color FgColor
@@ -48,35 +52,7 @@ namespace rabnet
 		}
 
 
-		private int _RabbitID = 0;
-		public int RabbitID
-		{
-			get { return _RabbitID;}
-			set
-			{
-				_RabbitID = value;
-				label1.Text = value.ToString();
-				UpdateTooltip();
-			}
-		}
-
-		public int RabbitDad
-		{
-			get { return 0; }
-			set
-			{
-				label2.Text = value.ToString();
-			}
-		}
-
-		public int RabbitMom
-		{
-			get { return 0; }
-			set
-			{
-				label3.Text = value.ToString();
-			}
-		}
+		private string _ToolTip = "";
 
 		private void UpdateTooltip()
 		{
@@ -117,7 +93,8 @@ namespace rabnet
 
 			}
 			RabToolTip.ToolTipTitle = ttl;
-			RabToolTip.SetToolTip(this, tt);
+//			RabToolTip.SetToolTip(this, tt);
+			_ToolTip = tt;
 			if (dead)
 			{
 				RabToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
@@ -157,23 +134,6 @@ namespace rabnet
 			return _GenomColors;
 		}
 
-		/*
-
-		public Boolean AddGenomeColor(int id, Color color)
-		{
-			try
-			{
-				_GenomColors.Add(id, color);
-			}
-			catch (ArgumentException)
-			{
-				return false;
-			}
-			RedrawMe();
-			return true;
-		}
-		
-		 */
 		private string _Genom = "";
 		private string[] _GenomArr = { };
 		private string[] _GenomOrderedArr = { };
@@ -202,53 +162,14 @@ namespace rabnet
 			}
 		}
 
-		/// <summary>
-		/// Gender:	0 - Undefined
-		///			1 - Male
-		///			2 - Female
-		/// </summary>
-		private int _Gender = 0;
-		public int Gender
-		{
-			get { return _Gender; }
-			set
-			{
-				_Gender = value;
-				this.RedrawMe();
-			}
-		}
-
-		private float _PlodK = 0;
-		public float PlodK
-		{
-			get { return _PlodK; }
-			set 
-			{
-				_PlodK=value;
-				this.RedrawMe();
-			} 
-		}
-
-		private float _RodK = 0;
-		public float RodK
-		{
-			get { return _RodK; }
-			set
-			{
-				_RodK = value;
-				this.RedrawMe();
-			}
-		}
-
-
-
-
 		public RabbitBar()
 		{
 			InitializeComponent();
+			TabStop = false;
 			label1.Visible = false;
 			label2.Visible = false;
 			label3.Visible = false;
+			RabToolTip.ShowAlways = true;
 		}
 
 		private Boolean CheckGenom(string g)
@@ -379,8 +300,6 @@ namespace rabnet
 
 			if (genoms.Length > 0)
 			{
-				//Array.Sort(genoms);
-
 				int[][] ids = { };
 				//int i = 0;
 
@@ -449,10 +368,6 @@ namespace rabnet
 				genoms = _GenomArr;
 			}
 
-//			return;
-
-			//genoms.GetHashCode
-
 			Color cl= new Color();
 
 			int gc = genoms.Length;
@@ -483,6 +398,26 @@ namespace rabnet
 
 		}
 
+		public void DrawBadge(Graphics g, Point p)
+		{
+
+			Pen pen = new Pen(Color.Black);
+			Brush brush = new SolidBrush(Color.White);
+
+
+			g.SmoothingMode = SmoothingMode.AntiAlias;
+			g.FillEllipse(brush, p.X, p.Y, 13, 13);
+			g.DrawEllipse(pen, p.X, p.Y, 13, 13);
+			g.SmoothingMode = SmoothingMode.None;
+
+			g.DrawLine(pen, p.X + 7, p.Y + 3, p.X + 7, p.Y + 10);
+			g.DrawLine(pen, p.X + 6, p.Y + 3, p.X + 6, p.Y + 10);
+
+			g.DrawLine(pen, p.X + 3, p.Y + 7, p.X + 10, p.Y + 7);
+			g.DrawLine(pen, p.X + 3, p.Y + 6, p.X + 10, p.Y + 6);
+
+		}
+
 
 		public override void DrawingProc(Graphics g)
 		{
@@ -491,7 +426,15 @@ namespace rabnet
 
 			Brush textbrush = SystemBrushes.ControlText;
 
-			string pripl = Math.Round(_PlodK, 2).ToString();
+			string pripl = "";
+			if (_Rabbit != null)
+			{
+				pripl = Math.Round(_Rabbit.PriplodK, 2).ToString();
+				if (_Rabbit.IsDead)
+				{
+					pen = new Pen(Color.Red);
+				}
+			}
 
 			SizeF priplsize = g.MeasureString(pripl, SystemFonts.DefaultFont);
 
@@ -506,9 +449,34 @@ namespace rabnet
 
 			p.StartFigure();
 
-			if (_Gender > 0)
+			int gender = 0;
+			float rodk = 0;
+			if (_ForcedGender > 0)
 			{
-				if (_Gender == 1) // Male
+				gender = _ForcedGender;
+			}
+			else
+			{
+				if (_Rabbit != null)
+				{
+					if (_Rabbit.sex == RabbitGen.RabbitSex.MALE)
+					{
+						gender = 1;
+					}
+					if (_Rabbit.sex == RabbitGen.RabbitSex.FEMALE)
+					{
+						gender = 2;
+					}
+				}
+			}
+			if (_Rabbit != null)
+			{
+				rodk = _Rabbit.RodK;
+			}
+
+			if (gender > 0)
+			{
+				if (gender == 1) // Male
 				{
 					p.AddLine(new Point(0, this.Height - 1), new Point(this.Width - 1, this.Height - 1));
 					p.AddLine(new Point(this.Width - 1, this.Height - 1), new Point(this.Width - 1, (int)(this.Height / 2)));
@@ -517,7 +485,7 @@ namespace rabnet
 					p.AddArc(this.Width - this.Height, 0, this.Height - 1, this.Height - 1, 270, 90);
 					p.AddLine(new Point(0, (int)(this.Height / 2)), new Point(0, this.Height - 1));
 				}
-				else if (_Gender == 2) //Female
+				else if (gender == 2) //Female
 				{
 					p.AddLine(new Point((int)(this.Height / 2), this.Height - 1), new Point(this.Width - (int)(this.Height / 2) - 1, this.Height - 1));
 					p.AddArc(this.Width - this.Height, 0, this.Height - 1, this.Height - 1, 90, -90);
@@ -539,7 +507,7 @@ namespace rabnet
 
 			if (!_Exists)
 			{
-				cl = Color.FromArgb(50, _FgColor);
+				cl = Color.FromArgb(200, _FgColor);
 				Pen lp=new Pen(_FgColor);
 				brush = new SolidBrush(cl);
 				g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -548,14 +516,25 @@ namespace rabnet
 				g.SmoothingMode = SmoothingMode.None;
 				return;
 			}
+			if (_Rabbit != null)
+			{
+				if (_Rabbit.IsDead)
+				{
+					cl = Color.FromArgb(50, Color.Red);
+					brush = new SolidBrush(cl);
+					g.SmoothingMode = SmoothingMode.AntiAlias;
+					g.FillPath(brush, p);
+					g.SmoothingMode = SmoothingMode.None;
+				}
+			}
 
 			g.SmoothingMode = SmoothingMode.AntiAlias;
 			g.FillPath(brush, p);
 			g.SmoothingMode = SmoothingMode.None;
 
-			if (_Gender > 0)
+			if (gender > 0)
 			{
-				if (_Gender == 1) // Male
+				if (gender == 1) // Male
 				{
 					DrawGenom(g, new Point(1, (int)(this.Height / 2)), new Size(this.Width - 2, (int)(this.Height / 2)), _OrderedGenom);
 
@@ -572,11 +551,11 @@ namespace rabnet
 
 					g.DrawLine(penGr, new Point((int)(this.Width / 3), 1), new Point((int)(this.Width / 3), (int)(this.Height / 2)));
 
-					DrawColorBar(g, new Point((int)(this.Width / 3) + 2, 2), new Size((int)((this.Width / 3 * 2) - (this.Height / 2 * 0.65)) - 5, (int)(this.Height / 2) - 4), _RodK);
+					DrawColorBar(g, new Point((int)(this.Width / 3) + 2, 2), new Size((int)((this.Width / 3 * 2) - (this.Height / 2 * 0.65)) - 5, (int)(this.Height / 2) - 4), rodk);
 
 					g.DrawString(pripl, SystemFonts.DefaultFont, textbrush, new RectangleF(((this.Width / 3) - priplsize.Width) / 2, ((this.Height / 2 - 1) - priplsize.Height) / 2, priplsize.Width, priplsize.Height));
 				}
-				else if (_Gender == 2) //Female
+				else if (gender == 2) //Female
 				{
 					DrawGenom(g, new Point(1, 0), new Size(this.Width - 2, (int)(this.Height / 2)), _OrderedGenom);
 
@@ -593,7 +572,7 @@ namespace rabnet
 
 					g.DrawLine(penGr, new Point((int)(this.Width / 3), (int)(this.Height / 2)), new Point((int)(this.Width / 3), this.Height - 2));
 
-					DrawColorBar(g, new Point((int)(this.Width / 3) + 2, (int)(this.Height / 2) + 2), new Size((int)((this.Width / 3 * 2) - (this.Height / 2 * 0.65)) - 5, (int)(this.Height / 2) - 5), _RodK);
+					DrawColorBar(g, new Point((int)(this.Width / 3) + 2, (int)(this.Height / 2) + 2), new Size((int)((this.Width / 3 * 2) - (this.Height / 2 * 0.65)) - 5, (int)(this.Height / 2) - 5), rodk);
 
 					g.DrawString(pripl, SystemFonts.DefaultFont, textbrush, new RectangleF(((this.Width / 3) - priplsize.Width) / 2, ((this.Height / 2 - 1) - priplsize.Height) / 2 + (this.Height / 2), priplsize.Width, priplsize.Height + (this.Height / 2)));
 
@@ -610,7 +589,7 @@ namespace rabnet
 
 				g.DrawLine(penGr, new Point((int)(this.Width / 3), (int)(this.Height / 2)), new Point((int)(this.Width / 3), this.Height - 2));
 
-				DrawColorBar(g, new Point((int)(this.Width / 3) + 2, (int)(this.Height / 2) + 2), new Size((int)((this.Width / 3 * 2) - (this.Height / 2 * 0.65)) - 5, (int)(this.Height / 2) - 5), _RodK);
+				DrawColorBar(g, new Point((int)(this.Width / 3) + 2, (int)(this.Height / 2) + 2), new Size((int)((this.Width / 3 * 2) - (this.Height / 2 * 0.65)) - 5, (int)(this.Height / 2) - 5), rodk);
 
 				g.DrawString(pripl, SystemFonts.DefaultFont, textbrush, new RectangleF(((this.Width / 3) - priplsize.Width) / 2, ((this.Height / 2 - 1) - priplsize.Height) / 2 + (this.Height / 2), priplsize.Width, priplsize.Height + (this.Height / 2)));
 
@@ -621,7 +600,7 @@ namespace rabnet
 
 			if (_Active)
 			{
-				cl = Color.FromArgb(100,SystemColors.MenuHighlight);
+				cl = Color.FromArgb(150,SystemColors.MenuHighlight);
 				brush = new SolidBrush(cl);
 				g.SmoothingMode = SmoothingMode.AntiAlias;
 				g.FillPath(brush, p);
@@ -629,13 +608,32 @@ namespace rabnet
 				//				pen = new Pen(Color.Red,2);
 			} else if (_Highlight)
 			{
-				cl = Color.FromArgb(50, SystemColors.ControlText);
+				cl = Color.FromArgb(150, SystemColors.MenuHighlight);
+//				cl = Color.FromArgb(50, SystemColors.ControlText);
 				brush = new SolidBrush(cl);
 				g.SmoothingMode = SmoothingMode.AntiAlias;
 				g.FillPath(brush, p);
 				g.SmoothingMode = SmoothingMode.None;
 			}
+			if (_Duplicated)
+			{
+				if (gender > 0)
+				{
+					if (gender == 1) // Male
+					{
+						DrawBadge(g, new Point(this.Width - 14, 0));
+					}
+					if (gender == 2) //Female
+					{
+						DrawBadge(g, new Point(this.Width - 14, this.Height - 14));
 
+					}
+				}
+				else  //Unknown
+				{
+					DrawBadge(g, new Point(this.Width - 14, this.Height - 14));
+				}
+			}
 		}
 
 		private Boolean _Active = false;
@@ -644,11 +642,11 @@ namespace rabnet
 		{
 			_Active = true;
 			RedrawMe();
-			if (this._RabbitID != 0)
+			if (_Rabbit != null)
 			{
 				if (_ParentPair != null)
 				{
-					_ParentPair.SearchFromChild(this._RabbitID, 1);
+					_ParentPair.SearchFromChild(_Rabbit.rid, 1);
 				}
 			}
 		}
@@ -657,31 +655,77 @@ namespace rabnet
 		{
 			_Active = false;
 			RedrawMe();
-			if (this._RabbitID != 0)
+			if (_Rabbit != null)
 			{
 				if (_ParentPair != null)
 				{
-					_ParentPair.SearchFromChild(this._RabbitID, 2);
+					_ParentPair.SearchFromChild(_Rabbit.rid, 2);
+				}
+			}
+		}
+
+		public void MeetNeighbors()
+		{
+			if (_Rabbit != null)
+			{
+				if (_ParentPair.SearchFromChild(_Rabbit.rid, 3))
+				{
+					_Duplicated = true;
+					RedrawMe();
 				}
 			}
 		}
 
 		private Boolean _Highlight = false;
-		public void SearchFromParent(int rid, int cmd)
+		public Boolean SearchFromParent(int rid, int cmd)
 		{
-			if (rid == this._RabbitID)
+			Boolean res = false;
+			if (_Rabbit != null)
 			{
-				if (cmd == 1)
+				if (rid == _Rabbit.rid)
 				{
-					_Highlight = true;
-					RedrawMe();
-				}
-				if (cmd == 2)
-				{
-					_Highlight = false;
-					RedrawMe();
+					if (cmd == 1)
+					{
+						_Highlight = true;
+						RedrawMe();
+					}
+					if (cmd == 2)
+					{
+						_Highlight = false;
+						RedrawMe();
+					}
+					if (cmd == 3)
+					{
+						_Duplicated = true;
+						res = true;
+						RedrawMe();
+					}
 				}
 			}
+			return res;
 		}
+
+		private void RabbitBar_MouseLeave(object sender, EventArgs e)
+		{
+			RabToolTip.Hide(this);
+		}
+
+		private void RabbitBar_MouseEnter(object sender, EventArgs e)
+		{
+			RabToolTip.Show(_ToolTip, this);
+		}
+
+		private void RabbitBar_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+		{
+			if (e.KeyChar == ' ')
+			{
+				RabToolTip.Show(_ToolTip, this);
+			}
+			else
+			{
+				RabToolTip.Hide(this);
+			}
+		}
+
 	}
 }

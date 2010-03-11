@@ -71,8 +71,11 @@
 			this.Controls.Add(this.label1);
 			this.Name = "RabbitBar";
 			this.Size = new System.Drawing.Size(150, 40);
+			this.MouseLeave += new System.EventHandler(this.RabbitBar_MouseLeave);
 			this.Leave += new System.EventHandler(this.RabbitBar_Leave);
+			this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.RabbitBar_KeyPress);
 			this.Enter += new System.EventHandler(this.RabbitBar_Enter);
+			this.MouseEnter += new System.EventHandler(this.RabbitBar_MouseEnter);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

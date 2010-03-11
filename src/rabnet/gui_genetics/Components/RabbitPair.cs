@@ -15,7 +15,6 @@ namespace rabnet
 		private RabbitGen _dad;
 		private Rectangle _MyRect;
 		private int _MyCenter;
-		private Boolean _Debug = true;
 
 		public int _id=-1;
 
@@ -36,14 +35,8 @@ namespace rabnet
 			if (r != null)
 			{
 				_mom = r;
-				FemaleRabbit.Exists = true;
-				FemaleRabbit.RabbitID = r.rid;
-				FemaleRabbit.RodK = r.RodK;
-				FemaleRabbit.PlodK = r.PriplodK;
 				FemaleRabbit.Genom = r.breed.ToString();
-				FemaleRabbit.RabbitDad = r.r_father;
-				FemaleRabbit.RabbitMom = r.r_mother;
-				FemaleRabbit.Rabbit = r;
+				FemaleRabbit.SetRabbit(r);
 				if (_TreeParentPair != null)
 				{
 					_TreeParentPair.RefreshGenom();
@@ -56,14 +49,8 @@ namespace rabnet
 			if (r != null)
 			{
 				_dad = r;
-				MaleRabbit.Exists = true;
-				MaleRabbit.RabbitID = r.rid;
-				MaleRabbit.RodK = r.RodK;
-				MaleRabbit.PlodK = r.PriplodK;
 				MaleRabbit.Genom = r.breed.ToString();
-				MaleRabbit.RabbitDad = r.r_father;
-				MaleRabbit.RabbitMom = r.r_mother;
-				MaleRabbit.Rabbit = r;
+				MaleRabbit.SetRabbit(r);
 				if (_TreeParentPair != null)
 				{
 					_TreeParentPair.RefreshGenom();
@@ -81,30 +68,6 @@ namespace rabnet
 			return _dad;
 		}
 
-
-		public float FemalePlodK
-		{
-			get { return FemaleRabbit.PlodK; }
-			set { FemaleRabbit.PlodK = value; }
-		}
-
-		public float MalePlodK
-		{
-			get { return MaleRabbit.PlodK; }
-			set { MaleRabbit.PlodK = value; }
-		}
-
-		public float FemaleRodK
-		{
-			get { return FemaleRabbit.RodK; }
-			set { FemaleRabbit.RodK = value; }
-		}
-
-		public float MaleRodK
-		{
-			get { return MaleRabbit.RodK; }
-			set { MaleRabbit.RodK = value; }
-		}
 
 		private Boolean _OrderedGenom = false;
 		public Boolean OrderedGenom
@@ -129,12 +92,12 @@ namespace rabnet
 
 		public string MaleGenom
 		{
-			get { return MaleRabbit.Exists ? MaleRabbit.Genom : ""; }
+			get { return (MaleRabbit.GetRabbit() != null) ? MaleRabbit.Genom : ""; }
 			set { MaleRabbit.Genom = value; }
 		}
 		public string FemaleGenom
 		{
-			get { return FemaleRabbit.Exists ? FemaleRabbit.Genom : ""; }
+			get { return (FemaleRabbit.GetRabbit() != null) ? FemaleRabbit.Genom : ""; }
 			set { FemaleRabbit.Genom = value; }
 		}
 
@@ -210,17 +173,10 @@ namespace rabnet
 			return res;
 		}
 
-		public void SetRabbitsIDs(int fid, int mid)
-		{
-			MaleRabbit.RabbitID = mid;
-			FemaleRabbit.RabbitID = fid;
-		}
-
 		public void SetRabbitsGenoms(string fg, string mg)
 		{
 			MaleRabbit.Genom = mg;
 			FemaleRabbit.Genom = fg;
-//			RedrawMe();
 			if (_TreeParentPair != null)
 			{
 				_TreeParentPair.RefreshGenom();
@@ -243,27 +199,6 @@ namespace rabnet
 			}
 		}
 
-		/*
-		public Boolean AddGenomeColor(int id, Color color)
-		{
-			Boolean fres = FemaleRabbit.AddGenomeColor(id, color);
-			Boolean mres = MaleRabbit.AddGenomeColor(id, color);
-
-			if (_TreeChildFPair != null)
-			{
-				_TreeChildFPair.AddGenomeColor(id, color);
-			}
-
-			if (_TreeChildMPair != null)
-			{
-				_TreeChildMPair.AddGenomeColor(id, color);
-			}
-
-			return fres && mres;
-		}
-
-		 */
-	
 		public void ReplaceGenomeColors(Dictionary<int, Color> gcs)
 		{
 			FemaleRabbit.ReplaceGenomeColors(gcs);
@@ -276,10 +211,6 @@ namespace rabnet
 			{
 				_TreeChildMPair.ReplaceGenomeColors(gcs);
 			}
-//			if (_TreeParentPair != null)
-//			{
-//				_TreeParentPair.RefreshGenom();
-//			}
 		}
 
 		#endregion
@@ -379,6 +310,7 @@ namespace rabnet
 			int dx = l - _TreeChildFPair.Left;
 			int dy = t - _TreeChildFPair.Top;
 			_TreeChildFPair.MoveBy(dx, dy);
+			_TreeChildFPair.MeetNeighbors();
 			UpdateFArrowPos();
 			rect.Offset(dx, dy);
 		}
@@ -390,8 +322,15 @@ namespace rabnet
 			int dx = l - _TreeChildMPair.Left;
 			int dy = t - _TreeChildMPair.Top;
 			_TreeChildMPair.MoveBy(dx, dy);
+			_TreeChildMPair.MeetNeighbors();
 			UpdateMArrowPos();
 			rect.Offset(dx, dy);
+		}
+
+		public void MeetNeighbors()
+		{
+			FemaleRabbit.MeetNeighbors();
+			MaleRabbit.MeetNeighbors();
 		}
 
 		public void SetNewLocation(int left, int top)
@@ -494,79 +433,68 @@ namespace rabnet
 		}
 
 
-		public void SearchFromChild(int rid, int cmd)
+		public Boolean SearchFromChild(int rid, int cmd)
 		{
+			Boolean res = false;
 			if (_TreeParentPair != null)
 			{
-				this._TreeParentPair.SearchUp(_TreeGenderSide, rid, cmd);
+				res = res || this._TreeParentPair.SearchUp(_TreeGenderSide, rid, cmd);
 			}
 			if (_TreeChildFPair != null)
 			{
-				this._TreeChildFPair.SearchDown(rid, cmd);
+				res = res || this._TreeChildFPair.SearchDown(rid, cmd);
 			}
 			if (_TreeChildMPair != null)
 			{
-				this._TreeChildMPair.SearchDown(rid, cmd);
+				res = res || this._TreeChildMPair.SearchDown(rid, cmd);
 			}
-			if (_Debug)
-			{
-				Graphics g = _ParentControl.CreateGraphics();
-				if (cmd == 1)
-				{
-//					//				_ParentControl.Invalidate();
-//					g.DrawRectangle(Pens.Aqua, _MyRect);
-				}
-				if (cmd == 2)
-				{
-//					g.DrawRectangle(Pens.Purple, _MyRect);
-////					g.DrawLine(Pens.Red, this.Left + (int)(this.Width / 2) + _TreeChildMCenter + 20, this.Top, this.Left + (int)(this.Width / 2) + _TreeChildMCenter + 20, this.Bottom + 20);
-////					g.DrawLine(Pens.Red, this.Left + (int)(this.Width / 2) - _TreeChildFSize.Width + _TreeChildFCenter - 20, this.Top, this.Left + (int)(this.Width / 2) - _TreeChildFSize.Width + _TreeChildFCenter - 20, this.Bottom + 20);
-//					g.DrawLine(Pens.Green, _MyRect.Left + _MyCenter, this.Top, _MyRect.Left + _MyCenter, this.Top-20);
-				}
-				g.Dispose();
-			}
+			return res;
 		}
 
-		public void SearchDown(int rid, int cmd)
+		public Boolean SearchDown(int rid, int cmd)
 		{
+			Boolean res = false;
 			if (_TreeChildFPair != null)
 			{
-				this._TreeChildFPair.SearchDown(rid, cmd);
+				res = res || this._TreeChildFPair.SearchDown(rid, cmd);
 			}
 			if (_TreeChildMPair != null)
 			{
-				this._TreeChildMPair.SearchDown(rid, cmd);
+				res = res || this._TreeChildMPair.SearchDown(rid, cmd);
 			}
 
 			if ((cmd == 1) || (cmd == 2))
 			{
-				this.FemaleRabbit.SearchFromParent(rid, cmd);
-				this.MaleRabbit.SearchFromParent(rid, cmd);
+				res = res || this.FemaleRabbit.SearchFromParent(rid, cmd);
+				res = res || this.MaleRabbit.SearchFromParent(rid, cmd);
 			}
+			return res;
 		}
 
-		public void SearchUp(int g,int rid, int cmd)
+		public Boolean SearchUp(int g,int rid, int cmd)
 		{
+			Boolean res = false;
 			if (_TreeParentPair != null)
 			{
-				_TreeParentPair.SearchUp(_TreeGenderSide, rid, cmd);
+				res = res || _TreeParentPair.SearchUp(_TreeGenderSide, rid, cmd);
 			}
 			if (g == 1)
 			{
 				if (_TreeChildFPair != null)
 				{
-					_TreeChildFPair.SearchDown(rid, cmd);
+					res = res || _TreeChildFPair.SearchDown(rid, cmd);
 				}
 			}
 			if (g == 2)
 			{
 				if (_TreeChildMPair != null)
 				{
-					_TreeChildMPair.SearchDown(rid, cmd);
+					res = res || _TreeChildMPair.SearchDown(rid, cmd);
 				}
 			}
-			this.FemaleRabbit.SearchFromParent(rid, cmd);
-			this.MaleRabbit.SearchFromParent(rid, cmd);
+			res = res || this.FemaleRabbit.SearchFromParent(rid, cmd);
+			res = res || this.MaleRabbit.SearchFromParent(rid, cmd);
+			return res;
 		}
 		#endregion
 	}

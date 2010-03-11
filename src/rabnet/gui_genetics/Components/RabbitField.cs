@@ -10,7 +10,7 @@ namespace rabnet.Components
 	{
 		protected static readonly ILog log = LogManager.GetLogger(typeof(RabbitField));
 
-		private OneRabbit _RootRabbitData;
+		private RabbitGen _RootRabbitData;
 		private RabbitBar _RootRabbit;
 		private RabbitPair _RootRabbitPair;
 		private Dictionary<int, RabbitPair> _RabbitPairs = new Dictionary<int, RabbitPair>();
@@ -18,6 +18,7 @@ namespace rabnet.Components
 		public RabbitField()
 		{
 			InitializeComponent();
+			//this.mouse
 		}
 
 		private Boolean _OrderedGenom = false;
@@ -31,17 +32,34 @@ namespace rabnet.Components
 				{
 					_RootRabbitPair.OrderedGenom = value;
 				}
+				if (_RootRabbit != null)
+				{
+					_RootRabbit.OrderedGenom = value;
+				}
 			}
 		}
 
-		public void DrawRabbit(OneRabbit rbt)
+		public void DrawRabbit(RabbitGen rbt)
 		{
+			Dictionary<int, Color> b_colors = new Dictionary<int, Color>();
+
+			b_colors = Engine.db().getBreedColors();
+
 			ProgressPanel.Visible = true;
 			RabbitsHolder.Visible = false;
+
 			_RootRabbitData = rbt;
 
 			_RootRabbit = new RabbitBar();
-			this.Controls.Add(_RootRabbit);
+			_RootRabbit.SetRabbit(rbt);
+
+			_RootRabbit.ReplaceGenomeColors(b_colors);
+
+			_RootRabbit.BackColor = this.BackColor;
+
+
+			
+			RabbitsHolder.Controls.Add(_RootRabbit);
 
 			RabbitPair rp = new RabbitPair();
 			_RootRabbitPair = rp;
@@ -53,13 +71,11 @@ namespace rabnet.Components
 
 			_RabbitPairs.Add(cnt, rp);
 
-			rp.ReplaceGenomeColors(Engine.db().getBreedColors());
+			rp.ReplaceGenomeColors(b_colors);
 
-			RabbitGen rabb = Engine.db().getRabbitGen(_RootRabbitData.id);
+			RabbitGen rabbF = Engine.db().getRabbitGen(rbt.r_father);
 
-			RabbitGen rabbF = Engine.db().getRabbitGen(rabb.r_father);
-
-			RabbitGen rabbM = Engine.db().getRabbitGen(rabb.r_mother);
+			RabbitGen rabbM = Engine.db().getRabbitGen(rbt.r_mother);
 
 			rp.SetMom(rabbM);
 			rp.SetDad(rabbF);
@@ -68,7 +84,6 @@ namespace rabnet.Components
 
 			RabbitsHolder.SuspendLayout();
 
-//			RabbitsHolder.Controls.Add(rp);
 			rp.SetParentControl(RabbitsHolder);
 			GetPairData(rp, ref cnt);
 
@@ -76,10 +91,10 @@ namespace rabnet.Components
 			CenterHolder();
 			ProgressPanel.Visible = false;
 			RabbitsHolder.Visible = true;
-//			this.ScrollControlIntoView(_RabbitPairs[0]);
 			RabbitsHolder.ResumeLayout();
-//			_RabbitPairs[0].SetRabbitsGenoms("1", "2");
-//			_RabbitPairs[2].SetRabbitsGenoms("1", "2");
+
+			this.ScrollControlIntoView(_RootRabbit);
+			this.ActiveControl = _RootRabbit;
 			//RabbitsHolder.AutoScrollMinSize
 
 		}
@@ -102,7 +117,12 @@ namespace rabnet.Components
 			{
 				return;
 			}
-			if (_RabbitPairs[0] == null)
+			if (_RootRabbitPair == null)
+			{
+				return;
+			}
+
+			if (_RootRabbit == null)
 			{
 				return;
 			}
@@ -111,12 +131,17 @@ namespace rabnet.Components
 
 			Rectangle r=new Rectangle();
 
-			_RabbitPairs[0].OrganizePos(ref r, ref c);
+			_RootRabbitPair.OrganizePos(ref r, ref c);
 
-			_RabbitPairs[0].SetNewLocation(c - (int)(_RabbitPairs[0].Width / 2),0);
+			_RootRabbit.Left = c - (int)(_RabbitPairs[0].Width / 2f) + 10;
+			_RootRabbit.Top = 0 + 10;
 
-			RabbitsHolder.Width = r.Width;
-			RabbitsHolder.Height = r.Height;
+			_RootRabbitPair.SetNewLocation(c - (int)(_RabbitPairs[0].Width / 2f) + 10, _RootRabbit.Height + 10 + 10);
+
+			RabbitsHolder.Width = r.Width + 20;
+			RabbitsHolder.Height = r.Height + _RootRabbit.Height + 10 + 20;
+
+			_RootRabbit.Genom = _RootRabbitPair.Genom;
 		}
 
 		public void GetPairData(RabbitPair mrp, ref int c)
