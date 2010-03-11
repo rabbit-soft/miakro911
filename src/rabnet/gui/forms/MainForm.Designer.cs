@@ -53,6 +53,7 @@
             this.породыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.продуктивностьСоитияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.возрастИКоличествоToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.количествоПоМесяцамToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.списанияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.списанияToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.окролыПоПользователямToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,7 +80,7 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
-            this.количествоПоМесяцамToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fucksByDateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -228,7 +229,8 @@
             this.количествоПоМесяцамToolStripMenuItem,
             this.списанияToolStripMenuItem,
             this.списанияToolStripMenuItem1,
-            this.окролыПоПользователямToolStripMenuItem});
+            this.окролыПоПользователямToolStripMenuItem,
+            this.fucksByDateToolStripMenuItem});
             this.отчетыToolStripMenuItem.Name = "отчетыToolStripMenuItem";
             this.отчетыToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.отчетыToolStripMenuItem.Text = "Отчеты";
@@ -261,6 +263,13 @@
             this.возрастИКоличествоToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
             this.возрастИКоличествоToolStripMenuItem.Text = "Возраст и количество";
             this.возрастИКоличествоToolStripMenuItem.Click += new System.EventHandler(this.возрастИКоличествоToolStripMenuItem_Click);
+            // 
+            // количествоПоМесяцамToolStripMenuItem
+            // 
+            this.количествоПоМесяцамToolStripMenuItem.Name = "количествоПоМесяцамToolStripMenuItem";
+            this.количествоПоМесяцамToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.количествоПоМесяцамToolStripMenuItem.Text = "Количество по месяцам";
+            this.количествоПоМесяцамToolStripMenuItem.Click += new System.EventHandler(this.количествоПоМесяцамToolStripMenuItem_Click);
             // 
             // списанияToolStripMenuItem
             // 
@@ -483,12 +492,12 @@
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
             // 
-            // количествоПоМесяцамToolStripMenuItem
+            // fucksByDateToolStripMenuItem
             // 
-            this.количествоПоМесяцамToolStripMenuItem.Name = "количествоПоМесяцамToolStripMenuItem";
-            this.количествоПоМесяцамToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-            this.количествоПоМесяцамToolStripMenuItem.Text = "Количество по месяцам";
-            this.количествоПоМесяцамToolStripMenuItem.Click += new System.EventHandler(this.количествоПоМесяцамToolStripMenuItem_Click);
+            this.fucksByDateToolStripMenuItem.Name = "fucksByDateToolStripMenuItem";
+            this.fucksByDateToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.fucksByDateToolStripMenuItem.Text = "Список случек\\вязок";
+            this.fucksByDateToolStripMenuItem.Click += new System.EventHandler(this.fucksByDateToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -565,6 +574,7 @@
         private System.Windows.Forms.ToolStripMenuItem shortZooMenuItem;
         private System.Windows.Forms.ToolStripMenuItem окролыПоПользователямToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem количествоПоМесяцамToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fucksByDateToolStripMenuItem;
     }
 }
 

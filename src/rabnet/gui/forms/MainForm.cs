@@ -236,5 +236,13 @@ namespace rabnet
                     Engine.get().db().makeReport(ReportType.Type.BY_MONTH,f)})).ShowDialog();
         }
 
+        private void fucksByDateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OkrolUser dlg = new OkrolUser();            
+            Filters f = new Filters();
+            (new ReportViewForm("Список случек/окролов", "fucks_by_date", new XmlDocument[]{
+                    Engine.get().db().makeReport(ReportType.Type.FUCKS_BY_DATE,f)})).ShowDialog();
+        }
+
     }
 }
