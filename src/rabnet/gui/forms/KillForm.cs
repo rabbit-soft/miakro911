@@ -140,7 +140,7 @@ namespace rabnet
                         int reason = 0;
                         if (comboBox1.SelectedIndex > 0)
                             reason = comboBox1.SelectedIndex + 2;
-                        r.killIt(dateDays1.DateValue, reason, textBox1.Text, cnt);
+                        r.killIt(dateDays1.DateValue, reason, r.smallAddress+" "+textBox1.Text, cnt);
                     }
                     i++;
                 }
