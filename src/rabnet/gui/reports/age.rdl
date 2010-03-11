@@ -14,7 +14,7 @@
       </ConnectionProperties>
     </DataSource>
   </DataSources>
-  <Width>7.5in</Width>
+  <Width>3in</Width>
   <TopMargin>.25in</TopMargin>
   <LeftMargin>.25in</LeftMargin>
   <RightMargin>.25in</RightMargin>
@@ -38,9 +38,24 @@
     </DataSet>
   </DataSets>
   <PageHeader>
-    <Height>0.0pt</Height>
+    <Height>33.4pt</Height>
     <PrintOnFirstPage>true</PrintOnFirstPage>
     <PrintOnLastPage>true</PrintOnLastPage>
+    <ReportItems >
+      <Textbox Name="Textbox1" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+        <Height>21.79pt</Height>
+        <Width>312.42pt</Width>
+        <Value>Статистика возрастного поголовья</Value>
+        <Left>26.7pt</Left>
+        <Top>9.8pt</Top>
+        <Style>
+          <BorderStyle />
+          <BorderColor />
+          <BorderWidth />
+          <FontSize>16pt</FontSize>
+        </Style>
+      </Textbox>
+    </ReportItems>
   </PageHeader>
   <Body>
     <ReportItems>
@@ -75,8 +90,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -91,8 +106,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -139,24 +154,12 @@
             </TableRow>
           </TableRows>
         </Details>
-        <Left >97.2pt</Left>
-        <Top >43.7pt</Top>
+        <Left>10pt</Left>
+        <Top>0pt</Top>
       </Table>
-      <Textbox Name="Textbox1" >
-        <Height>21.79pt</Height>
-        <Width>312.42pt</Width>
-        <Value>Статистика возрастного поголовья</Value>
-        <Left>76.90pt</Left>
-        <Top>14.90pt</Top>
-        <Style>
-          <BorderStyle />
-          <BorderColor />
-          <BorderWidth />
-          <FontSize>16pt</FontSize>
-        </Style>
-      </Textbox>
     </ReportItems>
-    <Height>82.9pt</Height>
+    <Height>40pt</Height>
+    <Columns>2</Columns>
   </Body>
   <PageFooter>
     <Height>14pt</Height>
@@ -176,4 +179,6 @@
     <PrintOnFirstPage>true</PrintOnFirstPage>
     <PrintOnLastPage>true</PrintOnLastPage>
   </PageFooter>
+  <DataElementName>Report</DataElementName>
+  <DataElementStyle>AttributeNormal</DataElementStyle>
 </Report>

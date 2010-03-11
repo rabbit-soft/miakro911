@@ -8,7 +8,7 @@ namespace rabnet
 {
     public class ReportType
     {
-        public enum Type { TEST,BREEDS,AGE,FUCKER,DEAD,DEADREASONS,REALIZE,USER_OKROLS,SHED,REVISION };
+        public enum Type { TEST,BREEDS,AGE,FUCKER,DEAD,DEADREASONS,REALIZE,USER_OKROLS,SHED,REVISION,BY_MONTH };
     }
 
     class Reports
@@ -174,6 +174,7 @@ namespace rabnet
                 case ReportType.Type.USER_OKROLS: return UserOkrolRpt(UserOkrols(f));
                 case ReportType.Type.SHED: return ShedReport(f);
                 case ReportType.Type.REVISION: return Revision(f);
+                case ReportType.Type.BY_MONTH: return rabByMonth();
             }
             return makeStdReportXml(query);
         }
@@ -404,6 +405,23 @@ FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AN
                         doc.DocumentElement.AppendChild(doc.CreateElement("Row")).AppendChild(
                             doc.CreateElement("address")).AppendChild(doc.CreateTextNode(rd.GetString(0)+Buildings.getRSec(rd.GetString(1),i,"000")));
                     }
+            rd.Close();
+            return doc;
+        }
+
+        private XmlDocument rabByMonth()
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.AppendChild(doc.CreateElement("Rows"));
+            MySqlCommand cmd = new MySqlCommand("SELECT DATE_FORMAT(r_born,'%m') mes,year(r_born) god,sum(r_group) cnt FROM rabbits GROUP BY mes,god ORDER BY god desc,mes desc;", sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            while (rd.Read())
+            {
+
+                XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
+                rw.AppendChild(doc.CreateElement("date")).AppendChild(doc.CreateTextNode(rd.GetString("mes") + "." + rd.GetInt32("god")));
+                rw.AppendChild(doc.CreateElement("count")).AppendChild(doc.CreateTextNode(rd.GetInt32("cnt").ToString()));
+            }
             rd.Close();
             return doc;
         }

@@ -55,10 +55,12 @@
             this.возрастИКоличествоToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.списанияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.списанияToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.окролыПоПользователямToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.настройкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showTierTMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showTierSMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shortNamesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.shortZooMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dblSurMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.shNumMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,9 +78,8 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.shortZooMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
-            this.окролыПоПользователямToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.количествоПоМесяцамToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -224,6 +225,7 @@
             this.породыToolStripMenuItem,
             this.продуктивностьСоитияToolStripMenuItem,
             this.возрастИКоличествоToolStripMenuItem,
+            this.количествоПоМесяцамToolStripMenuItem,
             this.списанияToolStripMenuItem,
             this.списанияToolStripMenuItem1,
             this.окролыПоПользователямToolStripMenuItem});
@@ -274,6 +276,13 @@
             this.списанияToolStripMenuItem1.Text = "Списания";
             this.списанияToolStripMenuItem1.Click += new System.EventHandler(this.списанияToolStripMenuItem1_Click);
             // 
+            // окролыПоПользователямToolStripMenuItem
+            // 
+            this.окролыПоПользователямToolStripMenuItem.Name = "окролыПоПользователямToolStripMenuItem";
+            this.окролыПоПользователямToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.окролыПоПользователямToolStripMenuItem.Text = "Окролы по пользователям";
+            this.окролыПоПользователямToolStripMenuItem.Click += new System.EventHandler(this.окролыПоПользователямToolStripMenuItem_Click);
+            // 
             // настройкиToolStripMenuItem
             // 
             this.настройкиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -316,6 +325,14 @@
             this.shortNamesMenuItem.Size = new System.Drawing.Size(228, 22);
             this.shortNamesMenuItem.Text = "Сокращения в таблицах";
             this.shortNamesMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
+            // 
+            // shortZooMenuItem
+            // 
+            this.shortZooMenuItem.CheckOnClick = true;
+            this.shortZooMenuItem.Name = "shortZooMenuItem";
+            this.shortZooMenuItem.Size = new System.Drawing.Size(228, 22);
+            this.shortZooMenuItem.Text = "Сокращения в зоотехплане";
+            this.shortZooMenuItem.Click += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
             // dblSurMenuItem
             // 
@@ -455,14 +472,6 @@
             this.panel1.Size = new System.Drawing.Size(906, 423);
             this.panel1.TabIndex = 7;
             // 
-            // shortZooMenuItem
-            // 
-            this.shortZooMenuItem.CheckOnClick = true;
-            this.shortZooMenuItem.Name = "shortZooMenuItem";
-            this.shortZooMenuItem.Size = new System.Drawing.Size(228, 22);
-            this.shortZooMenuItem.Text = "Сокращения в зоотехплане";
-            this.shortZooMenuItem.Click += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
-            // 
             // rabStatusBar1
             // 
             this.rabStatusBar1.filterPanel = null;
@@ -474,12 +483,12 @@
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
             // 
-            // окролыПоПользователямToolStripMenuItem
+            // количествоПоМесяцамToolStripMenuItem
             // 
-            this.окролыПоПользователямToolStripMenuItem.Name = "окролыПоПользователямToolStripMenuItem";
-            this.окролыПоПользователямToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-            this.окролыПоПользователямToolStripMenuItem.Text = "Окролы по пользователям";
-            this.окролыПоПользователямToolStripMenuItem.Click += new System.EventHandler(this.окролыПоПользователямToolStripMenuItem_Click);
+            this.количествоПоМесяцамToolStripMenuItem.Name = "количествоПоМесяцамToolStripMenuItem";
+            this.количествоПоМесяцамToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.количествоПоМесяцамToolStripMenuItem.Text = "Количество по месяцам";
+            this.количествоПоМесяцамToolStripMenuItem.Click += new System.EventHandler(this.количествоПоМесяцамToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -555,6 +564,7 @@
         private System.Windows.Forms.ToolStripMenuItem списанияToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem shortZooMenuItem;
         private System.Windows.Forms.ToolStripMenuItem окролыПоПользователямToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem количествоПоМесяцамToolStripMenuItem;
     }
 }
 

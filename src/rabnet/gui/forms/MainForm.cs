@@ -229,5 +229,12 @@ namespace rabnet
             }
         }
 
+        private void количествоПоМесяцамToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters f = new Filters();
+            (new ReportViewForm("Количество по месяцам", "by_month", new XmlDocument[]{
+                    Engine.get().db().makeReport(ReportType.Type.BY_MONTH,f)})).ShowDialog();
+        }
+
     }
 }

@@ -150,7 +150,7 @@
         <Details>
           <TableRows>
             <TableRow>
-              <Height>20pt</Height>
+              <Height>25pt</Height>
               <TableCells>
                 <TableCell>
                   <ReportItems>
@@ -166,8 +166,8 @@
                         <Direction>LTR</Direction>
                         <WritingMode>lr-tb</WritingMode>
                         <TextAlign>Right</TextAlign>
-                        <BorderColor  />
-                        <BorderWidth >
+                        <BorderColor />
+                        <BorderWidth>
                           <Bottom>2pt</Bottom>
                         </BorderWidth>
                       </Style>
@@ -188,8 +188,8 @@
                         <FontSize>16pt</FontSize>
                         <VerticalAlign>Middle</VerticalAlign>
                         <TextAlign>General</TextAlign>
-                        <BorderColor  />
-                        <BorderWidth >
+                        <BorderColor />
+                        <BorderWidth>
                           <Bottom>2pt</Bottom>
                         </BorderWidth>
                       </Style>
@@ -207,8 +207,8 @@
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
                         <VerticalAlign>Middle</VerticalAlign>
-                        <BorderColor  />
-                        <BorderWidth >
+                        <BorderColor />
+                        <BorderWidth>
                           <Bottom>2pt</Bottom>
                         </BorderWidth>
                       </Style>
@@ -225,8 +225,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <BorderColor  />
-                        <BorderWidth >
+                        <BorderColor />
+                        <BorderWidth>
                           <Bottom>2pt</Bottom>
                         </BorderWidth>
                       </Style>
