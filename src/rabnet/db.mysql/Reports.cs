@@ -412,7 +412,7 @@ FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AN
         private string rabByMonth()
         {
             return @"SELECT DATE_FORMAT(r_born,'%m.%Y') date,sum(r_group) count 
-FROM rabbits GROUP BY DATE_FORMAT(r_born,'%m.%Y') ORDER BY year(r_born) desc,month(r_born) desc;";
+FROM rabbits GROUP BY date ORDER BY year(r_born) desc,month(r_born) desc;";
         }
 
         private string fucksByDate(Filters f)
