@@ -439,17 +439,36 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             return r;
         }
 
+        public enum RAB_TYPE {LIVE,DEAD,ANY }
+        public static bool isDeadRabbit(MySqlConnection con, int rid)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT isdead({0:d});",rid), con);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            bool dead=false;
+            if (rd.Read())
+                dead = rd.GetBoolean(0);
+            rd.Close();
+            return dead;
+        }
         public static OneRabbit GetRabbit(MySqlConnection con, int rid)
         {
+            return GetRabbit(con, rid, RAB_TYPE.LIVE);
+        }
+        public static OneRabbit GetRabbit(MySqlConnection con, int rid,RAB_TYPE type)
+        {
             if (rid == 0) return null;
-            MySqlCommand cmd = new MySqlCommand(@"SELECT r_id,r_last_fuck_okrol,r_event_date,r_event,r_overall_babies,r_lost_babies,
+            if (type == RAB_TYPE.ANY)
+                type = (isDeadRabbit(con, rid) ? RAB_TYPE.DEAD : RAB_TYPE.LIVE);
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT r_id,r_last_fuck_okrol,{0:s},r_overall_babies,r_lost_babies,
 r_sex,r_born,r_flags,r_breed,r_zone,r_name,r_surname,r_secname,
-rabplace(r_id) address,r_group,r_notes,
-rabname(r_id,2) fullname,
+{1:s}place(r_id) address,r_group,r_notes,
+{1:s}name(r_id,2) fullname,
 (SELECT b_name FROM breeds WHERE b_id=r_breed) breedname,
 (SELECT COALESCE(GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' '),'') FROM genoms WHERE g_id=r_genesis) genom,
 r_status,r_rate,r_bon,r_parent
-FROM rabbits WHERE r_id=" + rid.ToString()+";",con);
+FROM {2:s} WHERE r_id={3:d};", (type == RAB_TYPE.LIVE ? "r_event_date,r_event" : "NULL r_event_date,'none' r_event"),
+                           (type == RAB_TYPE.LIVE ? "rab" : "dead"), (type == RAB_TYPE.LIVE ? "rabbits" : "dead"),
+                           rid), con);
             MySqlDataReader rd = cmd.ExecuteReader();
             if (!rd.Read())
             {
@@ -580,7 +599,7 @@ f_children={1:d},f_dead={2:d} WHERE f_rabid={3:d} AND f_state='sukrol';",
                        DBHelper.DateToMyString(date),children,dead,rabbit),sql);
             cmd.ExecuteNonQuery();
             OneRabbit fml = GetRabbit(sql, rabbit);
-            OneRabbit ml = GetRabbit(sql, father);
+            OneRabbit ml = GetRabbit(sql, father,RAB_TYPE.ANY);
             int rt = children-8;
             if (rt != 0 && ml!=null)
             {

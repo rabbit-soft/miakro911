@@ -174,8 +174,8 @@ namespace rabnet
                 case ReportType.Type.USER_OKROLS: return UserOkrolRpt(UserOkrols(f));
                 case ReportType.Type.SHED: return ShedReport(f);
                 case ReportType.Type.REVISION: return Revision(f);
-                case ReportType.Type.BY_MONTH: return rabByMonth();
-                case ReportType.Type.FUCKS_BY_DATE: return fucksByDate(f);
+                case ReportType.Type.BY_MONTH: query = rabByMonth(); break;
+                case ReportType.Type.FUCKS_BY_DATE: query=fucksByDate(f); break;
             }
             return makeStdReportXml(query);
         }
@@ -409,42 +409,18 @@ FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AN
             return doc;
         }
 
-        private XmlDocument rabByMonth()
+        private string rabByMonth()
         {
-            XmlDocument doc = new XmlDocument();
-            doc.AppendChild(doc.CreateElement("Rows"));
-            MySqlCommand cmd = new MySqlCommand(@"SELECT DATE_FORMAT(r_born,'%m') mes,year(r_born) god,sum(r_group) cnt 
-FROM rabbits GROUP BY mes,god ORDER BY god desc,mes desc;", sql);
-            MySqlDataReader rd = cmd.ExecuteReader();
-            while (rd.Read())
-            {
-                XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
-                rw.AppendChild(doc.CreateElement("date")).AppendChild(doc.CreateTextNode(rd.GetString("mes") + "." + rd.GetInt32("god")));
-                rw.AppendChild(doc.CreateElement("count")).AppendChild(doc.CreateTextNode(rd.GetInt32("cnt").ToString()));
-            }
-            rd.Close();
-            return doc;
+            return @"SELECT DATE_FORMAT(r_born,'%m.%Y') date,sum(r_group) count 
+FROM rabbits GROUP BY DATE_FORMAT(r_born,'%m.%Y') ORDER BY year(r_born) desc,month(r_born) desc;";
         }
 
-        private XmlDocument fucksByDate(Filters f)
+        private string fucksByDate(Filters f)
         {
-            XmlDocument doc = new XmlDocument();
-            doc.AppendChild(doc.CreateElement("Rows"));
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT DATE_FORMAT(f_date,'%d.%m.%Y')date,anyname(f_rabid,2) name,
+            return String.Format(@"SELECT DATE_FORMAT(f_date,'%d.%m.%Y')date,anyname(f_rabid,2) name,
 (SELECT n_name FROM names WHERE n_use=f_partner) partner,
 (SELECT u_name FROM users WHERE u_id=f_worker) worker 
-FROM fucks WHERE f_date is not null ORDER BY f_date DESC, f_worker;",DFROM,DTO),sql);
-            MySqlDataReader rd = cmd.ExecuteReader();
-            while (rd.Read())
-            {
-                XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
-                rw.AppendChild(doc.CreateElement("date")).AppendChild(doc.CreateTextNode(rd.GetString("date")));
-                rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(rd.GetString("name")));
-                rw.AppendChild(doc.CreateElement("partner")).AppendChild(doc.CreateTextNode(rd.GetString("partner")));
-                rw.AppendChild(doc.CreateElement("worker")).AppendChild(doc.CreateTextNode(rd.GetString("worker")));
-            }
-            rd.Close();
-            return doc;
+FROM fucks WHERE f_date is not null ORDER BY f_date DESC, f_worker;",DFROM,DTO);
         }
     }
 }
