@@ -126,6 +126,7 @@
 			<sources>
 				<include name="${curdir}/libs/pickers/*.cs"/>
 				<include name="${curdir}/libs/pickers/ComboBoxAppearance/*.cs"/>
+				<include name="${curdir}/libs/pickers/Properties/*.cs"/>
 			</sources>
 		</csc>
 	</target>
@@ -134,6 +135,7 @@
 		<csc target="library" output="${bin_dir}/db.mysql.dll" define="${istrial}">
 			<sources>
 				<include name="${curdir}/rabnet/db.mysql/*.cs"/>
+				<include name="${curdir}/rabnet/db.mysql/Properties/*.cs"/>
 			</sources>
 			<references>
 				<include name="${log4net.use}"/>
@@ -146,6 +148,7 @@
 		<csc target="library" output="${bin_dir}/engine.dll" define="${istrial}">
 			<sources>
 				<include name="${curdir}/rabnet/engine/*.cs"/>
+				<include name="${curdir}/rabnet/engine/Properties/*.cs"/>
 			</sources>
 			<references>
 				<include name="${log4net.use}"/>

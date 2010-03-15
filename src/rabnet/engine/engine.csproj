@@ -49,6 +49,7 @@
     <Compile Include="EngineSt.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Options.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RabNetEngBuilding.cs" />
     <Compile Include="RabNetEngRabbit.cs" />
     <Compile Include="RabNetLogs.cs" />
