@@ -11,7 +11,24 @@ namespace rabnet
 		public GeneticsMainForm()
 		{
 			InitializeComponent();
+			rabbitField1.SearchGoingOn += new EvSearchGoingOn(rabbitField1_SearchGoingOn);
 		}
+
+		private bool rabbitField1_SearchGoingOn(RabbitCommandMessage cmd)
+		{
+//			cmd.SourceRabbitID = _RabbitID;
+			return GeneticsManager.BroadcastSearch(cmd);
+		}
+
+		public Boolean SearchWindow(RabbitCommandMessage cmd)
+		{
+			if (cmd.SourceWindowRabbitID == _RabbitID)
+			{
+				return false;
+			}
+			return rabbitField1.SearchField(cmd);
+		}
+
 		public void SetID(int id)
 		{
 			_RabbitID = id;
@@ -32,6 +49,11 @@ namespace rabnet
 		{
 			if (!_BatchClose)
 			{
+				RabbitCommandMessage cmd = new RabbitCommandMessage();
+				cmd.Command = RabbitCommandMessage.Commands.ForgetWindow;
+				cmd.TargetRabbitID = 0;
+				cmd.SourceWindowRabbitID = _RabbitID;
+				GeneticsManager.BroadcastSearch(cmd);
 				GeneticsManager.RemoveForm(_RabbitID);
 			}
 		}

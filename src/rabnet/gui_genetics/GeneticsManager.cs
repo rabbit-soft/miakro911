@@ -50,6 +50,16 @@ namespace rabnet
 			set { _MaxFormsCount = value; }
 		}
 
+		public static Boolean BroadcastSearch(RabbitCommandMessage cmd)
+		{
+			Boolean res = false;
+			foreach (KeyValuePair<int, GeneticsMainForm> f in _GenForms)
+			{
+				res = res || f.Value.SearchWindow(cmd);
+			}
+			return res;
+		}
+
 		public static void CloseAllForms()
 		{
 			if (_GenForms.Count > 0)

@@ -10,6 +10,8 @@ namespace rabnet.Components
 	{
 		protected static readonly ILog log = LogManager.GetLogger(typeof(RabbitField));
 
+		public event EvSearchGoingOn SearchGoingOn;
+
 		private RabbitGen _RootRabbitData;
 		private RabbitBar _RootRabbit;
 		private RabbitPair _RootRabbitPair;
@@ -39,6 +41,29 @@ namespace rabnet.Components
 			}
 		}
 
+		private Boolean SearchProc(RabbitCommandMessage cmd)
+		{
+			if (SearchGoingOn != null)
+			{
+				return SearchGoingOn(cmd);
+			}
+			return false;
+		}
+
+		public Boolean SearchField(RabbitCommandMessage cmd)
+		{
+			Boolean res = false;
+			if (_RootRabbitPair != null)
+			{
+				res = res || _RootRabbitPair.SearchFromChild(cmd, false);
+			}
+			if (_RootRabbit != null)
+			{
+				res = res || _RootRabbit.SearchFromParent(cmd);
+			}
+			return res;
+		}
+
 		public void DrawRabbit(RabbitGen rbt)
 		{
 			Dictionary<int, Color> b_colors = new Dictionary<int, Color>();
@@ -57,12 +82,19 @@ namespace rabnet.Components
 
 			_RootRabbit.BackColor = this.BackColor;
 
+			_RootRabbit.WindowRabbitID = rbt.rid;
 
 			
 			RabbitsHolder.Controls.Add(_RootRabbit);
 
 			RabbitPair rp = new RabbitPair();
 			_RootRabbitPair = rp;
+
+			_RootRabbitPair.WindowRabbitID = rbt.rid;
+
+			_RootRabbitPair.SearchGoingOn+=new EvSearchGoingOn(SearchProc);
+
+
 			rp.Location = new Point(1000, 100);
 
 			int cnt = 0;
@@ -97,6 +129,11 @@ namespace rabnet.Components
 			this.ActiveControl = _RootRabbit;
 			//RabbitsHolder.AutoScrollMinSize
 
+		}
+
+		void _RootRabbitPair_SearchGoingOn(object sender, EventArgs e)
+		{
+			throw new NotImplementedException();
 		}
 
 		public void CenterHolder()

@@ -6,10 +6,15 @@ using log4net;
 
 namespace rabnet
 {
+	public delegate Boolean EvSearchGoingOn(RabbitCommandMessage cmd);
+
 	public partial class RabbitPair : UserControl
 	{
 
 		protected static readonly ILog log = LogManager.GetLogger(typeof(RabbitPair));
+
+		public event EvSearchGoingOn SearchGoingOn;
+
 
 		private RabbitGen _mom;
 		private RabbitGen _dad;
@@ -17,6 +22,18 @@ namespace rabnet
 		private int _MyCenter;
 
 		public int _id=-1;
+
+		private int _WindowRabbitID;
+		public int WindowRabbitID
+		{
+			get { return _WindowRabbitID; }
+			set
+			{
+				_WindowRabbitID = value;
+				MaleRabbit.WindowRabbitID = value;
+				FemaleRabbit.WindowRabbitID = value;
+			}
+		}
 
 		public RabbitPair()
 		{
@@ -369,12 +386,14 @@ namespace rabnet
 			_TreeFArrow.BackColor = this.BackColor;
 			_TreeFArrow.Location = new Point(0, 0);
 			_TreeFArrow.SetLeft();
-			_TreeFArrow.SetBothEnds();
+			_TreeFArrow.SetStart();
+//			_TreeFArrow.SetBothEnds();
 			_ParentControl.Controls.Add(_TreeFArrow);
 
 			p.SetTreeGenderSide(2);
 			p.SetTreeParentPair(this);
 			p.ReplaceGenomeColors(FemaleRabbit.GetGenomColors());
+			p.WindowRabbitID = _WindowRabbitID;
 		}
 
 		private RabbitPair _TreeChildMPair;
@@ -387,12 +406,14 @@ namespace rabnet
 			_TreeMArrow.BackColor = this.BackColor;
 			_TreeMArrow.Location = new Point(0, 0);
 			_TreeMArrow.SetRight();
-			_TreeMArrow.SetBothEnds();
+			_TreeMArrow.SetStart();
+//			_TreeMArrow.SetBothEnds();
 			_ParentControl.Controls.Add(_TreeMArrow);
 
 			p.SetTreeGenderSide(1);
 			p.SetTreeParentPair(this);
 			p.ReplaceGenomeColors(MaleRabbit.GetGenomColors());
+			p.WindowRabbitID = _WindowRabbitID;
 		}
 
 		private ArrowImg _TreeMArrow;
@@ -432,68 +453,82 @@ namespace rabnet
 			MaleRabbit.RedrawMe();
 		}
 
+		public Boolean SearchFromChild(RabbitCommandMessage cmd)
+		{
+			return SearchFromChild(cmd, true);
+		}
 
-		public Boolean SearchFromChild(int rid, int cmd)
+		public Boolean SearchFromChild(RabbitCommandMessage cmd, bool EvProc)
 		{
 			Boolean res = false;
 			if (_TreeParentPair != null)
 			{
-				res = res || this._TreeParentPair.SearchUp(_TreeGenderSide, rid, cmd);
+				res = res || this._TreeParentPair.SearchUp(_TreeGenderSide, cmd);
+			}
+			if ((EvProc) && (SearchGoingOn != null))
+			{
+				res = res || SearchGoingOn(cmd);
 			}
 			if (_TreeChildFPair != null)
 			{
-				res = res || this._TreeChildFPair.SearchDown(rid, cmd);
+				res = res || this._TreeChildFPair.SearchDown(cmd);
 			}
 			if (_TreeChildMPair != null)
 			{
-				res = res || this._TreeChildMPair.SearchDown(rid, cmd);
+				res = res || this._TreeChildMPair.SearchDown(cmd);
 			}
 			return res;
 		}
 
-		public Boolean SearchDown(int rid, int cmd)
+		public Boolean SearchDown(RabbitCommandMessage cmd)
 		{
 			Boolean res = false;
 			if (_TreeChildFPair != null)
 			{
-				res = res || this._TreeChildFPair.SearchDown(rid, cmd);
+				res = res || this._TreeChildFPair.SearchDown(cmd);
 			}
 			if (_TreeChildMPair != null)
 			{
-				res = res || this._TreeChildMPair.SearchDown(rid, cmd);
+				res = res || this._TreeChildMPair.SearchDown(cmd);
 			}
 
-			if ((cmd == 1) || (cmd == 2))
+			res = res || this.FemaleRabbit.SearchFromParent(cmd);
+			res = res || this.MaleRabbit.SearchFromParent(cmd);
+			if (SearchGoingOn != null)
 			{
-				res = res || this.FemaleRabbit.SearchFromParent(rid, cmd);
-				res = res || this.MaleRabbit.SearchFromParent(rid, cmd);
+				res = res || SearchGoingOn(cmd);
 			}
+		
 			return res;
 		}
 
-		public Boolean SearchUp(int g,int rid, int cmd)
+		public Boolean SearchUp(int g, RabbitCommandMessage cmd)
 		{
 			Boolean res = false;
 			if (_TreeParentPair != null)
 			{
-				res = res || _TreeParentPair.SearchUp(_TreeGenderSide, rid, cmd);
+				res = res || _TreeParentPair.SearchUp(_TreeGenderSide, cmd);
 			}
 			if (g == 1)
 			{
 				if (_TreeChildFPair != null)
 				{
-					res = res || _TreeChildFPair.SearchDown(rid, cmd);
+					res = res || _TreeChildFPair.SearchDown(cmd);
 				}
 			}
 			if (g == 2)
 			{
 				if (_TreeChildMPair != null)
 				{
-					res = res || _TreeChildMPair.SearchDown(rid, cmd);
+					res = res || _TreeChildMPair.SearchDown(cmd);
 				}
 			}
-			res = res || this.FemaleRabbit.SearchFromParent(rid, cmd);
-			res = res || this.MaleRabbit.SearchFromParent(rid, cmd);
+			res = res || this.FemaleRabbit.SearchFromParent(cmd);
+			res = res || this.MaleRabbit.SearchFromParent(cmd);
+			if (SearchGoingOn != null)
+			{
+				res = res || SearchGoingOn(cmd);
+			}
 			return res;
 		}
 		#endregion

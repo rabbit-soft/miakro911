@@ -5,12 +5,24 @@ using System.Drawing.Drawing2D;
 
 namespace rabnet
 {
+
+	public class RabbitCommandMessage
+	{
+		public enum Commands { Highlight, Unhighlight, FindClone, ForgetWindow };
+		public int TargetRabbitID;
+		public Commands Command;
+		public int FindCloneWindowID = 0;
+		public int SourceWindowRabbitID = 0;
+		public string test = "1";
+	}
+
 	/// <summary>
 	/// Rabbit class for miaGenetics
 	/// </summary>
 	public partial class RabbitBar : CustomGraphCmp
 	{
 
+		Dictionary<int, bool> _CommonWith = new Dictionary<int, bool>();
 		private Boolean _Duplicated = false;
 
 		private int _ForcedGender = 0;
@@ -18,6 +30,13 @@ namespace rabnet
 		{
 			get { return _ForcedGender; }
 			set { _ForcedGender = value; }
+		}
+
+		private int _WindowRabbitID;
+		public int WindowRabbitID
+		{
+			get { return _WindowRabbitID; }
+			set { _WindowRabbitID = value; }
 		}
 
 		private RabbitGen _Rabbit;
@@ -83,11 +102,11 @@ namespace rabnet
 				{
 					if (_Rabbit.sex == RabbitGen.RabbitSex.FEMALE)
 					{
-						ttl += " (умерла)";
+						ttl += " (списана)";
 					}
 					else
 					{
-						ttl += " (умер)";
+						ttl += " (списан)";
 					}
 				}
 
@@ -600,7 +619,8 @@ namespace rabnet
 
 			if (_Active)
 			{
-				cl = Color.FromArgb(150,SystemColors.MenuHighlight);
+//				cl = Color.FromArgb(150,SystemColors.MenuHighlight);
+				cl = Color.FromArgb(150, SystemColors.HotTrack);
 				brush = new SolidBrush(cl);
 				g.SmoothingMode = SmoothingMode.AntiAlias;
 				g.FillPath(brush, p);
@@ -608,8 +628,9 @@ namespace rabnet
 				//				pen = new Pen(Color.Red,2);
 			} else if (_Highlight)
 			{
-				cl = Color.FromArgb(150, SystemColors.MenuHighlight);
-//				cl = Color.FromArgb(50, SystemColors.ControlText);
+				cl = Color.FromArgb(150, SystemColors.Highlight);
+//				cl = Color.FromArgb(150, SystemColors.MenuHighlight);
+				//				cl = Color.FromArgb(50, SystemColors.ControlText);
 				brush = new SolidBrush(cl);
 				g.SmoothingMode = SmoothingMode.AntiAlias;
 				g.FillPath(brush, p);
@@ -646,7 +667,11 @@ namespace rabnet
 			{
 				if (_ParentPair != null)
 				{
-					_ParentPair.SearchFromChild(_Rabbit.rid, 1);
+					RabbitCommandMessage cmd=new RabbitCommandMessage();
+					cmd.Command=RabbitCommandMessage.Commands.Highlight;
+					cmd.TargetRabbitID=_Rabbit.rid;
+					cmd.SourceWindowRabbitID = _WindowRabbitID;
+					_ParentPair.SearchFromChild(cmd);
 				}
 			}
 		}
@@ -659,7 +684,11 @@ namespace rabnet
 			{
 				if (_ParentPair != null)
 				{
-					_ParentPair.SearchFromChild(_Rabbit.rid, 2);
+					RabbitCommandMessage cmd=new RabbitCommandMessage();
+					cmd.Command=RabbitCommandMessage.Commands.Unhighlight;
+					cmd.TargetRabbitID=_Rabbit.rid;
+					cmd.SourceWindowRabbitID = _WindowRabbitID;
+					_ParentPair.SearchFromChild(cmd);
 				}
 			}
 		}
@@ -668,7 +697,11 @@ namespace rabnet
 		{
 			if (_Rabbit != null)
 			{
-				if (_ParentPair.SearchFromChild(_Rabbit.rid, 3))
+				RabbitCommandMessage cmd = new RabbitCommandMessage();
+				cmd.Command = RabbitCommandMessage.Commands.FindClone;
+				cmd.TargetRabbitID = _Rabbit.rid;
+				cmd.SourceWindowRabbitID = _WindowRabbitID;
+				if (_ParentPair.SearchFromChild(cmd))
 				{
 					_Duplicated = true;
 					RedrawMe();
@@ -677,29 +710,40 @@ namespace rabnet
 		}
 
 		private Boolean _Highlight = false;
-		public Boolean SearchFromParent(int rid, int cmd)
+		public Boolean SearchFromParent(RabbitCommandMessage cmd)
 		{
 			Boolean res = false;
 			if (_Rabbit != null)
 			{
-				if (rid == _Rabbit.rid)
+				if (cmd.TargetRabbitID== _Rabbit.rid)
 				{
-					if (cmd == 1)
+					if (cmd.Command== RabbitCommandMessage.Commands.Highlight)
 					{
 						_Highlight = true;
 						RedrawMe();
 					}
-					if (cmd == 2)
+					if (cmd.Command == RabbitCommandMessage.Commands.Unhighlight)
 					{
 						_Highlight = false;
 						RedrawMe();
 					}
-					if (cmd == 3)
+					if (cmd.Command == RabbitCommandMessage.Commands.FindClone)
 					{
 						_Duplicated = true;
 						res = true;
-						RedrawMe();
+						if (!_CommonWith.ContainsKey(cmd.SourceWindowRabbitID))
+						{
+							_CommonWith.Add(cmd.SourceWindowRabbitID, true);
+							RedrawMe();
+						}
 					}
+				}
+				if (cmd.Command == RabbitCommandMessage.Commands.ForgetWindow)
+				{
+					_CommonWith.Remove(cmd.SourceWindowRabbitID);
+					_Duplicated = (_CommonWith.Count > 0);
+					res = true;
+					RedrawMe();
 				}
 			}
 			return res;
