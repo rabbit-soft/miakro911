@@ -83,6 +83,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="components\ColorPickerColumn\IDropDownDisplayAdapte.cs" />
+    <Compile Include="forms\PreReplaceYoungersForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\PreReplaceYoungersForm.Designer.cs">
+      <DependentUpon>PreReplaceYoungersForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="forms\SelectUserForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -407,6 +413,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\OptionsForm.resx">
       <DependentUpon>OptionsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\PreReplaceYoungersForm.resx">
+      <DependentUpon>PreReplaceYoungersForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\Proholost.resx">
       <DependentUpon>Proholost.cs</DependentUpon>

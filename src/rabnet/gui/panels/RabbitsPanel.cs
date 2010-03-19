@@ -326,9 +326,7 @@ namespace rabnet
         private void replaceYoungersMenuItem_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count != 1) return;
-            RabNetEngRabbit r = Engine.get().getRabbit((int)listView1.SelectedItems[0].Tag);
-            if (r.youngcount<1) return;
-            if((new ReplaceYoungersForm(r.youngers[0].id)).ShowDialog() == DialogResult.OK)
+            if(PreReplaceYoungersForm.MakeChoice((int)listView1.SelectedItems[0].Tag) == DialogResult.OK)
                 rsb.run();
         }
 
