@@ -37,7 +37,7 @@ namespace rabnet
         public void updateMothers()
         {
             int ad=Engine.opt().getIntOption(Options.OPT_ID.COMBINE_AGE);
-            cs.Clear();
+            cs.Prepare();
             listView1.Items.Clear();
             foreach(Rabbit rb in Engine.db().getMothers(r.age, ad))
             if (rb.fid!=r.parent)
@@ -66,8 +66,9 @@ namespace rabnet
             }
             String txt = listView1.Items[0].SubItems[REPLCOL].Text;
             listView1.Items[0].SubItems[REPLCOL].Text = "10";
-            listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            //listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             listView1.Items[0].SubItems[REPLCOL].Text = txt;
+            cs.Restore();
         }
 
         private void button2_Click(object sender, EventArgs e)
