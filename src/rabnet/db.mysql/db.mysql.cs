@@ -13,12 +13,18 @@ namespace rabnet
 {
     public class RabNetDbMySql:IRabNetDataLayer
     {
-        private MySqlConnection sql=null;
+        private MySqlConnection psql=null;
         private ILog log = LogManager.GetLogger(typeof(RabNetDbMySql));
         public RabNetDbMySql() {
             log4net.Config.XmlConfigurator.Configure();
             log.Debug("created");
         }
+        private MySqlConnection sql { get { 
+            if (psql == null) return null;
+            if (psql.State == System.Data.ConnectionState.Broken || psql.State == System.Data.ConnectionState.Closed)
+                psql.Open();
+        return psql;
+        } }
         public RabNetDbMySql(String connectionString)
             : this()
         {
@@ -33,18 +39,18 @@ namespace rabnet
 
         public void close()
         {
-            if (sql != null)
+            if (psql != null)
             {
-                sql.Close();
-                sql = null;
+                psql.Close();
+                psql = null;
             }
         }
         public void init(String connectionString)
         {
             close();
             log.Debug("init from string "+connectionString);
-            sql = new MySqlConnection(connectionString);
-            sql.Open();
+            psql = new MySqlConnection(connectionString);
+            psql.Open();
             new Users(sql).checktb();
         }
         public int exec(String cmd)

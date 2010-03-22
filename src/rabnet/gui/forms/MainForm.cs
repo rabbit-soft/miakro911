@@ -16,9 +16,12 @@ namespace rabnet
         private bool manflag=false;
         private RabNetPanel[] panels =null;
         private RabNetPanel curpanel=null;
+        private static MainForm me = null;
+        private bool mustclose = false;
         public MainForm()
         {
             InitializeComponent();
+            me = this;
             log.Debug("Program started");
             panels=new RabNetPanel[]{new RabbitsPanel(rabStatusBar1),
                         new YoungsPanel(rabStatusBar1),
@@ -37,6 +40,7 @@ namespace rabnet
         private void ChangeFarmMenuItem_Click(object sender, EventArgs e)
         {
             LoginForm.stop = false;
+            mustclose = true;
             Close();
         }
 
@@ -99,6 +103,7 @@ namespace rabnet
             panel1.Controls.Add(curpanel);
             actMenuItem.DropDown = curpanel.getMenu();
             curpanel.activate();
+            working();
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -138,6 +143,7 @@ namespace rabnet
         {
             if (Engine.opt().getIntOption(Options.OPT_ID.CONFIRM_EXIT) == 0)
                 return;
+            if (mustclose) return;
             DialogResult dlr = MessageBox.Show("Вы уверены что хотите Выйти?","Выход",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
             if (dlr == DialogResult.No)
             {
@@ -242,6 +248,26 @@ namespace rabnet
             Filters f = new Filters();
             (new ReportViewForm("Список случек/окролов", "fucks_by_date", new XmlDocument[]{
                     Engine.get().db().makeReport(ReportType.Type.FUCKS_BY_DATE,f)})).ShowDialog();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            LoginForm.stop = false;
+            mustclose = true;
+            Close();
+        }
+        public void working()
+        {
+            timer1.Stop();
+            timer1.Start();
+        }
+        public static void still_working()
+        {
+            me.working();
+        }
+        private void MainForm_MouseMove(object sender, MouseEventArgs e)
+        {
+            working();
         }
 
     }

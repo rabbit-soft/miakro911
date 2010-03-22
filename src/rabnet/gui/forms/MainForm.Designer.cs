@@ -57,6 +57,7 @@
             this.списанияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.списанияToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.окролыПоПользователямToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fucksByDateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.настройкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showTierTMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showTierSMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,7 +81,6 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
-            this.fucksByDateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -292,6 +292,13 @@
             this.окролыПоПользователямToolStripMenuItem.Text = "Окролы по пользователям";
             this.окролыПоПользователямToolStripMenuItem.Click += new System.EventHandler(this.окролыПоПользователямToolStripMenuItem_Click);
             // 
+            // fucksByDateToolStripMenuItem
+            // 
+            this.fucksByDateToolStripMenuItem.Name = "fucksByDateToolStripMenuItem";
+            this.fucksByDateToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.fucksByDateToolStripMenuItem.Text = "Список случек\\вязок";
+            this.fucksByDateToolStripMenuItem.Click += new System.EventHandler(this.fucksByDateToolStripMenuItem_Click);
+            // 
             // настройкиToolStripMenuItem
             // 
             this.настройкиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -415,7 +422,8 @@
             // 
             // timer1
             // 
-            this.timer1.Interval = 60000;
+            this.timer1.Interval = 300000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // tabControl1
             // 
@@ -492,13 +500,6 @@
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
             // 
-            // fucksByDateToolStripMenuItem
-            // 
-            this.fucksByDateToolStripMenuItem.Name = "fucksByDateToolStripMenuItem";
-            this.fucksByDateToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-            this.fucksByDateToolStripMenuItem.Text = "Список случек\\вязок";
-            this.fucksByDateToolStripMenuItem.Click += new System.EventHandler(this.fucksByDateToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -516,6 +517,7 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseMove);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
