@@ -45,7 +45,11 @@ namespace rabnet
             comboBox2.Focus();
             try
             {
-                RabnetConfigHandler.dataSource xs = RabnetConfigHandler.ds[comboBox1.SelectedIndex];
+                RabnetConfigHandler.dataSource xs=null;
+                foreach (RabnetConfigHandler.dataSource d in RabnetConfigHandler.ds)
+                    if (d.name == comboBox1.Text)
+                        xs = d;
+                if (xs == null) return;
                 Engine.get().initEngine(xs.type, xs.param);
                 comboBox2.Items.Clear();
                 comboBox2.Enabled = false;
