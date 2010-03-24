@@ -36,12 +36,16 @@ namespace rabdump
     [Serializable]
     class ArchiveJob : Object
     {
+        [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
+        public enum ArcType {Единожды,Ежедневно,Еженедельно,Ежемесячно};
         const string OBJ = "Объект";
         const string DATA = "Данные";
         const string TIME = "Расписание";
         private string nm,bp;
-        private int sl, cl;
+        private int sl, cl, rp;
         private DataBase db;
+        private DateTime st;
+        private ArcType tp;
         [Category(OBJ), DisplayName("Название"), Description("")]
         public String Name { get { return nm; } set { nm = value; } }
         [Category(DATA), DisplayName("База Данных"), Description(""),
@@ -55,10 +59,19 @@ namespace rabdump
         Description(""),
         Editor(typeof(FolderNameEditor), typeof(UITypeEditor))]
         public String BackupPath { get { return bp; } set { bp = value; } }
+        [Category(TIME), DisplayName("Начало Резервирования"),
+        Description(""),
+        Editor(typeof(FolderNameEditor), typeof(UITypeEditor))]
+        public DateTime StartTime { get { return st; } set { st = value; } }
+        [Category(TIME), DisplayName("Резервировать"),Description("")]
+        public ArcType Type { get { return tp; } set { tp = value; } }
+        [Category(TIME), DisplayName("Повторять каждые (часов)"), Description("")]
+        public int Repeat { get { return rp; } set { rp = value; } }
         public override string ToString()
         {
             return nm;
         }
+
     }
 
     [Serializable]
