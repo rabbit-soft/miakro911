@@ -52,7 +52,7 @@ namespace rabnet
         }
         public void Restore()
         {
-			lv.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+			//lv.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 			ListViewSaver.load(option, lv);
 			lv.ListViewItemSorter = this;
             lv.Sort();
