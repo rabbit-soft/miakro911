@@ -6,7 +6,7 @@
 	<loadtasks assembly="${wix.dir}\Microsoft.Tools.WindowsInstallerXml.NAntTasks.dll" />
 	<description>rabnet project makefile</description>
 	<!-- properties defines !-->
-	<property name="version" value="1.0"/>
+	<property name="version" value="0.2"/>
 	<property name="revision" value="none"/>
 	<property name="curdir" value="." overwrite="false"/>
 	<property name="host_spec_path" value="." overwrite="false"/>

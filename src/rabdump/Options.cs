@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Text;
 using System.ComponentModel;
-using System.Windows.Forms.Design;
 using System.Drawing.Design;
+using System.Windows.Forms.Design;
 using System.Configuration;
+using System.Collections.Generic;
 using System.Xml;
+using Microsoft.Win32;
+using System.Windows.Forms;
 
 namespace rabdump
 {
-    [Serializable]
     class DataBase:Object
     {
         const string DB = "База Данных";
@@ -33,11 +35,10 @@ namespace rabdump
         public static DataBase AllDataBases = new DataBase("[все]");
     }
 
-    [Serializable]
     class ArchiveJob : Object
     {
         [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
-        public enum ArcType {Единожды,Ежедневно,Еженедельно,Ежемесячно};
+        public enum ArcType {При_Запуске,Единожды,Ежедневно,Еженедельно,Ежемесячно};
         const string OBJ = "Объект";
         const string DATA = "Данные";
         const string TIME = "Расписание";
@@ -55,12 +56,10 @@ namespace rabdump
         public int SizeLimit { get { return sl; } set { sl = value; } }
         [Category(DATA), DisplayName("Лимит по количеству копий"), Description("")]
         public int CountLimit { get { return cl; } set { cl = value; } }
-        [Category(DATA), DisplayName("Путь к резервным копиям"),
-        Description(""),
+        [Category(DATA), DisplayName("Путь к резервным копиям"),Description(""),
         Editor(typeof(FolderNameEditor), typeof(UITypeEditor))]
         public String BackupPath { get { return bp; } set { bp = value; } }
-        [Category(TIME), DisplayName("Начало Резервирования"),
-        Description(""),
+        [Category(TIME), DisplayName("Начало Резервирования"),Description(""),
         Editor(typeof(FolderNameEditor), typeof(UITypeEditor))]
         public DateTime StartTime { get { return st; } set { st = value; } }
         [Category(TIME), DisplayName("Резервировать"),Description("")]
@@ -74,14 +73,14 @@ namespace rabdump
 
     }
 
-    [Serializable]
-    class DataBaseCollection : Collection<DataBase> { }
-    [Serializable]
-    class ArchiveJobCollection : Collection<DataBase> { }
+    class DataBaseCollection : List<DataBase> { }
+    class ArchiveJobCollection : List<ArchiveJob> { }
 
-    [Serializable]
+    [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
     class Options
     {
+        [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
+        public enum RUBOOL { Да, Нет };
         private static Options oops=null;
         public static Options get()
         {
@@ -90,37 +89,47 @@ namespace rabdump
             return oops;
         }
         const String OPT="Настройки";
+        const String ARKey=@"Software\Microsoft\Windows\CurrentVersion\Run";
+        const String ARValue = "rabdump";
         private String mp, p7;
+        private RUBOOL sas;
         private DataBaseCollection bds=new DataBaseCollection();
         private ArchiveJobCollection jobs = new ArchiveJobCollection();
-        [Category(OPT), DisplayName("mysqldump"),
-        Description(""),
+        [Category(OPT), DisplayName("mysqldump"),Description(""),
         Editor(typeof(FileNameEditor), typeof(UITypeEditor))]
         public String MySqlPath { get { return mp; } set { mp = value; } }
-        [Category(OPT), DisplayName("7z"),
-        Description(""),
+        [Category(OPT), DisplayName("7z"),Description(""),
         Editor(typeof(FileNameEditor), typeof(UITypeEditor))]
         public String Path7Z { get { return p7; } set { p7 = value; } }
-        [Category(OPT), DisplayName("Базы данных"),
-        Description("")]
+        [Category(OPT), DisplayName("Базы данных"),Description("")]
         public DataBaseCollection Databases { get { return bds; }}
-        [Category(OPT), DisplayName("Расписание"),
-        Description("")]
+        [Category(OPT), DisplayName("Расписание"),Description("")]
         public ArchiveJobCollection Jobs { get { return jobs; } }
+        [Category(OPT), DisplayName("Запускать при старте системы"),Description("")]
+        public RUBOOL StartAtStart { get { return sas; } set { sas = value; } }
 
         public void save()
         {
-            ArrayList a = Properties.Settings.Default.options;
-            if (a==null)
-                a=new ArrayList();
-            a.Clear();
-            a.Add(this);
-            Properties.Settings.Default.options = a;
-            Properties.Settings.Default.Save();
+         
+            RegistryKey rk=Registry.CurrentUser.CreateSubKey(ARKey);
+            rk.DeleteValue(ARValue,false);
+            if (StartAtStart==RUBOOL.Да)
+                rk.SetValue(ARValue,Application.ExecutablePath);
         }
         public void load(XmlNode nd)
         {
-            XmlReader rd=new XmlTextReader(
+            XmlNodeReader rdr = new XmlNodeReader(nd);
+            oops=(Options)rdr.ReadContentAs(typeof(Options), null);
+            StartAtStart=RUBOOL.Нет;
+            RegistryKey rk=Registry.CurrentUser.CreateSubKey(ARKey);
+            string val = (string)rk.GetValue(ARValue);
+            if (val != null)
+                if (val == Application.ExecutablePath)
+                    StartAtStart = RUBOOL.Да;
+        }
+        public void load()
+        {
+            load(ConfigurationManager.GetSection("rabdumpOptions") as XmlNode);
         }
     }
     
@@ -131,6 +140,8 @@ namespace rabdump
         public object Create(object parent, object configContext, XmlNode section)
         {
             Options.get().load(section);
+            return section;
         }
     }
+
 }

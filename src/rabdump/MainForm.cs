@@ -4,11 +4,14 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using log4net;
+
 
 namespace rabdump
 {
     public partial class MainForm : Form
     {
+        protected static readonly ILog logger = LogManager.GetLogger(typeof(MainForm));
         bool canclose = false;
         bool manual = true;
         public MainForm()
@@ -16,6 +19,10 @@ namespace rabdump
             InitializeComponent();
         }
 
+        public static ILog log()
+        {
+            return logger;
+        }
         private void restoreMenuItem_Click(object sender, EventArgs e)
         {
             manual = false;
@@ -48,6 +55,7 @@ namespace rabdump
         {
             notifyIcon1.Icon = Icon;
             propertyGrid1.SelectedObject = Options.get();
+            log().Debug("Program started");
         }
 
         private void MainForm_Resize(object sender, EventArgs e)

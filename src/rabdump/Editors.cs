@@ -11,7 +11,6 @@ namespace rabdump
 {
     internal class DataBaseEditor : UITypeEditor
     {
-        private FolderBrowserDialog fd = new FolderBrowserDialog();
         private IWindowsFormsEditorService edSvc;
 
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
@@ -46,4 +45,9 @@ namespace rabdump
             edSvc.CloseDropDown();
         }
     }
+
+    internal class StartTimeEditor : UITypeEditor
+    {
+    }
+
 }
