@@ -77,6 +77,7 @@ namespace rabdump
     class ArchiveJobCollection : List<ArchiveJob> { }
 
     [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
+    [XmlRootElement("rabdumpOptions")]
     class Options
     {
         [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
