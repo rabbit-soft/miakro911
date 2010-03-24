@@ -276,7 +276,7 @@ CREATE TABLE logs(
 
 #DATA
 
-INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','2');
+INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','3');
 INSERT INTO options(o_name,o_subname,o_value) VALUES
 ('opt', 'okrol', 30),
 ('opt', 'vudvor', 30),
