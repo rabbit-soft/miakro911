@@ -47,11 +47,18 @@
                         <Component Id="Reports" Guid="AF1369D3-6231-4FE8-8884-7ECDA59DE059">
                             <File Id="age.rdl" Source="$(var.ProjectDir)\reports\age.rdl" Checksum="yes" />
                             <File Id="breeds.rdl" Source="$(var.ProjectDir)\reports\breeds.rdl" Checksum="yes" />
+                            <File Id="by_month.rdl" Source="$(var.ProjectDir)\reports\by_month.rdl" Checksum="yes" />
                             <File Id="dead.rdl" Source="$(var.ProjectDir)\reports\dead.rdl" Checksum="yes" />
                             <File Id="deadreason.rdl" Source="$(var.ProjectDir)\reports\deadreason.rdl" Checksum="yes" />
+                            <File Id="empty_rev.rdl" Source="$(var.ProjectDir)\reports\empty_rev.rdl" Checksum="yes" />
                             <File Id="fucker.rdl" Source="$(var.ProjectDir)\reports\fucker.rdl" Checksum="yes" />
+                            <File Id="fucks_by_date.rdl" Source="$(var.ProjectDir)\reports\fucks_by_date.rdl" Checksum="yes" />
+                            <File Id="okrol_user.rdl" Source="$(var.ProjectDir)\reports\okrol_user.rdl" Checksum="yes" />
+                            <File Id="plem.rdl" Source="$(var.ProjectDir)\reports\plem.rdl" Checksum="yes" />
                             <File Id="rabbit.rdl" Source="$(var.ProjectDir)\reports\rabbit.rdl" Checksum="yes" KeyPath="yes" />
                             <File Id="realization.rdl" Source="$(var.ProjectDir)\reports\realization.rdl" Checksum="yes" />
+                            <File Id="replace_plan.rdl" Source="$(var.ProjectDir)\reports\replace_plan.rdl" Checksum="yes" />
+                            <File Id="shed.rdl" Source="$(var.ProjectDir)\reports\shed.rdl" Checksum="yes" />
                             <File Id="zooteh.rdl" Source="$(var.ProjectDir)\reports\zooteh.rdl" Checksum="yes" />
                             <File Id="zooteh_nofuck.rdl" Source="$(var.ProjectDir)\reports\zooteh_nofuck.rdl" Checksum="yes" />
                         </Component>
