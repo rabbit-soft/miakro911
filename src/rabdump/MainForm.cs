@@ -11,12 +11,13 @@ namespace rabdump
 {
     public partial class MainForm : Form
     {
-        protected static readonly ILog logger = LogManager.GetLogger(typeof(MainForm));
+        public static readonly ILog logger = LogManager.GetLogger(typeof(MainForm));
         bool canclose = false;
         bool manual = true;
         public MainForm()
         {
             InitializeComponent();
+            log4net.Config.XmlConfigurator.Configure();
         }
 
         public static ILog log()
@@ -40,6 +41,8 @@ namespace rabdump
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = !canclose;
+            if (canclose)
+                log().Debug("Program finished");
             manual = false;
             WindowState = FormWindowState.Minimized;
             ShowInTaskbar = false;
@@ -56,6 +59,8 @@ namespace rabdump
             notifyIcon1.Icon = Icon;
             propertyGrid1.SelectedObject = Options.get();
             log().Debug("Program started");
+            Options.get().load();
+            ReinitTimer(true);
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
@@ -75,6 +80,58 @@ namespace rabdump
         {
             Options.get().save();
             Close();
+            ReinitTimer(false);
         }
+
+        private void ReinitTimer(bool OnStart)
+        {
+            timer1.Stop();
+            timer1.Start();
+            jobsMenuItem.DropDownItems.Clear();
+            restMenuItem.DropDownItems.Clear();
+            foreach (ArchiveJob j in Options.get().Jobs)
+            {
+                jobsMenuItem.DropDownItems.Add(j.Name, null, jobnowMenuItem_Click);
+                restMenuItem.DropDownItems.Add(j.Name,null,restMenuItem_Click);
+            }
+            processTiming(OnStart);
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            processTiming(false);
+        }
+
+        private void processTiming(bool onstart)
+        {
+            log().Debug("processing timer "+(onstart?"OnStart":""));
+            foreach (ArchiveJob j in Options.get().Jobs)
+                if (j.needDump(onstart))
+                    doDump(j);
+        }
+
+        private void jobnowMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach(ArchiveJob j in Options.get().Jobs)
+                if (sender == jobnowMenuItem || j.Name == (sender as ToolStripMenuItem).Text)
+                {
+                    if (!j.busy)
+                        doDump(j);
+                }
+        }
+
+        private void doDump(ArchiveJob j)
+        {
+            notifyIcon1.ShowBalloonTip(5000,"Резервирование",j.Name,ToolTipIcon.Info);
+            ArchiveJobThread.MakeJob(j);
+
+        }
+
+        private void restMenuItem_Click(object sender, EventArgs e)
+        {
+            if (sender == restMenuItem)
+                return;
+        }
+
     }
 }

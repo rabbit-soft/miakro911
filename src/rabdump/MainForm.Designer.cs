@@ -34,13 +34,15 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.restoreMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.резервироватьСейчасToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.резервироватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.jobnowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.jobsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.restMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,47 +58,49 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.restoreMenuItem,
             this.toolStripMenuItem1,
-            this.резервироватьСейчасToolStripMenuItem,
-            this.резервироватьToolStripMenuItem,
+            this.jobnowMenuItem,
+            this.jobsMenuItem,
+            this.restMenuItem,
             this.toolStripMenuItem2,
             this.exitMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(200, 104);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(183, 148);
             // 
             // restoreMenuItem
             // 
             this.restoreMenuItem.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.restoreMenuItem.Name = "restoreMenuItem";
-            this.restoreMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.restoreMenuItem.Size = new System.Drawing.Size(182, 22);
             this.restoreMenuItem.Text = "Настройки";
             this.restoreMenuItem.Click += new System.EventHandler(this.restoreMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(196, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(179, 6);
             // 
-            // резервироватьСейчасToolStripMenuItem
+            // jobnowMenuItem
             // 
-            this.резервироватьСейчасToolStripMenuItem.Name = "резервироватьСейчасToolStripMenuItem";
-            this.резервироватьСейчасToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
-            this.резервироватьСейчасToolStripMenuItem.Text = "Резервировать сейчас";
+            this.jobnowMenuItem.Name = "jobnowMenuItem";
+            this.jobnowMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.jobnowMenuItem.Text = "Резервировать все";
+            this.jobnowMenuItem.Click += new System.EventHandler(this.jobnowMenuItem_Click);
             // 
-            // резервироватьToolStripMenuItem
+            // jobsMenuItem
             // 
-            this.резервироватьToolStripMenuItem.Name = "резервироватьToolStripMenuItem";
-            this.резервироватьToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
-            this.резервироватьToolStripMenuItem.Text = "Резервировать";
+            this.jobsMenuItem.Name = "jobsMenuItem";
+            this.jobsMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.jobsMenuItem.Text = "Резервировать";
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(196, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(179, 6);
             // 
             // exitMenuItem
             // 
             this.exitMenuItem.Name = "exitMenuItem";
-            this.exitMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.exitMenuItem.Size = new System.Drawing.Size(182, 22);
             this.exitMenuItem.Text = "Выход";
             this.exitMenuItem.Click += new System.EventHandler(this.exitMenuItem_Click);
             // 
@@ -129,6 +133,18 @@
             this.propertyGrid1.Size = new System.Drawing.Size(528, 357);
             this.propertyGrid1.TabIndex = 0;
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 60000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // restMenuItem
+            // 
+            this.restMenuItem.Name = "restMenuItem";
+            this.restMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.restMenuItem.Text = "Восстановить";
+            this.restMenuItem.Click += new System.EventHandler(this.restMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AcceptButton = this.button1;
@@ -160,13 +176,15 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem restoreMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem резервироватьСейчасToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem резервироватьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem jobnowMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem jobsMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem exitMenuItem;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.PropertyGrid propertyGrid1;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.ToolStripMenuItem restMenuItem;
     }
 }
 
