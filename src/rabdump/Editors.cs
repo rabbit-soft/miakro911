@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing.Design;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.ComponentModel;
@@ -44,10 +41,6 @@ namespace rabdump
         {
             edSvc.CloseDropDown();
         }
-    }
-
-    internal class StartTimeEditor : UITypeEditor
-    {
     }
 
 }
