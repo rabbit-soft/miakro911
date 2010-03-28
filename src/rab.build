@@ -28,7 +28,7 @@
 
 	<property name="obfuscated" value="" />
 
-	<property name="istrial" value="" />
+	<property name="compile_flag" value="" />
 	
 	<property name="nant.settings.currentframework" value="net-2.0" />
 
@@ -62,7 +62,7 @@
 	
 	
 	<target name="release" description="Build RELEASE">
-		<property name="istrial" value="" />
+		<property name="compile_flag" value="" />
 		<property name="bin_dir" value="${root_bin}/release"/>
 		<call target="prepare_bin_dir"/>
 		<call target="compile"/>
@@ -75,13 +75,9 @@
 			</fileset>
 		</zip>
 	</target>
-	<target name="trial" description="Build TRIAL">
-		<property name="istrial" value="TRIAL" />
-		<property name="bin_dir" value="${root_bin}/trial"/>
-		<call target="prepare_bin_dir"/>
-		<call target="compile"/>
-		<property name="istrial" value="TRIAL;CRACKED" />
-		<property name="bin_dir" value="${root_bin}/cracked"/>
+	<target name="protected" description="Build PROTECTED">
+		<property name="compile_flag" value="PROTECTED" />
+		<property name="bin_dir" value="${root_bin}/protected"/>
 		<call target="prepare_bin_dir"/>
 		<call target="compile"/>
 	</target>
@@ -93,17 +89,16 @@
 		<property name="mysql.use" value="${bin_dir}/${mysql.lib}" />
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
 		<call target="updater"/>
-		<call target="unchaos"/>
 		<!--delete file=""${mysql.use}/-->
 	</target>
 	
 
-	<target name="buildall" depends="svn_rev,release,trial,tools,release_zip" description="Build all projects"/>
-	<target name="compile" depends="miaconv,rabnet"/>
+	<target name="buildall" depends="svn_rev,release,protected,tools,release_zip" description="Build all projects"/>
+	<target name="compile" depends="miaconv,rabdump,rabnet"/>
 	
 	<target name="miaconv" description="Make mia converter project">
 		<copy file="${curdir}/mia_conv/rabnet_db_fmt.sql" tofile="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
-		<csc target="winexe" output="${bin_dir}/mia_conv.exe" win32icon="${curdir}/mia_conv/logo2.ico" define="${istrial}">
+		<csc target="winexe" output="${bin_dir}/mia_conv.exe" win32icon="${curdir}/mia_conv/logo2.ico" define="${compile_flag}">
 			<sources>
 				<include name="${curdir}/mia_conv/*.cs"/>
 			</sources>
@@ -122,7 +117,7 @@
 	<target name="rabnet" description="make rabnet application" depends="pickers,db.mysql,engine,gui_genetics,gui"/>
 	
 	<target name="pickers" description="pickers library for rabnet">
-		<csc target="library" output="${bin_dir}/Pickers.dll" define="${istrial}">
+		<csc target="library" output="${bin_dir}/Pickers.dll" define="${compile_flag}">
 			<sources>
 				<include name="${curdir}/libs/pickers/*.cs"/>
 				<include name="${curdir}/libs/pickers/ComboBoxAppearance/*.cs"/>
@@ -132,7 +127,7 @@
 	</target>
 
 	<target name="db.mysql" description="mysql data layer">
-		<csc target="library" output="${bin_dir}/db.mysql.dll" define="${istrial}">
+		<csc target="library" output="${bin_dir}/db.mysql.dll" define="${compile_flag}">
 			<sources>
 				<include name="${curdir}/rabnet/db.mysql/*.cs"/>
 				<include name="${curdir}/rabnet/db.mysql/Properties/*.cs"/>
@@ -145,7 +140,7 @@
 	</target>
 	
 	<target name="engine" description="engine">
-		<csc target="library" output="${bin_dir}/engine.dll" define="${istrial}">
+		<csc target="library" output="${bin_dir}/engine.dll" define="${compile_flag}">
 			<sources>
 				<include name="${curdir}/rabnet/engine/*.cs"/>
 				<include name="${curdir}/rabnet/engine/Properties/*.cs"/>
@@ -159,7 +154,7 @@
 	</target>
 
 	<target name="gui_genetics" description="rabnet gui genetics">
-		<csc target="library" output="${bin_dir}/gui_genetics.dll" define="${istrial}">
+		<csc target="library" output="${bin_dir}/gui_genetics.dll" define="${compile_flag}">
 			<sources>
 				<include name="${curdir}/rabnet/gui_genetics/*.cs"/>
 				<include name="${curdir}/rabnet/gui/Engine.cs"/>
@@ -181,8 +176,23 @@
 		</csc>
 	</target>
 	
+	<target name="rabdump" description="rabnet db dumper">
+		<csc target="winexe" output="${bin_dir}/rabdump.exe" win32icon="${curdir}/rabdump/logo3.ico">
+			<sources>
+				<include name="${curdir}/rabdump/*.cs"/>
+			</sources>
+			<resources>
+				<include name="${curdir}/rabdump/*.resx"/>
+			</resources>
+			<references>
+				<include name="${log4net.use}"/>
+			</references>
+		</csc>
+		<copy file="${curdir}/rabdump/app.config" tofile="${bin_dir}/rabdump.exe.config" />
+	</target>
+	
 	<target name="gui" description="rabnet gui">
-		<csc target="winexe" output="${bin_dir}/rabnet.exe" win32icon="${curdir}/rabnet/gui/mialicon.ico" define="${istrial}">
+		<csc target="winexe" output="${bin_dir}/rabnet.exe" win32icon="${curdir}/rabnet/gui/mialicon.ico" define="${compile_flag}">
 			<sources>
 				<include name="${curdir}/rabnet/gui/*.cs"/>
 				<include name="${curdir}/rabnet/gui/Properties/*.cs"/>
@@ -220,14 +230,16 @@
 			<arg value="${root_bin}/release/engine.dll" />
 			<arg value="${root_bin}/release/gui_genetics.dll" />
 			<arg value="${root_bin}/release/mia_conv.exe" />
+			<arg value="${root_bin}/release/rabdump.exe" />
 			<arg value="${root_bin}/release/rabnet.exe" />
 		</exec>
 		<exec program="${obfuscator}">
-			<arg value="${root_bin}/trial/db.mysql.dll" />
-			<arg value="${root_bin}/trial/engine.dll" />
-			<arg value="${root_bin}/trial/gui_genetics.dll" />
-			<arg value="${root_bin}/trial/mia_conv.exe" />
-			<arg value="${root_bin}/trial/rabnet.exe" />
+			<arg value="${root_bin}/protected/db.mysql.dll" />
+			<arg value="${root_bin}/protected/engine.dll" />
+			<arg value="${root_bin}/protected/gui_genetics.dll" />
+			<arg value="${root_bin}/protected/mia_conv.exe" />
+			<arg value="${root_bin}/protected/rabdump.exe" />
+			<arg value="${root_bin}/protected/rabnet.exe" />
 		</exec>
 		<property name="obfuscated" value=".ob" />
 		<call target="release_zip"/>
@@ -267,18 +279,8 @@
 			</references>
 		</csc>
 	</target>
-	<target name="unchaos" description="Make unchaos tool">
-		<csc target="winexe" output="${tools_dir}/unchaos.exe">
-			<sources>
-				<include name="${curdir}/unchaos/*.cs"/>
-			</sources>
-			<references>
-				<include name="${mysql.use}"/>
-			</references>
-		</csc>
-	</target>
 	
-	<target name="distrib" depends="obfuscate">
+	<target name="distrib" >
 		<mkdir dir="${root_bin}"/>
 		<delete dir="${root_bin}/distrib"/>
 		<mkdir dir="${root_bin}/distrib"/>
@@ -286,9 +288,9 @@
 		<property name="bin_dir" value="${root_bin}\release"/>
 		<property name="minver" value="1"/>
 		<call target="one_distrib"/>
-		<property name="dist_type" value="rabnet_trial"/>
-		<property name="bin_dir" value="${root_bin}\trial"/>
-		<property name="minver" value="0"/>
+		<property name="dist_type" value="rabnet_protected"/>
+		<property name="bin_dir" value="${root_bin}\protected"/>
+		<property name="minver" value="2"/>
 		<call target="one_distrib"/>
 		<delete dir="${root_bin}/distrib/obj"/>
 	</target>
@@ -322,17 +324,6 @@
 			<arg value="quiet" />
 		</exec>
 		<delete file="${data_dir}/Farm.mia" /-->
-		<unzip zipfile="${data_dir}/Farm_30.zip" todir="${data_dir}" />
-		<unzip zipfile="${data_dir}/farm_trial.zip" todir="${data_dir}" />
-		<exec program="${root_bin}/release/mia_conv.exe">
-			<arg value="${data_dir}\Farm 3_0.mia" />
-			<arg value="localhost;krol30;krol_trial;krol;root;;" />
-			<arg value="зоотехник;" />
-			<arg value="${data_dir}\farm_trial.sql" />
-			<arg value="quiet" />
-		</exec>
-		<delete file="${data_dir}/Farm 3_0.mia" />
-		<delete file="${data_dir}/Farm_trial.sql" />
 	</target>
 	
 	<!-- RELEASES -->

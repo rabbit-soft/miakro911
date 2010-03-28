@@ -1,4 +1,4 @@
-#define NOCATCH
+//#define NOCATCH
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -93,17 +93,6 @@ namespace mia_conv
 
         private void button3_Click(object sender, EventArgs e)
         {
-#if TRIAL
-            if (mia.builds.minifarms.Count > 255)
-            {
-                MessageBox.Show("Демо версия может обрабатывать только до 255 ферм.");
-                return;
-            }
-            if (mia.builds.minifarms.Count > 255)
-            {
-                throw new ApplicationException("Демо версия может обрабатывать только до 255 ферм.");
-            }
-#endif
             MDCreator crt = new MDCreator(log);
 #if !NOCATCH 
             try
