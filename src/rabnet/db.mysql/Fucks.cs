@@ -1,5 +1,4 @@
-﻿//#define TRIAL
-using System;
+﻿using System;
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 using System.Text;
@@ -90,17 +89,11 @@ FROM fucks WHERE f_rabid={0:d} AND isdead(f_partner)=0 ORDER BY f_date);", rabbi
 
             }
             rd.Close();
-#if TRIAL
-            Buildings.checkFarms3(sql);
-#endif
             return f;
         }
 
         public static Fucks AllFuckers(MySqlConnection sql, int female,bool geterosis,bool inbreeding,int malewait)
         {
-#if TRIAL
-            Buildings.checkFarms3(sql);
-#endif
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT r_id,rabname(r_id,2) fullname,r_status,
 r_breed,
 (SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=r_genesis) genom,

@@ -30,10 +30,6 @@ namespace rabnet
 
         private void addNoFarm(int farm)
         {
-#if TRIAL && !CRACKED
-            if (farm>255)
-                return;
-#endif
             if (farm==nofarm)
             {
                 nofarm++;

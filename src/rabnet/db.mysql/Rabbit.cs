@@ -1,5 +1,4 @@
-﻿//#define TRIAL
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using MySql.Data.MySqlClient;
@@ -544,9 +543,6 @@ r_flags='{7:d}',r_rate={8:d},r_born={9:s}",r.name,r.surname,r.secname,r.breed,r.
             String type = "sluchka";
             if (f.status > 0)
                 type = "vyazka";
-#if TRIAL
-            Buildings.checkFarms5(sql);
-#endif
             MySqlCommand cmd = new MySqlCommand(String.Format("UPDATE fucks SET f_last=0 WHERE f_rabid={0:d};",female), sql);
             cmd.ExecuteNonQuery();
             cmd.CommandText = String.Format(@"INSERT INTO fucks(f_rabid,f_date,f_partner,f_state,f_type,f_last,f_notes,f_worker) 
@@ -570,9 +566,6 @@ VALUES({0:d},{1:s},{2:d},'sukrol','{3:s}',1,'',{4:d});",female,DBHelper.DateToMy
             cmd.ExecuteNonQuery();
             cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date=NULL,r_event='none',r_rate=r_rate-2 WHERE r_id={0:d};",rabbit);
             cmd.ExecuteNonQuery();
-#if TRIAL
-            Buildings.checkFarms5(sql);
-#endif
             if (male != 0)
             {
                 cmd.CommandText = String.Format("UPDATE rabbits SET r_rate=r_rate-2 WHERE r_id={0:d};", male);
@@ -616,9 +609,6 @@ r_lost_babies=COALESCE(r_lost_babies+{3:d},1),r_rate=r_rate+{4:d} WHERE r_id={0:
                 rabbit,DBHelper.DateToMyString(date),children,dead,rt);
             fml.rate += rt;
             cmd.ExecuteNonQuery();
-#if TRIAL
-            Buildings.checkFarms5(sql);
-#endif
             if (children>0)
             {
                 int brd=1;
@@ -723,9 +713,6 @@ WHERE r_id={4:d};", farm, tier_id, sec, ntr,rabbit);
         public static void replaceYounger(MySqlConnection sql, int rabbit, int farm, int tier_id, int sec)
         {
             removeParent(sql, rabbit);
-#if TRIAL
-            Buildings.check1(sql, farm);
-#endif
             placeRabbit(sql, rabbit, farm, tier_id, sec);
         }
 
@@ -757,9 +744,6 @@ FROM rabbits WHERE r_id={0:d};",rabbit,mom,count), sql);
         public static void replaceRabbit(MySqlConnection sql, int rabbit, int farm, int tier_id, int sec)
         {
             freeTier(sql, rabbit);
-#if TRIAL
-            Buildings.check4(sql, farm, rabbit.ToString()+tier_id.ToString()+sec.ToString());
-#endif
             placeRabbit(sql, rabbit, farm, tier_id, sec);
         }
 
