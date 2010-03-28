@@ -15,6 +15,7 @@
         </Upgrade>
         <PropertyRef Id="NETFRAMEWORK20" />
 		<Property Id="CMDEXE">cmd.exe</Property>
+		<WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\..\..\src\docs\licenseansi.rtf" />
         <Condition Message="Установлена более новая версия продукта"><![CDATA[NOT NEWERVERSIONDETECTED]]></Condition>
         <CustomAction Id="Property3Assign" Property="RABNETUPDATER" Value="[RabbitsDir]updater.exe" />
         <CustomAction Id="RabnetUpdate" Property="RABNETUPDATER" ExeCommand="" />
@@ -35,6 +36,8 @@
                     <Component Id="MainProgram" Guid="3D19CA32-71E7-4A06-B323-142F4C03DB42">
                         <File Id="rabnet.exe" Source="$(var.ProjectDir)\rabnet.exe" Checksum="yes" KeyPath="yes" />
                         <File Id="mia_conv.exe" Source="$(var.ProjectDir)\mia_conv.exe" Checksum="yes" />
+                        <File Id="rabdump.exe" Source="$(var.ProjectDir)\rabdump.exe" Checksum="yes" />
+                        <File Id="rabdump.exe.config" Source="$(var.ProjectDir)\rabdump.exe.config" Checksum="yes" />
                         <File Id="db.mysql.dll" Source="$(var.ProjectDir)\db.mysql.dll" Checksum="yes" />
                         <File Id="engine.dll" Source="$(var.ProjectDir)\engine.dll" Checksum="yes" />
                         <File Id="log4net.dll" Source="$(var.ProjectDir)\log4net.dll" Checksum="yes" />
@@ -71,6 +74,7 @@
                         <Shortcut Id="UninstallShortcut" Name="Удалить" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" />
                         <Shortcut Id="miaconvShortcut" Name="Импорт фермы" WorkingDirectory="RabbitsDir" Target="[RabbitsDir]mia_conv.exe" />
                         <Shortcut Id="rabnetShortcut" Name="Миакро rabnet" WorkingDirectory="RabbitsDir" Target="[RabbitsDir]rabnet.exe" />
+                        <Shortcut Id="rabdumpShortcut" Name="Резервные копии" WorkingDirectory="RabbitsDir" Target="[RabbitsDir]rabdump.exe" />
                         <RemoveFolder Id="MenuDir" On="uninstall" />
                         <RegistryValue Root="HKCU" Key="Software\TrustBox\RabNet" Name="installed" Type="integer" Value="1" KeyPath="yes" />
                     </Component>
