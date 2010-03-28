@@ -89,6 +89,7 @@
 		<property name="mysql.use" value="${bin_dir}/${mysql.lib}" />
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
 		<call target="updater"/>
+		<call target="keycoder"/>
 		<!--delete file=""${mysql.use}/-->
 	</target>
 	
@@ -279,8 +280,16 @@
 			</references>
 		</csc>
 	</target>
+	<target name="keycoder" description="Make keycoder project">
+		<csc target="winexe" output="${tools_dir}/keycoder.exe">
+			<sources>
+				<include name="${curdir}/keycoder/*.cs"/>
+			</sources>
+		</csc>
+	</target>
 	
-	<target name="distrib" >
+	
+	<target name="distrib" depends="obfuscate">
 		<mkdir dir="${root_bin}"/>
 		<delete dir="${root_bin}/distrib"/>
 		<mkdir dir="${root_bin}/distrib"/>
