@@ -61,6 +61,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(143, 20);
             this.textBox1.TabIndex = 2;
+            this.textBox1.Text = "0";
             // 
             // numericUpDown1
             // 
@@ -86,12 +87,14 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(276, 6);
+            this.button1.Enabled = false;
+            this.button1.Location = new System.Drawing.Point(281, 4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 4;
             this.button1.Text = "Code";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // textBox2
             // 
@@ -116,6 +119,7 @@
             this.Controls.Add(this.label1);
             this.Name = "MainForm";
             this.Text = "KeyCoder";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
