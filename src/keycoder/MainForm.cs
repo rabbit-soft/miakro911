@@ -58,6 +58,7 @@ namespace KeyCoder
             check(Api32.GrdSetAccessCodes(key, 0, 0, uint.Parse(textBox1.Text), 0),"SetAccessCodes");
             check(Api32.GrdSetFindMode(key, GrdFMR.Local, GrdFM.Type, 0, 0, 0, 0, 0, GrdDT.Win, GrdFMM.ALL, GrdFMI.USB),"SetFindMode");
             check(Api32.GrdFind(key, GrdF.First, out id,out pf), "Find");
+            log(String.Format("FoundKey"));
             log("All OK");
             button1.Enabled = true;
             }

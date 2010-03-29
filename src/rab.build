@@ -19,6 +19,11 @@
 	
 	<property name="mysql.lib" value="MySql.Data.dll" />
 	<property name="mysql.ass" value="${mysql.path}/${mysql.lib}" />
+
+	<property name="guardant.path" value="${mysql.path}" />
+	<property name="guardant.lib" value="Guardant.Api32ru.dll" />
+	<property name="guardant2.lib" value="GrdAPI32.DLL" />
+	<property name="guardant.ass" value="${guardant.path}/${guardant.lib}" />
 	
 	<property name="rep.lib" value="RdlViewer.dll" />
 	<property name="rep.ass" value="${rep.path}/${rep.lib}" />
@@ -49,10 +54,13 @@
 		<property name="mysql.use" value="${bin_dir}/${mysql.lib}" />
 		<property name="rep.use" value="${bin_dir}/${rep.lib}" />
 		<property name="repeng.use" value="${bin_dir}/${repeng.lib}" />
+		<property name="guardant.use" value="${bin_dir}/${guardant.lib}" />
 		<copy file="${log4net.ass}" tofile="${log4net.use}" />
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
 		<copy file="${rep.ass}" tofile="${rep.use}" />
 		<copy file="${repeng.ass}" tofile="${repeng.use}" />
+		<copy file="${guardant.ass}" tofile="${guardant.use}" />
+		<copy file="${guardant.path}/${guardant2.lib}" tofile="${bin_dir}/${guardant2.lib}" />
 		<copy todir="${bin_dir}/reports">
 			<fileset basedir="${curdir}/rabnet/gui/reports">
 				<include name="*.rdl"/>
@@ -87,7 +95,10 @@
 		<mkdir dir="${tools_dir}"/>
 		<property name="bin_dir" value="${tools_dir}"/>
 		<property name="mysql.use" value="${bin_dir}/${mysql.lib}" />
+		<property name="guardant.use" value="${bin_dir}/${guardant.lib}" />
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
+		<copy file="${guardant.ass}" tofile="${guardant.use}" />
+		<copy file="${guardant.path}/${guardant2.lib}" tofile="${bin_dir}/${guardant2.lib}" />
 		<call target="updater"/>
 		<call target="keycoder"/>
 		<!--delete file=""${mysql.use}/-->
@@ -285,6 +296,9 @@
 			<sources>
 				<include name="${curdir}/keycoder/*.cs"/>
 			</sources>
+			<references>
+				<include name="${guardant.use}"/>
+			</references>
 		</csc>
 	</target>
 	
