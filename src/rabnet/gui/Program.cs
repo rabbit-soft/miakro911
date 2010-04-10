@@ -16,7 +16,7 @@ namespace rabnet
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             log4net.Config.XmlConfigurator.Configure();
             ILog log = LogManager.GetLogger(typeof(Program));
@@ -26,7 +26,10 @@ namespace rabnet
             try
             {
 #endif
-                LoginForm lf = new LoginForm();
+                bool dbedit=false;
+                if (args.Length > 0 && args[0] == "dbedit")
+                    dbedit = true;
+                LoginForm lf = new LoginForm(dbedit);
                 LoginForm.stop = false;
                 while (!LoginForm.stop)
                 {

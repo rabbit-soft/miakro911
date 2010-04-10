@@ -16,10 +16,15 @@ namespace rabnet
     {
         public static bool stop = true;
         protected static readonly ILog log = LogManager.GetLogger(typeof(LoginForm));
+        private bool dbedit=false;
         public LoginForm()
         {
             InitializeComponent();
             log.Debug("inited");
+        }
+        public LoginForm(bool dbedit):this()
+        {
+            this.dbedit = dbedit;
         }
 
         public void readConfig()
@@ -112,6 +117,13 @@ namespace rabnet
             readConfig();
             textBox1.SelectAll();
             textBox1.Focus();
+            if (dbedit)
+            {
+                new FarmChangeForm(null).ShowDialog();
+                stop = true;
+                DialogResult = DialogResult.Cancel;
+                Close();
+            }
         }
 
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
