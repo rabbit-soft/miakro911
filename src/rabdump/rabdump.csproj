@@ -60,10 +60,19 @@
     <Compile Include="Options.cs">
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="RestoreForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RestoreForm.Designer.cs">
+      <DependentUpon>RestoreForm.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RestoreForm.resx">
+      <DependentUpon>RestoreForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
