@@ -129,8 +129,22 @@ namespace rabdump
 
         private void restMenuItem_Click(object sender, EventArgs e)
         {
+            RestoreForm rest = null;
             if (sender == restMenuItem)
-                return;
+                rest = new RestoreForm();
+            else
+                rest = new RestoreForm((sender as ToolStripMenuItem).Text);
+            rest.ShowDialog();
+        }
+
+        private void запуститьRabnetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ArchiveJobThread.runrabnet("");
+        }
+
+        private void новаяФермаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ArchiveJobThread.runrabnet("dbedit");
         }
 
     }

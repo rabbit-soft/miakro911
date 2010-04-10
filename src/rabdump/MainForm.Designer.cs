@@ -36,13 +36,16 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.jobnowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.jobsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.restMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.restMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.запуститьRabnetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.новаяФермаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -58,13 +61,16 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.restoreMenuItem,
             this.toolStripMenuItem1,
+            this.запуститьRabnetToolStripMenuItem,
+            this.новаяФермаToolStripMenuItem,
+            this.toolStripMenuItem3,
             this.jobnowMenuItem,
             this.jobsMenuItem,
             this.restMenuItem,
             this.toolStripMenuItem2,
             this.exitMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(183, 148);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(183, 198);
             // 
             // restoreMenuItem
             // 
@@ -91,6 +97,13 @@
             this.jobsMenuItem.Name = "jobsMenuItem";
             this.jobsMenuItem.Size = new System.Drawing.Size(182, 22);
             this.jobsMenuItem.Text = "Резервировать";
+            // 
+            // restMenuItem
+            // 
+            this.restMenuItem.Name = "restMenuItem";
+            this.restMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.restMenuItem.Text = "Восстановить";
+            this.restMenuItem.Click += new System.EventHandler(this.restMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -138,12 +151,24 @@
             this.timer1.Interval = 60000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // restMenuItem
+            // toolStripMenuItem3
             // 
-            this.restMenuItem.Name = "restMenuItem";
-            this.restMenuItem.Size = new System.Drawing.Size(182, 22);
-            this.restMenuItem.Text = "Восстановить";
-            this.restMenuItem.Click += new System.EventHandler(this.restMenuItem_Click);
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(179, 6);
+            // 
+            // запуститьRabnetToolStripMenuItem
+            // 
+            this.запуститьRabnetToolStripMenuItem.Name = "запуститьRabnetToolStripMenuItem";
+            this.запуститьRabnetToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.запуститьRabnetToolStripMenuItem.Text = "Запустить rabnet";
+            this.запуститьRabnetToolStripMenuItem.Click += new System.EventHandler(this.запуститьRabnetToolStripMenuItem_Click);
+            // 
+            // новаяФермаToolStripMenuItem
+            // 
+            this.новаяФермаToolStripMenuItem.Name = "новаяФермаToolStripMenuItem";
+            this.новаяФермаToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.новаяФермаToolStripMenuItem.Text = "Новая Ферма";
+            this.новаяФермаToolStripMenuItem.Click += new System.EventHandler(this.новаяФермаToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -185,6 +210,9 @@
         private System.Windows.Forms.PropertyGrid propertyGrid1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ToolStripMenuItem restMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem запуститьRabnetToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem новаяФермаToolStripMenuItem;
     }
 }
 
