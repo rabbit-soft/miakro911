@@ -47,6 +47,15 @@ namespace rabnet
             }
         }
 
+        public string licFarms()
+        {
+#if PROTECTED
+            return String.Format("Лицензия - {0:d} ферм",PClient.get().farms());
+#else 
+            return "Без ограничений";
+#endif
+        }
+
         public string AssemblyDescription
         {
             get
@@ -54,9 +63,9 @@ namespace rabnet
                 object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
                 if (attributes.Length == 0)
                 {
-                    return "";
+                    return ""+licFarms();
                 }
-                return ((AssemblyDescriptionAttribute)attributes[0]).Description;
+                return ((AssemblyDescriptionAttribute)attributes[0]).Description+licFarms();
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define PROTECTED
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -61,6 +62,26 @@ namespace rabnet
             shortZooMenuItem.Checked = (op.safeIntOption(Options.OPT_ID.SHORT_ZOO,1) == 1);
             //rabStatusBar1.run();
             manflag = false;
+#if PROTECTED
+            protest(getmax(Engine.db().buildingsTree(), 0));
+        }
+
+        private int getmax(TreeData td,int mx)
+        {
+            int tx=0;
+            String[] st = td.caption.Split(':');
+            if (st.Length == 3)
+                tx = int.Parse(st[1]);
+            if (tx > mx) mx=tx;
+            if (td.items!=null)
+            for (int i = 0; i < td.items.Length; i++)
+            {
+                tx = getmax(td.items[i], mx);
+                if (tx > mx)
+                    mx = tx;
+            }
+            return mx;
+#endif
         }
 
         private void фильтрToolStripMenuItem_Click(object sender, EventArgs e)
@@ -98,6 +119,7 @@ namespace rabnet
             actMenuItem.DropDown = curpanel.getMenu();
             curpanel.activate();
             working();
+            protest();
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -258,6 +280,31 @@ namespace rabnet
         public static void still_working()
         {
             me.working();
+        }
+        public static void protest()
+        {
+            me.ptest(0);
+        }
+        public static void protest(int farms)
+        {
+            me.ptest(farms);
+        }
+        public void ptest(int farms)
+        {
+#if PROTECTED
+            String msg = "";
+            if (!PClient.get().canwork())
+                msg = "Ключ защиты не найден.";
+            if (farms > 0 && farms > PClient.get().farms())
+                msg = "Превышено количество разрешенных ферм.";
+            if (msg != "")
+            {
+                MessageBox.Show(this,msg+"\nПрограмма будет закрыта.","Ошибка защиты",MessageBoxButtons.OK,MessageBoxIcon.Stop);
+                LoginForm.stop = true;
+                mustclose = true;
+                Close();
+            }
+#endif
         }
         private void MainForm_MouseMove(object sender, MouseEventArgs e)
         {

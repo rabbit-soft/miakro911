@@ -316,6 +316,7 @@
     <Compile Include="panels\YoungsPanel.Designer.cs">
       <DependentUpon>YoungsPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="pclient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="components\RabStatusBar.cs">
       <SubType>Component</SubType>
