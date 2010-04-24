@@ -20,6 +20,7 @@ namespace rabnet
         int action = 0;
         int preBuilding = 0;
         public BuildingsPanel(): base(){}
+        int maxfarm = 0;
 
         public BuildingsPanel(RabStatusBar bsb):base(bsb, new BuildingsFilter(bsb))
         {
@@ -41,7 +42,10 @@ namespace rabnet
                 return;
             }
             for (int i = nofarm; i < farm; i++)
-                nofarms.Add(i);
+#if PROTECTED
+                if (i<=PClient.get().farms())
+#endif
+                    nofarms.Add(i);
             nofarm = farm + 1;
         }
 
@@ -58,7 +62,9 @@ namespace rabnet
                 String[] st = td.items[i].caption.Split(':');
                 TreeNode child = makenode(n, st[2], td.items[i]);
                 child.Tag=st[0]+":"+st[1];
-                addNoFarm(int.Parse(st[1]));
+                int fid = int.Parse(st[1]);
+                addNoFarm(fid);
+                if (maxfarm < fid) maxfarm = fid;
                 if (int.Parse(st[0]) == preBuilding)
                 {
                     treeView1.SelectedNode = child;
@@ -75,8 +81,13 @@ namespace rabnet
             treeView1.Nodes.Clear();
             nofarms.Clear();
             nofarm = 1;
+            maxfarm = 0;
             TreeNode n=makenode(null,"Ферма",Engine.db().buildingsTree());
-            nofarms.Add(nofarm);
+#if PROTECTED
+            if (nofarm<=PClient.get().farms())
+#endif
+                nofarms.Add(nofarm);
+            MainForm.protest(maxfarm);
             treeView1.Sort();
             manual = true;
             n.Tag="0:0";
@@ -521,6 +532,11 @@ namespace rabnet
         {
             if (treeView1.SelectedNode == null) return;
             if (isFarm()) return;
+            if (nofarms.Count == 0)
+            {
+                MessageBox.Show("Достигнуто максимальное количество ферм.");
+                return;
+            }
             new MiniFarmForm(buildNum(), nofarms.ToArray()).ShowDialog();
             rsb.run();
         }
@@ -529,7 +545,9 @@ namespace rabnet
         {
             if (treeView1.SelectedNode == null) return;
             if (!isFarm()) return;
-            new MiniFarmForm(farmNum()).ShowDialog();
+            int fid=farmNum();
+            MainForm.protest(fid);
+            new MiniFarmForm(fid).ShowDialog();
             rsb.run();
         }
 

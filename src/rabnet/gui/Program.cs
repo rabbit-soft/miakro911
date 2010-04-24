@@ -1,4 +1,5 @@
 ﻿//#define GLOBCATCH
+//#define PROTECTED
 
 using System;
 using System.Collections.Generic;
@@ -22,11 +23,24 @@ namespace rabnet
             ILog log = LogManager.GetLogger(typeof(Program));
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+#if PROTECTED
+            bool exit = true;
+            do
+            {
+                exit = true;
+                int hkey = 0;
+                while (PClient.get().farms() == -1 && hkey == 0)
+                    if (MessageBox.Show(null, "Ключ защиты не найден!\nВставьте ключ защиты в компьютер с БД и нажмите кнопку повтор.",
+                            "Ключ защиты", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) == DialogResult.Cancel) hkey = -1;
+                if (PClient.get().farms() == -1)
+                    return;
+                //MessageBox.Show(String.Format("HAS {0:d} FARMS",PClient.get().farms()));
+#endif
 #if (GLOBCATCH)
             try
             {
 #endif
-                bool dbedit=false;
+                bool dbedit = false;
                 if (args.Length > 0 && args[0] == "dbedit")
                     dbedit = true;
                 LoginForm lf = new LoginForm(dbedit);
@@ -38,6 +52,10 @@ namespace rabnet
                     {
                         Application.Run(new MainForm());
                     }
+#if PROTECTED
+                    if (PClient.get().farms() == -1)
+                        LoginForm.stop = true;
+#endif
                 }
 #if (GLOBCATCH)
             }
@@ -46,6 +64,11 @@ namespace rabnet
                             log.Fatal("General fault exception", ex);
                             throw ex;
                         }
+#endif
+#if PROTECTED
+                if (PClient.get().farms() == -1)
+                    exit = false;
+            } while (!exit);
 #endif
          }
     }
