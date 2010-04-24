@@ -45,6 +45,8 @@
                         <File Id="RdlEngine.dll" Source="$(var.ProjectDir)\RdlEngine.dll" Checksum="yes" />
                         <File Id="RdlViewer.dll" Source="$(var.ProjectDir)\RdlViewer.dll" Checksum="yes" />
                         <File Id="updater.exe" Source="$(var.ProjectDir)\..\tools\updater.exe" Checksum="yes" />
+                        <File Id="GrdAPI32.dll" Source="$(var.ProjectDir)\GrdAPI32.dll" Checksum="yes" />
+                        <File Id="key.dll" Source="$(var.ProjectDir)\key.dll" Checksum="yes" />
                     </Component>
                     <Directory Id="ReportsDir" Name="reports">
                         <Component Id="Reports" Guid="AF1369D3-6231-4FE8-8884-7ECDA59DE059">
