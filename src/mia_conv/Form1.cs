@@ -93,6 +93,19 @@ namespace mia_conv
 
         private void button3_Click(object sender, EventArgs e)
         {
+#if PROTECTED
+            int fms=PClient.get().farms();
+            if (fms<0)
+            {
+                MessageBox.Show("Ключ защиты не найден.");
+                return;
+            }
+            if (fms < mia.builds.maxfarm)
+            {
+                MessageBox.Show(String.Format("Слишком много миниферм в файле({0:d}).\nКлюч защиты позволяет работать с {1:d} миниферм.",mia.builds.maxfarm,fms));
+                return;
+            }
+#endif
             MDCreator crt = new MDCreator(log);
 #if !NOCATCH 
             try

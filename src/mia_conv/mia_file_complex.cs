@@ -157,11 +157,16 @@ namespace mia_conv
         public MFBuilds(int li) : base("Builds",li) { }
         public MFUShort count=new MFUShort("count");
         public List<MiniFarm> minifarms=new List<MiniFarm>();
+        public int maxfarm = 0;
         public void read(BinaryReader br, float ver)
         {
             count.read(br,ver);
-            for (int i=0;i<(int)count.value();i++)
-                minifarms.Add(new MiniFarm(br,ver));
+            for (int i = 0; i < (int)count.value(); i++)
+            {
+                minifarms.Add(new MiniFarm(br, ver));
+                if (minifarms[i].id > maxfarm)
+                    maxfarm = minifarms[i].id;
+            }
         }
         public List<MiniFarm> value() { return minifarms; }
         public override String strval()
