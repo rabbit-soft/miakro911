@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define PROTECTED
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -100,6 +101,13 @@ namespace rabdump
         private void timer1_Tick(object sender, EventArgs e)
         {
             processTiming(false);
+#if PROTECTED
+            if (!pserver.canwork())
+            {
+                canclose = true;
+                Close();
+            }
+#endif
         }
 
         private void processTiming(bool onstart)
