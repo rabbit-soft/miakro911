@@ -21,7 +21,7 @@
 	<property name="mysql.ass" value="${mysql.path}/${mysql.lib}" />
 
 	<property name="guardant.path" value="${mysql.path}" />
-	<property name="guardant.lib" value="Guardant.Api32ru.dll" />
+	<property name="guardant.lib" value="key.dll" />
 	<property name="guardant2.lib" value="GrdAPI32.DLL" />
 	<property name="guardant.ass" value="${guardant.path}/${guardant.lib}" />
 	
@@ -95,12 +95,8 @@
 		<mkdir dir="${tools_dir}"/>
 		<property name="bin_dir" value="${tools_dir}"/>
 		<property name="mysql.use" value="${bin_dir}/${mysql.lib}" />
-		<property name="guardant.use" value="${bin_dir}/${guardant.lib}" />
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
-		<copy file="${guardant.ass}" tofile="${guardant.use}" />
-		<copy file="${guardant.path}/${guardant2.lib}" tofile="${bin_dir}/${guardant2.lib}" />
 		<call target="updater"/>
-		<call target="keycoder"/>
 		<!--delete file=""${mysql.use}/-->
 	</target>
 	
@@ -189,7 +185,7 @@
 	</target>
 	
 	<target name="rabdump" description="rabnet db dumper">
-		<csc target="winexe" output="${bin_dir}/rabdump.exe" win32icon="${curdir}/rabdump/logo3.ico">
+		<csc target="winexe" output="${bin_dir}/rabdump.exe" win32icon="${curdir}/rabdump/logo3.ico"  define="${compile_flag}">
 			<sources>
 				<include name="${curdir}/rabdump/*.cs"/>
 			</sources>
@@ -291,26 +287,15 @@
 			</references>
 		</csc>
 	</target>
-	<target name="keycoder" description="Make keycoder project">
-		<csc target="winexe" output="${tools_dir}/keycoder.exe">
-			<sources>
-				<include name="${curdir}/keycoder/*.cs"/>
-			</sources>
-			<references>
-				<include name="${guardant.use}"/>
-			</references>
-		</csc>
-	</target>
-	
 	
 	<target name="distrib" depends="obfuscate">
 		<mkdir dir="${root_bin}"/>
 		<delete dir="${root_bin}/distrib"/>
 		<mkdir dir="${root_bin}/distrib"/>
-		<property name="dist_type" value="rabnet"/>
+		<!--property name="dist_type" value="rabnet"/>
 		<property name="bin_dir" value="${root_bin}\release"/>
 		<property name="minver" value="1"/>
-		<call target="one_distrib"/>
+		<call target="one_distrib"/-->
 		<property name="dist_type" value="rabnet_protected"/>
 		<property name="bin_dir" value="${root_bin}\protected"/>
 		<property name="minver" value="2"/>
