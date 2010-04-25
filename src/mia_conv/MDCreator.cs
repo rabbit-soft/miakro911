@@ -885,6 +885,7 @@ VALUES('{0:s}',{1:d},{2:d},{3:d},'{4:s}',{5:d},{6:s}-INTERVAL {7:d} DAY,{8:d},{9
             string adr = arc.strings[2].value();
             string nm = arc.strings[3].value();
             int jid=jobid(arc.strings[1].value());
+            if (jid == 0) return;
             MySqlCommand cmd = new MySqlCommand(@"SELECT r_id FROM rabbits,names WHERE r_name=n_id AND n_name='"+nm+"';", sql);
             int r = 0;
             MySqlDataReader rd = cmd.ExecuteReader();
