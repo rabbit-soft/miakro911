@@ -406,12 +406,12 @@ namespace rabnet
                 groupBox1.Enabled = (cnt > 1);
                 if (cnt > 1)
                     numericUpDown1.Maximum = cnt-1;
-                button10.Enabled = button11.Enabled = rp().nusex == OneRabbit.RabbitSex.VOID;
+                button10.Enabled = button11.Enabled = button14.Enabled = rp().nusex == OneRabbit.RabbitSex.VOID;
                 groupBox1.Enabled = (rp().id != 0);
                 if (action == Action.ONE_GIRL_OUT)
                 {
                     numericUpDown1.Value = numericUpDown1.Maximum = numericUpDown1.Minimum = 1;
-                    button10.Enabled = button11.Enabled = button4.Enabled = false;
+                    button10.Enabled = button11.Enabled = button14.Enabled = button4.Enabled = false;
                     groupBox2.Enabled = false;
                 }
             }
@@ -607,6 +607,13 @@ namespace rabnet
             toolTip.SetToolTip(button10, "Отделить из выбранной группы безполых, N-количество Мальчиков,\nоставшаяся группа будет помечена как Девочки");
             toolTip.SetToolTip(button11, "Пометить группу безполых как Девочки");
                        
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count != 1) return;
+            rp().nusex = OneRabbit.RabbitSex.MALE;
+            update();
         }
     }
 }
