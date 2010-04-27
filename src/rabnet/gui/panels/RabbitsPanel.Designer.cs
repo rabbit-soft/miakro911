@@ -63,10 +63,10 @@
             this.svidMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.plemMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.realizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.replacePlanMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.GeneticsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.genTree = new System.Windows.Forms.TreeView();
-            this.replacePlanMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -215,54 +215,54 @@
             this.toolStripSeparator1,
             this.GeneticsToolStripMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(285, 440);
+            this.actMenu.Size = new System.Drawing.Size(221, 440);
             this.actMenu.Opening += new System.ComponentModel.CancelEventHandler(this.actMenu_Opening);
             // 
             // passportMenuItem
             // 
             this.passportMenuItem.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.passportMenuItem.Name = "passportMenuItem";
-            this.passportMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.passportMenuItem.Size = new System.Drawing.Size(220, 22);
             this.passportMenuItem.Text = "Паспорт";
             this.passportMenuItem.Click += new System.EventHandler(this.passportMenuItem_Click);
             // 
             // newRab
             // 
             this.newRab.Name = "newRab";
-            this.newRab.Size = new System.Drawing.Size(284, 22);
+            this.newRab.Size = new System.Drawing.Size(220, 22);
             this.newRab.Text = "Привоз";
             this.newRab.Click += new System.EventHandler(this.newRab_Click);
             // 
             // makeBon
             // 
             this.makeBon.Name = "makeBon";
-            this.makeBon.Size = new System.Drawing.Size(284, 22);
+            this.makeBon.Size = new System.Drawing.Size(220, 22);
             this.makeBon.Text = "Бонитировка";
             this.makeBon.Click += new System.EventHandler(this.makeBon_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(281, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(217, 6);
             // 
             // KillMenuItem
             // 
             this.KillMenuItem.Name = "KillMenuItem";
-            this.KillMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.KillMenuItem.Size = new System.Drawing.Size(220, 22);
             this.KillMenuItem.Text = "Списание";
             this.KillMenuItem.Click += new System.EventHandler(this.KillMenuItem_Click);
             // 
             // replaceMenuItem
             // 
             this.replaceMenuItem.Name = "replaceMenuItem";
-            this.replaceMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.replaceMenuItem.Size = new System.Drawing.Size(220, 22);
             this.replaceMenuItem.Text = "Пересадить/Отсадить";
             this.replaceMenuItem.Click += new System.EventHandler(this.replaceMenuItem_Click);
             // 
             // boysoutMenuItem
             // 
             this.boysoutMenuItem.Name = "boysoutMenuItem";
-            this.boysoutMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.boysoutMenuItem.Size = new System.Drawing.Size(220, 22);
             this.boysoutMenuItem.Text = "Отсадить мальчиков";
             this.boysoutMenuItem.Visible = false;
             this.boysoutMenuItem.Click += new System.EventHandler(this.boysoutMenuItem_Click);
@@ -270,88 +270,95 @@
             // replaceYoungersMenuItem
             // 
             this.replaceYoungersMenuItem.Name = "replaceYoungersMenuItem";
-            this.replaceYoungersMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.replaceYoungersMenuItem.Size = new System.Drawing.Size(220, 22);
             this.replaceYoungersMenuItem.Text = "Отсадить молодняк";
             this.replaceYoungersMenuItem.Click += new System.EventHandler(this.replaceYoungersMenuItem_Click);
             // 
             // placeChMenuItem
             // 
             this.placeChMenuItem.Name = "placeChMenuItem";
-            this.placeChMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.placeChMenuItem.Size = new System.Drawing.Size(220, 22);
             this.placeChMenuItem.Text = "Жилобмен";
             this.placeChMenuItem.Click += new System.EventHandler(this.placeChMenuItem_Click);
             // 
             // fuckMenuItem
             // 
             this.fuckMenuItem.Name = "fuckMenuItem";
-            this.fuckMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.fuckMenuItem.Size = new System.Drawing.Size(220, 22);
             this.fuckMenuItem.Text = "Случка";
             this.fuckMenuItem.Click += new System.EventHandler(this.fuckMenuItem_Click);
             // 
             // proholostMenuItem
             // 
             this.proholostMenuItem.Name = "proholostMenuItem";
-            this.proholostMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.proholostMenuItem.Size = new System.Drawing.Size(220, 22);
             this.proholostMenuItem.Text = "Прохолостание";
             this.proholostMenuItem.Click += new System.EventHandler(this.proholostMenuItem_Click);
             // 
             // okrolMenuItem
             // 
             this.okrolMenuItem.Name = "okrolMenuItem";
-            this.okrolMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.okrolMenuItem.Size = new System.Drawing.Size(220, 22);
             this.okrolMenuItem.Text = "Принять окрол";
             this.okrolMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // countKidsMenuItem
             // 
             this.countKidsMenuItem.Name = "countKidsMenuItem";
-            this.countKidsMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.countKidsMenuItem.Size = new System.Drawing.Size(220, 22);
             this.countKidsMenuItem.Text = "Подсчет гнездовых";
             this.countKidsMenuItem.Click += new System.EventHandler(this.countKidsMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(281, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(217, 6);
             // 
             // SelectAllMenuItem
             // 
             this.SelectAllMenuItem.Name = "SelectAllMenuItem";
             this.SelectAllMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.SelectAllMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.SelectAllMenuItem.Size = new System.Drawing.Size(220, 22);
             this.SelectAllMenuItem.Text = "Выбрать всех";
             this.SelectAllMenuItem.Click += new System.EventHandler(this.SelectAllMenuItem_Click);
             // 
             // svidMenuItem
             // 
             this.svidMenuItem.Name = "svidMenuItem";
-            this.svidMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.svidMenuItem.Size = new System.Drawing.Size(220, 22);
             this.svidMenuItem.Text = "Племенное свидетельство";
             this.svidMenuItem.Click += new System.EventHandler(this.svidMenuItem_Click);
             // 
             // plemMenuItem
             // 
             this.plemMenuItem.Name = "plemMenuItem";
-            this.plemMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.plemMenuItem.Size = new System.Drawing.Size(220, 22);
             this.plemMenuItem.Text = "Племенной список";
             this.plemMenuItem.Click += new System.EventHandler(this.plemMenuItem_Click);
             // 
             // realizeMenuItem
             // 
             this.realizeMenuItem.Name = "realizeMenuItem";
-            this.realizeMenuItem.Size = new System.Drawing.Size(284, 22);
-            this.realizeMenuItem.Text = "Выбранные кандидаты на реализацию";
+            this.realizeMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.realizeMenuItem.Text = "Кандидаты на реализацию";
             this.realizeMenuItem.Click += new System.EventHandler(this.realizeMenuItem_Click);
+            // 
+            // replacePlanMenuItem
+            // 
+            this.replacePlanMenuItem.Name = "replacePlanMenuItem";
+            this.replacePlanMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.replacePlanMenuItem.Text = "План пересадок";
+            this.replacePlanMenuItem.Click += new System.EventHandler(this.replacePlanMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(281, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(217, 6);
             // 
             // GeneticsToolStripMenuItem
             // 
             this.GeneticsToolStripMenuItem.Name = "GeneticsToolStripMenuItem";
-            this.GeneticsToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.GeneticsToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
             this.GeneticsToolStripMenuItem.Text = "Показать родословную";
             this.GeneticsToolStripMenuItem.Click += new System.EventHandler(this.GeneticsToolStripMenuItem_Click);
             // 
@@ -364,13 +371,6 @@
             this.genTree.Name = "genTree";
             this.genTree.Size = new System.Drawing.Size(134, 544);
             this.genTree.TabIndex = 1;
-            // 
-            // replacePlanMenuItem
-            // 
-            this.replacePlanMenuItem.Name = "replacePlanMenuItem";
-            this.replacePlanMenuItem.Size = new System.Drawing.Size(284, 22);
-            this.replacePlanMenuItem.Text = "План пересадок";
-            this.replacePlanMenuItem.Click += new System.EventHandler(this.replacePlanMenuItem_Click);
             // 
             // RabbitsPanel
             // 

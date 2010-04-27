@@ -47,6 +47,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.nudCount = new System.Windows.Forms.NumericUpDown();
             this.nudRepl = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRepl)).BeginInit();
             this.SuspendLayout();
@@ -201,11 +202,20 @@
             // 
             this.nudRepl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.nudRepl.Enabled = false;
-            this.nudRepl.Location = new System.Drawing.Point(774, 59);
+            this.nudRepl.Location = new System.Drawing.Point(774, 82);
             this.nudRepl.Name = "nudRepl";
             this.nudRepl.Size = new System.Drawing.Size(75, 20);
             this.nudRepl.TabIndex = 9;
             this.nudRepl.ValueChanged += new System.EventHandler(this.nudRepl_ValueChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(774, 66);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(58, 13);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Отсадить:";
             // 
             // ReplaceYoungersForm
             // 
@@ -214,6 +224,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button2;
             this.ClientSize = new System.Drawing.Size(857, 441);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.nudRepl);
             this.Controls.Add(this.nudCount);
             this.Controls.Add(this.label5);
@@ -260,5 +271,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader9;
         private System.Windows.Forms.NumericUpDown nudCount;
         private System.Windows.Forms.NumericUpDown nudRepl;
+        private System.Windows.Forms.Label label6;
     }
 }

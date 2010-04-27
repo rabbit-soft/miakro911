@@ -38,6 +38,7 @@
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button14 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.button11 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
@@ -48,7 +49,6 @@
             this.button9 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
-            this.button14 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -188,6 +188,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Рассадить группу";
             // 
+            // button14
+            // 
+            this.button14.Location = new System.Drawing.Point(6, 177);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(107, 23);
+            this.button14.TabIndex = 14;
+            this.button14.Text = "Все мальчики";
+            this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -300,16 +310,6 @@
             this.button12.UseVisualStyleBackColor = true;
             this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
-            // button14
-            // 
-            this.button14.Location = new System.Drawing.Point(6, 177);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(107, 23);
-            this.button14.TabIndex = 14;
-            this.button14.Text = "Все мальчики";
-            this.button14.UseVisualStyleBackColor = true;
-            this.button14.Click += new System.EventHandler(this.button14_Click);
-            // 
             // ReplaceForm
             // 
             this.AcceptButton = this.button1;
@@ -334,7 +334,7 @@
             this.Name = "ReplaceForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.Text = "План пересадок";
+            this.Text = "Пересадки";
             this.Load += new System.EventHandler(this.ReplaceForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);
