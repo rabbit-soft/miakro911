@@ -25,7 +25,7 @@ namespace rabnet
 
         protected override IDataGetter onPrepare(Filters f)
         {
-            gentree = Engine.opt().getIntOption(Options.OPT_ID.GEN_TREE);
+            gentree = Engine.opt().getIntOption(Options.OPT_ID.GEN_TREE)-1;
             f = new Filters();
             Options op = Engine.opt();
             f["shr"] = op.getOption(Options.OPT_ID.SHORT_NAMES);

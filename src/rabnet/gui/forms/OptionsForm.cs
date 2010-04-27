@@ -79,8 +79,8 @@ namespace rabnet
             Description("Спрашивать подтверждение при списании кроликов")]
             public RUBOOL confirmKill { get { return ck; } set { ck = value; } }
             [Category("Вид"), 
-            DisplayName("Генетические деревья"),
-            Description("Количество показываемых генетических деревьев в Поголовье")]
+            DisplayName("Деревья роословной"),
+            Description("Количество отображаемых Деревьев родословной в Поголовье и Молодняке")]
             public int genTree { get { return gt; } set { gt = value; } }
             [Category("Вид"),
             DisplayName("Обновлять зоотехплан"),
