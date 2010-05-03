@@ -65,7 +65,7 @@
             this.listView1.Location = new System.Drawing.Point(4, 28);
             this.listView1.Name = "listView1";
             this.listView1.OwnerDraw = true;
-            this.listView1.Size = new System.Drawing.Size(425, 312);
+            this.listView1.Size = new System.Drawing.Size(487, 308);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -96,7 +96,7 @@
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.Cursor = System.Windows.Forms.Cursors.Default;
             this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(438, 159);
+            this.button2.Location = new System.Drawing.Point(500, 159);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(70, 23);
             this.button2.TabIndex = 4;
@@ -108,7 +108,7 @@
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(438, 124);
+            this.button1.Location = new System.Drawing.Point(500, 124);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(70, 23);
             this.button1.TabIndex = 3;
@@ -120,7 +120,7 @@
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(435, 303);
+            this.label4.Location = new System.Drawing.Point(497, 299);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(105, 13);
             this.label4.TabIndex = 7;
@@ -135,7 +135,7 @@
             "все",
             "свободные",
             "занятые"});
-            this.comboBox2.Location = new System.Drawing.Point(438, 319);
+            this.comboBox2.Location = new System.Drawing.Point(500, 315);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(120, 21);
             this.comboBox2.TabIndex = 5;
@@ -145,7 +145,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(435, 73);
+            this.label2.Location = new System.Drawing.Point(497, 73);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(56, 13);
             this.label2.TabIndex = 4;
@@ -154,7 +154,7 @@
             // textBox2
             // 
             this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox2.Location = new System.Drawing.Point(438, 89);
+            this.textBox2.Location = new System.Drawing.Point(500, 89);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(120, 20);
             this.textBox2.TabIndex = 2;
@@ -164,7 +164,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(435, 28);
+            this.label1.Location = new System.Drawing.Point(497, 28);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(29, 13);
             this.label1.TabIndex = 2;
@@ -173,7 +173,7 @@
             // textBox1
             // 
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(438, 44);
+            this.textBox1.Location = new System.Drawing.Point(500, 44);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(120, 20);
             this.textBox1.TabIndex = 1;
@@ -187,7 +187,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(572, 22);
+            this.tabControl1.Size = new System.Drawing.Size(634, 22);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -196,7 +196,7 @@
             this.tpMale.Location = new System.Drawing.Point(4, 22);
             this.tpMale.Name = "tpMale";
             this.tpMale.Padding = new System.Windows.Forms.Padding(3);
-            this.tpMale.Size = new System.Drawing.Size(564, 0);
+            this.tpMale.Size = new System.Drawing.Size(626, 0);
             this.tpMale.TabIndex = 0;
             this.tpMale.Text = "Мужские";
             this.tpMale.UseVisualStyleBackColor = true;
@@ -215,10 +215,10 @@
             // rabStatusBar1
             // 
             this.rabStatusBar1.filterPanel = null;
-            this.rabStatusBar1.Location = new System.Drawing.Point(0, 343);
+            this.rabStatusBar1.Location = new System.Drawing.Point(0, 339);
             this.rabStatusBar1.Name = "rabStatusBar1";
             this.rabStatusBar1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.rabStatusBar1.Size = new System.Drawing.Size(572, 23);
+            this.rabStatusBar1.Size = new System.Drawing.Size(634, 23);
             this.rabStatusBar1.TabIndex = 0;
             this.rabStatusBar1.Text = "rabStatusBar1";
             this.rabStatusBar1.itemGet += new rabnet.RabStatusBar.RSBItemEventHandler(this.rabStatusBar1_itemGet);
@@ -228,7 +228,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(572, 366);
+            this.ClientSize = new System.Drawing.Size(634, 362);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.comboBox2);
@@ -244,6 +244,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(500, 300);
             this.Name = "NamesForm";
+            this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Справочник имен";
             this.tabControl1.ResumeLayout(false);
