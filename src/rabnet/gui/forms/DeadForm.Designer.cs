@@ -139,7 +139,7 @@
             this.Name = "DeadForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.Text = "Списания";
+            this.Text = "Архив списаний";
             this.Activated += new System.EventHandler(this.DeadForm_Activated);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
