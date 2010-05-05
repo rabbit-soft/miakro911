@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using log4net;
 
 
-
 namespace rabnet
 {
 	public class GeneticsManager
