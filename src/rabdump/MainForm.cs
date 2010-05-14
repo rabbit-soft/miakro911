@@ -41,6 +41,8 @@ namespace rabdump
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (e.CloseReason == CloseReason.WindowsShutDown)
+                canclose = true;
             e.Cancel = !canclose;
             if (canclose)
                 log().Debug("Program finished");
