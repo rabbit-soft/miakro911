@@ -428,16 +428,19 @@ namespace rabnet
         {
             if (action != 0)
             {
-                if (e.Label == null)
+                if (e.Label == null || e.Label == "")
+                {
+                    e.CancelEdit = true;
                     treeView1.SelectedNode.Remove();
+                }
                 else
                 {
-                    Engine.db().addBuilding(buildNum(nodeToAdd),e.Label);
+                    Engine.db().addBuilding(buildNum(nodeToAdd), e.Label);
                 }
                 nodeToAdd = null;
                 action = 0;
             }
-            if (e.Label == null) return;
+            if (e.Label == null || e.Label == "") { e.CancelEdit = true; return; }
             if (!manual) return;
             if (e.Node == treeView1.Nodes[0])
             {
