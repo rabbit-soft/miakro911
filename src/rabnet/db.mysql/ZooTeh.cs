@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 using System.Text;
+using log4net;
 
 namespace rabnet
 {
@@ -43,6 +44,7 @@ namespace rabnet
 
     public class ZooJobItem
     {
+        
         public int type;
         public int id;
         public String name;
@@ -135,6 +137,7 @@ namespace rabnet
     class ZooTehGetter
     {
         private MySqlConnection sql;
+        protected static ILog log = log4net.LogManager.GetLogger(typeof(RabNetDataGetterBase));
         private Filters op;
         public ZooTehGetter(MySqlConnection sql,Filters f)
         {
@@ -318,7 +321,8 @@ ORDER BY r_born DESC,0+LEFT(place,LOCATE(',',place)) ASC;", days));
 FROM rabbits WHERE r_sex='female' AND r_event_date IS NOT NULL) c 
 WHERE (((children IS NULL AND sukr>={0:d}) OR (children>0 AND sukr>={1:d}))) AND
 place NOT like '%,%,0,jurta,%,1' ORDER BY sukr DESC,0+LEFT(place,LOCATE(',',place)) ASC;", wochild, wchild);
-             MySqlDataReader rd = reader(query);
+            log.Debug("db.myasql.ZooTeh: "+query);
+            MySqlDataReader rd = reader(query);
             List<ZooJobItem> res = new List<ZooJobItem>();
             while (rd.Read())
             {

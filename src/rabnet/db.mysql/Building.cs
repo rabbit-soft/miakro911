@@ -426,6 +426,7 @@ t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4 FROM minifarms,tiers WHERE
             int frm = farm;
             MySqlCommand cmd = new MySqlCommand(String.Format(@"INSERT INTO buildings(b_name,b_parent,b_level,b_farm) VALUES(
 '{0:s}',{1:d},{3:s},{2:d});",name,parent,frm,(parent==0?"0":String.Format("(SELECT b2.b_level+1 FROM buildings b2 WHERE b2.b_id={0:d})",parent))), sql);
+            log.Debug("db.mysql.Building: "+cmd.CommandText);
             cmd.ExecuteNonQuery();
         }
 
@@ -480,9 +481,21 @@ t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4 FROM minifarms,tiers WHERE
             if (type == "none") return 0;
             String hn = "00";
             String delims = "000";
-            if (type == "quarta") delims = "111"; if (type == "barin") delims = "100";
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"INSERT INTO tiers(t_type,t_delims,t_heater,t_nest,t_notes) 
-VALUES('{0:s}','{1:s}','{2:s}','{2:s}','');",type,delims,hn), sql);
+            if (type == "barin") delims = "100";
+            MySqlCommand cmd = new MySqlCommand("",sql);
+            switch (type) 
+            {
+                case "jurta":
+                    {
+                        delims = "111";
+                        cmd.CommandText = String.Format(@"INSERT INTO tiers(t_type,t_delims,t_heater,t_nest,t_notes,t_busy1,t_busy2,t_busy3,t_busy4) 
+VALUES('{0:s}','{1:s}','{2:s}','{2:s}','',0,0,null,null);", type, delims, hn); 
+                        break;
+                    }
+                default: cmd.CommandText=String.Format(@"INSERT INTO tiers(t_type,t_delims,t_heater,t_nest,t_notes) 
+VALUES('{0:s}','{1:s}','{2:s}','{2:s}','');", type, delims, hn);break;
+            }           
+            log.Debug("db.mysql.Building: "+cmd.CommandText);
             cmd.ExecuteNonQuery();
             return (int)cmd.LastInsertedId;
         }
@@ -505,8 +518,10 @@ t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}' WHERE t_id={3:d};", type, delim
             int res = 0;
             MySqlCommand cmd =new MySqlCommand(String.Format("INSERT INTO minifarms(m_upper,m_lower{2:s}) VALUES({0:d},{1:d}{3:s});",
                 t1,t2,(frm==0?"":",m_id"),(frm==0?"":String.Format(",{0:d}",frm))),sql);
+            log.Debug("db.mysql.Building: "+cmd.CommandText);
             cmd.ExecuteNonQuery();
             res = (int)cmd.LastInsertedId;
+
             addBuilding(sql, parent, (name!=""?name:String.Format("№{0:d}",res)), res);
             return res;
         }

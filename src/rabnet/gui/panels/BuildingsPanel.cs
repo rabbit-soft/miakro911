@@ -595,7 +595,10 @@ namespace rabnet
         {
             int i = str.Length - 1;
             while (Char.IsDigit(str[i]))
+            {
                 i--;
+                if (i == -1) return str;
+            }
             i++;
             return str.Substring(0, i);
         }
