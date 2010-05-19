@@ -487,7 +487,8 @@ t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4 FROM minifarms,tiers WHERE
             {
                 case "jurta":
                     {
-                        delims = "111";
+                        delims = "0";
+                        hn = "0";
                         cmd.CommandText = String.Format(@"INSERT INTO tiers(t_type,t_delims,t_heater,t_nest,t_notes,t_busy1,t_busy2,t_busy3,t_busy4) 
 VALUES('{0:s}','{1:s}','{2:s}','{2:s}','',0,0,null,null);", type, delims, hn); 
                         break;
