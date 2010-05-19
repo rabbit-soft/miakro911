@@ -43,6 +43,7 @@
             this.actMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.replaceYoungersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.replacePlanMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.genTree = new System.Windows.Forms.TreeView();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -141,10 +142,10 @@
             // 
             this.actMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.replaceYoungersMenuItem,
-            this.replacePlanMenuItem});
+            this.replacePlanMenuItem,
+            this.toolStripMenuItem1});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(188, 70);
-            this.actMenu.Opening += new System.ComponentModel.CancelEventHandler(this.actMenu_Opening);
+            this.actMenu.Size = new System.Drawing.Size(188, 76);
             // 
             // replaceYoungersMenuItem
             // 
@@ -159,6 +160,11 @@
             this.replacePlanMenuItem.Size = new System.Drawing.Size(187, 22);
             this.replacePlanMenuItem.Text = "План пересадок";
             this.replacePlanMenuItem.Click += new System.EventHandler(this.replacePlanMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(184, 6);
             // 
             // genTree
             // 
@@ -201,6 +207,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader10;
         private System.Windows.Forms.ContextMenuStrip actMenu;
         private System.Windows.Forms.ToolStripMenuItem replaceYoungersMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem replacePlanMenuItem;
 
     }
