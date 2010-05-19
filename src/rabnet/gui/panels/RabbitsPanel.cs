@@ -196,16 +196,6 @@ namespace rabnet
             return actMenu;
         }
 
-        private void SelectAllMenuItem_Click(object sender, EventArgs e)
-        {
-            manual = false;
-            foreach (ListViewItem li in listView1.Items)
-                li.Selected=true;
-            listView1.Show();
-            manual = true;
-            listView1_SelectedIndexChanged(null, null);
-        }
-
         private void passportMenuItem_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count != 1)

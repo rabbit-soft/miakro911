@@ -179,15 +179,6 @@ namespace rabnet
             rsb.setText(3, String.Format("Выбрано {0:d} строк - {1:d} кроликов", rows, cnt));
         }
 
-        private void selectAllMenuItem_Click(object sender, EventArgs e)
-        {
-            manual = false;
-            for (int i = 0; i < listView1.Items.Count; i++)
-                listView1.Items[i].Selected = true;
-            manual = true;
-            listView1_SelectedIndexChanged(null, null);
-        }
-
         private void listView1_MouseDown(object sender, MouseEventArgs e)
         {
             manual = false;
@@ -213,8 +204,6 @@ namespace rabnet
             }
             new ReportViewForm("План пересадок", "replace_plan", doc).ShowDialog();
         }
-
-
 
     }
 }

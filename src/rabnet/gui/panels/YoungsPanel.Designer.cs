@@ -42,10 +42,8 @@
             this.columnHeader10 = new System.Windows.Forms.ColumnHeader();
             this.actMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.replaceYoungersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.selectAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.genTree = new System.Windows.Forms.TreeView();
             this.replacePlanMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.genTree = new System.Windows.Forms.TreeView();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -143,31 +141,24 @@
             // 
             this.actMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.replaceYoungersMenuItem,
-            this.replacePlanMenuItem,
-            this.toolStripMenuItem1,
-            this.selectAllMenuItem});
+            this.replacePlanMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(189, 98);
+            this.actMenu.Size = new System.Drawing.Size(188, 70);
+            this.actMenu.Opening += new System.ComponentModel.CancelEventHandler(this.actMenu_Opening);
             // 
             // replaceYoungersMenuItem
             // 
             this.replaceYoungersMenuItem.Name = "replaceYoungersMenuItem";
-            this.replaceYoungersMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.replaceYoungersMenuItem.Size = new System.Drawing.Size(187, 22);
             this.replaceYoungersMenuItem.Text = "Отсадить молодняк";
             this.replaceYoungersMenuItem.Click += new System.EventHandler(this.replaceYoungersMenuItem_Click);
             // 
-            // toolStripMenuItem1
+            // replacePlanMenuItem
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(185, 6);
-            // 
-            // selectAllMenuItem
-            // 
-            this.selectAllMenuItem.Name = "selectAllMenuItem";
-            this.selectAllMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.selectAllMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.selectAllMenuItem.Text = "Выбрать все";
-            this.selectAllMenuItem.Click += new System.EventHandler(this.selectAllMenuItem_Click);
+            this.replacePlanMenuItem.Name = "replacePlanMenuItem";
+            this.replacePlanMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.replacePlanMenuItem.Text = "План пересадок";
+            this.replacePlanMenuItem.Click += new System.EventHandler(this.replacePlanMenuItem_Click);
             // 
             // genTree
             // 
@@ -178,13 +169,6 @@
             this.genTree.Name = "genTree";
             this.genTree.Size = new System.Drawing.Size(160, 534);
             this.genTree.TabIndex = 0;
-            // 
-            // replacePlanMenuItem
-            // 
-            this.replacePlanMenuItem.Name = "replacePlanMenuItem";
-            this.replacePlanMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.replacePlanMenuItem.Text = "План пересадок";
-            this.replacePlanMenuItem.Click += new System.EventHandler(this.replacePlanMenuItem_Click);
             // 
             // YoungsPanel
             // 
@@ -217,8 +201,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader10;
         private System.Windows.Forms.ContextMenuStrip actMenu;
         private System.Windows.Forms.ToolStripMenuItem replaceYoungersMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem selectAllMenuItem;
         private System.Windows.Forms.ToolStripMenuItem replacePlanMenuItem;
 
     }
