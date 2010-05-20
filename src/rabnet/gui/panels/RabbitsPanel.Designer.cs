@@ -65,6 +65,7 @@
             this.replacePlanMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.GeneticsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.логЗаписиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.genTree = new System.Windows.Forms.TreeView();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -211,9 +212,10 @@
             this.realizeMenuItem,
             this.replacePlanMenuItem,
             this.toolStripSeparator1,
-            this.GeneticsToolStripMenuItem});
+            this.GeneticsToolStripMenuItem,
+            this.логЗаписиToolStripMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(225, 418);
+            this.actMenu.Size = new System.Drawing.Size(225, 440);
             this.actMenu.Opening += new System.ComponentModel.CancelEventHandler(this.actMenu_Opening);
             // 
             // passportMenuItem
@@ -352,6 +354,16 @@
             this.GeneticsToolStripMenuItem.Text = "Показать родословную";
             this.GeneticsToolStripMenuItem.Click += new System.EventHandler(this.GeneticsToolStripMenuItem_Click);
             // 
+            // логЗаписиToolStripMenuItem
+            // 
+            this.логЗаписиToolStripMenuItem.Name = "логЗаписиToolStripMenuItem";
+            this.логЗаписиToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+                        | System.Windows.Forms.Keys.S)));
+            this.логЗаписиToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.логЗаписиToolStripMenuItem.Text = "Лог записи";
+            this.логЗаписиToolStripMenuItem.Visible = false;
+            this.логЗаписиToolStripMenuItem.Click += new System.EventHandler(this.логЗаписиToolStripMenuItem_Click);
+            // 
             // genTree
             // 
             this.genTree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
@@ -416,5 +428,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem plemMenuItem;
         private System.Windows.Forms.ToolStripMenuItem replacePlanMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem логЗаписиToolStripMenuItem;
     }
 }

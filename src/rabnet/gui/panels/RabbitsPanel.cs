@@ -6,6 +6,7 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
+using System.IO;
 
 namespace rabnet
 {
@@ -582,6 +583,31 @@ namespace rabnet
                 rw.AppendChild(doc.CreateElement("count")).AppendChild(doc.CreateTextNode(cn));
             }
             new ReportViewForm("План пересадок", "replace_plan", doc).ShowDialog();
+        }
+
+        private void логЗаписиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!Directory.Exists("zapis")) Directory.CreateDirectory("zapis");
+                string path = "zapis/log_" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt";
+                StreamWriter rw = new StreamWriter(path);
+
+                foreach (ListViewItem x in listView1.Items)
+                {
+                    string s = "";
+                    for (int i = 0; i < x.SubItems.Count - 1; i++) s += " " + x.SubItems[i].Text;
+                    rw.WriteLine(s);
+                }
+                rw.Close();
+                MessageBox.Show("Запись прошла успешно\n\rИмя файла: " + path, "Сохранение в файл");
+
+            }
+            catch (Exception exep)
+            {
+                MessageBox.Show(exep.Message);
+            }
+            
         }
 
     }
