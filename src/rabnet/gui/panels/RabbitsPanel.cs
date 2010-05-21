@@ -595,8 +595,18 @@ namespace rabnet
 
                 foreach (ListViewItem x in listView1.Items)
                 {
-                    string s = "";
-                    for (int i = 0; i < x.SubItems.Count - 1; i++) s += " " + x.SubItems[i].Text;
+                    string s = x.SubItems[1].Text;
+                    for (int i = 1; i < x.SubItems.Count - 1; i++) 
+                    {
+                        if (i==2 || i==8) continue;
+                        if (i == 1 || x.SubItems[i].Text.StartsWith("С"))
+                        {
+                            s += "|С";
+                            continue;
+                        }
+                        s += "|" + x.SubItems[i].Text;
+                    }
+                    
                     rw.WriteLine(s);
                 }
                 rw.Close();
@@ -608,6 +618,11 @@ namespace rabnet
                 MessageBox.Show(exep.Message);
             }
             
+        }
+
+        private void сравнитьЛогиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new aaa_merge().ShowDialog();
         }
 
     }

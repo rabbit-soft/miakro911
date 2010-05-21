@@ -83,6 +83,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="components\ColorPickerColumn\IDropDownDisplayAdapte.cs" />
+    <Compile Include="forms\aaa_merge.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\aaa_merge.Designer.cs">
+      <DependentUpon>aaa_merge.cs</DependentUpon>
+    </Compile>
     <Compile Include="forms\PreReplaceYoungersForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -363,6 +369,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="filters\ZootehFilter.resx">
       <DependentUpon>ZootehFilter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\aaa_merge.resx">
+      <DependentUpon>aaa_merge.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
