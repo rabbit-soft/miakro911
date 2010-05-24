@@ -109,16 +109,23 @@ namespace rabdump
         }
         public void save(XmlNode nd,XmlDocument doc)
         {
-            XmlElement j = doc.CreateElement("job");
-            j.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(Name));
-            j.AppendChild(doc.CreateElement("db")).AppendChild(doc.CreateTextNode(DB.Name));
-            j.AppendChild(doc.CreateElement("path")).AppendChild(doc.CreateTextNode(BackupPath));
-            j.AppendChild(doc.CreateElement("sizelim")).AppendChild(doc.CreateTextNode(SizeLimit.ToString()));
-            j.AppendChild(doc.CreateElement("countlim")).AppendChild(doc.CreateTextNode(CountLimit.ToString()));
-            j.AppendChild(doc.CreateElement("start")).AppendChild(doc.CreateTextNode(st.ToString("dd.MM.yyyy HH:mm")));
-            j.AppendChild(doc.CreateElement("type")).AppendChild(doc.CreateTextNode(Type.ToString()));
-            j.AppendChild(doc.CreateElement("repeat")).AppendChild(doc.CreateTextNode(Repeat.ToString()));
-            nd.AppendChild(j);
+            try
+            {
+                XmlElement j = doc.CreateElement("job");
+                j.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(Name));
+                j.AppendChild(doc.CreateElement("db")).AppendChild(doc.CreateTextNode(DB.Name));
+                j.AppendChild(doc.CreateElement("path")).AppendChild(doc.CreateTextNode(BackupPath));
+                j.AppendChild(doc.CreateElement("sizelim")).AppendChild(doc.CreateTextNode(SizeLimit.ToString()));
+                j.AppendChild(doc.CreateElement("countlim")).AppendChild(doc.CreateTextNode(CountLimit.ToString()));
+                j.AppendChild(doc.CreateElement("start")).AppendChild(doc.CreateTextNode(st.ToString("dd.MM.yyyy HH:mm")));
+                j.AppendChild(doc.CreateElement("type")).AppendChild(doc.CreateTextNode(Type.ToString()));
+                j.AppendChild(doc.CreateElement("repeat")).AppendChild(doc.CreateTextNode(Repeat.ToString()));
+                nd.AppendChild(j);
+            }
+            catch(NullReferenceException)
+            {
+                MessageBox.Show("Не все поля были заполненны верно");
+            }
         }
         public void load(XmlNode nd)
         {
