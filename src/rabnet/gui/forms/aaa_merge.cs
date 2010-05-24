@@ -40,21 +40,33 @@ namespace rabnet
                 list2.Add(sr2.ReadLine());
             }
             sr2.Close();
-            
-            for (int i1=0;i1<list1.Count;i1++)
+
+            int i1 = 0;
+            while (i1 < list1.Count)
             {
-                bool flag = false;
-                for (int i2=0;i2<list2.Count;i2++)
-                {                  
-                    if (list1[i1].ToString() == list2[i2].ToString())
+                int i2 = 0;
+                while (i2 < list2.Count)
+                {
+                    if (list1[i1] == list2[i2])
                     {
-                        flag = true;   
+                        list1.RemoveAt(i1);
+                        list2.RemoveAt(i2);
+                        i2--;
                     }
+                    i2++;
                 }
-                if (!flag) listBox1.Items.Add(list1[i1].ToString());
-                
+                i1++;
             }
-            
+            foreach (string s in list1)
+            {
+                listBox1.Items.Add(s);
+            }
+            foreach (string s in list2)
+            {
+                listBox2.Items.Add(s);
+            }
+
         }
     }
 }
+
