@@ -5,6 +5,7 @@ using System.Windows.Forms.Design;
 using System.Configuration;
 using System.Collections.Generic;
 using System.Xml;
+using System.IO;
 using Microsoft.Win32;
 using System.Windows.Forms;
 
@@ -19,7 +20,7 @@ namespace rabdump
         public DataBase(String name):this() {nm=name;}
         private string db,host,user,pswd,nm="BadDatabase";
         [Category(OBJ),DisplayName("Название"),Description("")]
-        public String Name { get { return nm; } set { nm = value; } }
+        public String Name { get { return nm; } set { if (value!="") nm = value; } }
         [Category(DB), DisplayName("Хост"), Description("")]
         public String Host{get{return host;} set{host=value;}}
         [Category(DB), DisplayName("Имя БД"), Description("")]
@@ -86,7 +87,7 @@ namespace rabdump
         public bool busy = false;
         public DateTime lastWork = DateTime.MinValue;
         [Category(OBJ), DisplayName("Название"), Description("")]
-        public String Name { get { return nm; } set { nm = value; } }
+        public String Name { get { return nm; } set { if (value!="") nm = value; } }
         [Category(DATA), DisplayName("База Данных"), Description(""),
          Editor(typeof(DataBaseEditor), typeof(UITypeEditor))]
         public DataBase DB { get { return db; } set { db = value; } }
@@ -96,7 +97,7 @@ namespace rabdump
         public int CountLimit { get { return cl; } set { cl = value; } }
         [Category(DATA), DisplayName("Путь к резервным копиям"),Description(""),
         Editor(typeof(FolderNameEditor), typeof(UITypeEditor))]
-        public String BackupPath { get { return bp; } set { bp = value; } }
+        public String BackupPath { get { return bp; } set { if (Directory.Exists(value)) bp = value; } }
         [Category(TIME), DisplayName("Начало Резервирования"),Description("")]
         public DateTime StartTime { get { return st; } set { st = value; } }
         [Category(TIME), DisplayName("Резервировать"), Description("")]
