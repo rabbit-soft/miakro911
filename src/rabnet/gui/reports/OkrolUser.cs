@@ -24,10 +24,12 @@ namespace rabnet
 
         private void dtpFrom_ValueChanged(object sender, EventArgs e)
         {
-            if (dtpFrom.Value > dtpTo.Value)
+            //if (dtpFrom.Value > dtpTo.Value)
                 dtpTo.Value = dtpFrom.Value.AddMonths(1).AddDays(-1);
+            /*
             if (dtpTo.Value < dtpFrom.Value)
                 dtpFrom.Value = dtpTo.Value.AddMonths(-1).AddDays(1);
+             * */
         }
 
         public int getUser()

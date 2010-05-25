@@ -87,6 +87,7 @@
             // 
             // dtpTo
             // 
+            this.dtpTo.Enabled = false;
             this.dtpTo.Location = new System.Drawing.Point(52, 76);
             this.dtpTo.Name = "dtpTo";
             this.dtpTo.Size = new System.Drawing.Size(144, 20);
