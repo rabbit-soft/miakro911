@@ -218,12 +218,10 @@ namespace rabnet
                     if (job.flag > 1)
                     {
                         id = 0;
-                        rf = new ReplaceForm();
-                        rf.addRabbit(job.id);
-                        rf.setAction(ReplaceForm.Action.ONE_GIRL_OUT);
-                        res = rf.ShowDialog();
+                        ReplaceBride rb=new ReplaceBride(job.id);
+                        res = rb.ShowDialog();
                         if (res == DialogResult.OK)
-                            id = rf.getGirlOut();
+                            id = rb.getGirlOut();
                         res = DialogResult.Cancel;
                     }
                     if (id!=0) 

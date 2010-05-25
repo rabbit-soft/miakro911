@@ -95,6 +95,12 @@
     <Compile Include="forms\PreReplaceYoungersForm.Designer.cs">
       <DependentUpon>PreReplaceYoungersForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="forms\ReplaceBride.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\ReplaceBride.Designer.cs">
+      <DependentUpon>ReplaceBride.cs</DependentUpon>
+    </Compile>
     <Compile Include="forms\SelectUserForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -432,6 +438,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\RabbitInfo.resx">
       <DependentUpon>RabbitInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\ReplaceBride.resx">
+      <DependentUpon>ReplaceBride.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\ReplaceForm.resx">
       <DependentUpon>ReplaceForm.cs</DependentUpon>
