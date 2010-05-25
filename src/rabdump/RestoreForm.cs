@@ -13,7 +13,8 @@ namespace rabdump
             setMode(true);
             foreach (ArchiveJob j in Options.get().Jobs)
                 comboBox1.Items.Add(j.Name);
-            comboBox1.SelectedIndex = 0;
+            if (comboBox1.Items.Count>0)
+                comboBox1.SelectedIndex = 0;
         }
 
         public RestoreForm(String place):this()

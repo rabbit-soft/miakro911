@@ -17,7 +17,7 @@ namespace rabdump
         const string OBJ = " Объект";
         public DataBase() { }
         public DataBase(String name):this() {nm=name;}
-        private string db,host,user,pswd,nm;
+        private string db,host,user,pswd,nm="BadDatabase";
         [Category(OBJ),DisplayName("Название"),Description("")]
         public String Name { get { return nm; } set { nm = value; } }
         [Category(DB), DisplayName("Хост"), Description("")]
@@ -78,9 +78,9 @@ namespace rabdump
         const string OBJ = " Объект";
         const string DATA = "Данные";
         const string TIME = "Расписание";
-        private string nm,bp;
+        private string nm="BadJob",bp="C:\\";
         private int sl, cl, rp;
-        private DataBase db;
+        private DataBase db=DataBase.AllDataBases;
         private DateTime st;
         private ArcType tp;
         public bool busy = false;
