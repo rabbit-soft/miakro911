@@ -81,8 +81,12 @@ namespace rabnet
                     if (type == "jurta") grVigul.Visible = true;
                     if (type == "dfemale") grNest2.Visible = true;
                     break;
-                case "quarta": grDelims.Visible = true; break;
-                case "barin": grDelim.Visible = true;  break;
+                case "quarta":
+                    //grDelims.Visible = true; 
+                    break;
+                case "barin": 
+                    //grDelim.Visible = true;  
+                    break;
             }
         }
 
