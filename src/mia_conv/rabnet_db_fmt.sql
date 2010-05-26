@@ -30,7 +30,7 @@ DROP TABLE IF EXISTS breeds;
 CREATE TABLE breeds(
 	b_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	b_name VARCHAR(50) NOT NULL,
-	b_short_name VARCHAR(4) NOT NULL,
+	b_short_name VARCHAR(7) NOT NULL,
 	b_color VARCHAR(100) NOT NULL default "White"
 );
 
