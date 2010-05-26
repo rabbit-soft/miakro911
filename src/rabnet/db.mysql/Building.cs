@@ -482,6 +482,7 @@ t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4 FROM minifarms,tiers WHERE
             String hn = "00";
             String delims = "000";
             if (type == "barin") delims = "100";
+            if (type == "quarta") delims = "111"; 
             MySqlCommand cmd = new MySqlCommand("",sql);
             switch (type) 
             {

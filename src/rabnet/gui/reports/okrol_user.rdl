@@ -82,6 +82,8 @@
           <BorderStyle>
             <Default>Solid</Default>
           </BorderStyle>
+          <BorderColor  />
+          <BorderWidth  />
         </Style>
         <Corner>
           <ReportItems>
@@ -120,6 +122,8 @@
                     <BorderStyle>
                       <Default>Solid</Default>
                     </BorderStyle>
+                    <BorderColor  />
+                    <BorderWidth  />
                   </Style>
                 </Textbox>
               </ReportItems>
@@ -150,7 +154,7 @@
         </RowGroupings>
         <MatrixColumns>
           <MatrixColumn>
-            <Width>29.1pt</Width>
+            <Width>20.8pt</Width>
           </MatrixColumn>
         </MatrixColumns>
         <MatrixRows>

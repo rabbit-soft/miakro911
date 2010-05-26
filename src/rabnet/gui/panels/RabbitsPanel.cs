@@ -625,5 +625,10 @@ namespace rabnet
             new aaa_merge().ShowDialog();
         }
 
+        private void показатьНомерToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(listView1.SelectedItems[0].Tag.ToString());
+        }
+
     }
 }

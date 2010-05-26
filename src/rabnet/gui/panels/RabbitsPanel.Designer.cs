@@ -69,6 +69,7 @@
             this.логЗаписиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.сравнитьЛогиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.genTree = new System.Windows.Forms.TreeView();
+            this.показатьНомерToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -217,9 +218,10 @@
             this.GeneticsToolStripMenuItem,
             this.toolStripSeparator2,
             this.логЗаписиToolStripMenuItem,
-            this.сравнитьЛогиToolStripMenuItem});
+            this.сравнитьЛогиToolStripMenuItem,
+            this.показатьНомерToolStripMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(230, 468);
+            this.actMenu.Size = new System.Drawing.Size(237, 490);
             this.actMenu.Opening += new System.ComponentModel.CancelEventHandler(this.actMenu_Opening);
             // 
             // passportMenuItem
@@ -362,6 +364,7 @@
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(226, 6);
+            this.toolStripSeparator2.Visible = false;
             // 
             // логЗаписиToolStripMenuItem
             // 
@@ -392,6 +395,16 @@
             this.genTree.Name = "genTree";
             this.genTree.Size = new System.Drawing.Size(134, 544);
             this.genTree.TabIndex = 1;
+            // 
+            // показатьНомерToolStripMenuItem
+            // 
+            this.показатьНомерToolStripMenuItem.Name = "показатьНомерToolStripMenuItem";
+            this.показатьНомерToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+                        | System.Windows.Forms.Keys.Z)));
+            this.показатьНомерToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
+            this.показатьНомерToolStripMenuItem.Text = "Показать номер";
+            this.показатьНомерToolStripMenuItem.Visible = false;
+            this.показатьНомерToolStripMenuItem.Click += new System.EventHandler(this.показатьНомерToolStripMenuItem_Click);
             // 
             // RabbitsPanel
             // 
@@ -450,5 +463,6 @@
         private System.Windows.Forms.ToolStripMenuItem логЗаписиToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem сравнитьЛогиToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem показатьНомерToolStripMenuItem;
     }
 }

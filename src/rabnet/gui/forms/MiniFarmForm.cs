@@ -54,13 +54,13 @@ namespace rabnet
         {
             switch(type)
             {
-                case "female": return 1;
-                case "dfemale": return 2;
-                case "complex": return 3;
-                case "jurta": return 4;
-                case "quarta": return 5;
-                case "vertep": return 6;
-                case "barin": return 7;
+                case "jurta": return 1;
+                case "quarta": return 2;
+                case "vertep": return 3;
+                case "barin": return 4;
+                case "female": return 5;
+                case "dfemale": return 6;
+                case "complex": return 7;                
                 case "cabin": return 8;
             }
             return 0;
@@ -70,13 +70,13 @@ namespace rabnet
         {
             switch(id)
             {
-                case 1: return "female";
-                case 2: return "dfemale";
-                case 3: return "complex";
-                case 4: return "jurta";
-                case 5: return "quarta";
-                case 6: return "vertep";
-                case 7: return "barin";
+                case 1: return "jurta";
+                case 2: return "quarta";
+                case 3: return "vertep";
+                case 4: return "barin";
+                case 5: return "female";
+                case 6: return "dfemale";
+                case 7: return "complex";
                 case 8: return "cabin";
             }
             return "none";

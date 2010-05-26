@@ -61,13 +61,13 @@
             this.cbUpper.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbUpper.FormattingEnabled = true;
             this.cbUpper.Items.AddRange(new object[] {
-            "Крольчихин",
-            "Двукрольчихин",
-            "Комплексный",
             "Юрта",
             "Кварта",
             "Вертеп",
             "Барин",
+            "Крольчихин",
+            "Двукрольчихин",
+            "Комплексный",
             "Хижина"});
             this.cbUpper.Location = new System.Drawing.Point(125, 37);
             this.cbUpper.Name = "cbUpper";
@@ -80,13 +80,13 @@
             this.cbLower.FormattingEnabled = true;
             this.cbLower.Items.AddRange(new object[] {
             "Нет",
-            "Крольчихин",
-            "Двукрольчихин",
-            "Комплексный",
             "Юрта",
             "Кварта",
             "Вертеп",
             "Барин",
+            "Крольчихин",
+            "Двукрольчихин",
+            "Комплексный",
             "Хижина"});
             this.cbLower.Location = new System.Drawing.Point(125, 69);
             this.cbLower.Name = "cbLower";
