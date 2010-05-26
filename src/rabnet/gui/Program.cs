@@ -1,4 +1,4 @@
-﻿//#define GLOBCATCH
+﻿#define GLOBCATCH
 //#define PROTECTED
 
 using System;
@@ -85,7 +85,8 @@ namespace rabnet
                         catch (Exception ex)
                         {
                             log.Fatal("General fault exception", ex);
-                            throw ex;
+                            MessageBox.Show("Извините, но программа допустила фатальную ошибку и будет закрыта.");
+                            //throw ex;
                         }
 #endif
 #if PROTECTED
