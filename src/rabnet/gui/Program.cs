@@ -85,7 +85,14 @@ namespace rabnet
                         catch (Exception ex)
                         {
                             log.Fatal("General fault exception", ex);
-                            MessageBox.Show("Извините, но программа допустила фатальную ошибку и будет закрыта.");
+                            if (ex.Source == "MySql.Data")
+                            {
+                                MessageBox.Show("Соединение с сервером было разорвано.\n\rПрграмма будет закрыта");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Произошла ошибка. Программа будет закрыта.\n\r"+ex.Message);
+                            }
                             //throw ex;
                         }
 #endif

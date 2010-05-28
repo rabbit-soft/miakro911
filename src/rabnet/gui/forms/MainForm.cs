@@ -311,5 +311,10 @@ namespace rabnet
             working();
         }
 
+        private void gjvjomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Help.ShowHelp(this, "rabHelp.chm");
+        }
+
     }
 }
