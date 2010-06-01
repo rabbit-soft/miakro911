@@ -204,8 +204,8 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d},'{7:d}');",
             int secname = getNameId((ushort)r.pathkey.value(), 1,false);
             vals += String.Format(",{0:d},{1:d},{2:d},'{3:s}',{4:d}", name, surname, secname,r.notes.value(),r.okrol_num.value());
             int tier=getTier((int)r.where.value(),(int)r.tier_id.value());
-            if (parent==0)
-                settieruser(tier,(int)r.area.value(),curRabbit);
+            if (parent == 0)
+                settieruser(tier, (int)r.area.value(), curRabbit);
             if (name != 0)
                 setnameuser(name, curRabbit);
             String flags = String.Format("{0:D1}{1:D1}{2:D1}",r.butcher.value(),r.risk.value(),r.multi.value());
@@ -213,7 +213,10 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d},'{7:d}');",
                 flags += String.Format("{0:D1}{1:D1}",r.female.no_kuk.value(),r.female.no_lact.value());
             else
                 flags += "00";
-            vals += String.Format(",{0:d},{1:d},{2:d},{3:d}",r.where.value(),r.tier_id.value(),tier,r.area.value());
+            if (parent==0)
+                vals += String.Format(",{0:d},{1:d},{2:d},{3:d}",r.where.value(),r.tier_id.value(),tier,r.area.value());
+            else
+                vals += String.Format(",{0:d},{1:d},{2:d},{3:d}", 0, 0, 0, 0);
             vals += String.Format(",{0:d},{1:d},{2:d},'{3:s}',{4:d}", 0/*r.rate.value()*/, r.group.value(),
                 findbreed((int)r.breed.value()),flags,r.zone.value());
             int status=0;
