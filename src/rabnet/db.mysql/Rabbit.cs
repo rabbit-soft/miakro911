@@ -681,7 +681,7 @@ r_area,t_busy1,t_busy2,t_busy3,t_busy4,m_upper,m_lower,m_id FROM rabbits,tiers,m
             {
                 cmd.CommandText = String.Format("UPDATE tiers SET t_busy{0:d}=0 WHERE t_id={1:d};", sc + 1, tr);
                 cmd.ExecuteNonQuery();
-                cmd.CommandText = String.Format("select r_id from rabbits where r_farm={0:d} and r_tier={1:d} and r_tier_id={2:d} and r_area={3:d} and r_id<>{4:d} limit 1;",frm,tr,tid,sc,rabbit);
+                cmd.CommandText = String.Format("select r_id from rabbits where r_farm={0:d} and r_tier={1:d} and r_tier_id={2:d} and r_area={3:d} and r_id<>{4:d} and r_parent=0 limit 1;",frm,tr,tid,sc,rabbit);
                 rd = cmd.ExecuteReader();
                 if(rd.Read())
                 {
