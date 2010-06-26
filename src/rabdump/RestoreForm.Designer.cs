@@ -35,21 +35,21 @@
             this.label2 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.listView1 = new System.Windows.Forms.ListView();
-            this.button3 = new System.Windows.Forms.Button();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.button3 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.tbHost = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.tbUser = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.tbPassword = new System.Windows.Forms.TextBox();
-            this.tbDB = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.tbFile = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
+            this.tbFile = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.tbDB = new System.Windows.Forms.TextBox();
+            this.tbPassword = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tbUser = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.tbHost = new System.Windows.Forms.TextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -129,16 +129,6 @@
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(12, 315);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(160, 23);
-            this.button3.TabIndex = 7;
-            this.button3.Text = "Расширенный режим <<";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
             // columnHeader1
             // 
             this.columnHeader1.Text = "Дата";
@@ -148,6 +138,16 @@
             // 
             this.columnHeader2.Text = "Имя файла";
             this.columnHeader2.Width = 291;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(12, 315);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(160, 23);
+            this.button3.TabIndex = 7;
+            this.button3.Text = "Расширенный режим <<";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // groupBox1
             // 
@@ -169,69 +169,22 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Расширенный режим";
             // 
-            // tbHost
+            // button4
             // 
-            this.tbHost.Location = new System.Drawing.Point(77, 19);
-            this.tbHost.Name = "tbHost";
-            this.tbHost.Size = new System.Drawing.Size(126, 20);
-            this.tbHost.TabIndex = 0;
+            this.button4.Location = new System.Drawing.Point(460, 90);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(27, 23);
+            this.button4.TabIndex = 5;
+            this.button4.Text = "...";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // label3
+            // tbFile
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(40, 22);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(31, 13);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "Хост";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(218, 22);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(80, 13);
-            this.label4.TabIndex = 2;
-            this.label4.Text = "Пользователь";
-            // 
-            // tbUser
-            // 
-            this.tbUser.Location = new System.Drawing.Point(304, 19);
-            this.tbUser.Name = "tbUser";
-            this.tbUser.Size = new System.Drawing.Size(100, 20);
-            this.tbUser.TabIndex = 3;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(253, 48);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(45, 13);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "Пароль";
-            // 
-            // tbPassword
-            // 
-            this.tbPassword.Location = new System.Drawing.Point(304, 45);
-            this.tbPassword.Name = "tbPassword";
-            this.tbPassword.Size = new System.Drawing.Size(100, 20);
-            this.tbPassword.TabIndex = 5;
-            // 
-            // tbDB
-            // 
-            this.tbDB.Location = new System.Drawing.Point(77, 49);
-            this.tbDB.Name = "tbDB";
-            this.tbDB.Size = new System.Drawing.Size(126, 20);
-            this.tbDB.TabIndex = 6;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(23, 52);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(48, 13);
-            this.label6.TabIndex = 7;
-            this.label6.Text = "Имя БД";
+            this.tbFile.Location = new System.Drawing.Point(81, 92);
+            this.tbFile.Name = "tbFile";
+            this.tbFile.Size = new System.Drawing.Size(373, 20);
+            this.tbFile.TabIndex = 4;
             // 
             // label7
             // 
@@ -242,22 +195,69 @@
             this.label7.TabIndex = 8;
             this.label7.Text = "Файл копии";
             // 
-            // tbFile
+            // label6
             // 
-            this.tbFile.Location = new System.Drawing.Point(81, 92);
-            this.tbFile.Name = "tbFile";
-            this.tbFile.Size = new System.Drawing.Size(373, 20);
-            this.tbFile.TabIndex = 9;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(23, 52);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(48, 13);
+            this.label6.TabIndex = 7;
+            this.label6.Text = "Имя БД";
             // 
-            // button4
+            // tbDB
             // 
-            this.button4.Location = new System.Drawing.Point(460, 90);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(27, 23);
-            this.button4.TabIndex = 10;
-            this.button4.Text = "...";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.tbDB.Location = new System.Drawing.Point(77, 49);
+            this.tbDB.Name = "tbDB";
+            this.tbDB.Size = new System.Drawing.Size(126, 20);
+            this.tbDB.TabIndex = 1;
+            // 
+            // tbPassword
+            // 
+            this.tbPassword.Location = new System.Drawing.Point(304, 45);
+            this.tbPassword.Name = "tbPassword";
+            this.tbPassword.Size = new System.Drawing.Size(100, 20);
+            this.tbPassword.TabIndex = 3;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(253, 48);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(45, 13);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "Пароль";
+            // 
+            // tbUser
+            // 
+            this.tbUser.Location = new System.Drawing.Point(304, 19);
+            this.tbUser.Name = "tbUser";
+            this.tbUser.Size = new System.Drawing.Size(100, 20);
+            this.tbUser.TabIndex = 2;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(218, 22);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(80, 13);
+            this.label4.TabIndex = 2;
+            this.label4.Text = "Пользователь";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(40, 22);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(31, 13);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "Хост";
+            // 
+            // tbHost
+            // 
+            this.tbHost.Location = new System.Drawing.Point(77, 19);
+            this.tbHost.Name = "tbHost";
+            this.tbHost.Size = new System.Drawing.Size(126, 20);
+            this.tbHost.TabIndex = 0;
             // 
             // openFileDialog1
             // 
