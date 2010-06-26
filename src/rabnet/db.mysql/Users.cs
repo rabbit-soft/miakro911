@@ -113,10 +113,9 @@ VALUES('{0:s}','{1:s}',MD5('{2:s}'));",name,getGroup(group),password));
                 tb = rd.GetString(0);
             rd.Close();
             DateTime dt = DateTime.MinValue;
-            if (!DateTime.TryParse(tb, out dt)) dt = DateTime.Parse("15.03.2010");
+            if (!DateTime.TryParse(tb, out dt)) dt = DateTime.Parse("20.04.2010");
             if (dt.AddMonths(3) < DateTime.Now)
                 throw new Exception("Bad Database CheckSumm. ReInitialize database.");
-
         }
 
     }
