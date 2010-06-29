@@ -848,7 +848,7 @@ f_dead=f_dead+{0:d},f_killed=f_killed+{1:d},f_added=f_added+{2:d} WHERE f_rabid=
 
         public static void combineGroups(MySqlConnection sql, int rabfrom, int rabto)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format("select r_mother,r_father,r_okrol from rabbits where r_id={0:d};", rabfrom), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT r_mother,r_father,r_okrol from rabbits where r_id={0:d};", rabfrom), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             
             int[] Arabfrom = new int[3];            
@@ -880,13 +880,14 @@ f_dead=f_dead+{0:d},f_killed=f_killed+{1:d},f_added=f_added+{2:d} WHERE f_rabid=
                 rd.Close();
                 cmd.CommandText = String.Format("UPDATE rabbits SET r_group=r_group+{0:d} WHERE r_id={1:d};", cnt, rabto);
                 cmd.ExecuteNonQuery();
-                cmd.CommandText = String.Format("CALL killRabbit({0:d},1,'{1:d}');", rabfrom, rabto);
+                freeTier(sql, rabfrom);
+                cmd.CommandText = String.Format("CALL killRabbit({0:d},1,'{1:d}');", rabfrom,"Объединен с"+rabto);
                 cmd.ExecuteNonQuery();
             }
             else
             {
                 freeTier(sql, rabfrom);
-                cmd.CommandText = String.Format("Select r_farm,r_tier,r_tier_id,r_area from rabbits where r_id={0:d};",rabto);
+                cmd.CommandText = String.Format("SELECT r_farm, r_tier, r_tier_id, r_area FROM rabbits WHERE r_id={0:d};", rabto);
                 rd = cmd.ExecuteReader();
                 if (rd.Read())
                 {
