@@ -265,11 +265,17 @@ r_status,r_flags,r_event_date,r_breed
             return (shr ? "-" : "Нет");
         }
 
+        public static TreeData getRabbitGen(int rabbit, MySqlConnection con)
+        {
+            return getRabbitGen(rabbit,con,0);
+        }
 
-        public static TreeData getRabbitGen(int rabbit,MySqlConnection con)
+        public static TreeData getRabbitGen(int rabbit,MySqlConnection con,byte level)
         {
             if (rabbit==0)
                 return null;
+            if (level == 7) return null;
+            level++;
             MySqlCommand cmd = new MySqlCommand(@"SELECT
 rabname(r_id,1) name,
 (SELECT n_use FROM names WHERE n_id=r_surname) mother,
@@ -283,8 +289,8 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
                 int mom=rd.IsDBNull(1)?0:rd.GetInt32(1);
                 int dad = rd.IsDBNull(2) ? 0 : rd.GetInt32(2);
                 rd.Close();
-                TreeData m = getRabbitGen(mom, con);
-                TreeData d = getRabbitGen(dad, con);
+                TreeData m = getRabbitGen(mom, con,level);
+                TreeData d = getRabbitGen(dad, con,level);
                 if (m == null)
                 {
                     m = d;
