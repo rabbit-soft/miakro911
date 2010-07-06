@@ -303,7 +303,7 @@ ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;",
         {
             MySqlDataReader rd = reader(String.Format(@"SELECT r_id,rabname(r_id," + getnm() + @") name,rabplace(r_id) place,
 (TO_DAYS(NOW())-TO_DAYS(r_born)) age," + brd() + @" 
-FROM rabbits WHERE (r_flags like '__0__' OR r_flags like '__1__')  AND (TO_DAYS(NOW())-TO_DAYS(r_born))>={0:d} 
+FROM rabbits WHERE (r_flags like '__0__' OR r_flags like '__1__' OR COALESCE(r_vaccine_end,NOW())<=NOW())  AND (TO_DAYS(NOW())-TO_DAYS(r_born))>={0:d} 
 ORDER BY r_born DESC,0+LEFT(place,LOCATE(',',place)) ASC;", days));
             List<ZooJobItem> res = new List<ZooJobItem>();
             while (rd.Read())

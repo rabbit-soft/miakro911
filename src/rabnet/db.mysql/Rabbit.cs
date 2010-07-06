@@ -29,7 +29,8 @@ namespace rabnet
     class Rabbits:RabNetDataGetterBase
     {
         public Rabbits(MySqlConnection sql, Filters opts) : base(sql, opts) { }
-        public override IData nextItem()
+        
+        public override IData nextItem() /*получение обьекта объект Rabbit*/ 
         {
             Rabbit r=new Rabbit(rd.GetInt32(0));
             r.fname = "";
@@ -84,23 +85,24 @@ namespace rabnet
                     r.faverage = -1;
             }
             //if (nm == "")
-            //    r.fname += "-" + rd.GetString("r_okrol").ToString();
+            //r.fname += "-" + rd.GetString("r_okrol").ToString();
             r.fbreed = rd.GetString("breed");
             r.fweight = rd.IsDBNull(8) ? "?" : rd.GetString("weight");
             String flg = rd.GetString("r_flags");
             r.fbgp = "";
-            if (flg[2] == '1') r.fbgp += "Б";
-            if (flg[2] == '2') r.fbgp += "в";
-            if (flg[0] != '0') r.fbgp += "ГП";
+            if (flg[2] == '1') r.fbgp +=Separate(r.fbgp)+"Б";
+            if (flg[2] == '2' || rd.GetDateTime("vac") > DateTime.Now) r.fbgp += Separate(r.fbgp) + "в";
+            if (flg[0] != '0') r.fbgp += Separate(r.fbgp) + "ГП";
             if (flg[1] != '0') r.fbgp = "<" + r.fbgp + ">";
             r.frate = rd.GetInt32("r_rate");
             r.fcls=Rabbits.getBon(rd.GetString("r_bon"),shr);
             r.fnotes = rd.GetString("r_notes");
             r.faddress = Buildings.fullPlaceName(rd.GetString("place"), shr, options.safeBool("sht"), options.safeBool("sho"));
-//                Buildings.fullRName(rd.GetInt32("r_farm"), rd.GetInt32("r_tier_id"), rd.GetInt32("r_area"),
-  //              rd.GetString("t_type"), rd.GetString("t_delims"), shr, options.safeBool("sht"), options.safeBool("sho"));
+            //Buildings.fullRName(rd.GetInt32("r_farm"), rd.GetInt32("r_tier_id"), rd.GetInt32("r_area"),
+            //rd.GetString("t_type"), rd.GetString("t_delims"), shr, options.safeBool("sht"), options.safeBool("sho"));
             return r;
         }
+
 
 
         public String makeWhere()
@@ -216,7 +218,7 @@ r_okrol,r_sex,
 TO_DAYS(NOW())-TO_DAYS(r_event_date) sukr,
 r_event,
 TO_DAYS(NOW())-TO_DAYS(r_born) age,
-(SELECT " + fld+@" FROM breeds WHERE b_id=r_breed) breed,
+(SELECT " + fld+ @" FROM breeds WHERE b_id=r_breed) breed,
 (SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight,
 r_status,
 r_flags,
@@ -229,8 +231,9 @@ rabplace(r_id) place,
 r_notes,
 r_born,
 r_event_date,
-r_breed
-FROM rabbits WHERE r_parent=0 ORDER BY name) c"+makeWhere()+";");
+r_breed,
+COALESCE(r_vaccine_end,now()) vac
+FROM rabbits WHERE r_parent=0 ORDER BY name) c" + makeWhere()+";");
         }
         /*
         r_farm,
@@ -312,6 +315,10 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             return res;
         }
 
+        private string Separate(string s)
+        {
+            if (s.Length != 0) return ","; else return "";
+        }
     }
 
     public class OneRabbit
@@ -424,6 +431,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
         {
             return (DateTime.Now-born).Days;
         }
+
         public string medAddress{get{return Buildings.fullPlaceName(justAddress, false, true, false);}}
     }
 

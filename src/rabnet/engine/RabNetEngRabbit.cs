@@ -87,8 +87,7 @@ namespace rabnet
                     throw new ExNotOne("переименовать");
                 eng.logs().log(RabNetLogs.LogType.RENAME, rid, 0, "", "", eng.db().makeName(rab.wasname, 0, 0, 1, rab.sex));
             }
-            else
-                eng.logs().log(RabNetLogs.LogType.RAB_CHANGE, rid);
+            else eng.logs().log(RabNetLogs.LogType.RAB_CHANGE, rid);
             eng.db().setRabbit(rab);
             rab=eng.db().getRabbit(id);
         }

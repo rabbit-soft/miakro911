@@ -48,6 +48,7 @@ namespace rabnet
                 f["heter"] = Engine.opt().getOption(Options.OPT_ID.GETEROSIS);
                 f["inbr"] = Engine.opt().getOption(Options.OPT_ID.INBREEDING);
                 f["mwait"] = Engine.opt().getOption(Options.OPT_ID.MALE_WAIT);
+                f["vactime"] = Engine.opt().getOption(Options.OPT_ID.VACCINE_TIME);
 
                 itm = -1;
                 if (listView1.SelectedItems.Count == 1)

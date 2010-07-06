@@ -108,14 +108,15 @@ VALUES('{0:s}','{1:s}',MD5('{2:s}'));",name,getGroup(group),password));
         public void checktb()
         {
             MySqlDataReader rd = reader("SELECT o_value FROM options WHERE o_name='db' AND o_subname='tb';");
-            String tb ="";
+            String tb = "";
             if (rd.Read())
                 tb = rd.GetString(0);
             rd.Close();
+            /* здесь была тайм бомба
             DateTime dt = DateTime.MinValue;
             if (!DateTime.TryParse(tb, out dt)) dt = DateTime.Parse("20.04.2010");
-            if (dt.AddMonths(3) < DateTime.Now)
-                throw new Exception("Bad Database CheckSumm. ReInitialize database.");
+            if (dt.AddMonths(3) < DateTime.Now) throw new Exception("Bad Database CheckSumm. ReInitialize database.");
+            */
         }
 
     }

@@ -15,7 +15,7 @@ namespace rabnet
         {
             [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
             public enum RUBOOL { Да, Нет };
-            private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su,n,cn,tt;
+            private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su,n,cn,tt,vactime;
             private string gd, sh;
             private RUBOOL ce, ck, uz,sp;
             [Category("Зоотехнические сроки"),DisplayName("Окрол"),
@@ -69,6 +69,9 @@ namespace rabnet
             [Category("Зоотехнические сроки"), DisplayName("Установка гнездовья при молодняке"),
             Description("Пересадить крольчиху в Юрту(А) если у нее есть подсосные")]
             public int childnest { get { return cn; } set { cn = value; } }
+            [Category("Зоотехнические сроки"), DisplayName("Действие Прививки"),
+            Description("Количество дней, сколько действует прививка")]
+            public int vaccine_time { get { return vactime; } set { vactime = value; } }
 
             [Category("Вид"),
             DisplayName("Подтверждение выхода"),
@@ -142,6 +145,7 @@ namespace rabnet
                 suck = o.getIntOption(Options.OPT_ID.SUCKERS);
                 nest = o.getIntOption(Options.OPT_ID.NEST);
                 childnest = o.getIntOption(Options.OPT_ID.CHILD_NEST);
+                vaccine_time = o.getIntOption(Options.OPT_ID.VACCINE_TIME);
                 //view
                 genTree = o.getIntOption(Options.OPT_ID.GEN_TREE);
                 confirmExit = toR(o.getIntOption(Options.OPT_ID.CONFIRM_EXIT));
@@ -152,6 +156,7 @@ namespace rabnet
                 nextSvid = o.getIntOption(Options.OPT_ID.NEXT_SVID);
                 svidHead = o.getOption(Options.OPT_ID.SVID_HEAD);
                 genDir = o.getOption(Options.OPT_ID.SVID_GEN_DIR);
+                
             }
             public void save()
             {
@@ -173,6 +178,7 @@ namespace rabnet
                 o.setOption(Options.OPT_ID.SUCKERS, suck);
                 o.setOption(Options.OPT_ID.NEST, nest);
                 o.setOption(Options.OPT_ID.CHILD_NEST, childnest);
+                o.setOption(Options.OPT_ID.VACCINE_TIME, vaccine_time);
                 //view
                 o.setOption(Options.OPT_ID.GEN_TREE, genTree);
                 o.setOption(Options.OPT_ID.CONFIRM_EXIT, fromR(confirmExit));
