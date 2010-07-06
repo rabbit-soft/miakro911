@@ -33,7 +33,6 @@
             this.sex = new System.Windows.Forms.ComboBox();
             this.label23 = new System.Windows.Forms.Label();
             this.button17 = new System.Windows.Forms.Button();
-            this.label22 = new System.Windows.Forms.Label();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.button13 = new System.Windows.Forms.Button();
             this.label18 = new System.Windows.Forms.Label();
@@ -66,7 +65,6 @@
             this.rate = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.spec = new System.Windows.Forms.CheckBox();
-            this.gr = new System.Windows.Forms.CheckBox();
             this.gp = new System.Windows.Forms.CheckBox();
             this.defect = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -97,6 +95,8 @@
             this.nokuk = new System.Windows.Forms.CheckBox();
             this.nolact = new System.Windows.Forms.CheckBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.changeWorker = new System.Windows.Forms.Button();
+            this.changeFucker = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
             this.fucks = new System.Windows.Forms.ListView();
@@ -111,6 +111,7 @@
             this.columnHeader9 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader15 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader16 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader19 = new System.Windows.Forms.ColumnHeader();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.suckers = new System.Windows.Forms.ListView();
             this.columnHeader10 = new System.Windows.Forms.ColumnHeader();
@@ -136,12 +137,11 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
-            this.columnHeader19 = new System.Windows.Forms.ColumnHeader();
-            this.changeFucker = new System.Windows.Forms.Button();
-            this.changeWorker = new System.Windows.Forms.Button();
             this.bdate = new rabnet.components.DateDays();
             this.okrolDd = new rabnet.components.DateDays();
             this.sukrDd = new rabnet.components.DateDays();
+            this.dtp_vacEnd = new System.Windows.Forms.DateTimePicker();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.tabControl1.SuspendLayout();
             this.TabPage1.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -163,6 +163,7 @@
             this.tabPage6.SuspendLayout();
             this.tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudWeight)).BeginInit();
+            this.groupBox8.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -184,7 +185,6 @@
             this.TabPage1.Controls.Add(this.sex);
             this.TabPage1.Controls.Add(this.label23);
             this.TabPage1.Controls.Add(this.button17);
-            this.TabPage1.Controls.Add(this.label22);
             this.TabPage1.Controls.Add(this.groupBox7);
             this.TabPage1.Controls.Add(this.name);
             this.TabPage1.Controls.Add(this.button16);
@@ -209,7 +209,7 @@
             "?",
             "м",
             "ж"});
-            this.sex.Location = new System.Drawing.Point(37, 276);
+            this.sex.Location = new System.Drawing.Point(217, 276);
             this.sex.Name = "sex";
             this.sex.Size = new System.Drawing.Size(55, 21);
             this.sex.TabIndex = 11;
@@ -218,7 +218,7 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(6, 279);
+            this.label23.Location = new System.Drawing.Point(186, 279);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(25, 13);
             this.label23.TabIndex = 12;
@@ -233,15 +233,6 @@
             this.button17.Text = "Переселить";
             this.button17.UseVisualStyleBackColor = true;
             this.button17.Click += new System.EventHandler(this.button17_Click);
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(154, 284);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(38, 13);
-            this.label22.TabIndex = 6;
-            this.label22.Text = "Адрес";
             // 
             // groupBox7
             // 
@@ -553,7 +544,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 86);
+            this.label6.Location = new System.Drawing.Point(15, 279);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(48, 13);
             this.label6.TabIndex = 2;
@@ -561,7 +552,7 @@
             // 
             // rate
             // 
-            this.rate.Location = new System.Drawing.Point(60, 84);
+            this.rate.Location = new System.Drawing.Point(69, 277);
             this.rate.Maximum = new decimal(new int[] {
             200,
             0,
@@ -573,18 +564,17 @@
             0,
             -2147483648});
             this.rate.Name = "rate";
-            this.rate.Size = new System.Drawing.Size(90, 20);
+            this.rate.Size = new System.Drawing.Size(76, 20);
             this.rate.TabIndex = 1;
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.spec);
-            this.groupBox1.Controls.Add(this.gr);
+            this.groupBox1.Controls.Add(this.groupBox8);
             this.groupBox1.Controls.Add(this.gp);
             this.groupBox1.Controls.Add(this.defect);
             this.groupBox1.Location = new System.Drawing.Point(6, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(145, 66);
+            this.groupBox1.Size = new System.Drawing.Size(145, 102);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Флаги";
@@ -592,27 +582,18 @@
             // spec
             // 
             this.spec.AutoSize = true;
-            this.spec.Location = new System.Drawing.Point(68, 40);
+            this.spec.Location = new System.Drawing.Point(5, -1);
             this.spec.Name = "spec";
             this.spec.Size = new System.Drawing.Size(76, 17);
             this.spec.TabIndex = 3;
             this.spec.Text = "Прививка";
             this.spec.UseVisualStyleBackColor = true;
-            // 
-            // gr
-            // 
-            this.gr.AutoSize = true;
-            this.gr.Location = new System.Drawing.Point(11, 42);
-            this.gr.Name = "gr";
-            this.gr.Size = new System.Drawing.Size(44, 17);
-            this.gr.TabIndex = 2;
-            this.gr.Text = "Г/Р";
-            this.gr.UseVisualStyleBackColor = true;
+            this.spec.CheckedChanged += new System.EventHandler(this.spec_CheckedChanged);
             // 
             // gp
             // 
             this.gp.AutoSize = true;
-            this.gp.Location = new System.Drawing.Point(68, 17);
+            this.gp.Location = new System.Drawing.Point(68, 20);
             this.gp.Name = "gp";
             this.gp.Size = new System.Drawing.Size(45, 17);
             this.gp.TabIndex = 1;
@@ -943,6 +924,27 @@
             this.tabPage4.Text = "Случки/Окролы";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // changeWorker
+            // 
+            this.changeWorker.Location = new System.Drawing.Point(287, 279);
+            this.changeWorker.Name = "changeWorker";
+            this.changeWorker.Size = new System.Drawing.Size(123, 23);
+            this.changeWorker.TabIndex = 4;
+            this.changeWorker.Text = "Изменить работника";
+            this.changeWorker.UseVisualStyleBackColor = true;
+            this.changeWorker.Click += new System.EventHandler(this.changeWorker_Click);
+            // 
+            // changeFucker
+            // 
+            this.changeFucker.Enabled = false;
+            this.changeFucker.Location = new System.Drawing.Point(165, 279);
+            this.changeFucker.Name = "changeFucker";
+            this.changeFucker.Size = new System.Drawing.Size(116, 23);
+            this.changeFucker.TabIndex = 3;
+            this.changeFucker.Text = "Изменить партнера";
+            this.changeFucker.UseVisualStyleBackColor = true;
+            this.changeFucker.Click += new System.EventHandler(this.changeFucker_Click);
+            // 
             // button12
             // 
             this.button12.Enabled = false;
@@ -1035,6 +1037,10 @@
             // columnHeader16
             // 
             this.columnHeader16.Text = "Инбридинг";
+            // 
+            // columnHeader19
+            // 
+            this.columnHeader19.Text = "работник";
             // 
             // tabPage6
             // 
@@ -1244,7 +1250,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(145, 9);
+            this.label5.Location = new System.Drawing.Point(151, 9);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(38, 13);
             this.label5.TabIndex = 8;
@@ -1269,36 +1275,11 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // columnHeader19
-            // 
-            this.columnHeader19.Text = "работник";
-            // 
-            // changeFucker
-            // 
-            this.changeFucker.Enabled = false;
-            this.changeFucker.Location = new System.Drawing.Point(165, 279);
-            this.changeFucker.Name = "changeFucker";
-            this.changeFucker.Size = new System.Drawing.Size(116, 23);
-            this.changeFucker.TabIndex = 3;
-            this.changeFucker.Text = "Изменить партнера";
-            this.changeFucker.UseVisualStyleBackColor = true;
-            this.changeFucker.Click += new System.EventHandler(this.changeFucker_Click);
-            // 
-            // changeWorker
-            // 
-            this.changeWorker.Location = new System.Drawing.Point(287, 279);
-            this.changeWorker.Name = "changeWorker";
-            this.changeWorker.Size = new System.Drawing.Size(123, 23);
-            this.changeWorker.TabIndex = 4;
-            this.changeWorker.Text = "Изменить работника";
-            this.changeWorker.UseVisualStyleBackColor = true;
-            this.changeWorker.Click += new System.EventHandler(this.changeWorker_Click);
-            // 
             // bdate
             // 
             this.bdate.AutoSize = true;
             this.bdate.DateText = "Дата рожд.";
-            this.bdate.DateValue = new System.DateTime(2010, 3, 9, 0, 0, 0, 0);
+            this.bdate.DateValue = new System.DateTime(2010, 7, 7, 0, 0, 0, 0);
             this.bdate.DaysText = "Возраст";
             this.bdate.DaysValue = 0;
             this.bdate.Location = new System.Drawing.Point(13, 111);
@@ -1313,7 +1294,7 @@
             // 
             this.okrolDd.AutoSize = true;
             this.okrolDd.DateText = "Дата";
-            this.okrolDd.DateValue = new System.DateTime(2010, 3, 9, 0, 0, 0, 0);
+            this.okrolDd.DateValue = new System.DateTime(2010, 7, 7, 0, 0, 0, 0);
             this.okrolDd.DaysText = "Срок";
             this.okrolDd.DaysValue = 0;
             this.okrolDd.Location = new System.Drawing.Point(8, 61);
@@ -1328,7 +1309,7 @@
             // 
             this.sukrDd.AutoSize = true;
             this.sukrDd.DateText = "Дата";
-            this.sukrDd.DateValue = new System.DateTime(2010, 3, 9, 0, 0, 0, 0);
+            this.sukrDd.DateValue = new System.DateTime(2010, 7, 7, 0, 0, 0, 0);
             this.sukrDd.DaysText = "Срок";
             this.sukrDd.DaysValue = 0;
             this.sukrDd.Location = new System.Drawing.Point(0, 46);
@@ -1338,6 +1319,26 @@
             this.sukrDd.Size = new System.Drawing.Size(136, 51);
             this.sukrDd.Step = 1;
             this.sukrDd.TabIndex = 5;
+            // 
+            // dtp_vacEnd
+            // 
+            this.dtp_vacEnd.Location = new System.Drawing.Point(5, 20);
+            this.dtp_vacEnd.MinDate = new System.DateTime(1988, 1, 1, 0, 0, 0, 0);
+            this.dtp_vacEnd.Name = "dtp_vacEnd";
+            this.dtp_vacEnd.Size = new System.Drawing.Size(122, 20);
+            this.dtp_vacEnd.TabIndex = 4;
+            this.dtp_vacEnd.Value = new System.DateTime(1988, 10, 10, 0, 0, 0, 0);
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.dtp_vacEnd);
+            this.groupBox8.Controls.Add(this.spec);
+            this.groupBox8.Location = new System.Drawing.Point(6, 48);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(133, 48);
+            this.groupBox8.TabIndex = 5;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "                      ";
             // 
             // RabbitInfo
             // 
@@ -1394,6 +1395,8 @@
             this.tabPage6.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudWeight)).EndInit();
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1418,7 +1421,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox spec;
-        private System.Windows.Forms.CheckBox gr;
         private System.Windows.Forms.CheckBox gp;
         private System.Windows.Forms.CheckBox defect;
         private System.Windows.Forms.Label label6;
@@ -1498,7 +1500,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader13;
         private System.Windows.Forms.ColumnHeader columnHeader14;
         private System.Windows.Forms.Button button17;
-        private System.Windows.Forms.Label label22;
         private System.Windows.Forms.ColumnHeader columnHeader15;
         private System.Windows.Forms.ColumnHeader columnHeader16;
         private System.Windows.Forms.NumericUpDown nudWeight;
@@ -1515,5 +1516,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader19;
         private System.Windows.Forms.Button changeFucker;
         private System.Windows.Forms.Button changeWorker;
+        private System.Windows.Forms.DateTimePicker dtp_vacEnd;
+        private System.Windows.Forms.GroupBox groupBox8;
     }
 }

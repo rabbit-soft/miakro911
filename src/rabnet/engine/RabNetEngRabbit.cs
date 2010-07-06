@@ -66,7 +66,7 @@ namespace rabnet
             String s="void";
             if (sx==OneRabbit.RabbitSex.FEMALE) s="female";
             if (sx==OneRabbit.RabbitSex.MALE) s="male";
-            rab = new OneRabbit(0, s, DateTime.Now, 0, "00000", 0, 0, 0, "", 1, 1, 0, "", "", 0, DateTime.MinValue, "", DateTime.MinValue, 0, 0, "", "", "00000",0,0);
+            rab = new OneRabbit(0, s, DateTime.Now, 0, "00000", 0, 0, 0, "", 1, 1, 0, "", "", 0, DateTime.MinValue, "", DateTime.MinValue, 0, 0, "", "", "00000",0,0,DateTime.Now);
             rab.youngers=new OneRabbit[0];
         }
         public void newCommit()
@@ -171,6 +171,11 @@ namespace rabnet
             get { return rab.lastfuckokrol; }
             set { rab.lastfuckokrol = value; }
         }
+        public DateTime vac_end
+        {
+            get { return rab.vac_end; }
+            set { rab.vac_end = value; }
+        }
         public String genom
         {
             get { return rab.gens; }
@@ -215,18 +220,23 @@ namespace rabnet
         {
             get
             {
-            if (id == 0)
-                return eng.db().makeName(name, surname, secname, group, sex);
-            return rab.fullname; } }
+                if (id == 0) return eng.db().makeName(name, surname, secname, group, sex);
+                return rab.fullname; 
+            } 
+        }
         public String breedName { get { return rab.breedname; } }
         public String bon { get { return rab.bon; } }
         public int age { get { return (DateTime.Now.Date - born.Date).Days; } }
-        public int youngcount { get {
-            int c = 0;
-            foreach (OneRabbit r in youngers)
-                c += r.group;
-            return c;
-        } }
+        public int youngcount 
+        { 
+            get 
+            {
+                int c = 0;
+                foreach (OneRabbit r in youngers)
+                    c += r.group;
+                return c;
+            } 
+        }
         public OneRabbit[] youngers { get { return rab.youngers; } }
         public void setBon(String bon)
         {

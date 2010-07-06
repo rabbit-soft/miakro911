@@ -91,7 +91,7 @@ namespace rabnet
             String flg = rd.GetString("r_flags");
             r.fbgp = "";
             if (flg[2] == '1') r.fbgp +=Separate(r.fbgp)+"Б";
-            if (flg[2] == '2' || rd.GetDateTime("vac") > DateTime.Now) r.fbgp += Separate(r.fbgp) + "в";
+            if (flg[2] == '2' || rd.GetDateTime("vac_end") > DateTime.Now) r.fbgp += Separate(r.fbgp) + "в";
             if (flg[0] != '0') r.fbgp += Separate(r.fbgp) + "ГП";
             if (flg[1] != '0') r.fbgp = "<" + r.fbgp + ">";
             r.frate = rd.GetInt32("r_rate");
@@ -232,7 +232,7 @@ r_notes,
 r_born,
 r_event_date,
 r_breed,
-COALESCE(r_vaccine_end,now()) vac
+COALESCE(r_vaccine_end,now()) vac_end
 FROM rabbits WHERE r_parent=0 ORDER BY name) c" + makeWhere()+";");
         }
         /*
@@ -352,6 +352,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
         public bool nolact;
         public bool nokuk;
         public DateTime evdate;
+        public DateTime vac_end;
         public int evtype;
         public int babies;
         public int lost;
@@ -364,7 +365,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
         public string nuaddr="";
         public OneRabbit(int id,string sx,DateTime bd,int rt,string flg,int nm,int sur,int sec,string adr,int grp,int brd,int zn,String nts,
             String gn,int st,DateTime lfo,String evt,DateTime evd,int ob,int lb,String fnm,String bnm,
-			String bon, int parent, int wa)
+			String bon, int parent, int wa, DateTime v_end)
         {
             this.parent = parent;
             tag = "";
@@ -378,7 +379,10 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             wasname = name;
             gp = flg[0] == '1';
             defect = flg[2] == '1' || flg[2]=='3';
-            spec = flg[2] == '2' || flg[2]=='3';
+            if (vac_end.Date == DateTime.Now.Date)
+            {
+                spec = flg[2] == '2' || flg[2] == '3';
+            }
             nokuk = flg[3] == '1';
             nolact = flg[4] == '1';
             risk = flg[4] == '1';
@@ -412,6 +416,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             evdate = evd;babies = ob;lost = lb;
             fullname = fnm; breedname = bnm;
 			weight_age = wa;
+            vac_end = v_end;
         }
 
         public static String SexToString(RabbitSex s)
@@ -447,7 +452,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
                 rd.IsDBNull(3) ? "none" : rd.GetString("r_event"), rd.IsDBNull(2) ? DateTime.MinValue : rd.GetDateTime("r_event_date"),
                 rd.IsDBNull(4) ? 0 : rd.GetInt32("r_overall_babies"), rd.IsDBNull(5) ? 0 : rd.GetInt32("r_lost_babies"),
                 rd.GetString("fullname"), rd.GetString("breedname"),
-                rd.GetString("r_bon"),rd.GetInt32("r_parent"),0);
+                rd.GetString("r_bon"),rd.GetInt32("r_parent"),0,rd.GetDateTime("vac_end"));
             return r;
         }
 
@@ -477,7 +482,7 @@ r_sex,r_born,r_flags,r_breed,r_zone,r_name,r_surname,r_secname,
 {1:s}name(r_id,2) fullname,
 (SELECT b_name FROM breeds WHERE b_id=r_breed) breedname,
 (SELECT COALESCE(GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' '),'') FROM genoms WHERE g_id=r_genesis) genom,
-r_status,r_rate,r_bon,r_parent
+r_status,r_rate,r_bon,r_parent,COALESCE(r_vaccine_end,NOW()) vac_end 
 FROM {2:s} WHERE r_id={3:d};", (type == RAB_TYPE.LIVE ? "r_event_date,r_event" : "NULL r_event_date,'none' r_event"),
                            (type == RAB_TYPE.LIVE ? "rab" : "dead"), (type == RAB_TYPE.LIVE ? "rabbits" : "dead"),
                            rid), con);
@@ -501,7 +506,7 @@ rabplace(r_id) address,r_group,r_notes,
 rabname(r_id,2) fullname,
 (SELECT b_name FROM breeds WHERE b_id=r_breed) breedname,
 (SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=r_genesis) genom,
-r_status,r_rate,r_bon,r_parent
+r_status,r_rate,r_bon,r_parent,COALESCE(r_vaccine_end,NOW()) vac_end 
 FROM rabbits WHERE r_parent=" + mom.ToString() + ";", con);
             List<OneRabbit> rbs = new List<OneRabbit>();
             MySqlDataReader rd = cmd.ExecuteReader();
@@ -517,8 +522,8 @@ FROM rabbits WHERE r_parent=" + mom.ToString() + ";", con);
             String flags = String.Format("{0:D1}{1:D1}{2:D1}{3:D1}{4:D1}", r.gp ? 1 : 0, r.risk?1:0, multi, r.nokuk?1:0, r.nolact?1:0);
             String qry=String.Format(@"UPDATE rabbits SET 
 r_name={0:d},r_surname={1:d},r_secname={2:d},r_breed={3:d},r_zone={4:d},r_group={5:d},r_notes='{6:s}',
-r_flags='{7:d}',r_rate={8:d},r_born={9:s}",r.name,r.surname,r.secname,r.breed,r.zone,r.group,r.notes,flags,r.rate,
-                                          DBHelper.DateToMyString(r.born));
+r_flags='{7:d}',r_rate={8:d},r_born={9:s},r_vaccine_end={10:s}",r.name,r.surname,r.secname,r.breed,r.zone,r.group,r.notes,flags,r.rate,
+                                          DBHelper.DateToMyString(r.born),DBHelper.DateToMyString(r.vac_end));
             if (r.sex != OneRabbit.RabbitSex.VOID)
             {
                 qry += String.Format(",r_status={0:d},r_last_fuck_okrol={1:s}",r.status,DBHelper.DateToMyString(r.lastfuckokrol));
@@ -982,7 +987,8 @@ TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d}+1000 ORDER BY age ASC;",name,agebefore);
 														r_sex,
 														(SELECT TO_DAYS({1:s})-TO_DAYS(r_born)) age,
 														r_born, 
-														r_lost_babies
+														r_lost_babies,
+                                                        COALESCE(r_vaccine_end,NOW()) vac_end
 											FROM {2:s} WHERE r_id={3:d};", (dead ? "dead" : "rab"), (dead ? "d_date" : "NOW()"), (dead ? "dead" : "rabbits"),rabbit);
             rd = cmd.ExecuteReader();
             if (!rd.Read())
@@ -993,7 +999,7 @@ TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d}+1000 ORDER BY age ASC;",name,agebefore);
             OneRabbit r = new OneRabbit(rabbit, rd.GetString("r_sex"), rd.GetDateTime("r_born"), rd.IsDBNull(7) ? 0 : rd.GetInt32("weight"),
                 "00000", 0, 0, 0, rd.GetString("place"), 1, rd.GetInt32("r_okrol"), dead?1:0, "", "", rd.GetInt32("age"), DateTime.MinValue, "", rd.IsDBNull(8) ? DateTime.MinValue : rd.GetDateTime("weight_date"),
 				rd.IsDBNull(10) ? 0 : rd.GetInt32("r_overall_babies"), rd.IsDBNull(15) ? 0 : rd.GetInt32("r_lost_babies"),
-				rd.GetString("name"), "", rd.GetString("r_bon"), 0, rd.IsDBNull(9) ? 0 : rd.GetInt32("weight_age"));
+				rd.GetString("name"), "", rd.GetString("r_bon"), 0, rd.IsDBNull(9) ? 0 : rd.GetInt32("weight_age"),rd.GetDateTime("vac_end"));
             rd.Close();
             return r;
         }

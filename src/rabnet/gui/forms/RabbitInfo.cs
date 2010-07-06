@@ -61,7 +61,6 @@ namespace rabnet
             toolTip.SetToolTip(button3,"Добавить номер гена");
             toolTip.SetToolTip(checkBox5,"Изменить данные вручную");
             toolTip.SetToolTip(button9, "Принять окрол");
-            toolTip.SetToolTip(gr, "Готов к реализации");
             toolTip.SetToolTip(gp, "Готовая продукция");
         }
 
@@ -118,11 +117,9 @@ namespace rabnet
         {
             defect.Checked = rab.defect;
             gp.Checked = rab.production;
-            gr.Checked = rab.realization;
             spec.Checked = rab.spec;
             rate.Value = rab.rate;
             group.Value = rab.group;
-            label5.Text = label22.Text="Адрес:" + rab.address;
             label2.Text = "Имя:" + name.Text;
             label3.Text = "Ж.Фам:" + surname.Text;
             label4.Text = "М.Фам:" + secname.Text;
@@ -141,6 +138,8 @@ namespace rabnet
             String[] wgh = Engine.db().getWeights(rab.rid);
             for (int i = 0; i < wgh.Length / 2; i++)
                 weightList.Items.Add(wgh[i * 2]).SubItems.Add(wgh[i*2+1]);
+            spec.Checked = dtp_vacEnd.Enabled = rab.spec;
+            dtp_vacEnd.Value = rab.vac_end;
         }
 
         private void updateMale()
@@ -344,7 +343,6 @@ namespace rabnet
         private void applyData()
         {
             rab.production = gp.Checked;
-            rab.realization = gr.Checked;
             rab.defect = defect.Checked;
             rab.spec = spec.Checked;
             rab.rate = (int)rate.Value;
@@ -381,6 +379,7 @@ namespace rabnet
                 rab.babies = (int)overallBab.Value;
                 rab.lost = (int)deadBab.Value;
             }
+            rab.vac_end = dtp_vacEnd.Value;
             rab.commit();
         }
 
@@ -675,6 +674,20 @@ namespace rabnet
             if (sf.ShowDialog() == DialogResult.OK && sf.SelectedUser!=0 && sf.SelectedUserName!=f.worker)
                 Engine.db().changeWorker(f.id, sf.SelectedUser);
             updateData();
+        }
+
+        private void spec_CheckedChanged(object sender, EventArgs e)
+        {
+            if (spec.Checked)
+            {
+                dtp_vacEnd.Enabled = true;
+                dtp_vacEnd.Value = DateTime.Now.AddDays(Engine.opt().getIntOption(Options.OPT_ID.VACCINE_TIME));
+            }
+            else
+            {
+                dtp_vacEnd.Enabled = false;
+                dtp_vacEnd.Value = DateTime.Now;
+            }
         }
 
     }
