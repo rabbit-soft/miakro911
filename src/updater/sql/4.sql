@@ -1,10 +1,7 @@
 ﻿
 UPDATE options SET o_value='4' WHERE o_name='db' AND o_subname='version';
 
-#DELIMITER |
-
-#DELIMITER ;
-UPDATE rabbits SET r_flags=SUBSTR(r_flags,0,5) WHERE r_flags LIKE '______';
+UPDATE rabbits SET r_flags=SUBSTR(r_flags,1,5) WHERE r_flags LIKE '______';
 UPDATE dead SET r_flags=SUBSTR(r_flags,1,5) WHERE r_flags LIKE '______';
 INSERT INTO options (o_name,o_subname,o_uid,o_value) VALUES('opt','vaccine_time',0,365);
 ALTER TABLE rabbits ADD COLUMN r_vaccine_end DATETIME NULL;
@@ -14,7 +11,7 @@ UPDATE rabbits SET r_vaccine_end=NOW() WHERE r_flags LIKE '__0__';
 UPDATE rabbits SET r_flags=CONCAT(SUBSTR(r_flags,1,1),SUBSTR(r_flags,2,1),'0',SUBSTR(r_flags,4,1),SUBSTR(r_flags,5,1)) where r_flags LIKE '__2__';
 UPDATE rabbits SET r_flags=CONCAT(SUBSTR(r_flags,1,1),SUBSTR(r_flags,2,1),'1',SUBSTR(r_flags,4,1),SUBSTR(r_flags,5,1)) where r_flags LIKE '__3__';
 
-DELIMITER |
+#DELIMITER |
 DROP PROCEDURE IF EXISTS `killRabbitDate` |
 CREATE PROCEDURE `killRabbitDate`(rid INTEGER UNSIGNED,reason INTEGER UNSIGNED,notes TEXT,ddate DATETIME)
 BEGIN
@@ -27,4 +24,4 @@ SELECT ddate,reason,notes,r_id,r_sex,r_bon,r_name,r_surname,r_secname,
 FROM rabbits WHERE r_id=rid;
 DELETE FROM rabbits WHERE r_id=rid;
 END |
-DELIMITER ;
+#DELIMITER ;
