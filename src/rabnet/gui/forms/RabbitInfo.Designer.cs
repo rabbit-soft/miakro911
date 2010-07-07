@@ -64,6 +64,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.rate = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.dtp_vacEnd = new System.Windows.Forms.DateTimePicker();
             this.spec = new System.Windows.Forms.CheckBox();
             this.gp = new System.Windows.Forms.CheckBox();
             this.defect = new System.Windows.Forms.CheckBox();
@@ -140,8 +142,6 @@
             this.bdate = new rabnet.components.DateDays();
             this.okrolDd = new rabnet.components.DateDays();
             this.sukrDd = new rabnet.components.DateDays();
-            this.dtp_vacEnd = new System.Windows.Forms.DateTimePicker();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.tabControl1.SuspendLayout();
             this.TabPage1.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -151,6 +151,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rate)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.groupBox8.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -163,7 +164,6 @@
             this.tabPage6.SuspendLayout();
             this.tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudWeight)).BeginInit();
-            this.groupBox8.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -578,6 +578,27 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Флаги";
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.dtp_vacEnd);
+            this.groupBox8.Controls.Add(this.spec);
+            this.groupBox8.Location = new System.Drawing.Point(6, 48);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(133, 48);
+            this.groupBox8.TabIndex = 5;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "                      ";
+            // 
+            // dtp_vacEnd
+            // 
+            this.dtp_vacEnd.Location = new System.Drawing.Point(5, 20);
+            this.dtp_vacEnd.MinDate = new System.DateTime(1988, 1, 1, 0, 0, 0, 0);
+            this.dtp_vacEnd.Name = "dtp_vacEnd";
+            this.dtp_vacEnd.Size = new System.Drawing.Size(122, 20);
+            this.dtp_vacEnd.TabIndex = 4;
+            this.dtp_vacEnd.Value = new System.DateTime(1988, 10, 10, 0, 0, 0, 0);
+            this.dtp_vacEnd.CloseUp += new System.EventHandler(this.dtp_vacEnd_CloseUp);
             // 
             // spec
             // 
@@ -1320,26 +1341,6 @@
             this.sukrDd.Step = 1;
             this.sukrDd.TabIndex = 5;
             // 
-            // dtp_vacEnd
-            // 
-            this.dtp_vacEnd.Location = new System.Drawing.Point(5, 20);
-            this.dtp_vacEnd.MinDate = new System.DateTime(1988, 1, 1, 0, 0, 0, 0);
-            this.dtp_vacEnd.Name = "dtp_vacEnd";
-            this.dtp_vacEnd.Size = new System.Drawing.Size(122, 20);
-            this.dtp_vacEnd.TabIndex = 4;
-            this.dtp_vacEnd.Value = new System.DateTime(1988, 10, 10, 0, 0, 0, 0);
-            // 
-            // groupBox8
-            // 
-            this.groupBox8.Controls.Add(this.dtp_vacEnd);
-            this.groupBox8.Controls.Add(this.spec);
-            this.groupBox8.Location = new System.Drawing.Point(6, 48);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(133, 48);
-            this.groupBox8.TabIndex = 5;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "                      ";
-            // 
             // RabbitInfo
             // 
             this.AcceptButton = this.button1;
@@ -1378,6 +1379,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.rate)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.groupBox4.ResumeLayout(false);
@@ -1395,8 +1398,6 @@
             this.tabPage6.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudWeight)).EndInit();
-            this.groupBox8.ResumeLayout(false);
-            this.groupBox8.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

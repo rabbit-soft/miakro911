@@ -380,7 +380,7 @@ namespace rabnet
                 rab.babies = (int)overallBab.Value;
                 rab.lost = (int)deadBab.Value;
             }
-            rab.vac_end = dtp_vacEnd.Value;
+            rab.vac_end = dtp_vacEnd.Value.Date;
             rab.commit();
         }
 
@@ -688,6 +688,15 @@ namespace rabnet
             {
                 dtp_vacEnd.Enabled = false;
                 dtp_vacEnd.Value = DateTime.Now;
+            }
+        }
+
+        private void dtp_vacEnd_CloseUp(object sender, EventArgs e)
+        {
+            if (dtp_vacEnd.Value.Date <= DateTime.Now.Date)
+            {
+                dtp_vacEnd.Enabled = spec.Checked = false;
+                dtp_vacEnd.Value = DateTime.Now.Date;
             }
         }
 

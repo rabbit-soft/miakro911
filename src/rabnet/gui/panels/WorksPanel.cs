@@ -234,6 +234,7 @@ namespace rabnet
                 case JobType.VACC:
                     RabNetEngRabbit r = Engine.get().getRabbit(job.id);
                     r.spec = true;
+                    r.vac_end = DateTime.Now.AddDays(Engine.opt().getIntOption(Options.OPT_ID.VACCINE_TIME));
                     r.commit();
                     needUpdate = false;
                     break;

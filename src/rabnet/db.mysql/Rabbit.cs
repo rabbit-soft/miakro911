@@ -91,7 +91,7 @@ namespace rabnet
             String flg = rd.GetString("r_flags");
             r.fbgp = "";
             if (flg[2] == '1') r.fbgp +=Separate(r.fbgp)+"Б";
-            if (flg[2] == '2' || rd.GetDateTime("vac_end").Date > DateTime.Now.Date) r.fbgp += Separate(r.fbgp) + "в";
+            if (rd.GetDateTime("vac_end").Date > DateTime.Now.Date) r.fbgp += Separate(r.fbgp) + "в";
             if (flg[0] != '0') r.fbgp += Separate(r.fbgp) + "ГП";
             if (flg[1] != '0') r.fbgp = "<" + r.fbgp + ">";
             r.frate = rd.GetInt32("r_rate");
@@ -380,7 +380,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             gp = flg[0] == '1';
             defect = flg[2] == '1' || flg[2]=='3';
             vac_end = v_end.Date;//+gambit
-            spec = flg[2] == '2' || flg[2] == '3' || vac_end>DateTime.Now.Date; //+gambit в дальнейшем первые 2 выражения можно убрать
+            spec = vac_end > DateTime.Now.Date; //+gambit в дальнейшем первые 2 выражения можно убрать
             nokuk = flg[3] == '1';
             nolact = flg[4] == '1';
             risk = flg[4] == '1';
@@ -515,7 +515,7 @@ FROM rabbits WHERE r_parent=" + mom.ToString() + ";", con);
 
         public static void SetRabbit(MySqlConnection con, OneRabbit r)
         {
-            int multi = ((r.spec ? 1 : 0) << 1) + (r.defect ? 1 : 0);
+            int multi = (r.defect ? 1 : 0);
             String flags = String.Format("{0:D1}{1:D1}{2:D1}{3:D1}{4:D1}", r.gp ? 1 : 0, r.risk?1:0, multi, r.nokuk?1:0, r.nolact?1:0);
             String qry=String.Format(@"UPDATE rabbits SET 
 r_name={0:d},r_surname={1:d},r_secname={2:d},r_breed={3:d},r_zone={4:d},r_group={5:d},r_notes='{6:s}',
