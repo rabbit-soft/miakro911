@@ -9,7 +9,7 @@ namespace rabnet
 {
     public class RabNetEngine
     {
-        const int NEED_DB_VERSION = 3;
+        const int NEED_DB_VERSION = 4;
         private IRabNetDataLayer data=null;
         private IRabNetDataLayer data2 = null;
         private ILog log = null;

@@ -60,8 +60,8 @@ namespace rabnet
                 //MessageBox.Show(String.Format("HAS {0:d} FARMS",PClient.get().farms()));
 #endif
 #if (GLOBCATCH)
-            //try
-           // {
+           try
+           {
 #endif
                     bool dbedit = false;
                     if (args.Length > 0 && args[0] == "dbedit")
@@ -81,8 +81,8 @@ namespace rabnet
 #endif
                     }
 #if (GLOBCATCH)
-            //}
-                        /*catch (Exception ex)
+            }
+                        catch (Exception ex)
                         {
                             log.Fatal("General fault exception", ex);
                             if (ex.Source == "MySql.Data")
@@ -94,7 +94,7 @@ namespace rabnet
                                 MessageBox.Show("Произошла ошибка. Программа будет закрыта.\n\r"+ex.Message);
                             }
                             //throw ex;
-                        }*/
+                        }
 #endif
 #if PROTECTED
                 if (PClient.get().farms() == -1)

@@ -123,6 +123,7 @@ namespace rabnet
             label2.Text = "Имя:" + name.Text;
             label3.Text = "Ж.Фам:" + surname.Text;
             label4.Text = "М.Фам:" + secname.Text;
+            label5.Text = "Адрес:" + rab.address;
             bdate.DateValue = rab.born.Date;
             notes.Text = rab.notes;
             String[] gns = rab.genom.Split(' ');
@@ -139,7 +140,7 @@ namespace rabnet
             for (int i = 0; i < wgh.Length / 2; i++)
                 weightList.Items.Add(wgh[i * 2]).SubItems.Add(wgh[i*2+1]);
             spec.Checked = dtp_vacEnd.Enabled = rab.spec;
-            dtp_vacEnd.Value = rab.vac_end;
+            dtp_vacEnd.Value = rab.vac_end; //+gambit
         }
 
         private void updateMale()

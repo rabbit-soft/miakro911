@@ -91,7 +91,7 @@ namespace rabnet
             String flg = rd.GetString("r_flags");
             r.fbgp = "";
             if (flg[2] == '1') r.fbgp +=Separate(r.fbgp)+"Б";
-            if (flg[2] == '2' || rd.GetDateTime("vac_end") > DateTime.Now) r.fbgp += Separate(r.fbgp) + "в";
+            if (flg[2] == '2' || rd.GetDateTime("vac_end").Date > DateTime.Now.Date) r.fbgp += Separate(r.fbgp) + "в";
             if (flg[0] != '0') r.fbgp += Separate(r.fbgp) + "ГП";
             if (flg[1] != '0') r.fbgp = "<" + r.fbgp + ">";
             r.frate = rd.GetInt32("r_rate");
@@ -352,7 +352,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
         public bool nolact;
         public bool nokuk;
         public DateTime evdate;
-        public DateTime vac_end;
+        public DateTime vac_end; //+gambit
         public int evtype;
         public int babies;
         public int lost;
@@ -379,10 +379,8 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             wasname = name;
             gp = flg[0] == '1';
             defect = flg[2] == '1' || flg[2]=='3';
-            if (vac_end.Date == DateTime.Now.Date)
-            {
-                spec = flg[2] == '2' || flg[2] == '3';
-            }
+            vac_end = v_end.Date;//+gambit
+            spec = flg[2] == '2' || flg[2] == '3' || vac_end>DateTime.Now.Date; //+gambit в дальнейшем первые 2 выражения можно убрать
             nokuk = flg[3] == '1';
             nolact = flg[4] == '1';
             risk = flg[4] == '1';
@@ -416,7 +414,6 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             evdate = evd;babies = ob;lost = lb;
             fullname = fnm; breedname = bnm;
 			weight_age = wa;
-            vac_end = v_end;
         }
 
         public static String SexToString(RabbitSex s)
@@ -635,10 +632,10 @@ r_lost_babies=COALESCE(r_lost_babies+{3:d},1),r_rate=r_rate+{4:d} WHERE r_id={0:
                 int rate = fml.rate + (ml==null?fml.rate:ml.rate)/2;
                 int okrol = fml.status;
                 cmd.CommandText = String.Format(@"INSERT INTO rabbits(r_parent,r_mother,r_father,r_born,r_sex,r_group,
-r_bon,r_genesis,r_name,r_surname,r_secname,r_breed,r_okrol,r_rate,r_notes) 
-VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d},{10:d},{11:d},'');",
+r_bon,r_genesis,r_name,r_surname,r_secname,r_breed,r_okrol,r_rate,r_notes,r_vaccine_end) 
+VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d},{10:d},{11:d},'',{12:s});",
       rabbit,rabbit,father,DBHelper.DateToMyString(date),children,DBHelper.commonBon(fml.bon,ml!=null?ml.bon:fml.bon),
-      DBHelper.makeCommonGenesis(sql,fml.gens,(ml!=null?ml.gens:fml.gens),fml.zone),fml.name,(ml!=null?ml.name:0),brd,okrol,rate);
+      DBHelper.makeCommonGenesis(sql,fml.gens,(ml!=null?ml.gens:fml.gens),fml.zone),fml.name,(ml!=null?ml.name:0),brd,okrol,rate,DBHelper.DateToMyString(date));
                 cmd.ExecuteNonQuery();
             }
         }
@@ -756,10 +753,10 @@ WHERE r_id={4:d};", farm, tier_id, sec, ntr,rabbit);
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"INSERT INTO rabbits
 (r_parent,r_father,r_mother,r_name,r_surname,r_secname,r_sex,r_bon,r_okrol,r_breed,r_rate,r_group,
-r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date,r_notes) SELECT 
+r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date,r_notes,r_vaccine_end) SELECT 
 {1:d},r_father,r_mother,0,r_surname,r_secname,r_sex,r_bon,r_okrol,r_breed,r_rate,{2:d},
-r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date,r_notes
-FROM rabbits WHERE r_id={0:d};",rabbit,mom,count), sql);
+r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date,r_notes,r_vaccine_end
+FROM rabbits WHERE r_id={0:d};", rabbit,mom,count), sql);
             cmd.ExecuteNonQuery();
             int nid = (int)cmd.LastInsertedId;
             cmd.CommandText = String.Format("UPDATE rabbits SET r_group=r_group-{0:d} WHERE r_id={1:d};", count, rabbit);
