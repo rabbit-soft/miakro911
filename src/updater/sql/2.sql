@@ -20,7 +20,6 @@ INSERT INTO options(o_name,o_subname,o_value) VALUES ('opt','short_zoo',1);
 
 
 #DELIMITER |
-
 DROP FUNCTION IF EXISTS inBuilding |
 CREATE FUNCTION inBuilding(building INTEGER UNSIGNED,farm INTEGER UNSIGNED) RETURNS BOOL
 BEGIN
@@ -33,5 +32,4 @@ BEGIN
   end while;
   return 0;
 END |
-
 #DELIMITER ;
