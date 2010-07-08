@@ -88,6 +88,7 @@ namespace rabnet
                 eng.logs().log(RabNetLogs.LogType.RENAME, rid, 0, "", "", eng.db().makeName(rab.wasname, 0, 0, 1, rab.sex));
             }
             else eng.logs().log(RabNetLogs.LogType.RAB_CHANGE, rid);
+            rab.vac_end.AddDays(Engine.opt().getIntOption(Options.OPT_ID.VACCINE_TIME));
             eng.db().setRabbit(rab);
             rab=eng.db().getRabbit(id);
         }

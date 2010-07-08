@@ -529,7 +529,7 @@ r_flags='{7:d}',r_rate={8:d},r_born={9:s},r_vaccine_end={10:s}",r.name,r.surname
             {
                 String ev="none";
                 if (r.evtype==1) ev="sluchka";if (r.evtype==2) ev="vyazka";if (r.evtype==2) ev="kuk";
-                qry += String.Format(",r_event='{0:s}',r_event_date={1:s},r_lost_babies={2:d},r_overall_babies={3:d}", ev, DBHelper.DateToMyString(r.evdate), r.babies, r.lost);
+                qry += String.Format(",r_event='{0:s}',r_event_date={1:s},r_lost_babies={2:d},r_overall_babies={3:d}", ev, DBHelper.DateToMyString(r.evdate), r.lost, r.babies);
             }
             qry+=String.Format(" WHERE r_id={0:d};",r.id);
             MySqlCommand cmd = new MySqlCommand(qry, con);
