@@ -78,7 +78,7 @@ namespace rabnet
             for (int i = 0; i < rbs.Count; i++)
             {
                 String name = "Бесполые";
-                if (rbs[i].sex == OneRabbit.RabbitSex.MALE) name = rbs[i].group==1?"Самец":"Самцы";
+                if (rbs[i].sex == OneRabbit.RabbitSex.MALE) name = rbs[i].group==1 ? "Самец" : "Самцы";
                 if (rbs[i].sex == OneRabbit.RabbitSex.FEMALE) name = rbs[i].group == 1 ? "Самка" : "Самки";
                 ListViewItem li = listView1.Items.Add(name);
                 li.SubItems.Add(rbs[i].group.ToString());
@@ -90,7 +90,7 @@ namespace rabnet
             if (plast)
             {
                 listView1.SelectedItems.Clear();
-                ListViewItem it=listView1.Items[listView1.Items.Count - 1];
+                ListViewItem it = listView1.Items[listView1.Items.Count - 1];
                 it.Selected = true;
                 (it.Tag as RabNetEngRabbit).zone = getZone();
                 button8.PerformClick();
@@ -168,27 +168,30 @@ namespace rabnet
         {
             try
             {
-                bool names = false;
-                bool addresses = false;
+                bool no_names = false;
+                bool no_addresses = false;
+                bool no_gens = false;
                 foreach (RabNetEngRabbit r in rbs)
                 {
-                    if (r.name == 0 && r.surname==0) names = true;
-                    if (r.address == OneRabbit.NullAddress)
-                        addresses = true;
+                    if (r.name == 0 && r.surname==0) no_names = true;
+                    if (r.address == OneRabbit.NullAddress) no_addresses = true;
+                    if (r.genom == "") no_gens = true;
                 }
                 String msg="";
-                if (names)
-                    msg = "У некоторых кроликов нет имени.\n";
-                if (addresses)
-                    msg += "У некоторых кроликов нет адреса.\n";
+                if (no_names) msg = "У некоторых кроликов нет имени.\n";
+                if (no_addresses) msg += "У некоторых кроликов нет адреса.\n";
+                if (no_gens) msg += "У некоторых кроликов нет ни одного Номера Гена";
                 if (msg != "")
                 {
-                    msg += "Продолжить?";
+                    MessageBox.Show(this, msg, "Нельзя продолжить", MessageBoxButtons.OK);
+                    DialogResult = DialogResult.None;
+                    return;
+                    /*msg += "Продолжить?";
                     if (MessageBox.Show(this, msg, "Предупреждение", MessageBoxButtons.YesNo) == DialogResult.No)
                     {
                         DialogResult = DialogResult.None;
                         return;
-                    }
+                    }*/
                 }
                 foreach (RabNetEngRabbit r in rbs)
                 {

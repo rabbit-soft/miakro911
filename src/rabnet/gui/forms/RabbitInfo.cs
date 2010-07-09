@@ -26,6 +26,7 @@ namespace rabnet
         private int curzone = 0;
         private int mkbrides = 122;
         private int makesuck = 50;
+        private bool can_commit;
         bool manual = true;
         public RabbitInfo()
         {
@@ -85,23 +86,11 @@ namespace rabnet
         private void button1_Click(object sender, EventArgs e)
         {
             button5.PerformClick();
-            String ex = "";
-            if (name.Text == "" && surname.Text == "" && secname.Text == "")
-                ex = "У кролика нет имени!\n";
-            if (rab.address == OneRabbit.NullAddress)
-                ex += "У кролика нет места жительства!\n";
-            if (ex != "")
-            {
-                ex += "Продолжить?";
-                if (MessageBox.Show(this, ex, "Не введены данные", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    Close();
-            }
-            else
+            if (can_commit)
             {
                 this.DialogResult = button1.DialogResult;
                 Close();
             }
-            
         }
 
         private String getbon(char bon)
@@ -414,8 +403,21 @@ namespace rabnet
 
         private void button5_Click(object sender, EventArgs e)
         {
-            applyData();
-            updateData();
+            String ex = "";
+            if (name.Text == "" && surname.Text == "" && secname.Text == "") ex = "У кролика нет имени!\n";
+            if (rab.address == OneRabbit.NullAddress) ex += "У кролика нет места жительства!\n";
+            if (gens.Items.Count == 0) ex += "У кролика нет ни одного Номера Гена!\n"; 
+            if (ex != "")
+            {
+                can_commit = false;
+                MessageBox.Show(this, ex, "Невозможно продолжить", MessageBoxButtons.OK,MessageBoxIcon.Warning);                
+            }
+            else
+            {
+                can_commit = true;
+                applyData();
+                updateData();
+            }
         }
 
         private void RabbitInfo_Load(object sender, EventArgs e)
