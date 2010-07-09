@@ -59,7 +59,7 @@ namespace rabnet
             {
                 switch (rd.GetInt32("r_status"))
                 {
-                    case 0: r.fstatus = shr?"Мал":"мальчик"; break;
+                    case 0: r.fstatus = shr ? "Мал" : (cnt > 1 ? "мальчики" : "мальчик"); break;
                     case 1: r.fstatus = shr ? "Кнд" : "кандидат"; break;
                     case 2: r.fstatus = shr ? "Прз" : "производитель"; break;
                 }
@@ -69,9 +69,9 @@ namespace rabnet
                 if (!rd.IsDBNull(4))
                    r.fsex = "C-" + String.Format("{0,2:d}",rd.GetInt32("sukr"));
                 if (r.fage < options.safeInt("brd", 122))
-                    r.fstatus = shr ? "Дев" : "Девочка";
+                    r.fstatus = shr ? "Дев" : (cnt > 1 ? "Девочки" : "Девочка");
                 else
-                    r.fstatus = shr ? "Нвс" : "Невеста";
+                    r.fstatus = shr ? "Нвс" : (cnt > 1 ? "Невесты" : "Невеста"); 
                 if ((rd.GetInt32("r_status") == 1 && rd.IsDBNull(4))|| (rd.GetInt32("r_status") == 0 && !rd.IsDBNull(4)))
                     r.fstatus = shr ? "Прк" : "Первокролка";
                 if (rd.GetInt32("r_status") > 1 || (rd.GetInt32("r_status") == 1 && !rd.IsDBNull(4)))

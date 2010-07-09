@@ -139,7 +139,7 @@ namespace rabnet
             String[] wgh = Engine.db().getWeights(rab.rid);
             for (int i = 0; i < wgh.Length / 2; i++)
                 weightList.Items.Add(wgh[i * 2]).SubItems.Add(wgh[i*2+1]);
-            spec.Checked = dtp_vacEnd.Enabled = rab.spec;
+            spec.Checked = dtp_vacEnd.Enabled = rab.spec;//+gambit
             dtp_vacEnd.Value = rab.vac_end; //+gambit
         }
 
