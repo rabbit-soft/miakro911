@@ -40,6 +40,7 @@ namespace rabnet
             flt["num"] = op.getOption(Options.OPT_ID.SHOW_NUMBERS);
             flt["brd"] = op.getOption(Options.OPT_ID.MAKE_BRIDE);
             flt["suc"] = op.getOption(Options.OPT_ID.SUCKERS);
+            flt["cand"] = op.getOption(Options.OPT_ID.MAKE_CANDIDATE);
             cs.Prepare();
             IDataGetter dg = DataThread.db().getRabbits(flt);
             rsb.setText(1, dg.getCount().ToString() + " записей");
@@ -627,7 +628,7 @@ namespace rabnet
 
         private void показатьНомерToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(listView1.SelectedItems[0].Tag.ToString());
+            MessageBox.Show("r_id = "+listView1.SelectedItems[0].Tag.ToString());
         }
 
     }

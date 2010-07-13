@@ -30,7 +30,7 @@ namespace rabnet
     {
         public Rabbits(MySqlConnection sql, Filters opts) : base(sql, opts) { }
         
-        public override IData nextItem() /*получение обьекта объект Rabbit*/ 
+        public override IData nextItem() /*получение одной записи в Поголовье*/ 
         {
             Rabbit r=new Rabbit(rd.GetInt32(0));
             r.fname = "";
@@ -57,21 +57,27 @@ namespace rabnet
             }
             else if (sx == "male")
             {
-                switch (rd.GetInt32("r_status"))
+                int stat = rd.GetInt32("r_status");
+                if (stat == 2) r.fstatus = shr ? "Прз" : "производитель";
+                    else if (stat == 1 || r.fage >= options.safeInt("cand", 120)) r.fstatus = shr ? "Кнд" : (cnt > 1 ? "кандидаты" : "кандидат");
+                    else r.fstatus = shr ? "Мал" : (cnt > 1 ? "мальчики" : "мальчик");
+                /*switch (rd.GetInt32("r_status"))
                 {
                     case 0: r.fstatus = shr ? "Мал" : (cnt > 1 ? "мальчики" : "мальчик"); break;
-                    case 1: r.fstatus = shr ? "Кнд" : "кандидат"; break;
+                    case 1: r.fstatus = shr ? "Кнд" : (cnt > 1 ? "кандидаты" : "кандидат"); break;
                     case 2: r.fstatus = shr ? "Прз" : "производитель"; break;
-                }
+                }*/
             }
             else
             {
                 if (!rd.IsDBNull(4))
                    r.fsex = "C-" + String.Format("{0,2:d}",rd.GetInt32("sukr"));
+
                 if (r.fage < options.safeInt("brd", 122))
                     r.fstatus = shr ? "Дев" : (cnt > 1 ? "Девочки" : "Девочка");
                 else
                     r.fstatus = shr ? "Нвс" : (cnt > 1 ? "Невесты" : "Невеста"); 
+
                 if ((rd.GetInt32("r_status") == 1 && rd.IsDBNull(4))|| (rd.GetInt32("r_status") == 0 && !rd.IsDBNull(4)))
                     r.fstatus = shr ? "Прк" : "Первокролка";
                 if (rd.GetInt32("r_status") > 1 || (rd.GetInt32("r_status") == 1 && !rd.IsDBNull(4)))
@@ -379,8 +385,8 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             wasname = name;
             gp = flg[0] == '1';
             defect = flg[2] == '1' || flg[2]=='3';
-            vac_end = v_end.Date;//+gambit
-            spec = vac_end > DateTime.Now.Date; //+gambit в дальнейшем первые 2 выражения можно убрать
+            vac_end = v_end.Date; //+gambit
+            spec = vac_end > DateTime.Now.Date; //+gambit 
             nokuk = flg[3] == '1';
             nolact = flg[4] == '1';
             risk = flg[4] == '1';
@@ -405,7 +411,7 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
             gens = gn;
             this.bon = bon;
             status = st;
-            if (sx == "void") status = age()<50?0:1;
+            if (sx == "void") status = age()< 50 ? 0 : 1;
             lastfuckokrol = lfo;
             evtype = 0;
             if (evt == "sluchka") evtype = 1;

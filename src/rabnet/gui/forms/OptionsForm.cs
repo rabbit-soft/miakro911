@@ -15,7 +15,7 @@ namespace rabnet
         {
             [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
             public enum RUBOOL { Да, Нет };
-            private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su,n,cn,tt,vactime;
+            private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su,n,cn,tt,vactime,cand;
             private string gd, sh;
             private RUBOOL ce, ck, uz,sp;
             [Category("Зоотехнические сроки"),DisplayName("Окрол"),
@@ -36,6 +36,9 @@ namespace rabnet
             [Category("Зоотехнические сроки"),DisplayName("Возведение в невесты"),
             Description("Присвоить самкам со статусом Девочка, статус Невеста, достигших указанного возраста")]
             public int brides { get { return br; } set { br = value; } }
+            [Category("Зоотехнические сроки"), DisplayName("Возведение в кандидаты"),
+            Description("Присвоить самцам со статусом Мальчик, статус Кандидат, достигших указанного возраста")]
+            public int candidate { get { return cand; } set { cand = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Предокрольный осмотр"),
             Description("Проверка перед окролом грелки, наличие пригодного сена и состояния крольчихи, в указанный срок")]
             public int preokrol { get { return pok; } set { pok = value; } }
@@ -128,6 +131,7 @@ namespace rabnet
             public void load()
             {
                 Options o=Engine.opt();
+                //zoo time
                 okrol=o.getIntOption(Options.OPT_ID.OKROL);
                 vudvor = o.getIntOption(Options.OPT_ID.VUDVOR);
                 count1 = o.getIntOption(Options.OPT_ID.COUNT1);
@@ -146,6 +150,7 @@ namespace rabnet
                 nest = o.getIntOption(Options.OPT_ID.NEST);
                 childnest = o.getIntOption(Options.OPT_ID.CHILD_NEST);
                 vaccine_time = o.getIntOption(Options.OPT_ID.VACCINE_TIME);
+                candidate = o.getIntOption(Options.OPT_ID.MAKE_CANDIDATE);
                 //view
                 genTree = o.getIntOption(Options.OPT_ID.GEN_TREE);
                 confirmExit = toR(o.getIntOption(Options.OPT_ID.CONFIRM_EXIT));
@@ -179,6 +184,7 @@ namespace rabnet
                 o.setOption(Options.OPT_ID.NEST, nest);
                 o.setOption(Options.OPT_ID.CHILD_NEST, childnest);
                 o.setOption(Options.OPT_ID.VACCINE_TIME, vaccine_time);
+                o.setOption(Options.OPT_ID.MAKE_CANDIDATE, candidate);
                 //view
                 o.setOption(Options.OPT_ID.GEN_TREE, genTree);
                 o.setOption(Options.OPT_ID.CONFIRM_EXIT, fromR(confirmExit));

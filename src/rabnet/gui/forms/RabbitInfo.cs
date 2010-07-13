@@ -25,6 +25,7 @@ namespace rabnet
         private TabPage weightPage;
         private int curzone = 0;
         private int mkbrides = 122;
+        private int mkcandidate = 120;
         private int makesuck = 50;
         private bool can_commit;
         bool manual = true;
@@ -40,6 +41,7 @@ namespace rabnet
             while(tabControl1.TabPages.Count>1)
                 tabControl1.TabPages.RemoveAt(1);
             mkbrides = Engine.get().brideAge();
+            mkcandidate = Engine.opt().getIntOption(Options.OPT_ID.MAKE_CANDIDATE);
             makesuck = Engine.opt().getIntOption(Options.OPT_ID.SUCKERS);
             dateWeight.Value = DateTime.Now.Date;
         }
@@ -85,7 +87,7 @@ namespace rabnet
 
         private void button1_Click(object sender, EventArgs e)
         {
-            button5.PerformClick();
+           button5.PerformClick();
             if (can_commit)
             {
                 this.DialogResult = button1.DialogResult;
@@ -134,9 +136,13 @@ namespace rabnet
 
         private void updateMale()
         {
-            setSex(1);
-            maleStatus.SelectedIndex = rab.status;
-            maleStatus.Enabled = rab.age > 100 && rab.name != 0;
+            setSex(1);        
+            if (rab.status == 2) maleStatus.SelectedIndex = 2;
+                else if (rab.status == 1 || rab.age >= mkcandidate) maleStatus.SelectedIndex = 1;
+                else maleStatus.SelectedIndex = 0;
+            maleStatus.Enabled = groupBox4.Enabled = rab.age > mkcandidate;
+            //maleStatus.SelectedIndex = rab.status;
+            //maleStatus.Enabled = rab.age > 100 && rab.name != 0;
             label7.Text = "Статус: " + maleStatus.Text;
             if (rab.group != 1) return;
             tabControl1.TabPages.Add(malePage);
@@ -158,7 +164,7 @@ namespace rabnet
             label7.Text = "Статус: Девочка";
             if (bdate.DaysValue >= mkbrides)
                 label7.Text = "Статус: Невеста";
-            if ((rab.status == 0 && rab.evdate!=DateTime.MinValue)||(rab.status==1 && rab.evdate==DateTime.MinValue))
+            if ((rab.status == 0 && rab.evdate != DateTime.MinValue )||(rab.status==1 && rab.evdate==DateTime.MinValue))
                 label7.Text = "Статус: Первокролка";
             if (rab.status > 1 || (rab.status==1 && rab.evdate!=DateTime.MinValue))
                 label7.Text = "Статус: Штатная";
@@ -405,12 +411,12 @@ namespace rabnet
         {
             String ex = "";
             if (name.Text == "" && surname.Text == "" && secname.Text == "") ex = "У кролика нет имени!\n";
-            if (rab.address == OneRabbit.NullAddress) ex += "У кролика нет места жительства!\n";
+            //if (rab.address == OneRabbit.NullAddress) ex += "У кролика нет места жительства!\n";
             if (gens.Items.Count == 0) ex += "У кролика нет ни одного Номера Гена!\n"; 
             if (ex != "")
             {
                 can_commit = false;
-                MessageBox.Show(this, ex, "Невозможно продолжить", MessageBoxButtons.OK,MessageBoxIcon.Warning);                
+                MessageBox.Show(this, ex, "Невозможно продолжить", MessageBoxButtons.OK, MessageBoxIcon.Warning);                
             }
             else
             {
@@ -699,6 +705,15 @@ namespace rabnet
             {
                 dtp_vacEnd.Enabled = spec.Checked = false;
                 dtp_vacEnd.Value = DateTime.Now.Date;
+            }
+        }
+
+        private void maleStatus_TextChanged(object sender, EventArgs e)
+        {
+            if (rab.name == 0 && maleStatus.SelectedIndex == 2)
+            {
+                MessageBox.Show("У Производителя должно быть имя");
+                maleStatus.SelectedIndex = 0;
             }
         }
 
