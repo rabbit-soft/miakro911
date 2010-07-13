@@ -343,7 +343,7 @@ AND f_end_date>={0:s} AND f_end_date<={1:s} ORDER BY name,dt;", DFROM, DTO, user
             double pregn_per_tier = 0.3114;     
             double feed_girls_per_tier = 0.6;   
             double feed_boys_per_tier = 2.0;    
-            double unkn_sucks_per_tier = 2.7;   
+            double unkn_sucks_per_tier = 2.7;
             int bid = f.safeInt("bld");
             int suck = f.safeInt("suck", 50);
             XmlDocument doc = new XmlDocument();
@@ -411,8 +411,12 @@ FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AN
 
         private string rabByMonth()
         {
-            return @"SELECT DATE_FORMAT(r_born,'%m.%Y') date,sum(r_group) count 
-FROM rabbits GROUP BY date ORDER BY year(r_born) desc,month(r_born) desc;";
+            //return "SELECT DATE_FORMAT(r_born,'%m.%Y') date, sum(r_group) count FROM rabbits GROUP BY date ORDER BY year(r_born) desc,month(r_born) desc;";
+            return @"SELECT
+                        DATE_FORMAT(r_born,'%m.%Y') date,
+                        sum(r_group) count,
+                        (SELECT SUM(r_group) FROM dead d WHERE MONTH(d.r_born)=MONTH(rabbits.r_born) AND YEAR(d.r_born)=YEAR(rabbits.r_born)) killed
+                        FROM rabbits GROUP BY date ORDER BY year(r_born) desc,month(r_born) desc;";
         }
 
         private string fucksByDate(Filters f)

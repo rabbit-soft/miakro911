@@ -14,7 +14,7 @@
       </ConnectionProperties>
     </DataSource>
   </DataSources>
-  <Width>2in</Width>
+  <Width>3.5in</Width>
   <TopMargin>.25in</TopMargin>
   <LeftMargin>.25in</LeftMargin>
   <RightMargin>.25in</RightMargin>
@@ -34,6 +34,10 @@
           <DataField>count</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="killed">
+          <DataField>killed</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
     </DataSet>
   </DataSets>
@@ -45,7 +49,7 @@
         <Left>7.23pt</Left>
         <Width>473.52pt</Width>
         <Height>17.32pt</Height>
-        <Value>Общее количество  живых кроликов по месяцам рождения</Value>
+        <Value>Общее количество живых и мертвых кроликов по месяцам рождения</Value>
         <Style>
           <FontSize>15pt</FontSize>
           <FontWeight>Bold</FontWeight>
@@ -70,7 +74,10 @@
             <Width>1in</Width>
           </TableColumn>
           <TableColumn>
-            <Width>1in</Width>
+            <Width>68.4pt</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>68.4pt</Width>
           </TableColumn>
         </TableColumns>
         <Header>
@@ -88,6 +95,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -95,8 +104,22 @@
                 <TableCell>
                   <ReportItems>
                     <Textbox Name="Textbox3">
-                      <Value>Количество</Value>
+                      <Value>Живых</Value>
                       <Style>
+                        <TextAlign>Center</TextAlign>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox5">
+                      <Value>Мертвых</Value>
+                      <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
                         <TextAlign>Center</TextAlign>
                         <BorderStyle>
                           <Default>Solid</Default>
@@ -144,6 +167,21 @@
                     </Textbox>
                   </ReportItems>
                 </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="killed">
+                      <Value>=Fields!killed.Value</Value>
+                      <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <BorderColor />
+                        <BorderWidth />
+                      </Style>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
               </TableCells>
             </TableRow>
           </TableRows>
@@ -151,7 +189,7 @@
       </Table>
     </ReportItems>
     <Height>50pt</Height>
-    <Columns >2</Columns>
+    <Columns>2</Columns>
   </Body>
   <PageFooter>
     <Height>14pt</Height>
@@ -171,6 +209,6 @@
     <PrintOnFirstPage>true</PrintOnFirstPage>
     <PrintOnLastPage>true</PrintOnLastPage>
   </PageFooter>
-  <DataElementName >Report</DataElementName>
-  <DataElementStyle >AttributeNormal</DataElementStyle>
+  <DataElementName>Report</DataElementName>
+  <DataElementStyle>AttributeNormal</DataElementStyle>
 </Report>

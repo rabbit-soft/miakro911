@@ -709,11 +709,12 @@ namespace rabnet
         }
 
         private void maleStatus_TextChanged(object sender, EventArgs e)
-        {
+        { 
             if (rab.name == 0 && maleStatus.SelectedIndex == 2)
-            {
+            {               
                 MessageBox.Show("У Производителя должно быть имя");
-                maleStatus.SelectedIndex = 0;
+                if (rab.status == 1 || rab.age >= mkcandidate) maleStatus.SelectedIndex = 1;
+                    else maleStatus.SelectedIndex = 0;
             }
         }
 
