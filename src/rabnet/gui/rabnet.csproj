@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{EFCCE992-8AB2-43AB-87DD-1BEC3E429345}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -357,132 +357,175 @@
     </Compile>
     <EmbeddedResource Include="components\BuildingControl.resx">
       <DependentUpon>BuildingControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="components\DateDays.resx">
       <DependentUpon>DateDays.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="components\FarmDrawer.resx">
       <DependentUpon>FarmDrawer.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="filters\BuildingsFilter.resx">
       <DependentUpon>BuildingsFilter.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="filters\DeadFilter.resx">
       <DependentUpon>DeadFilter.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="filters\RabbitsFilter.resx">
       <DependentUpon>RabbitsFilter.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="filters\ZootehFilter.resx">
       <DependentUpon>ZootehFilter.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\aaa_merge.resx">
       <DependentUpon>aaa_merge.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\BonForm.resx">
       <DependentUpon>BonForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\CatalogForm.resx">
       <DependentUpon>CatalogForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\CountKids.resx">
       <DependentUpon>CountKids.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\DeadForm.resx">
       <DependentUpon>DeadForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\FarmChangeForm.resx">
       <DependentUpon>FarmChangeForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\FarmListForm.resx">
       <DependentUpon>FarmListForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\GenomView.resx">
       <DependentUpon>GenomView.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\IncomeForm.resx">
       <DependentUpon>IncomeForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\KillForm.resx">
       <DependentUpon>KillForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\MakeFuck.resx">
       <DependentUpon>MakeFuck.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\MiniFarmForm.resx">
       <DependentUpon>MiniFarmForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\NamesForm.resx">
       <DependentUpon>NamesForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\OkrolForm.resx">
       <DependentUpon>OkrolForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\OptionsForm.resx">
       <DependentUpon>OptionsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\PreReplaceYoungersForm.resx">
       <DependentUpon>PreReplaceYoungersForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\Proholost.resx">
       <DependentUpon>Proholost.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\RabbitInfo.resx">
       <DependentUpon>RabbitInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\ReplaceBride.resx">
       <DependentUpon>ReplaceBride.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\ReplaceForm.resx">
       <DependentUpon>ReplaceForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\ReplaceYoungersForm.resx">
       <DependentUpon>ReplaceYoungersForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\ReportViewForm.resx">
       <DependentUpon>ReportViewForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\SelectUserForm.resx">
       <DependentUpon>SelectUserForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\UserForm.resx">
       <DependentUpon>UserForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\UserInfoForm.resx">
       <DependentUpon>UserInfoForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="panels\BuildingsPanel.resx">
       <DependentUpon>BuildingsPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="panels\RabbitsPanel.resx">
       <DependentUpon>RabbitsPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="components\RabStatusBar.resx">
       <DependentUpon>RabStatusBar.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="panels\WorksPanel.resx">
       <DependentUpon>WorksPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="panels\YoungsPanel.resx">
       <DependentUpon>YoungsPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="reports\FuckerForm.resx">
       <DependentUpon>FuckerForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="reports\OkrolUser.resx">
       <DependentUpon>OkrolUser.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="reports\PeriodForm.resx">
       <DependentUpon>PeriodForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -505,9 +548,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <EmbeddedResource Include="rabHelp.chm">
+    <None Include="..\..\..\help\rabHelp.chm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
+    </None>
     <None Include="reports\age.rdl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

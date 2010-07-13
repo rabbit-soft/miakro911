@@ -66,6 +66,11 @@
 				<include name="*.rdl"/>
 			</fileset>
 		</copy>
+		<copy todir="${bin_dir}">
+			<fileset basedir="${curdir}/../help">
+				<include name="*.chm"/>
+			</fileset>
+		</copy>
 	</target>
 	
 	

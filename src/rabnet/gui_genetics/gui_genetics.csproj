@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{A835C727-1EB1-490D-BEBC-5C88F382330B}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -104,21 +104,27 @@
   <ItemGroup>
     <EmbeddedResource Include="Components\ArrowImg.resx">
       <DependentUpon>ArrowImg.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\CustomGraphCmp.resx">
       <DependentUpon>CustomGraphCmp.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\RabbitBar.resx">
       <DependentUpon>RabbitBar.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\RabbitPair.resx">
       <DependentUpon>RabbitPair.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\RabbitField.resx">
       <DependentUpon>RabbitField.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\GeneticsMainForm.resx">
       <DependentUpon>GeneticsMainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
