@@ -306,14 +306,14 @@ namespace rabnet
             }
             rab.tag = "";
         }
-        public void ReplaceYounger(int yid, int farm, int tier, int sec)
+        public void ReplaceYounger(int yid, int farm, int tier, int sec, string address)
         {
             eng.db().replaceYounger(yid, farm, tier, sec);
             foreach (OneRabbit y in youngers)
                 if (y.id == yid)
                     y.tag = "";
             OneRabbit r = eng.db().getRabbit(yid);
-            eng.logs().log(RabNetLogs.LogType.REPLACE, yid,r.smallAddress);
+            eng.logs().log(RabNetLogs.LogType.REPLACE, yid,0,r.smallAddress,address);
         }
 
         public void killIt(DateTime when, int reason, string notes,int count)

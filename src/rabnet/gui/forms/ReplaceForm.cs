@@ -505,7 +505,7 @@ namespace rabnet
             {
                 int[] a = getAddress(r.curaddress);
                 if (r.younger)
-                    par.ReplaceYounger(rb.rid, a[0], a[1], a[2]);
+                    par.ReplaceYounger(rb.rid, a[0], a[1], a[2],r.curaddress);
                 else
                     rb.replaceRabbit(a[0], a[1], a[2], r.curaddress);
             }
