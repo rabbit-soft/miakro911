@@ -51,7 +51,8 @@ namespace mia_conv
              */
             setOption("opt","short_names",p.tab_abbr.value());
             setOption("opt", "short_zoo", 1);
-            setOption("opt", "vaccine_time", 365);
+            setOption("opt", "vaccine_time", 365); //+gambit
+            setOption("opt", "candidate", 120); //+gambit
             setOption("opt", "dbl_surname", p.double_sur.value());
             setOption("opt","heterosis",p.heterosis.value());
             setOption("opt","inbreeding",p.inbreeding.value());
