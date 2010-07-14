@@ -62,7 +62,7 @@ namespace rabnet
         void setBon(int rabbit,String bon);
         void makeFuck(int female, int male,DateTime date,int worker);
         void makeProholost(int female, DateTime when);
-        void makeOkrol(int female, DateTime when, int children, int dead);
+        int makeOkrol(int female, DateTime when, int children, int dead);
         String makeName(int nm, int sur, int sec,int grp, OneRabbit.RabbitSex sex);
         Younger[] getSuckers(int mom);
         Building[] getFreeBuilding(Filters f);

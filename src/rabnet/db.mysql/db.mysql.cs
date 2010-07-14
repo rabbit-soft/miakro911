@@ -236,9 +236,9 @@ namespace rabnet
             RabbitGetter.MakeProholost(sql, female, when);
         }
 
-        public void makeOkrol(int female, DateTime when, int children, int dead)
+        public int makeOkrol(int female, DateTime when, int children, int dead)
         {
-            RabbitGetter.MakeOkrol(sql, female, when, children, dead);
+            return RabbitGetter.MakeOkrol(sql, female, when, children, dead);
         }
 
         public IZones getZones()

@@ -605,7 +605,7 @@ VALUES({0:d},{1:s},{2:d},'sukrol','{3:s}',1,'',{4:d});",female,DBHelper.DateToMy
             return res;
         }
         
-        public static void MakeOkrol(MySqlConnection sql, int rabbit, DateTime date, int children, int dead)
+        public static int MakeOkrol(MySqlConnection sql, int rabbit, DateTime date, int children, int dead)
         {
             int father = WhosChildren(sql, rabbit);
             MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE fucks SET f_state='okrol',f_end_date={0:s},
@@ -643,7 +643,9 @@ VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d},{1
       rabbit,rabbit,father,DBHelper.DateToMyString(date),children,DBHelper.commonBon(fml.bon,ml!=null?ml.bon:fml.bon),
       DBHelper.makeCommonGenesis(sql,fml.gens,(ml!=null?ml.gens:fml.gens),fml.zone),fml.name,(ml!=null?ml.name:0),brd,okrol,rate,DBHelper.DateToMyString(date));
                 cmd.ExecuteNonQuery();
+                return (int)cmd.LastInsertedId;
             }
+            return 0;
         }
 
         public static String makeName(MySqlConnection con,int nm,int sur,int sec,int grp,OneRabbit.RabbitSex sex)

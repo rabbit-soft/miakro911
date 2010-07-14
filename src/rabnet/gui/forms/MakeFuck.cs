@@ -132,7 +132,7 @@ namespace rabnet
         {
             try
             {
-                if (rab1.name == 0 && comboBox1.SelectedIndex!=0)
+                if (rab1.name == 0 && comboBox1.SelectedIndex != 0)
                 {
                     foreach (int k in names.Keys)
                         if (comboBox1.Text == names[k])

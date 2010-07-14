@@ -36,7 +36,7 @@ namespace rabnet
 
         public void updateMothers()
         {
-            int ad=Engine.opt().getIntOption(Options.OPT_ID.COMBINE_AGE);
+            int ad = Engine.opt().getIntOption(Options.OPT_ID.COMBINE_AGE);
             cs.Prepare();
             listView1.Items.Clear();
             foreach(Rabbit rb in Engine.db().getMothers(r.age, ad))
@@ -89,24 +89,24 @@ namespace rabnet
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int gr=groups();
-            if (gr==0) return;
+            int gr = groups();
+            if (gr == 0) return;
             try
             {
                 for (int i = 0; i < listView1.Items.Count; i++)
                 {
                     int vl = getValue(i);
-                    if (vl!=0)
+                    if (vl != 0)
                     {
-                        RabNetEngRabbit rr=null;
+                        RabNetEngRabbit rr = null;
                         gr--;
-                        if (gr == 0 && nudCount.Value==0)
+                        if (gr == 0 && nudCount.Value == 0)
                         {
                             rr = r;
                         }
                         else
                         {
-                            rr=Engine.get().getRabbit(r.rid);
+                            rr = Engine.get().getRabbit(r.rid);
                             rr = Engine.get().getRabbit(rr.clone(vl, 0, 0, 0));
                         }
                         rr.placeSuckerTo((int)listView1.Items[i].Tag);

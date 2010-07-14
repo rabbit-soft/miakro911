@@ -266,7 +266,7 @@ namespace rabnet
                 throw new ExNotFucker(f);
             if (when > DateTime.Now)
                 throw new ExBadDate(when);
-            eng.logs().log(RabNetLogs.LogType.FUCK, rid, otherrab, "", "");
+            eng.logs().log(RabNetLogs.LogType.FUCK, rid, otherrab, smallAddress, f.smallAddress);
             eng.db().makeFuck(this.id, f.rid, when.Date,eng.uId());
         }
         public void ProholostIt(DateTime when)
@@ -287,9 +287,9 @@ namespace rabnet
             if (evdate == DateTime.MinValue)
                 throw new ExNotFucked(this);
             if (when > DateTime.Now)
-                throw new ExBadDate(when);
-            eng.logs().log(RabNetLogs.LogType.OKROL, rid,0,smallAddress,"",String.Format("живых {0:d}, мертвых {1:d}",children,dead));
-            eng.db().makeOkrol(this.id, when, children, dead);
+                throw new ExBadDate(when);           
+            int born = eng.db().makeOkrol(this.id, when, children, dead);
+            eng.logs().log(RabNetLogs.LogType.OKROL, rid, born, smallAddress, "", String.Format("живых {0:d}, мертвых {1:d}", children, dead));
         }
 
         public void replaceRabbit(int farm,int tier_id,int sec,string address)
@@ -301,7 +301,7 @@ namespace rabnet
             }
             else
             {
-                eng.logs().log(RabNetLogs.LogType.REPLACE, rid, rab.smallAddress);
+                eng.logs().log(RabNetLogs.LogType.REPLACE, rid, 0, rab.smallAddress,address.Substring(0,5));
                 eng.db().replaceRabbit(rid, farm, tier_id, sec);
             }
             rab.tag = "";
@@ -353,7 +353,7 @@ namespace rabnet
 
         public int clone(int count,int farm,int tier,int sec)
         {
-           if (group<count) throw new ExBadCount();
+           if (group < count) throw new ExBadCount();
            int nid = eng.db().cloneRabbit(id, count, farm, tier, sec, OneRabbit.RabbitSex.VOID, 0);
            RabNetEngRabbit rab = Engine.get().getRabbit(nid);       //+gambit
            eng.logs().log(RabNetLogs.LogType.CLONE_GROUP, id, nid, smallAddress, rab.smallAddress, String.Format("{0:d} и {1:d}", group-count ,count));
@@ -369,7 +369,8 @@ namespace rabnet
 
         public void placeSuckerTo(int mother)
         {
-            eng.logs().log(RabNetLogs.LogType.PLACE_SUCK, id, mother, "", "");
+            RabNetEngRabbit mom_to = Engine.get().getRabbit(mother);
+            eng.logs().log(RabNetLogs.LogType.PLACE_SUCK, id, mother, "", mom_to.smallAddress);
             eng.db().placeSucker(id, mother);
         }
 
