@@ -288,7 +288,7 @@ namespace rabnet
                 throw new ExNotFucked(this);
             if (when > DateTime.Now)
                 throw new ExBadDate(when);
-            eng.logs().log(RabNetLogs.LogType.OKROL, rid,0,"","",String.Format("живых {0:d}, мертвых {1:d}",children,dead));
+            eng.logs().log(RabNetLogs.LogType.OKROL, rid,0,smallAddress,"",String.Format("живых {0:d}, мертвых {1:d}",children,dead));
             eng.db().makeOkrol(this.id, when, children, dead);
         }
 
@@ -335,15 +335,14 @@ namespace rabnet
         {
             if (sex != OneRabbit.RabbitSex.FEMALE)
                 throw new ExNotFemale(this);
-            eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, rid, 0, "", "", String.Format("возраст {0:d} всего {1:d}(умерло {2:d},притоптано {3:d}, подсажено{4:d})",age,atall,dead,killed,added));
             if (dead == 0 && killed == 0 && added == 0) return;
+            eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, rid, 0, "", "", String.Format("возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, подсажено {4:d})",age,atall,dead,killed,added));            
             if (atall == 0)
             {
                 OneRabbit y=rab.youngers[yid];
                 RabNetEngRabbit r = eng.getRabbit(y.id);
                 r.killIt(DateTime.Now, 6, "при подсчете", y.group);
-            }else
-                eng.db().countKids(id, dead, killed, added,rab.youngers[yid].id);
+            }else eng.db().countKids(id, dead, killed, added, rab.youngers[yid].id);
         }
 
         public void setSex(OneRabbit.RabbitSex sex)
@@ -355,14 +354,16 @@ namespace rabnet
         public int clone(int count,int farm,int tier,int sec)
         {
            if (group<count) throw new ExBadCount();
-           int nid=eng.db().cloneRabbit(id, count, farm, tier, sec, OneRabbit.RabbitSex.VOID, 0);
-           eng.logs().log(RabNetLogs.LogType.CLONE_GROUP, id, nid, "", "", String.Format("{0:d} и {1:d}",group-count,count));
+           int nid = eng.db().cloneRabbit(id, count, farm, tier, sec, OneRabbit.RabbitSex.VOID, 0);
+           RabNetEngRabbit rab = Engine.get().getRabbit(nid);       //+gambit
+           eng.logs().log(RabNetLogs.LogType.CLONE_GROUP, id, nid, smallAddress, rab.smallAddress, String.Format("{0:d} и {1:d}", group-count ,count));
            return nid;
         }
 
         public void combineWidth(int rabto)
         {
-            eng.logs().log(RabNetLogs.LogType.COMBINE, rabto, 0, "", "", "+ "+fullName+" ["+group.ToString()+"]");
+            RabNetEngRabbit rab = Engine.get().getRabbit(rabto);    //+gambit
+            eng.logs().log(RabNetLogs.LogType.COMBINE, id, rabto, smallAddress, rab.smallAddress , "+ " + fullName + " [" + group.ToString() + "]");
             eng.db().combineGroups(id, rabto);
         }
 

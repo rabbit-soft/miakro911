@@ -483,7 +483,7 @@ namespace rabnet
                 r.saved = true;
                 return;
             }
-            RabNetEngRabbit rb = Engine.get().getRabbit(id==0?r.id:id);
+            RabNetEngRabbit rb = Engine.get().getRabbit(id==0 ? r.id : id);
             RabNetEngRabbit par = null;
             if (r.younger)
                 par = Engine.get().getRabbit(r.parent);
@@ -528,7 +528,7 @@ namespace rabnet
             try
             {
                 if (globalError)
-                    throw new ApplicationException("Секция для пересадки занята");
+                    throw new ApplicationException("Не всем кроликам назначены уникальные клетки для пересадки.");
                 foreach (RP r in rs)
                     commitRabbit(r,0,false);
                 foreach (RP r in rs)
@@ -537,7 +537,8 @@ namespace rabnet
             }
             catch (ApplicationException ex)
             {
-                MessageBox.Show("Ошибка " + ex.GetType().ToString() + ":" + ex.Message);
+                MessageBox.Show(ex.Message,"Нельзя продолжить",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                this.DialogResult = DialogResult.None;
             }
         }
 
