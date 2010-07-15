@@ -286,6 +286,7 @@ INSERT INTO options(o_name,o_subname,o_value) VALUES
 ('opt', 'count2', 6),
 ('opt', 'count3', 13),
 ('opt', 'bride', 121),
+('opt', 'candidate', 120),
 ('opt', 'preokrol', 27),
 ('opt', 'combage', 3),
 ('opt', 'malewait', 2),
