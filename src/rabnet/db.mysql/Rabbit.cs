@@ -274,22 +274,29 @@ r_status,r_flags,r_event_date,r_breed
             return (shr ? "-" : "Нет");
         }
 
-        public static TreeData getRabbitGen(int rabbit, MySqlConnection con)
+        public static TreeData getRabbitGen(int rabbit,MySqlConnection con)
         {
-            return getRabbitGen(rabbit,con,7);
-        }
-
-        public static TreeData getRabbitGen(int rabbit,MySqlConnection con,byte level)
-        {
-            if (rabbit==0)
-                return null;
-            if (level == 0) return null;
+            if (rabbit==0) return null;
             MySqlCommand cmd = new MySqlCommand(@"SELECT
-rabname(r_id,1) name,
-(SELECT n_use FROM names WHERE n_id=r_surname) mother,
-(SELECT n_use FROM names WHERE n_id=r_secname) father,
-r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString()+";",con);
+                                                    rabname(r_id,1),
+                                                    r_mother,
+                                                    r_father,
+                                                    r_bon,
+                                                    TO_DAYS(NOW())-TO_DAYS(r_born)
+                                                FROM rabbits WHERE r_id=" + rabbit.ToString() + " LIMIT 1;", con);
             MySqlDataReader rd = cmd.ExecuteReader();
+            if (!rd.HasRows)
+            {
+                rd.Close();
+                cmd.CommandText = @"SELECT
+                                        deadname(r_id,1),
+                                        r_mother,
+                                        r_father,
+                                        r_bon,
+                                        TO_DAYS(NOW())-TO_DAYS(r_born)
+                                   FROM dead WHERE r_id=" + rabbit.ToString() + " LIMIT 1;";
+                rd = cmd.ExecuteReader();
+            }
             TreeData res = new TreeData();
             if (rd.Read())
             {
@@ -297,8 +304,8 @@ r_bon,TO_DAYS(NOW())-TO_DAYS(r_born) FROM rabbits WHERE r_id=" + rabbit.ToString
                 int mom=rd.IsDBNull(1)?0:rd.GetInt32(1);
                 int dad = rd.IsDBNull(2) ? 0 : rd.GetInt32(2);
                 rd.Close();
-                TreeData m = getRabbitGen(mom, con,level--);
-                TreeData d = getRabbitGen(dad, con,level--);
+                TreeData m = getRabbitGen(mom, con);
+                TreeData d = getRabbitGen(dad, con);
                 if (m == null)
                 {
                     m = d;
