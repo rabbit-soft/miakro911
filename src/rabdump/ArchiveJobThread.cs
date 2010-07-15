@@ -186,6 +186,10 @@ namespace rabdump
             String ext=Path.GetExtension(file);
             String f = tmppath + fl;
             log.Debug("copy "+file+" to "+f);
+            if (!Directory.Exists(tmppath))
+            {
+                Directory.CreateDirectory(tmppath);
+            }
             File.Copy(file,f,true);
             if (ext == ".7z")
             {
@@ -238,7 +242,8 @@ namespace rabdump
                 mp.Close();
                 if (res != 0 || mout!="")
                     throw new ApplicationException("mysql exit code="+res.ToString()+"\nerror="+mout);
-            }catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 File.Delete(f);
                 throw ex;
