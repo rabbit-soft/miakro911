@@ -621,11 +621,6 @@ namespace rabnet
             
         }
 
-        private void сравнитьЛогиToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            new aaa_merge().ShowDialog();
-        }
-
         private void показатьНомерToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("r_id = "+listView1.SelectedItems[0].Tag.ToString());

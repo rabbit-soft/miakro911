@@ -143,7 +143,7 @@ CREATE TABLE rabbits(
 	KEY(r_status),
 	KEY(r_born)
 	
-);
+) ENGINE = MyISAM;
 
 DROP TABLE IF EXISTS fucks;
 CREATE TABLE fucks(
@@ -278,7 +278,7 @@ CREATE TABLE logs(
 
 #DATA
 
-INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','4');
+INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','5');
 INSERT INTO options(o_name,o_subname,o_value) VALUES
 ('opt', 'okrol', 30),
 ('opt', 'vudvor', 30),

@@ -51,11 +51,11 @@ namespace rabnet
             ToolTip toolTip = new ToolTip();
             
             toolTip.InitialDelay = 1000;
-            toolTip.SetToolTip(button11, "Показать генетику выделенного самца");
-            toolTip.SetToolTip(button12, "Выбрать партнера для соития");
-            toolTip.SetToolTip(overallBab, "Сколько родила живых крольчат вообщем");
-            toolTip.SetToolTip(button13, "Определение классности");
-            toolTip.SetToolTip(group, "Количество кроликов в клетке");
+            toolTip.SetToolTip(button11,"Показать генетику выделенного самца");
+            toolTip.SetToolTip(button12,"Выбрать партнера для соития");
+            toolTip.SetToolTip(overallBab,"Сколько родила живых крольчат вообщем");
+            toolTip.SetToolTip(button13,"Определение классности");
+            toolTip.SetToolTip(group,"Количество кроликов в клетке");
             toolTip.SetToolTip(button16,"Показать все имена");
             toolTip.SetToolTip(button14,"Показать все породы");
             toolTip.SetToolTip(button15,"Показать все местности");
@@ -63,8 +63,12 @@ namespace rabnet
             toolTip.SetToolTip(button4,"Удалить выбранный номер гена");
             toolTip.SetToolTip(button3,"Добавить номер гена");
             toolTip.SetToolTip(checkBox5,"Изменить данные вручную");
-            toolTip.SetToolTip(button9, "Принять окрол");
-            toolTip.SetToolTip(gp, "Готовая продукция");
+            toolTip.SetToolTip(button9,"Принять окрол");
+            toolTip.SetToolTip(gp,"Готовая продукция");
+            toolTip.SetToolTip(spec,"Привит ли кролик или группа");
+            toolTip.SetToolTip(dtp_vacEnd,"Дата окончания прививки");
+            toolTip.SetToolTip(sex, "Пол одного или группы кроликов");
+            toolTip.SetToolTip(rate, "Рейтинг кролика");
         }
 
         public RabbitInfo(int id)

@@ -63,7 +63,7 @@ namespace updater
         {
 			button1.Enabled = false;
 			int needcount = 0;
-            button1.Enabled = button2.Enabled = false;
+            button1.Enabled = false;
             status("Проверка версий баз данных");
             lv.Items.Clear();
             XmlDocument xml = new XmlDocument();
@@ -118,7 +118,7 @@ namespace updater
                 button1.Enabled = true;
             }else{
                 status("Обновления не требуются");
-                button2.Enabled = true;
+                //button2.Enabled = true;
             }
 			button1.Enabled = true;
         }

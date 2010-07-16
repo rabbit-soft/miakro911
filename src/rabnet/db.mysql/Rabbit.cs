@@ -300,7 +300,7 @@ r_status,r_flags,r_event_date,r_breed
             TreeData res = new TreeData();
             if (rd.Read())
             {
-                res.caption = rd.GetString(0) + "," + rd.GetInt32(4).ToString() + "," + Rabbits.getBon(rd.GetString("r_bon"), true);
+                res.caption = rd.GetString(0) + ", " + rd.GetInt32(4).ToString() + "," + Rabbits.getBon(rd.GetString("r_bon"), true);
                 int mom=rd.IsDBNull(1)?0:rd.GetInt32(1);
                 int dad = rd.IsDBNull(2) ? 0 : rd.GetInt32(2);
                 rd.Close();
@@ -838,7 +838,7 @@ FROM rabbits WHERE r_id={0:d};", rabbit,mom,count), sql);
             }else rd.Close();
             cmd.CommandText=String.Format("UPDATE rabbits SET r_parent=0,r_farm={1:d},r_tier={2:d},r_area={3:d},r_tier={4:d} WHERE r_parent={0:d};", rid,place[0],place[1],place[2],place[3]);
             cmd.ExecuteNonQuery();
-            cmd.CommandText=String.Format(@"CALL killRabbitDate({0:d},{1:d},'{2:s}',{3:s});",
+            cmd.CommandText = String.Format(@"COMMIT;CALL killRabbitDate({0:d},{1:d},'{2:s}',{3:s});",
                 rid,reason,notes,DBHelper.DateToMyString(when));
             cmd.ExecuteNonQuery();
         }

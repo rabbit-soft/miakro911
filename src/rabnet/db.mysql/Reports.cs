@@ -414,17 +414,17 @@ FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AN
             //return "SELECT DATE_FORMAT(r_born,'%m.%Y') date, sum(r_group) count FROM rabbits GROUP BY date ORDER BY year(r_born) desc,month(r_born) desc;";
             return @"SELECT
                         DATE_FORMAT(r_born,'%m.%Y') date,
-                        sum(r_group) count,
-                        (SELECT SUM(r_group) FROM dead d WHERE MONTH(d.r_born)=MONTH(rabbits.r_born) AND YEAR(d.r_born)=YEAR(rabbits.r_born)) killed
+                        COALESCE(SUM(r_group),0) count,
+                        (SELECT COALESCE(SUM(r_group),0) FROM dead d WHERE MONTH(d.r_born)=MONTH(rabbits.r_born) AND YEAR(d.r_born)=YEAR(rabbits.r_born)) killed
                         FROM rabbits GROUP BY date ORDER BY year(r_born) desc,month(r_born) desc;";
         }
 
         private string fucksByDate(Filters f)
         {
             return String.Format(@"SELECT DATE_FORMAT(f_date,'%d.%m.%Y')date,anyname(f_rabid,2) name,
-(SELECT n_name FROM names WHERE n_use=f_partner) partner,
-(SELECT u_name FROM users WHERE u_id=f_worker) worker 
-FROM fucks WHERE f_date is not null ORDER BY f_date DESC, f_worker;",DFROM,DTO);
+                                    (SELECT n_name FROM names WHERE n_use=f_partner) partner,
+                                    (SELECT u_name FROM users WHERE u_id=f_worker) worker 
+                                FROM fucks WHERE f_date is not null ORDER BY f_date DESC, f_worker;",DFROM,DTO);
         }
     }
 }

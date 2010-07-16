@@ -1,5 +1,4 @@
-﻿
-UPDATE options SET o_value='4' WHERE o_name='db' AND o_subname='version';
+﻿UPDATE options SET o_value='4' WHERE o_name='db' AND o_subname='version';
 
 UPDATE rabbits SET r_flags=SUBSTR(r_flags,1,5) WHERE r_flags LIKE '______';
 UPDATE dead SET r_flags=SUBSTR(r_flags,1,5) WHERE r_flags LIKE '______';
