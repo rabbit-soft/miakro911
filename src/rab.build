@@ -34,6 +34,14 @@
 	<property name="obfuscated" value="" />
 
 	<property name="compile_flag" value="" />
+	<property name="dotnetInstaller" value="dotnetfx.exe"/>
+	<property name="mysqlInstaller" value="install_mysql.cmd"/>
+	<property name="dotnetInstallerSource" value="${curdir}/distrib_new/3d_distrib/${dotnetInstaller}"/>
+	<property name="mysqlInstallerSource" value="${curdir}/distrib_new/3d_distrib/${mysqlInstaller}"/>
+	<property name="installersPath" value=""/>
+	<property name="slash" value=""/>
+	<property name="dotnetInstallerDest" value="${installersPath}${slash}${dotnetInstaller}"/>
+	<property name="mysqlInstallerDest" value="${installersPath}${slash}${mysqlInstaller}"/>
 	
 	<property name="nant.settings.currentframework" value="net-2.0" />
 
@@ -260,7 +268,7 @@
 	
 	<target name="one_distrib">
 		<mkdir dir="${root_bin}/distrib/obj"/>
-		<candle out="${root_bin}/distrib/obj/" rebuild="true"  extensions="WixUIExtension;WixUtilExtension;WiXNetFxExtension"  warningsaserrors="true">
+		<candle out="${root_bin}/distrib/obj/" rebuild="true"  extensions="WixUIExtension;WixUtilExtension;WiXNetFxExtension"  warningsaserrors="true" exedir="${wix.dir}">
 		 <defines>
 			<define name="ProjectDir" value="${bin_dir}" />
 			<define name="Version" value="${version}.${minver}" />
@@ -270,13 +278,36 @@
 		</sources>
 		</candle>
 		<light out="${root_bin}/distrib/${dist_type}_${version}.msi" warningsaserrors="true" 
-		  suppressices="ICE57" cultures="ru-ru" extensions="WixUIExtension;WiXNetFxExtension;WixUtilExtension" rebuild="true" suppresspdb="true">
+		  suppressices="ICE57" cultures="ru-ru" extensions="WixUIExtension;WiXNetFxExtension;WixUtilExtension" rebuild="true" suppresspdb="true" exedir="${wix.dir}">
 			<arg line="-fv" />
 			<sources basedir="${root_bin}/distrib/obj">
 				<include name="*.wixobj" />
 			</sources>
 		</light>
 		<delete dir="${root_bin}/distrib/obj"/>
+	</target>
+
+	<target name="one_distrib_new">
+		<mkdir dir="${root_bin}/distrib_new/obj"/>
+		<candle out="${root_bin}/distrib_new/obj/" rebuild="true"  extensions="WixUIExtension;WixUtilExtension;WiXNetFxExtension"  warningsaserrors="true" exedir="${wix.dir}">
+		 <defines>
+			<define name="ProjectDir" value="${bin_dir}" />
+			<define name="NetInstaller" value="${dotnetInstallerDest}" />
+			<define name="MysqlInstaller" value="${mysqlInstallerDest}" />
+			<define name="ProductVersion" value="${version}.${minver}" />
+		</defines>
+		<sources basedir="${curdir}/distrib_new">
+			<include name="rabnet.wxs" />
+		</sources>
+		</candle>
+		<light out="${root_bin}/distrib_new/${dist_type}_${version}.msi" warningsaserrors="true" 
+		  suppressices="ICE57" cultures="ru-ru" extensions="WixUIExtension;WiXNetFxExtension;WixUtilExtension" rebuild="true" suppresspdb="true" exedir="${wix.dir}">
+			<arg line="-fv" />
+			<sources basedir="${root_bin}/distrib_new/obj">
+				<include name="*.wixobj" />
+			</sources>
+		</light>
+		<delete dir="${root_bin}/distrib_new/obj"/>
 	</target>
 
 	<target name="updater" description="Make updater project">
@@ -306,6 +337,24 @@
 		<property name="minver" value="2"/>
 		<call target="one_distrib"/>
 		<delete dir="${root_bin}/distrib/obj"/>
+	</target>
+
+	<target name="distrib_new" depends="obfuscate">
+		<mkdir dir="${root_bin}"/>
+		<delete dir="${root_bin}/distrib_new"/>
+		<mkdir dir="${root_bin}/distrib_new"/>
+		<mkdir dir="${root_bin}/distrib_new/${installersPath}"/>
+		<copy file="${dotnetInstallerSource}" tofile="${root_bin}/distrib_new/3dparty/${dotnetInstallerDest}"/>
+		<copy file="${mysqlInstallerSource}" tofile="${root_bin}/distrib_new/3dparty/${mysqlInstallerDest}"/>
+		<!--property name="dist_type" value="rabnet"/>
+		<property name="bin_dir" value="${root_bin}\release"/>
+		<property name="minver" value="1"/>
+		<call target="one_distrib"/-->
+		<property name="dist_type" value="rabnet_protected"/>
+		<property name="bin_dir" value="${root_bin}\protected"/>
+		<property name="minver" value="2"/>
+		<call target="one_distrib_new"/>
+		<delete dir="${root_bin}/distrib_new/obj"/>
 	</target>
 	
 	<!-- FILL DATA!-->
