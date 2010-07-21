@@ -22,18 +22,18 @@
   <BottomMargin>.25in</BottomMargin>
   <DataSets>
     <DataSet Name="Data">
-      <Query >
+      <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>url=c:/temp/test.xml;RowsXPath=/Rows/Row</CommandText>
       </Query>
-      <Fields >
+      <Fields>
         <Field Name="address">
           <DataField>address</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
-    <DataSet Name="Data2" >
+    <DataSet Name="Data2">
       <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>
@@ -55,7 +55,7 @@
     <Height>17.4pt</Height>
     <PrintOnFirstPage>true</PrintOnFirstPage>
     <PrintOnLastPage>true</PrintOnLastPage>
-    <ReportItems >
+    <ReportItems>
       <Textbox Name="Textbox6">
         <Height>16.49pt</Height>
         <Width>219.09pt</Width>
@@ -73,7 +73,7 @@
   </PageHeader>
   <Body>
     <Height>27.1pt</Height>
-    <ReportItems >
+    <ReportItems>
       <Table Name="Table1">
         <DataSetName>Data</DataSetName>
         <NoRows>Query returned no rows!</NoRows>
@@ -98,7 +98,7 @@
                 <TableCell>
                   <ReportItems>
                     <Textbox Name="Textbox1">
-                      <Value>address</Value>
+                      <Value>Адрес</Value>
                       <Style>
                         <TextAlign>Center</TextAlign>
                         <BorderStyle>
@@ -169,7 +169,7 @@
         <Top>0.9pt</Top>
       </Table>
     </ReportItems>
-    <Columns >2</Columns>
+    <Columns>2</Columns>
   </Body>
   <PageFooter>
     <Height>14.3pt</Height>
@@ -189,6 +189,6 @@
     <PrintOnFirstPage>true</PrintOnFirstPage>
     <PrintOnLastPage>true</PrintOnLastPage>
   </PageFooter>
-  <DataElementName >Report</DataElementName>
-  <DataElementStyle >AttributeNormal</DataElementStyle>
+  <DataElementName>Report</DataElementName>
+  <DataElementStyle>AttributeNormal</DataElementStyle>
 </Report>

@@ -226,7 +226,7 @@ namespace rabnet
                 f["r" + i.ToString()] = rbs[i].rid.ToString();
             String tp = "";
             comboBox1.Tag = 1;
-            if (action == Action.SET_NEST)
+            if (action == Action.SET_NEST && comboBox1.SelectedIndex != 4 && comboBox1.SelectedIndex != 2 && comboBox1.SelectedIndex !=1)
                 comboBox1.SelectedIndex = 4;
             comboBox1.Tag = 0;
             if (comboBox1.SelectedIndex != 0)

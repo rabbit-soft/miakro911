@@ -87,8 +87,10 @@ namespace rabnet
             cbFemaleFirst.Checked = f.safeValue("ft", "gbfs").Contains("f");
             cbFemaleState.Checked = f.safeValue("ft", "gbfs").Contains("s");         
             cobPregnant.SelectedIndex = f.safeInt("pr");
-            cbPregFrom.Checked = f.ContainsKey("pf"); cbPregFrom_CheckedChanged(null, null);
-            cbPregTo.Checked = f.ContainsKey("Pf"); cbPregTo_CheckedChanged(null, null);
+            cbPregFrom.Checked = f.ContainsKey("pf"); 
+            cbPregFrom_CheckedChanged(null, null);
+            cbPregTo.Checked = f.ContainsKey("Pf"); 
+            cbPregTo_CheckedChanged(null, null);
             if (cbPregFrom.Checked)
             { nudPregFrom.Value = f.safeInt("pf", 10); nudPregFrom_ValueChanged(null, null); }
             if (cbPregTo.Checked)
@@ -101,7 +103,8 @@ namespace rabnet
             fillBreeds();
             cbSexFemale.Checked = cbSexMale.Checked = cbSexVoid.Checked = true;
             cbDateTo.Checked = cbDateFrom.Checked = false;
-            cbDateFrom_CheckedChanged(null, null); cbDateTo_CheckedChanged(null, null);
+            cbDateFrom_CheckedChanged(null, null); 
+            cbDateTo_CheckedChanged(null, null);
             cbWeightFrom.Checked = cbWeightTo.Checked = false;
             cbWeightFrom_CheckedChanged(null, null); cbWeightTo_CheckedChanged(null, null);
             cobWorks.SelectedIndex = 0;
@@ -167,6 +170,8 @@ namespace rabnet
         private void cbDateTo_CheckedChanged(object sender, EventArgs e)
         {
             dtpDateTo.Enabled = nudDateTo.Enabled = cbDateTo.Checked;
+            dtpDateTo.Value = DateTime.Today.AddDays(-(double)nudDateTo.Value);
+
             if (!cbDateTo.Checked)
             {
                 nudDateFrom.Maximum = 5000;
@@ -174,8 +179,7 @@ namespace rabnet
             }
             if (cbDateFrom.Checked)
             {
-                if (nudDateTo.Value < nudDateFrom.Value)
-                    nudDateTo.Value = nudDateFrom.Value;
+                if (nudDateTo.Value < nudDateFrom.Value)nudDateTo.Value = nudDateFrom.Value;               
                 nudDateFrom.Maximum = nudDateTo.Value;
                 nudDateTo.Minimum = nudDateFrom.Value;
             }
@@ -183,6 +187,7 @@ namespace rabnet
         private void cbDateFrom_CheckedChanged(object sender, EventArgs e)
         {
             dtpDateFrom.Enabled = nudDateFrom.Enabled = cbDateFrom.Checked;
+            dtpDateFrom.Value = DateTime.Now.AddDays(-(double)nudDateFrom.Value).Date;
             if (!cbDateFrom.Checked)
             {
                 nudDateTo.Minimum = 60;
@@ -254,6 +259,7 @@ namespace rabnet
         private void cbPregFrom_CheckedChanged(object sender, EventArgs e)
         {
             dtpPregFrom.Enabled = nudPregFrom.Enabled = cbPregFrom.Checked;
+            dtpPregFrom.Value = DateTime.Today.AddDays(-(double)nudPregFrom.Value);
             if (!cbPregFrom.Checked)
             {
                 nudPregTo.Minimum = 0;
@@ -272,6 +278,7 @@ namespace rabnet
         private void cbPregTo_CheckedChanged(object sender, EventArgs e)
         {
             dtpPregTo.Enabled = nudPregTo.Enabled = cbPregTo.Checked;
+            dtpPregTo.Value = DateTime.Today.AddDays(-(double)nudPregTo.Value);
             if (!cbPregTo.Checked)
             {
                 nudPregFrom.Maximum = 40;
@@ -430,5 +437,6 @@ namespace rabnet
         }
 
         #endregion
+
     }
 }

@@ -196,7 +196,9 @@ namespace rabnet
                         if (options.ContainsKey("pf"))
                             stat = "(r_event_date<=NOW()-INTERVAL "+options["pf"]+" DAY)";
                         if (options.ContainsKey("Pf"))
-                            stat = addWhereAnd(stat, "(r_event_date>=NOW()-INTERVAL " + options["Pf"] + " DAY)");
+                        {
+                            stat = addWhereAnd(stat, "(r_event_date>=NOW()-INTERVAL " + (options.safeInt("Pf")+1) + " DAY)");
+                        }
                     }
                     else
                         stat = "r_event_date IS NOT NULL";
