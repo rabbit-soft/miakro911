@@ -414,8 +414,8 @@ FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AN
             //return "SELECT DATE_FORMAT(r_born,'%m.%Y') date, sum(r_group) count FROM rabbits GROUP BY date ORDER BY year(r_born) desc,month(r_born) desc;";
             return @"SELECT
                         DATE_FORMAT(r_born,'%m.%Y') date,
-                        COALESCE(SUM(r_group),0) count,
-                        (SELECT COALESCE(SUM(r_group),0) FROM dead d WHERE MONTH(d.r_born)=MONTH(rabbits.r_born) AND YEAR(d.r_born)=YEAR(rabbits.r_born)) killed
+                        (SELECT COALESCE(SUM(r_group),0) FROM dead d WHERE MONTH(d.r_born)=MONTH(rabbits.r_born) AND YEAR(d.r_born)=YEAR(rabbits.r_born))+COALESCE(SUM(r_group),0) count,
+                        COALESCE(SUM(r_group),0) alife
                         FROM rabbits GROUP BY date ORDER BY year(r_born) desc,month(r_born) desc;";
         }
 

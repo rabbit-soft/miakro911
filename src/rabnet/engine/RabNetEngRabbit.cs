@@ -335,9 +335,9 @@ namespace rabnet
         {
             if (sex != OneRabbit.RabbitSex.FEMALE)
                 throw new ExNotFemale(this);
-            if (dead == 0 && killed == 0 && added == 0) return;
             eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, rid, 0, "", "", String.Format("возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, прибавилось {4:d})",age,atall,dead,killed,added));            
-            if (atall == 0)
+            if (dead == 0 && killed == 0 && added == 0) return;
+			if (atall == 0)
             {
                 OneRabbit y=rab.youngers[yid];
                 RabNetEngRabbit r = eng.getRabbit(y.id);

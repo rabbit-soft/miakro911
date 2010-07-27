@@ -34,8 +34,8 @@
           <DataField>count</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="killed">
-          <DataField>killed</DataField>
+        <Field Name="alife">
+          <DataField>alife</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -104,7 +104,7 @@
                 <TableCell>
                   <ReportItems>
                     <Textbox Name="Textbox3">
-                      <Value>Живых</Value>
+                      <Value>Всего</Value>
                       <Style>
                         <TextAlign>Center</TextAlign>
                         <BorderStyle>
@@ -118,7 +118,7 @@
                 <TableCell>
                   <ReportItems>
                     <Textbox Name="Textbox5">
-                      <Value>Мертвых</Value>
+                      <Value>Осталовь</Value>
                       <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
                         <TextAlign>Center</TextAlign>
                         <BorderStyle>
@@ -170,7 +170,7 @@
                 <TableCell>
                   <ReportItems>
                     <Textbox Name="killed">
-                      <Value>=Fields!killed.Value</Value>
+                      <Value>=Fields!alife.Value</Value>
                       <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
                         <BorderStyle>
                           <Default>Solid</Default>
