@@ -303,7 +303,7 @@ r_status,r_flags,r_event_date,r_breed
             if (rd.Read())
             {
                 res.caption = rd.GetString(0) + ", " + rd.GetInt32(4).ToString() + "," + Rabbits.getBon(rd.GetString("r_bon"), true);
-                int mom=rd.IsDBNull(1)?0:rd.GetInt32(1);
+                int mom = rd.IsDBNull(1) ? 0 : rd.GetInt32(1);
                 int dad = rd.IsDBNull(2) ? 0 : rd.GetInt32(2);
                 rd.Close();
                 TreeData m = getRabbitGen(mom, con);
