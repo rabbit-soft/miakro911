@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Rabnet")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Trustbox")]
+[assembly: AssemblyCompany("9Bits")]
 [assembly: AssemblyProduct("Миакро Rabnet")]
-[assembly: AssemblyCopyright("Copyright ©  2010 Trustbox")]
+[assembly: AssemblyCopyright("Copyright ©  2010 9Bits")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

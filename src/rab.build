@@ -35,13 +35,19 @@
 
 	<property name="compile_flag" value="" />
 	<property name="dotnetInstaller" value="dotnetfx.exe"/>
-	<property name="mysqlInstaller" value="install_mysql.cmd"/>
-	<property name="dotnetInstallerSource" value="${curdir}/distrib_new/3d_distrib/${dotnetInstaller}"/>
-	<property name="mysqlInstallerSource" value="${curdir}/distrib_new/3d_distrib/${mysqlInstaller}"/>
+	<property name="mysqlInstaller" value="mysql-essential-5.1.49-win32.msi"/>
+	<property name="MSIInstaller" value="WindowsXP-KB942288-v3-x86.exe"/>
+	<property name="dotnetInstallerSource" value="${curdir}/3dParty/${dotnetInstaller}"/>
+	<property name="mysqlInstallerSource" value="${curdir}/3dParty/${mysqlInstaller}"/>
+	<property name="MSIInstallerSource" value="${curdir}/3dParty/${MSIInstaller}"/>
 	<property name="installersPath" value=""/>
 	<property name="slash" value=""/>
 	<property name="dotnetInstallerDest" value="${installersPath}${slash}${dotnetInstaller}"/>
 	<property name="mysqlInstallerDest" value="${installersPath}${slash}${mysqlInstaller}"/>
+	<property name="MSIInstallerDest" value="${installersPath}${slash}${MSIInstaller}"/>
+
+	<property name="NSISPath" value="C:\Program Files\NSIS\"/>
+	<property name="NSIS" value="${NSISPath}makensis.exe"/>
 	
 	<property name="nant.settings.currentframework" value="net-2.0" />
 
@@ -119,7 +125,7 @@
 	
 	<target name="miaconv" description="Make mia converter project">
 		<copy file="${curdir}/mia_conv/rabnet_db_fmt.sql" tofile="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
-		<csc target="winexe" output="${bin_dir}/mia_conv.exe" win32icon="${curdir}/mia_conv/logo2.ico" define="${compile_flag}">
+		<csc target="winexe" output="${bin_dir}/mia_conv.exe" win32icon="${curdir}/mia_conv/icon_yell_red.ico" define="${compile_flag}">
 			<sources>
 				<include name="${curdir}/mia_conv/*.cs"/>
 			</sources>
@@ -198,7 +204,7 @@
 	</target>
 	
 	<target name="rabdump" description="rabnet db dumper">
-		<csc target="winexe" output="${bin_dir}/rabdump.exe" win32icon="${curdir}/rabdump/logo3.ico"  define="${compile_flag}">
+		<csc target="winexe" output="${bin_dir}/rabdump.exe" win32icon="${curdir}/rabdump/icon_white.ico"  define="${compile_flag}">
 			<sources>
 				<include name="${curdir}/rabdump/*.cs"/>
 			</sources>
@@ -213,7 +219,7 @@
 	</target>
 	
 	<target name="gui" description="rabnet gui">
-		<csc target="winexe" output="${bin_dir}/rabnet.exe" win32icon="${curdir}/rabnet/gui/mialicon.ico" define="${compile_flag}">
+		<csc target="winexe" output="${bin_dir}/rabnet.exe" win32icon="${curdir}/rabnet/gui/icon_green.ico" define="${compile_flag}">
 			<sources>
 				<include name="${curdir}/rabnet/gui/*.cs"/>
 				<include name="${curdir}/rabnet/gui/Properties/*.cs"/>
@@ -295,6 +301,7 @@
 			<define name="NetInstaller" value="${dotnetInstallerDest}" />
 			<define name="MysqlInstaller" value="${mysqlInstallerDest}" />
 			<define name="ProductVersion" value="${version}.${minver}" />
+			<!--define name="bannerBmp" value="${curdir}/../art/WixTopBanner.bmp" /-->
 		</defines>
 		<sources basedir="${curdir}/distrib_new">
 			<include name="rabnet.wxs" />
@@ -346,6 +353,7 @@
 		<mkdir dir="${root_bin}/distrib_new/${installersPath}"/>
 		<copy file="${dotnetInstallerSource}" tofile="${root_bin}/distrib_new/3dparty/${dotnetInstallerDest}"/>
 		<copy file="${mysqlInstallerSource}" tofile="${root_bin}/distrib_new/3dparty/${mysqlInstallerDest}"/>
+		<copy file="${MSIInstallerSource}" tofile="${root_bin}/distrib_new/3dparty/${MSIInstallerDest}"/>
 		<!--property name="dist_type" value="rabnet"/>
 		<property name="bin_dir" value="${root_bin}\release"/>
 		<property name="minver" value="1"/>
@@ -353,8 +361,77 @@
 		<property name="dist_type" value="rabnet_protected"/>
 		<property name="bin_dir" value="${root_bin}\protected"/>
 		<property name="minver" value="2"/>
+		<property name="appname" value="Миакро Rabnet"/>
+		<property name="companyname" value="ХЗкакзвать"/>
 		<call target="one_distrib_new"/>
 		<delete dir="${root_bin}/distrib_new/obj"/>
+		<delete dir="${curdir}/distrib_new/tmp"/>
+		<mkdir dir="${curdir}/distrib_new/tmp"/>
+		<copy todir="${curdir}/distrib_new/tmp" inputencoding="utf-8" outputencoding="utf-8">
+			<fileset basedir="${curdir}/distrib_new">
+				<include name="configuration.xml" />
+			</fileset>
+			<filterchain>
+				<replacetokens>
+					<token key="AppVer" value="${version}.${minver}" />
+					<token key="AppName" value="${appname}" />
+					<token key="FileDescr" value="Установщик ${appname} ${version}.${minver}" />
+					<token key="CompanyName" value="${companyname}" />
+					<token key="Copys" value="(C) ${companyname} 2010" />
+					<token key="Comments" value="" />
+					<token key="MSIFile" value="${dist_type}_${version}.msi" />
+				</replacetokens>
+				<!--tabstospaces /-->
+			</filterchain>
+		</copy>		
+		<exec program="${curdir}/distrib_new/dotNetInstaller/bin/InstallerLinker.exe">
+			<arg value="/Output:${root_bin}/distrib_new/Setup.exe" />
+			<arg value="/Banner:${curdir}/../art/logo1_big.bmp" />
+			<arg value="/Template:${curdir}/distrib_new/dotNetInstaller/bin/dotNetInstaller.exe" />
+			<arg value="/Configuration:${curdir}/distrib_new/tmp/Configuration.xml" />
+			<arg value="/Embed+" />
+			<arg value="/Icon:${curdir}/distrib_new/icon_green.ico" />
+		</exec>
+	</target>
+	
+	<target name="distrib_nsis" depends="obfuscate">
+		<mkdir dir="${root_bin}"/>
+		<delete dir="${root_bin}/distrib_nsis"/>
+		<mkdir dir="${root_bin}/distrib_nsis"/>
+		<mkdir dir="${root_bin}/distrib_nsis/dotnetfx2"/>
+		<mkdir dir="${root_bin}/distrib_nsis/mysql"/>
+		<copy file="${dotnetInstallerSource}" tofile="${root_bin}/distrib_nsis/dotnetfx2/${dotnetInstallerDest}"/>
+		<copy file="${mysqlInstallerSource}" tofile="${root_bin}/distrib_nsis/mysql/${mysqlInstallerDest}"/>
+		<!--property name="dist_type" value="rabnet"/>
+		<property name="bin_dir" value="${root_bin}\release"/>
+		<property name="minver" value="1"/>
+		<call target="one_distrib"/-->
+		<property name="dist_type" value="rabnet_protected"/>
+		<property name="bin_dir" value="${root_bin}\protected"/>
+		<property name="minver" value="2"/>
+		<property name="appname" value="Миакро Rabnet"/>
+		<property name="companyname" value="ХЗкакзвать"/>
+		<delete file="${curdir}/distrib_nsis/setup_bld.nsi"/>
+		<delete file="${curdir}/distrib_nsis/setup.exe"/>
+		<copy file="${curdir}/distrib_nsis/setup_tmpl.nsi" tofile="${curdir}/distrib_nsis/setup_bld.nsi">
+			<filterchain>
+				<replacetokens>
+					<token key="AppVer" value="${version}.${minver}" />
+					<token key="AppName" value="${appname}" />
+					<token key="FileDescr" value="Установщик ${appname} ${version}.${minver}" />
+					<token key="CompanyName" value="${companyname}" />
+					<token key="Copys" value="(C) ${companyname} 2010" />
+					<token key="Comments" value="" />
+				</replacetokens>
+				<!--tabstospaces /-->
+			</filterchain>
+		</copy>		
+
+		<exec program="${NSIS}">
+			<arg value="/V3" />
+			<arg value="${curdir}/distrib_nsis/setup_bld.nsi" />
+		</exec>
+		<copy file="${curdir}/distrib_nsis/setup.exe" tofile="${root_bin}/distrib_nsis/setup.exe"/>
 	</target>
 	
 	<!-- FILL DATA!-->

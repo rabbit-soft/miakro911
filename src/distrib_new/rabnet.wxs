@@ -23,20 +23,22 @@
 
 
     <PropertyRef Id="NETFRAMEWORK20"/>
-    <!-- Condition Message='This setup requires the .NET Framework 2.0 to be installed.'>
+    <Condition Message='This setup requires the .NET Framework 2.0 to be installed.'>
       <![CDATA[Installed OR NETFRAMEWORK20]]>
-    </Condition-->
+    </Condition>
 
-    <CustomAction Id="SetupNETFXAssign" Property="NETINSTALLER" Value="[CURRENTDIRECTORY]\$(var.NetInstaller)" />
+    <CustomAction Id="SetupNETFXAssign" Property="NETINSTALLER" Value="[CURRENTDIRECTORY]\3dparty\$(var.NetInstaller)" />
     <!--CustomAction Id="SetupNETFX" Property="NETINSTALLER" ExeCommand='/q /c:"install.exe /q"' /-->
-    <CustomAction Id="SetupNETFX" Property="NETINSTALLER" ExeCommand=' /c:"install.exe /l c:\dd_netfx20.txt /qb"' />
+    <!--CustomAction Id="SetupNETFX" Property="NETINSTALLER" ExeCommand=' /c:"install.exe /l c:\dd_netfx20.txt /qb"' /-->
+    <CustomAction Id="SetupNETFX" Property="NETINSTALLER" ExeCommand='' />
 
     <InstallExecuteSequence>
       <RemoveExistingProducts After="InstallInitialize" />
+      <Custom Action="SetupNETFX" After="CostFinalize"><![CDATA[&RabDump=3 OR  !RabDump=3]]></Custom>
       <Custom Action="SetupNETFXAssign" After="RemoveExistingProducts" />
       <!--Custom Action="SetupMysqlAssign" After="SetupNETFXAssign" />
       <Custom Action="RabnetUpdateAssign" After="SetupMysqlAssign" /-->
-      <Custom Action="SetupNETFX" After="SetupNETFXAssign">NOT Installed AND NOT NETFRAMEWORK20</Custom>
+      <!--Custom Action="SetupNETFX" After="SetupNETFXAssign">NOT Installed AND NOT NETFRAMEWORK20</Custom-->
       <!--Custom Action="SetupMysql" After="RabnetUpdateAssign">NOT Installed AND (FARMHERE="yes") AND (NOT HASMYSQL="1")</Custom>
       <Custom Action="RabnetUpdate" After="InstallFinalize">NOT Installed</Custom>
       <Custom Action="DeleteUpdater" After="RabnetUpdate">NOT Installed</Custom> -->
@@ -146,6 +148,7 @@
     <Property Id='ARPSIZE'>10000</Property>
     
     <WixVariable Id="WixUILicenseRtf" Overridable="yes" Value="$(var.ProjectDir)\..\..\src\docs\licenseansi.rtf"/>
+    <WixVariable Id="bannerBmp" Overridable="yes" Value="$(var.ProjectDir)\..\..\art\WixTopBanner.bmp"/>
     <UIRef Id="WixUI_FeatureTree"/>
    
     <!--Icon Id="rabnet.exe" SourceFile="$(var.ProjectDir)\rabnet.exe" />

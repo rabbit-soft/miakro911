@@ -18,7 +18,7 @@
     </UpgradeBackupLocation>
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
-    <ApplicationIcon>logo2.ico</ApplicationIcon>
+    <ApplicationIcon>icon_yell_red.ico</ApplicationIcon>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>

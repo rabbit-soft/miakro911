@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Rabnet DB.MySQL")]
 [assembly: AssemblyDescription("Интерфейс доступа к БД MySQL")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Trustbox")]
+[assembly: AssemblyCompany("9Bits")]
 [assembly: AssemblyProduct("Миакро Rabnet MySQL Layer")]
-[assembly: AssemblyCopyright("Copyright ©  2010 Trustbox")]
+[assembly: AssemblyCopyright("Copyright ©  2010 9Bits")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
