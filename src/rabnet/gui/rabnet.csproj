@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{EFCCE992-8AB2-43AB-87DD-1BEC3E429345}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -17,7 +17,7 @@
     <ManifestCertificateThumbprint>3B8C72DE762591324EA262613E6D576677A828BC</ManifestCertificateThumbprint>
     <ManifestKeyFile>rabnet_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -543,7 +543,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="..\..\..\help\rabHelp.chm">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="rabnet_TemporaryKey.pfx" />
     <None Include="reports\age.rdl">
