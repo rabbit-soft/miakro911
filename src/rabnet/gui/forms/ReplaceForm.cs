@@ -16,6 +16,7 @@ namespace rabnet
         }
         class RP
         {
+            public bool wchild = false;
             public int id;
             public bool saved = false;
             public string sname;
@@ -83,6 +84,14 @@ namespace rabnet
                 nusex = sex;
                 nuparent = parent;
             }
+
+            public void setCurAddress(string adr, bool wchildren)
+            {
+                wchild = wchildren;
+                curaddress = adr;
+                wchild = false;
+            }
+
             public string curaddress
             { 
                 get { return nuaddress==""?address:nuaddress;} 
@@ -92,7 +101,8 @@ namespace rabnet
                         {
                             String cur = r.address;
                             r.address = curaddress;
-                            r.curaddress = cur;
+                            if (!wchild)
+                                r.curaddress = cur;
                         }
                 }
             }
@@ -292,7 +302,7 @@ namespace rabnet
                     stat += ",ЗАНЯТО";
                 }
                 DataRow rw = ds.Rows.Add(r.name, r.age,OneRabbit.SexToRU(r.nusex) ,r.nucount, r.address, r.curaddress, stat);
-                if (action == Action.CHANGE && dataGridView1.SelectedRows.Count < 2)
+                if (action == Action.CHANGE && dataGridView1.SelectedRows.Count < 2 && r.parent==0)
                     dataGridView1.Rows[dataGridView1.Rows.Count - 1].Selected = true;
                 if (action == Action.BOYSOUT)
                 {
@@ -374,8 +384,8 @@ namespace rabnet
             RP r1= rp(dataGridView1.SelectedRows[0].Index);
             RP r2 = rp(dataGridView1.SelectedRows[1].Index);
             string ca = r1.curaddress;
-            r1.curaddress = r2.curaddress;
-            r2.curaddress = ca;
+            r1.setCurAddress(r2.curaddress,true);
+            r2.setCurAddress(ca,true);
             update();
         }
 
