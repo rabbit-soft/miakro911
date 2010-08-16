@@ -8,6 +8,7 @@ namespace updater
 {
     public partial class InstallForm : Form
     {
+        bool batch = false;
         public int result = 0;
         public string filename = "";
         private XmlDocument xml = new XmlDocument();
@@ -16,8 +17,9 @@ namespace updater
         {
             InitializeComponent();
         }
-        public InstallForm(String fl):this()
+        public InstallForm(String fl,bool bt):this()
         {
+            batch = bt;
             filename = fl;
             prepareXml();
         }

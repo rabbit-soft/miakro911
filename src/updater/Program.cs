@@ -11,8 +11,11 @@ namespace updater
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+            bool batch = false;
+            if (args.Length>0)
+                batch = args[0] == "batch";
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             String fl = Path.GetDirectoryName(Application.ExecutablePath) + "\\rabnet.exe.config";
@@ -21,13 +24,13 @@ namespace updater
             int res=0;
             if (update)
             {
-                UpdateForm uf = new UpdateForm(fl);
+                UpdateForm uf = new UpdateForm(fl,batch);
                 Application.Run(uf);
                 res = uf.result;
             }
             else
             {
-                InstallForm ifr=new InstallForm(fl);
+                InstallForm ifr=new InstallForm(fl,batch);
                 Application.Run(ifr);
                 res = ifr.result;
             }

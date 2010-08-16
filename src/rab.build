@@ -37,9 +37,9 @@
 	<property name="dotnetInstaller" value="dotnetfx.exe"/>
 	<property name="mysqlInstaller" value="mysql-essential-5.1.49-win32.msi"/>
 	<property name="MSIInstaller" value="WindowsXP-KB942288-v3-x86.exe"/>
-	<property name="dotnetInstallerSource" value="${curdir}/3dParty/${dotnetInstaller}"/>
-	<property name="mysqlInstallerSource" value="${curdir}/3dParty/${mysqlInstaller}"/>
-	<property name="MSIInstallerSource" value="${curdir}/3dParty/${MSIInstaller}"/>
+	<property name="dotnetInstallerSource" value="${party3d.path}/${dotnetInstaller}"/>
+	<property name="mysqlInstallerSource" value="${party3d.path}/${mysqlInstaller}"/>
+	<property name="MSIInstallerSource" value="${party3d.path}/${MSIInstaller}"/>
 	<property name="installersPath" value=""/>
 	<property name="slash" value=""/>
 	<property name="dotnetInstallerDest" value="${installersPath}${slash}${dotnetInstaller}"/>
@@ -303,7 +303,7 @@
 			<define name="ProductVersion" value="${version}.${minver}" />
 			<!--define name="bannerBmp" value="${curdir}/../art/WixTopBanner.bmp" /-->
 		</defines>
-		<sources basedir="${curdir}/distrib_new">
+		<sources basedir="${curdir}/distrib/distrib_new">
 			<include name="rabnet.wxs" />
 		</sources>
 		</candle>
@@ -365,10 +365,10 @@
 		<property name="companyname" value="ХЗкакзвать"/>
 		<call target="one_distrib_new"/>
 		<delete dir="${root_bin}/distrib_new/obj"/>
-		<delete dir="${curdir}/distrib_new/tmp"/>
-		<mkdir dir="${curdir}/distrib_new/tmp"/>
-		<copy todir="${curdir}/distrib_new/tmp" inputencoding="utf-8" outputencoding="utf-8">
-			<fileset basedir="${curdir}/distrib_new">
+		<delete dir="${curdir}/distrib/distrib_new/tmp"/>
+		<mkdir dir="${curdir}/distrib/distrib_new/tmp"/>
+		<copy todir="${curdir}/distrib/distrib_new/tmp" inputencoding="utf-8" outputencoding="utf-8">
+			<fileset basedir="${curdir}/distrib/distrib_new">
 				<include name="configuration.xml" />
 			</fileset>
 			<filterchain>
@@ -384,13 +384,13 @@
 				<!--tabstospaces /-->
 			</filterchain>
 		</copy>		
-		<exec program="${curdir}/distrib_new/dotNetInstaller/bin/InstallerLinker.exe">
+		<exec program="${netInstaller.path}/bin/InstallerLinker.exe">
 			<arg value="/Output:${root_bin}/distrib_new/Setup.exe" />
-			<arg value="/Banner:${curdir}/../art/logo1_big.bmp" />
-			<arg value="/Template:${curdir}/distrib_new/dotNetInstaller/bin/dotNetInstaller.exe" />
-			<arg value="/Configuration:${curdir}/distrib_new/tmp/Configuration.xml" />
+			<arg value="/Banner:${curdir}/distrib/art/logo1_big.bmp" />
+			<arg value="/Template:${netInstaller.path}/bin/dotNetInstaller.exe" />
+			<arg value="/Configuration:${curdir}/distrib/distrib_new/tmp/Configuration.xml" />
 			<arg value="/Embed+" />
-			<arg value="/Icon:${curdir}/distrib_new/icon_green.ico" />
+			<arg value="/Icon:${curdir}/distrib/distrib_new/icon_green.ico" />
 		</exec>
 	</target>
 	
@@ -411,9 +411,9 @@
 		<property name="minver" value="2"/>
 		<property name="appname" value="Миакро Rabnet"/>
 		<property name="companyname" value="ХЗкакзвать"/>
-		<delete file="${curdir}/distrib_nsis/setup_bld.nsi"/>
-		<delete file="${curdir}/distrib_nsis/setup.exe"/>
-		<copy file="${curdir}/distrib_nsis/setup_tmpl.nsi" tofile="${curdir}/distrib_nsis/setup_bld.nsi">
+		<delete file="${curdir}/distrib/distrib_nsis/setup_bld.nsi"/>
+		<delete file="${curdir}/distrib/distrib_nsis/setup.exe"/>
+		<copy file="${curdir}/distrib/distrib_nsis/setup_tmpl.nsi" tofile="${curdir}/distrib/distrib_nsis/setup_bld.nsi">
 			<filterchain>
 				<replacetokens>
 					<token key="AppVer" value="${version}.${minver}" />
@@ -429,9 +429,9 @@
 
 		<exec program="${NSIS}">
 			<arg value="/V3" />
-			<arg value="${curdir}/distrib_nsis/setup_bld.nsi" />
+			<arg value="${curdir}/distrib/distrib_nsis/setup_bld.nsi" />
 		</exec>
-		<copy file="${curdir}/distrib_nsis/setup.exe" tofile="${root_bin}/distrib_nsis/setup.exe"/>
+		<copy file="${curdir}/distrib/distrib_nsis/setup.exe" tofile="${root_bin}/distrib_nsis/setup.exe"/>
 	</target>
 	
 	<!-- FILL DATA!-->

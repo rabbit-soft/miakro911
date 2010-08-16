@@ -12,6 +12,7 @@ namespace updater
 {
     public partial class UpdateForm : Form
     {
+        bool batch = false;
         public int result = 0;
         private int curver = 0;
         private string filename="";
@@ -22,8 +23,9 @@ namespace updater
         {
             InitializeComponent();
         }
-        public UpdateForm(String fl):this()
+        public UpdateForm(String fl,bool bt):this()
         {
+            batch = bt;
             filename = fl;
         }
         public int getScripts()
