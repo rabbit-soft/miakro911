@@ -1,2 +1,2 @@
 ﻿Для сборки необходимо установить NSIS.
-Содержимое попки req скопировать в папку NSIS (обычно C:\Program Files\NSIS)
+Содержимое попки /allineed/NSIS/req скопировать в папку NSIS (обычно C:\Program Files\NSIS)
