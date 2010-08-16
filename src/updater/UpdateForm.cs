@@ -132,6 +132,10 @@ namespace updater
             button2.Update();
             curver = getScripts();
             UpdateList();
+            if (batch)
+                button1.PerformClick();
+            if (batch)
+                button2.PerformClick();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -173,6 +177,7 @@ namespace updater
                             catch (Exception ex)
                             {
                                 MessageBox.Show("Во время обновления БД произошла ошибка:"+ex.Message);
+                                batch = false;
                             }
                         }
                 }
@@ -190,11 +195,6 @@ namespace updater
             result = 0;
             Close();
         }
-
-		private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-		{
-
-		}
 
     }
 }
