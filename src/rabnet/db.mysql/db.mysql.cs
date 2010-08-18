@@ -164,6 +164,13 @@ namespace rabnet
             MySqlDataReader rd = reader("SELECT m_upper,m_lower FROM minifarms WHERE m_id=" + farm.ToString() + ";");
             rd.Read();
             int[] trs = new int[] { rd.GetInt32(0), rd.GetInt32(1) };
+/*            if (trs[1] != 0)
+            {
+                trs[0] ^= trs[1];
+                trs[1] ^= trs[0];
+                trs[0] ^= trs[1];
+            }
+ */
             rd.Close();
             return trs;
         }

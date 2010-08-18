@@ -248,9 +248,15 @@ namespace rabnet
                         res = DialogResult.Cancel;
                         RabNetEngRabbit rr = Engine.get().getRabbit(job.id);
                         RabNetEngBuilding rb = Engine.get().getBuilding(rr.justAddress);
-                        if (rb.type == "jurta")
+                        string[] st=rr.justAddress.Split(',');
+                        if (rb.type == "jurta" || rb.type=="female" || (rb.type=="dfemale" && st[2]=="0"))
                         {
                             rb.setNest(true);
+                            res = DialogResult.OK;
+                        }
+                        else if (rb.type == "dfemale" && st[2] == "1")
+                        {
+                            rb.setNest2(true);
                             res = DialogResult.OK;
                         }
                     }

@@ -28,7 +28,7 @@ namespace rabnet
         {
             String[] p = place.Split(',');
             int[] tiers = eng.db().getTiers(int.Parse(p[0]));
-            return new RabNetEngBuilding(tiers[(int.Parse(p[1])==1)?1:0],eng);
+            return new RabNetEngBuilding(tiers[(p[1]=="2")?1:0],eng);
         }
         public int tid{get{return id;}}
 

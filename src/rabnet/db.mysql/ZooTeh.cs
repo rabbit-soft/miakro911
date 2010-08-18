@@ -322,7 +322,8 @@ ORDER BY r_born DESC,0+LEFT(place,LOCATE(',',place)) ASC;", days);
 (SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) children," + brd() + @" 
 FROM rabbits WHERE r_sex='female' AND r_event_date IS NOT NULL) c 
 WHERE (((children IS NULL AND sukr>={0:d}) OR (children>0 AND sukr>={1:d}))) AND
-place NOT like '%,%,0,jurta,%,1' ORDER BY sukr DESC,0+LEFT(place,LOCATE(',',place)) ASC;", wochild, wchild);
+(place NOT like '%,%,0,jurta,%,1%' AND place NOT like '%,%,0,female,%,1%' AND place NOT like '%,%,0,dfemale,%,1%' AND place NOT like '%,%,1,dfemale,%,_1')
+ORDER BY sukr DESC,0+LEFT(place,LOCATE(',',place)) ASC;", wochild, wchild);
             log.Debug("db.myasql.ZooTeh: "+query);
             MySqlDataReader rd = reader(query);
             List<ZooJobItem> res = new List<ZooJobItem>();

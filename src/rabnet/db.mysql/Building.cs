@@ -178,8 +178,8 @@ namespace rabnet
         public static String fullRName(int farm, int tierid, int sec, String type, String delims, bool shr, bool sht, bool sho)
         {
             String res = String.Format("{0,4:d}",farm);
-            if (tierid == 1) res += "-";
-            if (tierid == 2) res += "^";
+            if (tierid == 1) res += "^";
+            if (tierid == 2) res += "-";
             res += getRSec(type, sec, delims);
             if (sht)
                 res += " [" + getRName(type, shr) + "]";
