@@ -22,6 +22,8 @@ namespace updater
             batch = bt;
             filename = fl;
             prepareXml();
+            radioButton4.Visible = !bt;
+            radioButton4.Enabled = !bt;
         }
         private string conf="<?xml version=\"1.0\" encoding=\"utf-8\" ?>"+
 "<configuration><configSections><section name=\"rabnetds\" type=\"rabnet.RabnetConfigHandler,rabnet\"/>"+
@@ -55,11 +57,27 @@ namespace updater
         {
             tbComp.Enabled = radioButton2.Checked;
             tbFile.Enabled = button2.Enabled = radioButton3.Checked;
+            if (radioButton3.Checked)
+            {
+                button1.Enabled = tbFile.Text != "";
+            }
+            else if (radioButton2.Checked)
+            {
+                button1.Enabled = tbComp.Text != "";
+            }
+            else
+            {
+                button1.Enabled = true;
+            }
+            
+
+
         }
 
         private void tbComp_TextChanged(object sender, EventArgs e)
         {
             tbHost.Text = tbComp.Text;
+            button1.Enabled = tbComp.Text != "";
         }
 
         private void tbHost_TextChanged(object sender, EventArgs e)
@@ -103,7 +121,8 @@ namespace updater
                 TopMost = false;
                 if (radioButton4.Checked)
                 {
-                    Close();
+                    //Application.Exit(
+                    System.Environment.Exit(10);
                 }
                 if (tbName.Text == "")
                     throw new ApplicationException("Введите название фермы");
@@ -127,6 +146,11 @@ namespace updater
                 MessageBox.Show(ex.Message);
                 TopMost = true;
             }
+        }
+
+        private void tbFile_TextChanged(object sender, EventArgs e)
+        {
+            button1.Enabled = tbFile.Text != "";
         }
     }
 }

@@ -106,6 +106,7 @@
             this.tbFile.ReadOnly = true;
             this.tbFile.Size = new System.Drawing.Size(298, 20);
             this.tbFile.TabIndex = 6;
+            this.tbFile.TextChanged += new System.EventHandler(this.tbFile_TextChanged);
             // 
             // button2
             // 
