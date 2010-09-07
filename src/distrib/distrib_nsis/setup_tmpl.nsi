@@ -14,13 +14,16 @@ SetCompressor /SOLID lzma
 
 RequestExecutionLevel admin
 
+# TargetMinimalOS 5.1
+
+
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\${NameInt}"
 
 # MUI Symbol Definitions
-!define MUI_ICON "..\..\art\icon_green.ico"
+!define MUI_ICON "..\art\icon_green.ico"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
-!define MUI_UNICON "..\..\art\icon_no_green.ico"
+!define MUI_UNICON "..\art\icon_no_green.ico"
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
 !define MUI_COMPONENTSPAGE_SMALLDESC
@@ -38,7 +41,7 @@ Var StartMenuGroup
 
 # Installer pages
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE ..\docs\licenseansi.rtf
+!insertmacro MUI_PAGE_LICENSE ..\..\docs\licenseansi.rtf
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
@@ -69,35 +72,35 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     SectionIn 1 2
     SetOutPath $INSTDIR
     SetOverwrite on
-    File ..\..\bin\protected\rabnet.exe
-    File ..\..\bin\protected\db.mysql.dll
-    File ..\..\bin\protected\engine.dll
-#    File ..\..\bin\protected\gui_genetics.dll
-    File ..\..\bin\protected\MySql.Data.dll
-    File ..\..\bin\protected\Pickers.dll
-    File ..\..\bin\protected\rabHelp.chm
-    File ..\..\bin\protected\RdlEngine.dll
-    File ..\..\bin\protected\RdlViewer.dll
+    File ..\..\..\bin\protected\rabnet.exe
+    File ..\..\..\bin\protected\db.mysql.dll
+    File ..\..\..\bin\protected\engine.dll
+#    File ..\..\..\bin\protected\gui_genetics.dll
+    File ..\..\..\bin\protected\MySql.Data.dll
+    File ..\..\..\bin\protected\Pickers.dll
+    File ..\..\..\bin\protected\rabHelp.chm
+    File ..\..\..\bin\protected\RdlEngine.dll
+    File ..\..\..\bin\protected\RdlViewer.dll
     SetOutPath $INSTDIR\reports
-    File ..\..\bin\protected\reports\age.rdl
-    File ..\..\bin\protected\reports\breeds.rdl
-    File ..\..\bin\protected\reports\by_month.rdl
-    File ..\..\bin\protected\reports\dead.rdl
-    File ..\..\bin\protected\reports\deadreason.rdl
-    File ..\..\bin\protected\reports\empty_rev.rdl
-    File ..\..\bin\protected\reports\fucker.rdl
-    File ..\..\bin\protected\reports\fucks_by_date.rdl
-    File ..\..\bin\protected\reports\okrol_user.rdl
-    File ..\..\bin\protected\reports\plem.rdl
-    File ..\..\bin\protected\reports\rabbit.rdl
-    File ..\..\bin\protected\reports\realization.rdl
-    File ..\..\bin\protected\reports\replace_plan.rdl
-    File ..\..\bin\protected\reports\shed.rdl
-    File ..\..\bin\protected\reports\zooteh.rdl
-    File ..\..\bin\protected\reports\zooteh_nofuck.rdl
+    File ..\..\..\bin\protected\reports\age.rdl
+    File ..\..\..\bin\protected\reports\breeds.rdl
+    File ..\..\..\bin\protected\reports\by_month.rdl
+    File ..\..\..\bin\protected\reports\dead.rdl
+    File ..\..\..\bin\protected\reports\deadreason.rdl
+    File ..\..\..\bin\protected\reports\empty_rev.rdl
+    File ..\..\..\bin\protected\reports\fucker.rdl
+    File ..\..\..\bin\protected\reports\fucks_by_date.rdl
+    File ..\..\..\bin\protected\reports\okrol_user.rdl
+    File ..\..\..\bin\protected\reports\plem.rdl
+    File ..\..\..\bin\protected\reports\rabbit.rdl
+    File ..\..\..\bin\protected\reports\realization.rdl
+    File ..\..\..\bin\protected\reports\replace_plan.rdl
+    File ..\..\..\bin\protected\reports\shed.rdl
+    File ..\..\..\bin\protected\reports\zooteh.rdl
+    File ..\..\..\bin\protected\reports\zooteh_nofuck.rdl
     SetOutPath $INSTDIR
     SetOverwrite off
-    File ..\..\bin\protected\rabnet.exe.config
+    #File ..\..\..\bin\protected\rabnet.exe.config
     SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Prog_NAME).lnk $INSTDIR\rabnet.exe
 #    WriteRegStr HKEY_CURRENT_USER Software\hzkakzvat\rabnet Path "C:\Program Files\7-Zip"
@@ -108,15 +111,19 @@ Section /o $(SEC_RabDump_NAME) SEC_RabDump
     SectionIn 2
     SetOutPath $INSTDIR
     SetOverwrite on
-    File ..\..\bin\protected\GrdAPI32.DLL
-    File ..\..\bin\protected\rabdump.exe
-    File ..\..\bin\protected\key.dll
-    File ..\..\bin\tools\updater.exe
+    File ..\..\..\bin\protected\GrdAPI32.DLL
+    File ..\..\..\bin\protected\rabdump.exe
+    File ..\..\..\bin\protected\key.dll
+    File ..\..\..\bin\tools\updater.exe
+    File ..\..\..\bin\protected\mia_conv.exe
     SetOutPath $INSTDIR
     SetOverwrite off
-    File ..\..\bin\protected\rabdump.exe.config
+    #File ..\..\..\bin\protected\rabdump.exe.config
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Dump_NAME).lnk $INSTDIR\rabdump.exe
     WriteRegStr HKLM "${REGKEY}\Components" "rabdump" 1
+#    DetailPrint $(UPDATER_Run)
+#    ExecWait '"$INSTDIR\updater.exe"'
+    !insertmacro SelectSection "SEC_Updater"
 SectionEnd
 
 Section /o $(SEC_Mysql_NAME) SEC_Mysql
@@ -133,8 +140,7 @@ SectionEnd
 Section -com_comps SEC_Common
     SetOutPath $INSTDIR
     SetOverwrite on
-    File ..\..\bin\protected\log4net.dll
-    File ..\..\bin\protected\mia_conv.exe
+    File ..\..\..\bin\protected\log4net.dll
     WriteRegStr HKLM "${REGKEY}\Components" com_comps 1
 SectionEnd
 
@@ -150,6 +156,11 @@ Section -post SEC_Sys
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" UninstallString $INSTDIR\uninstall.exe
     WriteRegDWORD HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoModify 1
     WriteRegDWORD HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoRepair 1
+SectionEnd
+
+Section /o -sec_updater SEC_Updater
+    DetailPrint $(UPDATER_Run)
+    ExecWait '"$INSTDIR\updater.exe"'
 SectionEnd
 
 # Macro for selecting uninstaller sections
@@ -231,7 +242,7 @@ Function .onInit
     #SectionSetText ${SEC_Rabnet} $(SEC_Rabnet_NAME) 
     #SectionSetText ${SEC_RabDump} $(SEC_RabDump_NAME) 
     Push $R1
-    File /oname=$PLUGINSDIR\spltmp.bmp ..\..\art\logo1_big.bmp
+    File /oname=$PLUGINSDIR\spltmp.bmp ..\art\logo1_big.bmp
     advsplash::show 1000 600 400 -1 $PLUGINSDIR\spltmp
     Pop $R1
     Pop $R1
@@ -292,6 +303,8 @@ LangString MYSQLINSTALLER_Done ${LANG_RUSSIAN} "MySQL installed successfully"
 LangString MYSQLINSTALLER_Configure ${LANG_ENGLISH} "Configuring MySQL..."
 LangString MYSQLINSTALLER_Configure ${LANG_RUSSIAN} "Настройка MySQL..."
 
+LangString UPDATER_Run ${LANG_ENGLISH} "Starting Updater..."
+LangString UPDATER_Run ${LANG_RUSSIAN} "Запуск Updater..."
 
 LangString Prog_NAME ${LANG_ENGLISH} "Miakro Rabnet"
 LangString Prog_NAME ${LANG_RUSSIAN} "Миакро Rabnet"
@@ -300,4 +313,16 @@ LangString SM_Prog_NAME ${LANG_ENGLISH} "Miakro Rabnet"
 LangString SM_Prog_NAME ${LANG_RUSSIAN} "Миакро Rabnet"
 
 LangString SM_Dump_NAME ${LANG_ENGLISH} "RabDump"
-LangString SM_Dump_NAME ${LANG_RUSSIAN} "RabDdump"
+LangString SM_Dump_NAME ${LANG_RUSSIAN} "Резервные копии"
+
+
+VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "Test Application"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" "A test comment"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "Fake company"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalTrademarks" "Test Application is a trademark of Fake company"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "© Fake company"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "Test Application"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "1.2.3"
+
+VIProductVersion "1.2.3.4"
+
