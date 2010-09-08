@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <project name="rabnet" default="build" basedir=".">
 	<!-- WiX 3 folder -->
 	<property name="wix.dir" value="${path::combine(environment::get-variable('WIX'), 'bin')}" readonly="true" />
@@ -10,7 +10,9 @@
 	<property name="revision" value="none"/>
 	<property name="curdir" value="." overwrite="false"/>
 	<property name="host_spec_path" value="." overwrite="false"/>
+	
 	<include buildfile="${host_spec_path}/host_spec.include"/>
+	
 	<property name="root_bin" value="${curdir}/../bin"/>
 	<property name="tools_dir" value="${root_bin}/tools" />
 	<property name="distrib_dir" value="${root_bin}/distrib" />
@@ -318,7 +320,7 @@
 	</target>
 
 	<target name="updater" description="Make updater project">
-		<csc target="winexe" output="${tools_dir}/updater.exe">
+		<csc target="winexe" output="${tools_dir}/updater.exe" win32icon="${curdir}/updater/icon_update_white.ico" >
 			<sources>
 				<include name="${curdir}/updater/*.cs"/>
 			</sources>
@@ -398,9 +400,9 @@
 		<mkdir dir="${root_bin}"/>
 		<delete dir="${root_bin}/distrib_nsis"/>
 		<mkdir dir="${root_bin}/distrib_nsis"/>
-		<mkdir dir="${root_bin}/distrib_nsis/dotnetfx2"/>
+		<mkdir dir="${root_bin}/distrib_nsis/dotnetfx20"/>
 		<mkdir dir="${root_bin}/distrib_nsis/mysql"/>
-		<copy file="${dotnetInstallerSource}" tofile="${root_bin}/distrib_nsis/dotnetfx2/${dotnetInstallerDest}"/>
+		<copy file="${dotnetInstallerSource}" tofile="${root_bin}/distrib_nsis/dotnetfx20/${dotnetInstallerDest}"/>
 		<copy file="${mysqlInstallerSource}" tofile="${root_bin}/distrib_nsis/mysql/${mysqlInstallerDest}"/>
 		<!--property name="dist_type" value="rabnet"/>
 		<property name="bin_dir" value="${root_bin}\release"/>
