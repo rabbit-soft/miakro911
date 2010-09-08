@@ -123,7 +123,6 @@ namespace rabnet
                 new FarmChangeForm(null).ShowDialog();
                 stop = true;
                 DialogResult = DialogResult.Cancel;
-                Close();
             }
             if (comboBox1.Items.Count == 0)
             {
@@ -150,7 +149,6 @@ namespace rabnet
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Close();
         }
     }
 
