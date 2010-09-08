@@ -1,9 +1,5 @@
 ﻿//#define PROTECTED
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using log4net;
 
@@ -154,7 +150,7 @@ namespace rabdump
 
         private void новаяФермаToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ArchiveJobThread.runrabnet("dbedit");
+            new FarmChangeForm().ShowDialog();
         }
 
     }

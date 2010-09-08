@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.IO;
 using System.Diagnostics;
+using Microsoft.Win32;
 
 namespace updater
 {
@@ -12,7 +13,7 @@ namespace updater
         public int result = 0;
         public string filename = "";
         private XmlDocument xml = new XmlDocument();
-        private XmlElement rabnet = null;
+        XmlElement opts = null;
         public InstallForm()
         {
             InitializeComponent();
@@ -25,25 +26,45 @@ namespace updater
             radioButton4.Visible = !bt;
             radioButton4.Enabled = !bt;
         }
-        private string conf="<?xml version=\"1.0\" encoding=\"utf-8\" ?>"+
-"<configuration><configSections><section name=\"rabnetds\" type=\"rabnet.RabnetConfigHandler,rabnet\"/>"+
+        private string conf="<?xml version=\"1.0\" encoding=\"utf-8\" ?><configuration><configSections>"+
+"<section name=\"rabdumpOptions\" type=\"rabdump.RabdumpConfigHandler,rabdump\"/>"+
 "<section name=\"log4net\" type=\"log4net.Config.Log4NetConfigurationSectionHandler,Log4net\"/>"+
-"</configSections><rabnetds/><log4net><appender name=\"FileAppender\" type=\"log4net.Appender.FileAppender\">"+
-"<file value=\"log.txt\" /><appendToFile value=\"true\" />"+
-"<lockingModel type=\"log4net.Appender.FileAppender+MinimalLock\" /><layout type=\"log4net.Layout.PatternLayout\">"+
-"<conversionPattern value=\"%date [%thread] %-5level %logger{2} [%property{NDC}] - %message%newline\" />"+
-"</layout></appender><root><level value=\"DEBUG\" /><appender-ref ref=\"FileAppender\" /></root></log4net>"+
-"</configuration>";
+"</configSections><rabdumpOptions></rabdumpOptions><log4net><appender name=\"FileAppender\" type=\"log4net.Appender.FileAppender\">"+
+"<file value=\"dumplog.txt\" /><appendToFile value=\"true\" /><lockingModel type=\"log4net.Appender.FileAppender+MinimalLock\" />"+
+"<layout type=\"log4net.Layout.PatternLayout\"><conversionPattern value=\"%date [%thread] %-5level %logger{2} [%property{NDC}] - %message%newline\" />"+
+"</layout></appender><root><level value=\"DEBUG\" /><appender-ref ref=\"FileAppender\" /></root></log4net></configuration>";
+
 
         public void prepareXml()
         {
             xml.LoadXml(conf);
-            xml.Save(filename);
             foreach (XmlNode n in xml.DocumentElement.ChildNodes)
             {
-                if (n.Name == "rabnetds")
-                    rabnet = (XmlElement)n;
+                if (n.Name=="rabdumpOptions")
+                {
+                    opts=(XmlElement)n;
+                }
             }
+            XmlElement elem = xml.CreateElement("mysql");
+            string msp=(string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\MySQL AB\\MySQL Server 5.0","Location","C:\\Program Files\\MySQL\\MySQL Server 5.0\\");
+            opts.AppendChild(xml.CreateElement("mysql")).AppendChild(xml.CreateTextNode(msp+"bin\\mysql.exe"));
+            opts.AppendChild(xml.CreateElement("mysqldump")).AppendChild(xml.CreateTextNode(msp + "bin\\mysqldump.exe"));
+            msp = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\7-Zip", "Path", "C:\\Program Files\\7-zip");
+            opts.AppendChild(xml.CreateElement("z7")).AppendChild(xml.CreateTextNode(msp + "\\7z.exe"));
+            XmlElement jb = xml.CreateElement("job");
+            jb.AppendChild(xml.CreateElement("name")).AppendChild(xml.CreateTextNode("Все БД в 18:00"));
+            jb.AppendChild(xml.CreateElement("db")).AppendChild(xml.CreateTextNode("[все]"));
+            string bf = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            bf += "\\Miakro Backups";
+            Directory.CreateDirectory(bf);
+            jb.AppendChild(xml.CreateElement("path")).AppendChild(xml.CreateTextNode(bf));
+            jb.AppendChild(xml.CreateElement("sizelim")).AppendChild(xml.CreateTextNode("0"));
+            jb.AppendChild(xml.CreateElement("countlim")).AppendChild(xml.CreateTextNode("0"));
+            jb.AppendChild(xml.CreateElement("start")).AppendChild(xml.CreateTextNode("01.01.2010 18:00"));
+            jb.AppendChild(xml.CreateElement("type")).AppendChild(xml.CreateTextNode("Ежедневно"));
+            jb.AppendChild(xml.CreateElement("repeat")).AppendChild(xml.CreateTextNode("0"));
+            opts.AppendChild(jb);
+            xml.Save(filename);
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -69,9 +90,6 @@ namespace updater
             {
                 button1.Enabled = true;
             }
-            
-
-
         }
 
         private void tbComp_TextChanged(object sender, EventArgs e)
@@ -93,13 +111,13 @@ namespace updater
 
         private void addFarm()
         {
-            XmlElement ds = xml.CreateElement("dataSource");
-            ds.Attributes.Append(xml.CreateAttribute("default")).Value = "1";
-            ds.Attributes.Append(xml.CreateAttribute("name")).Value = tbName.Text;
-            ds.Attributes.Append(xml.CreateAttribute("type")).Value = "db.mysql";
-            String param = "host=" + tbHost.Text + ";database=" + tbDb.Text + ";uid=" + tbUser.Text + ";pwd=" + tbPwd.Text + ";charset=utf8";
-            ds.Attributes.Append(xml.CreateAttribute("param")).Value = param;
-            rabnet.AppendChild(ds);
+            XmlElement ds = xml.CreateElement("db");
+            ds.AppendChild(xml.CreateElement("name")).AppendChild(xml.CreateTextNode(tbName.Text));
+            ds.AppendChild(xml.CreateElement("host")).AppendChild(xml.CreateTextNode(tbHost.Text));
+            ds.AppendChild(xml.CreateElement("db")).AppendChild(xml.CreateTextNode(tbDb.Text));
+            ds.AppendChild(xml.CreateElement("user")).AppendChild(xml.CreateTextNode(tbUser.Text));
+            ds.AppendChild(xml.CreateElement("password")).AppendChild(xml.CreateTextNode(tbPwd.Text));
+            opts.AppendChild(ds);
             xml.Save(filename);
             Close();
         }

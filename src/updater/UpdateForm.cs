@@ -71,12 +71,22 @@ namespace updater
             XmlDocument xml = new XmlDocument();
             xml.Load(filename);
             foreach (XmlNode n in xml.DocumentElement.ChildNodes)
-            if (n.Name=="rabnetds")
+            if (n.Name=="rabdumpOptions")
                 foreach(XmlNode ds in n.ChildNodes)
-                    if (ds.Name == "dataSource")
+                    if (ds.Name == "db")
                     {
-                        String nm=ds.Attributes["name"].Value;
-                        String prm = ds.Attributes["param"].Value;
+                        String nm = "";
+                        String prm = "";
+                        foreach (XmlNode nd in ds.ChildNodes)
+                            switch (nd.Name)
+                            {
+                                case "name": nm = nd.FirstChild != null ? nd.FirstChild.Value : ""; break;
+                                case "host": prm += "host="+(nd.FirstChild != null ? nd.FirstChild.Value : "")+";"; break;
+                                case "db": prm += "database=" + (nd.FirstChild != null ? nd.FirstChild.Value : "") + ";"; break;
+                                case "user": prm += "uid=" + (nd.FirstChild != null ? nd.FirstChild.Value : "") + ";"; break;
+                                case "password": prm += "pwd=" + (nd.FirstChild != null ? nd.FirstChild.Value : "") + ";"; break;
+                            }
+                        prm += "charset=utf8";
                         ListViewItem li = lv.Items.Add(nm);
                         li.SubItems.Add(prm);
                         li.Tag=0;

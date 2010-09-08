@@ -52,6 +52,12 @@
   <ItemGroup>
     <Compile Include="ArchiveJobThread.cs" />
     <Compile Include="Editors.cs" />
+    <Compile Include="FarmChangeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FarmChangeForm.designer.cs">
+      <DependentUpon>FarmChangeForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -70,6 +76,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FarmChangeForm.resx">
+      <DependentUpon>FarmChangeForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
