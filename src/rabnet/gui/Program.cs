@@ -18,6 +18,7 @@ namespace rabnet
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool ShowWindow(IntPtr hWnd,int mode);
 
+        static ILog log = null;
 
         static void SwitchRabWindow()
         {
@@ -30,6 +31,45 @@ namespace rabnet
                 }
         }
 
+#if GLOBCATCH
+        static void Excepted(Exception ex)
+        {
+            if (log != null)
+                log.Fatal("General fault exception", ex);
+            if (ex.Source == "MySql.Data")
+            {
+                MessageBox.Show("Соединение с сервером было разорвано.\n\rПрграмма будет закрыта");
+            }
+            else
+            {
+                MessageBox.Show("Произошла ошибка. Программа будет закрыта.\n\r" + ex.Message);
+            }
+        }
+
+        static void Threaded(object sender, System.Threading.ThreadExceptionEventArgs e)
+        {
+            try
+            {
+                Excepted(e.Exception);
+            }
+            finally
+            {
+                Application.Exit();
+            }
+        }
+
+        static void Unhandled(object sender, UnhandledExceptionEventArgs e)
+        {
+            try
+            {
+                Excepted((Exception)e.ExceptionObject);
+            }
+            finally
+            {
+                Application.Exit();
+            }
+        }
+#endif
 
         /// <summary>
         /// The main entry point for the application.
@@ -42,8 +82,12 @@ namespace rabnet
             {
                 if (new_instance)
                 {
+#if (GLOBCATCH)
+                    AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Unhandled);
+                    Application.ThreadException+=new System.Threading.ThreadExceptionEventHandler(Threaded);
+#endif
                     log4net.Config.XmlConfigurator.Configure();
-                    ILog log = LogManager.GetLogger(typeof(Program));
+                    log = LogManager.GetLogger(typeof(Program));
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
 #if PROTECTED
@@ -58,10 +102,6 @@ namespace rabnet
                 if (PClient.get().farms() == -1)
                     return;
                 //MessageBox.Show(String.Format("HAS {0:d} FARMS",PClient.get().farms()));
-#endif
-#if (GLOBCATCH)
-           try
-           {
 #endif
                     bool dbedit = false;
                     if (args.Length > 0 && args[0] == "dbedit")
@@ -80,22 +120,6 @@ namespace rabnet
                         LoginForm.stop = true;
 #endif
                     }
-#if (GLOBCATCH)
-            }
-                        catch (Exception ex)
-                        {
-                            log.Fatal("General fault exception", ex);
-                            if (ex.Source == "MySql.Data")
-                            {
-                                MessageBox.Show("Соединение с сервером было разорвано.\n\rПрграмма будет закрыта");
-                            }
-                            else
-                            {
-                                MessageBox.Show("Произошла ошибка. Программа будет закрыта.\n\r"+ex.Message);
-                            }
-                            //throw ex;
-                        }
-#endif
 #if PROTECTED
                 if (PClient.get().farms() == -1)
                     exit = false;

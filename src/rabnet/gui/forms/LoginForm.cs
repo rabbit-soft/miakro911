@@ -107,6 +107,7 @@ namespace rabnet
             {
                 RabnetConfigHandler.ds[comboBox1.SelectedIndex].setDefault(comboBox2.Text, textBox1.Text);
                 DialogResult = DialogResult.OK;
+                Close();
                 return;
             }
             MessageBox.Show("Неверное имя пользователя или пароль");
@@ -145,6 +146,11 @@ namespace rabnet
             comboBox2.Text = "";
             textBox1.Text = "";
             readConfig();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 
