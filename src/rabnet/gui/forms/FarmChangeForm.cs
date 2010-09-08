@@ -13,9 +13,22 @@ namespace rabnet
     public partial class FarmChangeForm : Form
     {
         private RabnetConfigHandler.dataSource ds=null;
+        bool noFarms=false;
         public FarmChangeForm()
         {
             InitializeComponent();
+        }
+        public FarmChangeForm(bool noFarms)
+            : this()
+        {
+            this.noFarms = noFarms;
+            groupBox2.Enabled = true;
+            Text = "Выберите ферму";
+            if (noFarms)
+            {
+                fname.Text = "Основная ферма";
+                fhost.Text="";
+            }
         }
 
         public FarmChangeForm(RabnetConfigHandler.dataSource ds):this()
@@ -100,6 +113,16 @@ namespace rabnet
         {
             if (runmia("nudb"))
                 button1.PerformClick();
+        }
+
+        private void FarmChangeForm_Shown(object sender, EventArgs e)
+        {
+            if (noFarms)
+            {
+                fhost.Text = "172.16.0.1";
+                fhost.Focus();
+                fhost.SelectAll();
+            }
         }
     }
 }

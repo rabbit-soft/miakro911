@@ -124,6 +124,11 @@ namespace rabnet
                 DialogResult = DialogResult.Cancel;
                 Close();
             }
+            if (comboBox1.Items.Count == 0)
+            {
+                new FarmChangeForm(true).ShowDialog();
+                readConfig();
+            }
         }
 
         private void textBox1_KeyDown(object sender, KeyEventArgs e)

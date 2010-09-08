@@ -133,7 +133,7 @@
             this.fdb.Name = "fdb";
             this.fdb.Size = new System.Drawing.Size(166, 20);
             this.fdb.TabIndex = 2;
-            this.fdb.Text = "kroldb";
+            this.fdb.Text = "kroliki";
             // 
             // fuser
             // 
@@ -308,6 +308,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Описание фермы";
+            this.Shown += new System.EventHandler(this.FarmChangeForm_Shown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
