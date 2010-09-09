@@ -4,6 +4,7 @@ using System.Xml;
 using System.IO;
 using System.Diagnostics;
 using Microsoft.Win32;
+using System.Collections;
 
 namespace updater
 {
@@ -35,6 +36,14 @@ namespace updater
 "</layout></appender><root><level value=\"DEBUG\" /><appender-ref ref=\"FileAppender\" /></root></log4net></configuration>";
 
 
+        public class ReverseComparer : IComparer
+        {
+            public int Compare(Object object1, Object object2)
+            {
+                return -((IComparable)object1).CompareTo(object2);
+            }
+        }
+
         public void prepareXml()
         {
             xml.LoadXml(conf);
@@ -46,11 +55,69 @@ namespace updater
                 }
             }
             XmlElement elem = xml.CreateElement("mysql");
-            string msp=(string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\MySQL AB\\MySQL Server 5.0","Location","C:\\Program Files\\MySQL\\MySQL Server 5.0\\");
-            opts.AppendChild(xml.CreateElement("mysql")).AppendChild(xml.CreateTextNode(msp+"bin\\mysql.exe"));
-            opts.AppendChild(xml.CreateElement("mysqldump")).AppendChild(xml.CreateTextNode(msp + "bin\\mysqldump.exe"));
-            msp = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\7-Zip", "Path", "C:\\Program Files\\7-zip");
-            opts.AppendChild(xml.CreateElement("z7")).AppendChild(xml.CreateTextNode(msp + "\\7z.exe"));
+//            string msp=(string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\MySQL AB\\MySQL Server 5.0","Location","C:\\Program Files\\MySQL\\MySQL Server 5.0\\");
+
+            RegistryKey rk1 = Registry.LocalMachine.OpenSubKey("SOFTWARE").OpenSubKey("MySQL AB");
+            string loc;
+            string loc_m = "";
+            string loc_md = "";
+            if (rk1 == null)
+            {
+                loc = "";
+                loc_m = "";
+                loc_md = "";
+
+            }
+            else
+            {
+                String[] names = rk1.GetSubKeyNames();
+                Array.Sort(names, new ReverseComparer());
+                foreach (String s in names)
+                {
+                    loc = (string)rk1.OpenSubKey(s).GetValue("Location");
+                    if (loc != null)
+                    {
+                        loc_m = loc + "bin\\mysql.exe";
+                        loc_md = loc + "bin\\mysqldump.exe";
+                        break;
+                    }
+                }
+            }
+
+
+
+            opts.AppendChild(xml.CreateElement("mysql")).AppendChild(xml.CreateTextNode(loc_m));
+            opts.AppendChild(xml.CreateElement("mysqldump")).AppendChild(xml.CreateTextNode(loc_md));
+
+            
+            
+            //msp = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\7-Zip", "Path", "C:\\Program Files\\7-zip");
+
+            RegistryKey rk2 = Registry.LocalMachine.OpenSubKey("SOFTWARE").OpenSubKey("7-Zip");
+            string loc_7;
+            string loc_7b = "";
+            if (rk2 == null)
+            {
+                loc_7 = "";
+                loc_7b = "";
+
+            }
+            else
+            {
+                loc_7 = (string)rk2.GetValue("Path");
+                if (loc_7 != null)
+                {
+                    loc_7b = loc_7 + "\\7z.exe";
+                }
+            }
+
+
+
+
+
+            opts.AppendChild(xml.CreateElement("z7")).AppendChild(xml.CreateTextNode(loc_7b));
+
+
             XmlElement jb = xml.CreateElement("job");
             jb.AppendChild(xml.CreateElement("name")).AppendChild(xml.CreateTextNode("Все БД в 18:00"));
             jb.AppendChild(xml.CreateElement("db")).AppendChild(xml.CreateTextNode("[все]"));

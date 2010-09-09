@@ -206,5 +206,10 @@ namespace updater
             Close();
         }
 
+        private void UpdateForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = !button1.Enabled;
+        }
+
     }
 }
