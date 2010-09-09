@@ -118,7 +118,7 @@ Section /o $(SEC_RabDump_NAME) SEC_RabDump
     File ..\..\..\bin\protected\mia_conv.exe
     SetOutPath $INSTDIR
     SetOverwrite off
-    #File ..\..\..\bin\protected\rabdump.exe.config
+    File ..\..\..\bin\protected\rabdump.exe.config
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Dump_NAME).lnk $INSTDIR\rabdump.exe
     WriteRegStr HKLM "${REGKEY}\Components" "rabdump" 1
 #    DetailPrint $(UPDATER_Run)
@@ -132,7 +132,8 @@ Section /o $(SEC_Mysql_NAME) SEC_Mysql
     ExecWait 'msiexec /i "$EXEDIR\mysql\mysql-essential-5.1.49-win32.msi" /qr INSTALLDIR="$PROGRAMFILES\MySQL\MySQL Server 5.1\"  DATADIR="$PROGRAMFILES\MySQL\MySQL Server 5.1\" /L* C:\MSI-MySQL-Log.txt'
     DetailPrint $(MYSQLINSTALLER_Configure)
 #    RmDir /r /REBOOTOK "$PROGRAMFILES\MySQL\MySQL Server 5.1\Data"
-    ExecWait '"$PROGRAMFILES\MySQL\MySQL Server 5.1\bin\mysqlinstanceconfig.exe" -i -q "-lC:\mysql_install_log.txt" "-p$PROGRAMFILES\MySQL\MySQL Server 5.1" AddBinToPath=yes ConnectionUsage=DSS ServiceName=MySQL5_1 RootPassword=mysql ServerType=SERVER DatabaseType=MIXED Port=3306 RootCurrentPassword=mysql Charset=utf8 StrictMode=no'
+    ExecWait '"$PROGRAMFILES\MySQL\MySQL Server 5.1\bin\mysqlinstanceconfig.exe" -i -q "-lC:\mysql_install_log.txt" "-p$PROGRAMFILES\MySQL\MySQL Server 5.1" AddBinToPath=yes ConnectionUsage=DSS ServiceName=MySQL5_1 ServerType=SERVER DatabaseType=MIXED Port=3306 RootCurrentPassword=mysql Charset=utf8 StrictMode=no'
+#    ExecWait '"$PROGRAMFILES\MySQL\MySQL Server 5.1\bin\mysqlinstanceconfig.exe" -i -q "-lC:\mysql_install_log.txt" "-p$PROGRAMFILES\MySQL\MySQL Server 5.1" AddBinToPath=yes ConnectionUsage=DSS ServiceName=MySQL5_1 RootPassword=mysql ServerType=SERVER DatabaseType=MIXED Port=3306 RootCurrentPassword=mysql Charset=utf8 StrictMode=no'
     DetailPrint $(MYSQLINSTALLER_Done)
 #"C:\Program Files\MySQL\MySQL Server 6.0\bin\mysqlinstanceconfig.exe" -i -q ServiceName=MySQL RootPassword=mysql ServerType=DEVELOPMENT DatabaseType=MYISAM Port=3306 RootCurrentPassword=mysql
 SectionEnd
@@ -160,7 +161,7 @@ SectionEnd
 
 Section /o -sec_updater SEC_Updater
     DetailPrint $(UPDATER_Run)
-    ExecWait '"$INSTDIR\updater.exe"'
+    ExecWait '"$INSTDIR\updater.exe" batch'
 SectionEnd
 
 # Macro for selecting uninstaller sections
@@ -276,7 +277,7 @@ LangString SEC_Rabnet_DESC ${LANG_RUSSIAN} "Устанавливается на компьютеры в сети
 LangString SEC_RabDump_DESC ${LANG_ENGLISH} "It is installed on the server that stores and runs the database"
 LangString SEC_RabDump_DESC ${LANG_RUSSIAN} "Устанавливается на сервер на котором хранится и работает база данных"
 
-LangString SEC_Mysql_DESC ${LANG_ENGLISH} "Data base. It is installed on a Miakro Rabnet server"
+LangString SEC_Mysql_DESC ${LANG_ENGLISH} "Database. It is installed on a Miakro Rabnet server"
 LangString SEC_Mysql_DESC ${LANG_RUSSIAN} "База данных. Устанавливается на сервер обслуживающий Миакро Rabnet"
 
 LangString SEC_Rabnet_NAME ${LANG_ENGLISH} "Rabnet client"
@@ -285,8 +286,8 @@ LangString SEC_Rabnet_NAME ${LANG_RUSSIAN} "Rabnet клиентская часть"
 LangString SEC_RabDump_NAME ${LANG_ENGLISH} "Rabnet server tools"
 LangString SEC_RabDump_NAME ${LANG_RUSSIAN} "Rabnet серверные приложения"
 
-LangString SEC_Mysql_NAME ${LANG_ENGLISH} "Mysql Server 5.1"
-LangString SEC_Mysql_NAME ${LANG_RUSSIAN} "Mysql Server 5.1"
+LangString SEC_Mysql_NAME ${LANG_ENGLISH} "MySQL Server 5.1"
+LangString SEC_Mysql_NAME ${LANG_RUSSIAN} "MySQL Server 5.1"
 
 LangString SEC_PackClient_NAME ${LANG_ENGLISH} "Working PC"
 LangString SEC_PackClient_NAME ${LANG_RUSSIAN} "Рабочий компьютер"
@@ -294,11 +295,11 @@ LangString SEC_PackClient_NAME ${LANG_RUSSIAN} "Рабочий компьютер"
 LangString SEC_PackServer_NAME ${LANG_ENGLISH} "Server"
 LangString SEC_PackServer_NAME ${LANG_RUSSIAN} "Сервер"
 
-LangString MYSQLINSTALLER_Start ${LANG_ENGLISH} "Установка MySQL..."
-LangString MYSQLINSTALLER_Start ${LANG_RUSSIAN} "Installing MySQL..."
+LangString MYSQLINSTALLER_Start ${LANG_ENGLISH} "Installing MySQL..."
+LangString MYSQLINSTALLER_Start ${LANG_RUSSIAN} "Установка MySQL..."
 
-LangString MYSQLINSTALLER_Done ${LANG_ENGLISH} "MySQL установлен"
-LangString MYSQLINSTALLER_Done ${LANG_RUSSIAN} "MySQL installed successfully"
+LangString MYSQLINSTALLER_Done ${LANG_ENGLISH} "MySQL installed successfully"
+LangString MYSQLINSTALLER_Done ${LANG_RUSSIAN} "MySQL установлен"
 
 LangString MYSQLINSTALLER_Configure ${LANG_ENGLISH} "Configuring MySQL..."
 LangString MYSQLINSTALLER_Configure ${LANG_RUSSIAN} "Настройка MySQL..."
@@ -316,13 +317,21 @@ LangString SM_Dump_NAME ${LANG_ENGLISH} "RabDump"
 LangString SM_Dump_NAME ${LANG_RUSSIAN} "Резервные копии"
 
 
-VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "Test Application"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" "A test comment"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "Fake company"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalTrademarks" "Test Application is a trademark of Fake company"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "© Fake company"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "Test Application"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "1.2.3"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "@AppName_en@"
+#VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" "A test comment"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "@CompanyName_en@"
+#VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalTrademarks" "Test Application is a trademark of Fake company"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "@Copys_en@"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "@FileDescr_en@"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "@AppVer@"
 
-VIProductVersion "1.2.3.4"
+VIAddVersionKey /LANG=${LANG_RUSSIAN} "ProductName" "@AppName@"
+#VIAddVersionKey /LANG=${LANG_RUSSIAN} "Comments" "A test comment"
+VIAddVersionKey /LANG=${LANG_RUSSIAN} "CompanyName" "@CompanyName@"
+#VIAddVersionKey /LANG=${LANG_RUSSIAN} "LegalTrademarks" "Test Application is a trademark of Fake company"
+VIAddVersionKey /LANG=${LANG_RUSSIAN} "LegalCopyright" "@Copys@"
+VIAddVersionKey /LANG=${LANG_RUSSIAN} "FileDescription" "@FileDescr@"
+VIAddVersionKey /LANG=${LANG_RUSSIAN} "FileVersion" "@AppVer@"
+
+VIProductVersion "@AppVer@"
 
