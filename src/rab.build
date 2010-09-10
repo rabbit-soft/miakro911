@@ -144,7 +144,7 @@
 			</sources>
 			<resources>
 				<include name="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
-				<include name="${curdir}/mia_conv/Form1.resx"/>
+				<include name="${curdir}/mia_conv/*.resx"/>
 			</resources>
 			<references>
 				<include name="${mysql.use}"/>
@@ -337,6 +337,7 @@
 			</sources>
 			<resources>
 				<include name="${curdir}/updater/sql/*.sql"/>
+				<include name="${curdir}/updater/*.resx"/>
 			</resources>
 			<references>
 				<include name="${mysql.use}"/>
