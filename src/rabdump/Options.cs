@@ -310,9 +310,27 @@ namespace rabdump
                 {
                     case "db": oops.Databases.Add(DataBase.load(n, 0)); break;
                     case "job": oops.Jobs.Add(ArchiveJob.load(n, 0)); break;
-                    case "z7": Path7Z = n.ChildNodes[0].Value; break;
-                    case "mysql": MySqlPath = n.ChildNodes[0].Value; break;
-                    case "mysqldump": MySqlDumpPath = n.ChildNodes[0].Value; break;
+                    case "z7": 
+                    case "mysql": 
+                    case "mysqldump": 
+                        string x_val;
+                        try
+                        {
+                            x_val = n.ChildNodes[0].Value;
+                        }
+                        catch
+                        {
+                            x_val = "";
+                        }
+
+                        switch (n.Name)
+                        {
+                            case "z7": Path7Z = x_val; break;
+                            case "mysql": MySqlPath = x_val; break;
+                            case "mysqldump": MySqlDumpPath = x_val; break;
+                        }
+                        break;
+
                 }
             }
             dbFromRabNet();
