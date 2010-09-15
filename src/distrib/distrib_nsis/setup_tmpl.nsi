@@ -69,10 +69,11 @@ ShowUninstDetails show
 
 InstType $(SEC_PackClient_NAME)
 InstType $(SEC_PackServer_NAME)
+InstType $(SEC_PackServerFull_NAME)
 
 # Installer sections
 Section $(SEC_Rabnet_NAME) SEC_Rabnet
-    SectionIn 1 2
+    SectionIn 1 
     SetOutPath $INSTDIR
     SetOverwrite on
     File ..\..\..\bin\protected\rabnet.exe
@@ -111,7 +112,7 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
 SectionEnd
 
 Section /o $(SEC_RabDump_NAME) SEC_RabDump
-    SectionIn 2
+    SectionIn 2 3
     SetOutPath $INSTDIR
     SetOverwrite on
     File ..\..\..\bin\protected\GrdAPI32.DLL
@@ -130,7 +131,7 @@ Section /o $(SEC_RabDump_NAME) SEC_RabDump
 SectionEnd
 
 Section /o $(SEC_Mysql_NAME) SEC_Mysql
-    SectionIn 2
+    SectionIn 3
     DetailPrint $(MYSQLINSTALLER_Start)
     ExecWait 'msiexec /i "$EXEDIR\mysql\mysql-essential-5.1.49-win32.msi" /qr INSTALLDIR="$PROGRAMFILES\MySQL\MySQL Server 5.1\"  DATADIR="$PROGRAMFILES\MySQL\MySQL Server 5.1\" /L* C:\MSI-MySQL-Log.txt'
     DetailPrint $(MYSQLINSTALLER_Configure)
@@ -347,6 +348,9 @@ LangString SEC_PackClient_NAME ${LANG_RUSSIAN} "Рабочий компьютер"
 
 LangString SEC_PackServer_NAME ${LANG_ENGLISH} "Server"
 LangString SEC_PackServer_NAME ${LANG_RUSSIAN} "Сервер"
+
+LangString SEC_PackServerFull_NAME ${LANG_ENGLISH} "Server Full (+MySQL)"
+LangString SEC_PackServerFull_NAME ${LANG_RUSSIAN} "Сервер Полный (+MySQL)"
 
 LangString MYSQLINSTALLER_Start ${LANG_ENGLISH} "Installing MySQL..."
 LangString MYSQLINSTALLER_Start ${LANG_RUSSIAN} "Установка MySQL..."
