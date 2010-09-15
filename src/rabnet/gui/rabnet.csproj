@@ -350,6 +350,7 @@
     <Compile Include="reports\PeriodForm.Designer.cs">
       <DependentUpon>PeriodForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\VerInfo.cs" />
     <EmbeddedResource Include="components\BuildingControl.resx">
       <DependentUpon>BuildingControl.cs</DependentUpon>
       <SubType>Designer</SubType>

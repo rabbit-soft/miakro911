@@ -137,9 +137,21 @@
 	<target name="compile" depends="miaconv,rabdump,rabnet"/>
 	
 	<target name="miaconv" description="Make mia converter project">
+		<delete dir="${curdir}/mia_conv/tmp"/>
+		<mkdir dir="${curdir}/mia_conv/tmp"/>
+		<asminfo output="${curdir}/mia_conv/tmp/VersionInfo.cs" language="CSharp">
+			<imports>
+				<import namespace="System.Reflection" />
+			</imports>
+			<attributes>
+				<attribute type="AssemblyFileVersionAttribute" value="${version}.${minver}" />
+				<attribute type="AssemblyVersionAttribute" value="${version}.${minver}" />
+			</attributes>
+		</asminfo>
 		<copy file="${curdir}/mia_conv/rabnet_db_fmt.sql" tofile="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
 		<csc target="winexe" output="${bin_dir}/mia_conv.exe" win32icon="${curdir}/mia_conv/icon_yell_red.ico" define="${compile_flag}">
 			<sources>
+				<include name="${curdir}/mia_conv/tmp/*.cs"/>
 				<include name="${curdir}/mia_conv/*.cs"/>
 			</sources>
 			<resources>
@@ -217,9 +229,21 @@
 	</target>
 	
 	<target name="rabdump" description="rabnet db dumper">
+		<delete dir="${curdir}/rabdump/tmp"/>
+		<mkdir dir="${curdir}/rabdump/tmp"/>
+		<asminfo output="${curdir}/rabdump/tmp/VersionInfo.cs" language="CSharp">
+			<imports>
+				<import namespace="System.Reflection" />
+			</imports>
+			<attributes>
+				<attribute type="AssemblyFileVersionAttribute" value="${version}.${minver}" />
+				<attribute type="AssemblyVersionAttribute" value="${version}.${minver}" />
+			</attributes>
+		</asminfo>
 		<csc target="winexe" output="${bin_dir}/rabdump.exe" win32icon="${curdir}/rabdump/icon_white.ico"  define="${compile_flag}">
 			<sources>
 				<include name="${curdir}/rabdump/*.cs"/>
+				<include name="${curdir}/rabdump/tmp/*.cs"/>
 			</sources>
 			<resources>
 				<include name="${curdir}/rabdump/*.resx"/>
@@ -232,10 +256,22 @@
 	</target>
 	
 	<target name="gui" description="rabnet gui">
+		<delete dir="${curdir}/rabnet/gui/tmp"/>
+		<mkdir dir="${curdir}/rabnet/gui/tmp"/>
+		<asminfo output="${curdir}/rabnet/gui/tmp/VersionInfo.cs" language="CSharp">
+			<imports>
+				<import namespace="System.Reflection" />
+			</imports>
+			<attributes>
+				<attribute type="AssemblyFileVersionAttribute" value="${version}.${minver}" />
+				<attribute type="AssemblyVersionAttribute" value="${version}.${minver}" />
+			</attributes>
+		</asminfo>
 		<csc target="winexe" output="${bin_dir}/rabnet.exe" win32icon="${curdir}/rabnet/gui/icon_green.ico" define="${compile_flag}">
 			<sources>
 				<include name="${curdir}/rabnet/gui/*.cs"/>
-				<include name="${curdir}/rabnet/gui/Properties/*.cs"/>
+				<include name="${curdir}/rabnet/gui/tmp/*.cs"/>
+				<include name="${curdir}/rabnet/gui/Properties/AssemblyInfo.cs"/>
 				<include name="${curdir}/rabnet/gui/components/*.cs"/>
 				<include name="${curdir}/rabnet/gui/components/Pickers/*.cs"/>
 				<include name="${curdir}/rabnet/gui/components/Pickers/ComboBoxAppearance/*.cs"/>
@@ -331,9 +367,21 @@
 	</target>
 
 	<target name="updater" description="Make updater project">
+		<delete dir="${curdir}/updater/tmp"/>
+		<mkdir dir="${curdir}/updater/tmp"/>
+		<asminfo output="${curdir}/updater/tmp/VersionInfo.cs" language="CSharp">
+			<imports>
+				<import namespace="System.Reflection" />
+			</imports>
+			<attributes>
+				<attribute type="AssemblyFileVersionAttribute" value="${version}.${minver}" />
+				<attribute type="AssemblyVersionAttribute" value="${version}.${minver}" />
+			</attributes>
+		</asminfo>
 		<csc target="winexe" output="${tools_dir}/updater.exe" win32icon="${curdir}/updater/icon_update_white.ico" >
 			<sources>
 				<include name="${curdir}/updater/*.cs"/>
+				<include name="${curdir}/updater/tmp/*.cs"/>
 			</sources>
 			<resources>
 				<include name="${curdir}/updater/sql/*.sql"/>
