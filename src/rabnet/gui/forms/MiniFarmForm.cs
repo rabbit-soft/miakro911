@@ -105,6 +105,8 @@ namespace rabnet
 
         private int checkBuilding(Building b)
         {
+            // 0 - МИНИферма свободна
+            // 1 - МИНИферма занята
             if (!hasRabbits(b)) return 0;
             MessageBox.Show("Перед изменением типа яруса расселите его.");
             return 1;
@@ -121,18 +123,21 @@ namespace rabnet
             else
             {
                 int change = -1;
-                if (getUpperType() != b1.ftype)
+                if (getUpperType() != b1.ftype) 
                     change = checkBuilding(b1);
+
                 if ((b2 != null && getLowerType() != b2.ftype) || (b2 == null && getLowerType() != "none"))
                 {
                     if (change<1)
                         change = checkBuilding(b2);
                 }
-                if (change==0)
+
+                if (change == 0)
                 {
                     Engine.db().changeFarm(id, getUpperType(), getLowerType());
+                    Close();
                 }
-                Close();
+                else this.DialogResult = DialogResult.None;
             }
         }
     }

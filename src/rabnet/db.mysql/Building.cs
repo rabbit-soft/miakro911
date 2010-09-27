@@ -506,10 +506,50 @@ VALUES('{0:s}','{1:s}','{2:s}','{2:s}','');", type, delims, hn);break;
         {
             String hn = "00";
             String delims = "000";
-            if (type == "quarta") delims = "111"; if (type == "barin") delims = "100";
+            String busy = "";
+            //if (type == "quarta") delims = "111"; 
+            //if (type == "barin") delims = "100";
+            switch (type)
+            {
+                case "quarta":
+                    {
+                        delims = "111";
+                        busy = getBusyString(4);
+                        break;
+                    }
+                case "barin":
+                    {
+                        delims = "100";
+                        busy = getBusyString(2); 
+                        break;
+                    }
+                case "vertep":
+                case "dfemale":
+                case "jurta":
+                    {
+                        busy = getBusyString(2);
+                        break;
+                    }
+                case "female":
+                    {
+                        busy = getBusyString(1);
+                        break;
+                    }
+            }
             MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE tiers SET t_type='{0:s}',
-t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}' WHERE t_id={3:d};", type, delims, hn,tid), sql);
+t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}'{4:s} WHERE t_id={3:d};", type, delims, hn,tid,busy), sql);
             cmd.ExecuteNonQuery();
+        }
+
+        public static string getBusyString(byte count)
+        {
+            string result ="";
+            for (int i = 1; i <= 4;i++ )
+            {
+                if (i <= count) result += String.Format(",t_busy{0:s}=0", i.ToString());
+                else result += String.Format(",t_busy{0:s}=NULL", i.ToString());
+            }
+            return result;
         }
 
         public static int addFarm(MySqlConnection sql,int parent,String uppertype, String lowertype, String name,int id)

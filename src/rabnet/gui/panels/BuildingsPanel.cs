@@ -550,8 +550,7 @@ namespace rabnet
             if (!isFarm()) return;
             int fid=farmNum();
             MainForm.protest(fid);
-            new MiniFarmForm(fid).ShowDialog();
-            rsb.run();
+            if (new MiniFarmForm(fid).ShowDialog() == DialogResult.OK) rsb.run();
         }
 
         private XmlDocument getBuildDoc(int bid)
