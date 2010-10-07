@@ -27,7 +27,7 @@ namespace rabnet
                 if (p.Id != cp.Id)
                 {
                     SetForegroundWindow(p.MainWindowHandle);
-                    ShowWindow(p.MainWindowHandle, 3);
+                    ShowWindow(p.MainWindowHandle, 5);
                 }
         }
 
