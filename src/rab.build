@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project name="rabnet" default="build" basedir=".">
-	<!-- WiX 3 folder -->
-	<property name="wix.dir" value="${path::combine(environment::get-variable('WIX'), 'bin')}" readonly="true" />
-	<!-- Load the WiX3 tasks -->
-	<loadtasks assembly="${wix.dir}\Microsoft.Tools.WindowsInstallerXml.NAntTasks.dll" />
 	<description>rabnet project makefile</description>
 	<!-- properties defines !-->
 	<property name="version" value="1.0"/>
@@ -322,6 +318,11 @@
 	</target>
 	
 	<target name="one_distrib">
+		<!-- WiX 3 folder -->
+		<property name="wix.dir" value="${path::combine(environment::get-variable('WIX'), 'bin')}" readonly="true" />
+		<!-- Load the WiX3 tasks -->
+		<loadtasks assembly="${wix.dir}\Microsoft.Tools.WindowsInstallerXml.NAntTasks.dll" />
+		
 		<mkdir dir="${root_bin}/distrib/obj"/>
 		<candle out="${root_bin}/distrib/obj/" rebuild="true"  extensions="WixUIExtension;WixUtilExtension;WiXNetFxExtension"  warningsaserrors="true" exedir="${wix.dir}">
 		 <defines>
