@@ -2,6 +2,8 @@
 using System;
 using System.Windows.Forms;
 using log4net;
+using X_Classes;
+using System.Threading;
 
 
 namespace rabdump
@@ -11,10 +13,21 @@ namespace rabdump
         public static readonly ILog logger = LogManager.GetLogger(typeof(MainForm));
         bool canclose = false;
         bool manual = true;
+
+        RabUpdater rupd;
+
+        SocketServer socksrv;
+
+        long updDelayCnt = 0;
+
         public MainForm()
         {
             InitializeComponent();
             log4net.Config.XmlConfigurator.Configure();
+            rupd = new RabUpdater();
+            rupd.MessageSenderCallback = message_cb;
+            rupd.CloseCallback = close_cb;
+            socksrv = new SocketServer();
         }
 
         public static ILog log()
@@ -41,7 +54,10 @@ namespace rabdump
                 canclose = true;
             e.Cancel = !canclose;
             if (canclose)
+            {
                 log().Debug("Program finished");
+                socksrv.Close();
+            }
             manual = false;
             WindowState = FormWindowState.Minimized;
             ShowInTaskbar = false;
@@ -99,6 +115,15 @@ namespace rabdump
         private void timer1_Tick(object sender, EventArgs e)
         {
             processTiming(false);
+            if ((updDelayCnt >= 900000) && (!timer_up.Enabled))
+            {
+                rupd.CheckUpdate();
+                timer_up.Enabled = true;
+            }
+            if ((updDelayCnt < 900000) && (!timer_up.Enabled))
+            {
+                updDelayCnt++;
+            }
 #if PROTECTED
             if (!pserver.canwork())
             {
@@ -151,6 +176,46 @@ namespace rabdump
         private void новаяФермаToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new FarmChangeForm().ShowDialog();
+        }
+
+        private void message_cb(string txt, string ttl,ToolTipIcon ico, bool hide)
+        {
+            if (this.InvokeRequired)
+            {
+                MessageSenderCallbackDelegate d = new MessageSenderCallbackDelegate(message_cb);
+                this.Invoke(d,new object[] {txt,ttl,ico,hide});
+            }
+            else
+            {
+                if (hide)
+                {
+                    notifyIcon1.Visible = false;
+                    notifyIcon1.Visible = true;
+                }
+                else
+                {
+                    notifyIcon1.ShowBalloonTip(5, ttl, txt, ico);
+                }
+            }
+        }
+
+        private void close_cb()
+        {
+            if (this.InvokeRequired)
+            {
+                CloseCallbackDelegate d = new CloseCallbackDelegate(close_cb);
+                this.Invoke(d);
+            }
+            else
+            {
+                canclose = true;
+                Close();
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            rupd.CheckUpdate();
         }
 
     }

@@ -76,35 +76,35 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     SectionIn 1 
     SetOutPath $INSTDIR
     SetOverwrite on
-    File ..\..\..\bin\protected\rabnet.exe
-    File ..\..\..\bin\protected\db.mysql.dll
-    File ..\..\..\bin\protected\engine.dll
-#    File ..\..\..\bin\protected\gui_genetics.dll
-    File ..\..\..\bin\protected\MySql.Data.dll
-    File ..\..\..\bin\protected\Pickers.dll
-    File ..\..\..\bin\protected\rabHelp.chm
-    File ..\..\..\bin\protected\RdlEngine.dll
-    File ..\..\..\bin\protected\RdlViewer.dll
+    File ..\..\..\bin\@bin_type@\rabnet.exe
+    File ..\..\..\bin\@bin_type@\db.mysql.dll
+    File ..\..\..\bin\@bin_type@\engine.dll
+#    File ..\..\..\bin\@bin_type@\gui_genetics.dll
+    File ..\..\..\bin\@bin_type@\MySql.Data.dll
+    File ..\..\..\bin\@bin_type@\Pickers.dll
+    File ..\..\..\bin\@bin_type@\rabHelp.chm
+    File ..\..\..\bin\@bin_type@\RdlEngine.dll
+    File ..\..\..\bin\@bin_type@\RdlViewer.dll
     SetOutPath $INSTDIR\reports
-    File ..\..\..\bin\protected\reports\age.rdl
-    File ..\..\..\bin\protected\reports\breeds.rdl
-    File ..\..\..\bin\protected\reports\by_month.rdl
-    File ..\..\..\bin\protected\reports\dead.rdl
-    File ..\..\..\bin\protected\reports\deadreason.rdl
-    File ..\..\..\bin\protected\reports\empty_rev.rdl
-    File ..\..\..\bin\protected\reports\fucker.rdl
-    File ..\..\..\bin\protected\reports\fucks_by_date.rdl
-    File ..\..\..\bin\protected\reports\okrol_user.rdl
-    File ..\..\..\bin\protected\reports\plem.rdl
-    File ..\..\..\bin\protected\reports\rabbit.rdl
-    File ..\..\..\bin\protected\reports\realization.rdl
-    File ..\..\..\bin\protected\reports\replace_plan.rdl
-    File ..\..\..\bin\protected\reports\shed.rdl
-    File ..\..\..\bin\protected\reports\zooteh.rdl
-    File ..\..\..\bin\protected\reports\zooteh_nofuck.rdl
+    File ..\..\..\bin\@bin_type@\reports\age.rdl
+    File ..\..\..\bin\@bin_type@\reports\breeds.rdl
+    File ..\..\..\bin\@bin_type@\reports\by_month.rdl
+    File ..\..\..\bin\@bin_type@\reports\dead.rdl
+    File ..\..\..\bin\@bin_type@\reports\deadreason.rdl
+    File ..\..\..\bin\@bin_type@\reports\empty_rev.rdl
+    File ..\..\..\bin\@bin_type@\reports\fucker.rdl
+    File ..\..\..\bin\@bin_type@\reports\fucks_by_date.rdl
+    File ..\..\..\bin\@bin_type@\reports\okrol_user.rdl
+    File ..\..\..\bin\@bin_type@\reports\plem.rdl
+    File ..\..\..\bin\@bin_type@\reports\rabbit.rdl
+    File ..\..\..\bin\@bin_type@\reports\realization.rdl
+    File ..\..\..\bin\@bin_type@\reports\replace_plan.rdl
+    File ..\..\..\bin\@bin_type@\reports\shed.rdl
+    File ..\..\..\bin\@bin_type@\reports\zooteh.rdl
+    File ..\..\..\bin\@bin_type@\reports\zooteh_nofuck.rdl
     SetOutPath $INSTDIR
     SetOverwrite off
-    File ..\..\..\bin\protected\rabnet.exe.config
+    File ..\..\..\bin\@bin_type@\rabnet.exe.config
     SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Prog_NAME).lnk $INSTDIR\rabnet.exe
 #    WriteRegStr HKEY_CURRENT_USER Software\hzkakzvat\rabnet Path "C:\Program Files\7-Zip"
@@ -115,14 +115,14 @@ Section /o $(SEC_RabDump_NAME) SEC_RabDump
     SectionIn 2 3
     SetOutPath $INSTDIR
     SetOverwrite on
-    File ..\..\..\bin\protected\GrdAPI32.DLL
-    File ..\..\..\bin\protected\rabdump.exe
-    File ..\..\..\bin\protected\key.dll
+    File ..\..\..\bin\@bin_type@\GrdAPI32.DLL
+    File ..\..\..\bin\@bin_type@\rabdump.exe
+    File ..\..\..\bin\@bin_type@\key.dll
     File ..\..\..\bin\tools\updater.exe
-    File ..\..\..\bin\protected\mia_conv.exe
+    File ..\..\..\bin\@bin_type@\mia_conv.exe
     #SetOutPath $INSTDIR
     #SetOverwrite off
-    #File ..\..\..\bin\protected\rabdump.exe.config
+    #File ..\..\..\bin\@bin_type@\rabdump.exe.config
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Dump_NAME).lnk $INSTDIR\rabdump.exe
     WriteRegStr HKLM "${REGKEY}\Components" "rabdump" 1
 #    DetailPrint $(UPDATER_Run)
@@ -145,7 +145,7 @@ SectionEnd
 Section -com_comps SEC_Common
     SetOutPath $INSTDIR
     SetOverwrite on
-    File ..\..\..\bin\protected\log4net.dll
+    File ..\..\..\bin\@bin_type@\log4net.dll
     WriteRegStr HKLM "${REGKEY}\Components" com_comps 1
 SectionEnd
 

@@ -46,12 +46,15 @@
             this.button2 = new System.Windows.Forms.Button();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.button3 = new System.Windows.Forms.Button();
+            this.timer_up = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // notifyIcon1
             // 
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
             this.notifyIcon1.Text = "rabdump";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
@@ -175,6 +178,20 @@
             this.timer1.Interval = 60000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(6, 362);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(137, 23);
+            this.button3.TabIndex = 4;
+            this.button3.Text = "Проверить обновление";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // timer_up
+            // 
+            this.timer_up.Interval = 10800000;
+            // 
             // MainForm
             // 
             this.AcceptButton = this.button1;
@@ -182,6 +199,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button2;
             this.ClientSize = new System.Drawing.Size(541, 393);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.propertyGrid1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -219,6 +237,8 @@
         private System.Windows.Forms.ToolStripMenuItem запуститьRabnetToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem новаяФермаToolStripMenuItem;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Timer timer_up;
     }
 }
 

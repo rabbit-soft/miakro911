@@ -456,19 +456,33 @@
 	</target>
 	
 	<target name="distrib_nsis" depends="obfuscate">
+		<property name="dist_type" value="rabnet_protected"/>
+		<property name="bin_dir" value="${root_bin}\protected"/>
+		<property name="bin_type" value="protected"/>
+		<call target="nsis_bld"/>
+	</target>
+
+	<target name="distrib_nsis_release" depends="obfuscate">
+		<property name="dist_type" value="rabnet_no_protect"/>
+		<property name="bin_dir" value="${root_bin}\release"/>
+		<property name="bin_type" value="release"/>
+		<call target="nsis_bld"/>
+	</target>
+
+	<target name="nsis_bld">
 		<mkdir dir="${root_bin}"/>
-		<delete dir="${root_bin}/distrib_nsis"/>
-		<mkdir dir="${root_bin}/distrib_nsis"/>
-		<mkdir dir="${root_bin}/distrib_nsis/dotnetfx20"/>
-		<mkdir dir="${root_bin}/distrib_nsis/mysql"/>
-		<copy file="${dotnetInstallerSource}" tofile="${root_bin}/distrib_nsis/dotnetfx20/${dotnetInstallerDest}"/>
-		<copy file="${mysqlInstallerSource}" tofile="${root_bin}/distrib_nsis/mysql/${mysqlInstallerDest}"/>
+		<delete dir="${root_bin}/distrib_nsis_${bin_type}"/>
+		<mkdir dir="${root_bin}/distrib_nsis_${bin_type}"/>
+		<mkdir dir="${root_bin}/distrib_nsis_${bin_type}/dotnetfx20"/>
+		<mkdir dir="${root_bin}/distrib_nsis_${bin_type}/mysql"/>
+		<copy file="${dotnetInstallerSource}" tofile="${root_bin}/distrib_nsis_${bin_type}/dotnetfx20/${dotnetInstallerDest}"/>
+		<copy file="${mysqlInstallerSource}" tofile="${root_bin}/distrib_nsis_${bin_type}/mysql/${mysqlInstallerDest}"/>
 		<!--property name="dist_type" value="rabnet"/>
 		<property name="bin_dir" value="${root_bin}\release"/>
 		<property name="minver" value="1"/>
 		<call target="one_distrib"/-->
-		<property name="dist_type" value="rabnet_protected"/>
-		<property name="bin_dir" value="${root_bin}\protected"/>
+		<!--property name="dist_type" value="rabnet_protected"/>
+		<property name="bin_dir" value="${root_bin}\protected"/-->
 		<!--property name="minver" value="2"/-->
 		<delete file="${curdir}/distrib/distrib_nsis/setup_bld.nsi"/>
 		<delete file="${curdir}/distrib/distrib_nsis/setup.exe"/>
@@ -484,6 +498,7 @@
 					<token key="CompanyName_en" value="${companyname_en}" />
 					<token key="Copys" value="(C) ${companyname} 2010" />
 					<token key="Copys_en" value="(C) ${companyname_en} 2010" />
+					<token key="bin_type" value="${bin_type}" />
 					
 					<!--token key="Comments" value="" /-->
 				</replacetokens>
@@ -495,7 +510,7 @@
 			<arg value="/V3" />
 			<arg value="${curdir}/distrib/distrib_nsis/setup_bld.nsi" />
 		</exec>
-		<copy file="${curdir}/distrib/distrib_nsis/setup.exe" tofile="${root_bin}/distrib_nsis/setup.exe"/>
+		<copy file="${curdir}/distrib/distrib_nsis/setup.exe" tofile="${root_bin}/distrib_nsis_${bin_type}/setup.exe"/>
 	</target>
 	
 	<!-- FILL DATA!-->

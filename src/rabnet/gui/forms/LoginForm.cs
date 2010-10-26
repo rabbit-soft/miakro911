@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Configuration;
 using log4net;
 using System.Xml;
+using System.Diagnostics;
 
 
 namespace rabnet
@@ -50,6 +51,7 @@ namespace rabnet
             comboBox2.Focus();
             try
             {
+                Application.DoEvents();
                 RabnetConfigHandler.dataSource xs=null;
                 foreach (RabnetConfigHandler.dataSource d in RabnetConfigHandler.ds)
                     if (d.name == comboBox1.Text)
@@ -102,33 +104,83 @@ namespace rabnet
 
         private void button2_Click(object sender, EventArgs e)
         {
-            int uid=Engine.get().setUid(comboBox2.Text, textBox1.Text,comboBox1.Text);
+            int uid = Engine.get().setUid(comboBox2.Text, textBox1.Text, comboBox1.Text);
             if (uid != 0)
             {
                 RabnetConfigHandler.ds[comboBox1.SelectedIndex].setDefault(comboBox2.Text, textBox1.Text);
-                DialogResult = DialogResult.OK;
-                Close();
+                
+                System.Diagnostics.Debug.WriteLine(RabnetConfigHandler.ds[comboBox1.SelectedIndex].getParamHost());
+                RabUpdaterClient.Get().SetIP(RabnetConfigHandler.ds[comboBox1.SelectedIndex].getParamHost());
+                
+                bool upRes=RabUpdaterClient.Get().CheckUpdate();
+                
+                System.Diagnostics.Debug.WriteLine(upRes.ToString());
+
+                if (upRes)
+                {
+                    DialogResult = DialogResult.Cancel;
+                    Hide();
+                    LoginForm.stop = false;
+
+                    ProgressForm prg = new ProgressForm();
+
+                    RabUpdaterClient.Get().progressUp = prg.progressUp;
+
+                    prg.progressUp(0);
+
+                    prg.Show();
+
+
+                    RabUpdaterClient.Get().GetUpdate();
+
+
+
+                    while (RabUpdaterClient.Get().GetUpRes()==RabUpdaterClient.UpErrStillWorking)
+                    {
+                        Application.DoEvents();
+                        
+                    }
+
+                    prg.Close();
+
+                    prg = null;
+
+                    if (RabUpdaterClient.Get().GetUpRes() != RabUpdaterClient.UpErrFinishedOK)
+                    {
+                        MessageBox.Show("При обновлении возникла ошибка." + Environment.NewLine + "Поробуйте перезапустить программу и обновить снова, если ошибка будет повторяться, то установите обновление вручную.", "Неполадки при обновлении", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        LoginForm.stop = true;
+                        Close();
+                    }
+                    else
+                    {
+                        Process.Start(RabUpdaterClient.Get().GetUpFilePath(),"test");
+                        LoginForm.stop = true;
+                        Close();
+
+                    }
+
+
+                }
+                else
+                {
+                                    DialogResult = DialogResult.OK;
+                                    Close();
+                }
+
+
+
+
+
+
                 return;
             }
             MessageBox.Show("Неверное имя пользователя или пароль");
         }
 
+
+
         private void LoginForm_Load(object sender, EventArgs e)
         {
-            readConfig();
-            textBox1.SelectAll();
-            textBox1.Focus();
-            if (dbedit)
-            {
-                new FarmChangeForm(null).ShowDialog();
-                stop = true;
-                DialogResult = DialogResult.Cancel;
-            }
-            if (comboBox1.Items.Count == 0)
-            {
-                new FarmChangeForm(true).ShowDialog();
-                readConfig();
-            }
         }
 
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
@@ -149,6 +201,24 @@ namespace rabnet
 
         private void button1_Click(object sender, EventArgs e)
         {
+        }
+
+        private void LoginForm_Shown(object sender, EventArgs e)
+        {
+            readConfig();
+            textBox1.SelectAll();
+            textBox1.Focus();
+            if (dbedit)
+            {
+                new FarmChangeForm(null).ShowDialog();
+                stop = true;
+                DialogResult = DialogResult.Cancel;
+            }
+            if (comboBox1.Items.Count == 0)
+            {
+                new FarmChangeForm(true).ShowDialog();
+                readConfig();
+            }
         }
     }
 
@@ -180,6 +250,20 @@ namespace rabnet
                 if (!savepassword) defpassword = "";
                 else defpassword = pswd;
                 RabnetConfigHandler.save();
+            }
+            public string getParamHost()
+            {
+                string[] param_arr=param.Split(';');
+                foreach (string prm in param_arr)
+                {
+                    if (prm.Substring(0, 4) == "host")
+                    {
+                        //System.Diagnostics.Debug.WriteLine(prm);
+                        string[] hsts = prm.Split('=');
+                        return hsts[1].Trim();
+                    }
+                }
+                return "";
             }
         }
         public static List<dataSource> ds = new List<dataSource>();

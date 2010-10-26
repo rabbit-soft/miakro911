@@ -13,6 +13,8 @@ namespace rabdump
         [STAThread]
         static void Main()
         {
+            try
+            {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 #if PROTECTED
@@ -38,6 +40,11 @@ namespace rabdump
                     exit = false;
             } while (!exit);
 #endif
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message + e.StackTrace);
+            }
         }
     }
 }

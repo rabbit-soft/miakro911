@@ -65,12 +65,15 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="pserver.cs" />
+    <Compile Include="RabUpdater.cs" />
     <Compile Include="RestoreForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="RestoreForm.Designer.cs">
       <DependentUpon>RestoreForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="SockServ.cs" />
+    <Compile Include="x_tools.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FarmChangeForm.resx">
