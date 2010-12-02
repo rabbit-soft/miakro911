@@ -495,6 +495,9 @@ BEGIN
     RETURN('');
   END IF;
   SELECT t_type,t_delims,t_nest INTO s1,s2,s3 FROM tiers WHERE t_id=tid;
+  IF (ISNULL(s1)) THEN
+    RETURN('');
+  END IF;
   SET res=CONCAT_WS(',',i1,i2,i3,s1,s2,s3);
   RETURN(res);
 END |
@@ -514,6 +517,9 @@ BEGIN
 	SELECT t_type,t_delims,t_nest INTO s1,s2,s3 FROM tiers WHERE t_id=tid;
   ELSE
 	SELECT t_type,t_delims,t_nest INTO s1,s2,s3 FROM tiers,minifarms WHERE m_id=i1 AND ((t_id=m_upper AND i2<>1) OR (t_id=m_lower AND i2=1));
+  END IF;
+  IF (ISNULL(s1)) THEN
+    RETURN('');
   END IF;
   SET res=CONCAT_WS(',',i1,i2,i3,s1,s2,s3);
   RETURN(res);
