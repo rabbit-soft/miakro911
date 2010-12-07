@@ -1,0 +1,2 @@
+select 'DEAD',r_id,d_dATE,concat((select n_surname from names where n_id=r_surname),'-',(select n_surname from names where n_id=r_secname)) nm from dead where r_id in (select r_id from rabbits)
+union select 'alive',r_id,r_born, concat((select n_surname from names where n_id=r_surname),'-',(select n_surname from names where n_id=r_secname)) nm from rabbits where r_id in (select r_id from dead) order by r_id
