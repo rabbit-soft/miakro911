@@ -48,7 +48,7 @@
             // 
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2010, 3, 10, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2010, 12, 13, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
             this.dateDays1.Location = new System.Drawing.Point(29, 46);
@@ -97,6 +97,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Proholost";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Прохолостание";
             this.ResumeLayout(false);
             this.PerformLayout();
