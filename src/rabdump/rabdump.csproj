@@ -60,63 +60,60 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutForm.cs">
+    <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AboutForm.designer.cs">
+    <Compile Include="Forms\AboutForm.designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ArchiveJobThread.cs" />
     <Compile Include="Editors.cs" />
-    <Compile Include="FarmChangeForm.cs">
+    <Compile Include="Forms\FarmChangeForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FarmChangeForm.designer.cs">
+    <Compile Include="Forms\FarmChangeForm.designer.cs">
       <DependentUpon>FarmChangeForm.cs</DependentUpon>
     </Compile>
     <Compile Include="GRD.cs" />
-    <Compile Include="MainForm.cs">
+    <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Options.cs">
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="RabUpdater.cs" />
-    <Compile Include="RestoreForm.cs">
+    <Compile Include="Forms\RestoreForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RestoreForm.Designer.cs">
+    <Compile Include="Forms\RestoreForm.Designer.cs">
       <DependentUpon>RestoreForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SockServ.cs" />
-    <Compile Include="x_tools.cs" />
+    <Compile Include="X_Tools\x_tools.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AboutForm.resx">
+    <EmbeddedResource Include="Forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="FarmChangeForm.resx">
+    <EmbeddedResource Include="Forms\FarmChangeForm.resx">
       <DependentUpon>FarmChangeForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="RestoreForm.resx">
+    <EmbeddedResource Include="Forms\RestoreForm.resx">
       <DependentUpon>RestoreForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\allineed\src\party3d\GrdAPI32.DLL">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\allineed\src\party3d\key.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="icon_white.ico" />
