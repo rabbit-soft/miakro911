@@ -6,7 +6,7 @@ namespace rabnet
 {
     class GeneticsManagerSafe
     {
-        private const string DllPath="genetics";
+        private const string DllPath=@"..\Genetics";
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(GeneticsManagerSafe));
         private static Boolean _hasModule = false;
@@ -85,7 +85,7 @@ namespace rabnet
 
             if ( nm == "gui_genetics")
             {
-                strAssmbPath=@".\"+DllPath+@"\gui_genetics.dll";
+                strAssmbPath=DllPath+@"\gui_genetics.dll";
             }
 
             //Load the assembly from the specified path.

@@ -79,29 +79,37 @@
 		<mkdir dir="${root_bin}"/>
 		<delete dir="${bin_dir}"/>
 		<mkdir dir="${bin_dir}"/>
-		<mkdir dir="${bin_dir}/reports"/>
 		<mkdir dir="${bin_dir}/7z"/>
-		<property name="log4net.use" value="${bin_dir}/${log4net.lib}" />
-		<property name="mysql.use" value="${bin_dir}/${mysql.lib}" />
-		<property name="rep.use" value="${bin_dir}/${rep.lib}" />
-		<property name="repeng.use" value="${bin_dir}/${repeng.lib}" />
+		<mkdir dir="${bin_dir}/RabNet"/>
+		<mkdir dir="${bin_dir}/RabNet/reports"/>
+		<mkdir dir="${bin_dir}/RabDump"/>
+		<mkdir dir="${bin_dir}/Guardant"/>
+		<mkdir dir="${bin_dir}/Genetics"/>
+		<property name="log4net.use" value="${bin_dir}/RabNet/${log4net.lib}" />
+		<property name="log4net.d.use" value="${bin_dir}/RabDump/${log4net.lib}" />
+		<property name="mysql.use" value="${bin_dir}/RabNet/${mysql.lib}" />
+		<property name="rep.use" value="${bin_dir}/RabNet/${rep.lib}" />
+		<property name="repeng.use" value="${bin_dir}/RabNet/${repeng.lib}" />
 		<!--property name="guardant.use" value="${bin_dir}/${guardant.lib}" /-->
 		<copy file="${log4net.ass}" tofile="${log4net.use}" />
+		<copy file="${log4net.ass}" tofile="${log4net.d.use}" />
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
 		<copy file="${rep.ass}" tofile="${rep.use}" />
 		<copy file="${repeng.ass}" tofile="${repeng.use}" />
 		<!--copy file="${guardant.ass}" tofile="${guardant.use}" /-->
-		<copy file="${guardant.path}/${guardant2.lib}" tofile="${bin_dir}/${guardant2.lib}" />
-		<copy file="${guardant.path}/${guardantNET.lib}" tofile="${bin_dir}/${guardantNET.lib}" />
+		<copy file="${guardant.path}/${guardant2.lib}" tofile="${bin_dir}/RabNet/${guardant2.lib}" />
+		<copy file="${guardant.path}/${guardantNET.lib}" tofile="${bin_dir}/RabNet/${guardantNET.lib}" />
+		<copy file="${guardant.path}/${guardant2.lib}" tofile="${bin_dir}/RabDump/${guardant2.lib}" />
+		<copy file="${guardant.path}/${guardantNET.lib}" tofile="${bin_dir}/RabDump/${guardantNET.lib}" />
 
-		<copy file="${GrdTruSource}" tofile="${bin_dir}/${GrdTru}" />
+		<copy file="${GrdTruSource}" tofile="${bin_dir}/Guardant/${GrdTru}" />
 
-		<copy todir="${bin_dir}/reports">
+		<copy todir="${bin_dir}/RabNet/reports">
 			<fileset basedir="${curdir}/rabnet/gui/reports">
 				<include name="*.rdl"/>
 			</fileset>
 		</copy>
-		<copy todir="${bin_dir}">
+		<copy todir="${bin_dir}/RabNet">
 			<fileset basedir="${curdir}/../help">
 				<include name="*.chm"/>
 			</fileset>
@@ -167,7 +175,7 @@
 			</attributes>
 		</asminfo>
 		<copy file="${curdir}/mia_conv/rabnet_db_fmt.sql" tofile="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
-		<csc target="winexe" output="${bin_dir}/mia_conv.exe" win32icon="${curdir}/mia_conv/icon_yell_red.ico" define="${compile_flag}">
+		<csc target="winexe" output="${bin_dir}/RabDump/mia_conv.exe" win32icon="${curdir}/mia_conv/icon_yell_red.ico" define="${compile_flag}">
 			<sources>
 				<include name="${curdir}/mia_conv/tmp/*.cs"/>
 				<include name="${curdir}/mia_conv/*.cs"/>
@@ -189,7 +197,7 @@
 	<target name="rabnet_demo" description="make rabnet application" depends="pickers,db.mysql,engine,gui_genetics,gui"/>
 	
 	<target name="pickers" description="pickers library for rabnet">
-		<csc target="library" output="${bin_dir}/Pickers.dll" define="${compile_flag}">
+		<csc target="library" output="${bin_dir}/RabNet/Pickers.dll" define="${compile_flag}">
 			<sources>
 				<include name="${curdir}/libs/pickers/*.cs"/>
 				<include name="${curdir}/libs/pickers/ComboBoxAppearance/*.cs"/>
@@ -199,7 +207,7 @@
 	</target>
 
 	<target name="db.mysql" description="mysql data layer">
-		<csc target="library" output="${bin_dir}/db.mysql.dll" define="${compile_flag}">
+		<csc target="library" output="${bin_dir}/RabNet/db.mysql.dll" define="${compile_flag}">
 			<sources>
 				<include name="${curdir}/rabnet/db.mysql/*.cs"/>
 				<include name="${curdir}/rabnet/db.mysql/Properties/*.cs"/>
@@ -212,21 +220,21 @@
 	</target>
 	
 	<target name="engine" description="engine">
-		<csc target="library" output="${bin_dir}/engine.dll" define="${compile_flag}">
+		<csc target="library" output="${bin_dir}/RabNet/engine.dll" define="${compile_flag}">
 			<sources>
 				<include name="${curdir}/rabnet/engine/*.cs"/>
 				<include name="${curdir}/rabnet/engine/Properties/*.cs"/>
 			</sources>
 			<references>
 				<include name="${log4net.use}"/>
-				<include name="${bin_dir}/db.mysql.dll" />
+				<include name="${bin_dir}/RabNet/db.mysql.dll" />
 				<include name="${bin_dir}/db.miafile.dll" />
 			</references>
 		</csc>
 	</target>
 
 	<target name="gui_genetics" description="rabnet gui genetics">
-		<csc target="library" output="${bin_dir}/gui_genetics.dll" define="${compile_flag}">
+		<csc target="library" output="${bin_dir}/Genetics/gui_genetics.dll" define="${compile_flag}">
 			<sources>
 				<include name="${curdir}/rabnet/gui_genetics/*.cs"/>
 				<include name="${curdir}/rabnet/gui/Engine.cs"/>
@@ -242,8 +250,8 @@
 				<include name="${log4net.use}"/>
 				<include name="${rep.use}"/>
 				<include name="${repeng.use}"/>
-				<include name="${bin_dir}/db.mysql.dll" />
-				<include name="${bin_dir}/engine.dll" />
+				<include name="${bin_dir}/RabNet/db.mysql.dll" />
+				<include name="${bin_dir}/RabNet/engine.dll" />
 			</references>
 		</csc>
 	</target>
@@ -260,7 +268,7 @@
 				<attribute type="AssemblyVersionAttribute" value="${version}.${minver}" />
 			</attributes>
 		</asminfo>
-		<csc target="winexe" output="${bin_dir}/rabdump.exe" win32icon="${curdir}/rabdump/icon_white.ico"  define="${compile_flag}">
+		<csc target="winexe" output="${bin_dir}/RabDump/rabdump.exe" win32icon="${curdir}/rabdump/icon_white.ico"  define="${compile_flag}">
 			<sources>
 				<include name="${curdir}/rabdump/*.cs"/>
 				<include name="${curdir}/rabdump/Forms/*.cs"/>
@@ -272,11 +280,11 @@
 				<include name="${curdir}/rabdump/Forms/*.resx"/>
 			</resources>
 			<references>
-				<include name="${bin_dir}/${guardantNET.lib}" />
+				<include name="${bin_dir}/RabDump/${guardantNET.lib}" />
 				<include name="${log4net.use}"/>
 			</references>
 		</csc>
-		<copy file="${curdir}/rabdump/clean_config/rabdump.exe.config" tofile="${bin_dir}/rabdump.exe.config" />
+		<copy file="${curdir}/rabdump/clean_config/rabdump.exe.config" tofile="${bin_dir}/RabDump/rabdump.exe.config" />
 	</target>
 	
 	<target name="gui" description="rabnet gui">
@@ -291,7 +299,7 @@
 				<attribute type="AssemblyVersionAttribute" value="${version}.${minver}" />
 			</attributes>
 		</asminfo>
-		<csc target="winexe" output="${bin_dir}/rabnet.exe" win32icon="${curdir}/rabnet/gui/icon_green.ico" define="${compile_flag}">
+		<csc target="winexe" output="${bin_dir}/RabNet/rabnet.exe" win32icon="${curdir}/rabnet/gui/icon_green.ico" define="${compile_flag}">
 			<sources>
 				<include name="${curdir}/rabnet/gui/*.cs"/>
 				<include name="${curdir}/rabnet/gui/tmp/*.cs"/>
@@ -315,14 +323,14 @@
 				<include name="${log4net.use}"/>
 				<include name="${rep.use}"/>
 				<include name="${repeng.use}"/>
-				<include name="${bin_dir}/Pickers.dll" />
-				<include name="${bin_dir}/db.mysql.dll" />
-				<include name="${bin_dir}/engine.dll" />
-				<include name="${bin_dir}/gui_genetics.dll" />
-				<include name="${bin_dir}/${guardantNET.lib}" />
+				<include name="${bin_dir}/RabNet/Pickers.dll" />
+				<include name="${bin_dir}/RabNet/db.mysql.dll" />
+				<include name="${bin_dir}/RabNet/engine.dll" />
+				<include name="${bin_dir}/Genetics/gui_genetics.dll" />
+				<include name="${bin_dir}/RabNet/${guardantNET.lib}" />
 			</references>
 		</csc>
-		<copy file="${curdir}/rabnet/gui/clean_config/rabnet.exe.config" tofile="${bin_dir}/rabnet.exe.config" />
+		<copy file="${curdir}/rabnet/gui/clean_config/rabnet.exe.config" tofile="${bin_dir}/RabNet/rabnet.exe.config" />
 	</target>
 	
 	<target name="obfuscate" depends="buildall" description="Binary Obfuscation">
