@@ -7,6 +7,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.Collections;
 using System.Xml;
+#if PROTECTED
+using RabGRD;
+#endif
 
 namespace rabnet
 {
@@ -31,7 +34,7 @@ namespace rabnet
 
         private void addNoFarm(int farm)
         {
-            if (farm==nofarm)
+            if (farm == nofarm)
             {
                 nofarm++;
                 return;
@@ -42,10 +45,13 @@ namespace rabnet
                 return;
             }
             for (int i = nofarm; i < farm; i++)
+            {
 #if PROTECTED
-                if (i<=PClient.get().farms())
+                //                    if (i <= PClient.get().farms())
+                if (i <= GRD.Instance.GetFarmsCnt())
 #endif
                     nofarms.Add(i);
+            }
             nofarm = farm + 1;
         }
 
@@ -84,7 +90,8 @@ namespace rabnet
             maxfarm = 0;
             TreeNode n=makenode(null,"Ферма",Engine.db().buildingsTree());
 #if PROTECTED
-            if (nofarm<=PClient.get().farms())
+//            if (nofarm<=PClient.get().farms())
+            if (nofarm <= GRD.Instance.GetFarmsCnt())
 #endif
                 nofarms.Add(nofarm);
             MainForm.protest(maxfarm);

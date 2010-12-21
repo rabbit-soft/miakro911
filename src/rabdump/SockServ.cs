@@ -3,7 +3,6 @@ using System.Text;
 using System.Net.Sockets;
 using System.Threading;
 using System.Net;
-using System.Diagnostics;
 using System.Windows.Forms;
 using System.IO;
 using X_Classes;
@@ -13,38 +12,38 @@ namespace rabdump
 {
     class SocketServer
     {
-        private TcpListener tcpListener;
-        private Thread listenThread;
+        private readonly TcpListener _tcpListener;
+        private readonly Thread _listenThread;
 
         public SocketServer()
         {
-            this.tcpListener = new TcpListener(IPAddress.Any, 3000);
-            this.listenThread = new Thread(new ThreadStart(ListenForClients));
-            this.listenThread.Start();
+            _tcpListener = new TcpListener(IPAddress.Any, 3000);
+            _listenThread = new Thread(ListenForClients);
+            _listenThread.Start();
         }
 
         public void Close()
         {
-            tcpListener.Stop();
-            listenThread.Abort();
+            _tcpListener.Stop();
+            _listenThread.Abort();
         }
         
         private void ListenForClients()
         {
             try
             {
-                this.tcpListener.Start();
+                _tcpListener.Start();
 
                 while (true)
                 {
                     //blocks until a client has connected to the server
                     try
                     {
-                        TcpClient client = this.tcpListener.AcceptTcpClient();
+                        TcpClient client = _tcpListener.AcceptTcpClient();
 
                         //create a thread to handle communication 
                         //with connected client
-                        Thread clientThread = new Thread(new ParameterizedThreadStart(HandleClientComm));
+                        Thread clientThread = new Thread(HandleClientComm);
                         clientThread.IsBackground = true;
                         clientThread.Start(client);
                     }
@@ -59,7 +58,7 @@ namespace rabdump
             }
         }
         
-        private void HandleClientComm(object client)
+        private static void HandleClientComm(object client)
         {
 
             RabUpdateInfo nfo=RabUpdater.ReadUpdateInfo(Path.GetDirectoryName(Application.ExecutablePath)+"\\updates\\updates.xml");
@@ -70,7 +69,6 @@ namespace rabdump
             ASCIIEncoding encoder = new ASCIIEncoding();
 
             byte[] message = new byte[4096];
-            int bytesRead;
 
             string cmd = "";
             string resp = "";
@@ -82,7 +80,7 @@ namespace rabdump
 
                 while (true)
                 {
-                    bytesRead = 0;
+                    int bytesRead = 0;
 
                     try
                     {
@@ -137,15 +135,15 @@ namespace rabdump
 
                                     try
                                     {
-                                        FileStream loc = new FileStream(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + nfo.file_name, FileMode.Open, FileAccess.Read);
+                                        FileStream loc = new FileStream(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + nfo.FileName, FileMode.Open, FileAccess.Read);
 
-                                        resp = "Ok# " + nfo.file_name + "/" + loc.Length + Environment.NewLine;
+                                        resp = "Ok# " + nfo.FileName + "/" + loc.Length + Environment.NewLine;
                                         clientStream.Write(encoder.GetBytes(resp), 0, resp.Length);
 
 
-                                        int Length = 2048;
-                                        Byte[] buffer = new Byte[Length];
-                                        int bR = loc.Read(buffer, 0, Length);
+                                        const int length = 2048;
+                                        Byte[] buffer = new Byte[length];
+                                        int bR = loc.Read(buffer, 0, length);
 
                                         // write the required bytes
 
@@ -153,7 +151,7 @@ namespace rabdump
                                         {
                                             clientStream.Write(buffer, 0, bR);
                                             //                                            bR = 0;
-                                            bR = loc.Read(buffer, 0, Length);
+                                            bR = loc.Read(buffer, 0, length);
                                             //resp = "--------------------------->"+loc.Position.ToString();
                                             //clientStream.Write(encoder.GetBytes(resp), 0, resp.Length);
                                         }

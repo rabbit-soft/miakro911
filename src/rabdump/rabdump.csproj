@@ -33,7 +33,20 @@
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Protected|AnyCPU' ">
+    <OutputPath>bin\Protected\</OutputPath>
+    <DefineConstants>TRACE;PROTECTED</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GuardantDotNetApi, Version=5.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\allineed\src\party3d\GuardantDotNetApi.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\allineed\src\party3d\log4net.dll</HintPath>
@@ -47,6 +60,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutForm.designer.cs">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ArchiveJobThread.cs" />
     <Compile Include="Editors.cs" />
     <Compile Include="FarmChangeForm.cs">
@@ -55,6 +74,7 @@
     <Compile Include="FarmChangeForm.designer.cs">
       <DependentUpon>FarmChangeForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="GRD.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,7 +84,6 @@
     <Compile Include="Options.cs">
     </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="pserver.cs" />
     <Compile Include="RabUpdater.cs" />
     <Compile Include="RestoreForm.cs">
       <SubType>Form</SubType>
@@ -76,6 +95,10 @@
     <Compile Include="x_tools.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="FarmChangeForm.resx">
       <DependentUpon>FarmChangeForm.cs</DependentUpon>
       <SubType>Designer</SubType>

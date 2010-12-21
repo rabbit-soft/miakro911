@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
 using System.IO;
 
@@ -44,19 +43,19 @@ namespace mia_conv
                 depth = br.ReadByte();
             }
         }
-        public TreeNode value() { return tr; }
-        public String getstrnode(TreeNode nd, int dph)
+        public TreeNode Value() { return tr; }
+        public String Getstrnode(TreeNode nd, int dph)
         {
             String str = "";
             for (int i = 0; i < dph; i++) str += " ";
             str += nd.Text + "\r\n";
             for (int i = 0; i < nd.Nodes.Count; i++)
-                str+=getstrnode(nd.Nodes[i], dph + 1);
+                str+=Getstrnode(nd.Nodes[i], dph + 1);
             return str;
         }
         public override String strval()
         {
-            return "-=BUILD_PLAN_START=-"+getstrnode(tr, 0)+"-=BUILD_PLAN_END=-";
+            return "-=BUILD_PLAN_START=-"+Getstrnode(tr, 0)+"-=BUILD_PLAN_END=-";
         }
     }
 
@@ -70,51 +69,51 @@ namespace mia_conv
         private Byte[] tierNestCount={0,1,2,1,1,0,0,0,1,0};
         private Byte[] tierDelimsCount={0,0,0,0,0,3,0,1,0,0};
         private Byte[] tierNWBCount={0,0,0,0,1,0,0,0,0,0};
-        public Byte type=0;
-        public Byte repair;
-        public MFString notes = new MFString("notes");
-        public Byte[] busies=new Byte[4];
-        public Byte[] heaters = new Byte[2];
-        public Byte[] nests=new Byte[2];
-        public Byte[] delims=new Byte[3];
-        public Byte nest_wbig=new Byte();
+        public Byte Type=0;
+        public Byte Repair;
+        public MFString Notes = new MFString("notes");
+        public Byte[] Busies=new Byte[4];
+        public Byte[] Heaters = new Byte[2];
+        public Byte[] Nests=new Byte[2];
+        public Byte[] Delims=new Byte[3];
+        public Byte NestWbig=new Byte();
         public Tier(BinaryReader br, float ver)
         {
             Read(br, ver);
         }
         public void Read(BinaryReader br,float ver)
         {
-            type=br.ReadByte();
-            repair=br.ReadByte();
-            notes.read(br,ver);
-            for (int i=0;i<tierBusyCount[type];i++)
-                busies[i]=br.ReadByte();
-            for (int i=0;i<tierHeaterCount[type];i++)
-                heaters[i]=br.ReadByte();
-            for (int i=0;i<tierNestCount[type];i++)
-                nests[i]=br.ReadByte();
-            for (int i=0;i<tierDelimsCount[type];i++)
-                delims[i]=br.ReadByte();
-            if (tierNWBCount[type]==1)
-                nest_wbig=br.ReadByte();
+            Type=br.ReadByte();
+            Repair=br.ReadByte();
+            Notes.read(br,ver);
+            for (int i=0;i<tierBusyCount[Type];i++)
+                Busies[i]=br.ReadByte();
+            for (int i=0;i<tierHeaterCount[Type];i++)
+                Heaters[i]=br.ReadByte();
+            for (int i=0;i<tierNestCount[Type];i++)
+                Nests[i]=br.ReadByte();
+            for (int i=0;i<tierDelimsCount[Type];i++)
+                Delims[i]=br.ReadByte();
+            if (tierNWBCount[Type]==1)
+                NestWbig=br.ReadByte();
         }
 
         public String log()
         {
             String str="  -=Tier=-\r\n";
-            str+=String.Format("   type:{0:d} - {1:s}\r\n",type,tierNames[type]);
-            str+=String.Format("   repair:{0:d}\r\n",repair);
-            str+="   "+notes.log()+"\r\n   ";
-            for (int i=0;i<tierBusyCount[type];i++)
-                str+=String.Format("busy[{0:d}]={1:d} ",i,busies[i]);
-            for (int i=0;i<tierHeaterCount[type];i++)
-                str+=String.Format("heater[{0:d}]={1:d} ",i,heaters[i]);
-            for (int i=0;i<tierNestCount[type];i++)
-                str+=String.Format("nest[{0:d}]={1:d} ",i,nests[i]);
-            for (int i=0;i<tierDelimsCount[type];i++)
-                str+=String.Format("delim[{0:d}]={1:d} ",i,delims[i]);
-            if (tierNWBCount[type]==1)
-                str+=String.Format("net_wbig={0:d}",nest_wbig);
+            str+=String.Format("   type:{0:d} - {1:s}\r\n",Type,tierNames[Type]);
+            str+=String.Format("   repair:{0:d}\r\n",Repair);
+            str+="   "+Notes.log()+"\r\n   ";
+            for (int i=0;i<tierBusyCount[Type];i++)
+                str+=String.Format("busy[{0:d}]={1:d} ",i,Busies[i]);
+            for (int i=0;i<tierHeaterCount[Type];i++)
+                str+=String.Format("heater[{0:d}]={1:d} ",i,Heaters[i]);
+            for (int i=0;i<tierNestCount[Type];i++)
+                str+=String.Format("nest[{0:d}]={1:d} ",i,Nests[i]);
+            for (int i=0;i<tierDelimsCount[Type];i++)
+                str+=String.Format("delim[{0:d}]={1:d} ",i,Delims[i]);
+            if (tierNWBCount[Type]==1)
+                str+=String.Format("net_wbig={0:d}",NestWbig);
 
             str+="\r\n  -=Tier_end=-";
             return str;
@@ -123,30 +122,30 @@ namespace mia_conv
     }
     class MiniFarm
     {
-        public short id=0;
-        public Tier upper=null;
-        public Byte haslower=0;
-        public Tier lower=null;
+        public short ID=0;
+        public Tier Upper=null;
+        public Byte Haslower=0;
+        public Tier Lower=null;
         public MiniFarm(BinaryReader br, float ver)
         {
-            read(br, ver);
+            Read(br, ver);
         }
-        public void read(BinaryReader br,float ver)
+        public void Read(BinaryReader br,float ver)
         {
-            id=br.ReadInt16();
-            upper=new Tier(br,ver);
-            haslower=br.ReadByte();
-            if (haslower>0)
-                lower=new Tier(br,ver);
+            ID=br.ReadInt16();
+            Upper=new Tier(br,ver);
+            Haslower=br.ReadByte();
+            if (Haslower>0)
+                Lower=new Tier(br,ver);
         }
         public String log()
         {
-            String str=" -=MiniFarm_"+id.ToString()+"=-\r\n";
-            str+=" upper="+upper.log()+"\r\n";
-            str+=String.Format(" haslower={0:d}\r\n",haslower);
-            if (haslower>0)
-                   str+=" lower="+lower.log()+"\r\n";
-            str+=" -=MiniFarm_"+id.ToString()+"_End=-";
+            String str=" -=MiniFarm_"+ID.ToString()+"=-\r\n";
+            str+=" upper="+Upper.log()+"\r\n";
+            str+=String.Format(" haslower={0:d}\r\n",Haslower);
+            if (Haslower>0)
+                   str+=" lower="+Lower.log()+"\r\n";
+            str+=" -=MiniFarm_"+ID.ToString()+"_End=-";
             return str;
         }
     }
@@ -155,26 +154,26 @@ namespace mia_conv
     class MFBuilds : MFCommon, IMFCommon
     {
         public MFBuilds(int li) : base("Builds",li) { }
-        public MFUShort count=new MFUShort("count");
-        public List<MiniFarm> minifarms=new List<MiniFarm>();
-        public int maxfarm = 0;
+        public MFUShort Count=new MFUShort("count");
+        public List<MiniFarm> Minifarms=new List<MiniFarm>();
+        public int Maxfarm = 0;
         public void read(BinaryReader br, float ver)
         {
-            count.read(br,ver);
-            for (int i = 0; i < (int)count.value(); i++)
+            Count.read(br,ver);
+            for (int i = 0; i < (int)Count.value(); i++)
             {
-                minifarms.Add(new MiniFarm(br, ver));
-                if (minifarms[i].id > maxfarm)
-                    maxfarm = minifarms[i].id;
+                Minifarms.Add(new MiniFarm(br, ver));
+                if (Minifarms[i].ID > Maxfarm)
+                    Maxfarm = Minifarms[i].ID;
             }
         }
-        public List<MiniFarm> value() { return minifarms; }
+        public List<MiniFarm> Value() { return Minifarms; }
         public override String strval()
         {
             String str="-=BUILDINGS=-\r\n";
-            str+=count.log()+"\r\n";
-            for (int i=0;i<(int)count.value();i++)
-                str+=minifarms[i].log()+"\r\n";
+            str+=Count.log()+"\r\n";
+            for (int i=0;i<(int)Count.value();i++)
+                str+=Minifarms[i].log()+"\r\n";
             str+="-=BUILDINGS_END=-";
             return str;
         }
@@ -182,46 +181,46 @@ namespace mia_conv
 
     class RabName
     {
-        public MFUShort key=new MFUShort("key");
-        public MFUShort surkey=new MFUShort("surkey");
-        public MFString name=new MFString("name");
-        public MFString surname=new MFString("surname");
+        public MFUShort Key=new MFUShort("key");
+        public MFUShort Surkey=new MFUShort("surkey");
+        public MFString Name=new MFString("name");
+        public MFString Surname=new MFString("surname");
         public RabName(BinaryReader br,float ver)
         {
-            read(br,ver);
+            Read(br,ver);
         }
-        public void read(BinaryReader br,float ver)
+        public void Read(BinaryReader br,float ver)
         {
-            key.read(br,ver);
-            surkey.read(br,ver);
-            name.read(br,ver);
-            surname.read(br,ver);
+            Key.read(br,ver);
+            Surkey.read(br,ver);
+            Name.read(br,ver);
+            Surname.read(br,ver);
         }
         public String log()
         {
-            return " "+key.log()+" "+surkey.log()+" "+name.log()+" "+surname.log();
+            return " "+Key.log()+" "+Surkey.log()+" "+Name.log()+" "+Surname.log();
         }
     }
     class MFRabNames : MFCommon, IMFCommon
     {
         private MFUShort count=new MFUShort("count");
-        public List<RabName> rabnames=new List<RabName>();
+        public List<RabName> Rabnames=new List<RabName>();
         public MFRabNames(String name,int li) : base(name,li) { }
         public void read(BinaryReader br,float ver)
         {
             count.read(br,ver);
             for (int i=0;i<(int)count.value();i++)
-                rabnames.Add(new RabName(br, ver));
+                Rabnames.Add(new RabName(br, ver));
         }
-        public String getname(ushort key)
+        public String Getname(ushort key)
         {
             if (key == 0) return "";
             for (int i = 0; i < (int)count.value(); i++)
             {
-                if (key == rabnames[i].key.value())
-                    return rabnames[i].name.value();
-                if (key == rabnames[i].surkey.value())
-                    return rabnames[i].surname.value();
+                if (key == Rabnames[i].Key.value())
+                    return Rabnames[i].Name.value();
+                if (key == Rabnames[i].Surkey.value())
+                    return Rabnames[i].Surname.value();
             }
             return null;
         }
@@ -229,7 +228,7 @@ namespace mia_conv
         {
             String str="-=RABNAMELIST=-\r\n"+count.log()+"\r\n";
             for (int i=0;i<(int)count.value();i++)
-                str+=rabnames[i].log()+"\r\n";
+                str+=Rabnames[i].log()+"\r\n";
             str+="-=RABNAMELIST_END=-";
             return str;
         }
@@ -237,68 +236,68 @@ namespace mia_conv
 
     class Trans
     {
-        public Byte transferType = 0;
-        public static String[] trNames = {"MEAT_SOLD","SKIN_SOLD","RABBITS","FEED","OTHER","MEAT","SKIN","USED_FEED","OTSEV","MAX_TRANS_TYPE"};
-        public MFString notes=new MFString("notes");
-        public MFDate when=new MFDate("when");
-        public MFULong units=new MFULong("units");
-        public static String[] masks = { "awpP", "aspP", "SanbwpP", "anWkpP", "SanWkpP", "amBNnA", "amXbsnA", "anWk", "SaWpkP", "" };
+        public Byte TransferType = 0;
+        public static String[] TrNames = {"MEAT_SOLD","SKIN_SOLD","RABBITS","FEED","OTHER","MEAT","SKIN","USED_FEED","OTSEV","MAX_TRANS_TYPE"};
+        public MFString Notes=new MFString("notes");
+        public MFDate When=new MFDate("when");
+        public MFULong Units=new MFULong("units");
+        public static String[] Masks = { "awpP", "aspP", "SanbwpP", "anWkpP", "SanWkpP", "amBNnA", "amXbsnA", "anWk", "SaWpkP", "" };
         //awpPsSnbWkmBNAX
-        public MFUShort age = null; //a
-        public MFUShort sweight = null; //w
-        public MFULong lweight = null; //W
-        public MFString price=null; //P
-        public MFString partner=null; //p
-        public MFByte issold = null; //S
-        public MFByte skintype=null; //s
-        public static String[] skinTypeNames={"SK_UNKNOWN","LUXURY","I","II","III","IV","MAX_SKIN"};
-        public MFString name = null; //n
-        public MFUShort breed=null; //b
-        public MFString kind = null; //k
-        public MFDate murder = null; //m
-        public MFUShort brutto = null; //B
-        public MFUShort netto = null; //N
-        public MFString address = null; //A
-        public MFByte sex = null; //X
+        public MFUShort Age = null; //a
+        public MFUShort Sweight = null; //w
+        public MFULong Lweight = null; //W
+        public MFString Price=null; //P
+        public MFString Partner=null; //p
+        public MFByte Issold = null; //S
+        public MFByte Skintype=null; //s
+        public static String[] SkinTypeNames={"SK_UNKNOWN","LUXURY","I","II","III","IV","MAX_SKIN"};
+        public MFString Name = null; //n
+        public MFUShort Breed=null; //b
+        public MFString Kind = null; //k
+        public MFDate Murder = null; //m
+        public MFUShort Brutto = null; //B
+        public MFUShort Netto = null; //N
+        public MFString Address = null; //A
+        public MFByte Sex = null; //X
         public Trans(BinaryReader br, float ver)
         {
-            read(br, ver);
+            Read(br, ver);
         }
 
-        public IMFCommon getobj(char code,bool create)
+        public IMFCommon Getobj(char code,bool create)
         {
             IMFCommon obj = null;
             switch (code)
             {
-                case 'a': if (create) age = new MFUShort("age"); obj = age; break;
-                case 'w': if (create) sweight = new MFUShort("weight"); obj = sweight; break;
-                case 'W': if (create) lweight = new MFULong("weight"); obj = lweight; break;
-                case 'P': if (create) price = new MFString("price"); obj = price; break;
-                case 'p': if (create) partner = new MFString("partner"); obj = partner; break;
-                case 'S': if (create) issold = new MFByte("is_sold"); obj = issold; break;
-                case 's': if (create) skintype = new MFByte("skintype"); obj = skintype; break;
-                case 'n': if (create) name = new MFString("name"); obj = name; break;
-                case 'b': if (create) breed = new MFUShort("breed"); obj = breed; break;
-                case 'k': if (create) kind = new MFString("kind"); obj = kind; break;
-                case 'm': if (create) murder = new MFDate("murder"); obj = murder; break;
-                case 'B': if (create) brutto = new MFUShort("brutto"); obj = brutto; break;
-                case 'N': if (create) netto = new MFUShort("netto"); obj = netto; break;
-                case 'A': if (create) address = new MFString("address"); obj = address; break;
-                case 'X': if (create) sex = new MFByte("sex"); obj = sex; break;
+                case 'a': if (create) Age = new MFUShort("age"); obj = Age; break;
+                case 'w': if (create) Sweight = new MFUShort("weight"); obj = Sweight; break;
+                case 'W': if (create) Lweight = new MFULong("weight"); obj = Lweight; break;
+                case 'P': if (create) Price = new MFString("price"); obj = Price; break;
+                case 'p': if (create) Partner = new MFString("partner"); obj = Partner; break;
+                case 'S': if (create) Issold = new MFByte("is_sold"); obj = Issold; break;
+                case 's': if (create) Skintype = new MFByte("skintype"); obj = Skintype; break;
+                case 'n': if (create) Name = new MFString("name"); obj = Name; break;
+                case 'b': if (create) Breed = new MFUShort("breed"); obj = Breed; break;
+                case 'k': if (create) Kind = new MFString("kind"); obj = Kind; break;
+                case 'm': if (create) Murder = new MFDate("murder"); obj = Murder; break;
+                case 'B': if (create) Brutto = new MFUShort("brutto"); obj = Brutto; break;
+                case 'N': if (create) Netto = new MFUShort("netto"); obj = Netto; break;
+                case 'A': if (create) Address = new MFString("address"); obj = Address; break;
+                case 'X': if (create) Sex = new MFByte("sex"); obj = Sex; break;
             }
             return obj;
         }
 
-        public void read(BinaryReader br, float ver)
+        public void Read(BinaryReader br, float ver)
         {
-            transferType = br.ReadByte();
-            notes.read(br, ver);
-            when.read(br, ver);
-            units.read(br, ver);
-            String msk=masks[transferType];
+            TransferType = br.ReadByte();
+            Notes.read(br, ver);
+            When.read(br, ver);
+            Units.read(br, ver);
+            String msk=Masks[TransferType];
             for (int i = 0; i < msk.Length; i++)
             {
-                IMFCommon obj = getobj(msk[i], true);
+                IMFCommon obj = Getobj(msk[i], true);
                 obj.read(br, ver);
             }
         }
@@ -306,17 +305,17 @@ namespace mia_conv
         public String log()
         {
             String str = " -=Transfer=-\r\n ";
-            str += String.Format("type={0:d} {1:s}\r\n ", transferType, trNames[transferType]);
-            str += notes.log() + "\r\n ";
-            str += when.log() + "\r\n ";
-            str += units.log() + "\r\n ";
-            String msk = masks[transferType];
+            str += String.Format("type={0:d} {1:s}\r\n ", TransferType, TrNames[TransferType]);
+            str += Notes.log() + "\r\n ";
+            str += When.log() + "\r\n ";
+            str += Units.log() + "\r\n ";
+            String msk = Masks[TransferType];
             for (int i = 0; i < msk.Length; i++)
             {
-                IMFCommon obj = getobj(msk[i], false);
+                IMFCommon obj = Getobj(msk[i], false);
                 str += obj.log();
                 if (msk[i] == 's')
-                    str += " " + skinTypeNames[skintype.value()];
+                    str += " " + SkinTypeNames[Skintype.value()];
                 str += "\r\n ";
             }
             str += "-=Transfer_end=-";
@@ -326,20 +325,20 @@ namespace mia_conv
 
     class MFTransTable : MFCommon, IMFCommon
     {
-        public long count = 0;
-        public List<Trans> transes = new List<Trans>();
+        public long Count = 0;
+        public List<Trans> Transes = new List<Trans>();
         public MFTransTable(int li) : base("trans_table", li) { }
         public void read(BinaryReader br,float ver)
         {
-            count = br.ReadUInt32();
-            for (long i = 0; i < count; i++)
-                transes.Add(new Trans(br, ver));
+            Count = br.ReadUInt32();
+            for (long i = 0; i < Count; i++)
+                Transes.Add(new Trans(br, ver));
         }
         public override String strval()
         {
-            String str = "-=translist=-\r\ncount="+count.ToString()+"\r\n";
-            for (int i = 0; i < count; i++)
-                str += transes[i].log()+"\r\n";
+            String str = "-=translist=-\r\ncount="+Count.ToString()+"\r\n";
+            for (int i = 0; i < Count; i++)
+                str += Transes[i].log()+"\r\n";
             str += "-=translist_end=-";
             return str;
         }
@@ -347,151 +346,151 @@ namespace mia_conv
 
     class Filter
     {
-        public int count = 34;
-        public List<Int32> values = new List<Int32>();
-        public String[] names={ "ALL_ENABLED","MALES_ENABLED","FEMALES_ENABLED","NOSEX_ENABLED","BOYS_ENABLED","CANDIDATES_ENABLED","FATHERS_ENABLED",
+        public int Count = 34;
+        public List<Int32> Values = new List<Int32>();
+        public String[] Names={ "ALL_ENABLED","MALES_ENABLED","FEMALES_ENABLED","NOSEX_ENABLED","BOYS_ENABLED","CANDIDATES_ENABLED","FATHERS_ENABLED",
 	"GIRLS_ENABLED","BRIDES_ENABLED","PERVO_ENABLED","MOTHERS_ENABLED","FEMALES_BAD","MALES_BAD","SUKROL","KUKU","FAMILY","WORKS_ENABLED",
 	"FROM_AGE","TILL_AGE","USE_FROM_WEIGHT","FROM_WEIGHT","USE_TILL_WEIGHT","TILL_WEIGHT","FROM_SUKROL","TILL_SUKROL",
 	"B_ALL_ENABLED","B_FREE","B_BUSY","B_SELRABBITS","B_MALE","B_FEMALE","B_OTHER","B_NESTS","B_HEATERS",
 	"MAX_FCONTROLS" };
         public Filter(BinaryReader br, float ver)
         {
-            read(br, ver);
+            Read(br, ver);
         }
-        public void read(BinaryReader br, float ver)
+        public void Read(BinaryReader br, float ver)
         {
             if (ver < 4.3)
-                count = 32;
-            for (int i = 0; i < count; i++)
-                values.Add(br.ReadInt32());
+                Count = 32;
+            for (int i = 0; i < Count; i++)
+                Values.Add(br.ReadInt32());
         }
         public String log()
         {
             String str = "";
-            for (int i = 0; i < count; i++)
-                str += names[i] + "=" + values[i].ToString() + " ";
+            for (int i = 0; i < Count; i++)
+                str += Names[i] + "=" + Values[i].ToString() + " ";
             return str;
         }
     }
 
     class MFFilterForm : MFCommon, IMFCommon
     {
-        public MFStringList combo = new MFStringList("combo");
-        public MFInt lookat = new MFInt("lookat");
-        public MFUShort max = new MFUShort("max");
-        public List<Filter> filters = new List<Filter>();
+        public MFStringList Combo = new MFStringList("combo");
+        public MFInt Lookat = new MFInt("lookat");
+        public MFUShort Max = new MFUShort("max");
+        public List<Filter> Filters = new List<Filter>();
         public MFFilterForm(String name,int li):base(name,li){}
         public MFFilterForm(String name) : base(name) { }
         public void read(BinaryReader br,float ver)
         {
-            lookat.read(br,ver);
-            max.read(br, ver);
-            for (int i = 0; i < (int)max.value(); i++)
-                filters.Add(new Filter(br, ver));
-            combo.read(br, ver);
+            Lookat.read(br,ver);
+            Max.read(br, ver);
+            for (int i = 0; i < (int)Max.value(); i++)
+                Filters.Add(new Filter(br, ver));
+            Combo.read(br, ver);
         }
         public override String strval()
         {
-            String str = "-=FilterForm=-\r\n" + lookat.log() + "\r\n" + max.log() + "\r\n";
-            for (int i = 0; i < (int)max.value(); i++)
-                str += "f"+i.ToString()+"="+filters[i].log() + "\r\n";
-            str += combo.log() + "\r\n";
+            String str = "-=FilterForm=-\r\n" + Lookat.log() + "\r\n" + Max.log() + "\r\n";
+            for (int i = 0; i < (int)Max.value(); i++)
+                str += "f"+i.ToString()+"="+Filters[i].log() + "\r\n";
+            str += Combo.log() + "\r\n";
             return str + "-=FilterForm_End=-";
         } 
     }
 
     class MFTransForm : MFCommon, IMFCommon
     {
-        public int valcount = 364;
-        public int skincount = 5;
-        public List<ulong> values = new List<ulong>();
-        public List<MFString> skinnames = new List<MFString>();
-        public MFString pricePerKilo = new MFString("PricePerKilo");
-        public MFString feedPrice = new MFString("FeedPrice");
-        public MFStringList skinBuyers=new MFStringList("SkinBuyers");
-        public MFStringList bodyBuyers = new MFStringList("BodyBuyers");
-        public MFStringList rabbitPartner = new MFStringList("RabbitPartner");
-        public MFStringList feedPartner = new MFStringList("FeedPartner");
-        public MFStringList kind = new MFStringList("Kind");
-        public MFStringList otherPartner = new MFStringList("OtherPartner");
-        public MFStringList feedType = new MFStringList("FeedType");
-        public MFStringList otherKind = new MFStringList("OtherKind");
-        public MFStringList otherProduct = new MFStringList("OtherProduct");
-        public MFStringList usedFeedType = new MFStringList("UsedFeedType");
-        public MFStringList usedFeedSpec = new MFStringList("UsedFeedSpec");
-        public MFStringList otsevBuyer = new MFStringList("OtsevBuyer");
+        public int Valcount = 364;
+        public int Skincount = 5;
+        public List<ulong> Values = new List<ulong>();
+        public List<MFString> Skinnames = new List<MFString>();
+        public MFString PricePerKilo = new MFString("PricePerKilo");
+        public MFString FeedPrice = new MFString("FeedPrice");
+        public MFStringList SkinBuyers=new MFStringList("SkinBuyers");
+        public MFStringList BodyBuyers = new MFStringList("BodyBuyers");
+        public MFStringList RabbitPartner = new MFStringList("RabbitPartner");
+        public MFStringList FeedPartner = new MFStringList("FeedPartner");
+        public MFStringList Kind = new MFStringList("Kind");
+        public MFStringList OtherPartner = new MFStringList("OtherPartner");
+        public MFStringList FeedType = new MFStringList("FeedType");
+        public MFStringList OtherKind = new MFStringList("OtherKind");
+        public MFStringList OtherProduct = new MFStringList("OtherProduct");
+        public MFStringList UsedFeedType = new MFStringList("UsedFeedType");
+        public MFStringList UsedFeedSpec = new MFStringList("UsedFeedSpec");
+        public MFStringList OtsevBuyer = new MFStringList("OtsevBuyer");
         public MFTransForm(String name, int li) : base(name, li) { }
         public MFTransForm(String name) : base(name) { }
         public void read(BinaryReader br, float ver)
         {
-            for (int i = 0; i < valcount; i++)
-                values.Add(br.ReadUInt32());
-            for (int i = 0; i < skincount; i++)
-                skinnames.Add(new MFString(br, ver));
-            pricePerKilo.read(br, ver);
-            feedPrice.read(br, ver);
-            skinBuyers.read(br, ver);
-            bodyBuyers.read(br, ver);
-            rabbitPartner.read(br, ver);
-            feedPartner.read(br, ver);
-            kind.read(br, ver);
-            otherPartner.read(br, ver);
-            feedType.read(br, ver);
-            otherKind.read(br, ver);
-            otherProduct.read(br, ver);
+            for (int i = 0; i < Valcount; i++)
+                Values.Add(br.ReadUInt32());
+            for (int i = 0; i < Skincount; i++)
+                Skinnames.Add(new MFString(br, ver));
+            PricePerKilo.read(br, ver);
+            FeedPrice.read(br, ver);
+            SkinBuyers.read(br, ver);
+            BodyBuyers.read(br, ver);
+            RabbitPartner.read(br, ver);
+            FeedPartner.read(br, ver);
+            Kind.read(br, ver);
+            OtherPartner.read(br, ver);
+            FeedType.read(br, ver);
+            OtherKind.read(br, ver);
+            OtherProduct.read(br, ver);
             if (ver > 3.9)
             {
-                usedFeedType.read(br, ver);
-                usedFeedSpec.read(br, ver);
-                otsevBuyer.read(br, ver);
+                UsedFeedType.read(br, ver);
+                UsedFeedSpec.read(br, ver);
+                OtsevBuyer.read(br, ver);
             }
         }
         public override String strval()
         {
             String str = "-=TransFrom=-\r\nvalues=";
-            for (int i=0;i<valcount;i++)
-                str+=values[i].ToString()+" ";
+            for (int i=0;i<Valcount;i++)
+                str+=Values[i].ToString()+" ";
             str+="\r\nskinnames=";
-            for (int i=0;i<skincount;i++)
-                str+=skinnames[i].log();
-            str+="\r\n"+pricePerKilo.log()+"\r\n"+feedPrice.log()+"\r\n";
-            str+=skinBuyers.log()+"\r\n"+bodyBuyers.log()+"\r\n"+rabbitPartner.log()+"\r\n"+feedPartner.log()+"\r\n";
-            str+=kind.log()+"\r\n"+otherPartner.log()+"\r\n"+feedType.log()+"\r\n"+otherKind.log()+"\r\n";
-            str+=otherProduct.log()+"\r\n"+usedFeedType.log()+"\r\n"+usedFeedSpec.log()+"\r\n"+otsevBuyer.log()+"\r\n";
+            for (int i=0;i<Skincount;i++)
+                str+=Skinnames[i].log();
+            str+="\r\n"+PricePerKilo.log()+"\r\n"+FeedPrice.log()+"\r\n";
+            str+=SkinBuyers.log()+"\r\n"+BodyBuyers.log()+"\r\n"+RabbitPartner.log()+"\r\n"+FeedPartner.log()+"\r\n";
+            str+=Kind.log()+"\r\n"+OtherPartner.log()+"\r\n"+FeedType.log()+"\r\n"+OtherKind.log()+"\r\n";
+            str+=OtherProduct.log()+"\r\n"+UsedFeedType.log()+"\r\n"+UsedFeedSpec.log()+"\r\n"+OtsevBuyer.log()+"\r\n";
             return str + "-=TransForm_End=-";
         }
     }
 
     class SubscruberOrJob
     {
-        public MFByte on=new MFByte("on");
-        public bool issub=true;
-        public MFString job=new MFString("job");
-        public MFString name=new MFString("name");
+        public MFByte On=new MFByte("on");
+        public bool Issub=true;
+        public MFString Job=new MFString("job");
+        public MFString Name=new MFString("name");
         public SubscruberOrJob(BinaryReader br,float ver,bool isjob)
         {
-            issub=!isjob;
-            if (issub)
-                on.read(br,ver);
-            job.read(br,ver);
-            name.read(br,ver);
+            Issub=!isjob;
+            if (Issub)
+                On.read(br,ver);
+            Job.read(br,ver);
+            Name.read(br,ver);
         }
         public String log()
         {
-            return (issub?on.log():"")+" "+job.log()+" "+name.log();
+            return (Issub?On.log():"")+" "+Job.log()+" "+Name.log();
         }
     }
 
 
     class MFParamForm : MFCommon, IMFCommon
     {
-       public MFByte pervonest=new MFByte("pervonest");
-       public MFByte kukunest=new MFByte("kukunest");    
-       public MFByte mothernest=new MFByte("mothernest"); 
-       public MFByte heater=new MFByte("heater");
-       public MFByte okrol=new MFByte("okrol");       
-       public MFByte kuk=new MFByte("kuk");       
-       public MFByte pravka_1=new MFByte("pravka_1"); 
+       public MFByte Pervonest=new MFByte("pervonest");
+       public MFByte Kukunest=new MFByte("kukunest");    
+       public MFByte Mothernest=new MFByte("mothernest"); 
+       public MFByte Heater=new MFByte("heater");
+       public MFByte Okrol=new MFByte("okrol");       
+       public MFByte Kuk=new MFByte("kuk");       
+       public MFByte Pravka1=new MFByte("pravka_1"); 
        public MFByte count_2=new MFByte("count_2");
        public MFByte count_3=new MFByte("count_3");   
        public MFByte endkuku=new MFByte("endkuku");       
@@ -578,13 +577,13 @@ namespace mia_conv
         public MFParamForm(String name) : base(name) { }
         public void read(BinaryReader br, float ver)
         {
-            allobj.Add(pervonest);
-            allobj.Add(kukunest);
-            allobj.Add(mothernest);
-            allobj.Add(heater);
-            allobj.Add(okrol);
-            allobj.Add(kuk);
-            allobj.Add(pravka_1);
+            allobj.Add(Pervonest);
+            allobj.Add(Kukunest);
+            allobj.Add(Mothernest);
+            allobj.Add(Heater);
+            allobj.Add(Okrol);
+            allobj.Add(Kuk);
+            allobj.Add(Pravka1);
             allobj.Add(count_2);
             allobj.Add(count_3);
             allobj.Add(endkuku);

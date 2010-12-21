@@ -1,42 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace mia_conv
+﻿namespace mia_conv
 {
     partial class MDCreator
     {
-        public void fillOptions()
+        public void FillOptions()
         {
-            debug("fill Options");
-            MFParamForm p = mia.paramform;
-            setOption("opt", "okrol", p.okrol.value());
-            setOption("opt", "vudvor", p.vudvorenie.value());
-            setOption("opt", "count1", p.pravka_1.value());
-            setOption("opt", "count2", p.count_2.value());
-            setOption("opt", "count3", p.count_3.value());
-            setOption("opt", "bride", p.make_brides.value());
-            setOption("opt", "preokrol", p.heater.value());
-            setOption("opt", "combage", 3);
-            setOption("opt", "malewait", 2);
-            setOption("opt", "girlsout", 100);
-            setOption("opt", "suckers", p.countsuckers.value());
-            setOption("opt", "boysout", p.otsad_boys_mother.value());
-            setOption("opt", "statefuck", p.vyazkamother.value());
-            setOption("opt", "firstfuck", p.vyazkapervo.value());
-            setOption("opt", "gentree", 10);
-            setOption("opt", "confirmexit", 0);
-            setOption("opt", "confirmkill", 1);
-            setOption("opt", "vacc", p.vacc.value());
-            setOption("opt", "nest", p.pervonest.value());
-            setOption("opt", "childnest", p.mothernest.value());
-            setOption("opt", "updatezoo", 1);
-            setOption("opt", "findpartner", 1);
-            setOption("opt", "nextsvid", p.next_svid.value());
-            setOption("opt", "svidhead", p.svid_head.value());
+            Debug("fill Options");
+            MFParamForm p = Mia.Paramform;
+            SetOption("opt", "okrol", p.Okrol.value());
+            SetOption("opt", "vudvor", p.vudvorenie.value());
+            SetOption("opt", "count1", p.Pravka1.value());
+            SetOption("opt", "count2", p.count_2.value());
+            SetOption("opt", "count3", p.count_3.value());
+            SetOption("opt", "bride", p.make_brides.value());
+            SetOption("opt", "preokrol", p.Heater.value());
+            SetOption("opt", "combage", 3);
+            SetOption("opt", "malewait", 2);
+            SetOption("opt", "girlsout", 100);
+            SetOption("opt", "suckers", p.countsuckers.value());
+            SetOption("opt", "boysout", p.otsad_boys_mother.value());
+            SetOption("opt", "statefuck", p.vyazkamother.value());
+            SetOption("opt", "firstfuck", p.vyazkapervo.value());
+            SetOption("opt", "gentree", 10);
+            SetOption("opt", "confirmexit", 0);
+            SetOption("opt", "confirmkill", 1);
+            SetOption("opt", "vacc", p.vacc.value());
+            SetOption("opt", "nest", p.Pervonest.value());
+            SetOption("opt", "childnest", p.Mothernest.value());
+            SetOption("opt", "updatezoo", 1);
+            SetOption("opt", "findpartner", 1);
+            SetOption("opt", "nextsvid", p.next_svid.value());
+            SetOption("opt", "svidhead", p.svid_head.value());
             if (p.subscriber.Count>0)
-                setOption("opt", "gendir", p.subscriber[0].name.value());
+                SetOption("opt", "gendir", p.subscriber[0].Name.value());
             else
-                setOption("opt", "gendir", "");
+                SetOption("opt", "gendir", "");
             //            setOption("opt", "kukunest", p.kukunest.value());
             //            setOption("opt", "otsad_boys_pervo", p.otsad_boys_pervo.value());
             /* //OPTIONS
@@ -49,18 +46,18 @@ namespace mia_conv
             setOption("opt","automode",p.automode.value());
             setOption("opt","rescopies",p.rescopies.value());
              */
-            setOption("opt","short_names",p.tab_abbr.value());
-            setOption("opt", "short_zoo", 1);
-            setOption("opt", "vaccine_time", 365); //+gambit
-            setOption("opt", "candidate", 120); //+gambit
-            setOption("opt", "dbl_surname", p.double_sur.value());
-            setOption("opt","heterosis",p.heterosis.value());
-            setOption("opt","inbreeding",p.inbreeding.value());
+            SetOption("opt","short_names",p.tab_abbr.value());
+            SetOption("opt", "short_zoo", 1);
+            SetOption("opt", "vaccine_time", 365); //+gambit
+            SetOption("opt", "candidate", 120); //+gambit
+            SetOption("opt", "dbl_surname", p.double_sur.value());
+            SetOption("opt","heterosis",p.heterosis.value());
+            SetOption("opt","inbreeding",p.inbreeding.value());
             /*
             setOption("opt","report_full_addr",p.report_full_addr.value());
              */
-            setOption("opt","sh_tier_t",p.show_tier_types.value());
-            setOption("opt","sh_tier_s",p.show_area_types.value());
+            SetOption("opt","sh_tier_t",p.show_tier_types.value());
+            SetOption("opt","sh_tier_s",p.show_area_types.value());
             /*
             setOption("opt","sluchka_filter",p.sluchka_filter.value());
             setOption("opt","zoo_bits",p.zoo_bits.value());
@@ -89,7 +86,7 @@ namespace mia_conv
             setOption("opt","gen_tree_width",p.gen_tree_width.value());
             setOption("opt","young_gen_tree_width",p.young_gen_tree_width.value());
              */
-            setOption("opt","sh_num",p.show_numbers.value());
+            SetOption("opt","sh_num",p.show_numbers.value());
             /*
             setOption("opt","averfeed",p.averfeed.value());
             setOption("opt","number_before_name",p.number_before_name.value());

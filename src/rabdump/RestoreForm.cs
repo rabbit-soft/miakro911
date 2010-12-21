@@ -6,12 +6,12 @@ namespace rabdump
 {
     public partial class RestoreForm : Form
     {
-        private ArchiveJob jj = null;
+        private ArchiveJob _jj = null;
         public RestoreForm()
         {
             InitializeComponent();
-            setMode(true);
-            foreach (ArchiveJob j in Options.get().Jobs)
+            SetMode(true);
+            foreach (ArchiveJob j in Options.Get().Jobs)
                 comboBox1.Items.Add(j.Name);
             if (comboBox1.Items.Count>0)
                 comboBox1.SelectedIndex = 0;
@@ -26,7 +26,7 @@ namespace rabdump
             }
         }
 
-        public void setMode(bool small)
+        public void SetMode(bool small)
         {
             Height = (small ? 410 : 550);
             button3.Text="Расширенный режим "+(small?">>":"<<");
@@ -35,20 +35,20 @@ namespace rabdump
 
         private void button3_Click(object sender, EventArgs e)
         {
-           setMode(Height==550);
+           SetMode(Height==550);
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             comboBox2.Items.Clear();
             listView1.Items.Clear();
-            foreach (ArchiveJob j in Options.get().Jobs)
+            foreach (ArchiveJob j in Options.Get().Jobs)
                 if (j.Name == comboBox1.Text)
                 {
-                    jj = j;
+                    _jj = j;
                     if (j.DB == DataBase.AllDataBases)
                     {
-                        foreach (DataBase db in Options.get().Databases)
+                        foreach (DataBase db in Options.Get().Databases)
                             comboBox2.Items.Add(db.Name);
                     }
                     else
@@ -57,14 +57,14 @@ namespace rabdump
             comboBox2.SelectedIndex = 0;
         }
 
-        private void fillList(ArchiveJob j, String db)
+        private void FillList(ArchiveJob j, String db)
         {
             listView1.Items.Clear();
             DirectoryInfo di = new DirectoryInfo(j.BackupPath);
             foreach (FileInfo fi in di.GetFiles())
             {
                 String[] nm = Path.GetFileName(fi.FullName).Split('_');
-                if (nm.Length == ArchiveJobThread.SPLIT_NAMES && nm[0]==j.Name && nm[1]==db)
+                if (nm.Length == ArchiveJobThread.SplitNames && nm[0]==j.Name && nm[1]==db)
                 {
                     string[] hms = new string[3] { nm[5].Substring(0, 2), nm[5].Substring(2, 2), nm[5].Substring(4, 2) };
                     DateTime dtm = new DateTime(int.Parse(nm[2]), int.Parse(nm[3]), int.Parse(nm[4]), int.Parse(hms[0]), int.Parse(hms[1]), int.Parse(hms[2]));
@@ -83,15 +83,15 @@ namespace rabdump
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DataBase db = jj.DB;
+            DataBase db = _jj.DB;
             if (db == DataBase.AllDataBases)
-                foreach (DataBase d in Options.get().Databases)
+                foreach (DataBase d in Options.Get().Databases)
                     if (d.Name == comboBox2.Text) db = d;
             tbHost.Text = db.Host;
             tbDB.Text = db.DBName;
             tbUser.Text = db.User;
             tbPassword.Text = db.Password;
-            fillList(jj, comboBox2.Text);
+            FillList(_jj, comboBox2.Text);
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -105,7 +105,7 @@ namespace rabdump
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count!=1) return;
-            tbFile.Text=jj.BackupPath+"\\"+listView1.SelectedItems[0].SubItems[1].Text;
+            tbFile.Text=_jj.BackupPath+"\\"+listView1.SelectedItems[0].SubItems[1].Text;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -117,7 +117,7 @@ namespace rabdump
         {
             try
             {
-                ArchiveJobThread.undumpdb(tbHost.Text, tbDB.Text, tbUser.Text, tbPassword.Text, tbFile.Text);
+                ArchiveJobThread.UndumpDB(tbHost.Text, tbDB.Text, tbUser.Text, tbPassword.Text, tbFile.Text);
                 MessageBox.Show("Восстановление завершено");
                 Close();
             }

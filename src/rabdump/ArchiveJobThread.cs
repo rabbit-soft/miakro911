@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Diagnostics;
@@ -11,32 +10,35 @@ namespace rabdump
 {
     class ArchiveJobThread
     {
-        private const String PASSWORD="ns471lbNITfq3";
-        public const int SPLIT_NAMES = 6;
-        private ArchiveJob j=null;
-        private ArchiveJobThread jobber=null;
+        private const String Password="ns471lbNITfq3";
+        public const int SplitNames = 6;
+        private readonly ArchiveJob _j=null;
+        private readonly ArchiveJobThread _jobber=null;
         private static readonly ILog log = LogManager.GetLogger(typeof(ArchiveJobThread));
-        String tmppath = "";
+        readonly String _tmppath = "";
         public ArchiveJobThread(ArchiveJob job)
         {
-            j = job;
-            j.busy = true;
-            jobber = this;
-            tmppath = Path.GetTempPath();
+            _j = job;
+            _j.Busy = true;
+            _jobber = this;
+            _tmppath = Path.GetTempPath();
         }
 
-        public int countBackups(out int sz,out String minFile)
+        public int CountBackups(out int sz,out String minFile)
         {
-            DirectoryInfo inf = new DirectoryInfo(j.BackupPath);
+            Directory.CreateDirectory(_j.BackupPath);
+            DirectoryInfo inf = new DirectoryInfo(_j.BackupPath);
             DateTime mindt=DateTime.MaxValue;
             int cnt=0;
+/*
             sz = 0;
+*/
             minFile = "";
             long fsz = 0;
             foreach(FileInfo fi in inf.GetFiles())
             {
                 String[] nm = Path.GetFileName(fi.FullName).Split('_');
-                if (nm.Length==SPLIT_NAMES && nm[0]==j.Name)
+                if (nm.Length==SplitNames && nm[0]==_j.Name)
                 {
                     cnt++;
                     fsz += fi.Length;
@@ -55,28 +57,29 @@ namespace rabdump
             return cnt;
         }
 
-        public void checkLimits()
+        public void CheckLimits()
         {
             int sz=0;
             string min="";
-            if (j.CountLimit > 0)
-                while (j.CountLimit > countBackups(out sz,out min))
-                    File.Delete(j.BackupPath + "\\" + min);
-            countBackups(out sz, out min);
-            if (j.SizeLimit > 0)
-                while (j.SizeLimit > sz)
+            if (_j.CountLimit > 0)
+                while (_j.CountLimit > CountBackups(out sz,out min))
+                    File.Delete(_j.BackupPath + "\\" + min);
+            CountBackups(out sz, out min);
+            if (_j.SizeLimit > 0)
+                while (_j.SizeLimit > sz)
                 {
-                    File.Delete(j.BackupPath + "\\" + min);
-                    countBackups(out sz, out min);
+                    File.Delete(_j.BackupPath + "\\" + min);
+                    CountBackups(out sz, out min);
                 }
         }
 
-        public void dumpdb(DataBase db)
+        public void DumpDB(DataBase db)
         {
-            String ffname=j.Name + "_" + db.Name + "_" + DateTime.Now.ToString("yyyy_MM_dd_HHmmss");
-            String fname = tmppath+"\\"+ffname;
-            log.Info("Making dump for " + j.Name + " to " + ffname);
-            String md = Options.get().MySqlDumpPath;
+            Directory.CreateDirectory(_j.BackupPath);
+            String ffname = _j.Name + "_" + db.Name + "_" + DateTime.Now.ToString("yyyy_MM_dd_HHmmss");
+            String fname = _tmppath+"\\"+ffname;
+            log.Info("Making dump for " + _j.Name + " to " + ffname);
+            String md = Options.Get().MySqlDumpPath;
             if (md == "")
             {
                 log.Error("Mysqldump not specified "+md);
@@ -86,12 +89,14 @@ namespace rabdump
                 (db.User==""?"":"-u "+db.User),(db.Password==""?"":"--password="+db.Password));
             try
             {
+
+                ProcessStartInfo inf = new ProcessStartInfo(md, pr);
                 
-                ProcessStartInfo inf=new ProcessStartInfo(md,pr);
                 inf.UseShellExecute = false;
-                inf.RedirectStandardOutput=true;
-                inf.CreateNoWindow=true;
+                inf.RedirectStandardOutput = true;
+                inf.CreateNoWindow = true;
                 inf.StandardOutputEncoding = Encoding.UTF8;
+
                 Process p = Process.Start(inf);
                 TextWriter wr=new StreamWriter(fname+".dump",false,Encoding.UTF8);
                 wr.Write(p.StandardOutput.ReadToEnd());
@@ -108,16 +113,18 @@ namespace rabdump
                 return;
             }
             bool is7z=false;
-            md = Options.get().Path7Z;
+            md = Options.Get().Path7Z;
             if (md == "")
                 log.Warn("7z not specified");
             else
                 try
-                {//
-                    ProcessStartInfo inf = new ProcessStartInfo(md, " a -mx9 -p" + PASSWORD + " \"" + fname + ".7z\" \"" + fname + ".dump\"");
+                {
+                    ProcessStartInfo inf = new ProcessStartInfo(md,string.Format(" a -mx9 -p{0} \"{1}.7z\" \"{2}.dump\"", Password, fname, fname));
+
                     inf.CreateNoWindow = true;
                     inf.RedirectStandardOutput = true;
                     inf.UseShellExecute = false;
+
                     Process p = Process.Start(inf);
                     p.WaitForExit();
                     if (p.ExitCode!=0)
@@ -130,37 +137,37 @@ namespace rabdump
                     log.Error("Error while "+md+":"+ex.GetType().ToString()+":"+ex.Message);
                     //return;
                 }
-            log.Debug("copy " + fname + (is7z ? ".7z" : ".dump")+" to "+j.BackupPath + "\\" + ffname + (is7z ? ".7z" : ".dump"));
-            File.Move(fname + (is7z ? ".7z" : ".dump"), j.BackupPath + "\\" + ffname + (is7z ? ".7z" : ".dump"));
-            checkLimits();
+            log.Debug("copy " + fname + (is7z ? ".7z" : ".dump")+" to "+_j.BackupPath + "\\" + ffname + (is7z ? ".7z" : ".dump"));
+            File.Move(fname + (is7z ? ".7z" : ".dump"), _j.BackupPath + "\\" + ffname + (is7z ? ".7z" : ".dump"));
+            CheckLimits();
         }
-        public void run()
+        public void Run()
         {
-            log.Debug("Making dump for "+j.Name);
-            if (j.DB == DataBase.AllDataBases)
-                foreach (DataBase db in Options.get().Databases)
-                    dumpdb(db);
+            log.Debug("Making dump for "+_j.Name);
+            if (_j.DB == DataBase.AllDataBases)
+                foreach (DataBase db in Options.Get().Databases)
+                    DumpDB(db);
             else
-                dumpdb(j.DB);
-            jobber.onEndJob();
+                DumpDB(_j.DB);
+            _jobber.OnEndJob();
         }
 
-        public void onEndJob()
+        public void OnEndJob()
         {
-            j.busy = false;
-            j.lastWork = DateTime.Now;
-            log.Debug("End of making dump "+j.Name);
+            _j.Busy = false;
+            _j.LastWork = DateTime.Now;
+            log.Debug("End of making dump "+_j.Name);
         }
 
         public static void MakeJob(ArchiveJob j)
         {
             ArchiveJobThread jt = new ArchiveJobThread(j);
-            j.busy = true;
-            Thread t = new Thread(jt.run);
+            j.Busy = true;
+            Thread t = new Thread(jt.Run);
             t.Start();
         }
 
-        public static void runrabnet(string param)
+        public static void RunRabnet(string param)
         {
             try
             {
@@ -168,7 +175,7 @@ namespace rabdump
                 if (param == "dbedit")
                 {
                     p.WaitForExit();
-                    Options.get().load();
+                    Options.Get().Load();
                 }
             }
             catch (Exception ex)
@@ -177,11 +184,11 @@ namespace rabdump
             }
         }
 
-        public static void undumpdb(string host,string db,string user,string password,string file)
+        public static void UndumpDB(string host,string db,string user,string password,string file)
         {
             log.Debug("undumping " + file + " to " + host + ":" + db + ":" + user + ":" + password);
             String tmppath = Path.GetTempPath();
-            String pth=Path.GetDirectoryName(file);
+            //String pth=Path.GetDirectoryName(file);
             String fl=Path.GetFileName(file);
             String ext=Path.GetExtension(file);
             String f = tmppath + fl;
@@ -194,15 +201,19 @@ namespace rabdump
             if (ext == ".7z")
             {
                 log.Debug("decompress 7z");
-                String z7 = Options.get().Path7Z;
+                String z7 = Options.Get().Path7Z;
                 String ff = tmppath + Path.GetFileNameWithoutExtension(f) + ".dump";
-                if (z7 == "") 
+                if (z7 == "")
+                {
                     throw new ApplicationException("7z not specified");
-                ProcessStartInfo inf = new ProcessStartInfo(z7, " e -p" + PASSWORD + " \"" + f + "\"");
+                }
+                ProcessStartInfo inf = new ProcessStartInfo(z7, " e -p" + Password + " \"" + f + "\"");
+
                 inf.WorkingDirectory = tmppath;
                 inf.CreateNoWindow = true;
                 inf.RedirectStandardOutput = true;
                 inf.UseShellExecute = false;
+
                 Process p = Process.Start(inf);
                 p.WaitForExit();
                 int res = p.ExitCode;
@@ -216,18 +227,19 @@ namespace rabdump
                 f = ff;
             }
             log.Debug("mysql");
-            String sql = Options.get().MySqlPath;
+            String sql = Options.Get().MySqlPath;
             if (sql == "")
                 throw new ApplicationException("mysql not specified");
-            String prms = String.Format(@"{1:s} {2:s} {3:s} {0:s}",db,(host!=""?"-h "+host:""),(user!=""?"-u "+user:""),
-                (password != "" ? "--password=" + password : ""));
+            String prms = String.Format(@"{1:s} {2:s} {3:s} {0:s}", db, (host != "" ? "-h " + host : ""), (user != "" ? "-u " + user : ""), (password != "" ? "--password=" + password : ""));
             try
             {
                 ProcessStartInfo pinf = new ProcessStartInfo(sql, prms);
+
                 pinf.UseShellExecute = false;
                 pinf.RedirectStandardInput = true;
                 pinf.CreateNoWindow = true;
                 pinf.RedirectStandardError = true;
+
                 Process mp = Process.Start(pinf);
                 FileStream rd = new FileStream(f, FileMode.Open);
                 byte[] buf=new byte[rd.Length];

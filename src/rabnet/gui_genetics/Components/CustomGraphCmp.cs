@@ -9,7 +9,7 @@ namespace rabnet
 	/// </summary>
 	public partial class CustomGraphCmp : UserControl
 	{
-		private Graphics Graph;
+		private Graphics _graph;
 
 		public virtual void DrawingProc(Graphics g)
 		{
@@ -24,16 +24,16 @@ namespace rabnet
 			 ControlStyles.AllPaintingInWmPaint |
 			 ControlStyles.OptimizedDoubleBuffer, true);
 
-			Graph = CreateGraphics();
+			_graph = CreateGraphics();
 			InitBuffer();
 		}
 
 		private void InitBuffer()
 		{
-			SolidBrush BgBrush = new SolidBrush(this.BackColor);
+			SolidBrush bgBrush = new SolidBrush(this.BackColor);
 			//SolidBrush BgBrush = new SolidBrush(Color.Pink);
-			Graph.FillRectangle(BgBrush, new Rectangle(0, 0, this.Width, this.Height));
-			DrawingProc(Graph);
+			_graph.FillRectangle(bgBrush, new Rectangle(0, 0, this.Width, this.Height));
+			DrawingProc(_graph);
 		}
 
 
@@ -43,8 +43,8 @@ namespace rabnet
 			//Debug.WriteLine(count++);
 			//base.OnPaint(e);
 //			InitBuffer();
-			SolidBrush BgBrush = new SolidBrush(this.BackColor);
-			e.Graphics.FillRectangle(BgBrush, new Rectangle(0, 0, this.Width, this.Height));
+			SolidBrush bgBrush = new SolidBrush(this.BackColor);
+			e.Graphics.FillRectangle(bgBrush, new Rectangle(0, 0, this.Width, this.Height));
 			DrawingProc(e.Graphics);
 		}
 
@@ -67,10 +67,10 @@ namespace rabnet
 			}
 			this.Size = new Size(w, h);
 			base.OnSizeChanged(e);
-			if (Graph != null)
+			if (_graph != null)
 			{
-				Graph.Dispose();
-				Graph = CreateGraphics();
+				_graph.Dispose();
+				_graph = CreateGraphics();
 			}
 		}
 

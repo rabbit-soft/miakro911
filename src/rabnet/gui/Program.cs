@@ -6,6 +6,9 @@ using System.Windows.Forms;
 using log4net;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+#if PROTECTED
+using RabGRD;
+#endif
 
 namespace rabnet
 {
@@ -83,8 +86,8 @@ namespace rabnet
                 if (new_instance)
                 {
 #if (GLOBCATCH)
-                    AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Unhandled);
-                    Application.ThreadException+=new System.Threading.ThreadExceptionEventHandler(Threaded);
+//                    AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Unhandled);
+//                    Application.ThreadException+=new System.Threading.ThreadExceptionEventHandler(Threaded);
 #endif
                     log4net.Config.XmlConfigurator.Configure();
                     log = LogManager.GetLogger(typeof(Program));
@@ -96,11 +99,20 @@ namespace rabnet
             {
                 exit = true;
                 int hkey = 0;
-                while (PClient.get().farms() == -1 && hkey == 0)
-                    if (MessageBox.Show(null, "Ключ защиты не найден!\nВставьте ключ защиты в компьютер с БД и нажмите кнопку повтор.",
-                            "Ключ защиты", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) == DialogResult.Cancel) hkey = -1;
-                if (PClient.get().farms() == -1)
+                //                    while (PClient.get().farms() == -1 && hkey == 0)
+                while (GRD.Instance.GetFarmsCnt() == -1 && hkey == 0)
+                {
+                    if (MessageBox.Show(null, "Ключ защиты не найден!\nВставьте ключ защиты в компьютер и нажмите кнопку повтор.",
+                            "Ключ защиты", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) == DialogResult.Cancel)
+                    {
+                        hkey = -1;
+                    }
+                }
+//                if (PClient.get().farms() == -1)
+                if (GRD.Instance.GetFarmsCnt() == -1)
+                {
                     return;
+                }
                 //MessageBox.Show(String.Format("HAS {0:d} FARMS",PClient.get().farms()));
 #endif
                     bool dbedit = false;
@@ -116,13 +128,19 @@ namespace rabnet
                             Application.Run(new MainForm());
                         }
 #if PROTECTED
-                    if (PClient.get().farms() == -1)
-                        LoginForm.stop = true;
+//                        if (PClient.get().farms() == -1)
+                        if (GRD.Instance.GetFarmsCnt() == -1)
+                        {
+                            LoginForm.stop = true;
+                        }
 #endif
                     }
 #if PROTECTED
-                if (PClient.get().farms() == -1)
-                    exit = false;
+//                    if (PClient.get().farms() == -1)
+                    if (GRD.Instance.GetFarmsCnt() == -1)
+                    {
+                        exit = false;
+                    }
             } while (!exit);
 #endif
                 }//new_instance

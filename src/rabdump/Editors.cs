@@ -8,7 +8,7 @@ namespace rabdump
 {
     internal class DataBaseEditor : UITypeEditor
     {
-        private IWindowsFormsEditorService edSvc;
+        private IWindowsFormsEditorService _edSvc;
 
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
@@ -20,17 +20,17 @@ namespace rabdump
             ListBox lb = new ListBox();
             lb.Items.Add(DataBase.AllDataBases);
             if (value == DataBase.AllDataBases) lb.SelectedItem = DataBase.AllDataBases;
-            foreach (DataBase db in Options.get().Databases)
+            foreach (DataBase db in Options.Get().Databases)
             {
                 lb.Items.Add(db);
                 if (db == value)
                     lb.SelectedItem = db;
             }
-            lb.SelectedValueChanged+=new EventHandler(this.lb_SelChanged);
+            lb.SelectedValueChanged+=lb_SelChanged;
             if (provider != null)
             {
-                edSvc = edSvc = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
-                edSvc.DropDownControl(lb);
+                _edSvc = _edSvc = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+                _edSvc.DropDownControl(lb);
                 value = lb.SelectedItem;
                 return value;
             }
@@ -39,7 +39,7 @@ namespace rabdump
 
         public void lb_SelChanged(object sender,EventArgs e)
         {
-            edSvc.CloseDropDown();
+            _edSvc.CloseDropDown();
         }
     }
 

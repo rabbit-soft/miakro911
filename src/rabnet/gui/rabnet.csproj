@@ -13,11 +13,12 @@
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ApplicationIcon>icon_green.ico</ApplicationIcon>
-    <NoWin32Manifest>true</NoWin32Manifest>
     <ManifestCertificateThumbprint>3B8C72DE762591324EA262613E6D576677A828BC</ManifestCertificateThumbprint>
     <ManifestKeyFile>rabnet_TemporaryKey.pfx</ManifestKeyFile>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
     <SignManifests>false</SignManifests>
+    <TargetZone>LocalIntranet</TargetZone>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -38,19 +39,42 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;PROTECTED</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Demo|AnyCPU' ">
+    <OutputPath>bin\Demo\</OutputPath>
+    <DefineConstants>DEMO</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Protected|AnyCPU' ">
+    <OutputPath>bin\Protected\</OutputPath>
+    <DefineConstants>PROTECTED</DefineConstants>
+    <Optimize>false</Optimize>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GuardantDotNetApi, Version=5.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\allineed\src\party3d\GuardantDotNetApi.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\allineed\src\party3d\log4net.dll</HintPath>
@@ -80,6 +104,7 @@
     <Compile Include="forms\ProgressForm.Designer.cs">
       <DependentUpon>ProgressForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="GRD.cs" />
     <Compile Include="RabUpdaterClient.cs" />
     <Compile Include="components\ColorPickerColumn\ColorPickerColumn.cs">
       <SubType>Component</SubType>
@@ -327,7 +352,6 @@
     <Compile Include="panels\YoungsPanel.Designer.cs">
       <DependentUpon>YoungsPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="pclient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="components\RabStatusBar.cs">
       <SubType>Component</SubType>
@@ -544,12 +568,14 @@
     <ProjectReference Include="..\gui_genetics\gui_genetics.csproj">
       <Project>{A835C727-1EB1-490D-BEBC-5C88F382330B}</Project>
       <Name>gui_genetics</Name>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="..\..\..\help\rabHelp.chm">
     </None>
+    <None Include="Properties\app.manifest" />
     <None Include="rabnet_TemporaryKey.pfx" />
     <None Include="reports\age.rdl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

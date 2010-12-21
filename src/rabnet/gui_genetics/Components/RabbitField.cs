@@ -12,9 +12,9 @@ namespace rabnet.Components
 
 		public event EvSearchGoingOn SearchGoingOn;
 
-		private RabbitGen _RootRabbitData;
-		private RabbitBar _RootRabbit;
-		private RabbitPair _RootRabbitPair;
+		private RabbitGen _rootRabbitData;
+		private RabbitBar _rootRabbit;
+		private RabbitPair _rootRabbitPair;
 		private Dictionary<int, RabbitPair> _RabbitPairs = new Dictionary<int, RabbitPair>();
 
 		public RabbitField()
@@ -23,20 +23,20 @@ namespace rabnet.Components
 			//this.mouse
 		}
 
-		private Boolean _OrderedGenom = false;
+		private Boolean _orderedGenom = false;
 		public Boolean OrderedGenom
 		{
-			get { return _OrderedGenom; }
+			get { return _orderedGenom; }
 			set
 			{
-				_OrderedGenom = value;
-				if (_RootRabbitPair != null)
+				_orderedGenom = value;
+				if (_rootRabbitPair != null)
 				{
-					_RootRabbitPair.OrderedGenom = value;
+					_rootRabbitPair.OrderedGenom = value;
 				}
-				if (_RootRabbit != null)
+				if (_rootRabbit != null)
 				{
-					_RootRabbit.OrderedGenom = value;
+					_rootRabbit.OrderedGenom = value;
 				}
 			}
 		}
@@ -53,13 +53,13 @@ namespace rabnet.Components
 		public Boolean SearchField(RabbitCommandMessage cmd)
 		{
 			Boolean res = false;
-			if (_RootRabbitPair != null)
+			if (_rootRabbitPair != null)
 			{
-				res = res || _RootRabbitPair.SearchFromChild(cmd, false);
+				res = res || _rootRabbitPair.SearchFromChild(cmd, false);
 			}
-			if (_RootRabbit != null)
+			if (_rootRabbit != null)
 			{
-				res = res || _RootRabbit.SearchFromParent(cmd);
+				res = res || _rootRabbit.SearchFromParent(cmd);
 			}
 			return res;
 		}
@@ -73,26 +73,26 @@ namespace rabnet.Components
 			ProgressPanel.Visible = true;
 			RabbitsHolder.Visible = false;
 
-			_RootRabbitData = rbt;
+			_rootRabbitData = rbt;
 
-			_RootRabbit = new RabbitBar();
-			_RootRabbit.SetRabbit(rbt);
+			_rootRabbit = new RabbitBar();
+			_rootRabbit.SetRabbit(rbt);
 
-			_RootRabbit.ReplaceGenomeColors(b_colors);
+			_rootRabbit.ReplaceGenomeColors(b_colors);
 
-			_RootRabbit.BackColor = this.BackColor;
+			_rootRabbit.BackColor = this.BackColor;
 
-			_RootRabbit.WindowRabbitID = rbt.rid;
+			_rootRabbit.WindowRabbitID = rbt.rid;
 
 			
-			RabbitsHolder.Controls.Add(_RootRabbit);
+			RabbitsHolder.Controls.Add(_rootRabbit);
 
 			RabbitPair rp = new RabbitPair();
-			_RootRabbitPair = rp;
+			_rootRabbitPair = rp;
 
-			_RootRabbitPair.WindowRabbitID = rbt.rid;
+			_rootRabbitPair.WindowRabbitID = rbt.rid;
 
-			_RootRabbitPair.SearchGoingOn+=new EvSearchGoingOn(SearchProc);
+			_rootRabbitPair.SearchGoingOn+=new EvSearchGoingOn(SearchProc);
 
 
 			rp.Location = new Point(1000, 100);
@@ -125,8 +125,8 @@ namespace rabnet.Components
 			RabbitsHolder.Visible = true;
 			RabbitsHolder.ResumeLayout();
 
-			this.ScrollControlIntoView(_RootRabbit);
-			this.ActiveControl = _RootRabbit;
+			this.ScrollControlIntoView(_rootRabbit);
+			this.ActiveControl = _rootRabbit;
 			//RabbitsHolder.AutoScrollMinSize
 
 		}
@@ -154,12 +154,12 @@ namespace rabnet.Components
 			{
 				return;
 			}
-			if (_RootRabbitPair == null)
+			if (_rootRabbitPair == null)
 			{
 				return;
 			}
 
-			if (_RootRabbit == null)
+			if (_rootRabbit == null)
 			{
 				return;
 			}
@@ -168,17 +168,17 @@ namespace rabnet.Components
 
 			Rectangle r=new Rectangle();
 
-			_RootRabbitPair.OrganizePos(ref r, ref c);
+			_rootRabbitPair.OrganizePos(ref r, ref c);
 
-			_RootRabbit.Left = c - (int)(_RabbitPairs[0].Width / 2f) + 10;
-			_RootRabbit.Top = 0 + 10;
+			_rootRabbit.Left = c - (int)(_RabbitPairs[0].Width / 2f) + 10;
+			_rootRabbit.Top = 0 + 10;
 
-			_RootRabbitPair.SetNewLocation(c - (int)(_RabbitPairs[0].Width / 2f) + 10, _RootRabbit.Height + 10 + 10);
+			_rootRabbitPair.SetNewLocation(c - (int)(_RabbitPairs[0].Width / 2f) + 10, _rootRabbit.Height + 10 + 10);
 
 			RabbitsHolder.Width = r.Width + 20;
-			RabbitsHolder.Height = r.Height + _RootRabbit.Height + 10 + 20;
+			RabbitsHolder.Height = r.Height + _rootRabbit.Height + 10 + 20;
 
-			_RootRabbit.Genom = _RootRabbitPair.Genom;
+			_rootRabbit.Genom = _rootRabbitPair.Genom;
 		}
 
 		public void GetPairData(RabbitPair mrp, ref int c)

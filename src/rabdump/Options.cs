@@ -15,26 +15,26 @@ namespace rabdump
     class DataBase : Object
     {
         const string DB = "База Данных";
-        const string OBJ = " Объект";
+        const string Obj = " Объект";
         public DataBase() { }
-        public DataBase(String name):this() {nm=name;}
-        private string db,host,user,pswd,nm="BadDatabase";
-        [Category(OBJ),DisplayName("Название"),Description("")]
-        public String Name { get { return nm; } set { if (value!="") nm = value; } }
+        public DataBase(String name):this() {_nm=name;}
+        private string _db,_host,_user,_pswd,_nm="BadDatabase";
+        [Category(Obj),DisplayName("Название"),Description("")]
+        public String Name { get { return _nm; } set { if (value!="") _nm = value; } }
         [Category(DB), DisplayName("Хост"), Description("")]
-        public String Host{get{return host;} set{host=value;}}
+        public String Host{get{return _host;} set{_host=value;}}
         [Category(DB), DisplayName("Имя БД"), Description("")]
-        public String DBName{get{return db;} set{db=value;}}
+        public String DBName{get{return _db;} set{_db=value;}}
         [Category(DB), DisplayName("Пользователь"), Description("")]
-        public String User{get{return user;} set{user=value;}}
+        public String User{get{return _user;} set{_user=value;}}
         [Category(DB), DisplayName("Пароль"), Description("")]
-        public String Password{get{return pswd;} set{pswd=value;}}
+        public String Password{get{return _pswd;} set{_pswd=value;}}
         public override string ToString()
         {
-            return nm;
+            return _nm;
         }
         public static DataBase AllDataBases = new DataBase("[все]");
-        public void save(XmlNode nd,XmlDocument doc)
+        public void Save(XmlNode nd,XmlDocument doc)
         {
             XmlElement db=doc.CreateElement("db");
             db.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(Name));
@@ -44,7 +44,7 @@ namespace rabdump
             db.AppendChild(doc.CreateElement("password")).AppendChild(doc.CreateTextNode(Password));
             nd.AppendChild(db);
         }
-        public void load(XmlNode nd)
+        public void Load(XmlNode nd)
         {
             if (nd.Name != "db") return;
             foreach(XmlNode n in nd.ChildNodes)
@@ -63,10 +63,10 @@ namespace rabdump
                 }
             }
         }
-        public static DataBase load(XmlNode nd,int hz)
+        public static DataBase Load(XmlNode nd,int hz)
         {
             DataBase db = new DataBase();
-            db.load(nd);
+            db.Load(nd);
             return db;
         }
     }
@@ -76,39 +76,39 @@ namespace rabdump
     {
         [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
         public enum ArcType {При_Запуске,Единожды,Ежедневно,Еженедельно,Ежемесячно};
-        const string OBJ = " Объект";
-        const string DATA = "Данные";
-        const string TIME = "Расписание";
-        private string nm="BadJob",bp="C:\\";
-        private int sl, cl, rp;
-        private DataBase db=DataBase.AllDataBases;
-        private DateTime st;
-        private ArcType tp;
-        public bool busy = false;
-        public DateTime lastWork = DateTime.MinValue;
-        [Category(OBJ), DisplayName("Название"), Description("")]
-        public String Name { get { return nm; } set { if (value!="") nm = value; } }
-        [Category(DATA), DisplayName("База Данных"), Description(""),
+        const string Obj = " Объект";
+        const string Data = "Данные";
+        const string Time = "Расписание";
+        private string _nm="BadJob",_bp="C:\\";
+        private int _sl, _cl, _rp;
+        private DataBase _db=DataBase.AllDataBases;
+        private DateTime _st;
+        private ArcType _tp;
+        public bool Busy = false;
+        public DateTime LastWork = DateTime.MinValue;
+        [Category(Obj), DisplayName("Название"), Description("")]
+        public String Name { get { return _nm; } set { if (value!="") _nm = value; } }
+        [Category(Data), DisplayName("База Данных"), Description(""),
          Editor(typeof(DataBaseEditor), typeof(UITypeEditor))]
-        public DataBase DB { get { return db; } set { db = value; } }
-        [Category(DATA), DisplayName("Лимит по размеру (МБ)"), Description("")]
-        public int SizeLimit { get { return sl; } set { sl = value; } }
-        [Category(DATA), DisplayName("Лимит по количеству копий"), Description("")]
-        public int CountLimit { get { return cl; } set { cl = value; } }
-        [Category(DATA), DisplayName("Путь к резервным копиям"),Description(""),
+        public DataBase DB { get { return _db; } set { _db = value; } }
+        [Category(Data), DisplayName("Лимит по размеру (МБ)"), Description("")]
+        public int SizeLimit { get { return _sl; } set { _sl = value; } }
+        [Category(Data), DisplayName("Лимит по количеству копий"), Description("")]
+        public int CountLimit { get { return _cl; } set { _cl = value; } }
+        [Category(Data), DisplayName("Путь к резервным копиям"),Description(""),
         Editor(typeof(FolderNameEditor), typeof(UITypeEditor))]
-        public String BackupPath { get { return bp; } set { if (Directory.Exists(value)) bp = value; } }
-        [Category(TIME), DisplayName("Начало Резервирования"),Description("")]
-        public DateTime StartTime { get { return st; } set { st = value; } }
-        [Category(TIME), DisplayName("Резервировать"), Description("")]
-        public ArcType Type { get { return tp; } set { tp = value; } }
-        [Category(TIME), DisplayName("Повторять каждые (часов)"), Description("")]
-        public int Repeat { get { return rp; } set { rp = value; } }
+        public String BackupPath { get { return _bp; } set { if (Directory.Exists(value)) _bp = value; } }
+        [Category(Time), DisplayName("Начало Резервирования"),Description("")]
+        public DateTime StartTime { get { return _st; } set { _st = value; } }
+        [Category(Time), DisplayName("Резервировать"), Description("")]
+        public ArcType Type { get { return _tp; } set { _tp = value; } }
+        [Category(Time), DisplayName("Повторять каждые (часов)"), Description("")]
+        public int Repeat { get { return _rp; } set { _rp = value; } }
         public override string ToString()
         {
-            return nm;
+            return _nm;
         }
-        public void save(XmlNode nd,XmlDocument doc)
+        public void Save(XmlNode nd,XmlDocument doc)
         {
             try
             {
@@ -118,7 +118,7 @@ namespace rabdump
                 j.AppendChild(doc.CreateElement("path")).AppendChild(doc.CreateTextNode(BackupPath));
                 j.AppendChild(doc.CreateElement("sizelim")).AppendChild(doc.CreateTextNode(SizeLimit.ToString()));
                 j.AppendChild(doc.CreateElement("countlim")).AppendChild(doc.CreateTextNode(CountLimit.ToString()));
-                j.AppendChild(doc.CreateElement("start")).AppendChild(doc.CreateTextNode(st.ToString("dd.MM.yyyy HH:mm")));
+                j.AppendChild(doc.CreateElement("start")).AppendChild(doc.CreateTextNode(_st.ToString("dd.MM.yyyy HH:mm")));
                 j.AppendChild(doc.CreateElement("type")).AppendChild(doc.CreateTextNode(Type.ToString()));
                 j.AppendChild(doc.CreateElement("repeat")).AppendChild(doc.CreateTextNode(Repeat.ToString()));
                 nd.AppendChild(j);
@@ -128,7 +128,7 @@ namespace rabdump
                 MessageBox.Show("Не все поля были заполненны верно");
             }
         }
-        public void load(XmlNode nd)
+        public void Load(XmlNode nd)
         {
             if (nd.Name != "job") return;
             foreach (XmlNode n in nd.ChildNodes)
@@ -139,23 +139,23 @@ namespace rabdump
                     case "name": Name = val; break;
                     case "db":
                         if (val == DataBase.AllDataBases.Name) DB = DataBase.AllDataBases;
-                        foreach (DataBase db in Options.get().Databases)
+                        foreach (DataBase db in Options.Get().Databases)
                             if (db.Name == val) 
                                 DB = db;
                         break;
                     case "path": BackupPath = val; break;
                     case "sizelim": SizeLimit = int.Parse(val); break;
                     case "countlim": CountLimit= int.Parse(val); break;
-                    case "start": st = DateTime.Parse(val); break;
+                    case "start": _st = DateTime.Parse(val); break;
                     case "type": Type = (ArcType)Enum.Parse(typeof(ArcType),val); break;
                     case "repeat": Repeat = int.Parse(val); break;
                 }
             }
         }
-        public static ArchiveJob load(XmlNode nd, int hz)
+        public static ArchiveJob Load(XmlNode nd, int hz)
         {
             ArchiveJob jb = new ArchiveJob();
-            jb.load(nd);
+            jb.Load(nd);
             return jb;
         }
 
@@ -170,12 +170,12 @@ namespace rabdump
         {
             return (dt.Hour == DateTime.Now.Hour && dt.Minute == DateTime.Now.Minute);
         }
-        public bool needDump(bool start)
+        public bool NeedDump(bool start)
         {
-            if (busy) return false;
+            if (Busy) return false;
             if (start && Type == ArcType.При_Запуске)
                 return true;
-            if (Repeat>0 && DateCmpNoSec(lastWork.AddHours(Repeat)))
+            if (Repeat>0 && DateCmpNoSec(LastWork.AddHours(Repeat)))
                 return true;
             if (Type == ArcType.Единожды && DateCmpNoSec(StartTime))
                 return true;
@@ -196,61 +196,61 @@ namespace rabdump
     class Options:Object
     {
         [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
-        public enum RUBOOL { Да, Нет };
-        private static Options oops=null;
-        public static Options get()
+        public enum Rubool { Да, Нет };
+        private static Options _oops=null;
+        public static Options Get()
         {
-            if (oops == null)
-                oops = new Options();
-            return oops;
+            if (_oops == null)
+                _oops = new Options();
+            return _oops;
         }
-        const String OPT="Настройки";
-        const String ARKey=@"Software\Microsoft\Windows\CurrentVersion\Run";
-        const String ARValue = "rabdump";
-        const String RDO = "rabdumpOptions";
-        private String mp="", p7="",mdp="";
-        private RUBOOL sas=RUBOOL.Нет;
-        private DataBaseCollection bds=new DataBaseCollection();
-        private ArchiveJobCollection jobs = new ArchiveJobCollection();
-        [Category(OPT), DisplayName("mysql"), Description(""),
+        const String Opt="Настройки";
+        const String ArKey=@"Software\Microsoft\Windows\CurrentVersion\Run";
+        const String ArValue = "rabdump";
+        const String Rdo = "rabdumpOptions";
+        private String _mp="", _p7="",_mdp="";
+        private Rubool _sas=Rubool.Нет;
+        private readonly DataBaseCollection _bds=new DataBaseCollection();
+        private readonly ArchiveJobCollection _jobs = new ArchiveJobCollection();
+        [Category(Opt), DisplayName("mysql"), Description(""),
         Editor(typeof(FileNameEditor), typeof(UITypeEditor))]
-        public String MySqlPath { get { return mp; } set { mp = value; } }
-        [Category(OPT), DisplayName("mysqldump"), Description(""),
+        public String MySqlPath { get { return _mp; } set { _mp = value; } }
+        [Category(Opt), DisplayName("mysqldump"), Description(""),
         Editor(typeof(FileNameEditor), typeof(UITypeEditor))]
-        public String MySqlDumpPath { get { return mdp; } set { mdp = value; } }
-        [Category(OPT), DisplayName("7z"),Description(""),
+        public String MySqlDumpPath { get { return _mdp; } set { _mdp = value; } }
+        [Category(Opt), DisplayName("7z"),Description(""),
         Editor(typeof(FileNameEditor), typeof(UITypeEditor))]
-        public String Path7Z { get { return p7; } set { p7 = value; } }
-        [Category(OPT), DisplayName("Базы данных"),Description("")]
-        public DataBaseCollection Databases { get { return bds; }}
-        [Category(OPT), DisplayName("Расписание"),Description("")]
-        public ArchiveJobCollection Jobs { get { return jobs; } }
-        [Category(OPT), DisplayName("Запускать при старте системы"),Description("")]
-        public RUBOOL StartAtStart { get { return sas; } set { sas = value; } }
+        public String Path7Z { get { return _p7; } set { _p7 = value; } }
+        [Category(Opt), DisplayName("Базы данных"),Description("")]
+        public DataBaseCollection Databases { get { return _bds; }}
+        [Category(Opt), DisplayName("Расписание"),Description("")]
+        public ArchiveJobCollection Jobs { get { return _jobs; } }
+        [Category(Opt), DisplayName("Запускать при старте системы"),Description("")]
+        public Rubool StartAtStart { get { return _sas; } set { _sas = value; } }
 
-        public void save()
+        public void Save()
         {
             MainForm.log().Debug("saving options");
             XmlDocument doc = new XmlDocument();
-            XmlElement rn = doc.CreateElement(RDO);
+            XmlElement rn = doc.CreateElement(Rdo);
             doc.AppendChild(rn);
             rn.AppendChild(doc.CreateElement("mysql")).AppendChild(doc.CreateTextNode(MySqlPath));
             rn.AppendChild(doc.CreateElement("mysqldump")).AppendChild(doc.CreateTextNode(MySqlDumpPath));
             rn.AppendChild(doc.CreateElement("z7")).AppendChild(doc.CreateTextNode(Path7Z));
             foreach (DataBase db in Databases)
-                db.save(rn, doc);
+                db.Save(rn, doc);
             foreach (ArchiveJob jb in Jobs)
-                jb.save(rn, doc);
+                jb.Save(rn, doc);
             Configuration conf = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            conf.GetSection(RDO).SectionInformation.SetRawXml(doc.OuterXml);
+            conf.GetSection(Rdo).SectionInformation.SetRawXml(doc.OuterXml);
             conf.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection(RDO);
-            RegistryKey rk=Registry.CurrentUser.CreateSubKey(ARKey);
-            rk.DeleteValue(ARValue,false);
-            if (StartAtStart==RUBOOL.Да)
-                rk.SetValue(ARValue,Application.ExecutablePath);
+            ConfigurationManager.RefreshSection(Rdo);
+            RegistryKey rk=Registry.CurrentUser.CreateSubKey(ArKey);
+            rk.DeleteValue(ArValue,false);
+            if (StartAtStart==Rubool.Да)
+                rk.SetValue(ArValue,Application.ExecutablePath);
         }
-        public void dbFromRabNet()
+        public void DBFromRabNet()
         {
             try
             {
@@ -285,10 +285,12 @@ namespace rabdump
                                     if (!found)
                                     {
                                         DataBase d = new DataBase(nm);
+
                                         d.DBName = db;
                                         d.Host = hst;
                                         d.User = usr;
                                         d.Password = pwd;
+
                                         Databases.Add(d);
                                     }
                                 }
@@ -298,52 +300,52 @@ namespace rabdump
             {
             }
         }
-        public void load(XmlNode nd)
+        public void Load(XmlNode nd)
         {
             MainForm.log().Debug("loading options from "+nd.Name);
-            if (nd.Name != RDO) return;
+            if (nd.Name != Rdo) return;
             Databases.Clear();
             Jobs.Clear();
             foreach (XmlNode n in nd.ChildNodes)
             {
                 switch (n.Name)
                 {
-                    case "db": oops.Databases.Add(DataBase.load(n, 0)); break;
-                    case "job": oops.Jobs.Add(ArchiveJob.load(n, 0)); break;
+                    case "db": _oops.Databases.Add(DataBase.Load(n, 0)); break;
+                    case "job": _oops.Jobs.Add(ArchiveJob.Load(n, 0)); break;
                     case "z7": 
                     case "mysql": 
                     case "mysqldump": 
-                        string x_val;
+                        string xVal;
                         try
                         {
-                            x_val = n.ChildNodes[0].Value;
+                            xVal = n.ChildNodes[0].Value;
                         }
                         catch
                         {
-                            x_val = "";
+                            xVal = "";
                         }
 
                         switch (n.Name)
                         {
-                            case "z7": Path7Z = x_val; break;
-                            case "mysql": MySqlPath = x_val; break;
-                            case "mysqldump": MySqlDumpPath = x_val; break;
+                            case "z7": Path7Z = xVal; break;
+                            case "mysql": MySqlPath = xVal; break;
+                            case "mysqldump": MySqlDumpPath = xVal; break;
                         }
                         break;
 
                 }
             }
-            dbFromRabNet();
-            StartAtStart = RUBOOL.Нет;
-            RegistryKey rk=Registry.CurrentUser.CreateSubKey(ARKey);
-            string val = (string)rk.GetValue(ARValue);
+            DBFromRabNet();
+            StartAtStart = Rubool.Нет;
+            RegistryKey rk=Registry.CurrentUser.CreateSubKey(ArKey);
+            string val = (string)rk.GetValue(ArValue);
             if (val != null)
                 if (val == Application.ExecutablePath)
-                    StartAtStart = RUBOOL.Да;
+                    StartAtStart = Rubool.Да;
         }
-        public void load()
+        public void Load()
         {
-            load(ConfigurationManager.GetSection(RDO) as XmlNode);
+            Load(ConfigurationManager.GetSection(Rdo) as XmlNode);
         }
 
     }
@@ -354,7 +356,7 @@ namespace rabdump
     {
         public object Create(object parent, object configContext, XmlNode section)
         {
-            Options.get().load(section);
+            Options.Get().Load(section);
             return section;
         }
     }

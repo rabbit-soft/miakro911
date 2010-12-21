@@ -1,28 +1,24 @@
 //#define NOCATCH
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace mia_conv
 {
     public partial class Form1 : Form
     {
-        private MiaFile mia=null;
-        public DataTable udata=new DataTable();
+        private MiaFile _mia=null;
+        public DataTable Udata=new DataTable();
         private bool auto=false;
-        private bool executed=false;
-        public bool quiet=false;
+        private bool _executed=false;
+        public bool Quiet=false;
         public Form1()
         {
-            udata.Columns.Add("Пользователь",typeof(String));
-            udata.Columns.Add("Пароль", typeof(String));
-            udata.Rows.Add("зоотехник","");
+            Udata.Columns.Add("Пользователь",typeof(String));
+            Udata.Columns.Add("Пароль", typeof(String));
+            Udata.Rows.Add("зоотехник","");
             InitializeComponent();
-            dataGridView1.DataSource = udata;
+            dataGridView1.DataSource = Udata;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
             dataGridView1.AutoSize = true;
             for (int i = 0; i < clb1.Items.Count; i++)
@@ -33,7 +29,7 @@ namespace mia_conv
         public Form1(int automode,String file,String h,String db,String u,String p,String r,String rp,String usrs,String scr):this()
         {
             auto = automode>0;
-            quiet = automode == 2;
+            Quiet = automode == 2;
             if (auto)
             {
                 Text += " - Авто режим";
@@ -48,11 +44,11 @@ namespace mia_conv
                     textRoot.Text = r;
                     textRootPswd.Text = rp;
                 }
-                udata.Clear();
+                Udata.Clear();
                 String[] us = usrs.Split(';');
                 for (int i = 0; i < us.Length / 2; i++)
                 {
-                    udata.Rows.Add(us[i * 2], us[i * 2 + 1]);
+                    Udata.Rows.Add(us[i * 2], us[i * 2 + 1]);
                 }
                 textBox1.Text = scr;
             }
@@ -72,8 +68,8 @@ namespace mia_conv
 
         private void button2_Click(object sender, EventArgs e)
         {
-            mia = new MiaFile(clb1,pb);
-            mia.LoadFromFile(tb1.Text, log);
+            _mia = new MiaFile(clb1,pb);
+            _mia.LoadFromFile(tb1.Text, log);
             button3.Enabled = true;
         }
 
@@ -93,7 +89,8 @@ namespace mia_conv
 
         private void button3_Click(object sender, EventArgs e)
         {
-#if PROTECTED
+//
+/*#if PROTECTED
             int fms=PClient.get().farms();
             if (fms<0)
             {
@@ -105,22 +102,23 @@ namespace mia_conv
                 MessageBox.Show(String.Format("Слишком много миниферм в файле({0:d}).\nКлюч защиты позволяет работать с {1:d} миниферм.",mia.builds.maxfarm,fms));
                 return;
             }
-#endif
+#endif*/
+//
             MDCreator crt = new MDCreator(log);
 #if !NOCATCH 
             try
 #endif
             {
                 pb.Value = 0;
-                if (crt.prepare(dbnew.Checked, textHost.Text, textUser.Text, textPassword.Text, textDB.Text, textRoot.Text, textRootPswd.Text,false,quiet))
+                if (crt.Prepare(dbnew.Checked, textHost.Text, textUser.Text, textPassword.Text, textDB.Text, textRoot.Text, textRootPswd.Text,false,Quiet))
                 {
                     button2.Enabled = false;
                     button3.Enabled = false;
                     //crt.oldid = oldid.Checked;
-                    crt.mia = mia;
-                    crt.setUsers(udata);
-                    crt.fillAll();
-                    crt.finish(textBox1.Text);
+                    crt.Mia = _mia;
+                    crt.SetUsers(Udata);
+                    crt.FillAll();
+                    crt.Finish(textBox1.Text);
                     pb.Value = 0;
                     button2.Enabled = true;
                     button3.Enabled = true;
@@ -139,9 +137,9 @@ namespace mia_conv
 
         private void Form1_Activated(object sender, EventArgs e)
         {
-            if (executed)
+            if (_executed)
                 return;
-            executed = true;
+            _executed = true;
             if (auto)
             {
                 dbnew.Checked=true;

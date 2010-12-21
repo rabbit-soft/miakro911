@@ -5,8 +5,8 @@ namespace rabnet
 {
 	public partial class GeneticsMainForm : Form
 	{
-		private int _RabbitID;
-		private RabbitGen _Rabbit;
+		private int _rabbitID;
+		private RabbitGen _rabbit;
 
 		public GeneticsMainForm()
 		{
@@ -22,7 +22,7 @@ namespace rabnet
 
 		public Boolean SearchWindow(RabbitCommandMessage cmd)
 		{
-			if (cmd.SourceWindowRabbitID == _RabbitID)
+			if (cmd.SourceWindowRabbitID == _rabbitID)
 			{
 				return false;
 			}
@@ -31,30 +31,30 @@ namespace rabnet
 
 		public void SetID(int id)
 		{
-			_RabbitID = id;
-			_Rabbit = Engine.db().getRabbitGen(id);
+			_rabbitID = id;
+			_rabbit = Engine.db().getRabbitGen(id);
 
-			this.Text = string.Format("Родословная '{0}' ({1:D})", _Rabbit.fullname, _Rabbit.rid);
+			this.Text = string.Format("Родословная '{0}' ({1:D})", _rabbit.fullname, _rabbit.rid);
 		}
 
-		private Boolean _BatchClose = false;
+		private Boolean _batchClose = false;
 		public void CloseBatch()
 		{
-			_BatchClose = true;
+			_batchClose = true;
 			Close();
 		}
 
 
 		private void GeneticsMainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (!_BatchClose)
+			if (!_batchClose)
 			{
 				RabbitCommandMessage cmd = new RabbitCommandMessage();
 				cmd.Command = RabbitCommandMessage.Commands.ForgetWindow;
 				cmd.TargetRabbitID = 0;
-				cmd.SourceWindowRabbitID = _RabbitID;
+				cmd.SourceWindowRabbitID = _rabbitID;
 				GeneticsManager.BroadcastSearch(cmd);
-				GeneticsManager.RemoveForm(_RabbitID);
+				GeneticsManager.RemoveForm(_rabbitID);
 			}
 		}
 
@@ -63,7 +63,7 @@ namespace rabnet
 			checkBox1.Enabled = false;
 			button1.Enabled = false;
 
-			rabbitField1.DrawRabbit(_Rabbit);
+			rabbitField1.DrawRabbit(_rabbit);
 
 			checkBox1.Enabled = true;
 			button1.Enabled = true;

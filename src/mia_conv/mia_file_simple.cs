@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 
 
@@ -242,7 +241,7 @@ namespace mia_conv
             {
                 if (mf != null)
                 {
-                    mf.setpb(100*i/cnt);
+                    mf.Setpb(100*i/cnt);
                 }
                 items.Add(new MFListItem(br, ver));
             }

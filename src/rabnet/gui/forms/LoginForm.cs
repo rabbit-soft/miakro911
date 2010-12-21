@@ -42,6 +42,20 @@ namespace rabnet
                         comboBox1_SelectedIndexChanged(null, null);
                     }
                 }
+
+
+/*            MessageBox.Show("Farms -> " + GRD.Instance.GetFarmsCnt().ToString());
+            MessageBox.Show("Genetics -> " + GRD.Instance.GetFlagGenetics().ToString());
+            MessageBox.Show("Zootech -> " + GRD.Instance.GetFlagZootech().ToString());
+
+            MessageBox.Show("Prog -> " + GRD.Instance.GetProgType().ToString());
+            MessageBox.Show("DateStart -> " + GRD.Instance.GetDateStart().ToString());
+            MessageBox.Show("DateEnd -> " + GRD.Instance.GetDateEnd().ToString());
+            MessageBox.Show("Org -> " + GRD.Instance.GetOrgName());
+ */
+
+            //GRD.Instance.ValidKey();
+            
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -109,7 +123,9 @@ namespace rabnet
             {
                 RabnetConfigHandler.ds[comboBox1.SelectedIndex].setDefault(comboBox2.Text, textBox1.Text);
                 
-                System.Diagnostics.Debug.WriteLine(RabnetConfigHandler.ds[comboBox1.SelectedIndex].getParamHost());
+//                System.Diagnostics.Debug.WriteLine(RabnetConfigHandler.ds[comboBox1.SelectedIndex].getParamHost());
+
+#if !DEMO
                 RabUpdaterClient.Get().SetIP(RabnetConfigHandler.ds[comboBox1.SelectedIndex].getParamHost());
                 
                 bool upRes=RabUpdaterClient.Get().CheckUpdate();
@@ -157,17 +173,19 @@ namespace rabnet
                         LoginForm.stop = true;
                         Close();
 
-
                     }
 
 
                 }
                 else
                 {
+#endif
                                     DialogResult = DialogResult.OK;
                                     Close();
+#if !DEMO
                 }
 
+#endif
 
 
 

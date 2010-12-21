@@ -8,6 +8,9 @@ using System.Text;
 using System.Windows.Forms;
 using log4net;
 using System.Xml;
+#if PROTECTED
+using RabGRD;
+#endif
 
 namespace rabnet
 {
@@ -276,6 +279,13 @@ namespace rabnet
         {
             timer1.Stop();
             timer1.Start();
+#if PROTECTED
+            if ((DateTime.Today < GRD.Instance.GetDateStart()) || (DateTime.Today > GRD.Instance.GetDateEnd()))
+            {
+                MessageBox.Show("Срок дейсвия лицензии истек!"+Environment.NewLine+"Для продления обратитесь к продавцу у которого вы приобрели программу."+Environment.NewLine+"Программа будет закрыта.","Истекла лицензия",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
+                Environment.Exit(101);
+            }
+#endif
         }
         public static void still_working()
         {
@@ -293,17 +303,29 @@ namespace rabnet
         {
 #if PROTECTED
             String msg = "";
-            if (!PClient.get().canwork())
+//            GRD.Instance.ValidKey();
+            if (!GRD.Instance.ValidKey())
+                msg = "Ключ защиты не найден.";
+            if (farms > 0 && farms > GRD.Instance.GetFarmsCnt())
+                msg = "Превышено количество разрешенных ферм.";
+            if (msg != "")
+            {
+                MessageBox.Show(this, msg + "\nПрограмма будет закрыта.", "Ошибка защиты", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                LoginForm.stop = true;
+                mustclose = true;
+                Close();
+            }
+/*            if (!PClient.get().canwork())
                 msg = "Ключ защиты не найден.";
             if (farms > 0 && farms > PClient.get().farms())
                 msg = "Превышено количество разрешенных ферм.";
             if (msg != "")
             {
-                MessageBox.Show(this,msg+"\nПрограмма будет закрыта.","Ошибка защиты",MessageBoxButtons.OK,MessageBoxIcon.Stop);
+                MessageBox.Show(this, msg + "\nПрограмма будет закрыта.", "Ошибка защиты", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 LoginForm.stop = true;
                 mustclose = true;
                 Close();
-            }
+            }*/
 #endif
         }
         private void MainForm_MouseMove(object sender, MouseEventArgs e)

@@ -48,8 +48,19 @@ namespace rabnet
             return dg;
         }
 
+        private delegate void onItemDelegate(IData data);
+
+
         protected override void onItem(IData data)
         {
+            if (this.listView1.InvokeRequired)
+            {
+                //MessageBox.Show("Invoke!");
+                onItemDelegate onItemDelegateV = new onItemDelegate(onItem);
+                this.listView1.Invoke(onItemDelegateV, new object[] { data });
+                return;
+            }
+
             if (data == null)
             {
                 cs.Restore();
@@ -503,7 +514,7 @@ namespace rabnet
 			{
 				for (int i = 0; i < listView1.SelectedItems.Count; i++)
 				{
-					GeneticsManagerSafe.AddNewGenetics(((int)listView1.SelectedItems[i].Tag));
+                    GeneticsManagerSafe.AddNewGenetics(((int)listView1.SelectedItems[i].Tag));
 				}
 			}
 			else

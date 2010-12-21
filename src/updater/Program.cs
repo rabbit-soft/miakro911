@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 using System.IO;
 
@@ -28,13 +27,13 @@ namespace updater
                 {
                     UpdateForm uf = new UpdateForm(fl, batch);
                     Application.Run(uf);
-                    res = uf.result;
+                    res = uf.Result;
                 }
                 else
                 {
                     InstallForm ifr = new InstallForm(fl, batch);
                     Application.Run(ifr);
-                    res = ifr.result;
+                    res = ifr.Result;
                 }
                 Environment.ExitCode = res;
 //            }

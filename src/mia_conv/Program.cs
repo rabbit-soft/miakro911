@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace mia_conv
@@ -117,7 +116,7 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
                 Environment.ExitCode = 1;
                 return;
             }
-            if (MDCreator.hasDB(root, rpswd, db, host))
+            if (MDCreator.HasDB(root, rpswd, db, host))
             {
                 MessageBox.Show("База данных уже существует!");
                 Environment.ExitCode = 1;
@@ -126,8 +125,8 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
             MDCreator cr = new MDCreator(null);
             try
             {
-                cr.prepare(true, host, user, pswd, db, root, rpswd, true);
-                cr.setUsers(us);
+                cr.Prepare(true, host, user, pswd, db, root, rpswd, true);
+                cr.SetUsers(us);
             }
             catch (Exception)
             {

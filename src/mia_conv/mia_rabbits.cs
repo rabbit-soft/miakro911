@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 
 namespace mia_conv
@@ -270,17 +269,17 @@ namespace mia_conv
                 if (proplist[i] == namekey)
                 {
                     if (sex.value()==1)
-                        str+=" "+males.getname((ushort)namekey.value());
+                        str+=" "+males.Getname((ushort)namekey.value());
                     if (sex.value()==2)
-                        str+=" "+females.getname((ushort)namekey.value());
+                        str+=" "+females.Getname((ushort)namekey.value());
                 }
                 if (proplist[i] == surkey)
                 {
-                        str += " " + females.getname((ushort)surkey.value());
+                        str += " " + females.Getname((ushort)surkey.value());
                 }
                 if (proplist[i] == pathkey)
                 {
-                        str += " " + males.getname((ushort)pathkey.value());
+                        str += " " + males.Getname((ushort)pathkey.value());
                 }
                 str += "\r\n";
             }
@@ -328,7 +327,7 @@ namespace mia_conv
             for (int i = 0; i < (int)count.value(); i++)
             {
                 if (mf != null)
-                    mf.setpb(100*i/cnt);
+                    mf.Setpb(100*i/cnt);
                 rabbits.Add(new Rabbit(br, ver, nmales, nfemales));
             }
         }

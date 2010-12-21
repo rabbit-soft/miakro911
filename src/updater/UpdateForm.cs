@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -12,23 +11,23 @@ namespace updater
 {
     public partial class UpdateForm : Form
     {
-        bool batch = false;
-        public int result = 0;
-        private int curver = 0;
-        private string filename="";
+        bool _batch = false;
+        public int Result = 0;
+        private int _curver = 0;
+        private string _filename="";
         private Dictionary<int, String> scr = new Dictionary<int, string>();
-        private MySqlConnection sql = null;
-        public enum UpdateStatus { BEFORE, PROCS, AFTER }
+        private MySqlConnection _sql = null;
+        public enum UpdateStatus { Before, Procs, After }
         public UpdateForm()
         {
             InitializeComponent();
         }
         public UpdateForm(String fl,bool bt):this()
         {
-            batch = bt;
-            filename = fl;
+            _batch = bt;
+            _filename = fl;
         }
-        public int getScripts()
+        public int GetScripts()
         {
             int i = 2;
             string prefix = "";
@@ -55,7 +54,7 @@ namespace updater
             return i;
         }
 
-        public void status(String txt)
+        public void Status(String txt)
         {
             label2.Text = txt;
             label2.Update();
@@ -66,10 +65,10 @@ namespace updater
 			button1.Enabled = false;
 			int needcount = 0;
             button1.Enabled = false;
-            status("Проверка версий баз данных");
+            Status("Проверка версий баз данных");
             lv.Items.Clear();
             XmlDocument xml = new XmlDocument();
-            xml.Load(filename);
+            xml.Load(_filename);
             foreach (XmlNode n in xml.DocumentElement.ChildNodes)
             if (n.Name=="rabdumpOptions")
                 foreach(XmlNode ds in n.ChildNodes)
@@ -90,25 +89,25 @@ namespace updater
                         ListViewItem li = lv.Items.Add(nm);
                         li.SubItems.Add(prm);
                         li.Tag=0;
-                        sql = new MySqlConnection(prm);
+                        _sql = new MySqlConnection(prm);
                         int hasver=0;
                         lv.Update();
                         try
                         {
-                            sql.Open();
-                            MySqlCommand cmd = new MySqlCommand("SELECT o_value FROM options WHERE o_name='db' AND o_subname='version';",sql);
+                            _sql.Open();
+                            MySqlCommand cmd = new MySqlCommand("SELECT o_value FROM options WHERE o_name='db' AND o_subname='version';",_sql);
                             MySqlDataReader rd = cmd.ExecuteReader();
                             if (rd.Read())
                                 hasver = rd.GetInt32(0);
                             rd.Close();
-                            sql.Close();
+                            _sql.Close();
                             li.SubItems.Add(hasver.ToString());
-                            if (hasver == curver)
+                            if (hasver == _curver)
                             {
                                 li.ForeColor = Color.Green;
                                 li.Tag = 1;
                             }
-                            else if (hasver > curver)
+                            else if (hasver > _curver)
                             {
                                 li.ForeColor = Color.YellowGreen;
                                 li.Tag = 2;
@@ -117,19 +116,19 @@ namespace updater
                         }
                         catch (Exception)
                         {
-                            sql.Close();
+                            _sql.Close();
                             li.Tag = 3;
                             li.ForeColor = Color.Red;
                             li.SubItems.Add("нет доступа");
                         }
-                        li.SubItems.Add(curver.ToString());
+                        li.SubItems.Add(_curver.ToString());
                     }
             if (needcount>0)
             {
-                status("Требуется обновить " + needcount.ToString() + " БД");
+                Status("Требуется обновить " + needcount.ToString() + " БД");
                 button1.Enabled = true;
             }else{
-                status("Обновления не требуются");
+                Status("Обновления не требуются");
                 //button2.Enabled = true;
             }
 			button1.Enabled = true;
@@ -140,25 +139,26 @@ namespace updater
             label1.Update();
             button1.Update();
             button2.Update();
-            curver = getScripts();
+            _curver = GetScripts();
             UpdateList();
-            if (batch)
+            if (_batch)
                 button1.PerformClick();
-            if (batch)
+            if (_batch)
                 button2.PerformClick();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
 			button1.Enabled = false;
+            button2.Enabled = !_batch;
             foreach (ListViewItem li in lv.Items)
             if ((int)li.Tag == 0)
             {
                 int prever = int.Parse(li.SubItems[2].Text);
                 String prm = li.SubItems[1].Text;
                 String nm = li.SubItems[0].Text;
-                status("Обновляется БД "+nm);
-                while (prever < curver)
+                Status("Обновляется БД "+nm);
+                while (prever < _curver)
                 {
                     prever++;
                     foreach(int k in scr.Keys)
@@ -166,43 +166,44 @@ namespace updater
                         {
                             try
                             {
-                                status(String.Format("Обновление {0:s} {1:d}->{2:d}",nm,prever-1,prever));
-                                sql = new MySqlConnection(prm);
-                                sql.Open();
-                                MySqlCommand c = new MySqlCommand("", sql);
-                                OnUpdate(prever, sql,UpdateStatus.BEFORE);
+                                Status(String.Format("Обновление {0:s} {1:d}->{2:d}",nm,prever-1,prever));
+                                _sql = new MySqlConnection(prm);
+                                _sql.Open();
+                                MySqlCommand c = new MySqlCommand("", _sql);
+                                OnUpdate(prever, _sql,UpdateStatus.Before);
                                 String[] cmds = scr[k].Split(new string[] { "#DELIMITER |" }, StringSplitOptions.RemoveEmptyEntries);
                                 c.CommandText = cmds[0];
                                 c.ExecuteNonQuery();
                                 if (cmds.Length > 1)
                                 {
-                                    OnUpdate(prever, sql, UpdateStatus.PROCS);
-                                    MySqlScript sc = new MySqlScript(sql, cmds[1]);
+                                    OnUpdate(prever, _sql, UpdateStatus.Procs);
+                                    MySqlScript sc = new MySqlScript(_sql, cmds[1]);
                                     sc.Delimiter = "|";
                                     sc.Execute();
                                 }
-                                OnUpdate(prever, sql,UpdateStatus.AFTER);
-                                sql.Close();
+                                OnUpdate(prever, _sql,UpdateStatus.After);
+                                _sql.Close();
                             }
                             catch (Exception ex)
                             {
                                 MessageBox.Show("Во время обновления БД произошла ошибка:"+ex.Message);
-                                batch = false;
+                                _batch = false;
                             }
                         }
                 }
             }
             UpdateList();
 			button1.Enabled = true;
-		}
-        private void OnUpdate(int tover,MySqlConnection con,UpdateStatus status)
+            button2.Enabled = true;
+        }
+        private static void OnUpdate(int tover,MySqlConnection con,UpdateStatus status)
         {
 			Application.DoEvents();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            result = 0;
+            Result = 0;
             Close();
         }
 

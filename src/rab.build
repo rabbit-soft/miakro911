@@ -32,6 +32,7 @@
 	<property name="guardant.path" value="${mysql.path}" />
 	<property name="guardant.lib" value="key.dll" />
 	<property name="guardant2.lib" value="GrdAPI32.DLL" />
+	<property name="guardantNET.lib" value="GuardantDotNetApi.dll" />
 	<property name="guardant.ass" value="${guardant.path}/${guardant.lib}" />
 	
 	<property name="rep.lib" value="RdlViewer.dll" />
@@ -46,9 +47,15 @@
 	<property name="dotnetInstaller" value="dotnetfx.exe"/>
 	<property name="mysqlInstaller" value="mysql-essential-5.1.49-win32.msi"/>
 	<property name="MSIInstaller" value="WindowsXP-KB942288-v3-x86.exe"/>
+	<property name="GrdTru" value="GrdTRU.exe"/>
+
 	<property name="dotnetInstallerSource" value="${party3d.path}/${dotnetInstaller}"/>
 	<property name="mysqlInstallerSource" value="${party3d.path}/${mysqlInstaller}"/>
 	<property name="MSIInstallerSource" value="${party3d.path}/${MSIInstaller}"/>
+	<property name="GrdTruSource" value="${party3d.path}/${GrdTru}"/>
+
+	<property name="Bin7zSource" value="${party3d.path}/7z"/>
+
 	<property name="installersPath" value=""/>
 	<property name="slash" value=""/>
 	<property name="dotnetInstallerDest" value="${installersPath}${slash}${dotnetInstaller}"/>
@@ -73,6 +80,7 @@
 		<delete dir="${bin_dir}"/>
 		<mkdir dir="${bin_dir}"/>
 		<mkdir dir="${bin_dir}/reports"/>
+		<mkdir dir="${bin_dir}/7z"/>
 		<property name="log4net.use" value="${bin_dir}/${log4net.lib}" />
 		<property name="mysql.use" value="${bin_dir}/${mysql.lib}" />
 		<property name="rep.use" value="${bin_dir}/${rep.lib}" />
@@ -84,6 +92,10 @@
 		<copy file="${repeng.ass}" tofile="${repeng.use}" />
 		<copy file="${guardant.ass}" tofile="${guardant.use}" />
 		<copy file="${guardant.path}/${guardant2.lib}" tofile="${bin_dir}/${guardant2.lib}" />
+		<copy file="${guardant.path}/${guardantNET.lib}" tofile="${bin_dir}/${guardantNET.lib}" />
+
+		<copy file="${GrdTruSource}" tofile="${bin_dir}/${GrdTru}" />
+
 		<copy todir="${bin_dir}/reports">
 			<fileset basedir="${curdir}/rabnet/gui/reports">
 				<include name="*.rdl"/>
@@ -94,12 +106,17 @@
 				<include name="*.chm"/>
 			</fileset>
 		</copy>
+		<copy todir="${bin_dir}/7z">
+			<fileset basedir="${Bin7zSource}">
+				<include name="*.*"/>
+			</fileset>
+		</copy>
 	</target>
 	
 	
 	<target name="release" description="Build RELEASE">
 		<property name="compile_flag" value="" />
-		<property name="bin_dir" value="${root_bin}/release"/>
+		<property name="bin_dir" value="${root_bin}/release" />
 		<call target="prepare_bin_dir"/>
 		<call target="compile"/>
 	</target>
@@ -117,6 +134,12 @@
 		<call target="prepare_bin_dir"/>
 		<call target="compile"/>
 	</target>
+	<target name="demo" description="Build DEMO">
+		<property name="compile_flag" value="DEMO" />
+		<property name="bin_dir" value="${root_bin}/demo"/>
+		<call target="prepare_bin_dir"/>
+		<call target="compile"/>
+	</target>
 	<target name="tools" description="Build TOOLS">
 		<mkdir dir="${root_bin}"/>
 		<delete dir="${tools_dir}"/>
@@ -127,7 +150,6 @@
 		<call target="updater"/>
 		<!--delete file=""${mysql.use}/-->
 	</target>
-	
 
 	<target name="buildall" depends="svn_rev,release,protected,tools,release_zip" description="Build all projects"/>
 	<target name="compile" depends="miaconv,rabdump,rabnet"/>
@@ -163,6 +185,8 @@
 	
 	<!--target name="rabnet" description="make rabnet application" depends="db.mysql,engine,gui"/-->
 	<target name="rabnet" description="make rabnet application" depends="pickers,db.mysql,engine,gui_genetics,gui"/>
+
+	<target name="rabnet_demo" description="make rabnet application" depends="pickers,db.mysql,engine,gui_genetics,gui"/>
 	
 	<target name="pickers" description="pickers library for rabnet">
 		<csc target="library" output="${bin_dir}/Pickers.dll" define="${compile_flag}">
@@ -245,10 +269,11 @@
 				<include name="${curdir}/rabdump/*.resx"/>
 			</resources>
 			<references>
+				<include name="${bin_dir}/${guardantNET.lib}" />
 				<include name="${log4net.use}"/>
 			</references>
 		</csc>
-		<copy file="${curdir}/rabdump/app.config" tofile="${bin_dir}/rabdump.exe.config" />
+		<copy file="${curdir}/rabdump/clean_config/rabdump.exe.config" tofile="${bin_dir}/rabdump.exe.config" />
 	</target>
 	
 	<target name="gui" description="rabnet gui">
@@ -291,13 +316,14 @@
 				<include name="${bin_dir}/db.mysql.dll" />
 				<include name="${bin_dir}/engine.dll" />
 				<include name="${bin_dir}/gui_genetics.dll" />
+				<include name="${bin_dir}/${guardantNET.lib}" />
 			</references>
 		</csc>
 		<copy file="${curdir}/rabnet/gui/clean_config/rabnet.exe.config" tofile="${bin_dir}/rabnet.exe.config" />
 	</target>
 	
 	<target name="obfuscate" depends="buildall" description="Binary Obfuscation">
-		<exec program="${obfuscator}">
+		<!--exec program="${obfuscator}">
 			<arg value="${root_bin}/release/db.mysql.dll" />
 			<arg value="${root_bin}/release/engine.dll" />
 			<arg value="${root_bin}/release/gui_genetics.dll" />
@@ -314,7 +340,7 @@
 			<arg value="${root_bin}/protected/rabnet.exe" />
 		</exec>
 		<property name="obfuscated" value=".ob" />
-		<call target="release_zip"/>
+		<call target="release_zip"/-->
 	</target>
 	
 	<target name="one_distrib">
@@ -463,6 +489,13 @@
 	</target>
 
 	<target name="distrib_nsis_release" depends="obfuscate">
+		<property name="dist_type" value="rabnet_no_protect"/>
+		<property name="bin_dir" value="${root_bin}\release"/>
+		<property name="bin_type" value="release"/>
+		<call target="nsis_bld"/>
+	</target>
+
+	<target name="distrib_nsis_release_no" depends="buildall">
 		<property name="dist_type" value="rabnet_no_protect"/>
 		<property name="bin_dir" value="${root_bin}\release"/>
 		<property name="bin_type" value="release"/>

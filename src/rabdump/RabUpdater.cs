@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Net;
 using System.Xml;
 using System.IO;
@@ -17,32 +15,35 @@ namespace X_Classes
 {
     class RabUpdateInfo
     {
-        public string version = "";
-        public string info = "";
-        public string file_uri = "";
-        public string file_name = "";
-        public bool require_client_restart = false;
+        public string Version = "";
+        public string Info = "";
+        public string FileUri = "";
+        public string FileName = "";
+        public bool RequireClientRestart = false;
 
-        public int xml_info_err = 0;
+        public int XmlInfoErr = 0;
 
-        public RabUpdateInfo()
-        {
-        }
+        //public RabUpdateInfo()
+        //{
+        //}
 
         public bool Check()
         {
             try
             {
-                Version v = new Version(version);
-                Uri u = new Uri(file_uri);
+                Version v = new Version(Version);
+                Uri u = new Uri(FileUri);
             }
             catch
             {
                 return false;
             }
-            if (x_tools.IsFilenameValid(file_name)){
-                return (xml_info_err == 0);
-            } else {
+            if (XTools.IsFilenameValid(FileName))
+            {
+                return (XmlInfoErr == 0);
+            }
+            else
+            {
                 return false;
             }
         }
@@ -55,28 +56,29 @@ namespace X_Classes
     {
         public static readonly ILog logger = LogManager.GetLogger(typeof(RabUpdater));
 
-        public const int ERR_OK = 0;
-        public const int ERR_TRANSPORT_FAIL = 10;
-        public const int ERR_BAD_XML = 100;
+        public const int ErrOk = 0;
+        public const int ErrTransportFail = 10;
+        public const int ErrBadXml = 100;
+        public const int ErrUnknown = 10000;
 
-        private Stopwatch stpw = new Stopwatch();
+        private readonly Stopwatch _stpw = new Stopwatch();
 
         public MessageSenderCallbackDelegate MessageSenderCallback;
         public CloseCallbackDelegate CloseCallback;
 
-        private Thread thrUpdate;
+        private Thread _thrUpdate;
 
-        private RabUpdateInfo UpInfo;
+        private RabUpdateInfo _upInfo;
 
-        private int lastPercents;
-        private long lastBytes;
+        private int _lastPercents;
+        private long _lastBytes;
 
 
 //        private Downloader dldr;
 
-        public RabUpdater()
-        {
-        }
+        //public RabUpdater()
+        //{
+        //}
 
         public static ILog log()
         {
@@ -115,91 +117,111 @@ namespace X_Classes
         public static RabUpdateInfo ReadUpdateInfo(string file, string savetofile)
         {
             RabUpdateInfo res = new RabUpdateInfo();
+            res.XmlInfoErr = ErrUnknown;
 
             WebClient client = new WebClient();
-            Stream XmlStream;
+            Stream xmlStream;
 
             try
             {
-                XmlStream = client.OpenRead(file);
+                xmlStream = client.OpenRead(file);
             }
             catch (Exception e)
             {
-                res.xml_info_err = ERR_TRANSPORT_FAIL;
+                res.XmlInfoErr = ErrTransportFail;
                 log().Error("Failed to get update xml. Err: " + e.Message);
                 return res;
             }
-            log().Debug("Got update xml.");
 
-            XmlReader reader = XmlReader.Create(XmlStream);
-
-            XmlDocument xd = new XmlDocument();
-
-            xd.Load(reader);
-
-            foreach (XmlNode nd in xd.DocumentElement.ChildNodes)
+            if (xmlStream != null)
             {
-                if (nd.Name == "bundle")
+                log().Debug("Got update xml.");
+
+                XmlReader reader = XmlReader.Create(xmlStream);
+
+                XmlDocument xd = new XmlDocument();
+
+                xd.Load(reader);
+
+                if (xd.DocumentElement != null)
                 {
-                    foreach (XmlNode bn in nd.ChildNodes)
+                    foreach (XmlNode nd in xd.DocumentElement.ChildNodes)
                     {
-                        switch (bn.Name)
+                        if (nd.Name == "bundle")
                         {
-                            case "version":
-                                try
+                            foreach (XmlNode bn in nd.ChildNodes)
+                            {
+                                switch (bn.Name)
                                 {
-                                    res.version = bn.Attributes["number"].Value;
+                                    case "version":
+                                        try
+                                        {
+                                            res.Version = bn.Attributes["number"].Value;
+                                        }
+                                        catch
+                                        {
+                                            res.XmlInfoErr = ErrBadXml;
+                                            log().Error("XML parse error in '" + bn.Name + "' node.");
+                                            return res;
+                                        }
+                                        log().Debug("Update version: " + res.Version.ToString());
+                                        break;
+                                    case "file":
+                                        try
+                                        {
+                                            res.FileUri = bn.Attributes["uri"].Value;
+                                            res.FileName = bn.Attributes["name"].Value;
+                                        }
+                                        catch
+                                        {
+                                            res.XmlInfoErr = ErrBadXml;
+                                            log().Error("XML parse error in '" + bn.Name + "' node.");
+                                            return res;
+                                        }
+                                        log().Debug("Update file uri: " + res.FileUri);
+                                        log().Debug("Update file name: " + res.FileName);
+                                        break;
+                                    case "info":
+                                        res.Info = bn.InnerText;
+                                        log().Debug("Update info: " + res.Info);
+                                        break;
+                                    case "req_client_restart":
+                                        try
+                                        {
+                                            res.RequireClientRestart = (bn.Attributes["value"].Value.ToLower() == "true");
+                                        }
+                                        catch
+                                        {
+                                            res.RequireClientRestart = false;
+                                        }
+                                        log().Debug("Update needs restart: " + res.RequireClientRestart.ToString());
+                                        break;
                                 }
-                                catch
-                                {
-                                    res.xml_info_err = ERR_BAD_XML;
-                                    log().Error("XML parse error in '" + bn.Name + "' node.");
-                                    return res;
-                                }
-                                log().Debug("Update version: " + res.version.ToString());
-                                break;
-                            case "file":
-                                try
-                                {
-                                    res.file_uri = bn.Attributes["uri"].Value;
-                                    res.file_name = bn.Attributes["name"].Value;
-                                }
-                                catch
-                                {
-                                    res.xml_info_err = ERR_BAD_XML;
-                                    log().Error("XML parse error in '" + bn.Name + "' node.");
-                                    return res;
-                                }
-                                log().Debug("Update file uri: " + res.file_uri);
-                                log().Debug("Update file name: " + res.file_name);
-                                break;
-                            case "info":
-                                res.info = bn.InnerText;
-                                log().Debug("Update info: " + res.info);
-                                break;
-                            case "req_client_restart":
-                                try
-                                {
-                                    res.require_client_restart = (bn.Attributes["value"].Value.ToLower() == "true");
-                                }
-                                catch
-                                {
-                                    res.require_client_restart = false;
-                                }
-                                log().Debug("Update needs restart: " + res.require_client_restart.ToString());
-                                break;
+                            }
+                        }
+                        else
+                        {
+                            log().Debug("Null update xml.");
+                            res.XmlInfoErr = ErrBadXml;
+                            return res;
                         }
                     }
+                } else
+                {
+                    log().Debug("Bad update xml.");
+                    res.XmlInfoErr = ErrBadXml;
+                    return res;
+                }
+                if (savetofile != "no save")
+                {
+                    xd.Save(savetofile);
                 }
             }
-            if (savetofile != "no save")
-            {
-                xd.Save(savetofile);
-            }
+            res.XmlInfoErr = ErrOk;
             return res;
         }
 
-        private RabUpdateInfo GetUpdateInfo()
+        private static RabUpdateInfo GetUpdateInfo()
         {
             Directory.CreateDirectory(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\");
 
@@ -208,16 +230,16 @@ namespace X_Classes
 
         public void CheckUpdate()
         {
-            if (thrUpdate == null)
+            if (_thrUpdate == null)
             {
-                thrUpdate = new Thread(new ThreadStart(CheckUpdateThr));
-                thrUpdate.Start();
+                _thrUpdate = new Thread(CheckUpdateThr);
+                _thrUpdate.Start();
             }
             else
             {
-                thrUpdate.Abort();
-                thrUpdate = new Thread(new ThreadStart(CheckUpdateThr));
-                thrUpdate.Start();
+                _thrUpdate.Abort();
+                _thrUpdate = new Thread(CheckUpdateThr);
+                _thrUpdate.Start();
             }
         }
 
@@ -233,15 +255,15 @@ namespace X_Classes
 
             bool needUpdate = false;
 
-            if (r.xml_info_err == 0)
+            if (r.XmlInfoErr == 0)
             {
                 string ver = Application.ProductVersion;
 
-                Version v_up = new Version(r.version);
-                Version v_self = new Version(ver);
+                Version vUp = new Version(r.Version);
+                Version vSelf = new Version(ver);
 
 
-                if (v_up > v_self)
+                if (vUp > vSelf)
                 {
                     needUpdate = true;
                 }
@@ -250,8 +272,8 @@ namespace X_Classes
 
             if (needUpdate)
             {
-                UpInfo = r;
-                log().Debug("Starting download of " + r.file_uri + "...");
+                _upInfo = r;
+                log().Debug("Starting download of " + r.FileUri + "...");
                 RunUpdate(r);
             }
             else
@@ -272,29 +294,29 @@ namespace X_Classes
             if (e.ProgressPercentage % 5 == 0)
             {
 
-                if (lastPercents != e.ProgressPercentage)
+                if (_lastPercents != e.ProgressPercentage)
                 {
-                    stpw.Stop();
-                    long ms = stpw.ElapsedMilliseconds;
-                    stpw.Reset();
-                    stpw.Start();
+                    _stpw.Stop();
+                    long ms = _stpw.ElapsedMilliseconds;
+                    _stpw.Reset();
+                    _stpw.Start();
 
-                    long bs = e.BytesReceived-lastBytes;
-                    lastBytes = e.BytesReceived;
+                    long bs = e.BytesReceived-_lastBytes;
+                    _lastBytes = e.BytesReceived;
 
-                    double speed = (float)bs / (float)ms * 1000.0;
+                    double speed = bs * 1000.0 / ms;
 
-                    lastPercents = e.ProgressPercentage;
-                    MessageShow("Новая версия программы " + UpInfo.version + Environment.NewLine + "Загрузка: " + e.ProgressPercentage.ToString() + "% (" + x_tools.formatBytes(e.BytesReceived) + ", " + x_tools.formatBytes(speed) + "/s)", "Обновление");
-                    log().Debug("Update download progress: " + e.ProgressPercentage + "% (" + x_tools.formatBytes(e.BytesReceived) + ", " + x_tools.formatBytes(speed) + "/s)");
+                    _lastPercents = e.ProgressPercentage;
+                    MessageShow("Новая версия программы " + _upInfo.Version + Environment.NewLine + "Загрузка: " + e.ProgressPercentage.ToString() + "% (" + XTools.FormatBytes(e.BytesReceived) + ", " + XTools.FormatBytes(speed) + "/s)", "Обновление");
+                    log().Debug("Update download progress: " + e.ProgressPercentage + "% (" + XTools.FormatBytes(e.BytesReceived) + ", " + XTools.FormatBytes(speed) + "/s)");
                 }
             }
         }
 
         private void Completed(object sender, AsyncCompletedEventArgs e)
         {
-            stpw.Stop();
-            stpw.Reset();
+            _stpw.Stop();
+            _stpw.Reset();
             if (e.Cancelled)
             {
                 log().Debug("Canceled!!!");
@@ -321,7 +343,7 @@ namespace X_Classes
                     
                     Directory.CreateDirectory(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\");
 
-                    Process.Start(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + UpInfo.file_name, "test");
+                    Process.Start(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + _upInfo.FileName, "test");
                     if (CloseCallback != null)
                     {
                         CloseCallback();
@@ -335,18 +357,18 @@ namespace X_Classes
         private void RunUpdate(RabUpdateInfo nfo)
         {
 
-            lastPercents = -1;
-            lastBytes = 0;
+            _lastPercents = -1;
+            _lastBytes = 0;
 
             Directory.CreateDirectory(Path.GetDirectoryName(Application.ExecutablePath)+"\\updates\\");
 
 
             WebClient webClient = new WebClient();
-            webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
-            webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
-            stpw.Reset();
-            stpw.Start();
-            webClient.DownloadFileAsync(new Uri(nfo.file_uri), Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + nfo.file_name);
+            webClient.DownloadFileCompleted += Completed;
+            webClient.DownloadProgressChanged += ProgressChanged;
+            _stpw.Reset();
+            _stpw.Start();
+            webClient.DownloadFileAsync(new Uri(nfo.FileUri), Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + nfo.FileName);
             
 
 

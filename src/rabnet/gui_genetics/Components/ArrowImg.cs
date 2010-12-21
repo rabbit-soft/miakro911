@@ -82,7 +82,7 @@ namespace rabnet
 		public override void DrawingProc(Graphics g)
 		{
 			Pen pen = new Pen(Color.Black);
-			Pen penGr = new Pen(Color.DarkGray);
+			//Pen penGr = new Pen(Color.DarkGray);
 
 			SolidBrush brush = new SolidBrush(Color.Black);
 

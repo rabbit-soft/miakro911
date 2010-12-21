@@ -3,31 +3,34 @@ using System;
 using System.Windows.Forms;
 using log4net;
 using X_Classes;
-using System.Threading;
-
+using System.Diagnostics;
+using System.IO;
+#if PROTECTED
+using RabGRD;
+#endif
 
 namespace rabdump
 {
     public partial class MainForm : Form
     {
-        public static readonly ILog logger = LogManager.GetLogger(typeof(MainForm));
-        bool canclose = false;
-        bool manual = true;
+        private static readonly ILog logger = LogManager.GetLogger(typeof(MainForm));
+        bool _canclose = false;
+        bool _manual = true;
 
-        RabUpdater rupd;
+        readonly RabUpdater _rupd;
 
-        SocketServer socksrv;
+        readonly SocketServer _socksrv;
 
-        long updDelayCnt = 0;
+        long _updDelayCnt = 0;
 
         public MainForm()
         {
             InitializeComponent();
             log4net.Config.XmlConfigurator.Configure();
-            rupd = new RabUpdater();
-            rupd.MessageSenderCallback = message_cb;
-            rupd.CloseCallback = close_cb;
-            socksrv = new SocketServer();
+            _rupd = new RabUpdater();
+            _rupd.MessageSenderCallback = MessageCb;
+            _rupd.CloseCallback = CloseCb;
+            _socksrv = new SocketServer();
         }
 
         public static ILog log()
@@ -36,32 +39,34 @@ namespace rabdump
         }
         private void restoreMenuItem_Click(object sender, EventArgs e)
         {
-            manual = false;
+            _manual = false;
             ShowInTaskbar = true;
             WindowState = FormWindowState.Normal;
-            manual = true;
+            _manual = true;
         }
 
         private void exitMenuItem_Click(object sender, EventArgs e)
         {
-            canclose = (MessageBox.Show(this,"Выйти из программы?","rabdump",MessageBoxButtons.YesNo)==DialogResult.Yes);
+            _canclose = (MessageBox.Show(this,"Выйти из программы?","RabDump",MessageBoxButtons.YesNo,MessageBoxIcon.Question)==DialogResult.Yes);
             Close();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.WindowsShutDown)
-                canclose = true;
-            e.Cancel = !canclose;
-            if (canclose)
+            {
+                _canclose = true;
+            }
+            e.Cancel = !_canclose;
+            if (_canclose)
             {
                 log().Debug("Program finished");
-                socksrv.Close();
+                _socksrv.Close();
             }
-            manual = false;
+            _manual = false;
             WindowState = FormWindowState.Minimized;
             ShowInTaskbar = false;
-            manual = true;
+            _manual = true;
         }
 
         private void notifyIcon1_DoubleClick(object sender, EventArgs e)
@@ -72,86 +77,91 @@ namespace rabdump
         private void MainForm_Load(object sender, EventArgs e)
         {
             notifyIcon1.Icon = Icon;
-            propertyGrid1.SelectedObject = Options.get();
+            propertyGrid1.SelectedObject = Options.Get();
             log().Debug("Program started");
-            Options.get().load();
+            Options.Get().Load();
             ReinitTimer(true);
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
-            if (!manual) return;
+            if (!_manual) return;
             if (WindowState == FormWindowState.Minimized)
                 ShowInTaskbar = false;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Options.get().load();
+            Options.Get().Load();
             Close();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Options.get().save();
+            Options.Get().Save();
             Close();
             ReinitTimer(false);
         }
 
-        private void ReinitTimer(bool OnStart)
+        private void ReinitTimer(bool onStart)
         {
             timer1.Stop();
             timer1.Start();
             jobsMenuItem.DropDownItems.Clear();
             restMenuItem.DropDownItems.Clear();
-            foreach (ArchiveJob j in Options.get().Jobs)
+            foreach (ArchiveJob j in Options.Get().Jobs)
             {
                 jobsMenuItem.DropDownItems.Add(j.Name, null, jobnowMenuItem_Click);
                 restMenuItem.DropDownItems.Add(j.Name,null,restMenuItem_Click);
             }
-            processTiming(OnStart);
+            ProcessTiming(onStart);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            processTiming(false);
-            if ((updDelayCnt >= 900000) && (!timer_up.Enabled))
+            ProcessTiming(false);
+            if ((_updDelayCnt >= 900000) && (!timer_up.Enabled))
             {
-                rupd.CheckUpdate();
+                _rupd.CheckUpdate();
                 timer_up.Enabled = true;
             }
-            if ((updDelayCnt < 900000) && (!timer_up.Enabled))
+            if ((_updDelayCnt < 900000) && (!timer_up.Enabled))
             {
-                updDelayCnt++;
+                _updDelayCnt++;
             }
 #if PROTECTED
-            if (!pserver.canwork())
+            if (!GRD.Instance.ValidKey())
             {
-                canclose = true;
+                _canclose = true;
+                Close();
+            }
+            if (!GRD.Instance.GetFlagServer())
+            {
+                _canclose = true;
                 Close();
             }
 #endif
         }
 
-        private void processTiming(bool onstart)
+        private void ProcessTiming(bool onstart)
         {
             log().Debug("processing timer "+(onstart?"OnStart":""));
-            foreach (ArchiveJob j in Options.get().Jobs)
-                if (j.needDump(onstart))
-                    doDump(j);
+            foreach (ArchiveJob j in Options.Get().Jobs)
+                if (j.NeedDump(onstart))
+                    DoDump(j);
         }
 
         private void jobnowMenuItem_Click(object sender, EventArgs e)
         {
-            foreach(ArchiveJob j in Options.get().Jobs)
-                if (sender == jobnowMenuItem || j.Name == (sender as ToolStripMenuItem).Text)
+            foreach(ArchiveJob j in Options.Get().Jobs)
+                if (sender == jobnowMenuItem || j.Name == ((ToolStripMenuItem) sender).Text)
                 {
-                    if (!j.busy)
-                        doDump(j);
+                    if (!j.Busy)
+                        DoDump(j);
                 }
         }
 
-        private void doDump(ArchiveJob j)
+        private void DoDump(ArchiveJob j)
         {
             notifyIcon1.ShowBalloonTip(5000,"Резервирование",j.Name,ToolTipIcon.Info);
             ArchiveJobThread.MakeJob(j);
@@ -160,17 +170,21 @@ namespace rabdump
 
         private void restMenuItem_Click(object sender, EventArgs e)
         {
-            RestoreForm rest = null;
+            RestoreForm rest;
             if (sender == restMenuItem)
+            {
                 rest = new RestoreForm();
+            }
             else
-                rest = new RestoreForm((sender as ToolStripMenuItem).Text);
+            {
+                rest = new RestoreForm(((ToolStripMenuItem) sender).Text);
+            }
             rest.ShowDialog();
         }
 
-        private void запуститьRabnetToolStripMenuItem_Click(object sender, EventArgs e)
+        private void RunRabnetToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ArchiveJobThread.runrabnet("");
+            ArchiveJobThread.RunRabnet("");
         }
 
         private void новаяФермаToolStripMenuItem_Click(object sender, EventArgs e)
@@ -178,12 +192,12 @@ namespace rabdump
             new FarmChangeForm().ShowDialog();
         }
 
-        private void message_cb(string txt, string ttl,ToolTipIcon ico, bool hide)
+        private void MessageCb(string txt, string ttl,ToolTipIcon ico, bool hide)
         {
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
-                MessageSenderCallbackDelegate d = new MessageSenderCallbackDelegate(message_cb);
-                this.Invoke(d,new object[] {txt,ttl,ico,hide});
+                MessageSenderCallbackDelegate d = MessageCb;
+                Invoke(d,new object[] {txt,ttl,ico,hide});
             }
             else
             {
@@ -199,23 +213,35 @@ namespace rabdump
             }
         }
 
-        private void close_cb()
+        private void CloseCb()
         {
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
-                CloseCallbackDelegate d = new CloseCallbackDelegate(close_cb);
-                this.Invoke(d);
+                CloseCallbackDelegate d = CloseCb;
+                Invoke(d);
             }
             else
             {
-                canclose = true;
+                _canclose = true;
                 Close();
             }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            rupd.CheckUpdate();
+            _rupd.CheckUpdate();
+        }
+
+        private void updateKeyMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start(Path.GetDirectoryName(Application.ExecutablePath) + "\\GrdTRU.exe");
+        }
+
+        private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutForm aFrm = new AboutForm();
+            //aFrm
+            aFrm.Show();
         }
 
     }

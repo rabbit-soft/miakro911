@@ -1,7 +1,9 @@
 ﻿//#define PROTECTED
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
+#if PROTECTED
+using RabGRD;
+#endif
 
 namespace rabdump
 {
@@ -13,37 +15,55 @@ namespace rabdump
         [STAThread]
         static void Main()
         {
-            try
+            bool new_instance;
+            using (System.Threading.Mutex mutex = new System.Threading.Mutex(true, "RabDumpApplication", out new_instance))
             {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-#if PROTECTED
-            bool exit = true;
-            do
-            {
-                exit = true;
-                int end = 0;
-                while (!pserver.haskey() && end == 0)
+                if (new_instance)
                 {
-                    if (MessageBox.Show(null, "Ключ защиты не найден!\nВставьте ключ защиты и нажмите кнопку повтор.",
-                        "Ключ защиты", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) == DialogResult.Cancel)
-                        end = 1;
-                }
-                if (!pserver.haskey())
-                    return;
-                pserver svr = new pserver();
-#endif
-                Application.Run(new MainForm());
+                    try
+                    {
+                        Application.EnableVisualStyles();
+                        Application.SetCompatibleTextRenderingDefault(false);
 #if PROTECTED
-                svr.release();
-                if (!pserver.haskey())
-                    exit = false;
-            } while (!exit);
+                        bool exit;
+                        do
+                        {
+                            exit = true;
+//                            int end = 0;
+                            if (!GRD.Instance.ValidKey())
+                            {
+                                MessageBox.Show(null, "Ключ защиты не найден!\nРабота программы будет завершена!",
+                                                "Ключ защиты", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+//                                    end = 1;
+                            }
+//                            if (!GRD.Instance.ValidKey())
+                            //{
+                                //return;
+                            //}
+                            if (!GRD.Instance.GetFlagServer())
+                            {
+                                MessageBox.Show(null, "Данный ключ защиты не позволяет запуск приложения!\n",
+                                                "Ключ защиты", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+                            //                pserver svr = new pserver();
 #endif
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message + e.StackTrace);
+                            Application.Run(new MainForm());
+#if PROTECTED
+                            //svr.release();
+                            if (!GRD.Instance.ValidKey())
+                            {
+                                exit = false;
+                            }
+                        } while (!exit);
+#endif
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message + e.StackTrace);
+                    }
+                }
             }
         }
     }

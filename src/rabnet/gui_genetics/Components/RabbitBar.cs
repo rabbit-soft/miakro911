@@ -13,7 +13,7 @@ namespace rabnet
 		public Commands Command;
 		public int FindCloneWindowID = 0;
 		public int SourceWindowRabbitID = 0;
-		public string test = "1";
+		public string Test = "1";
 	}
 
 	/// <summary>
@@ -23,27 +23,27 @@ namespace rabnet
 	{
 
 		Dictionary<int, bool> _CommonWith = new Dictionary<int, bool>();
-		private Boolean _Duplicated = false;
+		private Boolean _duplicated = false;
 
-		private int _ForcedGender = 0;
+		private int _forcedGender = 0;
 		public int ForcedGender 
 		{
-			get { return _ForcedGender; }
-			set { _ForcedGender = value; }
+			get { return _forcedGender; }
+			set { _forcedGender = value; }
 		}
 
-		private int _WindowRabbitID;
+		private int _windowRabbitID;
 		public int WindowRabbitID
 		{
-			get { return _WindowRabbitID; }
-			set { _WindowRabbitID = value; }
+			get { return _windowRabbitID; }
+			set { _windowRabbitID = value; }
 		}
 
-		private RabbitGen _Rabbit;
+		private RabbitGen _rabbit;
 		public void SetRabbit(RabbitGen rab){
-			_Rabbit=rab;
+			_rabbit=rab;
 			UpdateTooltip();
-			_Exists = true;
+			_exists = true;
 			TabStop = true;
 			label1.Text = rab.rid.ToString();
 			label2.Text = rab.r_father.ToString();
@@ -52,40 +52,40 @@ namespace rabnet
 		}
 		public RabbitGen GetRabbit()
 		{
-			return _Rabbit; 
+			return _rabbit; 
 		}
 
-		private Boolean _Exists = false;
+		private Boolean _exists = false;
 
-		private Color _FgColor = SystemColors.Control;
+		private Color _fgColor = SystemColors.Control;
 		public Color FgColor
 		{
-			get { return _FgColor; }
-			set { _FgColor = value; }
+			get { return _fgColor; }
+			set { _fgColor = value; }
 		}
 
-		private RabbitPair _ParentPair;
+		private RabbitPair _parentPair;
 		public void SetParentPair(RabbitPair p)
 		{
-			_ParentPair = p;
+			_parentPair = p;
 		}
 
 
-		private string _ToolTip = "";
+		private string _toolTip = "";
 
 		private void UpdateTooltip()
 		{
 			string tt = "";
 			string ttl = "";
 			Boolean dead = false;
-			if (_Rabbit != null)
+			if (_rabbit != null)
 			{
 				string sex = "-";
-				if (_Rabbit.sex == RabbitGen.RabbitSex.MALE)
+				if (_rabbit.sex == RabbitGen.RabbitSex.MALE)
 				{
 					sex = "мужской";
 				}
-				if (_Rabbit.sex == RabbitGen.RabbitSex.FEMALE)
+				if (_rabbit.sex == RabbitGen.RabbitSex.FEMALE)
 				{
 					sex = "женский";
 				}
@@ -93,14 +93,14 @@ namespace rabnet
 Пол: {1}
 Порода: {2}
 Приплод: {3:f2}
-Родительские качества: {4:f2}", _Rabbit.rid, sex, _Rabbit.breed_name, _Rabbit.PriplodK, _Rabbit.RodK);
-				ttl = _Rabbit.fullname;
+Родительские качества: {4:f2}", _rabbit.rid, sex, _rabbit.breed_name, _rabbit.PriplodK, _rabbit.RodK);
+				ttl = _rabbit.fullname;
 				
-				dead = _Rabbit.IsDead;
+				dead = _rabbit.IsDead;
 
 				if (dead)
 				{
-					if (_Rabbit.sex == RabbitGen.RabbitSex.FEMALE)
+					if (_rabbit.sex == RabbitGen.RabbitSex.FEMALE)
 					{
 						ttl += " (списана)";
 					}
@@ -113,7 +113,7 @@ namespace rabnet
 			}
 			RabToolTip.ToolTipTitle = ttl;
 //			RabToolTip.SetToolTip(this, tt);
-			_ToolTip = tt;
+			_toolTip = tt;
 			if (dead)
 			{
 				RabToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
@@ -124,58 +124,58 @@ namespace rabnet
 			}
 		}
 
-		private Boolean _OrderedGenom = false;
+		private Boolean _orderedGenom = false;
 		/// <summary>
 		/// Tells class if genom must be ordered.
 		/// </summary>
 		public Boolean OrderedGenom
 		{
-			get { return _OrderedGenom; }
+			get { return _orderedGenom; }
 			set
 			{
-				_OrderedGenom = value;
+				_orderedGenom = value;
 				this.RedrawMe();
 			}
 		}
 	
-		Dictionary<int, Color> _GenomColors = new Dictionary<int, Color>();
+		Dictionary<int, Color> _genomColors = new Dictionary<int, Color>();
 
 		public void ReplaceGenomeColors(Dictionary<int, Color> gcs)
 		{
-			_GenomColors.Clear();
-			_GenomColors = new Dictionary<int, Color>(gcs);
+			_genomColors.Clear();
+			_genomColors = new Dictionary<int, Color>(gcs);
 
 			RedrawMe();
 		}
 
 		public Dictionary<int, Color> GetGenomColors()
 		{
-			return _GenomColors;
+			return _genomColors;
 		}
 
-		private string _Genom = "";
-		private string[] _GenomArr = { };
-		private string[] _GenomOrderedArr = { };
+		private string _genom = "";
+		private string[] _genomArr = { };
+		private string[] _genomOrderedArr = { };
 		public string Genom
 		{
 			get
 			{
-				if (_Genom == "")
+				if (_genom == "")
 				{
 					return "0";
 				}
 				else
 				{
-					return _Genom;
+					return _genom;
 				}
 			}
 			set
 			{
 				if (CheckGenom(value))
 				{
-					_Genom = value;
-					_GenomArr = _Genom.Split(new Char[] { ';' });
-					_GenomOrderedArr = OrderGenom(_GenomArr);
+					_genom = value;
+					_genomArr = _genom.Split(new Char[] { ';' });
+					_genomOrderedArr = OrderGenom(_genomArr);
 				}
 				this.RedrawMe();
 			}
@@ -213,7 +213,7 @@ namespace rabnet
 
 		private void DrawColorBar(Graphics gr, Point point, Size size, float k)
 		{
-			Pen pen = new Pen(Color.Black);
+//			Pen pen = new Pen(Color.Black);
 			Pen penGr = new Pen(Color.DarkGray);
 			SolidBrush brush = new SolidBrush(Color.White);
 
@@ -380,11 +380,11 @@ namespace rabnet
 
 			if (ordered)
 			{
-				genoms = _GenomOrderedArr;
+				genoms = _genomOrderedArr;
 			}
 			else
 			{
-				genoms = _GenomArr;
+				genoms = _genomArr;
 			}
 
 			Color cl= new Color();
@@ -398,9 +398,9 @@ namespace rabnet
 				foreach (string g in genoms)
 				{
 
-					if (_GenomColors.ContainsKey(Convert.ToInt32(g)))
+					if (_genomColors.ContainsKey(Convert.ToInt32(g)))
 					{
-						cl = _GenomColors[Convert.ToInt32(g)];
+						cl = _genomColors[Convert.ToInt32(g)];
 					}
 					else
 					{
@@ -446,10 +446,10 @@ namespace rabnet
 			Brush textbrush = SystemBrushes.ControlText;
 
 			string pripl = "";
-			if (_Rabbit != null)
+			if (_rabbit != null)
 			{
-				pripl = Math.Round(_Rabbit.PriplodK, 2).ToString();
-				if (_Rabbit.IsDead)
+				pripl = Math.Round(_rabbit.PriplodK, 2).ToString();
+				if (_rabbit.IsDead)
 				{
 					pen = new Pen(Color.Red);
 				}
@@ -470,27 +470,27 @@ namespace rabnet
 
 			int gender = 0;
 			float rodk = 0;
-			if (_ForcedGender > 0)
+			if (_forcedGender > 0)
 			{
-				gender = _ForcedGender;
+				gender = _forcedGender;
 			}
 			else
 			{
-				if (_Rabbit != null)
+				if (_rabbit != null)
 				{
-					if (_Rabbit.sex == RabbitGen.RabbitSex.MALE)
+					if (_rabbit.sex == RabbitGen.RabbitSex.MALE)
 					{
 						gender = 1;
 					}
-					if (_Rabbit.sex == RabbitGen.RabbitSex.FEMALE)
+					if (_rabbit.sex == RabbitGen.RabbitSex.FEMALE)
 					{
 						gender = 2;
 					}
 				}
 			}
-			if (_Rabbit != null)
+			if (_rabbit != null)
 			{
-				rodk = _Rabbit.RodK;
+				rodk = _rabbit.RodK;
 			}
 
 			if (gender > 0)
@@ -521,13 +521,13 @@ namespace rabnet
 
 			p.CloseFigure();
 
-			Color cl = Color.FromArgb(255, _FgColor);
+			Color cl = Color.FromArgb(255, _fgColor);
 			SolidBrush brush = new SolidBrush(cl);
 
-			if (!_Exists)
+			if (!_exists)
 			{
-				cl = Color.FromArgb(200, _FgColor);
-				Pen lp=new Pen(_FgColor);
+				cl = Color.FromArgb(200, _fgColor);
+				Pen lp=new Pen(_fgColor);
 				brush = new SolidBrush(cl);
 				g.SmoothingMode = SmoothingMode.AntiAlias;
 				g.FillPath(brush, p);
@@ -535,9 +535,9 @@ namespace rabnet
 				g.SmoothingMode = SmoothingMode.None;
 				return;
 			}
-			if (_Rabbit != null)
+			if (_rabbit != null)
 			{
-				if (_Rabbit.IsDead)
+				if (_rabbit.IsDead)
 				{
 					cl = Color.FromArgb(50, Color.Red);
 					brush = new SolidBrush(cl);
@@ -555,7 +555,7 @@ namespace rabnet
 			{
 				if (gender == 1) // Male
 				{
-					DrawGenom(g, new Point(1, (int)(this.Height / 2)), new Size(this.Width - 2, (int)(this.Height / 2)), _OrderedGenom);
+					DrawGenom(g, new Point(1, (int)(this.Height / 2)), new Size(this.Width - 2, (int)(this.Height / 2)), _orderedGenom);
 
 					g.DrawLine(pen, new Point(0, this.Height - 1), new Point(this.Width - 1, this.Height - 1));
 					g.DrawLine(pen, new Point(this.Width - 1, (int)(this.Height / 2)), new Point(this.Width - 1, this.Height - 1));
@@ -576,7 +576,7 @@ namespace rabnet
 				}
 				else if (gender == 2) //Female
 				{
-					DrawGenom(g, new Point(1, 0), new Size(this.Width - 2, (int)(this.Height / 2)), _OrderedGenom);
+					DrawGenom(g, new Point(1, 0), new Size(this.Width - 2, (int)(this.Height / 2)), _orderedGenom);
 
 					g.DrawLine(pen, new Point((int)(this.Height / 2), this.Height - 1), new Point(this.Width - (int)(this.Height / 2) - 1, this.Height - 1));
 					g.DrawLine(pen, new Point(this.Width - 1, 0), new Point(this.Width - 1, (int)(this.Height / 2)));
@@ -599,7 +599,7 @@ namespace rabnet
 			}
 			else //Unknown gender;
 			{
-				DrawGenom(g, new Point(1, 0), new Size(this.Width - 2, (int)(this.Height / 2)), _OrderedGenom);
+				DrawGenom(g, new Point(1, 0), new Size(this.Width - 2, (int)(this.Height / 2)), _orderedGenom);
 
 				g.DrawLine(pen, new Point(0, 0), new Point(0, this.Height - 1));
 				g.DrawLine(pen, new Point(0, 0), new Point(this.Width - 1, 0));
@@ -617,7 +617,7 @@ namespace rabnet
 			g.DrawLine(pen, new Point(0, (int)(this.Height / 2)), new Point(this.Width - 1, (int)(this.Height / 2)));
 
 
-			if (_Active)
+			if (_active)
 			{
 //				cl = Color.FromArgb(150,SystemColors.MenuHighlight);
 				cl = Color.FromArgb(150, SystemColors.HotTrack);
@@ -626,7 +626,7 @@ namespace rabnet
 				g.FillPath(brush, p);
 				g.SmoothingMode = SmoothingMode.None;
 				//				pen = new Pen(Color.Red,2);
-			} else if (_Highlight)
+			} else if (_highlight)
 			{
 				cl = Color.FromArgb(150, SystemColors.Highlight);
 //				cl = Color.FromArgb(150, SystemColors.MenuHighlight);
@@ -636,7 +636,7 @@ namespace rabnet
 				g.FillPath(brush, p);
 				g.SmoothingMode = SmoothingMode.None;
 			}
-			if (_Duplicated)
+			if (_duplicated)
 			{
 				if (gender > 0)
 				{
@@ -657,79 +657,79 @@ namespace rabnet
 			}
 		}
 
-		private Boolean _Active = false;
+		private Boolean _active = false;
 
 		private void RabbitBar_Enter(object sender, EventArgs e)
 		{
-			_Active = true;
+			_active = true;
 			RedrawMe();
-			if (_Rabbit != null)
+			if (_rabbit != null)
 			{
-				if (_ParentPair != null)
+				if (_parentPair != null)
 				{
 					RabbitCommandMessage cmd=new RabbitCommandMessage();
 					cmd.Command=RabbitCommandMessage.Commands.Highlight;
-					cmd.TargetRabbitID=_Rabbit.rid;
-					cmd.SourceWindowRabbitID = _WindowRabbitID;
-					_ParentPair.SearchFromChild(cmd);
+					cmd.TargetRabbitID=_rabbit.rid;
+					cmd.SourceWindowRabbitID = _windowRabbitID;
+					_parentPair.SearchFromChild(cmd);
 				}
 			}
 		}
 
 		private void RabbitBar_Leave(object sender, EventArgs e)
 		{
-			_Active = false;
+			_active = false;
 			RedrawMe();
-			if (_Rabbit != null)
+			if (_rabbit != null)
 			{
-				if (_ParentPair != null)
+				if (_parentPair != null)
 				{
 					RabbitCommandMessage cmd=new RabbitCommandMessage();
 					cmd.Command=RabbitCommandMessage.Commands.Unhighlight;
-					cmd.TargetRabbitID=_Rabbit.rid;
-					cmd.SourceWindowRabbitID = _WindowRabbitID;
-					_ParentPair.SearchFromChild(cmd);
+					cmd.TargetRabbitID=_rabbit.rid;
+					cmd.SourceWindowRabbitID = _windowRabbitID;
+					_parentPair.SearchFromChild(cmd);
 				}
 			}
 		}
 
 		public void MeetNeighbors()
 		{
-			if (_Rabbit != null)
+			if (_rabbit != null)
 			{
 				RabbitCommandMessage cmd = new RabbitCommandMessage();
 				cmd.Command = RabbitCommandMessage.Commands.FindClone;
-				cmd.TargetRabbitID = _Rabbit.rid;
-				cmd.SourceWindowRabbitID = _WindowRabbitID;
-				if (_ParentPair.SearchFromChild(cmd))
+				cmd.TargetRabbitID = _rabbit.rid;
+				cmd.SourceWindowRabbitID = _windowRabbitID;
+				if (_parentPair.SearchFromChild(cmd))
 				{
-					_Duplicated = true;
+					_duplicated = true;
 					RedrawMe();
 				}
 			}
 		}
 
-		private Boolean _Highlight = false;
+		private Boolean _highlight = false;
 		public Boolean SearchFromParent(RabbitCommandMessage cmd)
 		{
 			Boolean res = false;
-			if (_Rabbit != null)
+			if (_rabbit != null)
 			{
-				if (cmd.TargetRabbitID== _Rabbit.rid)
+				if (cmd.TargetRabbitID== _rabbit.rid)
 				{
 					if (cmd.Command== RabbitCommandMessage.Commands.Highlight)
 					{
-						_Highlight = true;
+						_highlight = true;
 						RedrawMe();
 					}
 					if (cmd.Command == RabbitCommandMessage.Commands.Unhighlight)
 					{
-						_Highlight = false;
+						_highlight = false;
 						RedrawMe();
 					}
 					if (cmd.Command == RabbitCommandMessage.Commands.FindClone)
 					{
-						_Duplicated = true;
+						_duplicated = true;
 						res = true;
 						if (!_CommonWith.ContainsKey(cmd.SourceWindowRabbitID))
 						{
@@ -741,7 +741,7 @@ namespace rabnet
 				if (cmd.Command == RabbitCommandMessage.Commands.ForgetWindow)
 				{
 					_CommonWith.Remove(cmd.SourceWindowRabbitID);
-					_Duplicated = (_CommonWith.Count > 0);
+					_duplicated = (_CommonWith.Count > 0);
 					res = true;
 					RedrawMe();
 				}
@@ -756,14 +756,14 @@ namespace rabnet
 
 		private void RabbitBar_MouseEnter(object sender, EventArgs e)
 		{
-			RabToolTip.Show(_ToolTip, this);
+			RabToolTip.Show(_toolTip, this);
 		}
 
 		private void RabbitBar_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
 		{
 			if (e.KeyChar == ' ')
 			{
-				RabToolTip.Show(_ToolTip, this);
+				RabToolTip.Show(_toolTip, this);
 			}
 			else
 			{

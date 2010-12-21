@@ -36,11 +36,17 @@ RequestExecutionLevel admin
 !include Sections.nsh
 !include MUI2.nsh
 
+!include StrRep.nsh
+!include ReplaceInFile.nsh
+
 # Reserved Files
 ReserveFile "${NSISDIR}\Plugins\AdvSplash.dll"
 
 # Variables
 Var StartMenuGroup
+Var Inst_code
+
+
 
 # Installer pages
 !insertmacro MUI_PAGE_WELCOME
@@ -74,6 +80,9 @@ InstType $(SEC_PackServerFull_NAME)
 # Installer sections
 Section $(SEC_Rabnet_NAME) SEC_Rabnet
     SectionIn 1 
+
+    Call CloseRabNet
+
     SetOutPath $INSTDIR
     SetOverwrite on
     File ..\..\..\bin\@bin_type@\rabnet.exe
@@ -113,13 +122,26 @@ SectionEnd
 
 Section /o $(SEC_RabDump_NAME) SEC_RabDump
     SectionIn 2 3
+
+
+    Call CloseRabDump
+
     SetOutPath $INSTDIR
     SetOverwrite on
     File ..\..\..\bin\@bin_type@\GrdAPI32.DLL
     File ..\..\..\bin\@bin_type@\rabdump.exe
     File ..\..\..\bin\@bin_type@\key.dll
     File ..\..\..\bin\tools\updater.exe
-    File ..\..\..\bin\@bin_type@\mia_conv.exe
+
+    File ..\..\..\bin\@bin_type@\GrdTRU.exe
+
+    SetOutPath $INSTDIR\7z
+    File ..\..\..\bin\@bin_type@\7z\7-zip.chm
+    File ..\..\..\bin\@bin_type@\7z\7za.exe
+    File ..\..\..\bin\@bin_type@\7z\copying.txt
+    File ..\..\..\bin\@bin_type@\7z\license.txt
+    File ..\..\..\bin\@bin_type@\7z\readme.txt
+
     #SetOutPath $INSTDIR
     #SetOverwrite off
     #File ..\..\..\bin\@bin_type@\rabdump.exe.config
@@ -127,13 +149,21 @@ Section /o $(SEC_RabDump_NAME) SEC_RabDump
     WriteRegStr HKLM "${REGKEY}\Components" "rabdump" 1
 #    DetailPrint $(UPDATER_Run)
 #    ExecWait '"$INSTDIR\updater.exe"'
+
+#    !insertmacro ReplaceInFile "$INSTDIR\rabdump.conf" "[7z_bin]" "$INSTDIR\7z\7za.exe"
+
     !insertmacro SelectSection "SEC_Updater"
 SectionEnd
 
 Section /o $(SEC_Mysql_NAME) SEC_Mysql
     SectionIn 3
     DetailPrint $(MYSQLINSTALLER_Start)
-    ExecWait 'msiexec /i "$EXEDIR\mysql\mysql-essential-5.1.49-win32.msi" /qr INSTALLDIR="$PROGRAMFILES\MySQL\MySQL Server 5.1\"  DATADIR="$PROGRAMFILES\MySQL\MySQL Server 5.1\" /L* C:\MSI-MySQL-Log.txt'
+
+    ExecWait 'msiexec /i "$EXEDIR\mysql\mysql-essential-5.1.49-win32.msi" /qr INSTALLDIR="$PROGRAMFILES\MySQL\MySQL Server 5.1\"  DATADIR="$PROGRAMFILES\MySQL\MySQL Server 5.1\" /L* C:\MSI-MySQL-Log.txt' $Inst_code
+#    StrCmp $Inst_code 0 ok
+    DetailPrint $Inst_code
+#    ok:
+    DetailPrint "$Inst_code"
     DetailPrint $(MYSQLINSTALLER_Configure)
 #    RmDir /r /REBOOTOK "$PROGRAMFILES\MySQL\MySQL Server 5.1\Data"
     ExecWait '"$PROGRAMFILES\MySQL\MySQL Server 5.1\bin\mysqlinstanceconfig.exe" -i -q "-lC:\mysql_install_log.txt" "-p$PROGRAMFILES\MySQL\MySQL Server 5.1" AddBinToPath=yes ConnectionUsage=DSS ServiceName=MySQL5_1 ServerType=SERVER DatabaseType=MIXED Port=3306 RootCurrentPassword=mysql Charset=utf8 StrictMode=no'
@@ -146,6 +176,7 @@ Section -com_comps SEC_Common
     SetOutPath $INSTDIR
     SetOverwrite on
     File ..\..\..\bin\@bin_type@\log4net.dll
+    File ..\..\..\bin\@bin_type@\mia_conv.exe
     WriteRegStr HKLM "${REGKEY}\Components" com_comps 1
 SectionEnd
 
@@ -167,6 +198,7 @@ SectionEnd
 Section /o -sec_updater SEC_Updater
     DetailPrint $(UPDATER_Run)
     ExecWait '"$INSTDIR\updater.exe" batch'
+    Exec "$INSTDIR\rabdump.exe"
 SectionEnd
 
 # Macro for selecting uninstaller sections
@@ -221,34 +253,47 @@ Section /o -un.com_comps UNSEC_Common
 SectionEnd
 
 Section /o "-un.rabdump" UNSEC_RabDump
+
+    Call un.CloseRabDump
+
     Delete /REBOOTOK $INSTDIR\GrdAPI32.DLL
     Delete /REBOOTOK $INSTDIR\key.dll
     Delete /REBOOTOK $INSTDIR\rabdump.exe
     Delete /REBOOTOK $INSTDIR\updater.exe
+
+    Delete /REBOOTOK $INSTDIR\GrdTRU.exe
+
+    RmDir /REBOOTOK /r $INSTDIR\7z
+
+    RmDir /REBOOTOK /r $INSTDIR\updates
+
     DeleteRegValue HKLM "${REGKEY}\Components" "rabdump"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(SM_Dump_NAME).lnk"
 SectionEnd
 
 Section /o "-un.rabnet" UNSEC_Rabnet
+
+    Call un.CloseRabNet
+
     ;DeleteRegValue HKEY_CURRENT_USER Software\hzkakzvat\rabnet Path
     Delete /REBOOTOK $SMPROGRAMS\$StartMenuGroup\rabnet.lnk
-    Delete /REBOOTOK $INSTDIR\reports\zooteh_nofuck.rdl
-    Delete /REBOOTOK $INSTDIR\reports\zooteh.rdl
-    Delete /REBOOTOK $INSTDIR\reports\shed.rdl
-    Delete /REBOOTOK $INSTDIR\reports\replace_plan.rdl
-    Delete /REBOOTOK $INSTDIR\reports\realization.rdl
-    Delete /REBOOTOK $INSTDIR\reports\rabbit.rdl
-    Delete /REBOOTOK $INSTDIR\reports\plem.rdl
-    Delete /REBOOTOK $INSTDIR\reports\okrol_user.rdl
-    Delete /REBOOTOK $INSTDIR\reports\fucks_by_date.rdl
-    Delete /REBOOTOK $INSTDIR\reports\fucker.rdl
-    Delete /REBOOTOK $INSTDIR\reports\empty_rev.rdl
-    Delete /REBOOTOK $INSTDIR\reports\deadreason.rdl
-    Delete /REBOOTOK $INSTDIR\reports\dead.rdl
-    Delete /REBOOTOK $INSTDIR\reports\by_month.rdl
-    Delete /REBOOTOK $INSTDIR\reports\breeds.rdl
-    Delete /REBOOTOK $INSTDIR\reports\age.rdl
-    RmDir /REBOOTOK $INSTDIR/reports
+;    Delete /REBOOTOK $INSTDIR\reports\zooteh_nofuck.rdl
+;    Delete /REBOOTOK $INSTDIR\reports\zooteh.rdl
+;    Delete /REBOOTOK $INSTDIR\reports\shed.rdl
+;    Delete /REBOOTOK $INSTDIR\reports\replace_plan.rdl
+;    Delete /REBOOTOK $INSTDIR\reports\realization.rdl
+;    Delete /REBOOTOK $INSTDIR\reports\rabbit.rdl
+;    Delete /REBOOTOK $INSTDIR\reports\plem.rdl
+;    Delete /REBOOTOK $INSTDIR\reports\okrol_user.rdl
+;    Delete /REBOOTOK $INSTDIR\reports\fucks_by_date.rdl
+;    Delete /REBOOTOK $INSTDIR\reports\fucker.rdl
+;    Delete /REBOOTOK $INSTDIR\reports\empty_rev.rdl
+;    Delete /REBOOTOK $INSTDIR\reports\deadreason.rdl
+;    Delete /REBOOTOK $INSTDIR\reports\dead.rdl
+;    Delete /REBOOTOK $INSTDIR\reports\by_month.rdl
+;    Delete /REBOOTOK $INSTDIR\reports\breeds.rdl
+;    Delete /REBOOTOK $INSTDIR\reports\age.rdl
+    RmDir /REBOOTOK /r $INSTDIR/reports
     Delete /REBOOTOK $INSTDIR\RdlViewer.dll
     Delete /REBOOTOK $INSTDIR\RdlEngine.dll
     Delete /REBOOTOK $INSTDIR\rabnet.exe
@@ -257,6 +302,9 @@ Section /o "-un.rabnet" UNSEC_Rabnet
     Delete /REBOOTOK $INSTDIR\MySql.Data.dll
     Delete /REBOOTOK $INSTDIR\engine.dll
     Delete /REBOOTOK $INSTDIR\db.mysql.dll
+
+    RmDir /REBOOTOK /r $INSTDIR\upd
+
     DeleteRegValue HKLM "${REGKEY}\Components" "rabnet"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(SM_Prog_NAME).lnk"
 SectionEnd
@@ -268,8 +316,8 @@ Section -un.post UNSEC_Sys
     DeleteRegValue HKLM "${REGKEY}" Path
     DeleteRegKey /IfEmpty HKLM "${REGKEY}\Components"
     DeleteRegKey /IfEmpty HKLM "${REGKEY}"
-    RmDir /r /REBOOTOK $SMPROGRAMS\$StartMenuGroup
-    RmDir /REBOOTOK $INSTDIR
+    RmDir /r /REBOOTOK "$SMPROGRAMS\$StartMenuGroup"
+    RmDir /REBOOTOK "$INSTDIR"
 SectionEnd
 
 # Installer functions
@@ -302,6 +350,139 @@ Function .onInit
 
     
 FunctionEnd
+
+Function un.CloseRabDump
+
+    Push $5
+
+    push "rabdump.exe"
+    processwork::existsprocess
+    pop $5
+    IntCmp $5 0 done
+
+    loop:
+        push "rabdump.exe"
+        processwork::existsprocess
+        pop $5
+        IntCmp $5 0 done
+
+        DetailPrint $(KillRabDump)
+
+        push "rabdump.exe"
+;        processwork::CloseProcess
+        processwork::KillProcess
+        Sleep 2000
+        Goto loop
+
+    BailOut:
+        Abort
+
+    done:
+    Pop $5
+
+FunctionEnd
+
+
+Function CloseRabDump
+    Push $5
+
+    push "rabdump.exe"
+    processwork::existsprocess
+    pop $5
+    IntCmp $5 0 done
+
+    push "rabdump.exe"
+    processwork::CloseProcess
+;    processwork::KillProcess
+    Sleep 5000
+
+    loop:
+        push "rabdump.exe"
+        processwork::existsprocess
+        pop $5
+        IntCmp $5 0 done
+
+        DetailPrint $(KillRabDump)
+
+        push "rabdump.exe"
+;        processwork::CloseProcess
+        processwork::KillProcess
+        Sleep 2000
+        Goto loop
+
+    BailOut:
+        Abort
+
+    done:
+    Pop $5
+
+FunctionEnd
+
+Function un.CloseRabNet
+    Push $5
+
+    push "rabnet.exe"
+    processwork::existsprocess
+    pop $5
+    IntCmp $5 0 done
+
+    loop:
+        push "rabnet.exe"
+        processwork::existsprocess
+        pop $5
+        IntCmp $5 0 done
+
+        DetailPrint $(KillRabNet)
+
+        push "rabnet.exe"
+;        processwork::CloseProcess
+        processwork::KillProcess
+        Sleep 2000
+        Goto loop
+
+    BailOut:
+        Abort
+
+    done:
+    Pop $5
+
+FunctionEnd
+
+Function CloseRabNet
+    Push $5
+
+    push "rabnet.exe"
+    processwork::existsprocess
+    pop $5
+    IntCmp $5 0 done
+
+    push "rabnet.exe"
+    processwork::CloseProcess
+;    processwork::KillProcess
+    Sleep 5000
+
+    loop:
+        push "rabnet.exe"
+        processwork::existsprocess
+        pop $5
+        IntCmp $5 0 done
+
+        DetailPrint $(KillRabNet)
+
+        push "rabnet.exe"
+;        processwork::CloseProcess
+        processwork::KillProcess
+        Sleep 2000
+        Goto loop
+
+    BailOut:
+        Abort
+
+    done:
+    Pop $5
+
+FunctionEnd
+
 
 # Uninstaller functions
 Function un.onInit
@@ -372,6 +553,13 @@ LangString SM_Prog_NAME ${LANG_RUSSIAN} "Миакро Rabnet"
 
 LangString SM_Dump_NAME ${LANG_ENGLISH} "RabDump"
 LangString SM_Dump_NAME ${LANG_RUSSIAN} "Резервные копии"
+
+LangString KillRabDump ${LANG_ENGLISH} "Killing RabDump..."
+LangString KillRabDump ${LANG_RUSSIAN} "Закрываем Резервные копии..."
+
+LangString KillRabNet ${LANG_ENGLISH} "Killing RabNet..."
+LangString KillRabNet ${LANG_RUSSIAN} "Закрываем Rabnet..."
+
 
 
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "@AppName_en@"

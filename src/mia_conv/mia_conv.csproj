@@ -84,7 +84,6 @@
     <Compile Include="mia_file_complex.cs" />
     <Compile Include="mia_file_simple.cs" />
     <Compile Include="mia_rabbits.cs" />
-    <Compile Include="pclient.cs" />
     <Compile Include="Program.cs" />
     <EmbeddedResource Include="Form1.resx">
       <SubType>Designer</SubType>

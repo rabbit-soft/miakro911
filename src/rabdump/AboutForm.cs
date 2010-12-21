@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using RabGRD;
 #endif
 
-namespace rabnet
+namespace rabdump
 {
     partial class AboutForm : Form
     {
@@ -116,5 +116,10 @@ namespace rabnet
             }
         }
         #endregion
+
+        private void okButton_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }
