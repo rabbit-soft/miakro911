@@ -85,7 +85,7 @@
 		<property name="mysql.use" value="${bin_dir}/${mysql.lib}" />
 		<property name="rep.use" value="${bin_dir}/${rep.lib}" />
 		<property name="repeng.use" value="${bin_dir}/${repeng.lib}" />
-		<property name="guardant.use" value="${bin_dir}/${guardant.lib}" />
+		<!--property name="guardant.use" value="${bin_dir}/${guardant.lib}" /-->
 		<copy file="${log4net.ass}" tofile="${log4net.use}" />
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
 		<copy file="${rep.ass}" tofile="${rep.use}" />
