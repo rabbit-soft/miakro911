@@ -263,10 +263,13 @@
 		<csc target="winexe" output="${bin_dir}/rabdump.exe" win32icon="${curdir}/rabdump/icon_white.ico"  define="${compile_flag}">
 			<sources>
 				<include name="${curdir}/rabdump/*.cs"/>
+				<include name="${curdir}/rabdump/Forms/*.cs"/>
+				<include name="${curdir}/rabdump/X_Tools/*.cs"/>
 				<include name="${curdir}/rabdump/tmp/*.cs"/>
 			</sources>
 			<resources>
 				<include name="${curdir}/rabdump/*.resx"/>
+				<include name="${curdir}/rabdump/Forms/*.resx"/>
 			</resources>
 			<references>
 				<include name="${bin_dir}/${guardantNET.lib}" />
