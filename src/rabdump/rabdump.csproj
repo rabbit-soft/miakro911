@@ -74,7 +74,7 @@
     <Compile Include="Forms\FarmChangeForm.designer.cs">
       <DependentUpon>FarmChangeForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GRD.cs" />
+    <Compile Include="..\libs\GRD\GRD.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

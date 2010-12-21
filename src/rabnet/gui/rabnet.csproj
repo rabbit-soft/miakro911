@@ -104,7 +104,7 @@
     <Compile Include="forms\ProgressForm.Designer.cs">
       <DependentUpon>ProgressForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GRD.cs" />
+    <Compile Include="..\..\libs\GRD\GRD.cs" />
     <Compile Include="RabUpdaterClient.cs" />
     <Compile Include="components\ColorPickerColumn\ColorPickerColumn.cs">
       <SubType>Component</SubType>
