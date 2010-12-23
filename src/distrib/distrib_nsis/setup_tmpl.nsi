@@ -135,8 +135,8 @@ Section /o $(SEC_RabDump_NAME) SEC_RabDump
     SetOverwrite on
     File ..\..\..\bin\@bin_type@\RabDump\GrdAPI32.DLL
     File ..\..\..\bin\@bin_type@\RabDump\rabdump.exe
-    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage32.dll
-    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage64.dll
+#    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage32.dll
+#    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage64.dll
     File ..\..\..\bin\@bin_type@\RabDump\GuardantDotNetApi.dll
     File ..\..\..\bin\@bin_type@\RabDump\log4net.dll
 #    File ..\..\..\bin\@bin_type@\key.dll
@@ -270,8 +270,8 @@ Section /o "-un.rabdump" UNSEC_RabDump
 
     Delete /REBOOTOK $INSTDIR\RabDump\GrdAPI32.DLL
     Delete /REBOOTOK $INSTDIR\RabDump\rabdump.exe
-    Delete /REBOOTOK $INSTDIR\RabDump\CodeStorage32.dll
-    Delete /REBOOTOK $INSTDIR\RabDump\CodeStorage64.dll
+#    Delete /REBOOTOK $INSTDIR\RabDump\CodeStorage32.dll
+#    Delete /REBOOTOK $INSTDIR\RabDump\CodeStorage64.dll
     Delete /REBOOTOK $INSTDIR\RabDump\GuardantDotNetApi.dll
     Delete /REBOOTOK $INSTDIR\RabDump\updater.exe
     Delete /REBOOTOK $INSTDIR\RabDump\mia_conv.exe

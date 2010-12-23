@@ -400,7 +400,7 @@
 		<delete file="${root_bin}/protected/RabNet/db.mysql.dll.old"/>
 		<delete file="${root_bin}/protected/RabNet/rabnet.map"/>
 
-		<exec program="${grd_ob}">
+		<!--exec program="${grd_ob}">
 			<arg value="/INIT" />
 			<arg value="/MSG=C:\Program Files\Guardant\Guardant 5\PLAT_T+\bin\licensewizard.msg" />
 			<arg value="/SO" />
@@ -413,8 +413,9 @@
 			<arg value="${root_bin}/protected/RabDump/rabdump.exe" />
 			<arg value="/OUT=${root_bin}/protected/RabDump/" />
 			<arg value="/SO_CFG=${curdir}/GRDConfigs/rabdump/config.cfo" />
-		</exec>
-		<exec program="${grd_prot}">
+		</exec-->
+		<!--exec program="${grd_prot}">
+			<arg value="/INIT" />
 			<arg value="/MSG=C:\Program Files\Guardant\Guardant 5\PLAT_T+\bin\licensewizard.msg" />
 			<arg value="/PER=50" />
 			<arg value="/RC=1" />
@@ -424,7 +425,7 @@
 			<arg value="/SIGN" />
 			<arg value="${root_bin}/protected/RabDump/rabdump.exe" />
 			<arg value="/OUT=${root_bin}/protected/RabDump/" />
-		</exec> 
+		</exec--> 
 
 		<delete file="${root_bin}/protected/RabDump/rabdump.exe.old"/>
 		
