@@ -93,7 +93,7 @@ namespace updater
 
 
 
-            string path7Za=Path.GetDirectoryName(Application.ExecutablePath) + "\\7z\\7za.exe";
+            string path7Za=Path.GetDirectoryName(Application.ExecutablePath) + @"\..\7z\7za.exe";
 
             string loc_7B = "";
 
@@ -109,9 +109,7 @@ namespace updater
                 string loc7;
                 if (rk2 == null)
                 {
-/*
-                    loc7 = "";
-*/
+//                    loc7 = "";
                     loc_7B = "";
 
                 }
@@ -124,7 +122,6 @@ namespace updater
                     }
                 }
             }
-
 
 
 

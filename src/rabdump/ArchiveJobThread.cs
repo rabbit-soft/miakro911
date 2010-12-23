@@ -77,7 +77,20 @@ namespace rabdump
         {
             Directory.CreateDirectory(_j.BackupPath);
             String ffname = _j.Name + "_" + db.Name + "_" + DateTime.Now.ToString("yyyy_MM_dd_HHmmss");
-            String fname = _tmppath+"\\"+ffname;
+
+            ffname = ffname.Replace("?", "_");
+            ffname = ffname.Replace(":", "_");
+            ffname = ffname.Replace("\\", "_");
+            ffname = ffname.Replace("/", "_");
+            ffname = ffname.Replace("*", "_");
+            ffname = ffname.Replace("\"", "_");
+            ffname = ffname.Replace("<", "_");
+            ffname = ffname.Replace(">", "_");
+            ffname = ffname.Replace("|", "_");
+            ffname = ffname.Replace(" ", "_");
+
+
+            String fname = _tmppath+@"\"+ffname;
             log.Info("Making dump for " + _j.Name + " to " + ffname);
             String md = Options.Get().MySqlDumpPath;
             if (md == "")
@@ -109,7 +122,15 @@ namespace rabdump
             catch(Exception ex)
             {
                 log.Error("Error while "+md+":"+ex.GetType().ToString()+":"+ex.Message);
-                File.Delete(fname+".dump");
+                try
+                {
+                    File.Delete(fname + ".dump");
+                }
+                catch (Exception ex2)
+                {
+                    log.Error("Error while " + md + ":" + ex.GetType().ToString() + ":" + ex.Message);
+                    return;
+                }
                 return;
             }
             bool is7z=false;
