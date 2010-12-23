@@ -21,6 +21,10 @@ namespace RabGRD
 
         private string _keyId;
 
+        private int _farmCntCache;
+
+        private int _cacheTicks;
+
         /// <summary>
         /// Private constructor prevents instantiation from other classes
         /// </summary>
@@ -73,7 +77,21 @@ namespace RabGRD
             log.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
 
+            _farmCntCache = farmCnt;
+            _cacheTicks = Environment.TickCount & Int32.MaxValue;
+
             return farmCnt;
+        }
+
+        public int GetFarmsCntCache()
+        {
+
+            if ((Environment.TickCount& Int32.MaxValue)>_cacheTicks+60*1000)
+            {
+                GetFarmsCnt();
+            }
+
+            return _farmCntCache;
         }
 
         public string GetOrgName()

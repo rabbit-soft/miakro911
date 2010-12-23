@@ -6,11 +6,11 @@
 	<property name="minver_p" value="2"/>
 	<property name="minver" value="${minver_p}.0"/>
 
-	<property name="appname" value="Миакро Rabnet"/>
-	<property name="companyname" value="ХЗкакзвать"/>
+	<property name="appname" value="Миакро-9.11"/>
+	<property name="companyname" value="9-Бит"/>
 
-	<property name="appname_en" value="Miakro Rabnet"/>
-	<property name="companyname_en" value="IDontKnow"/>
+	<property name="appname_en" value="Miakro-9.11"/>
+	<property name="companyname_en" value="9-Bits"/>
 
 
 	<property name="revision" value="none"/>
@@ -40,6 +40,9 @@
 	<property name="repeng.lib" value="RdlEngine.dll" />
 	<property name="repeng.ass" value="${rep.path}/${repeng.lib}" />
 	<property name="obfuscator" value="Eazfuscator.NET.exe" />
+
+	<property name="grd_ob" value="C:\Program Files\Guardant\Guardant 5\PLAT_T+\Bin\CodeObfuscator.exe" />
+	<property name="grd_prot" value="C:\Program Files\Guardant\Guardant 5\PLAT_T+\Bin\CodeProtect.exe" />
 
 	<property name="obfuscated" value="" />
 
@@ -88,12 +91,14 @@
 		<property name="log4net.use" value="${bin_dir}/RabNet/${log4net.lib}" />
 		<property name="log4net.d.use" value="${bin_dir}/RabDump/${log4net.lib}" />
 		<property name="mysql.use" value="${bin_dir}/RabNet/${mysql.lib}" />
+		<property name="mysql.d.use" value="${bin_dir}/RabDump/${mysql.lib}" />
 		<property name="rep.use" value="${bin_dir}/RabNet/${rep.lib}" />
 		<property name="repeng.use" value="${bin_dir}/RabNet/${repeng.lib}" />
 		<!--property name="guardant.use" value="${bin_dir}/${guardant.lib}" /-->
 		<copy file="${log4net.ass}" tofile="${log4net.use}" />
 		<copy file="${log4net.ass}" tofile="${log4net.d.use}" />
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
+		<copy file="${mysql.ass}" tofile="${mysql.d.use}" />
 		<copy file="${rep.ass}" tofile="${rep.use}" />
 		<copy file="${repeng.ass}" tofile="${repeng.use}" />
 		<!--copy file="${guardant.ass}" tofile="${guardant.use}" /-->
@@ -274,6 +279,7 @@
 				<include name="${curdir}/rabdump/Forms/*.cs"/>
 				<include name="${curdir}/rabdump/X_Tools/*.cs"/>
 				<include name="${curdir}/rabdump/tmp/*.cs"/>
+				<include name="${curdir}/rabdump/Properties/AssemblyInfo.cs"/>
 				<include name="${curdir}/libs/GRD/*.cs"/>
 			</sources>
 			<resources>
@@ -343,17 +349,87 @@
 			<arg value="${root_bin}/release/mia_conv.exe" />
 			<arg value="${root_bin}/release/rabdump.exe" />
 			<arg value="${root_bin}/release/rabnet.exe" />
-		</exec>
+		</exec-->
 		<exec program="${obfuscator}">
-			<arg value="${root_bin}/protected/db.mysql.dll" />
+			<!--arg value="${root_bin}/protected/db.mysql.dll" />
 			<arg value="${root_bin}/protected/engine.dll" />
-			<arg value="${root_bin}/protected/gui_genetics.dll" />
-			<arg value="${root_bin}/protected/mia_conv.exe" />
-			<arg value="${root_bin}/protected/rabdump.exe" />
-			<arg value="${root_bin}/protected/rabnet.exe" />
+			<arg value="${root_bin}/protected/gui_genetics.dll" /-->
+			<arg value="${root_bin}/protected/RabDump/mia_conv.exe" />
+			<!--arg value="${root_bin}/protected/rabdump.exe" />
+			<arg value="${root_bin}/protected/rabnet.exe" /-->
 		</exec>
+
+		<!--exec program="${grd_ob}">
+			<arg value="/INIT" />
+			<arg value="/MSG=C:\Program Files\Guardant\Guardant 5\PLAT_T+\bin\licensewizard.msg" />
+			<arg value="/SO" />
+			<arg value="/SE" />
+			<arg value="/RC=1" />
+			<arg value="/ATR=2" />
+			<arg value="/GS3S" />
+			<arg value="/UN=1" />
+			<arg value="/SIGN" />
+			<arg value="/OUT=${root_bin}/protected/RabNet/" />
+			<!-arg value="/SO_CFG=${curdir}/GRDConfigs/rabnet/config.cfo" /->
+			<arg value="/MAP=${root_bin}/protected/RabNet/rabnet.map" />
+			<!-arg value="${root_bin}/protected/RabNet/rabnet.exe" /->
+			<!-arg value="${root_bin}/protected/RabNet/engine.dll" />
+			<arg value="${root_bin}/protected/RabNet/db.mysql.dll" /->
+		</exec-->
+		<exec program="${grd_prot}">
+			<arg value="/INIT" />
+			<arg value="/MSG=C:\Program Files\Guardant\Guardant 5\PLAT_T+\bin\licensewizard.msg" />
+			<arg value="/PER=50" />
+			<arg value="/RC=1" />
+			<arg value="/ATR=2" />
+			<arg value="/GS3S" />
+			<arg value="/UN=1" />
+			<arg value="/SIGN" />
+			<!--arg value="/MAP=${root_bin}/protected/RabNet/rabnet.map" /-->
+			<!--arg value="/EL=${curdir}/GRDConfigs/rabnet/config.cfp" /-->
+			<!--arg value="/IL=${curdir}/GRDConfigs/rabnet/rabnet.ifp" /-->
+			<arg value="/OUT=${root_bin}/protected/RabNet/" />
+			<arg value="${root_bin}/protected/RabNet/rabnet.exe" />
+			<arg value="${root_bin}/protected/RabNet/engine.dll" />
+			<arg value="${root_bin}/protected/RabNet/db.mysql.dll" />
+		</exec>
+		                                                                
+
+		<delete file="${root_bin}/protected/RabNet/rabnet.exe.old"/>
+		<delete file="${root_bin}/protected/RabNet/engine.dll.old"/>
+		<delete file="${root_bin}/protected/RabNet/db.mysql.dll.old"/>
+		<delete file="${root_bin}/protected/RabNet/rabnet.map"/>
+
+		<exec program="${grd_ob}">
+			<arg value="/INIT" />
+			<arg value="/MSG=C:\Program Files\Guardant\Guardant 5\PLAT_T+\bin\licensewizard.msg" />
+			<arg value="/SO" />
+			<arg value="/SE" />
+			<arg value="/RC=1" />
+			<arg value="/ATR=2" />
+			<arg value="/GS3S" />
+			<arg value="/UN=1" />
+			<arg value="/SIGN" />
+			<arg value="${root_bin}/protected/RabDump/rabdump.exe" />
+			<arg value="/OUT=${root_bin}/protected/RabDump/" />
+			<arg value="/SO_CFG=${curdir}/GRDConfigs/rabdump/config.cfo" />
+		</exec>
+		<exec program="${grd_prot}">
+			<arg value="/MSG=C:\Program Files\Guardant\Guardant 5\PLAT_T+\bin\licensewizard.msg" />
+			<arg value="/PER=50" />
+			<arg value="/RC=1" />
+			<arg value="/ATR=2" />
+			<arg value="/GS3S" />
+			<arg value="/UN=1" />
+			<arg value="/SIGN" />
+			<arg value="${root_bin}/protected/RabDump/rabdump.exe" />
+			<arg value="/OUT=${root_bin}/protected/RabDump/" />
+		</exec> 
+
+		<delete file="${root_bin}/protected/RabDump/rabdump.exe.old"/>
+		
 		<property name="obfuscated" value=".ob" />
-		<call target="release_zip"/-->
+		<call target="release_zip"/>
 	</target>
 	
 	<target name="one_distrib">

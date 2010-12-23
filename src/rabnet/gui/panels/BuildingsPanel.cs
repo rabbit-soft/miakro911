@@ -48,7 +48,7 @@ namespace rabnet
             {
 #if PROTECTED
                 //                    if (i <= PClient.get().farms())
-                if (i <= GRD.Instance.GetFarmsCnt())
+                if (i <= GRD.Instance.GetFarmsCntCache())
 #endif
                     nofarms.Add(i);
             }

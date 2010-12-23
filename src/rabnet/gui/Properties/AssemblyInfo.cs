@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("9-Bits")]
-[assembly: AssemblyProduct("Миакро Rabnet")]
+[assembly: AssemblyProduct("Миакро-9.11")]
 [assembly: AssemblyCopyright("Copyright ©  2010 9-Bits")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

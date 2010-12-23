@@ -2,9 +2,9 @@
 # 27.07.2010 15:45:25
 
 Name $(Prog_NAME)
-!define NameInt "MiakroRabnet"
-!define DirName "MiakroRabnet"
-!define CompName "HZKakZvat"
+!define NameInt "Miakro911"
+!define DirName "Miakro911"
+!define CompName "9-Bits"
 #!define DirName "@ProgDirName@"
 
 
@@ -83,39 +83,44 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
 
     Call CloseRabNet
 
-    SetOutPath $INSTDIR
+    SetOutPath $INSTDIR\RabNet
     SetOverwrite on
-    File ..\..\..\bin\@bin_type@\rabnet.exe
-    File ..\..\..\bin\@bin_type@\db.mysql.dll
-    File ..\..\..\bin\@bin_type@\engine.dll
+    File ..\..\..\bin\@bin_type@\RabNet\rabnet.exe
+    File ..\..\..\bin\@bin_type@\RabNet\db.mysql.dll
+    File ..\..\..\bin\@bin_type@\RabNet\engine.dll
 #    File ..\..\..\bin\@bin_type@\gui_genetics.dll
-    File ..\..\..\bin\@bin_type@\MySql.Data.dll
-    File ..\..\..\bin\@bin_type@\Pickers.dll
-    File ..\..\..\bin\@bin_type@\rabHelp.chm
-    File ..\..\..\bin\@bin_type@\RdlEngine.dll
-    File ..\..\..\bin\@bin_type@\RdlViewer.dll
-    SetOutPath $INSTDIR\reports
-    File ..\..\..\bin\@bin_type@\reports\age.rdl
-    File ..\..\..\bin\@bin_type@\reports\breeds.rdl
-    File ..\..\..\bin\@bin_type@\reports\by_month.rdl
-    File ..\..\..\bin\@bin_type@\reports\dead.rdl
-    File ..\..\..\bin\@bin_type@\reports\deadreason.rdl
-    File ..\..\..\bin\@bin_type@\reports\empty_rev.rdl
-    File ..\..\..\bin\@bin_type@\reports\fucker.rdl
-    File ..\..\..\bin\@bin_type@\reports\fucks_by_date.rdl
-    File ..\..\..\bin\@bin_type@\reports\okrol_user.rdl
-    File ..\..\..\bin\@bin_type@\reports\plem.rdl
-    File ..\..\..\bin\@bin_type@\reports\rabbit.rdl
-    File ..\..\..\bin\@bin_type@\reports\realization.rdl
-    File ..\..\..\bin\@bin_type@\reports\replace_plan.rdl
-    File ..\..\..\bin\@bin_type@\reports\shed.rdl
-    File ..\..\..\bin\@bin_type@\reports\zooteh.rdl
-    File ..\..\..\bin\@bin_type@\reports\zooteh_nofuck.rdl
-    SetOutPath $INSTDIR
+    File ..\..\..\bin\@bin_type@\RabNet\MySql.Data.dll
+    File ..\..\..\bin\@bin_type@\RabNet\Pickers.dll
+    File ..\..\..\bin\@bin_type@\RabNet\rabHelp.chm
+    File ..\..\..\bin\@bin_type@\RabNet\RdlEngine.dll
+    File ..\..\..\bin\@bin_type@\RabNet\log4net.dll
+    File ..\..\..\bin\@bin_type@\RabNet\RdlViewer.dll
+    File ..\..\..\bin\@bin_type@\RabNet\CodeStorage32.dll
+    File ..\..\..\bin\@bin_type@\RabNet\CodeStorage64.dll
+    File ..\..\..\bin\@bin_type@\RabNet\GuardantDotNetApi.dll
+    File ..\..\..\bin\@bin_type@\RabNet\GrdAPI32.DLL
+    SetOutPath $INSTDIR\RabNet\reports
+    File ..\..\..\bin\@bin_type@\RabNet\reports\age.rdl
+    File ..\..\..\bin\@bin_type@\RabNet\reports\breeds.rdl
+    File ..\..\..\bin\@bin_type@\RabNet\reports\by_month.rdl
+    File ..\..\..\bin\@bin_type@\RabNet\reports\dead.rdl
+    File ..\..\..\bin\@bin_type@\RabNet\reports\deadreason.rdl
+    File ..\..\..\bin\@bin_type@\RabNet\reports\empty_rev.rdl
+    File ..\..\..\bin\@bin_type@\RabNet\reports\fucker.rdl
+    File ..\..\..\bin\@bin_type@\RabNet\reports\fucks_by_date.rdl
+    File ..\..\..\bin\@bin_type@\RabNet\reports\okrol_user.rdl
+    File ..\..\..\bin\@bin_type@\RabNet\reports\plem.rdl
+    File ..\..\..\bin\@bin_type@\RabNet\reports\rabbit.rdl
+    File ..\..\..\bin\@bin_type@\RabNet\reports\realization.rdl
+    File ..\..\..\bin\@bin_type@\RabNet\reports\replace_plan.rdl
+    File ..\..\..\bin\@bin_type@\RabNet\reports\shed.rdl
+    File ..\..\..\bin\@bin_type@\RabNet\reports\zooteh.rdl
+    File ..\..\..\bin\@bin_type@\RabNet\reports\zooteh_nofuck.rdl
+    SetOutPath $INSTDIR\RabNet
     SetOverwrite off
-    File ..\..\..\bin\@bin_type@\rabnet.exe.config
+    File ..\..\..\bin\@bin_type@\RabNet\rabnet.exe.config
     SetOutPath $SMPROGRAMS\$StartMenuGroup
-    CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Prog_NAME).lnk $INSTDIR\rabnet.exe
+    CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Prog_NAME).lnk $INSTDIR\RabNet\rabnet.exe
 #    WriteRegStr HKEY_CURRENT_USER Software\hzkakzvat\rabnet Path "C:\Program Files\7-Zip"
     WriteRegStr HKLM "${REGKEY}\Components" "rabnet" 1
 SectionEnd
@@ -126,14 +131,18 @@ Section /o $(SEC_RabDump_NAME) SEC_RabDump
 
     Call CloseRabDump
 
-    SetOutPath $INSTDIR
+    SetOutPath $INSTDIR\RabDump
     SetOverwrite on
-    File ..\..\..\bin\@bin_type@\GrdAPI32.DLL
-    File ..\..\..\bin\@bin_type@\rabdump.exe
-    File ..\..\..\bin\@bin_type@\key.dll
+    File ..\..\..\bin\@bin_type@\RabDump\GrdAPI32.DLL
+    File ..\..\..\bin\@bin_type@\RabDump\rabdump.exe
+    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage32.dll
+    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage64.dll
+    File ..\..\..\bin\@bin_type@\RabDump\GuardantDotNetApi.dll
+    File ..\..\..\bin\@bin_type@\RabDump\log4net.dll
+#    File ..\..\..\bin\@bin_type@\key.dll
     File ..\..\..\bin\tools\updater.exe
-
-    File ..\..\..\bin\@bin_type@\GrdTRU.exe
+    File ..\..\..\bin\@bin_type@\RabDump\mia_conv.exe
+    File ..\..\..\bin\@bin_type@\RabDump\MySql.Data.dll
 
     SetOutPath $INSTDIR\7z
     File ..\..\..\bin\@bin_type@\7z\7-zip.chm
@@ -145,7 +154,7 @@ Section /o $(SEC_RabDump_NAME) SEC_RabDump
     #SetOutPath $INSTDIR
     #SetOverwrite off
     #File ..\..\..\bin\@bin_type@\rabdump.exe.config
-    CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Dump_NAME).lnk $INSTDIR\rabdump.exe
+    CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Dump_NAME).lnk $INSTDIR\RabDump\rabdump.exe
     WriteRegStr HKLM "${REGKEY}\Components" "rabdump" 1
 #    DetailPrint $(UPDATER_Run)
 #    ExecWait '"$INSTDIR\updater.exe"'
@@ -173,10 +182,11 @@ Section /o $(SEC_Mysql_NAME) SEC_Mysql
 SectionEnd
     
 Section -com_comps SEC_Common
-    SetOutPath $INSTDIR
+#    SetOutPath $INSTDIR
     SetOverwrite on
-    File ..\..\..\bin\@bin_type@\log4net.dll
-    File ..\..\..\bin\@bin_type@\mia_conv.exe
+#    File ..\..\..\bin\@bin_type@\log4net.dll
+    SetOutPath $INSTDIR\Guardant
+    File ..\..\..\bin\@bin_type@\Guardant\GrdTRU.exe
     WriteRegStr HKLM "${REGKEY}\Components" com_comps 1
 SectionEnd
 
@@ -197,8 +207,8 @@ SectionEnd
 
 Section /o -sec_updater SEC_Updater
     DetailPrint $(UPDATER_Run)
-    ExecWait '"$INSTDIR\updater.exe" batch'
-    Exec "$INSTDIR\rabdump.exe"
+    ExecWait '"$INSTDIR\RabDump\updater.exe" batch'
+    Exec "$INSTDIR\RabDump\rabdump.exe"
 SectionEnd
 
 # Macro for selecting uninstaller sections
@@ -247,8 +257,10 @@ done${SECTION_ID}:
 
 # Uninstaller sections
 Section /o -un.com_comps UNSEC_Common
-    Delete /REBOOTOK $INSTDIR\mia_conv.exe
-    Delete /REBOOTOK $INSTDIR\log4net.dll
+    RmDir /REBOOTOK /r $INSTDIR\Guardant
+#    Delete /REBOOTOK $INSTDIR\Guardant\GrdTRU.exe
+#    Delete /REBOOTOK $INSTDIR\mia_conv.exe
+#   Delete /REBOOTOK $INSTDIR\log4net.dll
     DeleteRegValue HKLM "${REGKEY}\Components" com_comps
 SectionEnd
 
@@ -256,16 +268,19 @@ Section /o "-un.rabdump" UNSEC_RabDump
 
     Call un.CloseRabDump
 
-    Delete /REBOOTOK $INSTDIR\GrdAPI32.DLL
-    Delete /REBOOTOK $INSTDIR\key.dll
-    Delete /REBOOTOK $INSTDIR\rabdump.exe
-    Delete /REBOOTOK $INSTDIR\updater.exe
-
-    Delete /REBOOTOK $INSTDIR\GrdTRU.exe
+    Delete /REBOOTOK $INSTDIR\RabDump\GrdAPI32.DLL
+    Delete /REBOOTOK $INSTDIR\RabDump\rabdump.exe
+    Delete /REBOOTOK $INSTDIR\RabDump\CodeStorage32.dll
+    Delete /REBOOTOK $INSTDIR\RabDump\CodeStorage64.dll
+    Delete /REBOOTOK $INSTDIR\RabDump\GuardantDotNetApi.dll
+    Delete /REBOOTOK $INSTDIR\RabDump\updater.exe
+    Delete /REBOOTOK $INSTDIR\RabDump\mia_conv.exe
+    Delete /REBOOTOK $INSTDIR\RabDump\MySql.Data.dll
+    Delete /REBOOTOK $INSTDIR\RabDump\log4net.dll
 
     RmDir /REBOOTOK /r $INSTDIR\7z
 
-    RmDir /REBOOTOK /r $INSTDIR\updates
+    RmDir /REBOOTOK /r $INSTDIR\RabDump\updates
 
     DeleteRegValue HKLM "${REGKEY}\Components" "rabdump"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(SM_Dump_NAME).lnk"
@@ -293,17 +308,26 @@ Section /o "-un.rabnet" UNSEC_Rabnet
 ;    Delete /REBOOTOK $INSTDIR\reports\by_month.rdl
 ;    Delete /REBOOTOK $INSTDIR\reports\breeds.rdl
 ;    Delete /REBOOTOK $INSTDIR\reports\age.rdl
-    RmDir /REBOOTOK /r $INSTDIR/reports
-    Delete /REBOOTOK $INSTDIR\RdlViewer.dll
-    Delete /REBOOTOK $INSTDIR\RdlEngine.dll
-    Delete /REBOOTOK $INSTDIR\rabnet.exe
-    Delete /REBOOTOK $INSTDIR\rabHelp.chm
-    Delete /REBOOTOK $INSTDIR\Pickers.dll
-    Delete /REBOOTOK $INSTDIR\MySql.Data.dll
-    Delete /REBOOTOK $INSTDIR\engine.dll
-    Delete /REBOOTOK $INSTDIR\db.mysql.dll
 
-    RmDir /REBOOTOK /r $INSTDIR\upd
+
+    RmDir /REBOOTOK /r $INSTDIR\RabNet\reports
+
+    Delete /REBOOTOK $INSTDIR\RabNet\rabnet.exe
+    Delete /REBOOTOK $INSTDIR\RabNet\db.mysql.dll
+    Delete /REBOOTOK $INSTDIR\RabNet\engine.dll
+    Delete /REBOOTOK $INSTDIR\RabNet\MySql.Data.dll
+    Delete /REBOOTOK $INSTDIR\RabNet\Pickers.dll
+    Delete /REBOOTOK $INSTDIR\RabNet\rabHelp.chm
+    Delete /REBOOTOK $INSTDIR\RabNet\RdlEngine.dll
+    Delete /REBOOTOK $INSTDIR\RabNet\log4net.dll
+    Delete /REBOOTOK $INSTDIR\RabNet\RdlViewer.dll
+    Delete /REBOOTOK $INSTDIR\RabNet\CodeStorage32.dll
+    Delete /REBOOTOK $INSTDIR\RabNet\CodeStorage64.dll
+    Delete /REBOOTOK $INSTDIR\RabNet\GuardantDotNetApi.dll
+    Delete /REBOOTOK $INSTDIR\RabNet\GrdAPI32.DLL
+
+
+    RmDir /REBOOTOK /r $INSTDIR\RabNet\upd
 
     DeleteRegValue HKLM "${REGKEY}\Components" "rabnet"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(SM_Prog_NAME).lnk"

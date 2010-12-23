@@ -171,7 +171,7 @@ namespace rabdump
         {
             try
             {
-                Process p = Process.Start(Path.GetDirectoryName(Application.ExecutablePath) + "\\rabnet.exe", param);
+                Process p = Process.Start(Path.GetDirectoryName(Application.ExecutablePath) + @"\..\RabNet\rabnet.exe", param);
                 if (param == "dbedit")
                 {
                     p.WaitForExit();

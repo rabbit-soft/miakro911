@@ -84,6 +84,7 @@
     <Compile Include="Options.cs">
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RabUpdater.cs" />
     <Compile Include="Forms\RestoreForm.cs">
       <SubType>Form</SubType>
@@ -92,6 +93,7 @@
       <DependentUpon>RestoreForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SockServ.cs" />
+    <Compile Include="Properties\VerInfo.cs" />
     <Compile Include="X_Tools\x_tools.cs" />
   </ItemGroup>
   <ItemGroup>

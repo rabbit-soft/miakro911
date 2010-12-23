@@ -234,7 +234,13 @@ namespace rabdump
 
         private void updateKeyMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start(Path.GetDirectoryName(Application.ExecutablePath) + "\\GrdTRU.exe");
+            try
+            {
+                Process.Start(Path.GetDirectoryName(Application.ExecutablePath) + @"\..\Guardant\GrdTRU.exe");
+            } catch
+            {
+
+            }
         }
 
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
