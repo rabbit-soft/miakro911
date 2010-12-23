@@ -5,6 +5,7 @@ using System.Diagnostics;
 using log4net;
 using System.IO;
 using System.Windows.Forms;
+using X_Tools;
 
 namespace rabdump
 {
@@ -78,15 +79,8 @@ namespace rabdump
             Directory.CreateDirectory(_j.BackupPath);
             String ffname = _j.Name + "_" + db.Name + "_" + DateTime.Now.ToString("yyyy_MM_dd_HHmmss");
 
-            ffname = ffname.Replace("?", "_");
-            ffname = ffname.Replace(":", "_");
-            ffname = ffname.Replace("\\", "_");
-            ffname = ffname.Replace("/", "_");
-            ffname = ffname.Replace("*", "_");
-            ffname = ffname.Replace("\"", "_");
-            ffname = ffname.Replace("<", "_");
-            ffname = ffname.Replace(">", "_");
-            ffname = ffname.Replace("|", "_");
+            ffname = XTools.SafeFileName(ffname, "_");
+
             ffname = ffname.Replace(" ", "_");
 
 

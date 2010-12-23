@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace X_Tools
@@ -21,7 +22,17 @@ namespace X_Tools
             }
             return String.Format("{0:0.00} {1}", dblSByte, suffix[i]);
         }
-        
+
+        public static string SafeFileName(string fileName, string replacer)
+        {
+            return Regex.Replace(fileName, "[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "]", replacer, RegexOptions.Compiled);
+        }
+
+        public static string SafeFileName(string fileName)
+        {
+            return SafeFileName(fileName, string.Empty);
+        }
+
         // readStream is the stream you need to read
         // writeStream is the stream you want to write to
 /*
