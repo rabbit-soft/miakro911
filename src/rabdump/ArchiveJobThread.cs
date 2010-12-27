@@ -122,7 +122,7 @@ namespace rabdump
                 }
                 catch (Exception ex2)
                 {
-                    log.Error("Error while " + md + ":" + ex.GetType().ToString() + ":" + ex.Message);
+                    log.Error("Error while " + md + ":" + ex2.GetType().ToString() + ":" + ex2.Message);
                     return;
                 }
                 return;

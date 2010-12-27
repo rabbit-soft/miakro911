@@ -119,8 +119,6 @@ namespace rabdump
                                 if (loggedin)
                                 {
                                     //FileVersionInfo myFI = FileVersionInfo.GetVersionInfo(Path.GetDirectoryName(Application.ExecutablePath)+"\\updates\\setup.exe");
-
-
                                     resp = "Ok# Version:" + Application.ProductVersion.ToString() + Environment.NewLine;
                                     clientStream.Write(encoder.GetBytes(resp), 0, resp.Length);
                                 }
@@ -130,38 +128,51 @@ namespace rabdump
                                 {
                                     //FileVersionInfo myFI = FileVersionInfo.GetVersionInfo(Path.GetDirectoryName(Application.ExecutablePath)+"\\updates\\setup.exe");
 
-
-
-
-                                    try
+                                    if (X_Tools.XTools.VerifyMD5(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + nfo.FileName, nfo.FileMD5))
                                     {
-                                        FileStream loc = new FileStream(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + nfo.FileName, FileMode.Open, FileAccess.Read);
 
-                                        resp = "Ok# " + nfo.FileName + "/" + loc.Length + Environment.NewLine;
-                                        clientStream.Write(encoder.GetBytes(resp), 0, resp.Length);
-
-
-                                        const int length = 2048;
-                                        Byte[] buffer = new Byte[length];
-                                        int bR = loc.Read(buffer, 0, length);
-
-                                        // write the required bytes
-
-                                        while (bR > 0)
+                                        try
                                         {
-                                            clientStream.Write(buffer, 0, bR);
-                                            //                                            bR = 0;
-                                            bR = loc.Read(buffer, 0, length);
-                                            //resp = "--------------------------->"+loc.Position.ToString();
-                                            //clientStream.Write(encoder.GetBytes(resp), 0, resp.Length);
+                                            FileStream loc = new FileStream(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + nfo.FileName, FileMode.Open, FileAccess.Read);
+
+                                            resp = "Ok# " + nfo.FileName + "/" + loc.Length + "/" + nfo.FileMD5 + Environment.NewLine;
+                                            clientStream.Write(encoder.GetBytes(resp), 0, resp.Length);
+
+
+                                            const int length = 2048;
+                                            Byte[] buffer = new Byte[length];
+                                            int bR = loc.Read(buffer, 0, length);
+
+                                            // write the required bytes
+
+                                            while (bR > 0)
+                                            {
+                                                clientStream.Write(buffer, 0, bR);
+                                                //                                            bR = 0;
+                                                bR = loc.Read(buffer, 0, length);
+                                                //resp = "--------------------------->"+loc.Position.ToString();
+                                                //clientStream.Write(encoder.GetBytes(resp), 0, resp.Length);
+                                            }
+                                            loc.Close();
+
+
                                         }
-                                        loc.Close();
+                                        catch
+                                        {
+                                            resp = "Err#0001 File operation failed"+Environment.NewLine;
+                                            try
+                                            {
+                                                clientStream.Write(encoder.GetBytes(resp), 0, resp.Length);
+                                            }
+                                            catch
+                                            {
+                                            }
 
-
+                                        }
                                     }
-                                    catch
+                                    else
                                     {
-                                        resp = "Err# File operation failed";
+                                        resp = "Err#0002 Update file has bad MD5"+Environment.NewLine;
                                         try
                                         {
                                             clientStream.Write(encoder.GetBytes(resp), 0, resp.Length);
@@ -169,14 +180,13 @@ namespace rabdump
                                         catch
                                         {
                                         }
-
+                                        break;
                                     }
-
 
                                 }
                                 break;
                             default:
-                                resp = "Err# Unknown command \"" + cmd + "\"" + Environment.NewLine;
+                                resp = "Err#0010 Unknown command \"" + cmd + "\"" + Environment.NewLine;
                                 clientStream.Write(encoder.GetBytes(resp), 0, resp.Length);
                                 //                                cmd = cmd + Environment.NewLine;
                                 //                                clientStream.Write(encoder.GetBytes(cmd), 0, cmd.Length);

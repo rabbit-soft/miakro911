@@ -161,11 +161,22 @@ namespace rabnet
 
                     prg = null;
 
-                    if (RabUpdaterClient.Get().GetUpRes() != RabUpdaterClient.UpErrFinishedOK)
+                    int upProcRes=RabUpdaterClient.Get().GetUpRes();
+
+                    if (upProcRes != RabUpdaterClient.UpErrFinishedOK)
                     {
-                        MessageBox.Show("При обновлении возникла ошибка." + Environment.NewLine + "Поробуйте перезапустить программу и обновить снова, если ошибка будет повторяться, то установите обновление вручную.", "Неполадки при обновлении", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        LoginForm.stop = true;
-                        Close();
+                        if (upProcRes != RabUpdaterClient.UpErrBadMD5OnServer)
+                        {
+                            MessageBox.Show("При обновлении возникла ошибка." + Environment.NewLine + "Поробуйте перезапустить программу и обновить снова, если ошибка будет повторяться, то установите обновление вручную.", "Неполадки при обновлении", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            LoginForm.stop = true;
+                            Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("При обновлении возникла ошибка." + Environment.NewLine + "Файл обновлений на сервере поврежден, обратитесь к администраторы!", "Неполадки при обновлении", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            LoginForm.stop = true;
+                            Close();
+                        }
                     }
                     else
                     {

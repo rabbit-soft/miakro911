@@ -19,6 +19,7 @@ namespace X_Classes
         public string Info = "";
         public string FileUri = "";
         public string FileName = "";
+        public string FileMD5 = "";
         public bool RequireClientRestart = false;
 
         public int XmlInfoErr = 0;
@@ -171,6 +172,7 @@ namespace X_Classes
                                         {
                                             res.FileUri = bn.Attributes["uri"].Value;
                                             res.FileName = bn.Attributes["name"].Value;
+                                            res.FileMD5 = bn.Attributes["md5"].Value;
                                         }
                                         catch
                                         {
@@ -180,6 +182,7 @@ namespace X_Classes
                                         }
                                         log().Debug("Update file uri: " + res.FileUri);
                                         log().Debug("Update file name: " + res.FileName);
+                                        log().Debug("Update file MD5: " + res.FileMD5);
                                         break;
                                     case "info":
                                         res.Info = bn.InnerText;
@@ -218,6 +221,7 @@ namespace X_Classes
                 }
             }
             res.XmlInfoErr = ErrOk;
+            xmlStream.Close();
             return res;
         }
 
@@ -335,18 +339,45 @@ namespace X_Classes
                 }
                 else
                 {
-                    MessageShow("Обновление загружено!", "Обновление");
-                    log().Debug("Update download completed.");
-
-                    MessageBox.Show("Новая версия готова к установке", "Обновление", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    HideBubble();
-                    
-                    Directory.CreateDirectory(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\");
-
-                    Process.Start(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + _upInfo.FileName, "test");
-                    if (CloseCallback != null)
+                    if (XTools.VerifyMD5(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + _upInfo.FileName+".tmp", _upInfo.FileMD5))
                     {
-                        CloseCallback();
+                        try
+                        {
+                            File.Delete(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + _upInfo.FileName);
+                        }
+                        catch (Exception e2)
+                        {
+                            ErrorShow("Ошибка при загрузке!" + Environment.NewLine + e2.Message.Replace(" | ", Environment.NewLine), "Обновление");
+                            log().Error("Update download failed. " + e2.Message);
+                            return;
+                        }
+                        try
+                        {
+                            File.Move(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + _upInfo.FileName + ".tmp", Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + _upInfo.FileName);
+                        }
+                        catch (Exception e3)
+                        {
+                            ErrorShow("Ошибка при загрузке!" + Environment.NewLine + e3.Message.Replace(" | ", Environment.NewLine), "Обновление");
+                            log().Error("Update download failed. " + e3.Message);
+                            return;
+                        }
+                        MessageShow("Обновление загружено!", "Обновление");
+                        log().Debug("Update download completed.");
+
+                        MessageBox.Show("Новая версия готова к установке", "Обновление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        HideBubble();
+
+                        Directory.CreateDirectory(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\");
+
+                        Process.Start(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + _upInfo.FileName, "test");
+                        if (CloseCallback != null)
+                        {
+                            CloseCallback();
+                        }
+                    } else
+                    {
+                        MessageShow("Не верная контрольная сумма!", "Обновление");
+                        log().Debug("Update download completed. MD5 check failed...");
                     }
 
                 }
@@ -368,12 +399,18 @@ namespace X_Classes
             webClient.DownloadProgressChanged += ProgressChanged;
             _stpw.Reset();
             _stpw.Start();
-            webClient.DownloadFileAsync(new Uri(nfo.FileUri), Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + nfo.FileName);
+            try
+            {
+                File.Delete(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + nfo.FileName + ".tmp");
+            }
+            catch (Exception e)
+            {
+                ErrorShow("Ошибка при загрузке!" + Environment.NewLine + e.Message.Replace(" | ", Environment.NewLine), "Обновление");
+                log().Error("Update download failed. " + e.Message);
+                return;
+            }
+            webClient.DownloadFileAsync(new Uri(nfo.FileUri), Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + nfo.FileName+".tmp");
             
-
-
-
-
         }
 
 

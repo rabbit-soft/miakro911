@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
 namespace X_Tools
@@ -31,6 +32,43 @@ namespace X_Tools
         public static string SafeFileName(string fileName)
         {
             return SafeFileName(fileName, string.Empty);
+        }
+
+        public static bool VerifyMD5(string file, string hash)
+        {
+            if (File.Exists(file))
+            {
+                string computed = GetFileMD5(file);
+                if (computed == hash)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static string GetFileMD5(string file)
+        {
+            MD5CryptoServiceProvider csp = new MD5CryptoServiceProvider();
+            if (File.Exists(file))
+            {
+                FileStream fs = File.OpenRead(file);
+                byte[] fileHash = csp.ComputeHash(fs);
+                fs.Close();
+
+                return BitConverter.ToString(fileHash).Replace("-", "").ToLower();
+            }
+            else
+            {
+                return "nofile";
+            }
         }
 
         // readStream is the stream you need to read

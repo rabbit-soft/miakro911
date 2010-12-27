@@ -379,6 +379,7 @@
       <DependentUpon>PeriodForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\VerInfo.cs" />
+    <Compile Include="..\..\rabdump\X_Tools\x_tools.cs" />
     <EmbeddedResource Include="components\BuildingControl.resx">
       <DependentUpon>BuildingControl.cs</DependentUpon>
       <SubType>Designer</SubType>

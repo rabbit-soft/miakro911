@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<update>
+  <bundle>
+    <version number="1.0.2.713" />
+    <file name="setup.exe" uri="http://updates.trustbox.ru/rab/setup.exe" md5="md5_stub" />
+    <require name="" />
+    <info>Обновление всякой фигни!</info>
+    <req_client_reboot value="true" />
+  </bundle>
+</update>

@@ -7,11 +7,15 @@ using System.Net.Sockets;
 using System.IO;
 using System.Windows.Forms;
 using System.Threading;
+using log4net;
+using X_Tools;
 
 namespace rabnet
 {
     class RabUpdaterClient
     {
+        public static readonly ILog logger = LogManager.GetLogger(typeof(RabUpdaterClient));
+
         private static RabUpdaterClient _updater;
         private string _ip;
         private TcpClient _tcpClient;
@@ -33,10 +37,17 @@ namespace rabnet
         public const int UpErrFinishedNoGetFile         = 11;
         public const int UpErrFinishedFileTransferFail  = 12;
         public const int UpErrFinishedSocketFail        = 5;
+        public const int UpErrBadMD5OnServer            = 15;
+        public const int UpErrBadMD5Local               = 16;
 
 
         public RabUpdaterClient()
         {
+        }
+
+        public static ILog log()
+        {
+            return logger;
         }
 
         public static RabUpdaterClient Get()
@@ -253,6 +264,7 @@ namespace rabnet
             {
                 // Display any possible error
                 System.Diagnostics.Debug.WriteLine(exMessage.Message);
+                log().Error("Failed to get update info: " + exMessage.Message);
             }
             
             _tcpClient.Close();
@@ -277,6 +289,8 @@ namespace rabnet
             Stream strRemote;
             ASCIIEncoding encoder = new ASCIIEncoding();
             _tcpClient = new TcpClient();
+            _tcpClient.ReceiveTimeout = 5000;
+            _tcpClient.SendTimeout = 5000;
             try
             {
                 // Connect the TCP client to the specified IP and port
@@ -310,11 +324,13 @@ namespace rabnet
                         string[] fie = fi.Split('/');
                         System.Diagnostics.Debug.WriteLine(fie[0] + "---<\r\n");
                         System.Diagnostics.Debug.WriteLine(fie[1] + "---<\r\n");
+                        System.Diagnostics.Debug.WriteLine(fie[2] + "---<\r\n");
 
                         long sz = Convert.ToInt32(fie[1]);
+                        string uMD5 = fie[2];
 
-                        
-                        string dir=Path.GetDirectoryName(Application.ExecutablePath) + "\\upd\\";
+
+                        string dir = Path.GetDirectoryName(Application.ExecutablePath) + "\\upd\\";
 
                         Directory.CreateDirectory(dir);
 
@@ -322,7 +338,14 @@ namespace rabnet
 
                         if (ReadFile(strRemote, sz, UpFilePath))
                         {
-                            ThrRes = UpErrFinishedOK;
+                            if (XTools.VerifyMD5(UpFilePath, uMD5))
+                            {
+                                ThrRes = UpErrFinishedOK;
+                            }
+                            else
+                            {
+                                ThrRes = UpErrBadMD5Local;
+                            }
                         }
                         else
                         {
@@ -331,26 +354,35 @@ namespace rabnet
 
                         return;
 
-//                        if (res.Substring(4, 8) == "Version:")
-//                        {
-//                            System.Diagnostics.Debug.WriteLine(res + "---<\r\n");
-//                            Version ver = new Version(res.Substring(12));
-//                            System.Diagnostics.Debug.WriteLine(ver.ToString() + "---<\r\n");
-//
-//                            Version myVer = new Version(Application.ProductVersion);
-//
-//                            if (myVer < ver)
-//                            {
-//                                return true;
-//                            }
-//                            else
-//                            {
-//                                return false;
-//                            }
+                        //                        if (res.Substring(4, 8) == "Version:")
+                        //                        {
+                        //                            System.Diagnostics.Debug.WriteLine(res + "---<\r\n");
+                        //                            Version ver = new Version(res.Substring(12));
+                        //                            System.Diagnostics.Debug.WriteLine(ver.ToString() + "---<\r\n");
+                        //
+                        //                            Version myVer = new Version(Application.ProductVersion);
+                        //
+                        //                            if (myVer < ver)
+                        //                            {
+                        //                                return true;
+                        //                            }
+                        //                            else
+                        //                            {
+                        //                                return false;
+                        //                            }
                         //}
                     }
                     else
                     {
+                        if (res.Substring(0, 4) == "Err#")
+                        {
+                            uint errN = Convert.ToUInt32(res.Substring(4, 4));
+                            if (errN == 2)
+                            {
+                                ThrRes = UpErrBadMD5OnServer;
+                                return;
+                            }
+                        }
                         ThrRes = UpErrFinishedNoGetFile;
                         return;
                     }
@@ -369,6 +401,7 @@ namespace rabnet
             {
                 // Display any possible error
                 System.Diagnostics.Debug.WriteLine(exMessage.Message);
+                log().Error("Failed to get update file: "+exMessage.Message);
             }
 
             ThrRes = UpErrFinishedSocketFail;
