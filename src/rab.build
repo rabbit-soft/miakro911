@@ -600,6 +600,8 @@
 		<mkdir dir="${root_bin}"/>
 		<delete dir="${root_bin}/distrib_nsis_${bin_type}"/>
 		<mkdir dir="${root_bin}/distrib_nsis_${bin_type}"/>
+		<delete dir="${root_bin}/distrib_nsis_${bin_type}_up"/>
+		<mkdir dir="${root_bin}/distrib_nsis_${bin_type}_up"/>
 		<mkdir dir="${root_bin}/distrib_nsis_${bin_type}/dotnetfx20"/>
 		<mkdir dir="${root_bin}/distrib_nsis_${bin_type}/mysql"/>
 		<copy file="${dotnetInstallerSource}" tofile="${root_bin}/distrib_nsis_${bin_type}/dotnetfx20/${dotnetInstallerDest}"/>
@@ -637,19 +639,20 @@
 			<arg value="/V3" />
 			<arg value="${curdir}/distrib/distrib_nsis/setup_bld.nsi" />
 		</exec>
-		<copy file="${curdir}/distrib/distrib_nsis/setup.exe" tofile="${root_bin}/distrib_nsis_${bin_type}/setup.${version}.${minver}.exe"/>
-		<copy file="${curdir}/distrib/distrib_nsis/updates.xml" tofile="${root_bin}/distrib_nsis_${bin_type}/updates.xml"/>
+		<copy file="${curdir}/distrib/distrib_nsis/setup.exe" tofile="${root_bin}/distrib_nsis_${bin_type}/setup.exe"/>
+		<copy file="${curdir}/distrib/distrib_nsis/setup.exe" tofile="${root_bin}/distrib_nsis_${bin_type}_up/setup.${version}.${minver}.exe"/>
+		<copy file="${curdir}/distrib/distrib_nsis/updates.xml" tofile="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml"/>
 		<loadtasks assembly="${nant_contrib}" />
 		<checksum algorithm="MD5">
 			<fileset>
-				<include name="${root_bin}/distrib_nsis_${bin_type}/setup.${version}.${minver}.exe"/>
+				<include name="${root_bin}/distrib_nsis_${bin_type}_up/setup.${version}.${minver}.exe"/>
 			</fileset>
 		</checksum>
-		<loadfile file="${root_bin}/distrib_nsis_${bin_type}/setup.${version}.${minver}.exe.MD5" property="distr.md5" />
-		<delete file="${root_bin}/distrib_nsis_${bin_type}/setup.${version}.${minver}.exe.MD5"/>
-		<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}/updates.xml" xpath="/update/bundle/file[@name = 'setup.exe']/@md5" value="${distr.md5}" />
-		<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}/updates.xml" xpath="/update/bundle/file[@name = 'setup.exe']/@uri" value="http://updates.trustbox.ru/rab/setup.${version}.${minver}.exe" />
-		<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}/updates.xml" xpath="/update/bundle/version/@number" value="${version}.${minver}" />
+		<loadfile file="${root_bin}/distrib_nsis_${bin_type}_up/setup.${version}.${minver}.exe.MD5" property="distr.md5" />
+		<delete file="${root_bin}/distrib_nsis_${bin_type}_up/setup.${version}.${minver}.exe.MD5"/>
+		<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml" xpath="/update/bundle/file[@name = 'setup.exe']/@md5" value="${distr.md5}" />
+		<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml" xpath="/update/bundle/file[@name = 'setup.exe']/@uri" value="http://updates.trustbox.ru/rab/setup.${version}.${minver}.exe" />
+		<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml" xpath="/update/bundle/version/@number" value="${version}.${minver}" />
 	</target>
 	
 	<!-- FILL DATA!-->
