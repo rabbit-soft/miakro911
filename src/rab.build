@@ -323,6 +323,7 @@
 				<include name="${curdir}/rabnet/gui/forms/*.cs"/>
 				<include name="${curdir}/rabnet/gui/reports/*.cs"/>
 				<include name="${curdir}/libs/GRD/*.cs"/>
+				<include name="${curdir}/rabdump/X_Tools/*.cs"/>
 			</sources>
 			<resources>
 				<include name="${curdir}/rabnet/gui/forms/*.resx"/>
