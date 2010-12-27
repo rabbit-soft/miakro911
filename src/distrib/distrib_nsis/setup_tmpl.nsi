@@ -569,11 +569,11 @@ LangString MYSQLINSTALLER_Configure ${LANG_RUSSIAN} "Настройка MySQL..."
 LangString UPDATER_Run ${LANG_ENGLISH} "Starting Updater..."
 LangString UPDATER_Run ${LANG_RUSSIAN} "Запуск Updater..."
 
-LangString Prog_NAME ${LANG_ENGLISH} "Miakro Rabnet"
-LangString Prog_NAME ${LANG_RUSSIAN} "Миакро Rabnet"
+LangString Prog_NAME ${LANG_ENGLISH} "Miakro-9.11"
+LangString Prog_NAME ${LANG_RUSSIAN} "Миакро-9.11"
 
-LangString SM_Prog_NAME ${LANG_ENGLISH} "Miakro Rabnet"
-LangString SM_Prog_NAME ${LANG_RUSSIAN} "Миакро Rabnet"
+LangString SM_Prog_NAME ${LANG_ENGLISH} "Miakro-9.11"
+LangString SM_Prog_NAME ${LANG_RUSSIAN} "Миакро-9.11"
 
 LangString SM_Dump_NAME ${LANG_ENGLISH} "RabDump"
 LangString SM_Dump_NAME ${LANG_RUSSIAN} "Резервные копии"

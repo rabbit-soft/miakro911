@@ -171,14 +171,14 @@ namespace rabdump
         private void restMenuItem_Click(object sender, EventArgs e)
         {
             RestoreForm rest;
-            if (sender == restMenuItem)
-            {
-                rest = new RestoreForm();
-            }
-            else
-            {
+//            if (sender == restMenuItem)
+//            {
+//                rest = new RestoreForm();
+//            }
+//            else
+//            {
                 rest = new RestoreForm(((ToolStripMenuItem) sender).Text);
-            }
+//            }
             rest.ShowDialog();
         }
 
@@ -248,6 +248,11 @@ namespace rabdump
             AboutForm aFrm = new AboutForm();
             //aFrm
             aFrm.Show();
+        }
+
+        private void jobsMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
 
     }

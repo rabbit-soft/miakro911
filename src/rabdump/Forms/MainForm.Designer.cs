@@ -59,7 +59,7 @@
             // 
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "rabdump";
+            this.notifyIcon1.Text = "Резервные копии";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
             // 
@@ -128,6 +128,7 @@
             this.jobsMenuItem.Name = "jobsMenuItem";
             this.jobsMenuItem.Size = new System.Drawing.Size(188, 22);
             this.jobsMenuItem.Text = "Резервировать";
+            this.jobsMenuItem.Click += new System.EventHandler(this.jobsMenuItem_Click);
             // 
             // restMenuItem
             // 

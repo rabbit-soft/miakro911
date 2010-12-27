@@ -115,6 +115,8 @@ namespace rabdump
 
         private void button1_Click(object sender, EventArgs e)
         {
+
+//            _thrUpdate = new Thread(CheckUpdateThr);
             try
             {
                 ArchiveJobThread.UndumpDB(tbHost.Text, tbDB.Text, tbUser.Text, tbPassword.Text, tbFile.Text);
