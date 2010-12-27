@@ -173,7 +173,7 @@ namespace rabnet
                         }
                         else
                         {
-                            MessageBox.Show("При обновлении возникла ошибка." + Environment.NewLine + "Файл обновлений на сервере поврежден, обратитесь к администраторы!", "Неполадки при обновлении", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("При обновлении возникла ошибка." + Environment.NewLine + "Файл обновлений на сервере поврежден, обратитесь к администратору!", "Неполадки при обновлении", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             LoginForm.stop = true;
                             Close();
                         }

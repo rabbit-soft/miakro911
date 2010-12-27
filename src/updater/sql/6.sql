@@ -1,5 +1,6 @@
 ﻿UPDATE options SET o_value='6' WHERE o_name='db' AND o_subname='version';
 
+#DELIMITER |
 DROP FUNCTION IF EXISTS rabplace |
 CREATE FUNCTION rabplace(rid INTEGER UNSIGNED) RETURNS char(150)
 BEGIN
@@ -47,3 +48,4 @@ BEGIN
   SET res=CONCAT_WS(',',i1,i2,i3,s1,s2,s3);
   RETURN(res);
 END |		
+#DELIMITER ;

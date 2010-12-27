@@ -76,12 +76,15 @@ namespace updater
                 Array.Sort(names, new ReverseComparer());
                 foreach (String s in names)
                 {
-                    loc = (string)rk1.OpenSubKey(s).GetValue("Location");
-                    if (loc != null)
+                    if (s.StartsWith("MySQL Server"))
                     {
-                        locM = loc + "bin\\mysql.exe";
-                        locMd = loc + "bin\\mysqldump.exe";
-                        break;
+                        loc = (string)rk1.OpenSubKey(s).GetValue("Location");
+                        if (loc != null)
+                        {
+                            locM = loc + "bin\\mysql.exe";
+                            locMd = loc + "bin\\mysqldump.exe";
+                            break;
+                        }
                     }
                 }
             }
