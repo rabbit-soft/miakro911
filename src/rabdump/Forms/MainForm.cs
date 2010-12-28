@@ -171,15 +171,19 @@ namespace rabdump
         private void restMenuItem_Click(object sender, EventArgs e)
         {
             RestoreForm rest;
-//            if (sender == restMenuItem)
-//            {
-//                rest = new RestoreForm();
-//            }
-//            else
-//            {
-                rest = new RestoreForm(((ToolStripMenuItem) sender).Text);
-//            }
-            rest.ShowDialog();
+            if (sender == restMenuItem)
+            {
+                if (!restMenuItem.HasDropDownItems)
+                {
+                    rest = new RestoreForm();
+                    rest.ShowDialog();
+                }
+            }
+            else
+            {
+                    rest = new RestoreForm(((ToolStripMenuItem) sender).Text);
+                    rest.ShowDialog();
+            }
         }
 
         private void RunRabnetToolStripMenuItem_Click(object sender, EventArgs e)

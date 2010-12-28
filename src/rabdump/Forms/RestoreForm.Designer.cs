@@ -58,7 +58,6 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button1.Location = new System.Drawing.Point(408, 481);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(97, 23);
@@ -122,6 +121,7 @@
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
+            this.listView1.FullRowSelect = true;
             this.listView1.Location = new System.Drawing.Point(12, 72);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(493, 237);
@@ -138,7 +138,7 @@
             // columnHeader2
             // 
             this.columnHeader2.Text = "Имя файла";
-            this.columnHeader2.Width = 291;
+            this.columnHeader2.Width = 349;
             // 
             // button3
             // 
@@ -186,6 +186,7 @@
             this.tbFile.Name = "tbFile";
             this.tbFile.Size = new System.Drawing.Size(373, 20);
             this.tbFile.TabIndex = 4;
+            this.tbFile.TextChanged += new System.EventHandler(this.tbFile_TextChanged);
             // 
             // label7
             // 
@@ -211,6 +212,7 @@
             this.tbDB.Name = "tbDB";
             this.tbDB.Size = new System.Drawing.Size(126, 20);
             this.tbDB.TabIndex = 1;
+            this.tbDB.TextChanged += new System.EventHandler(this.tbFile_TextChanged);
             // 
             // tbPassword
             // 
@@ -218,6 +220,7 @@
             this.tbPassword.Name = "tbPassword";
             this.tbPassword.Size = new System.Drawing.Size(100, 20);
             this.tbPassword.TabIndex = 3;
+            this.tbPassword.TextChanged += new System.EventHandler(this.tbFile_TextChanged);
             // 
             // label5
             // 
@@ -234,6 +237,7 @@
             this.tbUser.Name = "tbUser";
             this.tbUser.Size = new System.Drawing.Size(100, 20);
             this.tbUser.TabIndex = 2;
+            this.tbUser.TextChanged += new System.EventHandler(this.tbFile_TextChanged);
             // 
             // label4
             // 
@@ -259,6 +263,7 @@
             this.tbHost.Name = "tbHost";
             this.tbHost.Size = new System.Drawing.Size(126, 20);
             this.tbHost.TabIndex = 0;
+            this.tbHost.TextChanged += new System.EventHandler(this.tbFile_TextChanged);
             // 
             // openFileDialog1
             // 

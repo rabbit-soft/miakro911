@@ -30,9 +30,17 @@ namespace rabnet
 
         public void readConfig()
         {
-            ConfigurationManager.GetSection("rabnetds");
+            try
+            {
+                ConfigurationManager.GetSection("rabnetds");
+            }catch(Exception e)
+            {
+                log.Error("Read config error: "+e.Message);
+                return;
+            }
             comboBox1.Items.Clear();
             foreach (RabnetConfigHandler.dataSource ds in RabnetConfigHandler.ds)
+            {
                 if (!ds.hidden)
                 {
                     comboBox1.Items.Add(ds.name);
@@ -42,7 +50,7 @@ namespace rabnet
                         comboBox1_SelectedIndexChanged(null, null);
                     }
                 }
-
+            }
 
 /*            MessageBox.Show("Farms -> " + GRD.Instance.GetFarmsCnt().ToString());
             MessageBox.Show("Genetics -> " + GRD.Instance.GetFlagGenetics().ToString());
@@ -204,7 +212,9 @@ namespace rabnet
 
                 return;
             }
-            MessageBox.Show("Неверное имя пользователя или пароль");
+            MessageBox.Show("Неверное имя пользователя или пароль","Ошибка авторизации",MessageBoxButtons.OK,MessageBoxIcon.Error);
+            LoginForm.stop = false;
+            DialogResult = DialogResult.Retry;
         }
 
 
@@ -346,7 +356,12 @@ namespace rabnet
                 rnds.AppendChild(xds);
             }
             Configuration conf = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            conf.GetSection("rabnetds").SectionInformation.SetRawXml(rnds.OuterXml);
+            ConfigurationSection rabnetds = conf.GetSection("rabnetds");
+            if (rabnetds==null)
+            {
+                throw new Exception("bad configuration file");
+            }
+            rabnetds.SectionInformation.SetRawXml(rnds.OuterXml);
             conf.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("rabnetds");
         }

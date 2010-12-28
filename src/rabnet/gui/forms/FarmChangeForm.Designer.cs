@@ -28,10 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FarmChangeForm));
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.fname = new System.Windows.Forms.TextBox();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.rpswd = new System.Windows.Forms.TextBox();
+            this.ruser = new System.Windows.Forms.TextBox();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.fsavepswd = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.fpswd = new System.Windows.Forms.TextBox();
             this.fhost = new System.Windows.Forms.TextBox();
@@ -41,23 +54,19 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.fsavepswd = new System.Windows.Forms.CheckBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.rpswd = new System.Windows.Forms.TextBox();
-            this.ruser = new System.Windows.Forms.TextBox();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.groupBox1.SuspendLayout();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.fhostm = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.button6 = new System.Windows.Forms.Button();
+            this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button1.Location = new System.Drawing.Point(232, 363);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
@@ -68,6 +77,7 @@
             // 
             // button2
             // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button2.Location = new System.Drawing.Point(151, 363);
             this.button2.Name = "button2";
@@ -94,6 +104,122 @@
             this.fname.TabIndex = 0;
             this.fname.Text = "Название фермы";
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.Filter = "Файл фермы(*.mia)|*.mia";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.groupBox2);
+            this.panel1.Controls.Add(this.textBox6);
+            this.panel1.Controls.Add(this.fsavepswd);
+            this.panel1.Controls.Add(this.groupBox1);
+            this.panel1.Location = new System.Drawing.Point(14, 44);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(296, 320);
+            this.panel1.TabIndex = 13;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.rpswd);
+            this.groupBox2.Controls.Add(this.ruser);
+            this.groupBox2.Controls.Add(this.button5);
+            this.groupBox2.Controls.Add(this.button4);
+            this.groupBox2.Controls.Add(this.button3);
+            this.groupBox2.Controls.Add(this.label7);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Enabled = false;
+            this.groupBox2.Location = new System.Drawing.Point(0, 201);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(292, 112);
+            this.groupBox2.TabIndex = 11;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Создание БД";
+            // 
+            // rpswd
+            // 
+            this.rpswd.Location = new System.Drawing.Point(115, 47);
+            this.rpswd.Name = "rpswd";
+            this.rpswd.Size = new System.Drawing.Size(166, 20);
+            this.rpswd.TabIndex = 7;
+            // 
+            // ruser
+            // 
+            this.ruser.Location = new System.Drawing.Point(115, 23);
+            this.ruser.Name = "ruser";
+            this.ruser.Size = new System.Drawing.Size(166, 20);
+            this.ruser.TabIndex = 6;
+            this.ruser.Tag = "";
+            this.ruser.Text = "root";
+            // 
+            // button5
+            // 
+            this.button5.Enabled = false;
+            this.button5.Location = new System.Drawing.Point(207, 78);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 23);
+            this.button5.TabIndex = 10;
+            this.button5.Text = "Удалить";
+            this.button5.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(86, 78);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(115, 23);
+            this.button4.TabIndex = 9;
+            this.button4.Text = "Импортировать";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(13, 78);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(67, 23);
+            this.button3.TabIndex = 8;
+            this.button3.Text = "Создать";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(64, 50);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(45, 13);
+            this.label7.TabIndex = 1;
+            this.label7.Text = "Пароль";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(23, 26);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(86, 13);
+            this.label6.TabIndex = 0;
+            this.label6.Text = "Администратор";
+            // 
+            // textBox6
+            // 
+            this.textBox6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBox6.Enabled = false;
+            this.textBox6.ForeColor = System.Drawing.Color.Red;
+            this.textBox6.Location = new System.Drawing.Point(0, 158);
+            this.textBox6.Multiline = true;
+            this.textBox6.Name = "textBox6";
+            this.textBox6.Size = new System.Drawing.Size(289, 37);
+            this.textBox6.TabIndex = 10;
+            this.textBox6.Text = "Внимание! Пароль сохраняется на компьютере в открытом виде.";
+            // 
+            // fsavepswd
+            // 
+            this.fsavepswd.AutoSize = true;
+            this.fsavepswd.Location = new System.Drawing.Point(0, 135);
+            this.fsavepswd.Name = "fsavepswd";
+            this.fsavepswd.Size = new System.Drawing.Size(192, 17);
+            this.fsavepswd.TabIndex = 9;
+            this.fsavepswd.Text = "Сохранять пароль пользователя";
+            this.fsavepswd.UseVisualStyleBackColor = true;
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.fpswd);
@@ -104,10 +230,10 @@
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(15, 44);
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(292, 129);
-            this.groupBox1.TabIndex = 4;
+            this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "База данных";
             // 
@@ -179,112 +305,42 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "Хост";
             // 
-            // fsavepswd
+            // panel2
             // 
-            this.fsavepswd.AutoSize = true;
-            this.fsavepswd.Location = new System.Drawing.Point(15, 179);
-            this.fsavepswd.Name = "fsavepswd";
-            this.fsavepswd.Size = new System.Drawing.Size(192, 17);
-            this.fsavepswd.TabIndex = 5;
-            this.fsavepswd.Text = "Сохранять пароль пользователя";
-            this.fsavepswd.UseVisualStyleBackColor = true;
+            this.panel2.Controls.Add(this.fhostm);
+            this.panel2.Controls.Add(this.label8);
+            this.panel2.Location = new System.Drawing.Point(329, 44);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(296, 37);
+            this.panel2.TabIndex = 14;
             // 
-            // textBox6
+            // fhostm
             // 
-            this.textBox6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox6.Enabled = false;
-            this.textBox6.ForeColor = System.Drawing.Color.Red;
-            this.textBox6.Location = new System.Drawing.Point(15, 202);
-            this.textBox6.Multiline = true;
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(289, 37);
-            this.textBox6.TabIndex = 6;
-            this.textBox6.Text = "Внимание! Пароль сохраняется на компьютере в открытом виде.";
+            this.fhostm.Location = new System.Drawing.Point(61, 7);
+            this.fhostm.Name = "fhostm";
+            this.fhostm.Size = new System.Drawing.Size(231, 20);
+            this.fhostm.TabIndex = 3;
+            this.fhostm.Text = "localhost";
             // 
-            // groupBox2
+            // label8
             // 
-            this.groupBox2.Controls.Add(this.rpswd);
-            this.groupBox2.Controls.Add(this.ruser);
-            this.groupBox2.Controls.Add(this.button5);
-            this.groupBox2.Controls.Add(this.button4);
-            this.groupBox2.Controls.Add(this.button3);
-            this.groupBox2.Controls.Add(this.label7);
-            this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Enabled = false;
-            this.groupBox2.Location = new System.Drawing.Point(15, 245);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(292, 112);
-            this.groupBox2.TabIndex = 7;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Создание БД";
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(-2, 10);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(31, 13);
+            this.label8.TabIndex = 2;
+            this.label8.Text = "Хост";
             // 
-            // rpswd
+            // button6
             // 
-            this.rpswd.Location = new System.Drawing.Point(115, 47);
-            this.rpswd.Name = "rpswd";
-            this.rpswd.Size = new System.Drawing.Size(166, 20);
-            this.rpswd.TabIndex = 7;
-            // 
-            // ruser
-            // 
-            this.ruser.Location = new System.Drawing.Point(115, 23);
-            this.ruser.Name = "ruser";
-            this.ruser.Size = new System.Drawing.Size(166, 20);
-            this.ruser.TabIndex = 6;
-            this.ruser.Tag = "";
-            this.ruser.Text = "root";
-            // 
-            // button5
-            // 
-            this.button5.Enabled = false;
-            this.button5.Location = new System.Drawing.Point(207, 78);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 10;
-            this.button5.Text = "Удалить";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(86, 78);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(115, 23);
-            this.button4.TabIndex = 9;
-            this.button4.Text = "Импортировать";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(13, 78);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(67, 23);
-            this.button3.TabIndex = 8;
-            this.button3.Text = "Создать";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(64, 50);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(45, 13);
-            this.label7.TabIndex = 1;
-            this.label7.Text = "Пароль";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(23, 26);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(86, 13);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "Администратор";
-            // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.Filter = "Файл фермы(*.mia)|*.mia";
+            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button6.Location = new System.Drawing.Point(15, 363);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(75, 23);
+            this.button6.TabIndex = 15;
+            this.button6.Text = "Подробнее";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // FarmChangeForm
             // 
@@ -292,27 +348,30 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button2;
-            this.ClientSize = new System.Drawing.Size(316, 393);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.textBox6);
-            this.Controls.Add(this.fsavepswd);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.fname);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(675, 393);
+            this.Controls.Add(this.button6);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.fname);
+            this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FarmChangeForm";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Описание фермы";
             this.Shown += new System.EventHandler(this.FarmChangeForm_Shown);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -324,6 +383,18 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox fname;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TextBox rpswd;
+        private System.Windows.Forms.TextBox ruser;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.CheckBox fsavepswd;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox fpswd;
         private System.Windows.Forms.TextBox fhost;
@@ -333,16 +404,9 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.CheckBox fsavepswd;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox rpswd;
-        private System.Windows.Forms.TextBox ruser;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.TextBox fhostm;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button button6;
     }
 }

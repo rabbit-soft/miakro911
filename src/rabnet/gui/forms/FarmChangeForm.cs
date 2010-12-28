@@ -7,19 +7,27 @@ using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
+using log4net;
 
 namespace rabnet
 {
     public partial class FarmChangeForm : Form
     {
-        private RabnetConfigHandler.dataSource ds=null;
-        bool noFarms=false;
+        protected static readonly ILog log = LogManager.GetLogger(typeof(LoginForm));
+        private RabnetConfigHandler.dataSource ds = null;
+        private bool noFarms = false;
+        private bool _miniMode;
         public FarmChangeForm()
         {
             InitializeComponent();
+            Size = new Size(325, 425);
+            _miniMode = false;
+            panel2.Visible = false;
+            panel2.Left = 14;
+            panel2.Top = 44;
+            ChangeMode(_miniMode);
         }
-        public FarmChangeForm(bool noFarms)
-            : this()
+        public FarmChangeForm(bool noFarms): this()
         {
             this.noFarms = noFarms;
             groupBox2.Enabled = true;
@@ -27,8 +35,31 @@ namespace rabnet
             if (noFarms)
             {
                 fname.Text = "Основная ферма";
-                fhost.Text="";
+                fhost.Text="localhost";
+                _miniMode = true;
             }
+            ChangeMode(_miniMode);
+        }
+
+        private void ChangeMode(bool mini)
+        {
+            if (mini)
+            {
+                Size = new Size(325, 150);
+                panel1.Visible = false;
+                panel2.Visible = true;
+                button6.Text = "Подробней";
+                fhostm.Text = fhost.Text;
+            }
+            else
+            {
+                Size = new Size(325, 425);
+                panel2.Visible = false;
+                panel1.Visible = true;
+                button6.Text = "Меньше";
+                fhost.Text = fhostm.Text;
+            }
+            _miniMode = mini;
         }
 
         public FarmChangeForm(RabnetConfigHandler.dataSource ds):this()
@@ -62,7 +93,15 @@ namespace rabnet
 
         private void button1_Click(object sender, EventArgs e)
         {
-            String constr="host="+fhost.Text+";database="+fdb.Text+";uid="+fuser.Text+";pwd="+fpswd.Text+";charset=utf8";
+            String constr;
+            if (_miniMode)
+            {
+                constr = "host=" + fhostm.Text + ";database=" + fdb.Text + ";uid=" + fuser.Text + ";pwd=" + fpswd.Text + ";charset=utf8";
+            }
+            else
+            {
+                constr = "host=" + fhost.Text + ";database=" + fdb.Text + ";uid=" + fuser.Text + ";pwd=" + fpswd.Text + ";charset=utf8";
+            }
             if (ds!=null)
             {
                 ds.name = fname.Text;
@@ -73,7 +112,16 @@ namespace rabnet
                 mds.savepassword = fsavepswd.Checked;
                 RabnetConfigHandler.ds.Add(mds);
             }
-            RabnetConfigHandler.save();
+            try
+            {
+                RabnetConfigHandler.save();
+            }
+            catch(Exception exp)
+            {
+                MessageBox.Show(exp.Message);
+                log.Debug(exp.Message);
+                Environment.Exit(1000);
+            }
             Close();
         }
 
@@ -82,16 +130,16 @@ namespace rabnet
             Close();
         }
 
-        private void button4_Click(object sender, EventArgs e)
+/*        private void button4_Click(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
                 if (runmia(openFileDialog1.FileName))
             {
                 button1.PerformClick();
             }
-        }
+        }*/
 
-        private bool runmia(String prm)
+/*        private bool runmia(String prm)
         {
             String prms = "\""+prm + "\" " + fhost.Text + ';' + fdb.Text + ';' + fuser.Text + ';' + fpswd.Text + ';' + ruser.Text + ';' + rpswd.Text;
             prms += " зоотехник;";
@@ -107,22 +155,36 @@ namespace rabnet
                 return false;
             }
             return true;
-        }
+        }*/
 
-        private void button3_Click(object sender, EventArgs e)
+/*        private void button3_Click(object sender, EventArgs e)
         {
             if (runmia("nudb"))
                 button1.PerformClick();
-        }
+        }*/
 
         private void FarmChangeForm_Shown(object sender, EventArgs e)
         {
             if (noFarms)
             {
-                fhost.Text = "172.16.0.1";
-                fhost.Focus();
-                fhost.SelectAll();
+                if (_miniMode)
+                {
+                    fhostm.Text = "localhost";
+                    fhostm.Focus();
+                    fhostm.SelectAll();
+                }
+                else
+                {
+                    fhost.Text = "localhost";
+                    fhost.Focus();
+                    fhost.SelectAll();
+                }
             }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            ChangeMode(!_miniMode);
         }
     }
 }

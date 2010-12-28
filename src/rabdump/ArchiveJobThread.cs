@@ -89,7 +89,7 @@ namespace rabdump
             String md = Options.Get().MySqlDumpPath;
             if (md == "")
             {
-                log.Error("Mysqldump not specified "+md);
+                log.Error("MySQLDump not specified "+md);
                 return;
             }
             String pr = String.Format("{0:s} {1:s} {2:s} {3:s} --ignore-table={0:s}.allrabbits",db.DBName,(db.Host==""?"":"-h "+db.Host),
@@ -110,7 +110,7 @@ namespace rabdump
                 p.WaitForExit();
                 wr.Close();
                 if (p.ExitCode != 0)
-                    throw new ApplicationException("mysqldump run result is " + p.ExitCode.ToString());
+                    throw new ApplicationException("MySQLDump вернул результат " + p.ExitCode.ToString());
                 p.Close();
             }
             catch(Exception ex)
@@ -220,7 +220,7 @@ namespace rabdump
                 String ff = tmppath + Path.GetFileNameWithoutExtension(f) + ".dump";
                 if (z7 == "")
                 {
-                    throw new ApplicationException("7z not specified");
+                    throw new ApplicationException("7z не настроен");
                 }
                 ProcessStartInfo inf = new ProcessStartInfo(z7, " e -p" + Password + " \"" + f + "\"");
 
@@ -237,14 +237,14 @@ namespace rabdump
                 if (res != 0)
                 {
                     File.Delete(ff);
-                    throw new ApplicationException("7z run result is " + p.ExitCode.ToString());
+                    throw new ApplicationException("7z вернул результат " + p.ExitCode.ToString());
                 }
                 f = ff;
             }
             log.Debug("mysql");
             String sql = Options.Get().MySqlPath;
             if (sql == "")
-                throw new ApplicationException("mysql not specified");
+                throw new ApplicationException("MySQL не настроен");
             String prms = String.Format(@"{1:s} {2:s} {3:s} {0:s}", db, (host != "" ? "-h " + host : ""), (user != "" ? "-u " + user : ""), (password != "" ? "--password=" + password : ""));
             try
             {
@@ -268,7 +268,7 @@ namespace rabdump
                 int res=mp.ExitCode;
                 mp.Close();
                 if (res != 0 || mout!="")
-                    throw new ApplicationException("mysql exit code="+res.ToString()+"\nerror="+mout);
+                    throw new ApplicationException("MySQL вернул результат "+res.ToString()+"\nerror="+mout);
             }
             catch(Exception ex)
             {

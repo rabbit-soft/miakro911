@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows.Forms;
 using System.IO;
 
@@ -7,14 +8,26 @@ namespace rabdump
     public partial class RestoreForm : Form
     {
         private ArchiveJob _jj = null;
+
+        private Thread _thrRestore;
+
+        private readonly WaitForm _wtFrm;
+
         public RestoreForm()
         {
             InitializeComponent();
             SetMode(true);
             foreach (ArchiveJob j in Options.Get().Jobs)
+            {
                 comboBox1.Items.Add(j.Name);
-            if (comboBox1.Items.Count>0)
+            }
+            if (comboBox1.Items.Count > 0)
+            {
                 comboBox1.SelectedIndex = 0;
+            }
+            _wtFrm = new WaitForm();
+            _wtFrm.SetName("Восстановление БД...");
+
         }
 
         public RestoreForm(String place):this()
@@ -64,17 +77,20 @@ namespace rabdump
             foreach (FileInfo fi in di.GetFiles())
             {
                 String[] nm = Path.GetFileName(fi.FullName).Split('_');
-                if (nm.Length == ArchiveJobThread.SplitNames && nm[0]==j.Name && nm[1]==db)
+                string fls = X_Tools.XTools.SafeFileName(j.Name,"_") + "_" + X_Tools.XTools.SafeFileName(db,"_");
+                fls = fls.Replace(" ", "_");
+                if (Path.GetFileName(fi.FullName).StartsWith(fls))
+                //                    if (nm.Length == ArchiveJobThread.SplitNames && nm[0] == j.Name && nm[1] == db)
                 {
-                    string[] hms = new string[3] { nm[5].Substring(0, 2), nm[5].Substring(2, 2), nm[5].Substring(4, 2) };
-                    DateTime dtm = new DateTime(int.Parse(nm[2]), int.Parse(nm[3]), int.Parse(nm[4]), int.Parse(hms[0]), int.Parse(hms[1]), int.Parse(hms[2]));
-                    int idx=0;
-                    for (int i = 0; i < listView1.Items.Count;i++ )
+                    string[] hms = new string[3] { nm[nm.Length - 1].Substring(0, 2), nm[nm.Length - 1].Substring(2, 2), nm[nm.Length - 1].Substring(4, 2) };
+                    DateTime dtm = new DateTime(int.Parse(nm[nm.Length - 4]), int.Parse(nm[nm.Length - 3]), int.Parse(nm[nm.Length - 2]), int.Parse(hms[0]), int.Parse(hms[1]), int.Parse(hms[2]));
+                    int idx = 0;
+                    for (int i = 0; i < listView1.Items.Count; i++)
                     {
                         if (DateTime.Parse(listView1.Items[i].SubItems[0].Text) > dtm)
                             idx++;
                     }
-                    ListViewItem li=listView1.Items.Insert(idx,dtm.ToShortDateString()+" "+dtm.ToLongTimeString());
+                    ListViewItem li = listView1.Items.Insert(idx, dtm.ToShortDateString() + " " + dtm.ToLongTimeString());
                     li.SubItems.Add(Path.GetFileName(fi.FullName));
                 }
             }
@@ -91,6 +107,7 @@ namespace rabdump
             tbDB.Text = db.DBName;
             tbUser.Text = db.User;
             tbPassword.Text = db.Password;
+            tbFile_TextChanged(null,null);
             FillList(_jj, comboBox2.Text);
         }
 
@@ -116,18 +133,99 @@ namespace rabdump
         private void button1_Click(object sender, EventArgs e)
         {
 
-//            _thrUpdate = new Thread(CheckUpdateThr);
+            _thrRestore = new Thread(new ParameterizedThreadStart(RestoreThr));
+            RestoreRarams p = new RestoreRarams();
+
+            p.Host=tbHost.Text;
+            p.Db = tbDB.Text;
+            p.User = tbUser.Text;
+            p.Password = tbPassword.Text;
+            p.File = tbFile.Text;
+
+            Enabled = false;
+
+            _wtFrm.Show();
+
+            _thrRestore.Start(p);
+
+
+
+
+//            try
+//            {
+
+//                ArchiveJobThread.UndumpDB(tbHost.Text, tbDB.Text, tbUser.Text, tbPassword.Text, tbFile.Text);
+//                MessageBox.Show("Восстановление завершено");
+//                Close();
+//            }
+//            catch (Exception ex)
+//            {
+//                DialogResult = DialogResult.None;
+//                MessageBox.Show(ex.Message);
+//            }
+        }
+
+        public delegate void RestoreThrCbDelegate(bool success, string errMsg);
+
+
+        private void RestoreThrCb(bool success, string errMsg)
+        {
+            if (InvokeRequired)
+            {
+                RestoreThrCbDelegate d = RestoreThrCb;
+                Invoke(d, new object[] { success, errMsg });
+                //Invoke(d);
+            }
+            else
+            {
+           
+                _wtFrm.Hide();
+                if (success)
+                {
+                    MessageBox.Show("Восстановление базы данных прошло успешно!", "Восстановление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    DialogResult = DialogResult.OK;
+                    Close();
+                } else
+                {
+                    BringToFront();
+                    MessageBox.Show(errMsg,"Ошибка при восстановлении",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                    Enabled = true;
+                    BringToFront();
+                }
+            }
+
+        }
+
+        private void RestoreThr(object prms)
+        {
             try
             {
-                ArchiveJobThread.UndumpDB(tbHost.Text, tbDB.Text, tbUser.Text, tbPassword.Text, tbFile.Text);
-                MessageBox.Show("Восстановление завершено");
-                Close();
+                RestoreRarams p = (RestoreRarams) prms;
+                //MessageBox.Show(p.Db + Environment.NewLine + p.File);
+                ArchiveJobThread.UndumpDB(p.Host, p.Db, p.User, p.Password, p.File);
+                //MessageBox.Show("Done");
             }
             catch (Exception ex)
             {
-                DialogResult = DialogResult.None;
-                MessageBox.Show(ex.Message);
+//                DialogResult = DialogResult.None;
+//                MessageBox.Show(ex.Message);
+                RestoreThrCb(false, ex.Message);
+                return;
             }
+            RestoreThrCb(true,"");
         }
+
+        private void tbFile_TextChanged(object sender, EventArgs e)
+        {
+            button1.Enabled = !((tbFile.Text == "") || (tbDB.Text == "") || (tbHost.Text == "") || (tbUser.Text == "") || (tbPassword.Text == ""));
+        }
+    }
+    public class RestoreRarams
+    {
+        public string Host;
+        public string Db;
+        public string User;
+        public string Password;
+        public string File;
     }
 }
