@@ -149,7 +149,7 @@ namespace rabdump
 
         private void ProcessTiming(bool onstart)
         {
-            log().Debug("processing timer "+(onstart?"OnStart":""));
+            log().Debug("processing timer " + (onstart ? "OnStart" : ""));
             foreach (ArchiveJob j in Options.Get().Jobs)
                 if (j.NeedDump(onstart))
                     DoDump(j);

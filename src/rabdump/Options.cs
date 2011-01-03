@@ -212,20 +212,20 @@ namespace rabdump
         private Rubool _sas=Rubool.Нет;
         private readonly DataBaseCollection _bds=new DataBaseCollection();
         private readonly ArchiveJobCollection _jobs = new ArchiveJobCollection();
-        [Category(Opt), DisplayName("mysql"), Description(""),
+        [Category(Opt), DisplayName("mysql"), Description("Путь к исполняемому файлу mysql.exe\n\rНужен для работы с Базой Данных\n\rПуть по умолчанию: \"C:\\Program Files\\MySQL\\MySQL Server <№ версии>\\bin\\mysql.exe\""),
         Editor(typeof(FileNameEditor), typeof(UITypeEditor))]
         public String MySqlPath { get { return _mp; } set { _mp = value; } }
-        [Category(Opt), DisplayName("mysqldump"), Description(""),
+        [Category(Opt), DisplayName("mysqldump"), Description("Путь к исполняемому файлу mysqldump.exe\n\rНужен для резервного копирования рабочей Базы Данных\n\rПуть по умолчанию: \"C:\\Program Files\\MySQL\\MySQL Server <№ версии>\\bin\\mysqldump.exe\""),
         Editor(typeof(FileNameEditor), typeof(UITypeEditor))]
         public String MySqlDumpPath { get { return _mdp; } set { _mdp = value; } }
-        [Category(Opt), DisplayName("7z"),Description(""),
+        [Category(Opt), DisplayName("7z"), Description("Путь к арфиватору 7-zip"),
         Editor(typeof(FileNameEditor), typeof(UITypeEditor))]
         public String Path7Z { get { return _p7; } set { _p7 = value; } }
-        [Category(Opt), DisplayName("Базы данных"),Description("")]
+        [Category(Opt), DisplayName("Базы данных"), Description("Коллекция Настроек подключения к Базам Данных")]
         public DataBaseCollection Databases { get { return _bds; }}
-        [Category(Opt), DisplayName("Расписание"),Description("")]
+        [Category(Opt), DisplayName("Расписание"),Description("Коллекция расписаний резервирования Баз Данных")]
         public ArchiveJobCollection Jobs { get { return _jobs; } }
-        [Category(Opt), DisplayName("Запускать при старте системы"),Description("")]
+        [Category(Opt), DisplayName("Запускать при старте системы"),Description("Запускать программу вместе с Windows")]
         public Rubool StartAtStart { get { return _sas; } set { _sas = value; } }
 
         public void Save()
