@@ -188,7 +188,7 @@ namespace rabnet
                     }
                     else
                     {
-                        Process.Start(RabUpdaterClient.Get().GetUpFilePath(),"batch");
+                        Process.Start(RabUpdaterClient.Get().GetUpFilePath(),"/S"); //Batch Mode
                         LoginForm.stop = true;
                         Close();
 
