@@ -42,6 +42,10 @@ namespace rabdump
             _manual = false;
             ShowInTaskbar = true;
             WindowState = FormWindowState.Normal;
+            TopMost = true;
+            Focus();
+            BringToFront();
+            TopMost = false;            
             _manual = true;
         }
 
