@@ -369,7 +369,7 @@ namespace X_Classes
 
                         Directory.CreateDirectory(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\");
 
-                        Process.Start(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + _upInfo.FileName, "test");
+                        Process.Start(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + _upInfo.FileName, "batch");
                         if (CloseCallback != null)
                         {
                             CloseCallback();
