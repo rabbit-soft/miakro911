@@ -47,7 +47,7 @@ namespace rabdump
             String prms = "\""+prm + "\" " + fhost.Text + ';' + fdb.Text + ';' + fuser.Text + ';' + fpswd.Text + ';' + ruser.Text + ';' + rpswd.Text;
             prms += " зоотехник;";
             try{
-                String prg = Path.GetDirectoryName(Application.ExecutablePath) + "\\mia_conv.exe";
+                String prg = Path.GetDirectoryName(Application.ExecutablePath) + @"\..\Tools\mia_conv.exe";
                 Process p=Process.Start(prg, prms);
                 p.WaitForExit();
                 if (p.ExitCode != 0)

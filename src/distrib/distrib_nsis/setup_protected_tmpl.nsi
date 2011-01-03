@@ -12,6 +12,8 @@ Name $(Prog_NAME)
 #!define SUPPORT_EMAIL "support@xobni.com"
 
 SetCompressor /SOLID lzma
+SetDatablockOptimize on
+CRCCheck on
 
 RequestExecutionLevel admin
 
@@ -121,6 +123,7 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     File ..\..\..\bin\@bin_type@\RabNet\rabnet.exe.config
     SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Prog_NAME).lnk $INSTDIR\RabNet\rabnet.exe
+    CreateShortcut $DESKTOP\$(SM_Prog_NAME).lnk $INSTDIR\RabNet\rabnet.exe
 #    WriteRegStr HKEY_CURRENT_USER Software\hzkakzvat\rabnet Path "C:\Program Files\7-Zip"
     WriteRegStr HKLM "${REGKEY}\Components" "rabnet" 1
 SectionEnd
@@ -140,9 +143,6 @@ Section /o $(SEC_RabDump_NAME) SEC_RabDump
     File ..\..\..\bin\@bin_type@\RabDump\GuardantDotNetApi.dll
     File ..\..\..\bin\@bin_type@\RabDump\log4net.dll
 #    File ..\..\..\bin\@bin_type@\key.dll
-    File ..\..\..\bin\tools\updater.exe
-    File ..\..\..\bin\@bin_type@\RabDump\mia_conv.exe
-    File ..\..\..\bin\@bin_type@\RabDump\MySql.Data.dll
 
     SetOutPath $INSTDIR\7z
     File ..\..\..\bin\@bin_type@\7z\7-zip.chm
@@ -187,6 +187,12 @@ Section -com_comps SEC_Common
 #    File ..\..\..\bin\@bin_type@\log4net.dll
     SetOutPath $INSTDIR\Guardant
     File ..\..\..\bin\@bin_type@\Guardant\GrdTRU.exe
+    SetOutPath $INSTDIR\Tools
+    File ..\..\..\bin\@bin_type@\Tools\mia_conv.exe
+    File ..\..\..\bin\@bin_type@\Tools\MySql.Data.dll
+    File ..\..\..\bin\tools\updater.exe
+    CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Conv_NAME).lnk $INSTDIR\Tools\mia_conv.exe
+    CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Up_NAME).lnk $INSTDIR\Tools\updater.exe
     WriteRegStr HKLM "${REGKEY}\Components" com_comps 1
 SectionEnd
 
@@ -207,7 +213,7 @@ SectionEnd
 
 Section /o -sec_updater SEC_Updater
     DetailPrint $(UPDATER_Run)
-    ExecWait '"$INSTDIR\RabDump\updater.exe" batch'
+    ExecWait '"$INSTDIR\Tools\updater.exe" batch'
     Exec "$INSTDIR\RabDump\rabdump.exe"
 SectionEnd
 
@@ -258,9 +264,14 @@ done${SECTION_ID}:
 # Uninstaller sections
 Section /o -un.com_comps UNSEC_Common
     RmDir /REBOOTOK /r $INSTDIR\Guardant
+    Delete /REBOOTOK $INSTDIR\Tools\mia_conv.exe
+    Delete /REBOOTOK $INSTDIR\Tools\MySql.Data.dll
+    RmDir /REBOOTOK /r $INSTDIR\Tools
 #    Delete /REBOOTOK $INSTDIR\Guardant\GrdTRU.exe
 #    Delete /REBOOTOK $INSTDIR\mia_conv.exe
 #   Delete /REBOOTOK $INSTDIR\log4net.dll
+    Delete /REBOOTOK $SMPROGRAMS\$StartMenuGroup\$(SM_Conv_NAME).lnk
+    Delete /REBOOTOK $SMPROGRAMS\$StartMenuGroup\$(SM_Up_NAME).lnk
     DeleteRegValue HKLM "${REGKEY}\Components" com_comps
 SectionEnd
 
@@ -273,9 +284,7 @@ Section /o "-un.rabdump" UNSEC_RabDump
 #    Delete /REBOOTOK $INSTDIR\RabDump\CodeStorage32.dll
 #    Delete /REBOOTOK $INSTDIR\RabDump\CodeStorage64.dll
     Delete /REBOOTOK $INSTDIR\RabDump\GuardantDotNetApi.dll
-    Delete /REBOOTOK $INSTDIR\RabDump\updater.exe
-    Delete /REBOOTOK $INSTDIR\RabDump\mia_conv.exe
-    Delete /REBOOTOK $INSTDIR\RabDump\MySql.Data.dll
+    Delete /REBOOTOK $INSTDIR\Tools\updater.exe
     Delete /REBOOTOK $INSTDIR\RabDump\log4net.dll
 
     RmDir /REBOOTOK /r $INSTDIR\7z
@@ -292,6 +301,7 @@ Section /o "-un.rabnet" UNSEC_Rabnet
 
     ;DeleteRegValue HKEY_CURRENT_USER Software\hzkakzvat\rabnet Path
     Delete /REBOOTOK $SMPROGRAMS\$StartMenuGroup\rabnet.lnk
+    Delete /REBOOTOK $DESKTOP\$(SM_Prog_NAME).lnk
 ;    Delete /REBOOTOK $INSTDIR\reports\zooteh_nofuck.rdl
 ;    Delete /REBOOTOK $INSTDIR\reports\zooteh.rdl
 ;    Delete /REBOOTOK $INSTDIR\reports\shed.rdl
@@ -577,6 +587,12 @@ LangString SM_Prog_NAME ${LANG_RUSSIAN} "Миакро-9.11"
 
 LangString SM_Dump_NAME ${LANG_ENGLISH} "RabDump"
 LangString SM_Dump_NAME ${LANG_RUSSIAN} "Резервные копии"
+
+LangString SM_Conv_NAME ${LANG_ENGLISH} ".mia Converter"
+LangString SM_Conv_NAME ${LANG_RUSSIAN} "Конвертер из .mia"
+
+LangString SM_Up_NAME ${LANG_ENGLISH} "DB Updater"
+LangString SM_Up_NAME ${LANG_RUSSIAN} "Обновление БД"
 
 LangString KillRabDump ${LANG_ENGLISH} "Killing RabDump..."
 LangString KillRabDump ${LANG_RUSSIAN} "Закрываем Резервные копии..."

@@ -6,15 +6,18 @@ namespace rabnet
 {
     class GeneticsManagerSafe
     {
-        private const string DllPath=@"..\Genetics";
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(GeneticsManagerSafe));
+#if !DEMO
         private static Boolean _hasModule = false;
+        private const string DllPath = @"..\Genetics";
+#endif
 
         [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
         public static Boolean GeneticsModuleTest()
         {
             Log.Debug("Test assembly 'gui_genetics.dll' presence.");
+#if !DEMO
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.AssemblyResolve += new ResolveEventHandler(GeneticsAssemblyResolve);
 
@@ -32,6 +35,9 @@ namespace rabnet
             Log.Debug("Assembly 'gui_genetics.dll' is present.");
             _hasModule = true;
             return true;
+#else
+            return false;
+#endif
         }
 
 
@@ -39,35 +45,43 @@ namespace rabnet
         {
             get
             {
+#if !DEMO
                 if (_hasModule)
                 {
                     return GeneticsManager.MaxFormsCount;
                 }
                 else
+#endif
                 {
                     return 0;
                 }
             }
             set
             {
+#if !DEMO
                 if (_hasModule)
                 {
                     GeneticsManager.MaxFormsCount = value;
                 }
+#endif
             }
         }
 
         public static Boolean AddNewGenetics(int rabID)
         {
+#if !DEMO
             if (_hasModule)
             {
                 return GeneticsManager.AddNewGenetics(rabID);
             }
             else
+#endif
             {
                 return false;
             }
         }
+
+#if !DEMO
         static Assembly GeneticsAssemblyResolve(object sender, ResolveEventArgs args)
         {
             Assembly myAssembly;
@@ -102,5 +116,6 @@ namespace rabnet
             //Return the loaded assembly.
             return myAssembly;
         }
+#endif
     }
 }

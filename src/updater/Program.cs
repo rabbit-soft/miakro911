@@ -19,7 +19,7 @@ namespace updater
                     batch = args[0] == "batch";
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                String fl = Path.GetDirectoryName(Application.ExecutablePath) + @"\rabdump.exe.config";
+                String fl = Path.GetDirectoryName(Application.ExecutablePath) + @"\..\RabDump\rabdump.exe.config";
                 bool update = File.Exists(fl);
                 //update = true;
                 int res = 0;

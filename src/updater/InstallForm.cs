@@ -206,7 +206,7 @@ namespace updater
         {
             String prms = "\"" + prm + "\" " + tbHost.Text + ';' + tbDb.Text + ';' + tbUser.Text + ';' + tbPwd.Text + ';' + tbRoot.Text + ';' + tbRPwd.Text;
             prms += " зоотехник;";
-            String prg = Path.GetDirectoryName(Application.ExecutablePath) + "\\mia_conv.exe";
+            String prg = Path.GetDirectoryName(Application.ExecutablePath) + @"\mia_conv.exe";
             Process p = Process.Start(prg, prms);
             p.WaitForExit();
             if (p.ExitCode != 0)

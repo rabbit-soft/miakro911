@@ -98,6 +98,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Demo.cs" />
     <Compile Include="forms\ProgressForm.cs">
       <SubType>Form</SubType>
     </Compile>
