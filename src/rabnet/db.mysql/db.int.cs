@@ -24,6 +24,8 @@ namespace rabnet
     {
         int getCount();
         int getCount2();
+        int getCount3(); //+gambit
+        float getCount4(); //
         void stop();
         IData getNextItem();
     }

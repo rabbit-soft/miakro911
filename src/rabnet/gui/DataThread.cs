@@ -35,10 +35,12 @@ namespace rabnet
         private bool is_stop = false;
         delegate void initCallBack();
         delegate void progressCallBack(int i);
+
         public DataThread()
         {
             stopev=new EventHandler(this.StopClick);
         }
+
         private void threadProc()
         {
             setStatus(1);
@@ -51,6 +53,7 @@ namespace rabnet
             setRelease();
             setStatus(0);
         }
+
         public void setInit()
         {
             if (sb.InvokeRequired)
@@ -71,12 +74,13 @@ namespace rabnet
             {
                 progressCallBack d = new progressCallBack(setProgress);
                 sb.Invoke(d, new object[] { progress });
-            }else{
+            }
+            else
+            {
                 sb.progress(progress);
                 IData it = gt.getNextItem();
                 onitem(it, null);
-                if (it == null)
-                    setStop(true);
+                if (it == null) setStop(true);
             }
         }
         public void setRelease()
@@ -100,7 +104,11 @@ namespace rabnet
 
         public void Run(IDataGetter getter,RabStatusBar sb,EventHandler onItem)
         {
-            while (getStatus() != 0) { stop(); Thread.Sleep(100); }
+            while (getStatus() != 0) 
+            { 
+                stop(); 
+                Thread.Sleep(100); 
+            }
             gt = getter;
             if (gt==null)
                 return;
@@ -110,10 +118,12 @@ namespace rabnet
             t = new Thread(new ThreadStart(threadProc));
             t.Start();
         }
+
         private void StopClick(object sender, EventArgs e)
         {
             stop();
         }
+
         public void stop()
         {
             if (getStatus() == 0)
@@ -122,6 +132,7 @@ namespace rabnet
             while (getStatus() != 0)
                 Application.DoEvents();
         }
+
         private bool getStop()
         {
             lock (this)
@@ -129,6 +140,7 @@ namespace rabnet
                 return is_stop;
             }
         }
+
         private void setStop(bool val)
         {
             lock (this)
@@ -143,6 +155,7 @@ namespace rabnet
                 return status;
             }
         }
+
         private void setStatus(int stat)
         {
             lock (this)
@@ -150,6 +163,7 @@ namespace rabnet
                 status = stat;
             }
         }
+
         private int getCount()
         {
             lock (this)
@@ -157,6 +171,7 @@ namespace rabnet
                 return gt.getCount();
             }
         }
+
         public bool IsWorking()
         {
             return (getStatus() != 0);

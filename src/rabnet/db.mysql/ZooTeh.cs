@@ -27,6 +27,16 @@ namespace rabnet
             return 0;
         }
 
+        public int getCount3()
+        {
+            return 0;
+        }
+
+        public float getCount4()
+        {
+            return 0;
+        }
+
         public void stop()
         {
             

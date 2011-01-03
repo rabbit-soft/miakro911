@@ -1,4 +1,4 @@
-﻿#define GLOBCATCH
+﻿//#define GLOBCATCH
 //#define PROTECTED
 
 using System;
@@ -47,6 +47,7 @@ namespace rabnet
             {
                 MessageBox.Show("Произошла ошибка. Программа будет закрыта.\n\r" + ex.Message);
             }
+            log.Debug(ex.Message, ex);
         }
 
         static void Threaded(object sender, System.Threading.ThreadExceptionEventArgs e)
@@ -57,7 +58,8 @@ namespace rabnet
             }
             finally
             {
-                Application.Exit();
+                //Application.Exit();
+                Environment.Exit(0);
             }
         }
 
@@ -69,7 +71,8 @@ namespace rabnet
             }
             finally
             {
-                Application.Exit();
+                //Application.Exit();
+                Environment.Exit(0);
             }
         }
 #endif

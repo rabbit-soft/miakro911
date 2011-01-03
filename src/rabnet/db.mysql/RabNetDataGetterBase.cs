@@ -12,14 +12,18 @@ namespace rabnet
         protected static ILog log = log4net.LogManager.GetLogger(typeof(RabNetDataGetterBase));
         protected int count;
         protected int count2;
+        protected int count3; //+gambit  понадобилось для подсчета кормилиц
+        protected float count4; //+gambit  надо для подсчета среднего кол-ва детей
         protected int citem=0;
         protected MySqlConnection sql;
         protected MySqlDataReader rd;
         protected Filters options = null; 
+
         protected void Debug(String s)
         {
             log.Debug(this.GetType().ToString()+" "+s);
         }
+
         public RabNetDataGetterBase(MySqlConnection sql,Filters filters)
         {
             options = filters;
@@ -32,7 +36,12 @@ namespace rabnet
             count = (int)rd.GetInt32(0);
             count2 = 0;
             if (rd.FieldCount > 1)
-                count2 = rd.IsDBNull(1)?0:rd.GetInt32(1);
+                count2 = rd.IsDBNull(1) ? 0 : rd.GetInt32(1);
+            if (rd.FieldCount > 2)                                  //+gambit
+            {
+                count3 = rd.IsDBNull(2) ? 0 : rd.GetInt32(2);
+                count4 = (float)count2 / (float)count3;
+            } 
             rd.Close();
             cmd.CommandText = getQuery();
             Debug("d_query:" + cmd.CommandText);
@@ -47,6 +56,17 @@ namespace rabnet
         {
             return count2;
         }
+
+        public int getCount3()
+        {
+            return count3;
+        }
+
+        public float getCount4()
+        {
+            return count4;
+        }
+
         public void stop()
         {
             Debug("closed");

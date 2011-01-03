@@ -53,7 +53,7 @@ namespace rabnet
             usersMenuItem.Visible = Engine.get().isAdmin();
             manflag = true;
             rabStatusBar1.setText(0, Engine.db().now().ToShortDateString());
-            Text = Engine.get().farmName();
+            this.Text = Engine.get().farmName();
             Options op = Engine.opt();
             showTierTMenuItem.Checked = (op.getIntOption(Options.OPT_ID.SHOW_TIER_TYPE) == 1);
             showTierSMenuItem.Checked = (op.getIntOption(Options.OPT_ID.SHOW_TIER_SEC) == 1);
@@ -130,6 +130,7 @@ namespace rabnet
             DataThread.get().stop();
             for (int i = 0; i < panels.Length; i++)
                 panels[i].close();
+
         }
 
         private void оПрограммеToolStripMenuItem_Click(object sender, EventArgs e)
@@ -160,15 +161,18 @@ namespace rabnet
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+
             if (Engine.opt().getIntOption(Options.OPT_ID.CONFIRM_EXIT) == 0)
                 return;
             if (mustclose) return;
-            DialogResult dlr = MessageBox.Show("Вы уверены что хотите Выйти?","Выход",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+            DialogResult dlr = MessageBox.Show("Вы уверены что хотите Выйти?", "Выход", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dlr == DialogResult.No)
             {
                 if (LoginForm.stop == false) LoginForm.stop = true;
                 e.Cancel = true;
-            }   
+            }
+
+            log.Debug("CloseReason: " + e.CloseReason.ToString());
         }
 
         private void usersMenuItem_Click(object sender, EventArgs e)

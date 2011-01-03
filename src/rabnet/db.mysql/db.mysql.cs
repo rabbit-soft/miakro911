@@ -19,6 +19,7 @@ namespace rabnet
             log4net.Config.XmlConfigurator.Configure();
             log.Debug("created");
         }
+
         private MySqlConnection sql { get { 
             if (psql == null) return null;
             if (psql.State == System.Data.ConnectionState.Broken || psql.State == System.Data.ConnectionState.Closed)

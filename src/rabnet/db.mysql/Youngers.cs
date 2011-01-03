@@ -35,8 +35,7 @@ namespace rabnet
 
     class Youngers:RabNetDataGetterBase
     {
-        public Youngers(MySqlConnection sql, Filters f)
-            : base(sql, f)
+        public Youngers(MySqlConnection sql, Filters f): base(sql, f)
         {
         }
 
@@ -75,7 +74,11 @@ FROM rabbits WHERE r_parent!=0 ORDER BY name;";
 
         public override string countQuery()
         {
-            return "SELECT COUNT(*),SUM(r_group) FROM rabbits WHERE r_parent!=0;";
+            //return "SELECT COUNT(*),SUM(r_group) FROM rabbits WHERE r_parent!=0;";
+            return @"SELECT COUNT(*),
+                            SUM(r_group), 
+                            (SELECT count(a) FROM (select DISTINCT r_parent a from rabbits where r_parent<>0) t)mc                            
+                    FROM rabbits WHERE r_parent!=0;";
         }
 
         public static Younger[] getSuckers(MySqlConnection sql, int id)

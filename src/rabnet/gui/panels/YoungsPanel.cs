@@ -16,6 +16,7 @@ namespace rabnet
         public YoungsPanel():base()
         {
         }
+
         public YoungsPanel(RabStatusBar sb)
             : base(sb, null)
         {
@@ -34,9 +35,11 @@ namespace rabnet
             f["dbl"] = op.getOption(Options.OPT_ID.DBL_SURNAME);
             f["num"] = op.getOption(Options.OPT_ID.SHOW_NUMBERS);
             cs.Prepare();
-            IDataGetter dg = DataThread.db().getYoungers(f);
+            IDataGetter dg = DataThread.db().getYoungers(f); //отображение общей инфы в статус баре
             rsb.setText(1, dg.getCount().ToString() + " строк");
             rsb.setText(2, dg.getCount2().ToString() + " кроликов");
+            rsb.setText(3, dg.getCount3().ToString() + " кормилиц");
+            rsb.setText(4, String.Format("{0:f2} среднее количество подсосных", dg.getCount4()));
             return dg;
         }
 
@@ -57,7 +60,7 @@ namespace rabnet
             li.SubItems.Add(rab.faddress);
             li.SubItems.Add(rab.fcls);
             li.SubItems.Add(rab.mom);
-            li.SubItems.Add(rab.fneighbours==0?"-":rab.fneighbours.ToString());
+            li.SubItems.Add(rab.fneighbours == 0 ? "-" : rab.fneighbours.ToString());
 
 			cs.SemiReady();
 		}
