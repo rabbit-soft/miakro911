@@ -195,6 +195,7 @@ namespace rabnet
 
         private void replacePlanMenuItem_Click(object sender, EventArgs e)
         {
+#if !DEMO
             if (listView1.SelectedItems.Count < 1) return;
             XmlDocument doc = new XmlDocument();
             doc.AppendChild(doc.CreateElement("Rows"));
@@ -206,6 +207,9 @@ namespace rabnet
                 rw.AppendChild(doc.CreateElement("count")).AppendChild(doc.CreateTextNode(li.SubItems[1].Text));
             }
             new ReportViewForm("План пересадок", "replace_plan", doc).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
         }
 
     }

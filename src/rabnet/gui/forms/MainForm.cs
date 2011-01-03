@@ -54,6 +54,9 @@ namespace rabnet
             manflag = true;
             rabStatusBar1.setText(0, Engine.db().now().ToShortDateString());
             this.Text = Engine.get().farmName();
+#if DEMO
+            Text += " Демонстрационная версия";
+#endif
             Options op = Engine.opt();
             showTierTMenuItem.Checked = (op.getIntOption(Options.OPT_ID.SHOW_TIER_TYPE) == 1);
             showTierSMenuItem.Checked = (op.getIntOption(Options.OPT_ID.SHOW_TIER_SEC) == 1);
@@ -65,7 +68,7 @@ namespace rabnet
             shortZooMenuItem.Checked = (op.safeIntOption(Options.OPT_ID.SHORT_ZOO,1) == 1);
             //rabStatusBar1.run();
             manflag = false;
-#if PROTECTED
+#if PROTECTED || DEMO
             protest(getmax(Engine.db().buildingsTree(), 0));
         }
 
@@ -189,26 +192,39 @@ namespace rabnet
 
         private void тестовыйToolStripMenuItem_Click(object sender, EventArgs e)
         {
+#if !DEMO
             (new ReportViewForm("Тестовый отчет","test", 
                 Engine.get().db().makeReport(ReportType.Type.TEST, null))).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
         }
 
         private void породыToolStripMenuItem_Click(object sender, EventArgs e)
         {
+#if !DEMO
             Filters f = new Filters();
             f["brd"] = Engine.get().brideAge().ToString();
             (new ReportViewForm("Отчет по породам", "breeds", 
                 Engine.get().db().makeReport(ReportType.Type.BREEDS, f))).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
         }
 
         private void возрастИКоличествоToolStripMenuItem_Click(object sender, EventArgs e)
         {
+#if !DEMO
             (new ReportViewForm("Статистика возрастного поголовья", "age", 
                 Engine.get().db().makeReport(ReportType.Type.AGE, null))).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
         }
 
         private void продуктивностьСоитияToolStripMenuItem_Click(object sender, EventArgs e)
         {
+#if !DEMO
             FuckerForm dlg=new FuckerForm();
             if (dlg.ShowDialog() == DialogResult.OK)
             {
@@ -219,33 +235,49 @@ namespace rabnet
                 (new ReportViewForm("Статистика продуктивности", "fucker",new XmlDocument[]{
                     Engine.get().db().makeReport(ReportType.Type.FUCKER, f),dlg.getXml()})).ShowDialog();
             }
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
         }
 
         private void причиныСпичанияToolStripMenuItem_Click(object sender, EventArgs e)
         {
+#if !DEMO
             new CatalogForm(CatalogForm.CatalogType.DEAD).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
         }
 
         private void списанияToolStripMenuItem_Click(object sender, EventArgs e)
         {
+#if !DEMO
             Filters f=new Filters();
             XmlDocument dt=null;
             if (PeriodForm.Run(f, PeriodForm.Preset.CUR_MONTH, ref dt) == DialogResult.OK)
                 (new ReportViewForm("Причины списаний", "deadreason", new XmlDocument[]{
                     Engine.db().makeReport(ReportType.Type.DEADREASONS,f),dt})).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
         }
 
         private void списанияToolStripMenuItem1_Click(object sender, EventArgs e)
         {
+#if !DEMO
             Filters f = new Filters();
             XmlDocument dt = null;
             if (PeriodForm.Run(f, PeriodForm.Preset.CUR_MONTH, ref dt) == DialogResult.OK)
                 (new ReportViewForm("Списания", "dead", new XmlDocument[]{
                     Engine.db().makeReport(ReportType.Type.DEAD,f),dt})).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
 		}
 
         private void окролыПоПользователямToolStripMenuItem_Click(object sender, EventArgs e)
         {
+#if !DEMO
             OkrolUser dlg = new OkrolUser();
             if (dlg.ShowDialog() == DialogResult.OK)
             {
@@ -256,21 +288,32 @@ namespace rabnet
                 (new ReportViewForm("Окролы по пользователям", "okrol_user", new XmlDocument[]{
                     Engine.get().db().makeReport(ReportType.Type.USER_OKROLS, f),dlg.getXml()})).ShowDialog();
             }
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
         }
 
         private void количествоПоМесяцамToolStripMenuItem_Click(object sender, EventArgs e)
         {
+#if !DEMO
             Filters f = new Filters();
             (new ReportViewForm("Количество по месяцам", "by_month", new XmlDocument[]{
                     Engine.get().db().makeReport(ReportType.Type.BY_MONTH,f)})).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
         }
 
         private void fucksByDateToolStripMenuItem_Click(object sender, EventArgs e)
         {
+#if !DEMO
             OkrolUser dlg = new OkrolUser();            
             Filters f = new Filters();
             (new ReportViewForm("Список случек/окролов", "fucks_by_date", new XmlDocument[]{
                     Engine.get().db().makeReport(ReportType.Type.FUCKS_BY_DATE,f)})).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -326,10 +369,23 @@ namespace rabnet
             if (msg != "")
             {
                 MessageBox.Show(this, msg + "\nПрограмма будет закрыта.", "Ошибка защиты", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                LoginForm.stop = true;
-                mustclose = true;
-                Close();
+                // Надо сделать выход более доброжелательным
+//                LoginForm.stop = true;
+//                mustclose = true;
+//                Close();
+                Environment.Exit(100);
             }*/
+#endif
+#if DEMO
+            if (farms > 100)
+            {
+                MessageBox.Show(this, "Превышено количество разрешенных ферм." + Environment.NewLine + "Программа будет закрыта.", "Демонстрационная версия", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                // Надо сделать выход более доброжелательным
+//                LoginForm.stop = true;
+//                mustclose = true;
+//                Close();
+                Environment.Exit(100);
+            }
 #endif
         }
         private void MainForm_MouseMove(object sender, MouseEventArgs e)
@@ -343,4 +399,14 @@ namespace rabnet
         }
 
     }
+
+#if DEMO
+    public static class DemoErr
+    {
+        public static void DemoNoReportMsg()
+        {
+            MessageBox.Show("Генерация отчетов недоступна в демонстрационной версии." + Environment.NewLine + "По вопросам приобретения посетите сайт www.rabbit-soft.ru", "Демонстрационная версия", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+    }
+#endif
 }

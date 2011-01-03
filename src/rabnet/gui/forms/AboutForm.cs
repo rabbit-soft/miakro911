@@ -60,7 +60,11 @@ namespace rabnet
             info += String.Format("Период действия - с {0} по {1}", GRD.Instance.GetDateStart().ToShortDateString(),GRD.Instance.GetDateEnd().ToShortDateString());
             return info;
 #else 
+    #if DEMO
+            return "Демонстрационная версия"+Environment.NewLine+"Ограничена 100 фермами";
+    #else
             return "Без ограничений";
+    #endif
 #endif
         }
 

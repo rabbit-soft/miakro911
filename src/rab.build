@@ -359,6 +359,7 @@
 			<arg value="${root_bin}/protected/engine.dll" />
 			<arg value="${root_bin}/protected/gui_genetics.dll" /-->
 			<arg value="${root_bin}/protected/RabDump/mia_conv.exe" />
+			<arg value="${tools_dir}/updater.exe" />
 			<!--arg value="${root_bin}/protected/rabdump.exe" />
 			<arg value="${root_bin}/protected/rabnet.exe" /-->
 		</exec>

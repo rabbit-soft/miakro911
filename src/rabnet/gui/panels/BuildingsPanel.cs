@@ -49,6 +49,10 @@ namespace rabnet
 #if PROTECTED
                 //                    if (i <= PClient.get().farms())
                 if (i <= GRD.Instance.GetFarmsCntCache())
+#else
+    #if DEMO
+                if (i <= 100)
+    #endif
 #endif
                     nofarms.Add(i);
             }
@@ -92,8 +96,12 @@ namespace rabnet
 #if PROTECTED
 //            if (nofarm<=PClient.get().farms())
             if (nofarm <= GRD.Instance.GetFarmsCnt())
+#else
+    #if DEMO
+                if (nofarm <= 100)
+    #endif
 #endif
-                nofarms.Add(nofarm);
+                    nofarms.Add(nofarm);
             MainForm.protest(maxfarm);
             treeView1.Sort();
             manual = true;
@@ -572,6 +580,7 @@ namespace rabnet
 
         private void shedReportMenuItem_Click(object sender, EventArgs e)
         {
+#if !DEMO
             if (treeView1.SelectedNode==null) return;
             if (isFarm()) return;
             Filters f = new Filters();
@@ -580,10 +589,14 @@ namespace rabnet
             f["suck"] = Engine.opt().getOption(Options.OPT_ID.SUCKERS);
             new ReportViewForm("Шедовый отчет", "shed", new XmlDocument[]{
                 Engine.db().makeReport(ReportType.Type.SHED,f),getBuildDoc(bid)}).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
         }
 
         private void emptyRevMenuItem_Click(object sender, EventArgs e)
         {
+#if !DEMO
             if (treeView1.SelectedNode == null) return;
             if (isFarm()) return;
             Filters f = new Filters();
@@ -591,6 +604,9 @@ namespace rabnet
             f["bld"] = bid.ToString();
             new ReportViewForm("Ревизия свободных клеток", "empty_rev", new XmlDocument[]{
                 Engine.db().makeReport(ReportType.Type.REVISION,f),getBuildDoc(bid)}).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
         }
 
     }

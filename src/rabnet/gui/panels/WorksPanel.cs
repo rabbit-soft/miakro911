@@ -295,6 +295,7 @@ namespace rabnet
 
         private void печатьToolStripMenuItem_Click(object sender, EventArgs e)
         {
+#if !DEMO
             List<String> fuckers = new List<string>();
             XmlDocument rep=new XmlDocument();
             rep.AppendChild(rep.CreateElement("Rows")).AppendChild(rep.CreateElement("Row")).AppendChild(rep.CreateElement("date")).AppendChild(rep.CreateTextNode(repdate.ToLongDateString()+" "+repdate.ToLongTimeString()));
@@ -343,6 +344,9 @@ namespace rabnet
             }
             new ReportViewForm("Зоотехплан " + repdate.ToLongDateString() + " " + repdate.ToLongTimeString(), plan, 
                 xmls).ShowDialog();
+#else 
+            DemoErr.DemoNoReportMsg();
+#endif
         }
 
         private void countChangedMenuItem_Click(object sender, EventArgs e)

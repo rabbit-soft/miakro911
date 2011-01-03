@@ -467,6 +467,7 @@ namespace rabnet
 
         private void svidMenuItem_Click(object sender, EventArgs e)
         {
+#if !DEMO
             if (listView1.SelectedItems.Count != 1) return;
             XmlDocument[] docs=new XmlDocument[7];
             RabNetEngRabbit r=Engine.get().getRabbit((int)listView1.SelectedItems[0].Tag);
@@ -494,16 +495,23 @@ namespace rabnet
                 int num = Engine.opt().getIntOption(Options.OPT_ID.NEXT_SVID);
                 Engine.opt().setOption(Options.OPT_ID.NEXT_SVID, num + 1);
             }
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
         }
 
         private void realizeMenuItem_Click(object sender, EventArgs e)
         {
+#if !DEMO
             if (listView1.SelectedItems.Count < 1) return;
             Filters f = new Filters();
             f["cnt"] = listView1.SelectedItems.Count.ToString();
             for (int i = 0; i < listView1.SelectedItems.Count; i++)
                 f["r" + i.ToString()] = ((int)listView1.SelectedItems[i].Tag).ToString();
             new ReportViewForm("Кандидаты на реализацию", "realization", Engine.db().makeReport(ReportType.Type.REALIZE, f)).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
         }
 
 		private void GeneticsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -552,6 +560,7 @@ namespace rabnet
 
         private void plemMenuItem_Click(object sender, EventArgs e)
         {
+#if !DEMO
             if (listView1.SelectedItems.Count < 1) return;
             XmlDocument doc = new XmlDocument();
             doc.AppendChild(doc.CreateElement("Rows"));
@@ -573,10 +582,14 @@ namespace rabnet
             rw.AppendChild(doc2.CreateElement("breed")).AppendChild(doc2.CreateTextNode(brd));
             rw.AppendChild(doc2.CreateElement("count")).AppendChild(doc2.CreateTextNode(cnt.ToString()));
             new ReportViewForm("Племенной список", "plem", new XmlDocument[] { doc, doc2 }).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
         }
 
         private void replacePlanMenuItem_Click(object sender, EventArgs e)
         {
+#if !DEMO
             if (listView1.SelectedItems.Count < 1) return;
             XmlDocument doc = new XmlDocument();
             doc.AppendChild(doc.CreateElement("Rows"));
@@ -595,6 +608,9 @@ namespace rabnet
                 rw.AppendChild(doc.CreateElement("count")).AppendChild(doc.CreateTextNode(cn));
             }
             new ReportViewForm("План пересадок", "replace_plan", doc).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
         }
 
         private void логЗаписиToolStripMenuItem_Click(object sender, EventArgs e)
