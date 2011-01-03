@@ -89,8 +89,9 @@ namespace rabdump
             String md = Options.Get().MySqlDumpPath;
             if (md == "")
             {
-                log.Error("MySQLDump not specified "+md);
-                return;
+                log.Error("MySQLDump not specified " + md);
+                throw new ApplicationException("Путь к MySQLDump не настроен");
+//                return;
             }
             String pr = String.Format("{0:s} {1:s} {2:s} {3:s} --ignore-table={0:s}.allrabbits",db.DBName,(db.Host==""?"":"-h "+db.Host),
                 (db.User==""?"":"-u "+db.User),(db.Password==""?"":"--password="+db.Password));
@@ -143,7 +144,7 @@ namespace rabdump
                     Process p = Process.Start(inf);
                     p.WaitForExit();
                     if (p.ExitCode!=0)
-                        throw new ApplicationException("7z run result is "+p.ExitCode.ToString());
+                        throw new ApplicationException("7z вернул результат "+p.ExitCode.ToString());
                     File.Delete(fname + ".dump");
                     is7z = true;
                 }
@@ -220,7 +221,7 @@ namespace rabdump
                 String ff = tmppath + Path.GetFileNameWithoutExtension(f) + ".dump";
                 if (z7 == "")
                 {
-                    throw new ApplicationException("7z не настроен");
+                    throw new ApplicationException("Путь к 7z не настроен");
                 }
                 ProcessStartInfo inf = new ProcessStartInfo(z7, " e -p" + Password + " \"" + f + "\"");
 
@@ -244,7 +245,7 @@ namespace rabdump
             log.Debug("mysql");
             String sql = Options.Get().MySqlPath;
             if (sql == "")
-                throw new ApplicationException("MySQL не настроен");
+                throw new ApplicationException("Путь к MySQL не настроен");
             String prms = String.Format(@"{1:s} {2:s} {3:s} {0:s}", db, (host != "" ? "-h " + host : ""), (user != "" ? "-u " + user : ""), (password != "" ? "--password=" + password : ""));
             try
             {

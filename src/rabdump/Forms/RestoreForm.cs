@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Windows.Forms;
 using System.IO;
+using log4net;
 
 namespace rabdump
 {
@@ -12,6 +13,8 @@ namespace rabdump
         private Thread _thrRestore;
 
         private readonly WaitForm _wtFrm;
+
+        private static readonly ILog log = LogManager.GetLogger(typeof(RestoreForm));
 
         public RestoreForm()
         {
@@ -165,15 +168,15 @@ namespace rabdump
 //            }
         }
 
-        public delegate void RestoreThrCbDelegate(bool success, string errMsg);
+        public delegate void RestoreThrCbDelegate(bool success, Exception ex);
 
 
-        private void RestoreThrCb(bool success, string errMsg)
+        private void RestoreThrCb(bool success, Exception ex)
         {
             if (InvokeRequired)
             {
                 RestoreThrCbDelegate d = RestoreThrCb;
-                Invoke(d, new object[] { success, errMsg });
+                Invoke(d, new object[] { success, ex });
                 //Invoke(d);
             }
             else
@@ -188,7 +191,9 @@ namespace rabdump
                 } else
                 {
                     BringToFront();
-                    MessageBox.Show(errMsg,"Ошибка при восстановлении",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                    MessageBox.Show(ex.Message,"Ошибка при восстановлении",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                    log.Error(ex.Message);
+//                    log.Error(ex.Message);
                     Enabled = true;
                     BringToFront();
                 }
@@ -209,10 +214,10 @@ namespace rabdump
             {
 //                DialogResult = DialogResult.None;
 //                MessageBox.Show(ex.Message);
-                RestoreThrCb(false, ex.Message);
+                RestoreThrCb(false, ex);
                 return;
             }
-            RestoreThrCb(true,"");
+            RestoreThrCb(true,null);
         }
 
         private void tbFile_TextChanged(object sender, EventArgs e)
