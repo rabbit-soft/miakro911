@@ -647,10 +647,10 @@
 		<mkdir dir="${root_bin}"/>
 		<delete dir="${root_bin}/distrib_nsis_${bin_type}"/>
 		<mkdir dir="${root_bin}/distrib_nsis_${bin_type}"/>
-		<ifnot propertyexists="build_no_up">
+		<if test="${not property::exists('build_no_up')}">
 			<delete dir="${root_bin}/distrib_nsis_${bin_type}_up"/>
 			<mkdir dir="${root_bin}/distrib_nsis_${bin_type}_up"/>
-		</ifnot>
+		</if>
 		<mkdir dir="${root_bin}/distrib_nsis_${bin_type}/dotnetfx20"/>
 		<mkdir dir="${root_bin}/distrib_nsis_${bin_type}/mysql"/>
 		<copy file="${dotnetInstallerSource}" tofile="${root_bin}/distrib_nsis_${bin_type}/dotnetfx20/${dotnetInstallerDest}"/>
@@ -689,7 +689,7 @@
 			<arg value="${curdir}/distrib/distrib_nsis/setup_bld.nsi" />
 		</exec>
 		<copy file="${curdir}/distrib/distrib_nsis/setup.exe" tofile="${root_bin}/distrib_nsis_${bin_type}/setup.exe"/>
-		<ifnot propertyexists="build_no_up">
+		<if test="${not property::exists('build_no_up')}">
 			<copy file="${curdir}/distrib/distrib_nsis/setup.exe" tofile="${root_bin}/distrib_nsis_${bin_type}_up/setup.${version}.${minver}.exe"/>
 			<copy file="${curdir}/distrib/distrib_nsis/updates.xml" tofile="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml"/>
 			<loadtasks assembly="${nant_contrib}" />
@@ -703,7 +703,7 @@
 			<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml" xpath="/update/bundle/file[@name = 'setup.exe']/@md5" value="${distr.md5}" />
 			<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml" xpath="/update/bundle/file[@name = 'setup.exe']/@uri" value="http://updates.trustbox.ru/rab/setup.${version}.${minver}.exe" />
 			<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml" xpath="/update/bundle/version/@number" value="${version}.${minver}" />
-		</ifnot>
+		</if>
 	</target>
 	
 	<!-- FILL DATA!-->
