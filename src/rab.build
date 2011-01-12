@@ -590,7 +590,7 @@
 			<loadfile file="${root_bin}/distrib_nsis_${bin_type}_up/setup.${version}.${minver}.exe.MD5" property="distr.md5" />
 			<delete file="${root_bin}/distrib_nsis_${bin_type}_up/setup.${version}.${minver}.exe.MD5"/>
 			<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml" xpath="/update/bundle/file[@name = 'setup.exe']/@md5" value="${distr.md5}" />
-			<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml" xpath="/update/bundle/file[@name = 'setup.exe']/@uri" value="http://updates.trustbox.ru/rab/setup.${version}.${minver}.exe" />
+			<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml" xpath="/update/bundle/file[@name = 'setup.exe']/@uri" value="http://update.rabbit-soft.ru/rab/setup.${version}.${minver}.exe" />
 			<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml" xpath="/update/bundle/version/@number" value="${version}.${minver}" />
 		</if>
 	</target>

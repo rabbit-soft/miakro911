@@ -68,6 +68,8 @@ namespace rabnet
             if (ds == null)
             {
                 groupBox2.Enabled = true;
+                _miniMode = true;
+                ChangeMode(_miniMode);
             }
             else
             {
@@ -130,21 +132,21 @@ namespace rabnet
             Close();
         }
 
-/*        private void button4_Click(object sender, EventArgs e)
+        private void button4_Click(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
                 if (runmia(openFileDialog1.FileName))
             {
                 button1.PerformClick();
             }
-        }*/
+        }
 
-/*        private bool runmia(String prm)
+        private bool runmia(String prm)
         {
             String prms = "\""+prm + "\" " + fhost.Text + ';' + fdb.Text + ';' + fuser.Text + ';' + fpswd.Text + ';' + ruser.Text + ';' + rpswd.Text;
             prms += " зоотехник;";
             try{
-                String prg = Path.GetDirectoryName(Application.ExecutablePath) + "\\mia_conv.exe";
+                String prg = Path.GetDirectoryName(Application.ExecutablePath) + @"\..\Tools\mia_conv.exe";
                 Process p=Process.Start(prg, prms);
                 p.WaitForExit();
                 if (p.ExitCode != 0)
@@ -155,13 +157,13 @@ namespace rabnet
                 return false;
             }
             return true;
-        }*/
+        }
 
-/*        private void button3_Click(object sender, EventArgs e)
+        private void button3_Click(object sender, EventArgs e)
         {
             if (runmia("nudb"))
                 button1.PerformClick();
-        }*/
+        }
 
         private void FarmChangeForm_Shown(object sender, EventArgs e)
         {
@@ -186,5 +188,6 @@ namespace rabnet
         {
             ChangeMode(!_miniMode);
         }
+
     }
 }

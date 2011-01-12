@@ -10,24 +10,30 @@ namespace updater
 {
     public partial class InstallForm : Form
     {
-        bool _batch = false;
+        //bool _batch = false;
         public int Result = 0;
-        public string Filename = "";
-        private XmlDocument xml = new XmlDocument();
-        XmlElement _opts = null;
-        public InstallForm()
+        public string FilenameRabDump = "";
+        public string FilenameRabNet = "";
+        private XmlDocument _xmlRabDump = new XmlDocument();
+        private XmlDocument _xmlRabNet = new XmlDocument();
+        XmlElement _optsRabDump = null;
+        XmlElement _optsRabNet = null;
+
+        private InstallForm()
         {
             InitializeComponent();
         }
-        public InstallForm(String fl,bool bt):this()
+        public InstallForm(String flRabDump, string flRabNet ,bool bt):this()
         {
-            _batch = bt;
-            Filename = fl;
-            PrepareXml();
+            //_batch = bt;
+            FilenameRabDump = flRabDump;
+            FilenameRabNet = flRabNet;
+            PrepareXmlRabDump();
+            PrepareXmlRabNet();
             radioButton4.Visible = !bt;
             radioButton4.Enabled = !bt;
         }
-        private const string Conf="<?xml version=\"1.0\" encoding=\"utf-8\" ?><configuration><configSections>"+
+        private const string ConfRabDump="<?xml version=\"1.0\" encoding=\"utf-8\" ?><configuration><configSections>"+
 "<section name=\"rabdumpOptions\" type=\"rabdump.RabdumpConfigHandler,rabdump\"/>"+
 "<section name=\"log4net\" type=\"log4net.Config.Log4NetConfigurationSectionHandler,Log4net\"/>"+
 "</configSections><rabdumpOptions></rabdumpOptions><log4net><appender name=\"FileAppender\" type=\"log4net.Appender.FileAppender\">"+
@@ -44,107 +50,152 @@ namespace updater
             }
         }
 
-        public void PrepareXml()
+        private void PrepareXmlRabNet()
         {
-            xml.LoadXml(Conf);
-            foreach (XmlNode n in xml.DocumentElement.ChildNodes)
+            try
             {
-                if (n.Name=="rabdumpOptions")
-                {
-                    _opts=(XmlElement)n;
-                }
+                _xmlRabNet.Load(FilenameRabNet);
+                //xml.LoadXml(conf);
+                //            _xmlRabNet.Save(filename);
+//                foreach (XmlNode n in _xmlRabNet.DocumentElement.ChildNodes)
+//                {
+//                    if (n.Name == "rabnetds")
+//                    {
+                        _optsRabNet = (XmlElement) _xmlRabNet.DocumentElement.FirstChild.ParentNode;
+//                        _optsRabNet = (XmlElement)n;
+                //                    }
+//                }
+            } catch
+            {
             }
-            //XmlElement elem = xml.CreateElement("mysql");
-//            string msp=(string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\MySQL AB\\MySQL Server 5.0","Location","C:\\Program Files\\MySQL\\MySQL Server 5.0\\");
+        }
 
-            RegistryKey rk1 = Registry.LocalMachine.OpenSubKey("SOFTWARE").OpenSubKey("MySQL AB");
-            string loc;
-            string locM = "";
-            string locMd = "";
-            if (rk1 == null)
+        public static bool TestRabNetConfig(string fl)
+        {
+            try
             {
-/*
-                loc = "";
-*/
-                locM = "";
-                locMd = "";
-
-            }
-            else
-            {
-                String[] names = rk1.GetSubKeyNames();
-                Array.Sort(names, new ReverseComparer());
-                foreach (String s in names)
+                XmlDocument xml = new XmlDocument();
+                xml.Load(fl);
+                foreach (XmlNode n in xml.DocumentElement.ChildNodes)
                 {
-                    if (s.StartsWith("MySQL Server"))
+                    if (n.Name == "rabnetds")
                     {
-                        loc = (string)rk1.OpenSubKey(s).GetValue("Location");
-                        if (loc != null)
-                        {
-                            locM = loc + "bin\\mysql.exe";
-                            locMd = loc + "bin\\mysqldump.exe";
-                            break;
-                        }
+                        return true;
                     }
                 }
             }
-
-
-
-            _opts.AppendChild(xml.CreateElement("mysql")).AppendChild(xml.CreateTextNode(locM));
-            _opts.AppendChild(xml.CreateElement("mysqldump")).AppendChild(xml.CreateTextNode(locMd));
-
-
-
-            string path7Za=Path.GetDirectoryName(Application.ExecutablePath) + @"\..\7z\7za.exe";
-
-            string loc_7B = "";
-
-            if (File.Exists(path7Za))
+            catch
             {
-                loc_7B = path7Za;
+                return false;
             }
-            else
-            {
-                //msp = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\7-Zip", "Path", "C:\\Program Files\\7-zip");
+            return false;
+        }
 
-                RegistryKey rk2 = Registry.LocalMachine.OpenSubKey("SOFTWARE").OpenSubKey("7-Zip");
-                string loc7;
-                if (rk2 == null)
+
+        private void PrepareXmlRabDump()
+        {
+            try
+            {
+                _xmlRabDump.LoadXml(ConfRabDump);
+                foreach (XmlNode n in _xmlRabDump.DocumentElement.ChildNodes)
                 {
-//                    loc7 = "";
-                    loc_7B = "";
+                    if (n.Name == "rabdumpOptions")
+                    {
+                        _optsRabDump = (XmlElement) n;
+                    }
+                }
+                //XmlElement elem = xml.CreateElement("mysql");
+                //            string msp=(string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\MySQL AB\\MySQL Server 5.0","Location","C:\\Program Files\\MySQL\\MySQL Server 5.0\\");
+
+                RegistryKey rk1 = Registry.LocalMachine.OpenSubKey("SOFTWARE").OpenSubKey("MySQL AB");
+                string locM = "";
+                string locMd = "";
+                if (rk1 == null)
+                {
+                    /*
+                                    loc = "";
+                    */
+                    locM = "";
+                    locMd = "";
 
                 }
                 else
                 {
-                    loc7 = (string)rk2.GetValue("Path");
-                    if (loc7 != null)
+                    String[] names = rk1.GetSubKeyNames();
+                    Array.Sort(names, new ReverseComparer());
+                    foreach (String s in names)
                     {
-                        loc_7B = loc7 + "\\7z.exe";
+                        if (s.StartsWith("MySQL Server"))
+                        {
+                            string loc = (string) rk1.OpenSubKey(s).GetValue("Location");
+                            if (loc != null)
+                            {
+                                locM = loc + "bin\\mysql.exe";
+                                locMd = loc + "bin\\mysqldump.exe";
+                                break;
+                            }
+                        }
                     }
                 }
+
+
+
+                _optsRabDump.AppendChild(_xmlRabDump.CreateElement("mysql")).AppendChild(_xmlRabDump.CreateTextNode(locM));
+                _optsRabDump.AppendChild(_xmlRabDump.CreateElement("mysqldump")).AppendChild(_xmlRabDump.CreateTextNode(locMd));
+
+
+
+                string path7Za = Path.GetDirectoryName(Application.ExecutablePath) + @"\..\7z\7za.exe";
+
+                string loc_7B = "";
+
+                if (File.Exists(path7Za))
+                {
+                    loc_7B = path7Za;
+                }
+                else
+                {
+                    //msp = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\7-Zip", "Path", "C:\\Program Files\\7-zip");
+
+                    RegistryKey rk2 = Registry.LocalMachine.OpenSubKey("SOFTWARE").OpenSubKey("7-Zip");
+                    if (rk2 == null)
+                    {
+                        //                    loc7 = "";
+                        loc_7B = "";
+
+                    }
+                    else
+                    {
+                        string loc7 = (string) rk2.GetValue("Path");
+                        if (loc7 != null)
+                        {
+                            loc_7B = loc7 + "\\7z.exe";
+                        }
+                    }
+                }
+
+
+
+                _optsRabDump.AppendChild(_xmlRabDump.CreateElement("z7")).AppendChild(_xmlRabDump.CreateTextNode(loc_7B));
+
+
+                XmlElement jb = _xmlRabDump.CreateElement("job");
+                jb.AppendChild(_xmlRabDump.CreateElement("name")).AppendChild(_xmlRabDump.CreateTextNode("Все БД в 18:00"));
+                jb.AppendChild(_xmlRabDump.CreateElement("db")).AppendChild(_xmlRabDump.CreateTextNode("[все]"));
+                string bf = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                bf += "\\Miakro Backups";
+                Directory.CreateDirectory(bf);
+                jb.AppendChild(_xmlRabDump.CreateElement("path")).AppendChild(_xmlRabDump.CreateTextNode(bf));
+                jb.AppendChild(_xmlRabDump.CreateElement("sizelim")).AppendChild(_xmlRabDump.CreateTextNode("0"));
+                jb.AppendChild(_xmlRabDump.CreateElement("countlim")).AppendChild(_xmlRabDump.CreateTextNode("0"));
+                jb.AppendChild(_xmlRabDump.CreateElement("start")).AppendChild(_xmlRabDump.CreateTextNode("01.01.2010 18:00"));
+                jb.AppendChild(_xmlRabDump.CreateElement("type")).AppendChild(_xmlRabDump.CreateTextNode("Ежедневно"));
+                jb.AppendChild(_xmlRabDump.CreateElement("repeat")).AppendChild(_xmlRabDump.CreateTextNode("0"));
+                _optsRabDump.AppendChild(jb);
+                _xmlRabDump.Save(FilenameRabDump);
+            } catch
+            {
             }
-
-
-
-            _opts.AppendChild(xml.CreateElement("z7")).AppendChild(xml.CreateTextNode(loc_7B));
-
-
-            XmlElement jb = xml.CreateElement("job");
-            jb.AppendChild(xml.CreateElement("name")).AppendChild(xml.CreateTextNode("Все БД в 18:00"));
-            jb.AppendChild(xml.CreateElement("db")).AppendChild(xml.CreateTextNode("[все]"));
-            string bf = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            bf += "\\Miakro Backups";
-            Directory.CreateDirectory(bf);
-            jb.AppendChild(xml.CreateElement("path")).AppendChild(xml.CreateTextNode(bf));
-            jb.AppendChild(xml.CreateElement("sizelim")).AppendChild(xml.CreateTextNode("0"));
-            jb.AppendChild(xml.CreateElement("countlim")).AppendChild(xml.CreateTextNode("0"));
-            jb.AppendChild(xml.CreateElement("start")).AppendChild(xml.CreateTextNode("01.01.2010 18:00"));
-            jb.AppendChild(xml.CreateElement("type")).AppendChild(xml.CreateTextNode("Ежедневно"));
-            jb.AppendChild(xml.CreateElement("repeat")).AppendChild(xml.CreateTextNode("0"));
-            _opts.AppendChild(jb);
-            xml.Save(Filename);
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -191,14 +242,38 @@ namespace updater
 
         private void AddFarm()
         {
-            XmlElement ds = xml.CreateElement("db");
-            ds.AppendChild(xml.CreateElement("name")).AppendChild(xml.CreateTextNode(tbName.Text));
-            ds.AppendChild(xml.CreateElement("host")).AppendChild(xml.CreateTextNode(tbHost.Text));
-            ds.AppendChild(xml.CreateElement("db")).AppendChild(xml.CreateTextNode(tbDb.Text));
-            ds.AppendChild(xml.CreateElement("user")).AppendChild(xml.CreateTextNode(tbUser.Text));
-            ds.AppendChild(xml.CreateElement("password")).AppendChild(xml.CreateTextNode(tbPwd.Text));
-            _opts.AppendChild(ds);
-            xml.Save(Filename);
+            try
+            {
+                XmlElement dsRabDump = _xmlRabDump.CreateElement("db");
+                dsRabDump.AppendChild(_xmlRabDump.CreateElement("name")).AppendChild(_xmlRabDump.CreateTextNode(tbName.Text));
+                dsRabDump.AppendChild(_xmlRabDump.CreateElement("host")).AppendChild(_xmlRabDump.CreateTextNode(tbHost.Text));
+                dsRabDump.AppendChild(_xmlRabDump.CreateElement("db")).AppendChild(_xmlRabDump.CreateTextNode(tbDb.Text));
+                dsRabDump.AppendChild(_xmlRabDump.CreateElement("user")).AppendChild(_xmlRabDump.CreateTextNode(tbUser.Text));
+                dsRabDump.AppendChild(_xmlRabDump.CreateElement("password")).AppendChild(_xmlRabDump.CreateTextNode(tbPwd.Text));
+                _optsRabDump.AppendChild(dsRabDump);
+                _xmlRabDump.Save(FilenameRabDump);
+            }
+            catch 
+            {
+            }
+
+            try
+            {
+                XmlElement dsRabNetDS = _xmlRabNet.CreateElement("rabnetds");
+                XmlElement dsRabNet = _xmlRabNet.CreateElement("dataSource");
+                dsRabNet.Attributes.Append(_xmlRabNet.CreateAttribute("default")).Value = "1";
+                dsRabNet.Attributes.Append(_xmlRabNet.CreateAttribute("name")).Value = tbName.Text;
+                dsRabNet.Attributes.Append(_xmlRabNet.CreateAttribute("type")).Value = "db.mysql";
+                String param = "host=" + tbHost.Text + ";database=" + tbDb.Text + ";uid=" + tbUser.Text + ";pwd=" + tbPwd.Text + ";charset=utf8";
+                dsRabNet.Attributes.Append(_xmlRabNet.CreateAttribute("param")).Value = param;
+                _optsRabNet.AppendChild(dsRabNetDS);
+                dsRabNetDS.AppendChild(dsRabNet);
+                _xmlRabNet.Save(FilenameRabNet);
+            }
+            catch
+            {
+            }
+
             Close();
         }
 

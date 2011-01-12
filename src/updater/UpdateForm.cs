@@ -14,20 +14,24 @@ namespace updater
         bool _batch = false;
         public int Result = 0;
         private int _curver = 0;
-        private string _filename="";
+        private string _filenameRabDump="";
+        private string _filenameRabNet = "";
         private Dictionary<int, String> scr = new Dictionary<int, string>();
         private MySqlConnection _sql = null;
         public enum UpdateStatus { Before, Procs, After }
-        public UpdateForm()
+
+        private UpdateForm()
         {
             InitializeComponent();
         }
-        public UpdateForm(String fl,bool bt):this()
+        public UpdateForm(String flRabDump,string flRabNet,bool bt):this()
         {
             _batch = bt;
-            _filename = fl;
+            _filenameRabDump = flRabDump;
+            _filenameRabNet = flRabNet;
         }
-        public int GetScripts()
+
+        private int GetScripts()
         {
             int i = 2;
             string prefix = "";
@@ -54,13 +58,13 @@ namespace updater
             return i;
         }
 
-        public void Status(String txt)
+        private void Status(String txt)
         {
             label2.Text = txt;
             label2.Update();
         }
 
-        public void UpdateList()
+        private void UpdateList()
         {
 			button1.Enabled = false;
 			int needcount = 0;
@@ -68,61 +72,134 @@ namespace updater
             Status("Проверка версий баз данных");
             lv.Items.Clear();
             XmlDocument xml = new XmlDocument();
-            xml.Load(_filename);
-            foreach (XmlNode n in xml.DocumentElement.ChildNodes)
-            if (n.Name=="rabdumpOptions")
-                foreach(XmlNode ds in n.ChildNodes)
-                    if (ds.Name == "db")
+            try
+            {
+                xml.Load(_filenameRabDump);
+                foreach (XmlNode n in xml.DocumentElement.ChildNodes)
+                {
+                    if (n.Name == "rabdumpOptions")
                     {
-                        String nm = "";
-                        String prm = "";
-                        foreach (XmlNode nd in ds.ChildNodes)
-                            switch (nd.Name)
-                            {
-                                case "name": nm = nd.FirstChild != null ? nd.FirstChild.Value : ""; break;
-                                case "host": prm += "host="+(nd.FirstChild != null ? nd.FirstChild.Value : "")+";"; break;
-                                case "db": prm += "database=" + (nd.FirstChild != null ? nd.FirstChild.Value : "") + ";"; break;
-                                case "user": prm += "uid=" + (nd.FirstChild != null ? nd.FirstChild.Value : "") + ";"; break;
-                                case "password": prm += "pwd=" + (nd.FirstChild != null ? nd.FirstChild.Value : "") + ";"; break;
-                            }
-                        prm += "charset=utf8";
-                        ListViewItem li = lv.Items.Add(nm);
-                        li.SubItems.Add(prm);
-                        li.Tag=0;
-                        _sql = new MySqlConnection(prm);
-                        int hasver=0;
-                        lv.Update();
-                        try
+                        foreach (XmlNode ds in n.ChildNodes)
                         {
-                            _sql.Open();
-                            MySqlCommand cmd = new MySqlCommand("SELECT o_value FROM options WHERE o_name='db' AND o_subname='version';",_sql);
-                            MySqlDataReader rd = cmd.ExecuteReader();
-                            if (rd.Read())
-                                hasver = rd.GetInt32(0);
-                            rd.Close();
-                            _sql.Close();
-                            li.SubItems.Add(hasver.ToString());
-                            if (hasver == _curver)
+                            if (ds.Name == "db")
                             {
-                                li.ForeColor = Color.Green;
-                                li.Tag = 1;
+                                String nm = "";
+                                String prm = "";
+                                foreach (XmlNode nd in ds.ChildNodes)
+                                    switch (nd.Name)
+                                    {
+                                        case "name":
+                                            nm = nd.FirstChild != null ? nd.FirstChild.Value : "";
+                                            break;
+                                        case "host":
+                                            prm += "host=" + (nd.FirstChild != null ? nd.FirstChild.Value : "") + ";";
+                                            break;
+                                        case "db":
+                                            prm += "database=" + (nd.FirstChild != null ? nd.FirstChild.Value : "") + ";";
+                                            break;
+                                        case "user":
+                                            prm += "uid=" + (nd.FirstChild != null ? nd.FirstChild.Value : "") + ";";
+                                            break;
+                                        case "password":
+                                            prm += "pwd=" + (nd.FirstChild != null ? nd.FirstChild.Value : "") + ";";
+                                            break;
+                                    }
+                                prm += "charset=utf8";
+                                ListViewItem li = lv.Items.Add(nm);
+                                li.SubItems.Add(prm);
+                                li.Tag = 0;
+                                _sql = new MySqlConnection(prm);
+                                int hasver = 0;
+                                lv.Update();
+                                try
+                                {
+                                    _sql.Open();
+                                    MySqlCommand cmd = new MySqlCommand("SELECT o_value FROM options WHERE o_name='db' AND o_subname='version';", _sql);
+                                    MySqlDataReader rd = cmd.ExecuteReader();
+                                    if (rd.Read())
+                                        hasver = rd.GetInt32(0);
+                                    rd.Close();
+                                    _sql.Close();
+                                    li.SubItems.Add(hasver.ToString());
+                                    if (hasver == _curver)
+                                    {
+                                        li.ForeColor = Color.Green;
+                                        li.Tag = 1;
+                                    }
+                                    else if (hasver > _curver)
+                                    {
+                                        li.ForeColor = Color.YellowGreen;
+                                        li.Tag = 2;
+                                    }
+                                    else needcount++;
+                                }
+                                catch (Exception)
+                                {
+                                    _sql.Close();
+                                    li.Tag = 3;
+                                    li.ForeColor = Color.Red;
+                                    li.SubItems.Add("нет доступа");
+                                }
+                                li.SubItems.Add(_curver.ToString());
                             }
-                            else if (hasver > _curver)
-                            {
-                                li.ForeColor = Color.YellowGreen;
-                                li.Tag = 2;
-                            }
-                            else needcount++;
                         }
-                        catch (Exception)
-                        {
-                            _sql.Close();
-                            li.Tag = 3;
-                            li.ForeColor = Color.Red;
-                            li.SubItems.Add("нет доступа");
-                        }
-                        li.SubItems.Add(_curver.ToString());
                     }
+                }
+            }
+            catch
+            {
+                xml.Load(_filenameRabNet);
+                foreach (XmlNode n in xml.DocumentElement.ChildNodes)
+                {
+                    if (n.Name == "rabnetds")
+                    {
+                        foreach (XmlNode ds in n.ChildNodes)
+                        {
+                            if (ds.Name == "dataSource")
+                            {
+                                String nm = ds.Attributes["name"].Value;
+                                String prm = ds.Attributes["param"].Value; 
+                                ListViewItem li = lv.Items.Add(nm);
+                                li.SubItems.Add(prm);
+                                li.Tag = 0;
+                                _sql = new MySqlConnection(prm);
+                                int hasver = 0;
+                                lv.Update();
+                                try
+                                {
+                                    _sql.Open();
+                                    MySqlCommand cmd = new MySqlCommand("SELECT o_value FROM options WHERE o_name='db' AND o_subname='version';", _sql);
+                                    MySqlDataReader rd = cmd.ExecuteReader();
+                                    if (rd.Read())
+                                        hasver = rd.GetInt32(0);
+                                    rd.Close();
+                                    _sql.Close();
+                                    li.SubItems.Add(hasver.ToString());
+                                    if (hasver == _curver)
+                                    {
+                                        li.ForeColor = Color.Green;
+                                        li.Tag = 1;
+                                    }
+                                    else if (hasver > _curver)
+                                    {
+                                        li.ForeColor = Color.YellowGreen;
+                                        li.Tag = 2;
+                                    }
+                                    else needcount++;
+                                }
+                                catch (Exception)
+                                {
+                                    _sql.Close();
+                                    li.Tag = 3;
+                                    li.ForeColor = Color.Red;
+                                    li.SubItems.Add("нет доступа");
+                                }
+                                li.SubItems.Add(_curver.ToString());
+                            }
+                        }
+                    }
+                }
+            }
             if (needcount>0)
             {
                 Status("Требуется обновить " + needcount.ToString() + " БД");

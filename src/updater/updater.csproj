@@ -76,7 +76,7 @@
     <EmbeddedResource Include="sql\5.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="sql\6.sql" />
+    <EmbeddedResource Include="sql\6.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

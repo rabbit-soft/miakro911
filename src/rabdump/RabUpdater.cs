@@ -229,7 +229,7 @@ namespace X_Classes
         {
             Directory.CreateDirectory(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\");
 
-            return ReadUpdateInfo("http://updates.trustbox.ru/rab/updates.xml", Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\updates.xml");
+            return ReadUpdateInfo("http://update.rabbit-soft.ru/rab/updates.xml", Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\updates.xml");
         }
 
         public void CheckUpdate()
