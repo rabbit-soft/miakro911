@@ -180,24 +180,35 @@ namespace mia_conv
         public void FillAll()
         {
             Mia.Setpbpart(0, 8);
+            Mia.SetLabelName("Breeds");
             FillBreeds();
+            Mia.SetLabelName("Names");
             FillNames();
             Mia.Setpbpart(1, 8);
+            Mia.SetLabelName("Zones");
             FillZones();
             Mia.Setpbpart(2, 8);
+            Mia.SetLabelName("Buildings");
             FillBuildings();
             Mia.Setpbpart(3, 8);
+            Mia.SetLabelName("Transfers");
             FillTransfers();
             Mia.Setpbpart(4, 8);
+            Mia.SetLabelName("DeadFromLost");
             FillDeadFromLost();
             Mia.Setpbpart(5, 8);
+            Mia.SetLabelName("Rabbits");
             FillRabbits();
             Mia.Setpbpart(6, 8);
+            Mia.SetLabelName("TransferForm");
             FillTransForm();
+            Mia.SetLabelName("Options");
             FillOptions();
             Mia.Setpbpart(7, 8);
             //fillZooForm();
+            Mia.SetLabelName("GraphForm");
             FillGraphForm();
+            Mia.SetLabelName("ArcForm");
             FillArcForm();
             Mia.Setpbpart(8, 8);
         }
@@ -207,13 +218,17 @@ namespace mia_conv
             Debug("filling breeds");
             List<MFString> ls=Mia.BreedList.strings;
             _maxbreed = ls.Count / 3;
-            for (int i = 0; i < _maxbreed;i++ )
+            C.CommandText = "ALTER TABLE `breeds` DISABLE KEYS;";
+            C.ExecuteNonQuery();
+            for (int i = 0; i < _maxbreed; i++)
             {
-                C.CommandText = String.Format("INSERT INTO breeds(b_id,b_name,b_short_name) VALUES({2:d},'{0:s}','{1:s}');",
-                    ls[i * 3].value(), ls[i * 3 + 1].value(), i+1);
+                C.CommandText = String.Format("INSERT INTO breeds(b_id,b_name,b_short_name) VALUES({2:d},'{0:s}','{1:s}');", ls[i * 3].value(), ls[i * 3 + 1].value(), i+1);
                 C.ExecuteNonQuery();
                 ls[i * 3 + 2].tag = i + 1;// (int)c.LastInsertedId;
+                Mia.Setpb(i, _maxbreed);
             }
+            C.CommandText = "ALTER TABLE `breeds` ENABLE KEYS;";
+            C.ExecuteNonQuery();
         }
         
         public void InsName(RabName nm,bool sex)
@@ -246,21 +261,37 @@ namespace mia_conv
         public void FillNames()
         {
             Debug("fill names");
-            foreach(RabName nm in Mia.MaleNames.Rabnames)
+            C.CommandText = "ALTER TABLE `names` DISABLE KEYS;";
+            C.ExecuteNonQuery();
+            int cnt = Mia.MaleNames.Rabnames.Count + Mia.FemaleNames.Rabnames.Count;
+            int c = 0;
+            foreach (RabName nm in Mia.MaleNames.Rabnames)
+            {
                 InsName(nm, true);
+                c++;
+                Mia.Setpb(c, cnt);
+            }
             foreach (RabName nm in Mia.FemaleNames.Rabnames)
+            {
                 InsName(nm, false);
+                c++;
+                Mia.Setpb(c, cnt);
+            }
+            C.CommandText = "ALTER TABLE `names` ENABLE KEYS;";
+            C.ExecuteNonQuery();
         }
 
         public void FillZones()
         {
             Debug("fill zones");
             List<MFString> st = Mia.ZoneList.strings;
+            C.CommandText = "ALTER TABLE `zones` DISABLE KEYS;";
+            C.ExecuteNonQuery();
             for (int i = 0; i < st.Count / 2; i++)
             {
                 String[] idnm = st[i * 2].value().Split(':');
-                C.CommandText = String.Format("INSERT INTO zones(z_id,z_name,z_short_name) VALUES({0:d},'{1:s}','{2:s}')",
-                    int.Parse(idnm[0]),idnm[1],st[i*2+1].value());
+                C.CommandText = String.Format("INSERT INTO zones(z_id,z_name,z_short_name) VALUES({0:d},'{1:s}','{2:s}')",int.Parse(idnm[0]),idnm[1],st[i*2+1].value());
+                Mia.Setpb(i, st.Count);
                 try
                 {
                     if (int.Parse(idnm[0])!=0)
@@ -271,11 +302,13 @@ namespace mia_conv
                     Debug(ex);
                 }
             }
+            C.CommandText = "ALTER TABLE `zones` ENABLE KEYS;";
+            C.ExecuteNonQuery();
         }
 
         public int Savetier(Tier tr)
         {
-            Application.DoEvents();
+            //Application.DoEvents();
             String tp = "unk";
             String b1="NULL",b2="NULL",b3="NULL",b4="NULL";
             String heater="00";
@@ -367,21 +400,36 @@ namespace mia_conv
         {
             Debug("fill buildings");
             int maxid = 0;
+            C.CommandText = "ALTER TABLE `minifarms` DISABLE KEYS;";
+            C.ExecuteNonQuery();
+            C.CommandText = "ALTER TABLE `tiers` DISABLE KEYS;";
+            C.ExecuteNonQuery();
+            int cnt = Mia.Builds.Minifarms.Count;
+            int c = 0;
             foreach (MiniFarm fm in Mia.Builds.Minifarms)
             {
-                Application.DoEvents();
+                //Application.DoEvents();
+                c++;
                 int upp = Savetier(fm.Upper);
                 int low = 0;
                 if (fm.ID > maxid)
+                {
                     maxid = fm.ID;
-                if (fm.Haslower==1)
+                }
+                if (fm.Haslower == 1)
+                {
                     low = Savetier(fm.Lower);
-                C.CommandText = String.Format("INSERT INTO minifarms(m_id,m_upper,m_lower) VALUES({0:d},{1:d},{2:d});",
-                    fm.ID,upp,low);
+                }
+                C.CommandText = String.Format("INSERT INTO minifarms(m_id,m_upper,m_lower) VALUES({0:d},{1:d},{2:d});",fm.ID,upp,low);
                 C.ExecuteNonQuery();
+                Mia.Setpb(c, cnt);
 
             }
-            Debug("buildings="+maxid.ToString()+"\r\nfill buildings tree");
+            C.CommandText = "ALTER TABLE `tiers` ENABLE KEYS;";
+            C.ExecuteNonQuery();
+            C.CommandText = "ALTER TABLE `minifarms` ENABLE KEYS;";
+            C.ExecuteNonQuery();
+            Debug("buildings=" + maxid.ToString() + "\r\nfill buildings tree");
             ProcTreeNode(Mia.BuildPlan.Value(),0,0);
         }
 
@@ -626,11 +674,15 @@ namespace mia_conv
             {
                 memo += Mia.Zooform.strings[i].value() + "\r\n";
             }
-            C.CommandText = "INSERT INTO zooplans(z_date,z_memo) VALUES("+Convdt(dt)+",'"+MySqlHelper.EscapeString(memo)+"');";
+            C.CommandText = "ALTER TABLE `zooplans` DISABLE KEYS;";
+            C.ExecuteNonQuery();
+            C.CommandText = "ALTER TABLE `zooacceptors` DISABLE KEYS;";
+            C.ExecuteNonQuery();
+            C.CommandText = "INSERT INTO zooplans(z_date,z_memo) VALUES(" + Convdt(dt) + ",'" + MySqlHelper.EscapeString(memo) + "');";
             C.ExecuteNonQuery();
             for (int i = 0; i < Mia.Zooform.donors.Count; i++)
             {
-                Application.DoEvents();
+                //Application.DoEvents();
                 Donor d = Mia.Zooform.donors[i];
                 C.CommandText=String.Format("INSERT INTO zooplans(z_date,z_job,z_rabbit,z_address,z_address2) VALUES({0:s},666,{1:d},{2:d},{3:d});",
                     Convdt(dt),GetUniqueRabbit((int)d.unique.value()),d.surplus.value(),d.immediate.value());
@@ -646,9 +698,13 @@ namespace mia_conv
                     C.ExecuteNonQuery();
                 }
             }
+            C.CommandText = "ALTER TABLE `zooplans` ENABLE KEYS;";
+            C.ExecuteNonQuery();
+            C.CommandText = "ALTER TABLE `zooplans` DISABLE KEYS;";
+            C.ExecuteNonQuery();
             for (int i = 0; i < Mia.Zooform.zoojobs.Count; i++)
             {
-                Application.DoEvents();
+                //Application.DoEvents();
                 ZooJob j = Mia.Zooform.zoojobs[i];
                 C.CommandText = String.Format("INSERT INTO zooplans(z_date,z_job,z_level,z_rabbit,z_notes) "+
                     "VALUES({0:s},{1:d},{2:s},{3:d},'{4:s}');",Convdt(dt),j.type.value()+1,j.caption.value(),
@@ -665,6 +721,10 @@ namespace mia_conv
                     C.ExecuteNonQuery();
                 }
             }
+            C.CommandText = "ALTER TABLE `zooplans` ENABLE KEYS;";
+            C.ExecuteNonQuery();
+            C.CommandText = "ALTER TABLE `zooacceptors` ENABLE KEYS;";
+            C.ExecuteNonQuery();
 
         }
 
@@ -713,19 +773,24 @@ namespace mia_conv
         public void FillDeadFromLost()
         {
             Debug("filling Dead Rabbits From Lost List");
+            C.CommandText = "ALTER TABLE `deadreasons` DISABLE KEYS;";
+            C.ExecuteNonQuery();
             for (int i = 0; i < Mia.Graphform.reasons.size.value(); i++)
             {
-                Application.DoEvents();
+                //Application.DoEvents();
                 MFListItem li = Mia.Graphform.reasons.items[i];
-                C.CommandText = String.Format("INSERT INTO deadreasons(d_name,d_rate) VALUES('{0:s}',{1:s});",
-                    li.caption.value(),li.subs[0].value());
+                C.CommandText = String.Format("INSERT INTO deadreasons(d_name,d_rate) VALUES('{0:s}',{1:s});",li.caption.value(),li.subs[0].value());
                 C.ExecuteNonQuery();
             }
+            C.CommandText = "ALTER TABLE `deadreasons` ENABLE KEYS;";
+            C.ExecuteNonQuery();
             int cnt = (int)Mia.Graphform.lost.size.value();
+            C.CommandText = "ALTER TABLE `rabbits` DISABLE KEYS;";
+            C.ExecuteNonQuery();
             for (int i = 0; i < Mia.Graphform.lost.size.value(); i++)
             {
-                Mia.Setpb(100 *i/ cnt);
-                Application.DoEvents();
+                Mia.Setpb(i, cnt);
+                //Application.DoEvents();
                 MFListItem li = Mia.Graphform.lost.items[i];
                 String sex = "void";
                 if (li.subs[2].value() == "м") sex = "male";
@@ -794,6 +859,8 @@ VALUES('{0:s}',{1:d},{2:d},{3:d},'{4:s}',{5:d},{6:s}-INTERVAL {7:d} DAY,{8:d},{9
                 C.CommandText = "CALL killRabbitDate("+lid.ToString()+",1,'',"+Convdt(ddt)+");";
                 C.ExecuteNonQuery();
             }
+            C.CommandText = "ALTER TABLE `rabbits` ENABLE KEYS;";
+            C.ExecuteNonQuery();
         }
 
         public void FillGraphForm()
@@ -906,9 +973,15 @@ VALUES({0:s},{1:d},0,{2:d},'{3:s}');",Convdt(date),jid,r,adr);
         public void FillArcForm()
         {
             Debug("fill ArcForm");
+            C.CommandText = "ALTER TABLE `logs` DISABLE KEYS;";
+            C.ExecuteNonQuery();
+            int cnt = Mia.Arcform.plans.Count;
+            int c = 0;
             foreach (ArcPlan p in Mia.Arcform.plans)
             {
-                DateTime dt=p.date.value();
+                c++;
+                Mia.Setpb(c, cnt);
+                DateTime dt = p.date.value();
                 foreach (MFStringList sl in p.works)
                 {
                     FillJobs(sl, dt);
@@ -928,6 +1001,8 @@ VALUES({0:s},{1:d},0,{2:d},'{3:s}');",Convdt(date),jid,r,adr);
                      * */
                 }
             }
+            C.CommandText = "ALTER TABLE `logs` ENABLE KEYS;";
+            C.ExecuteNonQuery();
             FillDead();
         }
 

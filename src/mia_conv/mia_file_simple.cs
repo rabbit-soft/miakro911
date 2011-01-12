@@ -241,7 +241,7 @@ namespace mia_conv
             {
                 if (mf != null)
                 {
-                    mf.Setpb(100*i/cnt);
+                    mf.Setpb(i,cnt);
                 }
                 items.Add(new MFListItem(br, ver));
             }

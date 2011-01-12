@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Rabdump")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("9-Bits")]
+[assembly: AssemblyCompany("9-Бит")]
 [assembly: AssemblyProduct("Миакро-9.11")]
-[assembly: AssemblyCopyright("Copyright ©  2010 9-Bits")]
+[assembly: AssemblyCopyright("Copyright ©  2010 9-Бит")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

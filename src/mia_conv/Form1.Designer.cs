@@ -62,6 +62,7 @@ namespace mia_conv
             this.ofd2 = new System.Windows.Forms.OpenFileDialog();
             this.pb = new System.Windows.Forms.ProgressBar();
             this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox3.SuspendLayout();
@@ -243,6 +244,7 @@ namespace mia_conv
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label11);
             this.groupBox3.Controls.Add(this.log);
             this.groupBox3.Controls.Add(this.clb1);
             this.groupBox3.Controls.Add(this.label1);
@@ -405,6 +407,15 @@ namespace mia_conv
             this.label10.TabIndex = 10;
             this.label10.Text = "Ôאיכ פונלû";
             // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(25, 27);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(41, 13);
+            this.label11.TabIndex = 8;
+            this.label11.Text = "label11";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -470,6 +481,7 @@ namespace mia_conv
         private System.Windows.Forms.OpenFileDialog ofd2;
         private System.Windows.Forms.ProgressBar pb;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
     }
 }
 

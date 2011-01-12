@@ -1,4 +1,4 @@
-﻿//#define GLOBCATCH
+﻿#define GLOBCATCH
 //#define PROTECTED
 
 using System;

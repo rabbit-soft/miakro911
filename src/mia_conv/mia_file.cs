@@ -33,11 +33,17 @@ namespace mia_conv
         public MFWeightList Wlist = new MFWeightList("WeightList", 16);
         CheckedListBox clb1 = null;
         ProgressBar pb = null;
+        Label lbl = null;
         private int _pval;
 
-        public MiaFile(CheckedListBox lb,ProgressBar pb)
+        private long _label_ticks = 0;
+        private long _pb1_ticks = 0;
+        private string _label_nm = "";
+
+        public MiaFile(CheckedListBox lb,ProgressBar pb,Label lbl)
         {
             this.pb = pb;
+            this.lbl = lbl;
             pb.Value = 0;
             Graphform = new MFGraphForm("GraphForm", 13,this);
             Rabbits = new MFRabbits("AllRabbits", 8, MaleNames, FemaleNames,this);
@@ -74,6 +80,7 @@ namespace mia_conv
         {
             for (int i = 0; i < objs.Count; i++)
             {
+                SetLabelName("Object "+i.ToString());
                 Setpbpart(i, objs.Count);
                 Objread(objs[i], br, log);
             }
@@ -112,18 +119,36 @@ namespace mia_conv
             _pval = pb.Value;
             Application.DoEvents();
         }
-
-        public void Setpb(int p)
+        public void SetLabel(int part,int of)
         {
-            int val=(int)clb1.Tag + ((int)pb.Tag*p/100);
-            if (val>100) 
-                val=100;
-            if (_pval == val)
-                return;
-            pb.Value = val;
-            pb.Refresh();
-            _pval = pb.Value;
+            lbl.Text = _label_nm +" -> "+ part.ToString() + "/" + of.ToString();
+        }
+        public void SetLabelName(string nm)
+        {
+            lbl.Text = nm;
+            _label_nm = nm;
             Application.DoEvents();
+        }
+
+        public void Setpb(int i, int cnt)
+        {
+            if (_pb1_ticks + 500 < Environment.TickCount)
+            {
+                SetLabel(i, cnt);
+
+                int p = 100 * i / cnt;
+                int val = (int)clb1.Tag + ((int)pb.Tag * p / 100);
+                if (val > 100)
+                    val = 100;
+                if (_pval == val)
+                    return;
+                pb.Value = val;
+                pb.Refresh();
+                _pval = pb.Value;
+                _pb1_ticks = Environment.TickCount;
+
+                Application.DoEvents();
+            }
         }
     }
 }

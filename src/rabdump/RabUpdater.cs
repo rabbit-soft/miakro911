@@ -376,7 +376,7 @@ namespace X_Classes
                         }
                     } else
                     {
-                        MessageShow("Не верная контрольная сумма!", "Обновление");
+                        MessageShow("Файл обновлений поврежден! Повторите загрузку обновления.", "Обновление");
                         log().Debug("Update download completed. MD5 check failed...");
                     }
 

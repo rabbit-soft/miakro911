@@ -122,15 +122,18 @@ namespace mia_conv
 
         public void FillRabWeight(Rabbit r,int crab)
         {
+            C.CommandText = "ALTER TABLE `weights` DISABLE KEYS;";
+            C.ExecuteNonQuery();
             for (int i = 0; i < r.weights.Count; i++)
             {
                 ushort weight=(ushort)(r.weights[i] & 0xFFFF);
                 ushort dt=(ushort)((r.weights[i] >> 16)& 0xFFFF);
                 DateTime sdt = (new DateTime(1899, 12, 30)).AddDays(dt);
-                C.CommandText = String.Format("INSERT INTO weights(w_rabid,w_date,w_weight) VALUES({0:d},{1:s},{2:d});",
-                    crab,Convdt(sdt),weight);
+                C.CommandText = String.Format("INSERT INTO weights(w_rabid,w_date,w_weight) VALUES({0:d},{1:s},{2:d});",crab,Convdt(sdt),weight);
                 C.ExecuteNonQuery();
             }
+            C.CommandText = "ALTER TABLE `weights` ENABLE KEYS;";
+            C.ExecuteNonQuery();
         }
 
         private int FindDead(String name,int breed,List<ushort> genesis)
@@ -155,6 +158,8 @@ namespace mia_conv
 
         public void FillRabFuckers(Rabbit r, int crab,bool sukrol)
         {
+            C.CommandText = "ALTER TABLE `fucks` DISABLE KEYS;";
+            C.ExecuteNonQuery();
             foreach (Fucker f in r.female.fuckers)
             {
                 if (f.fucks.value() > 0 || f.my_fuck_is_last.value()==1)
@@ -184,12 +189,14 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d},'{7:d}');",
                     C.ExecuteNonQuery();
                 }
             }
+            C.CommandText = "ALTER TABLE `fucks` ENABLE KEYS;";
+            C.ExecuteNonQuery();
             
         }
 
         public void FillRabbit(Rabbit r,int parent,bool dead)
         {
-            Application.DoEvents();
+            //Application.DoEvents();
             String cmd = "INSERT INTO " + (dead ? "dead" : "rabbits") + "(r_sex,r_parent,r_bon,r_name,r_surname," + //r_number,r_unique,
                 "r_secname,r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,"+
                 "r_born,r_status,r_last_fuck_okrol,r_genesis";
@@ -295,22 +302,30 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d},'{7:d}');",
             Debug("fill rabbits");
             int cnt=Mia.Rabbits.rabbits.Count;
             int i=0;
+            C.CommandText = "ALTER TABLE `rabbits` DISABLE KEYS;";
+            C.ExecuteNonQuery();
             foreach (Rabbit r in Mia.Rabbits.rabbits)
             {
                 i++;
-                Mia.Setpb(100*i/cnt);
-                FillRabbit(r,0,false);
+                Mia.Setpb(i,cnt);
+                FillRabbit(r, 0, false);
             }
+            C.CommandText = "ALTER TABLE `rabbits` ENABLE KEYS;";
+            C.ExecuteNonQuery();
             Debug("normalizing fuckers");
             NormalizeFuckers();
         }
         public void FillDead()
         {
+            C.CommandText = "ALTER TABLE `dead` DISABLE KEYS;";
+            C.ExecuteNonQuery();
             Debug("fill dead");
             foreach (Rabbit r in Mia.Arcform.dead.rabbits)
             {
                 FillRabbit(r, 0, true);
             }
+            C.CommandText = "ALTER TABLE `dead` ENABLE KEYS;";
+            C.ExecuteNonQuery();
         }
 
     }

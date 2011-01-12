@@ -68,7 +68,7 @@ namespace mia_conv
 
         private void button2_Click(object sender, EventArgs e)
         {
-            _mia = new MiaFile(clb1,pb);
+            _mia = new MiaFile(clb1,pb,label11);
             _mia.LoadFromFile(tb1.Text, log);
             button3.Enabled = true;
         }

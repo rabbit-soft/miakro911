@@ -327,7 +327,7 @@ namespace mia_conv
             for (int i = 0; i < (int)count.value(); i++)
             {
                 if (mf != null)
-                    mf.Setpb(100*i/cnt);
+                    mf.Setpb(i,cnt);
                 rabbits.Add(new Rabbit(br, ver, nmales, nfemales));
             }
         }
