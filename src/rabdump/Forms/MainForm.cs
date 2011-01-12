@@ -8,6 +8,7 @@ using System.IO;
 #if PROTECTED
 using RabGRD;
 #endif
+using rabnet;
 
 namespace rabdump
 {

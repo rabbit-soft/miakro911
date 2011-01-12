@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using RabGRD;
 #endif
 
-namespace rabdump
+namespace rabnet
 {
     partial class AboutForm : Form
     {
@@ -13,11 +13,12 @@ namespace rabdump
         {
             InitializeComponent();
             //this.Text = String.Format("About {0} {0}", AssemblyTitle);
-            labelProductName.Text = AssemblyProduct;
+            labelProductName.Text = AssemblyProduct + " (" + AssemblyTitle+")";
             labelVersion.Text = String.Format("Версия {0}", AssemblyVersion);
             labelCopyright.Text = AssemblyCopyright;
-            labelCompanyName.Text = AssemblyCompany;
+            //            labelCompanyName.Text = AssemblyCompany;
             textBoxDescription.Text = AssemblyDescription;
+            linkLabel.Links.Add(18,18,"www.rabbit-soft.ru");
         }
 
         #region Assembly Attribute Accessors
@@ -60,7 +61,11 @@ namespace rabdump
             info += String.Format("Период действия - с {0} по {1}", GRD.Instance.GetDateStart().ToShortDateString(),GRD.Instance.GetDateEnd().ToShortDateString());
             return info;
 #else 
+    #if DEMO
+            return "Демонстрационная версия"+Environment.NewLine+"Ограничена 100 фермами";
+    #else
             return "Без ограничений";
+    #endif
 #endif
         }
 
@@ -117,9 +122,13 @@ namespace rabdump
         }
         #endregion
 
-        private void okButton_Click(object sender, EventArgs e)
+        private void linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Close();
+            System.Diagnostics.Process.Start(e.Link.LinkData.ToString());
         }
+
+
+ 
+
     }
 }

@@ -31,6 +31,13 @@ namespace updater
                 hasRabNet = InstallForm.TestRabNetConfig(flRabNet);
             }
             bool update = hasRabNet || hasRabDump;
+            if (hasRabNet && !hasRabDump)
+            {
+                if(Directory.Exists(Path.GetDirectoryName(Application.ExecutablePath) + @"\..\RabNet"))
+                {
+                    update = false;
+                }
+            }
             int res = 0;
             if (update)
             {

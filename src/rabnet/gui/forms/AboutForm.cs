@@ -13,11 +13,12 @@ namespace rabnet
         {
             InitializeComponent();
             //this.Text = String.Format("About {0} {0}", AssemblyTitle);
-            labelProductName.Text = AssemblyProduct;
+            labelProductName.Text = AssemblyProduct + " (" + AssemblyTitle+")";
             labelVersion.Text = String.Format("Версия {0}", AssemblyVersion);
             labelCopyright.Text = AssemblyCopyright;
-            labelCompanyName.Text = AssemblyCompany;
+            //            labelCompanyName.Text = AssemblyCompany;
             textBoxDescription.Text = AssemblyDescription;
+            linkLabel.Links.Add(18,18,"www.rabbit-soft.ru");
         }
 
         #region Assembly Attribute Accessors
@@ -120,5 +121,14 @@ namespace rabnet
             }
         }
         #endregion
+
+        private void linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(e.Link.LinkData.ToString());
+        }
+
+
+ 
+
     }
 }

@@ -155,7 +155,8 @@
             this.Name = "MiniFarmForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.Text = "Миниферма";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Добавить МИНИферму";
             this.ResumeLayout(false);
             this.PerformLayout();
 
