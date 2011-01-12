@@ -549,11 +549,11 @@ LangString SEC_RabDump_DESC ${LANG_RUSSIAN} "Устанавливается на сервер на которо
 LangString SEC_Mysql_DESC ${LANG_ENGLISH} "Database. It is installed on a Miakro Rabnet server"
 LangString SEC_Mysql_DESC ${LANG_RUSSIAN} "База данных. Устанавливается на сервер обслуживающий Миакро Rabnet"
 
-LangString SEC_Rabnet_NAME ${LANG_ENGLISH} "Rabnet client"
-LangString SEC_Rabnet_NAME ${LANG_RUSSIAN} "Rabnet клиентская часть"
+LangString SEC_Rabnet_NAME ${LANG_ENGLISH} "Miakro-9.11 client"
+LangString SEC_Rabnet_NAME ${LANG_RUSSIAN} "Миакро-9.11 клиентская часть"
 
-LangString SEC_RabDump_NAME ${LANG_ENGLISH} "Rabnet server tools"
-LangString SEC_RabDump_NAME ${LANG_RUSSIAN} "Rabnet серверные приложения"
+LangString SEC_RabDump_NAME ${LANG_ENGLISH} "Miakro-9.11 server tools"
+LangString SEC_RabDump_NAME ${LANG_RUSSIAN} "Миакро-9.11 серверные приложения"
 
 LangString SEC_Mysql_NAME ${LANG_ENGLISH} "MySQL Server 5.1"
 LangString SEC_Mysql_NAME ${LANG_RUSSIAN} "MySQL Server 5.1"
