@@ -259,14 +259,28 @@ namespace updater
 
             try
             {
-                XmlElement dsRabNetDS = _xmlRabNet.CreateElement("rabnetds");
                 XmlElement dsRabNet = _xmlRabNet.CreateElement("dataSource");
+
+                XmlElement dsRabNetDS = null;
+
+                foreach (XmlNode n in _optsRabNet.ChildNodes)
+                {
+                    if (n.Name == "rabnetds")
+                    {
+                        dsRabNetDS = (XmlElement)n;
+                    }
+                }
+                if (dsRabNetDS==null)
+                {
+                    dsRabNetDS = _xmlRabNet.CreateElement("rabnetds");
+                    _optsRabNet.AppendChild(dsRabNetDS);
+                }
+
                 dsRabNet.Attributes.Append(_xmlRabNet.CreateAttribute("default")).Value = "1";
                 dsRabNet.Attributes.Append(_xmlRabNet.CreateAttribute("name")).Value = tbName.Text;
                 dsRabNet.Attributes.Append(_xmlRabNet.CreateAttribute("type")).Value = "db.mysql";
                 String param = "host=" + tbHost.Text + ";database=" + tbDb.Text + ";uid=" + tbUser.Text + ";pwd=" + tbPwd.Text + ";charset=utf8";
                 dsRabNet.Attributes.Append(_xmlRabNet.CreateAttribute("param")).Value = param;
-                _optsRabNet.AppendChild(dsRabNetDS);
                 dsRabNetDS.AppendChild(dsRabNet);
                 _xmlRabNet.Save(FilenameRabNet);
             }

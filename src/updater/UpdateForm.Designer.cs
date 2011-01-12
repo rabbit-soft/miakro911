@@ -74,11 +74,13 @@
             // 
             // lv
             // 
+            this.lv.Activation = System.Windows.Forms.ItemActivation.OneClick;
             this.lv.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3,
             this.columnHeader4});
+            this.lv.FullRowSelect = true;
             this.lv.Location = new System.Drawing.Point(12, 36);
             this.lv.Name = "lv";
             this.lv.Size = new System.Drawing.Size(490, 197);
