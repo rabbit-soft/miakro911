@@ -212,10 +212,10 @@ namespace rabdump
         private Rubool _sas=Rubool.Нет;
         private readonly DataBaseCollection _bds=new DataBaseCollection();
         private readonly ArchiveJobCollection _jobs = new ArchiveJobCollection();
-        [Category(Opt), DisplayName("mysql"), Description("Путь к исполняемому файлу mysql.exe" + Environment.NewLine + "Нужен для работы с Базой Данных" + Environment.NewLine + "Путь по умолчанию: \"C:\\Program Files\\MySQL\\MySQL Server <№ версии>\\bin\\mysql.exe\""),
+        [Category(Opt), DisplayName("mysql"), Description("Путь к исполняемому файлу mysql.exe\n\rНужен для работы с Базой Данных\n\rПуть по умолчанию: \"C:\\Program Files\\MySQL\\MySQL Server <№ версии>\\bin\\mysql.exe\""),
         Editor(typeof(FileNameEditor), typeof(UITypeEditor))]
         public String MySqlPath { get { return _mp; } set { _mp = value; } }
-        [Category(Opt), DisplayName("mysqldump"), Description("Путь к исполняемому файлу mysqldump.exe" + Environment.NewLine + "Нужен для резервного копирования рабочей Базы Данных" + Environment.NewLine + "Путь по умолчанию: \"C:\\Program Files\\MySQL\\MySQL Server <№ версии>\\bin\\mysqldump.exe\""),
+        [Category(Opt), DisplayName("mysqldump"), Description("Путь к исполняемому файлу mysqldump.exe\n\rНужен для резервного копирования рабочей Базы Данных\n\rПуть по умолчанию: \"C:\\Program Files\\MySQL\\MySQL Server <№ версии>\\bin\\mysqldump.exe\""),
         Editor(typeof(FileNameEditor), typeof(UITypeEditor))]
         public String MySqlDumpPath { get { return _mdp; } set { _mdp = value; } }
         [Category(Opt), DisplayName("7z"), Description("Путь к архиватору 7-zip"),
