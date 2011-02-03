@@ -33,6 +33,7 @@
 	<property name="guardant.path" value="${mysql.path}" />
 	<!--property name="guardant.lib" value="key.dll" /-->
 	<property name="guardant2.lib" value="GrdAPI32.DLL" />
+	<property name="guardant2_64.lib" value="GrdAPI64.DLL" />
 	<property name="guardantNET.lib" value="GuardantDotNetApi.dll" />
 	<!--property name="guardant.ass" value="${guardant.path}/${guardant.lib}" /-->
 	
@@ -109,8 +110,10 @@
 		<copy file="${repeng.ass}" tofile="${repeng.use}" />
 		<!--copy file="${guardant.ass}" tofile="${guardant.use}" /-->
 		<copy file="${guardant.path}/${guardant2.lib}" tofile="${bin_dir}/RabNet/${guardant2.lib}" />
+		<copy file="${guardant.path}/${guardant2_64.lib}" tofile="${bin_dir}/RabNet/${guardant2_64.lib}" />
 		<copy file="${guardant.path}/${guardantNET.lib}" tofile="${bin_dir}/RabNet/${guardantNET.lib}" />
 		<copy file="${guardant.path}/${guardant2.lib}" tofile="${bin_dir}/RabDump/${guardant2.lib}" />
+		<copy file="${guardant.path}/${guardant2_64.lib}" tofile="${bin_dir}/RabDump/${guardant2_64.lib}" />
 		<copy file="${guardant.path}/${guardantNET.lib}" tofile="${bin_dir}/RabDump/${guardantNET.lib}" />
 
 		<copy file="${GrdTruSource}" tofile="${bin_dir}/Guardant/${GrdTru}" />

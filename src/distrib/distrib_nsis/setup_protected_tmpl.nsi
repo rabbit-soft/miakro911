@@ -101,6 +101,7 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     File ..\..\..\bin\@bin_type@\RabNet\CodeStorage64.dll
     File ..\..\..\bin\@bin_type@\RabNet\GuardantDotNetApi.dll
     File ..\..\..\bin\@bin_type@\RabNet\GrdAPI32.DLL
+    File ..\..\..\bin\@bin_type@\RabNet\GrdAPI64.DLL
     SetOutPath $INSTDIR\RabNet\reports
     File ..\..\..\bin\@bin_type@\RabNet\reports\age.rdl
     File ..\..\..\bin\@bin_type@\RabNet\reports\breeds.rdl
@@ -137,6 +138,7 @@ Section /o $(SEC_RabDump_NAME) SEC_RabDump
     SetOutPath $INSTDIR\RabDump
     SetOverwrite on
     File ..\..\..\bin\@bin_type@\RabDump\GrdAPI32.DLL
+    File ..\..\..\bin\@bin_type@\RabDump\GrdAPI64.DLL
     File ..\..\..\bin\@bin_type@\RabDump\rabdump.exe
 #    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage32.dll
 #    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage64.dll
@@ -280,6 +282,7 @@ Section /o "-un.rabdump" UNSEC_RabDump
     Call un.CloseRabDump
 
     Delete /REBOOTOK $INSTDIR\RabDump\GrdAPI32.DLL
+    Delete /REBOOTOK $INSTDIR\RabDump\GrdAPI64.DLL
     Delete /REBOOTOK $INSTDIR\RabDump\rabdump.exe
 #    Delete /REBOOTOK $INSTDIR\RabDump\CodeStorage32.dll
 #    Delete /REBOOTOK $INSTDIR\RabDump\CodeStorage64.dll
@@ -335,6 +338,7 @@ Section /o "-un.rabnet" UNSEC_Rabnet
     Delete /REBOOTOK $INSTDIR\RabNet\CodeStorage64.dll
     Delete /REBOOTOK $INSTDIR\RabNet\GuardantDotNetApi.dll
     Delete /REBOOTOK $INSTDIR\RabNet\GrdAPI32.DLL
+    Delete /REBOOTOK $INSTDIR\RabNet\GrdAPI64.DLL
 
 
     RmDir /REBOOTOK /r $INSTDIR\RabNet\upd

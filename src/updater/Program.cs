@@ -33,7 +33,7 @@ namespace updater
             bool update = hasRabNet || hasRabDump;
             if (hasRabNet && !hasRabDump)
             {
-                if(Directory.Exists(Path.GetDirectoryName(Application.ExecutablePath) + @"\..\RabDump"))
+                if (Directory.Exists(Path.GetDirectoryName(Application.ExecutablePath) + @"\..\RabDump"))
                 {
                     update = false;
                 }
