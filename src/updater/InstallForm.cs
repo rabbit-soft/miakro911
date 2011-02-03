@@ -108,6 +108,11 @@ namespace updater
                 //            string msp=(string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\MySQL AB\\MySQL Server 5.0","Location","C:\\Program Files\\MySQL\\MySQL Server 5.0\\");
 
                 RegistryKey rk1 = Registry.LocalMachine.OpenSubKey("SOFTWARE").OpenSubKey("MySQL AB");
+                if (rk1 == null)
+                {
+                    rk1 = Registry.LocalMachine.OpenSubKey("SOFTWARE").OpenSubKey("Wow6432Node").OpenSubKey("MySQL AB");
+                }
+                
                 string locM = "";
                 string locMd = "";
                 if (rk1 == null)
@@ -158,6 +163,10 @@ namespace updater
                     //msp = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\7-Zip", "Path", "C:\\Program Files\\7-zip");
 
                     RegistryKey rk2 = Registry.LocalMachine.OpenSubKey("SOFTWARE").OpenSubKey("7-Zip");
+                    if (rk2 == null)
+                    {
+                        rk2 = Registry.LocalMachine.OpenSubKey("SOFTWARE").OpenSubKey("Wow6432Node").OpenSubKey("7-Zip");
+                    }
                     if (rk2 == null)
                     {
                         //                    loc7 = "";
