@@ -103,6 +103,14 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     WriteRegStr HKLM "${REGKEY}\Components" "rabnet" 1
 
     !insertmacro SelectSection "SEC_Updater"
+
+    ######## Temporary fix of bug M0000308
+    ExpandEnvStrings $2 "%USERNAME%" 
+    
+    ExecWait 'cacls "$INSTDIR\RabNet" /E /G "$2":F'
+    ExecWait 'cacls "$INSTDIR\RabNet\rabnet.exe.config" /E /G "$2":F'
+    ######## end
+
 SectionEnd
 
 Section /o $(SEC_Mysql_NAME) SEC_Mysql

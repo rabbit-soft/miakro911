@@ -122,6 +122,14 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     SetOutPath $INSTDIR\RabNet
     SetOverwrite off
     File ..\..\..\bin\@bin_type@\RabNet\rabnet.exe.config
+    
+    ######## Temporary fix of bug M0000308
+    ExpandEnvStrings $2 "%USERNAME%"
+    
+    ExecWait 'cacls "$INSTDIR\RabNet" /E /G "$2":F'
+    ExecWait 'cacls "$INSTDIR\RabNet\rabnet.exe.config" /E /G "$2":F'
+    ######## end
+
     SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Prog_NAME).lnk $INSTDIR\RabNet\rabnet.exe
     CreateShortcut $DESKTOP\$(SM_Prog_NAME).lnk $INSTDIR\RabNet\rabnet.exe
@@ -163,7 +171,15 @@ Section /o $(SEC_RabDump_NAME) SEC_RabDump
 
 #    !insertmacro ReplaceInFile "$INSTDIR\rabdump.conf" "[7z_bin]" "$INSTDIR\7z\7za.exe"
 
+    ######## Temporary fix of bug M0000308
+    ExpandEnvStrings $2 "%USERNAME%"
+
+    ExecWait 'cacls "$INSTDIR\RabDump" /E /G "$2":F'
+    ######## end
+
     !insertmacro SelectSection "SEC_Updater"
+
+    
 SectionEnd
 
 Section /o $(SEC_Mysql_NAME) SEC_Mysql
@@ -216,7 +232,14 @@ SectionEnd
 Section /o -sec_updater SEC_Updater
     DetailPrint $(UPDATER_Run)
     ExecWait '"$INSTDIR\Tools\updater.exe" batch'
+  
     Exec "$INSTDIR\RabDump\rabdump.exe"
+
+    ######## Temporary fix of bug M0000308
+    ExpandEnvStrings $2 "%USERNAME%"
+
+    ExecWait 'cacls "$INSTDIR\RabDump\rabdump.exe.config" /E /G "$2":F'
+    ######## end
 SectionEnd
 
 # Macro for selecting uninstaller sections
