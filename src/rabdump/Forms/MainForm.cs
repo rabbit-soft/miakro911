@@ -41,7 +41,8 @@ namespace rabdump
         private void restoreMenuItem_Click(object sender, EventArgs e)
         {
             _manual = false;
-            ShowInTaskbar = true;
+            Show();
+//            ShowInTaskbar = true;
             WindowState = FormWindowState.Normal;
             TopMost = true;
             Focus();
@@ -70,7 +71,8 @@ namespace rabdump
             }
             _manual = false;
             WindowState = FormWindowState.Minimized;
-            ShowInTaskbar = false;
+            Hide();
+            //ShowInTaskbar = false;
             _manual = true;
         }
 
@@ -92,7 +94,10 @@ namespace rabdump
         {
             if (!_manual) return;
             if (WindowState == FormWindowState.Minimized)
-                ShowInTaskbar = false;
+            {
+                Hide();
+                //ShowInTaskbar = false;
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
