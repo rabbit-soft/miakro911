@@ -379,21 +379,14 @@
 	
 	<target name="obfuscate" depends="buildall" description="Binary Obfuscation">
 		<!--exec program="${obfuscator}">
-			<arg value="${root_bin}/release/db.mysql.dll" />
-			<arg value="${root_bin}/release/engine.dll" />
-			<arg value="${root_bin}/release/gui_genetics.dll" />
-			<arg value="${root_bin}/release/mia_conv.exe" />
-			<arg value="${root_bin}/release/rabdump.exe" />
-			<arg value="${root_bin}/release/rabnet.exe" />
-		</exec-->
-		<exec program="${obfuscator}">
-			<!--arg value="${root_bin}/protected/db.mysql.dll" />
-			<arg value="${root_bin}/protected/engine.dll" />
-			<arg value="${root_bin}/protected/gui_genetics.dll" /-->
 			<arg value="${root_bin}/protected/Rabnet/db.mysql.dll" />
 			<arg value="${root_bin}/protected/Rabnet/engine.dll" />
 			<arg value="${root_bin}/protected/Rabnet/rabnet.exe" />
+		</exec-->
+		<exec program="${obfuscator}">
 			<arg value="${root_bin}/protected/RabDump/rabdump.exe" />
+		</exec>
+		<exec program="${obfuscator}">
 			<arg value="${root_bin}/protected/Tools/mia_conv.exe" />
 		</exec>
 		<exec program="${obfuscator}">
@@ -404,8 +397,6 @@
 			<arg value="${root_bin}/demo/Rabnet/db.mysql.dll" />
 			<arg value="${root_bin}/demo/Rabnet/engine.dll" />
 			<arg value="${root_bin}/demo/Rabnet/rabnet.exe" />
-			<!--arg value="${root_bin}/protected/rabdump.exe" />
-			<arg value="${root_bin}/protected/rabnet.exe" /-->
 		</exec>
 
 		<!--exec program="${grd_ob}">
@@ -428,7 +419,7 @@
 		<exec program="${grd_prot}">
 			<arg value="/INIT" />
 			<arg value="/MSG=C:\Program Files\Guardant\Guardant 5\PLAT_T+\bin\licensewizard.msg" />
-			<arg value="/PER=50" />
+			<arg value="/PER=20" />
 			<arg value="/RC=1" />
 			<arg value="/ATR=2" />
 			<arg value="/GS3S" />
