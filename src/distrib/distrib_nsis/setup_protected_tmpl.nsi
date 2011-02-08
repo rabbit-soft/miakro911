@@ -193,7 +193,8 @@ Section /o $(SEC_Mysql_NAME) SEC_Mysql
     DetailPrint "$Inst_code"
     DetailPrint $(MYSQLINSTALLER_Configure)
 #    RmDir /r /REBOOTOK "$PROGRAMFILES\MySQL\MySQL Server 5.1\Data"
-    ExecWait '"$PROGRAMFILES\MySQL\MySQL Server 5.1\bin\mysqlinstanceconfig.exe" -i -q "-lC:\mysql_install_log.txt" "-p$PROGRAMFILES\MySQL\MySQL Server 5.1" AddBinToPath=yes ConnectionUsage=DSS ServiceName=MySQL5_1 ServerType=SERVER DatabaseType=MIXED Port=3306 RootCurrentPassword=mysql Charset=utf8 StrictMode=no'
+    ExecWait '"$PROGRAMFILES\MySQL\MySQL Server 5.1\bin\mysqlinstanceconfig.exe" -i -q "-lC:\mysql_install_log.txt" "-p$PROGRAMFILES\MySQL\MySQL Server 5.1" AddBinToPath=yes ConnectionUsage=DSS ServiceName=MySQL5_1 ServerType=SERVER DatabaseType=INNODB Port=3306 RootCurrentPassword=mysql Charset=utf8 StrictMode=no'
+#    ExecWait '"$PROGRAMFILES\MySQL\MySQL Server 5.1\bin\mysqlinstanceconfig.exe" -i -q "-lC:\mysql_install_log.txt" "-p$PROGRAMFILES\MySQL\MySQL Server 5.1" AddBinToPath=yes ConnectionUsage=DSS ServiceName=MySQL5_1 ServerType=SERVER DatabaseType=MIXED Port=3306 RootCurrentPassword=mysql Charset=utf8 StrictMode=no'
 #    ExecWait '"$PROGRAMFILES\MySQL\MySQL Server 5.1\bin\mysqlinstanceconfig.exe" -i -q "-lC:\mysql_install_log.txt" "-p$PROGRAMFILES\MySQL\MySQL Server 5.1" AddBinToPath=yes ConnectionUsage=DSS ServiceName=MySQL5_1 RootPassword=mysql ServerType=SERVER DatabaseType=MIXED Port=3306 RootCurrentPassword=mysql Charset=utf8 StrictMode=no'
     DetailPrint $(MYSQLINSTALLER_Done)
 #"C:\Program Files\MySQL\MySQL Server 6.0\bin\mysqlinstanceconfig.exe" -i -q ServiceName=MySQL RootPassword=mysql ServerType=DEVELOPMENT DatabaseType=MYISAM Port=3306 RootCurrentPassword=mysql
