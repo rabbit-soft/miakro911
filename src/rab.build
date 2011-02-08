@@ -504,11 +504,13 @@
 		<property name="dist_type" value="rabnet_protected"/>
 		<property name="bin_dir" value="${root_bin}\protected"/>
 		<property name="bin_type" value="protected"/>
+		<property name="setup_suff" value=""/>
 		<call target="nsis_bld"/>
 		<property name="dist_type" value="rabnet_protected"/>
 		<property name="bin_dir" value="${root_bin}\demo"/>
 		<property name="bin_type" value="demo"/>
 		<property name="build_no_up" value="1"/>
+		<property name="setup_suff" value="_demo"/>
 		<call target="nsis_bld"/>
 	</target>
 
@@ -571,9 +573,9 @@
 			<arg value="/V3" />
 			<arg value="${curdir}/distrib/distrib_nsis/setup_bld.nsi" />
 		</exec>
-		<copy file="${curdir}/distrib/distrib_nsis/setup.exe" tofile="${root_bin}/distrib_nsis_${bin_type}/setup.exe"/>
+		<copy file="${curdir}/distrib/distrib_nsis/setup.exe" tofile="${root_bin}/distrib_nsis_${bin_type}/setup${setup_suff}.exe"/>
 		<if test="${not property::exists('build_no_up')}">
-			<copy file="${curdir}/distrib/distrib_nsis/setup.exe" tofile="${root_bin}/distrib_nsis_${bin_type}_up/setup.${version}.${minver}.exe"/>
+			<copy file="${curdir}/distrib/distrib_nsis/setup${setup_suff}.exe" tofile="${root_bin}/distrib_nsis_${bin_type}_up/setup.${version}.${minver}.exe"/>
 			<copy file="${curdir}/distrib/distrib_nsis/updates.xml" tofile="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml"/>
 			<loadtasks assembly="${nant_contrib}" />
 			<checksum algorithm="MD5">
