@@ -329,7 +329,9 @@ namespace rabnet
 #if PROTECTED
             if ((DateTime.Today < GRD.Instance.GetDateStart()) || (DateTime.Today > GRD.Instance.GetDateEnd()))
             {
-                MessageBox.Show("Срок дейсвия лицензии истек!"+Environment.NewLine+"Для продления обратитесь к продавцу у которого вы приобрели программу."+Environment.NewLine+"Программа будет закрыта.","Истекла лицензия",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
+                MessageBox.Show("Срок дейсвия лицензии истек!" + Environment.NewLine +
+                                "Ваша лицензия позволяла работать с " + GRD.Instance.GetDateStart().ToShortDateString() + " по " + GRD.Instance.GetDateEnd().ToShortDateString() + Environment.NewLine +
+                                "Для продления обратитесь к продавцу у которого вы приобрели программу." + Environment.NewLine + "Программа будет закрыта.", "Истекла лицензия", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 Environment.Exit(101);
             }
 #endif
