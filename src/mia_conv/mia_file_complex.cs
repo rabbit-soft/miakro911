@@ -241,7 +241,8 @@ namespace mia_conv
         public MFString Notes=new MFString("notes");
         public MFDate When=new MFDate("when");
         public MFULong Units=new MFULong("units");
-        public static String[] Masks = { "awpP", "aspP", "SanbwpP", "anWkpP", "SanWkpP", "amBNnA", "amXbsnA", "anWk", "SaWpkP", "" };
+//        public static String[] Masks = { "awpP", "aspP", "SanbwpP", "anWkpP", "SanWkpP", "amBNnA", "amXbsnA", "anWk", "SaWpkP", "" };
+        public static String[] Masks = { "aWpP", "aspP", "SanbwpP", "anWkpP", "SanWkpP", "amBNnA", "amXbsnA", "anWk", "SaWpkP", "" };
         //awpPsSnbWkmBNAX
         public MFUShort Age = null; //a
         public MFUShort Sweight = null; //w

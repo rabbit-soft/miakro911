@@ -1003,7 +1003,7 @@ VALUES({0:s},{1:d},0,{2:d},'{3:s}');",Convdt(date),jid,r,adr);
             }
             C.CommandText = "ALTER TABLE `logs` ENABLE KEYS;";
             C.ExecuteNonQuery();
-            FillDead();
+            //FillDead();
         }
 
     }
