@@ -317,6 +317,10 @@ namespace rabnet
             return res;
 
         }
+        /// <summary>
+        /// Строка запроса для вкладки "Строения"
+        /// </summary>
+        /// <returns>Возвращает запрос, который выполняется объектом класса RabNetDataGetterBase.</returns>
         public override string getQuery()
         {
             string nm = "1";

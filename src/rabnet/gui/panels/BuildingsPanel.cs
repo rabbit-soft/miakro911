@@ -101,8 +101,8 @@ namespace rabnet
                 if (nofarm <= 100)
     #endif
 #endif
-                    nofarms.Add(nofarm);
-            MainForm.protest(maxfarm);
+            nofarms.Add(nofarm);
+            MainForm.protectTest(maxfarm);
             treeView1.Sort();
             manual = true;
             n.Tag="0:0";
@@ -114,7 +114,10 @@ namespace rabnet
             rsb.setText(1, dg.getCount().ToString() + " МИНИфермы");
             return dg;
         }
-
+        /// <summary>
+        /// Добавление новой строчки в ListView
+        /// </summary>
+        /// <param name="data">Одна запись</param>
         protected override void onItem(IData data)
         {
             if (data==null)
@@ -136,28 +139,26 @@ namespace rabnet
                 if (b.area(i) != prevnm || b.farm()!=prevfarm)
                 {
                     manual = false;
-                    ListViewItem it = listView1.Items.Add(String.Format("{0,4:d}",b.farm()) + b.area(i));
+                    ListViewItem it = listView1.Items.Add(String.Format("{0,4:d}",b.farm()) + b.area(i));//№
                     prevfarm = b.farm();
                     prevnm = b.area(i);
                     it.Tag = b.id().ToString();
-                    it.SubItems.Add(b.type());
-                    it.SubItems.Add(b.dep(i));
+                    it.SubItems.Add(b.type());//Ярус
+                    it.SubItems.Add(b.dep(i));//Отделение
                     String stat = "unk";
                     if (b.repair()) stat = "ремонт";
                     else
                     {
                         if (b.busy(i) == 0) stat = "-";
-                        else
-                            stat = b.use(i);
+                        else stat = b.use(i);
                     }
-                    it.SubItems.Add(stat);
+                    it.SubItems.Add(stat);//Статус
                     String nst = "";
                     String htr = "";
                     if (b.nest_heater_count() > 0)
                     {
                         int nid = 0;
-                        if (b.nest_heater_count() > 1)
-                            nid = i;
+                        if (b.nest_heater_count() > 1) nid = i;
                         nst = (b.nest()[nid] == '1') ? "да" : "нет";
                         htr = (b.heater()[nid] == '0' ? "нет" : (b.heater()[nid] == '1' ? "выкл" : "вкл"));
                         if (b.itype() == "jurta")
@@ -173,10 +174,10 @@ namespace rabnet
                                 htr = "";
                             }
                     }
-                    it.SubItems.Add(nst);
-                    it.SubItems.Add(htr);
-                    it.SubItems.Add(getAddress(b.farm()));
-                    it.SubItems.Add(b.notes());
+                    it.SubItems.Add(nst);//Гнездовье
+                    it.SubItems.Add(htr);//Грелка
+                    it.SubItems.Add(getAddress(b.farm()));//Адрес
+                    it.SubItems.Add(b.notes());//Заметки
                     it.Tag = b;
                     manual = true;
                 }
@@ -564,7 +565,7 @@ namespace rabnet
             if (treeView1.SelectedNode == null) return;
             if (!isFarm()) return;
             int fid=farmNum();
-            MainForm.protest(fid);
+            MainForm.protectTest(fid);
             if (new MiniFarmForm(fid).ShowDialog() == DialogResult.OK) rsb.run();
         }
 

@@ -78,21 +78,21 @@ namespace rabnet
             for (int i = 0; i < rbs.Count; i++)
             {
                 String name = "Бесполые";
-                if (rbs[i].sex == OneRabbit.RabbitSex.MALE) name = rbs[i].group==1 ? "Самец" : "Самцы";
-                if (rbs[i].sex == OneRabbit.RabbitSex.FEMALE) name = rbs[i].group == 1 ? "Самка" : "Самки";
+                if (rbs[i].Sex == OneRabbit.RabbitSex.MALE) name = rbs[i].Group==1 ? "Самец" : "Самцы";
+                if (rbs[i].Sex == OneRabbit.RabbitSex.FEMALE) name = rbs[i].Group == 1 ? "Самка" : "Самки";
                 ListViewItem li = listView1.Items.Add(name);
-                li.SubItems.Add(rbs[i].group.ToString());
+                li.SubItems.Add(rbs[i].Group.ToString());
                 li.Tag=rbs[i];
-                li.SubItems.Add(rbs[i].fullName);
-                li.SubItems.Add(brd[rbs[i].breed]);
-                li.SubItems.Add(rbs[i].address);
+                li.SubItems.Add(rbs[i].FullName);
+                li.SubItems.Add(brd[rbs[i].Breed]);
+                li.SubItems.Add(rbs[i].Address);
             }
             if (plast)
             {
                 listView1.SelectedItems.Clear();
                 ListViewItem it = listView1.Items[listView1.Items.Count - 1];
                 it.Selected = true;
-                (it.Tag as RabNetEngRabbit).zone = getZone();
+                (it.Tag as RabNetEngRabbit).Zone = getZone();
                 button8.PerformClick();
             }
         }
@@ -154,14 +154,14 @@ namespace rabnet
 
         private bool isMom(RabNetEngRabbit r1)
         {
-            return (r1.sex == OneRabbit.RabbitSex.FEMALE && r1.status > 0);
+            return (r1.Sex == OneRabbit.RabbitSex.FEMALE && r1.Status > 0);
         }
 
         private void commit(RabNetEngRabbit r1)
         {
-            if (r1.tag != "done")
+            if (r1.Tag != "done")
                 r1.newCommit();
-            r1.tag = "done";
+            r1.Tag = "done";
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -173,9 +173,9 @@ namespace rabnet
                 bool no_gens = false;
                 foreach (RabNetEngRabbit r in rbs)
                 {
-                    if (r.name == 0 && r.surname==0) no_names = true;
-                    if (r.address == OneRabbit.NullAddress) no_addresses = true;
-                    if (r.genom == "") no_gens = true;
+                    if (r.Name == 0 && r.Surname==0) no_names = true;
+                    if (r.Address == OneRabbit.NullAddress) no_addresses = true;
+                    if (r.Genom == "") no_gens = true;
                 }
                 String msg="";
                 if (no_names) msg = "У некоторых кроликов нет имени.\n";
@@ -197,13 +197,13 @@ namespace rabnet
                 {
                     foreach (RabNetEngRabbit r2 in rbs)
                     {
-                        if (r2 != r && r2.newAddress == r.newAddress && r.newAddress!="")
+                        if (r2 != r && r2.NewAddress == r.NewAddress && r.NewAddress!="")
                         {
                             RabNetEngRabbit mom=r;
                             RabNetEngRabbit chl = r2;
                             if (isMom(r2)) { chl = r; mom = r2; }
                             commit(mom);
-                            chl.mom=mom.rid;
+                            chl.mom=mom.RID;
                             commit(chl);
                         }
                     }

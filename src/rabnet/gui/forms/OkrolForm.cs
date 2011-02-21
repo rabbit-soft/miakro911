@@ -30,7 +30,7 @@ namespace rabnet
         public OkrolForm(int r1):this()
         {
             r = Engine.get().getRabbit(r1);
-            label1.Text = r.fullName;
+            label1.Text = r.FullName;
         }
 
         private void button3_Click(object sender, EventArgs e)

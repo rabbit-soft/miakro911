@@ -15,22 +15,29 @@ namespace rabnet
     {
         private MySqlConnection psql=null;
         private ILog log = LogManager.GetLogger(typeof(RabNetDbMySql));
-        public RabNetDbMySql() {
+        public RabNetDbMySql() 
+        {
             log4net.Config.XmlConfigurator.Configure();
             log.Debug("created");
         }
 
-        private MySqlConnection sql { get { 
-            if (psql == null) return null;
-            if (psql.State == System.Data.ConnectionState.Broken || psql.State == System.Data.ConnectionState.Closed)
-                psql.Open();
-        return psql;
-        } }
-        public RabNetDbMySql(String connectionString)
-            : this()
+        private MySqlConnection sql
+        {
+            get
+            {
+                if (psql == null) return null;
+                if (psql.State == System.Data.ConnectionState.Broken || psql.State == System.Data.ConnectionState.Closed)
+                    psql.Open();
+                return psql;
+            }
+        }
+        public RabNetDbMySql(String connectionString): this()
         {
             init(connectionString);
         }
+        /// <summary>
+        /// Деструктор класса.
+        /// </summary>
         ~RabNetDbMySql()
         {
             close();
@@ -38,6 +45,9 @@ namespace rabnet
 
         #region IRabNetDataLayer Members
 
+        /// <summary>
+        /// Закрывает и уничтожает подключение к Базе Данных
+        /// </summary>
         public void close()
         {
             if (psql != null)
@@ -46,6 +56,10 @@ namespace rabnet
                 psql = null;
             }
         }
+        /// <summary>
+        /// Создает и открывает новое подключение к Базе Данных
+        /// </summary>
+        /// <param name="connectionString">Строка подключение. Хранится в app.config</param>
         public void init(String connectionString)
         {
             close();
@@ -54,12 +68,22 @@ namespace rabnet
             psql.Open();
             new Users(sql).checktb();
         }
+        /// <summary>
+        /// Выполняет sql-Команду
+        /// </summary>
+        /// <param name="cmd">sql-команда</param>
+        /// <returns>Количество затронутых строк</returns>
         public int exec(String cmd)
         {
             log.Debug("exec query:" + cmd);
             MySqlCommand c = new MySqlCommand(cmd, sql);
             return c.ExecuteNonQuery();
         }
+        /// <summary>
+        /// Выполняет sql-команду и возвращает результат запроса как MySqlDataReader
+        /// </summary>
+        /// <param name="cmd">sql-команда</param>
+        /// <returns>Результат выполнения sql-команды</returns>
         public MySqlDataReader reader(String cmd)
         {
             log.Debug("reader query:"+cmd);

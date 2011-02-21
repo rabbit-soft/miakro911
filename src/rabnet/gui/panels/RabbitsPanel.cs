@@ -18,8 +18,7 @@ namespace rabnet
         const int STATUSFIELD = 5;
         const int SEXFIELD = 1;
         const int NAMEFIELD = 0;
-        public RabbitsPanel()
-            : base()
+        public RabbitsPanel(): base()
         {
         }
         public RabbitsPanel(RabStatusBar rsb):base(rsb,new RabbitsFilter(rsb))
@@ -55,7 +54,6 @@ namespace rabnet
         {
             if (this.listView1.InvokeRequired)
             {
-                //MessageBox.Show("Invoke!");
                 onItemDelegate onItemDelegateV = new onItemDelegate(onItem);
                 this.listView1.Invoke(onItemDelegateV, new object[] { data });
                 return;
@@ -281,8 +279,12 @@ namespace rabnet
 
         private void KillMenuItem_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count < 1)
+            if (listView1.SelectedItems.Count < 1) return;
+            if (Engine.db().getDeadReasons().getReasons().colnames.Length == 0)
+            {
+                MessageBox.Show("Нет ни одной причины списания. Вы можете добавить их в  меню Вид->Причины списания");
                 return;
+            }
             KillForm f = new KillForm();
             foreach (ListViewItem li in listView1.SelectedItems)
                 f.addRabbit((int)li.Tag);
@@ -408,7 +410,7 @@ namespace rabnet
             doc.DocumentElement.AppendChild(rw);
             if (er != null)
             {
-                or = Engine.db().getLiveDeadRabbit(er.rid);
+                or = Engine.db().getLiveDeadRabbit(er.RID);
                 if (hasdoc==null)
                 {
                     rw.AppendChild(doc.CreateElement("header")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.SVID_HEAD)));
@@ -416,27 +418,27 @@ namespace rabnet
                     rw.AppendChild(doc.CreateElement("date")).AppendChild(doc.CreateTextNode(DateTime.Now.Date.ToShortDateString()));
                     rw.AppendChild(doc.CreateElement("director")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.SVID_GEN_DIR)));
                 }else{
-                    rw.AppendChild(doc.CreateElement("group")).AppendChild(doc.CreateTextNode(er.group.ToString()));
+                    rw.AppendChild(doc.CreateElement("group")).AppendChild(doc.CreateTextNode(er.Group.ToString()));
                 }
                 Catalog zones = Engine.db().catalogs().getZones();
-                rw.AppendChild(doc.CreateElement("sex")).AppendChild(doc.CreateTextNode(er.sex==OneRabbit.RabbitSex.MALE?"male":(er.sex==OneRabbit.RabbitSex.FEMALE?"female":"void")));
-                rw.AppendChild(doc.CreateElement("class")).AppendChild(doc.CreateTextNode(getBon(er.bon)));
-                rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(er.fullName));
-                rw.AppendChild(doc.CreateElement("breed")).AppendChild(doc.CreateTextNode(er.breedName));
-                rw.AppendChild(doc.CreateElement("born_place")).AppendChild(doc.CreateTextNode(zones.ContainsKey(er.zone)?zones[er.zone]:"-"));
-                rw.AppendChild(doc.CreateElement("born_date")).AppendChild(doc.CreateTextNode(er.born.ToShortDateString()));
+                rw.AppendChild(doc.CreateElement("sex")).AppendChild(doc.CreateTextNode(er.Sex==OneRabbit.RabbitSex.MALE?"male":(er.Sex==OneRabbit.RabbitSex.FEMALE?"female":"void")));
+                rw.AppendChild(doc.CreateElement("class")).AppendChild(doc.CreateTextNode(getBon(er.Bon)));
+                rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(er.FullName));
+                rw.AppendChild(doc.CreateElement("breed")).AppendChild(doc.CreateTextNode(er.BreedName));
+                rw.AppendChild(doc.CreateElement("born_place")).AppendChild(doc.CreateTextNode(zones.ContainsKey(er.Zone)?zones[er.Zone]:"-"));
+                rw.AppendChild(doc.CreateElement("born_date")).AppendChild(doc.CreateTextNode(er.Born.ToShortDateString()));
                 rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(er.age.ToString()));
-                rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(er.smallAddress));
+                rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(er.SmallAddress));
                 rw.AppendChild(doc.CreateElement("weight")).AppendChild(doc.CreateTextNode(or.rate.ToString()));
                 rw.AppendChild(doc.CreateElement("weight_date")).AppendChild(doc.CreateTextNode(or.evdate.Date.ToShortDateString()));
                 rw.AppendChild(doc.CreateElement("weight_age")).AppendChild(doc.CreateTextNode(or.lost.ToString()));
                 rw.AppendChild(doc.CreateElement("born")).AppendChild(doc.CreateTextNode(or.babies.ToString()));
                 rw.AppendChild(doc.CreateElement("okrol")).AppendChild(doc.CreateTextNode(or.breed.ToString()));
-                rw.AppendChild(doc.CreateElement("genom")).AppendChild(doc.CreateTextNode(er.genom.Replace(' ',',')));
-                rw.AppendChild(doc.CreateElement("wclass")).AppendChild(doc.CreateTextNode(getBon("" + er.bon[1])));
-                rw.AppendChild(doc.CreateElement("bclass")).AppendChild(doc.CreateTextNode(getBon("" + er.bon[2])));
-                rw.AppendChild(doc.CreateElement("hclass")).AppendChild(doc.CreateTextNode(getBon("" + er.bon[3])));
-                rw.AppendChild(doc.CreateElement("cclass")).AppendChild(doc.CreateTextNode(getBon("" + er.bon[4])));
+                rw.AppendChild(doc.CreateElement("genom")).AppendChild(doc.CreateTextNode(er.Genom.Replace(' ',',')));
+                rw.AppendChild(doc.CreateElement("wclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[1])));
+                rw.AppendChild(doc.CreateElement("bclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[2])));
+                rw.AppendChild(doc.CreateElement("hclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[3])));
+                rw.AppendChild(doc.CreateElement("cclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[4])));
             }
             else if (or != null)
             {
@@ -472,7 +474,7 @@ namespace rabnet
             XmlDocument[] docs=new XmlDocument[7];
             RabNetEngRabbit r=Engine.get().getRabbit((int)listView1.SelectedItems[0].Tag);
             docs[0]=rabToXml(r,null);
-            OneRabbit[] p1 = Engine.db().getParents(r.rid, r.age);
+            OneRabbit[] p1 = Engine.db().getParents(r.RID, r.age);
             docs[1] = rabToXml(null, p1[0]);
             docs[2] = rabToXml(null, p1[1]);
             OneRabbit[] p2;
@@ -569,10 +571,10 @@ namespace rabnet
             foreach (ListViewItem li in listView1.SelectedItems)
             {
                 RabNetEngRabbit r = Engine.get().getRabbit((int)li.Tag);
-                cnt += r.group;
+                cnt += r.Group;
                 if (brd == "")
-                    brd = r.breedName;
-                if (r.breedName != brd)
+                    brd = r.BreedName;
+                if (r.BreedName != brd)
                     brd = "none";
                 rabToXml(r, null, doc);
             }

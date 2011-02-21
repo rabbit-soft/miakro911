@@ -15,6 +15,9 @@ namespace rabnet
         public enum CatalogType { NONE, BREEDS, ZONES, DEAD };
         private DataTable ds=new DataTable();
         private CatalogType cat = CatalogType.NONE;
+        /// <summary>
+        /// Вносятся ли изменения пользователем
+        /// </summary>
         private bool manual = true;
         public CatalogForm()
         {
@@ -37,7 +40,7 @@ namespace rabnet
                     break;
             }
 			ds.RowChanged += new DataRowChangeEventHandler(this.OnRowChange);
-            ds.TableNewRow+=new DataTableNewRowEventHandler(this.OnRowInsert);
+            ds.TableNewRow += new DataTableNewRowEventHandler(this.OnRowInsert);
             FillTable(false);
         }
 
@@ -56,7 +59,7 @@ namespace rabnet
                     cd = Engine.db().getZones().getZones();
                     break;
                 case CatalogType.DEAD:
-                    cd = Engine.db().getDeadReasons().getReasons();
+                    cd = Engine.db().getDeadReasons().getReasons();                   
                     break;
             }
 			/*
@@ -153,6 +156,7 @@ namespace rabnet
 //				dataGridView1.Rows[i].Cells[2].Value = lclColor;
 
 			}
+            if (cat == CatalogType.DEAD) dataGridView1.Rows[0].ReadOnly = true;
             manual = true;
         }
 
@@ -300,9 +304,6 @@ namespace rabnet
 					}
 					break;
 				case CatalogType.DEAD:
-//					if (e.Action == DataRowAction.Add)
-//						e.Row.ItemArray[1] = Engine.db().getDeadReasons().AddReason((string)e.Row.ItemArray[0]);
-//					else
 					if (dataGridView1.Rows[e.RowIndex].Cells[1].Value == null)
 					{
 						string col0 = "";
@@ -324,12 +325,5 @@ namespace rabnet
 					break;
 			}
 		}
-
-		private void dataGridView1_UserAddedRow(object sender, DataGridViewRowEventArgs e)
-		{
-
-		}
-
-
     }
 }

@@ -24,10 +24,10 @@ namespace rabnet
         public ReplaceYoungersForm(int rid):this()
         {
             r = Engine.get().getRabbit(rid);
-            label1.Text = r.fullName;
+            label1.Text = r.FullName;
             label2.Text = "Возраст: " + r.age.ToString();
-            nudCount.Value=nudCount.Maximum=r.group;
-            label5.Text = "Порода: " + r.breedName;
+            nudCount.Value=nudCount.Maximum=r.Group;
+            label5.Text = "Порода: " + r.BreedName;
         }
         public ReplaceYoungersForm(int rid,int selmom):this(rid)
         {
@@ -40,7 +40,7 @@ namespace rabnet
             cs.Prepare();
             listView1.Items.Clear();
             foreach(Rabbit rb in Engine.db().getMothers(r.age, ad))
-            if (rb.fid!=r.parent)
+            if (rb.fid!=r.Parent)
             {
                 ListViewItem li = listView1.Items.Add(rb.fname);
                 li.SubItems.Add(rb.fage.ToString());
@@ -51,8 +51,8 @@ namespace rabnet
                 li.SubItems.Add(rb.faverage.ToString());
                 if (selmom == rb.fid)
                 {
-                    li.SubItems.Add((int.Parse(rb.fN)+r.group).ToString());
-                    li.SubItems.Add(r.group.ToString());
+                    li.SubItems.Add((int.Parse(rb.fN)+r.Group).ToString());
+                    li.SubItems.Add(r.Group.ToString());
                     nudCount.Value = 0;
                     li.Selected = true;
                     li.EnsureVisible();
@@ -106,7 +106,7 @@ namespace rabnet
                         }
                         else
                         {
-                            rr = Engine.get().getRabbit(r.rid);
+                            rr = Engine.get().getRabbit(r.RID);
                             rr = Engine.get().getRabbit(rr.clone(vl, 0, 0, 0));
                         }
                         rr.placeSuckerTo((int)listView1.Items[i].Tag);

@@ -23,7 +23,7 @@ namespace rabnet
         {
             RabNetEngRabbit rb1 = Engine.get().getRabbit(r1);
             RabNetEngRabbit rb2 = Engine.get().getRabbit(r2);
-            MakeGenesis(rb1.breed, rb2.breed, rb1.genom, rb2.genom, rb1.fullName, rb2.fullName);
+            MakeGenesis(rb1.Breed, rb2.Breed, rb1.Genom, rb2.Genom, rb1.FullName, rb2.FullName);
         }
 
         public GenomView(int b1, int b2, String g1, String g2,String n1,String n2):this()

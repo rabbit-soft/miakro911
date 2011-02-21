@@ -48,26 +48,26 @@ namespace rabnet
         private void fillNames()
         {
             comboBox1.Items.Clear();
-            names = Engine.db().catalogs().getFreeNames(2, rab1.name);
+            names = Engine.db().catalogs().getFreeNames(2, rab1.Name);
             comboBox1.Items.Add("");
             comboBox1.SelectedIndex = 0;
             foreach (int key in names.Keys)
             {
                 comboBox1.Items.Add(names[key]);
-                if (key == rab1.name)
+                if (key == rab1.Name)
                     comboBox1.SelectedIndex = comboBox1.Items.Count - 1;
             }
-            comboBox1.Enabled = button4.Enabled = rab1.name == 0;
+            comboBox1.Enabled = button4.Enabled = rab1.Name == 0;
         }
 
         public MakeFuck(int r1, int r2):this()
         {
             rab1 = Engine.get().getRabbit(r1);
-            label1.Text = rab1.fullName;
-            label2.Text = rab1.breedName;
+            label1.Text = rab1.FullName;
+            label2.Text = rab1.BreedName;
             rtosel = r2;
             fillTable();
-            if (rab1.status > 0)
+            if (rab1.Status > 0)
                 Text = button1.Text = "Вязать";
             fillNames();
         }
@@ -79,11 +79,11 @@ namespace rabnet
         private void fillTable()
         {
             cs.Prepare();
-            Fucks fs = Engine.db().allFuckers(rab1.rid,cbHeter.Checked,cbInbreed.Checked,malewait);
+            Fucks fs = Engine.db().allFuckers(rab1.RID,cbHeter.Checked,cbInbreed.Checked,malewait);
             foreach (Fucks.Fuck f in fs.fucks)
             {
-                bool heter=(f.breed != rab1.breed);
-                bool inbr=RabNetEngHelper.inbreeding(rab1.genom,f.rgenom);
+                bool heter=(f.breed != rab1.Breed);
+                bool inbr=RabNetEngHelper.inbreeding(rab1.Genom,f.rgenom);
                 /*
                 if ((!inbr || cbInbreed.Checked) && (!heter || cbHeter.Checked) &&
                     (f.dead>1 || cbCand.Checked) || f.partnerid==rtosel)
@@ -120,7 +120,7 @@ namespace rabnet
         private void button3_Click(object sender, EventArgs e)
         {
             int r2 = (listView1.SelectedItems[0].Tag as Fucks.Fuck).partnerid;
-            (new GenomView(rab1.rid, r2)).ShowDialog();
+            (new GenomView(rab1.RID, r2)).ShowDialog();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -132,11 +132,11 @@ namespace rabnet
         {
             try
             {
-                if (rab1.name == 0 && comboBox1.SelectedIndex != 0)
+                if (rab1.Name == 0 && comboBox1.SelectedIndex != 0)
                 {
                     foreach (int k in names.Keys)
                         if (comboBox1.Text == names[k])
-                            rab1.name = k;
+                            rab1.Name = k;
                     rab1.commit();
                 }
                 if (listView1.SelectedItems.Count!=1)

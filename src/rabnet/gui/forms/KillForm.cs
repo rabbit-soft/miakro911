@@ -21,23 +21,24 @@ namespace rabnet
             dateDays1.DateValue = DateTime.Now;
             confirm = Engine.opt().getIntOption(Options.OPT_ID.CONFIRM_KILL) == 1;
             Catalog c=Engine.db().catalogs().getDeadReasons();
-            comboBox1.Items.Add("");
+            cbDeadReason.Items.Add("");
             for (int i = 0; i < c.Count; i++)
-                comboBox1.Items.Add(c[i+3]);
+                cbDeadReason.Items.Add(c[i+3]);
             cs = new ListViewColumnSorter(listView1, new int[] { 3,4, 5 }, Options.OPT_ID.KILL_LIST);
             update();
         }
-
+        /// <summary>
+        /// Установка подсказок на компоненты
+        /// </summary>
         private void initialHints()
         {
             ToolTip toolTip = new ToolTip();
             toolTip.InitialDelay = 1000;
-
             toolTip.SetToolTip(numericUpDown1, "Количество списываемых кроликов из выделенной записи");
             toolTip.SetToolTip(button1,"Убрать выделенную запись из плана списаний");
             toolTip.SetToolTip(button2,"Списать кроликов");
             toolTip.SetToolTip(dateDays1,"Дата списания");
-            toolTip.SetToolTip(comboBox1,"Причина списания кроликов");
+            toolTip.SetToolTip(cbDeadReason,"Причина списания кроликов");
             toolTip.SetToolTip(textBox1, "Здесь можно оставить любой коментарий по данному списанию");
         }
         public void addRabbit(int id)
@@ -56,11 +57,11 @@ namespace rabnet
         {
             rbs.Add(r);
             int id = rbs.Count - 1;
-            r.tag = r.address;
-            foreach (OneRabbit or in r.youngers)
+            r.Tag = r.Address;
+            foreach (OneRabbit or in r.Youngers)
             {
                 addRabbit(or.id);
-                rbs[rbs.Count - 1].tag = r.address;
+                rbs[rbs.Count - 1].Tag = r.Address;
             }
             //update();
         }
@@ -71,16 +72,16 @@ namespace rabnet
             listView1.Items.Clear();
             foreach (RabNetEngRabbit r in rbs)
             {
-                ListViewItem li = listView1.Items.Add(r.fullName);
-                li.Tag=r.rid;
-                li.SubItems.Add(r.tag);
+                ListViewItem li = listView1.Items.Add(r.FullName);
+                li.Tag=r.RID;
+                li.SubItems.Add(r.Tag);
                 String sex = "?";
-                if (r.sex == OneRabbit.RabbitSex.FEMALE) sex = "Ж";
-                if (r.sex == OneRabbit.RabbitSex.MALE) sex = "М";
+                if (r.Sex == OneRabbit.RabbitSex.FEMALE) sex = "Ж";
+                if (r.Sex == OneRabbit.RabbitSex.MALE) sex = "М";
                 li.SubItems.Add(sex);
                 li.SubItems.Add(r.age.ToString());
-                li.SubItems.Add(r.group.ToString());
-                li.SubItems.Add(r.group.ToString());
+                li.SubItems.Add(r.Group.ToString());
+                li.SubItems.Add(r.Group.ToString());
             }
             //listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             cs.Restore();
@@ -125,6 +126,13 @@ namespace rabnet
         {
             try
             {
+                if (cbDeadReason.SelectedIndex == -1)
+                {
+                    MessageBox.Show("Вам необходимо указать причину списания для продолжения", "Не указана причина списания");
+                    this.DialogResult = DialogResult.None;
+                    cbDeadReason.Focus();
+                    return;
+                }
                 int i = 0;
                 if (!doConfirm())
                 {
@@ -138,12 +146,13 @@ namespace rabnet
                     if (cnt != 0)
                     {
                         int reason = 0;
-                        if (comboBox1.SelectedIndex > 0)
-                            reason = comboBox1.SelectedIndex + 2;
-                        r.killIt(dateDays1.DateValue, reason, r.smallAddress+" "+textBox1.Text, cnt);
+                        if (cbDeadReason.SelectedIndex > 0)
+                            reason = cbDeadReason.SelectedIndex + 2;//1- списан из старой программы; 2- Обьединение
+                        r.killIt(dateDays1.DateValue, reason, r.SmallAddress + " " + textBox1.Text, cnt);
                     }
                     i++;
                 }
+                this.DialogResult = DialogResult.OK;
                 Close();
             }
             catch (Exception ex)
@@ -165,7 +174,7 @@ namespace rabnet
             int id=(int)listView1.SelectedItems[0].Tag;
             foreach (RabNetEngRabbit r in rbs)
             {
-                if (r.rid==id)
+                if (r.RID==id)
                 {
                     rbs.Remove(r);
                     update();

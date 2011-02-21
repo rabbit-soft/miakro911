@@ -5,24 +5,59 @@ using MySql.Data.MySqlClient;
 
 namespace rabnet
 {
-    public class Rabbit:IData{
+    public class Rabbit : IData
+    {
         public int fid;
         public String fname;
         public String fsex;
         public int fage;
+        /// <summary>
+        /// Порода кролика
+        /// </summary>
         public String fbreed;
+        /// <summary>
+        /// Вес кролика
+        /// </summary>
         public String fweight;
+        /// <summary>
+        /// Статус кролика
+        /// </summary>
         public String fstatus;
+        /// <summary>
+        /// Флаги(Бонитировка, Брак...)
+        /// </summary>
         public String fbgp;
+        /// <summary>
+        /// Количество в группе
+        /// </summary>
         public String fN;
+        /// <summary>
+        /// Количество подсосных
+        /// </summary>
         public int faverage;
+        /// <summary>
+        /// Рейтинг
+        /// </summary>
         public int frate;
+        /// <summary>
+        /// Класс бонитировки
+        /// </summary>
         public String fcls;
+        /// <summary>
+        /// Адрес формата "454б [Кварта]"
+        /// </summary>
         public String faddress;
+        /// <summary>
+        /// Заметки
+        /// </summary>
         public string fnotes;
+        /// <summary>
+        /// Конструктор класса
+        /// </summary>
+        /// <param name="id">Идентификационный номер кролика</param>
         public Rabbit(int id)
         {
-            fid=id;
+            fid = id;
         }
     }
 
@@ -108,8 +143,6 @@ namespace rabnet
             //rd.GetString("t_type"), rd.GetString("t_delims"), shr, options.safeBool("sht"), options.safeBool("sho"));
             return r;
         }
-
-
 
         public String makeWhere()
         {

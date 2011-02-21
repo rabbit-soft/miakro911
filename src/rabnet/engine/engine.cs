@@ -10,7 +10,7 @@ namespace rabnet
     public class RabNetEngine
     {
         const int NEED_DB_VERSION = 6; //Необходимой  версия БД (options o_name='db',o_subname='version')
-        private IRabNetDataLayer data=null;
+        private IRabNetDataLayer data = null;
         private IRabNetDataLayer data2 = null;
         private ILog log = null;
         private int uid = 0;
@@ -20,11 +20,13 @@ namespace rabnet
         private Options opts=null;
         private RabNetLogs logger = null;
         private RabEngZooTeh zooteh = null;
+
         public RabNetEngine()
         {
             log4net.Config.XmlConfigurator.Configure();
             log = log4net.LogManager.GetLogger(typeof(RabNetEngine));
         }
+
         public IRabNetDataLayer initEngine(String dbext,String param)
         {
             if (data!=null)
@@ -46,7 +48,8 @@ namespace rabnet
                 data = new RabNetDBMiaFile(param);
                 data2 = data;
             }*/
-            else{
+            else
+            {
                 throw new ExDBDriverNotFoud(dbext);
             }
             int ver = options().getIntOption("db", "version", Options.OPT_LEVEL.FARM);
@@ -60,14 +63,17 @@ namespace rabnet
             }
             return data;
         }
+
         public IRabNetDataLayer db()
         {
             return data;
         }
+
         public IRabNetDataLayer db2()
         {
             return data2;
         }
+
         public int setUid(String name, String password, String farmName)
         {
             uid = db().checkUser(name, password);
@@ -80,8 +86,11 @@ namespace rabnet
             }
             return uid;
         }
+
         public String farmName(){return uname+"@"+farmname;}
+
         public int uId() { return uid; }
+
         public Options options()
         {
             if (opts==null)
@@ -105,10 +114,12 @@ namespace rabnet
         {
             options().setOption(Options.OPT_ID.INBREEDING, on ? 1 : 0);
         }
+
         public void setGeterosis(bool on)
         {
             options().setOption(Options.OPT_ID.GETEROSIS, on ? 1 : 0);
         }
+
         public RabEngZooTeh zoo()
         {
             if (zooteh == null)
@@ -120,6 +131,7 @@ namespace rabnet
         {
             return new RabNetEngBuilding(tier, this);
         }
+
         public RabNetEngBuilding getBuilding(string place)
         {
             return RabNetEngBuilding.fromPlace(place, this);

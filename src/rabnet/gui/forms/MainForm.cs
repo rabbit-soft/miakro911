@@ -19,6 +19,9 @@ namespace rabnet
         protected static readonly ILog log = LogManager.GetLogger(typeof(MainForm));
         private bool manflag=false;
         private RabNetPanel[] panels =null;
+        /// <summary>
+        /// Панель, активная в данныймомент
+        /// </summary>
         private RabNetPanel curpanel=null;
         private static MainForm me = null;
         private bool mustclose = false;
@@ -90,7 +93,7 @@ namespace rabnet
 #endif
         }
 
-        private void фильтрToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiFilter_Click(object sender, EventArgs e)
         {
             rabStatusBar1.filterSwitch();
         }
@@ -122,10 +125,10 @@ namespace rabnet
             panel1.Controls.Remove(curpanel);
             curpanel = panels[tabControl1.SelectedIndex];
             panel1.Controls.Add(curpanel);
-            actMenuItem.DropDown = curpanel.getMenu();
+            tsmiActions.DropDown = curpanel.getMenu();
             curpanel.activate();
             working();
-            protest();
+            protectTest();
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -133,10 +136,9 @@ namespace rabnet
             DataThread.get().stop();
             for (int i = 0; i < panels.Length; i++)
                 panels[i].close();
-
         }
 
-        private void оПрограммеToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiAboutPO_Click(object sender, EventArgs e)
         {
             new AboutForm().ShowDialog();
         }
@@ -151,7 +153,7 @@ namespace rabnet
             new NamesForm().ShowDialog();
         }
 
-        private void зоныToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiAreas_Click(object sender, EventArgs e)
         {
             new CatalogForm(CatalogForm.CatalogType.ZONES).ShowDialog();
         }
@@ -184,8 +186,8 @@ namespace rabnet
             new UserForm().ShowDialog();
         }
 
-        private void забоиПривесыСписанияToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void tsmiDeadsArchive_Click(object sender, EventArgs e)
+        {         
             new DeadForm().ShowDialog();
             rabStatusBar1.run();
         }
@@ -200,7 +202,7 @@ namespace rabnet
 #endif
         }
 
-        private void породыToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiBreeds_Click(object sender, EventArgs e)
         {
 #if !DEMO
             Filters f = new Filters();
@@ -212,7 +214,7 @@ namespace rabnet
 #endif
         }
 
-        private void возрастИКоличествоToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiAgeAndCount_Click(object sender, EventArgs e)
         {
 #if !DEMO
             (new ReportViewForm("Статистика возрастного поголовья", "age", 
@@ -222,7 +224,7 @@ namespace rabnet
 #endif
         }
 
-        private void продуктивностьСоитияToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiFuckProductivity_Click(object sender, EventArgs e)
         {
 #if !DEMO
             FuckerForm dlg=new FuckerForm();
@@ -240,7 +242,7 @@ namespace rabnet
 #endif
         }
 
-        private void причиныСпичанияToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiDeadReasonsView_Click(object sender, EventArgs e)
         {
 #if !DEMO
             new CatalogForm(CatalogForm.CatalogType.DEAD).ShowDialog();
@@ -249,7 +251,7 @@ namespace rabnet
 #endif
         }
 
-        private void списанияToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiDeads_Click(object sender, EventArgs e)
         {
 #if !DEMO
             Filters f=new Filters();
@@ -262,7 +264,7 @@ namespace rabnet
 #endif
         }
 
-        private void списанияToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void tsmiDeadsReaport_Click(object sender, EventArgs e)
         {
 #if !DEMO
             Filters f = new Filters();
@@ -275,7 +277,7 @@ namespace rabnet
 #endif
 		}
 
-        private void окролыПоПользователямToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiFucksByUsers_Click(object sender, EventArgs e)
         {
 #if !DEMO
             OkrolUser dlg = new OkrolUser();
@@ -293,7 +295,7 @@ namespace rabnet
 #endif
         }
 
-        private void количествоПоМесяцамToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiCountByMonth_Click(object sender, EventArgs e)
         {
 #if !DEMO
             Filters f = new Filters();
@@ -315,17 +317,24 @@ namespace rabnet
             DemoErr.DemoNoReportMsg();
 #endif
         }
-
-        private void timer1_Tick(object sender, EventArgs e)
+        /// <summary>
+        /// При срабатывании таймера, происходит выход в меню выбора юзера
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tNoWorking_Tick(object sender, EventArgs e)
         {
             LoginForm.stop = false;
             mustclose = true;
             Close();
         }
+        /// <summary>
+        /// Сбрасывает таймер Простоя
+        /// </summary>
         public void working()
         {
-            timer1.Stop();
-            timer1.Start();
+            tNoWorking.Stop();
+            tNoWorking.Start();
 #if PROTECTED
             if ((DateTime.Today < GRD.Instance.GetDateStart()) || (DateTime.Today > GRD.Instance.GetDateEnd()))
             {
@@ -340,11 +349,15 @@ namespace rabnet
         {
             me.working();
         }
-        public static void protest()
+        public static void protectTest()
         {
             me.ptest(0);
         }
-        public static void protest(int farms)
+        /// <summary>
+        /// Проверяет наличие ключа
+        /// </summary>
+        /// <param name="farms">Количество ферм</param>
+        public static void protectTest(int farms)
         {
             me.ptest(farms);
         }
@@ -399,6 +412,5 @@ namespace rabnet
         {
             Help.ShowHelp(this, "rabHelp.chm");
         }
-
     }
 }

@@ -33,32 +33,32 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.фермаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiFarm = new System.Windows.Forms.ToolStripMenuItem();
             this.сменитьФермуToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.usersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.видToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.фильтрToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiView = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiFilter = new System.Windows.Forms.ToolStripMenuItem();
             this.параметрыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.забоиПривесыСписанияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDeadsArchive = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.namesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.breedsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.зоныToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.причиныСпичанияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.actMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.отчетыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiAreas = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDeadReasonsView = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiActions = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiReports = new System.Windows.Forms.ToolStripMenuItem();
             this.тестовыйToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.породыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.продуктивностьСоитияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.возрастИКоличествоToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.количествоПоМесяцамToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.списанияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.списанияToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.окролыПоПользователямToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiBreeds = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiFuckProductivity = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiAgeAndCount = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiCountByMonths = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDeadReasons = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDeadsReaport = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiFucksByUsers = new System.Windows.Forms.ToolStripMenuItem();
             this.fucksByDateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.настройкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.showTierTMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showTierSMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shortNamesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,10 +71,10 @@
             this.inbreedingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.paramsMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.справкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.оПрограммеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiAboutPO = new System.Windows.Forms.ToolStripMenuItem();
             this.gjvjomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.tNoWorking = new System.Windows.Forms.Timer(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -89,28 +89,28 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.фермаToolStripMenuItem,
-            this.видToolStripMenuItem,
-            this.actMenuItem,
-            this.отчетыToolStripMenuItem,
-            this.настройкиToolStripMenuItem,
-            this.справкаToolStripMenuItem});
+            this.tsmiFarm,
+            this.tsmiView,
+            this.tsmiActions,
+            this.tsmiReports,
+            this.tsmiOptions,
+            this.tsmiAbout});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(914, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // фермаToolStripMenuItem
+            // tsmiFarm
             // 
-            this.фермаToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiFarm.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.сменитьФермуToolStripMenuItem,
             this.usersMenuItem,
             this.toolStripMenuItem1,
             this.выходToolStripMenuItem});
-            this.фермаToolStripMenuItem.Name = "фермаToolStripMenuItem";
-            this.фермаToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
-            this.фермаToolStripMenuItem.Text = "Ферма";
+            this.tsmiFarm.Name = "tsmiFarm";
+            this.tsmiFarm.Size = new System.Drawing.Size(51, 20);
+            this.tsmiFarm.Text = "Ферма";
             // 
             // сменитьФермуToolStripMenuItem
             // 
@@ -140,28 +140,28 @@
             this.выходToolStripMenuItem.Text = "Выход";
             this.выходToolStripMenuItem.Click += new System.EventHandler(this.ExitMenuItem_Click);
             // 
-            // видToolStripMenuItem
+            // tsmiView
             // 
-            this.видToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.фильтрToolStripMenuItem,
+            this.tsmiView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiFilter,
             this.параметрыToolStripMenuItem,
-            this.забоиПривесыСписанияToolStripMenuItem,
+            this.tsmiDeadsArchive,
             this.toolStripMenuItem2,
             this.namesMenuItem,
             this.breedsMenuItem,
-            this.зоныToolStripMenuItem,
-            this.причиныСпичанияToolStripMenuItem});
-            this.видToolStripMenuItem.Name = "видToolStripMenuItem";
-            this.видToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
-            this.видToolStripMenuItem.Text = "Вид";
+            this.tsmiAreas,
+            this.tsmiDeadReasonsView});
+            this.tsmiView.Name = "tsmiView";
+            this.tsmiView.Size = new System.Drawing.Size(38, 20);
+            this.tsmiView.Text = "Вид";
             // 
-            // фильтрToolStripMenuItem
+            // tsmiFilter
             // 
-            this.фильтрToolStripMenuItem.Name = "фильтрToolStripMenuItem";
-            this.фильтрToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.фильтрToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.фильтрToolStripMenuItem.Text = "Фильтр";
-            this.фильтрToolStripMenuItem.Click += new System.EventHandler(this.фильтрToolStripMenuItem_Click);
+            this.tsmiFilter.Name = "tsmiFilter";
+            this.tsmiFilter.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this.tsmiFilter.Size = new System.Drawing.Size(207, 22);
+            this.tsmiFilter.Text = "Фильтр";
+            this.tsmiFilter.Click += new System.EventHandler(this.tsmiFilter_Click);
             // 
             // параметрыToolStripMenuItem
             // 
@@ -171,13 +171,13 @@
             this.параметрыToolStripMenuItem.Text = "Параметры";
             this.параметрыToolStripMenuItem.Click += new System.EventHandler(this.paramsMenuItem1_Click);
             // 
-            // забоиПривесыСписанияToolStripMenuItem
+            // tsmiDeadsArchive
             // 
-            this.забоиПривесыСписанияToolStripMenuItem.Name = "забоиПривесыСписанияToolStripMenuItem";
-            this.забоиПривесыСписанияToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-            this.забоиПривесыСписанияToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.забоиПривесыСписанияToolStripMenuItem.Text = "Архив Списаний";
-            this.забоиПривесыСписанияToolStripMenuItem.Click += new System.EventHandler(this.забоиПривесыСписанияToolStripMenuItem_Click);
+            this.tsmiDeadsArchive.Name = "tsmiDeadsArchive";
+            this.tsmiDeadsArchive.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
+            this.tsmiDeadsArchive.Size = new System.Drawing.Size(207, 22);
+            this.tsmiDeadsArchive.Text = "Архив Списаний";
+            this.tsmiDeadsArchive.Click += new System.EventHandler(this.tsmiDeadsArchive_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -200,41 +200,41 @@
             this.breedsMenuItem.Text = "Породы";
             this.breedsMenuItem.Click += new System.EventHandler(this.breedsMenuItem_Click);
             // 
-            // зоныToolStripMenuItem
+            // tsmiAreas
             // 
-            this.зоныToolStripMenuItem.Name = "зоныToolStripMenuItem";
-            this.зоныToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.зоныToolStripMenuItem.Text = "Зоны";
-            this.зоныToolStripMenuItem.Click += new System.EventHandler(this.зоныToolStripMenuItem_Click);
+            this.tsmiAreas.Name = "tsmiAreas";
+            this.tsmiAreas.Size = new System.Drawing.Size(207, 22);
+            this.tsmiAreas.Text = "Зоны";
+            this.tsmiAreas.Click += new System.EventHandler(this.tsmiAreas_Click);
             // 
-            // причиныСпичанияToolStripMenuItem
+            // tsmiDeadReasonsView
             // 
-            this.причиныСпичанияToolStripMenuItem.Name = "причиныСпичанияToolStripMenuItem";
-            this.причиныСпичанияToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.причиныСпичанияToolStripMenuItem.Text = "Причины списания";
-            this.причиныСпичанияToolStripMenuItem.Click += new System.EventHandler(this.причиныСпичанияToolStripMenuItem_Click);
+            this.tsmiDeadReasonsView.Name = "tsmiDeadReasonsView";
+            this.tsmiDeadReasonsView.Size = new System.Drawing.Size(207, 22);
+            this.tsmiDeadReasonsView.Text = "Причины списания";
+            this.tsmiDeadReasonsView.Click += new System.EventHandler(this.tsmiDeadReasonsView_Click);
             // 
-            // actMenuItem
+            // tsmiActions
             // 
-            this.actMenuItem.Name = "actMenuItem";
-            this.actMenuItem.Size = new System.Drawing.Size(68, 20);
-            this.actMenuItem.Text = "Действия";
+            this.tsmiActions.Name = "tsmiActions";
+            this.tsmiActions.Size = new System.Drawing.Size(68, 20);
+            this.tsmiActions.Text = "Действия";
             // 
-            // отчетыToolStripMenuItem
+            // tsmiReports
             // 
-            this.отчетыToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiReports.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.тестовыйToolStripMenuItem,
-            this.породыToolStripMenuItem,
-            this.продуктивностьСоитияToolStripMenuItem,
-            this.возрастИКоличествоToolStripMenuItem,
-            this.количествоПоМесяцамToolStripMenuItem,
-            this.списанияToolStripMenuItem,
-            this.списанияToolStripMenuItem1,
-            this.окролыПоПользователямToolStripMenuItem,
+            this.tsmiBreeds,
+            this.tsmiFuckProductivity,
+            this.tsmiAgeAndCount,
+            this.tsmiCountByMonths,
+            this.tsmiDeadReasons,
+            this.tsmiDeadsReaport,
+            this.tsmiFucksByUsers,
             this.fucksByDateToolStripMenuItem});
-            this.отчетыToolStripMenuItem.Name = "отчетыToolStripMenuItem";
-            this.отчетыToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
-            this.отчетыToolStripMenuItem.Text = "Отчеты";
+            this.tsmiReports.Name = "tsmiReports";
+            this.tsmiReports.Size = new System.Drawing.Size(59, 20);
+            this.tsmiReports.Text = "Отчеты";
             // 
             // тестовыйToolStripMenuItem
             // 
@@ -244,54 +244,54 @@
             this.тестовыйToolStripMenuItem.Visible = false;
             this.тестовыйToolStripMenuItem.Click += new System.EventHandler(this.тестовыйToolStripMenuItem_Click);
             // 
-            // породыToolStripMenuItem
+            // tsmiBreeds
             // 
-            this.породыToolStripMenuItem.Name = "породыToolStripMenuItem";
-            this.породыToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-            this.породыToolStripMenuItem.Text = "Состав пород";
-            this.породыToolStripMenuItem.Click += new System.EventHandler(this.породыToolStripMenuItem_Click);
+            this.tsmiBreeds.Name = "tsmiBreeds";
+            this.tsmiBreeds.Size = new System.Drawing.Size(220, 22);
+            this.tsmiBreeds.Text = "Состав пород";
+            this.tsmiBreeds.Click += new System.EventHandler(this.tsmiBreeds_Click);
             // 
-            // продуктивностьСоитияToolStripMenuItem
+            // tsmiFuckProductivity
             // 
-            this.продуктивностьСоитияToolStripMenuItem.Name = "продуктивностьСоитияToolStripMenuItem";
-            this.продуктивностьСоитияToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-            this.продуктивностьСоитияToolStripMenuItem.Text = "Продуктивность соития";
-            this.продуктивностьСоитияToolStripMenuItem.Click += new System.EventHandler(this.продуктивностьСоитияToolStripMenuItem_Click);
+            this.tsmiFuckProductivity.Name = "tsmiFuckProductivity";
+            this.tsmiFuckProductivity.Size = new System.Drawing.Size(220, 22);
+            this.tsmiFuckProductivity.Text = "Продуктивность соития";
+            this.tsmiFuckProductivity.Click += new System.EventHandler(this.tsmiFuckProductivity_Click);
             // 
-            // возрастИКоличествоToolStripMenuItem
+            // tsmiAgeAndCount
             // 
-            this.возрастИКоличествоToolStripMenuItem.Name = "возрастИКоличествоToolStripMenuItem";
-            this.возрастИКоличествоToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-            this.возрастИКоличествоToolStripMenuItem.Text = "Возраст и количество";
-            this.возрастИКоличествоToolStripMenuItem.Click += new System.EventHandler(this.возрастИКоличествоToolStripMenuItem_Click);
+            this.tsmiAgeAndCount.Name = "tsmiAgeAndCount";
+            this.tsmiAgeAndCount.Size = new System.Drawing.Size(220, 22);
+            this.tsmiAgeAndCount.Text = "Возраст и количество";
+            this.tsmiAgeAndCount.Click += new System.EventHandler(this.tsmiAgeAndCount_Click);
             // 
-            // количествоПоМесяцамToolStripMenuItem
+            // tsmiCountByMonths
             // 
-            this.количествоПоМесяцамToolStripMenuItem.Name = "количествоПоМесяцамToolStripMenuItem";
-            this.количествоПоМесяцамToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-            this.количествоПоМесяцамToolStripMenuItem.Text = "Количество по месяцам";
-            this.количествоПоМесяцамToolStripMenuItem.Click += new System.EventHandler(this.количествоПоМесяцамToolStripMenuItem_Click);
+            this.tsmiCountByMonths.Name = "tsmiCountByMonths";
+            this.tsmiCountByMonths.Size = new System.Drawing.Size(220, 22);
+            this.tsmiCountByMonths.Text = "Количество по месяцам";
+            this.tsmiCountByMonths.Click += new System.EventHandler(this.tsmiCountByMonth_Click);
             // 
-            // списанияToolStripMenuItem
+            // tsmiDeadReasons
             // 
-            this.списанияToolStripMenuItem.Name = "списанияToolStripMenuItem";
-            this.списанияToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-            this.списанияToolStripMenuItem.Text = "Причины списания";
-            this.списанияToolStripMenuItem.Click += new System.EventHandler(this.списанияToolStripMenuItem_Click);
+            this.tsmiDeadReasons.Name = "tsmiDeadReasons";
+            this.tsmiDeadReasons.Size = new System.Drawing.Size(220, 22);
+            this.tsmiDeadReasons.Text = "Причины списания";
+            this.tsmiDeadReasons.Click += new System.EventHandler(this.tsmiDeads_Click);
             // 
-            // списанияToolStripMenuItem1
+            // tsmiDeadsReaport
             // 
-            this.списанияToolStripMenuItem1.Name = "списанияToolStripMenuItem1";
-            this.списанияToolStripMenuItem1.Size = new System.Drawing.Size(220, 22);
-            this.списанияToolStripMenuItem1.Text = "Списания";
-            this.списанияToolStripMenuItem1.Click += new System.EventHandler(this.списанияToolStripMenuItem1_Click);
+            this.tsmiDeadsReaport.Name = "tsmiDeadsReaport";
+            this.tsmiDeadsReaport.Size = new System.Drawing.Size(220, 22);
+            this.tsmiDeadsReaport.Text = "Списания";
+            this.tsmiDeadsReaport.Click += new System.EventHandler(this.tsmiDeadsReaport_Click);
             // 
-            // окролыПоПользователямToolStripMenuItem
+            // tsmiFucksByUsers
             // 
-            this.окролыПоПользователямToolStripMenuItem.Name = "окролыПоПользователямToolStripMenuItem";
-            this.окролыПоПользователямToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-            this.окролыПоПользователямToolStripMenuItem.Text = "Окролы по пользователям";
-            this.окролыПоПользователямToolStripMenuItem.Click += new System.EventHandler(this.окролыПоПользователямToolStripMenuItem_Click);
+            this.tsmiFucksByUsers.Name = "tsmiFucksByUsers";
+            this.tsmiFucksByUsers.Size = new System.Drawing.Size(220, 22);
+            this.tsmiFucksByUsers.Text = "Окролы по пользователям";
+            this.tsmiFucksByUsers.Click += new System.EventHandler(this.tsmiFucksByUsers_Click);
             // 
             // fucksByDateToolStripMenuItem
             // 
@@ -300,9 +300,9 @@
             this.fucksByDateToolStripMenuItem.Text = "Список случек\\вязок";
             this.fucksByDateToolStripMenuItem.Click += new System.EventHandler(this.fucksByDateToolStripMenuItem_Click);
             // 
-            // настройкиToolStripMenuItem
+            // tsmiOptions
             // 
-            this.настройкиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiOptions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showTierTMenuItem,
             this.showTierSMenuItem,
             this.shortNamesMenuItem,
@@ -315,9 +315,9 @@
             this.inbreedingMenuItem,
             this.toolStripMenuItem3,
             this.paramsMenuItem1});
-            this.настройкиToolStripMenuItem.Name = "настройкиToolStripMenuItem";
-            this.настройкиToolStripMenuItem.Size = new System.Drawing.Size(73, 20);
-            this.настройкиToolStripMenuItem.Text = "Настройки";
+            this.tsmiOptions.Name = "tsmiOptions";
+            this.tsmiOptions.Size = new System.Drawing.Size(73, 20);
+            this.tsmiOptions.Text = "Настройки";
             // 
             // showTierTMenuItem
             // 
@@ -406,21 +406,20 @@
             this.paramsMenuItem1.Text = "Параметры ...";
             this.paramsMenuItem1.Click += new System.EventHandler(this.paramsMenuItem1_Click);
             // 
-            // справкаToolStripMenuItem
+            // tsmiAbout
             // 
-            this.справкаToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.оПрограммеToolStripMenuItem,
+            this.tsmiAbout.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiAboutPO,
             this.gjvjomToolStripMenuItem});
-            this.справкаToolStripMenuItem.Name = "справкаToolStripMenuItem";
-            this.справкаToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
-            this.справкаToolStripMenuItem.Text = "Справка";
+            this.tsmiAbout.Name = "tsmiAbout";
+            this.tsmiAbout.Size = new System.Drawing.Size(62, 20);
+            this.tsmiAbout.Text = "Справка";
             // 
-            // оПрограммеToolStripMenuItem
+            // tsmiAboutPO
             // 
-            this.оПрограммеToolStripMenuItem.Name = "оПрограммеToolStripMenuItem";
-            this.оПрограммеToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.оПрограммеToolStripMenuItem.Text = "О программе ...";
-            this.оПрограммеToolStripMenuItem.Click += new System.EventHandler(this.оПрограммеToolStripMenuItem_Click);
+            this.tsmiAboutPO.Name = "tsmiAboutPO";
+            this.tsmiAboutPO.Size = new System.Drawing.Size(164, 22);
+            this.tsmiAboutPO.Text = "О программе ...";
             // 
             // gjvjomToolStripMenuItem
             // 
@@ -430,10 +429,10 @@
             this.gjvjomToolStripMenuItem.Text = "Помощь";
             this.gjvjomToolStripMenuItem.Click += new System.EventHandler(this.gjvjomToolStripMenuItem_Click);
             // 
-            // timer1
+            // tNoWorking
             // 
-            this.timer1.Interval = 480000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.tNoWorking.Interval = 480000;
+            this.tNoWorking.Tick += new System.EventHandler(this.tNoWorking_Tick);
             // 
             // tabControl1
             // 
@@ -539,19 +538,19 @@
         #endregion
 
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem фермаToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiFarm;
         private System.Windows.Forms.ToolStripMenuItem сменитьФермуToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem выходToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem видToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem фильтрToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiView;
+        private System.Windows.Forms.ToolStripMenuItem tsmiFilter;
         private System.Windows.Forms.ToolStripMenuItem параметрыToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem забоиПривесыСписанияToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiDeadsArchive;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem namesMenuItem;
         private System.Windows.Forms.ToolStripMenuItem breedsMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem настройкиToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem справкаToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiOptions;
+        private System.Windows.Forms.ToolStripMenuItem tsmiAbout;
         private System.Windows.Forms.ToolStripMenuItem showTierTMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showTierSMenuItem;
         private System.Windows.Forms.ToolStripMenuItem shortNamesMenuItem;
@@ -561,31 +560,31 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
         private System.Windows.Forms.ToolStripMenuItem geterosisMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inbreedingMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem оПрограммеToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiAboutPO;
         private RabStatusBar rabStatusBar1;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer tNoWorking;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.ToolStripMenuItem actMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem зоныToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiActions;
+        private System.Windows.Forms.ToolStripMenuItem tsmiAreas;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem paramsMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem usersMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem отчетыToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiReports;
         private System.Windows.Forms.ToolStripMenuItem тестовыйToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem породыToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem списанияToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem продуктивностьСоитияToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem возрастИКоличествоToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem причиныСпичанияToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem списанияToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem tsmiBreeds;
+        private System.Windows.Forms.ToolStripMenuItem tsmiDeadReasons;
+        private System.Windows.Forms.ToolStripMenuItem tsmiFuckProductivity;
+        private System.Windows.Forms.ToolStripMenuItem tsmiAgeAndCount;
+        private System.Windows.Forms.ToolStripMenuItem tsmiDeadReasonsView;
+        private System.Windows.Forms.ToolStripMenuItem tsmiDeadsReaport;
         private System.Windows.Forms.ToolStripMenuItem shortZooMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem окролыПоПользователямToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem количествоПоМесяцамToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiFucksByUsers;
+        private System.Windows.Forms.ToolStripMenuItem tsmiCountByMonths;
         private System.Windows.Forms.ToolStripMenuItem fucksByDateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gjvjomToolStripMenuItem;
     }

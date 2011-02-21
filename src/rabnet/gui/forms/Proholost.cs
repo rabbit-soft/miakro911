@@ -28,7 +28,7 @@ namespace rabnet
         public Proholost(int r):this()
         {
             r1 = Engine.get().getRabbit(r);
-            label1.Text = r1.fullName;
+            label1.Text = r1.FullName;
         }
 
         private void button2_Click(object sender, EventArgs e)

@@ -16,10 +16,16 @@ namespace rabnet
 Обновите программу и базу данных до последних версий.",has,need)) { }
     }
 
+    /// <summary>
+    /// Интерфейс который представляет собой одну строку IDataGetter
+    /// </summary>
     public interface IData
     {
     }
 
+    /// <summary>
+    /// Интерфейс который представляет собой результат(MySqlDataReader) для заполнения информацией одну из панелей.
+    /// </summary>
     public interface IDataGetter
     {
         int getCount();

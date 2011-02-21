@@ -20,9 +20,9 @@ namespace rabnet
             : this()
         {
             r = Engine.get().getRabbit(rid);
-            label2.Text = r.fullName;
-            label3.Text = r.breedName;
-            String bn = r.bon;
+            label2.Text = r.FullName;
+            label3.Text = r.BreedName;
+            String bn = r.Bon;
             label7.Text = "классность " + (bn[0] == '1' ? "установлена в ручную" : "унаследована");
             comboBox1.SelectedIndex = int.Parse("" + bn[1]);
             comboBox2.SelectedIndex = int.Parse("" + bn[2]);

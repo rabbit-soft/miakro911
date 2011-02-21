@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbDeadReason = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -50,14 +50,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
-            // comboBox1
+            // cbDeadReason
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(215, 13);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(177, 21);
-            this.comboBox1.TabIndex = 1;
+            this.cbDeadReason.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbDeadReason.FormattingEnabled = true;
+            this.cbDeadReason.Location = new System.Drawing.Point(215, 13);
+            this.cbDeadReason.Name = "cbDeadReason";
+            this.cbDeadReason.Size = new System.Drawing.Size(177, 21);
+            this.cbDeadReason.TabIndex = 1;
             // 
             // label1
             // 
@@ -216,7 +216,7 @@
             // 
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2010, 3, 6, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2011, 2, 21, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
             this.dateDays1.Location = new System.Drawing.Point(12, 12);
@@ -245,7 +245,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cbDeadReason);
             this.Controls.Add(this.dateDays1);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -264,7 +264,7 @@
         #endregion
 
         private rabnet.components.DateDays dateDays1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cbDeadReason;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label2;

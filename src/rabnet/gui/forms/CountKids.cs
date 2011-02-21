@@ -32,17 +32,17 @@ namespace rabnet
         }
         private void CountKids_Load(object sender, EventArgs e)
         {
-            label1.Text = r.fullName;
+            label1.Text = r.FullName;
             comboBox1.Items.Clear();
-            for (int i = 0; i < r.youngers.Length; i++)
-                comboBox1.Items.Add(r.youngers[i].fullname + " (" + r.youngers[i].group+")");
+            for (int i = 0; i < r.Youngers.Length; i++)
+                comboBox1.Items.Add(r.Youngers[i].fullname + " (" + r.Youngers[i].group+")");
             comboBox1.SelectedIndex = grp;
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             int s = comboBox1.SelectedIndex;
-            int c = r.youngers[s].group;
+            int c = r.Youngers[s].group;
             int x = c - (int)(numericUpDown1.Value + numericUpDown2.Value)+(int)numericUpDown3.Value;
             textBox1.Text = x.ToString();
             numericUpDown2.Maximum = c - numericUpDown1.Value;
@@ -60,7 +60,7 @@ namespace rabnet
             {
                 int i = comboBox1.SelectedIndex;
                 r.CountKids((int)numericUpDown1.Value, (int)numericUpDown2.Value, (int)numericUpDown3.Value,
-                    int.Parse(textBox1.Text), r.youngers[i].age(),i);
+                    int.Parse(textBox1.Text), r.Youngers[i].age(),i);
                 Close();
             }
             catch (ApplicationException ex)
@@ -72,10 +72,10 @@ namespace rabnet
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             int i = comboBox1.SelectedIndex;
-            label2.Text = "Возраст:" + r.youngers[i].age().ToString() +"\nПорода:"+r.breedName.ToString();
-            textBox1.Text = r.youngers[i].group.ToString();
+            label2.Text = "Возраст:" + r.Youngers[i].age().ToString() +"\nПорода:"+r.BreedName.ToString();
+            textBox1.Text = r.Youngers[i].group.ToString();
             numericUpDown2.Value = numericUpDown1.Value=numericUpDown3.Value= 0;
-            numericUpDown2.Maximum = numericUpDown1.Maximum = r.youngers[i].group;
+            numericUpDown2.Maximum = numericUpDown1.Maximum = r.Youngers[i].group;
 
         }
 

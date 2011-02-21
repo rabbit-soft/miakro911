@@ -29,7 +29,7 @@ namespace rabnet
             if (fullUpdate)
             {
                 f["shr"] = Engine.opt().safeIntOption(Options.OPT_ID.SHORT_ZOO, 1).ToString();
-                f["dbl"] = f["shr"]=="1"?"0":"1";//Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
+                f["dbl"] = f["shr"] == "1" ? "0" : "1";//Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
                 f["prt"] = Engine.opt().getOption(Options.OPT_ID.FIND_PARTNERS);
                 f["okrol"] = Engine.opt().getOption(Options.OPT_ID.OKROL);
                 f["preok"] = Engine.opt().getOption(Options.OPT_ID.PRE_OKROL);
@@ -95,10 +95,12 @@ namespace rabnet
                 li.SubItems.Add(j.names);
                 li.Tag = j;
             }
-
 			cs.SemiReady();
         }
-
+        /// <summary>
+        /// Заполнение логов
+        /// </summary>
+        /// <param name="f">Коллекция фильтров</param>
         private void fillLogs(Filters f)
         {
             listView2.Items.Clear();
@@ -200,11 +202,11 @@ namespace rabnet
                     RabNetEngRabbit rrr = Engine.get().getRabbit(job.id);
                     CountKids ck;
                     int id2 = 0;
-                    for (int i = 0; i < rrr.youngers.Length; i++)
-                        if (rrr.youngers[i].id == job.id2) id2 = i;
+                    for (int i = 0; i < rrr.Youngers.Length; i++)
+                        if (rrr.Youngers[i].id == job.id2) id2 = i;
                     if (makeFlag == 0)
                     {
-                        rrr.CountKids(0, 0, 0, rrr.youngers[id2].group, rrr.youngers[id2].age(), 0);
+                        rrr.CountKids(0, 0, 0, rrr.Youngers[id2].group, rrr.Youngers[id2].age(), 0);
                         needUpdate = false;
                     }
                     else
@@ -233,8 +235,8 @@ namespace rabnet
                     break;
                 case JobType.VACC:
                     RabNetEngRabbit r = Engine.get().getRabbit(job.id);
-                    r.spec = true;
-                    r.vac_end = DateTime.Now.AddDays(Engine.opt().getIntOption(Options.OPT_ID.VACCINE_TIME));
+                    r.Spec = true;
+                    r.VaccineEnd = DateTime.Now.AddDays(Engine.opt().getIntOption(Options.OPT_ID.VACCINE_TIME));
                     r.commit();
                     needUpdate = false;
                     break;
@@ -247,8 +249,8 @@ namespace rabnet
                     {
                         res = DialogResult.Cancel;
                         RabNetEngRabbit rr = Engine.get().getRabbit(job.id);
-                        RabNetEngBuilding rb = Engine.get().getBuilding(rr.justAddress);
-                        string[] st=rr.justAddress.Split(',');
+                        RabNetEngBuilding rb = Engine.get().getBuilding(rr.JustAddress);
+                        string[] st=rr.JustAddress.Split(',');
                         if (rb.type == "jurta" || rb.type=="female" || (rb.type=="dfemale" && st[2]=="0"))
                         {
                             rb.setNest(true);

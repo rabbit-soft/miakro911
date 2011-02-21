@@ -19,18 +19,18 @@ namespace rabnet
         public static DialogResult MakeChoice(int rid)
         {
             RabNetEngRabbit r = Engine.get().getRabbit(rid);
-            if (r.youngers.Length == 0) return DialogResult.Cancel;
-            if (r.youngers.Length == 1)
-                return new ReplaceYoungersForm(r.youngers[0].id).ShowDialog();
+            if (r.Youngers.Length == 0) return DialogResult.Cancel;
+            if (r.Youngers.Length == 1)
+                return new ReplaceYoungersForm(r.Youngers[0].id).ShowDialog();
             return new PreReplaceYoungersForm(r).ShowDialog();
         }
 
         public PreReplaceYoungersForm(RabNetEngRabbit rab):this()
         {
             r = rab;
-            for (int i = 0; i < r.youngers.Length; i++)
+            for (int i = 0; i < r.Youngers.Length; i++)
             {
-                comboBox1.Items.Add(r.youngers[i].fullname);
+                comboBox1.Items.Add(r.Youngers[i].fullname);
             }
             comboBox1.SelectedIndex = 0;
         }
@@ -42,13 +42,13 @@ namespace rabnet
         private void button1_Click(object sender, EventArgs e)
         {
             //Hide();
-            DialogResult=new ReplaceYoungersForm(r.youngers[comboBox1.SelectedIndex].id).ShowDialog();
+            DialogResult=new ReplaceYoungersForm(r.Youngers[comboBox1.SelectedIndex].id).ShowDialog();
             Close();
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            OneRabbit y = r.youngers[comboBox1.SelectedIndex];
+            OneRabbit y = r.Youngers[comboBox1.SelectedIndex];
             label1.Text = "Возраст: " + y.age().ToString();
             label2.Text = "Количество: " + y.group.ToString();
             label3.Text = "Порода: " + y.breedname;
