@@ -388,6 +388,9 @@ r_status,r_flags,r_event_date,r_breed
         public int surname;
         public int secname;
         public string address;
+        /// <summary>
+        /// Адрес который возвращает sql-функция rabplase ("517,0,0,jurta,0,1") 
+        /// </summary>
         public string justAddress;
         public string smallAddress;
         public int group;
@@ -477,6 +480,10 @@ r_status,r_flags,r_event_date,r_breed
             if (s == RabbitSex.MALE) return "м";
             return "?";
         }
+        /// <summary>
+        /// Возвращает возраст кролика
+        /// </summary>
+        /// <returns></returns>
         public int age()
         {
             return (DateTime.Now-born).Days;

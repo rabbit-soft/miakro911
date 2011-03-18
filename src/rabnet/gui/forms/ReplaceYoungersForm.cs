@@ -106,7 +106,7 @@ namespace rabnet
                         }
                         else
                         {
-                            rr = Engine.get().getRabbit(r.RID);
+                            rr = Engine.get().getRabbit(r.RabID);
                             rr = Engine.get().getRabbit(rr.clone(vl, 0, 0, 0));
                         }
                         rr.placeSuckerTo((int)listView1.Items[i].Tag);

@@ -1,0 +1,12 @@
+d:\02_Development\rabbits\src\butcher\bin\x86\Debug\butcher.exe
+d:\02_Development\rabbits\src\butcher\bin\x86\Debug\butcher.pdb
+d:\02_Development\rabbits\src\butcher\obj\x86\Debug\ResolveAssemblyReference.cache
+d:\02_Development\rabbits\src\butcher\obj\x86\Debug\butcher.FarmChangeForm.resources
+d:\02_Development\rabbits\src\butcher\obj\x86\Debug\butcher.FarmListForm.resources
+d:\02_Development\rabbits\src\butcher\obj\x86\Debug\butcher.LoginPanel.resources
+d:\02_Development\rabbits\src\butcher\obj\x86\Debug\butcher.MainForm.resources
+d:\02_Development\rabbits\src\butcher\obj\x86\Debug\butcher.Properties.Resources.resources
+d:\02_Development\rabbits\src\butcher\obj\x86\Debug\butcher.NumPad.resources
+d:\02_Development\rabbits\src\butcher\obj\x86\Debug\butcher.csproj.GenerateResource.Cache
+d:\02_Development\rabbits\src\butcher\obj\x86\Debug\butcher.exe
+d:\02_Development\rabbits\src\butcher\obj\x86\Debug\butcher.pdb

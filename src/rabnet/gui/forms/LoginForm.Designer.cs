@@ -29,26 +29,26 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginForm));
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbFarm = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.cbUser = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.tbPassword = new System.Windows.Forms.TextBox();
+            this.btEnter = new System.Windows.Forms.Button();
+            this.btExit = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // comboBox1
+            // cbFarm
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(12, 25);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(277, 21);
-            this.comboBox1.TabIndex = 1;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.cbFarm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbFarm.FormattingEnabled = true;
+            this.cbFarm.Location = new System.Drawing.Point(12, 25);
+            this.cbFarm.Name = "cbFarm";
+            this.cbFarm.Size = new System.Drawing.Size(277, 21);
+            this.cbFarm.TabIndex = 1;
+            this.cbFarm.SelectedIndexChanged += new System.EventHandler(this.cbFarm_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -68,16 +68,16 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Пользователь";
             // 
-            // comboBox2
+            // cbUser
             // 
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.Enabled = false;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(12, 65);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(277, 21);
-            this.comboBox2.TabIndex = 2;
-            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
+            this.cbUser.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbUser.Enabled = false;
+            this.cbUser.FormattingEnabled = true;
+            this.cbUser.Location = new System.Drawing.Point(12, 65);
+            this.cbUser.Name = "cbUser";
+            this.cbUser.Size = new System.Drawing.Size(277, 21);
+            this.cbUser.TabIndex = 2;
+            this.cbUser.SelectedIndexChanged += new System.EventHandler(this.cbUser_SelectedIndexChanged);
             // 
             // label3
             // 
@@ -88,39 +88,38 @@
             this.label3.TabIndex = 4;
             this.label3.Text = "Пароль";
             // 
-            // textBox1
+            // tbPassword
             // 
-            this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(12, 105);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(277, 20);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.UseSystemPasswordChar = true;
-            this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
+            this.tbPassword.Enabled = false;
+            this.tbPassword.Location = new System.Drawing.Point(12, 105);
+            this.tbPassword.Name = "tbPassword";
+            this.tbPassword.Size = new System.Drawing.Size(277, 20);
+            this.tbPassword.TabIndex = 0;
+            this.tbPassword.UseSystemPasswordChar = true;
             // 
-            // button2
+            // btEnter
             // 
-            this.button2.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.button2.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(214, 131);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 7;
-            this.button2.Text = "Войти";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btEnter.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.btEnter.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btEnter.Enabled = false;
+            this.btEnter.Location = new System.Drawing.Point(214, 131);
+            this.btEnter.Name = "btEnter";
+            this.btEnter.Size = new System.Drawing.Size(75, 23);
+            this.btEnter.TabIndex = 7;
+            this.btEnter.Text = "Войти";
+            this.btEnter.UseVisualStyleBackColor = true;
+            this.btEnter.Click += new System.EventHandler(this.btEnter_Click);
             // 
-            // button1
+            // btExit
             // 
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button1.Location = new System.Drawing.Point(133, 131);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "Выход";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btExit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btExit.Location = new System.Drawing.Point(133, 131);
+            this.btExit.Name = "btExit";
+            this.btExit.Size = new System.Drawing.Size(75, 23);
+            this.btExit.TabIndex = 8;
+            this.btExit.Text = "Выход";
+            this.btExit.UseVisualStyleBackColor = true;
+            this.btExit.Click += new System.EventHandler(this.btExit_Click);
             // 
             // button3
             // 
@@ -134,21 +133,21 @@
             // 
             // LoginForm
             // 
-            this.AcceptButton = this.button2;
+            this.AcceptButton = this.btEnter;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.button1;
+            this.CancelButton = this.btExit;
             this.ClientSize = new System.Drawing.Size(301, 165);
             this.ControlBox = false;
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.btExit);
+            this.Controls.Add(this.btEnter);
+            this.Controls.Add(this.tbPassword);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.comboBox2);
+            this.Controls.Add(this.cbUser);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cbFarm);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -165,14 +164,14 @@
 
         #endregion
 
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cbFarm;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox cbUser;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox tbPassword;
+        private System.Windows.Forms.Button btEnter;
+        private System.Windows.Forms.Button btExit;
         private System.Windows.Forms.Button button3;
     }
 }

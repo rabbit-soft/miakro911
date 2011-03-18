@@ -131,7 +131,7 @@ namespace rabnet
             label18.Text = "Шкура:" + getbon(rab.Bon[3]);
             label17.Text = "Окраска:" + getbon(rab.Bon[4]);
             weightList.Items.Clear();
-            String[] wgh = Engine.db().getWeights(rab.RID);
+            String[] wgh = Engine.db().getWeights(rab.RabID);
             for (int i = 0; i < wgh.Length / 2; i++)
                 weightList.Items.Add(wgh[i * 2]).SubItems.Add(wgh[i*2+1]);
             spec.Checked = dtp_vacEnd.Enabled = rab.Spec;//+gambit
@@ -157,7 +157,7 @@ namespace rabnet
             {
                 lastFuck.Value = rab.Last_Fuck_Okrol;
             }
-            double[] d = Engine.db().getMaleChildrenProd(rab.RID);
+            double[] d = Engine.db().getMaleChildrenProd(rab.RabID);
             maleKids.Text = String.Format("Количество крольчат: {0:f0}",d[0]);
             maleProd.Text = String.Format("Продуктивность соития: {0:f5}",d[1]);
         }
@@ -208,7 +208,7 @@ namespace rabnet
             okrolCount.Value = rab.Status;
             fucks.Items.Clear();
             if (rid>0)
-            foreach (Fucks.Fuck f in Engine.db().getFucks(rab.RID).fucks)
+            foreach (Fucks.Fuck f in Engine.db().getFucks(rab.RabID).fucks)
             {
                 ListViewItem li = fucks.Items.Add(f.when == DateTime.MinValue ? "" : f.when.ToShortDateString());
                 li.SubItems.Add(f.type);
@@ -231,7 +231,7 @@ namespace rabnet
             fucks.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             suckers.Items.Clear();
             if (rid>0)
-            foreach (Younger y in Engine.db().getSuckers(rab.RID))
+            foreach (Younger y in Engine.db().getSuckers(rab.RabID))
             {
                 ListViewItem li=suckers.Items.Add(y.fname);
                 li.SubItems.Add(y.fcount.ToString());
@@ -513,35 +513,35 @@ namespace rabnet
 
         private void button13_Click(object sender, EventArgs e)
         {
-            if((new BonForm(rab.RID)).ShowDialog() != DialogResult.Abort)
+            if((new BonForm(rab.RabID)).ShowDialog() != DialogResult.Abort)
                 button2.Enabled = false;
             updateData();
         }
 
         private void button10_Click(object sender, EventArgs e)
         {
-            if((new Proholost(rab.RID)).ShowDialog() != DialogResult.Abort)
+            if((new Proholost(rab.RabID)).ShowDialog() != DialogResult.Abort)
                 button2.Enabled = false;
             updateData();
         }
 
         private void button9_Click(object sender, EventArgs e)
         {
-            if((new OkrolForm(rab.RID)).ShowDialog() != DialogResult.Abort)
+            if((new OkrolForm(rab.RabID)).ShowDialog() != DialogResult.Abort)
                 button2.Enabled = false;
             updateData();
         }
 
         private void button8_Click(object sender, EventArgs e)
         {
-            (new MakeFuck(rab.RID)).ShowDialog();
+            (new MakeFuck(rab.RabID)).ShowDialog();
             updateData();
         }
 
         private void button12_Click(object sender, EventArgs e)
         {
             Fucks.Fuck f = fucks.SelectedItems[0].Tag as Fucks.Fuck;
-            (new MakeFuck(rab.RID,f.partnerid)).ShowDialog();
+            (new MakeFuck(rab.RabID,f.partnerid)).ShowDialog();
             updateData();
         }
 
@@ -632,7 +632,7 @@ namespace rabnet
                     MessageBox.Show("Кролик уже взсешен "+li.SubItems[0].Text);
                     return;
                 }
-            Engine.db().addWeight(rab.RID, (int)nudWeight.Value, dateWeight.Value.Date);
+            Engine.db().addWeight(rab.RabID, (int)nudWeight.Value, dateWeight.Value.Date);
             updateData();
         }
 
@@ -640,7 +640,7 @@ namespace rabnet
         {
             if (weightList.SelectedItems.Count != 1) return;
             DateTime dt = DateTime.Parse(weightList.SelectedItems[0].SubItems[0].Text);
-            Engine.db().deleteWeight(rab.RID, dt.Date);
+            Engine.db().deleteWeight(rab.RabID, dt.Date);
             updateData();
         }
 
@@ -673,7 +673,7 @@ namespace rabnet
         {
             if (fucks.SelectedItems.Count!=1) return;
             Fucks.Fuck f = fucks.SelectedItems[0].Tag as Fucks.Fuck;
-            MakeFuck mf = new MakeFuck(rab.RID, f.partnerid, 1);
+            MakeFuck mf = new MakeFuck(rab.RabID, f.partnerid, 1);
             if (mf.ShowDialog() == DialogResult.OK && mf.SelectedFucker!=f.id)
                 Engine.db().changeFucker(f.id, mf.SelectedFucker);
             updateData();

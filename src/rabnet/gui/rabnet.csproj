@@ -99,6 +99,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Demo.cs" />
+    <Compile Include="reports\ButcherReportDate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="reports\ButcherReportDate.Designer.cs">
+      <DependentUpon>ButcherReportDate.cs</DependentUpon>
+    </Compile>
     <Compile Include="forms\ProgressForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -106,6 +112,12 @@
       <DependentUpon>ProgressForm.cs</DependentUpon>
     </Compile>
     <Compile Include="..\..\libs\GRD\GRD.cs" />
+    <Compile Include="panels\ButcherPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="panels\ButcherPanel.Designer.cs">
+      <DependentUpon>ButcherPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="RabUpdaterClient.cs" />
     <Compile Include="components\ColorPickerColumn\ColorPickerColumn.cs">
       <SubType>Component</SubType>
@@ -417,6 +429,10 @@
       <DependentUpon>BonForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="reports\ButcherReportDate.resx">
+      <DependentUpon>ButcherReportDate.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="forms\CatalogForm.resx">
       <DependentUpon>CatalogForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -523,6 +539,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="panels\BuildingsPanel.resx">
       <DependentUpon>BuildingsPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="panels\ButcherPanel.resx">
+      <DependentUpon>ButcherPanel.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="panels\RabbitsPanel.resx">

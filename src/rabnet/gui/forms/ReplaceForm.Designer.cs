@@ -66,7 +66,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(12, 39);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(647, 414);
+            this.dataGridView1.Size = new System.Drawing.Size(747, 437);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
             this.dataGridView1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView1_CellBeginEdit);
@@ -79,7 +79,7 @@
             this.btOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btOK.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.btOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btOK.Location = new System.Drawing.Point(574, 459);
+            this.btOK.Location = new System.Drawing.Point(674, 482);
             this.btOK.Name = "btOK";
             this.btOK.Size = new System.Drawing.Size(85, 23);
             this.btOK.TabIndex = 1;
@@ -91,7 +91,7 @@
             // 
             this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Abort;
-            this.btCancel.Location = new System.Drawing.Point(493, 459);
+            this.btCancel.Location = new System.Drawing.Point(593, 482);
             this.btCancel.Name = "btCancel";
             this.btCancel.Size = new System.Drawing.Size(75, 23);
             this.btCancel.TabIndex = 2;
@@ -131,7 +131,7 @@
             // btClearAll
             // 
             this.btClearAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btClearAll.Location = new System.Drawing.Point(541, 10);
+            this.btClearAll.Location = new System.Drawing.Point(641, 10);
             this.btClearAll.Name = "btClearAll";
             this.btClearAll.Size = new System.Drawing.Size(118, 23);
             this.btClearAll.TabIndex = 5;
@@ -143,7 +143,7 @@
             // 
             this.btChangeAddresses.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btChangeAddresses.Enabled = false;
-            this.btChangeAddresses.Location = new System.Drawing.Point(665, 108);
+            this.btChangeAddresses.Location = new System.Drawing.Point(765, 108);
             this.btChangeAddresses.Name = "btChangeAddresses";
             this.btChangeAddresses.Size = new System.Drawing.Size(120, 23);
             this.btChangeAddresses.TabIndex = 6;
@@ -154,7 +154,7 @@
             // btClear
             // 
             this.btClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btClear.Location = new System.Drawing.Point(664, 39);
+            this.btClear.Location = new System.Drawing.Point(764, 39);
             this.btClear.Name = "btClear";
             this.btClear.Size = new System.Drawing.Size(120, 23);
             this.btClear.TabIndex = 7;
@@ -183,7 +183,7 @@
             this.groupBox1.Controls.Add(this.numericUpDown1);
             this.groupBox1.Controls.Add(this.btSeparateByOne);
             this.groupBox1.Enabled = false;
-            this.groupBox1.Location = new System.Drawing.Point(666, 137);
+            this.groupBox1.Location = new System.Drawing.Point(766, 137);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(119, 206);
             this.groupBox1.TabIndex = 9;
@@ -264,7 +264,7 @@
             this.groupBox2.Controls.Add(this.btUniteUp);
             this.groupBox2.Controls.Add(this.btCombine);
             this.groupBox2.Enabled = false;
-            this.groupBox2.Location = new System.Drawing.Point(666, 349);
+            this.groupBox2.Location = new System.Drawing.Point(766, 349);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(119, 104);
             this.groupBox2.TabIndex = 10;
@@ -304,7 +304,7 @@
             // btAutoReplace
             // 
             this.btAutoReplace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btAutoReplace.Location = new System.Drawing.Point(665, 68);
+            this.btAutoReplace.Location = new System.Drawing.Point(765, 68);
             this.btAutoReplace.Name = "btAutoReplace";
             this.btAutoReplace.Size = new System.Drawing.Size(120, 23);
             this.btAutoReplace.TabIndex = 11;
@@ -318,7 +318,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btCancel;
-            this.ClientSize = new System.Drawing.Size(792, 493);
+            this.ClientSize = new System.Drawing.Size(892, 516);
             this.Controls.Add(this.btAutoReplace);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -330,12 +330,14 @@
             this.Controls.Add(this.btCancel);
             this.Controls.Add(this.btOK);
             this.Controls.Add(this.dataGridView1);
+            this.Location = new System.Drawing.Point(100, 100);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(480, 500);
             this.Name = "ReplaceForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Пересадки";
             this.Load += new System.EventHandler(this.ReplaceForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

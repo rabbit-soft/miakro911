@@ -14,9 +14,12 @@ namespace rabnet
         SortOrder OrderOfSort;
         CaseInsensitiveComparer ObjectCompare;
         private ListView lv = null;
+        /// <summary>
+        /// Номера столбцок, которые надо сортировать как целочисленные 
+        /// </summary>
         int[] intSorts = null;
-        int selItem=0;
-        Options.OPT_ID option=Options.OPT_ID.NONE;
+        int selItem = 0;
+        Options.OPT_ID option = Options.OPT_ID.NONE;
         public ListViewColumnSorter(ListView lv,int[] intsorts,Options.OPT_ID op)
         {
             ColumnToSort = 0;
@@ -35,7 +38,6 @@ namespace rabnet
             lv.DrawColumnHeader += new DrawListViewColumnHeaderEventHandler(this.OnDrawHeader);
             lv.DrawItem += new DrawListViewItemEventHandler(this.OnDrawItem);
             lv.DrawSubItem += new DrawListViewSubItemEventHandler(this.OnDrawSubItem);
-//			lv.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
             ListViewSaver.load(op, lv);
         }
 
@@ -45,33 +47,21 @@ namespace rabnet
             selItem = ListViewSaver.saveItem(lv);
             lv.ListViewItemSorter = null;
             lv.Items.Clear();
-            //lv.Hide();
-//			lv.Refresh();
 			lv.BeginUpdate();
-//			lv.SuspendLayout();
         }
         public void Restore()
         {
-			//lv.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 			ListViewSaver.load(option, lv);
 			lv.ListViewItemSorter = this;
             lv.Sort();
             ListViewSaver.loadItem(lv, selItem);
-            //lv.Show();
-//			lv.ResumeLayout();
 			lv.EndUpdate();
             lv.Focus();
         }
 
 		public void SemiReady()
 		{
-//			if (lv.Items.Count % 100 == 0)
-//			{
-//				lv.EndUpdate();
-//				lv.Refresh();
-//				lv.BeginUpdate();
-//			}
-//			lv.Refresh();
+
 		}
 
         public ListViewColumnSorter Clear()

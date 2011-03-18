@@ -17,10 +17,9 @@ namespace rabnet
         {
         }
 
-        public YoungsPanel(RabStatusBar sb)
-            : base(sb, null)
+        public YoungsPanel(RabStatusBar sb): base(sb, null)
         {
-            cs = new ListViewColumnSorter(listView1, new int[] { 1,2, 8 },Options.OPT_ID.YOUNG_LIST);
+            colSort = new ListViewColumnSorter(listView1, new int[] { 1,2, 8 },Options.OPT_ID.YOUNG_LIST);
             listView1.ListViewItemSorter = null;
         }
 
@@ -34,8 +33,9 @@ namespace rabnet
             f["sho"] = op.getOption(Options.OPT_ID.SHOW_TIER_SEC);
             f["dbl"] = op.getOption(Options.OPT_ID.DBL_SURNAME);
             f["num"] = op.getOption(Options.OPT_ID.SHOW_NUMBERS);
-            cs.Prepare();
-            IDataGetter dg = DataThread.db().getYoungers(f); //отображение общей инфы в статус баре
+            colSort.Prepare();
+            IDataGetter dg = DataThread.db().getYoungers(f); 
+            //отображение общей инфы в статус баре
             rsb.setText(1, dg.getCount().ToString() + " строк");
             rsb.setText(2, dg.getCount2().ToString() + " кроликов");
             rsb.setText(3, dg.getCount3().ToString() + " кормилиц");
@@ -47,7 +47,7 @@ namespace rabnet
         {
             if (data == null)
             {
-                cs.Restore();
+                colSort.Restore();
                 return;
             }
             Younger rab = (data as Younger);
@@ -62,7 +62,7 @@ namespace rabnet
             li.SubItems.Add(rab.mom);
             li.SubItems.Add(rab.fneighbours == 0 ? "-" : rab.fneighbours.ToString());
 
-			cs.SemiReady();
+			colSort.SemiReady();
 		}
 
         private void insertNode(TreeNode nd, TreeData data)
@@ -119,7 +119,7 @@ namespace rabnet
 
         public void setMenu()
         {
-            int cnt=listView1.SelectedItems.Count;
+            int cnt = listView1.SelectedItems.Count;
             replaceYoungersMenuItem.Visible = cnt == 1;
             replacePlanMenuItem.Visible = cnt > 0;
         }

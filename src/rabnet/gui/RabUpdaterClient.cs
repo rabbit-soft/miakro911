@@ -211,6 +211,7 @@ namespace rabnet
 
                 string msg="hello"+Environment.NewLine;
                 string res="";
+                System.Diagnostics.Debug.WriteLine(msg);
 
                 strRemote.Write(encoder.GetBytes(msg), 0, encoder.GetByteCount(msg));
 
@@ -223,6 +224,7 @@ namespace rabnet
                     System.Diagnostics.Debug.WriteLine("Successfully handshake\r\n");
                     msg = "updateInfo" + Environment.NewLine;
 
+                    System.Diagnostics.Debug.WriteLine(msg);
                     strRemote.Write(encoder.GetBytes(msg), 0, encoder.GetByteCount(msg));
                     res = ReadLine(strRemote);
                     System.Diagnostics.Debug.WriteLine(res+"\r\n");

@@ -203,7 +203,7 @@ namespace rabnet
                             RabNetEngRabbit chl = r2;
                             if (isMom(r2)) { chl = r; mom = r2; }
                             commit(mom);
-                            chl.mom=mom.RID;
+                            chl.mom=mom.RabID;
                             commit(chl);
                         }
                     }

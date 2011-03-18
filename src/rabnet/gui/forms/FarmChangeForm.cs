@@ -112,7 +112,7 @@ namespace rabnet
             }else{
                 RabnetConfigHandler.dataSource mds=new RabnetConfigHandler.dataSource(fname.Text,"db.mysql",constr);
                 mds.savepassword = fsavepswd.Checked;
-                RabnetConfigHandler.ds.Add(mds);
+                RabnetConfigHandler.dataSources.Add(mds);
             }
             try
             {

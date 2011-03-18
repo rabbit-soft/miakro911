@@ -41,8 +41,7 @@ namespace rabnet
 
         public void ChangeReason(int id, String name)
         {
-            if (id == 0)
-                return;
+            if (id == 0) return;
             MySqlCommand cmd = new MySqlCommand("UPDATE deadreasons SET d_name='" + name + "' WHERE d_id='" + id.ToString() + "';", sql);
             cmd.ExecuteNonQuery();
         }

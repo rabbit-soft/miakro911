@@ -9,7 +9,8 @@ namespace rabnet
     {
         protected RabStatusBar rsb=null;
         private FilterPanel fp=null;
-        protected ListViewColumnSorter cs = null;
+        protected ListViewColumnSorter colSort = null;
+        protected ListViewColumnSorter colSort2 = null;
         public RabNetPanel()
         {
             InitializeComponent();
@@ -87,7 +88,6 @@ namespace rabnet
         protected virtual void onItem(IData data)
         {
         }
-
         /// <summary>
         /// Тело метода содержится в наследниках класса RabNetPanel.
         /// Выполняется перед началом получения данных из Базы Данных

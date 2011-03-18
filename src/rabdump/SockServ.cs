@@ -119,8 +119,16 @@ namespace rabdump
                                 if (loggedin)
                                 {
                                     //FileVersionInfo myFI = FileVersionInfo.GetVersionInfo(Path.GetDirectoryName(Application.ExecutablePath)+"\\updates\\setup.exe");
-                                    resp = "Ok# Version:" + Application.ProductVersion.ToString() + Environment.NewLine;
-                                    clientStream.Write(encoder.GetBytes(resp), 0, resp.Length);
+                                    if (File.Exists(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + nfo.FileName))
+                                    {
+                                        resp = "Ok# Version:" + Application.ProductVersion.ToString() + Environment.NewLine;
+                                        clientStream.Write(encoder.GetBytes(resp), 0, resp.Length);
+                                    }
+                                    else
+                                    {
+                                        resp = "Err#0100 No update" + Environment.NewLine;
+                                        clientStream.Write(encoder.GetBytes(resp), 0, resp.Length);
+                                    }
                                 }
                                 break;
                             case "updateFile":

@@ -11,17 +11,17 @@ namespace rabnet
 {
     public partial class WorksPanel : RabNetPanel
     {
-        private DateTime repdate=DateTime.Now;
+        private DateTime repdate = DateTime.Now;
         public WorksPanel():base(){}
         public int makeFlag = 0;
         private bool fullUpdate=true;
         private Filters runF = null;
         private int itm = -1;
-        public WorksPanel(RabStatusBar sb)
-            : base(sb, new ZootehFilter(sb))
+        public WorksPanel(RabStatusBar sb): base(sb, new ZootehFilter(sb))
         {
-            cs = new ListViewColumnSorter(listView1, new int[] {0,4},Options.OPT_ID.ZOO_LIST);
-            listView1.ListViewItemSorter = cs;
+            colSort = new ListViewColumnSorter(lvZooTech, new int[] {0,4},Options.OPT_ID.ZOO_LIST);
+            colSort2 = new ListViewColumnSorter(lvZooTech, new int[] { 0, 4 }, Options.OPT_ID.ZOO_LIST);
+            lvZooTech.ListViewItemSorter = colSort;
         }
 
         protected override IDataGetter onPrepare(Filters f)
@@ -49,12 +49,11 @@ namespace rabnet
                 f["inbr"] = Engine.opt().getOption(Options.OPT_ID.INBREEDING);
                 f["mwait"] = Engine.opt().getOption(Options.OPT_ID.MALE_WAIT);
                 f["vactime"] = Engine.opt().getOption(Options.OPT_ID.VACCINE_TIME);
-
                 itm = -1;
-                if (listView1.SelectedItems.Count == 1)
-                    itm = listView1.SelectedItems[0].Index;
-                cs.Prepare();
-                listView1.Items.Clear();
+                if (lvZooTech.SelectedItems.Count == 1)
+                    itm = lvZooTech.SelectedItems[0].Index;
+                colSort.Prepare();
+                lvZooTech.Items.Clear();
                 repdate = DateTime.Now;
             }
             runF = f;
@@ -65,7 +64,7 @@ namespace rabnet
                 fullUpdate = true;
                 return null;
             }
-            return DataThread.db().zooTeh(f);
+            return DataThread.db().zooTeh(f);//возвращает ZooTehNullGetter
         }
 
         protected override void onItem(IData data)
@@ -73,19 +72,19 @@ namespace rabnet
             ZooTehNullItem it = data as ZooTehNullItem;
             if (it == null)
             {
-                cs.Restore();
-                if (itm > -1 && listView1.Items.Count > itm)
+                colSort.Restore();
+                if (itm > -1 && lvZooTech.Items.Count > itm)
                 {
-                    listView1.Items[itm].Selected = true;
-                    listView1.Items[itm].EnsureVisible();
+                    lvZooTech.Items[itm].Selected = true;
+                    lvZooTech.Items[itm].EnsureVisible();
                 }
-                listView1.Focus();
+                lvZooTech.Focus();
                 return;
             }
             Filters f = runF;
             foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f,it.id))
             {
-                ListViewItem li = listView1.Items.Add(j.days.ToString());
+                ListViewItem li = lvZooTech.Items.Add(j.days.ToString());
                 li.SubItems.Add(j.job);
                 li.SubItems.Add(j.address);
                 li.SubItems.Add(j.name);
@@ -95,24 +94,24 @@ namespace rabnet
                 li.SubItems.Add(j.names);
                 li.Tag = j;
             }
-			cs.SemiReady();
+			colSort.SemiReady();
         }
         /// <summary>
-        /// Заполнение логов
+        /// Заполнение listView c логами
         /// </summary>
         /// <param name="f">Коллекция фильтров</param>
         private void fillLogs(Filters f)
         {
-            listView2.Items.Clear();
+            lvLogs.Items.Clear();
             foreach (LogList.OneLog l in Engine.db().getLogs(f).logs)
             {
-                ListViewItem li = listView2.Items.Add(l.date.ToShortDateString() + " " + l.date.ToShortTimeString());
+                ListViewItem li = lvLogs.Items.Add(l.date.ToShortDateString() + " " + l.date.ToShortTimeString());
                 li.SubItems.Add(l.work);
                 li.SubItems.Add(l.address);
                 li.SubItems.Add(l.prms);
                 li.SubItems.Add(l.user);
             }
-            listView2.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            lvLogs.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
         public override ContextMenuStrip getMenu()
@@ -125,6 +124,12 @@ namespace rabnet
         {
             setMenu(type, null);
         }
+        /// <summary>
+        /// Открывает один из пунктов(работ) в контекстном меню,
+        /// когда жмут правой кнопкой на одну из строк в listView с зоотехПланом
+        /// </summary>
+        /// <param name="type">Тип работы</param>
+        /// <param name="job"></param>
         public void setMenu(JobType type,ZootehJob job)
         {
             okrolMenuItem.Visible = vudvorMenuItem.Visible = false;
@@ -151,26 +156,33 @@ namespace rabnet
             }
         }
 
+        /// <summary>
+        /// Возвращает тип работы выбранной строки 
+        /// (тип хранится в cdjqcndt Tag)
+        /// </summary>
+        /// <returns></returns>
         private ZootehJob getCurJob()
         {
-            if (listView1.SelectedItems.Count != 1)
+            if (lvZooTech.SelectedItems.Count != 1)
                 return null;
-            return  (listView1.SelectedItems[0].Tag) as ZootehJob;
+            return  (lvZooTech.SelectedItems[0].Tag) as ZootehJob;
         }
 
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        private void lvZooTech_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count != 1)
+            if (lvZooTech.SelectedItems.Count != 1)
             {
                 setMenu(JobType.NONE);
                 return;
             }
             setMenu(getCurJob().type,getCurJob());
         }
-
+        /// <summary>
+        /// Выполняет одну из зоотехнических работ
+        /// </summary>
         private void makeJob()
         {
-            DialogResult res=DialogResult.OK;
+            DialogResult res = DialogResult.OK;
             ZootehJob job = getCurJob();
             if (job == null)
                 return;
@@ -240,36 +252,36 @@ namespace rabnet
                     r.commit();
                     needUpdate = false;
                     break;
-                case JobType.SET_NEST:
-                    ReplaceForm f=new ReplaceForm();
+                case JobType.SET_NEST://установка гнездовья
+                    ReplaceForm f = new ReplaceForm();
                     f.addRabbit(job.id);
                     f.setAction(ReplaceForm.Action.SET_NEST);
                     res = f.ShowDialog();
-                    if (res == DialogResult.OK)
+                    /*if (res == DialogResult.OK)
                     {
                         res = DialogResult.Cancel;
                         RabNetEngRabbit rr = Engine.get().getRabbit(job.id);
                         RabNetEngBuilding rb = Engine.get().getBuilding(rr.JustAddress);
                         string[] st=rr.JustAddress.Split(',');
-                        if (rb.type == "jurta" || rb.type=="female" || (rb.type=="dfemale" && st[2]=="0"))
+                        if (rb.type == BuildingType.Jurta.Name || rb.type == BuildingType.Female.Name || (rb.type == BuildingType.DualFemale.Name && st[2] == "0"))
                         {
                             rb.setNest(true);
                             res = DialogResult.OK;
                         }
-                        else if (rb.type == "dfemale" && st[2] == "1")
+                        else if (rb.type == BuildingType.DualFemale.Name && st[2] == "1")
                         {
                             rb.setNest2(true);
                             res = DialogResult.OK;
                         }
-                    }
+                    }*/
                     break;
             }
             if (res != DialogResult.Cancel)
             {
-                int idx = listView1.SelectedItems[0].Index;
-                listView1.SelectedItems[0].Remove();
-                if (idx<listView1.Items.Count)
-                    listView1.Items[idx].Selected = true;
+                int idx = lvZooTech.SelectedItems[0].Index;
+                lvZooTech.SelectedItems[0].Remove();
+                if (idx<lvZooTech.Items.Count)
+                    lvZooTech.Items[idx].Selected = true;
                 fullUpdate = needUpdate;
                 rsb.run();
             }
@@ -281,7 +293,7 @@ namespace rabnet
             makeJob();
         }
 
-        private void listView1_DoubleClick(object sender, EventArgs e)
+        private void lvZooTech_DoubleClick(object sender, EventArgs e)
         {
             makeFlag = 0;
             makeJob();
@@ -295,7 +307,7 @@ namespace rabnet
             return lst.Count - 1;
         }
 
-        private void печатьToolStripMenuItem_Click(object sender, EventArgs e)
+        private void printMenuItem_Click(object sender, EventArgs e)
         {
 #if !DEMO
             List<String> fuckers = new List<string>();
@@ -308,9 +320,9 @@ namespace rabnet
             XmlElement fuck = fucks.CreateElement("Rows");
             fucks.AppendChild(fuck);
             XmlElement rw;
-            for (int i = 0; i < listView1.Items.Count; i++)
+            for (int i = 0; i < lvZooTech.Items.Count; i++)
             {
-                ListViewItem li = listView1.Items[i];
+                ListViewItem li = lvZooTech.Items[i];
                 ZootehJob j=(ZootehJob)li.Tag;
                 rw = xml.CreateElement("Row");
                 rw.AppendChild(xml.CreateElement("type")).AppendChild(xml.CreateTextNode(((int)j.type).ToString()));

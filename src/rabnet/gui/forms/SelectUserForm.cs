@@ -18,11 +18,11 @@ namespace rabnet
             InitializeComponent();
             comboBox1.Items.Add("");
             ids.Add(0);
-            List<String> us=Engine.db().getUsers(true, 0);
-            for (int i = 0; i < us.Count / 3; i++)
+            List<sUser> us = Engine.db().getUsers();
+            for (int i = 0; i < us.Count; i++)
             {
-                comboBox1.Items.Add(us[i * 3]);
-                ids.Add(int.Parse(us[i * 3 + 2]));
+                comboBox1.Items.Add(us[i].Name);
+                ids.Add(us[i].Id);
             }
             comboBox1.SelectedIndex = 0;
         }

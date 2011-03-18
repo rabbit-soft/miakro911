@@ -144,7 +144,7 @@ namespace rabnet
 
         public bool isAdmin()
         {
-            return group == "admin";
+            return group == sUser.Admin;
         }
 
         public void delUser(int uid)

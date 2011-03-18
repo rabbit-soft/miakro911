@@ -79,7 +79,7 @@ namespace rabnet
         private void fillTable()
         {
             cs.Prepare();
-            Fucks fs = Engine.db().allFuckers(rab1.RID,cbHeter.Checked,cbInbreed.Checked,malewait);
+            Fucks fs = Engine.db().allFuckers(rab1.RabID,cbHeter.Checked,cbInbreed.Checked,malewait);
             foreach (Fucks.Fuck f in fs.fucks)
             {
                 bool heter=(f.breed != rab1.Breed);
@@ -120,7 +120,7 @@ namespace rabnet
         private void button3_Click(object sender, EventArgs e)
         {
             int r2 = (listView1.SelectedItems[0].Tag as Fucks.Fuck).partnerid;
-            (new GenomView(rab1.RID, r2)).ShowDialog();
+            (new GenomView(rab1.RabID, r2)).ShowDialog();
         }
 
         private void button2_Click(object sender, EventArgs e)

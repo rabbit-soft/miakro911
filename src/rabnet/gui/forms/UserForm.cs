@@ -33,12 +33,12 @@ namespace rabnet
             if (!Engine.get().isAdmin())
                 return;
             listView1.Items.Clear();
-            List<String> usr = Engine.db().getUsers(true,0);
-            for (int i = 0; i < usr.Count / 3; i++)
+            List<sUser> usr = Engine.db().getUsers();
+            for (int i = 0; i < usr.Count; i++)
             {
-                ListViewItem li = listView1.Items.Add(usr[i * 3]);
-                li.SubItems.Add(usr[i * 3 + 1]);
-                li.Tag = int.Parse(usr[i * 3 + 2]);
+                ListViewItem li = listView1.Items.Add(usr[i].Name);
+                li.SubItems.Add(usr[i].GetRusUserName());
+                li.Tag = usr[i].Id;
             }
         }
 

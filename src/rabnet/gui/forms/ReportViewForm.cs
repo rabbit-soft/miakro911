@@ -31,10 +31,8 @@ namespace rabnet
 
         }
 
-        public ReportViewForm(String reportname, String fileName, XmlDocument xml)
-            : this(reportname,fileName,new XmlDocument[]{xml}){}
-        public ReportViewForm(String reportname, String fileName, XmlDocument[] xml)
-            : this()
+        public ReportViewForm(String reportname, String fileName, XmlDocument xml): this(reportname,fileName,new XmlDocument[]{xml}){}
+        public ReportViewForm(String reportname, String fileName, XmlDocument[] xml): this()
         {
             xmls = xml;
             string fn = Path.GetDirectoryName(Application.ExecutablePath) + "/reports/" + fileName + ".rdl";

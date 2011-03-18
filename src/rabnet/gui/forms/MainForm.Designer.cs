@@ -47,6 +47,7 @@
             this.breedsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAreas = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDeadReasonsView = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiProductTypesView = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiActions = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiReports = new System.Windows.Forms.ToolStripMenuItem();
             this.тестовыйToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,14 +74,16 @@
             this.paramsMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAboutPO = new System.Windows.Forms.ToolStripMenuItem();
-            this.gjvjomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.tNoWorking = new System.Windows.Forms.Timer(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tpButcher = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.мяснойЦехToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -150,7 +153,8 @@
             this.namesMenuItem,
             this.breedsMenuItem,
             this.tsmiAreas,
-            this.tsmiDeadReasonsView});
+            this.tsmiDeadReasonsView,
+            this.tsmiProductTypesView});
             this.tsmiView.Name = "tsmiView";
             this.tsmiView.Size = new System.Drawing.Size(38, 20);
             this.tsmiView.Text = "Вид";
@@ -214,6 +218,13 @@
             this.tsmiDeadReasonsView.Text = "Причины списания";
             this.tsmiDeadReasonsView.Click += new System.EventHandler(this.tsmiDeadReasonsView_Click);
             // 
+            // tsmiProductTypesView
+            // 
+            this.tsmiProductTypesView.Name = "tsmiProductTypesView";
+            this.tsmiProductTypesView.Size = new System.Drawing.Size(207, 22);
+            this.tsmiProductTypesView.Text = "Виды продукции";
+            this.tsmiProductTypesView.Click += new System.EventHandler(this.tsmiProductTypesView_Click);
+            // 
             // tsmiActions
             // 
             this.tsmiActions.Name = "tsmiActions";
@@ -231,7 +242,8 @@
             this.tsmiDeadReasons,
             this.tsmiDeadsReaport,
             this.tsmiFucksByUsers,
-            this.fucksByDateToolStripMenuItem});
+            this.fucksByDateToolStripMenuItem,
+            this.мяснойЦехToolStripMenuItem});
             this.tsmiReports.Name = "tsmiReports";
             this.tsmiReports.Size = new System.Drawing.Size(59, 20);
             this.tsmiReports.Text = "Отчеты";
@@ -410,7 +422,7 @@
             // 
             this.tsmiAbout.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiAboutPO,
-            this.gjvjomToolStripMenuItem});
+            this.tsmiHelp});
             this.tsmiAbout.Name = "tsmiAbout";
             this.tsmiAbout.Size = new System.Drawing.Size(62, 20);
             this.tsmiAbout.Text = "Справка";
@@ -420,14 +432,15 @@
             this.tsmiAboutPO.Name = "tsmiAboutPO";
             this.tsmiAboutPO.Size = new System.Drawing.Size(164, 22);
             this.tsmiAboutPO.Text = "О программе ...";
+            this.tsmiAboutPO.Click += new System.EventHandler(this.tsmiAboutPO_Click);
             // 
-            // gjvjomToolStripMenuItem
+            // tsmiHelp
             // 
-            this.gjvjomToolStripMenuItem.Name = "gjvjomToolStripMenuItem";
-            this.gjvjomToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.gjvjomToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.gjvjomToolStripMenuItem.Text = "Помощь";
-            this.gjvjomToolStripMenuItem.Click += new System.EventHandler(this.gjvjomToolStripMenuItem_Click);
+            this.tsmiHelp.Name = "tsmiHelp";
+            this.tsmiHelp.ShortcutKeys = System.Windows.Forms.Keys.F1;
+            this.tsmiHelp.Size = new System.Drawing.Size(164, 22);
+            this.tsmiHelp.Text = "Помощь";
+            this.tsmiHelp.Click += new System.EventHandler(this.tsmiHelp_Click);
             // 
             // tNoWorking
             // 
@@ -442,6 +455,7 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.tpButcher);
             this.tabControl1.Location = new System.Drawing.Point(0, 27);
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
@@ -488,6 +502,15 @@
             this.tabPage4.Text = "Зоотехплан";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // tpButcher
+            // 
+            this.tpButcher.Location = new System.Drawing.Point(4, 22);
+            this.tpButcher.Name = "tpButcher";
+            this.tpButcher.Size = new System.Drawing.Size(906, 0);
+            this.tpButcher.TabIndex = 4;
+            this.tpButcher.Text = "Стерильный цех";
+            this.tpButcher.UseVisualStyleBackColor = true;
+            // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
@@ -497,6 +520,13 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(906, 423);
             this.panel1.TabIndex = 7;
+            // 
+            // мяснойЦехToolStripMenuItem
+            // 
+            this.мяснойЦехToolStripMenuItem.Name = "мяснойЦехToolStripMenuItem";
+            this.мяснойЦехToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.мяснойЦехToolStripMenuItem.Text = "Мясной цех";
+            this.мяснойЦехToolStripMenuItem.Click += new System.EventHandler(this.мяснойЦехToolStripMenuItem_Click);
             // 
             // rabStatusBar1
             // 
@@ -586,7 +616,10 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiFucksByUsers;
         private System.Windows.Forms.ToolStripMenuItem tsmiCountByMonths;
         private System.Windows.Forms.ToolStripMenuItem fucksByDateToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem gjvjomToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiHelp;
+        private System.Windows.Forms.ToolStripMenuItem tsmiProductTypesView;
+        private System.Windows.Forms.TabPage tpButcher;
+        private System.Windows.Forms.ToolStripMenuItem мяснойЦехToolStripMenuItem;
     }
 }
 

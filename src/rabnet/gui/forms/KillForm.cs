@@ -73,7 +73,7 @@ namespace rabnet
             foreach (RabNetEngRabbit r in rbs)
             {
                 ListViewItem li = listView1.Items.Add(r.FullName);
-                li.Tag=r.RID;
+                li.Tag=r.RabID;
                 li.SubItems.Add(r.Tag);
                 String sex = "?";
                 if (r.Sex == OneRabbit.RabbitSex.FEMALE) sex = "Ж";
@@ -174,7 +174,7 @@ namespace rabnet
             int id=(int)listView1.SelectedItems[0].Tag;
             foreach (RabNetEngRabbit r in rbs)
             {
-                if (r.RID==id)
+                if (r.RabID==id)
                 {
                     rbs.Remove(r);
                     update();

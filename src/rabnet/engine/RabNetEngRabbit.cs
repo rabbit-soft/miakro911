@@ -51,6 +51,7 @@ namespace rabnet
         private OneRabbit rab = null;
         private RabNetEngine eng = null;
         public int mom = 0;
+
         public RabNetEngRabbit(int rid,RabNetEngine dl)
         {
             id = rid;
@@ -59,16 +60,18 @@ namespace rabnet
             if (rab == null)
                 throw new ExNoRabbit();
         }
+
         public RabNetEngRabbit(RabNetEngine dl,OneRabbit.RabbitSex sx)
         {
             id = 0;
             eng = dl;
             String s="void";
-            if (sx==OneRabbit.RabbitSex.FEMALE) s="female";
-            if (sx==OneRabbit.RabbitSex.MALE) s="male";
+            if (sx == OneRabbit.RabbitSex.FEMALE) s = "female";
+            if (sx == OneRabbit.RabbitSex.MALE) s = "male";
             rab = new OneRabbit(0, s, DateTime.Now, 0, "00000", 0, 0, 0, "", 1, 1, 0, "", "", 0, DateTime.MinValue, "", DateTime.MinValue, 0, 0, "", "", "00000",0,0,DateTime.Now);
             rab.youngers=new OneRabbit[0];
         }
+
         public void newCommit()
         {
             if (id != 0) return;
@@ -76,21 +79,23 @@ namespace rabnet
             rab.id = id;
             eng.logs().log(RabNetLogs.LogType.INCOME, id);
         }
+
         public void commit()
         {
-            if (RID == 0)
+            if (RabID == 0)
                 return;
             if (rab.wasname != rab.name)
             {
                 if (Group > 1)
                     throw new ExNotOne("переименовать");
-                eng.logs().log(RabNetLogs.LogType.RENAME, RID, 0, "", "", eng.db().makeName(rab.wasname, 0, 0, 1, rab.sex));
+                eng.logs().log(RabNetLogs.LogType.RENAME, RabID, 0, "", "", eng.db().makeName(rab.wasname, 0, 0, 1, rab.sex));
             }
-            else eng.logs().log(RabNetLogs.LogType.RAB_CHANGE, RID);
+            else eng.logs().log(RabNetLogs.LogType.RAB_CHANGE, RabID);
             rab.vac_end.AddDays(Engine.opt().getIntOption(Options.OPT_ID.VACCINE_TIME));
             eng.db().setRabbit(rab);
             rab=eng.db().getRabbit(id);
         }
+
         public OneRabbit.RabbitSex Sex
         {
             get { return rab.sex; }
@@ -226,9 +231,31 @@ namespace rabnet
         }
         public string SmallAddress{get{return rab.smallAddress;}}
         public string JustAddress{get{return rab.justAddress;}}
+        public string TierType
+        {
+            get
+            {
+                string[] values = rab.justAddress.Split(',');
+                return values[3];
+            }
+        }
+        public bool SetNest
+        { 
+            get 
+            {
+                string[] values = rab.justAddress.Split(',');
+                if (values[3]==myBuildingType.Jurta && values[2] == "0" && values[5] == "1")
+                    return true;
+                if (values[3] == myBuildingType.Female && values[5] == "1")
+                    return true;
+                if (values[3] == myBuildingType.DualFemale && ((values[2] == "0" && values[5][0] == '1') || (values[2] == "1" && values[5][1] == '1')))
+                    return true;
+                return false;
+            } 
+        }
         public string medAddress { get { return rab.medAddress; } }
         public int Parent { get { return rab.parent; } }
-        public int RID { get { return rab.id; } }
+        public int RabID { get { return rab.id; } }
         public int EventType{get { return rab.evtype; }}
         public DateTime EventDate { get { return rab.evdate; } }
         public int WasName { get { return rab.wasname; } }
@@ -276,11 +303,11 @@ namespace rabnet
         public OneRabbit[] Youngers { get { return rab.youngers; } }
         public void setBon(String bon)
         {
-            if (RID == 0)
+            if (RabID == 0)
                 rab.bon = bon;
             else
             {
-                eng.logs().log(RabNetLogs.LogType.BON, RID, 0, "", "", bon);
+                eng.logs().log(RabNetLogs.LogType.BON, RabID, 0, "", "", bon);
                 eng.db().setBon(id, bon);
             }
         }
@@ -306,8 +333,8 @@ namespace rabnet
                 throw new ExNotFucker(f);
             if (when > DateTime.Now)
                 throw new ExBadDate(when);
-            eng.logs().log(RabNetLogs.LogType.FUCK, RID, otherrab, SmallAddress, f.SmallAddress);
-            eng.db().makeFuck(this.id, f.RID, when.Date,eng.uId());
+            eng.logs().log(RabNetLogs.LogType.FUCK, RabID, otherrab, SmallAddress, f.SmallAddress);
+            eng.db().makeFuck(this.id, f.RabID, when.Date,eng.uId());
         }
         /// <summary>
         /// Отметить прохолост (самка не окролилась)
@@ -321,7 +348,7 @@ namespace rabnet
                 throw new ExNotFucked(this);
             if (when > DateTime.Now)
                 throw new ExBadDate(when);
-            eng.logs().log(RabNetLogs.LogType.PROHOLOST, RID);
+            eng.logs().log(RabNetLogs.LogType.PROHOLOST, RabID);
             eng.db().makeProholost(this.id, when);
         }
         /// <summary>
@@ -339,7 +366,7 @@ namespace rabnet
             if (when > DateTime.Now)
                 throw new ExBadDate(when);           
             int born = eng.db().makeOkrol(this.id, when, children, dead);
-            eng.logs().log(RabNetLogs.LogType.OKROL, RID, born, SmallAddress, "", String.Format("живых {0:d}, мертвых {1:d}", children, dead));
+            eng.logs().log(RabNetLogs.LogType.OKROL, RabID, born, SmallAddress, "", String.Format("живых {0:d}, мертвых {1:d}", children, dead));
         }
 
         public void replaceRabbit(int farm,int tier_id,int sec,string address)
@@ -351,8 +378,8 @@ namespace rabnet
             }
             else
             {
-                eng.logs().log(RabNetLogs.LogType.REPLACE, RID, 0, rab.smallAddress,address.Substring(0,5));
-                eng.db().replaceRabbit(RID, farm, tier_id, sec);
+                eng.logs().log(RabNetLogs.LogType.REPLACE, RabID, 0, rab.smallAddress,address.Substring(0,5));
+                eng.db().replaceRabbit(RabID, farm, tier_id, sec);
             }
             rab.tag = "";
         }
@@ -376,7 +403,7 @@ namespace rabnet
         {
             if (count == Group)
             {
-                eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, RID, 0, SmallAddress, "", FullName+String.Format(" ({0:d})",Group));
+                eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, RabID, 0, SmallAddress, "", FullName+String.Format(" ({0:d})",Group));
                 eng.db().killRabbit(id, when, reason, notes);
             }
             else
@@ -399,7 +426,7 @@ namespace rabnet
         {
             if (Sex != OneRabbit.RabbitSex.FEMALE)
                 throw new ExNotFemale(this);
-            eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, RID, 0, "", "", String.Format("возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, прибавилось {4:d})",age,atall,dead,killed,added));            
+            eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, RabID, 0, "", "", String.Format("возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, прибавилось {4:d})",age,atall,dead,killed,added));            
             if (dead == 0 && killed == 0 && added == 0) return;
 			if (atall == 0)
             {

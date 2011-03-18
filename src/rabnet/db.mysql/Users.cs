@@ -5,6 +5,48 @@ using MySql.Data.MySqlClient;
 
 namespace rabnet
 {
+    public class sUser
+    {
+        public int Id;
+        public string Name;
+        public string Group;
+
+        public sUser() { }
+
+        public sUser(int UserID,string UserName,string UserGroup)
+        {
+            this.Id = UserID;
+            this.Name = UserName;
+            this.Group = UserGroup;
+        }
+
+        public string GetRusUserName()
+        {
+            switch (Group)
+            {
+                case Admin: return "Администратор";
+                case Zootech: return "Зоотехник";
+                case Butcher: return "Упаковщик";
+                default: return "Рабочий";
+            }
+        }
+
+        /*
+         * Список типов юзеров, которые могут быть в базе.
+         * 
+         * Если хочешь добавить новый тип пользователя,
+         * то в начале нужно внести коррективы в таблицу БД 
+         * Users - поле u_group, т.к. оно ENUM
+         */
+        public const string Worker = "worker";
+
+        public const string Admin = "admin";//0
+        public const string Zootech = "zootech";//1    
+        public const string Butcher = "butcher";//2
+
+
+    }
+
     class Users
     {
         private MySqlConnection sql=null;
@@ -25,22 +67,32 @@ namespace rabnet
             cmd.ExecuteNonQuery();
             return cmd;
         }
-
-        public List<String> getUsers(bool wgroup,int uid)
+        /// <summary>
+        /// Возвращает список всех пользователей
+        /// </summary>
+        public List<sUser> getUsers()
         {
             MySqlDataReader rd = reader("SELECT u_name,u_group,u_id FROM users;");
-            List<String> res = new List<string>();
+            List<sUser> res = new List<sUser>();
             while (rd.Read())
             {
-                if (uid == 0 || uid == rd.GetInt32("u_id"))
-                {
-                    res.Add(rd.GetString(0));
-                    if (wgroup)
-                    {
-                        res.Add(rd.GetString(1));
-                        res.Add(rd.GetString(2));
-                    }
-                }
+                res.Add(new sUser(rd.GetInt32("u_id"),rd.GetString("u_name"),rd.GetString("u_group")));
+            }
+            rd.Close();
+            return res;
+        }
+        /// <summary>
+        /// Возвразает одного пользователя по ID
+        /// </summary>
+        /// <param name="uid">ID пользователя</param>
+        /// <returns></returns>
+        public sUser getUser(int uid)
+        {
+            MySqlDataReader rd = reader(String.Format("SELECT u_name,u_group,u_id FROM users WHERE u_id={0};",uid.ToString()));
+            sUser res = null;
+            while (rd.Read())
+            {
+                res = new sUser(rd.GetInt32("u_id"), rd.GetString("u_name"), rd.GetString("u_group"));
             }
             rd.Close();
             return res;
@@ -71,14 +123,15 @@ namespace rabnet
             exec(String.Format("DELETE FROM users WHERE u_id={0:d};",uid));
         }
 
+        
         public static string getGroup(int group)
         {
-            String sgrp = "worker";
+            String sgrp = sUser.Worker;
             switch (group)
             {
-                case 0: sgrp = "admin"; break;
-                case 1: sgrp = "zootech"; break;
-                case 2: sgrp = "genetik"; break;
+                case 0: sgrp = sUser.Admin; break;
+                case 1: sgrp = sUser.Zootech; break;
+                case 2: sgrp = sUser.Butcher; break;              
             }
             return sgrp;
         }

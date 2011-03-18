@@ -13,7 +13,7 @@ namespace rabnet
             ZOO_FILTER, COMBINE_AGE, BOYS_OUT, GIRLS_OUT, STATE_FUCK, FIRST_FUCK, MALE_WAIT, GEN_TREE, CONFIRM_EXIT, 
             VACC, CONFIRM_KILL, SUCKERS,NEST,CHILD_NEST,RAB_LIST,BUILD_LIST,YOUNG_LIST,DEAD_LIST,REPL_YOUNG_LIST,
             MAKE_FUCK_LIST,NAMES_LIST,UPDATE_ZOO,ZOO_LIST,FIND_PARTNERS,NEXT_SVID,SVID_HEAD,SVID_GEN_DIR,
-            KILL_LIST,SHORT_ZOO,VACCINE_TIME,MAKE_CANDIDATE
+            KILL_LIST,SHORT_ZOO,VACCINE_TIME,MAKE_CANDIDATE,BUTCHER_LIST
         }
         public enum OPT_LEVEL {FARM,USER};
         public class ExOptionNotFound:ApplicationException
@@ -82,6 +82,7 @@ namespace rabnet
                                    new Option(OPT_ID.SHORT_ZOO,OPT_LEVEL.USER,"short_zoo"),
                                    new Option(OPT_ID.VACCINE_TIME,OPT_LEVEL.FARM,"vaccine_time"),
                                    new Option(OPT_ID.MAKE_CANDIDATE,OPT_LEVEL.FARM,"candidate"),
+                                   new Option(OPT_ID.BUTCHER_LIST,OPT_LEVEL.USER,"butcherlist")
                                    };
         public Options(RabNetEngine eng)
         {
@@ -163,11 +164,16 @@ namespace rabnet
             setOption(name, subname, getUidOfLevel(level), value);
         }
 
-        //by oplist in other namespace
+        /// <summary>
+        /// Возвращает название опции в Базе Данных
+        /// </summary>
+        /// <param name="id">enum opt_id</param>
+        /// <returns>Название опции в базе данных</returns>
         private Option getOptionById(OPT_ID id)
         {
             for (int i = 0; i < optlist.Length; i++)
-                if (optlist[i].id == id) return optlist[i];
+                if (optlist[i].id == id) 
+                    return optlist[i];
             throw new ExOptionNotFound(id);
         }
         public String getOption(String name,OPT_ID id)

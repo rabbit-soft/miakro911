@@ -16,15 +16,28 @@ namespace rabnet
             caption = text;
         }
     }
-
+    /// <summary>
+    /// Класс для заполнения справочников в CatalogForm
+    /// </summary>
     public class CatalogData
     {
+        /// <summary>
+        /// Одна строка DataGridView. Имеет, ID и массив значений ячеек
+        /// </summary>
         public struct Row
         {
             public int key;
-            public String[] data;
+            public String[] data; 
+            public byte[] image;
+            public int imageSize;
         }
+        /// <summary>
+        /// Массив имен столбцов DataGridView
+        /// </summary>
         public String[] colnames;
+        /// <summary>
+        /// Массив строк DataGridView
+        /// </summary>
         public Row[] data;
     }
 

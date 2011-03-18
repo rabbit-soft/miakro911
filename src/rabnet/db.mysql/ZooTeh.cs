@@ -11,11 +11,20 @@ namespace rabnet
         public int id = 0;
         public ZooTehNullItem(int id) { this.id=id;}
     }
+    /// <summary>
+    /// В зоотехплане надо сделать 9 разных запросов.
+    /// В ответ на onPrepare возвращается этот класс, сожержащий 9 элементов,
+    /// на onItem каждой из них заполняется список конкретной работой.
+    /// </summary>
     public class ZooTehNullGetter : IDataGetter
     {
         #region IDataGetter Members
         private int val;
+        /// <summary>
+        /// Количество зоотех работ.
+        /// </summary>
         const int ZOOTEHITEMS = 9;
+
         public int getCount()
         {
             val = -1;
@@ -41,7 +50,10 @@ namespace rabnet
         {
             
         }
-
+        /// <summary>
+        /// Возвращает объект класса ZooTehNullItem, который содержит только параметр "id"
+        /// </summary>
+        /// <returns></returns>
         public IData getNextItem()
         {
             val++;

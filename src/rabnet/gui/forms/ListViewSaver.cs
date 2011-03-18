@@ -26,12 +26,16 @@ namespace rabnet
             res=res.Trim(',');
             Engine.opt().setOption(op,res);
         }
-
+        /// <summary>
+        /// Устанавливает ширину колонок компонента ListView
+        /// </summary>
+        /// <param name="op">enum opt_id</param>
+        /// <param name="lv">ListViev</param>
         public static void load(Options.OPT_ID op,ListView lv)
         {
             if (op == Options.OPT_ID.NONE) return;
             String val = Engine.opt().getOption(op);
-            if (val=="") return;
+            if (val == "") return;
             String[] cls=val.Split(',');
             int i;
             for (i=0;i<lv.Columns.Count;i++)

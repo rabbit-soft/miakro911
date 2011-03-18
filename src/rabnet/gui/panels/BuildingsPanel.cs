@@ -27,7 +27,7 @@ namespace rabnet
 
         public BuildingsPanel(RabStatusBar bsb):base(bsb, new BuildingsFilter(bsb))
         {
-            cs = new ListViewColumnSorter(listView1, new int[] { },Options.OPT_ID.BUILD_LIST);
+            colSort = new ListViewColumnSorter(listView1, new int[] { },Options.OPT_ID.BUILD_LIST);
             listView1.ListViewItemSorter = null;
             treeView1.TreeViewNodeSorter = new TVNodeSorter();
         }
@@ -109,7 +109,7 @@ namespace rabnet
             n.Expand();
             f["shr"] = Engine.opt().getOption(Options.OPT_ID.SHORT_NAMES);
             f["dbl"] = Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
-            cs.Prepare();
+            colSort.Prepare();
             IDataGetter dg = DataThread.db().getBuildings(f);
             rsb.setText(1, dg.getCount().ToString() + " МИНИфермы");
             return dg;
@@ -122,7 +122,7 @@ namespace rabnet
         {
             if (data==null)
             {
-                cs.Restore();
+                colSort.Restore();
                 return;
             }
             Building b = data as Building;
@@ -167,7 +167,7 @@ namespace rabnet
                                 nst = "";
                                 htr = "";
                             }
-                        if (b.itype()=="complex")
+                        if (b.itype()==myBuildingType.Complex)
                             if (i != 0)
                             {
                                 nst = "";
@@ -183,7 +183,7 @@ namespace rabnet
                 }
             }
 
-			cs.SemiReady();
+			colSort.SemiReady();
         }
 
         private String getAddress(int ifid){return getAddress(ifid, -1);}
@@ -589,7 +589,7 @@ namespace rabnet
             f["bld"] = bid.ToString();
             f["suck"] = Engine.opt().getOption(Options.OPT_ID.SUCKERS);
             new ReportViewForm("Шедовый отчет", "shed", new XmlDocument[]{
-                Engine.db().makeReport(ReportType.Type.SHED,f),getBuildDoc(bid)}).ShowDialog();
+                Engine.db().makeReport(myReportType.SHED,f),getBuildDoc(bid)}).ShowDialog();
 #else
             DemoErr.DemoNoReportMsg();
 #endif
@@ -604,7 +604,7 @@ namespace rabnet
             int bid = buildNum();
             f["bld"] = bid.ToString();
             new ReportViewForm("Ревизия свободных клеток", "empty_rev", new XmlDocument[]{
-                Engine.db().makeReport(ReportType.Type.REVISION,f),getBuildDoc(bid)}).ShowDialog();
+                Engine.db().makeReport(myReportType.REVISION,f),getBuildDoc(bid)}).ShowDialog();
 #else
             DemoErr.DemoNoReportMsg();
 #endif

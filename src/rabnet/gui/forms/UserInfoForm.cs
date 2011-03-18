@@ -10,48 +10,63 @@ namespace rabnet
 {
     public partial class UserInfoForm : Form
     {
-        private int action = 0;
-        private int uid=0;
+        /*
+         * Тип юзеров берется не из базы, они находятся в проге
+         * при редактировании надо внести изменения в 
+         * db.mysql/Users.getUser
+         * 
+         * по идее надо сделать чтобы тип юзеров брался из базы
+         */
+        /// <summary>
+        /// Действие. 1-сменить пароль
+        /// </summary>
+        private int _action = 0;
+        private int _uid=0;
         public UserInfoForm()
         {
             InitializeComponent();
-            comboBox1.SelectedIndex = 0;
+            cbUserType.SelectedIndex = 0;
         }
 
         public UserInfoForm(int id,int action):this()
         {
-            this.uid = id;
-            this.action = action;
+            this._uid = id;
+            this._action = action;
             if (action == 1)
-                textBox1.Enabled = comboBox1.Enabled = false;
+                tbUserName.Enabled = cbUserType.Enabled = false;
             checkBox1.Checked = groupBox1.Enabled = (id == 0 || action == 1);
             checkBox1.Enabled = !groupBox1.Enabled;
-            if (uid != 0)
+            if (_uid != 0)
             {
-                List<String> ui = Engine.db().getUsers(true, uid);
-                textBox1.Text = ui[0];
-                comboBox1.SelectedIndex = (ui[1] == "admin" ? 0 : 1);
+                sUser ui = Engine.db().getUser(_uid);
+                tbUserName.Text = ui.Name;
+                switch (ui.Group)
+                {
+                    case sUser.Admin: cbUserType.SelectedIndex = 0; break;
+                    case sUser.Zootech: cbUserType.SelectedIndex = 1; break;
+                    case sUser.Butcher: cbUserType.SelectedIndex = 2; break;
+                }
             }
-            if (uid == Engine.get().uId())
-                comboBox1.Enabled = false;
+            if (_uid == Engine.get().uId())
+                cbUserType.Enabled = false;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btCancel_Click(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btOK_Click(object sender, EventArgs e)
         {
             try
             {
                 if (checkBox1.Checked)
-                    if (textBox2.Text != textBox3.Text)
+                    if (tbPass1.Text != tbPass2.Text)
                         throw new ApplicationException("Пароли не совпадают.");
-                if (uid == 0)
-                    Engine.get().addUser(textBox1.Text, comboBox1.SelectedIndex, textBox2.Text);
-                else
-                    Engine.get().updateUser(uid, textBox1.Text, comboBox1.SelectedIndex, textBox2.Text, checkBox1.Checked);
+                if (_uid == 0)
+                    Engine.get().addUser(tbUserName.Text, cbUserType.SelectedIndex, tbPass1.Text);
+                else 
+                    Engine.get().updateUser(_uid, tbUserName.Text, cbUserType.SelectedIndex, tbPass1.Text, checkBox1.Checked);
                 Close();
             }
             catch(ApplicationException ex)
@@ -63,6 +78,44 @@ namespace rabnet
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             groupBox1.Enabled = checkBox1.Checked;
+        }
+
+        private void tbPass1_TextChanged(object sender, EventArgs e)
+        {
+            if (cbUserType.SelectedIndex != 2) return;
+            List<char> numbers = new List<char> { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+            TextBox tb = (sender as TextBox);
+            try
+            {
+                ulong.Parse(tb.Text);
+            }
+            catch (FormatException)
+            {
+                if (tb.Text != "")
+                {
+                    for (int i = 0; i < tb.Text.Length; i++)
+                    {
+                        if (!numbers.Contains(tb.Text[i]))
+                        {
+                            tb.Text = tb.Text.Remove(i, 1);
+                            tb.Select(i, 0);
+                            break;
+                        }
+                    }
+                }
+            }
+
+        }
+
+        private void cbUserType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbUserType.SelectedIndex == 2)
+            {
+                lbWarning.Text = "Пароль должен состоять только из цифр";
+                lbWarning.Show();
+            }
+            else lbWarning.Hide();
+            
         }
     }
 }

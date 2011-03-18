@@ -91,9 +91,14 @@ namespace rabnet
             return c.ExecuteReader();
         }
 
-        public List<String> getUsers(bool wgroup,int uid)
+        public List<sUser> getUsers()
         {
-            return new Users(sql).getUsers(wgroup,uid);
+            return new Users(sql).getUsers();
+        }
+
+        public sUser getUser(int uid)
+        {
+            return new Users(sql).getUser(uid);
         }
 
         public int checkUser(string name, string password)
@@ -218,6 +223,15 @@ namespace rabnet
             return new ZooTehNullGetter();
         }
 
+        public IDataGetter getButcherDates(Filters f)
+        {
+            return new Butcher(sql,f);
+        }
+
+        public List<String> getButcherMonths()
+        {
+            return Butcher.getButcherMonths(sql);
+        }
 
         IBreeds IRabNetDataLayer.getBreeds()
         {
@@ -276,6 +290,11 @@ namespace rabnet
         public IZones getZones()
         {
             return new Zones(sql);
+        }
+
+        public IProducts getProductTypes()
+        {
+            return new Products(sql);
         }
 
         public string makeName(int nm, int sur, int sec, int grp, OneRabbit.RabbitSex sex)
@@ -412,7 +431,7 @@ namespace rabnet
             RabbitGetter.combineGroups(sql, rabfrom, rabto);
         }
 
-        public XmlDocument makeReport(ReportType.Type type, Filters f)
+        public XmlDocument makeReport(myReportType type, Filters f)
         {
             return Reports.makeReport(sql, type, f);
         }
@@ -535,6 +554,16 @@ namespace rabnet
         public void changeWorker(int fid, int worker)
         {
             FucksGetter.changeWorker(sql,fid, worker);
+        }
+
+        public List<OneRabbit> getVictims(DateTime dt)
+        {
+            return Butcher.getVictims(sql,dt);
+        }
+
+        public List<sMeat> getMeats(DateTime date)
+        {
+            return Butcher.GetMeats(sql,date);
         }
 
         #endregion

@@ -30,10 +30,14 @@ namespace rabnet
             InitializeComponent();
             me = this;
             log.Debug("Program started");
-            panels=new RabNetPanel[]{new RabbitsPanel(rabStatusBar1),
-                        new YoungsPanel(rabStatusBar1),
-                        new BuildingsPanel(rabStatusBar1),
-                        new WorksPanel(rabStatusBar1)};
+            panels=new RabNetPanel[]
+            {
+                new RabbitsPanel(rabStatusBar1),
+                new YoungsPanel(rabStatusBar1),
+                new BuildingsPanel(rabStatusBar1),
+                new WorksPanel(rabStatusBar1),
+                new ButcherPanel(rabStatusBar1)
+            };
             curpanel = panels[0];
             tabControl1.SelectedIndex = 0;
             tabControl1_SelectedIndexChanged(null, null);
@@ -93,11 +97,6 @@ namespace rabnet
 #endif
         }
 
-        private void tsmiFilter_Click(object sender, EventArgs e)
-        {
-            rabStatusBar1.filterSwitch();
-        }
-
         private void showTierTMenuItem_CheckedChanged(object sender, EventArgs e)
         {
             if (manflag)
@@ -143,27 +142,6 @@ namespace rabnet
             new AboutForm().ShowDialog();
         }
 
-        private void breedsMenuItem_Click(object sender, EventArgs e)
-        {
-            new CatalogForm(CatalogForm.CatalogType.BREEDS).ShowDialog();
-        }
-
-        private void namesMenuItem_Click(object sender, EventArgs e)
-        {
-            new NamesForm().ShowDialog();
-        }
-
-        private void tsmiAreas_Click(object sender, EventArgs e)
-        {
-            new CatalogForm(CatalogForm.CatalogType.ZONES).ShowDialog();
-        }
-
-        private void paramsMenuItem1_Click(object sender, EventArgs e)
-        {
-            if ((new OptionsForm()).ShowDialog() == DialogResult.OK)
-                rabStatusBar1.run();
-        }
-
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
 
@@ -186,137 +164,6 @@ namespace rabnet
             new UserForm().ShowDialog();
         }
 
-        private void tsmiDeadsArchive_Click(object sender, EventArgs e)
-        {         
-            new DeadForm().ShowDialog();
-            rabStatusBar1.run();
-        }
-
-        private void тестовыйToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-#if !DEMO
-            (new ReportViewForm("Тестовый отчет","test", 
-                Engine.get().db().makeReport(ReportType.Type.TEST, null))).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
-        }
-
-        private void tsmiBreeds_Click(object sender, EventArgs e)
-        {
-#if !DEMO
-            Filters f = new Filters();
-            f["brd"] = Engine.get().brideAge().ToString();
-            (new ReportViewForm("Отчет по породам", "breeds", 
-                Engine.get().db().makeReport(ReportType.Type.BREEDS, f))).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
-        }
-
-        private void tsmiAgeAndCount_Click(object sender, EventArgs e)
-        {
-#if !DEMO
-            (new ReportViewForm("Статистика возрастного поголовья", "age", 
-                Engine.get().db().makeReport(ReportType.Type.AGE, null))).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
-        }
-
-        private void tsmiFuckProductivity_Click(object sender, EventArgs e)
-        {
-#if !DEMO
-            FuckerForm dlg=new FuckerForm();
-            if (dlg.ShowDialog() == DialogResult.OK)
-            {
-                Filters f = new Filters();
-                f["prt"] = dlg.getFucker().ToString();
-                f["dfr"] = dlg.getFromDate();
-                f["dto"] = dlg.getToDate();
-                (new ReportViewForm("Статистика продуктивности", "fucker",new XmlDocument[]{
-                    Engine.get().db().makeReport(ReportType.Type.FUCKER, f),dlg.getXml()})).ShowDialog();
-            }
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
-        }
-
-        private void tsmiDeadReasonsView_Click(object sender, EventArgs e)
-        {
-#if !DEMO
-            new CatalogForm(CatalogForm.CatalogType.DEAD).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
-        }
-
-        private void tsmiDeads_Click(object sender, EventArgs e)
-        {
-#if !DEMO
-            Filters f=new Filters();
-            XmlDocument dt=null;
-            if (PeriodForm.Run(f, PeriodForm.Preset.CUR_MONTH, ref dt) == DialogResult.OK)
-                (new ReportViewForm("Причины списаний", "deadreason", new XmlDocument[]{
-                    Engine.db().makeReport(ReportType.Type.DEADREASONS,f),dt})).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
-        }
-
-        private void tsmiDeadsReaport_Click(object sender, EventArgs e)
-        {
-#if !DEMO
-            Filters f = new Filters();
-            XmlDocument dt = null;
-            if (PeriodForm.Run(f, PeriodForm.Preset.CUR_MONTH, ref dt) == DialogResult.OK)
-                (new ReportViewForm("Списания", "dead", new XmlDocument[]{
-                    Engine.db().makeReport(ReportType.Type.DEAD,f),dt})).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
-		}
-
-        private void tsmiFucksByUsers_Click(object sender, EventArgs e)
-        {
-#if !DEMO
-            OkrolUser dlg = new OkrolUser();
-            if (dlg.ShowDialog() == DialogResult.OK)
-            {
-                Filters f = new Filters();
-                f["user"] = dlg.getUser().ToString();
-                f["dfr"] = dlg.getFromDate();
-                f["dto"] = dlg.getToDate();
-                (new ReportViewForm("Окролы по пользователям", "okrol_user", new XmlDocument[]{
-                    Engine.get().db().makeReport(ReportType.Type.USER_OKROLS, f),dlg.getXml()})).ShowDialog();
-            }
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
-        }
-
-        private void tsmiCountByMonth_Click(object sender, EventArgs e)
-        {
-#if !DEMO
-            Filters f = new Filters();
-            (new ReportViewForm("Количество по месяцам", "by_month", new XmlDocument[]{
-                    Engine.get().db().makeReport(ReportType.Type.BY_MONTH,f)})).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
-        }
-
-        private void fucksByDateToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-#if !DEMO
-            OkrolUser dlg = new OkrolUser();            
-            Filters f = new Filters();
-            (new ReportViewForm("Список случек/окролов", "fucks_by_date", new XmlDocument[]{
-                    Engine.get().db().makeReport(ReportType.Type.FUCKS_BY_DATE,f)})).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
-        }
         /// <summary>
         /// При срабатывании таймера, происходит выход в меню выбора юзера
         /// </summary>
@@ -345,6 +192,9 @@ namespace rabnet
             }
 #endif
         }
+        /// <summary>
+        /// Сбрасывает таймер простоя. Тем самым обозначает что с программой работают.
+        /// </summary>
         public static void still_working()
         {
             me.working();
@@ -408,9 +258,202 @@ namespace rabnet
             working();
         }
 
-        private void gjvjomToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiHelp_Click(object sender, EventArgs e)
         {
             Help.ShowHelp(this, "rabHelp.chm");
         }
+
+#region Views
+
+        private void tsmiFilter_Click(object sender, EventArgs e)
+        {
+            rabStatusBar1.filterSwitch();
+        }
+
+        private void paramsMenuItem1_Click(object sender, EventArgs e)
+        {
+            if ((new OptionsForm()).ShowDialog() == DialogResult.OK)
+                rabStatusBar1.run();
+        }
+
+        private void tsmiDeadsArchive_Click(object sender, EventArgs e)
+        {
+            new DeadForm().ShowDialog();
+            rabStatusBar1.run();
+        }
+
+        private void namesMenuItem_Click(object sender, EventArgs e)
+        {
+            new NamesForm().ShowDialog();
+        }
+
+        private void breedsMenuItem_Click(object sender, EventArgs e)
+        {
+            new CatalogForm(CatalogForm.CatalogType.BREEDS).ShowDialog();
+        }
+
+        private void tsmiAreas_Click(object sender, EventArgs e)
+        {
+            new CatalogForm(CatalogForm.CatalogType.ZONES).ShowDialog();
+        }
+
+        private void tsmiDeadReasonsView_Click(object sender, EventArgs e)
+        {
+#if !DEMO
+            new CatalogForm(CatalogForm.CatalogType.DEAD).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
+        }
+
+        private void tsmiProductTypesView_Click(object sender, EventArgs e)
+        {
+#if !DEMO
+            new CatalogForm(CatalogForm.CatalogType.PRODUCTS).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
+        }
+
+#endregion Views 
+
+
+#region reports
+
+        private void тестовыйToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+#if !DEMO
+            (new ReportViewForm("Тестовый отчет", "test",
+                Engine.get().db().makeReport(myReportType.TEST, null))).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
+        }
+
+
+        private void tsmiBreeds_Click(object sender, EventArgs e)
+        {
+#if !DEMO
+            Filters f = new Filters();
+            f["brd"] = Engine.get().brideAge().ToString();
+            (new ReportViewForm("Отчет по породам", "breeds",Engine.get().db().makeReport(myReportType.BREEDS, f)) ).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
+        }
+
+        private void tsmiFuckProductivity_Click(object sender, EventArgs e)
+        {
+#if !DEMO
+            FuckerForm dlg = new FuckerForm();
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                Filters f = new Filters();
+                f["prt"] = dlg.getFucker().ToString();
+                f["dfr"] = dlg.getFromDate();
+                f["dto"] = dlg.getToDate();
+                (new ReportViewForm("Статистика продуктивности", "fucker", new XmlDocument[]{
+                    Engine.get().db().makeReport(myReportType.FUCKER, f),dlg.getXml()})).ShowDialog();
+            }
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
+        }
+
+        private void tsmiAgeAndCount_Click(object sender, EventArgs e)
+        {
+#if !DEMO
+            (new ReportViewForm("Статистика возрастного поголовья", "age",
+                Engine.get().db().makeReport(myReportType.AGE, null))).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
+        }
+
+        private void tsmiCountByMonth_Click(object sender, EventArgs e)
+        {
+#if !DEMO
+            Filters f = new Filters();
+            (new ReportViewForm("Количество по месяцам", "by_month", new XmlDocument[]{
+                    Engine.get().db().makeReport(myReportType.BY_MONTH,f)})).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
+        }
+
+        private void tsmiDeads_Click(object sender, EventArgs e)
+        {
+#if !DEMO
+            Filters f = new Filters();
+            XmlDocument dt = null;
+            if (PeriodForm.Run(f, PeriodForm.Preset.CUR_MONTH, ref dt) == DialogResult.OK)
+                (new ReportViewForm("Причины списаний", "deadreason", new XmlDocument[]{
+                    Engine.db().makeReport(myReportType.DEADREASONS,f),dt})).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
+        }
+
+        private void tsmiDeadsReaport_Click(object sender, EventArgs e)
+        {
+#if !DEMO
+            Filters f = new Filters();
+            XmlDocument dt = null;
+            if (PeriodForm.Run(f, PeriodForm.Preset.CUR_MONTH, ref dt) == DialogResult.OK)
+                (new ReportViewForm("Списания", "dead", new XmlDocument[]{
+                    Engine.db().makeReport(myReportType.DEAD,f),dt})).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
+        }
+
+        private void tsmiFucksByUsers_Click(object sender, EventArgs e)
+        {
+#if !DEMO
+            OkrolUser dlg = new OkrolUser();
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                Filters f = new Filters();
+                f["user"] = dlg.getUser().ToString();
+                f["dfr"] = dlg.getFromDate();
+                f["dto"] = dlg.getToDate(); 
+                (new ReportViewForm("Окролы по пользователям", "okrol_user", 
+                    new XmlDocument[]
+                    {
+                        Engine.get().db().makeReport(myReportType.USER_OKROLS,f),
+                        dlg.getXml()
+                    }
+                    )).ShowDialog();
+            }
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
+        }
+
+        private void fucksByDateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+#if !DEMO
+            OkrolUser dlg = new OkrolUser();
+            Filters f = new Filters();
+            (new ReportViewForm("Список случек/окролов", "fucks_by_date", new XmlDocument[]{
+                    Engine.get().db().makeReport(myReportType.FUCKS_BY_DATE,f)})).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
+        }
+
+#endregion reports
+
+        private void мяснойЦехToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var brd = new ButcherReportDate();
+            if (brd.ShowDialog() == DialogResult.OK)
+            {
+                Filters f = new Filters();
+                f["per"] = brd.Period == ButcherReportDate.myDatePeriod.Month ? "0" : "1";
+                (new ReportViewForm("Отчет по завесам", "butcher", Engine.get().db().makeReport(myReportType.BUTCHER_PERIOD, f))).ShowDialog();
+            }
+        }
+
     }
 }

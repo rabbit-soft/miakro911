@@ -17,6 +17,9 @@ namespace rabnet
     {
         public static bool stop = true;
         protected static readonly ILog log = LogManager.GetLogger(typeof(LoginForm));
+        /// <summary>
+        /// Вызывается ли форма для того чтобы редактировать подключения
+        /// </summary>
         private bool dbedit=false;
         public LoginForm()
         {
@@ -33,21 +36,22 @@ namespace rabnet
             try
             {
                 ConfigurationManager.GetSection("rabnetds");
-            }catch(Exception e)
+            }
+            catch(Exception e)
             {
                 log.Error("Read config error: "+e.Message);
                 return;
             }
-            comboBox1.Items.Clear();
-            foreach (RabnetConfigHandler.dataSource ds in RabnetConfigHandler.ds)
+            cbFarm.Items.Clear();
+            foreach (RabnetConfigHandler.dataSource ds in RabnetConfigHandler.dataSources)
             {
                 if (!ds.hidden)
                 {
-                    comboBox1.Items.Add(ds.name);
+                    cbFarm.Items.Add(ds.name);
                     if (ds.def)
                     {
-                        comboBox1.SelectedIndex = comboBox1.Items.Count - 1;
-                        comboBox1_SelectedIndexChanged(null, null);
+                        cbFarm.SelectedIndex = cbFarm.Items.Count - 1;
+                        cbFarm_SelectedIndexChanged(null, null);
                     }
                 }
             }
@@ -66,75 +70,76 @@ namespace rabnet
             
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbFarm_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBox1.SelectedIndex < 0)
+            if (cbFarm.SelectedIndex < 0)
                 return;
-            comboBox2.Focus();
+            cbUser.Focus();
             try
             {
                 Application.DoEvents();
                 RabnetConfigHandler.dataSource xs=null;
-                foreach (RabnetConfigHandler.dataSource d in RabnetConfigHandler.ds)
-                    if (d.name == comboBox1.Text)
+                foreach (RabnetConfigHandler.dataSource d in RabnetConfigHandler.dataSources)
+                    if (d.name == cbFarm.Text)
                         xs = d;
                 if (xs == null) return;
                 Engine.get().initEngine(xs.type, xs.param);
-                comboBox2.Items.Clear();
-                comboBox2.Enabled = false;
-                textBox1.Enabled = false;
-                List<String> usrs = Engine.db().getUsers(false,0);
+                cbUser.Items.Clear();
+                cbUser.Enabled = false;
+                tbPassword.Enabled = false;
+                List<sUser> usrs = Engine.db().getUsers();
                 if (usrs != null)
                 {
-                    comboBox2.Enabled = true;
-                    textBox1.Enabled = true;
-                    foreach (String s in usrs)
+                    cbUser.Enabled = true;
+                    tbPassword.Enabled = true;
+                    foreach (sUser s in usrs)
                     {
-                        comboBox2.Items.Add(s);
-                        if (xs.defuser != "" && xs.defuser == s)
+                        if (s.Group == sUser.Butcher) continue;
+                        cbUser.Items.Add(s.Name);
+                        if (xs.defuser != "" && xs.defuser == s.Name)
                         {
-                            comboBox2.SelectedIndex = comboBox2.Items.Count - 1;
+                            cbUser.SelectedIndex = cbUser.Items.Count - 1;
                             if (xs.defpassword != "")
                             {
-                                textBox1.Text = xs.defpassword;
+                                tbPassword.Text = xs.defpassword;
                             }
-                            textBox1.Focus();
-                            textBox1.SelectAll();
+                            tbPassword.Focus();
+                            tbPassword.SelectAll();
                         }
                     }
                 }
                 else
                 {
-                    button2.Enabled = true;
+                    btEnter.Enabled = true;
                 }
             }
             catch (Exception ex)
             {
-                comboBox2.SelectedIndex = comboBox1.SelectedIndex = -1;
-                comboBox1.Text=comboBox2.Text=textBox1.Text = "";
-                comboBox1.Focus();
+                cbUser.SelectedIndex = cbFarm.SelectedIndex = -1;
+                cbFarm.Text=cbUser.Text=tbPassword.Text = "";
+                cbFarm.Focus();
                 MessageBox.Show("Ошибка подключения " + ex.GetType().ToString() + ": " + ex.Message,"Ошибка подключения");
             }
         }
 
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbUser_SelectedIndexChanged(object sender, EventArgs e)
         {
-            button2.Enabled=(comboBox2.Text!="");
-            textBox1.Text = "";
-            textBox1.Focus();
+            btEnter.Enabled=(cbUser.Text!="");
+            tbPassword.Text = "";
+            tbPassword.Focus();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btEnter_Click(object sender, EventArgs e)
         {
-            int uid = Engine.get().setUid(comboBox2.Text, textBox1.Text, comboBox1.Text);
+            int uid = Engine.get().setUid(cbUser.Text, tbPassword.Text, cbFarm.Text);
             if (uid != 0)
             {
-                RabnetConfigHandler.ds[comboBox1.SelectedIndex].setDefault(comboBox2.Text, textBox1.Text);
+                RabnetConfigHandler.dataSources[cbFarm.SelectedIndex].setDefault(cbUser.Text, tbPassword.Text);
                 
 //                System.Diagnostics.Debug.WriteLine(RabnetConfigHandler.ds[comboBox1.SelectedIndex].getParamHost());
 
 #if !DEMO
-                RabUpdaterClient.Get().SetIP(RabnetConfigHandler.ds[comboBox1.SelectedIndex].getParamHost());
+                RabUpdaterClient.Get().SetIP(RabnetConfigHandler.dataSources[cbFarm.SelectedIndex].getParamHost());
                 
                 bool upRes=RabUpdaterClient.Get().CheckUpdate();
                 
@@ -159,17 +164,17 @@ namespace rabnet
 
 
 
-                    while (RabUpdaterClient.Get().GetUpRes()==RabUpdaterClient.UpErrStillWorking)
+                    while (RabUpdaterClient.Get().GetUpRes() == RabUpdaterClient.UpErrStillWorking)
                     {
                         Application.DoEvents();
-                        
+
                     }
 
                     prg.Close();
 
                     prg = null;
 
-                    int upProcRes=RabUpdaterClient.Get().GetUpRes();
+                    int upProcRes = RabUpdaterClient.Get().GetUpRes();
 
                     if (upProcRes != RabUpdaterClient.UpErrFinishedOK)
                     {
@@ -188,7 +193,7 @@ namespace rabnet
                     }
                     else
                     {
-                        Process.Start(RabUpdaterClient.Get().GetUpFilePath(),"/S"); //Batch Mode
+                        Process.Start(RabUpdaterClient.Get().GetUpFilePath(), "/S"); //Batch Mode
                         LoginForm.stop = true;
                         Close();
 
@@ -199,16 +204,11 @@ namespace rabnet
                 else
                 {
 #endif
-                                    DialogResult = DialogResult.OK;
-                                    Close();
+                    DialogResult = DialogResult.OK;
+                    Close();
 #if !DEMO
                 }
-
 #endif
-
-
-
-
 
                 return;
             }
@@ -223,38 +223,32 @@ namespace rabnet
         {
         }
 
-        private void textBox1_KeyDown(object sender, KeyEventArgs e)
-        {
-//            if (e.KeyCode == Keys.Enter)
-//                button2.PerformClick();
-        }
-
         private void button3_Click(object sender, EventArgs e)
         {
             Hide();
             new FarmListForm().ShowDialog();
             Show();
-            comboBox2.Text = "";
-            textBox1.Text = "";
+            cbUser.Text = "";
+            tbPassword.Text = "";
             readConfig();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btExit_Click(object sender, EventArgs e)
         {
         }
 
         private void LoginForm_Shown(object sender, EventArgs e)
         {
             readConfig();
-            textBox1.SelectAll();
-            textBox1.Focus();
+            tbPassword.SelectAll();
+            tbPassword.Focus();
             if (dbedit)
             {
                 new FarmChangeForm(null).ShowDialog();
                 stop = true;
                 DialogResult = DialogResult.Cancel;
             }
-            if (comboBox1.Items.Count == 0)
+            if (cbFarm.Items.Count == 0)
             {
                 new FarmChangeForm(true).ShowDialog();
                 readConfig();
@@ -284,7 +278,7 @@ namespace rabnet
             public void setDefault(String uname,String pswd)
             {
                 def = true;
-                foreach (dataSource ds in RabnetConfigHandler.ds)
+                foreach (dataSource ds in RabnetConfigHandler.dataSources)
                     if (ds != this) ds.def = false;
                 defuser = uname;
                 if (!savepassword) defpassword = "";
@@ -306,17 +300,18 @@ namespace rabnet
                 return "";
             }
         }
-        public static List<dataSource> ds = new List<dataSource>();
+
+        public static List<dataSource> dataSources = new List<dataSource>();
         public object Create(object parent, object configContext, XmlNode section)
         {
-            ds.Clear();
+            dataSources.Clear();
             foreach (XmlNode cn in section.ChildNodes)
             {
                 if (cn.Name == "dataSource")
                 {
-                    ds.Add(new dataSource(cn.Attributes.GetNamedItem("name").Value,
+                    dataSources.Add(new dataSource(cn.Attributes.GetNamedItem("name").Value,
                         cn.Attributes.GetNamedItem("type").Value, cn.Attributes.GetNamedItem("param").Value));
-                    dataSource td = ds[ds.Count - 1];
+                    dataSource td = dataSources[dataSources.Count - 1];
                     if (cn.Attributes.GetNamedItem("default") != null)
                         td.def = (cn.Attributes.GetNamedItem("default").Value == "1");
                     if (cn.Attributes.GetNamedItem("savepassword") != null)
@@ -337,7 +332,7 @@ namespace rabnet
             XmlDocument xml = new XmlDocument();
             XmlElement rnds = xml.CreateElement("rabnetds");
             xml.AppendChild(rnds);
-            foreach (dataSource d in ds)
+            foreach (dataSource d in dataSources)
             {
                 XmlElement xds = xml.CreateElement("dataSource");
                 if (d.def)

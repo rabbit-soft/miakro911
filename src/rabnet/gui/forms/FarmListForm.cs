@@ -20,7 +20,7 @@ namespace rabnet
         {
             listView1.Tag = 1;
             listView1.Items.Clear();
-            foreach (RabnetConfigHandler.dataSource ds in RabnetConfigHandler.ds)
+            foreach (RabnetConfigHandler.dataSource ds in RabnetConfigHandler.dataSources)
             {
                 ListViewItem li = listView1.Items.Add(ds.name);
                 li.Checked = !ds.hidden;
@@ -65,7 +65,7 @@ namespace rabnet
         private void button4_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count != 1) return;
-            RabnetConfigHandler.ds.Remove((RabnetConfigHandler.dataSource)listView1.SelectedItems[0].Tag);
+            RabnetConfigHandler.dataSources.Remove((RabnetConfigHandler.dataSource)listView1.SelectedItems[0].Tag);
             updateList();
         }
     }

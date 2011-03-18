@@ -41,7 +41,8 @@ namespace rabnet
         void init(String connectionString);
         void close();
         //ENVIRONMENT
-        List<String> getUsers(bool wgroup,int uid);
+        List<sUser> getUsers();
+        sUser getUser(int uid);
         int checkUser(String name, String password);
         String getOption(String name, String subname, uint uid);
         void setOption(String name, String subname, uint uid, String value);
@@ -59,8 +60,12 @@ namespace rabnet
         Building getBuilding(int tier);
         IBreeds getBreeds();
         IZones getZones();
+        IProducts getProductTypes();
+        List<sMeat> getMeats(DateTime date);
         IDataGetter getNames(Filters filters);
         IDataGetter zooTeh(Filters f);
+        IDataGetter getButcherDates(Filters f);
+        List<String> getButcherMonths();
         OneRabbit getRabbit(int rid);
         void setRabbit(OneRabbit r);
         ICatalogs catalogs();
@@ -98,7 +103,7 @@ namespace rabnet
         ZooJobItem[] getPreokrols(Filters f, int days, int okroldays);
         void placeSucker(int sucker, int mother);
         void combineGroups(int rabfrom, int rabto);
-        XmlDocument makeReport(ReportType.Type type, Filters f);
+        XmlDocument makeReport(myReportType type, Filters f);
         Rabbit[] getMothers(int age,int agediff);
         ZooJobItem[] getBoysGirlsOut(Filters f, int days, OneRabbit.RabbitSex sex);
         String[] logNames();
@@ -124,6 +129,8 @@ namespace rabnet
 
 		RabbitGen getRabbitGen(int rid);
 		Dictionary<int, Color> getBreedColors();
+        List<OneRabbit> getVictims(DateTime dt);
+       
     }
 
 }

@@ -28,7 +28,7 @@ namespace rabnet
         {
             options = filters;
             this.sql = sql;
-            String qcmd=countQuery();
+            String qcmd = countQuery();//получить количество записей
             Debug("c_query:"+qcmd);
             MySqlCommand cmd = new MySqlCommand(qcmd, sql);
             rd = cmd.ExecuteReader();

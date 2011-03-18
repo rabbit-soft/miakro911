@@ -6,9 +6,9 @@ using System.Xml;
 
 namespace rabnet
 {
-    public class ReportType
+    public enum myReportType
     {
-        public enum Type { TEST,BREEDS,AGE,FUCKER,DEAD,DEADREASONS,REALIZE,USER_OKROLS,SHED,REVISION,BY_MONTH,FUCKS_BY_DATE };
+         TEST,BREEDS,AGE,FUCKER,DEAD,DEADREASONS,REALIZE,USER_OKROLS,SHED,REVISION,BY_MONTH,FUCKS_BY_DATE,BUTCHER_PERIOD 
     }
 
     class Reports
@@ -99,18 +99,22 @@ namespace rabnet
             el2.AppendChild(dok_out.CreateElement("state")).AppendChild(dok_out.CreateTextNode(state.ToString()));
             return dok_out;
         }
-
+        /// <summary>
+        /// Окролы по пользователям - Обработка
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         private XmlDocument UserOkrolRpt(String query)
         {
             XmlDocument doc = makeStdReportXml(query);
             XmlNodeList lst = doc.ChildNodes[0].ChildNodes;
-            Dictionary<String,int> sums=new Dictionary<String,int>();
-            Dictionary<String, int> cnts = new Dictionary<String, int>();
+            Dictionary<String, int> sums = new Dictionary<String, int>();//кл-во детей
+            Dictionary<String, int> cnts = new Dictionary<String, int>();//кл-во окролов
             foreach (XmlNode nd in lst)
             {
                 String nm = nd.FirstChild.FirstChild.Value;
-                String v=nd.FirstChild.NextSibling.NextSibling.FirstChild.Value;
-                int s=0;
+                String v = nd.FirstChild.NextSibling.NextSibling.FirstChild.Value;
+                int s = 0;
                 int cnt = 0;
                 if (v != "п" && v != "-")
                 {
@@ -159,28 +163,28 @@ namespace rabnet
             return doc;
         }
 
-        public XmlDocument makeReport(ReportType.Type type, Filters f)
+        public XmlDocument makeReport(myReportType type, Filters f)
         {
             String query="";
             switch (type)
             {
-                case ReportType.Type.TEST:query=testQuery(f);break;
-                case ReportType.Type.BREEDS: query = breedsQuery(f); break;
-                case ReportType.Type.AGE: query = ageQuery(f); break;
-                case ReportType.Type.FUCKER: query = fuckerQuery(f); break;
-                case ReportType.Type.DEAD: query = deadQuery(f); break;
-                case ReportType.Type.DEADREASONS: query = deadReasonsQuery(f); break;
-                case ReportType.Type.REALIZE: query = Realize(f); break;
-                case ReportType.Type.USER_OKROLS: return UserOkrolRpt(UserOkrols(f));
-                case ReportType.Type.SHED: return ShedReport(f);
-                case ReportType.Type.REVISION: return Revision(f);
-                case ReportType.Type.BY_MONTH: query = rabByMonth(); break;
-                case ReportType.Type.FUCKS_BY_DATE: query=fucksByDate(f); break;
+                case myReportType.TEST:query=testQuery(f);break;
+                case myReportType.BREEDS: query = breedsQuery(f); break;
+                case myReportType.AGE: query = ageQuery(f); break;
+                case myReportType.FUCKER: query = fuckerQuery(f); break;
+                case myReportType.DEAD: query = deadQuery(f); break;
+                case myReportType.DEADREASONS: query = deadReasonsQuery(f); break;
+                case myReportType.REALIZE: query = Realize(f); break;
+                case myReportType.USER_OKROLS: return UserOkrolRpt(UserOkrols(f));
+                case myReportType.SHED: return ShedReport(f);
+                case myReportType.REVISION: return Revision(f);
+                case myReportType.BY_MONTH: query = rabByMonth(); break;
+                case myReportType.FUCKS_BY_DATE: query=fucksByDate(f); break;
             }
             return makeStdReportXml(query);
         }
 
-        public static XmlDocument makeReport(MySqlConnection sql,ReportType.Type type,Filters f)
+        public static XmlDocument makeReport(MySqlConnection sql,myReportType type,Filters f)
         {
             return new Reports(sql).makeReport(type, f);
         }
@@ -286,11 +290,16 @@ IF(r_sex='male','м',IF(r_sex='female','ж','?')) sex,'' comment,
 r_group FROM rabbits WHERE {0:s} ORDER BY r_farm,r_tier_id,r_area;",where);
         }
 
+        /// <summary>
+        /// Окролы по пользователям - Запрос
+        /// </summary>
+        /// <param name="f"></param>
+        /// <returns></returns>
         private String UserOkrols(Filters f)
         {
             getDates(f);
             int user = f.safeInt("user");
-            return String.Format(@"SELECT CONCAT(' ',rabname(f_partner,0)) name,DATE_FORMAT(f_end_date,'%d.%m.%Y') dt,
+            return String.Format(@"SELECT CONCAT(' ',anyname(f_partner,0)) name,DATE_FORMAT(f_end_date,'%d') dt,
 IF (f_state='okrol',f_children,IF(f_state='proholost','п','-')) state 
 FROM fucks WHERE f_worker={2:d}
 AND f_end_date>={0:s} AND f_end_date<={1:s} ORDER BY name,dt;", DFROM, DTO, user);

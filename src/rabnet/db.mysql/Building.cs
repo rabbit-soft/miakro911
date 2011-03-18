@@ -7,6 +7,41 @@ using System.Windows.Forms;
 
 namespace rabnet
 {
+    public static class myBuildingType
+    {
+        public const string Female = "female";
+        public const string Female_Rus = "Крольчихин";
+        public const string Female_Short = "крлч";
+
+        public const string DualFemale = "dfemale";
+        public const string DualFemale_Rus = "Двукрольчихин";
+        public const string DualFemale_Short = "2крл";
+
+        public const string Jurta = "jurta";
+        public const string Jurta_Rus = "Юрта";
+        public const string Jurta_Short = "юрта";
+
+        public const string Quarta = "quarta";
+        public const string Quarta_Rus = "Кварта";
+        public const string Quarta_Short = "кврт";
+
+        public const string Vertep = "vertep";
+        public const string Vertep_Rus = "Вертеп";
+        public const string Vertep_Short = "вртп";
+
+        public const string Barin = "barin";
+        public const string Barin_Rus = "Барин";
+        public const string Barin_Short = "барн";
+
+        public const string Cabin = "cabin";
+        public const string Cabin_Rus = "Хижина";
+        public const string Cabin_Short = "хижн";
+
+        public const string Complex = "complex";
+        public const string Complex_Rus = "Комплексный";
+        public const string Complex_Short = "кмпл";
+    }
+
     public class Building:IData
     {
         public int fid;
@@ -71,11 +106,13 @@ namespace rabnet
 
     class Buildings : RabNetDataGetterBase
     {
+
+
         public static bool hasnest(String type,int sec,String nests)
         {
             int c = getRNHCount(type);
             if (c == 0) return false;
-            if (type=="dfemale")
+            if (type==myBuildingType.DualFemale)
                 return (nests[sec]=='1');
             return (nests[0]=='1');
         }
@@ -85,14 +122,14 @@ namespace rabnet
             String res = "";
             switch (type)
             {
-                case "female":
-                case "dfemale": res = shr ? "гн+выг" : "гнездовое+выгул"; break;
-                case "complex": if (sec==0)
+                case myBuildingType.Female:
+                case myBuildingType.DualFemale: res = shr ? "гн+выг" : "гнездовое+выгул"; break;
+                case myBuildingType.Complex: if (sec==0)
                         res = shr ? "гн+выг" : "гнездовое+выгул";
                     else
                         res = shr ? "отк" : "откормочное"; 
                     break;
-                case "jurta": if (sec == 0)
+                case myBuildingType.Jurta : if (sec == 0)
                     {
                         if (delims[0] == '0')
                             res = (shr ? "гн" : "гнездовое")+"+";
@@ -106,10 +143,10 @@ namespace rabnet
                     }
                     break;
 
-                case "quarta": res = shr ? "отк" : "откормочное"; break;
-                case "vertep":
-                case "barin": res = shr ? "врт" : "Вертеп"; break;
-                case "cabin": if (sec == 0)
+                case myBuildingType.Quarta: res = shr ? "отк" : "откормочное"; break;
+                case myBuildingType.Vertep :
+                case myBuildingType.Barin: res = shr ? "врт" : "Вертеп"; break;
+                case myBuildingType.Cabin: if (sec == 0)
                         res = shr ? "гн" : "гнездовое";
                     else
                         res = shr ? "отк" : "откормочное";
@@ -119,18 +156,18 @@ namespace rabnet
         }
         public static String getRSec(String type, int sec, String delims)
         {
-            if (type == "female")
+            if (type == myBuildingType.Female)
                 return "";
             String secnames = "абвг";
             String res = ""+secnames[sec];
-            if (type == "quarta" && delims!="111")
+            if (type == myBuildingType.Quarta && delims!="111")
             {
                 for (int i = sec - 1; i >= 0 && (delims[i]=='1'); i--)
                     if (delims[i] == '0') res = secnames[i] + res;
                 for (int i = sec; i < 3 && delims[i] == '1'; i++)
                     if (delims[i] == '0') res = res + secnames[i + 1];
             }
-            else if (type == "barin" && delims[0]=='0') 
+            else if (type == myBuildingType.Barin && delims[0]=='0') 
                 res = "аб";
             return res;
         }
@@ -139,14 +176,14 @@ namespace rabnet
             String res="Нет";
             switch (type)
             {
-                case "female": res=shr?"крлч":"Крольчихин"; break;
-                case "dfemale": res = shr ? "2крл" : "Двукрольчихин"; break;
-                case "complex": res = shr ? "кмпл" : "Комплексный"; break;
-                case "jurta": res = shr ? "юрта" : "Юрта"; break;
-                case "quarta": res = shr ? "кврт" : "Кварта"; break;
-                case "vertep": res = shr ? "вртп" : "Вертеп"; break;
-                case "barin": res = shr ? "барн" : "Барин"; break;
-                case "cabin": res = shr ? "хижн" : "Хижина"; break;
+                case myBuildingType.Female: res = shr ? myBuildingType.Female_Short : myBuildingType.Female_Rus; break;
+                case myBuildingType.DualFemale: res = shr ? myBuildingType.DualFemale_Short : myBuildingType.DualFemale_Rus; break;
+                case myBuildingType.Complex: res = shr ? myBuildingType.Complex_Short : myBuildingType.Complex_Rus; break;
+                case myBuildingType.Jurta : res = shr ? myBuildingType.Jurta_Short : myBuildingType.Jurta_Rus; break;
+                case myBuildingType.Quarta: res = shr ? myBuildingType.Quarta_Short : myBuildingType.Quarta_Rus; break;
+                case myBuildingType.Vertep: res = shr ? myBuildingType.Vertep_Short : myBuildingType.Vertep_Rus; break;
+                case myBuildingType.Barin: res = shr ? myBuildingType.Barin_Short : myBuildingType.Barin_Rus; break;
+                case myBuildingType.Cabin: res = shr ? myBuildingType.Cabin_Short : myBuildingType.Cabin_Rus; break;
             }
             return res;
         }
@@ -156,9 +193,9 @@ namespace rabnet
             int res = 2;
             switch (type)
             {
-                case "female": res = 1; break;
-                case "complex": res = 3; break;
-                case "quarta": res = 4; break;
+                case myBuildingType.Female: res = 1; break;
+                case myBuildingType.Complex: res = 3; break;
+                case myBuildingType.Quarta: res = 4; break;
             }
             return res;
         }
@@ -167,10 +204,10 @@ namespace rabnet
             int res = 1;
             switch (type)
             {
-                case "dfemale": res = 2; break;
-                case "quarta": 
-                case "vertep":
-                case "barin": res = 0; break;
+                case myBuildingType.DualFemale: res = 2; break;
+                case myBuildingType.Quarta: 
+                case myBuildingType.Vertep:
+                case myBuildingType.Barin: res = 0; break;
             }
             return res;
         }
@@ -387,9 +424,11 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) and t_id=" + tier.ToSt
         public static Building[] getFreeBuildings(MySqlConnection sql,Filters f)
         {
             List<Building> bld = new List<Building>();
-            String type="";
+            String type = "";
             if (f.safeValue("tp") != "")
                 type = "t_type='" + f.safeValue("tp") + "' AND ";
+            if (f.ContainsKey("nest"))
+                type = String.Format("(t_type='{0}' OR t_type='{1}' OR t_type='{2}') AND",myBuildingType.Jurta,myBuildingType.Female,myBuildingType.DualFemale);
             String busy = "(("+type+"(t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0))";
             if (f.safeInt("rcnt") > 0)
                 for (int i = 0; i < f.safeInt("rcnt"); i++)
@@ -399,13 +438,14 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) and t_id=" + tier.ToSt
                         busy += String.Format(" OR (t_busy1={0:d} OR t_busy2={0:d} OR t_busy3={0:d} OR t_busy4={0:d})", r);
                 }
             busy += ")";
-            MySqlCommand cmd = new MySqlCommand(@"SELECT t_id,m_upper,m_lower,m_id,t_type,t_delims,t_nest,t_heater,
-t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4 FROM minifarms,tiers WHERE
-(m_upper=t_id OR m_lower=t_id) AND t_repair=0 AND "+busy+";", sql);
+            MySqlCommand cmd = new MySqlCommand(@"SELECT 
+t_id,m_upper,m_lower,m_id,t_type,t_delims,t_nest,t_heater,t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4 
+FROM minifarms,tiers 
+WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 AND "+busy+";", sql);
             log.Debug("free Buildings cmd:"+cmd.CommandText);
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
-                bld.Add(getBuilding(rd,false,false) as Building);
+                bld.Add(getBuilding(rd, false, false) as Building);
             rd.Close();
             return bld.ToArray();
         }
@@ -515,26 +555,26 @@ VALUES('{0:s}','{1:s}','{2:s}','{2:s}','');", type, delims, hn);break;
             //if (type == "barin") delims = "100";
             switch (type)
             {
-                case "quarta":
+                case myBuildingType.Quarta:
                     {
                         delims = "111";
                         busy = getBusyString(4);
                         break;
                     }
-                case "barin":
+                case myBuildingType.Barin:
                     {
                         delims = "100";
                         busy = getBusyString(2); 
                         break;
                     }
-                case "vertep":
-                case "dfemale":
-                case "jurta":
+                case myBuildingType.Vertep:
+                case myBuildingType.DualFemale:
+                case myBuildingType.Jurta:
                     {
                         busy = getBusyString(2);
                         break;
                     }
-                case "female":
+                case myBuildingType.Female:
                     {
                         busy = getBusyString(1);
                         break;

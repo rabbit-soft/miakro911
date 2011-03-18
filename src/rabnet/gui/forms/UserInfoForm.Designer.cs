@@ -28,27 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tbUserName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbUserType = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.tbPass2 = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.tbPass1 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btOK = new System.Windows.Forms.Button();
+            this.btCancel = new System.Windows.Forms.Button();
+            this.lbWarning = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // textBox1
+            // tbUserName
             // 
-            this.textBox1.Location = new System.Drawing.Point(71, 16);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(176, 20);
-            this.textBox1.TabIndex = 0;
+            this.tbUserName.Location = new System.Drawing.Point(71, 16);
+            this.tbUserName.Name = "tbUserName";
+            this.tbUserName.Size = new System.Drawing.Size(176, 20);
+            this.tbUserName.TabIndex = 0;
             // 
             // label1
             // 
@@ -68,37 +69,41 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Группа";
             // 
-            // comboBox1
+            // cbUserType
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.cbUserType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbUserType.FormattingEnabled = true;
+            this.cbUserType.Items.AddRange(new object[] {
             "Администратор",
-            "Зоотехник"});
-            this.comboBox1.Location = new System.Drawing.Point(71, 48);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(176, 21);
-            this.comboBox1.TabIndex = 3;
+            "Зоотехник",
+            "Упаковщик"});
+            this.cbUserType.Location = new System.Drawing.Point(71, 48);
+            this.cbUserType.Name = "cbUserType";
+            this.cbUserType.Size = new System.Drawing.Size(176, 21);
+            this.cbUserType.TabIndex = 3;
+            this.cbUserType.SelectedIndexChanged += new System.EventHandler(this.cbUserType_SelectedIndexChanged);
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.textBox3);
+            this.groupBox1.Controls.Add(this.lbWarning);
+            this.groupBox1.Controls.Add(this.tbPass2);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.textBox2);
+            this.groupBox1.Controls.Add(this.tbPass1);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Location = new System.Drawing.Point(23, 92);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(224, 100);
+            this.groupBox1.Size = new System.Drawing.Size(224, 119);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             // 
-            // textBox3
+            // tbPass2
             // 
-            this.textBox3.Location = new System.Drawing.Point(57, 62);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(161, 20);
-            this.textBox3.TabIndex = 3;
-            this.textBox3.UseSystemPasswordChar = true;
+            this.tbPass2.Location = new System.Drawing.Point(57, 62);
+            this.tbPass2.Name = "tbPass2";
+            this.tbPass2.Size = new System.Drawing.Size(161, 20);
+            this.tbPass2.TabIndex = 3;
+            this.tbPass2.UseSystemPasswordChar = true;
+            this.tbPass2.TextChanged += new System.EventHandler(this.tbPass1_TextChanged);
             // 
             // label4
             // 
@@ -109,13 +114,14 @@
             this.label4.TabIndex = 2;
             this.label4.Text = "Повтор";
             // 
-            // textBox2
+            // tbPass1
             // 
-            this.textBox2.Location = new System.Drawing.Point(57, 30);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(161, 20);
-            this.textBox2.TabIndex = 1;
-            this.textBox2.UseSystemPasswordChar = true;
+            this.tbPass1.Location = new System.Drawing.Point(57, 30);
+            this.tbPass1.Name = "tbPass1";
+            this.tbPass1.Size = new System.Drawing.Size(161, 20);
+            this.tbPass1.TabIndex = 1;
+            this.tbPass1.UseSystemPasswordChar = true;
+            this.tbPass1.TextChanged += new System.EventHandler(this.tbPass1_TextChanged);
             // 
             // label3
             // 
@@ -137,43 +143,54 @@
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
-            // button1
+            // btOK
             // 
-            this.button1.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.button1.Location = new System.Drawing.Point(172, 200);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Применить";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btOK.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.btOK.Location = new System.Drawing.Point(172, 217);
+            this.btOK.Name = "btOK";
+            this.btOK.Size = new System.Drawing.Size(75, 23);
+            this.btOK.TabIndex = 6;
+            this.btOK.Text = "Применить";
+            this.btOK.UseVisualStyleBackColor = true;
+            this.btOK.Click += new System.EventHandler(this.btOK_Click);
             // 
-            // button2
+            // btCancel
             // 
-            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(91, 200);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 7;
-            this.button2.Text = "Отмена";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btCancel.Location = new System.Drawing.Point(91, 217);
+            this.btCancel.Name = "btCancel";
+            this.btCancel.Size = new System.Drawing.Size(75, 23);
+            this.btCancel.TabIndex = 7;
+            this.btCancel.Text = "Отмена";
+            this.btCancel.UseVisualStyleBackColor = true;
+            this.btCancel.Click += new System.EventHandler(this.btCancel_Click);
+            // 
+            // lbWarning
+            // 
+            this.lbWarning.ForeColor = System.Drawing.Color.Red;
+            this.lbWarning.Location = new System.Drawing.Point(6, 85);
+            this.lbWarning.Name = "lbWarning";
+            this.lbWarning.Size = new System.Drawing.Size(212, 31);
+            this.lbWarning.TabIndex = 8;
+            this.lbWarning.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // UserInfoForm
             // 
-            this.AcceptButton = this.button1;
+            this.AcceptButton = this.btOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.button2;
-            this.ClientSize = new System.Drawing.Size(272, 235);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.CancelButton = this.btCancel;
+            this.ClientSize = new System.Drawing.Size(272, 252);
+            this.Controls.Add(this.btCancel);
+            this.Controls.Add(this.btOK);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cbUserType);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.tbUserName);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -190,17 +207,18 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tbUserName;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cbUserType;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox tbPass2;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox tbPass1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btOK;
+        private System.Windows.Forms.Button btCancel;
+        private System.Windows.Forms.Label lbWarning;
     }
 }

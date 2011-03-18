@@ -35,10 +35,16 @@ namespace rabnet
 
     class Youngers:RabNetDataGetterBase
     {
-        public Youngers(MySqlConnection sql, Filters f): base(sql, f)
-        {
-        }
+        public Youngers(MySqlConnection sql, Filters f) : base(sql, f) { }
 
+        /// <summary>
+        /// Возвращает одну запись для вкладки Молодняк.
+        /// </summary>
+        /// <param name="rd">Результат выполнения запроса из  метода "getQuery"</param>
+        /// <param name="shr"></param>
+        /// <param name="sht"></param>
+        /// <param name="sho"></param>
+        /// <returns></returns>
         public static IData getYounger(MySqlDataReader rd, bool shr, bool sht,bool sho)
         {
             Younger y = new Younger(rd.GetInt32("r_id"), rd.GetString("name"),
@@ -50,16 +56,17 @@ namespace rabnet
             y.faddress = Buildings.fullPlaceName(rd.GetString("rplace"), shr,sht,sho);
             return y;
         }
-
         public override IData nextItem()
         {
-            bool shr=options.safeBool("shr");
+            bool shr = options.safeBool("shr");
             return getYounger(rd, shr, options.safeBool("sht"), options.safeBool("sho"));
         }
-
+        /// <summary>
+        /// Строка запроса к БД, для получения данных о Молодняке
+        /// </summary>
+        /// <returns>sql-запрос</returns>
         public override string getQuery()
         {
-
             return @"SELECT r_id,
 rabname(r_id,"+(options.safeBool("dbl")?"2":"1")+@") name,
 r_group,r_sex,
@@ -71,7 +78,13 @@ r_notes,TO_DAYS(NOW())-TO_DAYS(r_born) age,r_bon,
 rabplace(r_parent) rplace
 FROM rabbits WHERE r_parent!=0 ORDER BY name;";
         }
-
+        /// <summary>
+        /// Запрос на получение: 
+        ///     Общего количества записей, 
+        ///     общее количество кроликов,
+        ///     общее количество кормилиц.
+        /// </summary>
+        /// <returns>sql-запрос</returns>
         public override string countQuery()
         {
             //return "SELECT COUNT(*),SUM(r_group) FROM rabbits WHERE r_parent!=0;";

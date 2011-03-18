@@ -23,7 +23,7 @@ namespace rabnet
         }
         public RabbitsPanel(RabStatusBar rsb):base(rsb,new RabbitsFilter(rsb))
         {
-            cs = new ListViewColumnSorter(listView1, new int[] {2,8,9 },Options.OPT_ID.RAB_LIST);
+            colSort = new ListViewColumnSorter(listView1, new int[] {2,8,9 },Options.OPT_ID.RAB_LIST);
             listView1.ListViewItemSorter = null;
 			GeneticsToolStripMenuItem.Enabled = GeneticsManagerSafe.GeneticsModuleTest();
         }
@@ -40,7 +40,7 @@ namespace rabnet
             flt["brd"] = op.getOption(Options.OPT_ID.MAKE_BRIDE);
             flt["suc"] = op.getOption(Options.OPT_ID.SUCKERS);
             flt["cand"] = op.getOption(Options.OPT_ID.MAKE_CANDIDATE);
-            cs.Prepare();
+            colSort.Prepare();
             IDataGetter dg = DataThread.db().getRabbits(flt);
             rsb.setText(1, dg.getCount().ToString() + " записей");
             rsb.setText(2, dg.getCount2().ToString() + " кроликов");
@@ -61,7 +61,7 @@ namespace rabnet
 
             if (data == null)
             {
-                cs.Restore();
+                colSort.Restore();
                 return;
             }
             Rabbit rab = (data as Rabbit);
@@ -79,7 +79,7 @@ namespace rabnet
             li.SubItems.Add(rab.fcls);
             li.SubItems.Add(rab.faddress);
             li.SubItems.Add(rab.fnotes);
-			cs.SemiReady();
+			colSort.SemiReady();
         }
 
         private void insertNode(TreeNode nd,TreeData data)
@@ -410,7 +410,7 @@ namespace rabnet
             doc.DocumentElement.AppendChild(rw);
             if (er != null)
             {
-                or = Engine.db().getLiveDeadRabbit(er.RID);
+                or = Engine.db().getLiveDeadRabbit(er.RabID);
                 if (hasdoc==null)
                 {
                     rw.AppendChild(doc.CreateElement("header")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.SVID_HEAD)));
@@ -474,7 +474,7 @@ namespace rabnet
             XmlDocument[] docs=new XmlDocument[7];
             RabNetEngRabbit r=Engine.get().getRabbit((int)listView1.SelectedItems[0].Tag);
             docs[0]=rabToXml(r,null);
-            OneRabbit[] p1 = Engine.db().getParents(r.RID, r.age);
+            OneRabbit[] p1 = Engine.db().getParents(r.RabID, r.age);
             docs[1] = rabToXml(null, p1[0]);
             docs[2] = rabToXml(null, p1[1]);
             OneRabbit[] p2;
@@ -510,7 +510,7 @@ namespace rabnet
             f["cnt"] = listView1.SelectedItems.Count.ToString();
             for (int i = 0; i < listView1.SelectedItems.Count; i++)
                 f["r" + i.ToString()] = ((int)listView1.SelectedItems[i].Tag).ToString();
-            new ReportViewForm("Кандидаты на реализацию", "realization", Engine.db().makeReport(ReportType.Type.REALIZE, f)).ShowDialog();
+            new ReportViewForm("Кандидаты на реализацию", "realization", Engine.db().makeReport(myReportType.REALIZE, f)).ShowDialog();
 #else
             DemoErr.DemoNoReportMsg();
 #endif
