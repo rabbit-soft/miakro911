@@ -1,8 +1,0 @@
-D:\02_Development\rabbits\src\butcher\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
-D:\02_Development\rabbits\src\butcher\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
-D:\02_Development\rabbits\src\butcher\WindowsFormsApplication1\obj\Debug\ResolveAssemblyReference.cache
-D:\02_Development\rabbits\src\butcher\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
-D:\02_Development\rabbits\src\butcher\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
-D:\02_Development\rabbits\src\butcher\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.GenerateResource.Cache
-D:\02_Development\rabbits\src\butcher\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
-D:\02_Development\rabbits\src\butcher\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
