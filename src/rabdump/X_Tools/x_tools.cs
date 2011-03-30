@@ -71,6 +71,34 @@ namespace X_Tools
             }
         }
 
+        public static string toRusMonth(string dt)
+        {
+            try
+            {
+                string result = "";
+                switch (int.Parse(dt))
+                {
+                    case 1: result += "Январь "; break;
+                    case 2: result += "Февраль "; break;
+                    case 3: result += "Март "; break;
+                    case 4: result += "Апрель "; break;
+                    case 5: result += "Май "; break;
+                    case 6: result += "Июнь "; break;
+                    case 7: result += "Июль "; break;
+                    case 8: result += "Август "; break;
+                    case 9: result += "Сентябрь "; break;
+                    case 10: result += "Октябрь "; break;
+                    case 11: result += "Ноябрь "; break;
+                    case 12: result += "Декабрь "; break;
+                }
+                return result;
+            }
+            catch
+            {
+                return "";
+            }
+        }
+
         // readStream is the stream you need to read
         // writeStream is the stream you want to write to
 /*

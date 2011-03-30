@@ -14,6 +14,20 @@ namespace rabnet
 	[System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
 	public partial class CatalogForm : Form
     {
+        private class myCell
+        {
+            public int Coll;
+            public int Row;
+            public string Text;
+
+            public myCell(int coll, int row, string text)
+            {
+                this.Coll = coll;
+                this.Row = row;
+                this.Text = text;
+            }
+        }
+
         /// <summary>
         /// Типы справочников
         /// </summary>
@@ -22,21 +36,24 @@ namespace rabnet
         /// <summary>
         /// Тип показываемого справочника
         /// </summary>
-        private CatalogType cat = CatalogType.NONE;
+        private CatalogType catType = CatalogType.NONE;
         /// <summary>
         /// Вносятся ли изменения пользователем
         /// </summary>
         private bool manual = true;
         private int _hiddenId = 0;
+        private myCell _lastCell = null;
+
         public CatalogForm()
         {
             InitializeComponent();
+            this.manual = false;
         }
 
         public CatalogForm(CatalogType type):this()
         {
-            cat = type;
-            switch (cat)
+            catType = type;
+            switch (catType)
             {
                 case CatalogType.BREEDS:
                     Text = "Справочник Пород";
@@ -66,7 +83,7 @@ namespace rabnet
             manual = false;
             ds.Clear();
             CatalogData cd = null;
-            switch (cat)
+            switch (catType)
             {
                 case CatalogType.BREEDS:
                     cd = Engine.db().getBreeds().getBreeds();
@@ -156,7 +173,7 @@ namespace rabnet
 				dataGridView1.Rows[rownumber].Cells[cd.colnames.Length].Value = cd.data[i].key;
 
 			}
-            if (cat == CatalogType.DEAD) dataGridView1.Rows[0].ReadOnly = true;
+            if (catType == CatalogType.DEAD) dataGridView1.Rows[0].ReadOnly = true;
             if (colorExist != -1)
                 dataGridView1.Columns[colorExist].Name = dataGridView1.Columns[colorExist].Name.Remove(0, "#color#".Length);
             if (imageExist != -1)
@@ -178,12 +195,21 @@ namespace rabnet
 		private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
 		{
 			if (!manual) return;
+            if (_lastCell != null)
+            {
+                if (dataGridView1.SelectedCells[0].Value == null && e.ColumnIndex == _lastCell.Coll && e.RowIndex == _lastCell.Row)
+                {
+                    dataGridView1.SelectedCells[0].Value = _lastCell.Text;
+                    return;
+                }
+            }
+
             /*
              * Если последняя невидимая ячейка не содержит информации(ID записи),
              * значит нужно добавить новую запись.
              * Иначе изменить существующую
              */
-			switch (cat)
+			switch (catType)
 			{
 				case CatalogType.BREEDS:
                     if (dataGridView1.Rows[e.RowIndex].Cells[_hiddenId].Value == null)
@@ -226,6 +252,7 @@ namespace rabnet
                         dataGridView1.Refresh();
 					}
 					break;
+                ///////////////////////
 				case CatalogType.ZONES:
                     if (dataGridView1.Rows[e.RowIndex].Cells[_hiddenId].Value == null)
 					{
@@ -267,6 +294,7 @@ namespace rabnet
 						Engine.db().getZones().ChangeZone(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[3].Value), col1,col2);
 					}
 					break;
+                /////////////////////////
 				case CatalogType.DEAD:
                     if (dataGridView1.Rows[e.RowIndex].Cells[_hiddenId].Value == null)
 					{
@@ -287,6 +315,7 @@ namespace rabnet
 						Engine.db().getDeadReasons().ChangeReason(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[1].Value), col0);
 					}
 					break;
+                /////////////////////////
                 case CatalogType.PRODUCTS:
                     if (dataGridView1.Rows[e.RowIndex].Cells[_hiddenId].Value == null)
                     {
@@ -367,6 +396,7 @@ namespace rabnet
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
+            if (catType != CatalogType.PRODUCTS) return;
             if (dataGridView1.SelectedCells.Count != 0 && dataGridView1.SelectedCells[0].ColumnIndex == 2)
             {
                 btNewImage.Enabled = true;
@@ -401,6 +431,17 @@ namespace rabnet
         {
             if (dataGridView1.SelectedCells.Count != 0 && dataGridView1.SelectedCells[0].ColumnIndex == 2)
                 dataGridView1.SelectedCells[0].Value = null;
+        }
+
+        private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (!manual || dataGridView1.SelectedCells.Count==0) return;
+            if ((catType == CatalogType.PRODUCTS && e.ColumnIndex == 3) || dataGridView1.SelectedCells[0].Value==null)
+            {
+                _lastCell = null;
+                return;
+            }
+            _lastCell = new myCell(e.ColumnIndex,e.RowIndex,dataGridView1.SelectedCells[0].Value.ToString());
         }
     }
 }

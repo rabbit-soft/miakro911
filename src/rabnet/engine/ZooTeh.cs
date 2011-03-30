@@ -170,7 +170,7 @@ namespace rabnet
             for (int i = 0; i < 4; i++)
             {
                 int days = f.safeInt("count" + i.ToString());
-                int next = i==3?-1:f.safeInt("count" + (i+1).ToString());
+                int next = i == 3 ? -1 : f.safeInt("count" + (i + 1).ToString());
                 ZooJobItem[] jobs = eng.db2().getCounts(f, days,next);
                 foreach (ZooJobItem z in jobs)
                     jh.Add(new ZootehJob(f).Counts(z.id, z.name, z.place, z.age,z.i[0],i==3,z.breed,z.i[1],z.i[2]));

@@ -60,7 +60,7 @@ namespace rabnet
             button1.Enabled = button4.Enabled=button5.Enabled=false;
             if (listView1.SelectedItems.Count != 1) return;
             button1.Enabled = button4.Enabled =true;
-            if ((int)listView1.SelectedItems[0].Tag != Engine.get().uId())
+            if ((int)listView1.SelectedItems[0].Tag != Engine.get().userId)
                 button5.Enabled = true;
         }
 

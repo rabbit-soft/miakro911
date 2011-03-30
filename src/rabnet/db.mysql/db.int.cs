@@ -66,6 +66,7 @@ namespace rabnet
         IDataGetter zooTeh(Filters f);
         IDataGetter getButcherDates(Filters f);
         List<String> getButcherMonths();
+        List<String> getFuckMonths();
         OneRabbit getRabbit(int rid);
         void setRabbit(OneRabbit r);
         ICatalogs catalogs();

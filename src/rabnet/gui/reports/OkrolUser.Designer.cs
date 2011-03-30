@@ -32,10 +32,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.dtpTo = new System.Windows.Forms.DateTimePicker();
-            this.label2 = new System.Windows.Forms.Label();
-            this.dtpFrom = new System.Windows.Forms.DateTimePicker();
+            this.cbYear = new System.Windows.Forms.ComboBox();
+            this.cbMonth = new System.Windows.Forms.ComboBox();
+            this.rbYear = new System.Windows.Forms.RadioButton();
+            this.rbMonth = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // comboBox1
@@ -76,40 +76,51 @@
             this.button1.Text = "Отчет";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // label3
+            // cbYear
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(27, 80);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(19, 13);
-            this.label3.TabIndex = 11;
-            this.label3.Text = "по";
+            this.cbYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbYear.Enabled = false;
+            this.cbYear.FormattingEnabled = true;
+            this.cbYear.Location = new System.Drawing.Point(98, 79);
+            this.cbYear.Name = "cbYear";
+            this.cbYear.Size = new System.Drawing.Size(121, 21);
+            this.cbYear.TabIndex = 16;
             // 
-            // dtpTo
+            // cbMonth
             // 
-            this.dtpTo.Enabled = false;
-            this.dtpTo.Location = new System.Drawing.Point(52, 76);
-            this.dtpTo.Name = "dtpTo";
-            this.dtpTo.Size = new System.Drawing.Size(144, 20);
-            this.dtpTo.TabIndex = 10;
-            this.dtpTo.ValueChanged += new System.EventHandler(this.dtpFrom_ValueChanged);
+            this.cbMonth.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMonth.FormattingEnabled = true;
+            this.cbMonth.Location = new System.Drawing.Point(98, 45);
+            this.cbMonth.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
+            this.cbMonth.Name = "cbMonth";
+            this.cbMonth.Size = new System.Drawing.Size(121, 21);
+            this.cbMonth.TabIndex = 17;
             // 
-            // label2
+            // rbYear
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(33, 54);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(13, 13);
-            this.label2.TabIndex = 9;
-            this.label2.Text = "с";
+            this.rbYear.AutoSize = true;
+            this.rbYear.Location = new System.Drawing.Point(34, 83);
+            this.rbYear.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
+            this.rbYear.Name = "rbYear";
+            this.rbYear.Size = new System.Drawing.Size(43, 17);
+            this.rbYear.TabIndex = 15;
+            this.rbYear.Text = "Год";
+            this.rbYear.UseVisualStyleBackColor = true;
+            this.rbYear.CheckedChanged += new System.EventHandler(this.rbMonth_CheckedChanged);
             // 
-            // dtpFrom
+            // rbMonth
             // 
-            this.dtpFrom.Location = new System.Drawing.Point(52, 50);
-            this.dtpFrom.Name = "dtpFrom";
-            this.dtpFrom.Size = new System.Drawing.Size(144, 20);
-            this.dtpFrom.TabIndex = 8;
-            this.dtpFrom.ValueChanged += new System.EventHandler(this.dtpFrom_ValueChanged);
+            this.rbMonth.AutoSize = true;
+            this.rbMonth.Checked = true;
+            this.rbMonth.Location = new System.Drawing.Point(34, 46);
+            this.rbMonth.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
+            this.rbMonth.Name = "rbMonth";
+            this.rbMonth.Size = new System.Drawing.Size(58, 17);
+            this.rbMonth.TabIndex = 14;
+            this.rbMonth.TabStop = true;
+            this.rbMonth.Text = "Месяц";
+            this.rbMonth.UseVisualStyleBackColor = true;
+            this.rbMonth.CheckedChanged += new System.EventHandler(this.rbMonth_CheckedChanged);
             // 
             // OkrolUser
             // 
@@ -118,12 +129,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button2;
             this.ClientSize = new System.Drawing.Size(231, 158);
+            this.Controls.Add(this.cbYear);
+            this.Controls.Add(this.cbMonth);
+            this.Controls.Add(this.rbYear);
+            this.Controls.Add(this.rbMonth);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.dtpTo);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.dtpFrom);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBox1);
             this.MaximizeBox = false;
@@ -143,9 +154,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.DateTimePicker dtpTo;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.DateTimePicker dtpFrom;
+        private System.Windows.Forms.ComboBox cbYear;
+        private System.Windows.Forms.ComboBox cbMonth;
+        private System.Windows.Forms.RadioButton rbYear;
+        private System.Windows.Forms.RadioButton rbMonth;
     }
 }

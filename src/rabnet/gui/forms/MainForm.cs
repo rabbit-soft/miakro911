@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using log4net;
 using System.Xml;
+using X_Tools;
 #if PROTECTED
 using RabGRD;
 #endif
@@ -415,8 +416,10 @@ namespace rabnet
             {
                 Filters f = new Filters();
                 f["user"] = dlg.getUser().ToString();
-                f["dfr"] = dlg.getFromDate();
-                f["dto"] = dlg.getToDate(); 
+                f["dttp"] = dlg.Period == myDatePeriod.Month ? "m" : "y";
+                f["dtval"] = dlg.DateValue;
+                /*f["dfr"] = dlg.getFromDate();
+                f["dto"] = dlg.getToDate();*/
                 (new ReportViewForm("Окролы по пользователям", "okrol_user", 
                     new XmlDocument[]
                     {
@@ -450,7 +453,7 @@ namespace rabnet
             if (brd.ShowDialog() == DialogResult.OK)
             {
                 Filters f = new Filters();
-                f["per"] = brd.Period == ButcherReportDate.myDatePeriod.Month ? "0" : "1";
+                f["per"] =  brd.Period == myDatePeriod.Month ? "m" : "y";
                 (new ReportViewForm("Отчет по завесам", "butcher", Engine.get().db().makeReport(myReportType.BUTCHER_PERIOD, f))).ShowDialog();
             }
         }

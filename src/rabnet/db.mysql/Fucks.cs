@@ -48,12 +48,13 @@ namespace rabnet
                 rgenom = gen;
             }
         }
-        public List<Fuck> fucks=new List<Fuck>();
+        public List<Fuck> fucks = new List<Fuck>();
         public void addFuck(int id,String p,int pid,int tms,DateTime s,DateTime e,String st,int ch,int dd,
             int brd,String gen,String tp,int kl,int add,bool dead,String wrk)
         {
             fucks.Add(new Fuck(id,p,pid,tms,s,e,st,ch,dd,brd,gen,tp,kl,add,dead,wrk));
         }
+
     }
 
     class FucksGetter
@@ -144,6 +145,7 @@ female,malewait,
             MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE fucks SET f_worker={0:d} WHERE f_id={1:d};",wid,fid),sql);
             cmd.ExecuteNonQuery();
         }
+
         public static void changeFucker(MySqlConnection sql, int fid, int fucker)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT f_date FROM fucks WHERE f_id={0:d};",fid), sql);
@@ -169,6 +171,17 @@ female,malewait,
             }
         }
 
-
+        internal static List<string> getFuckMonths(MySqlConnection sql)
+        {
+            var result = new List<String>();
+            MySqlCommand cmd = new MySqlCommand("SELECT DISTINCT Date_Format(f_date,'%m.%Y')dt FROM fucks WHERE f_date IS NOT null ORDER BY f_date DESC;", sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            while (rd.Read())
+            {
+                result.Add(rd.GetString("dt"));
+            }
+            rd.Close();
+            return result;
+        }
     }
 }

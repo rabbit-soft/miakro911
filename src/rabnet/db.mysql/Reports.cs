@@ -18,15 +18,37 @@ namespace rabnet
         private DateTime TO = DateTime.Now;
         private String DFROM = "NOW()";
         private String DTO = "NOW()";
+
         public Reports(MySqlConnection sql)
         {
             this.sql = sql;
         }
 
+        public XmlDocument makeReport(myReportType type, Filters f)
+        {
+            String query = "";
+            switch (type)
+            {
+                case myReportType.TEST: query = testQuery(f); break;
+                case myReportType.BREEDS: query = breedsQuery(f); break;
+                case myReportType.AGE: query = ageQuery(f); break;
+                case myReportType.FUCKER: query = fuckerQuery(f); break;
+                case myReportType.DEAD: query = deadQuery(f); break;
+                case myReportType.DEADREASONS: query = deadReasonsQuery(f); break;
+                case myReportType.REALIZE: query = Realize(f); break;
+                case myReportType.USER_OKROLS: return UserOkrolRpt(UserOkrols(f));
+                case myReportType.SHED: return ShedReport(f);
+                case myReportType.REVISION: return Revision(f);
+                case myReportType.BY_MONTH: query = rabByMonth(); break;
+                case myReportType.FUCKS_BY_DATE: query = fucksByDate(f); break;
+            }
+            return makeStdReportXml(query);
+        }
+
         private XmlDocument makeStdReportXml(String query)
         {
             MySqlCommand cmd = new MySqlCommand(query, sql);
-            MySqlDataReader rd=cmd.ExecuteReader();
+            MySqlDataReader rd = cmd.ExecuteReader();
             XmlDocument xml = new XmlDocument();
             XmlElement root = xml.CreateElement("Rows");
             xml.AppendChild(root);
@@ -163,27 +185,6 @@ namespace rabnet
             return doc;
         }
 
-        public XmlDocument makeReport(myReportType type, Filters f)
-        {
-            String query="";
-            switch (type)
-            {
-                case myReportType.TEST:query=testQuery(f);break;
-                case myReportType.BREEDS: query = breedsQuery(f); break;
-                case myReportType.AGE: query = ageQuery(f); break;
-                case myReportType.FUCKER: query = fuckerQuery(f); break;
-                case myReportType.DEAD: query = deadQuery(f); break;
-                case myReportType.DEADREASONS: query = deadReasonsQuery(f); break;
-                case myReportType.REALIZE: query = Realize(f); break;
-                case myReportType.USER_OKROLS: return UserOkrolRpt(UserOkrols(f));
-                case myReportType.SHED: return ShedReport(f);
-                case myReportType.REVISION: return Revision(f);
-                case myReportType.BY_MONTH: query = rabByMonth(); break;
-                case myReportType.FUCKS_BY_DATE: query=fucksByDate(f); break;
-            }
-            return makeStdReportXml(query);
-        }
-
         public static XmlDocument makeReport(MySqlConnection sql,myReportType type,Filters f)
         {
             return new Reports(sql).makeReport(type, f);
@@ -194,14 +195,19 @@ namespace rabnet
             return "SELECT rabname(r_id,2) f1,(TO_DAYS(NOW())-TO_DAYS(r_born)) f2 FROM rabbits LIMIT 100;";
         }
 
+        /// <summary>
+        /// Отчет "Состав пород"
+        /// </summary>
+        /// <param name="f"></param>
+        /// <returns></returns>
         private string breedsQuery(Filters f)
         {
-            return String.Format(@"SELECT r_breed br,(SELECT b_name FROM breeds WHERE b_id=br) breed,
+            string s = String.Format(@"SELECT r_breed br,(SELECT b_name FROM breeds WHERE b_id=br) breed,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=2 AND r_breed=br) fuck,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=1 AND r_breed=br) kandidat,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=0 AND r_breed=br) boys,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status>=2 AND r_breed=br) state,
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND ((r_status=0 AND r_event_date IS NOT NULL)OR(r_status=1 AND r_event_date IS NULL)) AND r_breed=br) pervo,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND ((r_status=0 AND r_event_date IS NOT NULL)OR r_status=1 ) AND r_breed=br) pervo,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND (r_status=0 AND r_event_date IS NULL) AND r_breed=br AND r_born<=(now()-INTERVAL {0:s} day)) nevest,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=0 AND r_breed=br and r_born>(now()-INTERVAL {0:s} day)) girl,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='void' AND r_breed=br) bezpolie,
@@ -210,15 +216,16 @@ FROM rabbits GROUP BY r_breed
 union
 
 select 'Итого','',(SELECT count(*) FROM rabbits WHERE r_sex='male' AND r_status=2),
-(SELECT count(*) FROM rabbits WHERE r_sex='male' AND r_status=1) kandidat,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=1) kandidat,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=0) boys,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status>=2 ) state,
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND ((r_status=0 AND r_event_date IS NOT NULL)OR(r_status=1 AND r_event_date IS NULL))) pervo,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND ((r_status=0 AND r_event_date IS NOT NULL)OR r_status=1))) pervo,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND (r_status=0 AND r_event_date IS NULL) AND r_born<=(now()-INTERVAL {0:s} day)) nevest,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=0 and r_born>(now()-INTERVAL {0:s} day)) girl,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='void') bezpolie,
 sum(r_group) vsego
 from rabbits;", f.safeValue("brd","121"));
+            return s;
         }
 
         private string ageQuery(Filters f)
@@ -261,21 +268,23 @@ FROM fucks WHERE f_partner={0:d} AND f_end_date>={1:s} AND f_end_date<={2:s}
         private String deadQuery(Filters f)
         {
             getDates(f);
-            return String.Format(@"(SELECT DATE_FORMAT(d_date,'%d.%m.%Y') date,deadname(r_id,2) name,r_group,
+            string s= String.Format(@"(SELECT DATE_FORMAT(d_date,'%d.%m.%Y') date,deadname(r_id,2) name,r_group,
 (SELECT d_name FROM deadreasons WHERE d_id=d_reason) reason,d_notes FROM dead WHERE 
 d_date>={0:s} AND d_date<={1:s} ORDER BY d_date ASC)
 UNION ALL (SELECT 'Итого:','',SUM(r_group),'','' FROM dead WHERE 
 d_date>={0:s} AND d_date<={1:s});", DFROM, DTO);
+            return s;
         }
 
         private String deadReasonsQuery(Filters f)
         {
             getDates(f);
-            return String.Format(@"(SELECT SUM(r_group) grp,d_reason,
+            string s = String.Format(@"(SELECT SUM(r_group) grp,d_reason,
 (SELECT d_name FROM deadreasons WHERE d_reason=d_id) reason FROM dead WHERE
 d_date>={0:s} AND d_date<={1:s} GROUP BY d_reason)
 UNION 
 (SELECT SUM(r_group),0,'Итого' FROM dead WHERE d_date>={0:s} AND d_date<={1:s});", DFROM, DTO);
+            return s;
         }
 
         private String Realize(Filters f)
@@ -294,15 +303,32 @@ r_group FROM rabbits WHERE {0:s} ORDER BY r_farm,r_tier_id,r_area;",where);
         /// Окролы по пользователям - Запрос
         /// </summary>
         /// <param name="f"></param>
-        /// <returns></returns>
+        /// <returns>SQL-запрос на получение окролов</returns>
         private String UserOkrols(Filters f)
         {
             getDates(f);
             int user = f.safeInt("user");
-            return String.Format(@"SELECT CONCAT(' ',anyname(f_partner,0)) name,DATE_FORMAT(f_end_date,'%d') dt,
-IF (f_state='okrol',f_children,IF(f_state='proholost','п','-')) state 
-FROM fucks WHERE f_worker={2:d}
-AND f_end_date>={0:s} AND f_end_date<={1:s} ORDER BY name,dt;", DFROM, DTO, user);
+            string period = "";
+            string format = "";
+            if (f.safeValue("dttp") == "m")
+            {
+                DateTime dt = DateTime.Parse(f.safeValue("dtval"));
+                period = String.Format("AND (MONTH(f_end_date)={0:MM} AND YEAR(f_end_date)={0:yyyy})", dt);
+                format = "%d";
+            }
+            else if (f.safeValue("dttp") == "y")
+            {
+                period = String.Format("AND YEAR(f_end_date)={0}", f.safeValue("dtval"));
+                format = "%m";
+            }
+            string result = String.Format(@"SELECT 
+    CONCAT(' ',anyname(f_partner,0)) name,
+    DATE_FORMAT(f_end_date,'{2}') dt,
+    IF (f_state='okrol',f_children,IF(f_state='proholost','п','-')) state 
+FROM fucks 
+WHERE f_worker={0:d} {1} ORDER BY name,dt;", f.safeValue("user"), period,format);
+
+            return result;
         }
 
         private String getValue(String query)
@@ -421,11 +447,12 @@ FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AN
         private string rabByMonth()
         {
             //return "SELECT DATE_FORMAT(r_born,'%m.%Y') date, sum(r_group) count FROM rabbits GROUP BY date ORDER BY year(r_born) desc,month(r_born) desc;";
-            return @"SELECT
+            string s = @"SELECT
                         DATE_FORMAT(r_born,'%m.%Y') date,
                         (SELECT COALESCE(SUM(r_group),0) FROM dead d WHERE MONTH(d.r_born)=MONTH(rabbits.r_born) AND YEAR(d.r_born)=YEAR(rabbits.r_born))+COALESCE(SUM(r_group),0) count,
                         COALESCE(SUM(r_group),0) alife
                         FROM rabbits GROUP BY date ORDER BY year(r_born) desc,month(r_born) desc;";
+            return s;
         }
 
         private string fucksByDate(Filters f)

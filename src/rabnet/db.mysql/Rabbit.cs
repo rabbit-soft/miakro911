@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using MySql.Data.MySqlClient;
+using log4net;
 
 namespace rabnet
 {
@@ -861,27 +862,48 @@ FROM rabbits WHERE r_id={0:d};", rabbit,mom,count), sql);
             }
         }
 
+        /// <summary>
+        /// Списывает кролика.
+        /// Если кролик подсосный, то обнуляет поле с Кормилицей.
+        /// Если кролик кормилица, то обнуляет детям поле с кормилицей
+        /// </summary>
+        /// <param name="sql">sql-подключение</param>
+        /// <param name="rid">ID кролика</param>
+        /// <param name="when">Дата списания</param>
+        /// <param name="reason">Причина списания</param>
+        /// <param name="notes">Заметки</param>
         public static void killRabbit(MySqlConnection sql, int rid, DateTime when, int reason, string notes)
         {
-            int[] place=freeTier(sql, rid);
+            int[] place = freeTier(sql, rid);
             freeName(sql, rid);
-            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT r_id FROM rabbits WHERE r_parent={0:d};", rid), sql);
-            MySqlDataReader rd = cmd.ExecuteReader();
-            if (rd.Read())
+            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT r_parent FROM rabbits WHERE r_id={0:d};", rid), sql);
+            if (cmd.ExecuteScalar().ToString() != "0")//если подсосный
             {
-                int c1=rd.GetInt32(0);
-                rd.Close();
-                if (c1 != 0)
+                cmd.CommandText = String.Format("UPDATE rabbits SET r_parent=0 WHERE r_id={0:d};", rid);
+                cmd.ExecuteNonQuery();
+            }
+            else
+            {
+                cmd = new MySqlCommand(String.Format("SELECT r_id FROM rabbits WHERE r_parent={0:d};", rid), sql);
+                MySqlDataReader rd = cmd.ExecuteReader();
+                if (rd.Read())
                 {
-                    placeRabbit(sql, c1, place[0], place[1], place[2]);
-                    cmd.CommandText = String.Format("UPDATE rabbits SET r_parent=0 WHERE r_id={0:d};",c1);
-                    cmd.ExecuteNonQuery();
+                    int c1 = rd.GetInt32(0);
+                    rd.Close();
+                    if (c1 != 0)
+                    {
+                        placeRabbit(sql, c1, place[0], place[1], place[2]);
+                        cmd.CommandText = String.Format("UPDATE rabbits SET r_parent=0 WHERE r_id={0:d};", c1);
+                        cmd.ExecuteNonQuery();
+                    }
                 }
-            }else rd.Close();
+                else rd.Close();
+            }
             cmd.CommandText=String.Format("UPDATE rabbits SET r_parent=0,r_farm={1:d},r_tier={2:d},r_area={3:d},r_tier={4:d} WHERE r_parent={0:d};", rid,place[0],place[1],place[2],place[3]);
             cmd.ExecuteNonQuery();
             cmd.CommandText = String.Format(@"COMMIT;CALL killRabbitDate({0:d},{1:d},'{2:s}',{3:s});",
                 rid,reason,notes,DBHelper.DateToMyString(when));
+            
             cmd.ExecuteNonQuery();
         }
 

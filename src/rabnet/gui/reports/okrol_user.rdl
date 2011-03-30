@@ -82,8 +82,8 @@
           <BorderStyle>
             <Default>Solid</Default>
           </BorderStyle>
-          <BorderColor  />
-          <BorderWidth  />
+          <BorderColor />
+          <BorderWidth />
         </Style>
         <Corner>
           <ReportItems>
@@ -122,8 +122,8 @@
                     <BorderStyle>
                       <Default>Solid</Default>
                     </BorderStyle>
-                    <BorderColor  />
-                    <BorderWidth  />
+                    <BorderColor />
+                    <BorderWidth />
                   </Style>
                 </Textbox>
               </ReportItems>
@@ -132,7 +132,7 @@
         </ColumnGroupings>
         <RowGroupings>
           <RowGrouping>
-            <Width>76.2pt</Width>
+            <Width>50.6pt</Width>
             <DynamicRows>
               <Grouping Name="DynamicRowsGroup1">
                 <GroupExpressions>
@@ -154,7 +154,7 @@
         </RowGroupings>
         <MatrixColumns>
           <MatrixColumn>
-            <Width>20.8pt</Width>
+            <Width>23.2pt</Width>
           </MatrixColumn>
         </MatrixColumns>
         <MatrixRows>
@@ -171,6 +171,7 @@
                       </BorderStyle>
                       <BorderColor />
                       <BorderWidth />
+                      <FontSize>8pt</FontSize>
                     </Style>
                   </Textbox>
                 </ReportItems>
@@ -197,7 +198,7 @@
             <Width>11.1pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>69.6pt</Width>
+            <Width>94.8pt</Width>
           </TableColumn>
           <TableColumn>
             <Width>21.2pt</Width>

@@ -31,38 +31,50 @@ namespace rabnet
         }
         public ReplaceYoungersForm(int rid,int selmom):this(rid)
         {
-            this.selmom=selmom;
+            this.selmom = selmom;
         }
-
+        /// <summary>
+        /// Заполняет ListView возможными кормилицами.
+        /// </summary>
         public void updateMothers()
         {
             int ad = Engine.opt().getIntOption(Options.OPT_ID.COMBINE_AGE);
             cs.Prepare();
             listView1.Items.Clear();
-            foreach(Rabbit rb in Engine.db().getMothers(r.age, ad))
-            if (rb.fid!=r.Parent)
+            foreach (Rabbit rb in Engine.db().getMothers(r.age, ad))
             {
-                ListViewItem li = listView1.Items.Add(rb.fname);
-                li.SubItems.Add(rb.fage.ToString());
-                li.SubItems.Add(rb.fbreed);
-                li.SubItems.Add(rb.fstatus);
-                li.SubItems.Add(rb.frate.ToString());
-                li.SubItems.Add(rb.faddress);
-                li.SubItems.Add(rb.faverage.ToString());
-                if (selmom == rb.fid)
+                if (rb.fid != r.Parent)
                 {
-                    li.SubItems.Add((int.Parse(rb.fN)+r.Group).ToString());
-                    li.SubItems.Add(r.Group.ToString());
-                    nudCount.Value = 0;
-                    li.Selected = true;
-                    li.EnsureVisible();
+                    ListViewItem li = listView1.Items.Add(rb.fname);
+                    li.SubItems.Add(rb.fage.ToString());
+                    li.SubItems.Add(rb.fbreed);
+                    li.SubItems.Add(rb.fstatus);
+                    li.SubItems.Add(rb.frate.ToString());
+                    li.SubItems.Add(rb.faddress);
+                    li.SubItems.Add(rb.faverage.ToString());
+                    if (selmom == rb.fid)
+                    {
+                        li.SubItems.Add((int.Parse(rb.fN) + r.Group).ToString());
+                        li.SubItems.Add(r.Group.ToString());
+                        nudCount.Value = 0;
+                        li.Selected = true;
+                        li.EnsureVisible();
+                    }
+                    else
+                    {
+                        li.SubItems.Add(rb.fN);
+                        li.SubItems.Add("");
+                    }
+                    li.Tag = rb.fid;
                 }
-                else
-                {
-                    li.SubItems.Add(rb.fN);
-                    li.SubItems.Add("");
-                }
-                li.Tag=rb.fid;
+            }
+            if (listView1.Items.Count == 0)
+            {
+                MessageBox.Show("Нет кормилиц, которые сидят с крольчатами приближенного возраста."+Environment.NewLine+
+                    "Увеличьте значение параметра \"Объединение группы\"."+Environment.NewLine+
+                    "Либо отсадите кормилицу от молодняка.");
+                btCancel.PerformClick();
+                return;
             }
             String txt = listView1.Items[0].SubItems[REPLCOL].Text;
             listView1.Items[0].SubItems[REPLCOL].Text = "10";

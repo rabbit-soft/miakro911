@@ -334,7 +334,7 @@ namespace rabnet
             if (when > DateTime.Now)
                 throw new ExBadDate(when);
             eng.logs().log(RabNetLogs.LogType.FUCK, RabID, otherrab, SmallAddress, f.SmallAddress);
-            eng.db().makeFuck(this.id, f.RabID, when.Date,eng.uId());
+            eng.db().makeFuck(this.id, f.RabID, when.Date, eng.userId);
         }
         /// <summary>
         /// Отметить прохолост (самка не окролилась)

@@ -29,8 +29,7 @@ namespace rabnet
 
     class Deads:RabNetDataGetterBase
     {
-        public Deads(MySqlConnection sql, Filters f)
-            : base(sql, f)
+        public Deads(MySqlConnection sql, Filters f): base(sql, f)
         {
         }
 
@@ -77,11 +76,15 @@ FROM dead{0:s} LIMIT {1:d}) c;", makeWhere(), options.safeInt("max", 1000));
         {
             this.sql = sql;
         }
-
+        /// <summary>
+        /// Востановление списанного кролика
+        /// </summary>
+        /// <param name="rabbit">ID кролика</param>
         public void resurrect(int rabbit)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"CALL resurrectRabbit({0:d});",rabbit), sql);
             cmd.ExecuteNonQuery();
+            //OneRabbit rab = RabbitGetter.GetRabbit(sql, rabbit);
             cmd.CommandText = String.Format("SELECT r_id,r_name,r_tier,r_farm,r_tier_id,r_area FROM rabbits WHERE r_id={0:d}",rabbit);
             MySqlDataReader rd=cmd.ExecuteReader();
             int name = 0;

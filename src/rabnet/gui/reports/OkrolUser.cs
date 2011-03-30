@@ -2,17 +2,39 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
+using X_Tools;
 
 namespace rabnet
 {
     public partial class OkrolUser : Form
     {
+        public myDatePeriod Period
+        {
+            get 
+            {
+                if (rbMonth.Checked)
+                    return myDatePeriod.Month;
+                else
+                    return myDatePeriod.Year;
+            }
+        }
+
+        public string DateValue
+        {
+            get 
+            {
+                if (Period == myDatePeriod.Month)
+                    return cbMonth.Text;
+                else return cbYear.Text;
+            }
+        }
+
         List<int> ids = new List<int>();
         public OkrolUser()
         {
             InitializeComponent();
-            dtpFrom.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            dtpTo.Value = dtpFrom.Value.AddMonths(1).AddDays(-1);
+            //dtpFrom.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            //dtpTo.Value = dtpFrom.Value.AddMonths(1).AddDays(-1);
             List<sUser> usrs = Engine.db().getUsers();
             for (int i = 0; i < usrs.Count; i++)
             {
@@ -20,16 +42,30 @@ namespace rabnet
                 ids.Add(usrs[i].Id);
             }
             comboBox1.SelectedIndex = 0;
+            fillFucksDates();
         }
 
-        private void dtpFrom_ValueChanged(object sender, EventArgs e)
+        private void fillFucksDates()
         {
-            //if (dtpFrom.Value > dtpTo.Value)
-            dtpTo.Value = dtpFrom.Value.AddMonths(1).AddDays(-1);
-            /*
-            if (dtpTo.Value < dtpFrom.Value)
-                dtpFrom.Value = dtpTo.Value.AddMonths(-1).AddDays(1);
-             * */
+            cbMonth.Items.Clear();
+            cbYear.Items.Clear();
+            List<String> dates = Engine.get().db().getFuckMonths();
+            if (dates.Count > 0)
+            {
+                foreach (String dt in dates)
+                {
+                    string[] vals = dt.Split('.');
+                    cbMonth.Items.Add(XTools.toRusMonth(vals[0]) + vals[1]);
+                    if (!cbYear.Items.Contains(vals[1]))
+                        cbYear.Items.Add(vals[1]);
+                }
+                cbMonth.SelectedIndex = 0;
+            }
+            else
+            {
+                MessageBox.Show("Нет дат случек.");
+                this.Close();
+            }
         }
 
         public int getUser()
@@ -38,45 +74,33 @@ namespace rabnet
             return ids[comboBox1.SelectedIndex];
         }
 
-        public String getFromDate()
-        {
-            return dtpFrom.Value.ToShortDateString();
-        }
-        public String getToDate()
-        {
-            return dtpTo.Value.ToShortDateString();
-        }
-
         public XmlDocument getXml()
         {
             XmlDocument doc = new XmlDocument();
             XmlElement row = doc.CreateElement("Row");
             doc.AppendChild(doc.CreateElement("Rows")).AppendChild(row);
             row.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(comboBox1.Text));
-            row.AppendChild(doc.CreateElement("from")).AppendChild(doc.CreateTextNode(makePrettyDate(dtpFrom.Value)));
-            row.AppendChild(doc.CreateElement("to")).AppendChild(doc.CreateTextNode(makePrettyDate(dtpTo.Value)));
+            row.AppendChild(doc.CreateElement("from")).AppendChild(doc.CreateTextNode(DateValue));
+            //row.AppendChild(doc.CreateElement("to")).AppendChild(doc.CreateTextNode(""));
             return doc;
         }
 
-        private string makePrettyDate(DateTime uglyDate)
+        private void rbMonth_CheckedChanged(object sender, EventArgs e)
         {
-            string result = uglyDate.Day.ToString() + " ";
-            switch (uglyDate.Month)
+            if (rbMonth.Checked)
             {
-                case 1: result += "Января "; break;
-                case 2: result += "Февраля "; break;
-                case 3: result += "Марта "; break;
-                case 4: result += "Апреля "; break;
-                case 5: result += "Мая "; break;
-                case 6: result += "Июню "; break;
-                case 7: result += "Июля "; break;
-                case 8: result += "Августа "; break;
-                case 9: result += "Сентября "; break;
-                case 10: result += "Октября "; break;
-                case 11: result += "Ноября "; break;
-                case 12: result += "Декабря "; break;
+                cbMonth.Enabled = true;
+                cbMonth.SelectedIndex = 0;
+                cbYear.Enabled = false;
+                cbYear.SelectedIndex = -1;
             }
-            return result + uglyDate.Year.ToString()+"г.";
+            else
+            {
+                cbMonth.Enabled = false;
+                cbMonth.SelectedIndex = -1;
+                cbYear.Enabled = true;
+                cbYear.SelectedIndex = 0;
+            }
         }
     }
 }

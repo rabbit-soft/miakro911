@@ -17,16 +17,16 @@
 
 	<property name="curdir" value="." overwrite="false"/>
 	<property name="host_spec_path" value="." overwrite="false"/>
-	
+
 	<include buildfile="${host_spec_path}/host_spec.include"/>
-	
+
 	<property name="root_bin" value="${curdir}/../bin"/>
 	<property name="all_i_need" value="${curdir}/../allineed"/>
 	<property name="tools_dir" value="${root_bin}/tools" />
 	<property name="distrib_dir" value="${root_bin}/distrib" />
 	<property name="log4net.lib" value="log4net.dll" />
 	<property name="log4net.ass" value="${log4net.path}/${log4net.lib}" />
-	
+
 	<property name="mysql.lib" value="MySql.Data.dll" />
 	<property name="mysql.ass" value="${mysql.path}/${mysql.lib}" />
 
@@ -36,7 +36,7 @@
 	<property name="guardant2_64.lib" value="GrdAPI64.DLL" />
 	<property name="guardantNET.lib" value="GuardantDotNetApi.dll" />
 	<!--property name="guardant.ass" value="${guardant.path}/${guardant.lib}" /-->
-	
+
 	<property name="rep.lib" value="RdlViewer.dll" />
 	<property name="rep.ass" value="${rep.path}/${rep.lib}" />
 	<property name="repeng.lib" value="RdlEngine.dll" />
@@ -71,17 +71,17 @@
 
 	<property name="NSISPath" value="C:\Program Files\NSIS\"/>
 	<property name="NSIS" value="${NSISPath}makensis.exe"/>
-	
+
 	<property name="nant.settings.currentframework" value="net-2.0" />
 
 	<!-- TARGETS !-->
-	
+
 	<target name="build" depends="clear,buildall,tools" description="Full build"/>
-	
+
 	<target name="clear" description="Clear build directories">
 		<delete dir="${root_bin}" />
 	</target>
-	
+
 	<target name="prepare_bin_dir">
 		<mkdir dir="${root_bin}"/>
 		<delete dir="${bin_dir}"/>
@@ -154,8 +154,8 @@
 			</fileset>
 		</copy>
 	</target>
-	
-	
+
+
 	<!--target name="release" description="Build RELEASE">
 		<property name="compile_flag" value="" />
 		<property name="bin_dir" value="${root_bin}/release" />
@@ -201,7 +201,7 @@
 	<target name="compile_demo" depends="miaconv,rabnet_demo">
 		<xmlpoke file="${root_bin}/demo/RabNet/rabnet.exe.config" xpath="/configuration/log4net/root/level/@value" value="ERROR" />
 	</target>
-		
+
 	<target name="miaconv" description="Make mia converter project">
 		<delete dir="${curdir}/mia_conv/tmp"/>
 		<mkdir dir="${curdir}/mia_conv/tmp"/>
@@ -230,12 +230,12 @@
 		</csc>
 		<delete file="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
 	</target>
-	
+
 	<!--target name="rabnet" description="make rabnet application" depends="db.mysql,engine,gui"/-->
 	<target name="rabnet" description="make rabnet application" depends="pickers,db.mysql,engine,gui_genetics,gui"/>
 
 	<target name="rabnet_demo" description="make rabnet application" depends="pickers,db.mysql,engine,gui"/>
-	
+
 	<target name="pickers" description="pickers library for rabnet">
 		<csc target="library" output="${bin_dir}/RabNet/Pickers.dll" define="${compile_flag}">
 			<sources>
@@ -258,7 +258,7 @@
 			</references>
 		</csc>
 	</target>
-	
+
 	<target name="engine" description="engine">
 		<csc target="library" output="${bin_dir}/RabNet/engine.dll" define="${compile_flag}">
 			<sources>
@@ -295,7 +295,7 @@
 			</references>
 		</csc>
 	</target>
-	
+
 	<target name="rabdump" description="rabnet db dumper">
 		<delete dir="${curdir}/rabdump/tmp"/>
 		<mkdir dir="${curdir}/rabdump/tmp"/>
@@ -328,7 +328,7 @@
 		</csc>
 		<copy file="${curdir}/rabdump/clean_config/rabdump.exe.config" tofile="${bin_dir}/RabDump/rabdump.exe.config" />
 	</target>
-	
+
 	<target name="gui" description="rabnet gui">
 		<delete dir="${curdir}/rabnet/gui/tmp"/>
 		<mkdir dir="${curdir}/rabnet/gui/tmp"/>
@@ -376,7 +376,7 @@
 		</csc>
 		<copy file="${curdir}/rabnet/gui/clean_config/rabnet.exe.config" tofile="${bin_dir}/RabNet/rabnet.exe.config" />
 	</target>
-	
+
 	<target name="obfuscate" depends="buildall" description="Binary Obfuscation">
 		<!--exec program="${obfuscator}">
 			<arg value="${root_bin}/protected/Rabnet/db.mysql.dll" />
@@ -433,7 +433,7 @@
 			<arg value="${root_bin}/protected/RabNet/engine.dll" />
 			<arg value="${root_bin}/protected/RabNet/db.mysql.dll" />
 		</exec>
-		                                                                
+
 
 		<delete file="${root_bin}/protected/RabNet/rabnet.exe.old"/>
 		<delete file="${root_bin}/protected/RabNet/engine.dll.old"/>
@@ -468,11 +468,11 @@
 		</exec--> 
 
 		<delete file="${root_bin}/protected/RabDump/rabdump.exe.old"/>
-		
+
 		<property name="obfuscated" value=".ob" />
 		<!--call target="release_zip"/-->
 	</target>
-	
+
 	<target name="updater" description="Make updater project">
 		<delete dir="${curdir}/updater/tmp"/>
 		<mkdir dir="${curdir}/updater/tmp"/>
@@ -499,7 +499,7 @@
 			</references>
 		</csc>
 	</target>
-	
+
 	<target name="distrib_nsis" depends="obfuscate">
 		<property name="dist_type" value="rabnet_protected"/>
 		<property name="bin_dir" value="${root_bin}\protected"/>
@@ -562,7 +562,7 @@
 					<token key="Copys" value="(C) ${companyname} 2010" />
 					<token key="Copys_en" value="(C) ${companyname_en} 2010" />
 					<token key="bin_type" value="${bin_type}" />
-					
+
 					<!--token key="Comments" value="" /-->
 				</replacetokens>
 				<!--tabstospaces /-->
@@ -590,7 +590,7 @@
 			<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml" xpath="/update/bundle/version/@number" value="${version}.${minver}" />
 		</if>
 	</target>
-	
+
 	<!-- FILL DATA!-->
 	<target name="filldata" depends="build" description="filling developer databases">
 		<unzip zipfile="${data_dir}/Farm_30.zip" todir="${data_dir}" />
@@ -621,7 +621,7 @@
 		</exec>
 		<delete file="${data_dir}/Farm.mia" /-->
 	</target>
-	
+
 	<!-- RELEASES -->
 	<target name="version" description="making Rabnet distributed release">
 		<mkdir dir="${root_bin}"/>
@@ -683,9 +683,9 @@
                         }
                     }
                 ]]>
-            </code>
-        </script>
-	<echo message="Using Subversion revision number: ${revision}"/>
-	<property name="minver" value="${minver_p}.${revision}"/>
-    </target>
+			</code>
+		</script>
+		<echo message="Using Subversion revision number: ${revision}"/>
+		<property name="minver" value="${minver_p}.${revision}"/>
+	</target>
 </project>

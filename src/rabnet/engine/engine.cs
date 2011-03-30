@@ -89,7 +89,7 @@ namespace rabnet
 
         public String farmName(){return uname+"@"+farmname;}
 
-        public int uId() { return uid; }
+        public int userId { get { return uid; } }
 
         public Options options()
         {
@@ -149,7 +149,7 @@ namespace rabnet
 
         public void delUser(int uid)
         {
-            if (uid == uId())
+            if (uid == userId)
                 throw new ApplicationException("Нельзя удалить себя.");
             if (!isAdmin())
                 throw new ApplicationException("Нет прав доступа.");
@@ -158,7 +158,7 @@ namespace rabnet
 
         public void updateUser(int uid, string name, int group, string password, bool chpass)
         {
-            if (uid == uId() && group != 0)
+            if (uid == userId && group != 0)
                 throw new ApplicationException("Нельзя сменить группу администратора.");
             if (name == "")
                 throw new ApplicationException("Пустое имя.");

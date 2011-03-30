@@ -16,7 +16,7 @@ namespace rabnet
         }
         public static void log(RabNetEngine eng, LogType type, int r1,int r2,string a1,string a2,String text)
         {
-            eng.db().RabNetLog((int)type, eng.uId(),r1,r2,a1,a2, text);
+            eng.db().RabNetLog((int)type, eng.userId,r1,r2,a1,a2, text);
         }
         public static void log(RabNetEngine eng, LogType type){log(eng, type, 0,0,"","","");}
         public void log(LogType type){log(type, "");}

@@ -62,5 +62,26 @@ namespace rabnet
             }
             rsb.run();
         }
+
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+            if (listView1.SelectedItems.Count <= 0) 
+            {
+                e.Cancel = true;
+                return;
+            }
+            try
+            {
+                DateTime murderDate = DateTime.Parse(listView1.SelectedItems[0].SubItems[1].Text);
+                murderDate = murderDate.AddDays(10);
+                if (murderDate.Date < DateTime.Now.Date)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+            catch{}
+            
+        }
     }
 }

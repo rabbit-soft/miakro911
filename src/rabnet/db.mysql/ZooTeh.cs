@@ -227,16 +227,21 @@ ORDER BY srok DESC,0+LEFT(place,LOCATE(',',place)) ASC;", days));
 
         public ZooJobItem[] getCounts(int days,int next)
         {
-            MySqlDataReader rd = reader(String.Format(@"SELECT r_parent,rabname(r_parent," + getnm() + @") name,
-rabplace(r_parent) place,r_group,
-(SELECT TO_DAYS(NOW())-TO_DAYS(r3.r_born) FROM rabbits r3 WHERE r3.r_id=rabbits.r_parent) age," 
+            MySqlCommand cmd = new MySqlCommand("", sql);
+            cmd.CommandText=String.Format(@"SELECT 
+r_parent,
+rabname(r_parent," + getnm() + @") name,
+rabplace(r_parent) place,
+r_group,
+(SELECT TO_DAYS(NOW())-TO_DAYS(r3.r_born) FROM rabbits r3 WHERE r3.r_id=rabbits.r_parent) age,"
 + brd("(SELECT r7.r_breed FROM rabbits r7 WHERE r7.r_id=rabbits.r_parent)") + @",
 TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d} srok,r_id
 FROM rabbits WHERE r_parent<>0 AND (TO_DAYS(NOW())-TO_DAYS(r_born)>={0:d}{1:s}) AND
 r_parent NOT IN (SELECT l_rabbit FROM logs WHERE l_type=17 AND (DATE(l_date)<=DATE(NOW()) AND 
 DATE(l_date)>=DATE(NOW()- INTERVAL (TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d}) DAY))) ORDER BY age DESC,
-0+LEFT(place,LOCATE(',',place)) ASC;", days, 
-   next==-1?"":String.Format(" AND TO_DAYS(NOW())-TO_DAYS(r_born)<{0:d}", next)));
+0+LEFT(place,LOCATE(',',place)) ASC;", days,next == -1 ? "" : String.Format(" AND TO_DAYS(NOW())-TO_DAYS(r_born)<{0:d}", next));
+            log.Debug(cmd.CommandText);
+            MySqlDataReader rd = cmd.ExecuteReader();
             List<ZooJobItem> res = new List<ZooJobItem>();
             while (rd.Read())
                 res.Add(new ZooJobItem().Counts(rd.GetInt32("r_parent"),rd.GetString("name"),

@@ -127,8 +127,8 @@ namespace rabnet
         private void replaceYoungersMenuItem_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count != 1) return;
-            new ReplaceYoungersForm((int)listView1.SelectedItems[0].Tag).ShowDialog();
-            rsb.run();
+            if (new ReplaceYoungersForm((int)listView1.SelectedItems[0].Tag).ShowDialog() == DialogResult.OK)
+                rsb.run();
         }
 
         private void listView1_ItemDrag(object sender, ItemDragEventArgs e)

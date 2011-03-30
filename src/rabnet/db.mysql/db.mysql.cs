@@ -233,6 +233,11 @@ namespace rabnet
             return Butcher.getButcherMonths(sql);
         }
 
+        public List<String> getFuckMonths()
+        {
+            return FucksGetter.getFuckMonths(sql);
+        }
+
         IBreeds IRabNetDataLayer.getBreeds()
         {
             return new Breeds(sql);

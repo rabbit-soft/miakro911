@@ -47,7 +47,7 @@ namespace rabnet
                     case sUser.Butcher: cbUserType.SelectedIndex = 2; break;
                 }
             }
-            if (_uid == Engine.get().uId())
+            if (_uid == Engine.get().userId)
                 cbUserType.Enabled = false;
         }
 
