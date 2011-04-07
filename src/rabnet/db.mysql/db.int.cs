@@ -67,6 +67,8 @@ namespace rabnet
         IDataGetter getButcherDates(Filters f);
         List<String> getButcherMonths();
         List<String> getFuckMonths();
+        void changeDeadReason(int rid, int reason);
+        List<String> getDeadsMonths();
         OneRabbit getRabbit(int rid);
         void setRabbit(OneRabbit r);
         ICatalogs catalogs();

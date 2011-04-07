@@ -206,7 +206,7 @@ namespace rabnet
                 rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(li.SubItems[5].Text.Remove(li.SubItems[5].Text.IndexOf("["))));
                 rw.AppendChild(doc.CreateElement("count")).AppendChild(doc.CreateTextNode(li.SubItems[1].Text));
             }
-            new ReportViewForm("План пересадок", "replace_plan", doc).ShowDialog();
+            new ReportViewForm(myReportType.REPLACE, doc).ShowDialog();
 #else
             DemoErr.DemoNoReportMsg();
 #endif

@@ -194,10 +194,22 @@ namespace RabGRD
         {
             return ((GetFlags(0) & Convert.ToByte("00000010", 2)) > 0);
         }
-        
+
+        /// <summary>
+        /// Резервные копии
+        /// </summary>
+        /// <returns></returns>
         public bool GetFlagServer()
         {
             return ((GetFlags(0) & Convert.ToByte("00000100", 2)) > 0);
+        }
+        /// <summary>
+        /// Стерильный цех
+        /// </summary>
+        /// <returns></returns>
+        public bool GetFlagButcher()
+        {
+            return ((GetFlags(0) & Convert.ToByte("00001000", 2)) > 0);
         }
 
         public DateTime GetDateStart()

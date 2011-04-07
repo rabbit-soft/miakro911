@@ -356,8 +356,7 @@ namespace rabnet
                 plan += "_nofuck";
                 xmls = new XmlDocument[] { xml, rep };
             }
-            new ReportViewForm("Зоотехплан " + repdate.ToLongDateString() + " " + repdate.ToLongTimeString(), plan, 
-                xmls).ShowDialog();
+            new ReportViewForm("Зоотехплан " + repdate.ToLongDateString() + " " + repdate.ToLongTimeString(), plan,xmls).ShowDialog();
 #else 
             DemoErr.DemoNoReportMsg();
 #endif

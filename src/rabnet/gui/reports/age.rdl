@@ -14,7 +14,7 @@
       </ConnectionProperties>
     </DataSource>
   </DataSources>
-  <Width>3in</Width>
+  <Width>1.5in</Width>
   <TopMargin>.25in</TopMargin>
   <LeftMargin>.25in</LeftMargin>
   <RightMargin>.25in</RightMargin>
@@ -41,7 +41,7 @@
     <Height>33.4pt</Height>
     <PrintOnFirstPage>true</PrintOnFirstPage>
     <PrintOnLastPage>true</PrintOnLastPage>
-    <ReportItems >
+    <ReportItems>
       <Textbox Name="Textbox1" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
         <Height>21.79pt</Height>
         <Width>312.42pt</Width>
@@ -69,10 +69,10 @@
         </Style>
         <TableColumns>
           <TableColumn>
-            <Width>1in</Width>
+            <Width>48.1pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>165.4pt</Width>
+            <Width>62.2pt</Width>
           </TableColumn>
         </TableColumns>
         <Header>
@@ -159,7 +159,7 @@
       </Table>
     </ReportItems>
     <Height>40pt</Height>
-    <Columns>2</Columns>
+    <Columns>4</Columns>
   </Body>
   <PageFooter>
     <Height>14pt</Height>

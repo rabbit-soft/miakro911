@@ -19,6 +19,21 @@ namespace rabnet
             }
         }
 
+        public string PeriodChar
+        {
+            get
+            {
+                switch (Period)
+                {
+                    case myDatePeriod.Day:
+                        return "d";
+                    case myDatePeriod.Year:
+                        return "y";
+                    default: return "m";
+                }
+            }
+        }
+
         public string DateValue
         {
             get 
@@ -43,6 +58,7 @@ namespace rabnet
             }
             comboBox1.SelectedIndex = 0;
             fillFucksDates();
+            rbMonth_CheckedChanged(null, null);
         }
 
         private void fillFucksDates()
@@ -81,7 +97,7 @@ namespace rabnet
             doc.AppendChild(doc.CreateElement("Rows")).AppendChild(row);
             row.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(comboBox1.Text));
             row.AppendChild(doc.CreateElement("from")).AppendChild(doc.CreateTextNode(DateValue));
-            //row.AppendChild(doc.CreateElement("to")).AppendChild(doc.CreateTextNode(""));
+            row.AppendChild(doc.CreateElement("to")).AppendChild(doc.CreateTextNode(""));
             return doc;
         }
 
@@ -89,16 +105,16 @@ namespace rabnet
         {
             if (rbMonth.Checked)
             {
-                cbMonth.Enabled = true;
+                cbMonth.Visible = true;
                 cbMonth.SelectedIndex = 0;
-                cbYear.Enabled = false;
+                cbYear.Visible = false;
                 cbYear.SelectedIndex = -1;
             }
             else
             {
-                cbMonth.Enabled = false;
+                cbMonth.Visible = false;
                 cbMonth.SelectedIndex = -1;
-                cbYear.Enabled = true;
+                cbYear.Visible = true;
                 cbYear.SelectedIndex = 0;
             }
         }

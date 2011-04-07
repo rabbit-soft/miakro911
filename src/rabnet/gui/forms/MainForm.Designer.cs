@@ -59,6 +59,7 @@
             this.tsmiDeadsReaport = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiFucksByUsers = new System.Windows.Forms.ToolStripMenuItem();
             this.fucksByDateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.мяснойЦехToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.showTierTMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showTierSMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -83,7 +84,6 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tpButcher = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.мяснойЦехToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -312,6 +312,13 @@
             this.fucksByDateToolStripMenuItem.Text = "Список случек\\вязок";
             this.fucksByDateToolStripMenuItem.Click += new System.EventHandler(this.fucksByDateToolStripMenuItem_Click);
             // 
+            // мяснойЦехToolStripMenuItem
+            // 
+            this.мяснойЦехToolStripMenuItem.Name = "мяснойЦехToolStripMenuItem";
+            this.мяснойЦехToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.мяснойЦехToolStripMenuItem.Text = "Мясной цех";
+            this.мяснойЦехToolStripMenuItem.Click += new System.EventHandler(this.мяснойЦехToolStripMenuItem_Click);
+            // 
             // tsmiOptions
             // 
             this.tsmiOptions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -462,6 +469,7 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(914, 24);
             this.tabControl1.TabIndex = 6;
+            this.tabControl1.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl1_Selecting);
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabPage1
@@ -520,13 +528,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(906, 423);
             this.panel1.TabIndex = 7;
-            // 
-            // мяснойЦехToolStripMenuItem
-            // 
-            this.мяснойЦехToolStripMenuItem.Name = "мяснойЦехToolStripMenuItem";
-            this.мяснойЦехToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-            this.мяснойЦехToolStripMenuItem.Text = "Мясной цех";
-            this.мяснойЦехToolStripMenuItem.Click += new System.EventHandler(this.мяснойЦехToolStripMenuItem_Click);
             // 
             // rabStatusBar1
             // 

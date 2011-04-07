@@ -375,14 +375,29 @@ r_status,r_flags,r_event_date,r_breed
         public enum RabbitSex{VOID,MALE,FEMALE};
         public static string NullAddress = "бомж";
         public RabbitSex sex;
+        /// <summary>
+        /// Дата рождения
+        /// </summary>
         public DateTime born;
+        /// <summary>
+        /// Рэйтинг
+        /// </summary>
         public int rate;
         public int id;
         public bool defect;
+        /// <summary>
+        /// Готовая продукция
+        /// </summary>
         public bool gp;
+        /// <summary>
+        /// Готов к реализации
+        /// </summary>
         public bool gr;
         public bool spec;
         public bool risk;
+        /// <summary>
+        /// Кормилица
+        /// </summary>
         public int parent;
         public int name;
         public int wasname;
@@ -395,8 +410,14 @@ r_status,r_flags,r_event_date,r_breed
         public string justAddress;
         public string smallAddress;
         public int group;
+        /// <summary>
+        /// Порода
+        /// </summary>
         public int breed;
         public int zone;
+        /// <summary>
+        /// Заметки
+        /// </summary>
         public String notes;
         public string gens;
         public int status;
@@ -404,6 +425,9 @@ r_status,r_flags,r_event_date,r_breed
         public bool nolact;
         public bool nokuk;
         public DateTime evdate;
+        /// <summary>
+        /// Дата окончания прививки
+        /// </summary>
         public DateTime vac_end; //+gambit
         public int evtype;
         public int babies;
@@ -412,6 +436,9 @@ r_status,r_flags,r_event_date,r_breed
         public String fullname;
         public String breedname;
         public String bon;
+        /// <summary>
+        /// Подсосные
+        /// </summary>
         public OneRabbit[] youngers;
         public string tag;
         public string nuaddr="";

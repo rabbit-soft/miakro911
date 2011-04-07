@@ -71,6 +71,18 @@ namespace X_Tools
             }
         }
 
+        public static string RusMonthTo(string mon)
+        {
+            for (int i = 1; i <= 12; i++)
+            {
+                if (mon == toRusMonth(i.ToString()))
+                {
+                    return i.ToString();
+                }
+            }
+            return "0";
+        }
+
         public static string toRusMonth(string dt)
         {
             try

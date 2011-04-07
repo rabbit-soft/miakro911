@@ -79,7 +79,6 @@
             // cbYear
             // 
             this.cbYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbYear.Enabled = false;
             this.cbYear.FormattingEnabled = true;
             this.cbYear.Location = new System.Drawing.Point(98, 79);
             this.cbYear.Name = "cbYear";

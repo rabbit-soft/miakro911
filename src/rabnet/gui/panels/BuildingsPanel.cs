@@ -588,7 +588,7 @@ namespace rabnet
             int bid=buildNum();
             f["bld"] = bid.ToString();
             f["suck"] = Engine.opt().getOption(Options.OPT_ID.SUCKERS);
-            new ReportViewForm("Шедовый отчет", "shed", new XmlDocument[]{
+            new ReportViewForm(myReportType.SHED, new XmlDocument[]{
                 Engine.db().makeReport(myReportType.SHED,f),getBuildDoc(bid)}).ShowDialog();
 #else
             DemoErr.DemoNoReportMsg();
@@ -603,7 +603,7 @@ namespace rabnet
             Filters f = new Filters();
             int bid = buildNum();
             f["bld"] = bid.ToString();
-            new ReportViewForm("Ревизия свободных клеток", "empty_rev", new XmlDocument[]{
+            new ReportViewForm(myReportType.REVISION, new XmlDocument[]{
                 Engine.db().makeReport(myReportType.REVISION,f),getBuildDoc(bid)}).ShowDialog();
 #else
             DemoErr.DemoNoReportMsg();

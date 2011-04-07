@@ -77,7 +77,7 @@ namespace rabnet
             //rabStatusBar1.run();
             manflag = false;
 #if PROTECTED || DEMO
-            protest(getmax(Engine.db().buildingsTree(), 0));
+            protectTest(getmax(Engine.db().buildingsTree(), 0));
         }
 
         private int getmax(TreeData td,int mx)
@@ -324,8 +324,7 @@ namespace rabnet
         private void тестовыйToolStripMenuItem_Click(object sender, EventArgs e)
         {
 #if !DEMO
-            (new ReportViewForm("Тестовый отчет", "test",
-                Engine.get().db().makeReport(myReportType.TEST, null))).ShowDialog();
+            (new ReportViewForm(myReportType.TEST,Engine.get().db().makeReport(myReportType.TEST, null))).ShowDialog();
 #else
             DemoErr.DemoNoReportMsg();
 #endif
@@ -337,7 +336,7 @@ namespace rabnet
 #if !DEMO
             Filters f = new Filters();
             f["brd"] = Engine.get().brideAge().ToString();
-            (new ReportViewForm("Отчет по породам", "breeds",Engine.get().db().makeReport(myReportType.BREEDS, f)) ).ShowDialog();
+            (new ReportViewForm(myReportType.BREEDS,Engine.get().db().makeReport(myReportType.BREEDS, f)) ).ShowDialog();
 #else
             DemoErr.DemoNoReportMsg();
 #endif
@@ -353,7 +352,7 @@ namespace rabnet
                 f["prt"] = dlg.getFucker().ToString();
                 f["dfr"] = dlg.getFromDate();
                 f["dto"] = dlg.getToDate();
-                (new ReportViewForm("Статистика продуктивности", "fucker", new XmlDocument[]{
+                (new ReportViewForm(myReportType.FUCKER, new XmlDocument[]{
                     Engine.get().db().makeReport(myReportType.FUCKER, f),dlg.getXml()})).ShowDialog();
             }
 #else
@@ -364,7 +363,7 @@ namespace rabnet
         private void tsmiAgeAndCount_Click(object sender, EventArgs e)
         {
 #if !DEMO
-            (new ReportViewForm("Статистика возрастного поголовья", "age",
+            (new ReportViewForm(myReportType.AGE,
                 Engine.get().db().makeReport(myReportType.AGE, null))).ShowDialog();
 #else
             DemoErr.DemoNoReportMsg();
@@ -375,7 +374,7 @@ namespace rabnet
         {
 #if !DEMO
             Filters f = new Filters();
-            (new ReportViewForm("Количество по месяцам", "by_month", new XmlDocument[]{
+            (new ReportViewForm(myReportType.BY_MONTH, new XmlDocument[]{
                     Engine.get().db().makeReport(myReportType.BY_MONTH,f)})).ShowDialog();
 #else
             DemoErr.DemoNoReportMsg();
@@ -386,23 +385,44 @@ namespace rabnet
         {
 #if !DEMO
             Filters f = new Filters();
-            XmlDocument dt = null;
-            if (PeriodForm.Run(f, PeriodForm.Preset.CUR_MONTH, ref dt) == DialogResult.OK)
-                (new ReportViewForm("Причины списаний", "deadreason", new XmlDocument[]{
-                    Engine.db().makeReport(myReportType.DEADREASONS,f),dt})).ShowDialog();
+            //XmlDocument dt = null;
+            var dlg = new PeriodForm(PeriodForm.enumReportType.DeadReasons);
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                f["dttp"] = dlg.PeriodChar;
+                f["dtval"] = dlg.DateValue;
+                (new ReportViewForm(myReportType.DEADREASONS, new XmlDocument[]
+                {
+                    Engine.db().makeReport(myReportType.DEADREASONS,f),
+                    dlg.getXml()
+                })).ShowDialog();
+            }
 #else
             DemoErr.DemoNoReportMsg();
 #endif
         }
 
+        /// <summary>
+        /// Отчет "Списания"
+        /// </summary>
         private void tsmiDeadsReaport_Click(object sender, EventArgs e)
         {
 #if !DEMO
             Filters f = new Filters();
-            XmlDocument dt = null;
-            if (PeriodForm.Run(f, PeriodForm.Preset.CUR_MONTH, ref dt) == DialogResult.OK)
-                (new ReportViewForm("Списания", "dead", new XmlDocument[]{
-                    Engine.db().makeReport(myReportType.DEAD,f),dt})).ShowDialog();
+            //XmlDocument dt = null;
+            var dlg = new PeriodForm(PeriodForm.enumReportType.Deads);
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                f["dttp"] = dlg.PeriodChar;
+                f["dtval"] = dlg.DateValue;
+                (new ReportViewForm(myReportType.DEAD,
+                    new XmlDocument[]
+                    {
+                        Engine.db().makeReport(myReportType.DEAD,f),
+                        dlg.getXml()
+                    }
+                 )).ShowDialog();
+            }
 #else
             DemoErr.DemoNoReportMsg();
 #endif
@@ -416,11 +436,9 @@ namespace rabnet
             {
                 Filters f = new Filters();
                 f["user"] = dlg.getUser().ToString();
-                f["dttp"] = dlg.Period == myDatePeriod.Month ? "m" : "y";
+                f["dttp"] = dlg.PeriodChar;
                 f["dtval"] = dlg.DateValue;
-                /*f["dfr"] = dlg.getFromDate();
-                f["dto"] = dlg.getToDate();*/
-                (new ReportViewForm("Окролы по пользователям", "okrol_user", 
+                (new ReportViewForm(myReportType.USER_OKROLS, 
                     new XmlDocument[]
                     {
                         Engine.get().db().makeReport(myReportType.USER_OKROLS,f),
@@ -436,26 +454,54 @@ namespace rabnet
         private void fucksByDateToolStripMenuItem_Click(object sender, EventArgs e)
         {
 #if !DEMO
-            OkrolUser dlg = new OkrolUser();
             Filters f = new Filters();
-            (new ReportViewForm("Список случек/окролов", "fucks_by_date", new XmlDocument[]{
-                    Engine.get().db().makeReport(myReportType.FUCKS_BY_DATE,f)})).ShowDialog();
+            var dlg = new PeriodForm(PeriodForm.enumReportType.Fucks);
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                f["dttp"] = dlg.PeriodChar;
+                f["dtval"] = dlg.DateValue;
+                (new ReportViewForm(myReportType.FUCKS_BY_DATE, new XmlDocument[]
+                {
+                    Engine.get().db().makeReport(myReportType.FUCKS_BY_DATE,f)
+                })).ShowDialog();
+            }
 #else
             DemoErr.DemoNoReportMsg();
 #endif
         }
 
-#endregion reports
-
         private void мяснойЦехToolStripMenuItem_Click(object sender, EventArgs e)
         {
+#if PROTECTED
+
             var brd = new ButcherReportDate();
             if (brd.ShowDialog() == DialogResult.OK)
             {
                 Filters f = new Filters();
-                f["per"] =  brd.Period == myDatePeriod.Month ? "m" : "y";
+                f["dttp"] = brd.PeriodChar;
+                f["dtval"] = brd.DateValue;
                 (new ReportViewForm("Отчет по завесам", "butcher", Engine.get().db().makeReport(myReportType.BUTCHER_PERIOD, f))).ShowDialog();
             }
+#endif
+        }
+
+#endregion reports
+
+        private void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+#if PROTECTED
+            if (tabControl1.SelectedTab == tpButcher)
+            {
+                if (!GRD.Instance.GetFlagButcher())
+                {
+                    MessageBox.Show("Текущая лицензия не распространяется на данный модуль");
+                    e.Cancel = true;
+                }
+            }
+#elif DEMO
+            DemoErr.DemoNoModuleMsg();
+            e.Cancel;
+#endif
         }
 
     }

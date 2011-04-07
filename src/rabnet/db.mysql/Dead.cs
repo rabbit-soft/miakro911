@@ -71,7 +71,7 @@ FROM dead{0:s} LIMIT {1:d}) c;", makeWhere(), options.safeInt("max", 1000));
 
     class DeadHelper
     {
-        private MySqlConnection sql=null;
+        private MySqlConnection sql = null;
         public DeadHelper(MySqlConnection sql)
         {
             this.sql = sql;
@@ -140,6 +140,25 @@ m_id={2:d} AND ((t_id=m_upper AND {1:d}<>1)OR(t_id=m_lower AND {1:d}=1));",sec+1
             }
             else
                 cmd.CommandText = String.Format(@"UPDATE rabbits SET r_farm=0,r_tier_id=0,r_area=0,r_tier=0 WHERE r_id={0:d};",rabbit);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static List<string> getDeadMonths(MySqlConnection sql)
+        {
+            var result = new List<String>();
+            MySqlCommand cmd = new MySqlCommand("SELECT DISTINCT Date_Format(d_date,'%m.%Y')dt FROM dead WHERE d_date IS NOT null ORDER BY d_date DESC;", sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            while (rd.Read())
+            {
+                result.Add(rd.GetString("dt"));
+            }
+            rd.Close();
+            return result;
+        }
+
+        internal static void changeDeadReason(MySqlConnection sql, int rid, int reason)
+        {
+            var cmd = new MySqlCommand(String.Format("UPDATE dead SET d_reason={1:d} WHERE r_id={0:d};",rid,reason),sql);
             cmd.ExecuteNonQuery();
         }
     }

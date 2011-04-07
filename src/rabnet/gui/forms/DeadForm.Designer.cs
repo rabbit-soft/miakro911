@@ -40,6 +40,7 @@
             this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.восстановитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miChangeReason = new System.Windows.Forms.ToolStripMenuItem();
             this.rsb = new rabnet.RabStatusBar();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -106,17 +107,25 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.восстановитьToolStripMenuItem});
+            this.восстановитьToolStripMenuItem,
+            this.miChangeReason});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(156, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(173, 70);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // восстановитьToolStripMenuItem
             // 
             this.восстановитьToolStripMenuItem.Name = "восстановитьToolStripMenuItem";
-            this.восстановитьToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.восстановитьToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.восстановитьToolStripMenuItem.Text = "Восстановить";
             this.восстановитьToolStripMenuItem.Click += new System.EventHandler(this.восстановитьToolStripMenuItem_Click);
+            // 
+            // miChangeReason
+            // 
+            this.miChangeReason.Name = "miChangeReason";
+            this.miChangeReason.Size = new System.Drawing.Size(172, 22);
+            this.miChangeReason.Text = "Изменит причину";
+            this.miChangeReason.Click += new System.EventHandler(this.miChangeReason_Click);
             // 
             // rsb
             // 
@@ -163,5 +172,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader8;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem восстановитьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem miChangeReason;
     }
 }

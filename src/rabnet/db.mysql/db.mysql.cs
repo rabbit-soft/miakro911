@@ -238,6 +238,11 @@ namespace rabnet
             return FucksGetter.getFuckMonths(sql);
         }
 
+        public List<String> getDeadsMonths()
+        {
+            return DeadHelper.getDeadMonths(sql);
+        }
+
         IBreeds IRabNetDataLayer.getBreeds()
         {
             return new Breeds(sql);
@@ -414,6 +419,11 @@ namespace rabnet
         public IDataGetter getDead(Filters filters)
         {
             return new Deads(sql, filters);
+        }
+
+        public void changeDeadReason(int rid, int reason)
+        {
+            DeadHelper.changeDeadReason(sql,rid,reason );
         }
 
         public void resurrect(int rid)

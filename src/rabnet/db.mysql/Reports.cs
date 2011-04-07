@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Text;
 using MySql.Data.MySqlClient;
 using System.Xml;
+using log4net;
 
 namespace rabnet
 {
     public enum myReportType
     {
-         TEST,BREEDS,AGE,FUCKER,DEAD,DEADREASONS,REALIZE,USER_OKROLS,SHED,REVISION,BY_MONTH,FUCKS_BY_DATE,BUTCHER_PERIOD 
+         TEST,BREEDS,AGE,FUCKER,DEAD,DEADREASONS,REALIZE,USER_OKROLS,SHED,REPLACE,REVISION,BY_MONTH,FUCKS_BY_DATE,BUTCHER_PERIOD,RABBIT,PRIDE,ZOOTECH 
     }
 
     class Reports
     {
         MySqlConnection sql = null;
+        ILog log = log4net.LogManager.GetLogger(typeof(Reports));
         private DateTime FROM = DateTime.Now;
         private DateTime TO = DateTime.Now;
         private String DFROM = "NOW()";
@@ -42,6 +44,7 @@ namespace rabnet
                 case myReportType.BY_MONTH: query = rabByMonth(); break;
                 case myReportType.FUCKS_BY_DATE: query = fucksByDate(f); break;
             }
+            log.Debug(query);
             return makeStdReportXml(query);
         }
 
@@ -219,7 +222,7 @@ select 'Итого','',(SELECT count(*) FROM rabbits WHERE r_sex='male' AND r_st
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=1) kandidat,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=0) boys,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status>=2 ) state,
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND ((r_status=0 AND r_event_date IS NOT NULL)OR r_status=1))) pervo,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND ((r_status=0 AND r_event_date IS NOT NULL)OR r_status=1)) pervo,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND (r_status=0 AND r_event_date IS NULL) AND r_born<=(now()-INTERVAL {0:s} day)) nevest,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=0 and r_born>(now()-INTERVAL {0:s} day)) girl,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='void') bezpolie,
@@ -227,10 +230,15 @@ sum(r_group) vsego
 from rabbits;", f.safeValue("brd","121"));
             return s;
         }
-
+        /// <summary>
+        /// Количество по месяцам
+        /// </summary>
+        /// <param name="f"></param>
+        /// <returns></returns>
         private string ageQuery(Filters f)
         {
-            return "SELECT (TO_DAYS(NOW())-TO_DAYS(r_born)) age,sum(r_group) cnt FROM rabbits GROUP BY age;";
+            return @"SELECT (TO_DAYS(NOW())-TO_DAYS(r_born)) age,sum(r_group) cnt FROM rabbits GROUP BY age
+union SELECT 'Итого',sum(r_group) FROM rabbits;";
         }
 
         private DateTime[] getDates(Filters f)
@@ -251,8 +259,8 @@ from rabbits;", f.safeValue("brd","121"));
 
         private string fuckerQuery(Filters f)
         {
-            int partner = f.safeInt("prt");
-            getDates(f);
+            //getDates(f);
+            int partner = f.safeInt("prt");           
             return String.Format(@"(SELECT rabname(f_rabid,2) name,f_children,
 IF(f_type='vyazka','Вязка','случка') type,
 IF(f_state='proholost','Прохолостание','Окрол') state,
@@ -267,23 +275,64 @@ FROM fucks WHERE f_partner={0:d} AND f_end_date>={1:s} AND f_end_date<={2:s}
 
         private String deadQuery(Filters f)
         {
-            getDates(f);
-            string s= String.Format(@"(SELECT DATE_FORMAT(d_date,'%d.%m.%Y') date,deadname(r_id,2) name,r_group,
-(SELECT d_name FROM deadreasons WHERE d_id=d_reason) reason,d_notes FROM dead WHERE 
-d_date>={0:s} AND d_date<={1:s} ORDER BY d_date ASC)
-UNION ALL (SELECT 'Итого:','',SUM(r_group),'','' FROM dead WHERE 
-d_date>={0:s} AND d_date<={1:s});", DFROM, DTO);
+            //getDates(f);
+            string period = "";
+            string format = "%d.%m.%Y";        
+            if (f.safeValue("dttp") == "d")
+            {
+                DateTime dt = DateTime.Parse(f.safeValue("dtval"));
+                period = String.Format("WHERE DATE(d_date)='{0:yyyy-MM-dd}'", dt);
+            }
+            else if (f.safeValue("dttp") == "y")
+            {
+                //format = "%m";
+                period = String.Format("WHERE YEAR(d_date)={0}", f.safeValue("dtval"));
+            }
+            else if (f.safeValue("dttp") == "m")
+            {
+                DateTime dt = DateTime.Parse(f.safeValue("dtval"));
+                format = "%d";
+                period = String.Format("WHERE MONTH(d_date)={0:MM} AND YEAR(d_date)={0:yyyy}", dt);
+            }
+            
+            string s = String.Format(@"
+    (SELECT DATE_FORMAT(d_date,'{1}') date,
+    deadname(r_id,2) name,
+    r_group,
+    (SELECT d_name FROM deadreasons WHERE d_id=d_reason) reason,
+    d_notes 
+FROM dead WHERE {0} ORDER BY d_date ASC)
+UNION ALL 
+    (SELECT 'Итого:','',SUM(r_group),'','' FROM dead {0});", period,format);
             return s;
+
         }
 
         private String deadReasonsQuery(Filters f)
         {
-            getDates(f);
-            string s = String.Format(@"(SELECT SUM(r_group) grp,d_reason,
-(SELECT d_name FROM deadreasons WHERE d_reason=d_id) reason FROM dead WHERE
-d_date>={0:s} AND d_date<={1:s} GROUP BY d_reason)
+            //getDates(f);
+            string period = "";
+            if (f.safeValue("dttp") == "d")
+            {
+                DateTime dt = DateTime.Parse(f.safeValue("dtval"));
+                period = String.Format("DATE(d_date)='{0:yyyy-MM-dd}'", dt);
+            }
+            else if (f.safeValue("dttp") == "y")
+            {
+                period = String.Format("YEAR(d_date)={0}", f.safeValue("dtval"));
+            }
+            else
+            {
+                DateTime dt = DateTime.Parse(f.safeValue("dtval"));
+                period = String.Format("MONTH(d_date)={0:MM} AND YEAR(d_date)={0:yyyy}", dt);
+            }
+            string s = String.Format(@"
+    (SELECT SUM(r_group) grp,
+    d_reason,
+    (SELECT d_name FROM deadreasons WHERE d_reason=d_id) reason 
+FROM dead WHERE {0} GROUP BY d_reason)
 UNION 
-(SELECT SUM(r_group),0,'Итого' FROM dead WHERE d_date>={0:s} AND d_date<={1:s});", DFROM, DTO);
+(SELECT SUM(r_group),0,'Итого' FROM dead WHERE {0});",period);
             return s;
         }
 
@@ -306,7 +355,7 @@ r_group FROM rabbits WHERE {0:s} ORDER BY r_farm,r_tier_id,r_area;",where);
         /// <returns>SQL-запрос на получение окролов</returns>
         private String UserOkrols(Filters f)
         {
-            getDates(f);
+            //getDates(f);
             int user = f.safeInt("user");
             string period = "";
             string format = "";
@@ -457,10 +506,26 @@ FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AN
 
         private string fucksByDate(Filters f)
         {
+            string period = "";
+            if (f.safeValue("dttp") == "m")
+            {
+                DateTime dt = DateTime.Parse(f.safeValue("dtval"));
+                period = String.Format("AND (MONTH(f_date)={0:MM} AND YEAR(f_date)={0:yyyy})", dt);
+
+            }
+            else if (f.safeValue("dttp") == "y")
+            {
+                period = String.Format("AND YEAR(f_date)={0}", f.safeValue("dtval"));
+            }
+            else if (f.safeValue("dttp") == "d")
+            {
+                DateTime dt = DateTime.Parse(f.safeValue("dtval"));
+                period = String.Format("AND DATE(f_date)='{0:yyyy-MM-dd}'", dt);
+            }
             return String.Format(@"SELECT DATE_FORMAT(f_date,'%d.%m.%Y')date,anyname(f_rabid,2) name,
                                     (SELECT n_name FROM names WHERE n_use=f_partner) partner,
                                     (SELECT u_name FROM users WHERE u_id=f_worker) worker 
-                                FROM fucks WHERE f_date is not null ORDER BY f_date DESC, f_worker;",DFROM,DTO);
+                                FROM fucks WHERE f_date is not null {0} ORDER BY f_date DESC, f_worker;",period);
         }
     }
 }

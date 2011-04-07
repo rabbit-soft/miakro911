@@ -490,7 +490,7 @@ namespace rabnet
                 p2 = new OneRabbit[] { null, null };
             docs[5] = rabToXml(null, p2[0]);
             docs[6] = rabToXml(null, p2[1]);
-            ReportViewForm rf = new ReportViewForm("Племенное свидетельство", "rabbit", docs);
+            ReportViewForm rf = new ReportViewForm(myReportType.RABBIT, docs);
             rf.ShowDialog();
             if (rf.printed)
             {
@@ -510,7 +510,7 @@ namespace rabnet
             f["cnt"] = listView1.SelectedItems.Count.ToString();
             for (int i = 0; i < listView1.SelectedItems.Count; i++)
                 f["r" + i.ToString()] = ((int)listView1.SelectedItems[i].Tag).ToString();
-            new ReportViewForm("Кандидаты на реализацию", "realization", Engine.db().makeReport(myReportType.REALIZE, f)).ShowDialog();
+            new ReportViewForm(myReportType.REALIZE, Engine.db().makeReport(myReportType.REALIZE, f)).ShowDialog();
 #else
             DemoErr.DemoNoReportMsg();
 #endif
@@ -583,7 +583,7 @@ namespace rabnet
             rw.AppendChild(doc2.CreateElement("date")).AppendChild(doc2.CreateTextNode(DateTime.Now.Date.ToShortDateString()+" "+DateTime.Now.ToLongTimeString()));
             rw.AppendChild(doc2.CreateElement("breed")).AppendChild(doc2.CreateTextNode(brd));
             rw.AppendChild(doc2.CreateElement("count")).AppendChild(doc2.CreateTextNode(cnt.ToString()));
-            new ReportViewForm("Племенной список", "plem", new XmlDocument[] { doc, doc2 }).ShowDialog();
+            new ReportViewForm(myReportType.PRIDE, new XmlDocument[] { doc, doc2 }).ShowDialog();
 #else
             DemoErr.DemoNoReportMsg();
 #endif
@@ -609,7 +609,7 @@ namespace rabnet
                 if (cn == "-") cn = "1";
                 rw.AppendChild(doc.CreateElement("count")).AppendChild(doc.CreateTextNode(cn));
             }
-            new ReportViewForm("План пересадок", "replace_plan", doc).ShowDialog();
+            new ReportViewForm(myReportType.REPLACE, doc).ShowDialog();
 #else
             DemoErr.DemoNoReportMsg();
 #endif

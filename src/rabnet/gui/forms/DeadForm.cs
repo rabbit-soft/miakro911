@@ -83,5 +83,19 @@ namespace rabnet
             catch{}
             
         }
+
+        private void miChangeReason_Click(object sender, EventArgs e)
+        {
+            int id = (int)listView1.SelectedItems[0].Tag;
+            string name = listView1.SelectedItems[0].SubItems[0].Text;
+            string reason = listView1.SelectedItems[0].SubItems[6].Text;
+            DeadReasonChangeForm frm = new DeadReasonChangeForm(id,name,reason);
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                //log!
+                Engine.db().changeDeadReason(id, frm.NewReason);
+            }
+        }
+
     }
 }
