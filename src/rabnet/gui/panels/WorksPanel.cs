@@ -22,6 +22,7 @@ namespace rabnet
             colSort = new ListViewColumnSorter(lvZooTech, new int[] {0,4},Options.OPT_ID.ZOO_LIST);
             colSort2 = new ListViewColumnSorter(lvZooTech, new int[] { 0, 4 }, Options.OPT_ID.ZOO_LIST);
             lvZooTech.ListViewItemSorter = colSort;
+            MakeExcel = new RabStatusBar.ExcelButtonClickDelegate(this.makeExcel);
         }
 
         protected override IDataGetter onPrepare(Filters f)
@@ -283,7 +284,7 @@ namespace rabnet
                 if (idx<lvZooTech.Items.Count)
                     lvZooTech.Items[idx].Selected = true;
                 fullUpdate = needUpdate;
-                rsb.run();
+                _rsb.run();
             }
         }
 
@@ -366,6 +367,13 @@ namespace rabnet
         {
             makeFlag = 1;
             makeJob();
+        }
+
+        private void makeExcel()
+        {
+#if !DEMO
+            ExcelMaker.MakeExcelFromLV(lvZooTech, "Зоотехплан");
+#endif
         }
 
     }

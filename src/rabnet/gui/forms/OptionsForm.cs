@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
+using System.Drawing.Design;
 using System.Windows.Forms;
+using System.Windows.Forms.Design;
 
 namespace rabnet
 {
@@ -14,10 +16,11 @@ namespace rabnet
         class OptionsHolder
         {
             [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
-            public enum RUBOOL { Да, Нет };
             private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su,n,cn,tt,vactime,cand;
-            private string gd, sh;
-            private RUBOOL ce, ck, uz,sp;
+            private string gd, sh,xf;
+            private RUBOOL ce, ck, uz,sp,ask;
+
+            #region zooTime
             [Category("Зоотехнические сроки"),DisplayName("Окрол"),
             Description("Время от случки(вязки) до окрола")]
 			public int okrol { get { return ok; } set { ok = value; } }
@@ -61,7 +64,7 @@ namespace rabnet
             Description("Сколько суток отдыхает отработавший самец до назначения на работу")]
             public int maleWait { get { return mw; } set { mw = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Прививка"),
-            Description("Назначить на прививку молодняк, достикший указанного возраста")]
+            Description("Назначить на прививку молодняк, достигший указанного возраста")]
             public int vacc { get { return vac; } set { vac = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Подсчет подсосных"),
             Description("Возведение гнездовых крольчат в подсосных и подсчет их количества")]
@@ -75,7 +78,8 @@ namespace rabnet
             [Category("Зоотехнические сроки"), DisplayName("Действие Прививки"),
             Description("Количество дней, сколько действует прививка")]
             public int vaccine_time { get { return vactime; } set { vactime = value; } }
-
+            #endregion zooTime
+            #region view
             [Category("Вид"),
             DisplayName("Подтверждение выхода"),
             Description("Спрашивать подтверждение закрытия программы")]
@@ -96,20 +100,40 @@ namespace rabnet
             DisplayName("Показывать партнеров"),
             Description("Подбирать в Зоотехплане возможных патнеров для Случек и Вязок")]
             public RUBOOL showPartners { get { return sp; } set { sp = value; } }
-
-            [Category("Племенные свидетельства"),
-            DisplayName("Номер следующего свидетельства"),
-            Description("")]
+            #endregion view
+            #region plem
+            [Category("Племенные свидетельства"),DisplayName("Номер следующего свидетельства"),Description("")]
             public int nextSvid { get { return tt; } set { tt = value; } }
-            [Category("Племенные свидетельства"),
-            DisplayName("Шапка"),
-            Description("Текст  находяшийся в \"Шапке\" племенного свидетельства")]
+            [Category("Племенные свидетельства"),DisplayName("Шапка"),Description("Текст  находяшийся в \"Шапке\" племенного свидетельства")]
             public string svidHead { get { return sh; } set { sh = value; } }
-            [Category("Племенные свидетельства"),
-            DisplayName("Генеральный директор"),
-            Description("Иницияалы Генерального директора предприятия, отображаемые в конце племенного свидетельства")]
+            [Category("Племенные свидетельства"),DisplayName("Генеральный директор"),Description("Иницияалы Генерального директора предприятия, отображаемые в конце племенного свидетельства")]
             public string genDir { get { return gd; } set { gd = value; } }
-
+            #endregion plem
+            #region excel
+            [Category("Выгрузка в Excel"), DisplayName("Спрашивать папку"), Description("При выгрузке в Excel спрашивать папку для сохранения")]
+            public RUBOOL askFolder 
+            { 
+                get { return ask; } 
+                set 
+                { 
+                    ask = value;
+                    if (value == RUBOOL.Нет)
+                        xf = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                    else xf = "";
+                } 
+            }
+            [Category("Выгрузка в Excel"), DisplayName("Папка для сохранения"), Description("Папка в которую автоматически сохранять Excel-выгрузку"), 
+            Editor(typeof(FolderNameEditor), typeof(UITypeEditor))]
+            public string xlsFolder 
+            { 
+                get{return xf; }
+                set 
+                {
+                    if (System.IO.Directory.Exists(value))
+                        xf = value;
+                }
+            }
+            #endregion excel
             public int fromR(RUBOOL value)
             {
                 return (value == RUBOOL.Да)?1:0;
@@ -161,7 +185,11 @@ namespace rabnet
                 nextSvid = o.getIntOption(Options.OPT_ID.NEXT_SVID);
                 svidHead = o.getOption(Options.OPT_ID.SVID_HEAD);
                 genDir = o.getOption(Options.OPT_ID.SVID_GEN_DIR);
-                
+                //xls
+                ask = toR(o.getIntOption(Options.OPT_ID.XLS_ASK));
+                xf = o.getOption(Options.OPT_ID.XLS_FOLDER);
+                if (ask == RUBOOL.Нет && xf == "") 
+                    xf = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             }
             public void save()
             {
@@ -195,6 +223,9 @@ namespace rabnet
                 o.setOption(Options.OPT_ID.NEXT_SVID, nextSvid);
                 o.setOption(Options.OPT_ID.SVID_HEAD, svidHead);
                 o.setOption(Options.OPT_ID.SVID_GEN_DIR, genDir);
+                //xls
+                o.setOption(Options.OPT_ID.XLS_ASK, fromR(ask));
+                o.setOption(Options.OPT_ID.XLS_FOLDER, xf);
             }
         }
 

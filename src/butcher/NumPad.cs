@@ -16,8 +16,7 @@ namespace butcher
         private double _thisRatio;
         private bool _manual = false;
 
-        public delegate void btOkClick();
-        public btOkClick dOk;
+        public event EventHandler OkButtonClick;
 
         public override Font Font
         {
@@ -130,7 +129,7 @@ namespace butcher
 
         private void btOk_Click(object sender, EventArgs e)
         {
-            dOk();
+            OkButtonClick(sender, e);
         }
 
     }

@@ -111,6 +111,8 @@ namespace rabnet
             MySqlDataReader rd=reader(String.Format("SELECT o_value FROM options WHERE o_name='{0:s}' AND o_subname='{1:s}' AND (o_uid={2:d} OR o_uid=0) ORDER BY o_uid DESC;",
                 name,subname,uid));
             string res="";
+            if(subname=="xls_ask")
+                res = "";
             if (rd.Read())
                 res=rd.GetString(0);
             rd.Close();
@@ -579,6 +581,16 @@ namespace rabnet
         public List<sMeat> getMeats(DateTime date)
         {
             return Butcher.GetMeats(sql,date);
+        }
+
+        public List<sMeal> getMealPeriods()
+        {
+            return Meal.getMealPeriods(sql);
+        }
+
+        public void addMealPeriod(DateTime start, float amount)
+        {
+            Meal.AddMealPeriod(sql, start, amount);
         }
 
         #endregion

@@ -12,8 +12,58 @@ namespace rabnet
          TEST,BREEDS,AGE,FUCKER,DEAD,DEADREASONS,REALIZE,USER_OKROLS,SHED,REPLACE,REVISION,BY_MONTH,FUCKS_BY_DATE,BUTCHER_PERIOD,RABBIT,PRIDE,ZOOTECH 
     }
 
+    public static class ReportHelper
+    {
+        public static string getRusName(myReportType type)
+        {
+            switch (type)
+            {
+                case myReportType.AGE: return "Статистика возрастного поголовья";
+                case myReportType.BREEDS: return "Отчет по породам";
+                case myReportType.BUTCHER_PERIOD: return "Стерильный цех";
+                case myReportType.BY_MONTH: return "Количество по месяцам";
+                case myReportType.DEAD: return "Списания";
+                case myReportType.DEADREASONS: return "Причины списаний";
+                case myReportType.FUCKER: return "Статистика продуктивности";
+                case myReportType.FUCKS_BY_DATE: return "Список случек и вязок";
+                case myReportType.PRIDE: return "Племенной список";
+                case myReportType.RABBIT: return "Племенное свидетельство";
+                case myReportType.REALIZE: return "Кандидаты на реализацию";
+                case myReportType.REPLACE: return "План пересадок";
+                case myReportType.REVISION: return "Ревизия свободных клеток";
+                case myReportType.SHED: return "Шедовый отчет";
+                case myReportType.USER_OKROLS: return "Окролы по пользователям";
+                default: return "test";
+            }
+        }
+
+        public static string getFileName(myReportType type)
+        {
+            switch (type)
+            {
+                case myReportType.AGE: return "age";
+                case myReportType.BREEDS: return "breeds";
+                case myReportType.BUTCHER_PERIOD: return "butcher";
+                case myReportType.BY_MONTH: return "by_month";
+                case myReportType.DEAD: return "dead";
+                case myReportType.DEADREASONS: return "deadreason";
+                case myReportType.FUCKER: return "fucker";
+                case myReportType.FUCKS_BY_DATE: return "fucks_by_date";
+                case myReportType.PRIDE: return "plem";
+                case myReportType.RABBIT: return "rabbit";
+                case myReportType.REALIZE: return "realization";
+                case myReportType.REPLACE: return "replace_plan";
+                case myReportType.REVISION: return "empty_rev";
+                case myReportType.SHED: return "shed";
+                case myReportType.USER_OKROLS: return "okrol_user";
+                default: return "test";
+            }
+        }
+    }
+
     class Reports
     {
+
         MySqlConnection sql = null;
         ILog log = log4net.LogManager.GetLogger(typeof(Reports));
         private DateTime FROM = DateTime.Now;
@@ -31,18 +81,19 @@ namespace rabnet
             String query = "";
             switch (type)
             {
-                case myReportType.TEST: query = testQuery(f); break;
-                case myReportType.BREEDS: query = breedsQuery(f); break;
                 case myReportType.AGE: query = ageQuery(f); break;
-                case myReportType.FUCKER: query = fuckerQuery(f); break;
+                case myReportType.BY_MONTH: query = rabByMonth(); break;
+                case myReportType.BUTCHER_PERIOD: query = butcherQuery(f); break;
+                case myReportType.BREEDS: query = breedsQuery(f); break;
                 case myReportType.DEAD: query = deadQuery(f); break;
                 case myReportType.DEADREASONS: query = deadReasonsQuery(f); break;
-                case myReportType.REALIZE: query = Realize(f); break;
-                case myReportType.USER_OKROLS: return UserOkrolRpt(UserOkrols(f));
-                case myReportType.SHED: return ShedReport(f);
-                case myReportType.REVISION: return Revision(f);
-                case myReportType.BY_MONTH: query = rabByMonth(); break;
                 case myReportType.FUCKS_BY_DATE: query = fucksByDate(f); break;
+                case myReportType.FUCKER: query = fuckerQuery(f); break;
+                case myReportType.REALIZE: query = Realize(f); break;                                
+                case myReportType.REVISION: return Revision(f);               
+                case myReportType.SHED: return ShedReport(f);
+                case myReportType.TEST: query = testQuery(f); break;
+                case myReportType.USER_OKROLS: return UserOkrolRpt(UserOkrols(f));
             }
             log.Debug(query);
             return makeStdReportXml(query);
@@ -301,7 +352,7 @@ FROM fucks WHERE f_partner={0:d} AND f_end_date>={1:s} AND f_end_date<={2:s}
     r_group,
     (SELECT d_name FROM deadreasons WHERE d_id=d_reason) reason,
     d_notes 
-FROM dead WHERE {0} ORDER BY d_date ASC)
+FROM dead {0} ORDER BY d_date ASC)
 UNION ALL 
     (SELECT 'Итого:','',SUM(r_group),'','' FROM dead {0});", period,format);
             return s;
@@ -526,6 +577,34 @@ FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AN
                                     (SELECT n_name FROM names WHERE n_use=f_partner) partner,
                                     (SELECT u_name FROM users WHERE u_id=f_worker) worker 
                                 FROM fucks WHERE f_date is not null {0} ORDER BY f_date DESC, f_worker;",period);
+        }
+
+        private string butcherQuery(Filters f)
+        {
+            string period = "";
+            if (f.safeValue("dttp") == "m")
+            {
+                DateTime dt = DateTime.Parse(f.safeValue("dtval"));
+                period = String.Format("WHERE (MONTH(b_date)={0:MM} AND YEAR(b_date)={0:yyyy})", dt);
+
+            }
+            else if (f.safeValue("dttp") == "y")
+            {
+                period = String.Format("WHERE YEAR(b_date)={0}", f.safeValue("dtval"));
+            }
+            else if (f.safeValue("dttp") == "d")
+            {
+                DateTime dt = DateTime.Parse(f.safeValue("dtval"));
+                period = String.Format("WHERE DATE(b_date)='{0:yyyy-MM-dd}'", dt);
+            }
+            return String.Format(@"SELECT 
+    DATE_FORMAT(b_date,'%d.%m.%Y')date,
+    (SELECT p_name FROM products WHERE p_id=b_prodtype) prod,
+    b_amount,
+    (SELECT p_unit FROM products WHERE p_id = b_prodtype) unt,
+    (SELECT u_name FROM users WHERE b_user=u_id) user
+FROM butcher 
+{0} ORDER BY b_date DESC;", period);
         }
     }
 }

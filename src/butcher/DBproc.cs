@@ -97,7 +97,7 @@ namespace butcher
                         _sql.Open();
                     return true;
                 }
-                catch(Exception e)
+                catch(Exception ex)
                 {
                     return false;
                 }

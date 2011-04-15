@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml;
 using X_Tools;
 
 namespace rabnet
@@ -72,6 +73,7 @@ namespace rabnet
                     if (!cbYear.Items.Contains(vals[1]))
                         cbYear.Items.Add(vals[1]);
                 }
+                cbMonth.SelectedIndex = cbYear.SelectedIndex = 0;
             }
             else
             {
@@ -82,20 +84,26 @@ namespace rabnet
 
         private void rbMonth_CheckedChanged(object sender, EventArgs e)
         {
-            cbMonth.Enabled = cbYear.Enabled = false;
-            cbMonth.SelectedIndex = cbYear.SelectedIndex = -1;
             if (rbMonth.Checked)
             {
-                cbMonth.Enabled = true;
-                if (cbMonth.Items.Count > 0)
-                    cbMonth.SelectedIndex = 0;
+                cbMonth.Visible = true;
+                cbYear.Visible = false;
             }
             else
             {
-                cbYear.Enabled = true;
-                if (cbYear.Items.Count > 0)
-                    cbYear.SelectedIndex = 0;
+                cbYear.Visible = true;
+                cbMonth.Visible = false;
             }
+            
+        }
+
+        internal System.Xml.XmlDocument getXml()
+        {
+            XmlDocument doc = new XmlDocument();
+            XmlElement row = doc.CreateElement("Row");
+            doc.AppendChild(doc.CreateElement("Rows")).AppendChild(row);
+            row.AppendChild(doc.CreateElement("period")).AppendChild(doc.CreateTextNode(this.DateValue));
+            return doc;
         }
     }
 }

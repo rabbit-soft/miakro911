@@ -10,9 +10,11 @@ namespace rabnet
 {
     public partial class RabStatusBar : StatusStrip
     {
+
         private ToolStripProgressBar pb = new ToolStripProgressBar();
         private ToolStripButton btn = new ToolStripButton();
         private ToolStripButton filt = new ToolStripButton();
+        private ToolStripButton btExcel = new ToolStripButton();
         private List<ToolStripLabel> labels = new List<ToolStripLabel>();
         private int btnStatus=0;
         public event EventHandler stopClick;
@@ -27,8 +29,27 @@ namespace rabnet
         }
         public delegate void RSBEventHandler(object sender,RSBClickEvent e);
         public event RSBEventHandler stopRefreshClick;
+
         public delegate IDataGetter RSBPrepareEventHandler(object sender, EventArgs e);
         public event RSBPrepareEventHandler prepareGet;
+
+        public delegate void ExcelButtonClickDelegate();
+        public ExcelButtonClickDelegate excelButtonClick = null;
+        /// <summary>
+        /// Делегат нажатия на кнопку Excel, если 'null' то кнопка не видна. Подробнее RabNetPanel.MakeExcel
+        /// </summary>
+        public ExcelButtonClickDelegate dExcelButtonClick
+        {
+            get {return excelButtonClick; }
+            set 
+            {
+                excelButtonClick = value;
+                if (value == null)
+                    btExcel.Visible = false;
+                else btExcel.Visible = true;
+            }
+        }
+
         public class RSBItemEvent:EventArgs
         {
             public IData data;
@@ -57,25 +78,26 @@ namespace rabnet
                     fpan.BorderStyle = BorderStyle.FixedSingle;
                 }
                 else
-                {
-                    filt.Visible = false;
-                }
+                    filt.Visible = false;              
             }
         }
+
+        /// <summary>
+        /// Конструктор статусБара
+        /// </summary>
         public RabStatusBar()
         {
             InitializeComponent();
+            
             RenderMode = ToolStripRenderMode.Professional;
-            for (int i=0;i<5;i++)
+            for (int i = 0; i < 5; i++)
                 labels.Add(new ToolStripLabel());
             Items.Add(labels[0]);
             Items.Add(new ToolStripSeparator());
             Items.Add(pb);
-            Items.Add(btn);
-            btn.Image = imageList1.Images[1];
-            filt.Image = imageList1.Images[2];
-            filt.Visible = false;
-            Items.Add(filt);
+            Items.Add(btn); btn.Image = imageList1.Images[1];
+            Items.Add(filt); filt.Image = imageList1.Images[2]; filt.Visible = false;
+            Items.Add(btExcel); btExcel.Image = imageList1.Images[3]; btExcel.Visible = false;
             Items.Add(new ToolStripSeparator());
             Items.Add(labels[1]);
             Items.Add(new ToolStripSeparator());
@@ -87,6 +109,15 @@ namespace rabnet
             btnStatus=0;
             btn.Click += new EventHandler(this.OnBtnClick);
             filt.Click += new EventHandler(this.OnFiltClick);
+            btExcel.Click += new EventHandler(this.OnExcelClick);
+        }
+
+        private void initialHints()
+        {
+
+            btn.ToolTipText = "Обновить список";
+            filt.ToolTipText = "Показать фильт";
+            btExcel.ToolTipText = "Сохранить содержимое списка в Excel";
         }
 
         public void setText(int item,String text)
@@ -123,34 +154,15 @@ namespace rabnet
         {
             pb.Value = pb.Minimum;
             pb.Invalidate();
-            btn.Image=imageList1.Images[1];
+            btn.Image = imageList1.Images[1];
             btnStatus=0;
         }
         public void emergencyStop()
         {
-            btn.Image=imageList1.Images[1];
+            btn.Image = imageList1.Images[1];
             btnStatus=0;
         }
-        private void OnBtnClick(object sender,EventArgs e)
-        {
-            RSBClickEvent ev = new RSBClickEvent(btnStatus);
-            if (stopRefreshClick != null)
-                stopRefreshClick(this, ev);
-            if (btnStatus == 0)
-            {
-                if (refreshClick != null)
-                    refreshClick(this, null);
-                if (prepareGet!=null)
-                {
-                    DataThread.get4run().Run(prepareGet(this, null), this, this.OnItem);
-                }
-            }
-            else
-            {
-                if (stopClick != null)
-                    stopClick(this, null);
-            }
-        }
+
         private void OnItem(object sender, EventArgs e)
         {
             if (itemGet != null)
@@ -180,10 +192,35 @@ namespace rabnet
                 fpan.BringToFront();
             }
         }
+
         public void filterSwitch()
         {
             filt.PerformClick();
         }
+
+        #region clicks
+
+        private void OnBtnClick(object sender, EventArgs e)
+        {
+            RSBClickEvent ev = new RSBClickEvent(btnStatus);
+            if (stopRefreshClick != null)
+                stopRefreshClick(this, ev);
+            if (btnStatus == 0)
+            {
+                if (refreshClick != null)
+                    refreshClick(this, null);
+                if (prepareGet != null)
+                {
+                    DataThread.get4run().Run(prepareGet(this, null), this, this.OnItem);
+                }
+            }
+            else
+            {
+                if (stopClick != null)
+                    stopClick(this, null);
+            }
+        }
+
         private void OnFiltClick(object sender, EventArgs e)
         {
             if (fpan!=null)
@@ -194,6 +231,15 @@ namespace rabnet
                     filterShow();
             }
         }
+
+        private void OnExcelClick(object sender, EventArgs e)
+        {
+            this.Parent.Enabled = false;
+            dExcelButtonClick();
+            this.Parent.Enabled = true;
+        }
+
+        #endregion clicks
 
     }
 }

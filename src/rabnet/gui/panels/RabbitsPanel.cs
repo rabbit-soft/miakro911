@@ -26,6 +26,7 @@ namespace rabnet
             colSort = new ListViewColumnSorter(listView1, new int[] {2,8,9 },Options.OPT_ID.RAB_LIST);
             listView1.ListViewItemSorter = null;
 			GeneticsToolStripMenuItem.Enabled = GeneticsManagerSafe.GeneticsModuleTest();
+            MakeExcel = new RabStatusBar.ExcelButtonClickDelegate(this.makeExcel);
         }
 
         protected override IDataGetter onPrepare(Filters flt)
@@ -42,8 +43,8 @@ namespace rabnet
             flt["cand"] = op.getOption(Options.OPT_ID.MAKE_CANDIDATE);
             colSort.Prepare();
             IDataGetter dg = DataThread.db().getRabbits(flt);
-            rsb.setText(1, dg.getCount().ToString() + " записей");
-            rsb.setText(2, dg.getCount2().ToString() + " кроликов");
+            _rsb.setText(1, dg.getCount().ToString() + " записей");
+            _rsb.setText(2, dg.getCount2().ToString() + " кроликов");
             return dg;
         }
 
@@ -155,10 +156,16 @@ namespace rabnet
                 MessageBox.Show(@"Не возможно найти информацию по данной записи.
 Возможно данного кролика списал другой сетевой пользователь программы.
 Во избежании проблем, придется обновить Лист поголовья", "Не могу найти запись");
-                rsb.run();
+                _rsb.run();
             }
         }
 
+        /// <summary>
+        /// Устанавливает набор возможных действий
+        /// </summary>
+        /// <param name="sex"></param>
+        /// <param name="multi"></param>
+        /// <param name="kids"></param>
         private void setMenu(int sex,int multi,bool kids)
         {
             makeBon.Visible = passportMenuItem.Visible=proholostMenuItem.Visible=false;
@@ -168,13 +175,17 @@ namespace rabnet
             boysoutMenuItem.Visible = replaceYoungersMenuItem.Visible= false;
             svidMenuItem.Visible = realizeMenuItem.Visible= false;
             plemMenuItem.Visible = replacePlanMenuItem.Visible= false;
+            toolStripSeparator1.Visible = toolStripSeparator2.Visible = toolStripSeparator3.Visible = false;//separators
+            GeneticsToolStripMenuItem.Visible = false;
+
             if (sex < 0) return;
+            toolStripSeparator1.Visible = true;
+            GeneticsToolStripMenuItem.Visible = toolStripSeparator3.Visible = true;
             plemMenuItem.Visible = true;
             KillMenuItem.Visible = true;
             realizeMenuItem.Visible = true;
             replaceMenuItem.Visible = true;
-            countKidsMenuItem.Visible = replaceYoungersMenuItem.Visible = kids;
-                // boysoutMenuItem.Visible=
+            countKidsMenuItem.Visible = replaceYoungersMenuItem.Visible = toolStripSeparator2.Visible = kids;
             if (multi==1)
                 makeBon.Visible = true;
             if (multi == 2)
@@ -213,7 +224,7 @@ namespace rabnet
                 return;
             RabbitInfo ri = new RabbitInfo((int)listView1.SelectedItems[0].Tag);
             if (ri.ShowDialog() == DialogResult.OK)
-                rsb.run();
+                _rsb.run();
         }
 
         private void listView1_DoubleClick(object sender, EventArgs e)
@@ -229,7 +240,7 @@ namespace rabnet
                 return;
             int rid=(int)listView1.SelectedItems[0].Tag;
             if( (new BonForm(rid)).ShowDialog() == DialogResult.OK)
-                rsb.run();
+                _rsb.run();
         }
 
         private void proholostMenuItem_Click(object sender, EventArgs e)
@@ -238,7 +249,7 @@ namespace rabnet
                 return;
             int rid = (int)listView1.SelectedItems[0].Tag;
             if((new Proholost(rid)).ShowDialog() == DialogResult.OK)
-                rsb.run();
+                _rsb.run();
         }
 
         private void newRab_Click(object sender, EventArgs e)
@@ -246,7 +257,7 @@ namespace rabnet
             try
             {
                 if ((new IncomeForm()).ShowDialog() == DialogResult.OK)
-                    rsb.run();
+                    _rsb.run();
             }
             catch (Exception ex)
             {
@@ -262,7 +273,7 @@ namespace rabnet
             foreach (ListViewItem li in listView1.SelectedItems)
                 rpf.addRabbit((int)li.Tag);
             if(rpf.ShowDialog() == DialogResult.OK)
-                rsb.run();
+                _rsb.run();
         }
 
         private void placeChMenuItem_Click(object sender, EventArgs e)
@@ -274,7 +285,7 @@ namespace rabnet
             rpf.addRabbit((int)listView1.SelectedItems[1].Tag);
             rpf.setAction(ReplaceForm.Action.CHANGE);
             if (rpf.ShowDialog() == DialogResult.OK)
-                rsb.run();
+                _rsb.run();
         }
 
         private void KillMenuItem_Click(object sender, EventArgs e)
@@ -289,7 +300,7 @@ namespace rabnet
             foreach (ListViewItem li in listView1.SelectedItems)
                 f.addRabbit((int)li.Tag);
             if(f.ShowDialog() == DialogResult.OK)
-                rsb.run();
+                _rsb.run();
         }
 
         private void countKidsMenuItem_Click(object sender, EventArgs e)
@@ -298,7 +309,7 @@ namespace rabnet
                 return;
             CountKids f = new CountKids((int)listView1.SelectedItems[0].Tag);
             if (f.ShowDialog() == DialogResult.OK)
-                rsb.run();
+                _rsb.run();
         }
 
         private void okrolMenuItem_Click(object sender, EventArgs e)
@@ -306,7 +317,7 @@ namespace rabnet
             if (listView1.SelectedItems.Count != 1)
                 return;
             if ((new OkrolForm((int)listView1.SelectedItems[0].Tag)).ShowDialog() == DialogResult.OK)
-                rsb.run();
+                _rsb.run();
         }
 
         private void fuckMenuItem_Click(object sender, EventArgs e)
@@ -314,7 +325,7 @@ namespace rabnet
             if (listView1.SelectedItems.Count != 1)
                 return;
             if((new MakeFuck((int)listView1.SelectedItems[0].Tag)).ShowDialog() == DialogResult.OK)
-                rsb.run();
+                _rsb.run();
         }
 
         private void boysoutMenuItem_Click(object sender, EventArgs e)
@@ -325,14 +336,14 @@ namespace rabnet
             rpf.addRabbit((int)listView1.SelectedItems[0].Tag);
             rpf.setAction(ReplaceForm.Action.BOYSOUT);
             if (rpf.ShowDialog() == DialogResult.OK)
-                rsb.run();
+                _rsb.run();
         }
 
         private void replaceYoungersMenuItem_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count != 1) return;
             if(PreReplaceYoungersForm.MakeChoice((int)listView1.SelectedItems[0].Tag) == DialogResult.OK)
-                rsb.run();
+                _rsb.run();
         }
 
         private int GroupCount()
@@ -357,7 +368,7 @@ namespace rabnet
             int cnt = 0;
             foreach (ListViewItem li in listView1.SelectedItems)
                 cnt += selCount(li.Index);
-            rsb.setText(3, String.Format("Выбрано {0:d} строк - {1:d} кроликов",rows,cnt));
+            _rsb.setText(3, String.Format("Выбрано {0:d} строк - {1:d} кроликов",rows,cnt));
         }
 
         private void listView1_MouseDown(object sender, MouseEventArgs e)
@@ -395,9 +406,16 @@ namespace rabnet
         {
             return rabToXml(er, or, null);
         }
+
+        /// <summary>
+        /// Нужно для отчета Племенное свидетельство
+        /// </summary>
+        /// <param name="er"></param>
+        /// <param name="or"></param>
+        /// <param name="hasdoc"></param>
+        /// <returns></returns>
         private XmlDocument rabToXml(RabNetEngRabbit er, OneRabbit or, XmlDocument hasdoc)
         {
-
             XmlDocument doc = null;
             if (hasdoc == null)
             {
@@ -417,7 +435,9 @@ namespace rabnet
                     rw.AppendChild(doc.CreateElement("num")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.NEXT_SVID)));
                     rw.AppendChild(doc.CreateElement("date")).AppendChild(doc.CreateTextNode(DateTime.Now.Date.ToShortDateString()));
                     rw.AppendChild(doc.CreateElement("director")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.SVID_GEN_DIR)));
-                }else{
+                }
+                else
+                {
                     rw.AppendChild(doc.CreateElement("group")).AppendChild(doc.CreateTextNode(er.Group.ToString()));
                 }
                 Catalog zones = Engine.db().catalogs().getZones();
@@ -655,5 +675,11 @@ namespace rabnet
             MessageBox.Show("r_id = "+listView1.SelectedItems[0].Tag.ToString());
         }
 
+        private void makeExcel()
+        {         
+#if !DEMO
+            ExcelMaker.MakeExcelFromLV(listView1, "Поголовье");
+#endif
+        }
     }
 }

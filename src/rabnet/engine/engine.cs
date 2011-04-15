@@ -9,7 +9,7 @@ namespace rabnet
 {
     public class RabNetEngine
     {
-        const int NEED_DB_VERSION = 6; //Необходимой  версия БД (options o_name='db',o_subname='version')
+        const int NEED_DB_VERSION = 7; //Необходимой  версия БД (options o_name='db',o_subname='version')
         private IRabNetDataLayer data = null;
         private IRabNetDataLayer data2 = null;
         private ILog log = null;

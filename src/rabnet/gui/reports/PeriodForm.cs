@@ -79,7 +79,7 @@ namespace rabnet
                     lbReportName.Text = "Причины списаний";
                     break;
                 case enumReportType.Fucks:
-                    lbReportName.Text = "Список случек вязок";
+                    lbReportName.Text = "Список случек и вязок";
                     break;
             }
             this.ReportType = type;

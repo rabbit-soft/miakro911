@@ -135,12 +135,13 @@
             // btExit
             // 
             this.btExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btExit.Location = new System.Drawing.Point(1091, 960);
+            this.btExit.Location = new System.Drawing.Point(1060, 960);
             this.btExit.Name = "btExit";
             this.btExit.Size = new System.Drawing.Size(177, 52);
             this.btExit.TabIndex = 20;
             this.btExit.Text = "ВЫХОД";
             this.btExit.UseVisualStyleBackColor = true;
+            this.btExit.Click += new System.EventHandler(this.btExit_Click);
             // 
             // btDown
             // 
@@ -155,6 +156,7 @@
             this.btDown.Text = "Вниз";
             this.btDown.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btDown.UseVisualStyleBackColor = true;
+            this.btDown.Click += new System.EventHandler(this.btDown_Click);
             // 
             // tbAmount
             // 
@@ -179,6 +181,7 @@
             this.btUp.Text = "Вверх";
             this.btUp.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btUp.UseVisualStyleBackColor = true;
+            this.btUp.Click += new System.EventHandler(this.btUp_Click);
             // 
             // lvLogs
             // 
@@ -228,6 +231,7 @@
             this.npButcher.OnlyDigits = false;
             this.npButcher.Size = new System.Drawing.Size(326, 551);
             this.npButcher.TabIndex = 14;
+            this.npButcher.OkButtonClick += new System.EventHandler(this.npButcher_OkButtonClick);
             // 
             // MainForm
             // 

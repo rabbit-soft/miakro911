@@ -83,28 +83,7 @@ namespace rabnet
         private void tbPass1_TextChanged(object sender, EventArgs e)
         {
             if (cbUserType.SelectedIndex != 2) return;
-            List<char> numbers = new List<char> { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
-            TextBox tb = (sender as TextBox);
-            try
-            {
-                ulong.Parse(tb.Text);
-            }
-            catch (FormatException)
-            {
-                if (tb.Text != "")
-                {
-                    for (int i = 0; i < tb.Text.Length; i++)
-                    {
-                        if (!numbers.Contains(tb.Text[i]))
-                        {
-                            tb.Text = tb.Text.Remove(i, 1);
-                            tb.Select(i, 0);
-                            break;
-                        }
-                    }
-                }
-            }
-
+            X_Tools.XTools.checkFloatNumber(sender, e);
         }
 
         private void cbUserType_SelectedIndexChanged(object sender, EventArgs e)

@@ -126,6 +126,7 @@ namespace rabnet
             curpanel = panels[tabControl1.SelectedIndex];
             panel1.Controls.Add(curpanel);
             tsmiActions.DropDown = curpanel.getMenu();
+            rabStatusBar1.dExcelButtonClick = curpanel.MakeExcel;
             curpanel.activate();
             working();
             protectTest();
@@ -470,17 +471,30 @@ namespace rabnet
 #endif
         }
 
-        private void мяснойЦехToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void miButcher_Click(object sender, EventArgs e)
+        {            
 #if PROTECTED
-
-            var brd = new ButcherReportDate();
-            if (brd.ShowDialog() == DialogResult.OK)
+            if (!GRD.Instance.GetFlagButcher())
             {
-                Filters f = new Filters();
-                f["dttp"] = brd.PeriodChar;
-                f["dtval"] = brd.DateValue;
-                (new ReportViewForm("Отчет по завесам", "butcher", Engine.get().db().makeReport(myReportType.BUTCHER_PERIOD, f))).ShowDialog();
+#endif
+#if !DEMO
+                var brd = new ButcherReportDate();
+                if (brd.ShowDialog() == DialogResult.OK)
+                {
+                    Filters f = new Filters();
+                    f["dttp"] = brd.PeriodChar;
+                    f["dtval"] = brd.DateValue;
+                    (new ReportViewForm("Отчет по стерильному цеху", "butcher",new XmlDocument[]
+                    { 
+                        Engine.get().db().makeReport(myReportType.BUTCHER_PERIOD, f),
+                        //brd.getXml()
+                    }
+                    )).ShowDialog();
+                }   
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
+#if PROTECTED
             }
 #endif
         }
@@ -500,8 +514,22 @@ namespace rabnet
             }
 #elif DEMO
             DemoErr.DemoNoModuleMsg();
-            e.Cancel;
+            e.Cancel = true;
 #endif
+        }
+
+        private void tsmiReports_DropDownOpening(object sender, EventArgs e)
+        {
+#if PROTECTED
+            miButcher.Visible = GRD.Instance.GetFlagButcher();           
+#elif DEMO
+            miButcher.Visible = false;        
+#endif
+        }
+
+        private void miMeal_Click(object sender, EventArgs e)
+        {
+            (new MealForm()).ShowDialog();
         }
 
     }

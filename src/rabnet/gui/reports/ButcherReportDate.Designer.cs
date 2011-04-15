@@ -80,6 +80,7 @@
             this.cbYear.Name = "cbYear";
             this.cbYear.Size = new System.Drawing.Size(121, 21);
             this.cbYear.TabIndex = 2;
+            this.cbYear.Visible = false;
             // 
             // label1
             // 

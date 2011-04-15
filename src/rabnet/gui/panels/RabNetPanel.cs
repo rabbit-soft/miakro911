@@ -7,17 +7,22 @@ namespace rabnet
 {
     public class RabNetPanel:UserControl
     {
-        protected RabStatusBar rsb=null;
-        private FilterPanel fp=null;
+        protected RabStatusBar _rsb = null;
+        private FilterPanel fp = null;
         protected ListViewColumnSorter colSort = null;
         protected ListViewColumnSorter colSort2 = null;
+        /// <summary>
+        /// Делегат определяющий обработчик, когда жмут на кнопку Excel.
+        /// Если наследники присвоят обработчик, то кнопка Excel покажется.
+        /// </summary>
+        public RabStatusBar.ExcelButtonClickDelegate MakeExcel = null;
         public RabNetPanel()
         {
             InitializeComponent();
         }
         public RabNetPanel(RabStatusBar sb,FilterPanel fp):this()
         {
-            rsb=sb;
+            _rsb=sb;
             this.fp=fp;
         }
         public virtual void close()
@@ -42,21 +47,21 @@ namespace rabnet
         /// </summary>
         public virtual void activate()
         {
-            rsb.filterPanel = fp;
+            _rsb.filterPanel = fp;
             Size = Parent.Size;
             Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-            rsb.itemGet+=new RabStatusBar.RSBItemEventHandler(this.itemGet);
-            rsb.prepareGet += new RabStatusBar.RSBPrepareEventHandler(this.prepareGet);
-            rsb.run();
+            _rsb.itemGet+=new RabStatusBar.RSBItemEventHandler(this.itemGet);
+            _rsb.prepareGet += new RabStatusBar.RSBPrepareEventHandler(this.prepareGet);
+            _rsb.run();
         }
         /// <summary>
         /// Отвязывает, Фильтр, prepareGet, itemGet
         /// </summary>
         public virtual void deactivate()
         {
-            rsb.filterPanel = null;
-            rsb.prepareGet -= this.prepareGet;
-            rsb.itemGet -= this.itemGet;
+            _rsb.filterPanel = null;
+            _rsb.prepareGet -= this.prepareGet;
+            _rsb.itemGet -= this.itemGet;
         }
         /// <summary>
         /// Выполняет виртуальный метод  "onPrepare"  текущей активной панели

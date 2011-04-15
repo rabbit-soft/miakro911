@@ -96,6 +96,7 @@
             this.cbUser.Size = new System.Drawing.Size(500, 47);
             this.cbUser.TabIndex = 1;
             this.cbUser.TabStop = false;
+            this.cbUser.SelectedIndexChanged += new System.EventHandler(this.cbUser_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -153,7 +154,7 @@
             // 
             this.gbMessage.Controls.Add(this.lbError);
             this.gbMessage.ForeColor = System.Drawing.Color.Maroon;
-            this.gbMessage.Location = new System.Drawing.Point(910, 442);
+            this.gbMessage.Location = new System.Drawing.Point(910, 484);
             this.gbMessage.Margin = new System.Windows.Forms.Padding(20);
             this.gbMessage.Name = "gbMessage";
             this.gbMessage.Size = new System.Drawing.Size(318, 221);
@@ -169,6 +170,7 @@
             this.lbError.Name = "lbError";
             this.lbError.Size = new System.Drawing.Size(306, 202);
             this.lbError.TabIndex = 0;
+            this.lbError.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tError
             // 
@@ -188,6 +190,7 @@
             this.npLogin.Size = new System.Drawing.Size(301, 508);
             this.npLogin.TabIndex = 3;
             this.npLogin.TabStop = false;
+            this.npLogin.OkButtonClick += new System.EventHandler(this.npLogin_OkButtonClick);
             // 
             // LoginPanel
             // 
@@ -198,7 +201,6 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "LoginPanel";
             this.Size = new System.Drawing.Size(1248, 1000);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LoginPanel_KeyDown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.gbMessage.ResumeLayout(false);

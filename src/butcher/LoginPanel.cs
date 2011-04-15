@@ -19,11 +19,7 @@ namespace butcher
     {
         private delegate IntPtr KeyBoardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
-        private const int WH_KEYBOARD = 2;
-        private const int WM_KEYDOWN = 0x0100;
-        private static IntPtr _hookID = IntPtr.Zero;
-
-        internal SuccesfulLogin dSuccessfulLogin;
+        internal event EventHandler SuccessfulLogin;
 
         internal readonly Point mustLocation = new Point(12, 12);
 
@@ -33,28 +29,11 @@ namespace butcher
             npLogin.AddControl(tbPassword);
             RabnetConfigHandler.Create();
             updateFarms();
-            npLogin.dOk = btEnter_Click;
         }
 
-        private void btEnter_Click()
-        {
-            if (DBproc.CheckUser(cbUser.Text, tbPassword.Text))
-            {
-                this.Hide();
-                RabnetConfigHandler.dataSources[cbFarm.SelectedIndex].setDefault(cbUser.Text, tbPassword.Text);
-                dSuccessfulLogin();
-
-            }
-            else
-            {
-                gbMessage.Show();
-                lbError.Text = "Не удалось выполнить вход." + Environment.NewLine
-                    + "Возможно не правильно введен пароль.";
-                tError.Start();
-            }
-            tbPassword.Clear();
-        }
-
+        /// <summary>
+        /// Заполняет ComboBox с фермами
+        /// </summary>
         private void updateFarms()
         {
             cbUser.Items.Clear();
@@ -74,7 +53,7 @@ namespace butcher
 
         private void cbFarm_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            tbPassword.Enabled = npLogin.Enabled = false; 
             if (cbFarm.SelectedIndex < 0)
                 return;
             cbUser.Focus();
@@ -89,32 +68,26 @@ namespace butcher
                 if (!DBproc.Connect(xs.param))
                     throw new Exception("Не удалось подключиться к Базе Данных");
                 cbUser.Items.Clear();
-                cbUser.Enabled = false;
-                tbPassword.Enabled = false;
-                List<sUser> usrs = DBproc.GetUsers();
-                if (usrs != null)
+                List<sUser> usrs = DBproc.GetUsers();//Получаем список юзеров
+                if (usrs != null && usrs.Count>0)
                 {
-                    cbUser.Enabled = true;
-                    tbPassword.Enabled = true;
                     foreach (sUser s in usrs)
                     {
                         cbUser.Items.Add(s.Name);
                         if (xs.defuser != "" && xs.defuser == s.Name)
                         {
                             cbUser.SelectedIndex = cbUser.Items.Count - 1;
-                            if (xs.defpassword != "")
-                            {
-                                tbPassword.Text = xs.defpassword;
-                            }
+                            if (xs.defpassword != "")                          
+                                tbPassword.Text = xs.defpassword;                       
                             tbPassword.Focus();
                             tbPassword.SelectAll();
                         }
                     }
                 }
-                else
+                /*else
                 {
                     npLogin.OkButtonEnable = false;
-                }
+                }*/
             }
             catch (Exception ex)
             {
@@ -124,11 +97,6 @@ namespace butcher
                 MessageBox.Show("Ошибка подключения " + ex.GetType().ToString() + ": " + ex.Message, "Ошибка подключения");
             }
         }
-
-        private void LoginPanel_KeyDown(object sender, KeyEventArgs e)
-        {
-            MessageBox.Show("qwjdbe");
-      }
 
         private void tbPassword_TextChanged(object sender, EventArgs e)
         {
@@ -159,6 +127,29 @@ namespace butcher
         {
             tError.Stop();
             gbMessage.Hide();
+        }
+
+        private void cbUser_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            tbPassword.Enabled = npLogin.Enabled = (cbUser.SelectedIndex > -1);
+        }
+
+        private void npLogin_OkButtonClick(object sender, EventArgs e)
+        {
+            if (DBproc.CheckUser(cbUser.Text, tbPassword.Text))
+            {
+                this.Hide();
+                RabnetConfigHandler.dataSources[cbFarm.SelectedIndex].setDefault(cbUser.Text, tbPassword.Text);
+                SuccessfulLogin(sender,e);
+            }
+            else
+            {
+                gbMessage.Show();
+                lbError.Text = "Не удалось выполнить вход." + Environment.NewLine
+                    + "Возможно не правильно введен пароль.";
+                tError.Start();
+            }
+            tbPassword.Clear();
         }
     }
 

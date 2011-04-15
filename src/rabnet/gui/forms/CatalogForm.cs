@@ -417,14 +417,21 @@ namespace rabnet
 
         private void btNewImage_Click(object sender, EventArgs e)
         {
-            const int edge = 200;
-            if (openFileDialog1.ShowDialog() == DialogResult.Cancel) return;
-            var img = Image.FromFile(openFileDialog1.FileName);
-            double ratio = (double)img.Width /(double)img.Height  ;
-            var bmp = new Bitmap(img, (int)(edge*ratio), edge);
-            dataGridView1.Rows[dataGridView1.SelectedCells[0].RowIndex].Height = edge;
-            dataGridView1.SelectedCells[0].Value = bmp;
-            dataGridView1_CellEndEdit(dataGridView1, new DataGridViewCellEventArgs(dataGridView1.SelectedCells[0].ColumnIndex,dataGridView1.SelectedCells[0].RowIndex));       
+            const int mustH = 200;
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                var img = Image.FromFile(openFileDialog1.FileName);
+                //double ratio = (double)img.Width / (double)img.Height;
+                //var bmp = new Bitmap(img, (int)(mustH * ratio), mustH);
+
+                var bmp = new Bitmap(300, 200);
+                Graphics g = Graphics.FromImage(bmp);
+                g.DrawImage(img, new Rectangle(0, 0, 300, 200), new Rectangle(0, 0, img.Width, img.Height),GraphicsUnit.Pixel);
+
+                dataGridView1.Rows[dataGridView1.SelectedCells[0].RowIndex].Height = mustH;
+                dataGridView1.SelectedCells[0].Value = bmp;
+                dataGridView1_CellEndEdit(dataGridView1, new DataGridViewCellEventArgs(dataGridView1.SelectedCells[0].ColumnIndex, dataGridView1.SelectedCells[0].RowIndex));
+            }
         }
 
         private void btDeleteImage_Click(object sender, EventArgs e)

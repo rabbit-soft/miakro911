@@ -25,12 +25,10 @@ namespace butcher
             this.Controls.Add(logPan);
             npButcher.AddControl(tbAmount);
             logPan.BringToFront();
-            logPan.dSuccessfulLogin = this.enterMain;
-            npButcher.dOk = FreshMeat;
-            
+            logPan.SuccessfulLogin += new EventHandler(this.enterMain);           
         }
 
-        public void enterMain()
+        public void enterMain(object sender, EventArgs e)
         {
             FillProducts();
             updateLogs();
@@ -46,13 +44,13 @@ namespace butcher
                 if (i % 2 != 0) 
                     cellInt = 1;
 
-                if (cellInt == 0)
+                if (cellInt == 0)//если новая строка
                 {
                     DataGridViewRow row = new DataGridViewRow();
                     dataGridView1.Rows.Add(row);
                 }
 
-                if (products[i].Image.Length != 0)
+                if (products[i].Image.Length != 0)//если имеется изображение
                 {
                     Image img = getImage(products[i].Image);
                     dataGridView1.Rows[dataGridView1.Rows.Count-1].Cells[cellInt].Value = img;
@@ -60,30 +58,38 @@ namespace butcher
                     if (cellInt==0)
                         dataGridView1.Rows[dataGridView1.Rows.Count - 1].Height = img.Height;
                 }
-                else
+                else// делает картинку с надписью
                 {
+                    string product = products[i].Name;
                     var bmp = new Bitmap(300,200);
                     Graphics gr = Graphics.FromImage(bmp);
-                    var fnt = new Font("Arial", 20);
-                    int pointH = bmp.Height / 2 - fnt.Height;
-                    int pointW = (int)((float)bmp.Width - fnt.Size * (float)products[i].Name.Length) / 2;
-                    gr.DrawString(products[i].Name, fnt, new SolidBrush(Color.Black),pointW, pointH);
-                    
+                    var fnt = new Font("Arial", 24);
+                    //int pointH = bmp.Height/2 - fnt.Height/2;
+                    //int strLen = (int)((float)fnt.Size * (float)product.Length);
+
+                    //int pointW = (int)(Math.Abs(((float)bmp.Width - (float)strLen)) / 2);
+
+                    gr.DrawString(products[i].Name, fnt, new SolidBrush(Color.Black),new Rectangle(0,0,300,200)); 
+                    //gr.DrawString(product, fnt, new SolidBrush(Color.Black), pointW, pointH);
                     dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[cellInt].Value = bmp;
                     if (cellInt == 0)
                         dataGridView1.Rows[dataGridView1.Rows.Count - 1].Height = bmp.Height;
                     dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[cellInt].Tag = products[i].Id;
                 }
             }
-            if (dataGridView1.Rows.Count > 4)
+            if (dataGridView1.Rows.Count > 4)//если не помещается продукция в область
                 btDown.Enabled = true;
         }
 
         private void btExit_Click(object sender, EventArgs e)
         {
             logPan.Show();
+            lbProductName.Text = lbUnit.Text = "";
         }
 
+        /// <summary>
+        /// Преобразует массив байтов в Изображение
+        /// </summary>
         private Image getImage(byte[] bts)
         {
             var ms = new MemoryStream(bts);
@@ -126,16 +132,11 @@ namespace butcher
             tbAmount.Enabled = npButcher.Enabled = true;
         }
 
-        private void FreshMeat()
-        {
-            DBproc.AddMeat((int)dataGridView1.SelectedCells[0].Tag, float.Parse(tbAmount.Text));
-            tbAmount.Clear();
-            updateLogs();
-            //dataGridView1.SelectedCells[0].Selected = false;
-            //tbAmount.Enabled = npButcher.Enabled = false;
-            
-        }
 
+
+        /// <summary>
+        /// обновляет поле Логов
+        /// </summary>
         private void updateLogs()
         {
             lvLogs.Items.Clear();
@@ -153,6 +154,9 @@ namespace butcher
             }
         }
 
+        /// <summary>
+        /// Если вводится не цифра, то она удаляется
+        /// </summary>
         private void tbAmount_TextChanged(object sender, EventArgs e)
         {
             List<char> numbers = new List<char> { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
@@ -183,10 +187,38 @@ namespace butcher
         private void MainForm_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!logPan.Visible) return;
-            if (e.KeyChar == 'd')
+            if (e.KeyChar == 100)
             {
                 (new FarmListForm()).ShowDialog();
             }
+#if DEBUG
+            if (e.KeyChar == 27)
+            {
+                this.Close();
+            }
+            if (e.KeyChar == 32)
+            {
+                if (this.FormBorderStyle == FormBorderStyle.None)
+                {
+                    this.FormBorderStyle = FormBorderStyle.FixedSingle;
+                    this.WindowState = FormWindowState.Normal;
+                }
+                else
+                {
+                    this.FormBorderStyle = FormBorderStyle.None;
+                    this.WindowState = FormWindowState.Maximized;
+                }
+            }
+#endif
+        }
+
+        private void npButcher_OkButtonClick(object sender, EventArgs e)
+        {
+            DBproc.AddMeat((int)dataGridView1.SelectedCells[0].Tag, float.Parse(tbAmount.Text));
+            tbAmount.Clear();
+            updateLogs();
+            //dataGridView1.SelectedCells[0].Selected = false;
+            //tbAmount.Enabled = npButcher.Enabled = false;     
         }
 
     }

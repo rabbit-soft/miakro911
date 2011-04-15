@@ -43,8 +43,6 @@ namespace rabnet
         public const string Admin = "admin";//0
         public const string Zootech = "zootech";//1    
         public const string Butcher = "butcher";//2
-
-
     }
 
     class Users

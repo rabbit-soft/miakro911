@@ -188,7 +188,8 @@ namespace rabdump
                     MessageBox.Show("Восстановление базы данных прошло успешно!", "Восстановление", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     DialogResult = DialogResult.OK;
                     Close();
-                } else
+                } 
+                else
                 {
                     BringToFront();
                     MessageBox.Show(ex.Message,"Ошибка при восстановлении",MessageBoxButtons.OK,MessageBoxIcon.Error);

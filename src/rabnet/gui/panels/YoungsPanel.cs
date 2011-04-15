@@ -21,6 +21,7 @@ namespace rabnet
         {
             colSort = new ListViewColumnSorter(listView1, new int[] { 1,2, 8 },Options.OPT_ID.YOUNG_LIST);
             listView1.ListViewItemSorter = null;
+            MakeExcel = new RabStatusBar.ExcelButtonClickDelegate(this.makeExcel);
         }
 
         protected override IDataGetter onPrepare(Filters f)
@@ -36,10 +37,10 @@ namespace rabnet
             colSort.Prepare();
             IDataGetter dg = DataThread.db().getYoungers(f); 
             //отображение общей инфы в статус баре
-            rsb.setText(1, dg.getCount().ToString() + " строк");
-            rsb.setText(2, dg.getCount2().ToString() + " кроликов");
-            rsb.setText(3, dg.getCount3().ToString() + " кормилиц");
-            rsb.setText(4, String.Format("{0:f2} среднее количество подсосных", dg.getCount4()));
+            _rsb.setText(1, dg.getCount().ToString() + " строк");
+            _rsb.setText(2, dg.getCount2().ToString() + " кроликов");
+            _rsb.setText(3, dg.getCount3().ToString() + " кормилиц");
+            _rsb.setText(4, String.Format("{0:f2} среднее количество подсосных", dg.getCount4()));
             return dg;
         }
 
@@ -128,7 +129,7 @@ namespace rabnet
         {
             if (listView1.SelectedItems.Count != 1) return;
             if (new ReplaceYoungersForm((int)listView1.SelectedItems[0].Tag).ShowDialog() == DialogResult.OK)
-                rsb.run();
+                _rsb.run();
         }
 
         private void listView1_ItemDrag(object sender, ItemDragEventArgs e)
@@ -161,13 +162,13 @@ namespace rabnet
                     "Ошибка", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     if (new ReplaceYoungersForm((int)from.Tag).ShowDialog() == DialogResult.OK)
-                        rsb.run();
+                        _rsb.run();
                 }
                 return;
             }
             RabNetEngRabbit r = Engine.get().getRabbit((int)to.Tag);
             if (new ReplaceYoungersForm((int)from.Tag, r.Parent).ShowDialog() == DialogResult.OK)
-                rsb.run();
+                _rsb.run();
         }
 
         private void makeSelectedCount()
@@ -179,7 +180,7 @@ namespace rabnet
                 int c = int.Parse(li.SubItems[1].Text);
                 cnt += c;
             }
-            rsb.setText(3, String.Format("Выбрано {0:d} строк - {1:d} кроликов", rows, cnt));
+            _rsb.setText(3, String.Format("Выбрано {0:d} строк - {1:d} кроликов", rows, cnt));
         }
 
         private void listView1_MouseDown(object sender, MouseEventArgs e)
@@ -209,6 +210,13 @@ namespace rabnet
             new ReportViewForm(myReportType.REPLACE, doc).ShowDialog();
 #else
             DemoErr.DemoNoReportMsg();
+#endif
+        }
+
+        private void makeExcel()
+        {
+#if !DEMO
+            ExcelMaker.MakeExcelFromLV(listView1, "Молодняк");
 #endif
         }
 

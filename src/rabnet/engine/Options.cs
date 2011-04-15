@@ -4,6 +4,8 @@ using System.Text;
 
 namespace rabnet
 {
+    public enum RUBOOL { Да, Нет };
+
     public class Options
     {
         public enum OPT_ID
@@ -13,7 +15,7 @@ namespace rabnet
             ZOO_FILTER, COMBINE_AGE, BOYS_OUT, GIRLS_OUT, STATE_FUCK, FIRST_FUCK, MALE_WAIT, GEN_TREE, CONFIRM_EXIT, 
             VACC, CONFIRM_KILL, SUCKERS,NEST,CHILD_NEST,RAB_LIST,BUILD_LIST,YOUNG_LIST,DEAD_LIST,REPL_YOUNG_LIST,
             MAKE_FUCK_LIST,NAMES_LIST,UPDATE_ZOO,ZOO_LIST,FIND_PARTNERS,NEXT_SVID,SVID_HEAD,SVID_GEN_DIR,
-            KILL_LIST,SHORT_ZOO,VACCINE_TIME,MAKE_CANDIDATE,BUTCHER_LIST
+            KILL_LIST,SHORT_ZOO,VACCINE_TIME,MAKE_CANDIDATE,BUTCHER_LIST,XLS_ASK,XLS_FOLDER
         }
         public enum OPT_LEVEL {FARM,USER};
         public class ExOptionNotFound:ApplicationException
@@ -82,7 +84,9 @@ namespace rabnet
                                    new Option(OPT_ID.SHORT_ZOO,OPT_LEVEL.USER,"short_zoo"),
                                    new Option(OPT_ID.VACCINE_TIME,OPT_LEVEL.FARM,"vaccine_time"),
                                    new Option(OPT_ID.MAKE_CANDIDATE,OPT_LEVEL.FARM,"candidate"),
-                                   new Option(OPT_ID.BUTCHER_LIST,OPT_LEVEL.USER,"butcherlist")
+								   new Option(OPT_ID.BUTCHER_LIST,OPT_LEVEL.USER,"butcherlist"),
+                                   new Option(OPT_ID.XLS_ASK,OPT_LEVEL.USER,"xls_ask"),
+                                   new Option(OPT_ID.XLS_FOLDER,OPT_LEVEL.USER,"xls_folder")
                                    };
         public Options(RabNetEngine eng)
         {
@@ -93,14 +97,19 @@ namespace rabnet
         {
             return eng.db().getOption(name, subname, uid);
         }
+
         public int getIntOption(String name, String subname, uint uid)
         {
-				return int.Parse(getOption(name, subname, uid));
+            int res = 0;
+            int.TryParse(getOption(name, subname, uid),out res);
+            return res;
         }
+
         public double getFloatOption(String name, String subname, uint uid)
         {
 				return float.Parse(getOption(name, subname, uid));
         }
+
         public int safeIntOption(String name, String subname, uint uid,int def)
         {
             int res = def;
@@ -113,10 +122,12 @@ namespace rabnet
         {
             eng.db().setOption(name, subname, uid, value);
         }
+
 		public void setOption(String name, String subname, uint uid, int value)
 		{
 			setOption(name, subname, uid, value.ToString());
 		}
+
         public void setOption(String name, String subname, uint uid, double value)
         {
             setOption(name, subname, uid, value.ToString());
@@ -130,26 +141,32 @@ namespace rabnet
             if (res < 0) return 0;
             return (uint)res;
         }
+
         public String getOption(String name,String subname,OPT_LEVEL level)
         {
             return getOption(name,subname,getUidOfLevel(level));
         }
+
         public int getIntOption(String name,String subname,OPT_LEVEL level)
         {
             return getIntOption(name,subname,getUidOfLevel(level));
         }
+
         public double getFloatOption(String name,String subname,OPT_LEVEL level)
         {
             return getFloatOption(name,subname,getUidOfLevel(level));
         }
+
         public int safeIntOption(String name, String subname, OPT_LEVEL level,int def)
         {
             return safeIntOption(name, subname, getUidOfLevel(level),def);
         }
+
         public int safeIntOption(String name, String subname, OPT_LEVEL level)
         {
             return safeIntOption(name, subname, getUidOfLevel(level), 0);
         }
+        //public int safeRuBoolOption()
 
         public void setOption(String name, String subname, OPT_LEVEL level, String value)
         {
@@ -159,6 +176,7 @@ namespace rabnet
         {
             setOption(name, subname, getUidOfLevel(level), value);
         }
+
         public void setOption(String name, String subname, OPT_LEVEL level, double value)
         {
             setOption(name, subname, getUidOfLevel(level), value);
@@ -208,7 +226,7 @@ namespace rabnet
         }
         public void setOption(String name,OPT_ID id,int value)
         {
-            Option op=getOptionById(id);
+            Option op = getOptionById(id);
             setOption(name,op.name,op.level,value);
         }
         public void setOption(String name,OPT_ID id,double value)

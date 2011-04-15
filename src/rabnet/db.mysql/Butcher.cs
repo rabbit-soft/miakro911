@@ -10,14 +10,15 @@ namespace rabnet
         public DateTime Date;
         public int Victims;
         public int Products;
-        public ButcherDate(DateTime Date, int Victims)
+        public ButcherDate(DateTime Date, int victims, int products)
         {
             this.Date = Date;
-            this.Victims = Victims;
+            this.Victims = victims;
+            this.Products = products;
         }
     }
 
-        public class sMeat
+    public class sMeat
     {
         public int Id;
         public DateTime Date;
@@ -27,7 +28,7 @@ namespace rabnet
         public bool Today;
         public string User;
 
-        public sMeat(int id,DateTime date,string prodType,float amount,string unit,bool today,string user)
+        public sMeat(int id, DateTime date, string prodType, float amount, string unit, bool today, string user)
         {
             this.Id = id;
             this.Date = date;
@@ -46,11 +47,9 @@ namespace rabnet
         public override string getQuery()
         {
             return @"CREATE TEMPORARY TABLE aaa as
-SELECT Date(d_date) dt, COUNT(r_group) cnt FROM dead WHERE d_reason=3 GROUP BY dt
-union
-SELECT DISTINCT Date(b_date) dt,0 FROM butcher;
+SELECT Date(d_date) dt, COUNT(r_group) cnt FROM dead WHERE d_reason=3 GROUP BY dt;
 
-SELECT DISTINCT dt,cnt FROM aaa ORDER BY dt DESC;
+SELECT DISTINCT dt,cnt,(SELECT COUNT(*) FROM butcher WHERE DATE(b_date)=dt) prod FROM aaa ORDER BY dt DESC;
 DROP TABLE aaa;";
         }
 
@@ -62,7 +61,7 @@ DROP TABLE aaa;";
 
         public static IData getBucherDate(MySqlDataReader rd)
         {
-            return new ButcherDate(rd.GetDateTime("dt"),rd.GetInt32("cnt"));
+            return new ButcherDate(rd.GetDateTime("dt"), rd.GetInt32("cnt"), rd.GetInt32("prod"));
         }
 
         public override IData nextItem()
@@ -70,6 +69,10 @@ DROP TABLE aaa;";
             return getBucherDate(rd);
         }
 
+        /// <summary>
+        /// Получает список забитых кроликов
+        /// </summary>
+        /// <param name="dt">Дата забива</param>
         public static List<OneRabbit> getVictims(MySqlConnection sql, DateTime dt)
         {
             List<OneRabbit> result = new List<OneRabbit>();
@@ -102,7 +105,7 @@ FROM dead WHERE d_reason=3 AND DATE(d_date)='{0:yyyy-MM-dd}';",dt);
     (SELECT p_unit FROM products WHERE p_id=b_prodtype) units,
     (SELECT u_name FROM users WHERE b_user=u_id) user,
     if(DATE(b_date)=DATE(NOW()),'true','false') today 
-FROM butcher ORDER by b_date DESC;"), sql);
+FROM butcher WHERE DATE(b_date)='{0:yyy-MM-dd}' ORDER by b_date DESC;",dt), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
             {

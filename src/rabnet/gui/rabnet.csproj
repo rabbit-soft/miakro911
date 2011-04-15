@@ -98,12 +98,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Demo.cs" />
+    <Compile Include="classes\Demo.cs" />
+    <Compile Include="classes\ExcelMaker.cs" />
     <Compile Include="forms\DeadReasonChange.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="forms\DeadReasonChange.Designer.cs">
       <DependentUpon>DeadReasonChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\MealForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\MealForm.Designer.cs">
+      <DependentUpon>MealForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\WaitForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\WaitForm.designer.cs">
+      <DependentUpon>WaitForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -122,14 +135,16 @@
     <Compile Include="forms\ProgressForm.Designer.cs">
       <DependentUpon>ProgressForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="..\..\libs\GRD\GRD.cs" />
+    <Compile Include="..\..\libs\GRD\GRD.cs">
+      <Link>classes\GRD.cs</Link>
+    </Compile>
     <Compile Include="panels\ButcherPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="panels\ButcherPanel.Designer.cs">
       <DependentUpon>ButcherPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="RabUpdaterClient.cs" />
+    <Compile Include="classes\RabUpdaterClient.cs" />
     <Compile Include="components\ColorPickerColumn\ColorPickerColumn.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -155,7 +170,7 @@
     <Compile Include="forms\SelectUserForm.Designer.cs">
       <DependentUpon>SelectUserForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GeneticsManagerSafe.cs" />
+    <Compile Include="classes\GeneticsManagerSafe.cs" />
     <Compile Include="components\BuildingControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -221,7 +236,7 @@
     </Compile>
     <Compile Include="forms\ColumnSorter.cs">
     </Compile>
-    <Compile Include="DataThread.cs" />
+    <Compile Include="classes\DataThread.cs" />
     <Compile Include="forms\CountKids.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -403,7 +418,9 @@
       <DependentUpon>PeriodForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\VerInfo.cs" />
-    <Compile Include="..\..\rabdump\X_Tools\x_tools.cs" />
+    <Compile Include="..\..\rabdump\X_Tools\x_tools.cs">
+      <Link>classes\x_tools.cs</Link>
+    </Compile>
     <EmbeddedResource Include="components\BuildingControl.resx">
       <DependentUpon>BuildingControl.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -442,6 +459,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\DeadReasonChange.resx">
       <DependentUpon>DeadReasonChange.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\MealForm.resx">
+      <DependentUpon>MealForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\WaitForm.resx">
+      <DependentUpon>WaitForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -623,6 +648,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="reports\breeds.rdl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="reports\butcher.rdl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="reports\by_month.rdl">

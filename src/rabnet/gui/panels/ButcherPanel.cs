@@ -15,14 +15,15 @@ namespace rabnet
         {
             colSort = new ListViewColumnSorter(lvButcherDates, new int[] {  }, Options.OPT_ID.BUTCHER_LIST);
             lvButcherDates.ListViewItemSorter = null;
+            MakeExcel = new RabStatusBar.ExcelButtonClickDelegate(this.makeExcel);
         }
 
         protected override IDataGetter onPrepare(Filters f)
         {
             colSort.Prepare();
             IDataGetter dg = DataThread.db().getButcherDates(f);
-            rsb.setText(1, dg.getCount().ToString() + " дат забоя");
-            rsb.setText(2, dg.getCount2().ToString() + " забито");
+            _rsb.setText(1, dg.getCount().ToString() + " дат забоя");
+            _rsb.setText(2, dg.getCount2().ToString() + " забито");
             return dg;
         }
 
@@ -37,8 +38,8 @@ namespace rabnet
             ButcherDate bd = (data as ButcherDate);
             ListViewItem lvi = lvButcherDates.Items.Add(bd.Date.ToShortDateString());
             lvi.SubItems.Add(bd.Victims.ToString());
-
-            colSort.SemiReady();
+            lvi.SubItems.Add(bd.Products.ToString());
+            //colSort.SemiReady();
         }
 
         public override ContextMenuStrip getMenu()
@@ -68,6 +69,13 @@ namespace rabnet
                 lvi.SubItems.Add(m.User);
             }
             
+        }
+
+        private void makeExcel()
+        {
+#if !DEMO
+            ExcelMaker.MakeExcelFromLV(lvMeat, "Продукция");
+#endif
         }
     }
 }

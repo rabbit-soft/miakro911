@@ -6,6 +6,7 @@ using System.Drawing.Design;
 using System.IO;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using System.Drawing.Design;
 using System.Xml;
 using Microsoft.Win32;
 
@@ -212,6 +213,7 @@ namespace rabdump
         private Rubool _sas=Rubool.Нет;
         private readonly DataBaseCollection _bds=new DataBaseCollection();
         private readonly ArchiveJobCollection _jobs = new ArchiveJobCollection();
+
         [Category(Opt), DisplayName("mysql"), Description("Путь к исполняемому файлу mysql.exe\n\rНужен для работы с Базой Данных\n\rПуть по умолчанию: \"C:\\Program Files\\MySQL\\MySQL Server <№ версии>\\bin\\mysql.exe\""),
         Editor(typeof(FileNameEditor), typeof(UITypeEditor))]
         public String MySqlPath { get { return _mp; } set { _mp = value; } }

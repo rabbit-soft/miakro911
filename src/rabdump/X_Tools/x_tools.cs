@@ -1,7 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Collections;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
+
 
 namespace X_Tools
 {
@@ -12,6 +16,7 @@ namespace X_Tools
             Match m = Regex.Match(inputFileName, @"[\\\/\:\*\?\" + Convert.ToChar(34) + @"\<\>\|]");
             return !(m.Success);
         }
+
         static public string FormatBytes(double bytes)
         {
             string[] suffix = { "B", "KB", "MB", "GB", "TB", "PB" };
@@ -40,18 +45,10 @@ namespace X_Tools
             {
                 string computed = GetFileMD5(file);
                 if (computed == hash)
-                {
                     return true;
-                }
-                else
-                {
-                    return false;
-                }
+                else return false;
             }
-            else
-            {
-                return false;
-            }
+            else return false;           
         }
 
         public static string GetFileMD5(string file)
@@ -65,10 +62,8 @@ namespace X_Tools
 
                 return BitConverter.ToString(fileHash).Replace("-", "").ToLower();
             }
-            else
-            {
-                return "nofile";
-            }
+            else return "nofile";
+            
         }
 
         public static string RusMonthTo(string mon)
@@ -76,9 +71,7 @@ namespace X_Tools
             for (int i = 1; i <= 12; i++)
             {
                 if (mon == toRusMonth(i.ToString()))
-                {
-                    return i.ToString();
-                }
+                    return i.ToString();            
             }
             return "0";
         }
@@ -111,6 +104,68 @@ namespace X_Tools
             }
         }
 
+        /// <summary>
+        /// Проверяет есть ли указанный файл, если есть то возвращает имя 'Файл (1)'
+        /// </summary>
+        /// <param name="path">Полный путь</param>
+        public static string DuplicateName(string s)
+        {
+            int i = 1;
+            string path = s.Remove(s.LastIndexOf('.'));
+            string ext = s.Substring(s.LastIndexOf('.'));
+            string append = "";
+            while(true)
+            {
+                if (File.Exists(path + append + ext))
+                {
+                    append = " (" + i.ToString() + ")";
+                    i++;
+                }
+                else return path + append + ext;
+            }
+        }
+
+        public static void checkFloatNumber(object sender,EventArgs e)
+        {           
+            List<char> numbers = new List<char> { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',',' };
+            TextBox tb = (sender as TextBox);
+            try
+            {
+                if (tb.Text.Length != 0 && tb.Text[0] == ',')
+                {
+                    tb.Text = tb.Text.Insert(0, "0");
+                    tb.Select(tb.Text.Length , 0);
+                }
+                float.Parse(tb.Text);              
+            }
+            catch (FormatException)
+            {
+                bool haveComma = false;
+                if (tb.Text != "")
+                {
+                    for (int i = 0; i < tb.Text.Length; i++)
+                    {
+                        if (tb.Text[i] == ',')
+                        {
+                            if (haveComma)
+                            {
+                                tb.Text = tb.Text.Remove(i);
+                                break;
+                            }
+                            else haveComma = true;
+                        }
+
+                        if (!numbers.Contains(tb.Text[i]) )
+                        {
+                            tb.Text = tb.Text.Remove(i, 1);
+                            tb.Select(i, 0);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
         // readStream is the stream you need to read
         // writeStream is the stream you want to write to
 /*
@@ -129,5 +184,6 @@ namespace X_Tools
             writeStream.Close();
         }
 */
+        
     }
 }

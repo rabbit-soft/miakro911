@@ -30,6 +30,7 @@ namespace rabnet
             colSort = new ListViewColumnSorter(listView1, new int[] { },Options.OPT_ID.BUILD_LIST);
             listView1.ListViewItemSorter = null;
             treeView1.TreeViewNodeSorter = new TVNodeSorter();
+            MakeExcel = new RabStatusBar.ExcelButtonClickDelegate(this.makeExcel);
         }
 
         private void addNoFarm(int farm)
@@ -111,7 +112,7 @@ namespace rabnet
             f["dbl"] = Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
             colSort.Prepare();
             IDataGetter dg = DataThread.db().getBuildings(f);
-            rsb.setText(1, dg.getCount().ToString() + " МИНИфермы");
+            _rsb.setText(1, dg.getCount().ToString() + " МИНИфермы");
             return dg;
         }
         /// <summary>
@@ -373,7 +374,7 @@ namespace rabnet
                 }
             }
             if(f.ShowDialog() == DialogResult.OK)
-                rsb.run();
+                _rsb.run();
         }
 
         private void replaceMenuItem_Click(object sender, EventArgs e)
@@ -394,7 +395,7 @@ namespace rabnet
                 }
             }
             if(f.ShowDialog() == DialogResult.OK)
-                rsb.run();
+                _rsb.run();
         }
 
         private bool isFarm(TreeNode tn){return farmNum(tn)!=0;}
@@ -436,7 +437,7 @@ namespace rabnet
                 int bid = buildNum(child);
                 int to = buildNum(newpar);
                 Engine.db().replaceBuilding(bid, to);
-                rsb.run();
+                _rsb.run();
             }
         }
 
@@ -498,7 +499,7 @@ namespace rabnet
                 {
                     preBuilding = buildNum(treeView1.SelectedNode.Parent);
                     Engine.db().deleteFarm(farmNum());
-                    rsb.run();
+                    _rsb.run();
                 }
                 else
                     MessageBox.Show("Ферма не пуста.");
@@ -511,7 +512,7 @@ namespace rabnet
                 {
                     preBuilding = buildNum(treeView1.SelectedNode.Parent);
                     Engine.db().deleteBuilding(buildNum());
-                    rsb.run();
+                    _rsb.run();
                 }
             }
         }
@@ -534,7 +535,7 @@ namespace rabnet
         private void timer1_Tick(object sender, EventArgs e)
         {
             timer1.Stop();
-            rsb.run();
+            _rsb.run();
         }
 
         private void treeView1_Enter(object sender, EventArgs e)
@@ -557,7 +558,7 @@ namespace rabnet
                 return;
             }
             new MiniFarmForm(buildNum(), nofarms.ToArray()).ShowDialog();
-            rsb.run();
+            _rsb.run();
         }
 
         private void changeFarmMenuItem_Click(object sender, EventArgs e)
@@ -566,7 +567,7 @@ namespace rabnet
             if (!isFarm()) return;
             int fid=farmNum();
             MainForm.protectTest(fid);
-            if (new MiniFarmForm(fid).ShowDialog() == DialogResult.OK) rsb.run();
+            if (new MiniFarmForm(fid).ShowDialog() == DialogResult.OK) _rsb.run();
         }
 
         private XmlDocument getBuildDoc(int bid)
@@ -610,6 +611,12 @@ namespace rabnet
 #endif
         }
 
+        private void makeExcel()
+        {
+#if !DEMO
+            ExcelMaker.MakeExcelFromLV(listView1, "Строения");
+#endif
+        }
     }
 
     public class TVNodeSorter : IComparer
@@ -641,6 +648,7 @@ namespace rabnet
             int i2 = int.Parse(s2.Substring(ss2.Length));
             return i1 - i2;
         }
+
     }
 
 }

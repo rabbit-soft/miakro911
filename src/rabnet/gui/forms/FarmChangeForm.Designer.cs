@@ -140,6 +140,7 @@
             // 
             this.rpswd.Location = new System.Drawing.Point(115, 47);
             this.rpswd.Name = "rpswd";
+            this.rpswd.PasswordChar = '*';
             this.rpswd.Size = new System.Drawing.Size(166, 20);
             this.rpswd.TabIndex = 7;
             // 

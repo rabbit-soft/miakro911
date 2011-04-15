@@ -68,6 +68,7 @@
     <Compile Include="Building.cs" />
     <Compile Include="Butcher.cs" />
     <Compile Include="Catalogs.cs" />
+    <Compile Include="Meal.cs" />
     <Compile Include="Products.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RabbitGen.cs" />

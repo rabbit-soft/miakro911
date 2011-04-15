@@ -133,6 +133,9 @@ namespace rabnet
 		RabbitGen getRabbitGen(int rid);
 		Dictionary<int, Color> getBreedColors();
         List<OneRabbit> getVictims(DateTime dt);
+
+        List<sMeal> getMealPeriods();
+        void addMealPeriod(DateTime start, float amount);
        
     }
 

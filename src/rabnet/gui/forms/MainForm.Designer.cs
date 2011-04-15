@@ -59,7 +59,7 @@
             this.tsmiDeadsReaport = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiFucksByUsers = new System.Windows.Forms.ToolStripMenuItem();
             this.fucksByDateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.мяснойЦехToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miButcher = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.showTierTMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showTierSMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -85,6 +85,7 @@
             this.tpButcher = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
+            this.miMeal = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -149,6 +150,7 @@
             this.tsmiFilter,
             this.параметрыToolStripMenuItem,
             this.tsmiDeadsArchive,
+            this.miMeal,
             this.toolStripMenuItem2,
             this.namesMenuItem,
             this.breedsMenuItem,
@@ -243,10 +245,11 @@
             this.tsmiDeadsReaport,
             this.tsmiFucksByUsers,
             this.fucksByDateToolStripMenuItem,
-            this.мяснойЦехToolStripMenuItem});
+            this.miButcher});
             this.tsmiReports.Name = "tsmiReports";
             this.tsmiReports.Size = new System.Drawing.Size(59, 20);
             this.tsmiReports.Text = "Отчеты";
+            this.tsmiReports.DropDownOpening += new System.EventHandler(this.tsmiReports_DropDownOpening);
             // 
             // тестовыйToolStripMenuItem
             // 
@@ -312,12 +315,12 @@
             this.fucksByDateToolStripMenuItem.Text = "Список случек\\вязок";
             this.fucksByDateToolStripMenuItem.Click += new System.EventHandler(this.fucksByDateToolStripMenuItem_Click);
             // 
-            // мяснойЦехToolStripMenuItem
+            // miButcher
             // 
-            this.мяснойЦехToolStripMenuItem.Name = "мяснойЦехToolStripMenuItem";
-            this.мяснойЦехToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-            this.мяснойЦехToolStripMenuItem.Text = "Мясной цех";
-            this.мяснойЦехToolStripMenuItem.Click += new System.EventHandler(this.мяснойЦехToolStripMenuItem_Click);
+            this.miButcher.Name = "miButcher";
+            this.miButcher.Size = new System.Drawing.Size(220, 22);
+            this.miButcher.Text = "Срерильный цех";
+            this.miButcher.Click += new System.EventHandler(this.miButcher_Click);
             // 
             // tsmiOptions
             // 
@@ -531,6 +534,7 @@
             // 
             // rabStatusBar1
             // 
+            this.rabStatusBar1.dExcelButtonClick = null;
             this.rabStatusBar1.filterPanel = null;
             this.rabStatusBar1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
             this.rabStatusBar1.Location = new System.Drawing.Point(0, 481);
@@ -539,6 +543,13 @@
             this.rabStatusBar1.Size = new System.Drawing.Size(914, 23);
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
+            // 
+            // miMeal
+            // 
+            this.miMeal.Name = "miMeal";
+            this.miMeal.Size = new System.Drawing.Size(207, 22);
+            this.miMeal.Text = "Учет кормов";
+            this.miMeal.Click += new System.EventHandler(this.miMeal_Click);
             // 
             // MainForm
             // 
@@ -620,7 +631,8 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiHelp;
         private System.Windows.Forms.ToolStripMenuItem tsmiProductTypesView;
         private System.Windows.Forms.TabPage tpButcher;
-        private System.Windows.Forms.ToolStripMenuItem мяснойЦехToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem miButcher;
+        private System.Windows.Forms.ToolStripMenuItem miMeal;
     }
 }
 
