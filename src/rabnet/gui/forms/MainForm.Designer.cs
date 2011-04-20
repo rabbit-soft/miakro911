@@ -42,6 +42,7 @@
             this.tsmiFilter = new System.Windows.Forms.ToolStripMenuItem();
             this.параметрыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDeadsArchive = new System.Windows.Forms.ToolStripMenuItem();
+            this.miMeal = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.namesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.breedsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -85,7 +86,6 @@
             this.tpButcher = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
-            this.miMeal = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -184,6 +184,13 @@
             this.tsmiDeadsArchive.Size = new System.Drawing.Size(207, 22);
             this.tsmiDeadsArchive.Text = "Архив Списаний";
             this.tsmiDeadsArchive.Click += new System.EventHandler(this.tsmiDeadsArchive_Click);
+            // 
+            // miMeal
+            // 
+            this.miMeal.Name = "miMeal";
+            this.miMeal.Size = new System.Drawing.Size(207, 22);
+            this.miMeal.Text = "Учет кормов";
+            this.miMeal.Click += new System.EventHandler(this.miMeal_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -543,13 +550,6 @@
             this.rabStatusBar1.Size = new System.Drawing.Size(914, 23);
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
-            // 
-            // miMeal
-            // 
-            this.miMeal.Name = "miMeal";
-            this.miMeal.Size = new System.Drawing.Size(207, 22);
-            this.miMeal.Text = "Учет кормов";
-            this.miMeal.Click += new System.EventHandler(this.miMeal_Click);
             // 
             // MainForm
             // 

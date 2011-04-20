@@ -12,11 +12,11 @@ namespace rabnet
 {
     public partial class PeriodForm : Form
     {
-        public enum enumReportType { DeadReasons, Deads,Fucks };
+        //public enum enumReportType { DeadReasons, Deads,Fucks };
         public static XmlDocument nullDocument = new XmlDocument();
         public static XmlElement nullElem = nullDocument.CreateElement("none");
 
-        public readonly enumReportType ReportType;
+        public readonly myReportType ReportType = myReportType.TEST;
 
         public myDatePeriod Period
         {
@@ -67,18 +67,23 @@ namespace rabnet
             }
         }
 
-        public PeriodForm(enumReportType type)
+        public PeriodForm()
         {
             InitializeComponent();
+        }
+
+        public PeriodForm(myReportType type):this()
+        {
+            
             switch (type)
             {
-                case enumReportType.Deads:
+                case myReportType.DEAD:
                     lbReportName.Text = "Списания";
                     break;
-                case enumReportType.DeadReasons:
+                case myReportType.DEADREASONS:
                     lbReportName.Text = "Причины списаний";
                     break;
-                case enumReportType.Fucks:
+                case myReportType.FUCKS_BY_DATE:
                     lbReportName.Text = "Список случек и вязок";
                     break;
             }
@@ -87,14 +92,23 @@ namespace rabnet
             rbDay_CheckedChanged(null, null);
         }
 
+        public PeriodForm(string caption):this()
+        {
+            lbReportName.Text = caption;
+            fillDates();
+            rbDay_CheckedChanged(null, null);
+        }
+
         private void fillDates()
         {
             cbMonth.Items.Clear();
             cbYear.Items.Clear();
+
             List<String> dates = null;
-            if(ReportType != enumReportType.Fucks)
-                dates = Engine.get().db().getDeadsMonths();
-            else dates =Engine.get().db().getFuckMonths();
+            if(ReportType == myReportType.FUCKS_BY_DATE)                
+                dates =Engine.get().db().getFuckMonths();
+            else dates = Engine.get().db().getDeadsMonths();
+
             dtpDay.MaxDate = DateTime.Parse(dates[0]).AddMonths(1);
             dtpDay.MinDate = DateTime.Parse(dates[dates.Count-1]);
             if (dates.Count > 0)

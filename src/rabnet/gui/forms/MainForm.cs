@@ -18,7 +18,7 @@ namespace rabnet
     public partial class MainForm : Form
     {
         protected static readonly ILog log = LogManager.GetLogger(typeof(MainForm));
-        private bool manflag=false;
+        private bool manual = false;
         private RabNetPanel[] panels =null;
         /// <summary>
         /// Панель, активная в данныймомент
@@ -59,7 +59,7 @@ namespace rabnet
         private void MainForm_Load(object sender, EventArgs e)
         {
             usersMenuItem.Visible = Engine.get().isAdmin();
-            manflag = true;
+            manual = true;
             rabStatusBar1.setText(0, Engine.db().now().ToShortDateString());
             this.Text = Engine.get().farmName();
 #if DEMO
@@ -75,7 +75,8 @@ namespace rabnet
             shNumMenuItem.Checked = (op.getIntOption(Options.OPT_ID.SHOW_NUMBERS) == 1);
             shortZooMenuItem.Checked = (op.safeIntOption(Options.OPT_ID.SHORT_ZOO,1) == 1);
             //rabStatusBar1.run();
-            manflag = false;
+            manual = false;
+            checkPlugins();
 #if PROTECTED || DEMO
             protectTest(getmax(Engine.db().buildingsTree(), 0));
         }
@@ -98,9 +99,31 @@ namespace rabnet
 #endif
         }
 
+        private void checkPlugins()
+        {
+            if (ReportPlugInClass.Instance.Plugins.Count != 0)
+            {
+                tsmiReports.DropDownItems.Add(new ToolStripSeparator());
+                foreach (IReportInterface p in ReportPlugInClass.Instance.Plugins)
+                {
+                    var menu = new ToolStripMenuItem(p.MenuText);
+                    menu.Tag = p.UniqueName;
+                    menu.Click += new EventHandler(reportPluginMenu_Click);
+                    tsmiReports.DropDownItems.Add(menu);
+                }
+            }
+        }
+
+        private void reportPluginMenu_Click(object sender, EventArgs e)
+        {
+            IReportInterface p = ReportPlugInClass.Instance.getPluginByUName((sender as ToolStripMenuItem).Tag.ToString());
+            if (p != null)
+                p.MakeReport();
+        }
+
         private void showTierTMenuItem_CheckedChanged(object sender, EventArgs e)
         {
-            if (manflag)
+            if (manual)
                 return;
             bool reshow = true;
             Options.OPT_ID id=Options.OPT_ID.SHOW_TIER_TYPE;
@@ -387,7 +410,7 @@ namespace rabnet
 #if !DEMO
             Filters f = new Filters();
             //XmlDocument dt = null;
-            var dlg = new PeriodForm(PeriodForm.enumReportType.DeadReasons);
+            var dlg = new PeriodForm(myReportType.DEADREASONS);
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 f["dttp"] = dlg.PeriodChar;
@@ -411,7 +434,7 @@ namespace rabnet
 #if !DEMO
             Filters f = new Filters();
             //XmlDocument dt = null;
-            var dlg = new PeriodForm(PeriodForm.enumReportType.Deads);
+            var dlg = new PeriodForm(myReportType.DEAD);
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 f["dttp"] = dlg.PeriodChar;
@@ -456,7 +479,7 @@ namespace rabnet
         {
 #if !DEMO
             Filters f = new Filters();
-            var dlg = new PeriodForm(PeriodForm.enumReportType.Fucks);
+            var dlg = new PeriodForm(myReportType.FUCKS_BY_DATE);
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 f["dttp"] = dlg.PeriodChar;

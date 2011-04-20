@@ -99,6 +99,11 @@ namespace rabnet
             return makeStdReportXml(query);
         }
 
+        public XmlDocument makeReport(string query)
+        {
+            return makeStdReportXml(query);
+        }
+
         private XmlDocument makeStdReportXml(String query)
         {
             MySqlCommand cmd = new MySqlCommand(query, sql);
@@ -119,7 +124,7 @@ namespace rabnet
                         nm = nm.Substring(4);
                         vl = Buildings.fullPlaceName(vl, true, false, false);
                     }
-                    XmlElement f=xml.CreateElement(nm);
+                    XmlElement f = xml.CreateElement(nm);
                     f.AppendChild(xml.CreateTextNode(vl));
                     rw.AppendChild(f);
                 }
@@ -209,14 +214,14 @@ namespace rabnet
             {
                 XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
                 rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(k));
-                rw.AppendChild(doc.CreateElement("dt")).AppendChild(doc.CreateTextNode("C"));
+                rw.AppendChild(doc.CreateElement("dt")).AppendChild(doc.CreateTextNode("Cум."));
                 rw.AppendChild(doc.CreateElement("state")).AppendChild(doc.CreateTextNode(sums[k].ToString()));
             }
             foreach (String k in cnts.Keys)
             {
                 XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
                 rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(k));
-                rw.AppendChild(doc.CreateElement("dt")).AppendChild(doc.CreateTextNode("К"));
+                rw.AppendChild(doc.CreateElement("dt")).AppendChild(doc.CreateTextNode("К.Окр."));
                 rw.AppendChild(doc.CreateElement("state")).AppendChild(doc.CreateTextNode(cnts[k].ToString()));
             }
             sums.Clear();
@@ -242,6 +247,11 @@ namespace rabnet
         public static XmlDocument makeReport(MySqlConnection sql,myReportType type,Filters f)
         {
             return new Reports(sql).makeReport(type, f);
+        }
+
+        public static XmlDocument makeReport(MySqlConnection sql, string query)
+        {
+            return new Reports(sql).makeReport(query);
         }
 
         private string testQuery(Filters f)
@@ -326,7 +336,6 @@ FROM fucks WHERE f_partner={0:d} AND f_end_date>={1:s} AND f_end_date<={2:s}
 
         private String deadQuery(Filters f)
         {
-            //getDates(f);
             string period = "";
             string format = "%d.%m.%Y";        
             if (f.safeValue("dttp") == "d")
@@ -356,7 +365,6 @@ FROM dead {0} ORDER BY d_date ASC)
 UNION ALL 
     (SELECT 'Итого:','',SUM(r_group),'','' FROM dead {0});", period,format);
             return s;
-
         }
 
         private String deadReasonsQuery(Filters f)

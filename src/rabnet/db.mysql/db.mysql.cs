@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using rabnet;
-using MySql.Data;
-using MySql.Data.MySqlClient;
-using log4net;
-using log4net.Config;
-using System.Xml;
 using System.Drawing;
+using System.Xml;
+using log4net;
+using MySql.Data.MySqlClient;
 
 namespace rabnet
 {
@@ -31,10 +27,12 @@ namespace rabnet
                 return psql;
             }
         }
+
         public RabNetDbMySql(String connectionString): this()
         {
             init(connectionString);
         }
+
         /// <summary>
         /// Деструктор класса.
         /// </summary>
@@ -451,6 +449,11 @@ namespace rabnet
         public XmlDocument makeReport(myReportType type, Filters f)
         {
             return Reports.makeReport(sql, type, f);
+        }
+
+        public XmlDocument makeReport(string query)
+        {
+            return Reports.makeReport(sql, query);
         }
 
         public Rabbit[] getMothers(int age, int agediff)

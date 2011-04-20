@@ -100,6 +100,7 @@
   <ItemGroup>
     <Compile Include="classes\Demo.cs" />
     <Compile Include="classes\ExcelMaker.cs" />
+    <Compile Include="classes\PlugInsClass.cs" />
     <Compile Include="forms\DeadReasonChange.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -635,6 +636,11 @@
     <ProjectReference Include="..\gui_genetics\gui_genetics.csproj">
       <Project>{A835C727-1EB1-490D-BEBC-5C88F382330B}</Project>
       <Name>gui_genetics</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\ReportPlugIns\ReportInterface\ReportInterface.csproj">
+      <Project>{A0F963CE-A796-4E90-A6C6-71CD6E1AB3A0}</Project>
+      <Name>ReportInterface</Name>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>

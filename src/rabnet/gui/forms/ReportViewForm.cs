@@ -51,11 +51,11 @@ namespace rabnet
             build(xml);
         }
 
-        public ReportViewForm(String name,String fileName, XmlDocument[] xml): this()
+        public ReportViewForm(String name,String fileName, XmlDocument[] xmls): this()
         {
             _repName = name;
             _repFile = fileName;
-            build(xml);
+            build(xmls);
         }
 
         private void build(XmlDocument[] xml)

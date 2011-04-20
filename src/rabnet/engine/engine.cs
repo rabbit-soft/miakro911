@@ -93,7 +93,7 @@ namespace rabnet
 
         public Options options()
         {
-            if (opts==null)
+            if (opts == null)
                 opts = new Options(this);
             return opts;
         }

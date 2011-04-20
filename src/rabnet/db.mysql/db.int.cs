@@ -107,6 +107,7 @@ namespace rabnet
         void placeSucker(int sucker, int mother);
         void combineGroups(int rabfrom, int rabto);
         XmlDocument makeReport(myReportType type, Filters f);
+        XmlDocument makeReport(string query);
         Rabbit[] getMothers(int age,int agediff);
         ZooJobItem[] getBoysGirlsOut(Filters f, int days, OneRabbit.RabbitSex sex);
         String[] logNames();

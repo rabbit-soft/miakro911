@@ -7,9 +7,10 @@ namespace rabnet
     public class Engine
     {
         private static RabNetEngine eng = null;
+
         public static RabNetEngine get()
         {
-            if (eng==null)
+            if (eng == null)
                 eng = new RabNetEngine();
             return eng;
         }
@@ -17,14 +18,17 @@ namespace rabnet
         {
             return get().db();
         }
+
         public static IRabNetDataLayer db2()
         {
             return get().db2();
         }
+
         public static Options opt()
         {
             return get().options();
         }
+
 		public static void set(RabNetEngine e)
 		{
 			eng = e;
