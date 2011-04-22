@@ -6,7 +6,6 @@ using System.Drawing.Design;
 using System.IO;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using System.Drawing.Design;
 using System.Xml;
 using Microsoft.Win32;
 

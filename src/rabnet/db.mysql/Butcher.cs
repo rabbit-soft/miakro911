@@ -96,7 +96,7 @@ FROM dead WHERE d_reason=3 AND DATE(d_date)='{0:yyyy-MM-dd}';",dt);
 
         public static List<sMeat> GetMeats(MySqlConnection sql, DateTime dt)
         {
-            var result = new List<sMeat>();
+            List<sMeat> result = new List<sMeat>();
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT 
     b_id,
     b_date,
@@ -124,7 +124,7 @@ FROM butcher WHERE DATE(b_date)='{0:yyy-MM-dd}' ORDER by b_date DESC;",dt), sql)
 
         public static List<String> getButcherMonths(MySqlConnection sql)
         {
-            var result = new List<String>();
+            List<String> result = new List<String>();
             MySqlCommand cmd = new MySqlCommand("SELECT DISTINCT Date_Format(b_date,'%m.%Y')dt FROM butcher ORDER BY b_date;", sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())

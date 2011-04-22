@@ -25,11 +25,11 @@ namespace rabnet
             if (path == "") return;
 
             path = XTools.DuplicateName(path+ "\\" + filename());
-            var misValue = Type.Missing;
+            object misValue = Type.Missing;
             Excel.Application xlApp = new Excel.ApplicationClass();
             Excel.Workbook xlWorkBook = xlApp.Workbooks.Add(misValue);
             Excel.Worksheet xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-            var wf = new WaitForm();
+            WaitForm wf = new WaitForm();
             try
             {              
                 wf.Flush(); wf.MaxValue = 100; wf.Show(); wf.Style = ProgressBarStyle.Blocks;
@@ -85,8 +85,8 @@ namespace rabnet
 
         public static void MakeExcelFromLV(ListView lv, string name)
         {
-            var wf = new WaitForm();
-            var misValue = Type.Missing;
+            WaitForm wf = new WaitForm();
+            object misValue = Type.Missing;
             Excel.Application xlApp = new Excel.ApplicationClass();
             Excel.Workbook xlWorkBook = xlApp.Workbooks.Add(misValue);
             Excel.Worksheet xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
@@ -139,7 +139,7 @@ namespace rabnet
         {
             if (Engine.opt().getIntOption(Options.OPT_ID.XLS_ASK) == 1)
             {
-                var dlg = new FolderBrowserDialog();
+                FolderBrowserDialog dlg = new FolderBrowserDialog();
                 if (dlg.ShowDialog() == DialogResult.OK)
                     return dlg.SelectedPath;
                 else return "";

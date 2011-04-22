@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewImageColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewImageColumn();
@@ -147,7 +148,7 @@
             // 
             this.btDown.Enabled = false;
             this.btDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btDown.Image = global::butcher.Properties.Resources.DownIco;
+            this.btDown.Image = ((System.Drawing.Image)(resources.GetObject("btDown.Image")));
             this.btDown.Location = new System.Drawing.Point(368, 937);
             this.btDown.Margin = new System.Windows.Forms.Padding(10);
             this.btDown.Name = "btDown";
@@ -172,7 +173,7 @@
             // 
             this.btUp.Enabled = false;
             this.btUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btUp.Image = global::butcher.Properties.Resources.UpIco;
+            this.btUp.Image = ((System.Drawing.Image)(resources.GetObject("btUp.Image")));
             this.btUp.Location = new System.Drawing.Point(98, 937);
             this.btUp.Margin = new System.Windows.Forms.Padding(10);
             this.btUp.Name = "btUp";

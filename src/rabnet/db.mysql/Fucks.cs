@@ -173,7 +173,7 @@ female,malewait,
 
         internal static List<string> getFuckMonths(MySqlConnection sql)
         {
-            var result = new List<String>();
+            List<String> result = new List<String>();
             MySqlCommand cmd = new MySqlCommand("SELECT DISTINCT Date_Format(f_date,'%m.%Y')dt FROM fucks WHERE f_date IS NOT null ORDER BY f_date DESC;", sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())

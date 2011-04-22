@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Configuration;
@@ -61,9 +60,9 @@ namespace butcher
                 else// делает картинку с надписью
                 {
                     string product = products[i].Name;
-                    var bmp = new Bitmap(300,200);
+                    Bitmap bmp = new Bitmap(300, 200);
                     Graphics gr = Graphics.FromImage(bmp);
-                    var fnt = new Font("Arial", 24);
+                    Font fnt = new Font("Arial", 24);
                     //int pointH = bmp.Height/2 - fnt.Height/2;
                     //int strLen = (int)((float)fnt.Size * (float)product.Length);
 
@@ -92,8 +91,8 @@ namespace butcher
         /// </summary>
         private Image getImage(byte[] bts)
         {
-            var ms = new MemoryStream(bts);
-            var img = Image.FromStream(ms);
+            MemoryStream ms = new MemoryStream(bts);
+            Image img = Image.FromStream(ms);
             return img;
         }
 
@@ -126,7 +125,7 @@ namespace butcher
                 tbAmount.Enabled = npButcher.Enabled = false;
                 return;
             }
-            var prod = DBproc.GetProduct((int)dataGridView1.SelectedCells[0].Tag);
+            sProductType prod = DBproc.GetProduct((int)dataGridView1.SelectedCells[0].Tag);
             lbProductName.Text = prod.Name;
             lbUnit.Text = prod.Units;
             tbAmount.Enabled = npButcher.Enabled = true;
@@ -159,7 +158,17 @@ namespace butcher
         /// </summary>
         private void tbAmount_TextChanged(object sender, EventArgs e)
         {
-            List<char> numbers = new List<char> { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+            List<char> numbers = new List<char>();
+            numbers.Add('0');
+            numbers.Add('1');
+            numbers.Add('2');
+            numbers.Add('3');
+            numbers.Add('4');
+            numbers.Add('5');
+            numbers.Add('6');
+            numbers.Add('7');
+            numbers.Add('8');
+            numbers.Add('9');
             TextBox tb = (sender as TextBox);
             try
             {

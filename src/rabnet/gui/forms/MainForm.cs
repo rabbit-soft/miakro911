@@ -76,7 +76,9 @@ namespace rabnet
             shortZooMenuItem.Checked = (op.safeIntOption(Options.OPT_ID.SHORT_ZOO,1) == 1);
             //rabStatusBar1.run();
             manual = false;
+#if !DEMO
             checkPlugins();
+#endif 
 #if PROTECTED || DEMO
             protectTest(getmax(Engine.db().buildingsTree(), 0));
         }
@@ -98,7 +100,7 @@ namespace rabnet
             return mx;
 #endif
         }
-
+#if !DEMO
         private void checkPlugins()
         {
             if (ReportPlugInClass.Instance.Plugins.Count != 0)
@@ -106,7 +108,7 @@ namespace rabnet
                 tsmiReports.DropDownItems.Add(new ToolStripSeparator());
                 foreach (IReportInterface p in ReportPlugInClass.Instance.Plugins)
                 {
-                    var menu = new ToolStripMenuItem(p.MenuText);
+                    ToolStripMenuItem menu = new ToolStripMenuItem(p.MenuText);
                     menu.Tag = p.UniqueName;
                     menu.Click += new EventHandler(reportPluginMenu_Click);
                     tsmiReports.DropDownItems.Add(menu);
@@ -120,7 +122,7 @@ namespace rabnet
             if (p != null)
                 p.MakeReport();
         }
-
+#endif
         private void showTierTMenuItem_CheckedChanged(object sender, EventArgs e)
         {
             if (manual)
@@ -410,7 +412,7 @@ namespace rabnet
 #if !DEMO
             Filters f = new Filters();
             //XmlDocument dt = null;
-            var dlg = new PeriodForm(myReportType.DEADREASONS);
+            PeriodForm dlg = new PeriodForm(myReportType.DEADREASONS);
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 f["dttp"] = dlg.PeriodChar;
@@ -434,7 +436,7 @@ namespace rabnet
 #if !DEMO
             Filters f = new Filters();
             //XmlDocument dt = null;
-            var dlg = new PeriodForm(myReportType.DEAD);
+            PeriodForm dlg = new PeriodForm(myReportType.DEAD);
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 f["dttp"] = dlg.PeriodChar;
@@ -479,7 +481,7 @@ namespace rabnet
         {
 #if !DEMO
             Filters f = new Filters();
-            var dlg = new PeriodForm(myReportType.FUCKS_BY_DATE);
+            PeriodForm dlg = new PeriodForm(myReportType.FUCKS_BY_DATE);
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 f["dttp"] = dlg.PeriodChar;
@@ -501,7 +503,7 @@ namespace rabnet
             {
 #endif
 #if !DEMO
-                var brd = new ButcherReportDate();
+                ButcherReportDate brd = new ButcherReportDate();
                 if (brd.ShowDialog() == DialogResult.OK)
                 {
                     Filters f = new Filters();

@@ -48,7 +48,7 @@ namespace rabnet
         public static List<sMeal> getMealPeriods(MySqlConnection sql)
         {
             List<sMeal> result = new List<sMeal>();
-            var cmd = new MySqlCommand("SELECT m_start_date,m_end_date,m_amount,m_rate FROM meal ORDER BY m_id;", sql);
+            MySqlCommand cmd = new MySqlCommand("SELECT m_start_date,m_end_date,m_amount,m_rate FROM meal ORDER BY m_id;", sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
             {
@@ -67,7 +67,7 @@ namespace rabnet
         public static void AddMealPeriod(MySqlConnection sql, DateTime start, float amount)
         {
             //далее закрываем предыдущую дату
-            var cmd = new MySqlCommand("SELECT m_id FROM meal WHERE m_end_date IS NULL LIMIT 1", sql);
+            MySqlCommand cmd = new MySqlCommand("SELECT m_id FROM meal WHERE m_end_date IS NULL LIMIT 1", sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             if (rd.Read())
             {

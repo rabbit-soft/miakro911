@@ -27,17 +27,17 @@ namespace rabnet
             InitializeComponent();
         }
 
-        
-
         /// <summary>
         /// Отправляет данные ввиде XML
         /// </summary>
         public void setData()
         {
+
             fyiReporting.RDL.DataSets ds = rdlViewer1.Report.DataSets;
             ds["Data"].SetData(xmls[0]);
             for (int i = 1; i < xmls.Length; i++)
                 ds["Data" + (i + 1).ToString()].SetData(xmls[i]);
+
 
         }
         

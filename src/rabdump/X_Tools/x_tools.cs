@@ -126,8 +126,19 @@ namespace X_Tools
         }
 
         public static void checkFloatNumber(object sender,EventArgs e)
-        {           
-            List<char> numbers = new List<char> { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',',' };
+        {
+            List<char> numbers = new List<char>();
+            numbers.Add('0');
+            numbers.Add('1');
+            numbers.Add('2');
+            numbers.Add('3');
+            numbers.Add('4');
+            numbers.Add('5'); 
+            numbers.Add('6');
+            numbers.Add('7');
+            numbers.Add('8');
+            numbers.Add('9');
+            numbers.Add(',');
             TextBox tb = (sender as TextBox);
             try
             {

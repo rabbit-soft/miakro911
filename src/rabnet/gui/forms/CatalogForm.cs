@@ -116,7 +116,7 @@ namespace rabnet
                     else if (cd.colnames[i].Contains("#image#"))//в продукции
                     {
                         imageExist = i;
-                        var colImage = new DataGridViewImageColumn();
+                        DataGridViewImageColumn colImage = new DataGridViewImageColumn();
                         colImage.Name = cd.colnames[i];
                         dataGridView1.Columns.Add(colImage);
                     }
@@ -163,7 +163,7 @@ namespace rabnet
                     else if (cd.colnames[j].Contains("#image#"))
                     {
                         if (cd.data[i].image.Length == 0) continue;
-                        var ms = new MemoryStream(cd.data[i].image);
+                        MemoryStream ms = new MemoryStream(cd.data[i].image);
                         Image img = Image.FromStream(ms);
                         dataGridView1.Rows[rownumber].Cells[j].Value = img;
                         dataGridView1.Rows[rownumber].Height = img.Height;
@@ -341,11 +341,11 @@ namespace rabnet
                             }
                         }
 
-                        var col2 = new byte[0];
+                        byte[] col2 = new byte[0];
                         Image img = (dataGridView1.Rows[e.RowIndex].Cells[2].Value as Image);
                         if (img != null)
                         {
-                            var ms = new MemoryStream();
+                            MemoryStream ms = new MemoryStream();
                             img.Save(ms, ImageFormat.Jpeg);
                             col2 = ms.ToArray();
                             if (col2.Length == 784)
@@ -377,11 +377,11 @@ namespace rabnet
                             }
                         }
 
-                        var col2 = new byte[0];
+                        byte[] col2 = new byte[0];
                         Image img = (dataGridView1.Rows[e.RowIndex].Cells[2].Value as Image);
                         if (img != null)
                         {
-                            var ms = new MemoryStream();
+                            MemoryStream ms = new MemoryStream();
                             img.Save(ms, ImageFormat.Jpeg);
                             col2 = ms.ToArray();
                             if (col2.Length == 784)
@@ -420,11 +420,11 @@ namespace rabnet
             const int mustH = 200;
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                var img = Image.FromFile(openFileDialog1.FileName);
+                Image img = Image.FromFile(openFileDialog1.FileName);
                 //double ratio = (double)img.Width / (double)img.Height;
                 //var bmp = new Bitmap(img, (int)(mustH * ratio), mustH);
 
-                var bmp = new Bitmap(300, 200);
+                Bitmap bmp = new Bitmap(300, 200);
                 Graphics g = Graphics.FromImage(bmp);
                 g.DrawImage(img, new Rectangle(0, 0, 300, 200), new Rectangle(0, 0, img.Width, img.Height),GraphicsUnit.Pixel);
 

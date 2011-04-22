@@ -56,10 +56,13 @@ namespace rabnet
                 {
                     /*string[] s = Assembly.GetExecutingAssembly().GetManifestResourceNames();*/
                     Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("TestPlugIn.test.rdl");
-                    FileStream fileStream = new FileStream(path, FileMode.CreateNew);
-                    for (int i = 0; i < stream.Length; i++)
-                        fileStream.WriteByte((byte)stream.ReadByte());
-                    fileStream.Close();
+                    if (stream.Length != 0)
+                    {
+                        FileStream fileStream = new FileStream(path, FileMode.CreateNew);
+                        for (int i = 0; i < stream.Length; i++)
+                            fileStream.WriteByte((byte)stream.ReadByte());
+                        fileStream.Close();
+                    }
                 }
             }
             catch (Exception ex)

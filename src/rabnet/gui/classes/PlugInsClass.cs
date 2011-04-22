@@ -9,6 +9,7 @@ namespace rabnet
 {
     class ReportPlugInClass
     {
+#if !DEMO
         private static volatile ReportPlugInClass instance;
 
         public List<IReportInterface> Plugins = new List<IReportInterface>();
@@ -55,9 +56,6 @@ namespace rabnet
             }
             return null;
         }
-
-
-
-
+#endif
     }
 }

@@ -24,7 +24,7 @@ namespace rabnet
         private void fillPeriods()
         {
             dataGridView1.Rows.Clear();
-            var per = Engine.get().db().getMealPeriods();
+            List<sMeal> per = Engine.get().db().getMealPeriods();
             foreach (sMeal m in per)
             {
                 dataGridView1.Rows.Add(new string[] { m.StartDate, m.EndDate, m.Amount.ToString(), m.Rate.ToString() });

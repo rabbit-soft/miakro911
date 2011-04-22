@@ -125,12 +125,12 @@ namespace butcher
         public static List<sProductType> GetProducts()
         {
             if (!connected) return null;
-            var result = new List<sProductType>();
+            List<sProductType> result = new List<sProductType>();
             MySqlCommand cmd = new MySqlCommand(String.Format("SELECT p_id,p_name,p_unit,p_image,p_imgsize FROM products;"), _sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             while(rd.Read())
             {
-                var img = new byte[rd.GetInt32("p_imgsize")];
+                byte[] img = new byte[rd.GetInt32("p_imgsize")];
                 if(img.Length!=0) 
                     rd.GetBytes(rd.GetOrdinal("p_image"), 0, img, 0, img.Length);
                 result.Add(new sProductType(rd.GetInt32("p_id"),rd.GetString("p_name"),rd.GetString("p_unit"),img));         
@@ -147,7 +147,7 @@ namespace butcher
             MySqlDataReader rd = cmd.ExecuteReader();
             if (rd.Read())
             {
-                var img = new byte[rd.GetInt32("p_imgsize")];
+                byte[] img = new byte[rd.GetInt32("p_imgsize")];
                 if (img.Length != 0)
                     rd.GetBytes(rd.GetOrdinal("p_image"), 0, img, 0, img.Length);
                 result = new sProductType(rd.GetInt32("p_id"), rd.GetString("p_name"), rd.GetString("p_unit"), img);
@@ -159,7 +159,7 @@ namespace butcher
         public static List<sUser> GetUsers()
         {
             if (!connected) return null;
-            var result = new List<sUser>();
+            List<sUser> result = new List<sUser>();
             MySqlCommand cmd = new MySqlCommand(String.Format("SELECT u_id,u_name,u_group FROM users WHERE u_group='butcher';"), _sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
@@ -182,7 +182,7 @@ namespace butcher
         public static List<sMeat> GetMeats()
         {
             if (!connected) return null;
-            var result = new List<sMeat>();
+            List<sMeat> result = new List<sMeat>();
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT 
     b_id,
     b_date,
