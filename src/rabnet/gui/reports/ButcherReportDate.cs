@@ -56,7 +56,6 @@ namespace rabnet
         public ButcherReportDate()
         {
             InitializeComponent();
-            fillButcherDates();
         }
 
         private void fillButcherDates()
@@ -104,6 +103,11 @@ namespace rabnet
             doc.AppendChild(doc.CreateElement("Rows")).AppendChild(row);
             row.AppendChild(doc.CreateElement("period")).AppendChild(doc.CreateTextNode(this.DateValue));
             return doc;
+        }
+
+        private void ButcherReportDate_Load(object sender, EventArgs e)
+        {
+            fillButcherDates();
         }
     }
 }

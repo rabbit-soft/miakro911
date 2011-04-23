@@ -276,31 +276,34 @@ CREATE TABLE logs(
 	KEY(l_type)
 );
 
-CREATE TABLE `kroliki`.`products` (
-  `p_id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  `p_name` VARCHAR(45) NOT NULL DEFAULT '' COMMENT 'название продукции',
-  `p_unit` VARCHAR(30) NOT NULL DEFAULT '' 'единица измерения',
-  `p_image` BLOB COMMENT 'изображение',
-  `p_imgsize` INTEGER UNSIGNED  COMMENT 'размер изображения',
-  PRIMARY KEY (`p_id`)
+DROP TABLE IF EXISTS products;
+CREATE TABLE products (
+  p_id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  p_name VARCHAR(45) NOT NULL DEFAULT '' COMMENT 'название продукции',
+  p_unit VARCHAR(30) NOT NULL DEFAULT '' 'единица измерения',
+  p_image BLOB COMMENT 'изображение',
+  p_imgsize INTEGER UNSIGNED  COMMENT 'размер изображения',
+  PRIMARY KEY (p_id)
 )ENGINE = InnoDB COMMENT = 'продукция получаемая из кролика';
 
-CREATE TABLE `kroliki`.`butcher` (
-  `b_id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  `b_date` DATETIME NOT NULL COMMENT 'дата взвешивания',
-  `b_prodtype` INTEGER UNSIGNED NOT NULL COMMENT 'тип продукта',
-  `b_amount` FLOAT UNSIGNED NOT NULL COMMENT 'количество ГП',
-  `b_user` INTEGER UNSIGNED NOT NULL COMMENT 'пользователь',
-  PRIMARY KEY (`b_id`)
+DROP TABLE IF EXISTS butcher;
+CREATE TABLE butcher (
+  b_id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  b_date DATETIME NOT NULL COMMENT 'дата взвешивания',
+  b_prodtype INTEGER UNSIGNED NOT NULL COMMENT 'тип продукта',
+  b_amount FLOAT UNSIGNED NOT NULL COMMENT 'количество ГП',
+  b_user INTEGER UNSIGNED NOT NULL COMMENT 'пользователь',
+  PRIMARY KEY (b_id)
 )ENGINE = InnoDB COMMENT = 'готовая продукция';
 
-CREATE TABLE `kroliki`.`meal` (
-  `m_id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  `m_start_date` DATETIME NOT NULL COMMENT 'дата завоза комбикорма',
-  `m_end_date` DATETIME NULL COMMENT 'дата когда комбикорм закончился',
-  `m_amount` INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'в КилоГраммах',
-  `m_rate` FLOAT UNSIGNED NOT NULL COMMENT 'кг комбикорма съедает кролик в день',
-  PRIMARY KEY (`m_id`)
+DROP TABLE IF EXISTS meal;
+CREATE TABLE meal (
+  m_id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  m_start_date DATETIME NOT NULL COMMENT 'дата завоза комбикорма',
+  m_end_date DATETIME NULL COMMENT 'дата когда комбикорм закончился',
+  m_amount INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'в КилоГраммах',
+  m_rate FLOAT UNSIGNED NULL COMMENT 'кг комбикорма съедает кролик в день',
+  PRIMARY KEY (m_id)
 )ENGINE = InnoDB COMMENT = 'Таблица расчета кормов';
 
 #DATA

@@ -31,8 +31,10 @@
 	<property name="mysql.lib" value="MySql.Data.dll" />
 	<property name="mysql.ass" value="${mysql.path}/${mysql.lib}" />
 
-	<property name="office.core" value="${Office.path}/Interop.Microsoft.Office.Core.dll" />
-	<property name="office.excel" value="${Office.path}/Interop.Microsoft.Office.Interop.Excel.dll" />
+	<property name="office.core.name" value="Interop.Microsoft.Office.Core.dll" />
+	<property name="office.excel.name" value="Interop.Microsoft.Office.Interop.Excel.dll" />
+	<property name="office.core.path" value="${Office.path}/${office.core.name}" />
+	<property name="office.excel.path" value="${Office.path}/${office.excel.name}" />
 	
 	<property name="guardant.path" value="${mysql.path}" />
 	<!--property name="guardant.lib" value="key.dll" /-->
@@ -112,6 +114,8 @@
 		<copy file="${mysql.ass}" tofile="${mysql.t.use}" />
 		<copy file="${rep.ass}" tofile="${rep.use}" />
 		<copy file="${repeng.ass}" tofile="${repeng.use}" />
+		<copy file="${office.core.path}" tofile="${bin_dir}/RabNet/${office.core.name}" />
+		<copy file="${office.excel.path}" tofile="${bin_dir}/RabNet/${office.excel.name}" />
 		<!--copy file="${guardant.ass}" tofile="${guardant.use}" /-->
 		<copy file="${guardant.path}/${guardant2.lib}" tofile="${bin_dir}/RabNet/${guardant2.lib}" />
 		<copy file="${guardant.path}/${guardant2_64.lib}" tofile="${bin_dir}/RabNet/${guardant2_64.lib}" />
@@ -151,7 +155,6 @@
 		<copy file="${log4net.ass}" tofile="${log4net.use}" />
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
 		<copy file="${mysql.ass}" tofile="${mysql.t.use}" />
-
 		<copy todir="${bin_dir}/RabNet">
 			<fileset basedir="${curdir}/../help">
 				<include name="*.chm"/>
@@ -390,8 +393,8 @@
 				<include name="${bin_dir}/RabNet/engine.dll" />
 				<include name="${bin_dir}/Genetics/gui_genetics.dll" />
 				<include name="${bin_dir}/RabNet/${guardantNET.lib}" />				
-				<include name="${office.core} "/>
-				<include name="${office.excel} "/>
+				<include name="${office.core.path} "/>
+				<include name="${office.excel.path} "/>
 				<include name="${bin_dir}/RabNet/ReportInterface.dll" />
 			</references>
 		</csc>

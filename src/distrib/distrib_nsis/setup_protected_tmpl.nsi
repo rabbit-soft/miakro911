@@ -100,6 +100,9 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     File ..\..\..\bin\@bin_type@\RabNet\CodeStorage32.dll
     File ..\..\..\bin\@bin_type@\RabNet\CodeStorage64.dll
     File ..\..\..\bin\@bin_type@\RabNet\GuardantDotNetApi.dll
+	File ..\..\..\bin\@bin_type@\RabNet\ReportInterface.dll
+	File ..\..\..\bin\@bin_type@\RabNet\Interop.Microsoft.Office.Interop.Excel.dll
+	File ..\..\..\bin\@bin_type@\RabNet\Interop.Microsoft.Office.Core.dll
     File ..\..\..\bin\@bin_type@\RabNet\GrdAPI32.DLL
     File ..\..\..\bin\@bin_type@\RabNet\GrdAPI64.DLL
     SetOutPath $INSTDIR\RabNet\reports
@@ -358,12 +361,14 @@ Section /o "-un.rabnet" UNSEC_Rabnet
     Delete /REBOOTOK $INSTDIR\RabNet\RdlEngine.dll
     Delete /REBOOTOK $INSTDIR\RabNet\log4net.dll
     Delete /REBOOTOK $INSTDIR\RabNet\RdlViewer.dll
+	Delete /REBOOTOK $INSTDIR\RabNet\ReportInterface.dll
     Delete /REBOOTOK $INSTDIR\RabNet\CodeStorage32.dll
     Delete /REBOOTOK $INSTDIR\RabNet\CodeStorage64.dll
     Delete /REBOOTOK $INSTDIR\RabNet\GuardantDotNetApi.dll
     Delete /REBOOTOK $INSTDIR\RabNet\GrdAPI32.DLL
     Delete /REBOOTOK $INSTDIR\RabNet\GrdAPI64.DLL
-
+	Delete /REBOOTOK $INSTDIR\RabNet\Interop.Microsoft.Office.Interop.Excel.dll
+	Delete /REBOOTOK $INSTDIR\RabNet\Interop.Microsoft.Office.Core.dll
 
     RmDir /REBOOTOK /r $INSTDIR\RabNet\upd
 

@@ -129,6 +129,7 @@
             this.Name = "ButcherReportDate";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Отчет по Готовой продукции";
+            this.Load += new System.EventHandler(this.ButcherReportDate_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

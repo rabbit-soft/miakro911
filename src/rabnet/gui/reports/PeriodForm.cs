@@ -87,9 +87,7 @@ namespace rabnet
                     lbReportName.Text = "Список случек и вязок";
                     break;
             }
-            this.ReportType = type;
-            fillDates();
-            rbDay_CheckedChanged(null, null);
+            this.ReportType = type;        
         }
 
         public PeriodForm(string caption):this()
@@ -109,10 +107,11 @@ namespace rabnet
                 dates =Engine.get().db().getFuckMonths();
             else dates = Engine.get().db().getDeadsMonths();
 
-            dtpDay.MaxDate = DateTime.Parse(dates[0]).AddMonths(1);
-            dtpDay.MinDate = DateTime.Parse(dates[dates.Count-1]);
+
             if (dates.Count > 0)
             {
+                dtpDay.MaxDate = DateTime.Parse(dates[0]).AddMonths(1);
+                dtpDay.MinDate = DateTime.Parse(dates[dates.Count - 1]);
                 foreach (String dt in dates)
                 {
                     string[] vals = dt.Split('.');
@@ -121,10 +120,12 @@ namespace rabnet
                         cbYear.Items.Add(vals[1]);
                 }
                 cbMonth.SelectedIndex = 0;
+                rbDay_CheckedChanged(null, null);
             }
             else
             {
                 MessageBox.Show("Нет дат забоев.");
+                this.DialogResult = DialogResult.Cancel;
                 this.Close();
             }
         }
@@ -171,6 +172,11 @@ namespace rabnet
             row.AppendChild(doc.CreateElement("datefrom")).AppendChild(doc.CreateTextNode(DateValue));
             row.AppendChild(doc.CreateElement("dateto")).AppendChild(doc.CreateTextNode(""));
             return doc;
+        }
+
+        private void PeriodForm_Shown(object sender, EventArgs e)
+        {
+            fillDates();
         }
     }
 }

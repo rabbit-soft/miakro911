@@ -56,9 +56,7 @@ namespace rabnet
                 comboBox1.Items.Add(usrs[i].Name);
                 ids.Add(usrs[i].Id);
             }
-            comboBox1.SelectedIndex = 0;
-            fillFucksDates();
-            rbMonth_CheckedChanged(null, null);
+            comboBox1.SelectedIndex = 0;                    
         }
 
         private void fillFucksDates()
@@ -76,6 +74,7 @@ namespace rabnet
                         cbYear.Items.Add(vals[1]);
                 }
                 cbMonth.SelectedIndex = 0;
+                rbMonth_CheckedChanged(null, null);
             }
             else
             {
@@ -117,6 +116,11 @@ namespace rabnet
                 cbYear.Visible = true;
                 cbYear.SelectedIndex = 0;
             }
+        }
+
+        private void OkrolUser_Load(object sender, EventArgs e)
+        {
+            fillFucksDates();
         }
     }
 }

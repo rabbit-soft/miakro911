@@ -142,6 +142,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Окролы по пользователям";
+            this.Load += new System.EventHandler(this.OkrolUser_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
