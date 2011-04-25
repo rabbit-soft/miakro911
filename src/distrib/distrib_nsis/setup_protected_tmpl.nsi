@@ -101,6 +101,7 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     File ..\..\..\bin\@bin_type@\RabNet\CodeStorage64.dll
     File ..\..\..\bin\@bin_type@\RabNet\GuardantDotNetApi.dll
 	File ..\..\..\bin\@bin_type@\RabNet\ReportInterface.dll
+	File ..\..\..\bin\@bin_type@\RabNet\changeLog.txt
 	File ..\..\..\bin\@bin_type@\RabNet\Interop.Microsoft.Office.Interop.Excel.dll
 	File ..\..\..\bin\@bin_type@\RabNet\Interop.Microsoft.Office.Core.dll
     File ..\..\..\bin\@bin_type@\RabNet\GrdAPI32.DLL
@@ -369,7 +370,8 @@ Section /o "-un.rabnet" UNSEC_Rabnet
     Delete /REBOOTOK $INSTDIR\RabNet\GrdAPI64.DLL
 	Delete /REBOOTOK $INSTDIR\RabNet\Interop.Microsoft.Office.Interop.Excel.dll
 	Delete /REBOOTOK $INSTDIR\RabNet\Interop.Microsoft.Office.Core.dll
-
+	Delete /REBOOTOK $INSTDIR\RabNet\changeLog.txt
+	
     RmDir /REBOOTOK /r $INSTDIR\RabNet\upd
 
     DeleteRegValue HKLM "${REGKEY}\Components" "rabnet"
