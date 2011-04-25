@@ -124,7 +124,9 @@ namespace rabnet
             }
             else
             {
-                MessageBox.Show("Нет дат забоев.");
+                if(ReportType == myReportType.FUCKS_BY_DATE)
+                    MessageBox.Show("Нет дат случек.");
+                else MessageBox.Show("Нет дат забоев.");
                 this.DialogResult = DialogResult.Cancel;
                 this.Close();
             }
@@ -147,7 +149,8 @@ namespace rabnet
             else if (rbMonth.Checked)
             {
                 cbMonth.Visible = true;
-                cbMonth.SelectedIndex = 0;
+                if (cbMonth.Items.Count>0)
+                    cbMonth.SelectedIndex = 0;
             }
             else if (rbYear.Checked)
             {
@@ -174,9 +177,10 @@ namespace rabnet
             return doc;
         }
 
-        private void PeriodForm_Shown(object sender, EventArgs e)
+        private void PeriodForm_Load(object sender, EventArgs e)
         {
             fillDates();
         }
+
     }
 }

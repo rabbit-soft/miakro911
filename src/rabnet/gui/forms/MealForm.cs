@@ -30,6 +30,7 @@ namespace rabnet
                 dataGridView1.Rows.Add(new string[] { m.StartDate, m.EndDate, m.Amount.ToString(), m.Rate.ToString() });
                 dtpStartDate.MinDate = DateTime.Parse(m.StartDate);
             }
+            dtpStartDate.MaxDate = DateTime.Now;
         }
 
         private void btClose_Click(object sender, EventArgs e)
@@ -39,10 +40,14 @@ namespace rabnet
 
         private void btAdd_Click(object sender, EventArgs e)
         {
-            Engine.get().db().addMealPeriod(dtpStartDate.Value,float.Parse(tbAmount.Text));
-            tbAmount.Clear();
-            fillPeriods();
-            dtpStartDate.Value = DateTime.Now;
+            if (tbAmount.Text != "")
+            {
+                Engine.get().db().addMealPeriod(dtpStartDate.Value, float.Parse(tbAmount.Text));
+                tbAmount.Clear();
+                fillPeriods();
+                dtpStartDate.Value = dtpStartDate.MaxDate;
+            }
+            else MessageBox.Show("Заполните данными поле \"Объем\"");
         }
 
     }

@@ -52,7 +52,7 @@ namespace rabnet
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
             {
-                if (!rd.IsDBNull(1))
+                if (!rd.IsDBNull(1) && !rd.IsDBNull(3))
                     result.Add(new sMeal(rd.GetDateTime(0), rd.GetDateTime(1), rd.GetFloat(2), rd.GetFloat(3)));
                 else result.Add(new sMeal(rd.GetDateTime(0), rd.GetFloat(2)));
             }

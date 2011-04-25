@@ -157,7 +157,6 @@
             this.ShowInTaskbar = false;
             this.Text = "Выберите период отчета";
             this.Load += new System.EventHandler(this.PeriodForm_Load);
-            this.Shown += new System.EventHandler(this.PeriodForm_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -326,7 +326,7 @@
             // 
             this.miButcher.Name = "miButcher";
             this.miButcher.Size = new System.Drawing.Size(220, 22);
-            this.miButcher.Text = "Срерильный цех";
+            this.miButcher.Text = "Стерильный цех";
             this.miButcher.Click += new System.EventHandler(this.miButcher_Click);
             // 
             // tsmiOptions
@@ -495,7 +495,7 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(906, 0);
@@ -505,7 +505,7 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Location = new System.Drawing.Point(4, 24);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(906, 0);
             this.tabPage3.TabIndex = 2;
@@ -514,7 +514,7 @@
             // 
             // tabPage4
             // 
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Location = new System.Drawing.Point(4, 24);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Size = new System.Drawing.Size(906, 0);
             this.tabPage4.TabIndex = 3;
@@ -523,7 +523,7 @@
             // 
             // tpButcher
             // 
-            this.tpButcher.Location = new System.Drawing.Point(4, 22);
+            this.tpButcher.Location = new System.Drawing.Point(4, 24);
             this.tpButcher.Name = "tpButcher";
             this.tpButcher.Size = new System.Drawing.Size(906, 0);
             this.tpButcher.TabIndex = 4;

@@ -37,7 +37,8 @@ namespace rabnet
                 ids.Add(f.partnerid);
                 if (f.partnerid == fucker) sid = comboBox1.Items.Count - 1;
             }
-            comboBox1.SelectedIndex = 0;
+            if (comboBox1.Items.Count>0) 
+                comboBox1.SelectedIndex = 0;
         }
 
         private void button2_Click(object sender, EventArgs e)

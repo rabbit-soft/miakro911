@@ -60,6 +60,12 @@ BEGIN
 	CREATE TEMPORARY TABLE alives AS
 		SELECT r_group,r_born  	     FROM rabbits WHERE (AddDate(r_born,18)<=sd OR AddDate(r_born,18)<=ed ) 	 	    ORDER by r_born;
 		
+	SELECT (select count(*) from deads), (select count(*) from alives) INTO a,d;
+
+	IF a=0 AND d=0 THEN
+		return 0;
+	END IF;	
+		
 	WHILE i<days DO
 		SELECT COALESCE(SUM(r_group),0) INTO d FROM deads  WHERE (to_days(AddDate(sd,i))-to_days(r_born))>=18 AND d_date>=AddDate(sd,i);
 		SELECT COALESCE(SUM(r_group),0) INTO a FROM alives WHERE (to_days(AddDate(sd,i))-to_days(r_born))>=18;
