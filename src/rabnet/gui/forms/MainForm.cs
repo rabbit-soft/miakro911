@@ -103,24 +103,30 @@ namespace rabnet
 #if !DEMO
         private void checkPlugins()
         {
-            if (ReportPlugInClass.Instance.Plugins.Count != 0)
+            if (GRD.Instance.GetFlag(GRD.FlagType.PerortPlugIns))
             {
-                tsmiReports.DropDownItems.Add(new ToolStripSeparator());
-                foreach (IReportInterface p in ReportPlugInClass.Instance.Plugins)
+                if (ReportPlugInClass.Instance.Plugins.Count != 0)
                 {
-                    ToolStripMenuItem menu = new ToolStripMenuItem(p.MenuText);
-                    menu.Tag = p.UniqueName;
-                    menu.Click += new EventHandler(reportPluginMenu_Click);
-                    tsmiReports.DropDownItems.Add(menu);
+                    tsmiReports.DropDownItems.Add(new ToolStripSeparator());
+                    foreach (IReportInterface p in ReportPlugInClass.Instance.Plugins)
+                    {
+                        ToolStripMenuItem menu = new ToolStripMenuItem(p.MenuText);
+                        menu.Tag = p.UniqueName;
+                        menu.Click += new EventHandler(reportPluginMenu_Click);
+                        tsmiReports.DropDownItems.Add(menu);
+                    }
                 }
             }
         }
 
         private void reportPluginMenu_Click(object sender, EventArgs e)
         {
-            IReportInterface p = ReportPlugInClass.Instance.getPluginByUName((sender as ToolStripMenuItem).Tag.ToString());
-            if (p != null)
-                p.MakeReport();
+            if (GRD.Instance.GetFlag(GRD.FlagType.PerortPlugIns))
+            {
+                IReportInterface p = ReportPlugInClass.Instance.getPluginByUName((sender as ToolStripMenuItem).Tag.ToString());
+                if (p != null)
+                    p.MakeReport();
+            }
         }
 #endif
         private void showTierTMenuItem_CheckedChanged(object sender, EventArgs e)
@@ -499,7 +505,7 @@ namespace rabnet
         private void miButcher_Click(object sender, EventArgs e)
         {            
 #if PROTECTED
-            if (!GRD.Instance.GetFlagButcher())
+            if (!GRD.Instance.GetFlag(GRD.FlagType.Butcher))
             {
 #endif
 #if !DEMO
@@ -531,7 +537,7 @@ namespace rabnet
 #if PROTECTED
             if (tabControl1.SelectedTab == tpButcher)
             {
-                if (!GRD.Instance.GetFlagButcher())
+                if (!GRD.Instance.GetFlag(GRD.FlagType.Butcher))
                 {
                     MessageBox.Show("Текущая лицензия не распространяется на данный модуль");
                     e.Cancel = true;
@@ -546,7 +552,7 @@ namespace rabnet
         private void tsmiReports_DropDownOpening(object sender, EventArgs e)
         {
 #if PROTECTED
-            miButcher.Visible = GRD.Instance.GetFlagButcher();           
+            miButcher.Visible = GRD.Instance.GetFlag(GRD.FlagType.Butcher);           
 #elif DEMO
             miButcher.Visible = false;        
 #endif

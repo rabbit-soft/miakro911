@@ -291,6 +291,7 @@ sum(r_group) vsego
 from rabbits;", f.safeValue("brd","121"));
             return s;
         }
+
         /// <summary>
         /// Количество по месяцам
         /// </summary>
@@ -385,8 +386,8 @@ UNION ALL
                 DateTime dt = DateTime.Parse(f.safeValue("dtval"));
                 period = String.Format("MONTH(d_date)={0:MM} AND YEAR(d_date)={0:yyyy}", dt);
             }
-            string s = String.Format(@"
-    (SELECT SUM(r_group) grp,
+            string s = String.Format(@"(SELECT 
+    SUM(r_group) grp,
     d_reason,
     (SELECT d_name FROM deadreasons WHERE d_reason=d_id) reason 
 FROM dead WHERE {0} GROUP BY d_reason)
