@@ -1,0 +1,607 @@
+﻿<exclusions>
+   <assembly name="rabnet" CharSet="unprintable">
+      <module name="rabnet.exe" filePath="D:\_Projects\_rabbits\bin\protected\RabNet\rabnet.exe">
+         <type name="rabnet.DataThread">
+            <field name="thread" />
+            <field name="status" />
+            <field name="sb" />
+            <field name="gt" />
+            <field name="t" />
+            <field name="onitem" />
+            <field name="stopev" />
+            <field name="is_stop" />
+            <method name="get" signature="s rabnet.DataThread(  )" />
+            <method name="get4run" signature="s rabnet.DataThread(  )" />
+            <method name="db" signature="s rabnet.IRabNetDataLayer(  )" />
+            <method name="threadProc" signature="i System.Void(  )" />
+            <method name="setInit" signature="i System.Void(  )" />
+            <method name="setProgress" signature="i System.Void( System.Int32 )" />
+            <method name="setRelease" signature="i System.Void(  )" />
+            <method name="Run" signature="i System.Void( rabnet.IDataGetter,rabnet.RabStatusBar,System.EventHandler )" />
+            <method name="StopClick" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="stop" signature="i System.Void(  )" />
+            <method name="getStop" signature="i System.Boolean(  )" />
+            <method name="setStop" signature="i System.Void( System.Boolean )" />
+            <method name="getStatus" signature="i System.Int32(  )" />
+            <method name="setStatus" signature="i System.Void( System.Int32 )" />
+            <method name="getCount" signature="i System.Int32(  )" />
+            <method name="IsWorking" signature="i System.Boolean(  )" />
+         </type>
+         <type name="rabnet.DataThread/initCallBack">
+            <method name="Invoke" signature="i System.Void(  )" />
+            <method name="BeginInvoke" signature="i System.IAsyncResult( System.AsyncCallback,System.Object )" />
+            <method name="EndInvoke" signature="i System.Void( System.IAsyncResult )" />
+         </type>
+         <type name="rabnet.DataThread/progressCallBack">
+            <method name="Invoke" signature="i System.Void( System.Int32 )" />
+            <method name="BeginInvoke" signature="i System.IAsyncResult( System.Int32,System.AsyncCallback,System.Object )" />
+            <method name="EndInvoke" signature="i System.Void( System.IAsyncResult )" />
+         </type>
+         <type name="rabnet.BuildingControl">
+            <field name="ValueChanged" />
+            <field name="components" />
+            <field name="cbRepair" />
+            <field name="cbNest" />
+            <field name="label1" />
+            <field name="cbHeater" />
+            <field name="cbNest2" />
+            <field name="cbHeater2" />
+            <field name="grNest" />
+            <field name="grVigul" />
+            <field name="cbVigul" />
+            <field name="grNest2" />
+            <field name="grDelims" />
+            <field name="cbDelim3" />
+            <field name="cbDelim2" />
+            <field name="cbDelim1" />
+            <field name="grDelim" />
+            <field name="cbDelim" />
+            <method name="get_repair" signature="i System.Boolean(  )" />
+            <method name="set_repair" signature="i System.Void( System.Boolean )" />
+            <method name="get_nest" signature="i System.Boolean(  )" />
+            <method name="set_nest" signature="i System.Void( System.Boolean )" />
+            <method name="get_nest2" signature="i System.Boolean(  )" />
+            <method name="set_nest2" signature="i System.Void( System.Boolean )" />
+            <method name="get_heater" signature="i System.Int32(  )" />
+            <method name="set_heater" signature="i System.Void( System.Int32 )" />
+            <method name="get_heater2" signature="i System.Int32(  )" />
+            <method name="set_heater2" signature="i System.Void( System.Int32 )" />
+            <method name="get_delim" signature="i System.Boolean(  )" />
+            <method name="set_delim" signature="i System.Void( System.Boolean )" />
+            <method name="get_delim1" signature="i System.Boolean(  )" />
+            <method name="set_delim1" signature="i System.Void( System.Boolean )" />
+            <method name="get_delim2" signature="i System.Boolean(  )" />
+            <method name="set_delim2" signature="i System.Void( System.Boolean )" />
+            <method name="get_delim3" signature="i System.Boolean(  )" />
+            <method name="set_delim3" signature="i System.Void( System.Boolean )" />
+            <method name="get_vigul" signature="i System.Boolean(  )" />
+            <method name="set_vigul" signature="i System.Void( System.Boolean )" />
+            <method name="setType" signature="i System.Void( System.String )" />
+            <method name="add_ValueChanged" signature="i System.Void( rabnet.BuildingControl/BCEventHandler )" />
+            <method name="remove_ValueChanged" signature="i System.Void( rabnet.BuildingControl/BCEventHandler )" />
+            <method name="makeCBEvent" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="makeComboEvent" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+            <property name="repair" />
+            <property name="nest" />
+            <property name="nest2" />
+            <property name="heater" />
+            <property name="heater2" />
+            <property name="delim" />
+            <property name="delim1" />
+            <property name="delim2" />
+            <property name="delim3" />
+            <property name="vigul" />
+            <event name="ValueChanged" />
+         </type>
+         <type name="rabnet.BuildingControl/BCEvent">
+            <field name="value" />
+            <field name="type" />
+            <field name="farm" />
+            <field name="tier" />
+            <method name="val" signature="i System.Boolean(  )" />
+         </type>
+         <type name="rabnet.BuildingControl/BCEvent/EVTYPE">
+         </type>
+         <type name="rabnet.FarmDrawer">
+            <field name="manual" />
+            <field name="t1" />
+            <field name="t2" />
+            <field name="id" />
+            <field name="ValueChanged" />
+            <field name="components" />
+            <field name="pictureBox1" />
+            <field name="bc1" />
+            <field name="bc2" />
+            <method name="setFarm" signature="i System.Void( System.Int32,rabnet.FarmDrawer/DrawTier,rabnet.FarmDrawer/DrawTier )" />
+            <method name="pictureBox1_Paint" signature="i System.Void( System.Object,System.Windows.Forms.PaintEventArgs )" />
+            <method name="drawtext" signature="s System.Void( System.String,System.Drawing.Rectangle,System.Int32,System.Drawing.Graphics,System.Boolean )" />
+            <method name="drawHouse" signature="i System.Void( System.Drawing.Graphics,System.Drawing.Rectangle )" />
+            <method name="FarmDrawer_Move" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="FarmDrawer_Resize" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="FarmDrawer_Paint" signature="i System.Void( System.Object,System.Windows.Forms.PaintEventArgs )" />
+            <method name="add_ValueChanged" signature="i System.Void( rabnet.FarmDrawer/FDEventHandler )" />
+            <method name="remove_ValueChanged" signature="i System.Void( rabnet.FarmDrawer/FDEventHandler )" />
+            <method name="bc_ValueChanged" signature="i System.Void( System.Object,rabnet.BuildingControl/BCEvent )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+            <event name="ValueChanged" />
+         </type>
+         <type name="rabnet.FarmDrawer/DrawTier">
+            <field name="type" />
+            <field name="delims" />
+            <field name="nests" />
+            <field name="heaters" />
+            <field name="rbs" />
+            <field name="g" />
+            <field name="r" />
+            <field name="repair" />
+            <field name="id" />
+            <field name="f" />
+            <method name="setNest" signature="i System.Void( rabnet.BuildingControl,System.Char,System.Char,System.Boolean )" />
+            <method name="setVigul" signature="i System.Void( rabnet.BuildingControl,System.Char )" />
+            <method name="setDelim" signature="i System.Void( rabnet.BuildingControl,System.Char )" />
+            <method name="setDelims" signature="i System.Void( rabnet.BuildingControl,System.String )" />
+            <method name="draw" signature="i System.Void( System.Drawing.Graphics,System.Drawing.Rectangle,rabnet.BuildingControl )" />
+            <method name="drawQuarta" signature="i System.Void(  )" />
+            <method name="drawWall" signature="i System.Void( System.Double,System.Double )" />
+            <method name="drawPart" signature="i System.Void( System.Double,System.Double,System.String,System.String,System.Char,System.Char,System.Double[] )" />
+         </type>
+         <type name="rabnet.FarmDrawer/FDEventHandler">
+         </type>
+         <type name="rabnet.RabStatusBar">
+            <field name="pb" />
+            <field name="btn" />
+            <field name="filt" />
+            <field name="labels" />
+            <field name="btnStatus" />
+            <field name="stopClick" />
+            <field name="refreshClick" />
+            <field name="stopRefreshClick" />
+            <field name="prepareGet" />
+            <field name="itemGet" />
+            <field name="fpan" />
+            <field name="components" />
+            <field name="imageList1" />
+            <method name="add_stopClick" signature="i System.Void( System.EventHandler )" />
+            <method name="remove_stopClick" signature="i System.Void( System.EventHandler )" />
+            <method name="add_refreshClick" signature="i System.Void( System.EventHandler )" />
+            <method name="remove_refreshClick" signature="i System.Void( System.EventHandler )" />
+            <method name="add_stopRefreshClick" signature="i System.Void( rabnet.RabStatusBar/RSBEventHandler )" />
+            <method name="remove_stopRefreshClick" signature="i System.Void( rabnet.RabStatusBar/RSBEventHandler )" />
+            <method name="add_prepareGet" signature="i System.Void( rabnet.RabStatusBar/RSBPrepareEventHandler )" />
+            <method name="remove_prepareGet" signature="i System.Void( rabnet.RabStatusBar/RSBPrepareEventHandler )" />
+            <method name="add_itemGet" signature="i System.Void( rabnet.RabStatusBar/RSBItemEventHandler )" />
+            <method name="remove_itemGet" signature="i System.Void( rabnet.RabStatusBar/RSBItemEventHandler )" />
+            <method name="get_filterPanel" signature="i System.Windows.Forms.UserControl(  )" />
+            <method name="set_filterPanel" signature="i System.Void( System.Windows.Forms.UserControl )" />
+            <method name="setText" signature="i System.Void( System.Int32,System.String )" />
+            <method name="run" signature="i System.Void(  )" />
+            <method name="initProgress" signature="i System.Void( System.Int32,System.Int32 )" />
+            <method name="initProgress" signature="i System.Void( System.Int32 )" />
+            <method name="initProgress" signature="i System.Void(  )" />
+            <method name="progress" signature="i System.Void( System.Int32 )" />
+            <method name="endProgress" signature="i System.Void(  )" />
+            <method name="emergencyStop" signature="i System.Void(  )" />
+            <method name="OnBtnClick" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="OnItem" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="filterHide" signature="i System.Void(  )" />
+            <method name="filterShow" signature="i System.Void(  )" />
+            <method name="filterSwitch" signature="i System.Void(  )" />
+            <method name="OnFiltClick" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+            <property name="filterPanel" />
+            <event name="stopClick" />
+            <event name="refreshClick" />
+            <event name="stopRefreshClick" />
+            <event name="prepareGet" />
+            <event name="itemGet" />
+         </type>
+         <type name="rabnet.RabStatusBar/RSBClickEvent">
+         </type>
+         <type name="rabnet.RabStatusBar/RSBEventHandler">
+         </type>
+         <type name="rabnet.RabStatusBar/RSBPrepareEventHandler">
+         </type>
+         <type name="rabnet.RabStatusBar/RSBItemEvent">
+         </type>
+         <type name="rabnet.RabStatusBar/RSBItemEventHandler">
+         </type>
+         <type name="ColorPickerCombo.ColorPickerColumn">
+            <method name="get_CellTemplate" signature="i System.Windows.Forms.DataGridViewCell(  )" />
+            <method name="set_CellTemplate" signature="i System.Void( System.Windows.Forms.DataGridViewCell )" />
+            <property name="CellTemplate" />
+         </type>
+         <type name="ColorPickerCombo.ColorPickerCell">
+            <field name="_ColorPicker" />
+            <method name="InitializeEditingControl" signature="i System.Void( System.Int32,System.Object,System.Windows.Forms.DataGridViewCellStyle )" />
+            <method name="get_EditType" signature="i System.Type(  )" />
+            <method name="get_ValueType" signature="i System.Type(  )" />
+            <method name="get_DefaultNewRowValue" signature="i System.Object(  )" />
+            <method name="Paint" signature="i System.Void( System.Drawing.Graphics,System.Drawing.Rectangle,System.Drawing.Rectangle,System.Int32,System.Windows.Forms.DataGridViewElementStates,System.Object,System.Object,System.String,System.Windows.Forms.DataGridViewCellStyle,System.Windows.Forms.DataGridViewAdvancedBorderStyle,System.Windows.Forms.DataGridViewPaintParts )" />
+            <method name="ParseFormattedValue" signature="i System.Object( System.Object,System.Windows.Forms.DataGridViewCellStyle,System.ComponentModel.TypeConverter,System.ComponentModel.TypeConverter )" />
+            <method name="GetDisplayLayout" signature="i System.Void( System.Drawing.Rectangle,System.Drawing.Rectangle&amp;,System.Drawing.RectangleF&amp; )" />
+            <property name="EditType" />
+            <property name="ValueType" />
+            <property name="DefaultNewRowValue" />
+         </type>
+         <type name="ColorPickerCombo.ColorPickerControl">
+            <field name="dataGridView" />
+            <field name="valueChanged" />
+            <field name="rowIndex" />
+            <method name="get_EditingControlFormattedValue" signature="i System.Object(  )" />
+            <method name="set_EditingControlFormattedValue" signature="i System.Void( System.Object )" />
+            <method name="GetEditingControlFormattedValue" signature="i System.Object( System.Windows.Forms.DataGridViewDataErrorContexts )" />
+            <method name="ApplyCellStyleToEditingControl" signature="i System.Void( System.Windows.Forms.DataGridViewCellStyle )" />
+            <method name="get_EditingControlRowIndex" signature="i System.Int32(  )" />
+            <method name="set_EditingControlRowIndex" signature="i System.Void( System.Int32 )" />
+            <method name="EditingControlWantsInputKey" signature="i System.Boolean( System.Windows.Forms.Keys,System.Boolean )" />
+            <method name="PrepareEditingControlForEdit" signature="i System.Void( System.Boolean )" />
+            <method name="get_RepositionEditingControlOnValueChange" signature="i System.Boolean(  )" />
+            <method name="get_EditingControlDataGridView" signature="i System.Windows.Forms.DataGridView(  )" />
+            <method name="set_EditingControlDataGridView" signature="i System.Void( System.Windows.Forms.DataGridView )" />
+            <method name="get_EditingControlValueChanged" signature="i System.Boolean(  )" />
+            <method name="set_EditingControlValueChanged" signature="i System.Void( System.Boolean )" />
+            <method name="get_EditingPanelCursor" signature="i System.Windows.Forms.Cursor(  )" />
+            <method name="NotifyDataGridViewOfValueChange" signature="i System.Void(  )" />
+            <method name="OnLeave" signature="i System.Void( System.EventArgs )" />
+            <property name="EditingControlFormattedValue" />
+            <property name="EditingControlRowIndex" />
+            <property name="RepositionEditingControlOnValueChange" />
+            <property name="EditingControlDataGridView" />
+            <property name="EditingControlValueChanged" />
+            <property name="EditingPanelCursor" />
+         </type>
+         <type name="ColorPickerCombo.CalendarColumn">
+            <method name="get_CellTemplate" signature="i System.Windows.Forms.DataGridViewCell(  )" />
+            <method name="set_CellTemplate" signature="i System.Void( System.Windows.Forms.DataGridViewCell )" />
+            <property name="CellTemplate" />
+         </type>
+         <type name="ColorPickerCombo.CalendarCell">
+            <method name="InitializeEditingControl" signature="i System.Void( System.Int32,System.Object,System.Windows.Forms.DataGridViewCellStyle )" />
+            <method name="get_EditType" signature="i System.Type(  )" />
+            <method name="get_ValueType" signature="i System.Type(  )" />
+            <method name="get_DefaultNewRowValue" signature="i System.Object(  )" />
+            <property name="EditType" />
+            <property name="ValueType" />
+            <property name="DefaultNewRowValue" />
+         </type>
+         <type name="ColorPickerCombo.CalendarEditingControl">
+            <field name="dataGridView" />
+            <field name="valueChanged" />
+            <field name="rowIndex" />
+            <method name="get_EditingControlFormattedValue" signature="i System.Object(  )" />
+            <method name="set_EditingControlFormattedValue" signature="i System.Void( System.Object )" />
+            <method name="GetEditingControlFormattedValue" signature="i System.Object( System.Windows.Forms.DataGridViewDataErrorContexts )" />
+            <method name="ApplyCellStyleToEditingControl" signature="i System.Void( System.Windows.Forms.DataGridViewCellStyle )" />
+            <method name="get_EditingControlRowIndex" signature="i System.Int32(  )" />
+            <method name="set_EditingControlRowIndex" signature="i System.Void( System.Int32 )" />
+            <method name="EditingControlWantsInputKey" signature="i System.Boolean( System.Windows.Forms.Keys,System.Boolean )" />
+            <method name="PrepareEditingControlForEdit" signature="i System.Void( System.Boolean )" />
+            <method name="get_RepositionEditingControlOnValueChange" signature="i System.Boolean(  )" />
+            <method name="get_EditingControlDataGridView" signature="i System.Windows.Forms.DataGridView(  )" />
+            <method name="set_EditingControlDataGridView" signature="i System.Void( System.Windows.Forms.DataGridView )" />
+            <method name="get_EditingControlValueChanged" signature="i System.Boolean(  )" />
+            <method name="set_EditingControlValueChanged" signature="i System.Void( System.Boolean )" />
+            <method name="get_EditingPanelCursor" signature="i System.Windows.Forms.Cursor(  )" />
+            <method name="OnValueChanged" signature="i System.Void( System.EventArgs )" />
+            <property name="EditingControlFormattedValue" />
+            <property name="EditingControlRowIndex" />
+            <property name="RepositionEditingControlOnValueChange" />
+            <property name="EditingControlDataGridView" />
+            <property name="EditingControlValueChanged" />
+            <property name="EditingPanelCursor" />
+         </type>
+         <type name="ColorPickerCombo.IDropDownDisplayAdapter">
+            <method name="get_Color" signature="i System.Drawing.Color(  )" />
+            <method name="set_Color" signature="i System.Void( System.Drawing.Color )" />
+            <method name="get_Text" signature="i System.String(  )" />
+            <method name="set_Text" signature="i System.Void( System.String )" />
+            <method name="get_HasDropDownAppearance" signature="i System.Boolean(  )" />
+            <method name="set_HasDropDownAppearance" signature="i System.Void( System.Boolean )" />
+            <method name="add_DropDownAppearanceChanged" signature="i System.Void( System.EventHandler )" />
+            <method name="remove_DropDownAppearanceChanged" signature="i System.Void( System.EventHandler )" />
+            <method name="get_Adaptee" signature="i System.Windows.Forms.Control(  )" />
+            <property name="Color" />
+            <property name="Text" />
+            <property name="HasDropDownAppearance" />
+            <property name="Adaptee" />
+            <event name="DropDownAppearanceChanged" />
+         </type>
+         <type name="rabnet.RabNetPanel">
+            <field name="rsb" />
+            <field name="fp" />
+            <field name="cs" />
+            <method name="close" signature="i System.Void(  )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+            <method name="activate" signature="i System.Void(  )" />
+            <method name="deactivate" signature="i System.Void(  )" />
+            <method name="prepareGet" signature="i rabnet.IDataGetter( System.Object,System.EventArgs )" />
+            <method name="itemGet" signature="i System.Void( System.Object,rabnet.RabStatusBar/RSBItemEvent )" />
+            <method name="onItem" signature="i System.Void( rabnet.IData )" />
+            <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )" />
+            <method name="getMenu" signature="i System.Windows.Forms.ContextMenuStrip(  )" />
+         </type>
+         <type name="rabnet.BuildingsPanel">
+            <field name="nuBuild" />
+            <field name="manual" />
+            <field name="nofarms" />
+            <field name="nofarm" />
+            <field name="nodeToAdd" />
+            <field name="action" />
+            <field name="preBuilding" />
+            <field name="maxfarm" />
+            <field name="components" />
+            <field name="splitContainer1" />
+            <field name="treeView1" />
+            <field name="farmDrawer1" />
+            <field name="listView1" />
+            <field name="columnHeader1" />
+            <field name="columnHeader2" />
+            <field name="columnHeader3" />
+            <field name="columnHeader4" />
+            <field name="columnHeader5" />
+            <field name="columnHeader6" />
+            <field name="columnHeader7" />
+            <field name="columnHeader8" />
+            <field name="actMenu" />
+            <field name="replaceMenuItem" />
+            <field name="killMenuItem" />
+            <field name="addFarmMenuItem" />
+            <field name="addBuildingMenuItem" />
+            <field name="changeFarmMenuItem" />
+            <field name="deleteBuildingMenuItem" />
+            <field name="timer1" />
+            <field name="toolStripMenuItem1" />
+            <field name="shedReportMenuItem" />
+            <field name="emptyRevMenuItem" />
+            <method name="addNoFarm" signature="i System.Void( System.Int32 )" />
+            <method name="makenode" signature="i System.Windows.Forms.TreeNode( System.Windows.Forms.TreeNode,System.String,rabnet.TreeData )" />
+            <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )" />
+            <method name="onItem" signature="i System.Void( rabnet.IData )" />
+            <method name="getAddress" signature="i System.String( System.Int32 )" />
+            <method name="getAddress" signature="i System.String( System.Int32,System.Int32 )" />
+            <method name="searchFarm" signature="i System.Windows.Forms.TreeNode( System.Int32,System.Windows.Forms.TreeNode )" />
+            <method name="searchFarm" signature="i System.Windows.Forms.TreeNode( System.Int32,System.Int32,System.Windows.Forms.TreeNode )" />
+            <method name="listView1_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="tierFromBuilding" signature="i rabnet.FarmDrawer/DrawTier( rabnet.Building )" />
+            <method name="DrawFarm" signature="i System.Void( System.Int32 )" />
+            <method name="treeView1_AfterSelect" signature="i System.Void( System.Object,System.Windows.Forms.TreeViewEventArgs )" />
+            <method name="farmDrawer1_ValueChanged" signature="i System.Void( System.Object,rabnet.BuildingControl/BCEvent )" />
+            <method name="getMenu" signature="i System.Windows.Forms.ContextMenuStrip(  )" />
+            <method name="updateMenu" signature="i System.Void(  )" />
+            <method name="killMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="replaceMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="isFarm" signature="i System.Boolean( System.Windows.Forms.TreeNode )" />
+            <method name="isFarm" signature="i System.Boolean(  )" />
+            <method name="farmNum" signature="i System.Int32( System.Windows.Forms.TreeNode )" />
+            <method name="farmNum" signature="i System.Int32(  )" />
+            <method name="buildNum" signature="i System.Int32( System.Windows.Forms.TreeNode )" />
+            <method name="buildNum" signature="i System.Int32(  )" />
+            <method name="treeView1_NodeMouseClick" signature="i System.Void( System.Object,System.Windows.Forms.TreeNodeMouseClickEventArgs )" />
+            <method name="treeView1_ItemDrag" signature="i System.Void( System.Object,System.Windows.Forms.ItemDragEventArgs )" />
+            <method name="treeView1_DragOver_1" signature="i System.Void( System.Object,System.Windows.Forms.DragEventArgs )" />
+            <method name="treeView1_DragDrop" signature="i System.Void( System.Object,System.Windows.Forms.DragEventArgs )" />
+            <method name="treeView1_AfterLabelEdit" signature="i System.Void( System.Object,System.Windows.Forms.NodeLabelEditEventArgs )" />
+            <method name="askDelete" signature="i System.Boolean(  )" />
+            <method name="deleteBuildingMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="addBuildingMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="timer1_Tick" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="treeView1_Enter" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="listView1_Enter" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="addFarmMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="changeFarmMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="getBuildDoc" signature="i System.Xml.XmlDocument( System.Int32 )" />
+            <method name="shedReportMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="emptyRevMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.RabbitsPanel">
+            <field name="NFIELD" />
+            <field name="STATUSFIELD" />
+            <field name="SEXFIELD" />
+            <field name="NAMEFIELD" />
+            <field name="manual" />
+            <field name="gentree" />
+            <field name="components" />
+            <field name="splitContainer1" />
+            <field name="listView1" />
+            <field name="columnHeader1" />
+            <field name="columnHeader2" />
+            <field name="columnHeader3" />
+            <field name="columnHeader4" />
+            <field name="columnHeader5" />
+            <field name="columnHeader6" />
+            <field name="columnHeader7" />
+            <field name="columnHeader8" />
+            <field name="columnHeader9" />
+            <field name="columnHeader10" />
+            <field name="columnHeader11" />
+            <field name="columnHeader12" />
+            <field name="columnHeader13" />
+            <field name="genTree" />
+            <field name="actMenu" />
+            <field name="passportMenuItem" />
+            <field name="newRab" />
+            <field name="makeBon" />
+            <field name="toolStripMenuItem1" />
+            <field name="proholostMenuItem" />
+            <field name="toolStripMenuItem2" />
+            <field name="replaceMenuItem" />
+            <field name="placeChMenuItem" />
+            <field name="KillMenuItem" />
+            <field name="countKidsMenuItem" />
+            <field name="fuckMenuItem" />
+            <field name="okrolMenuItem" />
+            <field name="boysoutMenuItem" />
+            <field name="replaceYoungersMenuItem" />
+            <field name="svidMenuItem" />
+            <field name="realizeMenuItem" />
+            <field name="GeneticsToolStripMenuItem" />
+            <field name="toolStripSeparator1" />
+            <field name="plemMenuItem" />
+            <field name="replacePlanMenuItem" />
+            <field name="toolStripSeparator2" />
+            <field name="показатьНомерToolStripMenuItem" />
+            <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )" />
+            <method name="onItem" signature="i System.Void( rabnet.IData )" />
+            <method name="insertNode" signature="i System.Void( System.Windows.Forms.TreeNode,rabnet.TreeData )" />
+            <method name="isGirl" signature="i System.Boolean(  )" />
+            <method name="isBride" signature="i System.Boolean(  )" />
+            <method name="listView1_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="setMenu" signature="i System.Void( System.Int32,System.Int32,System.Boolean )" />
+            <method name="getMenu" signature="i System.Windows.Forms.ContextMenuStrip(  )" />
+            <method name="passportMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="listView1_DoubleClick" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="makeBon_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="proholostMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="newRab_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="replaceMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="placeChMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="KillMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="countKidsMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="okrolMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="fuckMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="boysoutMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="replaceYoungersMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="GroupCount" signature="i System.Int32(  )" />
+            <method name="selCount" signature="i System.Int32( System.Int32 )" />
+            <method name="makeSelectedCount" signature="i System.Void(  )" />
+            <method name="listView1_MouseDown" signature="i System.Void( System.Object,System.Windows.Forms.MouseEventArgs )" />
+            <method name="listView1_MouseUp" signature="i System.Void( System.Object,System.Windows.Forms.MouseEventArgs )" />
+            <method name="getBon" signature="i System.String( System.String )" />
+            <method name="rabToXml" signature="i System.Xml.XmlDocument( rabnet.RabNetEngRabbit,rabnet.OneRabbit )" />
+            <method name="rabToXml" signature="i System.Xml.XmlDocument( rabnet.RabNetEngRabbit,rabnet.OneRabbit,System.Xml.XmlDocument )" />
+            <method name="svidMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="realizeMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="GeneticsToolStripMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="actMenu_Opening" signature="i System.Void( System.Object,System.ComponentModel.CancelEventArgs )" />
+            <method name="plemMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="replacePlanMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="логЗаписиToolStripMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="показатьНомерToolStripMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.RabbitsPanel/onItemDelegate">
+         </type>
+         <type name="rabnet.WorksPanel">
+            <field name="repdate" />
+            <field name="makeFlag" />
+            <field name="fullUpdate" />
+            <field name="runF" />
+            <field name="itm" />
+            <field name="components" />
+            <field name="listView1" />
+            <field name="columnHeader1" />
+            <field name="columnHeader2" />
+            <field name="columnHeader3" />
+            <field name="columnHeader4" />
+            <field name="columnHeader5" />
+            <field name="columnHeader6" />
+            <field name="columnHeader8" />
+            <field name="splitContainer1" />
+            <field name="listView2" />
+            <field name="columnHeader11" />
+            <field name="columnHeader12" />
+            <field name="columnHeader13" />
+            <field name="columnHeader15" />
+            <field name="actMenu" />
+            <field name="okrolMenuItem" />
+            <field name="vudvorMenuItem" />
+            <field name="countsMenuItem" />
+            <field name="preokrolMenuItem" />
+            <field name="boysOutMenuItem" />
+            <field name="girlsOutMenuItem" />
+            <field name="fuckMenuItem" />
+            <field name="печатьToolStripMenuItem" />
+            <field name="vaccMenuItem" />
+            <field name="columnHeader14" />
+            <field name="setNestMenuItem" />
+            <field name="countChangedMenuItem" />
+            <field name="columnHeader7" />
+            <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )" />
+            <method name="onItem" signature="i System.Void( rabnet.IData )" />
+            <method name="fillLogs" signature="i System.Void( rabnet.Filters )" />
+            <method name="getMenu" signature="i System.Windows.Forms.ContextMenuStrip(  )" />
+            <method name="setMenu" signature="i System.Void( rabnet.JobType )" />
+            <method name="setMenu" signature="i System.Void( rabnet.JobType,rabnet.ZootehJob )" />
+            <method name="getCurJob" signature="i rabnet.ZootehJob(  )" />
+            <method name="listView1_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="makeJob" signature="i System.Void(  )" />
+            <method name="okrolMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="listView1_DoubleClick" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="getFuckerId" signature="i System.Int32( System.String,System.Collections.Generic.List`1&lt;System.String&gt; )" />
+            <method name="печатьToolStripMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="countChangedMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.YoungsPanel">
+            <field name="gentree" />
+            <field name="manual" />
+            <field name="components" />
+            <field name="splitContainer1" />
+            <field name="listView1" />
+            <field name="genTree" />
+            <field name="columnHeader1" />
+            <field name="columnHeader2" />
+            <field name="columnHeader3" />
+            <field name="columnHeader5" />
+            <field name="columnHeader6" />
+            <field name="columnHeader7" />
+            <field name="columnHeader8" />
+            <field name="columnHeader9" />
+            <field name="columnHeader10" />
+            <field name="actMenu" />
+            <field name="replaceYoungersMenuItem" />
+            <field name="toolStripMenuItem1" />
+            <field name="replacePlanMenuItem" />
+            <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )" />
+            <method name="onItem" signature="i System.Void( rabnet.IData )" />
+            <method name="insertNode" signature="i System.Void( System.Windows.Forms.TreeNode,rabnet.TreeData )" />
+            <method name="listView1_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="getMenu" signature="i System.Windows.Forms.ContextMenuStrip(  )" />
+            <method name="setMenu" signature="i System.Void(  )" />
+            <method name="replaceYoungersMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="listView1_ItemDrag" signature="i System.Void( System.Object,System.Windows.Forms.ItemDragEventArgs )" />
+            <method name="listView1_DragOver" signature="i System.Void( System.Object,System.Windows.Forms.DragEventArgs )" />
+            <method name="listView1_DragDrop" signature="i System.Void( System.Object,System.Windows.Forms.DragEventArgs )" />
+            <method name="makeSelectedCount" signature="i System.Void(  )" />
+            <method name="listView1_MouseDown" signature="i System.Void( System.Object,System.Windows.Forms.MouseEventArgs )" />
+            <method name="listView1_MouseUp" signature="i System.Void( System.Object,System.Windows.Forms.MouseEventArgs )" />
+            <method name="replacePlanMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.ListViewColumnSorter">
+            <field name="ColumnToSort" />
+            <field name="OrderOfSort" />
+            <field name="ObjectCompare" />
+            <field name="lv" />
+            <field name="intSorts" />
+            <field name="selItem" />
+            <field name="option" />
+            <method name="Prepare" signature="i System.Void(  )" />
+            <method name="Restore" signature="i System.Void(  )" />
+            <method name="SemiReady" signature="i System.Void(  )" />
+            <method name="Clear" signature="i rabnet.ListViewColumnSorter(  )" />
+            <method name="OnColumnClick" signature="i System.Void( System.Object,System.Windows.Forms.ColumnClickEventArgs )" />
+            <method name="Compare" signature="i System.Int32( System.Object,System.Object )" />
+            <method name="set_SortColumn" signature="i System.Void( System.Int32 )" />
+            <method name="get_SortColumn" signature="i System.Int32(  )" />
+            <method name="set_Order" signature="i System.Void( System.Windows.Forms.SortOrder )" />
+            <method name="get_Order" signature="i System.Windows.Forms.SortOrder(  )" />
+            <method name="OnColumnWidthChanged" signature="i System.Void( System.Object,System.Windows.Forms.ColumnWidthChangedEventArgs )" />
+            <method name="OnDrawHeader" signature="i System.Void( System.Object,System.Windows.Forms.DrawListViewColumnHeaderEventArgs )" />
+            <method name="OnDrawItem" signature="i System.Void( System.Object,System.Windows.Forms.DrawListViewItemEventArgs )" />
+            <method name="OnDrawSubItem" signature="i System.Void( System.Object,System.Windows.Forms.DrawListViewSubItemEventArgs )" />
+            <property name="SortColumn" />
+            <property name="Order" />
+         </type>
+      </module>
+   </assembly>
+</exclusions>

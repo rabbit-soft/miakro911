@@ -1,0 +1,507 @@
+#
+#Hack of .mia file format
+#
+
+-COMMON_STRUCTS
+string{ 
+  size:byte
+  data:byte[this.size]
+}
+date:ushort #int(VCL_TDateTime_float or VCL_TDate)
+price:string # of digits w or wo decimal separator (int or float)
+stringlist:{
+	size:ushort
+	strings:string[this.size]
+}
+listview{
+ size:int
+ items:LISTITEM[this.size]
+-LISTITEM
+caption:string
+subitemcnt:byte
+subitems:string[this.subitemcnt]
+-LISTITEM_END
+}
+-COMMON_STRUCTS_END
+
+-MIA_FILE
+version:string
+[somedate:date, someotherdate:date  # 2 more dates for version 3.0]
+savedate:date
+buildplan:BUILDPLAN
+bildings:BUILDINGS
+male_names:RABNAMELIST
+female_names:RABNAMELIST
+translist:TRANS_LIST
+zone_list:stringlist
+breed_list:stringlist
+rabbits:LISTRAB
+FilterForm:FILTERFORM
+TransForm:TRANSFORM
+ParamForm:PARAMFORM
+ZooForm:ZOOFORM
+GraphForm:GRAPHFORM		#v>3.0
+ArchiveForm:ARCHIVEFORM #v>3.9
+thisfarm:string			#v>4.3
+farmid:string			#v>4.3
+weightlist:WEIGHTLIST   #v>5.0
+-MIA_FILE_END
+
+--BUILDPLAN
+#Array while depth!=0
+depth:byte
+if (this.depth!=0)
+	name:string
+--BUILDPLAN_END
+
+--BUILDINGS
+count:ushort
+minifarms:array[this.count] MINIFARM
+
+---MINIFARM
+id:short
+upper:TIER
+haslower:bytebool
+if (this.haslower)
+	lower:TIER
+
+----TIER
+type:byte #enum TIER { NO_TIER,T_FEMALE,T_DFEMALE,T_COMPLEX,T_JURTA,T_QUARTA,T_VERTEP,T_BARIN,T_CABIN,MAX_TIER_TYPE };
+repair:bytebool
+notes:string
+#case of type
+if (this.type==0 || this.type==9) #NO_TIER or MAX_TIER_TYPE
+	#EMPTY
+if (this.type==1) #T_FEMALE
+	busy:bytebool
+	heater:char
+	nest:char
+if (this.type==2) #T_DFEMALE
+	busy:bytebool[2]
+	heater:char[2]
+	nest:char[2] 
+if (this.type==3) #T_COMPLEX enum COMPLEX_AREAS { GNEZD_VUGUL,OTS_1,OTS_2,MAX_COMPLEX };
+	busy:bytebool[3]  #MAX_COMPLEX busy for gnezd_vugul,ots_1,ots_2
+	heater:char
+	nest:char
+if (this.type==4) #T_JURTA
+	busy:bytebool[2]  #0-smallvugul  1-bigvugul
+	heater:char
+	nest:char
+	nest_with_big:bytebool  #nest connected with bigvugul
+if (this.type==5) #T_QUARTA
+	busy:bytebool[4]
+	delims:bytebool[3] #DELIMS count = QUARTA_SECTIONS-1
+if (this.type==6) #T_VERTEP
+	busy:bytebool[2]
+if (this.type==7) #T_BARIN
+	busy:bytebool[2]
+	delim:bytebool
+if (this.type==8) #T_CABIN
+	busy:bytebool[2]
+	heater:char
+	nest:char
+----TIER_END
+---MINIFARM_END
+--BUILDINGS_END
+
+--RABNAMELIST
+count:ushort
+names:array[this.count] RABNAME
+
+---RABNAME
+key:ushort  // Уникальный ключ каждого имени ( > 365); 0 - вакантно; 1 - 365 - срок блокипрвки
+surkey:ushort  // Неблокирующий ключ для фамилий. Уникален для каждого имени
+name:string
+surname:string	
+---RABNAME_END
+--RABNAMELIST_END
+
+
+--TRANS_LIST
+count:long
+items:array[this.count] of TRANS
+
+---TRANS
+#enum X_TYPE{
+#0	MEAT_SOLD, // Проданные тушки      | Реализация мяса	 | 1				|
+#1	SKIN_SOLD, // Проданные шкурки     | Реализация шкурок | 1				|
+#2	RABBITS, 	 // Закупка/продажа живых| Наличие тушек 		 | 0				|BodyList
+#3	FEED,      // Корма                | Закупка кормов      1
+#4	OTHER,     // Прочие               | Прочее            | 1				|
+#5	MEAT,      // Наличие  тушек       | Реализация мяса	 | 					|
+#6	SKIN,    	 // Непроданная шкурка   | Наличие шкурок		 | 					|
+#7  USED_FEED, // Корморасход
+#8  OTSEV,     // Отсев
+#	MAX_XTYPE};
+transfertype:byte  #X_TYPE
+notes:string
+when:date
+units:ulong #count
+#case of type:
+if (this.type==2) #RABBITS
+	is_sold:bytebool  #buyed/sold flag
+	age:ushort
+	name:string
+	breed:ushort
+	weight:ushort
+	partner:string
+	price:price
+if (this.type==6) #SKIN
+	age:ushort
+	murderdate:date
+	sex:bytebool
+	breed:ushort
+	skintype:byte #enum SKIN_TYPE { SK_UNKNOWN,LUXURY,I,II,III,IV,MAX_SKIN };
+	rabname:string
+	address:string
+if (this.type==5) #MEAT
+	age:ushort
+	murderdate:date
+	brutto:ushort
+	netto:ushort
+	rabname:string
+	address:string
+if (this.type==0) #MEAT_SOLD
+	age:ushort
+	weight:ulong
+	partner:string
+	price:price
+if (this.type==1) #SKIN_SOLD
+	age:ushort
+	skintype:byte ##look upper
+	partner:string
+	price:price
+if (this.type==4) #OTHER
+	is_sold:bytebool
+	age:ushort
+	name:string
+	weight:ulong
+	kind:string
+	partner:string
+	price:price
+if (this.type==3) #FEED
+	age:ushort
+	name:string
+	weight:ulong
+	kind:string
+	partner:string
+	price:price
+if (this.type==7) #USED_FEED
+	age:ushort
+	name:string
+	weight:ulong
+	kind:string
+if (this.type==8) #OTSEV
+	is_sold:bytebool
+	age:ushort
+	weight:ulong
+	partner:string
+	kind:string
+	price:price
+---TRANS_END
+--TRANS_LIST_END
+
+
+--LISTRAB
+count:ushort
+rabbits:RABBIT[this.count]
+
+---RABBIT
+sex:byte #enum SEX 		 { SEX_VOID,MALE,FEMALE,MAX_SEX };
+bon:BON
+number:ushort
+unique_PRIMARY:ushort   # {PRIMARY,SECONDARY,MAX_UNIQUES} unique[MAX_UNIQUES]; // Список уникальный порядковых номеров кролика. Присваивается при составлении зоотехплана
+name_key:ushort
+sur_key:ushort  #last name
+path_key:ushort  #second name
+notes:string
+butcher:bytebool	// Готовая продукция
+risk:bytebool		// Принадлежит к группе риска
+okrol_num:byte		// Номер окрола, от которого родился
+where:ushort		// | Номер минифермы, где живет
+tier:byte			// | Тип яруса проживания #enum TIER { NO_TIER,T_FEMALE,T_DFEMALE,T_COMPLEX,T_JURTA,T_QUARTA,T_VERTEP,T_BARIN,T_CABIN,MAX_TIER_TYPE };
+tier_id:byte		// | 0 - одноярусная, 1 - нижний ярус, 2 - верхний ярус #enum TIER_ID { SINGLE_TIER,LOWER_TIER,UPPER_TIER };
+area:char			// | Список номеров секций, где живёт
+rate:char			// Рейтинг
+group:uchar			// Число кроликов в единой группе.
+breed:ubyte			// Порода
+multi:byte			// Забракован (1), вакцинирован (2)
+zone:ushort			// Номер зоны прибытия (по сути, генетический номер, если нет других номеров) #union on death_date
+weight:WEIGHTLIST	#// Для новой версии
+born_date:date		// Дата рождения
+genesis_count:ushort
+genesis:ushort[this.genesis_count]
+#switch sex
+if (this.sex==1)  #MALE
+	last_fuck:date	// Дата последней случки
+	status:char		// Мальчик, Кандидат, Производитель
+if (this.sex==2)  #FEMALE	// Подсосные уходят вместе с матерью
+	child_counts:byte	// 0 - нет, 1 ?без детей) - предокросмотр/грелка. С детьми -  Число произведённых подсчётов крольчат
+	borns:byte		// Сколько раз рожала
+	ev_date:date	// Дата последнией случки, вязки или кука (случка - для невесты, вязки/кука - для штатной)
+	last_okrol:date	// Дата последнего окрола
+	ev_type:byte	#enum F_EVENT { NO_EVENT,SLUCHKA,VYAZKA,KUK }; 				// События для самок
+	lost_babies:byte	// Число потерянных крольчат, не отразившееся на рейтинге
+	overall_babies:ushort	// Сколько всего крольчат родила
+	suckers:LISTRAB		#same structure pointer  // Крольчата на подсосе. может быть несколько разноцветных групп
+	fuckers:LISTFUCK	// Партнёры по последней случке
+	worker:string		// Фамилия ответственного за случку
+	no_kuk:bytebool		// Не куковать
+	no_lact:bytebool	// Потеряла лактацию
+
+----BON
+#enum BON { B_UNKNOWN,B_THIRD,B_SECOND,B_FIRST,B_ELITE,MAX_BON };
+weight:byte   #BON // Вес
+body:byte   #BON // Телосложение
+hair:byte   #BON // Густота покрова
+color:byte   #BON // Окраска покрова
+manual:bytebool	// Установленная или унаследованная классность
+----BON_END
+
+----WEIGHTLIST
+count:ushort
+weights:long[this.count]	#weight=(date<<16) | ushort_weight
+----WEIGHTLIST_END
+
+----LISTFUCK
+count:ushort
+fuckers:FUCKER[this.count]
+
+-----FUCKER
+live:bytebool
+if (live!=0)  #if (live)
+	name_key:ushort
+if (live==0)  #else
+	genesis_count:ushort
+	genesis:ushort[this.genesis_count]
+	name:string
+breed:ushort
+fucks:ushort
+children:ushort
+my_fuck_is_last:bytebool
+-----FUCKER_END
+----LISTFUCK_END
+---RABBIT_END
+--LISTRAB_END
+
+--FILTERFORM
+filters:FILTERLIST
+combo:stringlist
+
+---FILTERLIST
+ lookat:int
+ max:ushort
+ filters:FILTER[max]
+ 
+----FILTER
+#
+#enum CTRLS { ALL_ENABLED,MALES_ENABLED,FEMALES_ENABLED,NOSEX_ENABLED,BOYS_ENABLED,CANDIDATES_ENABLED,FATHERS_ENABLED,
+#	GIRLS_ENABLED,BRIDES_ENABLED,PERVO_ENABLED,MOTHERS_ENABLED,FEMALES_BAD,MALES_BAD,SUKROL,KUKU,FAMILY,WORKS_ENABLED,
+#	FROM_AGE,TILL_AGE,USE_FROM_WEIGHT,FROM_WEIGHT,USE_TILL_WEIGHT,TILL_WEIGHT,FROM_SUKROL,TILL_SUKROL,
+#	B_ALL_ENABLED,B_FREE,B_BUSY,B_SELRABBITS,B_MALE,B_FEMALE,B_OTHER,B_NESTS,B_HEATERS,
+#	MAX_FCONTROLS };
+value:int[34]  #MAX_FCONTROLS
+----FILTER_END
+---FILTERLIST_END
+--FILTERFORM_END
+
+--TRANSFORM
+#values_array[2][2][kill_size]; // Сорт/число кроликов  kill_size=max_kill-min_kill=201-110=91
+#const int min_kill = 110; // Минимальный срок забоя
+#const int max_kill = 201; // Максимальный срок забоя + 1
+#  91*4=364
+values_array:ulong[364]
+#enum SKIN_TYPE { SK_UNKNOWN,LUXURY,I,II,III,IV,MAX_SKIN };
+SkinPrices:string[5]  #MAX_SKIN-1 was names SkinNames
+PricePerKilo:string
+FeedPrice:string
+SkinBuyers:stringlist
+BodyBuyers:stringlist
+RabbitPartner:stringlist
+FeedPartner:stringlist
+Kind:stringlist
+OtherPartner:stringlist
+FeedType:stringlist
+OtherKind:stringlist
+OtherProduct:stringlist
+UsedFeedType:stringlist
+UsedFeedSpec:stringlist
+OtsevBuyer:stringlist
+--TRANSFORM_END
+
+--PARAMFORM
+pervonest:uchar
+kukunest:uchar
+mothernest:uchar
+heater:uchar
+okrol:uchar
+kuk:uchar
+pravka_1:uchar
+count_2:uchar
+count_3:uchar
+endkuku:uchar
+vacc:uchar
+vudvorenie:uchar
+countsuckers:uchar
+vyazkamother:uchar
+vyazkapervo:uchar
+rasselboys:uchar
+killfemales:uchar
+killbrides:uchar
+killboys:uchar
+max_age_diff:uchar 			// Максимальная разница в возрасте между совместно проживающими крольчатами
+automode:bytebool     	    // Автопересчёт сроков забоя невест и мальчиков
+rescopies:uchar
+tab_abbr:bytebool          // Сокращения в таблицах
+double_sur:bytebool				// Двойные фамилии
+heterosis:bytebool 				// Разрешить межпородное скрещивание
+inbreeding:bytebool 				// Разрешить инбридинг
+report_full_addr:bytebool  // Полные адреса минифнрм в отчётах
+!!!SOME_OPTION:byte
+use_from:bytebool
+use_till:bytebool
+from:ushort
+till:ushort
+from_heater:ushort 			// Дата начала установки грелок
+till_heater:ushort			// Дата окончания установки грелок
+h_from_checked:bytebool 		// Помечена дата "от"
+h_till_checked:bytebool 		// Помечена дата "до"
+show_tier_types:bytebool
+show_area_types:bytebool;
+sluchka_filter:char
+today:ushort
+otsad_boys_mother:uchar
+otsad_boys_pervo:uchar
+zoo_bits:ulong
+job_grouping:bytebool
+name_show:bytebool
+ignore_last_fuck:bytebool
+partners_limit:bytebool
+limit_value:uchar
+sec_ignore:bytebool
+auto_kuk:bytebool      		// Автопометка групп для системы кукушек
+jurta_sync:bytebool     	// Резервировано
+make_brides:uchar	  	// Возведение в невесты
+sell_mothers_with_babies:bytebool
+imm_age_diff:uchar 		// Максимальная разница в возрасте при экстренных пересадках
+arctime:ushort
+lost_days:ushort				// Сохранять информацию о списаниях
+use_feed_spec:bytebool   // Раздельный вывод по разным спецификациям кормов
+auto_arc:bytebool        // Автоархивация данных об ушедших в расход производителях
+no_kuk:bytebool          // Запрет кука после подсадки крольчат
+no_gen_mix:bytebool      // Запрет пересадок с генетическим смешением
+holost_punish:char   // Штрафной балл за прохолостание
+imm_heater:char      // Когда включается грелка
+rotation:bytebool        // Вращение диаграмм
+rot_speed:bytebool       // Частота вращения в миллисекундах
+no_jurta_kuk:bytebool    // Запрет куков в юртах
+shed_scale:char
+show_gen_tree:bytebool
+show_young_gen_tree:bytebool
+gen_tree_width:ushort
+young_gen_tree_width:ushort
+show_numbers:bytebool  		 // Показывать номера кроликов
+averfeed:uchar  				 // Среднесуточный корморасход
+number_before_name:bytebool // Номера перед именами  #v>6.1
+reserved:uchar[99];			#v>6.1
+newconf:NEWCONFIG			#v>5.1
+jobcnt:uchar					#=MAX_JOBS
+jobs:JOB[this.jobcnt]
+
+---NEWCONFIG
+next_svid:int
+svid_remark_cnt:int
+svid_remarks:string[this.svid_remark_cnt]
+svid_head:string
+svid_farm:string
+reserved:char[100]
+subscriber:SUBSCRIBER[5]  #MAX_SUBSCRIPBE = 5
+
+----SUBSCRIBER
+on:bytebool
+job:string
+name:string
+-----SUBSCRIBER_END
+---NEWCONFIG_END
+
+---JOB
+s1:string
+s2:string
+---JOB_END
+--PARAMFORM_END
+
+--ZOOFORM
+itemcnt:int			// Число строк в зоотехплане
+if (itemcnt!=0)
+	zoodate:date	// Дата зоотехплана
+	donorcnt:ushort 
+	donors:DONOR[this.donorcnt]
+	zoocount:ushort
+	zoojob:ZOOJOB[this.zoocount]
+	memolines:int						#v>5.1
+	memostr:string[this.memolines]		#v>5.1
+
+---DONOR
+unique:ushort	// Или мать, или сирота
+acccount:ushort
+acceptors:ACCEPTOR[this.acccount]
+surplus:uchar	// Избыток крольчат
+immediate:uchar	// Немедленная отсадка этого количества крольчат
+
+----ACCEPTOR
+unique:ushort	// Это - мать
+lack:uchar		// Нехватка подсосных
+hybrid:bytebool 		 // Гибридизация в результате смешения групп
+new_group:bytebool		 // Будет новая группа
+gendiff:int  		 // Кол-во несхожих номеров
+distance:int 		 // Расстояние пересадки
+donor_best:ushort; 	  // unique группа крольчат донора, наиболее подходящая для пересадки
+acceptor_best:ushort; // unique группы крольчат акцептора, наиболее подходящая для пересадки
+----ACCEPTOR_END
+---DONOR_END	
+	
+---ZOOJOB
+caption:string
+subcount:uchar
+subitems:string[this.subcount]
+jobtype:uchar
+jobuniquer:uchar
+uniquescnt:uchar
+uniques:ushort[this.uniquescnt]
+---ZOOJOB_END	
+--ZOOFORM_END
+
+--GRAPHFORM
+reasonlist:listview
+workers:listview
+lostlist:listview
+--GRAPHFORM_END
+
+--ARCHIVEFORM
+size:int
+arcplans:ARCPLAN[this.size]
+if (ver<5.1)
+	dead:listview #v<=5.1
+else
+	dead:LISTRAB  #v>5.1
+
+---ARCPLAN
+apdate:date
+workcount:int
+arcworks:stringlist[this.worksize]
+---ARCPLAN_END
+--ARCHIVEFORM_END
+
+--WEIGHTLIST
+count:byte
+weighters:WEIGHTER[this.count]
+laston:byte
+lastpos:ushort
+
+---WEIGHTER
+on:byte
+start:ushort
+interval:ushort
+---WEIGHTER_END
+--WEIGHTLIST_END

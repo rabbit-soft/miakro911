@@ -1,0 +1,672 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EFCCE992-8AB2-43AB-87DD-1BEC3E429345}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>rabnet</RootNamespace>
+    <AssemblyName>rabnet</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ApplicationIcon>icon_green.ico</ApplicationIcon>
+    <ManifestCertificateThumbprint>3B8C72DE762591324EA262613E6D576677A828BC</ManifestCertificateThumbprint>
+    <ManifestKeyFile>rabnet_TemporaryKey.pfx</ManifestKeyFile>
+    <GenerateManifests>false</GenerateManifests>
+    <SignManifests>false</SignManifests>
+    <TargetZone>LocalIntranet</TargetZone>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Demo|AnyCPU' ">
+    <OutputPath>bin\Demo\</OutputPath>
+    <DefineConstants>DEMO</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Protected|AnyCPU' ">
+    <OutputPath>bin\Protected\</OutputPath>
+    <DefineConstants>PROTECTED</DefineConstants>
+    <Optimize>false</Optimize>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="GuardantDotNetApi, Version=5.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\allineed\src\party3d\GuardantDotNetApi.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\allineed\src\party3d\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="RdlEngine, Version=4.1.0.0, Culture=neutral, PublicKeyToken=98d963a3ed6bf418, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\allineed\src\party3d\RdlEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="RdlViewer, Version=4.1.0.0, Culture=neutral, PublicKeyToken=98d963a3ed6bf418, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\allineed\src\party3d\RdlViewer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Demo.cs" />
+    <Compile Include="forms\ProgressForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\ProgressForm.Designer.cs">
+      <DependentUpon>ProgressForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\libs\GRD\GRD.cs" />
+    <Compile Include="RabUpdaterClient.cs" />
+    <Compile Include="components\ColorPickerColumn\ColorPickerColumn.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="components\ColorPickerColumn\CommonMethods.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="components\ColorPickerColumn\IDropDownDisplayAdapte.cs" />
+    <Compile Include="forms\PreReplaceYoungersForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\PreReplaceYoungersForm.Designer.cs">
+      <DependentUpon>PreReplaceYoungersForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ReplaceBride.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\ReplaceBride.Designer.cs">
+      <DependentUpon>ReplaceBride.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\SelectUserForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\SelectUserForm.Designer.cs">
+      <DependentUpon>SelectUserForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GeneticsManagerSafe.cs" />
+    <Compile Include="components\BuildingControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\BuildingControl.Designer.cs">
+      <DependentUpon>BuildingControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="components\DateDays.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\DateDays.Designer.cs">
+      <DependentUpon>DateDays.cs</DependentUpon>
+    </Compile>
+    <Compile Include="components\FarmDrawer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\FarmDrawer.Designer.cs">
+      <DependentUpon>FarmDrawer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="filters\BuildingsFilter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="filters\BuildingsFilter.Designer.cs">
+      <DependentUpon>BuildingsFilter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="filters\DeadFilter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="filters\DeadFilter.Designer.cs">
+      <DependentUpon>DeadFilter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="filters\FilterPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="filters\RabbitsFilter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="filters\RabbitsFilter.Designer.cs">
+      <DependentUpon>RabbitsFilter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="filters\ZootehFilter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="filters\ZootehFilter.Designer.cs">
+      <DependentUpon>ZootehFilter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\AboutForm.Designer.cs">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\BonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\BonForm.Designer.cs">
+      <DependentUpon>BonForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\CatalogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\CatalogForm.Designer.cs">
+      <DependentUpon>CatalogForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ColumnSorter.cs">
+    </Compile>
+    <Compile Include="DataThread.cs" />
+    <Compile Include="forms\CountKids.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\CountKids.Designer.cs">
+      <DependentUpon>CountKids.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\DeadForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\DeadForm.Designer.cs">
+      <DependentUpon>DeadForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\FarmChangeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\FarmChangeForm.Designer.cs">
+      <DependentUpon>FarmChangeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\FarmListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\FarmListForm.Designer.cs">
+      <DependentUpon>FarmListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\GenomView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\GenomView.Designer.cs">
+      <DependentUpon>GenomView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\IncomeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\IncomeForm.Designer.cs">
+      <DependentUpon>IncomeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\KillForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\KillForm.Designer.cs">
+      <DependentUpon>KillForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ListViewSaver.cs" />
+    <Compile Include="forms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\MakeFuck.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\MakeFuck.Designer.cs">
+      <DependentUpon>MakeFuck.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\MiniFarmForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\MiniFarmForm.Designer.cs">
+      <DependentUpon>MiniFarmForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\NamesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\NamesForm.Designer.cs">
+      <DependentUpon>NamesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\OkrolForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\OkrolForm.Designer.cs">
+      <DependentUpon>OkrolForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\OptionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\OptionsForm.Designer.cs">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Proholost.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\Proholost.Designer.cs">
+      <DependentUpon>Proholost.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\RabbitInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\RabbitInfo.Designer.cs">
+      <DependentUpon>RabbitInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ReplaceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\ReplaceForm.Designer.cs">
+      <DependentUpon>ReplaceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ReplaceYoungersForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\ReplaceYoungersForm.Designer.cs">
+      <DependentUpon>ReplaceYoungersForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ReportViewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\ReportViewForm.Designer.cs">
+      <DependentUpon>ReportViewForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\UserForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\UserForm.Designer.cs">
+      <DependentUpon>UserForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\UserInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\UserInfoForm.Designer.cs">
+      <DependentUpon>UserInfoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="panels\BuildingsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="panels\BuildingsPanel.Designer.cs">
+      <DependentUpon>BuildingsPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="panels\RabbitsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="panels\RabbitsPanel.Designer.cs">
+      <DependentUpon>RabbitsPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="panels\RabNetPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="panels\WorksPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="panels\WorksPanel.Designer.cs">
+      <DependentUpon>WorksPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="panels\YoungsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="panels\YoungsPanel.Designer.cs">
+      <DependentUpon>YoungsPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="components\RabStatusBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="components\RabStatusBar.Designer.cs">
+      <DependentUpon>RabStatusBar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="reports\FuckerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="reports\FuckerForm.Designer.cs">
+      <DependentUpon>FuckerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="reports\OkrolUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="reports\OkrolUser.Designer.cs">
+      <DependentUpon>OkrolUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="reports\PeriodForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="reports\PeriodForm.Designer.cs">
+      <DependentUpon>PeriodForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\VerInfo.cs" />
+    <Compile Include="..\..\rabdump\X_Tools\x_tools.cs" />
+    <EmbeddedResource Include="components\BuildingControl.resx">
+      <DependentUpon>BuildingControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="components\DateDays.resx">
+      <DependentUpon>DateDays.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="components\FarmDrawer.resx">
+      <DependentUpon>FarmDrawer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="filters\BuildingsFilter.resx">
+      <DependentUpon>BuildingsFilter.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="filters\DeadFilter.resx">
+      <DependentUpon>DeadFilter.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="filters\RabbitsFilter.resx">
+      <DependentUpon>RabbitsFilter.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="filters\ZootehFilter.resx">
+      <DependentUpon>ZootehFilter.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\BonForm.resx">
+      <DependentUpon>BonForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\CatalogForm.resx">
+      <DependentUpon>CatalogForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\CountKids.resx">
+      <DependentUpon>CountKids.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\DeadForm.resx">
+      <DependentUpon>DeadForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\FarmChangeForm.resx">
+      <DependentUpon>FarmChangeForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\FarmListForm.resx">
+      <DependentUpon>FarmListForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\GenomView.resx">
+      <DependentUpon>GenomView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\IncomeForm.resx">
+      <DependentUpon>IncomeForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\KillForm.resx">
+      <DependentUpon>KillForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\MakeFuck.resx">
+      <DependentUpon>MakeFuck.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\MiniFarmForm.resx">
+      <DependentUpon>MiniFarmForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\NamesForm.resx">
+      <DependentUpon>NamesForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\OkrolForm.resx">
+      <DependentUpon>OkrolForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\OptionsForm.resx">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\PreReplaceYoungersForm.resx">
+      <DependentUpon>PreReplaceYoungersForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\ProgressForm.resx">
+      <DependentUpon>ProgressForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\Proholost.resx">
+      <DependentUpon>Proholost.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\RabbitInfo.resx">
+      <DependentUpon>RabbitInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\ReplaceBride.resx">
+      <DependentUpon>ReplaceBride.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\ReplaceForm.resx">
+      <DependentUpon>ReplaceForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\ReplaceYoungersForm.resx">
+      <DependentUpon>ReplaceYoungersForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\ReportViewForm.resx">
+      <DependentUpon>ReportViewForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\SelectUserForm.resx">
+      <DependentUpon>SelectUserForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\UserForm.resx">
+      <DependentUpon>UserForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\UserInfoForm.resx">
+      <DependentUpon>UserInfoForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="panels\BuildingsPanel.resx">
+      <DependentUpon>BuildingsPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="panels\RabbitsPanel.resx">
+      <DependentUpon>RabbitsPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="components\RabStatusBar.resx">
+      <DependentUpon>RabStatusBar.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="panels\WorksPanel.resx">
+      <DependentUpon>WorksPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="panels\YoungsPanel.resx">
+      <DependentUpon>YoungsPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="reports\FuckerForm.resx">
+      <DependentUpon>FuckerForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="reports\OkrolUser.resx">
+      <DependentUpon>OkrolUser.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="reports\PeriodForm.resx">
+      <DependentUpon>PeriodForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\libs\pickers\Pickers.csproj">
+      <Project>{9F02BE5E-50CC-487D-9092-2EE15E952B08}</Project>
+      <Name>Pickers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\db.mysql\db.mysql.csproj">
+      <Project>{B20A34DB-0FCD-4CFA-858E-16803387FF4F}</Project>
+      <Name>db.mysql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\engine\engine.csproj">
+      <Project>{241724AB-0674-41CF-A8AD-224EEC248E40}</Project>
+      <Name>engine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\gui_genetics\gui_genetics.csproj">
+      <Project>{A835C727-1EB1-490D-BEBC-5C88F382330B}</Project>
+      <Name>gui_genetics</Name>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="..\..\..\help\rabHelp.chm">
+    </None>
+    <None Include="Properties\app.manifest" />
+    <None Include="rabnet_TemporaryKey.pfx" />
+    <None Include="reports\age.rdl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="reports\breeds.rdl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="reports\by_month.rdl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="reports\dead.rdl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="reports\deadreason.rdl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="reports\empty_rev.rdl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="reports\fucker.rdl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="reports\fucks_by_date.rdl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="reports\okrol_user.rdl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="reports\plem.rdl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="reports\rabbit.rdl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="reports\realization.rdl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="reports\replace_plan.rdl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="reports\shed.rdl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="reports\zooteh.rdl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="reports\zooteh_nofuck.rdl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\allineed\src\party3d\GrdAPI32.DLL">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="icon_green.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

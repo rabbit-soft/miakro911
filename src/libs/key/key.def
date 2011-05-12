@@ -1,0 +1,4 @@
+LIBRARY key
+EXPORTS
+	_HasKey@8 @1
+	_VerifyKey@8 @2

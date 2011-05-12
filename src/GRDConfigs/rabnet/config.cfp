@@ -1,0 +1,744 @@
+﻿<data>
+   <assembly name="db.mysql">
+      <module name="db.mysql.dll" filePath="D:\_Projects\_rabbits\bin\protected\RabNet\db.mysql.dll">
+         <type name="rabnet.IBreeds">
+         </type>
+         <type name="rabnet.Breeds">
+            <method name="getBreeds" signature="i rabnet.CatalogData(  )" />
+            <method name="ChangeBreed" signature="i System.Void( System.Int32,System.String,System.String,System.String )" />
+            <method name="AddBreed" signature="i System.Int32( System.String,System.String,System.String )" />
+         </type>
+         <type name="rabnet.Catalog">
+         </type>
+         <type name="rabnet.ICatalogs">
+         </type>
+         <type name="rabnet.Catalogs">
+            <method name="stdCatalog" signature="i rabnet.Catalog( System.String )" />
+            <method name="getBreeds" signature="i rabnet.Catalog(  )" />
+            <method name="getNames" signature="i rabnet.Catalog( System.Int32 )" />
+            <method name="getSurNames" signature="i rabnet.Catalog( System.Int32,System.String )" />
+            <method name="getZones" signature="i rabnet.Catalog(  )" />
+            <method name="getFreeNames" signature="i rabnet.Catalog( System.Int32,System.Int32 )" />
+            <method name="getDeadReasons" signature="i rabnet.Catalog(  )" />
+         </type>
+         <type name="rabnet.DBHelper">
+            <method name="DateToMyString" signature="s System.String( System.DateTime )" />
+            <method name="makeGenesis" signature="s System.Int32( MySql.Data.MySqlClient.MySqlConnection,System.String )" />
+            <method name="get_genesis" signature="s System.String( MySql.Data.MySqlClient.MySqlConnection,System.Int32 )" />
+            <method name="combine_genesis" signature="s System.String( System.String,System.String )" />
+            <method name="combine_genesis" signature="s System.String( MySql.Data.MySqlClient.MySqlConnection,System.Int32,System.Int32 )" />
+            <method name="makeCommonGenesis" signature="s System.Int32( MySql.Data.MySqlClient.MySqlConnection,System.Int32,System.Int32 )" />
+            <method name="makeCommonGenesis" signature="s System.Int32( MySql.Data.MySqlClient.MySqlConnection,System.String,System.String,System.Int32 )" />
+            <method name="commonBon" signature="s System.String( System.String,System.String )" />
+            <method name="escape" signature="s System.String( System.String )" />
+         </type>
+         <type name="rabnet.Dead">
+         </type>
+         <type name="rabnet.Deads">
+            <method name="nextItem" signature="i rabnet.IData(  )" />
+            <method name="makeWhere" signature="i System.String(  )" />
+            <method name="getQuery" signature="i System.String(  )" />
+            <method name="countQuery" signature="i System.String(  )" />
+         </type>
+         <type name="rabnet.DeadHelper">
+            <method name="resurrect" signature="i System.Void( System.Int32 )" />
+         </type>
+         <type name="rabnet.IDeadReasons">
+         </type>
+         <type name="rabnet.DeadReasons">
+            <method name="getReasons" signature="i rabnet.CatalogData(  )" />
+            <method name="ChangeReason" signature="i System.Void( System.Int32,System.String )" />
+            <method name="AddReason" signature="i System.Int32( System.String )" />
+         </type>
+         <type name="rabnet.TreeData">
+         </type>
+         <type name="rabnet.CatalogData">
+         </type>
+         <type name="rabnet.CatalogData/Row">
+         </type>
+         <type name="rabnet.Fucks/Fuck">
+         </type>
+         <type name="rabnet.LogList">
+            <method name="addLog" signature="i System.Void( System.DateTime,System.String,System.String,System.String,System.String )" />
+         </type>
+         <type name="rabnet.LogList/OneLog">
+         </type>
+         <type name="rabnet.Name">
+         </type>
+         <type name="rabnet.Names">
+            <method name="nextItem" signature="i rabnet.IData(  )" />
+            <method name="makeWhereClause" signature="i System.String(  )" />
+            <method name="getQuery" signature="i System.String(  )" />
+            <method name="countQuery" signature="i System.String(  )" />
+            <method name="addName" signature="s System.Void( MySql.Data.MySqlClient.MySqlConnection,rabnet.OneRabbit/RabbitSex,System.String,System.String )" />
+            <method name="changeName" signature="s System.Void( MySql.Data.MySqlClient.MySqlConnection,System.String,System.String,System.String )" />
+         </type>
+         <type name="rabnet.Rabbit">
+         </type>
+         <type name="rabnet.OneRabbit">
+            <method name="SexToString" signature="s System.String( rabnet.OneRabbit/RabbitSex )" />
+            <method name="SexToRU" signature="s System.String( rabnet.OneRabbit/RabbitSex )" />
+            <method name="age" signature="i System.Int32(  )" />
+         </type>
+         <type name="rabnet.OneRabbit/RabbitSex">
+         </type>
+         <type name="rabnet.RabbitGetter">
+            <method name="fillRabbit" signature="s rabnet.OneRabbit( MySql.Data.MySqlClient.MySqlDataReader )" />
+            <method name="isDeadRabbit" signature="s System.Boolean( MySql.Data.MySqlClient.MySqlConnection,System.Int32 )" />
+            <method name="GetRabbit" signature="s rabnet.OneRabbit( MySql.Data.MySqlClient.MySqlConnection,System.Int32 )" />
+            <method name="GetRabbit" signature="s rabnet.OneRabbit( MySql.Data.MySqlClient.MySqlConnection,System.Int32,rabnet.RabbitGetter/RAB_TYPE )" />
+            <method name="getYoungers" signature="s rabnet.OneRabbit[]( MySql.Data.MySqlClient.MySqlConnection,System.Int32 )" />
+            <method name="SetRabbit" signature="s System.Void( MySql.Data.MySqlClient.MySqlConnection,rabnet.OneRabbit )" />
+            <method name="setBon" signature="s System.Void( MySql.Data.MySqlClient.MySqlConnection,System.Int32,System.String )" />
+            <method name="makeFuck" signature="s System.Void( MySql.Data.MySqlClient.MySqlConnection,System.Int32,System.Int32,System.DateTime,System.Int32 )" />
+            <method name="MakeProholost" signature="s System.Void( MySql.Data.MySqlClient.MySqlConnection,System.Int32,System.DateTime )" />
+            <method name="WhosChildren" signature="s System.Int32( MySql.Data.MySqlClient.MySqlConnection,System.Int32 )" />
+            <method name="MakeOkrol" signature="s System.Int32( MySql.Data.MySqlClient.MySqlConnection,System.Int32,System.DateTime,System.Int32,System.Int32 )" />
+            <method name="makeName" signature="s System.String( MySql.Data.MySqlClient.MySqlConnection,System.Int32,System.Int32,System.Int32,System.Int32,rabnet.OneRabbit/RabbitSex )" />
+            <method name="freeTier" signature="s System.Int32[]( MySql.Data.MySqlClient.MySqlConnection,System.Int32 )" />
+            <method name="placeRabbit" signature="s System.Void( MySql.Data.MySqlClient.MySqlConnection,System.Int32,System.Int32,System.Int32,System.Int32 )" />
+            <method name="removeParent" signature="s System.Void( MySql.Data.MySqlClient.MySqlConnection,System.Int32 )" />
+            <method name="replaceYounger" signature="s System.Void( MySql.Data.MySqlClient.MySqlConnection,System.Int32,System.Int32,System.Int32,System.Int32 )" />
+            <method name="setRabbitSex" signature="s System.Void( MySql.Data.MySqlClient.MySqlConnection,System.Int32,rabnet.OneRabbit/RabbitSex )" />
+            <method name="cloneRabbit" signature="s System.Int32( MySql.Data.MySqlClient.MySqlConnection,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,rabnet.OneRabbit/RabbitSex,System.Int32 )" />
+            <method name="replaceRabbit" signature="s System.Void( MySql.Data.MySqlClient.MySqlConnection,System.Int32,System.Int32,System.Int32,System.Int32 )" />
+            <method name="newRabbit" signature="s System.Int32( MySql.Data.MySqlClient.MySqlConnection,rabnet.OneRabbit,System.Int32 )" />
+            <method name="freeName" signature="s System.Void( MySql.Data.MySqlClient.MySqlConnection,System.Int32 )" />
+            <method name="killRabbit" signature="s System.Void( MySql.Data.MySqlClient.MySqlConnection,System.Int32,System.DateTime,System.Int32,System.String )" />
+            <method name="countKids" signature="s System.Void( MySql.Data.MySqlClient.MySqlConnection,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32 )" />
+            <method name="placeSucker" signature="s System.Void( MySql.Data.MySqlClient.MySqlConnection,System.Int32,System.Int32 )" />
+            <method name="combineGroups" signature="s System.Void( MySql.Data.MySqlClient.MySqlConnection,System.Int32,System.Int32 )" />
+            <method name="getMothers" signature="s rabnet.Rabbit[]( MySql.Data.MySqlClient.MySqlConnection,System.Int32,System.Int32 )" />
+            <method name="getRabByName" signature="s System.Int32( MySql.Data.MySqlClient.MySqlConnection,System.Int32,System.Int32 )" />
+            <method name="getLiveDeadRabbit" signature="s rabnet.OneRabbit( MySql.Data.MySqlClient.MySqlConnection,System.Int32 )" />
+            <method name="getParents" signature="s rabnet.OneRabbit[]( MySql.Data.MySqlClient.MySqlConnection,System.Int32,System.Int32 )" />
+         </type>
+         <type name="rabnet.RabbitGetter/RAB_TYPE">
+         </type>
+         <type name="rabnet.RabbitGen">
+         </type>
+         <type name="rabnet.RabbitGen/RabbitSex">
+         </type>
+         <type name="rabnet.RabbitGenGetter">
+            <method name="GetRabbit" signature="s rabnet.RabbitGen( MySql.Data.MySqlClient.MySqlConnection,System.Int32 )" />
+            <method name="getRabbitPriplodK" signature="s System.Void( MySql.Data.MySqlClient.MySqlConnection,rabnet.RabbitGen&amp; )" />
+            <method name="getRabbitRodK" signature="s System.Void( MySql.Data.MySqlClient.MySqlConnection,rabnet.RabbitGen&amp; )" />
+            <method name="getBreedColors" signature="s System.Collections.Generic.Dictionary`2&lt;System.Int32,System.Drawing.Color&gt;( MySql.Data.MySqlClient.MySqlConnection )" />
+         </type>
+         <type name="rabnet.ReportType">
+         </type>
+         <type name="rabnet.ReportType/Type">
+         </type>
+         <type name="rabnet.Weight">
+            <method name="getWeights" signature="i System.String[]( System.Int32 )" />
+            <method name="addWeight" signature="i System.Void( System.Int32,System.Int32,System.DateTime )" />
+            <method name="deleteWeight" signature="i System.Void( System.Int32,System.DateTime )" />
+         </type>
+         <type name="rabnet.Younger">
+         </type>
+         <type name="rabnet.IZones">
+         </type>
+         <type name="rabnet.Zones">
+            <method name="getZones" signature="i rabnet.CatalogData(  )" />
+            <method name="ChangeZone" signature="i System.Void( System.Int32,System.String,System.String )" />
+            <method name="AddZone" signature="i System.Int32( System.Int32,System.String,System.String )" />
+         </type>
+         <type name="rabnet.ZooTehNullItem">
+         </type>
+      </module>
+   </assembly>
+   <assembly name="engine">
+      <module name="engine.dll" filePath="D:\_Projects\_rabbits\bin\protected\RabNet\engine.dll">
+         <type name="rabnet.RabNetEngHelper">
+            <method name="inbreeding" signature="s System.Boolean( System.String,System.String )" />
+         </type>
+         <type name="rabnet.Options">
+            <method name="getOption" signature="i System.String( System.String,System.String,System.UInt32 )" />
+            <method name="getIntOption" signature="i System.Int32( System.String,System.String,System.UInt32 )" />
+            <method name="getFloatOption" signature="i System.Double( System.String,System.String,System.UInt32 )" />
+            <method name="safeIntOption" signature="i System.Int32( System.String,System.String,System.UInt32,System.Int32 )" />
+            <method name="setOption" signature="i System.Void( System.String,System.String,System.UInt32,System.String )" />
+            <method name="setOption" signature="i System.Void( System.String,System.String,System.UInt32,System.Int32 )" />
+            <method name="setOption" signature="i System.Void( System.String,System.String,System.UInt32,System.Double )" />
+            <method name="getUidOfLevel" signature="i System.UInt32( rabnet.Options/OPT_LEVEL )" />
+            <method name="getOption" signature="i System.String( System.String,System.String,rabnet.Options/OPT_LEVEL )" />
+            <method name="getIntOption" signature="i System.Int32( System.String,System.String,rabnet.Options/OPT_LEVEL )" />
+            <method name="getFloatOption" signature="i System.Double( System.String,System.String,rabnet.Options/OPT_LEVEL )" />
+            <method name="safeIntOption" signature="i System.Int32( System.String,System.String,rabnet.Options/OPT_LEVEL,System.Int32 )" />
+            <method name="safeIntOption" signature="i System.Int32( System.String,System.String,rabnet.Options/OPT_LEVEL )" />
+            <method name="setOption" signature="i System.Void( System.String,System.String,rabnet.Options/OPT_LEVEL,System.String )" />
+            <method name="setOption" signature="i System.Void( System.String,System.String,rabnet.Options/OPT_LEVEL,System.Int32 )" />
+            <method name="setOption" signature="i System.Void( System.String,System.String,rabnet.Options/OPT_LEVEL,System.Double )" />
+            <method name="getOptionById" signature="i rabnet.Options/Option( rabnet.Options/OPT_ID )" />
+            <method name="getOption" signature="i System.String( System.String,rabnet.Options/OPT_ID )" />
+            <method name="getIntOption" signature="i System.Int32( System.String,rabnet.Options/OPT_ID )" />
+            <method name="getFloatOption" signature="i System.Double( System.String,rabnet.Options/OPT_ID )" />
+            <method name="safeIntOption" signature="i System.Int32( System.String,rabnet.Options/OPT_ID,System.Int32 )" />
+            <method name="safeIntOption" signature="i System.Int32( System.String,rabnet.Options/OPT_ID )" />
+            <method name="setOption" signature="i System.Void( System.String,rabnet.Options/OPT_ID,System.String )" />
+            <method name="setOption" signature="i System.Void( System.String,rabnet.Options/OPT_ID,System.Int32 )" />
+            <method name="setOption" signature="i System.Void( System.String,rabnet.Options/OPT_ID,System.Double )" />
+            <method name="getOption" signature="i System.String( rabnet.Options/OPT_ID )" />
+            <method name="getIntOption" signature="i System.Int32( rabnet.Options/OPT_ID )" />
+            <method name="getFloatOption" signature="i System.Double( rabnet.Options/OPT_ID )" />
+            <method name="safeIntOption" signature="i System.Int32( rabnet.Options/OPT_ID,System.Int32 )" />
+            <method name="safeIntOption" signature="i System.Int32( rabnet.Options/OPT_ID )" />
+            <method name="setOption" signature="i System.Void( rabnet.Options/OPT_ID,System.String )" />
+            <method name="setOption" signature="i System.Void( rabnet.Options/OPT_ID,System.Int32 )" />
+            <method name="setOption" signature="i System.Void( rabnet.Options/OPT_ID,System.Double )" />
+         </type>
+         <type name="rabnet.Options/OPT_ID">
+         </type>
+         <type name="rabnet.Options/OPT_LEVEL">
+         </type>
+         <type name="rabnet.Options/ExOptionNotFound">
+         </type>
+         <type name="rabnet.Options/Option">
+         </type>
+         <type name="rabnet.RabNetEngBuilding">
+            <method name="fromPlace" signature="s rabnet.RabNetEngBuilding( System.String,rabnet.RabNetEngine )" />
+            <method name="commit" signature="i System.Void(  )" />
+            <method name="setRepair" signature="i System.Void( System.Boolean )" />
+            <method name="setNest" signature="i System.Void( System.Boolean )" />
+            <method name="setNest2" signature="i System.Void( System.Boolean )" />
+            <method name="setHeater" signature="i System.Void( System.Int32 )" />
+            <method name="setHeater2" signature="i System.Void( System.Int32 )" />
+            <method name="setDelim" signature="i System.Void( System.Boolean )" />
+            <method name="setDelim1" signature="i System.Void( System.Boolean )" />
+            <method name="setVigul" signature="i System.Void( System.Int32 )" />
+            <method name="setDelim2" signature="i System.Void( System.Boolean )" />
+            <method name="setDelim3" signature="i System.Void( System.Boolean )" />
+         </type>
+         <type name="rabnet.RabNetEngBuilding/ExBadBuildingType">
+         </type>
+         <type name="rabnet.RabNetEngBuilding/ExFarmNotEmpty">
+         </type>
+         <type name="rabnet.RabNetEngRabbit">
+            <method name="newCommit" signature="i System.Void(  )" />
+            <method name="commit" signature="i System.Void(  )" />
+            <method name="setBon" signature="i System.Void( System.String )" />
+            <method name="FuckIt" signature="i System.Void( System.Int32,System.DateTime )" />
+            <method name="ProholostIt" signature="i System.Void( System.DateTime )" />
+            <method name="OkrolIt" signature="i System.Void( System.DateTime,System.Int32,System.Int32 )" />
+            <method name="replaceRabbit" signature="i System.Void( System.Int32,System.Int32,System.Int32,System.String )" />
+            <method name="ReplaceYounger" signature="i System.Void( System.Int32,System.Int32,System.Int32,System.Int32,System.String )" />
+            <method name="killIt" signature="i System.Void( System.DateTime,System.Int32,System.String,System.Int32 )" />
+            <method name="CountKids" signature="i System.Void( System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32 )" />
+            <method name="setSex" signature="i System.Void( rabnet.OneRabbit/RabbitSex )" />
+            <method name="clone" signature="i System.Int32( System.Int32,System.Int32,System.Int32,System.Int32 )" />
+            <method name="combineWidth" signature="i System.Void( System.Int32 )" />
+            <method name="placeSuckerTo" signature="i System.Void( System.Int32 )" />
+         </type>
+         <type name="rabnet.RabNetEngRabbit/ExNotFemale">
+         </type>
+         <type name="rabnet.RabNetEngRabbit/ExNotMale">
+         </type>
+         <type name="rabnet.RabNetEngRabbit/ExNotFucker">
+         </type>
+         <type name="rabnet.RabNetEngRabbit/ExBadDate">
+         </type>
+         <type name="rabnet.RabNetEngRabbit/ExAlreadyFucked">
+         </type>
+         <type name="rabnet.RabNetEngRabbit/ExNotFucked">
+         </type>
+         <type name="rabnet.RabNetEngRabbit/ExNoName">
+         </type>
+         <type name="rabnet.RabNetEngRabbit/ExNotOne">
+         </type>
+         <type name="rabnet.RabNetEngRabbit/ExBadCount">
+         </type>
+         <type name="rabnet.RabNetEngRabbit/ExNoRabbit">
+         </type>
+         <type name="rabnet.RabNetLogs">
+            <method name="log" signature="s System.Void( rabnet.RabNetEngine,rabnet.RabNetLogs/LogType,System.Int32,System.Int32,System.String,System.String,System.String )" />
+            <method name="log" signature="s System.Void( rabnet.RabNetEngine,rabnet.RabNetLogs/LogType )" />
+            <method name="log" signature="i System.Void( rabnet.RabNetLogs/LogType )" />
+            <method name="log" signature="i System.Void( rabnet.RabNetLogs/LogType,System.String )" />
+            <method name="log" signature="i System.Void( rabnet.RabNetLogs/LogType,System.Int32 )" />
+            <method name="log" signature="i System.Void( rabnet.RabNetLogs/LogType,System.Int32,System.String )" />
+            <method name="log" signature="i System.Void( rabnet.RabNetLogs/LogType,System.Int32,System.String,System.String )" />
+            <method name="log" signature="i System.Void( rabnet.RabNetLogs/LogType,System.Int32,System.Int32,System.String )" />
+            <method name="log" signature="i System.Void( rabnet.RabNetLogs/LogType,System.Int32,System.Int32,System.String,System.String )" />
+            <method name="log" signature="i System.Void( rabnet.RabNetLogs/LogType,System.Int32,System.Int32,System.String,System.String,System.String )" />
+         </type>
+         <type name="rabnet.RabNetLogs/LogType">
+         </type>
+         <type name="rabnet.JobType">
+         </type>
+         <type name="rabnet.JobHolder">
+         </type>
+      </module>
+   </assembly>
+   <assembly name="rabnet">
+      <module name="rabnet.exe" filePath="D:\_Projects\_rabbits\bin\protected\RabNet\rabnet.exe">
+         <type name="rabnet.DataThread">
+            <method name="get" signature="s rabnet.DataThread(  )" />
+            <method name="get4run" signature="s rabnet.DataThread(  )" />
+            <method name="db" signature="s rabnet.IRabNetDataLayer(  )" />
+            <method name="threadProc" signature="i System.Void(  )" />
+            <method name="setInit" signature="i System.Void(  )" />
+            <method name="setProgress" signature="i System.Void( System.Int32 )" />
+            <method name="setRelease" signature="i System.Void(  )" />
+            <method name="Run" signature="i System.Void( rabnet.IDataGetter,rabnet.RabStatusBar,System.EventHandler )" />
+            <method name="StopClick" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="stop" signature="i System.Void(  )" />
+            <method name="getStop" signature="i System.Boolean(  )" />
+            <method name="setStop" signature="i System.Void( System.Boolean )" />
+            <method name="getStatus" signature="i System.Int32(  )" />
+            <method name="setStatus" signature="i System.Void( System.Int32 )" />
+            <method name="getCount" signature="i System.Int32(  )" />
+            <method name="IsWorking" signature="i System.Boolean(  )" />
+         </type>
+         <type name="rabnet.DataThread/initCallBack">
+         </type>
+         <type name="rabnet.DataThread/progressCallBack">
+         </type>
+         <type name="rabnet.Program">
+            <method name="SwitchRabWindow" signature="s System.Void(  )" />
+            <method name="Excepted" signature="s System.Void( System.Exception )" />
+            <method name="Threaded" signature="s System.Void( System.Object,System.Threading.ThreadExceptionEventArgs )" />
+            <method name="Unhandled" signature="s System.Void( System.Object,System.UnhandledExceptionEventArgs )" />
+         </type>
+         <type name="rabnet.RabUpdaterClient">
+            <method name="Get" signature="s rabnet.RabUpdaterClient(  )" />
+            <method name="SetIP" signature="i System.Void( System.String )" />
+            <method name="ReadLine" signature="i System.String( System.IO.Stream )" />
+            <method name="CheckUpdate" signature="i System.Boolean(  )" />
+            <method name="SetProgr" signature="i System.Void( System.Double )" />
+            <method name="GetUpdate" signature="i System.Void(  )" />
+            <method name="GetUpRes" signature="i System.Int32(  )" />
+            <method name="GetUpFilePath" signature="i System.String(  )" />
+         </type>
+         <type name="rabnet.RabUpdaterClient/progressUpCB">
+         </type>
+         <type name="rabnet.RabUpdaterClient/progressDoneCB">
+         </type>
+         <type name="rabnet.BuildingControl">
+            <method name="setType" signature="i System.Void( System.String )" />
+            <method name="makeCBEvent" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="makeComboEvent" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.BuildingControl/BCEvent">
+            <method name="val" signature="i System.Boolean(  )" />
+         </type>
+         <type name="rabnet.BuildingControl/BCEvent/EVTYPE">
+         </type>
+         <type name="rabnet.BuildingControl/BCEventHandler">
+         </type>
+         <type name="rabnet.components.DateDays">
+            <method name="reposition" signature="i System.Void(  )" />
+            <method name="dateTimePicker1_ValueChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="numericUpDown1_ValueChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.components.DateDays/DDPosition">
+         </type>
+         <type name="rabnet.RabStatusBar">
+            <method name="setText" signature="i System.Void( System.Int32,System.String )" />
+            <method name="run" signature="i System.Void(  )" />
+            <method name="initProgress" signature="i System.Void( System.Int32,System.Int32 )" />
+            <method name="initProgress" signature="i System.Void( System.Int32 )" />
+            <method name="initProgress" signature="i System.Void(  )" />
+            <method name="progress" signature="i System.Void( System.Int32 )" />
+            <method name="endProgress" signature="i System.Void(  )" />
+            <method name="emergencyStop" signature="i System.Void(  )" />
+            <method name="OnBtnClick" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="OnItem" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="filterHide" signature="i System.Void(  )" />
+            <method name="filterShow" signature="i System.Void(  )" />
+            <method name="filterSwitch" signature="i System.Void(  )" />
+            <method name="OnFiltClick" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.RabStatusBar/RSBClickEvent">
+         </type>
+         <type name="rabnet.RabStatusBar/RSBEventHandler">
+         </type>
+         <type name="rabnet.RabStatusBar/RSBPrepareEventHandler">
+         </type>
+         <type name="rabnet.RabStatusBar/RSBItemEvent">
+         </type>
+         <type name="rabnet.RabStatusBar/RSBItemEventHandler">
+         </type>
+         <type name="rabnet.DeadFilter">
+            <method name="getFilters" signature="i rabnet.Filters(  )" />
+            <method name="setFilters" signature="i System.Void( rabnet.Filters )" />
+            <method name="clearFilters" signature="i System.Void(  )" />
+            <method name="button1_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.RabbitsPanel">
+            <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )" />
+            <method name="onItem" signature="i System.Void( rabnet.IData )" />
+            <method name="insertNode" signature="i System.Void( System.Windows.Forms.TreeNode,rabnet.TreeData )" />
+            <method name="isGirl" signature="i System.Boolean(  )" />
+            <method name="isBride" signature="i System.Boolean(  )" />
+            <method name="listView1_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="setMenu" signature="i System.Void( System.Int32,System.Int32,System.Boolean )" />
+            <method name="getMenu" signature="i System.Windows.Forms.ContextMenuStrip(  )" />
+            <method name="passportMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="listView1_DoubleClick" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="makeBon_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="proholostMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="newRab_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="replaceMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="placeChMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="KillMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="countKidsMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="okrolMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="fuckMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="boysoutMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="replaceYoungersMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="GroupCount" signature="i System.Int32(  )" />
+            <method name="selCount" signature="i System.Int32( System.Int32 )" />
+            <method name="makeSelectedCount" signature="i System.Void(  )" />
+            <method name="listView1_MouseDown" signature="i System.Void( System.Object,System.Windows.Forms.MouseEventArgs )" />
+            <method name="listView1_MouseUp" signature="i System.Void( System.Object,System.Windows.Forms.MouseEventArgs )" />
+            <method name="getBon" signature="i System.String( System.String )" />
+            <method name="rabToXml" signature="i System.Xml.XmlDocument( rabnet.RabNetEngRabbit,rabnet.OneRabbit )" />
+            <method name="rabToXml" signature="i System.Xml.XmlDocument( rabnet.RabNetEngRabbit,rabnet.OneRabbit,System.Xml.XmlDocument )" />
+            <method name="svidMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="realizeMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="GeneticsToolStripMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="actMenu_Opening" signature="i System.Void( System.Object,System.ComponentModel.CancelEventArgs )" />
+            <method name="plemMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="replacePlanMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="логЗаписиToolStripMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="показатьНомерToolStripMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.RabbitsPanel/onItemDelegate">
+         </type>
+         <type name="rabnet.BonForm">
+            <method name="button2_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button1_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.CatalogForm">
+            <method name="FillTable" signature="i System.Void( System.Boolean )" />
+            <method name="OnRowChange" signature="i System.Void( System.Object,System.Data.DataRowChangeEventArgs )" />
+            <method name="OnRowInsert" signature="i System.Void( System.Object,System.Data.DataTableNewRowEventArgs )" />
+            <method name="dataGridView1_CellEndEdit" signature="i System.Void( System.Object,System.Windows.Forms.DataGridViewCellEventArgs )" />
+            <method name="dataGridView1_UserAddedRow" signature="i System.Void( System.Object,System.Windows.Forms.DataGridViewRowEventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.CatalogForm/CatalogType">
+         </type>
+         <type name="rabnet.CountKids">
+            <method name="setGrp" signature="i System.Void( System.Int32 )" />
+            <method name="CountKids_Load" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="numericUpDown1_ValueChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button2_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button1_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="comboBox1_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.DeadForm">
+            <method name="rsb_prepareGet" signature="i rabnet.IDataGetter( System.Object,System.EventArgs )" />
+            <method name="rsb_itemGet" signature="i System.Void( System.Object,rabnet.RabStatusBar/RSBItemEvent )" />
+            <method name="DeadForm_Activated" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="восстановитьToolStripMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.FarmListForm">
+            <method name="updateList" signature="i System.Void(  )" />
+            <method name="button1_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="listView1_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="listView1_DoubleClick" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button3_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button2_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button4_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.GenomView">
+            <method name="button1_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="findBreed" signature="i System.String( System.Int32 )" />
+            <method name="MakeChildName" signature="i System.String( System.String,System.String )" />
+            <method name="InsertGen" signature="i System.Windows.Forms.ListViewItem( System.Windows.Forms.ListView,System.String )" />
+            <method name="addGen" signature="i System.Void( System.Windows.Forms.ListView,System.String,System.String[] )" />
+            <method name="MakeGenesis" signature="i System.Void( System.Int32,System.Int32,System.String,System.String,System.String,System.String )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.IncomeForm">
+            <method name="initialHint" signature="i System.Void(  )" />
+            <method name="fillZones" signature="i System.Void(  )" />
+            <method name="getZone" signature="i System.Int32(  )" />
+            <method name="button7_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button5_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="update" signature="i System.Void( System.Boolean )" />
+            <method name="button1_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button2_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button3_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button8_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="listView1_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button4_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button9_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="isMom" signature="i System.Boolean( rabnet.RabNetEngRabbit )" />
+            <method name="commit" signature="i System.Void( rabnet.RabNetEngRabbit )" />
+            <method name="button6_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.KillForm">
+            <method name="initialHints" signature="i System.Void(  )" />
+            <method name="addRabbit" signature="i System.Void( System.Int32 )" />
+            <method name="addRabbit" signature="i System.Void( rabnet.RabNetEngRabbit )" />
+            <method name="update" signature="i System.Void(  )" />
+            <method name="KillForm_Load" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="listView1_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button1_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button3_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="doConfirm" signature="i System.Boolean(  )" />
+            <method name="button2_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="numericUpDown1_ValueChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button1_Click_1" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="updateLabels" signature="i System.Int32(  )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.MakeFuck">
+            <method name="initialHints" signature="i System.Void(  )" />
+            <method name="fillNames" signature="i System.Void(  )" />
+            <method name="fillTable" signature="i System.Void(  )" />
+            <method name="listView1_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button3_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button2_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button1_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="cbCand_CheckedChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="listView1_DoubleClick" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button4_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.MiniFarmForm">
+            <method name="button2_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="idFromType" signature="i System.Int32( System.String )" />
+            <method name="getType" signature="i System.String( System.Int32 )" />
+            <method name="getUpperType" signature="i System.String(  )" />
+            <method name="getLowerType" signature="i System.String(  )" />
+            <method name="hasRabbits" signature="i System.Boolean( rabnet.Building )" />
+            <method name="checkBuilding" signature="i System.Int32( rabnet.Building )" />
+            <method name="button1_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.NamesForm">
+            <method name="initNameForm" signature="i System.Void(  )" />
+            <method name="load" signature="i System.Void(  )" />
+            <method name="rabStatusBar1_prepareGet" signature="i rabnet.IDataGetter( System.Object,System.EventArgs )" />
+            <method name="rabStatusBar1_itemGet" signature="i System.Void( System.Object,rabnet.RabStatusBar/RSBItemEvent )" />
+            <method name="button2_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button1_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="textBox1_TextChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="makeSurname" signature="i System.String( System.String )" />
+            <method name="tabControl1_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.OkrolForm">
+            <method name="initialHint" signature="i System.Void(  )" />
+            <method name="button3_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button2_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button1_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.OptionsForm">
+            <method name="OptionsForm_Load" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button2_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button1_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.OptionsForm/OptionsHolder">
+            <method name="fromR" signature="i System.Int32( rabnet.OptionsForm/OptionsHolder/RUBOOL )" />
+            <method name="toR" signature="i rabnet.OptionsForm/OptionsHolder/RUBOOL( System.Int32 )" />
+            <method name="make" signature="s rabnet.OptionsForm/OptionsHolder(  )" />
+            <method name="load" signature="i System.Void(  )" />
+            <method name="save" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.OptionsForm/OptionsHolder/RUBOOL">
+         </type>
+         <type name="rabnet.PreReplaceYoungersForm">
+            <method name="MakeChoice" signature="s System.Windows.Forms.DialogResult( System.Int32 )" />
+            <method name="button1_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="comboBox1_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.ProgressForm">
+            <method name="progressUp" signature="i System.Void( System.Int32 )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.Proholost">
+            <method name="initialHints" signature="i System.Void(  )" />
+            <method name="button2_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button1_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.RabbitInfo">
+            <method name="initialHints" signature="i System.Void(  )" />
+            <method name="button2_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button1_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="getbon" signature="i System.String( System.Char )" />
+            <method name="updateStd" signature="i System.Void(  )" />
+            <method name="updateMale" signature="i System.Void(  )" />
+            <method name="updateFemale" signature="i System.Void(  )" />
+            <method name="FillList" signature="i System.Void( System.Windows.Forms.ComboBox,rabnet.Catalog,System.Int32 )" />
+            <method name="fillCatalogs" signature="i System.Void( System.Int32 )" />
+            <method name="fillNames" signature="i System.Void( System.Int32 )" />
+            <method name="UpdateNew" signature="i System.Void(  )" />
+            <method name="updateData" signature="i System.Void(  )" />
+            <method name="getCatValue" signature="i System.Int32( rabnet.Catalog,System.String )" />
+            <method name="applyData" signature="i System.Void(  )" />
+            <method name="warnme" signature="i System.Boolean(  )" />
+            <method name="checkBox5_CheckedChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button5_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="RabbitInfo_Load" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="lastFuckNever_CheckedChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button6_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button7_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button4_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="addgen" signature="i System.Void( System.Int32 )" />
+            <method name="button3_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="zone_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="fucks_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button11_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button13_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button10_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button9_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button8_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button12_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="fucks_DoubleClick" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button14_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button15_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button16_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="group_ValueChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button17_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="checkBox4_CheckedChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="okrolCount_ValueChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="dateTimePicker1_ValueChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="listView1_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button18_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button19_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="sex_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="setSex" signature="i System.Void( System.Int32 )" />
+            <method name="changeFucker_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="changeWorker_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="spec_CheckedChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="dtp_vacEnd_CloseUp" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="maleStatus_TextChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.ReplaceBride">
+            <method name="FillAddresses" signature="i System.Void(  )" />
+            <method name="getGirlOut" signature="i System.Int32(  )" />
+            <method name="getAddress" signature="i System.Int32[]( System.String )" />
+            <method name="button1_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.ReplaceForm">
+            <method name="addRabbit" signature="i System.Void( System.Int32 )" />
+            <method name="addRabbit" signature="i System.Void( rabnet.RabNetEngRabbit )" />
+            <method name="clear" signature="i System.Void(  )" />
+            <method name="setAction" signature="i System.Void( rabnet.ReplaceForm/Action )" />
+            <method name="myrab" signature="i System.Boolean( System.Int32 )" />
+            <method name="busy" signature="i System.Boolean( rabnet.ReplaceForm/RP )" />
+            <method name="getBuildings" signature="i System.Void(  )" />
+            <method name="updateB" signature="i System.Void(  )" />
+            <method name="update" signature="i System.Void(  )" />
+            <method name="update" signature="i System.Void( System.Boolean )" />
+            <method name="rp" signature="i rabnet.ReplaceForm/RP( System.Int32 )" />
+            <method name="rp" signature="i rabnet.ReplaceForm/RP(  )" />
+            <method name="button2_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="comboBox1_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="dataGridView1_CellBeginEdit" signature="i System.Void( System.Object,System.Windows.Forms.DataGridViewCellCancelEventArgs )" />
+            <method name="ReplaceForm_Load" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="dataGridView1_CellEndEdit" signature="i System.Void( System.Object,System.Windows.Forms.DataGridViewCellEventArgs )" />
+            <method name="button3_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button4_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="dataGridView1_MultiSelectChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button5_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button7_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="getAddress" signature="i System.Int32[]( System.String )" />
+            <method name="dataGridView1_DataError" signature="i System.Void( System.Object,System.Windows.Forms.DataGridViewDataErrorEventArgs )" />
+            <method name="button6_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button10_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="commitRabbit" signature="i System.Void( rabnet.ReplaceForm/RP,System.Int32,System.Boolean )" />
+            <method name="button1_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button11_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button12_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button8_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button9_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="getGirlOut" signature="i System.Int32(  )" />
+            <method name="initialHints" signature="i System.Void(  )" />
+            <method name="button14_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.ReplaceForm/RPList">
+         </type>
+         <type name="rabnet.ReplaceForm/RP">
+            <method name="clear" signature="i System.Void(  )" />
+            <method name="setCurAddress" signature="i System.Void( System.String,System.Boolean )" />
+            <method name="splitGroup" signature="i rabnet.ReplaceForm/RP( System.Int32 )" />
+         </type>
+         <type name="rabnet.ReplaceForm/Action">
+         </type>
+         <type name="rabnet.ReplaceYoungersForm">
+            <method name="updateMothers" signature="i System.Void(  )" />
+            <method name="button2_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="groups" signature="i System.Int32(  )" />
+            <method name="button1_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="ReplaceYoungersForm_Load" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="listView1_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="getValue" signature="i System.Int32( System.Int32 )" />
+            <method name="getValue" signature="i System.Int32(  )" />
+            <method name="nudRepl_ValueChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.SelectUserForm">
+            <method name="button2_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button1_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.UserForm">
+            <method name="initialHints" signature="i System.Void(  )" />
+            <method name="update" signature="i System.Void(  )" />
+            <method name="button2_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button1_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="listView1_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button4_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button3_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button5_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+         <type name="rabnet.UserInfoForm">
+            <method name="button2_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="button1_Click" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="checkBox1_CheckedChanged" signature="i System.Void( System.Object,System.EventArgs )" />
+            <method name="Dispose" signature="i System.Void( System.Boolean )" />
+            <method name="InitializeComponent" signature="i System.Void(  )" />
+         </type>
+      </module>
+   </assembly>
+</data>
