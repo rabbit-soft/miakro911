@@ -41,7 +41,7 @@ namespace rabdump
                             //{
                                 //return;
                             //}
-                            if (!GRD.Instance.GetFlagServer())
+                            if (!GRD.Instance.GetFlag(GRD.FlagType.RabDump))
                             {
                                 MessageBox.Show(null, "Данный ключ защиты не позволяет запуск приложения!\n",
                                                 "Ключ защиты", MessageBoxButtons.OK, MessageBoxIcon.Error);

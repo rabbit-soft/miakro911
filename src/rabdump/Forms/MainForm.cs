@@ -145,7 +145,7 @@ namespace rabdump
                 _canclose = true;
                 Close();
             }
-            if (!GRD.Instance.GetFlagServer())
+            if (!GRD.Instance.GetFlag(GRD.FlagType.RabDump))
             {
                 _canclose = true;
                 Close();
