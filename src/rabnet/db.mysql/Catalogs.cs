@@ -40,10 +40,12 @@ namespace rabnet
             rd.Close();
             return res;
         }
+
         public Catalog getBreeds()
         {
             return stdCatalog("SELECT b_id,b_name FROM breeds;");
         }
+
         public Catalog getNames(int sex)
         {
             String where="";

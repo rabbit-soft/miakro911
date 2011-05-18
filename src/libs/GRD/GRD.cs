@@ -223,22 +223,24 @@ namespace RabGRD
             if (retCode == GrdE.OK)
             {
                 string date = Cp1251BytesToString(bts, 0, 12);
-                DateTimeFormatInfo dtfi = new CultureInfo("en-US", false).DateTimeFormat;
-                DateTime dt = Convert.ToDateTime(date, dtfi);
-
-                if (dt > DateTime.Now)
+                if (date != "")
                 {
-                    bts = new byte[8];
-                    logStr = "Reading TempRole Flags : ";
-                    retCode = GrdApi.GrdRead(_grdHandle, TEMP_FLAGS_MASK, 8, out bts);
-                    logStr += GrdApi.PrintResult((int)retCode);
-                    if (retCode == GrdE.OK)
+                    DateTimeFormatInfo dtfi = new CultureInfo("en-US", false).DateTimeFormat;
+                    DateTime dt = Convert.ToDateTime(date, dtfi);
+                    if (dt > DateTime.Now)
                     {
-                        UInt64 flgs = BitConverter.ToUInt64(bts, 0);
-                        logStr += string.Format("; Full TempFlags = {0:D}", flgs);
-                        logStr += string.Format("; TempFlags = {3} - {2} - {1} - {0}", Convert.ToString(bts[0], 2), Convert.ToString(bts[1], 2), Convert.ToString(bts[2], 2), Convert.ToString(bts[3], 2));
-                        res = bts[byteNum];
-                    }                 
+                        bts = new byte[8];
+                        logStr = "Reading TempRole Flags : ";
+                        retCode = GrdApi.GrdRead(_grdHandle, TEMP_FLAGS_MASK, 8, out bts);
+                        logStr += GrdApi.PrintResult((int)retCode);
+                        if (retCode == GrdE.OK)
+                        {
+                            UInt64 flgs = BitConverter.ToUInt64(bts, 0);
+                            logStr += string.Format("; Full TempFlags = {0:D}", flgs);
+                            logStr += string.Format("; TempFlags = {3} - {2} - {1} - {0}", Convert.ToString(bts[0], 2), Convert.ToString(bts[1], 2), Convert.ToString(bts[2], 2), Convert.ToString(bts[3], 2));
+                            res = bts[byteNum];
+                        }
+                    }
                 }
             }
             log.Debug(logStr);

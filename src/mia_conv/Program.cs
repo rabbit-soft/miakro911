@@ -100,6 +100,10 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
             Application.Run(new Form1(auto,file,host,db,user,pswd,root,rpswd,users,scr));
         }
 
+        /// <summary>
+        /// Новая База данных
+        /// </summary>
+        /// <param name="args"></param>
         static void nudb(string[] args)
         {
             String[] dbpar = args[1].Split(';');

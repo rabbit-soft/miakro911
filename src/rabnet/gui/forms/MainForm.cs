@@ -100,11 +100,13 @@ namespace rabnet
             return mx;
 #endif
         }
-#if !DEMO
+#if !DEMO 
         private void checkPlugins()
         {
+#if PROTECTED
             if (GRD.Instance.GetFlag(GRD.FlagType.PerortPlugIns))
             {
+#endif
                 if (ReportPlugInClass.Instance.Plugins.Count != 0)
                 {
                     tsmiReports.DropDownItems.Add(new ToolStripSeparator());
@@ -116,17 +118,23 @@ namespace rabnet
                         tsmiReports.DropDownItems.Add(menu);
                     }
                 }
+#if PROTECTED
             }
+#endif
         }
 
         private void reportPluginMenu_Click(object sender, EventArgs e)
         {
+#if PROTECTED
             if (GRD.Instance.GetFlag(GRD.FlagType.PerortPlugIns))
             {
+#endif
                 IReportInterface p = ReportPlugInClass.Instance.getPluginByUName((sender as ToolStripMenuItem).Tag.ToString());
                 if (p != null)
                     p.MakeReport();
+#if PROTECTED
             }
+#endif
         }
 #endif
         private void showTierTMenuItem_CheckedChanged(object sender, EventArgs e)

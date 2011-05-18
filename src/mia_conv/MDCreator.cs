@@ -32,7 +32,13 @@ namespace mia_conv
         {
             Debug("Error:"+ex.GetType().ToString()+":"+ex.Message);
         }
-
+        /// <summary>
+        /// Удаляет базу данных
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="rpswd"></param>
+        /// <param name="db"></param>
+        /// <param name="host"></param>
         public static void DropDb(String root,String rpswd,String db,String host)
         {
             MySqlConnection sql = new MySqlConnection("server=" + host + ";userId=" + root + ";password=" + rpswd + ";database=mysql");
@@ -41,11 +47,15 @@ namespace mia_conv
                 sql.Open();
                 MySqlCommand cmd = new MySqlCommand("DROP DATABASE IF EXISTS " + db + ";", sql);
                 cmd.ExecuteNonQuery();
-            }catch(Exception)
+            }
+            catch(Exception)
             {
             }
         }
 
+        /// <summary>
+        /// Существует ли БазаДанных
+        /// </summary>
         public static bool HasDB(String root, String rpswd, String db, String host)
         {
             MySqlConnection sql = new MySqlConnection("server=" + host + ";userId=" + root + ";password=" + rpswd + ";database="+db);
@@ -55,6 +65,9 @@ namespace mia_conv
             return true;
         }
 
+        /// <summary>
+        /// Создает пустую базу данных
+        /// </summary>
         public bool CreateDB(String root,String rpswd,String db,String host,String user,String pswd,bool throwing,bool quiet)
         {
             Debug("Creating database "+db);
@@ -93,6 +106,10 @@ namespace mia_conv
         {
             return Prepare(nudb, host, user, password, db, root, rpswd, throwing, false);
         }
+
+        /// <summary>
+        /// Создание Таблиц и Функций для Кроличьей базы данных
+        /// </summary>
         public bool Prepare(bool nudb, String host, String user, String password, String db,String root, String rpswd,bool throwing,bool quiet)
         {
             if (nudb)
@@ -115,14 +132,14 @@ namespace mia_conv
             }
             C = new MySqlCommand("SET CHARACTER SET utf8;", Sql);
             C.ExecuteNonQuery();
-            StreamReader stm=new StreamReader(this.GetType().Assembly.GetManifestResourceStream("mia_conv.rabnet_db_fmt.sql"),Encoding.UTF8);
+            StreamReader stm = new StreamReader(this.GetType().Assembly.GetManifestResourceStream("mia_conv.rabnet_db_fmt.sql"),Encoding.UTF8);
             String cmd = stm.ReadToEnd();
             stm.Close();
             //cmd=cmd.Remove(cmd.IndexOf("##TEST_DATA"));
             String[] cmds = cmd.Split(new string[] { "#DELIMITER |" }, StringSplitOptions.RemoveEmptyEntries);
             C.CommandText = cmds[0];
             C.ExecuteNonQuery();
-            MySqlScript scr=new MySqlScript(Sql,cmds[1]);
+            MySqlScript scr = new MySqlScript(Sql,cmds[1]);
             scr.Delimiter="|";
             scr.Execute();
             return true;

@@ -1,4 +1,4 @@
-//#define NOCATCH
+#define NOCATCH
 using System;
 using System.Data;
 using System.Windows.Forms;

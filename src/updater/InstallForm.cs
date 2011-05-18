@@ -313,7 +313,8 @@ namespace updater
 
         private void button1_Click(object sender, EventArgs e)
         {
-            try{
+            try
+            {
                 TopMost = false;
                 if (radioButton4.Checked)
                 {

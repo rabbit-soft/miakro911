@@ -24,7 +24,7 @@ namespace rabnet
             {
                 this.Coll = coll;
                 this.Row = row;
-                this.Text = text;
+                this.Text = text == "" ? "текст" : text;
             }
         }
 
@@ -42,6 +42,9 @@ namespace rabnet
         /// </summary>
         private bool manual = true;
         private int _hiddenId = 0;
+        /// <summary>
+        /// Последняя редактируемая ячейка, нужна для того, чтобы если пользователь составит пустой текст, при выходе вставится бывший до этого.
+        /// </summary>
         private myCell _lastCell = null;
 
         public CatalogForm()
