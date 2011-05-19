@@ -239,12 +239,15 @@ namespace rabnet
                 return values[3];
             }
         }
+
         public bool SetNest
         { 
             get 
             {
                 string[] values = rab.justAddress.Split(',');
-                if (values[3]==myBuildingType.Jurta && values[2] == "0" && values[5] == "1")
+                if (values.Length < 3)
+                    return false;
+                if (values[3] == myBuildingType.Jurta && values[2] == "0" && values[5] == "1")
                     return true;
                 if (values[3] == myBuildingType.Female && values[5] == "1")
                     return true;

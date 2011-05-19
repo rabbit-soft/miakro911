@@ -157,7 +157,7 @@ namespace rabnet
                 get { return nuaddress == "" ? address : nuaddress; } 
                 set
                 {
-                    if (value == address || value == "")
+                    if (value == address || (value == "" || value == "бомж"))
                         nuaddress = "";
                     else nuaddress = value;
                     foreach (RP r in list)

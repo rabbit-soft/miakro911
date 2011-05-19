@@ -308,6 +308,10 @@ namespace rabnet
 
         private void updateData()
         {
+            if (rab.RabID == 0)
+            {
+                button13.Enabled = false;
+            }
             int idx = tabControl1.SelectedIndex;
             while (tabControl1.TabPages.Count > 1)
                 tabControl1.TabPages.RemoveAt(1);
@@ -513,6 +517,7 @@ namespace rabnet
 
         private void button13_Click(object sender, EventArgs e)
         {
+            if (rab.RabID == 0) return;
             if((new BonForm(rab.RabID)).ShowDialog() != DialogResult.Abort)
                 button2.Enabled = false;
             updateData();

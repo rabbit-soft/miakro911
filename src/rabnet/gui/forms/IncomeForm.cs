@@ -119,7 +119,9 @@ namespace rabnet
         {
             if (listView1.SelectedItems.Count != 1)
                 return;
-            (new RabbitInfo(listView1.SelectedItems[0].Tag as RabNetEngRabbit)).ShowDialog();
+            RabbitInfo dlg = new RabbitInfo(listView1.SelectedItems[0].Tag as RabNetEngRabbit);
+            if(dlg.ShowDialog() ==DialogResult.Cancel)
+                rbs.RemoveAt(rbs.Count-1);
             update(false);
         }
 
@@ -174,7 +176,7 @@ namespace rabnet
                 foreach (RabNetEngRabbit r in rbs)
                 {
                     if (r.Name == 0 && r.Surname==0) no_names = true;
-                    if (r.Address == OneRabbit.NullAddress) no_addresses = true;
+                    //if (r.Address == OneRabbit.NullAddress) no_addresses = true;
                     if (r.Genom == "") no_gens = true;
                 }
                 String msg="";

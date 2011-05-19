@@ -200,9 +200,9 @@ namespace rabnet
 			if (!manual) return;
             if (_lastCell != null)
             {
-                if (dataGridView1.SelectedCells[0].Value == null && e.ColumnIndex == _lastCell.Coll && e.RowIndex == _lastCell.Row)
+                if (dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == null && e.ColumnIndex == _lastCell.Coll && e.RowIndex == _lastCell.Row)
                 {
-                    dataGridView1.SelectedCells[0].Value = _lastCell.Text;
+                    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = _lastCell.Text;
                     return;
                 }
             }
