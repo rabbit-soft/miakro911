@@ -54,12 +54,12 @@ namespace rabnet
             toolTip.SetToolTip(button11,"Показать генетику выделенного самца");
             toolTip.SetToolTip(button12,"Выбрать партнера для соития");
             toolTip.SetToolTip(overallBab,"Сколько родила живых крольчат вообщем");
-            toolTip.SetToolTip(button13,"Определение классности");
+            toolTip.SetToolTip(btBon,"Определение классности");
             toolTip.SetToolTip(group,"Количество кроликов в клетке");
             toolTip.SetToolTip(button16,"Показать все имена");
             toolTip.SetToolTip(button14,"Показать все породы");
             toolTip.SetToolTip(button15,"Показать все местности");
-            toolTip.SetToolTip(button17,"Показать окно пересадок");
+            toolTip.SetToolTip(btReplace,"Показать окно пересадок");
             toolTip.SetToolTip(button4,"Удалить выбранный номер гена");
             toolTip.SetToolTip(button3,"Добавить номер гена");
             toolTip.SetToolTip(checkBox5,"Изменить данные вручную");
@@ -308,9 +308,10 @@ namespace rabnet
 
         private void updateData()
         {
-            if (rab.RabID == 0)
+            if (rab != null && rab.RabID == 0)
             {
-                button13.Enabled = false;
+                btBon.Enabled = 
+                btReplace.Enabled = false;
             }
             int idx = tabControl1.SelectedIndex;
             while (tabControl1.TabPages.Count > 1)

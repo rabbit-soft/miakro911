@@ -40,8 +40,8 @@ namespace rabnet
 
         public void ChangeZone(int id, String name, String sname)
         {
-            if (id == 0)
-                return;
+            //if (id == 0)
+                //return;
             MySqlCommand cmd = new MySqlCommand("UPDATE zones SET z_name='" + name + "',z_short_name='" +
                 sname + "' WHERE z_id='" + id.ToString() + "';", sql);
             cmd.ExecuteNonQuery();

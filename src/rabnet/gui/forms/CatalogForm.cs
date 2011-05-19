@@ -294,7 +294,7 @@ namespace rabnet
 						{
 							col2 = dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString();
 						}
-						Engine.db().getZones().ChangeZone(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[3].Value), col1,col2);
+						Engine.db().getZones().ChangeZone(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[_hiddenId].Value), col1,col2);
 					}
 					break;
                 /////////////////////////
@@ -315,7 +315,7 @@ namespace rabnet
 						{
 							col0 = dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString();
 						}
-						Engine.db().getDeadReasons().ChangeReason(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[1].Value), col0);
+						Engine.db().getDeadReasons().ChangeReason(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[_hiddenId].Value), col0);
 					}
 					break;
                 /////////////////////////
