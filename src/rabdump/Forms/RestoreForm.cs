@@ -133,9 +133,8 @@ namespace rabdump
             Close();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btRestore_Click(object sender, EventArgs e)
         {
-
             _thrRestore = new Thread(new ParameterizedThreadStart(RestoreThr));
             RestoreRarams p = new RestoreRarams();
 
@@ -150,8 +149,6 @@ namespace rabdump
             _wtFrm.Show();
 
             _thrRestore.Start(p);
-
-
 
 
 //            try
@@ -223,9 +220,13 @@ namespace rabdump
 
         private void tbFile_TextChanged(object sender, EventArgs e)
         {
-            button1.Enabled = !((tbFile.Text == "") || (tbDB.Text == "") || (tbHost.Text == "") || (tbUser.Text == "") || (tbPassword.Text == ""));
+            btRestore.Enabled = !((tbFile.Text == "") || (tbDB.Text == "") || (tbHost.Text == "") || (tbUser.Text == "") || (tbPassword.Text == ""));
         }
     }
+
+    /// <summary>
+    /// Набор параметров для востановления Базы Данных
+    /// </summary>
     public class RestoreRarams
     {
         public string Host;

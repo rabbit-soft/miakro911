@@ -157,6 +157,7 @@ namespace rabdump
             File.Move(fname + (is7z ? ".7z" : ".dump"), _j.BackupPath + "\\" + ffname + (is7z ? ".7z" : ".dump"));
             CheckLimits();
         }
+
         public void Run()
         {
             log.Debug("Making dump for "+_j.Name);
@@ -200,21 +201,28 @@ namespace rabdump
             }
         }
 
+        /// <summary>
+        /// Востановление БД из резервной копии
+        /// </summary>
         public static void UndumpDB(string host,string db,string user,string password,string file)
         {
             log.Debug("undumping " + file + " to " + host + ":" + db + ":" + user + ":" + password);
+
             String tmppath = Path.GetTempPath();
+            if (!Directory.Exists(tmppath))           
+                Directory.CreateDirectory(tmppath);
+           
+            String sql = Options.Get().MySqlPath;              
+            if (sql == "" || !File.Exists(sql))
+                throw new ApplicationException("Путь к MySQL не настроен"); 
+         
             //String pth=Path.GetDirectoryName(file);
-            String fl=Path.GetFileName(file);
-            String ext=Path.GetExtension(file);
+            String fl = Path.GetFileName(file);
+            String ext = Path.GetExtension(file);
             String f = tmppath + fl;
             log.Debug("copy "+file+" to "+f);
-            if (!Directory.Exists(tmppath))
-            {
-                Directory.CreateDirectory(tmppath);
-            }
             File.Copy(file,f,true);
-            if (ext == ".7z")
+            if (ext == ".7z")//распаковка файла если расширение .7z
             {
                 log.Debug("decompress 7z");
                 String z7 = Options.Get().Path7Z;
@@ -240,12 +248,36 @@ namespace rabdump
                     File.Delete(ff);
                     throw new ApplicationException("7z вернул результат " + p.ExitCode.ToString());
                 }
-                f = ff;
+
+                if (!File.Exists(ff))// нужно потому что не все имена Архивов совпадают с именами хранящихся в них Дампов
+                {
+                    string[] files = Directory.GetFiles(tmppath,"*.dump");
+                    if (files.Length == 1)
+                        f = files[0];
+                    else if (files.Length == 0)
+                        throw new ApplicationException("Ошибка при разархивировании.");
+                    else
+                    {
+                        DateTime dt = DateTime.MinValue;
+                        string ourFile = "";
+                        foreach(string s in files)
+                        {
+                            DateTime ct = File.GetCreationTime(s);
+                            if (ct > dt)
+                            {
+                                dt = ct;
+                                ourFile = s;
+                            }
+                        }
+                        f = ourFile;
+                    }
+                }
+                else
+                    f = ff;
+                log.Debug("dumpname: "+f);
             }
             log.Debug("mysql");
-            String sql = Options.Get().MySqlPath;
-            if (sql == "")
-                throw new ApplicationException("Путь к MySQL не настроен");
+            
             String prms = String.Format(@"{1:s} {2:s} {3:s} {0:s}", db, (host != "" ? "-h " + host : ""), (user != "" ? "-u " + user : ""), (password != "" ? "--password=" + password : ""));
             try
             {
@@ -258,7 +290,7 @@ namespace rabdump
 
                 Process mp = Process.Start(pinf);
                 FileStream rd = new FileStream(f, FileMode.Open);
-                byte[] buf=new byte[rd.Length];
+                byte[] buf = new byte[rd.Length];
                 rd.Read(buf, 0, (int)rd.Length);
                 rd.Close();
                 byte[] b2 = buf;// Encoding.Convert(Encoding.UTF8, Encoding.ASCII, buf);
@@ -266,7 +298,7 @@ namespace rabdump
                 mp.StandardInput.Close();
                 String mout = mp.StandardError.ReadToEnd();
                 mp.WaitForExit();
-                int res=mp.ExitCode;
+                int res = mp.ExitCode;
                 mp.Close();
                 if (res != 0 || mout!="")
                     throw new ApplicationException("MySQL вернул результат "+res.ToString()+"\nerror="+mout);

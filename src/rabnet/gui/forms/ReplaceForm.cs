@@ -462,6 +462,8 @@ namespace rabnet
             DataRow rw = _dataSet.Rows[e.RowIndex];
             RP r = _replaceList[e.RowIndex];
             r.curaddress = (string)rw[PLACEFIELD];
+            if (r.address == r.curaddress)
+                return;
             r.canHaveNest = canHaveNest(e.RowIndex);
             if (!r.canHaveNest)
                 r.setNest = false;
@@ -526,9 +528,11 @@ namespace rabnet
             {
                 int cnt = rp(dataGridView1.SelectedRows[0].Index).nucount;
                 groupBox1.Enabled = (cnt > 1);
-                if (cnt > 1)
-                    numericUpDown1.Maximum = cnt-1;
-                btSeparateBoys.Enabled = btSetAllGirls.Enabled = btSetAllBoys.Enabled = rp().nusex == OneRabbit.RabbitSex.VOID;
+                if (rp().nusex == OneRabbit.RabbitSex.VOID)
+                    btSeparateBoys.Enabled = btSetAllGirls.Enabled = btSetAllBoys.Enabled;
+                if (cnt > 1)           
+                    numericUpDown1.Maximum = cnt - 1;
+                numericUpDown1.Enabled = btSeparate.Enabled = btSeparateBoys.Enabled = btSeparateByOne.Enabled = (cnt > 1) ;                
                 groupBox1.Enabled = (rp().id != 0);
                 if (_action == Action.ONE_GIRL_OUT)
                 {

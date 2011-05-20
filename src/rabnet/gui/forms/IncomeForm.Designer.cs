@@ -36,15 +36,15 @@
             this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btMale = new System.Windows.Forms.Button();
+            this.btFemale = new System.Windows.Forms.Button();
+            this.btNoSex = new System.Windows.Forms.Button();
+            this.btDelete = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
+            this.btPassport = new System.Windows.Forms.Button();
+            this.btReplace = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // zones
@@ -87,7 +87,7 @@
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
-            this.listView1.DoubleClick += new System.EventHandler(this.button8_Click);
+            this.listView1.DoubleClick += new System.EventHandler(this.btPassport_Click);
             // 
             // columnHeader1
             // 
@@ -109,50 +109,50 @@
             // 
             this.columnHeader5.Text = "Адрес";
             // 
-            // button1
+            // btMale
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(251, 10);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Самцы";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btMale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btMale.Location = new System.Drawing.Point(251, 10);
+            this.btMale.Name = "btMale";
+            this.btMale.Size = new System.Drawing.Size(75, 23);
+            this.btMale.TabIndex = 3;
+            this.btMale.Text = "Самцы";
+            this.btMale.UseVisualStyleBackColor = true;
+            this.btMale.Click += new System.EventHandler(this.btMale_Click);
             // 
-            // button2
+            // btFemale
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(332, 10);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "Самки";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btFemale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btFemale.Location = new System.Drawing.Point(332, 10);
+            this.btFemale.Name = "btFemale";
+            this.btFemale.Size = new System.Drawing.Size(75, 23);
+            this.btFemale.TabIndex = 4;
+            this.btFemale.Text = "Самки";
+            this.btFemale.UseVisualStyleBackColor = true;
+            this.btFemale.Click += new System.EventHandler(this.btFemale_Click);
             // 
-            // button3
+            // btNoSex
             // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(413, 10);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 5;
-            this.button3.Text = "Бесполые";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btNoSex.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btNoSex.Location = new System.Drawing.Point(413, 10);
+            this.btNoSex.Name = "btNoSex";
+            this.btNoSex.Size = new System.Drawing.Size(75, 23);
+            this.btNoSex.TabIndex = 5;
+            this.btNoSex.Text = "Бесполые";
+            this.btNoSex.UseVisualStyleBackColor = true;
+            this.btNoSex.Click += new System.EventHandler(this.btNoSex_Click);
             // 
-            // button4
+            // btDelete
             // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Enabled = false;
-            this.button4.Location = new System.Drawing.Point(494, 117);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 6;
-            this.button4.Text = "Удалить";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.btDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btDelete.Enabled = false;
+            this.btDelete.Location = new System.Drawing.Point(494, 117);
+            this.btDelete.Name = "btDelete";
+            this.btDelete.Size = new System.Drawing.Size(75, 23);
+            this.btDelete.TabIndex = 6;
+            this.btDelete.Text = "Удалить";
+            this.btDelete.UseVisualStyleBackColor = true;
+            this.btDelete.Click += new System.EventHandler(this.btDelete_Click);
             // 
             // button5
             // 
@@ -189,29 +189,29 @@
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
-            // button8
+            // btPassport
             // 
-            this.button8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button8.Enabled = false;
-            this.button8.Location = new System.Drawing.Point(494, 59);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(75, 23);
-            this.button8.TabIndex = 10;
-            this.button8.Text = "Паспорт";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
+            this.btPassport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btPassport.Enabled = false;
+            this.btPassport.Location = new System.Drawing.Point(494, 59);
+            this.btPassport.Name = "btPassport";
+            this.btPassport.Size = new System.Drawing.Size(75, 23);
+            this.btPassport.TabIndex = 10;
+            this.btPassport.Text = "Паспорт";
+            this.btPassport.UseVisualStyleBackColor = true;
+            this.btPassport.Click += new System.EventHandler(this.btPassport_Click);
             // 
-            // button9
+            // btReplace
             // 
-            this.button9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button9.Enabled = false;
-            this.button9.Location = new System.Drawing.Point(494, 88);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(75, 23);
-            this.button9.TabIndex = 11;
-            this.button9.Text = "Поселить";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
+            this.btReplace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btReplace.Enabled = false;
+            this.btReplace.Location = new System.Drawing.Point(494, 88);
+            this.btReplace.Name = "btReplace";
+            this.btReplace.Size = new System.Drawing.Size(75, 23);
+            this.btReplace.TabIndex = 11;
+            this.btReplace.Text = "Поселить";
+            this.btReplace.UseVisualStyleBackColor = true;
+            this.btReplace.Click += new System.EventHandler(this.btReplace_Click);
             // 
             // IncomeForm
             // 
@@ -220,15 +220,15 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button7;
             this.ClientSize = new System.Drawing.Size(574, 366);
-            this.Controls.Add(this.button9);
-            this.Controls.Add(this.button8);
+            this.Controls.Add(this.btReplace);
+            this.Controls.Add(this.btPassport);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btDelete);
+            this.Controls.Add(this.btNoSex);
+            this.Controls.Add(this.btFemale);
+            this.Controls.Add(this.btMale);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.zones);
@@ -249,15 +249,15 @@
         private System.Windows.Forms.ComboBox zones;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btMale;
+        private System.Windows.Forms.Button btFemale;
+        private System.Windows.Forms.Button btNoSex;
+        private System.Windows.Forms.Button btDelete;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button btPassport;
+        private System.Windows.Forms.Button btReplace;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
