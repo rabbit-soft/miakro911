@@ -528,8 +528,7 @@ namespace rabnet
             {
                 int cnt = rp(dataGridView1.SelectedRows[0].Index).nucount;
                 groupBox1.Enabled = (cnt > 1);
-                if (rp().nusex == OneRabbit.RabbitSex.VOID)
-                    btSeparateBoys.Enabled = btSetAllGirls.Enabled = btSetAllBoys.Enabled;
+                btSeparateBoys.Enabled = btSetAllGirls.Enabled = btSetAllBoys.Enabled = (rp().nusex == OneRabbit.RabbitSex.VOID);
                 if (cnt > 1)           
                     numericUpDown1.Maximum = cnt - 1;
                 numericUpDown1.Enabled = btSeparate.Enabled = btSeparateBoys.Enabled = btSeparateByOne.Enabled = (cnt > 1) ;                
