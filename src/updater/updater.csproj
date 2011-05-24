@@ -42,6 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\mia_conv\miaExitCode.cs">
+      <Link>miaExitCode.cs</Link>
+    </Compile>
     <Compile Include="InstallForm.cs">
       <SubType>Form</SubType>
     </Compile>

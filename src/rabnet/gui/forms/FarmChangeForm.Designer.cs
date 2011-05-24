@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FarmChangeForm));
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btOk = new System.Windows.Forms.Button();
+            this.btCancel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.fname = new System.Windows.Forms.TextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -38,9 +38,9 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.rpswd = new System.Windows.Forms.TextBox();
             this.ruser = new System.Windows.Forms.TextBox();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btDeleteDB = new System.Windows.Forms.Button();
+            this.btImportDB = new System.Windows.Forms.Button();
+            this.btCreateDB = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.textBox6 = new System.Windows.Forms.TextBox();
@@ -64,28 +64,28 @@
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // button1
+            // btOk
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button1.Location = new System.Drawing.Point(232, 363);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 11;
-            this.button1.Text = "Сохранить";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btOk.Location = new System.Drawing.Point(232, 363);
+            this.btOk.Name = "btOk";
+            this.btOk.Size = new System.Drawing.Size(75, 23);
+            this.btOk.TabIndex = 11;
+            this.btOk.Text = "Сохранить";
+            this.btOk.UseVisualStyleBackColor = true;
+            this.btOk.Click += new System.EventHandler(this.btOk_Click);
             // 
-            // button2
+            // btCancel
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(151, 363);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 12;
-            this.button2.Text = "Отмена";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btCancel.Location = new System.Drawing.Point(151, 363);
+            this.btCancel.Name = "btCancel";
+            this.btCancel.Size = new System.Drawing.Size(75, 23);
+            this.btCancel.TabIndex = 12;
+            this.btCancel.Text = "Отмена";
+            this.btCancel.UseVisualStyleBackColor = true;
+            this.btCancel.Click += new System.EventHandler(this.btCancel_Click);
             // 
             // label1
             // 
@@ -123,9 +123,9 @@
             // 
             this.groupBox2.Controls.Add(this.rpswd);
             this.groupBox2.Controls.Add(this.ruser);
-            this.groupBox2.Controls.Add(this.button5);
-            this.groupBox2.Controls.Add(this.button4);
-            this.groupBox2.Controls.Add(this.button3);
+            this.groupBox2.Controls.Add(this.btDeleteDB);
+            this.groupBox2.Controls.Add(this.btImportDB);
+            this.groupBox2.Controls.Add(this.btCreateDB);
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Enabled = false;
@@ -153,35 +153,36 @@
             this.ruser.Tag = "";
             this.ruser.Text = "root";
             // 
-            // button5
+            // btDeleteDB
             // 
-            this.button5.Enabled = false;
-            this.button5.Location = new System.Drawing.Point(207, 78);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 10;
-            this.button5.Text = "Удалить";
-            this.button5.UseVisualStyleBackColor = true;
+            this.btDeleteDB.Enabled = false;
+            this.btDeleteDB.Location = new System.Drawing.Point(207, 78);
+            this.btDeleteDB.Name = "btDeleteDB";
+            this.btDeleteDB.Size = new System.Drawing.Size(75, 23);
+            this.btDeleteDB.TabIndex = 10;
+            this.btDeleteDB.Text = "Удалить";
+            this.btDeleteDB.UseVisualStyleBackColor = true;
+            this.btDeleteDB.Visible = false;
             // 
-            // button4
+            // btImportDB
             // 
-            this.button4.Location = new System.Drawing.Point(86, 78);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(115, 23);
-            this.button4.TabIndex = 9;
-            this.button4.Text = "Импортировать";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.btImportDB.Location = new System.Drawing.Point(86, 78);
+            this.btImportDB.Name = "btImportDB";
+            this.btImportDB.Size = new System.Drawing.Size(115, 23);
+            this.btImportDB.TabIndex = 9;
+            this.btImportDB.Text = "Импортировать";
+            this.btImportDB.UseVisualStyleBackColor = true;
+            this.btImportDB.Click += new System.EventHandler(this.btImportDB_Click);
             // 
-            // button3
+            // btCreateDB
             // 
-            this.button3.Location = new System.Drawing.Point(13, 78);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(67, 23);
-            this.button3.TabIndex = 8;
-            this.button3.Text = "Создать";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btCreateDB.Location = new System.Drawing.Point(13, 78);
+            this.btCreateDB.Name = "btCreateDB";
+            this.btCreateDB.Size = new System.Drawing.Size(67, 23);
+            this.btCreateDB.TabIndex = 8;
+            this.btCreateDB.Text = "Создать";
+            this.btCreateDB.UseVisualStyleBackColor = true;
+            this.btCreateDB.Click += new System.EventHandler(this.btCreateDB_Click);
             // 
             // label7
             // 
@@ -347,15 +348,15 @@
             // 
             // FarmChangeForm
             // 
-            this.AcceptButton = this.button1;
+            this.AcceptButton = this.btOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.button2;
+            this.CancelButton = this.btCancel;
             this.ClientSize = new System.Drawing.Size(675, 393);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btCancel);
+            this.Controls.Add(this.btOk);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.fname);
             this.Controls.Add(this.label1);
@@ -382,8 +383,8 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btOk;
+        private System.Windows.Forms.Button btCancel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox fname;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
@@ -391,9 +392,9 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox rpswd;
         private System.Windows.Forms.TextBox ruser;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btDeleteDB;
+        private System.Windows.Forms.Button btImportDB;
+        private System.Windows.Forms.Button btCreateDB;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textBox6;

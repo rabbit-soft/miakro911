@@ -196,9 +196,10 @@ namespace butcher
         private void MainForm_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!logPan.Visible) return;
-            if (e.KeyChar == 100)
+            if (e.KeyChar == 100 || e.KeyChar == 0x68 || e.KeyChar == 0x412 ||e.KeyChar == 0x432)
             {
                 (new FarmListForm()).ShowDialog();
+                logPan.UpdateFarms();
             }
 #if DEBUG
             if (e.KeyChar == 27)

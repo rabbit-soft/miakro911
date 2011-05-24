@@ -28,14 +28,15 @@ namespace butcher
             InitializeComponent();
             npLogin.AddControl(tbPassword);
             RabnetConfigHandler.Create();
-            updateFarms();
+            UpdateFarms();
         }
 
         /// <summary>
         /// Заполняет ComboBox с фермами
         /// </summary>
-        private void updateFarms()
+        public void UpdateFarms()
         {
+            cbFarm.Items.Clear();
             cbUser.Items.Clear();
             foreach (RabnetConfigHandler.dataSource ds in RabnetConfigHandler.dataSources)
             {
@@ -93,8 +94,8 @@ namespace butcher
             {
                 cbUser.SelectedIndex = cbFarm.SelectedIndex = -1;
                 cbFarm.Text = cbUser.Text = tbPassword.Text = "";
-                cbFarm.Focus();
-                MessageBox.Show("Ошибка подключения " + ex.GetType().ToString() + ": " + ex.Message, "Ошибка подключения");
+                cbFarm.Focus();               
+                lbError.Text="Ошибка подключения " + ex.GetType().ToString() + ": " + ex.Message;
             }
         }
 
@@ -157,9 +158,18 @@ namespace butcher
                 gbMessage.Show();
                 lbError.Text = "Не удалось выполнить вход." + Environment.NewLine
                     + "Возможно не правильно введен пароль.";
-                tError.Start();
+                //tError.Start();
             }
             tbPassword.Clear();
+        }
+
+        private void lbError_TextChanged(object sender, EventArgs e)
+        {
+            if (lbError.Text != "")
+            {
+                gbMessage.Show();
+                tError.Start();
+            }
         }
     }
 

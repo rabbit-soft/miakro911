@@ -30,7 +30,7 @@ namespace mia_conv
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tb1 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btOpenMIAfile = new System.Windows.Forms.Button();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.log = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
@@ -39,14 +39,15 @@ namespace mia_conv
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.openScriptFile = new System.Windows.Forms.Button();
+            this.tbScript = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.textHost = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btStart = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
             this.textRootPswd = new System.Windows.Forms.TextBox();
@@ -62,7 +63,6 @@ namespace mia_conv
             this.ofd2 = new System.Windows.Forms.OpenFileDialog();
             this.pb = new System.Windows.Forms.ProgressBar();
             this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox3.SuspendLayout();
@@ -76,15 +76,15 @@ namespace mia_conv
             this.tb1.Size = new System.Drawing.Size(496, 20);
             this.tb1.TabIndex = 0;
             // 
-            // button1
+            // btOpenMIAfile
             // 
-            this.button1.Location = new System.Drawing.Point(591, 8);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(24, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "...";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btOpenMIAfile.Location = new System.Drawing.Point(591, 8);
+            this.btOpenMIAfile.Name = "btOpenMIAfile";
+            this.btOpenMIAfile.Size = new System.Drawing.Size(24, 23);
+            this.btOpenMIAfile.TabIndex = 1;
+            this.btOpenMIAfile.Text = "...";
+            this.btOpenMIAfile.UseVisualStyleBackColor = true;
+            this.btOpenMIAfile.Click += new System.EventHandler(this.btOpenMIAfile_Click);
             // 
             // ofd
             // 
@@ -163,14 +163,14 @@ namespace mia_conv
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.button4);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.openScriptFile);
+            this.groupBox1.Controls.Add(this.tbScript);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.textHost);
             this.groupBox1.Controls.Add(this.dataGridView1);
             this.groupBox1.Controls.Add(this.groupBox3);
             this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.button3);
+            this.groupBox1.Controls.Add(this.btStart);
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.dbnew);
             this.groupBox1.Controls.Add(this.label4);
@@ -196,24 +196,24 @@ namespace mia_conv
             this.label9.Text = "Скрипт";
             this.label9.Visible = false;
             // 
-            // button4
+            // openScriptFile
             // 
-            this.button4.Location = new System.Drawing.Point(475, 273);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(26, 22);
-            this.button4.TabIndex = 11;
-            this.button4.Text = "...";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Visible = false;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.openScriptFile.Location = new System.Drawing.Point(475, 273);
+            this.openScriptFile.Name = "openScriptFile";
+            this.openScriptFile.Size = new System.Drawing.Size(26, 22);
+            this.openScriptFile.TabIndex = 11;
+            this.openScriptFile.Text = "...";
+            this.openScriptFile.UseVisualStyleBackColor = true;
+            this.openScriptFile.Visible = false;
+            this.openScriptFile.Click += new System.EventHandler(this.openScriptFile_Click);
             // 
-            // textBox1
+            // tbScript
             // 
-            this.textBox1.Location = new System.Drawing.Point(58, 274);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(413, 20);
-            this.textBox1.TabIndex = 9;
-            this.textBox1.Visible = false;
+            this.tbScript.Location = new System.Drawing.Point(58, 274);
+            this.tbScript.Name = "tbScript";
+            this.tbScript.Size = new System.Drawing.Size(413, 20);
+            this.tbScript.TabIndex = 9;
+            this.tbScript.Visible = false;
             // 
             // label8
             // 
@@ -256,6 +256,15 @@ namespace mia_conv
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Параметры";
             // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(25, 27);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(41, 13);
+            this.label11.TabIndex = 8;
+            this.label11.Text = "label11";
+            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -265,16 +274,16 @@ namespace mia_conv
             this.label7.TabIndex = 9;
             this.label7.Text = "Пользователи программы";
             // 
-            // button3
+            // btStart
             // 
-            this.button3.Enabled = false;
-            this.button3.Location = new System.Drawing.Point(521, 272);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 7;
-            this.button3.Text = "Перенести";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btStart.Enabled = false;
+            this.btStart.Location = new System.Drawing.Point(521, 272);
+            this.btStart.Name = "btStart";
+            this.btStart.Size = new System.Drawing.Size(75, 23);
+            this.btStart.TabIndex = 7;
+            this.btStart.Text = "Перенести";
+            this.btStart.UseVisualStyleBackColor = true;
+            this.btStart.Click += new System.EventHandler(this.btStart_Click);
             // 
             // groupBox2
             // 
@@ -407,15 +416,6 @@ namespace mia_conv
             this.label10.TabIndex = 10;
             this.label10.Text = "Файл фермы";
             // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(25, 27);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(41, 13);
-            this.label11.TabIndex = 8;
-            this.label11.Text = "label11";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -425,7 +425,7 @@ namespace mia_conv
             this.Controls.Add(this.pb);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btOpenMIAfile);
             this.Controls.Add(this.tb1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -449,7 +449,7 @@ namespace mia_conv
         #endregion
 
         private System.Windows.Forms.TextBox tb1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btOpenMIAfile;
         private System.Windows.Forms.OpenFileDialog ofd;
         private System.Windows.Forms.TextBox log;
         private System.Windows.Forms.Button button2;
@@ -470,14 +470,14 @@ namespace mia_conv
         private System.Windows.Forms.TextBox textPassword;
         private System.Windows.Forms.TextBox textUser;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btStart;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox textHost;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button openScriptFile;
+        private System.Windows.Forms.TextBox tbScript;
         private System.Windows.Forms.OpenFileDialog ofd2;
         private System.Windows.Forms.ProgressBar pb;
         private System.Windows.Forms.Label label10;

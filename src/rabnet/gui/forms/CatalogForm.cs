@@ -414,12 +414,13 @@ namespace rabnet
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (dataGridView1.SelectedCells.Count != 0 && dataGridView1.SelectedCells[0].ColumnIndex == 2)
+            if (catType == CatalogType.PRODUCTS && dataGridView1.SelectedCells[0].ColumnIndex == 2 && dataGridView1.SelectedCells.Count != 0)
                 btNewImage.PerformClick();
         }
 
         private void btNewImage_Click(object sender, EventArgs e)
         {
+            const int mustW = 300;
             const int mustH = 200;
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
@@ -427,9 +428,9 @@ namespace rabnet
                 //double ratio = (double)img.Width / (double)img.Height;
                 //var bmp = new Bitmap(img, (int)(mustH * ratio), mustH);
 
-                Bitmap bmp = new Bitmap(300, 200);
+                Bitmap bmp = new Bitmap(mustW, mustH);
                 Graphics g = Graphics.FromImage(bmp);
-                g.DrawImage(img, new Rectangle(0, 0, 300, 200), new Rectangle(0, 0, img.Width, img.Height),GraphicsUnit.Pixel);
+                g.DrawImage(img, new Rectangle(0, 0, mustW, mustH), new Rectangle(0, 0, img.Width, img.Height), GraphicsUnit.Pixel);
 
                 dataGridView1.Rows[dataGridView1.SelectedCells[0].RowIndex].Height = mustH;
                 dataGridView1.SelectedCells[0].Value = bmp;

@@ -60,6 +60,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\mia_conv\miaExitCode.cs">
+      <Link>miaExitCode.cs</Link>
+    </Compile>
     <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>

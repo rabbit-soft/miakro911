@@ -194,7 +194,7 @@
             this.lvLogs.GridLines = true;
             this.lvLogs.Location = new System.Drawing.Point(721, 749);
             this.lvLogs.Name = "lvLogs";
-            this.lvLogs.Size = new System.Drawing.Size(516, 168);
+            this.lvLogs.Size = new System.Drawing.Size(475, 168);
             this.lvLogs.TabIndex = 22;
             this.lvLogs.UseCompatibleStateImageBehavior = false;
             this.lvLogs.View = System.Windows.Forms.View.Details;
@@ -221,7 +221,6 @@
             // 
             // npButcher
             // 
-            this.npButcher.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.npButcher.Enabled = false;
             this.npButcher.Location = new System.Drawing.Point(745, 172);
             this.npButcher.MaximumSize = new System.Drawing.Size(502, 670);

@@ -7,7 +7,6 @@ using System.Windows.Forms;
 namespace mia_conv
 {
 
-
     class MiaFile
     {
         public List<IMFCommon> L1=new List<IMFCommon>();
@@ -119,6 +118,7 @@ namespace mia_conv
             _pval = pb.Value;
             Application.DoEvents();
         }
+
         public void SetLabel(int part,int of)
         {
             lbl.Text = _label_nm +" -> "+ part.ToString() + "/" + of.ToString();

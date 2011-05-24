@@ -202,7 +202,8 @@ namespace updater
                 jb.AppendChild(_xmlRabDump.CreateElement("repeat")).AppendChild(_xmlRabDump.CreateTextNode("0"));
                 _optsRabDump.AppendChild(jb);
                 _xmlRabDump.Save(FilenameRabDump);
-            } catch
+            } 
+            catch
             {
             }
         }
@@ -305,10 +306,35 @@ namespace updater
             String prms = "\"" + prm + "\" " + tbHost.Text + ';' + tbDb.Text + ';' + tbUser.Text + ';' + tbPwd.Text + ';' + tbRoot.Text + ';' + tbRPwd.Text;
             prms += " зоотехник;";
             String prg = Path.GetDirectoryName(Application.ExecutablePath) + @"\mia_conv.exe";
+#if DEBUG
+            if (!File.Exists(prg))//нужно для того чтобы из под дебага можно было запустить Mia_Conv
+            {
+                string path = Path.GetFullPath(Application.ExecutablePath);
+                bool recurs = true;
+                string[] drives = Directory.GetLogicalDrives();
+                while (recurs)
+                {
+                    foreach (string d in drives)
+                    {
+                        if (d.ToLower() == path)
+                            recurs = false;
+                    }
+                    if (!recurs) break;
+                    path = Directory.GetParent(path).FullName;
+                    string[] dirs = Directory.GetDirectories(path);
+                    if (Directory.Exists(path + @"\bin\protected\Tools"))
+                    {
+                        prg = path + @"\bin\protected\Tools\mia_conv.exe";
+                        recurs = false;
+                        break;
+                    }
+                }
+            }
+#endif
             Process p = Process.Start(prg, prms);
             p.WaitForExit();
             if (p.ExitCode != 0)
-                throw new ApplicationException("Ошибка создания БД");
+                throw new ApplicationException("Ошибка создания БД. " + miaExitCode.GetText(p.ExitCode));
         }
 
         private void button1_Click(object sender, EventArgs e)

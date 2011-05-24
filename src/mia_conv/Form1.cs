@@ -1,4 +1,3 @@
-#define NOCATCH
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -7,11 +6,12 @@ namespace mia_conv
 {
     public partial class Form1 : Form
     {
-        private MiaFile _mia=null;
+        private MiaFile _mia = null;
         public DataTable Udata=new DataTable();
-        private bool auto=false;
-        private bool _executed=false;
-        public bool Quiet=false;
+        private bool auto = false;
+        private bool _executed = false;
+        public bool Quiet = false;
+
         public Form1()
         {
             Udata.Columns.Add("Пользователь",typeof(String));
@@ -23,8 +23,8 @@ namespace mia_conv
             dataGridView1.AutoSize = true;
             for (int i = 0; i < clb1.Items.Count; i++)
                 clb1.SetItemChecked(i, false);
-            clb1.SetItemChecked(clb1.Items.Count-1, true);
-            Environment.ExitCode = 1;
+            clb1.SetItemChecked(clb1.Items.Count - 1, true);
+            Environment.ExitCode = miaExitCode.ERROR;
         }
         public Form1(int automode,String file,String h,String db,String u,String p,String r,String rp,String usrs,String scr):this()
         {
@@ -50,12 +50,12 @@ namespace mia_conv
                 {
                     Udata.Rows.Add(us[i * 2], us[i * 2 + 1]);
                 }
-                textBox1.Text = scr;
+                tbScript.Text = scr;
             }
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btOpenMIAfile_Click(object sender, EventArgs e)
         {
             if (ofd.ShowDialog()==DialogResult.OK)
             {
@@ -70,7 +70,7 @@ namespace mia_conv
         {
             _mia = new MiaFile(clb1,pb,label11);
             _mia.LoadFromFile(tb1.Text, log);
-            button3.Enabled = true;
+            btStart.Enabled = true;
         }
 
 
@@ -87,50 +87,39 @@ namespace mia_conv
             groupBox2.Enabled = dbnew.Checked;
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void btStart_Click(object sender, EventArgs e)
         {
-//
-/*#if PROTECTED
-            int fms=PClient.get().farms();
-            if (fms<0)
-            {
-                MessageBox.Show("Ключ защиты не найден.");
-                return;
-            }
-            if (fms < mia.builds.maxfarm)
-            {
-                MessageBox.Show(String.Format("Слишком много миниферм в файле({0:d}).\nКлюч защиты позволяет работать с {1:d} миниферм.",mia.builds.maxfarm,fms));
-                return;
-            }
-#endif*/
-//
             MDCreator crt = new MDCreator(log);
-#if !NOCATCH 
+#if !NOCATCH
             try
-#endif
             {
+#endif
                 pb.Value = 0;
-                if (crt.Prepare(dbnew.Checked, textHost.Text, textUser.Text, textPassword.Text, textDB.Text, textRoot.Text, textRootPswd.Text,false,Quiet))
+                int code = crt.Prepare(dbnew.Checked, textHost.Text, textUser.Text, textPassword.Text, textDB.Text, textRoot.Text, textRootPswd.Text,false,Quiet);
+                if (code == miaExitCode.OK)
                 {
                     button2.Enabled = false;
-                    button3.Enabled = false;
+                    btStart.Enabled = false;
                     //crt.oldid = oldid.Checked;
                     crt.Mia = _mia;
                     crt.SetUsers(Udata);
                     crt.FillAll();
-                    crt.Finish(textBox1.Text);
+                    crt.Finish(tbScript.Text);
                     pb.Value = 0;
                     button2.Enabled = true;
-                    button3.Enabled = true;
-                    Environment.ExitCode = 0;
+                    btStart.Enabled = true;
+                    Environment.ExitCode = miaExitCode.OK;
                 }
+                else
+                    MessageBox.Show(miaExitCode.GetText(code), "Ошибка");
+                
+#if !NOCATCH
             }
-#if !NOCATCH 
             catch (Exception ex)
             {
                 MessageBox.Show("Программа вызвала исключение: "+ex.GetType().ToString()+"\r\n"+ex.Message);
                 button2.Enabled = true;
-                button3.Enabled = true;
+                btStart.Enabled = true;
             }
 #endif
         }
@@ -145,15 +134,15 @@ namespace mia_conv
                 dbnew.Checked=true;
                 button2.Enabled = true;
                 button2.PerformClick();
-                button3.PerformClick();
+                btStart.PerformClick();
                 Close();
             }
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void openScriptFile_Click(object sender, EventArgs e)
         {
             if (ofd2.ShowDialog()==DialogResult.OK)
-                textBox1.Text=ofd2.FileName;
+                tbScript.Text=ofd2.FileName;
         }
     }
 }

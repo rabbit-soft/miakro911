@@ -37,22 +37,24 @@ namespace rabdump
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
                 if (Runmia(openFileDialog1.FileName))
-            {
-                button1.PerformClick();
-            }
+                {
+                    button1.PerformClick();
+                }
         }
 
         private bool Runmia(String prm)
         {
             String prms = "\""+prm + "\" " + fhost.Text + ';' + fdb.Text + ';' + fuser.Text + ';' + fpswd.Text + ';' + ruser.Text + ';' + rpswd.Text;
             prms += " зоотехник;";
-            try{
+            try
+            {
                 String prg = Path.GetDirectoryName(Application.ExecutablePath) + @"\..\Tools\mia_conv.exe";
                 Process p=Process.Start(prg, prms);
                 p.WaitForExit();
                 if (p.ExitCode != 0)
-                    throw new ApplicationException("Ошибка создания БД");
-            }catch(Exception ex)
+                    throw new ApplicationException("Ошибка создания БД. " + miaExitCode.GetText(p.ExitCode));
+            }
+            catch(Exception ex)
             {
                 MessageBox.Show(ex.Message);
                 return false;

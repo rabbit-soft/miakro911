@@ -12,10 +12,11 @@ namespace mia_conv
     {
         private TextBox log=null;
         public MySqlConnection Sql = null;
-        public MySqlCommand C=null;
-        public bool OldID=false;
-        public MiaFile Mia=null;
+        public MySqlCommand C = null;
+        public bool OldID = false;
+        public MiaFile Mia = null;
         private int _maxbreed = 0;
+
         public MDCreator(TextBox logger)
         {
             log=logger;
@@ -28,17 +29,15 @@ namespace mia_conv
             log.Select(log.Text.Length, 0);
             log.ScrollToCaret();
         }
+
         public void Debug(Exception ex)
         {
             Debug("Error:"+ex.GetType().ToString()+":"+ex.Message);
         }
+
         /// <summary>
         /// Удаляет базу данных
         /// </summary>
-        /// <param name="root"></param>
-        /// <param name="rpswd"></param>
-        /// <param name="db"></param>
-        /// <param name="host"></param>
         public static void DropDb(String root,String rpswd,String db,String host)
         {
             MySqlConnection sql = new MySqlConnection("server=" + host + ";userId=" + root + ";password=" + rpswd + ";database=mysql");
@@ -59,25 +58,34 @@ namespace mia_conv
         public static bool HasDB(String root, String rpswd, String db, String host)
         {
             MySqlConnection sql = new MySqlConnection("server=" + host + ";userId=" + root + ";password=" + rpswd + ";database="+db);
-            try{sql.Open();}
-            catch (Exception){return false;}
+            try
+            {
+                sql.Open();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
             sql.Close();
             return true;
         }
 
         /// <summary>
-        /// Создает пустую базу данных
+        /// Создает пустую базу данных, без заполнений таблицами.
         /// </summary>
-        public bool CreateDB(String root,String rpswd,String db,String host,String user,String pswd,bool throwing,bool quiet)
+        /// <returns>miaExitCode</returns>
+        public int CreateDB(String root,String rpswd,String db,String host,String user,String pswd,bool throwing,bool quiet)
         {
             Debug("Creating database "+db);
             Sql = new MySqlConnection("server=" + host + ";userId=" + root + ";password=" + rpswd + ";database=mysql");
+#if !NOCATCH
             try
             {
+#endif
                 if (HasDB(root, rpswd, db, host) && !quiet)
                     if (MessageBox.Show(null, "База данных " + db + " уже существует.\nЗаменить на новую?\nДанные старой фермы будут утеряны!",
                         "БД существует", MessageBoxButtons.YesNoCancel) != DialogResult.Yes)
-                        return false;
+                        return miaExitCode.ABORTED_BY_USER;
                 Sql.Open();
                 MySqlCommand cmd = new MySqlCommand("DROP DATABASE IF EXISTS " + db + ";", Sql);
                 cmd.ExecuteNonQuery();
@@ -90,19 +98,22 @@ namespace mia_conv
                 cmd.ExecuteNonQuery();
                 cmd.CommandText = "SET GLOBAL log_bin_trust_function_creators=1;";
                 cmd.ExecuteNonQuery();
+#if !NOCATCH
             }
             catch(Exception ex)
             {
                 if (throwing) throw ex;
-                MessageBox.Show(ex.Message);
-                return false;    
+                return checkOnMyEx(ex);
+                //MessageBox.Show(ex.Message);
+                //return miaExitCode.ERROR;    
             }
+#endif
             Sql.Close();
             Sql = null;
-            return true;
+            return miaExitCode.OK;
         }
 
-        public bool Prepare(bool nudb, String host, String user, String password, String db, String root, String rpswd, bool throwing)
+        public int Prepare(bool nudb, String host, String user, String password, String db, String root, String rpswd, bool throwing)
         {
             return Prepare(nudb, host, user, password, db, root, rpswd, throwing, false);
         }
@@ -110,26 +121,42 @@ namespace mia_conv
         /// <summary>
         /// Создание Таблиц и Функций для Кроличьей базы данных
         /// </summary>
-        public bool Prepare(bool nudb, String host, String user, String password, String db,String root, String rpswd,bool throwing,bool quiet)
+        /// <returns>miaExitCode</returns>
+        public int Prepare(bool nudb, String host, String user, String password, String db,String root, String rpswd,bool throwing,bool quiet)
         {
+            if (host == "" || user == "" || db == "")
+                return miaExitCode.NOT_ENOUGH_ARGS;
             if (nudb)
-                if (!CreateDB(root,rpswd,db,host,user,password,throwing,quiet))
-                    return false;
-            if (!nudb)
+            {
+                int code = CreateDB(root, rpswd, db, host, user, password, throwing, quiet);
+                if (code != miaExitCode.OK)
+                    return code;
+            }
+            else//if (!nudb)
+            {
+                //if (!HasDB(user, password, db, host))
+                  //  return miaExitCode.DB_NOT_EXISTS;
                 if (MessageBox.Show(null, "Данные старой фермы будут утеряны! Продолжить?",
-                    "БД существует", MessageBoxButtons.YesNoCancel) != DialogResult.Yes)
-                    return false;
+                    "БД существует", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                    return miaExitCode.ABORTED_BY_USER;
+            }
+
             Sql = new MySqlConnection("host=" + host + ";uid=" + user + ";pwd=" + password + ";database=" + db + ";charset=utf8");
+#if !NOCATCH
             try
             {
+#endif
                 Sql.Open();
+#if !NOCATCH
             }
             catch(Exception ex)
             {
                 if (throwing) throw ex;
-                MessageBox.Show(ex.Message);
-                return false;
+                return checkOnMyEx(ex);
+                //MessageBox.Show(ex.Message);
+                //return miaExitCode.ERROR;
             }
+#endif
             C = new MySqlCommand("SET CHARACTER SET utf8;", Sql);
             C.ExecuteNonQuery();
             StreamReader stm = new StreamReader(this.GetType().Assembly.GetManifestResourceStream("mia_conv.rabnet_db_fmt.sql"),Encoding.UTF8);
@@ -137,14 +164,17 @@ namespace mia_conv
             stm.Close();
             //cmd=cmd.Remove(cmd.IndexOf("##TEST_DATA"));
             String[] cmds = cmd.Split(new string[] { "#DELIMITER |" }, StringSplitOptions.RemoveEmptyEntries);
-            C.CommandText = cmds[0];
+            C.CommandText = cmds[0];//выполнение команд по созданию таблиц
             C.ExecuteNonQuery();
             MySqlScript scr = new MySqlScript(Sql,cmds[1]);
             scr.Delimiter="|";
-            scr.Execute();
-            return true;
+            scr.Execute();//Создает функции
+            return miaExitCode.OK;
         }
 
+        /// <summary>
+        /// Запускает SQL-скрипт
+        /// </summary>
         public void Finish(String sqlfile)
         {
             if (sqlfile != "")
@@ -168,6 +198,24 @@ namespace mia_conv
             Sql.Close();
         }
 
+        /// <summary>
+        /// Проверяет является ли Исключение Мускульным. Если нет, то возвращает miaExitCode.ERROR
+        /// </summary>
+        /// <returns>miaExitCode</returns>
+        private int checkOnMyEx(Exception ex)
+        {
+            if (ex is MySqlException)
+            {
+                MySqlException mex = (ex as MySqlException);
+                switch (mex.Number)
+                {
+                    case 1044: return miaExitCode.DB_NOT_EXISTS;
+                    case 1045: return miaExitCode.DB_ACCESS_DENIED;
+                    default: return miaExitCode.ERROR;
+                }
+            }
+            else return miaExitCode.ERROR;
+        }
 
         public String Decode(String data)
         {
@@ -184,6 +232,7 @@ namespace mia_conv
                 C.ExecuteNonQuery();
             }
         }
+        
         public void SetUsers(String[] usrs)
         {
             for (int i = 0; i < usrs.Length / 2;i++ )
@@ -247,32 +296,31 @@ namespace mia_conv
             C.CommandText = "ALTER TABLE `breeds` ENABLE KEYS;";
             C.ExecuteNonQuery();
         }
-        
-        public void InsName(RabName nm,bool sex)
-        {
 
-                String xdt="NULL";
-                if (nm.Key.value()<=365 && nm.Key.value()>0)
-                    xdt=String.Format("DATE(NOW())+INTERVAL {0:d} DAY",nm.Key.value());
-                String use="0";
-                if (nm.Key.value()>365)
-                    use=String.Format("{0:d}",nm.Key.value());
-                C.CommandText=String.Format("INSERT INTO names(n_sex,n_name,n_surname,n_use,n_block_date) VALUES('{0:s}','{1:s}','{2:s}',{3:s},{4:s});",
-                    sex?"male":"female",nm.Name.value(),nm.Surname.value(),use,xdt);
-                try
-                {
-                    C.ExecuteNonQuery();
-                    nm.Key.tag = (int)C.LastInsertedId;
-                }
-                catch (Exception ex)
-                {
-                    Debug("MYSQL Exception on name "+nm.Name.value()+"("+nm.Key.value().ToString()+"): " + ex.Message);
-                    C.CommandText = "SELECT n_id FROM names WHERE n_name='" + nm.Name.value() + "';";
-                    MySqlDataReader rd=C.ExecuteReader();
-                    rd.Read();
-                    nm.Key.tag = (int)rd.GetInt32(0);
-                    rd.Close();
-                }
+        public void InsName(RabName nm, bool sex)
+        {
+            String xdt = "NULL";
+            if (nm.Key.value() <= 365 && nm.Key.value() > 0)
+                xdt = String.Format("DATE(NOW())+INTERVAL {0:d} DAY", nm.Key.value());
+            String use = "0";
+            if (nm.Key.value() > 365)
+                use = String.Format("{0:d}", nm.Key.value());
+            C.CommandText = String.Format("INSERT INTO names(n_sex,n_name,n_surname,n_use,n_block_date) VALUES('{0:s}','{1:s}','{2:s}',{3:s},{4:s});",
+                sex ? "male" : "female", nm.Name.value(), nm.Surname.value(), use, xdt);
+            try
+            {
+                C.ExecuteNonQuery();
+                nm.Key.tag = (int)C.LastInsertedId;
+            }
+            catch (Exception ex)
+            {
+                Debug("MYSQL Exception on name " + nm.Name.value() + "(" + nm.Key.value().ToString() + "): " + ex.Message);
+                C.CommandText = "SELECT n_id FROM names WHERE n_name='" + nm.Name.value() + "';";
+                MySqlDataReader rd = C.ExecuteReader();
+                rd.Read();
+                nm.Key.tag = (int)rd.GetInt32(0);
+                rd.Close();
+            }
         }
 
         public void FillNames()
@@ -457,6 +505,7 @@ namespace mia_conv
                 return "NULL";
             return String.Format("'{0:S4}-{1:S2}-{2:S2}'",dmy[2],dmy[1],dmy[0]);
         }
+        
         public String Convdt(DateTime dt)
         {
             return Convdt(String.Format("{0:D2}.{1:D2}.{2:D2}",dt.Day,dt.Month,dt.Year));
@@ -623,10 +672,12 @@ namespace mia_conv
             C.CommandText = "UPDATE options SET o_value='"+value+"' WHERE o_name='" + name + "' AND o_subname='" + subname + "';";
             C.ExecuteNonQuery();
         }
+        
         public void SetOption(String name,String subname,int value)
         {
             SetOption(name, subname, value.ToString());
         }
+        
         public void SetOption(String name, String subname, float value)
         {
             SetOption(name,subname,value.ToString());
@@ -771,6 +822,7 @@ namespace mia_conv
             return res;
              * */
         }
+        
         public int GetReason(String name)
         {
             if (name == "") return 0;

@@ -55,6 +55,15 @@
     <DebugSymbols>true</DebugSymbols>
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'NOCATCH|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\NOCATCH\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NOCATCH</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MySql.Data, Version=6.2.0.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -77,6 +86,7 @@
     <Compile Include="MDCreator.cs" />
     <Compile Include="MDOptions.cs" />
     <Compile Include="MDRabbits.cs" />
+    <Compile Include="miaExitCode.cs" />
     <Compile Include="mia_file.cs" />
     <Compile Include="mia_file_complex.cs" />
     <Compile Include="mia_file_simple.cs" />

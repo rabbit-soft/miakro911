@@ -29,30 +29,30 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
             String users = "";
             String scr = "";
             int auto = 0;
-            Environment.ExitCode = 0;
+            Environment.ExitCode = miaExitCode.OK;
             if (args.Length >= 1)
             {
                 if (args.Length<3)
                 {
                     MessageBox.Show(usage());
-                    Environment.ExitCode = 1;
+                    Environment.ExitCode = miaExitCode.ERROR;
                     return;
                 }
                 file = args[0];
                 if (file == "nudb")
                 {
-                    nudb(args);
+                    Environment.ExitCode = nudb(args);
                     return;
                 }
                 if (file == "dropdb")
                 {
-                    dropdb(args);
+                    Environment.ExitCode = dropdb(args);
                     return;
                 }
                 if (!System.IO.File.Exists(file))
                 {
                     MessageBox.Show("Mia File Not exists "+file+"\r\n"+usage());
-                    Environment.ExitCode = 1;
+                    Environment.ExitCode = miaExitCode.FILE_NOT_EXISTS;
                     return;
                 }
                 String[] dbpar = args[1].Split(';');
@@ -67,25 +67,26 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
                         root = dbpar[4];
                         rpswd = dbpar[5];
                     }
-                }catch(Exception ex)
+                }
+                catch(Exception ex)
                 {
                     MessageBox.Show("Error:" + ex.ToString() + ":" + ex.Message + "\r\n" + usage());
-                    Environment.ExitCode = 1;
+                    Environment.ExitCode = miaExitCode.ERROR;
                     return;
                 }
                 users = args[2];
-                String[] us=users.Split(';');
+                String[] us = users.Split(';');
                 {
                     if (us.Length < 2)
                     {
                         MessageBox.Show("expected one user\r\n"+usage());
-                        Environment.ExitCode = 1;
+                        Environment.ExitCode = miaExitCode.EXPECTED_ONE_USER;
                         return;
                     }
                     if (us.Length % 2 != 0)
                     {
                         MessageBox.Show("Every user must have password\r\n" + usage());
-                        Environment.ExitCode = 2;
+                        Environment.ExitCode = miaExitCode.USER_MUST_HAVE_PASSWORD;
                         return;
                     }
                 }
@@ -103,8 +104,8 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
         /// <summary>
         /// Новая База данных
         /// </summary>
-        /// <param name="args"></param>
-        static void nudb(string[] args)
+        /// <returns>miaExitCode</returns>
+        static int nudb(string[] args)
         {
             String[] dbpar = args[1].Split(';');
                 string host = dbpar[0];
@@ -113,19 +114,15 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
                 string pswd = dbpar[3];
                 string root = dbpar[4];
                 string rpswd = dbpar[5];
-            Environment.ExitCode = 0;
+            Environment.ExitCode = miaExitCode.OK;
             String[] us = args[2].Split(';');
-            if (us.Length < 2 || us.Length % 2 != 0)
-            {
-                Environment.ExitCode = 1;
-                return;
-            }
-            if (MDCreator.HasDB(root, rpswd, db, host))
-            {
-                MessageBox.Show("База данных уже существует!");
-                Environment.ExitCode = 1;
-                return;
-            }
+            if (us.Length < 2)           
+                return miaExitCode.EXPECTED_ONE_USER;            
+            if (us.Length % 2 != 0)           
+                return miaExitCode.USER_MUST_HAVE_PASSWORD;          
+            if (MDCreator.HasDB(root, rpswd, db, host))           
+                return miaExitCode.DB_ALREADY_EXISTS;            
+
             MDCreator cr = new MDCreator(null);
             try
             {
@@ -134,14 +131,18 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
             }
             catch (Exception)
             {
-                Environment.ExitCode = 1;
+                return miaExitCode.ERROR;
             }
-            return;
+            return miaExitCode.OK;
         }
 
-        static void dropdb(string[] args)
+        /// <summary>
+        /// Удалить БД
+        /// </summary>
+        /// <returns>miaExitCode</returns>
+        static int dropdb(string[] args)
         {
-            Environment.ExitCode=0;
+            Environment.ExitCode = miaExitCode.OK;
             String[] dbpar = args[1].Split(';');
             string host = dbpar[0];
             string db = dbpar[1];
@@ -150,11 +151,12 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
             try
             {
                 MDCreator.DropDb(root, rpswd, db, host);
-            }catch(Exception)
-            {
-                Environment.ExitCode=1;
             }
-            return;
+            catch(Exception)
+            {
+                return miaExitCode.ERROR;
+            }
+            return miaExitCode.OK;
         }
     }
 }

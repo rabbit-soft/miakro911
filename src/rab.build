@@ -337,6 +337,7 @@
 				<include name="${curdir}/rabdump/tmp/*.cs"/>
 				<include name="${curdir}/rabdump/Properties/AssemblyInfo.cs"/>
 				<include name="${curdir}/libs/GRD/*.cs"/>
+				<include name="${curdir}/mia_conv/miaExitCode.cs"/>
 			</sources>
 			<resources>
 				<include name="${curdir}/rabdump/*.resx"/>
@@ -378,6 +379,7 @@
 				<include name="${curdir}/rabnet/gui/reports/*.cs"/>
 				<include name="${curdir}/libs/GRD/*.cs"/>
 				<include name="${curdir}/rabdump/X_Tools/*.cs"/>
+				<include name="${curdir}/mia_conv/miaExitCode.cs"/>
 			</sources>
 			<resources>
 				<include name="${curdir}/rabnet/gui/forms/*.resx"/>
@@ -515,6 +517,7 @@
 			<sources>
 				<include name="${curdir}/updater/*.cs"/>
 				<include name="${curdir}/updater/tmp/*.cs"/>
+				<include name="${curdir}/mia_conv/miaExitCode.cs"/>
 			</sources>
 			<resources>
 				<include name="${curdir}/updater/sql/*.sql"/>
@@ -530,7 +533,7 @@
 		<delete dir="${bin_dir}/Butcher"/>
 		<mkdir dir="${bin_dir}/Butcher"/>
 		<copy file="${mysql.ass}" tofile="${bin_dir}/Butcher/${mysql.lib}" />
-		<csc target="winexe" output="${bin_dir}/Butcher/butcher.exe" define="RELEASE">
+		<csc target="winexe" win32icon="${curdir}/butcher/icon_blue.ico" output="${bin_dir}/Butcher/butcher.exe" define="RELEASE">
 			<sources>
 				<include name="${curdir}/butcher/*.cs"/>
 				<include name="${curdir}/butcher/Properties/*.cs"/>

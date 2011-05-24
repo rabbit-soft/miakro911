@@ -93,7 +93,7 @@ namespace rabnet
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btOk_Click(object sender, EventArgs e)
         {
             String constr;
             if (_miniMode)
@@ -127,20 +127,23 @@ namespace rabnet
             Close();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btCancel_Click(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void btImportDB_Click(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
                 if (runmia(openFileDialog1.FileName))
             {
-                button1.PerformClick();
+                btOk.PerformClick();
             }
         }
 
+        /// <summary>
+        /// Запустить mia_conv
+        /// </summary>
         private bool runmia(String prm)
         {
             String prms = "\""+prm + "\" " + fhost.Text + ';' + fdb.Text + ';' + fuser.Text + ';' + fpswd.Text + ';' + ruser.Text + ';' + rpswd.Text;
@@ -148,10 +151,36 @@ namespace rabnet
             try
             {
                 String prg = Path.GetDirectoryName(Application.ExecutablePath) + @"\..\Tools\mia_conv.exe";
-                Process p=Process.Start(prg, prms);
+#if DEBUG
+                if (!File.Exists(prg))//нужно для того чтобы из под дебага можно было запустить Mia_Conv
+                {
+                    string path = Path.GetFullPath(Application.ExecutablePath);
+                    bool recurs = true;
+                    string[] drives = Directory.GetLogicalDrives();
+                    while (recurs)
+                    {
+                        foreach (string d in drives)
+                        {
+                            if (d.ToLower() == path)                            
+                                recurs = false;                            
+                        }
+                        if (!recurs) break;
+                        path = Directory.GetParent(path).FullName;
+                        string[] dirs = Directory.GetDirectories(path);
+                        if (Directory.Exists(path + @"\bin\protected\Tools"))
+                        {
+                            prg = path + @"\bin\protected\Tools\mia_conv.exe";
+                            recurs = false;
+                            break;
+                        }
+                    }
+                }
+#endif
+                Process p = Process.Start(prg, prms);
                 p.WaitForExit();
-                if (p.ExitCode != 0)
-                    throw new ApplicationException("Ошибка создания БД");
+                if (p.ExitCode != 0)             
+                    throw new ApplicationException("Ошибка создания БД. " +miaExitCode.GetText(p.ExitCode));
+                
             }
             catch(Exception ex)
             {
@@ -161,10 +190,10 @@ namespace rabnet
             return true;
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void btCreateDB_Click(object sender, EventArgs e)
         {
             if (runmia("nudb"))
-                button1.PerformClick();
+                btOk.PerformClick();
         }
 
         private void FarmChangeForm_Shown(object sender, EventArgs e)
