@@ -26,6 +26,7 @@ namespace mia_conv
             clb1.SetItemChecked(clb1.Items.Count - 1, true);
             Environment.ExitCode = miaExitCode.ERROR;
         }
+
         public Form1(int automode,String file,String h,String db,String u,String p,String r,String rp,String usrs,String scr):this()
         {
             auto = automode>0;
@@ -87,6 +88,9 @@ namespace mia_conv
             groupBox2.Enabled = dbnew.Checked;
         }
 
+        /// <summary>
+        /// Начинает конвертирование bp mia-файла
+        /// </summary>
         private void btStart_Click(object sender, EventArgs e)
         {
             MDCreator crt = new MDCreator(log);
@@ -110,9 +114,7 @@ namespace mia_conv
                     btStart.Enabled = true;
                     Environment.ExitCode = miaExitCode.OK;
                 }
-                else
-                    MessageBox.Show(miaExitCode.GetText(code), "Ошибка");
-                
+                else MessageBox.Show(miaExitCode.GetText(code), "Ошибка");              
 #if !NOCATCH
             }
             catch (Exception ex)

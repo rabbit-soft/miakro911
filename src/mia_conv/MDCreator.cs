@@ -10,7 +10,7 @@ namespace mia_conv
 {
     partial class MDCreator
     {
-        private TextBox log=null;
+        private TextBox log = null;
         public MySqlConnection Sql = null;
         public MySqlCommand C = null;
         public bool OldID = false;
@@ -19,7 +19,7 @@ namespace mia_conv
 
         public MDCreator(TextBox logger)
         {
-            log=logger;
+            log = logger;
         }
 
         public void Debug(String str)
@@ -32,13 +32,13 @@ namespace mia_conv
 
         public void Debug(Exception ex)
         {
-            Debug("Error:"+ex.GetType().ToString()+":"+ex.Message);
+            Debug("Error:" + ex.GetType().ToString() + ":" + ex.Message);
         }
 
         /// <summary>
         /// Удаляет базу данных
         /// </summary>
-        public static void DropDb(String root,String rpswd,String db,String host)
+        public static void DropDb(String root, String rpswd, String db, String host)
         {
             MySqlConnection sql = new MySqlConnection("server=" + host + ";userId=" + root + ";password=" + rpswd + ";database=mysql");
             try
@@ -47,7 +47,7 @@ namespace mia_conv
                 MySqlCommand cmd = new MySqlCommand("DROP DATABASE IF EXISTS " + db + ";", sql);
                 cmd.ExecuteNonQuery();
             }
-            catch(Exception)
+            catch (Exception)
             {
             }
         }
@@ -57,7 +57,7 @@ namespace mia_conv
         /// </summary>
         public static bool HasDB(String root, String rpswd, String db, String host)
         {
-            MySqlConnection sql = new MySqlConnection("server=" + host + ";userId=" + root + ";password=" + rpswd + ";database="+db);
+            MySqlConnection sql = new MySqlConnection("server=" + host + ";userId=" + root + ";password=" + rpswd + ";database=" + db);
             try
             {
                 sql.Open();
@@ -74,9 +74,9 @@ namespace mia_conv
         /// Создает пустую базу данных, без заполнений таблицами.
         /// </summary>
         /// <returns>miaExitCode</returns>
-        public int CreateDB(String root,String rpswd,String db,String host,String user,String pswd,bool throwing,bool quiet)
+        public int CreateDB(String root, String rpswd, String db, String host, String user, String pswd, bool throwing, bool quiet)
         {
-            Debug("Creating database "+db);
+            Debug("Creating database " + db);
             Sql = new MySqlConnection("server=" + host + ";userId=" + root + ";password=" + rpswd + ";database=mysql");
 #if !NOCATCH
             try
@@ -100,7 +100,7 @@ namespace mia_conv
                 cmd.ExecuteNonQuery();
 #if !NOCATCH
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 if (throwing) throw ex;
                 return checkOnMyEx(ex);
@@ -122,7 +122,7 @@ namespace mia_conv
         /// Создание Таблиц и Функций для Кроличьей базы данных
         /// </summary>
         /// <returns>miaExitCode</returns>
-        public int Prepare(bool nudb, String host, String user, String password, String db,String root, String rpswd,bool throwing,bool quiet)
+        public int Prepare(bool nudb, String host, String user, String password, String db, String root, String rpswd, bool throwing, bool quiet)
         {
             if (host == "" || user == "" || db == "")
                 return miaExitCode.NOT_ENOUGH_ARGS;
@@ -135,7 +135,7 @@ namespace mia_conv
             else//if (!nudb)
             {
                 //if (!HasDB(user, password, db, host))
-                  //  return miaExitCode.DB_NOT_EXISTS;
+                //  return miaExitCode.DB_NOT_EXISTS;
                 if (MessageBox.Show(null, "Данные старой фермы будут утеряны! Продолжить?",
                     "БД существует", MessageBoxButtons.YesNo) != DialogResult.Yes)
                     return miaExitCode.ABORTED_BY_USER;
@@ -149,7 +149,7 @@ namespace mia_conv
                 Sql.Open();
 #if !NOCATCH
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 if (throwing) throw ex;
                 return checkOnMyEx(ex);
@@ -159,15 +159,15 @@ namespace mia_conv
 #endif
             C = new MySqlCommand("SET CHARACTER SET utf8;", Sql);
             C.ExecuteNonQuery();
-            StreamReader stm = new StreamReader(this.GetType().Assembly.GetManifestResourceStream("mia_conv.rabnet_db_fmt.sql"),Encoding.UTF8);
+            StreamReader stm = new StreamReader(this.GetType().Assembly.GetManifestResourceStream("mia_conv.rabnet_db_fmt.sql"), Encoding.UTF8);
             String cmd = stm.ReadToEnd();
             stm.Close();
             //cmd=cmd.Remove(cmd.IndexOf("##TEST_DATA"));
             String[] cmds = cmd.Split(new string[] { "#DELIMITER |" }, StringSplitOptions.RemoveEmptyEntries);
             C.CommandText = cmds[0];//выполнение команд по созданию таблиц
             C.ExecuteNonQuery();
-            MySqlScript scr = new MySqlScript(Sql,cmds[1]);
-            scr.Delimiter="|";
+            MySqlScript scr = new MySqlScript(Sql, cmds[1]);
+            scr.Delimiter = "|";
             scr.Execute();//Создает функции
             return miaExitCode.OK;
         }
@@ -196,6 +196,26 @@ namespace mia_conv
                 }
             }
             Sql.Close();
+        }
+
+        /// <summary>
+        /// Удалаяет данные из таблицы с Породами
+        /// </summary>
+        private void deleteBreeds()
+        {
+            Debug("deleting breeds");
+            C.CommandText = "DELETE FROM breeds;";
+            C.ExecuteNonQuery();
+        }
+
+        /// <summary>
+        /// Удалаяет данные из таблицы с Зонами
+        /// </summary>
+        private void deleteZones()
+        {
+            Debug("deleting zones");
+            C.CommandText = "DELETE FROM zones;";
+            C.ExecuteNonQuery();
         }
 
         /// <summary>
@@ -228,21 +248,26 @@ namespace mia_conv
             foreach (DataRow rw in usrs.Rows)
             {
                 Debug("adding user " + rw.ItemArray[0]);
-                C.CommandText = String.Format("INSERT INTO users(u_name,u_password) VALUES('{0:s}',MD5('{1:s}'));",rw.ItemArray[0] as String,rw.ItemArray[1]);
-                C.ExecuteNonQuery();
-            }
-        }
-        
-        public void SetUsers(String[] usrs)
-        {
-            for (int i = 0; i < usrs.Length / 2;i++ )
-            {
-                Debug("adding user " + usrs[i*2]);
-                C.CommandText = String.Format("INSERT INTO users(u_name,u_password) VALUES('{0:s}',MD5('{1:s}'));", usrs[i*2], usrs[i*2+1]);
+                C.CommandText = String.Format("INSERT INTO users(u_name,u_password) VALUES('{0:s}',MD5('{1:s}'));", rw.ItemArray[0] as String, rw.ItemArray[1]);
                 C.ExecuteNonQuery();
             }
         }
 
+        public void SetUsers(String[] usrs)
+        {
+            for (int i = 0; i < usrs.Length / 2; i++)
+            {
+                Debug("adding user " + usrs[i * 2]);
+                C.CommandText = String.Format("INSERT INTO users(u_name,u_password) VALUES('{0:s}',MD5('{1:s}'));", usrs[i * 2], usrs[i * 2 + 1]);
+                C.ExecuteNonQuery();
+            }
+        }
+
+#region mia_work
+
+        /// <summary>
+        /// Заполняет базу данными из mia-файла
+        /// </summary>
         public void FillAll()
         {
             Mia.Setpbpart(0, 8);
@@ -279,16 +304,20 @@ namespace mia_conv
             Mia.Setpbpart(8, 8);
         }
 
+        /// <summary>
+        /// Заполняет таблицу Пород из mia-файла
+        /// </summary>
         public void FillBreeds()
         {
+            deleteBreeds();
             Debug("filling breeds");
-            List<MFString> ls=Mia.BreedList.strings;
+            List<MFString> ls = Mia.BreedList.strings;
             _maxbreed = ls.Count / 3;
             C.CommandText = "ALTER TABLE `breeds` DISABLE KEYS;";
             C.ExecuteNonQuery();
             for (int i = 0; i < _maxbreed; i++)
             {
-                C.CommandText = String.Format("INSERT INTO breeds(b_id,b_name,b_short_name) VALUES({2:d},'{0:s}','{1:s}');", ls[i * 3].value(), ls[i * 3 + 1].value(), i+1);
+                C.CommandText = String.Format("INSERT INTO breeds(b_id,b_name,b_short_name) VALUES({2:d},'{0:s}','{1:s}');", ls[i * 3].value(), ls[i * 3 + 1].value(), i + 1);
                 C.ExecuteNonQuery();
                 ls[i * 3 + 2].tag = i + 1;// (int)c.LastInsertedId;
                 Mia.Setpb(i, _maxbreed);
@@ -348,6 +377,7 @@ namespace mia_conv
 
         public void FillZones()
         {
+            deleteZones();
             Debug("fill zones");
             List<MFString> st = Mia.ZoneList.strings;
             C.CommandText = "ALTER TABLE `zones` DISABLE KEYS;";
@@ -355,14 +385,14 @@ namespace mia_conv
             for (int i = 0; i < st.Count / 2; i++)
             {
                 String[] idnm = st[i * 2].value().Split(':');
-                C.CommandText = String.Format("INSERT INTO zones(z_id,z_name,z_short_name) VALUES({0:d},'{1:s}','{2:s}')",int.Parse(idnm[0]),idnm[1],st[i*2+1].value());
+                C.CommandText = String.Format("INSERT INTO zones(z_id,z_name,z_short_name) VALUES({0:d},'{1:s}','{2:s}')", int.Parse(idnm[0]), idnm[1], st[i * 2 + 1].value());
                 Mia.Setpb(i, st.Count);
                 try
                 {
-                    if (int.Parse(idnm[0])!=0)
+                    if (int.Parse(idnm[0]) != 0)
                         C.ExecuteNonQuery();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Debug(ex);
                 }
@@ -375,25 +405,25 @@ namespace mia_conv
         {
             //Application.DoEvents();
             String tp = "unk";
-            String b1="NULL",b2="NULL",b3="NULL",b4="NULL";
-            String heater="00";
-            String nest="00";
-            String delims="000";
+            String b1 = "NULL", b2 = "NULL", b3 = "NULL", b4 = "NULL";
+            String heater = "00";
+            String nest = "00";
+            String delims = "000";
             String d = "D1";
             switch (tr.Type)
             {
                 case 0: tp = "none";
                     break;
                 case 1: tp = "female";
-                    b1 = "'"+tr.Busies[0].ToString()+"'";
+                    b1 = "'" + tr.Busies[0].ToString() + "'";
                     heater = tr.Heaters[0].ToString(d);
                     nest = tr.Nests[0].ToString(d);
                     break;
                 case 2: tp = "dfemale";
                     b1 = "'" + tr.Busies[0].ToString() + "'";
                     b2 = "'" + tr.Busies[1].ToString() + "'";
-                    heater = tr.Heaters[0].ToString(d)+tr.Heaters[1].ToString(d);
-                    nest = tr.Nests[0].ToString(d)+tr.Nests[1].ToString(d);
+                    heater = tr.Heaters[0].ToString(d) + tr.Heaters[1].ToString(d);
+                    nest = tr.Nests[0].ToString(d) + tr.Nests[1].ToString(d);
                     break;
                 case 3: tp = "complex";
                     b1 = "'" + tr.Busies[0].ToString() + "'";
@@ -414,7 +444,7 @@ namespace mia_conv
                     b2 = "'" + tr.Busies[1].ToString() + "'";
                     b3 = "'" + tr.Busies[2].ToString() + "'";
                     b4 = "'" + tr.Busies[3].ToString() + "'";
-                    delims = tr.Delims[0].ToString(d)+tr.Delims[1].ToString(d)+tr.Delims[2].ToString(d);
+                    delims = tr.Delims[0].ToString(d) + tr.Delims[1].ToString(d) + tr.Delims[2].ToString(d);
                     break;
                 case 6: tp = "vertep";
                     b1 = "'" + tr.Busies[0].ToString() + "'";
@@ -432,19 +462,19 @@ namespace mia_conv
                     nest = tr.Nests[0].ToString(d);
                     break;
             }
-            C.CommandText = String.Format("INSERT INTO tiers(t_type,t_repair,t_notes,t_heater,t_nest,t_delims,t_busy1,t_busy2,t_busy3,t_busy4) " + 
+            C.CommandText = String.Format("INSERT INTO tiers(t_type,t_repair,t_notes,t_heater,t_nest,t_delims,t_busy1,t_busy2,t_busy3,t_busy4) " +
                 "VALUES('{0:s}',{1:d},'{2:s}','{3:s}','{4:s}','{5:s}',{6:s},{7:s},{8:s},{9:s});", //{3:d},{4:d},{5:d},{6:d},
-                tp, tr.Repair, tr.Notes.value(), heater, nest, delims,b1,b2,b3,b4); //b1,b2,b3,b4,
+                tp, tr.Repair, tr.Notes.value(), heater, nest, delims, b1, b2, b3, b4); //b1,b2,b3,b4,
             C.ExecuteNonQuery();
             return (int)C.LastInsertedId;
         }
 
-        public void ProcTreeNode(TreeNode nd,int level,int parent)
+        public void ProcTreeNode(TreeNode nd, int level, int parent)
         {
             for (int i = 0; i < nd.Nodes.Count; i++)
             {
                 String nm = nd.Nodes[i].Text;
-                int fid=0;
+                int fid = 0;
                 if (int.TryParse(nm, out fid))
                 {
                     nm = "№" + fid.ToString();
@@ -453,8 +483,8 @@ namespace mia_conv
                 {
                     fid = 0;
                 }
-                C.CommandText=String.Format("INSERT INTO buildings(b_name,b_parent,b_level,b_farm) "+
-                    "VALUES('{0:s}',{1:d},{2:d},{3:d});",nm,parent,level,fid);
+                C.CommandText = String.Format("INSERT INTO buildings(b_name,b_parent,b_level,b_farm) " +
+                    "VALUES('{0:s}',{1:d},{2:d},{3:d});", nm, parent, level, fid);
                 C.ExecuteNonQuery();
                 int tpar = (int)C.LastInsertedId;
                 ProcTreeNode(nd.Nodes[i], level + 1, tpar);
@@ -485,7 +515,7 @@ namespace mia_conv
                 {
                     low = Savetier(fm.Lower);
                 }
-                C.CommandText = String.Format("INSERT INTO minifarms(m_id,m_upper,m_lower) VALUES({0:d},{1:d},{2:d});",fm.ID,upp,low);
+                C.CommandText = String.Format("INSERT INTO minifarms(m_id,m_upper,m_lower) VALUES({0:d},{1:d},{2:d});", fm.ID, upp, low);
                 C.ExecuteNonQuery();
                 Mia.Setpb(c, cnt);
 
@@ -495,23 +525,23 @@ namespace mia_conv
             C.CommandText = "ALTER TABLE `minifarms` ENABLE KEYS;";
             C.ExecuteNonQuery();
             Debug("buildings=" + maxid.ToString() + "\r\nfill buildings tree");
-            ProcTreeNode(Mia.BuildPlan.Value(),0,0);
+            ProcTreeNode(Mia.BuildPlan.Value(), 0, 0);
         }
 
         public String Convdt(String dt)
         {
-            String[] dmy=dt.Split('.');
+            String[] dmy = dt.Split('.');
             if (dmy[2] == "1899" && dmy[1] == "12" && dmy[0] == "30")
                 return "NULL";
-            return String.Format("'{0:S4}-{1:S2}-{2:S2}'",dmy[2],dmy[1],dmy[0]);
-        }
-        
-        public String Convdt(DateTime dt)
-        {
-            return Convdt(String.Format("{0:D2}.{1:D2}.{2:D2}",dt.Day,dt.Month,dt.Year));
+            return String.Format("'{0:S4}-{1:S2}-{2:S2}'", dmy[2], dmy[1], dmy[0]);
         }
 
-        public int GetCatalogValue(String type,Char flag,String value)
+        public String Convdt(DateTime dt)
+        {
+            return Convdt(String.Format("{0:D2}.{1:D2}.{2:D2}", dt.Day, dt.Month, dt.Year));
+        }
+
+        public int GetCatalogValue(String type, Char flag, String value)
         {
             return 0;
             /*
@@ -545,7 +575,7 @@ namespace mia_conv
              * */
         }
 
-        public uint Findname(String name,ref String addNm)
+        public uint Findname(String name, ref String addNm)
         {
             if (name == "") return 0;
             C.CommandText = "SELECT n_id FROM names WHERE n_name='" + name + "';";
@@ -557,7 +587,7 @@ namespace mia_conv
                 return 0;
             }
             rd.Read();
-            uint res= rd.GetUInt32(0);
+            uint res = rd.GetUInt32(0);
             rd.Close();
             return res;
         }
@@ -565,10 +595,10 @@ namespace mia_conv
         public uint Findsurname(string sur, String sex, int cnt, int tp)
         {
             if (sur == "") return 0;
-            if (cnt > 1) sur=sur.TrimEnd('ы');
+            if (cnt > 1) sur = sur.TrimEnd('ы');
             if (cnt == 1 && sex == "female") sur = sur.TrimEnd('а');
             String sx = "male";
-            if (tp==2) sx="female";
+            if (tp == 2) sx = "female";
             C.CommandText = "SELECT n_id FROM names WHERE n_surname='" + sur + "' AND n_sex='" + sx + "';";
             MySqlDataReader rd = C.ExecuteReader();
             if (!rd.Read())
@@ -669,25 +699,25 @@ namespace mia_conv
 
         public void SetOption(String name, String subname, String value)
         {
-            C.CommandText = "UPDATE options SET o_value='"+value+"' WHERE o_name='" + name + "' AND o_subname='" + subname + "';";
+            C.CommandText = "UPDATE options SET o_value='" + value + "' WHERE o_name='" + name + "' AND o_subname='" + subname + "';";
             C.ExecuteNonQuery();
         }
-        
-        public void SetOption(String name,String subname,int value)
+
+        public void SetOption(String name, String subname, int value)
         {
             SetOption(name, subname, value.ToString());
         }
-        
+
         public void SetOption(String name, String subname, float value)
         {
-            SetOption(name,subname,value.ToString());
+            SetOption(name, subname, value.ToString());
         }
 
         public void SetCatList(MFStringList lst, String type, String flag)
         {
             for (int i = 0; i < lst.strings.Count; i++)
             {
-                for (int j = 0; j < flag.Length;j++ )
+                for (int j = 0; j < flag.Length; j++)
                     GetCatalogValue(type, flag[j], lst.strings[i].value());
             }
         }
@@ -737,7 +767,7 @@ namespace mia_conv
         {
             Debug("fill ZooForm");
             DateTime dt = Mia.Zooform.zoodate.value();
-            String memo="";
+            String memo = "";
             for (int i = 0; i < Mia.Zooform.strings.Count; i++)
             {
                 memo += Mia.Zooform.strings[i].value() + "\r\n";
@@ -752,17 +782,17 @@ namespace mia_conv
             {
                 //Application.DoEvents();
                 Donor d = Mia.Zooform.donors[i];
-                C.CommandText=String.Format("INSERT INTO zooplans(z_date,z_job,z_rabbit,z_address,z_address2) VALUES({0:s},666,{1:d},{2:d},{3:d});",
-                    Convdt(dt),GetUniqueRabbit((int)d.unique.value()),d.surplus.value(),d.immediate.value());
+                C.CommandText = String.Format("INSERT INTO zooplans(z_date,z_job,z_rabbit,z_address,z_address2) VALUES({0:s},666,{1:d},{2:d},{3:d});",
+                    Convdt(dt), GetUniqueRabbit((int)d.unique.value()), d.surplus.value(), d.immediate.value());
                 C.ExecuteNonQuery();
-                int did=(int)C.LastInsertedId;
+                int did = (int)C.LastInsertedId;
                 for (int j = 0; j < d.acc.Count; j++)
                 {
                     Acceptor a = d.acc[j];
-                    C.CommandText=String.Format("INSERT INTO zooacceptors(z_id,z_rabbit,z_lack,z_hybrid,z_new_group,z_gendiff,z_distance,z_best_donor,z_best_acceptor) "+
-                        "VALUES({0:d},{1:d},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d},{8:d});",did,GetUniqueRabbit((int)a.unique.value()),
-                        a.lack.value(),a.hybrid.value(),a.newgroup.value(),a.gendiff.value(),a.distance.value(),
-                        GetUniqueRabbit((int)a.donor_best.value()),GetUniqueRabbit((int)a.acceptor_best.value()));
+                    C.CommandText = String.Format("INSERT INTO zooacceptors(z_id,z_rabbit,z_lack,z_hybrid,z_new_group,z_gendiff,z_distance,z_best_donor,z_best_acceptor) " +
+                        "VALUES({0:d},{1:d},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d},{8:d});", did, GetUniqueRabbit((int)a.unique.value()),
+                        a.lack.value(), a.hybrid.value(), a.newgroup.value(), a.gendiff.value(), a.distance.value(),
+                        GetUniqueRabbit((int)a.donor_best.value()), GetUniqueRabbit((int)a.acceptor_best.value()));
                     C.ExecuteNonQuery();
                 }
             }
@@ -774,18 +804,18 @@ namespace mia_conv
             {
                 //Application.DoEvents();
                 ZooJob j = Mia.Zooform.zoojobs[i];
-                C.CommandText = String.Format("INSERT INTO zooplans(z_date,z_job,z_level,z_rabbit,z_notes) "+
-                    "VALUES({0:s},{1:d},{2:s},{3:d},'{4:s}');",Convdt(dt),j.type.value()+1,j.caption.value(),
-                    GetUniqueRabbit(j.uniques[0]),((j.subcount.value()>=7)?j.subs[6].value():""));
+                C.CommandText = String.Format("INSERT INTO zooplans(z_date,z_job,z_level,z_rabbit,z_notes) " +
+                    "VALUES({0:s},{1:d},{2:s},{3:d},'{4:s}');", Convdt(dt), j.type.value() + 1, j.caption.value(),
+                    GetUniqueRabbit(j.uniques[0]), ((j.subcount.value() >= 7) ? j.subs[6].value() : ""));
                 C.ExecuteNonQuery();
                 int jid = (int)C.LastInsertedId;
                 for (int k = 1; k < (int)j.uniquescnt.value(); k++)
                 {
-                    String field="z_rabbit2";
-                    if (k==2) field="z_address";
-                    if (k==3) field="z_address2";
-                    C.CommandText = String.Format("UPDATE zooplans SET {1:s}={2:d} WHERE z_id={0:d};",jid,
-                        field,j.uniques[k]);
+                    String field = "z_rabbit2";
+                    if (k == 2) field = "z_address";
+                    if (k == 3) field = "z_address2";
+                    C.CommandText = String.Format("UPDATE zooplans SET {1:s}={2:d} WHERE z_id={0:d};", jid,
+                        field, j.uniques[k]);
                     C.ExecuteNonQuery();
                 }
             }
@@ -796,7 +826,7 @@ namespace mia_conv
 
         }
 
-        public int GetWorker(String name,bool insert)
+        public int GetWorker(String name, bool insert)
         {
             return 0;
             /*
@@ -822,11 +852,11 @@ namespace mia_conv
             return res;
              * */
         }
-        
+
         public int GetReason(String name)
         {
             if (name == "") return 0;
-            C.CommandText = "SELECT d_id FROM deadreasons WHERE d_name='"+name+"'";
+            C.CommandText = "SELECT d_id FROM deadreasons WHERE d_name='" + name + "'";
             MySqlDataReader rd = C.ExecuteReader();
             if (!rd.HasRows)
             {
@@ -848,7 +878,7 @@ namespace mia_conv
             {
                 //Application.DoEvents();
                 MFListItem li = Mia.Graphform.reasons.items[i];
-                C.CommandText = String.Format("INSERT INTO deadreasons(d_name,d_rate) VALUES('{0:s}',{1:s});",li.caption.value(),li.subs[0].value());
+                C.CommandText = String.Format("INSERT INTO deadreasons(d_name,d_rate) VALUES('{0:s}',{1:s});", li.caption.value(), li.subs[0].value());
                 C.ExecuteNonQuery();
             }
             C.CommandText = "ALTER TABLE `deadreasons` ENABLE KEYS;";
@@ -865,9 +895,9 @@ namespace mia_conv
                 if (li.subs[2].value() == "м") sex = "male";
                 if (li.subs[2].value() == "ж") sex = "female";
                 int weight = 0;
-                if (!int.TryParse(li.subs[5].value(),out weight))
+                if (!int.TryParse(li.subs[5].value(), out weight))
                 {
-                    weight=0;
+                    weight = 0;
                 }
                 String ddt = li.caption.value();
                 String[] names = li.subs[0].value().Split(' ');
@@ -879,29 +909,29 @@ namespace mia_conv
                 if (li.subitems.value() >= 9)
                     notes = li.subs[8].value();
                 int reason = GetReason(li.subs[6].value());
-                if (names[names.Length - 1].Length>0)
-                if (names[names.Length - 1].Trim()[0] == '[')
-                {
-                    String grp = names[names.Length - 1].Trim();
-                    grp=grp.Replace("[", "").Replace("]","");
-                    group = int.Parse(grp);
-                    names[names.Length - 1] = "";
-                }
+                if (names[names.Length - 1].Length > 0)
+                    if (names[names.Length - 1].Trim()[0] == '[')
+                    {
+                        String grp = names[names.Length - 1].Trim();
+                        grp = grp.Replace("[", "").Replace("]", "");
+                        group = int.Parse(grp);
+                        names[names.Length - 1] = "";
+                    }
                 String nm = names[0];
                 String xx = "";
                 uint nid = Findname(nm, ref xx);
                 if (nid != 0)
                 {
                     nm = "";
-                    if (names.Length>1)
+                    if (names.Length > 1)
                         nm = names[1];
                 }
 
-                uint suid = 0;uint seid = 0;
+                uint suid = 0; uint seid = 0;
                 String[] nms = nm.Split('-');
-                if (nms.Length>0)
-                if (nms[0].Trim()!="")
-                    suid = Findsurname(nms[0].Trim(), sex, group, 2);
+                if (nms.Length > 0)
+                    if (nms[0].Trim() != "")
+                        suid = Findsurname(nms[0].Trim(), sex, group, 2);
                 if (nms.Length > 1 && nms[1].Trim() != "")
                     seid = Findsurname(nms[1].Trim(), sex, group, 1);
                 int farm = 0;
@@ -909,8 +939,8 @@ namespace mia_conv
                 int tierID = 0;
                 int area = 0;
                 string sa = "";
-                int j=0;
-                while (address[j] >= '0' && address[j] <= '9'){sa += address[j];j++;}
+                int j = 0;
+                while (address[j] >= '0' && address[j] <= '9') { sa += address[j]; j++; }
                 if (sa != "")
                 {
                     farm = int.Parse(sa);
@@ -922,10 +952,10 @@ namespace mia_conv
                 }
                 C.CommandText = String.Format(@"INSERT INTO rabbits(r_sex,r_name,r_surname,r_secname,r_notes,r_group,r_born,r_farm,r_tier_id,r_tier,r_area,r_breed) 
 VALUES('{0:s}',{1:d},{2:d},{3:d},'{4:s}',{5:d},{6:s}-INTERVAL {7:d} DAY,{8:d},{9:d},{10:d},{11:d},1);",
-                                  sex,nid,suid,seid,notes,group,Convdt(ddt),age,farm,tierID,tier,area);
+                                  sex, nid, suid, seid, notes, group, Convdt(ddt), age, farm, tierID, tier, area);
                 C.ExecuteNonQuery();
                 uint lid = (uint)C.LastInsertedId;
-                C.CommandText = "CALL killRabbitDate("+lid.ToString()+",1,'',"+Convdt(ddt)+");";
+                C.CommandText = "CALL killRabbitDate(" + lid.ToString() + ",1,''," + Convdt(ddt) + ");";
                 C.ExecuteNonQuery();
             }
             C.CommandText = "ALTER TABLE `rabbits` ENABLE KEYS;";
@@ -968,7 +998,7 @@ VALUES('{0:s}',{1:d},{2:d},{3:d},'{4:s}',{5:d},{6:s}-INTERVAL {7:d} DAY,{8:d},{9
                     );
                 c.ExecuteNonQuery();
             }
-             * */ 
+             * */
         }
 
         public int Jobid(string name)
@@ -1016,13 +1046,13 @@ VALUES('{0:s}',{1:d},{2:d},{3:d},'{4:s}',{5:d},{6:s}-INTERVAL {7:d} DAY,{8:d},{9
             return 0;
         }
 
-        public void FillJobs(MFStringList arc,DateTime date)
+        public void FillJobs(MFStringList arc, DateTime date)
         {
             string adr = arc.strings[2].value();
             string nm = arc.strings[3].value();
-            int jid=Jobid(arc.strings[1].value());
+            int jid = Jobid(arc.strings[1].value());
             if (jid == 0) return;
-            MySqlCommand cmd = new MySqlCommand(@"SELECT r_id FROM rabbits,names WHERE r_name=n_id AND n_name='"+nm+"';", Sql);
+            MySqlCommand cmd = new MySqlCommand(@"SELECT r_id FROM rabbits,names WHERE r_name=n_id AND n_name='" + nm + "';", Sql);
             int r = 0;
             MySqlDataReader rd = cmd.ExecuteReader();
             if (rd.Read())
@@ -1035,7 +1065,7 @@ VALUES('{0:s}',{1:d},{2:d},{3:d},'{4:s}',{5:d},{6:s}-INTERVAL {7:d} DAY,{8:d},{9
                 r = rd.GetInt32(0);
             rd.Close();
             cmd.CommandText = String.Format(@"INSERT INTO logs(l_date,l_type,l_user,l_rabbit,l_address) 
-VALUES({0:s},{1:d},0,{2:d},'{3:s}');",Convdt(date),jid,r,adr);
+VALUES({0:s},{1:d},0,{2:d},'{3:s}');", Convdt(date), jid, r, adr);
             cmd.ExecuteNonQuery();
         }
 
@@ -1074,6 +1104,8 @@ VALUES({0:s},{1:d},0,{2:d},'{3:s}');",Convdt(date),jid,r,adr);
             C.ExecuteNonQuery();
             //FillDead();
         }
+
+#endregion mia_work
 
     }
 }

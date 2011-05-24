@@ -13,6 +13,7 @@ dbparams: host;database;user;password;[root;root_password] - use root;root_passw
 users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
 ";
         }
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -30,6 +31,7 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
             String scr = "";
             int auto = 0;
             Environment.ExitCode = miaExitCode.OK;
+
             if (args.Length >= 1)
             {
                 if (args.Length<3)

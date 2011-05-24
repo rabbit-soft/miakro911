@@ -121,8 +121,9 @@ namespace mia_conv
 
         public void SetLabel(int part,int of)
         {
-            lbl.Text = _label_nm +" -> "+ part.ToString() + "/" + of.ToString();
+            lbl.Text = _label_nm + " -> " + part.ToString() + "/" + of.ToString();
         }
+
         public void SetLabelName(string nm)
         {
             lbl.Text = nm;
