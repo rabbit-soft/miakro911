@@ -373,6 +373,9 @@ r_status,r_flags,r_event_date,r_breed
     public class OneRabbit
     {
         public enum RabbitSex{VOID,MALE,FEMALE};
+        /// <summary>
+        /// бомж
+        /// </summary>
         public static string NullAddress = "бомж";
         public RabbitSex sex;
         /// <summary>

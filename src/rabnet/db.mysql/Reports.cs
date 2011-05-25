@@ -321,7 +321,7 @@ union SELECT 'Итого',sum(r_group) FROM rabbits;";
 
         private string fuckerQuery(Filters f)
         {
-            //getDates(f);
+            getDates(f);
             int partner = f.safeInt("prt");           
             return String.Format(@"(SELECT rabname(f_rabid,2) name,f_children,
 IF(f_type='vyazka','Вязка','случка') type,

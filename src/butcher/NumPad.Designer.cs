@@ -199,6 +199,7 @@
             // 
             // btDel
             // 
+            this.btDel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btDel.Font = new System.Drawing.Font("Arial", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btDel.Location = new System.Drawing.Point(133, 197);
             this.btDel.Margin = new System.Windows.Forms.Padding(5);
@@ -247,6 +248,7 @@
             this.MinimumSize = new System.Drawing.Size(192, 256);
             this.Name = "NumPad";
             this.Size = new System.Drawing.Size(192, 324);
+            this.Load += new System.EventHandler(this.NumPad_Load);
             this.Resize += new System.EventHandler(this.NumPad_Resize);
             this.ResumeLayout(false);
 

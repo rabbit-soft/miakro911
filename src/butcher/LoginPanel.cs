@@ -171,6 +171,11 @@ namespace butcher
                 tError.Start();
             }
         }
+
+        private void npLogin_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 
     [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]

@@ -177,7 +177,7 @@ namespace rabnet
                 foreach (RabNetEngRabbit r in rbs)
                 {
                     if (r.Name == 0 && r.Surname==0) no_names = true;
-                    //if (r.Address == OneRabbit.NullAddress) no_addresses = true;
+                    if (r.Address == OneRabbit.NullAddress) no_addresses = true;
                     if (r.Genom == "") no_gens = true;
                     if (!same_names)
                     {

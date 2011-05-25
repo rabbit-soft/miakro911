@@ -16,8 +16,10 @@ namespace butcher
         private LoginPanel logPan = new LoginPanel();
         public MainForm()
         {
-            InitializeComponent();            
+            InitializeComponent(); 
+           
 #if RELEASE
+            Cursor.Hide();
             this.WindowState = FormWindowState.Maximized;
 #endif         
             logPan.Location = logPan.mustLocation;
@@ -169,6 +171,7 @@ namespace butcher
             numbers.Add('7');
             numbers.Add('8');
             numbers.Add('9');
+            numbers.Add(',');
             TextBox tb = (sender as TextBox);
             try
             {

@@ -131,5 +131,10 @@ namespace butcher
             OkButtonClick(sender, e);
         }
 
+        private void NumPad_Load(object sender, EventArgs e)
+        {
+            btDel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+        }
+
     }
 }

@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.npLogin = new butcher.NumPad();
             this.tbPassword = new System.Windows.Forms.TextBox();
             this.cbUser = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -42,6 +41,7 @@
             this.gbMessage = new System.Windows.Forms.GroupBox();
             this.lbError = new System.Windows.Forms.Label();
             this.tError = new System.Windows.Forms.Timer(this.components);
+            this.npLogin = new butcher.NumPad();
             this.groupBox1.SuspendLayout();
             this.gbMessage.SuspendLayout();
             this.SuspendLayout();
@@ -73,20 +73,6 @@
             this.label5.Text = "Для редактирования списка ферм, подсоединитеклавиатуру и нажмите на ней клавишу \'" +
                 "D\'";
             this.label5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // npLogin
-            // 
-            this.npLogin.Location = new System.Drawing.Point(113, 372);
-            this.npLogin.MaximumSize = new System.Drawing.Size(502, 670);
-            this.npLogin.MinimumSize = new System.Drawing.Size(192, 256);
-            this.npLogin.Name = "npLogin";
-            this.npLogin.OkButtonEnable = true;
-            this.npLogin.OkButtonVisible = true;
-            this.npLogin.OnlyDigits = true;
-            this.npLogin.Size = new System.Drawing.Size(301, 508);
-            this.npLogin.TabIndex = 3;
-            this.npLogin.TabStop = false;
-            this.npLogin.OkButtonClick += new System.EventHandler(this.npLogin_OkButtonClick);
             // 
             // tbPassword
             // 
@@ -192,6 +178,22 @@
             this.tError.Interval = 7000;
             this.tError.Tick += new System.EventHandler(this.tError_Tick);
             // 
+            // npLogin
+            // 
+            this.npLogin.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.npLogin.Location = new System.Drawing.Point(113, 372);
+            this.npLogin.MaximumSize = new System.Drawing.Size(502, 670);
+            this.npLogin.MinimumSize = new System.Drawing.Size(192, 256);
+            this.npLogin.Name = "npLogin";
+            this.npLogin.OkButtonEnable = true;
+            this.npLogin.OkButtonVisible = true;
+            this.npLogin.OnlyDigits = true;
+            this.npLogin.Size = new System.Drawing.Size(301, 508);
+            this.npLogin.TabIndex = 3;
+            this.npLogin.TabStop = false;
+            this.npLogin.Load += new System.EventHandler(this.npLogin_Load);
+            this.npLogin.OkButtonClick += new System.EventHandler(this.npLogin_OkButtonClick);
+            // 
             // LoginPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -199,6 +201,7 @@
             this.Controls.Add(this.gbMessage);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox1);
+            this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.Name = "LoginPanel";
             this.Size = new System.Drawing.Size(1248, 1000);
             this.groupBox1.ResumeLayout(false);
