@@ -1,1 +1,2 @@
 @nant buildall
+pause
