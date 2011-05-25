@@ -171,7 +171,6 @@
             this.lbError.Size = new System.Drawing.Size(306, 202);
             this.lbError.TabIndex = 0;
             this.lbError.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lbError.TextChanged += new System.EventHandler(this.lbError_TextChanged);
             // 
             // tError
             // 
@@ -191,7 +190,6 @@
             this.npLogin.Size = new System.Drawing.Size(301, 508);
             this.npLogin.TabIndex = 3;
             this.npLogin.TabStop = false;
-            this.npLogin.Load += new System.EventHandler(this.npLogin_Load);
             this.npLogin.OkButtonClick += new System.EventHandler(this.npLogin_OkButtonClick);
             // 
             // LoginPanel

@@ -65,7 +65,7 @@
   <ItemGroup>
     <Reference Include="Interop.lp16DLLCOMLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\allineed\src\party3d\Interop.lp16DLLCOMLib.dll</HintPath>
+      <HintPath>..\..\party3d\Interop.lp16DLLCOMLib.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data, Version=5.2.7.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -145,7 +145,6 @@
     <None Include="image\Navigate_down.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="image\Navigate_up.ico" />
   </ItemGroup>
   <ItemGroup>
