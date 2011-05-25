@@ -1,0 +1,1 @@
+@nant full_build

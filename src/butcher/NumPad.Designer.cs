@@ -199,7 +199,6 @@
             // 
             // btDel
             // 
-            this.btDel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btDel.Font = new System.Drawing.Font("Arial", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btDel.Location = new System.Drawing.Point(133, 197);
             this.btDel.Margin = new System.Windows.Forms.Padding(5);

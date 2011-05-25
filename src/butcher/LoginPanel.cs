@@ -95,7 +95,7 @@ namespace butcher
                 cbUser.SelectedIndex = cbFarm.SelectedIndex = -1;
                 cbFarm.Text = cbUser.Text = tbPassword.Text = "";
                 cbFarm.Focus();               
-                lbError.Text="Ошибка подключения " + ex.GetType().ToString() + ": " + ex.Message;
+                lbError_TextChange("Ошибка подключения " + ex.GetType().ToString() + ": " + ex.Message);
             }
         }
 
@@ -156,25 +156,21 @@ namespace butcher
             else
             {
                 gbMessage.Show();
-                lbError.Text = "Не удалось выполнить вход." + Environment.NewLine
-                    + "Возможно не правильно введен пароль.";
+                lbError_TextChange( "Не удалось выполнить вход." + Environment.NewLine
+                    + "Возможно не правильно введен пароль.");
                 //tError.Start();
             }
             tbPassword.Clear();
         }
 
-        private void lbError_TextChanged(object sender, EventArgs e)
+        private void lbError_TextChange(string s)
         {
+            lbError.Text = s;
             if (lbError.Text != "")
             {
                 gbMessage.Show();
                 tError.Start();
             }
-        }
-
-        private void npLogin_Load(object sender, EventArgs e)
-        {
-
         }
     }
 

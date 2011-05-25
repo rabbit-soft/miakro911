@@ -72,28 +72,28 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GuardantDotNetApi, Version=5.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\allineed\src\party3d\GuardantDotNetApi.dll</HintPath>
+      <HintPath>..\..\..\party3d\GuardantDotNetApi.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Interop.Microsoft.Office.Core, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\allineed\src\party3d\Interop.Microsoft.Office.Core.dll</HintPath>
+      <HintPath>..\..\..\party3d\Interop.Microsoft.Office.Core.dll</HintPath>
     </Reference>
     <Reference Include="Interop.Microsoft.Office.Interop.Excel, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\allineed\src\party3d\Interop.Microsoft.Office.Interop.Excel.dll</HintPath>
+      <HintPath>..\..\..\party3d\Interop.Microsoft.Office.Interop.Excel.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\allineed\src\party3d\log4net.dll</HintPath>
+      <HintPath>..\..\..\party3d\log4net.dll</HintPath>
     </Reference>
     <Reference Include="RdlEngine, Version=4.1.0.0, Culture=neutral, PublicKeyToken=98d963a3ed6bf418, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\allineed\src\party3d\RdlEngine.dll</HintPath>
+      <HintPath>..\..\..\party3d\RdlEngine.dll</HintPath>
     </Reference>
     <Reference Include="RdlViewer, Version=4.1.0.0, Culture=neutral, PublicKeyToken=98d963a3ed6bf418, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\allineed\src\party3d\RdlViewer.dll</HintPath>
+      <HintPath>..\..\..\party3d\RdlViewer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -657,7 +657,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="..\..\..\help\rabHelp.chm">
+    <None Include="..\..\..\help\rabnet_help\rabHelp.chm">
     </None>
     <None Include="Properties\app.manifest" />
     <None Include="rabnet_TemporaryKey.pfx" />
@@ -741,7 +741,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\allineed\src\party3d\GrdAPI32.DLL">
+    <Content Include="..\..\..\party3d\GrdAPI32.DLL">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="icon_green.ico" />
