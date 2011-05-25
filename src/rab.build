@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<project name="rabnet" default="build" basedir=".">
+<project name="rabnet" default="full_build" basedir=".">
 	<description>rabnet project makefile</description>
 	<!-- properties defines !-->
 	<property name="version" value="1.0"/>
 	<property name="minver_p" value="3"/>
 	<property name="minver" value="${minver_p}.0"/>
+	<property name="fullver" value="${version}.${minver}"/>
 
 	<property name="appname" value="Миакро-9.11"/>
 	<property name="companyname" value="9-Бит"/>
@@ -17,12 +18,29 @@
 	<property name="revision" value="none"/>
 
 	<property name="curdir" value="." overwrite="false"/>
-	<property name="host_spec_path" value="." overwrite="false"/>
+	<property name="host_spec_path" value=".." overwrite="false"/>
 
-	<include buildfile="${host_spec_path}/host_spec.include"/>
+	<if test="${not property::exists('build.root')}">
+        		<property name="build.root" value="../../.." if="${file::exists('../../../host_spec.include')}"/>
+        		<property name="build.root" value="../.." if="${file::exists('../../host_spec.include')}"/>
+	</if>
+
+	<include buildfile="${build.root}/host_spec.include"/>
+	<!--include buildfile="${host_spec_path}/host_spec.include"/-->
+
+	<!--echo message="${path::get-file-name(directory::get-parent-directory(project::get-base-directory()))}"/-->
+
+	<if test="${path::get-file-name(directory::get-parent-directory(project::get-base-directory()))!='trunk'}">
+		<property name="build.version" value="${path::get-file-name(directory::get-parent-directory(project::get-base-directory()))}" unless="${property::exists('build.version')}"/>
+		<echo message="Build version base from directory name: ${build.version}" />
+	</if>
+
+
+	
+	<!--property name="vdir" value="${project::get-base-directory()}"/-->
 
 	<property name="root_bin" value="${curdir}/../bin"/>
-	<property name="all_i_need" value="${curdir}/../allineed"/>
+	<property name="all_i_need" value="${build.root}/allineed"/>
 	<property name="tools_dir" value="${root_bin}/tools" />
 	<property name="plugin_dir" value="${root_bin}/PlugIns" />
 	<property name="distrib_dir" value="${root_bin}/distrib" />
@@ -222,8 +240,8 @@
 				<import namespace="System.Reflection" />
 			</imports>
 			<attributes>
-				<attribute type="AssemblyFileVersionAttribute" value="${version}.${minver}" />
-				<attribute type="AssemblyVersionAttribute" value="${version}.${minver}" />
+				<attribute type="AssemblyFileVersionAttribute" value="${fullver}" />
+				<attribute type="AssemblyVersionAttribute" value="${fullver}" />
 			</attributes>
 		</asminfo>
 		<copy file="${curdir}/mia_conv/rabnet_db_fmt.sql" tofile="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
@@ -325,8 +343,8 @@
 				<import namespace="System.Reflection" />
 			</imports>
 			<attributes>
-				<attribute type="AssemblyFileVersionAttribute" value="${version}.${minver}" />
-				<attribute type="AssemblyVersionAttribute" value="${version}.${minver}" />
+				<attribute type="AssemblyFileVersionAttribute" value="${fullver}" />
+				<attribute type="AssemblyVersionAttribute" value="${fullver}" />
 			</attributes>
 		</asminfo>
 		<csc target="winexe" output="${bin_dir}/RabDump/rabdump.exe" win32icon="${curdir}/rabdump/icon_white.ico"  define="${compile_flag}">
@@ -359,8 +377,8 @@
 				<import namespace="System.Reflection" />
 			</imports>
 			<attributes>
-				<attribute type="AssemblyFileVersionAttribute" value="${version}.${minver}" />
-				<attribute type="AssemblyVersionAttribute" value="${version}.${minver}" />
+				<attribute type="AssemblyFileVersionAttribute" value="${fullver}" />
+				<attribute type="AssemblyVersionAttribute" value="${fullver}" />
 			</attributes>
 		</asminfo>	
 		<csc target="winexe" output="${bin_dir}/RabNet/rabnet.exe" win32icon="${curdir}/rabnet/gui/icon_green.ico" define="${compile_flag}">
@@ -509,8 +527,8 @@
 				<import namespace="System.Reflection" />
 			</imports>
 			<attributes>
-				<attribute type="AssemblyFileVersionAttribute" value="${version}.${minver}" />
-				<attribute type="AssemblyVersionAttribute" value="${version}.${minver}" />
+				<attribute type="AssemblyFileVersionAttribute" value="${fullver}" />
+				<attribute type="AssemblyVersionAttribute" value="${fullver}" />
 			</attributes>
 		</asminfo>
 		<csc target="winexe" output="${tools_dir}/updater.exe" win32icon="${curdir}/updater/icon_update_white.ico" >
@@ -590,6 +608,17 @@
 		<call target="nsis_bld"/>
 	</target>
 
+	<target name="clean_mark">
+		<delete file="../build.ok" />
+	</target>
+
+	<target name="full_build" depends="clean_mark distrib_nsis">
+		<if test="${property::exists('build.automated')}">
+			<!--touch file="../build.ok" /-->
+			<echo message="${datetime::now()}" file="..\build.ok" />
+		</if>
+	</target>
+
 	<!--target name="distrib_nsis_release" depends="obfuscate">
 		<property name="dist_type" value="rabnet_no_protect"/>
 		<property name="bin_dir" value="${root_bin}\release"/>
@@ -628,7 +657,7 @@
 		<copy file="${curdir}/distrib/distrib_nsis/setup_${bin_type}_tmpl.nsi" tofile="${curdir}/distrib/distrib_nsis/setup_bld.nsi">
 			<filterchain>
 				<replacetokens>
-					<token key="AppVer" value="${version}.${minver}" />
+					<token key="AppVer" value="${fullver}" />
 					<token key="AppName" value="${appname}" />
 					<token key="AppName_en" value="${appname_en}" />
 					<token key="FileDescr" value="Программа установки ${appname} ${version}" />
@@ -651,19 +680,19 @@
 		</exec>
 		<copy file="${curdir}/distrib/distrib_nsis/setup.exe" tofile="${root_bin}/distrib_nsis_${bin_type}/setup${setup_suff}.exe"/>
 		<if test="${not property::exists('build_no_up')}">
-			<copy file="${curdir}/distrib/distrib_nsis/setup${setup_suff}.exe" tofile="${root_bin}/distrib_nsis_${bin_type}_up/setup.${version}.${minver}.exe"/>
+			<copy file="${curdir}/distrib/distrib_nsis/setup${setup_suff}.exe" tofile="${root_bin}/distrib_nsis_${bin_type}_up/setup.${fullver}.exe"/>
 			<copy file="${curdir}/distrib/distrib_nsis/updates.xml" tofile="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml"/>
 			<loadtasks assembly="${nant_contrib}" />
 			<checksum algorithm="MD5">
 				<fileset>
-					<include name="${root_bin}/distrib_nsis_${bin_type}_up/setup.${version}.${minver}.exe"/>
+					<include name="${root_bin}/distrib_nsis_${bin_type}_up/setup.${fullver}.exe"/>
 				</fileset>
 			</checksum>
-			<loadfile file="${root_bin}/distrib_nsis_${bin_type}_up/setup.${version}.${minver}.exe.MD5" property="distr.md5" />
-			<delete file="${root_bin}/distrib_nsis_${bin_type}_up/setup.${version}.${minver}.exe.MD5"/>
+			<loadfile file="${root_bin}/distrib_nsis_${bin_type}_up/setup.${fullver}.exe.MD5" property="distr.md5" />
+			<delete file="${root_bin}/distrib_nsis_${bin_type}_up/setup.${fullver}.exe.MD5"/>
 			<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml" xpath="/update/bundle/file[@name = 'setup.exe']/@md5" value="${distr.md5}" />
-			<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml" xpath="/update/bundle/file[@name = 'setup.exe']/@uri" value="http://update.rabbit-soft.ru/rab/setup.${version}.${minver}.exe" />
-			<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml" xpath="/update/bundle/version/@number" value="${version}.${minver}" />
+			<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml" xpath="/update/bundle/file[@name = 'setup.exe']/@uri" value="http://update.rabbit-soft.ru/rab/setup.${fullver}.exe" />
+			<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml" xpath="/update/bundle/version/@number" value="${fullver}" />
 		</if>
 	</target>
 
@@ -717,6 +746,7 @@
 	
 	<target name="svn_rev">
 		<echo message="Retrieving Subversion revision number"/>
+		<property name="cur_dir" value="${project::get-base-directory()}"/>
 		<script language="C#" mainclass="svn_rev" failonerror="false">
 			<code>
 				<![CDATA[
@@ -728,7 +758,7 @@
 							{
 								// Create an instance of StreamReader to read from a file.
 								// The using statement also closes the StreamReader.
-								using (StreamReader sr = new StreamReader(pd["curdir"]+"/.svn/entries")) 
+								using (StreamReader sr = new StreamReader(pd["cur_dir"]+"/.svn/entries")) 
 								{
 									string line;
 									// Read and display lines from the file until the end of 
@@ -764,5 +794,8 @@
 		</script>
 		<echo message="Using Subversion revision number: ${revision}"/>
 		<property name="minver" value="${minver_p}.${revision}"/>
+		<property name="fullver" value="${version}.${minver}"/>
+		<property name="fullver" value="${build.version}.${revision}" if="${property::exists('build.version')}"/>
+		<echo message="Build version: ${fullver}" />
 	</target>
 </project>
