@@ -426,8 +426,8 @@ LangString MYSQLINSTALLER_Configure ${LANG_RUSSIAN} "Настройка MySQL..."
 LangString UPDATER_Run ${LANG_ENGLISH} "Starting Updater..."
 LangString UPDATER_Run ${LANG_RUSSIAN} "Запуск Updater..."
 
-LangString Prog_NAME ${LANG_ENGLISH} "Miakro-9.11"
-LangString Prog_NAME ${LANG_RUSSIAN} "Миакро-9.11"
+LangString Prog_NAME ${LANG_ENGLISH} "Miakro-9.11 (@AppVer@)"
+LangString Prog_NAME ${LANG_RUSSIAN} "Миакро-9.11 (@AppVer@)"
 
 LangString SM_Prog_NAME ${LANG_ENGLISH} "Miakro-9.11"
 LangString SM_Prog_NAME ${LANG_RUSSIAN} "Миакро-9.11"
