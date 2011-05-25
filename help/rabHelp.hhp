@@ -1,0 +1,57 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=rabHelp.chm
+Contents file=miakroContent.hhc
+Default topic=MainList.htm
+Display compile progress=No
+Index file=Index.hhk
+Language=0x419 Русский
+Title=Помощь к программе rabnet
+
+
+[FILES]
+list01.htm
+list02.htm
+list03.htm
+list04.htm
+list05.htm
+list06.htm
+list07.htm
+list08.htm
+list09.htm
+list10.htm
+list11.htm
+list12.htm
+list13.htm
+list14.htm
+list15.htm
+list16.htm
+list17.htm
+list18.htm
+list19.htm
+list20.htm
+list21.htm
+list22.htm
+list23.htm
+list24.htm
+list25.htm
+list26.htm
+list27.htm
+list28.htm
+list29.htm
+list30.htm
+list31.htm
+list32.htm
+list33.htm
+list34.htm
+list35.htm
+list36.htm
+list37.htm
+list38.htm
+list111.htm
+list39.htm
+MainList.htm
+list40.htm
+
+[INFOTYPES]
+
