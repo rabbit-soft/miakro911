@@ -151,7 +151,7 @@
 			</fileset>
 		</copy>
 		<copy todir="${bin_dir}/RabNet">
-			<fileset basedir="${curdir}/../help">
+			<fileset basedir="${curdir}/../help/rabnet_help">
 				<include name="*.chm"/>
 			</fileset>
 		</copy>
@@ -175,7 +175,7 @@
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
 		<copy file="${mysql.ass}" tofile="${mysql.t.use}" />
 		<copy todir="${bin_dir}/RabNet">
-			<fileset basedir="${curdir}/../help">
+			<fileset basedir="${curdir}/../help/rabnet_help">
 				<include name="*.chm"/>
 			</fileset>
 		</copy>
