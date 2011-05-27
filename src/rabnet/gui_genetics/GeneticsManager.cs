@@ -5,10 +5,16 @@ using log4net;
 
 namespace rabnet
 {
+    /// <summary>
+    /// Менеджер окон генетики
+    /// </summary>
 	public class GeneticsManager
 	{
 		protected static readonly ILog log = LogManager.GetLogger(typeof(GeneticsManager));
 		private static Dictionary<int, GeneticsMainForm> _GenForms = new Dictionary<int, GeneticsMainForm>();
+        /// <summary>Добавляет новое окно генетики.</summary>
+        /// <param name="rabID">Номер кролика, чью генетику показать</param>
+        /// <returns>Успешность операции</returns>
 		public static Boolean AddNewGenetics(int rabID)
 		{
 			log.Debug(String.Format("Adding new genetics windows for rabbit #{0:D}", rabID));
@@ -44,12 +50,18 @@ namespace rabnet
 		}
 
 		private static int _maxFormsCount = 10;
+        /// <summary>Устанавливает максимальное количество окон генетики</summary>
+        /// <value>Максимальное количество окон генетики</value>
 		public static int MaxFormsCount
 		{
 			get { return _maxFormsCount; }
 			set { _maxFormsCount = value; }
 		}
 
+        /// <summary>Посылает сообщение поиска кролика в окна</summary>
+        /// <param name="cmd">Комманда поиска</param>
+        /// <see cref="RabbitCommandMessage"/>
+        /// <returns></returns>
 		public static Boolean BroadcastSearch(RabbitCommandMessage cmd)
 		{
 			Boolean res = false;
@@ -60,6 +72,7 @@ namespace rabnet
 			return res;
 		}
 
+        /// <summary>Закрывает все окна генетики</summary>
 		public static void CloseAllForms()
 		{
 			if (_GenForms.Count > 0)
@@ -72,17 +85,24 @@ namespace rabnet
 			}
 		}
 
+        /// <summary>Закрывает окно генетики</summary>
+        /// <param name="id">Номер окна</param>
 		public static void CloseForm(int id)
 		{
 			_GenForms[id].CloseBatch();
 			_GenForms.Remove(id);
 		}
 
+        /// <summary>Удаляет окно генетики</summary>
+        /// <param name="id">Номер окна</param>
 		public static void RemoveForm(int id)
 		{
 			_GenForms.Remove(id);
 		}
 
+        /// <summary>Делает активным окно генетики</summary>
+        /// <param name="id">Номер окна</param>
+        /// <returns></returns>
 		public static Boolean BringUpForm(int id)
 		{
 			try
