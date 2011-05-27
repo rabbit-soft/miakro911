@@ -70,7 +70,8 @@ namespace rabdump
                     else
                         comboBox2.Items.Add(j.DB.Name);
                 }
-            comboBox2.SelectedIndex = 0;
+            if (comboBox2.Items.Count!=0)
+                comboBox2.SelectedIndex = 0;
         }
 
         private void FillList(ArchiveJob j, String db)

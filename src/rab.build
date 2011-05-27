@@ -705,13 +705,13 @@
 	<target name="filldata" depends="build" description="filling developer databases">
 		<unzip zipfile="${data_dir}/Farm_30.zip" todir="${data_dir}" />
 		<exec program="${root_bin}/release/mia_conv.exe">
-			<arg value="${data_dir}\Farm 3_0.mia" />
+			<arg value="${data_dir}/Farm 3_0.mia" />
 			<arg value="localhost;krol30;kroliki;krol;root;;" />
 			<arg value="зоотехник;" />
-			<arg value="${data_dir}\data_30.sql" />
+			<arg value="${data_dir}/data_30.sql" />
 			<arg value="quiet" />
 		</exec>
-		<delete file="${data_dir}/Farm 3_0.mia" />
+		<delete file="${data_dir}\Farm 3_0.mia" />
 		<unzip zipfile="${data_dir}/Farm_main.zip" todir="${data_dir}" />
 		<exec program="${root_bin}/release/mia_conv.exe">
 			<arg value="${data_dir}\Farm.mia" />

@@ -118,7 +118,7 @@
                 <TableCell>
                   <ReportItems>
                     <Textbox Name="Textbox5">
-                      <Value>Осталовь</Value>
+                      <Value>Осталось</Value>
                       <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
                         <TextAlign>Center</TextAlign>
                         <BorderStyle>

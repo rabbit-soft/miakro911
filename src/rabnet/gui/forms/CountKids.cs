@@ -43,10 +43,10 @@ namespace rabnet
         {
             int s = comboBox1.SelectedIndex;
             int c = r.Youngers[s].group;
-            int x = c - (int)(numericUpDown1.Value + numericUpDown2.Value)+(int)numericUpDown3.Value;
-            textBox1.Text = x.ToString();
-            numericUpDown2.Maximum = c - numericUpDown1.Value;
-            numericUpDown1.Maximum = c - numericUpDown2.Value;
+            int x = c - (int)(nudDead.Value + nudKilled.Value)+(int)nudAdd.Value;
+            tbAlive.Text = x.ToString();
+            nudKilled.Maximum = c - nudDead.Value;
+            nudDead.Maximum = c - nudKilled.Value;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -59,8 +59,8 @@ namespace rabnet
             try
             {
                 int i = comboBox1.SelectedIndex;
-                r.CountKids((int)numericUpDown1.Value, (int)numericUpDown2.Value, (int)numericUpDown3.Value,
-                    int.Parse(textBox1.Text), r.Youngers[i].age(),i);
+                r.CountKids((int)nudDead.Value, (int)nudKilled.Value, (int)nudAdd.Value,
+                    int.Parse(tbAlive.Text), r.Youngers[i].age(),i);
                 Close();
             }
             catch (ApplicationException ex)
@@ -73,9 +73,9 @@ namespace rabnet
         {
             int i = comboBox1.SelectedIndex;
             label2.Text = "Возраст:" + r.Youngers[i].age().ToString() +"\nПорода:"+r.BreedName.ToString();
-            textBox1.Text = r.Youngers[i].group.ToString();
-            numericUpDown2.Value = numericUpDown1.Value=numericUpDown3.Value= 0;
-            numericUpDown2.Maximum = numericUpDown1.Maximum = r.Youngers[i].group;
+            tbAlive.Text = r.Youngers[i].group.ToString();
+            nudKilled.Value = nudDead.Value=nudAdd.Value= 0;
+            nudKilled.Maximum = nudDead.Maximum = r.Youngers[i].group;
 
         }
 

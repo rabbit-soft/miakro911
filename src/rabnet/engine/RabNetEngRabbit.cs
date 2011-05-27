@@ -416,6 +416,7 @@ namespace rabnet
                 nr.killIt(when, reason, notes, count);
             }
         }
+
         /// <summary>
         /// Подсчет подсосных\гнездовых
         /// </summary>
@@ -431,13 +432,22 @@ namespace rabnet
                 throw new ExNotFemale(this);
             eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, RabID, 0, "", "", String.Format("возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, прибавилось {4:d})",age,atall,dead,killed,added));            
             if (dead == 0 && killed == 0 && added == 0) return;
-			if (atall == 0)
+            OneRabbit y = rab.youngers[yid];
+            RabNetEngRabbit r = eng.getRabbit(y.id);
+            if (atall == 0)
             {
-                OneRabbit y=rab.youngers[yid];
-                RabNetEngRabbit r = eng.getRabbit(y.id);
                 r.killIt(DateTime.Now, 6, "при подсчете", y.group);
-            }else eng.db().countKids(id, dead, killed, added, rab.youngers[yid].id);
+            }
+            else
+            {
+                RabNetEngRabbit clone = eng.getRabbit(r.clone(dead + killed, 0, 0, 0));
+                clone.killIt(DateTime.Now, 6, "при подсчете", clone.Group);
+                //!!!тут надо списыватьт
+                if(added>0)
+                    eng.db().countKids(id,dead, killed, added, rab.youngers[yid].id);             
+            }
         }
+
         /// <summary>
         /// Установить пол
         /// </summary>
@@ -447,6 +457,7 @@ namespace rabnet
             eng.logs().log(RabNetLogs.LogType.SET_SEX, id, 0, "", "", OneRabbit.SexToRU(sex));
             eng.db().setRabbitSex(id, sex);
         }
+
         /// <summary>
         /// Отделяет несколько кроликов и создает новую группу
         /// </summary>

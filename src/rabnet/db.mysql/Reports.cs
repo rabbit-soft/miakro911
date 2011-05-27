@@ -556,9 +556,18 @@ FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AN
         private string rabByMonth()
         {
             //return "SELECT DATE_FORMAT(r_born,'%m.%Y') date, sum(r_group) count FROM rabbits GROUP BY date ORDER BY year(r_born) desc,month(r_born) desc;";
-            string s = @"SELECT
+            /*string s = @"SELECT
                         DATE_FORMAT(r_born,'%m.%Y') date,
                         (SELECT COALESCE(SUM(r_group),0) FROM dead d WHERE MONTH(d.r_born)=MONTH(rabbits.r_born) AND YEAR(d.r_born)=YEAR(rabbits.r_born))+COALESCE(SUM(r_group),0) count,
+                        COALESCE(SUM(r_group),0) alife
+                        FROM rabbits GROUP BY date ORDER BY year(r_born) desc,month(r_born) desc;";
+            Закоментирован 26.05.2011, раскоментироватьмесяца через 4 */
+            string s =@"SELECT
+                        DATE_FORMAT(r_born,'%m.%Y') date,
+                        Coalesce(
+                            (select sum(f_children) from fucks where date_format(f_end_date,'%m.%Y')=date),
+                            (SELECT COALESCE(SUM(r_group),0) FROM dead d WHERE MONTH(d.r_born)=MONTH(rabbits.r_born) AND YEAR(d.r_born)=YEAR(rabbits.r_born))+COALESCE(SUM(r_group),0)
+                        ) count,
                         COALESCE(SUM(r_group),0) alife
                         FROM rabbits GROUP BY date ORDER BY year(r_born) desc,month(r_born) desc;";
             return s;

@@ -30,20 +30,20 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.nudDead = new System.Windows.Forms.NumericUpDown();
+            this.tbAlive = new System.Windows.Forms.TextBox();
+            this.nudKilled = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
+            this.btOk = new System.Windows.Forms.Button();
+            this.btCancel = new System.Windows.Forms.Button();
+            this.nudAdd = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDead)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudKilled)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudAdd)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -65,29 +65,29 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "Возраст";
             // 
-            // numericUpDown1
+            // nudDead
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(118, 127);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(70, 20);
-            this.numericUpDown1.TabIndex = 3;
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            this.nudDead.Location = new System.Drawing.Point(118, 127);
+            this.nudDead.Name = "nudDead";
+            this.nudDead.Size = new System.Drawing.Size(70, 20);
+            this.nudDead.TabIndex = 3;
+            this.nudDead.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
-            // textBox1
+            // tbAlive
             // 
-            this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(118, 101);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(70, 20);
-            this.textBox1.TabIndex = 2;
+            this.tbAlive.Enabled = false;
+            this.tbAlive.Location = new System.Drawing.Point(118, 101);
+            this.tbAlive.Name = "tbAlive";
+            this.tbAlive.Size = new System.Drawing.Size(70, 20);
+            this.tbAlive.TabIndex = 2;
             // 
-            // numericUpDown2
+            // nudKilled
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(118, 153);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(70, 20);
-            this.numericUpDown2.TabIndex = 4;
-            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            this.nudKilled.Location = new System.Drawing.Point(118, 153);
+            this.nudKilled.Name = "nudKilled";
+            this.nudKilled.Size = new System.Drawing.Size(70, 20);
+            this.nudKilled.TabIndex = 4;
+            this.nudKilled.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // label3
             // 
@@ -116,38 +116,38 @@
             this.label5.TabIndex = 7;
             this.label5.Text = "Притоптано";
             // 
-            // button1
+            // btOk
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(127, 234);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Подсчет";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btOk.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.btOk.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btOk.Location = new System.Drawing.Point(127, 234);
+            this.btOk.Name = "btOk";
+            this.btOk.Size = new System.Drawing.Size(75, 23);
+            this.btOk.TabIndex = 6;
+            this.btOk.Text = "Подсчет";
+            this.btOk.UseVisualStyleBackColor = true;
+            this.btOk.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // btCancel
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(46, 234);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 7;
-            this.button2.Text = "Отмена";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btCancel.Location = new System.Drawing.Point(46, 234);
+            this.btCancel.Name = "btCancel";
+            this.btCancel.Size = new System.Drawing.Size(75, 23);
+            this.btCancel.TabIndex = 7;
+            this.btCancel.Text = "Отмена";
+            this.btCancel.UseVisualStyleBackColor = true;
+            this.btCancel.Click += new System.EventHandler(this.button2_Click);
             // 
-            // numericUpDown3
+            // nudAdd
             // 
-            this.numericUpDown3.Location = new System.Drawing.Point(118, 195);
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(70, 20);
-            this.numericUpDown3.TabIndex = 5;
-            this.numericUpDown3.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            this.nudAdd.Location = new System.Drawing.Point(118, 195);
+            this.nudAdd.Name = "nudAdd";
+            this.nudAdd.Size = new System.Drawing.Size(70, 20);
+            this.nudAdd.TabIndex = 5;
+            this.nudAdd.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // label6
             // 
@@ -170,22 +170,22 @@
             // 
             // CountKids
             // 
-            this.AcceptButton = this.button1;
+            this.AcceptButton = this.btOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.button2;
+            this.CancelButton = this.btCancel;
             this.ClientSize = new System.Drawing.Size(214, 269);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.numericUpDown3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.nudAdd);
+            this.Controls.Add(this.btCancel);
+            this.Controls.Add(this.btOk);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.numericUpDown2);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.numericUpDown1);
+            this.Controls.Add(this.nudKilled);
+            this.Controls.Add(this.tbAlive);
+            this.Controls.Add(this.nudDead);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -198,9 +198,9 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Подсчет гнездовых";
             this.Load += new System.EventHandler(this.CountKids_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDead)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudKilled)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudAdd)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -210,15 +210,15 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.NumericUpDown nudDead;
+        private System.Windows.Forms.TextBox tbAlive;
+        private System.Windows.Forms.NumericUpDown nudKilled;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.NumericUpDown numericUpDown3;
+        private System.Windows.Forms.Button btOk;
+        private System.Windows.Forms.Button btCancel;
+        private System.Windows.Forms.NumericUpDown nudAdd;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox comboBox1;
     }

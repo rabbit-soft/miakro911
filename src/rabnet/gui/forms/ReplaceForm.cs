@@ -226,7 +226,8 @@ namespace rabnet
             _dataSet.Columns.Add("Статус", typeof(string));
             _dataSet.Columns.Add("Гнездовье", typeof(bool));
             dataGridView1.DataSource = _dataSet;
-            dataGridView1.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            //dataGridView1.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridView1.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             cbFilter.Tag = 1;
             cbFilter.SelectedIndex = 0;
             cbFilter.Tag = 0;
@@ -366,6 +367,9 @@ namespace rabnet
         /// <param name="reget">Заполнять ли данными DataGridView</param>
         public void update(bool reget)
         {
+            int selectedRow = -1;
+            if (dataGridView1.SelectedRows.Count != 0)
+                selectedRow = dataGridView1.SelectedRows[0].Index; 
             globalError = false;
             _dataSet.Rows.Clear();
             if (reget)
@@ -413,6 +417,9 @@ namespace rabnet
 //                action = Action.NONE;
                 btSeparate.Enabled = btChangeAddresses.Enabled = btSeparateByOne.Enabled=noboys;
             }
+            if (selectedRow != -1)            
+                dataGridView1.CurrentCell = dataGridView1[0, selectedRow];
+            
         }
 
         private RP rp(int idx)
@@ -462,7 +469,7 @@ namespace rabnet
             DataRow rw = _dataSet.Rows[e.RowIndex];
             RP r = _replaceList[e.RowIndex];
             r.curaddress = (string)rw[PLACEFIELD];
-            if (r.address == r.curaddress)
+            if (e.ColumnIndex == PLACEFIELD && r.address == r.curaddress)
                 return;
             r.canHaveNest = canHaveNest(e.RowIndex);
             if (!r.canHaveNest)

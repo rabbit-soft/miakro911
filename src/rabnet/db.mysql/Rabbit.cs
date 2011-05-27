@@ -841,8 +841,8 @@ WHERE r_id={4:d};", farm, tier_id, sec, ntr,rabbit);
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"INSERT INTO rabbits
 (r_parent,r_father,r_mother,r_name,r_surname,r_secname,r_sex,r_bon,r_okrol,r_breed,r_rate,r_group,
-r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date,r_notes,r_vaccine_end) SELECT 
-{1:d},r_father,r_mother,0,r_surname,r_secname,r_sex,r_bon,r_okrol,r_breed,r_rate,{2:d},
+r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date,r_notes,r_vaccine_end) 
+SELECT {1:d},r_father,r_mother,0,r_surname,r_secname,r_sex,r_bon,r_okrol,r_breed,r_rate,{2:d},
 r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date,r_notes,r_vaccine_end
 FROM rabbits WHERE r_id={0:d};", rabbit,mom,count), sql);
             cmd.ExecuteNonQuery();
@@ -939,12 +939,23 @@ FROM rabbits WHERE r_id={0:d};", rabbit,mom,count), sql);
 
         public static void countKids(MySqlConnection sql,int rid,int dead,int killed,int added,int yid)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE rabbits SET 
+            /*MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE rabbits SET 
 r_group=r_group-{0:d}-{1:d}+{2:d},r_rate=r_rate-{4:d} WHERE r_parent={3:d} AND r_id={5:d};",dead,killed,added,rid,killed+dead,yid), sql);
             cmd.ExecuteNonQuery();
             cmd.CommandText = String.Format(@"UPDATE fucks SET 
 f_dead=f_dead+{0:d},f_killed=f_killed+{1:d},f_added=f_added+{2:d} WHERE f_rabid={3:d} AND f_last=1;",
                      dead,killed,added,rid);
+            cmd.ExecuteNonQuery();*/
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE rabbits SET 
+r_group=r_group+{0:d} WHERE r_parent={1:d} AND r_id={2:d};", added, rid, yid), sql);
+            cmd.ExecuteNonQuery();
+
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_rate={0:d} WHERE r_id={1:d};",dead+killed,rid);
+            cmd.ExecuteNonQuery();
+
+            cmd.CommandText = String.Format(@"UPDATE fucks SET 
+                f_dead=f_dead+{0:d},f_killed=f_killed+{1:d},f_added=f_added+{2:d} 
+                WHERE f_rabid={3:d} AND f_last=1;",dead, killed, added, rid);
             cmd.ExecuteNonQuery();
         }
 
