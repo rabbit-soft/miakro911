@@ -248,7 +248,7 @@
 			</attributes>
 		</asminfo>
 		<copy file="${curdir}/mia_conv/rabnet_db_fmt.sql" tofile="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
-		<csc target="winexe" output="${bin_dir}/Tools/mia_conv.exe" win32icon="${curdir}/mia_conv/icon_yell_red.ico" define="${compile_flag}">
+		<csc target="winexe" output="${bin_dir}/Tools/mia_conv.exe" win32icon="${curdir}/mia_conv/icon_yell_red.ico" define="${compile_flag}" optimize="true">
 			<sources>
 				<include name="${curdir}/mia_conv/tmp/*.cs"/>
 				<include name="${curdir}/mia_conv/*.cs"/>
@@ -270,7 +270,7 @@
 	<target name="rabnet_demo" description="make rabnet application" depends="pickers,db.mysql,engine,gui"/>
 
 	<target name="reportInterface" description="contain Interface for ReportPlugIns">
-		<csc target="library" output="${bin_dir}/RabNet/ReportInterface.dll" define="${compile_flag}">
+		<csc target="library" output="${bin_dir}/RabNet/ReportInterface.dll" define="${compile_flag}" optimize="true">
 			<sources>
 				<include name="${curdir}/rabnet/ReportPlugIns/ReportInterface/*.cs"/>
 				<include name="${curdir}/rabnet/ReportPlugIns/ReportInterface/Properties/*.cs"/>
@@ -279,7 +279,7 @@
 	</target>
 	
 	<target name="pickers" description="pickers library for rabnet">
-		<csc target="library" output="${bin_dir}/RabNet/Pickers.dll" define="${compile_flag}">
+		<csc target="library" output="${bin_dir}/RabNet/Pickers.dll" define="${compile_flag}" optimize="true">
 			<sources>
 				<include name="${curdir}/libs/pickers/*.cs"/>
 				<include name="${curdir}/libs/pickers/ComboBoxAppearance/*.cs"/>
@@ -289,7 +289,7 @@
 	</target>
 
 	<target name="db.mysql" description="mysql data layer">
-		<csc target="library" output="${bin_dir}/RabNet/db.mysql.dll" define="${compile_flag}">
+		<csc target="library" output="${bin_dir}/RabNet/db.mysql.dll" define="${compile_flag}" optimize="true">
 			<sources>
 				<include name="${curdir}/rabnet/db.mysql/*.cs"/>
 				<include name="${curdir}/rabnet/db.mysql/Properties/*.cs"/>
@@ -302,7 +302,7 @@
 	</target>
 
 	<target name="engine" description="engine">
-		<csc target="library" output="${bin_dir}/RabNet/engine.dll" define="${compile_flag}">
+		<csc target="library" output="${bin_dir}/RabNet/engine.dll" define="${compile_flag}" optimize="true">
 			<sources>
 				<include name="${curdir}/rabnet/engine/*.cs"/>
 				<include name="${curdir}/rabnet/engine/Properties/*.cs"/>
@@ -316,7 +316,7 @@
 	</target>
 
 	<target name="gui_genetics" description="rabnet gui genetics">
-		<csc target="library" output="${bin_dir}/Genetics/gui_genetics.dll" define="${compile_flag}">
+		<csc target="library" output="${bin_dir}/Genetics/gui_genetics.dll" define="${compile_flag}" optimize="true">
 			<sources>
 				<include name="${curdir}/rabnet/gui_genetics/*.cs"/>
 				<include name="${curdir}/rabnet/gui/Engine.cs"/>
@@ -350,7 +350,7 @@
 				<attribute type="AssemblyVersionAttribute" value="${fullver}" />
 			</attributes>
 		</asminfo>
-		<csc target="winexe" output="${bin_dir}/RabDump/rabdump.exe" win32icon="${curdir}/rabdump/icon_white.ico"  define="${compile_flag}">
+		<csc target="winexe" output="${bin_dir}/RabDump/rabdump.exe" win32icon="${curdir}/rabdump/icon_white.ico" define="${compile_flag}" optimize="true">
 			<sources>
 				<include name="${curdir}/rabdump/*.cs"/>
 				<include name="${curdir}/rabdump/Forms/*.cs"/>
@@ -384,7 +384,7 @@
 				<attribute type="AssemblyVersionAttribute" value="${fullver}" />
 			</attributes>
 		</asminfo>	
-		<csc target="winexe" output="${bin_dir}/RabNet/rabnet.exe" win32icon="${curdir}/rabnet/gui/icon_green.ico" define="${compile_flag}">
+		<csc target="winexe" output="${bin_dir}/RabNet/rabnet.exe" win32icon="${curdir}/rabnet/gui/icon_green.ico" define="${compile_flag}" optimize="true">
 			<sources>
 				<include name="${curdir}/rabnet/gui/Program.cs"/>
 				<include name="${curdir}/rabnet/gui/classes/*.cs"/>
@@ -534,7 +534,7 @@
 				<attribute type="AssemblyVersionAttribute" value="${fullver}" />
 			</attributes>
 		</asminfo>
-		<csc target="winexe" output="${tools_dir}/updater.exe" win32icon="${curdir}/updater/icon_update_white.ico" >
+		<csc target="winexe" output="${tools_dir}/updater.exe" win32icon="${curdir}/updater/icon_update_white.ico" optimize="true">
 			<sources>
 				<include name="${curdir}/updater/*.cs"/>
 				<include name="${curdir}/updater/tmp/*.cs"/>
@@ -555,7 +555,7 @@
 		<mkdir dir="${bin_dir}/Butcher"/>
 		<copy file="${mysql.ass}" tofile="${bin_dir}/Butcher/${mysql.lib}" />
 		<copy file="${cas.lp16.path}" tofile="${bin_dir}/Butcher/${cas.lp16.name}" />
-		<csc target="winexe" win32icon="${curdir}/butcher/icon_blue.ico" output="${bin_dir}/Butcher/butcher.exe" define="RELEASE">
+		<csc target="winexe" win32icon="${curdir}/butcher/icon_blue.ico" output="${bin_dir}/Butcher/butcher.exe" define="RELEASE" optimize="true">
 			<sources>
 				<include name="${curdir}/butcher/*.cs"/>
 				<include name="${curdir}/butcher/Properties/*.cs"/>
@@ -581,7 +581,7 @@
 	
 	<target name="testplugin" description="test report plugin">
 		<copy file="${curdir}/rabnet/ReportPlugIns/TestPlugIn/test.rdl" tofile="${plugin_dir}/TestPlugIn.test.rdl"/>
-		<csc target="library" output="${plugin_dir}/TestPlugIn.dll" define="RELEASE">
+		<csc target="library" output="${plugin_dir}/TestPlugIn.dll" define="RELEASE" optimize="true">
 			<sources>
 				<include name="${curdir}/rabnet/ReportPlugIns/TestPlugIn/*.cs"/>
 				<include name="${curdir}/rabnet/ReportPlugIns/TestPlugIn/Properties/*.cs"/>
