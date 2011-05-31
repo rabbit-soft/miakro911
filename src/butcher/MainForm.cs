@@ -201,7 +201,7 @@ namespace butcher
             if (!logPan.Visible) return;
             if (e.KeyChar == 100 || e.KeyChar == 0x68 || e.KeyChar == 0x412 ||e.KeyChar == 0x432)
             {
-                (new FarmListForm()).ShowDialog();
+                (new rabnet.FarmListForm()).ShowDialog();
                 logPan.UpdateFarms();
             }
 #if DEBUG

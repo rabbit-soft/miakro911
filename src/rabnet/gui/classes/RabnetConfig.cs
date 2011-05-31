@@ -12,7 +12,7 @@ public static class RabnetConfig
     /// <summary>
     /// Представлет собой Параметры с подключениями к БД
     /// </summary>
-    
+    [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
     public class sParams
     {
         public readonly string Host;
@@ -97,6 +97,7 @@ public static class RabnetConfig
 
 #region arcjobs
 
+    [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
     public class rabArchiveJob
     {
         public string Guid;
@@ -282,6 +283,7 @@ public static class RabnetConfig
 
 #region datasources
 
+    [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
     public class rabDataSource
     {
         /// <summary>

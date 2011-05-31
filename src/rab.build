@@ -564,15 +564,23 @@
 				<include name="${curdir}/butcher/*.cs"/>
 				<include name="${curdir}/butcher/Properties/*.cs"/>
 				<include name="${curdir}/rabnet/gui/classes/RabnetConfig.cs"/>
+				<include name="${curdir}/rabnet/gui/forms/FarmChangeForm.cs"/>
+				<include name="${curdir}/rabnet/gui/forms/FarmChangeForm.Designer.cs"/>
+				<include name="${curdir}/rabnet/gui/forms/FarmListForm.cs"/>
+				<include name="${curdir}/rabnet/gui/forms/FarmListForm.Designer.cs"/>
 			</sources>
 			<resources>
 				<include name="${curdir}/butcher/Properties/*.resx"/>
 				<include name="${curdir}/butcher/*.resx"/>
 				<include name="${curdir}/butcher/image/*.*"/>
+				<include name="${curdir}/rabnet/gui/forms/FarmChangeForm.resx"/>
+				<include name="${curdir}/rabnet/gui/forms/FarmListForm.resx"/>
 			</resources>
 			<references>
+			log4net.ass
 				<include name="${bin_dir}/Butcher/${mysql.lib}"/>	
 				<include name="${bin_dir}/Butcher/${cas.lp16.name}"/>
+				<include name="${log4net.ass}"/>
 			</references>
 		</csc>
 	</target>

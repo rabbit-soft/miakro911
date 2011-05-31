@@ -185,7 +185,7 @@ namespace rabnet
                 Process p = Process.Start(prg, prms);
                 p.WaitForExit();
                 if (p.ExitCode != 0)             
-                    throw new ApplicationException("Ошибка создания БД. " +miaExitCode.GetText(p.ExitCode));
+                    throw new ApplicationException("Ошибка создания БД. " + miaExitCode.GetText(p.ExitCode));
                 
             }
             catch(Exception ex)
