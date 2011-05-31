@@ -568,7 +568,7 @@
 				<include name="${curdir}/rabnet/gui/forms/FarmChangeForm.Designer.cs"/>
 				<include name="${curdir}/rabnet/gui/forms/FarmListForm.cs"/>
 				<include name="${curdir}/rabnet/gui/forms/FarmListForm.Designer.cs"/>
-				<include name="${curdir}/rabnet/gui/classes/miaExitCode.cs"/>
+				<include name="${curdir}/mia_conv/miaExitCode.cs"/>
 			</sources>
 			<resources>
 				<include name="${curdir}/butcher/Properties/*.resx"/>
