@@ -27,7 +27,7 @@ namespace butcher
         {
             InitializeComponent();
             npLogin.AddControl(tbPassword);
-            RabnetConfigHandler.Create();
+            RabnetConfig.LoadDataSources();
             UpdateFarms();
         }
 
@@ -38,12 +38,12 @@ namespace butcher
         {
             cbFarm.Items.Clear();
             cbUser.Items.Clear();
-            foreach (RabnetConfigHandler.dataSource ds in RabnetConfigHandler.dataSources)
+            foreach (RabnetConfig.rabDataSource ds in RabnetConfig.DataSources)
             {
-                if (!ds.hidden)
+                if (!ds.Hidden)
                 {
-                    cbFarm.Items.Add(ds.name);
-                    if (ds.def)
+                    cbFarm.Items.Add(ds.Name);
+                    if (ds.Default)
                     {
                         cbFarm.SelectedIndex = cbFarm.Items.Count - 1;
                         cbFarm_SelectedIndexChanged(null, null);
@@ -61,12 +61,12 @@ namespace butcher
             try
             {
                 Application.DoEvents();
-                RabnetConfigHandler.dataSource xs = null;
-                foreach (RabnetConfigHandler.dataSource d in RabnetConfigHandler.dataSources)
-                    if (d.name == cbFarm.Text)
+                RabnetConfig.rabDataSource xs = null;
+                foreach (RabnetConfig.rabDataSource d in RabnetConfig.DataSources)
+                    if (d.Name == cbFarm.Text)
                         xs = d;
                 if (xs == null) return;
-                if (!DBproc.Connect(xs.param))
+                if (!DBproc.Connect(xs.Params.ToString()))
                     throw new Exception("Не удалось подключиться к Базе Данных");
                 cbUser.Items.Clear();
                 List<sUser> usrs = DBproc.GetUsers();//Получаем список юзеров
@@ -75,11 +75,11 @@ namespace butcher
                     foreach (sUser s in usrs)
                     {
                         cbUser.Items.Add(s.Name);
-                        if (xs.defuser != "" && xs.defuser == s.Name)
+                        if (xs.DefUser != "" && xs.DefUser == s.Name)
                         {
                             cbUser.SelectedIndex = cbUser.Items.Count - 1;
-                            if (xs.defpassword != "")                          
-                                tbPassword.Text = xs.defpassword;                       
+                            if (xs.DefPassword != "")                          
+                                tbPassword.Text = xs.DefPassword;                       
                             tbPassword.Focus();
                             tbPassword.SelectAll();
                         }
@@ -150,7 +150,7 @@ namespace butcher
             if (DBproc.CheckUser(cbUser.Text, tbPassword.Text))
             {
                 this.Hide();
-                RabnetConfigHandler.dataSources[cbFarm.SelectedIndex].setDefault(cbUser.Text, tbPassword.Text);
+                RabnetConfig.DataSources[cbFarm.SelectedIndex].setDefault(cbUser.Text, tbPassword.Text);
                 SuccessfulLogin(sender,e);
             }
             else
@@ -174,7 +174,7 @@ namespace butcher
         }
     }
 
-    [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
+    /*[System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
     public static class RabnetConfigHandler 
     {
         public class dataSource
@@ -220,6 +220,7 @@ namespace butcher
         }
 
         public static List<dataSource> dataSources = new List<dataSource>();
+
         public static object Create()
         {
             RegistryKey rKey = Registry.CurrentUser;
@@ -282,11 +283,11 @@ namespace butcher
             rabnetds.SectionInformation.SetRawXml(rnds.OuterXml);
             conf.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("rabnetds");
-            */
+            *
             RegistryKey rKey = Registry.CurrentUser;
             rKey = rKey.CreateSubKey("Software\\9-bits\\Miakro\\butcher");
             rKey.SetValue("rabnets",xml.InnerXml);
         
         }
-    }
+    }*/
 }

@@ -175,7 +175,6 @@ namespace rabdump
         {
             notifyIcon1.ShowBalloonTip(5000,"Резервирование",j.Name,ToolTipIcon.Info);
             ArchiveJobThread.MakeJob(j);
-
         }
 
         private void restMenuItem_Click(object sender, EventArgs e)

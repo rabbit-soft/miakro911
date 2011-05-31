@@ -13,7 +13,7 @@ namespace rabdump
     {
         private const String Password="ns471lbNITfq3";
         public const int SplitNames = 6;
-        private readonly ArchiveJob _j=null;
+        private readonly ArchiveJob _j = null;
         private readonly ArchiveJobThread _jobber=null;
         private static readonly ILog log = LogManager.GetLogger(typeof(ArchiveJobThread));
         readonly String _tmppath = "";
@@ -58,6 +58,10 @@ namespace rabdump
             return cnt;
         }
 
+        /// <summary>
+        /// Делает проверку на Лимит Количества и Размера резервных копий.
+        /// Удаляет саммые ранние если РК выходят за рамки.
+        /// </summary>
         public void CheckLimits()
         {
             int sz=0;
@@ -97,7 +101,6 @@ namespace rabdump
                 (db.User==""?"":"-u "+db.User),(db.Password==""?"":"--password="+db.Password));
             try
             {
-
                 ProcessStartInfo inf = new ProcessStartInfo(md, pr);
                 
                 inf.UseShellExecute = false;
@@ -160,7 +163,7 @@ namespace rabdump
 
         public void Run()
         {
-            log.Debug("Making dump for "+_j.Name);
+            log.Debug("Making dump for " + _j.Name);
             if (_j.DB == DataBase.AllDataBases)
                 foreach (DataBase db in Options.Get().Databases)
                     DumpDB(db);

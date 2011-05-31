@@ -12,7 +12,7 @@ namespace butcher
 {
     public partial class FarmChangeForm : Form
     {
-        private RabnetConfigHandler.dataSource ds = null;
+        private RabnetConfig.rabDataSource ds = null;
         private bool noFarms = false;
         private bool _miniMode;
         public FarmChangeForm()
@@ -60,7 +60,7 @@ namespace butcher
             _miniMode = mini;
         }
 
-        public FarmChangeForm(RabnetConfigHandler.dataSource ds):this()
+        public FarmChangeForm(RabnetConfig.rabDataSource ds):this()
         {
             this.ds = ds;
             if (ds == null)
@@ -71,10 +71,10 @@ namespace butcher
             }
             else
             {
-                fname.Text = ds.name;
-                fsavepswd.Checked = ds.savepassword;
+                fname.Text = ds.Name;
+                fsavepswd.Checked = ds.SavePassword;
                 fhost.Text = fdb.Text = fuser.Text = fpswd.Text = "";
-                foreach(String s in ds.param.Split(';'))
+                foreach(String s in ds.Params.ToString().Split(';'))
                 {
                     String[] prm = s.Split('=');
                     switch (prm[0].ToLower())
@@ -104,17 +104,19 @@ namespace butcher
             }
             if (ds!=null)
             {
-                ds.name = fname.Text;
-                ds.savepassword = fsavepswd.Checked;
-                ds.param = constr;
-            }else{
-                RabnetConfigHandler.dataSource mds=new RabnetConfigHandler.dataSource(fname.Text,"db.mysql",constr);
-                mds.savepassword = fsavepswd.Checked;
-                RabnetConfigHandler.dataSources.Add(mds);
+                ds.Name = fname.Text;
+                ds.SavePassword = fsavepswd.Checked;
+                ds.Params = new RabnetConfig.sParams(constr);
+            }
+            else
+            {
+                RabnetConfig.rabDataSource mds = new RabnetConfig.rabDataSource(System.Guid.NewGuid().ToString(),fname.Text,"db.mysql",constr);
+                mds.SavePassword = fsavepswd.Checked;
+                RabnetConfig.DataSources.Add(mds);
             }
             try
             {
-                RabnetConfigHandler.save();
+                RabnetConfig.SaveDataSources();
             }
             catch(Exception exp)
             {

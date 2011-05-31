@@ -349,13 +349,14 @@ INSERT INTO options(o_name,o_subname,o_value) VALUES
 UPDATE tiers SET t_busy2=NULL,t_busy3=NULL,t_busy4=NULL WHERE t_type='female';
 UPDATE tiers SET t_busy3=NULL,t_busy4=NULL WHERE t_type='dfemale' OR t_type='jurta' OR t_type='vertep' OR t_type='barin' OR t_type='cabin';
 UPDATE tiers SET t_busy4=NULL WHERE t_type='complex';
+
 INSERT INTO deadreasons(d_name) VALUES
 ('Списан из старой программы'),
-('объединение'),
+('Объединение'),
 ('На убой'),
 ('Продажа племенного поголовья'),
-('Естественный отход'),
-('Падеж');
+('Падеж'),
+('Падеж при подсчете');
 INSERT INTO logtypes(l_name,l_params) VALUES
 ('привоз','$r в $p'),
 ('пересадка','$r  ->  $A'),
@@ -425,11 +426,6 @@ INSERT INTO `zones` VALUES
 (54000,'Новосибирск','Нск'),
 (62001,'Касимов','Ксм'),
 (73000,'Ульяновск','Улн');
-
-
-
-
-
 
 #views
 DROP VIEW IF EXISTS allrabbits;

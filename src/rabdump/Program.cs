@@ -1,4 +1,7 @@
 ﻿//#define PROTECTED
+#if DEBUG
+    #define NOCATCH
+#endif
 using System;
 using System.Windows.Forms;
 #if PROTECTED
@@ -20,8 +23,10 @@ namespace rabdump
             {
                 if (new_instance)
                 {
+#if !NOCATCH
                     try
                     {
+#endif
                         Application.EnableVisualStyles();
                         Application.SetCompatibleTextRenderingDefault(false);
 #if PROTECTED
@@ -56,13 +61,16 @@ namespace rabdump
                             {
                                 exit = false;
                             }
-                        } while (!exit);
+                        } 
+                        while (!exit);
 #endif
+#if !NOCATCH
                     }
                     catch (Exception e)
                     {
                         MessageBox.Show(e.Message + e.StackTrace);
                     }
+#endif
                 }
             }
         }

@@ -13,20 +13,23 @@ namespace rabnet
 {
     public partial class FarmChangeForm : Form
     {
-        protected static readonly ILog log = LogManager.GetLogger(typeof(LoginForm));
-        private RabnetConfigHandler.dataSource ds = null;
+        protected static readonly ILog log = LogManager.GetLogger(typeof(FarmChangeForm));
+        private RabnetConfig.rabDataSource ds = null;
         private bool noFarms = false;
-        private bool _miniMode;
+
+        public bool MiniMode = false;
+
         public FarmChangeForm()
         {
             InitializeComponent();
             Size = new Size(325, 425);
-            _miniMode = false;
+            MiniMode = false;
             panel2.Visible = false;
             panel2.Left = 14;
             panel2.Top = 44;
-            ChangeMode(_miniMode);
+            ChangeMode(MiniMode);
         }
+
         public FarmChangeForm(bool noFarms): this()
         {
             this.noFarms = noFarms;
@@ -36,9 +39,9 @@ namespace rabnet
             {
                 fname.Text = "Основная ферма";
                 fhost.Text="localhost";
-                _miniMode = true;
+                MiniMode = true;
             }
-            ChangeMode(_miniMode);
+            ChangeMode(MiniMode);
         }
 
         private void ChangeMode(bool mini)
@@ -59,24 +62,24 @@ namespace rabnet
                 button6.Text = "Меньше";
                 fhost.Text = fhostm.Text;
             }
-            _miniMode = mini;
+            MiniMode = mini;
         }
 
-        public FarmChangeForm(RabnetConfigHandler.dataSource ds):this()
+        public FarmChangeForm(RabnetConfig.rabDataSource ds):this()
         {
             this.ds = ds;
             if (ds == null)
             {
                 groupBox2.Enabled = true;
-                _miniMode = true;
-                ChangeMode(_miniMode);
+                //MiniMode = true;
+                //ChangeMode(MiniMode);
             }
             else
             {
-                fname.Text = ds.name;
-                fsavepswd.Checked = ds.savepassword;
+                fname.Text = ds.Name;
+                fsavepswd.Checked = ds.SavePassword;
                 fhost.Text = fdb.Text = fuser.Text = fpswd.Text = "";
-                foreach(String s in ds.param.Split(';'))
+                foreach(String s in ds.Params.ToString().Split(';'))
                 {
                     String[] prm = s.Split('=');
                     switch (prm[0].ToLower())
@@ -90,13 +93,14 @@ namespace rabnet
                         case "database": fdb.Text = prm[1]; break;
                     }
                 }
+
             }
         }
 
         private void btOk_Click(object sender, EventArgs e)
         {
             String constr;
-            if (_miniMode)
+            if (MiniMode)
             {
                 constr = "host=" + fhostm.Text + ";database=" + fdb.Text + ";uid=" + fuser.Text + ";pwd=" + fpswd.Text + ";charset=utf8";
             }
@@ -104,19 +108,21 @@ namespace rabnet
             {
                 constr = "host=" + fhost.Text + ";database=" + fdb.Text + ";uid=" + fuser.Text + ";pwd=" + fpswd.Text + ";charset=utf8";
             }
-            if (ds!=null)
+            if (ds != null)
             {
-                ds.name = fname.Text;
-                ds.savepassword = fsavepswd.Checked;
-                ds.param = constr;
-            }else{
-                RabnetConfigHandler.dataSource mds=new RabnetConfigHandler.dataSource(fname.Text,"db.mysql",constr);
-                mds.savepassword = fsavepswd.Checked;
-                RabnetConfigHandler.dataSources.Add(mds);
+                ds.Name = fname.Text;
+                ds.SavePassword = fsavepswd.Checked;
+                ds.Params = new RabnetConfig.sParams(constr);
+            }
+            else
+            {
+                RabnetConfig.rabDataSource mds = new RabnetConfig.rabDataSource(System.Guid.NewGuid().ToString(),fname.Text,"db.mysql",constr);
+                mds.SavePassword = fsavepswd.Checked;
+                RabnetConfig.DataSources.Add(mds);
             }
             try
             {
-                RabnetConfigHandler.save();
+                RabnetConfig.SaveDataSources();
             }
             catch(Exception exp)
             {
@@ -200,7 +206,7 @@ namespace rabnet
         {
             if (noFarms)
             {
-                if (_miniMode)
+                if (MiniMode)
                 {
                     fhostm.Text = "localhost";
                     fhostm.Focus();
@@ -217,7 +223,7 @@ namespace rabnet
 
         private void button6_Click(object sender, EventArgs e)
         {
-            ChangeMode(!_miniMode);
+            ChangeMode(!MiniMode);
         }
 
     }

@@ -43,7 +43,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <DocumentationFile>bin\Debug\rabnet.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -113,6 +114,7 @@
     <Compile Include="classes\Demo.cs" />
     <Compile Include="classes\ExcelMaker.cs" />
     <Compile Include="classes\PlugInsClass.cs" />
+    <Compile Include="classes\RabnetConfig.cs" />
     <Compile Include="forms\DeadReasonChange.cs">
       <SubType>Form</SubType>
     </Compile>

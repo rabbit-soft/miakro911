@@ -34,9 +34,9 @@
             this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btAddFarm = new System.Windows.Forms.Button();
+            this.btChangeFarm = new System.Windows.Forms.Button();
+            this.btDelFarm = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listView1
@@ -89,37 +89,37 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // btAddFarm
             // 
-            this.button2.Location = new System.Drawing.Point(12, 252);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Добавить";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btAddFarm.Location = new System.Drawing.Point(12, 252);
+            this.btAddFarm.Name = "btAddFarm";
+            this.btAddFarm.Size = new System.Drawing.Size(75, 23);
+            this.btAddFarm.TabIndex = 2;
+            this.btAddFarm.Text = "Добавить";
+            this.btAddFarm.UseVisualStyleBackColor = true;
+            this.btAddFarm.Click += new System.EventHandler(this.button2_Click);
             // 
-            // button3
+            // btChangeFarm
             // 
-            this.button3.Enabled = false;
-            this.button3.Location = new System.Drawing.Point(93, 252);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Изменить";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btChangeFarm.Enabled = false;
+            this.btChangeFarm.Location = new System.Drawing.Point(93, 252);
+            this.btChangeFarm.Name = "btChangeFarm";
+            this.btChangeFarm.Size = new System.Drawing.Size(75, 23);
+            this.btChangeFarm.TabIndex = 3;
+            this.btChangeFarm.Text = "Изменить";
+            this.btChangeFarm.UseVisualStyleBackColor = true;
+            this.btChangeFarm.Click += new System.EventHandler(this.button3_Click);
             // 
-            // button4
+            // btDelFarm
             // 
-            this.button4.Enabled = false;
-            this.button4.Location = new System.Drawing.Point(174, 252);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 4;
-            this.button4.Text = "Удалить";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.btDelFarm.Enabled = false;
+            this.btDelFarm.Location = new System.Drawing.Point(174, 252);
+            this.btDelFarm.Name = "btDelFarm";
+            this.btDelFarm.Size = new System.Drawing.Size(75, 23);
+            this.btDelFarm.TabIndex = 4;
+            this.btDelFarm.Text = "Удалить";
+            this.btDelFarm.UseVisualStyleBackColor = true;
+            this.btDelFarm.Click += new System.EventHandler(this.button4_Click);
             // 
             // FarmListForm
             // 
@@ -127,9 +127,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button1;
             this.ClientSize = new System.Drawing.Size(578, 287);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btDelFarm);
+            this.Controls.Add(this.btChangeFarm);
+            this.Controls.Add(this.btAddFarm);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.listView1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -148,9 +148,9 @@
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btAddFarm;
+        private System.Windows.Forms.Button btChangeFarm;
+        private System.Windows.Forms.Button btDelFarm;
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.ColumnHeader columnHeader5;
     }

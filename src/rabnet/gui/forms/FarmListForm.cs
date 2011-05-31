@@ -20,12 +20,12 @@ namespace rabnet
         {
             listView1.Tag = 1;
             listView1.Items.Clear();
-            foreach (RabnetConfigHandler.dataSource ds in RabnetConfigHandler.dataSources)
+            foreach (RabnetConfig.rabDataSource ds in RabnetConfig.DataSources)
             {
-                ListViewItem li = listView1.Items.Add(ds.name);
-                li.Checked = !ds.hidden;
-                li.SubItems.Add(ds.savepassword ? "ДА" : "нет");
-                li.SubItems.Add(ds.param);
+                ListViewItem li = listView1.Items.Add(ds.Name);
+                li.Checked = !ds.Hidden;
+                li.SubItems.Add(ds.SavePassword ? "ДА" : "нет");
+                li.SubItems.Add(ds.Params.ToString());
                 li.Tag = ds;
             }
             listView1.Tag = 0;
@@ -34,38 +34,40 @@ namespace rabnet
         private void button1_Click(object sender, EventArgs e)
         {
             foreach (ListViewItem li in listView1.Items)
-                ((RabnetConfigHandler.dataSource)li.Tag).hidden = !li.Checked;
-            RabnetConfigHandler.save();
+                ((RabnetConfig.rabDataSource)li.Tag).Hidden = !li.Checked;
+            RabnetConfig.SaveDataSources();
             Close();
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            button4.Enabled=button3.Enabled = listView1.SelectedItems.Count == 1;
+            btDelFarm.Enabled=btChangeFarm.Enabled = listView1.SelectedItems.Count == 1;
         }
 
         private void listView1_DoubleClick(object sender, EventArgs e)
         {
-            button2.PerformClick();
+            btAddFarm.PerformClick();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count != 1) return;
-            new FarmChangeForm((RabnetConfigHandler.dataSource)listView1.SelectedItems[0].Tag).ShowDialog();
+            new FarmChangeForm((RabnetConfig.rabDataSource)listView1.SelectedItems[0].Tag).ShowDialog();
             updateList();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            new FarmChangeForm(null).ShowDialog();
+            FarmChangeForm dlg = new FarmChangeForm(null);
+            dlg.MiniMode = listView1.Items.Count == 0;
+            dlg.ShowDialog();
             updateList();
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count != 1) return;
-            RabnetConfigHandler.dataSources.Remove((RabnetConfigHandler.dataSource)listView1.SelectedItems[0].Tag);
+            RabnetConfig.DataSources.Remove((RabnetConfig.rabDataSource)listView1.SelectedItems[0].Tag);
             updateList();
         }
     }

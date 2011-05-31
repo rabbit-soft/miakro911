@@ -525,6 +525,8 @@ r_status,r_flags,r_event_date,r_breed
 
     class RabbitGetter
     {
+        public enum RAB_TYPE { LIVE, DEAD, ANY }
+
         public static OneRabbit fillRabbit(MySqlDataReader rd)
         {
             OneRabbit r = new OneRabbit(rd.GetInt32("r_id"), rd.GetString("r_sex"), rd.GetDateTime("r_born"), rd.GetInt32("r_rate"),
@@ -538,8 +540,7 @@ r_status,r_flags,r_event_date,r_breed
                 rd.GetString("r_bon"),rd.GetInt32("r_parent"),0,rd.GetDateTime("vac_end"));
             return r;
         }
-
-        public enum RAB_TYPE {LIVE,DEAD,ANY }
+        
         public static bool isDeadRabbit(MySqlConnection con, int rid)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT isdead({0:d});",rid), con);
@@ -550,10 +551,12 @@ r_status,r_flags,r_event_date,r_breed
             rd.Close();
             return dead;
         }
+
         public static OneRabbit GetRabbit(MySqlConnection con, int rid)
         {
             return GetRabbit(con, rid, RAB_TYPE.LIVE);
         }
+
         public static OneRabbit GetRabbit(MySqlConnection con, int rid,RAB_TYPE type)
         {
             if (rid == 0) return null;
@@ -760,6 +763,10 @@ VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d},{1
             return res;
         }
 
+        /// <summary>
+        /// Освобождает клетку, в которой сидел кролик.
+        /// </summary>
+        /// <param name="rabbit">ID кролика, который сидит в клетке</param>
         public static int[] freeTier(MySqlConnection sql,int rabbit)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT r_id,r_farm,r_tier,r_tier_id,
@@ -783,15 +790,17 @@ r_area,t_busy1,t_busy2,t_busy3,t_busy4,m_upper,m_lower,m_id FROM rabbits,tiers,m
             if (tr != 0)
             {
                 cmd.CommandText = String.Format("UPDATE tiers SET t_busy{0:d}=0 WHERE t_id={1:d};", sc + 1, tr);
-                cmd.ExecuteNonQuery();
-                cmd.CommandText = String.Format("select r_id from rabbits where r_farm={0:d} and r_tier={1:d} and r_tier_id={2:d} and r_area={3:d} and r_id<>{4:d} and r_parent=0 limit 1;",frm,tr,tid,sc,rabbit);
+                cmd.ExecuteNonQuery();///Освобождает клетку
+                ///Проверяет наличие кролика в таблице  rabbits с таким же адресом
+                cmd.CommandText = String.Format("SELECT r_id FROM rabbits WHERE r_farm={0:d} AND r_tier={1:d} AND r_tier_id={2:d} AND r_area={3:d} AND r_id<>{4:d} AND r_parent=0 LIMIT 1;", frm, tr, tid, sc, rabbit);
                 rd = cmd.ExecuteReader();
-                if(rd.Read())
+                if (rd.Read())///если имеется, то клетка в таблице tiers заселяется найденным кроликом
                 {
                     cmd.CommandText = String.Format("UPDATE tiers SET t_busy{0:d}={2:d} WHERE t_id={1:d};", sc + 1, tr,rd.GetInt32("r_id"));
                     rd.Close();
                     cmd.ExecuteNonQuery();                    
-                }else rd.Close();
+                }
+                else rd.Close();
                 
             }
             return new int[] { frm, tid, sc, tr };
@@ -877,6 +886,10 @@ FROM rabbits WHERE r_id={0:d};", rabbit,mom,count), sql);
             return r.id;
         }
 
+        /// <summary>
+        /// Освобождает имя
+        /// </summary>
+        /// <param name="rid">ID кролика</param>
         public static void freeName(MySqlConnection sql, int rid)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT r_name FROM rabbits WHERE r_id={0:d};",rid), sql);

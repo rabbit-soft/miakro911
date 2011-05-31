@@ -107,7 +107,7 @@ namespace X_Tools
         /// <summary>
         /// Проверяет есть ли указанный файл, если есть то возвращает имя 'Файл (1)'
         /// </summary>
-        /// <param name="path">Полный путь</param>
+        /// <param name="s">Полный путь</param>
         public static string DuplicateName(string s)
         {
             int i = 1;

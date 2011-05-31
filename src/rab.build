@@ -359,10 +359,14 @@
 				<include name="${curdir}/rabdump/Properties/AssemblyInfo.cs"/>
 				<include name="${curdir}/libs/GRD/*.cs"/>
 				<include name="${curdir}/mia_conv/miaExitCode.cs"/>
+				<include name="${curdir}/rabnet/gui/classes/RabnetConfig.cs"/>
+				<include name="${curdir}/rabnet/gui/forms/FarmChangeForm.cs"/>
+				<include name="${curdir}/rabnet/gui/forms/FarmChangeForm.Designer.cs"/>
 			</sources>
 			<resources>
 				<include name="${curdir}/rabdump/*.resx"/>
 				<include name="${curdir}/rabdump/Forms/*.resx"/>
+				<include name="${curdir}/rabnet/gui/forms/FarmChangeForm.resx"/>
 			</resources>
 			<references>
 				<include name="${bin_dir}/RabDump/${guardantNET.lib}" />
@@ -559,6 +563,7 @@
 			<sources>
 				<include name="${curdir}/butcher/*.cs"/>
 				<include name="${curdir}/butcher/Properties/*.cs"/>
+				<include name="${curdir}/rabnet/gui/classes/RabnetConfig.cs"/>
 			</sources>
 			<resources>
 				<include name="${curdir}/butcher/Properties/*.resx"/>

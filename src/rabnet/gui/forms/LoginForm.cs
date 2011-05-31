@@ -5,10 +5,9 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using System.Configuration;
 using log4net;
-using System.Xml;
 using System.Diagnostics;
+using Microsoft.Win32;
 
 
 namespace rabnet
@@ -17,14 +16,17 @@ namespace rabnet
     {
         public static bool stop = true;
         protected static readonly ILog log = LogManager.GetLogger(typeof(LoginForm));
+
         /// <summary>
         /// Вызывается ли форма для того чтобы редактировать подключения
         /// </summary>
         private bool dbedit=false;
+
         public LoginForm()
         {
             InitializeComponent();
             log.Debug("inited");
+            RabnetConfig.LoadDataSources();
         }
         public LoginForm(bool dbedit):this()
         {
@@ -33,7 +35,7 @@ namespace rabnet
 
         public void readConfig()
         {
-            try
+            /*try
             {
                 ConfigurationManager.GetSection("rabnetds");
             }
@@ -41,14 +43,16 @@ namespace rabnet
             {
                 log.Error("Read config error: "+e.Message);
                 return;
-            }
+            }*/
+
             cbFarm.Items.Clear();
-            foreach (RabnetConfigHandler.dataSource ds in RabnetConfigHandler.dataSources)
+            cbUser.Items.Clear();
+            foreach (RabnetConfig.rabDataSource ds in RabnetConfig.DataSources)
             {
-                if (!ds.hidden)
+                if (!ds.Hidden)
                 {
-                    cbFarm.Items.Add(ds.name);
-                    if (ds.def)
+                    cbFarm.Items.Add(ds.Name);
+                    if (ds.Default)
                     {
                         cbFarm.SelectedIndex = cbFarm.Items.Count - 1;
                         cbFarm_SelectedIndexChanged(null, null);
@@ -56,7 +60,7 @@ namespace rabnet
                 }
             }
 
-/*            MessageBox.Show("Farms -> " + GRD.Instance.GetFarmsCnt().ToString());
+/*          MessageBox.Show("Farms -> " + GRD.Instance.GetFarmsCnt().ToString());
             MessageBox.Show("Genetics -> " + GRD.Instance.GetFlagGenetics().ToString());
             MessageBox.Show("Zootech -> " + GRD.Instance.GetFlagZootech().ToString());
 
@@ -78,12 +82,12 @@ namespace rabnet
             try
             {
                 Application.DoEvents();
-                RabnetConfigHandler.dataSource xs=null;
-                foreach (RabnetConfigHandler.dataSource d in RabnetConfigHandler.dataSources)
-                    if (d.name == cbFarm.Text)
+                RabnetConfig.rabDataSource xs = null;
+                foreach (RabnetConfig.rabDataSource d in RabnetConfig.DataSources)
+                    if (d.Name == cbFarm.Text)
                         xs = d;
                 if (xs == null) return;
-                Engine.get().initEngine(xs.type, xs.param);
+                Engine.get().initEngine(xs.Type, xs.Params.ToString());
                 cbUser.Items.Clear();
                 cbUser.Enabled = false;
                 tbPassword.Enabled = false;
@@ -96,12 +100,12 @@ namespace rabnet
                     {
                         if (s.Group == sUser.Butcher) continue;
                         cbUser.Items.Add(s.Name);
-                        if (xs.defuser != "" && xs.defuser == s.Name)
+                        if (xs.DefUser != "" && xs.DefUser == s.Name)
                         {
                             cbUser.SelectedIndex = cbUser.Items.Count - 1;
-                            if (xs.defpassword != "")
+                            if (xs.DefPassword != "")
                             {
-                                tbPassword.Text = xs.defpassword;
+                                tbPassword.Text = xs.DefPassword;
                             }
                             tbPassword.Focus();
                             tbPassword.SelectAll();
@@ -134,12 +138,12 @@ namespace rabnet
             int uid = Engine.get().setUid(cbUser.Text, tbPassword.Text, cbFarm.Text);
             if (uid != 0)
             {
-                RabnetConfigHandler.dataSources[cbFarm.SelectedIndex].setDefault(cbUser.Text, tbPassword.Text);
+                RabnetConfig.DataSources[cbFarm.SelectedIndex].setDefault(cbUser.Text, tbPassword.Text);
                 
 //                System.Diagnostics.Debug.WriteLine(RabnetConfigHandler.ds[comboBox1.SelectedIndex].getParamHost());
 
 #if !DEMO
-                RabUpdaterClient.Get().SetIP(RabnetConfigHandler.dataSources[cbFarm.SelectedIndex].getParamHost());
+                RabUpdaterClient.Get().SetIP(RabnetConfig.DataSources[cbFarm.SelectedIndex].Params.Host);
                 
                 bool upRes=RabUpdaterClient.Get().CheckUpdate();
                 
@@ -217,12 +221,6 @@ namespace rabnet
             DialogResult = DialogResult.Retry;
         }
 
-
-
-        private void LoginForm_Load(object sender, EventArgs e)
-        {
-        }
-
         private void button3_Click(object sender, EventArgs e)
         {
             Hide();
@@ -256,9 +254,12 @@ namespace rabnet
         }
     }
 
+    /* Первоначальный - хранит данные в rannet.exe.config
     [System.Reflection.Obfuscation(Exclude=true,ApplyToMembers=true)]
     public class RabnetConfigHandler : IConfigurationSectionHandler
     {
+        public static List<dataSource> dataSources = new List<dataSource>();
+
         public class dataSource
         {
             public String name;
@@ -299,9 +300,8 @@ namespace rabnet
                 }
                 return "";
             }
-        }
+        }      
 
-        public static List<dataSource> dataSources = new List<dataSource>();
         public object Create(object parent, object configContext, XmlNode section)
         {
             dataSources.Clear();
@@ -360,5 +360,5 @@ namespace rabnet
             conf.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("rabnetds");
         }
-    }
+    }*/
 }

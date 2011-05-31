@@ -19,7 +19,8 @@ namespace rabdump
         {
             ListBox lb = new ListBox();
             lb.Items.Add(DataBase.AllDataBases);
-            if (value == DataBase.AllDataBases) lb.SelectedItem = DataBase.AllDataBases;
+            if (value == DataBase.AllDataBases) 
+                lb.SelectedItem = DataBase.AllDataBases;
             foreach (DataBase db in Options.Get().Databases)
             {
                 lb.Items.Add(db);
