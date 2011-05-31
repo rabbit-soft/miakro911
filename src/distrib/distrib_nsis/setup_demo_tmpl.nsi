@@ -23,7 +23,8 @@ RequestExecutionLevel admin
 
 
 # General Symbol Definitions
-!define REGKEY "SOFTWARE\${NameInt}"
+!define REGKEY_old "SOFTWARE\${NameInt}"
+!define REGKEY "SOFTWARE\${CompName}\${NameInt}"
 
 # MUI Symbol Definitions
 !define MUI_ICON "..\art\icon_green.ico"
@@ -155,6 +156,8 @@ Section -post SEC_Sys
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" UninstallString $INSTDIR\uninstall.exe
     WriteRegDWORD HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoModify 1
     WriteRegDWORD HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoRepair 1
+
+    DeleteRegKey HKLM "${REGKEY_old}"
 SectionEnd
 
 Section /o -sec_updater SEC_Updater
@@ -163,6 +166,18 @@ Section /o -sec_updater SEC_Updater
 SectionEnd
 
 # Macro for selecting uninstaller sections
+!macro SELECT_UNSECTION_old SECTION_NAME UNSECTION_ID
+    Push $R0
+    ReadRegStr $R0 HKLM "${REGKEY_old}\Components" "${SECTION_NAME}"
+    StrCmp $R0 1 0 nextold${UNSECTION_ID}
+    !insertmacro SelectSection "${UNSECTION_ID}"
+    GoTo doneold${UNSECTION_ID}
+nextold${UNSECTION_ID}:
+    !insertmacro UnselectSection "${UNSECTION_ID}"
+doneold${UNSECTION_ID}:
+    Pop $R0
+!macroend
+
 !macro SELECT_UNSECTION SECTION_NAME UNSECTION_ID
     Push $R0
     ReadRegStr $R0 HKLM "${REGKEY}\Components" "${SECTION_NAME}"
@@ -175,6 +190,18 @@ done${UNSECTION_ID}:
     Pop $R0
 !macroend
 
+!macro SELECT_SECTION_old SECTION_NAME SECTION_ID
+    Push $R0
+    ReadRegStr $R0 HKLM "${REGKEY_old}\Components" "${SECTION_NAME}"
+    StrCmp $R0 1 0 nextold${SECTION_ID}
+    !insertmacro SelectSection "${SECTION_ID}"
+    GoTo doneold${SECTION_ID}
+nextold${SECTION_ID}:
+    !insertmacro UnselectSection "${SECTION_ID}"
+doneold${SECTION_ID}:
+    Pop $R0
+!macroend
+
 !macro SELECT_SECTION SECTION_NAME SECTION_ID
     Push $R0
     ReadRegStr $R0 HKLM "${REGKEY}\Components" "${SECTION_NAME}"
@@ -184,6 +211,22 @@ done${UNSECTION_ID}:
 next${SECTION_ID}:
     !insertmacro UnselectSection "${SECTION_ID}"
 done${SECTION_ID}:
+    Pop $R0
+!macroend
+
+!macro SELECT_SECTION_TEST_old
+    Push $R0
+    ReadRegStr $R0 HKLM "${REGKEY_old}\Components" "Main"
+    StrCmp $R0 1 0 nextold${SECTION_ID}
+
+    !insertmacro SELECT_UNSECTION_old "rabnet" ${SEC_Rabnet}
+    !insertmacro SELECT_UNSECTION_old "rabdump" ${SEC_Updater}
+    #!insertmacro SELECT_UNSECTION "com_comps" ${SEC_Common}
+
+    GoTo doneold${SECTION_ID}
+nextold${SECTION_ID}:
+    
+doneold${SECTION_ID}:
     Pop $R0
 !macroend
 
@@ -262,6 +305,7 @@ Section -un.post UNSEC_Sys
     DeleteRegKey HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^UninstallLink).lnk"
     Delete /REBOOTOK $INSTDIR\uninstall.exe
+    DeleteRegKey HKLM "${REGKEY_old}"
     DeleteRegValue HKLM "${REGKEY}" Path
     DeleteRegKey /IfEmpty HKLM "${REGKEY}\Components"
     DeleteRegKey /IfEmpty HKLM "${REGKEY}"
@@ -288,6 +332,7 @@ Function .onInit
     Pop $R1
 
 
+    !insertmacro SELECT_SECTION_TEST_old
     !insertmacro SELECT_SECTION_TEST
     
 
