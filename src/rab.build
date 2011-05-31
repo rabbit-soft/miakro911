@@ -577,7 +577,6 @@
 				<include name="${curdir}/rabnet/gui/forms/FarmListForm.resx"/>
 			</resources>
 			<references>
-			log4net.ass
 				<include name="${bin_dir}/Butcher/${mysql.lib}"/>	
 				<include name="${bin_dir}/Butcher/${cas.lp16.name}"/>
 				<include name="${log4net.ass}"/>
