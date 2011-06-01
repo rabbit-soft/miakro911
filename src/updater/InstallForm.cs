@@ -12,19 +12,19 @@ namespace updater
     {
         //bool _batch = false;
         public int Result = 0;
-        public string FilenameRabDump = "";
-        public string FilenameRabNet = "";
-        private XmlDocument _xmlRabDump = new XmlDocument();
-        private XmlDocument _xmlRabNet = new XmlDocument();
-        XmlElement _optsRabDump = null;
-        XmlElement _optsRabNet = null;
+        //public string FilenameRabDump = "";
+        //public string FilenameRabNet = "";
+        //private XmlDocument _xmlRabDump = new XmlDocument();
+        //private XmlDocument _xmlRabNet = new XmlDocument();
+        //XmlElement _optsRabDump = null;
+        //XmlElement _optsRabNet = null;
 
-        private InstallForm()
+        public InstallForm()
         {
             InitializeComponent();
         }
 
-        public InstallForm(String flRabDump, string flRabNet ,bool bt):this()
+        /*public InstallForm(String flRabDump, string flRabNet ,bool bt):this()
         {
             //_batch = bt;
             FilenameRabDump = flRabDump;
@@ -33,15 +33,15 @@ namespace updater
             PrepareXmlRabNet();
             radioButton4.Visible = !bt;
             radioButton4.Enabled = !bt;
-        }
+        }*/
 
-        private const string ConfRabDump ="<?xml version=\"1.0\" encoding=\"utf-8\" ?><configuration><configSections>"+
+        /*private const string ConfRabDump ="<?xml version=\"1.0\" encoding=\"utf-8\" ?><configuration><configSections>"+
 "<section name=\"rabdumpOptions\" type=\"rabdump.RabdumpConfigHandler,rabdump\"/>"+
 "<section name=\"log4net\" type=\"log4net.Config.Log4NetConfigurationSectionHandler,Log4net\"/>"+
 "</configSections><rabdumpOptions></rabdumpOptions><log4net><appender name=\"FileAppender\" type=\"log4net.Appender.FileAppender\">"+
 "<file value=\"dumplog.txt\" /><appendToFile value=\"true\" /><lockingModel type=\"log4net.Appender.FileAppender+MinimalLock\" />"+
 "<layout type=\"log4net.Layout.PatternLayout\"><conversionPattern value=\"%date [%thread] %-5level %logger{2} [%property{NDC}] - %message%newline\" />"+
-"</layout></appender><root><level value=\"DEBUG\" /><appender-ref ref=\"FileAppender\" /></root></log4net></configuration>";
+"</layout></appender><root><level value=\"DEBUG\" /><appender-ref ref=\"FileAppender\" /></root></log4net></configuration>";*/
 
 
         public class ReverseComparer : IComparer
@@ -52,7 +52,7 @@ namespace updater
             }
         }
 
-        private void PrepareXmlRabNet()
+        /*private void PrepareXmlRabNet()
         {
             try
             {
@@ -69,7 +69,7 @@ namespace updater
 //                }
             } 
             catch{}
-        }
+        }*/
 
         /// <summary>
         /// Проверяет содержит ли XML-файл элемент 'rabnetds'
@@ -119,7 +119,7 @@ namespace updater
             return false;
         }
 
-        private void PrepareXmlRabDump()
+        /*private void PrepareXmlRabDump()
         {
             try
             {
@@ -144,9 +144,9 @@ namespace updater
                 string locMd = "";
                 if (rk1 == null)
                 {
-                    /*
-                                    loc = "";
-                    */
+                    
+                                    //loc = "";
+                    
                     locM = "";
                     locMd = "";
 
@@ -233,37 +233,37 @@ namespace updater
             catch
             {
             }
-        }
+        }*/
 
-        private void button3_Click(object sender, EventArgs e)
+        private void btExtended_Click(object sender, EventArgs e)
         {
             groupBox2.Visible = !groupBox2.Visible;
             Height = (groupBox2.Visible ? 450 : 310);
-            button3.Text = "Расширенный режим " + (groupBox2.Visible ? "<<" : ">>");
+            btExtended.Text = "Расширенный режим " + (groupBox2.Visible ? "<<" : ">>");
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
             tbComp.Enabled = radioButton2.Checked;
-            tbFile.Enabled = button2.Enabled = radioButton3.Checked;
+            tbFile.Enabled = btFile.Enabled = radioButton3.Checked;
             if (radioButton3.Checked)
             {
-                button1.Enabled = tbFile.Text != "";
+                btCheck.Enabled = tbFile.Text != "";
             }
             else if (radioButton2.Checked)
             {
-                button1.Enabled = tbComp.Text != "";
+                btCheck.Enabled = tbComp.Text != "";
             }
             else
             {
-                button1.Enabled = true;
+                btCheck.Enabled = true;
             }
         }
 
         private void tbComp_TextChanged(object sender, EventArgs e)
         {
             tbHost.Text = tbComp.Text;
-            button1.Enabled = tbComp.Text != "";
+            btCheck.Enabled = tbComp.Text != "";
         }
 
         private void tbHost_TextChanged(object sender, EventArgs e)
@@ -271,7 +271,7 @@ namespace updater
             tbComp.Text = tbHost.Text;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btFile_Click(object sender, EventArgs e)
         {
             if (ofd.ShowDialog() == DialogResult.OK)
                 tbFile.Text = ofd.FileName;
@@ -279,7 +279,10 @@ namespace updater
 
         private void AddFarm()
         {
-            try
+            RabnetConfig.LoadDataSources();
+            RabnetConfig.SaveDataSource(System.Guid.NewGuid().ToString(), tbName.Text, tbHost.Text, tbDb.Text, tbUser.Text, tbPwd.Text);
+            RabnetConfig.SaveDataSources();
+            /*try
             {
                 XmlElement dsRabDump = _xmlRabDump.CreateElement("db");
                 dsRabDump.AppendChild(_xmlRabDump.CreateElement("name")).AppendChild(_xmlRabDump.CreateTextNode(tbName.Text));
@@ -323,7 +326,7 @@ namespace updater
             }
             catch
             {
-            }
+            }*/
 
             Close();
         }
@@ -364,7 +367,7 @@ namespace updater
                 throw new ApplicationException("Ошибка создания БД. " + miaExitCode.GetText(p.ExitCode));
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btCheck_Click(object sender, EventArgs e)
         {
             try
             {
@@ -400,7 +403,7 @@ namespace updater
 
         private void tbFile_TextChanged(object sender, EventArgs e)
         {
-            button1.Enabled = tbFile.Text != "";
+            btCheck.Enabled = tbFile.Text != "";
         }
     }
 }

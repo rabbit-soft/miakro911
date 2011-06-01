@@ -54,7 +54,7 @@ namespace updater
             }
             else
             {
-                InstallForm ifr = new InstallForm(flRabDump, flRabNet, batch);
+                InstallForm ifr = new InstallForm();
                 Application.Run(ifr);
                 res = ifr.Result;
             }

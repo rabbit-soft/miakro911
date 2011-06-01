@@ -33,14 +33,14 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.radioButton4 = new System.Windows.Forms.RadioButton();
             this.tbFile = new System.Windows.Forms.TextBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btFile = new System.Windows.Forms.Button();
             this.tbComp = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btCheck = new System.Windows.Forms.Button();
+            this.btExtended = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
             this.tbRPwd = new System.Windows.Forms.TextBox();
@@ -75,7 +75,7 @@
             // 
             this.groupBox1.Controls.Add(this.radioButton4);
             this.groupBox1.Controls.Add(this.tbFile);
-            this.groupBox1.Controls.Add(this.button2);
+            this.groupBox1.Controls.Add(this.btFile);
             this.groupBox1.Controls.Add(this.tbComp);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.radioButton3);
@@ -109,16 +109,16 @@
             this.tbFile.TabIndex = 6;
             this.tbFile.TextChanged += new System.EventHandler(this.tbFile_TextChanged);
             // 
-            // button2
+            // btFile
             // 
-            this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(365, 118);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(101, 23);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Выбрать файл";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btFile.Enabled = false;
+            this.btFile.Location = new System.Drawing.Point(365, 118);
+            this.btFile.Name = "btFile";
+            this.btFile.Size = new System.Drawing.Size(101, 23);
+            this.btFile.TabIndex = 5;
+            this.btFile.Text = "Выбрать файл";
+            this.btFile.UseVisualStyleBackColor = true;
+            this.btFile.Click += new System.EventHandler(this.btFile_Click);
             // 
             // tbComp
             // 
@@ -173,25 +173,25 @@
             this.radioButton1.UseVisualStyleBackColor = true;
             this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
-            // button1
+            // btCheck
             // 
-            this.button1.Location = new System.Drawing.Point(425, 248);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Выбрать";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btCheck.Location = new System.Drawing.Point(425, 248);
+            this.btCheck.Name = "btCheck";
+            this.btCheck.Size = new System.Drawing.Size(75, 23);
+            this.btCheck.TabIndex = 2;
+            this.btCheck.Text = "Выбрать";
+            this.btCheck.UseVisualStyleBackColor = true;
+            this.btCheck.Click += new System.EventHandler(this.btCheck_Click);
             // 
-            // button3
+            // btExtended
             // 
-            this.button3.Location = new System.Drawing.Point(12, 248);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(148, 23);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Расширенный режим >>";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btExtended.Location = new System.Drawing.Point(12, 248);
+            this.btExtended.Name = "btExtended";
+            this.btExtended.Size = new System.Drawing.Size(148, 23);
+            this.btExtended.TabIndex = 3;
+            this.btExtended.Text = "Расширенный режим >>";
+            this.btExtended.UseVisualStyleBackColor = true;
+            this.btExtended.Click += new System.EventHandler(this.btExtended_Click);
             // 
             // groupBox2
             // 
@@ -340,15 +340,15 @@
             // 
             // InstallForm
             // 
-            this.AcceptButton = this.button1;
+            this.AcceptButton = this.btCheck;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(512, 278);
             this.Controls.Add(this.tbName);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btExtended);
+            this.Controls.Add(this.btCheck);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -374,12 +374,12 @@
         private System.Windows.Forms.RadioButton radioButton3;
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btCheck;
+        private System.Windows.Forms.Button btFile;
         private System.Windows.Forms.TextBox tbComp;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tbFile;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btExtended;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox tbHost;
         private System.Windows.Forms.Label label3;
