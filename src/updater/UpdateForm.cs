@@ -13,24 +13,33 @@ namespace updater
     {
         bool _batch = false;
         public int Result = 0;
+        /// <summary>
+        /// Версия до которой надо обновиться
+        /// </summary>
         private int _curver = 0;
-        private string _filenameRabDump="";
-        private string _filenameRabNet = "";
-        private Dictionary<int, String> scr = new Dictionary<int, string>();
+        //private string _filenameRabDump = "";
+        //private string _filenameRabNet = "";
+        private bool _needUpdateSomebody = true;
+        private Dictionary<int, String> _scripts = new Dictionary<int, string>();
         private MySqlConnection _sql = null;
         public enum UpdateStatus { Before, Procs, After }
 
-        private UpdateForm()
+        public UpdateForm()
         {
             InitializeComponent();
         }
-        public UpdateForm(String flRabDump,string flRabNet,bool bt):this()
+
+        /*public UpdateForm(String flRabDump,string flRabNet,bool bt):this()
         {
             _batch = bt;
             _filenameRabDump = flRabDump;
             _filenameRabNet = flRabNet;
-        }
+        }*/
 
+        /// <summary>
+        /// Загружает список скриптов Обновлений
+        /// </summary>
+        /// <returns>Количество скриптов</returns>
         private int GetScripts()
         {
             int i = 2;
@@ -38,20 +47,23 @@ namespace updater
             try
             {
                 new StreamReader(GetType().Assembly.GetManifestResourceStream("2.sql"));
-            }catch(Exception)
+            }
+            catch(Exception)
             {
                 prefix="updater.sql.";
             }
-            try{
+            try
+            {
                 while (true)
                 {
-                    StreamReader stm = new StreamReader(GetType().Assembly.GetManifestResourceStream(prefix + i.ToString()+".sql"), Encoding.UTF8);
+                    StreamReader stm = new StreamReader(GetType().Assembly.GetManifestResourceStream(prefix + i.ToString() + ".sql"), Encoding.UTF8);
                     String cmd = stm.ReadToEnd();
                     stm.Close();
-                    scr[i] = cmd;
+                    _scripts[i] = cmd;
                     i++;
                 }
-            }catch(Exception)
+            }
+            catch (Exception)
             {
                 i--;
             }
@@ -64,16 +76,165 @@ namespace updater
             label2.Update();
         }
 
+
+        private void UpdateForm_Shown(object sender, EventArgs e)
+        {
+            label1.Update();
+            btUpdate.Update();
+            btClose.Update();
+            _curver = GetScripts();
+            UpdateList();
+            if (_batch)
+                btUpdate.PerformClick();
+            if (_batch)
+                btClose.PerformClick();
+        }
+
+        /// <summary>
+        /// Заполняет список данными Настроек подключения
+        /// </summary>
         private void UpdateList()
         {
-			button1.Enabled = false;
+            btUpdate.Enabled = false;
+            _needUpdateSomebody = true;
+            lv.Items.Clear();
+            int needcount = 0;
+            RabnetConfig.LoadDataSources();
+            lv.Update();
+            foreach(RabnetConfig.rabDataSource rds in RabnetConfig.DataSources)      
+            {
+                ListViewItem li = lv.Items.Add(rds.Name);
+                li.SubItems.Add(rds.Params.ToString());
+                li.Tag = 0;
+                _sql = new MySqlConnection(rds.Params.ToString());
+                int hasver = 0;
+                try
+                {
+                    _sql.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT o_value FROM options WHERE o_name='db' AND o_subname='version';", _sql);
+                    MySqlDataReader rd = cmd.ExecuteReader();
+                    if (rd.Read())
+                        hasver = rd.GetInt32(0);
+                    rd.Close();
+                    _sql.Close();
+                    li.SubItems.Add(hasver.ToString());
+                    if (hasver == _curver)
+                    {
+                        li.ForeColor = Color.Green;
+                        li.Tag = 1;
+                    }
+                    else if (hasver > _curver)
+                    {
+                        li.ForeColor = Color.YellowGreen;
+                        li.Tag = 2;
+                    }
+                    else needcount++;
+                }
+                catch (Exception)
+                {
+                    _sql.Close();
+                    li.Tag = 3;
+                    li.ForeColor = Color.Red;
+                    li.SubItems.Add("нет доступа");
+                }
+                li.SubItems.Add(_curver.ToString());
+            }
+            lv.Update();
+            if (needcount > 0)
+            {
+                Status("Требуется обновить " + needcount.ToString() + " БД");
+                btUpdate.Enabled = true;
+                
+            }
+            else
+            {
+                Status("Обновления не требуются");
+                _needUpdateSomebody = false;
+                //button2.Enabled = true;
+            }
+        }
+
+        private void btUpdate_Click(object sender, EventArgs e)
+        {
+			btUpdate.Enabled = false;
+            btClose.Enabled = !_batch;
+            foreach (ListViewItem li in lv.Items)
+            if ((int)li.Tag == 0)
+            {
+                int prever = int.Parse(li.SubItems[2].Text);
+                String prm = li.SubItems[1].Text;
+                String nm = li.SubItems[0].Text;
+                Status("Обновляется БД "+nm);
+                while (prever < _curver)
+                {
+                    prever++;
+                    foreach(int k in _scripts.Keys)
+                        if (k == prever)
+                        {
+                            try
+                            {
+                                Status(String.Format("Обновление {0:s} {1:d}->{2:d}",nm,prever-1,prever));
+                                _sql = new MySqlConnection(prm);
+                                _sql.Open();
+                                MySqlCommand c = new MySqlCommand("", _sql);
+                                OnUpdate(prever, _sql,UpdateStatus.Before);
+                                String[] cmds = _scripts[k].Split(new string[] { "#DELIMITER |" }, StringSplitOptions.RemoveEmptyEntries);
+                                c.CommandText = cmds[0];
+                                c.ExecuteNonQuery();
+                                if (cmds.Length > 1)
+                                {
+                                    OnUpdate(prever, _sql, UpdateStatus.Procs);
+                                    MySqlScript sc = new MySqlScript(_sql, cmds[1]);
+                                    sc.Delimiter = "|";
+                                    sc.Execute();
+                                }
+                                OnUpdate(prever, _sql,UpdateStatus.After);
+                                _sql.Close();
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Во время обновления БД произошла ошибка:"+ex.Message);
+                                _batch = false;
+                            }
+                        }
+                }
+            }
+            UpdateList();
+			btUpdate.Enabled = true;
+            btClose.Enabled = true;
+        }
+        
+        private static void OnUpdate(int tover,MySqlConnection con,UpdateStatus status)
+        {
+			Application.DoEvents();
+        }
+
+        private void btClose_Click(object sender, EventArgs e)
+        {
+            Result = 0;
+            Close();
+        }
+
+        private void UpdateForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (_needUpdateSomebody)
+            {              
+                MessageBox.Show("Перед выходом необходимо обновить БазыДанных");
+                e.Cancel = true;
+            }
+        }
+
+        /*private void UpdateList()
+        {
+			btUpdate.Enabled = false;
 			int needcount = 0;
-            button1.Enabled = false;
+            btUpdate.Enabled = false;
             Status("Проверка версий баз данных");
             lv.Items.Clear();
             XmlDocument xml = new XmlDocument();
             try
             {
+                //загружаем данные из файла rabDump.exe.config
                 xml.Load(_filenameRabDump);
                 foreach (XmlNode n in xml.DocumentElement.ChildNodes)
                 {
@@ -105,6 +266,7 @@ namespace updater
                                             break;
                                     }
                                 prm += "charset=utf8";
+          
                                 ListViewItem li = lv.Items.Add(nm);
                                 li.SubItems.Add(prm);
                                 li.Tag = 0;
@@ -148,6 +310,7 @@ namespace updater
             }
             catch
             {
+                //загружаем данные из файла rabNet.exe.config
                 xml.Load(_filenameRabNet);
                 foreach (XmlNode n in xml.DocumentElement.ChildNodes)
                 {
@@ -203,91 +366,14 @@ namespace updater
             if (needcount>0)
             {
                 Status("Требуется обновить " + needcount.ToString() + " БД");
-                button1.Enabled = true;
-            }else{
+                btUpdate.Enabled = true;
+            }
+            else
+            {
                 Status("Обновления не требуются");
                 //button2.Enabled = true;
             }
-			button1.Enabled = true;
-        }
-
-        private void UpdateForm_Shown(object sender, EventArgs e)
-        {
-            label1.Update();
-            button1.Update();
-            button2.Update();
-            _curver = GetScripts();
-            UpdateList();
-            if (_batch)
-                button1.PerformClick();
-            if (_batch)
-                button2.PerformClick();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-			button1.Enabled = false;
-            button2.Enabled = !_batch;
-            foreach (ListViewItem li in lv.Items)
-            if ((int)li.Tag == 0)
-            {
-                int prever = int.Parse(li.SubItems[2].Text);
-                String prm = li.SubItems[1].Text;
-                String nm = li.SubItems[0].Text;
-                Status("Обновляется БД "+nm);
-                while (prever < _curver)
-                {
-                    prever++;
-                    foreach(int k in scr.Keys)
-                        if (k == prever)
-                        {
-                            try
-                            {
-                                Status(String.Format("Обновление {0:s} {1:d}->{2:d}",nm,prever-1,prever));
-                                _sql = new MySqlConnection(prm);
-                                _sql.Open();
-                                MySqlCommand c = new MySqlCommand("", _sql);
-                                OnUpdate(prever, _sql,UpdateStatus.Before);
-                                String[] cmds = scr[k].Split(new string[] { "#DELIMITER |" }, StringSplitOptions.RemoveEmptyEntries);
-                                c.CommandText = cmds[0];
-                                c.ExecuteNonQuery();
-                                if (cmds.Length > 1)
-                                {
-                                    OnUpdate(prever, _sql, UpdateStatus.Procs);
-                                    MySqlScript sc = new MySqlScript(_sql, cmds[1]);
-                                    sc.Delimiter = "|";
-                                    sc.Execute();
-                                }
-                                OnUpdate(prever, _sql,UpdateStatus.After);
-                                _sql.Close();
-                            }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show("Во время обновления БД произошла ошибка:"+ex.Message);
-                                _batch = false;
-                            }
-                        }
-                }
-            }
-            UpdateList();
-			button1.Enabled = true;
-            button2.Enabled = true;
-        }
-        private static void OnUpdate(int tover,MySqlConnection con,UpdateStatus status)
-        {
-			Application.DoEvents();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Result = 0;
-            Close();
-        }
-
-        private void UpdateForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            e.Cancel = !button1.Enabled;
-        }
-
+			btUpdate.Enabled = true;
+        }*/
     }
 }

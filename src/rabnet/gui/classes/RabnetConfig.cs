@@ -252,12 +252,12 @@ public static class RabnetConfig
     /// <returns>GUID похожего расписания</returns>
     private static string compareArchivejobs(rabArchiveJob aj)
     {
+        List<string> dbguids = getGuidsByDBName(aj.DBguid);//вместо DBguid передается название БД
+        if (dbguids.Count == 0) return "";
         foreach (rabArchiveJob raj in _archiveJobs)
         {
-            List<string> dbguids = getGuidsByDBName(aj.DBguid);//вместо DBguid передается название БД
-            if (dbguids.Count == 0) return "";
             bool sameDBguids = false;
-            foreach(string g in dbguids)
+            foreach (string g in dbguids)
             {
                 if (raj.DBguid == g)
                 {
@@ -265,7 +265,7 @@ public static class RabnetConfig
                     break;
                 }
             }
-            if (!sameDBguids) return "";
+            if (!sameDBguids) continue;
             if (raj.JobName == aj.JobName &&
                 raj.DumpPath == aj.DumpPath &&
                 raj.CountLimit == aj.CountLimit &&
@@ -354,7 +354,8 @@ public static class RabnetConfig
     /// </summary>
     public static void LoadDataSources()
     {
-        if(!_extracting) extractConfig();
+        if (!_extracting) 
+            ExtractConfig(System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath);
         _dataSources.Clear();
         RegistryKey rKey = Registry.LocalMachine.CreateSubKey(DATASOURCES_PATH);
         foreach (string guid in rKey.GetSubKeyNames())
@@ -432,6 +433,17 @@ public static class RabnetConfig
             changeDataSource(newDS);
     }
 
+    /// <summary>
+    /// Имеются ли Настройки подключения к БД
+    /// </summary>
+    public static bool HaveDataSources()
+    {
+        RabnetConfig.LoadDataSources();
+        if (_dataSources.Count > 0)
+            return true;
+        else return false;
+    }
+
     private static void changeDataSource(rabDataSource newDS)
     {
         foreach (rabDataSource rds in _dataSources)
@@ -458,7 +470,7 @@ public static class RabnetConfig
     {
         foreach (rabDataSource rds in _dataSources)
         {
-            if (rds.Name == ds.Name && rds.Params == ds.Params)
+            if (rds.Name == ds.Name && rds.Params.ToString() == ds.Params.ToString())
                 return rds.Guid;
         }
         return "";
@@ -475,8 +487,6 @@ public static class RabnetConfig
         return result;
     }
 
-
-
 #endregion datasources
 
 
@@ -484,13 +494,13 @@ public static class RabnetConfig
     /// Выдирает из app.config настройки Подключения к БД и Расписания резервирования.
     /// Сохраняет полученные настройки в реестр.
     /// </summary>
-    private static void extractConfig()
+    public static void ExtractConfig(string filePath)
     {
+        if (!System.IO.File.Exists(filePath)) return;
         _extracting = true;
-        string filePath = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
         XmlDocument doc = new XmlDocument();
         doc.Load(filePath);
-        XmlNode rootNode =doc.FirstChild.NextSibling; 
+        XmlNode rootNode = doc.FirstChild.NextSibling; 
         foreach (XmlNode xnd in rootNode.ChildNodes)
         {
             if (xnd.Name == "configSections")
@@ -516,11 +526,12 @@ public static class RabnetConfig
             }
         }
         doc.Save(filePath);
-        _extracting = false;
+        //_extracting = false;
     }
 
     private static void extractRabnetds(XmlNode node)
     {
+        LoadDataSources();
         foreach (XmlNode nd in node.ChildNodes)
         {
             if (nd.Name == "dataSource")
@@ -537,14 +548,17 @@ public static class RabnetConfig
                     td.DefUser = nd.Attributes.GetNamedItem("user").Value;
                 if (nd.Attributes.GetNamedItem("password") != null)
                     td.DefPassword = nd.Attributes.GetNamedItem("password").Value;
-                _dataSources.Add(td);
+                if(compareDataSource(td) =="")
+                    _dataSources.Add(td);
             }          
         }
-        RabnetConfig.SaveDataSources();
+        SaveDataSources();
     }
 
     private static void extractRabDump(XmlNode node)
     {
+        LoadDataSources();
+        LoadArchiveJobs();
         foreach (XmlNode nd in node.ChildNodes)
         {
             switch (nd.Name)
@@ -555,19 +569,18 @@ public static class RabnetConfig
                 case "z7":
                     SaveOption(OptionType.zip7path, nd.InnerText);
                     break;
-                case "db":
-                    LoadDataSources();
-                        rabDataSource db = new rabDataSource("",
-                            nd.SelectSingleNode("name").InnerText,
-                            nd.SelectSingleNode("host").InnerText,
-                            nd.SelectSingleNode("db").InnerText,
-                            nd.SelectSingleNode("user").InnerText,
-                            nd.SelectSingleNode("password").InnerText);
-                        if (compareDataSource(db) == "")
-                            _dataSources.Add(db);                    
+                case "db":                   
+                    rabDataSource db = new rabDataSource("",
+                        nd.SelectSingleNode("name").InnerText,
+                        nd.SelectSingleNode("host").InnerText,
+                        nd.SelectSingleNode("db").InnerText,
+                        nd.SelectSingleNode("user").InnerText,
+                        nd.SelectSingleNode("password").InnerText);
+                    if (compareDataSource(db) == "")
+                        _dataSources.Add(db);
+
                     break;
-                case "job":
-                    LoadArchiveJobs();
+                case "job":                  
                     rabArchiveJob aj = new rabArchiveJob("",
                         nd.SelectSingleNode("name").InnerText,
                         nd.SelectSingleNode("db").InnerText,
@@ -577,12 +590,17 @@ public static class RabnetConfig
                         int.Parse(nd.SelectSingleNode("countlim").InnerText),
                         int.Parse(nd.SelectSingleNode("sizelim").InnerText),
                         int.Parse(nd.SelectSingleNode("repeat").InnerText));
-                    if (aj.DBguid == "[все]" || compareArchivejobs(aj) == "")
-                    {
+                    if (aj.DBguid == "[все]")
                         aj.DBguid = "[ВСЕ]";
-                        aj.Guid = System.Guid.NewGuid().ToString();
-                        _archiveJobs.Add(aj);
+                    else if(compareArchivejobs(aj) == "")
+                    {
+                        List<string> dbguids = getGuidsByDBName(aj.DBguid);
+                        if(dbguids.Count == 0) break;
+                        aj.DBguid = dbguids[0];
                     }
+                    else break;
+                    aj.Guid = System.Guid.NewGuid().ToString();
+                    _archiveJobs.Add(aj);                  
                     break;
             }
         }

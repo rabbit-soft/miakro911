@@ -11,12 +11,16 @@ namespace rabdump
 {
     class ArchiveJobThread
     {
-        private const String Password="ns471lbNITfq3";
-        public const int SplitNames = 6;
+        private const String ZIP_PASSWORD="ns471lbNITfq3";
+        public const int SPLIT_NAMES = 6;
+        /// <summary>
+        /// Расписание, которые выполняется в данный момент.
+        /// </summary>
         private readonly ArchiveJob _j = null;
-        private readonly ArchiveJobThread _jobber=null;
+        private readonly ArchiveJobThread _jobber = null;
         private static readonly ILog log = LogManager.GetLogger(typeof(ArchiveJobThread));
         readonly String _tmppath = "";
+
         public ArchiveJobThread(ArchiveJob job)
         {
             _j = job;
@@ -25,21 +29,27 @@ namespace rabdump
             _tmppath = Path.GetTempPath();
         }
 
+        /// <summary>
+        /// Возвращает информацию по дампам расписания
+        /// </summary>
+        /// <param name="sz">Общий размер дампов расписания</param>
+        /// <param name="minFile">Самый старый файл дампа, принадлежащий расписанию</param>
+        /// <returns>Количество дампов данного расписания</returns>
         public int CountBackups(out int sz,out String minFile)
         {
             Directory.CreateDirectory(_j.BackupPath);
             DirectoryInfo inf = new DirectoryInfo(_j.BackupPath);
-            DateTime mindt=DateTime.MaxValue;
-            int cnt=0;
+            DateTime mindt = DateTime.MaxValue;
+            int cnt = 0;// Количество дампов расписания
 /*
             sz = 0;
 */
             minFile = "";
             long fsz = 0;
-            foreach(FileInfo fi in inf.GetFiles())
+            foreach(FileInfo fi in inf.GetFiles("*_*_*_*_*_*.7z"))
             {
                 String[] nm = Path.GetFileName(fi.FullName).Split('_');
-                if (nm.Length==SplitNames && nm[0]==_j.Name)
+                if (nm.Length==SPLIT_NAMES && nm[0]==_j.Name)
                 {
                     cnt++;
                     fsz += fi.Length;
@@ -53,7 +63,7 @@ namespace rabdump
                         mindt = dt;
                     }
                 }
-            }
+            }           
             sz =(int)Math.Round((double)fsz/(1024 * 1024));
             return cnt;
         }
@@ -64,8 +74,8 @@ namespace rabdump
         /// </summary>
         public void CheckLimits()
         {
-            int sz=0;
-            string min="";
+            int sz = 0;
+            string min = "";
             if (_j.CountLimit > 0)
                 while (_j.CountLimit > CountBackups(out sz,out min))
                     File.Delete(_j.BackupPath + "\\" + min);
@@ -78,6 +88,9 @@ namespace rabdump
                 }
         }
 
+        /// <summary>
+        /// Делает резервную копию переданной Базы данных
+        /// </summary>
         public void DumpDB(DataBase db)
         {
             Directory.CreateDirectory(_j.BackupPath);
@@ -138,7 +151,7 @@ namespace rabdump
             else
                 try
                 {
-                    ProcessStartInfo inf = new ProcessStartInfo(md,string.Format(" a -mx9 -p{0} \"{1}.7z\" \"{2}.dump\"", Password, fname, fname));
+                    ProcessStartInfo inf = new ProcessStartInfo(md,string.Format(" a -mx9 -p{0} \"{1}.7z\" \"{2}.dump\"", ZIP_PASSWORD, fname, fname));
 
                     inf.CreateNoWindow = true;
                     inf.RedirectStandardOutput = true;
@@ -161,6 +174,9 @@ namespace rabdump
             CheckLimits();
         }
 
+        /// <summary>
+        /// Запускает резервирование в отдельном потоке
+        /// </summary>
         public void Run()
         {
             log.Debug("Making dump for " + _j.Name);
@@ -234,7 +250,7 @@ namespace rabdump
                 {
                     throw new ApplicationException("Путь к 7z не настроен");
                 }
-                ProcessStartInfo inf = new ProcessStartInfo(z7, " e -p" + Password + " \"" + f + "\"");
+                ProcessStartInfo inf = new ProcessStartInfo(z7, " e -p" + ZIP_PASSWORD + " \"" + f + "\"");
 
                 inf.WorkingDirectory = tmppath;
                 inf.CreateNoWindow = true;

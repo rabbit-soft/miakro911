@@ -23,6 +23,7 @@ namespace updater
         {
             InitializeComponent();
         }
+
         public InstallForm(String flRabDump, string flRabNet ,bool bt):this()
         {
             //_batch = bt;
@@ -33,7 +34,8 @@ namespace updater
             radioButton4.Visible = !bt;
             radioButton4.Enabled = !bt;
         }
-        private const string ConfRabDump="<?xml version=\"1.0\" encoding=\"utf-8\" ?><configuration><configSections>"+
+
+        private const string ConfRabDump ="<?xml version=\"1.0\" encoding=\"utf-8\" ?><configuration><configSections>"+
 "<section name=\"rabdumpOptions\" type=\"rabdump.RabdumpConfigHandler,rabdump\"/>"+
 "<section name=\"log4net\" type=\"log4net.Config.Log4NetConfigurationSectionHandler,Log4net\"/>"+
 "</configSections><rabdumpOptions></rabdumpOptions><log4net><appender name=\"FileAppender\" type=\"log4net.Appender.FileAppender\">"+
@@ -65,11 +67,14 @@ namespace updater
 //                        _optsRabNet = (XmlElement)n;
                 //                    }
 //                }
-            } catch
-            {
-            }
+            } 
+            catch{}
         }
 
+        /// <summary>
+        /// Проверяет содержит ли XML-файл элемент 'rabnetds'
+        /// </summary>
+        /// <param name="fl">Файл конфигурафии rabNet'a</param>
         public static bool TestRabNetConfig(string fl)
         {
             try
@@ -91,6 +96,28 @@ namespace updater
             return false;
         }
 
+        /// <summary>
+        /// Проверяет содержит ли XML-файл элемент 'db' и 'job'
+        /// </summary>
+        /// <param name="fl">Файл конфигурафии rabDump'a</param>
+        public static bool TestRabDumpConfig(string fl)
+        {
+            try
+            {
+                XmlDocument xml = new XmlDocument();
+                xml.Load(fl);
+                foreach (XmlNode n in xml.DocumentElement.ChildNodes)
+                {
+                    if (n.Name == "rabdumpOptions")
+                        return true;                  
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            return false;
+        }
 
         private void PrepareXmlRabDump()
         {

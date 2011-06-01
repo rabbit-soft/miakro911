@@ -543,6 +543,7 @@
 				<include name="${curdir}/updater/*.cs"/>
 				<include name="${curdir}/updater/tmp/*.cs"/>
 				<include name="${curdir}/mia_conv/miaExitCode.cs"/>
+				<include name="${curdir}/rabnet/gui/classes/RabnetConfig.cs"/>
 			</sources>
 			<resources>
 				<include name="${curdir}/updater/sql/*.sql"/>
