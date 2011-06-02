@@ -250,10 +250,8 @@ namespace rabdump
             try
             {
                 Process.Start(Path.GetDirectoryName(Application.ExecutablePath) + @"\..\Guardant\GrdTRU.exe");
-            } catch
-            {
-
-            }
+            } 
+            catch{}
         }
 
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)

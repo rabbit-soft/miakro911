@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.Win32;
 using System.Xml;
 using System.Configuration;
-
+using log4net;
 
 [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
 public static class RabnetConfig
@@ -57,6 +57,7 @@ public static class RabnetConfig
     }
 
     public enum OptionType {MysqlPath,zip7path,rabdump_startupPath }
+    private static readonly ILog log = LogManager.GetLogger(typeof(RabnetConfig));
 
     public const string STARTUP = @"Software\Microsoft\Windows\CurrentVersion\Run";
     public const string REGISTRY_PATH = @"Software\9-Bits\Miakro911";
@@ -354,6 +355,7 @@ public static class RabnetConfig
     /// </summary>
     public static void LoadDataSources()
     {
+        log.Info("loading DataSources");
         if (!_extracting) 
             ExtractConfig(System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath);
         _dataSources.Clear();
@@ -376,6 +378,7 @@ public static class RabnetConfig
     /// </summary>
     public static void SaveDataSources()
     {
+        log.Info("saving DataSources");
         RegistryKey rKey = Registry.LocalMachine.CreateSubKey(DATASOURCES_PATH);
         List<string> noDeleted = new List<string>();
         foreach (rabDataSource ds in _dataSources)
@@ -416,7 +419,10 @@ public static class RabnetConfig
             }
         }
         if (remove != null)
+        {
+            log.Debug("delete datasource "+remove.Name);
             _dataSources.Remove(remove);
+        }
     }
 
     /// <summary>
@@ -496,6 +502,7 @@ public static class RabnetConfig
     /// </summary>
     public static void ExtractConfig(string filePath)
     {
+        log.Info("extracting configs from app.configs");
         if (!System.IO.File.Exists(filePath)) return;
         _extracting = true;
         XmlDocument doc = new XmlDocument();
@@ -525,12 +532,15 @@ public static class RabnetConfig
                 rootNode.RemoveChild(xnd);
             }
         }
+#if !DEBUG
         doc.Save(filePath);
+#endif
         //_extracting = false;
     }
 
     private static void extractRabnetds(XmlNode node)
     {
+        log.Info("extracting config from RabNet");
         LoadDataSources();
         foreach (XmlNode nd in node.ChildNodes)
         {
@@ -557,6 +567,7 @@ public static class RabnetConfig
 
     private static void extractRabDump(XmlNode node)
     {
+        log.Info("extracting congig from RabDump");
         LoadDataSources();
         LoadArchiveJobs();
         foreach (XmlNode nd in node.ChildNodes)

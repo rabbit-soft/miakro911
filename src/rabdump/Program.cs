@@ -1,9 +1,10 @@
 ﻿//#define PROTECTED
 #if DEBUG
-    #define NOCATCH
+    //#define NOCATCH
 #endif
 using System;
 using System.Windows.Forms;
+using log4net;
 #if PROTECTED
 using RabGRD;
 #endif
@@ -12,6 +13,8 @@ namespace rabdump
 {
     static class Program
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(Program).Name);
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -68,6 +71,7 @@ namespace rabdump
                     }
                     catch (Exception e)
                     {
+                        log.Error("<exp>", e);
                         MessageBox.Show(e.Message + e.StackTrace);
                     }
 #endif

@@ -219,7 +219,8 @@ namespace updater
         {
             if (_needUpdateSomebody)
             {              
-                MessageBox.Show("Перед выходом необходимо обновить БазыДанных");
+                if(MessageBox.Show("Перед выходом необходимо обновить БазыДанных"+Environment.NewLine
+                    +"Вы точно хотите выйти?","",MessageBoxButtons.YesNo) == DialogResult.No)
                 e.Cancel = true;
             }
         }
