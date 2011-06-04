@@ -547,10 +547,11 @@
 			</sources>
 			<resources>
 				<include name="${curdir}/updater/sql/*.sql"/>
-				<include name="${curdir}/updater/*.resx"/>
+				<include name="${curdir}/updater/*.resx"/>				
 			</resources>
 			<references>
 				<include name="${mysql.use}"/>
+				<include name="${log4net.ass}"/>
 			</references>
 		</csc>
 	</target>
