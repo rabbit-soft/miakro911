@@ -529,6 +529,7 @@
 	<target name="updater" description="Make updater project">
 		<delete dir="${curdir}/updater/tmp"/>
 		<mkdir dir="${curdir}/updater/tmp"/>
+		<copy file="${log4net.use}" tofile="${tools_dir}/${log4net.lib}" />
 		<asminfo output="${curdir}/updater/tmp/VersionInfo.cs" language="CSharp">
 			<imports>
 				<import namespace="System.Reflection" />
@@ -547,13 +548,14 @@
 			</sources>
 			<resources>
 				<include name="${curdir}/updater/sql/*.sql"/>
-				<include name="${curdir}/updater/*.resx"/>				
+				<include name="${curdir}/updater/*.resx"/>
 			</resources>
 			<references>
 				<include name="${mysql.use}"/>
-				<include name="${log4net.ass}"/>
+				<include name="${log4net.use}"/>
 			</references>
 		</csc>
+		<copy file="${curdir}/updater/app.config" tofile="${tools_dir}/updater.exe.config" />
 	</target>
 
 	<target name="butcher" description="Make the Butcher Factory">		

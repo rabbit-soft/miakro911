@@ -12,7 +12,7 @@ namespace rabnet
         const int NEED_DB_VERSION = 7; //Необходимой  версия БД (options o_name='db',o_subname='version')
         private IRabNetDataLayer data = null;
         private IRabNetDataLayer data2 = null;
-        private ILog log = null;
+        private ILog _logger = null;
         private int uid = 0;
         private string group = "none";
         private String uname;
@@ -24,7 +24,7 @@ namespace rabnet
         public RabNetEngine()
         {
             log4net.Config.XmlConfigurator.Configure();
-            log = log4net.LogManager.GetLogger(typeof(RabNetEngine));
+            _logger = log4net.LogManager.GetLogger(typeof(RabNetEngine));
         }
 
         public IRabNetDataLayer initEngine(String dbext,String param)
@@ -36,7 +36,7 @@ namespace rabnet
                 if (data2 != null) data2.close();
                 data = data2 = null;
             }
-            log.Debug("initing engine data to " + dbext + " param=" + param);
+            _logger.Debug("initing engine data to " + dbext + " param=" + param);
             if (dbext == "db.mysql")
             {
                 data = new RabNetDbMySql(param);
@@ -77,7 +77,7 @@ namespace rabnet
         public int setUid(String name, String password, String farmName)
         {
             uid = db().checkUser(name, password);
-            log.DebugFormat("check uid {0:d} for farm {1:s}", uid,farmName);
+            _logger.DebugFormat("check uid {0:d} for farm {1:s}", uid,farmName);
             if (uid != 0)
             {
                 group = db().userGroup(uid);

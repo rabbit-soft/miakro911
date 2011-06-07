@@ -146,7 +146,6 @@ SectionEnd
 Section /o $(SEC_RabDump_NAME) SEC_RabDump
     SectionIn 2 3
 
-
     Call CloseRabDump
 
     SetOutPath $INSTDIR\RabDump
@@ -216,6 +215,8 @@ Section -com_comps SEC_Common
     File ..\..\..\bin\@bin_type@\Tools\mia_conv.exe
     File ..\..\..\bin\@bin_type@\Tools\MySql.Data.dll
     File ..\..\..\bin\tools\updater.exe
+	File ..\..\..\bin\tools\log4net.dll
+	File ..\..\..\bin\tools\updater.exe.config
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Conv_NAME).lnk $INSTDIR\Tools\mia_conv.exe
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Up_NAME).lnk $INSTDIR\Tools\updater.exe
     WriteRegStr HKLM "${REGKEY}\Components" com_comps 1
@@ -341,10 +342,12 @@ Section /o -un.com_comps UNSEC_Common
     RmDir /REBOOTOK /r $INSTDIR\Guardant
     Delete /REBOOTOK $INSTDIR\Tools\mia_conv.exe
     Delete /REBOOTOK $INSTDIR\Tools\MySql.Data.dll
+	Delete /REBOOTOK $INSTDIR\Tools\log4net.dll
+	Delete /REBOOTOK $INSTDIR\Tools\updater.exe
     RmDir /REBOOTOK /r $INSTDIR\Tools
 #    Delete /REBOOTOK $INSTDIR\Guardant\GrdTRU.exe
 #    Delete /REBOOTOK $INSTDIR\mia_conv.exe
-#   Delete /REBOOTOK $INSTDIR\log4net.dll
+#    Delete /REBOOTOK $INSTDIR\log4net.dll
     Delete /REBOOTOK $SMPROGRAMS\$StartMenuGroup\$(SM_Conv_NAME).lnk
     Delete /REBOOTOK $SMPROGRAMS\$StartMenuGroup\$(SM_Up_NAME).lnk
     DeleteRegValue HKLM "${REGKEY}\Components" com_comps
@@ -360,7 +363,7 @@ Section /o "-un.rabdump" UNSEC_RabDump
 #    Delete /REBOOTOK $INSTDIR\RabDump\CodeStorage32.dll
 #    Delete /REBOOTOK $INSTDIR\RabDump\CodeStorage64.dll
     Delete /REBOOTOK $INSTDIR\RabDump\GuardantDotNetApi.dll
-    Delete /REBOOTOK $INSTDIR\Tools\updater.exe
+   
     Delete /REBOOTOK $INSTDIR\RabDump\log4net.dll
 
     RmDir /REBOOTOK /r $INSTDIR\7z
@@ -498,7 +501,6 @@ Function un.CloseRabDump
 
 FunctionEnd
 
-
 Function CloseRabDump
     Push $5
 
@@ -598,7 +600,6 @@ Function CloseRabNet
     Pop $5
 
 FunctionEnd
-
 
 # Uninstaller functions
 Function un.onInit

@@ -57,7 +57,8 @@ public static class RabnetConfig
     }
 
     public enum OptionType {MysqlPath,zip7path,rabdump_startupPath }
-    private static readonly ILog log = LogManager.GetLogger(typeof(RabnetConfig));
+
+    private static readonly ILog _logger = LogManager.GetLogger(typeof(RabnetConfig));
 
     public const string STARTUP = @"Software\Microsoft\Windows\CurrentVersion\Run";
     public const string REGISTRY_PATH = @"Software\9-Bits\Miakro911";
@@ -134,6 +135,7 @@ public static class RabnetConfig
 
     public static void LoadArchiveJobs()
     {
+        _logger.Info("loading archiveJobs");
         _archiveJobs.Clear();
         RegistryKey rKey = Registry.LocalMachine.CreateSubKey(ARCHIVEJOBS_PATH);
         foreach (string s in rKey.GetSubKeyNames())
@@ -156,6 +158,7 @@ public static class RabnetConfig
     /// </summary>
     public static void SaveArchiveJobs()
     {
+        _logger.Info("saving archiveJobs");
         RegistryKey rKey = Registry.LocalMachine.CreateSubKey(RabnetConfig.ARCHIVEJOBS_PATH);
         foreach (rabArchiveJob raj in _archiveJobs)
         {
@@ -341,6 +344,17 @@ public static class RabnetConfig
             RabnetConfig.SaveDataSources();
         }
 
+        public override string ToString()
+        {
+            return String.Format("name={0};hid={1};def={2};du={3};dp={4};sp={5}; params={6}",
+                Name,
+                Hidden?"1":"0",
+                Default?"1":"0",
+                DefUser,
+                DefPassword,
+                SavePassword?"1":"0",
+                Params.ToString());
+        }
     }
 
     private static List<rabDataSource> _dataSources = new List<rabDataSource>();
@@ -355,7 +369,7 @@ public static class RabnetConfig
     /// </summary>
     public static void LoadDataSources()
     {
-        log.Info("loading DataSources");
+        _logger.Info("loading DataSources");
         if (!_extracting) 
             ExtractConfig(System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath);
         _dataSources.Clear();
@@ -378,7 +392,7 @@ public static class RabnetConfig
     /// </summary>
     public static void SaveDataSources()
     {
-        log.Info("saving DataSources");
+        _logger.Info("saving DataSources");
         RegistryKey rKey = Registry.LocalMachine.CreateSubKey(DATASOURCES_PATH);
         List<string> noDeleted = new List<string>();
         foreach (rabDataSource ds in _dataSources)
@@ -420,7 +434,7 @@ public static class RabnetConfig
         }
         if (remove != null)
         {
-            log.Debug("delete datasource "+remove.Name);
+            _logger.Debug("delete datasource "+remove.Name);
             _dataSources.Remove(remove);
         }
     }
@@ -474,6 +488,7 @@ public static class RabnetConfig
 
     private static string compareDataSource(rabDataSource ds)
     {
+        _logger.Debug(ds.ToString());
         foreach (rabDataSource rds in _dataSources)
         {
             if (rds.Name == ds.Name && rds.Params.ToString() == ds.Params.ToString())
@@ -501,9 +516,9 @@ public static class RabnetConfig
     /// Сохраняет полученные настройки в реестр.
     /// </summary>
     public static void ExtractConfig(string filePath)
-    {
-        log.Info("extracting configs from app.configs");
+    {       
         if (!System.IO.File.Exists(filePath)) return;
+        _logger.Info("extracting configs from app.configs");
         _extracting = true;
         XmlDocument doc = new XmlDocument();
         doc.Load(filePath);
@@ -540,7 +555,7 @@ public static class RabnetConfig
 
     private static void extractRabnetds(XmlNode node)
     {
-        log.Info("extracting config from RabNet");
+        _logger.Info("extracting config from RabNet");
         LoadDataSources();
         foreach (XmlNode nd in node.ChildNodes)
         {
@@ -558,7 +573,7 @@ public static class RabnetConfig
                     td.DefUser = nd.Attributes.GetNamedItem("user").Value;
                 if (nd.Attributes.GetNamedItem("password") != null)
                     td.DefPassword = nd.Attributes.GetNamedItem("password").Value;
-                if(compareDataSource(td) =="")
+                if (compareDataSource(td) == "")
                     _dataSources.Add(td);
             }          
         }
@@ -567,7 +582,7 @@ public static class RabnetConfig
 
     private static void extractRabDump(XmlNode node)
     {
-        log.Info("extracting congig from RabDump");
+        _logger.Info("extracting congig from RabDump");
         LoadDataSources();
         LoadArchiveJobs();
         foreach (XmlNode nd in node.ChildNodes)

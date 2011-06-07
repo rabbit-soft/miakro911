@@ -4,11 +4,14 @@
 using System;
 using System.Windows.Forms;
 using System.IO;
+using log4net;
 
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 namespace updater
 {
     static class Program
     {
+        private static ILog _logger = LogManager.GetLogger(typeof(Program));
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -17,6 +20,7 @@ namespace updater
         {
             //            try
             //            {
+            _logger.Info("STARTING");
             bool batch = false;
             if (args.Length > 0)
             {
@@ -48,12 +52,14 @@ namespace updater
             int res = 0;
             if (RabnetConfig.HaveDataSources())
             {
+                _logger.Info("have datasources");
                 UpdateForm uf = new UpdateForm(/*flRabDump, flRabNet, batch*/);
                 Application.Run(uf);
                 res = uf.Result;
             }
             else
             {
+                _logger.Info("not have datasources");
                 InstallForm ifr = new InstallForm();
                 Application.Run(ifr);
                 res = ifr.Result;
