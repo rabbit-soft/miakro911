@@ -6,11 +6,13 @@ using System.Windows.Forms;
 using System.IO;
 using MySql.Data.MySqlClient;
 using System.Xml;
+using log4net;
 
 namespace updater
 {
     public partial class UpdateForm : Form
     {
+        private ILog _logger = LogManager.GetLogger(typeof(UpdateForm));
         bool _batch = false;
         public int Result = 0;
         /// <summary>
@@ -50,7 +52,7 @@ namespace updater
             }
             catch(Exception)
             {
-                prefix="updater.sql.";
+                prefix = "updater.sql.";
             }
             try
             {
@@ -67,6 +69,7 @@ namespace updater
             {
                 i--;
             }
+            _logger.InfoFormat("get {0:s} scripts",i);
             return i;
         }
 
@@ -95,6 +98,7 @@ namespace updater
         /// </summary>
         private void UpdateList()
         {
+            _logger.Info("updating list");
             btUpdate.Enabled = false;
             _needUpdateSomebody = true;
             lv.Items.Clear();
@@ -111,6 +115,7 @@ namespace updater
                 try
                 {
                     _sql.Open();
+                    _logger.DebugFormat("connecting success: {0}|params:{1}",rds.Name,rds.Params.ToString());
                     MySqlCommand cmd = new MySqlCommand("SELECT o_value FROM options WHERE o_name='db' AND o_subname='version';", _sql);
                     MySqlDataReader rd = cmd.ExecuteReader();
                     if (rd.Read())
@@ -133,6 +138,7 @@ namespace updater
                 catch (Exception)
                 {
                     _sql.Close();
+                    _logger.DebugFormat("connecting fail: {0}|params:{1}", rds.Name, rds.Params.ToString());
                     li.Tag = 3;
                     li.ForeColor = Color.Red;
                     li.SubItems.Add("нет доступа");
@@ -156,6 +162,7 @@ namespace updater
 
         private void btUpdate_Click(object sender, EventArgs e)
         {
+            _logger.Info("start to Updating");
 			btUpdate.Enabled = false;
             btClose.Enabled = !_batch;
             foreach (ListViewItem li in lv.Items)
@@ -190,6 +197,7 @@ namespace updater
                                 }
                                 OnUpdate(prever, _sql,UpdateStatus.After);
                                 _sql.Close();
+                                _logger.DebugFormat("update success db:{0:s}|script:{1:#}|",li.SubItems[0].Text ,k);
                             }
                             catch (Exception ex)
                             {

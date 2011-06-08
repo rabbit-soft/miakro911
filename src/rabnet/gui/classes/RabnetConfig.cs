@@ -66,6 +66,7 @@ public static class RabnetConfig
     public const string ARCHIVEJOBS_PATH = REGISTRY_PATH + "\\archivejobs";
 
     private static bool _extracting = false;
+    private const string ALL_DB = "[ВСЕ]";
 
     public static string GetOption(OptionType optionType)
     {
@@ -257,19 +258,23 @@ public static class RabnetConfig
     private static string compareArchivejobs(rabArchiveJob aj)
     {
         List<string> dbguids = getGuidsByDBName(aj.DBguid);//вместо DBguid передается название БД
-        if (dbguids.Count == 0) return "";
+        if (aj.DBguid != ALL_DB && dbguids.Count == 0) return "";
+
         foreach (rabArchiveJob raj in _archiveJobs)
         {
-            bool sameDBguids = false;
-            foreach (string g in dbguids)
+            if (aj.DBguid != ALL_DB)
             {
-                if (raj.DBguid == g)
+                bool sameDBguids = false;
+                foreach (string g in dbguids)
                 {
-                    sameDBguids = true;
-                    break;
+                    if (raj.DBguid == g)
+                    {
+                        sameDBguids = true;
+                        break;
+                    }
                 }
+                if (!sameDBguids) continue;
             }
-            if (!sameDBguids) continue;
             if (raj.JobName == aj.JobName &&
                 raj.DumpPath == aj.DumpPath &&
                 raj.CountLimit == aj.CountLimit &&
@@ -488,7 +493,6 @@ public static class RabnetConfig
 
     private static string compareDataSource(rabDataSource ds)
     {
-        _logger.Debug(ds.ToString());
         foreach (rabDataSource rds in _dataSources)
         {
             if (rds.Name == ds.Name && rds.Params.ToString() == ds.Params.ToString())
@@ -497,6 +501,11 @@ public static class RabnetConfig
         return "";
     }
 
+    /// <summary>
+    /// Возвращает Все Guid Подключений к БД, имеющих заданное имя
+    /// </summary>
+    /// <param name="name">Имя подключения</param>
+    /// <returns>Список Guid'ов</returns>
     private static List<string> getGuidsByDBName(string name)
     {
         List<string> result = new List<string>();
@@ -616,13 +625,17 @@ public static class RabnetConfig
                         int.Parse(nd.SelectSingleNode("countlim").InnerText),
                         int.Parse(nd.SelectSingleNode("sizelim").InnerText),
                         int.Parse(nd.SelectSingleNode("repeat").InnerText));
-                    if (aj.DBguid == "[все]")
-                        aj.DBguid = "[ВСЕ]";
-                    else if(compareArchivejobs(aj) == "")
+                    if (aj.DBguid == "[все]")                  
+                        aj.DBguid = ALL_DB;
+
+                    if (compareArchivejobs(aj) == "")//если не имеется идентичных Расписаний
                     {
-                        List<string> dbguids = getGuidsByDBName(aj.DBguid);
-                        if(dbguids.Count == 0) break;
-                        aj.DBguid = dbguids[0];
+                        if (aj.DBguid != ALL_DB)
+                        {   //назначаем расписанию Guid Подключения к БД
+                            List<string> dbguids = getGuidsByDBName(aj.DBguid);
+                            if (dbguids.Count == 0) break;
+                            aj.DBguid = dbguids[0];
+                        }
                     }
                     else break;
                     aj.Guid = System.Guid.NewGuid().ToString();
