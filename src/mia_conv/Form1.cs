@@ -1,3 +1,6 @@
+#if DEBUG
+    #define NOCATCH
+#endif
 using System;
 using System.Data;
 using System.Windows.Forms;

@@ -220,6 +220,7 @@ namespace mia_conv
                 MySqlException mex = (ex as MySqlException);
                 switch (mex.Number)
                 {
+                    case 1042: return miaExitCode.CANT_CONNECT_TO_MYSQL;
                     case 1044: return miaExitCode.DB_NOT_EXISTS;
                     case 1045: return miaExitCode.DB_ACCESS_DENIED;
                     default: return miaExitCode.ERROR;

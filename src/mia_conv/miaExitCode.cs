@@ -17,6 +17,7 @@ using System.Text;
         public const int DB_NOT_EXISTS = 7;
         public const int DB_ACCESS_DENIED = 8;
         public const int ABORTED_BY_USER = 9;
+        public const int CANT_CONNECT_TO_MYSQL = 10;
 
         public static string GetText(int code)
         {
@@ -36,6 +37,7 @@ using System.Text;
                 case DB_NOT_EXISTS: return "Базы данных не существует";
                 case DB_ACCESS_DENIED: return "Не верный пользователь или пароль";
                 case ABORTED_BY_USER: return "Отменено пользователем";
+                case CANT_CONNECT_TO_MYSQL: return "Не могу подключиться к MySQL Server";
                 default: return "";
             }
         }
