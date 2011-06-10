@@ -41,7 +41,7 @@ namespace miaRepair
                 searchYoungerMother_bySurname();
                 searchYoungerFathers_bySecname();
                 repairFucksIfChildrenThenOkrol();
-                repirFucksEndDateByYoungers();
+                repairFucksEndDateByYoungers();
 
                 
                 saveRabbits();
@@ -57,7 +57,7 @@ namespace miaRepair
 #endif
         }
 
-        private static void repirFucksEndDateByYoungers()
+        private static void repairFucksEndDateByYoungers()
         {
             log("rapair fucks End_Date by Father and Mother");
             List<Rabbit> youngers = _rabbits.Yongers;
@@ -65,15 +65,50 @@ namespace miaRepair
             {
                 if (yng.Mother == 0 || yng.Father == 0) continue;
                 log("searching fuck where m:{0:d}|f:{1:d}",yng.Mother,yng.Father);
+                List<Fuck> candidates = new List<Fuck>();
                 foreach(Fuck f in _fucks)
                 {
+                    
                     if(f.EndDate != DateTime.MinValue) continue;
-                    if(yng.Mother==f.SheID && yng.Father ==f.HeID)
+                    if(yng.Mother == f.SheID && yng.Father == f.HeID)
                     {
                         log("   we fing a f_id: {0:d}",f.fID);
-                        f.EndDate = yng.Born;
-                        f.fState = Fuck.State.Okrol;
+                        candidates.Add(f);
                         break;
+                    }
+                }
+                if (candidates.Count == 0)
+                    log("   we find nothing");
+                else if (candidates.Count == 1)
+                    log("   we find only one fuck: {0:d}",candidates[0].fID);
+                else if (candidates.Count > 1)
+                {
+                    log("   we find a {0:s} fucks,you nead a chose № or type 'n' to next");
+                    log("   #       mother      father      start       end     childr");
+                    foreach (Fuck f in candidates)
+                    {
+                        log("   {0}        {1}      {2}     {3}     {4}     {5:d}");
+                    }
+                    while (true)
+                    {
+                        string ans = Console.ReadLine();
+                        if (ans == "n")
+                        {
+                            log("   you chose nobody");
+                            continue;
+                        }
+                        int n = 0;
+                        int.TryParse(ans, out n);
+                        foreach (Fuck f in candidates)
+                        {
+                            if (f.fID == n)
+                            {
+                                f.EndDate = yng.Born;
+                                if (f.fState == Fuck.State.Sukrol)
+                                    f.fState = Fuck.State.Okrol;
+                            }
+                        }
+                        log("   you type a wrong symbol, Idiot!");
                     }
                 }
             }
@@ -219,7 +254,11 @@ namespace miaRepair
             log("saving fucks");
             foreach (Fuck f in _fucks)
             {
-                _cmd.CommandText = String.Format("UPDATE fucks SET f_date='{0:yyyy-MM-dd}', f_end_date='{1:yyyy-MM-dd}',f_state='{2}' WHERE f_id={3:d};", f.StartDate,f.EndDate,f.fState.ToString().ToLower(),f.fID);
+                if (f.StartDate == DateTime.MinValue && f.EndDate == DateTime.MinValue) continue;
+                _cmd.CommandText = String.Format("UPDATE fucks SET {0:s} {1:s} f_state='{2}' WHERE f_id={3:d};",
+                    f.StartDate == DateTime.MinValue?"":String.Format("f_date='{0:yyy-MM-dd}',",f.StartDate),
+                    f.EndDate == DateTime.MinValue ? "" : String.Format("f_end_date='{0:yyy-MM-dd}',", f.EndDate),
+                    f.fState.ToString().ToLower(),f.fID);
                 _cmd.ExecuteNonQuery();
             }
         }
