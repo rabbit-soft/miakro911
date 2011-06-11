@@ -51,8 +51,8 @@ namespace rabnet
             ToolTip toolTip = new ToolTip();
             
             toolTip.InitialDelay = 1000;
-            toolTip.SetToolTip(button11,"Показать генетику выделенного самца");
-            toolTip.SetToolTip(button12,"Выбрать партнера для соития");
+            toolTip.SetToolTip(btGens,"Показать генетику выделенного самца");
+            toolTip.SetToolTip(btFuckHer,"Выбрать партнера для соития");
             toolTip.SetToolTip(overallBab,"Сколько родила живых крольчат вообщем");
             toolTip.SetToolTip(btBon,"Определение классности");
             toolTip.SetToolTip(group,"Количество кроликов в клетке");
@@ -69,6 +69,7 @@ namespace rabnet
             toolTip.SetToolTip(dtp_vacEnd,"Дата окончания прививки");
             toolTip.SetToolTip(sex, "Пол одного или группы кроликов");
             toolTip.SetToolTip(rate, "Рейтинг кролика");
+            toolTip.SetToolTip(btChangeWorker, "Изменить работника, который случал");
         }
 
         public RabbitInfo(int id)
@@ -162,6 +163,9 @@ namespace rabnet
             maleProd.Text = String.Format("Продуктивность соития: {0:f5}",d[1]);
         }
 
+        /// <summary>
+        /// Обновляет информацию для самки
+        /// </summary>
         private void updateFemale()
         {
             setSex(2);
@@ -174,7 +178,7 @@ namespace rabnet
                 label7.Text = "Статус: Штатная";
             if (rab.Status > 0)
             {
-                button8.Text = button12.Text = "Вязать";
+                button8.Text = btFuckHer.Text = "Вязать";
                 if (rab.Status>1)
                     okrolPage.Text = "Вязки/Окролы";
             }            
@@ -206,6 +210,7 @@ namespace rabnet
             overallBab.Value = rab.Babies;
             deadBab.Value = rab.Lost;
             okrolCount.Value = rab.Status;
+            ///Заполнение списка случек
             fucks.Items.Clear();
             if (rid>0)
             foreach (Fucks.Fuck f in Engine.db().getFucks(rab.RabID).fucks)
@@ -228,7 +233,7 @@ namespace rabnet
                 li.Tag = f;
             }
             changeFucker.Enabled = false;
-            fucks.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            ///Заполенение списка подсосных
             suckers.Items.Clear();
             if (rid>0)
             foreach (Younger y in Engine.db().getSuckers(rab.RabID))
@@ -239,7 +244,6 @@ namespace rabnet
                 li.SubItems.Add(y.fsex);
                 li.SubItems.Add(y.fbreed);
             }
-            suckers.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
         private void FillList(ComboBox cb,Catalog c,int key)
@@ -493,19 +497,20 @@ namespace rabnet
 
         private void fucks_SelectedIndexChanged(object sender, EventArgs e)
         {
-            changeFucker.Enabled = false;
+            btChangeWorker.Enabled = changeFucker.Enabled = false;
             if (fucks.SelectedItems.Count == 1)
             {
                 bool dead = (fucks.SelectedItems[0].SubItems[3].Text == RABDEAD);
-                button11.Enabled = true;
-                button12.Enabled = !sukr.Checked && !dead;
+                btGens.Enabled = true;
+                btFuckHer.Enabled = !sukr.Checked && !dead;
                 changeFucker.Enabled=fucks.SelectedItems[0].SubItems[3].Text=="сукрольна";
+                btChangeWorker.Enabled = true;
             }
             else
-                button11.Enabled = button12.Enabled = false;
+                 btGens.Enabled = btFuckHer.Enabled = false;
         }
 
-        private void button11_Click(object sender, EventArgs e)
+        private void btGens_Click(object sender, EventArgs e)
         {
             Fucks.Fuck f=fucks.SelectedItems[0].Tag as Fucks.Fuck;
             String nm=label2.Text.Split(':')[1];
@@ -544,7 +549,7 @@ namespace rabnet
             updateData();
         }
 
-        private void button12_Click(object sender, EventArgs e)
+        private void btFuckHer_Click(object sender, EventArgs e)
         {
             Fucks.Fuck f = fucks.SelectedItems[0].Tag as Fucks.Fuck;
             (new MakeFuck(rab.RabID,f.partnerid)).ShowDialog();
@@ -554,7 +559,7 @@ namespace rabnet
         private void fucks_DoubleClick(object sender, EventArgs e)
         {
             if (fucks.SelectedItems.Count == 1)
-                button11.PerformClick();
+                btGens.PerformClick();
         }
 
         private void button14_Click(object sender, EventArgs e)
@@ -726,6 +731,40 @@ namespace rabnet
                 if (rab.Status == 1 || rab.age >= mkcandidate) maleStatus.SelectedIndex = 1;
                     else maleStatus.SelectedIndex = 0;
             }
+        }
+
+        private void miIsNotAProholost_Click(object sender, EventArgs e)
+        {
+            if (fucks.SelectedItems.Count == 1)
+            {
+                Fucks.Fuck f = (fucks.SelectedItems[0].Tag as Fucks.Fuck);
+                if (!isLastEvent(f))
+                {
+                    MessageBox.Show("Отменить прохолостание можно лишь последней записи");
+                    return;
+                }
+                if (MessageBox.Show("Данная функция отменит прохолост текущей крольчихи и восстановит сукрольность." + Environment.NewLine +
+                    "Продолжить?", "Отмена прохолоста", MessageBoxButtons.YesNo) == DialogResult.No) return;
+                Engine.db().cancelFuckEnd(f.id);
+                this.updateData();
+                //(new OkrolForm(this.rid)).ShowDialog();
+            }
+        }
+
+        private bool isLastEvent(Fucks.Fuck f)
+        {
+            foreach (ListViewItem lvi in fucks.Items)
+            {
+                if ((lvi.Tag as Fucks.Fuck).id > f.id)
+                    return false;
+            }
+            return true;
+        }
+
+        private void msFucks_Opening(object sender, CancelEventArgs e)
+        {
+            if (fucks.SelectedItems.Count != 1 || fucks.SelectedItems[0].SubItems[3].Text != Fucks.Type.Proholost_rus)          
+                e.Cancel = true;                       
         }
 
     }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.TabPage1 = new System.Windows.Forms.TabPage();
             this.sex = new System.Windows.Forms.ComboBox();
@@ -97,10 +98,10 @@
             this.nokuk = new System.Windows.Forms.CheckBox();
             this.nolact = new System.Windows.Forms.CheckBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.changeWorker = new System.Windows.Forms.Button();
+            this.btChangeWorker = new System.Windows.Forms.Button();
             this.changeFucker = new System.Windows.Forms.Button();
-            this.button12 = new System.Windows.Forms.Button();
-            this.button11 = new System.Windows.Forms.Button();
+            this.btFuckHer = new System.Windows.Forms.Button();
+            this.btGens = new System.Windows.Forms.Button();
             this.fucks = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
@@ -114,6 +115,8 @@
             this.columnHeader15 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader16 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader19 = new System.Windows.Forms.ColumnHeader();
+            this.msFucks = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miIsNotAProholost = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.suckers = new System.Windows.Forms.ListView();
             this.columnHeader10 = new System.Windows.Forms.ColumnHeader();
@@ -139,6 +142,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
+            this.showfuckidToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bdate = new rabnet.components.DateDays();
             this.okrolDd = new rabnet.components.DateDays();
             this.sukrDd = new rabnet.components.DateDays();
@@ -161,6 +165,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.overallBab)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.msFucks.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudWeight)).BeginInit();
@@ -177,6 +182,7 @@
             this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Location = new System.Drawing.Point(8, 56);
+            this.tabControl1.MaximumSize = new System.Drawing.Size(800, 400);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(516, 331);
@@ -229,7 +235,6 @@
             // 
             // btReplace
             // 
-            this.btReplace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btReplace.Location = new System.Drawing.Point(404, 276);
             this.btReplace.Name = "btReplace";
             this.btReplace.Size = new System.Drawing.Size(90, 23);
@@ -313,8 +318,6 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.button15);
             this.groupBox2.Controls.Add(this.button14);
             this.groupBox2.Controls.Add(this.bdate);
@@ -334,6 +337,8 @@
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Enabled = false;
             this.groupBox2.Location = new System.Drawing.Point(157, 3);
+            this.groupBox2.MaximumSize = new System.Drawing.Size(500, 700);
+            this.groupBox2.MinimumSize = new System.Drawing.Size(343, 267);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(343, 267);
             this.groupBox2.TabIndex = 3;
@@ -965,10 +970,10 @@
             // 
             // tabPage4
             // 
-            this.tabPage4.Controls.Add(this.changeWorker);
+            this.tabPage4.Controls.Add(this.btChangeWorker);
             this.tabPage4.Controls.Add(this.changeFucker);
-            this.tabPage4.Controls.Add(this.button12);
-            this.tabPage4.Controls.Add(this.button11);
+            this.tabPage4.Controls.Add(this.btFuckHer);
+            this.tabPage4.Controls.Add(this.btGens);
             this.tabPage4.Controls.Add(this.fucks);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
@@ -977,15 +982,15 @@
             this.tabPage4.Text = "Случки/Окролы";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // changeWorker
+            // btChangeWorker
             // 
-            this.changeWorker.Location = new System.Drawing.Point(287, 279);
-            this.changeWorker.Name = "changeWorker";
-            this.changeWorker.Size = new System.Drawing.Size(123, 23);
-            this.changeWorker.TabIndex = 4;
-            this.changeWorker.Text = "Изменить работника";
-            this.changeWorker.UseVisualStyleBackColor = true;
-            this.changeWorker.Click += new System.EventHandler(this.changeWorker_Click);
+            this.btChangeWorker.Location = new System.Drawing.Point(287, 279);
+            this.btChangeWorker.Name = "btChangeWorker";
+            this.btChangeWorker.Size = new System.Drawing.Size(123, 23);
+            this.btChangeWorker.TabIndex = 4;
+            this.btChangeWorker.Text = "Изменить работника";
+            this.btChangeWorker.UseVisualStyleBackColor = true;
+            this.btChangeWorker.Click += new System.EventHandler(this.changeWorker_Click);
             // 
             // changeFucker
             // 
@@ -998,27 +1003,27 @@
             this.changeFucker.UseVisualStyleBackColor = true;
             this.changeFucker.Click += new System.EventHandler(this.changeFucker_Click);
             // 
-            // button12
+            // btFuckHer
             // 
-            this.button12.Enabled = false;
-            this.button12.Location = new System.Drawing.Point(84, 279);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(75, 23);
-            this.button12.TabIndex = 2;
-            this.button12.Text = "Случить";
-            this.button12.UseVisualStyleBackColor = true;
-            this.button12.Click += new System.EventHandler(this.button12_Click);
+            this.btFuckHer.Enabled = false;
+            this.btFuckHer.Location = new System.Drawing.Point(84, 279);
+            this.btFuckHer.Name = "btFuckHer";
+            this.btFuckHer.Size = new System.Drawing.Size(75, 23);
+            this.btFuckHer.TabIndex = 2;
+            this.btFuckHer.Text = "Случить";
+            this.btFuckHer.UseVisualStyleBackColor = true;
+            this.btFuckHer.Click += new System.EventHandler(this.btFuckHer_Click);
             // 
-            // button11
+            // btGens
             // 
-            this.button11.Enabled = false;
-            this.button11.Location = new System.Drawing.Point(3, 279);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(75, 23);
-            this.button11.TabIndex = 1;
-            this.button11.Text = "Гены";
-            this.button11.UseVisualStyleBackColor = true;
-            this.button11.Click += new System.EventHandler(this.button11_Click);
+            this.btGens.Enabled = false;
+            this.btGens.Location = new System.Drawing.Point(3, 279);
+            this.btGens.Name = "btGens";
+            this.btGens.Size = new System.Drawing.Size(75, 23);
+            this.btGens.TabIndex = 1;
+            this.btGens.Text = "Гены";
+            this.btGens.UseVisualStyleBackColor = true;
+            this.btGens.Click += new System.EventHandler(this.btGens_Click);
             // 
             // fucks
             // 
@@ -1037,6 +1042,7 @@
             this.columnHeader15,
             this.columnHeader16,
             this.columnHeader19});
+            this.fucks.ContextMenuStrip = this.msFucks;
             this.fucks.FullRowSelect = true;
             this.fucks.GridLines = true;
             this.fucks.Location = new System.Drawing.Point(3, 3);
@@ -1096,6 +1102,22 @@
             // columnHeader19
             // 
             this.columnHeader19.Text = "работник";
+            // 
+            // msFucks
+            // 
+            this.msFucks.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miIsNotAProholost,
+            this.showfuckidToolStripMenuItem});
+            this.msFucks.Name = "msFucks";
+            this.msFucks.Size = new System.Drawing.Size(219, 70);
+            this.msFucks.Opening += new System.ComponentModel.CancelEventHandler(this.msFucks_Opening);
+            // 
+            // miIsNotAProholost
+            // 
+            this.miIsNotAProholost.Name = "miIsNotAProholost";
+            this.miIsNotAProholost.Size = new System.Drawing.Size(218, 22);
+            this.miIsNotAProholost.Text = "Отменить прохолостание";
+            this.miIsNotAProholost.Click += new System.EventHandler(this.miIsNotAProholost_Click);
             // 
             // tabPage6
             // 
@@ -1245,7 +1267,7 @@
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.BackColor = System.Drawing.SystemColors.Control;
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(445, 484);
+            this.button1.Location = new System.Drawing.Point(445, 477);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -1257,7 +1279,7 @@
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(283, 484);
+            this.button2.Location = new System.Drawing.Point(283, 477);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
@@ -1273,7 +1295,7 @@
             this.notes.Location = new System.Drawing.Point(8, 406);
             this.notes.Multiline = true;
             this.notes.Name = "notes";
-            this.notes.Size = new System.Drawing.Size(512, 61);
+            this.notes.Size = new System.Drawing.Size(512, 54);
             this.notes.TabIndex = 3;
             // 
             // label1
@@ -1333,7 +1355,7 @@
             // button5
             // 
             this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button5.Location = new System.Drawing.Point(364, 484);
+            this.button5.Location = new System.Drawing.Point(364, 477);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 23);
             this.button5.TabIndex = 10;
@@ -1341,11 +1363,20 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
+            // showfuckidToolStripMenuItem
+            // 
+            this.showfuckidToolStripMenuItem.Name = "showfuckidToolStripMenuItem";
+            this.showfuckidToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+                        | System.Windows.Forms.Keys.Z)));
+            this.showfuckidToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
+            this.showfuckidToolStripMenuItem.Text = "show_fuck_id";
+            this.showfuckidToolStripMenuItem.Visible = false;
+            // 
             // bdate
             // 
             this.bdate.AutoSize = true;
             this.bdate.DateText = "Дата рожд.";
-            this.bdate.DateValue = new System.DateTime(2011, 5, 19, 0, 0, 0, 0);
+            this.bdate.DateValue = new System.DateTime(2011, 6, 9, 0, 0, 0, 0);
             this.bdate.DaysText = "Возраст";
             this.bdate.DaysValue = 0;
             this.bdate.Location = new System.Drawing.Point(13, 111);
@@ -1360,7 +1391,7 @@
             // 
             this.okrolDd.AutoSize = true;
             this.okrolDd.DateText = "Дата";
-            this.okrolDd.DateValue = new System.DateTime(2011, 5, 19, 0, 0, 0, 0);
+            this.okrolDd.DateValue = new System.DateTime(2011, 6, 9, 0, 0, 0, 0);
             this.okrolDd.DaysText = "Срок";
             this.okrolDd.DaysValue = 0;
             this.okrolDd.Location = new System.Drawing.Point(8, 61);
@@ -1375,7 +1406,7 @@
             // 
             this.sukrDd.AutoSize = true;
             this.sukrDd.DateText = "Дата";
-            this.sukrDd.DateValue = new System.DateTime(2011, 5, 19, 0, 0, 0, 0);
+            this.sukrDd.DateValue = new System.DateTime(2011, 6, 9, 0, 0, 0, 0);
             this.sukrDd.DaysText = "Срок";
             this.sukrDd.DaysValue = 0;
             this.sukrDd.Location = new System.Drawing.Point(0, 46);
@@ -1392,7 +1423,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button2;
-            this.ClientSize = new System.Drawing.Size(532, 523);
+            this.ClientSize = new System.Drawing.Size(532, 516);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label5);
@@ -1404,10 +1435,10 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tabControl1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(900, 600);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(538, 555);
+            this.MinimumSize = new System.Drawing.Size(538, 550);
             this.Name = "RabbitInfo";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
@@ -1442,6 +1473,7 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.tabPage4.ResumeLayout(false);
+            this.msFucks.ResumeLayout(false);
             this.tabPage6.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudWeight)).EndInit();
@@ -1525,10 +1557,10 @@
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ColumnHeader columnHeader6;
         private System.Windows.Forms.ColumnHeader columnHeader7;
-        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Button btGens;
         private System.Windows.Forms.ColumnHeader columnHeader8;
         private System.Windows.Forms.ColumnHeader columnHeader9;
-        private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.Button btFuckHer;
         private rabnet.components.DateDays bdate;
         private rabnet.components.DateDays okrolDd;
         private rabnet.components.DateDays sukrDd;
@@ -1563,8 +1595,11 @@
         private System.Windows.Forms.Label maleKids;
         private System.Windows.Forms.ColumnHeader columnHeader19;
         private System.Windows.Forms.Button changeFucker;
-        private System.Windows.Forms.Button changeWorker;
+        private System.Windows.Forms.Button btChangeWorker;
         private System.Windows.Forms.DateTimePicker dtp_vacEnd;
         private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.ContextMenuStrip msFucks;
+        private System.Windows.Forms.ToolStripMenuItem miIsNotAProholost;
+        private System.Windows.Forms.ToolStripMenuItem showfuckidToolStripMenuItem;
     }
 }

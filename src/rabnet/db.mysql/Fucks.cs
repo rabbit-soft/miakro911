@@ -2,11 +2,28 @@
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 using System.Text;
+using log4net;
 
 namespace rabnet
 {
     public class Fucks
     {
+        public static class Type
+        {
+            public const string Null = "нет";
+            public const string Vyazka_ENG = "vyazka";
+            public const string Vyazka_rus = "вязка";
+            public const string Sluchka_ENG = "sluchka";
+            public const string Sluchka_rus = "случка";
+            public const string Kuk_ENG = "kuk";
+            public const string Kuk_rus = "кук";
+            public const string Okrol_ENG = "okrol";
+            public const string Okrol_rus = "окрол";
+            public const string Proholost_ENG = "proholost";
+            public const string Proholost_rus = "прохолостание";
+            public const string Sukrol_rus = "сукрольна";
+        }
+
         public class Fuck
         {
             public String partner;
@@ -29,7 +46,8 @@ namespace rabnet
                 int brd, String gen,String tp,int kl,int add,bool isdead,string wrk)
             {
                 this.id = id;
-                partner = p;partnerid = pid;
+                partner = p;
+                partnerid = pid;
                 worker = wrk;
                 times = tms;
                 when = s;enddate = e;
@@ -59,9 +77,10 @@ namespace rabnet
 
     class FucksGetter
     {
-        public static Fucks GetFucks(MySqlConnection sql,int rabbit)
+        public static Fucks GetFucks(MySqlConnection sql, int rabbit)
         {
-            MySqlCommand cmd=new MySqlCommand(String.Format(@"(SELECT f_id,f_date,f_partner,f_times,f_state,f_date,f_end_date,
+
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"(SELECT f_id,f_date,f_partner,f_times,f_state,f_date,f_end_date,
 (SELECT u_name FROM users WHERE u_id=f_worker) worker,f_children,f_dead,f_type,
 deadname(f_partner,2) partner,
 (SELECT r_breed FROM dead WHERE r_id=f_partner) breed,
@@ -75,19 +94,18 @@ rabname(f_partner,2) partner,
 (SELECT r_breed FROM rabbits WHERE r_id=f_partner) breed,
 (SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=(SELECT r_genesis FROM rabbits WHERE r_id=f_partner)) genom,
 f_killed,f_added,0 dead
-FROM fucks WHERE f_rabid={0:d} AND isdead(f_partner)=0 ORDER BY f_date);", rabbit),sql);
-            MySqlDataReader rd=cmd.ExecuteReader();
-            Fucks f=new Fucks();
-            while(rd.Read())
+FROM fucks WHERE f_rabid={0:d} AND isdead(f_partner)=0 ORDER BY f_date);", rabbit), sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            Fucks f = new Fucks();
+            while (rd.Read())
             {
-                f.addFuck(rd.GetInt32("f_id"),rd.GetString("partner"),rd.GetInt32("f_partner"),rd.GetInt32("f_times"),
-                    rd.IsDBNull(5)?DateTime.MinValue:rd.GetDateTime("f_date"),
-                    rd.IsDBNull(6)?DateTime.MinValue:rd.GetDateTime("f_end_date"),
-                    rd.GetString("f_state"),rd.GetInt32("f_children"),rd.GetInt32("f_dead"),
-                    rd.GetInt32("breed"),rd.IsDBNull(12)?"":rd.GetString("genom"),rd.GetString("f_type"),
-                    rd.GetInt32("f_killed"),rd.GetInt32("f_added"),(rd.GetInt32("dead")==1),rd.IsDBNull(7)?"":rd.GetString("worker")
+                f.addFuck(rd.GetInt32("f_id"), rd.GetString("partner"), rd.GetInt32("f_partner"), rd.GetInt32("f_times"),
+                    rd.IsDBNull(5) ? DateTime.MinValue : rd.GetDateTime("f_date"),
+                    rd.IsDBNull(6) ? DateTime.MinValue : rd.GetDateTime("f_end_date"),
+                    rd.GetString("f_state"), rd.GetInt32("f_children"), rd.GetInt32("f_dead"),
+                    rd.GetInt32("breed"), rd.IsDBNull(12) ? "" : rd.GetString("genom"), rd.GetString("f_type"),
+                    rd.GetInt32("f_killed"), rd.GetInt32("f_added"), (rd.GetInt32("dead") == 1), rd.IsDBNull(7) ? "" : rd.GetString("worker")
                     );
-
             }
             rd.Close();
             return f;
@@ -182,6 +200,34 @@ female,malewait,
             }
             rd.Close();
             return result;
+        }
+
+        /// <summary>
+        /// Отменяет Конец Случки, т.е. продолжает сукрольность.
+        /// </summary>
+        public static void cancelFuckEnd(MySqlConnection sql, int fuckId)
+        {
+            DateTime ev_date = DateTime.MinValue;
+            int rabID = 0;
+            string type ="";
+            MySqlCommand cmd = new MySqlCommand("", sql);
+            // достаем информацию, которую нужно востановить в таблице rabbits по данной крольчихе
+            cmd.CommandText = String.Format("SELECT f_rabid,f_date,f_type FROM fucks f WHERE f_id={0:#};",fuckId);
+            MySqlDataReader rd = cmd.ExecuteReader();
+
+            if (rd.Read())
+            {
+                rabID = rd.GetInt32("f_rabid");
+                if (!rd.IsDBNull(1))
+                    ev_date = rd.GetDateTime("f_date");
+                else ev_date = DateTime.Now.AddDays(-30);
+                type = rd.GetString("f_type");
+            }
+            rd.Close();
+            cmd.CommandText = String.Format("UPDATE fucks SET f_end_date=null, f_state='sukrol', f_notes='proholost cancel' WHERE f_id={0:#};", fuckId);
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date='{0}',r_event='{2}',r_rate=r_rate+2 WHERE r_id={1:d};", ev_date.ToString("yyyy-MM-dd"), rabID, type);
+            cmd.ExecuteNonQuery();
         }
     }
 }

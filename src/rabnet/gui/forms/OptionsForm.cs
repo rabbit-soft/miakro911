@@ -25,7 +25,7 @@ namespace rabnet
             Description("Время от случки(вязки) до окрола")]
 			public int okrol { get { return ok; } set { ok = value; } }
             [Category("Зоотехнические сроки"),DisplayName("Выдворение"),
-            Description("Удаление гнездовья из клетки")]
+            Description("Назначать Удаление родильного ящика из клетки, где подсосные крольчата достигли указанного возраста.")]
             public int vudvor { get { return vud; } set { vud = value; } }
             [Category("Зоотехнические сроки"),DisplayName("1й подсчет гнездовых"),
             Description("Проверка изменения числа рожденных крольчат в 1ый раз")]

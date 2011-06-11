@@ -238,6 +238,11 @@ namespace rabnet
             return FucksGetter.getFuckMonths(sql);
         }
 
+        public void cancelFuckEnd(int fuckID)
+        {
+            FucksGetter.cancelFuckEnd(sql, fuckID);
+        }
+
         public List<String> getDeadsMonths()
         {
             return DeadHelper.getDeadMonths(sql);
@@ -269,7 +274,9 @@ namespace rabnet
 
         public Fucks getFucks(int rabbit)
         {
+
             return FucksGetter.GetFucks(sql, rabbit);
+
         }
 
         public Fucks allFuckers(int female,bool geterosis,bool inbreeding,int malewait)

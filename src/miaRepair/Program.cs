@@ -1,7 +1,7 @@
 ﻿#if DEBUG
     #define NOCATCH
     #define NOBREAK
-    //#define ASK
+    #define ASK
 #endif
     
 using System;
@@ -48,28 +48,31 @@ namespace miaRepair
                 _deads.LoadContent(_cmd);
                 _fucks.LoadFucks(_cmd);
                 repairNames();
-                searchYoungerMother_bySurname();
-                searchYoungerFathers_bySecname();
+                //searchYoungerMother_bySurname();
+                //searchYoungerFathers_bySecname();
                 repairMotherAndFather_bySurnameAndSecname();
                 repairFucksEndDate_byYoungers();             
                 repairFucksStartDate_byRabEventDate();
                 repairFucksIfChildrenThenOkrol();
                 
-         
+#if ASK        
                 while(true)
                 {
                     log("Do You Want Save This Shit? [y/n]");  
                     string ans = Console.ReadLine().ToLower();
                     if(ans == "y")
                     {
+#endif
                         saveRabbits();
                         saveFucks();
+#if ASK
                         break;
                     }
                     else if(ans !="n")
                         log("   Are You Idiot? You must type 'y' or 'n'. Lets Ask Again.");
                     else break;
                 }
+#endif
 
                 _sql.Close();
 #if !NOCATCH
@@ -77,15 +80,22 @@ namespace miaRepair
             catch (Exception ex)
             {
                 _sql.Close();
-                log("Exception: {0}",ex.Message);
+                _logger.ErrorFormat("Exception: {0}",ex.Message);
+                log("---Произошла ошибка при востановлении связей.");
+                log("---Это не очень критичная ошибка");
+                log("---Но все таки советуем обратится к разработчику");
             }
 #endif
         }
 
+        /// <summary>
+        /// Находит кроликам родителям по surname и secname
+        /// </summary>
         private static void repairMotherAndFather_bySurnameAndSecname()
         {
+            bool needAccept = true;
             log("searching Mother And Father by Surname and Secname");
-            foreach(Rabbit rab in _rabbits.Adult)
+            foreach(Rabbit rab in _rabbits)
             {
                 if (rab.SecnameID == 0 && rab.SurnameID == 0) continue;
                 Rabbit mbMother=null, mbFather=null;
@@ -109,7 +119,7 @@ namespace miaRepair
                         }
                         else if (candidates.Count > 1)
                         {
-#if !ASK
+
                             foreach (Rabbit c in candidates)
                             {
                                 if (mbMother == null)
@@ -117,8 +127,8 @@ namespace miaRepair
                                 if (mbMother.rID < c.rID)
                                     mbMother = c;
                             }
-#else
-                            log("   we find a {0:d} motherCandidate", candidates.Count);
+
+                            /*log("   we find a {0:d} motherCandidate", candidates.Count);
                             log("   #       name");
                             foreach (Rabbit c in candidates)
                             {
@@ -147,8 +157,8 @@ namespace miaRepair
                                 }
                                 if (exitloop) break;
                                 log("   you type a wrong symbol, Idiot!");
-                            }
-#endif
+                            }*/
+
                         }
                     }// if (mbMother == 0)
                 }
@@ -171,46 +181,13 @@ namespace miaRepair
                         }
                         else if (candidates.Count > 1)
                         {
-#if !ASK
                             foreach (Rabbit c in candidates)
                             {
                                 if (mbFather == null)
                                     mbFather = c;
                                 if (mbFather.rID < c.rID)
                                     mbFather = c;
-                            }
-#else
-                            log("   we find a {0:d} fatherCandidate", candidates.Count);
-                            log("   #       name");
-                            foreach (Rabbit c in candidates)
-                            {
-                                log("   {0:d}        {1:d}     ", c.rID, c.NameId);
-                            }
-                            while (true)//_deadFatherNames
-                            {
-                                log("you nead a type '№ of candFather' or type 'n' to next");
-                                string ans = Console.ReadLine();
-                                if (ans == "n")
-                                {
-                                    log("   you chose nobody");
-                                    break;
-                                }
-                                int n = 0;
-                                int.TryParse(ans, out n);
-                                bool exitloop = false;
-                                foreach (Rabbit c in candidates)
-                                {
-                                    if (c.rID == n)
-                                    {
-                                        mbFather = c;
-                                        exitloop = true;
-                                        break;
-                                    }
-                                }
-                                if (exitloop) break;
-                                log("   you type a wrong symbol, Idiot!");
-                            }
-#endif
+                            }                         
                         }
                     }//if(mbFather==0)
                 }
@@ -220,11 +197,17 @@ namespace miaRepair
 #if ASK
                 while (true)
                 {
-                    log("   do you accept this Parents? [y/n] ");
-                    string ans = Console.ReadLine();
+                    string ans = "y";
+                    if (needAccept)
+                    {
+                        log("   do you accept this Parents? [y/n], to cancel ask type 'q' ");
+                        ans = Console.ReadLine();
+                        if (ans == "q")
+                            needAccept = false;
+                    }
                     if (ans == "n")
                         break;
-                    else if (ans == "y" || ans == "")
+                    else if (ans == "y")
                     {
 #endif
                         rab.Mother = mbMother == null ? 0 : mbMother.rID;
@@ -244,10 +227,8 @@ namespace miaRepair
             foreach (Rabbit r in _rabbits)
             {
                 if (r.NameId == 0) continue;
-                bool breakloop;
                 foreach (Name n in _names)
                 {
-                    breakloop = false;
                     if (r.NameId == n.nID)
                     {
                         if (r.rID == n.useRabbit)
@@ -257,41 +238,71 @@ namespace miaRepair
                         }
                         else
                         {
-#if ASK
-                            log("   OOOPS. the rabit and Use not match");
-                            log("   rabid: {0:d}|name: {1:d} || n_id: {2:d}|n_use: {3:d}", r.rID, r.NameId, n.nID, n.useRabbit);
-                            while (true)
-                            {
-                                log("   What we need to do? 'u'-set rabbit to use 'n'-skip this rabbit");
-                                string ans = Console.ReadLine().ToLower();
-                                if (ans == "u")
-                                {
-                                    breakloop = true;
-#endif
-                                    n.useRabbit = r.rID;
-                                    
-                                    break;
-#if ASK
-                                }
-                                else if (ans != "n")
-                                {
-                                    log("   Are You Idiot? You must type 'u' or 'n'. Lets Ask Again.");
-                                }
-                                else
-                                {
-                                    breakloop = true;
-                                    break;
-                                }
-                            }
-                            if (breakloop) break;                                  
-#endif
-
+                            log("   replacing current n_use: {0:d} by {0:d}",n.useRabbit,r.rID);
+                            n.useRabbit = r.rID;
                         }
                     }
                 }
             }
         }
 
+        private static void searchYoungerMother_bySurname()
+        {
+            log("--repair mother of youngers--");
+            //List<Rabbit> yongers = _rabbits.Yongers;
+            log("youngers count: {0:d}", _rabbits.YongersCount);
+            foreach (Rabbit yng in _rabbits.Yongers)
+            {
+                if (yng.Mother != 0) continue;
+                log("searching mother for: {0:d}", yng.rID);
+                bool next = false;
+                foreach (Rabbit rab in _rabbits)
+                {
+                    if (rab.Sex == Sex.Female && rab.rID == yng.ParentID && rab.Born < yng.Born)
+                    {
+                        if (rab.NameId == yng.SurnameID)
+                        {
+                            log("   OK. We Find a mother: {0:d}", rab.rID);
+                            yng.Mother = rab.rID;
+                            next = true;
+                            break;
+                        }
+                    }
+                }
+                if (next) continue;
+                log("   we find nothing");
+            }
+        }
+
+        private static void searchYoungerFathers_bySecname()
+        {
+            log("--search father of youngers BY SURNAME--");
+            List<Rabbit> yongers = _rabbits.Yongers;
+            foreach (Rabbit yng in yongers)
+            {
+                if (yng.Father != 0) continue;
+                log("searching father for: {0:d}", yng.rID);
+                bool next = false;
+                foreach (Rabbit rab in _rabbits)
+                {
+                    if (rab.Sex == Sex.Male && rab.NameId == yng.SecnameID && rab.Born < yng.Born)
+                    {
+                        log("   OK. We Find a father: {0:d}", rab.rID);
+                        yng.Father = rab.rID;
+                        next = true;
+                        break;
+                    }
+                }
+                if (next) continue;
+                log("   we find nothing");
+            }
+        }
+
+        /// <summary>
+        /// Выбирает из кроликов самок, у которых "r_event_date is not null".
+        /// Находит в таблице fucks записи по этой крольчихи где "f_state='sukrol' AND f_date is null"
+        /// Ставит дату из r_event_date в f_date
+        /// </summary>
         private static void repairFucksStartDate_byRabEventDate()
         {
             log("--rapair fucks Start_Date by Mother event_date --");
@@ -299,6 +310,7 @@ namespace miaRepair
             {
                 log("searching fuck mother: {0:d}",rab.rID);
                 List<Fuck> candidates = new List<Fuck>();
+
                 int maxCand = 0;
 
                 foreach (Fuck f in _fucks)
@@ -306,10 +318,9 @@ namespace miaRepair
                     if (f.SheID == rab.rID && f.StartDate == DateTime.MinValue && f.fState == Fuck.State.Sukrol)
                     {
                         candidates.Add(f);
-#if !ASK
+
                         if (f.fID > maxCand)
                             maxCand = f.fID;
-#endif
                     }
                 }
                 if (candidates.Count == 0)
@@ -327,59 +338,28 @@ namespace miaRepair
                 else if (candidates.Count > 1)
                 {
                     log("   we find a {0:d} fucks", candidates.Count);
-#if ASK
-                    log("   #       mother      father      start       end     childr");
                     foreach (Fuck f in candidates)
                     {
-                        log("   {0:d}        {1:d}      {2:d}     {3:s}     {4:s}     {5:d}",f.fID, f.SheID, f.HeID,
-                            f.StartDate == DateTime.MinValue ? "null" : f.StartDate.ToString("yyyy-MM--dd"),
-                            f.EndDate == DateTime.MinValue ? "null" : f.EndDate.ToString("yyyy-MM--dd"),
-                            f.Children);
-                    }*/
-                    /*while (true)//_StartDate
-                    {
-                        log("you nead a type '# of fuck' or type 'n' to next");
-                        string ans = Console.ReadLine();
-                        if (ans == "n")
+                        if (f.fID == maxCand)
                         {
-                            log("   you chose nobody");
+                            f.StartDate = rab.EventDate;
+                            f.Children = 0;
                             break;
                         }
-                        int n = 0;
-                        int.TryParse(ans, out n);
-#else
-                        int n = maxCand;
-#endif
-                        
-                        bool exitloop = false;
-                        foreach (Fuck f in candidates)
+                        else
                         {
-                            if (f.fID == n)
-                            {
-                                f.StartDate = rab.EventDate;
-                                f.Children = 0;
-                                exitloop = true;
-                                break;
-                            }
+                            f.fState = Fuck.State.Proholost;
+                            f.Children = 0;
                         }
-                        if (exitloop)
-                        {
-                            foreach (Fuck f in candidates)
-                            {
-                                if (f.fID != n)
-                                {
-                                    f.fState = Fuck.State.Proholost;
-                                    f.Children = 0;
-                                }
-                                
-                            }
-                        }
-                        //log("   you type a wrong symbol, Idiot!");
-                    //}
+                    }
                 }
             }
-        }       
-
+        }   
+    
+        /// <summary>
+        /// Устанавливает в таблице fucks дату в поле f_end_date, крольчихе.
+        /// Строчка находится по Матери и Отчу
+        /// </summary>
         private static void repairFucksEndDate_byYoungers()
         {
             log("--rapair fucks End_Date by Father and Mother of Younger--");
@@ -389,6 +369,7 @@ namespace miaRepair
                 if (yng.Mother == 0 || yng.Father == 0) continue;
                 log("searching fuck where m:{0:d}|f:{1:d}",yng.Mother,yng.Father);
                 ///заполняем массив факов где f_rabid и f_parther совпадают с r_mother и r_father 
+                int maxCand =0;
                 List<Fuck> candidates = new List<Fuck>();
                 foreach(Fuck f in _fucks)
                 {                  
@@ -396,6 +377,8 @@ namespace miaRepair
                     if(yng.Mother == f.SheID && yng.Father == f.HeID)
                     {
                         candidates.Add(f);
+                        if(f.fID > maxCand)
+                            maxCand= f.fID;
                     }
                 }
                 ///разбираем кандидатов
@@ -408,49 +391,29 @@ namespace miaRepair
                 {
                     log("   we find only one fuck: {0:d}  and we write it in end_date", candidates[0].fID);
                     candidates[0].EndDate = yng.Born;
+                    candidates[0].fState = Fuck.State.Okrol;
                     continue;
                 }
                 else if (candidates.Count > 1)
                 {
                     log("   we find a {0:d} fucks",candidates.Count);
-                    log("   #       mother      father      start       end     childr");
                     foreach (Fuck f in candidates)
                     {
-                        log("   {0:d}        {1:d}      {2:d}     {3:s}     {4:s}     {5:d}",f.fID,f.SheID,f.HeID,
-                            f.StartDate == DateTime.MinValue?"null":f.StartDate.ToString("yyyy-MM--dd"),
-                            f.EndDate == DateTime.MinValue ? "null" : f.EndDate.ToString("yyyy-MM--dd"), 
-                            f.Children);
-                    }
-                    while (true)//_EndDate
-                    {
-                        log("you nead a type '№ of fuck' or type 'n' to next");
-                        string ans = Console.ReadLine();
-                        if (ans == "n")
+                        if (f.fID == maxCand)
                         {
-                            log("   you chose nobody");
+                            log("fuck: {0:d} we write it in end_date", f.fID);
+                            f.EndDate = yng.Born;
+                            f.fState = Fuck.State.Okrol;
                             break;
                         }
-                        int n = 0;
-                        int.TryParse(ans, out n);
-                        bool exitloop = false;
-                        foreach (Fuck f in candidates)
-                        {
-                            if (f.fID == n)
-                            {
-                                f.EndDate = yng.Born;
-                                if (f.fState == Fuck.State.Sukrol)
-                                    f.fState = Fuck.State.Okrol;
-                                exitloop = true;
-                                break;
-                            }
-                        }
-                        if (exitloop) break;
-                        log("   you type a wrong symbol, Idiot!");
                     }
                 }//if cand.count>0
             }
         }
 
+        /// <summary>
+        /// UPDATE fucks SET f_state='okrol' WHERE f_state='sucrol' AND f_children>0;
+        /// </summary>
         private static void repairFucksIfChildrenThenOkrol()
         {
             log("--searching fucks where state is 'sukrol'  and childrens<>0--");
@@ -461,58 +424,6 @@ namespace miaRepair
                     log("   fixing a bug. chldrn: {0:d}| state: {1:s}",f.Children,f.fState.ToString());
                     f.fState = Fuck.State.Okrol;
                 }
-            }
-        }
-
-        private static void searchYoungerMother_bySurname()
-        {
-            log("--repair mother of youngers--");
-            //List<Rabbit> yongers = _rabbits.Yongers;
-            log("youngers count: {0:d}", _rabbits.YongersCount);
-            foreach (Rabbit yng in _rabbits.Yongers)
-            {
-                if (yng.Mother != 0) continue;
-                log("searching mother for: {0:d}",yng.rID);
-                bool next = false;
-                foreach (Rabbit rab in _rabbits)
-                {
-                    if (rab.Sex == Sex.Female && rab.rID == yng.ParentID && rab.Born < yng.Born)
-                    {
-                        if (rab.NameId == yng.SurnameID)
-                        {
-                            log("   OK. We Find a mother: {0:d}", rab.rID);
-                            yng.Mother = rab.rID;
-                            next = true;
-                            break;
-                        }
-                    }
-                }
-                if (next) continue;
-                log("   we find nothing");
-            }            
-        }
-
-        private static void searchYoungerFathers_bySecname()
-        {
-            log("--search father of youngers BY SURNAME--");
-            List<Rabbit> yongers = _rabbits.Yongers;
-            foreach (Rabbit yng in yongers)
-            {
-                if (yng.Father != 0) continue;
-                log("searching father for: {0:d}", yng.rID);
-                bool next =false;
-                foreach (Rabbit rab in _rabbits)
-                {
-                    if (rab.Sex == Sex.Male && rab.NameId == yng.SecnameID && rab.Born < yng.Born)
-                    {
-                        log("   OK. We Find a father: {0:d}", rab.rID);
-                        yng.Father = rab.rID;
-                        next = true;
-                        break;
-                    }
-                }
-                if (next) continue;
-                log("   we find nothing");
             }
         }
 
@@ -531,7 +442,7 @@ namespace miaRepair
             log("--saving fucks--");
             foreach (Fuck f in _fucks)
             {
-                _cmd.CommandText = String.Format("UPDATE fucks SET {0:s} {1:s} f_state='{2}',f_choldren={4:d} WHERE f_id={3:d};",
+                _cmd.CommandText = String.Format("UPDATE fucks SET {0:s} {1:s} f_state='{2}',f_children={4:d} WHERE f_id={3:d};",
                     f.StartDate == DateTime.MinValue ?"":String.Format("f_date='{0:yyy-MM-dd}',",f.StartDate),
                     f.EndDate == DateTime.MinValue ? "" : String.Format("f_end_date='{0:yyy-MM-dd}',", f.EndDate),
                     f.fState.ToString().ToLower(),f.fID,f.Children);

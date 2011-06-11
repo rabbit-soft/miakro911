@@ -665,8 +665,10 @@ VALUES({0:d},{1:s},{2:d},'sukrol','{3:s}',1,'',{4:d});",female,DBHelper.DateToMy
         public static void MakeProholost(MySqlConnection sql, int rabbit, DateTime date)
         {
             int male = WhosChildren(sql, rabbit);
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE fucks SET f_state='proholost',f_end_date={0:s} WHERE f_state='sukrol' AND f_rabid={1:d};",
-                DBHelper.DateToMyString(date),rabbit), sql);
+            MySqlCommand cmd = new MySqlCommand("",sql);
+            checkStartEvDate(sql,rabbit);
+            cmd.CommandText = String.Format(@"UPDATE fucks SET f_state='proholost',f_end_date={0:s} WHERE f_state='sukrol' AND f_rabid={1:d};",
+                DBHelper.DateToMyString(date),rabbit);
             cmd.ExecuteNonQuery();
             cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date=NULL,r_event='none',r_rate=r_rate-2 WHERE r_id={0:d};",rabbit);
             cmd.ExecuteNonQuery();
@@ -675,6 +677,38 @@ VALUES({0:d},{1:s},{2:d},'sukrol','{3:s}',1,'',{4:d});",female,DBHelper.DateToMy
                 cmd.CommandText = String.Format("UPDATE rabbits SET r_rate=r_rate-2 WHERE r_id={0:d};", male);
                 cmd.ExecuteNonQuery();
             }
+        }
+
+        /// <summary>
+        /// Функчия проверяет стоит ли в последней записи из таблице fucks по данному кролику начало траха.
+        /// </summary>
+        /// <param name="rabbit">ID кролика</param>
+        private static void checkStartEvDate(MySqlConnection sql, int rabbit)
+        {
+            MySqlCommand cmd = new MySqlCommand("", sql);
+            cmd.CommandText = String.Format("SELECT f_date,f_id FROM fucks WHERE f_state='sukrol' AND f_rabid={0:d} LIMIT 1;", rabbit);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            if (rd.Read())
+            {
+                if (rd.IsDBNull(0))//если ли дата начала сукрольности
+                {
+                    int fid = rd.GetInt32("f_id");
+                    rd.Close();
+                    cmd.CommandText = String.Format("SELECT r_event_date FROM rabbits WHERE r_id={0:d};", rabbit);
+                    rd = cmd.ExecuteReader();
+                    if (rd.Read())
+                    {
+                        if (!rd.IsDBNull(0))
+                        {
+                            DateTime ev_date = rd.GetDateTime(0);
+                            rd.Close();
+                            cmd.CommandText = String.Format("UPDATE fucks SET f_date='{0:yyyy-MM-dd}',f_notes='fdate recovered' WHERE f_id={1:#};", ev_date, fid);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+            if(!rd.IsClosed)rd.Close();
         }
 
         public static int WhosChildren(MySqlConnection sql, int rabbit)

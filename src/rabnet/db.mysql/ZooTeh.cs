@@ -207,14 +207,31 @@ FROM rabbits WHERE r_sex='female' AND (TO_DAYS(NOW())-TO_DAYS(r_event_date))>={0
 
         public ZooJobItem[] getVudvors(int days)
         {
-            MySqlDataReader rd = reader(String.Format(@"SELECT r_id,rabname(r_id," + getnm() + @") name,rabplace(r_id) place,r_tier,r_area,r_event_date,
-(TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol)) srok,r_status,(TO_DAYS(NOW())-TO_DAYS(r_born)) age,
-t_nest,t_id,t_busy1,t_busy2,t_delims,t_type," + brd() + @",
-COALESCE((SELECT SUM(r3.r_group) FROM rabbits r3 WHERE r3.r_parent=rabbits.r_id),0) suckers
-FROM rabbits,tiers
-WHERE t_id=r_tier AND r_event_date IS NULL AND
-r_sex='female' AND (TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol))>={0:d} AND
-((t_busy1=r_id AND t_nest like '1%')OR(t_busy2=r_id AND t_nest like '%1' AND t_type='dfemale'))
+            MySqlDataReader rd = reader(String.Format(@"SELECT 
+    r_id,
+    rabname(r_id," + getnm() + @") name,
+    rabplace(r_id) place,
+    r_tier,
+    r_area,
+    r_event_date,
+    (TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol)) srok,
+    r_status,
+    (TO_DAYS(NOW())-TO_DAYS(r_born)) age,
+    t_nest,
+    t_id,
+    t_busy1,
+    t_busy2,
+    t_delims,
+    t_type," + brd() + @",
+    COALESCE( (SELECT SUM(r3.r_group) FROM rabbits r3 WHERE r3.r_parent=rabbits.r_id) ,0) suckers
+FROM 
+    rabbits,tiers
+WHERE 
+    t_id=r_tier AND 
+    r_event_date IS NULL AND
+    r_sex='female' AND 
+    (TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol))>={0:d} AND
+    ((t_busy1=r_id AND t_nest like '1%') OR (t_busy2=r_id AND t_nest like '%1' AND t_type='dfemale'))
 ORDER BY srok DESC,0+LEFT(place,LOCATE(',',place)) ASC;", days));
             List<ZooJobItem> res = new List<ZooJobItem>();
             while (rd.Read())

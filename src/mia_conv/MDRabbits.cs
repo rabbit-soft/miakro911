@@ -8,6 +8,7 @@ namespace mia_conv
     partial class MDCreator
     {
         private int _curRabbit=1;
+
         public int GetNameId(ushort key, ushort sex,bool name)
         {
             if (sex==0)
@@ -30,6 +31,7 @@ namespace mia_conv
             }
             return res;
         }
+        
         public int Rabbyname(int nid)
         {
             C.CommandText="SELECT r_id FROM rabbits WHERE r_name="+nid.ToString()+";";
@@ -58,6 +60,7 @@ namespace mia_conv
                 " WHERE t_id="+tier.ToString()+";";
             C.ExecuteNonQuery();
         }
+
         public void Setnameuser(int nameid,int rabbit)
         {
             C.CommandText="UPDATE names SET n_use="+rabbit.ToString()+" WHERE n_id="+nameid.ToString()+";";
@@ -315,6 +318,7 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d},'{7:d}');",
             Debug("normalizing fuckers");
             NormalizeFuckers();
         }
+
         public void FillDead()
         {
             C.CommandText = "ALTER TABLE `dead` DISABLE KEYS;";
