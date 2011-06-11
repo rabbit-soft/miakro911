@@ -231,7 +231,7 @@ namespace rabdump
             if (!Directory.Exists(tmppath))           
                 Directory.CreateDirectory(tmppath);
            
-            String sql = Options.Get().MySqlPath;              
+            String sql = Options.Get().MySqlExePath;              
             if (sql == "" || !File.Exists(sql))
                 throw new ApplicationException("Путь к MySQL не настроен"); 
          
