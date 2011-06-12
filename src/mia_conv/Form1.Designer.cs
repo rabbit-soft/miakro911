@@ -94,7 +94,7 @@ namespace mia_conv
             // 
             // log
             // 
-            this.log.Location = new System.Drawing.Point(61, 212);
+            this.log.Location = new System.Drawing.Point(61, 220);
             this.log.Multiline = true;
             this.log.Name = "log";
             this.log.ReadOnly = true;
@@ -135,7 +135,7 @@ namespace mia_conv
             "Архивная форма",
             "Строки названий фермы",
             "График взвешиваний"});
-            this.clb1.Location = new System.Drawing.Point(61, 187);
+            this.clb1.Location = new System.Drawing.Point(131, 195);
             this.clb1.Name = "clb1";
             this.clb1.Size = new System.Drawing.Size(63, 19);
             this.clb1.TabIndex = 5;
@@ -144,7 +144,7 @@ namespace mia_conv
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(58, 161);
+            this.label1.Location = new System.Drawing.Point(23, 201);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 6;
@@ -153,7 +153,7 @@ namespace mia_conv
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(61, 138);
+            this.dateTimePicker1.Location = new System.Drawing.Point(61, 194);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(62, 20);
             this.dateTimePicker1.TabIndex = 7;
@@ -244,11 +244,11 @@ namespace mia_conv
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.label11);
             this.groupBox3.Controls.Add(this.log);
             this.groupBox3.Controls.Add(this.clb1);
             this.groupBox3.Controls.Add(this.label1);
             this.groupBox3.Controls.Add(this.dateTimePicker1);
+            this.groupBox3.Controls.Add(this.label11);
             this.groupBox3.Location = new System.Drawing.Point(198, 16);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(200, 251);
@@ -258,10 +258,10 @@ namespace mia_conv
             // 
             // label11
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(25, 27);
+            this.label11.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label11.Location = new System.Drawing.Point(3, 16);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(41, 13);
+            this.label11.Size = new System.Drawing.Size(194, 232);
             this.label11.TabIndex = 8;
             this.label11.Text = "label11";
             // 

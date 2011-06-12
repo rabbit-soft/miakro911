@@ -248,6 +248,7 @@
 			</attributes>
 		</asminfo>
 		<copy file="${curdir}/mia_conv/rabnet_db_fmt.sql" tofile="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
+		<copy file="${log4net.use}" tofile="${bin_dir}/Tools/${log4net.lib}" />
 		<csc target="winexe" output="${bin_dir}/Tools/mia_conv.exe" win32icon="${curdir}/mia_conv/icon_yell_red.ico" define="${compile_flag}" optimize="true">
 			<sources>
 				<include name="${curdir}/mia_conv/tmp/*.cs"/>
@@ -259,8 +260,10 @@
 			</resources>
 			<references>
 				<include name="${mysql.use}"/>
+				<include name="${log4net.use}"/>
 			</references>
 		</csc>
+		<copy file="${curdir}/mia_conv/app.config" tofile="${bin_dir}/Tools/mia_conv.exe.config" />
 		<delete file="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
 	</target>
 

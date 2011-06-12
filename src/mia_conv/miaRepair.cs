@@ -1,89 +1,63 @@
-﻿#if DEBUG
-    #define NOCATCH
-    #define NOBREAK
-    #define ASK
-#endif
-    
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using log4net;
 using MySql.Data.MySqlClient;
 using System.IO;
 
-[assembly: log4net.Config.XmlConfigurator(Watch = true)]
-namespace miaRepair
+namespace mia_conv
 {
-    class Program
+    class miaRepair
     {
         private const string LOGFILE = "miaRepair.log";
 
         private static ILog _logger = LogManager.GetLogger("miaRepair");
-        
-        private static MySqlConnection _sql;
-        private static MySqlCommand _cmd;
+
+        //private static MySqlConnection _sql;
+        //private static MySqlCommand _cmd;
         private static RabbitList _rabbits = new RabbitList();
         private static DeadList _deads = new DeadList();
         private static NameList _names = new NameList();
         private static FuckList _fucks = new FuckList();
-        
 
-        static void Main(string[] args)
+
+        public static void Go(MySqlCommand cmd)
         {
-            if(File.Exists(LOGFILE))
+            
+            if (File.Exists(LOGFILE))
                 File.Delete(LOGFILE);
-            string conString = "host=localhost;database=kroliki;uid=kroliki;pwd=krol;charset=utf8";
-            if (args.Length > 0)
-                conString = args[0];
-            _sql = new MySqlConnection(conString);
+            //string conString = "host=localhost;database=kroliki;uid=kroliki;pwd=krol;charset=utf8";
+
+            //_sql = new MySqlConnection(conString);
 #if !NOCATCH
             try
-            { 
+            {
 #endif
-                _sql.Open();
-                _cmd = new MySqlCommand("", _sql);
-                _rabbits.LoadContent(_cmd);
-                _names.LoadNames(_cmd);
-                _deads.LoadContent(_cmd);
-                _fucks.LoadFucks(_cmd);
+                //_sql.Open();
+                //_cmd = new MySqlCommand("", _sql);
+                _rabbits.LoadContent(cmd);
+                _names.LoadNames(cmd);
+                _deads.LoadContent(cmd);
+                _fucks.LoadFucks(cmd);
                 repairNames();
-                //searchYoungerMother_bySurname();
-                //searchYoungerFathers_bySecname();
                 repairMotherAndFather_bySurnameAndSecname();
-                repairFucksEndDate_byYoungers();             
+                repairFucksEndDate_byYoungers();
                 repairFucksStartDate_byRabEventDate();
                 repairFucksIfChildrenThenOkrol();
-                
-#if ASK        
-                while(true)
-                {
-                    log("Do You Want Save This Shit? [y/n]");  
-                    string ans = Console.ReadLine().ToLower();
-                    if(ans == "y")
-                    {
-#endif
-                        saveRabbits();
-                        saveFucks();
-#if ASK
-                        break;
-                    }
-                    else if(ans !="n")
-                        log("   Are You Idiot? You must type 'y' or 'n'. Lets Ask Again.");
-                    else break;
-                }
-#endif
-
-                _sql.Close();
+                saveRabbits(cmd);
+                saveFucks(cmd);
+                //_sql.Close();
 #if !NOCATCH
             }
             catch (Exception ex)
             {
-                _sql.Close();
-                _logger.ErrorFormat("Exception: {0}",ex.Message);
+                //_sql.Close();
+                _logger.ErrorFormat("Exception: {0}", ex.Message);
                 log("---Произошла ошибка при востановлении связей.");
                 log("---Это не очень критичная ошибка");
                 log("---Но все таки советуем обратится к разработчику");
+                log("");
+                log("Нажмите любую клавишу чтобы продолжить");
             }
 #endif
         }
@@ -93,13 +67,12 @@ namespace miaRepair
         /// </summary>
         private static void repairMotherAndFather_bySurnameAndSecname()
         {
-            bool needAccept = true;
             log("searching Mother And Father by Surname and Secname");
-            foreach(repRabbit rab in _rabbits)
+            foreach (repRabbit rab in _rabbits)
             {
                 if (rab.SecnameID == 0 && rab.SurnameID == 0) continue;
-                repRabbit mbMother=null, mbFather=null;
-                log("searching mother for: {0:d} | name:            {1:s}",rab.rID,rab.Name);
+                repRabbit mbMother = null, mbFather = null;
+                log("searching mother for: {0:d} | name:            {1:s}", rab.rID, rab.Name);
                 if (rab.SurnameID != 0)
                 {
                     mbMother = _rabbits.GetRabbitByID(_names.GetSurnameUse(rab.SurnameID));
@@ -187,7 +160,7 @@ namespace miaRepair
                                     mbFather = c;
                                 if (mbFather.rID < c.rID)
                                     mbFather = c;
-                            }                         
+                            }
                         }
                     }//if(mbFather==0)
                 }
@@ -210,8 +183,8 @@ namespace miaRepair
                     else if (ans == "y")
                     {
 #endif
-                        rab.Mother = mbMother == null ? 0 : mbMother.rID;
-                        rab.Father = mbFather == null ? 0 : mbFather.rID;
+                rab.Mother = mbMother == null ? 0 : mbMother.rID;
+                rab.Father = mbFather == null ? 0 : mbFather.rID;
 #if ASK
                         break;
                     }
@@ -238,63 +211,11 @@ namespace miaRepair
                         }
                         else
                         {
-                            log("   replacing current n_use: {0:d} by {0:d}",n.useRabbit,r.rID);
+                            log("   replacing current n_use: {0:d} by {0:d}", n.useRabbit, r.rID);
                             n.useRabbit = r.rID;
                         }
                     }
                 }
-            }
-        }
-
-        private static void searchYoungerMother_bySurname()
-        {
-            log("--repair mother of youngers--");
-            //List<Rabbit> yongers = _rabbits.Yongers;
-            log("youngers count: {0:d}", _rabbits.YongersCount);
-            foreach (repRabbit yng in _rabbits.Yongers)
-            {
-                if (yng.Mother != 0) continue;
-                log("searching mother for: {0:d}", yng.rID);
-                bool next = false;
-                foreach (repRabbit rab in _rabbits)
-                {
-                    if (rab.Sex == Sex.Female && rab.rID == yng.ParentID && rab.Born < yng.Born)
-                    {
-                        if (rab.NameId == yng.SurnameID)
-                        {
-                            log("   OK. We Find a mother: {0:d}", rab.rID);
-                            yng.Mother = rab.rID;
-                            next = true;
-                            break;
-                        }
-                    }
-                }
-                if (next) continue;
-                log("   we find nothing");
-            }
-        }
-
-        private static void searchYoungerFathers_bySecname()
-        {
-            log("--search father of youngers BY SURNAME--");
-            List<repRabbit> yongers = _rabbits.Yongers;
-            foreach (repRabbit yng in yongers)
-            {
-                if (yng.Father != 0) continue;
-                log("searching father for: {0:d}", yng.rID);
-                bool next = false;
-                foreach (repRabbit rab in _rabbits)
-                {
-                    if (rab.Sex == Sex.Male && rab.NameId == yng.SecnameID && rab.Born < yng.Born)
-                    {
-                        log("   OK. We Find a father: {0:d}", rab.rID);
-                        yng.Father = rab.rID;
-                        next = true;
-                        break;
-                    }
-                }
-                if (next) continue;
-                log("   we find nothing");
             }
         }
 
@@ -308,7 +229,7 @@ namespace miaRepair
             log("--rapair fucks Start_Date by Mother event_date --");
             foreach (repRabbit rab in _rabbits.SukrolMothers)
             {
-                log("searching fuck mother: {0:d}",rab.rID);
+                log("searching fuck mother: {0:d}", rab.rID);
                 List<repFuck> candidates = new List<repFuck>();
 
                 int maxCand = 0;
@@ -354,8 +275,8 @@ namespace miaRepair
                     }
                 }
             }
-        }   
-    
+        }
+
         /// <summary>
         /// Устанавливает в таблице fucks дату в поле f_end_date, крольчихе.
         /// Строчка находится по Матери и Отчу
@@ -367,18 +288,18 @@ namespace miaRepair
             foreach (repRabbit yng in youngers)
             {
                 if (yng.Mother == 0 || yng.Father == 0) continue;
-                log("searching fuck where m:{0:d}|f:{1:d}",yng.Mother,yng.Father);
+                log("searching fuck where m:{0:d}|f:{1:d}", yng.Mother, yng.Father);
                 ///заполняем массив факов где f_rabid и f_parther совпадают с r_mother и r_father 
-                int maxCand =0;
+                int maxCand = 0;
                 List<repFuck> candidates = new List<repFuck>();
-                foreach(repFuck f in _fucks)
-                {                  
-                    if(f.EndDate != DateTime.MinValue) continue;
-                    if(yng.Mother == f.SheID && yng.Father == f.HeID)
+                foreach (repFuck f in _fucks)
+                {
+                    if (f.EndDate != DateTime.MinValue) continue;
+                    if (yng.Mother == f.SheID && yng.Father == f.HeID)
                     {
                         candidates.Add(f);
-                        if(f.fID > maxCand)
-                            maxCand= f.fID;
+                        if (f.fID > maxCand)
+                            maxCand = f.fID;
                     }
                 }
                 ///разбираем кандидатов
@@ -396,7 +317,7 @@ namespace miaRepair
                 }
                 else if (candidates.Count > 1)
                 {
-                    log("   we find a {0:d} fucks",candidates.Count);
+                    log("   we find a {0:d} fucks", candidates.Count);
                     foreach (repFuck f in candidates)
                     {
                         if (f.fID == maxCand)
@@ -421,32 +342,32 @@ namespace miaRepair
             {
                 if (f.fState == repFuck.State.Sukrol && f.Children != 0)
                 {
-                    log("   fixing a bug. chldrn: {0:d}| state: {1:s}",f.Children,f.fState.ToString());
+                    log("   fixing a bug. chldrn: {0:d}| state: {1:s}", f.Children, f.fState.ToString());
                     f.fState = repFuck.State.Okrol;
                 }
             }
         }
 
-        private static void saveRabbits()
+        private static void saveRabbits(MySqlCommand cmd)
         {
             log("--saving rabbits--");
             foreach (repRabbit rab in _rabbits)
             {
-                _cmd.CommandText = String.Format("UPDATE rabbits SET r_mother={0:d},r_father={1:d} WHERE r_id={2:d};",rab.Mother,rab.Father,rab.rID);
-                _cmd.ExecuteNonQuery();
+                cmd.CommandText = String.Format("UPDATE rabbits SET r_mother={0:d},r_father={1:d} WHERE r_id={2:d};", rab.Mother, rab.Father, rab.rID);
+                cmd.ExecuteNonQuery();
             }
         }
 
-        private static void saveFucks()
+        private static void saveFucks(MySqlCommand cmd)
         {
             log("--saving fucks--");
             foreach (repFuck f in _fucks)
             {
-                _cmd.CommandText = String.Format("UPDATE fucks SET {0:s} {1:s} f_state='{2}',f_children={4:d} WHERE f_id={3:d};",
-                    f.StartDate == DateTime.MinValue ?"":String.Format("f_date='{0:yyy-MM-dd}',",f.StartDate),
+                cmd.CommandText = String.Format("UPDATE fucks SET {0:s} {1:s} f_state='{2}',f_children={4:d} WHERE f_id={3:d};",
+                    f.StartDate == DateTime.MinValue ? "" : String.Format("f_date='{0:yyy-MM-dd}',", f.StartDate),
                     f.EndDate == DateTime.MinValue ? "" : String.Format("f_end_date='{0:yyy-MM-dd}',", f.EndDate),
-                    f.fState.ToString().ToLower(),f.fID,f.Children);
-                _cmd.ExecuteNonQuery();
+                    f.fState.ToString().ToLower(), f.fID, f.Children);
+                cmd.ExecuteNonQuery();
             }
         }
 
@@ -461,7 +382,7 @@ namespace miaRepair
         #region loging
         internal static void log(string s)
         {
-            Console.WriteLine(s);
+            //Console.WriteLine(s);
             _logger.Info(s);
         }
 
@@ -472,27 +393,28 @@ namespace miaRepair
 
         internal static void log(string s, object arg0, object arg1)
         {
-            log(String.Format(s, arg0,arg1));
+            log(String.Format(s, arg0, arg1));
         }
 
         internal static void log(string s, object arg0, object arg1, object arg2)
         {
-            log(String.Format(s, arg0, arg1,arg2));
+            log(String.Format(s, arg0, arg1, arg2));
         }
 
         internal static void log(string s, object arg0, object arg1, object arg2, object arg3)
         {
-            log(String.Format(s, arg0, arg1,arg2,arg3));
+            log(String.Format(s, arg0, arg1, arg2, arg3));
         }
 
-        internal static void log(string s, object arg0, object arg1, object arg2, object arg3, object arg4,object arg5)
+        internal static void log(string s, object arg0, object arg1, object arg2, object arg3, object arg4, object arg5)
         {
-            log(String.Format(s, arg0, arg1, arg2, arg3,arg4,arg5));
+            log(String.Format(s, arg0, arg1, arg2, arg3, arg4, arg5));
         }
         #endregion     
     }
 
-    enum Sex{Male,Female,Void}
+
+    enum Sex { Male, Female, Void }
 
     class repRabbit
     {
@@ -514,7 +436,7 @@ namespace miaRepair
         internal DateTime EventDate;
         internal string Name;
 
-        internal repRabbit(int rid,int mother,int father,string sex,int name,int surname,int secname,DateTime born,int parent,DateTime ev_date, string namestr)
+        internal repRabbit(int rid, int mother, int father, string sex, int name, int surname, int secname, DateTime born, int parent, DateTime ev_date, string namestr)
         {
             this.rID = rid;
             this.Mother = mother;
@@ -617,18 +539,18 @@ namespace miaRepair
 
         internal virtual void LoadContent(MySqlCommand cmd)
         {
-            Program.log("fill All Rabbits");
+            miaRepair.log("fill All Rabbits");
             cmd.CommandText = String.Format("SELECT r_id,r_mother,r_father,r_sex,r_name,r_surname,r_secname,r_born,r_parent,COALESCE(r_event_date,'0001-01-01')ev_date,rabname(r_id,2) nm FROM rabbits ORDER BY r_id ASC;");
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
             {
                 this.Add(new repRabbit(rd.GetInt32("r_id"), rd.GetInt32("r_mother"), rd.GetInt32("r_father"),
                                         rd.GetString("r_sex"), rd.GetInt32("r_name"), rd.GetInt32("r_surname"), rd.GetInt32("r_secname"),
-                                        rd.GetDateTime("r_born"), rd.GetInt32("r_parent"), rd.GetDateTime("ev_date"),rd.GetString("nm"))
+                                        rd.GetDateTime("r_born"), rd.GetInt32("r_parent"), rd.GetDateTime("ev_date"), rd.GetString("nm"))
                             );
             }
             rd.Close();
-            Program.log(" |rabbits count: {0:d}", this.Count);
+            miaRepair.log(" |rabbits count: {0:d}", this.Count);
         }
 
         internal List<repRabbit> Adult
@@ -668,7 +590,7 @@ namespace miaRepair
                 List<repRabbit> result = new List<repRabbit>();
                 foreach (repRabbit rab in this)
                 {
-                    if (rab.Sex == Sex.Female && rab.EventDate !=DateTime.MinValue)
+                    if (rab.Sex == Sex.Female && rab.EventDate != DateTime.MinValue)
                         result.Add(rab);
                 }
                 return result;
@@ -677,9 +599,9 @@ namespace miaRepair
 
         internal repRabbit GetRabbitByID(int id)
         {
-            foreach(repRabbit r in this)
+            foreach (repRabbit r in this)
             {
-                if(r.rID==id)
+                if (r.rID == id)
                     return r;
             }
             return null;
@@ -691,7 +613,7 @@ namespace miaRepair
     {
         internal override void LoadContent(MySqlCommand cmd)
         {
-            Program.log("fill dead Rabbits");
+            miaRepair.log("fill dead Rabbits");
             cmd.CommandText = String.Format("SELECT r_id,r_mother,r_father,r_sex,r_name,r_surname,r_secname,r_born,r_parent,deadname(r_id,2) nm FROM dead ORDER BY r_id DESC;");
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
@@ -702,7 +624,7 @@ namespace miaRepair
                             );
             }
             rd.Close();
-            Program.log(" |deads count: {0:d}", this.Count);
+            miaRepair.log(" |deads count: {0:d}", this.Count);
         }
     }
 
@@ -710,7 +632,7 @@ namespace miaRepair
     {
         internal void LoadNames(MySqlCommand cmd)
         {
-            Program.log("fill all names");
+            miaRepair.log("fill all names");
             cmd.CommandText = String.Format("SELECT n_id,n_sex,n_name,n_use,COALESCE(n_block_date,'0001-01-01')dt FROM names WHERE n_use<>0 ORDER BY n_use ASC;");
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
@@ -720,12 +642,12 @@ namespace miaRepair
                            );
             }
             rd.Close();
-            Program.log(" |name count: {0:d}", this.Count);
+            miaRepair.log(" |name count: {0:d}", this.Count);
         }
 
         internal int GetSurnameUse(int surname)
         {
-            foreach(repName n in this)
+            foreach (repName n in this)
             {
                 if (n.nameSex == Sex.Female && n.nID == surname)
                     return n.useRabbit;
@@ -748,7 +670,7 @@ namespace miaRepair
     {
         internal void LoadFucks(MySqlCommand cmd)
         {
-            Program.log("fill fucks");
+            miaRepair.log("fill fucks");
             cmd.CommandText = String.Format("SELECT f_id,f_rabid,f_partner,COALESCE(f_date,'0001-01-01') f_date, COALESCE(f_end_date,'0001-01-01')f_end_date,f_state,f_children FROM fucks ORDER BY f_id ASC;");
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
@@ -759,10 +681,7 @@ namespace miaRepair
                           );
             }
             rd.Close();
-            Program.log(" |fucks count: {0:d}", this.Count);
+            miaRepair.log(" |fucks count: {0:d}", this.Count);
         }
     }
-
-
-   
 }

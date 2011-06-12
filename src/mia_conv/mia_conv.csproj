@@ -66,6 +66,10 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\party3d\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.2.0.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\party3d\MySql.Data.dll</HintPath>
@@ -88,6 +92,7 @@
     <Compile Include="MDOptions.cs" />
     <Compile Include="MDRabbits.cs" />
     <Compile Include="miaExitCode.cs" />
+    <Compile Include="miaRepair.cs" />
     <Compile Include="mia_file.cs" />
     <Compile Include="mia_file_complex.cs" />
     <Compile Include="mia_file_simple.cs" />
@@ -136,6 +141,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

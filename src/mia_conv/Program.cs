@@ -3,6 +3,7 @@ using System.Windows.Forms;
 
 namespace mia_conv
 {
+    [assembly: log4net.Config.XmlConfigurator(Watch = true)]
     static class Program
     {
 

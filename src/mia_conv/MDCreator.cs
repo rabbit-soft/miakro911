@@ -262,38 +262,42 @@ namespace mia_conv
         /// </summary>
         public void FillAll()
         {
-            Mia.Setpbpart(0, 8);
-            Mia.SetLabelName("Breeds");
+            const int of = 9;
+            Mia.Setpbpart(0, of);
+            Mia.SetLabelName("Породы");
             FillBreeds();
-            Mia.SetLabelName("Names");
+            Mia.SetLabelName("Имена");
             FillNames();
-            Mia.Setpbpart(1, 8);
-            Mia.SetLabelName("Zones");
+            Mia.Setpbpart(1, of);
+            Mia.SetLabelName("Зоны");
             FillZones();
-            Mia.Setpbpart(2, 8);
-            Mia.SetLabelName("Buildings");
+            Mia.Setpbpart(2, of);
+            Mia.SetLabelName("Строения");
             FillBuildings();
-            Mia.Setpbpart(3, 8);
-            Mia.SetLabelName("Transfers");
+            Mia.Setpbpart(3, of);
+            Mia.SetLabelName("Переводы");
             FillTransfers();
-            Mia.Setpbpart(4, 8);
-            Mia.SetLabelName("DeadFromLost");
+            Mia.Setpbpart(4, of);
+            Mia.SetLabelName("Мертвые Кролики");
             FillDeadFromLost();
-            Mia.Setpbpart(5, 8);
-            Mia.SetLabelName("Rabbits");
+            Mia.Setpbpart(5, of);
+            Mia.SetLabelName("Живые Кролики");
             FillRabbits();
-            Mia.Setpbpart(6, 8);
-            Mia.SetLabelName("TransferForm");
+            Mia.Setpbpart(6, of);
+            Mia.SetLabelName("ПереФормы");
             FillTransForm();
-            Mia.SetLabelName("Options");
+            Mia.SetLabelName("Настройки");
             FillOptions();
-            Mia.Setpbpart(7, 8);
+            Mia.Setpbpart(7, of);
             //fillZooForm();
-            Mia.SetLabelName("GraphForm");
+            Mia.SetLabelName("ГрафФормы");
             FillGraphForm();
-            Mia.SetLabelName("ArcForm");
+            Mia.SetLabelName("АркФормы");
             FillArcForm();
-            Mia.Setpbpart(8, 8);
+            Mia.Setpbpart(8, of);
+            Mia.SetLabelName("Наладка связей");
+            miaRepair.Go(C);
+            Mia.Setpbpart(9, of);
         }
 
         public void FillNames()

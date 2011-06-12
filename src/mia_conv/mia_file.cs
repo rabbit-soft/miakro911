@@ -38,6 +38,7 @@ namespace mia_conv
         private long _label_ticks = 0;
         private long _pb1_ticks = 0;
         private string _label_nm = "";
+        private string _label_total = "";
 
         public MiaFile(CheckedListBox lb,ProgressBar pb,Label lbl)
         {
@@ -107,6 +108,7 @@ namespace mia_conv
             log.Text += String.Format("\r\nREAD ENDS AT FILEPOS {0:d} ({0:X}) OF {1:d} ({1:X})",sfs.Position,sfs.Length);
             fs.Close();
             sfs.Close();
+             _label_total= _label_nm = "";
         }
 
         public void Setpbpart(int part,int of)
@@ -120,12 +122,15 @@ namespace mia_conv
         }
 
         public void SetLabel(int part,int of)
-        {
+        {          
             lbl.Text = _label_nm + " -> " + part.ToString() + "/" + of.ToString();
+            lbl.Text += _label_total;
         }
 
         public void SetLabelName(string nm)
         {
+            if(_label_nm !="")
+                _label_total = Environment.NewLine + _label_nm + " [OK]" + _label_total;
             lbl.Text = nm;
             _label_nm = nm;
             Application.DoEvents();

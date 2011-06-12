@@ -95,7 +95,7 @@ namespace mia_conv
         /// Начинает конвертирование bp mia-файла
         /// </summary>
         private void btStart_Click(object sender, EventArgs e)
-        {
+        {           
             MDCreator crt = new MDCreator(log);
 #if !NOCATCH
             try
