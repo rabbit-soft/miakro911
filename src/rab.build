@@ -70,9 +70,9 @@
 	<property name="repeng.lib" value="RdlEngine.dll" />
 	<property name="repeng.ass" value="${rep.path}/${repeng.lib}" />
 	<property name="obfuscator" value="Eazfuscator.NET.exe" />
-
-	<property name="grd_ob" value="C:\Program Files\Guardant\Guardant 5\PLAT_T+\Bin\CodeObfuscator.exe" />
-	<property name="grd_prot" value="C:\Program Files\Guardant\Guardant 5\PLAT_T+\Bin\CodeProtect.exe" />
+	
+	<property name="grd_ob" value="${grd_path}\CodeObfuscator.exe" />
+	<property name="grd_prot" value="${grd_path}\CodeProtect.exe" />
 
 	<property name="nant_contrib" value="${all_i_need}/NAnt/NAnt.Contrib.Tasks.dll" />
 
@@ -97,8 +97,7 @@
 	<property name="mysqlInstallerDest" value="${installersPath}${slash}${mysqlInstaller}"/>
 	<property name="MSIInstallerDest" value="${installersPath}${slash}${MSIInstaller}"/>
 
-	<property name="NSISPath" value="C:\Program Files\NSIS\"/>
-	<property name="NSIS" value="${NSISPath}makensis.exe"/>
+	<property name="NSIS" value="${NSISPath}\makensis.exe"/>
 
 	<property name="nant.settings.currentframework" value="net-2.0" />
 
@@ -474,7 +473,7 @@
 		</exec-->
 		<exec program="${grd_prot}">
 			<arg value="/INIT" />
-			<arg value="/MSG=C:\Program Files\Guardant\Guardant 5\PLAT_T+\bin\licensewizard.msg" />
+			<arg value="/MSG=${grd_path}\licensewizard.msg" />
 			<arg value="/PER=20" />
 			<arg value="/RC=1" />
 			<arg value="/ATR=2" />
