@@ -138,6 +138,9 @@ namespace rabnet
 
         List<sMeal> getMealPeriods();
         void addMealPeriod(DateTime start, float amount);
+
+        List<ScalePLUSummary> getPluSummarys(DateTime date);
+        void addPLUSummary(int prodid, string prodname, int tsell, int tsumm, int tweight, DateTime cleared);
        
     }
 

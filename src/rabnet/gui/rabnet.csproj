@@ -111,6 +111,7 @@
     <Compile Include="..\..\mia_conv\miaExitCode.cs">
       <Link>classes\miaExitCode.cs</Link>
     </Compile>
+    <Compile Include="classes\CasLP16.cs" />
     <Compile Include="classes\Demo.cs" />
     <Compile Include="classes\ExcelMaker.cs" />
     <Compile Include="classes\PlugInsClass.cs" />
@@ -126,6 +127,18 @@
     </Compile>
     <Compile Include="forms\MealForm.Designer.cs">
       <DependentUpon>MealForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\PLUForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\PLUForm.Designer.cs">
+      <DependentUpon>PLUForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ScaleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\ScaleForm.Designer.cs">
+      <DependentUpon>ScaleForm.cs</DependentUpon>
     </Compile>
     <Compile Include="forms\WaitForm.cs">
       <SubType>Form</SubType>
@@ -478,6 +491,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\MealForm.resx">
       <DependentUpon>MealForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\PLUForm.resx">
+      <DependentUpon>PLUForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\ScaleForm.resx">
+      <DependentUpon>ScaleForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\WaitForm.resx">

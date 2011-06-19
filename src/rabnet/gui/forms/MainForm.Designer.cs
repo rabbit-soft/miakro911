@@ -86,6 +86,7 @@
             this.tpButcher = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
+            this.miScale = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -343,6 +344,7 @@
             this.geterosisMenuItem,
             this.inbreedingMenuItem,
             this.toolStripMenuItem3,
+            this.miScale,
             this.paramsMenuItem1});
             this.tsmiOptions.Name = "tsmiOptions";
             this.tsmiOptions.Size = new System.Drawing.Size(73, 20);
@@ -552,6 +554,13 @@
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
             // 
+            // miScale
+            // 
+            this.miScale.Name = "miScale";
+            this.miScale.Size = new System.Drawing.Size(228, 22);
+            this.miScale.Text = "Весы";
+            this.miScale.Click += new System.EventHandler(this.miScale_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -634,6 +643,7 @@
         private System.Windows.Forms.TabPage tpButcher;
         private System.Windows.Forms.ToolStripMenuItem miButcher;
         private System.Windows.Forms.ToolStripMenuItem miMeal;
+        private System.Windows.Forms.ToolStripMenuItem miScale;
     }
 }
 

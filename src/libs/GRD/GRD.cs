@@ -33,6 +33,7 @@ namespace RabGRD
             RabDump,    //2 bit
             Butcher,    //3 bit
             PerortPlugIns,//4 bit
+            Scale//5 bit
         }
 
         static readonly ILog log = LogManager.GetLogger(typeof(GRD));
@@ -282,11 +283,12 @@ namespace RabGRD
         {
             switch (ft)
             {
-                case FlagType.RabNet:        return (((GetFlags(0) & Convert.ToByte("00000001", 2)) > 0) || (GetTempFlags(0) & Convert.ToByte("00000001", 2))>0);
+                case FlagType.RabNet:        return (((GetFlags(0) & Convert.ToByte("00000001", 2)) > 0) || (GetTempFlags(0) & Convert.ToByte("00000001", 2)) > 0);
                 case FlagType.Genetics:      return (((GetFlags(0) & Convert.ToByte("00000010", 2)) > 0) || (GetTempFlags(0) & Convert.ToByte("00000010", 2)) > 0);
                 case FlagType.RabDump:       return (((GetFlags(0) & Convert.ToByte("00000100", 2)) > 0) || (GetTempFlags(0) & Convert.ToByte("00000100", 2)) > 0);           
-                case FlagType.Butcher:       return (((GetFlags(0) & Convert.ToByte("00001000", 2)) > 0) || (GetTempFlags(0) & Convert.ToByte("00001000", 2))>0);
+                case FlagType.Butcher:       return (((GetFlags(0) & Convert.ToByte("00001000", 2)) > 0) || (GetTempFlags(0) & Convert.ToByte("00001000", 2)) > 0);
                 case FlagType.PerortPlugIns: return (((GetFlags(0) & Convert.ToByte("00010000", 2)) > 0) || (GetTempFlags(0) & Convert.ToByte("00010000", 2)) > 0);
+                case FlagType.Scale:         return (((GetFlags(0) & Convert.ToByte("00100000", 2)) > 0) || (GetTempFlags(0) & Convert.ToByte("00100000", 2)) > 0);
             }
             return false;
         }

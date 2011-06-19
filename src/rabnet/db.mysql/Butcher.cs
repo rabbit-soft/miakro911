@@ -40,6 +40,34 @@ namespace rabnet
         }
     }
 
+    public class ScalePLUSummary
+    {
+        private int _id;
+        private int _prodId;
+        public int ProdId
+        {
+            get { return _prodId; }
+        }
+        public DateTime Date;
+        public string ProdName;
+        public int TotalSell;
+        public int TotalSumm;
+        public int TotalWeight;
+        public DateTime Cleared;
+
+        public ScalePLUSummary(int id,DateTime date,int prodid,string prodname,int tsell,int tsumm,int tweight,DateTime clear)
+        {
+            this._id = id;
+            this._prodId =prodid;
+            this.Date = date;
+            this.ProdName = prodname;
+            this.TotalSell = tsell;
+            this.TotalSumm = tsumm;
+            this.TotalWeight = tweight; 
+            this.Cleared = clear; 
+        }
+    }
+
     class Butcher:RabNetDataGetterBase
     {
         public Butcher(MySqlConnection sql,Filters f) : base(sql,f) { }
@@ -47,7 +75,7 @@ namespace rabnet
         public override string getQuery()
         {
             return @"CREATE TEMPORARY TABLE aaa as
-SELECT Date(d_date) dt, COUNT(r_group) cnt FROM dead WHERE d_reason=3 GROUP BY dt;
+SELECT Date(d_date) dt, SUM(r_group) cnt FROM dead WHERE d_reason=3 GROUP BY dt;
 
 SELECT DISTINCT dt,cnt,(SELECT COUNT(*) FROM butcher WHERE DATE(b_date)=dt) prod FROM aaa ORDER BY dt DESC;
 DROP TABLE aaa;";
@@ -133,6 +161,39 @@ FROM butcher WHERE DATE(b_date)='{0:yyy-MM-dd}' ORDER by b_date DESC;",dt), sql)
             }
             rd.Close();
             return result;
+        }
+    }
+
+    class Scale
+    {
+        public static List<ScalePLUSummary> getPluSummarys(MySqlConnection sql,DateTime date)
+        {
+            List<ScalePLUSummary> result = new List<ScalePLUSummary>();
+            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT s_id,s_date,s_plu_id,s_plu_name,appendPLUSumm(s_tsumm)asm,appendPLUSell(s_tsell)asl,appendPLUWeight(s_tweight)aw,s_cleared FROM scaleprod WHERE DATE(s_date)='{0:yyyy-MM-dd}' ORDER BY s_id DESC;", date), sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            while(rd.Read())
+            {
+                result.Add(new ScalePLUSummary(
+                    rd.GetInt32("s_id"),
+                    rd.GetDateTime("s_date"),
+                    rd.GetInt32("s_plu_id"),
+                    rd.GetString("s_plu_name"),
+                    rd.GetInt32("asm"),
+                    rd.GetInt32("asl"),
+                    rd.GetInt32("aw"),
+                    rd.GetDateTime("s_cleared")));
+            }
+            rd.Close();
+            return result;
+        }
+
+        public static void addPLUSummary(MySqlConnection sql,int prodid,string prodname,int tsell,int tsumm,int tweight,DateTime cleared)
+        {
+            MySqlCommand cmd = new MySqlCommand("", sql);
+            cmd.CommandText = String.Format(@"call addPLUSummary({0:d},'{1:s}',{2:d},{3:d},{4:d},'{5:yyyy-MM-dd hh:mm}');",
+                                                            prodid,prodname,tsell,tsumm,tweight,cleared);
+            cmd.ExecuteNonQuery();
+            
         }
     }
 }

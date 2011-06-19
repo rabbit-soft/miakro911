@@ -603,6 +603,16 @@ namespace rabnet
             Meal.AddMealPeriod(sql, start, amount);
         }
 
+        public List<ScalePLUSummary> getPluSummarys(DateTime date)
+        {
+            return Scale.getPluSummarys(sql,date);
+        }
+
+        public void addPLUSummary(int prodid, string prodname, int tsell, int tsumm, int tweight, DateTime cleared)
+        {
+            Scale.addPLUSummary(sql, prodid, prodname, tsell, tsumm, tweight, cleared);
+        }
+
         #endregion
     }
 }

@@ -40,7 +40,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.lvMeat = new System.Windows.Forms.ListView();
             this.chProduct = new System.Windows.Forms.ColumnHeader();
-            this.chAmount = new System.Windows.Forms.ColumnHeader();
             this.chUser = new System.Windows.Forms.ColumnHeader();
             this.label1 = new System.Windows.Forms.Label();
             this.lvButcherDates = new System.Windows.Forms.ListView();
@@ -48,6 +47,9 @@
             this.chCount = new System.Windows.Forms.ColumnHeader();
             this.chProd = new System.Windows.Forms.ColumnHeader();
             this.actMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.chTSell = new System.Windows.Forms.ColumnHeader();
+            this.chTSumm = new System.Windows.Forms.ColumnHeader();
+            this.chTWeight = new System.Windows.Forms.ColumnHeader();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -104,7 +106,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(446, 20);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Забитые кролики";
+            this.label2.Text = "Убитые кролики";
             this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // lvVictims
@@ -163,7 +165,9 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lvMeat.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chProduct,
-            this.chAmount,
+            this.chTSell,
+            this.chTSumm,
+            this.chTWeight,
             this.chUser});
             this.lvMeat.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lvMeat.FullRowSelect = true;
@@ -180,11 +184,6 @@
             this.chProduct.Text = "Продукция";
             this.chProduct.Width = 88;
             // 
-            // chAmount
-            // 
-            this.chAmount.Text = "Количество";
-            this.chAmount.Width = 85;
-            // 
             // chUser
             // 
             this.chUser.Text = "Пользователь";
@@ -198,7 +197,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(206, 20);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Забои";
+            this.label1.Text = "Убои";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // lvButcherDates
@@ -229,7 +228,7 @@
             // 
             // chCount
             // 
-            this.chCount.Text = "Забито";
+            this.chCount.Text = "Убито";
             this.chCount.Width = 63;
             // 
             // chProd
@@ -241,6 +240,20 @@
             // 
             this.actMenu.Name = "actMenu";
             this.actMenu.Size = new System.Drawing.Size(61, 4);
+            // 
+            // chTSell
+            // 
+            this.chTSell.Text = "Продано";
+            this.chTSell.Width = 72;
+            // 
+            // chTSumm
+            // 
+            this.chTSumm.Text = "На сумму";
+            this.chTSumm.Width = 88;
+            // 
+            // chTWeight
+            // 
+            this.chTWeight.Text = "Вес";
             // 
             // ButcherPanel
             // 
@@ -274,11 +287,13 @@
         private System.Windows.Forms.ContextMenuStrip actMenu;
         private System.Windows.Forms.ListView lvMeat;
         private System.Windows.Forms.ColumnHeader chProduct;
-        private System.Windows.Forms.ColumnHeader chAmount;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ColumnHeader chUser;
         private System.Windows.Forms.ColumnHeader chProd;
+        private System.Windows.Forms.ColumnHeader chTSell;
+        private System.Windows.Forms.ColumnHeader chTSumm;
+        private System.Windows.Forms.ColumnHeader chTWeight;
     }
 }

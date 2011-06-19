@@ -60,15 +60,24 @@ namespace rabnet
                 lvi.SubItems.Add(rab.group.ToString());
                 lvi.SubItems.Add(rab.breedname);
             }
+
             lvMeat.Items.Clear();
-            List<sMeat> meats = Engine.get().db().getMeats(date);
+            /*List<sMeat> meats = Engine.get().db().getMeats(date);
             foreach (sMeat m in meats)
             {
                 ListViewItem lvi = lvMeat.Items.Add(m.ProductType);
                 lvi.SubItems.Add(m.Amount.ToString()+" "+m.Units);
                 lvi.SubItems.Add(m.User);
+            }*/
+            List<ScalePLUSummary> summarys = Engine.get().db().getPluSummarys(date);
+            foreach (ScalePLUSummary sm in summarys)
+            {
+                ListViewItem lvi = lvMeat.Items.Add(String.Format("[{0:d}] {1:s}",sm.ProdId, sm.ProdName));
+                lvi.SubItems.Add(sm.TotalSell.ToString());
+                lvi.SubItems.Add(sm.TotalSumm.ToString());
+                lvi.SubItems.Add(sm.TotalWeight.ToString());
+                lvi.SubItems.Add("");
             }
-            
         }
 
         private void makeExcel()

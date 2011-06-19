@@ -139,6 +139,7 @@ namespace X_Tools
             numbers.Add('8');
             numbers.Add('9');
             numbers.Add(',');
+            //if (!(sender is TextBox)) return;
             TextBox tb = (sender as TextBox);
             try
             {
@@ -177,6 +178,12 @@ namespace X_Tools
             }
         }
 
+        public static void checkIntNumber(object sender, EventArgs e)
+        {
+            TextBox tb = (sender as TextBox);
+            tb.Text.Replace(",", "");
+            checkFloatNumber(sender,e);
+        }
         // readStream is the stream you need to read
         // writeStream is the stream you want to write to
 /*

@@ -571,5 +571,10 @@ namespace rabnet
             (new MealForm()).ShowDialog();
         }
 
+        private void miScale_Click(object sender, EventArgs e)
+        {
+            (new ScaleForm()).ShowDialog();
+        }
+
     }
 }

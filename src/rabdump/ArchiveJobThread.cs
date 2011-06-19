@@ -246,7 +246,7 @@ namespace rabdump
                 log.Debug("decompress 7z");
                 String z7 = Options.Get().Path7Z;
                 String ff = tmppath + Path.GetFileNameWithoutExtension(f) + ".dump";
-                if (z7 == "")
+                if (z7 == "" || !File.Exists(z7))
                 {
                     throw new ApplicationException("Путь к 7z не настроен");
                 }
@@ -265,7 +265,7 @@ namespace rabdump
                 if (res != 0)
                 {
                     File.Delete(ff);
-                    throw new ApplicationException("7z вернул результат " + p.ExitCode.ToString());
+                    throw new ApplicationException("7z вернул результат: " + res.ToString());
                 }
 
                 if (!File.Exists(ff))// нужно потому что не все имена Архивов совпадают с именами хранящихся в них Дампов

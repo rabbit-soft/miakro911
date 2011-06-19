@@ -432,7 +432,7 @@ namespace rabdump
         const String MYSQL_DUMP = @"\bin\mysqldump.exe";
         public String MySqlExePath = "";
         public String MySqlDumpPath = "";
-        private String _myPath = "", _p7 = "";
+        private String _myPath = @"C:\Program Files\MySQL\MySQL Server 5.1", _p7 = "";
         private Rubool _sas = Rubool.Нет;
 
         private readonly DataBaseCollection _bds = new DataBaseCollection();
