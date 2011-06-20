@@ -55,9 +55,6 @@
 	<property name="office.core.path" value="${Office.path}/${office.core.name}" />
 	<property name="office.excel.path" value="${Office.path}/${office.excel.name}" />
 	
-	<property name="cas.lp16.name" value="Interop.lp16DLLCOMLib.dll"/>	
-	<property name="cas.lp16.path" value="${party3d.path}/${cas.lp16.name}"/>
-	
 	<property name="guardant.path" value="${mysql.path}" />
 	<!--property name="guardant.lib" value="key.dll" /-->
 	<property name="guardant2.lib" value="GrdAPI32.DLL" />
@@ -564,7 +561,6 @@
 		<delete dir="${bin_dir}/Butcher"/>
 		<mkdir dir="${bin_dir}/Butcher"/>
 		<copy file="${mysql.ass}" tofile="${bin_dir}/Butcher/${mysql.lib}" />
-		<copy file="${cas.lp16.path}" tofile="${bin_dir}/Butcher/${cas.lp16.name}" />
 		<csc target="winexe" win32icon="${curdir}/butcher/icon_blue.ico" output="${bin_dir}/Butcher/butcher.exe" define="RELEASE" optimize="true">
 			<sources>
 				<include name="${curdir}/butcher/*.cs"/>
@@ -585,7 +581,6 @@
 			</resources>
 			<references>
 				<include name="${bin_dir}/Butcher/${mysql.lib}"/>	
-				<include name="${bin_dir}/Butcher/${cas.lp16.name}"/>
 				<include name="${log4net.ass}"/>
 			</references>
 		</csc>

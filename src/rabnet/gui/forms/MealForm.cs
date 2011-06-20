@@ -28,7 +28,7 @@ namespace rabnet
             foreach (sMeal m in per)
             {
                 dataGridView1.Rows.Add(new string[] { m.StartDate, m.EndDate, m.Amount.ToString(), m.Rate.ToString() });
-                dtpStartDate.MinDate = DateTime.Parse(m.StartDate);
+                //dtpStartDate.MinDate = DateTime.Parse(m.StartDate);
             }
             dtpStartDate.MaxDate = DateTime.Now;
         }

@@ -20,8 +20,6 @@ namespace CAS
             /// <summary>
             /// Заполнен ли массив только нулями
             /// </summary>
-            /// <param name="bts"></param>
-            /// <returns></returns>
             internal static bool arrayIsEmpty(byte[] bts)
             {
                 for (int i = 0; i < bts.Length; i++)
@@ -29,7 +27,9 @@ namespace CAS
                         return false;
                 return true;         
             }
-
+            /// <summary>
+            /// Переводит из Двоично-десятичного формата в число
+            /// </summary>
             internal static int fromBinDecimal(byte[] bytes)
             {
                 string result = "";
@@ -37,7 +37,9 @@ namespace CAS
                     result += bytes[i].ToString();
                 return int.Parse(result);
             }
-
+            /// <summary>
+            /// переводит число в массив байтов двоично-десятичного формата
+            /// </summary>
             internal static byte[] toBinDecimal(int val)
             {
                 string vstr = val.ToString();
@@ -45,7 +47,10 @@ namespace CAS
 
                 return result;
             }
-
+            /// <summary>
+            /// Разбирает массив байтов, данные в котором представленны в Упакованном двоичном формате.
+            /// (Старшие 4бита и Младшие 4бита содержат разные значения)
+            /// </summary>
             internal static byte[] parseGroupBinDec(byte[] bindec)
             {
                 byte[] result = new byte[bindec.Length * 2];
@@ -117,7 +122,9 @@ namespace CAS
                     bts[0] * 10 + bts[1]);
                 return result;
             }
-
+            /// <summary>
+            /// Соединяет массивы байтов в один
+            /// </summary>
             internal static byte[] concat(params byte[][] matrix)
             {
                 int totalLength = 0;
@@ -263,6 +270,69 @@ namespace CAS
                     public const byte FREE_MSG_ADDRESS = 0x26;
                     public const byte FREE_MSG_LENGTH = 2;
                 }
+                public static class State
+                {
+                    public const byte STATE_BYTE_ADDRESS = 0x00;
+                    public const byte STATE_BYTE_LENGHT = 1;
+
+                    public const byte ABSOLUTE_WEIGHT_ADDRESS = 0x01;
+                    public const byte ABSOLUTE_WEIGHT_LENGHT = 2;
+
+                    public const byte PRICE_ADDRESS = 0x02;
+                    public const byte PRICE_LENGHT = 4;
+
+                    public const byte VALUE_ADDRESS = 0x07;
+                    public const byte VALUE_LENGHT = 4;
+
+                    public const byte CHECKED_PLU_ADDRESS = 0x0B;
+                    public const byte CHECKED_PLU_LENGHT = 4;
+                }
+                public class FactoryConfig
+                {
+                    public const byte WEIGHT_LIMIT_ADDRESS = 0x00;
+                    public const byte WEIGHT_LIMIT_LENGHT = 2;
+
+                    public const byte DOT_PLACE_ADDRESS = 0x02;
+                    public const byte DOT_PLACE_LENGHT = 3;
+
+                    public const byte DRW_MODE_ADDRESS = 0x05;
+                    public const byte DRW_MODE_LENGHT = 1;
+
+                    public const byte SHIT1_ADDRESS = 0x06;
+                    public const byte SHIT1_LENGHT = 1;
+
+                    public const byte SHIT2_ADDRESS = 0x07;
+                    public const byte SHIT2_LENGHT = 1;
+
+                    public const byte WEIGHT_FOR_PRICE_ADDRESS = 0x08;
+                    public const byte WEIGHT_FOR_PRICE_LENGHT = 2;
+
+                    public const byte ROUND_VALUE_ADDRESS = 0x0A;
+                    public const byte ROUND_VALUE_LENGHT = 1;
+
+                    public const byte TARA_LIMIT_ADDRESS = 0x0B;
+                    public const byte TARA_LIMIT_LENGHT = 2;
+                }
+                public class UserPreferences
+                {
+                    public const byte DEPARTMENT_NUMBER_ADDRESS = 0x00;
+                    public const byte DEPARTMENT_NUMBER_LENGHT = 3;
+
+                    public const byte STICKER_FORMAT_ADDRESS = 0x03;
+                    public const byte STICKER_FORMAT_LENGHT = 1;
+
+                    public const byte BARCODE_FORMAT_ADDRESS = 0x04;
+                    public const byte BARCODE_FORMAT_LENGHT = 1;
+
+                    public const byte PRINT_OFFSET_ADDRESS = 0x05;
+                    public const byte PRINT_OFFSET_LENGHT = 1;
+
+                    public const byte PRINT_FEATURES_ADDRESS = 0x06;
+                    public const byte PRINT_FEATURES_LENGHT = 1;
+
+                    public const byte CHANGE_WEIGHT_ADDRESS = 0x07;
+                    public const byte CHANGE_WEIGHT_LENGHT = 2;
+                }
                 public static class Commands
                 {
                     public const int PLU_SET = 1+83;
@@ -294,7 +364,7 @@ namespace CAS
                 /// Размер одной строки в поле сообщения = 50
                 /// </summary>
                 public const int MSG_MAX_STRING_LENGTH = 50;
-                public const int FACTORY_CONF_ANS_SIZE = 13;
+                public const int FACTORY_CONF_LENGTH = 13;
                 public const int SUMMARY_LENGTH = 40;
                 public const int STATE_LENGTH = 13;
                 public const int LIVE_TIME_MAX_DAYS = 999;
@@ -313,30 +383,99 @@ namespace CAS
             /// </summary>
             public static class Commands
             {
+                /// <summary>
+                ///  Чтение из весов PLU
+                /// </summary>
                 public const byte PLU_GET = 0x81;
+                /// <summary>
+                /// Запись в весы PLU
+                /// </summary>
                 public const byte PLU_SET = 0x82;
+                /// <summary>
+                /// Чтение из весов сообщения
+                /// </summary>
                 public const byte MSG_GET = 0x83;
+                /// <summary>
+                /// Запись в весы сообщения
+                /// </summary>
                 public const byte MSG_SET = 0x84;
+                /// <summary>
+                /// Чтение общего итога продаж по всем товарам
+                /// </summary>
                 public const byte SUMMARY_SELL_GET = 0x85;
+                /// <summary>
+                /// Стирание суммарного итога продаж по всем товарам
+                /// </summary>
                 public const byte SUMMARY_SELL_CLEAR = 0x86;
+                /// <summary>
+                /// Запись границ единственного непрерывного диапазона номеров товаров
+                /// </summary>
                 public const byte BORDERS_SET = 0x87;
+                /// <summary>
+                /// Отмена границ диапазона номеров товаров
+                /// </summary>
                 public const byte BORDERS_CLEAR = 0x88;
+                /// <summary>
+                /// Чтение текущего состояния весов
+                /// </summary>
                 public const byte STATE_GET = 0x89;
+                /// <summary>
+                /// Запись в весы настроек пользователя
+                /// </summary>
                 public const byte USER_SET = 0x8A;
+                /// <summary>
+                /// Программирование клавиш цен
+                /// </summary>
                 public const byte PRICE_BUTTON_SET_PLU = 0x8B;
+                /// <summary>
+                /// Запись логотипа (LOGO 2)
+                /// </summary>
                 public const byte LOGO_SET = 0x8C;
+                /// <summary>
+                /// Стирание из памяти весов PLU
+                /// </summary>
                 public const byte PLU_CLEAR = 0x8D;
+                /// <summary>
+                /// Стирание из памяти весов сообщения
+                /// </summary>
                 public const byte MSG_CLEAR = 0x8E;
                 //0x8f  //0x90  //0x91
+                /// <summary>
+                /// Обнуление в памяти весов итоговых данных по PLU
+                /// </summary>
                 public const byte PLU_SUMMARY_CLEAR = 0x92;
                 //0x93
+                /// <summary>
+                /// Запись строк рекламной информации
+                /// </summary>
                 public const byte SHOP_SET = 0x94;
+                /// <summary>
+                /// Чтение из весов настроек пользователя
+                /// </summary>
                 public const byte USER_GET = 0x95;
+                /// <summary>
+                /// Чтение из весов номера товара, назначенного на клавишу цены
+                /// </summary>
                 public const byte PRICE_BUTTON_GET_PLU = 0x96;
+                /// <summary>
+                /// Чтение из весов логотипа (LOGO 2)
+                /// </summary>
                 public const byte LOGO_GET = 0x97;
+                /// <summary>
+                /// Чтение из весов строк рекламной информации
+                /// </summary>
                 public const byte SHOP_GET = 0x98;
+                /// <summary>
+                /// Запись в календарь весов значения даты
+                /// </summary>
                 public const byte DATE_SET = 0x99;
+                /// <summary>
+                /// Запись в часы весов значения времени. 
+                /// </summary>
                 public const byte TIME_SET = 0x9A;
+                /// <summary>
+                /// Чтение из весов заводских установок весов
+                /// </summary>
                 public const byte FACTORY_CONF_GET = 0x9B;
             }
         }
@@ -373,9 +512,8 @@ namespace CAS
             public const byte PLU_IS_NOT_EXISTS = 10;
             public const byte MSG_IS_NOT_EXISTS = 11;
             public const byte CONNECTION_FAIL = 12;
-            public const byte METHOD_NOT_SUPPORTED = 13;
+            public const byte NOT_SUPPORTED = 13;
         }
-
 
         public class PLU
         {
@@ -473,7 +611,9 @@ namespace CAS
                 get { return BitConverter.ToInt32(_price, 0); }
                 set
                 {
-
+                    if (value > 999999) return;
+                    byte[] bts = BitHelper.getLiveTimeBytes(value);
+                    Array.Copy(bts, _price, bts.Length);
                 }
             }
             public int LiveTime
@@ -506,7 +646,9 @@ namespace CAS
                 get { return BitHelper.fromBinDecimal(_groupCode); }
                 set
                 {
-
+                    if (value > 999999) return;
+                    byte[] bts = BitHelper.toBinDecimal(value);
+                    Array.Copy(bts,_groupCode,bts.Length);
                 }
             }
             public int MessageID
@@ -791,7 +933,7 @@ namespace CAS
 
         public class Summary
         {
-            private readonly byte[] _bytes = new byte[Info.Sizes.SUMMARY_LENGTH];
+            //private readonly byte[] _bytes = new byte[Info.Sizes.SUMMARY_LENGTH];
             private readonly byte[] _roll = new byte[Info.Sizes.Summary.ROLL_LENGTH];
             private readonly byte[] _sticker = new byte[Info.Sizes.Summary.STICKER_LENGTH];
             private readonly byte[] _summ = new byte[Info.Sizes.Summary.SUMM_LENGTH];
@@ -806,21 +948,88 @@ namespace CAS
 
             public Summary(byte[] bts)
             {
-                if (bts.Length < 100) return;
-                Array.Copy(bts, _bytes, Info.Sizes.SUMMARY_LENGTH);
+                if (bts.Length < Info.Sizes.SUMMARY_LENGTH) return;
+                //Array.Copy(bts, _bytes, Info.Sizes.SUMMARY_LENGTH);
 
-                Array.Copy(_bytes, Info.Sizes.Summary.ROLL_ADDRESS, _roll, 0, Info.Sizes.Summary.ROLL_LENGTH);
-                Array.Copy(_bytes, Info.Sizes.Summary.STICKER_ADDRESS, _sticker, 0, Info.Sizes.Summary.STICKER_LENGTH);
-                Array.Copy(_bytes, Info.Sizes.Summary.SUMM_ADDRESS, _summ, 0, Info.Sizes.Summary.SUMM_LENGTH);
-                Array.Copy(_bytes, Info.Sizes.Summary.SELL_ADDRESS, _sell, 0, Info.Sizes.Summary.SELL_LENGTH);
-                Array.Copy(_bytes, Info.Sizes.Summary.WEIGHT_ADDRESS, _weight, 0, Info.Sizes.Summary.WEIGHT_LENGTH);
-                Array.Copy(_bytes, Info.Sizes.Summary.ALL_PLU_SUMM_ADDRESS, _allPluSumm, 0, Info.Sizes.Summary.ALL_PLU_SUMM_LENGTH);
-                Array.Copy(_bytes, Info.Sizes.Summary.ALL_PLU_SELL_ADDRESS, _allPluSell, 0, Info.Sizes.Summary.ALL_PLU_SELL_LENGTH);
-                Array.Copy(_bytes, Info.Sizes.Summary.ALL_PLU_WEIGHT_ADDRESS, _allPluWeight, 0, Info.Sizes.Summary.ALL_PLU_WEIGHT_LENGTH);
-                Array.Copy(_bytes, Info.Sizes.Summary.LAST_CLEAR_ADDRESS, _lastClear, 0, Info.Sizes.Summary.LAST_CLEAR_LENGTH);
-                Array.Copy(_bytes, Info.Sizes.Summary.FREE_PLU_ADDRESS, _freePlu, 0, Info.Sizes.Summary.FREE_PLU_LENGTH);
-                Array.Copy(_bytes, Info.Sizes.Summary.FREE_MSG_ADDRESS, _freeMsg, 0, Info.Sizes.Summary.FREE_MSG_LENGTH);
+                Array.Copy(bts, Info.Sizes.Summary.ROLL_ADDRESS, _roll, 0, Info.Sizes.Summary.ROLL_LENGTH);
+                Array.Copy(bts, Info.Sizes.Summary.STICKER_ADDRESS, _sticker, 0, Info.Sizes.Summary.STICKER_LENGTH);
+                Array.Copy(bts, Info.Sizes.Summary.SUMM_ADDRESS, _summ, 0, Info.Sizes.Summary.SUMM_LENGTH);
+                Array.Copy(bts, Info.Sizes.Summary.SELL_ADDRESS, _sell, 0, Info.Sizes.Summary.SELL_LENGTH);
+                Array.Copy(bts, Info.Sizes.Summary.WEIGHT_ADDRESS, _weight, 0, Info.Sizes.Summary.WEIGHT_LENGTH);
+                Array.Copy(bts, Info.Sizes.Summary.ALL_PLU_SUMM_ADDRESS, _allPluSumm, 0, Info.Sizes.Summary.ALL_PLU_SUMM_LENGTH);
+                Array.Copy(bts, Info.Sizes.Summary.ALL_PLU_SELL_ADDRESS, _allPluSell, 0, Info.Sizes.Summary.ALL_PLU_SELL_LENGTH);
+                Array.Copy(bts, Info.Sizes.Summary.ALL_PLU_WEIGHT_ADDRESS, _allPluWeight, 0, Info.Sizes.Summary.ALL_PLU_WEIGHT_LENGTH);
+                Array.Copy(bts, Info.Sizes.Summary.LAST_CLEAR_ADDRESS, _lastClear, 0, Info.Sizes.Summary.LAST_CLEAR_LENGTH);
+                Array.Copy(bts, Info.Sizes.Summary.FREE_PLU_ADDRESS, _freePlu, 0, Info.Sizes.Summary.FREE_PLU_LENGTH);
+                Array.Copy(bts, Info.Sizes.Summary.FREE_MSG_ADDRESS, _freeMsg, 0, Info.Sizes.Summary.FREE_MSG_LENGTH);
             }
+
+            /// <summary>
+            /// Cчётчик пробега (мм)
+            /// </summary>
+            public int RollOut { get { return BitConverter.ToInt32(_roll,0); } }
+            public int Sticker { get { return BitConverter.ToInt32(_sticker,0); } }
+            public int TotalSumm { get { return BitConverter.ToInt32(_summ,0); } }
+            public int TotalSell { get { return BitConverter.ToInt32(_sell,0); } }
+            public int TotalWeight 
+            { 
+                get 
+                {   
+                    byte[] bts = new byte[4];
+                    Array.Copy(_weight, bts, _weight.Length);
+                    return BitConverter.ToInt32(bts, 0); 
+                } 
+            }
+            public DateTime LastClear{ get{return BitHelper.getLastClear(BitHelper.parseGroupBinDec(_lastClear));} }
+            public int FreePLU { get { return (int)BitConverter.ToInt16( _freePlu,0); } }
+            public int FreeMSG { get { return (int)BitConverter.ToInt16(_freeMsg,0); } }
+        }
+
+        public class State
+        {
+            private readonly byte[] _stateByte = new byte[Info.Sizes.State.STATE_BYTE_LENGHT];
+            private readonly byte[] _absWeight = new byte[Info.Sizes.State.ABSOLUTE_WEIGHT_LENGHT];
+            private readonly byte[] _priceRate = new byte[Info.Sizes.State.PRICE_LENGHT];
+            private readonly byte[] _value = new byte[Info.Sizes.State.VALUE_LENGHT];
+            private readonly byte[] _checkPlu = new byte[Info.Sizes.State.CHECKED_PLU_LENGHT];
+
+            public State(byte[] bts)
+            {
+                if (bts.Length < Info.Sizes.STATE_LENGTH) return;
+                Array.Copy(bts, Info.Sizes.State.STATE_BYTE_ADDRESS, _stateByte, 0, Info.Sizes.State.STATE_BYTE_LENGHT);
+                Array.Copy(bts, Info.Sizes.State.ABSOLUTE_WEIGHT_ADDRESS, _absWeight, 0, Info.Sizes.State.ABSOLUTE_WEIGHT_LENGHT);
+                Array.Copy(bts, Info.Sizes.State.PRICE_ADDRESS, _priceRate, 0, Info.Sizes.State.PRICE_LENGHT);
+                Array.Copy(bts, Info.Sizes.State.VALUE_ADDRESS, _value, 0, Info.Sizes.State.VALUE_LENGHT);
+                Array.Copy(bts, Info.Sizes.State.CHECKED_PLU_ADDRESS, _checkPlu, 0, Info.Sizes.State.CHECKED_PLU_LENGHT);
+            }
+
+            public bool Overload        { get { return (_stateByte[0] & Convert.ToByte("00000001", 2)) > 0 ? true : false; } }
+            public bool TaraSelection   { get { return (_stateByte[0] & Convert.ToByte("00000100", 2)) > 0 ? true : false; } }
+            public bool ZeroWeight      { get { return (_stateByte[0] & Convert.ToByte("00001000", 2)) > 0 ? true : false; } }
+            public bool TwoRange        { get { return (_stateByte[0] & Convert.ToByte("00100000", 2)) > 0 ? true : false; } }
+            public bool StableWeight    { get { return (_stateByte[0] & Convert.ToByte("01000000", 2)) > 0 ? true : false; } }
+            public char Sign            { get { return (_stateByte[0] & Convert.ToByte("10000000", 2)) > 0 ? '+' : '+'; } }
+            public int Weight   { get { return (int)BitConverter.ToInt16(_absWeight,0); } }
+            /// <summary>
+            /// Цена товара (коп/кг)
+            /// </summary>
+            public int PriceRate { get { return BitConverter.ToInt32(_priceRate, 0); } }
+            public int Value { get { return BitConverter.ToInt32(_value, 0); } }
+            public int CheckedPLU { get { return BitConverter.ToInt32(_checkPlu, 0); } }
+        }
+
+        public class FactoryConfig
+        {
+
+        }
+
+        public class UserPreferences
+        {
+
+        }
+
+        public class Logo2
+        {
         }
     }
 
@@ -893,6 +1102,14 @@ namespace CAS
         {
             get { return _msgList.Count; }
         }
+        /// <summary>
+        /// Получить текущее состояние весов
+        /// </summary>
+        public State GetState()
+        {
+            return getScaleState();
+        }
+
         //public PLUList PluList{get { return _pluList; }}
         //public MSGList MsgList{get { return _msgList; }}
         public bool Connected
@@ -918,6 +1135,14 @@ namespace CAS
         public int[] getIDsOfMSGs()
         {
             return _msgList.getIds();
+        }
+
+        private State getScaleState()
+        {
+            byte[] cmd = new byte[1]{Info.Commands.STATE_GET};
+            byte[] state = new byte[Info.Sizes.STATE_LENGTH];
+            execCommand(cmd, ref state, 2);
+            return new State(state);
         }
 
         private void runTimer()
@@ -1265,6 +1490,11 @@ namespace CAS
             return newplu;
         }
 
+        /// <summary>
+        /// Сохраняет в памяти весов LPU с заданным ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public int SavePLUbyID(int id)
         {
             PLU save = _pluList.GetPLU(id);
@@ -1388,7 +1618,7 @@ namespace CAS
 
         public int DeleteMSGbyID(int id)
         {
-            return;// НА весах пишется "POC",вводишь 2симвОла, пишется лого.При этом данные не отдает
+            return ReturnCode.NOT_SUPPORTED;// НА весах пишется "POC",вводишь 2символа, пишется лого.При этом данные не отдает
             MSG msg = GetMSGbyID(id);
             if (msg == null) return ReturnCode.MSG_IS_NOT_EXISTS;
             _msgList.Remove(msg);

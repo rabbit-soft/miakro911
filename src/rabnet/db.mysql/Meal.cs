@@ -48,7 +48,7 @@ namespace rabnet
         public static List<sMeal> getMealPeriods(MySqlConnection sql)
         {
             List<sMeal> result = new List<sMeal>();
-            MySqlCommand cmd = new MySqlCommand("SELECT m_start_date,m_end_date,m_amount,m_rate FROM meal ORDER BY m_id;", sql);
+            MySqlCommand cmd = new MySqlCommand("SELECT m_start_date,m_end_date,m_amount,m_rate FROM meal ORDER BY m_start_date ASC;", sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
             {
@@ -67,7 +67,9 @@ namespace rabnet
         public static void AddMealPeriod(MySqlConnection sql, DateTime start, float amount)
         {
             //далее закрываем предыдущую дату
-            MySqlCommand cmd = new MySqlCommand("SELECT m_id FROM meal WHERE m_end_date IS NULL LIMIT 1", sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format("call addMeal('{0:yyyy-MM-dd hh:mm}',{1:d});",start,amount), sql);
+            cmd.ExecuteNonQuery();
+            /*MySqlCommand cmd = new MySqlCommand("SELECT m_id FROM meal WHERE m_end_date IS NULL LIMIT 1", sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             if (rd.Read())
             {
@@ -81,7 +83,7 @@ namespace rabnet
             else rd.Close();
             //далее новая дата
             cmd.CommandText = String.Format("INSERT INTO meal(m_start_date,m_amount) VALUES('{0:yyyy-MM-dd HH:mm:ss}',{1});",start,amount);
-            cmd.ExecuteNonQuery();
+            cmd.ExecuteNonQuery();*/
         }
 
     }
