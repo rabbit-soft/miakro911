@@ -1,5 +1,7 @@
 UPDATE options SET o_value='8' WHERE o_name='db' AND o_subname='version';
 
+ALTER TABLE `meal` ADD COLUMN `m_type` ENUM('in','out') NOT NULL DEFAULT 'in' AFTER `m_id`;
+
 DROP TABLE IF EXISTS `scaleprod`;
 CREATE TABLE `scaleprod` (
   `s_id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -82,7 +84,7 @@ END |
 DROP FUNCTION IF EXISTS mealCalculate |
 CREATE FUNCTION mealCalculate(id INTEGER UNSIGNED) RETURNS float
 BEGIN
-	DECLARE days,i,a,d INTEGER;
+	DECLARE days,i,a,d,sell INTEGER;
 	DECLARE res,amnt FLOAT;
 	DECLARE sd,ed DateTime;
 	SELECT m_start_date, m_end_date INTO sd,ed FROM meal WHERE m_id=id;
@@ -117,23 +119,32 @@ BEGIN
 		SET i=i+1;
 	END WHILE;
 	SELECT m_amount INTO amnt FROM meal WHERE m_id=id;
+	SELECT COALESCE(sum(m_amount),0) INTO sell FROM meal WHERE m_type='out' AND m_start_date BETWEEN sd AND ed;
+	SET amnt=amnt-sell;
+	IF (amnt<=0)
+		return 0;
+	END IF;
 	IF res=0 THEN
 		return 0;
 	END IF;
 	return (amnt/res);
 END |
 
-DROP PROCEDURE IF EXISTS addMeal |
-CREATE PROCEDURE addMeal(startDate DateTime,amount integer unsigned)
-BEGIN
-  DECLARE i,oldI,maxId INTEGER;
+DROP PROCEDURE IF EXISTS updateMeal |
+CREATE PROCEDURE updateMeal()
+root:BEGIN
+  DECLARE i,oldI,maxId,sell INTEGER;
+  DECLARE yngRate FLOAT;
   DECLARE oldSD,oldED,yngSD,yngED DateTime;
-  INSERT INTO meal(m_start_date,m_amount) VALUES(startDate,amount);#add new record
-  SELECT m_id INTO maxId FROM meal ORDER BY m_start_date DESC LIMIT 1;
-  SELECT m_id,m_start_date,m_end_date INTO i,yngSD,yngED FROM meal ORDER BY m_start_date ASC LIMIT 1;#id of later date
+  SELECT COALESCE(m_id,0) INTO maxId FROM meal WHERE m_type='in' ORDER BY m_start_date DESC LIMIT 1;
+  IF (maxId=0) THEN
+	LEAVE root;
+  END IF;
+  SELECT m_id,m_start_date,m_end_date,m_rate INTO i,yngSD,yngED,yngRate FROM meal WHERE m_type='in' ORDER BY m_start_date ASC LIMIT 1;#id of later date
   WHILE (i<>maxId) DO
-    SELECT m_id,m_start_date,m_end_date INTO oldI, oldSD,oldED FROM meal WHERE m_start_date>yngSD ORDER BY m_start_date ASC LIMIT 1;
-	IF (isnull(yngED) OR yngED<>oldSD) THEN
+    SELECT m_id,m_start_date,COALESCE(m_end_date,'9999-12-31') INTO oldI, oldSD,oldED FROM meal WHERE m_type='in' AND m_start_date>yngSD ORDER BY m_start_date ASC LIMIT 1;
+	SELECT COALESCE(sum(m_amount),0) INTO sell FROM meal WHERE m_type='out' AND m_start_date BETWEEN yngSD AND oldED;
+	IF (isnull(yngED) OR yngED<>oldSD OR sell<>0 OR isnull(yngRate)) THEN		
 		UPDATE meal SET m_end_date=oldSD WHERE m_id=i;
 		UPDATE meal SET m_rate=mealCalculate(i) WHERE m_id=i;
 	END IF;	

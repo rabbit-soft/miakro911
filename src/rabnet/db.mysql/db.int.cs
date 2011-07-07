@@ -137,7 +137,8 @@ namespace rabnet
         List<OneRabbit> getVictims(DateTime dt);
 
         List<sMeal> getMealPeriods();
-        void addMealPeriod(DateTime start, float amount);
+        void addMealIn(DateTime start, int amount);
+        void addMealOut(DateTime start, int amount);
 
         List<ScalePLUSummary> getPluSummarys(DateTime date);
         void addPLUSummary(int prodid, string prodname, int tsell, int tsumm, int tweight, DateTime cleared);

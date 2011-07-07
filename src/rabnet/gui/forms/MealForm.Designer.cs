@@ -41,10 +41,14 @@
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgcStart = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgcEndDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.chType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgcAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgcRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rbIn = new System.Windows.Forms.RadioButton();
+            this.rbSell = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -59,18 +63,19 @@
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dgcStart,
             this.dgcEndDate,
+            this.chType,
             this.dgcAmount,
             this.dgcRate});
             this.dataGridView1.Location = new System.Drawing.Point(12, 12);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(435, 301);
+            this.dataGridView1.Size = new System.Drawing.Size(450, 289);
             this.dataGridView1.TabIndex = 0;
             // 
             // btClose
             // 
             this.btClose.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.btClose.Location = new System.Drawing.Point(192, 382);
+            this.btClose.Location = new System.Drawing.Point(200, 382);
             this.btClose.Name = "btClose";
             this.btClose.Size = new System.Drawing.Size(75, 23);
             this.btClose.TabIndex = 1;
@@ -82,23 +87,26 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.rbSell);
+            this.groupBox1.Controls.Add(this.rbIn);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.tbAmount);
             this.groupBox1.Controls.Add(this.dtpStartDate);
             this.groupBox1.Controls.Add(this.btAdd);
-            this.groupBox1.Location = new System.Drawing.Point(12, 319);
+            this.groupBox1.Location = new System.Drawing.Point(12, 307);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(435, 57);
+            this.groupBox1.Size = new System.Drawing.Size(450, 69);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Новый завоз";
+            this.groupBox1.Text = "Новый запись";
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(199, 24);
+            this.label3.Location = new System.Drawing.Point(214, 36);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(45, 13);
             this.label3.TabIndex = 10;
@@ -107,8 +115,9 @@
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 24);
+            this.label2.Location = new System.Drawing.Point(9, 36);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(36, 13);
             this.label2.TabIndex = 9;
@@ -117,8 +126,9 @@
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(328, 24);
+            this.label1.Location = new System.Drawing.Point(343, 36);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(20, 13);
             this.label1.TabIndex = 8;
@@ -127,7 +137,8 @@
             // 
             // tbAmount
             // 
-            this.tbAmount.Location = new System.Drawing.Point(250, 21);
+            this.tbAmount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.tbAmount.Location = new System.Drawing.Point(265, 33);
             this.tbAmount.MaxLength = 9;
             this.tbAmount.Name = "tbAmount";
             this.tbAmount.Size = new System.Drawing.Size(72, 20);
@@ -136,14 +147,16 @@
             // 
             // dtpStartDate
             // 
-            this.dtpStartDate.Location = new System.Drawing.Point(51, 20);
+            this.dtpStartDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.dtpStartDate.Location = new System.Drawing.Point(51, 32);
             this.dtpStartDate.Name = "dtpStartDate";
-            this.dtpStartDate.Size = new System.Drawing.Size(129, 20);
+            this.dtpStartDate.Size = new System.Drawing.Size(136, 20);
             this.dtpStartDate.TabIndex = 6;
             // 
             // btAdd
             // 
-            this.btAdd.Location = new System.Drawing.Point(354, 19);
+            this.btAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btAdd.Location = new System.Drawing.Point(369, 31);
             this.btAdd.Name = "btAdd";
             this.btAdd.Size = new System.Drawing.Size(75, 23);
             this.btAdd.TabIndex = 5;
@@ -183,26 +196,39 @@
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.ReadOnly = true;
             // 
+            // dataGridViewTextBoxColumn5
+            // 
+            this.dataGridViewTextBoxColumn5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn5.FillWeight = 101.5228F;
+            this.dataGridViewTextBoxColumn5.HeaderText = "Коэффициент (кг\\крол)";
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
+            // 
             // dgcStart
             // 
-            this.dgcStart.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgcStart.FillWeight = 97.24559F;
+            this.dgcStart.FillWeight = 164.9484F;
             this.dgcStart.HeaderText = "Привоз";
             this.dgcStart.Name = "dgcStart";
             this.dgcStart.ReadOnly = true;
             // 
             // dgcEndDate
             // 
-            this.dgcEndDate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgcEndDate.FillWeight = 111.2275F;
+            this.dgcEndDate.FillWeight = 86.35448F;
             this.dgcEndDate.HeaderText = "Окончание";
             this.dgcEndDate.Name = "dgcEndDate";
             this.dgcEndDate.ReadOnly = true;
             // 
+            // chType
+            // 
+            this.chType.HeaderText = "Тип";
+            this.chType.Name = "chType";
+            this.chType.ReadOnly = true;
+            this.chType.Width = 70;
+            // 
             // dgcAmount
             // 
             this.dgcAmount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgcAmount.FillWeight = 90.00401F;
+            this.dgcAmount.FillWeight = 69.87704F;
             this.dgcAmount.HeaderText = "Объем (кг)";
             this.dgcAmount.Name = "dgcAmount";
             this.dgcAmount.ReadOnly = true;
@@ -210,16 +236,41 @@
             // dgcRate
             // 
             this.dgcRate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgcRate.FillWeight = 101.5228F;
+            this.dgcRate.FillWeight = 78.81997F;
             this.dgcRate.HeaderText = "Коэффициент (кг\\крол)";
             this.dgcRate.Name = "dgcRate";
             this.dgcRate.ReadOnly = true;
+            // 
+            // rbIn
+            // 
+            this.rbIn.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.rbIn.AutoSize = true;
+            this.rbIn.ForeColor = System.Drawing.Color.Green;
+            this.rbIn.Location = new System.Drawing.Point(143, 0);
+            this.rbIn.Name = "rbIn";
+            this.rbIn.Size = new System.Drawing.Size(63, 17);
+            this.rbIn.TabIndex = 11;
+            this.rbIn.Text = "Привоз";
+            this.rbIn.UseVisualStyleBackColor = true;
+            // 
+            // rbSell
+            // 
+            this.rbSell.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.rbSell.AutoSize = true;
+            this.rbSell.ForeColor = System.Drawing.Color.Crimson;
+            this.rbSell.Location = new System.Drawing.Point(236, 0);
+            this.rbSell.Name = "rbSell";
+            this.rbSell.Size = new System.Drawing.Size(71, 17);
+            this.rbSell.TabIndex = 11;
+            this.rbSell.TabStop = true;
+            this.rbSell.Text = "Продажа";
+            this.rbSell.UseVisualStyleBackColor = true;
             // 
             // MealForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(459, 417);
+            this.ClientSize = new System.Drawing.Size(474, 417);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btClose);
             this.Controls.Add(this.dataGridView1);
@@ -252,7 +303,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgcStart;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgcEndDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn chType;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgcAmount;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgcRate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private System.Windows.Forms.RadioButton rbSell;
+        private System.Windows.Forms.RadioButton rbIn;
     }
 }

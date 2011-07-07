@@ -598,9 +598,14 @@ namespace rabnet
             return Meal.getMealPeriods(sql);
         }
 
-        public void addMealPeriod(DateTime start, float amount)
+        public void addMealIn(DateTime start, int amount)
         {
-            Meal.AddMealPeriod(sql, start, amount);
+            Meal.AddMealIn(sql, start, amount);
+        }
+
+        public void addMealOut(DateTime start, int amount)
+        {
+            Meal.AddMealOut(sql, start, amount);
         }
 
         public List<ScalePLUSummary> getPluSummarys(DateTime date)

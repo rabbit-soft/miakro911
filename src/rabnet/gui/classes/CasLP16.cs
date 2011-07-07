@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Net;
-//using System.Linq;
 using System.Threading;
 using System.Net.Sockets;
 using System.IO;
@@ -1039,7 +1038,7 @@ namespace CAS
     {
         private static CasLP16 _instance = null;
         /// <summary>
-        /// Должен быть создан лишь один класс CasLP16
+        /// Должен быть создан лишь один объект класса CasLP16
         /// </summary>
         public static CasLP16 Instance
         {
