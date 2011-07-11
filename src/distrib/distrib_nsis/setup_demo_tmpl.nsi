@@ -114,7 +114,9 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
 
 SectionEnd
 
-Section /o $(SEC_Mysql_NAME) SEC_Mysql
+Section $(SEC_Mysql_NAME) SEC_Mysql
+#Section /o $(SEC_Mysql_NAME) SEC_Mysql
+    SectionIn 1 
     DetailPrint $(MYSQLINSTALLER_Start)
 
     ExecWait 'msiexec /i "$EXEDIR\mysql\mysql-essential-5.1.49-win32.msi" /qr INSTALLDIR="$PROGRAMFILES\MySQL\MySQL Server 5.1\"  DATADIR="$PROGRAMFILES\MySQL\MySQL Server 5.1\" /L* C:\MSI-MySQL-Log.txt' $Inst_code
