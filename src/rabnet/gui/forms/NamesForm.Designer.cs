@@ -28,12 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miUnBlock = new System.Windows.Forms.ToolStripMenuItem();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
@@ -46,6 +49,7 @@
             this.tpMale = new System.Windows.Forms.TabPage();
             this.tpFemale = new System.Windows.Forms.TabPage();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
+            this.contextMenuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -60,9 +64,11 @@
             this.columnHeader3,
             this.columnHeader4,
             this.columnHeader5});
+            this.listView1.ContextMenuStrip = this.contextMenuStrip1;
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(4, 28);
+            this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
             this.listView1.OwnerDraw = true;
             this.listView1.Size = new System.Drawing.Size(487, 308);
@@ -90,6 +96,22 @@
             // columnHeader5
             // 
             this.columnHeader5.Text = "Дата освобождения";
+            this.columnHeader5.Width = 72;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miUnBlock});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(190, 26);
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            // 
+            // miUnBlock
+            // 
+            this.miUnBlock.Name = "miUnBlock";
+            this.miUnBlock.Size = new System.Drawing.Size(189, 22);
+            this.miUnBlock.Text = "Разблокировать имя";
+            this.miUnBlock.Click += new System.EventHandler(this.miUnBlock_Click);
             // 
             // button2
             // 
@@ -207,13 +229,14 @@
             this.tpFemale.Location = new System.Drawing.Point(4, 22);
             this.tpFemale.Name = "tpFemale";
             this.tpFemale.Padding = new System.Windows.Forms.Padding(3);
-            this.tpFemale.Size = new System.Drawing.Size(564, 0);
+            this.tpFemale.Size = new System.Drawing.Size(626, 0);
             this.tpFemale.TabIndex = 1;
             this.tpFemale.Text = "Женские";
             this.tpFemale.UseVisualStyleBackColor = true;
             // 
             // rabStatusBar1
             // 
+            this.rabStatusBar1.dExcelButtonClick = null;
             this.rabStatusBar1.filterPanel = null;
             this.rabStatusBar1.Location = new System.Drawing.Point(0, 339);
             this.rabStatusBar1.Name = "rabStatusBar1";
@@ -247,6 +270,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Справочник имен";
+            this.contextMenuStrip1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -273,5 +297,7 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tpFemale;
         private System.Windows.Forms.TabPage tpMale;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem miUnBlock;
     }
 }

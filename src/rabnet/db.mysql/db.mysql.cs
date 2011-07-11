@@ -319,6 +319,11 @@ namespace rabnet
             return RabbitGetter.makeName(sql, nm, sur, sec, grp, sex);
         }
 
+        public bool unblockName(int id)
+        {
+            return Names.unblockName(sql, id);
+        }
+
         public Younger[] getSuckers(int mom)
         {
             return Youngers.getSuckers(sql, mom);
@@ -506,6 +511,11 @@ namespace rabnet
         public int addFarm(int parent, string uppertype, string lowertype, string name, int id)
         {
             return Buildings.addFarm(sql, parent, uppertype, lowertype, name, id);
+        }
+
+        public bool FarmExists(int id)
+        {
+            return Buildings.farmExists(sql, id);
         }
 
         public void changeFarm(int fid, string uppertype, string lowertype)

@@ -142,15 +142,10 @@ namespace rabnet
                         res += shr ? "бвг" : "б.выгул";
                     }
                     break;
-
+                case myBuildingType.Cabin:
                 case myBuildingType.Quarta: res = shr ? "отк" : "откормочное"; break;
                 case myBuildingType.Vertep :
                 case myBuildingType.Barin: res = shr ? "врт" : "Вертеп"; break;
-                case myBuildingType.Cabin: if (sec == 0)
-                        res = shr ? "гн" : "гнездовое";
-                    else
-                        res = shr ? "отк" : "откормочное";
-                    break;
             }
             return res;
         }
@@ -188,11 +183,15 @@ namespace rabnet
             return res;
         }
 
+        /// <summary>
+        /// Возвращает количество секций у данного типа МИНИфермы
+        /// </summary>
         public static int getRSecCount(String type)
         {
             int res = 2;
             switch (type)
             {
+                case myBuildingType.Cabin:
                 case myBuildingType.Female: res = 1; break;
                 case myBuildingType.Complex: res = 3; break;
                 case myBuildingType.Quarta: res = 4; break;
@@ -463,7 +462,12 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 AND "+busy+";", sql);
                 name,bid), sql);
             cmd.ExecuteNonQuery();
         }
-
+        /// <summary>
+        /// Добавляет ветку в дерево строений
+        /// </summary>
+        /// <param name="parent">Родитель</param>
+        /// <param name="name">Имя ветки</param>
+        /// <param name="farm">Номер фермы</param>
         public static void addBuilding(MySqlConnection sql, int parent, String name,int farm)
         {
             
@@ -520,27 +524,50 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 AND "+busy+";", sql);
                 cmd.ExecuteNonQuery();
             }
         }
+
+        /// <summary>
+        /// Добавить новый Ярус
+        /// </summary>
+        /// <param name="type">Тип юрты</param>
+        /// <returns>ID нового яруса</returns>
         public static int addNewTier(MySqlConnection sql, String type)
         {
             if (type == "none") return 0;
-            String hn = "00";
-            String delims = "0";
-            if (type == "barin") delims = "100";
-            if (type == "quarta") delims = "111"; 
+            string hn = "0";
+            string delims = "1";
+            string bcols = "";
+            string bvals = "";
+
             MySqlCommand cmd = new MySqlCommand("",sql);
-            switch (type) 
-            {
-                case "jurta":
-                    {
-                        delims = "0";
-                        hn = "0";
-                        cmd.CommandText = String.Format(@"INSERT INTO tiers(t_type,t_delims,t_heater,t_nest,t_notes,t_busy1,t_busy2,t_busy3,t_busy4) 
-VALUES('{0:s}','{1:s}','{2:s}','{2:s}','',0,0,null,null);", type, delims, hn); 
-                        break;
-                    }
-                default: cmd.CommandText=String.Format(@"INSERT INTO tiers(t_type,t_delims,t_heater,t_nest,t_notes) 
-VALUES('{0:s}','{1:s}','{2:s}','{2:s}','');", type, delims, hn);break;
-            }           
+            switch (type)
+            {                           
+                case myBuildingType.Quarta: delims = "111"; break;
+
+                case myBuildingType.Complex:
+                    delims = "11";
+                    bcols = ",t_busy1,t_busy2,t_busy3,t_busy4";
+                    bvals = ",0,0,0,null";
+                    break;
+
+                case myBuildingType.Barin:
+                case myBuildingType.DualFemale:  
+                case myBuildingType.Vertep:
+                case myBuildingType.Jurta:
+                    if (type == myBuildingType.DualFemale) hn = "00";
+                    if (type == myBuildingType.Jurta) delims = "0";
+                    bcols = ",t_busy1,t_busy2,t_busy3,t_busy4";
+                    bvals = ",0,0,null,null";
+                    break;
+
+                case myBuildingType.Female:
+                case myBuildingType.Cabin:
+                    delims = "0";
+                    bcols = ",t_busy1,t_busy2,t_busy3,t_busy4";
+                    bvals = ",0,null,null,null";
+                    break;          
+            }
+            cmd.CommandText=String.Format(@"INSERT INTO tiers(t_type,t_delims,t_heater,t_nest,t_notes{3:s}) 
+VALUES('{0:s}','{1:s}','{2:s}','{2:s}',''{4:s});", type, delims, hn,bcols,bvals);
             log.Debug("db.mysql.Building: "+cmd.CommandText);
             cmd.ExecuteNonQuery();
             return (int)cmd.LastInsertedId;
@@ -595,7 +622,15 @@ t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}'{4:s} WHERE t_id={3:d};", type, 
             }
             return result;
         }
-
+        /// <summary>
+        /// Добавляет новую МИНИферму
+        /// </summary>
+        /// <param name="parent">Ветка-родитель</param>
+        /// <param name="uppertype">Тип верхнего яруса</param>
+        /// <param name="lowertype">Тип нижнего яруса</param>
+        /// <param name="name">Название (если блок)</param>
+        /// <param name="id">Номер МИНИфермы</param>
+        /// <returns>Номер новой клетки</returns>
         public static int addFarm(MySqlConnection sql,int parent,String uppertype, String lowertype, String name,int id)
         {
             int frm = id;
@@ -608,8 +643,18 @@ t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}'{4:s} WHERE t_id={3:d};", type, 
             cmd.ExecuteNonQuery();
             res = (int)cmd.LastInsertedId;
 
-            addBuilding(sql, parent, (name!=""?name:String.Format("№{0:d}",res)), res);
+            addBuilding(sql, parent, (name != "" ? name : String.Format("№{0:d}", res)), res);
             return res;
+        }
+        /// <summary>
+        /// Существует ли миниферма
+        /// </summary>
+        /// <param name="id">Номер минифермы</param>
+        public static bool farmExists(MySqlConnection sql, int id)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT COUNT(*) FROM minifarms WHERE m_id={0:d};",id),sql);
+            if (cmd.ExecuteScalar().ToString() == "0") return false;
+            else return true;
         }
 
         public static bool hasRabbits(MySqlConnection sql,int tid)

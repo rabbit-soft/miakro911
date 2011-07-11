@@ -81,6 +81,7 @@ namespace rabnet
         void makeProholost(int female, DateTime when);
         int makeOkrol(int female, DateTime when, int children, int dead);
         String makeName(int nm, int sur, int sec,int grp, OneRabbit.RabbitSex sex);
+        bool unblockName(int id);
         Younger[] getSuckers(int mom);
         Building[] getFreeBuilding(Filters f);
         void replaceRabbit(int rid, int farm, int tier_id, int sec);
@@ -118,6 +119,7 @@ namespace rabnet
         void replaceBuilding(int bid, int toBuilding);
         void deleteBuilding(int bid);
         int addFarm(int parent,String uppertype, String lowertype,String name,int id);
+        bool FarmExists(int id);
         void changeFarm(int fid,String uppertype,String lowertype);
         void deleteFarm(int fid);
         ZooJobItem[] getVacc(Filters f,int days);

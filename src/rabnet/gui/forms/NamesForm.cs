@@ -13,7 +13,8 @@ namespace rabnet
         ListViewColumnSorter cs = null;
         private bool manual=true;
         string originName, originSurname = null;
-        string[] btext = new string[] {"Добавить","Изменить" };
+        readonly string[] btext = new string[] {"Добавить","Изменить" };
+        readonly string[] status = new string[] { "занято", "свободно", "освобождается" };
 
         public NamesForm(byte sex)
         {
@@ -117,20 +118,20 @@ namespace rabnet
                 if (button1.Text == btext[0])
                 {
                     OneRabbit.RabbitSex sx = OneRabbit.RabbitSex.MALE;
-                    if (tabControl1.SelectedIndex == 1) sx = OneRabbit.RabbitSex.FEMALE;
+                    if (tabControl1.SelectedIndex == 1) 
+                        sx = OneRabbit.RabbitSex.FEMALE;
                     Engine.get().db().addName(sx, textBox1.Text.Trim(), textBox2.Text.Trim());
                 }
                 else
                 {
                     Engine.get().db().changeName(this.originName, textBox1.Text.Trim(), textBox2.Text.Trim());
                 }
+                load();
             }
             catch (Exception)
             {
-                MessageBox.Show("Ошибка: Данное имя уже существует");   
-            }
-
-            load();
+                MessageBox.Show("Ошибка: Такое имя уже существует");   
+            }         
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -141,9 +142,10 @@ namespace rabnet
             int i = 0;
             while (i < txt.Length)
             {
+            
                 if (i==0 && Char.IsLower(txt[0])) txt=Char.ToUpper(txt[0])+txt.Substring(1);
                 if (i!=0 && Char.IsUpper(txt[i])) txt=txt.Substring(0,i)+Char.ToLower(txt[i])+txt.Substring(i+1);
-                if (txt[i]<'А' || txt[i]>'я')
+                if ((txt[i] < 'A' || txt[i] > 'z')&&(txt[i] < 'А' || txt[i] > 'я') && (txt[i] < '0' || txt[i] > '9') && txt[i] != '-')
                     txt=txt.Remove(i,1);
                 else
                     i++;
@@ -181,6 +183,23 @@ namespace rabnet
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             load();
+        }
+
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0) e.Cancel = true;
+            if (listView1.SelectedItems[0].SubItems[3].Text != status[2]) e.Cancel = true;
+        }
+
+        private void miUnBlock_Click(object sender, EventArgs e)
+        {
+            int id = (int)listView1.SelectedItems[0].Tag;
+            if (!Engine.db().unblockName(id))
+            {
+                MessageBox.Show("Невозможно разблокировать имя."+Environment.NewLine+"Возможно оно входит в состав чьей-то фамилии.");
+                return;
+            }
+            rabStatusBar1.run();
         }
 
     }

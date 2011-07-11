@@ -129,6 +129,10 @@ namespace rabnet
             Building b = data as Building;
             string prevnm="";
             int prevfarm = 0;
+            if (b.ftype == "cabin")//удалить ветку
+            {
+                int op = 1;
+            }
             for (int i = 0; i < b.secs(); i++)
             {
                 /*
@@ -162,7 +166,7 @@ namespace rabnet
                         if (b.nest_heater_count() > 1) nid = i;
                         nst = (b.nest()[nid] == '1') ? "да" : "нет";
                         htr = (b.heater()[nid] == '0' ? "нет" : (b.heater()[nid] == '1' ? "выкл" : "вкл"));
-                        if (b.itype() == "jurta")
+                        if (b.itype() == myBuildingType.Jurta)
                             if ((b.delims()[0] == '1' && i == 0) || (b.delims()[0] == '0' && i == 1))
                             {
                                 nst = "";

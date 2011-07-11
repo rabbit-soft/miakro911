@@ -5,16 +5,22 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using X_Tools;
 
 namespace rabnet
 {
     public partial class MiniFarmForm : Form
     {
+        /// <summary>
+        /// Если новая то '0'
+        /// </summary>
         private int id=0;
         private int parent = 0;
         int[] tiers = null;
         Building b1 = null;
         Building b2 = null;
+        private bool _manual = true;
+
         public MiniFarmForm()
         {
             InitializeComponent();
@@ -24,11 +30,14 @@ namespace rabnet
 
         public MiniFarmForm(int parent,int[] ids):this()
         {
+            _manual = false;
             this.parent = parent;
             for (int i = 0; i < ids.Length; i++)
-            cbNum.Items.Add(ids[i].ToString());
+                cbNum.Items.Add(ids[i].ToString());
             cbNum.SelectedIndex = cbNum.Items.Count - 1;
+            _manual = true;
         }
+
         public MiniFarmForm(int id):this()
         {
             this.id = id;
@@ -54,14 +63,14 @@ namespace rabnet
         {
             switch(type)
             {
-                case "jurta": return 1;
-                case "quarta": return 2;
-                case "vertep": return 3;
-                case "barin": return 4;
-                case "female": return 5;
-                case "dfemale": return 6;
-                case "complex": return 7;                
-                case "cabin": return 8;
+                case myBuildingType.Jurta: return 1;
+                case myBuildingType.Quarta: return 2;
+                case myBuildingType.Vertep: return 3;
+                case myBuildingType.Barin: return 4;
+                case myBuildingType.Female: return 5;
+                case myBuildingType.DualFemale: return 6;
+                case myBuildingType.Complex: return 7;                
+                case myBuildingType.Cabin: return 8;
             }
             return 0;
         }
@@ -70,14 +79,14 @@ namespace rabnet
         {
             switch(id)
             {
-                case 1: return "jurta";
-                case 2: return "quarta";
-                case 3: return "vertep";
-                case 4: return "barin";
-                case 5: return "female";
-                case 6: return "dfemale";
-                case 7: return "complex";
-                case 8: return "cabin";
+                case 1: return myBuildingType.Jurta;
+                case 2: return myBuildingType.Quarta;
+                case 3: return myBuildingType.Vertep;
+                case 4: return myBuildingType.Barin;
+                case 5: return myBuildingType.Female;
+                case 6: return myBuildingType.DualFemale;
+                case 7: return myBuildingType.Complex;
+                case 8: return myBuildingType.Cabin;
             }
             return "none";
         }
@@ -117,6 +126,12 @@ namespace rabnet
             if (id == 0)
             {
                 int fid = int.Parse(cbNum.Text);
+                if (Engine.db().FarmExists(fid))
+                {
+                    MessageBox.Show("Ферма с таким номером уже существует");
+                    this.DialogResult = DialogResult.None;
+                    return;
+                }
                 Engine.db().addFarm(parent, getUpperType(), getLowerType(), "", fid);
                 Close();
             }
@@ -139,6 +154,21 @@ namespace rabnet
                 }
                 else this.DialogResult = DialogResult.None;
             }
+        }
+
+        private void cbNum_TextChanged(object sender, EventArgs e)
+        {
+            if (!_manual) return;
+            _manual = false;
+            TextBox tb = new TextBox();
+            tb.Text = cbNum.Text;
+            tb.SelectionStart = cbNum.SelectionStart;
+            XTools.checkIntNumber(tb,e);
+            cbNum.Text = tb.Text;
+            cbNum.SelectionStart = tb.SelectionStart;
+
+            button1.Enabled = (cbNum.Text != "") && (cbNum.Text != "0");
+            _manual = true;
         }
     }
 }

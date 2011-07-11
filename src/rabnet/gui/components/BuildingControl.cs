@@ -73,18 +73,17 @@ namespace rabnet
             grDelim.Visible = grDelims.Visible = grNest.Visible = grNest2.Visible = grVigul.Visible = false;
             switch (type)
             {
-                case "female":
-                case "complex": 
-                case "jurta":
-                case "cabin":
-                case "dfemale": grNest.Visible = true;
-                    if (type == "jurta") grVigul.Visible = true;
-                    if (type == "dfemale") grNest2.Visible = true;
+                case myBuildingType.Female:
+                case myBuildingType.Complex: 
+                case myBuildingType.Jurta:               
+                case myBuildingType.DualFemale: grNest.Visible = true;
+                    if (type == myBuildingType.Jurta) grVigul.Visible = true;
+                    if (type == myBuildingType.DualFemale) grNest2.Visible = true;
                     break;
-                case "quarta":
-                    //grDelims.Visible = true; 
-                    break;
-                case "barin": 
+                case myBuildingType.Cabin:
+                case myBuildingType.Quarta:
+                case myBuildingType.Barin: 
+                case myBuildingType.Vertep:
                     //grDelim.Visible = true;  
                     break;
             }

@@ -120,7 +120,7 @@ namespace rabnet
             if (listView1.SelectedItems.Count != 1)
                 return;
             RabbitInfo dlg = new RabbitInfo(listView1.SelectedItems[0].Tag as RabNetEngRabbit);
-            if(dlg.ShowDialog() ==DialogResult.Cancel)
+            if (dlg.ShowDialog() == DialogResult.Cancel && (listView1.SelectedItems[0].Tag as RabNetEngRabbit).Name==0)
                 rbs.RemoveAt(rbs.Count-1);
             update(false);
         }

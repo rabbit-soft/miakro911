@@ -125,63 +125,63 @@ namespace X_Tools
             }
         }
 
-        public static void checkFloatNumber(object sender,EventArgs e)
+        public static void checkFloatNumber(object sender, EventArgs e)
         {
+            if (!(sender is TextBox)) return;
             List<char> numbers = new List<char>();
             numbers.Add('0');
             numbers.Add('1');
             numbers.Add('2');
             numbers.Add('3');
             numbers.Add('4');
-            numbers.Add('5'); 
+            numbers.Add('5');
             numbers.Add('6');
             numbers.Add('7');
             numbers.Add('8');
             numbers.Add('9');
             numbers.Add(',');
-            //if (!(sender is TextBox)) return;
             TextBox tb = (sender as TextBox);
-            try
+            if (tb.Text.Length != 0 && tb.Text[0] == ',')
             {
-                if (tb.Text.Length != 0 && tb.Text[0] == ',')
-                {
-                    tb.Text = tb.Text.Insert(0, "0");
-                    tb.Select(tb.Text.Length , 0);
-                }
-                float.Parse(tb.Text);              
+                tb.Text = tb.Text.Insert(0, "0");
+                tb.Select(tb.Text.Length, 0);
             }
-            catch (FormatException)
+            bool haveComma = false;
+            if (tb.Text != "")
             {
-                bool haveComma = false;
-                if (tb.Text != "")
+                int i = 0;
+                while (i < tb.Text.Length)
                 {
-                    for (int i = 0; i < tb.Text.Length; i++)
+                    if (tb.Text[i] == ',')
                     {
-                        if (tb.Text[i] == ',')
+                        if (haveComma)
                         {
-                            if (haveComma)
-                            {
-                                tb.Text = tb.Text.Remove(i);
-                                break;
-                            }
-                            else haveComma = true;
+                            tb.Text = tb.Text.Remove(i);
+                            continue;
                         }
-
-                        if (!numbers.Contains(tb.Text[i]) )
-                        {
-                            tb.Text = tb.Text.Remove(i, 1);
-                            tb.Select(i, 0);
-                            break;
-                        }
+                        else haveComma = true;
                     }
+                    if (tb.Text.Length>1 && i == 0 && tb.Text[i] == '0' && tb.Text[i + 1] != ',')
+                    {
+                        tb.Text = tb.Text.Remove(i, 1);
+                        tb.Select(i, 0);
+                        continue;
+                    }
+                    if (!numbers.Contains(tb.Text[i]))//удаляем недопустимые символы
+                    {
+                        tb.Text = tb.Text.Remove(i, 1);
+                        tb.Select(i, 0);//если символ косячный,значит курсор стоит на нем
+                        continue;
+                    }
+
+                    i++;
                 }
             }
         }
 
         public static void checkIntNumber(object sender, EventArgs e)
         {
-            TextBox tb = (sender as TextBox);
-            tb.Text.Replace(",", "");
+            (sender as TextBox).Text = (sender as TextBox).Text.Replace(",", "");
             checkFloatNumber(sender,e);
         }
         // readStream is the stream you need to read

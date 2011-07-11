@@ -98,7 +98,7 @@ namespace rabnet
             i[2] = suckers;
             i[0] = srok;
             i[1] = area;
-            if (i[1] == 1 && tt == "jurta")
+            if (i[1] == 1 && tt == myBuildingType.Jurta)
                 i[1] = 0;
 
             return this;
