@@ -178,10 +178,9 @@ namespace rabnet
                 {
                     if (value == this.Address || (value == "" || value == "бомж"))
                         NewAddress = "";
-                    else this.NewAddress = value;
-                    //далее ищет детей и присваивает их адресу - новый адрес матери.
+                    else this.NewAddress = value;                 
                     if (this.ID == 0) return;
-                    foreach (RP r in List)
+                    foreach (RP r in List)//далее ищет детей и присваивает их адресу - новый адрес матери.
                         if (r.Parent == this.ID && r != this )
                         {
                             if (r.CurAddress != this.Address) continue;

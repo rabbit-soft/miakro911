@@ -17,8 +17,9 @@ namespace rabnet
         private bool fullUpdate=true;
         private Filters runF = null;
         private int itm = -1;
+
         public WorksPanel(RabStatusBar sb): base(sb, new ZootehFilter(sb))
-        {
+        {           
             colSort = new ListViewColumnSorter(lvZooTech, new int[] {0,4},Options.OPT_ID.ZOO_LIST);
             colSort2 = new ListViewColumnSorter(lvZooTech, new int[] { 0, 4 }, Options.OPT_ID.ZOO_LIST);
             lvZooTech.ListViewItemSorter = colSort;
@@ -97,6 +98,7 @@ namespace rabnet
             }
 			colSort.SemiReady();
         }
+
         /// <summary>
         /// Заполнение listView c логами
         /// </summary>
@@ -374,6 +376,11 @@ namespace rabnet
 #if !DEMO
             ExcelMaker.MakeExcelFromLV(lvZooTech, "Зоотехплан");
 #endif
+        }
+
+        private void WorksPanel_Load(object sender, EventArgs e)
+        {
+            MainForm.protectTest(Engine.db().getMFCount());
         }
 
     }

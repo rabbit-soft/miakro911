@@ -105,9 +105,7 @@ namespace rabnet
     }
 
     class Buildings : RabNetDataGetterBase
-    {
-
-
+    {     
         public static bool hasnest(String type,int sec,String nests)
         {
             int c = getRNHCount(type);
@@ -742,5 +740,11 @@ WHERE m_id={0:d};", fid), sql);
             }
         }
 
+
+        public static int GetMFCount(MySqlConnection sql)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT COUNT(*) FROM buildings WHERE b_farm<>0;"), sql);
+            return int.Parse(cmd.ExecuteScalar().ToString());
+        }
     }
 }

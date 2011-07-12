@@ -73,6 +73,7 @@
             this.geterosisMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inbreedingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.miScale = new System.Windows.Forms.ToolStripMenuItem();
             this.paramsMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAboutPO = new System.Windows.Forms.ToolStripMenuItem();
@@ -86,7 +87,6 @@
             this.tpButcher = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
-            this.miScale = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -349,6 +349,7 @@
             this.tsmiOptions.Name = "tsmiOptions";
             this.tsmiOptions.Size = new System.Drawing.Size(73, 20);
             this.tsmiOptions.Text = "Настройки";
+            this.tsmiOptions.DropDownOpening += new System.EventHandler(this.tsmiOptions_DropDownOpening);
             // 
             // showTierTMenuItem
             // 
@@ -428,6 +429,13 @@
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             this.toolStripMenuItem3.Size = new System.Drawing.Size(225, 6);
+            // 
+            // miScale
+            // 
+            this.miScale.Name = "miScale";
+            this.miScale.Size = new System.Drawing.Size(228, 22);
+            this.miScale.Text = "Весы";
+            this.miScale.Click += new System.EventHandler(this.miScale_Click);
             // 
             // paramsMenuItem1
             // 
@@ -553,13 +561,6 @@
             this.rabStatusBar1.Size = new System.Drawing.Size(914, 23);
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
-            // 
-            // miScale
-            // 
-            this.miScale.Name = "miScale";
-            this.miScale.Size = new System.Drawing.Size(228, 22);
-            this.miScale.Text = "Весы";
-            this.miScale.Click += new System.EventHandler(this.miScale_Click);
             // 
             // MainForm
             // 

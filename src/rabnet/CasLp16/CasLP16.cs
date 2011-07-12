@@ -1038,7 +1038,7 @@ namespace CAS
     {
         private static CasLP16 _instance = null;
         /// <summary>
-        /// Должен быть создан лишь один объект класса CasLP16
+        /// Должен быть создан лишь один класс CasLP16
         /// </summary>
         public static CasLP16 Instance
         {
@@ -1167,7 +1167,7 @@ namespace CAS
                     _nwStream = clnt.GetStream();
                     _nwStream.ReadTimeout = 10000;
                 }
-                catch(SocketException ex)
+                catch(SocketException)
                 {
                     this.Disconnect();
                 }
@@ -1459,7 +1459,7 @@ namespace CAS
                 //_loadProgress = ;
 #if !NOCATCH
                 }
-                catch(Exception ex) 
+                catch(Exception) 
                 {
  
                 }
@@ -1576,7 +1576,7 @@ namespace CAS
                 //_loadProgress = ;
 #if !NOCATCH
                 }
-                catch(Exception ex) 
+                catch(Exception) 
                 {
  
                 }

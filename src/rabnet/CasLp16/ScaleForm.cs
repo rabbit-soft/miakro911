@@ -7,8 +7,10 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 using CAS;
+
 namespace rabnet
 {
+    [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
     public partial class ScaleForm : Form
     {
         private bool _manual = true;
@@ -19,11 +21,13 @@ namespace rabnet
         {
             InitializeComponent();
         }
+
         ~ScaleForm()
         {
             CasLP16.Instance.Loading = false;
             CasLP16.Instance.Disconnect();
         }
+
         private void tbRefresh_Click(object sender, EventArgs e)
         {
             _loader = new Thread(loadfromscale);

@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using X_Tools;
 using CAS;
 
 namespace rabnet
@@ -40,7 +41,7 @@ namespace rabnet
 
         private void tbID_TextChanged(object sender, EventArgs e)
         {
-            X_Tools.XTools.checkIntNumber(sender, e);
+            XTools.checkIntNumber(sender, e);
         }
     }
 }

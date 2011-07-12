@@ -9,6 +9,8 @@ using System.Windows.Forms;
 using log4net;
 using System.Xml;
 using X_Tools;
+using System.IO;
+using System.Reflection;
 #if PROTECTED
 using RabGRD;
 #endif
@@ -26,6 +28,7 @@ namespace rabnet
         private RabNetPanel curpanel=null;
         private static MainForm me = null;
         private bool mustclose = false;
+
         public MainForm()
         {
             InitializeComponent();
@@ -80,26 +83,10 @@ namespace rabnet
             checkPlugins();
 #endif 
 #if PROTECTED || DEMO
-            protectTest(getmax(Engine.db().buildingsTree(), 0));
-        }
-
-        private int getmax(TreeData td,int mx)
-        {
-            int tx=0;
-            String[] st = td.caption.Split(':');
-            if (st.Length == 3)
-                tx = int.Parse(st[1]);
-            if (tx > mx) mx=tx;
-            if (td.items!=null)
-            for (int i = 0; i < td.items.Length; i++)
-            {
-                tx = getmax(td.items[i], mx);
-                if (tx > mx)
-                    mx = tx;
-            }
-            return mx;
+            MainForm.protectTest(BuildingsPanel.getFarmsCount(Engine.db().buildingsTree()));
 #endif
         }
+
 #if !DEMO 
         private void checkPlugins()
         {
@@ -244,14 +231,16 @@ namespace rabnet
         {
             me.ptest(0);
         }
+
         /// <summary>
-        /// Проверяет наличие ключа
+        /// Проверяет допустимо ли количество Ферм
         /// </summary>
         /// <param name="farms">Количество ферм</param>
         public static void protectTest(int farms)
         {
             me.ptest(farms);
         }
+
         public void ptest(int farms)
         {
 #if PROTECTED
@@ -266,7 +255,7 @@ namespace rabnet
                 MessageBox.Show(this, msg + "\nПрограмма будет закрыта.", "Ошибка защиты", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 LoginForm.stop = true;
                 mustclose = true;
-                Close();
+                Close();//Environment.Exit(100);
             }
 /*            if (!PClient.get().canwork())
                 msg = "Ключ защиты не найден.";
@@ -283,7 +272,7 @@ namespace rabnet
             }*/
 #endif
 #if DEMO
-            if (farms > 100)
+            if (farms > 10)
             {
                 MessageBox.Show(this, "Превышено количество разрешенных ферм." + Environment.NewLine + "Программа будет закрыта.", "Демонстрационная версия", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 // Надо сделать выход более доброжелательным
@@ -542,19 +531,21 @@ namespace rabnet
 
         private void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
         {
-#if PROTECTED
+
             if (tabControl1.SelectedTab == tpButcher)
             {
+#if PROTECTED
                 if (!GRD.Instance.GetFlag(GRD.FlagType.Butcher))
                 {
                     MessageBox.Show("Текущая лицензия не распространяется на данный модуль");
                     e.Cancel = true;
                 }
-            }
 #elif DEMO
-            DemoErr.DemoNoModuleMsg();
-            e.Cancel = true;
+                DemoErr.DemoNoModuleMsg();
+                e.Cancel = true;
 #endif
+            }
+
         }
 
         private void tsmiReports_DropDownOpening(object sender, EventArgs e)
@@ -573,7 +564,14 @@ namespace rabnet
 
         private void miScale_Click(object sender, EventArgs e)
         {
+#if !DEMO
             (new ScaleForm()).ShowDialog();
+#endif
+        }
+
+        private void tsmiOptions_DropDownOpening(object sender, EventArgs e)
+        {
+            miScale.Visible = AsmLoader.LoadAssembly("CAS");
         }
 
     }

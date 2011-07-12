@@ -23,6 +23,7 @@ namespace rabnet
 
         public void MakeReport()
         {
+#if !DEMO
             PeriodForm dlg = new PeriodForm(MenuText);
             Filters f = new Filters();
             if (dlg.ShowDialog() == DialogResult.OK)
@@ -36,6 +37,7 @@ namespace rabnet
                 }
                 )).ShowDialog();
             }
+#endif
         }
 
         public string FileName

@@ -128,7 +128,15 @@ namespace rabnet
                         LoginForm.stop = true;
                         if (lf.ShowDialog() == DialogResult.OK)
                         {
-                            Application.Run(new MainForm());
+                            try
+                            {
+                                Application.Run(new MainForm());
+                            }
+                            catch(Exception ex)
+                            {
+                                log.Fatal("", ex);
+                                MessageBox.Show(ex.Message, "Произошла серьезная ошибка.");
+                            }
                         }
 #if PROTECTED
 //                        if (PClient.get().farms() == -1)

@@ -15,6 +15,12 @@ namespace rabnet
 {
     public partial class BuildingsPanel : RabNetPanel
     {
+        /// <summary>
+        /// Нужна потому что под номер клетки отводится 4 знака
+        /// Иначе придется изменять форматирование номеров клеток во всей программе
+        /// </summary>
+        private const int MAX_FARMS_COUNT = 9999;
+
         private bool manual = true;
         const String nuBuild = "Новое строение";
         List<int> nofarms = new List<int>();
@@ -24,6 +30,32 @@ namespace rabnet
         int preBuilding = 0;
         public BuildingsPanel(): base(){}
         int maxfarm = 0;
+
+        /// <summary>
+        /// Считает количество ферм в Дереве строений
+        /// </summary>
+        /// <param name="td"></param>
+        /// <returns>Количество ферм</returns>
+        public static int getFarmsCount(TreeData td)
+        {
+            int res = 0;
+            String[] st = td.caption.Split(':');
+            if (st.Length == 3)
+                if (st[1] != "0")
+                {
+                    res++;
+                    return res;
+                }
+            if (td.items != null)
+            {
+                for (int i = 0; i < td.items.Length; i++)
+                {
+                    res += getFarmsCount(td.items[i]);
+                }
+            }
+            return res;
+
+        }
 
         public BuildingsPanel(RabStatusBar bsb):base(bsb, new BuildingsFilter(bsb))
         {
@@ -48,7 +80,7 @@ namespace rabnet
             for (int i = nofarm; i < farm; i++)
             {
 #if PROTECTED
-                //                    if (i <= PClient.get().farms())
+                //if (i <= PClient.get().farms())
                 if (i <= GRD.Instance.GetFarmsCntCache())
 #else
     #if DEMO
@@ -62,27 +94,28 @@ namespace rabnet
 
         private TreeNode makenode(TreeNode parent, String name, TreeData td)
         {
-            TreeNode n=null;
+            TreeNode n = null;
             if (parent == null)
-                n=treeView1.Nodes.Add(name);
+                n = treeView1.Nodes.Add(name);
             else
                 n = parent.Nodes.Add(name);
             if (td.items!=null)
-            for (int i = 0; i < td.items.Length; i++)
-            {
-                String[] st = td.items[i].caption.Split(':');
-                TreeNode child = makenode(n, st[2], td.items[i]);
-                child.Tag=st[0]+":"+st[1];
-                int fid = int.Parse(st[1]);
-                addNoFarm(fid);
-                if (maxfarm < fid) maxfarm = fid;
-                if (int.Parse(st[0]) == preBuilding)
+                for (int i = 0; i < td.items.Length; i++)
                 {
-                    treeView1.SelectedNode = child;
-                    treeView1.SelectedNode.Expand();
-                    //child.Expand();
+                    String[] st = td.items[i].caption.Split(':');
+                    TreeNode child = makenode(n, st[2], td.items[i]);
+                    child.Tag = st[0] + ":" + st[1];
+                    int fid = int.Parse(st[1]);
+                    addNoFarm(fid);
+                    if (maxfarm < fid)
+                        maxfarm = fid;
+                    if (int.Parse(st[0]) == preBuilding)
+                    {
+                        treeView1.SelectedNode = child;
+                        treeView1.SelectedNode.Expand();
+                        //child.Expand();
+                    }
                 }
-            }
             return n;
         }
 
@@ -93,17 +126,19 @@ namespace rabnet
             nofarms.Clear();
             nofarm = 1;
             maxfarm = 0;
-            TreeNode n=makenode(null,"Ферма",Engine.db().buildingsTree());
+            TreeData buildTree = Engine.db().buildingsTree();
+            TreeNode n = makenode(null, "Ферма", buildTree);
 #if PROTECTED
 //            if (nofarm<=PClient.get().farms())
             if (nofarm <= GRD.Instance.GetFarmsCnt())
 #else
     #if DEMO
-                if (nofarm <= 100)
+                if (Engine.db().getMFCount() <= 100)
     #endif
 #endif
-            nofarms.Add(nofarm);
-            MainForm.protectTest(maxfarm);
+            if(nofarm <= MAX_FARMS_COUNT)
+                nofarms.Add(nofarm);
+            MainForm.protectTest(BuildingsPanel.getFarmsCount(buildTree));
             treeView1.Sort();
             manual = true;
             n.Tag="0:0";
@@ -115,6 +150,7 @@ namespace rabnet
             _rsb.setText(1, dg.getCount().ToString() + " МИНИфермы");
             return dg;
         }
+
         /// <summary>
         /// Добавление новой строчки в ListView
         /// </summary>
@@ -129,10 +165,7 @@ namespace rabnet
             Building b = data as Building;
             string prevnm="";
             int prevfarm = 0;
-            if (b.ftype == "cabin")//удалить ветку
-            {
-                int op = 1;
-            }
+
             for (int i = 0; i < b.secs(); i++)
             {
                 /*
@@ -570,7 +603,7 @@ namespace rabnet
             if (treeView1.SelectedNode == null) return;
             if (!isFarm()) return;
             int fid=farmNum();
-            MainForm.protectTest(fid);
+            MainForm.protectTest(Engine.db().getMFCount());
             if (new MiniFarmForm(fid).ShowDialog() == DialogResult.OK) _rsb.run();
         }
 

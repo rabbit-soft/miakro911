@@ -58,4 +58,25 @@ namespace rabnet
         }
 #endif
     }
+
+    static class AsmLoader
+    {
+        [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
+        public static bool LoadAssembly(string asmname)
+        {
+            if (!asmname.EndsWith(".dll"))
+                asmname += ".dll";          
+            try
+            {
+                string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath),asmname);
+                if(!File.Exists(path))return false;
+                Assembly.LoadFile(path);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    }
 }

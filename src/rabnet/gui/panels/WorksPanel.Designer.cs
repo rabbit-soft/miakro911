@@ -139,7 +139,7 @@
             this.setNestMenuItem,
             this.printMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(258, 268);
+            this.actMenu.Size = new System.Drawing.Size(258, 246);
             // 
             // okrolMenuItem
             // 
@@ -290,6 +290,7 @@
             this.Controls.Add(this.splitContainer1);
             this.Name = "WorksPanel";
             this.Size = new System.Drawing.Size(689, 465);
+            this.Load += new System.EventHandler(this.WorksPanel_Load);
             this.actMenu.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);

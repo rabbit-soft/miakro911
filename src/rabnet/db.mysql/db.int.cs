@@ -53,6 +53,7 @@ namespace rabnet
         //DATA PROCEDURES
         IDataGetter getRabbits(Filters filters);
         IDataGetter getBuildings(Filters filters);
+        int getMFCount();
         TreeData rabbitGenTree(int rabbit);
         TreeData buildingsTree();
         IDataGetter getYoungers(Filters filters);

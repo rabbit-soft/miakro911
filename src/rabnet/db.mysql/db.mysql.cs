@@ -144,6 +144,11 @@ namespace rabnet
             return new Buildings(sql, filters);
         }
 
+        public int getMFCount()
+        {
+            return Buildings.GetMFCount(sql);
+        }
+
         public String[] getFilterNames(string type)
         {
             MySqlDataReader rd = reader("SELECT f_name FROM filters WHERE f_type='"+type+"';");

@@ -25,7 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPlugIn", "ReportPlugIns
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportInterface", "ReportPlugIns\ReportInterface\ReportInterface.csproj", "{A0F963CE-A796-4E90-A6C6-71CD6E1AB3A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CasLp16", "CasLp16\CasLp16.csproj", "{308BE49D-06D9-4CB9-ACAF-B133C815EB99}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CAS", "CasLp16\CAS.csproj", "{308BE49D-06D9-4CB9-ACAF-B133C815EB99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
