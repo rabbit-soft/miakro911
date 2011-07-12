@@ -299,7 +299,8 @@ CREATE TABLE butcher (
 DROP TABLE IF EXISTS meal;
 CREATE TABLE meal (
   m_id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  m_start_date DATETIME NOT NULL COMMENT 'дата завоза комбикорма',
+  m_type ENUM('in','out') NOT NULL DEFAULT 'in',
+  m_start_date DATETIME NOT NULL COMMENT 'дата завоза комбикорма', 
   m_end_date DATETIME NULL COMMENT 'дата когда комбикорм закончился',
   m_amount INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'в КилоГраммах',
   m_rate FLOAT UNSIGNED NULL COMMENT 'кг комбикорма съедает кролик в день',
