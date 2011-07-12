@@ -489,10 +489,10 @@ namespace rabnet
 
         private void zone_SelectedIndexChanged(object sender, EventArgs e)
         {
-            gens.Items.Remove(curzone);
+            /*gens.Items.Remove(curzone);
             curzone = getCatValue(zones, zone.Text);
             if (curzone != 0)
-                addgen(curzone);
+                addgen(curzone);*/
         }
 
         private void fucks_SelectedIndexChanged(object sender, EventArgs e)

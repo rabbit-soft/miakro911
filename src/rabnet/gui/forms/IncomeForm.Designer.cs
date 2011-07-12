@@ -96,6 +96,7 @@
             // columnHeader2
             // 
             this.columnHeader2.Text = "Количество";
+            this.columnHeader2.Width = 80;
             // 
             // columnHeader3
             // 
@@ -104,10 +105,12 @@
             // columnHeader4
             // 
             this.columnHeader4.Text = "Порода";
+            this.columnHeader4.Width = 94;
             // 
             // columnHeader5
             // 
             this.columnHeader5.Text = "Адрес";
+            this.columnHeader5.Width = 76;
             // 
             // btMale
             // 
