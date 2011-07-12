@@ -25,7 +25,7 @@ BEGIN
 	IF(isnull(preSell) OR isnull(preSumm) OR isnull(preWeight)) THEN
 		INSERT INTO scaleprod(s_date, s_plu_id, s_plu_name, s_tsell,s_tsumm,s_tweight,s_cleared) VALUES(NOW(),prodid, prodname, tsell, tsumm, tweight, cleared);
 	END IF;
-	IF (tsell<>preSell OR tsumm<>preSumm OR tweight<>preWeight)THEN
+	IF (tsell<>preSell OR tsumm<>preSumm OR tweight<>preWeight) THEN
 		INSERT INTO scaleprod(s_date,s_plu_id,s_plu_name,s_tsell,s_tsumm,s_tweight,s_cleared) VALUES(NOW(),prodid, prodname, tsell, tsumm, tweight, cleared);
 	END IF;
 END |
@@ -70,9 +70,9 @@ BEGIN
 	DECLARE preWeight,nowWeight,nowProdId INTEGER;
 	DECLARE preClear,nowClear DateTime;
 	SELECT s_tweight,s_cleared,s_plu_id INTO nowWeight,nowClear,nowProdId FROM scaleprod WHERE s_id=id;
-  IF (isnull(nowWeight) OR isnull(nowProdId)) THEN
-    return 0;
-  END IF;
+	IF (isnull(nowWeight) OR isnull(nowProdId)) THEN
+		return 0;
+	END IF;
 	SELECT s_tweight,s_cleared INTO preWeight,preClear FROM scaleprod WHERE s_id<id AND s_plu_id=nowProdId ORDER BY s_id DESC LIMIT 1;
 	IF(isnull(preClear) OR preClear<>nowClear) THEN
 		return nowWeight;
@@ -121,7 +121,7 @@ BEGIN
 	SELECT m_amount INTO amnt FROM meal WHERE m_id=id;
 	SELECT COALESCE(sum(m_amount),0) INTO sell FROM meal WHERE m_type='out' AND m_start_date BETWEEN sd AND ed;
 	SET amnt=amnt-sell;
-	IF (amnt<=0)
+	IF (amnt<=0) THEN
 		return 0;
 	END IF;
 	IF res=0 THEN

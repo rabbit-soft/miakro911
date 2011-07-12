@@ -308,7 +308,7 @@ CREATE TABLE meal (
 
 #DATA
 
-INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','7');
+INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','8');
 INSERT INTO options(o_name,o_subname,o_value) VALUES
 ('opt', 'okrol', 30),
 ('opt', 'vudvor', 30),
@@ -357,6 +357,7 @@ INSERT INTO deadreasons(d_name) VALUES
 ('Продажа племенного поголовья'),
 ('Падеж'),
 ('Падеж при подсчете');
+
 INSERT INTO logtypes(l_name,l_params) VALUES
 ('привоз','$r в $p'),
 ('пересадка','$r  ->  $A'),
@@ -725,7 +726,7 @@ BEGIN
 	SELECT m_amount INTO amnt FROM meal WHERE m_id=id;
 	SELECT COALESCE(sum(m_amount),0) INTO sell FROM meal WHERE m_type='out' AND m_start_date BETWEEN sd AND ed;
 	SET amnt=amnt-sell;
-	IF (amnt<=0)
+	IF (amnt<=0) THEN
 		return 0;
 	END IF;
 	IF res=0 THEN

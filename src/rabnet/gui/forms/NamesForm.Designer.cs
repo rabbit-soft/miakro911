@@ -177,6 +177,7 @@
             // 
             this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox2.Location = new System.Drawing.Point(500, 89);
+            this.textBox2.MaxLength = 25;
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(120, 20);
             this.textBox2.TabIndex = 2;
@@ -196,6 +197,7 @@
             // 
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox1.Location = new System.Drawing.Point(500, 44);
+            this.textBox1.MaxLength = 25;
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(120, 20);
             this.textBox1.TabIndex = 1;
