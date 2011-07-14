@@ -18,7 +18,7 @@ namespace rabnet
             [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
             private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su,n,cn,tt,vactime,cand;
             private string gd, sh,xf;
-            private RUBOOL ce, ck, uz,sp,ask;
+            private RUBOOL ce, ck, uz,sp,ask, fbz;
 
             #region zooTime
             [Category("Зоотехнические сроки"),DisplayName("Окрол"),
@@ -100,6 +100,10 @@ namespace rabnet
             DisplayName("Показывать партнеров"),
             Description("Подбирать в Зоотехплане возможных патнеров для Случек и Вязок")]
             public RUBOOL showPartners { get { return sp; } set { sp = value; } }
+            [Category("Вид"),
+            DisplayName("Заполнять адреса нулями"),
+            Description("Заполнять ли символом '0' пробелы в адресе")]
+            public RUBOOL fillByZeroes { get { return fbz; } set { fbz = value; } }
             #endregion view
             #region plem
             [Category("Племенные свидетельства"),DisplayName("Номер следующего свидетельства"),Description("")]
@@ -181,6 +185,7 @@ namespace rabnet
                 confirmKill = toR(o.getIntOption(Options.OPT_ID.CONFIRM_KILL));
                 updateZoo = toR(o.getIntOption(Options.OPT_ID.UPDATE_ZOO));
                 showPartners = toR(o.getIntOption(Options.OPT_ID.FIND_PARTNERS));
+                fbz = toR(o.getIntOption(Options.OPT_ID.BUILD_FILL_ZERO));
                 //svid
                 nextSvid = o.getIntOption(Options.OPT_ID.NEXT_SVID);
                 svidHead = o.getOption(Options.OPT_ID.SVID_HEAD);
@@ -191,6 +196,7 @@ namespace rabnet
                 if (ask == RUBOOL.Нет && xf == "") 
                     xf = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             }
+
             public void save()
             {
                 Options o = Engine.opt();
@@ -219,6 +225,7 @@ namespace rabnet
                 o.setOption(Options.OPT_ID.CONFIRM_KILL, fromR(confirmKill));
                 o.setOption(Options.OPT_ID.UPDATE_ZOO, fromR(updateZoo));
                 o.setOption(Options.OPT_ID.FIND_PARTNERS, fromR(showPartners));
+                o.setOption(Options.OPT_ID.BUILD_FILL_ZERO,fromR(fbz));
                 //svid
                 o.setOption(Options.OPT_ID.NEXT_SVID, nextSvid);
                 o.setOption(Options.OPT_ID.SVID_HEAD, svidHead);

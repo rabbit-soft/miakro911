@@ -19,7 +19,12 @@ namespace rabnet
         /// Нужна потому что под номер клетки отводится 4 знака
         /// Иначе придется изменять форматирование номеров клеток во всей программе
         /// </summary>
-        private const int MAX_FARMS_COUNT = 9999;
+        private int MAX_FARMS_COUNT = 999999;
+        /// <summary>
+        /// Сколько максимально может предлагаться новых ферм
+        /// Защита от расхода памяти
+        /// </summary>
+        private const int NEW_FARMS_LIMIT = 0xff;
 
         private bool manual = true;
         const String nuBuild = "Новое строение";
@@ -86,8 +91,10 @@ namespace rabnet
     #if DEMO
                 if (i <= 100)
     #endif
-#endif
+#endif              
+                if (nofarms.Count<NEW_FARMS_LIMIT)
                     nofarms.Add(i);
+                else nofarms[NEW_FARMS_LIMIT-1]=i;
             }
             nofarm = farm + 1;
         }
@@ -136,7 +143,7 @@ namespace rabnet
                 if (Engine.db().getMFCount() <= 100)
     #endif
 #endif
-            if(nofarm <= MAX_FARMS_COUNT)
+            if (nofarm <= MAX_FARMS_COUNT)
                 nofarms.Add(nofarm);
             MainForm.protectTest(BuildingsPanel.getFarmsCount(buildTree));
             treeView1.Sort();
@@ -177,14 +184,15 @@ namespace rabnet
                 if (b.area(i) != prevnm || b.farm()!=prevfarm)
                 {
                     manual = false;
-                    ListViewItem it = listView1.Items.Add(String.Format("{0,4:d}",b.farm()) + b.area(i));//№
+                    ListViewItem it = listView1.Items.Add(Building.Format(b.farm()) + b.area(i));//№
                     prevfarm = b.farm();
                     prevnm = b.area(i);
                     it.Tag = b.id().ToString();
                     it.SubItems.Add(b.type());//Ярус
                     it.SubItems.Add(b.dep(i));//Отделение
                     String stat = "unk";
-                    if (b.repair()) stat = "ремонт";
+                    if (b.repair()) 
+                        stat = "ремонт";
                     else
                     {
                         if (b.busy(i) == 0) stat = "-";
@@ -594,15 +602,15 @@ namespace rabnet
                 MessageBox.Show("Достигнуто максимальное количество ферм.");
                 return;
             }
-            new MiniFarmForm(buildNum(), nofarms.ToArray()).ShowDialog();
-            _rsb.run();
+            if(new MiniFarmForm(buildNum(), nofarms.ToArray()).ShowDialog() == DialogResult.OK)
+                _rsb.run();
         }
 
         private void changeFarmMenuItem_Click(object sender, EventArgs e)
         {
             if (treeView1.SelectedNode == null) return;
             if (!isFarm()) return;
-            int fid=farmNum();
+            int fid = farmNum();
             MainForm.protectTest(Engine.db().getMFCount());
             if (new MiniFarmForm(fid).ShowDialog() == DialogResult.OK) _rsb.run();
         }

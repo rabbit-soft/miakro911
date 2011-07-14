@@ -4,7 +4,6 @@ using System.Text;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms;
 
-
 namespace rabnet
 {
     public static class myBuildingType
@@ -64,6 +63,7 @@ namespace rabnet
         public string[] fullname=new string[4];
         public string[] smallname = new string[4];
         public string[] medname = new string[4];
+
         public Building(int id, int farm, int tier_id, string type, string typeloc, string delims, string notes, bool repair, int seccnt)
         {
             fid = id;
@@ -102,6 +102,52 @@ namespace rabnet
         public string address() { return faddress; }
         #endregion
 
+        /* Гамбит не знал как лучше сделать строку, которую можно установить в начале программы,
+         * ее мог использовать класс Building и BuildingPanel    
+         */
+        #region format
+        private static int _smbls = 6;
+        private static char _dsym = ' ';
+
+        public static void SetDefFmt(int symbols)
+        {
+            SetDefFmt(symbols, _dsym);
+        }
+        public static void SetDefFmt(char defchar)
+        {
+            SetDefFmt(_smbls, defchar);
+        }
+        public static void SetDefFmt(int symbols, char defchar)
+        {
+            if (symbols < 4) _smbls = 4;
+            else if (symbols > 10) _smbls = 10;
+            else _smbls = symbols;
+            if (defchar != '/' && defchar != '\\') _dsym = defchar;
+        }
+
+        public static string Format(int farmN) 
+        {
+            return Format(farmN, _smbls, _dsym); 
+        }
+        /// <summary>
+        /// Правило форматирования Номера клетки
+        /// </summary>
+        public static string Format(int farmN,int symbols,char defchar)
+        {
+            if (symbols < 4) symbols = 4;
+            if (symbols > 10) symbols = 10;
+            if (defchar == '/' || defchar == '\\') defchar = _dsym;
+
+            string res = farmN.ToString();
+            if (res.Length < symbols)
+            {
+                while(symbols != res.Length)
+                    res = defchar + res;
+            }
+            return res;
+        }
+
+        #endregion
     }
 
     class Buildings : RabNetDataGetterBase
@@ -122,12 +168,14 @@ namespace rabnet
             {
                 case myBuildingType.Female:
                 case myBuildingType.DualFemale: res = shr ? "гн+выг" : "гнездовое+выгул"; break;
-                case myBuildingType.Complex: if (sec==0)
+                case myBuildingType.Complex:
+                    if (sec==0)
                         res = shr ? "гн+выг" : "гнездовое+выгул";
                     else
                         res = shr ? "отк" : "откормочное"; 
                     break;
-                case myBuildingType.Jurta : if (sec == 0)
+                case myBuildingType.Jurta : 
+                    if (sec == 0)
                     {
                         if (delims[0] == '0')
                             res = (shr ? "гн" : "гнездовое")+"+";
@@ -196,6 +244,7 @@ namespace rabnet
             }
             return res;
         }
+
         public static int getRNHCount(String type)
         {
             int res = 1;
@@ -211,7 +260,7 @@ namespace rabnet
 
         public static String fullRName(int farm, int tierid, int sec, String type, String delims, bool shr, bool sht, bool sho)
         {
-            String res = String.Format("{0,4:d}",farm);
+            String res = Building.Format(farm);
             if (tierid == 1) res += "^";
             if (tierid == 2) res += "-";
             res += getRSec(type, sec, delims);
@@ -220,7 +269,7 @@ namespace rabnet
             if (sho)
                 res += " (" + getRDescr(type, shr, sec, delims)+")";
             return res;
-        }
+        }       
 
         public static String fullPlaceName(String rabplace,bool shr,bool sht,bool sho)
         {
@@ -229,6 +278,7 @@ namespace rabnet
             String[] dts = rabplace.Split(',');
             return fullRName(int.Parse(dts[0]),int.Parse(dts[1]),int.Parse(dts[2]),dts[3],dts[4],shr,sht,sho);
         }
+
         public static String fullPlaceName(String rabplace)
         {
             return fullPlaceName(rabplace, false, false, false);

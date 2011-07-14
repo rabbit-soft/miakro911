@@ -10,7 +10,6 @@ using X_Tools;
 using System.Diagnostics;
 
 
-
 namespace X_Classes
 {
     class RabUpdateInfo
@@ -62,6 +61,9 @@ namespace X_Classes
         public const int ErrBadXml = 100;
         public const int ErrUnknown = 10000;
 
+        /// <summary>
+        /// Для измерения скорости
+        /// </summary>
         private readonly Stopwatch _stpw = new Stopwatch();
 
         public MessageSenderCallbackDelegate MessageSenderCallback;
@@ -228,7 +230,6 @@ namespace X_Classes
         private static RabUpdateInfo GetUpdateInfo()
         {
             Directory.CreateDirectory(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\");
-
             return ReadUpdateInfo("http://update.rabbit-soft.ru/rab/updates.xml", Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\updates.xml");
         }
 
@@ -285,36 +286,31 @@ namespace X_Classes
                 log().Debug("No need to update!");
                 MessageShow("Обновление текущей версии не требуется!", "Обновление");
             }
-
-
-
         }
 
-        private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        private void RunUpdate(RabUpdateInfo nfo)
         {
+            _lastPercents = -1;
+            _lastBytes = 0;
 
+            Directory.CreateDirectory(Path.GetDirectoryName(Application.ExecutablePath)+"\\updates\\");
 
-
-            if (e.ProgressPercentage % 5 == 0)
+            WebClient webClient = new WebClient();
+            webClient.DownloadFileCompleted += Completed;
+            webClient.DownloadProgressChanged += ProgressChanged;
+            _stpw.Reset();
+            _stpw.Start();
+            try
             {
-
-                if (_lastPercents != e.ProgressPercentage)
-                {
-                    _stpw.Stop();
-                    long ms = _stpw.ElapsedMilliseconds;
-                    _stpw.Reset();
-                    _stpw.Start();
-
-                    long bs = e.BytesReceived-_lastBytes;
-                    _lastBytes = e.BytesReceived;
-
-                    double speed = bs * 1000.0 / ms;
-
-                    _lastPercents = e.ProgressPercentage;
-                    MessageShow("Новая версия программы " + _upInfo.Version + Environment.NewLine + "Загрузка: " + e.ProgressPercentage.ToString() + "% (" + XTools.FormatBytes(e.BytesReceived) + ", " + XTools.FormatBytes(speed) + "/s)", "Обновление");
-                    log().Debug("Update download progress: " + e.ProgressPercentage + "% (" + XTools.FormatBytes(e.BytesReceived) + ", " + XTools.FormatBytes(speed) + "/s)");
-                }
+                File.Delete(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + nfo.FileName + ".tmp");
             }
+            catch (Exception e)
+            {
+                ErrorShow("Ошибка при загрузке!" + Environment.NewLine + e.Message.Replace(" | ", Environment.NewLine), "Обновление");
+                log().Error("Update download failed. " + e.Message);
+                return;
+            }
+            webClient.DownloadFileAsync(new Uri(nfo.FileUri), Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + nfo.FileName+".tmp");          
         }
 
         private void Completed(object sender, AsyncCompletedEventArgs e)
@@ -334,12 +330,12 @@ namespace X_Classes
                     {
                         errMsg += " | " + e.Error.InnerException.Message;
                     }
-                    ErrorShow("Ошибка при загрузке!"+Environment.NewLine+errMsg.Replace(" | ",Environment.NewLine), "Обновление");
+                    ErrorShow("Ошибка при загрузке!" + Environment.NewLine + errMsg.Replace(" | ", Environment.NewLine), "Обновление");
                     log().Error("Update download failed. " + errMsg);
                 }
                 else
                 {
-                    if (XTools.VerifyMD5(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + _upInfo.FileName+".tmp", _upInfo.FileMD5))
+                    if (XTools.VerifyMD5(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + _upInfo.FileName + ".tmp", _upInfo.FileMD5))
                     {
                         try
                         {
@@ -374,45 +370,38 @@ namespace X_Classes
                         {
                             CloseCallback();
                         }
-                    } else
+                    }
+                    else
                     {
                         MessageShow("Файл обновлений поврежден! Повторите загрузку обновления.", "Обновление");
                         log().Debug("Update download completed. MD5 check failed...");
                     }
-
                 }
             }
-            
         }
 
-        private void RunUpdate(RabUpdateInfo nfo)
+        private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-
-            _lastPercents = -1;
-            _lastBytes = 0;
-
-            Directory.CreateDirectory(Path.GetDirectoryName(Application.ExecutablePath)+"\\updates\\");
-
-
-            WebClient webClient = new WebClient();
-            webClient.DownloadFileCompleted += Completed;
-            webClient.DownloadProgressChanged += ProgressChanged;
-            _stpw.Reset();
-            _stpw.Start();
-            try
+            if (e.ProgressPercentage % 5 == 0)
             {
-                File.Delete(Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + nfo.FileName + ".tmp");
+
+                if (_lastPercents != e.ProgressPercentage)
+                {
+                    _stpw.Stop();
+                    long ms = _stpw.ElapsedMilliseconds;
+                    _stpw.Reset();
+                    _stpw.Start();
+
+                    long bs = e.BytesReceived - _lastBytes;
+                    _lastBytes = e.BytesReceived;
+
+                    double speed = bs * 1000.0 / ms;
+
+                    _lastPercents = e.ProgressPercentage;
+                    MessageShow("Новая версия программы " + _upInfo.Version + Environment.NewLine + "Загрузка: " + e.ProgressPercentage.ToString() + "% (" + XTools.FormatBytes(e.BytesReceived) + ", " + XTools.FormatBytes(speed) + "/s)", "Обновление");
+                    log().Debug("Update download progress: " + e.ProgressPercentage + "% (" + XTools.FormatBytes(e.BytesReceived) + ", " + XTools.FormatBytes(speed) + "/s)");
+                }
             }
-            catch (Exception e)
-            {
-                ErrorShow("Ошибка при загрузке!" + Environment.NewLine + e.Message.Replace(" | ", Environment.NewLine), "Обновление");
-                log().Error("Update download failed. " + e.Message);
-                return;
-            }
-            webClient.DownloadFileAsync(new Uri(nfo.FileUri), Path.GetDirectoryName(Application.ExecutablePath) + "\\updates\\" + nfo.FileName+".tmp");
-            
         }
-
-
     }
 }

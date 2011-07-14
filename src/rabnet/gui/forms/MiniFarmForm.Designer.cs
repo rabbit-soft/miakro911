@@ -129,7 +129,7 @@
             // 
             this.cbNum.FormattingEnabled = true;
             this.cbNum.Location = new System.Drawing.Point(112, 6);
-            this.cbNum.MaxLength = 4;
+            this.cbNum.MaxLength = 6;
             this.cbNum.Name = "cbNum";
             this.cbNum.Size = new System.Drawing.Size(66, 21);
             this.cbNum.TabIndex = 7;

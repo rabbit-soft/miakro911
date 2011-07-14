@@ -135,7 +135,10 @@ namespace rabnet
                             catch(Exception ex)
                             {
                                 log.Fatal("", ex);
-                                MessageBox.Show(ex.Message, "Произошла серьезная ошибка.");
+                                MessageBox.Show("Произошла ошибка" + Environment.NewLine + 
+                                    ex.Message + 
+                                    Environment.NewLine + 
+                                    "Программа будет закрыта", "Ошибка.");
                             }
                         }
 #if PROTECTED

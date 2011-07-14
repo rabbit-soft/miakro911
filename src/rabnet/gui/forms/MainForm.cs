@@ -77,6 +77,7 @@ namespace rabnet
             inbreedingMenuItem.Checked = (op.getIntOption(Options.OPT_ID.INBREEDING) == 1);
             shNumMenuItem.Checked = (op.getIntOption(Options.OPT_ID.SHOW_NUMBERS) == 1);
             shortZooMenuItem.Checked = (op.safeIntOption(Options.OPT_ID.SHORT_ZOO,1) == 1);
+            Building.SetDefFmt(op.getIntOption(Options.OPT_ID.BUILD_FILL_ZERO) == 1?'0':' ');
             //rabStatusBar1.run();
             manual = false;
 #if !DEMO
@@ -303,7 +304,11 @@ namespace rabnet
         private void paramsMenuItem1_Click(object sender, EventArgs e)
         {
             if ((new OptionsForm()).ShowDialog() == DialogResult.OK)
+            {
+                Options op = Engine.opt();
+                Building.SetDefFmt(op.getIntOption(Options.OPT_ID.BUILD_FILL_ZERO) == 1 ? '0' : ' ');
                 rabStatusBar1.run();
+            }
         }
 
         private void tsmiDeadsArchive_Click(object sender, EventArgs e)

@@ -14,7 +14,7 @@ namespace rabnet
         /// <summary>
         /// Если новая то '0'
         /// </summary>
-        private int id=0;
+        private int id = 0;
         private int parent = 0;
         int[] tiers = null;
         Building b1 = null;
@@ -111,11 +111,13 @@ namespace rabnet
                     res = true;
             return res;
         }
-
+        /// <summary>
+        /// Проверяет на занятость
+        /// </summary>
+        /// <param name="b"></param>
+        /// <returns>0-свободна; 1-занята</returns>
         private int checkBuilding(Building b)
         {
-            // 0 - МИНИферма свободна
-            // 1 - МИНИферма занята
             if (!hasRabbits(b)) return 0;
             MessageBox.Show("Перед изменением типа яруса расселите его.");
             return 1;
