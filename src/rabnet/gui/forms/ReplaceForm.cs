@@ -183,7 +183,7 @@ namespace rabnet
                     foreach (RP r in List)//далее ищет детей и присваивает их адресу - новый адрес матери.
                         if (r.Parent == this.ID && r != this )
                         {
-                            if (r.CurAddress != this.Address) continue;
+                            if (r.CurAddress != this.Address) continue;//если детям назначили адрес раньше матери
                             String cur = r.Address;
                             r.Address = this.CurAddress;
                             if (!this.WithChild)
@@ -492,7 +492,8 @@ namespace rabnet
                 return;
             DataRow rw = _dataSet.Rows[e.RowIndex];
             RP r = _replaceList[e.RowIndex];
-            r.CurAddress = (string)rw[PLACEFIELD];
+            if (e.ColumnIndex == PLACEFIELD) 
+                r.CurAddress = (string)rw[PLACEFIELD];
             if (e.ColumnIndex == PLACEFIELD && r.Address == r.CurAddress)
                 return;
             r.CanHaveNest = canHaveNest(e.RowIndex);
@@ -536,6 +537,7 @@ namespace rabnet
 
         private void dataGridView1_MultiSelectChanged(object sender, EventArgs e)
         {
+            MainForm.still_working();
             btChangeAddresses.Enabled = (dataGridView1.SelectedRows.Count == 2 && _action!=Action.ONE_GIRL_OUT);
             btClear.Enabled = (dataGridView1.SelectedRows.Count >0);
             groupBox1.Enabled = groupBox2.Enabled = false;
@@ -710,6 +712,14 @@ namespace rabnet
 
         private void btOK_Click(object sender, EventArgs e)
         {
+            if (Engine.opt().getIntOption(Options.OPT_ID.CONFIRM_REPLACE) == 1)
+            {
+                if (MessageBox.Show("Пересадить?", "", MessageBoxButtons.YesNo) == DialogResult.No)
+                {
+                    this.DialogResult = DialogResult.None;
+                    return;
+                }
+            }
             if (_action == Action.SET_NEST && !chechOnNest())
             {
                 this.DialogResult = DialogResult.None;

@@ -116,9 +116,11 @@ namespace rabnet
             }
             else
             {
-                RabnetConfig.rabDataSource mds = new RabnetConfig.rabDataSource(System.Guid.NewGuid().ToString(),fname.Text,"db.mysql",constr);
-                mds.SavePassword = fsavepswd.Checked;
-                RabnetConfig.DataSources.Add(mds);
+                //RabnetConfig.rabDataSource mds = new RabnetConfig.rabDataSource(System.Guid.NewGuid().ToString(),fname.Text,"db.mysql",constr);
+                //mds.SavePassword = fsavepswd.Checked;
+                //RabnetConfig.DataSources.Add(mds);
+                
+                RabnetConfig.SaveDataSource(System.Guid.NewGuid().ToString(), fname.Text, fhost.Text, fdb.Text, fuser.Text, fpswd.Text);
             }
             try
             {

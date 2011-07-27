@@ -1,6 +1,6 @@
 ﻿//#define PROTECTED
 #if DEBUG
-    //#define NOCATCH
+    #define NOCATCH
 #endif
 using System;
 using System.Windows.Forms;
@@ -21,6 +21,7 @@ namespace rabdump
         [STAThread]
         static void Main()
         {
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("ru-RU", false);
             bool new_instance;
             using (System.Threading.Mutex mutex = new System.Threading.Mutex(true, "RabDumpApplication", out new_instance))
             {
@@ -32,6 +33,10 @@ namespace rabdump
 #endif
                         Application.EnableVisualStyles();
                         Application.SetCompatibleTextRenderingDefault(false);
+#if !NOCATCH
+                        AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Unhandled);
+                        Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Threaded);
+#endif
 #if PROTECTED
                         bool exit;
                         do
@@ -57,7 +62,7 @@ namespace rabdump
                             }
                             //                pserver svr = new pserver();
 #endif
-                            Application.Run(new MainForm());
+                        Application.Run(new MainForm());
 #if PROTECTED
                             //svr.release();
                             if (!GRD.Instance.ValidKey())
@@ -78,5 +83,47 @@ namespace rabdump
                 }
             }
         }
+#if !NOCATCH
+        private static void Excepted(Exception ex)
+        {
+            if (log != null)
+                log.Fatal("General fault exception", ex);
+            if (ex.Source == "MySql.Data")
+            {
+                MessageBox.Show("Соединение с сервером было разорвано.\n\rПрграмма будет закрыта");
+            }
+            else
+            {
+                MessageBox.Show("Произошла ошибка. Программа будет закрыта.\n\r" + ex.Message);
+            }
+            log.Error(ex.Message, ex);
+        }
+
+        private static void Threaded(object sender, System.Threading.ThreadExceptionEventArgs e)
+        {
+            try
+            {
+                Excepted(e.Exception);
+            }
+            finally
+            {
+                //Application.Exit();
+                Environment.Exit(0);
+            }
+        }
+
+        private static void Unhandled(object sender, UnhandledExceptionEventArgs e)
+        {
+            try
+            {
+                Excepted((Exception)e.ExceptionObject);
+            }
+            finally
+            {
+                //Application.Exit();
+                Environment.Exit(0);
+            }
+        }
+#endif
     }
 }

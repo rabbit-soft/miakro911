@@ -35,8 +35,10 @@ namespace rabnet
 
         public delegate void ExcelButtonClickDelegate();
         public ExcelButtonClickDelegate excelButtonClick = null;
+
         /// <summary>
-        /// Делегат нажатия на кнопку Excel, если 'null' то кнопка не видна. Подробнее RabNetPanel.MakeExcel
+        /// Делегат нажатия на кнопку Excel, если 'null' то кнопка не видна. 
+        /// Подробнее: RabNetPanel.MakeExcel
         /// </summary>
         public ExcelButtonClickDelegate dExcelButtonClick
         {

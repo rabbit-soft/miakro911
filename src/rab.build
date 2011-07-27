@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 
 <project name="rabnet" default="full_build" basedir=".">
 	<description>rabnet project makefile</description>
@@ -310,8 +310,7 @@
 				<include name="${curdir}/rabnet/CasLp16/*.resx"/>
 			</resources>
 			<references>
-				<include name="${bin_dir}/RabNet/db.mysql.dll" />
-				<include name="${bin_dir}/RabNet/engine.dll" />
+				<include name="${log4net.ass}" />
 			</references>
 		</csc>
 	</target>
@@ -365,6 +364,8 @@
 				<attribute type="AssemblyVersionAttribute" value="${fullver}" />
 			</attributes>
 		</asminfo>
+		<copy file="${curdir}/rabdump/libcurl.dll" tofile="${bin_dir}/RabDump/libcurl.dll" />	
+		<copy file="${curdir}/rabdump/LibCurlShim.dll" tofile="${bin_dir}/RabDump/LibCurlShim.dll" />
 		<csc target="winexe" output="${bin_dir}/RabDump/rabdump.exe" win32icon="${curdir}/rabdump/icon_white.ico" define="${compile_flag}" optimize="true">
 			<sources>
 				<include name="${curdir}/rabdump/*.cs"/>
@@ -386,6 +387,7 @@
 			<references>
 				<include name="${bin_dir}/RabDump/${guardantNET.lib}" />
 				<include name="${log4net.use}"/>
+				<include name="${party3d.path}/LibCurlNet.dll"/>
 			</references>
 		</csc>
 		<copy file="${curdir}/rabdump/clean_config/rabdump.exe.config" tofile="${bin_dir}/RabDump/rabdump.exe.config" />
@@ -444,7 +446,7 @@
 		</csc>
 		<copy file="${curdir}/rabnet/gui/clean_config/rabnet.exe.config" tofile="${bin_dir}/RabNet/rabnet.exe.config" />
 		<copy file="${curdir}/rabnet/gui/changeLog.txt" tofile="${bin_dir}/RabNet/changeLog.txt" />
-		<move file="${bin_dir}/RabNet/CAS.dll" tofile="${bin_dir}/Tools/CAS.dll" failonerror="false"/>
+		<!--move file="${bin_dir}/RabNet/CAS.dll" tofile="${bin_dir}/Tools/CAS.dll" failonerror="false" /-->
 	</target>
 
 	<target name="obfuscate" depends="buildall" description="Binary Obfuscation">

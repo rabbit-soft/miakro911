@@ -376,7 +376,7 @@ r_status,r_flags,r_event_date,r_breed
         /// <summary>
         /// бомж
         /// </summary>
-        public static string NullAddress = "бомж";
+        public const string NullAddress = "бомж";
         public RabbitSex sex;
         /// <summary>
         /// Дата рождения
@@ -680,7 +680,7 @@ VALUES({0:d},{1:s},{2:d},'sukrol','{3:s}',1,'',{4:d});",female,DBHelper.DateToMy
         }
 
         /// <summary>
-        /// Функчия проверяет стоит ли в последней записи из таблице fucks по данному кролику начало траха.
+        /// Функция проверяет стоит ли в последней записи из таблице fucks по данному кролику начало траха.
         /// </summary>
         /// <param name="rabbit">ID кролика</param>
         private static void checkStartEvDate(MySqlConnection sql, int rabbit)

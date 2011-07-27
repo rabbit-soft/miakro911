@@ -28,11 +28,12 @@ namespace RabGRD
         /// </summary>
         public enum FlagType
         {
-            RabNet,     //0 bit 
-            Genetics,   //1 bit
-            RabDump,    //2 bit
-            Butcher,    //3 bit
-            PerortPlugIns//4 bit
+            RabNet,         //0 bit 
+            Genetics,       //1 bit
+            RabDump,        //2 bit
+            Butcher,        //3 bit
+            PerortPlugIns,  //4 bit
+            ServerDump,     //5 bit
         }
 
         static readonly ILog log = LogManager.GetLogger(typeof(GRD));
@@ -280,7 +281,13 @@ namespace RabGRD
 
         public bool GetFlag(FlagType ft)
         {
-            switch (ft)
+            uint bait = (uint)( (int)ft / 8 );
+            int bit =(int)ft % 8;           
+            string mask = "";
+            for (int i = 0; i < 8; i++)
+                mask = (i == bit ? '1' : '0') + mask;
+            return (((GetFlags(bait) & Convert.ToByte(mask, 2)) > 0) || (GetTempFlags(bait) & Convert.ToByte(mask, 2)) > 0);
+            /*switch (ft)
             {
                 case FlagType.RabNet:        return (((GetFlags(0) & Convert.ToByte("00000001", 2)) > 0) || (GetTempFlags(0) & Convert.ToByte("00000001", 2)) > 0);
                 case FlagType.Genetics:      return (((GetFlags(0) & Convert.ToByte("00000010", 2)) > 0) || (GetTempFlags(0) & Convert.ToByte("00000010", 2)) > 0);
@@ -288,8 +295,7 @@ namespace RabGRD
                 case FlagType.Butcher:       return (((GetFlags(0) & Convert.ToByte("00001000", 2)) > 0) || (GetTempFlags(0) & Convert.ToByte("00001000", 2)) > 0);
                 case FlagType.PerortPlugIns: return (((GetFlags(0) & Convert.ToByte("00010000", 2)) > 0) || (GetTempFlags(0) & Convert.ToByte("00010000", 2)) > 0);
                 //case FlagType.Scale:         return (((GetFlags(0) & Convert.ToByte("00100000", 2)) > 0) || (GetTempFlags(0) & Convert.ToByte("00100000", 2)) > 0);
-            }
-            return false;
+            }*/
         }
 
         public DateTime GetDateStart()

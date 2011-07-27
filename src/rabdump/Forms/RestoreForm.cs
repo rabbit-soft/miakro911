@@ -22,11 +22,11 @@ namespace rabdump
             SetMode(true);
             foreach (ArchiveJob j in Options.Get().Jobs)
             {
-                comboBox1.Items.Add(j.Name);
+                cbJobName.Items.Add(j.Name);
             }
-            if (comboBox1.Items.Count > 0)
+            if (cbJobName.Items.Count > 0)
             {
-                comboBox1.SelectedIndex = 0;
+                cbJobName.SelectedIndex = 0;
             }
             _wtFrm = new WaitForm();
             _wtFrm.SetName("Восстановление БД...");
@@ -35,43 +35,47 @@ namespace rabdump
 
         public RestoreForm(String place):this()
         {
-            for (int i = 0; i < comboBox1.Items.Count; i++)
+            for (int i = 0; i < cbJobName.Items.Count; i++)
             {
-                if ((string)comboBox1.Items[i] == place)
-                    comboBox1.SelectedIndex = i;
+                if ((string)cbJobName.Items[i] == place)
+                    cbJobName.SelectedIndex = i;
             }
         }
 
+        /// <summary>
+        /// Установить режим
+        /// </summary>
+        /// <param name="small">Обычный/Расширенный</param>
         public void SetMode(bool small)
         {
             Height = (small ? 410 : 550);
-            button3.Text="Расширенный режим "+(small?">>":"<<");
+            btExtMode.Text="Расширенный режим "+(small?">>":"<<");
             groupBox1.Visible = !small;
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void btExtMode_Click(object sender, EventArgs e)
         {
            SetMode(Height==550);
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbJobName_SelectedIndexChanged(object sender, EventArgs e)
         {
-            comboBox2.Items.Clear();
+            cbDataBase.Items.Clear();
             listView1.Items.Clear();
             foreach (ArchiveJob j in Options.Get().Jobs)
-                if (j.Name == comboBox1.Text)
+                if (j.Name == cbJobName.Text)
                 {
                     _jj = j;
                     if (j.DB == DataBase.AllDataBases)
                     {
                         foreach (DataBase db in Options.Get().Databases)
-                            comboBox2.Items.Add(db.Name);
+                            cbDataBase.Items.Add(db.Name);
                     }
                     else
-                        comboBox2.Items.Add(j.DB.Name);
+                        cbDataBase.Items.Add(j.DB.Name);
                 }
-            if (comboBox2.Items.Count!=0)
-                comboBox2.SelectedIndex = 0;
+            if (cbDataBase.Items.Count!=0)
+                cbDataBase.SelectedIndex = 0;
         }
 
         private void FillList(ArchiveJob j, String db)
@@ -101,18 +105,18 @@ namespace rabdump
             
         }
 
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbDataBase_SelectedIndexChanged(object sender, EventArgs e)
         {
             DataBase db = _jj.DB;
             if (db == DataBase.AllDataBases)
                 foreach (DataBase d in Options.Get().Databases)
-                    if (d.Name == comboBox2.Text) db = d;
+                    if (d.Name == cbDataBase.Text) db = d;
             tbHost.Text = db.Host;
             tbDB.Text = db.DBName;
             tbUser.Text = db.User;
             tbPassword.Text = db.Password;
             tbFile_TextChanged(null,null);
-            FillList(_jj, comboBox2.Text);
+            FillList(_jj, cbDataBase.Text);
         }
 
         private void button4_Click(object sender, EventArgs e)

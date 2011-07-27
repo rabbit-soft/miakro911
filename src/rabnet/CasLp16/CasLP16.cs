@@ -1,5 +1,5 @@
 ﻿#if DEBUG
-//#define NOCATCH
+#define NOCATCH
 #endif
 
 using System;
@@ -14,6 +14,9 @@ namespace CAS
 {
     public sealed partial class CasLP16
     {
+        /// <summary>
+        /// Класс дополняющий функционал BitConverter'а
+        /// </summary>
         private static class BitHelper
         {
             /// <summary>
@@ -41,9 +44,12 @@ namespace CAS
             /// </summary>
             internal static byte[] toBinDecimal(int val)
             {
-                string vstr = val.ToString();
+                string vstr = val.ToString("000000");
                 byte[] result = new byte[vstr.Length];
-
+                for (int i = 0; i < result.Length; i++)
+                {
+                    result[i] = byte.Parse(vstr[5 - i].ToString());
+                }
                 return result;
             }
             /// <summary>
@@ -112,14 +118,16 @@ namespace CAS
             internal static DateTime getLastClear(byte[] bts)
             {
 
+                int milenium = bts[10] * 10 + bts[11] > 80 ? 1900 : 2000;
                 DateTime result = new DateTime(
-                    2000 + bts[10] * 10 + bts[11],
+                    milenium + bts[10] * 10 + bts[11],
                     bts[8] * 10 + bts[9],
                     bts[6] * 10 + bts[7],
                     bts[4] * 10 + bts[5],
                     bts[2] * 10 + bts[3],
                     bts[0] * 10 + bts[1]);
                 return result;
+
             }
             /// <summary>
             /// Соединяет массивы байтов в один
@@ -169,9 +177,22 @@ namespace CAS
                 }
                 return result;
             }
+
+            internal bool ContainsID(int id)
+            {
+                foreach (PLU plu in this)
+                {
+                    if (plu.ID == id) return true;
+                }
+                return false;
+            }
         }
         public class MSGList : List<MSG>
         {
+            /// <summary>
+            /// Возвращает сообщение с конкретным ID
+            /// </summary>
+            /// <param name="id">ID сообщения</param>
             internal MSG GetMSG(int id)
             {
                 foreach (MSG msg in this)
@@ -180,6 +201,9 @@ namespace CAS
                 return null;
             }
 
+            /// <summary>
+            /// Получить массив из ID сообщений
+            /// </summary>
             internal int[] getIds()
             {
                 int[] result = new int[this.Count];
@@ -191,6 +215,9 @@ namespace CAS
             }
         }
 
+        /// <summary>
+        /// Информация о размерах, адресах значений.
+        /// </summary>
         private static class Info
         {
             public static class Sizes
@@ -255,10 +282,10 @@ namespace CAS
                     public const byte ALL_PLU_SUMM_LENGTH = 4;
 
                     public const byte ALL_PLU_SELL_ADDRESS = 0x17;
-                    public const byte ALL_PLU_SELL_LENGTH = 4;
+                    public const byte ALL_PLU_SELL_LENGTH = 3;
 
                     public const byte ALL_PLU_WEIGHT_ADDRESS = 0x1A;
-                    public const byte ALL_PLU_WEIGHT_LENGTH = 3;
+                    public const byte ALL_PLU_WEIGHT_LENGTH = 4;
 
                     public const byte LAST_CLEAR_ADDRESS = 0x1E;
                     public const byte LAST_CLEAR_LENGTH = 6;
@@ -365,10 +392,13 @@ namespace CAS
                 public const int MSG_MAX_STRING_LENGTH = 50;
                 public const int FACTORY_CONF_LENGTH = 13;
                 public const int SUMMARY_LENGTH = 40;
-                public const int STATE_LENGTH = 13;
+                public const int STATE_LENGTH = 15;
                 public const int LIVE_TIME_MAX_DAYS = 999;
             }
 
+            /// <summary>
+            /// Ответы от весов
+            /// </summary>
             public static class Ansvers
             {
                 public const byte READY = 0x80;
@@ -401,11 +431,11 @@ namespace CAS
                 /// <summary>
                 /// Чтение общего итога продаж по всем товарам
                 /// </summary>
-                public const byte SUMMARY_SELL_GET = 0x85;
+                public const byte SUMMARY_GET = 0x85;
                 /// <summary>
                 /// Стирание суммарного итога продаж по всем товарам
                 /// </summary>
-                public const byte SUMMARY_SELL_CLEAR = 0x86;
+                public const byte SUMMARY_CLEAR = 0x86;
                 /// <summary>
                 /// Запись границ единственного непрерывного диапазона номеров товаров
                 /// </summary>
@@ -479,6 +509,9 @@ namespace CAS
             }
         }
 
+        /// <summary>
+        /// Коды ответа Данного класса
+        /// </summary>
         public static class ReturnCode
         {
             public static string getDescription(int code)
@@ -512,8 +545,12 @@ namespace CAS
             public const byte MSG_IS_NOT_EXISTS = 11;
             public const byte CONNECTION_FAIL = 12;
             public const byte NOT_SUPPORTED = 13;
+            public const byte READ_TIMEOUT = 14;
         }
 
+        /// <summary>
+        /// Запись о товаре
+        /// </summary>
         public class PLU
         {
             //private readonly byte[] _bytes = new byte[Info.Sizes.PLU_LENGTH];
@@ -563,7 +600,7 @@ namespace CAS
                     Array.Copy(newval, _id, newval.Length);
                 }
             }
-
+            [Obsolete("Должен быть строкой")]
             public int Code
             {
                 get { return BitHelper.fromBinDecimal(_code); }
@@ -611,7 +648,7 @@ namespace CAS
                 set
                 {
                     if (value > 999999) return;
-                    byte[] bts = BitHelper.getLiveTimeBytes(value);
+                    byte[] bts = BitConverter.GetBytes(value);
                     Array.Copy(bts, _price, bts.Length);
                 }
             }
@@ -693,7 +730,10 @@ namespace CAS
                     return BitConverter.ToInt32(result, 0);
                 }
             }
-
+            /// <summary>
+            /// Удалить ли данную запись при сохранении
+            /// </summary>
+            public bool Delete = false;
             /// <summary>
             /// Создает объект PLU из хранящихся данных в весах
             /// </summary>
@@ -716,19 +756,6 @@ namespace CAS
                 Array.Copy(bytes, Info.Sizes.PLU.TOTAL_SUMM_ADDRESS, _totalSumm, 0, Info.Sizes.PLU.TOTAL_SUMM_LENGTH);
                 Array.Copy(bytes, Info.Sizes.PLU.TOTAL_WEIGHT_ADDRESS, _totalWeight, 0, Info.Sizes.PLU.TOTAL_WEIGHT_LENGTH);
                 Array.Copy(bytes, Info.Sizes.PLU.TOTAL_SELL_ADDRESS, _totalSell, 0, Info.Sizes.PLU.TOTAL_SELL_LENGTH);
-                //_id = getBytes(Info.Sizes.PLU.ID_ADDRESS, Info.Sizes.PLU.ID_LENGTH);
-                //_code = getBytes(Info.Sizes.PLU.CODE_ADDRESS, Info.Sizes.PLU.CODE_LENGTH);
-                //_prodName1 = getBytes(Info.Sizes.PLU.PRODUCT_NAME_1_ADDRESS, Info.Sizes.PLU.PRODUCT_NAME_LENGTH); 
-                //_prodName2 = getBytes(Info.Sizes.PLU.PRODUCT_NAME_2_ADDRESS, Info.Sizes.PLU.PRODUCT_NAME_LENGTH);
-                //_price = getBytes(Info.Sizes.PLU.PRICE_ADDRESS, Info.Sizes.PLU.PRICE_LENGTH); 
-                //_liveTime = getBytes(Info.Sizes.PLU.LIVETIME_ADDRESS, Info.Sizes.PLU.LIVETIME_LENGTH); ;
-                //_taraWeight = getBytes(Info.Sizes.PLU.TARA_WEIGHT_ADDRESS, Info.Sizes.PLU.TARA_WEIGHT_LENGHT);
-                //_groupCode = getBytes(Info.Sizes.PLU.GROUP_CODE_ADDRESS, Info.Sizes.PLU.GROUP_CODE_LENGTH);
-                //_msgId = getBytes(Info.Sizes.PLU.MESSAGE_ID_ADDRESS, Info.Sizes.PLU.MESSAGE_ID_LENGTH);
-                //_lastClear = getBytes(Info.Sizes.PLU.LAST_CLEAR_ADDRESS, Info.Sizes.PLU.LAST_CLEAR_LENGTH);
-                // _totalSumm = getBytes(Info.Sizes.PLU.TOTAL_SUMM_ADDRESS, Info.Sizes.PLU.TOTAL_SUMM_LENGTH);
-                //_totalWeight = getBytes(Info.Sizes.PLU.TOTAL_WEIGHT_ADDRESS, Info.Sizes.PLU.TOTAL_WEIGHT_LENGTH);
-                //_totalSell = getBytes(Info.Sizes.PLU.TOTAL_SELL_ADDRESS, Info.Sizes.PLU.TOTAL_SELL_LENGTH);
 
             }
             public PLU() { }
@@ -739,10 +766,11 @@ namespace CAS
                 Array.Copy(_bytes, startByte, result, 0, lenght);
                 return result;
             }*/
-
-
         }
 
+        /// <summary>
+        /// Сообщение
+        /// </summary>
         public class MSG
         {
             private readonly byte[] _msg = new byte[Info.Sizes.MSG_LENGTH];
@@ -763,6 +791,7 @@ namespace CAS
                     Array.Copy(bid, _id, 2);
                 }
             }
+            public bool Delete = false;
 
             public byte[] Bytes
             {
@@ -847,11 +876,14 @@ namespace CAS
                     else*/
                     //btF = _msg.Skip(from).Take(Info.Sizes.MSG_MAX_STRING_LENGTH).ToArray();
                     Array.Copy(_msg, from, btF, 0, Info.Sizes.MSG_MAX_STRING_LENGTH);
-                    result += Encoding.GetEncoding(866).GetString(btF).TrimEnd(new char[]{' '}).Replace("\0","") ;
                     if (!BitHelper.arrayIsEmpty(btF))
-                        result += Environment.NewLine;
+                    {
+                        if (row != 0) result += Environment.NewLine;
+                        result += Encoding.GetEncoding(866).GetString(btF).TrimEnd(new char[] { ' ' }).Replace("\0", "");
+                    }
                 }
                 return result;
+                //return result.Remove(result.LastIndexOf(Environment.NewLine));
             }
 
             /// <summary>
@@ -895,41 +927,51 @@ namespace CAS
                 }
             }
 
+            /// <summary>
+            /// Устанавливает текст сообщения
+            /// </summary>
             private void setMessage(string text)
             {
                 Array.Clear(_msg, 0, _msg.Length);
                 text = text.Trim();
-                string[] strings = text.Split(new string[] { Environment.NewLine }, 8, StringSplitOptions.RemoveEmptyEntries);
-                if (strings.Length > 1)
+                string[] lines = text.Split(new string[] { Environment.NewLine }, 8, StringSplitOptions.RemoveEmptyEntries);
+                if (lines.Length > 1)
                 {
-                    for (int row = 0; row < strings.Length; row++)
-                        setRowString(row, strings[row]);
+                    for (int row = 0; row < lines.Length; row++)
+                        setRowString(row, lines[row].Substring(0, lines[row].Length > 50 ? 50 : lines[row].Length));
                 }
                 else
                 {
-                    if(text.Length>400)
-                        text = text.Substring(0, 400);
-                    string[] strs = new string[8];
-                    for (int row = 0; row < strs.Length; row++)
+                    if (text.Length <= 50)
+                        setRowString(0, text);
+                    else
                     {
-                        if (text.Length > 50)
+                        if (text.Length > 400)
+                            text = text.Substring(0, 400);
+                        string[] strs = new string[8];
+                        for (int row = 0; row < strs.Length; row++)
                         {
-                            strs[row] = text.Substring(0, 50).Trim();
-                            text =text.Remove(0, 50);
+                            if (text.Length > 50)
+                            {
+                                strs[row] = text.Substring(0, 50).Trim();
+                                text = text.Remove(0, 50);
+                            }
+                            else
+                            {
+                                strs[row] = text.Trim();
+                                break;
+                            }
                         }
-                        else
-                        {
-                            strs[row] = text.Substring(0, text.Length).Trim();
-                            break;
-                        }
+                        for (int row = 0; row < strs.Length; row++)
+                            setRowString(row, strs[row]);
                     }
-                    for (int row = 0; row < strs.Length; row++)
-                        setRowString(row, strs[row]);
                 }
             }
 
         }
-
+        /// <summary>
+        /// Общие итоги по продажам
+        /// </summary>
         public class Summary
         {
             //private readonly byte[] _bytes = new byte[Info.Sizes.SUMMARY_LENGTH];
@@ -967,23 +1009,43 @@ namespace CAS
             /// Cчётчик пробега (мм)
             /// </summary>
             public int RollOut { get { return BitConverter.ToInt32(_roll,0); } }
+            /// <summary>
+            /// Счетчик этикеток
+            /// </summary>
             public int Sticker { get { return BitConverter.ToInt32(_sticker,0); } }
+            public int Summ { get { return BitConverter.ToInt32(_summ, 0); } }
+            public int Sell
+            {
+                get
+                {
+                    byte[] result = new byte[4];
+                    Array.Copy(_sell, result, _sell.Length);
+                    return BitConverter.ToInt32(result, 0);
+                }
+            }
+            public int Weight { get { return BitConverter.ToInt32(_summ, 0); } }
             public int TotalSumm { get { return BitConverter.ToInt32(_summ,0); } }
-            public int TotalSell { get { return BitConverter.ToInt32(_sell,0); } }
-            public int TotalWeight 
+            public int TotalSell 
             { 
                 get 
-                {   
-                    byte[] bts = new byte[4];
-                    Array.Copy(_weight, bts, _weight.Length);
-                    return BitConverter.ToInt32(bts, 0); 
+                {
+                    //далее лечение от несоответствия байтов
+                    byte[] result = new byte[4];
+                    Array.Copy(_allPluSell, result, _allPluSell.Length);
+                    return BitConverter.ToInt32(result, 0); 
                 } 
             }
-            public DateTime LastClear{ get{return BitHelper.getLastClear(BitHelper.parseGroupBinDec(_lastClear));} }
-            public int FreePLU { get { return (int)BitConverter.ToInt16( _freePlu,0); } }
-            public int FreeMSG { get { return (int)BitConverter.ToInt16(_freeMsg,0); } }
+            public int TotalWeight {get{ return BitConverter.ToInt32(_weight, 0); } }
+            public DateTime LastClear
+            {
+                get { return BitHelper.getLastClear(BitHelper.parseGroupBinDec(_lastClear)); }
+            }
+            public int FreePLU { get { return (int)BitConverter.ToUInt16( _freePlu,0); } }
+            public int FreeMSG { get { return (int)BitConverter.ToUInt16(_freeMsg,0); } }
         }
-
+        /// <summary>
+        /// Текущее состояние весов
+        /// </summary>
         public class State
         {
             private readonly byte[] _stateByte = new byte[Info.Sizes.State.STATE_BYTE_LENGHT];
@@ -1007,7 +1069,7 @@ namespace CAS
             public bool ZeroWeight      { get { return (_stateByte[0] & Convert.ToByte("00001000", 2)) > 0 ? true : false; } }
             public bool TwoRange        { get { return (_stateByte[0] & Convert.ToByte("00100000", 2)) > 0 ? true : false; } }
             public bool StableWeight    { get { return (_stateByte[0] & Convert.ToByte("01000000", 2)) > 0 ? true : false; } }
-            public char Sign            { get { return (_stateByte[0] & Convert.ToByte("10000000", 2)) > 0 ? '+' : '+'; } }
+            public char Sign            { get { return (_stateByte[0] & Convert.ToByte("10000000", 2)) > 0 ? '-' : '+'; } }
             public int Weight   { get { return (int)BitConverter.ToInt16(_absWeight,0); } }
             /// <summary>
             /// Цена товара (коп/кг)
@@ -1016,10 +1078,51 @@ namespace CAS
             public int Value { get { return BitConverter.ToInt32(_value, 0); } }
             public int CheckedPLU { get { return BitConverter.ToInt32(_checkPlu, 0); } }
         }
-
+        /// <summary>
+        /// Заводские настройки весов
+        /// </summary>
         public class FactoryConfig
         {
+            private readonly byte[] _weightLimit = new byte[Info.Sizes.FactoryConfig.WEIGHT_LIMIT_LENGHT];
+            private readonly byte[] _dotPlace = new byte[Info.Sizes.FactoryConfig.DOT_PLACE_LENGHT];
+            private readonly byte[] _doubleRange = new byte[Info.Sizes.FactoryConfig.DRW_MODE_LENGHT];
+            private readonly byte[] _shit1 = new byte[Info.Sizes.FactoryConfig.SHIT1_LENGHT];
+            private readonly byte[] _shit2 = new byte[Info.Sizes.FactoryConfig.SHIT2_LENGHT];
+            private readonly byte[] _weightFor = new byte[Info.Sizes.FactoryConfig.WEIGHT_FOR_PRICE_LENGHT];
+            private readonly byte[] _round = new byte[Info.Sizes.FactoryConfig.ROUND_VALUE_LENGHT];
+            private readonly byte[] _taraLimit = new byte[Info.Sizes.FactoryConfig.TARA_LIMIT_LENGHT];
 
+            public FactoryConfig(byte[] bts)
+            {
+                if (bts.Length < Info.Sizes.FACTORY_CONF_LENGTH) return;
+                Array.Copy(bts, Info.Sizes.FactoryConfig.WEIGHT_LIMIT_ADDRESS, _weightLimit, 0, Info.Sizes.FactoryConfig.WEIGHT_LIMIT_LENGHT);
+                Array.Copy(bts, Info.Sizes.FactoryConfig.DOT_PLACE_ADDRESS, _dotPlace, 0, Info.Sizes.FactoryConfig.DOT_PLACE_LENGHT);
+                Array.Copy(bts, Info.Sizes.FactoryConfig.DRW_MODE_ADDRESS, _doubleRange, 0, Info.Sizes.FactoryConfig.DRW_MODE_LENGHT);
+                Array.Copy(bts, Info.Sizes.FactoryConfig.SHIT1_ADDRESS, _shit1, 0, Info.Sizes.FactoryConfig.SHIT1_LENGHT);
+                Array.Copy(bts, Info.Sizes.FactoryConfig.SHIT2_ADDRESS, _shit2, 0, Info.Sizes.FactoryConfig.SHIT2_LENGHT);
+                Array.Copy(bts, Info.Sizes.FactoryConfig.WEIGHT_FOR_PRICE_ADDRESS, _weightFor, 0, Info.Sizes.FactoryConfig.WEIGHT_FOR_PRICE_LENGHT);
+                Array.Copy(bts, Info.Sizes.FactoryConfig.ROUND_VALUE_ADDRESS, _round, 0, Info.Sizes.FactoryConfig.ROUND_VALUE_LENGHT);
+                Array.Copy(bts, Info.Sizes.FactoryConfig.TARA_LIMIT_ADDRESS, _taraLimit, 0, Info.Sizes.FactoryConfig.TARA_LIMIT_LENGHT);
+            }
+
+            public int WeightLimit { get { return (int)BitConverter.ToInt16(_weightLimit,0); } }
+            public int DotPlace_Weight { get { return (int)_dotPlace[0]; } }
+            public int DotPlace_Price { get { return (int)_dotPlace[1]; } }
+            public int DotPlace_Value { get { return (int)_dotPlace[2]; } }
+            public bool DoubleRange { get { return _dotPlace[0] == 0 ? false : true; } }
+            /// <summary>
+            ///  Дискретность индикации веса во всем диапазоне или в
+            ///  верхнем диапазоне при включенном двухдиапазонном режиме.
+            /// </summary>
+            public bool Shit1 { get { return _shit1[0] == 0 ? false : true; } }
+            /// <summary>
+            /// Дискретность индикации веса в нижнем диапазоне
+            /// при включенном двухдиапазонном режиме.
+            /// </summary>
+            public bool Shit2 { get { return _shit2[0] == 0 ? false : true; } }
+            public int WeightForPrice { get { return (int)BitConverter.ToInt16(_weightFor,0); } }
+            public int RoundValue { get { return (int)_round[0]; } }
+            public int TaraLimit { get { return (int)BitConverter.ToInt16(_taraLimit,0); } }
         }
 
         public class UserPreferences
@@ -1029,6 +1132,32 @@ namespace CAS
 
         public class Logo2
         {
+        }
+
+        /// <summary>
+        /// Сохранить все товары
+        /// </summary>
+        public void SavePLUs()
+        {
+            foreach (CasLP16.PLU plu in _pluList)
+            {
+                if (plu.Delete)
+                    deletePLU(plu);
+                else savePLU(plu);
+            }
+        }
+
+        /// <summary>
+        /// Сохранить все сообщения
+        /// </summary>
+        public void SaveMSGs()
+        {
+            foreach (CasLP16.MSG msg in _msgList)
+            {
+                if (msg.Delete)
+                    deleteMSG(msg);
+                else saveMSG(msg);
+            }
         }
     }
 
@@ -1109,18 +1238,37 @@ namespace CAS
             return getScaleState();
         }
 
+        public FactoryConfig GetFactoryConfig()
+        {
+            return getFactoryConf();
+        }
+
+        public Summary GetSummary()
+        {
+            return getSummary();
+        }
+        /// <summary>
+        /// Стирание сумарного итога продаж по всем товарам
+        /// </summary>
+        public void ClearSumarys()
+        {
+            byte[] cmd = new byte[1] { Info.Commands.SUMMARY_CLEAR };
+            execCommand(cmd);
+        }
+
         //public PLUList PluList{get { return _pluList; }}
         //public MSGList MsgList{get { return _msgList; }}
         public bool Connected
         {
             get 
             {
-                if (_tcpClient == null)
+                if (_tcpClient == null ||_tcpClient.Client ==null)
                     return false;
                 else return _tcpClient.Connected;
             }
         }
         public CasLP16() { }
+
         ~CasLP16()
         {
             this.Disconnect();
@@ -1136,14 +1284,63 @@ namespace CAS
             return _msgList.getIds();
         }
 
+
+
+        /// <summary>
+        /// Установить адрес весов в локальной сети.
+        /// </summary>
+        /// <param name="host">Адрес</param>
+        /// <param name="port">Порт</param>
+        /// <returns>ReturnCode</returns>
+        public int SetScaleAddress(string host, int port)
+        {
+#if !NOCATCH
+            try
+            {
+#endif
+            IPAddress.Parse(host);
+            _host = host;
+            _port = port;
+            return ReturnCode.SUCCESS;
+#if !NOCATCH
+            }
+            catch(Exception)
+            {
+                return ReturnCode.ERROR;
+            }
+#endif
+        }
+
+        /// <summary>
+        /// Текущее состояние весов
+        /// </summary>
         private State getScaleState()
         {
             byte[] cmd = new byte[1]{Info.Commands.STATE_GET};
             byte[] state = new byte[Info.Sizes.STATE_LENGTH];
-            execCommand(cmd, ref state, 2);
+            execCommand(cmd, ref state, 1);
             return new State(state);
         }
 
+        private FactoryConfig getFactoryConf()
+        {
+            byte[] cmd = new byte[1] { Info.Commands.FACTORY_CONF_GET };
+            byte[] state = new byte[Info.Sizes.FACTORY_CONF_LENGTH];
+            execCommand(cmd, ref state, 1);
+            return new FactoryConfig(state);
+        }
+
+        private Summary getSummary()
+        {
+            byte[] cmd = new byte[1] { Info.Commands.SUMMARY_GET };
+            byte[] state = new byte[Info.Sizes.SUMMARY_LENGTH];
+            execCommand(cmd, ref state, 1);
+            return new Summary(state);
+        }
+
+        /// <summary>
+        /// Нужен для соблюдения интерсала между посылом команд
+        /// </summary>
         private void runTimer()
         {
             _timer = new Thread(timerStart);
@@ -1180,17 +1377,24 @@ namespace CAS
             try
             {
 #endif
-            while (_timer.IsAlive)
-                    Thread.Sleep(20);
+                while (_timer.IsAlive)
+                    Thread.Sleep(10);
                 if (_tcpClient == null || !_tcpClient.Connected) return ReturnCode.CONNECTION_NOT_SET;
                 _nwStream.WriteByte((byte)_id);
                 byte[] ans = new byte[2];
-                _nwStream.Read(ans, 0, ans.Length);
+                try
+                {
+                    _nwStream.Read(ans, 0, ans.Length);
+                }
+                catch (IOException)
+                {
+                    return ReturnCode.READ_TIMEOUT;
+                }
                 runTimer();
                 if (ans[1] == Info.Ansvers.ERROR)
                     return ReturnCode.SCALE_ERROR;
                 else return ReturnCode.SUCCESS;
-            #if !NOCATCH
+#if !NOCATCH
             }
             catch (IOException)
             {
@@ -1207,14 +1411,19 @@ namespace CAS
             byte[] doodle = new byte[1];
             return execCommand(bts, ref doodle, 0);
         }
+        private int execCommand(byte[] cmd, ref byte[] answer, int offset)
+        {
+            return execCommand(cmd,ref answer,offset,true);
+        }
         /// <summary>
         /// Выполняет команду весов
         /// </summary>
         /// <param name="bts">Массив байтов соманды.</param>
         /// <param name="answer">Информация, полученнаяф от весов</param>
         /// <param name="offset">Смещение. С какого байта начинаются данные.</param>
+        /// <param name="byByte">Summary,FactoryConfig,State  не принимают данные если читать побайтно.</param>
         /// <returns>Код состояния</returns>
-        private int execCommand(byte[] bts, ref byte[] answer, int offset)
+        private int execCommand(byte[] cmd, ref byte[] answer, int offset,bool byByte)
         {
 #if !NOCATCH
             try
@@ -1222,17 +1431,31 @@ namespace CAS
 #endif
                 int result = beginSession();
                 if (result != ReturnCode.SUCCESS) return result;
-                _nwStream.Write(bts, 0, bts.Length);
+                _nwStream.Write(cmd, 0, cmd.Length);
                 byte[] ans = new byte[answer.Length + offset];
-                int a = 0;
-                int i = 0;
-                while (i < ans.Length && a != -1)//альтернатива Read, т.к он не читал полностью месседж
+                try
                 {
-                    a = _nwStream.ReadByte();
-                    if (a != -1)
-                        ans[i] = (byte)a;
-                    if (i == 0 && a == Info.Ansvers.ERROR) break;
-                    i++;
+                    if (byByte)
+                    {
+                        int a = 0;
+                        int i = 0;
+                        while (i < ans.Length && a != -1)//альтернатива Read, т.к он не читал полностью месседж
+                        {
+                            a = _nwStream.ReadByte();
+                            if (a != -1)
+                                ans[i] = (byte)a;
+                            if (i == 0 && a == Info.Ansvers.ERROR) break;
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        _nwStream.Read(ans, 0, ans.Length);
+                    }
+                }
+                catch (IOException)
+                {
+                    return ReturnCode.READ_TIMEOUT;
                 }
                 //_nwStream.Read(ans, 0,401);
                 //System.Diagnostics.Debug.WriteLine("Scale ans:"+ans[0],"execComand");
@@ -1325,48 +1548,31 @@ namespace CAS
             return execCommand(cmd);
         }
 
-        public int SetScaleAddress(string host, int port)
-        {
-#if !NOCATCH
-            try
-            {
-#endif
-            IPAddress.Parse(host);
-            _host = host;
-            _port = port;
-            return ReturnCode.SUCCESS;
-#if !NOCATCH
-            }
-            catch(Exception)
-            {
-                return ReturnCode.ERROR;
-            }
-#endif
-        }
-
         /// <summary>
         /// Устанавливает соединение с весами
         /// </summary>
         /// <returns>Код ошибки</returns>
         public int Connect()
         {
-#if !NOCATCH
             try
             {
-#endif
-            IPEndPoint pnt = new IPEndPoint(IPAddress.Parse(_host), _port);
-            _tcpClient = new TcpClient();
-            //_tcpClient.BeginConnect(pnt.Address, pnt.Port, new AsyncCallback(connectWaiter), _tcpClient);
-            _tcpClient.Connect(pnt);
-            _nwStream = _tcpClient.GetStream();
-            return ReturnCode.SUCCESS;
-#if !NOCATCH
+                IPEndPoint pnt = new IPEndPoint(IPAddress.Parse(_host), _port);
+                _tcpClient = new TcpClient();
+                //_tcpClient.BeginConnect(pnt.Address, pnt.Port, new AsyncCallback(connectWaiter), _tcpClient);
+                _tcpClient.ReceiveTimeout = 6000;
+                _tcpClient.Connect(pnt);
+                _nwStream = _tcpClient.GetStream();
+                return ReturnCode.SUCCESS;
             }
-            catch
+            catch (SocketException ex)
+            {
+                return ReturnCode.CONNECTION_FAIL;
+            }
+            catch (Exception)
             {
                 return ReturnCode.ERROR;
             }
-#endif
+
         }
         public int Connect(string host, int port)
         {
@@ -1383,12 +1589,11 @@ namespace CAS
             if (_nwStream != null)
             {
                 _nwStream.Close();
-                _nwStream = null;
+                _nwStream.Dispose();
             }
             if (_tcpClient != null)
             {
                 _tcpClient.Close();
-                _tcpClient = null;
             }
             return ReturnCode.SUCCESS;
 #if !NOCATCH
@@ -1439,11 +1644,16 @@ namespace CAS
         }
         public int LoadPLUs(params int[] IDs)
         {
+            _loading = true;
             _pluList.Clear();
             int result = beginSession();
-            if (result != ReturnCode.SUCCESS) return result;
+            if (result != ReturnCode.SUCCESS)
+            {
+                _loading = false;
+                return result;
+            }
             //_loadProgress = 0;
-            _loading = true;
+            
             for (int i = 0; i < IDs.Length; i++)
             {
                 if (IDs[i] < 0 || IDs[i] > Info.Sizes.PLU_MAX_INDEX) continue;
@@ -1461,7 +1671,6 @@ namespace CAS
                 }
                 catch(Exception) 
                 {
- 
                 }
 #endif
             }
@@ -1489,8 +1698,18 @@ namespace CAS
             return newplu;
         }
 
+        public int CleadPLUSummary(int pluid)
+        {
+            if (!_pluList.ContainsID(pluid)) return ReturnCode.PLU_IS_NOT_EXISTS;
+            byte[] bts = new byte[5];
+            bts[0] = Info.Commands.PLU_SUMMARY_CLEAR;
+            Array.Copy(BitConverter.GetBytes(pluid), 0, bts, 1, 4);
+            return execCommand(bts);
+        }
+
         /// <summary>
         /// Сохраняет в памяти весов LPU с заданным ID
+        /// При этом обнуляет общие итоги по продажам!
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -1501,6 +1720,11 @@ namespace CAS
             return savePLU(save);
         }
 
+        /// <summary>
+        /// Добавляет новый това
+        /// </summary>
+        /// <param name="newplu">ID нового товара</param>
+        /// <returns>ReturnCode</returns>
         public int AddPLU(PLU newplu)
         {
             if (GetPLUbyID(newplu.ID) != null) return ReturnCode.PLU_ID_ALREADY_EXISTS;
@@ -1517,7 +1741,7 @@ namespace CAS
             return deletePLU(plu);         
         }
 
-        public int LoadMSGs() { return LoadMSGs(0, Info.Sizes.MSG_MAX_INDEX); }
+        public int LoadMSGs() { return LoadMSGs(1, Info.Sizes.MSG_MAX_INDEX); }
         public int LoadMSGs(int from, int until)
         {
             if (from >= until) return ReturnCode.BAD_PARAMS;
@@ -1554,13 +1778,14 @@ namespace CAS
             _loadProgress = -1;
             return ReturnCode.SUCCESS;*/
         }
+
         public int LoadMSGs(params int[] IDs)
         {
             _msgList.Clear();
+            _loading = true;
             int result = beginSession();
             if (result != ReturnCode.SUCCESS) return result;
-            //_loadProgress = 0;
-            _loading = true;
+            //_loadProgress = 0;         
             for (int i = 0; i < IDs.Length; i++)
             {
                 if (IDs[i] < 0 || IDs[i] > Info.Sizes.MSG_MAX_INDEX) continue;
@@ -1586,6 +1811,7 @@ namespace CAS
             //_loadProgress = -1;
             return ReturnCode.SUCCESS;
         }
+
         public MSG GetMSGbyID(int id)
         {
             if (id < 1 || id > 1000) return null;
@@ -1614,7 +1840,7 @@ namespace CAS
             _msgList.Add(newmsg);
             return saveMSG(newmsg);
         }
-
+        [Obsolete("Виснет.Данные не отдает")]
         public int DeleteMSGbyID(int id)
         {
             return ReturnCode.NOT_SUPPORTED;// НА весах пишется "POC",вводишь 2символа, пишется лого.При этом данные не отдает

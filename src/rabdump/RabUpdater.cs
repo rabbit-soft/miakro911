@@ -10,7 +10,7 @@ using X_Tools;
 using System.Diagnostics;
 
 
-namespace X_Classes
+namespace rabdump
 {
     class RabUpdateInfo
     {
@@ -49,7 +49,15 @@ namespace X_Classes
         }
     }
 
-    public delegate void MessageSenderCallbackDelegate(string msg, string ttl, ToolTipIcon ico, bool hide);
+    /// <summary>
+    /// Нужен для отправки сообщения из классов,
+    /// работающих с сервером, основной программе
+    /// </summary>
+    /// <param name="msg">Сообщение</param>
+    /// <param name="ttl">Заголовок</param>
+    /// <param name="type">Error (3);Warning (2);Info (1);None (0)</param>
+    /// <param name="hide">Скрыть ли значек из трея</param>
+    public delegate void MessageSenderCallbackDelegate(string msg, string ttl, int type, bool hide);
     public delegate void CloseCallbackDelegate();
     
     class RabUpdater
@@ -92,7 +100,7 @@ namespace X_Classes
         {
             if (MessageSenderCallback != null)
             {
-                MessageSenderCallback(txt, ttl, ToolTipIcon.Info,false);
+                MessageSenderCallback(txt, ttl, 1,false);
             }
         }
 
@@ -100,7 +108,7 @@ namespace X_Classes
         {
             if (MessageSenderCallback != null)
             {
-                MessageSenderCallback(txt, ttl, ToolTipIcon.Error,false);
+                MessageSenderCallback(txt, ttl, 3,false);
             }
         }
 
@@ -108,7 +116,7 @@ namespace X_Classes
         {
             if (MessageSenderCallback != null)
             {
-                MessageSenderCallback("", "", ToolTipIcon.Error, true);
+                MessageSenderCallback("", "", 3, true);
             }
         }
 
@@ -384,7 +392,6 @@ namespace X_Classes
         {
             if (e.ProgressPercentage % 5 == 0)
             {
-
                 if (_lastPercents != e.ProgressPercentage)
                 {
                     _stpw.Stop();
@@ -403,5 +410,7 @@ namespace X_Classes
                 }
             }
         }
+
+
     }
 }

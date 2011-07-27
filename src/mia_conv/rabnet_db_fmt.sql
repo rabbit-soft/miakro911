@@ -329,6 +329,7 @@ INSERT INTO options(o_name,o_subname,o_value) VALUES
 ('opt', 'gentree', 10),
 ('opt', 'confirmexit', 0),
 ('opt', 'confirmkill', 1),
+('opt', 'confirmreplace', 0),
 ('opt', 'vacc', 45),
 ('opt', 'nest', 16),
 ('opt', 'childnest', 21),
@@ -346,7 +347,8 @@ INSERT INTO options(o_name,o_subname,o_value) VALUES
 ('opt','sh_num',0),
 ('opt','short_zoo',1),
 ('opt','build_fill_zero',0),
-('opt','vaccine_time',0);
+('opt','vaccine_time',0).
+('opt','butcher_type',0);
 
 UPDATE tiers SET t_busy2=NULL,t_busy3=NULL,t_busy4=NULL WHERE t_type='female';
 UPDATE tiers SET t_busy3=NULL,t_busy4=NULL WHERE t_type='dfemale' OR t_type='jurta' OR t_type='vertep' OR t_type='barin' OR t_type='cabin';

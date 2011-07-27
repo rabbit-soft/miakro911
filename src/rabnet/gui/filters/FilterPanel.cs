@@ -19,7 +19,7 @@ namespace rabnet
             clearFilters();
             loadFilters();
             String s = Engine.opt().getOption(opid);
-            if (s!="")
+            if (s!="" && s!="0")
                 setFilters(Filters.makeFromString(s));
         }
         public FilterPanel()

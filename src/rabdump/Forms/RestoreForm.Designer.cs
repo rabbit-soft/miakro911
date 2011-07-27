@@ -31,14 +31,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RestoreForm));
             this.btRestore = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbJobName = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.cbDataBase = new System.Windows.Forms.ComboBox();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btExtMode = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button4 = new System.Windows.Forms.Button();
             this.tbFile = new System.Windows.Forms.TextBox();
@@ -78,15 +78,15 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // comboBox1
+            // cbJobName
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(144, 12);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 2;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.cbJobName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbJobName.FormattingEnabled = true;
+            this.cbJobName.Location = new System.Drawing.Point(144, 12);
+            this.cbJobName.Name = "cbJobName";
+            this.cbJobName.Size = new System.Drawing.Size(121, 21);
+            this.cbJobName.TabIndex = 2;
+            this.cbJobName.SelectedIndexChanged += new System.EventHandler(this.cbJobName_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -106,15 +106,15 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "База Данных";
             // 
-            // comboBox2
+            // cbDataBase
             // 
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(144, 45);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 21);
-            this.comboBox2.TabIndex = 5;
-            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
+            this.cbDataBase.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbDataBase.FormattingEnabled = true;
+            this.cbDataBase.Location = new System.Drawing.Point(144, 45);
+            this.cbDataBase.Name = "cbDataBase";
+            this.cbDataBase.Size = new System.Drawing.Size(121, 21);
+            this.cbDataBase.TabIndex = 5;
+            this.cbDataBase.SelectedIndexChanged += new System.EventHandler(this.cbDataBase_SelectedIndexChanged);
             // 
             // listView1
             // 
@@ -140,15 +140,15 @@
             this.columnHeader2.Text = "Имя файла";
             this.columnHeader2.Width = 349;
             // 
-            // button3
+            // btExtMode
             // 
-            this.button3.Location = new System.Drawing.Point(12, 315);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(160, 23);
-            this.button3.TabIndex = 7;
-            this.button3.Text = "Расширенный режим <<";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btExtMode.Location = new System.Drawing.Point(12, 315);
+            this.btExtMode.Name = "btExtMode";
+            this.btExtMode.Size = new System.Drawing.Size(160, 23);
+            this.btExtMode.TabIndex = 7;
+            this.btExtMode.Text = "Расширенный режим <<";
+            this.btExtMode.UseVisualStyleBackColor = true;
+            this.btExtMode.Click += new System.EventHandler(this.btExtMode_Click);
             // 
             // groupBox1
             // 
@@ -277,12 +277,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button2;
             this.ClientSize = new System.Drawing.Size(517, 516);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.btExtMode);
             this.Controls.Add(this.listView1);
-            this.Controls.Add(this.comboBox2);
+            this.Controls.Add(this.cbDataBase);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cbJobName);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.btRestore);
             this.Controls.Add(this.groupBox1);
@@ -304,14 +304,14 @@
 
         private System.Windows.Forms.Button btRestore;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cbJobName;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox cbDataBase;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btExtMode;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox tbUser;
         private System.Windows.Forms.Label label4;

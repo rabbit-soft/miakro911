@@ -61,6 +61,18 @@ namespace rabnet
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+#if !DEMO
+            CAS.ScaleForm.SummarySaving += new CAS.AddPLUSummaryHandler(AddPluSummary);
+            if (
+#if PROTECTED
+                GRD.Instance.GetFlag(GRD.FlagType.Butcher) && 
+#endif
+                Engine.opt().getIntOption(Options.OPT_ID.BUCHER_TYPE)==1)
+            {
+                
+                CAS.ScaleForm.StartMonitoring();
+            }
+#endif
             usersMenuItem.Visible = Engine.get().isAdmin();
             manual = true;
             rabStatusBar1.setText(0, Engine.db().now().ToShortDateString());
@@ -173,7 +185,14 @@ namespace rabnet
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-
+#if !DEMO
+            if(
+    #if PROTECTED
+                GRD.Instance.GetFlag(GRD.FlagType.Butcher) && 
+    #endif
+                Engine.opt().getIntOption(Options.OPT_ID.BUCHER_TYPE)==1)
+                CAS.ScaleForm.StopMonitoring();
+#endif
             if (Engine.opt().getIntOption(Options.OPT_ID.CONFIRM_EXIT) == 0)
                 return;
             if (mustclose) return;
@@ -370,6 +389,7 @@ namespace rabnet
 #if !DEMO
             Filters f = new Filters();
             f["brd"] = Engine.get().brideAge().ToString();
+            f["cnd"] = Engine.get().candidateAge().ToString();
             (new ReportViewForm(myReportType.BREEDS,Engine.get().db().makeReport(myReportType.BREEDS, f)) ).ShowDialog();
 #else
             DemoErr.DemoNoReportMsg();
@@ -556,7 +576,7 @@ namespace rabnet
         private void tsmiReports_DropDownOpening(object sender, EventArgs e)
         {
 #if PROTECTED
-            miButcher.Visible = GRD.Instance.GetFlag(GRD.FlagType.Butcher);           
+            miButcher.Visible =  GRD.Instance.GetFlag(GRD.FlagType.Butcher) && Engine.opt().getIntOption(Options.OPT_ID.BUCHER_TYPE)==0 && GRD.Instance.GetFlag(GRD.FlagType.Butcher);           
 #elif DEMO
             miButcher.Visible = false;        
 #endif
@@ -570,13 +590,28 @@ namespace rabnet
         private void miScale_Click(object sender, EventArgs e)
         {
 #if !DEMO
-            (new ScaleForm()).ShowDialog();
+            tNoWorking.Stop();
+            (new CAS.ScaleForm()).ShowDialog();
+            tNoWorking.Start();
 #endif
         }
 
         private void tsmiOptions_DropDownOpening(object sender, EventArgs e)
         {
-            miScale.Visible = AsmLoader.LoadAssembly("CAS");
+#if !DEMO
+            miScale.Visible = 
+#if PROTECTED
+                GRD.Instance.GetFlag(GRD.FlagType.Butcher) && 
+#endif
+                Engine.opt().getIntOption(Options.OPT_ID.BUCHER_TYPE)==1;
+#else
+            miScale.Visible = false;
+#endif
+        }
+
+        private void AddPluSummary(int pluID, string pluPN1, int pluTSell, int TSumm, int TWeight, DateTime LastClear)
+        {
+            Engine.db2().addPLUSummary(pluID,pluPN1,pluTSell,TSumm,TWeight,LastClear);
         }
 
     }

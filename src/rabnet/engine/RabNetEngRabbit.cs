@@ -231,6 +231,10 @@ namespace rabnet
         }
         public string SmallAddress{get{return rab.smallAddress;}}
         public string JustAddress{get{return rab.justAddress;}}
+        /// <summary>
+        /// Нужно для логирования при Клонировании
+        /// </summary>
+        public string CloneAddress;
         public string TierType
         {
             get
@@ -406,13 +410,14 @@ namespace rabnet
         {
             if (count == Group)
             {
-                eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, RabID, 0, SmallAddress, "", FullName+String.Format(" ({0:d})",Group));
+                eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, RabID, 0, SmallAddress == OneRabbit.NullAddress ? CloneAddress : SmallAddress, "", FullName + String.Format(" ({0:d})", Group));
                 eng.db().killRabbit(id, when, reason, notes);
             }
             else
             {
                 int nid = clone(count, 0, 0, 0);
                 RabNetEngRabbit nr = new RabNetEngRabbit(nid, eng);
+                nr.CloneAddress = SmallAddress;
                 nr.killIt(when, reason, notes, count);
             }
         }
@@ -433,14 +438,16 @@ namespace rabnet
             eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, RabID, 0, "", "", String.Format("возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, прибавилось {4:d})",age,atall,dead,killed,added));            
             if (dead == 0 && killed == 0 && added == 0) return;
             OneRabbit y = rab.youngers[yid];
-            RabNetEngRabbit r = eng.getRabbit(y.id);
+            RabNetEngRabbit r = eng.getRabbit(y.id);        
             if (atall == 0)
             {
+                r.CloneAddress = SmallAddress;
                 r.killIt(DateTime.Now, 6, "при подсчете", y.group);
             }
             else
             {
                 RabNetEngRabbit clone = eng.getRabbit(r.clone(dead + killed, 0, 0, 0));
+                clone.CloneAddress = SmallAddress;
                 clone.killIt(DateTime.Now, 6, "при подсчете", clone.Group);
                 //!!!тут надо списыватьт
                 if(added>0)

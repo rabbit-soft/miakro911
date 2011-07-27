@@ -12,6 +12,7 @@ namespace rabnet
     {
         private const string rusIN = "Привоз";
         private const string rusOUT = "Продажа";
+        private const string sumTextRus = "Общий средний расход:   ";
 
         public MealForm()
         {
@@ -28,11 +29,18 @@ namespace rabnet
         {
             dataGridView1.Rows.Clear();
             List<sMeal> per = Engine.get().db().getMealPeriods();
+            double summary = 0;
+            int scnt = 0;
             foreach (sMeal m in per)
             {
                 string type = m.Type == sMeal.MoveType.In ? rusIN : rusOUT;
                 string end = m.Type == sMeal.MoveType.In ? m.EndDate == DateTime.MinValue ? " - " : m.EndDate.ToShortDateString() : "   --|||--    ";
-                string rate = m.Type == sMeal.MoveType.In ? m.Rate.ToString() : "   --|||--    ";         
+                string rate = m.Type == sMeal.MoveType.In ? m.Rate.ToString() : "   --|||--    ";
+                if (m.Type == sMeal.MoveType.In && m.Rate != 0)
+                {
+                    summary += m.Rate;
+                    scnt++;
+                }
                 dataGridView1.Rows.Add(new string[] { m.StartDate.ToShortDateString(), end, m.Amount.ToString(),type, rate });
                 dataGridView1.Rows[dataGridView1.Rows.Count - 1].Tag = m;
                 dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[3].Style.ForeColor = m.Type == sMeal.MoveType.In ? Color.Green : Color.Crimson;
@@ -40,6 +48,7 @@ namespace rabnet
             if (this.dataGridView1.Rows.Count!=0) 
                 dataGridView1.CurrentCell = this.dataGridView1[0, this.dataGridView1.Rows.Count - 1];
             dtpStartDate.MaxDate = DateTime.Now;
+            lbSummary.Text = sumTextRus + (summary/scnt).ToString("0.0000");
         }
 
         private void btClose_Click(object sender, EventArgs e)
@@ -50,7 +59,7 @@ namespace rabnet
         private void btAdd_Click(object sender, EventArgs e)
         {
             if (!(rbIn.Checked || rbSell.Checked)) { MessageBox.Show("Выберите \"Привоз\" или \"Продажа\""); return; }
-            if (tbAmount.Text == "") { MessageBox.Show("Заполните данными поле \"Объем\""); return; }
+            if (tbAmount.Text == "" || tbAmount.Text == "0") { MessageBox.Show("Заполните данными поле \"Объем\""); return; }
             if (rbIn.Checked)
             {
                 
@@ -69,7 +78,6 @@ namespace rabnet
                 dtpStartDate.Value = dtpStartDate.MaxDate;
             }
             rbIn.Checked = rbSell.Checked = false;
-
         }
 
         private bool canAddMealOut()
@@ -110,6 +118,19 @@ namespace rabnet
                 
             }
             return !(remain < 0);
+        }
+
+        private void miDelete_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count == 0) return;
+            int d = (dataGridView1.SelectedRows[0].Tag as sMeal).Id;
+            Engine.db().deleteMeal(d);
+            fillPeriods();
+        }
+
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            MainForm.still_working();
         }
 
     }

@@ -39,7 +39,7 @@
             this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.восстановитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miRestore = new System.Windows.Forms.ToolStripMenuItem();
             this.miChangeReason = new System.Windows.Forms.ToolStripMenuItem();
             this.rsb = new rabnet.RabStatusBar();
             this.contextMenuStrip1.SuspendLayout();
@@ -107,18 +107,18 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.восстановитьToolStripMenuItem,
+            this.miRestore,
             this.miChangeReason});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(173, 70);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
-            // восстановитьToolStripMenuItem
+            // miRestore
             // 
-            this.восстановитьToolStripMenuItem.Name = "восстановитьToolStripMenuItem";
-            this.восстановитьToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.восстановитьToolStripMenuItem.Text = "Восстановить";
-            this.восстановитьToolStripMenuItem.Click += new System.EventHandler(this.восстановитьToolStripMenuItem_Click);
+            this.miRestore.Name = "miRestore";
+            this.miRestore.Size = new System.Drawing.Size(172, 22);
+            this.miRestore.Text = "Восстановить";
+            this.miRestore.Click += new System.EventHandler(this.miRestore_Click);
             // 
             // miChangeReason
             // 
@@ -129,6 +129,7 @@
             // 
             // rsb
             // 
+            this.rsb.dExcelButtonClick = null;
             this.rsb.filterPanel = null;
             this.rsb.Location = new System.Drawing.Point(0, 463);
             this.rsb.Name = "rsb";
@@ -171,7 +172,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader7;
         private System.Windows.Forms.ColumnHeader columnHeader8;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem восстановитьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem miRestore;
         private System.Windows.Forms.ToolStripMenuItem miChangeReason;
     }
 }

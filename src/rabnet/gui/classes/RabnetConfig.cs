@@ -1,4 +1,7 @@
-﻿using System;
+﻿#if DEBUG
+#define NOCATCH
+#endif
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Win32;
@@ -112,8 +115,10 @@ public static class RabnetConfig
         public int CountLimit;
         public int SizeLimit;
         public int Repeat;
+        public string ServTime;
+        public int ServType;
 
-        public rabArchiveJob(string guid, string name, string db_duid, string path, string start, int type, int countlimit, int sizelimit, int repeat)
+        public rabArchiveJob(string guid, string name, string db_duid, string path, string start, int type, int countlimit, int sizelimit, int repeat,string stm, int stp)
         {
             this.Guid = guid;
             this.JobName = name;
@@ -124,6 +129,8 @@ public static class RabnetConfig
             this.CountLimit = countlimit;
             this.SizeLimit = sizelimit;
             this.Repeat = repeat;
+            this.ServTime = stm;
+            this.ServType = stp;
         }
     }
 
@@ -150,8 +157,11 @@ public static class RabnetConfig
                     (int)r.GetValue("type"),
                     (int)r.GetValue("cntlimit"),
                     (int)r.GetValue("szlimit"),
-                    (int)r.GetValue("repeat")));
+                    (int)r.GetValue("repeat"),
+                    (string)r.GetValue("srvtm",DateTime.Now.ToString("yyyy-MM-dd HH:mm")),
+                    (int)r.GetValue("srvtp",5)));
         }
+        _logger.Info("loading archiveJobs finish");
     }
 
     /// <summary>
@@ -174,6 +184,8 @@ public static class RabnetConfig
             r.SetValue("cntlimit", raj.CountLimit, RegistryValueKind.DWord);
             r.SetValue("szlimit", raj.SizeLimit, RegistryValueKind.DWord);
             r.SetValue("repeat", raj.Repeat, RegistryValueKind.DWord);
+            r.SetValue("srvtm", raj.ServTime, RegistryValueKind.String);
+            r.SetValue("srvtp", raj.ServType, RegistryValueKind.DWord);
         }
         ///Удаляем удаленные Расписания
         foreach (string s in rKey.GetSubKeyNames())
@@ -192,14 +204,15 @@ public static class RabnetConfig
             if (!contains)
                 rKey.DeleteSubKey(s);
         }
+        _logger.Info("saving archiveJobs finish");
     }
 
     /// <summary>
     /// Сохраняет одно расписание в списке ArchiveJobs
     /// </summary>
-    public static void SaveArchiveJob(string guid, string name, string db_guid, string path, string start, int type, int countlimit, int sizelimit, int repeat)
+    public static void SaveArchiveJob(string guid, string name, string db_guid, string path, string start, int type, int countlimit, int sizelimit, int repeat,string srvtm,int srvtp)
     {
-        rabArchiveJob newAJ = new rabArchiveJob(guid, name, db_guid, path, start, type, countlimit,sizelimit, repeat);
+        rabArchiveJob newAJ = new rabArchiveJob(guid, name, db_guid, path, start, type, countlimit,sizelimit, repeat,srvtm,srvtp);
         if (!containsArchiveJob(newAJ.Guid))
             _archiveJobs.Add(newAJ);
         else
@@ -235,6 +248,8 @@ public static class RabnetConfig
                 raj.CountLimit = newAJ.CountLimit;
                 raj.SizeLimit = newAJ.SizeLimit;
                 raj.Repeat = newAJ.Repeat;
+                raj.ServTime = newAJ.ServTime;
+                raj.ServType = newAJ.ServType;
             }
         }
     }
@@ -390,6 +405,7 @@ public static class RabnetConfig
             ds.DefPassword = (string)k.GetValue("defpass");
             _dataSources.Add(ds);
         }
+        _logger.Info("loading DataSources finish");
     }
 
     /// <summary>
@@ -419,7 +435,7 @@ public static class RabnetConfig
         foreach (string guid in rKey.GetSubKeyNames())
             if (!noDeleted.Contains(guid))
                 rKey.DeleteSubKey(guid);
-        
+        _logger.Info("saving DataSources finish");
     }
    
     /// <summary>
@@ -559,7 +575,8 @@ public static class RabnetConfig
 #if !DEBUG
         doc.Save(filePath);
 #endif
-        //_extracting = false;
+        _logger.Info("finish extracting");
+        //_extracting = false; //один раз за сессию и хватит
     }
 
     private static void extractRabnetds(XmlNode node)
@@ -599,7 +616,7 @@ public static class RabnetConfig
             switch (nd.Name)
             {
                 case "mysql":
-                    SaveOption(OptionType.MysqlPath, nd.InnerText.Replace("\\bin\\mysql.exe", ""));
+                    SaveOption(OptionType.MysqlPath, nd.InnerText.Replace(@"\bin\mysql.exe", ""));
                     break;
                 case "z7":
                     SaveOption(OptionType.zip7path, nd.InnerText);
@@ -624,7 +641,8 @@ public static class RabnetConfig
                         getAJTypeInt(nd.SelectSingleNode("type").InnerText),
                         int.Parse(nd.SelectSingleNode("countlim").InnerText),
                         int.Parse(nd.SelectSingleNode("sizelim").InnerText),
-                        int.Parse(nd.SelectSingleNode("repeat").InnerText));
+                        int.Parse(nd.SelectSingleNode("repeat").InnerText),
+                        DateTime.Now.ToString("yyyy-MM-dd HH:mm"),5);
                     if (aj.DBguid == "[все]")                  
                         aj.DBguid = ALL_DB;
 

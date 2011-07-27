@@ -109,11 +109,19 @@ namespace rabnet
             MySqlDataReader rd=reader(String.Format("SELECT o_value FROM options WHERE o_name='{0:s}' AND o_subname='{1:s}' AND (o_uid={2:d} OR o_uid=0) ORDER BY o_uid DESC;",
                 name,subname,uid));
             string res="";
-            if(subname=="xls_ask")
-                res = "";
+            //if(subname=="xls_ask")
+                //res = "";
             if (rd.Read())
-                res=rd.GetString(0);
-            rd.Close();
+            {
+                res = rd.GetString(0);
+                rd.Close();
+            }
+            else
+            {
+                rd.Close();
+                MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO options(o_name,o_subname,o_uid,o_value) VALUES('{0:s}','{1:s}',{2:d},'0');", name, subname, uid), sql);
+                cmd.ExecuteNonQuery();
+            }       
             return res;
         }
 
@@ -623,6 +631,11 @@ namespace rabnet
             Meal.AddMealOut(sql, start, amount);
         }
 
+        public void deleteMeal(int id)
+        {
+            Meal.DeleteMeal(sql, id);
+        }
+
         public List<ScalePLUSummary> getPluSummarys(DateTime date)
         {
             return Scale.getPluSummarys(sql,date);
@@ -631,6 +644,11 @@ namespace rabnet
         public void addPLUSummary(int prodid, string prodname, int tsell, int tsumm, int tweight, DateTime cleared)
         {
             Scale.addPLUSummary(sql, prodid, prodname, tsell, tsumm, tweight, cleared);
+        }
+
+        public void deletePLUsummary(int sid,DateTime lastClear)
+        {
+            Scale.DeletePLUsumary(sql,sid,lastClear);
         }
 
         #endregion

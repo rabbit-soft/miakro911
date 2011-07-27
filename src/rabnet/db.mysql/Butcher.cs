@@ -44,6 +44,7 @@ namespace rabnet
     {
         private int _id;
         private int _prodId;
+        public int Id { get { return _id; } }
         public int ProdId
         {
             get { return _prodId; }
@@ -74,11 +75,22 @@ namespace rabnet
 
         public override string getQuery()
         {
-            return @"CREATE TEMPORARY TABLE aaa as
+            string table = options["scale"] == "1"?"scaleprod" :"butcher";
+            string dtfield =options["scale"] == "1"?"s_date" :"b_date";
+            string unfield = options["scale"] == "1" ? "appendPLUSell(s_id)" : "b_amount";
+            /*return String.Format(@"CREATE TEMPORARY TABLE aaa as
 SELECT Date(d_date) dt, SUM(r_group) cnt FROM dead WHERE d_reason=3 GROUP BY dt;
 
-SELECT DISTINCT dt,cnt,(SELECT COUNT(*) FROM butcher WHERE DATE(b_date)=dt) prod FROM aaa ORDER BY dt DESC;
-DROP TABLE aaa;";
+SELECT DISTINCT dt,cnt,(SELECT COUNT(*) FROM {0:s}=dt prod FROM aaa ORDER BY dt DESC
+
+DROP TABLE aaa;",prod);*/
+            return String.Format(@"CREATE TEMPORARY TABLE aaa as
+SELECT Date(d_date) dt, SUM(r_group) cnt FROM dead WHERE d_reason=3 GROUP BY dt;
+CREATE TEMPORARY TABLE bbb as SELECT dt FROM aaa;
+SELECT dt,cnt,(SELECT COUNT(*) FROM {0:s} WHERE DATE({1:s})=dt) prod FROM aaa union
+SELECT DATE({1:s}) dt,0,SUM({2:s}) FROM {0:s} WHERE DATE({1:s}) not in (SELECT dt FROM bbb) GROUP BY dt ORDER BY dt DESC;
+DROP TABLE aaa;
+DROP TABLE bbb;",table,dtfield,unfield);
         }
 
         public override string countQuery()
@@ -169,7 +181,7 @@ FROM butcher WHERE DATE(b_date)='{0:yyy-MM-dd}' ORDER by b_date DESC;",dt), sql)
         public static List<ScalePLUSummary> getPluSummarys(MySqlConnection sql,DateTime date)
         {
             List<ScalePLUSummary> result = new List<ScalePLUSummary>();
-            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT s_id,s_date,s_plu_id,s_plu_name,appendPLUSumm(s_tsumm)asm,appendPLUSell(s_tsell)asl,appendPLUWeight(s_tweight)aw,s_cleared FROM scaleprod WHERE DATE(s_date)='{0:yyyy-MM-dd}' ORDER BY s_id DESC;", date), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT s_id,s_date,s_plu_id,s_plu_name,appendPLUSumm(s_id) asm,appendPLUSell(s_id) asl,appendPLUWeight(s_id)aw,s_cleared FROM scaleprod WHERE DATE(s_date)='{0:yyyy-MM-dd}' ORDER BY s_id DESC;", date), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             while(rd.Read())
             {
@@ -178,8 +190,8 @@ FROM butcher WHERE DATE(b_date)='{0:yyy-MM-dd}' ORDER by b_date DESC;",dt), sql)
                     rd.GetDateTime("s_date"),
                     rd.GetInt32("s_plu_id"),
                     rd.GetString("s_plu_name"),
-                    rd.GetInt32("asm"),
                     rd.GetInt32("asl"),
+                    rd.GetInt32("asm"),              
                     rd.GetInt32("aw"),
                     rd.GetDateTime("s_cleared")));
             }
@@ -187,13 +199,22 @@ FROM butcher WHERE DATE(b_date)='{0:yyy-MM-dd}' ORDER by b_date DESC;",dt), sql)
             return result;
         }
 
-        public static void addPLUSummary(MySqlConnection sql,int prodid,string prodname,int tsell,int tsumm,int tweight,DateTime cleared)
+        public static void addPLUSummary(MySqlConnection sql, int prodid, string prodname, int tsell, int tsumm, int tweight, DateTime cleared)
         {
-            MySqlCommand cmd = new MySqlCommand("", sql);
-            cmd.CommandText = String.Format(@"call addPLUSummary({0:d},'{1:s}',{2:d},{3:d},{4:d},'{5:yyyy-MM-dd hh:mm}');",
-                                                            prodid,prodname,tsell,tsumm,tweight,cleared);
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand("", sql);
+                cmd.CommandText = String.Format(@"call addPLUSummary({0:d},'{1:s}',{2:d},{3:d},{4:d},'{5:yyyy-MM-dd hh:mm}');",
+                                                                prodid, prodname, tsell, tsumm, tweight, cleared);
+                cmd.ExecuteNonQuery();
+            }
+            catch {}
+        }
+
+        public static void DeletePLUsumary(MySqlConnection sql, int sid,DateTime lc)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format("call deletePLUsumary({0:d},{1:yyyy-MM-dd hh-mm-ss});",sid,lc), sql);
             cmd.ExecuteNonQuery();
-            
         }
     }
 }

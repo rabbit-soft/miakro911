@@ -18,9 +18,33 @@ namespace rabnet
             MakeExcel = new RabStatusBar.ExcelButtonClickDelegate(this.makeExcel);
         }
 
+        private void drawMealList()
+        {
+            lvMeat.Clear();
+            switch(Engine.opt().getIntOption(Options.OPT_ID.BUCHER_TYPE))
+            {
+                case 0:
+                    lvMeat.Columns.Add("Продукция");
+                    lvMeat.Columns.Add("Количество");
+                    lvMeat.Columns.Add("Единицы изм.");
+                    lvMeat.Columns.Add("Пользователь");
+                    break;
+                case 1:
+                    lvMeat.Columns.Add("Продукция");
+                    lvMeat.Columns.Add("Продано (шт)");
+                    lvMeat.Columns.Add("На сумму");
+                    lvMeat.Columns.Add("Вес");
+                    break;
+            }
+            foreach(ColumnHeader ch in lvMeat.Columns )
+                ch.Width =120;          
+        }
+
         protected override IDataGetter onPrepare(Filters f)
         {
             colSort.Prepare();
+            if (f == null) f = new Filters();
+            f.Add("scale", "1");
             IDataGetter dg = DataThread.db().getButcherDates(f);
             _rsb.setText(1, dg.getCount().ToString() + " дат забоя");
             _rsb.setText(2, dg.getCount2().ToString() + " забито");
@@ -44,7 +68,7 @@ namespace rabnet
 
         public override ContextMenuStrip getMenu()
         {
-            return actMenu;
+            return miMeal;
         }
 
         private void lvButcherDates_SelectedIndexChanged(object sender, EventArgs e)
@@ -69,14 +93,27 @@ namespace rabnet
                 lvi.SubItems.Add(m.Amount.ToString()+" "+m.Units);
                 lvi.SubItems.Add(m.User);
             }*/
-            List<ScalePLUSummary> summarys = Engine.get().db().getPluSummarys(date);
-            foreach (ScalePLUSummary sm in summarys)
+            if (Engine.opt().getIntOption(Options.OPT_ID.BUCHER_TYPE) == 0)//1- scale
             {
-                ListViewItem lvi = lvMeat.Items.Add(String.Format("[{0:d}] {1:s}",sm.ProdId, sm.ProdName));
-                lvi.SubItems.Add(sm.TotalSell.ToString());
-                lvi.SubItems.Add(sm.TotalSumm.ToString());
-                lvi.SubItems.Add(sm.TotalWeight.ToString());
-                lvi.SubItems.Add("");
+                List<sMeat> mts = Engine.db().getMeats(date);
+                foreach (sMeat mt in mts)
+                {
+                    ListViewItem lvi = lvMeat.Items.Add(mt.ProductType);
+                    lvi.SubItems.Add(mt.Amount.ToString());
+                    lvi.SubItems.Add(mt.Units);
+                    lvi.SubItems.Add(mt.User);
+                }
+            }
+            else
+            {
+                List<ScalePLUSummary> summarys = Engine.get().db().getPluSummarys(date);
+                foreach (ScalePLUSummary sm in summarys)
+                {
+                    ListViewItem lvi = lvMeat.Items.Add(String.Format("[{0:d}] {1:s}", sm.ProdId, sm.ProdName));
+                    lvi.SubItems.Add(sm.TotalSell.ToString());
+                    lvi.SubItems.Add(sm.TotalSumm.ToString());
+                    lvi.SubItems.Add(sm.TotalWeight.ToString());
+                }
             }
         }
 
@@ -84,6 +121,30 @@ namespace rabnet
         {
 #if !DEMO
             ExcelMaker.MakeExcelFromLV(lvMeat, "Продукция");
+#endif
+        }
+
+        private void ButcherPanel_Load(object sender, EventArgs e)
+        {
+            drawMealList();
+        }
+
+        private void miDelete_Click(object sender, EventArgs e)
+        {
+#if !DEMO
+            if (lvMeat.SelectedItems.Count == 0) return;
+            if (!CAS.CasLP16.Instance.Connected)
+            {
+                MessageBox.Show("Соединение с весами не установлено");
+                return;
+            }
+            CAS.ScaleForm.StopMonitoring(false);
+            int pid = (lvMeat.SelectedItems[0].Tag as ScalePLUSummary).ProdId;
+            int sid = (lvMeat.SelectedItems[0].Tag as ScalePLUSummary).Id;
+            CAS.CasLP16.Instance.CleadPLUSummary(pid);
+            CAS.CasLP16.Instance.LoadPLUs();
+            DateTime lc = CAS.CasLP16.Instance.GetPLUbyID(pid).LastClear;
+            Engine.db().deletePLUsummary(sid,lc);
 #endif
         }
     }

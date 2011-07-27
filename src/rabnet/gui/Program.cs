@@ -1,5 +1,6 @@
-﻿#define GLOBCATCH
-//#define PROTECTED
+﻿#if DEBUG
+#define NOCATCH
+#endif
 
 using System;
 using System.Windows.Forms;
@@ -34,7 +35,93 @@ namespace rabnet
                 }
         }
 
-#if GLOBCATCH
+
+
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main(string[] args)
+        {
+            bool new_instance;
+            using(System.Threading.Mutex mutex=new System.Threading.Mutex(true,"RabNetApplication",out new_instance))
+            {
+                if (new_instance)
+                {
+#if !NOCATCH
+                    AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Unhandled);
+                    Application.ThreadException+=new System.Threading.ThreadExceptionEventHandler(Threaded);
+#endif
+                    log4net.Config.XmlConfigurator.Configure();
+                    log = LogManager.GetLogger(typeof(Program));
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+#if PROTECTED
+            bool exit = true;
+            do
+            {
+                exit = true;
+                int hkey = 0;
+
+                //while (PClient.get().farms() == -1 && hkey == 0)
+                while (GRD.Instance.GetFarmsCnt() == -1 && hkey == 0)
+                {
+                    if (MessageBox.Show(null, "Ключ защиты не найден!\nВставьте ключ защиты в компьютер и нажмите кнопку повтор.",
+                            "Ключ защиты", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) == DialogResult.Cancel)
+                    {
+                        hkey = -1;
+                    }
+                }
+//              if (PClient.get().farms() == -1)
+                if (GRD.Instance.GetFarmsCnt() == -1)
+                {
+                    return;
+                }
+                if (!GRD.Instance.GetFlag(GRD.FlagType.RabNet))
+                {
+                    MessageBox.Show("Программа не может работать с данным ключом защиты");
+                    return;
+                }
+                //MessageBox.Show(String.Format("HAS {0:d} FARMS",PClient.get().farms()));
+#endif
+                    bool dbedit = false;
+                    if (args.Length > 0 && args[0] == "dbedit")
+                        dbedit = true;
+                    LoginForm lf = new LoginForm(dbedit);
+                    LoginForm.stop = false;
+                    while (!LoginForm.stop)
+                    {
+                        LoginForm.stop = true;
+                        if (lf.ShowDialog() == DialogResult.OK)
+                        {
+                            Application.Run(new MainForm());
+                        }
+#if PROTECTED
+//                        if (PClient.get().farms() == -1)
+                        if (GRD.Instance.GetFarmsCnt() == -1)
+                        {
+                            LoginForm.stop = true;
+                        }
+#endif
+                    }
+#if PROTECTED
+//                    if (PClient.get().farms() == -1)
+                    if (GRD.Instance.GetFarmsCnt() == -1)
+                    {
+                        exit = false;
+                    }
+            } 
+            while (!exit);
+#endif
+                }//new_instance
+                else
+                {
+                    SwitchRabWindow();
+                }
+        }//using
+         }
+
+#if !NOCATCH
         static void Excepted(Exception ex)
         {
             if (log != null)
@@ -77,92 +164,5 @@ namespace rabnet
         }
 #endif
 
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main(string[] args)
-        {
-            bool new_instance;
-            using(System.Threading.Mutex mutex=new System.Threading.Mutex(true,"RabNetApplication",out new_instance))
-            {
-                if (new_instance)
-                {
-#if (GLOBCATCH)
-//                    AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Unhandled);
-//                    Application.ThreadException+=new System.Threading.ThreadExceptionEventHandler(Threaded);
-#endif
-                    log4net.Config.XmlConfigurator.Configure();
-                    log = LogManager.GetLogger(typeof(Program));
-                    Application.EnableVisualStyles();
-                    Application.SetCompatibleTextRenderingDefault(false);
-#if PROTECTED
-            bool exit = true;
-            do
-            {
-                exit = true;
-                int hkey = 0;
-                //                    while (PClient.get().farms() == -1 && hkey == 0)
-                while (GRD.Instance.GetFarmsCnt() == -1 && hkey == 0)
-                {
-                    if (MessageBox.Show(null, "Ключ защиты не найден!\nВставьте ключ защиты в компьютер и нажмите кнопку повтор.",
-                            "Ключ защиты", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) == DialogResult.Cancel)
-                    {
-                        hkey = -1;
-                    }
-                }
-//              if (PClient.get().farms() == -1)
-                if (GRD.Instance.GetFarmsCnt() == -1)
-                {
-                    return;
-                }
-                //MessageBox.Show(String.Format("HAS {0:d} FARMS",PClient.get().farms()));
-#endif
-                    bool dbedit = false;
-                    if (args.Length > 0 && args[0] == "dbedit")
-                        dbedit = true;
-                    LoginForm lf = new LoginForm(dbedit);
-                    LoginForm.stop = false;
-                    while (!LoginForm.stop)
-                    {
-                        LoginForm.stop = true;
-                        if (lf.ShowDialog() == DialogResult.OK)
-                        {
-                            try
-                            {
-                                Application.Run(new MainForm());
-                            }
-                            catch(Exception ex)
-                            {
-                                log.Fatal("", ex);
-                                MessageBox.Show("Произошла ошибка" + Environment.NewLine + 
-                                    ex.Message + 
-                                    Environment.NewLine + 
-                                    "Программа будет закрыта", "Ошибка.");
-                            }
-                        }
-#if PROTECTED
-//                        if (PClient.get().farms() == -1)
-                        if (GRD.Instance.GetFarmsCnt() == -1)
-                        {
-                            LoginForm.stop = true;
-                        }
-#endif
-                    }
-#if PROTECTED
-//                    if (PClient.get().farms() == -1)
-                    if (GRD.Instance.GetFarmsCnt() == -1)
-                    {
-                        exit = false;
-                    }
-            } while (!exit);
-#endif
-                }//new_instance
-                else
-                {
-                    SwitchRabWindow();
-                }
-        }//using
-         }//main()
     }//class
 }//namespace

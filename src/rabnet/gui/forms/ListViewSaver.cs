@@ -35,7 +35,7 @@ namespace rabnet
         {
             if (op == Options.OPT_ID.NONE) return;
             String val = Engine.opt().getOption(op);
-            if (val == "") return;
+            if (val == "" || val =="0") return;
             String[] cls=val.Split(',');
             int i;
             for (i=0;i<lv.Columns.Count;i++)

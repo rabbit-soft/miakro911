@@ -142,6 +142,11 @@ namespace rabnet
             return options().getIntOption(Options.OPT_ID.MAKE_BRIDE);
         }
 
+        public int candidateAge()
+        {
+            return options().getIntOption(Options.OPT_ID.MAKE_CANDIDATE);
+        }
+
         public bool isAdmin()
         {
             return group == sUser.Admin;

@@ -18,7 +18,8 @@ namespace rabnet
             [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
             private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su,n,cn,tt,vactime,cand;
             private string gd, sh,xf;
-            private RUBOOL ce, ck, uz,sp,ask, fbz;
+            private RUBOOL ce, ck,crp, uz,sp,ask, fbz;
+            private BuchTp bt;
 
             #region zooTime
             [Category("Зоотехнические сроки"),DisplayName("Окрол"),
@@ -88,6 +89,10 @@ namespace rabnet
             DisplayName("Подтверждение списания"),
             Description("Спрашивать подтверждение при списании кроликов")]
             public RUBOOL confirmKill { get { return ck; } set { ck = value; } }
+            [Category("Вид"),
+            DisplayName("Подтверждение пересадку"),
+            Description("Спрашивать подтверждение при пересадке/отсадке кролика")]
+            public RUBOOL confirmReplace { get { return crp; } set { crp = value; } }
             [Category("Вид"), 
             DisplayName("Деревья роословной"),
             Description("Количество отображаемых Деревьев родословной в Поголовье и Молодняке")]
@@ -104,6 +109,7 @@ namespace rabnet
             DisplayName("Заполнять адреса нулями"),
             Description("Заполнять ли символом '0' пробелы в адресе")]
             public RUBOOL fillByZeroes { get { return fbz; } set { fbz = value; } }
+
             #endregion view
             #region plem
             [Category("Племенные свидетельства"),DisplayName("Номер следующего свидетельства"),Description("")]
@@ -113,6 +119,7 @@ namespace rabnet
             [Category("Племенные свидетельства"),DisplayName("Генеральный директор"),Description("Иницияалы Генерального директора предприятия, отображаемые в конце племенного свидетельства")]
             public string genDir { get { return gd; } set { gd = value; } }
             #endregion plem
+#if !DEMO
             #region excel
             [Category("Выгрузка в Excel"), DisplayName("Спрашивать папку"), Description("При выгрузке в Excel спрашивать папку для сохранения")]
             public RUBOOL askFolder 
@@ -138,6 +145,21 @@ namespace rabnet
                 }
             }
             #endregion excel
+            [Category("Другое"),
+            DisplayName("Источник информации о продукции"),
+            Description("Что отвечает за внесение новой продукции в программу")]
+            public BuchTp bucherType
+            {
+                get { return bt; }
+                set
+                {
+                    bt = value;
+                }
+            }
+#endif 
+            
+
+
             public int fromR(RUBOOL value)
             {
                 return (value == RUBOOL.Да)?1:0;
@@ -183,18 +205,24 @@ namespace rabnet
                 genTree = o.getIntOption(Options.OPT_ID.GEN_TREE);
                 confirmExit = toR(o.getIntOption(Options.OPT_ID.CONFIRM_EXIT));
                 confirmKill = toR(o.getIntOption(Options.OPT_ID.CONFIRM_KILL));
+                confirmReplace = toR(o.getIntOption(Options.OPT_ID.CONFIRM_REPLACE));
                 updateZoo = toR(o.getIntOption(Options.OPT_ID.UPDATE_ZOO));
                 showPartners = toR(o.getIntOption(Options.OPT_ID.FIND_PARTNERS));
                 fbz = toR(o.getIntOption(Options.OPT_ID.BUILD_FILL_ZERO));
+
                 //svid
                 nextSvid = o.getIntOption(Options.OPT_ID.NEXT_SVID);
                 svidHead = o.getOption(Options.OPT_ID.SVID_HEAD);
                 genDir = o.getOption(Options.OPT_ID.SVID_GEN_DIR);
+#if !DEMO
                 //xls
                 ask = toR(o.getIntOption(Options.OPT_ID.XLS_ASK));
                 xf = o.getOption(Options.OPT_ID.XLS_FOLDER);
                 if (ask == RUBOOL.Нет && xf == "") 
                     xf = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                //buch
+                bt = (BuchTp)o.getIntOption(Options.OPT_ID.BUCHER_TYPE);
+#endif
             }
 
             public void save()
@@ -223,6 +251,7 @@ namespace rabnet
                 o.setOption(Options.OPT_ID.GEN_TREE, genTree);
                 o.setOption(Options.OPT_ID.CONFIRM_EXIT, fromR(confirmExit));
                 o.setOption(Options.OPT_ID.CONFIRM_KILL, fromR(confirmKill));
+                o.setOption(Options.OPT_ID.CONFIRM_REPLACE,fromR(confirmReplace));
                 o.setOption(Options.OPT_ID.UPDATE_ZOO, fromR(updateZoo));
                 o.setOption(Options.OPT_ID.FIND_PARTNERS, fromR(showPartners));
                 o.setOption(Options.OPT_ID.BUILD_FILL_ZERO,fromR(fbz));
@@ -230,9 +259,13 @@ namespace rabnet
                 o.setOption(Options.OPT_ID.NEXT_SVID, nextSvid);
                 o.setOption(Options.OPT_ID.SVID_HEAD, svidHead);
                 o.setOption(Options.OPT_ID.SVID_GEN_DIR, genDir);
+#if !DEMO
                 //xls
                 o.setOption(Options.OPT_ID.XLS_ASK, fromR(ask));
                 o.setOption(Options.OPT_ID.XLS_FOLDER, xf);
+                //buch
+                o.setOption(Options.OPT_ID.BUCHER_TYPE,(int)bt);
+#endif
             }
         }
 

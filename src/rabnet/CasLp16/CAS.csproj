@@ -31,10 +31,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\party3d\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CasLP16.cs" />
@@ -51,6 +56,7 @@
     <Compile Include="ScaleForm.Designer.cs">
       <DependentUpon>ScaleForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ScaleOpt.cs" />
     <Compile Include="x_tools.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +78,9 @@
       <Project>{241724AB-0674-41CF-A8AD-224EEC248E40}</Project>
       <Name>engine</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CASupdate.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -2,7 +2,7 @@
 using System;
 using System.Windows.Forms;
 using log4net;
-using X_Classes;
+//using X_Classes;
 using System.Diagnostics;
 using System.IO;
 #if PROTECTED
@@ -26,10 +26,11 @@ namespace rabdump
 
         public MainForm()
         {
-            InitializeComponent();
+            InitializeComponent();     
             log4net.Config.XmlConfigurator.Configure();
             _rupd = new RabUpdater();
             _rupd.MessageSenderCallback = MessageCb;
+            RabServWorker.OnMessage += new MessageSenderCallbackDelegate(MessageCb);
             _rupd.CloseCallback = CloseCb;
             _socksrv = new SocketServer();
         }
@@ -115,27 +116,27 @@ namespace rabdump
 
         private void ReinitTimer(bool onStart)
         {
-            timer1.Stop();
-            timer1.Start();
+            tDumper.Stop();
+            tDumper.Start();
             jobsMenuItem.DropDownItems.Clear();
             restMenuItem.DropDownItems.Clear();
             foreach (ArchiveJob j in Options.Get().Jobs)
             {
                 jobsMenuItem.DropDownItems.Add(j.Name, null, jobnowMenuItem_Click);
-                restMenuItem.DropDownItems.Add(j.Name,null,restMenuItem_Click);
+                restMenuItem.DropDownItems.Add(j.Name, null, restMenuItem_Click);
             }
             ProcessTiming(onStart);
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void tDumper_Tick(object sender, EventArgs e)
         {
             ProcessTiming(false);
-            if ((_updDelayCnt >= 900000) && (!timer_up.Enabled))
+            if ((_updDelayCnt >= 900000) && (!tUpdater.Enabled))
             {
                 _rupd.CheckUpdate();
-                timer_up.Enabled = true;
+                tUpdater.Enabled = true;
             }
-            if ((_updDelayCnt < 900000) && (!timer_up.Enabled))
+            if ((_updDelayCnt < 900000) && (!tUpdater.Enabled))
             {
                 _updDelayCnt++;
             }
@@ -153,12 +154,25 @@ namespace rabdump
 #endif
         }
 
+        /// <summary>
+        /// Проверяет все расписания на необходимость обновления
+        /// </summary>
+        /// <param name="onstart">Делать ли дамп при старте</param>
         private void ProcessTiming(bool onstart)
         {
             log().Debug("processing timer " + (onstart ? "OnStart" : ""));
             foreach (ArchiveJob j in Options.Get().Jobs)
+            {
                 if (j.NeedDump(onstart))
                     DoDump(j);
+                /*if (j.NeedServDump(onstart))
+                    ServDump(j);*/
+            }
+        }
+
+        private void ServDump(ArchiveJob j)
+        {
+            RabServWorker.MakeDump(j);
         }
 
         private void jobnowMenuItem_Click(object sender, EventArgs e)
@@ -170,7 +184,10 @@ namespace rabdump
                         DoDump(j);
                 }
         }
-
+        /// <summary>
+        /// Делает резервирование одного расписания
+        /// </summary>
+        /// <param name="j"></param>
         private void DoDump(ArchiveJob j)
         {
             notifyIcon1.ShowBalloonTip(5000,"Резервирование",j.Name,ToolTipIcon.Info);
@@ -205,12 +222,14 @@ namespace rabdump
             new FarmChangeForm().ShowDialog();
         }
 
-        private void MessageCb(string txt, string ttl,ToolTipIcon ico, bool hide)
+        private void MessageCb(string txt, string ttl,int type, bool hide)
         {
+            if (type < 0) type = 0;
+            if (type > 3) type = 3;
             if (InvokeRequired)
             {
                 MessageSenderCallbackDelegate d = MessageCb;
-                Invoke(d,new object[] {txt,ttl,ico,hide});
+                Invoke(d,new object[] {txt,ttl,(ToolTipIcon)type,hide});
             }
             else
             {
@@ -221,7 +240,7 @@ namespace rabdump
                 }
                 else
                 {
-                    notifyIcon1.ShowBalloonTip(5, ttl, txt, ico);
+                    notifyIcon1.ShowBalloonTip(10, ttl, txt, (ToolTipIcon)type);//10secs is min
                 }
             }
         }
@@ -261,9 +280,13 @@ namespace rabdump
             aFrm.Show();
         }
 
-        private void jobsMenuItem_Click(object sender, EventArgs e)
+        private void отправитьНаСерверToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            foreach (ArchiveJob j in Options.Get().Jobs)
+            {
+                if (j.NeedServDump(true))
+                    ServDump(j);
+            }
         }
 
     }

@@ -355,7 +355,7 @@
             // 
             this.showTierTMenuItem.CheckOnClick = true;
             this.showTierTMenuItem.Name = "showTierTMenuItem";
-            this.showTierTMenuItem.Size = new System.Drawing.Size(228, 22);
+            this.showTierTMenuItem.Size = new System.Drawing.Size(234, 22);
             this.showTierTMenuItem.Text = "Показывать типы ярусов";
             this.showTierTMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
@@ -363,15 +363,15 @@
             // 
             this.showTierSMenuItem.CheckOnClick = true;
             this.showTierSMenuItem.Name = "showTierSMenuItem";
-            this.showTierSMenuItem.Size = new System.Drawing.Size(228, 22);
-            this.showTierSMenuItem.Text = "Пказывать типы отделений";
+            this.showTierSMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.showTierSMenuItem.Text = "Показывать типы отделений";
             this.showTierSMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
             // shortNamesMenuItem
             // 
             this.shortNamesMenuItem.CheckOnClick = true;
             this.shortNamesMenuItem.Name = "shortNamesMenuItem";
-            this.shortNamesMenuItem.Size = new System.Drawing.Size(228, 22);
+            this.shortNamesMenuItem.Size = new System.Drawing.Size(234, 22);
             this.shortNamesMenuItem.Text = "Сокращения в таблицах";
             this.shortNamesMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
@@ -379,7 +379,7 @@
             // 
             this.shortZooMenuItem.CheckOnClick = true;
             this.shortZooMenuItem.Name = "shortZooMenuItem";
-            this.shortZooMenuItem.Size = new System.Drawing.Size(228, 22);
+            this.shortZooMenuItem.Size = new System.Drawing.Size(234, 22);
             this.shortZooMenuItem.Text = "Сокращения в зоотехплане";
             this.shortZooMenuItem.Click += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
@@ -387,33 +387,33 @@
             // 
             this.dblSurMenuItem.CheckOnClick = true;
             this.dblSurMenuItem.Name = "dblSurMenuItem";
-            this.dblSurMenuItem.Size = new System.Drawing.Size(228, 22);
+            this.dblSurMenuItem.Size = new System.Drawing.Size(234, 22);
             this.dblSurMenuItem.Text = "Двойные фамилии";
             this.dblSurMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(225, 6);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(231, 6);
             // 
             // shNumMenuItem
             // 
             this.shNumMenuItem.CheckOnClick = true;
             this.shNumMenuItem.Name = "shNumMenuItem";
-            this.shNumMenuItem.Size = new System.Drawing.Size(228, 22);
+            this.shNumMenuItem.Size = new System.Drawing.Size(234, 22);
             this.shNumMenuItem.Text = "Показывать номера";
             this.shNumMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
             // toolStripMenuItem5
             // 
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(225, 6);
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(231, 6);
             // 
             // geterosisMenuItem
             // 
             this.geterosisMenuItem.CheckOnClick = true;
             this.geterosisMenuItem.Name = "geterosisMenuItem";
-            this.geterosisMenuItem.Size = new System.Drawing.Size(228, 22);
+            this.geterosisMenuItem.Size = new System.Drawing.Size(234, 22);
             this.geterosisMenuItem.Text = "Разрешен гетерозис";
             this.geterosisMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
@@ -421,19 +421,19 @@
             // 
             this.inbreedingMenuItem.CheckOnClick = true;
             this.inbreedingMenuItem.Name = "inbreedingMenuItem";
-            this.inbreedingMenuItem.Size = new System.Drawing.Size(228, 22);
+            this.inbreedingMenuItem.Size = new System.Drawing.Size(234, 22);
             this.inbreedingMenuItem.Text = "Разрешен инбридинг";
             this.inbreedingMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(225, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(231, 6);
             // 
             // miScale
             // 
             this.miScale.Name = "miScale";
-            this.miScale.Size = new System.Drawing.Size(228, 22);
+            this.miScale.Size = new System.Drawing.Size(234, 22);
             this.miScale.Text = "Весы";
             this.miScale.Click += new System.EventHandler(this.miScale_Click);
             // 
@@ -441,7 +441,7 @@
             // 
             this.paramsMenuItem1.Name = "paramsMenuItem1";
             this.paramsMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-            this.paramsMenuItem1.Size = new System.Drawing.Size(228, 22);
+            this.paramsMenuItem1.Size = new System.Drawing.Size(234, 22);
             this.paramsMenuItem1.Text = "Параметры ...";
             this.paramsMenuItem1.Click += new System.EventHandler(this.paramsMenuItem1_Click);
             // 

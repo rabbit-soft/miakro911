@@ -142,10 +142,11 @@ namespace rabnet
         List<sMeal> getMealPeriods();
         void addMealIn(DateTime start, int amount);
         void addMealOut(DateTime start, int amount);
+        void deleteMeal(int id);
 
         List<ScalePLUSummary> getPluSummarys(DateTime date);
         void addPLUSummary(int prodid, string prodname, int tsell, int tsumm, int tweight, DateTime cleared);
-       
+        void deletePLUsummary(int sid,DateTime lastClear);
     }
 
 }

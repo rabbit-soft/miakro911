@@ -1,13 +1,70 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Drawing.Design;
 using System.IO;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using System.Reflection;
+#if PROTECTED
+using RabGRD;
+#endif
 
 namespace rabdump
 {
+    #region myeditors
+
+    /// <summary>
+    /// Предпосылками для создания служило то,
+    /// что по умолчанию в форме Редактора Расписаний
+    /// Text выглядел как "blabla Collection Editor"
+    /// </summary>
+    class MyCollectionEditor : CollectionEditor
+    {
+        protected MyCollectionEditor(Type type) : base(type) { }
+        private string _text = "";
+        protected string Caption
+        {
+            set { _text = value; }
+        }
+        protected override CollectionForm CreateCollectionForm()
+        {
+            CollectionForm collectionForm = base.CreateCollectionForm();
+            Form frmCollectionEditorForm = collectionForm as Form;
+            frmCollectionEditorForm.Text = _text;
+
+
+            return collectionForm;
+        }
+    }
+
+    class DBce : MyCollectionEditor
+    {
+        public DBce(Type type): base(type){Caption = "Коллекция Баз Данных";}
+    }
+
+    class AJce : MyCollectionEditor
+    {
+        public AJce(Type type) : base(type) { Caption = "Коллекция Расписаний резервирования на локальном компьютере"; }
+    }
+
+        
+    class CollectionTypeConverter : TypeConverter
+    {
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destType)
+        {
+            return destType == typeof(string);
+        }
+
+        public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture,object value, Type destType)
+        {
+            return "Список...";
+        }
+    }
+
+    #endregion
+
     [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
     class DataBase : Object
     {
@@ -55,53 +112,18 @@ namespace rabdump
             return _nm;
         }     
 
-        /*public void Save(XmlNode nd,XmlDocument doc)
-        {
-            XmlElement db = doc.CreateElement("db");
-            db.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(Name));
-            db.AppendChild(doc.CreateElement("host")).AppendChild(doc.CreateTextNode(Host));
-            db.AppendChild(doc.CreateElement("db")).AppendChild(doc.CreateTextNode(DBName));
-            db.AppendChild(doc.CreateElement("user")).AppendChild(doc.CreateTextNode(User));
-            db.AppendChild(doc.CreateElement("password")).AppendChild(doc.CreateTextNode(Password));
-            nd.AppendChild(db);
-        }*/   
-
-        /*public void Load(XmlNode nd)
-        {
-            if (nd.Name != "db") return;
-            foreach(XmlNode n in nd.ChildNodes)
-            {
-
-                String val = "";
-                if (n.ChildNodes.Count>0)
-                    val=n.ChildNodes[0].Value;
-                switch (n.Name)
-                {
-                    case "name": Name = val; break;
-                    case "host": Host = val; break;
-                    case "db": DBName = val; break;
-                    case "user": User = val; break;
-                    case "password": Password = val; break;
-                }
-            }
-        }
-
-        public static DataBase Load(XmlNode nd,int hz)
-        {
-            DataBase db = new DataBase();
-            db.Load(nd);
-            return db;
-        }*/
+       
     }
 
     [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
     class ArchiveJob : Object
     {
         [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
-        public enum ArcType {При_Запуске,Единожды,Ежедневно,Еженедельно,Ежемесячно};
-        const string Obj = " Объект";
+        public enum ArcType { При_Запуске, Единожды, Ежедневно, Еженедельно, Ежемесячно, Никогда };
+        const string Obj = " Резервирование";
         const string Data = "Данные";
         const string Time = "Расписание";
+        const string Serv = "Удаленное резервирование";
         private string _nm = "Расписание", _bp = "C:\\";
         private int _sl, _cl, _rp;
         private DataBase _db = DataBase.AllDataBases;
@@ -109,7 +131,12 @@ namespace rabdump
         private ArcType _tp;
         public string Guid ="";
         public bool Busy = false;
+        private DateTime _servTime = DateTime.Parse("18:00");
+        private ArcType _servType = ArcType.Никогда;
         public DateTime LastWork = DateTime.MinValue;
+
+        [Browsable(false)]
+        public DateTime ServDateTime { get { return _servTime; } }
 
         [Category(Obj), DisplayName("Название"), Description("")]
         public String Name { get { return _nm; } set { if (value!="") _nm = value; } }
@@ -132,31 +159,39 @@ namespace rabdump
         public DateTime StartTime { get { return _st; } set { _st = value; } }
         
         [Category(Time), DisplayName("Резервировать"), Description("")]
-        public ArcType Type { get { return _tp; } set { _tp = value; } }
+        public ArcType arcType { get { return _tp; } set { _tp = value; } }
         
         [Category(Time), DisplayName("Повторять каждые (часов)"), Description("")]
         public int Repeat { get { return _rp; } set { _rp = value; } }
+
+        [Category(Serv), DisplayName("Время"), Description("Врямя отправки резервных копий баз данных на сервер."), Browsable(false)]
+        public string ServTime
+        {
+            get { return _servTime.ToString("HH:mm"); }
+            set
+            {
+                try
+                {
+                    _servTime = DateTime.Parse(value);
+                }
+                catch { }
+            }
+        }
+
+        [Category(Serv), DisplayName("Оправлять"), Description("Как часто отправлять РКБД на удаленный сервер"), Browsable(false)]
+        public ArcType ServType { get { return _servType; } set { _servType = value; } }
+
         
         public override string ToString()
         {
             return _nm;
         }
 
-        public int IntType()
+        public ArchiveJob() 
         {
-                switch (this.Type)
-                {
-                    case ArcType.Единожды: return 1;
-                    case ArcType.Ежедневно: return 2;
-                    case ArcType.Еженедельно: return 3;
-                    case ArcType.Ежемесячно: return 4;
-                    default: return 0;
-                }          
         }
 
-        public ArchiveJob() { }
-
-        public ArchiveJob(string guid, string name, DataBase db, string path, string start, int type, int countlimit,int sizelimit, int repeat)
+        public ArchiveJob(string guid, string name, DataBase db, string path, string start, int type, int countlimit,int sizelimit, int repeat,string servTime,int servType):this()
         {
             this.Guid = guid;
             _nm = name;
@@ -167,74 +202,54 @@ namespace rabdump
             _cl = countlimit;
             _sl = sizelimit;
             _rp = repeat;
+            _servTime = DateTime.Parse(servTime);
+            _servType = getAJtype(servType);
         }
 
         private ArcType getAJtype(int i)
         {
             switch (i)
             {
+                case 0: return ArcType.При_Запуске;
                 case 1: return ArcType.Единожды;
                 case 2: return ArcType.Ежедневно;
                 case 3: return ArcType.Еженедельно;
                 case 4: return ArcType.Ежемесячно;
-                default: return ArcType.При_Запуске;
+                default: return ArcType.Никогда;
             }
         }
 
-        /*
-        public void Save(XmlNode nd,XmlDocument doc)
+        public int IntType()
         {
-            try
+            switch (this.arcType)
             {
-                XmlElement j = doc.CreateElement("job");
-                j.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(Name));
-                j.AppendChild(doc.CreateElement("db")).AppendChild(doc.CreateTextNode(DB.Name));
-                j.AppendChild(doc.CreateElement("path")).AppendChild(doc.CreateTextNode(BackupPath));
-                j.AppendChild(doc.CreateElement("sizelim")).AppendChild(doc.CreateTextNode(SizeLimit.ToString()));
-                j.AppendChild(doc.CreateElement("countlim")).AppendChild(doc.CreateTextNode(CountLimit.ToString()));
-                j.AppendChild(doc.CreateElement("start")).AppendChild(doc.CreateTextNode(_st.ToString("dd.MM.yyyy HH:mm")));
-                j.AppendChild(doc.CreateElement("type")).AppendChild(doc.CreateTextNode(Type.ToString()));
-                j.AppendChild(doc.CreateElement("repeat")).AppendChild(doc.CreateTextNode(Repeat.ToString()));
-                nd.AppendChild(j);
-            }
-            catch(NullReferenceException)
-            {
-                MessageBox.Show("Не все поля были заполненны верно");
+                case ArcType.При_Запуске: return 0;
+                case ArcType.Единожды: return 1;
+                case ArcType.Ежедневно: return 2;
+                case ArcType.Еженедельно: return 3;
+                case ArcType.Ежемесячно: return 4;
+                default: return 5;
             }
         }
 
-        public void Load(XmlNode nd)
+        public int IntServType()
         {
-            if (nd.Name != "job") return;
-            foreach (XmlNode n in nd.ChildNodes)
+            switch (this.ServType)
             {
-                String val=n.ChildNodes[0].Value;
-                switch(n.Name)
-                {
-                    case "name": Name = val; break;
-                    case "db":
-                        if (val == DataBase.AllDataBases.Name) DB = DataBase.AllDataBases;
-                        foreach (DataBase db in Options.Get().Databases)
-                            if (db.Name == val) 
-                                DB = db;
-                        break;
-                    case "path": BackupPath = val; break;
-                    case "sizelim": SizeLimit = int.Parse(val); break;
-                    case "countlim": CountLimit= int.Parse(val); break;
-                    case "start": _st = DateTime.Parse(val); break;
-                    case "type": Type = (ArcType)Enum.Parse(typeof(ArcType),val); break;
-                    case "repeat": Repeat = int.Parse(val); break;
-                }
+                case ArcType.При_Запуске: return 0;
+                case ArcType.Единожды: return 1;
+                case ArcType.Ежедневно: return 2;
+                case ArcType.Еженедельно: return 3;
+                case ArcType.Ежемесячно: return 4;
+                default: return 5;
             }
         }
 
-        public static ArchiveJob Load(XmlNode nd, int hz)
-        {
-            ArchiveJob jb = new ArchiveJob();
-            jb.Load(nd);
-            return jb;
-        }*/
-
+        /// <summary>
+        /// Сейчас ли переданное дата и время
+        /// </summary>
+        /// <param name="dt">Проверяемое время</param>
+        /// <returns></returns>
         public bool DateCmpNoSec(DateTime dt)
         {
             DateTime cmp1 = new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, 0);
@@ -243,28 +258,79 @@ namespace rabdump
             return cmp1 == cmp2;
         }
 
+        /// <summary>
+        /// Сейчас ли переданное время
+        /// </summary>
         public bool DateCmpTime(DateTime dt)
         {
             return (dt.Hour == DateTime.Now.Hour && dt.Minute == DateTime.Now.Minute);
         }
 
+        /// <summary>
+        /// Нужно ли делать Резервирование по данному расписанию
+        /// </summary>
+        /// <param name="start">Старт ли программы</param>
         public bool NeedDump(bool start)
         {
             if (Busy) return false;
-            if (start && Type == ArcType.При_Запуске)
+            if (arcType == ArcType.Никогда)
+                return false;
+            if (start && arcType == ArcType.При_Запуске)
                 return true;
             if (Repeat>0 && DateCmpNoSec(LastWork.AddHours(Repeat)))
                 return true;
-            if (Type == ArcType.Единожды && DateCmpNoSec(StartTime))
+            if (arcType == ArcType.Единожды && DateCmpNoSec(StartTime))
                 return true;
-            if (Type == ArcType.Ежедневно && DateCmpTime(StartTime))
+            if (arcType == ArcType.Ежедневно && DateCmpTime(StartTime))
                 return true;
-            if (Type == ArcType.Еженедельно && ((DateTime.Now - StartTime).Days % 7) == 0 && DateCmpTime(StartTime))
+            if (arcType == ArcType.Еженедельно && ((DateTime.Now - StartTime).Days % 7) == 0 && DateCmpTime(StartTime))
                 return true;
-            if (Type == ArcType.Ежемесячно && StartTime.Day == DateTime.Now.Day && DateCmpTime(StartTime))
+            if (arcType == ArcType.Ежемесячно && StartTime.Day == DateTime.Now.Day && DateCmpTime(StartTime))
                 return true;
             return false;
         }
+        /// <summary>
+        /// Залить ли на сервер РКБД
+        /// </summary>
+        /// <param name="start"></param>
+        /// <returns></returns>
+        public bool NeedServDump(bool start)
+        {
+            if (ServType == ArcType.Никогда)
+                return false;
+            if (start && ServType == ArcType.При_Запуске)
+                return true;
+            if (ServType == ArcType.Единожды && DateCmpNoSec(_servTime))
+                return true;
+            if (ServType == ArcType.Ежедневно && DateCmpTime(_servTime))
+                return true;
+            if (ServType == ArcType.Еженедельно && ((DateTime.Now - _servTime).Days % 7) == 0 && DateCmpTime(_servTime))
+                return true;
+            if (ServType == ArcType.Ежемесячно && _servTime.Day == DateTime.Now.Day && DateCmpTime(_servTime))
+                return true;
+            return false;
+        }
+
+        private bool checkTime(string val)
+        {
+            const int maxHour = 23;
+            const int maxMint = 59;
+            if (val == "") return false;
+            if (!val.Contains(":")) return false;
+            string[] ham = val.Split(':');
+            try
+            {
+                if(int.Parse(ham[0])>maxHour) return false;
+                if(int.Parse(ham[1])>maxMint) return false;
+            }
+            catch (FormatException) { return false; }
+            return true;
+        }
+    }
+
+    class ServerArchJob : Object
+    {
+
     }
 
     class DataBaseCollection : List<DataBase>
@@ -346,7 +412,8 @@ namespace rabdump
                         raj.Type,
                         raj.CountLimit,
                         raj.SizeLimit,
-                        raj.Repeat));
+                        raj.Repeat,
+                        raj.ServTime,raj.ServType));
             }
         }
 
@@ -382,7 +449,7 @@ namespace rabdump
             {
                 if (aj.Guid == "" || aj.Guid == null)
                     aj.Guid = System.Guid.NewGuid().ToString();
-                RabnetConfig.SaveArchiveJob(aj.Guid, aj.Name, aj.DB.Guid, aj.BackupPath, aj.StartTime.ToString(), aj.IntType(), aj.CountLimit, aj.SizeLimit, aj.Repeat);
+                RabnetConfig.SaveArchiveJob(aj.Guid, aj.Name, aj.DB.Guid, aj.BackupPath, aj.StartTime.ToString(), aj.IntType(), aj.CountLimit, aj.SizeLimit, aj.Repeat,aj.ServDateTime.ToString(),aj.IntServType());
             }
 
             ///Удаляем из RabnetConfig.ArchiveJobs то, что удалили из THIS
@@ -417,7 +484,6 @@ namespace rabdump
         }
     }
 
-
     [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
     class Options:Object
     {
@@ -435,8 +501,9 @@ namespace rabdump
         private String _myPath = @"C:\Program Files\MySQL\MySQL Server 5.1", _p7 = "";
         private Rubool _sas = Rubool.Нет;
 
-        private readonly DataBaseCollection _bds = new DataBaseCollection();
+        private readonly DataBaseCollection _bds = new DataBaseCollection();      
         private readonly ArchiveJobCollection _jobs = new ArchiveJobCollection();
+
 
         /// <summary>
         /// Синглтон опций
@@ -471,11 +538,11 @@ namespace rabdump
         { 
             get { return _p7; } 
             set { _p7 = value; } }
-        
-        [Category(Opt), DisplayName(" Базы данных"), Description("Коллекция Настроек подключения к Базам Данных")]
+
+        [Category(Opt), DisplayName(" Базы данных"), Description("Коллекция Настроек подключения к Базам Данных"), Editor(typeof(DBce), typeof(UITypeEditor)), TypeConverter(typeof(CollectionTypeConverter))]
         public DataBaseCollection Databases { get { return _bds; }}
-        
-        [Category(Opt), DisplayName(" Расписание"),Description("Коллекция расписаний резервирования Баз Данных")]
+
+        [Category(Opt), DisplayName(" Расписания локального резервирования"), Description("Коллекция расписаний резервирования Баз Данных на локальном компьютере"), Editor(typeof(AJce), typeof(UITypeEditor)), TypeConverter(typeof(CollectionTypeConverter))]
         public ArchiveJobCollection Jobs { get { return _jobs; } }
         
         [Category(Opt), DisplayName("Запускать при старте системы"),Description("Запускать программу вместе с Windows")]
@@ -490,33 +557,10 @@ namespace rabdump
             _jobs.SaveAJs(_bds);
             RabnetConfig.SaveOption(RabnetConfig.OptionType.MysqlPath, _myPath);
             RabnetConfig.SaveOption(RabnetConfig.OptionType.zip7path, _p7);
-            //foreach (ArchiveJob jb in Jobs)
-                //jb.Save(rn, doc);
-            //Microsoft.Win32.RegistryKey rk = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(ArKey);
-            //rk.DeleteValue(ArValue, false);
             string s = "";
             if (StartAtStart == Rubool.Да)
-                s = Application.StartupPath;    
+                s = Application.ExecutablePath;    
             RabnetConfig.SaveOption(RabnetConfig.OptionType.rabdump_startupPath, s);
-            /*MainForm.log().Debug("saving options");
-            XmlDocument doc = new XmlDocument();
-            XmlElement rn = doc.CreateElement(Rdo);
-            doc.AppendChild(rn);
-            rn.AppendChild(doc.CreateElement("mysql")).AppendChild(doc.CreateTextNode(MySqlPath));
-            rn.AppendChild(doc.CreateElement("mysqldump")).AppendChild(doc.CreateTextNode(MySqlDumpPath));
-            rn.AppendChild(doc.CreateElement("z7")).AppendChild(doc.CreateTextNode(Path7Z));
-            foreach (DataBase db in Databases)
-                db.Save(rn, doc);
-            foreach (ArchiveJob jb in Jobs)
-                jb.Save(rn, doc);
-            Configuration conf = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            conf.GetSection(Rdo).SectionInformation.SetRawXml(doc.OuterXml);
-            conf.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection(Rdo);
-            RegistryKey rk=Registry.LocalMachine.CreateSubKey(ArKey);
-            rk.DeleteValue(ArValue,false);
-            if (StartAtStart==Rubool.Да)
-                rk.SetValue(ArValue,Application.ExecutablePath);*/
         }
 
         /// <summary>
@@ -531,51 +575,14 @@ namespace rabdump
             _jobs.LoadAJs(_bds);
             MySqlPath = RabnetConfig.GetOption(RabnetConfig.OptionType.MysqlPath);
             _p7 = RabnetConfig.GetOption(RabnetConfig.OptionType.zip7path);
-            /*MainForm.log().Debug("loading options");
-            if (nd.Name != Rdo) return;
-            Databases.Clear();
-            Jobs.Clear();
-            foreach (XmlNode n in nd.ChildNodes)
-            {
-                switch (n.Name)
-                {
-                    case "db": _oops.Databases.Add(DataBase.Load(n, 0)); break;
-                    case "job": _oops.Jobs.Add(ArchiveJob.Load(n, 0)); break;
-                    case "z7": 
-                    case "mysql": 
-                    case "mysqldump": 
-                        string xVal;
-                        try
-                        {
-                            xVal = n.ChildNodes[0].Value;
-                        }
-                        catch
-                        {
-                            xVal = "";
-                        }
-
-                        switch (n.Name)
-                        {
-                            case "z7": Path7Z = xVal; break;
-                            case "mysql": MySqlPath = xVal; break;
-                            case "mysqldump": MySqlDumpPath = xVal; break;
-                        }
-                        break;
-
-                }
-            }*/
+            
             StartAtStart = Rubool.Нет;
-            //Microsoft.Win32.RegistryKey rk = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(ArKey);
+            
             string val = RabnetConfig.GetOption(RabnetConfig.OptionType.rabdump_startupPath);
             if (val != null)
                 if (val == Application.ExecutablePath)
                     StartAtStart = Rubool.Да;
         }
-
-        /*public void Load()
-        {
-            Load(ConfigurationManager.GetSection(Rdo) as XmlNode);
-        }*/
 
     }
     

@@ -53,7 +53,7 @@ namespace rabnet
             rsb.run();
         }
 
-        private void восстановитьToolStripMenuItem_Click(object sender, EventArgs e)
+        private void miRestore_Click(object sender, EventArgs e)
         {
             foreach (ListViewItem li in listView1.SelectedItems)
             {
@@ -73,7 +73,7 @@ namespace rabnet
             try
             {
                 DateTime murderDate = DateTime.Parse(listView1.SelectedItems[0].SubItems[1].Text);
-                murderDate = murderDate.AddDays(10);
+                murderDate = murderDate.AddDays(30);
                 if (murderDate.Date < DateTime.Now.Date)
                 {
                     e.Cancel = true;

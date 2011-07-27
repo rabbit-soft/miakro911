@@ -5,6 +5,7 @@ using System.Text;
 namespace rabnet
 {
     public enum RUBOOL { Да, Нет };
+    public enum BuchTp { Программа, Весы }
 
     public class Options
     {
@@ -13,9 +14,9 @@ namespace rabnet
             NONE, GETEROSIS, INBREEDING, SHORT_NAMES, DBL_SURNAME, SHOW_TIER_TYPE, SHOW_TIER_SEC, RAB_FILTER,
             SHOW_NUMBERS, BUILD_FILTER, OKROL, VUDVOR, COUNT1, COUNT2, COUNT3, MAKE_BRIDE, DEAD_FILTER, PRE_OKROL, 
             ZOO_FILTER, COMBINE_AGE, BOYS_OUT, GIRLS_OUT, STATE_FUCK, FIRST_FUCK, MALE_WAIT, GEN_TREE, CONFIRM_EXIT, 
-            VACC, CONFIRM_KILL, SUCKERS,NEST,CHILD_NEST,RAB_LIST,BUILD_LIST,YOUNG_LIST,DEAD_LIST,REPL_YOUNG_LIST,
+            VACC, CONFIRM_KILL,CONFIRM_REPLACE, SUCKERS,NEST,CHILD_NEST,RAB_LIST,BUILD_LIST,YOUNG_LIST,DEAD_LIST,REPL_YOUNG_LIST,
             MAKE_FUCK_LIST,NAMES_LIST,UPDATE_ZOO,ZOO_LIST,FIND_PARTNERS,NEXT_SVID,SVID_HEAD,SVID_GEN_DIR,
-            KILL_LIST,SHORT_ZOO,VACCINE_TIME,MAKE_CANDIDATE,BUTCHER_LIST,XLS_ASK,XLS_FOLDER,BUILD_FILL_ZERO
+            KILL_LIST,SHORT_ZOO,VACCINE_TIME,MAKE_CANDIDATE,BUTCHER_LIST,XLS_ASK,XLS_FOLDER,BUILD_FILL_ZERO,BUCHER_TYPE
         }
         public enum OPT_LEVEL {FARM,USER};
         public class ExOptionNotFound:ApplicationException
@@ -64,6 +65,7 @@ namespace rabnet
                                    new Option(OPT_ID.CONFIRM_EXIT,OPT_LEVEL.USER,"confirmexit"), 
                                    new Option(OPT_ID.VACC,OPT_LEVEL.FARM,"vacc"), 
                                    new Option(OPT_ID.CONFIRM_KILL,OPT_LEVEL.USER,"confirmkill"), 
+                                   new Option(OPT_ID.CONFIRM_REPLACE,OPT_LEVEL.USER,"confirmreplace"),
                                    new Option(OPT_ID.SUCKERS,OPT_LEVEL.FARM,"suckers"), 
                                    new Option(OPT_ID.NEST,OPT_LEVEL.FARM,"nest"), 
                                    new Option(OPT_ID.CHILD_NEST,OPT_LEVEL.FARM,"childnest"), 
@@ -87,7 +89,8 @@ namespace rabnet
 								   new Option(OPT_ID.BUTCHER_LIST,OPT_LEVEL.USER,"butcherlist"),
                                    new Option(OPT_ID.XLS_ASK,OPT_LEVEL.USER,"xls_ask"),
                                    new Option(OPT_ID.XLS_FOLDER,OPT_LEVEL.USER,"xls_folder"),
-                                   new Option(OPT_ID.BUILD_FILL_ZERO,OPT_LEVEL.USER,"build_fill_zero")
+                                   new Option(OPT_ID.BUILD_FILL_ZERO,OPT_LEVEL.USER,"build_fill_zero"),
+                                   new Option(OPT_ID.BUCHER_TYPE,OPT_LEVEL.FARM,"butcher_type")
                                    };
         public Options(RabNetEngine eng)
         {

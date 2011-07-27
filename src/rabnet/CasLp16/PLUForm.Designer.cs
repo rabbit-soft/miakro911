@@ -1,4 +1,4 @@
-﻿namespace rabnet
+﻿namespace CAS
 {
     partial class PLUForm
     {
@@ -127,16 +127,16 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(9, 117);
+            this.label5.Location = new System.Drawing.Point(137, 143);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(36, 13);
+            this.label5.Size = new System.Drawing.Size(73, 13);
             this.label5.TabIndex = 0;
-            this.label5.Text = "Цена:";
+            this.label5.Text = "Цена (за КГ):";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tbPrice
             // 
-            this.tbPrice.Location = new System.Drawing.Point(51, 114);
+            this.tbPrice.Location = new System.Drawing.Point(213, 140);
             this.tbPrice.MaxLength = 4;
             this.tbPrice.Name = "tbPrice";
             this.tbPrice.Size = new System.Drawing.Size(48, 20);
@@ -146,12 +146,13 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(126, 117);
+            this.label6.Location = new System.Drawing.Point(93, 117);
+            this.label6.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(84, 13);
+            this.label6.Size = new System.Drawing.Size(117, 13);
             this.label6.TabIndex = 0;
-            this.label6.Text = "Срок годности:";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label6.Text = "Срок годности (дней):";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // tbLiveTime
             // 
@@ -164,8 +165,9 @@
             // 
             // label7
             // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(10, 143);
+            this.label7.Location = new System.Drawing.Point(10, 169);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(77, 13);
             this.label7.TabIndex = 8;
@@ -173,7 +175,8 @@
             // 
             // tbTara
             // 
-            this.tbTara.Location = new System.Drawing.Point(91, 140);
+            this.tbTara.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.tbTara.Location = new System.Drawing.Point(91, 166);
             this.tbTara.MaxLength = 6;
             this.tbTara.Name = "tbTara";
             this.tbTara.Size = new System.Drawing.Size(48, 20);
@@ -202,7 +205,7 @@
             // 
             this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btCancel.Location = new System.Drawing.Point(99, 180);
+            this.btCancel.Location = new System.Drawing.Point(99, 206);
             this.btCancel.Name = "btCancel";
             this.btCancel.Size = new System.Drawing.Size(75, 23);
             this.btCancel.TabIndex = 10;
@@ -213,17 +216,19 @@
             // 
             this.btOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btOk.Location = new System.Drawing.Point(181, 180);
+            this.btOk.Location = new System.Drawing.Point(181, 206);
             this.btOk.Name = "btOk";
             this.btOk.Size = new System.Drawing.Size(75, 23);
             this.btOk.TabIndex = 10;
             this.btOk.Text = "Сохранить";
             this.btOk.UseVisualStyleBackColor = true;
+            this.btOk.Click += new System.EventHandler(this.btOk_Click);
             // 
             // label9
             // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(142, 143);
+            this.label9.Location = new System.Drawing.Point(142, 169);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(68, 13);
             this.label9.TabIndex = 8;
@@ -231,9 +236,10 @@
             // 
             // comboBox1
             // 
+            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(213, 140);
+            this.comboBox1.Location = new System.Drawing.Point(213, 166);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(48, 21);
             this.comboBox1.TabIndex = 11;
@@ -242,7 +248,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(268, 215);
+            this.ClientSize = new System.Drawing.Size(268, 241);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.btOk);
             this.Controls.Add(this.btCancel);
@@ -263,11 +269,14 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.tbID);
             this.Controls.Add(this.label1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "PLUForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.Text = "PLUForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Запись о товаре";
             this.ResumeLayout(false);
             this.PerformLayout();
 

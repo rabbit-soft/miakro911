@@ -266,10 +266,10 @@ namespace rabnet
         /// <returns></returns>
         private string breedsQuery(Filters f)
         {
-            string s = String.Format(@"SELECT r_breed br,(SELECT b_name FROM breeds WHERE b_id=br) breed,
+            return String.Format(@"SELECT r_breed br,(SELECT b_name FROM breeds WHERE b_id=br) breed,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=2 AND r_breed=br) fuck,
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=1 AND r_breed=br) kandidat,
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=0 AND r_breed=br) boys,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND (r_status=1 OR (r_status=0 AND to_days(NOW())-to_days(r_born)>={1:s} )) AND r_breed=br) kandidat,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=0 AND (to_days(NOW())-to_days(r_born)<{1:s})  AND r_breed=br) boys,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status>=2 AND r_breed=br) state,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND ((r_status=0 AND r_event_date IS NOT NULL)OR r_status=1 ) AND r_breed=br) pervo,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND (r_status=0 AND r_event_date IS NULL) AND r_breed=br AND r_born<=(now()-INTERVAL {0:s} day)) nevest,
@@ -280,16 +280,15 @@ FROM rabbits GROUP BY r_breed
 union
 
 select 'Итого','',(SELECT count(*) FROM rabbits WHERE r_sex='male' AND r_status=2),
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=1) kandidat,
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=0) boys,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND (r_status=1 OR (r_status=0 AND to_days(NOW())-to_days(r_born)>={1:s}) ) ) kandidat,
+(SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=0 AND (to_days(NOW())-to_days(r_born)<{1:s})) boys,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status>=2 ) state,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND ((r_status=0 AND r_event_date IS NOT NULL)OR r_status=1)) pervo,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND (r_status=0 AND r_event_date IS NULL) AND r_born<=(now()-INTERVAL {0:s} day)) nevest,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=0 and r_born>(now()-INTERVAL {0:s} day)) girl,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='void') bezpolie,
 sum(r_group) vsego
-from rabbits;", f.safeValue("brd","121"));
-            return s;
+from rabbits;", f.safeValue("brd","121"),f.safeValue("cnd","120"));
         }
 
         /// <summary>
