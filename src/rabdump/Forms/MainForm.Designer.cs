@@ -37,7 +37,7 @@
             this.RunRabnetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.новаяФермаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
-            this.отправитьНаСерверToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miServDump = new System.Windows.Forms.ToolStripMenuItem();
             this.jobnowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.jobsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.restMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,7 +72,7 @@
             this.RunRabnetToolStripMenuItem,
             this.новаяФермаToolStripMenuItem,
             this.toolStripMenuItem3,
-            this.отправитьНаСерверToolStripMenuItem,
+            this.miServDump,
             this.jobnowMenuItem,
             this.jobsMenuItem,
             this.restMenuItem,
@@ -118,13 +118,12 @@
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             this.toolStripMenuItem3.Size = new System.Drawing.Size(191, 6);
             // 
-            // отправитьНаСерверToolStripMenuItem
+            // miServDump
             // 
-            this.отправитьНаСерверToolStripMenuItem.Name = "отправитьНаСерверToolStripMenuItem";
-            this.отправитьНаСерверToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.отправитьНаСерверToolStripMenuItem.Text = "Отправить на сервер";
-            this.отправитьНаСерверToolStripMenuItem.Visible = false;
-            this.отправитьНаСерверToolStripMenuItem.Click += new System.EventHandler(this.отправитьНаСерверToolStripMenuItem_Click);
+            this.miServDump.Name = "miServDump";
+            this.miServDump.Size = new System.Drawing.Size(194, 22);
+            this.miServDump.Text = "Отправить на сервер";
+            this.miServDump.Click += new System.EventHandler(this.отправитьНаСерверToolStripMenuItem_Click);
             // 
             // jobnowMenuItem
             // 
@@ -291,7 +290,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem AboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripMenuItem отправитьНаСерверToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem miServDump;
     }
 }
 

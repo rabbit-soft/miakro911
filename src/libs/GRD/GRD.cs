@@ -120,6 +120,10 @@ namespace RabGRD
             return _farmCntCache;
         }
 
+        /// <summary>
+        /// Получить название организации,
+        /// на которую выписан ключ
+        /// </summary>
         public string GetOrgName()
         {
             string nm = "";         

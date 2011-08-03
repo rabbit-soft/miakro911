@@ -59,7 +59,7 @@ public static class RabnetConfig
 
     }
 
-    public enum OptionType {MysqlPath,zip7path,rabdump_startupPath }
+    public enum OptionType {MysqlPath,zip7path,rabdump_startupPath,serverUrl }
 
     private static readonly ILog _logger = LogManager.GetLogger(typeof(RabnetConfig));
 
@@ -81,6 +81,8 @@ public static class RabnetConfig
             case OptionType.rabdump_startupPath:
                 k = Registry.LocalMachine.CreateSubKey(STARTUP);
                 return (string)k.GetValue("rabdump", "");
+            case OptionType.serverUrl:
+                return (string)k.GetValue("sUrl","");
         }
         return "";
     }
@@ -98,6 +100,8 @@ public static class RabnetConfig
                 if (val == "") k.DeleteValue("rabdump", false);
                 else k.SetValue("rabdump",val);
                 break;
+            case OptionType.serverUrl:
+                k.SetValue("sUrl", val); break;
         }
     }
 

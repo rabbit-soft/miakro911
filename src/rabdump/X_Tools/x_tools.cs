@@ -28,6 +28,12 @@ namespace X_Tools
             return String.Format("{0:0.00} {1}", dblSByte, suffix[i]);
         }
 
+        /// <summary>
+        /// Заменяет недопустимые символы
+        /// </summary>
+        /// <param name="fileName">Название файла</param>
+        /// <param name="replacer">На что заменить недопустимый символ</param>
+        /// <returns>ЗАщишенная строка</returns>
         public static string SafeFileName(string fileName, string replacer)
         {
             return Regex.Replace(fileName, "[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "]", replacer, RegexOptions.Compiled);

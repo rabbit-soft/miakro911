@@ -159,11 +159,15 @@
     <Content Include="..\..\party3d\GrdAPI32.DLL">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\..\party3d\libcurl.dll">
+      <Link>libcurl.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\party3d\LibCurlShim.dll">
+      <Link>LibCurlShim.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="icon_white.ico" />
-    <Content Include="libcurl.dll">
-    </Content>
-    <Content Include="LibCurlShim.dll">
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

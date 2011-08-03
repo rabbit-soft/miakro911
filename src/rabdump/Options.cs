@@ -164,7 +164,7 @@ namespace rabdump
         [Category(Time), DisplayName("Повторять каждые (часов)"), Description("")]
         public int Repeat { get { return _rp; } set { _rp = value; } }
 
-        [Category(Serv), DisplayName("Время"), Description("Врямя отправки резервных копий баз данных на сервер."), Browsable(false)]
+        [Category(Serv), DisplayName("Время"), Description("Врямя отправки резервных копий баз данных на сервер.")]
         public string ServTime
         {
             get { return _servTime.ToString("HH:mm"); }
@@ -178,7 +178,7 @@ namespace rabdump
             }
         }
 
-        [Category(Serv), DisplayName("Оправлять"), Description("Как часто отправлять РКБД на удаленный сервер"), Browsable(false)]
+        [Category(Serv), DisplayName("Оправлять"), Description("Как часто отправлять РКБД на удаленный сервер")]
         public ArcType ServType { get { return _servType; } set { _servType = value; } }
 
         
@@ -542,7 +542,7 @@ namespace rabdump
         [Category(Opt), DisplayName(" Базы данных"), Description("Коллекция Настроек подключения к Базам Данных"), Editor(typeof(DBce), typeof(UITypeEditor)), TypeConverter(typeof(CollectionTypeConverter))]
         public DataBaseCollection Databases { get { return _bds; }}
 
-        [Category(Opt), DisplayName(" Расписания локального резервирования"), Description("Коллекция расписаний резервирования Баз Данных на локальном компьютере"), Editor(typeof(AJce), typeof(UITypeEditor)), TypeConverter(typeof(CollectionTypeConverter))]
+        [Category(Opt), DisplayName(" Расписания резервирования"), Description("Коллекция расписаний резервирования Баз Данных на локальном компьютере"), Editor(typeof(AJce), typeof(UITypeEditor)), TypeConverter(typeof(CollectionTypeConverter))]
         public ArchiveJobCollection Jobs { get { return _jobs; } }
         
         [Category(Opt), DisplayName("Запускать при старте системы"),Description("Запускать программу вместе с Windows")]

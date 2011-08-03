@@ -1,8 +1,15 @@
-﻿using System;
+﻿#if DEBUG
+    //#define NOCATCH
+#endif
+using System;
 using System.Threading;
 using System.Windows.Forms;
 using System.IO;
 using log4net;
+using System.Collections.Generic;
+#if PROTECTED
+using RabGRD;
+#endif
 
 namespace rabdump
 {
@@ -13,6 +20,7 @@ namespace rabdump
         private Thread _thrRestore;
 
         private readonly WaitForm _wtFrm;
+        private bool _manual=true;
 
         private static readonly ILog log = LogManager.GetLogger(typeof(RestoreForm));
 
@@ -62,6 +70,7 @@ namespace rabdump
         {
             cbDataBase.Items.Clear();
             listView1.Items.Clear();
+
             foreach (ArchiveJob j in Options.Get().Jobs)
                 if (j.Name == cbJobName.Text)
                 {
@@ -76,23 +85,42 @@ namespace rabdump
                 }
             if (cbDataBase.Items.Count!=0)
                 cbDataBase.SelectedIndex = 0;
+            
         }
 
+        /// <summary>
+        /// Заполняет таблицу имеющимися Дампами
+        /// </summary>
+        /// <param name="j"></param>
+        /// <param name="db">имя Бд</param>
         private void FillList(ArchiveJob j, String db)
         {
             listView1.Items.Clear();
             DirectoryInfo di = new DirectoryInfo(j.BackupPath);
-            foreach (FileInfo fi in di.GetFiles())
+            string fls= (X_Tools.XTools.SafeFileName(j.Name, "_") + "_" + X_Tools.XTools.SafeFileName(db, "_")).Replace(" ", "_");
+#if !DEMO
+    #if PROTECTED
+            if (GRD.Instance.GetFlag(GRD.FlagType.ServerDump))
             {
-                String[] nm = Path.GetFileName(fi.FullName).Split('_');
-                string fls = X_Tools.XTools.SafeFileName(j.Name,"_") + "_" + X_Tools.XTools.SafeFileName(db,"_");
-                fls = fls.Replace(" ", "_");
+                string farmname = GRD.Instance.GetOrgName();
+    #elif DEBUG
+                string farmname = "testing";
+    #endif
+                List<String> servDumps = RabServWorker.GetDumpList(farmname, cbDataBase.Text);
+    #if PROTECTED
+            }
+    #endif
+#endif
+            int idx;
+            DateTime dtm;
+            foreach (FileInfo fi in di.GetFiles())
+            {                                 
                 if (Path.GetFileName(fi.FullName).StartsWith(fls))
-                //                    if (nm.Length == ArchiveJobThread.SplitNames && nm[0] == j.Name && nm[1] == db)
                 {
+                    String[] nm = Path.GetFileName(fi.FullName).Split('_');
                     string[] hms = new string[3] { nm[nm.Length - 1].Substring(0, 2), nm[nm.Length - 1].Substring(2, 2), nm[nm.Length - 1].Substring(4, 2) };
-                    DateTime dtm = new DateTime(int.Parse(nm[nm.Length - 4]), int.Parse(nm[nm.Length - 3]), int.Parse(nm[nm.Length - 2]), int.Parse(hms[0]), int.Parse(hms[1]), int.Parse(hms[2]));
-                    int idx = 0;
+                    dtm = new DateTime(int.Parse(nm[nm.Length - 4]), int.Parse(nm[nm.Length - 3]), int.Parse(nm[nm.Length - 2]), int.Parse(hms[0]), int.Parse(hms[1]), int.Parse(hms[2]));
+                    idx = 0;
                     for (int i = 0; i < listView1.Items.Count; i++)
                     {
                         if (DateTime.Parse(listView1.Items[i].SubItems[0].Text) > dtm)
@@ -100,13 +128,41 @@ namespace rabdump
                     }
                     ListViewItem li = listView1.Items.Insert(idx, dtm.ToShortDateString() + " " + dtm.ToLongTimeString());
                     li.SubItems.Add(Path.GetFileName(fi.FullName));
+#if !DEMO
+                    ///Если такой дамп имеется на сервере, то окрашиваем строку в зеленый
+                    if (servDumps.Contains(Path.GetFileName(fi.FullName)))
+                    {
+                        li.ForeColor = System.Drawing.Color.Green;
+                        servDumps.Remove(Path.GetFileName(fi.FullName));
+                    }                  
+#endif
                 }
             }
-            
+#if !DEMO
+            if (servDumps.Count > 0 && j.DB != DataBase.AllDataBases)
+            {
+                foreach (string s in servDumps)
+                {
+                    String[] nm = s.Split('_');
+                    string[] hms = new string[3] { nm[nm.Length - 1].Substring(0, 2), nm[nm.Length - 1].Substring(2, 2), nm[nm.Length - 1].Substring(4, 2) };
+                    dtm = new DateTime(int.Parse(nm[nm.Length - 4]), int.Parse(nm[nm.Length - 3]), int.Parse(nm[nm.Length - 2]), int.Parse(hms[0]), int.Parse(hms[1]), int.Parse(hms[2]));
+                    idx = 0;
+                    for (int i = 0; i < listView1.Items.Count; i++)
+                    {
+                        if (DateTime.Parse(listView1.Items[i].SubItems[0].Text) > dtm)
+                            idx++;
+                        
+                    }
+                    ListViewItem li = listView1.Items.Insert(idx, dtm.ToShortDateString() + " " + dtm.ToLongTimeString());
+                    li.SubItems.Add(s);
+                    li.ForeColor = System.Drawing.Color.BlueViolet;
+                }
+            }
+#endif
         }
 
         private void cbDataBase_SelectedIndexChanged(object sender, EventArgs e)
-        {
+        {         
             DataBase db = _jj.DB;
             if (db == DataBase.AllDataBases)
                 foreach (DataBase d in Options.Get().Databases)
@@ -140,6 +196,15 @@ namespace rabdump
 
         private void btRestore_Click(object sender, EventArgs e)
         {
+            if (listView1.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Выберите Резервную Копию для востановления");
+                return;
+            }
+            if (listView1.SelectedItems[0].Index != 0)
+                if (MessageBox.Show("Выбранная Резервная копия не является самой поздней. Продолжить?", "Внимание!", MessageBoxButtons.YesNo) == DialogResult.No)
+                    return;
+                         
             _thrRestore = new Thread(new ParameterizedThreadStart(RestoreThr));
             RestoreRarams p = new RestoreRarams();
 
@@ -148,6 +213,9 @@ namespace rabdump
             p.User = tbUser.Text;
             p.Password = tbPassword.Text;
             p.File = tbFile.Text;
+#if !DEMO
+            p.fromServer = listView1.SelectedItems[0].ForeColor == System.Drawing.Color.BlueViolet;
+#endif
 
             Enabled = false;
 
@@ -182,8 +250,7 @@ namespace rabdump
                 //Invoke(d);
             }
             else
-            {
-           
+            {     
                 _wtFrm.Hide();
                 if (success)
                 {
@@ -206,12 +273,35 @@ namespace rabdump
 
         private void RestoreThr(object prms)
         {
+#if !NOCATCH
             try
             {
+#endif
                 RestoreRarams p = (RestoreRarams) prms;
-                //MessageBox.Show(p.Db + Environment.NewLine + p.File);
+#if !DEMO
+    #if PROTECTED
+                if (GRD.Instance.GetFlag(GRD.FlagType.ServerDump))
+                {
+    #endif
+                    if (p.fromServer)
+                    {
+                        string filepath = RabServWorker.DownloadDump(Path.GetFileName(p.File));
+                        if (filepath == "")
+                        {
+                            RestoreThrCb(false, new ApplicationException("Проблема при скачки файла." + Environment.NewLine + "Востановление отменено"));
+                            return;
+                        }
+                        else
+                        {
+                            File.Move(filepath, p.File);
+                        }
+                    }
+    #if PROTECTED
+                }
+    #endif
+#endif
                 ArchiveJobThread.UndumpDB(p.Host, p.Db, p.User, p.Password, p.File);
-                //MessageBox.Show("Done");
+#if !NOCATCH
             }
             catch (Exception ex)
             {
@@ -220,7 +310,8 @@ namespace rabdump
                 RestoreThrCb(false, ex);
                 return;
             }
-            RestoreThrCb(true,null);
+#endif
+                RestoreThrCb(true,null);
         }
 
         private void tbFile_TextChanged(object sender, EventArgs e)
@@ -234,10 +325,14 @@ namespace rabdump
     /// </summary>
     public class RestoreRarams
     {
+#if !DEMO
+        public bool fromServer;
+#endif
         public string Host;
         public string Db;
         public string User;
         public string Password;
         public string File;
     }
+
 }

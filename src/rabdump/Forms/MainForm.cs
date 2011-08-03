@@ -29,10 +29,20 @@ namespace rabdump
             InitializeComponent();     
             log4net.Config.XmlConfigurator.Configure();
             _rupd = new RabUpdater();
-            _rupd.MessageSenderCallback = MessageCb;
-            RabServWorker.OnMessage += new MessageSenderCallbackDelegate(MessageCb);
+            _rupd.MessageSenderCallback = MessageCb;          
             _rupd.CloseCallback = CloseCb;
             _socksrv = new SocketServer();
+#if !DEMO   
+    #if PROTECTED
+            if(RabGRD.GRD.Instance.GetFlag(GRD.FlagType.ServerDump))
+            {
+    #endif
+                RabServWorker.SetServerUrl(RabnetConfig.GetOption(RabnetConfig.OptionType.serverUrl));
+                RabServWorker.OnMessage += new MessageSenderCallbackDelegate(MessageCb);
+    #if PROTECTED
+            }
+    #endif
+#endif
         }
 
         public static ILog log()
@@ -165,8 +175,8 @@ namespace rabdump
             {
                 if (j.NeedDump(onstart))
                     DoDump(j);
-                /*if (j.NeedServDump(onstart))
-                    ServDump(j);*/
+                if (j.NeedServDump(onstart))
+                    ServDump(j);
             }
         }
 
@@ -196,6 +206,15 @@ namespace rabdump
 
         private void restMenuItem_Click(object sender, EventArgs e)
         {
+            ///Чтобы не отображалось 2 формы востановления
+            foreach (Form OpenForm in Application.OpenForms)
+            {
+                if (OpenForm.GetType() == typeof(RestoreForm))
+                {
+                    OpenForm.BringToFront();
+                    return;
+                }
+            }
             RestoreForm rest;
             if (sender == restMenuItem)
             {
