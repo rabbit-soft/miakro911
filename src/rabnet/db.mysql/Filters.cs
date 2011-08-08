@@ -10,8 +10,7 @@ namespace rabnet
         public String caption;
         public TreeData[] items;
         public TreeData() { }
-        public TreeData(String text)
-            : this()
+        public TreeData(String text): this()
         {
             caption = text;
         }

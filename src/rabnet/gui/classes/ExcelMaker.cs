@@ -49,7 +49,8 @@ namespace rabnet
                             }
                         break;
                     default:
-                        row = 1;
+                        drawHeader(repType, ref xlWorkSheet);
+                        row = 2;
                         wf.MaxValue = xmls[0].FirstChild.ChildNodes.Count;
                         foreach (XmlNode nd in xmls[0].FirstChild.ChildNodes)
                         {
@@ -226,6 +227,63 @@ namespace rabnet
                 filename = ReportHelper.getRusName(_repType) + " " + DateTime.Now.ToShortDateString() + ".xls";
             }
             return filename;
+        }
+
+        /// <summary>
+        /// Заполняет заголовки колонок.
+        /// (по хорошему их нужно передавать при формировании ХМЛ)
+        /// </summary>
+        /// <param name="repType">Тип отчета</param>
+        /// <param name="xlWorkSheet"></param>
+        private static void drawHeader(myReportType repType, ref Excel.Worksheet xlWS)
+        {
+            xlWS.get_Range("A1", "Z1").Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Green);
+            xlWS.get_Range("A1", "Z1").Font.Bold = true;
+            int col = 1;
+            int row = 1;
+            switch (repType)
+            {
+                case myReportType.BREEDS:
+                    xlWS.Cells[row, col++] = "№";
+                    xlWS.Cells[row, col++] = "Порода";
+                    xlWS.Cells[row, col++] = "Производители";
+                    xlWS.Cells[row, col++] = "Кандидаты";
+                    xlWS.Cells[row, col++] = "Мальчики";
+                    xlWS.Cells[row, col++] = "Штатные";
+                    xlWS.Cells[row, col++] = "Первокролки";
+                    xlWS.Cells[row, col++] = "Невесты";
+                    xlWS.Cells[row, col++] = "Девочки";
+                    xlWS.Cells[row, col++] = "Безполые";
+                    xlWS.Cells[row, col++] = "Всего";
+                    break;
+                case myReportType.AGE:
+                    xlWS.Cells[row, col++] = "Возраст";
+                    xlWS.Cells[row, col++] = "Количество";
+                    break;
+                case myReportType.BY_MONTH:
+                    xlWS.Cells[row, col++] = "Дата";
+                    xlWS.Cells[row, col++] = "Всего";
+                    xlWS.Cells[row, col++] = "Осталось";
+                    break;
+                case myReportType.DEADREASONS:
+                    xlWS.Cells[row, col++] = "Причина";
+                    xlWS.Cells[row, col++] = "Количество";
+                    break;
+                case myReportType.DEAD:
+                    xlWS.Cells[row, col++] = "Дата";
+                    xlWS.Cells[row, col++] = "Имя";
+                    xlWS.Cells[row, col++] = "Количество";
+                    xlWS.Cells[row, col++] = "Причина";
+                    xlWS.Cells[row, col++] = "Заметки";
+                    break;
+                case myReportType.FUCKS_BY_DATE:
+                    xlWS.Cells[row, col++] = "Дата";
+                    xlWS.Cells[row, col++] = "Самка";
+                    xlWS.Cells[row, col++] = "Самец";
+                    xlWS.Cells[row, col++] = "Работник";
+                    break;
+
+            }
         }
     }
     

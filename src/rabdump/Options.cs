@@ -48,8 +48,7 @@ namespace rabdump
     {
         public AJce(Type type) : base(type) { Caption = "Коллекция Расписаний резервирования на локальном компьютере"; }
     }
-
-        
+       
     class CollectionTypeConverter : TypeConverter
     {
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destType)

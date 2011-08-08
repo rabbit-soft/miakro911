@@ -29,13 +29,14 @@ namespace rabnet
         {
             comboBox1.Items.Clear();
             ids.Clear();
-            Fucks ff=Engine.db().allFuckers(0,true,true,0);
             int sid = 0;
+            Fucks ff = Engine.db().allFuckers(0, true, true, 0);
             foreach (Fucks.Fuck f in ff.fucks)
             {
                 comboBox1.Items.Add(f.partner);
                 ids.Add(f.partnerid);
-                if (f.partnerid == fucker) sid = comboBox1.Items.Count - 1;
+                if (f.partnerid == fucker) 
+                    sid = comboBox1.Items.Count - 1;
             }
             if (comboBox1.Items.Count>0) 
                 comboBox1.SelectedIndex = 0;

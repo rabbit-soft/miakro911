@@ -113,16 +113,23 @@ FROM fucks WHERE f_rabid={0:d} AND isdead(f_partner)=0 ORDER BY f_date);", rabbi
 
         public static Fucks AllFuckers(MySqlConnection sql, int female,bool geterosis,bool inbreeding,int malewait)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT r_id,rabname(r_id,2) fullname,r_status,
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT 
+r_id,
+rabname(r_id,2) fullname,
+r_status,
 r_breed,
 (SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=r_genesis) genom,
-(SELECT SUM(f_times) FROM fucks WHERE f_partner=r_id AND f_rabid={0:d}) fucks,
-(SELECT SUM(f_children) FROM fucks WHERE f_partner=r_id AND f_rabid={0:d}) children
-FROM rabbits WHERE r_sex='male' AND r_status>0 AND (r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol)>={1:d}){2:s}{3:s} ORDER BY fullname;",
-female,malewait,
-(geterosis?"":String.Format(" AND r_breed=(SELECT r2.r_breed FROM rabbits r2 WHERE r_id={0:d})",female)),
-(inbreeding?"":String.Format(@" AND (SELECT COUNT(g_genom) FROM genoms WHERE g_id=r_genesis AND g_genom IN 
-(SELECT g2.g_genom FROM genoms g2 WHERE g2.g_id=(SELECT r3.r_genesis from rabbits r3 WHERE r3.r_id={0:d})))=0",female))
+{4:s} fucks,
+{5:s} children
+FROM rabbits 
+WHERE r_sex='male' AND r_status>0 AND (r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol)>={1:d}){2:s}{3:s} ORDER BY fullname;",
+female,
+malewait,
+(geterosis ? "" : String.Format(" AND r_breed=(SELECT r2.r_breed FROM rabbits r2 WHERE r_id={0:d})",female)),
+(inbreeding ? "" : String.Format(@" AND (SELECT COUNT(g_genom) FROM genoms WHERE g_id=r_genesis AND g_genom IN 
+    (SELECT g2.g_genom FROM genoms g2 WHERE g2.g_id=(SELECT r3.r_genesis from rabbits r3 WHERE r3.r_id={0:d})))=0",female)),
+(female !=0 ? String.Format("(SELECT SUM(f_times)     FROM fucks WHERE f_partner=r_id AND f_rabid={0:d})",female): "'0'"),
+(female !=0 ? String.Format("(SELECT SUM(f_children)  FROM fucks WHERE f_partner=r_id AND f_rabid={0:d})",female): "'0'")
 ), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             Fucks f = new Fucks();

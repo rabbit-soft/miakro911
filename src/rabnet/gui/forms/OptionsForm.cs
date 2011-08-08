@@ -262,10 +262,19 @@ namespace rabnet
 #if !DEMO
                 //xls
                 o.setOption(Options.OPT_ID.XLS_ASK, fromR(ask));
-                o.setOption(Options.OPT_ID.XLS_FOLDER, xf);
+                o.setOption(Options.OPT_ID.XLS_FOLDER, protectPath(xf));
                 //buch
                 o.setOption(Options.OPT_ID.BUCHER_TYPE,(int)bt);
 #endif
+            }
+
+            private string protectPath(string path)
+            {
+                if (path.Contains("\\"))
+                {
+                    return path.Replace(@"\", @"\\");
+                }
+                else return path;
             }
         }
 
@@ -292,5 +301,7 @@ namespace rabnet
             (pg.SelectedObject as OptionsHolder).save();
             Close();
         }
+
+
     }
 }

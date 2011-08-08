@@ -364,8 +364,8 @@
 				<attribute type="AssemblyVersionAttribute" value="${fullver}" />
 			</attributes>
 		</asminfo>
-		<copy file="${curdir}/rabdump/libcurl.dll" tofile="${bin_dir}/RabDump/libcurl.dll" />	
-		<copy file="${curdir}/rabdump/LibCurlShim.dll" tofile="${bin_dir}/RabDump/LibCurlShim.dll" />
+		<copy file="${party3d.path}/libcurl.dll" tofile="${bin_dir}/RabDump/libcurl.dll" />	
+		<copy file="${party3d.path}/LibCurlShim.dll" tofile="${bin_dir}/RabDump/LibCurlShim.dll" />
 		<csc target="winexe" output="${bin_dir}/RabDump/rabdump.exe" win32icon="${curdir}/rabdump/icon_white.ico" define="${compile_flag}" optimize="true">
 			<sources>
 				<include name="${curdir}/rabdump/*.cs"/>

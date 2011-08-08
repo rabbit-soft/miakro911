@@ -64,9 +64,9 @@ namespace rabnet
 #if !DEMO
             CAS.ScaleForm.SummarySaving += new CAS.AddPLUSummaryHandler(AddPluSummary);
             if (
-#if PROTECTED
+    #if PROTECTED
                 GRD.Instance.GetFlag(GRD.FlagType.Butcher) && 
-#endif
+    #endif
                 Engine.opt().getIntOption(Options.OPT_ID.BUCHER_TYPE)==1)
             {
                 
@@ -78,7 +78,7 @@ namespace rabnet
             rabStatusBar1.setText(0, Engine.db().now().ToShortDateString());
             this.Text = Engine.get().farmName();
 #if DEMO
-            Text += " Демонстрационная версия";
+            this.Text += " Демонстрационная версия";
 #endif
             Options op = Engine.opt();
             showTierTMenuItem.Checked = (op.getIntOption(Options.OPT_ID.SHOW_TIER_TYPE) == 1);
@@ -89,12 +89,17 @@ namespace rabnet
             inbreedingMenuItem.Checked = (op.getIntOption(Options.OPT_ID.INBREEDING) == 1);
             shNumMenuItem.Checked = (op.getIntOption(Options.OPT_ID.SHOW_NUMBERS) == 1);
             shortZooMenuItem.Checked = (op.safeIntOption(Options.OPT_ID.SHORT_ZOO,1) == 1);
-            Building.SetDefFmt(op.getIntOption(Options.OPT_ID.BUILD_FILL_ZERO) == 1?'0':' ');
+            Building.SetDefFmt(op.getIntOption(Options.OPT_ID.BUILD_FILL_ZERO) == 1 ? '0' : ' ');
             //rabStatusBar1.run();
             manual = false;
 #if !DEMO
             checkPlugins();
-#endif 
+    #if PROTECTED
+            uint elapsed =(uint) GRD.Instance.GetDateEnd().Subtract(DateTime.Now).Days;
+            if (elapsed <= 10)
+                MessageBox.Show(String.Format("Срок лицензии истекает через {0:d} дней", elapsed));
+    #endif
+#endif
 #if PROTECTED || DEMO
             MainForm.protectTest(BuildingsPanel.getFarmsCount(Engine.db().buildingsTree()));
 #endif

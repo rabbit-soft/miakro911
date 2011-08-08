@@ -17,12 +17,14 @@ namespace rabdump
 {
     static class RabServWorker
     {
+#if !DEMO
         public enum State
         {
             /// <summary>
             /// Класс не выполняет никакой работы
             /// </summary>
             Free,
+            Conection_Failed,
             UploadDump_Loading,
             /// <summary>
             /// Успешная загрузка на сервер
@@ -177,15 +179,20 @@ namespace rabdump
         private static void makeDump()      
         {
             while(_ajt.JobIsBusy)           
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
             if (_state != State.Free)
             {
                 callOnMessage("Пока нельзя отправить","",2);
                 return;
             }        
             _logger.Debug("making Server Dump");
-            OnMessage("Начало отсылки" + NL + _ajt.JobName, "Отправка", 1, false);
+            callOnMessage("Начало отсылки" + NL + _ajt.JobName, "Отправка", 1, false);
             getDumpList();
+            if (_state == State.Conection_Failed)
+            {
+                callOnMessage("Не удалось подключиться к серверу", "ошибка", 3);
+                return;
+            }
             if (_state == State.DumpList_NodesYes)
             {
                 if (!System.IO.File.Exists(Options.Get().Path7Z))
@@ -444,16 +451,16 @@ namespace rabdump
                     CURLformoption.CURLFORM_END);
 
                 Easy easy = new Easy();
+                easy.SetOpt(CURLoption.CURLOPT_CONNECTTIMEOUT, 10);
+                easy.SetOpt(CURLoption.CURLOPT_VERBOSE, true);
+                easy.SetOpt(CURLoption.CURLOPT_URL, uploadDumpURI);
+                easy.SetOpt(CURLoption.CURLOPT_HTTPPOST, mform);
 
                 Easy.DebugFunction df = new Easy.DebugFunction(onDebug);
                 easy.SetOpt(CURLoption.CURLOPT_DEBUGFUNCTION, df);
-                easy.SetOpt(CURLoption.CURLOPT_VERBOSE, true);
-
+               
                 Easy.ProgressFunction pf = new Easy.ProgressFunction(onProgress);
                 easy.SetOpt(CURLoption.CURLOPT_PROGRESSFUNCTION, pf);
-
-                easy.SetOpt(CURLoption.CURLOPT_URL, uploadDumpURI);
-                easy.SetOpt(CURLoption.CURLOPT_HTTPPOST, mform);
 
                 easy.Perform();
                 easy.Cleanup();
@@ -634,6 +641,9 @@ namespace rabdump
             {
                 _state = State.DownloadDump_LoadErr;
             }
+            else if (msg == "connect() timed out!\n")          
+                _state = State.Conection_Failed;
+            
         }
 
         private static void callOnMessage(string msg, string ttl, int type, bool hide)
@@ -735,5 +745,6 @@ namespace rabdump
             }
             else return -1;
         }
+#endif
     }
 }

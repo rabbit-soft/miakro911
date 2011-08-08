@@ -99,6 +99,7 @@ namespace rabdump
             DirectoryInfo di = new DirectoryInfo(j.BackupPath);
             string fls= (X_Tools.XTools.SafeFileName(j.Name, "_") + "_" + X_Tools.XTools.SafeFileName(db, "_")).Replace(" ", "_");
 #if !DEMO
+            List<String> servDumps = new List<string>();
     #if PROTECTED
             if (GRD.Instance.GetFlag(GRD.FlagType.ServerDump))
             {
@@ -106,7 +107,7 @@ namespace rabdump
     #elif DEBUG
                 string farmname = "testing";
     #endif
-                List<String> servDumps = RabServWorker.GetDumpList(farmname, cbDataBase.Text);
+                servDumps = RabServWorker.GetDumpList(farmname, cbDataBase.Text);
     #if PROTECTED
             }
     #endif

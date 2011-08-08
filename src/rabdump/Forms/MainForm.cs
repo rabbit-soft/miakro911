@@ -175,8 +175,17 @@ namespace rabdump
             {
                 if (j.NeedDump(onstart))
                     DoDump(j);
-                if (j.NeedServDump(onstart))
-                    ServDump(j);
+#if !DEMO
+    #if PROTECTED
+                if(GRD.Instance.GetFlag(GRD.FlagType.ServerDump))
+                {
+    #endif
+                    if (j.NeedServDump(onstart))
+                        ServDump(j);
+    #if PROTECTED
+                }
+    #endif
+#endif
             }
         }
 

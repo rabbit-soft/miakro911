@@ -25,7 +25,6 @@ namespace rabnet
         /// Защита от расхода памяти
         /// </summary>
         private const int NEW_FARMS_LIMIT = 0xff;
-
         private bool manual = true;
         const String nuBuild = "Новое строение";
         List<int> nofarms = new List<int>();
@@ -98,7 +97,13 @@ namespace rabnet
             }
             nofarm = farm + 1;
         }
-
+        /// <summary>
+        /// Создает ветку в дереве строений.
+        /// </summary>
+        /// <param name="parent">Ветка-родитель</param>
+        /// <param name="name">Название фетки</param>
+        /// <param name="td"></param>
+        /// <returns></returns>
         private TreeNode makenode(TreeNode parent, String name, TreeData td)
         {
             TreeNode n = null;

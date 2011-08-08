@@ -2,6 +2,9 @@
 
 namespace rabnet
 {
+    /// <summary>
+    /// Форма - ПрограсБар
+    /// </summary>
     public partial class WaitForm : Form
     {
         public WaitForm()

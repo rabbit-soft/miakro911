@@ -1,7 +1,7 @@
 ﻿//#define PROTECTED
-#if DEBUG
+//#if DEBUG
     #define NOCATCH
-#endif
+//#endif
 using System;
 using System.Windows.Forms;
 using log4net;
@@ -31,46 +31,46 @@ namespace rabdump
                     try
                     {
 #endif
-                        Application.EnableVisualStyles();
-                        Application.SetCompatibleTextRenderingDefault(false);
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
 #if !NOCATCH
                         AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Unhandled);
                         Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Threaded);
 #endif
 #if PROTECTED
-                        bool exit;
-                        do
+                    bool exit;
+                    do
+                    {
+                        exit = true;
+                        //                            int end = 0;
+                        if (!GRD.Instance.ValidKey())
                         {
-                            exit = true;
-//                            int end = 0;
-                            if (!GRD.Instance.ValidKey())
-                            {
-                                MessageBox.Show(null, "Ключ защиты не найден!\nРабота программы будет завершена!",
-                                                "Ключ защиты", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                return;
-//                                    end = 1;
-                            }
-//                            if (!GRD.Instance.ValidKey())
-                            //{
-                                //return;
-                            //}
-                            if (!GRD.Instance.GetFlag(GRD.FlagType.RabDump))
-                            {
-                                MessageBox.Show(null, "Данный ключ защиты не позволяет запуск приложения!\n",
-                                                "Ключ защиты", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                return;
-                            }
-                            //                pserver svr = new pserver();
+                            MessageBox.Show(null, "Ключ защиты не найден!\nРабота программы будет завершена!",
+                                            "Ключ защиты", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                            //                                    end = 1;
+                        }
+                        //                            if (!GRD.Instance.ValidKey())
+                        //{
+                        //return;
+                        //}
+                        if (!GRD.Instance.GetFlag(GRD.FlagType.RabDump))
+                        {
+                            MessageBox.Show(null, "Данный ключ защиты не позволяет запуск приложения!\n",
+                                            "Ключ защиты", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        //                pserver svr = new pserver();
 #endif
                         Application.Run(new MainForm());
 #if PROTECTED
-                            //svr.release();
-                            if (!GRD.Instance.ValidKey())
-                            {
-                                exit = false;
-                            }
-                        } 
-                        while (!exit);
+                        //svr.release();
+                        if (!GRD.Instance.ValidKey())
+                        {
+                            exit = false;
+                        }
+                    }
+                    while (!exit);
 #endif
 #if !NOCATCH
                     }
@@ -81,6 +81,7 @@ namespace rabdump
                     }
 #endif
                 }
+                //else MessageBox.Show("Программа уже запущена");
             }
         }
 #if !NOCATCH

@@ -109,14 +109,12 @@ namespace rabnet
         private static int _smbls = 6;
         private static char _dsym = ' ';
 
-        public static void SetDefFmt(int symbols)
-        {
-            SetDefFmt(symbols, _dsym);
-        }
-        public static void SetDefFmt(char defchar)
-        {
-            SetDefFmt(_smbls, defchar);
-        }
+
+        /// <summary>
+        /// Установить формат адреса МИНИфермы (По просьбе Татищево)
+        /// </summary>
+        /// <param name="symbols">Сколько цифр в строке адреса</param>
+        /// <param name="defchar">Символ заполнитель</param>
         public static void SetDefFmt(int symbols, char defchar)
         {
             if (symbols < 4) _smbls = 4;
@@ -124,11 +122,15 @@ namespace rabnet
             else _smbls = symbols;
             if (defchar != '/' && defchar != '\\') _dsym = defchar;
         }
-
-        public static string Format(int farmN) 
+        public static void SetDefFmt(char defchar)
         {
-            return Format(farmN, _smbls, _dsym); 
+            SetDefFmt(_smbls, defchar);
         }
+        public static void SetDefFmt(int symbols)
+        {
+            SetDefFmt(symbols, _dsym);
+        }
+
         /// <summary>
         /// Правило форматирования Номера клетки
         /// </summary>
@@ -145,6 +147,16 @@ namespace rabnet
                     res = defchar + res;
             }
             return res;
+        }
+        public static string Format(int farmN)
+        {
+            return Format(farmN, _smbls, _dsym);
+        }
+        public static string Format(string farmN)
+        {
+            int fn = 0;
+            int.TryParse(farmN, out fn);
+            return fn == 0 ? farmN : Format(fn, _smbls, _dsym);
         }
 
         #endregion
@@ -434,10 +446,10 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) "+makeWhere()+"ORDER B
             List<TreeData> lst = new List<TreeData>();
             while (rd.Read())
             {
-                int id=rd.GetInt32(0);
+                int id = rd.GetInt32(0);
                 String nm=rd.GetString(1);
                 int frm = rd.GetInt32(2);
-                TreeData dt=new TreeData(id.ToString() + ":" + frm.ToString() + ":" + nm);
+                TreeData dt=new TreeData(id.ToString() + ":" + frm.ToString() + ":" + (frm==0?nm:"№"+Building.Format(nm.Remove(0,1))) );
                 lst.Add(dt);
             }
             rd.Close();

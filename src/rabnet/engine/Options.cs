@@ -97,47 +97,7 @@ namespace rabnet
             this.eng=eng;
         }
         //STD
-        public String getOption(String name,String subname,uint uid)
-        {
-            return eng.db().getOption(name, subname, uid);
-        }
-
-        public int getIntOption(String name, String subname, uint uid)
-        {
-            int res = 0;
-            int.TryParse(getOption(name, subname, uid),out res);
-            return res;
-        }
-
-        public double getFloatOption(String name, String subname, uint uid)
-        {
-				return float.Parse(getOption(name, subname, uid));
-        }
-
-        public int safeIntOption(String name, String subname, uint uid,int def)
-        {
-            int res = def;
-            String s = getOption(name, subname, uid);
-            if (!int.TryParse(s,out res)) return def;
-            return res;
-        }
-
-        public void setOption(String name, String subname, uint uid, String value)
-        {
-            eng.db().setOption(name, subname, uid, value);
-        }
-
-		public void setOption(String name, String subname, uint uid, int value)
-		{
-			setOption(name, subname, uid, value.ToString());
-		}
-
-        public void setOption(String name, String subname, uint uid, double value)
-        {
-            setOption(name, subname, uid, value.ToString());
-        }
-
-        // BY LEVEL
+  
         private uint getUidOfLevel(OPT_LEVEL level)
         {
             if (level==OPT_LEVEL.FARM) return 0;
@@ -145,47 +105,6 @@ namespace rabnet
             if (res < 0) return 0;
             return (uint)res;
         }
-
-        public String getOption(String name,String subname,OPT_LEVEL level)
-        {
-            return getOption(name,subname,getUidOfLevel(level));
-        }
-
-        public int getIntOption(String name,String subname,OPT_LEVEL level)
-        {
-            return getIntOption(name,subname,getUidOfLevel(level));
-        }
-
-        public double getFloatOption(String name,String subname,OPT_LEVEL level)
-        {
-            return getFloatOption(name,subname,getUidOfLevel(level));
-        }
-
-        public int safeIntOption(String name, String subname, OPT_LEVEL level,int def)
-        {
-            return safeIntOption(name, subname, getUidOfLevel(level),def);
-        }
-
-        public int safeIntOption(String name, String subname, OPT_LEVEL level)
-        {
-            return safeIntOption(name, subname, getUidOfLevel(level), 0);
-        }
-        //public int safeRuBoolOption()
-
-        public void setOption(String name, String subname, OPT_LEVEL level, String value)
-        {
-            setOption(name, subname, getUidOfLevel(level), value);
-        }
-        public void setOption(String name, String subname, OPT_LEVEL level, int value)
-        {
-            setOption(name, subname, getUidOfLevel(level), value);
-        }
-
-        public void setOption(String name, String subname, OPT_LEVEL level, double value)
-        {
-            setOption(name, subname, getUidOfLevel(level), value);
-        }
-
         /// <summary>
         /// Возвращает название опции в Базе Данных
         /// </summary>
@@ -194,34 +113,51 @@ namespace rabnet
         private Option getOptionById(OPT_ID id)
         {
             for (int i = 0; i < optlist.Length; i++)
-                if (optlist[i].id == id) 
+                if (optlist[i].id == id)
                     return optlist[i];
             throw new ExOptionNotFound(id);
         }
-        public String getOption(String name,OPT_ID id)
+
+        public int safeIntOption(String name, String subname, uint uid, int def)
         {
-            Option op = getOptionById(id);
-            return getOption(name, op.name, op.level);
+            int res = def;
+            String s = getOption(name, subname, uid);
+            if (!int.TryParse(s, out res)) return def;
+            return res;
         }
-        public int getIntOption(String name,OPT_ID id)
+        public int safeIntOption(String name, String subname, OPT_LEVEL level,int def)
         {
-            Option op = getOptionById(id);
-            return getIntOption(name, op.name, op.level);
+            return safeIntOption(name, subname, getUidOfLevel(level),def);
         }
-        public double getFloatOption(String name,OPT_ID id)
+        public int safeIntOption(String name, String subname, OPT_LEVEL level)
         {
-            Option op = getOptionById(id);
-            return getFloatOption(name, op.name, op.level);
+            return safeIntOption(name, subname, getUidOfLevel(level), 0);
         }
-        public int safeIntOption(String name, OPT_ID id, int def)
+
+        
+        public void setOption(String name, String subname, uint uid, String value)
         {
-            Option op = getOptionById(id);
-            return safeIntOption(name, op.name, op.level,def);
+            eng.db().setOption(name, subname, uid, value);
         }
-        public int safeIntOption(String name, OPT_ID id)
+        public void setOption(String name, String subname, uint uid, int value)
         {
-            Option op = getOptionById(id);
-            return safeIntOption(name, op.name, op.level);
+            setOption(name, subname, uid, value.ToString());
+        }
+        public void setOption(String name, String subname, uint uid, double value)
+        {
+            setOption(name, subname, uid, value.ToString());
+        }
+        public void setOption(String name, String subname, OPT_LEVEL level, String value)
+        {
+            setOption(name, subname, getUidOfLevel(level), value);
+        }
+        public void setOption(String name, String subname, OPT_LEVEL level, int value)
+        {
+            setOption(name, subname, getUidOfLevel(level), value);
+        }
+        public void setOption(String name, String subname, OPT_LEVEL level, double value)
+        {
+            setOption(name, subname, getUidOfLevel(level), value);
         }
         public void setOption(String name,OPT_ID id,String value)
         {
@@ -238,28 +174,6 @@ namespace rabnet
             Option op=getOptionById(id);
             setOption(name,op.name,op.level,value);
         }
-
-        //by optlist ion def namespace
-        public String getOption(OPT_ID id)
-        {
-            return getOption(defNameSpace, id);
-        }
-        public int getIntOption(OPT_ID id)
-        {
-            return getIntOption(defNameSpace, id);
-        }
-        public double getFloatOption(OPT_ID id)
-        {
-            return getFloatOption(defNameSpace, id);
-        }
-        public int safeIntOption(OPT_ID id, int def)
-        {
-            return safeIntOption(defNameSpace, id, def);
-        }
-        public int safeIntOption(OPT_ID id)
-        {
-            return safeIntOption(defNameSpace, id);
-        }
         public void setOption(OPT_ID id, String value)
         {
             setOption(defNameSpace, id, value);
@@ -272,5 +186,87 @@ namespace rabnet
         {
             setOption(defNameSpace, id, value);
         }
+
+        public String getOption(String name, String subname, uint uid)
+        {
+            return eng.db().getOption(name, subname, uid);
+        }
+        public String getOption(String name, String subname, OPT_LEVEL level)
+        {
+            return getOption(name, subname, getUidOfLevel(level));
+        }
+        public String getOption(String name, OPT_ID id)
+        {
+            Option op = getOptionById(id);
+            return getOption(name, op.name, op.level);
+        }
+        public String getOption(OPT_ID id)
+        {
+            return getOption(defNameSpace, id);
+        }
+
+        public int getIntOption(String name, String subname, uint uid)
+        {
+            int res = 0;
+            int.TryParse(getOption(name, subname, uid), out res);
+            return res;
+        }
+        public int getIntOption(String name, String subname, OPT_LEVEL level)
+        {
+            return getIntOption(name, subname, getUidOfLevel(level));
+        }
+        public int getIntOption(String name, OPT_ID id)
+        {
+            Option op = getOptionById(id);
+            return getIntOption(name, op.name, op.level);
+        }
+        public int getIntOption(OPT_ID id)
+        {
+            return getIntOption(defNameSpace, id);
+        }
+
+        public double getFloatOption(String name, String subname, uint uid)
+        {
+            return float.Parse(getOption(name, subname, uid));
+        }
+        public double getFloatOption(String name, String subname, OPT_LEVEL level)
+        {
+            return getFloatOption(name, subname, getUidOfLevel(level));
+        }
+        public double getFloatOption(String name, OPT_ID id)
+        {
+            Option op = getOptionById(id);
+            return getFloatOption(name, op.name, op.level);
+        }
+        public double getFloatOption(OPT_ID id)
+        {
+            return getFloatOption(defNameSpace, id);
+        }
+
+        public bool getBoolOption(OPT_ID id)
+        {
+            string val = getOption(id);
+            return (val == "1" || val == "true");
+        }
+
+        public int safeIntOption(String name, OPT_ID id, int def)
+        {
+            Option op = getOptionById(id);
+            return safeIntOption(name, op.name, op.level, def);
+        }
+        public int safeIntOption(String name, OPT_ID id)
+        {
+            Option op = getOptionById(id);
+            return safeIntOption(name, op.name, op.level);
+        }
+        public int safeIntOption(OPT_ID id, int def)
+        {
+            return safeIntOption(defNameSpace, id, def);
+        }
+        public int safeIntOption(OPT_ID id)
+        {
+            return safeIntOption(defNameSpace, id);
+        }
+
     }
 }
