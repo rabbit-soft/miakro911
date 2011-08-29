@@ -189,6 +189,16 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\rabnet\db.mysql\db.mysql.csproj">
+      <Project>{B20A34DB-0FCD-4CFA-858E-16803387FF4F}</Project>
+      <Name>db.mysql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\rabnet\engine\engine.csproj">
+      <Project>{241724AB-0674-41CF-A8AD-224EEC248E40}</Project>
+      <Name>engine</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

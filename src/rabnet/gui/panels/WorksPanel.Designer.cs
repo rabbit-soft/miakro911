@@ -57,6 +57,7 @@
             this.columnHeader13 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader15 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader14 = new System.Windows.Forms.ColumnHeader();
+            this.label1 = new System.Windows.Forms.Label();
             this.actMenu.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -232,6 +233,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.label1);
             this.splitContainer1.Panel2.Controls.Add(this.lvLogs);
             this.splitContainer1.Size = new System.Drawing.Size(683, 459);
             this.splitContainer1.SplitterDistance = 272;
@@ -252,9 +254,9 @@
             this.lvLogs.FullRowSelect = true;
             this.lvLogs.GridLines = true;
             this.lvLogs.HideSelection = false;
-            this.lvLogs.Location = new System.Drawing.Point(3, 3);
+            this.lvLogs.Location = new System.Drawing.Point(3, 22);
             this.lvLogs.Name = "lvLogs";
-            this.lvLogs.Size = new System.Drawing.Size(677, 177);
+            this.lvLogs.Size = new System.Drawing.Size(677, 158);
             this.lvLogs.TabIndex = 0;
             this.lvLogs.UseCompatibleStateImageBehavior = false;
             this.lvLogs.View = System.Windows.Forms.View.Details;
@@ -282,6 +284,17 @@
             // columnHeader14
             // 
             this.columnHeader14.Text = "Пользователь";
+            // 
+            // label1
+            // 
+            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(683, 19);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "События (Логи)";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // WorksPanel
             // 
@@ -329,6 +342,7 @@
         private System.Windows.Forms.ToolStripMenuItem setNestMenuItem;
         private System.Windows.Forms.ToolStripMenuItem countChangedMenuItem;
         private System.Windows.Forms.ColumnHeader columnHeader7;
+        private System.Windows.Forms.Label label1;
 
     }
 }

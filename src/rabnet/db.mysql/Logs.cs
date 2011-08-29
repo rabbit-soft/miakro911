@@ -87,8 +87,8 @@ ORDER BY date DESC LIMIT {0:d};", limit,makeWhere(f));
                     {
                         case 'r': prms += rd.GetString("r1"); break;
                         case 'R': prms += rd.GetString("r2"); break;
-                        case 'p': prms += Buildings.fullPlaceName(rd.GetString("place"), true, false, false); break;
-                        case 'P': prms += Buildings.fullPlaceName(rd.GetString("place2"), true, false, false); break;
+                        case 'p': prms += Buildings.FullPlaceName(rd.GetString("place"), true, false, false); break;
+                        case 'P': prms += Buildings.FullPlaceName(rd.GetString("place2"), true, false, false); break;
                         case 'a': prms += rd.GetString("address"); break;
                         case 'A': prms += rd.GetString("address2"); break;
                         case 't': prms += rd.IsDBNull(8)?"":rd.GetString("param"); break;
@@ -97,7 +97,7 @@ ORDER BY date DESC LIMIT {0:d};", limit,makeWhere(f));
                 }
                 String adr = rd.GetString("address");
                 if (adr=="")
-                    adr = Buildings.fullPlaceName(rd.GetString("place"), true, false, false);
+                    adr = Buildings.FullPlaceName(rd.GetString("place"), true, false, false);
                 ll.addLog(rd.GetDateTime("date"), rd.IsDBNull(2)?"":rd.GetString("user"), rd.GetString("name"), np,adr);
             }
             rd.Close();
@@ -113,6 +113,20 @@ ORDER BY date DESC LIMIT {0:d};", limit,makeWhere(f));
                 res.Add(rd.GetString(0));
             rd.Close();
             return res.ToArray();
+        }
+
+        /// <summary>
+        /// Возвращает Дату начала работы с программой.
+        /// Вычисляется по самому раннему логу.
+        /// Если нет логов, то возвращает DateTime.MaxValue
+        /// </summary>
+        public static DateTime getFarmStartTime(MySqlConnection sql)
+        {
+            MySqlCommand cmd = new MySqlCommand("SELECT l_date FROM logs ORDER BY l_id ASC LIMIT 1;",sql);
+            string res = cmd.ExecuteScalar().ToString();
+            DateTime result = DateTime.MaxValue;
+            DateTime.TryParse(res,out result);
+            return result;
         }
     }
 }

@@ -35,7 +35,7 @@
             this.restoreMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.RunRabnetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.новаяФермаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miNewFarm = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.miServDump = new System.Windows.Forms.ToolStripMenuItem();
             this.jobnowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,6 +53,7 @@
             this.tDumper = new System.Windows.Forms.Timer(this.components);
             this.btCheckUpdate = new System.Windows.Forms.Button();
             this.tUpdater = new System.Windows.Forms.Timer(this.components);
+            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -70,7 +71,7 @@
             this.restoreMenuItem,
             this.toolStripMenuItem1,
             this.RunRabnetToolStripMenuItem,
-            this.новаяФермаToolStripMenuItem,
+            this.miNewFarm,
             this.toolStripMenuItem3,
             this.miServDump,
             this.jobnowMenuItem,
@@ -81,9 +82,10 @@
             this.toolStripSeparator1,
             this.AboutToolStripMenuItem,
             this.toolStripSeparator2,
+            this.testToolStripMenuItem,
             this.exitMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(195, 276);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(195, 298);
             // 
             // restoreMenuItem
             // 
@@ -106,12 +108,12 @@
             this.RunRabnetToolStripMenuItem.Visible = false;
             this.RunRabnetToolStripMenuItem.Click += new System.EventHandler(this.RunRabnetToolStripMenuItem_Click);
             // 
-            // новаяФермаToolStripMenuItem
+            // miNewFarm
             // 
-            this.новаяФермаToolStripMenuItem.Name = "новаяФермаToolStripMenuItem";
-            this.новаяФермаToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.новаяФермаToolStripMenuItem.Text = "Новая Ферма";
-            this.новаяФермаToolStripMenuItem.Click += new System.EventHandler(this.новаяФермаToolStripMenuItem_Click);
+            this.miNewFarm.Name = "miNewFarm";
+            this.miNewFarm.Size = new System.Drawing.Size(194, 22);
+            this.miNewFarm.Text = "Новая Ферма";
+            this.miNewFarm.Click += new System.EventHandler(this.newFarm_Click);
             // 
             // toolStripMenuItem3
             // 
@@ -123,13 +125,14 @@
             this.miServDump.Name = "miServDump";
             this.miServDump.Size = new System.Drawing.Size(194, 22);
             this.miServDump.Text = "Отправить на сервер";
-            this.miServDump.Click += new System.EventHandler(this.отправитьНаСерверToolStripMenuItem_Click);
+            this.miServDump.Click += new System.EventHandler(this.miServDump_Click);
             // 
             // jobnowMenuItem
             // 
             this.jobnowMenuItem.Name = "jobnowMenuItem";
             this.jobnowMenuItem.Size = new System.Drawing.Size(194, 22);
             this.jobnowMenuItem.Text = "Резервировать все";
+            this.jobnowMenuItem.Visible = false;
             this.jobnowMenuItem.Click += new System.EventHandler(this.jobnowMenuItem_Click);
             // 
             // jobsMenuItem
@@ -235,6 +238,14 @@
             // 
             this.tUpdater.Interval = 10800000;
             // 
+            // testToolStripMenuItem
+            // 
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.testToolStripMenuItem.Text = "test";
+            this.testToolStripMenuItem.Visible = false;
+            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AcceptButton = this.btOk;
@@ -283,7 +294,7 @@
         private System.Windows.Forms.ToolStripMenuItem restMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RunRabnetToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
-        private System.Windows.Forms.ToolStripMenuItem новаяФермаToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem miNewFarm;
         private System.Windows.Forms.Button btCheckUpdate;
         private System.Windows.Forms.Timer tUpdater;
         private System.Windows.Forms.ToolStripMenuItem updateKeyMenuItem;
@@ -291,6 +302,7 @@
         private System.Windows.Forms.ToolStripMenuItem AboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem miServDump;
+        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
     }
 }
 

@@ -40,29 +40,36 @@ namespace rabnet
         public Row[] data;
     }
 
+    /// <summary>
+    /// Нужен в основном Для передачи Параметром программы SQL запросам
+    /// </summary>
     public class Filters : Dictionary<String, String>
     {
-        public string safeValue(String key, String def)
-        {
-            if (!ContainsKey(key))
-                return def;
-            return this[key];
-        }
         public Filters() : base() { }
         public Filters(String s)
             : base()
         {
             fromString(s);
         }
+
         public static Filters makeFromString(String s)
         {
             return new Filters(s);
         }
+        public string safeValue(String key, String def)
+        {
+            if (!ContainsKey(key))
+                return def;
+            return this[key];
+        }
         public String safeValue(String key) { return safeValue(key, ""); }
+
         public int safeInt(String key, int def) { return int.Parse(safeValue(key, def.ToString())); }
         public int safeInt(String key) { return safeInt(key, 0); }
+
         public bool safeBool(String key, bool def) { return (safeInt(key, (def ? 1 : 0)) == 1); }
         public bool safeBool(String key) { return safeBool(key, false); }
+
         public String toString()
         {
             String res = "";
@@ -76,6 +83,7 @@ namespace rabnet
             }
             return res;
         }
+
         public void fromString(String str)
         {
             this.Clear();

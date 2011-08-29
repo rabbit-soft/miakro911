@@ -287,9 +287,7 @@ namespace rabnet
 
         public Fucks getFucks(int rabbit)
         {
-
             return FucksGetter.GetFucks(sql, rabbit);
-
         }
 
         public Fucks allFuckers(int female,bool geterosis,bool inbreeding,int malewait)
@@ -498,7 +496,7 @@ namespace rabnet
 
         public ZooJobItem[] getZooFuck(Filters f,int statedays, int firstdays,int brideage,int malewait,bool heter,bool inbr,int type)
         {
-            return new ZooTehGetter(sql,f).getFucks(statedays, firstdays,brideage,malewait,heter,inbr,type);
+            return new ZooTehGetter(sql,f).getZooFucks(statedays, firstdays,brideage,malewait,heter,inbr,type);
         }
 
         public void setBuildingName(int bid, string name)
@@ -649,6 +647,21 @@ namespace rabnet
         public void deletePLUsummary(int sid,DateTime lastClear)
         {
             Scale.DeletePLUsumary(sql,sid,lastClear);
+        }
+
+        public string WebReportGlobal(DateTime dt)
+        {
+            return WebReports.GetGlobal(sql, dt);
+        }
+
+        public string[] WebReportsGlobal(DateTime dt, int days)
+        {
+            return WebReports.GetGlobals(sql, dt, days);
+        }
+
+        public DateTime GetFarmStartTime()
+        {
+            return Logs.getFarmStartTime(sql);
         }
 
         #endregion

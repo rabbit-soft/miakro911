@@ -148,6 +148,12 @@ namespace rabnet
             }
             return res;
         }
+        /// <summary>
+        /// Приводит номер фермы к нужному виду 
+        /// (начало заполнено нулями или пробелами)
+        /// </summary>
+        /// <param name="farmN">Номер фермы</param>
+        /// <returns></returns>
         public static string Format(int farmN)
         {
             return Format(farmN, _smbls, _dsym);
@@ -270,30 +276,30 @@ namespace rabnet
             return res;
         }
 
-        public static String fullRName(int farm, int tierid, int sec, String type, String delims, bool shr, bool sht, bool sho)
+        public static String fullRName(int farm, int tierid, int sec, String type, String delims, bool shrt, bool showTier, bool ShowDescr)
         {
             String res = Building.Format(farm);
             if (tierid == 1) res += "^";
             if (tierid == 2) res += "-";
             res += getRSec(type, sec, delims);
-            if (sht)
-                res += " [" + getRName(type, shr) + "]";
-            if (sho)
-                res += " (" + getRDescr(type, shr, sec, delims)+")";
+            if (showTier)
+                res += " [" + getRName(type, shrt) + "]";
+            if (ShowDescr)
+                res += " (" + getRDescr(type, shrt, sec, delims)+")";
             return res;
         }       
 
-        public static String fullPlaceName(String rabplace,bool shr,bool sht,bool sho)
+        public static String FullPlaceName(String rabplace,bool shrt,bool showTier,bool showDescr)
         {
             if (rabplace == "")
                 return OneRabbit.NullAddress;
             String[] dts = rabplace.Split(',');
-            return fullRName(int.Parse(dts[0]),int.Parse(dts[1]),int.Parse(dts[2]),dts[3],dts[4],shr,sht,sho);
+            return fullRName(int.Parse(dts[0]),int.Parse(dts[1]),int.Parse(dts[2]),dts[3],dts[4],shrt,showTier,showDescr);
         }
 
-        public static String fullPlaceName(String rabplace)
+        public static String FullPlaceName(String rabplace)
         {
-            return fullPlaceName(rabplace, false, false, false);
+            return FullPlaceName(rabplace, false, false, false);
         }
 
         public static bool hasnest(String rabplace)

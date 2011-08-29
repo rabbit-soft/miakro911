@@ -64,6 +64,7 @@
     <Compile Include="Building.cs" />
     <Compile Include="Butcher.cs" />
     <Compile Include="Catalogs.cs" />
+    <Compile Include="WebReports.cs" />
     <Compile Include="Meal.cs" />
     <Compile Include="Products.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

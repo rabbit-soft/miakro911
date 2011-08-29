@@ -113,6 +113,7 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
 	File ..\..\..\bin\@bin_type@\RabNet\Interop.Microsoft.Office.Core.dll
     File ..\..\..\bin\@bin_type@\RabNet\GrdAPI32.DLL
     File ..\..\..\bin\@bin_type@\RabNet\GrdAPI64.DLL
+	File ..\..\..\bin\@bin_type@\RabNet\CAS.DLL
     SetOutPath $INSTDIR\RabNet\reports
     File ..\..\..\bin\@bin_type@\RabNet\reports\age.rdl
     File ..\..\..\bin\@bin_type@\RabNet\reports\breeds.rdl
@@ -159,10 +160,12 @@ Section  $(SEC_RabDump_NAME) SEC_RabDump
     File ..\..\..\bin\@bin_type@\RabDump\GrdAPI32.DLL
     File ..\..\..\bin\@bin_type@\RabDump\GrdAPI64.DLL
     File ..\..\..\bin\@bin_type@\RabDump\rabdump.exe
-#    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage32.dll
-#    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage64.dll
     File ..\..\..\bin\@bin_type@\RabDump\GuardantDotNetApi.dll
     File ..\..\..\bin\@bin_type@\RabDump\log4net.dll
+	File ..\..\..\bin\@bin_type@\RabDump\libcurl.dll
+	File ..\..\..\bin\@bin_type@\RabDump\LibCurlShim.dll
+#    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage32.dll
+#    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage64.dll
 #    File ..\..\..\bin\@bin_type@\key.dll
 
     SetOutPath $INSTDIR\7z
@@ -365,13 +368,14 @@ Section /o "-un.rabdump" UNSEC_RabDump
 
     Delete /REBOOTOK $INSTDIR\RabDump\GrdAPI32.DLL
     Delete /REBOOTOK $INSTDIR\RabDump\GrdAPI64.DLL
+	Delete /REBOOTOK $INSTDIR\RabDump\LibCurlShim.dll
+	Delete /REBOOTOK $INSTDIR\RabDump\libcurl.dll
+	Delete /REBOOTOK $INSTDIR\RabDump\log4net.dll
     Delete /REBOOTOK $INSTDIR\RabDump\rabdump.exe
 #    Delete /REBOOTOK $INSTDIR\RabDump\CodeStorage32.dll
 #    Delete /REBOOTOK $INSTDIR\RabDump\CodeStorage64.dll
     Delete /REBOOTOK $INSTDIR\RabDump\GuardantDotNetApi.dll
    
-    Delete /REBOOTOK $INSTDIR\RabDump\log4net.dll
-
     RmDir /REBOOTOK /r $INSTDIR\7z
 
     RmDir /REBOOTOK /r $INSTDIR\RabDump\updates
@@ -422,9 +426,11 @@ Section /o "-un.rabnet" UNSEC_Rabnet
     Delete /REBOOTOK $INSTDIR\RabNet\GuardantDotNetApi.dll
     Delete /REBOOTOK $INSTDIR\RabNet\GrdAPI32.DLL
     Delete /REBOOTOK $INSTDIR\RabNet\GrdAPI64.DLL
+	Delete /REBOOTOK $INSTDIR\RabNet\CAS.dll
 	Delete /REBOOTOK $INSTDIR\RabNet\Interop.Microsoft.Office.Interop.Excel.dll
 	Delete /REBOOTOK $INSTDIR\RabNet\Interop.Microsoft.Office.Core.dll
 	Delete /REBOOTOK $INSTDIR\RabNet\changeLog.txt
+	Delete /REBOOTOK $INSTDIR\RabNet\CAS.dll
 	
     RmDir /REBOOTOK /r $INSTDIR\RabNet\upd
 

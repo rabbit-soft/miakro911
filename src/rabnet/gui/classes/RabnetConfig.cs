@@ -18,9 +18,21 @@ public static class RabnetConfig
     [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
     public class sParams
     {
+        /// <summary>
+        /// Адресс БД
+        /// </summary>
         public readonly string Host;
+        /// <summary>
+        /// Имя Базы Данных
+        /// </summary>
         public readonly string DataBase;
+        /// <summary>
+        /// Пользователь, который подключается к БД
+        /// </summary>
         public readonly string User;
+        /// <summary>
+        /// Пароль пользователя
+        /// </summary>
         public readonly string Password;
         public readonly string Charset = "utf8";
 
@@ -59,7 +71,14 @@ public static class RabnetConfig
 
     }
 
-    public enum OptionType {MysqlPath,zip7path,rabdump_startupPath,serverUrl }
+    public enum OptionType 
+    {
+        MysqlPath,
+        zip7path,
+        rabdump_startupPath,
+        serverUrl,
+        makeWebReport
+    }
 
     private static readonly ILog _logger = LogManager.GetLogger(typeof(RabnetConfig));
 
@@ -341,6 +360,10 @@ public static class RabnetConfig
         public String DefUser = "";
         public String DefPassword = "";
         public bool SavePassword = false;
+        /// <summary>
+        /// отправлять ли ВебСтатистику
+        /// </summary>
+        public bool WebReport = false;
 
         public rabDataSource(string guid, string name, string type, string param)
         {
@@ -389,7 +412,7 @@ public static class RabnetConfig
     }
 
     /// <summary>
-    /// Загружает настройки подключения к БД
+    /// Загружает настройки подключения к БД из реестра
     /// </summary>
     public static void LoadDataSources()
     {
@@ -407,6 +430,7 @@ public static class RabnetConfig
             ds.SavePassword = (string)k.GetValue("savepass", false) == true.ToString();
             ds.DefUser = (string)k.GetValue("defuser");
             ds.DefPassword = (string)k.GetValue("defpass");
+            ds.WebReport = (string)k.GetValue("webrep", false) == true.ToString();
             _dataSources.Add(ds);
         }
         _logger.Info("loading DataSources finish");
@@ -433,13 +457,14 @@ public static class RabnetConfig
             k.SetValue("savepass", ds.SavePassword,RegistryValueKind.Unknown);
             k.SetValue("defuser", ds.DefUser, RegistryValueKind.String);
             k.SetValue("defpass", ds.DefPassword, RegistryValueKind.String);
+            k.SetValue("webrep", ds.WebReport, RegistryValueKind.String);
             noDeleted.Add(ds.Guid);
         }
         //Удаляем из реестра
         foreach (string guid in rKey.GetSubKeyNames())
             if (!noDeleted.Contains(guid))
                 rKey.DeleteSubKey(guid);
-        _logger.Info("saving DataSources finish");
+        _logger.Debug("saving DataSources finish");
     }
    
     /// <summary>
@@ -472,6 +497,10 @@ public static class RabnetConfig
     public static void SaveDataSource(string guid,string name, string host,string db,string user,string password)
     {
         rabDataSource newDS = new rabDataSource(guid, name, host, db, user, password);
+        SaveDataSource(newDS);
+    }
+    public static void SaveDataSource(rabDataSource newDS)
+    {
         if (!containsDataSource(newDS.Guid))//если не содержит такого ДС, то добавляем
             _dataSources.Add(newDS);
         else
@@ -497,6 +526,7 @@ public static class RabnetConfig
             {
                 rds.Name = newDS.Name;
                 rds.Params = newDS.Params;
+                rds.WebReport = newDS.WebReport;
             }
         }
     }

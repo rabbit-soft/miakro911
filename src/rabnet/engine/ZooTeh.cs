@@ -126,13 +126,13 @@ namespace rabnet
             this.eng = eng;
         }
 
-        public ZootehJob[] makeZooTehPlan(Filters f,int type)
+        public ZootehJob[] makeZooTehPlan(Filters f, int type)
         {
             JobHolder zjobs = new JobHolder();
             this.f = f;
-            if (f.safeValue("act","O").Contains("O") && type==0)
+            if (f.safeValue("act", "O").Contains("O") && type == 0)
                 getOkrols(zjobs);
-            if (f.safeValue("act", "V").Contains("V") && type==1)
+            if (f.safeValue("act", "V").Contains("V") && type == 1)
                 getVudvors(zjobs);
             if (f.safeValue("act", "C").Contains("C") && type == 2)
                 getCounts(zjobs);
@@ -141,7 +141,7 @@ namespace rabnet
             if (f.safeValue("act", "R").Contains("R") && type == 4)
                 getBoysGirlsOut(zjobs);
             if (f.safeValue("act", "F").Contains("F") && type == 5)
-                getFucks(zjobs,0);
+                getFucks(zjobs, 0);
             if (f.safeValue("act", "f").Contains("f") && type == 6)
                 getFucks(zjobs, 1);
             if (f.safeValue("act", "v").Contains("v") && type == 7)
@@ -198,6 +198,11 @@ namespace rabnet
                 jh.Add(new ZootehJob(f).BoysGirlsOut(z.id, z.name, z.place, z.age, z.i[0], false,z.breed));
         }
 
+        /// <summary>
+        /// Добавляет к работам Случки или Вязки
+        /// </summary>
+        /// <param name="jh">Список работ</param>
+        /// <param name="type">0- Случка, 1-Вязка</param>
         public void getFucks(JobHolder jh,int type)
         {
             int days1 = f.safeInt("sfuck");

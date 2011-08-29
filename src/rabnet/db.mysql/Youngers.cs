@@ -53,7 +53,7 @@ namespace rabnet
             y.fneighbours = rd.GetInt32("neighbours");
             y.mom = rd.GetString("parent");
             y.momid = rd.GetInt32("r_parent");
-            y.faddress = Buildings.fullPlaceName(rd.GetString("rplace"), shr,sht,sho);
+            y.faddress = Buildings.FullPlaceName(rd.GetString("rplace"), shr,sht,sho);
             return y;
         }
         public override IData nextItem()

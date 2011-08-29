@@ -69,8 +69,9 @@ namespace rabdump
     {
         const string ALL_DB = "[ВСЕ]";
         const string DB = "База Данных";
-        const string Obj = " Объект";
+        const string Obj = " Основное";
         private string _db, _host, _user, _pswd, _nm = "Ферма";
+        private Options.Rubool _wr = Options.Rubool.Нет;
 
         public string Guid ="";
             
@@ -86,6 +87,13 @@ namespace rabdump
         public String User{get{return _user;} set{_user=value;}}
         [Category(DB), DisplayName("Пароль"), Description("")]
         public String Password{get{return _pswd;} set{_pswd=value;}}
+        [Category("Дополнительное"), DisplayName("Отправлять статистику"), Description("Отправлять статистику о Ферме на удаленный сервер. Стаститику можно просматривать на сайте.")]
+        public Options.Rubool WebReport { get { return _wr; } 
+            set { 
+#if PROTECTED
+                if(GRD.Instance.GetFlag(GRD.FlagType.WebReports))
+#endif
+                _wr = value; } }
 
         public DataBase() { }
 
@@ -327,11 +335,6 @@ namespace rabdump
         }
     }
 
-    class ServerArchJob : Object
-    {
-
-    }
-
     class DataBaseCollection : List<DataBase>
     {
         public DataBase GetDataBase(string guid)
@@ -353,7 +356,9 @@ namespace rabdump
             foreach (RabnetConfig.rabDataSource ds in RabnetConfig.DataSources)
             {
                 RabnetConfig.sParams p = ds.Params;
-                this.Add(new DataBase(ds.Guid, p.Host, p.DataBase, p.User, p.Password, ds.Name));
+                DataBase db = new DataBase(ds.Guid, p.Host, p.DataBase, p.User, p.Password, ds.Name);
+                db.WebReport = ds.WebReport ?Options.Rubool.Да:Options.Rubool.Нет;
+                this.Add(db);
             }
         }
 
@@ -362,8 +367,10 @@ namespace rabdump
             foreach (DataBase db in this)
             {
                 if (db.Guid == "")
-                    db.Guid = System.Guid.NewGuid().ToString();                
-                    RabnetConfig.SaveDataSource(db.Guid, db.Name, db.Host, db.DBName, db.User, db.Password);
+                    db.Guid = System.Guid.NewGuid().ToString();
+                RabnetConfig.rabDataSource newDS= new RabnetConfig.rabDataSource(db.Guid, db.Name, db.Host, db.DBName, db.User, db.Password);
+                newDS.WebReport =  db.WebReport == Options.Rubool.Да;
+                RabnetConfig.SaveDataSource(newDS);
 
             }
             ///Удаляем удаленные
@@ -483,6 +490,7 @@ namespace rabdump
         }
     }
 
+
     [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
     class Options:Object
     {
@@ -543,8 +551,8 @@ namespace rabdump
 
         [Category(Opt), DisplayName(" Расписания резервирования"), Description("Коллекция расписаний резервирования Баз Данных на локальном компьютере"), Editor(typeof(AJce), typeof(UITypeEditor)), TypeConverter(typeof(CollectionTypeConverter))]
         public ArchiveJobCollection Jobs { get { return _jobs; } }
-        
-        [Category(Opt), DisplayName("Запускать при старте системы"),Description("Запускать программу вместе с Windows")]
+
+        [Category(Opt), DisplayName("Запускать при старте системы"), Description("Запускать программу вместе с Windows")]
         public Rubool StartAtStart { get { return _sas; } set { _sas = value; } }
 
         /// <summary>

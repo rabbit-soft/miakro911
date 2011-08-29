@@ -314,7 +314,7 @@ namespace rabnet
         {
 #if !DEMO
             List<String> fuckers = new List<string>();
-            XmlDocument rep=new XmlDocument();
+            XmlDocument rep = new XmlDocument();
             rep.AppendChild(rep.CreateElement("Rows")).AppendChild(rep.CreateElement("Row")).AppendChild(rep.CreateElement("date")).AppendChild(rep.CreateTextNode(repdate.ToLongDateString()+" "+repdate.ToLongTimeString()));
             XmlDocument xml = new XmlDocument();
             XmlDocument fucks = new XmlDocument();
@@ -352,9 +352,9 @@ namespace rabnet
                 rw.AppendChild(fucks.CreateElement("names")).AppendChild(fucks.CreateTextNode(fuckers[i]));
                 fuck.AppendChild(rw);
             }
-            XmlDocument[] xmls=new XmlDocument[]{xml,rep,fucks};
+            XmlDocument[] xmls = new XmlDocument[] { xml, rep, fucks };
             String plan = "zooteh";
-            if (fuckers.Count==0)
+            if (fuckers.Count == 0)
             {
                 plan += "_nofuck";
                 xmls = new XmlDocument[] { xml, rep };

@@ -83,7 +83,7 @@ namespace rabnet
         }
         public ZooJobItem Okrol(int id,String nm,String place,int age,int srok,int status,String br)
         {
-            type = 1; name = nm; this.place = Buildings.fullPlaceName(place);
+            type = 1; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age; this.status = status;
             this.id = id;
             i[0] = srok;
@@ -92,7 +92,7 @@ namespace rabnet
         }
         public ZooJobItem Vudvor(int id, String nm, String place, int age, int srok, int status,int area,string tt,string dlm,String br,int suckers)
         {
-            type = 2; name = nm; this.place = Buildings.fullPlaceName(place);
+            type = 2; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age; this.status = status;
             this.id = id; breed = br;
             i[2] = suckers;
@@ -105,7 +105,7 @@ namespace rabnet
         }
         public ZooJobItem Counts(int id, String nm, String place, int age,int count,String br,int srok,int yid)
         {
-            type = 3; name = nm; this.place = Buildings.fullPlaceName(place);
+            type = 3; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age; this.status = 0;
             this.id = id; breed = br;
             i[0] = count;
@@ -115,7 +115,7 @@ namespace rabnet
         }
         public ZooJobItem Preokrol(int id, String nm, String place, int age, int srok,string br)
         {
-            type = 4; name = nm; this.place = Buildings.fullPlaceName(place);
+            type = 4; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age;
             this.id = id; breed = br;
             i[0] = srok;
@@ -123,7 +123,7 @@ namespace rabnet
         }
         public ZooJobItem BoysGirlsOut(int id, String nm, String place, int age, int srok,String br)
         {
-            type = 5; name = nm; this.place = Buildings.fullPlaceName(place);
+            type = 5; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age;
             this.id = id; breed = br;
             i[0] = srok;
@@ -131,7 +131,7 @@ namespace rabnet
         }
         public ZooJobItem Fuck(int id, String nm, String place, int age, int srok,int status,string boys,int group,string breed)
         {
-            type = 6; name = nm; this.place = Buildings.fullPlaceName(place);
+            type = 6; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age; this.status = status;this.id = id;
             names = boys; this.breed = breed;
             i[0] = srok;
@@ -140,14 +140,14 @@ namespace rabnet
         }
         public ZooJobItem Vacc(int id, String nm, String place, int age, int srok,String br)
         {
-            type = 7; name = nm; this.place = Buildings.fullPlaceName(place);
+            type = 7; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age; this.id = id; breed = br;
             i[0] = srok;
             return this;
         }
         public ZooJobItem SetNest(int id, String nm, String place, int age, int srok,int sukr,int children,String br)
         {
-            type = 8; name = nm; this.place = Buildings.fullPlaceName(place);
+            type = 8; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age; this.id = id; breed = br;
             i[0] = srok;
             i[1] = sukr;
@@ -297,17 +297,17 @@ FROM rabbits WHERE r_parent<>0 AND {0:s} AND (TO_DAYS(NOW())-TO_DAYS(r_born))>={
             return res.ToArray();
         }
 
-        public ZooJobItem[] getFucks(int statedays, int firstdays,int brideage,int malewait,bool heterosis,bool inbreeding,int type)
+        public ZooJobItem[] getZooFucks(int statedays, int firstdays,int brideage,int malewait,bool heterosis,bool inbreeding,int type)
         {
             string query = String.Format(@"SELECT * FROM (SELECT r_id,rabname(r_id," + getnm(1) + @") name,rabplace(r_id) place,
 TO_DAYS(NOW())-TO_DAYS(r_born) age,
 coalesce((SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id),null,0) suckers,
 r_status,
-TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol) fromokrol," + (op.safeValue("prt") == "1" ? @"
-(SELECT GROUP_CONCAT(rabname(r5.r_id,0) ORDER BY rabname(r5.r_id,0) SEPARATOR ',') FROM rabbits r5
-WHERE r5.r_sex='male' AND r_status>0 AND 
-(r5.r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r5.r_last_fuck_okrol)>={3:d}){4:s}{5:s}) partners" : "'' partners") + @",
-r_group,
+TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol) fromokrol," +
+    (op.safeValue("prt") == "1" ? @"(SELECT GROUP_CONCAT( CONCAT(rabname(r_id,0),' &', rabplace(r_id),'&') ORDER BY rabname(r5.r_id,0) SEPARATOR ',') FROM rabbits r5
+    WHERE r5.r_sex='male' AND r_status>0 AND 
+    (r5.r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r5.r_last_fuck_okrol)>={3:d}){4:s}{5:s}) partners" : "'' partners") + 
+@",r_group,
 (SELECT {6:s} FROM breeds WHERE b_id=r_breed) breed
 FROM rabbits WHERE r_sex='female' AND r_event_date IS NULL AND r_status{7:s}) c 
 WHERE age>{0:d} AND r_status=0 OR (r_status=1 AND (suckers=0 OR fromokrol>={1:d})) OR 
@@ -335,9 +335,16 @@ ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;",
                         srok = fromok - (state == 1 ? firstdays : statedays);
                     else srok = fromok;
                 }
-                res.Add(new ZooJobItem().Fuck(rd.GetInt32("r_id"), rd.GetString("name"),
-                    rd.GetString("place"), age, srok, state,rd.IsDBNull(7)?"":rd.GetString("partners"),
-                    rd.GetInt32("r_group"),rd.GetString("breed")));
+                res.Add(new ZooJobItem().Fuck(
+                    rd.GetInt32("r_id"), 
+                    rd.GetString("name"),
+                    rd.GetString("place"), 
+                    age, 
+                    srok, 
+                    state, 
+                    rd.IsDBNull(7) ? "" : zooFuckPartnerAddressParce( rd.GetString("partners")),
+                    rd.GetInt32("r_group"), 
+                    rd.GetString("breed")));
             }
             rd.Close();
             return res.ToArray();
@@ -381,6 +388,25 @@ ORDER BY sukr DESC,0+LEFT(place,LOCATE(',',place)) ASC;", wochild, wchild);
            rd.Close();
             return res.ToArray();
 
+        }
+
+        /// <summary>
+        /// По просьбе Татищево, надо указать у партнеров адрес.
+        /// Функция преобразует адрес вида  &10606,0,0,jurta,0,1& в [ 10606б]
+        /// </summary>
+        /// <param name="partners">Строка партнеров</param>
+        /// <returns></returns>
+        private string zooFuckPartnerAddressParce(string partners)
+        {
+            string result = "";
+            string[] fuckers = partners.Split(new string[] { "&," }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string s in fuckers)
+            {
+                string[] set = s.Split(new char[] { '&' });
+                result += String.Format(" {0:s} [{1:s}],", set[0].Trim(), Buildings.FullPlaceName(set[1]));
+            }
+            if (result[result.Length - 1] == ',') result.Remove(result.Length - 1);
+            return result;
         }
     }
 }

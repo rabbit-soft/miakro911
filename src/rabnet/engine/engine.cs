@@ -27,7 +27,13 @@ namespace rabnet
             _logger = log4net.LogManager.GetLogger(typeof(RabNetEngine));
         }
 
-        public IRabNetDataLayer initEngine(String dbext,String param)
+        /// <summary>
+        /// Устанавливает обработчик функций движка
+        /// </summary>
+        /// <param name="dbext">Тип</param>
+        /// <param name="param">Строка подключения</param>
+        /// <returns></returns>
+        public IRabNetDataLayer initEngine(String dbType,String param)
         {
             if (data!=null)
             {
@@ -36,8 +42,8 @@ namespace rabnet
                 if (data2 != null) data2.close();
                 data = data2 = null;
             }
-            _logger.Debug("initing engine data to " + dbext + " param=" + param);
-            if (dbext == "db.mysql")
+            _logger.Debug("initing engine data to " + dbType + " param=" + param);
+            if (dbType == "db.mysql")
             {
                 data = new RabNetDbMySql(param);
                 data2 = new RabNetDbMySql(param);
@@ -50,7 +56,7 @@ namespace rabnet
             }*/
             else
             {
-                throw new ExDBDriverNotFoud(dbext);
+                throw new ExDBDriverNotFoud(dbType);
             }
             int ver = options().getIntOption("db", "version", Options.OPT_LEVEL.FARM);
             if (ver != NEED_DB_VERSION)
@@ -62,6 +68,10 @@ namespace rabnet
                 throw new ExDBBadVersion(NEED_DB_VERSION, ver);
             }
             return data;
+        }
+        public IRabNetDataLayer initEngine(String param)
+        {
+            return initEngine("db.mysql", param);
         }
 
         public IRabNetDataLayer db()
@@ -137,11 +147,16 @@ namespace rabnet
             return RabNetEngBuilding.fromPlace(place, this);
         }
 
+        /// <summary>
+        /// Возраст при котором возводят в Невесты
+        /// </summary>
         public int brideAge()
         {
             return options().getIntOption(Options.OPT_ID.MAKE_BRIDE);
         }
-
+        /// <summary>
+        /// Возраст при котором возводят в Кандидаты
+        /// </summary>
         public int candidateAge()
         {
             return options().getIntOption(Options.OPT_ID.MAKE_CANDIDATE);

@@ -385,11 +385,12 @@ namespace rabnet
             }
             else
             {
-                eng.logs().log(RabNetLogs.LogType.REPLACE, RabID, 0, rab.smallAddress,address.Substring(0,5));
+                eng.logs().log(RabNetLogs.LogType.REPLACE, RabID, 0, rab.smallAddress, address.TrimEnd(' ').Substring(0,address.LastIndexOf(' ')));
                 eng.db().replaceRabbit(RabID, farm, tier_id, sec);
             }
             rab.tag = "";
         }
+
         public void ReplaceYounger(int yid, int farm, int tier, int sec, string address)
         {
             eng.db().replaceYounger(yid, farm, tier, sec);
@@ -399,6 +400,7 @@ namespace rabnet
             OneRabbit r = eng.db().getRabbit(yid);
             eng.logs().log(RabNetLogs.LogType.REPLACE, yid,0,r.smallAddress,address);
         }
+
         /// <summary>
         /// Списать кролика
         /// </summary>

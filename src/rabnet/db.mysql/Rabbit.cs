@@ -87,16 +87,19 @@ namespace rabnet
             r.fsex = getRSex(sx);
             if (sx == "void")
             {
+                /*      
                 r.fstatus = shr ? "Пдс" : "Подсосные";
                 if (r.fage<options.safeInt("suc",50))
                     r.fstatus = shr ? "Гнд" : "Гнездовые";
+                */
+                r.fstatus = shr ? "Бпл" : "бесполые";
             }
             else if (sx == "male")
             {
                 int stat = rd.GetInt32("r_status");
                 if (stat == 2) r.fstatus = shr ? "Прз" : "производитель";
-                    else if (stat == 1 || r.fage >= options.safeInt("cand", 120)) r.fstatus = shr ? "Кнд" : (cnt > 1 ? "кандидаты" : "кандидат");
-                    else r.fstatus = shr ? "Мал" : (cnt > 1 ? "мальчики" : "мальчик");
+                else if (stat == 1 || r.fage >= options.safeInt("cand", 120)) r.fstatus = shr ? "Кнд" : (cnt > 1 ? "кандидаты" : "кандидат");
+                else r.fstatus = shr ? "Мал" : (cnt > 1 ? "мальчики" : "мальчик");
                 /*switch (rd.GetInt32("r_status"))
                 {
                     case 0: r.fstatus = shr ? "Мал" : (cnt > 1 ? "мальчики" : "мальчик"); break;
@@ -107,20 +110,20 @@ namespace rabnet
             else
             {
                 if (!rd.IsDBNull(4))
-                   r.fsex = "C-" + String.Format("{0,2:d}",rd.GetInt32("sukr"));
+                    r.fsex = "C-" + String.Format("{0,2:d}", rd.GetInt32("sukr"));
 
                 if (r.fage < options.safeInt("brd", 122))
                     r.fstatus = shr ? "Дев" : (cnt > 1 ? "Девочки" : "Девочка");
                 else
-                    r.fstatus = shr ? "Нвс" : (cnt > 1 ? "Невесты" : "Невеста"); 
+                    r.fstatus = shr ? "Нвс" : (cnt > 1 ? "Невесты" : "Невеста");
 
-                if ((rd.GetInt32("r_status") == 1 && rd.IsDBNull(4))|| (rd.GetInt32("r_status") == 0 && !rd.IsDBNull(4)))
+                if ((rd.GetInt32("r_status") == 1 && rd.IsDBNull(4)) || (rd.GetInt32("r_status") == 0 && !rd.IsDBNull(4)))
                     r.fstatus = shr ? "Прк" : "Первокролка";
                 if (rd.GetInt32("r_status") > 1 || (rd.GetInt32("r_status") == 1 && !rd.IsDBNull(4)))
                     r.fstatus = shr ? "Штн" : "Штатная";
                 if (!rd.IsDBNull(12))
                 {
-                    r.fN = "+" + String.Format("{0,2:s}",rd.GetString("suckers"));
+                    r.fN = "+" + String.Format("{0,2:s}", rd.GetString("suckers"));
                     r.faverage = rd.GetInt32("aage");
                 }
                 else
@@ -139,7 +142,7 @@ namespace rabnet
             r.frate = rd.GetInt32("r_rate");
             r.fcls=Rabbits.getBon(rd.GetString("r_bon"),shr);
             r.fnotes = rd.GetString("r_notes");
-            r.faddress = Buildings.fullPlaceName(rd.GetString("place"), shr, options.safeBool("sht"), options.safeBool("sho"));
+            r.faddress = Buildings.FullPlaceName(rd.GetString("place"), shr, options.safeBool("sht"), options.safeBool("sho"));
             //Buildings.fullRName(rd.GetInt32("r_farm"), rd.GetInt32("r_tier_id"), rd.GetInt32("r_area"),
             //rd.GetString("t_type"), rd.GetString("t_delims"), shr, options.safeBool("sht"), options.safeBool("sho"));
             return r;
@@ -293,7 +296,6 @@ rabname(r_id,2) name,r_group,
 r_status,r_flags,r_event_date,r_breed
  FROM rabbits WHERE r_parent=0) c"+makeWhere()+";";
         }
-
 
         public static String getBon(String bon,bool shr)
         {
@@ -477,8 +479,8 @@ r_status,r_flags,r_event_date,r_breed
             else
             {
                 justAddress = adr;
-                address = Buildings.fullPlaceName(adr, false, true, true);
-                smallAddress = Buildings.fullPlaceName(adr, true, false, false);
+                address = Buildings.FullPlaceName(adr, false, true, true);
+                smallAddress = Buildings.FullPlaceName(adr, true, false, false);
             }
             group = grp;
             breed = brd;
@@ -520,7 +522,7 @@ r_status,r_flags,r_event_date,r_breed
             return (DateTime.Now-born).Days;
         }
 
-        public string medAddress{get{return Buildings.fullPlaceName(justAddress, false, true, false);}}
+        public string medAddress{get{return Buildings.FullPlaceName(justAddress, false, true, false);}}
     }
 
     class RabbitGetter
@@ -1098,7 +1100,7 @@ FROM rabbits WHERE r_sex='female' AND r_group=1 AND (r_status>0 OR (r_status=0 A
                 r.faverage = rd.GetInt32("aage");
                 r.fN = rd.GetString("suckers");
                 r.fstatus = ((rd.GetInt32("r_status") == 1 && rd.IsDBNull(9)) || (rd.GetInt32("r_status") == 0 && !rd.IsDBNull(9))) ? "Первокролка" : "Штатная";
-                r.faddress = Buildings.fullPlaceName(rd.GetString("place"), true, false, false);
+                r.faddress = Buildings.FullPlaceName(rd.GetString("place"), true, false, false);
                 rbs.Add(r);
             }
             rd.Close();

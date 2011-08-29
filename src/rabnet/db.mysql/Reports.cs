@@ -122,7 +122,7 @@ namespace rabnet
                     if (nm.Substring(0, 4) == "adr_")
                     {
                         nm = nm.Substring(4);
-                        vl = Buildings.fullPlaceName(vl, true, false, false);
+                        vl = Buildings.FullPlaceName(vl, true, false, false);
                     }
                     XmlElement f = xml.CreateElement(nm);
                     f.AppendChild(xml.CreateTextNode(vl));
@@ -504,32 +504,39 @@ WHERE f_worker={0:d} {1} ORDER BY name,dt;", f.safeValue("user"), period,format)
             int real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE (r_parent=0 AND inBuilding({0:d},r_farm))OR
 (r_parent!=0 AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent)));",bid));
             addShedRows(doc, "  все", ideal, real);
+
             ideal = fem + 2 * (dfe + jur) + com;
             real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE r_sex='female' AND 
 (r_status>0 OR r_event_date IS NOT NULL) AND inBuilding({0:d},r_farm);",bid));
             addShedRows(doc, "  крольчихи", ideal, real);
+
             ideal = round(ideal*pregn_per_tier);
             real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE r_sex='female' AND 
 r_event_date IS NOT NULL AND inBuilding({0:d},r_farm);", bid));
             addShedRows(doc, "  сукрольные", ideal, real);
+
             ideal = round(alltiers * feed_girls_per_tier);
             real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits,tiers WHERE r_tier=t_id AND 
 (t_type='quarta' OR (r_area=1 AND (t_type='complex' OR t_type='cabin'))) AND r_parent=0 AND r_sex='female'
 AND r_status=0 AND r_event_date IS NULL AND inBuilding({0:d},r_farm);",bid));
             addShedRows(doc, " Д.откорм", ideal, real);
+
             ideal = round(alltiers * feed_boys_per_tier);
             real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits,tiers WHERE r_tier=t_id AND 
 (t_type='quarta' OR (r_area=1 AND (t_type='complex' OR t_type='cabin'))) AND r_parent=0 AND r_sex='male'
 AND r_status=0 AND inBuilding({0:d},r_farm);", bid));
             addShedRows(doc, " М.откорм", ideal, real);
+
             ideal = round(unkn_sucks_per_tier * alltiers);
             real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)>={1:d} 
 AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent));", bid, suck));
             addShedRows(doc, " подсосные", ideal, real);
+
             real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d} 
 AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent));", bid, suck));
             ideal = real;
             addShedRows(doc, "гнездовые", ideal, real);
+
             return doc;
         }
 

@@ -144,9 +144,15 @@ namespace rabnet
         void addMealOut(DateTime start, int amount);
         void deleteMeal(int id);
 
+        //for scale
         List<ScalePLUSummary> getPluSummarys(DateTime date);
         void addPLUSummary(int prodid, string prodname, int tsell, int tsumm, int tweight, DateTime cleared);
         void deletePLUsummary(int sid,DateTime lastClear);
+
+        //for webreports
+        string WebReportGlobal(DateTime dt);
+        string[] WebReportsGlobal(DateTime dt,int days);
+        DateTime GetFarmStartTime();
     }
 
 }

@@ -19,7 +19,7 @@ namespace rabnet
         public Dead(int id,string nm,string ad,int ag,DateTime dd,string rsn,string nts,string brd,int grp)
         {
             this.id = id;  name = nm;
-            address = Buildings.fullPlaceName(ad);
+            address = Buildings.FullPlaceName(ad);
             age = ag; deadDate = dd;
             reason = rsn;
             notes = nts; breed = brd;

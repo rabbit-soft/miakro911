@@ -34,6 +34,7 @@ namespace RabGRD
             Butcher,        //3 bit
             PerortPlugIns,  //4 bit
             ServerDump,     //5 bit
+            WebReports       //6 bit
         }
 
         static readonly ILog log = LogManager.GetLogger(typeof(GRD));

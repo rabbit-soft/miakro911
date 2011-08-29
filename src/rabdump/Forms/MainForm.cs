@@ -8,7 +8,7 @@ using System.IO;
 #if PROTECTED
 using RabGRD;
 #endif
-using rabnet;
+//using rabnet;
 
 namespace rabdump
 {
@@ -26,7 +26,12 @@ namespace rabdump
 
         public MainForm()
         {
-            InitializeComponent();     
+            InitializeComponent();  
+#if PROTECTED
+            miServDump.Enabled = GRD.Instance.GetFlag(GRD.FlagType.ServerDump);
+#else
+            miServDump.Enabled =true;
+#endif
             log4net.Config.XmlConfigurator.Configure();
             _rupd = new RabUpdater();
             _rupd.MessageSenderCallback = MessageCb;          
@@ -39,6 +44,7 @@ namespace rabdump
     #endif
                 RabServWorker.SetServerUrl(RabnetConfig.GetOption(RabnetConfig.OptionType.serverUrl));
                 RabServWorker.OnMessage += new MessageSenderCallbackDelegate(MessageCb);
+                miServDump.Visible = true;
     #if PROTECTED
             }
     #endif
@@ -64,7 +70,11 @@ namespace rabdump
 
         private void exitMenuItem_Click(object sender, EventArgs e)
         {
+#if !DEBUG
             _canclose = (MessageBox.Show(this,"Выйти из программы?","RabDump",MessageBoxButtons.YesNo,MessageBoxIcon.Question)==DialogResult.Yes);
+#else
+            _canclose = true;
+#endif
             Close();
         }
 
@@ -99,6 +109,14 @@ namespace rabdump
             log().Debug("Program started");
             Options.Get().Load();
             ReinitTimer(true);
+#if PROTECTED 
+            if(GRD.Instance.GetFlag(GRD.FlagType.WebReports))
+            {
+#endif
+                RabServWorker.SendWebReport();
+#if PROTECTED
+            }
+#endif
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
@@ -134,6 +152,7 @@ namespace rabdump
             {
                 jobsMenuItem.DropDownItems.Add(j.Name, null, jobnowMenuItem_Click);
                 restMenuItem.DropDownItems.Add(j.Name, null, restMenuItem_Click);
+                miServDump.DropDownItems.Add(j.Name, null, miServDump_Click);
             }
             ProcessTiming(onStart);
         }
@@ -182,9 +201,10 @@ namespace rabdump
     #endif
                     if (j.NeedServDump(onstart))
                         ServDump(j);
-    #if PROTECTED
+    #if PROTECTED               
                 }
     #endif
+
 #endif
             }
         }
@@ -224,6 +244,7 @@ namespace rabdump
                     return;
                 }
             }
+
             RestoreForm rest;
             if (sender == restMenuItem)
             {
@@ -245,9 +266,9 @@ namespace rabdump
             ArchiveJobThread.RunRabnet("");
         }
 
-        private void новаяФермаToolStripMenuItem_Click(object sender, EventArgs e)
+        private void newFarm_Click(object sender, EventArgs e)
         {
-            new FarmChangeForm().ShowDialog();
+            new rabnet.FarmChangeForm().ShowDialog();
         }
 
         private void MessageCb(string txt, string ttl,int type, bool hide)
@@ -303,18 +324,25 @@ namespace rabdump
 
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AboutForm aFrm = new AboutForm();
+            rabnet.AboutForm aFrm = new rabnet.AboutForm();
             //aFrm
             aFrm.Show();
         }
 
-        private void отправитьНаСерверToolStripMenuItem_Click(object sender, EventArgs e)
+        private void miServDump_Click(object sender, EventArgs e)
         {
             foreach (ArchiveJob j in Options.Get().Jobs)
             {
-                if (j.NeedServDump(true))
-                    ServDump(j);
+                if (j.Name == ((ToolStripMenuItem)sender).Text)
+                    if (!j.Busy)
+                        ServDump(j);
+                    else MessageCb("Выполняется другой процесс", "Отправка отменена", 2, false);
             }
+        }
+
+        private void testToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RabServWorker.SendWebReport();
         }
 
     }
