@@ -94,6 +94,7 @@ namespace rabdump
             internal Double lastUploadedBytes;
             internal string webRepLD;//LastDate
             internal string webrepXML;
+            internal string dumpOffset;
         }
 
         private const string dumpListNodeName ="dumplist";
@@ -159,6 +160,7 @@ namespace rabdump
                 _crossData.farmname = "testing";
 #endif
                 _crossData.dumpPath = filename;
+                _crossData.dumpOffset = unDownloaded(dumpFile).ToString(); 
                 downloadDump();
                 if (_state == State.DownloadDump_Loaded)
                 {
@@ -398,13 +400,13 @@ namespace rabdump
 
 #region curl_usage
 
-        private static void downloadDump(string farmname,string dumpFile)
+        private static void downloadDump(string farmname,string dumpFile, long offset)
         {
             _logger.Info("start Downloading Dump");
             _state = State.DownloadDump_Loading;
             _crossData.farmname = farmname;
             _crossData.dumpPath = dumpFile;
-            long offset = unDownloaded(dumpFile);
+            _crossData.dumpOffset = offset;
 
             try
             {
@@ -422,20 +424,18 @@ namespace rabdump
                         CURLformoption.CURLFORM_COPYCONTENTS, offset.ToString(),
                         CURLformoption.CURLFORM_END);
                 
-
                 Easy easy = new Easy();
-                easy.SetOpt(CURLoption.CURLOPT_HTTPPOST, mf);
-                easy.SetOpt(CURLoption.CURLOPT_VERBOSE, true);
-                easy.SetOpt(CURLoption.CURLOPT_URL, downloadDumpURI);
+
                 easy.SetOpt(CURLoption.CURLOPT_LOW_SPEED_LIMIT, 10);
                 easy.SetOpt(CURLoption.CURLOPT_LOW_SPEED_TIME, 30);
 
+                easy.SetOpt(CURLoption.CURLOPT_HTTPPOST, mf);
+                easy.SetOpt(CURLoption.CURLOPT_VERBOSE, true);
+                easy.SetOpt(CURLoption.CURLOPT_URL, downloadDumpURI);
                 Easy.WriteFunction wf = new Easy.WriteFunction(onWriteData);
                 easy.SetOpt(CURLoption.CURLOPT_WRITEFUNCTION, wf);
-
                 Easy.DebugFunction df = new Easy.DebugFunction(onDebug);
-                easy.SetOpt(CURLoption.CURLOPT_DEBUGFUNCTION, df);
-              
+                easy.SetOpt(CURLoption.CURLOPT_DEBUGFUNCTION, df);             
                 Easy.ProgressFunction pf = new Easy.ProgressFunction(onProgress);
                 easy.SetOpt(CURLoption.CURLOPT_PROGRESSFUNCTION, pf);            
                
@@ -486,7 +486,7 @@ namespace rabdump
         }
         private static void downloadDump()
         {
-            downloadDump(_crossData.farmname,_crossData.dumpPath);
+            downloadDump(_crossData.farmname,_crossData.dumpPath,_crossData.dumpOffset);
         }
 
         private static void getDumpList(string farmname)
@@ -503,17 +503,15 @@ namespace rabdump
                     CURLformoption.CURLFORM_END);
 
                 Easy easy = new Easy();
+
+                easy.SetOpt(CURLoption.CURLOPT_CONNECTTIMEOUT, 10);
                 easy.SetOpt(CURLoption.CURLOPT_VERBOSE, true);
                 easy.SetOpt(CURLoption.CURLOPT_URL, lastDumpURI);
                 easy.SetOpt(CURLoption.CURLOPT_HTTPPOST, mf);
-                easy.SetOpt(CURLoption.CURLOPT_CONNECTTIMEOUT, 10);
-
                 Easy.WriteFunction wf = new Easy.WriteFunction(onWriteData);
                 easy.SetOpt(CURLoption.CURLOPT_WRITEFUNCTION, wf);
-
                 Easy.DebugFunction df = new Easy.DebugFunction(onDebug);
-                easy.SetOpt(CURLoption.CURLOPT_DEBUGFUNCTION, df);
-                
+                easy.SetOpt(CURLoption.CURLOPT_DEBUGFUNCTION, df);             
                 Easy.ProgressFunction pf = new Easy.ProgressFunction(onProgress);
                 easy.SetOpt(CURLoption.CURLOPT_PROGRESSFUNCTION, pf);
 
@@ -556,35 +554,30 @@ namespace rabdump
                 _logger.Info("sending dump on server");
                 Curl.GlobalInit((int)CURLinitFlag.CURL_GLOBAL_ALL);
 
-                // <form action="http://mybox/cgi-bin/myscript.cgi
-                //  method="post" enctype="multipart/form-data">
                 MultiPartForm mform = new MultiPartForm();
 
-                // <input name="frmUsername">
+
                 mform.AddSection(CURLformoption.CURLFORM_COPYNAME, "farm",
                     CURLformoption.CURLFORM_COPYCONTENTS, farmname,
                     CURLformoption.CURLFORM_END);
 
-                // <input name="frmPassword">
                 mform.AddSection(CURLformoption.CURLFORM_COPYNAME, "type",
                     CURLformoption.CURLFORM_COPYCONTENTS, "dump",
                     CURLformoption.CURLFORM_END);
-
-                // <input type="File" name="f1">
+              
                 mform.AddSection(CURLformoption.CURLFORM_COPYNAME, "uploadedfile",
                     CURLformoption.CURLFORM_FILE, dumpPath,
                     CURLformoption.CURLFORM_CONTENTTYPE, "application/binary",
                     CURLformoption.CURLFORM_END);
 
                 Easy easy = new Easy();
+
                 easy.SetOpt(CURLoption.CURLOPT_CONNECTTIMEOUT, 60);
                 easy.SetOpt(CURLoption.CURLOPT_VERBOSE, true);
                 easy.SetOpt(CURLoption.CURLOPT_URL, uploadDumpURI);
                 easy.SetOpt(CURLoption.CURLOPT_HTTPPOST, mform);
-
                 Easy.DebugFunction df = new Easy.DebugFunction(onDebug);
-                easy.SetOpt(CURLoption.CURLOPT_DEBUGFUNCTION, df);
-               
+                easy.SetOpt(CURLoption.CURLOPT_DEBUGFUNCTION, df);            
                 Easy.ProgressFunction pf = new Easy.ProgressFunction(onProgress);
                 easy.SetOpt(CURLoption.CURLOPT_PROGRESSFUNCTION, pf);
 
@@ -691,17 +684,15 @@ namespace rabdump
                     CURLformoption.CURLFORM_END);
 
                 Easy easy = new Easy();
+
+                easy.SetOpt(CURLoption.CURLOPT_CONNECTTIMEOUT, 10);
                 easy.SetOpt(CURLoption.CURLOPT_VERBOSE, true);
                 easy.SetOpt(CURLoption.CURLOPT_URL, webrepUploadURI);
                 easy.SetOpt(CURLoption.CURLOPT_HTTPPOST, mf);
-                easy.SetOpt(CURLoption.CURLOPT_CONNECTTIMEOUT, 10);
-
                 Easy.WriteFunction wf = new Easy.WriteFunction(onWriteData);
                 easy.SetOpt(CURLoption.CURLOPT_WRITEFUNCTION, wf);
-
                 Easy.DebugFunction df = new Easy.DebugFunction(onDebug);
                 easy.SetOpt(CURLoption.CURLOPT_DEBUGFUNCTION, df);
-
                 Easy.ProgressFunction pf = new Easy.ProgressFunction(onProgress);
                 easy.SetOpt(CURLoption.CURLOPT_PROGRESSFUNCTION, pf);
 
@@ -726,6 +717,41 @@ namespace rabdump
             sendWRonServ(_crossData.farmname,_crossData.webrepXML);
         }
 
+        private static MultiPartForm addVarsMPP(Dictionary<String,String> vars)
+        {
+            MultiPartForm mpp = new MultiPartForm();
+            foreach (KeyValuePair<string, string> pair in var)
+            {
+                // <input name="pair.Key">
+                mf.AddSection(CURLformoption.CURLFORM_COPYNAME, pair.Key,
+                    CURLformoption.CURLFORM_COPYCONTENTS, defendString(pair.Value),
+                    CURLformoption.CURLFORM_END);
+            }
+            return mpp;
+        }
+
+        private static void configEasy(Easy easy,int timeout)
+        {
+            if (timeout != 0)
+                easy.SetOpt(CURLoption.CURLOPT_CONNECTTIMEOUT, timeout);
+
+            easy.SetOpt(CURLoption.CURLOPT_VERBOSE, true);
+            easy.SetOpt(CURLoption.CURLOPT_URL, lastDumpURI);
+            easy.SetOpt(CURLoption.CURLOPT_HTTPPOST, mf);
+
+            Easy.WriteFunction wf = new Easy.WriteFunction(onWriteData);
+            easy.SetOpt(CURLoption.CURLOPT_WRITEFUNCTION, wf);
+
+            Easy.DebugFunction df = new Easy.DebugFunction(onDebug);
+            easy.SetOpt(CURLoption.CURLOPT_DEBUGFUNCTION, df);
+
+            Easy.ProgressFunction pf = new Easy.ProgressFunction(onProgress);
+            easy.SetOpt(CURLoption.CURLOPT_PROGRESSFUNCTION, pf);
+        }
+        private static void configEasy(Easy easy)
+        {
+            configEasy(easy, 0);
+        }
 #endregion curl_usage
 
         /// <summary>
@@ -995,7 +1021,6 @@ namespace rabdump
             }
             else return -1;
         }
-#endif
 
         private static XmlDocument newWebRepDoc()
         {
@@ -1027,4 +1052,6 @@ namespace rabdump
             doc.SelectSingleNode("webReports").AppendChild(el);
         }
     }
+
+#endif
 }

@@ -225,7 +225,7 @@
 		<!--delete file=""${mysql.use}/-->
 	</target>
 
-	<target name="compile" depends="miaconv,rabdump,rabnet,butcher"/>
+	<target name="compile" depends="miaconv,rabnet,rabdump,butcher"/>
 
 	<target name="compile_demo" depends="miaconv,rabnet_demo">
 		<xmlpoke file="${root_bin}/demo/RabNet/rabnet.exe.config" xpath="/configuration/log4net/root/level/@value" value="ERROR" />
@@ -366,6 +366,8 @@
 		</asminfo>
 		<copy file="${party3d.path}/libcurl.dll" tofile="${bin_dir}/RabDump/libcurl.dll" />	
 		<copy file="${party3d.path}/LibCurlShim.dll" tofile="${bin_dir}/RabDump/LibCurlShim.dll" />
+		<copy file="${bin_dir}/RabNet/db.mysql.dll" tofile="${bin_dir}/RabDump/db.mysql.dll" />
+		<copy file="${bin_dir}/RabNet/engine.dll" tofile="${bin_dir}/RabDump/engine.dll" />
 		<csc target="winexe" output="${bin_dir}/RabDump/rabdump.exe" win32icon="${curdir}/rabdump/icon_white.ico" define="${compile_flag}" optimize="true">
 			<sources>
 				<include name="${curdir}/rabdump/*.cs"/>
@@ -388,6 +390,8 @@
 				<include name="${bin_dir}/RabDump/${guardantNET.lib}" />
 				<include name="${log4net.use}"/>
 				<include name="${party3d.path}/LibCurlNet.dll"/>
+				<include name="${bin_dir}/RabDump/engine.dll"/>
+				<include name="${bin_dir}/RabDump/db.mysql.dll"/>
 			</references>
 		</csc>
 		<copy file="${curdir}/rabdump/clean_config/rabdump.exe.config" tofile="${bin_dir}/RabDump/rabdump.exe.config" />
