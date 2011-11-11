@@ -20,7 +20,8 @@ namespace rabdump
         private Thread _thrRestore;
 
         private readonly WaitForm _wtFrm;
-        private bool _manual=true;
+        private bool _smallMode = true;
+        private bool _manual = true;
 
         private static readonly ILog log = LogManager.GetLogger(typeof(RestoreForm));
 
@@ -59,6 +60,7 @@ namespace rabdump
             Height = (small ? 410 : 550);
             btExtMode.Text="Расширенный режим "+(small?">>":"<<");
             groupBox1.Visible = !small;
+            _smallMode = small;
         }
 
         private void btExtMode_Click(object sender, EventArgs e)
@@ -197,7 +199,7 @@ namespace rabdump
 
         private void btRestore_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count == 0)
+            if (!_smallMode && listView1.SelectedItems.Count == 0)
             {
                 MessageBox.Show("Выберите Резервную Копию для востановления");
                 return;

@@ -430,7 +430,7 @@ public static class RabnetConfig
             ds.SavePassword = (string)k.GetValue("savepass", false) == true.ToString();
             ds.DefUser = (string)k.GetValue("defuser");
             ds.DefPassword = (string)k.GetValue("defpass");
-            ds.WebReport = (string)k.GetValue("webrep", false) == true.ToString();
+            ds.WebReport = (string)k.GetValue("webrep", false.ToString()) == true.ToString();
             _dataSources.Add(ds);
         }
         _logger.Info("loading DataSources finish");

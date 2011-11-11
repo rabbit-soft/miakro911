@@ -160,7 +160,7 @@ namespace rabdump
                 _crossData.farmname = "testing";
 #endif
                 _crossData.dumpPath = filename;
-                _crossData.dumpOffset = unDownloaded(dumpFile).ToString(); 
+                _crossData.dumpOffset = unDownloaded(_crossData.dumpPath).ToString(); 
                 downloadDump();
                 if (_state == State.DownloadDump_Loaded)
                 {
@@ -276,6 +276,7 @@ namespace rabdump
                 _state = State.Free;
                 return;
             }
+            //TODO если не надо ни одного отчета отправить ???
             if (doc.InnerXml != newWebRepDoc().InnerXml)
             {
                 _crossData.webrepXML = doc.InnerXml;
@@ -385,10 +386,9 @@ namespace rabdump
         /// <param name="srcFile">Старый файл</param>
         /// <param name="trgFile">Новый Файл</param>
         /// <returns>Путь к файлу с Дифом</returns>
-        [Obsolete("Недописан")]
         private static string makeDiff(string srcFile, string trgFile)
         {
-            
+            //TODO реализовать diff
             /*FileStream srcFS = new FileStream(srcFile, FileMode.Open, FileAccess.Read);
             StreamReader srcSR = new StreamReader(srcFile);
             FileStream trgFS = new FileStream(trgFile, FileMode.Open, FileAccess.Read);
@@ -400,7 +400,7 @@ namespace rabdump
 
 #region curl_usage
 
-        private static void downloadDump(string farmname,string dumpFile, long offset)
+        private static void downloadDump(string farmname,string dumpFile, string offset)
         {
             _logger.Info("start Downloading Dump");
             _state = State.DownloadDump_Loading;
@@ -419,7 +419,7 @@ namespace rabdump
                 mf.AddSection(CURLformoption.CURLFORM_COPYNAME, "file",
                     CURLformoption.CURLFORM_COPYCONTENTS, dumpFile,
                     CURLformoption.CURLFORM_END);
-                if (offset != -1)               
+                if (offset != "-1")               
                     mf.AddSection(CURLformoption.CURLFORM_COPYNAME, "offset",
                         CURLformoption.CURLFORM_COPYCONTENTS, offset.ToString(),
                         CURLformoption.CURLFORM_END);
@@ -720,10 +720,10 @@ namespace rabdump
         private static MultiPartForm addVarsMPP(Dictionary<String,String> vars)
         {
             MultiPartForm mpp = new MultiPartForm();
-            foreach (KeyValuePair<string, string> pair in var)
+            foreach (KeyValuePair<string, string> pair in vars)
             {
                 // <input name="pair.Key">
-                mf.AddSection(CURLformoption.CURLFORM_COPYNAME, pair.Key,
+                mpp.AddSection(CURLformoption.CURLFORM_COPYNAME, pair.Key,
                     CURLformoption.CURLFORM_COPYCONTENTS, defendString(pair.Value),
                     CURLformoption.CURLFORM_END);
             }
@@ -737,7 +737,7 @@ namespace rabdump
 
             easy.SetOpt(CURLoption.CURLOPT_VERBOSE, true);
             easy.SetOpt(CURLoption.CURLOPT_URL, lastDumpURI);
-            easy.SetOpt(CURLoption.CURLOPT_HTTPPOST, mf);
+            //easy.SetOpt(CURLoption.CURLOPT_HTTPPOST, mf);
 
             Easy.WriteFunction wf = new Easy.WriteFunction(onWriteData);
             easy.SetOpt(CURLoption.CURLOPT_WRITEFUNCTION, wf);

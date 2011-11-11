@@ -796,12 +796,12 @@
 					class svn_rev {
 						public static void ScriptMain(Project project) {
 							PropertyDictionary pd = project.Properties;
-							string rev="none";
+							string rev="0";
 							try 
 							{
 								// Create an instance of StreamReader to read from a file.
 								// The using statement also closes the StreamReader.
-								using (StreamReader sr = new StreamReader(pd["cur_dir"]+"/.svn/entries")) 
+								using (StreamReader sr = new StreamReader(pd["cur_dir"]+"/../../.svn/entries")) 
 								{
 									string line;
 									// Read and display lines from the file until the end of 
