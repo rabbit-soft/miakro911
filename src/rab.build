@@ -21,8 +21,8 @@
 	<property name="host_spec_path" value=".." overwrite="false"/>
 
 	<if test="${not property::exists('build.root')}">
-        		<property name="build.root" value="../../.." if="${file::exists('../../../host_spec.include')}"/>
-        		<property name="build.root" value="../.." if="${file::exists('../../host_spec.include')}"/>
+        <property name="build.root" value="../../.." if="${file::exists('../../../host_spec.include')}"/>
+        <property name="build.root" value="../.." if="${file::exists('../../host_spec.include')}"/>
 	</if>
 
 	<include buildfile="${build.root}/host_spec.include"/>

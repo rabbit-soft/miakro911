@@ -299,12 +299,13 @@ FROM rabbits WHERE r_parent<>0 AND {0:s} AND (TO_DAYS(NOW())-TO_DAYS(r_born))>={
 
         public ZooJobItem[] getZooFucks(int statedays, int firstdays,int brideage,int malewait,bool heterosis,bool inbreeding,int type)
         {
-            string query = String.Format(@"SELECT * FROM (SELECT r_id,rabname(r_id," + getnm(1) + @") name,rabplace(r_id) place,
+            string query = String.Format(@"SET group_concat_max_len=4096;
+SELECT * FROM (SELECT r_id,rabname(r_id," + getnm(1) + @") name,rabplace(r_id) place,
 TO_DAYS(NOW())-TO_DAYS(r_born) age,
 coalesce((SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id),null,0) suckers,
 r_status,
 TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol) fromokrol," +
-    (op.safeValue("prt") == "1" ? @"(SELECT GROUP_CONCAT( CONCAT(rabname(r_id,0),' &', rabplace(r_id),'&') ORDER BY rabname(r5.r_id,0) SEPARATOR ',') FROM rabbits r5
+    (op.safeValue("prt") == "1" ? @"(SELECT GROUP_CONCAT( CONCAT(rabname(r_id,0),'&', rabplace(r_id)) ORDER BY rabname(r5.r_id,0) SEPARATOR '|') FROM rabbits r5
     WHERE r5.r_sex='male' AND r_status>0 AND 
     (r5.r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r5.r_last_fuck_okrol)>={3:d}){4:s}{5:s}) partners" : "'' partners") + 
 @",r_group,
@@ -392,20 +393,21 @@ ORDER BY sukr DESC,0+LEFT(place,LOCATE(',',place)) ASC;", wochild, wchild);
 
         /// <summary>
         /// По просьбе Татищево, надо указать у партнеров адрес.
-        /// Функция преобразует адрес вида  &10606,0,0,jurta,0,1& в [ 10606б]
+        /// Функция преобразует адрес вида  &10606,0,0,jurta,0,1 в [ 10606б]
         /// </summary>
         /// <param name="partners">Строка партнеров</param>
         /// <returns></returns>
         private string zooFuckPartnerAddressParce(string partners)
         {
             string result = "";
-            string[] fuckers = partners.Split(new string[] { "&," }, StringSplitOptions.RemoveEmptyEntries);
+            string[] fuckers = partners.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in fuckers)
             {
                 string[] set = s.Split(new char[] { '&' });
                 result += String.Format(" {0:s} [{1:s}],", set[0].Trim(), Buildings.FullPlaceName(set[1]));
             }
-            if (result[result.Length - 1] == ',') result.Remove(result.Length - 1);
+            if (result[result.Length - 1] == ',') 
+                result = result.Remove(result.Length - 1);
             return result;
         }
     }

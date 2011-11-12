@@ -199,15 +199,17 @@ namespace rabdump
 
         private void btRestore_Click(object sender, EventArgs e)
         {
-            if (!_smallMode && listView1.SelectedItems.Count == 0)
+            if (_smallMode)
             {
-                MessageBox.Show("Выберите Резервную Копию для востановления");
-                return;
-            }
-            if (listView1.SelectedItems[0].Index != 0)
-                if (MessageBox.Show("Выбранная Резервная копия не является самой поздней. Продолжить?", "Внимание!", MessageBoxButtons.YesNo) == DialogResult.No)
+                if (listView1.SelectedItems.Count == 0)
+                {
+                    MessageBox.Show("Выберите Резервную Копию для востановления");
                     return;
-                         
+                }
+                if (listView1.Items.Count!=0 && listView1.SelectedItems[0].Index != 0)
+                    if (MessageBox.Show("Выбранная Резервная копия не является самой поздней. Продолжить?", "Внимание!", MessageBoxButtons.YesNo) == DialogResult.No)
+                        return;
+            }           
             _thrRestore = new Thread(new ParameterizedThreadStart(RestoreThr));
             RestoreRarams p = new RestoreRarams();
 
@@ -217,7 +219,7 @@ namespace rabdump
             p.Password = tbPassword.Text;
             p.File = tbFile.Text;
 #if !DEMO
-            p.fromServer = listView1.SelectedItems[0].ForeColor == System.Drawing.Color.BlueViolet;
+            p.fromServer = listView1.Items.Count!=0 && (listView1.SelectedItems[0].ForeColor == System.Drawing.Color.BlueViolet);
 #endif
 
             Enabled = false;

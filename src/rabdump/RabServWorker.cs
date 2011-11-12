@@ -283,7 +283,7 @@ namespace rabdump
                 sendWRonServ();
                 callOnMessage("Статистика отослана"," ",1);
             }
-            else callOnMessage("На сервере самая свежая информация", "Отправка статистики отменена", 1);
+            else callOnMessage("На сервере самая свежая информация", "Отправка статистики отменена", 1);//TODO исправить условие
             _state = State.Free;
         }
 
