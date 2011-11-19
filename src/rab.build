@@ -34,8 +34,6 @@
 		<property name="build.version" value="${path::get-file-name(directory::get-parent-directory(project::get-base-directory()))}" unless="${property::exists('build.version')}"/>
 		<echo message="Build version base from directory name: ${build.version}" />
 	</if>
-
-
 	
 	<!--property name="vdir" value="${project::get-base-directory()}"/-->
 
@@ -218,8 +216,9 @@
 		<delete dir="${tools_dir}"/>
 		<mkdir dir="${tools_dir}"/>
 		<property name="bin_dir" value="${tools_dir}"/>
-		<property name="mysql.use" value="${bin_dir}/${mysql.lib}" />
-		<copy file="${mysql.ass}" tofile="${mysql.use}" />
+		<!--<property name="mysql.use" value="${bin_dir}/${mysql.lib}" />-->
+		<copy file="${mysql.ass}" tofile="${bin_dir}/${mysql.lib}" />
+		<copy file="${log4net.ass}" tofile="${bin_dir}/${log4net.lib}" />
 		<call target="updater" />
 		<call target="plugins" />
 		<!--delete file=""${mysql.use}/-->
@@ -232,23 +231,13 @@
 	</target>
 
 	<target name="miaconv" description="Make mia converter project">
-		<delete dir="${curdir}/mia_conv/tmp"/>
-		<mkdir dir="${curdir}/mia_conv/tmp"/>
-		<asminfo output="${curdir}/mia_conv/tmp/VersionInfo.cs" language="CSharp">
-			<imports>
-				<import namespace="System.Reflection" />
-			</imports>
-			<attributes>
-				<attribute type="AssemblyFileVersionAttribute" value="${fullver}" />
-				<attribute type="AssemblyVersionAttribute" value="${fullver}" />
-			</attributes>
-		</asminfo>
+
 		<copy file="${curdir}/mia_conv/rabnet_db_fmt.sql" tofile="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
 		<copy file="${log4net.use}" tofile="${bin_dir}/Tools/${log4net.lib}" />
 		<csc target="winexe" output="${bin_dir}/Tools/mia_conv.exe" win32icon="${curdir}/mia_conv/icon_yell_red.ico" define="${compile_flag}" optimize="true">
-			<sources>
-				<include name="${curdir}/mia_conv/tmp/*.cs"/>
+			<sources>				
 				<include name="${curdir}/mia_conv/*.cs"/>
+				<include name="${curdir}/_tmp/*.cs"/>
 			</sources>
 			<resources>
 				<include name="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
@@ -353,17 +342,7 @@
 	</target>
 
 	<target name="rabdump" description="rabnet db dumper">
-		<delete dir="${curdir}/rabdump/tmp"/>
-		<mkdir dir="${curdir}/rabdump/tmp"/>
-		<asminfo output="${curdir}/rabdump/tmp/VersionInfo.cs" language="CSharp">
-			<imports>
-				<import namespace="System.Reflection" />
-			</imports>
-			<attributes>
-				<attribute type="AssemblyFileVersionAttribute" value="${fullver}" />
-				<attribute type="AssemblyVersionAttribute" value="${fullver}" />
-			</attributes>
-		</asminfo>
+		
 		<copy file="${party3d.path}/libcurl.dll" tofile="${bin_dir}/RabDump/libcurl.dll" />	
 		<copy file="${party3d.path}/LibCurlShim.dll" tofile="${bin_dir}/RabDump/LibCurlShim.dll" />
 		<copy file="${bin_dir}/RabNet/db.mysql.dll" tofile="${bin_dir}/RabDump/db.mysql.dll" />
@@ -373,7 +352,7 @@
 				<include name="${curdir}/rabdump/*.cs"/>
 				<include name="${curdir}/rabdump/Forms/*.cs"/>
 				<include name="${curdir}/rabdump/X_Tools/*.cs"/>
-				<include name="${curdir}/rabdump/tmp/*.cs"/>
+				<include name="${curdir}/_tmp/*.cs"/>
 				<include name="${curdir}/rabdump/Properties/AssemblyInfo.cs"/>
 				<include name="${curdir}/libs/GRD/*.cs"/>
 				<include name="${curdir}/mia_conv/miaExitCode.cs"/>
@@ -398,22 +377,12 @@
 	</target>
 
 	<target name="gui" description="rabnet gui">
-		<delete dir="${curdir}/rabnet/gui/tmp"/>
-		<mkdir dir="${curdir}/rabnet/gui/tmp"/>
-		<asminfo output="${curdir}/rabnet/gui/tmp/VersionInfo.cs" language="CSharp">
-			<imports>
-				<import namespace="System.Reflection" />
-			</imports>
-			<attributes>
-				<attribute type="AssemblyFileVersionAttribute" value="${fullver}" />
-				<attribute type="AssemblyVersionAttribute" value="${fullver}" />
-			</attributes>
-		</asminfo>	
+
 		<csc target="winexe" output="${bin_dir}/RabNet/rabnet.exe" win32icon="${curdir}/rabnet/gui/icon_green.ico" define="${compile_flag}" optimize="true">
 			<sources>
 				<include name="${curdir}/rabnet/gui/Program.cs"/>
 				<include name="${curdir}/rabnet/gui/classes/*.cs"/>
-				<include name="${curdir}/rabnet/gui/tmp/*.cs"/>
+				<include name="${curdir}/_tmp/*.cs"/>
 				<include name="${curdir}/rabnet/gui/Properties/AssemblyInfo.cs"/>
 				<include name="${curdir}/rabnet/gui/components/*.cs"/>
 				<include name="${curdir}/rabnet/gui/components/Pickers/*.cs"/>
@@ -550,22 +519,11 @@
 	</target>
 
 	<target name="updater" description="Make updater project">
-		<delete dir="${curdir}/updater/tmp"/>
-		<mkdir dir="${curdir}/updater/tmp"/>
-		<copy file="${log4net.use}" tofile="${tools_dir}/${log4net.lib}" />
-		<asminfo output="${curdir}/updater/tmp/VersionInfo.cs" language="CSharp">
-			<imports>
-				<import namespace="System.Reflection" />
-			</imports>
-			<attributes>
-				<attribute type="AssemblyFileVersionAttribute" value="${fullver}" />
-				<attribute type="AssemblyVersionAttribute" value="${fullver}" />
-			</attributes>
-		</asminfo>
+
 		<csc target="winexe" output="${tools_dir}/updater.exe" win32icon="${curdir}/updater/icon_update_white.ico" optimize="true">
 			<sources>
 				<include name="${curdir}/updater/*.cs"/>
-				<include name="${curdir}/updater/tmp/*.cs"/>
+				<include name="${curdir}/_tmp/*.cs"/>
 				<include name="${curdir}/mia_conv/miaExitCode.cs"/>
 				<include name="${curdir}/rabnet/gui/classes/RabnetConfig.cs"/>
 			</sources>
@@ -787,58 +745,23 @@
 		<delete dir="${vdir}/.svn" />
 	</target>
 	
-	<target name="svn_rev">
-		<echo message="Retrieving Subversion revision number"/>
-		<property name="cur_dir" value="${project::get-base-directory()}"/>
-		<script language="C#" mainclass="svn_rev" failonerror="false">
-			<code>
-				<![CDATA[
-					class svn_rev {
-						public static void ScriptMain(Project project) {
-							PropertyDictionary pd = project.Properties;
-							string rev="0";
-							try 
-							{
-								// Create an instance of StreamReader to read from a file.
-								// The using statement also closes the StreamReader.
-								using (StreamReader sr = new StreamReader(pd["cur_dir"]+"/../../.svn/entries")) 
-								{
-									string line;
-									// Read and display lines from the file until the end of 
-									// the file is reached.
-									while ((line = sr.ReadLine()) != null) 
-									{
-										if (line=="dir") 
-										{
-											rev = sr.ReadLine();
-											break;
-										}
-									}
-								}
-							}
-							catch (Exception e) 
-							{
-								// Let the user know what went wrong.
-								Console.WriteLine("The SVN Entries file could not be read:");
-								Console.WriteLine(e.Message);
-							}
-							
-							//Console.WriteLine("rev: "+rev);
-							
-							pd["revision"] = rev;
-							//foreach (DictionaryEntry property in pd) 
-							//{
-							//	Console.WriteLine("{0} = {1}", property.Key, property.Value);
-							//}
-                        }
-                    }
-                ]]>
-			</code>
-		</script>
-		<echo message="Using Subversion revision number: ${revision}"/>
-		<property name="minver" value="${minver_p}.${revision}"/>
-		<property name="fullver" value="${version}.${minver}"/>
-		<property name="fullver" value="${build.version}.${revision}" if="${property::exists('build.version')}"/>
-		<echo message="Build version: ${fullver}" />
+	<target name="svn_rev" description="set revision number in assembly info">
+		<delete dir="${curdir}/_tmp"/>
+		<mkdir dir="${curdir}/_tmp"/>
+		<asminfo output="${curdir}/_tmp/VersionInfo.cs.tmp" language="CSharp">
+			<imports>
+				<import namespace="System.Reflection" />
+			</imports>
+			<attributes>
+				<attribute type="AssemblyFileVersionAttribute" value="${version}.${minver_p}.$WCREV$" />
+				<attribute type="AssemblyVersionAttribute" value="${version}.${minver_p}.$WCREV$" />
+			</attributes>
+		</asminfo>
+		<exec program="subWCrev">
+			<arg value="${build.root}" />
+			<arg value="${curdir}/_tmp/VersionInfo.cs.tmp" />
+			<arg value="${curdir}/_tmp/VersionInfo.cs" />
+		</exec>
 	</target>
+	
 </project>
