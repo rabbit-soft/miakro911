@@ -216,8 +216,8 @@
 		<delete dir="${tools_dir}"/>
 		<mkdir dir="${tools_dir}"/>
 		<property name="bin_dir" value="${tools_dir}"/>
-		<!--<property name="mysql.use" value="${bin_dir}/${mysql.lib}" />-->
-		<copy file="${mysql.ass}" tofile="${bin_dir}/${mysql.lib}" />
+		<property name="mysql.use" value="${bin_dir}/${mysql.lib}" />
+		<copy file="${mysql.ass}" tofile="${mysql.use}" />
 		<copy file="${log4net.ass}" tofile="${bin_dir}/${log4net.lib}" />
 		<call target="updater" />
 		<call target="plugins" />
@@ -235,9 +235,9 @@
 		<copy file="${curdir}/mia_conv/rabnet_db_fmt.sql" tofile="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
 		<copy file="${log4net.use}" tofile="${bin_dir}/Tools/${log4net.lib}" />
 		<csc target="winexe" output="${bin_dir}/Tools/mia_conv.exe" win32icon="${curdir}/mia_conv/icon_yell_red.ico" define="${compile_flag}" optimize="true">
-			<sources>				
-				<include name="${curdir}/mia_conv/*.cs"/>
+			<sources>
 				<include name="${curdir}/_tmp/*.cs"/>
+				<include name="${curdir}/mia_conv/*.cs"/>				
 			</sources>
 			<resources>
 				<include name="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
