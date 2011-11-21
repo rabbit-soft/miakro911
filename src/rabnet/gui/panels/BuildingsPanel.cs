@@ -25,6 +25,7 @@ namespace rabnet
         /// Защита от расхода памяти
         /// </summary>
         private const int NEW_FARMS_LIMIT = 0xff;
+        public const int DEMO_MAX_FARMS = 10;
         private bool manual = true;
         const String nuBuild = "Новое строение";
         List<int> nofarms = new List<int>();
@@ -58,7 +59,6 @@ namespace rabnet
                 }
             }
             return res;
-
         }
 
         public BuildingsPanel(RabStatusBar bsb):base(bsb, new BuildingsFilter(bsb))
@@ -86,10 +86,8 @@ namespace rabnet
 #if PROTECTED
                 //if (i <= PClient.get().farms())
                 if (i <= GRD.Instance.GetFarmsCntCache())
-#else
-    #if DEMO
-                if (i <= 100)
-    #endif
+#elif DEMO
+                if (i <= DEMO_MAX_FARMS)
 #endif              
                 if (nofarms.Count<NEW_FARMS_LIMIT)
                     nofarms.Add(i);
@@ -131,6 +129,9 @@ namespace rabnet
             return n;
         }
 
+        /// <summary>
+        /// Подготовка перед получением данных
+        /// </summary>
         protected override IDataGetter onPrepare(Filters f)
         {
             manual = false;
@@ -143,13 +144,11 @@ namespace rabnet
 #if PROTECTED
 //            if (nofarm<=PClient.get().farms())
             if (nofarm <= GRD.Instance.GetFarmsCnt())
-#else
-    #if DEMO
-                if (Engine.db().getMFCount() <= 100)
-    #endif
+#elif DEMO
+            if (Engine.db().getMFCount() <= DEMO_MAX_FARMS)
 #endif
             if (nofarm <= MAX_FARMS_COUNT)
-                nofarms.Add(nofarm);
+                nofarms.Add(nofarm); 
             MainForm.protectTest(BuildingsPanel.getFarmsCount(buildTree));
             treeView1.Sort();
             manual = true;
@@ -602,7 +601,13 @@ namespace rabnet
         {
             if (treeView1.SelectedNode == null) return;
             if (isFarm()) return;
-            if (nofarms.Count == 0)
+            if (nofarms.Count == 0 
+#if DEMO
+                || Engine.db().getMFCount() >= DEMO_MAX_FARMS
+#elif PROTECTED
+                || Engine.db().getMFCount() >= GRD.Instance.GetFarmsCnt()
+#endif
+)
             {
                 MessageBox.Show("Достигнуто максимальное количество ферм.");
                 return;

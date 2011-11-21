@@ -26,6 +26,9 @@ namespace rabnet
             InitializeComponent();
             cbUpper.SelectedIndex = 0;
             cbLower.SelectedIndex = 0;
+#if DEMO
+            cbNum.DropDownStyle = ComboBoxStyle.DropDownList;
+#endif
         }
 
         public MiniFarmForm(int parent,int[] ids):this()

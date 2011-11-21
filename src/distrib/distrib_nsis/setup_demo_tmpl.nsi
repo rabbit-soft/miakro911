@@ -144,6 +144,7 @@ Section -com_comps SEC_Common
     File ..\..\..\bin\@bin_type@\Tools\mia_conv.exe
     File ..\..\..\bin\@bin_type@\Tools\MySql.Data.dll
     File ..\..\..\bin\tools\updater.exe
+	File ..\..\..\bin\tools\log4net.dll
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Conv_NAME).lnk $INSTDIR\Tools\mia_conv.exe
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Up_NAME).lnk $INSTDIR\Tools\updater.exe
     WriteRegStr HKLM "${REGKEY}\Components" com_comps 1

@@ -751,6 +751,10 @@
     <Content Include="..\..\..\party3d\GrdAPI32.DLL">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\..\..\party3d\GrdAPI64.DLL">
+      <Link>GrdAPI64.DLL</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="icon_green.ico" />
     <Content Include="changeLog.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

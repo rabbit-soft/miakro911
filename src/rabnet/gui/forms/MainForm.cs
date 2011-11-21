@@ -297,7 +297,7 @@ namespace rabnet
             }*/
 #endif
 #if DEMO
-            if (farms > 10)
+            if (farms > BuildingsPanel.DEMO_MAX_FARMS)
             {
                 MessageBox.Show(this, "Превышено количество разрешенных ферм." + Environment.NewLine + "Программа будет закрыта.", "Демонстрационная версия", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 // Надо сделать выход более доброжелательным

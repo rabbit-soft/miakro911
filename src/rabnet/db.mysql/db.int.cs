@@ -53,6 +53,10 @@ namespace rabnet
         //DATA PROCEDURES
         IDataGetter getRabbits(Filters filters);
         IDataGetter getBuildings(Filters filters);
+        /// <summary>
+        /// Получает число имеющихся МИНИферм
+        /// </summary>
+        /// <returns></returns>
         int getMFCount();
         TreeData rabbitGenTree(int rabbit);
         TreeData buildingsTree();

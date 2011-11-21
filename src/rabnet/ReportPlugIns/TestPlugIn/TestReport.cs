@@ -23,7 +23,7 @@ namespace rabnet
 
         public void MakeReport()
         {
-#if !DEMO
+#if DEBUG || RELEASE || PROTECTED 
             PeriodForm dlg = new PeriodForm(MenuText);
             Filters f = new Filters();
             if (dlg.ShowDialog() == DialogResult.OK)
