@@ -762,6 +762,18 @@
 			<arg value="${curdir}/_tmp/VersionInfo.cs.tmp" />
 			<arg value="${curdir}/_tmp/VersionInfo.cs" />
 		</exec>
+		<echo file="${curdir}/_tmp/rev.tmp">$WCREV$</echo>
+		<exec program="subWCrev">
+			<arg value="${build.root}" />
+			<arg value="${curdir}/_tmp/rev.tmp" />
+			<arg value="${curdir}/_tmp/rev.txt" />
+		</exec>
+		<loadfile file="${curdir}/_tmp/rev.txt" property="revision" />
+		<echo message="Using Subversion revision number: ${revision}"/>
+		<property name="minver" value="${minver_p}.${revision}"/>
+		<property name="fullver" value="${version}.${minver}"/>
+		<property name="fullver" value="${build.version}.${revision}" if="${property::exists('build.version')}"/>
+		<echo message="Build version: ${fullver}" />
 	</target>
 	
 </project>
