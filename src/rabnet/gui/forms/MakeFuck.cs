@@ -119,6 +119,11 @@ namespace rabnet
 
         private void button3_Click(object sender, EventArgs e)
         {
+            if (listView1.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Партнер не выбран");
+                return;
+            }
             int r2 = (listView1.SelectedItems[0].Tag as Fucks.Fuck).partnerid;
             (new GenomView(rab1.RabID, r2)).ShowDialog();
         }

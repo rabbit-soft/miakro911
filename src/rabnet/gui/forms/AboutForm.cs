@@ -62,7 +62,7 @@ namespace rabnet
             return info;
 #else 
     #if DEMO
-            return "Демонстрационная версия"+Environment.NewLine+"Ограничена 100 фермами";
+            return string.Format("Демонстрационная версия{0:s}Ограничение на {1:d} ферм", Environment.NewLine,BuildingsPanel.DEMO_MAX_FARMS);
     #else
             return "Без ограничений";
     #endif

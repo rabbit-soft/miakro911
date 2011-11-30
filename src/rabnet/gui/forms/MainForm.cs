@@ -358,11 +358,11 @@ namespace rabnet
 
         private void tsmiDeadReasonsView_Click(object sender, EventArgs e)
         {
-#if !DEMO
+//#if !DEMO
             new CatalogForm(CatalogForm.CatalogType.DEAD).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
+//#else
+//            DemoErr.DemoNoReportMsg();
+//#endif
         }
 
         private void tsmiProductTypesView_Click(object sender, EventArgs e)
