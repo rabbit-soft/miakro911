@@ -224,8 +224,11 @@ Section -com_comps SEC_Common
     File ..\..\..\bin\@bin_type@\Tools\mia_conv.exe
     File ..\..\..\bin\@bin_type@\Tools\MySql.Data.dll
     File ..\..\..\bin\tools\updater.exe
-	File ..\..\..\bin\tools\log4net.dll
 	File ..\..\..\bin\tools\updater.exe.config
+	File ..\..\..\bin\tools\miaRepair.exe
+	File ..\..\..\bin\tools\miaRepair.exe.config
+	File ..\..\..\bin\tools\log4net.dll
+	
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Conv_NAME).lnk $INSTDIR\Tools\mia_conv.exe
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Up_NAME).lnk $INSTDIR\Tools\updater.exe
     WriteRegStr HKLM "${REGKEY}\Components" com_comps 1
@@ -353,6 +356,9 @@ Section /o -un.com_comps UNSEC_Common
     Delete /REBOOTOK $INSTDIR\Tools\MySql.Data.dll
 	Delete /REBOOTOK $INSTDIR\Tools\log4net.dll
 	Delete /REBOOTOK $INSTDIR\Tools\updater.exe
+	Delete /REBOOTOK $INSTDIR\Tools\updater.exe.config
+	Delete /REBOOTOK $INSTDIR\Tools\miaRepair.exe
+	Delete /REBOOTOK $INSTDIR\Tools\miaRepair.exe.config
     RmDir /REBOOTOK /r $INSTDIR\Tools
 #    Delete /REBOOTOK $INSTDIR\Guardant\GrdTRU.exe
 #    Delete /REBOOTOK $INSTDIR\mia_conv.exe
@@ -375,11 +381,9 @@ Section /o "-un.rabdump" UNSEC_RabDump
 #    Delete /REBOOTOK $INSTDIR\RabDump\CodeStorage32.dll
 #    Delete /REBOOTOK $INSTDIR\RabDump\CodeStorage64.dll
     Delete /REBOOTOK $INSTDIR\RabDump\GuardantDotNetApi.dll
-   
     RmDir /REBOOTOK /r $INSTDIR\7z
-
     RmDir /REBOOTOK /r $INSTDIR\RabDump\updates
-
+	RmDir /REBOOTOK /r $INSTDIR\RabDump
     DeleteRegValue HKLM "${REGKEY}\Components" "rabdump"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(SM_Dump_NAME).lnk"
 SectionEnd
@@ -412,6 +416,7 @@ Section /o "-un.rabnet" UNSEC_Rabnet
     RmDir /REBOOTOK /r $INSTDIR\RabNet\reports
 
     Delete /REBOOTOK $INSTDIR\RabNet\rabnet.exe
+	Delete /REBOOTOK $INSTDIR\RabNet\rabnet.exe.config
     Delete /REBOOTOK $INSTDIR\RabNet\db.mysql.dll
     Delete /REBOOTOK $INSTDIR\RabNet\engine.dll
     Delete /REBOOTOK $INSTDIR\RabNet\MySql.Data.dll
@@ -433,7 +438,8 @@ Section /o "-un.rabnet" UNSEC_Rabnet
 	Delete /REBOOTOK $INSTDIR\RabNet\CAS.dll
 	
     RmDir /REBOOTOK /r $INSTDIR\RabNet\upd
-
+	RmDir /REBOOTOK /r $INSTDIR\RabNet
+	
     DeleteRegValue HKLM "${REGKEY}\Components" "rabnet"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(SM_Prog_NAME).lnk"
 SectionEnd

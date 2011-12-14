@@ -144,6 +144,9 @@ Section -com_comps SEC_Common
     File ..\..\..\bin\@bin_type@\Tools\mia_conv.exe
     File ..\..\..\bin\@bin_type@\Tools\MySql.Data.dll
     File ..\..\..\bin\tools\updater.exe
+	File ..\..\..\bin\tools\updater.exe.config
+	File ..\..\..\bin\tools\miaRepair.exe
+	File ..\..\..\bin\tools\miaRepair.exe.config
 	File ..\..\..\bin\tools\log4net.dll
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Conv_NAME).lnk $INSTDIR\Tools\mia_conv.exe
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Up_NAME).lnk $INSTDIR\Tools\updater.exe
@@ -294,6 +297,7 @@ Section /o "-un.rabnet" UNSEC_Rabnet
 
 
     Delete /REBOOTOK $INSTDIR\RabNet\rabnet.exe
+	Delete /REBOOTOK $INSTDIR\RabNet\rabnet.exe.config
     Delete /REBOOTOK $INSTDIR\RabNet\db.mysql.dll
     Delete /REBOOTOK $INSTDIR\RabNet\engine.dll
     Delete /REBOOTOK $INSTDIR\RabNet\MySql.Data.dll
@@ -301,8 +305,8 @@ Section /o "-un.rabnet" UNSEC_Rabnet
     Delete /REBOOTOK $INSTDIR\RabNet\rabHelp.chm
     Delete /REBOOTOK $INSTDIR\RabNet\log4net.dll
 
-
     RmDir /REBOOTOK /r $INSTDIR\RabNet\upd
+	RmDir /REBOOTOK /r $INSTDIR\RabNet
 
     DeleteRegValue HKLM "${REGKEY}\Components" "rabnet"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(SM_Prog_NAME).lnk"

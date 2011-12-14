@@ -42,7 +42,7 @@ namespace mia_conv
             this.openScriptFile = new System.Windows.Forms.Button();
             this.tbScript = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.textHost = new System.Windows.Forms.TextBox();
+            this.tbHost = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -56,13 +56,14 @@ namespace mia_conv
             this.dbnew = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.textPassword = new System.Windows.Forms.TextBox();
-            this.textUser = new System.Windows.Forms.TextBox();
+            this.tbPassword = new System.Windows.Forms.TextBox();
+            this.tbUser = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.textDB = new System.Windows.Forms.TextBox();
+            this.tbDB = new System.Windows.Forms.TextBox();
             this.ofd2 = new System.Windows.Forms.OpenFileDialog();
             this.pb = new System.Windows.Forms.ProgressBar();
             this.label10 = new System.Windows.Forms.Label();
+            this.chRepair = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox3.SuspendLayout();
@@ -162,11 +163,15 @@ namespace mia_conv
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.chRepair);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.openScriptFile);
             this.groupBox1.Controls.Add(this.tbScript);
             this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.textHost);
+            this.groupBox1.Controls.Add(this.tbHost);
             this.groupBox1.Controls.Add(this.dataGridView1);
             this.groupBox1.Controls.Add(this.groupBox3);
             this.groupBox1.Controls.Add(this.label7);
@@ -175,21 +180,22 @@ namespace mia_conv
             this.groupBox1.Controls.Add(this.dbnew);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.textPassword);
-            this.groupBox1.Controls.Add(this.textUser);
+            this.groupBox1.Controls.Add(this.tbPassword);
+            this.groupBox1.Controls.Add(this.tbUser);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.textDB);
+            this.groupBox1.Controls.Add(this.tbDB);
             this.groupBox1.Location = new System.Drawing.Point(12, 37);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(603, 302);
+            this.groupBox1.Size = new System.Drawing.Size(603, 331);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "База Данных";
             // 
             // label9
             // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(9, 277);
+            this.label9.Location = new System.Drawing.Point(9, 306);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(43, 13);
             this.label9.TabIndex = 10;
@@ -198,7 +204,8 @@ namespace mia_conv
             // 
             // openScriptFile
             // 
-            this.openScriptFile.Location = new System.Drawing.Point(475, 273);
+            this.openScriptFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.openScriptFile.Location = new System.Drawing.Point(570, 301);
             this.openScriptFile.Name = "openScriptFile";
             this.openScriptFile.Size = new System.Drawing.Size(26, 22);
             this.openScriptFile.TabIndex = 11;
@@ -209,9 +216,10 @@ namespace mia_conv
             // 
             // tbScript
             // 
-            this.tbScript.Location = new System.Drawing.Point(58, 274);
+            this.tbScript.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.tbScript.Location = new System.Drawing.Point(58, 303);
             this.tbScript.Name = "tbScript";
-            this.tbScript.Size = new System.Drawing.Size(413, 20);
+            this.tbScript.Size = new System.Drawing.Size(506, 20);
             this.tbScript.TabIndex = 9;
             this.tbScript.Visible = false;
             // 
@@ -224,13 +232,13 @@ namespace mia_conv
             this.label8.TabIndex = 13;
             this.label8.Text = "Хост";
             // 
-            // textHost
+            // tbHost
             // 
-            this.textHost.Location = new System.Drawing.Point(92, 16);
-            this.textHost.Name = "textHost";
-            this.textHost.Size = new System.Drawing.Size(100, 20);
-            this.textHost.TabIndex = 12;
-            this.textHost.Text = "localhost";
+            this.tbHost.Location = new System.Drawing.Point(92, 16);
+            this.tbHost.Name = "tbHost";
+            this.tbHost.Size = new System.Drawing.Size(100, 20);
+            this.tbHost.TabIndex = 12;
+            this.tbHost.Text = "localhost";
             // 
             // dataGridView1
             // 
@@ -362,21 +370,21 @@ namespace mia_conv
             this.label3.TabIndex = 4;
             this.label3.Text = "Пользователь";
             // 
-            // textPassword
+            // tbPassword
             // 
-            this.textPassword.Location = new System.Drawing.Point(92, 95);
-            this.textPassword.Name = "textPassword";
-            this.textPassword.Size = new System.Drawing.Size(100, 20);
-            this.textPassword.TabIndex = 3;
-            this.textPassword.Text = "krol";
+            this.tbPassword.Location = new System.Drawing.Point(92, 95);
+            this.tbPassword.Name = "tbPassword";
+            this.tbPassword.Size = new System.Drawing.Size(100, 20);
+            this.tbPassword.TabIndex = 3;
+            this.tbPassword.Text = "krol";
             // 
-            // textUser
+            // tbUser
             // 
-            this.textUser.Location = new System.Drawing.Point(92, 69);
-            this.textUser.Name = "textUser";
-            this.textUser.Size = new System.Drawing.Size(100, 20);
-            this.textUser.TabIndex = 2;
-            this.textUser.Text = "kroliki";
+            this.tbUser.Location = new System.Drawing.Point(92, 69);
+            this.tbUser.Name = "tbUser";
+            this.tbUser.Size = new System.Drawing.Size(100, 20);
+            this.tbUser.TabIndex = 2;
+            this.tbUser.Text = "kroliki";
             // 
             // label2
             // 
@@ -387,13 +395,13 @@ namespace mia_conv
             this.label2.TabIndex = 1;
             this.label2.Text = "Имя БД";
             // 
-            // textDB
+            // tbDB
             // 
-            this.textDB.Location = new System.Drawing.Point(92, 43);
-            this.textDB.Name = "textDB";
-            this.textDB.Size = new System.Drawing.Size(100, 20);
-            this.textDB.TabIndex = 0;
-            this.textDB.Text = "kroliki";
+            this.tbDB.Location = new System.Drawing.Point(92, 43);
+            this.tbDB.Name = "tbDB";
+            this.tbDB.Size = new System.Drawing.Size(100, 20);
+            this.tbDB.TabIndex = 0;
+            this.tbDB.Text = "kroliki";
             // 
             // ofd2
             // 
@@ -402,7 +410,8 @@ namespace mia_conv
             // 
             // pb
             // 
-            this.pb.Location = new System.Drawing.Point(12, 345);
+            this.pb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.pb.Location = new System.Drawing.Point(12, 374);
             this.pb.Name = "pb";
             this.pb.Size = new System.Drawing.Size(603, 16);
             this.pb.TabIndex = 9;
@@ -416,11 +425,23 @@ namespace mia_conv
             this.label10.TabIndex = 10;
             this.label10.Text = "Файл фермы";
             // 
+            // chRepair
+            // 
+            this.chRepair.AutoSize = true;
+            this.chRepair.Checked = true;
+            this.chRepair.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chRepair.Location = new System.Drawing.Point(9, 276);
+            this.chRepair.Name = "chRepair";
+            this.chRepair.Size = new System.Drawing.Size(339, 17);
+            this.chRepair.TabIndex = 14;
+            this.chRepair.Text = "Запустить Ремонт старых данных по окончанию конвертации";
+            this.chRepair.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(627, 370);
+            this.ClientSize = new System.Drawing.Size(627, 399);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.pb);
             this.Controls.Add(this.groupBox1);
@@ -458,7 +479,7 @@ namespace mia_conv
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textDB;
+        private System.Windows.Forms.TextBox tbDB;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textRootPswd;
@@ -467,14 +488,14 @@ namespace mia_conv
         private System.Windows.Forms.CheckBox dbnew;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textPassword;
-        private System.Windows.Forms.TextBox textUser;
+        private System.Windows.Forms.TextBox tbPassword;
+        private System.Windows.Forms.TextBox tbUser;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button btStart;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textHost;
+        private System.Windows.Forms.TextBox tbHost;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button openScriptFile;
         private System.Windows.Forms.TextBox tbScript;
@@ -482,6 +503,7 @@ namespace mia_conv
         private System.Windows.Forms.ProgressBar pb;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.CheckBox chRepair;
     }
 }
 

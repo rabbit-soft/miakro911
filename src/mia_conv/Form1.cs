@@ -4,6 +4,7 @@
 using System;
 using System.Data;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace mia_conv
 {
@@ -38,10 +39,10 @@ namespace mia_conv
             {
                 Text += " - Авто режим";
                 tb1.Text = file;
-                textHost.Text = h;
-                textDB.Text = db;
-                textUser.Text = u;
-                textPassword.Text = p;
+                tbHost.Text = h;
+                tbDB.Text = db;
+                tbUser.Text = u;
+                tbPassword.Text = p;
                 if (r != "")
                 {
                     dbnew.Checked = true;
@@ -95,14 +96,14 @@ namespace mia_conv
         /// Начинает конвертирование bp mia-файла
         /// </summary>
         private void btStart_Click(object sender, EventArgs e)
-        {           
+        {
             MDCreator crt = new MDCreator(log);
 #if !NOCATCH
             try
             {
 #endif
                 pb.Value = 0;
-                int code = crt.Prepare(dbnew.Checked, textHost.Text, textUser.Text, textPassword.Text, textDB.Text, textRoot.Text, textRootPswd.Text,false,Quiet);
+                int code = crt.Prepare(dbnew.Checked, tbHost.Text, tbUser.Text, tbPassword.Text, tbDB.Text, textRoot.Text, textRootPswd.Text,false,Quiet);
                 if (code == miaExitCode.OK)
                 {
                     button2.Enabled = false;
@@ -115,6 +116,8 @@ namespace mia_conv
                     pb.Value = 0;
                     button2.Enabled = true;
                     btStart.Enabled = true;
+                    if (chRepair.Checked)
+                        runMiaRepair();
                     Environment.ExitCode = miaExitCode.OK;
                 }
                 else MessageBox.Show(miaExitCode.GetText(code), "Ошибка");              
@@ -148,6 +151,17 @@ namespace mia_conv
         {
             if (ofd2.ShowDialog()==DialogResult.OK)
                 tbScript.Text=ofd2.FileName;
+        }
+
+        private void runMiaRepair()
+        {
+            const string FILE ="miaRepair.exe";
+            if (!System.IO.File.Exists(FILE)) return;
+            ProcessStartInfo inf = new ProcessStartInfo(FILE,
+                string.Format("-h {0:s} -d {1:s} -u {2:s} -p {3:s} -y", tbHost.Text.Trim(), tbDB.Text.Trim(), tbUser.Text.Trim(), tbPassword.Text.Trim()));
+            Process p = Process.Start(inf);
+            p.WaitForExit();
+            p.Close();
         }
     }
 }
