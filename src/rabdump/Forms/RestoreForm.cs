@@ -219,7 +219,7 @@ namespace rabdump
             p.Password = tbPassword.Text;
             p.File = tbFile.Text;
 #if !DEMO
-            p.fromServer = listView1.Items.Count!=0 && (listView1.SelectedItems[0].ForeColor == System.Drawing.Color.BlueViolet);
+            p.fromServer = _smallMode && listView1.SelectedItems.Count != 0 && (listView1.SelectedItems[0].ForeColor == System.Drawing.Color.BlueViolet);
 #endif
 
             Enabled = false;

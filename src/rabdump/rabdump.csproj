@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2E3AC590-15C2-4341-9F18-8DA91DEEDB31}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -157,6 +157,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\party3d\GrdAPI32.DLL">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\party3d\GrdAPI64.DLL">
+      <Link>GrdAPI64.DLL</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\party3d\libcurl.dll">

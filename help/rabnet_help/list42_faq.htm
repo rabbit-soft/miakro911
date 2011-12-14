@@ -9,20 +9,41 @@
 <br>
 <br>
 - <span style="font-weight: bold;">При внесении данных о
-ферме в программу, мы наделали много шибок. Как мы можем удалить нанешнюю ферму и начать с "чистого листа".<br>
+ферме в программу, мы наделали много шибок. Как мы можем удалить
+нанешнюю ферму и начать с "чистого листа".<br>
 <span style="font-weight: bold;"></span>&nbsp;&nbsp;&nbsp;
-</span>&nbsp;&nbsp;&nbsp; Удалить текущую БазуДанных вы не можете, в целях безопасности. Вы можете создать новую БД с помощью <a href="list02.htm">Настройки Подключений</a>.<br>
+</span>&nbsp;&nbsp;&nbsp; Удалить текущую БазуДанных
+вы не можете, в целях безопасности. Вы можете создать новую БД с
+помощью <a href="list02.htm">Настройки Подключений</a>.<br>
 <span style="font-weight: bold;"><br>
 - Мы ошибочно ввели не тот пол. В группе девочек оказался мальчик. Как
 ему изменить пол?<br>
 <br>
 - В списке поголовья внизу показывает: "183 записи, 390 кроликов", а в
-шедовом отчете "524 кролика". Почему?<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span>Количество
+шедовом отчете "524 кролика". Почему?<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span>Количество
 кроликов в списке поголовья указано без учета Подсосных и Гнездовых
 крольчат. Выделите в списке поголовья все записи и внизу появится новая
-строчка с сумарным количеством &nbsp;всех кроликов.<br><span style="font-weight: bold;">
+строчка с сумарным количеством &nbsp;всех кроликов.<br>
 <br>
-</span><br>
+- <span style="font-weight: bold;">При запуске программа
+выдает ошибку</span> &nbsp;"<span style="font-style: italic; color: rgb(153, 0, 0);">Ошибка
+подключения MySql.Data.MySqlClient.MySqlException: Unable to connect to
+any of the specified MySQL hosts.</span>"<br>&nbsp;&nbsp;&nbsp; Это
+означает, что программа не может подключиться ни к одной из
+зарегистрированных в программе Баз Данных. Это может случиться по
+следующим причинам:<br><span class="Apple-style-span" style="font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: 13px; color: rgb(34, 34, 34); font-family: arial,sans-serif;">
+&nbsp;&nbsp;&nbsp; 1. </span><span class="">Убедитесь,
+что вы установили&nbsp;MySQL&nbsp;Server, который вы скачали
+вместе с программой. Во время установки вы должны поставить галочку на
+MySql Server.&nbsp;Путь к&nbsp;MySQL&nbsp;по умолчанию
+&nbsp;- C:\Program Files\MySQL\
+.&nbsp;Если&nbsp;MySQL&nbsp;установлен, убедитесь в том,
+что он запущен. Это можно проверить зайдя в &nbsp;</span><span class="" style="font-style: italic;">Пуск\Панель&nbsp;Управления\Администрирование\Службы</span><span class="">, найдите там 'mysql' и проверьте его состояние.</span>
+<div style="color: rgb(34, 34, 34); font-family: arial,sans-serif; font-size: 13px;"><wbr></div>&nbsp;&nbsp;&nbsp; 2. Если MySql Server запущен,
+то это значит, что вы не создали новую Базу Данных, необходимую для
+работы.<br>
+<br>
 <br>
 <span style="font-style: italic;"></span>
 </body></html>

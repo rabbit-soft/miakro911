@@ -58,7 +58,7 @@ namespace miaRepair
 #if ASK        
                 while(true)
                 {
-                    log("Do You Want Save This Shit? [y/n]");  
+                    log("Do You Want Save Changes in DataBase? [y/n]");  
                     string ans = Console.ReadLine().ToLower();
                     if(ans == "y")
                     {
@@ -93,14 +93,14 @@ namespace miaRepair
         /// </summary>
         private static void repairMotherAndFather_bySurnameAndSecname()
         {
-            bool needAccept = true;
-            log("searching Mother And Father by Surname and Secname");
+            log("--searching Mother And Father by Surname and Secname--");
+            bool needAccept = true;          
             foreach(repRabbit rab in _rabbits)
             {
-                if (rab.SecnameID == 0 && rab.SurnameID == 0) continue;
+                if ((rab.Mother!=0 && rab.Father!=0) || (rab.SecnameID == 0 && rab.SurnameID == 0)) continue;
                 repRabbit mbMother=null, mbFather=null;
-                log("searching mother for: {0:d} | name:            {1:s}",rab.rID,rab.Name);
-                if (rab.SurnameID != 0)
+                log("searching mother for: {0:d} | name:  {1:s}",rab.rID,rab.Name);
+                if (rab.Mother==0 && rab.SurnameID != 0)
                 {
                     mbMother = _rabbits.GetRabbitByID(_names.GetSurnameUse(rab.SurnameID));
                     if (mbMother == null)//если нет живого кандидата на мать, то ищем в мертвых
@@ -163,7 +163,7 @@ namespace miaRepair
                     }// if (mbMother == 0)
                 }
 
-                if (rab.SecnameID != 0)
+                if (rab.Father==0 && rab.SecnameID != 0)
                 {
                     mbFather = _deads.GetRabbitByID(_names.GetSecnameUse(rab.SecnameID));
                     if (mbFather == null)//если нет живого кандидата на отца, то ищем в мертвых
@@ -198,12 +198,15 @@ namespace miaRepair
                 while (true)
                 {
                     string ans = "y";
-                    if (needAccept)
+                    if (needAccept) //если надо справшивать о каждом принятии
                     {
                         log("   do you accept this Parents? [y/n], to cancel ask type 'q' ");
                         ans = Console.ReadLine();
                         if (ans == "q")
+                        {
                             needAccept = false;
+                            ans = "y";
+                        }
                     }
                     if (ans == "n")
                         break;
@@ -224,22 +227,23 @@ namespace miaRepair
 
         private static void repairNames()
         {
-            foreach (repRabbit r in _rabbits)
+            log("--repair names--");
+            foreach (repRabbit rabbit in _rabbits)
             {
-                if (r.NameId == 0) continue;
-                foreach (repName n in _names)
+                if (rabbit.NameId == 0) continue;
+                foreach (repName name in _names)
                 {
-                    if (r.NameId == n.nID)
+                    if (rabbit.NameId == name.nID)
                     {
-                        if (r.rID == n.useRabbit)
+                        if (rabbit.rID == name.useRabbit)
                         {
-                            log("   OK.name:{0:d} is fine", n.nID);
+                            //log("   OK.name:{0:d} is fine", name.nID);
                             break;
                         }
                         else
                         {
-                            log("   replacing current n_use: {0:d} by {0:d}",n.useRabbit,r.rID);
-                            n.useRabbit = r.rID;
+                            log("   replacing current n_use: {0:d} by {0:d}",name.useRabbit,rabbit.rID);
+                            name.useRabbit = rabbit.rID;
                         }
                     }
                 }
@@ -315,7 +319,7 @@ namespace miaRepair
 
                 foreach (repFuck f in _fucks)
                 {
-                    if (f.SheID == rab.rID && f.StartDate == DateTime.MinValue && f.fState == repFuck.State.Sukrol)
+                    if (f.SheID == rab.rID && f.StartDate == DateTime.MinValue && f.FuckState == repFuck.State.Sukrol)
                     {
                         candidates.Add(f);
 
@@ -348,7 +352,8 @@ namespace miaRepair
                         }
                         else
                         {
-                            f.fState = repFuck.State.Proholost;
+
+                            f.FuckState = repFuck.State.Proholost;
                             f.Children = 0;
                         }
                     }
@@ -391,7 +396,7 @@ namespace miaRepair
                 {
                     log("   we find only one fuck: {0:d}  and we write it in end_date", candidates[0].fID);
                     candidates[0].EndDate = yng.Born;
-                    candidates[0].fState = repFuck.State.Okrol;
+                    candidates[0].FuckState = repFuck.State.Okrol;
                     continue;
                 }
                 else if (candidates.Count > 1)
@@ -403,7 +408,7 @@ namespace miaRepair
                         {
                             log("fuck: {0:d} we write it in end_date", f.fID);
                             f.EndDate = yng.Born;
-                            f.fState = repFuck.State.Okrol;
+                            f.FuckState = repFuck.State.Okrol;
                             break;
                         }
                     }
@@ -419,10 +424,10 @@ namespace miaRepair
             log("--searching fucks where state is 'sukrol'  and childrens<>0--");
             foreach (repFuck f in _fucks)
             {
-                if (f.fState == repFuck.State.Sukrol && f.Children != 0)
+                if (f.FuckState == repFuck.State.Sukrol && f.Children != 0)
                 {
-                    log("   fixing a bug. chldrn: {0:d}| state: {1:s}",f.Children,f.fState.ToString());
-                    f.fState = repFuck.State.Okrol;
+                    log("   fixing a bug. chldrn: {0:d}| state: {1:s}",f.Children,f.FuckState.ToString());
+                    f.FuckState = repFuck.State.Okrol;
                 }
             }
         }
@@ -442,10 +447,11 @@ namespace miaRepair
             log("--saving fucks--");
             foreach (repFuck f in _fucks)
             {
+                if (!f.Modified) continue;
                 _cmd.CommandText = String.Format("UPDATE fucks SET {0:s} {1:s} f_state='{2}',f_children={4:d} WHERE f_id={3:d};",
                     f.StartDate == DateTime.MinValue ?"":String.Format("f_date='{0:yyy-MM-dd}',",f.StartDate),
                     f.EndDate == DateTime.MinValue ? "" : String.Format("f_end_date='{0:yyy-MM-dd}',", f.EndDate),
-                    f.fState.ToString().ToLower(),f.fID,f.Children);
+                    f.FuckState.ToString().ToLower(),f.fID,f.Children);
                 _cmd.ExecuteNonQuery();
             }
         }
@@ -497,7 +503,13 @@ namespace miaRepair
     class repRabbit
     {
         internal readonly int rID;
+        /// <summary>
+        /// ID матери
+        /// </summary>
         internal int Mother;
+        /// <summary>
+        /// ID отца
+        /// </summary>
         internal int Father;
         internal Sex Sex;
         internal int NameId;
@@ -565,35 +577,47 @@ namespace miaRepair
     {
         internal enum State { Sukrol, Okrol, Proholost };
 
-        internal int fID;
-        /// <summary>
-        /// ID крольчихи
-        /// </summary>
-        internal int SheID;
-        /// <summary>
-        /// ID самца
-        /// </summary>
-        internal int HeID;
-        internal DateTime StartDate;
-        internal DateTime EndDate;
-        internal State fState;
-        internal int Children;
+        internal readonly int fID;
+        private int _sheID;
+        private int _heID;
+        private DateTime _startDate;
+        private DateTime _endDate;
+        private State _fState;
+        private int _children;
+
+        private bool _modified = false;
 
         internal repFuck(int id, int rabid, int partner, DateTime date, DateTime end_date, string state, int children)
         {
             this.fID = id;
-            this.SheID = rabid;
-            this.HeID = partner;
+            _sheID = rabid;
+            _heID = partner;
             this.StartDate = date;
             this.EndDate = end_date;
             switch (state)
             {
-                case "okrol": this.fState = State.Okrol; break;
-                case "sukrol": this.fState = State.Sukrol; break;
-                case "proholost": this.fState = State.Proholost; break;
+                case "okrol": _fState = State.Okrol; break;
+                case "sukrol": _fState = State.Sukrol; break;
+                case "proholost": _fState = State.Proholost; break;
             }
-            this.Children = children;
+            _children = children;
         }
+        /// <summary>
+        /// Были ли внесены изменения
+        /// </summary>
+        internal bool Modified { get { return _modified; } }
+        /// <summary>
+        /// ID самца
+        /// </summary>
+        internal int HeID { get { return _heID; } set { _heID = value; _modified = true; } }
+        /// <summary>
+        /// ID крольчихи
+        /// </summary>
+        internal int SheID { get { return _sheID; } set { _sheID = value; _modified = true; } }
+        internal State FuckState { get { return _fState; } set { _fState = value; _modified = true; } }
+        internal int Children { get { return _children; } set { _children = value; _modified = true; } }
+        internal DateTime StartDate { get { return _startDate; } set { _startDate = value; _modified = true; } }
+        internal DateTime EndDate { get { return _endDate; } set { _endDate = value; _modified = true; } }
     }
 
     class RabbitList : List<repRabbit>
@@ -617,15 +641,14 @@ namespace miaRepair
 
         internal virtual void LoadContent(MySqlCommand cmd)
         {
-            Program.log("fill All Rabbits");
+            Program.log("Loading All Rabbits");
             cmd.CommandText = String.Format("SELECT r_id,r_mother,r_father,r_sex,r_name,r_surname,r_secname,r_born,r_parent,COALESCE(r_event_date,'0001-01-01')ev_date,rabname(r_id,2) nm FROM rabbits ORDER BY r_id ASC;");
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
             {
                 this.Add(new repRabbit(rd.GetInt32("r_id"), rd.GetInt32("r_mother"), rd.GetInt32("r_father"),
                                         rd.GetString("r_sex"), rd.GetInt32("r_name"), rd.GetInt32("r_surname"), rd.GetInt32("r_secname"),
-                                        rd.GetDateTime("r_born"), rd.GetInt32("r_parent"), rd.GetDateTime("ev_date"),rd.GetString("nm"))
-                            );
+                                        rd.GetDateTime("r_born"), rd.GetInt32("r_parent"), rd.GetDateTime("ev_date"),rd.GetString("nm")));
             }
             rd.Close();
             Program.log(" |rabbits count: {0:d}", this.Count);
@@ -691,7 +714,7 @@ namespace miaRepair
     {
         internal override void LoadContent(MySqlCommand cmd)
         {
-            Program.log("fill dead Rabbits");
+            Program.log("Loading dead Rabbits");
             cmd.CommandText = String.Format("SELECT r_id,r_mother,r_father,r_sex,r_name,r_surname,r_secname,r_born,r_parent,deadname(r_id,2) nm FROM dead ORDER BY r_id DESC;");
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
@@ -710,7 +733,7 @@ namespace miaRepair
     {
         internal void LoadNames(MySqlCommand cmd)
         {
-            Program.log("fill all names");
+            Program.log("Loading all names");
             cmd.CommandText = String.Format("SELECT n_id,n_sex,n_name,n_use,COALESCE(n_block_date,'0001-01-01')dt FROM names WHERE n_use<>0 ORDER BY n_use ASC;");
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
@@ -748,7 +771,7 @@ namespace miaRepair
     {
         internal void LoadFucks(MySqlCommand cmd)
         {
-            Program.log("fill fucks");
+            Program.log("Loading fucks");
             cmd.CommandText = String.Format("SELECT f_id,f_rabid,f_partner,COALESCE(f_date,'0001-01-01') f_date, COALESCE(f_end_date,'0001-01-01')f_end_date,f_state,f_children FROM fucks ORDER BY f_id ASC;");
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())

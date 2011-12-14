@@ -81,7 +81,8 @@ namespace rabnet
         {
 
             MySqlCommand cmd = new MySqlCommand(String.Format(@"(SELECT f_id,f_date,f_partner,f_times,f_state,f_date,f_end_date,
-(SELECT u_name FROM users WHERE u_id=f_worker) worker,f_children,f_dead,f_type,
+(SELECT u_name FROM users WHERE u_id=f_worker) worker, 
+f_children,f_dead,f_type,
 deadname(f_partner,2) partner,
 (SELECT r_breed FROM dead WHERE r_id=f_partner) breed,
 (SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=(SELECT r_genesis FROM dead WHERE r_id=f_partner)) genom,
@@ -100,10 +101,12 @@ FROM fucks WHERE f_rabid={0:d} AND isdead(f_partner)=0 ORDER BY f_date);", rabbi
             while (rd.Read())
             {
                 f.addFuck(rd.GetInt32("f_id"), rd.GetString("partner"), rd.GetInt32("f_partner"), rd.GetInt32("f_times"),
-                    rd.IsDBNull(5) ? DateTime.MinValue : rd.GetDateTime("f_date"),
-                    rd.IsDBNull(6) ? DateTime.MinValue : rd.GetDateTime("f_end_date"),
+                    rd.IsDBNull(rd.GetOrdinal("f_date")) ? DateTime.MinValue : rd.GetDateTime("f_date"),
+                    rd.IsDBNull(rd.GetOrdinal("f_end_date")) ? DateTime.MinValue : rd.GetDateTime("f_end_date"),
                     rd.GetString("f_state"), rd.GetInt32("f_children"), rd.GetInt32("f_dead"),
-                    rd.GetInt32("breed"), rd.IsDBNull(12) ? "" : rd.GetString("genom"), rd.GetString("f_type"),
+                    rd.IsDBNull(rd.GetOrdinal("breed")) ? 1 :rd.GetInt32("breed"),
+                    rd.IsDBNull(rd.GetOrdinal("genom")) ? "" : rd.GetString("genom"), 
+                    rd.GetString("f_type"),
                     rd.GetInt32("f_killed"), rd.GetInt32("f_added"), (rd.GetInt32("dead") == 1), rd.IsDBNull(7) ? "" : rd.GetString("worker")
                     );
             }

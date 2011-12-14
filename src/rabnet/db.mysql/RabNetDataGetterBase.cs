@@ -29,7 +29,7 @@ namespace rabnet
             options = filters;
             this.sql = sql;
             String qcmd = countQuery();//получить количество записей
-            Debug("c_query: "+qcmd);
+            Debug("c_query: " + qcmd);
             MySqlCommand cmd = new MySqlCommand(qcmd, sql);
             rd = cmd.ExecuteReader();
             rd.Read();
@@ -41,7 +41,7 @@ namespace rabnet
             {
                 count3 = rd.IsDBNull(2) ? 0 : rd.GetInt32(2);
                 count4 = (float)count2 / (float)count3;
-            } 
+            }
             rd.Close();
             cmd.CommandText = getQuery();
             Debug("d_query:" + cmd.CommandText);

@@ -575,7 +575,6 @@ namespace rabnet
                 e.Cancel = true;
 #endif
             }
-
         }
 
         private void tsmiReports_DropDownOpening(object sender, EventArgs e)
