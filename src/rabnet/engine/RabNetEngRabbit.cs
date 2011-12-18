@@ -435,6 +435,7 @@ namespace rabnet
         /// <param name="yid">ID детей</param>
         public void CountKids(int dead,int killed,int added,int atall,int age,int yid)
         {
+            const byte DR_ON_COUNT=4;//deadreason "при подсчете"
             if (Sex != OneRabbit.RabbitSex.FEMALE)
                 throw new ExNotFemale(this);
             eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, RabID, 0, "", "", String.Format("возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, прибавилось {4:d})",age,atall,dead,killed,added));            
@@ -444,13 +445,13 @@ namespace rabnet
             if (atall == 0)
             {
                 r.CloneAddress = SmallAddress;
-                r.killIt(DateTime.Now, 6, "при подсчете", y.group);
+                r.killIt(DateTime.Now, DR_ON_COUNT, "при подсчете", y.group);
             }
             else
             {
                 RabNetEngRabbit clone = eng.getRabbit(r.clone(dead + killed, 0, 0, 0));
                 clone.CloneAddress = SmallAddress;
-                clone.killIt(DateTime.Now, 6, "при подсчете", clone.Group);
+                clone.killIt(DateTime.Now, DR_ON_COUNT, "при подсчете", clone.Group);
                 //!!!тут надо списыватьт
                 if(added>0)
                     eng.db().countKids(id,dead, killed, added, rab.youngers[yid].id);             

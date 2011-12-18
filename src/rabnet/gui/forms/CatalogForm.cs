@@ -176,7 +176,11 @@ namespace rabnet
 				dataGridView1.Rows[rownumber].Cells[cd.colnames.Length].Value = cd.data[i].key;
 
 			}
-            if (catType == CatalogType.DEAD) dataGridView1.Rows[0].ReadOnly = true;
+            if (catType == CatalogType.DEAD)
+            {
+                dataGridView1.Rows[0].ReadOnly =
+                    dataGridView1.Rows[1].ReadOnly = true;
+            }
             if (colorExist != -1)
                 dataGridView1.Columns[colorExist].Name = dataGridView1.Columns[colorExist].Name.Remove(0, "#color#".Length);
             if (imageExist != -1)

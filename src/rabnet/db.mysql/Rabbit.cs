@@ -1060,7 +1060,7 @@ r_group=r_group+{0:d} WHERE r_parent={1:d} AND r_id={2:d};", added, rid, yid), s
                 cmd.CommandText = String.Format("UPDATE rabbits SET r_group=r_group+{0:d} WHERE r_id={1:d};", cnt, rabto);
                 cmd.ExecuteNonQuery();
                 freeTier(sql, rabfrom);
-                cmd.CommandText = String.Format("CALL killRabbit({0:d},1,'{1:d}');", rabfrom,"Объединен с"+rabto);
+                cmd.CommandText = String.Format("CALL killRabbit({0:d},2,'{1:d}');", rabfrom,"Объединен с "+rabto);
                 cmd.ExecuteNonQuery();
             }
             else
