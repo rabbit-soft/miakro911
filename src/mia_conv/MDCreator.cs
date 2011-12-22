@@ -201,6 +201,10 @@ namespace mia_conv
 
         /// <summary>
         /// Удалаяет данные из таблицы с Причинами списаний
+        /// <remarks>
+        /// При создании новой БД в справочники добавляется информация.
+        /// При конверте из .mia файла нужно ее стереть справочники чтобы заполнить информацией из конвертируемой Фермы
+        /// </remarks>
         /// </summary>
         private void deleteTableContent(Tables tb)
         {
@@ -566,7 +570,7 @@ namespace mia_conv
 
         public void FillDeadFromLost()
         {
-            deleteTableContent(Tables.DeadReasons);
+            //deleteTableContent(Tables.DeadReasons);
             Debug("filling Dead Rabbits From Lost List");
             C.CommandText = "ALTER TABLE `deadreasons` DISABLE KEYS;";
             C.ExecuteNonQuery();

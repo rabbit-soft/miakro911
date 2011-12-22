@@ -35,7 +35,7 @@ namespace mia_conv
         Label lbl = null;
         private int _pval;
 
-        private long _label_ticks = 0;
+        //private long _label_ticks = 0;
         private long _pb1_ticks = 0;
         private string _label_nm = "";
         private string _label_total = "";
