@@ -399,6 +399,7 @@ ORDER BY sukr DESC,0+LEFT(place,LOCATE(',',place)) ASC;", wochild, wchild);
         /// <returns></returns>
         private string zooFuckPartnerAddressParce(string partners)
         {
+            if (partners == "") return "";
             string result = "";
             string[] fuckers = partners.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in fuckers)
