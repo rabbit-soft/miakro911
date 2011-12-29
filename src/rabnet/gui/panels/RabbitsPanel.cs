@@ -456,7 +456,7 @@ namespace rabnet
                 rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(er.SmallAddress));
                 rw.AppendChild(doc.CreateElement("weight")).AppendChild(doc.CreateTextNode(or.rate.ToString()));
                 rw.AppendChild(doc.CreateElement("weight_date")).AppendChild(doc.CreateTextNode(or.evdate.Date.ToShortDateString()));
-                rw.AppendChild(doc.CreateElement("weight_age")).AppendChild(doc.CreateTextNode(or.lost.ToString()));
+                rw.AppendChild(doc.CreateElement("weight_age")).AppendChild(doc.CreateTextNode(or.weight_age.ToString()));
                 rw.AppendChild(doc.CreateElement("born")).AppendChild(doc.CreateTextNode(or.babies.ToString()));
                 rw.AppendChild(doc.CreateElement("okrol")).AppendChild(doc.CreateTextNode(or.breed.ToString()));
                 rw.AppendChild(doc.CreateElement("genom")).AppendChild(doc.CreateTextNode(er.Genom.Replace(' ',',')));

@@ -492,7 +492,7 @@
             <Width>122.1pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>184.0pt</Width>
+            <Width>188.8pt</Width>
           </TableColumn>
         </TableColumns>
         <Header>
@@ -644,7 +644,7 @@
               </TableCells>
             </TableRow>
             <TableRow>
-              <Height>15.9pt</Height>
+              <Height>23.9pt</Height>
               <TableCells>
                 <TableCell>
                   <ReportItems>
@@ -1390,7 +1390,7 @@
         </Style>
       </Textbox>
       <Rectangle Name="Rectangle1">
-        <Height>274.60pt</Height>
+        <Height>266.0pt</Height>
         <Width>279.37pt</Width>
         <Left>8.65pt</Left>
         <Top>317.96pt</Top>
@@ -1681,7 +1681,7 @@
             <Width>84.30pt</Width>
             <Value>Мать матери</Value>
             <Left>26.0pt</Left>
-            <Top>148.9pt</Top>
+            <Top>150.5pt</Top>
             <Style>
               <BorderStyle />
               <BorderColor />
@@ -2133,8 +2133,8 @@
         </ReportItems>
       </Rectangle>
       <Rectangle Name="Rectangle2">
-        <Height>274.76pt</Height>
-        <Width>277.07pt</Width>
+        <Height>266.0pt</Height>
+        <Width>278.00pt</Width>
         <Left>287.90pt</Left>
         <Top>318.00pt</Top>
         <Style>
@@ -2362,8 +2362,8 @@
               <BorderStyle>
                 <Default>Solid</Default>
               </BorderStyle>
-              <BorderColor  />
-              <BorderWidth  />
+              <BorderColor />
+              <BorderWidth />
             </Style>
             <TableColumns>
               <TableColumn>

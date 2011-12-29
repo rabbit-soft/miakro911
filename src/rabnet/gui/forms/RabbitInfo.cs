@@ -327,7 +327,8 @@ namespace rabnet
             if (rab.Sex == OneRabbit.RabbitSex.VOID)
             {
                 setSex(0);
-                label7.Text = "Статус:" + (rab.age < makesuck ? "Гнездовые" : "Подсосные");
+                //label7.Text = "Статус:" + (rab.age < makesuck ? "Гнездовые" : "Подсосные");
+                label7.Text = "Статус: Бесполые";
             }
             if (rab.Sex == OneRabbit.RabbitSex.MALE)
                 updateMale();

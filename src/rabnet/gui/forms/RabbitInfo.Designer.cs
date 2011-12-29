@@ -117,6 +117,7 @@
             this.columnHeader19 = new System.Windows.Forms.ColumnHeader();
             this.msFucks = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miIsNotAProholost = new System.Windows.Forms.ToolStripMenuItem();
+            this.showfuckidToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.suckers = new System.Windows.Forms.ListView();
             this.columnHeader10 = new System.Windows.Forms.ColumnHeader();
@@ -142,7 +143,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
-            this.showfuckidToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bdate = new rabnet.components.DateDays();
             this.okrolDd = new rabnet.components.DateDays();
             this.sukrDd = new rabnet.components.DateDays();
@@ -1109,7 +1109,7 @@
             this.miIsNotAProholost,
             this.showfuckidToolStripMenuItem});
             this.msFucks.Name = "msFucks";
-            this.msFucks.Size = new System.Drawing.Size(219, 70);
+            this.msFucks.Size = new System.Drawing.Size(219, 48);
             this.msFucks.Opening += new System.ComponentModel.CancelEventHandler(this.msFucks_Opening);
             // 
             // miIsNotAProholost
@@ -1118,6 +1118,15 @@
             this.miIsNotAProholost.Size = new System.Drawing.Size(218, 22);
             this.miIsNotAProholost.Text = "Отменить прохолостание";
             this.miIsNotAProholost.Click += new System.EventHandler(this.miIsNotAProholost_Click);
+            // 
+            // showfuckidToolStripMenuItem
+            // 
+            this.showfuckidToolStripMenuItem.Name = "showfuckidToolStripMenuItem";
+            this.showfuckidToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+                        | System.Windows.Forms.Keys.Z)));
+            this.showfuckidToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
+            this.showfuckidToolStripMenuItem.Text = "show_fuck_id";
+            this.showfuckidToolStripMenuItem.Visible = false;
             // 
             // tabPage6
             // 
@@ -1337,7 +1346,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(151, 9);
+            this.label5.Location = new System.Drawing.Point(148, 9);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(38, 13);
             this.label5.TabIndex = 8;
@@ -1363,20 +1372,11 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // showfuckidToolStripMenuItem
-            // 
-            this.showfuckidToolStripMenuItem.Name = "showfuckidToolStripMenuItem";
-            this.showfuckidToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.Z)));
-            this.showfuckidToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
-            this.showfuckidToolStripMenuItem.Text = "show_fuck_id";
-            this.showfuckidToolStripMenuItem.Visible = false;
-            // 
             // bdate
             // 
             this.bdate.AutoSize = true;
             this.bdate.DateText = "Дата рожд.";
-            this.bdate.DateValue = new System.DateTime(2011, 6, 9, 0, 0, 0, 0);
+            this.bdate.DateValue = new System.DateTime(2011, 12, 26, 0, 0, 0, 0);
             this.bdate.DaysText = "Возраст";
             this.bdate.DaysValue = 0;
             this.bdate.Location = new System.Drawing.Point(13, 111);
@@ -1391,7 +1391,7 @@
             // 
             this.okrolDd.AutoSize = true;
             this.okrolDd.DateText = "Дата";
-            this.okrolDd.DateValue = new System.DateTime(2011, 6, 9, 0, 0, 0, 0);
+            this.okrolDd.DateValue = new System.DateTime(2011, 12, 26, 0, 0, 0, 0);
             this.okrolDd.DaysText = "Срок";
             this.okrolDd.DaysValue = 0;
             this.okrolDd.Location = new System.Drawing.Point(8, 61);
@@ -1406,7 +1406,7 @@
             // 
             this.sukrDd.AutoSize = true;
             this.sukrDd.DateText = "Дата";
-            this.sukrDd.DateValue = new System.DateTime(2011, 6, 9, 0, 0, 0, 0);
+            this.sukrDd.DateValue = new System.DateTime(2011, 12, 26, 0, 0, 0, 0);
             this.sukrDd.DaysText = "Срок";
             this.sukrDd.DaysValue = 0;
             this.sukrDd.Location = new System.Drawing.Point(0, 46);
@@ -1426,8 +1426,8 @@
             this.ClientSize = new System.Drawing.Size(532, 516);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
