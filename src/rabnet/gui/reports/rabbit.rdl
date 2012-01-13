@@ -1158,7 +1158,7 @@
         <Width>42.17pt</Width>
         <Value>Мать</Value>
         <Left>119.1pt</Left>
-        <Top>324pt</Top>
+        <Top>322.4pt</Top>
         <Style>
           <BorderStyle />
           <BorderColor />
@@ -1187,19 +1187,19 @@
             <Width>47.0pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>75.5pt</Width>
+            <Width>63.5pt</Width>
           </TableColumn>
           <TableColumn>
             <Width>50.6pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>64.6pt</Width>
+            <Width>103.4pt</Width>
           </TableColumn>
         </TableColumns>
         <Header>
           <TableRows>
             <TableRow>
-              <Height>18.3pt</Height>
+              <Height>23.9pt</Height>
               <TableCells>
                 <TableCell>
                   <ReportItems>
@@ -1369,8 +1369,8 @@
             </TableRow>
           </TableRows>
         </Details>
-        <Left>29.2pt</Left>
-        <Top>347.0pt</Top>
+        <Left>15pt</Left>
+        <Top>345.0pt</Top>
         <Visibility>
         </Visibility>
       </Table>
@@ -1390,7 +1390,7 @@
         </Style>
       </Textbox>
       <Rectangle Name="Rectangle1">
-        <Height>266.0pt</Height>
+        <Height>266.00pt</Height>
         <Width>279.37pt</Width>
         <Left>8.65pt</Left>
         <Top>317.96pt</Top>
@@ -2133,7 +2133,7 @@
         </ReportItems>
       </Rectangle>
       <Rectangle Name="Rectangle2">
-        <Height>266.0pt</Height>
+        <Height>266.00pt</Height>
         <Width>278.00pt</Width>
         <Left>287.90pt</Left>
         <Top>318.00pt</Top>
@@ -2168,19 +2168,19 @@
                 <Width>48.4pt</Width>
               </TableColumn>
               <TableColumn>
-                <Width>78.0pt</Width>
+                <Width>67.8pt</Width>
               </TableColumn>
               <TableColumn>
                 <Width>47.4pt</Width>
               </TableColumn>
               <TableColumn>
-                <Width>64.6pt</Width>
+                <Width>102.0pt</Width>
               </TableColumn>
             </TableColumns>
             <Header>
               <TableRows>
                 <TableRow>
-                  <Height>18.4pt</Height>
+                  <Height>23.2pt</Height>
                   <TableCells>
                     <TableCell>
                       <ReportItems>
@@ -2350,7 +2350,7 @@
                 </TableRow>
               </TableRows>
             </Details>
-            <Left>16.8pt</Left>
+            <Left>5pt</Left>
             <Top>27pt</Top>
             <Visibility>
             </Visibility>
