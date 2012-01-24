@@ -112,10 +112,11 @@ namespace rabnet
             if (GRD.Instance.GetFlag(GRD.FlagType.PerortPlugIns))
             {
 #endif
-                if (ReportPlugInClass.Instance.Plugins.Count != 0)
+            
+                if (ReportBase.CheckPlugins() != 0)
                 {
                     tsmiReports.DropDownItems.Add(new ToolStripSeparator());
-                    foreach (IReportInterface p in ReportPlugInClass.Instance.Plugins)
+                    foreach (ReportBase p in ReportBase.Plugins)
                     {
                         ToolStripMenuItem menu = new ToolStripMenuItem(p.MenuText);
                         menu.Tag = p.UniqueName;
@@ -134,7 +135,7 @@ namespace rabnet
             if (GRD.Instance.GetFlag(GRD.FlagType.PerortPlugIns))
             {
 #endif
-                IReportInterface p = ReportPlugInClass.Instance.getPluginByUName((sender as ToolStripMenuItem).Tag.ToString());
+                ReportBase p = ReportBase.GetPluginByName((sender as ToolStripMenuItem).Tag.ToString());
                 if (p != null)
                     p.MakeReport();
 #if PROTECTED

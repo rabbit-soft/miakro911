@@ -1,29 +1,18 @@
 ﻿using System;
-using System.IO;
 using System.Text;
 using System.Xml;
-using System.Reflection;
 using System.Windows.Forms;
 
 namespace rabnet
 {
-    public class TestReport:IReportInterface
+    public class TestReport:ReportBase
     {
-        const string _fileName = "testplgn";
+        public TestReport() : base("test", "Тестовый отчет") { }
+        
 
-        public string UniqueName
+        public override void MakeReport()
         {
-            get { return "TestReport"; }
-        }
-
-        public string MenuText
-        {
-            get { return "Тестовый плагин"; }
-        }
-
-        public void MakeReport()
-        {
-#if DEBUG || RELEASE || PROTECTED 
+#if Release || DEBUG
             PeriodForm dlg = new PeriodForm(MenuText);
             Filters f = new Filters();
             if (dlg.ShowDialog() == DialogResult.OK)
@@ -38,39 +27,6 @@ namespace rabnet
                 )).ShowDialog();
             }
 #endif
-        }
-
-        public string FileName
-        {
-            get 
-            {
-                checkFile();
-                return _fileName; 
-            }
-        }
-
-        private void checkFile()
-        {
-            try
-            {
-                string path = Path.GetDirectoryName(Application.ExecutablePath) + "\\reports\\" + _fileName + ".rdl";
-                if (!File.Exists(path))
-                {
-                    /*string[] s = Assembly.GetExecutingAssembly().GetManifestResourceNames();*/
-                    Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("TestPlugIn.test.rdl");
-                    if (stream.Length != 0)
-                    {
-                        FileStream fileStream = new FileStream(path, FileMode.CreateNew);
-                        for (int i = 0; i < stream.Length; i++)
-                            fileStream.WriteByte((byte)stream.ReadByte());
-                        fileStream.Close();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine("|Ex| "+ex.Message);
-            }
         }
 
         private string getSQL(Filters f)
@@ -98,6 +54,11 @@ FROM dead WHERE {0} GROUP BY d_reason)
 UNION 
 (SELECT SUM(r_group),0,'Итого' FROM dead WHERE {0});", period);
             return s;
+        }
+
+        protected override System.IO.Stream getAssembly()
+        {
+            return System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("TestPlugIn.test.rdl");
         }
 
     }

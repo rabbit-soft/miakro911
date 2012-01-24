@@ -17,8 +17,41 @@ namespace rabnet
         public static XmlElement nullElem = nullDocument.CreateElement("none");
 
         public readonly myReportType ReportType = myReportType.TEST;
+        
+        private PeriodForm()
+        {
+            InitializeComponent();
+        }
 
-        public myDatePeriod Period
+        public PeriodForm(string caption) : this()
+        {
+            lbReportName.Text = caption;
+            fillDates();
+            rbDay_CheckedChanged(null, null);
+        }
+
+        public PeriodForm(myReportType type) : this()
+        {
+
+            switch (type)
+            {
+                case myReportType.DEAD:
+                    lbReportName.Text = "Списания";
+                    break;
+                case myReportType.DEADREASONS:
+                    lbReportName.Text = "Причины списаний";
+                    break;
+                case myReportType.FUCKS_BY_DATE:
+                    lbReportName.Text = "Список случек и вязок";
+                    break;
+            }
+            this.ReportType = type;
+        }
+
+        /// <summary>
+        /// За какой период показывать отчет (Год,месяц,Год)
+        /// </summary>
+        public myDatePeriod PeriodType
         {
             get
             {
@@ -34,11 +67,32 @@ namespace rabnet
             }
         }
 
+        /// <summary>
+        /// Ограничить выбора периода. Битовая маска ymd=7
+        /// </summary>
+        public int PeriodConstrain
+        {
+            get
+            {
+                int result = 0;
+                result += rbDay.Enabled ? 1 : 0;
+                result += rbMonth.Enabled ? 2 : 0;
+                result += rbYear.Enabled ? 4 : 0;
+                return result;
+            }
+            set
+            {
+                rbYear.Enabled = rbYear.Checked = cbYear.Enabled = (value & 4) > 0;
+                rbMonth.Enabled = rbMonth.Checked = cbMonth.Enabled = (value & 2) > 0;
+                rbDay.Enabled = rbDay.Checked = dtpDay.Enabled =(value & 1) > 0;                     
+            }
+        }
+
         public string PeriodChar
         {
             get
             {
-                switch (Period)
+                switch (PeriodType)
                 {
                     case myDatePeriod.Day:
                         return "d";
@@ -54,7 +108,7 @@ namespace rabnet
         {
             get
             {
-                switch (Period)
+                switch (PeriodType)
                 {
                     case myDatePeriod.Day:
                         return dtpDay.Value.Date.ToShortDateString();
@@ -67,35 +121,25 @@ namespace rabnet
             }
         }
 
-        public PeriodForm()
+        public XmlDocument getXml()
         {
-            InitializeComponent();
+            /*XmlDocument doc = new XmlDocument();
+            XmlElement rows = doc.CreateElement("Rows");
+            doc.AppendChild(rows);
+            XmlElement row = doc.CreateElement("Row");
+            rows.AppendChild(row);
+            row.AppendChild(doc.CreateElement("datefrom")).AppendChild(doc.CreateTextNode(DateValue));
+            row.AppendChild(doc.CreateElement("dateto")).AppendChild(doc.CreateTextNode(""));
+            return doc;*/
+            XmlDocument doc = new XmlDocument();
+            XmlElement row = doc.CreateElement("Row");
+            doc.AppendChild(doc.CreateElement("Rows")).AppendChild(row);
+            row.AppendChild(doc.CreateElement("datefrom")).AppendChild(doc.CreateTextNode(DateValue));
+            row.AppendChild(doc.CreateElement("dateto")).AppendChild(doc.CreateTextNode(""));
+            return doc;
         }
 
-        public PeriodForm(myReportType type):this()
-        {
-            
-            switch (type)
-            {
-                case myReportType.DEAD:
-                    lbReportName.Text = "Списания";
-                    break;
-                case myReportType.DEADREASONS:
-                    lbReportName.Text = "Причины списаний";
-                    break;
-                case myReportType.FUCKS_BY_DATE:
-                    lbReportName.Text = "Список случек и вязок";
-                    break;
-            }
-            this.ReportType = type;        
-        }
 
-        public PeriodForm(string caption):this()
-        {
-            lbReportName.Text = caption;
-            fillDates();
-            rbDay_CheckedChanged(null, null);
-        }
 
         private void fillDates()
         {
@@ -157,24 +201,6 @@ namespace rabnet
                 cbYear.Visible = true;
                 cbYear.SelectedIndex = 0;
             }
-        }
-
-        public XmlDocument getXml()
-        {
-            /*XmlDocument doc = new XmlDocument();
-            XmlElement rows = doc.CreateElement("Rows");
-            doc.AppendChild(rows);
-            XmlElement row = doc.CreateElement("Row");
-            rows.AppendChild(row);
-            row.AppendChild(doc.CreateElement("datefrom")).AppendChild(doc.CreateTextNode(DateValue));
-            row.AppendChild(doc.CreateElement("dateto")).AppendChild(doc.CreateTextNode(""));
-            return doc;*/
-            XmlDocument doc = new XmlDocument();
-            XmlElement row = doc.CreateElement("Row");
-            doc.AppendChild(doc.CreateElement("Rows")).AppendChild(row);
-            row.AppendChild(doc.CreateElement("datefrom")).AppendChild(doc.CreateTextNode(DateValue));
-            row.AppendChild(doc.CreateElement("dateto")).AppendChild(doc.CreateTextNode(""));
-            return doc;
         }
 
         private void PeriodForm_Load(object sender, EventArgs e)

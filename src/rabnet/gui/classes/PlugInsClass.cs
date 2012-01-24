@@ -7,37 +7,15 @@ using System.Windows.Forms;
 
 namespace rabnet
 {
-    class ReportPlugInClass
-    {
+    //class ReportPlugInClass
+    //{
 #if !DEMO
-        private static volatile ReportPlugInClass instance;
+        //private static volatile ReportPlugInClass instance;
 
-        public List<IReportInterface> Plugins = new List<IReportInterface>();
+        //public List<ReportBase> Plugins = new List<ReportBase>();
 
-        private ReportPlugInClass() 
-        {
-            foreach (string Filename in Directory.GetFiles(Path.Combine(Application.StartupPath, "reports"), "*.dll"))
-            {
-                try
-                {
-                    Assembly Asm = Assembly.LoadFile(Filename);//загружаем Сборку
-                    foreach (Type AsmType in Asm.GetTypes())//Проверяем все имеющиеся типы данных (классы)
-                    {
-                        if (AsmType.GetInterface("IReportInterface") != null)//Если интерфейс у типа
-                        {
-                            IReportInterface Plugin = (IReportInterface)Activator.CreateInstance(AsmType);
-                            Plugins.Add(Plugin);
-                        }
-                    }
-                }
-                catch(BadImageFormatException)
-                {
-                    continue;
-                }
-            }
-       }
-
-        public static ReportPlugInClass Instance
+        
+        /*public static ReportPlugInClass Instance
         {
             get
             {
@@ -45,19 +23,11 @@ namespace rabnet
                     instance = new ReportPlugInClass();
                 return instance;
             }
-        }
+        }*/
 
-        public IReportInterface getPluginByUName(string uname)
-        {
-            foreach(IReportInterface p in Plugins)
-            {
-                if (p.UniqueName == uname)
-                    return p;
-            }
-            return null;
-        }
+
 #endif
-    }
+    //}
 
     /*tatic class AsmLoader
     {

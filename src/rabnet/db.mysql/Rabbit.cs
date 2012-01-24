@@ -919,6 +919,8 @@ FROM rabbits WHERE r_id={0:d};", rabbit,mom,count), sql);
                 String[] adr = r.nuaddr.Split('|');
                 placeRabbit(sql, r.id, int.Parse(adr[0]), int.Parse(adr[1]), int.Parse(adr[2]));
             }
+            cmd.CommandText = String.Format("INSERT INTO income(t_rab_id,t_date,t_count) VALUES({0:d},NOW(),{1:d});", r.id,r.group);
+            cmd.ExecuteNonQuery();
             return r.id;
         }
 

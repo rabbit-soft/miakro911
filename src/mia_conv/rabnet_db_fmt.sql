@@ -276,6 +276,15 @@ CREATE TABLE logs(
 	KEY(l_type)
 );
 
+DROP TABLE IF EXISTS income;
+CREATE TABLE `income` (
+  `t_rab_id` INTEGER UNSIGNED NOT NULL,
+  `t_date` DATETIME NOT NULL,
+  `t_count` INTEGER UNSIGNED,
+  PRIMARY KEY (`t_rab_id`)
+)
+ENGINE = InnoDB COMMENT = 'Таблица привозов';
+
 DROP TABLE IF EXISTS products;
 CREATE TABLE products (
   p_id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -307,9 +316,11 @@ CREATE TABLE meal (
   PRIMARY KEY (m_id)
 )ENGINE = InnoDB COMMENT = 'Таблица расчета кормов';
 
+
+
 #DATA
 
-INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','8');
+INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','9');
 INSERT INTO options(o_name,o_subname,o_value) VALUES
 ('opt', 'okrol', 30),
 ('opt', 'vudvor', 30),
@@ -360,8 +371,7 @@ INSERT INTO deadreasons(d_name) VALUES
 ('На убой'),
 ('Падеж при подсчете'),
 ('Продажа племенного поголовья'),
-('Падеж'),
-('Падеж при подсчете');
+('Падеж');
 
 INSERT INTO logtypes(l_name,l_params) VALUES
 ('привоз','$r в $p'),

@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ReportInterface")]
+[assembly: AssemblyTitle("population")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("kikos")]
-[assembly: AssemblyProduct("ReportInterface")]
-[assembly: AssemblyCopyright("Copyright © kikos 2011")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("population")]
+[assembly: AssemblyCopyright("Copyright ©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("7b79f906-7fc2-41da-a3b3-333484a2f540")]
+[assembly: Guid("3e3e00bd-49e3-4599-88a1-7c66bbd43687")]
 
 // Version information for an assembly consists of the following four values:
 //

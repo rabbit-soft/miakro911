@@ -4,7 +4,6 @@ using System.Text;
 
 namespace rabnet
 {
-
     public class TreeData
     {
         public String caption;
