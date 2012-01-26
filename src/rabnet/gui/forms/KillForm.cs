@@ -148,7 +148,7 @@ namespace rabnet
                         int reason = 0;
                         if (cbDeadReason.SelectedIndex > 0)
                             reason = cbDeadReason.SelectedIndex + 2;//1- списан из старой программы; 2- Обьединение
-                        r.killIt(dateDays1.DateValue, reason, r.SmallAddress + " " + textBox1.Text, cnt);
+                        r.killIt(dateDays1.DateValue, reason, r.SmallAddress + " " + (textBox1.Text!=""?textBox1.Text:cbDeadReason.Text), cnt);
                     }
                     i++;
                 }

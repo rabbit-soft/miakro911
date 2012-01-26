@@ -46,8 +46,8 @@ namespace rabnet
   (select Coalesce(sum(t_count),0) from income where t_date>= '{0:s}' and t_date<'{1:s}') buy,
   (select Coalesce(sum(r_group),0) from dead where d_reason>2 and d_date>='{0:s}' and d_date<'{1:s}') gonetotal,
   (select Coalesce(sum(r_group),0) from dead where d_reason=3 and d_date>='{0:s}' and d_date<'{1:s}' ) killed,
-  (select Coalesce(sum(r_group),0) from dead where d_reason=6 and d_date>='{0:s}' and d_date<'{1:s}' ) dying,
-  (select Coalesce(sum(r_group),0) from dead where d_reason=5 and d_date>='{0:s}' and d_date<'{1:s}') sell,
+  (select Coalesce(sum(r_group),0) from dead where (d_reason=5 or d_reason=6) and d_date>='{0:s}' and d_date<'{1:s}' ) dying,
+  (select Coalesce(sum(r_group),0) from dead where d_reason=4 and d_date>='{0:s}' and d_date<'{1:s}') sell,
   (select Coalesce(sum(r_group),0) from dead where d_reason>6 and d_date>='{0:s}' and d_date<'{1:s}' ) another,  
   (select Coalesce(sum(r_group),0) from rabbits where r_born<'{1:s}') + (select Coalesce(sum(r_group),0) from dead where r_born<'{1:s}' and d_date>='{1:s}') ecount;", 
                 dt.ToString("yyyy-MM-dd"), dt.AddMonths(1).ToString("yyyy-MM-dd"),dt.Month,dt.Year);

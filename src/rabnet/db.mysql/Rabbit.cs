@@ -997,17 +997,17 @@ r_group=r_group-{0:d}-{1:d}+{2:d},r_rate=r_rate-{4:d} WHERE r_parent={3:d} AND r
 f_dead=f_dead+{0:d},f_killed=f_killed+{1:d},f_added=f_added+{2:d} WHERE f_rabid={3:d} AND f_last=1;",
                      dead,killed,added,rid);
             cmd.ExecuteNonQuery();*/
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE rabbits SET 
-r_group=r_group+{0:d} WHERE r_parent={1:d} AND r_id={2:d};", added, rid, yid), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE rabbits SET r_group=r_group+{0:d} 
+WHERE r_parent={1:d} AND r_id={2:d};", added, rid, yid), sql);
             cmd.ExecuteNonQuery();
 
             cmd.CommandText = String.Format("UPDATE rabbits SET r_rate={0:d} WHERE r_id={1:d};",dead+killed,rid);
             cmd.ExecuteNonQuery();
 
             cmd.CommandText = String.Format(@"UPDATE fucks SET 
-                f_dead=f_dead+{0:d},f_killed=f_killed+{1:d},f_added=f_added+{2:d} 
+                f_dead=f_dead+{0:d}, f_killed=f_killed+{1:d}, f_added=f_added+{2:d} 
                 WHERE f_rabid={3:d} AND f_last=1;",dead, killed, added, rid);
-            cmd.ExecuteNonQuery();
+            cmd.ExecuteNonQuery();           
         }
 
         public static void placeSucker(MySqlConnection sql, int sucker, int mother)

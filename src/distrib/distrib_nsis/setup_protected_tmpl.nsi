@@ -107,7 +107,6 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     File ..\..\..\bin\@bin_type@\RabNet\CodeStorage32.dll
     File ..\..\..\bin\@bin_type@\RabNet\CodeStorage64.dll
     File ..\..\..\bin\@bin_type@\RabNet\GuardantDotNetApi.dll
-	File ..\..\..\bin\@bin_type@\RabNet\ReportInterface.dll
 	File ..\..\..\bin\@bin_type@\RabNet\changeLog.txt
 	File ..\..\..\bin\@bin_type@\RabNet\Interop.Microsoft.Office.Interop.Excel.dll
 	File ..\..\..\bin\@bin_type@\RabNet\Interop.Microsoft.Office.Core.dll
@@ -425,7 +424,6 @@ Section /o "-un.rabnet" UNSEC_Rabnet
     Delete /REBOOTOK $INSTDIR\RabNet\RdlEngine.dll
     Delete /REBOOTOK $INSTDIR\RabNet\log4net.dll
     Delete /REBOOTOK $INSTDIR\RabNet\RdlViewer.dll
-	Delete /REBOOTOK $INSTDIR\RabNet\ReportInterface.dll
     Delete /REBOOTOK $INSTDIR\RabNet\CodeStorage32.dll
     Delete /REBOOTOK $INSTDIR\RabNet\CodeStorage64.dll
     Delete /REBOOTOK $INSTDIR\RabNet\GuardantDotNetApi.dll

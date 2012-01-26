@@ -51,7 +51,7 @@ namespace rabnet
 Coalesce((SELECT Count(*) FROM fucks WHERE f_state='proholost' AND Date(f_end_date)='{0:s}'   ),0) proholosts,
 Coalesce((SELECT Sum(f_children) FROM fucks WHERE f_state='okrol' AND Date(f_end_date)='{0:s}'),0) born,
 Coalesce((SELECT Sum(r_group) FROM dead WHERE d_reason=3 AND Date(d_date)='{0:s}'),0) killed,
-Coalesce((SELECT Sum(r_group) FROM dead WHERE d_reason>3 AND Date(d_date)='{0:s}'),0) deads,
+Coalesce((SELECT Sum(r_group) FROM dead WHERE d_reason>=4 AND Date(d_date)='{0:s}'),0) deads,
 Coalesce(( select sum(a) from ( (SELECT Sum(r_group) a FROM rabbits WHERE Date(r_born)<='{0:s}') union all (SELECT Sum(r_group) a FROM dead WHERE Date(r_born)<='{0:s}' AND Date(d_date)>'{0:s}'))rb),0) rabbits ", dt.ToString("yyyy-MM-dd"));
         }
 

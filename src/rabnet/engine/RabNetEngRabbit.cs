@@ -412,7 +412,7 @@ namespace rabnet
         {
             if (count == Group)
             {
-                eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, RabID, 0, SmallAddress == OneRabbit.NullAddress ? CloneAddress : SmallAddress, "", FullName + String.Format(" ({0:d})", Group));
+                eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, RabID, 0, SmallAddress == OneRabbit.NullAddress ? CloneAddress : SmallAddress, "", String.Format(" {0:d}[{1:s}] {2:s})",FullName, Group, notes));
                 eng.db().killRabbit(id, when, reason, notes);
             }
             else
@@ -435,7 +435,7 @@ namespace rabnet
         /// <param name="yid">ID детей</param>
         public void CountKids(int dead,int killed,int added,int atall,int age,int yid)
         {
-            const byte DR_ON_COUNT=4;//deadreason "при подсчете"
+            const byte DR_ON_COUNT=5;//deadreason "при подсчете"
             if (Sex != OneRabbit.RabbitSex.FEMALE)
                 throw new ExNotFemale(this);
             eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, RabID, 0, "", "", String.Format("возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, прибавилось {4:d})",age,atall,dead,killed,added));            

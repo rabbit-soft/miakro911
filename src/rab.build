@@ -256,18 +256,9 @@
 	</target>
 
 	<!--target name="rabnet" description="make rabnet application" depends="db.mysql,engine,gui"/-->
-	<target name="rabnet" description="make rabnet application" depends="reportInterface,pickers,db.mysql,engine,gui_genetics,cas,gui"/>
+	<target name="rabnet" description="make rabnet application" depends="pickers,db.mysql,engine,gui_genetics,cas,gui"/>
 
 	<target name="rabnet_demo" description="make rabnet application" depends="pickers,db.mysql,engine,gui"/>
-
-	<target name="reportInterface" description="contain Interface for ReportPlugIns">
-		<csc target="library" output="${bin_dir}/RabNet/ReportInterface.dll" define="${compile_flag}" optimize="true">
-			<sources>
-				<include name="${curdir}/rabnet/ReportPlugIns/ReportInterface/*.cs"/>
-				<include name="${curdir}/rabnet/ReportPlugIns/ReportInterface/Properties/*.cs"/>
-			</sources>
-		</csc>
-	</target>
 	
 	<target name="pickers" description="pickers library for rabnet">
 		<csc target="library" output="${bin_dir}/RabNet/Pickers.dll" define="${compile_flag}" optimize="true">
@@ -416,8 +407,7 @@
 				<include name="${bin_dir}/Genetics/gui_genetics.dll" />
 				<include name="${bin_dir}/RabNet/${guardantNET.lib}" />				
 				<include name="${office.core.path} "/>
-				<include name="${office.excel.path} "/>
-				<include name="${bin_dir}/RabNet/ReportInterface.dll" />				
+				<include name="${office.excel.path} "/>				
 			</references>
 		</csc>
 		<copy file="${curdir}/rabnet/gui/clean_config/rabnet.exe.config" tofile="${bin_dir}/RabNet/rabnet.exe.config" />
@@ -587,6 +577,7 @@
 		<delete dir="${plugin_dir}"/>
 		<mkdir dir="${plugin_dir}"/>
 		<call target="testplugin"/>
+		<call target="populationplugin"/>
 		<!--еще плагины добавлять здесь,-->
 	</target>	
 	
@@ -601,13 +592,31 @@
 				<include name="${plugin_dir}/TestPlugIn.test.rdl"/>
 			</resources>
 			<references>
-				<include name="${root_bin}/Protected/RabNet/ReportInterface.dll"/>
 				<include name="${root_bin}/Protected/RabNet/rabnet.exe" />
 				<include name="${root_bin}/Protected/RabNet/db.mysql.dll" />
 				<include name="${root_bin}/Protected/RabNet/engine.dll" />
 			</references>
 		</csc>
 		<delete dir="${plugin_dir}/TestPlugIn.test.rdl"/>
+	</target>
+	
+	<target name="populationplugin" description="Population report plugin for Tatishevo">
+		<copy file="${curdir}/rabnet/ReportPlugIns/PopulationPlugIn/population.rdl" tofile="${plugin_dir}/PopulationPlugIn.test.rdl"/>
+		<csc target="library" output="${plugin_dir}/PopulationPlugIn.dll" define="RELEASE" optimize="true">
+			<sources>
+				<include name="${curdir}/rabnet/ReportPlugIns/PopulationPlugIn/*.cs"/>
+				<include name="${curdir}/rabnet/ReportPlugIns/PopulationPlugIn/Properties/*.cs"/>
+			</sources>
+			<resources>
+				<include name="${plugin_dir}/PopulationPlugIn.test.rdl"/>
+			</resources>
+			<references>
+				<include name="${root_bin}/Protected/RabNet/rabnet.exe" />
+				<include name="${root_bin}/Protected/RabNet/db.mysql.dll" />
+				<include name="${root_bin}/Protected/RabNet/engine.dll" />
+			</references>
+		</csc>
+		<delete dir="${plugin_dir}/PopulationPlugIn.test.rdl"/>
 	</target>
 	
 	<target name="distrib_nsis" depends="obfuscate">
