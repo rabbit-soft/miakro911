@@ -21,11 +21,11 @@
   <BottomMargin>.25in</BottomMargin>
   <DataSets>
     <DataSet Name="Data">
-      <Query>
+      <Query >
         <DataSourceName>DS1</DataSourceName>
         <CommandText>Url=d:\temp\dead.xml;RowsXPath=/Rows/Row</CommandText>
       </Query>
-      <Fields>
+      <Fields >
         <Field Name="date">
           <DataField>date</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -36,7 +36,7 @@
         </Field>
         <Field Name="r_group">
           <DataField>r_group</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="reason">
           <DataField>reason</DataField>
@@ -79,6 +79,8 @@
           <BorderStyle>
             <Default>Solid</Default>
           </BorderStyle>
+          <BorderColor  />
+          <BorderWidth  />
         </Style>
         <TableColumns>
           <TableColumn>
@@ -270,6 +272,82 @@
         </Details>
         <Left>3.3pt</Left>
         <Top>42.1pt</Top>
+        <Footer >
+          <TableRows>
+            <TableRow>
+              <Height>.2in</Height>
+              <TableCells>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox16">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <BorderColor />
+                        <BorderWidth />
+                        <TextAlign>Right</TextAlign>
+                        <VerticalAlign>Middle</VerticalAlign>
+                      </Style>
+                      <Value>Итого:</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox17">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                      </Style>
+                      <Value>
+                      </Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox18">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                      </Style>
+                      <Value>=Sum(Fields!r_group)</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox19">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                      </Style>
+                      <Value>
+                      </Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox20">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                      </Style>
+                      <Value>
+                      </Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+              </TableCells>
+            </TableRow>
+          </TableRows>
+        </Footer>
       </Table>
       <Textbox Name="Textbox1">
         <Height>18.03pt</Height>

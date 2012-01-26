@@ -21,14 +21,14 @@
   <BottomMargin>.25in</BottomMargin>
   <DataSets>
     <DataSet Name="Data">
-      <Query>
+      <Query >
         <DataSourceName>DS1</DataSourceName>
         <CommandText> Url=D:/breed.xml;RowsXPath=/Rows/Row</CommandText>
       </Query>
-      <Fields>
+      <Fields >
         <Field Name="br">
           <DataField>br</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="breed">
           <DataField>breed</DataField>
@@ -36,39 +36,39 @@
         </Field>
         <Field Name="fuck">
           <DataField>fuck</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="kandidat">
           <DataField>kandidat</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="boys">
           <DataField>boys</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="state">
           <DataField>state</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="pervo">
           <DataField>pervo</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="nevest">
           <DataField>nevest</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="girl">
           <DataField>girl</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="bezpolie">
           <DataField>bezpolie</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="vsego">
           <DataField>vsego</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -87,13 +87,15 @@
           <BorderStyle>
             <Default>Solid</Default>
           </BorderStyle>
+          <BorderColor  />
+          <BorderWidth  />
         </Style>
         <TableColumns>
           <TableColumn>
-            <Width>41.9pt</Width>
+            <Width>31.5pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>121.0pt</Width>
+            <Width>143.4pt</Width>
           </TableColumn>
           <TableColumn>
             <Width>86.1pt</Width>
@@ -442,6 +444,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
+                        <FontSize >10pt</FontSize>
+                        <FontWeight >Bolder</FontWeight>
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -452,6 +456,150 @@
         </Details>
         <Left>10pt</Left>
         <Top>50pt</Top>
+        <Footer >
+          <TableRows>
+            <TableRow>
+              <Height>.2in</Height>
+              <TableCells>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox14">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <BorderColor />
+                        <BorderWidth />
+                        <TextAlign>Right</TextAlign>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                      <Value>Итого:</Value>
+                    </Textbox>
+                  </ReportItems>
+                  <ColSpan>2</ColSpan>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox16">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                      <Value>=Sum(Fields!fuck)</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox17">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                      <Value>=Sum(Fields!kandidat)</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox18">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                      <Value>=Sum(Fields!boys)</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox19">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                      <Value>=Sum(Fields!state)</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox20">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                      <Value>=Sum(Fields!pervo)</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox21">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                      <Value>=Sum(Fields!nevest)</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox22">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                      <Value>=Sum(Fields!girl)</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox23">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                      <Value>=Sum(Fields!bezpolie)</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox24">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                      <Value>=Sum(Fields!vsego)</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+              </TableCells>
+            </TableRow>
+          </TableRows>
+        </Footer>
       </Table>
       <Textbox Name="Textbox13">
         <Height>32.82pt</Height>
@@ -464,7 +612,7 @@
         </Style>
       </Textbox>
     </ReportItems>
-    <Height>196.4pt</Height>
+    <Height>107.2pt</Height>
     <Columns>1</Columns>
   </Body>
   <PageFooter>

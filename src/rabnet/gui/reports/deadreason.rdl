@@ -21,14 +21,14 @@
   <BottomMargin>.25in</BottomMargin>
   <DataSets>
     <DataSet Name="Data">
-      <Query >
+      <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>Url=D:\Temp\deadr.xml;RowsXPath=/Rows/Row</CommandText>
       </Query>
-      <Fields >
+      <Fields>
         <Field Name="grp">
           <DataField>grp</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="d_reason">
           <DataField>d_reason</DataField>
@@ -40,7 +40,7 @@
         </Field>
       </Fields>
     </DataSet>
-    <DataSet Name="Data2" >
+    <DataSet Name="Data2">
       <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>Url=D:\Temp\deadr.xml;RowsXPath=/Rows/Row2</CommandText>
@@ -71,6 +71,8 @@
           <BorderStyle>
             <Default>Solid</Default>
           </BorderStyle>
+          <BorderColor />
+          <BorderWidth />
         </Style>
         <TableColumns>
           <TableColumn>
@@ -95,8 +97,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -111,8 +113,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -137,8 +139,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -153,8 +155,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -163,10 +165,52 @@
             </TableRow>
           </TableRows>
         </Details>
-        <Left >36.5pt</Left>
-        <Top >40.4pt</Top>
+        <Left>36.5pt</Left>
+        <Top>40.4pt</Top>
+        <Footer>
+          <TableRows>
+            <TableRow>
+              <Height>.2in</Height>
+              <TableCells>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox3">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <BorderColor />
+                        <BorderWidth />
+                        <TextAlign>Right</TextAlign>
+                        <VerticalAlign>Middle</VerticalAlign>
+                      </Style>
+                      <Value>Итого:</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox14">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <BorderColor />
+                        <BorderWidth />
+                        <TextAlign>Right</TextAlign>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                      <Value>=Sum(Fields!grp)</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+              </TableCells>
+            </TableRow>
+          </TableRows>
+        </Footer>
       </Table>
-      <Textbox Name="Textbox1" >
+      <Textbox Name="Textbox1">
         <Height>15.75pt</Height>
         <Width>118.86pt</Width>
         <Value>Причины списаний</Value>
@@ -179,7 +223,7 @@
           <FontSize>12pt</FontSize>
         </Style>
       </Textbox>
-      <Table Name="Table2" >
+      <Table Name="Table2">
         <DataSetName>Data2</DataSetName>
         <NoRows>Query returned no rows!</NoRows>
         <Style>
@@ -386,7 +430,7 @@
         <Top>9.2pt</Top>
       </Table>
     </ReportItems>
-    <Height>75.5pt</Height>
+    <Height>81.9pt</Height>
   </Body>
   <PageFooter>
     <Height>14pt</Height>

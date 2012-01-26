@@ -40,11 +40,11 @@
         </Field>
         <Field Name="f_children">
           <DataField>f_children</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
-    <DataSet Name="Data2" >
+    <DataSet Name="Data2">
       <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>Url=D:\temp\fuck.xml;RowsXPath=/Rows/Rows2</CommandText>
@@ -79,6 +79,8 @@
           <BorderStyle>
             <Default>Solid</Default>
           </BorderStyle>
+          <BorderColor />
+          <BorderWidth />
         </Style>
         <TableColumns>
           <TableColumn>
@@ -115,8 +117,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -131,8 +133,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -147,8 +149,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -163,8 +165,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -179,8 +181,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -195,8 +197,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -263,6 +265,8 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -299,10 +303,102 @@
             </TableRow>
           </TableRows>
         </Details>
-        <Left >1.7pt</Left>
-        <Top >75.5pt</Top>
+        <Left>1.7pt</Left>
+        <Top>75.5pt</Top>
+        <Footer>
+          <TableRows>
+            <TableRow>
+              <Height>.2in</Height>
+              <TableCells>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox17">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <BorderColor />
+                        <BorderWidth />
+                        <TextAlign>Right</TextAlign>
+                        <VerticalAlign>Middle</VerticalAlign>
+                      </Style>
+                      <Value>Итого:</Value>
+                      <HideDuplicates>
+                      </HideDuplicates>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox18">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                      </Style>
+                      <Value>
+                      </Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox19">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                      </Style>
+                      <Value>
+                      </Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox20">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                      </Style>
+                      <Value>
+                      </Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox23">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                      </Style>
+                      <Value>
+                      </Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox24">
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontWeight >Bold</FontWeight>
+                      </Style>
+                      <Value>=Sum(Fields!f_children)</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+              </TableCells>
+            </TableRow>
+          </TableRows>
+        </Footer>
       </Table>
-      <Table Name="Table2" >
+      <Table Name="Table2">
         <DataSetName>Data2</DataSetName>
         <NoRows>Query returned no rows!</NoRows>
         <Style>
@@ -550,7 +646,7 @@
         <Left>18.1pt</Left>
         <Top>37.3pt</Top>
       </Table>
-      <Textbox Name="Textbox14" >
+      <Textbox Name="Textbox14">
         <Height>20.26pt</Height>
         <Width>456.95pt</Width>
         <Value>Статистика продуктивности самца</Value>
@@ -584,7 +680,7 @@
     <PrintOnFirstPage>true</PrintOnFirstPage>
     <PrintOnLastPage>true</PrintOnLastPage>
   </PageFooter>
-  <DataSources >
+  <DataSources>
     <DataSource Name="DS1">
       <ConnectionProperties>
         <DataProvider>XML</DataProvider>

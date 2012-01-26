@@ -275,20 +275,7 @@ namespace rabnet
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND (r_status=0 AND r_event_date IS NULL) AND r_breed=br AND r_born<=(now()-INTERVAL {0:s} day)) nevest,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=0 AND r_breed=br and r_born>(now()-INTERVAL {0:s} day)) girl,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='void' AND r_breed=br) bezpolie,
-sum(r_group) vsego
-FROM rabbits GROUP BY r_breed
-union
-
-select 'Итого','',(SELECT count(*) FROM rabbits WHERE r_sex='male' AND r_status=2),
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND (r_status=1 OR (r_status=0 AND to_days(NOW())-to_days(r_born)>={1:s}) ) ) kandidat,
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='male' AND r_status=0 AND (to_days(NOW())-to_days(r_born)<{1:s})) boys,
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status>=2 ) state,
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND ((r_status=0 AND r_event_date IS NOT NULL)OR r_status=1)) pervo,
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND (r_status=0 AND r_event_date IS NULL) AND r_born<=(now()-INTERVAL {0:s} day)) nevest,
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=0 and r_born>(now()-INTERVAL {0:s} day)) girl,
-(SELECT sum(r_group) FROM rabbits WHERE r_sex='void') bezpolie,
-sum(r_group) vsego
-from rabbits;", f.safeValue("brd","121"),f.safeValue("cnd","120"));
+sum(r_group) vsego FROM rabbits GROUP BY r_breed;", f.safeValue("brd","121"),f.safeValue("cnd","120"));
         }
 
         /// <summary>
@@ -326,11 +313,7 @@ union SELECT 'Итого',sum(r_group) FROM rabbits;";
 IF(f_type='vyazka','Вязка','случка') type,
 IF(f_state='proholost','Прохолостание','Окрол') state,
 DATE_FORMAT(f_date,'%d.%m.%Y') start,DATE_FORMAT(f_end_date,'%d.%m.%Y') stop 
-FROM fucks WHERE f_partner={0:d} AND f_end_date>={1:s} AND f_end_date<={2:s})
-union
-(SELECT 'Итого:',sum(f_children),'','','','' 
-FROM fucks WHERE f_partner={0:d} AND f_end_date>={1:s} AND f_end_date<={2:s}
-);",
+FROM fucks WHERE f_partner={0:d} AND f_end_date>={1:s} AND f_end_date<={2:s});",
               partner,DFROM,DTO);
         }
 
@@ -355,16 +338,14 @@ FROM fucks WHERE f_partner={0:d} AND f_end_date>={1:s} AND f_end_date<={2:s}
                 period = String.Format("WHERE MONTH(d_date)={0:MM} AND YEAR(d_date)={0:yyyy}", dt);
             }
             
-            string s = String.Format(@"
+            return String.Format(@"
     (SELECT DATE_FORMAT(d_date,'{1}') date,
     deadname(r_id,2) name,
     r_group,
     (SELECT d_name FROM deadreasons WHERE d_id=d_reason) reason,
     d_notes 
-FROM dead {0} ORDER BY d_date ASC)
-UNION ALL 
-    (SELECT 'Итого:','',SUM(r_group),'','' FROM dead {0});", period,format);
-            return s;
+FROM dead {0} ORDER BY d_date ASC);", period,format);
+            
         }
 
         private String deadReasonsQuery(Filters f)
@@ -389,9 +370,7 @@ UNION ALL
     SUM(r_group) grp,
     d_reason,
     (SELECT d_name FROM deadreasons WHERE d_reason=d_id) reason 
-FROM dead WHERE {0} GROUP BY d_reason)
-UNION 
-(SELECT SUM(r_group),0,'Итого' FROM dead WHERE {0});",period);
+FROM dead WHERE {0} GROUP BY d_reason);",period);
             return s;
         }
 
@@ -458,8 +437,7 @@ WHERE f_worker={0:d} {1} ORDER BY name,dt;", f.safeValue("user"), period,format)
         private int getBuildCount(String type,int bid)
         {
             return getInt32(String.Format(@"SELECT COUNT(t_id) FROM tiers,minifarms WHERE
-(t_id=m_upper OR t_id=m_lower) AND inBuilding({0:d},m_id){1:s};",bid,
-                                                                type==""?"":" AND t_type='"+type+"'"));
+(t_id=m_upper OR t_id=m_lower) AND inBuilding({0:d},m_id){1:s};",bid, type==""?"":" AND t_type='"+type+"'"));
         }
 
         private int round(double d)
