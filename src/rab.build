@@ -644,14 +644,14 @@
 		</if>
 	</target>
 
-	<!--target name="distrib_nsis_release" depends="obfuscate">
+	<!--target name="miakro_911_release" depends="obfuscate">
 		<property name="dist_type" value="rabnet_no_protect"/>
 		<property name="bin_dir" value="${root_bin}\release"/>
 		<property name="bin_type" value="release"/>
 		<call target="nsis_bld"/>
 	</target>
 
-	<target name="distrib_nsis_release_no" depends="buildall">
+	<target name="miakro_911_release_no" depends="buildall">
 		<property name="dist_type" value="rabnet_no_protect"/>
 		<property name="bin_dir" value="${root_bin}\release"/>
 		<property name="bin_type" value="release"/>
@@ -660,16 +660,16 @@
 
 	<target name="nsis_bld">
 		<mkdir dir="${root_bin}"/>
-		<delete dir="${root_bin}/distrib_nsis_${bin_type}"/>
-		<mkdir dir="${root_bin}/distrib_nsis_${bin_type}"/>
+		<delete dir="${root_bin}/miakro_911_${bin_type}"/>
+		<mkdir dir="${root_bin}/miakro_911_${bin_type}"/>
 		<if test="${not property::exists('build_no_up')}">
-			<delete dir="${root_bin}/distrib_nsis_${bin_type}_up"/>
-			<mkdir dir="${root_bin}/distrib_nsis_${bin_type}_up"/>
+			<delete dir="${root_bin}/miakro_911_${bin_type}_up"/>
+			<mkdir dir="${root_bin}/miakro_911_${bin_type}_up"/>
 		</if>
-		<mkdir dir="${root_bin}/distrib_nsis_${bin_type}/dotnetfx20"/>
-		<mkdir dir="${root_bin}/distrib_nsis_${bin_type}/mysql"/>
-		<copy file="${dotnetInstallerSource}" tofile="${root_bin}/distrib_nsis_${bin_type}/dotnetfx20/${dotnetInstallerDest}"/>
-		<copy file="${mysqlInstallerSource}" tofile="${root_bin}/distrib_nsis_${bin_type}/mysql/${mysqlInstallerDest}"/>
+		<mkdir dir="${root_bin}/miakro_911_${bin_type}/dotnetfx20"/>
+		<mkdir dir="${root_bin}/miakro_911_${bin_type}/mysql"/>
+		<copy file="${dotnetInstallerSource}" tofile="${root_bin}/miakro_911_${bin_type}/dotnetfx20/${dotnetInstallerDest}"/>
+		<copy file="${mysqlInstallerSource}" tofile="${root_bin}/miakro_911_${bin_type}/mysql/${mysqlInstallerDest}"/>
 		<!--property name="dist_type" value="rabnet"/>
 		<property name="bin_dir" value="${root_bin}\release"/>
 		<property name="minver" value="1"/>
@@ -703,21 +703,21 @@
 			<arg value="/V3" />
 			<arg value="${curdir}/distrib/distrib_nsis/setup_bld.nsi" />
 		</exec>
-		<copy file="${curdir}/distrib/distrib_nsis/setup.exe" tofile="${root_bin}/distrib_nsis_${bin_type}/setup${setup_suff}.exe"/>
+		<copy file="${curdir}/distrib/distrib_nsis/setup.exe" tofile="${root_bin}/miakro_911_${bin_type}/setup${setup_suff}.exe"/>
 		<if test="${not property::exists('build_no_up')}">
-			<copy file="${curdir}/distrib/distrib_nsis/setup${setup_suff}.exe" tofile="${root_bin}/distrib_nsis_${bin_type}_up/setup.${fullver}.exe"/>
-			<copy file="${curdir}/distrib/distrib_nsis/updates.xml" tofile="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml"/>
+			<copy file="${curdir}/distrib/distrib_nsis/setup${setup_suff}.exe" tofile="${root_bin}/miakro_911_${bin_type}_up/setup.${fullver}.exe"/>
+			<copy file="${curdir}/distrib/distrib_nsis/updates.xml" tofile="${root_bin}/miakro_911_${bin_type}_up/updates.xml"/>
 			<loadtasks assembly="${nant_contrib}" />
 			<checksum algorithm="MD5">
 				<fileset>
-					<include name="${root_bin}/distrib_nsis_${bin_type}_up/setup.${fullver}.exe"/>
+					<include name="${root_bin}/miakro_911_${bin_type}_up/setup.${fullver}.exe"/>
 				</fileset>
 			</checksum>
-			<loadfile file="${root_bin}/distrib_nsis_${bin_type}_up/setup.${fullver}.exe.MD5" property="distr.md5" />
-			<delete file="${root_bin}/distrib_nsis_${bin_type}_up/setup.${fullver}.exe.MD5"/>
-			<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml" xpath="/update/bundle/file[@name = 'setup.exe']/@md5" value="${distr.md5}" />
-			<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml" xpath="/update/bundle/file[@name = 'setup.exe']/@uri" value="http://update.rabbit-soft.ru/rab/setup.${fullver}.exe" />
-			<xmlpoke file="${root_bin}/distrib_nsis_${bin_type}_up/updates.xml" xpath="/update/bundle/version/@number" value="${fullver}" />
+			<loadfile file="${root_bin}/miakro_911_${bin_type}_up/setup.${fullver}.exe.MD5" property="distr.md5" />
+			<delete file="${root_bin}/miakro_911_${bin_type}_up/setup.${fullver}.exe.MD5"/>
+			<xmlpoke file="${root_bin}/miakro_911_${bin_type}_up/updates.xml" xpath="/update/bundle/file[@name = 'setup.exe']/@md5" value="${distr.md5}" />
+			<xmlpoke file="${root_bin}/miakro_911_${bin_type}_up/updates.xml" xpath="/update/bundle/file[@name = 'setup.exe']/@uri" value="http://update.rabbit-soft.ru/rab/setup.${fullver}.exe" />
+			<xmlpoke file="${root_bin}/miakro_911_${bin_type}_up/updates.xml" xpath="/update/bundle/version/@number" value="${fullver}" />
 		</if>
 	</target>
 
