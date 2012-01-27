@@ -670,6 +670,7 @@
 		<mkdir dir="${root_bin}/miakro_911_${bin_type}/mysql"/>
 		<copy file="${dotnetInstallerSource}" tofile="${root_bin}/miakro_911_${bin_type}/dotnetfx20/${dotnetInstallerDest}"/>
 		<copy file="${mysqlInstallerSource}" tofile="${root_bin}/miakro_911_${bin_type}/mysql/${mysqlInstallerDest}"/>
+		<copy file="${curdir}/../help/Руководство по установке программы Miakro 9.11.docx" tofile="${root_bin}/miakro_911_${bin_type}/Руководство по установке программы Miakro 9.11.docx"/>
 		<!--property name="dist_type" value="rabnet"/>
 		<property name="bin_dir" value="${root_bin}\release"/>
 		<property name="minver" value="1"/>

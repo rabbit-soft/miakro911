@@ -338,13 +338,12 @@ FROM fucks WHERE f_partner={0:d} AND f_end_date>={1:s} AND f_end_date<={2:s});",
                 period = String.Format("WHERE MONTH(d_date)={0:MM} AND YEAR(d_date)={0:yyyy}", dt);
             }
             
-            return String.Format(@"
-    (SELECT DATE_FORMAT(d_date,'{1}') date,
+            return String.Format(@"SELECT DATE_FORMAT(d_date,'{1}') date,
     deadname(r_id,2) name,
     r_group,
     (SELECT d_name FROM deadreasons WHERE d_id=d_reason) reason,
     d_notes 
-FROM dead {0} ORDER BY d_date ASC);", period,format);
+FROM dead {0} ORDER BY d_date ASC;", period,format);
             
         }
 

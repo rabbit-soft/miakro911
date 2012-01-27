@@ -412,7 +412,7 @@ namespace rabnet
         {
             if (count == Group)
             {
-                eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, RabID, 0, SmallAddress == OneRabbit.NullAddress ? CloneAddress : SmallAddress, "", String.Format(" {0:d}[{1:s}] {2:s})",FullName, Group, notes));
+                eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, RabID, 0, SmallAddress == OneRabbit.NullAddress ? CloneAddress : SmallAddress, "", String.Format(" {0:s}[{1:d}] {2:s})",FullName, Group, notes));
                 eng.db().killRabbit(id, when, reason, notes);
             }
             else
