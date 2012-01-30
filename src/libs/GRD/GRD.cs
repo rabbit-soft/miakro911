@@ -37,7 +37,7 @@ namespace RabGRD
             WebReports       //6 bit
         }
 
-        static readonly ILog log = LogManager.GetLogger(typeof(GRD));
+        private static readonly ILog log = LogManager.GetLogger(typeof(GRD));
 
         public static readonly GRD Instance = new GRD();
 
@@ -370,8 +370,8 @@ namespace RabGRD
             uint ReadCode = 0xFE8392B2 - cryptRd;    // Must be encoded             
 
             // Variables to use in GrdSetFindMode()
-            GrdFMR remoteMode;         // Operation mode flags                    
-            GrdFM dongleFlags;        // Operation mode flags                    
+            GrdFMR remoteMode;       // Operation mode flags                    
+            GrdFM dongleFlags;       // Operation mode flags                    
             uint programNumber = 0;  // Program number                          
             uint version = 0;        // Version                                 
             uint dongleID = 0;       // Dongle ID

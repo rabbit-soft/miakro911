@@ -36,18 +36,16 @@ namespace rabdump
             _rupd = new RabUpdater();
             _rupd.MessageSenderCallback = MessageCb;          
             _rupd.CloseCallback = CloseCb;
-            _socksrv = new SocketServer();
-#if !DEMO   
-    #if PROTECTED
+            _socksrv = new SocketServer(); 
+#if PROTECTED
             if(RabGRD.GRD.Instance.GetFlag(GRD.FlagType.ServerDump))
             {
-    #endif
+#endif
                 RabServWorker.SetServerUrl(RabnetConfig.GetOption(RabnetConfig.OptionType.serverUrl));
                 RabServWorker.OnMessage += new MessageSenderCallbackDelegate(MessageCb);
                 miServDump.Visible = true;
-    #if PROTECTED
+#if PROTECTED
             }
-    #endif
 #endif
         }
 
@@ -194,24 +192,27 @@ namespace rabdump
             {
                 if (j.NeedDump(onstart))
                     DoDump(j);
-#if !DEMO
-    #if PROTECTED
+
+#if PROTECTED
                 if(GRD.Instance.GetFlag(GRD.FlagType.ServerDump))
                 {
-    #endif
+#endif
                     if (j.NeedServDump(onstart))
                         ServDump(j);
-    #if PROTECTED               
+#if PROTECTED               
                 }
-    #endif
-
 #endif
+
+
             }
         }
 
         private void ServDump(ArchiveJob j)
         {
-            RabServWorker.MakeDump(j);
+#if PROTECTED
+            if(RabGRD.GRD.Instance.GetFlag(GRD.FlagType.ServerDump))   
+#endif
+                RabServWorker.MakeDump(j);
         }
 
         private void jobnowMenuItem_Click(object sender, EventArgs e)

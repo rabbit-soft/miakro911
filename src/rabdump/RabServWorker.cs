@@ -20,7 +20,7 @@ namespace rabdump
     /// </summary>
     static class RabServWorker
     {
-#if !DEMO
+
         public enum State
         {
             /// <summary>
@@ -1052,6 +1052,4 @@ namespace rabdump
             doc.SelectSingleNode("webReports").AppendChild(el);
         }
     }
-
-#endif
 }

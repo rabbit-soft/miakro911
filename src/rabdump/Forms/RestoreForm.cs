@@ -100,7 +100,7 @@ namespace rabdump
             listView1.Items.Clear();
             DirectoryInfo di = new DirectoryInfo(j.BackupPath);
             string fls= (X_Tools.XTools.SafeFileName(j.Name, "_") + "_" + X_Tools.XTools.SafeFileName(db, "_")).Replace(" ", "_");
-#if !DEMO
+
             List<String> servDumps = new List<string>();
     #if PROTECTED
             if (GRD.Instance.GetFlag(GRD.FlagType.ServerDump))
@@ -113,7 +113,7 @@ namespace rabdump
     #if PROTECTED
             }
     #endif
-#endif
+
             int idx;
             DateTime dtm;
             foreach (FileInfo fi in di.GetFiles())
@@ -131,17 +131,17 @@ namespace rabdump
                     }
                     ListViewItem li = listView1.Items.Insert(idx, dtm.ToShortDateString() + " " + dtm.ToLongTimeString());
                     li.SubItems.Add(Path.GetFileName(fi.FullName));
-#if !DEMO
+
                     ///Если такой дамп имеется на сервере, то окрашиваем строку в зеленый
                     if (servDumps.Contains(Path.GetFileName(fi.FullName)))
                     {
                         li.ForeColor = System.Drawing.Color.Green;
                         servDumps.Remove(Path.GetFileName(fi.FullName));
                     }                  
-#endif
+
                 }
             }
-#if !DEMO
+
             if (servDumps.Count > 0 && j.DB != DataBase.AllDataBases)
             {
                 foreach (string s in servDumps)
@@ -161,7 +161,7 @@ namespace rabdump
                     li.ForeColor = System.Drawing.Color.BlueViolet;
                 }
             }
-#endif
+
         }
 
         private void cbDataBase_SelectedIndexChanged(object sender, EventArgs e)
@@ -218,9 +218,9 @@ namespace rabdump
             p.User = tbUser.Text;
             p.Password = tbPassword.Text;
             p.File = tbFile.Text;
-#if !DEMO
+
             p.fromServer = _smallMode && listView1.SelectedItems.Count != 0 && (listView1.SelectedItems[0].ForeColor == System.Drawing.Color.BlueViolet);
-#endif
+
 
             Enabled = false;
 
@@ -283,7 +283,7 @@ namespace rabdump
             {
 #endif
                 RestoreRarams p = (RestoreRarams) prms;
-#if !DEMO
+
     #if PROTECTED
                 if (GRD.Instance.GetFlag(GRD.FlagType.ServerDump))
                 {
@@ -304,7 +304,7 @@ namespace rabdump
     #if PROTECTED
                 }
     #endif
-#endif
+
                 ArchiveJobThread.UndumpDB(p.Host, p.Db, p.User, p.Password, p.File);
 #if !NOCATCH
             }
@@ -330,9 +330,8 @@ namespace rabdump
     /// </summary>
     public class RestoreRarams
     {
-#if !DEMO
+
         public bool fromServer;
-#endif
         public string Host;
         public string Db;
         public string User;

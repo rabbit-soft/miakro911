@@ -80,7 +80,8 @@ namespace rabnet
                         if (AsmType.BaseType==typeof(ReportBase))
                         {
                             ReportBase Plugin = (ReportBase)Activator.CreateInstance(AsmType);
-                            Plugins.Add(Plugin);
+                            if(!alreadyLoaded(Plugin))
+                                Plugins.Add(Plugin);
                         }
                     }
                 }
@@ -98,6 +99,15 @@ namespace rabnet
             }
             return null;
         }
+
+        private static bool alreadyLoaded(ReportBase rb)
+        {
+            foreach (ReportBase pl in Plugins)
+                if (pl.UniqueName == rb.UniqueName)
+                    return true;
+            return false;
+        }
+
         #endregion static_members
 
     }

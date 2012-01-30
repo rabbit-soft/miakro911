@@ -1,7 +1,7 @@
 ﻿//#define PROTECTED
-//#if DEBUG
+#if DEBUG
     #define NOCATCH
-//#endif
+#endif
 using System;
 using System.Windows.Forms;
 using log4net;
