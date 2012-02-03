@@ -44,8 +44,8 @@ namespace rabnet
         private void checkFile()
         {
             try
-            {
-                string path = Path.Combine(Directory.GetCurrentDirectory(),FOLDER) + _name + ".rdl";
+            {             
+                string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath),FOLDER) + _name + ".rdl";
                 if (!File.Exists(path))
                 {
                     Stream stream = getAssembly();
@@ -71,7 +71,7 @@ namespace rabnet
         public static int CheckPlugins() 
         {
             foreach (string Filename in Directory.GetFiles(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "reports"), "*.dll"))
-            {
+            {                
                 try
                 {
                     Assembly Asm = Assembly.LoadFile(Filename);//загружаем Сборку

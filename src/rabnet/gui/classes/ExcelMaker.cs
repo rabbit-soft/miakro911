@@ -17,7 +17,7 @@ namespace rabnet
         private static XmlNode[] _xmls;
         private static myReportType _repType;
 
-        public static void MakeExcelFromXML(XmlNode[] xmls, myReportType repType)
+        public static void MakeExcelFromXML(XmlNode[] xmls, myReportType repType)///Для плагинов сделать excel тоже
         {
             _repType = repType;
             _xmls = xmls;

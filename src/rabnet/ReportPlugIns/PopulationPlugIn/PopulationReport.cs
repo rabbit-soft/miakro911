@@ -27,11 +27,9 @@ namespace rabnet
                         doc.FirstChild.AppendChild(doc.ImportNode(Engine.db().makeReport(getSQL(dt)).SelectSingleNode("Rows/Row"),true));
                     dt = dt.AddMonths(1);
                 }
-                (new ReportViewForm(MenuText, FileName, new XmlDocument[]
-                {
-                   doc//,dlg.getXml()
-                }
-                )).ShowDialog();
+                ReportViewForm rvf = new ReportViewForm(MenuText, FileName, new XmlDocument[] { doc });
+                rvf.ExcelEnabled = false;
+                rvf.ShowDialog();
             }
 #endif
         }

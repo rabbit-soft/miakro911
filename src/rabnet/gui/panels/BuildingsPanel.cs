@@ -301,7 +301,7 @@ namespace rabnet
             List<string> rabs=new List<string>();
             for (int i=0;i<b.secs();i++)
                     rabs.Add(b.use(i));
-            //Engine.db().
+            //TODO здесь надо в rabs сунуть строку с соседями и детьми
             return new FarmDrawer.DrawTier(b.id(),b.itype(),b.delims(),b.nest(),b.heater(),rabs.ToArray(),b.repair());
         }
 
@@ -646,8 +646,10 @@ namespace rabnet
             int bid=buildNum();
             f["bld"] = bid.ToString();
             f["suck"] = Engine.opt().getOption(Options.OPT_ID.SUCKERS);
-            new ReportViewForm(myReportType.SHED, new XmlDocument[]{
-                Engine.db().makeReport(myReportType.SHED,f),getBuildDoc(bid)}).ShowDialog();
+            ReportViewForm dlg =  new ReportViewForm(myReportType.SHED, new XmlDocument[] { 
+                Engine.db().makeReport(myReportType.SHED,f),getBuildDoc(bid)});
+            dlg.ExcelEnabled = false;
+            dlg.ShowDialog();
 #else
             DemoErr.DemoNoReportMsg();
 #endif

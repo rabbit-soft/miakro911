@@ -27,6 +27,12 @@ namespace rabnet
             InitializeComponent();
         }
 
+        public bool ExcelEnabled
+        {
+            get { return tbExcel.Visible; }
+            set { tbExcel.Visible = value; }
+        }
+
         /// <summary>
         /// Отправляет данные ввиде XML
         /// </summary>
