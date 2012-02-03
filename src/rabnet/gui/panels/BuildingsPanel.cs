@@ -275,7 +275,7 @@ namespace rabnet
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
+        {   
             if (listView1.SelectedItems.Count<1)
                 return;
             if (listView1.SelectedItems[0] == null)
@@ -290,7 +290,8 @@ namespace rabnet
             //tr.Expand();
             manual = false;
             treeView1.SelectedNode = searchFarm((int)b.farm(), tr);
-            if (treeView1.SelectedNode != null) treeView1.SelectedNode.Expand();
+            if (treeView1.SelectedNode != null) 
+                treeView1.SelectedNode.Expand();
 			treeView1.EndUpdate();
             manual = true;
         }
@@ -310,7 +311,7 @@ namespace rabnet
             FarmDrawer.DrawTier t2=null;
             if (tiers[1]!=0)
                 t2=tierFromBuilding(Engine.db().getBuilding(tiers[1]));
-            farmDrawer1.setFarm(farm,t1,t2);
+            farmDrawer1.SetFarm(farm,t1,t2);
             updateMenu();
         }
 
@@ -319,14 +320,14 @@ namespace rabnet
         {
             if (treeView1.SelectedNode == null)
             {
-                farmDrawer1.setFarm(0, null, null);
+                farmDrawer1.SetFarm(0, null, null);
                 return;
             }
             preBuilding = buildNum();
             int farm = farmNum();
             if (farm == 0)
             {
-                farmDrawer1.setFarm(0, null, null);
+                farmDrawer1.SetFarm(0, null, null);
                 updateMenu();
                 return;
             }

@@ -67,7 +67,7 @@ namespace rabnet
                 Close();
                 return;
             }
-            girlOut = r.clone(1, adr[0], adr[1], adr[2]);
+            girlOut = r.Clone(1, adr[0], adr[1], adr[2]);
         }
     }
 }

@@ -67,10 +67,22 @@ namespace rabnet
             }
         }
         public List<Fuck> fucks = new List<Fuck>();
-        public void addFuck(int id,String p,int pid,int tms,DateTime s,DateTime e,String st,int ch,int dd,
+        public void AddFuck(int id,String p,int pid,int tms,DateTime s,DateTime e,String st,int ch,int dd,
             int brd,String gen,String tp,int kl,int add,bool dead,String wrk)
         {
             fucks.Add(new Fuck(id,p,pid,tms,s,e,st,ch,dd,brd,gen,tp,kl,add,dead,wrk));
+        }
+
+        public Fuck LastFuck
+        {
+            get
+            {
+                Fuck result=null;
+                foreach (Fuck f in this.fucks)
+                    if (result == null || result.when < f.when)
+                        result = f;
+                return result;
+            }
         }
 
     }
@@ -100,7 +112,7 @@ FROM fucks WHERE f_rabid={0:d} AND isdead(f_partner)=0 ORDER BY f_date);", rabbi
             Fucks f = new Fucks();
             while (rd.Read())
             {
-                f.addFuck(rd.GetInt32("f_id"), rd.GetString("partner"), rd.GetInt32("f_partner"), rd.GetInt32("f_times"),
+                f.AddFuck(rd.GetInt32("f_id"), rd.GetString("partner"), rd.GetInt32("f_partner"), rd.GetInt32("f_times"),
                     rd.IsDBNull(rd.GetOrdinal("f_date")) ? DateTime.MinValue : rd.GetDateTime("f_date"),
                     rd.IsDBNull(rd.GetOrdinal("f_end_date")) ? DateTime.MinValue : rd.GetDateTime("f_end_date"),
                     rd.GetString("f_state"), rd.GetInt32("f_children"), rd.GetInt32("f_dead"),
@@ -138,7 +150,7 @@ malewait,
             Fucks f = new Fucks();
             while (rd.Read())
             {
-                f.addFuck(0,rd.GetString("fullname"), rd.GetInt32("r_id"), rd.IsDBNull(5)?0:rd.GetInt32("fucks"), DateTime.MinValue,
+                f.AddFuck(0,rd.GetString("fullname"), rd.GetInt32("r_id"), rd.IsDBNull(5)?0:rd.GetInt32("fucks"), DateTime.MinValue,
                     DateTime.MinValue, "", rd.IsDBNull(6) ? 0 : rd.GetInt32("children"), rd.GetInt32("r_status"), rd.GetInt32("r_breed"),
                     rd.IsDBNull(4)?"":rd.GetString("genom"), "",0,0,false,"");
             }

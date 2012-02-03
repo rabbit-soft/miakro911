@@ -142,7 +142,7 @@ namespace rabnet
                     foreach (int k in names.Keys)
                         if (comboBox1.Text == names[k])
                             rab1.Name = k;
-                    rab1.commit();
+                    rab1.Commit();
                 }
                 if (listView1.SelectedItems.Count!=1)
                     throw new ApplicationException("Выберите самца");

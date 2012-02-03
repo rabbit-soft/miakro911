@@ -390,7 +390,7 @@ namespace rabnet
                 rab.Lost = (int)deadBab.Value;
             }
             rab.VaccineEnd = dtp_vacEnd.Value.Date;
-            rab.commit();
+            rab.Commit();
         }
 
         private bool warnme()
@@ -664,7 +664,7 @@ namespace rabnet
                 OneRabbit.RabbitSex sx=OneRabbit.RabbitSex.VOID;
                 if (sex.SelectedIndex==1) sx=OneRabbit.RabbitSex.MALE;
                 if (sex.SelectedIndex==2) sx=OneRabbit.RabbitSex.FEMALE;
-                rab.setSex(sx);
+                rab.SetSex(sx);
                 updateData();
             }
             else

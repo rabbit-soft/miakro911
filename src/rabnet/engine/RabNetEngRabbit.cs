@@ -80,7 +80,7 @@ namespace rabnet
             eng.logs().log(RabNetLogs.LogType.INCOME, id);
         }
 
-        public void commit()
+        public void Commit()
         {
             if (RabID == 0)
                 return;
@@ -376,7 +376,7 @@ namespace rabnet
             eng.logs().log(RabNetLogs.LogType.OKROL, RabID, born, SmallAddress, "", String.Format("живых {0:d}, мертвых {1:d}", children, dead));
         }
 
-        public void replaceRabbit(int farm,int tier_id,int sec,string address)
+        public void ReplaceRabbit(int farm,int tier_id,int sec,string address)
         {
             if (id == 0)
             {
@@ -408,7 +408,7 @@ namespace rabnet
         /// <param name="reason">Причина списания</param>
         /// <param name="notes">Заметки по данному списанию</param>
         /// <param name="count">Количество списанных кроликов</param>
-        public void killIt(DateTime when, int reason, string notes,int count)
+        public void KillIt(DateTime when, int reason, string notes,int count)
         {
             if (count == Group)
             {
@@ -417,10 +417,10 @@ namespace rabnet
             }
             else
             {
-                int nid = clone(count, 0, 0, 0);
+                int nid = Clone(count, 0, 0, 0);
                 RabNetEngRabbit nr = new RabNetEngRabbit(nid, eng);
                 nr.CloneAddress = SmallAddress;
-                nr.killIt(when, reason, notes, count);
+                nr.KillIt(when, reason, notes, count);
             }
         }
 
@@ -445,13 +445,13 @@ namespace rabnet
             if (atall == 0)
             {
                 r.CloneAddress = SmallAddress;
-                r.killIt(DateTime.Now, DR_ON_COUNT, "при подсчете", y.group);
+                r.KillIt(DateTime.Now, DR_ON_COUNT, "при подсчете", y.group);
             }
             else
             {
-                RabNetEngRabbit clone = eng.getRabbit(r.clone(dead + killed, 0, 0, 0));
+                RabNetEngRabbit clone = eng.getRabbit(r.Clone(dead + killed, 0, 0, 0));
                 clone.CloneAddress = SmallAddress;
-                clone.killIt(DateTime.Now, DR_ON_COUNT, "при подсчете", clone.Group);
+                clone.KillIt(DateTime.Now, DR_ON_COUNT, "при подсчете", clone.Group);
                 //!!!тут надо списыватьт
                 if(added>0)
                     eng.db().countKids(id,dead, killed, added, rab.youngers[yid].id);             
@@ -462,7 +462,7 @@ namespace rabnet
         /// Установить пол
         /// </summary>
         /// <param name="sex">Новый пол</param>
-        public void setSex(OneRabbit.RabbitSex sex)
+        public void SetSex(OneRabbit.RabbitSex sex)
         {
             eng.logs().log(RabNetLogs.LogType.SET_SEX, id, 0, "", "", OneRabbit.SexToRU(sex));
             eng.db().setRabbitSex(id, sex);
@@ -476,7 +476,7 @@ namespace rabnet
         /// <param name="tier">Ярус</param>
         /// <param name="sec">Клетка</param>
         /// <returns></returns>
-        public int clone(int count,int farm,int tier,int sec)
+        public int Clone(int count,int farm,int tier,int sec)
         {
            if (Group < count) throw new ExBadCount();
            int nid = eng.db().cloneRabbit(id, count, farm, tier, sec, OneRabbit.RabbitSex.VOID, 0);
@@ -488,14 +488,14 @@ namespace rabnet
         /// Обьединить с группой
         /// </summary>
         /// <param name="rabto">ID кролика с которым объединить</param>
-        public void combineWidth(int rabto)
+        public void CombineWidth(int rabto)
         {
             RabNetEngRabbit rab = Engine.get().getRabbit(rabto);    //+gambit
             eng.logs().log(RabNetLogs.LogType.COMBINE, id, rabto, SmallAddress, rab.SmallAddress , "+ " + FullName + " [" + Group.ToString() + "]");
             eng.db().combineGroups(id, rabto);
         }
 
-        public void placeSuckerTo(int mother)
+        public void PlaceSuckerTo(int mother)
         {
             RabNetEngRabbit mom_to = Engine.get().getRabbit(mother);
             eng.logs().log(RabNetLogs.LogType.PLACE_SUCK, id, mother, "", mom_to.SmallAddress);

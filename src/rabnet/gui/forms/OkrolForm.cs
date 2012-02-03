@@ -10,11 +10,16 @@ namespace rabnet
 {
     public partial class OkrolForm : Form
     {
-        private RabNetEngRabbit r = null;
-        public OkrolForm()
+        private RabNetEngRabbit _rabbit = null;
+
+        public OkrolForm(int r1)           
         {
             InitializeComponent();
             initialHint();
+            _rabbit = Engine.get().getRabbit(r1);
+            label1.Text = _rabbit.FullName;
+            TimeSpan days = DateTime.Now.Subtract(Engine.db().getFucks(_rabbit.RabID).LastFuck.when);
+            dateDays1.Maximum = days.Days;
         }
 
         private void initialHint()
@@ -27,12 +32,6 @@ namespace rabnet
             toolTip.SetToolTip(button3, "Отменить принятие окрола. Закрыть окно");
         }
 
-        public OkrolForm(int r1):this()
-        {
-            r = Engine.get().getRabbit(r1);
-            label1.Text = r.FullName;
-        }
-
         private void button3_Click(object sender, EventArgs e)
         {
             Close();
@@ -42,7 +41,7 @@ namespace rabnet
         {
             try
             {
-                r.ProholostIt(dateDays1.DateValue);
+                _rabbit.ProholostIt(dateDays1.DateValue);
                 Close();
             }
             catch (ApplicationException ex)
@@ -55,7 +54,7 @@ namespace rabnet
         {
             try
             {
-                r.OkrolIt(dateDays1.DateValue, (int)numericUpDown1.Value, (int)numericUpDown2.Value);
+                _rabbit.OkrolIt(dateDays1.DateValue, (int)numericUpDown1.Value, (int)numericUpDown2.Value);
                 Close();
             }
             catch (ApplicationException ex)

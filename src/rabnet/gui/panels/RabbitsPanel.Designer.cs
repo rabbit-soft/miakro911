@@ -64,7 +64,7 @@
             this.realizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.replacePlanMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.GeneticsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miGenetic = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.показатьНомерToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.genTree = new System.Windows.Forms.TreeView();
@@ -213,7 +213,7 @@
             this.realizeMenuItem,
             this.replacePlanMenuItem,
             this.toolStripSeparator3,
-            this.GeneticsToolStripMenuItem,
+            this.miGenetic,
             this.toolStripSeparator4,
             this.показатьНомерToolStripMenuItem});
             this.actMenu.Name = "actMenu";
@@ -350,12 +350,12 @@
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(233, 6);
             // 
-            // GeneticsToolStripMenuItem
+            // miGenetic
             // 
-            this.GeneticsToolStripMenuItem.Name = "GeneticsToolStripMenuItem";
-            this.GeneticsToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.GeneticsToolStripMenuItem.Text = "Показать родословную";
-            this.GeneticsToolStripMenuItem.Click += new System.EventHandler(this.GeneticsToolStripMenuItem_Click);
+            this.miGenetic.Name = "miGenetic";
+            this.miGenetic.Size = new System.Drawing.Size(236, 22);
+            this.miGenetic.Text = "Показать родословную";
+            this.miGenetic.Click += new System.EventHandler(this.GeneticsToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
@@ -433,7 +433,7 @@
         private System.Windows.Forms.ToolStripMenuItem replaceYoungersMenuItem;
         private System.Windows.Forms.ToolStripMenuItem svidMenuItem;
         private System.Windows.Forms.ToolStripMenuItem realizeMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem GeneticsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem miGenetic;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem plemMenuItem;
         private System.Windows.Forms.ToolStripMenuItem replacePlanMenuItem;

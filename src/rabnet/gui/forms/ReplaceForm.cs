@@ -646,7 +646,7 @@ namespace rabnet
             if (rp.ID == 0)
             {
                 int[] a = getAddress(rp.CurAddress);
-                rbs[_replaceList.IndexOf(rp)].replaceRabbit(a[0], a[1], a[2], rp.CurAddress);
+                rbs[_replaceList.IndexOf(rp)].ReplaceRabbit(a[0], a[1], a[2], rp.CurAddress);
                 rp.Saved = true;
                 return;
             }
@@ -659,13 +659,13 @@ namespace rabnet
                 if (!replaced) return;
                 if (rp.PlaceWith != null)
                 {
-                    rb.combineWidth(rp.PlaceWith.ID);
+                    rb.CombineWidth(rp.PlaceWith.ID);
                     rp.Saved = true;
                     return;
                 }
                 if (rp.PlaceTo != null)
                 {
-                    rb.placeSuckerTo(rp.PlaceTo.ID);
+                    rb.PlaceSuckerTo(rp.PlaceTo.ID);
                 }
             }
             if (rp.Replaced && !replaced)
@@ -674,7 +674,7 @@ namespace rabnet
                 if (rp.Younger)
                     par.ReplaceYounger(rb.RabID, a[0], a[1], a[2], rp.CurAddress);
                 else
-                    rb.replaceRabbit(a[0], a[1], a[2], rp.CurAddress);
+                    rb.ReplaceRabbit(a[0], a[1], a[2], rp.CurAddress);
                 
             }
             if (rp.CanHaveNest)
@@ -697,12 +697,12 @@ namespace rabnet
             }
 
             if (rp.NewSex != rp.Sex)
-                rb.setSex(rp.NewSex);
+                rb.SetSex(rp.NewSex);
             if (rp.Children.Count > 0)
                 foreach (RP c in rp.Children)
                 {
                     int[] a=getAddress(c.CurAddress);
-                    int cid = rb.clone(c.Count, a[0],a[1],a[2]);
+                    int cid = rb.Clone(c.Count, a[0],a[1],a[2]);
                     commitRabbit(c, cid,replaced);
                     if (_action == Action.ONE_GIRL_OUT && girlout == 0 && c.Sex == OneRabbit.RabbitSex.FEMALE && c.Count == 1)
                         girlout = cid;

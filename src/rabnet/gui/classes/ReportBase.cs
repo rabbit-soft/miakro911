@@ -70,7 +70,7 @@ namespace rabnet
 
         public static int CheckPlugins() 
         {
-            foreach (string Filename in Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "reports"), "*.dll"))
+            foreach (string Filename in Directory.GetFiles(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "reports"), "*.dll"))
             {
                 try
                 {

@@ -284,14 +284,16 @@ r_id NOT IN (SELECT l_rabbit FROM logs WHERE l_type=21 AND DATE(l_date)>=DATE(ra
 
         public ZooJobItem[] getBoysGirlsOut(int days, OneRabbit.RabbitSex sex)
         {
-            MySqlDataReader rd = reader(String.Format(@"SELECT r_parent,rabname(r_parent," + getnm() + @") name ,rabplace(r_parent) place, 
-TO_DAYS(NOW())-TO_DAYS(r_born) age," + brd() + @" 
-FROM rabbits WHERE r_parent<>0 AND {0:s} AND (TO_DAYS(NOW())-TO_DAYS(r_born))>={1:d} ORDER BY age DESC,
-0+LEFT(place,LOCATE(',',place)) ASC;",
-                  (sex==OneRabbit.RabbitSex.FEMALE?"r_sex='female'":"(r_sex='male' OR r_sex='void')"),days));
+            MySqlDataReader rd = reader(String.Format(@"SELECT if(r_parent!=0,r_parent,r_id) id, 
+rabname(if(r_parent!=0,r_parent,r_id),{3:s}) name, 
+rabplace(if(r_parent!=0,r_parent,r_id)) place, 
+TO_DAYS(NOW())-TO_DAYS(r_born) age,{2:s} 
+FROM rabbits WHERE {0:s} AND (TO_DAYS(NOW())-TO_DAYS(r_born))>={1:d} 
+ORDER BY age DESC,0+LEFT(place,LOCATE(',',place)) ASC;",
+                  (sex == OneRabbit.RabbitSex.FEMALE ? "(r_sex='female' and r_parent<>0)" : "(r_sex='void' OR (r_sex='male' and r_parent<>0))"), days, brd(), getnm()));
             List<ZooJobItem> res = new List<ZooJobItem>();
             while (rd.Read())
-                res.Add(new ZooJobItem().BoysGirlsOut(rd.GetInt32("r_parent"), rd.GetString("name"),
+                res.Add(new ZooJobItem().BoysGirlsOut(rd.GetInt32("id"), rd.GetString("name"),
                     rd.GetString("place"), rd.GetInt32("age"), rd.GetInt32("age")-days,rd.GetString("breed")));
             rd.Close();
             return res.ToArray();

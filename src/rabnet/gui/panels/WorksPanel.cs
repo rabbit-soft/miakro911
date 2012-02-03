@@ -161,7 +161,7 @@ namespace rabnet
 
         /// <summary>
         /// Возвращает тип работы выбранной строки 
-        /// (тип хранится в cdjqcndt Tag)
+        /// (тип хранится в свойстве Tag)
         /// </summary>
         /// <returns></returns>
         private ZootehJob getCurJob()
@@ -252,7 +252,7 @@ namespace rabnet
                     RabNetEngRabbit r = Engine.get().getRabbit(job.id);
                     r.Spec = true;
                     r.VaccineEnd = DateTime.Now.AddDays(Engine.opt().getIntOption(Options.OPT_ID.VACCINE_TIME));
-                    r.commit();
+                    r.Commit();
                     needUpdate = false;
                     break;
                 case JobType.SET_NEST://установка гнездовья

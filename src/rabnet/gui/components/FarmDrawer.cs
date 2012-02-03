@@ -28,6 +28,7 @@ namespace rabnet
             public int id = 0;
 //            private Font f = new Font("Arial", 8);
 			private Font f = SystemFonts.DefaultFont;
+
 			public DrawTier(int id, String type, String delims, String nests, String heaters, String[] rabbits, bool repair)
             {
                 this.id = id;
@@ -39,36 +40,7 @@ namespace rabnet
                 this.heaters = heaters;
             }
 
-            private void setNest(BuildingControl p, char nest, char heater, bool second)
-            {
-                if (second)
-                    p.nest2 = (nest == '1');
-                else
-                    p.nest = (nest == '1');
-                int htr = 2;
-                if (heater == '0') htr = 0;
-                if (heater == '1') htr = 1;
-                if (second)
-                    p.heater2 = htr;
-                else
-                    p.heater = htr;
-            }
-            private void setVigul(BuildingControl p,char delim)
-            {
-                p.vigul = (delim == '1');
-            }
-            private void setDelim(BuildingControl p, char delim)
-            {
-                p.delim = (delim == '1');
-            }
-            private void setDelims(BuildingControl p, string delims)
-            {
-                p.delim1 = (delims[0] == '1');
-                p.delim2 = (delims[1] == '1');
-                p.delim3 = (delims[2] == '1');
-            }
-
-            public void draw(Graphics g, Rectangle r,BuildingControl p)
+            public void Draw(Graphics g, Rectangle r,BuildingControl p)
             {              
 
                 this._graf=g;
@@ -78,23 +50,23 @@ namespace rabnet
                 switch (type)
                 {
                     case myBuildingType.Female:
-                        drawPart(0,1,"",rbs[0],nests[0],heaters[0],null);
+                        DrawPart(0,1,"",rbs[0],nests[0],heaters[0],null);
                         setNest(p, nests[0], heaters[0], false);
                         break;
                     case myBuildingType.DualFemale:
-                        drawPart(0, 0.5,"а",rbs[0],nests[0],heaters[0],null);
-                        drawPart(0.5, 0.5,"б",rbs[1],nests[1],heaters[1],null);
-						drawWall(0, 0.5);
-						drawWall(0.5, 0.5);
+                        DrawPart(0, 0.5,"а",rbs[0],nests[0],heaters[0],null);
+                        DrawPart(0.5, 0.5,"б",rbs[1],nests[1],heaters[1],null);
+						DrawWall(0, 0.5);
+						DrawWall(0.5, 0.5);
 						setNest(p, nests[0], heaters[0], false);
                         setNest(p, nests[1], heaters[1], true);
                         break;
                     case myBuildingType.Complex:
-                        drawPart(0, 0.5, "а", rbs[0], nests[0], heaters[0], null);
-                        drawPart(0.5, 0.25, "б", rbs[1], N, N, null);
-                        drawPart(0.75, 0.25, "в", rbs[2], N, N, null);
-						drawWall(0, 0.5);
-						drawWall(0.5, 0.25);
+                        DrawPart(0, 0.5, "а", rbs[0], nests[0], heaters[0], null);
+                        DrawPart(0.5, 0.25, "б", rbs[1], N, N, null);
+                        DrawPart(0.75, 0.25, "в", rbs[2], N, N, null);
+						DrawWall(0, 0.5);
+						DrawWall(0.5, 0.25);
 						//drawWall(0.75, 0.25);
 						setNest(p, nests[0], heaters[0], false);
                         break;
@@ -102,48 +74,48 @@ namespace rabnet
                         bool fst = delims[0] == '1';
                         if (fst)
                         {
-                            drawPart(0, 0.25, "а", rbs[0], N, N, null);
-                            drawPart(0.25, 0.75, "б", rbs[1], nests[0], heaters[0], new double[]{0.62});
-							drawWall(0, 0.25);
+                            DrawPart(0, 0.25, "а", rbs[0], N, N, null);
+                            DrawPart(0.25, 0.75, "б", rbs[1], nests[0], heaters[0], new double[]{0.62});
+							DrawWall(0, 0.25);
 							//drawWall(0.25, 0.75);
 						}
                         else
                         {
-                            drawPart(0, 0.62, "а", rbs[0], nests[0], heaters[0], new double[] { 0.25 });
-                            drawPart(0.62, 0.38, "б", rbs[1], N, N, null);
-							drawWall(0, 0.62);
+                            DrawPart(0, 0.62, "а", rbs[0], nests[0], heaters[0], new double[] { 0.25 });
+                            DrawPart(0.62, 0.38, "б", rbs[1], N, N, null);
+							DrawWall(0, 0.62);
 							//drawWall(0.62, 0.38);
 						}
                         setNest(p, nests[0], heaters[0], false);
                         setVigul(p, delims[0]);
                         break;
                     case myBuildingType.Quarta:
-                        drawQuarta();
+                        DrawQuarta();
                         setDelims(p, delims);
                         break;
                     case myBuildingType.Vertep:
-                        drawPart(0, 0.5, "а", rbs[0], N, N, null);
-                        drawPart(0.5, 0.5, "б", rbs[1], N, N, null);
-						drawWall(0, 0.5);
+                        DrawPart(0, 0.5, "а", rbs[0], N, N, null);
+                        DrawPart(0.5, 0.5, "б", rbs[1], N, N, null);
+						DrawWall(0, 0.5);
 						//drawWall(0.5, 0.5);
 						break;
                     case myBuildingType.Barin:
 						if (delims[0] == '1')
 						{
-							drawPart(0, 0.5, "а", rbs[0], N, N, null);
-							drawPart(0.5, 0.5, "б", rbs[1], N, N, null);
-							drawWall(0, 0.5);
+							DrawPart(0, 0.5, "а", rbs[0], N, N, null);
+							DrawPart(0.5, 0.5, "б", rbs[1], N, N, null);
+							DrawWall(0, 0.5);
 							//drawWall(0.5, 0.5);
 						}
 						else
 						{
-							drawPart(0, 1, "аб", rbs[0], N, N, new double[] { 0.5 });
-							drawWall(0, 1);
+							DrawPart(0, 1, "аб", rbs[0], N, N, new double[] { 0.5 });
+							DrawWall(0, 1);
 						}
 						setDelim(p, delims[0]);
                         break;
                     case myBuildingType.Cabin:
-                        drawPart(0, 1, "а", rbs[0], N, N, null);
+                        DrawPart(0, 1, "а", rbs[0], N, N, null);
                         //drawPart(0.65, 0.35, "б", rbs[1], N, N, null);
 						//drawWall(0, 1);
 						//drawWall(0.65, 0.35);
@@ -151,7 +123,7 @@ namespace rabnet
                         break;
                 }
             }
-            public void drawQuarta()
+            public void DrawQuarta()
             {
                 int i = 0;
                 double x = 0.25;
@@ -165,7 +137,7 @@ namespace rabnet
                 {
                     if (delims[i] == '1')
                     {
-                        drawPart(start, x, nm, rbs[i], N, N, dl.ToArray());
+                        DrawPart(start, x, nm, rbs[i], N, N, dl.ToArray());
 						wls.Add(start,x);
 						i++;
                         start += x;
@@ -180,11 +152,11 @@ namespace rabnet
                         nm += names[i];
                     }
                 }
-                drawPart(start, x, nm, rbs[i], N, N, dl.ToArray());
+                DrawPart(start, x, nm, rbs[i], N, N, dl.ToArray());
 				wls.Add(start, x);
 				foreach (KeyValuePair<double, double> wl in wls)
 				{
-					drawWall(wl.Key, wl.Value);
+					DrawWall(wl.Key, wl.Value);
 				}
 			}
 
@@ -193,7 +165,7 @@ namespace rabnet
             /// </summary>
             /// <param name="start">От какой нозиции начать отчет</param>
             /// <param name="sz">На каком растоянии от старта нарисовать стенку</param>
-			public void drawWall(double start, double sz)
+			public void DrawWall(double start, double sz)
 			{
 				Point p1 = new Point();
 				Point p2 = new Point();
@@ -217,11 +189,11 @@ namespace rabnet
             /// <param name="rabbit">Имя кролика</param>
             /// <param name="nest">Гнездовье?</param>
             /// <param name="heater">Грелка?</param>
-            public void drawPart(double start,double sz,String area,String rabbit,Char nest,Char heater,double[] fd)
+            public void DrawPart(double start,double sz,String area,String rabbit,Char nest,Char heater,double[] fd)
             {
                 Rectangle rct = _rect;
 				RectangleF rctF = _rect;
-                int wdth = 0;//Лекарство от захождения Секции за правую стенку
+                int wdth = 0; //Лекарство от захождения Секции за правую стенку
                 if ((Math.Round(_rect.Width * start) + Math.Round(_rect.Width * sz)) > _rect.Width)
                     wdth = (int)(_rect.Width - Math.Round(_rect.Width * start));
                 else wdth = (int)Math.Round(_rect.Width * sz);
@@ -244,7 +216,7 @@ namespace rabnet
 					}
 				}
                 _graf.DrawString(area, f, Brushes.Black, rct.X, rct.Y);
-                FarmDrawer.drawtext(rabbit, rct, 8, _graf,false);
+                FarmDrawer.DrawText(rabbit, rct, 8, _graf,false);//пишем имена кроликов сидящих в клетке
                 Rectangle nrct = rct;
                 nrct.Height = (int)Math.Round(rct.Height * 0.2);
                 nrct.Offset(0, (int)Math.Round(rct.Height * 0.8));
@@ -254,7 +226,7 @@ namespace rabnet
                 if (nest!=N)
                 {
                     _graf.FillRectangle(nest == '1' ? Brushes.Gold : Brushes.Silver, nrct);
-                    FarmDrawer.drawtext("гнездо" + (nest == '1' ? "" : ":нет"), nrct, 10, _graf, false);
+                    FarmDrawer.DrawText("гнездо" + (nest == '1' ? "" : ":нет"), nrct, 10, _graf, false);
                 }
                 if (heater !=N)
                 {
@@ -271,10 +243,39 @@ namespace rabnet
                         stat = "Вкл";
                     }
                     _graf.FillRectangle(b, hrct);
-                    FarmDrawer.drawtext("грелка:" + stat, hrct, 10, _graf, false);
+                    FarmDrawer.DrawText("грелка:" + stat, hrct, 10, _graf, false);
                 }
                 _graf.DrawLine(Pens.Black, new Point(rct.Left, rct.Top), new Point(rct.Right, rct.Top));//Основание крыши
 				_graf.DrawLine(Pens.Black, new Point(rct.Right, rct.Bottom), new Point(rct.Left, rct.Bottom));//Основание домика
+            }
+
+            private void setNest(BuildingControl p, char nest, char heater, bool second)
+            {
+                if (second)
+                    p.nest2 = (nest == '1');
+                else
+                    p.nest = (nest == '1');
+                int htr = 2;
+                if (heater == '0') htr = 0;
+                if (heater == '1') htr = 1;
+                if (second)
+                    p.heater2 = htr;
+                else
+                    p.heater = htr;
+            }
+            private void setVigul(BuildingControl p, char delim)
+            {
+                p.vigul = (delim == '1');
+            }
+            private void setDelim(BuildingControl p, char delim)
+            {
+                p.delim = (delim == '1');
+            }
+            private void setDelims(BuildingControl p, string delims)
+            {
+                p.delim1 = (delims[0] == '1');
+                p.delim2 = (delims[1] == '1');
+                p.delim3 = (delims[2] == '1');
             }
         }
 
@@ -287,7 +288,7 @@ namespace rabnet
             InitializeComponent();
         }
 
-        public void setFarm(int id,DrawTier t1,DrawTier t2)
+        public void SetFarm(int id,DrawTier t1,DrawTier t2)
         {
             this.t1 = t1;
             this.t2 = t2;
@@ -308,17 +309,23 @@ namespace rabnet
             }
         }
 
-        public static void drawtext(String text,Rectangle r,int sz,Graphics g,bool bottom)
+        /// <summary>
+        /// Пишет текст в указанной области
+        /// </summary>
+        /// <param name="text">Какой текст писать</param>
+        /// <param name="r">В какой прямоугольник вписывать</param>
+        /// <param name="sz">Размер шрифта</param>
+        /// <param name="g">На какой графике рисовать</param>
+        public static void DrawText(String text,Rectangle r,int sz,Graphics g,bool bottom)
         {
-            StringFormat sf=new StringFormat();
-            sf.Alignment=StringAlignment.Center;
-            sf.LineAlignment = bottom?StringAlignment.Far:StringAlignment.Center;
+            StringFormat sf = new StringFormat();
+            sf.Alignment = StringAlignment.Center;
+            sf.LineAlignment = bottom ? StringAlignment.Far : StringAlignment.Center;
 //			g.DrawString(text, new Font("Arial", sz), Brushes.Black,
 //				new RectangleF(r.X, r.Y, r.Width, r.Height), sf);
 			g.DrawString(text, new Font(SystemFonts.DefaultFont.Name, sz), Brushes.Black,
 				new RectangleF(r.X, r.Y, r.Width, r.Height), sf);
 		}
-
 
         private void drawHouse(Graphics g,Rectangle rect)
         {
@@ -349,12 +356,12 @@ namespace rabnet
             });
 			g.SmoothingMode = SmoothingMode.None;
 
-            drawtext(id.ToString(), r1, 12, g,true);
+            DrawText(id.ToString(), r1, 12, g,true);
             g.DrawRectangle(new Pen(Color.Black, 1), r2[0]);
 
 			bc1.Top = r2[0].Top + pictureBox1.Top;// +1;
             bc1.Height = r2[0].Height+1;
-            t1.draw(g, r2[0], bc1);
+            t1.Draw(g, r2[0], bc1);
 			bc1.Visible = true;
             if (t2 != null)
             {
@@ -363,7 +370,7 @@ namespace rabnet
 				r2[1].Offset(0,1);
 				r2[1].Height -= 1;
 				g.DrawRectangle(new Pen(Color.Black, 1), r2[1]);
-                t2.draw(g, r2[1],bc2);
+                t2.Draw(g, r2[1],bc2);
                 bc2.Visible = true;
             }
         }

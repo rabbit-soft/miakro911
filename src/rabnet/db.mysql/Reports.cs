@@ -526,11 +526,11 @@ AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_p
 FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AND (t_id=m_upper OR t_id=m_lower) AND inBuilding({0:d},m_id);",bld),sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
-                for (int i = 0; i < Buildings.getRSecCount(rd.GetString(1)); i++)
+                for (int i = 0; i < Buildings.GetRSecCount(rd.GetString(1)); i++)
                     if (rd.GetInt32(i + 2) == 0)
                     {
                         doc.DocumentElement.AppendChild(doc.CreateElement("Row")).AppendChild(
-                            doc.CreateElement("address")).AppendChild(doc.CreateTextNode(rd.GetString(0)+Buildings.getRSec(rd.GetString(1),i,"000")));
+                            doc.CreateElement("address")).AppendChild(doc.CreateTextNode(rd.GetString(0)+Buildings.GetRSec(rd.GetString(1),i,"000")));
                     }
             rd.Close();
             return doc;

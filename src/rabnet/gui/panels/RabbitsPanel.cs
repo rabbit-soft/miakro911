@@ -26,7 +26,7 @@ namespace rabnet
         {
             colSort = new ListViewColumnSorter(listView1, new int[] {2,8,9 },Options.OPT_ID.RAB_LIST);
             listView1.ListViewItemSorter = null;
-			GeneticsToolStripMenuItem.Enabled = GeneticsManagerSafe.GeneticsModuleTest();
+			miGenetic.Enabled = GeneticsManagerSafe.GeneticsModuleTest();
             MakeExcel = new RabStatusBar.ExcelButtonClickDelegate(this.makeExcel);
         }
 
@@ -177,11 +177,11 @@ namespace rabnet
             svidMenuItem.Visible = realizeMenuItem.Visible= false;
             plemMenuItem.Visible = replacePlanMenuItem.Visible= false;
             toolStripSeparator1.Visible = toolStripSeparator2.Visible = toolStripSeparator3.Visible = false;//separators
-            GeneticsToolStripMenuItem.Visible = false;
+            miGenetic.Visible = false;
 
             if (sex < 0) return;
             toolStripSeparator1.Visible = true;
-            GeneticsToolStripMenuItem.Visible = toolStripSeparator3.Visible = true;
+            miGenetic.Visible = toolStripSeparator3.Visible = true;
             plemMenuItem.Visible = true;
             KillMenuItem.Visible = true;
             realizeMenuItem.Visible = true;
@@ -544,7 +544,13 @@ namespace rabnet
 		private void GeneticsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (listView1.SelectedItems.Count < 1) return;
-			
+#if PROTECTED
+            if (!RabGRD.GRD.Instance.GetFlag(RabGRD.GRD.FlagType.Genetics))
+            {
+                MessageBox.Show("Текущая лицензия не распространяется на данный модуль");
+                return;
+            }
+#endif
             if (GeneticsManagerSafe.GeneticsModuleTest())
 			{
 				for (int i = 0; i < listView1.SelectedItems.Count; i++)

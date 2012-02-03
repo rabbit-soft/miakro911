@@ -69,17 +69,17 @@ namespace rabnet
             fid = id;
             ffarm = farm;
             ftid = tier_id;
-            ftype=type;
+            ftype = type;
             ftypeloc = typeloc;
-            fdelims=delims;
+            fdelims = delims;
             fnotes = notes;
             frepair = repair;
             fsecs = seccnt;
             for (int i = 0; i < fsecs; i++)
             {
-                fullname[i] = Buildings.fullRName(ffarm, ftid, i, ftype, fdelims, false, true, true);
-                smallname[i] = Buildings.fullRName(ffarm, ftid, i, ftype, fdelims, true, false, false);
-                medname[i] = Buildings.fullRName(ffarm, ftid, i, ftype, fdelims, false, true, false);
+                fullname[i] = Buildings.FullRName(ffarm, ftid, i, ftype, fdelims, false, true, true);
+                smallname[i] = Buildings.FullRName(ffarm, ftid, i, ftype, fdelims, true, false, false);
+                medname[i] = Buildings.FullRName(ffarm, ftid, i, ftype, fdelims, false, true, false);
             }
         }
         #region IBuilding Members
@@ -172,14 +172,14 @@ namespace rabnet
     {     
         public static bool hasnest(String type,int sec,String nests)
         {
-            int c = getRNHCount(type);
+            int c = GetRNHCount(type);
             if (c == 0) return false;
             if (type==myBuildingType.DualFemale)
                 return (nests[sec]=='1');
             return (nests[0]=='1');
         }
 
-        public static String getRDescr(String type, bool shr,int sec,String delims)
+        public static String GetRDescr(String type, bool shr,int sec,String delims)
         {
             String res = "";
             switch (type)
@@ -213,7 +213,7 @@ namespace rabnet
             }
             return res;
         }
-        public static String getRSec(String type, int sec, String delims)
+        public static String GetRSec(String type, int sec, String delims)
         {
             if (type == myBuildingType.Female)
                 return "";
@@ -230,7 +230,7 @@ namespace rabnet
                 res = "аб";
             return res;
         }
-        public static String getRName(String type,bool shr)
+        public static String GetRName(String type,bool shr)
         {
             String res="Нет";
             switch (type)
@@ -250,7 +250,7 @@ namespace rabnet
         /// <summary>
         /// Возвращает количество секций у данного типа МИНИфермы
         /// </summary>
-        public static int getRSecCount(String type)
+        public static int GetRSecCount(String type)
         {
             int res = 2;
             switch (type)
@@ -263,7 +263,7 @@ namespace rabnet
             return res;
         }
 
-        public static int getRNHCount(String type)
+        public static int GetRNHCount(String type)
         {
             int res = 1;
             switch (type)
@@ -276,16 +276,16 @@ namespace rabnet
             return res;
         }
 
-        public static String fullRName(int farm, int tierid, int sec, String type, String delims, bool shrt, bool showTier, bool ShowDescr)
+        public static String FullRName(int farm, int tierid, int sec, String type, String delims, bool shrt, bool showTier, bool ShowDescr)
         {
             String res = Building.Format(farm);
             if (tierid == 1) res += "^";
             if (tierid == 2) res += "-";
-            res += getRSec(type, sec, delims);
+            res += GetRSec(type, sec, delims);
             if (showTier)
-                res += " [" + getRName(type, shrt) + "]";
+                res += " [" + GetRName(type, shrt) + "]";
             if (ShowDescr)
-                res += " (" + getRDescr(type, shrt, sec, delims)+")";
+                res += " (" + GetRDescr(type, shrt, sec, delims)+")";
             return res;
         }       
 
@@ -294,7 +294,7 @@ namespace rabnet
             if (rabplace == "")
                 return OneRabbit.NullAddress;
             String[] dts = rabplace.Split(',');
-            return fullRName(int.Parse(dts[0]),int.Parse(dts[1]),int.Parse(dts[2]),dts[3],dts[4],shrt,showTier,showDescr);
+            return FullRName(int.Parse(dts[0]),int.Parse(dts[1]),int.Parse(dts[2]),dts[3],dts[4],shrt,showTier,showDescr);
         }
 
         public static String FullPlaceName(String rabplace)
@@ -302,7 +302,7 @@ namespace rabnet
             return FullPlaceName(rabplace, false, false, false);
         }
 
-        public static bool hasnest(String rabplace)
+        public static bool HasNest(String rabplace)
         {
             if (rabplace == "")
                 return false;
@@ -312,7 +312,7 @@ namespace rabnet
 
         public Buildings(MySqlConnection sql, Filters filters):base(sql,filters){}
 
-        public static Building getBuilding(MySqlDataReader rd,bool shr,bool rabbits)
+        public static Building GetBuilding(MySqlDataReader rd,bool shr,bool rabbits)
         {
             int id = rd.GetInt32(0);
             int farm = rd.GetInt32(3);
@@ -325,8 +325,8 @@ namespace rabnet
             }
             String tp = rd.GetString("t_type");
             String dl = rd.GetString("t_delims");
-            int scs = getRSecCount(tp);
-            Building b = new Building(id, farm, tid, tp, getRName(tp, shr), dl,
+            int scs = GetRSecCount(tp);
+            Building b = new Building(id, farm, tid, tp, GetRName(tp, shr), dl,
                 rd.GetString("t_notes"), (rd.GetInt32("t_repair") == 0 ? false : true), scs);
             List<string> ars = new List<string>();
             List<string> deps = new List<string>();
@@ -334,8 +334,8 @@ namespace rabnet
             List<String> uses = new List<string>();
             for (int i = 0; i < b.secs(); i++)
             {
-                ars.Add((tid == 0 ? "" : (tid == 1 ? "^" : "-")) + getRSec(tp, i, dl));
-                deps.Add(getRDescr(tp, shr, i, dl));
+                ars.Add((tid == 0 ? "" : (tid == 1 ? "^" : "-")) + GetRSec(tp, i, dl));
+                deps.Add(GetRDescr(tp, shr, i, dl));
                 int rn = (rd.IsDBNull(10+i) ? -1 : rd.GetInt32("t_busy" + (i + 1).ToString()));
                 bus.Add(rn);
                 if (rabbits)
@@ -347,7 +347,7 @@ namespace rabnet
             b.fbusies = bus.ToArray();
             b.fdeps = deps.ToArray();
             b.fuses = uses.ToArray();
-            b.fnhcount = getRNHCount(tp);
+            b.fnhcount = GetRNHCount(tp);
             b.fnests = rd.GetString("t_nest");
             b.fheaters = rd.GetString("t_heater");
             b.faddress = "";
@@ -359,7 +359,7 @@ namespace rabnet
             try
             {
                 bool shr = options.safeBool("shr");
-                return getBuilding(rd, shr,true);
+                return GetBuilding(rd, shr,true);
             }
             catch (Exception ex)
             {
@@ -481,7 +481,7 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) and t_id=" + tier.ToSt
             MySqlDataReader rd = cmd.ExecuteReader();
             Building b=null;
             if (rd.Read())
-                b = getBuilding(rd, false,true);
+                b = GetBuilding(rd, false,true);
             rd.Close();
             return b;
         }
@@ -510,7 +510,7 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 AND "+busy+";", sql);
             log.Debug("free Buildings cmd:"+cmd.CommandText);
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
-                bld.Add(getBuilding(rd, false, false) as Building);
+                bld.Add(GetBuilding(rd, false, false) as Building);
             rd.Close();
             return bld.ToArray();
         }
