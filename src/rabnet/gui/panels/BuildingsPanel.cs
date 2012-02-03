@@ -301,6 +301,7 @@ namespace rabnet
             List<string> rabs=new List<string>();
             for (int i=0;i<b.secs();i++)
                     rabs.Add(b.use(i));
+            //Engine.db().
             return new FarmDrawer.DrawTier(b.id(),b.itype(),b.delims(),b.nest(),b.heater(),rabs.ToArray(),b.repair());
         }
 

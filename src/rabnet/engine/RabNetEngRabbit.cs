@@ -413,7 +413,7 @@ namespace rabnet
             if (count == Group)
             {
                 eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, RabID, 0, SmallAddress == OneRabbit.NullAddress ? CloneAddress : SmallAddress, "", String.Format(" {0:s}[{1:d}] {2:s})",FullName, Group, notes));
-                eng.db().killRabbit(id, when, reason, notes);
+                eng.db().KillRabbit(id, when, reason, notes);
             }
             else
             {
@@ -454,7 +454,7 @@ namespace rabnet
                 clone.KillIt(DateTime.Now, DR_ON_COUNT, "при подсчете", clone.Group);
                 //!!!тут надо списыватьт
                 if(added>0)
-                    eng.db().countKids(id,dead, killed, added, rab.youngers[yid].id);             
+                    eng.db().СountKids(id,dead, killed, added, rab.youngers[yid].id);             
             }
         }
 

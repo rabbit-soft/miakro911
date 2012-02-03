@@ -21,7 +21,7 @@ namespace rabnet
             private String delims;
             private String nests;
             private String heaters;
-            private string[] rbs;
+            private string[] rbs;   
             private Graphics _graf;
             private Rectangle _rect;
             private bool repair;
@@ -29,14 +29,14 @@ namespace rabnet
 //            private Font f = new Font("Arial", 8);
 			private Font f = SystemFonts.DefaultFont;
 
-			public DrawTier(int id, String type, String delims, String nests, String heaters, String[] rabbits, bool repair)
+			public DrawTier(int id, String type, String delims, String nests, String heaters, String[] residents, bool repair)
             {
                 this.id = id;
                 this.repair=repair;
                 this.type = type;
                 this.delims = delims;
                 this.nests = nests;
-                rbs=rabbits;
+                rbs=residents;
                 this.heaters = heaters;
             }
 

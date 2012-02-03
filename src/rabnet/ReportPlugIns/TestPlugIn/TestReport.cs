@@ -12,7 +12,7 @@ namespace rabnet
 
         public override void MakeReport()
         {
-#if Release || DEBUG
+#if RELEASE || DEBUG
             PeriodForm dlg = new PeriodForm(MenuText);
             Filters f = new Filters();
             if (dlg.ShowDialog() == DialogResult.OK)

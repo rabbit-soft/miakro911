@@ -11,7 +11,7 @@ namespace rabnet
 
         public override void MakeReport()
         {
-#if Release || DEBUG
+#if RELEASE || DEBUG
             PeriodForm dlg = new PeriodForm(MenuText);
             dlg.PeriodConstrain = 4;
             if (dlg.ShowDialog() == DialogResult.OK)

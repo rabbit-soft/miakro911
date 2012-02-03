@@ -60,6 +60,9 @@ namespace rabnet
         int getMFCount();
         TreeData rabbitGenTree(int rabbit);
         TreeData buildingsTree();
+        /// <summary>
+        /// Список Молодняка
+        /// </summary>
         IDataGetter getYoungers(Filters filters);
         int[] getTiers(int farm);
         Building getBuilding(int tier);
@@ -98,8 +101,23 @@ namespace rabnet
         ZooJobItem[] getVudvors(Filters f, int days);
         void addName(OneRabbit.RabbitSex sex, string name, string surname);
         void changeName(string orgName, string name, string surname);
-        void killRabbit(int id,DateTime when,int reason,string notes);
-        void countKids(int rid, int dead, int killed, int added,int yid);
+        /// <summary>
+        /// Списание кролика
+        /// </summary>
+        /// <param name="id">ID кролика</param>
+        /// <param name="when">Дата списания</param>
+        /// <param name="reason">Причина списания</param>
+        /// <param name="notes">Заметки</param>
+        void KillRabbit(int id,DateTime when,int reason,string notes);
+        /// <summary>
+        /// Подсчет Гнездовых
+        /// </summary>
+        /// <param name="rid">ID кормилицы</param>
+        /// <param name="dead">Количество погибших</param>
+        /// <param name="killed">Количество Затоптоных</param>
+        /// <param name="added">Прибавилось</param>
+        /// <param name="yid">К какой группе подсосных</param>
+        void СountKids(int rid, int dead, int killed, int added,int yid);
         ZooJobItem[] getCounts(Filters f, int days,int next);
         void setRabbitSex(int rid,OneRabbit.RabbitSex sex);
         int cloneRabbit(int rid, int count, int farm, int tier, int sec, OneRabbit.RabbitSex sex, int mom);

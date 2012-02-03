@@ -389,12 +389,12 @@ namespace rabnet
             Names.changeName(sql, orgName, name, surname);            
         }
 
-        public void killRabbit(int id, DateTime when, int reason, string notes)
+        public void KillRabbit(int id, DateTime when, int reason, string notes)
         {
             RabbitGetter.killRabbit(sql, id, when, reason, notes);
         }
 
-        public void countKids(int rid, int dead, int killed, int added,int yid)
+        public void СountKids(int rid, int dead, int killed, int added,int yid)
         {
             RabbitGetter.countKids(sql, rid, dead, killed, added, yid);
         }
