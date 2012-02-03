@@ -387,7 +387,7 @@ namespace RabGRD
 
             UInt32 tempData;           // Temporary data         
 
-            UInt32 lms;
+            Int32 lms;
 
             string logStr = "";
 
@@ -514,7 +514,7 @@ namespace RabGRD
             // -----------------------------------------------------------------
             logStr = "Searching for the specified local or remote dongle and log in : ";
             // If command line parameter is specified, License Management System functions are used
-            lms =UInt32.MaxValue;
+            lms =-1;
             // All following Guardant API calls before next GrdCloseHandle()/GrdLogin() will use this dongle
             retCode = GrdApi.GrdLogin(_grdHandle, lms, GrdLM.PerStation);
             logStr += GrdApi.PrintResult((int)retCode);
