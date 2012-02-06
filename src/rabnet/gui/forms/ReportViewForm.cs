@@ -26,7 +26,9 @@ namespace rabnet
         {
             InitializeComponent();
         }
-
+        /// <summary>
+        /// Предусмотрена ли импортирование отчета в Excel
+        /// </summary>
         public bool ExcelEnabled
         {
             get { return tbExcel.Visible; }

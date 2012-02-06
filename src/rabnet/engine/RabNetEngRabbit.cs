@@ -307,7 +307,14 @@ namespace rabnet
         /// <summary>
         /// Лист с группами подсосных
         /// </summary>
-        public OneRabbit[] Youngers { get { return rab.youngers; } }
+        public OneRabbit[] Youngers 
+        { 
+            get { return rab.youngers; } 
+        }
+        public OneRabbit[] Neighbors
+        {
+            get { return rab.neighbors; }
+        }
         public void setBon(String bon)
         {
             if (RabID == 0)

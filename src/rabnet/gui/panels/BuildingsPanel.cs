@@ -298,10 +298,23 @@ namespace rabnet
 
         private FarmDrawer.DrawTier tierFromBuilding(Building b)
         {
-            List<string> rabs=new List<string>();
+            List<string> rabs = new List<string>();
+            RabNetEngRabbit rner;
+            string livesIn = "";
             for (int i=0;i<b.secs();i++)
-                    rabs.Add(b.use(i));
-            //TODO здесь надо в rabs сунуть строку с соседями и детьми
+            {
+                livesIn = b.use(i);
+                if (b.fbusies[i] != 0)
+                {
+                    rner = Engine.get().getRabbit(b.fbusies[i]);
+                    if (rner.YoungCount != 0)
+                        livesIn += String.Format(" (+{0:d})", rner.YoungCount);
+                    foreach (OneRabbit n in rner.Neighbors)
+                        livesIn += String.Format("{0:s}[{1:s}]",Environment.NewLine,n.fullname); ;
+                }
+                rabs.Add(livesIn);
+            }
+           
             return new FarmDrawer.DrawTier(b.id(),b.itype(),b.delims(),b.nest(),b.heater(),rabs.ToArray(),b.repair());
         }
 

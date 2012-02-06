@@ -228,7 +228,7 @@ FROM
     rabbits,tiers
 WHERE 
     t_id=r_tier AND 
-    r_event_date IS NULL AND
+#r_event_date IS NULL AND
     r_sex='female' AND 
     (TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol))>={0:d} AND
     ((t_busy1=r_id AND t_nest like '1%') OR (t_busy2=r_id AND t_nest like '%1' AND t_type='dfemale'))

@@ -160,7 +160,7 @@ namespace rabnet
 		RabbitGen getRabbitGen(int rid);
 		Dictionary<int, Color> getBreedColors();
         List<OneRabbit> getVictims(DateTime dt);
-
+        //for buther
         List<sMeal> getMealPeriods();
         void addMealIn(DateTime start, int amount);
         void addMealOut(DateTime start, int amount);
@@ -175,6 +175,7 @@ namespace rabnet
         string WebReportGlobal(DateTime dt);
         string[] WebReportsGlobal(DateTime dt,int days);
         DateTime GetFarmStartTime();
+
     }
 
 }

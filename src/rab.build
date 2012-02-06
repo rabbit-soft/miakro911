@@ -371,7 +371,6 @@
 	</target>
 
 	<target name="gui" description="rabnet gui">
-
 		<csc target="winexe" output="${bin_dir}/RabNet/rabnet.exe" win32icon="${curdir}/rabnet/gui/icon_green.ico" define="${compile_flag}" optimize="true">
 			<sources>
 				<include name="${curdir}/rabnet/gui/Program.cs"/>
@@ -597,18 +596,18 @@
 				<include name="${root_bin}/Protected/RabNet/engine.dll" />
 			</references>
 		</csc>
-		<delete dir="${plugin_dir}/TestPlugIn.test.rdl"/>
+		<delete file="${plugin_dir}/TestPlugIn.test.rdl"/>
 	</target>
 	
 	<target name="populationplugin" description="Population report plugin for Tatishevo">
-		<copy file="${curdir}/rabnet/ReportPlugIns/PopulationPlugIn/population.rdl" tofile="${plugin_dir}/PopulationPlugIn.test.rdl"/>
+		<copy file="${curdir}/rabnet/ReportPlugIns/PopulationPlugIn/population.rdl" tofile="${plugin_dir}/PopulationPlugIn.population.rdl"/>
 		<csc target="library" output="${plugin_dir}/PopulationPlugIn.dll" define="RELEASE" optimize="true">
 			<sources>
 				<include name="${curdir}/rabnet/ReportPlugIns/PopulationPlugIn/*.cs"/>
 				<include name="${curdir}/rabnet/ReportPlugIns/PopulationPlugIn/Properties/*.cs"/>
 			</sources>
 			<resources>
-				<include name="${plugin_dir}/PopulationPlugIn.test.rdl"/>
+				<include name="${plugin_dir}/PopulationPlugIn.population.rdl"/>
 			</resources>
 			<references>
 				<include name="${root_bin}/Protected/RabNet/rabnet.exe" />
@@ -616,7 +615,7 @@
 				<include name="${root_bin}/Protected/RabNet/engine.dll" />
 			</references>
 		</csc>
-		<delete dir="${plugin_dir}/PopulationPlugIn.test.rdl"/>
+		<delete file="${plugin_dir}/PopulationPlugIn.population.rdl"/>
 	</target>
 	
 	<target name="distrib_nsis" depends="obfuscate">

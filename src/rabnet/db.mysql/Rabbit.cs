@@ -445,6 +445,7 @@ r_status,r_flags,r_event_date,r_breed
         /// Подсосные
         /// </summary>
         public OneRabbit[] youngers;
+        public OneRabbit[] neighbors;
         public string tag;
         public string nuaddr="";
         public OneRabbit(int id,string sx,DateTime bd,int rt,string flg,int nm,int sur,int sec,string adr,int grp,int brd,int zn,String nts,
@@ -583,6 +584,8 @@ FROM {2:s} WHERE r_id={3:d};", (type == RAB_TYPE.LIVE ? "r_event_date,r_event" :
             OneRabbit r = fillRabbit(rd);
             rd.Close();
             r.youngers = getYoungers(con, rid);
+            if(r.parent==0)
+                r.neighbors = getNeighbors(con,rid);
             return r;
         }
 
@@ -596,6 +599,30 @@ rabname(r_id,2) fullname,
 (SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=r_genesis) genom,
 r_status,r_rate,r_bon,r_parent,COALESCE(r_vaccine_end,NOW()) vac_end 
 FROM rabbits WHERE r_parent=" + mom.ToString() + ";", con);
+            List<OneRabbit> rbs = new List<OneRabbit>();
+            MySqlDataReader rd = cmd.ExecuteReader();
+            while (rd.Read())
+                rbs.Add(fillRabbit(rd));
+            rd.Close();
+            return rbs.ToArray();
+        }
+        /// <summary>
+        /// Получает список кролико у кого в адресе числится такая же клетка
+        /// </summary>
+        /// <param name="con"></param>
+        /// <param name="rabOwner"></param>
+        /// <returns></returns>
+        public static OneRabbit[] getNeighbors(MySqlConnection con, int rabOwner)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT r_id,r_last_fuck_okrol,r_event_date,r_event,r_overall_babies,r_lost_babies,
+r_sex,r_born,r_flags,r_breed,r_zone,r_name,r_surname,r_secname,
+rabplace(r_id) address,
+r_group,r_notes,
+rabname(r_id,2) fullname,
+(SELECT b_name FROM breeds WHERE b_id=r_breed) breedname,
+(SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=r_genesis) genom,
+r_status,r_rate,r_bon,r_parent,COALESCE(r_vaccine_end,NOW()) vac_end 
+FROM rabbits WHERE rabplace(r_id)=rabplace({0:d}) AND r_id<>{0:d} AND r_parent=0;", rabOwner), con);
             List<OneRabbit> rbs = new List<OneRabbit>();
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())

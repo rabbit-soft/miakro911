@@ -12,14 +12,14 @@
   <BottomMargin>.25in</BottomMargin>
   <DataSets>
     <DataSet Name="Data">
-      <Query>
+      <Query >
         <DataSourceName>DS1</DataSourceName>
         <CommandText>url=C:\\tmp.xml;RowsXPath=Rows</CommandText>
       </Query>
-      <Fields>
+      <Fields >
         <Field Name="month">
           <DataField>month</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="year">
           <DataField>year</DataField>
@@ -103,19 +103,19 @@
         </Style>
         <TableColumns>
           <TableColumn>
-            <Width>54.3pt</Width>
+            <Width>67.1pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>45.8pt</Width>
-          </TableColumn>
-          <TableColumn>
-            <Width>1in</Width>
+            <Width>37.0pt</Width>
           </TableColumn>
           <TableColumn>
             <Width>1in</Width>
           </TableColumn>
           <TableColumn>
-            <Width>1in</Width>
+            <Width>58.7pt</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>60.3pt</Width>
           </TableColumn>
           <TableColumn>
             <Width>73.0pt</Width>
@@ -124,7 +124,7 @@
             <Width>1.125in</Width>
           </TableColumn>
           <TableColumn>
-            <Width>53.3pt</Width>
+            <Width>43.7pt</Width>
           </TableColumn>
           <TableColumn>
             <Width>69.8pt</Width>
@@ -136,7 +136,10 @@
             <Width>52.9pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>1in</Width>
+            <Width>51.7pt</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>51.7pt</Width>
           </TableColumn>
         </TableColumns>
         <Header>
@@ -310,8 +313,22 @@
                 <TableCell>
                   <ReportItems>
                     <Textbox Name="Textbox13">
-                      <Value>Прочее</Value>
+                      <Value>Прочие причины</Value>
                       <Style>
+                        <TextAlign>Center</TextAlign>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox15">
+                      <Value>Кол-во на конец периода</Value>
+                      <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
                         <TextAlign>Center</TextAlign>
                         <BorderStyle>
                           <Default>Solid</Default>
@@ -341,9 +358,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <BorderColor  />
-                        <BorderWidth  />
-                        <VerticalAlign >Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
+                        <VerticalAlign>Middle</VerticalAlign>
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -358,9 +375,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <BorderColor  />
-                        <BorderWidth  />
-                        <VerticalAlign >Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
+                        <VerticalAlign>Middle</VerticalAlign>
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -375,9 +392,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <BorderColor  />
-                        <BorderWidth  />
-                        <VerticalAlign >Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
+                        <VerticalAlign>Middle</VerticalAlign>
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -392,9 +409,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <VerticalAlign >Middle</VerticalAlign>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -409,9 +426,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <VerticalAlign >Middle</VerticalAlign>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -426,9 +443,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <VerticalAlign >Middle</VerticalAlign>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -443,9 +460,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <VerticalAlign >Middle</VerticalAlign>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -460,9 +477,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <VerticalAlign >Middle</VerticalAlign>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -477,9 +494,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <VerticalAlign >Middle</VerticalAlign>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -494,9 +511,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <VerticalAlign >Middle</VerticalAlign>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -511,9 +528,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <VerticalAlign >Middle</VerticalAlign>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -521,16 +538,32 @@
                 <TableCell>
                   <ReportItems>
                     <Textbox Name="ecount">
-                      <Value>=Fields!ecount.Value</Value>
+                      <Value>=Fields!another.Value</Value>
                       <CanGrow>true</CanGrow>
                       <Style>
                         <BorderStyle>
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
-                        <VerticalAlign >Middle</VerticalAlign>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
+                      </Style>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox16">
+                      <Value>=Fields!ecount.Value</Value>
+                      <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -552,9 +585,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <BorderColor  />
-                        <BorderWidth  />
-                        <VerticalAlign >Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
+                        <VerticalAlign>Middle</VerticalAlign>
                       </Style>
                       <Value>Итого:</Value>
                     </Textbox>
@@ -569,9 +602,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <VerticalAlign >Middle</VerticalAlign>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                       <Value>=Sum(Fields!bcount)</Value>
                     </Textbox>
@@ -585,9 +618,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <VerticalAlign >Middle</VerticalAlign>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                       <Value>=Sum(Fields!buy)+Sum(Fields!born)</Value>
                     </Textbox>
@@ -601,9 +634,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <VerticalAlign >Middle</VerticalAlign>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                       <Value>=Sum(Fields!born)</Value>
                     </Textbox>
@@ -617,9 +650,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <VerticalAlign >Middle</VerticalAlign>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                       <Value>=Sum(Fields!buy)</Value>
                     </Textbox>
@@ -633,9 +666,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <VerticalAlign >Middle</VerticalAlign>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                       <Value>=Sum(Fields!gonetotal)</Value>
                     </Textbox>
@@ -649,9 +682,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <VerticalAlign >Middle</VerticalAlign>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                       <Value>=Sum(Fields!killed)</Value>
                     </Textbox>
@@ -665,9 +698,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <VerticalAlign >Middle</VerticalAlign>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                       <Value>=Sum(Fields!sell)</Value>
                     </Textbox>
@@ -681,9 +714,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <VerticalAlign >Middle</VerticalAlign>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                       <Value>=Sum(Fields!dying)</Value>
                     </Textbox>
@@ -697,9 +730,9 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <VerticalAlign >Middle</VerticalAlign>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                       <Value>=Sum(Fields!another)</Value>
                     </Textbox>
@@ -713,11 +746,27 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <FontWeight>Bold</FontWeight>
-                        <VerticalAlign >Middle</VerticalAlign>
-                        <BorderColor  />
-                        <BorderWidth  />
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
+                      <Value>=Sum(Fields!another)</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox17">
                       <Value>=Sum(Fields!ecount)</Value>
+                      <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontWeight>Bold</FontWeight>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <BorderColor />
+                        <BorderWidth />
+                      </Style>
                     </Textbox>
                   </ReportItems>
                 </TableCell>
