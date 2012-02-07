@@ -308,7 +308,10 @@ namespace rabnet
                 {
                     rner = Engine.get().getRabbit(b.fbusies[i]);
                     if (rner.YoungCount != 0)
-                        livesIn += String.Format(" (+{0:d})", rner.YoungCount);
+                    {
+                        foreach(OneRabbit or in rner.Youngers)
+                            livesIn += String.Format(" (+{0:d} в:{1:d})", or.group,or.age());
+                    }
                     foreach (OneRabbit n in rner.Neighbors)
                         livesIn += String.Format("{0:s}[{1:s}]",Environment.NewLine,n.fullname); ;
                 }
