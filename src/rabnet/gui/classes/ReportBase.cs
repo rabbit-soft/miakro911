@@ -23,11 +23,11 @@ namespace rabnet
         /// <summary>
         /// Уникальное имя плагина
         /// </summary>
-        public string UniqueName { get { checkFile(); return _name; } }
+        public string UniqueName { get { return _name; } }
         /// <summary>
         /// Текст в контекстном меню главной формы
         /// </summary>
-        public string MenuText { get { checkFile(); return _menuText; } }
+        public string MenuText { get { return _menuText; } }
         public string FileName
         {
             get
@@ -46,10 +46,17 @@ namespace rabnet
             try
             {             
                 string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath),FOLDER) + _name + ".rdl";
+                Stream stream = getAssembly();
+                if (File.Exists(path))
+                {
+                    FileInfo fi = new FileInfo(path);
+                    if (fi.Length != stream.Length)
+                        File.Delete(path);
+                }
+                
                 if (!File.Exists(path))
                 {
-                    Stream stream = getAssembly();
-                    if (stream !=null && stream.Length != 0)
+                    if (stream != null && stream.Length != 0)
                     {
                         FileStream fileStream = new FileStream(path, FileMode.CreateNew);
                         for (int i = 0; i < stream.Length; i++)
@@ -57,6 +64,8 @@ namespace rabnet
                         fileStream.Close();
                     }
                 }
+                stream.Close();
+
             }
             catch (Exception ex)
             {

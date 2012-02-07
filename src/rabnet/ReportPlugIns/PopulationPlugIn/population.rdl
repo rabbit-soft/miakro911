@@ -12,11 +12,11 @@
   <BottomMargin>.25in</BottomMargin>
   <DataSets>
     <DataSet Name="Data">
-      <Query >
+      <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>url=C:\\tmp.xml;RowsXPath=Rows</CommandText>
       </Query>
-      <Fields >
+      <Fields>
         <Field Name="month">
           <DataField>month</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -139,7 +139,7 @@
             <Width>51.7pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>51.7pt</Width>
+            <Width>53.1pt</Width>
           </TableColumn>
         </TableColumns>
         <Header>
@@ -554,7 +554,7 @@
                 </TableCell>
                 <TableCell>
                   <ReportItems>
-                    <Textbox Name="Textbox16">
+                    <Textbox Name="Textbox16" >
                       <Value>=Fields!ecount.Value</Value>
                       <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
                         <BorderStyle>
@@ -575,7 +575,7 @@
         <Footer>
           <TableRows>
             <TableRow>
-              <Height>.2in</Height>
+              <Height>15.7pt</Height>
               <TableCells>
                 <TableCell>
                   <ReportItems>
