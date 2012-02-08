@@ -98,7 +98,7 @@ namespace rabnet
         LogList getLogs(Filters f);
         ZooJobItem[] getOkrols(Filters f, int days);
         void updateBuilding(Building b);
-        ZooJobItem[] getVudvors(Filters f, int days);
+        ZooJobItem[] getVudvors(Filters f);
         void addName(OneRabbit.RabbitSex sex, string name, string surname);
         void changeName(string orgName, string name, string surname);
         /// <summary>

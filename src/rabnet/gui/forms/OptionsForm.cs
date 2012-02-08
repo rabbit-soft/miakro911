@@ -18,7 +18,7 @@ namespace rabnet
             [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
             private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su,n,cn,tt,vactime,cand;
             private string gd, sh,xf;
-            private RUBOOL ce, ck,crp, uz,sp,ask, fbz;
+            private RUBOOL ce, ck,crp, uz,sp,ask, fbz,vIs;
             private BuchTp bt;
 
             #region zooTime
@@ -28,6 +28,9 @@ namespace rabnet
             [Category("Зоотехнические сроки"),DisplayName("Выдворение"),
             Description("Назначать Удаление родильного ящика из клетки, где подсосные крольчата достигли указанного возраста.")]
             public int vudvor { get { return vud; } set { vud = value; } }
+            [Category("Зоотехнические сроки"), DisplayName("Выдворение при сукрольной"),
+            Description("Назначать Выдворение даже если крольчиха сукрольна")]
+            public RUBOOL VudvorIfSukrol { get { return vIs; } set { vIs = value; } }
             [Category("Зоотехнические сроки"),DisplayName("1й подсчет гнездовых"),
             Description("Проверка изменения числа рожденных крольчат в 1ый раз")]
             public int count1 { get { return c1; } set { c1=value;} }
@@ -168,6 +171,10 @@ namespace rabnet
             {
                 return value==1 ? RUBOOL.Да : RUBOOL.Нет;
             }
+            public RUBOOL toR(bool value)
+            {
+                return value ? RUBOOL.Да : RUBOOL.Нет;
+            }
 
             public OptionsHolder()
             {
@@ -184,6 +191,7 @@ namespace rabnet
                 //zoo time
                 okrol=o.getIntOption(Options.OPT_ID.OKROL);
                 vudvor = o.getIntOption(Options.OPT_ID.VUDVOR);
+                VudvorIfSukrol = toR(o.getIntOption(Options.OPT_ID.VUDVOR_IF_SUKROL));
                 count1 = o.getIntOption(Options.OPT_ID.COUNT1);
                 count2 = o.getIntOption(Options.OPT_ID.COUNT2);
                 count3 = o.getIntOption(Options.OPT_ID.COUNT3);
@@ -230,6 +238,7 @@ namespace rabnet
                 Options o = Engine.opt();
                 o.setOption(Options.OPT_ID.OKROL, okrol);
                 o.setOption(Options.OPT_ID.VUDVOR, vudvor);
+                o.setOption(Options.OPT_ID.VUDVOR_IF_SUKROL, fromR(VudvorIfSukrol));
                 o.setOption(Options.OPT_ID.COUNT1, count1);
                 o.setOption(Options.OPT_ID.COUNT2, count2);
                 o.setOption(Options.OPT_ID.COUNT3, count3);

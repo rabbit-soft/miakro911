@@ -160,10 +160,9 @@ namespace rabnet
         }
         public void getVudvors(JobHolder jh)
         {
-            int days = f.safeInt("vudvor");
-            ZooJobItem[] jobs = eng.db2().getVudvors(f, days);
+            ZooJobItem[] jobs = eng.db2().getVudvors(f);
             foreach (ZooJobItem z in jobs)
-                jh.Add(new ZootehJob(f).Vudvor(z.id, z.name, z.place, z.status + 1, z.age, z.i[0] - days,z.i[1],z.breed,z.i[2]));
+                jh.Add(new ZootehJob(f).Vudvor(z.id, z.name, z.place, z.status + 1, z.age, z.i[0] - f.safeInt("vudvor"), z.i[1], z.breed, z.i[2]));
         }
         public void getCounts(JobHolder jh)
         {

@@ -12,7 +12,7 @@ namespace rabnet
         public enum OPT_ID
         {
             NONE, GETEROSIS, INBREEDING, SHORT_NAMES, DBL_SURNAME, SHOW_TIER_TYPE, SHOW_TIER_SEC, RAB_FILTER,
-            SHOW_NUMBERS, BUILD_FILTER, OKROL, VUDVOR, COUNT1, COUNT2, COUNT3, MAKE_BRIDE, DEAD_FILTER, PRE_OKROL, 
+            SHOW_NUMBERS, BUILD_FILTER, OKROL, VUDVOR,VUDVOR_IF_SUKROL, COUNT1, COUNT2, COUNT3, MAKE_BRIDE, DEAD_FILTER, PRE_OKROL, 
             ZOO_FILTER, COMBINE_AGE, BOYS_OUT, GIRLS_OUT, STATE_FUCK, FIRST_FUCK, MALE_WAIT, GEN_TREE, CONFIRM_EXIT, 
             VACC, CONFIRM_KILL,CONFIRM_REPLACE, SUCKERS,NEST,CHILD_NEST,RAB_LIST,BUILD_LIST,YOUNG_LIST,DEAD_LIST,REPL_YOUNG_LIST,
             MAKE_FUCK_LIST,NAMES_LIST,UPDATE_ZOO,ZOO_LIST,FIND_PARTNERS,NEXT_SVID,SVID_HEAD,SVID_GEN_DIR,
@@ -47,7 +47,8 @@ namespace rabnet
                                    new Option(OPT_ID.SHOW_NUMBERS,OPT_LEVEL.USER,"sh_num"),
                                    new Option(OPT_ID.BUILD_FILTER,OPT_LEVEL.USER,"build_filter"),
                                    new Option(OPT_ID.OKROL,OPT_LEVEL.FARM,"okrol"), 
-                                   new Option(OPT_ID.VUDVOR,OPT_LEVEL.FARM,"vudvor"), 
+                                   new Option(OPT_ID.VUDVOR,OPT_LEVEL.FARM,"vudvor"),
+                                   new Option(OPT_ID.VUDVOR_IF_SUKROL,OPT_LEVEL.FARM,"vudvor_if_sukrol"),
                                    new Option(OPT_ID.COUNT1,OPT_LEVEL.FARM,"count1"), 
                                    new Option(OPT_ID.COUNT2,OPT_LEVEL.FARM,"count2"), 
                                    new Option(OPT_ID.COUNT3,OPT_LEVEL.FARM,"count3"), 

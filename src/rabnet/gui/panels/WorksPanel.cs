@@ -36,6 +36,7 @@ namespace rabnet
                 f["okrol"] = Engine.opt().getOption(Options.OPT_ID.OKROL);
                 f["preok"] = Engine.opt().getOption(Options.OPT_ID.PRE_OKROL);
                 f["vudvor"] = Engine.opt().getOption(Options.OPT_ID.VUDVOR);
+                f["vd_sukr"] = Engine.opt().getOption(Options.OPT_ID.VUDVOR_IF_SUKROL);
                 f["count0"] = Engine.opt().getOption(Options.OPT_ID.COUNT1);
                 f["count1"] = Engine.opt().getOption(Options.OPT_ID.COUNT2);
                 f["count2"] = Engine.opt().getOption(Options.OPT_ID.COUNT3);

@@ -374,9 +374,9 @@ namespace rabnet
             Buildings.updateBuilding(b, sql);
         }
 
-        public ZooJobItem[] getVudvors(Filters f,int days)
+        public ZooJobItem[] getVudvors(Filters f)
         {
-            return new ZooTehGetter(sql,f).getVudvors(days);
+            return new ZooTehGetter(sql,f).getVudvors(f);
         }
 
         public void addName(OneRabbit.RabbitSex sex, string name, string surname)
