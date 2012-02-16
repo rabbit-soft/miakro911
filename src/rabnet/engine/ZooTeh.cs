@@ -44,7 +44,9 @@ namespace rabnet
         {
             type = JobType.VUDVOR; 
             job = "Выдворение";//f.safeInt("shr")==0?"Выдворение":"Выдв";
-            days = srok; name = nm; address = ad;
+            days = srok; 
+            name = nm; 
+            address = ad;
             this.age = age; this.id = id; breed = br;
             this.id2=id2;
             comment = (f.safeInt("shr") == 0 ? "подсосных" : "+") + suckers.ToString();
@@ -153,16 +155,15 @@ namespace rabnet
 
         public void getOkrols(JobHolder jh)
         {
-            int days = f.safeInt("okrol");
-            ZooJobItem[] jobs = eng.db2().getOkrols(f, days);
+            ZooJobItem[] jobs = eng.db2().getOkrols(f);
             foreach(ZooJobItem z in jobs)
-                jh.Add(new ZootehJob(f).Okrol(z.id,z.name,z.place,z.status+1,z.age,z.i[0]-days,z.breed));
+                jh.Add(new ZootehJob(f).Okrol(z.id, z.name, z.place, z.status + 1, z.age, z.info[0] - f.safeInt("okrol"), z.breed));
         }
         public void getVudvors(JobHolder jh)
         {
             ZooJobItem[] jobs = eng.db2().getVudvors(f);
             foreach (ZooJobItem z in jobs)
-                jh.Add(new ZootehJob(f).Vudvor(z.id, z.name, z.place, z.status + 1, z.age, z.i[0] - f.safeInt("vudvor"), z.i[1], z.breed, z.i[2]));
+                jh.Add(new ZootehJob(f).Vudvor(z.id, z.name, z.place, z.status + 1, z.age, z.info[0] - f.safeInt("vudvor"), z.info[1], z.breed, z.info[2]));
         }
         public void getCounts(JobHolder jh)
         {
@@ -172,7 +173,7 @@ namespace rabnet
                 int next = i == 3 ? -1 : f.safeInt("count" + (i + 1).ToString());
                 ZooJobItem[] jobs = eng.db2().getCounts(f, days,next);
                 foreach (ZooJobItem z in jobs)
-                    jh.Add(new ZootehJob(f).Counts(z.id, z.name, z.place, z.age,z.i[0],i==3,z.breed,z.i[1],z.i[2]));
+                    jh.Add(new ZootehJob(f).Counts(z.id, z.name, z.place, z.age,z.info[0],i==3,z.breed,z.info[1],z.info[2]));
             }
         }
 
@@ -182,7 +183,7 @@ namespace rabnet
             int okroldays = f.safeInt("okrol");
             ZooJobItem[] jobs = eng.db2().getPreokrols(f, days, okroldays);
             foreach(ZooJobItem z in jobs)
-                jh.Add(new ZootehJob(f).Preokrol(z.id,z.name,z.place,z.age,z.i[0],z.breed));
+                jh.Add(new ZootehJob(f).Preokrol(z.id,z.name,z.place,z.age,z.info[0],z.breed));
         }
 
         public void getBoysGirlsOut(JobHolder jh)
@@ -190,11 +191,11 @@ namespace rabnet
             int days = f.safeInt("boysout");
             ZooJobItem[] jobs = eng.db2().getBoysGirlsOut(f, days, OneRabbit.RabbitSex.MALE);
             foreach (ZooJobItem z in jobs)
-                jh.Add(new ZootehJob(f).BoysGirlsOut(z.id, z.name, z.place, z.age, z.i[0],true,z.breed));
+                jh.Add(new ZootehJob(f).BoysGirlsOut(z.id, z.name, z.place, z.age, z.info[0],true,z.breed));
             days = f.safeInt("girlsout");
             jobs = eng.db2().getBoysGirlsOut(f, days, OneRabbit.RabbitSex.FEMALE);
             foreach (ZooJobItem z in jobs)
-                jh.Add(new ZootehJob(f).BoysGirlsOut(z.id, z.name, z.place, z.age, z.i[0], false,z.breed));
+                jh.Add(new ZootehJob(f).BoysGirlsOut(z.id, z.name, z.place, z.age, z.info[0], false,z.breed));
         }
 
         /// <summary>
@@ -212,7 +213,7 @@ namespace rabnet
             ZooJobItem[] jobs = eng.db2().getZooFuck(f, days1, days2, eng.brideAge(), malewait, heter, inbr, type);
             foreach (ZooJobItem z in jobs)
             {
-                jh.Add(new ZootehJob(f).Fuck(z.id, z.name, z.place, z.age, z.i[0], z.status,z.names,z.i[1],z.breed));
+                jh.Add(new ZootehJob(f).Fuck(z.id, z.name, z.place, z.age, z.info[0], z.status,z.names,z.info[1],z.breed));
             }
         }
         public void getVacc(JobHolder jh)
@@ -220,7 +221,7 @@ namespace rabnet
             int days = f.safeInt("vacc");
             ZooJobItem[] jobs = eng.db2().getVacc(f, days);
             foreach (ZooJobItem z in jobs)
-                jh.Add(new ZootehJob(f).Vacc(z.id,z.name,z.place,z.age,z.i[0],z.breed));
+                jh.Add(new ZootehJob(f).Vacc(z.id,z.name,z.place,z.age,z.info[0],z.breed));
         }
 
         public void getSetNest(JobHolder jh)
@@ -229,7 +230,7 @@ namespace rabnet
             int wchild = f.safeInt("cnest");
             ZooJobItem[] jobs = eng.db2().getSetNest(f, wochild, wchild);
             foreach (ZooJobItem z in jobs)
-                jh.Add(new ZootehJob(f).SetNest(z.id, z.name, z.place, z.age, z.i[0],z.i[1],z.i[2],z.breed));
+                jh.Add(new ZootehJob(f).SetNest(z.id, z.name, z.place, z.age, z.info[0],z.info[1],z.info[2],z.breed));
         }
 
     }

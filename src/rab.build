@@ -577,6 +577,7 @@
 		<mkdir dir="${plugin_dir}"/>
 		<call target="testplugin"/>
 		<call target="populationplugin"/>
+		<call target="okrolplanplugin"/>
 		<!--еще плагины добавлять здесь,-->
 	</target>	
 	
@@ -616,6 +617,25 @@
 			</references>
 		</csc>
 		<delete file="${plugin_dir}/PopulationPlugIn.population.rdl"/>
+	</target>
+	
+	<target name="okrolplanplugin" description="OkrolPlan report plugin for Tatishevo">
+		<copy file="${curdir}/rabnet/ReportPlugIns/OkrolPlanPlugIn/okrolplan.rdl" tofile="${plugin_dir}/OkrolPlanPlugIn.okrolplan.rdl"/>
+		<csc target="library" output="${plugin_dir}/OkrolPlanPlugIn.dll" define="RELEASE" optimize="true">
+			<sources>
+				<include name="${curdir}/rabnet/ReportPlugIns/OkrolPlanPlugIn/*.cs"/>
+				<include name="${curdir}/rabnet/ReportPlugIns/OkrolPlanPlugIn/Properties/*.cs"/>
+			</sources>
+			<resources>
+				<include name="${plugin_dir}/OkrolPlanPlugIn.okrolplan.rdl"/>
+			</resources>
+			<references>
+				<include name="${root_bin}/Protected/RabNet/rabnet.exe" />
+				<include name="${root_bin}/Protected/RabNet/db.mysql.dll" />
+				<include name="${root_bin}/Protected/RabNet/engine.dll" />
+			</references>
+		</csc>
+		<delete file="${plugin_dir}/OkrolPlanPlugIn.okrolplan.rdl"/>
 	</target>
 	
 	<target name="distrib_nsis" depends="obfuscate">
@@ -670,6 +690,9 @@
 		<copy file="${dotnetInstallerSource}" tofile="${root_bin}/miakro_911_${bin_type}/dotnetfx20/${dotnetInstallerDest}"/>
 		<copy file="${mysqlInstallerSource}" tofile="${root_bin}/miakro_911_${bin_type}/mysql/${mysqlInstallerDest}"/>
 		<copy file="${curdir}/../help/Руководство по установке программы Miakro 9.11.docx" tofile="${root_bin}/miakro_911_${bin_type}/Руководство по установке программы Miakro 9.11.docx"/>
+		<if test="${bin_type=='protected'}">
+			<copy file="${curdir}/../help/Создание Резервных Копий Базы Данных.docx" tofile="${root_bin}/miakro_911_${bin_type}/Создание Резервных Копий Базы Данных.docx"/>
+		</if>
 		<!--property name="dist_type" value="rabnet"/>
 		<property name="bin_dir" value="${root_bin}\release"/>
 		<property name="minver" value="1"/>

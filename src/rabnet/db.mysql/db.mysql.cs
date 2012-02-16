@@ -364,9 +364,9 @@ namespace rabnet
             return (new Logs(sql).getLogs(f));
         }
 
-        public ZooJobItem[] getOkrols(Filters f,int days)
+        public ZooJobItem[] getOkrols(Filters f)
         {
-            return new ZooTehGetter(sql,f).getOkrols(days);
+            return new ZooTehGetter(sql,f).getOkrols(f.safeInt("okrol"));
         }
 
         public void updateBuilding(Building b)

@@ -168,9 +168,9 @@ namespace rabnet
         #endregion
     }
 
-    class Buildings : RabNetDataGetterBase
+    public class Buildings : RabNetDataGetterBase
     {     
-        public static bool hasnest(String type,int sec,String nests)
+        internal static bool hasnest(String type,int sec,String nests)
         {
             int c = GetRNHCount(type);
             if (c == 0) return false;
@@ -179,7 +179,7 @@ namespace rabnet
             return (nests[0]=='1');
         }
 
-        public static String GetRDescr(String type, bool shr,int sec,String delims)
+        internal static String GetRDescr(String type, bool shr,int sec,String delims)
         {
             String res = "";
             switch (type)
@@ -213,7 +213,7 @@ namespace rabnet
             }
             return res;
         }
-        public static String GetRSec(String type, int sec, String delims)
+        internal static String GetRSec(String type, int sec, String delims)
         {
             if (type == myBuildingType.Female)
                 return "";
@@ -230,7 +230,7 @@ namespace rabnet
                 res = "аб";
             return res;
         }
-        public static String GetRName(String type,bool shr)
+        internal static String GetRName(String type,bool shr)
         {
             String res="Нет";
             switch (type)
@@ -250,7 +250,7 @@ namespace rabnet
         /// <summary>
         /// Возвращает количество секций у данного типа МИНИфермы
         /// </summary>
-        public static int GetRSecCount(String type)
+        internal static int GetRSecCount(String type)
         {
             int res = 2;
             switch (type)
@@ -263,7 +263,7 @@ namespace rabnet
             return res;
         }
 
-        public static int GetRNHCount(String type)
+        internal static int GetRNHCount(String type)
         {
             int res = 1;
             switch (type)
@@ -276,7 +276,7 @@ namespace rabnet
             return res;
         }
 
-        public static String FullRName(int farm, int tierid, int sec, String type, String delims, bool shrt, bool showTier, bool ShowDescr)
+        internal static String FullRName(int farm, int tierid, int sec, String type, String delims, bool shrt, bool showTier, bool ShowDescr)
         {
             String res = Building.Format(farm);
             if (tierid == 1) res += "^";
@@ -289,7 +289,7 @@ namespace rabnet
             return res;
         }       
 
-        public static String FullPlaceName(String rabplace,bool shrt,bool showTier,bool showDescr)
+        internal static String FullPlaceName(String rabplace,bool shrt,bool showTier,bool showDescr)
         {
             if (rabplace == "")
                 return OneRabbit.NullAddress;
@@ -302,7 +302,7 @@ namespace rabnet
             return FullPlaceName(rabplace, false, false, false);
         }
 
-        public static bool HasNest(String rabplace)
+        internal static bool HasNest(String rabplace)
         {
             if (rabplace == "")
                 return false;
@@ -310,9 +310,9 @@ namespace rabnet
             return hasnest(dts[3], int.Parse(dts[2]), dts[5]);
         }
 
-        public Buildings(MySqlConnection sql, Filters filters):base(sql,filters){}
+        internal Buildings(MySqlConnection sql, Filters filters):base(sql,filters){}
 
-        public static Building GetBuilding(MySqlDataReader rd,bool shr,bool rabbits)
+        internal static Building GetBuilding(MySqlDataReader rd,bool shr,bool rabbits)
         {
             int id = rd.GetInt32(0);
             int farm = rd.GetInt32(3);
@@ -368,7 +368,7 @@ namespace rabnet
             }
         }
 
-        public String makeWhere()
+        internal String makeWhere()
         {
             
             String res = "";
@@ -441,7 +441,7 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) "+makeWhere()+"ORDER B
             return "SELECT COUNT(t_id) FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id)" + makeWhere() + ";";
         }
 
-        public static TreeData getTree(int parent,MySqlConnection con,TreeData par)
+        internal static TreeData getTree(int parent,MySqlConnection con,TreeData par)
         {
             MySqlCommand cmd = new MySqlCommand(@"SELECT b_id,b_name,b_farm FROM buildings WHERE b_parent="+parent.ToString()+" ORDER BY b_farm ASC;", con);
             MySqlDataReader rd = cmd.ExecuteReader();
@@ -474,7 +474,7 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) "+makeWhere()+"ORDER B
         }
 
 
-        public static Building getTier(int tier,MySqlConnection con)
+        internal static Building getTier(int tier,MySqlConnection con)
         {
             MySqlCommand cmd=new MySqlCommand(@"SELECT t_id,m_upper,m_lower,m_id,t_type,t_delims,t_nest,t_heater,
 t_repair,coalesce(t_notes,'') t_notes,t_busy1,t_busy2,t_busy3,t_busy4,
@@ -488,7 +488,7 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) and t_id=" + tier.ToSt
             return b;
         }
 
-        public static Building[] getFreeBuildings(MySqlConnection sql,Filters f)
+        internal static Building[] getFreeBuildings(MySqlConnection sql,Filters f)
         {
             List<Building> bld = new List<Building>();
             String type = "";
@@ -517,14 +517,14 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 AND "+busy+";", sql);
             return bld.ToArray();
         }
 
-        public static void updateBuilding(Building b,MySqlConnection sql)
+        internal static void updateBuilding(Building b,MySqlConnection sql)
         {
             MySqlCommand cmd=new MySqlCommand(String.Format(@"UPDATE tiers SET t_repair={1:d},t_delims='{2:s}',t_heater='{3:s}',t_nest='{4:s}' WHERE t_id={0:d};",
                 b.fid,b.frepair?1:0,b.fdelims,b.fheaters,b.fnests),sql);
             cmd.ExecuteNonQuery();
         }
 
-        public static void setBuildingName(MySqlConnection sql, int bid, String name)
+        internal static void setBuildingName(MySqlConnection sql, int bid, String name)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE buildings SET b_name='{0:s}' WHERE b_id={1:d};",
                 name,bid), sql);
@@ -536,7 +536,7 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 AND "+busy+";", sql);
         /// <param name="parent">Родитель</param>
         /// <param name="name">Имя ветки</param>
         /// <param name="farm">Номер фермы</param>
-        public static void addBuilding(MySqlConnection sql, int parent, String name,int farm)
+        internal static void addBuilding(MySqlConnection sql, int parent, String name,int farm)
         {
             
             int frm = farm;
@@ -546,7 +546,7 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 AND "+busy+";", sql);
             cmd.ExecuteNonQuery();
         }
 
-        public static void setLevel(MySqlConnection sql,int bid,int level)
+        internal static void setLevel(MySqlConnection sql,int bid,int level)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE buildings SET b_level={0:d} WHERE b_id={1:d};",level,bid), sql);
             cmd.ExecuteNonQuery();
@@ -560,7 +560,7 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 AND "+busy+";", sql);
                 setLevel(sql, b, level + 1);
         }
 
-        public static void replaceBuilding(MySqlConnection sql, int bid, int toBuilding)
+        internal static void replaceBuilding(MySqlConnection sql, int bid, int toBuilding)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT b_level FROM buildings WHERE b_id={0:d};",toBuilding), sql);
             MySqlDataReader rd;
@@ -578,7 +578,7 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 AND "+busy+";", sql);
             setLevel(sql, bid, level );
         }
 
-        public static void deleteBuilding(MySqlConnection sql, int bid)
+        internal static void deleteBuilding(MySqlConnection sql, int bid)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT COUNT(b_id) FROM buildings WHERE b_parent={0:d};",bid), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
@@ -598,7 +598,7 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 AND "+busy+";", sql);
         /// </summary>
         /// <param name="type">Тип юрты</param>
         /// <returns>ID нового яруса</returns>
-        public static int addNewTier(MySqlConnection sql, String type)
+        internal static int addNewTier(MySqlConnection sql, String type)
         {
             if (type == "none") return 0;
             string hn = "0";
@@ -641,7 +641,7 @@ VALUES('{0:s}','{1:s}','{2:s}','{2:s}',''{4:s});", type, delims, hn,bcols,bvals)
             return (int)cmd.LastInsertedId;
         }
 
-        public static void changeTierType(MySqlConnection sql, int tid, String type)
+        internal static void changeTierType(MySqlConnection sql, int tid, String type)
         {
             String hn = "00";
             String delims = "000";
@@ -680,7 +680,7 @@ t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}'{4:s} WHERE t_id={3:d};", type, 
             cmd.ExecuteNonQuery();
         }
 
-        public static string getBusyString(byte count)
+        internal static string getBusyString(byte count)
         {
             string result ="";
             for (int i = 1; i <= 4;i++ )
@@ -699,7 +699,7 @@ t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}'{4:s} WHERE t_id={3:d};", type, 
         /// <param name="name">Название (если блок)</param>
         /// <param name="id">Номер МИНИфермы</param>
         /// <returns>Номер новой клетки</returns>
-        public static int addFarm(MySqlConnection sql,int parent,String uppertype, String lowertype, String name,int id)
+        internal static int addFarm(MySqlConnection sql,int parent,String uppertype, String lowertype, String name,int id)
         {
             int frm = id;
             int t1 = addNewTier(sql,uppertype);
@@ -718,14 +718,14 @@ t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}'{4:s} WHERE t_id={3:d};", type, 
         /// Существует ли миниферма
         /// </summary>
         /// <param name="id">Номер минифермы</param>
-        public static bool farmExists(MySqlConnection sql, int id)
+        internal static bool farmExists(MySqlConnection sql, int id)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format("SELECT COUNT(*) FROM minifarms WHERE m_id={0:d};",id),sql);
             if (cmd.ExecuteScalar().ToString() == "0") return false;
             else return true;
         }
 
-        public static bool hasRabbits(MySqlConnection sql,int tid)
+        internal static bool hasRabbits(MySqlConnection sql,int tid)
         {
             if (tid == 0) return false;
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT t_busy1,t_busy2,t_busy3,t_busy4 
@@ -744,7 +744,7 @@ FROM tiers WHERE t_id={0:d};",tid), sql);
             return busy;
         }
 
-        public static int[] getTiersFromFarm(MySqlConnection sql, int fid)
+        internal static int[] getTiersFromFarm(MySqlConnection sql, int fid)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT m_upper,m_lower FROM minifarms 
 WHERE m_id={0:d};", fid), sql);
@@ -759,7 +759,7 @@ WHERE m_id={0:d};", fid), sql);
             return new int[] { t1, t2 };
         }
 
-        public static void changeFarm(MySqlConnection sql, int fid, String uppertype, String lowertype)
+        internal static void changeFarm(MySqlConnection sql, int fid, String uppertype, String lowertype)
         {
             int[] t = getTiersFromFarm(sql, fid);
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT t_type FROM tiers WHERE t_id={0:d};",t[0]),sql);
@@ -796,7 +796,7 @@ WHERE m_id={0:d};", fid), sql);
             }
         }
 
-        public static void deleteFarm(MySqlConnection sql,int fid)
+        internal static void deleteFarm(MySqlConnection sql,int fid)
         {
             int[] t = getTiersFromFarm(sql, fid);
             if (!hasRabbits(sql,t[0]) && !hasRabbits(sql,t[1]))
@@ -811,7 +811,7 @@ WHERE m_id={0:d};", fid), sql);
         }
 
 
-        public static int GetMFCount(MySqlConnection sql)
+        internal static int GetMFCount(MySqlConnection sql)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format("SELECT COUNT(*) FROM buildings WHERE b_farm<>0;"), sql);
             return int.Parse(cmd.ExecuteScalar().ToString());

@@ -96,7 +96,7 @@ namespace rabnet
         void replaceYounger(int yid, int farm, int tier_id, int sec);
         int newRabbit(OneRabbit r,int mom);
         LogList getLogs(Filters f);
-        ZooJobItem[] getOkrols(Filters f, int days);
+        ZooJobItem[] getOkrols(Filters f);
         void updateBuilding(Building b);
         ZooJobItem[] getVudvors(Filters f);
         void addName(OneRabbit.RabbitSex sex, string name, string surname);

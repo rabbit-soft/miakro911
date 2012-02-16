@@ -7,7 +7,7 @@ using log4net;
 
 namespace rabnet
 {
-    abstract class RabNetDataGetterBase : IDataGetter
+    public abstract class RabNetDataGetterBase : IDataGetter
     {
         protected static ILog log = log4net.LogManager.GetLogger(typeof(RabNetDataGetterBase));
         protected int count;
@@ -84,13 +84,13 @@ namespace rabnet
             }
             return nextItem();
         }
-        public static String addWhereAnd(String str, String adder)
+        internal static String addWhereAnd(String str, String adder)
         {
             if (str != "") str += " AND ";
             str += adder;
             return str;
         }
-        public static String addWhereOr(String str, String adder)
+        internal static String addWhereOr(String str, String adder)
         {
             if (str != "") str += " OR ";
             str += adder;

@@ -75,7 +75,7 @@ namespace rabnet
         public int status;
         public DateTime date;
         public string names;
-        public int[] i = new int[10];
+        public int[] info = new int[10];
         public string[] s = new string[10];
         public string breed;
         public ZooJobItem()
@@ -86,7 +86,7 @@ namespace rabnet
             type = 1; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age; this.status = status;
             this.id = id;
-            i[0] = srok;
+            info[0] = srok;
             breed = br;
             return this;
         }
@@ -95,11 +95,11 @@ namespace rabnet
             type = 2; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age; this.status = status;
             this.id = id; breed = br;
-            i[2] = suckers;
-            i[0] = srok;
-            i[1] = area;
-            if (i[1] == 1 && tt == myBuildingType.Jurta)
-                i[1] = 0;
+            info[2] = suckers;
+            info[0] = srok;
+            info[1] = area;
+            if (info[1] == 1 && tt == myBuildingType.Jurta)
+                info[1] = 0;
 
             return this;
         }
@@ -108,9 +108,9 @@ namespace rabnet
             type = 3; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age; this.status = 0;
             this.id = id; breed = br;
-            i[0] = count;
-            i[1] = srok;
-            i[2] = yid;
+            info[0] = count;
+            info[1] = srok;
+            info[2] = yid;
             return this;
         }
         public ZooJobItem Preokrol(int id, String nm, String place, int age, int srok,string br)
@@ -118,7 +118,7 @@ namespace rabnet
             type = 4; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age;
             this.id = id; breed = br;
-            i[0] = srok;
+            info[0] = srok;
             return this;
         }
         public ZooJobItem BoysGirlsOut(int id, String nm, String place, int age, int srok,String br)
@@ -126,7 +126,7 @@ namespace rabnet
             type = 5; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age;
             this.id = id; breed = br;
-            i[0] = srok;
+            info[0] = srok;
             return this;
         }
         public ZooJobItem Fuck(int id, String nm, String place, int age, int srok,int status,string boys,int group,string breed)
@@ -134,24 +134,24 @@ namespace rabnet
             type = 6; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age; this.status = status;this.id = id;
             names = boys; this.breed = breed;
-            i[0] = srok;
-            i[1] = group;
+            info[0] = srok;
+            info[1] = group;
             return this;
         }
         public ZooJobItem Vacc(int id, String nm, String place, int age, int srok,String br)
         {
             type = 7; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age; this.id = id; breed = br;
-            i[0] = srok;
+            info[0] = srok;
             return this;
         }
         public ZooJobItem SetNest(int id, String nm, String place, int age, int srok,int sukr,int children,String br)
         {
             type = 8; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age; this.id = id; breed = br;
-            i[0] = srok;
-            i[1] = sukr;
-            i[2] = children;
+            info[0] = srok;
+            info[1] = sukr;
+            info[2] = children;
             return this;
         }
     }
@@ -194,7 +194,8 @@ namespace rabnet
         public ZooJobItem[] getOkrols(int days)
         {
             MySqlDataReader rd=reader(String.Format(@"SELECT r_id,rabname(r_id,"+getnm()+@") name,rabplace(r_id) place,
-(TO_DAYS(NOW())-TO_DAYS(r_event_date)) srok,r_status,(TO_DAYS(NOW())-TO_DAYS(r_born)) age,"+brd()+@" 
+(TO_DAYS(NOW())-TO_DAYS(r_event_date)) srok,
+r_status,(TO_DAYS(NOW())-TO_DAYS(r_born)) age,"+brd()+@" 
 FROM rabbits WHERE r_sex='female' AND (TO_DAYS(NOW())-TO_DAYS(r_event_date))>={0:d} ORDER BY srok DESC,
 0+LEFT(place,LOCATE(',',place)) ASC;", days));
             List<ZooJobItem> res=new List<ZooJobItem>();
