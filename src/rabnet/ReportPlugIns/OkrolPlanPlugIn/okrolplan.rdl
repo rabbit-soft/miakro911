@@ -70,27 +70,10 @@
           <BorderStyle>
             <Default>Solid</Default>
           </BorderStyle>
+          <BorderColor  />
+          <BorderWidth  />
         </Style>
         <Corner>
-          <ReportItems>
-            <Textbox Name="Textbox1">
-              <Value>
-              </Value>
-              <Style>
-                <BorderStyle>
-                  <Default>Solid</Default>
-                </BorderStyle>
-                <BorderWidth>
-                  <Left>1pt</Left>
-                  <Right>1pt</Right>
-                  <Top>1pt</Top>
-                  <Bottom>1pt</Bottom>
-                </BorderWidth>
-                <FontWeight>bold</FontWeight>
-                <BorderColor  />
-              </Style>
-            </Textbox>
-          </ReportItems>
         </Corner>
         <ColumnGroupings>
           <ColumnGrouping>
@@ -108,6 +91,7 @@
                     <BorderStyle>
                       <Default>Solid</Default>
                     </BorderStyle>
+                    <FontSize >8pt</FontSize>
                   </Style>
                 </Textbox>
               </ReportItems>
@@ -116,7 +100,7 @@
         </ColumnGroupings>
         <RowGroupings>
           <RowGrouping>
-            <Width>115.4pt</Width>
+            <Width>89.8pt</Width>
             <DynamicRows>
               <Grouping Name="DynamicRowsGroup1">
                 <GroupExpressions>
@@ -178,7 +162,7 @@
         </RowGroupings>
         <MatrixColumns>
           <MatrixColumn>
-            <Width>28.1pt</Width>
+            <Width>24.9pt</Width>
           </MatrixColumn>
         </MatrixColumns>
         <MatrixRows>
@@ -193,9 +177,9 @@
                       <BorderStyle>
                         <Default>Solid</Default>
                       </BorderStyle>
-                      <BorderColor  />
-                      <BorderWidth  />
-                      <TextAlign >Center</TextAlign>
+                      <BorderColor />
+                      <BorderWidth />
+                      <TextAlign>Center</TextAlign>
                     </Style>
                   </Textbox>
                 </ReportItems>
@@ -206,6 +190,30 @@
         <Left>0.7pt</Left>
         <Top>25.0pt</Top>
       </Matrix>
+      <Textbox Name="Textbox1" >
+        <Height>12.00pt</Height>
+        <Width>89.53pt</Width>
+        <Value>Имя</Value>
+        <ZIndex>1</ZIndex>
+        <Left>1.10pt</Left>
+        <Top>25.20pt</Top>
+      </Textbox>
+      <Textbox Name="Textbox8" >
+        <Height>11.25pt</Height>
+        <Width>31.63pt</Width>
+        <Value>Прд.</Value>
+        <ZIndex>1</ZIndex>
+        <Left>90.50pt</Left>
+        <Top>25.70pt</Top>
+      </Textbox>
+      <Textbox Name="Textbox10" >
+        <Height>12.00pt</Height>
+        <Width>45.24pt</Width>
+        <Value>Адр</Value>
+        <ZIndex>1</ZIndex>
+        <Left>121.00pt</Left>
+        <Top>24.90pt</Top>
+      </Textbox>
     </ReportItems>
     <Columns>1</Columns>
   </Body>
