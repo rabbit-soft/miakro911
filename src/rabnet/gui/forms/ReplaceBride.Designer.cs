@@ -91,6 +91,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Отсадить невесту";
+            this.Load += new System.EventHandler(this.ReplaceBride_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

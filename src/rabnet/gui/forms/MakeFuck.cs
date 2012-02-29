@@ -19,6 +19,7 @@ namespace rabnet
         Catalog names = null;
         int selected = 0;
         int action = 0;
+
         public MakeFuck()
         {
             InitializeComponent();
@@ -137,6 +138,8 @@ namespace rabnet
         {
             try
             {
+                if (listView1.SelectedItems.Count != 1)
+                    throw new ApplicationException("Выберите самца");
                 if (rab1.Name == 0 && comboBox1.SelectedIndex != 0)
                 {
                     foreach (int k in names.Keys)
@@ -144,8 +147,7 @@ namespace rabnet
                             rab1.Name = k;
                     rab1.Commit();
                 }
-                if (listView1.SelectedItems.Count!=1)
-                    throw new ApplicationException("Выберите самца");
+                
                 int r2 = (listView1.SelectedItems[0].Tag as Fucks.Fuck).partnerid;
                 selected = r2;
                 if (action==0)

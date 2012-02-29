@@ -7,6 +7,9 @@ using System.IO;
 
 namespace mia_conv
 {
+    /// <summary>
+    /// После конвертации из старой базы. Устраняет неточности в конвертации
+    /// </summary>
     class miaRepair
     {
         private const string LOGFILE = "miaRepair.log";
@@ -412,7 +415,6 @@ namespace mia_conv
         }
         #endregion     
     }
-
 
     enum Sex { Male, Female, Void }
 

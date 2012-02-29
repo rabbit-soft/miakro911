@@ -10,7 +10,7 @@ namespace rabnet
 {
     public partial class RabStatusBar : StatusStrip
     {
-
+        delegate void progressCallBack2(int min,int max);
         private ToolStripProgressBar pb = new ToolStripProgressBar();
         private ToolStripButton btn = new ToolStripButton();
         private ToolStripButton filt = new ToolStripButton();
@@ -133,11 +133,21 @@ namespace rabnet
         }
         public void initProgress(int min,int max)
         {
-            pb.Minimum=min;
-            pb.Maximum=max;
-            pb.Value=min;
-            btn.Image=imageList1.Images[0];
-            btnStatus=1;
+            if (this.InvokeRequired)
+            {
+                progressCallBack2 d = new progressCallBack2(initProgress);
+                this.Invoke(d, new object[] { min, max });
+            }
+            else
+            {
+                pb.Minimum = min;
+                pb.Maximum = max;
+                pb.Value = min;
+
+                btn.Image = imageList1.Images[0];
+                btnStatus = 1;
+            }
+
         }
         public void initProgress(int max)
         {

@@ -68,7 +68,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Protected|AnyCPU' ">
     <OutputPath>..\..\bin\Protected\rabnet\</OutputPath>
     <DefineConstants>PROTECTED</DefineConstants>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>

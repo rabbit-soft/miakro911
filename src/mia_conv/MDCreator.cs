@@ -302,6 +302,7 @@ namespace mia_conv
             Mia.SetLabelName("Наладка связей");
             miaRepair.Go(C);
             Mia.Setpbpart(9, of);
+            Mia.SetLabelName("");
         }
 
         public void FillNames()

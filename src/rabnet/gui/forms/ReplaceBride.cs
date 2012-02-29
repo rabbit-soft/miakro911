@@ -16,14 +16,21 @@ namespace rabnet
 
         public ReplaceBride(int rid):this()
         {
-            r = Engine.get().getRabbit(rid);
-            FillAddresses();
+            r = Engine.get().getRabbit(rid);          
         }
 
         public void FillAddresses()
         {
             comboBox1.Items.Clear();
             bs=Engine.db().getFreeBuilding(new Filters());
+            if (bs.Length == 0)
+            {
+                MessageBox.Show(@"Не возможно пересадить, т.к. все клетки заняты.
+Освободите одну или несколько клеток и попробуйте снова.","Нет свободных клеток",MessageBoxButtons.OK,MessageBoxIcon.Asterisk);
+                this.DialogResult = DialogResult.Cancel;
+                this.Close();
+                return;
+            }
             foreach(Building b in bs)
             {
                 for (int i = 0; i < b.secs();i++ )
@@ -68,6 +75,11 @@ namespace rabnet
                 return;
             }
             girlOut = r.Clone(1, adr[0], adr[1], adr[2]);
+        }
+
+        private void ReplaceBride_Load(object sender, EventArgs e)
+        {
+            FillAddresses();
         }
     }
 }
