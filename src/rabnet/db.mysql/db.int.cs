@@ -97,6 +97,7 @@ namespace rabnet
         int newRabbit(OneRabbit r,int mom);
         LogList getLogs(Filters f);
         ZooJobItem[] getOkrols(Filters f);
+        ZooJobItem[] getBoysByOne(Filters f);
         void updateBuilding(Building b);
         ZooJobItem[] getVudvors(Filters f);
         void addName(OneRabbit.RabbitSex sex, string name, string surname);

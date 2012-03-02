@@ -100,7 +100,8 @@
             "Случки",
             "Вязки",
             "Прививка",
-            "Установка гнездовья"});
+            "Установка гнездовья",
+            "Рассадка мальчиков по одному"});
             this.lbZoo.Location = new System.Drawing.Point(12, 26);
             this.lbZoo.Name = "lbZoo";
             this.lbZoo.Size = new System.Drawing.Size(191, 214);

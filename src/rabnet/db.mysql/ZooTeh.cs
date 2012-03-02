@@ -23,7 +23,7 @@ namespace rabnet
         /// <summary>
         /// Количество зоотех работ.
         /// </summary>
-        const int ZOOTEHITEMS = 9;
+        const int ZOOTEHITEMS = 10;
 
         public int getCount()
         {
@@ -121,6 +121,7 @@ namespace rabnet
             info[0] = srok;
             return this;
         }
+
         public ZooJobItem BoysGirlsOut(int id, String nm, String place, int age, int srok,String br)
         {
             type = 5; name = nm; this.place = Buildings.FullPlaceName(place);
@@ -129,6 +130,7 @@ namespace rabnet
             info[0] = srok;
             return this;
         }
+
         public ZooJobItem Fuck(int id, String nm, String place, int age, int srok,int status,string boys,int group,string breed)
         {
             type = 6; name = nm; this.place = Buildings.FullPlaceName(place);
@@ -152,6 +154,17 @@ namespace rabnet
             info[0] = srok;
             info[1] = sukr;
             info[2] = children;
+            return this;
+        }
+
+        public ZooJobItem BoysByOne(int id, String nm, String place, int age, int srok, int group)
+        {
+            type = 10; 
+            name = nm; this.place = Buildings.FullPlaceName(place);
+            this.age = age;
+            this.id = id;
+            info[0] = srok;
+            info[1] = group;
             return this;
         }
     }
@@ -270,12 +283,28 @@ DATE(l_date)>=DATE(NOW()- INTERVAL (TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d}) DAY)))
             return res.ToArray();
         }
 
+        public ZooJobItem[] getBoysByOne(int days)
+        {
+            MySqlDataReader rd = reader(String.Format(@"SELECT 
+r_id, rabname(r_id,{0:s}) name, rabplace(r_id) place, r_group,
+(TO_DAYS(NOW())-TO_DAYS(r_born)-{1:d}) srok,
+(TO_DAYS(NOW())-TO_DAYS(r_born)) age
+FROM rabbits WHERE (TO_DAYS(NOW())-TO_DAYS(r_born))>={1:d} and r_group>1 and r_sex='male' ;", getnm(), days));
+            List<ZooJobItem> res = new List<ZooJobItem>();
+            while (rd.Read())
+                res.Add(new ZooJobItem().BoysByOne(rd.GetInt32("r_id"), rd.GetString("name"),
+                    rd.GetString("place"), rd.GetInt32("age"), rd.GetInt32("srok"), rd.GetInt32("r_group")));
+            rd.Close();
+            return res.ToArray();
+        }
+
         public ZooJobItem[] getPreokrols(int days,int okroldays)
         {
             MySqlDataReader rd = reader(String.Format(@"SELECT r_id,rabname(r_id," + getnm() + @") name,rabplace(r_id) place,
 (TO_DAYS(NOW())-TO_DAYS(r_event_date)) srok,r_status,(TO_DAYS(NOW())-TO_DAYS(r_born)) age," + brd() + @" 
 FROM rabbits WHERE r_sex='female' AND (TO_DAYS(NOW())-TO_DAYS(r_event_date))>={0:d} AND (TO_DAYS(NOW())-TO_DAYS(r_event_date))<{1:d} AND
-r_id NOT IN (SELECT l_rabbit FROM logs WHERE l_type=21 AND DATE(l_date)>=DATE(rabbits.r_event_date)) ORDER BY srok DESC
+r_id NOT IN (SELECT l_rabbit FROM logs 
+WHERE l_type=21 AND DATE(l_date)>=DATE(rabbits.r_event_date)) ORDER BY srok DESC
 ,0+LEFT(place,LOCATE(',',place)) ASC;", days, okroldays));
             List<ZooJobItem> res = new List<ZooJobItem>();
             while (rd.Read())

@@ -52,6 +52,7 @@ namespace rabnet
                 f["inbr"] = Engine.opt().getOption(Options.OPT_ID.INBREEDING);
                 f["mwait"] = Engine.opt().getOption(Options.OPT_ID.MALE_WAIT);
                 f["vactime"] = Engine.opt().getOption(Options.OPT_ID.VACCINE_TIME);
+                f["bbone"] = Engine.opt().getOption(Options.OPT_ID.BOYS_BY_ONE);
                 itm = -1;
                 if (lvZooTech.SelectedItems.Count == 1)
                     itm = lvZooTech.SelectedItems[0].Index;
@@ -136,11 +137,11 @@ namespace rabnet
         /// <param name="job"></param>
         public void setMenu(JobType type,ZootehJob job)
         {
-            okrolMenuItem.Visible = vudvorMenuItem.Visible = false;
-            countsMenuItem.Visible = preokrolMenuItem.Visible= false;
-            boysOutMenuItem.Visible = girlsOutMenuItem.Visible = false;
-            vaccMenuItem.Visible = fuckMenuItem.Visible = false;
-            setNestMenuItem.Visible = countChangedMenuItem.Visible=false;
+            okrolMenuItem.Visible = vudvorMenuItem.Visible= miBoysByOne.Visible=
+                countsMenuItem.Visible = preokrolMenuItem.Visible=
+                boysOutMenuItem.Visible = girlsOutMenuItem.Visible=
+                vaccMenuItem.Visible = fuckMenuItem.Visible =
+                setNestMenuItem.Visible = countChangedMenuItem.Visible=false;
             switch (type)
             {
                 case JobType.OKROL: okrolMenuItem.Visible = true; break;
@@ -157,6 +158,7 @@ namespace rabnet
                     break;
                 case JobType.VACC: vaccMenuItem.Visible = true; break;
                 case JobType.SET_NEST: vaccMenuItem.Visible = true; break;
+                case JobType.BOYS_BY_ONE: miBoysByOne.Visible = true; break;
             }
         }
 
@@ -278,6 +280,11 @@ namespace rabnet
                             res = DialogResult.OK;
                         }
                     }*/
+                    break;
+                case JobType.BOYS_BY_ONE:
+                    f = new ReplaceForm();
+                    f.addRabbit(job.id);
+                    res = f.ShowDialog();
                     break;
             }
             if (res != DialogResult.Cancel)

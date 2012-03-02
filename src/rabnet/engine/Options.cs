@@ -16,7 +16,12 @@ namespace rabnet
             /// <summary>
             /// День принятия Окрола
             /// </summary>
-            OKROL, VUDVOR,VUDVOR_IF_SUKROL, COUNT1, COUNT2, COUNT3, MAKE_BRIDE, DEAD_FILTER, PRE_OKROL, 
+            OKROL, 
+            /// <summary>
+            /// Рассадка группы мальчиков по одному
+            /// </summary>
+            BOYS_BY_ONE,
+            VUDVOR,VUDVOR_IF_SUKROL, COUNT1, COUNT2, COUNT3, MAKE_BRIDE, DEAD_FILTER, PRE_OKROL, 
             ZOO_FILTER, COMBINE_AGE, BOYS_OUT, GIRLS_OUT, STATE_FUCK, FIRST_FUCK, MALE_WAIT, GEN_TREE, CONFIRM_EXIT, 
             VACC, CONFIRM_KILL,CONFIRM_REPLACE, SUCKERS,NEST,CHILD_NEST,RAB_LIST,BUILD_LIST,YOUNG_LIST,DEAD_LIST,REPL_YOUNG_LIST,
             MAKE_FUCK_LIST,NAMES_LIST,UPDATE_ZOO,ZOO_LIST,FIND_PARTNERS,NEXT_SVID,SVID_HEAD,SVID_GEN_DIR,
@@ -41,7 +46,8 @@ namespace rabnet
         };
         private static String defNameSpace="opt";
         private RabNetEngine eng;
-        private Option[] optlist = {new Option(OPT_ID.GETEROSIS,OPT_LEVEL.FARM,"heterosis"), 
+        private Option[] optlist = {new Option(OPT_ID.GETEROSIS,OPT_LEVEL.FARM,"heterosis"),
+                                   new Option(OPT_ID.BOYS_BY_ONE,OPT_LEVEL.FARM,"bbone"),
                                    new Option(OPT_ID.INBREEDING,OPT_LEVEL.FARM,"inbreeding"), 
                                    new Option(OPT_ID.SHORT_NAMES,OPT_LEVEL.USER,"short_names"), 
                                    new Option(OPT_ID.DBL_SURNAME,OPT_LEVEL.USER,"dbl_surname"), 

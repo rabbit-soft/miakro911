@@ -16,7 +16,7 @@ namespace rabnet
         class OptionsHolder
         {
             [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
-            private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su,n,cn,tt,vactime,cand;
+            private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su,n,cn,tt,vactime,cand,bbone;
             private string gd, sh,xf;
             private RUBOOL ce, ck,crp, uz,sp,ask, fbz,vIs;
             private BuchTp bt;
@@ -82,6 +82,9 @@ namespace rabnet
             [Category("Зоотехнические сроки"), DisplayName("Действие Прививки"),
             Description("Количество дней, сколько действует прививка")]
             public int vaccine_time { get { return vactime; } set { vactime = value; } }
+            [Category("Зоотехнические сроки"), DisplayName("Рассадка мальчиков по одному"),
+            Description("Назначать всем группам мальчиков,достигших указанного возраста, рассадку по одному")]
+            public int BoysByOne { get { return bbone; } set { bbone = value; } }
             #endregion zooTime
             #region view
             [Category("Вид"),
@@ -209,6 +212,7 @@ namespace rabnet
                 childnest = o.getIntOption(Options.OPT_ID.CHILD_NEST);
                 vaccine_time = o.getIntOption(Options.OPT_ID.VACCINE_TIME);
                 candidate = o.getIntOption(Options.OPT_ID.MAKE_CANDIDATE);
+                bbone = o.getIntOption(Options.OPT_ID.BOYS_BY_ONE);
                 //view
                 genTree = o.getIntOption(Options.OPT_ID.GEN_TREE);
                 confirmExit = toR(o.getIntOption(Options.OPT_ID.CONFIRM_EXIT));
@@ -256,6 +260,7 @@ namespace rabnet
                 o.setOption(Options.OPT_ID.CHILD_NEST, childnest);
                 o.setOption(Options.OPT_ID.VACCINE_TIME, vaccine_time);
                 o.setOption(Options.OPT_ID.MAKE_CANDIDATE, candidate);
+                o.setOption(Options.OPT_ID.BOYS_BY_ONE, bbone);
                 //view
                 o.setOption(Options.OPT_ID.GEN_TREE, genTree);
                 o.setOption(Options.OPT_ID.CONFIRM_EXIT, fromR(confirmExit));

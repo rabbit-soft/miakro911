@@ -51,13 +51,14 @@
             this.setNestMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.printMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.label1 = new System.Windows.Forms.Label();
             this.lvLogs = new System.Windows.Forms.ListView();
             this.columnHeader11 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader12 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader13 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader15 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader14 = new System.Windows.Forms.ColumnHeader();
-            this.label1 = new System.Windows.Forms.Label();
+            this.miBoysByOne = new System.Windows.Forms.ToolStripMenuItem();
             this.actMenu.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -138,83 +139,85 @@
             this.fuckMenuItem,
             this.vaccMenuItem,
             this.setNestMenuItem,
+            this.miBoysByOne,
             this.printMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(258, 246);
+            this.actMenu.Size = new System.Drawing.Size(265, 290);
             // 
             // okrolMenuItem
             // 
             this.okrolMenuItem.Name = "okrolMenuItem";
-            this.okrolMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.okrolMenuItem.Size = new System.Drawing.Size(264, 22);
             this.okrolMenuItem.Text = "Принять окрол";
             this.okrolMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // vudvorMenuItem
             // 
             this.vudvorMenuItem.Name = "vudvorMenuItem";
-            this.vudvorMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.vudvorMenuItem.Size = new System.Drawing.Size(264, 22);
             this.vudvorMenuItem.Text = "Выдворение";
             this.vudvorMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // countsMenuItem
             // 
             this.countsMenuItem.Name = "countsMenuItem";
-            this.countsMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.countsMenuItem.Size = new System.Drawing.Size(264, 22);
             this.countsMenuItem.Text = "Подсчет гнездовых/подсосных";
             this.countsMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // countChangedMenuItem
             // 
             this.countChangedMenuItem.Name = "countChangedMenuItem";
-            this.countChangedMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.countChangedMenuItem.Size = new System.Drawing.Size(264, 22);
             this.countChangedMenuItem.Text = "Изменилось количество крольчат";
             this.countChangedMenuItem.Click += new System.EventHandler(this.countChangedMenuItem_Click);
             // 
             // preokrolMenuItem
             // 
             this.preokrolMenuItem.Name = "preokrolMenuItem";
-            this.preokrolMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.preokrolMenuItem.Size = new System.Drawing.Size(264, 22);
             this.preokrolMenuItem.Text = "Предокрольный осмотр";
             this.preokrolMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // boysOutMenuItem
             // 
             this.boysOutMenuItem.Name = "boysOutMenuItem";
-            this.boysOutMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.boysOutMenuItem.Size = new System.Drawing.Size(264, 22);
             this.boysOutMenuItem.Text = "Отсадить мальчиков";
             this.boysOutMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // girlsOutMenuItem
             // 
             this.girlsOutMenuItem.Name = "girlsOutMenuItem";
-            this.girlsOutMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.girlsOutMenuItem.Size = new System.Drawing.Size(264, 22);
             this.girlsOutMenuItem.Text = "Отсадить девочек";
             this.girlsOutMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // fuckMenuItem
             // 
             this.fuckMenuItem.Name = "fuckMenuItem";
-            this.fuckMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.fuckMenuItem.Size = new System.Drawing.Size(264, 22);
             this.fuckMenuItem.Text = "Случить";
             this.fuckMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // vaccMenuItem
             // 
             this.vaccMenuItem.Name = "vaccMenuItem";
-            this.vaccMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.vaccMenuItem.Size = new System.Drawing.Size(264, 22);
             this.vaccMenuItem.Text = "Привить";
+            this.vaccMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // setNestMenuItem
             // 
             this.setNestMenuItem.Name = "setNestMenuItem";
-            this.setNestMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.setNestMenuItem.Size = new System.Drawing.Size(264, 22);
             this.setNestMenuItem.Text = "Установить гнездовье";
             this.setNestMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // printMenuItem
             // 
             this.printMenuItem.Name = "printMenuItem";
-            this.printMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.printMenuItem.Size = new System.Drawing.Size(264, 22);
             this.printMenuItem.Text = "Печать";
             this.printMenuItem.Click += new System.EventHandler(this.printMenuItem_Click);
             // 
@@ -238,6 +241,17 @@
             this.splitContainer1.Size = new System.Drawing.Size(683, 459);
             this.splitContainer1.SplitterDistance = 272;
             this.splitContainer1.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(683, 19);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "События (Логи)";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // lvLogs
             // 
@@ -285,16 +299,12 @@
             // 
             this.columnHeader14.Text = "Пользователь";
             // 
-            // label1
+            // miBoysByOne
             // 
-            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(683, 19);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "События (Логи)";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.miBoysByOne.Name = "miBoysByOne";
+            this.miBoysByOne.Size = new System.Drawing.Size(264, 22);
+            this.miBoysByOne.Text = "Рассадка по одному";
+            this.miBoysByOne.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
             // WorksPanel
             // 
@@ -343,6 +353,7 @@
         private System.Windows.Forms.ToolStripMenuItem countChangedMenuItem;
         private System.Windows.Forms.ColumnHeader columnHeader7;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolStripMenuItem miBoysByOne;
 
     }
 }

@@ -406,10 +406,10 @@ namespace rabnet
 
         public void updateMenu()
         {
-            killMenuItem.Visible = replaceMenuItem.Visible = false;
-            addBuildingMenuItem.Visible = addFarmMenuItem.Visible = false;
-            changeFarmMenuItem.Visible = deleteBuildingMenuItem.Visible = false;
-            shedReportMenuItem.Visible = false;
+            killMenuItem.Visible = replaceMenuItem.Visible =  tsSplitter.Visible =
+                addBuildingMenuItem.Visible = addFarmMenuItem.Visible=
+                changeFarmMenuItem.Visible = deleteBuildingMenuItem.Visible =
+                shedReportMenuItem.Visible = emptyRevMenuItem.Visible = false;
             if (listView1.Focused)
             {
                 killMenuItem.Visible = replaceMenuItem.Visible = (listView1.SelectedItems.Count > 0);
@@ -419,8 +419,10 @@ namespace rabnet
                 addBuildingMenuItem.Visible = addFarmMenuItem.Visible = !isFarm();
                 changeFarmMenuItem.Visible = isFarm();
                 deleteBuildingMenuItem.Visible = true;
-                shedReportMenuItem.Visible = emptyRevMenuItem.Visible=!isFarm();
+                tsSplitter.Visible = shedReportMenuItem.Visible = emptyRevMenuItem.Visible = !isFarm();
+                
             }
+            
         }
 
         private void killMenuItem_Click(object sender, EventArgs e)

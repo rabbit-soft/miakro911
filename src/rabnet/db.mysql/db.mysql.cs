@@ -489,6 +489,11 @@ namespace rabnet
             return new ZooTehGetter(sql,f).getBoysGirlsOut(days, sex);
         }
 
+        public ZooJobItem[] getBoysByOne(Filters f)
+        {
+            return new ZooTehGetter(sql, f).getBoysByOne(f.safeInt("bbone"));
+        }
+
         public string[] logNames()
         {
             return new Logs(sql).logNames();

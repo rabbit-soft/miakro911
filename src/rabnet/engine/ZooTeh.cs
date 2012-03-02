@@ -4,7 +4,7 @@ using System.Text;
 
 namespace rabnet
 {
-    public enum JobType {NONE, OKROL, VUDVOR, COUNT_KIDS, PRE_OKROL ,BOYS_OUT,GIRLS_OUT,FUCK,VACC,SET_NEST};
+    public enum JobType {NONE, OKROL, VUDVOR, COUNT_KIDS, PRE_OKROL ,BOYS_OUT,GIRLS_OUT,FUCK,VACC,SET_NEST,BOYS_BY_ONE};
 
     public class ZootehJob:IData
     {
@@ -106,11 +106,22 @@ namespace rabnet
         }
         public ZootehJob SetNest(int id, String nm, String ad, int age, int srok,int sukr,int children,String br)
         {
-            type = JobType.SET_NEST; job = f.safeInt("shr")==0?"Установка гнездовья":"Устан. Гнезда";
+            type = JobType.SET_NEST;
+            job = f.safeInt("shr") == 0 ? "Установка гнездовья" : "Устан. Гнезда";
             days = srok; name = nm; address = ad;
             this.age = age; this.id = id; breed = br;
             comment = "C-" + sukr.ToString();
             if (children>0) comment+=" " +(f.safeInt("shr")==0?" подсосных":"+")+ children.ToString();
+            return this;
+        }
+
+        public ZootehJob BoysByOne(int id, String nm, String ad, int age,int srok, int group)
+        {
+            type = JobType.BOYS_BY_ONE;
+            job = f.safeInt("shr") == 0 ? "Рассадка мальчиков по одному" : "Рсд М. по1";
+            days = srok; name = nm; address = ad;
+            this.age = age; this.id = id; 
+            comment = "количество:" + group.ToString();
             return this;
         }
     }
@@ -150,7 +161,16 @@ namespace rabnet
                 getVacc(zjobs);
             if (f.safeValue("act", "N").Contains("N") && type == 8)
                 getSetNest(zjobs);
+            if (f.safeValue("act", "B").Contains("B") && type == 9)
+                getBBOne(zjobs);
             return zjobs.ToArray();
+        }
+
+        private void getBBOne(JobHolder zjobs)
+        {
+            ZooJobItem[] jobs = eng.db2().getBoysByOne(f);
+            foreach (ZooJobItem z in jobs)
+                zjobs.Add(new ZootehJob(f).BoysByOne(z.id, z.name, z.place, z.age, z.info[0], z.info[1]));
         }
 
         public void getOkrols(JobHolder jh)

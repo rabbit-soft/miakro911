@@ -47,7 +47,7 @@
             this.addBuildingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeFarmMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteBuildingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsSplitter = new System.Windows.Forms.ToolStripSeparator();
             this.shedReportMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.emptyRevMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.treeView1 = new System.Windows.Forms.TreeView();
@@ -157,70 +157,70 @@
             this.addBuildingMenuItem,
             this.changeFarmMenuItem,
             this.deleteBuildingMenuItem,
-            this.toolStripMenuItem1,
+            this.tsSplitter,
             this.shedReportMenuItem,
             this.emptyRevMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(225, 208);
+            this.actMenu.Size = new System.Drawing.Size(222, 208);
             // 
             // replaceMenuItem
             // 
             this.replaceMenuItem.Name = "replaceMenuItem";
-            this.replaceMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.replaceMenuItem.Size = new System.Drawing.Size(221, 22);
             this.replaceMenuItem.Text = "Расселить";
             this.replaceMenuItem.Click += new System.EventHandler(this.replaceMenuItem_Click);
             // 
             // killMenuItem
             // 
             this.killMenuItem.Name = "killMenuItem";
-            this.killMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.killMenuItem.Size = new System.Drawing.Size(221, 22);
             this.killMenuItem.Text = "Списать";
             this.killMenuItem.Click += new System.EventHandler(this.killMenuItem_Click);
             // 
             // addFarmMenuItem
             // 
             this.addFarmMenuItem.Name = "addFarmMenuItem";
-            this.addFarmMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.addFarmMenuItem.Size = new System.Drawing.Size(221, 22);
             this.addFarmMenuItem.Text = "Добавить миниферму";
             this.addFarmMenuItem.Click += new System.EventHandler(this.addFarmMenuItem_Click);
             // 
             // addBuildingMenuItem
             // 
             this.addBuildingMenuItem.Name = "addBuildingMenuItem";
-            this.addBuildingMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.addBuildingMenuItem.Size = new System.Drawing.Size(221, 22);
             this.addBuildingMenuItem.Text = "Добавить блок(шед)";
             this.addBuildingMenuItem.Click += new System.EventHandler(this.addBuildingMenuItem_Click);
             // 
             // changeFarmMenuItem
             // 
             this.changeFarmMenuItem.Name = "changeFarmMenuItem";
-            this.changeFarmMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.changeFarmMenuItem.Size = new System.Drawing.Size(221, 22);
             this.changeFarmMenuItem.Text = "Изменить миниферму";
             this.changeFarmMenuItem.Click += new System.EventHandler(this.changeFarmMenuItem_Click);
             // 
             // deleteBuildingMenuItem
             // 
             this.deleteBuildingMenuItem.Name = "deleteBuildingMenuItem";
-            this.deleteBuildingMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.deleteBuildingMenuItem.Size = new System.Drawing.Size(221, 22);
             this.deleteBuildingMenuItem.Text = "Удалить строение";
             this.deleteBuildingMenuItem.Click += new System.EventHandler(this.deleteBuildingMenuItem_Click);
             // 
-            // toolStripMenuItem1
+            // tsSplitter
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(221, 6);
+            this.tsSplitter.Name = "tsSplitter";
+            this.tsSplitter.Size = new System.Drawing.Size(218, 6);
             // 
             // shedReportMenuItem
             // 
             this.shedReportMenuItem.Name = "shedReportMenuItem";
-            this.shedReportMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.shedReportMenuItem.Size = new System.Drawing.Size(221, 22);
             this.shedReportMenuItem.Text = "Шедовый отчет";
             this.shedReportMenuItem.Click += new System.EventHandler(this.shedReportMenuItem_Click);
             // 
             // emptyRevMenuItem
             // 
             this.emptyRevMenuItem.Name = "emptyRevMenuItem";
-            this.emptyRevMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.emptyRevMenuItem.Size = new System.Drawing.Size(221, 22);
             this.emptyRevMenuItem.Text = "Ревизия свободных клеток";
             this.emptyRevMenuItem.Click += new System.EventHandler(this.emptyRevMenuItem_Click);
             // 
@@ -287,7 +287,7 @@
         private System.Windows.Forms.ToolStripMenuItem changeFarmMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteBuildingMenuItem;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator tsSplitter;
         private System.Windows.Forms.ToolStripMenuItem shedReportMenuItem;
         private System.Windows.Forms.ToolStripMenuItem emptyRevMenuItem;
 
