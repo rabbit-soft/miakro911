@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 using log4net;
 using MySql.Data.MySqlClient;
@@ -12,10 +13,12 @@ namespace mia_conv
     /// </summary>
     class miaRepair
     {
-        private const string LOGFILE = "miaRepair.log";
+        /*[DllImport("kernel32.dll")]
+        private static extern Boolean AllocConsole();
+        [DllImport("kernel32.dll")]
+        public static extern Boolean FreeConsole();*/
 
         private static ILog _logger = LogManager.GetLogger("miaRepair");
-
         //private static MySqlConnection _sql;
         //private static MySqlCommand _cmd;
         private static RabbitList _rabbits = new RabbitList();
@@ -26,12 +29,8 @@ namespace mia_conv
 
         public static void Go(MySqlCommand cmd)
         {
-            
-            if (File.Exists(LOGFILE))
-                File.Delete(LOGFILE);
-            //string conString = "host=localhost;database=kroliki;uid=kroliki;pwd=krol;charset=utf8";
+            //AllocConsole();
 
-            //_sql = new MySqlConnection(conString);
 #if !NOCATCH
             try
             {
@@ -63,6 +62,7 @@ namespace mia_conv
                 log("Нажмите любую клавишу чтобы продолжить");
             }
 #endif
+            //FreeConsole();
         }
 
         /// <summary>

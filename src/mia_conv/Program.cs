@@ -6,7 +6,6 @@ namespace mia_conv
     
     static class Program
     {
-
         static String usage()
         {
             return @"usage: mia_conv file.mia dbparams users [script_file]
@@ -21,6 +20,8 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
         [STAThread]
         static void Main(string[] args)
         {
+            log4net.Config.XmlConfigurator.Configure();
+
             String file ="";
             String host = "";
             String user = "";
@@ -126,7 +127,7 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
             if (MDCreator.HasDB(root, rpswd, db, host))           
                 return miaExitCode.DB_ALREADY_EXISTS;            
 
-            MDCreator cr = new MDCreator(null);
+            MDCreator cr = new MDCreator();
             try
             {
                 cr.Prepare(true, host, user, pswd, db, root, rpswd, true);

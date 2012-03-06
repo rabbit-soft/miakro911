@@ -63,7 +63,6 @@ namespace mia_conv
             this.ofd2 = new System.Windows.Forms.OpenFileDialog();
             this.pb = new System.Windows.Forms.ProgressBar();
             this.label10 = new System.Windows.Forms.Label();
-            this.chRepair = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox3.SuspendLayout();
@@ -166,7 +165,6 @@ namespace mia_conv
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.chRepair);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.openScriptFile);
             this.groupBox1.Controls.Add(this.tbScript);
@@ -425,18 +423,6 @@ namespace mia_conv
             this.label10.TabIndex = 10;
             this.label10.Text = "Файл фермы";
             // 
-            // chRepair
-            // 
-            this.chRepair.AutoSize = true;
-            this.chRepair.Checked = true;
-            this.chRepair.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chRepair.Location = new System.Drawing.Point(9, 276);
-            this.chRepair.Name = "chRepair";
-            this.chRepair.Size = new System.Drawing.Size(339, 17);
-            this.chRepair.TabIndex = 14;
-            this.chRepair.Text = "Запустить Ремонт старых данных по окончанию конвертации";
-            this.chRepair.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -503,7 +489,6 @@ namespace mia_conv
         private System.Windows.Forms.ProgressBar pb;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.CheckBox chRepair;
     }
 }
 

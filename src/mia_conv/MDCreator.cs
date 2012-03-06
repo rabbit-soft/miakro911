@@ -5,30 +5,28 @@ using MySql.Data.MySqlClient;
 using System.Windows.Forms;
 using System.Data;
 using System.IO;
+using log4net;
 
 namespace mia_conv
 {
     partial class MDCreator
     {
         private enum Tables {Breeds,DeadReasons,Names,Zones }
-        private TextBox log = null;
+        private ILog log = LogManager.GetLogger("MDCreator");
         public MySqlConnection Sql = null;
         public MySqlCommand C = null;
         public bool OldID = false;
         public MiaFile Mia = null;
         private int _maxbreed = 0;
 
-        public MDCreator(TextBox logger)
+        public MDCreator()
         {
-            log = logger;
+            
         }
 
         public void Debug(String str)
         {
-            if (log == null) return;
-            log.Text += str + "\r\n";
-            log.Select(log.Text.Length, 0);
-            log.ScrollToCaret();
+            log.Debug(str);
         }
 
         public void Debug(Exception ex)
@@ -265,7 +263,7 @@ namespace mia_conv
         /// Заполняет базу данными из mia-файла
         /// </summary>
         public void FillAll()
-        {
+        {   
             const int of = 9;
             Mia.Setpbpart(0, of);
             Mia.SetLabelName("Породы");
@@ -348,7 +346,7 @@ namespace mia_conv
                 }
                 catch (Exception ex)
                 {
-                    Debug(ex);
+                    log.Error(String.Format("Error while filling Zones. ({0:s},{1:s}){2:s}", idnm[1],st[i * 2 + 1].value(),(Environment.NewLine+ ex.Message)));
                 }
             }
             C.CommandText = "ALTER TABLE `zones` ENABLE KEYS;";
@@ -365,10 +363,17 @@ namespace mia_conv
             C.ExecuteNonQuery();
             for (int i = 0; i < _maxbreed; i++)
             {
-                C.CommandText = String.Format("INSERT INTO breeds(b_id,b_name,b_short_name) VALUES({2:d},'{0:s}','{1:s}');", ls[i * 3].value(), ls[i * 3 + 1].value(), i + 1);
-                C.ExecuteNonQuery();
-                ls[i * 3 + 2].tag = i + 1;// (int)c.LastInsertedId;
-                Mia.Setpb(i, _maxbreed);
+                try
+                {
+                    C.CommandText = String.Format("INSERT INTO breeds(b_id,b_name,b_short_name) VALUES({2:d},'{0:s}','{1:s}');", ls[i * 3].value(), ls[i * 3 + 1].value(), i + 1);
+                    C.ExecuteNonQuery();
+                    ls[i * 3 + 2].tag = i + 1;// (int)c.LastInsertedId;
+                    Mia.Setpb(i, _maxbreed);
+                }
+                catch (Exception exc)
+                {
+                    log.Error(String.Format("Error while insertin Breed ({0:s},{1:s})\n\t{2:s}",ls[i * 3].value(), ls[i * 3 + 1].value(),exc.Message));
+                }
             }
             C.CommandText = "ALTER TABLE `breeds` ENABLE KEYS;";
             C.ExecuteNonQuery();
@@ -387,20 +392,27 @@ namespace mia_conv
             foreach (MiniFarm fm in Mia.Builds.Minifarms)
             {
                 //Application.DoEvents();
-                c++;
-                int upp = Savetier(fm.Upper);
-                int low = 0;
-                if (fm.ID > maxid)
+                try
                 {
-                    maxid = fm.ID;
+                    c++;
+                    int upp = Savetier(fm.Upper);
+                    int low = 0;
+                    if (fm.ID > maxid)
+                    {
+                        maxid = fm.ID;
+                    }
+                    if (fm.Haslower == 1)
+                    {
+                        low = Savetier(fm.Lower);
+                    }
+                    C.CommandText = String.Format("INSERT INTO minifarms(m_id,m_upper,m_lower) VALUES({0:d},{1:d},{2:d});", fm.ID, upp, low);
+                    C.ExecuteNonQuery();
+                    Mia.Setpb(c, cnt);
                 }
-                if (fm.Haslower == 1)
+                catch (Exception exc)
                 {
-                    low = Savetier(fm.Lower);
+                    log.Error(exc.Message);
                 }
-                C.CommandText = String.Format("INSERT INTO minifarms(m_id,m_upper,m_lower) VALUES({0:d},{1:d},{2:d});", fm.ID, upp, low);
-                C.ExecuteNonQuery();
-                Mia.Setpb(c, cnt);
 
             }
             C.CommandText = "ALTER TABLE `tiers` ENABLE KEYS;";
@@ -781,7 +793,7 @@ VALUES({0:s},{1:d},0,{2:d},'{3:s}');", Convdt(date), jid, r, adr);
             }
             catch (Exception ex)
             {
-                Debug("MYSQL Exception on name " + nm.Name.value() + "(" + nm.Key.value().ToString() + "): " + ex.Message);
+                log.Error("MYSQL Exception on name " + nm.Name.value() + "(" + nm.Key.value().ToString() + "): " + ex.Message);
                 C.CommandText = "SELECT n_id FROM names WHERE n_name='" + nm.Name.value() + "';";
                 MySqlDataReader rd = C.ExecuteReader();
                 rd.Read();

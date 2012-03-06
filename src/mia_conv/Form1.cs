@@ -97,7 +97,7 @@ namespace mia_conv
         /// </summary>
         private void btStart_Click(object sender, EventArgs e)
         {
-            MDCreator crt = new MDCreator(log);
+            MDCreator crt = new MDCreator();
 #if !NOCATCH
             try
             {
@@ -106,18 +106,14 @@ namespace mia_conv
                 int code = crt.Prepare(dbnew.Checked, tbHost.Text, tbUser.Text, tbPassword.Text, tbDB.Text, textRoot.Text, textRootPswd.Text,false,Quiet);
                 if (code == miaExitCode.OK)
                 {
-                    button2.Enabled = false;
-                    btStart.Enabled = false;
+                    groupBox1.Enabled = false;
                     //crt.oldid = oldid.Checked;
                     crt.Mia = _mia;
                     crt.SetUsers(Udata);
                     crt.FillAll();
                     crt.Finish(tbScript.Text);
-                    pb.Value = 0;
-                    button2.Enabled = true;
-                    btStart.Enabled = true;
-                    if (chRepair.Checked)
-                        runMiaRepair();
+                    pb.Value = 0;                 
+                    groupBox1.Enabled = true;
                     Environment.ExitCode = miaExitCode.OK;
                 }
                 else MessageBox.Show(miaExitCode.GetText(code), "Ошибка");              
@@ -153,7 +149,7 @@ namespace mia_conv
                 tbScript.Text=ofd2.FileName;
         }
 
-        private void runMiaRepair()
+        /*private void runMiaRepair()
         {
             const string FILE ="miaRepair.exe";
             if (!System.IO.File.Exists(FILE)) return;
@@ -162,6 +158,6 @@ namespace mia_conv
             Process p = Process.Start(inf);
             p.WaitForExit();
             p.Close();
-        }
+        }*/
     }
 }

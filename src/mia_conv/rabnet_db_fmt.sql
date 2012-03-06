@@ -30,7 +30,7 @@ DROP TABLE IF EXISTS breeds;
 CREATE TABLE breeds(
 	b_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	b_name VARCHAR(50) NOT NULL,
-	b_short_name VARCHAR(10) NOT NULL,
+	b_short_name VARCHAR(20) NOT NULL,
 	b_color VARCHAR(100) NOT NULL default "White"
 );
 
@@ -43,7 +43,7 @@ CREATE TABLE names(
 	n_use INTEGER UNSIGNED NOT NULL default 0,
 	n_block_date DATETIME DEFAULT NULL,
 	KEY(n_sex),
-	UNIQUE(n_name),
+	UNIQUE(n_name,n_sex),
 	KEY(n_use),
 	KEY(n_block_date)
 );
@@ -97,7 +97,7 @@ DROP TABLE IF EXISTS zones;
 CREATE TABLE zones(
 	z_id INTEGER UNSIGNED NOT NULL PRIMARY KEY,
 	z_name VARCHAR(50) NOT NULL,
-	z_short_name VARCHAR(4) NOT NULL
+	z_short_name VARCHAR(20) NOT NULL
 );
 
 DROP TABLE IF EXISTS rabbits;

@@ -129,6 +129,8 @@ namespace mia_conv
 
         public void SetLabelName(string nm)
         {
+            if (nm == "")
+                _label_nm = "";
             if(_label_nm !="")
                 _label_total = Environment.NewLine + _label_nm + " [OK]" + _label_total;
             lbl.Text = nm;
