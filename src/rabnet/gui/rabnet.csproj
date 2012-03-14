@@ -692,6 +692,9 @@
     <None Include="..\..\..\help\rabnet_help\rabHelp.chm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="gnclient.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\app.manifest" />
     <None Include="reports\age.rdl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

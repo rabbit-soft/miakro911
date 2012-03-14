@@ -263,23 +263,6 @@ namespace rabnet
                     f.addRabbit(job.id);
                     f.setAction(ReplaceForm.Action.SET_NEST);
                     res = f.ShowDialog();
-                    /*if (res == DialogResult.OK)
-                    {
-                        res = DialogResult.Cancel;
-                        RabNetEngRabbit rr = Engine.get().getRabbit(job.id);
-                        RabNetEngBuilding rb = Engine.get().getBuilding(rr.JustAddress);
-                        string[] st=rr.JustAddress.Split(',');
-                        if (rb.type == BuildingType.Jurta.Name || rb.type == BuildingType.Female.Name || (rb.type == BuildingType.DualFemale.Name && st[2] == "0"))
-                        {
-                            rb.setNest(true);
-                            res = DialogResult.OK;
-                        }
-                        else if (rb.type == BuildingType.DualFemale.Name && st[2] == "1")
-                        {
-                            rb.setNest2(true);
-                            res = DialogResult.OK;
-                        }
-                    }*/
                     break;
                 case JobType.BOYS_BY_ONE:
                     f = new ReplaceForm();
@@ -308,6 +291,7 @@ namespace rabnet
         {
             makeFlag = 0;
             makeJob();
+
         }
 
         private int getFuckerId(String f,List<String> lst)

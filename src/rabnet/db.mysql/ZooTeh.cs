@@ -65,8 +65,7 @@ namespace rabnet
     }
 
     public class ZooJobItem
-    {
-        
+    {       
         public int type;
         public int id;
         public String name;
@@ -242,13 +241,13 @@ FROM
     rabbits,tiers
 WHERE 
     t_id=r_tier AND 
-    (r_event_date=NULL {1:s}) AND
+    (r_event_date IS NULL {1:s}) AND
     r_sex='female' AND 
     (TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol))>={0:d} AND
     ((t_busy1=r_id AND t_nest like '1%') OR (t_busy2=r_id AND t_nest like '%1' AND t_type='dfemale'))
 ORDER BY srok DESC,0+LEFT(place,LOCATE(',',place)) ASC;",
                 f.safeInt("vudvor"),
-                f.safeBool("vd_sukr") ? String.Format("OR (r_event_date IS NOT null AND (to_days(NOW())-to_days(r_event_date))<{0:d})", f.safeInt("nest")) : ""));
+                f.safeBool("vd_sukr") ? String.Format("OR (r_event_date IS NOT NULL AND (to_days(NOW())-to_days(r_event_date))<{0:d})", f.safeInt("nest")) : ""));
             List<ZooJobItem> res = new List<ZooJobItem>();
             while (rd.Read())
                 res.Add(new ZooJobItem().Vudvor(rd.GetInt32("t_id"), rd.GetString("name"),

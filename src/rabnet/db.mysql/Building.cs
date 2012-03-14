@@ -454,10 +454,9 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) "+makeWhere()+"ORDER B
             List<TreeData> lst = new List<TreeData>();
             while (rd.Read())
             {
-                int id = rd.GetInt32(0);
                 String nm=rd.GetString(1);
                 int frm = rd.GetInt32(2);
-                TreeData dt=new TreeData(id.ToString() + ":" + frm.ToString() + ":" + (frm==0?nm:"№"+Building.Format(nm.Remove(0,1))) );
+                TreeData dt=new TreeData(String.Format("{0:d}:{1:d}:{2:s}",rd.GetInt32(0), frm,(frm==0?nm:"№"+Building.Format(nm.Remove(0,1)))) );
                 lst.Add(dt);
             }
             rd.Close();

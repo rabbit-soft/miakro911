@@ -69,6 +69,7 @@ namespace rabnet
             MakeExcel = new RabStatusBar.ExcelButtonClickDelegate(this.makeExcel);
         }
 
+        
         private void addNoFarm(int farm)
         {
             if (farm == nofarm)
@@ -95,6 +96,7 @@ namespace rabnet
             }
             nofarm = farm + 1;
         }
+
         /// <summary>
         /// Создает ветку в дереве строений.
         /// </summary>
@@ -237,6 +239,7 @@ namespace rabnet
         }
 
         private String getAddress(int ifid){return getAddress(ifid, -1);}
+
         private String getAddress(int ifid,int bid)
         {
             String res = "";

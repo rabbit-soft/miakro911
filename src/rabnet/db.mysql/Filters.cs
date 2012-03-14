@@ -9,11 +9,18 @@ namespace rabnet
         public String caption;
         public TreeData[] items;
         public TreeData() { }
+        /// <summary>
+        /// Данные о ветке, представляют собой 3 значения, разделенные ":"
+        /// 1 - Id строения
+        /// 2 - Id яруса (tier)
+        /// 3 - Название
+        /// </summary>
         public TreeData(String text): this()
         {
             caption = text;
         }
     }
+
     /// <summary>
     /// Класс для заполнения справочников в CatalogForm
     /// </summary>

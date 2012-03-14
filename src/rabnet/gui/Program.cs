@@ -20,14 +20,14 @@ namespace rabnet
         static extern bool SetForegroundWindow(IntPtr hWnd);
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool ShowWindow(IntPtr hWnd,int mode);
+        static extern bool ShowWindow(IntPtr hWnd, int mode);
 
         static ILog log = null;
 
         static void SwitchRabWindow()
         {
             Process cp = Process.GetCurrentProcess();
-            foreach(Process p in Process.GetProcessesByName(cp.ProcessName))
+            foreach (Process p in Process.GetProcessesByName(cp.ProcessName))
                 if (p.Id != cp.Id)
                 {
                     SetForegroundWindow(p.MainWindowHandle);
@@ -44,82 +44,83 @@ namespace rabnet
         static void Main(string[] args)
         {
             bool new_instance;
-            using(System.Threading.Mutex mutex=new System.Threading.Mutex(true,"RabNetApplication",out new_instance))
+            using (System.Threading.Mutex mutex = new System.Threading.Mutex(true, "RabNetApplication", out new_instance))
             {
                 if (new_instance)
                 {
 #if !NOCATCH
                     AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Unhandled);
-                    Application.ThreadException+=new System.Threading.ThreadExceptionEventHandler(Threaded);
+                    Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Threaded);
 #endif
                     log4net.Config.XmlConfigurator.Configure();
                     log = LogManager.GetLogger(typeof(Program));
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
 #if PROTECTED
-            bool exit = true;
-            do
-            {
-                exit = true;
-                int hkey = 0;
+                    bool exit = true;
+                    do
+                    {
+                        exit = true;
+                        int hkey = 0;
 
-                //while (PClient.get().farms() == -1 && hkey == 0)
-                while (GRD.Instance.GetFarmsCnt() == -1 && hkey == 0)
-                {
-                    if (MessageBox.Show(null, "Ключ защиты не найден!\nВставьте ключ защиты в компьютер и нажмите кнопку повтор.",
-                            "Ключ защиты", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) == DialogResult.Cancel)
-                    {
-                        hkey = -1;
-                    }
-                }
-//              if (PClient.get().farms() == -1)
-                if (GRD.Instance.GetFarmsCnt() == -1)
-                {
-                    return;
-                }
-                if (!GRD.Instance.GetFlag(GRD.FlagType.RabNet))
-                {
-                    MessageBox.Show("Программа не может работать с данным ключом защиты");
-                    return;
-                }
-                //MessageBox.Show(String.Format("HAS {0:d} FARMS",PClient.get().farms()));
-#endif
-                    bool dbedit = false;
-                    if (args.Length > 0 && args[0] == "dbedit")
-                        dbedit = true;
-                    LoginForm lf = new LoginForm(dbedit);
-                    LoginForm.stop = false;
-                    while (!LoginForm.stop)
-                    {
-                        LoginForm.stop = true;
-                        if (lf.ShowDialog() == DialogResult.OK)
+                        //while (PClient.get().farms() == -1 && hkey == 0)
+                        while (GRD.Instance.GetFarmsCnt() == -1 && hkey == 0)
                         {
-                            Application.Run(new MainForm());
+                            if (MessageBox.Show(null, "Ключ защиты не найден!\nВставьте ключ защиты в компьютер и нажмите кнопку повтор.",
+                                    "Ключ защиты", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) == DialogResult.Cancel)
+                            {
+                                hkey = -1;
+                            }
                         }
-#if PROTECTED
-//                        if (PClient.get().farms() == -1)
+                        //              if (PClient.get().farms() == -1)
                         if (GRD.Instance.GetFarmsCnt() == -1)
                         {
-                            LoginForm.stop = true;
+                            return;
                         }
+                        if (!GRD.Instance.GetFlag(GRD.FlagType.RabNet))
+                        {
+                            MessageBox.Show("Программа не может работать с данным ключом защиты");
+                            return;
+                        }
+                        //MessageBox.Show(String.Format("HAS {0:d} FARMS",PClient.get().farms()));
 #endif
-                    }
+                        bool dbedit = false;
+                        if (args.Length > 0 && args[0] == "dbedit")
+                            dbedit = true;
+                        LoginForm lf = new LoginForm(dbedit);
+                        LoginForm.stop = false;
+                        while (!LoginForm.stop)
+                        {
+                            LoginForm.stop = true;
+                            if (lf.ShowDialog() == DialogResult.OK)
+                            {
+                                Application.Run(new MainForm());
+                            }
 #if PROTECTED
-//                    if (PClient.get().farms() == -1)
-                    if (GRD.Instance.GetFarmsCnt() == -1)
-                    {
-                        exit = false;
+                            //                        if (PClient.get().farms() == -1)
+                            if (GRD.Instance.GetFarmsCnt() == -1)
+                            {
+                                LoginForm.stop = true;
+                            }
+#endif
+                        }
+#if PROTECTED
+                        //                    if (PClient.get().farms() == -1)
+                        if (GRD.Instance.GetFarmsCnt() == -1)
+                        {
+                            exit = false;
+                        }
                     }
-            } 
-            while (!exit);
+                    while (!exit);
+                    
 #endif
                 }//new_instance
                 else
                 {
                     SwitchRabWindow();
                 }
-        }//using
-         }
+            }//using
+        }
 
 #if !NOCATCH
         static void Excepted(Exception ex)
