@@ -11,6 +11,7 @@ namespace rabnet
         public int id = 0;
         public ZooTehNullItem(int id) { this.id=id;}
     }
+    
     /// <summary>
     /// В зоотехплане надо сделать 9 разных запросов.
     /// В ответ на onPrepare возвращается этот класс, сожержащий 9 элементов,
@@ -384,17 +385,18 @@ ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;",
             return res.ToArray();
         }
 
-        public ZooJobItem[] getVacc(int days)
+        public ZooJobItem[] getVacc(Filters f)
         {
-            string query = String.Format(@"SELECT r_id,rabname(r_id," + getnm() + @") name,rabplace(r_id) place,
-(TO_DAYS(NOW())-TO_DAYS(r_born)) age," + brd() + @" 
-FROM rabbits WHERE r_vaccine_end<=NOW() AND (TO_DAYS(NOW())-TO_DAYS(r_born))>={0:d} 
-ORDER BY r_born DESC,0+LEFT(place,LOCATE(',',place)) ASC;", days);
+            string query = String.Format(@"SELECT r_id,rabname(r_id,{2:s}) name,rabplace(r_id) place,
+(TO_DAYS(NOW())-TO_DAYS(r_born)) age,{1:s} 
+FROM rabbits WHERE (r_vaccine_end<=NOW() OR  r_vaccine_end IS NULL) AND (TO_DAYS(NOW())-TO_DAYS(r_born))>={0:d} {3:s}
+ORDER BY r_born DESC,0+LEFT(place,LOCATE(',',place)) ASC;", f.safeInt("vacc"), brd(), getnm(), (f.safeBool("vacc_moth") ? @" AND r_id NOT IN (
+                    SELECT r_parent FROM rabbits WHERE (r_vaccine_end<=NOW() or r_vaccine_end is null) AND (TO_DAYS(NOW())-TO_DAYS(r_born))>=" + f.safeInt("vacc") + " and r_parent<>0)" : ""));
             MySqlDataReader rd = reader(query);
             List<ZooJobItem> res = new List<ZooJobItem>();
             while (rd.Read())
                 res.Add(new ZooJobItem().Vacc(rd.GetInt32("r_id"), rd.GetString("name"),
-                    rd.GetString("place"), rd.GetInt32("age"), rd.GetInt32("age")-days,rd.GetString("breed")));
+                    rd.GetString("place"), rd.GetInt32("age"), rd.GetInt32("age") - f.safeInt("vacc"), rd.GetString("breed")));
             rd.Close();
             return res.ToArray();
         }

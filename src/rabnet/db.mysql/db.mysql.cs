@@ -544,9 +544,9 @@ namespace rabnet
             Buildings.deleteFarm(sql, fid);
         }
 
-        public ZooJobItem[] getVacc(Filters f,int days)
+        public ZooJobItem[] getVacc(Filters f)
         {
-            return new ZooTehGetter(sql,f).getVacc(days);
+            return new ZooTehGetter(sql,f).getVacc(f);
         }
 
         public ZooJobItem[] getSetNest(Filters f,int wochild, int wchild)

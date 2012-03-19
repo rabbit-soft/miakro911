@@ -80,6 +80,9 @@ namespace rabnet
             eng.logs().log(RabNetLogs.LogType.INCOME, id);
         }
 
+        /// <summary>
+        /// Сохраняет изменение данных на сервере
+        /// </summary>
         public void Commit()
         {
             if (RabID == 0)
@@ -91,7 +94,6 @@ namespace rabnet
                 eng.logs().log(RabNetLogs.LogType.RENAME, RabID, 0, "", "", eng.db().makeName(rab.wasname, 0, 0, 1, rab.sex));
             }
             else eng.logs().log(RabNetLogs.LogType.RAB_CHANGE, RabID);
-            rab.vac_end.AddDays(Engine.opt().getIntOption(Options.OPT_ID.VACCINE_TIME));
             eng.db().setRabbit(rab);
             rab=eng.db().getRabbit(id);
         }

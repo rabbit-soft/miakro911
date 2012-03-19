@@ -146,7 +146,7 @@ namespace rabnet
         bool FarmExists(int id);
         void changeFarm(int fid,String uppertype,String lowertype);
         void deleteFarm(int fid);
-        ZooJobItem[] getVacc(Filters f,int days);
+        ZooJobItem[] getVacc(Filters f);
         ZooJobItem[] getSetNest(Filters f,int wochild,int wchild);
         IDeadReasons getDeadReasons();
         String[] getWeights(int rabbit);

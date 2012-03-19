@@ -53,6 +53,7 @@ namespace rabnet
                 f["mwait"] = Engine.opt().getOption(Options.OPT_ID.MALE_WAIT);
                 f["vactime"] = Engine.opt().getOption(Options.OPT_ID.VACCINE_TIME);
                 f["bbone"] = Engine.opt().getOption(Options.OPT_ID.BOYS_BY_ONE);
+                f["vacc_moth"] = Engine.opt().getBoolOption(Options.OPT_ID.VACC_MOTHER)?"1":"0";
                 itm = -1;
                 if (lvZooTech.SelectedItems.Count == 1)
                     itm = lvZooTech.SelectedItems[0].Index;
@@ -256,6 +257,13 @@ namespace rabnet
                     r.Spec = true;
                     r.VaccineEnd = DateTime.Now.AddDays(Engine.opt().getIntOption(Options.OPT_ID.VACCINE_TIME));
                     r.Commit();
+                    if (r.Parent != 0 && Engine.opt().getBoolOption(Options.OPT_ID.VACC_MOTHER))
+                    {
+                        RabNetEngRabbit r2 = Engine.get().getRabbit(r.Parent);
+                        r2.Spec = true;
+                        r2.VaccineEnd = r.VaccineEnd;
+                        r2.Commit();
+                    }
                     needUpdate = false;
                     break;
                 case JobType.SET_NEST://установка гнездовья

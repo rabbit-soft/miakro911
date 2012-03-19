@@ -255,35 +255,6 @@ namespace RabGRD
             return res;
         }
 
-        /*
-        public bool GetFlagZootech()
-        {
-            
-        }
-
-        public bool GetFlagGenetics()
-        {
-            return ((GetFlags(0) & Convert.ToByte("00000010", 2)) > 0);
-        }
-
-        /// <summary>
-        /// Резервные копии
-        /// </summary>
-        /// <returns></returns>
-        public bool GetFlagServer()
-        {
-            return ((GetFlags(0) & Convert.ToByte("00000100", 2)) > 0);
-        }
-        /// <summary>
-        /// Стерильный цех
-        /// </summary>
-        /// <returns></returns>
-        public bool GetFlagButcher()
-        {
-            return ((GetFlags(0) & Convert.ToByte("00001000", 2)) > 0);
-        }
-        */
-
         public bool GetFlag(FlagType ft)
         {
             uint bait = (uint)( (int)ft / 8 );
@@ -292,28 +263,21 @@ namespace RabGRD
             for (int i = 0; i < 8; i++)
                 mask = (i == bit ? '1' : '0') + mask;
             return (((GetFlags(bait) & Convert.ToByte(mask, 2)) > 0) || (GetTempFlags(bait) & Convert.ToByte(mask, 2)) > 0);
-            /*switch (ft)
-            {
-                case FlagType.RabNet:        return (((GetFlags(0) & Convert.ToByte("00000001", 2)) > 0) || (GetTempFlags(0) & Convert.ToByte("00000001", 2)) > 0);
-                case FlagType.Genetics:      return (((GetFlags(0) & Convert.ToByte("00000010", 2)) > 0) || (GetTempFlags(0) & Convert.ToByte("00000010", 2)) > 0);
-                case FlagType.RabDump:       return (((GetFlags(0) & Convert.ToByte("00000100", 2)) > 0) || (GetTempFlags(0) & Convert.ToByte("00000100", 2)) > 0);           
-                case FlagType.Butcher:       return (((GetFlags(0) & Convert.ToByte("00001000", 2)) > 0) || (GetTempFlags(0) & Convert.ToByte("00001000", 2)) > 0);
-                case FlagType.PerortPlugIns: return (((GetFlags(0) & Convert.ToByte("00010000", 2)) > 0) || (GetTempFlags(0) & Convert.ToByte("00010000", 2)) > 0);
-                //case FlagType.Scale:         return (((GetFlags(0) & Convert.ToByte("00100000", 2)) > 0) || (GetTempFlags(0) & Convert.ToByte("00100000", 2)) > 0);
-            }*/
         }
 
-        public DateTime GetDateStart()
+        public DateTime GetDateStart() { return getDate(true); }
+        public DateTime GetDateEnd() { return getDate(false); }
+        private DateTime getDate(bool start)
         {            
             DateTime dt = new DateTime();
-
             byte[] bts = new byte[12];
-
             GrdE retCode;                       // Error code for all Guardant API functions
             string logStr = "";
 
-            logStr = "Reading Start Date : ";
-            retCode = GrdApi.GrdRead(_grdHandle, FARM_START_DATE, 12, out bts);
+ 
+            logStr = start ? "Reading Start Date : " : "Reading End Date : ";
+            retCode = GrdApi.GrdRead(_grdHandle, (start ? FARM_START_DATE:FARM_STOP_DATE), 12, out bts);
+            
             logStr += GrdApi.PrintResult((int)retCode);
             if (retCode == GrdE.OK)
             {
@@ -330,12 +294,10 @@ namespace RabGRD
             return dt;
         }
         
-        public DateTime GetDateEnd()
+        /*public DateTime GetDateEnd()
         {           
             DateTime dt = new DateTime();
-
             byte[] bts = new byte[12];
-
             GrdE retCode;                       // Error code for all Guardant API functions
             string logStr = "";
 
@@ -355,8 +317,7 @@ namespace RabGRD
             ErrorHandling(_grdHandle, retCode);
 
             return dt;
-        }
-
+        }*/
 
         private GrdE Connect()
         {
@@ -365,7 +326,6 @@ namespace RabGRD
 
             const uint cryptPu = 0x8568683U;
             const uint cryptRd = 0x56547675U;
-
             uint PublicCode = 0x9BD54F75 - cryptPu;    // Must be encoded             
             uint ReadCode = 0xFE8392B2 - cryptRd;    // Must be encoded             
 
@@ -382,22 +342,14 @@ namespace RabGRD
             GrdDT dongleType;         // Dongle type                             
             GrdFMM dongleModel;        // Dongle model                             
             GrdFMI dongleInterface;    // Dongle interface                             
-
             FindInfo findInfo; //= new FindInfo();   // structure used in GrdFind()
-
             UInt32 tempData;           // Temporary data         
-
-            Int32 lms;
-
+            //UInt32 lms;
             string logStr = "";
 
-            log.Debug("Guardant Stealth/Net III example for C# (MS .NET Environment)\n (C) 2006 Aktiv Co. All rights reserved");
-
-
             // Initialize this copy of GrdAPI. GrdStartup() must be called once before first GrdAPI call at application startup
-            //            log.Debug("Initialize this copy of GrdAPI :");
             logStr = "Initialize this copy of GrdAPI : ";
-            retCode = GrdApi.GrdStartup(GrdFMR.Local);	// + GrdFMR.Remote if you want to use network dongles
+            retCode = GrdApi.GrdStartup(GrdFMR.ALL);	// + GrdFMR.Remote if you want to use network dongles
             //Console.WriteLine("Address of hGrd: " + hGrd.Address);
             logStr += GrdApi.PrintResult((int)retCode);
             log.Debug(logStr);
@@ -431,8 +383,8 @@ namespace RabGRD
             // -----------------------------------------------------------------
             logStr = "Storing dongle codes in Guardant protected container : ";
             retCode = GrdApi.GrdSetAccessCodes(_grdHandle,	// Handle to Guardant protected container
-            PublicCode + cryptPu,   // Public code, should always be specified
-            ReadCode + cryptRd);    // Private read code; you can omit this code and all following via using of overloaded function;
+                                    PublicCode + cryptPu,   // Public code, should always be specified
+                                    ReadCode + cryptRd);    // Private read code; you can omit this code and all following via using of overloaded function;
             logStr += GrdApi.PrintResult((int)retCode);
             log.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
@@ -445,7 +397,7 @@ namespace RabGRD
             // Set dongle search criteria
             // -----------------------------------------------------------------
             logStr = "Setting dongle search conditions : ";
-            remoteMode = GrdFMR.Local; 				            // Local dongles only
+            remoteMode = GrdFMR.ALL; 				            // Search Local & Remote
             dongleFlags = GrdFM.NProg | GrdFM.Ver | GrdFM.Type;	// Check by bProg, bVer & dongle type flag
             programNumber = 1;     								// Check by specified program number                
             dongleID = 0;		     							// This search mode is not used                     
@@ -484,10 +436,12 @@ namespace RabGRD
             // -----------------------------------------------------------------
             logStr = "Searching for all specified dongles and print info about it's : ";
             retCode = GrdApi.GrdFind(_grdHandle, GrdF.First, out dongleID, out findInfo);
-            if (retCode == GrdE.OK)		// Print table header if at least one dongle found
+            if (retCode != GrdE.OK && retCode!= GrdE.AllDonglesFound)		// Print table header if at least one dongle found
             {
-                logStr += "; Found dongle with following ID : ";
+                return retCode;
             }
+
+            /*Если вставлен локальный ключ, то прога его находит. затем ищет удаленный ключ - не находит его и делает return. Так что ищем первый попавшийся
             while (retCode == GrdE.OK)
             {
                 // Print info about dongles found
@@ -507,16 +461,16 @@ namespace RabGRD
                 {
                     return retCode;
                 }
-            }
+            }*/
 
             // -----------------------------------------------------------------
             // Search for the specified local or remote dongle and log in
             // -----------------------------------------------------------------
             logStr = "Searching for the specified local or remote dongle and log in : ";
             // If command line parameter is specified, License Management System functions are used
-            lms =-1;
+            //lms = Int32.MaxValue;
             // All following Guardant API calls before next GrdCloseHandle()/GrdLogin() will use this dongle
-            retCode = GrdApi.GrdLogin(_grdHandle, lms, GrdLM.PerStation);
+            retCode = GrdApi.GrdLogin(_grdHandle, 0, GrdLM.PerStation);
             logStr += GrdApi.PrintResult((int)retCode);
             log.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
@@ -594,12 +548,13 @@ namespace RabGRD
             retCode = GrdApi.GrdRead(_grdHandle,DEV_MARKER,16,out bts);
             logStr += GrdApi.PrintResult((int)retCode);
             if (retCode == GrdE.OK)
-            {
-                marker = AsciiBytesToString(bts, 0, 32);
+            {               
+                marker = AsciiBytesToString(bts, 0, 32); 
                 logStr += "; \"" + marker + "\"";
             }
             if (marker != "9-bits RabSoft")
             {
+                
                 logStr += "; No correct marker";
                 log.Debug(logStr);
                 ErrorHandling(_grdHandle, GrdE.VerifyError);
@@ -611,7 +566,6 @@ namespace RabGRD
                 log.Debug(logStr);
                 ErrorHandling(_grdHandle, retCode);
             }
-
 
             return GrdE.OK;
         }
@@ -651,10 +605,11 @@ namespace RabGRD
         {
             GrdE retCode;                       // Error code for all Guardant API functions
             string logStr = "";
+
             // -----------------------------------------------------------------
             // Close hGrd handle. Log out from dongle/server & free allocated memory
             // -----------------------------------------------------------------
-            logStr = "Closing handle: ";
+            logStr = "Closing dongle handle: ";
             retCode = GrdApi.GrdCloseHandle(_grdHandle);
             logStr += GrdApi.PrintResult((int)retCode);
             log.Debug(logStr);
@@ -674,13 +629,14 @@ namespace RabGRD
 
             return GrdE.OK;
         }
-        //----------------------------------------------------------------------------------------------
-        //  Handle errors
-        //  Prints operation result, closes handle and forces program termination on error  
-        //  Input:  Handle to Guardant protected Container
-        //	Input:  error code
-        //	return: error code
-        //----------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Handle errors
+        /// Prints operation result, closes handle and forces program termination on error  
+        /// </summary>
+        /// <param name="hGrd">Handle to Guardant protected Container</param>
+        /// <param name="nRet">error code</param>
+        /// <returns>error code</returns>
         private static GrdE ErrorHandling(Handle hGrd, GrdE nRet)
         {
             // print the result of last executed function
@@ -710,7 +666,5 @@ namespace RabGRD
             return nRet;
         }
     }
-
-
 }
 #endif

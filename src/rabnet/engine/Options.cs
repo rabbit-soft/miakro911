@@ -21,6 +21,10 @@ namespace rabnet
             /// Рассадка группы мальчиков по одному
             /// </summary>
             BOYS_BY_ONE,
+            /// <summary>
+            /// Прививать кормилицу вместе с детьми
+            /// </summary>
+            VACC_MOTHER,
             VUDVOR,VUDVOR_IF_SUKROL, COUNT1, COUNT2, COUNT3, MAKE_BRIDE, DEAD_FILTER, PRE_OKROL, 
             ZOO_FILTER, COMBINE_AGE, BOYS_OUT, GIRLS_OUT, STATE_FUCK, FIRST_FUCK, MALE_WAIT, GEN_TREE, CONFIRM_EXIT, 
             VACC, CONFIRM_KILL,CONFIRM_REPLACE, SUCKERS,NEST,CHILD_NEST,RAB_LIST,BUILD_LIST,YOUNG_LIST,DEAD_LIST,REPL_YOUNG_LIST,
@@ -74,7 +78,8 @@ namespace rabnet
                                    new Option(OPT_ID.MALE_WAIT,OPT_LEVEL.FARM,"malewait"), 
                                    new Option(OPT_ID.GEN_TREE,OPT_LEVEL.USER,"gentree"), 
                                    new Option(OPT_ID.CONFIRM_EXIT,OPT_LEVEL.USER,"confirmexit"), 
-                                   new Option(OPT_ID.VACC,OPT_LEVEL.FARM,"vacc"), 
+                                   new Option(OPT_ID.VACC,OPT_LEVEL.FARM,"vacc"),
+                                   new Option(OPT_ID.VACC_MOTHER,OPT_LEVEL.FARM,"vacc_moth"), 
                                    new Option(OPT_ID.CONFIRM_KILL,OPT_LEVEL.USER,"confirmkill"), 
                                    new Option(OPT_ID.CONFIRM_REPLACE,OPT_LEVEL.USER,"confirmreplace"),
                                    new Option(OPT_ID.SUCKERS,OPT_LEVEL.FARM,"suckers"), 

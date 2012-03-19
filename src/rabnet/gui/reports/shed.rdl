@@ -13,11 +13,11 @@
   <BottomMargin>.25in</BottomMargin>
   <DataSets>
     <DataSet Name="Data">
-      <Query >
+      <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>url=c:/temp/shed.xml;RowsXPath=/Rows/Row</CommandText>
       </Query>
-      <Fields >
+      <Fields>
         <Field Name="name">
           <DataField>name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -32,7 +32,7 @@
         </Field>
       </Fields>
     </DataSet>
-    <DataSet Name="Data2" >
+    <DataSet Name="Data2">
       <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>url=c:/temp/test.xml;RowsXPath=/Rows/Row</CommandText>
@@ -227,7 +227,7 @@
         </fyi:TooltipYFormat>
         <fyi:TooltipX xmlns:fyi="http://www.fyireporting.com/schemas">False</fyi:TooltipX>
       </Chart>
-      <Table Name="Table1" >
+      <Table Name="Table1">
         <DataSetName>Data2</DataSetName>
         <NoRows>Query returned no rows!</NoRows>
         <Style>
@@ -272,6 +272,14 @@
         <Left>1.4pt</Left>
         <Top>14.3pt</Top>
       </Table>
+      <Textbox Name="Textbox1" >
+        <Height>12.75pt</Height>
+        <Width>123.37pt</Width>
+        <Value>=Globals!ExecutionTime</Value>
+        <ZIndex>1</ZIndex>
+        <Left>472.1pt</Left>
+        <Top>0.0pt</Top>
+      </Textbox>
     </ReportItems>
   </Body>
   <PageFooter>
@@ -292,7 +300,7 @@
     <PrintOnFirstPage>true</PrintOnFirstPage>
     <PrintOnLastPage>true</PrintOnLastPage>
   </PageFooter>
-  <DataSources >
+  <DataSources>
     <DataSource Name="DS1">
       <ConnectionProperties>
         <DataProvider>XML</DataProvider>

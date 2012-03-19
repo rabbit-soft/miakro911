@@ -72,11 +72,11 @@
     <Height>49.1pt</Height>
     <ReportItems>
       <Textbox Name="Textbox1">
-        <Top>7.3pt</Top>
-        <Left>157.5pt</Left>
-        <Width>6in</Width>
-        <Height>.25in</Height>
-        <Value>Наличие и движение поголовья по месяцам рождения за период</Value>
+        <Top>7.30pt</Top>
+        <Left>157.50pt</Left>
+        <Width>350.06pt</Width>
+        <Height>18.82pt</Height>
+        <Value>Наличие и движение поголовья за период</Value>
         <Style>
           <FontSize>15pt</FontSize>
           <FontWeight>Bold</FontWeight>
@@ -84,6 +84,14 @@
           <BorderColor />
           <BorderWidth />
         </Style>
+      </Textbox>
+      <Textbox Name="Textbox18" >
+        <Height>12.75pt</Height>
+        <Width>123.37pt</Width>
+        <Value>=Globals!ExecutionTime</Value>
+        <ZIndex>1</ZIndex>
+        <Left>647.3pt</Left>
+        <Top>0.0pt</Top>
       </Textbox>
     </ReportItems>
     <PrintOnFirstPage>true</PrintOnFirstPage>
@@ -554,7 +562,7 @@
                 </TableCell>
                 <TableCell>
                   <ReportItems>
-                    <Textbox Name="Textbox16" >
+                    <Textbox Name="Textbox16">
                       <Value>=Fields!ecount.Value</Value>
                       <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
                         <BorderStyle>

@@ -55,6 +55,14 @@
           <FontWeight>Bold</FontWeight>
         </Style>
       </Textbox>
+      <Textbox Name="Textbox6" >
+        <Height>12.75pt</Height>
+        <Width>123.37pt</Width>
+        <Value>=Globals!ExecutionTime</Value>
+        <ZIndex>1</ZIndex>
+        <Left>471.9pt</Left>
+        <Top>0.0pt</Top>
+      </Textbox>
     </ReportItems>
     <PrintOnFirstPage>true</PrintOnFirstPage>
     <PrintOnLastPage>true</PrintOnLastPage>

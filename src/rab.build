@@ -44,9 +44,9 @@
 	<property name="tools_dir" value="${root_bin}/tools" />
 	<property name="plugin_dir" value="${root_bin}/PlugIns" />
 	<property name="distrib_dir" value="${root_bin}/distrib" />
+	
 	<property name="log4net.lib" value="log4net.dll" />
 	<property name="log4net.ass" value="${log4net.path}/${log4net.lib}" />
-
 	<property name="mysql.lib" value="MySql.Data.dll" />
 	<property name="mysql.ass" value="${mysql.path}/${mysql.lib}" />
 
@@ -55,12 +55,13 @@
 	<property name="office.core.path" value="${Office.path}/${office.core.name}" />
 	<property name="office.excel.path" value="${Office.path}/${office.excel.name}" />
 	
-	<property name="guardant.path" value="${mysql.path}" />
-	<!--property name="guardant.lib" value="key.dll" /-->
+	<property name="grd_path.bin" value="${grd_path}\Bin" />
+	<property name="grd_path.lib" value="${grd_path}\Lib" />
+	<property name="grd_lib64_path" value="${grd_path}\Lib\x64" />	
 	<property name="guardant2.lib" value="GrdAPI32.DLL" />
 	<property name="guardant2_64.lib" value="GrdAPI64.DLL" />
 	<property name="guardantNET.lib" value="GuardantDotNetApi.dll" />
-	<!--property name="guardant.ass" value="${guardant.path}/${guardant.lib}" /-->
+	<property name="grdClientConf" value="gnclient.ini" />
 
 	<property name="rep.lib" value="RdlViewer.dll" />
 	<property name="rep.ass" value="${rep.path}/${rep.lib}" />
@@ -68,8 +69,8 @@
 	<property name="repeng.ass" value="${rep.path}/${repeng.lib}" />
 	<property name="obfuscator" value="Eazfuscator.NET.exe" />
 	
-	<property name="grd_ob" value="${grd_path}\CodeObfuscator.exe" />
-	<property name="grd_prot" value="${grd_path}\CodeProtect.exe" />
+	<property name="grd_ob" value="${grd_path.bin}\CodeObfuscator.exe" />
+	<property name="grd_prot" value="${grd_path.bin}\CodeProtect.exe" />
 
 	<property name="nant_contrib" value="${all_i_need}/NAnt/NAnt.Contrib.Tasks.dll" />
 
@@ -79,13 +80,19 @@
 	<property name="dotnetInstaller" value="dotnetfx.exe"/>
 	<property name="mysqlInstaller" value="mysql-essential-5.1.49-win32.msi"/>
 	<property name="MSIInstaller" value="WindowsXP-KB942288-v3-x86.exe"/>
-	<property name="GrdTru" value="GrdTRU.exe"/>
+
 
 	<property name="dotnetInstallerSource" value="${party3d.path}/${dotnetInstaller}"/>
 	<property name="mysqlInstallerSource" value="${party3d.path}/${mysqlInstaller}"/>
 	<property name="MSIInstallerSource" value="${party3d.path}/${MSIInstaller}"/>
-	<property name="GrdTruSource" value="${party3d.path}/${GrdTru}"/>
-
+	
+	<property name="GrdTru" value="GrdTRU.exe"/>
+	<property name="GrdSrv" value="grdsrv.exe"/>
+	<property name="GrdMon" value="grdmon.exe"/>
+	<property name="GrdTruSource" value="${grd_path.bin}/${GrdTru}"/>
+	<property name="GrdSrvSource" value="${grd_path.bin}/${GrdSrv}"/>
+	<property name="GrdMonSource" value="${grd_path.bin}/${GrdMon}"/>
+	
 	<property name="Bin7zSource" value="${party3d.path}/7z"/>
 
 	<property name="installersPath" value=""/>
@@ -124,7 +131,6 @@
 		<property name="mysql.t.use" value="${bin_dir}/Tools/${mysql.lib}" />
 		<property name="rep.use" value="${bin_dir}/RabNet/${rep.lib}" />
 		<property name="repeng.use" value="${bin_dir}/RabNet/${repeng.lib}" />
-		<!--property name="guardant.use" value="${bin_dir}/${guardant.lib}" /-->
 		<copy file="${log4net.ass}" tofile="${log4net.use}" />
 		<copy file="${log4net.ass}" tofile="${log4net.d.use}" />
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
@@ -134,16 +140,18 @@
 		<copy file="${repeng.ass}" tofile="${repeng.use}" />
 		<copy file="${office.core.path}" tofile="${bin_dir}/RabNet/${office.core.name}" />
 		<copy file="${office.excel.path}" tofile="${bin_dir}/RabNet/${office.excel.name}" />
-		<!--copy file="${guardant.ass}" tofile="${guardant.use}" /-->
-		<copy file="${guardant.path}/${guardant2.lib}" tofile="${bin_dir}/RabNet/${guardant2.lib}" />
-		<copy file="${guardant.path}/${guardant2_64.lib}" tofile="${bin_dir}/RabNet/${guardant2_64.lib}" />
-		<copy file="${guardant.path}/${guardantNET.lib}" tofile="${bin_dir}/RabNet/${guardantNET.lib}" />
-		<copy file="${guardant.path}/${guardant2.lib}" tofile="${bin_dir}/RabDump/${guardant2.lib}" />
-		<copy file="${guardant.path}/${guardant2_64.lib}" tofile="${bin_dir}/RabDump/${guardant2_64.lib}" />
-		<copy file="${guardant.path}/${guardantNET.lib}" tofile="${bin_dir}/RabDump/${guardantNET.lib}" />
-
+		<copy file="${grd_path.lib}/${guardant2.lib}" tofile="${bin_dir}/RabNet/${guardant2.lib}" />
+		<copy file="${grd_lib64_path}/${guardant2_64.lib}" tofile="${bin_dir}/RabNet/${guardant2_64.lib}" />
+		<copy file="${grd_path.lib}/${guardantNET.lib}" tofile="${bin_dir}/RabNet/${guardantNET.lib}" />
+		<copy file="${grd_path.lib}/${guardant2.lib}" tofile="${bin_dir}/RabDump/${guardant2.lib}" />
+		<copy file="${grd_lib64_path}/${guardant2_64.lib}" tofile="${bin_dir}/RabDump/${guardant2_64.lib}" />
+		<copy file="${grd_path.lib}/${guardantNET.lib}" tofile="${bin_dir}/RabDump/${guardantNET.lib}" />
+		
 		<copy file="${GrdTruSource}" tofile="${bin_dir}/Guardant/${GrdTru}" />
-
+		<copy file="${GrdSrvSource}" tofile="${bin_dir}/Guardant/${GrdSrv}" />
+		<copy file="${GrdMonSource}" tofile="${bin_dir}/Guardant/${GrdMon}" />
+		<copy file="${curdir}/rabnet/gui/${grdClientConf}" tofile="${bin_dir}/RabNet/${grdClientConf}" />
+		
 		<copy todir="${bin_dir}/RabNet/reports">
 			<fileset basedir="${curdir}/rabnet/gui/reports">
 				<include name="*.rdl"/>
@@ -179,7 +187,6 @@
 			</fileset>
 		</copy>
 	</target>
-
 
 	<!--target name="release" description="Build RELEASE">
 		<property name="compile_flag" value="" />
@@ -234,7 +241,6 @@
 	</target>
 
 	<target name="miaconv" description="Make mia converter project">
-
 		<copy file="${curdir}/mia_conv/rabnet_db_fmt.sql" tofile="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
 		<copy file="${log4net.use}" tofile="${bin_dir}/Tools/${log4net.lib}" />
 		<csc target="winexe" output="${bin_dir}/Tools/mia_conv.exe" win32icon="${curdir}/mia_conv/icon_yell_red.ico" define="${compile_flag}" optimize="true">
@@ -455,7 +461,7 @@
 		</exec-->
 		<exec program="${grd_prot}">
 			<arg value="/INIT" />
-			<arg value="/MSG=${grd_path}\licensewizard.msg" />
+			<arg value="/MSG=${grd_path.bin}\licensewizard.msg" />
 			<arg value="/PER=20" />
 			<arg value="/RC=1" />
 			<arg value="/ATR=2" />

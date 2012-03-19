@@ -3521,6 +3521,14 @@
         <Left>8.9pt</Left>
         <Top>690.1pt</Top>
       </Table>
+      <Textbox Name="Textbox115" >
+        <Height>12.75pt</Height>
+        <Width>123.37pt</Width>
+        <Value>=Globals!ExecutionTime</Value>
+        <ZIndex>1</ZIndex>
+        <Left>472.8pt</Left>
+        <Top>0.0pt</Top>
+      </Textbox>
     </ReportItems>
     <Height>746.3pt</Height>
     <Columns>1</Columns>

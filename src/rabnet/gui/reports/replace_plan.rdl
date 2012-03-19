@@ -43,7 +43,7 @@
     </DataSet>
   </DataSets>
   <PageHeader>
-    <Height>28.3pt</Height>
+    <Height>0.0pt</Height>
     <PrintOnFirstPage>true</PrintOnFirstPage>
     <PrintOnLastPage>true</PrintOnLastPage>
   </PageHeader>
@@ -252,6 +252,14 @@
           <BorderWidth />
           <FontSize>16pt</FontSize>
         </Style>
+      </Textbox>
+      <Textbox Name="Textbox8" >
+        <Height>12.75pt</Height>
+        <Width>123.37pt</Width>
+        <Value>=Globals!ExecutionTime</Value>
+        <ZIndex>1</ZIndex>
+        <Left>471.2pt</Left>
+        <Top>0.0pt</Top>
       </Textbox>
     </ReportItems>
     <Height>124.2pt</Height>

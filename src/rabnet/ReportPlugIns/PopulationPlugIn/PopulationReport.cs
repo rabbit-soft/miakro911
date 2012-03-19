@@ -7,7 +7,7 @@ namespace rabnet
 {
     public class PopulationReport:ReportBase
     {
-        public PopulationReport() : base("population", "Движение поголовья по месяцам рождения") { }
+        public PopulationReport() : base("population", "Наличие и движение поголовья за период") { }
 
         public override void MakeReport()
         {

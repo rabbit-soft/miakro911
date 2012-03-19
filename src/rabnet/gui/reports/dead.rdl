@@ -21,11 +21,11 @@
   <BottomMargin>.25in</BottomMargin>
   <DataSets>
     <DataSet Name="Data">
-      <Query >
+      <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>Url=d:\temp\dead.xml;RowsXPath=/Rows/Row</CommandText>
       </Query>
-      <Fields >
+      <Fields>
         <Field Name="date">
           <DataField>date</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -66,7 +66,7 @@
     </DataSet>
   </DataSets>
   <PageHeader>
-    <Height>6.8pt</Height>
+    <Height>0.0pt</Height>
     <PrintOnFirstPage>true</PrintOnFirstPage>
     <PrintOnLastPage>true</PrintOnLastPage>
   </PageHeader>
@@ -79,8 +79,8 @@
           <BorderStyle>
             <Default>Solid</Default>
           </BorderStyle>
-          <BorderColor  />
-          <BorderWidth  />
+          <BorderColor />
+          <BorderWidth />
         </Style>
         <TableColumns>
           <TableColumn>
@@ -272,7 +272,7 @@
         </Details>
         <Left>3.3pt</Left>
         <Top>42.1pt</Top>
-        <Footer >
+        <Footer>
           <TableRows>
             <TableRow>
               <Height>.2in</Height>
@@ -572,6 +572,14 @@
         <Left>137.0pt</Left>
         <Top>10.7pt</Top>
       </Table>
+      <Textbox Name="Textbox21" >
+        <Height>12.75pt</Height>
+        <Width>123.37pt</Width>
+        <Value>=Globals!ExecutionTime</Value>
+        <ZIndex>1</ZIndex>
+        <Left>472.6pt</Left>
+        <Top>0.0pt</Top>
+      </Textbox>
     </ReportItems>
     <Height>85.2pt</Height>
   </Body>

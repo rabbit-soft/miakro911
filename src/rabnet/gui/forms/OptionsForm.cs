@@ -18,70 +18,73 @@ namespace rabnet
             [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
             private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su,n,cn,tt,vactime,cand,bbone;
             private string gd, sh,xf;
-            private RUBOOL ce, ck,crp, uz,sp,ask, fbz,vIs;
+            private RUBOOL ce, ck,crp, uz,sp,ask, fbz,vIs,vacMoth;
             private BuchTp bt;
 
             #region zooTime
             [Category("Зоотехнические сроки"),DisplayName("Окрол"),
             Description("Время от случки(вязки) до окрола")]
-			public int okrol { get { return ok; } set { ok = value; } }
+			public int Okrol { get { return ok; } set { ok = value; } }
             [Category("Зоотехнические сроки"),DisplayName("Выдворение"),
             Description("Назначать Удаление родильного ящика из клетки, где подсосные крольчата достигли указанного возраста.")]
-            public int vudvor { get { return vud; } set { vud = value; } }
+            public int Vudvor { get { return vud; } set { vud = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Выдворение при сукрольной"),
             Description("Назначать Выдворение даже если крольчиха сукрольна")]
             public RUBOOL VudvorIfSukrol { get { return vIs; } set { vIs = value; } }
             [Category("Зоотехнические сроки"),DisplayName("1й подсчет гнездовых"),
             Description("Проверка изменения числа рожденных крольчат в 1ый раз")]
-            public int count1 { get { return c1; } set { c1=value;} }
+            public int Count1 { get { return c1; } set { c1=value;} }
             [Category("Зоотехнические сроки"),DisplayName("2й подсчет гнездовых"),
             Description("Проверка изменения числа рожденных крольчат в 2ый раз")]
-            public int count2 { get { return c2; } set { c2 = value; } }
+            public int Count2 { get { return c2; } set { c2 = value; } }
             [Category("Зоотехнические сроки"),DisplayName("3й подсчет гнездовых"),
             Description("Проверка изменения числа рожденных крольчат в 3ый раз")]
-            public int count3 { get { return c3; } set { c3 = value; } }
+            public int Count3 { get { return c3; } set { c3 = value; } }
             [Category("Зоотехнические сроки"),DisplayName("Возведение в невесты"),
             Description("Присвоить самкам со статусом Девочка, статус Невеста, достигших указанного возраста")]
-            public int brides { get { return br; } set { br = value; } }
+            public int Brides { get { return br; } set { br = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Возведение в кандидаты"),
             Description("Присвоить самцам со статусом Мальчик, статус Кандидат, достигших указанного возраста")]
-            public int candidate { get { return cand; } set { cand = value; } }
+            public int Candidate { get { return cand; } set { cand = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Предокрольный осмотр"),
             Description("Проверка перед окролом грелки, наличие пригодного сена и состояния крольчихи, в указанный срок")]
-            public int preokrol { get { return pok; } set { pok = value; } }
+            public int Preokrol { get { return pok; } set { pok = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Объединение группы"),
             Description("Максимально допустимая разница в возрасте двух объединяемых групп гнездовых/подсосных крольчат")]
-            public int combine { get { return com; } set { com = value; } }
+            public int Combine { get { return com; } set { com = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Отсадка мальчиков"),
             Description("Назначить пересадку мальчиков из клетки кормилицы, достигших указанного возраста")]
-            public int boysOut { get { return bo; } set { bo = value; } }
+            public int BoysOut { get { return bo; } set { bo = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Отсадка девочек"),
             Description("Назначить пересдку девочек из клетки кормилицы, достигших указанного возраста")]
-            public int girlsOut { get { return go; } set { go = value; } }
+            public int GirlsOut { get { return go; } set { go = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Назначение штатной на вязку"),
             Description("Назначить Штатную на вязку, если молодняк, сидящий с ней, достигает указанного возраста")]
-            public int stateFuck { get { return sf; } set { sf = value; } }
+            public int StateFuck { get { return sf; } set { sf = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Назначение первокролки на вязку"),
             Description("Назначить Перкокролку на вязку, если молодняк, сидящий с ней, достигает указанного возраста")]
-            public int firstFuck { get { return ff; } set { ff = value; } }
+            public int FirstFuck { get { return ff; } set { ff = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Отдых самца"),
             Description("Сколько суток отдыхает отработавший самец до назначения на работу")]
-            public int maleWait { get { return mw; } set { mw = value; } }
+            public int MaleWait { get { return mw; } set { mw = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Прививка"),
             Description("Назначить на прививку молодняк, достигший указанного возраста")]
-            public int vacc { get { return vac; } set { vac = value; } }
+            public int Vacc { get { return vac; } set { vac = value; } }
+            [Category("Зоотехнические сроки"), DisplayName("Привививать мать вместе с детьми"),
+            Description("В зоотех плане на вакцинацию будут назначаться только дети. При прививке детей, будет привита и мать, с которой они сидят в однорй клетке")]
+            public RUBOOL VaccWithMother { get { return vacMoth; } set { vacMoth = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Подсчет подсосных"),
             Description("Возведение гнездовых крольчат в подсосных и подсчет их количества")]
             public int suck { get { return su; } set { su = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Установка гнездовья"),
             Description("Пересадить крольчиху в Юрту(А)")]
-            public int nest { get { return n; } set { n = value; } }
+            public int Nest { get { return n; } set { n = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Установка гнездовья при молодняке"),
             Description("Пересадить крольчиху в Юрту(А) если у нее есть подсосные")]
-            public int childnest { get { return cn; } set { cn = value; } }
+            public int ChildNest { get { return cn; } set { cn = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Действие Прививки"),
             Description("Количество дней, сколько действует прививка")]
-            public int vaccine_time { get { return vactime; } set { vactime = value; } }
+            public int VaccineTime { get { return vactime; } set { vactime = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Рассадка мальчиков по одному"),
             Description("Назначать всем группам мальчиков,достигших указанного возраста, рассадку по одному")]
             public int BoysByOne { get { return bbone; } set { bbone = value; } }
@@ -192,26 +195,27 @@ namespace rabnet
             {
                 Options o=Engine.opt();
                 //zoo time
-                okrol=o.getIntOption(Options.OPT_ID.OKROL);
-                vudvor = o.getIntOption(Options.OPT_ID.VUDVOR);
+                Okrol=o.getIntOption(Options.OPT_ID.OKROL);
+                Vudvor = o.getIntOption(Options.OPT_ID.VUDVOR);
                 VudvorIfSukrol = toR(o.getIntOption(Options.OPT_ID.VUDVOR_IF_SUKROL));
-                count1 = o.getIntOption(Options.OPT_ID.COUNT1);
-                count2 = o.getIntOption(Options.OPT_ID.COUNT2);
-                count3 = o.getIntOption(Options.OPT_ID.COUNT3);
-                brides = o.getIntOption(Options.OPT_ID.MAKE_BRIDE);
-                preokrol = o.getIntOption(Options.OPT_ID.PRE_OKROL);
-                combine = o.getIntOption(Options.OPT_ID.COMBINE_AGE);
-                boysOut = o.getIntOption(Options.OPT_ID.BOYS_OUT);
-                girlsOut = o.getIntOption(Options.OPT_ID.GIRLS_OUT);
-                stateFuck = o.getIntOption(Options.OPT_ID.STATE_FUCK);
-                firstFuck = o.getIntOption(Options.OPT_ID.FIRST_FUCK);
-                maleWait = o.getIntOption(Options.OPT_ID.MALE_WAIT);
-                vacc = o.getIntOption(Options.OPT_ID.VACC);
+                Count1 = o.getIntOption(Options.OPT_ID.COUNT1);
+                Count2 = o.getIntOption(Options.OPT_ID.COUNT2);
+                Count3 = o.getIntOption(Options.OPT_ID.COUNT3);
+                Brides = o.getIntOption(Options.OPT_ID.MAKE_BRIDE);
+                Preokrol = o.getIntOption(Options.OPT_ID.PRE_OKROL);
+                Combine = o.getIntOption(Options.OPT_ID.COMBINE_AGE);
+                BoysOut = o.getIntOption(Options.OPT_ID.BOYS_OUT);
+                GirlsOut = o.getIntOption(Options.OPT_ID.GIRLS_OUT);
+                StateFuck = o.getIntOption(Options.OPT_ID.STATE_FUCK);
+                FirstFuck = o.getIntOption(Options.OPT_ID.FIRST_FUCK);
+                MaleWait = o.getIntOption(Options.OPT_ID.MALE_WAIT);
+                Vacc = o.getIntOption(Options.OPT_ID.VACC);
                 suck = o.getIntOption(Options.OPT_ID.SUCKERS);
-                nest = o.getIntOption(Options.OPT_ID.NEST);
-                childnest = o.getIntOption(Options.OPT_ID.CHILD_NEST);
-                vaccine_time = o.getIntOption(Options.OPT_ID.VACCINE_TIME);
-                candidate = o.getIntOption(Options.OPT_ID.MAKE_CANDIDATE);
+                Nest = o.getIntOption(Options.OPT_ID.NEST);
+                ChildNest = o.getIntOption(Options.OPT_ID.CHILD_NEST);
+                VaccineTime = o.getIntOption(Options.OPT_ID.VACCINE_TIME);
+                VaccWithMother = toR(o.getBoolOption(Options.OPT_ID.VACC_MOTHER));
+                Candidate = o.getIntOption(Options.OPT_ID.MAKE_CANDIDATE);
                 bbone = o.getIntOption(Options.OPT_ID.BOYS_BY_ONE);
                 //view
                 genTree = o.getIntOption(Options.OPT_ID.GEN_TREE);
@@ -240,26 +244,27 @@ namespace rabnet
             public void save()
             {
                 Options o = Engine.opt();
-                o.setOption(Options.OPT_ID.OKROL, okrol);
-                o.setOption(Options.OPT_ID.VUDVOR, vudvor);
+                o.setOption(Options.OPT_ID.OKROL, Okrol);
+                o.setOption(Options.OPT_ID.VUDVOR, Vudvor);
                 o.setOption(Options.OPT_ID.VUDVOR_IF_SUKROL, fromR(VudvorIfSukrol));
-                o.setOption(Options.OPT_ID.COUNT1, count1);
-                o.setOption(Options.OPT_ID.COUNT2, count2);
-                o.setOption(Options.OPT_ID.COUNT3, count3);
-                o.setOption(Options.OPT_ID.MAKE_BRIDE, brides);
-                o.setOption(Options.OPT_ID.PRE_OKROL, preokrol);
-                o.setOption(Options.OPT_ID.COMBINE_AGE, combine);
-                o.setOption(Options.OPT_ID.BOYS_OUT, boysOut);
-                o.setOption(Options.OPT_ID.GIRLS_OUT, girlsOut);
-                o.setOption(Options.OPT_ID.STATE_FUCK, stateFuck);
-                o.setOption(Options.OPT_ID.FIRST_FUCK, firstFuck);
-                o.setOption(Options.OPT_ID.MALE_WAIT, maleWait);
-                o.setOption(Options.OPT_ID.VACC, vacc);
+                o.setOption(Options.OPT_ID.COUNT1, Count1);
+                o.setOption(Options.OPT_ID.COUNT2, Count2);
+                o.setOption(Options.OPT_ID.COUNT3, Count3);
+                o.setOption(Options.OPT_ID.MAKE_BRIDE, Brides);
+                o.setOption(Options.OPT_ID.PRE_OKROL, Preokrol);
+                o.setOption(Options.OPT_ID.COMBINE_AGE, Combine);
+                o.setOption(Options.OPT_ID.BOYS_OUT, BoysOut);
+                o.setOption(Options.OPT_ID.GIRLS_OUT, GirlsOut);
+                o.setOption(Options.OPT_ID.STATE_FUCK, StateFuck);
+                o.setOption(Options.OPT_ID.FIRST_FUCK, FirstFuck);
+                o.setOption(Options.OPT_ID.MALE_WAIT, MaleWait);
+                o.setOption(Options.OPT_ID.VACC, Vacc);
+                o.setOption(Options.OPT_ID.VACC_MOTHER, fromR(VaccWithMother));
                 o.setOption(Options.OPT_ID.SUCKERS, suck);
-                o.setOption(Options.OPT_ID.NEST, nest);
-                o.setOption(Options.OPT_ID.CHILD_NEST, childnest);
-                o.setOption(Options.OPT_ID.VACCINE_TIME, vaccine_time);
-                o.setOption(Options.OPT_ID.MAKE_CANDIDATE, candidate);
+                o.setOption(Options.OPT_ID.NEST, Nest);
+                o.setOption(Options.OPT_ID.CHILD_NEST, ChildNest);
+                o.setOption(Options.OPT_ID.VACCINE_TIME, VaccineTime);
+                o.setOption(Options.OPT_ID.MAKE_CANDIDATE, Candidate);
                 o.setOption(Options.OPT_ID.BOYS_BY_ONE, bbone);
                 //view
                 o.setOption(Options.OPT_ID.GEN_TREE, genTree);

@@ -239,7 +239,7 @@ namespace rabnet
         public void getVacc(JobHolder jh)
         {
             int days = f.safeInt("vacc");
-            ZooJobItem[] jobs = eng.db2().getVacc(f, days);
+            ZooJobItem[] jobs = eng.db2().getVacc(f);
             foreach (ZooJobItem z in jobs)
                 jh.Add(new ZootehJob(f).Vacc(z.id,z.name,z.place,z.age,z.info[0],z.breed));
         }

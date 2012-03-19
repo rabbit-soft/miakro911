@@ -13,11 +13,11 @@
   <BottomMargin>.25in</BottomMargin>
   <DataSets>
     <DataSet Name="Data">
-      <Query >
+      <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>Url=D:\temp\fuck.xml;RowsXPath=/Rows/Row</CommandText>
       </Query>
-      <Fields >
+      <Fields>
         <Field Name="name">
           <DataField>name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -387,7 +387,7 @@
                         <BorderStyle>
                           <Default>Solid</Default>
                         </BorderStyle>
-                        <FontWeight >Bold</FontWeight>
+                        <FontWeight>Bold</FontWeight>
                       </Style>
                       <Value>=Sum(Fields!f_children)</Value>
                     </Textbox>
@@ -658,6 +658,14 @@
           <BorderWidth />
           <FontSize>14pt</FontSize>
         </Style>
+      </Textbox>
+      <Textbox Name="Textbox25" >
+        <Height>12.75pt</Height>
+        <Width>123.37pt</Width>
+        <Value>=Globals!ExecutionTime</Value>
+        <ZIndex>1</ZIndex>
+        <Left>471.9pt</Left>
+        <Top>0.0pt</Top>
       </Textbox>
     </ReportItems>
     <Height>129.7pt</Height>

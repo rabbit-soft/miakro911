@@ -563,7 +563,6 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 AND "+busy+";", sql);
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT b_level FROM buildings WHERE b_id={0:d};",toBuilding), sql);
             MySqlDataReader rd;
-            //TODO: here
             int level = 0;
             if (toBuilding != 0)
             {

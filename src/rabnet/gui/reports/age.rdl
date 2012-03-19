@@ -55,6 +55,14 @@
           <FontSize>16pt</FontSize>
         </Style>
       </Textbox>
+      <Textbox Name="Textbox5" >
+        <Height>12.75pt</Height>
+        <Width>123.37pt</Width>
+        <Value>=Globals!ExecutionTime</Value>
+        <ZIndex>1</ZIndex>
+        <Left>472.9pt</Left>
+        <Top>0.0pt</Top>
+      </Textbox>
     </ReportItems>
   </PageHeader>
   <Body>

@@ -73,11 +73,11 @@
       </Fields>
     </DataSet>
     <DataSet Name="Data2">
-      <Query >
+      <Query>
         <DataSourceName>DS1</DataSourceName>
         <CommandText>url=C:/Temp/plem.xml;RowsXPath=/Rows/NUROWS/Row</CommandText>
       </Query>
-      <Fields >
+      <Fields>
         <Field Name="date">
           <DataField>date</DataField>
           <TypeName>System.String</TypeName>
@@ -529,7 +529,7 @@
         <Left>68.9pt</Left>
         <Top>5.9pt</Top>
       </Table>
-      <Table Name="Table3" >
+      <Table Name="Table3">
         <DataSetName>Data2</DataSetName>
         <NoRows>Query returned no rows!</NoRows>
         <Style>
@@ -574,6 +574,14 @@
         <Left>97.3pt</Left>
         <Top>82.0pt</Top>
       </Table>
+      <Textbox Name="Textbox22" >
+        <Height>12.75pt</Height>
+        <Width>123.37pt</Width>
+        <Value>=Globals!ExecutionTime</Value>
+        <ZIndex>1</ZIndex>
+        <Left>470.6pt</Left>
+        <Top>0.0pt</Top>
+      </Textbox>
     </ReportItems>
     <Columns>1</Columns>
   </Body>
