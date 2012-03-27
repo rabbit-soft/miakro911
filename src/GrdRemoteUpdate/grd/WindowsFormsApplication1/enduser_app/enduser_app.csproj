@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>enduser_app</RootNamespace>
     <AssemblyName>enduser_app</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -40,15 +40,6 @@
       <HintPath>dlls\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
@@ -72,7 +63,6 @@
       <Link>GRD\GRDCommon.cs</Link>
     </Compile>
     <Compile Include="GRD\GRDEndUser.cs" />
-    <Compile Include="GRD\GRDEndUserRabbits.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -99,11 +89,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="GrdAPI32.DLL">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="..\..\..\..\..\party3d\GrdAPI32.DLL">
+      <Link>GrdAPI32.DLL</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="GrdAPI64.DLL">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="..\..\..\..\..\party3d\GrdAPI64.DLL">
+      <Link>GrdAPI64.DLL</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

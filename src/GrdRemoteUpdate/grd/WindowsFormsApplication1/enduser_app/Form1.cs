@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
+using System.IO;
+using System.Text.RegularExpressions;
 using System.Text;
 using System.Windows.Forms;
 using RabGRD;
@@ -27,9 +28,9 @@ namespace enduser_app
         {
             if (GRDEndUser.Instance.ValidKey())
             {
-                label1.Text = GRDEndUser.Instance.GetKeyID();
+                //label1.Text = GRDEndUser.Instance.GetKeyID();
                 label2.Text = GRDEndUser.Instance.GetFarmsCnt().ToString();
-                label3.Text = GRDEndUser.Instance.GetOrgName();
+                label3.Text = GRDEndUser.Instance.GetOrganizationName();
                 label4.Text = GRDEndUser.Instance.GetDateStart().ToString();
                 label5.Text = GRDEndUser.Instance.GetDateEnd().ToString();
                 label6.Text = GRDEndUser.Instance.GetFlag(GRDEndUser.FlagType.RabNet).ToString();
@@ -39,7 +40,8 @@ namespace enduser_app
                 label10.Text = GRDEndUser.Instance.GetFlag(GRDEndUser.FlagType.ReportPlugIns).ToString();
                 label22.Text = GRDEndUser.Instance.ValidKey().ToString();
                 label24.Text = GRDEndUser.Instance.GetCustomerID().ToString("X");
-            } else
+            } 
+            else
             {
                 label22.Text = GRDEndUser.Instance.ValidKey().ToString();
             }
@@ -47,12 +49,25 @@ namespace enduser_app
 
         private void button2_Click(object sender, EventArgs e)
         {
-            GRDEndUser.Instance.GetTRUQuestion();
+            string base64data = GRDEndUser.Instance.GetTRUQuestion();
+            TextWriter tw = new StreamWriter("question.txt");
+            tw.WriteLine("############################################################################");
+            tw.WriteLine("##                                                                        ##");
+            tw.WriteLine("##     Key update question data                                           ##");
+            tw.WriteLine("##                                                                        ##");
+            tw.WriteLine("############################################################################");
+            tw.WriteLine(base64data);
+            tw.Close();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            GRDEndUser.Instance.SetTRUAnswer();
+            TextReader tr = new StreamReader("answer.txt");
+            string st = tr.ReadToEnd();
+            Regex test = new Regex(@"^##.*$", RegexOptions.Multiline);
+            st = test.Replace(st, string.Empty);            
+            tr.Close();
+            GRDEndUser.Instance.SetTRUAnswer(st);
         }
     }
 }

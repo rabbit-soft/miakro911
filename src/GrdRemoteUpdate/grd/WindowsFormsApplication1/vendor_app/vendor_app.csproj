@@ -69,7 +69,6 @@
     <Compile Include="..\..\..\..\libs\GRD\GRD_Base.cs">
       <Link>GRD\GRD_Base.cs</Link>
     </Compile>
-    <Compile Include="GRD\GRDVendorRabbits.cs" />
     <Compile Include="GRD\GRDCommon.cs" />
     <Compile Include="GRD\GRD_BaseCodes.cs" />
     <Compile Include="GRD\GRDVendor.cs" />
@@ -106,12 +105,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\app.manifest" />
-    <None Include="GrdAPI32.DLL">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="GrdAPI64.DLL">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
@@ -133,6 +126,16 @@
   <ItemGroup>
     <None Include="writemask.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\..\party3d\GrdAPI32.DLL">
+      <Link>GrdAPI32.DLL</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\..\party3d\GrdAPI64.DLL">
+      <Link>GrdAPI64.DLL</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

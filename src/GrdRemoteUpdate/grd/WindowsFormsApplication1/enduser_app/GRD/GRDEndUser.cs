@@ -1,15 +1,8 @@
-﻿#define LOCALDEBUG
-#if PROTECTED
+﻿#if PROTECTED
 using System;
-using System.Globalization;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using Guardant;
-
 using log4net;
-
+using Guardant;
 
 namespace RabGRD
 {
@@ -19,20 +12,131 @@ namespace RabGRD
     /// </summary>
     public sealed partial class GRDEndUser:GRD_Base
     {
-        private readonly ILog Log = LogManager.GetLogger(typeof(GRDEndUser));
-        
-        //public static GRDEndUser Instance = new GRDEndUser();                         
-        //public static readonly GRDEndUser Instance = new GRDEndUser();
-        //private Handle _grdHandle = new Handle(); // Creates empty handle for Guardant protected container
-        //private string _keyId;
+        public static readonly GRDEndUser Instance = new GRDEndUser();
 
-        private byte _modelid;
-        private ushort _type;
+        private const uint ProgIDCode = 1;
+        private uint _keyId;
+        private ushort _keyType;
         private ushort _lanRes;
-        private uint _id;
-        private uint _uamOffset;
+        private byte _modelId;
+        
+        private GRDEndUser()
+        {
+            try
+            {
+                log = LogManager.GetLogger(typeof(GRDEndUser));
+                Connect();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.InnerException.Message, "Фатальная ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                log.Debug(e.InnerException.Message);
+                Environment.Exit(100);
+            }
+        }
+        ~GRDEndUser()
+        {
+            Disconnect();
+        }
 
-        public void ResetSearchConditions()
+        public GrdE Connect()
+        {
+            GrdE retCode;
+            string logStr;
+            FindInfo findInfo;
+
+            _findPropRemoteMode = GrdFMR.Local;
+            _findPropDongleType = GrdDT.TRU;            
+
+            prepareHandle();
+
+            // -----------------------------------------------------------------
+            // Search for all specified dongles and print ID's
+            // -----------------------------------------------------------------
+            logStr = "Searching for all specified dongles and print info about it's : ";
+            retCode = GrdApi.GrdFind(_grdHandle, GrdF.First, out _findPropDongleID, out findInfo);
+            if (retCode == GrdE.OK) // Print table header if at least one dongle found
+            {
+                logStr += string.Format("; Found dongle with following ID : {0,8:X}", _findPropDongleID);
+                _keyId = findInfo.dwID;
+                _keyType = findInfo.wType;
+                _lanRes = findInfo.wRealNetRes;
+                _modelId = (byte)findInfo.dwModel;
+            }
+            else
+            {
+                return ErrorHandling(_grdHandle, retCode);
+            }
+
+            // -----------------------------------------------------------------
+            // Search for the specified local or remote dongle and log in
+            // -----------------------------------------------------------------
+            logStr = "Searching for the specified local or remote dongle and log in : ";
+            retCode = GrdApi.GrdLogin(_grdHandle, 0, GrdLM.PerStation);
+            logStr += GrdApi.PrintResult((int)retCode);
+            log.Debug(logStr);
+            return ErrorHandling(_grdHandle, retCode);
+        }
+
+        public void SetTRUAnswer(string base64_answer)
+        {
+            byte[] buf = Convert.FromBase64String(base64_answer);
+            GrdE retCode; // Error code for all Guardant API functions
+            string logStr = "Apply encrypted answer data: ";
+
+            retCode = GrdApi.GrdTRU_ApplyAnswer(_grdHandle, // handle to Guardant protected container of dongle with 
+                                                            // corresponding pre-generated question 
+                                                buf);       // answer data update buffer prepared and encrypted by GrdTRU_EncryptAnswer 
+
+            logStr += GrdApi.PrintResult((int)retCode);
+            log.Debug(logStr);
+            ErrorHandling(_grdHandle, retCode);
+
+            byte[] buffer = new byte[16];
+            byte[] initVector = new byte[16];
+
+            logStr = "Testing new mask by GrdTransform test: ";
+            retCode = GrdApi.GrdTransform(_grdHandle, 0, 8, buffer, 0, initVector);
+            logStr += GrdApi.PrintResult((int)retCode);
+            log.Debug(logStr);
+            ErrorHandling(_grdHandle, retCode);
+        }
+
+        /// <summary>
+        /// Генерирует число вопрос для Удаленного Обновления Ключа(TRU)
+        /// </summary>
+        /// <returns>Число вопрос (base64string)</returns>
+        public string GetTRUQuestion()
+        {
+            GrdE retCode; // Error code for all Guardant API functions
+            string logStr = "Generate encrypted question and initialize remote update procedure: ";
+
+            TRUQuestionStruct quest = new TRUQuestionStruct();
+
+
+            retCode = GrdApi.GrdTRU_GenerateQuestion(
+                            _grdHandle,         // handle to Guardant protected container 
+                            out quest.question, // pointer to question					8 bytes (64 bit) 
+                            out quest.id,       // pointer to dongle ID					4 bytes 
+                            out quest.pubKey,   // pointer to dongle Public Code		4 bytes 
+                            out quest.hash);    // pointer to Hash of previous data		8 bytes 
+
+            logStr += GrdApi.PrintResult((int)retCode);
+            log.Debug(logStr);
+            ErrorHandling(_grdHandle, retCode);
+
+            quest.type = _keyType;
+            quest.lanRes = _lanRes;
+            quest.model = _model;
+
+            byte[] buf = GRDUtils.RawSerialize(quest);
+
+            return Convert.ToBase64String(buf, 0, buf.Length, Base64FormattingOptions.None);
+        }
+
+        #region rudiments
+
+        /*public void ResetSearchConditions()
         {
             _findPropRemoteMode = GrdFMR.Local;                 // Local dongles only
             _findPropDongleFlags = GrdFM.Type | GrdFM.NProg;    // Check by bProg, bVer & dongle type flag
@@ -44,101 +148,8 @@ namespace RabGRD
             _findPropDongleType = GrdDT.TRU;                    // Dongle that supports GSII64 algorithm   
             _findPropDongleModel = GrdFMM.ALL;                  // Guardant Stealth III dongle
             _findPropDongleInterface = GrdFMI.ALL;              // of any interface
-        }
+        }*/
 
-        public void SetTRUAnswer()
-        {
-            TextReader tr = new StreamReader("answer.txt");
-
-            string st = tr.ReadToEnd();
-
-            Regex test = new Regex(@"^##.*$", RegexOptions.Multiline);
-
-            st = test.Replace(st, string.Empty);
-
-            byte[] buf = Convert.FromBase64String(st);
-
-            tr.Close();
-
-            GrdE retCode; // Error code for all Guardant API functions
-            string logStr = "Apply encrypted answer data: ";
-
-            retCode = GrdApi.GrdTRU_ApplyAnswer(_grdHandle, // handle to Guardant protected container of dongle with 
-                // corresponding pre-generated question 
-                                                buf);       // answer data update buffer prepared and encrypted by GrdTRU_EncryptAnswer 
-
-            logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
-            ErrorHandling(_grdHandle, retCode);
-
-            byte[] buffer = new byte[16];
-            byte[] initVector = new byte[16];
-
-            logStr = "Testing new mask by GrdTransform test:";
-            retCode = GrdApi.GrdTransform(_grdHandle, 0, 8, buffer, 0, initVector);
-            logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
-            ErrorHandling(_grdHandle, retCode);
-        }
-
-        public void GetTRUQuestion()
-        {
-            GrdE retCode; // Error code for all Guardant API functions
-            string logStr = "Generate encrypted question and initialize remote update procedure: ";
-
-            TRUQuestionStruct quest = new TRUQuestionStruct();
-
-            if (((GrdDT)_type & GrdDT.RTC) == GrdDT.RTC) // End User dongle supports RTC 
-            {
-                retCode = GrdApi.GrdTRU_GenerateQuestionTime(
-                                _grdHandle,                 // handle to Guardant protected container 
-                                out quest.question,         // pointer to question					8 bytes (64 bit) 
-                                out quest.id,               // pointer to dongle ID					4 bytes 
-                                out quest.pubKey,           // pointer to dongle Public Code		4 bytes 
-                                out quest.dongleTime,       // pointer to dongle time (encrypted)	8 bytes 
-                                128 * sizeof(byte),         // size of DeadTimes array in bytes 
-                                out quest.deadTimes,        // pointer to array of DeadTimes 
-                                out quest.deadTimesNumber,  // number of returned DeadTimes 
-                                out quest.hash);            // pointer to Hash of previous data		8 bytes 
-
-            }
-            else
-            {
-                retCode = GrdApi.GrdTRU_GenerateQuestion(
-                                _grdHandle,         // handle to Guardant protected container 
-                                out quest.question, // pointer to question					8 bytes (64 bit) 
-                                out quest.id,       // pointer to dongle ID					4 bytes 
-                                out quest.pubKey,   // pointer to dongle Public Code		4 bytes 
-                                out quest.hash);    // pointer to Hash of previous data		8 bytes 
-            }
-            logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
-            ErrorHandling(_grdHandle, retCode);
-
-            quest.type = _type;
-            quest.lanRes = _lanRes;
-            quest.model = _modelid;
-
-            byte[] buf = GRDUtils.RawSerialize(quest);
-
-            string base64data;
-
-            base64data = Convert.ToBase64String(buf, 0, buf.Length, Base64FormattingOptions.None);
-
-            TextWriter tw = new StreamWriter("question.txt");
-
-            tw.WriteLine("############################################################################");
-            tw.WriteLine("##                                                                        ##");
-            tw.WriteLine("##     Key update question data                                           ##");
-            tw.WriteLine("##                                                                        ##");
-            tw.WriteLine("############################################################################");
-
-            tw.WriteLine(base64data);
-
-            tw.Close();
-        }
-
-        #region rudiments
         /// <summary>
         /// Private constructor prevents instantiation from other classes
         /// </summary>
@@ -151,7 +162,7 @@ namespace RabGRD
             catch (Exception e)
             {
                 MessageBox.Show(e.InnerException.Message, "Фатальная ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LogIt(e.InnerException.Message);
+                log.Debug(e.InnerException.Message);
                 Environment.Exit(100);
             }
         }
@@ -161,7 +172,7 @@ namespace RabGRD
             Disconnect();
         }*/
 
-        /*private static void LogIt(string txt)
+        /*private static void log.Debug(string txt)
         {
             Log.Debug(txt);
 #if LOCALDEBUG
@@ -259,10 +270,10 @@ namespace RabGRD
             _findPropProgramNumber = 0;              // Check by specified program number                
             _findPropDongleID = 0;                   // This search mode is not used                     
             _findPropSerialNumber = 0;               // This search mode is not used                     
-//            FindProp_program_version = 1; // Check by specified FindProp_program_version                       
+//              FindProp_program_version = 1; // Check by specified FindProp_program_version                       
             _findPropProgramVersion = 0;                    // Check by specified FindProp_program_version                       
             _findPropBitMask = 0;                    // This search mode is not used                     
-//            FindProp_dongleType = GrdDT.GSII64; // Dongle that supports GSII64 algorithm   
+//              FindProp_dongleType = GrdDT.GSII64; // Dongle that supports GSII64 algorithm   
             _findPropDongleType = GrdDT.TRU;         // Dongle that supports GSII64 algorithm   
             _findPropDongleModel = GrdFMM.ALL;       // Guardant Stealth III dongle
             _findPropDongleInterface = GrdFMI.ALL;   // of any interface
@@ -360,7 +371,7 @@ namespace RabGRD
             string logStr = "Reading Bytes : ";
             GrdE retCode = GrdApi.GrdRead(_grdHandle, offset, (int)length, out buffer);
             logStr += GrdApi.PrintResult((int)retCode);
-            LogIt(logStr);
+            log.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
 
             return (retCode==GrdE.OK);
@@ -372,12 +383,12 @@ namespace RabGRD
             if (ReadBytes(out buffer, offset, length))
             {
                 string str = AsciiBytesToString(buffer, 0, (int)length);
-                LogIt("Got string : " + str);
+                log.Debug("Got string : " + str);
                 return str;
             }
             else
             {
-                LogIt("Got NO string");
+                log.Debug("Got NO string");
                 return "";
             }
         }
@@ -388,12 +399,12 @@ namespace RabGRD
             if (ReadBytes(out buffer, offset, length))
             {
                 string str = Cp1251BytesToString(buffer, 0, (int)length);
-                LogIt("Got string : " + str);
+                log.Debug("Got string : " + str);
                 return str;
             }
             else
             {
-                LogIt("Got NO string");
+                log.Debug("Got NO string");
                 return "";
             }
         }
@@ -403,12 +414,12 @@ namespace RabGRD
             byte[] buffer;
             if (ReadBytes(out buffer, offset, 4))
             {
-                LogIt("Got UInt : " + BitConverter.ToUInt32(buffer, 0).ToString());
+                log.Debug("Got UInt : " + BitConverter.ToUInt32(buffer, 0).ToString());
                 return BitConverter.ToUInt32(buffer, 0);
             }
             else
             {
-                LogIt("Got No UInt");
+                log.Debug("Got No UInt");
                 return 0;
             }
         }
@@ -418,12 +429,12 @@ namespace RabGRD
             byte[] buffer;
             if (ReadBytes(out buffer, offset, 4))
             {
-                LogIt("Got Int : " + BitConverter.ToInt32(buffer, 0).ToString());
+                log.Debug("Got Int : " + BitConverter.ToInt32(buffer, 0).ToString());
                 return BitConverter.ToInt32(buffer, 0);
             }
             else
             {
-                LogIt("Got No UInt");
+                log.Debug("Got No UInt");
                 return 0;
             }
         }*/
@@ -469,11 +480,11 @@ namespace RabGRD
             {
                 retCode = GrdApi.GrdCloseHandle(_grdHandle);
                 logStr += GrdApi.PrintResult((int)retCode);
-                LogIt(logStr);
+                log.Debug(logStr);
             }
             else
             {
-                LogIt("..Already closed!");
+                log.Debug("..Already closed!");
             }
 
 //            _isActive = false;

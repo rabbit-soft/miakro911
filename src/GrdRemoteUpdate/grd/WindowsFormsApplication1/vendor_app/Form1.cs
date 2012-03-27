@@ -33,7 +33,6 @@ namespace WindowsFormsApplication1
 
         }
 
-
         private const int grdMarkerOffset = 0;
         private const int grdMarkerLength = 32;
         private const int grdNameOffset = 32;
@@ -77,7 +76,7 @@ namespace WindowsFormsApplication1
             CheckActive();
 
 //            label8.Text = key.UAMOffset.ToString()+" - "+key.ProgID.ToString();
-            label8.Text = key.ReadStringCp1251(key.UAMOffset + grdMarkerOffset, grdMarkerLength);
+            label8.Text = key.GetOrganizationName();
             textBox6.Text = "";
 
         }
@@ -90,7 +89,8 @@ namespace WindowsFormsApplication1
             try
             {
                 act = key.Active;
-            } catch
+            } 
+            catch
             {
                 act = false;
             }
@@ -120,18 +120,17 @@ namespace WindowsFormsApplication1
 
         private void button10_Click(object sender, EventArgs e)
         {
-            textBox6.Text = key.ReadStringCp1251(key.UAMOffset + grdNameOffset, grdNameLength);
+            textBox6.Text = key.GetOrganizationName();
         }
 
         private void button11_Click(object sender, EventArgs e)
         {
-            key.WriteToUserBuf(textBox6.Text, grdMarkerOffset, grdMarkerLength);
-            key.WriteMask();
+            key.WriteMask(key.MakeUserBuff("Чумачечая организация", 1488, 15, new DateTime(1917, 10, 25), DateTime.MaxValue));
         }
 
         private void button12_Click(object sender, EventArgs e)
         {
-            string st = key.get_question();
+            /*string st = key.get_question();
 
             TextWriter tw = new StreamWriter("question.txt");
             tw.WriteLine("############################################################################");
@@ -140,24 +139,20 @@ namespace WindowsFormsApplication1
             tw.WriteLine("##                                                                        ##");
             tw.WriteLine("############################################################################");
             tw.WriteLine(st);
-            tw.Close();
-            
+            tw.Close();*/           
         }
 
         private void button13_Click(object sender, EventArgs e)
         {
-            key.WriteToUserBuf(textBox6.Text, grdMarkerOffset, grdMarkerLength);
-
             TextReader tr = new StreamReader("question.txt");
-
             string st = tr.ReadToEnd();
-
             Regex test = new Regex(@"^##.*$", RegexOptions.Multiline);
             st = test.Replace(st, string.Empty).Trim();
             MessageBox.Show(st);
             tr.Close();
 
-            st = key.GetAnswer(st);
+            st = key.GetTRUAnswer(st, 
+                key.MakeUserBuff("Чумачечая организация", 1488, 15, new DateTime(1917, 10, 25), DateTime.MaxValue));
 
             MessageBox.Show(st);
             TextWriter tw = new StreamWriter("answer.txt");
@@ -184,7 +179,7 @@ namespace WindowsFormsApplication1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            key.WriteToUserBuf(new DateTime(2011, 10, 5), 100);
+            //key.WriteToUserBuf(new DateTime(2011, 10, 5), 100);
         }
 
 
