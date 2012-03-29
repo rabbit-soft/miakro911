@@ -125,7 +125,7 @@ namespace WindowsFormsApplication1
 
         private void button11_Click(object sender, EventArgs e)
         {
-            key.WriteMask(key.MakeUserBuff("Чумачечая организация", 1488, 15, new DateTime(1917, 10, 25), DateTime.MaxValue));
+            key.WriteMask("Наци-организация", 1388, 15, new DateTime(1917, 10, 25), new DateTime(2100, 10, 25));
         }
 
         private void button12_Click(object sender, EventArgs e)
@@ -151,8 +151,7 @@ namespace WindowsFormsApplication1
             MessageBox.Show(st);
             tr.Close();
 
-            st = key.GetTRUAnswer(st, 
-                key.MakeUserBuff("Чумачечая организация", 1488, 15, new DateTime(1917, 10, 25), DateTime.MaxValue));
+            st = key.GetTRUAnswer(st,"Чумачечая организация", 1488, 15, new DateTime(1917, 10, 25), DateTime.MaxValue);
 
             MessageBox.Show(st);
             TextWriter tw = new StreamWriter("answer.txt");
@@ -169,12 +168,12 @@ namespace WindowsFormsApplication1
 
         private void button14_Click(object sender, EventArgs e)
         {
-            TextReader tr = new StreamReader("answer.txt");
+            /*TextReader tr = new StreamReader("answer.txt");
             string st = tr.ReadToEnd();
             Regex test = new Regex(@"^##.*$", RegexOptions.Multiline);
             st = test.Replace(st, string.Empty);
             tr.Close();
-            key.SetTRUAnswer(st);
+            key.SetTRUAnswer(st);*/
         }
 
         private void button1_Click(object sender, EventArgs e)

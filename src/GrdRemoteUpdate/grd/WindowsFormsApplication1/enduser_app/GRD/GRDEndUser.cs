@@ -36,7 +36,7 @@ namespace RabGRD
         }
         ~GRDEndUser()
         {
-            Disconnect();
+            disconnect();
         }
 
         public GrdE Connect()
