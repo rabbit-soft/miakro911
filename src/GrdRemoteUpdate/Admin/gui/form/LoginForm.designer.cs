@@ -43,11 +43,11 @@
             this.btPassChange = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.gbNewPass = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tbNewPassConf = new System.Windows.Forms.TextBox();
             this.lbError = new System.Windows.Forms.Label();
             this.lbNewPass = new System.Windows.Forms.Label();
             this.tbNewPass = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.tbNewPassConf = new System.Windows.Forms.TextBox();
             this.gbServ.SuspendLayout();
             this.gbNewPass.SuspendLayout();
             this.SuspendLayout();
@@ -186,6 +186,24 @@
             this.gbNewPass.TabStop = false;
             this.gbNewPass.Text = "Установить новый пароль";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(15, 48);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(76, 13);
+            this.label5.TabIndex = 17;
+            this.label5.Text = "Подтвердить:";
+            // 
+            // tbNewPassConf
+            // 
+            this.tbNewPassConf.Location = new System.Drawing.Point(104, 45);
+            this.tbNewPassConf.Name = "tbNewPassConf";
+            this.tbNewPassConf.PasswordChar = '*';
+            this.tbNewPassConf.Size = new System.Drawing.Size(141, 20);
+            this.tbNewPassConf.TabIndex = 16;
+            this.tbNewPassConf.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
             // lbError
             // 
             this.lbError.AutoSize = true;
@@ -215,24 +233,6 @@
             this.tbNewPass.TabIndex = 11;
             this.tbNewPass.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(15, 48);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(76, 13);
-            this.label5.TabIndex = 17;
-            this.label5.Text = "Подтвердить:";
-            // 
-            // tbNewPassConf
-            // 
-            this.tbNewPassConf.Location = new System.Drawing.Point(104, 45);
-            this.tbNewPassConf.Name = "tbNewPassConf";
-            this.tbNewPassConf.PasswordChar = '*';
-            this.tbNewPassConf.Size = new System.Drawing.Size(141, 20);
-            this.tbNewPassConf.TabIndex = 16;
-            this.tbNewPassConf.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            // 
             // LoginFrom
             // 
             this.AcceptButton = this.btOk;
@@ -256,7 +256,7 @@
             this.MinimizeBox = false;
             this.Name = "LoginFrom";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Вход в систем pAdmin";
+            this.Text = "Вход в систем GuardantUpdate";
             this.Load += new System.EventHandler(this.LoginFrom_Load);
             this.gbServ.ResumeLayout(false);
             this.gbServ.PerformLayout();

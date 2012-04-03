@@ -34,7 +34,7 @@ namespace pEngine
 
     partial class Options:IOptions
     {
-        private const string REG_PATH = @"Software\9-Bits\pAdmin";
+        private const string REG_PATH = @"Software\9-Bits\grdUpdate";
 
         private RegistryKey _userReg = Registry.CurrentUser.CreateSubKey(REG_PATH);
         private RegistryKey _loclReg = Registry.LocalMachine.CreateSubKey(REG_PATH);

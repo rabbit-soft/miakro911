@@ -6,11 +6,11 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace AdminGRD
+namespace AdminGRD.form
 {
-    public partial class AddKey : Form
+    public partial class DongleForm : Form
     {
-        public AddKey()
+        public DongleForm()
         {
             InitializeComponent();
         }

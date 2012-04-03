@@ -83,11 +83,11 @@ namespace pEngine
         /// <param name="mn">Название функции</param>
         /// <param name="vars">Параметры функции</param>
         /// <returns>Объект с данными ответа</returns>
-        public ResponceItem ExecuteMethod(MethodName mn, MethodParams vars)
+        public ResponceItem ExecuteMethod(MName mn, MethodParams vars)
         {
             return executeMethod(mn, vars);
         }
-        public ResponceItem ExecuteMethod(MethodName mn, params string[] prms)
+        public ResponceItem ExecuteMethod(MName mn, params string[] prms)
         {
             MethodParams vars = new MethodParams();
             for (int i = 0; i < prms.Length; i+=2)            
@@ -95,7 +95,7 @@ namespace pEngine
             
             return executeMethod(mn, vars);
         }
-        public ResponceItem ExecuteMethod(MethodName mn)
+        public ResponceItem ExecuteMethod(MName mn)
         {
             return executeMethod(mn, null);
         }
@@ -152,7 +152,7 @@ namespace pEngine
         /// <param name="vars">Параметры необходимые для выполнения метода</param>
         /// <returns>Может вернуть null при неверном запросе</returns>
         /// <exception cref="">NotHandle</exception>
-        private ResponceItem executeMethod(MethodName name, MethodParams vars)
+        private ResponceItem executeMethod(MName name, MethodParams vars)
         {
             Type t = typeof(IServerProxy);
             ResponceItem result = new ResponceItem();
@@ -343,9 +343,9 @@ namespace pEngine
     /// </summary>
     public struct RequestItem
     {
-        public MethodName Name;
+        public MName Name;
         public MethodParams Params;
-        public RequestItem(MethodName name, MethodParams prms)
+        public RequestItem(MName name, MethodParams prms)
         {
             this.Name = name;
             this.Params = prms;
@@ -355,7 +355,7 @@ namespace pEngine
         /// </summary>
         /// <param name="name">Название метода</param>
         /// <param name="prms">Параметры функци, Должны представлять пару (название параметра, значение)</param>
-        public RequestItem(MethodName name, params string[] prms)
+        public RequestItem(MName name, params string[] prms)
         {
             this.Name = name;
             //if()
@@ -366,7 +366,7 @@ namespace pEngine
             }
             this.Params = temp;
         }
-        public RequestItem(MethodName name)
+        public RequestItem(MName name)
         {
             this.Name = name;
             this.Params = null;
@@ -375,7 +375,7 @@ namespace pEngine
 
     public struct ResponceItem
     {
-        public MethodName Key;
+        public MName Key;
         public Object Value;
     }
     /// <summary>
@@ -411,14 +411,14 @@ namespace pEngine
         /// </summary>
         event RSSuccessEventHandler OnSuccess;
         /// <summary>
-        /// Выполняет ассинхронную посылку,приняти и бработку данных
+        /// Выполняет ассинхронную посылку,принятие и бработку данных
         /// </summary>
         /// <param name="data"></param>
         void ExecuteAsync(RequestList list);
         void ExecuteAsync(RequestItem item);
         //void ExecuteAsync(RequestItem item);
-        ResponceItem ExecuteMethod(MethodName name, MethodParams vars);
-        ResponceItem ExecuteMethod(MethodName mn);
+        ResponceItem ExecuteMethod(MName name, MethodParams vars);
+        ResponceItem ExecuteMethod(MName mn);
     }
 
     /// <summary>

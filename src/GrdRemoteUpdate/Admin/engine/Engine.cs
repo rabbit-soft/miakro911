@@ -22,7 +22,7 @@ namespace pEngine
         /// который уже полностью настроен
         /// </summary>
         /// <returns></returns>
-        public static IRequestSender NewReqPack()
+        public static RequestSender NewReqSender()
         {
             RequestSender rp = new RequestSender(_opt.ServersGetDefault());
             rp.UserID = _curUser.Id;
@@ -111,27 +111,34 @@ namespace pEngine
 #endif
             if (ans == "")
             {
+
                 if (_opt == null)
                     _opt = new Options(_curUser);
                 else _opt.BindUser(_curUser);
                 Options.SetOption(optType.DefaultUser, _curUser.Name);
                 if (server != "")
                     _opt.ServersAdd(new sServer("Сервер", server), true);
-
+                if (_opt.ServersCount == 0)
+                {
+                    return "Не найдено не одного сервера. Зайдайте собственный";
+                }
                 int i = 0;
                 bool succesConnect = false;
-                while (i <= _opt.ServersCount())
+                while (i < _opt.ServersCount)
                 {
                     try
                     {
                         ResponceItem resp;
                         if (newpass != "")
                         {
-                            resp = Pack.ExecuteMethod(MethodName.UserGenerateKey, MethodParamName.userId, _curUser.Id.ToString());
+                            resp = Pack.ExecuteMethod(MName.UserGenerateKey, MPN.userId, _curUser.Id.ToString());
                             MakeUserFile(_curUser.Id, _curUser.Name, newpass, resp.Value as string);
                             LogOut();
                             return LogIn(keyfile, newpass, server, "");
                         }
+                        Pack.ExecuteMethod(MName.Ping);
+                        succesConnect = true;
+                        break;
                     }
                     catch (Exception ex)
                     {
@@ -141,6 +148,8 @@ namespace pEngine
                             //LogOut();
                             //return ex.InnerException.Message;
                             succesConnect = true;
+                            if(server!="")
+                                _opt.ServersSave();
                             ans = ex.InnerException.Message;
                             break;
                         }
@@ -150,11 +159,13 @@ namespace pEngine
 
                 }//while END
                 if (!succesConnect)
-                    ans = String.Format("Не удалось подключиться ни к одному из серверов ({0:d}){1:s}Задайте новый сервер либо свяжитесь с поставщиком.", _opt.ServersCount(), Environment.NewLine);
+                    ans = String.Format("Не удалось подключиться ни к одному из серверов ({0:d}){1:s}Задайте новый сервер либо свяжитесь с поставщиком.", _opt.ServersCount, Environment.NewLine);
             }
 
             if (ans != "")
-                LogOut();                    
+                LogOut();
+            if (server != "")
+                _opt.ServersSave();
             return ans;
         }
 
@@ -194,19 +205,20 @@ namespace pEngine
         /// <param name="key">ключ</param>
         public static void MakeUserFile(int uid,string name,string pass,byte[] key)
         {
-            const int NAME_START = 8;
+            const int UID_IND = 6;
+            const int NAME_IND = 8;
             byte[] nm = Encoding.UTF8.GetBytes(name);
             byte[] falseKey = org.phprpc.util.XXTEA.Encrypt(key, Encoding.UTF8.GetBytes(pass));//falsekey
 #if DEBUG
             string s = Encoding.UTF8.GetString(key);
 #endif 
-            byte[] buffer = new byte[NAME_START + nm.Length + falseKey.Length];
+            byte[] buffer = new byte[NAME_IND + nm.Length + falseKey.Length];
             buffer[0] = 0xAB; buffer[1] = 0x61; buffer[2] = 0xFF; 
             buffer[3] = (byte)nm.Length;
             Array.Copy(BitConverter.GetBytes((short)falseKey.Length), 0, buffer, 4, 2);
-            Array.Copy(BitConverter.GetBytes((short)uid), 0, buffer, 6, 2);
-            Array.Copy(nm, 0, buffer, NAME_START, nm.Length);
-            Array.Copy(falseKey, 0, buffer, NAME_START+nm.Length, falseKey.Length);
+            Array.Copy(BitConverter.GetBytes((short)uid), 0, buffer, UID_IND, 2);
+            Array.Copy(nm, 0, buffer, NAME_IND, nm.Length);
+            Array.Copy(falseKey, 0, buffer, NAME_IND+nm.Length, falseKey.Length);
 
             FileStream fstream = new FileStream(Path.Combine(KeysFolder, name + ".psk"), FileMode.Create, FileAccess.Write);
             fstream.Write(buffer, 0, buffer.Length);

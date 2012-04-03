@@ -67,9 +67,9 @@ namespace pEngine
             return prettyServer(_servers[_defserv].Address);
         }
 
-        public int ServersCount()
+        public int ServersCount
         {
-            return _servers.Count;
+            get { return _servers.Count; }
         }
 
         /// <summary>
@@ -122,8 +122,9 @@ namespace pEngine
 
         private string prettyServer(string result)
         {
+            result = result.Replace("\\","//");
             if (!result.StartsWith("http://")) result = "http://" + result;
-            if (!result.EndsWith("/")) result += "/";
+            if (!result.EndsWith("//")) result += "//";
             return result;
         }
 

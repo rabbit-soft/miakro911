@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 
@@ -13,12 +12,14 @@ namespace DongleUpdateService
         /// </summary>
         static void Main()
         {
-            ServiceBase[] ServicesToRun;
+            log4net.Config.XmlConfigurator.Configure();
+            /*ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[] 
 			{ 
 				new GRDDUService() 
 			};
-            ServiceBase.Run(ServicesToRun);
+            ServiceBase.Run(ServicesToRun);*/
+            new GRDDUService();
         }
     }
 }

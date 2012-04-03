@@ -25,4 +25,40 @@ namespace pEngine
         }
         public sServer() { }
     }
+
+    public class sClient
+    {
+        [XmlRpcMember("c_id")]
+        public readonly string Id;
+        [XmlRpcMember("c_org")]
+        public readonly string Organization;
+        [XmlRpcMember("c_contact")]
+        public readonly string ContactMan;
+        [XmlRpcMember("c_address")]
+        public readonly string Address;
+        [XmlRpcMember("c_money")]
+        public readonly string Money;
+        [XmlRpcMember("dongles"),
+        XmlRpcMissingMapping(MappingAction.Ignore)]
+        public sDongle[] Dongles;
+
+    }
+
+    public class sDongle
+    {
+        [XmlRpcMember("d_id")]
+        public string Id;
+        [XmlRpcMember("u_flags")]
+        public string Flags;
+        [XmlRpcMember("u_farms")]
+        public string Farms;
+        [XmlRpcMember("u_start_date")]
+        public string StartDate;
+        [XmlRpcMember("u_end_date")]
+        public string EndDate;
+        [XmlRpcMember("u_time_flags")]
+        public string TimeFlags;
+        [XmlRpcMember("u_time_flags_end")]
+        public string TimeFlagsEnd;
+    }
 }

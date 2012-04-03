@@ -13,10 +13,18 @@ namespace pEngine
     {
         [XmlRpcMethod("user.genkey")]
         string UserGenerateKey(string userId);
+        [XmlRpcMethod("ping")]
+        string Ping();
+        [XmlRpcMethod("clients.get")]
+        sClient[] GetClients();
+        [XmlRpcMethod("client.add")]
+        void AddClient(string org,string contact,string address);
+        [XmlRpcMethod("vendor.update.dongle")]
+        string VendorUpdateDongle(string base64_question, string orgId, string farms, string flags, string startDate, string endDate);
     }
     
     /// <summary>
-    /// Список имеющихся методов на сервере
+    /// Список имеющихся методов на сервере (MethodName)
     /// <para>[X] - Необязательный параметр.</para>
     /// </summary>
     /// <remarks>
@@ -33,7 +41,7 @@ namespace pEngine
     /// </para>
     /// </remarks>
     /// <see cref="IServerProxy"/>
-    public enum MethodName
+    public enum MName
     {
         /// <summary>
         /// Генерирует новый ключ пользователя
@@ -41,12 +49,53 @@ namespace pEngine
         /// <para>Return: string - Ключ пользователя (base64)</para>
         /// </summary>
         UserGenerateKey,
+
+        /// <summary>
+        /// Проверка подключения
+        /// </summary>
+        Ping,
+
+        /// <summary>
+        /// Получает список клиентов и их ключей
+        /// <para>Return: sClients[] - Массив клиентов</para>
+        /// </summary>
+        GetClients,
+
+        /// <summary>
+        /// Добавляет нового клиента
+        /// <para>PARAM: string org - Название организации</para>
+        /// <para>PARAM: string сщтефсе - Контактное лицо</para>
+        /// <para>PARAM: string address - Адрес организации</para>
+        /// </summary>
+        AddClient,
+
+        /// <summary>
+        /// Прошивает ключ для нового пользователя
+        /// <para>PARAM: string base64_question - число вопрос</para>
+        /// <para>PARAM: int orgId - ID организации</para>
+        /// <para>PARAM: int farms - количество ферм</para>
+        /// <para>PARAM: int flags - маска ролей</para>
+        /// <para>PARAM: MysqlDate startDate - начало работы ключа</para>
+        /// <para>PARAM: MysqlDate endDate - окончание работы ключа</para>
+        /// <para>Return: string - base64 ответ</para>
+        /// </summary>
+        VendorUpdateDongle
     }
     /// <summary>
     /// Возможные имена аргументов функции
+    /// MethodParamName
     /// </summary>
-    public static class MethodParamName
+    public static class MPN
     {
         public const string userId = "userId";
+        public const string orgName = "orgName";
+        public const string contact = "contact";
+        public const string address = "address";
+        public const string base64_question = "base64_question";
+        public const string farms = "farms";
+        public const string flags = "flags";
+        public const string startDate = "startDate";
+        public const string endDate = "endDate";
+        public const string orgId = "orgId";
     }
 }
