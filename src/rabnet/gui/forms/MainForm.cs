@@ -109,7 +109,7 @@ namespace rabnet
         private void checkPlugins()
         {
 #if PROTECTED
-            if (GRD.Instance.GetFlag(GRD.FlagType.PerortPlugIns))
+            if (GRD.Instance.GetFlag(GRD.FlagType.ReportPlugIns))
             {
 #endif
             
@@ -132,7 +132,7 @@ namespace rabnet
         private void reportPluginMenu_Click(object sender, EventArgs e)
         {
 #if PROTECTED
-            if (GRD.Instance.GetFlag(GRD.FlagType.PerortPlugIns))
+            if (GRD.Instance.GetFlag(GRD.FlagType.ReportPlugIns))
             {
 #endif
                 ReportBase p = ReportBase.GetPluginByName((sender as ToolStripMenuItem).Tag.ToString());

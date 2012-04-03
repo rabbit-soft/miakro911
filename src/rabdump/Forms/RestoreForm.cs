@@ -105,7 +105,7 @@ namespace rabdump
     #if PROTECTED
             if (GRD.Instance.GetFlag(GRD.FlagType.ServerDump))
             {
-                string farmname = GRD.Instance.GetOrgName();
+                string farmname = GRD.Instance.GetOrganizationName();
     #elif DEBUG
                 string farmname = "testing";
     #endif

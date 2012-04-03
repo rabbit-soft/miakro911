@@ -85,7 +85,7 @@
           <BorderWidth />
         </Style>
       </Textbox>
-      <Textbox Name="Textbox18" >
+      <Textbox Name="Textbox18">
         <Height>12.75pt</Height>
         <Width>123.37pt</Width>
         <Value>=Globals!ExecutionTime</Value>
@@ -142,9 +142,6 @@
           </TableColumn>
           <TableColumn>
             <Width>52.9pt</Width>
-          </TableColumn>
-          <TableColumn>
-            <Width>51.7pt</Width>
           </TableColumn>
           <TableColumn>
             <Width>53.1pt</Width>
@@ -320,20 +317,6 @@
                 </TableCell>
                 <TableCell>
                   <ReportItems>
-                    <Textbox Name="Textbox13">
-                      <Value>Прочие причины</Value>
-                      <Style>
-                        <TextAlign>Center</TextAlign>
-                        <BorderStyle>
-                          <Default>Solid</Default>
-                        </BorderStyle>
-                        <FontWeight>Bold</FontWeight>
-                      </Style>
-                    </Textbox>
-                  </ReportItems>
-                </TableCell>
-                <TableCell>
-                  <ReportItems>
                     <Textbox Name="Textbox15">
                       <Value>Кол-во на конец периода</Value>
                       <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
@@ -410,7 +393,7 @@
                 <TableCell>
                   <ReportItems>
                     <Textbox Name="income">
-                      <Value>=Fields!born.Value+Fields!buy.Value</Value>
+                      <Value>=Fields!income.Value</Value>
                       <CanGrow>true</CanGrow>
                       <Style>
                         <BorderStyle>
@@ -545,23 +528,6 @@
                 </TableCell>
                 <TableCell>
                   <ReportItems>
-                    <Textbox Name="ecount">
-                      <Value>=Fields!another.Value</Value>
-                      <CanGrow>true</CanGrow>
-                      <Style>
-                        <BorderStyle>
-                          <Default>Solid</Default>
-                        </BorderStyle>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <VerticalAlign>Middle</VerticalAlign>
-                        <BorderColor />
-                        <BorderWidth />
-                      </Style>
-                    </Textbox>
-                  </ReportItems>
-                </TableCell>
-                <TableCell>
-                  <ReportItems>
                     <Textbox Name="Textbox16">
                       <Value>=Fields!ecount.Value</Value>
                       <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
@@ -614,7 +580,7 @@
                         <BorderColor />
                         <BorderWidth />
                       </Style>
-                      <Value>=Sum(Fields!bcount)</Value>
+                      <Value>=First(Fields!bcount)</Value>
                     </Textbox>
                   </ReportItems>
                 </TableCell>
@@ -630,7 +596,7 @@
                         <BorderColor />
                         <BorderWidth />
                       </Style>
-                      <Value>=Sum(Fields!buy)+Sum(Fields!born)</Value>
+                      <Value>=Sum(Fields!income)</Value>
                     </Textbox>
                   </ReportItems>
                 </TableCell>
@@ -748,24 +714,8 @@
                 </TableCell>
                 <TableCell>
                   <ReportItems>
-                    <Textbox Name="Textbox36">
-                      <Style>
-                        <BorderStyle>
-                          <Default>Solid</Default>
-                        </BorderStyle>
-                        <FontWeight>Bold</FontWeight>
-                        <VerticalAlign>Middle</VerticalAlign>
-                        <BorderColor />
-                        <BorderWidth />
-                      </Style>
-                      <Value>=Sum(Fields!another)</Value>
-                    </Textbox>
-                  </ReportItems>
-                </TableCell>
-                <TableCell>
-                  <ReportItems>
                     <Textbox Name="Textbox17">
-                      <Value>=Sum(Fields!ecount)</Value>
+                      <Value>=Last(Fields!ecount)</Value>
                       <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
                         <BorderStyle>
                           <Default>Solid</Default>

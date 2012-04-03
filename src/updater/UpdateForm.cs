@@ -168,34 +168,34 @@ namespace updater
             foreach (ListViewItem li in lv.Items)
             if ((int)li.Tag == 0)
             {
-                int prever = int.Parse(li.SubItems[2].Text);
+                int preVer = int.Parse(li.SubItems[2].Text);
                 String prm = li.SubItems[1].Text;
                 String nm = li.SubItems[0].Text;
                 Status("Обновляется БД "+nm);
-                while (prever < _curver)
+                while (preVer < _curver)
                 {
-                    prever++;
+                    preVer++;
                     foreach(int k in _scripts.Keys)
-                        if (k == prever)
+                        if (k == preVer)
                         {
                             try
                             {
-                                Status(String.Format("Обновление {0:s} {1:d}->{2:d}",nm,prever-1,prever));
+                                Status(String.Format("Обновление {0:s} {1:d}->{2:d}",nm,preVer-1,preVer));
                                 _sql = new MySqlConnection(prm);
                                 _sql.Open();
                                 MySqlCommand c = new MySqlCommand("", _sql);
-                                OnUpdate(prever, _sql,UpdateStatus.Before);
+                                OnUpdate(preVer, _sql,UpdateStatus.Before);
                                 String[] cmds = _scripts[k].Split(new string[] { "#DELIMITER |" }, StringSplitOptions.RemoveEmptyEntries);
                                 c.CommandText = cmds[0];
                                 c.ExecuteNonQuery();
                                 if (cmds.Length > 1)
                                 {
-                                    OnUpdate(prever, _sql, UpdateStatus.Procs);
+                                    OnUpdate(preVer, _sql, UpdateStatus.Procs);
                                     MySqlScript sc = new MySqlScript(_sql, cmds[1]);
                                     sc.Delimiter = "|";
                                     sc.Execute();
                                 }
-                                OnUpdate(prever, _sql,UpdateStatus.After);
+                                OnUpdate(preVer, _sql,UpdateStatus.After);
                                 _sql.Close();
                                 _logger.DebugFormat("update success db:{0:s}|script:{1:#}|",li.SubItems[0].Text ,k);
                             }

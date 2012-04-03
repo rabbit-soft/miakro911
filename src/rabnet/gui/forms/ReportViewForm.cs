@@ -15,11 +15,14 @@ namespace rabnet
     public partial class ReportViewForm : Form
     {
 #if !DEMO
-        
+        public delegate void ExcelCallBack(XmlNode[] xmls);
+
         private XmlDocument[] xmls = null;
         private myReportType _repType = myReportType.TEST;
         private string _repName = "";
         private string _repFile = "";
+        private string[] _xclHeaders;
+        private ExcelMaker.DataFillCallBack _xclDataFill;
 
         public bool printed = false;
         public ReportViewForm()
@@ -51,15 +54,22 @@ namespace rabnet
         public ReportViewForm(myReportType type, XmlDocument[] xml): this()
         {
             this._repType = type;
-            this._repFile = ReportHelper.getFileName(type);
-            this._repName = ReportHelper.getRusName(type);
+            this._repFile = ReportHelper.GetFileName(type);
+            this._repName = ReportHelper.GetRusName(type);
+            this._xclHeaders = ReportHelper.GetHeaders(_repType);
             build(xml);
         }
 
-        public ReportViewForm(String name,String fileName, XmlDocument[] xmls): this()
+        public ReportViewForm(String name, String fileName, XmlDocument[] xmls) 
+            : this(name, fileName, xmls, new string[] { },null) { }
+        public ReportViewForm(String name, String fileName, XmlDocument[] xmls, string[] xclHeaders) 
+            : this(name, fileName, xmls, xclHeaders, null) { }
+        public ReportViewForm(String name, String fileName, XmlDocument[] xmls, string[] xclHeaders, ExcelMaker.DataFillCallBack dataFill)
+            : this()
         {
             _repName = name;
             _repFile = fileName;
+            _xclHeaders = xclHeaders;
             build(xmls);
         }
 
@@ -229,10 +239,10 @@ namespace rabnet
         private void tbExcel_Click(object sender, EventArgs e)
         {
 #if !DEMO
-            ExcelMaker.MakeExcelFromXML(xmls, this._repType);     
+            ExcelMaker.MakeExcelFromXML(xmls, _repName, _xclHeaders,_xclDataFill);     
 #else
             DemoErr.DemoNoModuleMsg();
 #endif
-        }     
+        }
     }
 }

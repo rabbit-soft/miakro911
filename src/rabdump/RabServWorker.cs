@@ -133,7 +133,7 @@ namespace rabdump
         {
             _crossData = new ServData();
 #if PROTECTED
-            _crossData.farmname = GRD.Instance.GetOrgName();           
+            _crossData.farmname = GRD.Instance.GetOrganizationName();           
 #elif DEBUG
             _crossData.farmname = "testing";
 #endif
@@ -155,7 +155,7 @@ namespace rabdump
 #endif
                 callOnMessage("Скачиваем с сервера Резервную копию", "Начало загрузки", 1);
 #if PROTECTED
-                _crossData.farmname = GRD.Instance.GetOrgName();           
+                _crossData.farmname = GRD.Instance.GetOrganizationName();           
 #elif DEBUG
                 _crossData.farmname = "testing";
 #endif
@@ -208,7 +208,7 @@ namespace rabdump
         {
             _crossData = new ServData();
 #if PROTECTED
-            _crossData.farmname = GRD.Instance.GetOrgName();           
+            _crossData.farmname = GRD.Instance.GetOrganizationName();           
 #elif DEBUG
             _crossData.farmname = "testing";
 #endif

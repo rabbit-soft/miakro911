@@ -354,7 +354,8 @@
 				<include name="${curdir}/rabdump/X_Tools/*.cs"/>
 				<include name="${curdir}/_tmp/*.cs"/>
 				<include name="${curdir}/rabdump/Properties/AssemblyInfo.cs"/>
-				<include name="${curdir}/libs/GRD/*.cs"/>
+				<include name="${curdir}/libs/GRD/GRD_Base.cs"/>
+				<include name="${curdir}/libs/GRD/GRD_BaseCodes.cs"/>
 				<include name="${curdir}/mia_conv/miaExitCode.cs"/>
 				<include name="${curdir}/rabnet/gui/classes/RabnetConfig.cs"/>
 				<include name="${curdir}/rabnet/gui/forms/FarmChangeForm.cs"/>
@@ -391,7 +392,8 @@
 				<include name="${curdir}/rabnet/gui/panels/*.cs"/>
 				<include name="${curdir}/rabnet/gui/forms/*.cs"/>
 				<include name="${curdir}/rabnet/gui/reports/*.cs"/>
-				<include name="${curdir}/libs/GRD/*.cs"/>
+				<include name="${curdir}/libs/GRD/GRD_Base.cs"/>
+				<include name="${curdir}/libs/GRD/GRD_BaseCodes.cs"/>
 				<include name="${curdir}/rabdump/X_Tools/*.cs"/>
 				<include name="${curdir}/mia_conv/miaExitCode.cs"/>
 			</sources>

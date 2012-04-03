@@ -14,7 +14,7 @@ namespace rabnet
 
     public static class ReportHelper
     {
-        public static string getRusName(myReportType type)
+        public static string GetRusName(myReportType type)
         {
             switch (type)
             {
@@ -37,7 +37,7 @@ namespace rabnet
             }
         }
 
-        public static string getFileName(myReportType type)
+        public static string GetFileName(myReportType type)
         {
             switch (type)
             {
@@ -59,11 +59,60 @@ namespace rabnet
                 default: return "test";
             }
         }
+
+
+        public static string[] GetHeaders(myReportType repType)
+        {
+            switch (repType)
+            {
+                case myReportType.BREEDS: return new string[]{
+                      "№",
+                      "Порода",
+                      "Производители",
+                      "Кандидаты",
+                      "Мальчики",
+                      "Штатные",
+                      "Первокролки",
+                      "Невесты",
+                      "Девочки",
+                      "Безполые",
+                      "Всего"};
+                  
+                case myReportType.AGE:return new string[]{
+                      "Возраст",
+                      "Количество"};
+                  
+                case myReportType.BY_MONTH: return new string[]{
+                      "Дата",
+                      "Всего",
+                      "Осталось"};
+                  
+                case myReportType.DEADREASONS:return new string[]{
+                     "Причина",
+                     "Количество"};
+                  
+                case myReportType.DEAD:return new string[]{
+                     "Дата",
+                     "Имя",
+                     "Количество",
+                     "Причина",
+                     "Заметки"};
+                    
+                case myReportType.FUCKS_BY_DATE:return new string[]{
+                     "Дата",
+                     "Самка",
+                     "Самец",
+                     "Работник"};
+
+                default: return new string[] { };
+            }
+        }
     }
+        
+    
 
     class Reports
     {
-
         MySqlConnection sql = null;
         ILog log = log4net.LogManager.GetLogger(typeof(Reports));
         private DateTime FROM = DateTime.Now;

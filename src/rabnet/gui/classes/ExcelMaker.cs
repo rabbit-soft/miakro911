@@ -12,14 +12,22 @@ using X_Tools;
 
 namespace rabnet
 {
-    internal static class ExcelMaker
+    public static class ExcelMaker
     {
-        private static XmlNode[] _xmls;
-        private static myReportType _repType;
+        /// <summary>
+        /// Если отчет должен быть заполнен данными иначе нежели стандартный отчет. 
+        /// Данный делегат используется в MakeExcelFromXML для передачи функции не стандартной обработки.
+        /// Нужно для матриц.
+        /// </summary>
+        public delegate void DataFillCallBack(XmlNode[] xmls, ref Excel.Worksheet xlWorkSheet);
 
-        public static void MakeExcelFromXML(XmlNode[] xmls, myReportType repType)///Для плагинов сделать excel тоже наверное нужны делегаты или еще что
+        private static XmlNode[] _xmls;
+        private static string _repName;
+
+        public static void MakeExcelFromXML(XmlNode[] xmls, String repName, string[] headers) { MakeExcelFromXML(xmls, repName, headers, null); }
+        public static void MakeExcelFromXML(XmlNode[] xmls,String repName,string[] headers,DataFillCallBack dataFill)///Для плагинов сделать excel тоже наверное нужны делегаты или еще что
         {
-            _repType = repType;
+            _repName = repName;
             _xmls = xmls;
             string path = location();
             if (path == "") return;
@@ -31,42 +39,32 @@ namespace rabnet
             Excel.Worksheet xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
             WaitForm wf = new WaitForm();
             try
-            {              
+            {
                 wf.Flush(); wf.MaxValue = 100; wf.Show(); wf.Style = ProgressBarStyle.Blocks;
                 int row, col;
-                switch (repType)
+                if (dataFill != null)
                 {
-                    case myReportType.USER_OKROLS:
-                        string[,] matrix = doMegaMAtr(xmls[0]);
-                        wf.MaxValue = matrix.GetLength(0) * matrix.GetLength(1);
-                        for (int i = 0; i < matrix.GetLength(0); i++)
-                            for (int j = 0; j < matrix.GetLength(1); j++)
-                            {
-                                if (matrix[i, j] != null)
-                                    xlWorkSheet.Cells[i + 1, j + 1] = matrix[i, j];
-                                else xlWorkSheet.Cells[i + 1, j + 1] = "";
-                                wf.Inc();
-                            }
-                        break;
-                    default:
-                        drawHeader(repType, ref xlWorkSheet);
-                        row = 2;
-                        wf.MaxValue = xmls[0].FirstChild.ChildNodes.Count;
-                        foreach (XmlNode nd in xmls[0].FirstChild.ChildNodes)
-                        {
-                            col = 1;
-                            foreach (XmlNode nd2 in nd.ChildNodes)
-                            {
-                                xlWorkSheet.Cells[row, col] = nd2.InnerText;
-                                col++;
-                            }
-                            row++;
-                            wf.Inc();
-                        }
-
-                        break;
+                    dataFill(xmls, ref xlWorkSheet);
                 }
-                wf.Hide();               
+                else
+                {
+                    drawHeader(headers, ref xlWorkSheet);
+                    row = 2;
+                    wf.MaxValue = xmls[0].FirstChild.ChildNodes.Count;
+                    foreach (XmlNode nd in xmls[0].FirstChild.ChildNodes)
+                    {
+                        col = 1;
+                        foreach (XmlNode nd2 in nd.ChildNodes)
+                        {
+                            xlWorkSheet.Cells[row, col] = nd2.InnerText;
+                            col++;
+                        }
+                        row++;
+                        wf.Inc();
+                    }
+                }
+
+                wf.Hide();
 
                 xlWorkSheet.Columns.AutoFit();
                 xlWorkBook.SaveAs(path, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
@@ -149,7 +147,10 @@ namespace rabnet
             {
                 string path = Engine.opt().getOption(Options.OPT_ID.XLS_FOLDER);
                 if (!Directory.Exists(path))
+                {
+                    Engine.opt().setOption(Options.OPT_ID.XLS_FOLDER, Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
                     return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                }
                 else return path;
             }
         }
@@ -187,9 +188,12 @@ namespace rabnet
             catch {return new string[0,0];}
         }
 
+        /// <summary>
+        /// Убивает процесс excel, т.к. она сам че-то не убивается
+        /// </summary>
         private static void killExcelProcess()
         {
-            //убивает процесс excel, т.к. она сам че-то не убивается
+            
             Hashtable myHashtable = new Hashtable();
             Process[] AllProcesses = Process.GetProcessesByName("excel");
             int iCount = 0;
@@ -214,7 +218,7 @@ namespace rabnet
             string filename = "";
             if (_xmls.Length > 1)
             {
-                filename += ReportHelper.getRusName(_repType) + " (";
+                filename += _repName + " (";
                 foreach (XmlNode nd in _xmls[1].FirstChild.ChildNodes)
                 {
                     foreach (XmlNode nd2 in nd.ChildNodes)
@@ -224,7 +228,7 @@ namespace rabnet
             }
             else
             {
-                filename = ReportHelper.getRusName(_repType) + " " + DateTime.Now.ToShortDateString() + ".xls";
+                filename = _repName + " " + DateTime.Now.ToShortDateString() + ".xls";
             }
             return filename;
         }
@@ -235,55 +239,14 @@ namespace rabnet
         /// </summary>
         /// <param name="repType">Тип отчета</param>
         /// <param name="xlWorkSheet"></param>
-        private static void drawHeader(myReportType repType, ref Excel.Worksheet xlWS)
+        private static void drawHeader(string[] headers, ref Excel.Worksheet xlWS)
         {
             xlWS.get_Range("A1", "Z1").Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Green);
             xlWS.get_Range("A1", "Z1").Font.Bold = true;
             int col = 1;
             int row = 1;
-            switch (repType)
-            {
-                case myReportType.BREEDS:
-                    xlWS.Cells[row, col++] = "№";
-                    xlWS.Cells[row, col++] = "Порода";
-                    xlWS.Cells[row, col++] = "Производители";
-                    xlWS.Cells[row, col++] = "Кандидаты";
-                    xlWS.Cells[row, col++] = "Мальчики";
-                    xlWS.Cells[row, col++] = "Штатные";
-                    xlWS.Cells[row, col++] = "Первокролки";
-                    xlWS.Cells[row, col++] = "Невесты";
-                    xlWS.Cells[row, col++] = "Девочки";
-                    xlWS.Cells[row, col++] = "Безполые";
-                    xlWS.Cells[row, col++] = "Всего";
-                    break;
-                case myReportType.AGE:
-                    xlWS.Cells[row, col++] = "Возраст";
-                    xlWS.Cells[row, col++] = "Количество";
-                    break;
-                case myReportType.BY_MONTH:
-                    xlWS.Cells[row, col++] = "Дата";
-                    xlWS.Cells[row, col++] = "Всего";
-                    xlWS.Cells[row, col++] = "Осталось";
-                    break;
-                case myReportType.DEADREASONS:
-                    xlWS.Cells[row, col++] = "Причина";
-                    xlWS.Cells[row, col++] = "Количество";
-                    break;
-                case myReportType.DEAD:
-                    xlWS.Cells[row, col++] = "Дата";
-                    xlWS.Cells[row, col++] = "Имя";
-                    xlWS.Cells[row, col++] = "Количество";
-                    xlWS.Cells[row, col++] = "Причина";
-                    xlWS.Cells[row, col++] = "Заметки";
-                    break;
-                case myReportType.FUCKS_BY_DATE:
-                    xlWS.Cells[row, col++] = "Дата";
-                    xlWS.Cells[row, col++] = "Самка";
-                    xlWS.Cells[row, col++] = "Самец";
-                    xlWS.Cells[row, col++] = "Работник";
-                    break;
-
-            }
+            foreach (string s in headers)
+                xlWS.Cells[row, col++] = s;
         }
     }
     

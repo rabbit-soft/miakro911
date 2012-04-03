@@ -151,7 +151,6 @@ namespace rabnet
                 dates =Engine.get().db().getFuckMonths();
             else dates = Engine.get().db().getDeadsMonths();
 
-
             if (dates.Count > 0)
             {
                 dtpDay.MaxDate = DateTime.Parse(dates[0]).AddMonths(1);
@@ -175,6 +174,9 @@ namespace rabnet
                 this.Close();
             }
         }
+
+        public DateTime MaxDate { get { return dtpDay.MaxDate; } }
+        public DateTime MinDate { get { return dtpDay.MinDate; } }
 
         /// <summary>
         /// Происходит когда изменяют выбранный RadioButton

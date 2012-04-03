@@ -108,6 +108,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\libs\GRD\GRD_Base.cs">
+      <Link>GRD_Base.cs</Link>
+    </Compile>
+    <Compile Include="..\libs\GRD\GRD_BaseCodes.cs">
+      <Link>GRD_BaseCodes.cs</Link>
+    </Compile>
     <Compile Include="..\mia_conv\miaExitCode.cs">
       <Link>miaExitCode.cs</Link>
     </Compile>
@@ -130,7 +136,6 @@
     </Compile>
     <Compile Include="ArchiveJobThread.cs" />
     <Compile Include="Editors.cs" />
-    <Compile Include="..\libs\GRD\GRD.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

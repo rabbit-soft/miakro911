@@ -54,7 +54,7 @@ namespace rabnet
             string info = "";
 //            return String.Format("Лицензия - {0:d} ферм",PClient.get().farms());
             info += "Лицензия:";
-            info += String.Format("Владелец - {0}", GRD.Instance.GetOrgName());
+            info += String.Format("Владелец - {0}", GRD.Instance.GetOrganizationName());
             info += Environment.NewLine;
             info += String.Format("Ограничение на количство ферм - {0:d}", GRD.Instance.GetFarmsCnt());
             info += Environment.NewLine;

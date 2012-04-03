@@ -138,6 +138,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\libs\GRD\GRD_Base.cs">
+      <Link>classes\GRD_Base.cs</Link>
+    </Compile>
+    <Compile Include="..\..\libs\GRD\GRD_BaseCodes.cs">
+      <Link>classes\GRD_BaseCodes.cs</Link>
+    </Compile>
     <Compile Include="..\..\mia_conv\miaExitCode.cs">
       <Link>classes\miaExitCode.cs</Link>
     </Compile>
@@ -178,9 +184,6 @@
     </Compile>
     <Compile Include="forms\ProgressForm.Designer.cs">
       <DependentUpon>ProgressForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="..\..\libs\GRD\GRD.cs">
-      <Link>classes\GRD.cs</Link>
     </Compile>
     <Compile Include="panels\ButcherPanel.cs">
       <SubType>UserControl</SubType>
