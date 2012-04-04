@@ -323,140 +323,17 @@ namespace RabGRD
 
             byte[] userBuff = makeUserBuff(org, farms, flags, startDate, endDate);
             GrdE retCode; // Error code for all Guardant API functions
-            string logStr = "Setting TruKey ";
-            //byte[] abyMask = new byte[4096];
-            //byte[] abyMaskHeader = new byte[4096];
-
-            /*DongleHeaderStruct dongleHeader;
-            dongleHeader.ProgID = 55;
-            dongleHeader.Version = 10;
-            dongleHeader.SerialNumber = 123;
-            dongleHeader.Mask = 12121;*/
-
-            WriteMaskInit(_keyType, _model);
-
-            //byte[] abyDongleHeader = GRDUtils.RawSerialize(dongleHeader, 14);
-         
-            //ushort wMaskSize = 0;
-            //ushort wASTSize = 0;
-            //ushort wNumberOfItems = 0;
-
-            //AddAlgorithm(abyMask,
-            //             abyMaskHeader,
-            //             AlgoNumGSII64,
-            //             (byte)(nsafl_ST_III + nsafl_ActivationSrv + nsafl_DeactivationSrv + nsafl_UpdateSrv),
-            //             (ushort)(nsafh_ReadSrv + nsafh_ReadPwd),
-            //             rs_algo_GSII64,
-            //             GrdAdsGSII64Demo,
-            //             GrdArsGSII64Demo,
-            //             GrdApGSII64DemoActivation,
-            //             GrdApGSII64DemoDeactivation,
-            //             GrdApGSII64DemoRead,
-            //             GrdApGSII64DemoUpdate,
-            //             null,
-            //             null,
-            //             null,
-            //             null,
-            //             0xFFFF,
-            //             0xFFFF,
-            //             _keyTRU,
-            //             ref wMaskSize,
-            //             ref wASTSize,
-            //             ref wNumberOfItems);
-
-            //AddAlgorithm(abyMask,
-            //             abyMaskHeader,
-            //             AlgoNumHash64,
-            //             (byte)(nsafl_ST_III + nsafl_ActivationSrv + nsafl_DeactivationSrv + nsafl_UpdateSrv),
-            //             (ushort)(nsafh_ReadSrv + nsafh_ReadPwd),
-            //             RsAlgoHash64,
-            //             GrdAdsHash64Demo,
-            //             GrdArsHash64Demo,
-            //             GrdApHash64DemoActivation,
-            //             GrdApHash64DemoDeactivation,
-            //             GrdApHash64DemoRead,
-            //             GrdApHash64DemoUpdate,
-            //             null,
-            //             null,
-            //             null,
-            //             null,
-            //             0xFFFF,
-            //             0xFFFF,
-            //             _keyTRU,
-            //             ref wMaskSize,
-            //             ref wASTSize,
-            //             ref wNumberOfItems);
-
-            //retCode = GrdApi.GrdTRU_SetKey(_grdHandle, _keyTRU);
-            //logStr += retCode.ToString() + " " + GrdApi.PrintResult((byte)retCode);
-            //log.Debug(logStr);
-            //ErrorHandling(_grdHandle, retCode);
-
-            //byte[] pbyWholeMask = new byte[WHOLE_MASK_LENGTH];
-
-            //Array.Copy(abyDongleHeader,
-            //           0,
-            //           pbyWholeMask,
-            //           0,
-            //           GRDConst.GrdWmUAMOffset);
-            //Array.Copy(abyMaskHeader,
-            //           0,
-            //           pbyWholeMask,
-            //           GRDConst.GrdWmUAMOffset,
-            //           wASTSize);
-            //Array.Copy(abyMask,
-            //           0,
-            //           pbyWholeMask,
-            //           GRDConst.GrdWmUAMOffset + wASTSize,
-            //           wMaskSize);
-            //Array.Copy(userBuff,
-            //           0,
-            //           pbyWholeMask,
-            //           USER_DATA_BEGINING,
-            //           userBuff.Length);
-
-            /*logStr = "Writing dongle header : ";
-            retCode = GrdApi.GrdWrite(_grdHandle,
-                                      (uint)0,
-                                      GRDConst.GrdWmUAMOffset,
-                                      abyDongleHeader);
-            logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
-            ErrorHandling(_grdHandle, retCode);
-
-
-            logStr = "Writing Mask header : ";
-            retCode = GrdApi.GrdWrite(_grdHandle,
-                                      (uint)GRDConst.GrdWmUAMOffset,
-                                      wASTSize,
-                                      abyMaskHeader);
-            logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
-            ErrorHandling(_grdHandle, retCode);
-
-
-            logStr = "Writing mask : ";
-            retCode = GrdApi.GrdWrite(_grdHandle,
-                                      (uint)(GRDConst.GrdWmUAMOffset + wASTSize),
-                                      wMaskSize,
-                                      abyMask);
-            logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
-            ErrorHandling(_grdHandle, retCode);
-
-
-            logStr = "Writing test user buffer : ";
-            retCode = GrdApi.GrdWrite(_grdHandle,
-                                      (uint)(GRDConst.GrdWmUAMOffset + wASTSize + wMaskSize),
-                                      userBuff.Length,
-                                      userBuff);
-            logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
-            ErrorHandling(_grdHandle, retCode);*/
+                                           
 
             uint protectLength;
             ushort wNumberOfItems;
             byte[] pbyWholeMask = createNewMask(userBuff, out protectLength, out wNumberOfItems);
+
+            string logStr = "Setting TruKey "; 
+            retCode = GrdApi.GrdTRU_SetKey(_grdHandle, _keyTRU);
+            logStr += retCode.ToString() + " " + GrdApi.PrintResult((byte)retCode);
+            log.Debug(logStr);
+            ErrorHandling(_grdHandle, retCode);
 
             logStr = "Writing test user buffer : ";
             retCode = GrdApi.GrdWrite(_grdHandle,
@@ -494,7 +371,7 @@ namespace RabGRD
             string logStr = "Decrypt and validate question: ";
 
             retCode = GrdApi.GrdTRU_DecryptQuestion(_grdHandle,     // handle to Guardant protected container of dongle that contains 
-                // GSII64 algorithm with the same key as in remote dongle 
+                                                                    // GSII64 algorithm with the same key as in remote dongle 
                                                     AlgoNumGSII64,  // dongle GSII64 algorithm number with same key as in remote dongle 
                                                     AlgoNumHash64,  // dongle HASH64 algorithm number with same key as in remote dongle 
                                                     qq.question,    // pointer to Question					8 bytes (64 bit) 
@@ -505,93 +382,7 @@ namespace RabGRD
             logStr += GrdApi.PrintResult((int)retCode);
             log.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
-
-            //byte[] abyMask = new byte[4096];
-            //byte[] abyMaskHeader = new byte[4096];
-
-            //DongleHeaderStruct dongleHeader;
-            //dongleHeader.ProgID = 50;
-            //dongleHeader.Version = 11;
-            //dongleHeader.SerialNumber = 543;
-            //dongleHeader.Mask = 21212;
-
-            //byte[] abyDongleHeader = GRDUtils.RawSerialize(dongleHeader, 14);
-
-            //WriteMaskInit(_keyType, _model);
-
-            //ushort wMaskSize = 0;
-            //ushort wASTSize = 0;
-            //ushort wNumberOfItems = 0;
-
-            //AddAlgorithm(abyMask,
-            //             abyMaskHeader,
-            //             AlgoNumGSII64,
-            //             (byte)(nsafl_ST_III + nsafl_ActivationSrv + nsafl_DeactivationSrv + nsafl_UpdateSrv),
-            //             (ushort)(nsafh_ReadSrv + nsafh_ReadPwd),
-            //             rs_algo_GSII64,
-            //             GrdAdsGSII64Demo,
-            //             GrdArsGSII64Demo,
-            //             GrdApGSII64DemoActivation,
-            //             GrdApGSII64DemoDeactivation,
-            //             GrdApGSII64DemoRead,
-            //             GrdApGSII64DemoUpdate,
-            //             null,
-            //             null,
-            //             null,
-            //             null,
-            //             0xFFFF,
-            //             0xFFFF,
-            //             _keyTRU,
-            //             ref wMaskSize,
-            //             ref wASTSize,
-            //             ref wNumberOfItems);
-
-            //AddAlgorithm(abyMask,
-            //             abyMaskHeader,
-            //             AlgoNumHash64,
-            //             (byte)(nsafl_ST_III + nsafl_ActivationSrv + nsafl_DeactivationSrv + nsafl_UpdateSrv),
-            //             (ushort)(nsafh_ReadSrv + nsafh_ReadPwd),
-            //             RsAlgoHash64,
-            //             GrdAdsHash64Demo,
-            //             GrdArsHash64Demo,
-            //             GrdApHash64DemoActivation,
-            //             GrdApHash64DemoDeactivation,
-            //             GrdApHash64DemoRead,
-            //             GrdApHash64DemoUpdate,
-            //             null,
-            //             null,
-            //             null,
-            //             null,
-            //             0xFFFF,
-            //             0xFFFF,
-            //             _keyTRU,
-            //             ref wMaskSize,
-            //             ref wASTSize,
-            //             ref wNumberOfItems);
-
-            //byte[] pbyWholeMask = new byte[GRDConst.GrdWmUAMOffset + wASTSize + wMaskSize + userBuff.Length];
-
-            //Array.Copy(abyDongleHeader,
-            //           0,
-            //           pbyWholeMask,
-            //           0,
-            //           GRDConst.GrdWmUAMOffset);
-            //Array.Copy(abyMaskHeader,
-            //           0,
-            //           pbyWholeMask,
-            //           GRDConst.GrdWmUAMOffset,
-            //           wASTSize);
-            //Array.Copy(abyMask,
-            //           0,
-            //           pbyWholeMask,
-            //           GRDConst.GrdWmUAMOffset + wASTSize,
-            //           wMaskSize);
-            //Array.Copy(userBuff,
-            //           0,
-            //           pbyWholeMask,
-            //           GRDConst.GrdWmUAMOffset + wASTSize + wMaskSize,
-            //           userBuff.Length);
-
+           
             uint protectLength;
             ushort wNumberOfItems;
             byte[] pbyWholeMask = createNewMask(userBuff, out protectLength,out wNumberOfItems);
@@ -614,17 +405,17 @@ namespace RabGRD
             byte[] answer;
 
             logStr = "Encrypt answer for Trusted Remote Update: ";
-            retCode = GrdApi.GrdTRU_EncryptAnswer(_grdHandle,                                                         // handle to Guardant protected container 
-                // GSII64 algorithm with the same key as in remote dongle 
-                // and pre-stored GrdTRU_SetAnswerProperties data if needed 
-                                                  GRDConst.GrdSAMToUAM,                                                 // starting address for writing in dongle 
-                                                  (int) WHOLE_MASK_LENGTH,    //4 + GRDConst.GrdWmUAMOffset + wASTSize + wMaskSize + userBuff.Length,    // size of data to be written 
-                                                  pbyWholeMask,                                                         // buffer for data to be written 
-                                                  qq.question,                                                          // pointer to decrypted Question 
-                                                  AlgoNumGSII64,                                                        // dongle GSII64 algorithm number with the same key as in remote dongle 
-                                                  AlgoNumHash64,                                                        // dongle HASH64 algorithm number with the same key as in remote dongle 
-                                                  out answer,                                                           // pointer to the buffer for Answer data 
-                                                  out ansSize);                                                         // IN: Maximum buffer size for Answer data, OUT: Size of pAnswer buffer 
+            retCode = GrdApi.GrdTRU_EncryptAnswer(_grdHandle,                   // handle to Guardant protected container 
+                                                                                // GSII64 algorithm with the same key as in remote dongle 
+                                                                                // and pre-stored GrdTRU_SetAnswerProperties data if needed 
+                                                  GRDConst.GrdSAMToUAM,         // starting address for writing in dongle 
+                                                  4+pbyWholeMask.Length,          // size of data to be written 
+                                                  pbyWholeMask,                 // buffer for data to be written 
+                                                  qq.question,                  // pointer to decrypted Question 
+                                                  AlgoNumGSII64,                // dongle GSII64 algorithm number with the same key as in remote dongle 
+                                                  AlgoNumHash64,                // dongle HASH64 algorithm number with the same key as in remote dongle 
+                                                  out answer,                   // pointer to the buffer for Answer data 
+                                                  out ansSize);                 // IN: Maximum buffer size for Answer data, OUT: Size of pAnswer buffer 
             logStr += GrdApi.PrintResult((int)retCode);
             log.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
@@ -682,6 +473,8 @@ namespace RabGRD
             ushort wASTSize = 0;
             wNumberOfItems = 0;
 
+            WriteMaskInit(_keyType, _model); 
+
             AddAlgorithm(abyMask,
                          abyMaskHeader,
                          AlgoNumGSII64,
@@ -726,12 +519,7 @@ namespace RabGRD
                          _keyTRU,
                          ref wMaskSize,
                          ref wASTSize,
-                         ref wNumberOfItems);
-
-            retCode = GrdApi.GrdTRU_SetKey(_grdHandle, _keyTRU);
-            logStr += retCode.ToString() + " " + GrdApi.PrintResult((byte)retCode);
-            log.Debug(logStr);
-            ErrorHandling(_grdHandle, retCode);
+                         ref wNumberOfItems);          
 
             byte[] pbyWholeMask = new byte[WHOLE_MASK_LENGTH];
 
@@ -758,66 +546,7 @@ namespace RabGRD
 
             protectLength = (uint)(GRDConst.GrdWmSAMOffset + wASTSize + wMaskSize);
             return pbyWholeMask;
-        }
-
-        /*public void SetTRUAnswer(string base64_question)
-        {
-            byte[] buf = Convert.FromBase64String(base64_question);
-            GrdE retCode; // Error code for all Guardant API functions
-            string logStr = "Apply encrypted answer data: ";
-
-            retCode = GrdApi.GrdTRU_ApplyAnswer(_grdHandle, // handle to Guardant protected container of dongle with 
-                // corresponding pre-generated question 
-                                                buf);       // answer data update buffer prepared and encrypted by GrdTRU_EncryptAnswer 
-
-            logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
-            ErrorHandling(_grdHandle, retCode);
-
-            byte[] buffer = new byte[16];
-            byte[] initVector = new byte[16];
-
-            logStr = "Testing new mask by GrdTransform test:";
-            retCode = GrdApi.GrdTransform(_grdHandle, 0, 8, buffer, 0, initVector);
-            logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
-            ErrorHandling(_grdHandle, retCode);
-        }*/
-
-        /*private void insUserBuf(ref byte[] userBuff,byte[] buf, ushort offset, ushort length)
-        {
-            ushort len = length;
-            if (buf.Length < len)
-            {
-                len = (ushort)buf.Length;
-            }
-            Array.Copy(buf, 0, userBuff, 0, len);
-            //if (userBuff.Length < offset + len)
-            //{
-                //_userBufSize = (ushort)(offset + len); 
-            //}
-        }
-
-        private void insUserBuf(ref byte[] userBuf, string txt, ushort offset, ushort length)
-        {
-            insUserBuf(ref userBuf, Encoding.GetEncoding(1251).GetBytes(txt), offset, length);
-        }
-
-        private void insUserBuf(ref byte[] userBuf, int i, ushort offset)
-        {
-            insUserBuf(ref userBuf, BitConverter.GetBytes(i), offset, 4);
-        }
-
-        private void insUserBuf(ref byte[] userBuf, uint i, ushort offset)
-        {
-            insUserBuf(ref userBuf, BitConverter.GetBytes(i), offset, 4);
-        }
-
-        private void insUserBuf(ref byte[] userBuf, DateTime dt, ushort offset)
-        {
-            string sdt = dt.Year.ToString("0000") + "-" + dt.Month.ToString("00") + "-" + dt.Day.ToString("00");
-            insUserBuf(ref userBuf, sdt, offset, 12);
-        } */
+        }        
 
         #region writemask.dll
 
@@ -887,36 +616,21 @@ namespace RabGRD
 
         #region rudiments
 
-        /*public string get_question()
+        public string get_question()
         {
             GrdE retCode; // Error code for all Guardant API functions
             string logStr = "Generate encrypted question and initialize remote update procedure: ";
 
             TRUQuestionStruct quest=new TRUQuestionStruct();
 
-            if (((GrdDT)_keyType & GrdDT.RTC) == GrdDT.RTC) // End User dongle supports RTC 
-            {
-                retCode = GrdApi.GrdTRU_GenerateQuestionTime(
-                                                            _grdHandle,                 // handle to Guardant protected container 
-                                                            out quest.question,         // pointer to question					8 bytes (64 bit) 
-                                                            out quest.id,               // pointer to dongle ID					4 bytes 
-                                                            out quest.pubKey,           // pointer to dongle Public Code		4 bytes 
-                                                            out quest.dongleTime,       // pointer to dongle time (encrypted)	8 bytes 
-                                                            128 * sizeof(byte),         // size of DeadTimes array in bytes 
-                                                            out quest.deadTimes,        // pointer to array of DeadTimes 
-                                                            out quest.deadTimesNumber,  // number of returned DeadTimes 
-                                                            out quest.hash);            // pointer to Hash of previous data		8 bytes 
-                                                            
-            }
-            else
-            {
+            
                 retCode = GrdApi.GrdTRU_GenerateQuestion(
                                             _grdHandle,         // handle to Guardant protected container 
                                             out quest.question, // pointer to question					8 bytes (64 bit) 
                                             out quest.id,       // pointer to dongle ID					4 bytes 
                                             out quest.pubKey,   // pointer to dongle Public Code		4 bytes 
                                             out quest.hash);    // pointer to Hash of previous data		8 bytes 
-            }
+            
             logStr += GrdApi.PrintResult((int)retCode);
             log.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
@@ -928,7 +642,7 @@ namespace RabGRD
             byte[] buf = GRDUtils.RawSerialize(quest);
 
             return Convert.ToBase64String(buf, 0, buf.Length,Base64FormattingOptions.None);
-        }*/
+        }
 
         /*private GrdE Disconnect()
         {

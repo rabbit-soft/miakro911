@@ -1,4 +1,4 @@
-﻿#define A
+﻿//#define A
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,7 +29,19 @@ namespace DongleUpdateService
                 throw new XmlRpcException("Ошибка генерации числа-ответа на сервере");
             return ans;
 #else
+            _log.Debug("DongleUpdate");
             GRDVendorKey key = new GRDVendorKey();
+            string ans;
+            string q = key.GetTRUQuestion();
+            key.GetTRUAnswer(out ans, q, orgId, farms, flags,
+                DateTime.Parse(startDate),
+                DateTime.Parse(endDate));
+            key.Dispose();
+            if (ans == "")
+                throw new XmlRpcException("Ошибка генерации числа-ответа на сервере");
+            return ans;
+
+            //GRDVendorKey key = new GRDVendorKey();
             key.WriteMask(orgId, farms, flags, DateTime.Parse(startDate), DateTime.Parse(endDate));
             return "";
 #endif

@@ -34,6 +34,7 @@
             this.scMain = new System.Windows.Forms.SplitContainer();
             this.scUsers = new System.Windows.Forms.SplitContainer();
             this.lbClients = new System.Windows.Forms.ListView();
+            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.btAddUser = new System.Windows.Forms.Button();
             this.tbAddress = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -54,7 +55,6 @@
             this.chFlags = new System.Windows.Forms.ColumnHeader();
             this.chTimeFlags = new System.Windows.Forms.ColumnHeader();
             this.chTimeFlagsEnd = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.menuStrip1.SuspendLayout();
             this.scMain.Panel1.SuspendLayout();
             this.scMain.Panel2.SuspendLayout();
@@ -147,6 +147,11 @@
             this.lbClients.View = System.Windows.Forms.View.Details;
             this.lbClients.SelectedIndexChanged += new System.EventHandler(this.lbClients_SelectedIndexChanged);
             // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Клиенты";
+            this.columnHeader1.Width = 200;
+            // 
             // btAddUser
             // 
             this.btAddUser.Location = new System.Drawing.Point(12, 224);
@@ -216,6 +221,7 @@
             this.btEditKey.TabIndex = 3;
             this.btEditKey.Text = "Перепрошить ключ";
             this.btEditKey.UseVisualStyleBackColor = true;
+            this.btEditKey.Click += new System.EventHandler(this.btEditKey_Click);
             // 
             // btAddKey
             // 
@@ -296,11 +302,6 @@
             // chTimeFlagsEnd
             // 
             this.chTimeFlagsEnd.Text = "Окончание временных флагов";
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Клиенты";
-            this.columnHeader1.Width = 200;
             // 
             // MainForm
             // 

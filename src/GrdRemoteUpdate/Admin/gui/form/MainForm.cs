@@ -73,7 +73,7 @@ namespace AdminGRD
             }
 
             string org = (lbClients.SelectedItems[0].Tag as sClient).Organization;
-            GRDEndUser key = new GRDEndUser();
+            GRDVendorKey key = new GRDVendorKey();
             if (key.ID == 0)
             {
                 MessageBox.Show("Произошла ошибка подключения к ключу.\nПодробности в логах");
@@ -84,22 +84,67 @@ namespace AdminGRD
             {
                 try
                 {
-                    ResponceItem s = _reqSend.ExecuteMethod(MName.VendorUpdateDongle,
+                    /*ResponceItem s = _reqSend.ExecuteMethod(MName.VendorUpdateDongle,
                         MPN.base64_question, key.GetTRUQuestion(),
                         MPN.orgId, (lbClients.SelectedItems[0].Tag as sClient).Organization,
                         MPN.farms, dlg.Farms.ToString(),
                         MPN.flags, dlg.Flags.ToString(),
                         MPN.startDate, dlg.StartDate,
-                        MPN.endDate, dlg.EndDate);
+                        MPN.endDate, dlg.EndDate);*/
 
                     //key.SetTRUAnswer(s.Value);    
+                    key.WriteMask((lbClients.SelectedItems[0].Tag as sClient).Organization,
+                        dlg.Farms,
+                        dlg.Flags,
+                        dlg.StartDate,
+                        dlg.EndDate);
+                    MessageBox.Show("Прошили Успешно");
                 }
                 catch (Exception exc)
                 {
                     MessageBox.Show(exc.Message);
                 }
             }
-            key.Disconnect();
+            key.Dispose();
+        }
+
+        private void btEditKey_Click(object sender, EventArgs e)
+        {
+            if (lbClients.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Не выбран пользователь");
+                return;
+            }
+
+            string org = (lbClients.SelectedItems[0].Tag as sClient).Organization;
+            GRDVendorKey key = new GRDVendorKey();
+            if (key.ID == 0)
+            {
+                MessageBox.Show("Произошла ошибка подключения к ключу.\nПодробности в логах");
+                return;
+            }
+            AddDongleForm dlg = new AddDongleForm(org, key.ID);
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    string q = key.GetTRUQuestion();
+                    ResponceItem s = _reqSend.ExecuteMethod(MName.VendorUpdateDongle,
+                        MPN.base64_question, q,
+                        MPN.orgId, (lbClients.SelectedItems[0].Tag as sClient).Organization,
+                        MPN.farms, dlg.Farms.ToString(),
+                        MPN.flags, dlg.Flags.ToString(),
+                        MPN.startDate, dlg.StartDate.ToString("yyyy-MM-dd"),
+                        MPN.endDate, dlg.EndDate.ToString("yyyy-MM-dd"));
+
+                    key.SetTRUAnswer(s.Value.ToString());    
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show(exc.Message);
+                }
+            }
+            key.Dispose();
         }
 
         protected override void WndProc(ref Message message)
@@ -120,5 +165,7 @@ namespace AdminGRD
             // pass messages on to the base control for processing
             base.WndProc(ref message);
         }
+
+
     }
 }

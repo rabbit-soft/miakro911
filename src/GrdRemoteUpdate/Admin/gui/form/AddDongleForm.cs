@@ -60,8 +60,8 @@ namespace AdminGRD
 
         public int Farms { get { return (int)nudFarms.Value; } }
         public int Flags { get { return (int)nudFlags.Value; } }
-        public string StartDate { get { return dtpStartDate.Value.ToString("yyyy-MM-dd"); } }
-        public string EndDate { get { return dtpEndDate.Value.ToString("yyyy-MM-dd"); } }
+        public DateTime StartDate { get { return dtpStartDate.Value; } }
+        public DateTime EndDate { get { return dtpEndDate.Value; } }
         public int TimeFlags { get { return (int)nudTimeFlags.Value; } }
         public string TimeFlagsEnd { get { return dtpTimeFlags.Value.ToString("yyyy-MM-dd"); } }
 

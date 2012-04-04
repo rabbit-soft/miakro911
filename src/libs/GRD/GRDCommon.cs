@@ -27,7 +27,7 @@ namespace RabGRD
         public byte[] hash;
         public ulong dongleTime;
         public uint deadTimesNumber;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
         public byte[] deadTimes;
     }
 

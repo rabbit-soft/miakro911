@@ -144,6 +144,8 @@ namespace RabGRD
 
         protected uint _id;
         protected byte _model;
+        protected ushort _keyType;
+        protected ushort _lanRes;
               
         //protected uint _uamOffset;          
 

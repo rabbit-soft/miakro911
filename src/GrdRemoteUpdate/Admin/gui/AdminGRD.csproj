@@ -66,11 +66,17 @@
     <Compile Include="..\..\..\libs\GRD\GRDCommon.cs">
       <Link>grd\GRDCommon.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\libs\GRD\GRDEndUser.cs">
+      <Link>grd\GRDEndUser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\libs\GRD\GRDVendor.cs">
+      <Link>grd\GRDVendor.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\libs\GRD\GRD_Base.cs">
       <Link>grd\GRD_Base.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\libs\GRD\GRD_BaseCodes.cs">
-      <Link>grd\GRD_BaseCodes.cs</Link>
+    <Compile Include="..\..\..\libs\GRD\GRD_BaseTRU.cs">
+      <Link>grd\GRD_BaseTRU.cs</Link>
     </Compile>
     <Compile Include="form\AddDongleForm.cs">
       <SubType>Form</SubType>
@@ -102,7 +108,7 @@
     <Compile Include="form\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="grd\GRDEndUser.cs" />
+    <Compile Include="grd\GRD_Codes.cs" />
     <Compile Include="MyHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -159,9 +165,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\..\party3d\writemask.dll">
+    <None Include="..\..\..\..\party3d\writemask.dll">
       <Link>writemask.dll</Link>
-    </Content>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

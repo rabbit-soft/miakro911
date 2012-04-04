@@ -130,7 +130,7 @@ namespace WindowsFormsApplication1
 
         private void button12_Click(object sender, EventArgs e)
         {
-            /*string st = key.get_question();
+            string st = key.get_question();
 
             TextWriter tw = new StreamWriter("question.txt");
             tw.WriteLine("############################################################################");
@@ -139,7 +139,7 @@ namespace WindowsFormsApplication1
             tw.WriteLine("##                                                                        ##");
             tw.WriteLine("############################################################################");
             tw.WriteLine(st);
-            tw.Close();*/           
+            tw.Close();           
         }
 
         private void button13_Click(object sender, EventArgs e)
@@ -151,7 +151,7 @@ namespace WindowsFormsApplication1
             MessageBox.Show(st);
             tr.Close();
 
-            st = key.GetTRUAnswer(st,"Чумачечая организация", 1488, 15, new DateTime(1917, 10, 25), DateTime.MaxValue);
+            st = key.GetTRUAnswer(st, "Чумачечая организация", 1488, 15, new DateTime(1917, 10, 25), new DateTime(2100, 10, 25));
 
             MessageBox.Show(st);
             TextWriter tw = new StreamWriter("answer.txt");

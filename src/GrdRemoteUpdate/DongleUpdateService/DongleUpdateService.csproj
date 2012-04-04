@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;PROTECTED</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -33,7 +33,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;PROTECTED</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -81,6 +81,9 @@
     </Compile>
     <Compile Include="..\..\libs\GRD\GRD_Base.cs">
       <Link>GRD\GRD_Base.cs</Link>
+    </Compile>
+    <Compile Include="..\..\libs\GRD\GRD_BaseTRU.cs">
+      <Link>GRD\GRD_BaseTRU.cs</Link>
     </Compile>
     <Compile Include="GRD\GRD_Codes.cs" />
     <Compile Include="ProjectInstaller.cs">
