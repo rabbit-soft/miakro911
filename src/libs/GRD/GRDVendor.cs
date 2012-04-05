@@ -225,8 +225,8 @@ namespace RabGRD
             if (retCode != GrdE.OK)
                 return retCode;
 
-            int ansSize;
             byte[] answer = new byte[pbyWholeMask.Length * 3 + 128];
+            int ansSize = answer.Length;
 
             logStr = "Encrypt answer for Trusted Remote Update: ";
             retCode = GrdApi.GrdTRU_EncryptAnswer(_grdHandle,                   // handle to Guardant protected container 
