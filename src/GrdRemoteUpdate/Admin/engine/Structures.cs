@@ -38,6 +38,8 @@ namespace pEngine
         public readonly string Address;
         [XmlRpcMember("c_money")]
         public readonly string Money;
+        [XmlRpcMember("c_saas")]
+        public readonly bool SAAS;
         [XmlRpcMember("dongles"),
         XmlRpcMissingMapping(MappingAction.Ignore)]
         public sDongle[] Dongles;
@@ -52,13 +54,13 @@ namespace pEngine
         public string Flags;
         [XmlRpcMember("u_farms")]
         public string Farms;
-        [XmlRpcMember("u_start_date")]
+        [XmlRpcMember("sd")]
         public string StartDate;
-        [XmlRpcMember("u_end_date")]
+        [XmlRpcMember("ed")]
         public string EndDate;
         [XmlRpcMember("u_time_flags")]
         public string TimeFlags;
-        [XmlRpcMember("u_time_flags_end")]
+        [XmlRpcMember("tfe")]
         public string TimeFlagsEnd;
     }
 }

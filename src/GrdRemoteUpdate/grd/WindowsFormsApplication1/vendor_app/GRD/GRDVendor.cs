@@ -382,7 +382,9 @@ namespace RabGRD
             logStr += GrdApi.PrintResult((int)retCode);
             log.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
-           
+            //if(retCode!=GrdE.OK)
+
+
             uint protectLength;
             ushort wNumberOfItems;
             byte[] pbyWholeMask = createNewMask(userBuff, out protectLength,out wNumberOfItems);
@@ -401,16 +403,17 @@ namespace RabGRD
             log.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
 
-            int ansSize;
-            byte[] answer;
+            
+            byte[] answer = new byte[pbyWholeMask.Length * 3 + 128];
+            int ansSize = answer.Length;
 
             logStr = "Encrypt answer for Trusted Remote Update: ";
             retCode = GrdApi.GrdTRU_EncryptAnswer(_grdHandle,                   // handle to Guardant protected container 
                                                                                 // GSII64 algorithm with the same key as in remote dongle 
                                                                                 // and pre-stored GrdTRU_SetAnswerProperties data if needed 
-                                                  GRDConst.GrdSAMToUAM,         // starting address for writing in dongle 
-                                                  4+pbyWholeMask.Length,          // size of data to be written 
-                                                  pbyWholeMask,                 // buffer for data to be written 
+                                                  USER_DATA_BEGINING,         // starting address for writing in dongle 
+                                                  userBuff.Length,          // size of data to be written 
+                                                  userBuff,                 // buffer for data to be written 
                                                   qq.question,                  // pointer to decrypted Question 
                                                   AlgoNumGSII64,                // dongle GSII64 algorithm number with the same key as in remote dongle 
                                                   AlgoNumHash64,                // dongle HASH64 algorithm number with the same key as in remote dongle 

@@ -28,24 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scMain = new System.Windows.Forms.SplitContainer();
             this.scUsers = new System.Windows.Forms.SplitContainer();
-            this.lbClients = new System.Windows.Forms.ListView();
+            this.lvClients = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.btAddUser = new System.Windows.Forms.Button();
-            this.tbAddress = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.tbContact = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.tbOrgName = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.btEditKey = new System.Windows.Forms.Button();
             this.btAddKey = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.lvDongles = new System.Windows.Forms.ListView();
             this.chID = new System.Windows.Forms.ColumnHeader();
             this.chIdhex = new System.Windows.Forms.ColumnHeader();
             this.chLabel = new System.Windows.Forms.ColumnHeader();
@@ -55,13 +50,20 @@
             this.chFlags = new System.Windows.Forms.ColumnHeader();
             this.chTimeFlags = new System.Windows.Forms.ColumnHeader();
             this.chTimeFlagsEnd = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.добавитьДенегToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
+            this.обновитьСписокToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.scMain.Panel1.SuspendLayout();
             this.scMain.Panel2.SuspendLayout();
             this.scMain.SuspendLayout();
             this.scUsers.Panel1.SuspendLayout();
-            this.scUsers.Panel2.SuspendLayout();
             this.scUsers.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -77,6 +79,7 @@
             // файлToolStripMenuItem
             // 
             this.файлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.обновитьСписокToolStripMenuItem,
             this.выходToolStripMenuItem});
             this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
             this.файлToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
@@ -85,8 +88,9 @@
             // выходToolStripMenuItem
             // 
             this.выходToolStripMenuItem.Name = "выходToolStripMenuItem";
-            this.выходToolStripMenuItem.Size = new System.Drawing.Size(108, 22);
+            this.выходToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.выходToolStripMenuItem.Text = "Выход";
+            this.выходToolStripMenuItem.Click += new System.EventHandler(this.выходToolStripMenuItem_Click);
             // 
             // scMain
             // 
@@ -104,7 +108,7 @@
             this.scMain.Panel2.Controls.Add(this.btEditKey);
             this.scMain.Panel2.Controls.Add(this.btAddKey);
             this.scMain.Panel2.Controls.Add(this.label2);
-            this.scMain.Panel2.Controls.Add(this.listView1);
+            this.scMain.Panel2.Controls.Add(this.lvDongles);
             this.scMain.Size = new System.Drawing.Size(750, 507);
             this.scMain.SplitterDistance = 250;
             this.scMain.TabIndex = 1;
@@ -117,40 +121,39 @@
             // 
             // scUsers.Panel1
             // 
-            this.scUsers.Panel1.Controls.Add(this.lbClients);
+            this.scUsers.Panel1.Controls.Add(this.lvClients);
             this.scUsers.Panel1.Controls.Add(this.btAddUser);
-            // 
-            // scUsers.Panel2
-            // 
-            this.scUsers.Panel2.Controls.Add(this.tbAddress);
-            this.scUsers.Panel2.Controls.Add(this.label3);
-            this.scUsers.Panel2.Controls.Add(this.tbContact);
-            this.scUsers.Panel2.Controls.Add(this.label4);
-            this.scUsers.Panel2.Controls.Add(this.tbOrgName);
-            this.scUsers.Panel2.Controls.Add(this.label5);
+            this.scUsers.Panel2Collapsed = true;
             this.scUsers.Size = new System.Drawing.Size(750, 250);
             this.scUsers.SplitterDistance = 250;
             this.scUsers.TabIndex = 0;
             // 
-            // lbClients
+            // lvClients
             // 
-            this.lbClients.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1});
-            this.lbClients.FullRowSelect = true;
-            this.lbClients.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.lbClients.Location = new System.Drawing.Point(3, 3);
-            this.lbClients.Name = "lbClients";
-            this.lbClients.Size = new System.Drawing.Size(244, 215);
-            this.lbClients.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.lbClients.TabIndex = 3;
-            this.lbClients.UseCompatibleStateImageBehavior = false;
-            this.lbClients.View = System.Windows.Forms.View.Details;
-            this.lbClients.SelectedIndexChanged += new System.EventHandler(this.lbClients_SelectedIndexChanged);
+            this.lvClients.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvClients.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3,
+            this.columnHeader4,
+            this.columnHeader5});
+            this.lvClients.ContextMenuStrip = this.contextMenuStrip1;
+            this.lvClients.FullRowSelect = true;
+            this.lvClients.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.lvClients.Location = new System.Drawing.Point(3, 3);
+            this.lvClients.Name = "lvClients";
+            this.lvClients.Size = new System.Drawing.Size(744, 215);
+            this.lvClients.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.lvClients.TabIndex = 3;
+            this.lvClients.UseCompatibleStateImageBehavior = false;
+            this.lvClients.View = System.Windows.Forms.View.Details;
+            this.lvClients.SelectedIndexChanged += new System.EventHandler(this.lbClients_SelectedIndexChanged);
             // 
             // columnHeader1
             // 
             this.columnHeader1.Text = "Клиенты";
-            this.columnHeader1.Width = 200;
+            this.columnHeader1.Width = 129;
             // 
             // btAddUser
             // 
@@ -161,57 +164,6 @@
             this.btAddUser.Text = "Добавить";
             this.btAddUser.UseVisualStyleBackColor = true;
             this.btAddUser.Click += new System.EventHandler(this.btAddUser_Click);
-            // 
-            // tbAddress
-            // 
-            this.tbAddress.Enabled = false;
-            this.tbAddress.Location = new System.Drawing.Point(58, 74);
-            this.tbAddress.Name = "tbAddress";
-            this.tbAddress.Size = new System.Drawing.Size(265, 20);
-            this.tbAddress.TabIndex = 13;
-            // 
-            // label3
-            // 
-            this.label3.Location = new System.Drawing.Point(3, 73);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(49, 20);
-            this.label3.TabIndex = 12;
-            this.label3.Text = "Адрес:";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // tbContact
-            // 
-            this.tbContact.Enabled = false;
-            this.tbContact.Location = new System.Drawing.Point(121, 47);
-            this.tbContact.Name = "tbContact";
-            this.tbContact.Size = new System.Drawing.Size(202, 20);
-            this.tbContact.TabIndex = 11;
-            // 
-            // label4
-            // 
-            this.label4.Location = new System.Drawing.Point(3, 47);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(112, 20);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "Контактное лицо:";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // tbOrgName
-            // 
-            this.tbOrgName.Enabled = false;
-            this.tbOrgName.Location = new System.Drawing.Point(159, 21);
-            this.tbOrgName.Name = "tbOrgName";
-            this.tbOrgName.Size = new System.Drawing.Size(164, 20);
-            this.tbOrgName.TabIndex = 9;
-            // 
-            // label5
-            // 
-            this.label5.Location = new System.Drawing.Point(3, 21);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(150, 20);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "Название организации:";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // btEditKey
             // 
@@ -229,7 +181,7 @@
             this.btAddKey.Name = "btAddKey";
             this.btAddKey.Size = new System.Drawing.Size(151, 23);
             this.btAddKey.TabIndex = 2;
-            this.btAddKey.Text = "Прошить новый ключ";
+            this.btAddKey.Text = "Добавить новый ключ";
             this.btAddKey.UseVisualStyleBackColor = true;
             this.btAddKey.Click += new System.EventHandler(this.btAddKey_Click);
             // 
@@ -244,9 +196,11 @@
             this.label2.Text = "Ключи пользователя";
             this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // listView1
+            // lvDongles
             // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lvDongles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvDongles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chID,
             this.chIdhex,
             this.chLabel,
@@ -256,12 +210,13 @@
             this.chFlags,
             this.chTimeFlags,
             this.chTimeFlagsEnd});
-            this.listView1.Location = new System.Drawing.Point(3, 26);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(744, 185);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
+            this.lvDongles.FullRowSelect = true;
+            this.lvDongles.Location = new System.Drawing.Point(3, 26);
+            this.lvDongles.Name = "lvDongles";
+            this.lvDongles.Size = new System.Drawing.Size(744, 185);
+            this.lvDongles.TabIndex = 0;
+            this.lvDongles.UseCompatibleStateImageBehavior = false;
+            this.lvDongles.View = System.Windows.Forms.View.Details;
             // 
             // chID
             // 
@@ -286,10 +241,12 @@
             // chStartDate
             // 
             this.chStartDate.Text = "ДатаНачала ";
+            this.chStartDate.Width = 120;
             // 
             // chEndDate
             // 
             this.chEndDate.Text = "Дата Окончания";
+            this.chEndDate.Width = 120;
             // 
             // chFlags
             // 
@@ -302,6 +259,45 @@
             // chTimeFlagsEnd
             // 
             this.chTimeFlagsEnd.Text = "Окончание временных флагов";
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Контактное лицо";
+            this.columnHeader2.Width = 116;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Деньги";
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Адрес";
+            this.columnHeader4.Width = 299;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.добавитьДенегToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(160, 26);
+            // 
+            // добавитьДенегToolStripMenuItem
+            // 
+            this.добавитьДенегToolStripMenuItem.Name = "добавитьДенегToolStripMenuItem";
+            this.добавитьДенегToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.добавитьДенегToolStripMenuItem.Text = "Добавить денег";
+            this.добавитьДенегToolStripMenuItem.Click += new System.EventHandler(this.btAddMoney_Click);
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Версия";
+            // 
+            // обновитьСписокToolStripMenuItem
+            // 
+            this.обновитьСписокToolStripMenuItem.Name = "обновитьСписокToolStripMenuItem";
+            this.обновитьСписокToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.обновитьСписокToolStripMenuItem.Text = "Обновить список";
+            this.обновитьСписокToolStripMenuItem.Click += new System.EventHandler(this.обновитьСписокToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -319,9 +315,8 @@
             this.scMain.Panel2.ResumeLayout(false);
             this.scMain.ResumeLayout(false);
             this.scUsers.Panel1.ResumeLayout(false);
-            this.scUsers.Panel2.ResumeLayout(false);
-            this.scUsers.Panel2.PerformLayout();
             this.scUsers.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -336,7 +331,7 @@
         private System.Windows.Forms.ToolStripMenuItem выходToolStripMenuItem;
         private System.Windows.Forms.Button btAddUser;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView lvDongles;
         private System.Windows.Forms.ColumnHeader chID;
         private System.Windows.Forms.ColumnHeader chIdhex;
         private System.Windows.Forms.ColumnHeader chLabel;
@@ -348,14 +343,15 @@
         private System.Windows.Forms.ColumnHeader chFlags;
         private System.Windows.Forms.ColumnHeader chTimeFlags;
         private System.Windows.Forms.ColumnHeader chTimeFlagsEnd;
-        private System.Windows.Forms.ListView lbClients;
-        private System.Windows.Forms.TextBox tbAddress;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox tbContact;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox tbOrgName;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ListView lvClients;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem добавитьДенегToolStripMenuItem;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.ToolStripMenuItem обновитьСписокToolStripMenuItem;
     }
 }
 

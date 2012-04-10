@@ -19,7 +19,7 @@ namespace AdminGRD
             showPassChange(false);
             toolTip1.SetToolTip(btPassChange, "Сменить пароль");
 #if DEBUG
-            this.BackColor = System.Drawing.Color.Crimson;
+            this.BackColor = System.Drawing.Color.BurlyWood;
 #endif          
         }
 

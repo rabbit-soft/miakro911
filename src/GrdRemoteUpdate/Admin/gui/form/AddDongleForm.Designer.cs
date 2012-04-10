@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btCancel = new System.Windows.Forms.Button();
             this.btOk = new System.Windows.Forms.Button();
             this.tbDongleId = new System.Windows.Forms.TextBox();
@@ -45,16 +46,22 @@
             this.label6 = new System.Windows.Forms.Label();
             this.dtpTimeFlags = new System.Windows.Forms.DateTimePicker();
             this.label7 = new System.Windows.Forms.Label();
+            this.tbPrice = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.nudMonths = new System.Windows.Forms.NumericUpDown();
+            this.label9 = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.nudFarms)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudFlags)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTimeFlags)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMonths)).BeginInit();
             this.SuspendLayout();
             // 
             // btCancel
             // 
             this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btCancel.Location = new System.Drawing.Point(126, 356);
+            this.btCancel.Location = new System.Drawing.Point(126, 413);
             this.btCancel.Name = "btCancel";
             this.btCancel.Size = new System.Drawing.Size(75, 23);
             this.btCancel.TabIndex = 3;
@@ -65,12 +72,13 @@
             // 
             this.btOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btOk.Location = new System.Drawing.Point(207, 356);
+            this.btOk.Location = new System.Drawing.Point(207, 413);
             this.btOk.Name = "btOk";
             this.btOk.Size = new System.Drawing.Size(75, 23);
             this.btOk.TabIndex = 2;
             this.btOk.Text = "Готово";
             this.btOk.UseVisualStyleBackColor = true;
+            this.btOk.Click += new System.EventHandler(this.btOk_Click);
             // 
             // tbDongleId
             // 
@@ -116,6 +124,7 @@
             0,
             0,
             0});
+            this.nudFarms.ValueChanged += new System.EventHandler(this.nudFarms_ValueChanged);
             // 
             // label2
             // 
@@ -137,8 +146,7 @@
             // 
             // ch
             // 
-            this.ch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.ch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ch.FormattingEnabled = true;
             this.ch.Location = new System.Drawing.Point(116, 87);
             this.ch.Name = "ch";
@@ -168,7 +176,7 @@
             // dtpEndDate
             // 
             this.dtpEndDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.dtpEndDate.Location = new System.Drawing.Point(117, 258);
+            this.dtpEndDate.Location = new System.Drawing.Point(115, 256);
             this.dtpEndDate.Name = "dtpEndDate";
             this.dtpEndDate.Size = new System.Drawing.Size(167, 20);
             this.dtpEndDate.TabIndex = 20;
@@ -185,15 +193,16 @@
             // 
             // nudTimeFlags
             // 
-            this.nudTimeFlags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudTimeFlags.Location = new System.Drawing.Point(118, 284);
+            this.nudTimeFlags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudTimeFlags.Location = new System.Drawing.Point(115, 319);
             this.nudTimeFlags.Name = "nudTimeFlags";
             this.nudTimeFlags.Size = new System.Drawing.Size(166, 20);
             this.nudTimeFlags.TabIndex = 22;
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(10, 284);
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label6.Location = new System.Drawing.Point(10, 319);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(101, 20);
             this.label6.TabIndex = 21;
@@ -202,26 +211,74 @@
             // 
             // dtpTimeFlags
             // 
-            this.dtpTimeFlags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.dtpTimeFlags.Location = new System.Drawing.Point(118, 310);
+            this.dtpTimeFlags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.dtpTimeFlags.Location = new System.Drawing.Point(115, 345);
             this.dtpTimeFlags.Name = "dtpTimeFlags";
-            this.dtpTimeFlags.Size = new System.Drawing.Size(167, 20);
+            this.dtpTimeFlags.Size = new System.Drawing.Size(166, 20);
             this.dtpTimeFlags.TabIndex = 23;
             // 
             // label7
             // 
-            this.label7.Location = new System.Drawing.Point(10, 312);
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label7.Location = new System.Drawing.Point(10, 347);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(101, 20);
             this.label7.TabIndex = 24;
             this.label7.Text = "Врем. флаги до";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // tbPrice
+            // 
+            this.tbPrice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbPrice.Enabled = false;
+            this.tbPrice.Location = new System.Drawing.Point(115, 378);
+            this.tbPrice.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
+            this.tbPrice.Name = "tbPrice";
+            this.tbPrice.Size = new System.Drawing.Size(166, 20);
+            this.tbPrice.TabIndex = 25;
+            // 
+            // label8
+            // 
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label8.Location = new System.Drawing.Point(12, 378);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(101, 20);
+            this.label8.TabIndex = 26;
+            this.label8.Text = "Сколько стоит";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // nudMonths
+            // 
+            this.nudMonths.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudMonths.Location = new System.Drawing.Point(197, 282);
+            this.nudMonths.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nudMonths.Name = "nudMonths";
+            this.nudMonths.Size = new System.Drawing.Size(84, 20);
+            this.nudMonths.TabIndex = 27;
+            this.nudMonths.ValueChanged += new System.EventHandler(this.nudMonths_ValueChanged);
+            // 
+            // label9
+            // 
+            this.label9.Location = new System.Drawing.Point(115, 282);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(76, 20);
+            this.label9.TabIndex = 28;
+            this.label9.Text = "На месяцев";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // AddDongleForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(294, 391);
+            this.ClientSize = new System.Drawing.Size(294, 448);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.nudMonths);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.tbPrice);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.dtpTimeFlags);
             this.Controls.Add(this.nudTimeFlags);
@@ -242,10 +299,12 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AddDongleForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Прошить ключ для: ";
             ((System.ComponentModel.ISupportInitialize)(this.nudFarms)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudFlags)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTimeFlags)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMonths)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -270,5 +329,10 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.DateTimePicker dtpTimeFlags;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox tbPrice;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.NumericUpDown nudMonths;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

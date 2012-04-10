@@ -90,11 +90,11 @@
     <Compile Include="form\AddClientForm.Designer.cs">
       <DependentUpon>AddClientForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="form\DongleForm.cs">
+    <Compile Include="form\AddMoney.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="form\DongleForm.Designer.cs">
-      <DependentUpon>DongleForm.cs</DependentUpon>
+    <Compile Include="form\AddMoney.Designer.cs">
+      <DependentUpon>AddMoney.cs</DependentUpon>
     </Compile>
     <Compile Include="form\LoginForm.cs">
       <SubType>Form</SubType>
@@ -118,6 +118,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="form\AddClientForm.resx">
       <DependentUpon>AddClientForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="form\AddMoney.resx">
+      <DependentUpon>AddMoney.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="form\LoginForm.resx">

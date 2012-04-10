@@ -20,5 +20,6 @@ namespace AdminGRD
         public string Address { get { return tbAddress.Text; } }
         public string Contact { get { return tbContact.Text; } }
         public string Organization { get { return tbOrgName.Text; } }
+        public bool SAAS { get { return chSAAS.Checked; } }
     }
 }

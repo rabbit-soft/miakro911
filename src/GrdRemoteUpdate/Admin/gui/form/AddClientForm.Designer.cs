@@ -36,13 +36,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.tbAddress = new System.Windows.Forms.TextBox();
+            this.chSAAS = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btOk
             // 
             this.btOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btOk.Location = new System.Drawing.Point(257, 106);
+            this.btOk.Location = new System.Drawing.Point(257, 121);
             this.btOk.Name = "btOk";
             this.btOk.Size = new System.Drawing.Size(75, 23);
             this.btOk.TabIndex = 0;
@@ -53,7 +54,7 @@
             // 
             this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btCancel.Location = new System.Drawing.Point(176, 106);
+            this.btCancel.Location = new System.Drawing.Point(176, 121);
             this.btCancel.Name = "btCancel";
             this.btCancel.Size = new System.Drawing.Size(75, 23);
             this.btCancel.TabIndex = 1;
@@ -108,13 +109,24 @@
             this.tbAddress.Size = new System.Drawing.Size(265, 20);
             this.tbAddress.TabIndex = 7;
             // 
+            // chSAAS
+            // 
+            this.chSAAS.AutoSize = true;
+            this.chSAAS.Location = new System.Drawing.Point(239, 88);
+            this.chSAAS.Name = "chSAAS";
+            this.chSAAS.Size = new System.Drawing.Size(93, 17);
+            this.chSAAS.TabIndex = 8;
+            this.chSAAS.Text = "SAAS-версия";
+            this.chSAAS.UseVisualStyleBackColor = true;
+            // 
             // AddClientForm
             // 
             this.AcceptButton = this.btOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btCancel;
-            this.ClientSize = new System.Drawing.Size(344, 141);
+            this.ClientSize = new System.Drawing.Size(344, 156);
+            this.Controls.Add(this.chSAAS);
             this.Controls.Add(this.tbAddress);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.tbContact);
@@ -144,5 +156,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox tbAddress;
+        private System.Windows.Forms.CheckBox chSAAS;
     }
 }
