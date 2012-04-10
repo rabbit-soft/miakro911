@@ -135,17 +135,21 @@ namespace RabGRD
             Butcher = 1 << 3,       //3 bit
             ReportPlugIns = 1 << 4,  //4 bit
             ServerDump = 1 << 5,    //5 bit
-            WebReports = 1 << 6   	//6 bit
+            WebReports = 1 << 6,   	//6 bit
+            SAASVersion= 1 << 7,
         }
 
         protected Handle _grdHandle = new Handle();    // Creates empty handle for Guardant protected container
         protected int _farmCntCache;
         protected int _cacheTicks;
 
-        protected uint _id;
+        protected uint _keyId;
         protected byte _model;
         protected ushort _keyType;
         protected ushort _lanRes;
+
+        public uint ID { get { return _keyId; } }
+        public ushort Model { get { return _model; } }
               
         //protected uint _uamOffset;          
 

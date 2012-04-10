@@ -20,15 +20,18 @@ namespace RabGRD
         private bool _isActive = false;
 
         //private byte _model;
-        private ushort _keyType;
-        private ushort _lanRes;
         //private uint _uamOffset;
         private uint _prog;
 
         //private byte[] _userBuf=new byte[4096];
         //private ushort _userBufSize = 0;
-        private byte[] _keyTRU = new byte[]{0xC6, 0x3B, 0x04, 0xF0, 0xB0, 0x37, 0x56, 0x88, 
-                                            0x76, 0x89, 0x8A, 0x2F, 0xAE, 0xD1, 0x8E, 0x07 };//этот ключ-обновления записан во все проданые ключи
+        /// <summary>
+        /// Этот ключ-обновления записан во все проданые ключи
+        /// </summary>
+        private byte[] _keyTRU = new byte[]{    0xC6, 0x3B, 0x04, 0xF0, 0xB0, 0x37, 0x56, 0x88, 
+                                                0x76, 0x89, 0x8A, 0x2F, 0xAE, 0xD1, 0x8E, 0x07 };
+        private byte[] _keyProtect = new byte[]{0x97, 0xA1, 0x16, 0xD8, 0xCF, 0xE2, 0x42, 0xE1,
+                                                0xD2, 0x73, 0x2A, 0xBE, 0x39, 0x6F, 0x43, 0xEF };
 
         public GRDVendorKey()
         {
@@ -76,9 +79,7 @@ namespace RabGRD
         /*public uint ProgID
         {
             get { return _prog; }
-        }*/
-
-        public uint ID { get { return _id; } }
+        }*/       
 
         private GrdE connect()
         {
@@ -95,7 +96,7 @@ namespace RabGRD
             if (retCode == GrdE.OK) // Print table header if at least one dongle found
             {
                 logStr += String.Format("; Found dongle with following ID : {0,8:X}", _findPropDongleID);
-                _id = findInfo.dwID;
+                _keyId = findInfo.dwID;
                 _keyType = findInfo.wType;
                 _model = (byte)findInfo.dwModel;
                 _prog = findInfo.byNProg;
@@ -136,6 +137,17 @@ namespace RabGRD
             get { return _isActive; }
         }
 
+        /// <summary>
+        /// Инициализирует ключ. Устанавливает пароль дял Удаленного Обновления
+        /// </summary>
+        public int SetTRUKey()
+        {
+            GrdE retCode = GrdApi.GrdTRU_SetKey(_grdHandle, _keyTRU);
+            log.Debug("Setting TruKey " + retCode.ToString() + " " + GrdApi.PrintResult((byte)retCode));
+            ErrorHandling(_grdHandle, retCode);
+            return (int)retCode;
+        }
+
         public void WriteMask(string org, int farms, int flags, DateTime startDate, DateTime endDate)
         {
             if (!GrdApi.GrdIsValidHandle(_grdHandle))
@@ -149,12 +161,9 @@ namespace RabGRD
             uint protectLength;
             ushort wNumberOfItems;
             byte[] pbyWholeMask = createNewMask(userBuff, out protectLength, out wNumberOfItems);
+            string logStr;
 
-            string logStr = "Setting TruKey ";
-            retCode = GrdApi.GrdTRU_SetKey(_grdHandle, _keyTRU);
-            logStr += retCode.ToString() + " " + GrdApi.PrintResult((byte)retCode);
-            log.Debug(logStr);
-            ErrorHandling(_grdHandle, retCode);
+            SetTRUKey();
 
             logStr = "Writing test user buffer : ";
             retCode = GrdApi.GrdWrite(_grdHandle,
@@ -306,13 +315,10 @@ namespace RabGRD
             const UInt32 GrdApHash64DemoUpdate = 0xCCCCCCCC;
 
             DongleHeaderStruct dongleHeader;
-            dongleHeader.ProgID = 55;
+            dongleHeader.ProgID = 1;
             dongleHeader.Version = 10;
             dongleHeader.SerialNumber = 123;
             dongleHeader.Mask = 12121;
-
-            GrdE retCode;
-            string logStr = "CreatingNewMask : ";
 
             byte[] abyDongleHeader = GRDUtils.RawSerialize(dongleHeader, 14);
             byte[] abyMask = new byte[4096];

@@ -577,8 +577,7 @@ namespace rabnet
                     }
                 }
                 else
-                    MessageBox.Show(@"Ферма не пуста.
-Необходимо расселить чтобы продолжить");
+                    MessageBox.Show(@"Ферма не пуста.");
             }
             else
             {

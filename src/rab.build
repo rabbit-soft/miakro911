@@ -230,7 +230,6 @@
 		<copy file="${log4net.ass}" tofile="${bin_dir}/${log4net.lib}" />
 		<call target="updater" />
 		<call target="plugins" />
-		<call target="miaRepair" />
 		<!--delete file=""${mysql.use}/-->
 	</target>
 
@@ -536,19 +535,6 @@
 			</references>
 		</csc>
 		<copy file="${curdir}/updater/app.config" tofile="${tools_dir}/updater.exe.config" />
-	</target>
-	
-	<target name="miaRepair" description="Make miaRepair console app">
-		<csc target="exe" output="${tools_dir}/miaRepair.exe" optimize="true">
-			<sources>
-				<include name="${curdir}/miaRepair/*.cs"/>
-			</sources>
-			<references>
-				<include name="${mysql.use}"/>
-				<include name="${log4net.use}"/>
-			</references>
-		</csc>
-		<copy file="${curdir}/miaRepair/app.config" tofile="${tools_dir}/miaRepair.exe.config" />
 	</target>
 	
 	<target name="butcher" description="Make the Butcher Factory">		

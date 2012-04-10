@@ -14,9 +14,6 @@ namespace RabGRD
         public static readonly GRDEndUser Instance = new GRDEndUser();
 
         private const uint ProgIDCode = 1;
-        private uint _keyId;
-        private ushort _keyType;
-        private ushort _lanRes;
         private byte _modelId;
 
         private GRDEndUser()

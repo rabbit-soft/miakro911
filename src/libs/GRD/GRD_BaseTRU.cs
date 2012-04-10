@@ -9,14 +9,13 @@ namespace RabGRD
         /// <summary>
         /// Генерирует число вопрос для Удаленного Обновления Ключа(TRU)
         /// </summary>
-        /// <returns>Число вопрос (base64string)</returns>
-        public string GetTRUQuestion()
+        /// <param name="answer">Число вопрос (base64string)</param>
+        public int GetTRUQuestion(out string answer)
         {
             GrdE retCode; // Error code for all Guardant API functions
             string logStr = "Generate encrypted question and initialize remote update procedure: ";
-
+            answer = "";
             TRUQuestionStruct quest = new TRUQuestionStruct();
-
 
             retCode = GrdApi.GrdTRU_GenerateQuestion(
                             _grdHandle,         // handle to Guardant protected container 
@@ -28,6 +27,7 @@ namespace RabGRD
             logStr += GrdApi.PrintResult((int)retCode);
             log.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
+            if(retCode != GrdE.OK) return (int)retCode;
 
             quest.type = _keyType;
             quest.lanRes = _lanRes;
@@ -35,24 +35,24 @@ namespace RabGRD
 
             byte[] buf = GRDUtils.RawSerialize(quest);
 
-            return Convert.ToBase64String(buf, 0, buf.Length, Base64FormattingOptions.None);
+            answer = Convert.ToBase64String(buf, 0, buf.Length, Base64FormattingOptions.None);
+            return 0;
         }
 
-        public GrdE SetTRUAnswer(string base64_answer)
+        public int SetTRUAnswer(string base64_answer)
         {
             byte[] buf = Convert.FromBase64String(base64_answer);
             GrdE retCode; // Error code for all Guardant API functions
             string logStr = "Apply encrypted answer data: ";
 
             retCode = GrdApi.GrdTRU_ApplyAnswer(_grdHandle, // handle to Guardant protected container of dongle with 
-                // corresponding pre-generated question 
+                                                            // corresponding pre-generated question 
                                                 buf);       // answer data update buffer prepared and encrypted by GrdTRU_EncryptAnswer 
 
             logStr += GrdApi.PrintResult((int)retCode);
             log.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
-            if (retCode != GrdE.OK)
-                return retCode;
+            if (retCode != GrdE.OK) return (int)retCode;
 
             byte[] buffer = new byte[16];
             byte[] initVector = new byte[16];
@@ -61,7 +61,7 @@ namespace RabGRD
             retCode = GrdApi.GrdTransform(_grdHandle, 0, 8, buffer, 0, initVector);
             logStr += GrdApi.PrintResult((int)retCode);
             log.Debug(logStr);
-            return ErrorHandling(_grdHandle, retCode);          
+            return (int)ErrorHandling(_grdHandle, retCode);          
         }
     }
 }
