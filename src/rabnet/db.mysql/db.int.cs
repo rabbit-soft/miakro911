@@ -144,7 +144,7 @@ namespace rabnet
         void deleteBuilding(int bid);
         int addFarm(int parent,String uppertype, String lowertype,String name,int id);
         bool FarmExists(int id);
-        void changeFarm(int fid,String uppertype,String lowertype);
+        void ChangeFarm(int fid,String uppertype,String lowertype);
         void deleteFarm(int fid);
         ZooJobItem[] getVacc(Filters f);
         ZooJobItem[] getSetNest(Filters f,int wochild,int wchild);

@@ -14,7 +14,7 @@ namespace rabnet
         /// <summary>
         /// Если новая то '0'
         /// </summary>
-        private int id = 0;
+        private int _id = 0;
         private int parent = 0;
         int[] tiers = null;
         Building b1 = null;
@@ -43,7 +43,7 @@ namespace rabnet
 
         public MiniFarmForm(int id):this()
         {
-            this.id = id;
+            this._id = id;
             cbNum.Items.Add(id.ToString());
             cbNum.SelectedIndex = 0;
             cbNum.Enabled = false;
@@ -94,25 +94,34 @@ namespace rabnet
             return "none";
         }
 
-        private String getUpperType()
+        /// <summary>
+        /// Выбраный пользователем Верхний ярус
+        /// </summary>
+        private String upperType
         {
-            return getType(cbUpper.SelectedIndex + 1);
+            get { return getType(cbUpper.SelectedIndex + 1); }
         }
 
-        private String getLowerType()
+        /// <summary>
+        /// Выбраный пользователем Нижний ярус
+        /// </summary>
+        private String lowerType
         {
-            return getType(cbLower.SelectedIndex);
+            get{return getType(cbLower.SelectedIndex);}
         }
 
+        /// <summary>
+        /// Сидят ли в строении кролики
+        /// </summary>
         private bool hasRabbits(Building b)
         {
             if (b==null)
                 return false;
-            bool res = false;
+            //bool res = false;
             for (int i = 0; i < b.secs(); i++)
-                if (b.busy(i) != 0)
-                    res = true;
-            return res;
+                if (b.busy(i) > 0)
+                    return true;
+            return false;
         }
         /// <summary>
         /// Проверяет на занятость
@@ -128,7 +137,7 @@ namespace rabnet
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (id == 0)
+            if (_id == 0)
             {
                 int fid = int.Parse(cbNum.Text);
                 if (Engine.db().FarmExists(fid))
@@ -137,16 +146,16 @@ namespace rabnet
                     this.DialogResult = DialogResult.None;
                     return;
                 }
-                Engine.db().addFarm(parent, getUpperType(), getLowerType(), "", fid);
+                Engine.db().addFarm(parent, upperType, lowerType, "", fid);
                 Close();
             }
             else
             {
                 int change = -1;
-                if (getUpperType() != b1.ftype) 
+                if (upperType != b1.ftype) 
                     change = checkBuilding(b1);
 
-                if ((b2 != null && getLowerType() != b2.ftype) || (b2 == null && getLowerType() != "none"))
+                if ((b2 != null && lowerType != b2.ftype) || (b2 == null && lowerType != "none"))
                 {
                     if (change<1)
                         change = checkBuilding(b2);
@@ -154,7 +163,7 @@ namespace rabnet
 
                 if (change == 0)
                 {
-                    Engine.db().changeFarm(id, getUpperType(), getLowerType());
+                    Engine.db().ChangeFarm(_id, upperType, lowerType);
                     Close();
                 }
                 else this.DialogResult = DialogResult.None;

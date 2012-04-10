@@ -534,7 +534,7 @@ namespace rabnet
             return Buildings.farmExists(sql, id);
         }
 
-        public void changeFarm(int fid, string uppertype, string lowertype)
+        public void ChangeFarm(int fid, string uppertype, string lowertype)
         {
             Buildings.changeFarm(sql, fid, uppertype, lowertype);
         }

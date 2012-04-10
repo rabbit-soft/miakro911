@@ -639,7 +639,7 @@ VALUES('{0:s}','{1:s}','{2:s}','{2:s}',''{4:s});", type, delims, hn,bcols,bvals)
             return (int)cmd.LastInsertedId;
         }
 
-        internal static void changeTierType(MySqlConnection sql, int tid, String type)
+        private static void changeTierType(MySqlConnection sql, int tid, String type)
         {
             String hn = "00";
             String delims = "000";
@@ -648,36 +648,40 @@ VALUES('{0:s}','{1:s}','{2:s}','{2:s}',''{4:s});", type, delims, hn,bcols,bvals)
             //if (type == "barin") delims = "100";
             switch (type)
             {
-                case myBuildingType.Quarta:
-                    {
+                case myBuildingType.Quarta:                    
                         delims = "111";
                         busy = getBusyString(4);
                         break;
-                    }
-                case myBuildingType.Barin:
-                    {
+
+                case myBuildingType.Complex:
+                        hn = "0";
+                        delims = "11";
+                        busy = getBusyString(3);
+                        break;
+
+                case myBuildingType.Barin:                    
                         delims = "100";
                         busy = getBusyString(2); 
                         break;
-                    }
+                   
                 case myBuildingType.Vertep:
                 case myBuildingType.DualFemale:
-                case myBuildingType.Jurta:
-                    {
+                case myBuildingType.Jurta:                    
                         busy = getBusyString(2);
                         break;
-                    }
-                case myBuildingType.Female:
-                    {
+                    
+                case myBuildingType.Female:                    
                         busy = getBusyString(1);
                         break;
-                    }
+                    
+
             }
             MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE tiers SET t_type='{0:s}',
 t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}'{4:s} WHERE t_id={3:d};", type, delims, hn,tid,busy), sql);
             cmd.ExecuteNonQuery();
         }
 
+        /// <param name="count">Сколько клеток доступны для заселения</param>
         internal static string getBusyString(byte count)
         {
             string result ="";

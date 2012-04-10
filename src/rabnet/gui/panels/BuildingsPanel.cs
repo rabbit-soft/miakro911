@@ -307,7 +307,7 @@ namespace rabnet
             for (int i=0;i<b.secs();i++)
             {
                 livesIn = b.use(i);
-                if (b.fbusies[i] != 0)
+                if (b.fbusies[i] > 0)
                 {
                     rner = Engine.get().getRabbit(b.fbusies[i]);
                     if (rner.YoungCount != 0)
@@ -563,18 +563,22 @@ namespace rabnet
                         Building b = Engine.db().getBuilding(tiers[i]);
                         for (int j = 0; j < b.secs(); j++)
                         {
-                            if (b.busy(j) != 0)
+                            if (b.busy(j) > 0)
                                 candelete = false;
                         }
                     }
-                if (candelete && askDelete())
+                if (candelete)
                 {
-                    preBuilding = buildNum(treeView1.SelectedNode.Parent);
-                    Engine.db().deleteFarm(farmNum());
-                    _rsb.run();
+                    if (askDelete())
+                    {
+                        preBuilding = buildNum(treeView1.SelectedNode.Parent);
+                        Engine.db().deleteFarm(farmNum());
+                        _rsb.run();
+                    }
                 }
                 else
-                    MessageBox.Show("Ферма не пуста.");
+                    MessageBox.Show(@"Ферма не пуста.
+Необходимо расселить чтобы продолжить");
             }
             else
             {
