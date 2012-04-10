@@ -12,8 +12,7 @@ using System.Net.Sockets;
 namespace DongleUpdateService
 {
     public partial class GRDDUService //: ServiceBase
-    {
-        
+    {       
 
         public GRDDUService()
         {
@@ -23,12 +22,13 @@ namespace DongleUpdateService
             
 
             HttpListener listener = new HttpListener();
-            listener.Prefixes.Add("http://192.168.0.110:11000/rpc2/");
+            listener.Prefixes.Add("http://192.168.0.103:11000/rpc2/");
             listener.Start();
             while (true)
             {
                 HttpListenerContext context = listener.GetContext();
                 XmlRpcListenerService svc = new GrdUpdateHost();
+                
                 svc.ProcessRequest(context);
             }
         }

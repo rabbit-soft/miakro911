@@ -1,4 +1,4 @@
-﻿//#define A
+﻿#define A
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,7 +18,7 @@ namespace DongleUpdateService
         public string DongleUpdate(string base64_question,string orgId, int farms, int flags, string startDate, string endDate)
         {
 #if A
-            _log.Debug("DongleUpdate");
+            _log.Info("Request For UpdateDongle");
             GRDVendorKey key = new GRDVendorKey();
             string ans;
             key.GetTRUAnswer(out ans,base64_question, orgId, farms, flags, 
