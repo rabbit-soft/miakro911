@@ -246,6 +246,20 @@ namespace AdminGRD
             fillUsers();
         }
 
+        /*private void button1_Click(object sender, EventArgs e)
+        {
+            GRDVendorKey key = new GRDVendorKey();
+            AddDongleForm dlg = new AddDongleForm((lvClients.SelectedItems[0].Tag as sClient), (lvDongles.SelectedItems[0].Tag as sDongle));
+            dlg.ShowDialog();
+            key.WriteMask(
+                         (lvClients.SelectedItems[0].Tag as sClient).Organization,
+                         dlg.Farms,
+                         dlg.Flags,
+                         dlg.StartDate,
+                         dlg.EndDate);
+            key.Dispose();  
+        }*/
+
 
     }
 }

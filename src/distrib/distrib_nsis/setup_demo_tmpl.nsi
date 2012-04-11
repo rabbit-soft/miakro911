@@ -144,9 +144,6 @@ Section -com_comps SEC_Common
     File ..\..\..\bin\@bin_type@\Tools\mia_conv.exe
     File ..\..\..\bin\@bin_type@\Tools\MySql.Data.dll
     File ..\..\..\bin\tools\updater.exe
-	File ..\..\..\bin\tools\updater.exe.config
-	File ..\..\..\bin\tools\miaRepair.exe
-	File ..\..\..\bin\tools\miaRepair.exe.config
 	File ..\..\..\bin\tools\log4net.dll
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Conv_NAME).lnk $INSTDIR\Tools\mia_conv.exe
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Up_NAME).lnk $INSTDIR\Tools\updater.exe

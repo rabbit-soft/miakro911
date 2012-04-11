@@ -31,11 +31,18 @@
             this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.обновитьСписокToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scMain = new System.Windows.Forms.SplitContainer();
             this.scUsers = new System.Windows.Forms.SplitContainer();
             this.lvClients = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.добавитьДенегToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btAddUser = new System.Windows.Forms.Button();
             this.btEditKey = new System.Windows.Forms.Button();
             this.btAddKey = new System.Windows.Forms.Button();
@@ -50,13 +57,6 @@
             this.chFlags = new System.Windows.Forms.ColumnHeader();
             this.chTimeFlags = new System.Windows.Forms.ColumnHeader();
             this.chTimeFlagsEnd = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.добавитьДенегToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
-            this.обновитьСписокToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.scMain.Panel1.SuspendLayout();
             this.scMain.Panel2.SuspendLayout();
@@ -85,10 +85,17 @@
             this.файлToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.файлToolStripMenuItem.Text = "Файл";
             // 
+            // обновитьСписокToolStripMenuItem
+            // 
+            this.обновитьСписокToolStripMenuItem.Name = "обновитьСписокToolStripMenuItem";
+            this.обновитьСписокToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.обновитьСписокToolStripMenuItem.Text = "Обновить список";
+            this.обновитьСписокToolStripMenuItem.Click += new System.EventHandler(this.обновитьСписокToolStripMenuItem_Click);
+            // 
             // выходToolStripMenuItem
             // 
             this.выходToolStripMenuItem.Name = "выходToolStripMenuItem";
-            this.выходToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.выходToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.выходToolStripMenuItem.Text = "Выход";
             this.выходToolStripMenuItem.Click += new System.EventHandler(this.выходToolStripMenuItem_Click);
             // 
@@ -154,6 +161,38 @@
             // 
             this.columnHeader1.Text = "Клиенты";
             this.columnHeader1.Width = 129;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Контактное лицо";
+            this.columnHeader2.Width = 116;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Деньги";
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Адрес";
+            this.columnHeader4.Width = 299;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Версия";
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.добавитьДенегToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(160, 26);
+            // 
+            // добавитьДенегToolStripMenuItem
+            // 
+            this.добавитьДенегToolStripMenuItem.Name = "добавитьДенегToolStripMenuItem";
+            this.добавитьДенегToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.добавитьДенегToolStripMenuItem.Text = "Добавить денег";
+            this.добавитьДенегToolStripMenuItem.Click += new System.EventHandler(this.btAddMoney_Click);
             // 
             // btAddUser
             // 
@@ -259,45 +298,6 @@
             // chTimeFlagsEnd
             // 
             this.chTimeFlagsEnd.Text = "Окончание временных флагов";
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Контактное лицо";
-            this.columnHeader2.Width = 116;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Деньги";
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "Адрес";
-            this.columnHeader4.Width = 299;
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.добавитьДенегToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(160, 26);
-            // 
-            // добавитьДенегToolStripMenuItem
-            // 
-            this.добавитьДенегToolStripMenuItem.Name = "добавитьДенегToolStripMenuItem";
-            this.добавитьДенегToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
-            this.добавитьДенегToolStripMenuItem.Text = "Добавить денег";
-            this.добавитьДенегToolStripMenuItem.Click += new System.EventHandler(this.btAddMoney_Click);
-            // 
-            // columnHeader5
-            // 
-            this.columnHeader5.Text = "Версия";
-            // 
-            // обновитьСписокToolStripMenuItem
-            // 
-            this.обновитьСписокToolStripMenuItem.Name = "обновитьСписокToolStripMenuItem";
-            this.обновитьСписокToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-            this.обновитьСписокToolStripMenuItem.Text = "Обновить список";
-            this.обновитьСписокToolStripMenuItem.Click += new System.EventHandler(this.обновитьСписокToolStripMenuItem_Click);
             // 
             // MainForm
             // 

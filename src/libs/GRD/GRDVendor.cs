@@ -16,6 +16,7 @@ namespace RabGRD
     {
         const ushort AlgoNumGSII64 = 0;
         const ushort AlgoNumHash64 = 1;
+        const ushort AlgoNumECC160 = 8;
 
         private bool _isActive = false;
 
@@ -225,7 +226,7 @@ namespace RabGRD
                                                         protectLength,                                      // SAM address of the first byte available for reading in bytes 
                                                         wNumberOfItems,                                     // number of hardware-implemented algorithms in the dongle including all protected items and LMS table of Net III 
                                                         0,                                                  // LMS Item number 
-                                                        0);                                                 // Global Flags 
+                                                        GrdGF.HID);                                         // Global Flags 
 
 
             logStr += GrdApi.PrintResult((int)retCode);
@@ -298,7 +299,8 @@ namespace RabGRD
             const byte nsafl_UpdateSrv = 64;
             const ushort nsafh_ReadSrv = 128;
             const ushort nsafh_ReadPwd = 2;
-            const byte rs_algo_GSII64 = 5;
+
+            const byte RsAlgoGSII64 = 5;
             const byte GrdAdsGSII64Demo = 16;
             const byte GrdArsGSII64Demo = 8;
             const UInt32 GrdApGSII64DemoActivation = 0xAAAAAAAA;
@@ -316,9 +318,9 @@ namespace RabGRD
 
             DongleHeaderStruct dongleHeader;
             dongleHeader.ProgID = 1;
-            dongleHeader.Version = 10;
-            dongleHeader.SerialNumber = 123;
-            dongleHeader.Mask = 12121;
+            dongleHeader.Version = 1;
+            dongleHeader.SerialNumber = 1;
+            dongleHeader.Mask = 20;
 
             byte[] abyDongleHeader = GRDUtils.RawSerialize(dongleHeader, 14);
             byte[] abyMask = new byte[4096];
@@ -335,7 +337,7 @@ namespace RabGRD
                          AlgoNumGSII64,
                          (byte)(nsafl_ST_III + nsafl_ActivationSrv + nsafl_DeactivationSrv + nsafl_UpdateSrv),
                          (ushort)(nsafh_ReadSrv + nsafh_ReadPwd),
-                         rs_algo_GSII64,
+                         RsAlgoGSII64,
                          GrdAdsGSII64Demo,
                          GrdArsGSII64Demo,
                          GrdApGSII64DemoActivation,
@@ -348,7 +350,7 @@ namespace RabGRD
                          null,
                          0xFFFF,
                          0xFFFF,
-                         _keyTRU,
+                         _keyProtect,
                          ref wMaskSize,
                          ref wASTSize,
                          ref wNumberOfItems);
@@ -371,10 +373,33 @@ namespace RabGRD
                          null,
                          0xFFFF,
                          0xFFFF,
-                         _keyTRU,
+                         _keyProtect,
                          ref wMaskSize,
                          ref wASTSize,
-                         ref wNumberOfItems);            
+                         ref wNumberOfItems);
+
+            AddAlgorithm(abyMask,
+                         abyMaskHeader,
+                         AlgoNumECC160,
+                         (byte)(nsafl_ST_III + nsafl_ActivationSrv + nsafl_DeactivationSrv + nsafl_UpdateSrv),
+                         (ushort)(nsafh_ReadSrv + nsafh_ReadPwd),
+                         RsAlgoHash64,
+                         GrdAdsHash64Demo,
+                         GrdArsHash64Demo,
+                         GrdApHash64DemoActivation,
+                         GrdApHash64DemoDeactivation,
+                         GrdApHash64DemoRead,
+                         GrdApHash64DemoUpdate,
+                         null,
+                         null,
+                         null,
+                         null,
+                         0xFFFF,
+                         0xFFFF,
+                         _keyProtect,
+                         ref wMaskSize,
+                         ref wASTSize,
+                         ref wNumberOfItems);
 
             byte[] pbyWholeMask = new byte[WHOLE_MASK_LENGTH];
 
@@ -428,9 +453,36 @@ namespace RabGRD
                                                            [MarshalAs(UnmanagedType.LPArray)] byte[] pPrivECCKey4Key,
                                                            ref ushort pwCodeDetSize);
 
+        /// <summary>
+        /// Записывает дискриптор алгоритма в маску, которая будет зашита  в ключ
+        /// </summary>
+        /// <param name="pbyAlgos">pointer to a buffer to return generated mask</param>
+        /// <param name="pbyAST">pointer to a buffer to return generated mask header</param>
+        /// <param name="wNumericName">numeric name (algorithm number) of added algorithm/protected item (PI)</param>
+        /// <param name="byLoFlags">services flags</param>
+        /// <param name="wHiFlags">services flags</param>
+        /// <param name="byAlgorithmCode">algorithm code</param>
+        /// <param name="wKeyLength">key length</param>
+        /// <param name="wBlockLength">block length</param>
+        /// <param name="dwActivatePwd">activation service password</param>
+        /// <param name="dwDeactivatePwd">deactivation service password</param>
+        /// <param name="dwReadPwd">read service password</param>
+        /// <param name="dwUpdatePwd">update service password</param>
+        /// <param name="pBirthTime">pointer to structure, contains birth time of algorithm/PI (only for Time dongles)</param>
+        /// <param name="pDeadTime">pointer to structure, contains dead time of algorithm/PI (only for Time dongles)</param>
+        /// <param name="pLifeTime">pointer to structure, contains life time of algorithm/PI (only for Time dongles)</param>
+        /// <param name="pFlipTime">pointer to structure, contains flip time of algorithm/PI (only for Time dongles)</param>
+        /// <param name="wGpCounter">GP counter of algorithm/PI</param>
+        /// <param name="wErrorCounter">error counter of algorithm/PI</param>
+        /// <param name="pbyDet"> algorithm determinant</param>
+        /// <param name="pwMaskSize">pointer to variables, contains mask size</param>
+        /// <param name="pwNewASTSize"> pointer to variables, contains AST size</param>
+        /// <param name="pwNumberOfItems">pointer to variables, contains number of items in mask</param>
         [DllImport("WriteMask.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "AddAlgorithm")]
-        private static extern void AddAlgorithm([MarshalAs(UnmanagedType.LPArray)] byte[] pbyAlgos,
-                                                [MarshalAs(UnmanagedType.LPArray)] byte[] pbyAST,
+        private static extern void AddAlgorithm([MarshalAs(UnmanagedType.LPArray)] 
+                                                byte[] pbyAlgos,
+                                                [MarshalAs(UnmanagedType.LPArray)] 
+                                                byte[] pbyAST,
                                                 ushort wNumericName,
                                                 byte byLoFlags,
                                                 ushort wHiFlags,

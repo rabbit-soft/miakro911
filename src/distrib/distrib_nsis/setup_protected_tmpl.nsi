@@ -224,8 +224,8 @@ Section -com_comps SEC_Common
     File ..\..\..\bin\@bin_type@\Tools\MySql.Data.dll
     File ..\..\..\bin\tools\updater.exe
 	File ..\..\..\bin\tools\updater.exe.config
-	File ..\..\..\bin\tools\miaRepair.exe
-	File ..\..\..\bin\tools\miaRepair.exe.config
+
+	
 	File ..\..\..\bin\tools\log4net.dll
 	
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Conv_NAME).lnk $INSTDIR\Tools\mia_conv.exe
@@ -356,8 +356,8 @@ Section /o -un.com_comps UNSEC_Common
 	Delete /REBOOTOK $INSTDIR\Tools\log4net.dll
 	Delete /REBOOTOK $INSTDIR\Tools\updater.exe
 	Delete /REBOOTOK $INSTDIR\Tools\updater.exe.config
-	Delete /REBOOTOK $INSTDIR\Tools\miaRepair.exe
-	Delete /REBOOTOK $INSTDIR\Tools\miaRepair.exe.config
+	
+	
     RmDir /REBOOTOK /r $INSTDIR\Tools
 #    Delete /REBOOTOK $INSTDIR\Guardant\GrdTRU.exe
 #    Delete /REBOOTOK $INSTDIR\mia_conv.exe
