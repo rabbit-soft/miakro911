@@ -293,28 +293,31 @@ namespace RabGRD
 
         private byte[] createNewMask(byte[] userBuff, out uint protectLength, out ushort wNumberOfItems)
         {
+            const ushort nsafh_ReadPwd = 2;
+            const ushort nsafh_ReadSrv = 128;
+
             const byte nsafl_ST_III = 8;
             const byte nsafl_ActivationSrv = 16;
             const byte nsafl_DeactivationSrv = 32;
             const byte nsafl_UpdateSrv = 64;
-            const ushort nsafh_ReadSrv = 128;
-            const ushort nsafh_ReadPwd = 2;
+            
+            
 
-            const byte RsAlgoGSII64 = 5;
-            const byte GrdAdsGSII64Demo = 16;
+            //const byte RsAlgoGSII64 = 5;
+            //const byte GrdAdsGSII64Demo = 16;
             const byte GrdArsGSII64Demo = 8;
-            const UInt32 GrdApGSII64DemoActivation = 0xAAAAAAAA;
+            /*const UInt32 GrdApGSII64DemoActivation = 0xAAAAAAAA;
             const UInt32 GrdApGSII64DemoDeactivation = 0xDDDDDDDD;
             const UInt32 GrdApGSII64DemoRead = 0xBBBBBBBB;
-            const UInt32 GrdApGSII64DemoUpdate = 0xCCCCCCCC;
+            const UInt32 GrdApGSII64DemoUpdate = 0xCCCCCCCC;*/
 
-            const byte RsAlgoHash64 = 6;
-            const byte GrdAdsHash64Demo = 16;
+            //const byte RsAlgoHash64 = 6;
+            //const byte GrdAdsHash64Demo = 16;
             const byte GrdArsHash64Demo = 8;
-            const UInt32 GrdApHash64DemoActivation = 0xAAAAAAAA;
+            /*const UInt32 GrdApHash64DemoActivation = 0xAAAAAAAA;
             const UInt32 GrdApHash64DemoDeactivation = 0xDDDDDDDD;
             const UInt32 GrdApHash64DemoRead = 0xBBBBBBBB;
-            const UInt32 GrdApHash64DemoUpdate = 0xCCCCCCCC;
+            const UInt32 GrdApHash64DemoUpdate = 0xCCCCCCCC;*/
 
             DongleHeaderStruct dongleHeader;
             dongleHeader.ProgID = 1;
@@ -335,15 +338,15 @@ namespace RabGRD
             AddAlgorithm(abyMask,
                          abyMaskHeader,
                          AlgoNumGSII64,
-                         (byte)(nsafl_ST_III + nsafl_ActivationSrv + nsafl_DeactivationSrv + nsafl_UpdateSrv),
-                         (ushort)(nsafh_ReadSrv + nsafh_ReadPwd),
-                         RsAlgoGSII64,
-                         GrdAdsGSII64Demo,
+                         (byte)GRDConst.nsafl.ST_III,
+                         (ushort)0,
+                         (byte)GrdAN.GSII64,  //RsAlgoGSII64,
+                         (ushort)GrdADS.GSII64,//GrdAdsGSII64Demo,
                          GrdArsGSII64Demo,
-                         GrdApGSII64DemoActivation,
-                         GrdApGSII64DemoDeactivation,
-                         GrdApGSII64DemoRead,
-                         GrdApGSII64DemoUpdate,
+                         0,
+                         0,
+                         0,
+                         0,
                          null,
                          null,
                          null,
@@ -358,15 +361,15 @@ namespace RabGRD
             AddAlgorithm(abyMask,
                          abyMaskHeader,
                          AlgoNumHash64,
-                         (byte)(nsafl_ST_III + nsafl_ActivationSrv + nsafl_DeactivationSrv + nsafl_UpdateSrv),
-                         (ushort)(nsafh_ReadSrv + nsafh_ReadPwd),
-                         RsAlgoHash64,
-                         GrdAdsHash64Demo,
-                         GrdArsHash64Demo,
-                         GrdApHash64DemoActivation,
-                         GrdApHash64DemoDeactivation,
-                         GrdApHash64DemoRead,
-                         GrdApHash64DemoUpdate,
+                         (byte)GRDConst.nsafl.ST_III,
+                         (ushort)0,
+                         (byte) GrdAN.HASH64,  //RsAlgoHash64,
+                         (ushort)GrdADS.HASH64,//GrdAdsHash64Demo,
+                         0,
+                         0,
+                         0,
+                         0,
+                         0,
                          null,
                          null,
                          null,
@@ -378,12 +381,12 @@ namespace RabGRD
                          ref wASTSize,
                          ref wNumberOfItems);
 
-            AddAlgorithm(abyMask,
+            /*AddAlgorithm(abyMask,
                          abyMaskHeader,
                          AlgoNumECC160,
                          (byte)(nsafl_ST_III + nsafl_ActivationSrv + nsafl_DeactivationSrv + nsafl_UpdateSrv),
                          (ushort)(nsafh_ReadSrv + nsafh_ReadPwd),
-                         RsAlgoHash64,
+                         (byte)GrdAN.ECC160, //RsAlgoHash64,
                          GrdAdsHash64Demo,
                          GrdArsHash64Demo,
                          GrdApHash64DemoActivation,
@@ -399,7 +402,7 @@ namespace RabGRD
                          _keyProtect,
                          ref wMaskSize,
                          ref wASTSize,
-                         ref wNumberOfItems);
+                         ref wNumberOfItems);*/
 
             byte[] pbyWholeMask = new byte[WHOLE_MASK_LENGTH];
 

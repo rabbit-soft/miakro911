@@ -11,6 +11,90 @@ namespace RabGRD
         public const int GrdWmUAMOffset = 14;
         public const int GrdWmSAMOffset = 44;
         public const uint GrdSAMToUAM = GrdWmSAMOffset - GrdWmUAMOffset;// 1Eh  start address of UAM memory
+
+
+        /// <summary>
+        /// NS Algorithm Flags Low
+        /// </summary>
+        public enum nsafl
+        {
+            /// <summary>
+            /// Уникальность алгоритма по ID ключа. При одинаковых определителях алгоритмы в разных ключах кодируют данные по-разному
+            /// </summary>
+            ID = 1,
+
+            /// <summary>
+            /// Уменьшать счетчик GP при каждой обращении к алгоритму. По достижении счетчиком GP 0, алгоритм автоматически деактивируется и при дальнейших обращениях возвращается код ошибки GrdE_InactiveItem
+            /// </summary>
+            GP_dec = 2,
+
+            /// <summary>
+            /// В современных ключах не используется
+            /// </summary>
+            GP = 4,
+
+            /// <summary>
+            /// Для Guardant Sign/Time/Code/Stealth III/Net III флаг должен быть установлен
+            /// </summary>
+            ST_III = 8,
+
+            /// <summary>
+            /// Сервис активации доступен
+            /// </summary>
+
+            ActivationSrv = 16,
+
+            /// <summary>
+            /// Сервис деактивации доступен
+            /// </summary>
+            DeactivationSrv = 32,
+
+            /// <summary>
+            ///  Сервис изменения ячейки rs_K[] по паролю доступен (функция GrdPI_Update поддерживается)
+            /// </summary>
+            UpdateSrv = 64,
+
+            /// <summary>
+            /// Признак, что в данный момент алгоритм деактивирован. Операции GrdTransform, GrdPI_Read, GrdPI_Update недоступны
+            /// </summary>
+            InactiveFlag = 128,
+        }
+
+        /// <summary>
+        /// NS Algorithm Flags High
+        /// </summary>
+        public enum nsafh
+        {
+            /// <summary>
+            /// Сервис чтения данных ячейки rs_K[] доступен (функция GrdPI_Read поддерживается)
+            /// </summary>
+            ReadSrv = 1,
+
+            /// <summary>
+            /// Чтение осуществляется по паролю rs_ReadPwd
+            /// </summary>
+            ReadPwd = 2,
+
+            /// <summary>
+            /// Включен режим активации в указанное время (хранится в поле rs_BirthTime)
+            /// </summary>
+            BirthTime = 4,
+
+            /// <summary>
+            /// Включен режим деактивации в указанное время (хранится в поле rs_DeadTime)
+            /// </summary>
+            DeadTime = 8,
+
+            /// <summary>
+            /// Включен режим деактивации через указанное время после первого обращения к ячейке (оставшееся до деактивации время хранится в ячейке rs_LifeTime) Одновременное использование с флагами nsafh_DeadTime и nsafh_BirthTime не допускается!
+            /// </summary>
+            LifeTime = 16,
+
+            /// <summary>
+            /// Включен режим автоматического изменения определителя каждые rs_DaysGap-дней, начиная с даты rs_ChangeFlipTimeStart. Можно комбинировать с флагами nsafh_DeadTime, nsafh_BirthTime и nsafh_LifeTime. 
+            /// </summary>
+            FlipTime = 32,
+        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -40,6 +124,7 @@ namespace RabGRD
         public uint Model;
         public uint UAMOffset;
     }
+    
     public static class GRDUtils
     {
         public static string ModelName(byte model)
@@ -104,7 +189,6 @@ namespace RabGRD
             return retobj;
 
         }
-
 
     }
 

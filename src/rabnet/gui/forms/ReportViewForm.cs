@@ -22,6 +22,9 @@ namespace rabnet
         private string _repName = "";
         private string _repFile = "";
         private string[] _xclHeaders;
+        /// <summary>
+        /// Обработчик XL из вне
+        /// </summary>
         private ExcelMaker.DataFillCallBack _xclDataFill;
 
         public bool printed = false;
