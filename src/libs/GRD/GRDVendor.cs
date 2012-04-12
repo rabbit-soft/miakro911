@@ -8,6 +8,9 @@ using System.Text;
 using System.Windows.Forms;
 using Guardant;
 using log4net;
+#if DEBUG
+using System.IO;
+#endif
 
 namespace RabGRD
 {
@@ -19,20 +22,27 @@ namespace RabGRD
         const ushort AlgoNumECC160 = 8;
 
         private bool _isActive = false;
-
-        //private byte _model;
-        //private uint _uamOffset;
         private uint _prog;
 
-        //private byte[] _userBuf=new byte[4096];
-        //private ushort _userBufSize = 0;
         /// <summary>
         /// Этот ключ-обновления записан во все проданые ключи
         /// </summary>
         private byte[] _keyTRU = new byte[]{    0xC6, 0x3B, 0x04, 0xF0, 0xB0, 0x37, 0x56, 0x88, 
                                                 0x76, 0x89, 0x8A, 0x2F, 0xAE, 0xD1, 0x8E, 0x07 };
+
+        /// <summary>
+        /// Этот ключ авто-шифрования записан во все проданые ключи
+        /// </summary>
         private byte[] _keyProtect = new byte[]{0x97, 0xA1, 0x16, 0xD8, 0xCF, 0xE2, 0x42, 0xE1,
                                                 0xD2, 0x73, 0x2A, 0xBE, 0x39, 0x6F, 0x43, 0xEF };
+
+        private byte[] _keyHash = new byte[]   {0x34, 0x3D, 0xBC, 0x24, 0xA5, 0x91, 0x87, 0x62,
+                                                0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20 };
+        /// <summary>
+        /// Этот секретный ключ ЭЦП записан во все проданные ключи
+        /// </summary>
+        private byte[] _keyEcc160 = new byte[] {0xF5, 0xC1, 0x4B, 0x1F, 0x18, 0x8D, 0x24, 0x54, 0xF2, 0x43, 
+                                                0xDE, 0xB9, 0x39, 0x7C, 0x2F, 0x97, 0x41, 0xCB, 0x9B, 0xAB };
 
         public GRDVendorKey()
         {
@@ -149,11 +159,11 @@ namespace RabGRD
             return (int)retCode;
         }
 
-        public void WriteMask(string org, int farms, int flags, DateTime startDate, DateTime endDate)
+        public int WriteMask(string org, int farms, int flags, DateTime startDate, DateTime endDate)
         {
             if (!GrdApi.GrdIsValidHandle(_grdHandle))
             {
-                return;
+                return (int)GrdE.InvalidHandle;
             }
 
             byte[] userBuff = makeUserBuff(org, farms, flags, startDate, endDate);
@@ -161,12 +171,13 @@ namespace RabGRD
                        
             uint protectLength;
             ushort wNumberOfItems;
-            byte[] pbyWholeMask = createNewMask(userBuff, out protectLength, out wNumberOfItems);
+            byte[] pbyWholeMask = makeNewMask(userBuff, out protectLength, out wNumberOfItems);
             string logStr;
 
-            SetTRUKey();
+            //retCode = (GrdE)SetTRUKey();
+            //if (retCode != GrdE.OK) return (int)retCode;
 
-            logStr = "Writing test user buffer : ";
+            logStr = "Writing user buffer : ";
             retCode = GrdApi.GrdWrite(_grdHandle,
                                       (uint)0,
                                       pbyWholeMask.Length,
@@ -175,18 +186,22 @@ namespace RabGRD
             logStr += GrdApi.PrintResult((int)retCode);
             log.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
+            if (retCode != GrdE.OK) return (int)retCode;
 
             logStr = "Protecting : ";
-            retCode = GrdApi.GrdProtect(_grdHandle,
+            retCode = GrdApi.GrdProtect(new IntPtr(_grdHandle.Address),
                                         protectLength,
                                         protectLength,
                                         wNumberOfItems,
-                                        0);
+                                        0,
+                                        (uint)GrdGF.HID,IntPtr.Zero );
             logStr += GrdApi.PrintResult((int)retCode);
             log.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
+            if (retCode != GrdE.OK) return (int)retCode;
 
             log.Debug(" ====> " + (protectLength).ToString());
+            return (int)retCode;
         }       
 
         public GrdE GetTRUAnswer(out string base64_answer, string base64_question, string org, int farms, int flags, DateTime startDate, DateTime endDate)
@@ -217,7 +232,7 @@ namespace RabGRD
             uint protectLength;
             ushort wNumberOfItems;
             byte[] userBuff = makeUserBuff(org, farms, flags, startDate, endDate);
-            byte[] pbyWholeMask = createNewMask(userBuff, out protectLength, out wNumberOfItems);
+            byte[] pbyWholeMask = makeNewMask(userBuff, out protectLength, out wNumberOfItems);
 
             logStr = "Set Init & Protect parameters for Trusted Remote Update: ";
             retCode = GrdApi.GrdTRU_SetAnswerProperties(_grdHandle,                                         // handle to Guardant protected container 
@@ -291,39 +306,13 @@ namespace RabGRD
             return userBuff;
         }
 
-        private byte[] createNewMask(byte[] userBuff, out uint protectLength, out ushort wNumberOfItems)
-        {
-            const ushort nsafh_ReadPwd = 2;
-            const ushort nsafh_ReadSrv = 128;
-
-            const byte nsafl_ST_III = 8;
-            const byte nsafl_ActivationSrv = 16;
-            const byte nsafl_DeactivationSrv = 32;
-            const byte nsafl_UpdateSrv = 64;
-            
-            
-
-            //const byte RsAlgoGSII64 = 5;
-            //const byte GrdAdsGSII64Demo = 16;
-            const byte GrdArsGSII64Demo = 8;
-            /*const UInt32 GrdApGSII64DemoActivation = 0xAAAAAAAA;
-            const UInt32 GrdApGSII64DemoDeactivation = 0xDDDDDDDD;
-            const UInt32 GrdApGSII64DemoRead = 0xBBBBBBBB;
-            const UInt32 GrdApGSII64DemoUpdate = 0xCCCCCCCC;*/
-
-            //const byte RsAlgoHash64 = 6;
-            //const byte GrdAdsHash64Demo = 16;
-            const byte GrdArsHash64Demo = 8;
-            /*const UInt32 GrdApHash64DemoActivation = 0xAAAAAAAA;
-            const UInt32 GrdApHash64DemoDeactivation = 0xDDDDDDDD;
-            const UInt32 GrdApHash64DemoRead = 0xBBBBBBBB;
-            const UInt32 GrdApHash64DemoUpdate = 0xCCCCCCCC;*/
-
+        private byte[] makeNewMask(byte[] userBuff, out uint protectLength, out ushort wNumberOfItems)
+        {              
             DongleHeaderStruct dongleHeader;
             dongleHeader.ProgID = 1;
             dongleHeader.Version = 1;
             dongleHeader.SerialNumber = 1;
-            dongleHeader.Mask = 20;
+            dongleHeader.Mask = 21;
 
             byte[] abyDongleHeader = GRDUtils.RawSerialize(dongleHeader, 14);
             byte[] abyMask = new byte[4096];
@@ -340,19 +329,12 @@ namespace RabGRD
                          AlgoNumGSII64,
                          (byte)GRDConst.nsafl.ST_III,
                          (ushort)0,
-                         (byte)GrdAN.GSII64,  //RsAlgoGSII64,
-                         (ushort)GrdADS.GSII64,//GrdAdsGSII64Demo,
-                         GrdArsGSII64Demo,
-                         0,
-                         0,
-                         0,
-                         0,
-                         null,
-                         null,
-                         null,
-                         null,
-                         0xFFFF,
-                         0xFFFF,
+                         GRDConst.RsAlgo.GSII64,
+                         (ushort)GrdADS.GSII64,
+                         (ushort)GrdARS.GSII64,
+                         0, 0, 0, 0,
+                         null, null, null, null,
+                         0, 0,
                          _keyProtect,
                          ref wMaskSize,
                          ref wASTSize,
@@ -363,46 +345,36 @@ namespace RabGRD
                          AlgoNumHash64,
                          (byte)GRDConst.nsafl.ST_III,
                          (ushort)0,
-                         (byte) GrdAN.HASH64,  //RsAlgoHash64,
-                         (ushort)GrdADS.HASH64,//GrdAdsHash64Demo,
-                         0,
-                         0,
-                         0,
-                         0,
-                         0,
-                         null,
-                         null,
-                         null,
-                         null,
-                         0xFFFF,
-                         0xFFFF,
-                         _keyProtect,
+                         GRDConst.RsAlgo.HASH64,
+                         (ushort)GrdADS.HASH64,
+                         (ushort)GrdARS.HASH64,
+                         0, 0, 0, 0,
+                         null, null, null, null,
+                         0, 0,
+                         _keyHash,
                          ref wMaskSize,
                          ref wASTSize,
                          ref wNumberOfItems);
 
-            /*AddAlgorithm(abyMask,
+            AddAlgorithm(abyMask,
                          abyMaskHeader,
                          AlgoNumECC160,
-                         (byte)(nsafl_ST_III + nsafl_ActivationSrv + nsafl_DeactivationSrv + nsafl_UpdateSrv),
-                         (ushort)(nsafh_ReadSrv + nsafh_ReadPwd),
-                         (byte)GrdAN.ECC160, //RsAlgoHash64,
-                         GrdAdsHash64Demo,
-                         GrdArsHash64Demo,
-                         GrdApHash64DemoActivation,
-                         GrdApHash64DemoDeactivation,
-                         GrdApHash64DemoRead,
-                         GrdApHash64DemoUpdate,
-                         null,
-                         null,
-                         null,
-                         null,
-                         0xFFFF,
-                         0xFFFF,
-                         _keyProtect,
+                         (byte) (GRDConst.nsafl.ST_III + GRDConst.nsafl.ActivationSrv + GRDConst.nsafl.DeactivationSrv ),
+                         (ushort)(GRDConst.nsafh.ReadSrv + GRDConst.nsafh.ReadPwd),
+                         GRDConst.RsAlgo.ECC160,
+                         (ushort)GrdADS.ECC160,
+                         (ushort)GrdARS.ECC160,
+                         2863311530,
+                         3722304989,
+                         3149642683, 
+                         0,
+                         null, null, null, null,
+                         0, 
+                         10,
+                         _keyEcc160,
                          ref wMaskSize,
                          ref wASTSize,
-                         ref wNumberOfItems);*/
+                         ref wNumberOfItems);
 
             byte[] pbyWholeMask = new byte[WHOLE_MASK_LENGTH];
 
@@ -428,6 +400,28 @@ namespace RabGRD
                        userBuff.Length);
 
             protectLength = (uint)(GRDConst.GrdWmSAMOffset + wASTSize + wMaskSize);
+#if DEBUG
+            /*String maskDump = BitConverter.ToString(pbyWholeMask).ToLower().Replace("-", " ");
+            int ind =-1;
+            int cnt=0;
+            do
+            {
+                ind = maskDump.IndexOf(" ",ind+1);
+                if (ind > -1)
+                    cnt++;
+                if (cnt == 16)
+                {
+                    maskDump = maskDump.Remove(ind,1).Insert(ind, Environment.NewLine);
+                    cnt = 0;
+                }
+            }
+            while (ind > -1);
+            log.Debug(Environment.NewLine + maskDump);*/
+            FileStream fs = new System.IO.FileStream(@"c:\Users\Gambit\Desktop\invalid_key",FileMode.Create,FileAccess.ReadWrite);
+            fs.Write(pbyWholeMask, 0, pbyWholeMask.Length);
+            fs.Close();
+            
+#endif
             return pbyWholeMask;
         }
 

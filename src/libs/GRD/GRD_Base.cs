@@ -184,7 +184,6 @@ namespace RabGRD
 
         public int GetFarmsCntCache()
         {
-
             if ((Environment.TickCount & Int32.MaxValue) > _cacheTicks+60*1000)
             {
                 GetFarmsCnt();
@@ -253,6 +252,7 @@ namespace RabGRD
             }
             return valid;
         }
+
         public bool ValidKey()
         {
             GrdE retCode;
@@ -266,7 +266,6 @@ namespace RabGRD
         protected uint GetFlags(uint byteNum)
         {         
             byte[] bts = new byte[8];
-
             uint res = 0;
 
             GrdE retCode;                       // Error code for all Guardant API functions
@@ -439,154 +438,7 @@ namespace RabGRD
                 //Environment.Exit((int)nRet);
             }
             return nRet;
-        }
-
-        /*protected void log.Debug(string txt)
-        {
-            log.Debug(txt);
-        }*/
-        /*protected virtual GrdE Connect()
-        {
-            GrdE retCode; // Error code for all Guardant API functions                                
-            FindInfo findInfo; //= new FindInfo();   // structure used in GrdFind()
-            string logStr = "";
-
-            // Initialize this copy of GrdAPI. GrdStartup() must be called once before first GrdAPI call at application startup
-            /*logStr = "Initialize this copy of GrdAPI : ";
-            retCode = GrdApi.GrdStartup(_findPropRemoteMode);	// + GrdFMR.Remote if you want to use network dongles
-
-            logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
-            ErrorHandling(_grdHandle, retCode);
-            if (retCode != GrdE.OK && retCode != GrdE.AlreadyInitialized)
-            {
-                return retCode;
-            }
-
-            // -----------------------------------------------------------------
-            // Creating Grd protected container & returning it's handle
-            // -----------------------------------------------------------------
-            logStr = "Create Guardant protected container : ";
-            _grdHandle = GrdApi.GrdCreateHandle(_grdHandle, GrdCHM.MultiThread);
-            if (_grdHandle.Address == 0) // Some error found?
-            {
-                logStr += GrdApi.PrintResult((int)GrdE.MemoryAllocation);
-                log.Debug(logStr);
-                return ErrorHandling(new Handle(0), GrdE.MemoryAllocation);
-            }
-            else
-            {
-                logStr += GrdApi.PrintResult((int)retCode);
-                log.Debug(logStr);
-                ErrorHandling(_grdHandle, GrdE.OK); // Print success information
-            }
-
-            // -----------------------------------------------------------------
-            // Store dongle codes in Guardant protected container
-            // -----------------------------------------------------------------
-            logStr = "Storing dongle codes in Guardant protected container : ";
-            retCode = GrdApi.GrdSetAccessCodes(_grdHandle,	// Handle to Guardant protected container
-                                    PublicCode + CryptPu,   // Public code, should always be specified
-                                    ReadCode + CryptRd);    // Private read code; you can omit this code and all following via using of overloaded function;
-            logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
-            ErrorHandling(_grdHandle, retCode);
-            if (retCode != GrdE.OK)
-            {
-                return retCode;
-            }
-
-            // -----------------------------------------------------------------
-            // Set dongle search criteria
-            // -----------------------------------------------------------------
-            logStr = "Setting dongle search conditions : ";
-
-            // All following GrdFind() & GrdLogin() calls before next
-            // GrdSetFindMode() will use specified flag values. 
-            // If dongle field values and specified values do not match, error code is
-            // returned. Both access code and flags are required to call the dongle.
-            retCode = GrdApi.GrdSetFindMode(_grdHandle,
-                                            _findPropRemoteMode,
-                                            _findPropDongleFlags,
-                                            _findPropProgramNumber,
-                                            _findPropDongleID,
-                                            _findPropSerialNumber,
-                                            _findPropProgramVersion,
-                                            _findPropBitMask,
-                                            _findPropDongleType,
-                                            _findPropDongleModel,
-                                            _findPropDongleInterface);
-            logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
-            ErrorHandling(_grdHandle, retCode);
-            if (retCode != GrdE.OK)
-            {
-                return retCode;
-            }*/
-
-        // -----------------------------------------------------------------
-        // Search for all specified dongles and print ID's
-        // -----------------------------------------------------------------
-        /*logStr = "Searching for all specified dongles and print info about it's : ";
-        retCode = GrdApi.GrdFind(_grdHandle, GrdF.First, out _findPropDongleID, out findInfo);
-        if (retCode == GrdE.OK) // Print table header if at least one dongle found
-        {
-            logStr += "; Found dongle with following ID : ";
-        }
-
-        while ( retCode == GrdE.OK)
-        {
-            // Print info about dongles found
-            logStr += string.Format(" {0,8:X}", _findPropDongleID); // Dongle's ID (unique)
-            logStr += " type:" + findInfo.wType.ToString();
-            _id = findInfo.dwID;
-            _keyType = findInfo.wType;
-            _lanRes = findInfo.wRealNetRes;
-            _model = (byte)findInfo.dwModel;
-
-            //_uamOffset = findInfo.wWriteProtectS3 - GRDConst.GrdSAMToUAM;
-
-            // Find next dongle
-            retCode = GrdApi.GrdFind(_grdHandle, GrdF.Next, out _findPropDongleID, out findInfo);
-        }
-        log.Debug(logStr);
-        if (retCode == GrdE.AllDonglesFound || retCode == GrdE.OK)	// Search has been completed?
-        {
-            log.Debug("Dongles search is complete with no errors");
-        }
-        else if (retCode == GrdE.NetDongleNotFound)
-        {
-            ErrorHandling(_grdHandle, retCode);
-        }
-        else
-        {
-            ErrorHandling(_grdHandle, retCode);
-            if (retCode != GrdE.OK)
-            {
-                return retCode;
-            }
-        }
-			
-        ///ПОИСК ОКОНЧЕН  ===  SearchDongles      
-
-        // -----------------------------------------------------------------
-        // Search for the specified local or remote dongle and log in
-        // -----------------------------------------------------------------
-        logStr = "Searching for the specified local or remote dongle and log in : ";
-        // If command line parameter is specified, License Management System functions are used
-        //lms = Int32.MaxValue;
-        // All following Guardant API calls before next GrdCloseHandle()/GrdLogin() will use this dongle
-        retCode = GrdApi.GrdLogin(_grdHandle, 0, GrdLM.PerStation);
-        logStr += GrdApi.PrintResult((int)retCode);
-        log.Debug(logStr);
-        ErrorHandling(_grdHandle, retCode);
-        if (retCode != GrdE.OK)
-        {
-            return retCode;
-        }
-
-        return GrdE.OK;
-    }*/
+        }    
 
         #region common_func
         public DateTime ReadDate(uint offset)

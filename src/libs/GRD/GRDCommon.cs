@@ -5,7 +5,9 @@ using Guardant;
 
 namespace RabGRD
 {
-
+    /// <summary>
+    /// Константы API не указанные в GuardantDotNetApi
+    /// </summary>
     public struct GRDConst
     {
         public const int GrdWmUAMOffset = 14;
@@ -16,84 +18,103 @@ namespace RabGRD
         /// <summary>
         /// NS Algorithm Flags Low
         /// </summary>
-        public enum nsafl
+        public static class nsafl
         {
             /// <summary>
             /// Уникальность алгоритма по ID ключа. При одинаковых определителях алгоритмы в разных ключах кодируют данные по-разному
             /// </summary>
-            ID = 1,
+            public static byte ID = 1;
 
             /// <summary>
             /// Уменьшать счетчик GP при каждой обращении к алгоритму. По достижении счетчиком GP 0, алгоритм автоматически деактивируется и при дальнейших обращениях возвращается код ошибки GrdE_InactiveItem
             /// </summary>
-            GP_dec = 2,
+            public static byte GP_dec = 2;
 
             /// <summary>
             /// В современных ключах не используется
             /// </summary>
-            GP = 4,
+            public static byte GP = 4;
 
             /// <summary>
             /// Для Guardant Sign/Time/Code/Stealth III/Net III флаг должен быть установлен
             /// </summary>
-            ST_III = 8,
+            public static byte ST_III = 8;
 
             /// <summary>
             /// Сервис активации доступен
             /// </summary>
 
-            ActivationSrv = 16,
+            public static byte ActivationSrv = 16;
 
             /// <summary>
             /// Сервис деактивации доступен
             /// </summary>
-            DeactivationSrv = 32,
+            public static byte DeactivationSrv = 32;
 
             /// <summary>
             ///  Сервис изменения ячейки rs_K[] по паролю доступен (функция GrdPI_Update поддерживается)
             /// </summary>
-            UpdateSrv = 64,
+            public static byte UpdateSrv = 64;
 
             /// <summary>
             /// Признак, что в данный момент алгоритм деактивирован. Операции GrdTransform, GrdPI_Read, GrdPI_Update недоступны
             /// </summary>
-            InactiveFlag = 128,
+            public static byte InactiveFlag = 128;
         }
 
         /// <summary>
         /// NS Algorithm Flags High
         /// </summary>
-        public enum nsafh
+        public static class nsafh
         {
             /// <summary>
             /// Сервис чтения данных ячейки rs_K[] доступен (функция GrdPI_Read поддерживается)
             /// </summary>
-            ReadSrv = 1,
+            public static byte ReadSrv = 1;
 
             /// <summary>
             /// Чтение осуществляется по паролю rs_ReadPwd
             /// </summary>
-            ReadPwd = 2,
+            public static byte ReadPwd = 2;
 
             /// <summary>
             /// Включен режим активации в указанное время (хранится в поле rs_BirthTime)
             /// </summary>
-            BirthTime = 4,
+            public static byte BirthTime = 4;
 
             /// <summary>
             /// Включен режим деактивации в указанное время (хранится в поле rs_DeadTime)
             /// </summary>
-            DeadTime = 8,
+            public static byte DeadTime = 8;
 
             /// <summary>
             /// Включен режим деактивации через указанное время после первого обращения к ячейке (оставшееся до деактивации время хранится в ячейке rs_LifeTime) Одновременное использование с флагами nsafh_DeadTime и nsafh_BirthTime не допускается!
             /// </summary>
-            LifeTime = 16,
+            public static byte LifeTime = 16;
 
             /// <summary>
             /// Включен режим автоматического изменения определителя каждые rs_DaysGap-дней, начиная с даты rs_ChangeFlipTimeStart. Можно комбинировать с флагами nsafh_DeadTime, nsafh_BirthTime и nsafh_LifeTime. 
             /// </summary>
-            FlipTime = 32,
+            public static byte FlipTime = 32;
+        }
+
+        /// <summary>
+        /// Поле rs_algo содержит код типа защищенной ячейки.
+        /// </summary>
+        public static class RsAlgo
+        {
+            public static byte GSII64 = 5;
+            public static byte HASH64 = 6;
+            public static byte RND64 = 7;
+            public static byte PI = 8;
+            public static byte GSII64_ENCRYPT = 10;
+            public static byte GSII64_DECRYPT = 11;
+            public static byte ECC160 = 12;
+            public static byte AES128 = 13;
+            public static byte LoadableCode = 14;
+            public static byte SHA256 = 15;
+            public static byte AES128Encode = 16;
+            public static byte AES128Decode = 17;
         }
     }
 

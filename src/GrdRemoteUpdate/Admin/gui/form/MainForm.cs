@@ -246,19 +246,32 @@ namespace AdminGRD
             fillUsers();
         }
 
-        /*private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
+            int ret;
             GRDVendorKey key = new GRDVendorKey();
-            AddDongleForm dlg = new AddDongleForm((lvClients.SelectedItems[0].Tag as sClient), (lvDongles.SelectedItems[0].Tag as sDongle));
-            dlg.ShowDialog();
-            key.WriteMask(
-                         (lvClients.SelectedItems[0].Tag as sClient).Organization,
-                         dlg.Farms,
-                         dlg.Flags,
-                         dlg.StartDate,
-                         dlg.EndDate);
-            key.Dispose();  
-        }*/
+            try
+            {
+                ret = key.SetTRUKey();
+                if (ret != 0)
+                    throw new Exception(ret.ToString()); ;
+               
+                ret = key.WriteMask(
+                             "Мистер-Кролл",
+                             110,
+                             21,
+                             DateTime.Parse("2011-01-11"),
+                             DateTime.Parse("2012-07-11"));
+                throw new Exception(ret.ToString());
+
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+                
+            key.Dispose();
+        }
 
 
     }
