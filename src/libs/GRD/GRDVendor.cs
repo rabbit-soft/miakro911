@@ -156,14 +156,14 @@ namespace RabGRD
             return (int)retCode;
         }
 
-        public int WriteMask(string org, int farms, int flags, DateTime startDate, DateTime endDate)
+        public int WriteMask(int orgId,string orgName, int farms, int flags, DateTime startDate, DateTime endDate)
         {
             if (!GrdApi.GrdIsValidHandle(_grdHandle))
             {
                 return (int)GrdE.InvalidHandle;
             }
 
-            byte[] userBuff = makeUserBuff(org, farms, flags, startDate, endDate);
+            byte[] userBuff = makeUserBuff(orgId,orgName, farms, flags, startDate, endDate);
             GrdE retCode; // Error code for all Guardant API functions
                        
             uint protectLength;
@@ -201,7 +201,7 @@ namespace RabGRD
             return (int)retCode;
         }       
 
-        public GrdE GetTRUAnswer(out string base64_answer, string base64_question, string org, int farms, int flags, DateTime startDate, DateTime endDate,byte[] keyCode)
+        public GrdE GetTRUAnswer(out string base64_answer, string base64_question, int orgId,string orgName, int farms, int flags, DateTime startDate, DateTime endDate,byte[] keyCode)
         {            
             byte[] buf = Convert.FromBase64String(base64_question);
 
@@ -228,7 +228,7 @@ namespace RabGRD
 
             uint protectLength;
             ushort wNumberOfItems;
-            byte[] userBuff = makeUserBuff(org, farms, flags, startDate, endDate,keyCode);
+            byte[] userBuff = makeUserBuff(orgId,orgName, farms, flags, startDate, endDate,keyCode);
             byte[] pbyWholeMask = makeNewMask(userBuff, out protectLength, out wNumberOfItems);
 
             logStr = "Set Init & Protect parameters for Trusted Remote Update: ";
@@ -273,13 +273,16 @@ namespace RabGRD
             return GrdE.OK;
         }
 
-        private byte[] makeUserBuff(string org, int farms, int flags, DateTime startDate, DateTime endDate)
+        private byte[] makeUserBuff(int orgId,string orgName, int farms, int flags, DateTime startDate, DateTime endDate)
         {
             byte[] userBuff = new byte[USER_DATA_LENGTH]; //TODO говнокод!
-            byte[] tmp = Encoding.GetEncoding(1251).GetBytes(DEV_MARKER);
+            byte[] tmp = BitConverter.GetBytes((ushort)orgId);
             Array.Copy(tmp, userBuff, tmp.Length);
+                
+            tmp = Encoding.GetEncoding(1251).GetBytes(DEV_MARKER);
+            Array.Copy(tmp, 0,userBuff,DEV_MARKER_OFFSET, tmp.Length);
 
-            tmp = Encoding.GetEncoding(1251).GetBytes(org);
+            tmp = Encoding.GetEncoding(1251).GetBytes(orgName);
             Array.Copy(tmp, 0, userBuff, ORGANIZATION_NAME_OFFSET, tmp.Length);
 
             tmp = BitConverter.GetBytes(farms);
@@ -302,9 +305,9 @@ namespace RabGRD
 
             return userBuff;
         }
-        private byte[] makeUserBuff(string org, int farms, int flags, DateTime startDate, DateTime endDate, byte[] keyCode)
+        private byte[] makeUserBuff(int orgId,string orgName, int farms, int flags, DateTime startDate, DateTime endDate, byte[] keyCode)
         {
-            byte[] res = makeUserBuff(org,farms,flags,startDate,endDate);
+            byte[] res = makeUserBuff(orgId,orgName,farms,flags,startDate,endDate);
             Array.Copy(keyCode, 0, res, KEY_CODE_OFFSET, keyCode.Length);
             return res;
         }
