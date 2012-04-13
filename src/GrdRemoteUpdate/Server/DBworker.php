@@ -9,7 +9,7 @@ class DBworker
 	private static function connect($dbName = null)
 	{
 		//if(self::$sql != null)self::disconnect();
-		if($dbName == null) $dbName = "pay44ne";
+		if($dbName == null) $dbName = "grdupdate";
 		$link = new mysqli("localhost","pay44ne","vtufdjym",$dbName);
 		//mysql_select_db($dbName,$link);
 		if(mysqli_connect_errno()) 

@@ -13,8 +13,10 @@ class Coder
 	public static function Encrypt($str)
 	{
 		global $UID;
-		$keys = DBworker::GetListOfStruct("select U_KEYS from padmin.Users where UID=$UID limit 1;");
-		$text = self::xxtea_encrypt($str,$keys[0]['U_KEYS']);
+		if($UID == 0 or !isset($UID))
+			return $str;
+		$keys = DBworker::GetListOfStruct("select u_key from grdupdate.users where u_id=$UID limit 1;");
+		$text = self::xxtea_encrypt($str,$keys[0]['u_key']);
 		return $text;
 	}
 	
@@ -26,26 +28,27 @@ class Coder
 	public static function Decrypt($str,&$uid=0)
 	{	
 		global $log;	
-		$log->debug("Codestr: ".$str);
+		//$log->debug("Codestr: ".$str);
 		if($str == null or strlen($str)==0)  return;
 		$uid = unpack("V1",$str);
 		$uid = $uid[1];		
-		$keys = DBworker::GetListOfStruct("update padmin.Users set U_LAST_CONN=NOW() where UID=$uid;
-		select U_KEYS,U_NU_KEYS,U_BLOCK from padmin.Users where UID=$uid limit 1;");
-		//$log->debug(var_export($keys,true));
-		$text = self::xxtea_decrypt(substr($str, 4),$keys[0]['U_KEYS']);
+		$keys = DBworker::GetListOfStruct("select u_key,u_new_key from grdupdate.users where u_id=$uid limit 1;");
+		if(count($keys)==0)
+			throw new DecryptionException("Ошибка чтения посылки");
+		//$log->debug("key of user: ".var_export($keys,true));
+		$text = self::xxtea_decrypt(substr($str, 4),$keys[0]['u_key']);
 		
 		if(!simplexml_load_string($text))
 		{
-			$text = self::xxtea_decrypt(substr($str, 4),$keys[0]['U_NU_KEYS']);			
-			if(!simplexml_load_string($text))
-				throw new DecryptionException("Ошибка чтения посылки");
-			else DBworker::Execute("update padmin.Users set U_KEYS=U_NU_KEYS where UID=$uid;
-			update padmin.Users set U_NU_KEYS=null where UID=$uid");
+			$text = self::xxtea_decrypt(substr($str, 4),$keys[0]['u_new_key']);			
+			if(!simplexml_load_string($text))	
+				throw new DecryptionException("Ошибка чтения посылки");			
+			else DBworker::Execute("update grdupdate.users set u_key=u_new_key where u_id=$uid;
+									update grdupdate.users set u_new_key=null where u_id=$uid");
 		}		
 		//$log->debug("\nCHIPHER\n".self::xxtea_decrypt(substr($str, 4),'123'));
-		if($keys[0]['U_BLOCK'] !="0")
-			throw new DecryptionException("Пользователь заблокирован");
+		//if($keys[0]['U_BLOCK'] !="0")
+			//throw new DecryptionException("Пользователь заблокирован");
 		return $text;		
 	}
 	

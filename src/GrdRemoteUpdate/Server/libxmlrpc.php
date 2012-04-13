@@ -118,9 +118,8 @@ class XML
 } 
 
 class XMLRPC
-{	
-	
-	private static $logger = null;	
+{			
+	private static $logger = NULL;	
 	
 	private static function & adjustValue(&$current_node)
 	{ 
@@ -238,112 +237,31 @@ class XMLRPC
 	
 	private static function debug($function_name, $debug_message)
 	{ 
-		global $DEBUG;
-		if(defined($DEBUG)){
-		if(self::$logger == null)
-		{
-			Logger::configure('log4php.xml');
-			self::$logger = Logger::getLogger("xmlrpc");
-		}
-		$strlen = strlen($debug_message);
-		if($strlen<10000)
-			self::$logger->debug("$function_name: $debug_message"); 
-		else
-		{
-			self::$logger->debug("Traced String ".$strlen." len"); 
-			self::$logger->trace("$function_name: $debug_message"); 
-		}}
+		//global $DEBUG;
+		//if(defined($DEBUG))
+		//{
+			if(self::$logger==NULL)
+			{
+				Logger::configure('log4php.xml');
+				self::$logger = Logger::getLogger("xmlrpc");
+			}
+			$strlen = strlen($debug_message);
+			if($strlen<20000)
+				self::$logger->debug("$function_name: $debug_message"); 
+			else
+			{
+				self::$logger->debug("Traced String ".$strlen." len"); 
+				self::$logger->trace("$function_name: $debug_message"); 
+			}
+		//}
 	} 
 	
-	private static function & prepare($data, $type = NULL)
-	{ 
-	    if(is_array($data))
-	    { 
-	        $num_elements = count($data); 
-	        if((array_key_exists(0, $data) or !$num_elements) and $type != 'struct')
-	        { 	#it's an array 
-	            if(!$num_elements)
-	            { #if the array is empty 
-	                $returnvalue =  array('array' => array('data' => NULL)); 
-	            }
-	            else
-	            { 
-	                $returnvalue['array']['data']['value'] = array(); 
-	                $temp = &$returnvalue['array']['data']['value']; 
-	                $count = self::count_numeric_items($data); 
-	                for($n=0; $n<$count; $n++)
-	                { 
-	                    $type = NULL; 
-	                    if(array_key_exists("$n type", $data))
-	                    { 
-	                        $type = $data["$n type"]; 
-	                    } 
-	                    $temp[$n] = self::prepare(&$data[$n], $type); 
-	                } 
-	            } 
-	        }
-	        else
-	        { #it's a struct 
-	            if(!$num_elements)
-	            { 	#if the struct is empty 
-	                $returnvalue = array('struct' => NULL); 
-	            }
-	            else
-	            { 
-	                $returnvalue['struct']['member'] = array(); 
-	                $temp = &$returnvalue['struct']['member']; 
-	                while(list($key, $value) = each($data))
-	                { 
-	                    if(substr($key, -5) != ' type')
-	                    { 	#if it's not a type specifier 
-	                        $type = NULL; 
-	                        if(array_key_exists("$key type", $data))
-	                        { 
-	                            $type = $data["$key type"]; 
-	                        } 
-	                        $temp[] = array('name' => $key, 'value' => self::prepare(&$value, $type)); 
-	                    } 
-	                } 
-	            } 
-	        } 
-	    }
-	    else
-	    { #it's a scalar 
-	        if(!$type)
-	        { 
-	            if(is_int($data))
-	            { 
-	                $returnvalue['int'] = $data; 
-	                return $returnvalue; 
-	            }
-	            elseif(is_float($data))
-	            { 
-	                $returnvalue['double'] = $data; 
-	                return $returnvalue; 
-	            }
-	            elseif(is_bool($data))
-	            { 
-	                $returnvalue['boolean'] = ($data ? 1 : 0); 
-	                return $returnvalue; 
-	            }
-	            elseif(preg_match('/^\d{8}T\d{2}:\d{2}:\d{2}$/', $data, $matches))
-	            { 	#it's a date 
-	                $returnvalue['dateTime.iso8601'] = $data; 
-	                return $returnvalue; 
-	            }
-	            elseif(is_string($data))
-	            { 
-	                $returnvalue['string'] = htmlspecialchars($data); 
-	                return $returnvalue; 
-	            } 
-	        }
-	        else
-	        { 
-	            $returnvalue[$type] = htmlspecialchars($data); 
-	        } 
-	    } 
-	    return $returnvalue; 
-	} 	
+	/**
+	 * Назначает тип переменной
+	 * @param $data
+	 * @param $type
+	 */
+		
 	
 	/**
 	 * Преобразует массив ответа в XMLRPC-ответ
@@ -361,21 +279,19 @@ class XMLRPC
         	$numeric_array = false; 
         	$attributes = ""; 
         	#echo "My current key is '$key', called with prior key '$prior_key'<br>"; 
-        	if(!strstr($key, " attr"))
-        	{ 	#if it's not an attribute 
+        	if(!strstr($key, " attr")) #if it's not an attribute 
+        	{
             	if(array_key_exists("$key attr", $data))
             	{ 
 	                while(list($attr_name, $attr_value) = each($data["$key attr"]))
-                	{ 
-	                    #echo "Found attribute $attribute_name with value $attribute_value<br>"; 
+                	{  	#echo "Found attribute $attribute_name with value $attribute_value<br>"; 
                     	$attr_value = &htmlspecialchars($attr_value, ENT_QUOTES); 
                     	$attributes .= " $attr_name=\"$attr_value\""; 
                 	} 
             	} 
 
             	if(is_numeric($key))
-            	{ 
-	                #echo "My current key ($key) is numeric. My parent key is '$prior_key'<br>"; 
+            	{  	#echo "My current key ($key) is numeric. My parent key is '$prior_key'<br>"; 
                 	$key = $prior_key; 
             	}
             	else
@@ -383,8 +299,7 @@ class XMLRPC
                 	#you can't have numeric keys at two levels in a row, so this is ok 
                		#echo "Checking to see if a numeric key exists in data."; 
                 	if(is_array($value) and array_key_exists(0, $value))
-                	{ 
-                		#echo " It does! Calling myself as a result of a numeric array.<br>"; 
+                	{  	#echo " It does! Calling myself as a result of a numeric array.<br>"; 
                     	$numeric_array = true; 
                     	$xml_serialized_string .= self::serialize($value, $level, $key); 
                 	} 
@@ -403,6 +318,7 @@ class XMLRPC
                 	{ 
                     	$inline = true; 
                     	$xml_serialized_string .= htmlspecialchars($value); 
+                    	//self::debug("serialize $level", $value);
                 	} 
                 	$xml_serialized_string .= (!$inline ? str_repeat("\t", $level) : "") . "</$key>\r\n"; 
             	} 
@@ -491,7 +407,7 @@ class XMLRPC
 		}
 	}
 	
-	public static function getParams($request)
+	public static function GetParams($request)
 	{ 
 	    if(!is_array($request['methodCall']['params']))
 	    { 
@@ -520,7 +436,7 @@ class XMLRPC
 	    } 
 	} 
 
-	public static function getMethodName($methodCall)
+	public static function GetMethodName($methodCall)
 	{ 
 	    #returns the method name 
 	    return $methodCall['methodCall']['methodName']; 
@@ -531,7 +447,7 @@ class XMLRPC
 	 * @param string $request - XMl
 	 * @return array
 	 */
-	public static function & parse(&$request)
+	public static function & Parse(&$request)
 	{ 
         //self::debug('XMLRPC_parse', "Received the following raw request:\n" . $request); 	    
 	    $data = &self::unserialize(&$request); 	   
@@ -539,8 +455,112 @@ class XMLRPC
 	    return $data; 
 	}
 	
-	public static function request($site, $location, $methodName, $params = NULL, $user_agent = NULL)
+	/**
+	 * Нужно при отправке Вызова процедуры чтобы указать Тип переменной
+	 * @param $data
+	 * @param $type - Тип переменной
+	 */
+	public static function & Prepare($data, $type = NULL)
 	{ 
+	    if(is_array($data)) 
+	    { 
+	        $num_elements = count($data); 
+	        if((array_key_exists(0, $data) or !$num_elements) and $type != 'struct')
+	        { 	#it's an array 
+	            if(!$num_elements)
+	            { 	#if the array is empty 
+	                $returnvalue =  array('array' => array('data' => NULL)); 
+	            }
+	            else
+	            { 
+	                $returnvalue['array']['data']['value'] = array(); 
+	                $temp = &$returnvalue['array']['data']['value']; 
+	                $count = self::count_numeric_items($data); 
+	                for($n=0; $n<$count; $n++)
+	                { 
+	                    $type = NULL; 
+	                    if(array_key_exists("$n type", $data))
+	                    { 
+	                        $type = $data["$n type"]; 
+	                    } 
+	                    $temp[$n] = self::Prepare(&$data[$n], $type); 
+	                    
+	                } 
+	            } 
+	        }
+	        else
+	        { 	#it's a struct 
+	            if(!$num_elements)
+	            { 	#if the struct is empty 
+	                $returnvalue = array('struct' => NULL); 
+	            }
+	            else
+	            { 
+	                $returnvalue['struct']['member'] = array(); 
+	                $temp = &$returnvalue['struct']['member']; 
+	                while(list($key, $value) = each($data))
+	                { 
+	                    if(substr($key, -5) != ' type')
+	                    { 	#if it's not a type specifier 
+	                        $type = NULL; 
+	                        if(array_key_exists("$key type", $data))
+	                        { 
+	                            $type = $data["$key type"]; 
+	                        } 
+	                        $temp[] = array('name' => $key, 'value' => self::Prepare(&$value, $type)); 
+	                    } 
+	                } 
+	            } 
+	        } 
+	    }
+	    else
+	    { #it's a scalar 
+	        if(!$type)
+	        { 	
+	            if(is_int($data))
+	            { 	
+	                $returnvalue['int'] = $data; 
+	                return $returnvalue; 
+	            }
+	            elseif(is_float($data))
+	            { 	
+	                $returnvalue['double'] = $data; 
+	                return $returnvalue; 
+	            }
+	            elseif(is_bool($data))
+	            {
+	                $returnvalue['boolean'] = ($data ? 1 : 0); 
+	                return $returnvalue; 
+	            }
+	            elseif(preg_match('/^\d{8}T\d{2}:\d{2}:\d{2}$/', $data, $matches))
+	            { 	#it's a date 
+	                $returnvalue['dateTime.iso8601'] = $data; 
+	                return $returnvalue; 
+	            }
+	            elseif(is_string($data))
+	            { 
+	                $returnvalue['string'] = $data;//htmlspecialchars($data);  TODO need TO test
+	                return $returnvalue; 
+	            } 
+	        }
+	        else
+	        {
+	            $returnvalue[$type] = htmlspecialchars($data); 
+	        } 
+	    }
+	    return $returnvalue; 
+	} 
+	
+	/**
+	 * Делает вызов удаленной процедуры
+	 * @param $site - адрес сервера
+	 * @param $location - расположение
+	 * @param $methodName - Имя вызываемого метода
+	 * @param $params - Массив параметров
+	 * @param $user_agent
+	 */
+	public static function Request($site, $location, $methodName, $params = NULL, $user_agent = NULL)
+	{ 	
 	    $site = explode(':', $site); 
 	    if(isset($site[1]) and is_numeric($site[1]))
 	    { 
@@ -554,7 +574,8 @@ class XMLRPC
 	
 	    $data["methodCall"]["methodName"] = $methodName; 
 	    $param_count = count($params); 
-	    if(!$param_count){ 
+	    if(!$param_count)
+	    { 
 	        $data["methodCall"]["params"] = NULL; 
 	    }
 	    else
@@ -565,12 +586,13 @@ class XMLRPC
 	        } 
 	    } 
 	    $data = self::serialize($data); 	
-	    //self::debug('XMLRPC_request', "Received the following parameter list to send:" . $params);      
+	    //self::debug('XMLRPC_request', "Received the following parameter list to send:" . $params);     
+	    //self::debug('XMLRPC_request', "Connecting to: $site:$port"); 
 	    $conn = fsockopen ($site, $port); #open the connection 
 	    if(!$conn)
-	    { #if the connection was not opened successfully 
-	        //self::debug('XMLRPC_request', "Connection failed: Couldn't make the connection to $site."); 	        
-	        return array(false, array('faultCode'=>10532, 'faultString'=>"Connection failed: Couldn't make the connection to $site.")); 
+	    { 	#if the connection was not opened successfully 
+	        //self::debug('XMLRPC_request', "Connection failed: Couldn't make the connection to $site"); 	        
+	        return array(false, array('faultCode'=>10532, 'faultString'=>"Connection failed: Couldn't make the connection to $site")); 
 	    }
 	    else
 	    { 
@@ -585,7 +607,7 @@ class XMLRPC
 	        fputs($conn, "$headers"); 
 	        fputs($conn, $data); 
 	
-	        //self::debug('XMLRPC_request', "Sent the following request:" . $headers . $data); 	         
+	        self::debug('XMLRPC_request', "Sent the following request:" . $headers . $data); 	         
 	
 	        #socket_set_blocking ($conn, false); 
 	        $response = ""; 
@@ -596,38 +618,32 @@ class XMLRPC
 	        fclose($conn); 
 	
 	        #strip headers off of response 
-	        $data = self::unserialize(substr($response, strpos($response, "\r\n\r\n")+4)); 
-	
- 	        //self::debug('XMLRPC_request', "Received the following response:\n" . $response . "Which was serialized into the following data:\n" . $data); 
+	        $data = self::unserialize(substr($response, strpos($response, "\r\n\r\n")+4)); 	
+ 	        //self::debug('XMLRPC_request', "Received the following response:\n" . $response . "Which was serialized into the following data:\n" . var_export($data,true)); 
 	        
 	        if(isset($data['methodResponse']['fault'])){ 
 	            $return =  array(false, self::adjustValue(&$data['methodResponse']['fault']['value'])); 
-
-	            //self::debug('XMLRPC_request', "Returning:\n" . $return); 
-	             
+	            self::debug('XMLRPC_request', "Returning:\n" . var_export($return,true));              
 	            return $return; 
 	        }
 	        else
 	        { 
 	            $return = array(true, self::adjustValue(&$data['methodResponse']['params']['param']['value'])); 
-
-	           	//self::debug('XMLRPC_request', "Returning:\n\n" . $return); 
-	             
+	           	//self::debug('XMLRPC_request', "Returning:\n\n" . var_export($return,true)); 
 	            return $return; 
 	        } 
 	    } 
 	} 
-	
-	
+		
 	/**
-	 * Allows you to send back an XML-RPC response when your program is acting as a server
-	 * @param unknown_type $return_value - Данные для возврата
-	 * @param unknown_type $server
+	 * Формирует ответную XML на удаленный вызов процедуры из вне
+	 * @param $return_value - Данные для возврата
+	 * @param $server
 	 * @return XML-RPC responce string
 	 */
-	public static function response($return_value, $server = NULL)
+	public static function Response($return_value, $server = NULL)
 	{ 
-		$return_value = self::prepare($return_value);
+		$return_value = self::Prepare($return_value);	
 	    $data["methodResponse"]["params"]["param"]["value"] = &$return_value; 
 	    $return = self::serialize(&$data); 
 	
@@ -648,4 +664,15 @@ class XMLRPC
 	}  	 	
 
 }
+
+class Type
+{
+	const arr ="array";
+	const int = "i4";
+	const bool = "boolean";
+	const double = "double";
+	const str = "string";
+	const struct = "struct";
+}
+
 ?>
