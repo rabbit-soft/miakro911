@@ -27,7 +27,10 @@ namespace pEngine
         void VendorAddDongle(string dongleId, string orgId, string model);
         [XmlRpcMethod("vendor.update.dongle")]
         string VendorUpdateDongle(string base64_question, string orgId, string farms, string flags, string startDate, string endDate, string dongleId);
+        [XmlRpcMethod("vendor.shedule.dongle")]
+        void VendorSheduleDongle(string base64_question, string orgId, string farms, string flags, string startDate, string endDate, string dongleId);
     }
+
     
     /// <summary>
     /// Список имеющихся методов на сервере (MethodName)
@@ -84,7 +87,7 @@ namespace pEngine
         AddClientMoney,
 
         /// <summary>
-        /// Прошивает ключ для нового пользователя
+        /// Прошивает ключ указанный ключ. Возвращает число-ответ
         /// <para>PARAM: string base64_question - число вопрос</para>
         /// <para>PARAM: int orgId - ID организации</para>
         /// <para>PARAM: int farms - количество ферм</para>
@@ -95,6 +98,18 @@ namespace pEngine
         /// <para>Return: string - base64 ответ</para>
         /// </summary>
         VendorUpdateDongle,
+
+        /// <summary>
+        /// Назначает прошивку ключа при следующем подключении
+        /// <para>PARAM: string base64_question - число вопрос</para>
+        /// <para>PARAM: int orgId - ID организации</para>
+        /// <para>PARAM: int farms - количество ферм</para>
+        /// <para>PARAM: int flags - маска ролей</para>
+        /// <para>PARAM: MysqlDate startDate - начало работы ключа</para>
+        /// <para>PARAM: MysqlDate endDate - окончание работы ключа</para>
+        /// <para>PARAM: int dongleId - ID ключа</para>
+        /// </summary>
+        VendorSheduleDongle,
 
         /// <summary>
         /// Прошивает ключ для нового пользователя

@@ -15,6 +15,14 @@ namespace AdminGRD
             InitializeComponent();
             _reqSend = Engine.NewReqSender();
             fillUsers();
+            toolTipsInit();
+        }
+
+        private void toolTipsInit()
+        {
+            toolTip1.InitialDelay = 6000;
+            toolTip1.SetToolTip(btEditKey, "Назначить прошивку удаленноку ключу при следующем соединении с сервером");
+            toolTip1.SetToolTip(btAddUser, "Добавить нового пользователя");
         }
 
         private void fillUsers()
@@ -164,7 +172,7 @@ namespace AdminGRD
                     string q;
                     int retCode = key.GetTRUQuestion(out q);
                     if (retCode != 0) throw new Exception("Ощибка при генерировании числа-вопроса: " + retCode.ToString());
-                    ResponceItem s = _reqSend.ExecuteMethod(MName.VendorUpdateDongle,
+                    ResponceItem s = _reqSend.ExecuteMethod(MName.VendorSheduleDongle,
                         MPN.base64_question, q,
                         MPN.orgId, client.Id,
                         MPN.farms, dlg.Farms.ToString(),
@@ -173,8 +181,8 @@ namespace AdminGRD
                         MPN.endDate, dlg.EndDate.ToString("yyyy-MM-dd"),
                         MPN.dongleId, key.ID.ToString());
 
-                    retCode = key.SetTRUAnswer(s.Value.ToString());
-                    if (retCode != 0) throw new Exception("Ощибка установки числа ответа: " + retCode.ToString());
+                    //retCode = key.SetTRUAnswer(s.Value.ToString());
+                    //if (retCode != 0) throw new Exception("Ощибка установки числа ответа: " + retCode.ToString());
                     MessageBox.Show("Прошивка Завершена");
                 }
                 key.Dispose();              
@@ -251,8 +259,8 @@ namespace AdminGRD
             int ret;
             GRDVendorKey key = new GRDVendorKey();
             try
-            {
-                ret = key.SetTRUKey();
+            {               
+                /*ret = key.SetTRUKey();
                 if (ret != 0)
                     throw new Exception(ret.ToString()); ;
                
@@ -262,8 +270,7 @@ namespace AdminGRD
                              21,
                              DateTime.Parse("2011-01-11"),
                              DateTime.Parse("2012-07-11"));
-                throw new Exception(ret.ToString());
-
+                throw new Exception(ret.ToString());*/
             }
             catch (Exception exc)
             {

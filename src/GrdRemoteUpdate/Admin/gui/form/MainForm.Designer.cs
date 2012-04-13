@@ -44,6 +44,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.добавитьДенегToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btAddUser = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.btEditKey = new System.Windows.Forms.Button();
             this.btAddKey = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -57,7 +58,7 @@
             this.chFlags = new System.Windows.Forms.ColumnHeader();
             this.chTimeFlags = new System.Windows.Forms.ColumnHeader();
             this.chTimeFlagsEnd = new System.Windows.Forms.ColumnHeader();
-            this.button1 = new System.Windows.Forms.Button();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.menuStrip1.SuspendLayout();
             this.scMain.Panel1.SuspendLayout();
             this.scMain.Panel2.SuspendLayout();
@@ -206,13 +207,23 @@
             this.btAddUser.UseVisualStyleBackColor = true;
             this.btAddUser.Click += new System.EventHandler(this.btAddUser_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(514, 217);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // btEditKey
             // 
             this.btEditKey.Location = new System.Drawing.Point(175, 218);
             this.btEditKey.Name = "btEditKey";
             this.btEditKey.Size = new System.Drawing.Size(182, 23);
             this.btEditKey.TabIndex = 3;
-            this.btEditKey.Text = "Перепрошить ключ";
+            this.btEditKey.Text = "Назначить прошивку";
             this.btEditKey.UseVisualStyleBackColor = true;
             this.btEditKey.Click += new System.EventHandler(this.btEditKey_Click);
             // 
@@ -301,16 +312,6 @@
             // 
             this.chTimeFlagsEnd.Text = "Окончание временных флагов";
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(514, 217);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -365,6 +366,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ToolStripMenuItem обновитьСписокToolStripMenuItem;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 

@@ -87,6 +87,10 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ccxmlrpc, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\party3d\ccxmlrpc.dll</HintPath>
+    </Reference>
     <Reference Include="GuardantDotNetApi, Version=5.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\party3d\GuardantDotNetApi.dll</HintPath>
@@ -108,11 +112,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\libs\GRD\GRDCommon.cs">
+      <Link>GRDCommon.cs</Link>
+    </Compile>
     <Compile Include="..\libs\GRD\GRD_Base.cs">
       <Link>GRD_Base.cs</Link>
     </Compile>
     <Compile Include="..\libs\GRD\GRD_BaseCodes.cs">
       <Link>GRD_BaseCodes.cs</Link>
+    </Compile>
+    <Compile Include="..\libs\GRD\GRD_BaseTRU.cs">
+      <Link>GRD_BaseTRU.cs</Link>
+    </Compile>
+    <Compile Include="..\libs\xxTEA.cs">
+      <Link>xxTEA.cs</Link>
     </Compile>
     <Compile Include="..\mia_conv\miaExitCode.cs">
       <Link>miaExitCode.cs</Link>
@@ -160,6 +173,7 @@
     <Compile Include="Forms\RestoreForm.Designer.cs">
       <DependentUpon>RestoreForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ServerMethods.cs" />
     <Compile Include="SockServ.cs" />
     <Compile Include="Properties\VerInfo.cs" />
     <Compile Include="X_Tools\x_tools.cs" />

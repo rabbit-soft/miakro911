@@ -318,7 +318,8 @@ namespace rabdump
         {
             try
             {
-                Process.Start(Path.GetDirectoryName(Application.ExecutablePath) + @"\..\Guardant\GrdTRU.exe");
+                //Process.Start(Path.GetDirectoryName(Application.ExecutablePath) + @"\..\Guardant\GrdTRU.exe");
+                
             } 
             catch{}
         }

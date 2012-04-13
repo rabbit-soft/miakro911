@@ -13,22 +13,43 @@ namespace RabGRD
     /// Thread-safe singleton example created at first call
     /// </summary>
     public partial class GRD_Base
-    {       
+    {
+        /// <summary>
+        /// Достпные функции. Добавил тут - измени метод GetFlag
+        /// </summary>
+        [Flags]
+        public enum FlagType
+        {
+            //None = 0,
+            RabNet = 1,             //0 bit 
+            Genetics = 1 << 1,      //1 bit
+            RabDump = 1 << 2,       //2 bit
+            Butcher = 1 << 3,       //3 bit
+            ReportPlugIns = 1 << 4,  //4 bit
+            ServerDump = 1 << 5,    //5 bit
+            WebReports = 1 << 6,   	//6 bit
+            SAASVersion = 1 << 7,
+        }
+
         protected ILog log = LogManager.GetLogger(typeof(GRD));
 
-        //Далее список адресов данных в ключе
-        protected const uint USER_DATA_BEGINING = 1182;
-        protected const uint DEV_MARKER_OFFSET = 0;
-        protected const uint ORGANIZATION_NAME_OFFSET = 32;
-        protected const uint MAX_BUILDINGS_COUNT_OFFSET = 132;
-        protected const uint FLAGS_MASK_OFFSET = 136;
-        protected const uint FARM_START_DATE_OFFSET = 144;
-        protected const uint FARM_STOP_DATE_OFFSET = 156;
-        protected const uint TEMP_FLAGS_MASK_OFFSET = 168;
-        protected const uint TEMP_FLAGS_END_OFFSET = 176;
-        protected const uint KEY_CODE = 188;
         protected const string DEV_MARKER = "9-bits RabSoft";
-        protected uint USER_DATA_LENGTH { get { return KEY_CODE + 260; } }
+
+        //Далее список адресов данных в ключе
+        protected const uint USER_DATA_BEGINING = 1180;
+        protected const uint CLIENT_ID_OFFSET = 0;
+        protected const uint DEV_MARKER_OFFSET = 2;
+        protected const uint ORGANIZATION_NAME_OFFSET = 34;
+        protected const uint MAX_BUILDINGS_COUNT_OFFSET = 134;
+        protected const uint FLAGS_MASK_OFFSET = 138;
+        protected const uint FARM_START_DATE_OFFSET = 146;
+        protected const uint FARM_STOP_DATE_OFFSET = 158;
+        protected const uint TEMP_FLAGS_MASK_OFFSET = 170;
+        protected const uint TEMP_FLAGS_END_OFFSET = 178;
+        protected const uint KEY_CODE_OFFSET = 190;
+        
+        protected const uint KEY_CODE_LENGTH = 262;
+        protected uint USER_DATA_LENGTH { get { return KEY_CODE_OFFSET + KEY_CODE_LENGTH; } }
         protected uint WHOLE_MASK_LENGTH { get { return USER_DATA_BEGINING + USER_DATA_LENGTH; } }
 
         // Variables to use in GrdSetFindMode() 
@@ -122,24 +143,7 @@ namespace RabGRD
             }
             return GrdE.OK;
         }
-
-        /// <summary>
-        /// Достпные функции. Добавил тут - измени метод GetFlag
-        /// </summary>
-		[Flags]
-        public enum FlagType
-        {
-			//None = 0,
-            RabNet = 1,             //0 bit 
-            Genetics = 1 << 1,      //1 bit
-            RabDump = 1 << 2,       //2 bit
-            Butcher = 1 << 3,       //3 bit
-            ReportPlugIns = 1 << 4,  //4 bit
-            ServerDump = 1 << 5,    //5 bit
-            WebReports = 1 << 6,   	//6 bit
-            SAASVersion= 1 << 7,
-        }
-
+   
         protected Handle _grdHandle = new Handle();    // Creates empty handle for Guardant protected container
         protected int _farmCntCache;
         protected int _cacheTicks;
@@ -151,76 +155,6 @@ namespace RabGRD
 
         public uint ID { get { return _keyId; } }
         public ushort Model { get { return _model; } }
-              
-        //protected uint _uamOffset;          
-
-        /// <summary>
-        /// Получает максимально-допустимое количество МИНИферм
-        /// </summary>
-        /// <returns></returns>
-        public int GetFarmsCnt()
-        {
-            uint farms = 0;
-            int farmCnt = -1;
-
-            GrdE retCode;                       // Error code for all Guardant API functions
-            string logStr = "";
-
-            logStr = "Reading Farm cnt : ";
-            retCode = GrdApi.GrdRead(_grdHandle, USER_DATA_BEGINING + MAX_BUILDINGS_COUNT_OFFSET, out farms);
-            logStr += GrdApi.PrintResult((int)retCode);
-            if (retCode == GrdE.OK)
-            {
-                logStr += string.Format("; CNT = {0:D}", farms);
-                farmCnt = (int)farms;
-            }
-            log.Debug(logStr);
-            ErrorHandling(_grdHandle, retCode);
-
-            _farmCntCache = farmCnt;
-            _cacheTicks = Environment.TickCount & Int32.MaxValue;
-
-            return farmCnt;
-        }
-
-        public int GetFarmsCntCache()
-        {
-            if ((Environment.TickCount & Int32.MaxValue) > _cacheTicks+60*1000)
-            {
-                GetFarmsCnt();
-            }
-
-            return _farmCntCache;
-        }
-
-        /// <summary>
-        /// Получить название организации,
-        /// на которую выписан ключ
-        /// </summary>
-        public string GetOrganizationName()
-        {
-            uint addr = USER_DATA_BEGINING + ORGANIZATION_NAME_OFFSET;
-            log.Debug("Reading Org Name: ");
-            return ReadStringCp1251(addr, MAX_BUILDINGS_COUNT_OFFSET - ORGANIZATION_NAME_OFFSET);
-
-            /*string nm = "";                     
-            byte[] bts = new byte[100];          
-            GrdE retCode;                       // Error code for all Guardant API functions
-            string logStr = "";
-
-            logStr = "Reading Organization Name : ";
-            retCode = GrdApi.GrdRead(_grdHandle, USER_DATA_BEGINING + ORGANIZATION_NAME_OFFSET, 100, out bts);
-            logStr += GrdApi.PrintResult((int)retCode);
-            if (retCode == GrdE.OK)
-            {
-                nm = Cp1251BytesToString(bts, 0, 100);
-                logStr += "; Name = " + nm;
-            }
-            log.Debug(logStr);
-            ErrorHandling(_grdHandle, retCode);
-
-            return nm;*/
-        }
 
         public bool ValidKey(out GrdE retCode)
         {            
@@ -258,121 +192,6 @@ namespace RabGRD
         {
             GrdE retCode;
             return ValidKey(out retCode);
-        }
-
-        /// <summary>
-        /// Возвращает число(битовую маску), содержащее битовые флаги включенных функций
-        /// </summary>
-        /// <param name="byteNum">Порядковый номер байта, из которого читать флаг</param>
-        protected uint GetFlags(uint byteNum)
-        {         
-            byte[] bts = new byte[8];
-            uint res = 0;
-
-            GrdE retCode;                       // Error code for all Guardant API functions
-            string logStr = "";
-
-            logStr = "Reading Role Flags : ";
-            retCode = GrdApi.GrdRead(_grdHandle, USER_DATA_BEGINING + FLAGS_MASK_OFFSET, 8, out bts);
-            logStr += GrdApi.PrintResult((int)retCode);
-            if (retCode == GrdE.OK)
-            {
-                UInt64 flgs = BitConverter.ToUInt64(bts, 0);
-                logStr += string.Format("; Full Flags = {0:D}", flgs);
-                logStr += string.Format("; Flags = {3} - {2} - {1} - {0}", 
-                                    Convert.ToString(bts[0], 2), 
-                                    Convert.ToString(bts[1], 2), 
-                                    Convert.ToString(bts[2], 2), 
-                                    Convert.ToString(bts[3], 2));
-                res = bts[byteNum];
-            }
-            log.Debug(logStr);
-            ErrorHandling(_grdHandle, retCode);
-
-            return res;
-        }
-
-        protected uint GetTempFlags(uint byteNum)
-        {
-            byte[] bts = new byte[12];
-
-            uint res = 0;
-
-            GrdE retCode;                       // Error code for all Guardant API functions
-            string logStr = "";
-
-            logStr = "Reading TempDateEnd : ";
-            retCode = GrdApi.GrdRead(_grdHandle, USER_DATA_BEGINING + TEMP_FLAGS_END_OFFSET, 12, out bts);
-            DateTime dt2 = ReadDate(USER_DATA_BEGINING + TEMP_FLAGS_END_OFFSET);
-            logStr += GrdApi.PrintResult((int)retCode);
-
-            if (retCode == GrdE.OK)
-            {
-                string date = Cp1251BytesToString(bts, 0, 12);
-                if (date != "")
-                {
-                    DateTimeFormatInfo dtfi = new CultureInfo("en-US", false).DateTimeFormat;
-                    DateTime dt = Convert.ToDateTime(date, dtfi);
-                    if (dt > DateTime.Now)
-                    {
-                        bts = new byte[8];
-                        logStr = "Reading TempRole Flags : ";
-                        retCode = GrdApi.GrdRead(_grdHandle, USER_DATA_BEGINING + TEMP_FLAGS_MASK_OFFSET, 8, out bts);
-                        logStr += GrdApi.PrintResult((int)retCode);
-                        if (retCode == GrdE.OK)
-                        {
-                            UInt64 flgs = BitConverter.ToUInt64(bts, 0);
-                            logStr += string.Format("; Full TempFlags = {0:D}", flgs);
-                            logStr += string.Format("; TempFlags = {3} - {2} - {1} - {0}", Convert.ToString(bts[0], 2), Convert.ToString(bts[1], 2), Convert.ToString(bts[2], 2), Convert.ToString(bts[3], 2));
-                            res = bts[byteNum];
-                        }
-                    }
-                }
-            }
-            log.Debug(logStr);
-            ErrorHandling(_grdHandle, retCode);
-
-            return res;
-        }
-
-        public bool GetFlag(FlagType ft)
-        {
-            /*uint bait = (uint)( (int)ft / 8 );
-            int bit =(int)ft % 8;           
-            string mask = "";
-            for (int i = 0; i < 8; i++)
-                mask = (i == bit ? '1' : '0') + mask;
-            return (((GetFlags(bait) & Convert.ToByte(mask, 2)) > 0) || (GetTempFlags(bait) & Convert.ToByte(mask, 2)) > 0);*/
-            
-            FlagType flags = (FlagType)GetFlags(0);
-            FlagType flagsTemp = (FlagType)GetTempFlags(0);
-
-            log.Debug("========================> " + flags.ToString() + " " + ((int)flags).ToString());
-            log.Debug("========================> " + flagsTemp.ToString() + " " + ((int)flagsTemp).ToString());
-
-            return ((flags & ft) == ft) || ((flagsTemp & ft) == ft);
-        }
-
-        public uint GetCustomerID()
-        {
-            uint addr = USER_DATA_BEGINING + DEV_MARKER_OFFSET;
-
-            log.Debug("Reading customer id: ");
-            return ReadUInt(addr);
-        }
-
-        public DateTime GetDateStart()
-        {
-            uint addr = USER_DATA_BEGINING + FARM_START_DATE_OFFSET;
-            log.Debug("Reading Date start: ");
-            return ReadDate(addr);
-        }
-
-        public DateTime GetDateEnd()
-        {
-            uint addr = USER_DATA_BEGINING + FARM_STOP_DATE_OFFSET;
-            log.Debug("Reading Date end: ");
-            return ReadDate(addr);
         }
 
         protected GrdE disconnect()
@@ -439,7 +258,179 @@ namespace RabGRD
                 //Environment.Exit((int)nRet);
             }
             return nRet;
-        }    
+        }
+
+        #region get_user_data
+        /// <summary>
+        /// Получает максимально-допустимое количество МИНИферм
+        /// </summary>
+        /// <returns></returns>
+        public int GetFarmsCnt()
+        {
+            uint farms = 0;
+            int farmCnt = -1;
+
+            GrdE retCode;                       // Error code for all Guardant API functions
+            string logStr = "";
+
+            logStr = "Reading Farm cnt : ";
+            retCode = GrdApi.GrdRead(_grdHandle, USER_DATA_BEGINING + MAX_BUILDINGS_COUNT_OFFSET, out farms);
+            logStr += GrdApi.PrintResult((int)retCode);
+            if (retCode == GrdE.OK)
+            {
+                logStr += string.Format("; CNT = {0:D}", farms);
+                farmCnt = (int)farms;
+            }
+            log.Debug(logStr);
+            ErrorHandling(_grdHandle, retCode);
+
+            _farmCntCache = farmCnt;
+            _cacheTicks = Environment.TickCount & Int32.MaxValue;
+
+            return farmCnt;
+        }
+
+        public int GetFarmsCntCache()
+        {
+            if ((Environment.TickCount & Int32.MaxValue) > _cacheTicks + 60 * 1000)
+            {
+                GetFarmsCnt();
+            }
+
+            return _farmCntCache;
+        }
+
+        /// <summary>
+        /// Получить название организации,
+        /// на которую выписан ключ
+        /// </summary>
+        public string GetOrganizationName()
+        {
+            uint addr = USER_DATA_BEGINING + ORGANIZATION_NAME_OFFSET;
+            log.Debug("Reading Org Name: ");
+            return ReadStringCp1251(addr, MAX_BUILDINGS_COUNT_OFFSET - ORGANIZATION_NAME_OFFSET);
+        }
+
+        /// <summary>
+        /// Возвращает число(битовую маску), содержащее битовые флаги включенных функций
+        /// </summary>
+        /// <param name="byteNum">Порядковый номер байта, из которого читать флаг</param>
+        protected uint GetFlags(uint byteNum)
+        {
+            byte[] bts = new byte[8];
+            uint res = 0;
+
+            GrdE retCode;                       // Error code for all Guardant API functions
+            string logStr = "";
+
+            logStr = "Reading Role Flags : ";
+            retCode = GrdApi.GrdRead(_grdHandle, USER_DATA_BEGINING + FLAGS_MASK_OFFSET, 8, out bts);
+            logStr += GrdApi.PrintResult((int)retCode);
+            if (retCode == GrdE.OK)
+            {
+                UInt64 flgs = BitConverter.ToUInt64(bts, 0);
+                logStr += string.Format("; Full Flags = {0:D}", flgs);
+                logStr += string.Format("; Flags = {3} - {2} - {1} - {0}",
+                                    Convert.ToString(bts[0], 2),
+                                    Convert.ToString(bts[1], 2),
+                                    Convert.ToString(bts[2], 2),
+                                    Convert.ToString(bts[3], 2));
+                res = bts[byteNum];
+            }
+            log.Debug(logStr);
+            ErrorHandling(_grdHandle, retCode);
+
+            return res;
+        }
+
+        protected uint GetTempFlags(uint byteNum)
+        {
+            byte[] bts = new byte[12];
+
+            uint res = 0;
+
+            GrdE retCode;                       // Error code for all Guardant API functions
+            string logStr = "";
+
+            logStr = "Reading TempDateEnd : ";
+            retCode = GrdApi.GrdRead(_grdHandle, USER_DATA_BEGINING + TEMP_FLAGS_END_OFFSET, 12, out bts);
+            DateTime dt2 = ReadDate(USER_DATA_BEGINING + TEMP_FLAGS_END_OFFSET);
+            logStr += GrdApi.PrintResult((int)retCode);
+
+            if (retCode == GrdE.OK)
+            {
+                string date = Cp1251BytesToString(bts, 0, 12);
+                if (date != "")
+                {
+                    DateTimeFormatInfo dtfi = new CultureInfo("en-US", false).DateTimeFormat;
+                    DateTime dt = Convert.ToDateTime(date, dtfi);
+                    if (dt > DateTime.Now)
+                    {
+                        bts = new byte[8];
+                        logStr = "Reading TempRole Flags : ";
+                        retCode = GrdApi.GrdRead(_grdHandle, USER_DATA_BEGINING + TEMP_FLAGS_MASK_OFFSET, 8, out bts);
+                        logStr += GrdApi.PrintResult((int)retCode);
+                        if (retCode == GrdE.OK)
+                        {
+                            UInt64 flgs = BitConverter.ToUInt64(bts, 0);
+                            logStr += string.Format("; Full TempFlags = {0:D}", flgs);
+                            logStr += string.Format("; TempFlags = {3} - {2} - {1} - {0}", Convert.ToString(bts[0], 2), Convert.ToString(bts[1], 2), Convert.ToString(bts[2], 2), Convert.ToString(bts[3], 2));
+                            res = bts[byteNum];
+                        }
+                    }
+                }
+            }
+            log.Debug(logStr);
+            ErrorHandling(_grdHandle, retCode);
+
+            return res;
+        }
+
+        public bool GetFlag(FlagType ft)
+        {
+            FlagType flags = (FlagType)GetFlags(0);
+            FlagType flagsTemp = (FlagType)GetTempFlags(0);
+
+            log.Debug("========================> " + flags.ToString() + " " + ((int)flags).ToString());
+            log.Debug("========================> " + flagsTemp.ToString() + " " + ((int)flagsTemp).ToString());
+
+            return ((flags & ft) == ft) || ((flagsTemp & ft) == ft);
+        }
+
+        public uint GetCustomerID()
+        {
+            uint addr = USER_DATA_BEGINING + DEV_MARKER_OFFSET;
+
+            log.Debug("Reading customer id: ");
+            return ReadUInt(addr);
+        }
+
+        public DateTime GetDateStart()
+        {
+            uint addr = USER_DATA_BEGINING + FARM_START_DATE_OFFSET;
+            log.Debug("Reading Date start: ");
+            return ReadDate(addr);
+        }
+
+        public DateTime GetDateEnd()
+        {
+            uint addr = USER_DATA_BEGINING + FARM_STOP_DATE_OFFSET;
+            log.Debug("Reading Date end: ");
+            return ReadDate(addr);
+        }
+
+        /// <summary>
+        /// Получает Ключ шифрования посылки для удаленного обновления
+        /// </summary>
+        /// <returns></returns>
+        public byte[] GetKeyCode()
+        {
+            byte[] result = new byte[KEY_CODE_LENGTH];
+            ReadBytes(out result, (USER_DATA_BEGINING+ KEY_CODE_OFFSET), KEY_CODE_LENGTH);
+            return result;
+        }
+
+        #endregion get_user_data
 
         #region common_func
         public DateTime ReadDate(uint offset)
@@ -447,7 +438,7 @@ namespace RabGRD
             DateTime dt = new DateTime();
             byte[] bts = new byte[12];
             log.Debug("Reading date: ");
-            if (ReadBytes(out bts, offset, 12))
+            if (ReadBytes(out bts, offset, 12)==0)
             {
                 string nm = Cp1251BytesToString(bts, 0, 12);
                 log.Debug("Date  string = " + nm);
@@ -465,7 +456,7 @@ namespace RabGRD
             return dt;
         }
 
-        public bool ReadBytes(out byte[] buffer, uint offset, uint length)
+        public int ReadBytes(out byte[] buffer, uint offset, uint length)
         {
             string logStr = "Reading Bytes : ";
             GrdE retCode = GrdApi.GrdRead(_grdHandle, offset, (int)length, out buffer);
@@ -473,13 +464,13 @@ namespace RabGRD
             log.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
 
-            return (retCode == GrdE.OK);
+            return (int)retCode;
         }
 
         public string ReadString(uint offset, uint length)
         {
             byte[] buffer;
-            if (ReadBytes(out buffer, offset, length))
+            if (ReadBytes(out buffer, offset, length)==0)
             {
                 string str = AsciiBytesToString(buffer, 0, (int)length);
                 log.Debug("Got string : " + str);
@@ -495,7 +486,7 @@ namespace RabGRD
         public string ReadStringCp1251(uint offset, uint length)
         {
             byte[] buffer;
-            if (ReadBytes(out buffer, offset, length))
+            if (ReadBytes(out buffer, offset, length)==0)
             {
                 string str = Cp1251BytesToString(buffer, 0, (int)length);
                 log.Debug("Got string : " + str);
@@ -511,7 +502,7 @@ namespace RabGRD
         public uint ReadUInt(uint offset)
         {
             byte[] buffer;
-            if (ReadBytes(out buffer, offset, 4))
+            if (ReadBytes(out buffer, offset, 4)==0)
             {
                 log.Debug("Got UInt : " + BitConverter.ToUInt32(buffer, 0).ToString());
                 return BitConverter.ToUInt32(buffer, 0);
@@ -526,7 +517,7 @@ namespace RabGRD
         protected int ReadInt(uint offset)
         {
             byte[] buffer;
-            if (ReadBytes(out buffer, offset, 4))
+            if (ReadBytes(out buffer, offset, 4)==0)
             {
                 log.Debug("Got Int : " + BitConverter.ToInt32(buffer, 0).ToString());
                 return BitConverter.ToInt32(buffer, 0);

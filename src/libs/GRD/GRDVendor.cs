@@ -8,9 +8,6 @@ using System.Text;
 using System.Windows.Forms;
 using Guardant;
 using log4net;
-#if DEBUG
-using System.IO;
-#endif
 
 namespace RabGRD
 {
@@ -308,7 +305,7 @@ namespace RabGRD
         private byte[] makeUserBuff(string org, int farms, int flags, DateTime startDate, DateTime endDate, byte[] keyCode)
         {
             byte[] res = makeUserBuff(org,farms,flags,startDate,endDate);
-            Array.Copy(keyCode, 0, res, KEY_CODE, keyCode.Length);
+            Array.Copy(keyCode, 0, res, KEY_CODE_OFFSET, keyCode.Length);
             return res;
         }
 
