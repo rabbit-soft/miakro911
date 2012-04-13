@@ -26,8 +26,9 @@ namespace RabGRD
         protected const uint FARM_STOP_DATE_OFFSET = 156;
         protected const uint TEMP_FLAGS_MASK_OFFSET = 168;
         protected const uint TEMP_FLAGS_END_OFFSET = 176;
+        protected const uint KEY_CODE = 188;
         protected const string DEV_MARKER = "9-bits RabSoft";
-        protected uint USER_DATA_LENGTH { get { return TEMP_FLAGS_END_OFFSET + 12; } }
+        protected uint USER_DATA_LENGTH { get { return KEY_CODE + 260; } }
         protected uint WHOLE_MASK_LENGTH { get { return USER_DATA_BEGINING + USER_DATA_LENGTH; } }
 
         // Variables to use in GrdSetFindMode() 

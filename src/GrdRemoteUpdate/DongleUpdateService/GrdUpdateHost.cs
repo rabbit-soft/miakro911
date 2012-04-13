@@ -15,15 +15,17 @@ namespace DongleUpdateService
 
 
         [XmlRpcMethod("dongle.update")]
-        public string DongleUpdate(string base64_question,string orgId, int farms, int flags, string startDate, string endDate)
+        public string DongleUpdate(string base64_question,string orgId, int farms, int flags, string startDate, string endDate,string base64key)
         {
 #if A
+            byte[] keyCode = Convert.FromBase64String(base64key);
             _log.Info("Request For UpdateDongle");
             GRDVendorKey key = new GRDVendorKey();
             string ans;
             key.GetTRUAnswer(out ans, base64_question, orgId, farms, flags, 
                 DateTime.Parse(startDate),
-                DateTime.Parse(endDate));
+                DateTime.Parse(endDate),
+                keyCode);
             key.Dispose();
             if(ans=="")
                 throw new XmlRpcException("Ошибка генерации числа-ответа на сервере");

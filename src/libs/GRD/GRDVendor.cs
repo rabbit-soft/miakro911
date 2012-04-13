@@ -204,7 +204,7 @@ namespace RabGRD
             return (int)retCode;
         }       
 
-        public GrdE GetTRUAnswer(out string base64_answer, string base64_question, string org, int farms, int flags, DateTime startDate, DateTime endDate)
+        public GrdE GetTRUAnswer(out string base64_answer, string base64_question, string org, int farms, int flags, DateTime startDate, DateTime endDate,byte[] keyCode)
         {            
             byte[] buf = Convert.FromBase64String(base64_question);
 
@@ -231,7 +231,7 @@ namespace RabGRD
 
             uint protectLength;
             ushort wNumberOfItems;
-            byte[] userBuff = makeUserBuff(org, farms, flags, startDate, endDate);
+            byte[] userBuff = makeUserBuff(org, farms, flags, startDate, endDate,keyCode);
             byte[] pbyWholeMask = makeNewMask(userBuff, out protectLength, out wNumberOfItems);
 
             logStr = "Set Init & Protect parameters for Trusted Remote Update: ";
@@ -301,9 +301,15 @@ namespace RabGRD
             Array.Copy(tmp, 0, userBuff, TEMP_FLAGS_MASK_OFFSET, tmp.Length);
 
             tmp = Encoding.GetEncoding(1251).GetBytes(endDate.AddMonths(1).ToString("yyyy-MM-dd"));
-            Array.Copy(tmp, 0, userBuff, TEMP_FLAGS_END_OFFSET, tmp.Length);
+            Array.Copy(tmp, 0, userBuff, TEMP_FLAGS_END_OFFSET, tmp.Length);         
 
             return userBuff;
+        }
+        private byte[] makeUserBuff(string org, int farms, int flags, DateTime startDate, DateTime endDate, byte[] keyCode)
+        {
+            byte[] res = makeUserBuff(org,farms,flags,startDate,endDate);
+            Array.Copy(keyCode, 0, res, KEY_CODE, keyCode.Length);
+            return res;
         }
 
         private byte[] makeNewMask(byte[] userBuff, out uint protectLength, out ushort wNumberOfItems)
@@ -400,28 +406,6 @@ namespace RabGRD
                        userBuff.Length);
 
             protectLength = (uint)(GRDConst.GrdWmSAMOffset + wASTSize + wMaskSize);
-#if DEBUG
-            /*String maskDump = BitConverter.ToString(pbyWholeMask).ToLower().Replace("-", " ");
-            int ind =-1;
-            int cnt=0;
-            do
-            {
-                ind = maskDump.IndexOf(" ",ind+1);
-                if (ind > -1)
-                    cnt++;
-                if (cnt == 16)
-                {
-                    maskDump = maskDump.Remove(ind,1).Insert(ind, Environment.NewLine);
-                    cnt = 0;
-                }
-            }
-            while (ind > -1);
-            log.Debug(Environment.NewLine + maskDump);*/
-            FileStream fs = new System.IO.FileStream(@"c:\Users\Gambit\Desktop\invalid_key",FileMode.Create,FileAccess.ReadWrite);
-            fs.Write(pbyWholeMask, 0, pbyWholeMask.Length);
-            fs.Close();
-            
-#endif
             return pbyWholeMask;
         }
 
