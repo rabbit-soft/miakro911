@@ -6,6 +6,7 @@ using System.ComponentModel;
 
 namespace rabdump
 {
+    
     internal class DataBaseEditor : UITypeEditor
     {
         private IWindowsFormsEditorService _edSvc;
