@@ -15,7 +15,8 @@ class Coder
 		global $UID;
 		if($UID == 0 or !isset($UID))
 			return $str;
-		$keys = DBworker::GetListOfStruct("select u_key from grdupdate.users where u_id=$UID limit 1;");
+		$query = defined("CLIENT")? "select c_key as u_key from clients where c_id=$UID limit 1;" : "select u_key from users where u_id=$UID limit 1;";
+		$keys = DBworker::GetListOfStruct($query);
 		$text = self::xxtea_encrypt($str,$keys[0]['u_key']);
 		return $text;
 	}
@@ -34,7 +35,13 @@ class Coder
 		$uid = $uid[1];		
 		$keys = DBworker::GetListOfStruct("select u_key,u_new_key from grdupdate.users where u_id=$uid limit 1;");
 		if(count($keys)==0)
-			throw new DecryptionException("Ошибка чтения посылки");
+		{
+			$keys = DBworker::GetListOfStruct("select c_key as u_key from clients where c_id=$uid limit 1;");
+			if(count($keys)==0)
+				throw new DecryptionException("Ошибка чтения посылки");
+			define("CLIENT", true);
+		}
+			
 		//$log->debug("key of user: ".var_export($keys,true));
 		$text = self::xxtea_decrypt(substr($str, 4),$keys[0]['u_key']);
 		

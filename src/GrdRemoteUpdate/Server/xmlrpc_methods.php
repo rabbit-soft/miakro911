@@ -28,6 +28,7 @@ class MC
 			$logThis = false;
 			switch ($methodName)
 			{				
+				case "client.get.update": $return_value = self::client_get_update($params[0],$params[1]); break;
 				case "user.genkey": $return_value = user_gen_key($params[0]); break;
 				case "ping": $return_value = "pong"; break;
 				case "client.add": self::client_add($params[0],$params[1],$params[2],$params[3]); break;
@@ -139,7 +140,7 @@ class MC
 		$timeFlagsEnd = "NOW()"; //Заглушка
 		
 		$org = DBworker::GetListOfStruct("SELECT c_key,c_org FROM clients WHERE c_id=$orgId;");
-		$key = base64_encode($org[0]['c_key']); //преобразуем в Байт-Массив		
+		$key = base64_encode($org[0]['c_key']); //ключ-шифрования, который будет вшит в ключ-защиты, чтобы шифровать посылки к сереверу
 		$result = self::reqest('dongle.update',
 			array(
 				XMLRPC::Prepare($base64_question,Type::str), 
@@ -158,6 +159,33 @@ class MC
 										VALUES($dongle,$orgId,NOW(),$farms,'$startDate','$endDate',$flags,$timeFlags,$timeFlagsEnd);");	
 		
 		return $result[1];	
+	}
+	
+	private static function client_get_update($base64_question,$dongleId)
+	{
+		global $UID;
+		$timeFlags = 0;//заглушка
+		$timeFlagsEnd = "NOW()"; //Заглушка
+		
+		$org = DBworker::GetListOfStruct("SELECT c_key,c_org FROM clients WHERE c_id=$UID;");
+		$data = DBworker::GetListOfStruct("SELECT u_farms,u_flags,u_start_date,u_end_date FROM updates WHERE u_client=$UID AND u_waiting=1 AND u_dongle=$dongleId;");
+		if(count($data)==0)
+			throw new Exception("Нет назначенных обновлений");
+		$key = base64_encode($org[0]['c_key']); //ключ-шифрования, который будет вшит в ключ-защиты, чтобы шифровать посылки к сереверу
+		$result = self::reqest('dongle.update',
+			array(
+				XMLRPC::Prepare($base64_question,Type::str), 
+				XMLRPC::Prepare($UID, Type::int),
+				XMLRPC::Prepare($org[0]['c_org'], Type::str),
+				XMLRPC::Prepare($data[0]['u_farms'],Type::int), 
+				XMLRPC::Prepare($data[0]['u_flags'],Type::int), 
+				XMLRPC::Prepare($data[0]['u_start_date'],Type::str), 
+				XMLRPC::Prepare($data[0]['u_end_date'], Type::str),
+				XMLRPC::Prepare($key, Type::str)));
+		if(!$result[0])		
+			throw new Exception("Ошибка сервиса обновления ключей\n".$result[1]['faultString']);
+		DBworker::Execute("UPDATE updates SET u_waiting=0 WHERE u_client=$UID AND u_waiting=1 AND u_dongle=$dongleId;");
+		return $result[1];
 	}
 	
 	private static function vendor_shedule_dongle($base64_question, $orgId, $farms, $flags, $startDate, $endDate, $dongle)
