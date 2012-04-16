@@ -172,7 +172,7 @@ namespace AdminGRD
                     string q;
                     int retCode = key.GetTRUQuestion(out q);
                     if (retCode != 0) throw new Exception("Ощибка при генерировании числа-вопроса: " + retCode.ToString());
-                    ResponceItem s = _reqSend.ExecuteMethod(MName.VendorSheduleDongle,
+                    ResponceItem s = _reqSend.ExecuteMethod(MName.VendorUpdateDongle, //MName.VendorSheduleDongle,
                         MPN.base64_question, q,
                         MPN.orgId, client.Id,
                         MPN.farms, dlg.Farms.ToString(),
@@ -181,8 +181,8 @@ namespace AdminGRD
                         MPN.endDate, dlg.EndDate.ToString("yyyy-MM-dd"),
                         MPN.dongleId, key.ID.ToString());
 
-                    //retCode = key.SetTRUAnswer(s.Value.ToString());
-                    //if (retCode != 0) throw new Exception("Ощибка установки числа ответа: " + retCode.ToString());
+                    retCode = key.SetTRUAnswer(s.Value.ToString());
+                    if (retCode != 0) throw new Exception("Ощибка установки числа ответа: " + retCode.ToString());
                     MessageBox.Show("Прошивка Завершена");
                 }
                 key.Dispose();              
@@ -256,8 +256,9 @@ namespace AdminGRD
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int ret;
+            int ret ;
             GRDVendorKey key = new GRDVendorKey();
+            ret = key.GetOrgID();
             try
             {               
                 /*ret = key.SetTRUKey();
