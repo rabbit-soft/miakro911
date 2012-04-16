@@ -142,6 +142,7 @@ Section -com_comps SEC_Common
 #    File ..\..\..\bin\@bin_type@\log4net.dll
     SetOutPath $INSTDIR\Tools
     File ..\..\..\bin\@bin_type@\Tools\mia_conv.exe
+	File ..\..\..\bin\@bin_type@\Tools\mia_conv.exe.config
     File ..\..\..\bin\@bin_type@\Tools\MySql.Data.dll
     File ..\..\..\bin\tools\updater.exe
 	File ..\..\..\bin\tools\log4net.dll
@@ -258,6 +259,7 @@ done${SECTION_ID}:
 # Uninstaller sections
 Section /o -un.com_comps UNSEC_Common
     Delete /REBOOTOK $INSTDIR\Tools\mia_conv.exe
+	Delete /REBOOTOK $INSTDIR\Tools\mia_conv.exe.config
     Delete /REBOOTOK $INSTDIR\Tools\MySql.Data.dll
     RmDir /REBOOTOK /r $INSTDIR\Tools
 #    Delete /REBOOTOK $INSTDIR\Guardant\GrdTRU.exe

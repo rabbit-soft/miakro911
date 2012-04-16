@@ -227,6 +227,8 @@ namespace rabdump
             //DataSources могут изменить
             RabnetConfig.rabDataSource[] dataSources = new RabnetConfig.rabDataSource[RabnetConfig.DataSources.Count];
             RabnetConfig.DataSources.CopyTo(dataSources);
+            if (dataSources.Length == 0)
+                return;
             foreach (RabnetConfig.rabDataSource rds in dataSources)
             {
                 if (!rds.WebReport) continue;

@@ -166,7 +166,7 @@ public static class RabnetConfig
 
     public static void LoadArchiveJobs()
     {
-        _logger.Info("loading archiveJobs");
+        //_logger.Info("loading archiveJobs");
         _archiveJobs.Clear();
         RegistryKey rKey = Registry.LocalMachine.CreateSubKey(ARCHIVEJOBS_PATH);
         foreach (string s in rKey.GetSubKeyNames())
@@ -184,7 +184,7 @@ public static class RabnetConfig
                     (string)r.GetValue("srvtm",DateTime.Now.ToString("yyyy-MM-dd HH:mm")),
                     (int)r.GetValue("srvtp",5)));
         }
-        _logger.Info("loading archiveJobs finish");
+        //_logger.Info("loading archiveJobs finish");
     }
 
     /// <summary>
@@ -192,7 +192,7 @@ public static class RabnetConfig
     /// </summary>
     public static void SaveArchiveJobs()
     {
-        _logger.Info("saving archiveJobs");
+        //_logger.Info("saving archiveJobs");
         RegistryKey rKey = Registry.LocalMachine.CreateSubKey(RabnetConfig.ARCHIVEJOBS_PATH);
         foreach (rabArchiveJob raj in _archiveJobs)
         {
@@ -227,7 +227,7 @@ public static class RabnetConfig
             if (!contains)
                 rKey.DeleteSubKey(s);
         }
-        _logger.Info("saving archiveJobs finish");
+        //_logger.Info("saving archiveJobs finish");
     }
 
     /// <summary>
@@ -416,7 +416,7 @@ public static class RabnetConfig
     /// </summary>
     public static void LoadDataSources()
     {
-        _logger.Info("loading DataSources");
+        //_logger.Info("loading DataSources");
         if (!_extracting) 
             ExtractConfig(System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath);
         _dataSources.Clear();
@@ -433,7 +433,7 @@ public static class RabnetConfig
             ds.WebReport = (string)k.GetValue("webrep", false.ToString()) == true.ToString();
             _dataSources.Add(ds);
         }
-        _logger.Info("loading DataSources finish");
+        //_logger.Info("loading DataSources finish");
     }
 
     /// <summary>
@@ -441,7 +441,7 @@ public static class RabnetConfig
     /// </summary>
     public static void SaveDataSources()
     {
-        _logger.Info("saving DataSources");
+        //_logger.Info("saving DataSources");
         RegistryKey rKey = Registry.LocalMachine.CreateSubKey(DATASOURCES_PATH);
         List<string> noDeleted = new List<string>();
         foreach (rabDataSource ds in _dataSources)
@@ -464,7 +464,7 @@ public static class RabnetConfig
         foreach (string guid in rKey.GetSubKeyNames())
             if (!noDeleted.Contains(guid))
                 rKey.DeleteSubKey(guid);
-        _logger.Debug("saving DataSources finish");
+        //_logger.Debug("saving DataSources finish");
     }
    
     /// <summary>
@@ -484,7 +484,7 @@ public static class RabnetConfig
         }
         if (remove != null)
         {
-            _logger.Debug("delete datasource "+remove.Name);
+            //_logger.Debug("delete datasource "+remove.Name);
             _dataSources.Remove(remove);
         }
     }

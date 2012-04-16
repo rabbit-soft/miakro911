@@ -7,10 +7,10 @@ using System.IO;
 
 namespace pEngine
 {
-    interface IServerProxy : IXmlRpcProxy
+    public interface IServerProxy : IXmlRpcProxy
     {
         [XmlRpcMethod("client.get.update")]
-        void ClientGetUpdate(string question);
+        string ClientGetUpdate(string question,string dongleId);
     }
 
     /// <summary>
@@ -42,5 +42,6 @@ namespace pEngine
     public static class MethodParamName
     {
         public const string question = "question";
+        public const string dongleId = "dongleId";
     }
 }

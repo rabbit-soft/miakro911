@@ -620,6 +620,7 @@ namespace RabGRD
             if (retCode == GrdE.OK) // Print table header if at least one dongle found
             {
                 logStr += string.Format("; Found dongle with following ID : {0,8:X}", _findPropDongleID);
+                _keyId = _findPropDongleID;
             }
             else
             {

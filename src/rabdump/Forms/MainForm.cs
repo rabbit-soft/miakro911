@@ -316,23 +316,28 @@ namespace rabdump
             try
             {
                 //Process.Start(Path.GetDirectoryName(Application.ExecutablePath) + @"\..\Guardant\GrdTRU.exe");
+#if PROTECTED
                 string q;
                 if(GRD.Instance.GetTRUQuestion(out q)!=0)
                     throw new Exception("не удалось сгенерировать число вопрос");
                 RequestSender rs = new RequestSender();
                 rs.UserID = GRD.Instance.GetOrgID();
                 rs.Key = GRD.Instance.GetKeyCode();
-                rs.Url = "vm1/grdUpdate/index.php";
+                rs.Url = "http://vm1/grdUpdate/index.php";
                 ResponceItem ri = rs.ExecuteMethod(MethodName.ClientGetUpdate,
-                    MethodParamName.question,q);
+                    MethodParamName.question,q,
+                    MethodParamName.dongleId,GRD.Instance.ID.ToString());
                 GRD.Instance.SetTRUAnswer(ri.Value as String);
-                MessageBox.Show("Обновлено");               
+                notifyIcon1.ShowBalloonTip(5, "", "Обновлено", ToolTipIcon.Info);               
             } 
             catch(Exception exc)
             {
+                if (exc.InnerException != null)
+                    exc = exc.InnerException;
                 logger.Error(exc);
-                MessageBox.Show(exc.Message);
+                notifyIcon1.ShowBalloonTip(5, "Ошибка обновления", exc.Message,ToolTipIcon.Error);
             }
+#endif
         }
 
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)

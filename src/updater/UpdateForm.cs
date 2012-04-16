@@ -69,7 +69,7 @@ namespace updater
             {
                 i--;
             }
-            _logger.InfoFormat("get {0:s} scripts",i);
+            _logger.InfoFormat("get {0:d} scripts",i);
             return i;
         }
 

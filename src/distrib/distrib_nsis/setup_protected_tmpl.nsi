@@ -163,6 +163,8 @@ Section  $(SEC_RabDump_NAME) SEC_RabDump
     File ..\..\..\bin\@bin_type@\RabDump\log4net.dll
 	File ..\..\..\bin\@bin_type@\RabDump\libcurl.dll
 	File ..\..\..\bin\@bin_type@\RabDump\LibCurlShim.dll
+	File ..\..\..\bin\@bin_type@\RabDump\engine.dll
+	File ..\..\..\bin\@bin_type@\RabDump\db.mysql.dll
 #    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage32.dll
 #    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage64.dll
 #    File ..\..\..\bin\@bin_type@\key.dll
@@ -221,6 +223,7 @@ Section -com_comps SEC_Common
     File ..\..\..\bin\@bin_type@\Guardant\GrdTRU.exe
     SetOutPath $INSTDIR\Tools
     File ..\..\..\bin\@bin_type@\Tools\mia_conv.exe
+	File ..\..\..\bin\@bin_type@\Tools\mia_conv.exe.config
     File ..\..\..\bin\@bin_type@\Tools\MySql.Data.dll
     File ..\..\..\bin\tools\updater.exe
 	File ..\..\..\bin\tools\updater.exe.config
@@ -352,6 +355,7 @@ doneold${SECTION_ID}:
 Section /o -un.com_comps UNSEC_Common
     RmDir /REBOOTOK /r $INSTDIR\Guardant
     Delete /REBOOTOK $INSTDIR\Tools\mia_conv.exe
+	Delete /REBOOTOK $INSTDIR\Tools\mia_conv.exe.config
     Delete /REBOOTOK $INSTDIR\Tools\MySql.Data.dll
 	Delete /REBOOTOK $INSTDIR\Tools\log4net.dll
 	Delete /REBOOTOK $INSTDIR\Tools\updater.exe
@@ -376,6 +380,8 @@ Section /o "-un.rabdump" UNSEC_RabDump
 	Delete /REBOOTOK $INSTDIR\RabDump\LibCurlShim.dll
 	Delete /REBOOTOK $INSTDIR\RabDump\libcurl.dll
 	Delete /REBOOTOK $INSTDIR\RabDump\log4net.dll
+	Delete /REBOOTOK $INSTDIR\RabDump\db.mysql.dll
+	Delete /REBOOTOK $INSTDIR\RabDump\engine.dll
     Delete /REBOOTOK $INSTDIR\RabDump\rabdump.exe
 #    Delete /REBOOTOK $INSTDIR\RabDump\CodeStorage32.dll
 #    Delete /REBOOTOK $INSTDIR\RabDump\CodeStorage64.dll

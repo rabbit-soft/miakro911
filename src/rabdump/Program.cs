@@ -87,17 +87,11 @@ namespace rabdump
 #if !NOCATCH
         private static void Excepted(Exception ex)
         {
-            if (log != null)
-                log.Fatal("General fault exception", ex);
-            if (ex.Source == "MySql.Data")
-            {
-                MessageBox.Show("Соединение с сервером было разорвано.\n\rПрграмма будет закрыта");
-            }
-            else
-            {
-                MessageBox.Show("Произошла ошибка. Программа будет закрыта.\n\r" + ex.Message);
-            }
-            log.Error(ex.Message, ex);
+            log.Fatal(ex);
+            string msg ="Произошла ошибка. Программа будет закрыта.\n\r" + ex.Message;
+            if (ex.Source == "MySql.Data")            
+                msg="Соединение с сервером было разорвано.\n\rПрграмма будет закрыта";
+            MessageBox.Show(msg, "Серьезная ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);           
         }
 
         private static void Threaded(object sender, System.Threading.ThreadExceptionEventArgs e)
@@ -109,7 +103,7 @@ namespace rabdump
             finally
             {
                 //Application.Exit();
-                Environment.Exit(0);
+                Environment.Exit(1);
             }
         }
 
@@ -122,7 +116,7 @@ namespace rabdump
             finally
             {
                 //Application.Exit();
-                Environment.Exit(0);
+                Environment.Exit(1);
             }
         }
 #endif
