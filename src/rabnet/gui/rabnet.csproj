@@ -193,7 +193,6 @@
     </Compile>
     <Compile Include="classes\RabUpdaterClient.cs" />
     <Compile Include="components\ColorPickerColumn\ColorPickerColumn.cs">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="components\ColorPickerColumn\CommonMethods.cs">
       <SubType>Component</SubType>

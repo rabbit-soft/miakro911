@@ -59,19 +59,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\libs\pEngine\Engine.UserFile.cs">
+      <Link>Engine.UserFile.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\libs\pEngine\Helper.cs">
+      <Link>Helper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\libs\pEngine\IRequestSender.cs">
+      <Link>IRequestSender.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\libs\pEngine\Options.cs">
+      <Link>Options.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\libs\pEngine\Options.Servers.cs">
+      <Link>Options.Servers.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\libs\pEngine\RequestPack.cs">
+      <Link>RequestPack.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\libs\pEngine\xxTEA.cs">
+      <Link>xxTEA.cs</Link>
+    </Compile>
     <Compile Include="Engine.cs" />
-    <Compile Include="Helper.cs" />
-    <Compile Include="User.cs" />
-    <Compile Include="Options.cs" />
-    <Compile Include="Options.Servers.cs" />
-    <Compile Include="Permissions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RequestPack.cs" />
     <Compile Include="ServerMethods.cs" />
     <Compile Include="Structures.cs" />
-    <Compile Include="xxTEA.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="User.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

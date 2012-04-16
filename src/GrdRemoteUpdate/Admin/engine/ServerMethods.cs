@@ -50,7 +50,7 @@ namespace pEngine
     /// </para>
     /// </remarks>
     /// <see cref="IServerProxy"/>
-    public enum MName
+    public enum MethodName
     {
         /// <summary>
         /// Генерирует новый ключ пользователя
@@ -123,7 +123,7 @@ namespace pEngine
     /// Возможные имена аргументов функции
     /// MethodParamName
     /// </summary>
-    public static class MPN
+    public static class MethodParamName
     {
         public const string userId = "userId";
         public const string dongleId = "dongleId";

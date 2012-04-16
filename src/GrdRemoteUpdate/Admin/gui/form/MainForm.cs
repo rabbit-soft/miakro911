@@ -30,7 +30,7 @@ namespace AdminGRD
             lvDongles.Items.Clear();
             
             lvClients.Items.Clear();
-            ResponceItem ri = _reqSend.ExecuteMethod(MName.GetClients);
+            ResponceItem ri = _reqSend.ExecuteMethod(MethodName.GetClients);
             foreach (sClient cl in (ri.Value as sClient[]))
             {
                 ListViewItem lvi = lvClients.Items.Add(cl.Organization);
@@ -49,11 +49,11 @@ namespace AdminGRD
             AddClientForm dlg = new AddClientForm();
             if (dlg.ShowDialog() == DialogResult.OK)
             {
-                _reqSend.ExecuteMethod(MName.AddClient,
-                    MPN.orgName, dlg.Organization,
-                    MPN.contact, dlg.Contact,
-                    MPN.address, dlg.Address,
-                    MPN.saas,dlg.SAAS ? "1":"0");
+                _reqSend.ExecuteMethod(MethodName.AddClient,
+                    MethodParamName.orgName, dlg.Organization,
+                    MethodParamName.contact, dlg.Contact,
+                    MethodParamName.address, dlg.Address,
+                    MethodParamName.saas,dlg.SAAS ? "1":"0");
             }
             fillUsers();
         }
@@ -103,10 +103,10 @@ namespace AdminGRD
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
 #if !A
-                    _reqSend.ExecuteMethod(MName.VendorAddDongle,
-                        MPN.dongleId, key.ID.ToString(),
-                        MPN.orgId, client.Id,
-                        MPN.model, key.Model.ToString());
+                    _reqSend.ExecuteMethod(MethodName.VendorAddDongle,
+                        MethodParamName.dongleId, key.ID.ToString(),
+                        MethodParamName.orgId, client.Id,
+                        MethodParamName.model, key.Model.ToString());
 
                     retCode = key.SetTRUKey();
                     if (retCode != 0) throw new Exception("Ощибка при инициализации ключа: " + retCode.ToString());
@@ -114,14 +114,14 @@ namespace AdminGRD
                     retCode = key.GetTRUQuestion(out q);
                     if (retCode != 0) throw new Exception("Ощибка при генерировании числа-вопроса: "+retCode.ToString());
                     
-                    ResponceItem s = _reqSend.ExecuteMethod(MName.VendorUpdateDongle,
-                        MPN.base64_question, q,
-                        MPN.orgId, client.Id,
-                        MPN.farms, dlg.Farms.ToString(),
-                        MPN.flags, dlg.Flags.ToString(),
-                        MPN.startDate, dlg.StartDate.ToString("yyyy-MM-dd"),
-                        MPN.endDate, dlg.EndDate.ToString("yyyy-MM-dd"),
-                        MPN.dongleId, key.ID.ToString());
+                    ResponceItem s = _reqSend.ExecuteMethod(MethodName.VendorUpdateDongle,
+                        MethodParamName.base64_question, q,
+                        MethodParamName.orgId, client.Id,
+                        MethodParamName.farms, dlg.Farms.ToString(),
+                        MethodParamName.flags, dlg.Flags.ToString(),
+                        MethodParamName.startDate, dlg.StartDate.ToString("yyyy-MM-dd"),
+                        MethodParamName.endDate, dlg.EndDate.ToString("yyyy-MM-dd"),
+                        MethodParamName.dongleId, key.ID.ToString());
                     string ans = s.Value.ToString();
                     if (ans == "")
                         throw new Exception("Пустое число-ответ");
@@ -172,14 +172,14 @@ namespace AdminGRD
                     string q;
                     int retCode = key.GetTRUQuestion(out q);
                     if (retCode != 0) throw new Exception("Ощибка при генерировании числа-вопроса: " + retCode.ToString());
-                    ResponceItem s = _reqSend.ExecuteMethod(MName.VendorUpdateDongle, //MName.VendorSheduleDongle,
-                        MPN.base64_question, q,
-                        MPN.orgId, client.Id,
-                        MPN.farms, dlg.Farms.ToString(),
-                        MPN.flags, dlg.Flags.ToString(),
-                        MPN.startDate, (lvDongles.SelectedItems[0].Tag as sDongle).StartDate,
-                        MPN.endDate, dlg.EndDate.ToString("yyyy-MM-dd"),
-                        MPN.dongleId, key.ID.ToString());
+                    ResponceItem s = _reqSend.ExecuteMethod(MethodName.VendorUpdateDongle, //MName.VendorSheduleDongle,
+                        MethodParamName.base64_question, q,
+                        MethodParamName.orgId, client.Id,
+                        MethodParamName.farms, dlg.Farms.ToString(),
+                        MethodParamName.flags, dlg.Flags.ToString(),
+                        MethodParamName.startDate, (lvDongles.SelectedItems[0].Tag as sDongle).StartDate,
+                        MethodParamName.endDate, dlg.EndDate.ToString("yyyy-MM-dd"),
+                        MethodParamName.dongleId, key.ID.ToString());
 
                     retCode = key.SetTRUAnswer(s.Value.ToString());
                     if (retCode != 0) throw new Exception("Ощибка установки числа ответа: " + retCode.ToString());
@@ -232,9 +232,9 @@ namespace AdminGRD
             {
                 AddMoneyForm dlg = new AddMoneyForm();
                 if (dlg.ShowDialog() == DialogResult.OK)
-                    _reqSend.ExecuteMethod(MName.AddClientMoney,
-                        MPN.orgId, (lvClients.SelectedItems[0].Tag as sClient).Id,
-                        MPN.money, dlg.Value.ToString());
+                    _reqSend.ExecuteMethod(MethodName.AddClientMoney,
+                        MethodParamName.orgId, (lvClients.SelectedItems[0].Tag as sClient).Id,
+                        MethodParamName.money, dlg.Value.ToString());
                 MessageBox.Show("Добавили успешно");
                 fillUsers();
             }

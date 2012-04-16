@@ -25,14 +25,14 @@ namespace pEngine
         {
             _password = password;
         }
-        public User(string id, string name,string parent,bool block/*, sPermission[] perms*/)
+        /*public User(string id, string name,string parent,bool block, sPermission[] perms)
         {
             this.Id = int.Parse(id);
             this.Name = name;
             this.Parent = parent;
             this.Block = block;
-            //SetPermissions(perms);
-        }
+            SetPermissions(perms);
+        }*/
 
         /// <summary>
         /// Разрещения Данного пользователя

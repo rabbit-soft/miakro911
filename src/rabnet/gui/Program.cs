@@ -64,7 +64,7 @@ namespace rabnet
                         int hkey = 0;
 
                         //while (PClient.get().farms() == -1 && hkey == 0)
-                        while (GRD.Instance.GetFarmsCnt() == -1 && hkey == 0)
+                        while (GRD_Base.Instance.GetFarmsCnt() == -1 && hkey == 0)
                         {
                             if (MessageBox.Show(null, "Ключ защиты не найден!\nВставьте ключ защиты в компьютер и нажмите кнопку повтор.",
                                     "Ключ защиты", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) == DialogResult.Cancel)
@@ -73,11 +73,11 @@ namespace rabnet
                             }
                         }
                         //              if (PClient.get().farms() == -1)
-                        if (GRD.Instance.GetFarmsCnt() == -1)
+                        if (GRD_Base.Instance.GetFarmsCnt() == -1)
                         {
                             return;
                         }
-                        if (!GRD.Instance.GetFlag(GRD.FlagType.RabNet))
+                        if (!GRD_Base.Instance.GetFlag(GRD_Base.FlagType.RabNet))
                         {
                             MessageBox.Show("Программа не может работать с данным ключом защиты");
                             return;
@@ -98,7 +98,7 @@ namespace rabnet
                             }
 #if PROTECTED
                             //                        if (PClient.get().farms() == -1)
-                            if (GRD.Instance.GetFarmsCnt() == -1)
+                            if (GRD_Base.Instance.GetFarmsCnt() == -1)
                             {
                                 LoginForm.stop = true;
                             }
@@ -106,7 +106,7 @@ namespace rabnet
                         }
 #if PROTECTED
                         //                    if (PClient.get().farms() == -1)
-                        if (GRD.Instance.GetFarmsCnt() == -1)
+                        if (GRD_Base.Instance.GetFarmsCnt() == -1)
                         {
                             exit = false;
                         }

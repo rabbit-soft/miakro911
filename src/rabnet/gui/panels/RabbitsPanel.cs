@@ -545,7 +545,7 @@ namespace rabnet
 		{
 			if (listView1.SelectedItems.Count < 1) return;
 #if PROTECTED
-            if (!RabGRD.GRD.Instance.GetFlag(RabGRD.GRD.FlagType.Genetics))
+            if (!RabGRD.GRD_Base.Instance.GetFlag(RabGRD.GRD_Base.FlagType.Genetics))
             {
                 MessageBox.Show("Текущая лицензия не распространяется на данный модуль");
                 return;
