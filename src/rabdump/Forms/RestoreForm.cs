@@ -21,7 +21,7 @@ namespace rabdump
 
         private readonly WaitForm _wtFrm;
         private bool _smallMode = true;
-        private bool _manual = true;
+        //private bool _manual = true;
 
         private static readonly ILog log = LogManager.GetLogger(typeof(RestoreForm));
 

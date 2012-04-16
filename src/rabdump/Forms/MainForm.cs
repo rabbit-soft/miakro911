@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 #if PROTECTED
 using RabGRD;
+using pEngine;
 #endif
 //using rabnet;
 
@@ -319,9 +320,23 @@ namespace rabdump
             try
             {
                 //Process.Start(Path.GetDirectoryName(Application.ExecutablePath) + @"\..\Guardant\GrdTRU.exe");
-                
+                string q;
+                if(GRD.Instance.GetTRUQuestion(out q)!=0)
+                    throw new Exception("не удалось сгенерировать число вопрос");
+                RequestSender rs = new RequestSender();
+                rs.UserID = GRD.Instance.GetOrgID();
+                rs.Key = GRD.Instance.GetKeyCode();
+                rs.Url = "vm1/grdUpdate/index.php";
+                ResponceItem ri = rs.ExecuteMethod(MethodName.ClientGetUpdate,
+                    MethodParamName.question,q);
+                GRD.Instance.SetTRUAnswer(ri.Value as String);
+                MessageBox.Show("Обновлено");               
             } 
-            catch{}
+            catch(Exception exc)
+            {
+                logger.Error(exc);
+                MessageBox.Show(exc.Message);
+            }
         }
 
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)

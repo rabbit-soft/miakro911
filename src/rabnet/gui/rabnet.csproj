@@ -147,6 +147,9 @@
     <Compile Include="..\..\mia_conv\miaExitCode.cs">
       <Link>classes\miaExitCode.cs</Link>
     </Compile>
+    <Compile Include="..\..\rabdump\classes\x_tools.cs">
+      <Link>classes\x_tools.cs</Link>
+    </Compile>
     <Compile Include="classes\Demo.cs" />
     <Compile Include="classes\ExcelMaker.cs" />
     <Compile Include="classes\RabnetConfig.cs" />
@@ -193,6 +196,7 @@
     </Compile>
     <Compile Include="classes\RabUpdaterClient.cs" />
     <Compile Include="components\ColorPickerColumn\ColorPickerColumn.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="components\ColorPickerColumn\CommonMethods.cs">
       <SubType>Component</SubType>
@@ -465,9 +469,6 @@
       <DependentUpon>PeriodForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\VerInfo.cs" />
-    <Compile Include="..\..\rabdump\X_Tools\x_tools.cs">
-      <Link>classes\x_tools.cs</Link>
-    </Compile>
     <EmbeddedResource Include="components\BuildingControl.resx">
       <DependentUpon>BuildingControl.cs</DependentUpon>
       <SubType>Designer</SubType>

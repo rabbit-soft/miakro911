@@ -64,7 +64,7 @@ namespace rabnet
                         int hkey = 0;
 
                         //while (PClient.get().farms() == -1 && hkey == 0)
-                        while (GRD_Base.Instance.GetFarmsCnt() == -1 && hkey == 0)
+                        while (GRD.Instance.GetFarmsCnt() == -1 && hkey == 0)
                         {
                             if (MessageBox.Show(null, "Ключ защиты не найден!\nВставьте ключ защиты в компьютер и нажмите кнопку повтор.",
                                     "Ключ защиты", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) == DialogResult.Cancel)
@@ -73,11 +73,11 @@ namespace rabnet
                             }
                         }
                         //              if (PClient.get().farms() == -1)
-                        if (GRD_Base.Instance.GetFarmsCnt() == -1)
+                        if (GRD.Instance.GetFarmsCnt() == -1)
                         {
                             return;
                         }
-                        if (!GRD_Base.Instance.GetFlag(GRD_Base.FlagType.RabNet))
+                        if (!GRD.Instance.GetFlag(GRD_Base.FlagType.RabNet))
                         {
                             MessageBox.Show("Программа не может работать с данным ключом защиты");
                             return;
@@ -98,7 +98,7 @@ namespace rabnet
                             }
 #if PROTECTED
                             //                        if (PClient.get().farms() == -1)
-                            if (GRD_Base.Instance.GetFarmsCnt() == -1)
+                            if (GRD.Instance.GetFarmsCnt() == -1)
                             {
                                 LoginForm.stop = true;
                             }
@@ -106,7 +106,7 @@ namespace rabnet
                         }
 #if PROTECTED
                         //                    if (PClient.get().farms() == -1)
-                        if (GRD_Base.Instance.GetFarmsCnt() == -1)
+                        if (GRD.Instance.GetFarmsCnt() == -1)
                         {
                             exit = false;
                         }
@@ -125,8 +125,6 @@ namespace rabnet
 #if !NOCATCH
         static void Excepted(Exception ex)
         {
-            if (log != null)
-                log.Fatal("General fault exception", ex);
             if (ex.Source == "MySql.Data")
             {
                 MessageBox.Show("Соединение с сервером было разорвано.\n\rПрграмма будет закрыта");
@@ -135,7 +133,7 @@ namespace rabnet
             {
                 MessageBox.Show("Произошла ошибка. Программа будет закрыта.\n\r" + ex.Message);
             }
-            log.Debug(ex.Message, ex);
+            log.Fatal(ex.Message, ex);
         }
 
         static void Threaded(object sender, System.Threading.ThreadExceptionEventArgs e)

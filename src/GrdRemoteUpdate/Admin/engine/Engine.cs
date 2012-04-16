@@ -117,7 +117,7 @@ namespace pEngine
                         ResponceItem resp;
                         if (newpass != "")
                         {
-                            resp = Pack.ExecuteMethod(MethodName.UserGenerateKey, MethodParamName.userId, _curUser.Id.ToString());
+                            resp = Pack.ExecuteMethod(MethodName.UserGenerateKey, MPN.userId, _curUser.Id.ToString());
                             MakeUserFile(_curUser.Id, _curUser.Name, newpass, resp.Value as string);
                             LogOut();
                             return LogIn(keyfile, newpass, server, "");

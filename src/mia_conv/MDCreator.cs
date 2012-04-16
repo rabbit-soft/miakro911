@@ -29,11 +29,6 @@ namespace mia_conv
             log.Debug(str);
         }
 
-        public void Debug(Exception ex)
-        {
-            Debug("Error:" + ex.GetType().ToString() + ":" + ex.Message);
-        }
-
         /// <summary>
         /// Удаляет базу данных
         /// </summary>
@@ -47,7 +42,7 @@ namespace mia_conv
                 cmd.ExecuteNonQuery();
             }
             catch (Exception)
-            {
+            {               
             }
         }
 

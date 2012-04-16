@@ -119,11 +119,12 @@ namespace pEngine
         /// </summary>
         VendorAddDongle
     }
+    
     /// <summary>
     /// Возможные имена аргументов функции
     /// MethodParamName
     /// </summary>
-    public static class MethodParamName
+    public static class MPN
     {
         public const string userId = "userId";
         public const string dongleId = "dongleId";

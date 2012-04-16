@@ -577,7 +577,7 @@ public static class RabnetConfig
     public static void ExtractConfig(string filePath)
     {       
         if (!System.IO.File.Exists(filePath)) return;
-        _logger.Info("extracting configs from app.configs");
+        //_logger.Info("extracting configs from app.configs");
         _extracting = true;
         XmlDocument doc = new XmlDocument();
         doc.Load(filePath);
@@ -609,13 +609,13 @@ public static class RabnetConfig
 #if !DEBUG
         doc.Save(filePath);
 #endif
-        _logger.Info("finish extracting");
+        //_logger.Info("finish extracting");
         //_extracting = false; //один раз за сессию и хватит
     }
 
     private static void extractRabnetds(XmlNode node)
     {
-        _logger.Info("extracting config from RabNet");
+        //_logger.Info("extracting config from RabNet");
         LoadDataSources();
         foreach (XmlNode nd in node.ChildNodes)
         {
@@ -642,7 +642,7 @@ public static class RabnetConfig
 
     private static void extractRabDump(XmlNode node)
     {
-        _logger.Info("extracting congig from RabDump");
+        //_logger.Info("extracting congig from RabDump");
         LoadDataSources();
         LoadArchiveJobs();
         foreach (XmlNode nd in node.ChildNodes)

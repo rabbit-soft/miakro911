@@ -113,25 +113,31 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\libs\GRD\GRDCommon.cs">
-      <Link>GRDCommon.cs</Link>
+      <Link>classes\GRDCommon.cs</Link>
     </Compile>
     <Compile Include="..\libs\GRD\GRD_Base.cs">
-      <Link>GRD_Base.cs</Link>
+      <Link>classes\GRD_Base.cs</Link>
     </Compile>
     <Compile Include="..\libs\GRD\GRD_BaseCodes.cs">
-      <Link>GRD_BaseCodes.cs</Link>
+      <Link>classes\GRD_BaseCodes.cs</Link>
     </Compile>
     <Compile Include="..\libs\GRD\GRD_BaseTRU.cs">
-      <Link>GRD_BaseTRU.cs</Link>
+      <Link>classes\GRD_BaseTRU.cs</Link>
     </Compile>
-    <Compile Include="..\libs\xxTEA.cs">
-      <Link>xxTEA.cs</Link>
+    <Compile Include="..\libs\pEngine\IRequestSender.cs">
+      <Link>remote\IRequestSender.cs</Link>
+    </Compile>
+    <Compile Include="..\libs\pEngine\RequestPack.cs">
+      <Link>remote\RequestPack.cs</Link>
+    </Compile>
+    <Compile Include="..\libs\pEngine\xxTEA.cs">
+      <Link>remote\xxTEA.cs</Link>
     </Compile>
     <Compile Include="..\mia_conv\miaExitCode.cs">
-      <Link>miaExitCode.cs</Link>
+      <Link>classes\miaExitCode.cs</Link>
     </Compile>
     <Compile Include="..\rabnet\gui\classes\RabnetConfig.cs">
-      <Link>RabnetConfig.cs</Link>
+      <Link>classes\RabnetConfig.cs</Link>
     </Compile>
     <Compile Include="..\rabnet\gui\forms\FarmChangeForm.cs">
       <Link>Forms\FarmChangeForm.cs</Link>
@@ -147,8 +153,8 @@
     <Compile Include="Forms\AboutForm.designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ArchiveJobThread.cs" />
-    <Compile Include="Editors.cs" />
+    <Compile Include="classes\ArchiveJobThread.cs" />
+    <Compile Include="classes\Editors.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -161,22 +167,22 @@
     <Compile Include="Forms\WaitForm.Designer.cs">
       <DependentUpon>WaitForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Options.cs">
+    <Compile Include="classes\Options.cs">
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RabServWorker.cs" />
-    <Compile Include="RabUpdater.cs" />
+    <Compile Include="remote\RabServWorker.cs" />
+    <Compile Include="remote\RabUpdater.cs" />
     <Compile Include="Forms\RestoreForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\RestoreForm.Designer.cs">
       <DependentUpon>RestoreForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ServerMethods.cs" />
-    <Compile Include="SockServ.cs" />
+    <Compile Include="remote\ServerMethods.cs" />
+    <Compile Include="remote\SockServ.cs" />
     <Compile Include="Properties\VerInfo.cs" />
-    <Compile Include="X_Tools\x_tools.cs" />
+    <Compile Include="classes\x_tools.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\rabnet\gui\forms\FarmChangeForm.resx">

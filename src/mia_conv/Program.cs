@@ -1,11 +1,14 @@
+#define CATCH
 using System;
 using System.Windows.Forms;
+using log4net;
 
 namespace mia_conv
 {
     
     static class Program
     {
+        private static ILog _log;
         static String usage()
         {
             return @"usage: mia_conv file.mia dbparams users [script_file]
@@ -20,8 +23,12 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
         [STAThread]
         static void Main(string[] args)
         {
+#if CATCH
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Unhandled);
+            Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Threaded);
+#endif
             log4net.Config.XmlConfigurator.Configure();
-
+            _log = LogManager.GetLogger("MDCreator");
             String file ="";
             String host = "";
             String user = "";
@@ -72,9 +79,10 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
                         rpswd = dbpar[5];
                     }
                 }
-                catch(Exception ex)
+                catch(Exception exc)
                 {
-                    MessageBox.Show("Error:" + ex.ToString() + ":" + ex.Message + "\r\n" + usage());
+                    _log.Error(exc);
+                    MessageBox.Show("Error:" + exc.ToString() + ":" + exc.Message + "\r\n" + usage());
                     Environment.ExitCode = miaExitCode.ERROR;
                     return;
                 }
@@ -133,8 +141,9 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
                 cr.Prepare(true, host, user, pswd, db, root, rpswd, true);
                 cr.SetUsers(us);
             }
-            catch (Exception)
+            catch (Exception exc)
             {
+                _log.Error(exc);               
                 return miaExitCode.ERROR;
             }
             return miaExitCode.OK;
@@ -156,11 +165,45 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
             {
                 MDCreator.DropDb(root, rpswd, db, host);
             }
-            catch(Exception)
+            catch(Exception exc)
             {
+                _log.Error(exc); 
                 return miaExitCode.ERROR;
             }
             return miaExitCode.OK;
         }
+#if CATCH
+        static void Excepted(Exception ex)
+        {
+            MessageBox.Show("Произошла ошибка. Программа будет закрыта.\n\r" + ex.Message);
+            _log.Fatal(ex.Message, ex);
+        }
+
+        static void Threaded(object sender, System.Threading.ThreadExceptionEventArgs e)
+        {
+            try
+            {
+                Excepted(e.Exception);
+            }
+            finally
+            {
+                //Application.Exit();
+                Environment.Exit(0);
+            }
+        }
+
+        static void Unhandled(object sender, UnhandledExceptionEventArgs e)
+        {
+            try
+            {
+                Excepted((Exception)e.ExceptionObject);
+            }
+            finally
+            {
+                //Application.Exit();
+                Environment.Exit(0);
+            }
+        }
+#endif
     }
 }

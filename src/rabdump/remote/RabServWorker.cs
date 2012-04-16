@@ -102,11 +102,11 @@ namespace rabdump
         private static string _tmpPath = Path.GetTempPath();
         private static string NL = Environment.NewLine;
         private static string _url = "localhost/rabdump";
-        private static string lastDumpURI = _url + "/dumplist.php";
-        private static string uploadDumpURI = _url + "/uploader.php";
-        private static string downloadDumpURI = _url + "/getdump.php";
-        private static string webrepGetLastDateURI = _url + "/wrLD.php";
-        private static string webrepUploadURI = _url + "/wrUpload.php";
+        private static string lastDumpURI { get { return _url + "/dumplist.php"; } }
+        private static string uploadDumpURI { get { return _url + "/uploader.php"; } }
+        private static string downloadDumpURI { get { return  _url + "/getdump.php";} }
+        private static string webrepGetLastDateURI { get { return  _url + "/wrLD.php";} }
+        private static string webrepUploadURI { get { return _url + "/wrUpload.php"; } }
         private static ILog _logger = LogManager.GetLogger(typeof(RabServWorker));
         private static ServData _crossData;
         private static ArchiveJobThread _ajt;
@@ -123,10 +123,8 @@ namespace rabdump
 
         public static void SetServerUrl(string url)
         {
-            if (_state != State.Free || url == "") return;
-            lastDumpURI = _url +  "/dumplist.php";
-            uploadDumpURI = _url + "/uploader.php";
-            downloadDumpURI = _url +  "/getdump.php";
+            if (_state != State.Free || url == "") 
+                return;
         }
 
         public static void MakeDump(ArchiveJob j)

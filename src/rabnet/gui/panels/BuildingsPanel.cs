@@ -86,7 +86,7 @@ namespace rabnet
             {
 #if PROTECTED
                 //if (i <= PClient.get().farms())
-                if (i <= GRD_Base.Instance.GetFarmsCntCache())
+                if (i <= GRD.Instance.GetFarmsCntCache())
 #elif DEMO
                 if (i <= DEMO_MAX_FARMS)
 #endif              
@@ -145,7 +145,7 @@ namespace rabnet
             TreeNode n = makenode(null, "Ферма", buildTree);
 #if PROTECTED
 //            if (nofarm<=PClient.get().farms())
-            if (nofarm <= GRD_Base.Instance.GetFarmsCnt())
+            if (nofarm <= GRD.Instance.GetFarmsCnt())
 #elif DEMO
             if (Engine.db().getMFCount() <= DEMO_MAX_FARMS)
 #endif
@@ -631,7 +631,7 @@ namespace rabnet
 #if DEMO
                 || Engine.db().getMFCount() >= DEMO_MAX_FARMS
 #elif PROTECTED
-                || Engine.db().getMFCount() >= GRD_Base.Instance.GetFarmsCnt()
+                || Engine.db().getMFCount() >= GRD.Instance.GetFarmsCnt()
 #endif
 )
             {
