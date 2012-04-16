@@ -344,18 +344,25 @@
 		
 		<copy file="${party3d.path}/libcurl.dll" tofile="${bin_dir}/RabDump/libcurl.dll" />	
 		<copy file="${party3d.path}/LibCurlShim.dll" tofile="${bin_dir}/RabDump/LibCurlShim.dll" />
+		<copy file="${party3d.path}/ccxmlrpc.dll" tofile="${bin_dir}/RabDump/ccxmlrpc.dll" />
 		<copy file="${bin_dir}/RabNet/db.mysql.dll" tofile="${bin_dir}/RabDump/db.mysql.dll" />
 		<copy file="${bin_dir}/RabNet/engine.dll" tofile="${bin_dir}/RabDump/engine.dll" />
 		<csc target="winexe" output="${bin_dir}/RabDump/rabdump.exe" win32icon="${curdir}/rabdump/icon_white.ico" define="${compile_flag}" optimize="true">
 			<sources>
-				<include name="${curdir}/rabdump/*.cs"/>
-				<include name="${curdir}/rabdump/Forms/*.cs"/>
-				<include name="${curdir}/rabdump/X_Tools/*.cs"/>
 				<include name="${curdir}/_tmp/*.cs"/>
+				<include name="${curdir}/rabdump/*.cs"/>				
+				<include name="${curdir}/rabdump/classes/*.cs"/>
+				<include name="${curdir}/rabdump/remote/*.cs"/>				
 				<include name="${curdir}/rabdump/Properties/AssemblyInfo.cs"/>
 				<include name="${curdir}/libs/GRD/GRD_Base.cs"/>
+				<include name="${curdir}/libs/GRD/GRD_BaseTRU.cs"/>
 				<include name="${curdir}/libs/GRD/GRD_BaseCodes.cs"/>
+				<include name="${curdir}/libs/GRD/GRDCommon.cs"/>
+				<include name="${curdir}/libs/pEngine/IRequestSender.cs"/>
+				<include name="${curdir}/libs/pEngine/RequestPack.cs"/>
+				<include name="${curdir}/libs/pEngine/xxTEA.cs"/>
 				<include name="${curdir}/mia_conv/miaExitCode.cs"/>
+				<include name="${curdir}/rabdump/Forms/*.cs"/>
 				<include name="${curdir}/rabnet/gui/classes/RabnetConfig.cs"/>
 				<include name="${curdir}/rabnet/gui/forms/FarmChangeForm.cs"/>
 				<include name="${curdir}/rabnet/gui/forms/FarmChangeForm.Designer.cs"/>
@@ -369,6 +376,7 @@
 				<include name="${bin_dir}/RabDump/${guardantNET.lib}" />
 				<include name="${log4net.use}"/>
 				<include name="${party3d.path}/LibCurlNet.dll"/>
+				<include name="${party3d.path}/ccxmlrpc.dll"/>
 				<include name="${bin_dir}/RabDump/engine.dll"/>
 				<include name="${bin_dir}/RabDump/db.mysql.dll"/>
 			</references>
@@ -393,7 +401,7 @@
 				<include name="${curdir}/rabnet/gui/reports/*.cs"/>
 				<include name="${curdir}/libs/GRD/GRD_Base.cs"/>
 				<include name="${curdir}/libs/GRD/GRD_BaseCodes.cs"/>
-				<include name="${curdir}/rabdump/X_Tools/*.cs"/>
+				<include name="${curdir}/rabdump/classes/*.cs"/>
 				<include name="${curdir}/mia_conv/miaExitCode.cs"/>
 			</sources>
 			<resources>

@@ -117,9 +117,7 @@ namespace rabdump
         public override string ToString()
         {
             return _nm;
-        }     
-
-       
+        }           
     }
 
     [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
@@ -490,7 +488,6 @@ namespace rabdump
         }
     }
 
-
     [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
     class Options:Object
     {
@@ -575,7 +572,6 @@ namespace rabdump
         /// </summary>
         public void Load()
         {
-            MainForm.log().Debug("loading options");
             Databases.Clear();
             Jobs.Clear();
             _bds.LoadDBs();

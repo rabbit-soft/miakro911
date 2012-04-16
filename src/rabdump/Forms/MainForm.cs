@@ -50,10 +50,6 @@ namespace rabdump
 #endif
         }
 
-        public static ILog log()
-        {
-            return logger;
-        }
         private void restoreMenuItem_Click(object sender, EventArgs e)
         {
             _manual = false;
@@ -86,7 +82,7 @@ namespace rabdump
             e.Cancel = !_canclose;
             if (_canclose)
             {
-                log().Debug("Program finished");
+                logger.Debug("Program finished");
                 _socksrv.Close();
             }
             _manual = false;
@@ -105,7 +101,7 @@ namespace rabdump
         {
             notifyIcon1.Icon = Icon;
             propertyGrid1.SelectedObject = Options.Get();
-            log().Debug("Program started");
+            logger.Debug("Program started");
             Options.Get().Load();
             ReinitTimer(true);
 #if PROTECTED 
@@ -188,7 +184,7 @@ namespace rabdump
         /// <param name="onstart">Делать ли дамп при старте</param>
         private void ProcessTiming(bool onstart)
         {
-            log().Debug("processing timer " + (onstart ? "OnStart" : ""));
+            logger.Debug("processing timer " + (onstart ? "OnStart" : ""));
             foreach (ArchiveJob j in Options.Get().Jobs)
             {
                 if (j.NeedDump(onstart))
