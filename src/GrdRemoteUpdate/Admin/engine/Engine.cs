@@ -12,6 +12,10 @@ namespace pEngine
 {
     public static partial class Engine
     {
+        /// <summary>
+        /// Первые 3 байта файла-пользователя данным приложением
+        /// </summary>
+        private static byte[] _fileMarker = new byte[] {0xAB,0x61,0xff };
         private static RequestSender _reqPack = null;
         private static Options _opt = null;
         private static User _curUser = null;
@@ -35,7 +39,7 @@ namespace pEngine
             get
             {
                 if (_opt == null)
-                    _opt = new Options();
+                    _opt = new Options("grdUpdate");
                 return _opt;
             }
         }   
@@ -99,7 +103,7 @@ namespace pEngine
             {
 
                 if (_opt == null)
-                    _opt = new Options(_curUser);
+                    _opt = new Options(_curUser,  "grdUpdate");
                 else _opt.BindUser(_curUser);
                 Options.SetOption(optType.DefaultUser, _curUser.Name);
                 if (server != "")

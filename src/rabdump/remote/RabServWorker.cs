@@ -222,16 +222,17 @@ namespace rabdump
             while (_state != State.Free)            
                 Thread.Sleep(5000);           
             const int MAX_DAYS = 200;
-
+            _state = State.WebRep_Uploading;
+            bool exec = false;
             XmlDocument doc = newWebRepDoc();
             //DataSources могут изменить
             RabnetConfig.rabDataSource[] dataSources = new RabnetConfig.rabDataSource[RabnetConfig.DataSources.Count];
             RabnetConfig.DataSources.CopyTo(dataSources);
-            if (dataSources.Length == 0)
-                return;
+            
             foreach (RabnetConfig.rabDataSource rds in dataSources)
             {
                 if (!rds.WebReport) continue;
+                exec = true;
                 _crossData.webRepLD = "";
                 getLatestWebReport(_crossData.farmname, rds.Params.DataBase);
                 if (_state == State.Conection_Failed)
@@ -270,20 +271,23 @@ namespace rabdump
                     appendWR_Global(doc, rds.Params.DataBase, DateTime.Now.AddDays(-1), stDate);
                 }
             }
-            if (_state == State.WebRep_WaitErr)
+            if (exec)
             {
-                callOnMessage("Ошибка при отправке отчета", "", 2);
-                _state = State.Free;
-                return;
-            }
-            //TODO если не надо ни одного отчета отправить ???
-            if (doc.InnerXml != newWebRepDoc().InnerXml)
-            {
-                _crossData.webrepXML = doc.InnerXml;
-                sendWRonServ();
-                callOnMessage("Статистика отослана"," ",1);
-            }
-            else callOnMessage("На сервере самая свежая информация", "Отправка статистики отменена", 1);//TODO исправить условие
+                if (_state == State.WebRep_WaitErr)
+                {
+                    callOnMessage("Ошибка при отправке отчета", "", 2);
+                    _state = State.Free;
+                    return;
+                }
+                //TODO если не надо ни одного отчета отправить ???
+                if (doc.InnerXml != newWebRepDoc().InnerXml)
+                {
+                    _crossData.webrepXML = doc.InnerXml;
+                    sendWRonServ();
+                    callOnMessage("Статистика отослана", " ", 1);
+                }
+                else callOnMessage("На сервере самая свежая информация", "Отправка статистики отменена", 1);//TODO исправить условие
+            } 
             _state = State.Free;
         }
 

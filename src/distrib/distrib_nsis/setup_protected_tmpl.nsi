@@ -95,6 +95,7 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     SetOutPath $INSTDIR\RabNet
     SetOverwrite on
     File ..\..\..\bin\@bin_type@\RabNet\rabnet.exe
+	File ..\..\..\bin\@bin_type@\RabNet\rabnet.exe.config
     File ..\..\..\bin\@bin_type@\RabNet\db.mysql.dll
     File ..\..\..\bin\@bin_type@\RabNet\engine.dll
 #    File ..\..\..\bin\@bin_type@\gui_genetics.dll
@@ -131,8 +132,8 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     File ..\..\..\bin\@bin_type@\RabNet\reports\zooteh.rdl
     File ..\..\..\bin\@bin_type@\RabNet\reports\zooteh_nofuck.rdl
     SetOutPath $INSTDIR\RabNet
-    SetOverwrite off
-    File ..\..\..\bin\@bin_type@\RabNet\rabnet.exe.config
+#    SetOverwrite off
+#   File ..\..\..\bin\@bin_type@\RabNet\rabnet.exe.config
     
     ######## Temporary fix of bug M0000308
     ExpandEnvStrings $2 "%USERNAME%"
@@ -159,6 +160,7 @@ Section  $(SEC_RabDump_NAME) SEC_RabDump
     File ..\..\..\bin\@bin_type@\RabDump\GrdAPI32.DLL
     File ..\..\..\bin\@bin_type@\RabDump\GrdAPI64.DLL
     File ..\..\..\bin\@bin_type@\RabDump\rabdump.exe
+	File ..\..\..\bin\@bin_type@\RabDump\rabdump.exe.config
     File ..\..\..\bin\@bin_type@\RabDump\GuardantDotNetApi.dll
     File ..\..\..\bin\@bin_type@\RabDump\log4net.dll
 	File ..\..\..\bin\@bin_type@\RabDump\libcurl.dll
@@ -383,6 +385,7 @@ Section /o "-un.rabdump" UNSEC_RabDump
 	Delete /REBOOTOK $INSTDIR\RabDump\db.mysql.dll
 	Delete /REBOOTOK $INSTDIR\RabDump\engine.dll
     Delete /REBOOTOK $INSTDIR\RabDump\rabdump.exe
+	Delete /REBOOTOK $INSTDIR\RabDump\rabdump.exe.config
 #    Delete /REBOOTOK $INSTDIR\RabDump\CodeStorage32.dll
 #    Delete /REBOOTOK $INSTDIR\RabDump\CodeStorage64.dll
     Delete /REBOOTOK $INSTDIR\RabDump\GuardantDotNetApi.dll

@@ -14,9 +14,8 @@ namespace RabGRD
 
     public sealed partial class GRDVendorKey : GRD_Base, IDisposable
     {
-        const ushort AlgoNumGSII64 = 0;
-        const ushort AlgoNumHash64 = 1;
-        const ushort AlgoNumECC160 = 8;
+        const ushort TRUAlgoNumGSII64 = 0;
+        const ushort TRUAlgoNumHash64 = 1;
 
         private bool _isActive = false;
         private uint _prog;
@@ -213,8 +212,8 @@ namespace RabGRD
 
             retCode = GrdApi.GrdTRU_DecryptQuestion(_grdHandle,     // handle to Guardant protected container of dongle that contains 
                                                                     // GSII64 algorithm with the same key as in remote dongle 
-                                                    AlgoNumGSII64,  // dongle GSII64 algorithm number with same key as in remote dongle 
-                                                    AlgoNumHash64,  // dongle HASH64 algorithm number with same key as in remote dongle 
+                                                    TRUAlgoNumGSII64,  // dongle GSII64 algorithm number with same key as in remote dongle 
+                                                    TRUAlgoNumHash64,  // dongle HASH64 algorithm number with same key as in remote dongle 
                                                     qq.question,    // pointer to Question					8 bytes (64 bit) 
                                                     qq.id,          // ID									4 bytes 
                                                     qq.pubKey,      // Public Code							4 bytes 
@@ -258,8 +257,8 @@ namespace RabGRD
                                                   (int)pbyWholeMask.Length,     // size of data to be written 
                                                   pbyWholeMask,                 // buffer for data to be written 
                                                   qq.question,                  // pointer to decrypted Question 
-                                                  AlgoNumGSII64,                // dongle GSII64 algorithm number with the same key as in remote dongle 
-                                                  AlgoNumHash64,                // dongle HASH64 algorithm number with the same key as in remote dongle 
+                                                  TRUAlgoNumGSII64,                // dongle GSII64 algorithm number with the same key as in remote dongle 
+                                                  TRUAlgoNumHash64,                // dongle HASH64 algorithm number with the same key as in remote dongle 
                                                   out answer,                   // pointer to the buffer for Answer data 
                                                   out ansSize);                 // IN: Maximum buffer size for Answer data, OUT: Size of pAnswer buffer 
             logStr += GrdApi.PrintResult((int)retCode);
@@ -332,7 +331,7 @@ namespace RabGRD
 
             AddAlgorithm(abyMask,
                          abyMaskHeader,
-                         AlgoNumGSII64,
+                         (ushort)GrdAN.GSII64, //номер алгоритма по умолчанию
                          (byte)GRDConst.nsafl.ST_III,
                          (ushort)0,
                          GRDConst.RsAlgo.GSII64,
@@ -348,7 +347,7 @@ namespace RabGRD
 
             AddAlgorithm(abyMask,
                          abyMaskHeader,
-                         AlgoNumHash64,
+                         (ushort)GrdAN.HASH64,
                          (byte)GRDConst.nsafl.ST_III,
                          (ushort)0,
                          GRDConst.RsAlgo.HASH64,
@@ -364,7 +363,7 @@ namespace RabGRD
 
             AddAlgorithm(abyMask,
                          abyMaskHeader,
-                         AlgoNumECC160,
+                         (ushort)GrdAN.ECC160,
                          (byte) (GRDConst.nsafl.ST_III + GRDConst.nsafl.ActivationSrv + GRDConst.nsafl.DeactivationSrv ),
                          (ushort)(GRDConst.nsafh.ReadSrv + GRDConst.nsafh.ReadPwd),
                          GRDConst.RsAlgo.ECC160,

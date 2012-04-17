@@ -323,7 +323,7 @@ namespace rabdump
                 RequestSender rs = new RequestSender();
                 rs.UserID = GRD.Instance.GetOrgID();
                 rs.Key = GRD.Instance.GetKeyCode();
-                rs.Url = "http://vm1/grdUpdate/index.php";
+                rs.Url = "http://192.168.0.95/grdUpdate/index.php";
                 ResponceItem ri = rs.ExecuteMethod(MethodName.ClientGetUpdate,
                     MethodParamName.question,q,
                     MethodParamName.dongleId,GRD.Instance.ID.ToString());

@@ -99,7 +99,7 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     File ..\..\..\bin\@bin_type@\RabNet\rabHelp.chm
     File ..\..\..\bin\@bin_type@\RabNet\log4net.dll
     SetOutPath $INSTDIR\RabNet
-    SetOverwrite off
+#    SetOverwrite off
     File ..\..\..\bin\@bin_type@\RabNet\rabnet.exe.config
     SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Prog_NAME).lnk $INSTDIR\RabNet\rabnet.exe
