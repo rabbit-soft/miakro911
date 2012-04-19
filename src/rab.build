@@ -188,13 +188,13 @@
 		</copy>
 	</target>
 
-	<!--target name="release" description="Build RELEASE">
-		<property name="compile_flag" value="" />
+	<target name="release" description="Build RELEASE">
+		<property name="compile_flag" value="RELEASE" />
 		<property name="bin_dir" value="${root_bin}/release" />
 		<call target="prepare_bin_dir"/>
 		<call target="compile"/>
 	</target>
-	<target name="release_zip" description="Zip RELEASE">
+	<!--target name="release_zip" description="Zip RELEASE">
 		<property name="bin_dir" value="${root_bin}/release"/>
 		<zip zipfile="${root_bin}/release.rev.${revision}${obfuscated}.zip" failonerror="false">
 			<fileset basedir="${bin_dir}">

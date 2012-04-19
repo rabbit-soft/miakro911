@@ -267,6 +267,7 @@ namespace rabdump
         private void newFarm_Click(object sender, EventArgs e)
         {
             new rabnet.FarmChangeForm().ShowDialog();
+            RabnetConfig.LoadDataSources();
         }
 
         private void MessageCb(string txt, string ttl,int type, bool hide)
@@ -313,10 +314,11 @@ namespace rabdump
 
         private void updateKeyMenuItem_Click(object sender, EventArgs e)
         {
+#if PROTECTED
             try
             {
                 //Process.Start(Path.GetDirectoryName(Application.ExecutablePath) + @"\..\Guardant\GrdTRU.exe");
-#if PROTECTED
+
                 string q;
                 if(GRD.Instance.GetTRUQuestion(out q)!=0)
                     throw new Exception("не удалось сгенерировать число вопрос");

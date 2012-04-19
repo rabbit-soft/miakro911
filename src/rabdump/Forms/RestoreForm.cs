@@ -102,17 +102,20 @@ namespace rabdump
             string fls= (X_Tools.XTools.SafeFileName(j.Name, "_") + "_" + X_Tools.XTools.SafeFileName(db, "_")).Replace(" ", "_");
 
             List<String> servDumps = new List<string>();
-    #if PROTECTED
+#if PROTECTED
             if (GRD.Instance.GetFlag(GRD.FlagType.ServerDump))
             {
                 string farmname = GRD.Instance.GetOrganizationName();
-    #elif DEBUG
+#elif DEBUG
                 string farmname = "testing";
-    #endif
+#endif
+#if PROTECTED ||DEBUG
                 servDumps = RabServWorker.GetDumpList(farmname, cbDataBase.Text);
-    #if PROTECTED
+#endif
+#if PROTECTED
+                
             }
-    #endif
+#endif
 
             int idx;
             DateTime dtm;
