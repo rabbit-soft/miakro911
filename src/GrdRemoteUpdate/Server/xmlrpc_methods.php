@@ -29,15 +29,18 @@ class MC
 			switch ($methodName)
 			{				
 				case "client.get.update": $return_value = self::client_get_update($params[0],$params[1]); break;
-				case "user.genkey": $return_value = user_gen_key($params[0]); break;
+				case "user.genkey": $return_value = self::user_gen_key($params[0]); break;
 				case "ping": $return_value = "pong"; break;
 				case "client.add": self::client_add($params[0],$params[1],$params[2],$params[3]); break;
-				case "clients.get": $return_value = self::clients_get(); break;
+				case "clients.get": $return_value = self::clients_get($params[0]); break;
 				case "client.money.add": self::client_money_add($params[0],$params[1]); break;
-				case "vendor.add.dongle": self::vendor_add_dongle($params[0],$params[1],$params[2]) ; break;				
+                case "get.payments": $return_value = self::get_payments($params[0]); break;
+                case "get.costs": $return_value = self::get_costs($params[0]); break;
+                case "vendor.add.dongle": self::vendor_add_dongle($params[0],$params[1],$params[2]) ; break;
 				case "vendor.update.dongle": $return_value = self::vendor_update_dongle($params[0],$params[1],$params[2],$params[3],$params[4],$params[5],$params[6]) ; break;
 				case "vendor.shedule.dongle": $return_value = self::vendor_shedule_dongle($params[0],$params[1],$params[2],$params[3],$params[4],$params[5],$params[6]) ; break;				
-				default:return self::methodNotFound($methodName); 					
+                case "dongle.update.success": $return_value = self::dongle_update_success($params[0],$params[1]); break;
+                default:return self::methodNotFound($methodName);
 			}
 			$log->trace("callMethod->return_value\n".var_export($return_value,true));
 			if($logThis)
@@ -56,9 +59,9 @@ class MC
 			$log->error($exc->getMessage());
 			return XMLRPC::error(2, $exc->getMessage());
 		}		
-	}	
-	
-	private static function methodNotFound($methodName)
+	}
+
+    private static function methodNotFound($methodName)
 	{
 		return XMLRPC::error(1, "Запрашиваемый метод '$methodName', не найден.");
 	}
@@ -68,7 +71,7 @@ class MC
 		global $UID;
 		$key = self::getRandomKey();
 		$newpass =  $UID == $userId ? 0: 1;
-		$query = "update grdupdate.users set u_key=?,u_new_pass=$newpass where u_id=$userId";
+		$query = "UPDATE grdupdate.users set u_key=?,u_new_pass=$newpass where u_id=$userId";
 		
 		$mysqli = DBworker::GetConnection();
 		$stmt =  $mysqli->prepare($query);
@@ -92,9 +95,9 @@ class MC
 		return $result;
 	}
 	
-	private static function clients_get()
-	{
-		$query = "SELECT c_id,c_org,c_address,c_contact,c_money,c_saas FROM clients;";
+	private static function clients_get($clientId = null)
+	{   self::debug("clientid ".$clientId);
+		$query = sprintf("SELECT c_id,c_org,c_address,c_contact,c_money,c_saas FROM clients %s;",(isset($clientId) ? "WHERE c_id=$clientId":""));
 		$clients = DBworker::GetListOfStruct($query);
 		for($i=0;$i<count($clients);$i++)
 		{
@@ -104,8 +107,8 @@ class MC
 			Date_Format(u_end_date,'%Y-%m-%d') ed,
 			u_time_flags,
 			Date_Format(u_time_flags_end,'%Y-%m-%d') tfe
-				FROM dongles d ,updates 
-				WHERE d_id=u_dongle AND d_returned=0 AND d_client=$cid AND u_date=(select max(u_date) from updates where d.d_id=u_dongle);";
+				FROM dongles d ,updates
+				WHERE d_id=u_dongle AND d_returned=0 AND d_client=$cid AND u_date=(select max(u_date) from updates WHERE d.d_id=u_dongle);";
 			$clients[$i]["dongles"] = DBworker::GetListOfStruct($query);
 			settype($clients[$i]["c_saas"], Type::bool);
 		}
@@ -152,7 +155,7 @@ class MC
 				XMLRPC::Prepare($endDate, Type::str),
 				XMLRPC::Prepare($key, Type::str)));
 		if(!$result[0])		
-			throw new Exception("Ошибка сервиса обновления ключей\n".$result[1]['faultString']);
+			throw new Exception("Ошибка сервиса обновления ключей\n".$result[1]['faultCode']);
 		//self::debug("responce ".var_export($result,true));	
 		self::money_sub($orgId,$farms,$endDate);
 		DBworker::Execute("INSERT INTO updates(u_dongle, u_client, u_date, u_farms, u_start_date, u_end_date, u_flags, u_time_flags, u_time_flags_end) 
@@ -183,20 +186,18 @@ class MC
 				XMLRPC::Prepare($data[0]['u_end_date'], Type::str),
 				XMLRPC::Prepare($key, Type::str)));
 		if(!$result[0])		
-			throw new Exception("Ошибка сервиса обновления ключей\n".$result[1]['faultString']);
-		DBworker::Execute("UPDATE updates SET u_waiting=0 WHERE u_client=$UID AND u_waiting=1 AND u_dongle=$dongleId;");
-		return $result[1];
+			throw new Exception("Ошибка сервиса обновления ключей\n".$result[1]['faultCode']);
+        return $result[1];
 	}
 	
-	private static function vendor_shedule_dongle($base64_question, $orgId, $farms, $flags, $startDate, $endDate, $dongle)
+	private static function vendor_shedule_dongle($orgId, $farms, $flags, $startDate, $endDate, $dongle)
 	{
 		$timeFlags = 0;//заглушка
 		$timeFlagsEnd = "NOW()"; //Заглушка
 		
 		self::money_sub($orgId,$farms,$endDate);
 		DBworker::Execute("INSERT INTO updates(u_dongle, u_client, u_date, u_farms, u_start_date, u_end_date, u_flags, u_time_flags, u_time_flags_end,u_waiting) 
-									VALUES($dongle,$orgId,NOW(),$farms,'$startDate','$endDate',$flags,$timeFlags,$timeFlagsEnd,1);");	
-		
+									VALUES($dongle,$orgId,NOW(),$farms,'$startDate','$endDate',$flags,$timeFlags,$timeFlagsEnd,1);");
 	}
 	
 	private static function money_sub($orgId,$farms,$endDate)
@@ -208,16 +209,13 @@ class MC
 			$dng = DBworker::GetListOfStruct("SELECT DATE_FORMAT(u_end_date,'%Y-%m-%d') endd FROM updates WHERE u_client=$orgId ORDER BY u_date desc limit 1;");		
 			$months = self::dtDiff($dng[0]['endd'],$endDate);	//self::debug("months ".$months);
 			$money = $farms*5*$months;
-			$comment = "плата за SAAS версию $months мсц.";
+			$comment = "плата за SAAS версию $months мсц. $farms фрм.";
 		}
 		else
 		{
-			if(count($dongles)==0)//уже оплачено
-			{
-				$money=$farms*100;
-				$comment ="плата за коробочную версию";
-			}		
-		}
+            $money=$farms*100;
+            $comment ="плата за коробочную версию";
+        }
 		if((int)$money > (int)$client[0]["c_money"])
 				throw  new Exception("Недостаточно средств на счету.\nНеобходимо: $money.\nДоступно:".$client[0]["c_money"]);
 		DBworker::Execute("INSERT INTO money(m_client,m_credit,m_date,m_comment) VALUES($orgId,$money,NOW(),'$comment');
@@ -244,5 +242,23 @@ class MC
 		$months += (int)$ed[1] - (int)$sd[1]; 		
 		return $months;
 	}
+
+    private static function dongle_update_success($dongleId)
+    {
+        global $UID;
+        DBworker::Execute("UPDATE updates SET u_waiting=0 WHERE u_client=$UID AND u_waiting=1 AND u_dongle=$dongleId;");
+    }
+
+    private static function get_payments($clientId)
+    {
+        return DBworker::GetListOfStruct("SELECT m_date,m_debet,m_credit,m_comment FROM money WHERE m_client=$clientId ORDER BY m_date;");
+    }
+
+    private static function get_costs($array1)
+    {
+        $result= DBworker::GetListOfStruct("SELECT o_value FROM options WHERE o_name='price';");
+        $ret = array($result[0]['o_value'],$result[1]['o_value']);
+        return $ret;
+    }
 }
 ?>

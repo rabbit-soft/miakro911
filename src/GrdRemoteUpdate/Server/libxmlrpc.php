@@ -91,8 +91,8 @@ class XML
         } 
 
         $this->parent[$key] = array(); 
-        $this->parent = &$this->parent[$key]; 
-        array_unshift($this->parents, &$this->parent); 
+        $this->parent = &$this->parent[$key];
+        array_unshift($this->parents, &$this->parent);
     } 
 
     function data($parser, $data)
