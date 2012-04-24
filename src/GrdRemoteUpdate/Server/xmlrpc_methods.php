@@ -118,8 +118,19 @@ class MC
 	
 	private static function client_add($org, $contact, $address,$saas)
 	{
-		$query = "INSERT INTO clients(c_org,c_contact,c_address,c_saas) VALUES('$org','$contact','$address',$saas);";
-		DBworker::Execute($query); //TODO key
+        $key = self::getRandomKey(65);
+		DBworker::Execute("INSERT INTO clients(c_org,c_contact,c_address,c_saas,c_key) VALUES('$org','$contact','$address',$saas,'$key');");
+
+        /*$stmt =  $mysqli->prepare("update clients set c_key=? where c_id=2");
+        $stmt->bind_param('b', $key);
+        $err = $stmt->error;
+        $stmt->send_long_data(0, $key);//TODO возможно это кастыль
+        $err = $stmt->error;
+        $err = $stmt->execute();
+        $err = $stmt->error;
+        $mysqli->close();*/
+
+		//DBworker::Execute($query); //TODO key
 	}
 	
 	private static function client_money_add($orgId, $money)

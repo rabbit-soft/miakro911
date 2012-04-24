@@ -29,7 +29,7 @@ class XML
 		$this->parser = xml_parser_create();
 
 		xml_parser_set_option ($this->parser, XML_OPTION_CASE_FOLDING, 0);
-		xml_set_object($this->parser, &$this);
+		xml_set_object($this->parser, $this);
 		xml_set_element_handler($this->parser, "open", "close");
 		xml_set_character_data_handler($this->parser, "data");
 		#        register_shutdown_function(array(&$this, 'destruct'));
@@ -92,7 +92,7 @@ class XML
 
         $this->parent[$key] = array(); 
         $this->parent = &$this->parent[$key];
-        array_unshift($this->parents, &$this->parent);
+        array_unshift($this->parents, $this->parent);
     } 
 
     function data($parser, $data)
@@ -138,13 +138,13 @@ class XMLRPC
 	                if(is_array($temp) and array_key_exists(0, $temp)){ 
 	                    $count = count($temp); 
 	                    for($n=0;$n<$count;$n++){ 
-	                        $temp2[$n] = &self::adjustValue(&$temp[$n]); 
+	                        $temp2[$n] = &self::adjustValue($temp[$n]);
 	                    } 
 	                    $temp = &$temp2; 
 	                }
 	                else
 	                { 
-	                    $temp2 = &self::adjustValue(&$temp); 
+	                    $temp2 = &self::adjustValue($temp);
 	                    $temp = array(&$temp2); 
 	                    #I do the temp assignment because it avoids copying, 
 	                    # since I can put a reference in the array 
@@ -170,14 +170,14 @@ class XMLRPC
 	                    for($n=0;$n<$count;$n++)
 	                    { 
 	                        #echo "Passing name {$temp[$n][name]}. Value is: " . show($temp[$n][value], var_dump, true) . "<br>\n"; 
-	                        $temp2[$temp[$n]['name']] = &self::adjustValue(&$temp[$n]['value']); 
+	                        $temp2[$temp[$n]['name']] = &self::adjustValue($temp[$n]['value']);
 	                        #echo "adjustValue(): After assigning, the value is " . show($temp2[$temp[$n]['name']], var_dump, true) . "<br>\n"; 
 	                    } 
 	                }
 	                else
 	                { 
 	                    #echo "Passing name $temp[name]<br>\n"; 
-	                    $temp2[$temp['name']] = &self::adjustValue(&$temp['value']); 
+	                    $temp2[$temp['name']] = &self::adjustValue($temp['value']);
 	                } 
 	                $temp = &$temp2; 
 	            } 
@@ -358,7 +358,7 @@ class XMLRPC
 	private static function & unserialize(&$xml)
 	{ 
 	    $xml_parser = new XML(); 
-	    $data = &$xml_parser->parse(&$xml); 
+	    $data = &$xml_parser->parse($xml);
 	    $xml_parser->destruct(); 
 	    return $data; 
 	} 
@@ -424,7 +424,7 @@ class XMLRPC
 	            for($n = 0; $n < $count; $n++)
 	            { 
 	                #echo "Serializing parameter $n<br>"; 
-	                $temp2[$n] = &self::adjustValue(&$temp[$n]['value']); 
+	                $temp2[$n] = &self::adjustValue($temp[$n]['value']);
 	            } 
 	        }
 	        else
@@ -450,7 +450,7 @@ class XMLRPC
 	public static function & Parse(&$request)
 	{ 
         //self::debug('XMLRPC_parse', "Received the following raw request:\n" . $request); 	    
-	    $data = &self::unserialize(&$request); 	   
+	    $data = &self::unserialize($request);
 	    //self::debug('XMLRPC_parse', "Returning the following parsed request:\n" . var_export($data,true)); 	    
 	    return $data; 
 	}
@@ -460,7 +460,7 @@ class XMLRPC
 	 * @param $data
 	 * @param $type - Тип переменной
 	 */
-	public static function & Prepare($data, $type = NULL)
+	public static function & Prepare(&$data, $type = NULL)
 	{ 
 	    if(is_array($data)) 
 	    { 
@@ -483,7 +483,7 @@ class XMLRPC
 	                    { 
 	                        $type = $data["$n type"]; 
 	                    } 
-	                    $temp[$n] = self::Prepare(&$data[$n], $type); 
+	                    $temp[$n] = self::Prepare($data[$n], $type);
 	                    
 	                } 
 	            } 
@@ -507,7 +507,7 @@ class XMLRPC
 	                        { 
 	                            $type = $data["$key type"]; 
 	                        } 
-	                        $temp[] = array('name' => $key, 'value' => self::Prepare(&$value, $type)); 
+	                        $temp[] = array('name' => $key, 'value' => self::Prepare($value, $type));
 	                    } 
 	                } 
 	            } 
@@ -622,13 +622,13 @@ class XMLRPC
  	        //self::debug('XMLRPC_request', "Received the following response:\n" . $response . "Which was serialized into the following data:\n" . var_export($data,true)); 
 	        
 	        if(isset($data['methodResponse']['fault'])){ 
-	            $return =  array(false, self::adjustValue(&$data['methodResponse']['fault']['value'])); 
+	            $return =  array(false, self::adjustValue($data['methodResponse']['fault']['value']));
 	            self::debug('XMLRPC_request', "Returning:\n" . var_export($return,true));              
 	            return $return; 
 	        }
 	        else
 	        { 
-	            $return = array(true, self::adjustValue(&$data['methodResponse']['params']['param']['value'])); 
+	            $return = array(true, self::adjustValue($data['methodResponse']['params']['param']['value']));
 	           	//self::debug('XMLRPC_request', "Returning:\n\n" . var_export($return,true)); 
 	            return $return; 
 	        } 
@@ -645,7 +645,7 @@ class XMLRPC
 	{ 
 		$return_value = self::Prepare($return_value);	
 	    $data["methodResponse"]["params"]["param"]["value"] = &$return_value; 
-	    $return = self::serialize(&$data); 
+	    $return = self::serialize($data);
 	
 	    //self::debug('XMLRPC_response', "Received the following data to return:\n" . var_export($return_value,true)); 
 	     

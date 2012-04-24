@@ -10,7 +10,7 @@ class DBworker
 	{
 		//if(self::$sql != null)self::disconnect();
 		if($dbName == null) $dbName = "grdupdate";
-		$link = new mysqli("localhost","pay44ne","vtufdjym",$dbName);
+		$link = new mysqli("localhost","root","",$dbName);
 		//mysql_select_db($dbName,$link);
 		if(mysqli_connect_errno()) 
 			throw new MySqlException("Не удалось подключиться к БД");
