@@ -106,7 +106,7 @@ namespace rabdump
         {
             if (File.Exists(_j.BackupPath + "\\" + filename))
             {
-                return getMD5FromDumpFile(_j.BackupPath + "\\" + filename) == md5;
+                return getMD5FromFile(_j.BackupPath + "\\" + filename) == md5;
             }
             else return false;
         }
@@ -493,7 +493,7 @@ namespace rabdump
             string file;
             CountBackups(out sz, out file, false);
             string path = _j.BackupPath + "\\" + file;
-            md5 = getMD5FromDumpFile(path);
+            md5 = getMD5FromFile(path);
             return file == "" ? "" : _j.BackupPath + "\\" + file;
         }
         public string GetLatestDump()
@@ -534,7 +534,7 @@ namespace rabdump
             }
         }
 
-        private string getMD5FromDumpFile(string filepath)
+        private string getMD5FromFile(string filepath)
         {           
             filepath = ExtractDump(filepath);
             if (filepath == "") return "0";

@@ -99,7 +99,7 @@ namespace AdminGRD
                         throw new Exception("Данный клиент уже имеет этот ключ");
 #endif
                 this.Enabled = false;
-                AddDongleForm dlg = new AddDongleForm(client, key.ID);
+                AddDongleForm dlg = new AddDongleForm(client, key.ID,true);
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
 #if !A
@@ -162,14 +162,15 @@ namespace AdminGRD
                     throw new Exception("Не выбран пользователь");
 
                 sClient client = lvClients.SelectedItems[0].Tag as sClient;
-                GRDVendorKey key = new GRDVendorKey();
-                if (key.ID == 0)
-                    throw new Exception("Произошла ошибка подключения к ключу.\nПодробности в логах");
+                sDongle dongle = lvDongles.SelectedItems[0].Tag as sDongle;
+                //GRDVendorKey key = new GRDVendorKey();
+                //if (key.ID == 0)
+                    //throw new Exception("Произошла ошибка подключения к ключу.\nПодробности в логах");
 
-                AddDongleForm dlg = new AddDongleForm(client, (lvDongles.SelectedItems[0].Tag as sDongle));
+                AddDongleForm dlg = new AddDongleForm(client, dongle,true);
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
-                    string q;
+                    /*string q;
                     int retCode = key.GetTRUQuestion(out q);
                     if (retCode != 0) throw new Exception("Ощибка при генерировании числа-вопроса: " + retCode.ToString());
                     ResponceItem s = _reqSend.ExecuteMethod(MethodName.VendorUpdateDongle, //MName.VendorSheduleDongle,
@@ -183,9 +184,17 @@ namespace AdminGRD
 
                     retCode = key.SetTRUAnswer(s.Value.ToString());
                     if (retCode != 0) throw new Exception("Ощибка установки числа ответа: " + retCode.ToString());
-                    MessageBox.Show("Прошивка Завершена");
+                    MessageBox.Show("Прошивка Завершена");*/
+                    ResponceItem s = _reqSend.ExecuteMethod(MethodName.VendorSheduleDongle,
+                        MPN.orgId, client.Id,
+                        MPN.farms, dlg.Farms.ToString(),
+                        MPN.flags, dlg.Flags.ToString(),
+                        MPN.startDate, (lvDongles.SelectedItems[0].Tag as sDongle).StartDate,
+                        MPN.endDate, dlg.EndDate.ToString("yyyy-MM-dd"),
+                        MPN.dongleId, dongle.Id);
+                    MessageBox.Show("Отправлено");
                 }
-                key.Dispose();              
+                //key.Dispose();              
             }
             catch (Exception exc)
             {
@@ -197,7 +206,8 @@ namespace AdminGRD
             this.Enabled = true;
         }
 
-        protected override void WndProc(ref Message message)
+
+        protected override void WndProc(ref Message message) //Для авто растягивания
         {
             const int WM_PAINT = 0xf;
 

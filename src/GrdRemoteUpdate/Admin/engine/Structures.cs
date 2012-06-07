@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Reflection;
 using CookComputing.XmlRpc;
 
 namespace pEngine
@@ -62,5 +63,56 @@ namespace pEngine
         public string TimeFlags;
         [XmlRpcMember("tfe")]
         public string TimeFlagsEnd;
+    }
+
+    public class sPayment
+    {
+        [XmlRpcMember("m_date")]
+        public string Date;
+        [XmlRpcMember("m_debet")]
+        public string Debet;
+        [XmlRpcMember("m_credit")]
+        public string Credit;
+        [XmlRpcMember("m_comment")]
+        public string Comment;
+    }
+
+    public class sWebRepOneDay
+    {
+        public string Date;
+        public string Fucks;
+        public string Okrols;
+        public string Oroholosts;
+        public string Born;
+        public string Killed;
+        public string Deads;
+        public string Rabbits;
+
+        public sWebRepOneDay(string vals)
+        {
+            FieldInfo fi;
+            Type t = this.GetType();           
+            string[] cols = vals.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string pair in cols)
+            {
+                string[] dict = pair.Split(new char[] { '=' });
+                fi = t.GetField(dict[0]);
+                if (fi != null)
+                    fi.SetValue(dict[1], this);
+            }            
+        }
+        
+    }
+
+    public class sDump
+    {
+        [XmlRpcMember("farm")]
+        public string Farm;
+        [XmlRpcMember("datetime")]
+        public string Datetime;
+        [XmlRpcMember("filename")]
+        public string FileName;
+        [XmlRpcMember("md5dump")]
+        public string MD5;
     }
 }

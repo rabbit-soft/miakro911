@@ -63,7 +63,8 @@ namespace rabnet
 rabplace(r_id) address,
 Date_Format(DATE_ADD(r_event_date,interval {0:d} day),'%m %d') dt,
 '+' plus
-FROM rabbits WHERE r_event_date is not null AND DATE_ADD(r_event_date,interval {0:d} day)>NOW() AND inBuilding({1:s},substr(rabplace(r_id),1,INSTR(rabplace(r_id),',')-1))
+FROM rabbits 
+WHERE r_event_date is not null AND DATE_ADD(r_event_date,interval {0:d} day)>NOW() AND inBuilding({1:s},substr(rabplace(r_id),1,INSTR(rabplace(r_id),',')-1))
 ORDER BY r_event_date;", Engine.opt().getIntOption(Options.OPT_ID.NEST), build);
         }
 

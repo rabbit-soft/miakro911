@@ -11,6 +11,26 @@ namespace pEngine
     {
         [XmlRpcMethod("client.get.update")]
         string ClientGetUpdate(string question,string dongleId);
+
+        [XmlRpcMethod("clients.get")]
+        sClient[] GetClient(string clientId);
+        [XmlRpcMethod("get.payments")]
+        sPayment[] GetPayments(string clientId);
+        [XmlRpcMethod("get.costs")]
+        string[] GetCosts();
+
+        [XmlRpcMethod("get.dumplist")]
+        sDump[] GetDumpList(string farm);
+
+        [XmlRpcMethod("vendor.update.dongle")]
+        string VendorUpdateDongle(string base64_question, string clientId, string farms, string flags, string startDate, string endDate, string dongleId);
+        [XmlRpcMethod("dongle.update.success")]
+        void SuccessUpdate(string dongleId);
+
+        [XmlRpcMethod("webrep.send.global")]
+        void WebRep_SendGlobal(sWebRepOneDay[] value);
+        [XmlRpcMethod("webrep.get.lastdate")]
+        string WebRep_GetLastDate(string farm, string db);
     }
 
     /// <summary>
@@ -33,15 +53,64 @@ namespace pEngine
     /// <see cref="IServerProxy"/>
     public enum MethodName
     {
-        ClientGetUpdate
+
+        /// <summary>
+        /// Прошивает ключ указанный ключ. Возвращает число-ответ
+        /// <para>PARAM: string base64_question - число вопрос</para>
+        /// <para>PARAM: int clientId - ID организации</para>
+        /// <para>PARAM: int farms - количество ферм</para>
+        /// <para>PARAM: int flags - маска ролей</para>
+        /// <para>PARAM: MysqlDate startDate - начало работы ключа</para>
+        /// <para>PARAM: MysqlDate endDate - окончание работы ключа</para>
+        /// <para>PARAM: int dongleId - ID ключа</para>
+        /// <para>Return: string - base64 ответ</para>
+        /// </summary>
+        VendorUpdateDongle,
+
+        /// <summary>
+        /// Получает стоимость ферм.
+        /// <para>Return: string[2] {box,saas} </para>
+        /// </summary>
+        GetCosts,
+
+        /// <summary>
+        /// Получает операции по счету указанного клиента
+        /// <para>PARAM: int clientId - ID организации</para>
+        /// <para>Return: sPayment[]</para>
+        /// </summary>
+        GetPayments,
+
+        GetDumpList,
+        
+
+        /// <summary>
+        /// Сообщает серверу, что обновления ключа прошло успешно
+        /// <para>PARAM: int dongleId - ID ключа</para>
+        /// </summary>
+        SuccessUpdate,
+
+        WebRep_GetLastDate,
+        WebRep_SendGlobal,
+        ClientGetUpdate,
+        GetClient
     }
 
     /// <summary>
     /// Возможные имена аргументов функции
     /// </summary>
-    public static class MethodParamName
+    public static class MPN
     {
-        public const string question = "question";
+        public const string base64_question = "base64_question";
+        public const string db = "db";        
         public const string dongleId = "dongleId";
+        public const string clientId = "clientId";
+        public const string farm = "farm";
+        public const string farms = "farms";
+        public const string flags = "flags";        
+        public const string question = "question";
+        public const string startDate = "startDate";
+        public const string endDate = "endDate";
+        public const string value = "value";
+
     }
 }

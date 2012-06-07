@@ -154,7 +154,7 @@ namespace pEngine
 
             if (ans != "")
                 LogOut();
-            if (server != "")
+            else if (server != "")
                 _opt.ServersSave();
             return ans;
         }

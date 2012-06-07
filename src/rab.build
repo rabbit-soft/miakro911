@@ -352,7 +352,8 @@
 				<include name="${curdir}/_tmp/*.cs"/>
 				<include name="${curdir}/rabdump/*.cs"/>				
 				<include name="${curdir}/rabdump/classes/*.cs"/>
-				<include name="${curdir}/rabdump/remote/*.cs"/>				
+				<include name="${curdir}/rabdump/remote/*.cs"/>		
+				<include name="${curdir}/rabdump/Forms/*.cs"/>				
 				<include name="${curdir}/rabdump/Properties/AssemblyInfo.cs"/>
 				<include name="${curdir}/libs/GRD/GRD_Base.cs"/>
 				<include name="${curdir}/libs/GRD/GRD_BaseTRU.cs"/>
@@ -361,16 +362,19 @@
 				<include name="${curdir}/libs/pEngine/IRequestSender.cs"/>
 				<include name="${curdir}/libs/pEngine/RequestPack.cs"/>
 				<include name="${curdir}/libs/pEngine/xxTEA.cs"/>
-				<include name="${curdir}/mia_conv/miaExitCode.cs"/>
-				<include name="${curdir}/rabdump/Forms/*.cs"/>
+				<include name="${curdir}/mia_conv/miaExitCode.cs"/>				
 				<include name="${curdir}/rabnet/gui/classes/RabnetConfig.cs"/>
 				<include name="${curdir}/rabnet/gui/forms/FarmChangeForm.cs"/>
 				<include name="${curdir}/rabnet/gui/forms/FarmChangeForm.Designer.cs"/>
+				<include name="${curdir}/GrdRemoteUpdate/Admin/engine/Structures.cs"/>
+				<include name="${curdir}/GrdRemoteUpdate/Admin/gui/form/AddDongleForm.cs"/>
+				<include name="${curdir}/GrdRemoteUpdate/Admin/gui/form/AddDongleForm.designer.cs"/>
 			</sources>
 			<resources>
 				<include name="${curdir}/rabdump/*.resx"/>
 				<include name="${curdir}/rabdump/Forms/*.resx"/>
 				<include name="${curdir}/rabnet/gui/forms/FarmChangeForm.resx"/>
+				<include name="${curdir}/GrdRemoteUpdate/Admin/gui/form/AddDongleForm.resx"/>
 			</resources>
 			<references>
 				<include name="${bin_dir}/RabDump/${guardantNET.lib}" />
@@ -607,7 +611,7 @@
 		<csc target="library" output="${plugin_dir}/PopulationPlugIn.dll" define="RELEASE" optimize="true">
 			<sources>
 				<include name="${curdir}/rabnet/ReportPlugIns/PopulationPlugIn/*.cs"/>
-				<include name="${curdir}/rabnet/ReportPlugIns/PopulationPlugIn/Properties/*.cs"/>
+				<include name="${curdir}/_tmp/VersionInfo.cs"/>
 			</sources>
 			<resources>
 				<include name="${plugin_dir}/PopulationPlugIn.population.rdl"/>
@@ -626,7 +630,7 @@
 		<csc target="library" output="${plugin_dir}/OkrolPlanPlugIn.dll" define="RELEASE" optimize="true">
 			<sources>
 				<include name="${curdir}/rabnet/ReportPlugIns/OkrolPlanPlugIn/*.cs"/>
-				<include name="${curdir}/rabnet/ReportPlugIns/OkrolPlanPlugIn/Properties/*.cs"/>
+				<include name="${curdir}/_tmp/VersionInfo.cs"/>
 			</sources>
 			<resources>
 				<include name="${plugin_dir}/OkrolPlanPlugIn.okrolplan.rdl"/>

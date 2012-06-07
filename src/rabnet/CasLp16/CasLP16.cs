@@ -600,7 +600,7 @@ namespace CAS
                     Array.Copy(newval, _id, newval.Length);
                 }
             }
-            [Obsolete("Должен быть строкой")]
+            //todo "Должен быть строкой"
             public int Code
             {
                 get { return BitHelper.fromBinDecimal(_code); }
@@ -1564,7 +1564,7 @@ namespace CAS
                 _nwStream = _tcpClient.GetStream();
                 return ReturnCode.SUCCESS;
             }
-            catch (SocketException ex)
+            catch (SocketException)
             {
                 return ReturnCode.CONNECTION_FAIL;
             }

@@ -1,5 +1,5 @@
 ﻿#if DEBUG
-#define NOCATCH
+    #define NOCATCH
 #endif
 
 using System;
@@ -23,19 +23,6 @@ namespace rabnet
         static extern bool ShowWindow(IntPtr hWnd, int mode);
 
         static ILog log = null;
-
-        static void SwitchRabWindow()
-        {
-            Process cp = Process.GetCurrentProcess();
-            foreach (Process p in Process.GetProcessesByName(cp.ProcessName))
-                if (p.Id != cp.Id)
-                {
-                    SetForegroundWindow(p.MainWindowHandle);
-                    ShowWindow(p.MainWindowHandle, 5);
-                }
-        }
-
-
 
         /// <summary>
         /// The main entry point for the application.
@@ -162,6 +149,16 @@ namespace rabnet
             }
         }
 #endif
+        static void SwitchRabWindow()
+        {
+            Process cp = Process.GetCurrentProcess();
+            foreach (Process p in Process.GetProcessesByName(cp.ProcessName))
+                if (p.Id != cp.Id)
+                {
+                    SetForegroundWindow(p.MainWindowHandle);
+                    ShowWindow(p.MainWindowHandle, 5);
+                }
+        }
 
     }//class
 }//namespace

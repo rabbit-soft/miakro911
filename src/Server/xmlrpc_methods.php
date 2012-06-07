@@ -36,10 +36,13 @@ class MC
 				case "client.money.add": self::client_money_add($params[0],$params[1]); break;
                 case "get.payments": $return_value = self::get_payments($params[0]); break;
                 case "get.costs": $return_value = self::get_costs($params[0]); break;
+                case "get.dumplist": $return_value = self::GetDumpList($params[0]); break;
                 case "vendor.add.dongle": self::vendor_add_dongle($params[0],$params[1],$params[2]) ; break;
 				case "vendor.update.dongle": $return_value = self::vendor_update_dongle($params[0],$params[1],$params[2],$params[3],$params[4],$params[5],$params[6]) ; break;
 				case "vendor.shedule.dongle": $return_value = self::vendor_shedule_dongle($params[0],$params[1],$params[2],$params[3],$params[4],$params[5],$params[6]) ; break;				
                 case "dongle.update.success": $return_value = self::dongle_update_success($params[0],$params[1]); break;
+                case "webrep.get.lastdate": $return_value = self::GetWebRep_LastDate($params[0],$params[1]); break;
+                case "webrep.send.global": self::ParseWebReport($params[0],$params[1]); break;
                 default:return self::methodNotFound($methodName);
 			}
 			$log->trace("callMethod->return_value\n".var_export($return_value,true));
@@ -270,6 +273,70 @@ class MC
         $result= DBworker::GetListOfStruct("SELECT o_value FROM options WHERE o_name='price';");
         $ret = array($result[0]['o_value'],$result[1]['o_value']);
         return $ret;
+    }
+
+    /**
+     * Получает дату последнего отчета
+     * @param string $farmname - Название организации
+     * @package string $db - имя БазыДанных
+     * @return string Дату либо "nodates"
+     */
+    public static function GetWebRep_LastDate($farmname,$db)
+    {
+        //$result = "nodates";
+        //$farmname = iconv("cp1251", "UTF-8", $farmname);
+        //$db = iconv("cp1251", "UTF-8", $db);
+        $sql = DBworker::GetConnection();
+        $query ="SELECT Max(`date`) AS dt FROM globalReport WHERE farm='$farmname' AND `database`='$db'";
+        $result = DBworker::GetListOfStruct($query);
+        return $result[0]['dt'];
+    }
+
+    /**
+     * Разбирает полученную от rabdump'а XML со статистикой
+     * @param string $farmname - Название организации
+     * @param string $xml_text - Текст XML-статистики
+     */
+    private static function ParseWebReport($farmname,$array)
+    {
+        /*$farmname = iconv("cp1251", "UTF-8", $farmname);
+        $xml_text = stripcslashes($array);
+        $xml = simplexml_load_string($xml_text);
+        foreach ($xml->global as $g)
+            self::AddWebRep_Global($farmname,$g);*/
+    }
+
+    /**
+     * Добавляет в БД Глобальный отчет
+     * @param string $farmname - Название организации
+     * @param simpleXMLElement $xml
+     */
+    private static function AddWebRep_Global($farmname,$xml)
+    {
+        $sql = DBworker::GetConnection();
+        $database = $xml["database"];
+        foreach ($xml->oneglobalday as $gd)
+        {
+            $query = "INSERT INTO globalReport( farm, `database`, `date`, fucks, proholosts, born, killed, deads, rabbits)
+						VALUES('$farmname','$database','".$gd["date"]."',".$gd["fucks"].",".$gd["proholosts"].",
+						".$gd["born"].",".$gd["killed"].",".$gd["deads"].",".$gd["rabbits"].")";
+            mysql_query($query,$sql);
+        }
+        $sql->close();
+    }
+
+    /**
+     * Возвращает XML со списком имеющихся Резервных Копий
+     * @param string $farmname - Название организации
+     * @return XML
+     */
+    private static function GetDumpList($farmname)
+    {
+        //$farmname = iconv("cp1251","UTF-8",$farmname);
+        /*$xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><dumplist/>');*/
+        //$sql = DBworker::GetConnection();
+        $query = "SELECT farm, datetime, filename, md5dump FROM dumplist WHERE farm='$farmname' order by datetime desc";
+        return DBworker::GetListOfStruct($query);
     }
 }
 ?>

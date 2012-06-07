@@ -1,7 +1,7 @@
 <?php
 
 include_once 'log4php/Logger.php';
-require_once 'libxmlrpc.php';
+require_once 'gamlib/libxmlrpc.php';
 require_once 'xmlrpc_methods.php';
 require_once 'coder.php';
 

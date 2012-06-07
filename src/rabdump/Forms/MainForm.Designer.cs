@@ -42,10 +42,12 @@
             this.jobsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.restMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.miManage = new System.Windows.Forms.ToolStripMenuItem();
             this.updateKeyMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.AboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btOk = new System.Windows.Forms.Button();
             this.btCancel = new System.Windows.Forms.Button();
@@ -53,7 +55,6 @@
             this.tDumper = new System.Windows.Forms.Timer(this.components);
             this.btCheckUpdate = new System.Windows.Forms.Button();
             this.tUpdater = new System.Windows.Forms.Timer(this.components);
-            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -78,6 +79,7 @@
             this.jobsMenuItem,
             this.restMenuItem,
             this.toolStripMenuItem2,
+            this.miManage,
             this.updateKeyMenuItem,
             this.toolStripSeparator1,
             this.AboutToolStripMenuItem,
@@ -85,25 +87,25 @@
             this.testToolStripMenuItem,
             this.exitMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(195, 298);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(211, 320);
             // 
             // restoreMenuItem
             // 
             this.restoreMenuItem.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.restoreMenuItem.Name = "restoreMenuItem";
-            this.restoreMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.restoreMenuItem.Size = new System.Drawing.Size(210, 22);
             this.restoreMenuItem.Text = "Настройки";
             this.restoreMenuItem.Click += new System.EventHandler(this.restoreMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(191, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(207, 6);
             // 
             // RunRabnetToolStripMenuItem
             // 
             this.RunRabnetToolStripMenuItem.Name = "RunRabnetToolStripMenuItem";
-            this.RunRabnetToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.RunRabnetToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.RunRabnetToolStripMenuItem.Text = "Запустить rabnet";
             this.RunRabnetToolStripMenuItem.Visible = false;
             this.RunRabnetToolStripMenuItem.Click += new System.EventHandler(this.RunRabnetToolStripMenuItem_Click);
@@ -111,26 +113,26 @@
             // miNewFarm
             // 
             this.miNewFarm.Name = "miNewFarm";
-            this.miNewFarm.Size = new System.Drawing.Size(194, 22);
+            this.miNewFarm.Size = new System.Drawing.Size(210, 22);
             this.miNewFarm.Text = "Новая Ферма";
             this.miNewFarm.Click += new System.EventHandler(this.newFarm_Click);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(191, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(207, 6);
             // 
             // miServDump
             // 
             this.miServDump.Name = "miServDump";
-            this.miServDump.Size = new System.Drawing.Size(194, 22);
+            this.miServDump.Size = new System.Drawing.Size(210, 22);
             this.miServDump.Text = "Отправить на сервер";
             this.miServDump.Click += new System.EventHandler(this.miServDump_Click);
             // 
             // jobnowMenuItem
             // 
             this.jobnowMenuItem.Name = "jobnowMenuItem";
-            this.jobnowMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.jobnowMenuItem.Size = new System.Drawing.Size(210, 22);
             this.jobnowMenuItem.Text = "Резервировать все";
             this.jobnowMenuItem.Visible = false;
             this.jobnowMenuItem.Click += new System.EventHandler(this.jobnowMenuItem_Click);
@@ -138,49 +140,64 @@
             // jobsMenuItem
             // 
             this.jobsMenuItem.Name = "jobsMenuItem";
-            this.jobsMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.jobsMenuItem.Size = new System.Drawing.Size(210, 22);
             this.jobsMenuItem.Text = "Резервировать";
             // 
             // restMenuItem
             // 
             this.restMenuItem.Name = "restMenuItem";
-            this.restMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.restMenuItem.Size = new System.Drawing.Size(210, 22);
             this.restMenuItem.Text = "Восстановить";
             this.restMenuItem.Click += new System.EventHandler(this.restMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(191, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(207, 6);
+            // 
+            // miManage
+            // 
+            this.miManage.Name = "miManage";
+            this.miManage.Size = new System.Drawing.Size(210, 22);
+            this.miManage.Text = "Управление лецензиями";
+            this.miManage.Click += new System.EventHandler(this.miManage_Click);
             // 
             // updateKeyMenuItem
             // 
             this.updateKeyMenuItem.Name = "updateKeyMenuItem";
-            this.updateKeyMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.updateKeyMenuItem.Size = new System.Drawing.Size(210, 22);
             this.updateKeyMenuItem.Text = "Обновить лицензию";
             this.updateKeyMenuItem.Click += new System.EventHandler(this.updateKeyMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(191, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(207, 6);
             // 
             // AboutToolStripMenuItem
             // 
             this.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem";
-            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.AboutToolStripMenuItem.Text = "О программе";
             this.AboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(191, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(207, 6);
+            // 
+            // testToolStripMenuItem
+            // 
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
+            this.testToolStripMenuItem.Text = "test";
+            this.testToolStripMenuItem.Visible = false;
+            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
             // exitMenuItem
             // 
             this.exitMenuItem.Name = "exitMenuItem";
-            this.exitMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.exitMenuItem.Size = new System.Drawing.Size(210, 22);
             this.exitMenuItem.Text = "Выход";
             this.exitMenuItem.Click += new System.EventHandler(this.exitMenuItem_Click);
             // 
@@ -237,14 +254,6 @@
             // tUpdater
             // 
             this.tUpdater.Interval = 10800000;
-            // 
-            // testToolStripMenuItem
-            // 
-            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.testToolStripMenuItem.Text = "test";
-            this.testToolStripMenuItem.Visible = false;
-            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -303,6 +312,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem miServDump;
         private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem miManage;
     }
 }
 

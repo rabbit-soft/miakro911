@@ -6,8 +6,10 @@
 -- Структура таблицы `clients`
 -- 
 
-DROP TABLE IF EXISTS `grdupdate`.`clients`;
-CREATE TABLE  `grdupdate`.`clients` (
+CREATE TABLE `grdupdate`;
+
+DROP TABLE IF EXISTS `clients`;
+CREATE TABLE  `clients` (
   `c_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `c_org` varchar(45) NOT NULL COMMENT 'name of the organization',
   `c_address` varchar(100) NOT NULL,
@@ -41,8 +43,8 @@ CREATE TABLE `money` (
   `m_id` int(10) unsigned NOT NULL auto_increment,
   `m_client` int(10) unsigned NOT NULL,
   `m_date` datetime NOT NULL,
-  `m_debet` int(10) unsigned NOT NULL COMMENT 'income money',
-  `m_credit` int(10) unsigned NOT NULL COMMENT 'outcome money',
+  `m_debet` int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'income money',
+  `m_credit` int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'outcome money',
   `m_comment` varchar(45) NOT NULL,
   PRIMARY KEY  (`m_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=49 ;

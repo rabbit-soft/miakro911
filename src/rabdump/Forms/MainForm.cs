@@ -31,7 +31,7 @@ namespace rabdump
 #if PROTECTED
             miServDump.Enabled = GRD.Instance.GetFlag(GRD.FlagType.ServerDump);
 #else
-            miServDump.Enabled =true;
+            miServDump.Enabled = true;
 #endif
             log4net.Config.XmlConfigurator.Configure();
             _rupd = new RabUpdater();
@@ -42,8 +42,8 @@ namespace rabdump
             if(RabGRD.GRD.Instance.GetFlag(GRD.FlagType.ServerDump))
             {
 #endif
-                RabServWorker.SetServerUrl(RabnetConfig.GetOption(RabnetConfig.OptionType.serverUrl));
-                RabServWorker.OnMessage += new MessageSenderCallbackDelegate(MessageCb);
+                //RabServWorker.SetServerUrl(RabnetConfig.GetOption(RabnetConfig.OptionType.serverUrl));
+                //RabServWorker.OnMessage += new MessageSenderCallbackDelegate(MessageCb);
                 miServDump.Visible = true;
 #if PROTECTED
             }
@@ -143,11 +143,13 @@ namespace rabdump
             tDumper.Start();
             jobsMenuItem.DropDownItems.Clear();
             restMenuItem.DropDownItems.Clear();
+            miServDump.DropDownItems.Clear();
             foreach (ArchiveJob j in Options.Get().Jobs)
             {
                 jobsMenuItem.DropDownItems.Add(j.Name, null, jobnowMenuItem_Click);
                 restMenuItem.DropDownItems.Add(j.Name, null, restMenuItem_Click);
-                miServDump.DropDownItems.Add(j.Name, null, miServDump_Click);
+                if(GRD.Instance.GetFlag(GRD_Base.FlagType.ServerDump))
+                    miServDump.DropDownItems.Add(j.Name, null, miServDump_Click);
             }
             ProcessTiming(onStart);
         }
@@ -254,8 +256,8 @@ namespace rabdump
             }
             else
             {
-                    rest = new RestoreForm(((ToolStripMenuItem) sender).Text);
-                    rest.ShowDialog();
+                rest = new RestoreForm(((ToolStripMenuItem)sender).Text);
+                rest.ShowDialog();
             }
         }
 
@@ -267,7 +269,6 @@ namespace rabdump
         private void newFarm_Click(object sender, EventArgs e)
         {
             new rabnet.FarmChangeForm().ShowDialog();
-            RabnetConfig.LoadDataSources();
         }
 
         private void MessageCb(string txt, string ttl,int type, bool hide)
@@ -318,17 +319,13 @@ namespace rabdump
             try
             {
                 //Process.Start(Path.GetDirectoryName(Application.ExecutablePath) + @"\..\Guardant\GrdTRU.exe");
-
                 string q;
                 if(GRD.Instance.GetTRUQuestion(out q)!=0)
                     throw new Exception("не удалось сгенерировать число вопрос");
-                RequestSender rs = new RequestSender();
-                rs.UserID = GRD.Instance.GetOrgID();
-                rs.Key = GRD.Instance.GetKeyCode();
-                rs.Url = "http://192.168.0.95/grdUpdate/index.php";
+                RequestSender rs = newReqSender();
                 ResponceItem ri = rs.ExecuteMethod(MethodName.ClientGetUpdate,
-                    MethodParamName.question,q,
-                    MethodParamName.dongleId,GRD.Instance.ID.ToString());
+                    MPN.question,q,
+                    MPN.dongleId,GRD.Instance.ID.ToString());
                 GRD.Instance.SetTRUAnswer(ri.Value as String);
                 notifyIcon1.ShowBalloonTip(5, "", "Обновлено", ToolTipIcon.Info);               
             } 
@@ -363,6 +360,27 @@ namespace rabdump
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
             RabServWorker.SendWebReport();
+        }
+
+        private void miManage_Click(object sender, EventArgs e)
+        {
+#if PROTECTED
+            RequestSender rs = newReqSender();
+            ResponceItem resp = rs.ExecuteMethod(MethodName.GetClient, MPN.clientId, GRD.Instance.GetOrgID().ToString());
+            
+            DongleUpdater dlg = new DongleUpdater((resp.Value as sClient[])[0]);
+            dlg.ShowDialog();
+
+        }
+
+        internal static RequestSender newReqSender()
+        {
+            RequestSender rs = new RequestSender();
+            rs.UserID = GRD.Instance.GetOrgID();
+            rs.Key = GRD.Instance.GetKeyCode();
+            rs.Url = "http://192.168.0.95/grdUpdate/index.php";
+            return rs;
+#endif
         }
 
     }

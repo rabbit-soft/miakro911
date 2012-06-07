@@ -11,6 +11,7 @@ using System.Xml;
 using System.IO;
 #if PROTECTED
 using RabGRD;
+using pEngine;
 #endif
 
 namespace rabdump
@@ -85,15 +86,15 @@ namespace rabdump
         struct ServData
         {
             internal string farmname;
-            internal string DBname;
+            //internal string DBname;
             internal string dumpPath;
-            internal XmlDocument dumpList;
+            //internal XmlDocument dumpList;
             internal FileStream uploadFS;
             internal BinaryWriter uploadBW;
             internal System.Diagnostics.Stopwatch watcher;
             internal Double lastUploadedBytes;
             internal string webRepLD;//LastDate
-            internal string webrepXML;
+            //internal string webrepXML;
             internal string dumpOffset;
         }
 
@@ -102,11 +103,11 @@ namespace rabdump
         private static string _tmpPath = Path.GetTempPath();
         private static string NL = Environment.NewLine;
         private static string _url = "localhost/rabdump";
-        private static string lastDumpURI { get { return _url + "/dumplist.php"; } }
+        //private static string lastDumpURI { get { return _url + "/dumplist.php"; } }
         private static string uploadDumpURI { get { return _url + "/uploader.php"; } }
         private static string downloadDumpURI { get { return  _url + "/getdump.php";} }
-        private static string webrepGetLastDateURI { get { return  _url + "/wrLD.php";} }
-        private static string webrepUploadURI { get { return _url + "/wrUpload.php"; } }
+        //private static string webrepGetLastDateURI { get { return  _url + "/wrLD.php";} }
+        //private static string webrepUploadURI { get { return _url + "/wrUpload.php"; } }
         private static ILog _logger = LogManager.GetLogger(typeof(RabServWorker));
         private static ServData _crossData;
         private static ArchiveJobThread _ajt;
@@ -130,14 +131,15 @@ namespace rabdump
         public static void MakeDump(ArchiveJob j)
         {
             _crossData = new ServData();
+            string farmname;
 #if PROTECTED
-            _crossData.farmname = GRD.Instance.GetOrganizationName();           
+            farmname = GRD.Instance.GetOrganizationName();           
 #elif DEBUG
-            _crossData.farmname = "testing";
+            farmname = "testing";
 #endif
             _ajt = new ArchiveJobThread(j);
-            Thread t = new Thread(makeDump);
-            t.Start();
+            Thread t = new Thread(new ParameterizedThreadStart(makeDump));
+            t.Start(farmname);
         }
 
         /// <summary>
@@ -179,12 +181,9 @@ namespace rabdump
 #endif
         }
 
-        public static List<string> GetDumpList(string farmname,string dbName)
+        /*public static List<string> GetDumpList(string farmname,string dbName)
         {
-            if (_crossData.dumpList == null)
-            {
-                getDumpList(farmname);
-            }
+            
 
             List<string> result = new List<string>();
             if (_crossData.dumpList!= null && _crossData.dumpList.FirstChild.ChildNodes.Count>0)
@@ -200,7 +199,7 @@ namespace rabdump
             }
             _state = State.Free;
             return result;
-        }
+        }*/
 
         public static void SendWebReport()
         {
@@ -223,91 +222,95 @@ namespace rabdump
                 Thread.Sleep(5000);           
             const int MAX_DAYS = 200;
             _state = State.WebRep_Uploading;
-            bool exec = false;
-            XmlDocument doc = newWebRepDoc();
+            //XmlDocument doc = newWebRepDoc();
             //DataSources могут изменить
             RabnetConfig.rabDataSource[] dataSources = new RabnetConfig.rabDataSource[RabnetConfig.DataSources.Count];
             RabnetConfig.DataSources.CopyTo(dataSources);
-            
+            sWebRepOneDay[] reps = null;
+            RequestSender reqSend = MainForm.newReqSender();
             foreach (RabnetConfig.rabDataSource rds in dataSources)
             {
                 if (!rds.WebReport) continue;
-                exec = true;
                 _crossData.webRepLD = "";
-                getLatestWebReport(_crossData.farmname, rds.Params.DataBase);
-                if (_state == State.Conection_Failed)
+                //getLatestWebReport(_crossData.farmname, rds.Params.DataBase);
+                
+                string lastDate = reqSend.ExecuteMethod(MethodName.WebRep_GetLastDate,
+                    MPN.farm, _crossData.farmname,
+                    MPN.db, rds.Params.DataBase).Value as string;
+                /*if (_state == State.Conection_Failed)
                 {
                     callOnMessage("Не удалось подключиться к серверу", "", 2);
                     return;
-                }
+                }*/
                 rabnet.Engine.get().initEngine(rds.Params.ToString());
 
                 //Если Получена дата последнего Отчета
-                if (_state == State.WebRep_WaitOK)
+                //if (_state == State.WebRep_WaitOK)
+                //{
+                DateTime stDate = DateTime.MaxValue;
+                if (lastDate == "")
                 {
-                    DateTime stDate = DateTime.MaxValue;
-                    if (_crossData.webRepLD == "nodates")
+                    stDate = rabnet.Engine.db().GetFarmStartTime();
+                    if (stDate == DateTime.MaxValue) continue;
+                    if (DateTime.Now.Date.Subtract(stDate.Date).Days > MAX_DAYS)
+                        stDate = DateTime.Now.AddDays(-MAX_DAYS);
+                }
+                else
+                {
+                    DateTime.TryParse(_crossData.webRepLD, out stDate);
+                    if (stDate == DateTime.MaxValue)
                     {
-                        stDate = rabnet.Engine.db().GetFarmStartTime();
-                        if (stDate == DateTime.MaxValue) continue;
-                        if (DateTime.Now.Date.Subtract(stDate.Date).Days > MAX_DAYS)
-                            stDate = DateTime.Now.AddDays(-MAX_DAYS);
-                    }
-                    else
-                    {
-                        DateTime.TryParse(_crossData.webRepLD, out stDate);
-                        if (stDate == DateTime.MaxValue)
-                        {
-                            _logger.ErrorFormat("LAST DATE ERROR: {0:s}", _crossData.webRepLD);
-                            continue;
-                        }
-                    }
-                    if (stDate.Date == DateTime.Now.AddDays(-1))
-                    {
-                        _logger.Info("На сервере самый свежий отчет");
+                        _logger.ErrorFormat("LAST DATE ERROR: {0:s}", _crossData.webRepLD);
                         continue;
                     }
-                    ///далее Прибавляем все нужные отчеты
-                    appendWR_Global(doc, rds.Params.DataBase, DateTime.Now.AddDays(-1), stDate);
                 }
+                if (stDate.Date == DateTime.Now.AddDays(-1))
+                {
+                    _logger.Info("На сервере самый свежий отчет");
+                    continue;
+                }
+                ///далее Прибавляем все нужные отчеты
+                reps = appendWR_Global(rds.Params.DataBase, DateTime.Now.AddDays(-1), stDate);
+                //}
             }
-            if (exec)
-            {
-                if (_state == State.WebRep_WaitErr)
+            //if (exec)
+            //{
+                /*if (_state == State.WebRep_WaitErr)
                 {
                     callOnMessage("Ошибка при отправке отчета", "", 2);
                     _state = State.Free;
                     return;
-                }
+                }*/
                 //TODO если не надо ни одного отчета отправить ???
-                if (doc.InnerXml != newWebRepDoc().InnerXml)
-                {
-                    _crossData.webrepXML = doc.InnerXml;
-                    sendWRonServ();
+                if (reps!=null && reps.Length>0)
+                {//todo request sender
+
+                    reqSend.ExecuteMethod(MethodName.WebRep_SendGlobal, MPN.value, reps);
+                    //_crossData.webrepXML = doc.InnerXml;
+                    //sendWRonServ();
                     callOnMessage("Статистика отослана", " ", 1);
                 }
                 else callOnMessage("На сервере самая свежая информация", "Отправка статистики отменена", 1);//TODO исправить условие
-            } 
+            //} 
             _state = State.Free;
         }
 
-        private static void appendWR_Global(XmlDocument doc,string DBname,DateTime reportDate,DateTime startDate)
+        /// <summary>
+        /// Составляет отчет за каждый день
+        /// </summary>
+        private static sWebRepOneDay[] appendWR_Global(string DBname,DateTime reportDate,DateTime startDate)
         {
-            if (reportDate.Date == startDate.Date) return ;
-            string[] reps = new string[reportDate.Date.Subtract(startDate.Date).Days];
-            int i = 0;
+            if (reportDate.Date == startDate.Date) return null;
+            List<sWebRepOneDay> reps = new List<sWebRepOneDay>();
             while (startDate.Date < reportDate.Date)
             {
-                reps[i] = rabnet.Engine.db().WebReportGlobal(reportDate);
+                reps.Add(new sWebRepOneDay(rabnet.Engine.db().WebReportGlobal(reportDate)));
                 reportDate = reportDate.AddDays(-1);
-                i++;
             }
-            //string[] reps = rabnet.Engine.db().WebReportsGlobal(DateTime.Now.AddDays(-1), DateTime.Now.Subtract(stDate).Days);
-
-            makeGlobalXml(doc, DBname, reps);
+            return reps.ToArray();
         }
 
-        private static void makeDump()
+        private static void makeDump(object farmname)
         {
             while (_ajt.JobIsBusy)
                 Thread.Sleep(2000);
@@ -316,7 +319,8 @@ namespace rabdump
 
             _logger.Debug("making Server Dump");
             callOnMessage("Начало отсылки" + NL + _ajt.JobName, "Отправка", 1, false);
-            getDumpList();
+            RequestSender reqSend = MainForm.newReqSender();
+            sDump[] dumpList = reqSend.ExecuteMethod(MethodName.GetDumpList, MPN.farm, farmname as string).Value as sDump[];
             if (_state == State.Conection_Failed)
             {
                 callOnMessage("Не удалось подключиться к серверу", "ошибка", 3);
@@ -329,16 +333,16 @@ namespace rabdump
                     _logger.Warn("7z not specified");
                     _state = State.DumpList_NodesNo;
                 }
-                else if (_crossData.dumpList != null)
+                else if (dumpList != null)
                 {
                     _logger.Debug("we have a DumpList");
                     bool coincidence = false;
-                    foreach (XmlNode nd in _crossData.dumpList.SelectSingleNode(dumpListNodeName).ChildNodes)
+                    foreach (sDump nd in dumpList)
                     {
-                        if (_ajt.FileExists(nd.Attributes["filename"].Value, nd.Attributes["md5dump"].Value))
+                        if (_ajt.FileExists(nd.FileName, nd.MD5))
                         {
                             coincidence = true;
-                            string srcFile = nd.Attributes["filename"].Value;
+                            string srcFile = nd.FileName;
                             string trgFile = _ajt.GetLatestDump();
                             if (srcFile != Path.GetFileName(trgFile))
                             {
@@ -493,7 +497,7 @@ namespace rabdump
             downloadDump(_crossData.farmname,_crossData.dumpPath,_crossData.dumpOffset);
         }
 
-        private static void getDumpList(string farmname)
+        /*private static void getDumpList(string farmname)
         {
             try
             {
@@ -545,7 +549,7 @@ namespace rabdump
         private static void getDumpList()
         {
             getDumpList(_crossData.farmname);
-        }
+        }*/
 
         private static void uploadDump(string farmname,string dumpPath)
         {
@@ -621,7 +625,7 @@ namespace rabdump
             uploadDump(_crossData.farmname, _crossData.dumpPath);
         }
 
-        private static void getLatestWebReport(string farmname,string db)
+        /*private static void getLatestWebReport(string farmname,string db)
         {
             try
             {
@@ -668,9 +672,9 @@ namespace rabdump
                 _logger.Error("sendfile", ex);
                 _state = State.Free;
             }
-        }
+        }*/
 
-        private static void sendWRonServ(string farmname, string xml)
+        /*private static void sendWRonServ(string farmname, string xml)
         {
             try
             {
@@ -719,7 +723,7 @@ namespace rabdump
         private static void sendWRonServ()
         {
             sendWRonServ(_crossData.farmname,_crossData.webrepXML);
-        }
+        }*/
 
         private static MultiPartForm addVarsMPP(Dictionary<String,String> vars)
         {
@@ -734,7 +738,7 @@ namespace rabdump
             return mpp;
         }
 
-        private static void configEasy(Easy easy,int timeout)
+        /*private static void configEasy(Easy easy,int timeout)
         {
             if (timeout != 0)
                 easy.SetOpt(CURLoption.CURLOPT_CONNECTTIMEOUT, timeout);
@@ -755,8 +759,8 @@ namespace rabdump
         private static void configEasy(Easy easy)
         {
             configEasy(easy, 0);
-        }
-#endregion curl_usage
+        }*/
+
 
         /// <summary>
         /// При получении данных от сервера
@@ -780,7 +784,7 @@ namespace rabdump
                     if (dumplist != null)
                         if (dumplist.ChildNodes.Count > 0)
                         {
-                            _crossData.dumpList = dumpListDateDSort(doc);
+                            //_crossData.dumpList = dumpListDateDSort(doc);
                             _state = State.DumpList_NodesYes;                       
                         }
                         else _state = State.DumpList_NodesNo;
@@ -797,11 +801,11 @@ namespace rabdump
                 }
                 _crossData.uploadBW.Write(buf);
             }
-            if (_state == State.WebRep_WaitLD)
+            /*if (_state == State.WebRep_WaitLD)
             {
                 _crossData.webRepLD = msg;
                 _state = State.WebRep_WaitOK;
-            }
+            }*/
             return size * nmemb;
         }
 
@@ -941,13 +945,14 @@ namespace rabdump
         {
             callOnMessage(msg, "", 0, false);
         }
+#endregion curl_usage
 
         /// <summary>
         /// Сортирует Ноды дампов по убыванию Дат.
         /// </summary>
         /// <param name="xmlDocument"></param>
         /// <returns>Отсортированная XML по датам</returns>
-        private static XmlDocument dumpListDateDSort(XmlDocument srcDocument)
+        /*private static XmlDocument dumpListDateDSort(XmlDocument srcDocument)
         {
             XmlDocument sortedDoc = new XmlDocument();
             XmlElement rootNode = sortedDoc.CreateElement(dumpListNodeName);
@@ -980,7 +985,7 @@ namespace rabdump
             sortedDoc.Save("sortedDoc.xml");
 #endif
             return sortedDoc;
-        }
+        }*/
 
         /// <summary>
         /// Округляет число байтов до Кбайт,Мбайт,ГБайт
@@ -1026,15 +1031,15 @@ namespace rabdump
             else return -1;
         }
 
-        private static XmlDocument newWebRepDoc()
+        /*private static XmlDocument newWebRepDoc()
         {
             XmlDocument doc = new XmlDocument();
             doc.AppendChild(doc.CreateXmlDeclaration("1.0", "UTF-8", "no"));
             doc.AppendChild(doc.CreateElement("webReports"));
             return doc;
-        }
+        }*/
 
-        private static void makeGlobalXml(XmlDocument doc, string db, string[] reps)
+        /*private static void makeGlobalXml(XmlDocument doc, string db, string[] reps)
         {
             const string globRep = "global";
 
@@ -1054,6 +1059,6 @@ namespace rabdump
                 el.AppendChild(col);
             }
             doc.SelectSingleNode("webReports").AppendChild(el);
-        }
+        }*/
     }
 }

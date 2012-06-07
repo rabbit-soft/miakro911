@@ -36,13 +36,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.nudFarms = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
-            this.nudFlags = new System.Windows.Forms.NumericUpDown();
-            this.ch = new System.Windows.Forms.CheckedListBox();
+            this.chbFlags = new System.Windows.Forms.CheckedListBox();
             this.label3 = new System.Windows.Forms.Label();
             this.dtpStartDate = new System.Windows.Forms.DateTimePicker();
             this.dtpEndDate = new System.Windows.Forms.DateTimePicker();
             this.label4 = new System.Windows.Forms.Label();
-            this.nudTimeFlags = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.dtpTimeFlags = new System.Windows.Forms.DateTimePicker();
             this.label7 = new System.Windows.Forms.Label();
@@ -51,9 +49,8 @@
             this.nudMonths = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.chbTimeFlags = new System.Windows.Forms.CheckedListBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudFarms)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudFlags)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTimeFlags)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMonths)).BeginInit();
             this.SuspendLayout();
             // 
@@ -61,7 +58,7 @@
             // 
             this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btCancel.Location = new System.Drawing.Point(126, 413);
+            this.btCancel.Location = new System.Drawing.Point(126, 497);
             this.btCancel.Name = "btCancel";
             this.btCancel.Size = new System.Drawing.Size(75, 23);
             this.btCancel.TabIndex = 3;
@@ -72,7 +69,7 @@
             // 
             this.btOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btOk.Location = new System.Drawing.Point(207, 413);
+            this.btOk.Location = new System.Drawing.Point(207, 497);
             this.btOk.Name = "btOk";
             this.btOk.Size = new System.Drawing.Size(75, 23);
             this.btOk.TabIndex = 2;
@@ -110,6 +107,11 @@
             // nudFarms
             // 
             this.nudFarms.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudFarms.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.nudFarms.Location = new System.Drawing.Point(116, 35);
             this.nudFarms.Maximum = new decimal(new int[] {
             1000000,
@@ -130,34 +132,24 @@
             // 
             this.label2.Location = new System.Drawing.Point(10, 59);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(100, 20);
+            this.label2.Size = new System.Drawing.Size(100, 22);
             this.label2.TabIndex = 14;
             this.label2.Text = "Флаги";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // nudFlags
+            // chbFlags
             // 
-            this.nudFlags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudFlags.Location = new System.Drawing.Point(117, 61);
-            this.nudFlags.Name = "nudFlags";
-            this.nudFlags.Size = new System.Drawing.Size(166, 20);
-            this.nudFlags.TabIndex = 15;
-            this.nudFlags.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
-            // 
-            // ch
-            // 
-            this.ch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ch.FormattingEnabled = true;
-            this.ch.Location = new System.Drawing.Point(116, 87);
-            this.ch.Name = "ch";
-            this.ch.Size = new System.Drawing.Size(166, 139);
-            this.ch.TabIndex = 16;
-            this.ch.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.ch_ItemCheck);
-            this.ch.SelectedValueChanged += new System.EventHandler(this.ch_SelectedValueChanged);
+            this.chbFlags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chbFlags.FormattingEnabled = true;
+            this.chbFlags.Location = new System.Drawing.Point(116, 61);
+            this.chbFlags.Name = "chbFlags";
+            this.chbFlags.Size = new System.Drawing.Size(166, 139);
+            this.chbFlags.TabIndex = 16;
+            this.chbFlags.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.ch_ItemCheck);
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(10, 232);
+            this.label3.Location = new System.Drawing.Point(10, 206);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(100, 20);
             this.label3.TabIndex = 17;
@@ -167,7 +159,7 @@
             // dtpStartDate
             // 
             this.dtpStartDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.dtpStartDate.Location = new System.Drawing.Point(115, 232);
+            this.dtpStartDate.Location = new System.Drawing.Point(115, 206);
             this.dtpStartDate.Name = "dtpStartDate";
             this.dtpStartDate.Size = new System.Drawing.Size(167, 20);
             this.dtpStartDate.TabIndex = 18;
@@ -176,7 +168,7 @@
             // dtpEndDate
             // 
             this.dtpEndDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.dtpEndDate.Location = new System.Drawing.Point(115, 256);
+            this.dtpEndDate.Location = new System.Drawing.Point(115, 230);
             this.dtpEndDate.Name = "dtpEndDate";
             this.dtpEndDate.Size = new System.Drawing.Size(167, 20);
             this.dtpEndDate.TabIndex = 20;
@@ -184,25 +176,17 @@
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(10, 258);
+            this.label4.Location = new System.Drawing.Point(10, 232);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(100, 20);
             this.label4.TabIndex = 19;
             this.label4.Text = "По дату";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // nudTimeFlags
-            // 
-            this.nudTimeFlags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudTimeFlags.Location = new System.Drawing.Point(115, 319);
-            this.nudTimeFlags.Name = "nudTimeFlags";
-            this.nudTimeFlags.Size = new System.Drawing.Size(166, 20);
-            this.nudTimeFlags.TabIndex = 22;
-            // 
             // label6
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label6.Location = new System.Drawing.Point(10, 319);
+            this.label6.Location = new System.Drawing.Point(9, 284);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(101, 20);
             this.label6.TabIndex = 21;
@@ -212,7 +196,7 @@
             // dtpTimeFlags
             // 
             this.dtpTimeFlags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.dtpTimeFlags.Location = new System.Drawing.Point(115, 345);
+            this.dtpTimeFlags.Location = new System.Drawing.Point(115, 429);
             this.dtpTimeFlags.Name = "dtpTimeFlags";
             this.dtpTimeFlags.Size = new System.Drawing.Size(166, 20);
             this.dtpTimeFlags.TabIndex = 23;
@@ -220,7 +204,7 @@
             // label7
             // 
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label7.Location = new System.Drawing.Point(10, 347);
+            this.label7.Location = new System.Drawing.Point(10, 431);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(101, 20);
             this.label7.TabIndex = 24;
@@ -231,7 +215,7 @@
             // 
             this.tbPrice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.tbPrice.Enabled = false;
-            this.tbPrice.Location = new System.Drawing.Point(115, 378);
+            this.tbPrice.Location = new System.Drawing.Point(115, 462);
             this.tbPrice.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
             this.tbPrice.Name = "tbPrice";
             this.tbPrice.Size = new System.Drawing.Size(166, 20);
@@ -240,7 +224,7 @@
             // label8
             // 
             this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label8.Location = new System.Drawing.Point(12, 378);
+            this.label8.Location = new System.Drawing.Point(12, 462);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(101, 20);
             this.label8.TabIndex = 26;
@@ -249,8 +233,8 @@
             // 
             // nudMonths
             // 
-            this.nudMonths.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudMonths.Location = new System.Drawing.Point(197, 282);
+            this.nudMonths.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudMonths.Location = new System.Drawing.Point(197, 256);
             this.nudMonths.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -263,32 +247,41 @@
             // 
             // label9
             // 
-            this.label9.Location = new System.Drawing.Point(115, 282);
+            this.label9.Location = new System.Drawing.Point(115, 256);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(76, 20);
             this.label9.TabIndex = 28;
             this.label9.Text = "На месяцев";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // chbTimeFlags
+            // 
+            this.chbTimeFlags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.chbTimeFlags.FormattingEnabled = true;
+            this.chbTimeFlags.Location = new System.Drawing.Point(115, 284);
+            this.chbTimeFlags.Name = "chbTimeFlags";
+            this.chbTimeFlags.Size = new System.Drawing.Size(166, 139);
+            this.chbTimeFlags.TabIndex = 29;
+            this.chbTimeFlags.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.ch_ItemCheck);
+            // 
             // AddDongleForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(294, 448);
+            this.ClientSize = new System.Drawing.Size(294, 532);
+            this.Controls.Add(this.chbTimeFlags);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.nudMonths);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.tbPrice);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.dtpTimeFlags);
-            this.Controls.Add(this.nudTimeFlags);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.dtpEndDate);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.dtpStartDate);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.ch);
-            this.Controls.Add(this.nudFlags);
+            this.Controls.Add(this.chbFlags);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.nudFarms);
             this.Controls.Add(this.label1);
@@ -296,14 +289,13 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.btCancel);
             this.Controls.Add(this.btOk);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AddDongleForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Прошить ключ для: ";
             ((System.ComponentModel.ISupportInitialize)(this.nudFarms)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudFlags)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTimeFlags)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMonths)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -319,13 +311,11 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown nudFarms;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.NumericUpDown nudFlags;
-        private System.Windows.Forms.CheckedListBox ch;
+        private System.Windows.Forms.CheckedListBox chbFlags;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DateTimePicker dtpStartDate;
         private System.Windows.Forms.DateTimePicker dtpEndDate;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.NumericUpDown nudTimeFlags;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.DateTimePicker dtpTimeFlags;
         private System.Windows.Forms.Label label7;
@@ -334,5 +324,6 @@
         private System.Windows.Forms.NumericUpDown nudMonths;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.CheckedListBox chbTimeFlags;
     }
 }

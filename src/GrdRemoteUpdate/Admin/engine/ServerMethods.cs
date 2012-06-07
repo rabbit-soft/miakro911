@@ -28,7 +28,7 @@ namespace pEngine
         [XmlRpcMethod("vendor.update.dongle")]
         string VendorUpdateDongle(string base64_question, string orgId, string farms, string flags, string startDate, string endDate, string dongleId);
         [XmlRpcMethod("vendor.shedule.dongle")]
-        void VendorSheduleDongle(string base64_question, string orgId, string farms, string flags, string startDate, string endDate, string dongleId);
+        void VendorSheduleDongle(string orgId, string farms, string flags, string startDate, string endDate, string dongleId);
     }
 
     
@@ -101,7 +101,6 @@ namespace pEngine
 
         /// <summary>
         /// Назначает прошивку ключа при следующем подключении
-        /// <para>PARAM: string base64_question - число вопрос</para>
         /// <para>PARAM: int orgId - ID организации</para>
         /// <para>PARAM: int farms - количество ферм</para>
         /// <para>PARAM: int flags - маска ролей</para>

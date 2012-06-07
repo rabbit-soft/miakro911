@@ -8,6 +8,7 @@ using System.IO;
 using log4net;
 using System.Collections.Generic;
 #if PROTECTED
+using pEngine;
 using RabGRD;
 #endif
 
@@ -110,7 +111,8 @@ namespace rabdump
                 string farmname = "testing";
 #endif
 #if PROTECTED ||DEBUG
-                servDumps = RabServWorker.GetDumpList(farmname, cbDataBase.Text);
+                RequestSender reqSend = MainForm.newReqSender();
+                sDump[] dumps = reqSend.ExecuteMethod(MethodName.GetDumpList, MPN.farm, farmname).Value as sDump[];
 #endif
 #if PROTECTED
                 

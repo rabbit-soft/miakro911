@@ -20,6 +20,7 @@ namespace AdminGRD
             toolTip1.SetToolTip(btPassChange, "Сменить пароль");
 #if DEBUG
             this.BackColor = System.Drawing.Color.BurlyWood;
+            btKey.Visible = true;
 #endif          
         }
 
@@ -124,5 +125,7 @@ namespace AdminGRD
         {
             showPassChange(!tbNewPass.Visible);
         }
+
+
     }
 }
