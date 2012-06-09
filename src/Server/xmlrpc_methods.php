@@ -1,7 +1,6 @@
 <?php
-include_once "DBworker.php";
-include_once "helper.php";
-include_once "libxmlrpc.php";
+include_once "gamlib/DBworker.php";
+include_once "gamlib/helper.php";
 
 /**
  * MethodsCaller
@@ -22,46 +21,33 @@ class MC
 		global $log, $UID;//определена в index.php
 		$log->info("callMethod: $methodName");
 		$log->debug("params: \n".var_export($params,true));
-		try 
-		{
-			$return_value = "";
-			$logThis = false;
-			switch ($methodName)
-			{				
-				case "client.get.update": $return_value = self::client_get_update($params[0],$params[1]); break;
-				case "user.genkey": $return_value = self::user_gen_key($params[0]); break;
-				case "ping": $return_value = "pong"; break;
-				case "client.add": self::client_add($params[0],$params[1],$params[2],$params[3]); break;
-				case "clients.get": $return_value = self::clients_get($params[0]); break;
-				case "client.money.add": self::client_money_add($params[0],$params[1]); break;
-                case "get.payments": $return_value = self::get_payments($params[0]); break;
-                case "get.costs": $return_value = self::get_costs($params[0]); break;
-                case "get.dumplist": $return_value = self::GetDumpList($params[0]); break;
-                case "vendor.add.dongle": self::vendor_add_dongle($params[0],$params[1],$params[2]) ; break;
-				case "vendor.update.dongle": $return_value = self::vendor_update_dongle($params[0],$params[1],$params[2],$params[3],$params[4],$params[5],$params[6]) ; break;
-				case "vendor.shedule.dongle": $return_value = self::vendor_shedule_dongle($params[0],$params[1],$params[2],$params[3],$params[4],$params[5],$params[6]) ; break;				
-                case "dongle.update.success": $return_value = self::dongle_update_success($params[0],$params[1]); break;
-                case "webrep.get.lastdate": $return_value = self::GetWebRep_LastDate($params[0],$params[1]); break;
-                case "webrep.send.global": self::ParseWebReport($params[0],$params[1]); break;
-                default:return self::methodNotFound($methodName);
-			}
-			$log->trace("callMethod->return_value\n".var_export($return_value,true));
-			if($logThis)
-			{
-				//TODO Логирование !!
-			}				
-			return XMLRPC::Response($return_value);
-		}
-		catch (MySqlException $mexc)
-		{
-			$log->error($mexc->getMessage());
-			return XMLRPC::error(3, $mexc->getMessage());
-		}
-		catch (Exception $exc)
-		{
-			$log->error($exc->getMessage());
-			return XMLRPC::error(2, $exc->getMessage());
-		}		
+        $return_value = "";
+        $logThis = false;
+        switch ($methodName)
+        {
+            case "client.get.update": $return_value = self::client_get_update($params[0],$params[1]); break;
+            case "user.genkey": $return_value = self::user_gen_key($params[0]); break;
+            case "ping": $return_value = "pong"; break;
+            case "client.add": self::client_add($params[0],$params[1],$params[2],$params[3]); break;
+            case "clients.get": $return_value = self::clients_get($params[0]); break;
+            case "client.money.add": self::client_money_add($params[0],$params[1]); break;
+            case "get.payments": $return_value = self::get_payments($params[0]); break;
+            case "get.costs": $return_value = self::get_costs($params[0]); break;
+            case "get.dumplist": $return_value = self::GetDumpList($params[0]); break;
+            case "vendor.add.dongle": self::vendor_add_dongle($params[0],$params[1],$params[2]) ; break;
+            case "vendor.update.dongle": $return_value = self::vendor_update_dongle($params[0],$params[1],$params[2],$params[3],$params[4],$params[5],$params[6]) ; break;
+            case "vendor.shedule.dongle": $return_value = self::vendor_shedule_dongle($params[0],$params[1],$params[2],$params[3],$params[4],$params[5],$params[6]) ; break;
+            case "dongle.update.success": $return_value = self::dongle_update_success($params[0],$params[1]); break;
+            case "webrep.get.lastdate": $return_value = self::GetWebRep_LastDate($params[0],$params[1]); break;
+            case "webrep.send.global": self::ParseWebReport($params[0],$params[1]); break;
+            default:return self::methodNotFound($methodName);
+        }
+        $log->trace("callMethod->return_value\n".var_export($return_value,true));
+        if($logThis)
+        {
+            //TODO Логирование !!
+        }
+        return $return_value;
 	}
 
     private static function methodNotFound($methodName)
