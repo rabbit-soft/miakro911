@@ -2,6 +2,7 @@
 include_once 'log4php/Logger.php';
 include_once "gamlib/libxmlrpc.php";
 include_once "xmlrpc_methods.php";
+include_once "config.php";
 
 Logger::configure('log4php.xml');
 $log = Logger::getLogger("test");
