@@ -27,8 +27,10 @@ try
 		//exit(Coder::Encrypt(XMLRPC::error(6, "Для продолжения работы необходимо назначить новый пароль")));
 		
 	$result = MC::callMethod($methodName,$params);
-    $result = XMLRPC::Response($result);    $log->debug("RESPONCE ".$result);
-    $result = Coder::Encrypt($result);      $log->debug("chipher ".$result);
+    $result = XMLRPC::Response($result);    //$log->debug("RESPONCE ".$result);
+    $result = Coder::Encrypt($result);      //$log->debug("chipher ".$result);
+    ob_clean(); //чтобы не было BOM
+    header("Content-type: application/octet-stream; charset=utf-8");
 	exit($result);
 }
 catch (pException $exc)

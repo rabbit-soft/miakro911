@@ -8,7 +8,7 @@ class Conf
     /**
      * Адрес сервера MySQL
      */
-    public static $DB_HOST= "localhost";
+    public static $DB_HOST= "192.168.0.95";
     public static $DB_USER= "pay44ne";
     public static $DB_PWD = "vtufdjym";
     public static $DB_NAME = "rabserv";

@@ -13,7 +13,7 @@ class Coder
 	 */
 	public static function Encrypt($str)
 	{
-		global $UID,$log;
+		global $UID;
         //$log->debug("ecr str: ".var_export($str,true));
 		if($UID == 0 or !isset($UID))
 			return $str;
@@ -34,7 +34,8 @@ class Coder
 	 */
 	public static function Decrypt($str,&$uid=0)
 	{	
-		global $log;	
+		global $log;
+        Conf::$LOG_QRS = false;
 		//$log->debug("Codestr: ".$str);
 		if($str == null or strlen($str)==0) return;
 		$uid = unpack("V1",$str);
@@ -63,6 +64,7 @@ class Coder
 		//$log->debug("\nCHIPHER\n".self::xxtea_decrypt(substr($str, 4),'123'));
 		//if($keys[0]['U_BLOCK'] !="0")
 			//throw new DecryptionException("Пользователь заблокирован");
+        Conf::$LOG_QRS = true;
 		return $text;		
 	}
 	

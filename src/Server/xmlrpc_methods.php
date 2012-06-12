@@ -88,6 +88,7 @@ class MC
 	{   self::debug("clientid ".$clientId);
 		$query = sprintf("SELECT c_id,c_org,c_address,c_contact,c_money,c_saas FROM clients %s;",(isset($clientId) ? "WHERE c_id=$clientId":""));
 		$clients = DBworker::GetListOfStruct($query);
+        Conf::$LOG_QRS = false;
 		for($i=0;$i<count($clients);$i++)
 		{
 			$cid = $clients[$i]["c_id"];
@@ -99,27 +100,35 @@ class MC
 				FROM dongles d ,updates
 				WHERE d_id=u_dongle AND d_returned=0 AND d_client=$cid AND u_date=(select max(u_date) from updates WHERE d.d_id=u_dongle);";
 			$clients[$i]["dongles"] = DBworker::GetListOfStruct($query);
-			settype($clients[$i]["c_saas"], Type::bool);
+			$clients[$i]["c_saas"] = Type::Cast($clients[$i]["c_saas"], Type::bool);
 		}
+        Conf::$LOG_QRS = true;
 		//self::debug(var_export($clients,true));
 		return $clients;
 	}
 	
 	private static function client_add($org, $contact, $address,$saas)
 	{
-        $key = self::getRandomKey(65);
-		DBworker::Execute("INSERT INTO clients(c_org,c_contact,c_address,c_saas,c_key) VALUES('$org','$contact','$address',$saas,'$key');");
+        global $log;
+        $mysqli = DBworker::GetConnection();
+        $key = $mysqli->real_escape_string(self::getRandomKey(65));
+        $query = "INSERT INTO clients(c_org,c_contact,c_address,c_saas,c_key) VALUES('$org','$contact','$address',$saas,'$key');";
+        $log->debug('Query:     '.$query);
+        if(!$mysqli->query($query))
+            throw new MySqlException($mysqli->error,$mysqli->errno);
 
-        /*$stmt =  $mysqli->prepare("update clients set c_key=? where c_id=2");
-        $stmt->bind_param('b', $key);
+        //DBworker::Execute($query);
+        /*$mysqli = DBworker::GetConnection();
+        $stmt =  $mysqli->prepare("INSERT INTO clients(c_org,c_contact,c_address,c_saas,c_key) VALUES('$org','$contact','$address',$saas,?);");
+        $stmt->bind_param('b', null);
         $err = $stmt->error;
         $stmt->send_long_data(0, $key);//TODO возможно это кастыль
         $err = $stmt->error;
         $err = $stmt->execute();
         $err = $stmt->error;
-        $mysqli->close();*/
+        $mysqli->close();
+        global $log; $log->debug('err '.$err);*/
 
-		//DBworker::Execute($query); //TODO key
 	}
 	
 	private static function client_money_add($orgId, $money)

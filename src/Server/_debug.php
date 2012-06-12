@@ -10,14 +10,16 @@ Logger::configure('log4php.xml');
 $log = Logger::getLogger("test");
 $UID=1;
 //XMLRPC::debug("fuck", "you");
-$request ="<methodCall>
-  <methodName>ping</methodName>
-</methodCall>";
+$request ='<?xml version="1.0" encoding="utf-8"?>
+<methodCall>
+  <methodName>clients.get</methodName>
+  <params />
+</methodCall>';
 $xmlrpc_request = XMLRPC::Parse($request);
 $methodName = XMLRPC::GetMethodName($xmlrpc_request);
 $params = XMLRPC::GetParams($xmlrpc_request);
 
-$params = array ('"rkbtyn"','jcnfg','nfv','1');
+//$params = array ('"rkbtyn"','jcnfg','nfv','1');
   /*0 => 'AAAAAAdng4FPGTkkxGCNqyh1T9WbnU5/7gUrJ14AAAAAAAAAAAAAAAAAAAAA',
   1 => '1',
   2 => '10',
