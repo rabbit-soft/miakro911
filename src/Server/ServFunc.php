@@ -1,7 +1,7 @@
-<?php
+﻿<?php
 include_once "log4php/Logger.php";
 
-class ServFunc
+class ServFuncs
 {
     /**
     * Получить название фермы, данные по которой может проссматривать пользователь

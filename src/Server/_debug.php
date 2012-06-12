@@ -3,26 +3,15 @@ include_once 'log4php/Logger.php';
 include_once "gamlib/libxmlrpc.php";
 include_once "xmlrpc_methods.php";
 include_once "config.php";
+include_once "coder.php";
 
+ini_set('display_errors', 1);//нужно для дебага
 Logger::configure('log4php.xml');
 $log = Logger::getLogger("test");
-$UID=5;
-ini_set('display_errors', 1);
+$UID=1;
 //XMLRPC::debug("fuck", "you");
 $request ="<methodCall>
-  <methodName>client.money.add</methodName>
-  <params>
-    <param>
-      <value>
-        <string>6</string>
-      </value>
-    </param>
-    <param>
-      <value>
-        <string>10000</string>
-      </value>
-    </param>
-  </params>
+  <methodName>ping</methodName>
 </methodCall>";
 $xmlrpc_request = XMLRPC::Parse($request);
 $methodName = XMLRPC::GetMethodName($xmlrpc_request);
@@ -37,7 +26,10 @@ $params = array ('"rkbtyn"','jcnfg','nfv','1');
   5 => '2012-04-02',
   6 => '5555'
 ); */
-echo MC::callMethod("clients.get");
+$result = MC::callMethod($methodName,$params);
+$result = XMLRPC::Response($result);
+$result = Coder::Encrypt($result);
+echo $result;
 
 //vecho($arr);
 ?>

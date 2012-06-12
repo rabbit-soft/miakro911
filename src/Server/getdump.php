@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 	$filepath="uploads/".$_POST["farm"]."/dump/".$_POST["file"];
 	if(!file_exists($filepath))
 	{

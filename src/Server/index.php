@@ -10,12 +10,12 @@ include_once 'config.php';
 Logger::configure('log4php.xml');
 $log = Logger::getLogger("main");
 
-ini_set('display_errors', 1);//нужно для дебага
+ini_set('display_errors', 0);//нужно для дебага
 try
 {
 	$request = Coder::Decrypt($HTTP_RAW_POST_DATA,$UID);
-	$log->debug("Request".$request);
-	$log->info("Connected UID: ".$UID);
+	//$log->debug("Request".$request);
+	$log->debug("Connected UID: ".$UID."\n request:\n".$request);
 	if ($UID == 0 or !isset($UID)) // проверка на пользователя 
 		throw new pException("Не верный пользователь",pErrCode::IncorrectUser);
 	
@@ -27,14 +27,9 @@ try
 		//exit(Coder::Encrypt(XMLRPC::error(6, "Для продолжения работы необходимо назначить новый пароль")));
 		
 	$result = MC::callMethod($methodName,$params);
-    $result = XMLRPC::Response($result);
-    $result = Coder::Encrypt($result);
-	header("Content-type: application/octet-stream");
-	header("Content-length:".strlen($result));
-	
-	//$log->debug($result);
-	//$log->debug('SIZEOF\n'.strlen($result));
-	echo $result;
+    $result = XMLRPC::Response($result);    $log->debug("RESPONCE ".$result);
+    $result = Coder::Encrypt($result);      $log->debug("chipher ".$result);
+	exit($result);
 }
 catch (pException $exc)
 {
@@ -43,9 +38,8 @@ catch (pException $exc)
 }
 catch (DecryptionException $exc)
 {
-	$log->fatal($exc->getMessage());
-	//echo Coder::Encrypt(XMLRPC::error(5, $exc->getMessage()));
-	echo XMLRPC::error(5, $exc->getMessage());
+    $log->fatal($exc->getMessage());
+	echo "fuck you";
 }
 catch (Exception $exc)
 {

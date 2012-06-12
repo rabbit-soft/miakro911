@@ -1,15 +1,9 @@
-﻿-- 
--- База данных: `grdupdate`
--- 
+﻿CREATE DATABASE `rabserv`;
 
--- 
--- Структура таблицы `clients`
--- 
+GRANT ALL ON rabserv.* TO `rabserv` IDENTIFIED BY 'rabserv';
 
-CREATE TABLE `grdupdate`;
-
-DROP TABLE IF EXISTS `clients`;
-CREATE TABLE  `clients` (
+DROP TABLE IF EXISTS `rabserv`.`clients`;
+CREATE TABLE  `rabserv`.`clients` (
   `c_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `c_org` varchar(45) NOT NULL COMMENT 'name of the organization',
   `c_address` varchar(100) NOT NULL,
@@ -24,22 +18,15 @@ CREATE TABLE  `clients` (
   PRIMARY KEY (`c_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- 
--- Структура таблицы `dongles`
--- 
 
-CREATE TABLE `dongles` (
+CREATE TABLE `rabserv`.`dongles` (
   `d_id` int(10) unsigned NOT NULL,
   `d_client` int(10) unsigned NOT NULL COMMENT 'id клиента',
   `d_model` tinyint(10) unsigned NOT NULL,
   `d_returned` tinyint(1) NOT NULL default '0' COMMENT 'вернули ли ключ'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 
--- Структура таблицы `money`
--- 
-
-CREATE TABLE `money` (
+CREATE TABLE `rabserv`.`money` (
   `m_id` int(10) unsigned NOT NULL auto_increment,
   `m_client` int(10) unsigned NOT NULL,
   `m_date` datetime NOT NULL,
@@ -49,21 +36,13 @@ CREATE TABLE `money` (
   PRIMARY KEY  (`m_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=49 ;
 
--- 
--- Структура таблицы `options`
--- 
-
-CREATE TABLE `options` (
+CREATE TABLE `rabserv`.`options` (
   `o_name` varchar(10) NOT NULL,
   `o_subname` varchar(10) NOT NULL,
   `o_value` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='опции';
 
--- 
--- Структура таблицы `updates`
--- 
-
-CREATE TABLE `updates` (
+CREATE TABLE `rabserv`.`updates` (
   `u_dongle` int(10) unsigned NOT NULL,
   `u_client` int(10) unsigned NOT NULL,
   `u_date` datetime NOT NULL,
@@ -77,16 +56,43 @@ CREATE TABLE `updates` (
   `u_id` int(10) unsigned NOT NULL auto_increment,
   PRIMARY KEY  (`u_id`),
   KEY `Index_1` (`u_dongle`,`u_client`,`u_date`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=54 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=54
+COMMENT = 'таблица с записями об обновлении ключей';
 
--- 
--- Структура таблицы `users`
--- 
-
-CREATE TABLE `users` (
+CREATE TABLE `rabserv`.`users` (
   `u_id` int(10) unsigned NOT NULL auto_increment,
   `u_name` varchar(45) NOT NULL,
   `u_key` blob NOT NULL,
   `u_new_key` blob NOT NULL,
   PRIMARY KEY  (`u_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=2
+COMMENT = 'таблица с администраторами';
+
+CREATE TABLE `rabserv`.`globalReport` (
+  `date` DATETIME NOT NULL,
+  `clientId` int(10) unsigned NOT NULL,
+  `farm` VARCHAR(45) NOT NULL,
+  `database` VARCHAR(45) NOT NULL COMMENT 'название БД на компьютере пользователя',
+  `fucks` INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'случек',
+  `okrols` INTEGER UNSIGNED NOT NULL DEFAULT 0,
+  `proholosts` INTEGER UNSIGNED NOT NULL DEFAULT 0,
+  `born` INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'сколько рождено крольчат',
+  `killed` INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'сколько забито',
+  `deads` INTEGER UNSIGNED NOT NULL,
+  `rabbits` INTEGER UNSIGNED NOT NULL COMMENT 'количество кроликов на ферме',
+  UNIQUE INDEX `Indexes`(`date`, `farm`, `database`)
+)
+ENGINE = InnoDB
+COMMENT = 'таблица с отчетами по фермам';
+
+CREATE TABLE `rabserv`.`dumplist` (
+  `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  `datetime` DATETIME NOT NULL,
+  `clientId` int(10) unsigned NOT NULL,
+  `farm` VARCHAR(40) NOT NULL,
+  `filename` VARCHAR(100) NOT NULL,
+  `md5dump` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`)
+)
+ENGINE = InnoDB
+COMMENT = 'таблица с названиями хнанимых файлов';
