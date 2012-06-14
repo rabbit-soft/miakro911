@@ -1,7 +1,9 @@
-﻿<?php
+<?php
 include_once "log4php/Logger.php";
+include_once 'gamlib/DBworker.php';
+include_once 'config.php';
 
-class ServFuncs
+class ServFunc
 {
     /**
     * Получить название фермы, данные по которой может проссматривать пользователь
@@ -36,27 +38,15 @@ class ServFuncs
 	 * @param string $filename - Имя файла РК
 	 * @param string $md5dump - md5 dump-файла
 	 */
-	public static function AddDump($farm,$filename,$md5dump)
+	public static function AddDump($clientId,$filename,$md5dump)
 	{
-		$farm = iconv("cp1251","UTF-8",$farm);
-		$filename = iconv("cp1251","UTF-8",basename($filename));
-
-		$sql = DBworker::GetConnection();
-		$query = "SELECT farm, filename, md5dump FROM dumplist
-				  WHERE farm='$farm' AND filename='$filename' AND md5dump='$md5dump'";
-		$rd = mysql_query($query,$sql);
-		if($rd)
-		{
-			if(mysql_fetch_array($rd))
-			{
-				//Logger::WriteLine("AddDump: row is  exists");
-				$sql->close();
-				return;
-			}
-		}
-		$query = "INSERT INTO dumplist(datetime, farm, filename, md5dump) VALUES (NOW(),'$farm','$filename','$md5dump')";
-		mysql_query($query,$sql);
-		DBworker::disconnect($sql);
+		/*$query = "SELECT farm, filename, md5dump FROM dumplist
+				  WHERE clientId=$clientId AND filename='$filename' AND md5dump='$md5dump'";
+		DBworker::GetListOfStruct($query);*/
+        global $log;
+        $log->debug('hi'.Conf::$LOG_QRS);
+		$query = "INSERT INTO dumplist(datetime, clientId, filename, md5dump) VALUES (NOW(),'$clientId','$filename','$md5dump')";
+        DBworker::Execute($query);
 	}
 
 	/**

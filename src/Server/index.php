@@ -14,8 +14,8 @@ ini_set('display_errors', 0);//нужно для дебага
 try
 {
 	$request = Coder::Decrypt($HTTP_RAW_POST_DATA,$UID);
-	//$log->debug("Request".$request);
-	$log->debug("Connected UID: ".$UID."\n request:\n".$request);
+	$log->debug("Connected UID: ".$UID);
+    //$log->debug("request: ".$request);
 	if ($UID == 0 or !isset($UID)) // проверка на пользователя 
 		throw new pException("Не верный пользователь",pErrCode::IncorrectUser);
 	

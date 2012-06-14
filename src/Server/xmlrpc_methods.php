@@ -33,7 +33,7 @@ class MC
             case "client.money.add": self::client_money_add($params[0],$params[1]); break;
             case "get.payments": $return_value = self::get_payments($params[0]); break;
             case "get.costs": $return_value = self::get_costs($params[0]); break;
-            case "get.dumplist": $return_value = self::GetDumpList($params[0]); break;
+            case "get.dumplist": $return_value = self::get_dumplist($params[0]); break;
             case "vendor.add.dongle": self::vendor_add_dongle($params[0],$params[1],$params[2]) ; break;
             case "vendor.update.dongle": $return_value = self::vendor_update_dongle($params[0],$params[1],$params[2],$params[3],$params[4],$params[5],$params[6]) ; break;
             case "vendor.shedule.dongle": $return_value = self::vendor_shedule_dongle($params[0],$params[1],$params[2],$params[3],$params[4],$params[5],$params[6]) ; break;
@@ -139,18 +139,16 @@ class MC
 	
 	private static function vendor_add_dongle($dongle, $orgId, $model)
 	{
-		/*$result = DBworker::GetListOfStruct("SELECT COUNT(*) cnt FROM dongles WHERE d_id=$dongle;");
-		if($result[0]['cnt']!=0)
-			throw new Exception("Данный ключ уже добавлен в БД");*/ // todo release uncomment!
-		DBworker::Execute(
-			"INSERT INTO dongles(d_id,d_client,d_model) VALUES($dongle,$orgId,$model);");
+		$result = DBworker::GetListOfStruct("SELECT COUNT(*) cnt FROM dongles WHERE d_id=$dongle;");
+		if($result[0]['cnt']==0)
+		    DBworker::Execute("INSERT INTO dongles(d_id,d_client,d_model) VALUES($dongle,$orgId,$model);");
 	}
 	
 	private static function vendor_update_dongle($base64_question, $orgId, $farms, $flags, $startDate, $endDate, $dongle)
 	{
 		$timeFlags = 0;//заглушка
 		$timeFlagsEnd = "NOW()"; //Заглушка
-		
+        self::money_sub($orgId,$farms,$endDate);
 		$org = DBworker::GetListOfStruct("SELECT c_key,c_org FROM clients WHERE c_id=$orgId;");
 		$key = base64_encode($org[0]['c_key']); //ключ-шифрования, который будет вшит в ключ-защиты, чтобы шифровать посылки к сереверу
 		$result = self::reqest('dongle.update',
@@ -165,8 +163,7 @@ class MC
 				XMLRPC::Prepare($key, Type::str)));
 		if(!$result[0])		
 			throw new Exception("Ошибка сервиса обновления ключей\n".$result[1]['faultCode']);
-		//self::debug("responce ".var_export($result,true));	
-		self::money_sub($orgId,$farms,$endDate);
+		//self::debug("responce ".var_export($result,true));
 		DBworker::Execute("INSERT INTO updates(u_dongle, u_client, u_date, u_farms, u_start_date, u_end_date, u_flags, u_time_flags, u_time_flags_end) 
 										VALUES($dongle,$orgId,NOW(),$farms,'$startDate','$endDate',$flags,$timeFlags,$timeFlagsEnd);");	
 		
@@ -215,9 +212,11 @@ class MC
 
 		if($client[0]["c_saas"])
 		{	 
-			$dng = DBworker::GetListOfStruct("SELECT DATE_FORMAT(u_end_date,'%Y-%m-%d') endd FROM updates WHERE u_client=$orgId ORDER BY u_date desc limit 1;");		
-			$months = self::dtDiff($dng[0]['endd'],$endDate);	//self::debug("months ".$months);
-			$money = $farms*5*$months;
+			$dng = DBworker::GetListOfStruct("SELECT DATE_FORMAT(Coalesce(u_end_date,NOW()),'%Y-%m-%d') endd FROM updates WHERE u_client=$orgId ORDER BY u_date desc limit 1;");
+			$dng = count($dng)==0 ? date("Y-m-d") : $dng[0]['endd'];
+
+            $months = self::dtDiff($dng,$endDate);	//self::debug("months ".$months);
+			$money = $farms*5*$months;  //todo если прошили на больше ферм, но дата осталась та же
 			$comment = "плата за SAAS версию $months мсц. $farms фрм.";
 		}
 		else
@@ -227,14 +226,14 @@ class MC
         }
 		if((int)$money > (int)$client[0]["c_money"])
 				throw  new Exception("Недостаточно средств на счету.\nНеобходимо: $money.\nДоступно:".$client[0]["c_money"]);
+        if($money==0) return;
 		DBworker::Execute("INSERT INTO money(m_client,m_credit,m_date,m_comment) VALUES($orgId,$money,NOW(),'$comment');
 								UPDATE clients SET c_money=c_money-$money WHERE c_id=$orgId;");	
 	}
 	
 	private static function reqest($method, $params)
 	{
-		self::debug("responce");
-		return XMLRPC::Request('192.168.0.103:11000', '/rpc2', $method, $params);
+		return XMLRPC::Request(Conf::$DONG_UPDATE_HOST.':11000', '/rpc2', $method, $params);
 	}
 	
 	private static function debug($message)
@@ -276,7 +275,7 @@ class MC
      * @package string $db - имя БазыДанных
      * @return string Дату либо "nodates"
      */
-    public static function GetWebRep_LastDate($farmname,$db)
+    private static function GetWebRep_LastDate($farmname,$db)
     {
         //$result = "nodates";
         //$farmname = iconv("cp1251", "UTF-8", $farmname);
@@ -325,12 +324,10 @@ class MC
      * @param string $farmname - Название организации
      * @return XML
      */
-    private static function GetDumpList($farmname)
+    private static function get_dumplist()
     {
-        //$farmname = iconv("cp1251","UTF-8",$farmname);
-        /*$xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><dumplist/>');*/
-        //$sql = DBworker::GetConnection();
-        $query = "SELECT farm, datetime, filename, md5dump FROM dumplist WHERE farm='$farmname' order by datetime desc";
+        global $UID;
+        $query = "SELECT farm, datetime, filename, md5dump FROM dumplist WHERE clientId=$UID order by datetime desc";
         return DBworker::GetListOfStruct($query);
     }
 }

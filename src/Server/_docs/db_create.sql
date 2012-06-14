@@ -43,6 +43,7 @@ CREATE TABLE `rabserv`.`options` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='опции';
 
 CREATE TABLE `rabserv`.`updates` (
+  `u_id` int(10) unsigned NOT NULL auto_increment,
   `u_dongle` int(10) unsigned NOT NULL,
   `u_client` int(10) unsigned NOT NULL,
   `u_date` datetime NOT NULL,
@@ -53,7 +54,6 @@ CREATE TABLE `rabserv`.`updates` (
   `u_flags` int(10) unsigned NOT NULL,
   `u_time_flags` int(10) unsigned NOT NULL,
   `u_time_flags_end` datetime NOT NULL,
-  `u_id` int(10) unsigned NOT NULL auto_increment,
   PRIMARY KEY  (`u_id`),
   KEY `Index_1` (`u_dongle`,`u_client`,`u_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=54
