@@ -74,6 +74,9 @@
     <Compile Include="..\..\..\libs\pEngine\Options.Servers.cs">
       <Link>Options.Servers.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\libs\pEngine\pException.cs">
+      <Link>pException.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\libs\pEngine\RequestPack.cs">
       <Link>RequestPack.cs</Link>
     </Compile>

@@ -64,8 +64,7 @@ namespace rabdump
             foreach(sDongle d in _client.Dongles)
                 if (uint.Parse(d.Id) == grd.ID)
                 {
-                    RequestSender rs = MainForm.newReqSender();
-                    ResponceItem resp = rs.ExecuteMethod(MethodName.GetCosts);
+                    ResponceItem resp = RabServWorker.ReqSender.ExecuteMethod(MethodName.GetCosts);
                     AdminGRD.AddDongleForm dlg = new AdminGRD.AddDongleForm(_client, d,false);
                     dlg.BOX_Farm_Cost = int.Parse((resp.Value as string[])[0]);
                     dlg.SAAS_Farm_Cost = int.Parse((resp.Value as string[])[1]);
@@ -75,8 +74,8 @@ namespace rabdump
                         try
                         {
                             int retCode = grd.GetTRUQuestion(out q);
-                            
-                                resp = rs.ExecuteMethod(MethodName.VendorUpdateDongle, //MName.VendorSheduleDongle,
+
+                                resp = RabServWorker.ReqSender.ExecuteMethod(MethodName.VendorUpdateDongle, //MName.VendorSheduleDongle,
                                 MPN.base64_question, q,
                                 MPN.clientId, _client.Id,
                                 MPN.farms, dlg.Farms.ToString(),
@@ -89,7 +88,7 @@ namespace rabdump
                             retCode = grd.SetTRUAnswer(resp.Value as string);
                             if (retCode != 0)
                                 throw new Exception("Ошибка обновления ключа");
-                            rs.ExecuteMethod(MethodName.SuccessUpdate,
+                            RabServWorker.ReqSender.ExecuteMethod(MethodName.SuccessUpdate,
                                 MPN.dongleId, grd.ID.ToString());
                             MessageBox.Show("Прошивка прошла успешно");
                             this.Close();
@@ -108,8 +107,7 @@ namespace rabdump
         private void btPayments_Click(object sender, EventArgs e)
         {
 #if PROTECTED
-            RequestSender rs = MainForm.newReqSender();
-            ResponceItem s = rs.ExecuteMethod(MethodName.GetPayments, MPN.clientId, grd.GetOrgID().ToString());
+            ResponceItem s = RabServWorker.ReqSender.ExecuteMethod(MethodName.GetPayments, MPN.clientId, grd.GetClientID().ToString());
             (new PaymentForm(s.Value as sPayment[])).ShowDialog();
 #endif
         }

@@ -8,37 +8,41 @@ namespace AdminGRD
 {
     public partial class LoginFrom : Form
     {
+        private const string DEF_INFO = "Выберите ключ и введите пароль";
         private const int SERV_H = 40;
         private const int PASS_H = 100;
 
+        private bool _sos = true;
+        private bool _spc = true;
         private List<string> _usrList = null;
+
         public LoginFrom()
         {
             InitializeComponent();
-            showOwnServer(false);
-            showPassChange(false);
             toolTip1.SetToolTip(btPassChange, "Сменить пароль");
+            ShowOwnServer = false;
+            ShowPassChange = false;
 #if DEBUG
             this.BackColor = System.Drawing.Color.BurlyWood;
-            btKey.Visible = true;
-#endif          
+            this.btKey.Visible = true;
+#endif         
         }
 
-        public string SelectedFile
+        private string SelectedFile
         {
             get 
             {
                 return comboBox1.Text;
             }
         }
-        public string Password { get { return tbPass.Text; } }
+        private string Password { get { return tbPass.Text; } }
 
         public void FocusPassword()
         {
             tbPass.Focus();
         }
 
-        public string NewPassword
+        private string NewPassword
         {
             get
             {
@@ -50,7 +54,7 @@ namespace AdminGRD
         {
             comboBox1.Items.Clear();
             _usrList = Engine.GetUserKeys();
-            string defU = Engine.Options.GetStringOption(optType.DefaultUser)+".psk";
+            string defU = Engine.Opt.GetStringOption(optType.DefaultUser);
             int index = 0;
             foreach (string u in _usrList)
             {
@@ -69,32 +73,51 @@ namespace AdminGRD
 
         private void LoginFrom_Load(object sender, EventArgs e)
         {
+            tbPass.Select();
             fillUsers();
         }
 
         private void btOwnServer_Click(object sender, EventArgs e)
         {
-            showOwnServer(!gbServ.Visible);
+            ShowOwnServer = !gbServ.Visible;
         }
 
-        private void showOwnServer(bool show)
+        private bool ShowOwnServer
         {
-            tbServ.Clear();
-            gbServ.Visible = show;
-            this.Height += show ? SERV_H : -SERV_H;
-            textBox1_TextChanged(null, null);
+            get { return _sos; }
+            set
+            {
+                if (_sos == value) return;
+                _sos = value;
+                tbServ.Clear();
+                gbServ.Visible = value;
+                this.Height += value ? SERV_H : -SERV_H;
+                textBox1_TextChanged(null, null);
+            }
         }
 
-        private void showPassChange(bool show)
+        /// <summary>
+        /// Ввод пароля
+        /// </summary>
+        private bool ShowPassChange
         {
+            get { return _spc; }
+            set
+            {
+                if (_spc == value) return;
+                _spc = value;
+                if (value)
+                    lbInfo.Text = @"Введите текущий пароль в поле 'Пароль'
+Новый пароль укажите в поле 'Установить новый пароль'";
+                else lbInfo.Text = DEF_INFO;
+                tbNewPass.Clear();
+                tbNewPassConf.Clear();
+                lbError.Visible = false;
 
-            tbNewPass.Clear();
-            tbNewPassConf.Clear();
-            lbError.Visible = false;
-
-            gbNewPass.Visible = show;
-            this.Height += show ? PASS_H : -PASS_H;
-            textBox1_TextChanged(null, null);
+                gbNewPass.Visible = value;
+                this.Height += value ? PASS_H : -PASS_H;
+                textBox1_TextChanged(null, null);
+            }
         }
                
 
@@ -119,13 +142,48 @@ namespace AdminGRD
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             tbPass.Text = "";
+            ShowPassChange = false;
         }
 
         private void btPassChange_Click(object sender, EventArgs e)
         {
-            showPassChange(!tbNewPass.Visible);
+            ShowPassChange = !tbNewPass.Visible;
         }
 
+        private void btKey_Click(object sender, EventArgs e)
+        {
+#if DEBUG
+            NewKeyForm dlg = new NewKeyForm();
+            dlg.ShowDialog();
+            fillUsers();
+#endif
+        }
 
+        private void btOk_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                Engine.LogIn(SelectedFile, Password, Server, NewPassword);
+            }
+            catch (pException pex)
+            {
+                string title = "Ошибка";
+                MessageBoxIcon icon = MessageBoxIcon.Stop;
+                if (pex.Code == pException.NeedChangeUserPass)
+                {
+                    ShowPassChange = (pex.Code == pException.NeedChangeUserPass);
+                    title = "";
+                    icon = MessageBoxIcon.Information;
+                }
+                MessageBox.Show(pex.Message, title, MessageBoxButtons.OK, icon);
+                this.DialogResult = DialogResult.None;
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+                tbPass.Clear();
+            }
+        }
     }
 }

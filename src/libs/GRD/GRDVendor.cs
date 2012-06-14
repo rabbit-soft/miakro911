@@ -29,7 +29,7 @@ namespace RabGRD
         /// <summary>
         /// Этот ключ авто-шифрования записан во все проданые ключи
         /// </summary>
-        private byte[] _keyProtect = new byte[]{0x97, 0xA1, 0x16, 0xD8, 0xCF, 0xE2, 0x42, 0xE1,
+        private byte[] _keyGSII64 = new byte[]{ 0x97, 0xA1, 0x16, 0xD8, 0xCF, 0xE2, 0x42, 0xE1,
                                                 0xD2, 0x73, 0x2A, 0xBE, 0x39, 0x6F, 0x43, 0xEF };
 
         private byte[] _keyHash = new byte[]   {0x34, 0x3D, 0xBC, 0x24, 0xA5, 0x91, 0x87, 0x62,
@@ -39,19 +39,12 @@ namespace RabGRD
         /// </summary>
         private byte[] _keyEcc160 = new byte[] {0xF5, 0xC1, 0x4B, 0x1F, 0x18, 0x8D, 0x24, 0x54, 0xF2, 0x43, 
                                                 0xDE, 0xB9, 0x39, 0x7C, 0x2F, 0x97, 0x41, 0xCB, 0x9B, 0xAB };
-
         public GRDVendorKey()
         {
             log = LogManager.GetLogger(typeof(GRDVendorKey));
             _findPropDongleType = GrdDT.TRU;
             connect();
         }
-
-        /*public void CleanUserBuf()
-        {
-            _userBuf = new byte[4096];
-            _userBufSize = 0;
-        }*/
 
         protected override GrdE setAccessCodes()
         {
@@ -62,9 +55,14 @@ namespace RabGRD
                                            MasterCode + CryptMs);
         }
 
+        #region delete
+        /*public void CleanUserBuf()
+        {
+            _userBuf = new byte[4096];
+            _userBufSize = 0;
+        }*/
 
-
-        public GRDVendorKey(uint keyID, byte[] truKey)
+        /*public GRDVendorKey(uint keyID, byte[] truKey)
         {
             uint len = 16;
             if (truKey.Length < 16)
@@ -76,7 +74,7 @@ namespace RabGRD
             _findPropDongleID = keyID;
             _findPropDongleType = GrdDT.TRU;
             connect();
-        }
+        }*/
 
         /*public uint UAMOffset
         {
@@ -86,8 +84,13 @@ namespace RabGRD
         /*public uint ProgID
         {
             get { return _prog; }
-        }*/       
+        }*/
+        #endregion delete
 
+        /// <summary>
+        /// Подключается к первому найденному ключу
+        /// </summary>
+        /// <returns></returns>
         private GrdE connect()
         {
             GrdE retCode; // Error code for all Guardant API functions
@@ -145,7 +148,7 @@ namespace RabGRD
         }
 
         /// <summary>
-        /// Инициализирует ключ. Устанавливает пароль дял Удаленного Обновления
+        /// Обнуляет ключ. Устанавливает пароль для Удаленного Обновления
         /// </summary>
         public int SetTRUKey()
         {
@@ -155,50 +158,33 @@ namespace RabGRD
             return (int)retCode;
         }
 
+        /// <summary>
+        /// Прошивает ключ для сервиса удаленного обновления ключей
+        /// </summary>
+        /// <returns></returns>
+        public int WriteTRUHostMask()
+        {
+            uint protectLength;
+            ushort wNumberOfItems;
+            byte[] pbyWholeMask = makeNewMask(new byte[0], out protectLength, out wNumberOfItems, false);
+            return writeMask(pbyWholeMask, protectLength, wNumberOfItems);
+        }
+
+        /// <summary>
+        /// Записывает пользовательские данные в ключ-Guardant
+        /// </summary>
         public int WriteMask(int orgId,string orgName, int farms, int flags, DateTime startDate, DateTime endDate)
         {
-            if (!GrdApi.GrdIsValidHandle(_grdHandle))
-            {
+            if (!GrdApi.GrdIsValidHandle(_grdHandle))            
                 return (int)GrdE.InvalidHandle;
-            }
-
-            byte[] userBuff = makeUserBuff(orgId,orgName, farms, flags, startDate, endDate);
-            GrdE retCode; // Error code for all Guardant API functions
-                       
+            
+            byte[] userBuff = makeUserBuff(orgId,orgName, farms, flags, startDate, endDate);                                 
             uint protectLength;
             ushort wNumberOfItems;
             byte[] pbyWholeMask = makeNewMask(userBuff, out protectLength, out wNumberOfItems);
-            string logStr;
 
-            //retCode = (GrdE)SetTRUKey();
-            //if (retCode != GrdE.OK) return (int)retCode;
-
-            logStr = "Writing user buffer : ";
-            retCode = GrdApi.GrdWrite(_grdHandle,
-                                      (uint)0,
-                                      pbyWholeMask.Length,
-                                      pbyWholeMask);
-
-            logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
-            ErrorHandling(_grdHandle, retCode);
-            if (retCode != GrdE.OK) return (int)retCode;
-
-            logStr = "Protecting : ";
-            retCode = GrdApi.GrdProtect(new IntPtr(_grdHandle.Address),
-                                        protectLength,
-                                        protectLength,
-                                        wNumberOfItems,
-                                        0,
-                                        (uint)GrdGF.HID,IntPtr.Zero );
-            logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
-            ErrorHandling(_grdHandle, retCode);
-            if (retCode != GrdE.OK) return (int)retCode;
-
-            log.Debug(" ====> " + (protectLength).ToString());
-            return (int)retCode;
-        }       
+            return writeMask(pbyWholeMask, protectLength, wNumberOfItems);
+        }
 
         public GrdE GetTRUAnswer(out string base64_answer, string base64_question, int orgId,string orgName, int farms, int flags, DateTime startDate, DateTime endDate,byte[] keyCode)
         {            
@@ -210,14 +196,14 @@ namespace RabGRD
             GrdE retCode; // Error code for all Guardant API functions
             string logStr = "Decrypt and validate question: ";
 
-            retCode = GrdApi.GrdTRU_DecryptQuestion(_grdHandle,     // handle to Guardant protected container of dongle that contains 
-                                                                    // GSII64 algorithm with the same key as in remote dongle 
-                                                    TRUAlgoNumGSII64,  // dongle GSII64 algorithm number with same key as in remote dongle 
-                                                    TRUAlgoNumHash64,  // dongle HASH64 algorithm number with same key as in remote dongle 
-                                                    qq.question,    // pointer to Question					8 bytes (64 bit) 
-                                                    qq.id,          // ID									4 bytes 
-                                                    qq.pubKey,      // Public Code							4 bytes 
-                                                    qq.hash);       // pointer to Hash of previous 16 bytes	8 bytes 
+            retCode = GrdApi.GrdTRU_DecryptQuestion(_grdHandle,      // handle to Guardant protected container of dongle that contains 
+                                                                     // GSII64 algorithm with the same key as in remote dongle 
+                                                    TRUAlgoNumGSII64,// dongle GSII64 algorithm number with same TRUkey as in remote dongle 
+                                                    TRUAlgoNumHash64,// dongle HASH64 algorithm number with same TRUkey as in remote dongle 
+                                                    qq.question,     // pointer to Question					8 bytes (64 bit) 
+                                                    qq.id,           // ID									4 bytes 
+                                                    qq.pubKey,       // Public Code							4 bytes 
+                                                    qq.hash);        // pointer to Hash of previous 16 bytes	8 bytes 
 
             logStr += GrdApi.PrintResult((int)retCode);
             log.Debug(logStr);
@@ -251,14 +237,14 @@ namespace RabGRD
 
             logStr = "Encrypt answer for Trusted Remote Update: ";
             retCode = GrdApi.GrdTRU_EncryptAnswer(_grdHandle,                   // handle to Guardant protected container 
-                // GSII64 algorithm with the same key as in remote dongle 
-                // and pre-stored GrdTRU_SetAnswerProperties data if needed 
+                                                                                // GSII64 algorithm with the same key as in remote dongle 
+                                                                                // and pre-stored GrdTRU_SetAnswerProperties data if needed 
                                                   GRDConst.GrdSAMToUAM,         // starting address for writing in dongle 
                                                   (int)pbyWholeMask.Length,     // size of data to be written 
                                                   pbyWholeMask,                 // buffer for data to be written 
                                                   qq.question,                  // pointer to decrypted Question 
-                                                  TRUAlgoNumGSII64,                // dongle GSII64 algorithm number with the same key as in remote dongle 
-                                                  TRUAlgoNumHash64,                // dongle HASH64 algorithm number with the same key as in remote dongle 
+                                                  TRUAlgoNumGSII64,             // dongle GSII64 algorithm number with the same key as in remote dongle 
+                                                  TRUAlgoNumHash64,             // dongle HASH64 algorithm number with the same key as in remote dongle 
                                                   out answer,                   // pointer to the buffer for Answer data 
                                                   out ansSize);                 // IN: Maximum buffer size for Answer data, OUT: Size of pAnswer buffer 
             logStr += GrdApi.PrintResult((int)retCode);
@@ -310,9 +296,14 @@ namespace RabGRD
             Array.Copy(keyCode, 0, res, KEY_CODE_OFFSET, keyCode.Length);
             return res;
         }
-
-        private byte[] makeNewMask(byte[] userBuff, out uint protectLength, out ushort wNumberOfItems)
-        {              
+        
+        /// <summary>
+        /// Создает окончательную битовую маску, которая будет записана в ключ Клиента.
+        /// </summary>
+        /// <param name="userBuff">Битовая маска с данными конкретного клиента</param>
+        /// <param name="forUser">Прошивается ли для конечного пользователя. Если False, то для сервиса обновления ключей</param>
+        private byte[] makeNewMask(byte[] userBuff, out uint protectLength, out ushort wNumberOfItems, bool forUser)
+        {
             DongleHeaderStruct dongleHeader;
             dongleHeader.ProgID = 1;
             dongleHeader.Version = 1;
@@ -340,7 +331,7 @@ namespace RabGRD
                          0, 0, 0, 0,
                          null, null, null, null,
                          0, 0,
-                         _keyProtect,
+                         forUser ? _keyGSII64 : _keyTRU,
                          ref wMaskSize,
                          ref wASTSize,
                          ref wNumberOfItems);
@@ -356,30 +347,30 @@ namespace RabGRD
                          0, 0, 0, 0,
                          null, null, null, null,
                          0, 0,
-                         _keyHash,
+                         forUser ? _keyHash : _keyTRU,
                          ref wMaskSize,
                          ref wASTSize,
                          ref wNumberOfItems);
-
-            AddAlgorithm(abyMask,
-                         abyMaskHeader,
-                         (ushort)GrdAN.ECC160,
-                         (byte) (GRDConst.nsafl.ST_III + GRDConst.nsafl.ActivationSrv + GRDConst.nsafl.DeactivationSrv ),
-                         (ushort)(GRDConst.nsafh.ReadSrv + GRDConst.nsafh.ReadPwd),
-                         GRDConst.RsAlgo.ECC160,
-                         (ushort)GrdADS.ECC160,
-                         (ushort)GrdARS.ECC160,
-                         2863311530,
-                         3722304989,
-                         3149642683, 
-                         0,
-                         null, null, null, null,
-                         0, 
-                         10,
-                         _keyEcc160,
-                         ref wMaskSize,
-                         ref wASTSize,
-                         ref wNumberOfItems);
+            if (forUser)
+                AddAlgorithm(abyMask,
+                             abyMaskHeader,
+                             (ushort)GrdAN.ECC160,
+                             (byte)(GRDConst.nsafl.ST_III + GRDConst.nsafl.ActivationSrv + GRDConst.nsafl.DeactivationSrv),
+                             (ushort)(GRDConst.nsafh.ReadSrv + GRDConst.nsafh.ReadPwd),
+                             GRDConst.RsAlgo.ECC160,
+                             (ushort)GrdADS.ECC160,
+                             (ushort)GrdARS.ECC160,
+                             2863311530,
+                             3722304989,
+                             3149642683,
+                             0,
+                             null, null, null, null,
+                             0,
+                             10,
+                             _keyEcc160,
+                             ref wMaskSize,
+                             ref wASTSize,
+                             ref wNumberOfItems);
 
             byte[] pbyWholeMask = new byte[WHOLE_MASK_LENGTH];
 
@@ -406,6 +397,45 @@ namespace RabGRD
 
             protectLength = (uint)(GRDConst.GrdWmSAMOffset + wASTSize + wMaskSize);
             return pbyWholeMask;
+        }
+        private byte[] makeNewMask(byte[] userBuff, out uint protectLength, out ushort wNumberOfItems)
+        {
+            return makeNewMask(userBuff, out protectLength, out wNumberOfItems, true);
+        }
+
+        private int writeMask(byte[] pbyWholeMask, uint protectLength, ushort wNumberOfItems)
+        {
+            string logStr;
+            GrdE retCode; // Error code for all Guardant API functions
+
+            //retCode = (GrdE)SetTRUKey();
+            //if (retCode != GrdE.OK) return (int)retCode;
+
+            logStr = "Writing user buffer : ";
+            retCode = GrdApi.GrdWrite(_grdHandle,
+                                      (uint)0,
+                                      pbyWholeMask.Length,
+                                      pbyWholeMask);
+
+            logStr += GrdApi.PrintResult((int)retCode);
+            log.Debug(logStr);
+            ErrorHandling(_grdHandle, retCode);
+            if (retCode != GrdE.OK) return (int)retCode;
+
+            logStr = "Protecting : ";
+            retCode = GrdApi.GrdProtect(new IntPtr(_grdHandle.Address),
+                                        protectLength,
+                                        protectLength,
+                                        wNumberOfItems,
+                                        0,
+                                        (uint)GrdGF.HID, IntPtr.Zero);
+            logStr += GrdApi.PrintResult((int)retCode);
+            log.Debug(logStr);
+            ErrorHandling(_grdHandle, retCode);
+            if (retCode != GrdE.OK) return (int)retCode;
+
+            log.Debug(" ====> " + (protectLength).ToString());
+            return (int)retCode;
         }
 
         #region writemask.dll

@@ -34,12 +34,12 @@ namespace pEngine
             return rp;
         }
 
-        public static IOptions Options
+        public static Options Opt
         {
             get
             {
                 if (_opt == null)
-                    _opt = new Options("grdUpdate");
+                    _opt = new Options();
                 return _opt;
             }
         }   
@@ -77,44 +77,33 @@ namespace pEngine
         /// <param name="user">Пользователь который запрашивает данные</param>
         /// <param name="server">использовать сервер  Если пользователь не указал то равно ""</param>
         /// <param name"newpass">при подключении поменять паролью Если пользователь не указал, то равно ""</param>
-        /// <returns>Возвращает пустую строку если логин прошел успешно,
-        /// иначе возвращает текст ошибки</returns>
-        public static string LogIn(string keyfile, string password, string server,string newpass)
+        /// <returns>Возвращает код ощибки</returns> //todo сделать номер ошибки
+        public static void LogIn(string keyfile, string password, string server, string newpass)
         {
-            string ans = "Произошла ошибка";
-#if !NOCATCH
+            LogOut();
             try
             {
-#endif
                 _curUser = extractKeyFileData(keyfile, password);
-                if (_curUser != null) 
-                    ans = "";
-#if !NOCATCH
-            }
-            catch(Exception ex)
-            {
-                _logger.Error("init", ex);
-                ans = ex.Message;
-                if(ex.InnerException !=null)
-                    ans+=Environment.NewLine+ex.InnerException.Message;
-            }
-#endif
-            if (ans == "")
-            {
-
                 if (_opt == null)
-                    _opt = new Options(_curUser,  "grdUpdate");
-                else _opt.BindUser(_curUser);
-                Options.SetOption(optType.DefaultUser, _curUser.Name);
+                    _opt = new Options();
+                _opt.SetOption(optType.DefaultUser, keyfile);
+                _opt.BindUser(_curUser);
+
+                //Options.SetOption(optType.DefaultUser, _curUser.Name);
                 if (server != "")
                     _opt.ServersAdd(new sServer("Сервер", server), true);
                 if (_opt.ServersCount == 0)
                 {
-                    return "Не найдено не одного сервера. Зайдайте собственный";
+                    LogOut();
+                    throw new pException(pException.AdressesNotFound);
                 }
+
+#if DEBUG
+                _opt.ServersSave();
+#endif
                 int i = 0;
                 bool succesConnect = false;
-                while (i < _opt.ServersCount)
+                while (i <= _opt.ServersCount)
                 {
                     try
                     {
@@ -123,25 +112,20 @@ namespace pEngine
                         {
                             resp = Pack.ExecuteMethod(MethodName.UserGenerateKey, MPN.userId, _curUser.Id.ToString());
                             MakeUserFile(_curUser.Id, _curUser.Name, newpass, resp.Value as string);
-                            LogOut();
-                            return LogIn(keyfile, newpass, server, "");
+                            LogIn(keyfile, newpass, server, "");
+                            return;
                         }
                         Pack.ExecuteMethod(MethodName.Ping);
                         succesConnect = true;
-                        break;
+                        break; //обязалельно иначе бесконечный цикл
                     }
                     catch (Exception ex)
                     {
-                        _logger.Warn("LogIn:", ex);
-                        if (ex.InnerException != null && ex.InnerException is XmlRpcFaultException )
+                        _logger.Warn("LogIn: "+ ex.Message);
+                        if (ex.InnerException != null && ex.InnerException is XmlRpcFaultException)
                         {
-                            //LogOut();
-                            //return ex.InnerException.Message;
-                            succesConnect = true;
-                            if(server!="")
-                                _opt.ServersSave();
-                            ans = ex.InnerException.Message;
-                            break;
+                            _opt.ServersSave();
+                            throw new pException(50 + (ex.InnerException as XmlRpcFaultException).FaultCode, ex.InnerException.Message);
                         }
                         Pack.Url = _opt.ServersGetNext();
                         i++;
@@ -149,14 +133,21 @@ namespace pEngine
 
                 }//while END
                 if (!succesConnect)
-                    ans = String.Format("Не удалось подключиться ни к одному из серверов ({0:d}){1:s}Задайте новый сервер либо свяжитесь с поставщиком.", _opt.ServersCount, Environment.NewLine);
-            }
+                    throw new pException(pException.FailToConnect, String.Format("Не удалось подключиться ни к одному из серверов ({0:d}){1:s}Задайте новый сервер либо свяжитесь с поставщиком.", _opt.ServersCount, Environment.NewLine));
 
-            if (ans != "")
+            }
+            catch (pException pexc)
+            {
                 LogOut();
-            else if (server != "")
-                _opt.ServersSave();
-            return ans;
+                _logger.Error(pexc.Message);
+                throw pexc;
+            }
+            catch (Exception exc)
+            {
+                LogOut();
+                _logger.Error(exc);
+                throw new pException(1, exc.Message);
+            }
         }
 
         /// <summary>
@@ -169,6 +160,6 @@ namespace pEngine
             _curUser = null;
         }
 
-    }
 
+    }
 }

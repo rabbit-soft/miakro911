@@ -300,7 +300,7 @@ namespace RabGRD
             return _farmCntCache;
         }
 
-        public int GetOrgID()
+        public int GetClientID()
         {
             byte[] bts;
             ReadBytes(out bts, USER_DATA_BEGINING, 2);

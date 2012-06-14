@@ -208,7 +208,6 @@ namespace RabGRD
             object retobj = Marshal.PtrToStructure(buffer, anytype);
             Marshal.FreeHGlobal(buffer);
             return retobj;
-
         }
 
     }

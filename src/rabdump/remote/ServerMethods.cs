@@ -20,7 +20,7 @@ namespace pEngine
         string[] GetCosts();
 
         [XmlRpcMethod("get.dumplist")]
-        sDump[] GetDumpList(string farm);
+        sDump[] GetDumpList();
 
         [XmlRpcMethod("vendor.update.dongle")]
         string VendorUpdateDongle(string base64_question, string clientId, string farms, string flags, string startDate, string endDate, string dongleId);
@@ -80,6 +80,9 @@ namespace pEngine
         /// </summary>
         GetPayments,
 
+        /// <summary>
+        /// Получает сортированный по убыванию дат список РКБД, хранящихся на сервере.
+        /// </summary>
         GetDumpList,
         
 

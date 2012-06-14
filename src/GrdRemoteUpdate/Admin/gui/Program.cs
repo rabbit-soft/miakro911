@@ -1,12 +1,17 @@
-﻿using System;
+﻿#if DEBUG
+    //#define NOCATCH
+#endif
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using log4net;
 using pEngine;
 
 namespace AdminGRD
 {
     static class Program
     {
+        static ILog _log;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -14,6 +19,7 @@ namespace AdminGRD
         static void Main()
         {
             log4net.Config.XmlConfigurator.Configure();
+            _log = LogManager.GetLogger("AdminGrd");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             if (alredyRun())
@@ -24,23 +30,13 @@ namespace AdminGRD
             while (true)
             {
                 LoginFrom lf = new LoginFrom();
-                string msg = "1";
                 if (lf.ShowDialog() == DialogResult.OK)
-                {
-                    msg = Engine.LogIn(lf.SelectedFile, lf.Password, lf.Server, lf.NewPassword);
-                    if (msg == "")
-                    {
+                {                
                         MainForm mf = new MainForm();
                         Application.Run(mf);
                         Engine.LogOut();
                         if (!mf.Retry)
                             break;
-                    }
-                    else
-                    {
-                        MessageBox.Show(msg, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                        lf.FocusPassword();
-                    }
                 }
                 else break;
             }
@@ -52,7 +48,48 @@ namespace AdminGRD
             return p.Length > 1;
         }
 
-        //TODO Глобальный отлов Эксепшнов
+#if !NOCATCH
+        static void Excepted(Exception ex)
+        {
+            if (ex.Source == "MySql.Data")
+            {
+                MessageBox.Show("Соединение с сервером было разорвано.\n\rПрграмма будет закрыта");
+            }
+            else
+            {
+                MessageBox.Show("Произошла ошибка. Программа будет закрыта.\n\r" + ex.Message);
+            }
+            _log.Fatal(ex.Message, ex);
+        }
+
+        static void Threaded(object sender, System.Threading.ThreadExceptionEventArgs e)
+        {
+            try
+            {
+                Excepted(e.Exception);
+            }
+            finally
+            {
+                //Application.Exit();
+                Environment.Exit(0);
+            }
+        }
+
+        static void Unhandled(object sender, UnhandledExceptionEventArgs e)
+        {
+            try
+            {
+                Excepted((Exception)e.ExceptionObject);
+            }
+            finally
+            {
+                //Application.Exit();
+                Environment.Exit(0);
+            }
+        }
+#endif
+
+
     }
 
     public class MyException : Exception

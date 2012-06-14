@@ -1,5 +1,4 @@
-﻿//#define A
-using System;
+﻿using System;
 using System.Windows.Forms;
 using pEngine;
 using RabGRD;
@@ -46,16 +45,25 @@ namespace AdminGRD
 
         private void btAddUser_Click(object sender, System.EventArgs e)
         {
-            AddClientForm dlg = new AddClientForm();
-            if (dlg.ShowDialog() == DialogResult.OK)
+            try
             {
-                _reqSend.ExecuteMethod(MethodName.AddClient,
-                    MPN.orgName, dlg.Organization,
-                    MPN.contact, dlg.Contact,
-                    MPN.address, dlg.Address,
-                    MPN.saas,dlg.SAAS ? "1":"0");
+                AddClientForm dlg = new AddClientForm();
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    _reqSend.ExecuteMethod(MethodName.AddClient,
+                        MPN.orgName, dlg.Organization,
+                        MPN.contact, dlg.Contact,
+                        MPN.address, dlg.Address,
+                        MPN.saas, dlg.SAAS ? "1" : "0");
+                }
+                fillUsers();
             }
-            fillUsers();
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.InnerException !=null
+                    ? exc.InnerException.Message
+                    : exc.Message);
+            }
         }
 
         private void lbClients_SelectedIndexChanged(object sender, System.EventArgs e)
@@ -82,7 +90,7 @@ namespace AdminGRD
 
         private void btAddKey_Click(object sender, System.EventArgs e)
         {
-            GRDVendorKey key = null ;
+            GRDVendorKey key = null;
             try
             {
                 int retCode=0;
@@ -102,7 +110,6 @@ namespace AdminGRD
                 AddDongleForm dlg = new AddDongleForm(client, key.ID,true);
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
-#if !A
                     _reqSend.ExecuteMethod(MethodName.VendorAddDongle,
                         MPN.dongleId, key.ID.ToString(),
                         MPN.orgId, client.Id,
@@ -125,19 +132,9 @@ namespace AdminGRD
                     string ans = s.Value.ToString();
                     if (ans == "")
                         throw new Exception("Пустое число-ответ");
-                    key.SetTRUAnswer(ans);
-
-#else
-                    key.WriteMask((lbClients.SelectedItems[0].Tag as sClient).Organization,
-                        dlg.Farms,
-                        dlg.Flags,
-                        dlg.StartDate,
-                        dlg.EndDate);
-#endif
-                    
+                    key.SetTRUAnswer(ans);                    
                     MessageBox.Show("Прошивка Завершена");
-                }
-                          
+                }                         
             }
             catch (Exception exc)
             {
@@ -242,11 +239,13 @@ namespace AdminGRD
             {
                 AddMoneyForm dlg = new AddMoneyForm();
                 if (dlg.ShowDialog() == DialogResult.OK)
+                {
                     _reqSend.ExecuteMethod(MethodName.AddClientMoney,
                         MPN.orgId, (lvClients.SelectedItems[0].Tag as sClient).Id,
                         MPN.money, dlg.Value.ToString());
-                MessageBox.Show("Добавили успешно");
-                fillUsers();
+                    MessageBox.Show("Добавили успешно");
+                    fillUsers();
+                }
             }
             catch (Exception exc)
             {
@@ -288,6 +287,14 @@ namespace AdminGRD
                 MessageBox.Show(exc.Message);
             }
                 
+            key.Dispose();
+        }
+
+        private void miTRUHostDongle_Click(object sender, EventArgs e)
+        {
+            GRDVendorKey key = new GRDVendorKey();
+            int p =key.SetTRUKey();
+            p = key.WriteTRUHostMask();
             key.Dispose();
         }
 

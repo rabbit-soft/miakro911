@@ -33,6 +33,8 @@
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.обновитьСписокToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miDongles = new System.Windows.Forms.ToolStripMenuItem();
+            this.miTRUHostDongle = new System.Windows.Forms.ToolStripMenuItem();
             this.scMain = new System.Windows.Forms.SplitContainer();
             this.scUsers = new System.Windows.Forms.SplitContainer();
             this.lvClients = new System.Windows.Forms.ListView();
@@ -59,6 +61,7 @@
             this.chTimeFlags = new System.Windows.Forms.ColumnHeader();
             this.chTimeFlagsEnd = new System.Windows.Forms.ColumnHeader();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.показатьПрошивкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.scMain.Panel1.SuspendLayout();
             this.scMain.Panel2.SuspendLayout();
@@ -71,7 +74,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.файлToolStripMenuItem});
+            this.файлToolStripMenuItem,
+            this.miDongles});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(750, 24);
@@ -100,6 +104,21 @@
             this.выходToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.выходToolStripMenuItem.Text = "Выход";
             this.выходToolStripMenuItem.Click += new System.EventHandler(this.выходToolStripMenuItem_Click);
+            // 
+            // miDongles
+            // 
+            this.miDongles.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miTRUHostDongle});
+            this.miDongles.Name = "miDongles";
+            this.miDongles.Size = new System.Drawing.Size(121, 20);
+            this.miDongles.Text = "Работа с ключами";
+            // 
+            // miTRUHostDongle
+            // 
+            this.miTRUHostDongle.Name = "miTRUHostDongle";
+            this.miTRUHostDongle.Size = new System.Drawing.Size(184, 22);
+            this.miTRUHostDongle.Text = "Прошить ключ TRU";
+            this.miTRUHostDongle.Click += new System.EventHandler(this.miTRUHostDongle_Click);
             // 
             // scMain
             // 
@@ -186,14 +205,15 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.добавитьДенегToolStripMenuItem});
+            this.добавитьДенегToolStripMenuItem,
+            this.показатьПрошивкиToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(160, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(186, 48);
             // 
             // добавитьДенегToolStripMenuItem
             // 
             this.добавитьДенегToolStripMenuItem.Name = "добавитьДенегToolStripMenuItem";
-            this.добавитьДенегToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.добавитьДенегToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.добавитьДенегToolStripMenuItem.Text = "Добавить денег";
             this.добавитьДенегToolStripMenuItem.Click += new System.EventHandler(this.btAddMoney_Click);
             // 
@@ -234,7 +254,7 @@
             this.btAddKey.Name = "btAddKey";
             this.btAddKey.Size = new System.Drawing.Size(151, 23);
             this.btAddKey.TabIndex = 2;
-            this.btAddKey.Text = "Добавить новый ключ";
+            this.btAddKey.Text = "Прошить новый ключ";
             this.btAddKey.UseVisualStyleBackColor = true;
             this.btAddKey.Click += new System.EventHandler(this.btAddKey_Click);
             // 
@@ -313,6 +333,12 @@
             // 
             this.chTimeFlagsEnd.Text = "Окончание временных флагов";
             // 
+            // показатьПрошивкиToolStripMenuItem
+            // 
+            this.показатьПрошивкиToolStripMenuItem.Name = "показатьПрошивкиToolStripMenuItem";
+            this.показатьПрошивкиToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.показатьПрошивкиToolStripMenuItem.Text = "Показать прошивки";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -368,6 +394,9 @@
         private System.Windows.Forms.ToolStripMenuItem обновитьСписокToolStripMenuItem;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ToolStripMenuItem miDongles;
+        private System.Windows.Forms.ToolStripMenuItem miTRUHostDongle;
+        private System.Windows.Forms.ToolStripMenuItem показатьПрошивкиToolStripMenuItem;
     }
 }
 

@@ -42,8 +42,8 @@ namespace rabdump
             if(RabGRD.GRD.Instance.GetFlag(GRD.FlagType.ServerDump))
             {
 #endif
-                //RabServWorker.SetServerUrl(RabnetConfig.GetOption(RabnetConfig.OptionType.serverUrl));
-                //RabServWorker.OnMessage += new MessageSenderCallbackDelegate(MessageCb);
+                RabServWorker.Url = RabnetConfig.GetOption(RabnetConfig.OptionType.serverUrl);
+                RabServWorker.OnMessage += new MessageSenderCallbackDelegate(MessageCb);
                 miServDump.Visible = true;
 #if PROTECTED
             }
@@ -322,8 +322,7 @@ namespace rabdump
                 string q;
                 if(GRD.Instance.GetTRUQuestion(out q)!=0)
                     throw new Exception("не удалось сгенерировать число вопрос");
-                RequestSender rs = newReqSender();
-                ResponceItem ri = rs.ExecuteMethod(MethodName.ClientGetUpdate,
+                ResponceItem ri = RabServWorker.ReqSender.ExecuteMethod(MethodName.ClientGetUpdate,
                     MPN.question,q,
                     MPN.dongleId,GRD.Instance.ID.ToString());
                 GRD.Instance.SetTRUAnswer(ri.Value as String);
@@ -365,23 +364,11 @@ namespace rabdump
         private void miManage_Click(object sender, EventArgs e)
         {
 #if PROTECTED
-            RequestSender rs = newReqSender();
-            ResponceItem resp = rs.ExecuteMethod(MethodName.GetClient, MPN.clientId, GRD.Instance.GetOrgID().ToString());
+            ResponceItem resp = RabServWorker.ReqSender.ExecuteMethod(MethodName.GetClient, MPN.clientId, GRD.Instance.GetClientID().ToString());
             
             DongleUpdater dlg = new DongleUpdater((resp.Value as sClient[])[0]);
             dlg.ShowDialog();
-
-        }
-
-        internal static RequestSender newReqSender()
-        {
-            RequestSender rs = new RequestSender();
-            rs.UserID = GRD.Instance.GetOrgID();
-            rs.Key = GRD.Instance.GetKeyCode();
-            rs.Url = "http://192.168.0.95/grdUpdate/index.php";
-            return rs;
 #endif
         }
-
     }
 }

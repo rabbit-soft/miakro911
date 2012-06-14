@@ -100,34 +100,28 @@ namespace rabdump
         {
             listView1.Items.Clear();
             DirectoryInfo di = new DirectoryInfo(j.BackupPath);
-            string fls= (X_Tools.XTools.SafeFileName(j.Name, "_") + "_" + X_Tools.XTools.SafeFileName(db, "_")).Replace(" ", "_");
-
-            List<String> servDumps = new List<string>();
-#if PROTECTED
+            string searchName = j.Name.Replace(' ', '+') + "_" + db.Replace(' ', '+');
+            List<sDump> servDumps = null;
+#if PROTECTED           
             if (GRD.Instance.GetFlag(GRD.FlagType.ServerDump))
             {
-                string farmname = GRD.Instance.GetOrganizationName();
-#elif DEBUG
-                string farmname = "testing";
 #endif
 #if PROTECTED ||DEBUG
-                RequestSender reqSend = MainForm.newReqSender();
-                sDump[] dumps = reqSend.ExecuteMethod(MethodName.GetDumpList, MPN.farm, farmname).Value as sDump[];
+                sDump[] dmps= RabServWorker.ReqSender.ExecuteMethod(MethodName.GetDumpList).Value as sDump[];
+                servDumps = new List<sDump>(dmps);
 #endif
-#if PROTECTED
-                
+#if PROTECTED               
             }
 #endif
 
             int idx;
             DateTime dtm;
             foreach (FileInfo fi in di.GetFiles())
-            {                                 
-                if (Path.GetFileName(fi.FullName).StartsWith(fls))
+            {
+                if (Path.GetFileName(fi.FullName).StartsWith(searchName))
                 {
-                    String[] nm = Path.GetFileName(fi.FullName).Split('_');
-                    string[] hms = new string[3] { nm[nm.Length - 1].Substring(0, 2), nm[nm.Length - 1].Substring(2, 2), nm[nm.Length - 1].Substring(4, 2) };
-                    dtm = new DateTime(int.Parse(nm[nm.Length - 4]), int.Parse(nm[nm.Length - 3]), int.Parse(nm[nm.Length - 2]), int.Parse(hms[0]), int.Parse(hms[1]), int.Parse(hms[2]));
+                    String[] nm = ArchiveJobThread.ParseDumpName(fi.Name);
+                    dtm = DateTime.Parse(String.Format("{0}-{1}-{2} {3}:{4}:{5}", nm[2], nm[3], nm[4], nm[5].Substring(0, 2), nm[5].Substring(2, 2), nm[5].Substring(4, 2)));
                     idx = 0;
                     for (int i = 0; i < listView1.Items.Count; i++)
                     {
@@ -135,38 +129,38 @@ namespace rabdump
                             idx++;
                     }
                     ListViewItem li = listView1.Items.Insert(idx, dtm.ToShortDateString() + " " + dtm.ToLongTimeString());
-                    li.SubItems.Add(Path.GetFileName(fi.FullName));
+                    li.SubItems.Add(fi.Name);
 
-                    ///Если такой дамп имеется на сервере, то окрашиваем строку в зеленый
-                    if (servDumps.Contains(Path.GetFileName(fi.FullName)))
-                    {
-                        li.ForeColor = System.Drawing.Color.Green;
-                        servDumps.Remove(Path.GetFileName(fi.FullName));
-                    }                  
+                    ///Если такой дамп имеется на сервере, то окрашиваем строку в зеленый                    
+                    if (servDumps != null && servDumps.Count > 0)
+                        for (int i = 0; i < servDumps.Count; i++)
+                            if (servDumps[i].FileName == fi.Name)
+                            {
+                                li.ForeColor = System.Drawing.Color.Green;
+                                servDumps.RemoveAt(i);
+                                break;
+                            }
 
                 }
             }
-
-            if (servDumps.Count > 0 && j.DB != DataBase.AllDataBases)
+            ///Добавляем файлы которые имеются только на сервере
+            if (servDumps != null && servDumps.Count > 0 && j.DB != DataBase.AllDataBases)
             {
-                foreach (string s in servDumps)
+                foreach (sDump dmp in servDumps)
                 {
-                    String[] nm = s.Split('_');
-                    string[] hms = new string[3] { nm[nm.Length - 1].Substring(0, 2), nm[nm.Length - 1].Substring(2, 2), nm[nm.Length - 1].Substring(4, 2) };
-                    dtm = new DateTime(int.Parse(nm[nm.Length - 4]), int.Parse(nm[nm.Length - 3]), int.Parse(nm[nm.Length - 2]), int.Parse(hms[0]), int.Parse(hms[1]), int.Parse(hms[2]));
+                    String[] nm = ArchiveJobThread.ParseDumpName(dmp.FileName);
+                    dtm = DateTime.Parse(String.Format("{0}-{1}-{2} {3}:{4}:{5}", nm[2], nm[3], nm[4], nm[5].Substring(0, 2), nm[5].Substring(2, 2), nm[5].Substring(4, 2)));
                     idx = 0;
                     for (int i = 0; i < listView1.Items.Count; i++)
                     {
                         if (DateTime.Parse(listView1.Items[i].SubItems[0].Text) > dtm)
-                            idx++;
-                        
+                            idx++;                        
                     }
                     ListViewItem li = listView1.Items.Insert(idx, dtm.ToShortDateString() + " " + dtm.ToLongTimeString());
-                    li.SubItems.Add(s);
+                    li.SubItems.Add(dmp.FileName);
                     li.ForeColor = System.Drawing.Color.BlueViolet;
                 }
             }
-
         }
 
         private void cbDataBase_SelectedIndexChanged(object sender, EventArgs e)

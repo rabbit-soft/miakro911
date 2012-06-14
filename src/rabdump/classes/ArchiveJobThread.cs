@@ -50,7 +50,8 @@ namespace rabdump
         /// Количество дампов, Общий размер дампов, Название позднего или Раннего файла
         /// </summary>
         /// <param name="sz">Общий размер дампов расписания</param>
-        /// <param name="minFile">Самый старый файл дампа, принадлежащий расписанию</param>
+        /// <param name="resFile">Имя файла, зафисит от параметра minimum</param>
+        /// <param name="minimum">Самый старый файл дампа, принадлежащий расписанию</param>
         /// <returns>Количество дампов данного расписания</returns>
         public int CountBackups(out int sz,out String resFile, bool minimum)
         {
@@ -67,7 +68,7 @@ namespace rabdump
             long fsz = 0;
             foreach(FileInfo fi in inf.GetFiles("*_*_*_*_*_*.7z"))
             {
-                String[] nm = fixNM(Path.GetFileName(fi.FullName).Split('_'));
+                String[] nm = ParseDumpName(fi.FullName);
                 if (nm[0]==_j.Name)
                 {
                     cnt++;
@@ -106,7 +107,7 @@ namespace rabdump
         {
             if (File.Exists(_j.BackupPath + "\\" + filename))
             {
-                return getMD5FromFile(_j.BackupPath + "\\" + filename) == md5;
+                return pEngine.Helper.GetMD5FromFile(_j.BackupPath + "\\" + filename) == md5;
             }
             else return false;
         }
@@ -200,10 +201,9 @@ namespace rabdump
         public string DumpDB(DataBase db)
         {
             Directory.CreateDirectory(_j.BackupPath);
-            String ffname = _j.Name + "_" + db.Name + "_" + DateTime.Now.ToString("yyyy_MM_dd_HHmmss");
+            String ffname = _j.Name.Replace(' ', '+') + "_" + db.Name.Replace(' ', '+') + "_" + DateTime.Now.ToString("yyyy_MM_dd_HHmmss");
 
-            ffname = XTools.SafeFileName(ffname, "_");
-            ffname = ffname.Replace(" ", "_");
+            ffname = XTools.SafeFileName(ffname, "-");
 
             String fname = _tmppath + ffname;
             log.Info("Making dump for " + _j.Name + " to " + ffname);
@@ -376,6 +376,11 @@ namespace rabdump
             File.Delete(f);
         }
 
+        /// <summary>
+        /// РАзархивирует РКБД и возвращает путь к .dump файлу
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         public static string ExtractDump(string filePath)
         {
             log.InfoFormat("Extracting file: {0:s}",filePath);
@@ -491,10 +496,18 @@ namespace rabdump
         {
             int sz;
             string file;
-            CountBackups(out sz, out file, false);
-            string path = _j.BackupPath + "\\" + file;
-            md5 = getMD5FromFile(path);
-            return file == "" ? "" : _j.BackupPath + "\\" + file;
+            int count = CountBackups(out sz, out file, false);
+            if (count == 0)
+            {
+                md5 = "";
+                return "";
+            }
+            else
+            {
+                string path = _j.BackupPath + "\\" + file;
+                md5 = pEngine.Helper.GetMD5FromFile(path);
+                return path;
+            }
         }
         public string GetLatestDump()
         {
@@ -502,27 +515,12 @@ namespace rabdump
             return GetLatestDump(out md5);
         }
 
-        /// <summary>
-        /// Если в Имени БД более одного слова,
-        /// то они разделяются '_' , это сбивает формат
-        /// </summary>
-        private string[] fixNM(string[] nm)
+        public static string[] ParseDumpName(string fullName)
         {
-            if (nm.Length <= SPLIT_NAMES) return nm;
-            string[] res = new string[SPLIT_NAMES];
-            res[0] = nm[0];
-            int step = 5;
-            for (int i = nm.Length - 1; i > 0; i--)
-            {
-                if (step > 1)
-                {
-                    res[step] = nm[i];
-                    step--;
-                }
-                else
-                    res[step] = nm[i] + (res[step] == null ? "" : " " + res[step]);
-            }
-            return res;
+            string[] result = Path.GetFileName(fullName).Split('_','.');
+            for (int i = 0; i < result.Length; i++)
+                result[i] = result[i].Replace('+', ' ');
+            return result;
         }
 
         private static string z7err(int res)
@@ -534,7 +532,7 @@ namespace rabdump
             }
         }
 
-        private string getMD5FromFile(string filepath)
+        /*private string getMD5FromFile(string filepath)
         {           
             filepath = ExtractDump(filepath);
             if (filepath == "") return "0";
@@ -550,7 +548,7 @@ namespace rabdump
             }
             File.Delete(filepath);
             return sb.ToString();
-        }
+        }*/
 
     }
 }

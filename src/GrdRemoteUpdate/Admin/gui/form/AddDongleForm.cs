@@ -15,7 +15,7 @@ namespace AdminGRD
 
         bool _manual = false;
         sClient _client;
-        DateTime _from;
+        DateTime _from = DateTime.Now;
         int _flags =0;
         int _timeFlags =0;
 
@@ -73,7 +73,7 @@ namespace AdminGRD
             }
 
             _manual = true;
-            //calcMoney();
+            calcMoney();
         }
 
         public AddDongleForm(sClient client, sDongle dongle, bool flags)

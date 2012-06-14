@@ -108,6 +108,12 @@
     <Compile Include="form\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="form\NewKeyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="form\NewKeyForm.designer.cs">
+      <DependentUpon>NewKeyForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="grd\GRD_Codes.cs" />
     <Compile Include="MyHelper.cs" />
     <Compile Include="Program.cs" />
@@ -130,6 +136,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="form\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="form\NewKeyForm.resx">
+      <DependentUpon>NewKeyForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
