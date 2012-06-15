@@ -22,15 +22,18 @@ namespace pEngine
         [XmlRpcMethod("get.dumplist")]
         sDump[] GetDumpList();
 
+        [XmlRpcMethod("get.update.files")]
+        sUpdateFile[] GetUpdateFiles();
+
         [XmlRpcMethod("vendor.update.dongle")]
         string VendorUpdateDongle(string base64_question, string clientId, string farms, string flags, string startDate, string endDate, string dongleId);
         [XmlRpcMethod("dongle.update.success")]
         void SuccessUpdate(string dongleId);
 
         [XmlRpcMethod("webrep.send.global")]
-        void WebRep_SendGlobal(sWebRepOneDay[] value);
+        void WebRep_SendGlobal(string db,sWebRepOneDay[] value);
         [XmlRpcMethod("webrep.get.lastdate")]
-        string WebRep_GetLastDate(string farm, string db);
+        string WebRep_GetLastDate(string db);
     }
 
     /// <summary>
@@ -79,6 +82,8 @@ namespace pEngine
         /// <para>Return: sPayment[]</para>
         /// </summary>
         GetPayments,
+
+        GetUpdateFiles,
 
         /// <summary>
         /// Получает сортированный по убыванию дат список РКБД, хранящихся на сервере.

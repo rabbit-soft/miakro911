@@ -10,7 +10,7 @@ using System.IO;
 
 namespace rabdump
 {
-    class SocketServer
+    /*class SocketServer
     {
         private readonly TcpListener _tcpListener;
         private readonly Thread _listenThread;
@@ -61,7 +61,7 @@ namespace rabdump
         private static void HandleClientComm(object client)
         {
 
-            RabUpdateInfo nfo=RabUpdater.ReadUpdateInfo(Path.GetDirectoryName(Application.ExecutablePath)+"\\updates\\updates.xml");
+            //RabUpdateInfo nfo=RabUpdater.ReadUpdateInfo(Path.GetDirectoryName(Application.ExecutablePath)+"\\updates\\updates.xml");
             
             TcpClient tcpClient = (TcpClient)client;
             NetworkStream clientStream = tcpClient.GetStream();
@@ -217,5 +217,5 @@ namespace rabdump
 
             tcpClient.Close();
         }
-    }
+    }*/
 }

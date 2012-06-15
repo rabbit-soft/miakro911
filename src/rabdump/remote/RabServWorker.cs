@@ -10,103 +10,49 @@ using SeasideResearch.LibCurlNet;
 using System.Xml;
 using System.Net;
 using System.IO;
-#if PROTECTED
-using RabGRD;
-using pEngine;
 using System.Collections.Specialized;
+using System.Globalization;
+#if PROTECTED
+    using RabGRD;
+    using pEngine;   
 #endif
 
 namespace rabdump
 {
+    public class UploadFile
+    {
+        public UploadFile()
+        {
+            ContentType = "application/octet-stream";
+        }
+        public string Name { get; set; }
+        public string Filename { get; set; }
+        public string ContentType { get; set; }
+        public Stream Stream { get; set; }
+    }
+
+    /// <summary>
+    /// Нужен для отправки сообщения из классов,
+    /// работающих с сервером, основной программе
+    /// </summary>
+    /// <param name="msg">Сообщение</param>
+    /// <param name="ttl">Заголовок</param>
+    /// <param name="type">Error (3);Warning (2);Info (1);None (0)</param>
+    /// <param name="hide">Скрыть ли значек из трея</param>
+    public delegate void MessageSenderCallbackDelegate(string msg, string ttl, int type, bool hide);
+    public delegate void CloseCallbackDelegate();
+
     /// <summary>
     /// Класс отсылающий РК и Статистику на сервер
     /// </summary>
     static class RabServWorker
     {
-        
-
-        public enum State
-        {
-            /// <summary>
-            /// Класс не выполняет никакой работы
-            /// </summary>
-            Free,
-            Conection_Failed,
-
-            UploadDump_Loading,
-            /// <summary>
-            /// Успешная загрузка на сервер
-            /// </summary>
-            UploadDump_Loaded,
-            /// <summary>
-            /// Ошибка при загрузке на сервер
-            /// </summary>
-            UploadDump_LoadErr,
-            /// <summary>
-            /// На сервере самая последняя РК
-            /// </summary>
-            UploadDump_Latest,
-            /// <summary>
-            /// На компьютере пользователя нет РК
-            /// </summary>
-            UploadDump_Dumpless,
-
-            /// <summary>
-            /// Ожидание списка Дампов от сервера
-            /// </summary>
-            DumpList_Wait,
-            /// <summary>
-            /// Список дампов получен. На сервере имеются дампы
-            /// </summary>
-            DumpList_NodesYes,
-            /// <summary>
-            /// Список дампов получен. На сервере дампов нет.
-            /// </summary>
-            DumpList_NodesNo,
-            /// <summary>
-            /// Процесс скачивания дампа
-            /// </summary>
-            DownloadDump_Loading,
-            /// <summary>
-            /// Дамп скачан
-            /// </summary>
-            DownloadDump_Loaded,
-            /// <summary>
-            /// Ошибка при скачке дампа
-            /// </summary>
-            DownloadDump_LoadErr,
-            /// <summary>
-            /// Получение даты последнего отчета
-            /// </summary>
-            WebRep_WaitLD,
-            WebRep_WaitOK,
-            WebRep_WaitErr,
-            WebRep_Uploading,
-            WebRep_Uploaded,
-            WebRep_UploadErr,
-        }
-
-        struct ServData
-        {
-            internal string farmname;
-            internal string dumpPath;
-            internal FileStream uploadFS;
-            internal System.Diagnostics.Stopwatch watcher;
-            internal Double lastUploadedBytes;
-            internal string webRepLD;
-        }
         private static string _url = "http://192.168.0.95/rabServ/";
-        //private static string uploadDumpURI { get { return _url + "/uploader.php"; } }
-        //private static string downloadDumpURI { get { return  _url + "/getdump.php";} }
         private static ILog _logger = LogManager.GetLogger(typeof(RabServWorker));
-        private static ServData _crossData;
         private static ArchiveJobThread _ajt;
-        /// <summary>
-        /// В каком состоянии находися Класс в данный момент
-        /// </summary>
-        private static State _state = State.Free;
-
         private static RequestSender _reqSend = null;
+        private static bool _busy = false;
+
         internal static RequestSender ReqSender
         {
             get
@@ -121,10 +67,7 @@ namespace rabdump
                 return _reqSend;
             }
         }
-
-        //public static State CurState { get { return _state; } }
-
-        public static event MessageSenderCallbackDelegate OnMessage;
+        public static event MessageSenderCallbackDelegate OnMessage;     
 
         /// <summary>
         /// Адрес удаленного сервера
@@ -139,12 +82,6 @@ namespace rabdump
                 _url = value; 
             }
         }
-
-        /*public static void SetServerUrl(string url)
-        {
-            if (_state != State.Free || url == "") 
-                return;
-        }*/
 
         public static void MakeDump(ArchiveJob j)
         {
@@ -165,13 +102,14 @@ namespace rabdump
 #if !NOCATCH
             try
             {
-#endif
+#endif  
+                string filePath = Path.GetTempPath() + filename + ".tmp";
                 callOnMessage("Скачиваем с сервера Резервную копию", "Начало загрузки", 1);
-                long offset = unDownloaded(filename);
-                downloadDump(filename, offset);
+                long offset = unDownloaded(filePath);
+                downloadDump(filename, filePath, offset);
 
                 callOnMessage(String.Format("Файл успешно скачан{0:s}Переходим к востановлению.", Environment.NewLine), "Успех", 1);
-                return Path.GetTempPath() + filename;
+                return filePath;
 #if !NOCATCH
             }
             catch (Exception ex)
@@ -192,90 +130,81 @@ namespace rabdump
         /// Отправляет Веб-отчет
         /// </summary>
         private static void sendWebReport()
-        {          
-            const int MAX_DAYS = 200;
-            //XmlDocument doc = newWebRepDoc();
-            //DataSources могут изменить
-            RabnetConfig.rabDataSource[] dataSources = new RabnetConfig.rabDataSource[RabnetConfig.DataSources.Count];
-            RabnetConfig.DataSources.CopyTo(dataSources);
-            sWebRepOneDay[] reps = null;
-            foreach (RabnetConfig.rabDataSource rds in dataSources)
+        {
+            if (_busy) return;
+            _busy = true;
+            try
             {
-                if (!rds.WebReport) continue;
-                string webRepLD = "";
-                //getLatestWebReport(_crossData.farmname, rds.Params.DataBase);
+                const int MAX_DAYS = 200;
+                RabnetConfig.rabDataSource[] dataSources = new RabnetConfig.rabDataSource[RabnetConfig.DataSources.Count];
+                RabnetConfig.DataSources.CopyTo(dataSources);
+                sWebRepOneDay[] reps = null;
+                foreach (RabnetConfig.rabDataSource rds in dataSources)
+                {
+                    if (!rds.WebReport) continue;
+                    string webRepLD = RabServWorker.ReqSender.ExecuteMethod(MethodName.WebRep_GetLastDate,
+                        MPN.db, rds.Params.DataBase).Value as string;
 
-                string lastDate = RabServWorker.ReqSender.ExecuteMethod(MethodName.WebRep_GetLastDate,
-                    MPN.farm, _crossData.farmname,
-                    MPN.db, rds.Params.DataBase).Value as string;
-                /*if (_state == State.Conection_Failed)
-                {
-                    callOnMessage("Не удалось подключиться к серверу", "", 2);
-                    return;
-                }*/
-                rabnet.Engine.get().initEngine(rds.Params.ToString());
+                    rabnet.Engine.get().initEngine(rds.Params.ToString());
 
-                //Если Получена дата последнего Отчета
-                //if (_state == State.WebRep_WaitOK)
-                //{
-                DateTime stDate = DateTime.MaxValue;
-                if (lastDate == "")
-                {
-                    stDate = rabnet.Engine.db().GetFarmStartTime();
-                    if (stDate == DateTime.MaxValue) continue;
-                    if (DateTime.Now.Date.Subtract(stDate.Date).Days > MAX_DAYS)
-                        stDate = DateTime.Now.AddDays(-MAX_DAYS);
-                }
-                else
-                {
-                    DateTime.TryParse(webRepLD, out stDate);
-                    if (stDate == DateTime.MaxValue)
+
+                    DateTime stDate = DateTime.MaxValue;
+                    if (webRepLD == "")
                     {
-                        _logger.ErrorFormat("LAST DATE ERROR: {0:s}", webRepLD);
+                        stDate = rabnet.Engine.db().GetFarmStartTime();
+                        if (stDate == DateTime.MaxValue) continue;
+                        if (DateTime.Now.Date.Subtract(stDate.Date).Days > MAX_DAYS)
+                            stDate = DateTime.Now.AddDays(-MAX_DAYS);
+                    }
+                    else
+                    {
+                        DateTime.TryParse(webRepLD, out stDate);
+                        if (stDate == DateTime.MaxValue)
+                        {
+                            _logger.ErrorFormat("LAST DATE ERROR: {0:s}", webRepLD);
+                            continue;
+                        }                       
+                    }
+                    if (stDate.Date == DateTime.Now.AddDays(-1))
+                    {
+                        _logger.Info("На сервере самый свежий отчет по БД: "+rds.Name);
                         continue;
                     }
+                    ///далее Прибавляем все нужные отчеты
+                    reps = appendWR_Global(rds.Params.DataBase, stDate.AddDays(1), DateTime.Now.AddDays(-1));
+                    if (reps != null && reps.Length > 0)
+                    {
+                        RabServWorker.ReqSender.ExecuteMethod(MethodName.WebRep_SendGlobal,
+                            MPN.db, rds.Params.DataBase,
+                            MPN.value, reps);
+                        callOnMessage("Статистика отослана", " ", 1);
+                    }
+                    else
+                        callOnMessage("На сервере самая свежая информация", "Отправка статистики отменена", 1);
                 }
-                if (stDate.Date == DateTime.Now.AddDays(-1))
-                {
-                    _logger.Info("На сервере самый свежий отчет");
-                    continue;
-                }
-                ///далее Прибавляем все нужные отчеты
-                reps = appendWR_Global(rds.Params.DataBase, DateTime.Now.AddDays(-1), stDate);
-                //}
             }
-            //if (exec)
-            //{
-                /*if (_state == State.WebRep_WaitErr)
-                {
-                    callOnMessage("Ошибка при отправке отчета", "", 2);
-                    _state = State.Free;
-                    return;
-                }*/
-                //TODO если не надо ни одного отчета отправить ???
-                if (reps!=null && reps.Length>0)
-                {//todo request sender
-
-                    RabServWorker.ReqSender.ExecuteMethod(MethodName.WebRep_SendGlobal, MPN.value, reps);
-                    //_crossData.webrepXML = doc.InnerXml;
-                    //sendWRonServ();
-                    callOnMessage("Статистика отослана", " ", 1);
-                }
-                else callOnMessage("На сервере самая свежая информация", "Отправка статистики отменена", 1);//TODO исправить условие
-            //}
+            catch (Exception exc)
+            {
+                _logger.Error(exc);
+                callOnMessage(exc.Message, "Ошибка", 3);
+            }
+            finally
+            {
+                _busy = false;
+            }
         }
 
         /// <summary>
-        /// Составляет отчет за каждый день
+        /// Составляет отчет за каждый день в диапазоне дат от startDate до endDate
         /// </summary>
-        private static sWebRepOneDay[] appendWR_Global(string DBname,DateTime reportDate,DateTime startDate)
+        private static sWebRepOneDay[] appendWR_Global(string DBname, DateTime startDate, DateTime endDate)
         {
-            if (reportDate.Date == startDate.Date) return null;
+            if (startDate.Date == endDate.Date) return null;
             List<sWebRepOneDay> reps = new List<sWebRepOneDay>();
-            while (startDate.Date < reportDate.Date)
+            while (startDate.Date <= endDate.Date)
             {
-                reps.Add(new sWebRepOneDay(rabnet.Engine.db().WebReportGlobal(reportDate)));
-                reportDate = reportDate.AddDays(-1);
+                reps.Add(new sWebRepOneDay(rabnet.Engine.db().WebReportGlobal(startDate)));
+                startDate = startDate.AddDays(1);
             }
             return reps.ToArray();
         }
@@ -360,109 +289,40 @@ namespace rabdump
 
 #region curl_usage
 
-        /*private static void downloadDump(string farmname,string dumpFile, string offset)
+        /// <summary>
+        /// Скачивает РКБД с сервера
+        /// </summary>
+        /// <param name="filename">Название файла, который надо получить с сервера</param>
+        /// <param name="downloadTo">По какому пути поместить файл после загрузки</param>
+        /// <param name="offset">Если не равен -1, то будет скачан файл начиная с щааыуе байта и прибавлен к существующему, 
+        /// который находится по пути downloadTo</param>
+        private static void downloadDump(string filename,string downloadTo, long offset)
         {
-            _logger.Info("start Downloading Dump");
-            _state = State.DownloadDump_Loading;
-            _crossData.farmname = farmname;
-            _crossData.dumpPath = dumpFile;
-            _crossData.dumpOffset = offset;
+            string address = Path.Combine(ReqSender.Url, "getdump.php");
+            byte[] responce;
+            
+            WebClient wc = new WebClient();
 
-            try
+            wc.Encoding = Encoding.UTF8;
+            NameValueCollection values = new NameValueCollection();
+            values.Add("clientId", GRD.Instance.GetClientID().ToString());
+            values.Add("file", filename);
+            if (offset != -1)
+                values.Add("offset", offset.ToString());
+            responce = wc.UploadValues(address, values);
+            if (responce.Length == 0)
+                throw new Exception("Не удалось получить файл от удаленного сервера");
+            FileStream fs = new FileStream(downloadTo, FileMode.OpenOrCreate, FileAccess.Write);
+            if (offset == -1)
+                offset = 0;  
+            fs.Seek(offset, SeekOrigin.Begin);
+            fs.Write(responce, 0, responce.Length);
+            fs.Close();
+            string md5 = Helper.GetMD5FromFile(downloadTo);
+            if (wc.ResponseHeaders["Content-MD5"] != "" && md5 != wc.ResponseHeaders["Content-MD5"])
             {
-                Curl.GlobalInit((int)CURLinitFlag.CURL_GLOBAL_ALL);
-
-                MultiPartForm mf = new MultiPartForm();
-                mf.AddSection(CURLformoption.CURLFORM_COPYNAME, "farm",
-                    CURLformoption.CURLFORM_COPYCONTENTS, defendString(farmname),
-                    CURLformoption.CURLFORM_END);
-                mf.AddSection(CURLformoption.CURLFORM_COPYNAME, "file",
-                    CURLformoption.CURLFORM_COPYCONTENTS, dumpFile,
-                    CURLformoption.CURLFORM_END);
-                if (offset != "-1")               
-                    mf.AddSection(CURLformoption.CURLFORM_COPYNAME, "offset",
-                        CURLformoption.CURLFORM_COPYCONTENTS, offset.ToString(),
-                        CURLformoption.CURLFORM_END);
-                
-                Easy easy = new Easy();
-
-                easy.SetOpt(CURLoption.CURLOPT_LOW_SPEED_LIMIT, 10);
-                easy.SetOpt(CURLoption.CURLOPT_LOW_SPEED_TIME, 30);
-
-                easy.SetOpt(CURLoption.CURLOPT_HTTPPOST, mf);
-                easy.SetOpt(CURLoption.CURLOPT_VERBOSE, true);
-                easy.SetOpt(CURLoption.CURLOPT_URL, downloadDumpURI);
-                Easy.WriteFunction wf = new Easy.WriteFunction(onWriteData);
-                easy.SetOpt(CURLoption.CURLOPT_WRITEFUNCTION, wf);
-                Easy.DebugFunction df = new Easy.DebugFunction(onDebug);
-                easy.SetOpt(CURLoption.CURLOPT_DEBUGFUNCTION, df);             
-                Easy.ProgressFunction pf = new Easy.ProgressFunction(onProgress);
-                easy.SetOpt(CURLoption.CURLOPT_PROGRESSFUNCTION, pf);            
-               
-                easy.Perform();
-                easy.Cleanup();
-                mf.Free();
-
-                Curl.GlobalCleanup();
-
-                if (_state != State.DownloadDump_Loaded)
-                {
-                    _state = State.DownloadDump_LoadErr;
-                    if (_crossData.uploadBW != null)
-                    {
-                        _crossData.uploadBW.Close();
-                        _crossData.uploadBW = null;
-                    }
-                    if (_crossData.uploadFS != null)
-                    {
-                        _crossData.uploadFS.Close();
-                        _crossData.uploadFS = null;
-                    }
-                }
-                if (_crossData.watcher != null)
-                {
-                    _crossData.watcher.Stop();
-                    _crossData.watcher = null;
-                }
-            }
-            catch (NullReferenceException ex)
-            {
-                callOnMessage("Возможно отсутствует сетевое подключение", "Ошибка при отправке", 3);
-                _logger.Error("sendfile", ex);
-                if (_crossData.watcher != null)
-                {
-                    _crossData.watcher.Stop();
-                    _crossData.watcher = null;
-                }
-                _state = State.Free;
-            }
-#if !NOCATCH          
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex);
-                _state = State.Free;
-            }
-#endif
-        }
-        private static void downloadDump()
-        {
-            downloadDump(_crossData.farmname,_crossData.dumpPath,_crossData.dumpOffset);
-        }*/
-
-        private static void downloadDump(string dumpFile, long offset)
-        {
-            string address = Path.Combine(ReqSender.Url, "uploader.php");
-
-            using (WebClient wc = new WebClient())
-            {
-                wc.Encoding = Encoding.UTF8;
-                NameValueCollection values = new NameValueCollection();
-                values.Add("clientId", GRD.Instance.GetClientID().ToString());
-                values.Add("fileName", dumpFile);
-                if(offset!=-1)
-                    values.Add("offset", offset.ToString());
-                wc.QueryString = values;
-                wc.DownloadFile(address, dumpFile);                
+                File.Delete(downloadTo);
+                throw new Exception("Контрольная сумма скачанного файла не совпадает");
             }
         }
 
@@ -470,7 +330,7 @@ namespace rabdump
         {
             string address = Path.Combine(ReqSender.Url, "uploader.php");
             
-            using (WebClient wc = new WebClient())
+            /*using (WebClient wc = new WebClient())
             {
                 wc.Encoding = Encoding.UTF8;
                 NameValueCollection values = new NameValueCollection();
@@ -479,181 +339,33 @@ namespace rabdump
                 wc.QueryString = values;
                 byte[] buff = wc.UploadFile(address, dumpPath);
                 address = Encoding.UTF8.GetString(buff);
+            }*/
+
+            using (var stream = File.Open(dumpPath, FileMode.Open))
+            {
+                var files = new[] 
+                {
+                    new UploadFile
+                    {
+                        Name = "file",
+                        Filename = Path.GetFileName(dumpPath),
+                        ContentType = "text/plain",
+                        Stream = stream
+                    }
+                };
+
+                var values = new NameValueCollection
+                {
+                    { "clientId", GRD.Instance.GetClientID().ToString() },
+                    { "md5dump", md5dump },
+                };
+
+                byte[] result = uploadFiles(address, files, values);
             }
         }
 
-        
-
-        /*private static MultiPartForm addVarsMPP(Dictionary<String,String> vars)
-        {
-            MultiPartForm mpp = new MultiPartForm();
-            foreach (KeyValuePair<string, string> pair in vars)
-            {
-                // <input name="pair.Key">
-                mpp.AddSection(CURLformoption.CURLFORM_COPYNAME, pair.Key,
-                    CURLformoption.CURLFORM_COPYCONTENTS, defendString(pair.Value),
-                    CURLformoption.CURLFORM_END);
-            }
-            return mpp;
-        }*/
-
-        /// <summary>
-        /// При получении данных от сервера
-        /// </summary>
-        /// <returns>size * nmemb</returns>
-        /*private static Int32 onWriteData(Byte[] buf, Int32 size, Int32 nmemb, Object extraData)
-        {
-            string msg = ""; 
-            if (_state != State.DownloadDump_Loading)
-            {
-                msg = System.Text.Encoding.UTF8.GetString(buf);
-                _logger.DebugFormat("Curl WriteData: {0:s}", msg);
-            }
-            if (_state == State.DumpList_Wait)
-            {
-                XmlDocument doc = new XmlDocument();
-                try
-                {
-                    doc.LoadXml(msg);
-                    XmlNode dumplist = doc.SelectSingleNode(dumpListNodeName);
-                    if (dumplist != null)
-                        if (dumplist.ChildNodes.Count > 0)
-                        {
-                            //_crossData.dumpList = dumpListDateDSort(doc);
-                            _state = State.DumpList_NodesYes;                       
-                        }
-                        else _state = State.DumpList_NodesNo;
-                }
-                catch (XmlException) { }
-            }
-            else if (_state == State.DownloadDump_Loading)
-            {
-                if (_crossData.uploadFS == null)
-                {
-                    _crossData.uploadFS = new FileStream(Path.GetTempPath() + Path.GetFileName(_crossData.dumpPath) + ".tmp", FileMode.OpenOrCreate, FileAccess.Write);
-                    _crossData.uploadBW = new BinaryWriter(_crossData.uploadFS);
-                    _crossData.uploadBW.Seek(0, SeekOrigin.End);
-                }
-                _crossData.uploadBW.Write(buf);
-            }
-            if (_state == State.WebRep_WaitLD)
-            {
-                _crossData.webRepLD = msg;
-                _state = State.WebRep_WaitOK;
-            }
-            return size * nmemb;
-        }*/
-
-        /// <summary>
-        /// Возникает если есть прогресс передачи данных.
-        /// </summary>
-        /*private static Int32 onProgress(Object extraData, Double dlTotal, Double dlNow, Double ulTotal, Double ulNow)
-        {
-            _logger.DebugFormat("Curl Progress: {0} {1} {2} {3}", dlTotal, dlNow, ulTotal, ulNow);
-            if (_state == State.DownloadDump_Loading && dlNow != 0 && dlTotal == dlNow)
-            {
-                _state = State.DownloadDump_Loaded;
-                _crossData.uploadBW.Close(); 
-                _crossData.uploadFS.Close();
-                File.Move(_crossData.uploadFS.Name, _crossData.uploadFS.Name.Replace(".tmp",""));
-                _crossData.dumpPath = _crossData.uploadFS.Name;
-                _crossData.uploadFS = null;            
-            }
-            else if (_state == State.UploadDump_Loading || _state == State.DownloadDump_Loading)
-            {
-                Double Total = 0, Now = 0;
-                if (_state == State.UploadDump_Loading) { Total = ulTotal; Now = ulNow; }
-                if (_state == State.DownloadDump_Loading)
-                {
-                    if (dlTotal == 0) return 0;//Пока идет отправка запроса, и не получен размер файла
-                    Total = dlTotal;
-                    Now = dlNow;
-                }
-                if (Total == Now)
-                {
-                    if (_state == State.UploadDump_Loading) _state = State.UploadDump_Loaded;
-                    if (_state == State.DownloadDump_Loading) _state = State.DownloadDump_Loaded;
-                    _crossData.watcher.Stop();
-                    _crossData.watcher = null;
-                }
-                else
-                {
-                    if (_crossData.watcher == null)
-                    {
-                        _crossData.watcher = new System.Diagnostics.Stopwatch();
-                        _crossData.lastUploadedBytes = Now;
-                        _crossData.watcher.Start();
-                    }
-                    else
-                    {
-                        if (_crossData.watcher.Elapsed.Seconds > 10)
-                        {
-                            _crossData.watcher.Stop();
-                            double speed = (Now - _crossData.lastUploadedBytes) / _crossData.watcher.Elapsed.Seconds;
-
-                            _crossData.watcher.Reset();
-
-                            if (_state == State.UploadDump_Loading)
-                                callOnMessage(String.Format("Отправленно: {0:s}{1:s}Скорость: {2:s}/сек", getSize(Now), Environment.NewLine, getSize(speed)), "отправка", 1);
-                            if (_state == State.DownloadDump_Loading)
-                                callOnMessage(String.Format("Скачано: {0:s}{1:s}Скорость: {2:s}/сек", getSize(_crossData.uploadFS.Length), Environment.NewLine, getSize(speed)), "Загрузка", 1);
-
-                            _crossData.lastUploadedBytes = Now;
-                            _crossData.watcher.Start();
-                        }
-                    }
-                }
-            }
-            return 0;
-        }*/
-
-        /*private static void onDebug(CURLINFOTYPE infoType, String msg, Object extraData)
-        {
-            if((infoType ==CURLINFOTYPE.CURLINFO_DATA_IN && msg.Length<1000) || infoType == CURLINFOTYPE.CURLINFO_TEXT
-#if DEBUG
-                || infoType == CURLINFOTYPE.CURLINFO_HEADER_OUT || infoType == CURLINFOTYPE.CURLINFO_HEADER_IN
-#endif
-                )
-            {
-                _logger.DebugFormat("Curl Debug: [{1:s}] {0}", msg,infoType.ToString());
-                servMsg(msg);
-            }
-        }*/
-
-        /*private static string defendString(string str)
-        {
-            return str.Replace("\"", "").Replace("\\", "").Replace("/", "");
-        }*/
-
-        /// <summary>
-        /// Вылавливание информации, которую нужно показать в ToolTip
-        /// </summary>
-        /// <param name="msg"></param>
-        /*private static void servMsg(string msg)
-        {
-            if(msg.Contains("couldn't connect to host"))
-            {
-                callOnMessage("Не удалось подключиться к серверу", "Ошибка", 3);
-            }
-            else if(msg.Contains("[File Upload Successful]"))
-            {
-                _state = State.UploadDump_Loaded;
-                //callOnMessage("Файл отправлен успешно", "Успех", 1);
-            }
-            else if(msg.Contains("[File Upload Error]"))
-            {
-                _state = State.UploadDump_LoadErr;
-                //callOnMessage("Ошибка при отправлении файла", "Внимание", 2);
-            }
-            else if (msg.StartsWith("transfer closed with") && msg.EndsWith("bytes remaining to read\n"))
-            {
-                _state = State.DownloadDump_LoadErr;
-            }
-            else if (msg == "connect() timed out!\n")          
-                _state = State.Conection_Failed;
-            
-        }*/
 #endregion curl_usage
+        
         /// <summary>
         /// Запускает событие
         /// </summary>
@@ -680,9 +392,6 @@ namespace rabdump
         {
             callOnMessage(msg, "", 0, false);
         }
-
-
-        
 
         /// <summary>
         /// Округляет число байтов до Кбайт,Мбайт,ГБайт
@@ -717,358 +426,72 @@ namespace rabdump
         /// </summary>
         /// <param name="filename">Название файла</param>
         /// <returns></returns>
-        private static long unDownloaded(string filename)
-        {
-            filename = Path.GetTempPath() + Path.GetFileName(filename) + ".tmp";
-            if(File.Exists(filename))
+        private static long unDownloaded(string filePath)
+        {            
+            if(File.Exists(filePath))
             {
-                FileInfo fi = new FileInfo(filename);
+                FileInfo fi = new FileInfo(filePath);
                 return fi.Length;
             }
             else return -1;
         }
 
-        #region to_delete
-        /*private static XmlDocument newWebRepDoc()
+        private static byte[] uploadFiles(string address, IEnumerable<UploadFile> files, NameValueCollection values)
         {
-            XmlDocument doc = new XmlDocument();
-            doc.AppendChild(doc.CreateXmlDeclaration("1.0", "UTF-8", "no"));
-            doc.AppendChild(doc.CreateElement("webReports"));
-            return doc;
-        }*/
+            var request = WebRequest.Create(address);
+            request.Method = "POST";
+            var boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x", NumberFormatInfo.InvariantInfo);
+            request.ContentType = "multipart/form-data; boundary=" + boundary;
+            boundary = "--" + boundary;
 
-        /*private static void makeGlobalXml(XmlDocument doc, string db, string[] reps)
-        {
-            const string globRep = "global";
-
-            XmlElement el = doc.CreateElement(globRep);
-            el.Attributes.Append(doc.CreateAttribute("database"));
-            el.Attributes["database"].Value = db;
-            foreach (string oneday in reps)
+            using (var requestStream = request.GetRequestStream())
             {
-                string[] cols = oneday.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
-                XmlElement col = doc.CreateElement("oneglobalday");
-                foreach(string s2 in cols)
+                // Write the values
+                foreach (string name in values.Keys)
                 {
-                    string[] dict = s2.Split(new char[] { '=' });
-                    col.Attributes.Append(doc.CreateAttribute(dict[0]));
-                    col.Attributes[dict[0]].Value = dict[1];
+                    var buffer = Encoding.ASCII.GetBytes(boundary + Environment.NewLine);
+                    requestStream.Write(buffer, 0, buffer.Length);
+                    buffer = Encoding.ASCII.GetBytes(string.Format("Content-Disposition: form-data; name=\"{0}\"{1}{1}", name, Environment.NewLine));
+                    requestStream.Write(buffer, 0, buffer.Length);
+                    buffer = Encoding.UTF8.GetBytes(values[name] + Environment.NewLine);
+                    requestStream.Write(buffer, 0, buffer.Length);
                 }
-                el.AppendChild(col);
-            }
-            doc.SelectSingleNode("webReports").AppendChild(el);
-        }*/
 
-        /*public static List<string> GetDumpList(string farmname,string dbName)
-        {
-            
-
-            List<string> result = new List<string>();
-            if (_crossData.dumpList!= null && _crossData.dumpList.FirstChild.ChildNodes.Count>0)
-            {          
-                foreach (XmlNode nd in _crossData.dumpList.FirstChild.ChildNodes)
+                // Write the files
+                foreach (var file in files)
                 {
-                    if (nd.Attributes["filename"].Value.Contains(dbName.Replace(' ','_')))
-                    {
-                        if(!result.Contains(nd.Attributes["filename"].Value))
-                            result.Add( nd.Attributes["filename"].Value);                      
-                    }
+                    var buffer = Encoding.ASCII.GetBytes(boundary + Environment.NewLine);
+                    requestStream.Write(buffer, 0, buffer.Length);
+                    buffer = Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"{2}", file.Name, file.Filename, Environment.NewLine));
+                    requestStream.Write(buffer, 0, buffer.Length);
+                    buffer = Encoding.ASCII.GetBytes(string.Format("Content-Type: {0}{1}{1}", file.ContentType, Environment.NewLine));
+                    requestStream.Write(buffer, 0, buffer.Length);
+                    CopyStream(file.Stream,requestStream);
+                    buffer = Encoding.ASCII.GetBytes(Environment.NewLine);
+                    requestStream.Write(buffer, 0, buffer.Length);
                 }
+
+                var boundaryBuffer = Encoding.ASCII.GetBytes(boundary + "--");
+                requestStream.Write(boundaryBuffer, 0, boundaryBuffer.Length);
             }
-            _state = State.Free;
-            return result;
-        }*/
 
-        /// <summary>
-        /// Сортирует Ноды дампов по убыванию Дат.
-        /// </summary>
-        /// <param name="xmlDocument"></param>
-        /// <returns>Отсортированная XML по датам</returns>
-        /*private static XmlDocument dumpListDateDSort(XmlDocument srcDocument)
-        {
-            XmlDocument sortedDoc = new XmlDocument();
-            XmlElement rootNode = sortedDoc.CreateElement(dumpListNodeName);
-            sortedDoc.AppendChild(rootNode);
-            foreach (XmlNode srcND in srcDocument.SelectSingleNode(dumpListNodeName))
+            using (var response = request.GetResponse())
+            using (var responseStream = response.GetResponseStream())
+            using (var stream = new MemoryStream())
             {
-                if (srcND.Name != dumpListItemName) continue;
-                if (rootNode.ChildNodes.Count == 0)
-                    rootNode.AppendChild(sortedDoc.ImportNode(srcND,true));
-                else
-                {
-                    DateTime srcDT = DateTime.Parse(srcND.Attributes["datetime"].Value);
-                    foreach (XmlNode destND in rootNode.ChildNodes)
-                    {                      
-                        DateTime destDT = DateTime.Parse(destND.Attributes["datetime"].Value);
-                        if (srcDT > destDT)
-                        {
-                            rootNode.InsertBefore(sortedDoc.ImportNode(srcND, true), destND);
-                            break;
-                        }
-                        if (destND == rootNode.LastChild)
-                        {
-                            rootNode.AppendChild(sortedDoc.ImportNode(srcND, true));
-                            break;
-                        }
-                    }
-                }
-            }
-#if DEBUG
-            sortedDoc.Save("sortedDoc.xml");
-#endif
-            return sortedDoc;
-        }*/
-
-        /*private static void configEasy(Easy easy,int timeout)
-        {
-            if (timeout != 0)
-                easy.SetOpt(CURLoption.CURLOPT_CONNECTTIMEOUT, timeout);
-
-            easy.SetOpt(CURLoption.CURLOPT_VERBOSE, true);
-            easy.SetOpt(CURLoption.CURLOPT_URL, lastDumpURI);
-            //easy.SetOpt(CURLoption.CURLOPT_HTTPPOST, mf);
-
-            Easy.WriteFunction wf = new Easy.WriteFunction(onWriteData);
-            easy.SetOpt(CURLoption.CURLOPT_WRITEFUNCTION, wf);
-
-            Easy.DebugFunction df = new Easy.DebugFunction(onDebug);
-            easy.SetOpt(CURLoption.CURLOPT_DEBUGFUNCTION, df);
-
-            Easy.ProgressFunction pf = new Easy.ProgressFunction(onProgress);
-            easy.SetOpt(CURLoption.CURLOPT_PROGRESSFUNCTION, pf);
-        }
-        private static void configEasy(Easy easy)
-        {
-            configEasy(easy, 0);
-        }*/
-
-        /*private static void getDumpList(string farmname)
-        {
-            try
-            {
-                _state = State.DumpList_Wait;
-                _crossData.farmname = farmname;
-                Curl.GlobalInit((int)CURLinitFlag.CURL_GLOBAL_ALL);
-
-                MultiPartForm mf = new MultiPartForm();
-                mf.AddSection(CURLformoption.CURLFORM_COPYNAME, "farm",
-                    CURLformoption.CURLFORM_COPYCONTENTS, defendString(farmname),
-                    CURLformoption.CURLFORM_END);
-
-                Easy easy = new Easy();
-
-                easy.SetOpt(CURLoption.CURLOPT_CONNECTTIMEOUT, 10);
-                easy.SetOpt(CURLoption.CURLOPT_VERBOSE, true);
-                easy.SetOpt(CURLoption.CURLOPT_URL, lastDumpURI);
-                easy.SetOpt(CURLoption.CURLOPT_HTTPPOST, mf);
-                Easy.WriteFunction wf = new Easy.WriteFunction(onWriteData);
-                easy.SetOpt(CURLoption.CURLOPT_WRITEFUNCTION, wf);
-                Easy.DebugFunction df = new Easy.DebugFunction(onDebug);
-                easy.SetOpt(CURLoption.CURLOPT_DEBUGFUNCTION, df);             
-                Easy.ProgressFunction pf = new Easy.ProgressFunction(onProgress);
-                easy.SetOpt(CURLoption.CURLOPT_PROGRESSFUNCTION, pf);
-
-
-                easy.Perform();
-                easy.Cleanup();
-                mf.Free();
-
-                Curl.GlobalCleanup();
-                if (_state == State.DumpList_Wait)
-                    _state = State.DumpList_NodesNo;
-            }
-            catch (NullReferenceException ex)
-            {
-                callOnMessage("Возможно отсутствует сетевое подключение", "Ошибка при отправке", 3);
-                _logger.Error("sendfile", ex);
-                _state = State.Free;
-            }
-#if !NOCATCH          
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex);
-                _state = State.Free;
-            }
-#endif
-        }
-        private static void getDumpList()
-        {
-            getDumpList(_crossData.farmname);
-        }*/
-
-        /*private static void uploadDump(string farmname,string dumpPath)
-        {
-            try
-            {
-                _state = State.UploadDump_Loading;
-                _crossData.farmname = farmname;
-                _crossData.dumpPath = dumpPath;
-
-                _logger.Info("sending dump on server");
-                Curl.GlobalInit((int)CURLinitFlag.CURL_GLOBAL_ALL);
-
-                MultiPartForm mform = new MultiPartForm();
-
-
-                mform.AddSection(CURLformoption.CURLFORM_COPYNAME, "farm",
-                    CURLformoption.CURLFORM_COPYCONTENTS, farmname,
-                    CURLformoption.CURLFORM_END);
-
-                mform.AddSection(CURLformoption.CURLFORM_COPYNAME, "type",
-                    CURLformoption.CURLFORM_COPYCONTENTS, "dump",
-                    CURLformoption.CURLFORM_END);
-              
-                mform.AddSection(CURLformoption.CURLFORM_COPYNAME, "uploadedfile",
-                    CURLformoption.CURLFORM_FILE, dumpPath,
-                    CURLformoption.CURLFORM_CONTENTTYPE, "application/binary",
-                    CURLformoption.CURLFORM_END);
-
-                Easy easy = new Easy();
-
-                easy.SetOpt(CURLoption.CURLOPT_CONNECTTIMEOUT, 60);
-                easy.SetOpt(CURLoption.CURLOPT_VERBOSE, true);
-                easy.SetOpt(CURLoption.CURLOPT_URL, uploadDumpURI);
-                easy.SetOpt(CURLoption.CURLOPT_HTTPPOST, mform);
-                Easy.DebugFunction df = new Easy.DebugFunction(onDebug);
-                easy.SetOpt(CURLoption.CURLOPT_DEBUGFUNCTION, df);            
-                Easy.ProgressFunction pf = new Easy.ProgressFunction(onProgress);
-                easy.SetOpt(CURLoption.CURLOPT_PROGRESSFUNCTION, pf);
-
-                easy.Perform();
-                easy.Cleanup();
-                mform.Free();
-
-                Curl.GlobalCleanup();
-                if (_crossData.watcher != null)
-                {
-                    _crossData.watcher.Stop();
-                    _crossData.watcher = null;
-                } 
-            }
-            catch (NullReferenceException ex)
-            {
-                callOnMessage("Возможно отсутствует сетевое подключение", "Ошибка при отправке", 3);
-                _logger.Error("sendfile", ex);
-                _state = State.Free;
-            }
-#if !NOCATCH
-            catch (ApplicationException ex)
-            {
-                callOnMessage(ex.Message, "Ошибка при отправке", 3);
-                _logger.Error("sendfile", ex);
-                _state = State.Free;
-            }
-            catch (Exception ex)
-            {
-                _logger.Fatal("sendfile", ex);
-                _state = State.Free;
-            }
-#endif
-        }
-        private static void uploadDump()
-        {
-            uploadDump(_crossData.farmname, _crossData.dumpPath);
-        }*/
-
-        /*private static void getLatestWebReport(string farmname,string db)
-        {
-            try
-            {
-                _state = State.WebRep_WaitLD;
-                _crossData.farmname = farmname;
-                _crossData.DBname = db;
-                Curl.GlobalInit((int)CURLinitFlag.CURL_GLOBAL_ALL);
-
-                MultiPartForm mf = new MultiPartForm();
-                mf.AddSection(CURLformoption.CURLFORM_COPYNAME, "farm",
-                    CURLformoption.CURLFORM_COPYCONTENTS, defendString(farmname),
-                    CURLformoption.CURLFORM_END);
-                mf.AddSection(CURLformoption.CURLFORM_COPYNAME, "db",
-                    CURLformoption.CURLFORM_COPYCONTENTS, db,
-                    CURLformoption.CURLFORM_END);
-
-                Easy easy = new Easy();
-                easy.SetOpt(CURLoption.CURLOPT_VERBOSE, true);
-                easy.SetOpt(CURLoption.CURLOPT_URL, webrepGetLastDateURI);
-                easy.SetOpt(CURLoption.CURLOPT_HTTPPOST, mf);
-                easy.SetOpt(CURLoption.CURLOPT_CONNECTTIMEOUT, 10);
-
-                Easy.WriteFunction wf = new Easy.WriteFunction(onWriteData);
-                easy.SetOpt(CURLoption.CURLOPT_WRITEFUNCTION, wf);
-
-                Easy.DebugFunction df = new Easy.DebugFunction(onDebug);
-                easy.SetOpt(CURLoption.CURLOPT_DEBUGFUNCTION, df);
-
-                Easy.ProgressFunction pf = new Easy.ProgressFunction(onProgress);
-                easy.SetOpt(CURLoption.CURLOPT_PROGRESSFUNCTION, pf);
-
-
-                easy.Perform();
-                easy.Cleanup();
-                mf.Free();
-
-                Curl.GlobalCleanup();
-                if (_state == State.WebRep_WaitLD)
-                    _state = State.WebRep_WaitErr;
-            }
-            catch (NullReferenceException ex)
-            {
-                callOnMessage("Возможно отсутствует сетевое подключение", "Ошибка при отправке ВебОтчета", 3);
-                _logger.Error("sendfile", ex);
-                _state = State.Free;
-            }
-        }*/
-
-        /*private static void sendWRonServ(string farmname, string xml)
-        {
-            try
-            {
-                _state = State.WebRep_Uploading;
-                _crossData.farmname = farmname;
-                _crossData.webrepXML = xml;
-                Curl.GlobalInit((int)CURLinitFlag.CURL_GLOBAL_ALL);
-
-                MultiPartForm mf = new MultiPartForm();
-                mf.AddSection(CURLformoption.CURLFORM_COPYNAME, "farm",
-                    CURLformoption.CURLFORM_COPYCONTENTS, defendString(farmname),
-                    CURLformoption.CURLFORM_END);
-                mf.AddSection(CURLformoption.CURLFORM_COPYNAME, "report",
-                    CURLformoption.CURLFORM_COPYCONTENTS, xml,
-                    CURLformoption.CURLFORM_END);
-
-                Easy easy = new Easy();
-
-                easy.SetOpt(CURLoption.CURLOPT_CONNECTTIMEOUT, 10);
-                easy.SetOpt(CURLoption.CURLOPT_VERBOSE, true);
-                easy.SetOpt(CURLoption.CURLOPT_URL, webrepUploadURI);
-                easy.SetOpt(CURLoption.CURLOPT_HTTPPOST, mf);
-                Easy.WriteFunction wf = new Easy.WriteFunction(onWriteData);
-                easy.SetOpt(CURLoption.CURLOPT_WRITEFUNCTION, wf);
-                Easy.DebugFunction df = new Easy.DebugFunction(onDebug);
-                easy.SetOpt(CURLoption.CURLOPT_DEBUGFUNCTION, df);
-                Easy.ProgressFunction pf = new Easy.ProgressFunction(onProgress);
-                easy.SetOpt(CURLoption.CURLOPT_PROGRESSFUNCTION, pf);
-
-
-                easy.Perform();
-                easy.Cleanup();
-                mf.Free();
-
-                Curl.GlobalCleanup();
-                if (_state == State.WebRep_Uploading)
-                    _state = State.WebRep_UploadErr;
-            }
-            catch (NullReferenceException ex)
-            {
-                callOnMessage("Возможно отсутствует сетевое подключение", "Ошибка при отправке Статистики", 3);
-                _logger.Error("sendfile", ex);
-                _state = State.Free;
+                CopyStream(responseStream,stream);
+                return stream.ToArray();
             }
         }
-        private static void sendWRonServ()
+
+        public static void CopyStream(Stream input, Stream output)
         {
-            sendWRonServ(_crossData.farmname,_crossData.webrepXML);
-        }*/
-        #endregion to_delete
+            byte[] buffer = new byte[32768];
+            int read;
+            while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                output.Write(buffer, 0, read);
+            }
+        }
     }
 }

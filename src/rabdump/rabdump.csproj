@@ -135,6 +135,9 @@
     <Compile Include="..\libs\GRD\GRD_BaseTRU.cs">
       <Link>classes\GRD_BaseTRU.cs</Link>
     </Compile>
+    <Compile Include="..\libs\pEngine\AppUpdater.cs">
+      <Link>remote\AppUpdater.cs</Link>
+    </Compile>
     <Compile Include="..\libs\pEngine\Helper.cs">
       <Link>remote\Helper.cs</Link>
     </Compile>

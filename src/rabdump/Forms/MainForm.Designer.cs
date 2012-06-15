@@ -42,19 +42,19 @@
             this.jobsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.restMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.miSendGlobRep = new System.Windows.Forms.ToolStripMenuItem();
             this.miManage = new System.Windows.Forms.ToolStripMenuItem();
             this.updateKeyMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.AboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btOk = new System.Windows.Forms.Button();
             this.btCancel = new System.Windows.Forms.Button();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.tDumper = new System.Windows.Forms.Timer(this.components);
-            this.btCheckUpdate = new System.Windows.Forms.Button();
             this.tUpdater = new System.Windows.Forms.Timer(this.components);
+            this.miCheckForUpdate = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -79,15 +79,16 @@
             this.jobsMenuItem,
             this.restMenuItem,
             this.toolStripMenuItem2,
+            this.miSendGlobRep,
             this.miManage,
             this.updateKeyMenuItem,
+            this.miCheckForUpdate,
             this.toolStripSeparator1,
             this.AboutToolStripMenuItem,
             this.toolStripSeparator2,
-            this.testToolStripMenuItem,
             this.exitMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(211, 320);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(211, 342);
             // 
             // restoreMenuItem
             // 
@@ -155,6 +156,13 @@
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(207, 6);
             // 
+            // miSendGlobRep
+            // 
+            this.miSendGlobRep.Name = "miSendGlobRep";
+            this.miSendGlobRep.Size = new System.Drawing.Size(210, 22);
+            this.miSendGlobRep.Text = "Послать отчет на сервер";
+            this.miSendGlobRep.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
+            // 
             // miManage
             // 
             this.miManage.Name = "miManage";
@@ -185,14 +193,6 @@
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(207, 6);
-            // 
-            // testToolStripMenuItem
-            // 
-            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
-            this.testToolStripMenuItem.Text = "test";
-            this.testToolStripMenuItem.Visible = false;
-            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
             // exitMenuItem
             // 
@@ -240,20 +240,16 @@
             this.tDumper.Interval = 60000;
             this.tDumper.Tick += new System.EventHandler(this.tDumper_Tick);
             // 
-            // btCheckUpdate
-            // 
-            this.btCheckUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btCheckUpdate.Location = new System.Drawing.Point(6, 362);
-            this.btCheckUpdate.Name = "btCheckUpdate";
-            this.btCheckUpdate.Size = new System.Drawing.Size(137, 23);
-            this.btCheckUpdate.TabIndex = 4;
-            this.btCheckUpdate.Text = "Проверить обновление";
-            this.btCheckUpdate.UseVisualStyleBackColor = true;
-            this.btCheckUpdate.Click += new System.EventHandler(this.button3_Click);
-            // 
             // tUpdater
             // 
             this.tUpdater.Interval = 10800000;
+            // 
+            // miCheckForUpdate
+            // 
+            this.miCheckForUpdate.Name = "miCheckForUpdate";
+            this.miCheckForUpdate.Size = new System.Drawing.Size(210, 22);
+            this.miCheckForUpdate.Text = "Проверить обновление";
+            this.miCheckForUpdate.Click += new System.EventHandler(this.miCheckForUpdate_Click);
             // 
             // MainForm
             // 
@@ -262,7 +258,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btCancel;
             this.ClientSize = new System.Drawing.Size(541, 393);
-            this.Controls.Add(this.btCheckUpdate);
             this.Controls.Add(this.propertyGrid1);
             this.Controls.Add(this.btCancel);
             this.Controls.Add(this.btOk);
@@ -304,15 +299,15 @@
         private System.Windows.Forms.ToolStripMenuItem RunRabnetToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem miNewFarm;
-        private System.Windows.Forms.Button btCheckUpdate;
         private System.Windows.Forms.Timer tUpdater;
         private System.Windows.Forms.ToolStripMenuItem updateKeyMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem AboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem miServDump;
-        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem miSendGlobRep;
         private System.Windows.Forms.ToolStripMenuItem miManage;
+        private System.Windows.Forms.ToolStripMenuItem miCheckForUpdate;
     }
 }
 

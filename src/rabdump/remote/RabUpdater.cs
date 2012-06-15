@@ -12,7 +12,7 @@ using System.Diagnostics;
 
 namespace rabdump
 {
-    class RabUpdateInfo
+    /*class RabUpdateInfo
     {
         public string Version = "";
         public string Info = "";
@@ -48,17 +48,8 @@ namespace rabdump
             }
         }
     }
-
-    /// <summary>
-    /// Нужен для отправки сообщения из классов,
-    /// работающих с сервером, основной программе
-    /// </summary>
-    /// <param name="msg">Сообщение</param>
-    /// <param name="ttl">Заголовок</param>
-    /// <param name="type">Error (3);Warning (2);Info (1);None (0)</param>
-    /// <param name="hide">Скрыть ли значек из трея</param>
-    public delegate void MessageSenderCallbackDelegate(string msg, string ttl, int type, bool hide);
-    public delegate void CloseCallbackDelegate();
+    
+    
     
     class RabUpdater
     {
@@ -412,5 +403,5 @@ namespace rabdump
         }
 
 
-    }
+    }*/
 }

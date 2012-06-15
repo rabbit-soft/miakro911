@@ -62,14 +62,14 @@ Coalesce((select sum(a) from (
         {
             if (rd.IsClosed) return "";
             string result = "";
-            result += String.Format("date={0:s};", rd.GetString("date"));
-            result += String.Format("fucks={0:s};", rd.GetString("fucks"));
-            result += String.Format("okrols={0:s};", rd.GetString("okrols"));
-            result += String.Format("proholosts={0:s};", rd.GetString("proholosts"));
-            result += String.Format("born={0:s};", rd.GetString("born"));
-            result += String.Format("killed={0:s};", rd.GetString("killed"));
-            result += String.Format("deads={0:s};", rd.GetString("deads"));
-            result += String.Format("rabbits={0:s};", rd.GetString("rabbits"));
+            result += String.Format("Date={0:s};", rd.GetString("date"));
+            result += String.Format("Fucks={0:s};", rd.GetString("fucks"));
+            result += String.Format("Okrols={0:s};", rd.GetString("okrols"));
+            result += String.Format("Proholosts={0:s};", rd.GetString("proholosts"));
+            result += String.Format("Born={0:s};", rd.GetString("born"));
+            result += String.Format("Killed={0:s};", rd.GetString("killed"));
+            result += String.Format("Deads={0:s};", rd.GetString("deads"));
+            result += String.Format("Rabbits={0:s};", rd.GetString("rabbits"));
             return result;
         }
     }

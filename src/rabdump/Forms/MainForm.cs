@@ -19,25 +19,30 @@ namespace rabdump
         bool _canclose = false;
         bool _manual = true;
 
-        readonly RabUpdater _rupd;
+        //readonly RabUpdater _rupd;
 
-        readonly SocketServer _socksrv;
+        //readonly SocketServer _socksrv;
 
         long _updDelayCnt = 0;
 
         public MainForm()
         {
-            InitializeComponent();  
+            InitializeComponent();
+            AppUpdater au = new AppUpdater(RabServWorker.ReqSender, getUpdatePath());
+            au.DeleteOldFiles();
+            
 #if PROTECTED
             miServDump.Enabled = GRD.Instance.GetFlag(GRD.FlagType.ServerDump);
+            miSendGlobRep.Enabled = GRD.Instance.GetFlag(GRD_Base.FlagType.WebReports);
 #else
-            miServDump.Enabled = true;
+            miServDump.Enabled =
+                miSendGlobRep.Enabled= true;
 #endif
             log4net.Config.XmlConfigurator.Configure();
-            _rupd = new RabUpdater();
-            _rupd.MessageSenderCallback = MessageCb;          
-            _rupd.CloseCallback = CloseCb;
-            _socksrv = new SocketServer(); 
+            //_rupd = new RabUpdater();
+            //_rupd.MessageSenderCallback = MessageCb;          
+            //_rupd.CloseCallback = CloseCb;
+            //_socksrv = new SocketServer(); 
 #if PROTECTED
             if(RabGRD.GRD.Instance.GetFlag(GRD.FlagType.ServerDump))
             {
@@ -48,6 +53,12 @@ namespace rabdump
 #if PROTECTED
             }
 #endif
+        }
+
+        public void UpdateFinishHandler()
+        {
+            notifyIcon1.ShowBalloonTip(5, "Обновление завершено", "Программа требует перезапуска",ToolTipIcon.Info);
+            Environment.Exit(1);
         }
 
         private void restoreMenuItem_Click(object sender, EventArgs e)
@@ -83,7 +94,7 @@ namespace rabdump
             if (_canclose)
             {
                 logger.Debug("Program finished");
-                _socksrv.Close();
+                //_socksrv.Close();
             }
             _manual = false;
             WindowState = FormWindowState.Minimized;
@@ -159,7 +170,7 @@ namespace rabdump
             ProcessTiming(false);
             if ((_updDelayCnt >= 900000) && (!tUpdater.Enabled))
             {
-                _rupd.CheckUpdate();
+                //_rupd.CheckUpdate();
                 tUpdater.Enabled = true;
             }
             if ((_updDelayCnt < 900000) && (!tUpdater.Enabled))
@@ -223,6 +234,7 @@ namespace rabdump
                         DoDump(j);
                 }
         }
+        
         /// <summary>
         /// Делает резервирование одного расписания
         /// </summary>
@@ -310,7 +322,7 @@ namespace rabdump
 
         private void button3_Click(object sender, EventArgs e)
         {
-            _rupd.CheckUpdate();
+            //_rupd.CheckUpdate();
         }
 
         private void updateKeyMenuItem_Click(object sender, EventArgs e)
@@ -369,6 +381,20 @@ namespace rabdump
             DongleUpdater dlg = new DongleUpdater((resp.Value as sClient[])[0]);
             dlg.ShowDialog();
 #endif
+        }
+
+        private void miCheckForUpdate_Click(object sender, EventArgs e)
+        {
+            AppUpdater au = new AppUpdater(RabServWorker.ReqSender, getUpdatePath());          
+            au.OnUpdateFinish += UpdateFinishHandler;
+            au.Check();            
+            miCheckForUpdate.Visible = false;
+        }
+
+        private string getUpdatePath()
+        {
+            DirectoryInfo di = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            return di.Parent.FullName;
         }
     }
 }

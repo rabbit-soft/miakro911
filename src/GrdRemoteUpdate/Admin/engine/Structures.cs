@@ -82,7 +82,7 @@ namespace pEngine
         public string Date;
         public string Fucks;
         public string Okrols;
-        public string Oroholosts;
+        public string Proholosts;
         public string Born;
         public string Killed;
         public string Deads;
@@ -98,7 +98,7 @@ namespace pEngine
                 string[] dict = pair.Split(new char[] { '=' });
                 fi = t.GetField(dict[0]);
                 if (fi != null)
-                    fi.SetValue(dict[1], this);
+                    fi.SetValue(this, dict[1]);
             }            
         }
         
@@ -114,5 +114,24 @@ namespace pEngine
         public string FileName;
         [XmlRpcMember("md5dump")]
         public string MD5;
+    }
+
+    public class sUpdateFile
+    {
+        public string Name;
+        /// <summary>
+        /// Каталог в папке обновления, в котором находится файл.
+        /// <remarks>
+        /// Не должен начинаться прямой косой черты(/).
+        /// Должен заканчиваться на прямую косую черту(/).</remarks>
+        /// </summary>
+        public string Path;
+        public string md5;
+        public string Version;
+        [XmlRpcMissingMapping(MappingAction.Ignore)]
+        public string PathName
+        {
+            get { return Path + Name; }
+        }
     }
 }
