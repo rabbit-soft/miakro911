@@ -27,14 +27,16 @@ function checkDir($path)
 		mkdir($path);
 	}
 }
-
+;
 Logger::configure('log4php.xml');
 $log = Logger::getLogger("uploader");
 $log->info('dump Upload '.$_FILES["file"]["name"]);
+$log->debug(var_export($_POST,true));
+$log->debug(var_export($_FILES,true));
 
 $target_path = Conf::$DUMPS_DIR;
 checkDir($target_path);
-$target_path = $target_path . $_GET["clientId"]."/";
+$target_path = $target_path . $_POST["clientId"]."/";
 checkDir($target_path);
 $target_path = $target_path . $_FILES["file"]["name"];
 if(move_uploaded_file($_FILES["file"]["tmp_name"], $target_path))
@@ -46,8 +48,8 @@ if(move_uploaded_file($_FILES["file"]["tmp_name"], $target_path))
         delete($target_path);
         exit("2");
     }*/
-    $md5dump = $_GET['md5dump'];
-    ServFunc::AddDump($_GET["clientId"], $_FILES["file"]["name"], $md5dump);
+    $md5dump = $_POST['md5dump'];
+    ServFunc::AddDump($_POST["clientId"], $_FILES["file"]["name"], $md5dump);
 	echo "0";
 } 
 else

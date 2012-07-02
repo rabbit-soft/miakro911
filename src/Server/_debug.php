@@ -12,7 +12,7 @@ $UID=1;
 //XMLRPC::debug("fuck", "you");
 $request ='<?xml version="1.0" encoding="utf-8"?>
 <methodCall>
-  <methodName>clients.get</methodName>
+  <methodName>get.update.files</methodName>
   <params />
 </methodCall>';
 $xmlrpc_request = XMLRPC::Parse($request);

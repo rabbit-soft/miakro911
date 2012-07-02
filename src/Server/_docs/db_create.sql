@@ -71,7 +71,6 @@ COMMENT = 'таблица с администраторами';
 CREATE TABLE `rabserv`.`globalReport` (
   `date` DATETIME NOT NULL,
   `clientId` int(10) unsigned NOT NULL,
-  `farm` VARCHAR(45) NOT NULL,
   `database` VARCHAR(45) NOT NULL COMMENT 'название БД на компьютере пользователя',
   `fucks` INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'случек',
   `okrols` INTEGER UNSIGNED NOT NULL DEFAULT 0,

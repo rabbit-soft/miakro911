@@ -34,11 +34,12 @@ class MC
             case "get.payments": $return_value = self::get_payments($params[0]); break;
             case "get.costs": $return_value = self::get_costs($params[0]); break;
             case "get.dumplist": $return_value = self::get_dumplist($params[0]); break;
+            case "get.update.files": $return_value = self::get_update_files(); break;
             case "vendor.add.dongle": self::vendor_add_dongle($params[0],$params[1],$params[2]) ; break;
             case "vendor.update.dongle": $return_value = self::vendor_update_dongle($params[0],$params[1],$params[2],$params[3],$params[4],$params[5],$params[6]) ; break;
             case "vendor.shedule.dongle": $return_value = self::vendor_shedule_dongle($params[0],$params[1],$params[2],$params[3],$params[4],$params[5],$params[6]) ; break;
             case "dongle.update.success": $return_value = self::dongle_update_success($params[0],$params[1]); break;
-            case "webrep.get.lastdate": $return_value = self::GetWebRep_LastDate($params[0],$params[1]); break;
+            case "webrep.get.lastdate": $return_value = self::GetWebRep_LastDate($params[0]); break;
             case "webrep.send.global": self::ParseWebReport($params[0],$params[1]); break;
             default:return self::methodNotFound($methodName);
         }
@@ -275,13 +276,13 @@ class MC
      * @package string $db - имя БазыДанных
      * @return string Дату либо "nodates"
      */
-    private static function GetWebRep_LastDate($farmname,$db)
+    private static function GetWebRep_LastDate($db)
     {
         //$result = "nodates";
         //$farmname = iconv("cp1251", "UTF-8", $farmname);
         //$db = iconv("cp1251", "UTF-8", $db);
-        $sql = DBworker::GetConnection();
-        $query ="SELECT Max(`date`) AS dt FROM globalReport WHERE farm='$farmname' AND `database`='$db'";
+        global $UID;
+        $query ="SELECT Max(`date`) dt FROM globalReport WHERE clientId=$UID AND `database`='$db'";
         $result = DBworker::GetListOfStruct($query);
         return $result[0]['dt'];
     }
@@ -291,34 +292,19 @@ class MC
      * @param string $farmname - Название организации
      * @param string $xml_text - Текст XML-статистики
      */
-    private static function ParseWebReport($farmname,$array)
+    private static function ParseWebReport($database,$array)
     {
-        /*$farmname = iconv("cp1251", "UTF-8", $farmname);
-        $xml_text = stripcslashes($array);
-        $xml = simplexml_load_string($xml_text);
-        foreach ($xml->global as $g)
-            self::AddWebRep_Global($farmname,$g);*/
-    }
-
-    /**
-     * Добавляет в БД Глобальный отчет
-     * @param string $farmname - Название организации
-     * @param simpleXMLElement $xml
-     */
-    private static function AddWebRep_Global($farmname,$xml)
-    {
-        $sql = DBworker::GetConnection();
-        $database = $xml["database"];
-        foreach ($xml->oneglobalday as $gd)
+        global $UID;
+        $query = "INSERT INTO globalReport( clientId, `database`, `date`, fucks, proholosts, born, killed, deads, rabbits)
+						VALUES";
+        foreach ($array as $day)
         {
-            $query = "INSERT INTO globalReport( farm, `database`, `date`, fucks, proholosts, born, killed, deads, rabbits)
-						VALUES('$farmname','$database','".$gd["date"]."',".$gd["fucks"].",".$gd["proholosts"].",
-						".$gd["born"].",".$gd["killed"].",".$gd["deads"].",".$gd["rabbits"].")";
-            mysql_query($query,$sql);
+            $query.=sprintf("($UID,'$database','%s',%s,%s,%s,%s,%s,%s),",
+                $day["Date"],$day["Fucks"],$day["Proholosts"],$day["Born"],$day["Killed"],$day["Deads"],$day["Rabbits"]);
         }
-        $sql->close();
+        $query = rtrim($query,',');
+        DBworker::Execute($query);
     }
-
     /**
      * Возвращает XML со списком имеющихся Резервных Копий
      * @param string $farmname - Название организации
@@ -329,6 +315,38 @@ class MC
         global $UID;
         $query = "SELECT farm, datetime, filename, md5dump FROM dumplist WHERE clientId=$UID order by datetime desc";
         return DBworker::GetListOfStruct($query);
+    }
+
+    private static function get_update_files($pand="")
+    {
+        $result=array();
+        $path =Conf::$UPDATE_PATH.$pand;
+        if (is_dir($path))
+        {
+            if ($dh = opendir($path))
+            {
+                while (($file = readdir($dh)) !== false)
+                {
+                    if($file=="." ||$file=="..")continue;
+                    $row = array();
+                    if((filetype($path.$file) == "dir"))
+                    {
+                        $tabs = self::get_update_files("$file/");
+                        $result = array_merge($result,$tabs);
+                    }
+                    else
+                    {
+                        $row['Name']=$file;
+                        $row['md5'] = md5_file($path.$file);
+                        $row['Path']=$pand;
+                        $row['Version']=implode('.',GetFileVersion($path.$file));
+                        $result[]=$row;
+                    }
+                }
+                closedir($dh);
+            }
+        }
+        return $result;
     }
 }
 ?>
