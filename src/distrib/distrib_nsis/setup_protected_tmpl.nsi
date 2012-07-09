@@ -163,8 +163,7 @@ Section  $(SEC_RabDump_NAME) SEC_RabDump
 	File ..\..\..\bin\@bin_type@\RabDump\rabdump.exe.config
     File ..\..\..\bin\@bin_type@\RabDump\GuardantDotNetApi.dll
     File ..\..\..\bin\@bin_type@\RabDump\log4net.dll
-	File ..\..\..\bin\@bin_type@\RabDump\libcurl.dll
-	File ..\..\..\bin\@bin_type@\RabDump\LibCurlShim.dll
+	File ..\..\..\bin\@bin_type@\RabDump\ccxmlrpc.dll
 	File ..\..\..\bin\@bin_type@\RabDump\engine.dll
 	File ..\..\..\bin\@bin_type@\RabDump\db.mysql.dll
 #    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage32.dll
@@ -379,9 +378,8 @@ Section /o "-un.rabdump" UNSEC_RabDump
 
     Delete /REBOOTOK $INSTDIR\RabDump\GrdAPI32.DLL
     Delete /REBOOTOK $INSTDIR\RabDump\GrdAPI64.DLL
-	Delete /REBOOTOK $INSTDIR\RabDump\LibCurlShim.dll
-	Delete /REBOOTOK $INSTDIR\RabDump\libcurl.dll
 	Delete /REBOOTOK $INSTDIR\RabDump\log4net.dll
+	Delete /REBOOTOK $INSTDIR\RabDump\ccxmlrpc.dll
 	Delete /REBOOTOK $INSTDIR\RabDump\db.mysql.dll
 	Delete /REBOOTOK $INSTDIR\RabDump\engine.dll
     Delete /REBOOTOK $INSTDIR\RabDump\rabdump.exe

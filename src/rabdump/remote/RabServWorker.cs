@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using log4net;
-using SeasideResearch.LibCurlNet;
-using System.Xml;
 using System.Net;
 using System.IO;
 using System.Collections.Specialized;
@@ -25,10 +23,10 @@ namespace rabdump
         {
             ContentType = "application/octet-stream";
         }
-        public string Name { get; set; }
-        public string Filename { get; set; }
-        public string ContentType { get; set; }
-        public Stream Stream { get; set; }
+        public string Name;
+        public string Filename;
+        public string ContentType;
+        public Stream Stream;
     }
 
     /// <summary>
@@ -340,25 +338,20 @@ namespace rabdump
                 byte[] buff = wc.UploadFile(address, dumpPath);
                 address = Encoding.UTF8.GetString(buff);
             }*/
-
-            using (var stream = File.Open(dumpPath, FileMode.Open))
+            
+            using (FileStream stream = File.Open(dumpPath, FileMode.Open))
             {
-                var files = new[] 
-                {
-                    new UploadFile
-                    {
-                        Name = "file",
-                        Filename = Path.GetFileName(dumpPath),
-                        ContentType = "text/plain",
-                        Stream = stream
-                    }
-                };
+                UploadFile fl = new UploadFile();                   
+                fl.Name = "file";
+                fl.Filename = Path.GetFileName(dumpPath);
+                fl.ContentType = "text/plain";
+                fl.Stream = stream;
 
-                var values = new NameValueCollection
-                {
-                    { "clientId", GRD.Instance.GetClientID().ToString() },
-                    { "md5dump", md5dump },
-                };
+                UploadFile[] files = new UploadFile[] { fl };
+
+                NameValueCollection values = new NameValueCollection();
+                values.Add( "clientId", GRD.Instance.GetClientID().ToString());
+                values.Add( "md5dump", md5dump );             
 
                 byte[] result = uploadFiles(address, files, values);
             }
@@ -438,18 +431,18 @@ namespace rabdump
 
         private static byte[] uploadFiles(string address, IEnumerable<UploadFile> files, NameValueCollection values)
         {
-            var request = WebRequest.Create(address);
+            WebRequest request = WebRequest.Create(address);
             request.Method = "POST";
-            var boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x", NumberFormatInfo.InvariantInfo);
+            string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x", NumberFormatInfo.InvariantInfo);
             request.ContentType = "multipart/form-data; boundary=" + boundary;
             boundary = "--" + boundary;
 
-            using (var requestStream = request.GetRequestStream())
+            using (Stream requestStream = request.GetRequestStream())
             {
                 // Write the values
                 foreach (string name in values.Keys)
                 {
-                    var buffer = Encoding.ASCII.GetBytes(boundary + Environment.NewLine);
+                    byte[] buffer = Encoding.ASCII.GetBytes(boundary + Environment.NewLine);
                     requestStream.Write(buffer, 0, buffer.Length);
                     buffer = Encoding.ASCII.GetBytes(string.Format("Content-Disposition: form-data; name=\"{0}\"{1}{1}", name, Environment.NewLine));
                     requestStream.Write(buffer, 0, buffer.Length);
@@ -458,9 +451,9 @@ namespace rabdump
                 }
 
                 // Write the files
-                foreach (var file in files)
+                foreach (UploadFile file in files)
                 {
-                    var buffer = Encoding.ASCII.GetBytes(boundary + Environment.NewLine);
+                    byte[] buffer = Encoding.ASCII.GetBytes(boundary + Environment.NewLine);
                     requestStream.Write(buffer, 0, buffer.Length);
                     buffer = Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"{2}", file.Name, file.Filename, Environment.NewLine));
                     requestStream.Write(buffer, 0, buffer.Length);
@@ -471,13 +464,13 @@ namespace rabdump
                     requestStream.Write(buffer, 0, buffer.Length);
                 }
 
-                var boundaryBuffer = Encoding.ASCII.GetBytes(boundary + "--");
+                byte[] boundaryBuffer = Encoding.ASCII.GetBytes(boundary + "--");
                 requestStream.Write(boundaryBuffer, 0, boundaryBuffer.Length);
             }
 
-            using (var response = request.GetResponse())
-            using (var responseStream = response.GetResponseStream())
-            using (var stream = new MemoryStream())
+            using (WebResponse response = request.GetResponse())
+            using (Stream responseStream = response.GetResponseStream())
+            using (MemoryStream stream = new MemoryStream())
             {
                 CopyStream(responseStream,stream);
                 return stream.ToArray();

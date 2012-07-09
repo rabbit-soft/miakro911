@@ -461,7 +461,7 @@ namespace rabnet
                 RabNetEngRabbit clone = eng.getRabbit(r.Clone(dead + killed, 0, 0, 0));
                 clone.CloneAddress = SmallAddress;
                 clone.KillIt(DateTime.Now, DR_ON_COUNT, "при подсчете", clone.Group);
-                //!!!тут надо списыватьт
+                //!!!тут надо списывать
                 if(added>0)
                     eng.db().СountKids(id,dead, killed, added, rab.youngers[yid].id);             
             }

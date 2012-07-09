@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.TabPage1 = new System.Windows.Forms.TabPage();
+            this.tpGeneral = new System.Windows.Forms.TabPage();
             this.sex = new System.Windows.Forms.ComboBox();
             this.label23 = new System.Windows.Forms.Label();
             this.btReplace = new System.Windows.Forms.Button();
@@ -44,6 +44,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button15 = new System.Windows.Forms.Button();
             this.button14 = new System.Windows.Forms.Button();
+            this.bdate = new rabnet.components.DateDays();
             this.zone = new System.Windows.Forms.ComboBox();
             this.button16 = new System.Windows.Forms.Button();
             this.name = new System.Windows.Forms.ComboBox();
@@ -70,7 +71,7 @@
             this.spec = new System.Windows.Forms.CheckBox();
             this.gp = new System.Windows.Forms.CheckBox();
             this.defect = new System.Windows.Forms.CheckBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tpMale = new System.Windows.Forms.TabPage();
             this.maleProd = new System.Windows.Forms.Label();
             this.maleKids = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -80,12 +81,13 @@
             this.lastFuck = new System.Windows.Forms.DateTimePicker();
             this.label16 = new System.Windows.Forms.Label();
             this.maleStatus = new System.Windows.Forms.ComboBox();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tpFemale = new System.Windows.Forms.TabPage();
             this.button10 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.okrolDd = new rabnet.components.DateDays();
             this.okrolCount = new System.Windows.Forms.NumericUpDown();
             this.label21 = new System.Windows.Forms.Label();
             this.deadBab = new System.Windows.Forms.NumericUpDown();
@@ -93,11 +95,12 @@
             this.overallBab = new System.Windows.Forms.NumericUpDown();
             this.label19 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.sukrDd = new rabnet.components.DateDays();
             this.sukrType = new System.Windows.Forms.ComboBox();
             this.sukr = new System.Windows.Forms.CheckBox();
             this.nokuk = new System.Windows.Forms.CheckBox();
             this.nolact = new System.Windows.Forms.CheckBox();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tpFucks = new System.Windows.Forms.TabPage();
             this.btChangeWorker = new System.Windows.Forms.Button();
             this.changeFucker = new System.Windows.Forms.Button();
             this.btFuckHer = new System.Windows.Forms.Button();
@@ -118,14 +121,14 @@
             this.msFucks = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miIsNotAProholost = new System.Windows.Forms.ToolStripMenuItem();
             this.showfuckidToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.tpYoungers = new System.Windows.Forms.TabPage();
             this.suckers = new System.Windows.Forms.ListView();
             this.columnHeader10 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader11 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader12 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader13 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader14 = new System.Windows.Forms.ColumnHeader();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.tpWeight = new System.Windows.Forms.TabPage();
             this.button19 = new System.Windows.Forms.Button();
             this.button18 = new System.Windows.Forms.Button();
             this.nudWeight = new System.Windows.Forms.NumericUpDown();
@@ -143,11 +146,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
-            this.bdate = new rabnet.components.DateDays();
-            this.okrolDd = new rabnet.components.DateDays();
-            this.sukrDd = new rabnet.components.DateDays();
             this.tabControl1.SuspendLayout();
-            this.TabPage1.SuspendLayout();
+            this.tpGeneral.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.group)).BeginInit();
@@ -156,18 +156,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.rate)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox8.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.tpMale.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            this.tabPage3.SuspendLayout();
+            this.tpFemale.SuspendLayout();
             this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.okrolCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.deadBab)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.overallBab)).BeginInit();
             this.groupBox5.SuspendLayout();
-            this.tabPage4.SuspendLayout();
+            this.tpFucks.SuspendLayout();
             this.msFucks.SuspendLayout();
-            this.tabPage6.SuspendLayout();
-            this.tabPage5.SuspendLayout();
+            this.tpYoungers.SuspendLayout();
+            this.tpWeight.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudWeight)).BeginInit();
             this.SuspendLayout();
             // 
@@ -175,37 +175,37 @@
             // 
             this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.TabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage4);
-            this.tabControl1.Controls.Add(this.tabPage6);
-            this.tabControl1.Controls.Add(this.tabPage5);
+            this.tabControl1.Controls.Add(this.tpGeneral);
+            this.tabControl1.Controls.Add(this.tpMale);
+            this.tabControl1.Controls.Add(this.tpFemale);
+            this.tabControl1.Controls.Add(this.tpFucks);
+            this.tabControl1.Controls.Add(this.tpYoungers);
+            this.tabControl1.Controls.Add(this.tpWeight);
             this.tabControl1.Location = new System.Drawing.Point(8, 56);
             this.tabControl1.MaximumSize = new System.Drawing.Size(800, 400);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(516, 331);
+            this.tabControl1.Size = new System.Drawing.Size(506, 331);
             this.tabControl1.TabIndex = 0;
             // 
-            // TabPage1
+            // tpGeneral
             // 
-            this.TabPage1.Controls.Add(this.sex);
-            this.TabPage1.Controls.Add(this.label23);
-            this.TabPage1.Controls.Add(this.btReplace);
-            this.TabPage1.Controls.Add(this.groupBox7);
-            this.TabPage1.Controls.Add(this.checkBox5);
-            this.TabPage1.Controls.Add(this.groupBox2);
-            this.TabPage1.Controls.Add(this.label6);
-            this.TabPage1.Controls.Add(this.rate);
-            this.TabPage1.Controls.Add(this.groupBox1);
-            this.TabPage1.Location = new System.Drawing.Point(4, 22);
-            this.TabPage1.Name = "TabPage1";
-            this.TabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage1.Size = new System.Drawing.Size(508, 305);
-            this.TabPage1.TabIndex = 0;
-            this.TabPage1.Text = "Основное";
-            this.TabPage1.UseVisualStyleBackColor = true;
+            this.tpGeneral.Controls.Add(this.sex);
+            this.tpGeneral.Controls.Add(this.label23);
+            this.tpGeneral.Controls.Add(this.btReplace);
+            this.tpGeneral.Controls.Add(this.groupBox7);
+            this.tpGeneral.Controls.Add(this.checkBox5);
+            this.tpGeneral.Controls.Add(this.groupBox2);
+            this.tpGeneral.Controls.Add(this.label6);
+            this.tpGeneral.Controls.Add(this.rate);
+            this.tpGeneral.Controls.Add(this.groupBox1);
+            this.tpGeneral.Location = new System.Drawing.Point(4, 22);
+            this.tpGeneral.Name = "tpGeneral";
+            this.tpGeneral.Padding = new System.Windows.Forms.Padding(3);
+            this.tpGeneral.Size = new System.Drawing.Size(498, 305);
+            this.tpGeneral.TabIndex = 0;
+            this.tpGeneral.Text = "Основное";
+            this.tpGeneral.UseVisualStyleBackColor = true;
             // 
             // sex
             // 
@@ -366,6 +366,21 @@
             this.button14.Text = "...";
             this.button14.UseVisualStyleBackColor = true;
             this.button14.Click += new System.EventHandler(this.button14_Click);
+            // 
+            // bdate
+            // 
+            this.bdate.AutoSize = true;
+            this.bdate.DateText = "Дата рожд.";
+            this.bdate.DateValue = new System.DateTime(2012, 7, 9, 0, 0, 0, 0);
+            this.bdate.DaysText = "Возраст";
+            this.bdate.DaysValue = 0;
+            this.bdate.Location = new System.Drawing.Point(13, 111);
+            this.bdate.Maximum = 5000;
+            this.bdate.Name = "bdate";
+            this.bdate.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
+            this.bdate.Size = new System.Drawing.Size(168, 50);
+            this.bdate.Step = 1;
+            this.bdate.TabIndex = 17;
             // 
             // zone
             // 
@@ -665,19 +680,19 @@
             this.defect.Text = "Брак";
             this.defect.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
+            // tpMale
             // 
-            this.tabPage2.Controls.Add(this.maleProd);
-            this.tabPage2.Controls.Add(this.maleKids);
-            this.tabPage2.Controls.Add(this.groupBox4);
-            this.tabPage2.Controls.Add(this.label16);
-            this.tabPage2.Controls.Add(this.maleStatus);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(508, 305);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Самец";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tpMale.Controls.Add(this.maleProd);
+            this.tpMale.Controls.Add(this.maleKids);
+            this.tpMale.Controls.Add(this.groupBox4);
+            this.tpMale.Controls.Add(this.label16);
+            this.tpMale.Controls.Add(this.maleStatus);
+            this.tpMale.Location = new System.Drawing.Point(4, 22);
+            this.tpMale.Name = "tpMale";
+            this.tpMale.Size = new System.Drawing.Size(498, 305);
+            this.tpMale.TabIndex = 1;
+            this.tpMale.Text = "Самец";
+            this.tpMale.UseVisualStyleBackColor = true;
             // 
             // maleProd
             // 
@@ -774,26 +789,26 @@
             this.maleStatus.TabIndex = 0;
             this.maleStatus.TextChanged += new System.EventHandler(this.maleStatus_TextChanged);
             // 
-            // tabPage3
+            // tpFemale
             // 
-            this.tabPage3.Controls.Add(this.button10);
-            this.tabPage3.Controls.Add(this.button9);
-            this.tabPage3.Controls.Add(this.button8);
-            this.tabPage3.Controls.Add(this.checkBox4);
-            this.tabPage3.Controls.Add(this.groupBox6);
-            this.tabPage3.Controls.Add(this.deadBab);
-            this.tabPage3.Controls.Add(this.label20);
-            this.tabPage3.Controls.Add(this.overallBab);
-            this.tabPage3.Controls.Add(this.label19);
-            this.tabPage3.Controls.Add(this.groupBox5);
-            this.tabPage3.Controls.Add(this.nokuk);
-            this.tabPage3.Controls.Add(this.nolact);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(508, 305);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Самка";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.tpFemale.Controls.Add(this.button10);
+            this.tpFemale.Controls.Add(this.button9);
+            this.tpFemale.Controls.Add(this.button8);
+            this.tpFemale.Controls.Add(this.checkBox4);
+            this.tpFemale.Controls.Add(this.groupBox6);
+            this.tpFemale.Controls.Add(this.deadBab);
+            this.tpFemale.Controls.Add(this.label20);
+            this.tpFemale.Controls.Add(this.overallBab);
+            this.tpFemale.Controls.Add(this.label19);
+            this.tpFemale.Controls.Add(this.groupBox5);
+            this.tpFemale.Controls.Add(this.nokuk);
+            this.tpFemale.Controls.Add(this.nolact);
+            this.tpFemale.Location = new System.Drawing.Point(4, 22);
+            this.tpFemale.Name = "tpFemale";
+            this.tpFemale.Size = new System.Drawing.Size(498, 305);
+            this.tpFemale.TabIndex = 2;
+            this.tpFemale.Text = "Самка";
+            this.tpFemale.UseVisualStyleBackColor = true;
             // 
             // button10
             // 
@@ -851,6 +866,21 @@
             this.groupBox6.TabIndex = 8;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "окролы";
+            // 
+            // okrolDd
+            // 
+            this.okrolDd.AutoSize = true;
+            this.okrolDd.DateText = "Дата";
+            this.okrolDd.DateValue = new System.DateTime(2012, 7, 9, 0, 0, 0, 0);
+            this.okrolDd.DaysText = "Срок";
+            this.okrolDd.DaysValue = 0;
+            this.okrolDd.Location = new System.Drawing.Point(8, 61);
+            this.okrolDd.Maximum = 10000;
+            this.okrolDd.Name = "okrolDd";
+            this.okrolDd.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
+            this.okrolDd.Size = new System.Drawing.Size(136, 48);
+            this.okrolDd.Step = 1;
+            this.okrolDd.TabIndex = 2;
             // 
             // okrolCount
             // 
@@ -924,6 +954,21 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "сукрольность";
             // 
+            // sukrDd
+            // 
+            this.sukrDd.AutoSize = true;
+            this.sukrDd.DateText = "Дата";
+            this.sukrDd.DateValue = new System.DateTime(2012, 7, 9, 0, 0, 0, 0);
+            this.sukrDd.DaysText = "Срок";
+            this.sukrDd.DaysValue = 0;
+            this.sukrDd.Location = new System.Drawing.Point(0, 46);
+            this.sukrDd.Maximum = 10000;
+            this.sukrDd.Name = "sukrDd";
+            this.sukrDd.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
+            this.sukrDd.Size = new System.Drawing.Size(136, 51);
+            this.sukrDd.Step = 1;
+            this.sukrDd.TabIndex = 5;
+            // 
             // sukrType
             // 
             this.sukrType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -968,19 +1013,19 @@
             this.nolact.Text = "Потеря лактации";
             this.nolact.UseVisualStyleBackColor = true;
             // 
-            // tabPage4
+            // tpFucks
             // 
-            this.tabPage4.Controls.Add(this.btChangeWorker);
-            this.tabPage4.Controls.Add(this.changeFucker);
-            this.tabPage4.Controls.Add(this.btFuckHer);
-            this.tabPage4.Controls.Add(this.btGens);
-            this.tabPage4.Controls.Add(this.fucks);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(508, 305);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Случки/Окролы";
-            this.tabPage4.UseVisualStyleBackColor = true;
+            this.tpFucks.Controls.Add(this.btChangeWorker);
+            this.tpFucks.Controls.Add(this.changeFucker);
+            this.tpFucks.Controls.Add(this.btFuckHer);
+            this.tpFucks.Controls.Add(this.btGens);
+            this.tpFucks.Controls.Add(this.fucks);
+            this.tpFucks.Location = new System.Drawing.Point(4, 22);
+            this.tpFucks.Name = "tpFucks";
+            this.tpFucks.Size = new System.Drawing.Size(498, 305);
+            this.tpFucks.TabIndex = 3;
+            this.tpFucks.Text = "Случки/Окролы";
+            this.tpFucks.UseVisualStyleBackColor = true;
             // 
             // btChangeWorker
             // 
@@ -1048,7 +1093,7 @@
             this.fucks.Location = new System.Drawing.Point(3, 3);
             this.fucks.MultiSelect = false;
             this.fucks.Name = "fucks";
-            this.fucks.Size = new System.Drawing.Size(503, 270);
+            this.fucks.Size = new System.Drawing.Size(493, 270);
             this.fucks.TabIndex = 0;
             this.fucks.UseCompatibleStateImageBehavior = false;
             this.fucks.View = System.Windows.Forms.View.Details;
@@ -1089,7 +1134,7 @@
             // 
             // columnHeader9
             // 
-            this.columnHeader9.Text = "Подсажено";
+            this.columnHeader9.Text = "Прибавилось";
             // 
             // columnHeader15
             // 
@@ -1128,15 +1173,15 @@
             this.showfuckidToolStripMenuItem.Text = "show_fuck_id";
             this.showfuckidToolStripMenuItem.Visible = false;
             // 
-            // tabPage6
+            // tpYoungers
             // 
-            this.tabPage6.Controls.Add(this.suckers);
-            this.tabPage6.Location = new System.Drawing.Point(4, 22);
-            this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Size = new System.Drawing.Size(508, 305);
-            this.tabPage6.TabIndex = 5;
-            this.tabPage6.Text = "Подсосные";
-            this.tabPage6.UseVisualStyleBackColor = true;
+            this.tpYoungers.Controls.Add(this.suckers);
+            this.tpYoungers.Location = new System.Drawing.Point(4, 22);
+            this.tpYoungers.Name = "tpYoungers";
+            this.tpYoungers.Size = new System.Drawing.Size(498, 305);
+            this.tpYoungers.TabIndex = 5;
+            this.tpYoungers.Text = "Подсосные";
+            this.tpYoungers.UseVisualStyleBackColor = true;
             // 
             // suckers
             // 
@@ -1153,7 +1198,7 @@
             this.suckers.Location = new System.Drawing.Point(3, 3);
             this.suckers.MultiSelect = false;
             this.suckers.Name = "suckers";
-            this.suckers.Size = new System.Drawing.Size(500, 265);
+            this.suckers.Size = new System.Drawing.Size(490, 265);
             this.suckers.TabIndex = 1;
             this.suckers.UseCompatibleStateImageBehavior = false;
             this.suckers.View = System.Windows.Forms.View.Details;
@@ -1178,24 +1223,24 @@
             // 
             this.columnHeader14.Text = "Порода";
             // 
-            // tabPage5
+            // tpWeight
             // 
-            this.tabPage5.Controls.Add(this.button19);
-            this.tabPage5.Controls.Add(this.button18);
-            this.tabPage5.Controls.Add(this.nudWeight);
-            this.tabPage5.Controls.Add(this.dateWeight);
-            this.tabPage5.Controls.Add(this.weightList);
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(508, 305);
-            this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "Вес";
-            this.tabPage5.UseVisualStyleBackColor = true;
+            this.tpWeight.Controls.Add(this.button19);
+            this.tpWeight.Controls.Add(this.button18);
+            this.tpWeight.Controls.Add(this.nudWeight);
+            this.tpWeight.Controls.Add(this.dateWeight);
+            this.tpWeight.Controls.Add(this.weightList);
+            this.tpWeight.Location = new System.Drawing.Point(4, 22);
+            this.tpWeight.Name = "tpWeight";
+            this.tpWeight.Size = new System.Drawing.Size(498, 305);
+            this.tpWeight.TabIndex = 4;
+            this.tpWeight.Text = "Вес";
+            this.tpWeight.UseVisualStyleBackColor = true;
             // 
             // button19
             // 
             this.button19.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button19.Location = new System.Drawing.Point(428, 272);
+            this.button19.Location = new System.Drawing.Point(418, 272);
             this.button19.Name = "button19";
             this.button19.Size = new System.Drawing.Size(75, 23);
             this.button19.TabIndex = 4;
@@ -1255,7 +1300,7 @@
             this.weightList.Location = new System.Drawing.Point(3, 3);
             this.weightList.MultiSelect = false;
             this.weightList.Name = "weightList";
-            this.weightList.Size = new System.Drawing.Size(500, 255);
+            this.weightList.Size = new System.Drawing.Size(490, 255);
             this.weightList.TabIndex = 0;
             this.weightList.UseCompatibleStateImageBehavior = false;
             this.weightList.View = System.Windows.Forms.View.Details;
@@ -1276,7 +1321,7 @@
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.BackColor = System.Drawing.SystemColors.Control;
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(445, 477);
+            this.button1.Location = new System.Drawing.Point(435, 473);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -1288,7 +1333,7 @@
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(283, 477);
+            this.button2.Location = new System.Drawing.Point(273, 473);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
@@ -1304,7 +1349,7 @@
             this.notes.Location = new System.Drawing.Point(8, 406);
             this.notes.Multiline = true;
             this.notes.Name = "notes";
-            this.notes.Size = new System.Drawing.Size(512, 54);
+            this.notes.Size = new System.Drawing.Size(502, 50);
             this.notes.TabIndex = 3;
             // 
             // label1
@@ -1364,7 +1409,7 @@
             // button5
             // 
             this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button5.Location = new System.Drawing.Point(364, 477);
+            this.button5.Location = new System.Drawing.Point(354, 473);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 23);
             this.button5.TabIndex = 10;
@@ -1372,58 +1417,13 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // bdate
-            // 
-            this.bdate.AutoSize = true;
-            this.bdate.DateText = "Дата рожд.";
-            this.bdate.DateValue = new System.DateTime(2011, 12, 26, 0, 0, 0, 0);
-            this.bdate.DaysText = "Возраст";
-            this.bdate.DaysValue = 0;
-            this.bdate.Location = new System.Drawing.Point(13, 111);
-            this.bdate.Maximum = 5000;
-            this.bdate.Name = "bdate";
-            this.bdate.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
-            this.bdate.Size = new System.Drawing.Size(168, 50);
-            this.bdate.Step = 1;
-            this.bdate.TabIndex = 17;
-            // 
-            // okrolDd
-            // 
-            this.okrolDd.AutoSize = true;
-            this.okrolDd.DateText = "Дата";
-            this.okrolDd.DateValue = new System.DateTime(2011, 12, 26, 0, 0, 0, 0);
-            this.okrolDd.DaysText = "Срок";
-            this.okrolDd.DaysValue = 0;
-            this.okrolDd.Location = new System.Drawing.Point(8, 61);
-            this.okrolDd.Maximum = 10000;
-            this.okrolDd.Name = "okrolDd";
-            this.okrolDd.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
-            this.okrolDd.Size = new System.Drawing.Size(136, 48);
-            this.okrolDd.Step = 1;
-            this.okrolDd.TabIndex = 2;
-            // 
-            // sukrDd
-            // 
-            this.sukrDd.AutoSize = true;
-            this.sukrDd.DateText = "Дата";
-            this.sukrDd.DateValue = new System.DateTime(2011, 12, 26, 0, 0, 0, 0);
-            this.sukrDd.DaysText = "Срок";
-            this.sukrDd.DaysValue = 0;
-            this.sukrDd.Location = new System.Drawing.Point(0, 46);
-            this.sukrDd.Maximum = 10000;
-            this.sukrDd.Name = "sukrDd";
-            this.sukrDd.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
-            this.sukrDd.Size = new System.Drawing.Size(136, 51);
-            this.sukrDd.Step = 1;
-            this.sukrDd.TabIndex = 5;
-            // 
             // RabbitInfo
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button2;
-            this.ClientSize = new System.Drawing.Size(532, 516);
+            this.ClientSize = new System.Drawing.Size(522, 512);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label4);
@@ -1436,7 +1436,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tabControl1);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(900, 600);
+            this.MaximumSize = new System.Drawing.Size(800, 600);
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(538, 550);
             this.Name = "RabbitInfo";
@@ -1445,8 +1445,8 @@
             this.Text = "Паспорт кролика";
             this.Load += new System.EventHandler(this.RabbitInfo_Load);
             this.tabControl1.ResumeLayout(false);
-            this.TabPage1.ResumeLayout(false);
-            this.TabPage1.PerformLayout();
+            this.tpGeneral.ResumeLayout(false);
+            this.tpGeneral.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -1459,12 +1459,12 @@
             this.groupBox1.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
+            this.tpMale.ResumeLayout(false);
+            this.tpMale.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
+            this.tpFemale.ResumeLayout(false);
+            this.tpFemale.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.okrolCount)).EndInit();
@@ -1472,10 +1472,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.overallBab)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
-            this.tabPage4.ResumeLayout(false);
+            this.tpFucks.ResumeLayout(false);
             this.msFucks.ResumeLayout(false);
-            this.tabPage6.ResumeLayout(false);
-            this.tabPage5.ResumeLayout(false);
+            this.tpYoungers.ResumeLayout(false);
+            this.tpWeight.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudWeight)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1485,17 +1485,17 @@
         #endregion
 
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage TabPage1;
+        private System.Windows.Forms.TabPage tpGeneral;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox notes;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.TabPage tabPage6;
-        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.TabPage tpMale;
+        private System.Windows.Forms.TabPage tpFemale;
+        private System.Windows.Forms.TabPage tpFucks;
+        private System.Windows.Forms.TabPage tpYoungers;
+        private System.Windows.Forms.TabPage tpWeight;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;

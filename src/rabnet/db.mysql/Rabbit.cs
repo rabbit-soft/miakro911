@@ -1033,7 +1033,7 @@ WHERE r_parent={1:d} AND r_id={2:d};", added, rid, yid), sql);
 
             cmd.CommandText = String.Format(@"UPDATE fucks SET 
                 f_dead=f_dead+{0:d}, f_killed=f_killed+{1:d}, f_added=f_added+{2:d} 
-                WHERE f_rabid={3:d} AND f_last=1;",dead, killed, added, rid);
+                WHERE f_rabid={3:d} AND f_end_date=(SELECT r_born FROM rabbits WHERE r_id={4:d});", dead, killed, added, rid,yid);
             cmd.ExecuteNonQuery();           
         }
 

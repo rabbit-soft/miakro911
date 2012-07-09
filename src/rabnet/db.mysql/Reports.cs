@@ -138,11 +138,11 @@ namespace rabnet
                 case myReportType.DEADREASONS: query = deadReasonsQuery(f); break;
                 case myReportType.FUCKS_BY_DATE: query = fucksByDate(f); break;
                 case myReportType.FUCKER: query = fuckerQuery(f); break;
-                case myReportType.REALIZE: query = Realize(f); break;                                
-                case myReportType.REVISION: return Revision(f);               
-                case myReportType.SHED: return ShedReport(f);
+                case myReportType.REALIZE: query = realize(f); break;                                
+                case myReportType.REVISION: return revision(f);               
+                case myReportType.SHED: return shedReport(f);
                 case myReportType.TEST: query = testQuery(f); break;
-                case myReportType.USER_OKROLS: return UserOkrolRpt(UserOkrols(f));
+                case myReportType.USER_OKROLS: return userOkrolRpt(UserOkrols(f));
             }
             log.Debug(query);
             return makeStdReportXml(query);
@@ -234,7 +234,7 @@ namespace rabnet
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        private XmlDocument UserOkrolRpt(String query)
+        private XmlDocument userOkrolRpt(String query)
         {
             XmlDocument doc = makeStdReportXml(query);
             XmlNodeList lst = doc.ChildNodes[0].ChildNodes;
@@ -422,7 +422,7 @@ FROM dead WHERE {0} GROUP BY d_reason);",period);
             return s;
         }
 
-        private String Realize(Filters f)
+        private String realize(Filters f)
         {
             int cnt = f.safeInt("cnt");
             String where = "r_id=0";
@@ -505,7 +505,7 @@ WHERE f_worker={0:d} {1} ORDER BY name,dt;", f.safeValue("user"), period,format)
             rw.AppendChild(doc.CreateElement("value")).AppendChild(doc.CreateTextNode(real.ToString()));
         }
 
-        private XmlDocument ShedReport(Filters f)
+        private XmlDocument shedReport(Filters f)
         {
             double per_vertep = 3.2;
             double per_female = 6;              
@@ -566,7 +566,7 @@ AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_p
             return doc;
         }
 
-        private XmlDocument Revision(Filters f)
+        private XmlDocument revision(Filters f)
         {
             int bld = f.safeInt("bld");
             XmlDocument doc=new XmlDocument();
@@ -593,15 +593,15 @@ FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AN
                         (SELECT COALESCE(SUM(r_group),0) FROM dead d WHERE MONTH(d.r_born)=MONTH(rabbits.r_born) AND YEAR(d.r_born)=YEAR(rabbits.r_born))+COALESCE(SUM(r_group),0) count,
                         COALESCE(SUM(r_group),0) alife
                         FROM rabbits GROUP BY date ORDER BY year(r_born) desc,month(r_born) desc;";
-            Закоментирован 26.05.2011, раскоментироватьмесяца через 4 */
-            string s =@"SELECT
-                        DATE_FORMAT(r_born,'%m.%Y') date,
-                        Coalesce(
-                            (select sum(f_children) from fucks where date_format(f_end_date,'%m.%Y')=date),
-                            (SELECT COALESCE(SUM(r_group),0) FROM dead d WHERE MONTH(d.r_born)=MONTH(rabbits.r_born) AND YEAR(d.r_born)=YEAR(rabbits.r_born))+COALESCE(SUM(r_group),0)
-                        ) count,
-                        COALESCE(SUM(r_group),0) alife
-                        FROM rabbits GROUP BY date ORDER BY year(r_born) desc,month(r_born) desc;";
+            Закоментирован 26.05.2011, раскоментировать месяца через 4 */
+            string s = @"SELECT
+                DATE_FORMAT(r_born,'%m.%Y') date,
+                Coalesce(
+                    (select sum(f_children+f_added) from fucks where date_format(f_end_date,'%m.%Y')=date),
+                    (SELECT COALESCE(SUM(r_group),0) FROM dead d WHERE MONTH(d.r_born)=MONTH(rabbits.r_born) AND YEAR(d.r_born)=YEAR(rabbits.r_born))+COALESCE(SUM(r_group),0) #если есть данные из старой программы
+                ) count,
+                COALESCE(SUM(r_group),0) alife
+                FROM rabbits GROUP BY date ORDER BY year(r_born) desc,month(r_born) desc;";
             return s;
         }
 

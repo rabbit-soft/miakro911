@@ -56,7 +56,7 @@ namespace rabnet
   (select Coalesce(sum(r_group),0) from dead where d_reason>6 and d_date>='{0:s}' and d_date<'{1:s}' ) another,  
   (select Coalesce(sum(r_group),0) from rabbits where r_born<'{1:s}') + (select Coalesce(sum(r_group),0) from dead where r_born<'{1:s}' and d_date>='{1:s}') ecount;
 select `month`, `year`, bcount, (born+buy) income,born, buy,(killed+dying+sell+another) gonetotal, killed, dying, sell, another, ecount from aaa;
-drop table aaa;",
+drop temporary table aaa;",
                 dt.ToString("yyyy-MM-dd"), dt.AddMonths(1).ToString("yyyy-MM-dd"), toRusMonth(dt.Month), dt.Year,dt.Month);
         }
 

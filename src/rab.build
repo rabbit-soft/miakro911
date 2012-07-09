@@ -340,10 +340,9 @@
 		</csc>
 	</target>
 
-	<target name="rabdump" description="rabnet db dumper">
-		
-		<copy file="${party3d.path}/libcurl.dll" tofile="${bin_dir}/RabDump/libcurl.dll" />	
-		<copy file="${party3d.path}/LibCurlShim.dll" tofile="${bin_dir}/RabDump/LibCurlShim.dll" />
+	<target name="rabdump" description="rabnet db dumper">		
+		<!--copy file="${party3d.path}/libcurl.dll" tofile="${bin_dir}/RabDump/libcurl.dll" /-->	
+		<!--copy file="${party3d.path}/LibCurlShim.dll" tofile="${bin_dir}/RabDump/LibCurlShim.dll" /-->
 		<copy file="${party3d.path}/ccxmlrpc.dll" tofile="${bin_dir}/RabDump/ccxmlrpc.dll" />
 		<copy file="${bin_dir}/RabNet/db.mysql.dll" tofile="${bin_dir}/RabDump/db.mysql.dll" />
 		<copy file="${bin_dir}/RabNet/engine.dll" tofile="${bin_dir}/RabDump/engine.dll" />
@@ -362,6 +361,9 @@
 				<include name="${curdir}/libs/pEngine/IRequestSender.cs"/>
 				<include name="${curdir}/libs/pEngine/RequestPack.cs"/>
 				<include name="${curdir}/libs/pEngine/xxTEA.cs"/>
+				<include name="${curdir}/libs/pEngine/Helper.cs"/>
+				<include name="${curdir}/libs/pEngine/pException.cs"/>
+				<include name="${curdir}/libs/pEngine/AppUpdater.cs"/>
 				<include name="${curdir}/mia_conv/miaExitCode.cs"/>				
 				<include name="${curdir}/rabnet/gui/classes/RabnetConfig.cs"/>
 				<include name="${curdir}/rabnet/gui/forms/FarmChangeForm.cs"/>
@@ -379,7 +381,6 @@
 			<references>
 				<include name="${bin_dir}/RabDump/${guardantNET.lib}" />
 				<include name="${log4net.use}"/>
-				<include name="${party3d.path}/LibCurlNet.dll"/>
 				<include name="${party3d.path}/ccxmlrpc.dll"/>
 				<include name="${bin_dir}/RabDump/engine.dll"/>
 				<include name="${bin_dir}/RabDump/db.mysql.dll"/>
@@ -405,7 +406,7 @@
 				<include name="${curdir}/rabnet/gui/reports/*.cs"/>
 				<include name="${curdir}/libs/GRD/GRD_Base.cs"/>
 				<include name="${curdir}/libs/GRD/GRD_BaseCodes.cs"/>
-				<include name="${curdir}/rabdump/classes/*.cs"/>
+				<include name="${curdir}/rabdump/classes/x_tools.cs"/>
 				<include name="${curdir}/mia_conv/miaExitCode.cs"/>
 			</sources>
 			<resources>

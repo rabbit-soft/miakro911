@@ -5,9 +5,9 @@ using log4net;
 //using X_Classes;
 using System.Diagnostics;
 using System.IO;
-#if PROTECTED
-using RabGRD;
 using pEngine;
+#if PROTECTED
+    using RabGRD;
 #endif
 //using rabnet;
 
