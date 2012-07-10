@@ -25,11 +25,22 @@ namespace rabnet
             /// Прививать кормилицу вместе с детьми
             /// </summary>
             VACC_MOTHER,
-            VUDVOR,VUDVOR_IF_SUKROL, COUNT1, COUNT2, COUNT3, MAKE_BRIDE, DEAD_FILTER, PRE_OKROL, 
-            ZOO_FILTER, COMBINE_AGE, BOYS_OUT, GIRLS_OUT, STATE_FUCK, FIRST_FUCK, MALE_WAIT, GEN_TREE, CONFIRM_EXIT, 
-            VACC, CONFIRM_KILL,CONFIRM_REPLACE, SUCKERS,NEST,CHILD_NEST,RAB_LIST,BUILD_LIST,YOUNG_LIST,DEAD_LIST,REPL_YOUNG_LIST,
-            MAKE_FUCK_LIST,NAMES_LIST,UPDATE_ZOO,ZOO_LIST,FIND_PARTNERS,NEXT_SVID,SVID_HEAD,SVID_GEN_DIR,
-            KILL_LIST,SHORT_ZOO,VACCINE_TIME,MAKE_CANDIDATE,BUTCHER_LIST,XLS_ASK,XLS_FOLDER,BUILD_FILL_ZERO,BUCHER_TYPE
+            /// <summary>
+            /// Выдворение (Удаление гнездовья)
+            /// </summary>
+            NEST_OUT,
+            NEST_OUT_IF_SUKROL,
+            /// <summary>
+            /// Установка гнездовья
+            /// </summary>
+            NEST_IN,
+            COUNT1, COUNT2, COUNT3, //COUNT_SUCKERS, 
+            //Подсчет подсосных более не требуется, т.к. это делается после выдворения крольчат
+            MAKE_BRIDE, DEAD_FILTER, PRE_OKROL, VACC, CONFIRM_KILL, CONFIRM_REPLACE, CONFIRM_EXIT,
+            ZOO_FILTER, COMBINE_AGE, BOYS_OUT, GIRLS_OUT, STATE_FUCK, FIRST_FUCK, MALE_WAIT, GEN_TREE,                         
+            CHILD_NEST, RAB_LIST, BUILD_LIST, YOUNG_LIST, DEAD_LIST, REPL_YOUNG_LIST,
+            MAKE_FUCK_LIST, NAMES_LIST, UPDATE_ZOO, ZOO_LIST, FIND_PARTNERS, NEXT_SVID, SVID_HEAD, SVID_GEN_DIR,
+            KILL_LIST, SHORT_ZOO, VACCINE_TIME, MAKE_CANDIDATE, BUTCHER_LIST, XLS_ASK, XLS_FOLDER, BUILD_FILL_ZERO, BUCHER_TYPE
         }
         public enum OPT_LEVEL {FARM,USER};
         public class ExOptionNotFound:ApplicationException
@@ -61,8 +72,8 @@ namespace rabnet
                                    new Option(OPT_ID.SHOW_NUMBERS,OPT_LEVEL.USER,"sh_num"),
                                    new Option(OPT_ID.BUILD_FILTER,OPT_LEVEL.USER,"build_filter"),
                                    new Option(OPT_ID.OKROL,OPT_LEVEL.FARM,"okrol"), 
-                                   new Option(OPT_ID.VUDVOR,OPT_LEVEL.FARM,"vudvor"),
-                                   new Option(OPT_ID.VUDVOR_IF_SUKROL,OPT_LEVEL.FARM,"vudvor_if_sukrol"),
+                                   new Option(OPT_ID.NEST_OUT,OPT_LEVEL.FARM,"vudvor"),
+                                   new Option(OPT_ID.NEST_OUT_IF_SUKROL,OPT_LEVEL.FARM,"vudvor_if_sukrol"),
                                    new Option(OPT_ID.COUNT1,OPT_LEVEL.FARM,"count1"), 
                                    new Option(OPT_ID.COUNT2,OPT_LEVEL.FARM,"count2"), 
                                    new Option(OPT_ID.COUNT3,OPT_LEVEL.FARM,"count3"), 
@@ -82,8 +93,8 @@ namespace rabnet
                                    new Option(OPT_ID.VACC_MOTHER,OPT_LEVEL.FARM,"vacc_moth"), 
                                    new Option(OPT_ID.CONFIRM_KILL,OPT_LEVEL.USER,"confirmkill"), 
                                    new Option(OPT_ID.CONFIRM_REPLACE,OPT_LEVEL.USER,"confirmreplace"),
-                                   new Option(OPT_ID.SUCKERS,OPT_LEVEL.FARM,"suckers"), 
-                                   new Option(OPT_ID.NEST,OPT_LEVEL.FARM,"nest"), 
+                                   //new Option(OPT_ID.COUNT_SUCKERS,OPT_LEVEL.FARM,"suckers"), 
+                                   new Option(OPT_ID.NEST_IN,OPT_LEVEL.FARM,"nest"), 
                                    new Option(OPT_ID.CHILD_NEST,OPT_LEVEL.FARM,"childnest"), 
                                    new Option(OPT_ID.RAB_LIST,OPT_LEVEL.USER,"rablist"), 
                                    new Option(OPT_ID.BUILD_LIST,OPT_LEVEL.USER,"buildlist"), 

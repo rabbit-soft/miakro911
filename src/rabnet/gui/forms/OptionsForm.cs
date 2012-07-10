@@ -16,7 +16,7 @@ namespace rabnet
         class OptionsHolder
         {
             [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
-            private int ok,vud,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su,n,cn,tt,vactime,cand,bbone;
+            private int ok,_nout,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su,n,cn,tt,vactime,cand,bbone;
             private string gd, sh,xf;
             private RUBOOL ce, ck,crp, uz,sp,ask, fbz,vIs,vacMoth;
             private BuchTp bt;
@@ -26,11 +26,11 @@ namespace rabnet
             Description("Время от случки(вязки) до окрола")]
 			public int Okrol { get { return ok; } set { ok = value; } }
             [Category("Зоотехнические сроки"),DisplayName("Выдворение"),
-            Description("Назначать Удаление родильного ящика из клетки, где подсосные крольчата достигли указанного возраста.")]
-            public int Vudvor { get { return vud; } set { vud = value; } }
+            Description("Назначать Удаление родильного ящика из клетки, где гнездовые крольчата достигли указанного возраста.")]
+            public int NestOut { get { return _nout; } set { _nout = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Выдворение при сукрольной"),
             Description("Назначать Выдворение даже если крольчиха сукрольна")]
-            public RUBOOL VudvorIfSukrol { get { return vIs; } set { vIs = value; } }
+            public RUBOOL NestOutIfSukrol { get { return vIs; } set { vIs = value; } }
             [Category("Зоотехнические сроки"),DisplayName("1й подсчет гнездовых"),
             Description("Проверка изменения числа рожденных крольчат в 1ый раз")]
             public int Count1 { get { return c1; } set { c1=value;} }
@@ -74,11 +74,12 @@ namespace rabnet
             Description("В зоотех плане на вакцинацию будут назначаться только дети. При прививке детей, будет привита и мать, с которой они сидят в однорй клетке")]
             public RUBOOL VaccWithMother { get { return vacMoth; } set { vacMoth = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Подсчет подсосных"),
-            Description("Возведение гнездовых крольчат в подсосных и подсчет их количества")]
-            public int suck { get { return su; } set { su = value; } }
+            //Description("Возведение гнездовых крольчат в подсосных и подсчет их количества")]
+            Description("Данная опция больше не автивна. Возведение в подсосные происходит при выдворении")]
+            public int CountSuckers { get { return NestOut/*su; } set { su = value*/; } } //TODO удалить версий через 100
             [Category("Зоотехнические сроки"), DisplayName("Установка гнездовья"),
             Description("Пересадить крольчиху в Юрту(А)")]
-            public int Nest { get { return n; } set { n = value; } }
+            public int NestIn { get { return n; } set { n = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Установка гнездовья при молодняке"),
             Description("Пересадить крольчиху в Юрту(А) если у нее есть подсосные")]
             public int ChildNest { get { return cn; } set { cn = value; } }
@@ -93,45 +94,45 @@ namespace rabnet
             [Category("Вид"),
             DisplayName("Подтверждение выхода"),
             Description("Спрашивать подтверждение закрытия программы")]
-            public RUBOOL confirmExit { get { return ce; } set { ce = value; } }
+            public RUBOOL ConfirmExit { get { return ce; } set { ce = value; } }
             [Category("Вид"),
             DisplayName("Подтверждение списания"),
             Description("Спрашивать подтверждение при списании кроликов")]
-            public RUBOOL confirmKill { get { return ck; } set { ck = value; } }
+            public RUBOOL ConfirmKill { get { return ck; } set { ck = value; } }
             [Category("Вид"),
             DisplayName("Подтверждение пересадку"),
             Description("Спрашивать подтверждение при пересадке/отсадке кролика")]
-            public RUBOOL confirmReplace { get { return crp; } set { crp = value; } }
+            public RUBOOL ConfirmReplace { get { return crp; } set { crp = value; } }
             [Category("Вид"), 
             DisplayName("Деревья роословной"),
             Description("Количество отображаемых Деревьев родословной в Поголовье и Молодняке")]
-            public int genTree { get { return gt; } set { gt = value; } }
+            public int GenTree { get { return gt; } set { gt = value; } }
             [Category("Вид"),
             DisplayName("Обновлять зоотехплан"),
             Description("Будет ли обновляться зоотех план после отметки работы. Внимание!!! Не стоит выключать опцию при работе по сети нескольких человек")]
-            public RUBOOL updateZoo { get { return uz; } set { uz = value; } }
+            public RUBOOL UpdateZoo { get { return uz; } set { uz = value; } }
             [Category("Вид"),
             DisplayName("Показывать партнеров"),
             Description("Подбирать в Зоотехплане возможных патнеров для Случек и Вязок")]
-            public RUBOOL showPartners { get { return sp; } set { sp = value; } }
+            public RUBOOL ShowPartners { get { return sp; } set { sp = value; } }
             [Category("Вид"),
             DisplayName("Заполнять адреса нулями"),
             Description("Заполнять ли символом '0' пробелы в адресе")]
-            public RUBOOL fillByZeroes { get { return fbz; } set { fbz = value; } }
+            public RUBOOL FillByZeroes { get { return fbz; } set { fbz = value; } }
 
             #endregion view
             #region plem
             [Category("Племенные свидетельства"),DisplayName("Номер следующего свидетельства"),Description("")]
-            public int nextSvid { get { return tt; } set { tt = value; } }
+            public int NextSvid { get { return tt; } set { tt = value; } }
             [Category("Племенные свидетельства"),DisplayName("Шапка"),Description("Текст  находяшийся в \"Шапке\" племенного свидетельства")]
-            public string svidHead { get { return sh; } set { sh = value; } }
+            public string SvidHead { get { return sh; } set { sh = value; } }
             [Category("Племенные свидетельства"),DisplayName("Генеральный директор"),Description("Иницияалы Генерального директора предприятия, отображаемые в конце племенного свидетельства")]
-            public string genDir { get { return gd; } set { gd = value; } }
+            public string GenDir { get { return gd; } set { gd = value; } }
             #endregion plem
 #if !DEMO
             #region excel
             [Category("Выгрузка в Excel"), DisplayName("Спрашивать папку"), Description("При выгрузке в Excel спрашивать папку для сохранения")]
-            public RUBOOL askFolder 
+            public RUBOOL XlsAskFolder 
             { 
                 get { return ask; } 
                 set 
@@ -144,7 +145,7 @@ namespace rabnet
             }
             [Category("Выгрузка в Excel"), DisplayName("Папка для сохранения"), Description("Папка в которую автоматически сохранять Excel-выгрузку"), 
             Editor(typeof(FolderNameEditor), typeof(UITypeEditor))]
-            public string xlsFolder 
+            public string XlsFolder 
             { 
                 get{return xf; }
                 set 
@@ -154,10 +155,11 @@ namespace rabnet
                 }
             }
             #endregion excel
+
             [Category("Другое"),
             DisplayName("Источник информации о продукции"),
             Description("Что отвечает за внесение новой продукции в программу")]
-            public BuchTp bucherType
+            public BuchTp BucherType
             {
                 get { return bt; }
                 set
@@ -166,38 +168,34 @@ namespace rabnet
                 }
             }
 #endif 
-            
 
-
-            public int fromR(RUBOOL value)
-            {
-                return (value == RUBOOL.Да)?1:0;
-            }
-            public RUBOOL toR(int value)
-            {
-                return value==1 ? RUBOOL.Да : RUBOOL.Нет;
-            }
-            public RUBOOL toR(bool value)
-            {
-                return value ? RUBOOL.Да : RUBOOL.Нет;
-            }
-
-            public OptionsHolder()
-            {
-            }
-            public static OptionsHolder make()
+            public static OptionsHolder Make()
             {
                 OptionsHolder op = new OptionsHolder();
                 op.load();
                 return op;
             }
-            public void load()
+
+            private int fromR(RUBOOL value)
+            {
+                return (value == RUBOOL.Да)?1:0;
+            }
+            private RUBOOL toR(int value)
+            {
+                return value==1 ? RUBOOL.Да : RUBOOL.Нет;
+            }
+            private RUBOOL toR(bool value)
+            {
+                return value ? RUBOOL.Да : RUBOOL.Нет;
+            }
+
+            private void load()
             {
                 Options o=Engine.opt();
                 //zoo time
                 Okrol=o.getIntOption(Options.OPT_ID.OKROL);
-                Vudvor = o.getIntOption(Options.OPT_ID.VUDVOR);
-                VudvorIfSukrol = toR(o.getIntOption(Options.OPT_ID.VUDVOR_IF_SUKROL));
+                NestOut = o.getIntOption(Options.OPT_ID.NEST_OUT);
+                NestOutIfSukrol = toR(o.getIntOption(Options.OPT_ID.NEST_OUT_IF_SUKROL));
                 Count1 = o.getIntOption(Options.OPT_ID.COUNT1);
                 Count2 = o.getIntOption(Options.OPT_ID.COUNT2);
                 Count3 = o.getIntOption(Options.OPT_ID.COUNT3);
@@ -210,29 +208,29 @@ namespace rabnet
                 FirstFuck = o.getIntOption(Options.OPT_ID.FIRST_FUCK);
                 MaleWait = o.getIntOption(Options.OPT_ID.MALE_WAIT);
                 Vacc = o.getIntOption(Options.OPT_ID.VACC);
-                suck = o.getIntOption(Options.OPT_ID.SUCKERS);
-                Nest = o.getIntOption(Options.OPT_ID.NEST);
+                //suck = o.getIntOption(Options.OPT_ID.COUNT_SUCKERS);
+                NestIn = o.getIntOption(Options.OPT_ID.NEST_IN);
                 ChildNest = o.getIntOption(Options.OPT_ID.CHILD_NEST);
                 VaccineTime = o.getIntOption(Options.OPT_ID.VACCINE_TIME);
                 VaccWithMother = toR(o.getBoolOption(Options.OPT_ID.VACC_MOTHER));
                 Candidate = o.getIntOption(Options.OPT_ID.MAKE_CANDIDATE);
                 bbone = o.getIntOption(Options.OPT_ID.BOYS_BY_ONE);
                 //view
-                genTree = o.getIntOption(Options.OPT_ID.GEN_TREE);
-                confirmExit = toR(o.getIntOption(Options.OPT_ID.CONFIRM_EXIT));
-                confirmKill = toR(o.getIntOption(Options.OPT_ID.CONFIRM_KILL));
-                confirmReplace = toR(o.getIntOption(Options.OPT_ID.CONFIRM_REPLACE));
-                updateZoo = toR(o.getIntOption(Options.OPT_ID.UPDATE_ZOO));
-                showPartners = toR(o.getIntOption(Options.OPT_ID.FIND_PARTNERS));
-                fbz = toR(o.getIntOption(Options.OPT_ID.BUILD_FILL_ZERO));
+                GenTree = o.getIntOption(Options.OPT_ID.GEN_TREE);
+                ConfirmExit = toR(o.getIntOption(Options.OPT_ID.CONFIRM_EXIT));
+                ConfirmKill = toR(o.getIntOption(Options.OPT_ID.CONFIRM_KILL));
+                ConfirmReplace = toR(o.getIntOption(Options.OPT_ID.CONFIRM_REPLACE));
+                UpdateZoo = toR(o.getIntOption(Options.OPT_ID.UPDATE_ZOO));
+                ShowPartners = toR(o.getIntOption(Options.OPT_ID.FIND_PARTNERS));
+                FillByZeroes = toR(o.getIntOption(Options.OPT_ID.BUILD_FILL_ZERO));
 
                 //svid
-                nextSvid = o.getIntOption(Options.OPT_ID.NEXT_SVID);
-                svidHead = o.getOption(Options.OPT_ID.SVID_HEAD);
-                genDir = o.getOption(Options.OPT_ID.SVID_GEN_DIR);
+                NextSvid = o.getIntOption(Options.OPT_ID.NEXT_SVID);
+                SvidHead = o.getOption(Options.OPT_ID.SVID_HEAD);
+                GenDir = o.getOption(Options.OPT_ID.SVID_GEN_DIR);
 #if !DEMO
                 //xls
-                ask = toR(o.getIntOption(Options.OPT_ID.XLS_ASK));
+                XlsAskFolder = toR(o.getIntOption(Options.OPT_ID.XLS_ASK));
                 xf = o.getOption(Options.OPT_ID.XLS_FOLDER);
                 if (ask == RUBOOL.Нет && xf == "") 
                     xf = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -245,8 +243,8 @@ namespace rabnet
             {
                 Options o = Engine.opt();
                 o.setOption(Options.OPT_ID.OKROL, Okrol);
-                o.setOption(Options.OPT_ID.VUDVOR, Vudvor);
-                o.setOption(Options.OPT_ID.VUDVOR_IF_SUKROL, fromR(VudvorIfSukrol));
+                o.setOption(Options.OPT_ID.NEST_OUT, NestOut);
+                o.setOption(Options.OPT_ID.NEST_OUT_IF_SUKROL, fromR(NestOutIfSukrol));
                 o.setOption(Options.OPT_ID.COUNT1, Count1);
                 o.setOption(Options.OPT_ID.COUNT2, Count2);
                 o.setOption(Options.OPT_ID.COUNT3, Count3);
@@ -260,24 +258,24 @@ namespace rabnet
                 o.setOption(Options.OPT_ID.MALE_WAIT, MaleWait);
                 o.setOption(Options.OPT_ID.VACC, Vacc);
                 o.setOption(Options.OPT_ID.VACC_MOTHER, fromR(VaccWithMother));
-                o.setOption(Options.OPT_ID.SUCKERS, suck);
-                o.setOption(Options.OPT_ID.NEST, Nest);
+                //o.setOption(Options.OPT_ID.COUNT_SUCKERS, suck);
+                o.setOption(Options.OPT_ID.NEST_IN, NestIn);
                 o.setOption(Options.OPT_ID.CHILD_NEST, ChildNest);
                 o.setOption(Options.OPT_ID.VACCINE_TIME, VaccineTime);
                 o.setOption(Options.OPT_ID.MAKE_CANDIDATE, Candidate);
                 o.setOption(Options.OPT_ID.BOYS_BY_ONE, bbone);
                 //view
-                o.setOption(Options.OPT_ID.GEN_TREE, genTree);
-                o.setOption(Options.OPT_ID.CONFIRM_EXIT, fromR(confirmExit));
-                o.setOption(Options.OPT_ID.CONFIRM_KILL, fromR(confirmKill));
-                o.setOption(Options.OPT_ID.CONFIRM_REPLACE,fromR(confirmReplace));
-                o.setOption(Options.OPT_ID.UPDATE_ZOO, fromR(updateZoo));
-                o.setOption(Options.OPT_ID.FIND_PARTNERS, fromR(showPartners));
+                o.setOption(Options.OPT_ID.GEN_TREE, GenTree);
+                o.setOption(Options.OPT_ID.CONFIRM_EXIT, fromR(ConfirmExit));
+                o.setOption(Options.OPT_ID.CONFIRM_KILL, fromR(ConfirmKill));
+                o.setOption(Options.OPT_ID.CONFIRM_REPLACE,fromR(ConfirmReplace));
+                o.setOption(Options.OPT_ID.UPDATE_ZOO, fromR(UpdateZoo));
+                o.setOption(Options.OPT_ID.FIND_PARTNERS, fromR(ShowPartners));
                 o.setOption(Options.OPT_ID.BUILD_FILL_ZERO,fromR(fbz));
                 //svid
-                o.setOption(Options.OPT_ID.NEXT_SVID, nextSvid);
-                o.setOption(Options.OPT_ID.SVID_HEAD, svidHead);
-                o.setOption(Options.OPT_ID.SVID_GEN_DIR, genDir);
+                o.setOption(Options.OPT_ID.NEXT_SVID, NextSvid);
+                o.setOption(Options.OPT_ID.SVID_HEAD, SvidHead);
+                o.setOption(Options.OPT_ID.SVID_GEN_DIR, GenDir);
 #if !DEMO
                 //xls
                 o.setOption(Options.OPT_ID.XLS_ASK, fromR(ask));
@@ -300,7 +298,7 @@ namespace rabnet
         public OptionsForm()
         {
             InitializeComponent();
-            pg.SelectedObject=OptionsHolder.make();
+            pg.SelectedObject=OptionsHolder.Make();
 			this.AcceptButton = button1;
 
 //            MoveSplitter(pg, -100);

@@ -698,7 +698,8 @@
 		<copy file="${mysqlInstallerSource}" tofile="${root_bin}/miakro_911_${bin_type}/mysql/${mysqlInstallerDest}"/>
 		<copy file="${curdir}/../help/Руководство по установке программы Miakro 9.11.docx" tofile="${root_bin}/miakro_911_${bin_type}/Руководство по установке программы Miakro 9.11.docx"/>
 		<if test="${bin_type=='protected'}">
-			<copy file="${curdir}/../help/Создание Резервных Копий Базы Данных.docx" tofile="${root_bin}/miakro_911_${bin_type}/Создание Резервных Копий Базы Данных.docx"/>
+			<copy file="${curdir}/../help/Создание Резервных Копий Базы Данных.docx" tofile="${root_bin}/miakro_911_${bin_type}/Создание Резервных Копий Базы Данных.docx"/>			
+			<copy file="${curdir}/../help/Руководство по обновлению Ключей Защиты.docx" tofile="${root_bin}/miakro_911_${bin_type}/Руководство по обновлению Ключей Защиты.docx"/>
 		</if>
 		<!--property name="dist_type" value="rabnet"/>
 		<property name="bin_dir" value="${root_bin}\release"/>

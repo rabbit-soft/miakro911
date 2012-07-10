@@ -40,7 +40,7 @@ namespace rabnet
             flt["dbl"] = op.getOption(Options.OPT_ID.DBL_SURNAME);
             flt["num"] = op.getOption(Options.OPT_ID.SHOW_NUMBERS);
             flt["brd"] = op.getOption(Options.OPT_ID.MAKE_BRIDE);
-            flt["suc"] = op.getOption(Options.OPT_ID.SUCKERS);
+            //flt["suc"] = op.getOption(Options.OPT_ID.COUNT_SUCKERS);
             flt["cand"] = op.getOption(Options.OPT_ID.MAKE_CANDIDATE);
             colSort.Prepare();
             IDataGetter dg = DataThread.db().getRabbits(flt);

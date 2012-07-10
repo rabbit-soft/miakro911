@@ -188,7 +188,7 @@ namespace rabnet
 
         public String getnm(int def)
         {
-            return op.safeInt("dbl")==1?"2":def.ToString();
+            return op.safeInt("dbl") == 1 ? "2" : def.ToString();
         }
         public String getnm()
         {
@@ -258,21 +258,32 @@ ORDER BY srok DESC,0+LEFT(place,LOCATE(',',place)) ASC;",
             return res.ToArray();
         }
 
+        /// <summary>
+        /// Возвращает ЗооРаботу Подсчет гнездовых
+        /// </summary>
+        /// <param name="days">Подсчет на какой день</param>
+        /// <param name="next">Какой подсчет следующий</param>
+        /// <returns></returns>
         public ZooJobItem[] getCounts(int days,int next)
         {
             MySqlCommand cmd = new MySqlCommand("", sql);
             cmd.CommandText=String.Format(@"SELECT 
-r_parent,
-rabname(r_parent," + getnm() + @") name,
-rabplace(r_parent) place,
-r_group,
-(SELECT TO_DAYS(NOW())-TO_DAYS(r3.r_born) FROM rabbits r3 WHERE r3.r_id=rabbits.r_parent) age,"
-+ brd("(SELECT r7.r_breed FROM rabbits r7 WHERE r7.r_id=rabbits.r_parent)") + @",
-TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d} srok,r_id
-FROM rabbits WHERE r_parent<>0 AND (TO_DAYS(NOW())-TO_DAYS(r_born)>={0:d}{1:s}) AND
-r_parent NOT IN (SELECT l_rabbit FROM logs WHERE l_type=17 AND (DATE(l_date)<=DATE(NOW()) AND 
-DATE(l_date)>=DATE(NOW()- INTERVAL (TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d}) DAY))) ORDER BY age DESC,
-0+LEFT(place,LOCATE(',',place)) ASC;", days,next == -1 ? "" : String.Format(" AND TO_DAYS(NOW())-TO_DAYS(r_born)<{0:d}", next));
+    r_parent,
+    rabname(r_parent,{2:s}) name,
+    rabplace(r_parent) place,
+    r_group,
+    (SELECT TO_DAYS(NOW())-TO_DAYS(r3.r_born) FROM rabbits r3 WHERE r3.r_id=rabbits.r_parent) age,"
+    + brd("(SELECT r7.r_breed FROM rabbits r7 WHERE r7.r_id=rabbits.r_parent)") + @",
+    TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d} srok,
+    r_id
+FROM rabbits 
+WHERE r_parent<>0 AND (TO_DAYS(NOW())-TO_DAYS(r_born)>={0:d}{1:s}) 
+    AND r_parent NOT IN (
+                            SELECT l_rabbit FROM logs 
+                            WHERE l_type=17 AND (DATE(l_date)<=DATE(NOW()) 
+                                AND DATE(l_date)>=DATE( NOW()- INTERVAL (TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d}) DAY) )
+                        )
+ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", days, (next == -1 ? "" : String.Format(" AND TO_DAYS(NOW())-TO_DAYS(r_born)<{0:d}", next)),getnm());
             log.Debug(cmd.CommandText);
             MySqlDataReader rd = cmd.ExecuteReader();
             List<ZooJobItem> res = new List<ZooJobItem>();

@@ -514,18 +514,18 @@ WHERE f_worker={0:d} {1} ORDER BY name,dt;", f.safeValue("user"), period,format)
             double feed_boys_per_tier = 2.0;    
             double unkn_sucks_per_tier = 2.7;
             int bid = f.safeInt("bld");
-            int suck = f.safeInt("suck", 50);
+            int nest_out = f.safeInt("nest_out", 38);
             XmlDocument doc = new XmlDocument();
             doc.AppendChild(doc.CreateElement("Rows"));
             int alltiers = getBuildCount("", bid);
-            int fem = getBuildCount("female", bid);
-            int dfe = getBuildCount("dfemale", bid);
-            int com = getBuildCount("complex", bid);
-            int jur = getBuildCount("jurta", bid);
-            int qua = getBuildCount("quarta", bid);
-            int ver = getBuildCount("vertep", bid);
-            int bar = getBuildCount("barin", bid);
-            int cab = getBuildCount("cabin", bid);
+            int fem = getBuildCount(myBuildingType.Female, bid); 
+            int dfe = getBuildCount(myBuildingType.DualFemale, bid);
+            int com = getBuildCount(myBuildingType.Complex, bid);
+            int jur = getBuildCount(myBuildingType.Jurta, bid);
+            int qua = getBuildCount(myBuildingType.Quarta, bid);
+            int ver = getBuildCount(myBuildingType.Vertep, bid);
+            int bar = getBuildCount(myBuildingType.Barin, bid);
+            int cab = getBuildCount(myBuildingType.Cabin, bid);
             int ideal=round(per_vertep*(ver+bar+4*qua+2*com+cab/2)+per_female* (2 * (dfe + jur) + fem + com + cab));
             int real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE (r_parent=0 AND inBuilding({0:d},r_farm))OR
 (r_parent!=0 AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent)));",bid));
@@ -555,11 +555,11 @@ AND r_status=0 AND inBuilding({0:d},r_farm);", bid));
 
             ideal = round(unkn_sucks_per_tier * alltiers);
             real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)>={1:d} 
-AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent));", bid, suck));
+AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent));", bid, nest_out));
             addShedRows(doc, " подсосные", ideal, real);
 
             real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d} 
-AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent));", bid, suck));
+AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent));", bid, nest_out));
             ideal = real;
             addShedRows(doc, "гнездовые", ideal, real);
 

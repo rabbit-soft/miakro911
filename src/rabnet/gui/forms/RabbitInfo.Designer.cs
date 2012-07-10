@@ -136,8 +136,8 @@
             this.weightList = new System.Windows.Forms.ListView();
             this.columnHeader17 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader18 = new System.Windows.Forms.ColumnHeader();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btOk = new System.Windows.Forms.Button();
+            this.btCancel = new System.Windows.Forms.Button();
             this.notes = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -145,7 +145,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Button();
+            this.btAccept = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -371,7 +371,7 @@
             // 
             this.bdate.AutoSize = true;
             this.bdate.DateText = "Дата рожд.";
-            this.bdate.DateValue = new System.DateTime(2012, 7, 9, 0, 0, 0, 0);
+            this.bdate.DateValue = new System.DateTime(2012, 7, 10, 0, 0, 0, 0);
             this.bdate.DaysText = "Возраст";
             this.bdate.DaysValue = 0;
             this.bdate.Location = new System.Drawing.Point(13, 111);
@@ -871,7 +871,7 @@
             // 
             this.okrolDd.AutoSize = true;
             this.okrolDd.DateText = "Дата";
-            this.okrolDd.DateValue = new System.DateTime(2012, 7, 9, 0, 0, 0, 0);
+            this.okrolDd.DateValue = new System.DateTime(2012, 7, 10, 0, 0, 0, 0);
             this.okrolDd.DaysText = "Срок";
             this.okrolDd.DaysValue = 0;
             this.okrolDd.Location = new System.Drawing.Point(8, 61);
@@ -958,7 +958,7 @@
             // 
             this.sukrDd.AutoSize = true;
             this.sukrDd.DateText = "Дата";
-            this.sukrDd.DateValue = new System.DateTime(2012, 7, 9, 0, 0, 0, 0);
+            this.sukrDd.DateValue = new System.DateTime(2012, 7, 10, 0, 0, 0, 0);
             this.sukrDd.DaysText = "Срок";
             this.sukrDd.DaysValue = 0;
             this.sukrDd.Location = new System.Drawing.Point(0, 46);
@@ -1316,30 +1316,30 @@
             this.columnHeader18.Text = "Вес";
             this.columnHeader18.Width = 100;
             // 
-            // button1
+            // btOk
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.BackColor = System.Drawing.SystemColors.Control;
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(435, 473);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Готово";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btOk.BackColor = System.Drawing.SystemColors.Control;
+            this.btOk.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btOk.Location = new System.Drawing.Point(435, 473);
+            this.btOk.Name = "btOk";
+            this.btOk.Size = new System.Drawing.Size(75, 23);
+            this.btOk.TabIndex = 1;
+            this.btOk.Text = "Готово";
+            this.btOk.UseVisualStyleBackColor = true;
+            this.btOk.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // btCancel
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(273, 473);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Отмена";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btCancel.Location = new System.Drawing.Point(273, 473);
+            this.btCancel.Name = "btCancel";
+            this.btCancel.Size = new System.Drawing.Size(75, 23);
+            this.btCancel.TabIndex = 2;
+            this.btCancel.Text = "Отмена";
+            this.btCancel.UseVisualStyleBackColor = true;
+            this.btCancel.Click += new System.EventHandler(this.button2_Click);
             // 
             // notes
             // 
@@ -1406,25 +1406,25 @@
             this.label7.TabIndex = 9;
             this.label7.Text = "Статус";
             // 
-            // button5
+            // btAccept
             // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button5.Location = new System.Drawing.Point(354, 473);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 10;
-            this.button5.Text = "Применить";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.btAccept.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btAccept.Location = new System.Drawing.Point(354, 473);
+            this.btAccept.Name = "btAccept";
+            this.btAccept.Size = new System.Drawing.Size(75, 23);
+            this.btAccept.TabIndex = 10;
+            this.btAccept.Text = "Применить";
+            this.btAccept.UseVisualStyleBackColor = true;
+            this.btAccept.Click += new System.EventHandler(this.button5_Click);
             // 
             // RabbitInfo
             // 
-            this.AcceptButton = this.button1;
+            this.AcceptButton = this.btOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.button2;
+            this.CancelButton = this.btCancel;
             this.ClientSize = new System.Drawing.Size(522, 512);
-            this.Controls.Add(this.button5);
+            this.Controls.Add(this.btAccept);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label5);
@@ -1432,8 +1432,8 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.notes);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btCancel);
+            this.Controls.Add(this.btOk);
             this.Controls.Add(this.tabControl1);
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(800, 600);
@@ -1486,8 +1486,8 @@
 
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tpGeneral;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btOk;
+        private System.Windows.Forms.Button btCancel;
         private System.Windows.Forms.TextBox notes;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -1525,7 +1525,7 @@
         private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button btAccept;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.CheckBox lastFuckNever;
         private System.Windows.Forms.Button button7;

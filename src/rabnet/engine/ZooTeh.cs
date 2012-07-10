@@ -4,7 +4,7 @@ using System.Text;
 
 namespace rabnet
 {
-    public enum JobType {NONE, OKROL, VUDVOR, COUNT_KIDS, PRE_OKROL ,BOYS_OUT,GIRLS_OUT,FUCK,VACC,SET_NEST,BOYS_BY_ONE};
+    public enum JobType {NONE, OKROL, VUDVOR, COUNT_KIDS, PRE_OKROL, BOYS_OUT, GIRLS_OUT,FUCK, VACC, SET_NEST, BOYS_BY_ONE};
 
     public class ZootehJob:IData
     {
@@ -40,6 +40,7 @@ namespace rabnet
             comment = (f.safeInt("shr") == 0 ? "окрол " : "№") + stat.ToString();
             return this;
         }
+        
         public ZootehJob Vudvor(int id,String nm,String ad,int stat,int age,int srok,int id2,String br,int suckers)
         {
             type = JobType.VUDVOR; 
@@ -52,17 +53,20 @@ namespace rabnet
             comment = (f.safeInt("shr") == 0 ? "подсосных" : "+") + suckers.ToString();
             return this;
         }
-        public ZootehJob Counts(int id, String nm, String ad, int age,int count,bool suckers,String br,int srok,int yid)
+        
+        public ZootehJob Counts(int id, String nm, String ad, int age,int count,/*bool suckers,*/String br,int srok,int yid)
         {
-            type = JobType.COUNT_KIDS; 
-            job = /*(f.safeInt("shr") == 0 ? "Подсчет " : "Подсчет ")*/"Подсчет " + (suckers ? /*(f.safeInt("shr") == 0 ? "подсосных" : "подсосных")*/ "подсосных": /*(f.safeInt("shr") == 0 ? "гнездовых" : "Гнез")*/"гнездовых");
+            type = JobType.COUNT_KIDS;
+            job = "Подсчет гнездовых";
+            //job = /*(f.safeInt("shr") == 0 ? "Подсчет " : "Подсчет ")*/"Подсчет " + /*(suckers ? /*(f.safeInt("shr") == 0 ? "подсосных" : "подсосных")*/ "подсосных"/*: (f.safeInt("shr") == 0 ? "гнездовых" : "Гнез")"гнездовых")*/;
             days = srok; name = nm; address = ad;
             this.age = age; this.id = id; breed = br;
-            flag = suckers ? 1 : 0;
+            flag = /*suckers ? 1 :*/ 0;
             id2 = yid;
             comment = (f.safeInt("shr") == 0 ? "количество " : "+") + count.ToString();
             return this;
         }
+        
         public ZootehJob Preokrol(int id, String nm, String ad, int age, int srok,String br)
         {
             type = JobType.PRE_OKROL; job = f.safeInt("shr")==0?"Предокрольный осмотр":"ПредОкрОс";
@@ -168,52 +172,52 @@ namespace rabnet
 
         private void getBBOne(JobHolder zjobs)
         {
-            ZooJobItem[] jobs = eng.db2().getBoysByOne(f);
+            ZooJobItem[] jobs = eng.db2().ztGetBoysByOne(f);
             foreach (ZooJobItem z in jobs)
                 zjobs.Add(new ZootehJob(f).BoysByOne(z.id, z.name, z.place, z.age, z.info[0], z.info[1]));
         }
 
-        public void getOkrols(JobHolder jh)
+        private void getOkrols(JobHolder jh)
         {
-            ZooJobItem[] jobs = eng.db2().getOkrols(f);
+            ZooJobItem[] jobs = eng.db2().ztGetOkrols(f);
             foreach(ZooJobItem z in jobs)
                 jh.Add(new ZootehJob(f).Okrol(z.id, z.name, z.place, z.status + 1, z.age, z.info[0] - f.safeInt("okrol"), z.breed));
         }
-        public void getVudvors(JobHolder jh)
+        private void getVudvors(JobHolder jh)
         {
-            ZooJobItem[] jobs = eng.db2().getVudvors(f);
+            ZooJobItem[] jobs = eng.db2().ztGetVudvors(f);
             foreach (ZooJobItem z in jobs)
                 jh.Add(new ZootehJob(f).Vudvor(z.id, z.name, z.place, z.status + 1, z.age, z.info[0] - f.safeInt("vudvor"), z.info[1], z.breed, z.info[2]));
         }
-        public void getCounts(JobHolder jh)
+        private void getCounts(JobHolder jh)
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 1; i < 4; i++)
             {
                 int days = f.safeInt("count" + i.ToString());
                 int next = i == 3 ? -1 : f.safeInt("count" + (i + 1).ToString());
-                ZooJobItem[] jobs = eng.db2().getCounts(f, days,next);
+                ZooJobItem[] jobs = eng.db2().ztGetCounts(f, days,next);
                 foreach (ZooJobItem z in jobs)
-                    jh.Add(new ZootehJob(f).Counts(z.id, z.name, z.place, z.age,z.info[0],i==3,z.breed,z.info[1],z.info[2]));
+                    jh.Add(new ZootehJob(f).Counts(z.id, z.name, z.place, z.age,z.info[0],/*i==3,*/ z.breed,z.info[1],z.info[2]));
             }
         }
 
-        public void getPreokrols(JobHolder jh)
+        private void getPreokrols(JobHolder jh)
         {
             int days = f.safeInt("preok");
             int okroldays = f.safeInt("okrol");
-            ZooJobItem[] jobs = eng.db2().getPreokrols(f, days, okroldays);
+            ZooJobItem[] jobs = eng.db2().ztGetPreokrols(f, days, okroldays);
             foreach(ZooJobItem z in jobs)
                 jh.Add(new ZootehJob(f).Preokrol(z.id,z.name,z.place,z.age,z.info[0],z.breed));
         }
 
-        public void getBoysGirlsOut(JobHolder jh)
+        private void getBoysGirlsOut(JobHolder jh)
         {
             int days = f.safeInt("boysout");
-            ZooJobItem[] jobs = eng.db2().getBoysGirlsOut(f, days, OneRabbit.RabbitSex.MALE);
+            ZooJobItem[] jobs = eng.db2().ztGetBoysGirlsOut(f, days, OneRabbit.RabbitSex.MALE);
             foreach (ZooJobItem z in jobs)
                 jh.Add(new ZootehJob(f).BoysGirlsOut(z.id, z.name, z.place, z.age, z.info[0],true,z.breed));
             days = f.safeInt("girlsout");
-            jobs = eng.db2().getBoysGirlsOut(f, days, OneRabbit.RabbitSex.FEMALE);
+            jobs = eng.db2().ztGetBoysGirlsOut(f, days, OneRabbit.RabbitSex.FEMALE);
             foreach (ZooJobItem z in jobs)
                 jh.Add(new ZootehJob(f).BoysGirlsOut(z.id, z.name, z.place, z.age, z.info[0], false,z.breed));
         }
@@ -223,32 +227,32 @@ namespace rabnet
         /// </summary>
         /// <param name="jh">Список работ</param>
         /// <param name="type">0- Случка, 1-Вязка</param>
-        public void getFucks(JobHolder jh,int type)
+        private void getFucks(JobHolder jh,int type)
         {
             int days1 = f.safeInt("sfuck");
             int days2 = f.safeInt("ffuck");
             bool heter = f.safeBool("heter");
             bool inbr = f.safeBool("inbr");
             int malewait = f.safeInt("mwait");
-            ZooJobItem[] jobs = eng.db2().getZooFuck(f, days1, days2, eng.brideAge(), malewait, heter, inbr, type);
+            ZooJobItem[] jobs = eng.db2().ztGetZooFuck(f, days1, days2, eng.brideAge(), malewait, heter, inbr, type);
             foreach (ZooJobItem z in jobs)
             {
                 jh.Add(new ZootehJob(f).Fuck(z.id, z.name, z.place, z.age, z.info[0], z.status,z.names,z.info[1],z.breed));
             }
         }
-        public void getVacc(JobHolder jh)
+        private void getVacc(JobHolder jh)
         {
             int days = f.safeInt("vacc");
-            ZooJobItem[] jobs = eng.db2().getVacc(f);
+            ZooJobItem[] jobs = eng.db2().ztGetVacc(f);
             foreach (ZooJobItem z in jobs)
                 jh.Add(new ZootehJob(f).Vacc(z.id,z.name,z.place,z.age,z.info[0],z.breed));
         }
 
-        public void getSetNest(JobHolder jh)
+        private void getSetNest(JobHolder jh)
         {
             int wochild = f.safeInt("nest");
             int wchild = f.safeInt("cnest");
-            ZooJobItem[] jobs = eng.db2().getSetNest(f, wochild, wchild);
+            ZooJobItem[] jobs = eng.db2().ztGetSetNest(f, wochild, wchild);
             foreach (ZooJobItem z in jobs)
                 jh.Add(new ZootehJob(f).SetNest(z.id, z.name, z.place, z.age, z.info[0],z.info[1],z.info[2],z.breed));
         }

@@ -669,9 +669,14 @@ namespace rabnet
             Filters f = new Filters();
             int bid=buildNum();
             f["bld"] = bid.ToString();
-            f["suck"] = Engine.opt().getOption(Options.OPT_ID.SUCKERS);
-            ReportViewForm dlg =  new ReportViewForm(myReportType.SHED, new XmlDocument[] { 
-                Engine.db().makeReport(myReportType.SHED,f),getBuildDoc(bid)});
+            f["nest_out"] = Engine.opt().getOption(Options.OPT_ID.NEST_OUT);
+            //f["suck"] = Engine.opt().getOption(Options.OPT_ID.COUNT_SUCKERS);
+            ReportViewForm dlg =  new ReportViewForm(
+                myReportType.SHED, 
+                new XmlDocument[] 
+                { 
+                    Engine.db().makeReport(myReportType.SHED,f),getBuildDoc(bid)
+                });
             dlg.ExcelEnabled = false;
             dlg.ShowDialog();
 #else

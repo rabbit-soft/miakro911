@@ -26,9 +26,10 @@ namespace rabnet
         private int curzone = 0;
         private int mkbrides = 122;
         private int mkcandidate = 120;
-        private int makesuck = 50;
+        //private int makesuck = 50; ваще не понятно зачем это тут надо
         private bool can_commit;
         bool manual = true;
+
         public RabbitInfo()
         {
             InitializeComponent();
@@ -42,7 +43,7 @@ namespace rabnet
                 tabControl1.TabPages.RemoveAt(1);
             mkbrides = Engine.get().brideAge();
             mkcandidate = Engine.opt().getIntOption(Options.OPT_ID.MAKE_CANDIDATE);
-            makesuck = Engine.opt().getIntOption(Options.OPT_ID.SUCKERS);
+            //makesuck = Engine.opt().getIntOption(Options.OPT_ID.COUNT_SUCKERS);
             dateWeight.Value = DateTime.Now.Date;
         }
 
@@ -92,10 +93,10 @@ namespace rabnet
 
         private void button1_Click(object sender, EventArgs e)
         {
-           button5.PerformClick();
+           btAccept.PerformClick();
             if (can_commit)
             {
-                this.DialogResult = button1.DialogResult;
+                this.DialogResult = btOk.DialogResult;
                 Close();
             }
         }
@@ -526,21 +527,21 @@ namespace rabnet
         {
             if (rab.RabID == 0) return;
             if((new BonForm(rab.RabID)).ShowDialog() != DialogResult.Abort)
-                button2.Enabled = false;
+                btCancel.Enabled = false;
             updateData();
         }
 
         private void button10_Click(object sender, EventArgs e)
         {
             if((new Proholost(rab.RabID)).ShowDialog() != DialogResult.Abort)
-                button2.Enabled = false;
+                btCancel.Enabled = false;
             updateData();
         }
 
         private void button9_Click(object sender, EventArgs e)
         {
             if((new OkrolForm(rab.RabID)).ShowDialog() != DialogResult.Abort)
-                button2.Enabled = false;
+                btCancel.Enabled = false;
             updateData();
         }
 

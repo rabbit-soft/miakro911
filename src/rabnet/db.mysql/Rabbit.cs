@@ -442,7 +442,7 @@ r_status,r_flags,r_event_date,r_breed
         public String breedname;
         public String bon;
         /// <summary>
-        /// Подсосные
+        /// молодняк
         /// </summary>
         public OneRabbit[] youngers;
         public OneRabbit[] neighbors;
