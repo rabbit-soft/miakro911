@@ -114,34 +114,34 @@
             this.toolStripMenuItem1,
             this.выходToolStripMenuItem});
             this.tsmiFarm.Name = "tsmiFarm";
-            this.tsmiFarm.Size = new System.Drawing.Size(51, 20);
+            this.tsmiFarm.Size = new System.Drawing.Size(56, 20);
             this.tsmiFarm.Text = "Ферма";
             // 
             // сменитьФермуToolStripMenuItem
             // 
             this.сменитьФермуToolStripMenuItem.Name = "сменитьФермуToolStripMenuItem";
             this.сменитьФермуToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.сменитьФермуToolStripMenuItem.Size = new System.Drawing.Size(293, 22);
+            this.сменитьФермуToolStripMenuItem.Size = new System.Drawing.Size(297, 22);
             this.сменитьФермуToolStripMenuItem.Text = "Сменить ферму/пользователя ...";
             this.сменитьФермуToolStripMenuItem.Click += new System.EventHandler(this.ChangeFarmMenuItem_Click);
             // 
             // usersMenuItem
             // 
             this.usersMenuItem.Name = "usersMenuItem";
-            this.usersMenuItem.Size = new System.Drawing.Size(293, 22);
+            this.usersMenuItem.Size = new System.Drawing.Size(297, 22);
             this.usersMenuItem.Text = "Пользователи";
             this.usersMenuItem.Click += new System.EventHandler(this.usersMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(290, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(294, 6);
             // 
             // выходToolStripMenuItem
             // 
             this.выходToolStripMenuItem.Name = "выходToolStripMenuItem";
             this.выходToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F4)));
-            this.выходToolStripMenuItem.Size = new System.Drawing.Size(293, 22);
+            this.выходToolStripMenuItem.Size = new System.Drawing.Size(297, 22);
             this.выходToolStripMenuItem.Text = "Выход";
             this.выходToolStripMenuItem.Click += new System.EventHandler(this.ExitMenuItem_Click);
             // 
@@ -159,14 +159,14 @@
             this.tsmiDeadReasonsView,
             this.tsmiProductTypesView});
             this.tsmiView.Name = "tsmiView";
-            this.tsmiView.Size = new System.Drawing.Size(38, 20);
+            this.tsmiView.Size = new System.Drawing.Size(39, 20);
             this.tsmiView.Text = "Вид";
             // 
             // tsmiFilter
             // 
             this.tsmiFilter.Name = "tsmiFilter";
             this.tsmiFilter.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.tsmiFilter.Size = new System.Drawing.Size(207, 22);
+            this.tsmiFilter.Size = new System.Drawing.Size(208, 22);
             this.tsmiFilter.Text = "Фильтр";
             this.tsmiFilter.Click += new System.EventHandler(this.tsmiFilter_Click);
             // 
@@ -174,7 +174,7 @@
             // 
             this.параметрыToolStripMenuItem.Name = "параметрыToolStripMenuItem";
             this.параметрыToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-            this.параметрыToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.параметрыToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
             this.параметрыToolStripMenuItem.Text = "Параметры";
             this.параметрыToolStripMenuItem.Click += new System.EventHandler(this.paramsMenuItem1_Click);
             // 
@@ -182,27 +182,27 @@
             // 
             this.tsmiDeadsArchive.Name = "tsmiDeadsArchive";
             this.tsmiDeadsArchive.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-            this.tsmiDeadsArchive.Size = new System.Drawing.Size(207, 22);
+            this.tsmiDeadsArchive.Size = new System.Drawing.Size(208, 22);
             this.tsmiDeadsArchive.Text = "Архив Списаний";
             this.tsmiDeadsArchive.Click += new System.EventHandler(this.tsmiDeadsArchive_Click);
             // 
             // miMeal
             // 
             this.miMeal.Name = "miMeal";
-            this.miMeal.Size = new System.Drawing.Size(207, 22);
+            this.miMeal.Size = new System.Drawing.Size(208, 22);
             this.miMeal.Text = "Учет кормов";
             this.miMeal.Click += new System.EventHandler(this.miMeal_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(204, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(205, 6);
             // 
             // namesMenuItem
             // 
             this.namesMenuItem.Name = "namesMenuItem";
             this.namesMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.K)));
-            this.namesMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.namesMenuItem.Size = new System.Drawing.Size(208, 22);
             this.namesMenuItem.Text = "Имена";
             this.namesMenuItem.Click += new System.EventHandler(this.namesMenuItem_Click);
             // 
@@ -210,35 +210,35 @@
             // 
             this.breedsMenuItem.Name = "breedsMenuItem";
             this.breedsMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-            this.breedsMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.breedsMenuItem.Size = new System.Drawing.Size(208, 22);
             this.breedsMenuItem.Text = "Породы";
             this.breedsMenuItem.Click += new System.EventHandler(this.breedsMenuItem_Click);
             // 
             // tsmiAreas
             // 
             this.tsmiAreas.Name = "tsmiAreas";
-            this.tsmiAreas.Size = new System.Drawing.Size(207, 22);
+            this.tsmiAreas.Size = new System.Drawing.Size(208, 22);
             this.tsmiAreas.Text = "Зоны";
             this.tsmiAreas.Click += new System.EventHandler(this.tsmiAreas_Click);
             // 
             // tsmiDeadReasonsView
             // 
             this.tsmiDeadReasonsView.Name = "tsmiDeadReasonsView";
-            this.tsmiDeadReasonsView.Size = new System.Drawing.Size(207, 22);
+            this.tsmiDeadReasonsView.Size = new System.Drawing.Size(208, 22);
             this.tsmiDeadReasonsView.Text = "Причины списания";
             this.tsmiDeadReasonsView.Click += new System.EventHandler(this.tsmiDeadReasonsView_Click);
             // 
             // tsmiProductTypesView
             // 
             this.tsmiProductTypesView.Name = "tsmiProductTypesView";
-            this.tsmiProductTypesView.Size = new System.Drawing.Size(207, 22);
+            this.tsmiProductTypesView.Size = new System.Drawing.Size(208, 22);
             this.tsmiProductTypesView.Text = "Виды продукции";
             this.tsmiProductTypesView.Click += new System.EventHandler(this.tsmiProductTypesView_Click);
             // 
             // tsmiActions
             // 
             this.tsmiActions.Name = "tsmiActions";
-            this.tsmiActions.Size = new System.Drawing.Size(68, 20);
+            this.tsmiActions.Size = new System.Drawing.Size(70, 20);
             this.tsmiActions.Text = "Действия";
             // 
             // tsmiReports
@@ -255,14 +255,14 @@
             this.fucksByDateToolStripMenuItem,
             this.miButcher});
             this.tsmiReports.Name = "tsmiReports";
-            this.tsmiReports.Size = new System.Drawing.Size(59, 20);
+            this.tsmiReports.Size = new System.Drawing.Size(60, 20);
             this.tsmiReports.Text = "Отчеты";
             this.tsmiReports.DropDownOpening += new System.EventHandler(this.tsmiReports_DropDownOpening);
             // 
             // тестовыйToolStripMenuItem
             // 
             this.тестовыйToolStripMenuItem.Name = "тестовыйToolStripMenuItem";
-            this.тестовыйToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.тестовыйToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.тестовыйToolStripMenuItem.Text = "Тестовый";
             this.тестовыйToolStripMenuItem.Visible = false;
             this.тестовыйToolStripMenuItem.Click += new System.EventHandler(this.тестовыйToolStripMenuItem_Click);
@@ -270,63 +270,63 @@
             // tsmiBreeds
             // 
             this.tsmiBreeds.Name = "tsmiBreeds";
-            this.tsmiBreeds.Size = new System.Drawing.Size(220, 22);
+            this.tsmiBreeds.Size = new System.Drawing.Size(223, 22);
             this.tsmiBreeds.Text = "Состав пород";
             this.tsmiBreeds.Click += new System.EventHandler(this.tsmiBreeds_Click);
             // 
             // tsmiFuckProductivity
             // 
             this.tsmiFuckProductivity.Name = "tsmiFuckProductivity";
-            this.tsmiFuckProductivity.Size = new System.Drawing.Size(220, 22);
+            this.tsmiFuckProductivity.Size = new System.Drawing.Size(223, 22);
             this.tsmiFuckProductivity.Text = "Продуктивность соития";
             this.tsmiFuckProductivity.Click += new System.EventHandler(this.tsmiFuckProductivity_Click);
             // 
             // tsmiAgeAndCount
             // 
             this.tsmiAgeAndCount.Name = "tsmiAgeAndCount";
-            this.tsmiAgeAndCount.Size = new System.Drawing.Size(220, 22);
+            this.tsmiAgeAndCount.Size = new System.Drawing.Size(223, 22);
             this.tsmiAgeAndCount.Text = "Возраст и количество";
             this.tsmiAgeAndCount.Click += new System.EventHandler(this.tsmiAgeAndCount_Click);
             // 
             // tsmiCountByMonths
             // 
             this.tsmiCountByMonths.Name = "tsmiCountByMonths";
-            this.tsmiCountByMonths.Size = new System.Drawing.Size(220, 22);
+            this.tsmiCountByMonths.Size = new System.Drawing.Size(223, 22);
             this.tsmiCountByMonths.Text = "Количество по месяцам";
             this.tsmiCountByMonths.Click += new System.EventHandler(this.tsmiCountByMonth_Click);
             // 
             // tsmiDeadReasons
             // 
             this.tsmiDeadReasons.Name = "tsmiDeadReasons";
-            this.tsmiDeadReasons.Size = new System.Drawing.Size(220, 22);
+            this.tsmiDeadReasons.Size = new System.Drawing.Size(223, 22);
             this.tsmiDeadReasons.Text = "Причины списания";
             this.tsmiDeadReasons.Click += new System.EventHandler(this.tsmiDeads_Click);
             // 
             // tsmiDeadsReaport
             // 
             this.tsmiDeadsReaport.Name = "tsmiDeadsReaport";
-            this.tsmiDeadsReaport.Size = new System.Drawing.Size(220, 22);
+            this.tsmiDeadsReaport.Size = new System.Drawing.Size(223, 22);
             this.tsmiDeadsReaport.Text = "Списания";
             this.tsmiDeadsReaport.Click += new System.EventHandler(this.tsmiDeadsReaport_Click);
             // 
             // tsmiFucksByUsers
             // 
             this.tsmiFucksByUsers.Name = "tsmiFucksByUsers";
-            this.tsmiFucksByUsers.Size = new System.Drawing.Size(220, 22);
+            this.tsmiFucksByUsers.Size = new System.Drawing.Size(223, 22);
             this.tsmiFucksByUsers.Text = "Окролы по пользователям";
             this.tsmiFucksByUsers.Click += new System.EventHandler(this.tsmiFucksByUsers_Click);
             // 
             // fucksByDateToolStripMenuItem
             // 
             this.fucksByDateToolStripMenuItem.Name = "fucksByDateToolStripMenuItem";
-            this.fucksByDateToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.fucksByDateToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.fucksByDateToolStripMenuItem.Text = "Список случек\\вязок";
             this.fucksByDateToolStripMenuItem.Click += new System.EventHandler(this.fucksByDateToolStripMenuItem_Click);
             // 
             // miButcher
             // 
             this.miButcher.Name = "miButcher";
-            this.miButcher.Size = new System.Drawing.Size(220, 22);
+            this.miButcher.Size = new System.Drawing.Size(223, 22);
             this.miButcher.Text = "Стерильный цех";
             this.miButcher.Click += new System.EventHandler(this.miButcher_Click);
             // 
@@ -347,7 +347,7 @@
             this.miScale,
             this.paramsMenuItem1});
             this.tsmiOptions.Name = "tsmiOptions";
-            this.tsmiOptions.Size = new System.Drawing.Size(73, 20);
+            this.tsmiOptions.Size = new System.Drawing.Size(79, 20);
             this.tsmiOptions.Text = "Настройки";
             this.tsmiOptions.DropDownOpening += new System.EventHandler(this.tsmiOptions_DropDownOpening);
             // 
@@ -355,7 +355,7 @@
             // 
             this.showTierTMenuItem.CheckOnClick = true;
             this.showTierTMenuItem.Name = "showTierTMenuItem";
-            this.showTierTMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.showTierTMenuItem.Size = new System.Drawing.Size(231, 22);
             this.showTierTMenuItem.Text = "Показывать типы ярусов";
             this.showTierTMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
@@ -363,7 +363,7 @@
             // 
             this.showTierSMenuItem.CheckOnClick = true;
             this.showTierSMenuItem.Name = "showTierSMenuItem";
-            this.showTierSMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.showTierSMenuItem.Size = new System.Drawing.Size(231, 22);
             this.showTierSMenuItem.Text = "Показывать типы отделений";
             this.showTierSMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
@@ -371,7 +371,7 @@
             // 
             this.shortNamesMenuItem.CheckOnClick = true;
             this.shortNamesMenuItem.Name = "shortNamesMenuItem";
-            this.shortNamesMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.shortNamesMenuItem.Size = new System.Drawing.Size(231, 22);
             this.shortNamesMenuItem.Text = "Сокращения в таблицах";
             this.shortNamesMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
@@ -379,7 +379,7 @@
             // 
             this.shortZooMenuItem.CheckOnClick = true;
             this.shortZooMenuItem.Name = "shortZooMenuItem";
-            this.shortZooMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.shortZooMenuItem.Size = new System.Drawing.Size(231, 22);
             this.shortZooMenuItem.Text = "Сокращения в зоотехплане";
             this.shortZooMenuItem.Click += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
@@ -387,33 +387,33 @@
             // 
             this.dblSurMenuItem.CheckOnClick = true;
             this.dblSurMenuItem.Name = "dblSurMenuItem";
-            this.dblSurMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.dblSurMenuItem.Size = new System.Drawing.Size(231, 22);
             this.dblSurMenuItem.Text = "Двойные фамилии";
             this.dblSurMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(231, 6);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(228, 6);
             // 
             // shNumMenuItem
             // 
             this.shNumMenuItem.CheckOnClick = true;
             this.shNumMenuItem.Name = "shNumMenuItem";
-            this.shNumMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.shNumMenuItem.Size = new System.Drawing.Size(231, 22);
             this.shNumMenuItem.Text = "Показывать номера";
             this.shNumMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
             // toolStripMenuItem5
             // 
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(231, 6);
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(228, 6);
             // 
             // geterosisMenuItem
             // 
             this.geterosisMenuItem.CheckOnClick = true;
             this.geterosisMenuItem.Name = "geterosisMenuItem";
-            this.geterosisMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.geterosisMenuItem.Size = new System.Drawing.Size(231, 22);
             this.geterosisMenuItem.Text = "Разрешен гетерозис";
             this.geterosisMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
@@ -421,19 +421,19 @@
             // 
             this.inbreedingMenuItem.CheckOnClick = true;
             this.inbreedingMenuItem.Name = "inbreedingMenuItem";
-            this.inbreedingMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.inbreedingMenuItem.Size = new System.Drawing.Size(231, 22);
             this.inbreedingMenuItem.Text = "Разрешен инбридинг";
             this.inbreedingMenuItem.CheckedChanged += new System.EventHandler(this.showTierTMenuItem_CheckedChanged);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(231, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(228, 6);
             // 
             // miScale
             // 
             this.miScale.Name = "miScale";
-            this.miScale.Size = new System.Drawing.Size(234, 22);
+            this.miScale.Size = new System.Drawing.Size(231, 22);
             this.miScale.Text = "Весы";
             this.miScale.Click += new System.EventHandler(this.miScale_Click);
             // 
@@ -441,7 +441,7 @@
             // 
             this.paramsMenuItem1.Name = "paramsMenuItem1";
             this.paramsMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-            this.paramsMenuItem1.Size = new System.Drawing.Size(234, 22);
+            this.paramsMenuItem1.Size = new System.Drawing.Size(231, 22);
             this.paramsMenuItem1.Text = "Параметры ...";
             this.paramsMenuItem1.Click += new System.EventHandler(this.paramsMenuItem1_Click);
             // 
@@ -451,13 +451,13 @@
             this.tsmiAboutPO,
             this.tsmiHelp});
             this.tsmiAbout.Name = "tsmiAbout";
-            this.tsmiAbout.Size = new System.Drawing.Size(62, 20);
+            this.tsmiAbout.Size = new System.Drawing.Size(65, 20);
             this.tsmiAbout.Text = "Справка";
             // 
             // tsmiAboutPO
             // 
             this.tsmiAboutPO.Name = "tsmiAboutPO";
-            this.tsmiAboutPO.Size = new System.Drawing.Size(164, 22);
+            this.tsmiAboutPO.Size = new System.Drawing.Size(161, 22);
             this.tsmiAboutPO.Text = "О программе ...";
             this.tsmiAboutPO.Click += new System.EventHandler(this.tsmiAboutPO_Click);
             // 
@@ -465,7 +465,7 @@
             // 
             this.tsmiHelp.Name = "tsmiHelp";
             this.tsmiHelp.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.tsmiHelp.Size = new System.Drawing.Size(164, 22);
+            this.tsmiHelp.Size = new System.Drawing.Size(161, 22);
             this.tsmiHelp.Text = "Помощь";
             this.tsmiHelp.Click += new System.EventHandler(this.tsmiHelp_Click);
             // 

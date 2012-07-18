@@ -151,8 +151,8 @@ namespace rabnet
 #endif
             if (nofarm <= MAX_FARMS_COUNT)
                 nofarms.Add(nofarm); 
-            MainForm.protectTest(BuildingsPanel.getFarmsCount(buildTree));
-            treeView1.Sort();
+            MainForm.ProtectTest(BuildingsPanel.getFarmsCount(buildTree));
+            //treeView1.Sort();
             manual = true;
             n.Tag="0:0";
             n.Expand();
@@ -324,7 +324,7 @@ namespace rabnet
             return new FarmDrawer.DrawTier(b.id(),b.itype(),b.delims(),b.nest(),b.heater(),rabs.ToArray(),b.repair());
         }
 
-        private void DrawFarm(int farm)
+        private void drawFarm(int farm)
         {
             int[] tiers=Engine.db().getTiers(farm);
             FarmDrawer.DrawTier t1 = tierFromBuilding(Engine.db().getBuilding(tiers[0]));
@@ -366,7 +366,7 @@ namespace rabnet
                 }
                 manual = true;
             }
-            DrawFarm(farm);
+            drawFarm(farm);
         }
 
         private void farmDrawer1_ValueChanged(object sender, BuildingControl.BCEvent e)
@@ -399,7 +399,7 @@ namespace rabnet
             {
                 MessageBox.Show(ex.Message);
             }
-            DrawFarm(e.farm);
+            drawFarm(e.farm);
         }
 
         public override ContextMenuStrip getMenu()
@@ -441,8 +441,8 @@ namespace rabnet
                 {
                     b = b2;
                     for (int i = 0; i < b.secs(); i++)
-                        if (b.busy(i)!=0)
-                        f.addRabbit(b.busy(i));
+                        if (b.busy(i)>0)
+                            f.addRabbit(b.busy(i));
                 }
             }
             if(f.ShowDialog() == DialogResult.OK)
@@ -462,7 +462,7 @@ namespace rabnet
                 {
                     b = b2;
                     for (int i = 0; i < b.secs(); i++)
-                        if (b.busy(i)!=0)
+                        if (b.busy(i)>0)
                             f.addRabbit(b.busy(i));
                 }
             }
@@ -647,7 +647,7 @@ namespace rabnet
             if (treeView1.SelectedNode == null) return;
             if (!isFarm()) return;
             int fid = farmNum();
-            MainForm.protectTest(Engine.db().getMFCount());
+            MainForm.ProtectTest(Engine.db().getMFCount());
             if (new MiniFarmForm(fid).ShowDialog() == DialogResult.OK) _rsb.run();
         }
 
@@ -734,7 +734,7 @@ namespace rabnet
             }
             int i1 = int.Parse(s1.Substring(ss1.Length));
             int i2 = int.Parse(s2.Substring(ss2.Length));
-            return i1 - i2;
+            return i1.CompareTo(i2);
         }
 
     }

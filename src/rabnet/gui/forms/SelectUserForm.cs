@@ -18,7 +18,7 @@ namespace rabnet
             InitializeComponent();
             comboBox1.Items.Add("");
             ids.Add(0);
-            List<sUser> us = Engine.db().getUsers();
+            List<sUser> us = Engine.db().GetUsers();
             for (int i = 0; i < us.Count; i++)
             {
                 comboBox1.Items.Add(us[i].Name);

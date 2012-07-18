@@ -133,20 +133,28 @@ namespace rabnet
         }
         public void initProgress(int min,int max)
         {
-            if (this.InvokeRequired) 
+#if DEBUG
+            try
             {
-                progressCallBack2 d = new progressCallBack2(initProgress);
-                this.Invoke(d, new object[] { min, max });
+#endif
+                if (this.InvokeRequired)
+                {
+                    progressCallBack2 d = new progressCallBack2(initProgress);
+                    this.Invoke(d, new object[] { min, max });
+                }
+                else
+                {
+                    pb.Minimum = min;
+                    pb.Maximum = max;
+                    pb.Value = min;
+
+                    btn.Image = imageList1.Images[0];
+                    btnStatus = 1;
+                }
+#if DEBUG
             }
-            else
-            {
-                pb.Minimum = min;
-                pb.Maximum = max;
-                pb.Value = min;
-                
-                btn.Image = imageList1.Images[0];
-                btnStatus = 1;
-            }
+            catch (Exception) { }
+#endif
         }
         public void initProgress(int max)
         {

@@ -358,7 +358,7 @@ INSERT INTO options(o_name,o_subname,o_value) VALUES
 ('opt','sh_num',0),
 ('opt','short_zoo',1),
 ('opt','build_fill_zero',0),
-('opt','vaccine_time',0),
+('opt','vaccine_time',360),
 ('opt','butcher_type',0);
 
 UPDATE tiers SET t_busy2=NULL,t_busy3=NULL,t_busy4=NULL WHERE t_type='female';

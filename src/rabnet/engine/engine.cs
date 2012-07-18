@@ -41,8 +41,8 @@ namespace rabnet
             if (data!=null)
             {
                 if (data2 == data) data2 = null;
-                data.close();
-                if (data2 != null) data2.close();
+                data.Close();
+                if (data2 != null) data2.Close();
                 data = data2 = null;
             }
             _logger.Debug("initing engine data to " + dbType + " param=" + param);
@@ -65,8 +65,8 @@ namespace rabnet
             if (ver != NEED_DB_VERSION)
             {
                 if (data2 == data) data2 = null;
-                if (data != null) data.close();
-                if (data2 != null) data2.close();
+                if (data != null) data.Close();
+                if (data2 != null) data2.Close();
                 data = data2 = null;
                 throw new ExDBBadVersion(NEED_DB_VERSION, ver);
             }

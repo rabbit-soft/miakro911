@@ -91,7 +91,7 @@ namespace rabnet
                 cbUser.Items.Clear();
                 cbUser.Enabled = false;
                 tbPassword.Enabled = false;
-                List<sUser> usrs = Engine.db().getUsers();
+                List<sUser> usrs = Engine.db().GetUsers();
                 if (usrs != null)
                 {
                     cbUser.Enabled = true;

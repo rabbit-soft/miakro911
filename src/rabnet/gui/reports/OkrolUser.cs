@@ -50,7 +50,7 @@ namespace rabnet
             InitializeComponent();
             //dtpFrom.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             //dtpTo.Value = dtpFrom.Value.AddMonths(1).AddDays(-1);
-            List<sUser> usrs = Engine.db().getUsers();
+            List<sUser> usrs = Engine.db().GetUsers();
             for (int i = 0; i < usrs.Count; i++)
             {
                 comboBox1.Items.Add(usrs[i].Name);

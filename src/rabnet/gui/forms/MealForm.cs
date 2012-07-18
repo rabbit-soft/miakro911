@@ -130,7 +130,7 @@ namespace rabnet
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
-            MainForm.still_working();
+            MainForm.StillWorking();
         }
 
     }

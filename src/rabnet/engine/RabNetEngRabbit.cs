@@ -56,7 +56,7 @@ namespace rabnet
         {
             id = rid;
             eng = dl;
-            rab = eng.db().getRabbit(rid);
+            rab = eng.db().GetRabbit(rid);
             if (rab == null)
                 throw new ExNoRabbit();
         }
@@ -94,8 +94,8 @@ namespace rabnet
                 eng.logs().log(RabNetLogs.LogType.RENAME, RabID, 0, "", "", eng.db().makeName(rab.wasname, 0, 0, 1, rab.sex));
             }
             else eng.logs().log(RabNetLogs.LogType.RAB_CHANGE, RabID);
-            eng.db().setRabbit(rab);
-            rab=eng.db().getRabbit(id);
+            eng.db().SetRabbit(rab);
+            rab=eng.db().GetRabbit(id);
         }
 
         public OneRabbit.RabbitSex Sex
@@ -406,7 +406,7 @@ namespace rabnet
             foreach (OneRabbit y in Youngers)
                 if (y.id == yid)
                     y.tag = "";
-            OneRabbit r = eng.db().getRabbit(yid);
+            OneRabbit r = eng.db().GetRabbit(yid);
             eng.logs().log(RabNetLogs.LogType.REPLACE, yid,0,r.smallAddress,address);
         }
 

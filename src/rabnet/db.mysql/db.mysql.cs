@@ -11,6 +11,7 @@ namespace rabnet
     {
         private MySqlConnection psql=null;
         private ILog log = LogManager.GetLogger(typeof(RabNetDbMySql));
+
         public RabNetDbMySql() 
         {
             log4net.Config.XmlConfigurator.Configure();
@@ -30,7 +31,7 @@ namespace rabnet
 
         public RabNetDbMySql(String connectionString): this()
         {
-            init(connectionString);
+            Init(connectionString);
         }
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace rabnet
         /// </summary>
         ~RabNetDbMySql()
         {
-            close();
+            Close();
         }
 
         #region IRabNetDataLayer Members
@@ -46,7 +47,7 @@ namespace rabnet
         /// <summary>
         /// Закрывает и уничтожает подключение к Базе Данных
         /// </summary>
-        public void close()
+        public void Close()
         {
             if (psql != null)
             {
@@ -58,9 +59,9 @@ namespace rabnet
         /// Создает и открывает новое подключение к Базе Данных
         /// </summary>
         /// <param name="connectionString">Строка подключение. Хранится в app.config</param>
-        public void init(String connectionString)
+        public void Init(String connectionString)
         {
-            close();
+            Close();
             log.Debug("init from string "+connectionString);
             psql = new MySqlConnection(connectionString);
             psql.Open();
@@ -71,7 +72,7 @@ namespace rabnet
         /// </summary>
         /// <param name="cmd">sql-команда</param>
         /// <returns>Количество затронутых строк</returns>
-        public int exec(String cmd)
+        public int Exec(String cmd)
         {
             log.Debug("exec query:" + cmd);
             MySqlCommand c = new MySqlCommand(cmd, sql);
@@ -82,14 +83,14 @@ namespace rabnet
         /// </summary>
         /// <param name="cmd">sql-команда</param>
         /// <returns>Результат выполнения sql-команды</returns>
-        public MySqlDataReader reader(String cmd)
+        private MySqlDataReader reader(String cmd)
         {
             log.Debug("reader query:"+cmd);
             MySqlCommand c=new MySqlCommand(cmd,sql);
             return c.ExecuteReader();
         }
 
-        public List<sUser> getUsers()
+        public List<sUser> GetUsers()
         {
             return new Users(sql).getUsers();
         }
@@ -127,9 +128,9 @@ namespace rabnet
 
         public void setOption(string name, string subname, uint uid, string value)
         {
-            exec(String.Format("DELETE FROM options WHERE o_name='{0:s}' AND o_subname='{1:s}' AND o_uid={2:d};",
+            Exec(String.Format("DELETE FROM options WHERE o_name='{0:s}' AND o_subname='{1:s}' AND o_uid={2:d};",
                 name,subname,uid));
-            exec(String.Format("INSERT INTO options(o_name,o_subname,o_uid,o_value) VALUES('{0:s}','{1:s}',{2:d},'{3:s}');",
+            Exec(String.Format("INSERT INTO options(o_name,o_subname,o_uid,o_value) VALUES('{0:s}','{1:s}',{2:d},'{3:s}');",
                 name,subname,uid,value));
         }
 
@@ -179,8 +180,8 @@ namespace rabnet
 
         public void setFilter(string type, string name, Filters filter)
         {
-            exec("DELETE FROM filters WHERE f_type='"+type+"' AND f_name='"+name+"';");
-            exec(String.Format("INSERT INTO filters(f_type,f_name,f_filter) VALUES('{0:s}','{1:s}','{2:s}');",
+            Exec("DELETE FROM filters WHERE f_type='"+type+"' AND f_name='"+name+"';");
+            Exec(String.Format("INSERT INTO filters(f_type,f_name,f_filter) VALUES('{0:s}','{1:s}','{2:s}');",
                 type,name,filter.toString()));
         }
 
@@ -195,7 +196,7 @@ namespace rabnet
         }
 
 
-        public IDataGetter getYoungers(Filters filters)
+        public IDataGetter GetYoungers(Filters filters)
         {
             return new Youngers(sql, filters);
         }
@@ -266,11 +267,11 @@ namespace rabnet
             return new Breeds(sql);
         }
 
-        public OneRabbit getRabbit(int rid)
+        public OneRabbit GetRabbit(int rid)
         {
             return RabbitGetter.GetRabbit(sql, rid);
         }
-        public void setRabbit(OneRabbit r)
+        public void SetRabbit(OneRabbit r)
         {
             RabbitGetter.SetRabbit(sql,r);
         }

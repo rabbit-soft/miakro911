@@ -380,7 +380,7 @@ namespace rabnet
 
         private void WorksPanel_Load(object sender, EventArgs e)
         {
-            MainForm.protectTest(Engine.db().getMFCount());
+            MainForm.ProtectTest(Engine.db().getMFCount());
         }
 
     }

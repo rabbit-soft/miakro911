@@ -43,7 +43,7 @@ namespace rabnet
 
         public void Prepare()
         {
-            MainForm.still_working();
+            MainForm.StillWorking();
             selItem = ListViewSaver.saveItem(lv);
             lv.ListViewItemSorter = null;
             lv.Items.Clear();

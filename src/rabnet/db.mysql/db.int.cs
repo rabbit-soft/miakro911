@@ -38,10 +38,10 @@ namespace rabnet
 
     public interface IRabNetDataLayer
     {
-        void init(String connectionString);
-        void close();
+        void Init(String connectionString);
+        void Close();
         //ENVIRONMENT
-        List<sUser> getUsers();
+        List<sUser> GetUsers();
         sUser getUser(int uid);
         int checkUser(String name, String password);
         String getOption(String name, String subname, uint uid);
@@ -63,7 +63,7 @@ namespace rabnet
         /// <summary>
         /// Список Молодняка
         /// </summary>
-        IDataGetter getYoungers(Filters filters);
+        IDataGetter GetYoungers(Filters filters);
         int[] getTiers(int farm);
         Building getBuilding(int tier);
         IBreeds getBreeds();
@@ -77,8 +77,8 @@ namespace rabnet
         List<String> getFuckMonths();
         void changeDeadReason(int rid, int reason);
         List<String> getDeadsMonths();
-        OneRabbit getRabbit(int rid);
-        void setRabbit(OneRabbit r);
+        OneRabbit GetRabbit(int rid);
+        void SetRabbit(OneRabbit r);
         ICatalogs catalogs();
         void RabNetLog(int type, int user, int r1,int r2,string a1,string a2,String text);
         Fucks getFucks(int rabbit);

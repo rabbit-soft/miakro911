@@ -101,7 +101,7 @@ namespace rabnet
     #endif
 #endif
 #if PROTECTED || DEMO
-            MainForm.protectTest(BuildingsPanel.getFarmsCount(Engine.db().buildingsTree()));
+            MainForm.ProtectTest(BuildingsPanel.getFarmsCount(Engine.db().buildingsTree()));
 #endif
         }
 
@@ -173,8 +173,8 @@ namespace rabnet
             tsmiActions.DropDown = curpanel.getMenu();
             rabStatusBar1.dExcelButtonClick = curpanel.MakeExcel;
             curpanel.activate();
-            working();
-            protectTest();
+            Working();
+            ProtectTest();
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -232,7 +232,7 @@ namespace rabnet
         /// <summary>
         /// Сбрасывает таймер Простоя
         /// </summary>
-        public void working()
+        public void Working()
         {
             tNoWorking.Stop();
             tNoWorking.Start();
@@ -249,11 +249,11 @@ namespace rabnet
         /// <summary>
         /// Сбрасывает таймер простоя. Тем самым обозначает что с программой работают.
         /// </summary>
-        public static void still_working()
+        public static void StillWorking()
         {
-            me.working();
+            me.Working();
         }
-        public static void protectTest()
+        public static void ProtectTest()
         {
             me.ptest(0);
         }
@@ -262,7 +262,7 @@ namespace rabnet
         /// Проверяет допустимо ли количество Ферм
         /// </summary>
         /// <param name="farms">Количество ферм</param>
-        public static void protectTest(int farms)
+        public static void ProtectTest(int farms)
         {
             me.ptest(farms);
         }
@@ -290,7 +290,7 @@ namespace rabnet
             if (msg != "")
             {
                 MessageBox.Show(this, msg + "\nПрограмма будет закрыта.", "Ошибка защиты", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                // Надо сделать выход более доброжелательным
+                //TODO Надо сделать выход более доброжелательным
 //                LoginForm.stop = true;
 //                mustclose = true;
 //                Close();
@@ -311,7 +311,7 @@ namespace rabnet
         }
         private void MainForm_MouseMove(object sender, MouseEventArgs e)
         {
-            working();
+            Working();
         }
 
         private void tsmiHelp_Click(object sender, EventArgs e)

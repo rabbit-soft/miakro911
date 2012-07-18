@@ -93,7 +93,7 @@ namespace rabnet
 
         private void button1_Click(object sender, EventArgs e)
         {
-           btAccept.PerformClick();
+            btAccept.PerformClick();
             if (can_commit)
             {
                 this.DialogResult = btOk.DialogResult;
@@ -117,10 +117,10 @@ namespace rabnet
             spec.Checked = rab.Spec;
             rate.Value = rab.Rate;
             group.Value = rab.Group;
-            label2.Text = "Имя:" + name.Text;
-            label3.Text = "Ж.Фам:" + surname.Text;
-            label4.Text = "М.Фам:" + secname.Text;
-            label5.Text = "Адрес:" + rab.Address;
+            lbName.Text = "Имя:" + name.Text;
+            lbSecname.Text = "Ж.Фам:" + surname.Text;
+            lbSurname.Text = "М.Фам:" + secname.Text;
+            lbAddress.Text = "Адрес:" + rab.Address;
             bdate.DateValue = rab.Born.Date;
             notes.Text = rab.Notes;
             String[] gns = rab.Genom.Split(' ');
@@ -149,7 +149,7 @@ namespace rabnet
             maleStatus.Enabled = groupBox4.Enabled = rab.age > mkcandidate;
             //maleStatus.SelectedIndex = rab.status;
             //maleStatus.Enabled = rab.age > 100 && rab.name != 0;
-            label7.Text = "Статус: " + maleStatus.Text;
+            lbState.Text = "Статус: " + maleStatus.Text;
             if (rab.Group != 1) return;
             tabControl1.TabPages.Add(malePage);
             tabControl1.TabPages.Add(weightPage);           
@@ -170,13 +170,13 @@ namespace rabnet
         private void updateFemale()
         {
             setSex(2);
-            label7.Text = "Статус: Девочка";
+            lbState.Text = "Статус: Девочка";
             if (bdate.DaysValue >= mkbrides)
-                label7.Text = "Статус: Невеста";
+                lbState.Text = "Статус: Невеста";
             if ((rab.Status == 0 && rab.EventDate != DateTime.MinValue )||(rab.Status==1 && rab.EventDate==DateTime.MinValue))
-                label7.Text = "Статус: Первокролка";
+                lbState.Text = "Статус: Первокролка";
             if (rab.Status > 1 || (rab.Status==1 && rab.EventDate!=DateTime.MinValue))
-                label7.Text = "Статус: Штатная";
+                lbState.Text = "Статус: Штатная";
             if (rab.Status > 0)
             {
                 button8.Text = btFuckHer.Text = "Вязать";
@@ -329,7 +329,7 @@ namespace rabnet
             {
                 setSex(0);
                 //label7.Text = "Статус:" + (rab.age < makesuck ? "Гнездовые" : "Подсосные");
-                label7.Text = "Статус: Бесполые";
+                lbState.Text = "Статус: Бесполые";
             }
             if (rab.Sex == OneRabbit.RabbitSex.MALE)
                 updateMale();
@@ -515,11 +515,11 @@ namespace rabnet
         private void btGens_Click(object sender, EventArgs e)
         {
             Fucks.Fuck f=fucks.SelectedItems[0].Tag as Fucks.Fuck;
-            String nm=label2.Text.Split(':')[1];
-            if (label3.Text!="")
-                nm += " " + label3.Text.Split(':')[1];
-            if (label4.Text!="")
-                nm += "-" + label4.Text.Split(':')[1];
+            String nm=lbName.Text.Split(':')[1];
+            if (lbSecname.Text!="")
+                nm += " " + lbSecname.Text.Split(':')[1];
+            if (lbSurname.Text!="")
+                nm += "-" + lbSurname.Text.Split(':')[1];
             (new GenomView(rab.Breed, f.breed, rab.Genom, f.rgenom, nm, f.partner)).ShowDialog();
         }
 

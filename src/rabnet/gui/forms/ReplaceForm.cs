@@ -257,7 +257,7 @@ namespace rabnet
         }
 
         /// <summary>
-        /// Добавляет из вне Кролика, которого надо пересадить в форму.
+        /// Добавляет в форму пересадок кролика с указанным Id.
         /// </summary>
         /// <param name="id"></param>
         public void addRabbit(int id)
@@ -537,7 +537,7 @@ namespace rabnet
 
         private void dataGridView1_MultiSelectChanged(object sender, EventArgs e)
         {
-            MainForm.still_working();
+            MainForm.StillWorking();
             btChangeAddresses.Enabled = (dataGridView1.SelectedRows.Count == 2 && _action!=Action.ONE_GIRL_OUT);
             btClear.Enabled = (dataGridView1.SelectedRows.Count >0);
             groupBox1.Enabled = groupBox2.Enabled = false;

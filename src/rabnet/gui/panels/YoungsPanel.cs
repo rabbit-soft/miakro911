@@ -35,7 +35,7 @@ namespace rabnet
             f["dbl"] = op.getOption(Options.OPT_ID.DBL_SURNAME);
             f["num"] = op.getOption(Options.OPT_ID.SHOW_NUMBERS);
             colSort.Prepare();
-            IDataGetter dg = DataThread.db().getYoungers(f); 
+            IDataGetter dg = DataThread.db().GetYoungers(f); 
             //отображение общей инфы в статус баре
             _rsb.setText(1, dg.getCount().ToString() + " строк");
             _rsb.setText(2, dg.getCount2().ToString() + " кроликов");

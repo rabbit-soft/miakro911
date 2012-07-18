@@ -161,7 +161,7 @@
             this.shedReportMenuItem,
             this.emptyRevMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(222, 208);
+            this.actMenu.Size = new System.Drawing.Size(222, 186);
             // 
             // replaceMenuItem
             // 

@@ -387,8 +387,10 @@ namespace rabdump
         {
             AppUpdater au = new AppUpdater(RabServWorker.ReqSender, getUpdatePath());          
             au.OnUpdateFinish += UpdateFinishHandler;
-            au.Check();            
+            au.Check();   
+#if !DEBUG
             miCheckForUpdate.Visible = false;
+#endif
         }
 
         private string getUpdatePath()
