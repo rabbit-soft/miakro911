@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReportPlugIns", "ReportPlugIns", "{908E03B8-81E4-4A61-B848-F9E34BE9F3B7}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rabnet", "gui\rabnet.csproj", "{EFCCE992-8AB2-43AB-87DD-1BEC3E429345}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A835C727-1EB1-490D-BEBC-5C88F382330B} = {A835C727-1EB1-490D-BEBC-5C88F382330B}
@@ -18,8 +20,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gui_genetics", "gui_genetics\gui_genetics.csproj", "{A835C727-1EB1-490D-BEBC-5C88F382330B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pickers", "..\libs\pickers\Pickers.csproj", "{9F02BE5E-50CC-487D-9092-2EE15E952B08}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReportPlugIns", "ReportPlugIns", "{908E03B8-81E4-4A61-B848-F9E34BE9F3B7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPlugIn", "ReportPlugIns\TestPlugIn\TestPlugIn.csproj", "{30EA7E1F-03D0-43BA-9169-0C4379AC5625}"
 EndProject

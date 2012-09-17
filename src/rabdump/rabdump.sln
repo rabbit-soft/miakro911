@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rabdump", "rabdump.csproj", "{2E3AC590-15C2-4341-9F18-8DA91DEEDB31}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "engine", "..\rabnet\engine\engine.csproj", "{241724AB-0674-41CF-A8AD-224EEC248E40}"

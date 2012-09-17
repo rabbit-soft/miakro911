@@ -254,6 +254,7 @@ namespace rabdump
             if (md == "")///если путь к 7zip не настроен, то в папку BackUps копируется .dump-файл
                 log.Warn("7z not specified");
             else
+            {
                 try
                 {
                     ProcessStartInfo inf = new ProcessStartInfo(md, string.Format(" a -mx9 -p{0} \"{1}.7z\" \"{1}.dump\"", ZIP_PASSWORD, fname));
@@ -274,6 +275,7 @@ namespace rabdump
                     log.Error("Error while " + md + ":" + ex.GetType().ToString() + ":" + ex.Message);
                     //return;
                 }
+            }
             log.Debug("copy " + fname + (is7z ? ".7z" : ".dump") + " to " + _j.BackupPath + "\\" + ffname + (is7z ? ".7z" : ".dump"));
             string movepath = _j.BackupPath + "\\" + ffname + (is7z ? ".7z" : ".dump");
             File.Move(fname + (is7z ? ".7z" : ".dump"), movepath);
