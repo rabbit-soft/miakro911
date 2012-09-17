@@ -51,11 +51,11 @@ namespace rabdump
         /// </summary>
         /// <param name="sz">Общий размер дампов расписания</param>
         /// <param name="resFile">Имя файла, зафисит от параметра minimum</param>
-        /// <param name="minimum">Самый старый файл дампа, принадлежащий расписанию</param>
+        /// <param name="minimum">Самый старый файл дампа, принадлежащий расписанию, или самый новый</param>
         /// <returns>Количество дампов данного расписания</returns>
         public int CountBackups(out int sz,out String resFile, bool minimum)
         {
-            _logger.Debug("count backups");
+            _logger.Debug("count backups in " + _j.BackupPath);
             if (!Directory.Exists(_j.BackupPath))
                 Directory.CreateDirectory(_j.BackupPath);
             DirectoryInfo inf = new DirectoryInfo(_j.BackupPath);
@@ -73,7 +73,7 @@ namespace rabdump
                 {
                     cnt++;
                     fsz += fi.Length;
-                    String h = nm[5].Substring(0, 2); //TODO а что если дата в имени стерта
+                    String h = nm[5].Substring(0, 2);
                     String m = nm[5].Substring(2, 2);
                     String s = nm[5].Substring(4, 2);
                     DateTime dt = new DateTime(int.Parse(nm[2]), int.Parse(nm[3]), int.Parse(nm[4]), int.Parse(h), int.Parse(m), int.Parse(s));
@@ -105,9 +105,10 @@ namespace rabdump
 
         public bool FileExists(string filename, string md5)
         {
-            if (File.Exists(_j.BackupPath + "\\" + filename))
+            string path = Path.Combine(_j.BackupPath, filename);
+            if (File.Exists(path))
             {
-                return pEngine.Helper.GetMD5FromFile(_j.BackupPath + "\\" + filename) == md5;
+                return pEngine.Helper.GetMD5FromFile(path) == md5;
             }
             else return false;
         }
@@ -127,14 +128,14 @@ namespace rabdump
                 if (_j.CountLimit > 0)
                     while (_j.CountLimit < cnt)
                     {
-                        File.Delete(_j.BackupPath + "\\" + min);
+                        File.Delete(Path.Combine(_j.BackupPath,min));
                         _logger.InfoFormat("Deleting file: {0:s}\\{1:s}", _j.BackupPath, min);
                     }
                 //CountBackups(out sz, out min);
                 if (_j.SizeLimit > 0)
                     while (_j.SizeLimit < sz)
                     {
-                        File.Delete(_j.BackupPath + "\\" + min);
+                        File.Delete(Path.Combine(_j.BackupPath,min));
                         _logger.InfoFormat("Deleting file: {0:s}\\{1:s}", _j.BackupPath, min);
                         CountBackups(out sz, out min);
                     }
