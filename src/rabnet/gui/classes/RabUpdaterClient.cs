@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.IO;
 using System.Windows.Forms;
 using System.Threading;
+using System.Diagnostics;
 using log4net;
 using X_Tools;
 
@@ -14,7 +15,7 @@ namespace rabnet
 {
     class RabUpdaterClient
     {
-        public static readonly ILog logger = LogManager.GetLogger(typeof(RabUpdaterClient));
+        public static readonly ILog _log = LogManager.GetLogger(typeof(RabUpdaterClient));
 
         private static RabUpdaterClient _updater;
         private string _ip;
@@ -39,16 +40,6 @@ namespace rabnet
         public const int UpErrFinishedSocketFail        = 5;
         public const int UpErrBadMD5OnServer            = 15;
         public const int UpErrBadMD5Local               = 16;
-
-
-        public RabUpdaterClient()
-        {
-        }
-
-        public static ILog log()
-        {
-            return logger;
-        }
 
         public static RabUpdaterClient Get()
         {
@@ -159,7 +150,7 @@ namespace rabnet
                 bytesReadTotal += bytesRead;
                 if (bytesReadTotal >= 6000000)
                 {
-                    System.Diagnostics.Debug.WriteLine("Successfully connected to server\r\n");
+                    Debug.WriteLine("Successfully connected to server\r\n");
                 }
 
                 try
@@ -218,23 +209,23 @@ namespace rabnet
 
                 res=ReadLine(strRemote);
 
-                System.Diagnostics.Debug.WriteLine(res + "\r\n");
+                Debug.WriteLine(res + "\r\n");
                 if (res.Substring(0, 3) == "Ok#")
                 {
-                    System.Diagnostics.Debug.WriteLine("Successfully handshake\r\n");
+                    Debug.WriteLine("Successfully handshake\r\n");
                     msg = "updateInfo" + Environment.NewLine;
 
-                    System.Diagnostics.Debug.WriteLine(msg);
+                    Debug.WriteLine(msg);
                     strRemote.Write(encoder.GetBytes(msg), 0, encoder.GetByteCount(msg));
                     res = ReadLine(strRemote);
-                    System.Diagnostics.Debug.WriteLine(res+"\r\n");
+                    Debug.WriteLine(res+"\r\n");
                     if (res.Substring(0, 3) == "Ok#")
                     {
                         if (res.Substring(4, 8) == "Version:")
                         {
-                            System.Diagnostics.Debug.WriteLine(res + "---<\r\n");
+                            Debug.WriteLine(res + "---<\r\n");
                             Version ver = new Version(res.Substring(12));
-                            System.Diagnostics.Debug.WriteLine(ver.ToString() + "---<\r\n");
+                            Debug.WriteLine(ver.ToString() + "---<\r\n");
 
                             Version myVer = new Version(Application.ProductVersion);
 
@@ -265,8 +256,8 @@ namespace rabnet
             catch (Exception exMessage)
             {
                 // Display any possible error
-                System.Diagnostics.Debug.WriteLine(exMessage.Message);
-                log().Error("Failed to get update info: " + exMessage.Message);
+                Debug.WriteLine(exMessage.Message);
+                _log.Error("Failed to get update info: " + exMessage.Message);
             }
             
             _tcpClient.Close();
@@ -297,7 +288,7 @@ namespace rabnet
             {
                 // Connect the TCP client to the specified IP and port
                 _tcpClient.Connect(_ip, 3000);
-                System.Diagnostics.Debug.WriteLine("Successfully connected to server\r\n");
+                Debug.WriteLine("Successfully connected to server\r\n");
 
                 strRemote = _tcpClient.GetStream();
 
@@ -309,24 +300,24 @@ namespace rabnet
 
                 res = ReadLine(strRemote);
 
-                System.Diagnostics.Debug.WriteLine(res + "\r\n");
+                Debug.WriteLine(res + "\r\n");
                 if (res.Substring(0, 3) == "Ok#")
                 {
-                    System.Diagnostics.Debug.WriteLine("Successfully handshake\r\n");
+                    Debug.WriteLine("Successfully handshake\r\n");
                     msg = "updateFile" + Environment.NewLine;
 
                     strRemote.Write(encoder.GetBytes(msg), 0, encoder.GetByteCount(msg));
                     res = ReadLine(strRemote);
-                    System.Diagnostics.Debug.WriteLine(res + "\r\n");
+                    Debug.WriteLine(res + "\r\n");
                     if (res.Substring(0, 3) == "Ok#")
                     {
 
                         string fi = res.Substring(4);
 
                         string[] fie = fi.Split('/');
-                        System.Diagnostics.Debug.WriteLine(fie[0] + "---<\r\n");
-                        System.Diagnostics.Debug.WriteLine(fie[1] + "---<\r\n");
-                        System.Diagnostics.Debug.WriteLine(fie[2] + "---<\r\n");
+                        Debug.WriteLine(fie[0] + "---<\r\n");
+                        Debug.WriteLine(fie[1] + "---<\r\n");
+                        Debug.WriteLine(fie[2] + "---<\r\n");
 
                         long sz = Convert.ToInt32(fie[1]);
                         string uMD5 = fie[2];
@@ -403,7 +394,7 @@ namespace rabnet
             {
                 // Display any possible error
                 System.Diagnostics.Debug.WriteLine(exMessage.Message);
-                log().Error("Failed to get update file: "+exMessage.Message);
+                _log.Error("Failed to get update file: "+exMessage.Message);
             }
 
             ThrRes = UpErrFinishedSocketFail;

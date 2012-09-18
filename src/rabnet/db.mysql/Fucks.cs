@@ -21,6 +21,7 @@ namespace rabnet
             public const string Okrol_rus = "окрол";
             public const string Proholost_ENG = "proholost";
             public const string Proholost_rus = "прохолостание";
+            public const string Sukrol_ENG = "sukrol";
             public const string Sukrol_rus = "сукрольна";
         }
 
