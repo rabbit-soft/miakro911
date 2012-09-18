@@ -27,7 +27,7 @@ namespace rabdump
 
         public MainForm()
         {
-            InitializeComponent();
+            InitializeComponent();          
             AppUpdater au = new AppUpdater(RabServWorker.ReqSender, getUpdatePath());
             au.DeleteOldFiles();
             
@@ -159,7 +159,9 @@ namespace rabdump
             {
                 jobsMenuItem.DropDownItems.Add(j.Name, null, jobnowMenuItem_Click);
                 restMenuItem.DropDownItems.Add(j.Name, null, restMenuItem_Click);
+#if PROTECTED
                 if(GRD.Instance.GetFlag(GRD_Base.FlagType.ServerDump))
+#endif
                     miServDump.DropDownItems.Add(j.Name, null, miServDump_Click);
             }
             ProcessTiming(onStart);

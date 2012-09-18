@@ -10,9 +10,9 @@ using System.Net;
 using System.IO;
 using System.Collections.Specialized;
 using System.Globalization;
+using pEngine;   
 #if PROTECTED
-    using RabGRD;
-    using pEngine;   
+    using RabGRD;   
 #endif
 
 namespace rabdump
@@ -58,8 +58,14 @@ namespace rabdump
                 if (_reqSend == null)
                 {
                     _reqSend = new RequestSender();
+#if PROTECTED
                     _reqSend.UserID = GRD.Instance.GetClientID();
                     _reqSend.Key = GRD.Instance.GetKeyCode();
+#elif DEBUG
+                    _reqSend.UserID = 1;
+                    _reqSend.Key = new byte[0];
+#endif
+                    
                     _reqSend.Url = _url;
                 }
                 return _reqSend;
@@ -285,8 +291,6 @@ namespace rabdump
             return trgFile;
         }
 
-#region curl_usage
-
         /// <summary>
         /// Скачивает РКБД с сервера
         /// </summary>
@@ -303,7 +307,11 @@ namespace rabdump
 
             wc.Encoding = Encoding.UTF8;
             NameValueCollection values = new NameValueCollection();
+#if PROTECTED
             values.Add("clientId", GRD.Instance.GetClientID().ToString());
+#elif DEBUG
+            values.Add("clientId", "1");
+#endif
             values.Add("file", filename);
             if (offset != -1)
                 values.Add("offset", offset.ToString());
@@ -350,14 +358,16 @@ namespace rabdump
                 UploadFile[] files = new UploadFile[] { fl };
 
                 NameValueCollection values = new NameValueCollection();
-                values.Add( "clientId", GRD.Instance.GetClientID().ToString());
+#if PROTECTED
+                values.Add("clientId", GRD.Instance.GetClientID().ToString());
+#elif DEBUG
+                values.Add("clientId", "1");
+#endif
                 values.Add( "md5dump", md5dump );             
 
                 byte[] result = uploadFiles(address, files, values);
             }
         }
-
-#endregion curl_usage
         
         /// <summary>
         /// Запускает событие

@@ -1,5 +1,5 @@
 ﻿#if DEBUG
-    #define NOCATCH
+    //#define NOCATCH
 #endif
 using System;
 using System.Threading;
@@ -7,9 +7,9 @@ using System.Windows.Forms;
 using System.IO;
 using log4net;
 using System.Collections.Generic;
-#if PROTECTED
 using pEngine;
-using RabGRD;
+#if PROTECTED
+    using RabGRD;
 #endif
 
 namespace rabdump
@@ -107,8 +107,15 @@ namespace rabdump
             {
 #endif
 #if PROTECTED ||DEBUG
-                sDump[] dmps= RabServWorker.ReqSender.ExecuteMethod(MethodName.GetDumpList).Value as sDump[];
-                servDumps = new List<sDump>(dmps);
+                try
+                {
+                    sDump[] dmps = RabServWorker.ReqSender.ExecuteMethod(MethodName.GetDumpList).Value as sDump[];
+                    servDumps = new List<sDump>(dmps);
+                }
+                catch (Exception exc)
+                {
+                    log.Warn(exc);
+                }
 #endif
 #if PROTECTED               
             }
