@@ -94,21 +94,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Breeds.cs" />
+    <Compile Include="CatalogData\Breeds.cs" />
     <Compile Include="Building.cs" />
     <Compile Include="Butcher.cs" />
-    <Compile Include="Catalogs.cs" />
+    <Compile Include="CatalogData\Catalogs.cs" />
+    <Compile Include="CatalogData\Vaccines.cs" />
     <Compile Include="Filters.cs" />
     <Compile Include="WebReports.cs" />
     <Compile Include="Meal.cs" />
-    <Compile Include="Products.cs" />
+    <Compile Include="CatalogData\Products.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RabbitGen.cs" />
     <Compile Include="db.int.cs" />
     <Compile Include="db.mysql.cs" />
     <Compile Include="DBHelper.cs" />
     <Compile Include="Dead.cs" />
-    <Compile Include="DeadReasons.cs" />
+    <Compile Include="CatalogData\DeadReasons.cs" />
     <Compile Include="Fucks.cs" />
     <Compile Include="Logs.cs" />
     <Compile Include="Names.cs" />
@@ -118,15 +119,10 @@
     <Compile Include="Users.cs" />
     <Compile Include="Weight.cs" />
     <Compile Include="Youngers.cs" />
-    <Compile Include="Zones.cs" />
+    <Compile Include="CatalogData\Zones.cs" />
     <Compile Include="ZooTeh.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Service References\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

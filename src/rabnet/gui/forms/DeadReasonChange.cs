@@ -18,8 +18,8 @@ namespace rabnet
             label1.Text = name;
             cbOldReason.Items.Add(curReason);
             cbOldReason.SelectedIndex = 0;
-            dr = Engine.get().db().getDeadReasons().getReasons();
-            foreach (CatalogData.Row row in dr.data)
+            dr = Engine.get().db().getDeadReasons().Get();
+            foreach (CatalogData.Row row in dr.Rows)
             {
                 if(row.data[0] != curReason)
                     cbNewReason.Items.Add(row.data[0]);
@@ -35,7 +35,7 @@ namespace rabnet
         {
             get
             {
-                foreach (CatalogData.Row row in dr.data)
+                foreach (CatalogData.Row row in dr.Rows)
                 {
                     if (row.data[0] == cbNewReason.Text)
                         return row.key;

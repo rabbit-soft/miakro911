@@ -65,9 +65,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.rate = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.dtp_vacEnd = new System.Windows.Forms.DateTimePicker();
-            this.spec = new System.Windows.Forms.CheckBox();
             this.gp = new System.Windows.Forms.CheckBox();
             this.defect = new System.Windows.Forms.CheckBox();
             this.tpMale = new System.Windows.Forms.TabPage();
@@ -103,36 +100,36 @@
             this.btFuckHer = new System.Windows.Forms.Button();
             this.btGens = new System.Windows.Forms.Button();
             this.fucks = new System.Windows.Forms.ListView();
-            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader9 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader15 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader16 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader19 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader15 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader16 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader19 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.msFucks = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miIsNotAProholost = new System.Windows.Forms.ToolStripMenuItem();
             this.showfuckidToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tpYoungers = new System.Windows.Forms.TabPage();
             this.suckers = new System.Windows.Forms.ListView();
-            this.columnHeader10 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader11 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader12 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader13 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader14 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader14 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tpWeight = new System.Windows.Forms.TabPage();
             this.button19 = new System.Windows.Forms.Button();
             this.button18 = new System.Windows.Forms.Button();
             this.nudWeight = new System.Windows.Forms.NumericUpDown();
             this.dateWeight = new System.Windows.Forms.DateTimePicker();
             this.weightList = new System.Windows.Forms.ListView();
-            this.columnHeader17 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader18 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader17 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader18 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btOk = new System.Windows.Forms.Button();
             this.btCancel = new System.Windows.Forms.Button();
             this.notes = new System.Windows.Forms.TextBox();
@@ -143,9 +140,13 @@
             this.lbAddress = new System.Windows.Forms.Label();
             this.lbState = new System.Windows.Forms.Label();
             this.btAccept = new System.Windows.Forms.Button();
+            this.spec = new System.Windows.Forms.CheckBox();
+            this.tpVaccines = new System.Windows.Forms.TabPage();
             this.bdate = new rabnet.components.DateDays();
             this.okrolDd = new rabnet.components.DateDays();
             this.sukrDd = new rabnet.components.DateDays();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.riVaccinePanel1 = new rabnet.panels.RabInfoPanels.RIVaccinePanel();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -155,7 +156,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rate)).BeginInit();
             this.groupBox1.SuspendLayout();
-            this.groupBox8.SuspendLayout();
             this.tpMale.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.tpFemale.SuspendLayout();
@@ -169,6 +169,7 @@
             this.tpYoungers.SuspendLayout();
             this.tpWeight.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudWeight)).BeginInit();
+            this.tpVaccines.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -181,6 +182,7 @@
             this.tabControl1.Controls.Add(this.tpFucks);
             this.tabControl1.Controls.Add(this.tpYoungers);
             this.tabControl1.Controls.Add(this.tpWeight);
+            this.tabControl1.Controls.Add(this.tpVaccines);
             this.tabControl1.Location = new System.Drawing.Point(8, 56);
             this.tabControl1.MaximumSize = new System.Drawing.Size(800, 400);
             this.tabControl1.Name = "tabControl1";
@@ -603,7 +605,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.groupBox8);
+            this.groupBox1.Controls.Add(this.spec);
             this.groupBox1.Controls.Add(this.gp);
             this.groupBox1.Controls.Add(this.defect);
             this.groupBox1.Location = new System.Drawing.Point(6, 6);
@@ -612,38 +614,6 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Флаги";
-            // 
-            // groupBox8
-            // 
-            this.groupBox8.Controls.Add(this.dtp_vacEnd);
-            this.groupBox8.Controls.Add(this.spec);
-            this.groupBox8.Location = new System.Drawing.Point(6, 48);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(133, 48);
-            this.groupBox8.TabIndex = 5;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "                      ";
-            // 
-            // dtp_vacEnd
-            // 
-            this.dtp_vacEnd.Location = new System.Drawing.Point(5, 20);
-            this.dtp_vacEnd.MinDate = new System.DateTime(1988, 1, 1, 0, 0, 0, 0);
-            this.dtp_vacEnd.Name = "dtp_vacEnd";
-            this.dtp_vacEnd.Size = new System.Drawing.Size(122, 20);
-            this.dtp_vacEnd.TabIndex = 4;
-            this.dtp_vacEnd.Value = new System.DateTime(1988, 10, 10, 0, 0, 0, 0);
-            this.dtp_vacEnd.CloseUp += new System.EventHandler(this.dtp_vacEnd_CloseUp);
-            // 
-            // spec
-            // 
-            this.spec.AutoSize = true;
-            this.spec.Location = new System.Drawing.Point(5, -1);
-            this.spec.Name = "spec";
-            this.spec.Size = new System.Drawing.Size(76, 17);
-            this.spec.TabIndex = 3;
-            this.spec.Text = "Прививка";
-            this.spec.UseVisualStyleBackColor = true;
-            this.spec.CheckedChanged += new System.EventHandler(this.spec_CheckedChanged);
             // 
             // gp
             // 
@@ -1372,11 +1342,31 @@
             this.btAccept.UseVisualStyleBackColor = true;
             this.btAccept.Click += new System.EventHandler(this.button5_Click);
             // 
+            // spec
+            // 
+            this.spec.AutoSize = true;
+            this.spec.Location = new System.Drawing.Point(11, 48);
+            this.spec.Name = "spec";
+            this.spec.Size = new System.Drawing.Size(76, 17);
+            this.spec.TabIndex = 4;
+            this.spec.Text = "Прививка";
+            this.spec.UseVisualStyleBackColor = true;
+            // 
+            // tpVaccines
+            // 
+            this.tpVaccines.Controls.Add(this.riVaccinePanel1);
+            this.tpVaccines.Location = new System.Drawing.Point(4, 22);
+            this.tpVaccines.Name = "tpVaccines";
+            this.tpVaccines.Size = new System.Drawing.Size(498, 305);
+            this.tpVaccines.TabIndex = 6;
+            this.tpVaccines.Text = "Прививки";
+            this.tpVaccines.UseVisualStyleBackColor = true;
+            // 
             // bdate
             // 
             this.bdate.AutoSize = true;
             this.bdate.DateText = "Дата рожд.";
-            this.bdate.DateValue = new System.DateTime(2012, 7, 12, 0, 0, 0, 0);
+            this.bdate.DateValue = new System.DateTime(2012, 9, 17, 0, 0, 0, 0);
             this.bdate.DaysText = "Возраст";
             this.bdate.DaysValue = 0;
             this.bdate.Location = new System.Drawing.Point(13, 111);
@@ -1391,7 +1381,7 @@
             // 
             this.okrolDd.AutoSize = true;
             this.okrolDd.DateText = "Дата";
-            this.okrolDd.DateValue = new System.DateTime(2012, 7, 12, 0, 0, 0, 0);
+            this.okrolDd.DateValue = new System.DateTime(2012, 9, 17, 0, 0, 0, 0);
             this.okrolDd.DaysText = "Срок";
             this.okrolDd.DaysValue = 0;
             this.okrolDd.Location = new System.Drawing.Point(8, 61);
@@ -1406,7 +1396,7 @@
             // 
             this.sukrDd.AutoSize = true;
             this.sukrDd.DateText = "Дата";
-            this.sukrDd.DateValue = new System.DateTime(2012, 7, 12, 0, 0, 0, 0);
+            this.sukrDd.DateValue = new System.DateTime(2012, 9, 17, 0, 0, 0, 0);
             this.sukrDd.DaysText = "Срок";
             this.sukrDd.DaysValue = 0;
             this.sukrDd.Location = new System.Drawing.Point(0, 46);
@@ -1416,6 +1406,19 @@
             this.sukrDd.Size = new System.Drawing.Size(136, 51);
             this.sukrDd.Step = 1;
             this.sukrDd.TabIndex = 5;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // riVaccinePanel1
+            // 
+            this.riVaccinePanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.riVaccinePanel1.Location = new System.Drawing.Point(0, 0);
+            this.riVaccinePanel1.Name = "riVaccinePanel1";
+            this.riVaccinePanel1.Size = new System.Drawing.Size(498, 305);
+            this.riVaccinePanel1.TabIndex = 0;
             // 
             // RabbitInfo
             // 
@@ -1457,8 +1460,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.rate)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox8.ResumeLayout(false);
-            this.groupBox8.PerformLayout();
             this.tpMale.ResumeLayout(false);
             this.tpMale.PerformLayout();
             this.groupBox4.ResumeLayout(false);
@@ -1477,6 +1478,7 @@
             this.tpYoungers.ResumeLayout(false);
             this.tpWeight.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudWeight)).EndInit();
+            this.tpVaccines.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1500,7 +1502,6 @@
         private System.Windows.Forms.Label lbSecname;
         private System.Windows.Forms.Label lbSurname;
         private System.Windows.Forms.Label lbAddress;
-        private System.Windows.Forms.CheckBox spec;
         private System.Windows.Forms.CheckBox gp;
         private System.Windows.Forms.CheckBox defect;
         private System.Windows.Forms.Label label6;
@@ -1596,10 +1597,12 @@
         private System.Windows.Forms.ColumnHeader columnHeader19;
         private System.Windows.Forms.Button changeFucker;
         private System.Windows.Forms.Button btChangeWorker;
-        private System.Windows.Forms.DateTimePicker dtp_vacEnd;
-        private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.ContextMenuStrip msFucks;
         private System.Windows.Forms.ToolStripMenuItem miIsNotAProholost;
         private System.Windows.Forms.ToolStripMenuItem showfuckidToolStripMenuItem;
+        private System.Windows.Forms.CheckBox spec;
+        private System.Windows.Forms.TabPage tpVaccines;
+        private panels.RabInfoPanels.RIVaccinePanel riVaccinePanel1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
     }
 }

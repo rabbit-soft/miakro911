@@ -83,6 +83,7 @@ namespace rabnet
                 if (it == null) setStop(true);
             }
         }
+
         public void setRelease()
         {
             if (sb.InvokeRequired)

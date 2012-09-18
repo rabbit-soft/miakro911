@@ -11,38 +11,38 @@ namespace rabnet
     public partial class RabbitInfo : Form
     {
         const String RABDEAD = "Списан";
-        private int rid = 0;
+        private int _rabId = 0;
         private Catalog breeds = null;
         private Catalog zones = null;
         private Catalog names = null;
         private Catalog surnames = null;
         private Catalog secnames = null;
-        private RabNetEngRabbit rab = null;
-        private TabPage malePage;
-        private TabPage femalePage;
-        private TabPage okrolPage;
-        private TabPage suckersPage;
-        private TabPage weightPage;
-        private int curzone = 0;
-        private int mkbrides = 122;
-        private int mkcandidate = 120;
+        private RabNetEngRabbit _rab = null;
+        /*private TabPage _tpMale;
+        private TabPage _tpFemale;
+        private TabPage _tpOkrol;
+        private TabPage _tpSuckers;
+        private TabPage _tpWeight;*/
+        private int _curzone = 0;
+        private int _mkbrides = 122;
+        private int _mkcandidate = 120;
         //private int makesuck = 50; ваще не понятно зачем это тут надо
-        private bool can_commit;
-        bool manual = true;
+        private bool _can_commit;
+        bool _manual = true;
 
         public RabbitInfo()
         {
             InitializeComponent();
             initialHints();            
-            malePage = tabControl1.TabPages[1];
-            femalePage = tabControl1.TabPages[2];
-            okrolPage = tabControl1.TabPages[3];
-            suckersPage = tabControl1.TabPages[4];
-            weightPage = tabControl1.TabPages[5];
+            /*_tpMale = tabControl1.TabPages[1];
+            _tpFemale = tabControl1.TabPages[2];
+            _tpOkrol = tabControl1.TabPages[3];
+            _tpSuckers = tabControl1.TabPages[4];
+            _tpWeight = tabControl1.TabPages[5];
             while(tabControl1.TabPages.Count>1)
-                tabControl1.TabPages.RemoveAt(1);
-            mkbrides = Engine.get().brideAge();
-            mkcandidate = Engine.opt().getIntOption(Options.OPT_ID.MAKE_CANDIDATE);
+                tabControl1.TabPages.RemoveAt(1);*/
+            _mkbrides = Engine.get().brideAge();
+            _mkcandidate = Engine.opt().getIntOption(Options.OPT_ID.MAKE_CANDIDATE);
             //makesuck = Engine.opt().getIntOption(Options.OPT_ID.COUNT_SUCKERS);
             dateWeight.Value = DateTime.Now.Date;
         }
@@ -67,7 +67,7 @@ namespace rabnet
             toolTip.SetToolTip(button9,"Принять окрол");
             toolTip.SetToolTip(gp,"Готовая продукция");
             toolTip.SetToolTip(spec,"Привит ли кролик или группа");
-            toolTip.SetToolTip(dtp_vacEnd,"Дата окончания прививки");
+            //toolTip.SetToolTip(dtp_vacEnd,"Дата окончания прививки");
             toolTip.SetToolTip(sex, "Пол одного или группы кроликов");
             toolTip.SetToolTip(rate, "Рейтинг кролика");
             toolTip.SetToolTip(btChangeWorker, "Изменить работника, который случал");
@@ -76,13 +76,13 @@ namespace rabnet
         public RabbitInfo(int id)
             : this()
         {
-            rid = id;
+            _rabId = id;
         }
         public RabbitInfo(RabNetEngRabbit r)
             : this()
         {
-            rid = 0;
-            rab = r;
+            _rabId = 0;
+            _rab = r;
         }
 
 
@@ -94,7 +94,7 @@ namespace rabnet
         private void button1_Click(object sender, EventArgs e)
         {
             btAccept.PerformClick();
-            if (can_commit)
+            if (_can_commit)
             {
                 this.DialogResult = btOk.DialogResult;
                 Close();
@@ -112,54 +112,58 @@ namespace rabnet
 
         private void updateStd()
         {
-            defect.Checked = rab.Defect;
-            gp.Checked = rab.Production;
-            spec.Checked = rab.Spec;
-            rate.Value = rab.Rate;
-            group.Value = rab.Group;
+            defect.Checked = _rab.Defect;
+            gp.Checked = _rab.Production;
+            spec.Checked = _rab.Spec;
+            rate.Value = _rab.Rate;
+            group.Value = _rab.Group;
             lbName.Text = "Имя:" + name.Text;
             lbSecname.Text = "Ж.Фам:" + surname.Text;
             lbSurname.Text = "М.Фам:" + secname.Text;
-            lbAddress.Text = "Адрес:" + rab.Address;
-            bdate.DateValue = rab.Born.Date;
-            notes.Text = rab.Notes;
-            String[] gns = rab.Genom.Split(' ');
+            lbAddress.Text = "Адрес:" + _rab.Address;
+            bdate.DateValue = _rab.Born.Date;
+            notes.Text = _rab.Notes;
+            String[] gns = _rab.Genom.Split(' ');
             gens.Items.Clear();
             foreach (string s in gns)
                 if (s!="")
                     addgen(int.Parse(s));
-            label11.Text = "Вес:" + getbon(rab.Bon[1]);
-            label12.Text = "Телосложение:" + getbon(rab.Bon[2]);
-            label18.Text = "Шкура:" + getbon(rab.Bon[3]);
-            label17.Text = "Окраска:" + getbon(rab.Bon[4]);
+            label11.Text = "Вес:" + getbon(_rab.Bon[1]);
+            label12.Text = "Телосложение:" + getbon(_rab.Bon[2]);
+            label18.Text = "Шкура:" + getbon(_rab.Bon[3]);
+            label17.Text = "Окраска:" + getbon(_rab.Bon[4]);
             weightList.Items.Clear();
-            String[] wgh = Engine.db().getWeights(rab.RabID);
+            String[] wgh = Engine.db().getWeights(_rab.RabID);
             for (int i = 0; i < wgh.Length / 2; i++)
                 weightList.Items.Add(wgh[i * 2]).SubItems.Add(wgh[i*2+1]);
-            spec.Checked = dtp_vacEnd.Enabled = rab.Spec;//+gambit
-            dtp_vacEnd.Value = rab.VaccineEnd; //+gambit
+            spec.Checked  = _rab.Spec;//+gambit
+            riVaccinePanel1.FillVaccines(_rab.RabID);
+            //dtp_vacEnd.Value = rab.VaccineEnd; //+gambit
         }
 
         private void updateMale()
         {
             setSex(1);        
-            if (rab.Status == 2) maleStatus.SelectedIndex = 2;
-                else if (rab.Status == 1 || rab.age >= mkcandidate) maleStatus.SelectedIndex = 1;
+            if (_rab.Status == 2) maleStatus.SelectedIndex = 2;
+                else if (_rab.Status == 1 || _rab.age >= _mkcandidate) maleStatus.SelectedIndex = 1;
                 else maleStatus.SelectedIndex = 0;
-            maleStatus.Enabled = groupBox4.Enabled = rab.age > mkcandidate;
+            maleStatus.Enabled = groupBox4.Enabled = _rab.age > _mkcandidate;
             //maleStatus.SelectedIndex = rab.status;
             //maleStatus.Enabled = rab.age > 100 && rab.name != 0;
             lbState.Text = "Статус: " + maleStatus.Text;
-            if (rab.Group != 1) return;
-            tabControl1.TabPages.Add(malePage);
-            tabControl1.TabPages.Add(weightPage);           
-            lastFuckNever.Checked = rab.Last_Fuck_Okrol == DateTime.MinValue;
+            if (_rab.Group != 1) return;
+            tabControl1.TabPages.Remove(tpFemale);
+            tabControl1.TabPages.Remove(tpYoungers);
+            tabControl1.TabPages.Remove(tpFucks);
+            /*tabControl1.TabPages.Add(_tpMale);
+            tabControl1.TabPages.Add(_tpWeight);*/         
+            lastFuckNever.Checked = _rab.Last_Fuck_Okrol == DateTime.MinValue;
             lastFuckNever_CheckedChanged(null, null);
             if (!lastFuckNever.Checked)
             {
-                lastFuck.Value = rab.Last_Fuck_Okrol;
+                lastFuck.Value = _rab.Last_Fuck_Okrol;
             }
-            double[] d = Engine.db().getMaleChildrenProd(rab.RabID);
+            double[] d = Engine.db().getMaleChildrenProd(_rab.RabID);
             maleKids.Text = String.Format("Количество крольчат: {0:f0}",d[0]);
             maleProd.Text = String.Format("Продуктивность соития: {0:f5}",d[1]);
         }
@@ -169,52 +173,53 @@ namespace rabnet
         /// </summary>
         private void updateFemale()
         {
+            tabControl1.TabPages.Remove(tpMale);
             setSex(2);
             lbState.Text = "Статус: Девочка";
-            if (bdate.DaysValue >= mkbrides)
+            if (bdate.DaysValue >= _mkbrides)
                 lbState.Text = "Статус: Невеста";
-            if ((rab.Status == 0 && rab.EventDate != DateTime.MinValue )||(rab.Status==1 && rab.EventDate==DateTime.MinValue))
+            if ((_rab.Status == 0 && _rab.EventDate != DateTime.MinValue )||(_rab.Status==1 && _rab.EventDate==DateTime.MinValue))
                 lbState.Text = "Статус: Первокролка";
-            if (rab.Status > 1 || (rab.Status==1 && rab.EventDate!=DateTime.MinValue))
+            if (_rab.Status > 1 || (_rab.Status==1 && _rab.EventDate!=DateTime.MinValue))
                 lbState.Text = "Статус: Штатная";
-            if (rab.Status > 0)
+            if (_rab.Status > 0)
             {
                 button8.Text = btFuckHer.Text = "Вязать";
-                if (rab.Status>1)
-                    okrolPage.Text = "Вязки/Окролы";
+                if (_rab.Status>1) 
+                    tpFucks.Text = "Вязки/Окролы";
             }            
-            if (rab.Group != 1) return;
-            tabControl1.TabPages.Add(okrolPage);
-            tabControl1.TabPages.Add(femalePage);           
-            tabControl1.TabPages.Add(suckersPage);
-            tabControl1.TabPages.Add(weightPage);
-            nokuk.Checked = rab.NoKuk;
-            nolact.Checked = rab.NoLact;
-            okrolCount.Value = rab.Status;
-            if (rab.Status<1)
+            if (_rab.Group != 1) return;
+            /*tabControl1.TabPages.Add(_tpOkrol);
+            tabControl1.TabPages.Add(_tpFemale);           
+            tabControl1.TabPages.Add(_tpSuckers);
+            tabControl1.TabPages.Add(_tpWeight);*/
+            nokuk.Checked = _rab.NoKuk;
+            nolact.Checked = _rab.NoLact;
+            okrolCount.Value = _rab.Status;
+            if (_rab.Status<1)
             {
                 okrolDd.Enabled = false;
             }
             else
-                okrolDd.DateValue = rab.Last_Fuck_Okrol;
-            sukr.Checked=(rab.EventDate != DateTime.MinValue);
+                okrolDd.DateValue = _rab.Last_Fuck_Okrol;
+            sukr.Checked=(_rab.EventDate != DateTime.MinValue);
             sukrType.SelectedIndex = 0;
             button8.Enabled = button9.Enabled = button10.Enabled = false;
             if (sukr.Checked)
             {
-                sukrType.SelectedIndex = rab.EventType;
-                sukrDd.DateValue = rab.EventDate.Date;
+                sukrType.SelectedIndex = _rab.EventType;
+                sukrDd.DateValue = _rab.EventDate.Date;
                 button9.Enabled = button10.Enabled=true;
             }
             else
                 button8.Enabled = true;
-            overallBab.Value = rab.Babies;
-            deadBab.Value = rab.Lost;
-            okrolCount.Value = rab.Status;
+            overallBab.Value = _rab.Babies;
+            deadBab.Value = _rab.Lost;
+            okrolCount.Value = _rab.Status;
             ///Заполнение списка случек
             fucks.Items.Clear();
-            if (rid>0)
-            foreach (Fucks.Fuck f in Engine.db().getFucks(rab.RabID).fucks)
+            if (_rabId>0)
+            foreach (Fucks.Fuck f in Engine.db().getFucks(_rab.RabID).fucks)
             {
                 ListViewItem li = fucks.Items.Add(f.when == DateTime.MinValue ? "" : f.when.ToShortDateString());
                 li.SubItems.Add(f.type);
@@ -228,16 +233,16 @@ namespace rabnet
                 li.SubItems.Add(f.dead.ToString());
                 li.SubItems.Add(f.killed.ToString());
                 li.SubItems.Add(f.added.ToString());
-                li.SubItems.Add(f.breed == rab.Breed ? "-" : "Да");
-                li.SubItems.Add(RabNetEngHelper.inbreeding(f.rgenom, rab.Genom) ? "Да" : "-");
+                li.SubItems.Add(f.breed == _rab.Breed ? "-" : "Да");
+                li.SubItems.Add(RabNetEngHelper.inbreeding(f.rgenom, _rab.Genom) ? "Да" : "-");
                 li.SubItems.Add(f.worker);
                 li.Tag = f;
             }
             changeFucker.Enabled = false;
             ///Заполенение списка подсосных
             suckers.Items.Clear();
-            if (rid>0)
-            foreach (Younger y in Engine.db().getSuckers(rab.RabID))
+            if (_rabId>0)
+            foreach (Younger y in Engine.db().getSuckers(_rab.RabID))
             {
                 ListViewItem li=suckers.Items.Add(y.fname);
                 li.SubItems.Add(y.fcount.ToString());
@@ -268,76 +273,76 @@ namespace rabnet
         {
             ICatalogs cts = Engine.db().catalogs();
             breeds = cts.getBreeds();
-            FillList(breed,breeds,rab.Breed);
+            FillList(breed,breeds,_rab.Breed);
             zones = cts.getZones();
-            FillList(zone, zones, rab.Zone);
+            FillList(zone, zones, _rab.Zone);
             int sx=0;
             String end="";
-            if (rab.Sex==OneRabbit.RabbitSex.MALE)
+            if (_rab.Sex==OneRabbit.RabbitSex.MALE)
                 sx=1;
-            if (rab.Sex==OneRabbit.RabbitSex.FEMALE)
+            if (_rab.Sex==OneRabbit.RabbitSex.FEMALE)
             {
                 end="а";
                 sx=2;
             }
-            if (rab.Group>1)
+            if (_rab.Group>1)
                 end="ы";
             surnames = cts.getSurNames(2, end);
             secnames = cts.getSurNames(1, end);
-            FillList(surname, surnames, rab.Surname);
-            FillList(secname, secnames, rab.SecondName);
+            FillList(surname, surnames, _rab.Surname);
+            FillList(secname, secnames, _rab.SecondName);
             fillNames(sx);
         }
 
         private void fillNames(int sx)
         {
-            if (sx != 0 && rab.Group == 1)
+            if (sx != 0 && _rab.Group == 1)
             {
-                names = Engine.db().catalogs().getFreeNames(sx, rab.WasName);
-                FillList(name, names, rab.Name);
-                if (rab.Name == 0)
+                names = Engine.db().catalogs().getFreeNames(sx, _rab.WasName);
+                FillList(name, names, _rab.Name);
+                if (_rab.Name == 0)
                     name.Enabled = button16.Enabled=true;
             }
         }
 
         private void UpdateNew()
         {
-            manual = false;
+            _manual = false;
             checkBox5.Checked = true;
             checkBox5.Enabled = false; 
             groupBox2.Enabled = true;
             button8.Enabled = false;
             groupBox5.Enabled = groupBox6.Enabled = true;
-            manual = true;
+            _manual = true;
         }
 
         private void updateData()
         {
-            if (rab != null && rab.RabID == 0)
+            if (_rab != null && _rab.RabID == 0)
             {
                 btBon.Enabled = 
                 btReplace.Enabled = false;
             }
             int idx = tabControl1.SelectedIndex;
-            while (tabControl1.TabPages.Count > 1)
-                tabControl1.TabPages.RemoveAt(1);
-            if (rid!=0)
-                rab=Engine.get().getRabbit(rid);
+            //while (tabControl1.TabPages.Count > 1)
+                //tabControl1.TabPages.RemoveAt(1);
+            if (_rabId!=0)
+                _rab=Engine.get().getRabbit(_rabId);
             fillCatalogs(0);
             updateStd();
-            if (rab.Sex == OneRabbit.RabbitSex.VOID)
+            if (_rab.Sex == OneRabbit.RabbitSex.VOID)
             {
                 setSex(0);
                 //label7.Text = "Статус:" + (rab.age < makesuck ? "Гнездовые" : "Подсосные");
                 lbState.Text = "Статус: Бесполые";
             }
-            if (rab.Sex == OneRabbit.RabbitSex.MALE)
+            if (_rab.Sex == OneRabbit.RabbitSex.MALE)
                 updateMale();
-            if (rab.Sex == OneRabbit.RabbitSex.FEMALE)
+            if (_rab.Sex == OneRabbit.RabbitSex.FEMALE)
                 updateFemale();
             tabControl1.SelectedIndex = idx;
-            sex.Enabled = (rab.Name == 0 && rab.Last_Fuck_Okrol == DateTime.MinValue);
-            if (rid == 0)
+            sex.Enabled = (_rab.Name == 0 && _rab.Last_Fuck_Okrol == DateTime.MinValue);
+            if (_rabId == 0)
                 UpdateNew();
         }
 
@@ -353,45 +358,45 @@ namespace rabnet
 
         private void applyData()
         {
-            rab.Production = gp.Checked;
-            rab.Defect = defect.Checked;
-            rab.Spec = spec.Checked;
-            rab.Rate = (int)rate.Value;
-            rab.Name = getCatValue(names, name.Text);
-            rab.Surname = getCatValue(surnames, surname.Text);
-            rab.SecondName = getCatValue(secnames, secname.Text);
-            rab.Breed = getCatValue(breeds, breed.Text);
-            rab.Zone = getCatValue(zones, zone.Text);
-            curzone = rab.Zone;
-            rab.Born = bdate.DateValue.Date;
-            rab.Group = (int)group.Value;
-            rab.Notes = notes.Text;
+            _rab.Production = gp.Checked;
+            _rab.Defect = defect.Checked;
+            _rab.Spec = spec.Checked;
+            _rab.Rate = (int)rate.Value;
+            _rab.Name = getCatValue(names, name.Text);
+            _rab.Surname = getCatValue(surnames, surname.Text);
+            _rab.SecondName = getCatValue(secnames, secname.Text);
+            _rab.Breed = getCatValue(breeds, breed.Text);
+            _rab.Zone = getCatValue(zones, zone.Text);
+            _curzone = _rab.Zone;
+            _rab.Born = bdate.DateValue.Date;
+            _rab.Group = (int)group.Value;
+            _rab.Notes = notes.Text;
             String gns = "";
             for (int i = 0; i < gens.Items.Count;i++ )
                 gns += ((int)gens.Items[i]).ToString() + " ";
-            rab.Genom=gns.Trim();
-            if (rab.Sex == OneRabbit.RabbitSex.MALE)
+            _rab.Genom=gns.Trim();
+            if (_rab.Sex == OneRabbit.RabbitSex.MALE)
             {
-                rab.Status = maleStatus.SelectedIndex;
+                _rab.Status = maleStatus.SelectedIndex;
                 if (lastFuckNever.Checked)
-                    rab.Last_Fuck_Okrol = DateTime.MinValue;
+                    _rab.Last_Fuck_Okrol = DateTime.MinValue;
                 else
-                    rab.Last_Fuck_Okrol = lastFuck.Value;
+                    _rab.Last_Fuck_Okrol = lastFuck.Value;
             }
-            if (rab.Sex == OneRabbit.RabbitSex.FEMALE)
+            if (_rab.Sex == OneRabbit.RabbitSex.FEMALE)
             {
-                rab.Status = (int)okrolCount.Value;
-                if (rab.Status<1)
-                    rab.Last_Fuck_Okrol = DateTime.MinValue;
+                _rab.Status = (int)okrolCount.Value;
+                if (_rab.Status<1)
+                    _rab.Last_Fuck_Okrol = DateTime.MinValue;
                 else
-                    rab.Last_Fuck_Okrol = okrolDd.DateValue;
-                rab.NoKuk = nokuk.Checked;
-                rab.NoLact = nolact.Checked;
-                rab.Babies = (int)overallBab.Value;
-                rab.Lost = (int)deadBab.Value;
+                    _rab.Last_Fuck_Okrol = okrolDd.DateValue;
+                _rab.NoKuk = nokuk.Checked;
+                _rab.NoLact = nolact.Checked;
+                _rab.Babies = (int)overallBab.Value;
+                _rab.Lost = (int)deadBab.Value;
             }
-            rab.VaccineEnd = dtp_vacEnd.Value.Date;
-            rab.Commit();
+            //rab.VaccineEnd = dtp_vacEnd.Value.Date;
+            _rab.Commit();
         }
 
         private bool warnme()
@@ -399,7 +404,7 @@ namespace rabnet
             String CHANGE_ERR = @"Вы пытаетесь изменить статичные данные.
 Обычно их не нужно изменять вручную - они изменяются программно.
 Изменить?";
-            if (!manual)
+            if (!_manual)
                 return true;
             return MessageBox.Show(CHANGE_ERR, "Изменить данные?",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes;
@@ -407,7 +412,7 @@ namespace rabnet
 
         private void checkBox5_CheckedChanged(object sender, EventArgs e)
         {
-            if (manual)
+            if (_manual)
             if (checkBox5.Checked)
                 if (!warnme())
                 {
@@ -415,9 +420,9 @@ namespace rabnet
                     return;
                 }
             name.Enabled=groupBox2.Enabled = checkBox5.Checked;
-            if (rab.Group > 1 || rab.Sex==OneRabbit.RabbitSex.VOID)
+            if (_rab.Group > 1 || _rab.Sex==OneRabbit.RabbitSex.VOID)
                 name.Enabled = false;
-            if (!checkBox5.Checked && rab.Group==1 && rab.Sex!=OneRabbit.RabbitSex.VOID && rab.Name==0)
+            if (!checkBox5.Checked && _rab.Group==1 && _rab.Sex!=OneRabbit.RabbitSex.VOID && _rab.Name==0)
                 name.Enabled = true;
             button16.Enabled = name.Enabled;
         }
@@ -430,12 +435,12 @@ namespace rabnet
             if (gens.Items.Count == 0) ex += "У кролика нет ни одного Номера Гена!\n"; 
             if (ex != "")
             {
-                can_commit = false;
+                _can_commit = false;
                 MessageBox.Show(this, ex, "Невозможно продолжить", MessageBoxButtons.OK, MessageBoxIcon.Warning);                
             }
             else
             {
-                can_commit = true;
+                _can_commit = true;
                 applyData();
                 updateData();
             }
@@ -520,41 +525,41 @@ namespace rabnet
                 nm += " " + lbSecname.Text.Split(':')[1];
             if (lbSurname.Text!="")
                 nm += "-" + lbSurname.Text.Split(':')[1];
-            (new GenomView(rab.Breed, f.breed, rab.Genom, f.rgenom, nm, f.partner)).ShowDialog();
+            (new GenomView(_rab.Breed, f.breed, _rab.Genom, f.rgenom, nm, f.partner)).ShowDialog();
         }
 
         private void button13_Click(object sender, EventArgs e)
         {
-            if (rab.RabID == 0) return;
-            if((new BonForm(rab.RabID)).ShowDialog() != DialogResult.Abort)
+            if (_rab.RabID == 0) return;
+            if((new BonForm(_rab.RabID)).ShowDialog() != DialogResult.Abort)
                 btCancel.Enabled = false;
             updateData();
         }
 
         private void button10_Click(object sender, EventArgs e)
         {
-            if((new Proholost(rab.RabID)).ShowDialog() != DialogResult.Abort)
+            if((new Proholost(_rab.RabID)).ShowDialog() != DialogResult.Abort)
                 btCancel.Enabled = false;
             updateData();
         }
 
         private void button9_Click(object sender, EventArgs e)
         {
-            if((new OkrolForm(rab.RabID)).ShowDialog() != DialogResult.Abort)
+            if((new OkrolForm(_rab.RabID)).ShowDialog() != DialogResult.Abort)
                 btCancel.Enabled = false;
             updateData();
         }
 
         private void button8_Click(object sender, EventArgs e)
         {
-            (new MakeFuck(rab.RabID)).ShowDialog();
+            (new MakeFuck(_rab.RabID)).ShowDialog();
             updateData();
         }
 
         private void btFuckHer_Click(object sender, EventArgs e)
         {
             Fucks.Fuck f = fucks.SelectedItems[0].Tag as Fucks.Fuck;
-            (new MakeFuck(rab.RabID,f.partnerid)).ShowDialog();
+            (new MakeFuck(_rab.RabID,f.partnerid)).ShowDialog();
             updateData();
         }
 
@@ -590,9 +595,9 @@ namespace rabnet
             {
                 name.Enabled = false;
                 fillCatalogs(0);
-                manual = false;
+                _manual = false;
                 checkBox5_CheckedChanged(null, null);
-                manual = true;
+                _manual = true;
             }
             else
             {
@@ -605,7 +610,7 @@ namespace rabnet
         private void button17_Click(object sender, EventArgs e)
         {
             ReplaceForm rpf = new ReplaceForm();
-            rpf.addRabbit(rab);
+            rpf.addRabbit(_rab);
             rpf.ShowDialog();
             updateData();
         }
@@ -645,7 +650,7 @@ namespace rabnet
                     MessageBox.Show("Кролик уже взсешен "+li.SubItems[0].Text);
                     return;
                 }
-            Engine.db().addWeight(rab.RabID, (int)nudWeight.Value, dateWeight.Value.Date);
+            Engine.db().addWeight(_rab.RabID, (int)nudWeight.Value, dateWeight.Value.Date);
             updateData();
         }
 
@@ -653,40 +658,40 @@ namespace rabnet
         {
             if (weightList.SelectedItems.Count != 1) return;
             DateTime dt = DateTime.Parse(weightList.SelectedItems[0].SubItems[0].Text);
-            Engine.db().deleteWeight(rab.RabID, dt.Date);
+            Engine.db().deleteWeight(_rab.RabID, dt.Date);
             updateData();
         }
 
         private void sex_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!manual) return;
+            if (!_manual) return;
             if (MessageBox.Show(this, "Сменить пол?", "Смена пола", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 OneRabbit.RabbitSex sx=OneRabbit.RabbitSex.VOID;
                 if (sex.SelectedIndex==1) sx=OneRabbit.RabbitSex.MALE;
                 if (sex.SelectedIndex==2) sx=OneRabbit.RabbitSex.FEMALE;
-                rab.SetSex(sx);
+                _rab.SetSex(sx);
                 updateData();
             }
             else
             {
-                if (rab.Sex == OneRabbit.RabbitSex.VOID) setSex(0);
-                if (rab.Sex == OneRabbit.RabbitSex.MALE) setSex(1);
-                if (rab.Sex == OneRabbit.RabbitSex.FEMALE) setSex(2);
+                if (_rab.Sex == OneRabbit.RabbitSex.VOID) setSex(0);
+                if (_rab.Sex == OneRabbit.RabbitSex.MALE) setSex(1);
+                if (_rab.Sex == OneRabbit.RabbitSex.FEMALE) setSex(2);
             }
         }
         void setSex(int s)
         {
-            manual = false;
+            _manual = false;
             sex.SelectedIndex = s;
-            manual = true;
+            _manual = true;
         }
 
         private void changeFucker_Click(object sender, EventArgs e)
         {
             if (fucks.SelectedItems.Count!=1) return;
             Fucks.Fuck f = fucks.SelectedItems[0].Tag as Fucks.Fuck;
-            MakeFuck mf = new MakeFuck(rab.RabID, f.partnerid, 1);
+            MakeFuck mf = new MakeFuck(_rab.RabID, f.partnerid, 1);
             if (mf.ShowDialog() == DialogResult.OK && mf.SelectedFucker!=f.id)
                 Engine.db().changeFucker(f.id, mf.SelectedFucker);
             updateData();
@@ -702,7 +707,7 @@ namespace rabnet
             updateData();
         }
 
-        private void spec_CheckedChanged(object sender, EventArgs e)
+        /*private void spec_CheckedChanged(object sender, EventArgs e)
         {
             if (spec.Checked)
             {
@@ -714,23 +719,23 @@ namespace rabnet
                 dtp_vacEnd.Enabled = false;
                 dtp_vacEnd.Value = DateTime.Now;
             }
-        }
+        }*/
 
-        private void dtp_vacEnd_CloseUp(object sender, EventArgs e)
+        /*private void dtp_vacEnd_CloseUp(object sender, EventArgs e)
         {
             if (dtp_vacEnd.Value.Date <= DateTime.Now.Date)
             {
                 dtp_vacEnd.Enabled = spec.Checked = false;
                 dtp_vacEnd.Value = DateTime.Now.Date;
             }
-        }
+        }*/
 
         private void maleStatus_TextChanged(object sender, EventArgs e)
         { 
-            if (rab.Name == 0 && maleStatus.SelectedIndex == 2)
+            if (_rab.Name == 0 && maleStatus.SelectedIndex == 2)
             {               
                 MessageBox.Show("У Производителя должно быть имя");
-                if (rab.Status == 1 || rab.age >= mkcandidate) maleStatus.SelectedIndex = 1;
+                if (_rab.Status == 1 || _rab.age >= _mkcandidate) maleStatus.SelectedIndex = 1;
                     else maleStatus.SelectedIndex = 0;
             }
         }
@@ -767,6 +772,16 @@ namespace rabnet
         {
             if (fucks.SelectedItems.Count != 1 || fucks.SelectedItems[0].SubItems[3].Text != Fucks.Type.Proholost_rus)          
                 e.Cancel = true;                       
+        }
+
+        private void spec_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dtp_vacEnd_CloseUp(object sender, EventArgs e)
+        {
+
         }
 
     }

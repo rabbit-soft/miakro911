@@ -87,6 +87,7 @@
             this.tpButcher = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
+            this.tsmiVaccines = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -157,7 +158,8 @@
             this.breedsMenuItem,
             this.tsmiAreas,
             this.tsmiDeadReasonsView,
-            this.tsmiProductTypesView});
+            this.tsmiProductTypesView,
+            this.tsmiVaccines});
             this.tsmiView.Name = "tsmiView";
             this.tsmiView.Size = new System.Drawing.Size(39, 20);
             this.tsmiView.Text = "Вид";
@@ -490,8 +492,8 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(914, 24);
             this.tabControl1.TabIndex = 6;
-            this.tabControl1.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl1_Selecting);
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+            this.tabControl1.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl1_Selecting);
             // 
             // tabPage1
             // 
@@ -562,6 +564,13 @@
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
             // 
+            // tsmiVaccines
+            // 
+            this.tsmiVaccines.Name = "tsmiVaccines";
+            this.tsmiVaccines.Size = new System.Drawing.Size(208, 22);
+            this.tsmiVaccines.Text = "Прививки";
+            this.tsmiVaccines.Click += new System.EventHandler(this.tsmiVaccines_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -576,9 +585,9 @@
             this.Name = "MainForm";
             this.Text = "Form1";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.MainForm_Load);
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseMove);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -645,6 +654,7 @@
         private System.Windows.Forms.ToolStripMenuItem miButcher;
         private System.Windows.Forms.ToolStripMenuItem miMeal;
         private System.Windows.Forms.ToolStripMenuItem miScale;
+        private System.Windows.Forms.ToolStripMenuItem tsmiVaccines;
     }
 }
 

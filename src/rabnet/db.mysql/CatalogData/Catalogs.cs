@@ -5,9 +5,42 @@ using System.Text;
 
 namespace rabnet
 {
-    public class Catalog : Dictionary<int, string>
-    {
+    public class Catalog : Dictionary<int, string> { }
 
+    public interface ICatalog
+    {
+        CatalogData Get();
+        void Change(int id, params string[] args);
+        int Add(params string[] args);
+    }
+
+    /// <summary>
+    /// Класс для заполнения справочников в CatalogForm
+    /// </summary>
+    public class CatalogData
+    {
+        public const string IMAGE_MARKER = "#image#";
+        public const string COLOR_MARKER = "#color#";
+        public const string BOOL_MARKER = "#bool#";
+
+        /// <summary>
+        /// Одна строка DataGridView. Имеет, ID и массив значений ячеек
+        /// </summary>
+        public struct Row
+        {
+            public int key;
+            public String[] data;
+            //public byte[] image;
+            //public int imageSize;
+        }
+        /// <summary>
+        /// Массив имен столбцов DataGridView
+        /// </summary>
+        public String[] ColNames;
+        /// <summary>
+        /// Массив строк DataGridView
+        /// </summary>
+        public Row[] Rows;
     }
 
     public interface ICatalogs

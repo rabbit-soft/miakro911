@@ -43,11 +43,12 @@ namespace rabnet
             if (cbWeightTo.Checked) f["Wg"] = nudWeightTo.Value.ToString();
             if (cobWorks.SelectedIndex != 0) f["wr"] = cobWorks.SelectedIndex.ToString();
             if (!cbMaleBoy.Checked || !cbMaleCandidate.Checked || !cbMaleProducer.Checked)
-                f["mt"] = String.Format("{0:s}{1:s}{2:s}", cbMaleBoy.Checked ? "b" : "", cbMaleCandidate.Checked ? "c" : "", cbMaleProducer.Checked ? "p" : "");
-            if (f.safeValue("mt") == "") f.Remove("mt");
+                f[Filters.MALE] = String.Format("{0:s}{1:s}{2:s}", cbMaleBoy.Checked ? "b" : "", cbMaleCandidate.Checked ? "c" : "", cbMaleProducer.Checked ? "p" : "");
+            if (f.safeValue(Filters.MALE) == "") f.Remove(Filters.MALE);
             if (!cbFemaleGirl.Checked || !cbFemaleBride.Checked || !cbFemaleFirst.Checked || !cbFemaleState.Checked)
-                f["ft"] = String.Format("{0:s}{1:s}{2:s}{3:s}", cbFemaleGirl.Checked ? "g" : "", cbFemaleBride.Checked ? "b" : "", cbFemaleFirst.Checked ? "f" : "", cbFemaleState.Checked ? "s" : "");
-            if (f.safeValue("ft") == "") f.Remove("ft");
+                f[Filters.FEMALE] = String.Format("{0:s}{1:s}{2:s}{3:s}", cbFemaleGirl.Checked ? "g" : "", cbFemaleBride.Checked ? "b" : "", cbFemaleFirst.Checked ? "f" : "", cbFemaleState.Checked ? "s" : "");
+            if (f.safeValue(Filters.FEMALE) == "")
+                f.Remove(Filters.FEMALE);
             if (cobPregnant.SelectedIndex != 0)
                 f["pr"] = cobPregnant.SelectedIndex.ToString();
 
@@ -70,31 +71,47 @@ namespace rabnet
             cbSexVoid.Checked = f.safeValue("sx", "mfv").Contains("v");
             cbDateTo.Checked = f.ContainsKey("dt"); cbDateFrom_CheckedChanged(null, null);
             if (cbDateTo.Checked)
-            { nudDateTo.Value = f.safeInt("dt", 100); nudDateFrom_ValueChanged(null, null); }
+            { 
+                nudDateTo.Value = f.safeInt("dt", 100); 
+                nudDateFrom_ValueChanged(null, null);
+            }
             cbDateFrom.Checked = f.ContainsKey("Dt"); cbDateTo_CheckedChanged(null, null);
             if (cbDateFrom.Checked)
-            { nudDateFrom.Value = f.safeInt("Dt", 60); nudDateTo_ValueChanged(null, null); }
+            { 
+                nudDateFrom.Value = f.safeInt("Dt", 60); 
+                nudDateTo_ValueChanged(null, null); 
+            }
             cbWeightFrom.Checked = f.ContainsKey("wg"); cbWeightFrom_CheckedChanged(null, null);
-            if (cbWeightFrom.Checked) nudWeightFrom.Value = f.safeInt("wg", 1000);
+            if (cbWeightFrom.Checked) 
+                nudWeightFrom.Value = f.safeInt("wg", 1000);
             cbWeightTo.Checked = f.ContainsKey("Wg"); cbWeightTo_CheckedChanged(null, null);
-            if (cbWeightTo.Checked) nudWeightTo.Value = f.safeInt("Wg", 5000);
+            if (cbWeightTo.Checked) 
+                nudWeightTo.Value = f.safeInt("Wg", 5000);
             cobWorks.SelectedIndex = f.safeInt("wr");
-            cbMaleBoy.Checked = f.safeValue("mt", "bcp").Contains("b");
-            cbMaleCandidate.Checked = f.safeValue("mt", "bcp").Contains("c");
-            cbMaleProducer.Checked = f.safeValue("mt", "bcp").Contains("p");
-            cbFemaleGirl.Checked = f.safeValue("ft", "gbfs").Contains("g");
-            cbFemaleBride.Checked = f.safeValue("ft", "gbfs").Contains("b");
-            cbFemaleFirst.Checked = f.safeValue("ft", "gbfs").Contains("f");
-            cbFemaleState.Checked = f.safeValue("ft", "gbfs").Contains("s");         
+
+            cbMaleBoy.Checked = f.safeValue(Filters.MALE, "bcp").Contains("b");
+            cbMaleCandidate.Checked = f.safeValue(Filters.MALE, "bcp").Contains("c");
+            cbMaleProducer.Checked = f.safeValue(Filters.MALE, "bcp").Contains("p");
+
+            cbFemaleGirl.Checked = f.safeValue(Filters.FEMALE, "gbfs").Contains("g");
+            cbFemaleBride.Checked = f.safeValue(Filters.FEMALE, "gbfs").Contains("b");
+            cbFemaleFirst.Checked = f.safeValue(Filters.FEMALE, "gbfs").Contains("f");
+            cbFemaleState.Checked = f.safeValue(Filters.FEMALE, "gbfs").Contains("s");         
             cobPregnant.SelectedIndex = f.safeInt("pr");
             cbPregFrom.Checked = f.ContainsKey("pf"); 
             cbPregFrom_CheckedChanged(null, null);
             cbPregTo.Checked = f.ContainsKey("Pf"); 
             cbPregTo_CheckedChanged(null, null);
             if (cbPregFrom.Checked)
-            { nudPregFrom.Value = f.safeInt("pf", 10); nudPregFrom_ValueChanged(null, null); }
+            { 
+                nudPregFrom.Value = f.safeInt("pf", 10); 
+                nudPregFrom_ValueChanged(null, null);
+            }
             if (cbPregTo.Checked)
-            { nudPregTo.Value = f.safeInt("Pf", 20); nudPregTo_ValueChanged(null, null); }
+            { 
+                nudPregTo.Value = f.safeInt("Pf", 20); 
+                nudPregTo_ValueChanged(null, null); 
+            }
             tbName.Text = f.safeValue("nm");
             cobBreeds.SelectedIndex = f.safeInt("br",0);
         }

@@ -252,7 +252,7 @@ namespace rabnet
                 case JobType.OKROL:
                     res=(new OkrolForm(job.id)).ShowDialog();
                     break;
-                case JobType.VACC:
+                /*case JobType.VACC: //TODO прививки зоотехплана
                     RabNetEngRabbit r = Engine.get().getRabbit(job.id);
                     r.Spec = true;
                     r.VaccineEnd = DateTime.Now.AddDays(Engine.opt().getIntOption(Options.OPT_ID.VACCINE_TIME));
@@ -265,7 +265,7 @@ namespace rabnet
                         r2.Commit();
                     }
                     needUpdate = false;
-                    break;
+                    break;*/
                 case JobType.SET_NEST://установка гнездовья
                     ReplaceForm f = new ReplaceForm();
                     f.addRabbit(job.id);

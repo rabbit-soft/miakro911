@@ -5,14 +5,14 @@ using System.Text;
 
 namespace rabnet
 {
-    public interface IBreeds
+    /*public interface IBreeds
     {
         CatalogData getBreeds();
         void ChangeBreed(int id,String name,String sname,String color);
 		int AddBreed(String name, String sname, String color);
-    }
+    }*/
 
-    class Breeds:IBreeds
+    class Breeds:ICatalog //:IBreeds
     {
         private MySqlConnection sql = null;
         public Breeds(MySqlConnection sql)
@@ -20,10 +20,10 @@ namespace rabnet
             this.sql = sql;
         }
 
-        public CatalogData getBreeds()
+        public CatalogData Get()
         {
             CatalogData cd = new CatalogData();
-            cd.colnames = new String[] {"порода","сокращение","#color#Цвет" };
+            cd.ColNames = new String[] {"порода","сокращение",CatalogData.COLOR_MARKER+"Цвет" };
             MySqlCommand cmd = new MySqlCommand("SELECT b_id,b_name,b_short_name,b_color FROM breeds ORDER BY b_id;", sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             List<CatalogData.Row> rws = new List<CatalogData.Row>();
@@ -35,23 +35,27 @@ namespace rabnet
                 rws.Add(rw);
             }
             rd.Close();
-            cd.data = rws.ToArray();
+            cd.Rows = rws.ToArray();
             return cd;
         }
 
-        public void ChangeBreed(int id,String name,String sname,String color)
+        public void Change(int id, params String[] args)
         {
+            if (args.Length != 3)  throw new Exception("incorrect parms count (" + args.Length+") expected: 3");
+
             if (id==0)
                 return;
-            MySqlCommand cmd = new MySqlCommand("UPDATE breeds SET b_name='"+name+"',b_short_name='"+
-                sname+"', b_color='"+color+"' WHERE b_id='"+id.ToString()+"';", sql);
+            MySqlCommand cmd = new MySqlCommand(
+                String.Format("UPDATE breeds SET b_name='{0:s}',b_short_name='{1:s}', b_color='{2:s}' WHERE b_id={3:d};", args[0], args[1], args[2], id), sql);
             cmd.ExecuteNonQuery();
         }
 
-        public int AddBreed(String name, String sname, String color)
+        public int Add(params String[] args)
         {
-            MySqlCommand cmd = new MySqlCommand("INSERT INTO breeds(b_name,b_short_name,b_color) VALUES('"+
-                name+"','"+sname+"','"+color+"');", sql);
+            if (args.Length != 3) throw new Exception("incorrect parms count (" + args.Length + ") expected: 3");
+
+            MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO breeds(b_name,b_short_name,b_color) VALUES('{0:s}','{1:s}','{2:s}');",
+                args[0],args[1],args[2]), sql);
             cmd.ExecuteNonQuery();
             return (int)cmd.LastInsertedId;
         }

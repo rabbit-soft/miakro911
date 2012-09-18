@@ -51,7 +51,7 @@ namespace rabnet
             OneRabbit y = r.Youngers[comboBox1.SelectedIndex];
             label1.Text = "Возраст: " + y.age().ToString();
             label2.Text = "Количество: " + y.group.ToString();
-            label3.Text = "Порода: " + y.breedname;
+            label3.Text = "Порода: " + y.breed;
         }
     }
 }

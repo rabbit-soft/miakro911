@@ -262,9 +262,14 @@ namespace rabnet
             return DeadHelper.getDeadMonths(sql);
         }
 
-        IBreeds IRabNetDataLayer.getBreeds()
+        ICatalog IRabNetDataLayer.getBreeds()
         {
             return new Breeds(sql);
+        }
+
+        public ICatalog getDeadReasons()
+        {
+            return new DeadReasons(sql);
         }
 
         public OneRabbit GetRabbit(int rid)
@@ -316,14 +321,19 @@ namespace rabnet
             return RabbitGetter.MakeOkrol(sql, female, when, children, dead);
         }
 
-        public IZones getZones()
+        public ICatalog getZones()
         {
             return new Zones(sql);
         }
 
-        public IProducts getProductTypes()
+        public ICatalog getProductTypes()
         {
             return new Products(sql);
+        }
+
+        public ICatalog getVaccines()
+        {
+            return new Vaccines(sql);
         }
 
         public string makeName(int nm, int sur, int sec, int grp, OneRabbit.RabbitSex sex)
@@ -555,14 +565,16 @@ namespace rabnet
             return new ZooTehGetter(sql,f).getSetNest(wochild, wchild);
         }
 
-        public IDeadReasons getDeadReasons()
-        {
-            return new DeadReasons(sql);
-        }
+       
 
         public string[] getWeights(int rabbit)
         {
             return new Weight(sql).getWeights(rabbit);
+        }
+
+        public String[][] GetRabVac(int rabId)
+        {
+            return RabbitGetter.GetRabVac(rabId, sql);
         }
 
         public void addWeight(int rabbit, int weight, DateTime date)

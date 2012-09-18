@@ -296,7 +296,7 @@ namespace rabnet
         private void KillMenuItem_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count < 1) return;
-            if (Engine.db().getDeadReasons().getReasons().colnames.Length == 0)
+            if (Engine.db().getDeadReasons().Get().ColNames.Length == 0)
             {
                 MessageBox.Show("Нет ни одной причины списания. Вы можете добавить их в  меню Вид->Причины списания");
                 return;
@@ -360,6 +360,7 @@ namespace rabnet
 
         private int selCount(int index)
         {
+            if (index < 0) return 0;
             String s = listView1.Items[index].SubItems[NFIELD].Text;
             int c = 1;
             if (s[0] == '+') c += int.Parse(s.Substring(1));
@@ -446,7 +447,7 @@ namespace rabnet
                     rw.AppendChild(doc.CreateElement("group")).AppendChild(doc.CreateTextNode(er.Group.ToString()));
                 }
                 Catalog zones = Engine.db().catalogs().getZones();
-                rw.AppendChild(doc.CreateElement("sex")).AppendChild(doc.CreateTextNode(er.Sex==OneRabbit.RabbitSex.MALE?"male":(er.Sex==OneRabbit.RabbitSex.FEMALE?"female":"void")));
+                rw.AppendChild(doc.CreateElement("sex")).AppendChild(doc.CreateTextNode(er.Sex == OneRabbit.RabbitSex.MALE ? "male" : (er.Sex == OneRabbit.RabbitSex.FEMALE ? "female" : "void")));
                 rw.AppendChild(doc.CreateElement("class")).AppendChild(doc.CreateTextNode(getBon(er.Bon)));
                 rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(er.FullName));
                 rw.AppendChild(doc.CreateElement("breed")).AppendChild(doc.CreateTextNode(er.BreedName));

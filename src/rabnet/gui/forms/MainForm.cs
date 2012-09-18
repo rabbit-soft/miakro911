@@ -375,6 +375,15 @@ namespace rabnet
 #endif
         }
 
+        private void tsmiVaccines_Click(object sender, EventArgs e)
+        {
+#if !DEMO
+            new CatalogForm(CatalogForm.CatalogType.VACCINES).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
+        }
+
 #endregion Views 
 
 
@@ -618,6 +627,5 @@ namespace rabnet
         {
             Engine.db2().addPLUSummary(pluID,pluPN1,pluTSell,TSumm,TWeight,LastClear);
         }
-
     }
 }

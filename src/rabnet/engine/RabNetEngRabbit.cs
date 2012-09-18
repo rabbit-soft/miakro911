@@ -68,7 +68,7 @@ namespace rabnet
             String s="void";
             if (sx == OneRabbit.RabbitSex.FEMALE) s = "female";
             if (sx == OneRabbit.RabbitSex.MALE) s = "male";
-            rab = new OneRabbit(0, s, DateTime.Now, 0, "00000", 0, 0, 0, "", 1, 1, 0, "", "", 0, DateTime.MinValue, "", DateTime.MinValue, 0, 0, "", "", "00000",0,0,DateTime.Now);
+            rab = new OneRabbit(0, s, DateTime.Now, 0, "00000", 0, 0, 0, "", 1, 1, 0, "", "", 0, DateTime.MinValue, "", DateTime.MinValue, 0, 0, "", "", "00000",0,0/*,DateTime.Now*/);
             rab.youngers=new OneRabbit[0];
         }
 
@@ -196,11 +196,11 @@ namespace rabnet
         /// <summary>
         /// Дата окончания действия прививки
         /// </summary>
-        public DateTime VaccineEnd
+        /*public DateTime VaccineEnd
         {
             get { return rab.vac_end; }
             set { rab.vac_end = value; }
-        }
+        }*/
         public String Genom
         {
             get { return rab.gens; }

@@ -65,10 +65,7 @@ namespace rabnet
         /// </summary>
         IDataGetter GetYoungers(Filters filters);
         int[] getTiers(int farm);
-        Building getBuilding(int tier);
-        IBreeds getBreeds();
-        IZones getZones();
-        IProducts getProductTypes();
+        Building getBuilding(int tier);       
         List<sMeat> getMeats(DateTime date);
         IDataGetter getNames(Filters filters);
         IDataGetter zooTeh(Filters f);
@@ -88,7 +85,7 @@ namespace rabnet
         void makeFuck(int female, int male,DateTime date,int worker);
         void makeProholost(int female, DateTime when);
         int makeOkrol(int female, DateTime when, int children, int dead);
-        String makeName(int nm, int sur, int sec,int grp, OneRabbit.RabbitSex sex);
+        String makeName(int nm, int sur, int sec, int grp, OneRabbit.RabbitSex sex);
         bool unblockName(int id);
         Younger[] getSuckers(int mom);
         Building[] getFreeBuilding(Filters f);
@@ -147,9 +144,9 @@ namespace rabnet
         void ChangeFarm(int fid,String uppertype,String lowertype);
         void deleteFarm(int fid);
         ZooJobItem[] ztGetVacc(Filters f);
-        ZooJobItem[] ztGetSetNest(Filters f,int wochild,int wchild);
-        IDeadReasons getDeadReasons();
+        ZooJobItem[] ztGetSetNest(Filters f,int wochild,int wchild);        
         String[] getWeights(int rabbit);
+        String[][] GetRabVac(int rabId);
         void addWeight(int rabbit, int weight, DateTime date);
         void deleteWeight(int rabbit, DateTime date);
         OneRabbit[] getParents(int rabbit,int age);
@@ -161,6 +158,14 @@ namespace rabnet
 		RabbitGen getRabbitGen(int rid);
 		Dictionary<int, Color> getBreedColors();
         List<OneRabbit> getVictims(DateTime dt);
+
+        //catalogs
+        ICatalog getDeadReasons();      
+        ICatalog getBreeds();
+        ICatalog getZones();
+        ICatalog getProductTypes();
+        ICatalog getVaccines();
+
         //for buther
         List<sMeal> getMealPeriods();
         void addMealIn(DateTime start, int amount);

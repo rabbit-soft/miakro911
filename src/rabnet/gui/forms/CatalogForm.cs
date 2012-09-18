@@ -31,16 +31,17 @@ namespace rabnet
         /// <summary>
         /// Типы справочников
         /// </summary>
-        public enum CatalogType { NONE, BREEDS, ZONES, DEAD, PRODUCTS };
+        public enum CatalogType { NONE, BREEDS, ZONES, DEAD, PRODUCTS, VACCINES };
+        private ICatalog _catalog;
         private DataTable ds = new DataTable();
         /// <summary>
         /// Тип показываемого справочника
         /// </summary>
-        private CatalogType catType = CatalogType.NONE;
+        private CatalogType _catType = CatalogType.NONE;
         /// <summary>
         /// Вносятся ли изменения пользователем
         /// </summary>
-        private bool manual = true;
+        private bool _manual = true;
         private int _hiddenId = 0;
         /// <summary>
         /// Последняя редактируемая ячейка, нужна для того, чтобы если пользователь составит пустой текст, при выходе вставится бывший до этого.
@@ -50,90 +51,102 @@ namespace rabnet
         public CatalogForm()
         {
             InitializeComponent();
-            this.manual = false;
+            this._manual = false;
         }
 
         public CatalogForm(CatalogType type):this()
         {
-            catType = type;
-            switch (catType)
+            _catType = type;
+            this.Text = "Справочник ";
+            switch (_catType)
             {
                 case CatalogType.BREEDS:
-                    Text = "Справочник Пород";
+                    Text += "Пород";
                     break;
                 case CatalogType.ZONES:
-                    Text = "Справочник Зон Прибытия";
+                    Text += "Зон Прибытия";
                     break;
                 case CatalogType.DEAD:
-                    Text = "Справочник причин списания";
+                    Text += "причин списания";
                     break;
                 case CatalogType.PRODUCTS:
-                    this.Text = "Справочник видов продукции";
+                    this.Text += "видов продукции";
+                    break;
+                case CatalogType.VACCINES:
+                    this.Text += "прививок";
                     break;
             }
 			ds.RowChanged += new DataRowChangeEventHandler(this.OnRowChange);
             ds.TableNewRow += new DataTableNewRowEventHandler(this.OnRowInsert);
-            FillTable(false);
+            fillTable(false);
         }
 
         /// <summary>
         /// Заполнение каталога данными
         /// </summary>
         /// <param name="update"></param>
-        public void FillTable(bool update)
+        private void fillTable(bool update)
         {
             btDeleteImage.Visible = btNewImage.Visible = false;
-            manual = false;
+            _manual = false;
             ds.Clear();
-            CatalogData cd = null;
-            switch (catType)
+            
+            switch (_catType)
             {
                 case CatalogType.BREEDS:
-                    cd = Engine.db().getBreeds().getBreeds();
+                    _catalog = Engine.db().getBreeds();
                     break;
                 case CatalogType.ZONES:
-                    cd = Engine.db().getZones().getZones();
+                    _catalog = Engine.db().getZones();
                     break;
                 case CatalogType.DEAD:
-                    cd = Engine.db().getDeadReasons().getReasons();                   
+                    _catalog = Engine.db().getDeadReasons();                   
                     break;
                 case CatalogType.PRODUCTS:
-                    cd = Engine.db().getProductTypes().getProducts();
+                    _catalog = Engine.db().getProductTypes();
                     btDeleteImage.Visible = btNewImage.Visible = true;
                     btDeleteImage.Enabled = btNewImage.Enabled = false;
                     break;
+                case CatalogType.VACCINES:
+                    _catalog = Engine.db().getVaccines();
+                    break;
             }
-            int colorExist=-1,imageExist = -1; //чтобы удалить слово #color#
+            CatalogData cd = _catalog.Get();
+            //int colorExist=-1,imageExist = -1, boolExist=-1; //чтобы удалить слово #color#
             if (!update)//установка колонок
             {
 				DataGridViewTextBoxColumn TextColumn;
-				for (int i = 0; i < cd.colnames.Length; i++)
+				for (int i = 0; i < cd.ColNames.Length; i++)
 				{
-                    if (cd.colnames[i].Contains("#color#"))//в породах
+                    if (cd.ColNames[i].StartsWith(CatalogData.COLOR_MARKER))//в породах
 					{
-                        colorExist = i;
+                        //colorExist = i;
 						ColorPickerColumn colColorPick = new ColorPickerColumn();
-						colColorPick.Name = cd.colnames[i];
+						colColorPick.Name = cd.ColNames[i];
 						dataGridView1.Columns.Add(colColorPick);
 					}
-                    else if (cd.colnames[i].Contains("#image#"))//в продукции
+                    else if (cd.ColNames[i].StartsWith(CatalogData.IMAGE_MARKER))//в продукции
                     {
-                        imageExist = i;
+                        //imageExist = i;
                         DataGridViewImageColumn colImage = new DataGridViewImageColumn();
-                        colImage.Name = cd.colnames[i];
+                        colImage.Name = cd.ColNames[i];
                         dataGridView1.Columns.Add(colImage);
+                    }
+                    else if (cd.ColNames[i].StartsWith(CatalogData.BOOL_MARKER))
+                    {
+                        DataGridViewCheckBoxColumn colBool = new DataGridViewCheckBoxColumn();
+                        colBool.Name = cd.ColNames[i];
+                        dataGridView1.Columns.Add(colBool);
                     }
                     else
 					{
 						TextColumn = new DataGridViewTextBoxColumn();
-						TextColumn.Name = cd.colnames[i];
+						TextColumn.Name = cd.ColNames[i];
 						dataGridView1.Columns.Add(TextColumn);
 					}
-				}              
-                /*
-                 * Далее добавляется одна невидимая ячейка,
-                 * в коротой содержится ID записи
-                 */
+				} 
+             
+                /// Далее добавляется одна невидимая ячейка, в коротой содержится ID записи                
 				TextColumn = new DataGridViewTextBoxColumn();
 				TextColumn.Name = "id";
 				TextColumn.ValueType = typeof(int);
@@ -147,15 +160,14 @@ namespace rabnet
 			string value;
             Color lclColor = SystemColors.ButtonFace;
 			int res;
-			for (int i = 0; i < cd.data.Length; i++)
+			for (int i = 0; i < cd.Rows.Length; i++)
             {
 				int rownumber = dataGridView1.Rows.Add();
-				//List<object> objs = new List<object>();
-                for (int j = 0; j < cd.colnames.Length; j++)    //заполнение столбцов
+                for (int j = 0; j < cd.ColNames.Length; j++)    //заполнение столбцов
 				{
-					if (cd.colnames[j].Contains("#color#"))
+					if (cd.ColNames[j].StartsWith(CatalogData.COLOR_MARKER))
 					{
-						value = cd.data[i].data[j];
+						value = cd.Rows[i].data[j];
 						if (int.TryParse(value, System.Globalization.NumberStyles.HexNumber, null, out res))
 						{
 							lclColor = Color.FromArgb(res);
@@ -163,31 +175,49 @@ namespace rabnet
 						else lclColor = Color.FromName(value);						
 						dataGridView1.Rows[rownumber].Cells[j].Value = lclColor;
 					}
-                    else if (cd.colnames[j].Contains("#image#"))
+                    else if (cd.ColNames[j].StartsWith(CatalogData.IMAGE_MARKER))
                     {
-                        if (cd.data[i].image.Length == 0) continue;
-                        MemoryStream ms = new MemoryStream(cd.data[i].image);
+                        if (cd.Rows[i].data.Length == 0) continue;
+                        MemoryStream ms = new MemoryStream(Convert.FromBase64String(cd.Rows[i].data[j]));
                         Image img = Image.FromStream(ms);
                         dataGridView1.Rows[rownumber].Cells[j].Value = img;
                         dataGridView1.Rows[rownumber].Height = img.Height;
                     }
-					else dataGridView1.Rows[rownumber].Cells[j].Value = cd.data[i].data[j];
+                    else if (cd.ColNames[j].StartsWith(CatalogData.BOOL_MARKER))
+                    {
+                        dataGridView1.Rows[rownumber].Cells[j].Value = cd.Rows[i].data[j] == "1";
+                    }
+					else 
+                        dataGridView1.Rows[rownumber].Cells[j].Value = cd.Rows[i].data[j];
 				}
-				dataGridView1.Rows[rownumber].Cells[cd.colnames.Length].Value = cd.data[i].key;
+				dataGridView1.Rows[rownumber].Cells[cd.ColNames.Length].Value = cd.Rows[i].key;
 
 			}
-            if (catType == CatalogType.DEAD)
+            if (_catType == CatalogType.DEAD)
             {
                 dataGridView1.Rows[0].ReadOnly =    //на убой
                     dataGridView1.Rows[1].ReadOnly =//продажа племенного поголовья
                     dataGridView1.Rows[2].ReadOnly =//падеж при подсчете
                     dataGridView1.Rows[3].ReadOnly = true;//падеж
             }
-            if (colorExist != -1)
-                dataGridView1.Columns[colorExist].Name = dataGridView1.Columns[colorExist].Name.Remove(0, "#color#".Length);
+            ///убираем маркеры
+            foreach (DataGridViewColumn col in dataGridView1.Columns)
+            {
+                if (col.Name.StartsWith(CatalogData.COLOR_MARKER))
+                    col.Name = col.Name.Remove(0, CatalogData.COLOR_MARKER.Length);
+                if (col.Name.StartsWith(CatalogData.IMAGE_MARKER))
+                    col.Name = col.Name.Remove(0, CatalogData.IMAGE_MARKER.Length);
+                if (col.Name.StartsWith(CatalogData.BOOL_MARKER))
+                    col.Name = col.Name.Remove(0, CatalogData.BOOL_MARKER.Length);
+            }
+            /*if (colorExist != -1)
+                dataGridView1.Columns[colorExist].Name = dataGridView1.Columns[colorExist].Name.Remove(0, CatalogData.COLOR_MARKER.Length);
             if (imageExist != -1)
-                dataGridView1.Columns[imageExist].Name = dataGridView1.Columns[imageExist].Name.Remove(0, "#image#".Length);
-            manual = true;
+                dataGridView1.Columns[imageExist].Name = dataGridView1.Columns[imageExist].Name.Remove(0, CatalogData.IMAGE_MARKER.Length);
+            if (boolExist != -1)
+                dataGridView1.Columns[boolExist].Name = dataGridView1.Columns[boolExist].Name.Remove(0, CatalogData.BOOL_MARKER.Length);*/              
+
+            _manual = true;
         }
 
         private void OnRowChange(object sender, DataRowChangeEventArgs e)
@@ -203,209 +233,237 @@ namespace rabnet
 
 		private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
 		{
-			if (!manual) return;
+			if (!_manual) return;
+            DataGridViewRow editRow = dataGridView1.Rows[e.RowIndex];
             if (_lastCell != null)
             {
-                if (dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == null && e.ColumnIndex == _lastCell.Coll && e.RowIndex == _lastCell.Row)
+                if (editRow.Cells[e.ColumnIndex].Value == null && e.ColumnIndex == _lastCell.Coll && e.RowIndex == _lastCell.Row)
                 {
-                    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = _lastCell.Text;
+                    editRow.Cells[e.ColumnIndex].Value = _lastCell.Text;
                     return;
                 }
             }
 
-            /*
-             * Если последняя невидимая ячейка не содержит информации(ID записи),
-             * значит нужно добавить новую запись.
-             * Иначе изменить существующую
-             */
-			switch (catType)
-			{
-				case CatalogType.BREEDS:
-                    if (dataGridView1.Rows[e.RowIndex].Cells[_hiddenId].Value == null)
-					{
-						string col0 = "";
-						if (dataGridView1.Rows[e.RowIndex].Cells[0].Value != null)
-						{
-							col0 = dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString();
-						}
-						string col1 = "";
-						if (dataGridView1.Rows[e.RowIndex].Cells[1].Value != null)
-						{
-							col1 = dataGridView1.Rows[e.RowIndex].Cells[1].Value.ToString();
-						}
-						string col2 = "";
-						if (dataGridView1.Rows[e.RowIndex].Cells[2].Value != null)
-						{
-							col2 = ((Color)(dataGridView1.Rows[e.RowIndex].Cells[2].Value)).Name;
-						}
-                        dataGridView1.Rows[e.RowIndex].Cells[_hiddenId].Value = Engine.db().getBreeds().AddBreed(col0, col1, col2);
-					}
-					else
-					{
-						string col0 = "";
-						if (dataGridView1.Rows[e.RowIndex].Cells[0].Value != null)
-						{
-							col0 = dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString();
-						}
-						string col1 = "";
-						if (dataGridView1.Rows[e.RowIndex].Cells[1].Value != null)
-						{
-							col1 = dataGridView1.Rows[e.RowIndex].Cells[1].Value.ToString();
-						}
-						string col2 = "";
-						if (dataGridView1.Rows[e.RowIndex].Cells[2].Value != null)
-						{
-							col2 = ((Color)(dataGridView1.Rows[e.RowIndex].Cells[2].Value)).Name;
-						}
-						Engine.db().getBreeds().ChangeBreed(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[3].Value), col0, col1, col2);
-                        dataGridView1.Refresh();
-					}
-					break;
-                ///////////////////////
-				case CatalogType.ZONES:
-                    if (dataGridView1.Rows[e.RowIndex].Cells[_hiddenId].Value == null)
-					{
-						int col0 = 0;
-						if (dataGridView1.Rows[e.RowIndex].Cells[0].Value != null)
-						{
-							col0 = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value);
-						}
-						string col1 = "";
-						if (dataGridView1.Rows[e.RowIndex].Cells[1].Value != null)
-						{
-							col1 = dataGridView1.Rows[e.RowIndex].Cells[1].Value.ToString();
-						}
-						string col2 = "";
-						if (dataGridView1.Rows[e.RowIndex].Cells[2].Value != null)
-						{
-							col2 = dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString();
-						}
-                        dataGridView1.Rows[e.RowIndex].Cells[_hiddenId].Value = Engine.db().getZones().AddZone(col0, col1, col2);
-					}
-					else
-					{
-						dataGridView1.Rows[e.RowIndex].Cells[3].Value = dataGridView1.Rows[e.RowIndex].Cells[0].Value;
-						int col0 = 0;
-						if (dataGridView1.Rows[e.RowIndex].Cells[0].Value != null)
-						{
-							col0 = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value);
-						}
-						string col1 = "";
-						if (dataGridView1.Rows[e.RowIndex].Cells[1].Value != null)
-						{
-							col1 = dataGridView1.Rows[e.RowIndex].Cells[1].Value.ToString();
-						}
-						string col2 = "";
-						if (dataGridView1.Rows[e.RowIndex].Cells[2].Value != null)
-						{
-							col2 = dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString();
-						}
-						Engine.db().getZones().ChangeZone(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[_hiddenId].Value), col1,col2);
-					}
-					break;
-                /////////////////////////
-				case CatalogType.DEAD:
-                    if (dataGridView1.Rows[e.RowIndex].Cells[_hiddenId].Value == null)
-					{
-						string col0 = "";
-						if (dataGridView1.Rows[e.RowIndex].Cells[0].Value != null)
-						{
-							col0 = dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString();
-						}
-                        dataGridView1.Rows[e.RowIndex].Cells[_hiddenId].Value = Engine.db().getDeadReasons().AddReason(col0);
-					}
-					else
-					{
-						string col0 = "";
-						if (dataGridView1.Rows[e.RowIndex].Cells[0].Value != null)
-						{
-							col0 = dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString();
-						}
-						Engine.db().getDeadReasons().ChangeReason(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[_hiddenId].Value), col0);
-					}
-					break;
-                /////////////////////////
-                case CatalogType.PRODUCTS:
-                    if (dataGridView1.Rows[e.RowIndex].Cells[_hiddenId].Value == null)
-                    {
-                        string col0 = "";
-                        if (dataGridView1.Rows[e.RowIndex].Cells[0].Value != null)
-                        {
-                            col0 = dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString();
-                            if (col0.Length > 20)
-                            {
-                                col0 = col0.Substring(0, 20);
-                                dataGridView1.Rows[e.RowIndex].Cells[0].Value = col0;
-                            }
-                        }
-
-                        string col1 = "";
-                        if (dataGridView1.Rows[e.RowIndex].Cells[1].Value != null)
-                        {
-                            col1 = dataGridView1.Rows[e.RowIndex].Cells[1].Value.ToString();
-                            if (col1.Length > 10)
-                            {
-                                col1 = col1.Substring(0, 10);
-                                dataGridView1.Rows[e.RowIndex].Cells[1].Value = col1;
-                            }
-                        }
-
-                        byte[] col2 = new byte[0];
-                        Image img = (dataGridView1.Rows[e.RowIndex].Cells[2].Value as Image);
-                        if (img != null)
-                        {
-                            MemoryStream ms = new MemoryStream();
-                            img.Save(ms, ImageFormat.Jpeg);
-                            col2 = ms.ToArray();
-                            if (col2.Length == 784)
-                                col2 = new byte[0];
-                        }
-                        dataGridView1.Rows[e.RowIndex].Cells[_hiddenId].Value = Engine.db().getProductTypes().AddProduct(col0, col1,col2);
-                    }
-                    else
-                    {
-                        string col0 = "";
-                        if (dataGridView1.Rows[e.RowIndex].Cells[0].Value != null)
-                        {
-                            col0 = dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString();
-                            if (col0.Length > 20)
-                            {
-                                col0 = col0.Substring(0, 20);
-                                dataGridView1.Rows[e.RowIndex].Cells[0].Value = col0;
-                            }
-                        }
-
-                        string col1 = "";
-                        if (dataGridView1.Rows[e.RowIndex].Cells[1].Value != null)
-                        {
-                            col1 = dataGridView1.Rows[e.RowIndex].Cells[1].Value.ToString();
-                            if (col1.Length > 10)
-                            {
-                                col1 = col1.Substring(0, 10);
-                                dataGridView1.Rows[e.RowIndex].Cells[1].Value = col1;
-                            }
-                        }
-
-                        byte[] col2 = new byte[0];
-                        Image img = (dataGridView1.Rows[e.RowIndex].Cells[2].Value as Image);
-                        if (img != null)
-                        {
-                            MemoryStream ms = new MemoryStream();
-                            img.Save(ms, ImageFormat.Jpeg);
-                            col2 = ms.ToArray();
-                            if (col2.Length == 784)
-                                col2 = new byte[0];
-                        }
-
-                        Engine.db().getProductTypes().ChangeProduct(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[_hiddenId].Value), col0, col1,col2);
-                    }
-                    break;
-			}
+            try
+            {
+                /**
+                 * Если последняя невидимая ячейка не содержит информации(ID записи),
+                 * значит нужно добавить новую запись.
+                 * Иначе изменить существующую
+                 */
+                switch (_catType)
+                {
+                    case CatalogType.BREEDS: breeds_RowEdited(editRow); break;
+                    case CatalogType.ZONES: zones_RowEdited(editRow); break;                   
+                    case CatalogType.DEAD: deadReasons_RowEdited(editRow); break;                   
+                    case CatalogType.PRODUCTS: products_RowEdited(editRow); break;
+                    case CatalogType.VACCINES: vaccines_RowEdited(editRow); break;
+                }
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Произошла ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
 		}
+
+        private void breeds_RowEdited(DataGridViewRow editRow)
+        {
+            string col0 = "", col1 = "", col2 = "";
+            if (editRow.Cells[_hiddenId].Value == null)
+            {
+                if (editRow.Cells[0].Value != null)
+                    col0 = editRow.Cells[0].Value.ToString();
+
+                if (editRow.Cells[1].Value != null)
+                    col1 = editRow.Cells[1].Value.ToString();
+
+                if (editRow.Cells[2].Value != null)
+                    col2 = ((Color)(editRow.Cells[2].Value)).Name;
+
+                editRow.Cells[_hiddenId].Value = /*Engine.db().getBreeds().*/ _catalog.Add(col0, col1, col2);
+            }
+            else
+            {
+                if (editRow.Cells[0].Value != null)
+                    col0 = editRow.Cells[0].Value.ToString();
+
+                if (editRow.Cells[1].Value != null)
+                    col1 = editRow.Cells[1].Value.ToString();
+
+                if (editRow.Cells[2].Value != null)
+                    col2 = ((Color)(editRow.Cells[2].Value)).Name;
+
+                //Engine.db().getBreeds().
+                _catalog.Change(Convert.ToInt32(editRow.Cells[3].Value), col0, col1, col2);
+                dataGridView1.Refresh();
+            }
+        }
+
+        private void zones_RowEdited(DataGridViewRow editRow)
+        {
+            string col0 = "0", col1 = "", col2 = "";
+            if (editRow.Cells[_hiddenId].Value == null)
+            {
+                
+                if (editRow.Cells[0].Value != null)
+                    col0 = editRow.Cells[0].Value.ToString();
+
+                if (editRow.Cells[1].Value != null)
+                    col1 = editRow.Cells[1].Value.ToString();
+
+                if (editRow.Cells[2].Value != null)
+                    col2 = editRow.Cells[2].Value.ToString();
+
+                editRow.Cells[_hiddenId].Value = /*Engine.db().getZones().*/ _catalog.Add(col0.ToString(), col1, col2);
+            }
+            else
+            {
+                editRow.Cells[3].Value = editRow.Cells[0].Value;
+                if (editRow.Cells[0].Value != null)
+                    col0 = editRow.Cells[0].Value.ToString();
+
+                if (editRow.Cells[1].Value != null)
+                    col1 = editRow.Cells[1].Value.ToString();
+
+                if (editRow.Cells[2].Value != null)
+                    col2 = editRow.Cells[2].Value.ToString();
+                //Engine.db().getZones()
+                _catalog.Change(Convert.ToInt32(editRow.Cells[_hiddenId].Value), col1, col2);
+            }
+        }
+
+        private void deadReasons_RowEdited(DataGridViewRow editRow)
+        {
+            string col0 = "";
+            if (editRow.Cells[_hiddenId].Value == null)
+            {
+                
+                if (editRow.Cells[0].Value != null)
+                    col0 = editRow.Cells[0].Value.ToString();
+
+                editRow.Cells[_hiddenId].Value = Engine.db().getDeadReasons().Add(col0);
+            }
+            else
+            {
+                if (editRow.Cells[0].Value != null)
+                    col0 = editRow.Cells[0].Value.ToString();
+
+                Engine.db().getDeadReasons().Change(Convert.ToInt32(editRow.Cells[_hiddenId].Value), col0);
+            }
+        }
+
+        private void products_RowEdited(DataGridViewRow editRow)
+        {
+            if (editRow.Cells[_hiddenId].Value == null)
+            {
+                string col0 = "", col1 = "";
+                if (editRow.Cells[0].Value != null)
+                {
+                    col0 = editRow.Cells[0].Value.ToString();
+                    if (col0.Length > 20)
+                    {
+                        col0 = col0.Substring(0, 20);
+                        editRow.Cells[0].Value = col0;
+                    }
+                }
+
+                if (editRow.Cells[1].Value != null)
+                {
+                    col1 = editRow.Cells[1].Value.ToString();
+                    if (col1.Length > 10)
+                    {
+                        col1 = col1.Substring(0, 10);
+                        editRow.Cells[1].Value = col1;
+                    }
+                }
+
+                byte[] col2 = new byte[0];
+                Image img = (editRow.Cells[2].Value as Image);
+                if (img != null)
+                {
+                    MemoryStream ms = new MemoryStream();
+                    img.Save(ms, ImageFormat.Jpeg);
+                    col2 = ms.ToArray();
+                    if (col2.Length == 784)
+                        col2 = new byte[0];
+                }
+                editRow.Cells[_hiddenId].Value = Engine.db().getProductTypes().Add(col0, col1, Convert.ToBase64String(col2));
+            }
+            else
+            {
+                string col0 = "", col1 = "";
+                if (editRow.Cells[0].Value != null)
+                {
+                    col0 = editRow.Cells[0].Value.ToString();
+                    if (col0.Length > 20)
+                    {
+                        col0 = col0.Substring(0, 20);
+                        editRow.Cells[0].Value = col0;
+                    }
+                }
+
+                if (editRow.Cells[1].Value != null)
+                {
+                    col1 = editRow.Cells[1].Value.ToString();
+                    if (col1.Length > 10)
+                    {
+                        col1 = col1.Substring(0, 10);
+                        editRow.Cells[1].Value = col1;
+                    }
+                }
+
+                byte[] col2 = new byte[0];
+                Image img = (editRow.Cells[2].Value as Image);
+                if (img != null)
+                {
+                    MemoryStream ms = new MemoryStream();
+                    img.Save(ms, ImageFormat.Jpeg);
+                    col2 = ms.ToArray();
+                    if (col2.Length == 784)
+                        col2 = new byte[0];
+                }
+
+                //Engine.db().getProductTypes().
+                _catalog.Change(Convert.ToInt32(editRow.Cells[_hiddenId].Value), col0, col1, Convert.ToBase64String(col2));
+            }
+        }
+
+        private void vaccines_RowEdited(DataGridViewRow editRow)
+        {
+            string col0 = "", col1 = "", col2 = "";
+            if (editRow.Cells[_hiddenId].Value == null)
+            {
+                if (editRow.Cells[0].Value != null)
+                    col0 = editRow.Cells[0].Value.ToString();
+                if (col0 == "") return;
+                if (editRow.Cells[1].Value != null)
+                    col1 = editRow.Cells[1].Value.ToString();
+
+                if (editRow.Cells[2].Value != null)
+                    col2 = editRow.Cells[2].Value.ToString();
+                
+                editRow.Cells[_hiddenId].Value = /*Engine.db().getBreeds().*/ _catalog.Add(col0, col1, col2);
+            }
+            else
+            {
+                if (editRow.Cells[0].Value != null)
+                    col0 = editRow.Cells[0].Value.ToString();
+
+                if (editRow.Cells[1].Value != null)
+                    col1 = editRow.Cells[1].Value.ToString();
+
+                if (editRow.Cells[2].Value != null)
+                    col2 = editRow.Cells[2].Value.ToString();
+
+                //Engine.db().getBreeds().
+                _catalog.Change(Convert.ToInt32(editRow.Cells[3].Value), col0, col1, col2);
+                dataGridView1.Refresh();
+            }
+        }
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
-            if (catType != CatalogType.PRODUCTS) return;
+            if (_catType != CatalogType.PRODUCTS) return;
             if (dataGridView1.SelectedCells.Count != 0 && dataGridView1.SelectedCells[0].ColumnIndex == 2)
             {
                 btNewImage.Enabled = true;
@@ -420,7 +478,7 @@ namespace rabnet
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (catType == CatalogType.PRODUCTS && dataGridView1.SelectedCells[0].ColumnIndex == 2 && dataGridView1.SelectedCells.Count != 0)
+            if (_catType == CatalogType.PRODUCTS && dataGridView1.SelectedCells[0].ColumnIndex == 2 && dataGridView1.SelectedCells.Count != 0)
                 btNewImage.PerformClick();
         }
 
@@ -452,13 +510,27 @@ namespace rabnet
 
         private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
-            if (!manual || dataGridView1.SelectedCells.Count==0) return;
-            if ((catType == CatalogType.PRODUCTS && e.ColumnIndex == 3) || dataGridView1.SelectedCells[0].Value==null)
+            if (!_manual || dataGridView1.SelectedCells.Count==0) return;
+            if ((_catType == CatalogType.PRODUCTS && e.ColumnIndex == 3) || dataGridView1.SelectedCells[0].Value==null)
             {
                 _lastCell = null;
                 return;
             }
             _lastCell = new myCell(e.ColumnIndex,e.RowIndex,dataGridView1.SelectedCells[0].Value.ToString());
+        }
+
+        private void dataGridView1_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (_manual && _catType == CatalogType.VACCINES)
+            {
+                if (dataGridView1.CurrentCell.ColumnIndex == 2)
+                {
+                    _manual = false;
+                    dataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);
+                    _manual = true;
+                    dataGridView1_CellEndEdit(sender, new DataGridViewCellEventArgs(dataGridView1.CurrentCell.ColumnIndex, dataGridView1.CurrentCell.RowIndex));
+                }
+            }
         }
     }
 }

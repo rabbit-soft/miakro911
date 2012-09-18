@@ -136,7 +136,7 @@ namespace rabnet
             String flg = rd.GetString("r_flags");
             r.fbgp = "";
             if (flg[2] == '1') r.fbgp +=Separate(r.fbgp)+"Б";
-            if (rd.GetDateTime("vac_end").Date > DateTime.Now.Date) r.fbgp += Separate(r.fbgp) + "в";
+            //if (rd.GetDateTime("vac_end").Date > DateTime.Now.Date) r.fbgp += Separate(r.fbgp) + "в";
             if (flg[0] != '0') r.fbgp += Separate(r.fbgp) + "ГП";
             if (flg[1] != '0') r.fbgp = "<" + r.fbgp + ">";
             r.frate = rd.GetInt32("r_rate");
@@ -276,8 +276,7 @@ rabplace(r_id) place,
 r_notes,
 r_born,
 r_event_date,
-r_breed,
-COALESCE(r_vaccine_end,now()) vac_end
+r_breed #,COALESCE(r_vaccine_end,now()) vac_end
 FROM rabbits WHERE r_parent=0 ORDER BY name) c" + makeWhere()+";");
         }
         /*
@@ -433,7 +432,7 @@ r_status,r_flags,r_event_date,r_breed
         /// <summary>
         /// Дата окончания прививки
         /// </summary>
-        public DateTime vac_end; //+gambit
+        //public DateTime vac_end; //+gambit
         public int evtype;
         public int babies;
         public int lost;
@@ -450,7 +449,7 @@ r_status,r_flags,r_event_date,r_breed
         public string nuaddr="";
         public OneRabbit(int id,string sx,DateTime bd,int rt,string flg,int nm,int sur,int sec,string adr,int grp,int brd,int zn,String nts,
             String gn,int st,DateTime lfo,String evt,DateTime evd,int ob,int lb,String fnm,String bnm,
-			String bon, int parent, int wa, DateTime v_end)
+			String bon, int parent, int wa/*, DateTime v_end*/)
         {
             this.parent = parent;
             tag = "";
@@ -464,8 +463,8 @@ r_status,r_flags,r_event_date,r_breed
             wasname = name;
             gp = flg[0] == '1';
             defect = flg[2] == '1' || flg[2]=='3';
-            vac_end = v_end.Date; //+gambit
-            spec = vac_end > DateTime.Now.Date; //+gambit 
+            //vac_end = v_end.Date; //+gambit
+            //spec = vac_end > DateTime.Now.Date; //+gambit 
             nokuk = flg[3] == '1';
             nolact = flg[4] == '1';
             risk = flg[4] == '1';
@@ -540,7 +539,7 @@ r_status,r_flags,r_event_date,r_breed
                 rd.IsDBNull(3) ? "none" : rd.GetString("r_event"), rd.IsDBNull(2) ? DateTime.MinValue : rd.GetDateTime("r_event_date"),
                 rd.IsDBNull(4) ? 0 : rd.GetInt32("r_overall_babies"), rd.IsDBNull(5) ? 0 : rd.GetInt32("r_lost_babies"),
                 rd.GetString("fullname"), rd.GetString("breedname"),
-                rd.GetString("r_bon"),rd.GetInt32("r_parent"),0,rd.GetDateTime("vac_end"));
+                rd.GetString("r_bon"),rd.GetInt32("r_parent"),0/*,rd.GetDateTime("vac_end")*/);
             return r;
         }
         
@@ -571,7 +570,7 @@ r_sex,r_born,r_flags,r_breed,r_zone,r_name,r_surname,r_secname,
 {1:s}name(r_id,2) fullname,
 (SELECT b_name FROM breeds WHERE b_id=r_breed) breedname,
 (SELECT COALESCE(GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' '),'') FROM genoms WHERE g_id=r_genesis) genom,
-r_status,r_rate,r_bon,r_parent,COALESCE(r_vaccine_end,NOW()) vac_end 
+r_status,r_rate,r_bon,r_parent #,COALESCE(r_vaccine_end,NOW()) vac_end 
 FROM {2:s} WHERE r_id={3:d};", (type == RAB_TYPE.LIVE ? "r_event_date,r_event" : "NULL r_event_date,'none' r_event"),
                            (type == RAB_TYPE.LIVE ? "rab" : "dead"), (type == RAB_TYPE.LIVE ? "rabbits" : "dead"),
                            rid), con);
@@ -597,7 +596,7 @@ rabplace(r_id) address,r_group,r_notes,
 rabname(r_id,2) fullname,
 (SELECT b_name FROM breeds WHERE b_id=r_breed) breedname,
 (SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=r_genesis) genom,
-r_status,r_rate,r_bon,r_parent,COALESCE(r_vaccine_end,NOW()) vac_end 
+r_status,r_rate,r_bon,r_parent #,COALESCE(r_vaccine_end,NOW()) vac_end 
 FROM rabbits WHERE r_parent=" + mom.ToString() + ";", con);
             List<OneRabbit> rbs = new List<OneRabbit>();
             MySqlDataReader rd = cmd.ExecuteReader();
@@ -621,7 +620,7 @@ r_group,r_notes,
 rabname(r_id,2) fullname,
 (SELECT b_name FROM breeds WHERE b_id=r_breed) breedname,
 (SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=r_genesis) genom,
-r_status,r_rate,r_bon,r_parent,COALESCE(r_vaccine_end,NOW()) vac_end 
+r_status,r_rate,r_bon,r_parent #,COALESCE(r_vaccine_end,NOW()) vac_end 
 FROM rabbits WHERE rabplace(r_id)=rabplace({0:d}) AND r_id<>{0:d} AND r_parent=0;", rabOwner), con);
             List<OneRabbit> rbs = new List<OneRabbit>();
             MySqlDataReader rd = cmd.ExecuteReader();
@@ -637,8 +636,8 @@ FROM rabbits WHERE rabplace(r_id)=rabplace({0:d}) AND r_id<>{0:d} AND r_parent=0
             String flags = String.Format("{0:D1}{1:D1}{2:D1}{3:D1}{4:D1}", r.gp ? 1 : 0, r.risk?1:0, multi, r.nokuk?1:0, r.nolact?1:0);
             String qry=String.Format(@"UPDATE rabbits SET 
 r_name={0:d},r_surname={1:d},r_secname={2:d},r_breed={3:d},r_zone={4:d},r_group={5:d},r_notes='{6:s}',
-r_flags='{7:d}',r_rate={8:d},r_born={9:s},r_vaccine_end={10:s}",r.name,r.surname,r.secname,r.breed,r.zone,r.group,r.notes,flags,r.rate,
-                                          DBHelper.DateToMyString(r.born),DBHelper.DateToMyString(r.vac_end));
+r_flags='{7:d}',r_rate={8:d},r_born={9:s} #,r_vaccine_end={10:s}",r.name,r.surname,r.secname,r.breed,r.zone,r.group,r.notes,flags,r.rate,
+                                          DBHelper.DateToMyString(r.born)/*,DBHelper.DateToMyString(r.vac_end)*/);
             if (r.sex != OneRabbit.RabbitSex.VOID)
             {
                 qry += String.Format(",r_status={0:d},r_last_fuck_okrol={1:s}",r.status,DBHelper.DateToMyString(r.lastfuckokrol));
@@ -784,10 +783,12 @@ r_lost_babies=COALESCE(r_lost_babies+{3:d},1),r_rate=r_rate+{4:d} WHERE r_id={0:
                 int rate = fml.rate + (ml==null?fml.rate:ml.rate)/2;
                 int okrol = fml.status;
                 cmd.CommandText = String.Format(@"INSERT INTO rabbits(r_parent,r_mother,r_father,r_born,r_sex,r_group,
-r_bon,r_genesis,r_name,r_surname,r_secname,r_breed,r_okrol,r_rate,r_notes,r_vaccine_end) 
-VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d},{10:d},{11:d},'',{12:s});",
+r_bon,r_genesis,r_name,r_surname,r_secname,r_breed,r_okrol,r_rate,r_notes #,r_vaccine_end
+) 
+VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d},{10:d},{11:d},'' #,{12:s}
+);",
       rabbit,rabbit,father,DBHelper.DateToMyString(date),children,DBHelper.commonBon(fml.bon,ml!=null?ml.bon:fml.bon),
-      DBHelper.makeCommonGenesis(sql,fml.gens,(ml!=null?ml.gens:fml.gens),fml.zone),fml.name,(ml!=null?ml.name:0),brd,okrol,rate,DBHelper.DateToMyString(date));
+      DBHelper.makeCommonGenesis(sql,fml.gens,(ml!=null?ml.gens:fml.gens),fml.zone),fml.name,(ml!=null?ml.name:0),brd,okrol,rate/*,DBHelper.DateToMyString(date)*/);
                 cmd.ExecuteNonQuery();
                 return (int)cmd.LastInsertedId;
             }
@@ -1194,7 +1195,7 @@ TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d}+1000 ORDER BY age ASC;",name,agebefore);
             OneRabbit r = new OneRabbit(rabbit, rd.GetString("r_sex"), rd.GetDateTime("r_born"), rd.IsDBNull(7) ? 0 : rd.GetInt32("weight"),
                 "00000", 0, 0, 0, rd.GetString("place"), 1, rd.GetInt32("r_okrol"), dead?1:0, "", "", rd.GetInt32("age"), DateTime.MinValue, "", rd.IsDBNull(8) ? DateTime.MinValue : rd.GetDateTime("weight_date"),
 				rd.IsDBNull(10) ? 0 : rd.GetInt32("r_overall_babies"), rd.IsDBNull(15) ? 0 : rd.GetInt32("r_lost_babies"),
-				rd.GetString("name"), "", rd.GetString("r_bon"), 0, rd.IsDBNull(9) ? 0 : rd.GetInt32("weight_age"),rd.GetDateTime("vac_end"));
+				rd.GetString("name"), "", rd.GetString("r_bon"), 0, rd.IsDBNull(9) ? 0 : rd.GetInt32("weight_age")/*,rd.GetDateTime("vac_end")*/);
             rd.Close();
             return r;
         }
@@ -1219,5 +1220,24 @@ TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d}+1000 ORDER BY age ASC;",name,agebefore);
             return new OneRabbit[] {getLiveDeadRabbit(sql,mom),getLiveDeadRabbit(sql,pap) };
         }
 
+
+        internal static string[][] GetRabVac(int rabId, MySqlConnection sql)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT    
+    Date_Format(date,'%d.%m.%Y'),
+    v_name,
+    Greatest(CAST(v.v_duration as SIGNED)-CAST(to_days(NOW())-to_days(date) AS SIGNED),0),
+    unabled FROM rab_vac rv 
+INNER JOIN vaccines v ON rv.v_id=v.v_id
+WHERE r_id={0:d}", rabId), sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            List<string[]> result = new List<string[]>();
+            while (rd.Read())
+            {
+                result.Add(new string[] { rd.GetString(0), rd.GetString(1), rd.GetString(2), rd.GetString(3) });
+            }
+            rd.Close();
+            return result.ToArray();
+        }
     }
 }
