@@ -4,17 +4,17 @@ using System.Windows.Forms;
 
 namespace rabnet
 {
-    public partial class ReplaceBride : Form
+    public partial class ReplaceBrideForm : Form
     {
         RabNetEngRabbit r = null;
         Building[] bs;
         int girlOut = 0;
-        public ReplaceBride()
+        public ReplaceBrideForm()
         {
             InitializeComponent();
         }
 
-        public ReplaceBride(int rid):this()
+        public ReplaceBrideForm(int rid):this()
         {
             r = Engine.get().getRabbit(rid);          
         }

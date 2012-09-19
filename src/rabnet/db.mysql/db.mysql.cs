@@ -153,11 +153,6 @@ namespace rabnet
             return new Buildings(sql, filters);
         }
 
-        public int getMFCount()
-        {
-            return Buildings.GetMFCount(sql);
-        }
-
         public String[] getFilterNames(string type)
         {
             MySqlDataReader rd = reader("SELECT f_name FROM filters WHERE f_type='"+type+"';");
@@ -200,6 +195,10 @@ namespace rabnet
         {
             return new Youngers(sql, filters);
         }
+        public OneRabbit[] GetYoungers(int momId)
+        {
+            return RabbitGetter.GetYoungers(sql,momId);
+        }
 
         public int[] getTiers(int farm)
         {
@@ -217,14 +216,7 @@ namespace rabnet
  */
             rd.Close();
             return trs;
-        }
-
-        public Building getBuilding(int tier)
-        {
-            if (tier == 0)
-                return null;
-            return Buildings.getTier(tier, sql);
-        }
+        } 
 
         public IDataGetter getNames(Filters filters)
         {
@@ -235,11 +227,6 @@ namespace rabnet
         {
             //TODO:remove item
             return new ZooTehNullGetter();
-        }
-
-        public IDataGetter getButcherDates(Filters f)
-        {
-            return new Butcher(sql,f);
         }
 
         public List<String> getButcherMonths()
@@ -284,7 +271,6 @@ namespace rabnet
         {
             return new Catalogs(sql);
         }
-
 
         public void RabNetLog(int type, int user, int r1,int r2,string a1,string a2,string text)
         {
@@ -351,11 +337,6 @@ namespace rabnet
             return Youngers.getSuckers(sql, mom);
         }
 
-        public Building[] getFreeBuilding(Filters f)
-        {
-            return Buildings.getFreeBuildings(sql, f);
-        }
-
         public void replaceRabbit(int rid, int farm, int tier_id, int sec)
         {
             RabbitGetter.replaceRabbit(sql, rid, farm, tier_id, sec);
@@ -373,21 +354,6 @@ namespace rabnet
         public LogList getLogs(Filters f)
         {
             return (new Logs(sql).getLogs(f));
-        }
-
-        public ZooJobItem[] ztGetOkrols(Filters f)
-        {
-            return new ZooTehGetter(sql,f).getOkrols(f.safeInt("okrol"));
-        }
-
-        public void updateBuilding(Building b)
-        {
-            Buildings.updateBuilding(b, sql);
-        }
-
-        public ZooJobItem[] ztGetVudvors(Filters f)
-        {
-            return new ZooTehGetter(sql,f).getVudvors(f);
         }
 
         public void addName(OneRabbit.RabbitSex sex, string name, string surname)
@@ -410,11 +376,6 @@ namespace rabnet
             RabbitGetter.countKids(sql, rid, dead, killed, added, yid);
         }
 
-        public ZooJobItem[] ztGetCounts(Filters f,int days,int next)
-        {
-            return new ZooTehGetter(sql,f).getCounts(days,next);
-        }
-
         public void setRabbitSex(int rid, OneRabbit.RabbitSex sex)
         {
             RabbitGetter.setRabbitSex(sql, rid, sex);
@@ -424,7 +385,7 @@ namespace rabnet
         {
             return RabbitGetter.cloneRabbit(sql, rid, count, farm, tier, sec, sex, mom);
         }
-
+#region users
         public string userGroup(int uid)
         {
             return new Users(sql).getUserGroup(uid);
@@ -449,6 +410,7 @@ namespace rabnet
         {
             return new Users(sql).addUser(name, group, password);
         }
+#endregion users
 
         public IDataGetter getDead(Filters filters)
         {
@@ -465,11 +427,6 @@ namespace rabnet
             new DeadHelper(sql).resurrect(rid);
         }
 
-        public ZooJobItem[] ztGetPreokrols(Filters f,int days,int okroldays)
-        {
-            return new ZooTehGetter(sql,f).getPreokrols(days,okroldays);
-        }
-
         public void placeSucker(int sucker, int mother)
         {
             RabbitGetter.placeSucker(sql, sucker, mother);
@@ -480,19 +437,26 @@ namespace rabnet
             RabbitGetter.combineGroups(sql, rabfrom, rabto);
         }
 
-        public XmlDocument makeReport(myReportType type, Filters f)
-        {
-            return Reports.makeReport(sql, type, f);
-        }
-
-        public XmlDocument makeReport(string query)
-        {
-            return Reports.makeReport(sql, query);
-        }
-
         public Rabbit[] getMothers(int age, int agediff)
         {
             return RabbitGetter.getMothers(sql, age, agediff);
+        }
+#region zoo_tech_get
+        public ZooJobItem[] ztGetVudvors(Filters f)
+        {
+            return new ZooTehGetter(sql, f).getVudvors(f);
+        }
+        public ZooJobItem[] ztGetOkrols(Filters f)
+        {
+            return new ZooTehGetter(sql, f).getOkrols(f.safeInt("okrol"));
+        } 
+        public ZooJobItem[] ztGetPreokrols(Filters f, int days, int okroldays)
+        {
+            return new ZooTehGetter(sql, f).getPreokrols(days, okroldays);
+        }
+        public ZooJobItem[] ztGetCounts(Filters f, int days, int next)
+        {
+            return new ZooTehGetter(sql, f).getCounts(days, next);
         }
 
         public ZooJobItem[] ztGetBoysGirlsOut(Filters f,int days, OneRabbit.RabbitSex sex)
@@ -505,16 +469,42 @@ namespace rabnet
             return new ZooTehGetter(sql, f).getBoysByOne(f.safeInt("bbone"));
         }
 
-        public string[] logNames()
+        public ZooJobItem[] ztGetZooFuck(Filters f, int statedays, int firstdays, int brideage, int malewait, bool heter, bool inbr, int type)
         {
-            return new Logs(sql).logNames();
+            return new ZooTehGetter(sql, f).getZooFucks(statedays, firstdays, brideage, malewait, heter, inbr, type);
         }
 
-        public ZooJobItem[] ztGetZooFuck(Filters f,int statedays, int firstdays,int brideage,int malewait,bool heter,bool inbr,int type)
+        public ZooJobItem[] ztGetVacc(Filters f)
         {
-            return new ZooTehGetter(sql,f).getZooFucks(statedays, firstdays,brideage,malewait,heter,inbr,type);
+            return new ZooTehGetter(sql, f).getVacc(f);
         }
 
+        public ZooJobItem[] ztGetSetNest(Filters f, int wochild, int wchild)
+        {
+            return new ZooTehGetter(sql, f).getSetNest(wochild, wchild);
+        }
+
+#endregion zoo_tech_get
+   
+#region buildings
+        public Building getBuilding(int tier)
+        {
+            if (tier == 0)
+                return null;
+            return Buildings.getTier(tier, sql);
+        }
+        public void updateBuilding(Building b)
+        {
+            Buildings.updateBuilding(b, sql);
+        }
+        public int getMFCount()
+        {
+            return Buildings.GetMFCount(sql);
+        }
+        public Building[] getFreeBuilding(Filters f)
+        {
+            return Buildings.getFreeBuildings(sql, f);
+        }
         public void setBuildingName(int bid, string name)
         {
             Buildings.setBuildingName(sql, bid, name);
@@ -554,27 +544,16 @@ namespace rabnet
         {
             Buildings.deleteFarm(sql, fid);
         }
+#endregion buildings
 
-        public ZooJobItem[] ztGetVacc(Filters f)
+        public string[] logNames()
         {
-            return new ZooTehGetter(sql,f).getVacc(f);
+            return new Logs(sql).logNames();
         }
-
-        public ZooJobItem[] ztGetSetNest(Filters f,int wochild, int wchild)
-        {
-            return new ZooTehGetter(sql,f).getSetNest(wochild, wchild);
-        }
-
-       
 
         public string[] getWeights(int rabbit)
         {
             return new Weight(sql).getWeights(rabbit);
-        }
-
-        public String[][] GetRabVac(int rabId)
-        {
-            return RabbitGetter.GetRabVac(rabId, sql);
         }
 
         public void addWeight(int rabbit, int weight, DateTime date)
@@ -586,6 +565,17 @@ namespace rabnet
         {
             new Weight(sql).deleteWeight(rabbit, date);
         }
+#region vaccines
+        public RabVac[] GetRabVac(int rabId)
+        {
+            return RabbitGetter.GetRabVac( sql,rabId);
+        }
+
+        public void SetRabbitVaccine(int rid, int vid,DateTime date)
+        {
+            RabbitGetter.SetRabbitVaccine(sql,rid,vid,date);
+        }
+#endregion vaccines
 
         public OneRabbit[] getParents(int rabbit, int age)
         {
@@ -621,7 +611,11 @@ namespace rabnet
         {
             FucksGetter.changeWorker(sql,fid, worker);
         }
-
+#region butcher
+        public IDataGetter getButcherDates(Filters f)
+        {
+            return new Butcher(sql, f);
+        }
         public List<OneRabbit> getVictims(DateTime dt)
         {
             return Butcher.getVictims(sql,dt);
@@ -651,20 +645,30 @@ namespace rabnet
         {
             Meal.DeleteMeal(sql, id);
         }
-
-        public List<ScalePLUSummary> getPluSummarys(DateTime date)
-        {
-            return Scale.getPluSummarys(sql,date);
-        }
-
         public void addPLUSummary(int prodid, string prodname, int tsell, int tsumm, int tweight, DateTime cleared)
         {
             Scale.addPLUSummary(sql, prodid, prodname, tsell, tsumm, tweight, cleared);
         }
 
-        public void deletePLUsummary(int sid,DateTime lastClear)
+        public List<ScalePLUSummary> getPluSummarys(DateTime date)
         {
-            Scale.DeletePLUsumary(sql,sid,lastClear);
+            return Scale.getPluSummarys(sql, date);
+        }
+
+        public void deletePLUsummary(int sid, DateTime lastClear)
+        {
+            Scale.DeletePLUsumary(sql, sid, lastClear);
+        }
+#endregion butcher
+
+        public XmlDocument makeReport(myReportType type, Filters f)
+        {
+            return Reports.makeReport(sql, type, f);
+        }
+
+        public XmlDocument makeReport(string query)
+        {
+            return Reports.makeReport(sql, query);
         }
 
         public string WebReportGlobal(DateTime dt)
@@ -681,7 +685,6 @@ namespace rabnet
         {
             return Logs.getFarmStartTime(sql);
         }
-
-        #endregion
-    }
+        #endregion IRabNetDataLayer Members
+    }        
 }

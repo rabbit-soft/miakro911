@@ -64,6 +64,7 @@ namespace rabnet
         /// Список Молодняка
         /// </summary>
         IDataGetter GetYoungers(Filters filters);
+        OneRabbit[] GetYoungers(int momId);
         int[] getTiers(int farm);
         Building getBuilding(int tier);       
         List<sMeat> getMeats(DateTime date);
@@ -146,7 +147,7 @@ namespace rabnet
         ZooJobItem[] ztGetVacc(Filters f);
         ZooJobItem[] ztGetSetNest(Filters f,int wochild,int wchild);        
         String[] getWeights(int rabbit);
-        String[][] GetRabVac(int rabId);
+        RabVac[] GetRabVac(int rabId);
         void addWeight(int rabbit, int weight, DateTime date);
         void deleteWeight(int rabbit, DateTime date);
         OneRabbit[] getParents(int rabbit,int age);
@@ -182,6 +183,7 @@ namespace rabnet
         string[] WebReportsGlobal(DateTime dt,int days);
         DateTime GetFarmStartTime();
 
+        void SetRabbitVaccine(int rid, int vid,DateTime date);
     }
 
 }

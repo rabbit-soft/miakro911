@@ -123,7 +123,7 @@ deadplace(r_id) address,r_group,r_notes,
 deadname(r_id,2) fullname,
 (SELECT b_name FROM breeds WHERE b_id=r_breed) breedname,
 (SELECT COALESCE(GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' '),'') FROM genoms WHERE g_id=r_genesis) genom,
-r_status,r_rate,r_bon,r_parent,COALESCE(r_vaccine_end,NOW()) vac_end 
+r_status,r_rate,r_bon,r_parent
 FROM dead WHERE d_reason=3 AND DATE(d_date)='{0:yyyy-MM-dd}';",dt);
             MySqlDataReader rd = cmd.ExecuteReader();
             while(rd.Read())

@@ -16,7 +16,7 @@ namespace rabnet
         class OptionsHolder
         {
             [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
-            private int ok,_nout,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,su,n,cn,tt,vactime,cand,bbone;
+            private int ok,_nout,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,n,cn,tt,cand,bbone;
             private string gd, sh,xf;
             private RUBOOL ce, ck,crp, uz,sp,ask, fbz,vIs,vacMoth;
             private BuchTp bt;
@@ -83,9 +83,9 @@ namespace rabnet
             [Category("Зоотехнические сроки"), DisplayName("Установка гнездовья при молодняке"),
             Description("Пересадить крольчиху в Юрту(А) если у нее есть подсосные")]
             public int ChildNest { get { return cn; } set { cn = value; } }
-            [Category("Зоотехнические сроки"), DisplayName("Действие Прививки"),
+            /*[Category("Зоотехнические сроки"), DisplayName("Действие Прививки"),
             Description("Количество дней, сколько действует прививка")]
-            public int VaccineTime { get { return vactime; } set { vactime = value; } }
+            public int VaccineTime { get { return vactime; } set { vactime = value; } }*/
             [Category("Зоотехнические сроки"), DisplayName("Рассадка мальчиков по одному"),
             Description("Назначать всем группам мальчиков,достигших указанного возраста, рассадку по одному")]
             public int BoysByOne { get { return bbone; } set { bbone = value; } }
@@ -211,7 +211,7 @@ namespace rabnet
                 //suck = o.getIntOption(Options.OPT_ID.COUNT_SUCKERS);
                 NestIn = o.getIntOption(Options.OPT_ID.NEST_IN);
                 ChildNest = o.getIntOption(Options.OPT_ID.CHILD_NEST);
-                VaccineTime = o.getIntOption(Options.OPT_ID.VACCINE_TIME);
+                //VaccineTime = o.getIntOption(Options.OPT_ID.VACCINE_TIME);
                 VaccWithMother = toR(o.getBoolOption(Options.OPT_ID.VACC_MOTHER));
                 Candidate = o.getIntOption(Options.OPT_ID.MAKE_CANDIDATE);
                 bbone = o.getIntOption(Options.OPT_ID.BOYS_BY_ONE);
@@ -261,7 +261,7 @@ namespace rabnet
                 //o.setOption(Options.OPT_ID.COUNT_SUCKERS, suck);
                 o.setOption(Options.OPT_ID.NEST_IN, NestIn);
                 o.setOption(Options.OPT_ID.CHILD_NEST, ChildNest);
-                o.setOption(Options.OPT_ID.VACCINE_TIME, VaccineTime);
+                //o.setOption(Options.OPT_ID.VACCINE_TIME, VaccineTime);
                 o.setOption(Options.OPT_ID.MAKE_CANDIDATE, Candidate);
                 o.setOption(Options.OPT_ID.BOYS_BY_ONE, bbone);
                 //view

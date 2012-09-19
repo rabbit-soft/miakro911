@@ -87,25 +87,17 @@ namespace rabnet
             r.fsex = getRSex(sx);
             if (sx == "void")
             {
-                /*      
-                r.fstatus = shr ? "Пдс" : "Подсосные";
-                if (r.fage<options.safeInt("suc",50))
-                    r.fstatus = shr ? "Гнд" : "Гнездовые";
-                */
                 r.fstatus = shr ? "Бпл" : "бесполые";
             }
             else if (sx == "male")
             {
                 int stat = rd.GetInt32("r_status");
-                if (stat == 2) r.fstatus = shr ? "Прз" : "производитель";
-                else if (stat == 1 || r.fage >= options.safeInt("cand", 120)) r.fstatus = shr ? "Кнд" : (cnt > 1 ? "кандидаты" : "кандидат");
-                else r.fstatus = shr ? "Мал" : (cnt > 1 ? "мальчики" : "мальчик");
-                /*switch (rd.GetInt32("r_status"))
-                {
-                    case 0: r.fstatus = shr ? "Мал" : (cnt > 1 ? "мальчики" : "мальчик"); break;
-                    case 1: r.fstatus = shr ? "Кнд" : (cnt > 1 ? "кандидаты" : "кандидат"); break;
-                    case 2: r.fstatus = shr ? "Прз" : "производитель"; break;
-                }*/
+                if (stat == 2) 
+                    r.fstatus = shr ? "Прз" : "производитель";
+                else if 
+                    (stat == 1 || r.fage >= options.safeInt("cand", 120)) r.fstatus = shr ? "Кнд" : (cnt > 1 ? "кандидаты" : "кандидат");
+                else 
+                    r.fstatus = shr ? "Мал" : (cnt > 1 ? "мальчики" : "мальчик");
             }
             else
             {
@@ -133,12 +125,14 @@ namespace rabnet
             //r.fname += "-" + rd.GetString("r_okrol").ToString();
             r.fbreed = rd.GetString("breed");
             r.fweight = rd.IsDBNull(8) ? "?" : rd.GetString("weight");
+
             String flg = rd.GetString("r_flags");
             r.fbgp = "";
             if (flg[2] == '1') r.fbgp +=Separate(r.fbgp)+"Б";
-            //if (rd.GetDateTime("vac_end").Date > DateTime.Now.Date) r.fbgp += Separate(r.fbgp) + "в";
             if (flg[0] != '0') r.fbgp += Separate(r.fbgp) + "ГП";
+            r.fbgp += Separate(r.fbgp) + rd.GetString("vaccines");
             if (flg[1] != '0') r.fbgp = "<" + r.fbgp + ">";
+
             r.frate = rd.GetInt32("r_rate");
             r.fcls=Rabbits.getBon(rd.GetString("r_bon"),shr);
             r.fnotes = rd.GetString("r_notes");
@@ -170,27 +164,27 @@ namespace rabnet
                 res = addWhereAnd(res,"(weight>=" + options["wg"] + ")");
             if (options.ContainsKey("Wg"))
                 res = addWhereAnd(res, "(weight<=" + options["Wg"] + ")");
-            if (options.ContainsKey("mt") && options.safeValue("sx", "m").Contains("m"))
+            if (options.ContainsKey(Filters.MALE) && options.safeValue("sx", "m").Contains("m"))
             {
                 String stat = "";
-                if (options["mt"].Contains("b"))
+                if (options[Filters.MALE].Contains("b"))
                     stat = "r_status=0";
-                if (options["mt"].Contains("c"))
+                if (options[Filters.MALE].Contains("c"))
                     stat = addWhereOr(stat,"r_status=1");
-                if (options["mt"].Contains("p"))
+                if (options[Filters.MALE].Contains("p"))
                     stat = addWhereOr(stat, "r_status=2");
                 res = addWhereAnd(res,"(r_sex!='male' OR (r_sex='male' AND ("+stat+")))");
             }
-            if (options.ContainsKey("ft") && options.safeValue("sx", "f").Contains("f"))
+            if (options.ContainsKey(Filters.FEMALE) && options.safeValue("sx", "f").Contains("f"))
             {
                 String stat = "";
-                if (options["ft"].Contains("g"))
+                if (options[Filters.FEMALE].Contains("g"))
                     stat = "r_born>(NOW()-INTERVAL " + options["brd"] + " DAY)";
-                if (options["ft"].Contains("b"))
+                if (options[Filters.FEMALE].Contains("b"))
                     stat = addWhereOr(stat, "(r_born<=(NOW()-INTERVAL "+options["brd"]+" DAY) AND (r_status=0 AND r_event_date IS NULL))");
-                if (options["ft"].Contains("f"))
+                if (options[Filters.FEMALE].Contains("f"))
                     stat = addWhereOr(stat, "((r_status=0 AND r_event_date IS NOT NULL)OR(r_status=1 AND r_event_date IS NULL))");
-                if (options["ft"].Contains("s"))
+                if (options[Filters.FEMALE].Contains("s"))
                     stat = addWhereOr(stat, "(r_status>1 OR (r_status=1 AND r_event_date IS NOT NULL))");
                 res = addWhereAnd(res, "(r_sex!='female' OR (r_sex='female' AND (" + stat + ")))");
             }
@@ -258,26 +252,27 @@ COALESCE((SELECT n_surname FROM names WHERE n_id=r_secname),'') secname,
             if (options.safeBool("shr"))
                 fld = "b_short_name";
             return String.Format(@" SELECT * FROM (SELECT r_id, 
-rabname(r_id,"+(options.safeBool("dbl")?"2":"1")+@") name,
+rabname(r_id,{0:s}) name,
 r_okrol,r_sex,
 TO_DAYS(NOW())-TO_DAYS(r_event_date) sukr,
 r_event,
 TO_DAYS(NOW())-TO_DAYS(r_born) age,
-(SELECT " + fld+ @" FROM breeds WHERE b_id=r_breed) breed,
+(SELECT {1:s} FROM breeds WHERE b_id=r_breed) breed,
 (SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight,
 r_status,
 r_flags,
 r_group,
-(SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) suckers,
-(SELECT AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) aage,
+(SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=r.r_id) suckers,
+(SELECT AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) FROM rabbits r2 WHERE r2.r_parent=r.r_id) aage,
 r_rate,
 r_bon,
 rabplace(r_id) place,
 r_notes,
 r_born,
 r_event_date,
-r_breed #,COALESCE(r_vaccine_end,now()) vac_end
-FROM rabbits WHERE r_parent=0 ORDER BY name) c" + makeWhere()+";");
+r_breed,
+(SELECT GROUP_CONCAT('v',v_id ORDER BY v_id) FROM rab_vac rv WHERE rv.r_id=r.r_id ) vaccines
+FROM rabbits r WHERE r_parent=0 ORDER BY name) c {2:s};", (options.safeBool("dbl") ? "2" : "1"), fld, makeWhere());
         }
         /*
         r_farm,
@@ -445,6 +440,8 @@ r_status,r_flags,r_event_date,r_breed
         /// </summary>
         public OneRabbit[] youngers;
         public OneRabbit[] neighbors;
+        public RabVac[] rabVacs;
+        //public string[] neighbors;
         public string tag;
         public string nuaddr="";
         public OneRabbit(int id,string sx,DateTime bd,int rt,string flg,int nm,int sur,int sec,string adr,int grp,int brd,int zn,String nts,
@@ -559,21 +556,21 @@ r_status,r_flags,r_event_date,r_breed
             return GetRabbit(con, rid, RAB_TYPE.LIVE);
         }
 
-        public static OneRabbit GetRabbit(MySqlConnection con, int rid,RAB_TYPE type)
+        public static OneRabbit GetRabbit(MySqlConnection sql, int rid,RAB_TYPE type)
         {
             if (rid == 0) return null;
             if (type == RAB_TYPE.ANY)
-                type = (isDeadRabbit(con, rid) ? RAB_TYPE.DEAD : RAB_TYPE.LIVE);
+                type = (isDeadRabbit(sql, rid) ? RAB_TYPE.DEAD : RAB_TYPE.LIVE);
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT r_id,r_last_fuck_okrol,{0:s},r_overall_babies,r_lost_babies,
 r_sex,r_born,r_flags,r_breed,r_zone,r_name,r_surname,r_secname,
 {1:s}place(r_id) address,r_group,r_notes,
 {1:s}name(r_id,2) fullname,
 (SELECT b_name FROM breeds WHERE b_id=r_breed) breedname,
 (SELECT COALESCE(GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' '),'') FROM genoms WHERE g_id=r_genesis) genom,
-r_status,r_rate,r_bon,r_parent #,COALESCE(r_vaccine_end,NOW()) vac_end 
+r_status,r_rate,r_bon,r_parent
 FROM {2:s} WHERE r_id={3:d};", (type == RAB_TYPE.LIVE ? "r_event_date,r_event" : "NULL r_event_date,'none' r_event"),
                            (type == RAB_TYPE.LIVE ? "rab" : "dead"), (type == RAB_TYPE.LIVE ? "rabbits" : "dead"),
-                           rid), con);
+                           rid), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             if (!rd.Read())
             {
@@ -582,13 +579,14 @@ FROM {2:s} WHERE r_id={3:d};", (type == RAB_TYPE.LIVE ? "r_event_date,r_event" :
             }
             OneRabbit r = fillRabbit(rd);
             rd.Close();
-            r.youngers = getYoungers(con, rid);
+            r.youngers = GetYoungers(sql, rid);
+            r.rabVacs = GetRabVac(sql,rid);
             if(r.parent==0)
-                r.neighbors = getNeighbors(con,rid);
+                r.neighbors = getNeighbors(sql,rid);
             return r;
         }
 
-        public static OneRabbit[] getYoungers(MySqlConnection con, int mom)
+        public static OneRabbit[] GetYoungers(MySqlConnection con, int mom)
         {
             MySqlCommand cmd = new MySqlCommand(@"SELECT r_id,r_last_fuck_okrol,r_event_date,r_event,r_overall_babies,r_lost_babies,
 r_sex,r_born,r_flags,r_breed,r_zone,r_name,r_surname,r_secname,
@@ -596,7 +594,7 @@ rabplace(r_id) address,r_group,r_notes,
 rabname(r_id,2) fullname,
 (SELECT b_name FROM breeds WHERE b_id=r_breed) breedname,
 (SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=r_genesis) genom,
-r_status,r_rate,r_bon,r_parent #,COALESCE(r_vaccine_end,NOW()) vac_end 
+r_status,r_rate,r_bon,r_parent
 FROM rabbits WHERE r_parent=" + mom.ToString() + ";", con);
             List<OneRabbit> rbs = new List<OneRabbit>();
             MySqlDataReader rd = cmd.ExecuteReader();
@@ -620,7 +618,7 @@ r_group,r_notes,
 rabname(r_id,2) fullname,
 (SELECT b_name FROM breeds WHERE b_id=r_breed) breedname,
 (SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=r_genesis) genom,
-r_status,r_rate,r_bon,r_parent #,COALESCE(r_vaccine_end,NOW()) vac_end 
+r_status,r_rate,r_bon,r_parent
 FROM rabbits WHERE rabplace(r_id)=rabplace({0:d}) AND r_id<>{0:d} AND r_parent=0;", rabOwner), con);
             List<OneRabbit> rbs = new List<OneRabbit>();
             MySqlDataReader rd = cmd.ExecuteReader();
@@ -636,8 +634,7 @@ FROM rabbits WHERE rabplace(r_id)=rabplace({0:d}) AND r_id<>{0:d} AND r_parent=0
             String flags = String.Format("{0:D1}{1:D1}{2:D1}{3:D1}{4:D1}", r.gp ? 1 : 0, r.risk?1:0, multi, r.nokuk?1:0, r.nolact?1:0);
             String qry=String.Format(@"UPDATE rabbits SET 
 r_name={0:d},r_surname={1:d},r_secname={2:d},r_breed={3:d},r_zone={4:d},r_group={5:d},r_notes='{6:s}',
-r_flags='{7:d}',r_rate={8:d},r_born={9:s} #,r_vaccine_end={10:s}",r.name,r.surname,r.secname,r.breed,r.zone,r.group,r.notes,flags,r.rate,
-                                          DBHelper.DateToMyString(r.born)/*,DBHelper.DateToMyString(r.vac_end)*/);
+r_flags='{7:d}',r_rate={8:d},r_born={9:s} ",r.name,r.surname,r.secname,r.breed,r.zone,r.group,r.notes,flags,r.rate, DBHelper.DateToMyString(r.born));
             if (r.sex != OneRabbit.RabbitSex.VOID)
             {
                 qry += String.Format(",r_status={0:d},r_last_fuck_okrol={1:s}",r.status,DBHelper.DateToMyString(r.lastfuckokrol));
@@ -645,7 +642,9 @@ r_flags='{7:d}',r_rate={8:d},r_born={9:s} #,r_vaccine_end={10:s}",r.name,r.surna
             if (r.sex == OneRabbit.RabbitSex.FEMALE)
             {
                 String ev="none";
-                if (r.evtype==1) ev="sluchka";if (r.evtype==2) ev="vyazka";if (r.evtype==2) ev="kuk";
+                if (r.evtype==1) ev="sluchka";
+                if (r.evtype==2) ev="vyazka";
+                if (r.evtype==2) ev="kuk";
                 qry += String.Format(",r_event='{0:s}',r_event_date={1:s},r_lost_babies={2:d},r_overall_babies={3:d}", ev, DBHelper.DateToMyString(r.evdate), r.lost, r.babies);
             }
             qry+=String.Format(" WHERE r_id={0:d};",r.id);
@@ -783,9 +782,9 @@ r_lost_babies=COALESCE(r_lost_babies+{3:d},1),r_rate=r_rate+{4:d} WHERE r_id={0:
                 int rate = fml.rate + (ml==null?fml.rate:ml.rate)/2;
                 int okrol = fml.status;
                 cmd.CommandText = String.Format(@"INSERT INTO rabbits(r_parent,r_mother,r_father,r_born,r_sex,r_group,
-r_bon,r_genesis,r_name,r_surname,r_secname,r_breed,r_okrol,r_rate,r_notes #,r_vaccine_end
+r_bon,r_genesis,r_name,r_surname,r_secname,r_breed,r_okrol,r_rate,r_notes
 ) 
-VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d},{10:d},{11:d},'' #,{12:s}
+VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d},{10:d},{11:d},''
 );",
       rabbit,rabbit,father,DBHelper.DateToMyString(date),children,DBHelper.commonBon(fml.bon,ml!=null?ml.bon:fml.bon),
       DBHelper.makeCommonGenesis(sql,fml.gens,(ml!=null?ml.gens:fml.gens),fml.zone),fml.name,(ml!=null?ml.name:0),brd,okrol,rate/*,DBHelper.DateToMyString(date)*/);
@@ -914,9 +913,9 @@ WHERE r_id={4:d};", farm, tier_id, sec, ntr,rabbit);
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"INSERT INTO rabbits
 (r_parent,r_father,r_mother,r_name,r_surname,r_secname,r_sex,r_bon,r_okrol,r_breed,r_rate,r_group,
-r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date,r_notes,r_vaccine_end) 
+r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date,r_notes) 
 SELECT {1:d},r_father,r_mother,0,r_surname,r_secname,r_sex,r_bon,r_okrol,r_breed,r_rate,{2:d},
-r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date,r_notes,r_vaccine_end
+r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date,r_notes
 FROM rabbits WHERE r_id={0:d};", rabbit,mom,count), sql);
             cmd.ExecuteNonQuery();
             int nid = (int)cmd.LastInsertedId;
@@ -1168,24 +1167,24 @@ TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d}+1000 ORDER BY age ASC;",name,agebefore);
             if (rd.Read())
                 dead = rd.GetBoolean(0);
             rd.Close();
-            cmd.CommandText = String.Format(@"SELECT 	r_id,
-														r_name,
-														r_surname,
-														r_secname,
-														{0:s}name(r_id,0) name,
-														{0:s}place(r_id) place,
-														r_bon,
-														(SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight,
-														(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id) weight_date,
-														(SELECT TO_DAYS(MAX(w_date))-TO_DAYS(r_born) FROM weights WHERE w_rabid=r_id) weight_age,
-														r_overall_babies,
-														r_okrol,
-														r_sex,
-														(SELECT TO_DAYS({1:s})-TO_DAYS(r_born)) age,
-														r_born, 
-														r_lost_babies,
-                                                        COALESCE(r_vaccine_end,NOW()) vac_end
-											FROM {2:s} WHERE r_id={3:d};", (dead ? "dead" : "rab"), (dead ? "d_date" : "NOW()"), (dead ? "dead" : "rabbits"),rabbit);
+            cmd.CommandText = String.Format(@"SELECT 	
+    r_id,
+	r_name,
+	r_surname,
+	r_secname,
+	{0:s}name(r_id,0) name,
+	{0:s}place(r_id) place,
+	r_bon,
+	(SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight,
+	(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id) weight_date,
+	(SELECT TO_DAYS(MAX(w_date))-TO_DAYS(r_born) FROM weights WHERE w_rabid=r_id) weight_age,
+	r_overall_babies,
+	r_okrol,
+	r_sex,
+	(SELECT TO_DAYS({1:s})-TO_DAYS(r_born)) age,
+	r_born, 
+	r_lost_babies
+FROM {2:s} WHERE r_id={3:d};", (dead ? "dead" : "rab"), (dead ? "d_date" : "NOW()"), (dead ? "dead" : "rabbits"),rabbit);
             rd = cmd.ExecuteReader();
             if (!rd.Read())
             {
@@ -1221,23 +1220,30 @@ TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d}+1000 ORDER BY age ASC;",name,agebefore);
         }
 
 
-        internal static string[][] GetRabVac(int rabId, MySqlConnection sql)
+        internal static RabVac[] GetRabVac(MySqlConnection sql,int rabId)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT    
-    Date_Format(date,'%d.%m.%Y'),
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT   
+    rv.v_id, 
+    date,
     v_name,
     Greatest(CAST(v.v_duration as SIGNED)-CAST(to_days(NOW())-to_days(date) AS SIGNED),0),
     unabled FROM rab_vac rv 
 INNER JOIN vaccines v ON rv.v_id=v.v_id
-WHERE r_id={0:d}", rabId), sql);
+WHERE r_id={0:d} ORDER BY date", rabId), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
-            List<string[]> result = new List<string[]>();
+            List<RabVac> result = new List<RabVac>();
             while (rd.Read())
             {
-                result.Add(new string[] { rd.GetString(0), rd.GetString(1), rd.GetString(2), rd.GetString(3) });
+                result.Add(new RabVac(rd.GetInt32(0), rd.GetDateTime(1), rd.GetString(2), rd.GetInt32(3), rd.GetBoolean(4)));
             }
             rd.Close();
             return result.ToArray();
+        }
+
+        internal static void SetRabbitVaccine(MySqlConnection sql, int rid, int vid, DateTime date)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO rab_vac(r_id,v_id,date) VALUES({0:d},{1:d},{2:s});",rid,vid,DBHelper.DateToMyString(date)),sql);
+            cmd.ExecuteNonQuery();
         }
     }
 }

@@ -341,8 +341,6 @@
 	</target>
 
 	<target name="rabdump" description="rabnet db dumper">		
-		<!--copy file="${party3d.path}/libcurl.dll" tofile="${bin_dir}/RabDump/libcurl.dll" /-->	
-		<!--copy file="${party3d.path}/LibCurlShim.dll" tofile="${bin_dir}/RabDump/LibCurlShim.dll" /-->
 		<copy file="${party3d.path}/ccxmlrpc.dll" tofile="${bin_dir}/RabDump/ccxmlrpc.dll" />
 		<copy file="${bin_dir}/RabNet/db.mysql.dll" tofile="${bin_dir}/RabDump/db.mysql.dll" />
 		<copy file="${bin_dir}/RabNet/engine.dll" tofile="${bin_dir}/RabDump/engine.dll" />

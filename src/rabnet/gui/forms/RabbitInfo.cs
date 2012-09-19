@@ -137,7 +137,7 @@ namespace rabnet
             for (int i = 0; i < wgh.Length / 2; i++)
                 weightList.Items.Add(wgh[i * 2]).SubItems.Add(wgh[i*2+1]);
             spec.Checked  = _rab.Spec;//+gambit
-            riVaccinePanel1.FillVaccines(_rab.RabID);
+            riVaccinePanel1.SetRabbit(_rab);
             //dtp_vacEnd.Value = rab.VaccineEnd; //+gambit
         }
 

@@ -26,8 +26,13 @@ namespace rabnet
     /// </summary>
     public class Filters : Dictionary<String, String>
     {
+        #region const
         public const string MALE = "mt";
         public const string FEMALE = "ft";
+        public const string ZT_VACC_DAYS = "vacc";
+        public const string ZT_VACC_MOTH = "vacc_moth";
+        public const string ZT_VACC_SHOW = "vacc_show";
+        #endregion const
 
         public Filters() : base() { }
         public Filters(String s)

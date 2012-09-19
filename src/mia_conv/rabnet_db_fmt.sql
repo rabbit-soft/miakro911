@@ -130,7 +130,7 @@ CREATE TABLE rabbits(
 	r_event_date DATETIME,
 	r_lost_babies INTEGER UNSIGNED,
 	r_overall_babies INTEGER UNSIGNED,
-	r_vaccine_end DATETIME,
+	#--r_vaccine_end DATETIME,
 	KEY(r_parent),
 	KEY(r_mother),
 	KEY(r_father),
@@ -142,7 +142,6 @@ CREATE TABLE rabbits(
 	KEY(r_zone),
 	KEY(r_status),
 	KEY(r_born)
-	
 ) ENGINE = MyISAM;
 
 DROP TABLE IF EXISTS fucks;
@@ -234,7 +233,7 @@ CREATE TABLE dead(
 	r_last_fuck_okrol DATETIME,
 	r_lost_babies INTEGER UNSIGNED,
 	r_overall_babies INTEGER UNSIGNED,
-	r_vaccine_end DATETIME,
+	#r_vaccine_end DATETIME,
 	UNIQUE(r_id),
 	KEY(r_parent),
 	KEY(r_sex),
@@ -316,11 +315,31 @@ CREATE TABLE meal (
   PRIMARY KEY (m_id)
 )ENGINE = InnoDB COMMENT = 'Таблица расчета кормов';
 
+DROP TABLE IF EXISTS `vaccines`;
+CREATE  TABLE `vaccines` (
+  `v_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `v_name` VARCHAR(45) NULL ,
+  `v_duration` INT UNSIGNED NOT NULL COMMENT 'Продолжительность прививки в Днях' ,
+  `v_zootech` BIT NOT NULL DEFAULT 0 COMMENT 'Отображать в Зоотехплане',
+  PRIMARY KEY (`v_id`) ,
+  UNIQUE INDEX `v_name_UNIQUE` (`v_name` ASC) 
+)ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COMMENT = 'Список имеющихся прививок';
+
+DROP TABLE IF EXISTS `rab_vac`;
+CREATE  TABLE `rab_vac` (
+  `r_id` INT UNSIGNED NOT NULL ,
+  `v_id` INT UNSIGNED NOT NULL COMMENT 'Тип прививки' ,
+  `date` DATETIME NULL COMMENT 'Когда была сделана прививка',
+  `unabled` BIT NOT NULL DEFAULT 0 COMMENT 'Отменена ли прививка'
+)ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COMMENT = 'Какие прививки делались кролику';
+
 
 
 #DATA
 
-INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','9');
+INSERT INTO vaccines(v_id,v_name,v_duration,v_zootech) VALUES(1,'Прививка',356,1);
+
+INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','10');
 INSERT INTO options(o_name,o_subname,o_value) VALUES
 ('opt', 'okrol', 30),
 ('opt', 'vudvor', 30),

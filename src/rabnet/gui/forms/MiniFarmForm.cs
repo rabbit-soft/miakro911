@@ -66,14 +66,14 @@ namespace rabnet
         {
             switch(type)
             {
-                case myBuildingType.Jurta: return 1;
-                case myBuildingType.Quarta: return 2;
-                case myBuildingType.Vertep: return 3;
-                case myBuildingType.Barin: return 4;
-                case myBuildingType.Female: return 5;
-                case myBuildingType.DualFemale: return 6;
-                case myBuildingType.Complex: return 7;                
-                case myBuildingType.Cabin: return 8;
+                case BuildingType.Jurta: return 1;
+                case BuildingType.Quarta: return 2;
+                case BuildingType.Vertep: return 3;
+                case BuildingType.Barin: return 4;
+                case BuildingType.Female: return 5;
+                case BuildingType.DualFemale: return 6;
+                case BuildingType.Complex: return 7;                
+                case BuildingType.Cabin: return 8;
             }
             return 0;
         }
@@ -82,14 +82,14 @@ namespace rabnet
         {
             switch(id)
             {
-                case 1: return myBuildingType.Jurta;
-                case 2: return myBuildingType.Quarta;
-                case 3: return myBuildingType.Vertep;
-                case 4: return myBuildingType.Barin;
-                case 5: return myBuildingType.Female;
-                case 6: return myBuildingType.DualFemale;
-                case 7: return myBuildingType.Complex;
-                case 8: return myBuildingType.Cabin;
+                case 1: return BuildingType.Jurta;
+                case 2: return BuildingType.Quarta;
+                case 3: return BuildingType.Vertep;
+                case 4: return BuildingType.Barin;
+                case 5: return BuildingType.Female;
+                case 6: return BuildingType.DualFemale;
+                case 7: return BuildingType.Complex;
+                case 8: return BuildingType.Cabin;
             }
             return "none";
         }

@@ -75,18 +75,17 @@ namespace rabnet
         public int status;
         public DateTime date;
         public string names;
-        public int[] info = new int[10];
-        public string[] s = new string[10];
+        public int[] info_int = new int[10];
+        public string[] info_s = new string[10];
         public string breed;
-        public ZooJobItem()
-        {
-        }
+        public ZooJobItem() { }
+
         public ZooJobItem Okrol(int id,String nm,String place,int age,int srok,int status,String br)
         {
             type = 1; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age; this.status = status;
             this.id = id;
-            info[0] = srok;
+            info_int[0] = srok;
             breed = br;
             return this;
         }
@@ -95,11 +94,11 @@ namespace rabnet
             type = 2; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age; this.status = status;
             this.id = id; breed = br;
-            info[2] = suckers;
-            info[0] = srok;
-            info[1] = area;
-            if (info[1] == 1 && tt == myBuildingType.Jurta)
-                info[1] = 0;
+            info_int[2] = suckers;
+            info_int[0] = srok;
+            info_int[1] = area;
+            if (info_int[1] == 1 && tt == BuildingType.Jurta)
+                info_int[1] = 0;
 
             return this;
         }
@@ -108,9 +107,9 @@ namespace rabnet
             type = 3; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age; this.status = 0;
             this.id = id; breed = br;
-            info[0] = count;
-            info[1] = srok;
-            info[2] = yid;
+            info_int[0] = count;
+            info_int[1] = srok;
+            info_int[2] = yid;
             return this;
         }
         public ZooJobItem Preokrol(int id, String nm, String place, int age, int srok,string br)
@@ -118,7 +117,7 @@ namespace rabnet
             type = 4; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age;
             this.id = id; breed = br;
-            info[0] = srok;
+            info_int[0] = srok;
             return this;
         }
 
@@ -127,7 +126,7 @@ namespace rabnet
             type = 5; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age;
             this.id = id; breed = br;
-            info[0] = srok;
+            info_int[0] = srok;
             return this;
         }
 
@@ -136,24 +135,27 @@ namespace rabnet
             type = 6; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age; this.status = status;this.id = id;
             names = boys; this.breed = breed;
-            info[0] = srok;
-            info[1] = group;
+            info_int[0] = srok;
+            info_int[1] = group;
             return this;
         }
-        public ZooJobItem Vacc(int id, String nm, String place, int age, int srok,String br)
+        public ZooJobItem Vacc(int id, String nm, String place, int age, int srok,String br, string vac_name)
         {
-            type = 7; name = nm; this.place = Buildings.FullPlaceName(place);
+            type = 7; name = nm; 
+            this.place = Buildings.FullPlaceName(place);
             this.age = age; this.id = id; breed = br;
-            info[0] = srok;
+            info_int[0] = srok;
+            info_s[0] = vac_name;
+            //info[1] = vac_name;
             return this;
         }
         public ZooJobItem SetNest(int id, String nm, String place, int age, int srok,int sukr,int children,String br)
         {
             type = 8; name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age; this.id = id; breed = br;
-            info[0] = srok;
-            info[1] = sukr;
-            info[2] = children;
+            info_int[0] = srok;
+            info_int[1] = sukr;
+            info_int[2] = children;
             return this;
         }
 
@@ -163,8 +165,8 @@ namespace rabnet
             name = nm; this.place = Buildings.FullPlaceName(place);
             this.age = age;
             this.id = id;
-            info[0] = srok;
-            info[1] = group;
+            info_int[0] = srok;
+            info_int[1] = group;
             return this;
         }
     }
@@ -398,17 +400,30 @@ ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;",
 
         public ZooJobItem[] getVacc(Filters f)
         {
-            string query = String.Format(@"SELECT r_id,rabname(r_id,{2:s}) name,rabplace(r_id) place,
-(TO_DAYS(NOW())-TO_DAYS(r_born)) age,{1:s} 
-FROM rabbits WHERE (r_vaccine_end<=NOW() OR  r_vaccine_end IS NULL) AND (TO_DAYS(NOW())-TO_DAYS(r_born))>={0:d} {3:s}
-ORDER BY r_born DESC,0+LEFT(place,LOCATE(',',place)) ASC;", f.safeInt("vacc"), brd(), getnm(), (f.safeBool("vacc_moth") ? @" AND r_id NOT IN (
-                    SELECT r_parent FROM rabbits WHERE (r_vaccine_end<=NOW() or r_vaccine_end is null) AND (TO_DAYS(NOW())-TO_DAYS(r_born))>=" + f.safeInt("vacc") + " and r_parent<>0)" : ""));
-            MySqlDataReader rd = reader(query);
             List<ZooJobItem> res = new List<ZooJobItem>();
-            while (rd.Read())
-                res.Add(new ZooJobItem().Vacc(rd.GetInt32("r_id"), rd.GetString("name"),
-                    rd.GetString("place"), rd.GetInt32("age"), rd.GetInt32("age") - f.safeInt("vacc"), rd.GetString("breed")));
-            rd.Close();
+            if (f.safeValue(Filters.ZT_VACC_SHOW, "") != "")
+            {
+                string query = String.Format(@"CREATE TEMPORARY TABLE aaa  SELECT 
+    rb.r_id, r_parent,rabname(r_id,{0:s}) name, rabplace(r_id) place, (TO_DAYS(NOW())-TO_DAYS(r_born)) age, v.v_id,
+    to_days(NOW()) - to_days(COALESCE((SELECT date FROM rab_vac WHERE r_id=rb.r_id AND v_id=v.v_id),Date_Add(r_born,INTERVAL {2:s} DAY))) srok, #сколько дней не выполнена работа
+    ( SELECT `date` FROM rab_vac rv         #показываем дату прививки
+      WHERE rv.v_id=v.v_id AND rv.r_id=rb.r_id AND unabled!=1       #если ее сделали кролику
+        AND CAST(v.v_duration as SIGNED)-CAST(to_days(NOW())-to_days(date) AS SIGNED)>0     #и она еще не кончилась
+    ) dt, v_name, {1:s}
+  FROM rabbits rb,vaccines v WHERE v_id in({3:s});
+{4:s}
+SELECT * FROM aaa WHERE age>={2:s} AND dt is NULL {5:s};
+DROP TEMPORARY TABLE IF EXISTS aaa;
+DROP TEMPORARY TABLE IF EXISTS bbb;", getnm(), brd(), f.safeValue(Filters.ZT_VACC_DAYS, "50"), f.safeValue(Filters.ZT_VACC_SHOW, "1"),
+    f.safeBool(Filters.ZT_VACC_MOTH, true) ? "CREATE TEMPORARY TABLE bbb SELECT DISTINCT r_parent FROM aaa WHERE r_parent !=0;" :"",
+    f.safeBool(Filters.ZT_VACC_MOTH, true) ? " AND r_id not in (select r_parent FROM bbb)" : "");
+                MySqlDataReader rd = reader(query);
+
+                while (rd.Read())
+                    res.Add(new ZooJobItem().Vacc(rd.GetInt32("r_id"), rd.GetString("name"),
+                        rd.GetString("place"), rd.GetInt32("age"), rd.GetInt32("srok"), rd.GetString("breed"), rd.GetString("v_name")));
+                rd.Close();
+            }
             return res.ToArray();
         }
 
@@ -432,7 +447,7 @@ ORDER BY sukr DESC,0+LEFT(place,LOCATE(',',place)) ASC;", wochild, wchild);
                 res.Add(new ZooJobItem().SetNest(rd.GetInt32("r_id"), rd.GetString("name"),
                     rd.GetString("place"), rd.GetInt32("age"), (child > 0 ? sukr - wchild : sukr - wochild), sukr, child,rd.GetString("breed")));
             }
-           rd.Close();
+            rd.Close();
             return res.ToArray();
 
         }

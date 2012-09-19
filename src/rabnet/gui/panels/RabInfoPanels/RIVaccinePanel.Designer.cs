@@ -28,12 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lvVaccine = new System.Windows.Forms.ListView();
             this.chDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chDuration = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chUnable = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btAddVac = new System.Windows.Forms.Button();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.отменаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lvVaccine
@@ -51,7 +55,7 @@
             this.lvVaccine.Location = new System.Drawing.Point(3, 3);
             this.lvVaccine.MultiSelect = false;
             this.lvVaccine.Name = "lvVaccine";
-            this.lvVaccine.Size = new System.Drawing.Size(570, 282);
+            this.lvVaccine.Size = new System.Drawing.Size(570, 170);
             this.lvVaccine.TabIndex = 1;
             this.lvVaccine.UseCompatibleStateImageBehavior = false;
             this.lvVaccine.View = System.Windows.Forms.View.Details;
@@ -78,12 +82,27 @@
             // 
             // btAddVac
             // 
-            this.btAddVac.Location = new System.Drawing.Point(3, 291);
+            this.btAddVac.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btAddVac.Location = new System.Drawing.Point(3, 179);
             this.btAddVac.Name = "btAddVac";
             this.btAddVac.Size = new System.Drawing.Size(75, 23);
             this.btAddVac.TabIndex = 2;
             this.btAddVac.Text = "Привить";
             this.btAddVac.UseVisualStyleBackColor = true;
+            this.btAddVac.Click += new System.EventHandler(this.btAddVac_Click);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.отменаToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 48);
+            // 
+            // отменаToolStripMenuItem
+            // 
+            this.отменаToolStripMenuItem.Name = "отменаToolStripMenuItem";
+            this.отменаToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.отменаToolStripMenuItem.Text = "Отмена";
             // 
             // RIVaccinePanel
             // 
@@ -92,7 +111,8 @@
             this.Controls.Add(this.btAddVac);
             this.Controls.Add(this.lvVaccine);
             this.Name = "RIVaccinePanel";
-            this.Size = new System.Drawing.Size(576, 317);
+            this.Size = new System.Drawing.Size(576, 205);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -105,5 +125,7 @@
         private System.Windows.Forms.ColumnHeader chDuration;
         private System.Windows.Forms.ColumnHeader chUnable;
         private System.Windows.Forms.Button btAddVac;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem отменаToolStripMenuItem;
     }
 }

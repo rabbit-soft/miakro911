@@ -39,7 +39,7 @@ namespace rabnet
         {
             String bon = "1" + comboBox1.SelectedIndex.ToString() + comboBox2.SelectedIndex.ToString()+
                 comboBox3.SelectedIndex.ToString() + comboBox4.SelectedIndex.ToString();
-            r.setBon(bon);
+            r.SetBon(bon);
             Close();
         }
     }

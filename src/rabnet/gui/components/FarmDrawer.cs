@@ -49,11 +49,11 @@ namespace rabnet
                 p.repair = repair;
                 switch (type)
                 {
-                    case myBuildingType.Female:
+                    case BuildingType.Female:
                         DrawPart(0,1,"",rbs[0],nests[0],heaters[0],null);
                         setNest(p, nests[0], heaters[0], false);
                         break;
-                    case myBuildingType.DualFemale:
+                    case BuildingType.DualFemale:
                         DrawPart(0, 0.5,"а",rbs[0],nests[0],heaters[0],null);
                         DrawPart(0.5, 0.5,"б",rbs[1],nests[1],heaters[1],null);
 						DrawWall(0, 0.5);
@@ -61,7 +61,7 @@ namespace rabnet
 						setNest(p, nests[0], heaters[0], false);
                         setNest(p, nests[1], heaters[1], true);
                         break;
-                    case myBuildingType.Complex:
+                    case BuildingType.Complex:
                         DrawPart(0, 0.5, "а", rbs[0], nests[0], heaters[0], null);
                         DrawPart(0.5, 0.25, "б", rbs[1], N, N, null);
                         DrawPart(0.75, 0.25, "в", rbs[2], N, N, null);
@@ -70,7 +70,7 @@ namespace rabnet
 						//drawWall(0.75, 0.25);
 						setNest(p, nests[0], heaters[0], false);
                         break;
-                    case myBuildingType.Jurta:
+                    case BuildingType.Jurta:
                         bool fst = delims[0] == '1';
                         if (fst)
                         {
@@ -89,17 +89,17 @@ namespace rabnet
                         setNest(p, nests[0], heaters[0], false);
                         setVigul(p, delims[0]);
                         break;
-                    case myBuildingType.Quarta:
+                    case BuildingType.Quarta:
                         DrawQuarta();
                         setDelims(p, delims);
                         break;
-                    case myBuildingType.Vertep:
+                    case BuildingType.Vertep:
                         DrawPart(0, 0.5, "а", rbs[0], N, N, null);
                         DrawPart(0.5, 0.5, "б", rbs[1], N, N, null);
 						DrawWall(0, 0.5);
 						//drawWall(0.5, 0.5);
 						break;
-                    case myBuildingType.Barin:
+                    case BuildingType.Barin:
 						if (delims[0] == '1')
 						{
 							DrawPart(0, 0.5, "а", rbs[0], N, N, null);
@@ -114,7 +114,7 @@ namespace rabnet
 						}
 						setDelim(p, delims[0]);
                         break;
-                    case myBuildingType.Cabin:
+                    case BuildingType.Cabin:
                         DrawPart(0, 1, "а", rbs[0], N, N, null);
                         //drawPart(0.65, 0.35, "б", rbs[1], N, N, null);
 						//drawWall(0, 1);

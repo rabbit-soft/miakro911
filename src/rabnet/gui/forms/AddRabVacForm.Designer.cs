@@ -28,28 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.cbVaccineType = new System.Windows.Forms.ComboBox();
-            this.tbName = new System.Windows.Forms.TextBox();
             this.chWithChildren = new System.Windows.Forms.CheckBox();
             this.btCancel = new System.Windows.Forms.Button();
             this.btOk = new System.Windows.Forms.Button();
+            this.dateDays1 = new rabnet.components.DateDays();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 12);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(49, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Кличка: ";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 41);
+            this.label2.Location = new System.Drawing.Point(12, 75);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(60, 13);
             this.label2.TabIndex = 1;
@@ -61,26 +51,17 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.cbVaccineType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbVaccineType.FormattingEnabled = true;
-            this.cbVaccineType.Location = new System.Drawing.Point(78, 38);
+            this.cbVaccineType.Location = new System.Drawing.Point(78, 72);
             this.cbVaccineType.Name = "cbVaccineType";
             this.cbVaccineType.Size = new System.Drawing.Size(158, 21);
             this.cbVaccineType.TabIndex = 2;
             this.cbVaccineType.SelectedIndexChanged += new System.EventHandler(this.cbVaccineType_SelectedIndexChanged);
             // 
-            // tbName
-            // 
-            this.tbName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbName.Location = new System.Drawing.Point(78, 9);
-            this.tbName.Name = "tbName";
-            this.tbName.ReadOnly = true;
-            this.tbName.Size = new System.Drawing.Size(158, 20);
-            this.tbName.TabIndex = 3;
-            // 
             // chWithChildren
             // 
             this.chWithChildren.AutoSize = true;
-            this.chWithChildren.Location = new System.Drawing.Point(78, 65);
+            this.chWithChildren.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chWithChildren.Location = new System.Drawing.Point(78, 99);
             this.chWithChildren.Name = "chWithChildren";
             this.chWithChildren.Size = new System.Drawing.Size(127, 17);
             this.chWithChildren.TabIndex = 4;
@@ -91,7 +72,7 @@
             // 
             this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btCancel.Location = new System.Drawing.Point(78, 110);
+            this.btCancel.Location = new System.Drawing.Point(78, 128);
             this.btCancel.Name = "btCancel";
             this.btCancel.Size = new System.Drawing.Size(75, 23);
             this.btCancel.TabIndex = 6;
@@ -102,13 +83,29 @@
             // 
             this.btOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btOk.Location = new System.Drawing.Point(161, 110);
+            this.btOk.Location = new System.Drawing.Point(161, 128);
             this.btOk.Name = "btOk";
             this.btOk.Size = new System.Drawing.Size(75, 23);
             this.btOk.TabIndex = 5;
-            this.btOk.Text = "Окрол";
+            this.btOk.Text = "Готово";
             this.btOk.UseVisualStyleBackColor = true;
             this.btOk.Visible = false;
+            this.btOk.Click += new System.EventHandler(this.btOk_Click);
+            // 
+            // dateDays1
+            // 
+            this.dateDays1.AutoSize = true;
+            this.dateDays1.DateText = "Дата";
+            this.dateDays1.DateValue = new System.DateTime(2012, 9, 19, 0, 0, 0, 0);
+            this.dateDays1.DaysText = "Дней";
+            this.dateDays1.DaysValue = 0;
+            this.dateDays1.Location = new System.Drawing.Point(45, 12);
+            this.dateDays1.Maximum = 100000;
+            this.dateDays1.Name = "dateDays1";
+            this.dateDays1.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
+            this.dateDays1.Size = new System.Drawing.Size(158, 54);
+            this.dateDays1.Step = 1;
+            this.dateDays1.TabIndex = 7;
             // 
             // AddRabVacForm
             // 
@@ -116,19 +113,20 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btCancel;
-            this.ClientSize = new System.Drawing.Size(248, 145);
+            this.ClientSize = new System.Drawing.Size(248, 163);
+            this.Controls.Add(this.dateDays1);
             this.Controls.Add(this.btCancel);
             this.Controls.Add(this.btOk);
             this.Controls.Add(this.chWithChildren);
-            this.Controls.Add(this.tbName);
             this.Controls.Add(this.cbVaccineType);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AddRabVacForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Привить";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -137,12 +135,11 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cbVaccineType;
-        private System.Windows.Forms.TextBox tbName;
         private System.Windows.Forms.CheckBox chWithChildren;
         private System.Windows.Forms.Button btCancel;
         private System.Windows.Forms.Button btOk;
+        private components.DateDays dateDays1;
     }
 }

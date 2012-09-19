@@ -1,6 +1,6 @@
 ﻿namespace rabnet
 {
-    partial class ReplaceBride
+    partial class ReplaceBrideForm
     {
         /// <summary>
         /// Required designer variable.

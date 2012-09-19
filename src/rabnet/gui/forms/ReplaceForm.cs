@@ -105,8 +105,8 @@ namespace rabnet
 
             public static bool canTierHaveNest(string place)
             {              
-                if (place.Contains(myBuildingType.DualFemale_Rus) || place.Contains(myBuildingType.Female_Rus)) return true;
-                if (place.Contains(myBuildingType.Jurta_Rus))
+                if (place.Contains(BuildingType.DualFemale_Rus) || place.Contains(BuildingType.Female_Rus)) return true;
+                if (place.Contains(BuildingType.Jurta_Rus))
                 {
                     place = place.Remove(place.LastIndexOf(" ["));
                     if (place.Contains("а"))
@@ -345,14 +345,14 @@ namespace rabnet
                 {
                     switch (cbFilter.SelectedIndex)
                     {
-                        case 1: tp = myBuildingType.Female; break;
-                        case 2: tp = myBuildingType.DualFemale; break;
-                        case 3: tp = myBuildingType.Complex; break;
-                        case 4: tp = myBuildingType.Jurta; break;
-                        case 5: tp = myBuildingType.Quarta; break;
-                        case 6: tp = myBuildingType.Vertep; break;
-                        case 7: tp = myBuildingType.Barin; break;
-                        case 8: tp = myBuildingType.Cabin; break;
+                        case 1: tp = BuildingType.Female; break;
+                        case 2: tp = BuildingType.DualFemale; break;
+                        case 3: tp = BuildingType.Complex; break;
+                        case 4: tp = BuildingType.Jurta; break;
+                        case 5: tp = BuildingType.Quarta; break;
+                        case 6: tp = BuildingType.Vertep; break;
+                        case 7: tp = BuildingType.Barin; break;
+                        case 8: tp = BuildingType.Cabin; break;
                     }
                     f["tp"] = tp;
                 }
@@ -368,7 +368,7 @@ namespace rabnet
             {
                 for (int i = 0; i < b.secs(); i++)
                 {
-                    if (_action == Action.SET_NEST && b.ftype == myBuildingType.Jurta && i == 1)
+                    if (_action == Action.SET_NEST && b.ftype == BuildingType.Jurta && i == 1)
                         continue;
                     if (b.busy(i)==0 || myrab(b.busy(i))) 
                         dgcbNewAddress.Items.Add(b.medname[i]);
@@ -684,9 +684,9 @@ namespace rabnet
                     RabNetEngRabbit rr = Engine.get().getRabbit(rb.RabID);
                     RabNetEngBuilding rbe = Engine.get().getBuilding(rr.JustAddress);
                     string[] vals = rr.JustAddress.Split(',');
-                    if (vals[3] == myBuildingType.Jurta || vals[3] == myBuildingType.Female)
+                    if (vals[3] == BuildingType.Jurta || vals[3] == BuildingType.Female)
                         rbe.setNest(rp.SetNest);
-                    else if (vals[3] == myBuildingType.DualFemale)
+                    else if (vals[3] == BuildingType.DualFemale)
                     {                        
                         if (vals[2] == "0")
                             rbe.setNest(rp.SetNest);

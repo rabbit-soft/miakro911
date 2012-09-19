@@ -224,11 +224,11 @@
     <Compile Include="forms\PreReplaceYoungersForm.Designer.cs">
       <DependentUpon>PreReplaceYoungersForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="forms\ReplaceBride.cs">
+    <Compile Include="forms\ReplaceBrideForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\ReplaceBride.Designer.cs">
-      <DependentUpon>ReplaceBride.cs</DependentUpon>
+    <Compile Include="forms\ReplaceBrideForm.Designer.cs">
+      <DependentUpon>ReplaceBrideForm.cs</DependentUpon>
     </Compile>
     <Compile Include="forms\SelectUserForm.cs">
       <SubType>Form</SubType>
@@ -624,8 +624,8 @@
       <DependentUpon>RabbitInfo.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\ReplaceBride.resx">
-      <DependentUpon>ReplaceBride.cs</DependentUpon>
+    <EmbeddedResource Include="forms\ReplaceBrideForm.resx">
+      <DependentUpon>ReplaceBrideForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\ReplaceForm.resx">

@@ -43,7 +43,7 @@ namespace rabnet
                 //f["count3"] = Engine.opt().getOption(Options.OPT_ID.COUNT_SUCKERS);
                 f["boysout"] = Engine.opt().getOption(Options.OPT_ID.BOYS_OUT);
                 f["girlsout"] = Engine.opt().getOption(Options.OPT_ID.GIRLS_OUT);
-                f["vacc"] = Engine.opt().getOption(Options.OPT_ID.VACC);
+                f[Filters.ZT_VACC_DAYS] = Engine.opt().getOption(Options.OPT_ID.VACC);
                 f["nest"] = Engine.opt().getOption(Options.OPT_ID.NEST_IN);
                 f["cnest"] = Engine.opt().getOption(Options.OPT_ID.CHILD_NEST);
                 f["sfuck"] = Engine.opt().getOption(Options.OPT_ID.STATE_FUCK);
@@ -51,9 +51,16 @@ namespace rabnet
                 f["heter"] = Engine.opt().getOption(Options.OPT_ID.GETEROSIS);
                 f["inbr"] = Engine.opt().getOption(Options.OPT_ID.INBREEDING);
                 f["mwait"] = Engine.opt().getOption(Options.OPT_ID.MALE_WAIT);
-                f["vactime"] = Engine.opt().getOption(Options.OPT_ID.VACCINE_TIME);
+                //f["vactime"] = Engine.opt().getOption(Options.OPT_ID.VACCINE_TIME);
                 f["bbone"] = Engine.opt().getOption(Options.OPT_ID.BOYS_BY_ONE);
-                f["vacc_moth"] = Engine.opt().getBoolOption(Options.OPT_ID.VACC_MOTHER)?"1":"0";
+                f[Filters.ZT_VACC_MOTH] = Engine.opt().getBoolOption(Options.OPT_ID.VACC_MOTHER)?"1":"0";
+                f[Filters.ZT_VACC_SHOW] = "";
+                foreach (CatalogData.Row row in Engine.db().getVaccines().Get().Rows)
+                {
+                    if (row.data[2] == "1")
+                        f[Filters.ZT_VACC_SHOW] += String.Format("{0:d},", row.key);
+                }
+                f[Filters.ZT_VACC_SHOW] = f[Filters.ZT_VACC_SHOW].TrimEnd(',');
                 itm = -1;
                 if (lvZooTech.SelectedItems.Count == 1)
                     itm = lvZooTech.SelectedItems[0].Index;
@@ -240,7 +247,7 @@ namespace rabnet
                     if (job.flag > 1)
                     {
                         id = 0;
-                        ReplaceBride rb=new ReplaceBride(job.id);
+                        ReplaceBrideForm rb=new ReplaceBrideForm(job.id);
                         res = rb.ShowDialog();
                         if (res == DialogResult.OK)
                             id = rb.getGirlOut();
@@ -252,20 +259,20 @@ namespace rabnet
                 case JobType.OKROL:
                     res=(new OkrolForm(job.id)).ShowDialog();
                     break;
-                /*case JobType.VACC: //TODO прививки зоотехплана
-                    RabNetEngRabbit r = Engine.get().getRabbit(job.id);
-                    r.Spec = true;
-                    r.VaccineEnd = DateTime.Now.AddDays(Engine.opt().getIntOption(Options.OPT_ID.VACCINE_TIME));
-                    r.Commit();
-                    if (r.Parent != 0 && Engine.opt().getBoolOption(Options.OPT_ID.VACC_MOTHER))
+                case JobType.VACC: //TODO прививки зоотехплана
+                    RabNetEngRabbit rab = Engine.get().getRabbit(job.id);
+                    AddRabVacForm dlg = new AddRabVacForm(rab);
+                    if (dlg.ShowDialog() == DialogResult.OK)
                     {
-                        RabNetEngRabbit r2 = Engine.get().getRabbit(r.Parent);
-                        r2.Spec = true;
-                        r2.VaccineEnd = r.VaccineEnd;
-                        r2.Commit();
+                        rab.SetVaccine(dlg.VacID, dlg.VacDate,false);
+                        if (rab.Parent != 0 && Engine.opt().getBoolOption(Options.OPT_ID.VACC_MOTHER))
+                        {
+                            RabNetEngRabbit r2 = Engine.get().getRabbit(rab.Parent);
+                            r2.SetVaccine(dlg.VacID, dlg.VacDate,false);
+                        }
                     }
                     needUpdate = false;
-                    break;*/
+                    break;
                 case JobType.SET_NEST://установка гнездовья
                     ReplaceForm f = new ReplaceForm();
                     f.addRabbit(job.id);
