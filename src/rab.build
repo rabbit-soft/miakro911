@@ -401,6 +401,7 @@
 				<include name="${curdir}/rabnet/gui/components/ColorPickerColumn/*.cs"/>
 				<include name="${curdir}/rabnet/gui/filters/*.cs"/>
 				<include name="${curdir}/rabnet/gui/panels/*.cs"/>
+				<include name="${curdir}/rabnet/gui/panels/RabInfoPanels/*.cs"/>
 				<include name="${curdir}/rabnet/gui/forms/*.cs"/>
 				<include name="${curdir}/rabnet/gui/reports/*.cs"/>
 				<include name="${curdir}/libs/GRD/GRD_Base.cs"/>
