@@ -149,7 +149,7 @@
 		
 		<copy file="${GrdTruSource}" tofile="${bin_dir}/Guardant/${GrdTru}" />
 		<copy file="${GrdSrvSource}" tofile="${bin_dir}/Guardant/${GrdSrv}" />
-		<copy file="${GrdMonSource}" tofile="${bin_dir}/Guardant/${GrdMon}" />
+		<!--copy file="${GrdMonSource}" tofile="${bin_dir}/Guardant/${GrdMon}" /-->
 		<copy file="${curdir}/rabnet/gui/${grdClientConf}" tofile="${bin_dir}/RabNet/${grdClientConf}" />
 		
 		<copy todir="${bin_dir}/RabNet/reports">
@@ -279,6 +279,7 @@
 		<csc target="library" output="${bin_dir}/RabNet/db.mysql.dll" define="${compile_flag}" optimize="true">
 			<sources>
 				<include name="${curdir}/rabnet/db.mysql/*.cs"/>
+				<include name="${curdir}/rabnet/db.mysql/CatalogData/*.cs"/>
 				<include name="${curdir}/rabnet/db.mysql/Properties/*.cs"/>
 			</sources>
 			<references>
