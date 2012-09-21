@@ -96,7 +96,7 @@
     <Compile Include="RabNetEngBuilding.cs" />
     <Compile Include="RabNetEngRabbit.cs" />
     <Compile Include="RabNetLogs.cs" />
-    <Compile Include="ZooTeh.cs" />
+    <Compile Include="RabNetZooTeh.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\db.mysql\db.mysql.csproj">

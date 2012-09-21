@@ -30,29 +30,29 @@ namespace rabnet
         {
             if (fullUpdate)
             {
-                f["shr"] = Engine.opt().safeIntOption(Options.OPT_ID.SHORT_ZOO, 1).ToString();
-                f["dbl"] = f["shr"] == "1" ? "0" : "1";//Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
-                f["prt"] = Engine.opt().getOption(Options.OPT_ID.FIND_PARTNERS);
-                f["okrol"] = Engine.opt().getOption(Options.OPT_ID.OKROL);
-                f["preok"] = Engine.opt().getOption(Options.OPT_ID.PRE_OKROL);
-                f["vudvor"] = Engine.opt().getOption(Options.OPT_ID.NEST_OUT);
-                f["vd_sukr"] = Engine.opt().getOption(Options.OPT_ID.NEST_OUT_IF_SUKROL);
-                f["count1"] = Engine.opt().getOption(Options.OPT_ID.COUNT1);
-                f["count2"] = Engine.opt().getOption(Options.OPT_ID.COUNT2);
-                f["count3"] = Engine.opt().getOption(Options.OPT_ID.COUNT3);
+                f[Filters.SHORT] = Engine.opt().safeIntOption(Options.OPT_ID.SHORT_ZOO, 1).ToString();
+                f[Filters.DBL_SURNAME] = f[Filters.SHORT] == "1" ? "0" : "1";//Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
+                f[Filters.FIND_PARTNERS] = Engine.opt().getOption(Options.OPT_ID.FIND_PARTNERS);
+                f[Filters.OKROL] = Engine.opt().getOption(Options.OPT_ID.OKROL);
+                f[Filters.PRE_OKROL] = Engine.opt().getOption(Options.OPT_ID.PRE_OKROL);
+                f[Filters.VUDVOR] = Engine.opt().getOption(Options.OPT_ID.NEST_OUT);
+                f[Filters.NEST_OUT_IF_SUKROL] = Engine.opt().getOption(Options.OPT_ID.NEST_OUT_IF_SUKROL);
+                f[Filters.COUNT1] = Engine.opt().getOption(Options.OPT_ID.COUNT1);
+                f[Filters.COUNT2] = Engine.opt().getOption(Options.OPT_ID.COUNT2);
+                f[Filters.COUNT3] = Engine.opt().getOption(Options.OPT_ID.COUNT3);
                 //f["count3"] = Engine.opt().getOption(Options.OPT_ID.COUNT_SUCKERS);
-                f["boysout"] = Engine.opt().getOption(Options.OPT_ID.BOYS_OUT);
-                f["girlsout"] = Engine.opt().getOption(Options.OPT_ID.GIRLS_OUT);
+                f[Filters.BOYS_OUT] = Engine.opt().getOption(Options.OPT_ID.BOYS_OUT);
+                f[Filters.GIRLS_OUT] = Engine.opt().getOption(Options.OPT_ID.GIRLS_OUT);
                 f[Filters.ZT_VACC_DAYS] = Engine.opt().getOption(Options.OPT_ID.VACC);
-                f["nest"] = Engine.opt().getOption(Options.OPT_ID.NEST_IN);
-                f["cnest"] = Engine.opt().getOption(Options.OPT_ID.CHILD_NEST);
-                f["sfuck"] = Engine.opt().getOption(Options.OPT_ID.STATE_FUCK);
-                f["ffuck"] = Engine.opt().getOption(Options.OPT_ID.FIRST_FUCK);
-                f["heter"] = Engine.opt().getOption(Options.OPT_ID.GETEROSIS);
-                f["inbr"] = Engine.opt().getOption(Options.OPT_ID.INBREEDING);
-                f["mwait"] = Engine.opt().getOption(Options.OPT_ID.MALE_WAIT);
+                f[Filters.NEST_IN] = Engine.opt().getOption(Options.OPT_ID.NEST_IN);
+                f[Filters.CHILD_NEST] = Engine.opt().getOption(Options.OPT_ID.CHILD_NEST);
+                f[Filters.STATE_FUCK] = Engine.opt().getOption(Options.OPT_ID.STATE_FUCK);
+                f[Filters.FIRST_FUCK] = Engine.opt().getOption(Options.OPT_ID.FIRST_FUCK);
+                f[Filters.GETEROSIS] = Engine.opt().getOption(Options.OPT_ID.GETEROSIS);
+                f[Filters.INBREEDING] = Engine.opt().getOption(Options.OPT_ID.INBREEDING);
+                f[Filters.MALE_WAIT] = Engine.opt().getOption(Options.OPT_ID.MALE_WAIT);
                 //f["vactime"] = Engine.opt().getOption(Options.OPT_ID.VACCINE_TIME);
-                f["bbone"] = Engine.opt().getOption(Options.OPT_ID.BOYS_BY_ONE);
+                f[Filters.BOYS_BY_ONE] = Engine.opt().getOption(Options.OPT_ID.BOYS_BY_ONE);
                 f[Filters.ZT_VACC_MOTH] = Engine.opt().getBoolOption(Options.OPT_ID.VACC_MOTHER)?"1":"0";
                 f[Filters.ZT_VACC_SHOW] = "";
                 foreach (CatalogData.Row row in Engine.db().getVaccines().Get().Rows)
@@ -96,14 +96,14 @@ namespace rabnet
             Filters f = runF;
             foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f,it.id))
             {
-                ListViewItem li = lvZooTech.Items.Add(j.days.ToString());
-                li.SubItems.Add(j.job);
-                li.SubItems.Add(j.address);
-                li.SubItems.Add(j.name);
-                li.SubItems.Add(j.age.ToString());
-                li.SubItems.Add(j.breed);
-                li.SubItems.Add(j.comment);
-                li.SubItems.Add(j.names);
+                ListViewItem li = lvZooTech.Items.Add(j.Days.ToString());
+                li.SubItems.Add(j.JobName);
+                li.SubItems.Add(j.Address);
+                li.SubItems.Add(j.RabName);
+                li.SubItems.Add(j.RabAge.ToString());
+                li.SubItems.Add(j.RabBreed);
+                li.SubItems.Add(j.Comment);
+                li.SubItems.Add(j.Partners);
                 li.Tag = j;
             }
 			colSort.SemiReady();
@@ -159,7 +159,7 @@ namespace rabnet
                 case JobType.BOYS_OUT: boysOutMenuItem.Visible = true; break;
                 case JobType.GIRLS_OUT: girlsOutMenuItem.Visible = true; break;
                 case JobType.FUCK: fuckMenuItem.Visible = true;
-                    if (job.job == "Случка")
+                    if (job.JobName == "Случка")
                         fuckMenuItem.Text = "Случить";
                     else
                         fuckMenuItem.Text = "Вязать";
@@ -189,7 +189,7 @@ namespace rabnet
                 setMenu(JobType.NONE);
                 return;
             }
-            setMenu(getCurJob().type,getCurJob());
+            setMenu(getCurJob().Type,getCurJob());
         }
         /// <summary>
         /// Выполняет одну из зоотехнических работ
@@ -202,34 +202,34 @@ namespace rabnet
                 return;
             fullUpdate = true;
             bool needUpdate = Engine.opt().getIntOption(Options.OPT_ID.UPDATE_ZOO) == 1;
-            switch (job.type)
+            switch (job.Type)
             {                
                 case JobType.VUDVOR:
-                    RabNetEngBuilding b = Engine.get().getBuilding(job.id);
-                    if (job.id2 == 0)
+                    RabNetEngBuilding b = Engine.get().getBuilding(job.ID);
+                    if (job.ID2 == 0)
                         b.setNest(false);
                     else
                         b.setNest2(false);
                     needUpdate = false;
                     break;
                 case JobType.PRE_OKROL:
-                    Engine.get().preOkrol(job.id);
+                    Engine.get().preOkrol(job.ID);
                     needUpdate = false;
                     break;
                 case JobType.BOYS_OUT:
                 case JobType.GIRLS_OUT:
                     ReplaceForm rf = new ReplaceForm();
-                    rf.addRabbit(job.id);
-                    if (job.type==JobType.BOYS_OUT)
+                    rf.addRabbit(job.ID);
+                    if (job.Type==JobType.BOYS_OUT)
                         rf.setAction(ReplaceForm.Action.BOYSOUT);
                     res=rf.ShowDialog();
                     break;                                   
                 case JobType.COUNT_KIDS:
-                    RabNetEngRabbit rrr = Engine.get().getRabbit(job.id);
+                    RabNetEngRabbit rrr = Engine.get().getRabbit(job.ID);
                     CountKids ck;
                     int id2 = 0;
                     for (int i = 0; i < rrr.Youngers.Length; i++)
-                        if (rrr.Youngers[i].id == job.id2) id2 = i;
+                        if (rrr.Youngers[i].id == job.ID2) id2 = i;
                     if (makeFlag == 0)
                     {
                         rrr.CountKids(0, 0, 0, rrr.Youngers[id2].group, rrr.Youngers[id2].age(), 0);
@@ -237,17 +237,17 @@ namespace rabnet
                     }
                     else
                     {
-                        ck = new CountKids(job.id, job.flag == 1);
+                        ck = new CountKids(job.ID, job.Flag == 1);
                         ck.setGrp(id2);
                         res = ck.ShowDialog();
                     }
                     break;
                 case JobType.FUCK:
-                    int id = job.id;
-                    if (job.flag > 1)
+                    int id = job.ID;
+                    if (job.Flag > 1)
                     {
                         id = 0;
-                        ReplaceBrideForm rb=new ReplaceBrideForm(job.id);
+                        ReplaceBrideForm rb=new ReplaceBrideForm(job.ID);
                         res = rb.ShowDialog();
                         if (res == DialogResult.OK)
                             id = rb.getGirlOut();
@@ -257,31 +257,32 @@ namespace rabnet
                         res=(new MakeFuck(id)).ShowDialog();
                     break;                                    
                 case JobType.OKROL:
-                    res=(new OkrolForm(job.id)).ShowDialog();
+                    res=(new OkrolForm(job.ID)).ShowDialog();
                     break;
                 case JobType.VACC: //TODO прививки зоотехплана
-                    RabNetEngRabbit rab = Engine.get().getRabbit(job.id);
-                    AddRabVacForm dlg = new AddRabVacForm(rab);
-                    if (dlg.ShowDialog() == DialogResult.OK)
+                    RabNetEngRabbit rab = Engine.get().getRabbit(job.ID);
+                    AddRabVacForm dlg = new AddRabVacForm(rab,false,job.ID2);
+                    res=dlg.ShowDialog();
+                    if ( res== DialogResult.OK)
                     {
                         rab.SetVaccine(dlg.VacID, dlg.VacDate,false);
                         if (rab.Parent != 0 && Engine.opt().getBoolOption(Options.OPT_ID.VACC_MOTHER))
                         {
                             RabNetEngRabbit r2 = Engine.get().getRabbit(rab.Parent);
                             r2.SetVaccine(dlg.VacID, dlg.VacDate,false);
-                        }
+                        }                       
                     }
                     needUpdate = false;
                     break;
                 case JobType.SET_NEST://установка гнездовья
                     ReplaceForm f = new ReplaceForm();
-                    f.addRabbit(job.id);
+                    f.addRabbit(job.ID);
                     f.setAction(ReplaceForm.Action.SET_NEST);
                     res = f.ShowDialog();
                     break;
                 case JobType.BOYS_BY_ONE:
                     f = new ReplaceForm();
-                    f.addRabbit(job.id);
+                    f.addRabbit(job.ID);
                     res = f.ShowDialog();
                     break;
             }
@@ -335,21 +336,21 @@ namespace rabnet
                 ListViewItem li = lvZooTech.Items[i];
                 ZootehJob j=(ZootehJob)li.Tag;
                 rw = xml.CreateElement("Row");
-                rw.AppendChild(xml.CreateElement("type")).AppendChild(xml.CreateTextNode(((int)j.type).ToString()));
-                rw.AppendChild(xml.CreateElement("days")).AppendChild(xml.CreateTextNode(j.days.ToString()));
-                rw.AppendChild(xml.CreateElement("name")).AppendChild(xml.CreateTextNode(j.job));
-                rw.AppendChild(xml.CreateElement("rabbit")).AppendChild(xml.CreateTextNode(j.name));
-                rw.AppendChild(xml.CreateElement("address")).AppendChild(xml.CreateTextNode(j.address));
+                rw.AppendChild(xml.CreateElement("type")).AppendChild(xml.CreateTextNode(((int)j.Type).ToString()));
+                rw.AppendChild(xml.CreateElement("days")).AppendChild(xml.CreateTextNode(j.Days.ToString()));
+                rw.AppendChild(xml.CreateElement("name")).AppendChild(xml.CreateTextNode(j.JobName));
+                rw.AppendChild(xml.CreateElement("rabbit")).AppendChild(xml.CreateTextNode(j.RabName));
+                rw.AppendChild(xml.CreateElement("address")).AppendChild(xml.CreateTextNode(j.Address));
                 //rw.AppendChild(xml.CreateElement("comment")).AppendChild(xml.CreateTextNode(""));
-                rw.AppendChild(xml.CreateElement("breed")).AppendChild(xml.CreateTextNode(j.breed));
-                rw.AppendChild(xml.CreateElement("age")).AppendChild(xml.CreateTextNode(j.age.ToString()));
-                if (j.type == JobType.FUCK)
+                rw.AppendChild(xml.CreateElement("breed")).AppendChild(xml.CreateTextNode(j.RabBreed));
+                rw.AppendChild(xml.CreateElement("age")).AppendChild(xml.CreateTextNode(j.RabAge.ToString()));
+                if (j.Type == JobType.FUCK)
                 {
-                    int id = getFuckerId(j.names, fuckers);
+                    int id = getFuckerId(j.Partners, fuckers);
                     rw.AppendChild(xml.CreateElement("comment")).AppendChild(xml.CreateTextNode("см. "+(id+1).ToString()));
                 }
                 else
-                    rw.AppendChild(xml.CreateElement("comment")).AppendChild(xml.CreateTextNode(j.comment));
+                    rw.AppendChild(xml.CreateElement("comment")).AppendChild(xml.CreateTextNode(j.Comment));
                 root.AppendChild(rw);
             }
             for (int i = 0; i < fuckers.Count; i++)

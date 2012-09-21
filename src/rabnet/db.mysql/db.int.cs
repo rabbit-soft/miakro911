@@ -50,27 +50,28 @@ namespace rabnet
         String[] getFilterNames(String type);
         Filters getFilter(String type, String name);
         void setFilter(String type, String name, Filters filter);
-        //DATA PROCEDURES
-        IDataGetter getRabbits(Filters filters);
-        IDataGetter getBuildings(Filters filters);
+        
         /// <summary>
         /// Получает число имеющихся МИНИферм
         /// </summary>
         /// <returns></returns>
         int getMFCount();
         TreeData rabbitGenTree(int rabbit);
-        TreeData buildingsTree();
-        /// <summary>
-        /// Список Молодняка
-        /// </summary>
-        IDataGetter GetYoungers(Filters filters);
+        TreeData buildingsTree();       
         OneRabbit[] GetYoungers(int momId);
         int[] getTiers(int farm);
         Building getBuilding(int tier);       
         List<sMeat> getMeats(DateTime date);
+        /// <summary>
+        /// Список Молодняка
+        /// </summary>
+        IDataGetter GetYoungers(Filters filters);
+        IDataGetter getRabbits(Filters filters);
+        IDataGetter getBuildings(Filters filters);
         IDataGetter getNames(Filters filters);
         IDataGetter zooTeh(Filters f);
         IDataGetter getButcherDates(Filters f);
+        IDataGetter getDead(Filters filters);
         List<String> getButcherMonths();
         List<String> getFuckMonths();
         void changeDeadReason(int rid, int reason);
@@ -93,11 +94,8 @@ namespace rabnet
         void replaceRabbit(int rid, int farm, int tier_id, int sec);
         void replaceYounger(int yid, int farm, int tier_id, int sec);
         int newRabbit(OneRabbit r,int mom);
-        LogList getLogs(Filters f);
-        ZooJobItem[] ztGetOkrols(Filters f);
-        ZooJobItem[] ztGetBoysByOne(Filters f);
+        LogList getLogs(Filters f);       
         void updateBuilding(Building b);
-        ZooJobItem[] ztGetVudvors(Filters f);
         void addName(OneRabbit.RabbitSex sex, string name, string surname);
         void changeName(string orgName, string name, string surname);
         /// <summary>
@@ -116,8 +114,7 @@ namespace rabnet
         /// <param name="killed">Количество Затоптоных</param>
         /// <param name="added">Прибавилось</param>
         /// <param name="yid">К какой группе подсосных</param>
-        void СountKids(int rid, int dead, int killed, int added,int yid);
-        ZooJobItem[] ztGetCounts(Filters f, int days,int next);
+        void СountKids(int rid, int dead, int killed, int added,int yid);       
         void setRabbitSex(int rid,OneRabbit.RabbitSex sex);
         int cloneRabbit(int rid, int count, int farm, int tier, int sec, OneRabbit.RabbitSex sex, int mom);
         string userGroup(int uid);
@@ -125,17 +122,14 @@ namespace rabnet
         void changeUser(int uid, string name, int group, string password, bool chpass);
         bool hasUser(string name);
         int addUser(string name, int group, string password);
-        IDataGetter getDead(Filters filters);
-        void resurrect(int rid);
-        ZooJobItem[] ztGetPreokrols(Filters f, int days, int okroldays);
+        
+        void resurrect(int rid);       
         void placeSucker(int sucker, int mother);
         void combineGroups(int rabfrom, int rabto);
         XmlDocument makeReport(myReportType type, Filters f);
         XmlDocument makeReport(string query);
-        Rabbit[] getMothers(int age,int agediff);
-        ZooJobItem[] ztGetBoysGirlsOut(Filters f, int days, OneRabbit.RabbitSex sex);
-        String[] logNames();
-        ZooJobItem[] ztGetZooFuck(Filters f, int statedays, int firstdays, int brideage, int malewait, bool heterosis, bool inbreeding,int type);
+        Rabbit[] getMothers(int age,int agediff);        
+        String[] logNames();        
         void setBuildingName(int bid,String name);
         void addBuilding(int parent, String name);
         void replaceBuilding(int bid, int toBuilding);
@@ -143,9 +137,7 @@ namespace rabnet
         int addFarm(int parent,String uppertype, String lowertype,String name,int id);
         bool FarmExists(int id);
         void ChangeFarm(int fid,String uppertype,String lowertype);
-        void deleteFarm(int fid);
-        ZooJobItem[] ztGetVacc(Filters f);
-        ZooJobItem[] ztGetSetNest(Filters f,int wochild,int wchild);        
+        void deleteFarm(int fid);             
         String[] getWeights(int rabbit);
         RabVac[] GetRabVac(int rabId);
         void addWeight(int rabbit, int weight, DateTime date);
@@ -155,10 +147,12 @@ namespace rabnet
         double[] getMaleChildrenProd(int male);
         void changeFucker(int fid, int fucker);
         void changeWorker(int fid, int worker);
-
 		RabbitGen getRabbitGen(int rid);
 		Dictionary<int, Color> getBreedColors();
         List<OneRabbit> getVictims(DateTime dt);
+
+        //zooTech
+        ZootehJob[] GetZooTechJobs(Filters f, JobType type);
 
         //catalogs
         ICatalog getDeadReasons();      

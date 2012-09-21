@@ -271,7 +271,7 @@ r_notes,
 r_born,
 r_event_date,
 r_breed,
-(SELECT GROUP_CONCAT('v',v_id ORDER BY v_id) FROM rab_vac rv WHERE rv.r_id=r.r_id ) vaccines
+Coalesce((SELECT GROUP_CONCAT('v',v_id ORDER BY v_id) FROM rab_vac rv WHERE rv.r_id=r.r_id ),'') vaccines
 FROM rabbits r WHERE r_parent=0 ORDER BY name) c {2:s};", (options.safeBool("dbl") ? "2" : "1"), fld, makeWhere());
         }
         /*

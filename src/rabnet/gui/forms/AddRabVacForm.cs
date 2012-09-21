@@ -12,19 +12,29 @@ namespace rabnet
     {
         private CatalogData _vacc;
         private RabNetEngRabbit _rab;
+        //private int _forceVacId=-1;
 
-        public AddRabVacForm(RabNetEngRabbit rab,bool withChildrens)
+        public AddRabVacForm(RabNetEngRabbit rab,bool withChildrens,int forceId)
         {
             InitializeComponent();
+            //_forceVacId = forceId;
             chWithChildren.Enabled = withChildrens;
             _rab = rab;
             _vacc = Engine.db().getVaccines().Get();
+            int ind=-1;
             foreach (CatalogData.Row r in _vacc.Rows)
-            {
+            {              
                 cbVaccineType.Items.Add(r.data[0]);
+                if (forceId != -1 && r.key != forceId)
+                    ind=cbVaccineType.Items.Count-1;
+            }
+            if (forceId != -1)
+            {
+                cbVaccineType.SelectedIndex = ind;
+                cbVaccineType.Enabled = false;
             }
         }
-        public AddRabVacForm(RabNetEngRabbit rab):this(rab,true) { }
+        public AddRabVacForm(RabNetEngRabbit rab):this(rab,true,-1) { }
 
         public int VacID { get { return _vacc.Rows[cbVaccineType.SelectedIndex].key; } }
         public bool VacChildren { get { return chWithChildren.Checked; } }

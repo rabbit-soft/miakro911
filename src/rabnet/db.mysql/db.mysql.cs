@@ -442,46 +442,10 @@ namespace rabnet
             return RabbitGetter.getMothers(sql, age, agediff);
         }
 #region zoo_tech_get
-        public ZooJobItem[] ztGetVudvors(Filters f)
-        {
-            return new ZooTehGetter(sql, f).getVudvors(f);
-        }
-        public ZooJobItem[] ztGetOkrols(Filters f)
-        {
-            return new ZooTehGetter(sql, f).getOkrols(f.safeInt("okrol"));
-        } 
-        public ZooJobItem[] ztGetPreokrols(Filters f, int days, int okroldays)
-        {
-            return new ZooTehGetter(sql, f).getPreokrols(days, okroldays);
-        }
-        public ZooJobItem[] ztGetCounts(Filters f, int days, int next)
-        {
-            return new ZooTehGetter(sql, f).getCounts(days, next);
-        }
 
-        public ZooJobItem[] ztGetBoysGirlsOut(Filters f,int days, OneRabbit.RabbitSex sex)
+        public ZootehJob[] GetZooTechJobs(Filters f, JobType type)
         {
-            return new ZooTehGetter(sql,f).getBoysGirlsOut(days, sex);
-        }
-
-        public ZooJobItem[] ztGetBoysByOne(Filters f)
-        {
-            return new ZooTehGetter(sql, f).getBoysByOne(f.safeInt("bbone"));
-        }
-
-        public ZooJobItem[] ztGetZooFuck(Filters f, int statedays, int firstdays, int brideage, int malewait, bool heter, bool inbr, int type)
-        {
-            return new ZooTehGetter(sql, f).getZooFucks(statedays, firstdays, brideage, malewait, heter, inbr, type);
-        }
-
-        public ZooJobItem[] ztGetVacc(Filters f)
-        {
-            return new ZooTehGetter(sql, f).getVacc(f);
-        }
-
-        public ZooJobItem[] ztGetSetNest(Filters f, int wochild, int wchild)
-        {
-            return new ZooTehGetter(sql, f).getSetNest(wochild, wchild);
+            return new ZooTehGetter(sql, f).GetZooTechJobs(type);
         }
 
 #endregion zoo_tech_get
