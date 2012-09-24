@@ -19,6 +19,7 @@ namespace rabnet
             if (sender is ReplaceForm) opt = Options.OPT_ID.FS_REPLACE;
             else if (sender is KillForm) opt = Options.OPT_ID.FS_KILL;
             else if (sender is ReplaceYoungersForm) opt = Options.OPT_ID.FS_REPLACE_YOUNG;
+            else if (sender is MakeFuckForm) opt = Options.OPT_ID.FS_FUCK;
             else return false;
             return true;
         }

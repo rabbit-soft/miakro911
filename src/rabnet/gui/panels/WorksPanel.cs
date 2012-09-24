@@ -254,7 +254,7 @@ namespace rabnet
                         res = DialogResult.Cancel;
                     }
                     if (id!=0) 
-                        res=(new MakeFuck(id)).ShowDialog();
+                        res=(new MakeFuckForm(id)).ShowDialog();
                     break;                                    
                 case JobType.OKROL:
                     res=(new OkrolForm(job.ID)).ShowDialog();

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace rabnet
 {
-    public partial class MakeFuck : Form
+    public partial class MakeFuckForm : Form
     {
         private RabNetEngRabbit rab1 = null;
         private Catalog brds;
@@ -20,7 +20,7 @@ namespace rabnet
         int selected = 0;
         int action = 0;
 
-        public MakeFuck()
+        public MakeFuckForm()
         {
             InitializeComponent();
             initialHints();
@@ -33,8 +33,9 @@ namespace rabnet
             manual = true;
             cs = new ListViewColumnSorter(listView1, new int[] { 3,4 },Options.OPT_ID.MAKE_FUCK_LIST);
             listView1.ListViewItemSorter = cs;
+            FormSizeSaver.Append(this);
         }
-        public MakeFuck(int r1)
+        public MakeFuckForm(int r1)
             : this(r1,0)
         {
         }
@@ -61,7 +62,7 @@ namespace rabnet
             comboBox1.Enabled = button4.Enabled = rab1.Name == 0;
         }
 
-        public MakeFuck(int r1, int r2):this()
+        public MakeFuckForm(int r1, int r2):this()
         {
             rab1 = Engine.get().getRabbit(r1);
             label1.Text = rab1.FullName;
@@ -72,7 +73,7 @@ namespace rabnet
                 Text = button1.Text = "Вязать";
             fillNames();
         }
-        public MakeFuck(int r1, int r2, int action):this(r1,r2)
+        public MakeFuckForm(int r1, int r2, int action):this(r1,r2)
         {
             this.action = action;
         }

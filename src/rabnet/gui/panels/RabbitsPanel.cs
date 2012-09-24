@@ -328,7 +328,7 @@ namespace rabnet
         {
             if (listView1.SelectedItems.Count != 1)
                 return;
-            if((new MakeFuck((int)listView1.SelectedItems[0].Tag)).ShowDialog() == DialogResult.OK)
+            if((new MakeFuckForm((int)listView1.SelectedItems[0].Tag)).ShowDialog() == DialogResult.OK)
                 _rsb.run();
         }
 

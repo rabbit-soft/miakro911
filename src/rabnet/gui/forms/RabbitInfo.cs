@@ -552,14 +552,14 @@ namespace rabnet
 
         private void button8_Click(object sender, EventArgs e)
         {
-            (new MakeFuck(_rab.RabID)).ShowDialog();
+            (new MakeFuckForm(_rab.RabID)).ShowDialog();
             updateData();
         }
 
         private void btFuckHer_Click(object sender, EventArgs e)
         {
             Fucks.Fuck f = fucks.SelectedItems[0].Tag as Fucks.Fuck;
-            (new MakeFuck(_rab.RabID,f.partnerid)).ShowDialog();
+            (new MakeFuckForm(_rab.RabID,f.partnerid)).ShowDialog();
             updateData();
         }
 
@@ -691,7 +691,7 @@ namespace rabnet
         {
             if (fucks.SelectedItems.Count!=1) return;
             Fucks.Fuck f = fucks.SelectedItems[0].Tag as Fucks.Fuck;
-            MakeFuck mf = new MakeFuck(_rab.RabID, f.partnerid, 1);
+            MakeFuckForm mf = new MakeFuckForm(_rab.RabID, f.partnerid, 1);
             if (mf.ShowDialog() == DialogResult.OK && mf.SelectedFucker!=f.id)
                 Engine.db().changeFucker(f.id, mf.SelectedFucker);
             updateData();
