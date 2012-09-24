@@ -1,57 +1,22 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
-using System.Text;
 using log4net;
+using rabnet;
 
-namespace rabnet
-{
+namespace db.mysql
+{   
 
-    public enum JobType 
-    { 
-        NONE, 
-        OKROL, 
-        VUDVOR, 
-        COUNT_KIDS, 
-        PRE_OKROL, 
-        BOYS_OUT, 
-        GIRLS_OUT, 
-        FUCK, 
-        VACC, 
-        SET_NEST,
-        BOYS_BY_ONE
-    }
-
-    public class ZooTehNullItem : IData
+    public class ZootehJob_MySql : ZootehJob
     {
-        public int id = 0;
-        public ZooTehNullItem(int id) { this.id=id;}
-    }
-
-    public class ZootehJob : IData //todo можно сделать
-    {
-        public JobType Type = JobType.OKROL;
-        public int Days = 0;
-        public string JobName = "";
-        public string Address = "";
-        public string RabName = "";
-        public int RabAge = 0;
-        public string RabBreed = "";
-        public string Comment = "";
-        public string Partners = "";
-        //public string addresses="";
-        public int ID = 0;
-        public int ID2;
-        public int Flag = 0;
-
         private Filters _flt = null;
-        public ZootehJob() { }
-        public ZootehJob(Filters f)
+        public ZootehJob_MySql(Filters f)
         {
             this._flt = f;
         }
 
-        public ZootehJob(Filters f,JobType type,MySqlDataReader rd)
+        public ZootehJob_MySql(Filters f,JobType type,MySqlDataReader rd)
         {
             _flt = f;
             this.Type = type;
@@ -100,7 +65,7 @@ namespace rabnet
  	        Days = rd.GetInt32("srok");
             ID=rd.GetInt32("r_id");
             RabName = rd.GetString("name");
-            Address = Buildings.FullPlaceName(rd.GetString("place"));
+            Address = Building.FullPlaceName(rd.GetString("place"));
             RabAge = rd.GetInt32("age");
             RabBreed = rd.GetString("breed");
         }
@@ -128,7 +93,7 @@ namespace rabnet
 
         private void fillBoysGirlsOut(MySqlDataReader rd)
         {
-            int sub = _flt.safeInt("type") == (int)OneRabbit.RabbitSex.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT);
+            int sub = _flt.safeInt("type") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT);
             Days = rd.GetInt32("age") - sub ;
         }
 
@@ -154,7 +119,7 @@ namespace rabnet
                 else srok = fromok;
             }
 
-            Days = srok; //todo в common не определится срок и произойдет ошибка
+            Days = srok; //если в common не определится срок и произойдет ошибка
             JobName = status == 0 ? "Случка" : "Вязка";
             Comment = _flt.safeInt("shr") == 1 ? "Нвс" : "Невеста";
             if (status > 0)
@@ -199,67 +164,14 @@ namespace rabnet
             foreach (string s in fuckers)
             {
                 string[] set = s.Split(new char[] { '&' });
-                result += String.Format(" {0:s} [{1:s}],", set[0].Trim(), Buildings.FullPlaceName(set[1]));
+                result += String.Format(" {0:s} [{1:s}],", set[0].Trim(), Building.FullPlaceName(set[1]));
             }
             if (result[result.Length - 1] == ',')
                 result = result.Remove(result.Length - 1);
             return result;
         }
     }
-    
-    /// <summary>
-    /// В зоотехплане надо сделать 9 разных запросов.
-    /// В ответ на onPrepare возвращается этот класс, сожержащий 9 элементов,
-    /// на onItem каждой из них заполняется список конкретной работой.
-    /// </summary>
-    public class ZooTehNullGetter : IDataGetter
-    {
-        #region IDataGetter Members
-        private int val;
-        /// <summary>
-        /// Количество зоотех работ.
-        /// </summary>
-        const int ZOOTEHITEMS = 10;
-
-        public int getCount()
-        {
-            val = -1;
-            return ZOOTEHITEMS;
-        }
-
-        public int getCount2()
-        {
-            return 0;
-        }
-
-        public int getCount3()
-        {
-            return 0;
-        }
-
-        public float getCount4()
-        {
-            return 0;
-        }
-
-        public void stop()
-        {
-            
-        }
-        /// <summary>
-        /// Возвращает объект класса ZooTehNullItem, который содержит только параметр "id"
-        /// </summary>
-        /// <returns></returns>
-        public IData getNextItem()
-        {
-            val++;
-            if (val > ZOOTEHITEMS) return null;
-            return new ZooTehNullItem(val);
-        }
-
-        #endregion
-    }
-
+ 
     class ZooTehGetter
     {
         private MySqlConnection sql;
@@ -297,9 +209,9 @@ namespace rabnet
         }
         #endregion helpers
 
-        public ZootehJob[] GetZooTechJobs(JobType type)
+        public ZootehJob_MySql[] GetZooTechJobs(JobType type)
         {
-            List<ZootehJob> res = new List<ZootehJob>();
+            List<ZootehJob_MySql> res = new List<ZootehJob_MySql>();
             string query = getQuery(type);
             if (query == "")
             {
@@ -315,7 +227,7 @@ namespace rabnet
                 MySqlCommand cmd = new MySqlCommand(query,sql);
                 rd = cmd.ExecuteReader();
                 while (rd.Read())
-                    res.Add(new ZootehJob(_flt, type, rd));
+                    res.Add(new ZootehJob_MySql(_flt, type, rd));
                 rd.Close();
             }
             catch(Exception err)
@@ -339,10 +251,10 @@ namespace rabnet
                 case JobType.COUNT_KIDS: return qCounts();
                 case JobType.PRE_OKROL: return qPreOkrol();
                 case JobType.GIRLS_OUT:
-                    _flt["sex"] = ((int)OneRabbit.RabbitSex.FEMALE).ToString();
+                    _flt["sex"] = ((int)Rabbit.SexType.FEMALE).ToString();
                     return qBoysGirlsOut();
                 case JobType.BOYS_OUT:
-                    _flt["sex"] = ((int)OneRabbit.RabbitSex.MALE).ToString();
+                    _flt["sex"] = ((int)Rabbit.SexType.MALE).ToString();
                     return qBoysGirlsOut();
                 case JobType.FUCK: return qFuck();
                 case JobType.VACC: return qVacc();
@@ -428,7 +340,7 @@ rabplace(if(r_parent!=0,r_parent,r_id)) place,
 TO_DAYS(NOW())-TO_DAYS(r_born) age,{2:s} 
 FROM rabbits WHERE {0:s} AND (TO_DAYS(NOW())-TO_DAYS(r_born))>={1:d} 
 ORDER BY age DESC,0+LEFT(place,LOCATE(',',place)) ASC;",
-                (_flt.safeInt("sex") == (int)OneRabbit.RabbitSex.FEMALE ? "(r_sex='female' and r_parent<>0)" : "(r_sex='void' OR (r_sex='male' and r_parent<>0))"), _flt.safeInt(Filters.BOYS_OUT), brd(), getnm());
+                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "(r_sex='female' and r_parent<>0)" : "(r_sex='void' OR (r_sex='male' and r_parent<>0))"), _flt.safeInt(Filters.BOYS_OUT), brd(), getnm());
         }
 
         private string qFuck()
@@ -465,9 +377,9 @@ ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;",
 {4:s}
 SELECT * FROM aaa WHERE age>={2:s} AND dt is NULL {5:s};
 DROP TEMPORARY TABLE IF EXISTS aaa;
-DROP TEMPORARY TABLE IF EXISTS bbb;", getnm(), brd(), _flt.safeValue(Filters.ZT_VACC_DAYS, "50"), _flt.safeValue(Filters.ZT_VACC_SHOW, "1"),
-    _flt.safeBool(Filters.ZT_VACC_MOTH, true) ? "CREATE TEMPORARY TABLE bbb SELECT DISTINCT r_parent FROM aaa WHERE r_parent !=0;" : "",
-    _flt.safeBool(Filters.ZT_VACC_MOTH, true) ? " AND r_id not in (select r_parent FROM bbb)" : "");
+DROP TEMPORARY TABLE IF EXISTS bbb;", getnm(), brd(), _flt.safeValue(Filters.VACC_DAYS, "50"), _flt.safeValue(Filters.VACC_SHOW, "1"),
+    _flt.safeBool(Filters.VACC_MOTH, true) ? "CREATE TEMPORARY TABLE bbb SELECT DISTINCT r_parent FROM aaa WHERE r_parent !=0;" : "",
+    _flt.safeBool(Filters.VACC_MOTH, true) ? " AND r_id not in (select r_parent FROM bbb)" : "");
         }
 
         private string qSetNest()

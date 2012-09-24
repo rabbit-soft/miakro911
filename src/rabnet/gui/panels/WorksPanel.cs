@@ -43,7 +43,7 @@ namespace rabnet
                 //f["count3"] = Engine.opt().getOption(Options.OPT_ID.COUNT_SUCKERS);
                 f[Filters.BOYS_OUT] = Engine.opt().getOption(Options.OPT_ID.BOYS_OUT);
                 f[Filters.GIRLS_OUT] = Engine.opt().getOption(Options.OPT_ID.GIRLS_OUT);
-                f[Filters.ZT_VACC_DAYS] = Engine.opt().getOption(Options.OPT_ID.VACC);
+                f[Filters.VACC_DAYS] = Engine.opt().getOption(Options.OPT_ID.VACC);
                 f[Filters.NEST_IN] = Engine.opt().getOption(Options.OPT_ID.NEST_IN);
                 f[Filters.CHILD_NEST] = Engine.opt().getOption(Options.OPT_ID.CHILD_NEST);
                 f[Filters.STATE_FUCK] = Engine.opt().getOption(Options.OPT_ID.STATE_FUCK);
@@ -53,14 +53,14 @@ namespace rabnet
                 f[Filters.MALE_WAIT] = Engine.opt().getOption(Options.OPT_ID.MALE_WAIT);
                 //f["vactime"] = Engine.opt().getOption(Options.OPT_ID.VACCINE_TIME);
                 f[Filters.BOYS_BY_ONE] = Engine.opt().getOption(Options.OPT_ID.BOYS_BY_ONE);
-                f[Filters.ZT_VACC_MOTH] = Engine.opt().getBoolOption(Options.OPT_ID.VACC_MOTHER)?"1":"0";
-                f[Filters.ZT_VACC_SHOW] = "";
+                f[Filters.VACC_MOTH] = Engine.opt().getBoolOption(Options.OPT_ID.VACC_MOTHER)?"1":"0";
+                f[Filters.VACC_SHOW] = "";
                 foreach (CatalogData.Row row in Engine.db().getVaccines().Get().Rows)
                 {
                     if (row.data[2] == "1")
-                        f[Filters.ZT_VACC_SHOW] += String.Format("{0:d},", row.key);
+                        f[Filters.VACC_SHOW] += String.Format("{0:d},", row.key);
                 }
-                f[Filters.ZT_VACC_SHOW] = f[Filters.ZT_VACC_SHOW].TrimEnd(',');
+                f[Filters.VACC_SHOW] = f[Filters.VACC_SHOW].TrimEnd(',');
                 itm = -1;
                 if (lvZooTech.SelectedItems.Count == 1)
                     itm = lvZooTech.SelectedItems[0].Index;
@@ -229,10 +229,10 @@ namespace rabnet
                     CountKids ck;
                     int id2 = 0;
                     for (int i = 0; i < rrr.Youngers.Length; i++)
-                        if (rrr.Youngers[i].id == job.ID2) id2 = i;
+                        if (rrr.Youngers[i].ID == job.ID2) id2 = i;
                     if (makeFlag == 0)
                     {
-                        rrr.CountKids(0, 0, 0, rrr.Youngers[id2].group, rrr.Youngers[id2].age(), 0);
+                        rrr.CountKids(0, 0, 0, rrr.Youngers[id2].Group, rrr.Youngers[id2].Age, 0);
                         needUpdate = false;
                     }
                     else
@@ -259,7 +259,7 @@ namespace rabnet
                 case JobType.OKROL:
                     res=(new OkrolForm(job.ID)).ShowDialog();
                     break;
-                case JobType.VACC: //TODO прививки зоотехплана
+                case JobType.VACC:
                     RabNetEngRabbit rab = Engine.get().getRabbit(job.ID);
                     AddRabVacForm dlg = new AddRabVacForm(rab,false,job.ID2);
                     res=dlg.ShowDialog();

@@ -78,8 +78,8 @@ namespace rabnet
             for (int i = 0; i < rbs.Count; i++)
             {
                 String name = "Бесполые";
-                if (rbs[i].Sex == OneRabbit.RabbitSex.MALE) name = rbs[i].Group==1 ? "Самец" : "Самцы";
-                if (rbs[i].Sex == OneRabbit.RabbitSex.FEMALE) name = rbs[i].Group == 1 ? "Самка" : "Самки";
+                if (rbs[i].Sex == Rabbit.SexType.MALE) name = rbs[i].Group==1 ? "Самец" : "Самцы";
+                if (rbs[i].Sex == Rabbit.SexType.FEMALE) name = rbs[i].Group == 1 ? "Самка" : "Самки";
                 ListViewItem li = listView1.Items.Add(name);
                 li.SubItems.Add(rbs[i].Group.ToString());
                 li.Tag=rbs[i];
@@ -99,19 +99,19 @@ namespace rabnet
 
         private void btMale_Click(object sender, EventArgs e)
         {
-            rbs.Add(new RabNetEngRabbit(Engine.get(),OneRabbit.RabbitSex.MALE));
+            rbs.Add(new RabNetEngRabbit(Engine.get(),Rabbit.SexType.MALE));
             update(true);
         }
 
         private void btFemale_Click(object sender, EventArgs e)
         {
-            rbs.Add(new RabNetEngRabbit(Engine.get(), OneRabbit.RabbitSex.FEMALE));
+            rbs.Add(new RabNetEngRabbit(Engine.get(), Rabbit.SexType.FEMALE));
             update(true);
         }
 
         private void btNoSex_Click(object sender, EventArgs e)
         {
-            rbs.Add(new RabNetEngRabbit(Engine.get(), OneRabbit.RabbitSex.VOID));
+            rbs.Add(new RabNetEngRabbit(Engine.get(), Rabbit.SexType.VOID));
             update(true);
         }
 
@@ -156,7 +156,7 @@ namespace rabnet
 
         private bool isMom(RabNetEngRabbit r1)
         {
-            return (r1.Sex == OneRabbit.RabbitSex.FEMALE && r1.Status > 0);
+            return (r1.Sex == Rabbit.SexType.FEMALE && r1.Status > 0);
         }
 
         private void commit(RabNetEngRabbit r1)
@@ -177,7 +177,7 @@ namespace rabnet
                 foreach (RabNetEngRabbit r in rbs)
                 {
                     if (r.Name == 0 && r.Surname==0) no_names = true;
-                    if (r.Address == OneRabbit.NullAddress) no_addresses = true;
+                    if (r.Address == Rabbit.NULL_ADDRESS) no_addresses = true;
                     if (r.Genom == "") no_gens = true;
                     if (!same_names)
                     {

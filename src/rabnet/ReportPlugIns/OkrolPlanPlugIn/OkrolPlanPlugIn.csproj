@@ -10,12 +10,13 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OkrolPlanPlugIn</RootNamespace>
     <AssemblyName>OkrolPlanPlugIn</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,17 +45,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -69,10 +61,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\db.mysql\db.mysql.csproj">
-      <Project>{B20A34DB-0FCD-4CFA-858E-16803387FF4F}</Project>
-      <Name>db.mysql</Name>
-      <Private>False</Private>
+    <ProjectReference Include="..\..\db.Interface\db.Interface.csproj">
+      <Project>{F23F4D6E-203C-419D-8A18-32DCABFA4175}</Project>
+      <Name>db.Interface</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\engine\engine.csproj">
       <Project>{241724AB-0674-41CF-A8AD-224EEC248E40}</Project>

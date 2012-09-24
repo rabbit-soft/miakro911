@@ -88,20 +88,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="engine.cs" />
     <Compile Include="EngineSt.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RabNetEngBuilding.cs" />
+    <Compile Include="RabNetEngine.cs" />
     <Compile Include="RabNetEngRabbit.cs" />
     <Compile Include="RabNetLogs.cs" />
     <Compile Include="RabNetZooTeh.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\db.mysql\db.mysql.csproj">
-      <Project>{B20A34DB-0FCD-4CFA-858E-16803387FF4F}</Project>
-      <Name>db.mysql</Name>
+    <ProjectReference Include="..\db.Interface\db.Interface.csproj">
+      <Project>{F23F4D6E-203C-419D-8A18-32DCABFA4175}</Project>
+      <Name>db.Interface</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

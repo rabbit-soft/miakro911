@@ -35,14 +35,14 @@ namespace rabnet
             label1.Text = r.FullName;
             comboBox1.Items.Clear();
             for (int i = 0; i < r.Youngers.Length; i++)
-                comboBox1.Items.Add(r.Youngers[i].fullname + " (" + r.Youngers[i].group+")");
+                comboBox1.Items.Add(r.Youngers[i].NameFull + " (" + r.Youngers[i].Group+")");
             comboBox1.SelectedIndex = grp;
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             int s = comboBox1.SelectedIndex;
-            int c = r.Youngers[s].group;
+            int c = r.Youngers[s].Group;
             int x = c - (int)(nudDead.Value + nudKilled.Value)+(int)nudAdd.Value;
             tbAlive.Text = x.ToString();
             nudKilled.Maximum = c - nudDead.Value;
@@ -60,7 +60,7 @@ namespace rabnet
             {
                 int i = comboBox1.SelectedIndex;
                 r.CountKids((int)nudDead.Value, (int)nudKilled.Value, (int)nudAdd.Value,
-                    int.Parse(tbAlive.Text), r.Youngers[i].age(),i);
+                    int.Parse(tbAlive.Text), r.Youngers[i].Age,i);
                 Close();
             }
             catch (ApplicationException ex)
@@ -72,10 +72,10 @@ namespace rabnet
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             int i = comboBox1.SelectedIndex;
-            label2.Text = "Возраст:" + r.Youngers[i].age().ToString() +"\nПорода:"+r.BreedName.ToString();
-            tbAlive.Text = r.Youngers[i].group.ToString();
+            label2.Text = "Возраст:" + r.Youngers[i].Age.ToString() +"\nПорода:"+r.BreedName.ToString();
+            tbAlive.Text = r.Youngers[i].Group.ToString();
             nudKilled.Value = nudDead.Value=nudAdd.Value= 0;
-            nudKilled.Maximum = nudDead.Maximum = r.Youngers[i].group;
+            nudKilled.Maximum = nudDead.Maximum = r.Youngers[i].Group;
 
         }
 

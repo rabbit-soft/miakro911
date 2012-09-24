@@ -290,9 +290,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\rabnet\db.mysql\db.mysql.csproj">
-      <Project>{B20A34DB-0FCD-4CFA-858E-16803387FF4F}</Project>
-      <Name>db.mysql</Name>
+    <ProjectReference Include="..\rabnet\db.Interface\db.Interface.csproj">
+      <Project>{F23F4D6E-203C-419D-8A18-32DCABFA4175}</Project>
+      <Name>db.Interface</Name>
     </ProjectReference>
     <ProjectReference Include="..\rabnet\engine\engine.csproj">
       <Project>{241724AB-0674-41CF-A8AD-224EEC248E40}</Project>

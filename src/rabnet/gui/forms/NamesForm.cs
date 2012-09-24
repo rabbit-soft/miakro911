@@ -68,7 +68,7 @@ namespace rabnet
                 listView1.Show();
                 return;
             }
-            rabnet.Name nm=(e.data as rabnet.Name);
+            RabName nm=(e.data as RabName);
             ListViewItem li = listView1.Items.Add(nm.name);
             li.Tag = nm.id;
             li.SubItems.Add(nm.surname);
@@ -117,9 +117,9 @@ namespace rabnet
             {
                 if (button1.Text == btext[0])
                 {
-                    OneRabbit.RabbitSex sx = OneRabbit.RabbitSex.MALE;
+                    Rabbit.SexType sx = Rabbit.SexType.MALE;
                     if (tabControl1.SelectedIndex == 1) 
-                        sx = OneRabbit.RabbitSex.FEMALE;
+                        sx = Rabbit.SexType.FEMALE;
                     Engine.get().db().addName(sx, textBox1.Text.Trim(), textBox2.Text.Trim());
                 }
                 else

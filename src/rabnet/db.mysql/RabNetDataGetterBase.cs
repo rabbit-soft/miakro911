@@ -4,8 +4,9 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Text;
 using log4net;
+using rabnet;
 
-namespace rabnet
+namespace db.mysql
 {
     public abstract class RabNetDataGetterBase : IDataGetter
     {
@@ -24,12 +25,14 @@ namespace rabnet
             log.Debug(this.GetType().ToString()+" "+s);
         }
 
-        public RabNetDataGetterBase(MySqlConnection sql,Filters filters)
+        public RabNetDataGetterBase(MySqlConnection sql,Filters filters) 
         {
             options = filters;
             this.sql = sql;
             String qcmd = countQuery();//получить количество записей
-            Debug("c_query: " + qcmd);
+#if DEBUG
+            Debug("QCount: " + qcmd);
+#endif
             MySqlCommand cmd = new MySqlCommand(qcmd, sql);
             rd = cmd.ExecuteReader();
             rd.Read();
@@ -44,12 +47,14 @@ namespace rabnet
             }
             rd.Close();
             cmd.CommandText = getQuery();
-            Debug("d_query:" + cmd.CommandText);
+#if DEBUG
+            Debug("QGetIData:" + cmd.CommandText);
+#endif
             rd = cmd.ExecuteReader();
         }
         public int getCount()
         {
-            Debug("count = "+count.ToString());
+            //Debug("count = "+count.ToString());
             return count;
         }
         public int getCount2()

@@ -16,7 +16,6 @@
 	<property name="appname_en" value="Miakro-9.11"/>
 	<property name="companyname_en" value="9-Bits"/>
 
-
 	<property name="revision" value="none"/>
 
 	<property name="curdir" value="." overwrite="false"/>
@@ -80,7 +79,6 @@
 	<property name="dotnetInstaller" value="dotnetfx.exe"/>
 	<property name="mysqlInstaller" value="mysql-essential-5.1.49-win32.msi"/>
 	<property name="MSIInstaller" value="WindowsXP-KB942288-v3-x86.exe"/>
-
 
 	<property name="dotnetInstallerSource" value="${party3d.path}/${dotnetInstaller}"/>
 	<property name="mysqlInstallerSource" value="${party3d.path}/${mysqlInstaller}"/>
@@ -204,7 +202,9 @@
 	</target-->
 	
 	<!--target name="buildall" depends="svn_rev,release,protected,tools,release_zip" description="Build all projects"/-->
-	<target name="buildall" depends="svn_rev,protected,demo,tools" description="Build all projects"/>
+	<target name="buildall" depends="svn_rev,protected,demo,tools" description="Build all projects">
+		<delete dir="${curdir}/_tmp"/>
+	</target>
 	
 	<target name="protected" description="Build PROTECTED">
 		<property name="compile_flag" value="PROTECTED" />
@@ -261,9 +261,9 @@
 	</target>
 
 	<!--target name="rabnet" description="make rabnet application" depends="db.mysql,engine,gui"/-->
-	<target name="rabnet" description="make rabnet application" depends="pickers,db.mysql,engine,gui_genetics,cas,gui"/>
+	<target name="rabnet" description="make rabnet application" depends="db.Interface,db.mysql,engine,pickers,gui_genetics,cas,gui"/>
 
-	<target name="rabnet_demo" description="make rabnet application" depends="pickers,db.mysql,engine,gui"/>
+	<target name="rabnet_demo" description="make rabnet application" depends="db.Interface,db.mysql,engine,pickers,gui"/>
 	
 	<target name="pickers" description="pickers library for rabnet">
 		<csc target="library" output="${bin_dir}/RabNet/Pickers.dll" define="${compile_flag}" optimize="true">
@@ -275,6 +275,19 @@
 		</csc>
 	</target>
 
+	<target name="db.Interface" description="interface for all data layer">
+		<csc target="library" output="${bin_dir}/RabNet/db.Interface.dll" define="${compile_flag}" optimize="true">
+			<sources>
+				<include name="${curdir}/rabnet/db.Interface/*.cs"/>
+				<include name="${curdir}/rabnet/db.Interface/Properties/*.cs"/>
+			</sources>
+			<references>
+				<include name="${log4net.use}"/>
+				<include name="${mysql.use}"/>
+			</references>
+		</csc>
+	</target>
+	
 	<target name="db.mysql" description="mysql data layer">
 		<csc target="library" output="${bin_dir}/RabNet/db.mysql.dll" define="${compile_flag}" optimize="true">
 			<sources>
@@ -283,6 +296,7 @@
 				<include name="${curdir}/rabnet/db.mysql/Properties/*.cs"/>
 			</sources>
 			<references>
+				<include name="${bin_dir}/RabNet/db.Interface.dll" />
 				<include name="${log4net.use}"/>
 				<include name="${mysql.use}"/>
 			</references>
@@ -312,7 +326,7 @@
 			</sources>
 			<references>
 				<include name="${log4net.use}"/>
-				<include name="${bin_dir}/RabNet/db.mysql.dll" />
+				<include name="${bin_dir}/RabNet/db.Interface.dll" />
 				<include name="${bin_dir}/db.miafile.dll" />
 			</references>
 		</csc>
@@ -335,7 +349,7 @@
 				<include name="${log4net.use}"/>
 				<include name="${rep.use}"/>
 				<include name="${repeng.use}"/>
-				<include name="${bin_dir}/RabNet/db.mysql.dll" />
+				<include name="${bin_dir}/RabNet/db.Interface.dll" />
 				<include name="${bin_dir}/RabNet/engine.dll" />
 			</references>
 		</csc>
@@ -343,7 +357,7 @@
 
 	<target name="rabdump" description="rabnet db dumper">		
 		<copy file="${party3d.path}/ccxmlrpc.dll" tofile="${bin_dir}/RabDump/ccxmlrpc.dll" />
-		<copy file="${bin_dir}/RabNet/db.mysql.dll" tofile="${bin_dir}/RabDump/db.mysql.dll" />
+		<copy file="${bin_dir}/RabNet/db.Interface.dll" tofile="${bin_dir}/RabDump/db.Interface.dll" />
 		<copy file="${bin_dir}/RabNet/engine.dll" tofile="${bin_dir}/RabDump/engine.dll" />
 		<csc target="winexe" output="${bin_dir}/RabDump/rabdump.exe" win32icon="${curdir}/rabdump/icon_white.ico" define="${compile_flag}" optimize="true">
 			<sources>
@@ -382,7 +396,7 @@
 				<include name="${log4net.use}"/>
 				<include name="${party3d.path}/ccxmlrpc.dll"/>
 				<include name="${bin_dir}/RabDump/engine.dll"/>
-				<include name="${bin_dir}/RabDump/db.mysql.dll"/>
+				<include name="${bin_dir}/RabDump/db.Interface.dll"/>
 			</references>
 		</csc>
 		<copy file="${curdir}/rabdump/clean_config/rabdump.exe.config" tofile="${bin_dir}/RabDump/rabdump.exe.config" />
@@ -420,7 +434,7 @@
 				<include name="${rep.use}"/>
 				<include name="${repeng.use}"/>
 				<include name="${bin_dir}/RabNet/Pickers.dll" />
-				<include name="${bin_dir}/RabNet/db.mysql.dll" />
+				<include name="${bin_dir}/RabNet/db.Interface.dll" />
 				<include name="${bin_dir}/RabNet/engine.dll" />
 				<include name="${bin_dir}/RabNet/CAS.dll" />
 				<include name="${bin_dir}/Genetics/gui_genetics.dll" />
@@ -451,11 +465,11 @@
 		</exec>
 		<exec program="${obfuscator}">
 			<arg value="${root_bin}/demo/Tools/mia_conv.exe" />
+			<arg value="${root_bin}/demo/Rabnet/db.Interface.dll" />
 			<arg value="${root_bin}/demo/Rabnet/db.mysql.dll" />
 			<arg value="${root_bin}/demo/Rabnet/engine.dll" />
 			<arg value="${root_bin}/demo/Rabnet/rabnet.exe" />
 		</exec>
-
 		<!--exec program="${grd_ob}">
 			<arg value="/INIT" />
 			<arg value="/MSG=C:\Program Files\Guardant\Guardant 5\PLAT_T+\bin\licensewizard.msg" />
@@ -486,15 +500,16 @@
 			<!--arg value="/EL=${curdir}/GRDConfigs/rabnet/config.cfp" /-->
 			<!--arg value="/IL=${curdir}/GRDConfigs/rabnet/rabnet.ifp" /-->
 			<arg value="/OUT=${root_bin}/protected/RabNet/" />
-			<arg value="${root_bin}/protected/RabNet/rabnet.exe" />
-			<arg value="${root_bin}/protected/RabNet/engine.dll" />
+			<arg value="${root_bin}/protected/RabNet/db.Interface.dll" />
 			<arg value="${root_bin}/protected/RabNet/db.mysql.dll" />
+			<arg value="${root_bin}/protected/RabNet/engine.dll" />
+			<arg value="${root_bin}/protected/RabNet/rabnet.exe" />		
 		</exec>
 
-
-		<delete file="${root_bin}/protected/RabNet/rabnet.exe.old"/>
-		<delete file="${root_bin}/protected/RabNet/engine.dll.old"/>
+		<delete file="${root_bin}/protected/RabNet/rabnet.exe.old"/>	
+		<delete file="${root_bin}/protected/RabNet/db.Interface.dll.old"/>
 		<delete file="${root_bin}/protected/RabNet/db.mysql.dll.old"/>
+		<delete file="${root_bin}/protected/RabNet/engine.dll.old"/>
 		<delete file="${root_bin}/protected/RabNet/rabnet.map"/>
 
 		<!--exec program="${grd_ob}">
@@ -600,7 +615,7 @@
 			</resources>
 			<references>
 				<include name="${root_bin}/Protected/RabNet/rabnet.exe" />
-				<include name="${root_bin}/Protected/RabNet/db.mysql.dll" />
+				<include name="${root_bin}/Protected/RabNet/db.Interface.dll" />
 				<include name="${root_bin}/Protected/RabNet/engine.dll" />
 			</references>
 		</csc>
@@ -619,7 +634,7 @@
 			</resources>
 			<references>
 				<include name="${root_bin}/Protected/RabNet/rabnet.exe" />
-				<include name="${root_bin}/Protected/RabNet/db.mysql.dll" />
+				<include name="${root_bin}/Protected/RabNet/db.Interface.dll" />
 				<include name="${root_bin}/Protected/RabNet/engine.dll" />
 			</references>
 		</csc>
@@ -638,7 +653,7 @@
 			</resources>
 			<references>
 				<include name="${root_bin}/Protected/RabNet/rabnet.exe" />
-				<include name="${root_bin}/Protected/RabNet/db.mysql.dll" />
+				<include name="${root_bin}/Protected/RabNet/db.Interface.dll" />
 				<include name="${root_bin}/Protected/RabNet/engine.dll" />
 			</references>
 		</csc>

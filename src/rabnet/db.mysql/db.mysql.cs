@@ -4,8 +4,9 @@ using System.Drawing;
 using System.Xml;
 using log4net;
 using MySql.Data.MySqlClient;
+using rabnet;
 
-namespace rabnet
+namespace db.mysql
 {
     public class RabNetDbMySql:IRabNetDataLayer
     {
@@ -85,7 +86,9 @@ namespace rabnet
         /// <returns>Результат выполнения sql-команды</returns>
         private MySqlDataReader reader(String cmd)
         {
-            log.Debug("reader query:"+cmd);
+#if DEBUG
+            //log.Debug("reader query:"+cmd);
+#endif
             MySqlCommand c=new MySqlCommand(cmd,sql);
             return c.ExecuteReader();
         }
@@ -145,7 +148,7 @@ namespace rabnet
 
         public IDataGetter getRabbits(Filters filters)
         {
-            return new Rabbits(sql, filters);
+            return new RabbitsDataGetter(sql, filters);
         }
 
         public IDataGetter getBuildings(Filters filters)
@@ -182,7 +185,7 @@ namespace rabnet
 
         public TreeData rabbitGenTree(int rabbit)
         {
-            return Rabbits.getRabbitGen(rabbit,sql);
+            return RabbitsDataGetter.getRabbitGen(rabbit,sql);
         }
 
         public TreeData buildingsTree()
@@ -190,14 +193,13 @@ namespace rabnet
             return Buildings.getTree(0, sql, null);
         }
 
-
         public IDataGetter GetYoungers(Filters filters)
         {
             return new Youngers(sql, filters);
         }
-        public OneRabbit[] GetYoungers(int momId)
+        public YoungRabbit[] GetYoungers(int momId)
         {
-            return RabbitGetter.GetYoungers(sql,momId);
+            return Youngers.GetYoungers(sql,momId);
         }
 
         public int[] getTiers(int farm)
@@ -225,7 +227,6 @@ namespace rabnet
 
         public IDataGetter zooTeh(Filters f)
         {
-            //TODO:remove item
             return new ZooTehNullGetter();
         }
 
@@ -294,7 +295,7 @@ namespace rabnet
 
         public void makeFuck(int female, int male, DateTime date,int worker)
         {
-            RabbitGetter.makeFuck(sql, female, male, date,worker);
+            FucksGetter.makeFuck(sql, female, male, date,worker);
         }
 
         public void makeProholost(int female, DateTime when)
@@ -322,7 +323,7 @@ namespace rabnet
             return new Vaccines(sql);
         }
 
-        public string makeName(int nm, int sur, int sec, int grp, OneRabbit.RabbitSex sex)
+        public string makeName(int nm, int sur, int sec, int grp, Rabbit.SexType sex)
         {
             return RabbitGetter.makeName(sql, nm, sur, sec, grp, sex);
         }
@@ -332,10 +333,10 @@ namespace rabnet
             return Names.unblockName(sql, id);
         }
 
-        public Younger[] getSuckers(int mom)
-        {
-            return Youngers.getSuckers(sql, mom);
-        }
+        //public YoungRabbit[] getSuckers(int mom)
+        //{
+        //    return Youngers.GetYoungers(sql, mom);
+        //}
 
         public void replaceRabbit(int rid, int farm, int tier_id, int sec)
         {
@@ -356,7 +357,7 @@ namespace rabnet
             return (new Logs(sql).getLogs(f));
         }
 
-        public void addName(OneRabbit.RabbitSex sex, string name, string surname)
+        public void addName(Rabbit.SexType sex, string name, string surname)
         {
             Names.addName(sql, sex, name, surname);
         }
@@ -376,12 +377,12 @@ namespace rabnet
             RabbitGetter.countKids(sql, rid, dead, killed, added, yid);
         }
 
-        public void setRabbitSex(int rid, OneRabbit.RabbitSex sex)
+        public void setRabbitSex(int rid, Rabbit.SexType sex)
         {
             RabbitGetter.setRabbitSex(sql, rid, sex);
         }
 
-        public int cloneRabbit(int rid, int count, int farm, int tier, int sec, OneRabbit.RabbitSex sex, int mom)
+        public int cloneRabbit(int rid, int count, int farm, int tier, int sec, Rabbit.SexType sex, int mom)
         {
             return RabbitGetter.cloneRabbit(sql, rid, count, farm, tier, sec, sex, mom);
         }
@@ -437,7 +438,7 @@ namespace rabnet
             RabbitGetter.combineGroups(sql, rabfrom, rabto);
         }
 
-        public Rabbit[] getMothers(int age, int agediff)
+        public AdultRabbit[] getMothers(int age, int agediff)
         {
             return RabbitGetter.getMothers(sql, age, agediff);
         }
@@ -532,7 +533,7 @@ namespace rabnet
 #region vaccines
         public RabVac[] GetRabVac(int rabId)
         {
-            return RabbitGetter.GetRabVac( sql,rabId);
+            return RabbitGetter.GetRabVacs( sql,rabId);
         }
 
         public void SetRabbitVaccine(int rid, int vid,DateTime date)
@@ -580,7 +581,7 @@ namespace rabnet
         {
             return new Butcher(sql, f);
         }
-        public List<OneRabbit> getVictims(DateTime dt)
+        public Rabbit[] GetVictims(DateTime dt)
         {
             return Butcher.getVictims(sql,dt);
         }
@@ -648,6 +649,11 @@ namespace rabnet
         public DateTime GetFarmStartTime()
         {
             return Logs.getFarmStartTime(sql);
+        }
+
+        public IRabNetDataLayer Clone()
+        {
+            return this.MemberwiseClone() as IRabNetDataLayer;
         }
         #endregion IRabNetDataLayer Members
     }        

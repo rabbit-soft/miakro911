@@ -4,113 +4,10 @@ using System.Text;
 using MySql.Data.MySqlClient;
 using System.Xml;
 using log4net;
+using rabnet;
 
-namespace rabnet
-{
-    public enum myReportType
-    {
-         TEST,BREEDS,AGE,FUCKER,DEAD,DEADREASONS,REALIZE,USER_OKROLS,SHED,REPLACE,REVISION,BY_MONTH,FUCKS_BY_DATE,BUTCHER_PERIOD,RABBIT,PRIDE,ZOOTECH 
-    }
-
-    public static class ReportHelper
-    {
-        public static string GetRusName(myReportType type)
-        {
-            switch (type)
-            {
-                case myReportType.AGE: return "Статистика возрастного поголовья";
-                case myReportType.BREEDS: return "Отчет по породам";
-                case myReportType.BUTCHER_PERIOD: return "Стерильный цех";
-                case myReportType.BY_MONTH: return "Количество по месяцам";
-                case myReportType.DEAD: return "Списания";
-                case myReportType.DEADREASONS: return "Причины списаний";
-                case myReportType.FUCKER: return "Статистика продуктивности";
-                case myReportType.FUCKS_BY_DATE: return "Список случек и вязок";
-                case myReportType.PRIDE: return "Племенной список";
-                case myReportType.RABBIT: return "Племенное свидетельство";
-                case myReportType.REALIZE: return "Кандидаты на реализацию";
-                case myReportType.REPLACE: return "План пересадок";
-                case myReportType.REVISION: return "Ревизия свободных клеток";
-                case myReportType.SHED: return "Шедовый отчет";
-                case myReportType.USER_OKROLS: return "Окролы по пользователям";
-                default: return "test";
-            }
-        }
-
-        public static string GetFileName(myReportType type)
-        {
-            switch (type)
-            {
-                case myReportType.AGE: return "age";
-                case myReportType.BREEDS: return "breeds";
-                case myReportType.BUTCHER_PERIOD: return "butcher";
-                case myReportType.BY_MONTH: return "by_month";
-                case myReportType.DEAD: return "dead";
-                case myReportType.DEADREASONS: return "deadreason";
-                case myReportType.FUCKER: return "fucker";
-                case myReportType.FUCKS_BY_DATE: return "fucks_by_date";
-                case myReportType.PRIDE: return "plem";
-                case myReportType.RABBIT: return "rabbit";
-                case myReportType.REALIZE: return "realization";
-                case myReportType.REPLACE: return "replace_plan";
-                case myReportType.REVISION: return "empty_rev";
-                case myReportType.SHED: return "shed";
-                case myReportType.USER_OKROLS: return "okrol_user";
-                default: return "test";
-            }
-        }
-
-
-        public static string[] GetHeaders(myReportType repType)
-        {
-            switch (repType)
-            {
-                case myReportType.BREEDS: return new string[]{
-                      "№",
-                      "Порода",
-                      "Производители",
-                      "Кандидаты",
-                      "Мальчики",
-                      "Штатные",
-                      "Первокролки",
-                      "Невесты",
-                      "Девочки",
-                      "Безполые",
-                      "Всего"};
-                  
-                case myReportType.AGE:return new string[]{
-                      "Возраст",
-                      "Количество"};
-                  
-                case myReportType.BY_MONTH: return new string[]{
-                      "Дата",
-                      "Всего",
-                      "Осталось"};
-                  
-                case myReportType.DEADREASONS:return new string[]{
-                     "Причина",
-                     "Количество"};
-                  
-                case myReportType.DEAD:return new string[]{
-                     "Дата",
-                     "Имя",
-                     "Количество",
-                     "Причина",
-                     "Заметки"};
-                    
-                case myReportType.FUCKS_BY_DATE:return new string[]{
-                     "Дата",
-                     "Самка",
-                     "Самец",
-                     "Работник"};
-
-                default: return new string[] { };
-            }
-        }
-    }
-        
-    
-
+namespace db.mysql
+{    
     class Reports
     {
         MySqlConnection sql = null;
@@ -171,7 +68,7 @@ namespace rabnet
                     if (nm.Substring(0, 4) == "adr_")
                     {
                         nm = nm.Substring(4);
-                        vl = Buildings.FullPlaceName(vl, true, false, false);
+                        vl = Building.FullPlaceName(vl, true, false, false);
                     }
                     XmlElement f = xml.CreateElement(nm);
                     f.AppendChild(xml.CreateTextNode(vl));
@@ -185,8 +82,8 @@ namespace rabnet
 
         private XmlDocument makeRabOfDate(XmlDocument doc_in)
         {
-            XmlDocument dok_out = new XmlDocument();
-            dok_out.AppendChild(dok_out.CreateElement("Rows"));
+            XmlDocument doc = new XmlDocument();
+            doc.AppendChild(doc.CreateElement("Rows"));
             XmlNodeList lst = doc_in.ChildNodes[0].ChildNodes;
             string name = "";
             string dt = "";
@@ -213,21 +110,27 @@ namespace rabnet
                 }
                 else 
                 {
-                    XmlElement el = (XmlElement)dok_out.DocumentElement.AppendChild(dok_out.CreateElement("Row"));
-                    el.AppendChild(dok_out.CreateElement("name")).AppendChild(dok_out.CreateTextNode(name));
-                    el.AppendChild(dok_out.CreateElement("dt")).AppendChild(dok_out.CreateTextNode(dt));
-                    el.AppendChild(dok_out.CreateElement("state")).AppendChild(dok_out.CreateTextNode(state.ToString()));
+                    XmlElement el = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
+                    ReportHelper.Append(el, doc, "name", name);
+                    ReportHelper.Append(el, doc, "dt", dt);
+                    ReportHelper.Append(el, doc, "state", state.ToString());
+                    //el.AppendChild(dok_out.CreateElement("name")).AppendChild(dok_out.CreateTextNode(name));
+                    //el.AppendChild(dok_out.CreateElement("dt")).AppendChild(dok_out.CreateTextNode(dt));
+                    //el.AppendChild(dok_out.CreateElement("state")).AppendChild(dok_out.CreateTextNode(state.ToString()));
 
                     name = nd.FirstChild.FirstChild.Value;
                     dt = nd.FirstChild.NextSibling.FirstChild.Value;
                     state = nd.FirstChild.NextSibling.NextSibling.FirstChild.Value == "п" ? state = 0 : state = int.Parse(nd.FirstChild.NextSibling.NextSibling.FirstChild.Value);
                 }               
             }
-            XmlElement el2 = (XmlElement)dok_out.DocumentElement.AppendChild(dok_out.CreateElement("Row"));
-            el2.AppendChild(dok_out.CreateElement("name")).AppendChild(dok_out.CreateTextNode(name));
-            el2.AppendChild(dok_out.CreateElement("dt")).AppendChild(dok_out.CreateTextNode(dt));
-            el2.AppendChild(dok_out.CreateElement("state")).AppendChild(dok_out.CreateTextNode(state.ToString()));
-            return dok_out;
+            XmlElement el2 = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
+            ReportHelper.Append(el2, doc, "name", name);
+            ReportHelper.Append(el2, doc, "dt", dt);
+            ReportHelper.Append(el2, doc, "state", state.ToString());
+            //el2.AppendChild(dok_out.CreateElement("name")).AppendChild(dok_out.CreateTextNode(name));
+            //el2.AppendChild(dok_out.CreateElement("dt")).AppendChild(dok_out.CreateTextNode(dt));
+            //el2.AppendChild(dok_out.CreateElement("state")).AppendChild(dok_out.CreateTextNode(state.ToString()));
+            return doc;
         }
         /// <summary>
         /// Окролы по пользователям - Обработка
@@ -262,16 +165,22 @@ namespace rabnet
             foreach (String k in sums.Keys)
             {
                 XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
-                rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(k));
-                rw.AppendChild(doc.CreateElement("dt")).AppendChild(doc.CreateTextNode("Cум."));
-                rw.AppendChild(doc.CreateElement("state")).AppendChild(doc.CreateTextNode(sums[k].ToString()));
+                ReportHelper.Append(rw, doc, "name", k);
+                ReportHelper.Append(rw, doc, "dt", "Cум.");
+                ReportHelper.Append(rw, doc, "state", sums[k].ToString());
+                //rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(k));
+                //rw.AppendChild(doc.CreateElement("dt")).AppendChild(doc.CreateTextNode("Cум."));
+                //rw.AppendChild(doc.CreateElement("state")).AppendChild(doc.CreateTextNode(sums[k].ToString()));
             }
             foreach (String k in cnts.Keys)
             {
                 XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
-                rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(k));
-                rw.AppendChild(doc.CreateElement("dt")).AppendChild(doc.CreateTextNode("К.Окр."));
-                rw.AppendChild(doc.CreateElement("state")).AppendChild(doc.CreateTextNode(cnts[k].ToString()));
+                ReportHelper.Append(rw, doc, "name", k);
+                ReportHelper.Append(rw, doc, "dt", "К.Окр.");
+                ReportHelper.Append(rw, doc, "state", cnts[k].ToString());
+                //rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(k));
+                //rw.AppendChild(doc.CreateElement("dt")).AppendChild(doc.CreateTextNode("К.Окр."));
+                //rw.AppendChild(doc.CreateElement("state")).AppendChild(doc.CreateTextNode(cnts[k].ToString()));
             }
             sums.Clear();
             foreach (XmlNode nd in lst)
@@ -286,9 +195,12 @@ namespace rabnet
             foreach (String k in sums.Keys)
             {
                 XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
-                rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode("итого"));
-                rw.AppendChild(doc.CreateElement("dt")).AppendChild(doc.CreateTextNode(k));
-                rw.AppendChild(doc.CreateElement("state")).AppendChild(doc.CreateTextNode(sums[k].ToString()));
+                ReportHelper.Append(rw, doc, "name", "итого");
+                ReportHelper.Append(rw, doc, "dt", k);
+                ReportHelper.Append(rw, doc, "state", sums[k].ToString());
+                //rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode("итого"));
+                //rw.AppendChild(doc.CreateElement("dt")).AppendChild(doc.CreateTextNode(k));
+                //rw.AppendChild(doc.CreateElement("state")).AppendChild(doc.CreateTextNode(sums[k].ToString()));
             }
             return doc;
         }
@@ -496,13 +408,19 @@ WHERE f_worker={0:d} {1} ORDER BY name,dt;", f.safeValue("user"), period,format)
         private void addShedRows(XmlDocument doc,String type, int ideal, int real)
         {
             XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
-            rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(type));
-            rw.AppendChild(doc.CreateElement("type")).AppendChild(doc.CreateTextNode("идеал"));
-            rw.AppendChild(doc.CreateElement("value")).AppendChild(doc.CreateTextNode(ideal.ToString()));
+            ReportHelper.Append(rw, doc, "name", type);
+            ReportHelper.Append(rw, doc, "type", "идеал");
+            ReportHelper.Append(rw, doc, "value", ideal.ToString());
+            //rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(type));
+            //rw.AppendChild(doc.CreateElement("type")).AppendChild(doc.CreateTextNode("идеал"));
+            //rw.AppendChild(doc.CreateElement("value")).AppendChild(doc.CreateTextNode(ideal.ToString()));
             rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
-            rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(type));
-            rw.AppendChild(doc.CreateElement("type")).AppendChild(doc.CreateTextNode("реально"));
-            rw.AppendChild(doc.CreateElement("value")).AppendChild(doc.CreateTextNode(real.ToString()));
+            ReportHelper.Append(rw, doc, "name", type);
+            ReportHelper.Append(rw, doc, "type", "реально");
+            ReportHelper.Append(rw, doc, "value", real.ToString());
+            //rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(type));
+            //rw.AppendChild(doc.CreateElement("type")).AppendChild(doc.CreateTextNode("реально"));
+            //rw.AppendChild(doc.CreateElement("value")).AppendChild(doc.CreateTextNode(real.ToString()));
         }
 
         private XmlDocument shedReport(Filters f)
@@ -575,11 +493,11 @@ AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_p
 FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AND (t_id=m_upper OR t_id=m_lower) AND inBuilding({0:d},m_id);",bld),sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
-                for (int i = 0; i < Buildings.GetRSecCount(rd.GetString(1)); i++)
+                for (int i = 0; i < Building.GetRSecCount(rd.GetString(1)); i++)
                     if (rd.GetInt32(i + 2) == 0)
                     {
                         doc.DocumentElement.AppendChild(doc.CreateElement("Row")).AppendChild(
-                            doc.CreateElement("address")).AppendChild(doc.CreateTextNode(rd.GetString(0)+Buildings.GetRSec(rd.GetString(1),i,"000")));
+                            doc.CreateElement("address")).AppendChild(doc.CreateTextNode(rd.GetString(0)+Building.GetRSec(rd.GetString(1),i,"000")));
                     }
             rd.Close();
             return doc;

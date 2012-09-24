@@ -75,14 +75,14 @@ namespace rabnet
         {
             if (lvButcherDates.SelectedItems.Count == 0) return;
             DateTime date = DateTime.Parse(lvButcherDates.SelectedItems[0].SubItems[0].Text);
-            List<OneRabbit> rabbits = Engine.get().db().getVictims(date);
+            Rabbit[] rabbits = Engine.get().db().GetVictims(date);
             lvVictims.Items.Clear();
             foreach (OneRabbit rab in rabbits)
             {
-                ListViewItem lvi = lvVictims.Items.Add(rab.fullname);
-                lvi.SubItems.Add(rab.age().ToString());
-                lvi.SubItems.Add(rab.group.ToString());
-                lvi.SubItems.Add(rab.breedname);
+                ListViewItem lvi = lvVictims.Items.Add(rab.NameFull);
+                lvi.SubItems.Add(rab.Age.ToString());
+                lvi.SubItems.Add(rab.Group.ToString());
+                lvi.SubItems.Add(rab.BreedName);
             }
 
             lvMeat.Items.Clear();

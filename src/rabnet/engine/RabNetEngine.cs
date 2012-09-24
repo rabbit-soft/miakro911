@@ -4,6 +4,8 @@ using System.Text;
 using System.Configuration;
 using log4net;
 using log4net.Config;
+using System.IO;
+using System.Reflection;
 
 namespace rabnet
 {
@@ -48,8 +50,12 @@ namespace rabnet
             _logger.Debug("initing engine data to " + dbType + " param=" + param);
             if (dbType == "db.mysql")
             {
-                data = new RabNetDbMySql(param);
-                data2 = new RabNetDbMySql(param);
+                //data = new RabNetDbMySql(param);
+                //data2 = new RabNetDbMySql(param);
+                data = getDataLayer("db.mysql");               
+                data2 = data.Clone();
+                data.Init(param);
+                data2.Init(param);
             }
             /*
             else if (dbext == "db.miafile")
@@ -72,6 +78,7 @@ namespace rabnet
             }
             return data;
         }
+
         public IRabNetDataLayer initEngine(String param)
         {
             return initEngine("db.mysql", param);
@@ -212,5 +219,23 @@ namespace rabnet
             logs().log(RabNetLogs.LogType.PREOKROL, rid);
         }
 
+        private IRabNetDataLayer getDataLayer(string asmName)
+        {
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, asmName+".dll");
+            if (!File.Exists(filePath))
+                throw new Exception("MySQL DataLayer dll is not exists");
+            //todo проверка на уже загруженность сборки
+            Assembly Asm = Assembly.LoadFile(filePath);//загружаем Сборку
+            //Type AsmType = Asm.GetType();
+            foreach (Type AsmType in Asm.GetTypes())//Проверяем все имеющиеся типы данных (классы)
+            {
+                if (typeof(IRabNetDataLayer).IsAssignableFrom(AsmType))
+                {
+                    IRabNetDataLayer db = (IRabNetDataLayer)Activator.CreateInstance(AsmType);
+                    return db;
+                }
+            }
+            throw new Exception("could not load DataLayer from assembly");
+        }
 	}
 }

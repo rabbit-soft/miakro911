@@ -30,21 +30,26 @@ namespace rabnet
         /// <summary>
         /// Сокращения
         /// </summary>
-        public static string SHORT = "shr";
+        public const string SHORT = "shr";
         public const string MALE = "mt";
         public const string FEMALE = "ft";
+        public const string SHOW_BLD_TIERS = "sht";
+        public const string SHOW_BLD_DESCR = "sho";
+        public const string SHOW_OKROL_NUM = "num";
+        public const string MAKE_CANDIDATE = "cand";
+        public const string MAKE_BRIDE = "brd";
         /// <summary>
         /// Какого возраста крольчатам назначать прививку
         /// </summary>
-        public const string ZT_VACC_DAYS = "vacc";
+        public const string VACC_DAYS = "vacc";
         /// <summary>
         /// Прививать крольчат с матерью
         /// </summary>
-        public const string ZT_VACC_MOTH = "vacc_moth";
+        public const string VACC_MOTH = "vacc_moth";
         /// <summary>
         /// Набор id прививок для отображение
         /// </summary>
-        public const string ZT_VACC_SHOW = "vacc_show";
+        public const string VACC_SHOW = "vacc_show";
         /// <summary>
         /// Отсадка мальчиков в возврасте начиная с...
         /// </summary>

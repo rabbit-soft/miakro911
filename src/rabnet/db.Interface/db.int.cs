@@ -58,7 +58,7 @@ namespace rabnet
         int getMFCount();
         TreeData rabbitGenTree(int rabbit);
         TreeData buildingsTree();       
-        OneRabbit[] GetYoungers(int momId);
+        YoungRabbit[] GetYoungers(int momId);
         int[] getTiers(int farm);
         Building getBuilding(int tier);       
         List<sMeat> getMeats(DateTime date);
@@ -87,16 +87,16 @@ namespace rabnet
         void makeFuck(int female, int male,DateTime date,int worker);
         void makeProholost(int female, DateTime when);
         int makeOkrol(int female, DateTime when, int children, int dead);
-        String makeName(int nm, int sur, int sec, int grp, OneRabbit.RabbitSex sex);
+        String makeName(int nm, int sur, int sec, int grp, Rabbit.SexType sex);
         bool unblockName(int id);
-        Younger[] getSuckers(int mom);
+        //YoungRabbit[] getSuckers(int mom);
         Building[] getFreeBuilding(Filters f);
         void replaceRabbit(int rid, int farm, int tier_id, int sec);
         void replaceYounger(int yid, int farm, int tier_id, int sec);
         int newRabbit(OneRabbit r,int mom);
         LogList getLogs(Filters f);       
         void updateBuilding(Building b);
-        void addName(OneRabbit.RabbitSex sex, string name, string surname);
+        void addName(Rabbit.SexType sex, string name, string surname);
         void changeName(string orgName, string name, string surname);
         /// <summary>
         /// Списание кролика
@@ -115,8 +115,8 @@ namespace rabnet
         /// <param name="added">Прибавилось</param>
         /// <param name="yid">К какой группе подсосных</param>
         void СountKids(int rid, int dead, int killed, int added,int yid);       
-        void setRabbitSex(int rid,OneRabbit.RabbitSex sex);
-        int cloneRabbit(int rid, int count, int farm, int tier, int sec, OneRabbit.RabbitSex sex, int mom);
+        void setRabbitSex(int rid,Rabbit.SexType sex);
+        int cloneRabbit(int rid, int count, int farm, int tier, int sec, Rabbit.SexType sex, int mom);
         string userGroup(int uid);
         void deleteUser(int uid);
         void changeUser(int uid, string name, int group, string password, bool chpass);
@@ -128,7 +128,7 @@ namespace rabnet
         void combineGroups(int rabfrom, int rabto);
         XmlDocument makeReport(myReportType type, Filters f);
         XmlDocument makeReport(string query);
-        Rabbit[] getMothers(int age,int agediff);        
+        AdultRabbit[] getMothers(int age,int agediff);        
         String[] logNames();        
         void setBuildingName(int bid,String name);
         void addBuilding(int parent, String name);
@@ -149,7 +149,7 @@ namespace rabnet
         void changeWorker(int fid, int worker);
 		RabbitGen getRabbitGen(int rid);
 		Dictionary<int, Color> getBreedColors();
-        List<OneRabbit> getVictims(DateTime dt);
+        Rabbit[] GetVictims(DateTime dt);
 
         //zooTech
         ZootehJob[] GetZooTechJobs(Filters f, JobType type);
@@ -178,6 +178,8 @@ namespace rabnet
         DateTime GetFarmStartTime();
 
         void SetRabbitVaccine(int rid, int vid,DateTime date);
+
+        IRabNetDataLayer Clone();
     }
 
 }

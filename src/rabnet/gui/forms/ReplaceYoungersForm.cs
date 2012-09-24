@@ -13,7 +13,7 @@ namespace rabnet
         const int REPLCOL = 8;
         private RabNetEngRabbit r = null;
         private ListViewColumnSorter cs = null;
-        private int selmom=0;
+        private int _selmom=0;
         public ReplaceYoungersForm()
         {
             InitializeComponent();
@@ -25,13 +25,13 @@ namespace rabnet
         {
             r = Engine.get().getRabbit(rid);
             label1.Text = r.FullName;
-            label2.Text = "Возраст: " + r.age.ToString();
-            nudCount.Value=nudCount.Maximum=r.Group;
+            label2.Text = "Возраст: " + r.Age.ToString();
+            nudCount.Value = nudCount.Maximum = r.Group;
             label5.Text = "Порода: " + r.BreedName;
         }
         public ReplaceYoungersForm(int rid,int selmom):this(rid)
         {
-            this.selmom = selmom;
+            this._selmom = selmom;
         }
         /// <summary>
         /// Заполняет ListView возможными кормилицами.
@@ -41,20 +41,20 @@ namespace rabnet
             int ad = Engine.opt().getIntOption(Options.OPT_ID.COMBINE_AGE);
             cs.Prepare();
             listView1.Items.Clear();
-            foreach (Rabbit rb in Engine.db().getMothers(r.age, ad))
+            foreach (AdultRabbit moth in Engine.db().getMothers(r.Age, ad))
             {
-                if (rb.fid != r.Parent)
+                if (moth.ID != r.Parent)
                 {
-                    ListViewItem li = listView1.Items.Add(rb.fname);
-                    li.SubItems.Add(rb.fage.ToString());
-                    li.SubItems.Add(rb.fbreed);
-                    li.SubItems.Add(rb.fstatus);
-                    li.SubItems.Add(rb.frate.ToString());
-                    li.SubItems.Add(rb.faddress);
-                    li.SubItems.Add(rb.faverage.ToString());
-                    if (selmom == rb.fid)
+                    ListViewItem li = listView1.Items.Add(moth.NameFull);
+                    li.SubItems.Add(moth.Age.ToString());
+                    li.SubItems.Add(moth.BreedName);
+                    li.SubItems.Add(moth.FStatus());
+                    li.SubItems.Add(moth.Rate.ToString());
+                    li.SubItems.Add(moth.FAddress());
+                    li.SubItems.Add(moth.KidsAge.ToString());
+                    if (_selmom == moth.ID)
                     {
-                        li.SubItems.Add((int.Parse(rb.fN) + r.Group).ToString());
+                        li.SubItems.Add((moth.Group + r.Group).ToString()); //TODO выяснить зачем это
                         li.SubItems.Add(r.Group.ToString());
                         nudCount.Value = 0;
                         li.Selected = true;
@@ -62,10 +62,10 @@ namespace rabnet
                     }
                     else
                     {
-                        li.SubItems.Add(rb.fN);
+                        li.SubItems.Add(moth.KidsCount.ToString());
                         li.SubItems.Add("");
                     }
-                    li.Tag = rb.fid;
+                    li.Tag = moth.ID;
                 }
             }
             if (listView1.Items.Count == 0)
@@ -171,7 +171,7 @@ namespace rabnet
             int was = getValue();
             int def = (int)nudRepl.Value - was;
             nudCount.Value -= def;
-            listView1.SelectedItems[0].SubItems[REPLCOL].Text = nudRepl.Value==0?"":nudRepl.Value.ToString();
+            listView1.SelectedItems[0].SubItems[REPLCOL].Text = nudRepl.Value == 0 ? "" : nudRepl.Value.ToString();
             int wcnt = int.Parse(listView1.SelectedItems[0].SubItems[REPLCOL - 1].Text);
             listView1.SelectedItems[0].SubItems[REPLCOL - 1].Text = (wcnt + def).ToString();
         }

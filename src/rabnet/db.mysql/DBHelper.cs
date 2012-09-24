@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 using System.Text;
 
-namespace rabnet
+namespace db.mysql
 {
     class DBHelper
-    {
+    {       
         public static String DateToMyString(DateTime dt)
         {
             if (dt == DateTime.MinValue)

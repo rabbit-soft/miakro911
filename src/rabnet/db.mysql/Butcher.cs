@@ -2,73 +2,10 @@
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 using System.Text;
+using rabnet;
 
-namespace rabnet
-{
-    public class ButcherDate : IData
-    {
-        public DateTime Date;
-        public int Victims;
-        public int Products;
-        public ButcherDate(DateTime Date, int victims, int products)
-        {
-            this.Date = Date;
-            this.Victims = victims;
-            this.Products = products;
-        }
-    }
-
-    public class sMeat
-    {
-        public int Id;
-        public DateTime Date;
-        public string ProductType;
-        public float Amount;
-        public string Units;
-        public bool Today;
-        public string User;
-
-        public sMeat(int id, DateTime date, string prodType, float amount, string unit, bool today, string user)
-        {
-            this.Id = id;
-            this.Date = date;
-            this.ProductType = prodType;
-            this.Amount = amount;
-            this.Units = unit;
-            this.Today = today;
-            this.User = user;
-        }
-    }
-
-    public class ScalePLUSummary
-    {
-        private int _id;
-        private int _prodId;
-        public int Id { get { return _id; } }
-        public int ProdId
-        {
-            get { return _prodId; }
-        }
-        public DateTime Date;
-        public string ProdName;
-        public int TotalSell;
-        public int TotalSumm;
-        public int TotalWeight;
-        public DateTime Cleared;
-
-        public ScalePLUSummary(int id,DateTime date,int prodid,string prodname,int tsell,int tsumm,int tweight,DateTime clear)
-        {
-            this._id = id;
-            this._prodId =prodid;
-            this.Date = date;
-            this.ProdName = prodname;
-            this.TotalSell = tsell;
-            this.TotalSumm = tsumm;
-            this.TotalWeight = tweight; 
-            this.Cleared = clear; 
-        }
-    }
-
+namespace db.mysql
+{ 
     class Butcher:RabNetDataGetterBase
     {
         public Butcher(MySqlConnection sql,Filters f) : base(sql,f) { }
@@ -113,25 +50,26 @@ DROP TABLE bbb;",table,dtfield,unfield);
         /// Получает список забитых кроликов
         /// </summary>
         /// <param name="dt">Дата забива</param>
-        public static List<OneRabbit> getVictims(MySqlConnection sql, DateTime dt)
+        public static Rabbit[] getVictims(MySqlConnection sql, DateTime dt)
         {
-            List<OneRabbit> result = new List<OneRabbit>();
+            List<Rabbit> result = new List<Rabbit>();
             MySqlCommand cmd = new MySqlCommand("", sql);
-            cmd.CommandText = String.Format(@"SELECT r_id,r_last_fuck_okrol,NULL r_event_date,'none' r_event,r_overall_babies,r_lost_babies,
-r_sex,r_born,r_flags,r_breed,r_zone,r_name,r_surname,r_secname,
-deadplace(r_id) address,r_group,r_notes,
-deadname(r_id,2) fullname,
-(SELECT b_name FROM breeds WHERE b_id=r_breed) breedname,
-(SELECT COALESCE(GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' '),'') FROM genoms WHERE g_id=r_genesis) genom,
-r_status,r_rate,r_bon,r_parent
-FROM dead WHERE d_reason=3 AND DATE(d_date)='{0:yyyy-MM-dd}';",dt);
+            cmd.CommandText = String.Format(@"SELECT r_id,#r_last_fuck_okrol,NULL r_event_date,'none' r_event,r_overall_babies,r_lost_babies,r_flags,r_name,r_surname,r_secname,r_zone,r_breed,
+#(SELECT COALESCE(GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' '),'') FROM genoms WHERE g_id=r_genesis) genom,
+#r_status,r_rate,r_bon,r_parent
+    r_sex,
+    r_born,
+    deadplace(r_id) address,r_group,r_notes,
+    deadname(r_id,2) name,
+    (SELECT b_name FROM breeds WHERE b_id=r_breed) breedname,
+FROM dead WHERE d_reason=3 AND DATE(d_date)='{0:yyyy-MM-dd}';", dt);
             MySqlDataReader rd = cmd.ExecuteReader();
             while(rd.Read())
             {
                 result.Add(RabbitGetter.fillRabbit(rd));
             }
             rd.Close();
-            return result;
+            return result.ToArray();
         }
 
         public static List<sMeat> GetMeats(MySqlConnection sql, DateTime dt)

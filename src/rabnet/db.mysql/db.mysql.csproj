@@ -99,13 +99,13 @@
     <Compile Include="Butcher.cs" />
     <Compile Include="CatalogData\Catalogs.cs" />
     <Compile Include="CatalogData\Vaccines.cs" />
-    <Compile Include="Filters.cs" />
+    <Compile Include="RabbitGetter.cs" />
+    <Compile Include="RabbitsDataGetter.cs" />
     <Compile Include="WebReports.cs" />
     <Compile Include="Meal.cs" />
     <Compile Include="CatalogData\Products.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RabbitGen.cs" />
-    <Compile Include="db.int.cs" />
     <Compile Include="db.mysql.cs" />
     <Compile Include="DBHelper.cs" />
     <Compile Include="Dead.cs" />
@@ -113,7 +113,6 @@
     <Compile Include="Fucks.cs" />
     <Compile Include="Logs.cs" />
     <Compile Include="Names.cs" />
-    <Compile Include="Rabbit.cs" />
     <Compile Include="RabNetDataGetterBase.cs" />
     <Compile Include="Reports.cs" />
     <Compile Include="Users.cs" />
@@ -123,7 +122,10 @@
     <Compile Include="ZooTeh.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
+    <ProjectReference Include="..\db.Interface\db.Interface.csproj">
+      <Project>{F23F4D6E-203C-419D-8A18-32DCABFA4175}</Project>
+      <Name>db.Interface</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

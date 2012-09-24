@@ -81,11 +81,11 @@ namespace rabnet
 			if (_rabbit != null)
 			{
 				string sex = "-";
-				if (_rabbit.sex == RabbitGen.RabbitSex.MALE)
+                if (_rabbit.sex == Rabbit.SexType.MALE)
 				{
 					sex = "мужской";
 				}
-				if (_rabbit.sex == RabbitGen.RabbitSex.FEMALE)
+                if (_rabbit.sex == Rabbit.SexType.FEMALE)
 				{
 					sex = "женский";
 				}
@@ -100,7 +100,7 @@ namespace rabnet
 
 				if (dead)
 				{
-					if (_rabbit.sex == RabbitGen.RabbitSex.FEMALE)
+                    if (_rabbit.sex == Rabbit.SexType.FEMALE)
 					{
 						ttl += " (списана)";
 					}
@@ -478,11 +478,11 @@ namespace rabnet
 			{
 				if (_rabbit != null)
 				{
-					if (_rabbit.sex == RabbitGen.RabbitSex.MALE)
+                    if (_rabbit.sex == Rabbit.SexType.MALE)
 					{
 						gender = 1;
 					}
-					if (_rabbit.sex == RabbitGen.RabbitSex.FEMALE)
+                    if (_rabbit.sex == Rabbit.SexType.FEMALE)
 					{
 						gender = 2;
 					}

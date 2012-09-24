@@ -58,9 +58,9 @@ namespace rabnet
             rbs.Add(r);
             int id = rbs.Count - 1;
             r.Tag = r.Address;
-            foreach (OneRabbit or in r.Youngers)
+            foreach (YoungRabbit or in r.Youngers)
             {
-                addRabbit(or.id);
+                addRabbit(or.ID);
                 rbs[rbs.Count - 1].Tag = r.Address;
             }
             //update();
@@ -76,10 +76,10 @@ namespace rabnet
                 li.Tag=r.RabID;
                 li.SubItems.Add(r.Tag);
                 String sex = "?";
-                if (r.Sex == OneRabbit.RabbitSex.FEMALE) sex = "Ж";
-                if (r.Sex == OneRabbit.RabbitSex.MALE) sex = "М";
+                if (r.Sex == Rabbit.SexType.FEMALE) sex = "Ж";
+                if (r.Sex == Rabbit.SexType.MALE) sex = "М";
                 li.SubItems.Add(sex);
-                li.SubItems.Add(r.age.ToString());
+                li.SubItems.Add(r.Age.ToString());
                 li.SubItems.Add(r.Group.ToString());
                 li.SubItems.Add(r.Group.ToString());
             }

@@ -122,7 +122,8 @@ namespace rabnet
                 cbUser.SelectedIndex = cbFarm.SelectedIndex = -1;
                 cbFarm.Text=cbUser.Text=tbPassword.Text = "";
                 cbFarm.Focus();
-                MessageBox.Show("Ошибка подключения " + ex.GetType().ToString() + ": " + ex.Message,"Ошибка подключения");
+                //string message = ex.GetType().ToString() + ": " + ex.Message;
+                MessageBox.Show(ex.Message, "Ошибка подключения", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

@@ -30,20 +30,21 @@ namespace rabnet
             MakeExcel = new RabStatusBar.ExcelButtonClickDelegate(this.makeExcel);
         }
 
-        protected override IDataGetter onPrepare(Filters flt)
+        protected override IDataGetter onPrepare(Filters f)
         {
             gentree = Engine.opt().getIntOption(Options.OPT_ID.GEN_TREE)-1;
             Options op = Engine.opt();
-            flt["shr"] = op.getOption(Options.OPT_ID.SHORT_NAMES);
-            flt["sht"] = op.getOption(Options.OPT_ID.SHOW_TIER_TYPE);
-            flt["sho"] = op.getOption(Options.OPT_ID.SHOW_TIER_SEC);
-            flt["dbl"] = op.getOption(Options.OPT_ID.DBL_SURNAME);
-            flt["num"] = op.getOption(Options.OPT_ID.SHOW_NUMBERS);
-            flt["brd"] = op.getOption(Options.OPT_ID.MAKE_BRIDE);
+            f[Filters.SHORT] = op.getOption(Options.OPT_ID.SHORT_NAMES);
+            f[Filters.SHOW_BLD_TIERS] = op.getOption(Options.OPT_ID.SHOW_TIER_TYPE);
+            f[Filters.SHOW_BLD_DESCR] = op.getOption(Options.OPT_ID.SHOW_TIER_SEC);
+            f[Filters.DBL_SURNAME] = op.getOption(Options.OPT_ID.DBL_SURNAME);
+            f[Filters.SHOW_OKROL_NUM] = op.getOption(Options.OPT_ID.SHOW_NUMBERS);
+            f[Filters.MAKE_BRIDE] = op.getOption(Options.OPT_ID.MAKE_BRIDE);
             //flt["suc"] = op.getOption(Options.OPT_ID.COUNT_SUCKERS);
-            flt["cand"] = op.getOption(Options.OPT_ID.MAKE_CANDIDATE);
+            f[Filters.MAKE_CANDIDATE] = op.getOption(Options.OPT_ID.MAKE_CANDIDATE);
+            _runF = f;
             colSort.Prepare();
-            IDataGetter dg = DataThread.db().getRabbits(flt);
+            IDataGetter dg = DataThread.db().getRabbits(f);
             _rsb.setText(1, dg.getCount().ToString() + " записей");
             _rsb.setText(2, dg.getCount2().ToString() + " кроликов");
             return dg;
@@ -66,21 +67,21 @@ namespace rabnet
                 colSort.Restore();
                 return;
             }
-            Rabbit rab = (data as Rabbit);
-            ListViewItem li = listView1.Items.Add(rab.fname);
-            li.Tag = rab.fid;
-            li.SubItems.Add(rab.fsex);
-            li.SubItems.Add(rab.fage.ToString());
-            li.SubItems.Add(rab.fbreed);
-            li.SubItems.Add(rab.fweight);
-            li.SubItems.Add(rab.fstatus);
-            li.SubItems.Add(rab.fbgp);
-            li.SubItems.Add(rab.fN);
-            li.SubItems.Add(rab.faverage == -1 ? "" : rab.faverage.ToString());
-            li.SubItems.Add(rab.frate.ToString());
-            li.SubItems.Add(rab.fcls);
-            li.SubItems.Add(rab.faddress);
-            li.SubItems.Add(rab.fnotes);
+            AdultRabbit rab = (data as AdultRabbit);
+            ListViewItem li = listView1.Items.Add(rab.NameFull);
+            li.Tag = rab.ID;
+            li.SubItems.Add(rab.FSex());
+            li.SubItems.Add(rab.Age.ToString());
+            li.SubItems.Add(rab.BreedName);
+            li.SubItems.Add(rab.FWeight());
+            li.SubItems.Add(rab.FStatus(_runF.safeBool(Filters.SHORT), _runF.safeInt(Filters.MAKE_CANDIDATE), _runF.safeInt(Filters.MAKE_BRIDE)));
+            li.SubItems.Add(rab.FFlags());
+            li.SubItems.Add(rab.FGroup());
+            li.SubItems.Add(rab.KidsAge == -1 ? "" : rab.KidsAge.ToString());
+            li.SubItems.Add(rab.Rate.ToString());
+            li.SubItems.Add(rab.FBon(_runF.safeBool(Filters.SHORT)));
+            li.SubItems.Add(rab.FAddress(_runF.safeBool(Filters.SHOW_BLD_TIERS), _runF.safeBool(Filters.SHOW_BLD_TIERS)));
+            li.SubItems.Add(rab.Notes);
 			colSort.SemiReady();
         }
 
@@ -388,7 +389,7 @@ namespace rabnet
             listView1_SelectedIndexChanged(null, null);
         }
 
-        private String getBon(String b)
+        private String getBon(String b) //todo проверить на схожесть с RabbitBon
         {
             if (b.Length == 1)
             {
@@ -437,58 +438,122 @@ namespace rabnet
                 or = Engine.db().getLiveDeadRabbit(er.RabID);
                 if (hasdoc==null)
                 {
-                    rw.AppendChild(doc.CreateElement("header")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.SVID_HEAD)));
-                    rw.AppendChild(doc.CreateElement("num")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.NEXT_SVID)));
-                    rw.AppendChild(doc.CreateElement("date")).AppendChild(doc.CreateTextNode(DateTime.Now.Date.ToShortDateString()));
-                    rw.AppendChild(doc.CreateElement("director")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.SVID_GEN_DIR)));
+                    ReportHelper.Append(rw, doc, "header", Engine.opt().getOption(Options.OPT_ID.SVID_HEAD));
+                    ReportHelper.Append(rw, doc, "num", Engine.opt().getOption(Options.OPT_ID.NEXT_SVID));
+                    ReportHelper.Append(rw, doc, "date", DateTime.Now.Date.ToShortDateString());
+                    ReportHelper.Append(rw, doc, "director", Engine.opt().getOption(Options.OPT_ID.SVID_GEN_DIR));
+                    //rw.AppendChild(doc.CreateElement("header")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.SVID_HEAD)));
+                    //rw.AppendChild(doc.CreateElement("num")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.NEXT_SVID)));
+                    //rw.AppendChild(doc.CreateElement("date")).AppendChild(doc.CreateTextNode(DateTime.Now.Date.ToShortDateString()));
+                    //rw.AppendChild(doc.CreateElement("director")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.SVID_GEN_DIR)));
                 }
                 else
                 {
                     rw.AppendChild(doc.CreateElement("group")).AppendChild(doc.CreateTextNode(er.Group.ToString()));
                 }
                 Catalog zones = Engine.db().catalogs().getZones();
-                rw.AppendChild(doc.CreateElement("sex")).AppendChild(doc.CreateTextNode(er.Sex == OneRabbit.RabbitSex.MALE ? "male" : (er.Sex == OneRabbit.RabbitSex.FEMALE ? "female" : "void")));
-                rw.AppendChild(doc.CreateElement("class")).AppendChild(doc.CreateTextNode(getBon(er.Bon)));
-                rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(er.FullName));
-                rw.AppendChild(doc.CreateElement("breed")).AppendChild(doc.CreateTextNode(er.BreedName));
-                rw.AppendChild(doc.CreateElement("born_place")).AppendChild(doc.CreateTextNode(zones.ContainsKey(er.Zone)?zones[er.Zone]:"-"));
-                rw.AppendChild(doc.CreateElement("born_date")).AppendChild(doc.CreateTextNode(er.Born.ToShortDateString()));
-                rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(er.age.ToString()));
-                rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(er.SmallAddress));
-                rw.AppendChild(doc.CreateElement("weight")).AppendChild(doc.CreateTextNode(or.rate.ToString()));
-                rw.AppendChild(doc.CreateElement("weight_date")).AppendChild(doc.CreateTextNode(or.evdate.Date.ToShortDateString()));
-                rw.AppendChild(doc.CreateElement("weight_age")).AppendChild(doc.CreateTextNode(or.weight_age.ToString()));
-                rw.AppendChild(doc.CreateElement("born")).AppendChild(doc.CreateTextNode(or.babies.ToString()));
-                rw.AppendChild(doc.CreateElement("okrol")).AppendChild(doc.CreateTextNode(or.breed.ToString()));
-                rw.AppendChild(doc.CreateElement("genom")).AppendChild(doc.CreateTextNode(er.Genom.Replace(' ',',')));
-                rw.AppendChild(doc.CreateElement("wclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[1])));
-                rw.AppendChild(doc.CreateElement("bclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[2])));
-                rw.AppendChild(doc.CreateElement("hclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[3])));
-                rw.AppendChild(doc.CreateElement("cclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[4])));
+                ReportHelper.Append(rw, doc, "sex", er.Sex == Rabbit.SexType.MALE ? "male" : (er.Sex == Rabbit.SexType.FEMALE ? "female" : "void"));
+                ReportHelper.Append(rw, doc, "class", getBon(er.Bon));
+                ReportHelper.Append(rw, doc, "name", er.FullName);
+                ReportHelper.Append(rw, doc, "breed", er.BreedName);
+                ReportHelper.Append(rw, doc, "born_place", zones.ContainsKey(er.Zone) ? zones[er.Zone] : "-");
+                ReportHelper.Append(rw, doc, "born_date", er.Born.ToShortDateString());
+                ReportHelper.Append(rw, doc, "age", er.Age.ToString());
+                ReportHelper.Append(rw, doc, "address", er.SmallAddress);
+                ReportHelper.Append(rw, doc, "weight", or.FWeight().ToString());
+                ReportHelper.Append(rw, doc, "weight_date", or.WeightDate.Date.ToShortDateString());
+                ReportHelper.Append(rw, doc, "weight_age", or.WeightAge.ToString());
+                ReportHelper.Append(rw, doc, "born", or.kidsOverAll.ToString());//сколько родила
+                ReportHelper.Append(rw, doc, "okrol", or.Okrol.ToString());
+                ReportHelper.Append(rw, doc, "genom", er.Genom.Replace(' ', ','));
+                ReportHelper.Append(rw, doc, "wclass", getBon("" + er.Bon[1]));
+                ReportHelper.Append(rw, doc, "bclass", getBon("" + er.Bon[1]));
+                ReportHelper.Append(rw, doc, "hclass", getBon("" + er.Bon[3]));
+                ReportHelper.Append(rw, doc, "cclass", getBon("" + er.Bon[4]));
+                #region old
+                //rw.AppendChild(doc.CreateElement("sex")).AppendChild(doc.CreateTextNode(er.Sex == Rabbit.SexType.MALE ? "male" : (er.Sex == Rabbit.SexType.FEMALE ? "female" : "void")));
+                //rw.AppendChild(doc.CreateElement("class")).AppendChild(doc.CreateTextNode());
+                //rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(er.FullName));
+                //rw.AppendChild(doc.CreateElement("breed")).AppendChild(doc.CreateTextNode(er.BreedName));
+                //rw.AppendChild(doc.CreateElement("born_place")).AppendChild(doc.CreateTextNode(zones.ContainsKey(er.Zone)?zones[er.Zone]:"-"));
+                //rw.AppendChild(doc.CreateElement("born_date")).AppendChild(doc.CreateTextNode(er.Born.ToShortDateString()));
+                //rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(er.age.ToString()));
+                //rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(er.SmallAddress));
+                //rw.AppendChild(doc.CreateElement("weight")).AppendChild(doc.CreateTextNode(or.Rate.ToString()));
+                //rw.AppendChild(doc.CreateElement("weight_date")).AppendChild(doc.CreateTextNode(or.EventDate.Date.ToShortDateString()));
+                //rw.AppendChild(doc.CreateElement("weight_age")).AppendChild(doc.CreateTextNode(or.weight_age.ToString()));
+                //rw.AppendChild(doc.CreateElement("born")).AppendChild(doc.CreateTextNode(or.kidsOverAll.ToString()));
+                //rw.AppendChild(doc.CreateElement("okrol")).AppendChild(doc.CreateTextNode(or.BreedID.ToString()));
+                //rw.AppendChild(doc.CreateElement("genom")).AppendChild(doc.CreateTextNode(er.Genom.Replace(' ',',')));
+                //rw.AppendChild(doc.CreateElement("wclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[1])));
+                //rw.AppendChild(doc.CreateElement("bclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[2])));
+                //rw.AppendChild(doc.CreateElement("hclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[3])));
+                //rw.AppendChild(doc.CreateElement("cclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[4])));
+                //rw.AppendChild(doc.CreateElement("sex")).AppendChild(doc.CreateTextNode(er.Sex == Rabbit.SexType.MALE ? "male" : (er.Sex == Rabbit.SexType.FEMALE ? "female" : "void")));
+                //rw.AppendChild(doc.CreateElement("class")).AppendChild(doc.CreateTextNode(getBon(er.Bon)));
+                //rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(er.FullName));
+                //rw.AppendChild(doc.CreateElement("breed")).AppendChild(doc.CreateTextNode(er.BreedName));
+                //rw.AppendChild(doc.CreateElement("born_place")).AppendChild(doc.CreateTextNode(zones.ContainsKey(er.Zone)?zones[er.Zone]:"-"));
+                //rw.AppendChild(doc.CreateElement("born_date")).AppendChild(doc.CreateTextNode(er.Born.ToShortDateString()));
+                //rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(er.age.ToString()));
+                //rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(er.SmallAddress));
+                //rw.AppendChild(doc.CreateElement("weight")).AppendChild(doc.CreateTextNode(or.Rate.ToString()));
+                //rw.AppendChild(doc.CreateElement("weight_date")).AppendChild(doc.CreateTextNode(or.EventDate.Date.ToShortDateString()));
+                //rw.AppendChild(doc.CreateElement("weight_age")).AppendChild(doc.CreateTextNode(or.weight_age.ToString()));
+                //rw.AppendChild(doc.CreateElement("born")).AppendChild(doc.CreateTextNode(or.kidsOverAll.ToString()));
+                //rw.AppendChild(doc.CreateElement("okrol")).AppendChild(doc.CreateTextNode(or.BreedID.ToString()));
+                //rw.AppendChild(doc.CreateElement("genom")).AppendChild(doc.CreateTextNode(er.Genom.Replace(' ',',')));
+                //rw.AppendChild(doc.CreateElement("wclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[1])));
+                //rw.AppendChild(doc.CreateElement("bclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[2])));
+                //rw.AppendChild(doc.CreateElement("hclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[3])));
+                //rw.AppendChild(doc.CreateElement("cclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[4])));
+                #endregion old
             }
             else if (or != null)
             {
-                rw.AppendChild(doc.CreateElement("sex")).AppendChild(doc.CreateTextNode(or.sex==OneRabbit.RabbitSex.MALE?"male":"female"));
-                rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(or.status.ToString()+(or.zone==1?"(списан)":"")));
-                rw.AppendChild(doc.CreateElement("weight")).AppendChild(doc.CreateTextNode(or.rate.ToString()));
-                rw.AppendChild(doc.CreateElement("class")).AppendChild(doc.CreateTextNode(getBon(or.bon)));
-                rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(or.fullname));
-                rw.AppendChild(doc.CreateElement("wclass")).AppendChild(doc.CreateTextNode(getBon(""+or.bon[1])));
-                rw.AppendChild(doc.CreateElement("bclass")).AppendChild(doc.CreateTextNode(getBon("" + or.bon[2])));
-                rw.AppendChild(doc.CreateElement("hclass")).AppendChild(doc.CreateTextNode(getBon("" + or.bon[3])));
-                rw.AppendChild(doc.CreateElement("cclass")).AppendChild(doc.CreateTextNode(getBon("" + or.bon[4])));
+                ReportHelper.Append(rw, doc, "sex", or.Sex==Rabbit.SexType.MALE?"male":"female");
+                ReportHelper.Append(rw, doc, "age", or.Status.ToString()+(or.zone==1?"(списан)":""));
+                ReportHelper.Append(rw, doc, "weight", or.Rate.ToString());
+                ReportHelper.Append(rw, doc, "class", getBon(or.Bon));
+                ReportHelper.Append(rw, doc, "name", or.NameFull);
+                ReportHelper.Append(rw, doc, "wclass", getBon("" + or.Bon[1]));
+                ReportHelper.Append(rw, doc, "bclass", getBon("" + or.Bon[1]));
+                ReportHelper.Append(rw, doc, "hclass", getBon("" + or.Bon[3]));
+                ReportHelper.Append(rw, doc, "cclass", getBon("" + or.Bon[4]));
+                #region old
+                //rw.AppendChild(doc.CreateElement("sex")).AppendChild(doc.CreateTextNode(or.Sex==Rabbit.SexType.MALE?"male":"female"));
+                //rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(or.Status.ToString()+(or.zone==1?"(списан)":"")));
+                //rw.AppendChild(doc.CreateElement("weight")).AppendChild(doc.CreateTextNode(or.Rate.ToString()));
+                //rw.AppendChild(doc.CreateElement("class")).AppendChild(doc.CreateTextNode(getBon(or.Bon)));
+                //rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(or.NameFull));
+                //rw.AppendChild(doc.CreateElement("wclass")).AppendChild(doc.CreateTextNode(getBon(""+or.Bon[1])));
+                //rw.AppendChild(doc.CreateElement("bclass")).AppendChild(doc.CreateTextNode(getBon("" + or.Bon[2])));
+                //rw.AppendChild(doc.CreateElement("hclass")).AppendChild(doc.CreateTextNode(getBon("" + or.Bon[3])));
+                //rw.AppendChild(doc.CreateElement("cclass")).AppendChild(doc.CreateTextNode(getBon("" + or.Bon[4])));
+                #endregion old
             }
             else
             {
-                rw.AppendChild(doc.CreateElement("sex")).AppendChild(doc.CreateTextNode("none"));
-                rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(""));
-                rw.AppendChild(doc.CreateElement("weight")).AppendChild(doc.CreateTextNode(""));
-                rw.AppendChild(doc.CreateElement("class")).AppendChild(doc.CreateTextNode(""));
-                rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(""));
-                rw.AppendChild(doc.CreateElement("wclass")).AppendChild(doc.CreateTextNode(""));
-                rw.AppendChild(doc.CreateElement("bclass")).AppendChild(doc.CreateTextNode(""));
-                rw.AppendChild(doc.CreateElement("hclass")).AppendChild(doc.CreateTextNode(""));
-                rw.AppendChild(doc.CreateElement("cclass")).AppendChild(doc.CreateTextNode(""));
+                ReportHelper.Append(rw, doc, "sex", "none");
+                ReportHelper.Append(rw, doc, "age", "");
+                ReportHelper.Append(rw, doc, "weight", "");
+                ReportHelper.Append(rw, doc, "class", "");
+                ReportHelper.Append(rw, doc, "name", "");
+                ReportHelper.Append(rw, doc, "wclass", "");
+                ReportHelper.Append(rw, doc, "bclass", "");
+                ReportHelper.Append(rw, doc, "hclass", "");
+                ReportHelper.Append(rw, doc, "cclass", "");
+                #region old
+                //rw.AppendChild(doc.CreateElement("sex")).AppendChild(doc.CreateTextNode("none"));
+                //rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(""));
+                //rw.AppendChild(doc.CreateElement("weight")).AppendChild(doc.CreateTextNode(""));
+                //rw.AppendChild(doc.CreateElement("class")).AppendChild(doc.CreateTextNode(""));
+                //rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(""));
+                //rw.AppendChild(doc.CreateElement("wclass")).AppendChild(doc.CreateTextNode(""));
+                //rw.AppendChild(doc.CreateElement("bclass")).AppendChild(doc.CreateTextNode(""));
+                //rw.AppendChild(doc.CreateElement("hclass")).AppendChild(doc.CreateTextNode(""));
+                //rw.AppendChild(doc.CreateElement("cclass")).AppendChild(doc.CreateTextNode(""));
+                #endregion old
             }
             return doc;
         }
@@ -500,18 +565,18 @@ namespace rabnet
             XmlDocument[] docs=new XmlDocument[7];
             RabNetEngRabbit r=Engine.get().getRabbit((int)listView1.SelectedItems[0].Tag);
             docs[0]=rabToXml(r,null);
-            OneRabbit[] p1 = Engine.db().getParents(r.RabID, r.age);
+            OneRabbit[] p1 = Engine.db().getParents(r.RabID, r.Age);
             docs[1] = rabToXml(null, p1[0]);
             docs[2] = rabToXml(null, p1[1]);
             OneRabbit[] p2;
             if (p1[0] != null)
-                p2 = Engine.db().getParents(p1[0].id, p1[0].age());
+                p2 = Engine.db().getParents(p1[0].ID, p1[0].Age);
             else
                 p2 = new OneRabbit[] { null, null };
             docs[3] = rabToXml(null, p2[0]);
             docs[4] = rabToXml(null, p2[1]);
             if (p1[1] != null)
-                p2 = Engine.db().getParents(p1[1].id, p1[1].age());
+                p2 = Engine.db().getParents(p1[1].ID, p1[1].Age);
             else
                 p2 = new OneRabbit[] { null, null };
             docs[5] = rabToXml(null, p2[0]);
@@ -523,6 +588,38 @@ namespace rabnet
                 int num = Engine.opt().getIntOption(Options.OPT_ID.NEXT_SVID);
                 Engine.opt().setOption(Options.OPT_ID.NEXT_SVID, num + 1);
             }
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
+        }
+
+        private void plemMenuItem_Click(object sender, EventArgs e)
+        {
+#if !DEMO
+            if (listView1.SelectedItems.Count < 1) return;
+            XmlDocument doc = new XmlDocument();
+            doc.AppendChild(doc.CreateElement("Rows"));
+            int cnt = 0;
+            string brd = "";
+            foreach (ListViewItem li in listView1.SelectedItems)
+            {
+                RabNetEngRabbit r = Engine.get().getRabbit((int)li.Tag);
+                cnt += r.Group;
+                if (brd == "")
+                    brd = r.BreedName;
+                if (r.BreedName != brd)
+                    brd = "none";
+                rabToXml(r, null, doc);
+            }
+            XmlDocument doc2 = new XmlDocument();
+            XmlElement rw = (XmlElement)doc2.AppendChild(doc2.CreateElement("Rows")).AppendChild(doc2.CreateElement("Row"));
+            ReportHelper.Append(rw, doc2, "date", DateTime.Now.Date.ToShortDateString() + " " + DateTime.Now.ToLongTimeString());
+            ReportHelper.Append(rw, doc2, "breed", brd);
+            ReportHelper.Append(rw, doc2, "count", cnt.ToString());
+            //rw.AppendChild(doc2.CreateElement("date")).AppendChild(doc2.CreateTextNode(DateTime.Now.Date.ToShortDateString()+" "+DateTime.Now.ToLongTimeString()));
+            //rw.AppendChild(doc2.CreateElement("breed")).AppendChild(doc2.CreateTextNode(brd));
+            //rw.AppendChild(doc2.CreateElement("count")).AppendChild(doc2.CreateTextNode(cnt.ToString()));
+            new ReportViewForm(myReportType.PRIDE, new XmlDocument[] { doc, doc2 }).ShowDialog();
 #else
             DemoErr.DemoNoReportMsg();
 #endif
@@ -592,34 +689,7 @@ namespace rabnet
             setMenu(isx, listView1.SelectedItems.Count, kids);
         }
 
-        private void plemMenuItem_Click(object sender, EventArgs e)
-        {
-#if !DEMO
-            if (listView1.SelectedItems.Count < 1) return;
-            XmlDocument doc = new XmlDocument();
-            doc.AppendChild(doc.CreateElement("Rows"));
-            int cnt = 0;
-            string brd = "";
-            foreach (ListViewItem li in listView1.SelectedItems)
-            {
-                RabNetEngRabbit r = Engine.get().getRabbit((int)li.Tag);
-                cnt += r.Group;
-                if (brd == "")
-                    brd = r.BreedName;
-                if (r.BreedName != brd)
-                    brd = "none";
-                rabToXml(r, null, doc);
-            }
-            XmlDocument doc2 = new XmlDocument();
-            XmlElement rw = (XmlElement)doc2.AppendChild(doc2.CreateElement("Rows")).AppendChild(doc2.CreateElement("Row"));
-            rw.AppendChild(doc2.CreateElement("date")).AppendChild(doc2.CreateTextNode(DateTime.Now.Date.ToShortDateString()+" "+DateTime.Now.ToLongTimeString()));
-            rw.AppendChild(doc2.CreateElement("breed")).AppendChild(doc2.CreateTextNode(brd));
-            rw.AppendChild(doc2.CreateElement("count")).AppendChild(doc2.CreateTextNode(cnt.ToString()));
-            new ReportViewForm(myReportType.PRIDE, new XmlDocument[] { doc, doc2 }).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
-        }
+        
 
         private void replacePlanMenuItem_Click(object sender, EventArgs e)
         {
@@ -630,16 +700,16 @@ namespace rabnet
             foreach (ListViewItem li in listView1.SelectedItems)
             {
                 XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
-                rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(li.SubItems[2].Text));
+                ReportHelper.Append(rw, doc, "age", li.SubItems[2].Text); //rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(li.SubItems[2].Text));
                 String cn=li.SubItems[11].Text;
                 if (cn.IndexOf('[') > -1)
                     cn = cn.Remove(cn.IndexOf('['));
-                rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(cn));
+                ReportHelper.Append(rw, doc, "address", cn); //rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(cn));
                 cn=li.SubItems[NFIELD].Text;
                 if (cn[0]=='[')
                     cn=int.Parse(cn.Substring(1,cn.Length-2)).ToString();
                 if (cn == "-") cn = "1";
-                rw.AppendChild(doc.CreateElement("count")).AppendChild(doc.CreateTextNode(cn));
+                ReportHelper.Append(rw, doc, "count", cn);//rw.AppendChild(doc.CreateElement("count")).AppendChild(doc.CreateTextNode(cn));
             }
             new ReportViewForm(myReportType.REPLACE, doc).ShowDialog();
 #else
@@ -692,6 +762,6 @@ namespace rabnet
 #if !DEMO
             ExcelMaker.MakeExcelFromLV(listView1, "Поголовье");
 #endif
-        }
+        }     
     }
 }

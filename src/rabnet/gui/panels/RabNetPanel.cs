@@ -7,6 +7,7 @@ namespace rabnet
 {
     public class RabNetPanel:UserControl
     {
+        protected Filters _runF;
         protected RabStatusBar _rsb = null;
         private FilterPanel fp = null;
         protected ListViewColumnSorter colSort = null;

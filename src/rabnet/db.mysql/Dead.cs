@@ -2,31 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using MySql.Data.MySqlClient;
+using rabnet;
 
-namespace rabnet
+namespace db.mysql
 {
-    public class Dead : IData
-    {
-        public int id;
-        public string name;
-        public string address;
-        public int age;
-        public DateTime deadDate;
-        public string reason;
-        public string notes;
-        public string breed;
-        public int group;
-        public Dead(int id,string nm,string ad,int ag,DateTime dd,string rsn,string nts,string brd,int grp)
-        {
-            this.id = id;  name = nm;
-            address = Buildings.FullPlaceName(ad);
-            age = ag; deadDate = dd;
-            reason = rsn;
-            notes = nts; breed = brd;
-            group = grp;
-        }
-    }
-
     class Deads:RabNetDataGetterBase
     {
         public Deads(MySqlConnection sql, Filters f): base(sql, f)

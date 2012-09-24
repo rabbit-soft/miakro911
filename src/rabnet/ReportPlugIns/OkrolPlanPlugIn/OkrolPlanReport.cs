@@ -21,7 +21,7 @@ namespace rabnet
             int total = 0;
             foreach (XmlNode nd in doc.FirstChild.ChildNodes)
             {
-                nd.SelectSingleNode("address").InnerText = Buildings.FullPlaceName(nd.SelectSingleNode("address").InnerText);
+                nd.SelectSingleNode("address").InnerText = Building.FullPlaceName(nd.SelectSingleNode("address").InnerText);
                 if (!dict.ContainsKey(nd.SelectSingleNode("dt").InnerText))
                     dict.Add(nd.SelectSingleNode("dt").InnerText, 0);
                 dict[nd.SelectSingleNode("dt").InnerText]++;

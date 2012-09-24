@@ -3,90 +3,10 @@ using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 using System.Text;
 using log4net;
+using rabnet;
 
-namespace rabnet
-{
-    public class Fucks
-    {
-        public static class Type
-        {
-            public const string Null = "нет";
-            public const string Vyazka_ENG = "vyazka";
-            public const string Vyazka_rus = "вязка";
-            public const string Sluchka_ENG = "sluchka";
-            public const string Sluchka_rus = "случка";
-            public const string Kuk_ENG = "kuk";
-            public const string Kuk_rus = "кук";
-            public const string Okrol_ENG = "okrol";
-            public const string Okrol_rus = "окрол";
-            public const string Proholost_ENG = "proholost";
-            public const string Proholost_rus = "прохолостание";
-            public const string Sukrol_ENG = "sukrol";
-            public const string Sukrol_rus = "сукрольна";
-        }
-
-        public class Fuck
-        {
-            public String partner;
-            public int partnerid;
-            public int id;
-            public int times;
-            public DateTime when;
-            public String type;
-            public DateTime enddate;
-            public String status;
-            public int children;
-            public int dead;
-            public int killed;
-            public int added;
-            public int breed;
-            public String rgenom;
-            public bool isDead;
-            public string worker;
-            public Fuck(int id,String p, int pid, int tms, DateTime s, DateTime e, String st, int ch, int dd, 
-                int brd, String gen,String tp,int kl,int add,bool isdead,string wrk)
-            {
-                this.id = id;
-                partner = p;
-                partnerid = pid;
-                worker = wrk;
-                times = tms;
-                when = s;enddate = e;
-                type = "нет";
-                if (tp == "vyazka") type = "вязка";
-                if (tp == "sluchka") type = "случка";
-                if (tp == "kuk") type = "кук";
-                status = "сукрольна";
-                if (st == "okrol") status = "окрол";
-                if (st == "proholost") status = "прохолостание";
-                children = ch; dead = dd;
-                isDead = isdead;
-                killed=kl;
-                added = add;
-                breed = brd;
-                rgenom = gen;
-            }
-        }
-        public List<Fuck> fucks = new List<Fuck>();
-        public void AddFuck(int id,String p,int pid,int tms,DateTime s,DateTime e,String st,int ch,int dd,
-            int brd,String gen,String tp,int kl,int add,bool dead,String wrk)
-        {
-            fucks.Add(new Fuck(id,p,pid,tms,s,e,st,ch,dd,brd,gen,tp,kl,add,dead,wrk));
-        }
-
-        public Fuck LastFuck
-        {
-            get
-            {
-                Fuck result=null;
-                foreach (Fuck f in this.fucks)
-                    if (result == null || result.when < f.when)
-                        result = f;
-                return result;
-            }
-        }
-
-    }
+namespace db.mysql
+{ 
 
     class FucksGetter
     {
@@ -250,6 +170,27 @@ malewait,
             cmd.CommandText = String.Format("UPDATE fucks SET f_end_date=null, f_state='sukrol', f_notes='proholost cancel' WHERE f_id={0:#};", fuckId);
             cmd.ExecuteNonQuery();
             cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date='{0}',r_event='{2}',r_rate=r_rate+2 WHERE r_id={1:d};", ev_date.ToString("yyyy-MM-dd"), rabID, type);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void makeFuck(MySqlConnection sql, int female, int male, DateTime date, int worker)
+        {
+            OneRabbit f = RabbitGetter.GetRabbit(sql, female);
+            String type = "sluchka";
+            if (f.Status > 0)
+                type = "vyazka";
+            MySqlCommand cmd = new MySqlCommand(String.Format("UPDATE fucks SET f_last=0 WHERE f_rabid={0:d};", female), sql);
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = String.Format(@"INSERT INTO fucks(f_rabid,f_date,f_partner,f_state,f_type,f_last,f_notes,f_worker) 
+VALUES({0:d},{1:s},{2:d},'sukrol','{3:s}',1,'',{4:d});", female, DBHelper.DateToMyString(date), male, type, worker);
+            cmd.ExecuteNonQuery();
+            //            cmd.CommandText = String.Format("SELECT r_status,TODAYS(r_last_fuck_okrol FROM rabbits WHERE r_id=");
+            int rate = 1;
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date={0:s},r_event='{1:s}',r_rate=r_rate+{3:d} WHERE r_id={2:d};",
+                DBHelper.DateToMyString(date), type, female, rate);
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_last_fuck_okrol={0:s},r_rate=r_rate+1 WHERE r_id={1:d};",
+                DBHelper.DateToMyString(date), male);
             cmd.ExecuteNonQuery();
         }
     }

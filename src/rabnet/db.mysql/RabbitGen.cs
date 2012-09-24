@@ -3,66 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using MySql.Data.MySqlClient;
 using System.Drawing;
+using rabnet;
 
-namespace rabnet
-{
-	public class RabbitGen
-	{
-		public enum RabbitSex { VOID, MALE, FEMALE };
-		public RabbitSex sex;
-		public int rid;
-		public int r_mother;
-		public int r_father;
-		public string name;
-		public string surname;
-		public string secname;
-		public string breed_color_name;
-		public Color breed_color;
-		public int breed;
-		public string breed_name;
-		public Boolean IsDead;
-		public string t;
-		public float PriplodK;
-		public float RodK;
-		public string fullname
-		{
-			get
-			{
-				string n = name;
-				string surn = surname;
-				string secn = secname;
-				if (sex == RabbitSex.FEMALE)
-				{
-					if (surn != "")
-					{
-						surn += "a";
-					}
-					if (secn != "")
-					{
-						secn += "a";
-					}
-				}
-
-				if ((secn != "") && (surn != ""))
-				{
-					n += " " + surn + "-" + secn;
-				}
-				else
-				{
-					if (secn != "")
-					{
-						n += " " + secn;
-					}
-					if (surn != "")
-					{
-						n += " " + surn;
-					}
-				}
-				return n;
-			}
-		}
-	}
-	
+namespace db.mysql
+{		
 	public class RabbitGenGetter
 	{
 		public static RabbitGen GetRabbit(MySqlConnection sql, int rid)
@@ -114,15 +58,15 @@ namespace rabnet
 				r.r_father = rd.GetInt32("r_father"); //0
 				r.r_mother = rd.GetInt32("r_mother"); //1
 				string sx = rd.GetString("r_sex"); //2
-				r.sex=RabbitGen.RabbitSex.VOID;
+                r.sex = Rabbit.SexType.VOID;
 				if (sx == "male")
 				{
-					r.sex = RabbitGen.RabbitSex.MALE;
+                    r.sex = Rabbit.SexType.MALE;
 				}
 				if (sx == "female")
 				{
 
-					r.sex = RabbitGen.RabbitSex.FEMALE;
+                    r.sex = Rabbit.SexType.FEMALE;
 				}
 
 				r.name = rd.IsDBNull(3) ? "" : rd.GetString("name"); //3
@@ -163,7 +107,7 @@ namespace rabnet
 		public static void getRabbitPriplodK(MySqlConnection sql, ref RabbitGen rabbit)
 		{
 			string f = "f_rabid";
-			if (rabbit.sex == RabbitGen.RabbitSex.MALE)
+            if (rabbit.sex == Rabbit.SexType.MALE)
 			{
 				f = "f_partner";
 			}
@@ -186,7 +130,7 @@ namespace rabnet
 		
 		public static void getRabbitRodK(MySqlConnection sql, ref RabbitGen rabbit)
 		{
-			if (rabbit.sex == RabbitGen.RabbitSex.FEMALE)
+            if (rabbit.sex == Rabbit.SexType.FEMALE)
 			{
 				MySqlCommand cmd = new MySqlCommand(String.Format(@"	select coalesce((sum(f_children)-sum(f_killed)+sum(f_added))/(sum(f_children)+sum(f_added)),0) k
 																		from fucks 
@@ -198,7 +142,7 @@ namespace rabnet
 				}
 				rd.Close();
 			}
-			if (rabbit.sex == RabbitGen.RabbitSex.MALE)
+            if (rabbit.sex == Rabbit.SexType.MALE)
 			{
 				MySqlCommand cmd = new MySqlCommand(String.Format(@"	select	(select count(f_state) from fucks where f_partner={0:d} and f_state='okrol' and f_times=1) o,
 																				(select count(f_state) from fucks where f_partner={0:d} and f_state='proholost' and f_times=1) p;", rabbit.rid), sql);

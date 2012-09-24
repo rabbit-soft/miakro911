@@ -76,7 +76,7 @@ namespace rabnet
             [Category("Зоотехнические сроки"), DisplayName("Подсчет подсосных"),
             //Description("Возведение гнездовых крольчат в подсосных и подсчет их количества")]
             Description("Данная опция больше не автивна. Возведение в подсосные происходит при выдворении")]
-            public int CountSuckers { get { return NestOut/*su; } set { su = value*/; } } //TODO удалить версий через 100
+            public int CountSuckers { get { return NestOut/*su; } set { su = value*/; } } //TODO удалить версий через 90
             [Category("Зоотехнические сроки"), DisplayName("Установка гнездовья"),
             Description("Пересадить крольчиху в Юрту(А)")]
             public int NestIn { get { return n; } set { n = value; } }

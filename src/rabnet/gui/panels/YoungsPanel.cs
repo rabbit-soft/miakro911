@@ -34,6 +34,7 @@ namespace rabnet
             f["sho"] = op.getOption(Options.OPT_ID.SHOW_TIER_SEC);
             f["dbl"] = op.getOption(Options.OPT_ID.DBL_SURNAME);
             f["num"] = op.getOption(Options.OPT_ID.SHOW_NUMBERS);
+            _runF = f;
             colSort.Prepare();
             IDataGetter dg = DataThread.db().GetYoungers(f); 
             //отображение общей инфы в статус баре
@@ -51,18 +52,17 @@ namespace rabnet
                 colSort.Restore();
                 return;
             }
-            Younger rab = (data as Younger);
-            ListViewItem li = listView1.Items.Add(rab.fname);
-            li.Tag = rab.fid;
-            li.SubItems.Add(rab.fcount.ToString());
-            li.SubItems.Add(rab.fage.ToString());
-            li.SubItems.Add(rab.fsex);
-            li.SubItems.Add(rab.fbreed);
-            li.SubItems.Add(rab.faddress);
-            li.SubItems.Add(rab.fcls);
-            li.SubItems.Add(rab.mom);
-            li.SubItems.Add(rab.fneighbours == 0 ? "-" : rab.fneighbours.ToString());
-
+            YoungRabbit rab = (data as YoungRabbit);
+            ListViewItem li = listView1.Items.Add(rab.NameFull);           
+            li.SubItems.Add(rab.Group.ToString());
+            li.SubItems.Add(rab.Age.ToString());
+            li.SubItems.Add(rab.FSex());
+            li.SubItems.Add(rab.BreedName);
+            li.SubItems.Add(rab.FAddress(_runF.safeBool(Filters.SHOW_BLD_TIERS), _runF.safeBool(Filters.SHOW_BLD_DESCR)));
+            li.SubItems.Add(rab.FBon(_runF.safeBool(Filters.SHORT)));
+            li.SubItems.Add(rab.ParentName);
+            li.SubItems.Add(rab.Neighbours == 0 ? "-" : rab.Neighbours.ToString());
+            li.Tag = rab.ID;
 			colSort.SemiReady();
 		}
 

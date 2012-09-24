@@ -48,7 +48,7 @@ namespace rabnet
 
         private int[] getAddress(String s)
         {
-            if (s == OneRabbit.NullAddress)
+            if (s == Rabbit.NULL_ADDRESS)
                 return new int[] { 0, 0, 0 };
             for (int i = 0; i < bs.Length; i++)
                 for (int j = 0; j < bs[i].secs(); j++)

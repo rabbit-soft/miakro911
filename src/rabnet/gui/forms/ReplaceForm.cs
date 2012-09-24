@@ -58,11 +58,11 @@ namespace rabnet
             /// <summary>
             /// Новый пол кролика
             /// </summary>
-            public OneRabbit.RabbitSex NewSex;
+            public Rabbit.SexType NewSex;
             /// <summary>
             /// Пол кролика
             /// </summary>
-            public OneRabbit.RabbitSex Sex;
+            public Rabbit.SexType Sex;
             public int Age = 0;
             /// <summary>
             /// Текущий адрес кролика
@@ -89,7 +89,7 @@ namespace rabnet
             public RP PlaceWith = null;
             public RPList List = null;
             public RPList Children = new RPList();
-            public RP(RPList list,int id, string name, string address, int count, OneRabbit.RabbitSex sex,int age)
+            public RP(RPList list,int id, string name, string address, int count, Rabbit.SexType sex,int age)
             {
                 this.List = list;
                 this.ID = id;
@@ -115,13 +115,13 @@ namespace rabnet
                 return false;
             }
 
-            public RP(RPList list, int id, string name, string address, int count, OneRabbit.RabbitSex sex, int age, bool nest):
+            public RP(RPList list, int id, string name, string address, int count, Rabbit.SexType sex, int age, bool nest):
                 this(list, id, name, address, count, sex, age)
             {
                 this.SetNest = nest;
             }
 
-            public RP(RPList list,int id, string name, string address, int count, OneRabbit.RabbitSex sex,int age,int parent):
+            public RP(RPList list,int id, string name, string address, int count, Rabbit.SexType sex,int age,int parent):
                 this(list,id,name,address,count,sex,age)
             {
                 Younger = true;
@@ -207,7 +207,7 @@ namespace rabnet
                     }
                     if (PlaceWith != null) res = ",объединение";
                     if (NewCount < Count) res += ",разбиение";
-                    if (Sex != NewSex) res += ",пол-" + OneRabbit.SexToRU(NewSex);
+                    if (Sex != NewSex) res += ",пол-" + Rabbit.SexToRU(NewSex);
                     return res;
                 }
             }
@@ -281,10 +281,10 @@ namespace rabnet
             _replaceList.Clear();
             foreach (RabNetEngRabbit r in rbs)
             {
-                _replaceList.Add(new RP(_replaceList,r.RabID, r.FullName, r.medAddress, r.Group, r.Sex, r.age,r.SetNest));
+                _replaceList.Add(new RP(_replaceList,r.RabID, r.FullName, r.medAddress, r.Group, r.Sex, r.Age,r.SetNest));
                 //Engine.get().db().getBuilding(r.Address);
-                foreach (OneRabbit y in r.Youngers)
-                    _replaceList.Add(new RP(_replaceList,y.id, y.fullname, r.medAddress, y.group, y.sex,(DateTime.Now-y.born).Days, r.RabID));
+                foreach (YoungRabbit y in r.Youngers)
+                    _replaceList.Add(new RP(_replaceList,y.ID, y.NameFull, r.medAddress, y.Group, y.Sex,DateTime.Now.Subtract(y.BirthDay).Days, r.RabID));
             }
         }
         public void setAction(Action act)
@@ -302,7 +302,7 @@ namespace rabnet
         private bool busy(RP id)
         {
             bool res = false;
-            if (id.CurAddress == OneRabbit.NullAddress) return false;
+            if (id.CurAddress == Rabbit.NULL_ADDRESS) return false;
             foreach (RP r in _replaceList)
             {
                 if (r.CurAddress == id.CurAddress && r != id && !res)
@@ -363,7 +363,7 @@ namespace rabnet
             }
             bs = Engine.db().getFreeBuilding(f);
             dgcbNewAddress.Items.Clear();
-            dgcbNewAddress.Items.Add(OneRabbit.NullAddress);
+            dgcbNewAddress.Items.Add(Rabbit.NULL_ADDRESS);
             foreach (Building b in bs)
             {
                 for (int i = 0; i < b.secs(); i++)
@@ -418,7 +418,7 @@ namespace rabnet
                     globalError = true;
                     stat += ",ЗАНЯТО";
                 }
-                DataRow rw = _dataSet.Rows.Add(r.Name, r.Age, OneRabbit.SexToRU(r.NewSex), r.NewCount, r.Address, r.CurAddress, stat, r.SetNest);
+                DataRow rw = _dataSet.Rows.Add(r.Name, r.Age, Rabbit.SexToRU(r.NewSex), r.NewCount, r.Address, r.CurAddress, stat, r.SetNest);
                 if (_action == Action.CHANGE && dataGridView1.SelectedRows.Count < 2 && r.Parent==0)
                     dataGridView1.Rows[dataGridView1.Rows.Count - 1].Selected = true;
                 if (_action == Action.BOYSOUT)
@@ -547,7 +547,7 @@ namespace rabnet
                 btCombine.Enabled = btUniteUp.Enabled = btUniteDown.Enabled=false;
                 RP r1 = rp(dataGridView1.SelectedRows[0].Index);
                 RP r2 = rp(dataGridView1.SelectedRows[1].Index);
-                if ((r1.Count == 1 && r1.Sex == OneRabbit.RabbitSex.FEMALE && r1.Age>r2.Age) || (r2.Count == 1 && r2.Sex == OneRabbit.RabbitSex.FEMALE && r2.Age>r1.Age))
+                if ((r1.Count == 1 && r1.Sex == Rabbit.SexType.FEMALE && r1.Age>r2.Age) || (r2.Count == 1 && r2.Sex == Rabbit.SexType.FEMALE && r2.Age>r1.Age))
                 {
                     btCombine.Enabled = true;
                 }
@@ -561,7 +561,7 @@ namespace rabnet
             {
                 int cnt = rp(dataGridView1.SelectedRows[0].Index).NewCount;
                 groupBox1.Enabled = (cnt > 1);
-                btSeparateBoys.Enabled = btSetAllGirls.Enabled = btSetAllBoys.Enabled = (rp().NewSex == OneRabbit.RabbitSex.VOID);
+                btSeparateBoys.Enabled = btSetAllGirls.Enabled = btSetAllBoys.Enabled = (rp().NewSex == Rabbit.SexType.VOID);
                 if (cnt > 1)           
                     numericUpDown1.Maximum = cnt - 1;
                 numericUpDown1.Enabled = btSeparate.Enabled = btSeparateBoys.Enabled = btSeparateByOne.Enabled = (cnt > 1) ;                
@@ -597,7 +597,7 @@ namespace rabnet
         /// <returns>Массив (Номер фермы, Ярус, Клетка)</returns>
         private int[] getAddress(String s)
         {
-            if (s == OneRabbit.NullAddress)
+            if (s == Rabbit.NULL_ADDRESS)
                 return new int[] { 0, 0, 0 };
             for (int i = 0; i < bs.Length; i++)
                 for (int j = 0; j < bs[i].secs();j++ )
@@ -627,8 +627,8 @@ namespace rabnet
         {
             if (dataGridView1.SelectedRows.Count != 1) return;
             RP nrp = rp().SplitGroup((int)numericUpDown1.Value);
-            rp().NewSex = OneRabbit.RabbitSex.FEMALE;
-            nrp.NewSex = OneRabbit.RabbitSex.MALE;
+            rp().NewSex = Rabbit.SexType.FEMALE;
+            nrp.NewSex = Rabbit.SexType.MALE;
             noboys = true;
             btSeparate.Enabled = btSeparateByOne.Enabled = true;
             update();
@@ -704,7 +704,7 @@ namespace rabnet
                     int[] a=getAddress(c.CurAddress);
                     int cid = rb.Clone(c.Count, a[0],a[1],a[2]);
                     commitRabbit(c, cid,replaced);
-                    if (_action == Action.ONE_GIRL_OUT && girlout == 0 && c.Sex == OneRabbit.RabbitSex.FEMALE && c.Count == 1)
+                    if (_action == Action.ONE_GIRL_OUT && girlout == 0 && c.Sex == Rabbit.SexType.FEMALE && c.Count == 1)
                         girlout = cid;
                 }
             rp.Saved = true;
@@ -769,7 +769,7 @@ namespace rabnet
         private void btSetAllGirls_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count != 1) return;
-            rp().NewSex = OneRabbit.RabbitSex.FEMALE;
+            rp().NewSex = Rabbit.SexType.FEMALE;
             update();
         }
 
@@ -837,7 +837,7 @@ namespace rabnet
         private void btSetAllBoys_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count != 1) return;
-            rp().NewSex = OneRabbit.RabbitSex.MALE;
+            rp().NewSex = Rabbit.SexType.MALE;
             update();
         }
     }

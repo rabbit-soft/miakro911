@@ -62,22 +62,22 @@ namespace rabnet
                 throw new ExNoRabbit();
         }
 
-        public RabNetEngRabbit(RabNetEngine dl,OneRabbit.RabbitSex sx)
+        public RabNetEngRabbit(RabNetEngine dl,Rabbit.SexType sx)
         {
             _id = 0;
             _eng = dl;
             String s="void";
-            if (sx == OneRabbit.RabbitSex.FEMALE) s = "female";
-            if (sx == OneRabbit.RabbitSex.MALE) s = "male";
-            _rab = new OneRabbit(0, s, DateTime.Now, 0, "00000", 0, 0, 0, "", 1, 1, 0, "", "", 0, DateTime.MinValue, "", DateTime.MinValue, 0, 0, "", "", "00000",0,0/*,DateTime.Now*/);
-            _rab.youngers=new OneRabbit[0];
+            if (sx == Rabbit.SexType.FEMALE) s = "female";
+            if (sx == Rabbit.SexType.MALE) s = "male";
+            _rab = new OneRabbit(0, s, DateTime.Now, 0, Rabbit.NULL_FLAGS, 0, 0, 0, "", 1, 1, 0, "", "", 0, DateTime.MinValue, "", DateTime.MinValue, 0, 0, "", "", Rabbit.NULL_BON,0,1,-1,DateTime.MinValue);
+            _rab.youngers=new YoungRabbit[0];
         }
 
         public void newCommit()
         {
             if (_id != 0) return;
             _id = _eng.db().newRabbit(_rab, Mom);
-            _rab.id = _id;
+            _rab.ID = _id;
             _eng.logs().log(RabNetLogs.LogType.INCOME, _id);
         }
 
@@ -88,11 +88,11 @@ namespace rabnet
         {
             if (RabID == 0)
                 return;
-            if (_rab.wasname != _rab.name)
+            if (_rab.wasname != _rab.nameID)
             {
                 if (Group > 1)
                     throw new ExNotOne("переименовать");
-                _eng.logs().log(RabNetLogs.LogType.RENAME, RabID, 0, "", "", _eng.db().makeName(_rab.wasname, 0, 0, 1, _rab.sex));
+                _eng.logs().log(RabNetLogs.LogType.RENAME, RabID, 0, "", "", _eng.db().makeName(_rab.wasname, 0, 0, 1, _rab.Sex));
             }
             else _eng.logs().log(RabNetLogs.LogType.RAB_CHANGE, RabID);
             _eng.db().SetRabbit(_rab);
@@ -101,45 +101,45 @@ namespace rabnet
 
         //TODO Сделать это на уровне OneRabbit
         #region properties
-        public OneRabbit.RabbitSex Sex
+        public Rabbit.SexType Sex
         {   
-            get { return _rab.sex; }
-            set { _rab.sex=value; }
+            get { return _rab.Sex; }
+            set { _rab.Sex=value; }
         }
         public DateTime Born
         {
-            get { return _rab.born; }
-            set { _rab.born = value; }
+            get { return _rab.BirthDay; }
+            set { _rab.BirthDay = value; }
         }
         public int Rate
         {
-            get { return _rab.rate; }
-            set { _rab.rate = value; }
+            get { return _rab.Rate; }
+            set { _rab.Rate = value; }
         }
         public bool Defect
         {
-            get { return _rab.defect; }
-            set { _rab.defect = value; }
+            get { return _rab.Defect; }
+            set { _rab.Defect = value; }
         }
         public bool Production
         {
-            get { return _rab.gp; }
-            set { _rab.gp = value; }
+            get { return _rab.Production; }
+            set { _rab.Production = value; }
         }
         public bool Realization
         {
-            get { return _rab.gr; }
-            set { _rab.gr = value; }
+            get { return _rab.RealizeReady; }
+            set { _rab.RealizeReady = value; }
         }
-        public bool Spec
+        /*public bool Spec
         {
             get { return _rab.spec; }
             set { _rab.spec = value; }
-        }
+        }*/
         public int Name
         {
-            get { return _rab.name; }
-            set { _rab.name = value; }
+            get { return _rab.nameID; }
+            set { _rab.nameID = value; }
         }
         /// <summary>
         /// Фамили по отцу
@@ -162,16 +162,16 @@ namespace rabnet
         /// </summary>
         public int Group
         {
-            get { return _rab.group; }
-            set { _rab.group = value; }
+            get { return _rab.Group; }
+            set { _rab.Group = value; }
         }
         /// <summary>
         /// Порода кролика
         /// </summary>
         public int Breed
         {
-            get { return _rab.breed;}
-            set {_rab.breed=value;}
+            get { return _rab.BreedID;}
+            set {_rab.BreedID=value;}
         }
         public int Zone
         {
@@ -183,13 +183,13 @@ namespace rabnet
         /// </summary>
         public String Notes
         {
-            get { return _rab.notes; }
-            set { _rab.notes = value; }
+            get { return _rab.Notes; }
+            set { _rab.Notes = value; }
         }
         public int Status
         {
-            get { return _rab.status; }
-            set { _rab.status = value; }
+            get { return _rab.Status; }
+            set { _rab.Status = value; }
         }
         public DateTime Last_Fuck_Okrol
         {
@@ -201,7 +201,12 @@ namespace rabnet
         /// </summary>
         public RabVac[] Vaccines
         {
-            get { return _rab.rabVacs; }
+            get 
+            {
+                if (_rab.rabVacs == null)
+                    _rab.rabVacs = _eng.db().GetRabVac(_id);
+                return _rab.rabVacs; 
+            }
             //set { rab.rabVacs = value; }
         }
         public String Genom
@@ -211,31 +216,31 @@ namespace rabnet
         }
         public bool NoLact
         {
-            get { return _rab.nolact; }
-            set { _rab.nolact = value; }
+            get { return _rab.NoLact; }
+            set { _rab.NoLact = value; }
         }
         public bool NoKuk
         {
-            get { return _rab.nokuk; }
-            set { _rab.nokuk = value; }
+            get { return _rab.NoKuk; }
+            set { _rab.NoKuk = value; }
         }
         public int Babies
         {
-            get { return _rab.babies; }
-            set { _rab.babies = value; }
+            get { return _rab.kidsOverAll; }
+            set { _rab.kidsOverAll = value; }
         }
         public int Lost
         {
-            get { return _rab.lost; }
-            set { _rab.lost = value; }
+            get { return _rab.kidsLost; }
+            set { _rab.kidsLost = value; }
         }
         public string Tag
         {
             get { return _rab.tag; }
             set { _rab.tag = value; }
         }
-        public string SmallAddress{get{return _rab.smallAddress;}}
-        public string JustAddress{get{return _rab.justAddress;}}
+        public string SmallAddress{get{return _rab.AddressSmall;}}
+        public string JustAddress{get{return _rab.RawAddress;}}
         /// <summary>
         /// Нужно для логирования при Клонировании
         /// </summary>
@@ -244,17 +249,17 @@ namespace rabnet
         {
             get
             {
-                string[] values = _rab.justAddress.Split(',');
+                string[] values = _rab.RawAddress.Split(',');
                 return values[3];
             }
         }
-        public string medAddress { get { return _rab.medAddress; } }
-        public int Parent { get { return _rab.parent; } }
-        public int RabID { get { return _rab.id; } }
+        public string medAddress { get { return _rab.Address; } }
+        public int Parent { get { return _rab.parentId; } }
+        public int RabID { get { return _rab.ID; } }
         public int EventType { get { return _rab.evtype; } }
-        public DateTime EventDate { get { return _rab.evdate; } }
+        public DateTime EventDate { get { return _rab.EventDate; } }
         public int WasName { get { return _rab.wasname; } }
-        public String Address { get { return _rab.address; } }
+        public String Address { get { return _rab.Address; } }
         public String NewAddress { get { return _rab.nuaddr; } }
         #endregion propertie
 
@@ -262,7 +267,7 @@ namespace rabnet
         { 
             get 
             {
-                string[] values = _rab.justAddress.Split(',');
+                string[] values = _rab.RawAddress.Split(',');
                 if (values.Length < 3)
                     return false;
                 if (values[3] == BuildingType.Jurta && values[2] == "0" && values[5] == "1")
@@ -282,21 +287,24 @@ namespace rabnet
             get
             {
                 if (_id == 0) return _eng.db().makeName(Name, Surname, SecondName, Group, Sex);
-                return _rab.fullname; 
+                return _rab.NameFull; 
             } 
         }
         /// <summary>
         /// Порода
         /// </summary>
-        public String BreedName { get { return _rab.breedname; } }
+        public String BreedName { get { return _rab.BreedName; } }
         /// <summary>
         /// Бонитировка
         /// </summary>
-        public String Bon { get { return _rab.bon; } }
+        public String Bon { get { return _rab.Bon; } }
         /// <summary>
         /// Возраст
         /// </summary>
-        public int age { get { return (DateTime.Now.Date - Born.Date).Days; } }
+        public int Age 
+        {
+            get { return _rab.Age; } 
+        }
         /// <summary>
         /// Общее моличество подсосных крольчат (если это Кормилица)
         /// </summary>
@@ -305,17 +313,22 @@ namespace rabnet
             get 
             {
                 int c = 0;
-                foreach (OneRabbit r in Youngers)
-                    c += r.group;
+                foreach (YoungRabbit r in Youngers)
+                    c += r.Group;
                 return c;
             } 
         }
         /// <summary>
         /// Лист с группами подсосных
         /// </summary>
-        public OneRabbit[] Youngers 
+        public YoungRabbit[] Youngers 
         { 
-            get { return _rab.youngers; } 
+            get 
+            { 
+                if(_rab.youngers ==null)
+                    return _rab.youngers = _eng.db().GetYoungers(_id);
+                return _rab.youngers; 
+            } 
         }
         public OneRabbit[] Neighbors
         {
@@ -325,7 +338,7 @@ namespace rabnet
         public void SetBon(String bon)
         {
             if (RabID == 0)
-                _rab.bon = bon;
+                _rab.Bon = bon;
             else
             {
                 _eng.logs().log(RabNetLogs.LogType.BON, RabID, 0, "", "", bon);
@@ -339,16 +352,16 @@ namespace rabnet
         /// <param name="when">Дата вязки</param>
         public void FuckIt(int otherrab, DateTime when)
         {
-            if (Sex != OneRabbit.RabbitSex.FEMALE)
+            if (Sex != Rabbit.SexType.FEMALE)
                 throw new ExNotFemale(this);
-            if (age<_eng.brideAge())
+            if (Age<_eng.brideAge())
                 throw new ExNotFucker(this);
             if (EventDate != DateTime.MinValue)
                 throw new ExAlreadyFucked(this);
             if (Name == 0) throw new ExNoName();
             if (Group > 1) throw new ExNotOne("случить");
             RabNetEngRabbit f = _eng.getRabbit(otherrab);
-            if (f.Sex != OneRabbit.RabbitSex.MALE)
+            if (f.Sex != Rabbit.SexType.MALE)
                 throw new ExNotMale(f);
             if (f.Status < 1)
                 throw new ExNotFucker(f);
@@ -363,7 +376,7 @@ namespace rabnet
         /// <param name="when">Дата установки прохолоста</param>
         public void ProholostIt(DateTime when)
         {
-            if (Sex != OneRabbit.RabbitSex.FEMALE)
+            if (Sex != Rabbit.SexType.FEMALE)
                 throw new ExNotFemale(this);
             if (EventDate == DateTime.MinValue)
                 throw new ExNotFucked(this);
@@ -380,7 +393,7 @@ namespace rabnet
         /// <param name="dead">Количество родившихся мертвых крольчат</param>
         public void OkrolIt(DateTime when, int children, int dead)
         {
-            if (Sex != OneRabbit.RabbitSex.FEMALE)
+            if (Sex != Rabbit.SexType.FEMALE)
                 throw new ExNotFemale(this);
             if (EventDate == DateTime.MinValue)
                 throw new ExNotFucked(this);
@@ -394,12 +407,12 @@ namespace rabnet
         {
             if (_id == 0)
             {
-                _rab.address = address;
+                _rab.Address = address;
                 _rab.nuaddr = String.Format("{0:d}|{1:d}|{2:d}", farm, tier_id, sec);
             }
             else
             {
-                _eng.logs().log(RabNetLogs.LogType.REPLACE, RabID, 0, _rab.smallAddress, address.TrimEnd(' ').Substring(0,address.LastIndexOf(' ')));
+                _eng.logs().log(RabNetLogs.LogType.REPLACE, RabID, 0, _rab.AddressSmall, address.TrimEnd(' ').Substring(0,address.LastIndexOf(' ')));
                 _eng.db().replaceRabbit(RabID, farm, tier_id, sec);
             }
             _rab.tag = "";
@@ -408,11 +421,11 @@ namespace rabnet
         public void ReplaceYounger(int yid, int farm, int tier, int sec, string address)
         {
             _eng.db().replaceYounger(yid, farm, tier, sec);
-            foreach (OneRabbit y in Youngers)
-                if (y.id == yid)
-                    y.tag = "";
+            /*foreach (YoungRabbit y in Youngers) //TODO warning removing tag
+                if (y.ID == yid)
+                    y.tag = "";*/
             OneRabbit r = _eng.db().GetRabbit(yid);
-            _eng.logs().log(RabNetLogs.LogType.REPLACE, yid,0,r.smallAddress,address);
+            _eng.logs().log(RabNetLogs.LogType.REPLACE, yid,0,r.AddressSmall,address);
         }
 
         /// <summary>
@@ -426,7 +439,7 @@ namespace rabnet
         {
             if (count == Group)
             {
-                _eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, RabID, 0, SmallAddress == OneRabbit.NullAddress ? CloneAddress : SmallAddress, "", String.Format(" {0:s}[{1:d}] {2:s})",FullName, Group, notes));
+                _eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, RabID, 0, SmallAddress == Rabbit.NULL_ADDRESS ? CloneAddress : SmallAddress, "", String.Format(" {0:s}[{1:d}] {2:s})",FullName, Group, notes));
                 _eng.db().KillRabbit(_id, when, reason, notes);
             }
             else
@@ -450,16 +463,16 @@ namespace rabnet
         public void CountKids(int dead,int killed,int added,int atall,int age,int yid)
         {
             const byte DR_ON_COUNT=5;//deadreason "при подсчете"
-            if (Sex != OneRabbit.RabbitSex.FEMALE)
+            if (Sex != Rabbit.SexType.FEMALE)
                 throw new ExNotFemale(this);
             _eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, RabID, 0, "", "", String.Format("возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, прибавилось {4:d})",age,atall,dead,killed,added));            
             if (dead == 0 && killed == 0 && added == 0) return;
-            OneRabbit y = _rab.youngers[yid];
-            RabNetEngRabbit r = _eng.getRabbit(y.id);        
+            YoungRabbit y = _rab.youngers[yid];
+            RabNetEngRabbit r = _eng.getRabbit(y.ID);        
             if (atall == 0)
             {
                 r.CloneAddress = SmallAddress;
-                r.KillIt(DateTime.Now, DR_ON_COUNT, "при подсчете", y.group);
+                r.KillIt(DateTime.Now, DR_ON_COUNT, "при подсчете", y.Group);
             }
             else
             {
@@ -468,7 +481,7 @@ namespace rabnet
                 clone.KillIt(DateTime.Now, DR_ON_COUNT, "при подсчете", clone.Group);
                 //!!!тут надо списывать
                 if(added>0)
-                    _eng.db().СountKids(_id,dead, killed, added, _rab.youngers[yid].id);             
+                    _eng.db().СountKids(_id,dead, killed, added, _rab.youngers[yid].ID);             
             }
         }
 
@@ -476,9 +489,9 @@ namespace rabnet
         /// Установить пол
         /// </summary>
         /// <param name="sex">Новый пол</param>
-        public void SetSex(OneRabbit.RabbitSex sex)
+        public void SetSex(Rabbit.SexType sex)
         {
-            _eng.logs().log(RabNetLogs.LogType.SET_SEX, _id, 0, "", "", OneRabbit.SexToRU(sex));
+            _eng.logs().log(RabNetLogs.LogType.SET_SEX, _id, 0, "", "", Rabbit.SexToRU(sex));
             _eng.db().setRabbitSex(_id, sex);
         }
 
@@ -493,7 +506,7 @@ namespace rabnet
         public int Clone(int count,int farm,int tier,int sec)
         {
            if (Group < count) throw new ExBadCount();
-           int nid = _eng.db().cloneRabbit(_id, count, farm, tier, sec, OneRabbit.RabbitSex.VOID, 0);
+           int nid = _eng.db().cloneRabbit(_id, count, farm, tier, sec, Rabbit.SexType.VOID, 0);
            RabNetEngRabbit rab = Engine.get().getRabbit(nid);       //+gambit
            _eng.logs().log(RabNetLogs.LogType.CLONE_GROUP, _id, nid, SmallAddress, rab.SmallAddress, String.Format("{0:d} и {1:d}", Group-count ,count));
            return nid;
@@ -527,8 +540,8 @@ namespace rabnet
             _eng.db().SetRabbitVaccine(_id,vid,date);
             if (withChildrens)
             {
-                foreach (OneRabbit r in _rab.youngers)
-                    _eng.db().SetRabbitVaccine(r.id, vid, date);
+                foreach (YoungRabbit r in Youngers)
+                    _eng.db().SetRabbitVaccine(r.ID, vid, date);
                 _rab.youngers = _eng.db().GetYoungers(_id);
             }
             _rab.rabVacs = _eng.db().GetRabVac(_id);                        

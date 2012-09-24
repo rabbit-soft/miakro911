@@ -2,313 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using MySql.Data.MySqlClient;
-using System.Windows.Forms;
+//using System.Windows.Forms;
+using rabnet;
 
-namespace rabnet
-{
-    public static class BuildingType
-    {
-        public const string Female = "female";
-        public const string Female_Rus = "Крольчихин";
-        public const string Female_Short = "крлч";
-
-        public const string DualFemale = "dfemale";
-        public const string DualFemale_Rus = "Двукрольчихин";
-        public const string DualFemale_Short = "2крл";
-
-        public const string Jurta = "jurta";
-        public const string Jurta_Rus = "Юрта";
-        public const string Jurta_Short = "юрта";
-
-        public const string Quarta = "quarta";
-        public const string Quarta_Rus = "Кварта";
-        public const string Quarta_Short = "кврт";
-
-        public const string Vertep = "vertep";
-        public const string Vertep_Rus = "Вертеп";
-        public const string Vertep_Short = "вртп";
-
-        public const string Barin = "barin";
-        public const string Barin_Rus = "Барин";
-        public const string Barin_Short = "барн";
-
-        public const string Cabin = "cabin";
-        public const string Cabin_Rus = "Хижина";
-        public const string Cabin_Short = "хижн";
-
-        public const string Complex = "complex";
-        public const string Complex_Rus = "Комплексный";
-        public const string Complex_Short = "кмпл";
-    }
-
-    public class Building:IData
-    {
-        public int fid;
-        public int ffarm;
-        public int ftid;
-        public int fsecs;
-        public String[] fareas;
-        public String[] fdeps;
-        public string ftype;
-        public string ftypeloc;
-        public string fdelims;
-        public string fnotes;
-        public bool frepair;
-        public string fnests;
-        public string fheaters;
-        public string faddress;
-        public string[] fuses;
-        public int[] fbusies;
-        public int fnhcount;
-        public string[] fullname=new string[4];
-        public string[] smallname = new string[4];
-        public string[] medname = new string[4];
-
-        public Building(int id, int farm, int tier_id, string type, string typeloc, string delims, string notes, bool repair, int seccnt)
-        {
-            fid = id;
-            ffarm = farm;
-            ftid = tier_id;
-            ftype = type;
-            ftypeloc = typeloc;
-            fdelims = delims;
-            fnotes = notes;
-            frepair = repair;
-            fsecs = seccnt;
-            for (int i = 0; i < fsecs; i++)
-            {
-                fullname[i] = Buildings.FullRName(ffarm, ftid, i, ftype, fdelims, false, true, true);
-                smallname[i] = Buildings.FullRName(ffarm, ftid, i, ftype, fdelims, true, false, false);
-                medname[i] = Buildings.FullRName(ffarm, ftid, i, ftype, fdelims, false, true, false);
-            }
-        }
-        #region IBuilding Members
-        public int id() { return fid; }
-        public int farm() { return ffarm; }
-        public int tier_id() { return ftid; }
-        public string delims(){return fdelims;}
-        public string type(){return ftypeloc;}
-        public string itype(){return ftype;}
-        public string notes() { return fnotes; }
-        public bool repair() { return frepair; }
-        public int secs() { return fsecs; }
-        public string area(int id) { return fareas[id]; }
-        public string dep(int id) { return fdeps[id]; }
-        public string nest() { return fnests; }
-        public string heater() { return fheaters; }
-        public int nest_heater_count() { return fnhcount; }
-        public int busy(int id) { return fbusies[id]; }
-        public string use(int id) { return fuses[id]; }
-        public string address() { return faddress; }
-        #endregion
-
-        /* Гамбит не знал как лучше сделать строку, которую можно установить в начале программы,
-         * ее мог использовать класс Building и BuildingPanel    
-         */
-        #region format
-        private static int _smbls = 6;
-        private static char _dsym = ' ';
-
-
-        /// <summary>
-        /// Установить формат адреса МИНИфермы (По просьбе Татищево)
-        /// </summary>
-        /// <param name="symbols">Сколько цифр в строке адреса</param>
-        /// <param name="defchar">Символ заполнитель</param>
-        public static void SetDefFmt(int symbols, char defchar)
-        {
-            if (symbols < 4) _smbls = 4;
-            else if (symbols > 10) _smbls = 10;
-            else _smbls = symbols;
-            if (defchar != '/' && defchar != '\\') _dsym = defchar;
-        }
-        public static void SetDefFmt(char defchar)
-        {
-            SetDefFmt(_smbls, defchar);
-        }
-        public static void SetDefFmt(int symbols)
-        {
-            SetDefFmt(symbols, _dsym);
-        }
-
-        /// <summary>
-        /// Правило форматирования Номера клетки
-        /// </summary>
-        public static string Format(int farmN,int symbols,char defchar)
-        {
-            if (symbols < 4) symbols = 4;
-            if (symbols > 10) symbols = 10;
-            if (defchar == '/' || defchar == '\\') defchar = _dsym;
-
-            string res = farmN.ToString();
-            if (res.Length < symbols)
-            {
-                while(symbols != res.Length)
-                    res = defchar + res;
-            }
-            return res;
-        }
-        /// <summary>
-        /// Приводит номер фермы к нужному виду 
-        /// (начало заполнено нулями или пробелами)
-        /// </summary>
-        /// <param name="farmN">Номер фермы</param>
-        /// <returns></returns>
-        public static string Format(int farmN)
-        {
-            return Format(farmN, _smbls, _dsym);
-        }
-        public static string Format(string farmN)
-        {
-            int fn = 0;
-            int.TryParse(farmN, out fn);
-            return fn == 0 ? farmN : Format(fn, _smbls, _dsym);
-        }
-
-        #endregion
-    }
+namespace db.mysql
+{    
 
     public class Buildings : RabNetDataGetterBase
-    {     
-        internal static bool hasnest(String type,int sec,String nests)
-        {
-            int c = GetRNHCount(type);
-            if (c == 0) return false;
-            if (type==BuildingType.DualFemale)
-                return (nests[sec]=='1');
-            return (nests[0]=='1');
-        }
-
-        internal static String GetRDescr(String type, bool shr,int sec,String delims)
-        {
-            String res = "";
-            switch (type)
-            {
-                case BuildingType.Female:
-                case BuildingType.DualFemale: res = shr ? "гн+выг" : "гнездовое+выгул"; break;
-                case BuildingType.Complex:
-                    if (sec==0)
-                        res = shr ? "гн+выг" : "гнездовое+выгул";
-                    else
-                        res = shr ? "отк" : "откормочное"; 
-                    break;
-                case BuildingType.Jurta : 
-                    if (sec == 0)
-                    {
-                        if (delims[0] == '0')
-                            res = (shr ? "гн" : "гнездовое")+"+";
-                        res += shr ? "мвг" : "м.выгул";
-                    }
-                    else
-                    {
-                        if (delims[0] == '1')
-                            res = (shr ? "гн" : "гнездовое") + "+";
-                        res += shr ? "бвг" : "б.выгул";
-                    }
-                    break;
-                case BuildingType.Cabin:
-                case BuildingType.Quarta: res = shr ? "отк" : "откормочное"; break;
-                case BuildingType.Vertep :
-                case BuildingType.Barin: res = shr ? "врт" : "Вертеп"; break;
-            }
-            return res;
-        }
-        internal static String GetRSec(String type, int sec, String delims)
-        {
-            if (type == BuildingType.Female)
-                return "";
-            String secnames = "абвг";
-            String res = ""+secnames[sec];
-            if (type == BuildingType.Quarta && delims!="111")
-            {
-                for (int i = sec - 1; i >= 0 && (delims[i]=='1'); i--)
-                    if (delims[i] == '0') res = secnames[i] + res;
-                for (int i = sec; i < 3 && delims[i] == '1'; i++)
-                    if (delims[i] == '0') res = res + secnames[i + 1];
-            }
-            else if (type == BuildingType.Barin && delims[0]=='0') 
-                res = "аб";
-            return res;
-        }
-        internal static String GetRName(String type,bool shr)
-        {
-            String res="Нет";
-            switch (type)
-            {
-                case BuildingType.Female: res = shr ? BuildingType.Female_Short : BuildingType.Female_Rus; break;
-                case BuildingType.DualFemale: res = shr ? BuildingType.DualFemale_Short : BuildingType.DualFemale_Rus; break;
-                case BuildingType.Complex: res = shr ? BuildingType.Complex_Short : BuildingType.Complex_Rus; break;
-                case BuildingType.Jurta : res = shr ? BuildingType.Jurta_Short : BuildingType.Jurta_Rus; break;
-                case BuildingType.Quarta: res = shr ? BuildingType.Quarta_Short : BuildingType.Quarta_Rus; break;
-                case BuildingType.Vertep: res = shr ? BuildingType.Vertep_Short : BuildingType.Vertep_Rus; break;
-                case BuildingType.Barin: res = shr ? BuildingType.Barin_Short : BuildingType.Barin_Rus; break;
-                case BuildingType.Cabin: res = shr ? BuildingType.Cabin_Short : BuildingType.Cabin_Rus; break;
-            }
-            return res;
-        }
-
-        /// <summary>
-        /// Возвращает количество секций у данного типа МИНИфермы
-        /// </summary>
-        internal static int GetRSecCount(String type)
-        {
-            int res = 2;
-            switch (type)
-            {
-                case BuildingType.Cabin:
-                case BuildingType.Female: res = 1; break;
-                case BuildingType.Complex: res = 3; break;
-                case BuildingType.Quarta: res = 4; break;
-            }
-            return res;
-        }
-
-        internal static int GetRNHCount(String type)
-        {
-            int res = 1;
-            switch (type)
-            {
-                case BuildingType.DualFemale: res = 2; break;
-                case BuildingType.Quarta: 
-                case BuildingType.Vertep:
-                case BuildingType.Barin: res = 0; break;
-            }
-            return res;
-        }
-
-        internal static String FullRName(int farm, int tierid, int sec, String type, String delims, bool shrt, bool showTier, bool ShowDescr)
-        {
-            String res = Building.Format(farm);
-            if (tierid == 1) res += "^";
-            if (tierid == 2) res += "-";
-            res += GetRSec(type, sec, delims);
-            if (showTier)
-                res += " [" + GetRName(type, shrt) + "]";
-            if (ShowDescr)
-                res += " (" + GetRDescr(type, shrt, sec, delims)+")";
-            return res;
-        }       
-
-        internal static String FullPlaceName(String rabplace,bool shrt,bool showTier,bool showDescr)
-        {
-            if (rabplace == "")
-                return OneRabbit.NullAddress;
-            String[] dts = rabplace.Split(',');
-            return FullRName(int.Parse(dts[0]),int.Parse(dts[1]),int.Parse(dts[2]),dts[3],dts[4],shrt,showTier,showDescr);
-        }
-
-        public static String FullPlaceName(String rabplace)
-        {
-            return FullPlaceName(rabplace, false, false, false);
-        }
-
-        internal static bool HasNest(String rabplace)
-        {
-            if (rabplace == "")
-                return false;
-            String[] dts = rabplace.Split(',');
-            return hasnest(dts[3], int.Parse(dts[2]), dts[5]);
-        }
+    {             
 
         internal Buildings(MySqlConnection sql, Filters filters):base(sql,filters){}
 
@@ -325,8 +26,8 @@ namespace rabnet
             }
             String tp = rd.GetString("t_type");
             String dl = rd.GetString("t_delims");
-            int scs = GetRSecCount(tp);
-            Building b = new Building(id, farm, tid, tp, GetRName(tp, shr), dl,
+            int scs = Building.GetRSecCount(tp);
+            Building b = new Building(id, farm, tid, tp, Building.GetRName(tp, shr), dl,
                 rd.GetString("t_notes"), (rd.GetInt32("t_repair") == 0 ? false : true), scs);
             List<string> ars = new List<string>();
             List<string> deps = new List<string>();
@@ -334,8 +35,8 @@ namespace rabnet
             List<String> uses = new List<string>();
             for (int i = 0; i < b.secs(); i++)
             {
-                ars.Add((tid == 0 ? "" : (tid == 1 ? "^" : "-")) + GetRSec(tp, i, dl));
-                deps.Add(GetRDescr(tp, shr, i, dl));
+                ars.Add((tid == 0 ? "" : (tid == 1 ? "^" : "-")) + Building.GetRSec(tp, i, dl));
+                deps.Add(Building.GetRDescr(tp, shr, i, dl));
                 int rn = (rd.IsDBNull(10+i) ? -1 : rd.GetInt32("t_busy" + (i + 1).ToString()));
                 bus.Add(rn);
                 if (rabbits)
@@ -347,7 +48,7 @@ namespace rabnet
             b.fbusies = bus.ToArray();
             b.fdeps = deps.ToArray();
             b.fuses = uses.ToArray();
-            b.fnhcount = GetRNHCount(tp);
+            b.fnhcount = Building.GetRNHCount(tp);
             b.fnests = rd.GetString("t_nest");
             b.fheaters = rd.GetString("t_heater");
             b.faddress = "";
@@ -472,7 +173,6 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) "+makeWhere()+"ORDER B
             return res;
         }
 
-
         internal static Building getTier(int tier,MySqlConnection con)
         {
             MySqlCommand cmd=new MySqlCommand(@"SELECT t_id,m_upper,m_lower,m_id,t_type,t_delims,t_nest,t_heater,
@@ -529,6 +229,7 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 AND "+busy+";", sql);
                 name,bid), sql);
             cmd.ExecuteNonQuery();
         }
+        
         /// <summary>
         /// Добавляет ветку в дерево строений
         /// </summary>
@@ -811,7 +512,6 @@ WHERE m_id={0:d};", fid), sql);
                 cmd.ExecuteNonQuery();
             }
         }
-
 
         internal static int GetMFCount(MySqlConnection sql)
         {
