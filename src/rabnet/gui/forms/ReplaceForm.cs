@@ -220,6 +220,7 @@ namespace rabnet
             }
         }
 
+        private bool _manual = false;
         private int girlout = 0;
         private List<RabNetEngRabbit> rbs = new List<RabNetEngRabbit>();
         private RPList _replaceList = new RPList();
@@ -248,12 +249,12 @@ namespace rabnet
             _dataSet.Columns.Add("Статус", typeof(string));
             _dataSet.Columns.Add("Гнездовье", typeof(bool));
             dataGridView1.DataSource = _dataSet;
-            //dataGridView1.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridView1.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             cbFilter.Tag = 1;
             cbFilter.SelectedIndex = 0;
             cbFilter.Tag = 0;
             combineage = Engine.get().options().getIntOption(Options.OPT_ID.COMBINE_AGE);
+            FormSizeSaver.Append(this);
+            _manual = true;
         }
 
         /// <summary>
@@ -840,5 +841,13 @@ namespace rabnet
             rp().NewSex = Rabbit.SexType.MALE;
             update();
         }
+
+        private void dataGridView1_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (!_manual || dataGridView1.CurrentCell.ColumnIndex != PLACEFIELD) return;
+            _manual = false;
+            dataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            _manual = true;
+        }       
     }
 }

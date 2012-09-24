@@ -26,6 +26,7 @@ namespace rabnet
                 cbDeadReason.Items.Add(c[i+3]);
             cs = new ListViewColumnSorter(listView1, new int[] { 3,4, 5 }, Options.OPT_ID.KILL_LIST);
             update();
+            FormSizeSaver.Append(this);
         }
         /// <summary>
         /// Установка подсказок на компоненты

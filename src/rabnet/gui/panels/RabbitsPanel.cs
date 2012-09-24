@@ -19,9 +19,7 @@ namespace rabnet
         const int SEXFIELD = 1;
         const int NAMEFIELD = 0;
 
-        public RabbitsPanel(): base()
-        {
-        }
+        public RabbitsPanel(): base() { }
         public RabbitsPanel(RabStatusBar rsb):base(rsb,new RabbitsFilter(rsb))
         {
             colSort = new ListViewColumnSorter(listView1, new int[] {2,8,9 },Options.OPT_ID.RAB_LIST);

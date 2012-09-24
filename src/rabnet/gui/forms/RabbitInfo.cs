@@ -66,7 +66,7 @@ namespace rabnet
             toolTip.SetToolTip(checkBox5,"Изменить данные вручную");
             toolTip.SetToolTip(button9,"Принять окрол");
             toolTip.SetToolTip(gp,"Готовая продукция");
-            toolTip.SetToolTip(spec,"Привит ли кролик или группа");
+            //toolTip.SetToolTip(spec,"Привит ли кролик или группа");
             //toolTip.SetToolTip(dtp_vacEnd,"Дата окончания прививки");
             toolTip.SetToolTip(sex, "Пол одного или группы кроликов");
             toolTip.SetToolTip(rate, "Рейтинг кролика");
@@ -114,7 +114,7 @@ namespace rabnet
         {
             defect.Checked = _rab.Defect;
             gp.Checked = _rab.Production;
-            //spec.Checked = _rab.Spec;
+            cbRealization.Checked = _rab.Realization;
             rate.Value = _rab.Rate;
             group.Value = _rab.Group;
             lbName.Text = "Имя:" + name.Text;
@@ -360,7 +360,7 @@ namespace rabnet
         {
             _rab.Production = gp.Checked;
             _rab.Defect = defect.Checked;
-            //_rab.Spec = spec.Checked;
+            _rab.Realization = cbRealization.Checked;
             _rab.Rate = (int)rate.Value;
             _rab.Name = getCatValue(names, name.Text);
             _rab.Surname = getCatValue(surnames, surname.Text);
