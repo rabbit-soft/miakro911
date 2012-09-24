@@ -28,6 +28,11 @@ namespace rabnet
             }
         }
 
+        private const int D1 = 0;
+        private const int D2 = 1;
+        private const int D3 = 2;
+        private const int D4 = 3;
+
         /// <summary>
         /// Типы справочников
         /// </summary>
@@ -73,7 +78,7 @@ namespace rabnet
                     this.Text += "видов продукции";
                     break;
                 case CatalogType.VACCINES:
-                    this.Text += "прививок";
+                    this.Text += "вакцин";
                     break;
             }
 			ds.RowChanged += new DataRowChangeEventHandler(this.OnRowChange);
@@ -144,8 +149,12 @@ namespace rabnet
 						TextColumn.Name = cd.ColNames[i];
 						dataGridView1.Columns.Add(TextColumn);
 					}
-				} 
-             
+				}
+                if (_catType == CatalogType.VACCINES)
+                {
+                    dataGridView1.Columns[D1].Width = 50;
+                    dataGridView1.Columns[D1].ReadOnly = true;
+                }
                 /// Далее добавляется одна невидимая ячейка, в коротой содержится ID записи                
 				TextColumn = new DataGridViewTextBoxColumn();
 				TextColumn.Name = "id";
@@ -271,30 +280,30 @@ namespace rabnet
             string col0 = "", col1 = "", col2 = "";
             if (editRow.Cells[_hiddenId].Value == null)
             {
-                if (editRow.Cells[0].Value != null)
-                    col0 = editRow.Cells[0].Value.ToString();
+                if (editRow.Cells[D1].Value != null)
+                    col0 = editRow.Cells[D1].Value.ToString();
 
-                if (editRow.Cells[1].Value != null)
-                    col1 = editRow.Cells[1].Value.ToString();
+                if (editRow.Cells[D2].Value != null)
+                    col1 = editRow.Cells[D2].Value.ToString();
 
-                if (editRow.Cells[2].Value != null)
-                    col2 = ((Color)(editRow.Cells[2].Value)).Name;
+                if (editRow.Cells[D3].Value != null)
+                    col2 = ((Color)(editRow.Cells[D3].Value)).Name;
 
                 editRow.Cells[_hiddenId].Value = /*Engine.db().getBreeds().*/ _catalog.Add(col0, col1, col2);
             }
             else
             {
-                if (editRow.Cells[0].Value != null)
-                    col0 = editRow.Cells[0].Value.ToString();
+                if (editRow.Cells[D1].Value != null)
+                    col0 = editRow.Cells[D1].Value.ToString();
 
-                if (editRow.Cells[1].Value != null)
-                    col1 = editRow.Cells[1].Value.ToString();
+                if (editRow.Cells[D2].Value != null)
+                    col1 = editRow.Cells[D2].Value.ToString();
 
-                if (editRow.Cells[2].Value != null)
-                    col2 = ((Color)(editRow.Cells[2].Value)).Name;
+                if (editRow.Cells[D3].Value != null)
+                    col2 = ((Color)(editRow.Cells[D3].Value)).Name;
 
                 //Engine.db().getBreeds().
-                _catalog.Change(Convert.ToInt32(editRow.Cells[3].Value), col0, col1, col2);
+                _catalog.Change(Convert.ToInt32(editRow.Cells[_hiddenId].Value), col0, col1, col2);
                 dataGridView1.Refresh();
             }
         }
@@ -305,30 +314,30 @@ namespace rabnet
             if (editRow.Cells[_hiddenId].Value == null)
             {
                 
-                if (editRow.Cells[0].Value != null)
-                    col0 = editRow.Cells[0].Value.ToString();
+                if (editRow.Cells[D1].Value != null)
+                    col0 = editRow.Cells[D1].Value.ToString();
 
-                if (editRow.Cells[1].Value != null)
-                    col1 = editRow.Cells[1].Value.ToString();
+                if (editRow.Cells[D2].Value != null)
+                    col1 = editRow.Cells[D2].Value.ToString();
 
-                if (editRow.Cells[2].Value != null)
-                    col2 = editRow.Cells[2].Value.ToString();
+                if (editRow.Cells[D3].Value != null)
+                    col2 = editRow.Cells[D3].Value.ToString();
 
                 editRow.Cells[_hiddenId].Value = /*Engine.db().getZones().*/ _catalog.Add(col0.ToString(), col1, col2);
             }
             else
-            {
-                editRow.Cells[3].Value = editRow.Cells[0].Value;
-                if (editRow.Cells[0].Value != null)
-                    col0 = editRow.Cells[0].Value.ToString();
+            {                
+                if (editRow.Cells[D1].Value != null)
+                    col0 = editRow.Cells[D1].Value.ToString();
 
-                if (editRow.Cells[1].Value != null)
-                    col1 = editRow.Cells[1].Value.ToString();
+                if (editRow.Cells[D2].Value != null)
+                    col1 = editRow.Cells[D2].Value.ToString();
 
-                if (editRow.Cells[2].Value != null)
-                    col2 = editRow.Cells[2].Value.ToString();
+                if (editRow.Cells[D3].Value != null)
+                    col2 = editRow.Cells[D3].Value.ToString();
                 //Engine.db().getZones()
-                _catalog.Change(Convert.ToInt32(editRow.Cells[_hiddenId].Value), col1, col2);
+                _catalog.Change(Convert.ToInt32(editRow.Cells[_hiddenId].Value),col0, col1, col2);
+                editRow.Cells[_hiddenId].Value = editRow.Cells[D1].Value;
             }
         }
 
@@ -338,15 +347,15 @@ namespace rabnet
             if (editRow.Cells[_hiddenId].Value == null)
             {
                 
-                if (editRow.Cells[0].Value != null)
-                    col0 = editRow.Cells[0].Value.ToString();
+                if (editRow.Cells[D1].Value != null)
+                    col0 = editRow.Cells[D1].Value.ToString();
 
                 editRow.Cells[_hiddenId].Value = Engine.db().getDeadReasons().Add(col0);
             }
             else
             {
-                if (editRow.Cells[0].Value != null)
-                    col0 = editRow.Cells[0].Value.ToString();
+                if (editRow.Cells[D1].Value != null)
+                    col0 = editRow.Cells[D1].Value.ToString();
 
                 Engine.db().getDeadReasons().Change(Convert.ToInt32(editRow.Cells[_hiddenId].Value), col0);
             }
@@ -357,28 +366,28 @@ namespace rabnet
             if (editRow.Cells[_hiddenId].Value == null)
             {
                 string col0 = "", col1 = "";
-                if (editRow.Cells[0].Value != null)
+                if (editRow.Cells[D1].Value != null)
                 {
-                    col0 = editRow.Cells[0].Value.ToString();
+                    col0 = editRow.Cells[D1].Value.ToString();
                     if (col0.Length > 20)
                     {
                         col0 = col0.Substring(0, 20);
-                        editRow.Cells[0].Value = col0;
+                        editRow.Cells[D1].Value = col0;
                     }
                 }
 
-                if (editRow.Cells[1].Value != null)
+                if (editRow.Cells[D2].Value != null)
                 {
-                    col1 = editRow.Cells[1].Value.ToString();
+                    col1 = editRow.Cells[D2].Value.ToString();
                     if (col1.Length > 10)
                     {
                         col1 = col1.Substring(0, 10);
-                        editRow.Cells[1].Value = col1;
+                        editRow.Cells[D2].Value = col1;
                     }
                 }
 
                 byte[] col2 = new byte[0];
-                Image img = (editRow.Cells[2].Value as Image);
+                Image img = (editRow.Cells[D3].Value as Image);
                 if (img != null)
                 {
                     MemoryStream ms = new MemoryStream();
@@ -392,28 +401,28 @@ namespace rabnet
             else
             {
                 string col0 = "", col1 = "";
-                if (editRow.Cells[0].Value != null)
+                if (editRow.Cells[D1].Value != null)
                 {
-                    col0 = editRow.Cells[0].Value.ToString();
+                    col0 = editRow.Cells[D1].Value.ToString();
                     if (col0.Length > 20)
                     {
                         col0 = col0.Substring(0, 20);
-                        editRow.Cells[0].Value = col0;
+                        editRow.Cells[D1].Value = col0;
                     }
                 }
 
-                if (editRow.Cells[1].Value != null)
+                if (editRow.Cells[D2].Value != null)
                 {
-                    col1 = editRow.Cells[1].Value.ToString();
+                    col1 = editRow.Cells[D2].Value.ToString();
                     if (col1.Length > 10)
                     {
                         col1 = col1.Substring(0, 10);
-                        editRow.Cells[1].Value = col1;
+                        editRow.Cells[D2].Value = col1;
                     }
                 }
 
                 byte[] col2 = new byte[0];
-                Image img = (editRow.Cells[2].Value as Image);
+                Image img = (editRow.Cells[D3].Value as Image);
                 if (img != null)
                 {
                     MemoryStream ms = new MemoryStream();
@@ -433,30 +442,32 @@ namespace rabnet
             string col0 = "", col1 = "", col2 = "";
             if (editRow.Cells[_hiddenId].Value == null)
             {
-                if (editRow.Cells[0].Value != null)
-                    col0 = editRow.Cells[0].Value.ToString();
+                if (editRow.Cells[D2].Value != null)
+                    col0 = editRow.Cells[D2].Value.ToString();
                 if (col0 == "") return;
-                if (editRow.Cells[1].Value != null)
-                    col1 = editRow.Cells[1].Value.ToString();
+                if (editRow.Cells[D3].Value != null)
+                    col1 = editRow.Cells[D3].Value.ToString();
 
-                if (editRow.Cells[2].Value != null)
-                    col2 = editRow.Cells[2].Value.ToString();
+                if (editRow.Cells[D4].Value != null)
+                    col2 = editRow.Cells[D4].Value.ToString();
                 
                 editRow.Cells[_hiddenId].Value = /*Engine.db().getBreeds().*/ _catalog.Add(col0, col1, col2);
+                editRow.Cells[D1].Value = editRow.Cells[_hiddenId].Value;
+                editRow.Cells[D3].Value = 0;
             }
             else
             {
-                if (editRow.Cells[0].Value != null)
-                    col0 = editRow.Cells[0].Value.ToString();
+                if (editRow.Cells[D1].Value != null)
+                    col0 = editRow.Cells[D1].Value.ToString();
 
-                if (editRow.Cells[1].Value != null)
-                    col1 = editRow.Cells[1].Value.ToString();
+                if (editRow.Cells[D2].Value != null)
+                    col1 = editRow.Cells[D2].Value.ToString();
 
-                if (editRow.Cells[2].Value != null)
-                    col2 = editRow.Cells[2].Value.ToString();
+                if (editRow.Cells[D3].Value != null)
+                    col2 = editRow.Cells[D3].Value.ToString();
 
                 //Engine.db().getBreeds().
-                _catalog.Change(Convert.ToInt32(editRow.Cells[3].Value), col0, col1, col2);
+                _catalog.Change(Convert.ToInt32(editRow.Cells[_hiddenId].Value), col0, col1, col2);
                 dataGridView1.Refresh();
             }
         }

@@ -17,7 +17,7 @@ namespace rabnet
         public CatalogData Get()
         {
             CatalogData cd = new CatalogData();
-            cd.ColNames = new String[] { "Название", "Продолжительность (дней)", CatalogData.BOOL_MARKER+"Назначать в ЗооТехПлане" };
+            cd.ColNames = new String[] { "№","Название", "Продолжительность (дней)", CatalogData.BOOL_MARKER+"Назначать в ЗооТехПлане" };
             MySqlCommand cmd = new MySqlCommand("SELECT v_id,v_name,v_duration,v_zootech FROM vaccines;", _sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             List<CatalogData.Row> rws = new List<CatalogData.Row>();
@@ -25,7 +25,7 @@ namespace rabnet
             {
                 CatalogData.Row rw = new CatalogData.Row();
                 rw.key = rd.GetInt32(0);
-                rw.data = new String[] { rd.GetString(1), rd.GetString(2), rd.GetString(3) };
+                rw.data = new String[] { rd.GetString(0),rd.GetString(1), rd.GetString(2), rd.GetString(3) };
                 rws.Add(rw);
             }
             rd.Close();

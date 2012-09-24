@@ -46,9 +46,9 @@ namespace rabnet
         /// <exception cref="Exception">Не верное кол-во параметров</exception>
         public void Change(int id, params String[] args)
         {
-            if (args.Length != 2) throw new Exception("incorrect parms count (" + args.Length + ") expected: 2");
+            if (args.Length != 3) throw new Exception("incorrect parms count (" + args.Length + ") expected: 2");
             //if (id == 0) return;
-            MySqlCommand cmd = new MySqlCommand(String.Format("UPDATE zones SET z_name='{0:s}',z_short_name='{1:s}' WHERE z_id={2:d};",args[0],args[1],id), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format("UPDATE zones SET z_id={0:d}, z_name='{1:s}',z_short_name='{2:s}' WHERE z_id={3:d};", args[0], args[1], args[2], id), sql);
             cmd.ExecuteNonQuery();
         }
 

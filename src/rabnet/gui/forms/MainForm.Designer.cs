@@ -49,6 +49,7 @@
             this.tsmiAreas = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDeadReasonsView = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiProductTypesView = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiVaccines = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiActions = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiReports = new System.Windows.Forms.ToolStripMenuItem();
             this.тестовыйToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -87,7 +88,6 @@
             this.tpButcher = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
-            this.tsmiVaccines = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -236,6 +236,13 @@
             this.tsmiProductTypesView.Size = new System.Drawing.Size(208, 22);
             this.tsmiProductTypesView.Text = "Виды продукции";
             this.tsmiProductTypesView.Click += new System.EventHandler(this.tsmiProductTypesView_Click);
+            // 
+            // tsmiVaccines
+            // 
+            this.tsmiVaccines.Name = "tsmiVaccines";
+            this.tsmiVaccines.Size = new System.Drawing.Size(208, 22);
+            this.tsmiVaccines.Text = "Вакцины";
+            this.tsmiVaccines.Click += new System.EventHandler(this.tsmiVaccines_Click);
             // 
             // tsmiActions
             // 
@@ -563,13 +570,6 @@
             this.rabStatusBar1.Size = new System.Drawing.Size(914, 23);
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
-            // 
-            // tsmiVaccines
-            // 
-            this.tsmiVaccines.Name = "tsmiVaccines";
-            this.tsmiVaccines.Size = new System.Drawing.Size(208, 22);
-            this.tsmiVaccines.Text = "Прививки";
-            this.tsmiVaccines.Click += new System.EventHandler(this.tsmiVaccines_Click);
             // 
             // MainForm
             // 
