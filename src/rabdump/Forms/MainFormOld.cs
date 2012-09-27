@@ -13,9 +13,9 @@ using pEngine;
 
 namespace rabdump
 {
-    public partial class MainForm : Form
+    public partial class MainOldForm : Form
     {
-        private static readonly ILog logger = LogManager.GetLogger(typeof(MainForm));
+        private static readonly ILog logger = LogManager.GetLogger(typeof(MainOldForm));
         bool _canclose = false;
         bool _manual = true;
 
@@ -25,7 +25,7 @@ namespace rabdump
 
         long _updDelayCnt = 0;
 
-        public MainForm()
+        public MainOldForm()
         {
             InitializeComponent();          
             AppUpdater au = new AppUpdater(RabServWorker.ReqSender, getUpdatePath());

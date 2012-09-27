@@ -156,6 +156,14 @@
     <Compile Include="..\rabnet\gui\classes\RabnetConfig.cs">
       <Link>classes\RabnetConfig.cs</Link>
     </Compile>
+    <Compile Include="..\rabnet\gui\forms\AboutForm.cs">
+      <Link>Forms\AboutForm.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\rabnet\gui\forms\AboutForm.designer.cs">
+      <Link>Forms\AboutForm.designer.cs</Link>
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="..\rabnet\gui\forms\FarmChangeForm.cs">
       <Link>Forms\FarmChangeForm.cs</Link>
       <SubType>Form</SubType>
@@ -164,11 +172,13 @@
       <Link>Forms\FarmChangeForm.designer.cs</Link>
       <DependentUpon>FarmChangeForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AboutForm.cs">
-      <SubType>Form</SubType>
+    <Compile Include="..\rabnet\gui\panels\FarmsPanel.cs">
+      <Link>panels\FarmsPanel.cs</Link>
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\AboutForm.designer.cs">
-      <DependentUpon>AboutForm.cs</DependentUpon>
+    <Compile Include="..\rabnet\gui\panels\FarmsPanel.designer.cs">
+      <Link>panels\FarmsPanel.designer.cs</Link>
+      <DependentUpon>FarmsPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="classes\ArchiveJobThread.cs" />
     <Compile Include="classes\Editors.cs" />
@@ -178,11 +188,17 @@
     <Compile Include="Forms\DongleUpdater.Designer.cs">
       <DependentUpon>DongleUpdater.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\MainForm.cs">
+    <Compile Include="Forms\MainFormOld.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <Compile Include="Forms\MainFormOld.Designer.cs">
+      <DependentUpon>MainFormOld.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MainFormNew.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainFormNew.Designer.cs">
+      <DependentUpon>MainFormNew.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\PaymentForm.cs">
       <SubType>Form</SubType>
@@ -219,21 +235,28 @@
       <DependentUpon>AddDongleForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="..\rabnet\gui\forms\AboutForm.resx">
+      <Link>Forms\AboutForm.resx</Link>
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="..\rabnet\gui\forms\FarmChangeForm.resx">
       <Link>Forms\FarmChangeForm.resx</Link>
       <DependentUpon>FarmChangeForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AboutForm.resx">
-      <DependentUpon>AboutForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="..\rabnet\gui\panels\FarmsPanel.resx">
+      <Link>panels\FarmsPanel.resx</Link>
+      <DependentUpon>FarmsPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DongleUpdater.resx">
       <DependentUpon>DongleUpdater.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\MainFormNew.resx">
+      <DependentUpon>MainFormNew.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainFormOld.resx">
+      <DependentUpon>MainFormOld.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PaymentForm.resx">

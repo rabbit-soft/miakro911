@@ -62,7 +62,7 @@ namespace rabdump
                         }
                         //                pserver svr = new pserver();
 #endif
-                        Application.Run(new MainForm());
+                        Application.Run(new MainFormNew());
 #if PROTECTED
                         //svr.release();
                         if (!GRD.Instance.ValidKey())

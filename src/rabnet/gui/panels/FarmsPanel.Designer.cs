@@ -335,7 +335,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btAdd);
             this.Controls.Add(this.cbName);
-            this.MaximumSize = new System.Drawing.Size(340, 315);
+            this.MaximumSize = new System.Drawing.Size(0, 315);
             this.MinimumSize = new System.Drawing.Size(340, 315);
             this.Name = "FarmsPanel";
             this.Size = new System.Drawing.Size(340, 315);
