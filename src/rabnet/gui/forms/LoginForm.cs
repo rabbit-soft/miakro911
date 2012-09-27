@@ -225,7 +225,8 @@ namespace rabnet
         private void button3_Click(object sender, EventArgs e)
         {
             Hide();
-            new FarmListForm().ShowDialog();
+            //new FarmListForm().ShowDialog();
+            new FarmNewForm().ShowDialog();
             Show();
             cbUser.Text = "";
             tbPassword.Text = "";
