@@ -1,16 +1,16 @@
 <?php
 /*
  * Содержит настройки сайта
- * Должен быть включен в файле index.php
+ * Должен быть включен в файле forrpc.php
  */
 class Conf
 {
     /**
      * Адрес сервера MySQL
      */
-    public static $DB_HOST= "192.168.0.95";
-    public static $DB_USER= "pay44ne";
-    public static $DB_PWD = "vtufdjym";
+    public static $DB_HOST= "localhost";
+    public static $DB_USER= "root";
+    public static $DB_PWD = "";
     public static $DB_NAME = "rabserv";
     public static $LOG_QRS =true;
     public static $UPDATE_PATH="../tmp/rabbit_bin/";

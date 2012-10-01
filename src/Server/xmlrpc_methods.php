@@ -18,7 +18,7 @@ class MC
 	 */
 	public static function callMethod($methodName,$params=NULL)
 	{	
-		global $log, $UID;//определена в index.php
+		global $log, $UID;//определена в forrpc.php
 		$log->info("callMethod: $methodName");
 		$log->debug("params: \n".var_export($params,true));
         $return_value = "";

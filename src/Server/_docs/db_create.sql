@@ -79,7 +79,7 @@ CREATE TABLE `rabserv`.`globalReport` (
   `killed` INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'сколько забито',
   `deads` INTEGER UNSIGNED NOT NULL,
   `rabbits` INTEGER UNSIGNED NOT NULL COMMENT 'количество кроликов на ферме',
-  UNIQUE INDEX `Indexes`(`date`, `farm`, `database`)
+  UNIQUE INDEX `Indexes`(`date`, `clientId`, `database`)
 )
 ENGINE = InnoDB
 COMMENT = 'таблица с отчетами по фермам';
