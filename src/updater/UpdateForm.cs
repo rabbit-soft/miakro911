@@ -7,6 +7,7 @@ using System.IO;
 using MySql.Data.MySqlClient;
 using System.Xml;
 using log4net;
+using rabnet.RNC;
 
 namespace updater
 {
@@ -103,9 +104,9 @@ namespace updater
             _needUpdateSomebody = true;
             lv.Items.Clear();
             int needcount = 0;
-            RabnetConfig.LoadDataSources();
+            Program.RNC.LoadDataSources();
             lv.Update();
-            foreach(RabnetConfig.rabDataSource rds in RabnetConfig.DataSources)      
+            foreach (DataSource rds in Program.RNC.DataSources)      
             {
                 ListViewItem li = lv.Items.Add(rds.Name);
                 li.SubItems.Add(rds.Params.ToString());

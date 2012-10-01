@@ -163,9 +163,9 @@ namespace updater
 
         private void AddFarm()
         {
-            RabnetConfig.LoadDataSources();
-            RabnetConfig.SaveDataSource(System.Guid.NewGuid().ToString(), tbName.Text, tbHost.Text, tbDb.Text, tbUser.Text, tbPwd.Text);
-            RabnetConfig.SaveDataSources();
+            Program.RNC.LoadDataSources();
+            Program.RNC.SaveDataSource(System.Guid.NewGuid().ToString(), tbName.Text, tbHost.Text, tbDb.Text, tbUser.Text, tbPwd.Text);
+            Program.RNC.SaveDataSources();
             /*try
             {
                 XmlElement dsRabDump = _xmlRabDump.CreateElement("db");

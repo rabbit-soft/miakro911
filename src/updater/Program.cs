@@ -5,6 +5,7 @@ using System;
 using System.Windows.Forms;
 using System.IO;
 using log4net;
+using rabnet.RNC;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 namespace updater
@@ -12,14 +13,16 @@ namespace updater
     static class Program
     {
         private static ILog _logger = LogManager.GetLogger(typeof(Program));
+        private static RabnetConfig _rnc;
+        public static RabnetConfig RNC { get { return _rnc; } }
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main(string[] args)
         {
-            //            try
-            //            {
+            _rnc = new RabnetConfig();
+
             _logger.Info("STARTING");
             bool batch = false;
             if (args.Length > 0)
@@ -41,16 +44,16 @@ namespace updater
             bool hasRabDump = File.Exists(flRabDump);
             ///Извлекаем настройки из файлов конфигурации
             if (hasRabNet && InstallForm.TestRabNetConfig(flRabNet))
-                RabnetConfig.ExtractConfig(flRabNet);
+                _rnc.ExtractConfig(flRabNet);
             if (hasRabDump && InstallForm.TestRabDumpConfig(flRabDump))
-                RabnetConfig.ExtractConfig(flRabDump);
+                _rnc.ExtractConfig(flRabDump);
             
             /*bool update = hasRabNet || hasRabDump;
             if (hasRabNet && !hasRabDump)           
                 if (Directory.Exists(Path.GetDirectoryName(Application.ExecutablePath) + @"\..\RabDump"))               
                     update = false;*/                         
             int res = 0;
-            if (RabnetConfig.HaveDataSources())
+            if (_rnc.HaveDataSources())
             {
                 _logger.Info("have datasources");
                 UpdateForm uf = new UpdateForm(/*flRabDump, flRabNet, batch*/);
