@@ -41,7 +41,7 @@ namespace rabnet
         /// <summary>
         /// Какого возраста крольчатам назначать прививку
         /// </summary>
-        public const string VACC_DAYS = "vacc";
+        //public const string VACC_DAYS = "vacc";
         /// <summary>
         /// Прививать крольчат с матерью
         /// </summary>

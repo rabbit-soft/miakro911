@@ -43,7 +43,7 @@ namespace rabnet
                 //f["count3"] = Engine.opt().getOption(Options.OPT_ID.COUNT_SUCKERS);
                 f[Filters.BOYS_OUT] = Engine.opt().getOption(Options.OPT_ID.BOYS_OUT);
                 f[Filters.GIRLS_OUT] = Engine.opt().getOption(Options.OPT_ID.GIRLS_OUT);
-                f[Filters.VACC_DAYS] = Engine.opt().getOption(Options.OPT_ID.VACC);
+                //f[Filters.VACC_DAYS] = Engine.opt().getOption(Options.OPT_ID.VACC);
                 f[Filters.NEST_IN] = Engine.opt().getOption(Options.OPT_ID.NEST_IN);
                 f[Filters.CHILD_NEST] = Engine.opt().getOption(Options.OPT_ID.CHILD_NEST);
                 f[Filters.STATE_FUCK] = Engine.opt().getOption(Options.OPT_ID.STATE_FUCK);
@@ -57,7 +57,7 @@ namespace rabnet
                 f[Filters.VACC_SHOW] = "";
                 foreach (CatalogData.Row row in Engine.db().getVaccines().Get().Rows)
                 {
-                    if (row.data[3] == "1") //за такое отрывают яйцы, но уж извините
+                    if (row.data[4] == "1") //todo опасно vaccines
                         f[Filters.VACC_SHOW] += String.Format("{0:d},", row.key);
                 }
                 f[Filters.VACC_SHOW] = f[Filters.VACC_SHOW].TrimEnd(',');

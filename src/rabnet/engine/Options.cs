@@ -36,7 +36,7 @@ namespace rabnet
             NEST_IN,
             COUNT1, COUNT2, COUNT3, //COUNT_SUCKERS, 
             //Подсчет подсосных более не требуется, т.к. это делается после выдворения крольчат
-            MAKE_BRIDE, DEAD_FILTER, PRE_OKROL, VACC, CONFIRM_KILL, CONFIRM_REPLACE, CONFIRM_EXIT,
+            MAKE_BRIDE, DEAD_FILTER, PRE_OKROL, CONFIRM_KILL, CONFIRM_REPLACE, CONFIRM_EXIT,
             ZOO_FILTER, COMBINE_AGE, BOYS_OUT, GIRLS_OUT, STATE_FUCK, FIRST_FUCK, MALE_WAIT, GEN_TREE,                         
             CHILD_NEST, RAB_LIST, BUILD_LIST, YOUNG_LIST, DEAD_LIST, REPL_YOUNG_LIST,
             MAKE_FUCK_LIST, NAMES_LIST, UPDATE_ZOO, ZOO_LIST, FIND_PARTNERS, NEXT_SVID, SVID_HEAD, SVID_GEN_DIR,
@@ -94,7 +94,7 @@ namespace rabnet
                                    new Option(OPT_ID.MALE_WAIT,OPT_LEVEL.FARM,"malewait"), 
                                    new Option(OPT_ID.GEN_TREE,OPT_LEVEL.USER,"gentree"), 
                                    new Option(OPT_ID.CONFIRM_EXIT,OPT_LEVEL.USER,"confirmexit"), 
-                                   new Option(OPT_ID.VACC,OPT_LEVEL.FARM,"vacc"),
+                                   //new Option(OPT_ID.VACC,OPT_LEVEL.FARM,"vacc"),
                                    new Option(OPT_ID.VACC_MOTHER,OPT_LEVEL.FARM,"vacc_moth"), 
                                    new Option(OPT_ID.CONFIRM_KILL,OPT_LEVEL.USER,"confirmkill"), 
                                    new Option(OPT_ID.CONFIRM_REPLACE,OPT_LEVEL.USER,"confirmreplace"),

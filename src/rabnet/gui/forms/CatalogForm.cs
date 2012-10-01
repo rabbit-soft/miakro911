@@ -32,6 +32,7 @@ namespace rabnet
         private const int D2 = 1;
         private const int D3 = 2;
         private const int D4 = 3;
+        private const int D5 = 4;
 
         /// <summary>
         /// Типы справочников
@@ -154,6 +155,7 @@ namespace rabnet
                 {
                     dataGridView1.Columns[D1].Width = 30;
                     dataGridView1.Columns[D1].ReadOnly = true;
+                    this.Width += 70;
                 }
                 /// Далее добавляется одна невидимая ячейка, в коротой содержится ID записи                
 				TextColumn = new DataGridViewTextBoxColumn();
@@ -439,19 +441,19 @@ namespace rabnet
 
         private void vaccines_RowEdited(DataGridViewRow editRow)
         {
-            string col0 = "", col1 = "", col2 = "";
+            int check = 0;
+            string col0 = "", col1 = "", col2 = "", col3 = "";
             if (editRow.Cells[_hiddenId].Value == null)
             {
                 if (editRow.Cells[D2].Value != null)
                     col0 = editRow.Cells[D2].Value.ToString();
                 if (col0 == "") return;
-                if (editRow.Cells[D3].Value != null)
-                    col1 = editRow.Cells[D3].Value.ToString();
+                col1 = getIntVal(editRow.Cells[D3].Value);
+                col2 = getIntVal(editRow.Cells[D4].Value);
+                if (editRow.Cells[D5].Value != null)
+                    col3 = editRow.Cells[D5].Value.ToString();
 
-                if (editRow.Cells[D4].Value != null)
-                    col2 = editRow.Cells[D4].Value.ToString();
-                
-                editRow.Cells[_hiddenId].Value = /*Engine.db().getBreeds().*/ _catalog.Add(col0, col1, col2);
+                editRow.Cells[_hiddenId].Value = /*Engine.db().getBreeds().*/ _catalog.Add(col0, col1, col2,col3);
                 editRow.Cells[D1].Value = editRow.Cells[_hiddenId].Value;
                 editRow.Cells[D3].Value = 0;
             }
@@ -459,15 +461,15 @@ namespace rabnet
             {
                 if (editRow.Cells[D2].Value != null)
                     col0 = editRow.Cells[D2].Value.ToString();
+                if (col0 == "") return;
+                col1 = getIntVal(editRow.Cells[D3].Value);
+                col2 = getIntVal(editRow.Cells[D4].Value);
 
-                if (editRow.Cells[D3].Value != null)
-                    col1 = editRow.Cells[D3].Value.ToString();
-
-                if (editRow.Cells[D4].Value != null)
-                    col2 = editRow.Cells[D4].Value.ToString();
+                if (editRow.Cells[D5].Value != null)
+                    col3 = editRow.Cells[D5].Value.ToString();
 
                 //Engine.db().getBreeds().
-                _catalog.Change(Convert.ToInt32(editRow.Cells[_hiddenId].Value), col0, col1, col2);
+                _catalog.Change(Convert.ToInt32(editRow.Cells[_hiddenId].Value), col0, col1, col2,col3);
                 dataGridView1.Refresh();
             }
         }
@@ -534,7 +536,7 @@ namespace rabnet
         {
             if (_manual && _catType == CatalogType.VACCINES)
             {
-                if (dataGridView1.CurrentCell.ColumnIndex == D4)
+                if (dataGridView1.CurrentCell.ColumnIndex == D5)
                 {
                     _manual = false;
                     dataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);
@@ -542,6 +544,15 @@ namespace rabnet
                     dataGridView1_CellEndEdit(sender, new DataGridViewCellEventArgs(dataGridView1.CurrentCell.ColumnIndex, dataGridView1.CurrentCell.RowIndex));
                 }
             }
+        }
+
+        private string getIntVal(object cellValue)
+        {
+            int intVal = 0;
+            string result = cellValue == null ? "0" : cellValue.ToString();
+            int.TryParse(result, out intVal);
+            result = intVal.ToString();
+            return result;
         }
     }
 }

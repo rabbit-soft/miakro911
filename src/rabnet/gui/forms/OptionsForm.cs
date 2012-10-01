@@ -16,7 +16,7 @@ namespace rabnet
         class OptionsHolder
         {
             [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
-            private int ok,_nout,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,vac,gt,n,cn,tt,cand,bbone;
+            private int ok,_nout,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,gt,n,cn,tt,cand,bbone;
             private string gd, sh,xf;
             private RUBOOL ce, ck,crp, uz,sp,ask, fbz,vIs,vacMoth;
             private BuchTp bt;
@@ -67,9 +67,9 @@ namespace rabnet
             [Category("Зоотехнические сроки"), DisplayName("Отдых самца"),
             Description("Сколько суток отдыхает отработавший самец до назначения на работу")]
             public int MaleWait { get { return mw; } set { mw = value; } }
-            [Category("Зоотехнические сроки"), DisplayName("Прививка"),
-            Description("Назначить на прививку молодняк, достигший указанного возраста")]
-            public int Vacc { get { return vac; } set { vac = value; } }
+            //[Category("Зоотехнические сроки"), DisplayName("Прививка"),
+            //Description("Назначить на прививку молодняк, достигший указанного возраста")]
+            //public int Vacc { get { return vac; } set { vac = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Привививать мать вместе с детьми"),
             Description("В зоотех плане на вакцинацию будут назначаться только дети. При прививке детей, будет привита и мать, с которой они сидят в однорй клетке")]
             public RUBOOL VaccWithMother { get { return vacMoth; } set { vacMoth = value; } }
@@ -207,7 +207,7 @@ namespace rabnet
                 StateFuck = o.getIntOption(Options.OPT_ID.STATE_FUCK);
                 FirstFuck = o.getIntOption(Options.OPT_ID.FIRST_FUCK);
                 MaleWait = o.getIntOption(Options.OPT_ID.MALE_WAIT);
-                Vacc = o.getIntOption(Options.OPT_ID.VACC);
+                //Vacc = o.getIntOption(Options.OPT_ID.VACC);
                 //suck = o.getIntOption(Options.OPT_ID.COUNT_SUCKERS);
                 NestIn = o.getIntOption(Options.OPT_ID.NEST_IN);
                 ChildNest = o.getIntOption(Options.OPT_ID.CHILD_NEST);
@@ -256,7 +256,7 @@ namespace rabnet
                 o.setOption(Options.OPT_ID.STATE_FUCK, StateFuck);
                 o.setOption(Options.OPT_ID.FIRST_FUCK, FirstFuck);
                 o.setOption(Options.OPT_ID.MALE_WAIT, MaleWait);
-                o.setOption(Options.OPT_ID.VACC, Vacc);
+                //o.setOption(Options.OPT_ID.VACC, Vacc);
                 o.setOption(Options.OPT_ID.VACC_MOTHER, fromR(VaccWithMother));
                 //o.setOption(Options.OPT_ID.COUNT_SUCKERS, suck);
                 o.setOption(Options.OPT_ID.NEST_IN, NestIn);

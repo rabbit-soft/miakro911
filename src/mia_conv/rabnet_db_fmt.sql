@@ -130,7 +130,6 @@ CREATE TABLE rabbits(
 	r_event_date DATETIME,
 	r_lost_babies INTEGER UNSIGNED,
 	r_overall_babies INTEGER UNSIGNED,
-	#--r_vaccine_end DATETIME,
 	KEY(r_parent),
 	KEY(r_mother),
 	KEY(r_father),
@@ -233,7 +232,6 @@ CREATE TABLE dead(
 	r_last_fuck_okrol DATETIME,
 	r_lost_babies INTEGER UNSIGNED,
 	r_overall_babies INTEGER UNSIGNED,
-	#--r_vaccine_end DATETIME,
 	UNIQUE(r_id),
 	KEY(r_parent),
 	KEY(r_sex),
@@ -320,6 +318,7 @@ CREATE  TABLE `vaccines` (
   `v_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `v_name` VARCHAR(45) NULL ,
   `v_duration` INT UNSIGNED NOT NULL COMMENT 'Продолжительность прививки в Днях' ,
+  `v_age` INT UNSIGNED NOT NULL COMMENT 'Назначать с (дней)' ,
   `v_zootech` BIT NOT NULL DEFAULT 0 COMMENT 'Отображать в Зоотехплане',
   PRIMARY KEY (`v_id`) ,
   UNIQUE INDEX `v_name_UNIQUE` (`v_name` ASC) 
