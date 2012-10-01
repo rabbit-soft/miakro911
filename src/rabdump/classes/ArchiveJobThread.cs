@@ -7,13 +7,15 @@ using System.IO;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using X_Tools;
+using rabnet.RNC;
 
 namespace rabdump
 {
     class ArchiveJobThread
-    {
+    {       
         private const String ZIP_PASSWORD="ns471lbNITfq3";
-        public const int SPLIT_NAMES = 6;
+        //public const int SPLIT_NAMES = 6;
+        public const char SPACE_REPLACE = '+';
         /// <summary>
         /// Расписание, которые выполняется в данный момент.
         /// </summary>
@@ -39,10 +41,9 @@ namespace rabdump
         {
             get { return _j.Busy; }
         }
-
         public string JobName
         {
-            get { return _j.Name; }
+            get { return _j.JobName; }
         }
 
         /// <summary>
@@ -55,10 +56,10 @@ namespace rabdump
         /// <returns>Количество дампов данного расписания</returns>
         public int CountBackups(out int sz,out String resFile, bool minimum)
         {
-            _logger.Debug("count backups in " + _j.BackupPath);
-            if (!Directory.Exists(_j.BackupPath))
-                Directory.CreateDirectory(_j.BackupPath);
-            DirectoryInfo inf = new DirectoryInfo(_j.BackupPath);
+            _logger.Debug("count backups in " + _j.DumpPath);
+            if (!Directory.Exists(_j.DumpPath))
+                Directory.CreateDirectory(_j.DumpPath);
+            DirectoryInfo inf = new DirectoryInfo(_j.DumpPath);
             DateTime asDT = minimum ? DateTime.MaxValue : DateTime.MinValue;
             int cnt = 0;// Количество дампов расписания
 /*
@@ -69,7 +70,7 @@ namespace rabdump
             foreach(FileInfo fi in inf.GetFiles("*_*_*_*_*_*.7z"))
             {
                 String[] nm = ParseDumpName(fi.FullName);
-                if (nm[0]==_j.Name)
+                if (nm[0]==_j.JobName)
                 {
                     cnt++;
                     fsz += fi.Length;
@@ -105,7 +106,7 @@ namespace rabdump
 
         public bool FileExists(string filename, string md5)
         {
-            string path = Path.Combine(_j.BackupPath, filename);
+            string path = Path.Combine(_j.DumpPath, filename);
             if (File.Exists(path))
             {
                 return pEngine.Helper.GetMD5FromFile(path) == md5;
@@ -128,15 +129,15 @@ namespace rabdump
                 if (_j.CountLimit > 0)
                     while (_j.CountLimit < cnt)
                     {
-                        File.Delete(Path.Combine(_j.BackupPath,min));
-                        _logger.InfoFormat("Deleting file: {0:s}\\{1:s}", _j.BackupPath, min);
+                        File.Delete(Path.Combine(_j.DumpPath,min));
+                        _logger.InfoFormat("Deleting file: {0:s}\\{1:s}", _j.DumpPath, min);
                     }
                 //CountBackups(out sz, out min);
                 if (_j.SizeLimit > 0)
                     while (_j.SizeLimit < sz)
                     {
-                        File.Delete(Path.Combine(_j.BackupPath,min));
-                        _logger.InfoFormat("Deleting file: {0:s}\\{1:s}", _j.BackupPath, min);
+                        File.Delete(Path.Combine(_j.DumpPath,min));
+                        _logger.InfoFormat("Deleting file: {0:s}\\{1:s}", _j.DumpPath, min);
                         CountBackups(out sz, out min);
                     }
             }
@@ -146,6 +147,62 @@ namespace rabdump
             }
         }
 
+        /// <summary>
+        /// Запускает резервирование в отдельном потоке
+        /// </summary>
+        public void Run()
+        {
+            _logger.Debug("Run dump for " + _j.JobName);
+            //if (_j.DataSrc == DataBase.AllDataBases)
+            //{
+            //    List<DataSource> dbs = Options.Get().Databases;
+            //    for (int i = 0; i < dbs.Count - 1; i++)
+            //        DumpDB(dbs[i]);
+            //}
+            //else
+            DumpDB(_j.DataSrc);
+            _jobber.OnEndJob();
+        }
+
+        /// <summary>
+        /// При окончании резервирования
+        /// </summary>
+        public void OnEndJob()
+        {
+            _j.Busy = false;
+            _j.LastWork = DateTime.Now;
+            _logger.Debug("End of making dump " + _j.JobName);
+        }
+
+        /// <summary>
+        /// Получить путь к самому позднему файлу дампа
+        /// </summary>
+        /// <param name="md5">Хэш дампа</param>
+        /// <returns>Полный путь</returns>
+        public string GetLatestDump(out string md5)
+        {
+            int sz;
+            string file;
+            int count = CountBackups(out sz, out file, false);
+            if (count == 0)
+            {
+                md5 = "";
+                return "";
+            }
+            else
+            {
+                string path = _j.DumpPath + "\\" + file;
+                md5 = pEngine.Helper.GetMD5FromFile(path);
+                return path;
+            }
+        }
+        public string GetLatestDump()
+        {
+            string md5;
+            return GetLatestDump(out md5);
+        }
+
+        #region static
         /// <summary>
         /// Делает Резервирование БазыДанных
         /// </summary>
@@ -159,71 +216,27 @@ namespace rabdump
         }
 
         /// <summary>
-        /// Запускает резервирование в отдельном потоке
-        /// </summary>
-        public void Run()
-        {
-            _logger.Debug("Making dump for " + _j.Name);
-            if (_j.DB == DataBase.AllDataBases)
-            {
-                DataBaseCollection dbs = Options.Get().Databases;
-                for (int i = 0; i < dbs.Count - 1; i++)
-                    DumpDB(dbs[i]);
-            }
-            else
-                DumpDB(_j.DB);
-            _jobber.OnEndJob();
-        }
-
-        /// <summary>
-        /// При окончании резервирования
-        /// </summary>
-        public void OnEndJob()
-        {
-            _j.Busy = false;
-            _j.LastWork = DateTime.Now;
-            _logger.Debug("End of making dump " + _j.Name);
-        }
-
-        public static void RunRabnet(string param)
-        {
-            try
-            {
-                Process p = Process.Start(Path.GetDirectoryName(Application.ExecutablePath) + @"\..\RabNet\rabnet.exe", param);
-                if (param == "dbedit")
-                {
-                    p.WaitForExit();
-                    Options.Get().Load();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ошибка: "+ex.Message);
-            }
-        }
-
-        /// <summary>
         /// Делает резервную копию переданной Базы данных
         /// </summary>
         /// <returns>Путь к созданному файлу</returns>
-        public string DumpDB(DataBase db)
+        public string DumpDB(DataSource db)
         {
-            Directory.CreateDirectory(_j.BackupPath);
-            String ffname = _j.Name.Replace(' ', '+') + "_" + db.Name.Replace(' ', '+') + "_" + DateTime.Now.ToString("yyyy_MM_dd_HHmmss");
+            Directory.CreateDirectory(_j.DumpPath);
+            String ffname = String.Format("{0:s}_{1:s}_{2:yyyy_MM_dd_HHmmss}", _j.JobName.Replace(' ', SPACE_REPLACE), db.Name.Replace(' ', SPACE_REPLACE), DateTime.Now);
 
             ffname = XTools.SafeFileName(ffname, "-");
 
             String fname = _tmppath + ffname;
-            _logger.Info("Making dump for " + _j.Name + " to " + ffname);
+            _logger.Info("Making dump for " + _j.JobName + " to " + ffname);
             ///Делайем дамп с помошью mysqldump
-            String md = Options.Get().MySqlDumpPath;
+            String md = Options.Inst.MySqlDumpPath;
             if (md == "")
             {
                 _logger.Error("MySQLDump not specified " + md);
                 throw new ApplicationException("Путь к MySQLDump не настроен");
             }
-            String pr = String.Format("{0:s} {1:s} {2:s} {3:s} --ignore-table={0:s}.allrabbits", db.DBName, (db.Host == "" ? "" : "-h " + db.Host),
-                (db.User == "" ? "" : "-u " + db.User), (db.Password == "" ? "" : "--password=" + db.Password));
+            String pr = String.Format("{0:s} {1:s} {2:s} {3:s} --ignore-table={0:s}.allrabbits", db.Params.DataBase, (db.Params.Host == "" ? "" : "-h " + db.Params.Host),
+                (db.Params.User == "" ? "" : "-u " + db.Params.User), (db.Params.Password == "" ? "" : "--password=" + db.Params.Password));
             try
             {
                 ProcessStartInfo inf = new ProcessStartInfo(md, pr);
@@ -258,7 +271,7 @@ namespace rabdump
             }
             ///Упаковываем в архив
             bool is7z = false;
-            md = Options.Get().Path7Z;
+            md = Options.Inst.Path7Z;
             if (md == "")///если путь к 7zip не настроен, то в папку BackUps копируется .dump-файл
                 _logger.Warn("7z not specified");
             else
@@ -284,8 +297,8 @@ namespace rabdump
                     //return;
                 }
             }
-            _logger.Debug("copy " + fname + (is7z ? ".7z" : ".dump") + " to " + _j.BackupPath + "\\" + ffname + (is7z ? ".7z" : ".dump"));
-            string movepath = _j.BackupPath + "\\" + ffname + (is7z ? ".7z" : ".dump");
+            _logger.Debug("copy " + fname + (is7z ? ".7z" : ".dump") + " to " + _j.DumpPath + "\\" + ffname + (is7z ? ".7z" : ".dump"));
+            string movepath = _j.DumpPath + "\\" + ffname + (is7z ? ".7z" : ".dump");
             File.Move(fname + (is7z ? ".7z" : ".dump"), movepath);
             CheckLimits();
             _logger.Debug("finishing dumping");
@@ -304,7 +317,7 @@ namespace rabdump
             if (!Directory.Exists(tmppath))           
                 Directory.CreateDirectory(tmppath);
            
-            String sql = Options.Get().MySqlExePath;              
+            String sql = Options.Inst.MySqlExePath;              
             if (sql == "" || !File.Exists(sql))
                 throw new ApplicationException("Путь к MySQL не настроен"); 
          
@@ -318,7 +331,7 @@ namespace rabdump
             if (ext == ".7z")//распаковка файла если расширение .7z
             {
                 _logger.Debug("decompress 7z");
-                String z7 = Options.Get().Path7Z;
+                String z7 = Options.Inst.Path7Z;
                 String ff = tmppath + Path.GetFileNameWithoutExtension(f) + ".dump";
                 if (z7 == "" || !File.Exists(z7))
                 {
@@ -401,7 +414,7 @@ namespace rabdump
                 string targPath = Path.GetTempPath() + Path.GetFileNameWithoutExtension(filePath) + ".dump";
                 if (File.Exists(targPath))
                     File.Delete(targPath);
-                ProcessStartInfo inf = new ProcessStartInfo(Options.Get().Path7Z, " e -p" + ZIP_PASSWORD + " \"" + filePath + "\"");
+                ProcessStartInfo inf = new ProcessStartInfo(Options.Inst.Path7Z, " e -p" + ZIP_PASSWORD + " \"" + filePath + "\"");
 
                 inf.WorkingDirectory = Path.GetTempPath();
                 inf.CreateNoWindow = true;
@@ -435,7 +448,7 @@ namespace rabdump
             try
             {
                 string trgPath = Path.GetTempPath() + Path.GetFileNameWithoutExtension(filePath);
-                ProcessStartInfo inf = new ProcessStartInfo(Options.Get().Path7Z, string.Format(" a -mx9 -p{0} \"{1}.{2:s}\" \"{1}.dump\"", ZIP_PASSWORD, trgPath, z7type ? "7z" : "zip"));
+                ProcessStartInfo inf = new ProcessStartInfo(Options.Inst.Path7Z, string.Format(" a -mx9 -p{0} \"{1}.{2:s}\" \"{1}.dump\"", ZIP_PASSWORD, trgPath, z7type ? "7z" : "zip"));
                 inf.CreateNoWindow = true;
                 inf.RedirectStandardOutput = true;
                 inf.UseShellExecute = false;
@@ -497,39 +510,11 @@ namespace rabdump
                 return dumpPath;
         }
 
-        /// <summary>
-        /// Получить путь к самому позднему файлу дампа
-        /// </summary>
-        /// <param name="md5">Хэш дампа</param>
-        /// <returns>Полный путь</returns>
-        public string GetLatestDump(out string md5)
-        {
-            int sz;
-            string file;
-            int count = CountBackups(out sz, out file, false);
-            if (count == 0)
-            {
-                md5 = "";
-                return "";
-            }
-            else
-            {
-                string path = _j.BackupPath + "\\" + file;
-                md5 = pEngine.Helper.GetMD5FromFile(path);
-                return path;
-            }
-        }
-        public string GetLatestDump()
-        {
-            string md5;
-            return GetLatestDump(out md5);
-        }
-
         public static string[] ParseDumpName(string fullName)
         {
             string[] result = Path.GetFileName(fullName).Split('_','.');
             for (int i = 0; i < result.Length; i++)
-                result[i] = result[i].Replace('+', ' ');
+                result[i] = result[i].Replace(SPACE_REPLACE, ' ');
             return result;
         }
 
@@ -542,6 +527,7 @@ namespace rabdump
             }
         }
 
+        #endregion static
         /*private string getMD5FromFile(string filepath)
         {           
             filepath = ExtractDump(filepath);

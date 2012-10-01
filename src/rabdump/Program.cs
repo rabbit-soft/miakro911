@@ -21,6 +21,7 @@ namespace rabdump
         [STAThread]
         static void Main()
         {
+            log4net.Config.XmlConfigurator.Configure();
             System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("ru-RU", false);
             bool new_instance;
             using (System.Threading.Mutex mutex = new System.Threading.Mutex(true, "RabDumpApplication", out new_instance))
@@ -48,23 +49,16 @@ namespace rabdump
                             MessageBox.Show(null, "Ключ защиты не найден!\nРабота программы будет завершена!",
                                             "Ключ защиты", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
-                            //                                    end = 1;
                         }
-                        //                            if (!GRD.Instance.ValidKey())
-                        //{
-                        //return;
-                        //}
                         if (!GRD.Instance.GetFlag(GRD.FlagType.RabDump))
                         {
                             MessageBox.Show(null, "Данный ключ защиты не позволяет запуск приложения!\n",
                                             "Ключ защиты", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
                         }
-                        //                pserver svr = new pserver();
 #endif
                         Application.Run(new MainFormNew());
 #if PROTECTED
-                        //svr.release();
                         if (!GRD.Instance.ValidKey())
                         {
                             exit = false;

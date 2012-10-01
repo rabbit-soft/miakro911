@@ -208,7 +208,30 @@ namespace X_Tools
             catch { } // just dismiss errors but return false
             return false;
         }
-    
+
+        /// <summary>
+        /// Сейчас ли переданное дата и время
+        /// </summary>
+        /// <param name="dt">Проверяемое время</param>
+        /// <returns></returns>
+        public static bool DateCmpNoSec(DateTime dt) //todo думаю, можно переписать
+        {
+            return dt.Date == DateTime.Now.Date && DateCmpTime(dt);
+
+            //DateTime cmp1 = new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, 0);
+            //DateTime cmp2 = DateTime.Now;
+            //cmp2 = new DateTime(cmp2.Year, cmp2.Month, cmp2.Day, cmp2.Hour, cmp2.Minute, 0);
+            //return cmp1 == cmp2;
+        }
+
+        /// <summary>
+        /// Сейчас ли переданное время
+        /// </summary>
+        public static bool DateCmpTime(DateTime dt)
+        {
+            return (dt.Hour == DateTime.Now.Hour && dt.Minute == DateTime.Now.Minute);
+        }
+
         // readStream is the stream you need to read
         // writeStream is the stream you want to write to
 /*

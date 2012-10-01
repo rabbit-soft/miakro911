@@ -7,17 +7,19 @@ using pEngine;
 
 namespace rabdump
 {
-    public partial class DongleUpdater : Form
+    partial class DongleUpdater : Form
     {
 #if PROTECTED
         private GRD grd = GRD.Instance;
 
+        private RabReqSender _reqSend;
         private sClient _client;
 
-        public DongleUpdater(sClient client)
-        {
-            _client = client;
+        public DongleUpdater(RabReqSender reqSend,sClient client)
+        {            
             InitializeComponent();
+            _reqSend = reqSend;
+            _client = client;
             updateData();
         }
 
@@ -64,7 +66,7 @@ namespace rabdump
             foreach(sDongle d in _client.Dongles)
                 if (uint.Parse(d.Id) == grd.ID)
                 {
-                    ResponceItem resp = RabServWorker.ReqSender.ExecuteMethod(MethodName.GetCosts);
+                    ResponceItem resp = _reqSend.ExecuteMethod(MethodName.GetCosts);
                     AdminGRD.AddDongleForm dlg = new AdminGRD.AddDongleForm(_client, d,false);
                     dlg.BOX_Farm_Cost = int.Parse((resp.Value as string[])[0]);
                     dlg.SAAS_Farm_Cost = int.Parse((resp.Value as string[])[1]);
@@ -75,7 +77,7 @@ namespace rabdump
                         {
                             int retCode = grd.GetTRUQuestion(out q);
 
-                                resp = RabServWorker.ReqSender.ExecuteMethod(MethodName.VendorUpdateDongle, //MName.VendorSheduleDongle,
+                            resp = _reqSend.ExecuteMethod(MethodName.VendorUpdateDongle, //MName.VendorSheduleDongle,
                                 MPN.base64_question, q,
                                 MPN.clientId, _client.Id,
                                 MPN.farms, dlg.Farms.ToString(),
@@ -88,7 +90,7 @@ namespace rabdump
                             retCode = grd.SetTRUAnswer(resp.Value as string);
                             if (retCode != 0)
                                 throw new Exception("Ошибка обновления ключа");
-                            RabServWorker.ReqSender.ExecuteMethod(MethodName.SuccessUpdate,
+                            _reqSend.ExecuteMethod(MethodName.SuccessUpdate,
                                 MPN.dongleId, grd.ID.ToString());
                             MessageBox.Show("Прошивка прошла успешно");
                             this.Close();
@@ -107,7 +109,7 @@ namespace rabdump
         private void btPayments_Click(object sender, EventArgs e)
         {
 #if PROTECTED
-            ResponceItem s = RabServWorker.ReqSender.ExecuteMethod(MethodName.GetPayments, MPN.clientId, grd.GetClientID().ToString());
+            ResponceItem s = _reqSend.ExecuteMethod(MethodName.GetPayments, MPN.clientId, grd.GetClientID().ToString());
             (new PaymentForm(s.Value as sPayment[])).ShowDialog();
 #endif
         }

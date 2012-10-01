@@ -153,8 +153,14 @@
     <Compile Include="..\mia_conv\miaExitCode.cs">
       <Link>classes\miaExitCode.cs</Link>
     </Compile>
-    <Compile Include="..\rabnet\gui\classes\RabnetConfig.cs">
+    <Compile Include="..\rabnet\gui\classes\RabnetConfig\DataSource.cs">
+      <Link>classes\DataSource.cs</Link>
+    </Compile>
+    <Compile Include="..\rabnet\gui\classes\RabnetConfig\RabnetConfig.cs">
       <Link>classes\RabnetConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\rabnet\gui\classes\RabnetConfig\sParams.cs">
+      <Link>classes\sParams.cs</Link>
     </Compile>
     <Compile Include="..\rabnet\gui\forms\AboutForm.cs">
       <Link>Forms\AboutForm.cs</Link>
@@ -164,14 +170,6 @@
       <Link>Forms\AboutForm.designer.cs</Link>
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="..\rabnet\gui\forms\FarmChangeForm.cs">
-      <Link>Forms\FarmChangeForm.cs</Link>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="..\rabnet\gui\forms\FarmChangeForm.designer.cs">
-      <Link>Forms\FarmChangeForm.designer.cs</Link>
-      <DependentUpon>FarmChangeForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="..\rabnet\gui\panels\FarmsPanel.cs">
       <Link>panels\FarmsPanel.cs</Link>
       <SubType>UserControl</SubType>
@@ -180,19 +178,13 @@
       <Link>panels\FarmsPanel.designer.cs</Link>
       <DependentUpon>FarmsPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="classes\ArchiveJob.cs" />
     <Compile Include="classes\ArchiveJobThread.cs" />
-    <Compile Include="classes\Editors.cs" />
     <Compile Include="Forms\DongleUpdater.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\DongleUpdater.Designer.cs">
       <DependentUpon>DongleUpdater.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\MainFormOld.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\MainFormOld.Designer.cs">
-      <DependentUpon>MainFormOld.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\MainFormNew.cs">
       <SubType>Form</SubType>
@@ -214,8 +206,25 @@
     </Compile>
     <Compile Include="classes\Options.cs">
     </Compile>
+    <Compile Include="panels\ArchiveJobsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="panels\ArchiveJobsPanel.Designer.cs">
+      <DependentUpon>ArchiveJobsPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="panels\GeneralPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="panels\GeneralPanel.Designer.cs">
+      <DependentUpon>GeneralPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="remote\RabServWorker.cs" />
     <Compile Include="remote\RabUpdater.cs" />
     <Compile Include="Forms\RestoreForm.cs">
@@ -239,11 +248,6 @@
       <Link>Forms\AboutForm.resx</Link>
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\rabnet\gui\forms\FarmChangeForm.resx">
-      <Link>Forms\FarmChangeForm.resx</Link>
-      <DependentUpon>FarmChangeForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="..\rabnet\gui\panels\FarmsPanel.resx">
       <Link>panels\FarmsPanel.resx</Link>
       <DependentUpon>FarmsPanel.cs</DependentUpon>
@@ -254,10 +258,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainFormNew.resx">
       <DependentUpon>MainFormNew.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MainFormOld.resx">
-      <DependentUpon>MainFormOld.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PaymentForm.resx">
       <DependentUpon>PaymentForm.cs</DependentUpon>
@@ -270,6 +270,16 @@
     <EmbeddedResource Include="Forms\WaitForm.resx">
       <DependentUpon>WaitForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="panels\ArchiveJobsPanel.resx">
+      <DependentUpon>ArchiveJobsPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="panels\GeneralPanel.resx">
+      <DependentUpon>GeneralPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -284,6 +294,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Compile Include="classes\RabnetConfig.ArchiveJobs.cs" />
+    <None Include="gnclient.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

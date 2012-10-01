@@ -8,6 +8,7 @@ using System.IO;
 using log4net;
 using System.Collections.Generic;
 using pEngine;
+using rabnet.RNC;
 #if PROTECTED
     using RabGRD;
 #endif
@@ -30,9 +31,9 @@ namespace rabdump
         {
             InitializeComponent();
             SetMode(true);
-            foreach (ArchiveJob j in Options.Get().Jobs)
+            foreach (ArchiveJob j in Options.Inst.Jobs)
             {
-                cbJobName.Items.Add(j.Name);
+                cbJobName.Items.Add(j.JobName);
             }
             if (cbJobName.Items.Count > 0)
             {
@@ -74,17 +75,17 @@ namespace rabdump
             cbDataBase.Items.Clear();
             listView1.Items.Clear();
 
-            foreach (ArchiveJob j in Options.Get().Jobs)
-                if (j.Name == cbJobName.Text)
+            foreach (ArchiveJob j in Options.Inst.Jobs)
+                if (j.JobName == cbJobName.Text)
                 {
                     _jj = j;
-                    if (j.DB == DataBase.AllDataBases)
-                    {
-                        foreach (DataBase db in Options.Get().Databases)
-                            cbDataBase.Items.Add(db.Name);
-                    }
-                    else
-                        cbDataBase.Items.Add(j.DB.Name);
+                    //if (j.DataSrc == DataSource.AllDataBases) //TODO вернуть
+                    //{
+                    //    foreach (DataSource db in Options.Get().Databases)
+                    //        cbDataBase.Items.Add(db.Name);
+                    //}
+                    //else
+                        cbDataBase.Items.Add(j.DataSrc.Name);
                 }
             if (cbDataBase.Items.Count!=0)
                 cbDataBase.SelectedIndex = 0;
@@ -99,8 +100,8 @@ namespace rabdump
         private void FillList(ArchiveJob j, String db)
         {
             listView1.Items.Clear();
-            DirectoryInfo di = new DirectoryInfo(j.BackupPath);
-            string searchName = j.Name.Replace(' ', '+') + "_" + db.Replace(' ', '+');
+            DirectoryInfo di = new DirectoryInfo(j.DumpPath);
+            string searchName = j.JobName.Replace(' ', ArchiveJobThread.SPACE_REPLACE) + "_" + db.Replace(' ', ArchiveJobThread.SPACE_REPLACE);
             List<sDump> servDumps = null;
 #if PROTECTED           
             if (GRD.Instance.GetFlag(GRD.FlagType.ServerDump))
@@ -151,7 +152,7 @@ namespace rabdump
                 }
             }
             ///Добавляем файлы которые имеются только на сервере
-            if (servDumps != null && servDumps.Count > 0 && j.DB != DataBase.AllDataBases)
+            if (servDumps != null && servDumps.Count > 0 /*&& j.DataSrc != DataBase.AllDataBases*/)
             {
                 foreach (sDump dmp in servDumps)
                 {
@@ -172,14 +173,14 @@ namespace rabdump
 
         private void cbDataBase_SelectedIndexChanged(object sender, EventArgs e)
         {         
-            DataBase db = _jj.DB;
-            if (db == DataBase.AllDataBases)
-                foreach (DataBase d in Options.Get().Databases)
-                    if (d.Name == cbDataBase.Text) db = d;
-            tbHost.Text = db.Host;
-            tbDB.Text = db.DBName;
-            tbUser.Text = db.User;
-            tbPassword.Text = db.Password;
+            DataSource db = _jj.DataSrc;
+            //if (db == DataBase.AllDataBases)
+            //    foreach (DataSource d in Options.Get().Databases)
+            //        if (d.Name == cbDataBase.Text) db = d;
+            tbHost.Text = db.Params.Host;
+            tbDB.Text = db.Params.DataBase;
+            tbUser.Text = db.Params.User;
+            tbPassword.Text = db.Params.Password;
             tbFile_TextChanged(null,null);
             FillList(_jj, cbDataBase.Text);
         }
@@ -195,7 +196,7 @@ namespace rabdump
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count!=1) return;
-            tbFile.Text=_jj.BackupPath+"\\"+listView1.SelectedItems[0].SubItems[1].Text;
+            tbFile.Text=_jj.DumpPath+"\\"+listView1.SelectedItems[0].SubItems[1].Text;
         }
 
         private void button2_Click(object sender, EventArgs e)

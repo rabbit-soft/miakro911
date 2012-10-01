@@ -10,13 +10,23 @@ using System.Net;
 using System.IO;
 using System.Collections.Specialized;
 using System.Globalization;
-using pEngine;   
+using rabnet.RNC;
+using pEngine;
 #if PROTECTED
     using RabGRD;   
 #endif
 
 namespace rabdump
 {
+    class RabReqSender : RequestSender
+    {
+        public RabReqSender()
+        {
+            _ServUriAppend = "";
+            _RPCfile = "forrpc.php";
+        }
+    }
+
     public class UploadFile
     {
         public UploadFile()
@@ -43,35 +53,51 @@ namespace rabdump
     /// <summary>
     /// Класс отсылающий РК и Статистику на сервер
     /// </summary>
-    static class RabServWorker
+    class RabServWorker
     {
         private static string _url = "http://192.168.0.95/rabServ/";
         private static ILog _logger = LogManager.GetLogger(typeof(RabServWorker));
         private static ArchiveJobThread _ajt;
-        private static RequestSender _reqSend = null;
+        private static RabReqSender _reqSend = null;
         private static bool _busy = false;
 
-        internal static RequestSender ReqSender
+        public static event MessageSenderCallbackDelegate OnMessage;
+
+        internal static RabReqSender ReqSender
         {
             get
             {
                 if (_reqSend == null)
                 {
-                    _reqSend = new RequestSender();
+                    _reqSend = new RabReqSender();
+                    _reqSend.Url = _url;
 #if PROTECTED
                     _reqSend.UserID = GRD.Instance.GetClientID();
                     _reqSend.Key = GRD.Instance.GetKeyCode();
+                    if (_reqSend.UserID == 0) // если старый ключ
+                    {
+                        bool empty=true;
+                        for(int i=0;i<_reqSend.Key.Length;i++)
+                            if (_reqSend.Key[i]!=0)
+                            {
+                                empty = false;
+                                break;
+                            }
+                        if (empty)
+                        {
+                            byte[] defPass = Encoding.UTF8.GetBytes("user_with_old_key");
+                            Array.Copy(defPass, _reqSend.Key, defPass.Length);
+                        }
+                    }
 #elif DEBUG
                     _reqSend.UserID = 1;
                     _reqSend.Key = new byte[0];
 #endif
-                    
-                    _reqSend.Url = _url;
                 }
                 return _reqSend;
             }
         }
-        public static event MessageSenderCallbackDelegate OnMessage;     
+             
 
         /// <summary>
         /// Адрес удаленного сервера
@@ -83,16 +109,18 @@ namespace rabdump
             {
                 if (value == null || value == "")
                     return;
-                _url = value; 
+                _url = value;
+                if (_reqSend != null) //ГОВНОКОД
+                    _reqSend.Url = _url;
             }
         }
 
-        public static void MakeDump(ArchiveJob j)
+        public static void SendDump(ArchiveJob j)
         {
+            while (j.Busy)
+                Thread.Sleep(2000);
             //_crossData = new ServData();
-            _ajt = new ArchiveJobThread(j);
-            _ajt.Run();
-            Thread t = new Thread(makeDump);
+            Thread t = new Thread(sendDump);
             t.Start();
         }
 
@@ -140,10 +168,11 @@ namespace rabdump
             try
             {
                 const int MAX_DAYS = 200;
-                RabnetConfig.rabDataSource[] dataSources = new RabnetConfig.rabDataSource[RabnetConfig.DataSources.Count];
-                RabnetConfig.DataSources.CopyTo(dataSources);
+                DataSource[] dataSources = Options.Inst.DataSource.ToArray();
+                // new RabnetConfig.rabDataSource[RabnetConfig.DataSources.Count];
+                //RabnetConfig.DataSources.CopyTo(dataSources);
                 sWebRepOneDay[] reps = null;
-                foreach (RabnetConfig.rabDataSource rds in dataSources)
+                foreach (DataSource rds in dataSources)
                 {
                     if (!rds.WebReport) continue;
                     string webRepLD = RabServWorker.ReqSender.ExecuteMethod(MethodName.WebRep_GetLastDate,
@@ -213,82 +242,33 @@ namespace rabdump
             return reps.ToArray();
         }
 
-        private static void makeDump()
+        private static void sendDump()
         {
             try
             {
-                if (!System.IO.File.Exists(Options.Get().Path7Z))
-                    throw new Exception("7z not specified");
+                if (!System.IO.File.Exists(Options.Inst.Path7Z))
+                    throw new Exception("Путь к 7zip не корректен");
                 while (_ajt.JobIsBusy)
                     Thread.Sleep(2000);
-                _logger.Debug("making Server Dump");
+                _logger.Debug("ServerDump start");
                 callOnMessage("Начало отсылки" + Environment.NewLine + _ajt.JobName, "Отправка", 1, false);
-                //RequestSender reqSend = MainForm.newReqSender();
-                //sDump[] dumpList = reqSend.ExecuteMethod(MethodName.GetDumpList).Value as sDump[];
-                //if (dumpList.Length > 0) //todo если что можно сделать diff
-                //{
-                    /*_logger.Debug("we have a DumpList"); 
-                    bool coincidence = false;
-                    foreach (sDump nd in dumpList)
-                    {
-                        if (_ajt.FileExists(nd.FileName, nd.MD5))
-                        {
-                            string srcFile = nd.FileName;
-                            string trgFile = _ajt.GetLatestDump();
-                            if (srcFile != Path.GetFileName(trgFile))
-                            {
-                                srcFile = Path.GetDirectoryName(trgFile) + "\\" + srcFile;
-                                srcFile = ArchiveJobThread.ExtractDump(srcFile);
-                                trgFile = ArchiveJobThread.ExtractDump(trgFile);
-                                string diffPath = makeDiff(srcFile, trgFile);
-                                diffPath = ArchiveJobThread.ZipFile(diffPath, true);
-                                File.Delete(srcFile);
-                                File.Delete(trgFile);
-                                uploadDump(diffPath);
-                                File.Delete(diffPath);
-                                break;
-                            }
-                            else
-                                callOnMessage("На сервере сама последняя версия БД", "загрузка отменена", 0);
-                        }
-                    }*/
-                //}
-                //else
-                //{
-                    string dumpPath = _ajt.GetLatestDump();
-                    if (dumpPath != "")
-                    {
-                        string dump = ArchiveJobThread.ExtractDump(dumpPath);
-                        string md5Dump = Helper.GetMD5FromFile(dump);
-                        File.Delete(dump);
-                        uploadDump(dumpPath, md5Dump);
-                        callOnMessage("Файл отправлен успешно", "Успех", 1);
-                    }
-                //}               
+
+                string dumpPath = _ajt.GetLatestDump();
+                if (dumpPath != "")
+                {
+                    string dump = ArchiveJobThread.ExtractDump(dumpPath);
+                    string md5Dump = Helper.GetMD5FromFile(dump);
+                    File.Delete(dump);
+                    uploadDump(dumpPath, md5Dump);
+                    callOnMessage("Файл отправлен успешно", "Успех", 1);
+                }           
             }
-            catch (Exception)
+            catch (Exception exc)
             {
-                callOnMessage("Ошибка при отправлении файла", "Внимание", 2);
+                _logger.Error(exc);
+                callOnMessage("Ошибка при отправлении файла\n"+exc.Message, "Внимание", 2);
             }
-
-        }
-
-        /// <summary>
-        /// Файл должен делать патч
-        /// </summary>
-        /// <param name="srcFile">Старый файл</param>
-        /// <param name="trgFile">Новый Файл</param>
-        /// <returns>Путь к файлу с Дифом</returns>
-        private static string makeDiff(string srcFile, string trgFile)
-        {
-            //TODO реализовать diff
-            /*FileStream srcFS = new FileStream(srcFile, FileMode.Open, FileAccess.Read);
-            StreamReader srcSR = new StreamReader(srcFile);
-            FileStream trgFS = new FileStream(trgFile, FileMode.Open, FileAccess.Read);
-            StreamReader trgSR = new StreamReader(trgFile);
-            srcSR.Close(); srcFS.Close();
-            trgSR.Close(); trgFS.Close();*/
-            return trgFile;
+            _logger.Debug("ServerDump end");
         }
 
         /// <summary>
@@ -330,52 +310,16 @@ namespace rabdump
                 File.Delete(downloadTo);
                 throw new Exception("Контрольная сумма скачанного файла не совпадает");
             }
-        }
+        }       
 
-        private static void uploadDump(string dumpPath, string md5dump)
-        {
-            string address = Path.Combine(ReqSender.Url, "uploader.php");
-            
-            /*using (WebClient wc = new WebClient())
-            {
-                wc.Encoding = Encoding.UTF8;
-                NameValueCollection values = new NameValueCollection();
-                values.Add("clientId", GRD.Instance.GetClientID().ToString());
-                values.Add("md5dump", md5dump); 
-                wc.QueryString = values;
-                byte[] buff = wc.UploadFile(address, dumpPath);
-                address = Encoding.UTF8.GetString(buff);
-            }*/
-            
-            using (FileStream stream = File.Open(dumpPath, FileMode.Open))
-            {
-                UploadFile fl = new UploadFile();                   
-                fl.Name = "file";
-                fl.Filename = Path.GetFileName(dumpPath);
-                fl.ContentType = "text/plain";
-                fl.Stream = stream;
-
-                UploadFile[] files = new UploadFile[] { fl };
-
-                NameValueCollection values = new NameValueCollection();
-#if PROTECTED
-                values.Add("clientId", GRD.Instance.GetClientID().ToString());
-#elif DEBUG
-                values.Add("clientId", "1");
-#endif
-                values.Add( "md5dump", md5dump );             
-
-                byte[] result = uploadFiles(address, files, values);
-            }
-        }
-        
+        #region OnMessage
         /// <summary>
         /// Запускает событие
         /// </summary>
         /// <param name="msg">Сообщение</param>
         /// <param name="ttl">Заголовок</param>
         /// <param name="type">Тип(none,info,warning,error)</param>
-        /// <param name="hide">Спрятать Значек в трее</param>
+        /// <param name="hide">Спрятать Значок в трее</param>
         private static void callOnMessage(string msg, string ttl, int type, bool hide)
         {
             if (OnMessage != null)
@@ -395,6 +339,7 @@ namespace rabdump
         {
             callOnMessage(msg, "", 0, false);
         }
+        #endregion OnMessage
 
         /// <summary>
         /// Округляет число байтов до Кбайт,Мбайт,ГБайт
@@ -439,9 +384,36 @@ namespace rabdump
             else return -1;
         }
 
+        private static void uploadDump(string dumpPath, string md5dump)
+        {
+            string address = Path.Combine(ReqSender.Url, "uploader.php");
+
+            using (FileStream stream = File.Open(dumpPath, FileMode.Open))
+            {
+                UploadFile fl = new UploadFile();
+                fl.Name = "file";
+                fl.Filename = Path.GetFileName(dumpPath);
+                fl.ContentType = "text/plain";
+                fl.Stream = stream;
+
+                UploadFile[] files = new UploadFile[] { fl };
+
+                NameValueCollection values = new NameValueCollection();
+#if PROTECTED
+                values.Add("clientId", GRD.Instance.GetClientID().ToString());
+#elif DEBUG
+                values.Add("clientId", "1");
+#endif
+                values.Add("md5dump", md5dump);
+
+                byte[] result = uploadFiles(address, files, values);
+            }
+        }
+
         private static byte[] uploadFiles(string address, IEnumerable<UploadFile> files, NameValueCollection values)
         {
             WebRequest request = WebRequest.Create(address);
+            request.Timeout = 5000; //TODO сообщить если не удалось подключиться
             request.Method = "POST";
             string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x", NumberFormatInfo.InvariantInfo);
             request.ContentType = "multipart/form-data; boundary=" + boundary;
@@ -496,5 +468,25 @@ namespace rabdump
                 output.Write(buffer, 0, read);
             }
         }
+
+        /// <summary>
+        /// Файл должен делать патч
+        /// </summary>
+        /// <param name="srcFile">Старый файл</param>
+        /// <param name="trgFile">Новый Файл</param>
+        /// <returns>Путь к файлу с Дифом</returns>
+        //private static string makeDiff(string srcFile, string trgFile)
+        //{
+        //TODO реализовать diff
+        /*FileStream srcFS = new FileStream(srcFile, FileMode.Open, FileAccess.Read);
+        StreamReader srcSR = new StreamReader(srcFile);
+        FileStream trgFS = new FileStream(trgFile, FileMode.Open, FileAccess.Read);
+        StreamReader trgSR = new StreamReader(trgFile);
+        srcSR.Close(); srcFS.Close();
+        trgSR.Close(); trgFS.Close();*/
+        //return trgFile;
+        //}
     }
+
+    
 }
