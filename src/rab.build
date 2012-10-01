@@ -374,7 +374,6 @@
 				<include name="${curdir}/libs/GRD/GRD_BaseTRU.cs"/>
 				<include name="${curdir}/libs/GRD/GRD_BaseCodes.cs"/>
 				<include name="${curdir}/libs/GRD/GRDCommon.cs"/>
-				<include name="${curdir}/libs/pEngine/IRequestSender.cs"/>
 				<include name="${curdir}/libs/pEngine/RequestPack.cs"/>
 				<include name="${curdir}/libs/pEngine/xxTEA.cs"/>
 				<include name="${curdir}/libs/pEngine/Helper.cs"/>
