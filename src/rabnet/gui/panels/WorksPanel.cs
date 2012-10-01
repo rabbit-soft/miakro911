@@ -57,7 +57,7 @@ namespace rabnet
                 f[Filters.VACC_SHOW] = "";
                 foreach (CatalogData.Row row in Engine.db().getVaccines().Get().Rows)
                 {
-                    if (row.data[2] == "1")
+                    if (row.data[3] == "1") //за такое отрывают яйцы, но уж извините
                         f[Filters.VACC_SHOW] += String.Format("{0:d},", row.key);
                 }
                 f[Filters.VACC_SHOW] = f[Filters.VACC_SHOW].TrimEnd(',');
@@ -212,10 +212,12 @@ namespace rabnet
                         b.setNest2(false);
                     needUpdate = false;
                     break;
+
                 case JobType.PRE_OKROL:
                     Engine.get().preOkrol(job.ID);
                     needUpdate = false;
                     break;
+
                 case JobType.BOYS_OUT:
                 case JobType.GIRLS_OUT:
                     ReplaceForm rf = new ReplaceForm();
@@ -223,7 +225,8 @@ namespace rabnet
                     if (job.Type==JobType.BOYS_OUT)
                         rf.setAction(ReplaceForm.Action.BOYSOUT);
                     res=rf.ShowDialog();
-                    break;                                   
+                    break; 
+                                  
                 case JobType.COUNT_KIDS:
                     RabNetEngRabbit rrr = Engine.get().getRabbit(job.ID);
                     CountKids ck;
@@ -242,6 +245,7 @@ namespace rabnet
                         res = ck.ShowDialog();
                     }
                     break;
+
                 case JobType.FUCK:
                     int id = job.ID;
                     if (job.Flag > 1)
@@ -255,10 +259,12 @@ namespace rabnet
                     }
                     if (id!=0) 
                         res=(new MakeFuckForm(id)).ShowDialog();
-                    break;                                    
+                    break;    
+                                
                 case JobType.OKROL:
                     res=(new OkrolForm(job.ID)).ShowDialog();
                     break;
+
                 case JobType.VACC:
                     RabNetEngRabbit rab = Engine.get().getRabbit(job.ID);
                     AddRabVacForm dlg = new AddRabVacForm(rab,false,job.ID2);
@@ -274,12 +280,14 @@ namespace rabnet
                     }
                     needUpdate = false;
                     break;
+
                 case JobType.SET_NEST://установка гнездовья
                     ReplaceForm f = new ReplaceForm();
                     f.addRabbit(job.ID);
                     f.setAction(ReplaceForm.Action.SET_NEST);
                     res = f.ShowDialog();
                     break;
+
                 case JobType.BOYS_BY_ONE:
                     f = new ReplaceForm();
                     f.addRabbit(job.ID);
@@ -297,18 +305,18 @@ namespace rabnet
             }
         }
 
-        private void okrolMenuItem_Click(object sender, EventArgs e)
+        private void MenuItem_Click(object sender, EventArgs e)
         {
             makeFlag = 0;
             makeJob();
         }
 
-        private void lvZooTech_DoubleClick(object sender, EventArgs e)
-        {
-            makeFlag = 0;
-            makeJob();
+        //private void lvZooTech_DoubleClick(object sender, EventArgs e)
+        //{
+        //    makeFlag = 0;
+        //    makeJob();
 
-        }
+        //}
 
         private int getFuckerId(String f,List<String> lst)
         {
@@ -390,6 +398,5 @@ namespace rabnet
         {
             MainForm.ProtectTest(Engine.db().getMFCount());
         }
-
     }
 }

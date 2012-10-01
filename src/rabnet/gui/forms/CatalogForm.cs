@@ -81,8 +81,8 @@ namespace rabnet
                     this.Text += "вакцин";
                     break;
             }
-			ds.RowChanged += new DataRowChangeEventHandler(this.OnRowChange);
-            ds.TableNewRow += new DataTableNewRowEventHandler(this.OnRowInsert);
+			//ds.RowChanged += new DataRowChangeEventHandler(this.OnRowChange);
+            //ds.TableNewRow += new DataTableNewRowEventHandler(this.OnRowInsert);
             fillTable(false);
         }
 
@@ -152,7 +152,7 @@ namespace rabnet
 				}
                 if (_catType == CatalogType.VACCINES)
                 {
-                    dataGridView1.Columns[D1].Width = 50;
+                    dataGridView1.Columns[D1].Width = 30;
                     dataGridView1.Columns[D1].ReadOnly = true;
                 }
                 /// Далее добавляется одна невидимая ячейка, в коротой содержится ID записи                
@@ -229,15 +229,15 @@ namespace rabnet
             _manual = true;
         }
 
-        private void OnRowChange(object sender, DataRowChangeEventArgs e)
-        {
+        //private void OnRowChange(object sender, DataRowChangeEventArgs e)
+        //{
 
-        }
+        //}
 
-        private void OnRowInsert(object sender,DataTableNewRowEventArgs e)
-        {
-            //e.Row.ItemArray[2]=-1;
-		}
+        //private void OnRowInsert(object sender,DataTableNewRowEventArgs e)
+        //{
+        //    //e.Row.ItemArray[2]=-1;
+        //}
 
 
 		private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -457,14 +457,14 @@ namespace rabnet
             }
             else
             {
-                if (editRow.Cells[D1].Value != null)
-                    col0 = editRow.Cells[D1].Value.ToString();
-
                 if (editRow.Cells[D2].Value != null)
-                    col1 = editRow.Cells[D2].Value.ToString();
+                    col0 = editRow.Cells[D2].Value.ToString();
 
                 if (editRow.Cells[D3].Value != null)
-                    col2 = editRow.Cells[D3].Value.ToString();
+                    col1 = editRow.Cells[D3].Value.ToString();
+
+                if (editRow.Cells[D4].Value != null)
+                    col2 = editRow.Cells[D4].Value.ToString();
 
                 //Engine.db().getBreeds().
                 _catalog.Change(Convert.ToInt32(editRow.Cells[_hiddenId].Value), col0, col1, col2);
@@ -534,7 +534,7 @@ namespace rabnet
         {
             if (_manual && _catType == CatalogType.VACCINES)
             {
-                if (dataGridView1.CurrentCell.ColumnIndex == 2)
+                if (dataGridView1.CurrentCell.ColumnIndex == D4)
                 {
                     _manual = false;
                     dataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);

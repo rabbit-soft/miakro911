@@ -7,8 +7,9 @@ using System.Text;
 using System.IO;
 using System.Windows.Forms;
 using System.Diagnostics;
+using rabnet.RNC;
 
-namespace rabnet.panels
+namespace rabnet
 {
     public partial class FarmsPanel : UserControl
     {
@@ -17,7 +18,8 @@ namespace rabnet.panels
         private const int DEF_Y_SUB = 128 - 39;
 
         private bool _manual = false;
-        private Dictionary<int, RabnetConfig.rabDataSource> _ds;
+        private RabnetConfig _rnc;
+        private Dictionary<int, DataSource> _ds_dict;
         private int _sInd = -1;
 
         public FarmsPanel()
@@ -27,20 +29,33 @@ namespace rabnet.panels
             _manual = true;
         }
 
-        public void UpdateList()
+        public void Init(RabnetConfig rnc)
+        {
+            btCancel_Click(null, null);
+            _rnc = rnc;           
+            init();
+        }
+
+        private void init()
         {
             _manual = false;
-            _ds = new Dictionary<int, RabnetConfig.rabDataSource>();
+            int def = -1;
             cbName.Items.Clear();
-            foreach (RabnetConfig.rabDataSource ds in RabnetConfig.DataSources)
+            _ds_dict = new Dictionary<int, DataSource>();
+            for (int i = 0; i < _rnc.DataSources.Count; i++)
             {
-                cbName.Items.Add(ds.Name);
-                _ds.Add(cbName.Items.Count - 1, ds);
+                _ds_dict.Add(i, _rnc.DataSources[i]);
+                cbName.Items.Add(_rnc.DataSources[i].Name);
+                if (_rnc.DataSources[i].Default)
+                    def = i;
             }
+         
             if (cbName.Items.Count > 0)
             {
                 cbName.SelectedIndex = 0;
                 btEdit.Enabled = btDelete.Enabled = true;
+                if (def != -1)
+                    cbName.SelectedIndex = def;
             }
             _manual = true;
         }
@@ -53,7 +68,7 @@ namespace rabnet.panels
 
         private void updateSelectedItem()
         {            
-            RabnetConfig.rabDataSource ds = _ds[cbName.SelectedIndex];
+            DataSource ds = _ds_dict[cbName.SelectedIndex];
             tbHost.Text = ds.Params.Host;
             tbDB.Text = ds.Params.DataBase;
             tbUser.Text = ds.Params.User;
@@ -70,7 +85,7 @@ namespace rabnet.panels
             showButtons(cb.Checked);
             if (cb == btAdd)
             {
-                if (!cb.Checked)
+                if (!cb.Checked && cbName.Items.Count > 0)
                 {
                     cbName.SelectedIndex = 0;
                     updateSelectedItem();
@@ -83,11 +98,6 @@ namespace rabnet.panels
                 btAdd.Enabled = btDelete.Enabled = !btEdit.Checked;
                 _sInd = cbName.SelectedIndex;
             }
-        }
-
-        private void btEdit_CheckedChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void showButtons(bool p)
@@ -127,39 +137,49 @@ namespace rabnet.panels
 
         private void btDelete_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show(String.Format("Вы уверены что хотите удалить подключение '{0:s}' ?", _ds[cbName.SelectedIndex].Name), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
+            if (MessageBox.Show(String.Format("Вы уверены что хотите удалить подключение '{0:s}' ?", _ds_dict[cbName.SelectedIndex].Name), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
 
-            RabnetConfig.DataSources.Remove(_ds[cbName.SelectedIndex]);
-            RabnetConfig.SaveDataSources();
-            UpdateList();
+            _rnc.DataSources.Remove(_ds_dict[cbName.SelectedIndex]);
+            //RabnetConfig.SaveDataSources();
+            init();
         }
 
         private void btOk_Click(object sender, EventArgs e)
         {
-            RabnetConfig.rabDataSource ds;
+            cbName.Text = cbName.Text.Replace("+","");
+            if (cbName.Text == "")
+            {
+                MessageBox.Show("Название не должно быть пустым");
+                return;
+            }
+            DataSource ds;
             if (btAdd.Checked)
             {
                 if (chCreate.Checked)
                     runmia("nudb");
-                if(isNameExists()) return;
-                ds = new RabnetConfig.rabDataSource(Guid.NewGuid().ToString(), cbName.Text, tbHost.Text, tbDB.Text, tbUser.Text, tbPass.Text);
-                RabnetConfig.SaveDataSource(ds);
+                if(isNameExists())
+                {
+                    MessageBox.Show("Подключение с таким именем уже существует");
+                    return;
+                }
+                ds = new DataSource(Guid.NewGuid().ToString(), cbName.Text, tbHost.Text, tbDB.Text, tbUser.Text, tbPass.Text);
+                _rnc.SaveDataSource(ds);
             }
             else if (btEdit.Checked)
             {
-                ds = _ds[_sInd];
+                ds = _ds_dict[_sInd];
                 ds.Name = cbName.Text;
-                ds.Params = new RabnetConfig.sParams(tbHost.Text, tbDB.Text, tbUser.Text, tbPass.Text);
+                ds.Params = new sParams(tbHost.Text, tbDB.Text, tbUser.Text, tbPass.Text);
             }
-            RabnetConfig.SaveDataSources();
+            //RabnetConfig.SaveDataSources();
             btCancel_Click(null,null);
-            UpdateList();
+            init();
         }
 
         private bool isNameExists()
         {
             bool exists = false;
-            foreach (RabnetConfig.rabDataSource ds in _ds.Values)
+            foreach (DataSource ds in _ds_dict.Values)
             {
                 if (cbName.Text == ds.Name)
                 {
@@ -167,7 +187,7 @@ namespace rabnet.panels
                     break;
                 }
             }
-            return exists && MessageBox.Show("Подключение с таким именем уже существует\nПродолжить?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes;
+            return exists;
         }
 
         /// <summary>

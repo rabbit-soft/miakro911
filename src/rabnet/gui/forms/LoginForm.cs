@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using log4net;
 using System.Diagnostics;
 using Microsoft.Win32;
-
+using rabnet.RNC;
 
 namespace rabnet
 {
@@ -16,7 +16,8 @@ namespace rabnet
     {
         public static bool stop = true;
         protected static readonly ILog log = LogManager.GetLogger(typeof(LoginForm));
-
+        private RabnetConfig _rnc;
+        private Dictionary<int, DataSource> _dss;
         /// <summary>
         /// Вызывается ли форма для того чтобы редактировать подключения
         /// </summary>
@@ -26,7 +27,7 @@ namespace rabnet
         {
             InitializeComponent();
             log.Debug("inited");
-            RabnetConfig.LoadDataSources();
+            _rnc = new RabnetConfig();
         }
         public LoginForm(bool dbedit):this()
         {
@@ -44,14 +45,16 @@ namespace rabnet
                 log.Error("Read config error: "+e.Message);
                 return;
             }*/
-
+            _dss = new Dictionary<int, DataSource>();
+            _rnc.LoadDataSources();
             cbFarm.Items.Clear();
             cbUser.Items.Clear();
-            foreach (RabnetConfig.rabDataSource ds in RabnetConfig.DataSources)
+            foreach (DataSource ds in _rnc.DataSources)
             {
                 if (!ds.Hidden)
                 {
                     cbFarm.Items.Add(ds.Name);
+                    _dss.Add(cbFarm.Items.Count - 1, ds);
                     if (ds.Default)
                     {
                         cbFarm.SelectedIndex = cbFarm.Items.Count - 1;
@@ -82,8 +85,8 @@ namespace rabnet
             try
             {
                 Application.DoEvents();
-                RabnetConfig.rabDataSource xs = null;
-                foreach (RabnetConfig.rabDataSource d in RabnetConfig.DataSources)
+                DataSource xs = null;
+                foreach (DataSource d in _rnc.DataSources)
                     if (d.Name == cbFarm.Text)
                         xs = d;
                 if (xs == null) return;
@@ -139,12 +142,12 @@ namespace rabnet
             int uid = Engine.get().setUid(cbUser.Text, tbPassword.Text, cbFarm.Text);
             if (uid != 0)
             {
-                RabnetConfig.DataSources[cbFarm.SelectedIndex].setDefault(cbUser.Text, tbPassword.Text);
+                _rnc.SetDefault(_dss[cbFarm.SelectedIndex], cbUser.Text, tbPassword.Text);
                 
 //                System.Diagnostics.Debug.WriteLine(RabnetConfigHandler.ds[comboBox1.SelectedIndex].getParamHost());
 
 #if !DEMO
-                RabUpdaterClient.Get().SetIP(RabnetConfig.DataSources[cbFarm.SelectedIndex].Params.Host);
+                RabUpdaterClient.Get().SetIP(_rnc.DataSources[cbFarm.SelectedIndex].Params.Host);
                 
                 bool upRes=RabUpdaterClient.Get().CheckUpdate();
                 
@@ -155,32 +158,19 @@ namespace rabnet
                     DialogResult = DialogResult.Cancel;
                     Hide();
                     LoginForm.stop = false;
-
                     ProgressForm prg = new ProgressForm();
-
                     RabUpdaterClient.Get().progressUp = prg.progressUp;
-
                     prg.progressUp(0);
-
                     prg.Show();
-
-
                     RabUpdaterClient.Get().GetUpdate();
-
-
-
                     while (RabUpdaterClient.Get().GetUpRes() == RabUpdaterClient.UpErrStillWorking)
                     {
                         Application.DoEvents();
 
                     }
-
                     prg.Close();
-
                     prg = null;
-
                     int upProcRes = RabUpdaterClient.Get().GetUpRes();
-
                     if (upProcRes != RabUpdaterClient.UpErrFinishedOK)
                     {
                         if (upProcRes != RabUpdaterClient.UpErrBadMD5OnServer)
@@ -201,10 +191,7 @@ namespace rabnet
                         Process.Start(RabUpdaterClient.Get().GetUpFilePath(), "/S"); //Batch Mode
                         LoginForm.stop = true;
                         Close();
-
                     }
-
-
                 }
                 else
                 {
@@ -214,7 +201,6 @@ namespace rabnet
 #if !DEMO
                 }
 #endif
-
                 return;
             }
             MessageBox.Show("Неверное имя пользователя или пароль","Ошибка авторизации",MessageBoxButtons.OK,MessageBoxIcon.Error);
@@ -255,112 +241,4 @@ namespace rabnet
             }
         }
     }
-
-    /* Первоначальный - хранит данные в rannet.exe.config
-    [System.Reflection.Obfuscation(Exclude=true,ApplyToMembers=true)]
-    public class RabnetConfigHandler : IConfigurationSectionHandler
-    {
-        public static List<dataSource> dataSources = new List<dataSource>();
-
-        public class dataSource
-        {
-            public String name;
-            public String type;
-            public String param;
-            public bool hidden=false;
-            public bool def = false;
-            public String defuser = "";
-            public String defpassword = "";
-            public bool savepassword = false;
-            public dataSource(String name, String type, String param)
-            {
-                this.name = name;
-                this.type = type;
-                this.param = param;
-            }
-            public void setDefault(String uname,String pswd)
-            {
-                def = true;
-                foreach (dataSource ds in RabnetConfigHandler.dataSources)
-                    if (ds != this) ds.def = false;
-                defuser = uname;
-                if (!savepassword) defpassword = "";
-                else defpassword = pswd;
-                RabnetConfigHandler.save();
-            }
-            public string getParamHost()
-            {
-                string[] param_arr=param.Split(';');
-                foreach (string prm in param_arr)
-                {
-                    if (prm.Substring(0, 4) == "host")
-                    {
-                        //System.Diagnostics.Debug.WriteLine(prm);
-                        string[] hsts = prm.Split('=');
-                        return hsts[1].Trim();
-                    }
-                }
-                return "";
-            }
-        }      
-
-        public object Create(object parent, object configContext, XmlNode section)
-        {
-            dataSources.Clear();
-            foreach (XmlNode cn in section.ChildNodes)
-            {
-                if (cn.Name == "dataSource")
-                {
-                    dataSources.Add(new dataSource(cn.Attributes.GetNamedItem("name").Value,
-                        cn.Attributes.GetNamedItem("type").Value, cn.Attributes.GetNamedItem("param").Value));
-                    dataSource td = dataSources[dataSources.Count - 1];
-                    if (cn.Attributes.GetNamedItem("default") != null)
-                        td.def = (cn.Attributes.GetNamedItem("default").Value == "1");
-                    if (cn.Attributes.GetNamedItem("savepassword") != null)
-                        td.savepassword = (cn.Attributes.GetNamedItem("savepassword").Value == "1");
-                    if (cn.Attributes.GetNamedItem("hidden") != null)
-                        td.hidden = (cn.Attributes.GetNamedItem("hidden").Value == "1");
-                    if (cn.Attributes.GetNamedItem("user") != null)
-                        td.defuser = cn.Attributes.GetNamedItem("user").Value;
-                    if (cn.Attributes.GetNamedItem("password") != null)
-                        td.defpassword = cn.Attributes.GetNamedItem("password").Value;
-                }
-            }
-            return section;
-        }
-
-        public static void save()
-        {
-            XmlDocument xml = new XmlDocument();
-            XmlElement rnds = xml.CreateElement("rabnetds");
-            xml.AppendChild(rnds);
-            foreach (dataSource d in dataSources)
-            {
-                XmlElement xds = xml.CreateElement("dataSource");
-                if (d.def)
-                    xds.Attributes.Append(xml.CreateAttribute("default")).Value = "1";
-                if (d.hidden)
-                    xds.Attributes.Append(xml.CreateAttribute("hidden")).Value = "1";
-                if (d.defuser != "")
-                    xds.Attributes.Append(xml.CreateAttribute("user")).Value = d.defuser;
-                if (d.defpassword != "")
-                    xds.Attributes.Append(xml.CreateAttribute("password")).Value = d.defpassword;
-                if (d.savepassword)
-                    xds.Attributes.Append(xml.CreateAttribute("savepassword")).Value = "1";
-                xds.Attributes.Append(xml.CreateAttribute("name")).Value = d.name;
-                xds.Attributes.Append(xml.CreateAttribute("type")).Value = d.type;
-                xds.Attributes.Append(xml.CreateAttribute("param")).Value = d.param;
-                rnds.AppendChild(xds);
-            }
-            Configuration conf = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            ConfigurationSection rabnetds = conf.GetSection("rabnetds");
-            if (rabnetds==null)
-            {
-                throw new Exception("bad configuration file");
-            }
-            rabnetds.SectionInformation.SetRawXml(rnds.OuterXml);
-            conf.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection("rabnetds");
-        }
-    }*/
 }

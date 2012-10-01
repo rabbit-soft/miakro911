@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
+using rabnet.RNC;
 using log4net;
 
 namespace rabnet
@@ -14,7 +15,7 @@ namespace rabnet
     public partial class FarmChangeForm : Form
     {
         protected static readonly ILog log = LogManager.GetLogger(typeof(FarmChangeForm));
-        private RabnetConfig.rabDataSource ds = null;
+        private DataSource ds = null;
         private bool noFarms = false;
 
         public bool MiniMode = false;
@@ -65,7 +66,7 @@ namespace rabnet
             MiniMode = mini;
         }
 
-        public FarmChangeForm(RabnetConfig.rabDataSource ds):this()
+        public FarmChangeForm(DataSource ds):this()
         {
             this.ds = ds;
             if (ds == null)
@@ -112,7 +113,7 @@ namespace rabnet
             {
                 ds.Name = fname.Text;
                 ds.SavePassword = fsavepswd.Checked;
-                ds.Params = new RabnetConfig.sParams(constr);
+                ds.Params = new sParams(constr);
             }
             else
             {
@@ -120,11 +121,11 @@ namespace rabnet
                 //mds.SavePassword = fsavepswd.Checked;
                 //RabnetConfig.DataSources.Add(mds);
                 
-                RabnetConfig.SaveDataSource(System.Guid.NewGuid().ToString(), fname.Text, fhost.Text, fdb.Text, fuser.Text, fpswd.Text);
+                //RabnetConfig.SaveDataSource(System.Guid.NewGuid().ToString(), fname.Text, fhost.Text, fdb.Text, fuser.Text, fpswd.Text);
             }
             try
             {
-                RabnetConfig.SaveDataSources();
+                //RabnetConfig.SaveDataSources();
             }
             catch(Exception exp)
             {

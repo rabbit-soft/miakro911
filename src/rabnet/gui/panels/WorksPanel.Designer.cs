@@ -30,14 +30,14 @@
         {
             this.components = new System.ComponentModel.Container();
             this.lvZooTech = new System.Windows.Forms.ListView();
-            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.actMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.okrolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vudvorMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,16 +49,16 @@
             this.fuckMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vaccMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setNestMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miBoysByOne = new System.Windows.Forms.ToolStripMenuItem();
             this.printMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.label1 = new System.Windows.Forms.Label();
             this.lvLogs = new System.Windows.Forms.ListView();
-            this.columnHeader11 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader12 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader13 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader15 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader14 = new System.Windows.Forms.ColumnHeader();
-            this.miBoysByOne = new System.Windows.Forms.ToolStripMenuItem();
+            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader15 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader14 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.actMenu.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -92,7 +92,7 @@
             this.lvZooTech.UseCompatibleStateImageBehavior = false;
             this.lvZooTech.View = System.Windows.Forms.View.Details;
             this.lvZooTech.SelectedIndexChanged += new System.EventHandler(this.lvZooTech_SelectedIndexChanged);
-            this.lvZooTech.DoubleClick += new System.EventHandler(this.lvZooTech_DoubleClick);
+            this.lvZooTech.DoubleClick += new System.EventHandler(this.MenuItem_Click);
             // 
             // columnHeader1
             // 
@@ -142,28 +142,28 @@
             this.miBoysByOne,
             this.printMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(265, 290);
+            this.actMenu.Size = new System.Drawing.Size(265, 268);
             // 
             // okrolMenuItem
             // 
             this.okrolMenuItem.Name = "okrolMenuItem";
             this.okrolMenuItem.Size = new System.Drawing.Size(264, 22);
             this.okrolMenuItem.Text = "Принять окрол";
-            this.okrolMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
+            this.okrolMenuItem.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // vudvorMenuItem
             // 
             this.vudvorMenuItem.Name = "vudvorMenuItem";
             this.vudvorMenuItem.Size = new System.Drawing.Size(264, 22);
             this.vudvorMenuItem.Text = "Выдворение";
-            this.vudvorMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
+            this.vudvorMenuItem.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // countsMenuItem
             // 
             this.countsMenuItem.Name = "countsMenuItem";
             this.countsMenuItem.Size = new System.Drawing.Size(264, 22);
             this.countsMenuItem.Text = "Подсчет гнездовых/подсосных";
-            this.countsMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
+            this.countsMenuItem.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // countChangedMenuItem
             // 
@@ -177,42 +177,49 @@
             this.preokrolMenuItem.Name = "preokrolMenuItem";
             this.preokrolMenuItem.Size = new System.Drawing.Size(264, 22);
             this.preokrolMenuItem.Text = "Предокрольный осмотр";
-            this.preokrolMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
+            this.preokrolMenuItem.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // boysOutMenuItem
             // 
             this.boysOutMenuItem.Name = "boysOutMenuItem";
             this.boysOutMenuItem.Size = new System.Drawing.Size(264, 22);
             this.boysOutMenuItem.Text = "Отсадить мальчиков";
-            this.boysOutMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
+            this.boysOutMenuItem.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // girlsOutMenuItem
             // 
             this.girlsOutMenuItem.Name = "girlsOutMenuItem";
             this.girlsOutMenuItem.Size = new System.Drawing.Size(264, 22);
             this.girlsOutMenuItem.Text = "Отсадить девочек";
-            this.girlsOutMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
+            this.girlsOutMenuItem.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // fuckMenuItem
             // 
             this.fuckMenuItem.Name = "fuckMenuItem";
             this.fuckMenuItem.Size = new System.Drawing.Size(264, 22);
             this.fuckMenuItem.Text = "Случить";
-            this.fuckMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
+            this.fuckMenuItem.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // vaccMenuItem
             // 
             this.vaccMenuItem.Name = "vaccMenuItem";
             this.vaccMenuItem.Size = new System.Drawing.Size(264, 22);
             this.vaccMenuItem.Text = "Привить";
-            this.vaccMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
+            this.vaccMenuItem.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // setNestMenuItem
             // 
             this.setNestMenuItem.Name = "setNestMenuItem";
             this.setNestMenuItem.Size = new System.Drawing.Size(264, 22);
             this.setNestMenuItem.Text = "Установить гнездовье";
-            this.setNestMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
+            this.setNestMenuItem.Click += new System.EventHandler(this.MenuItem_Click);
+            // 
+            // miBoysByOne
+            // 
+            this.miBoysByOne.Name = "miBoysByOne";
+            this.miBoysByOne.Size = new System.Drawing.Size(264, 22);
+            this.miBoysByOne.Text = "Рассадка по одному";
+            this.miBoysByOne.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // printMenuItem
             // 
@@ -275,7 +282,6 @@
             this.lvLogs.UseCompatibleStateImageBehavior = false;
             this.lvLogs.View = System.Windows.Forms.View.Details;
             this.lvLogs.SelectedIndexChanged += new System.EventHandler(this.lvZooTech_SelectedIndexChanged);
-            this.lvLogs.DoubleClick += new System.EventHandler(this.lvZooTech_DoubleClick);
             // 
             // columnHeader11
             // 
@@ -299,13 +305,6 @@
             // 
             this.columnHeader14.Text = "Пользователь";
             // 
-            // miBoysByOne
-            // 
-            this.miBoysByOne.Name = "miBoysByOne";
-            this.miBoysByOne.Size = new System.Drawing.Size(264, 22);
-            this.miBoysByOne.Text = "Рассадка по одному";
-            this.miBoysByOne.Click += new System.EventHandler(this.okrolMenuItem_Click);
-            // 
             // WorksPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -313,7 +312,6 @@
             this.Controls.Add(this.splitContainer1);
             this.Name = "WorksPanel";
             this.Size = new System.Drawing.Size(689, 465);
-            this.Load += new System.EventHandler(this.WorksPanel_Load);
             this.actMenu.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);

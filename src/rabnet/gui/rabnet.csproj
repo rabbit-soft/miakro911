@@ -157,7 +157,9 @@
     <Compile Include="classes\Demo.cs" />
     <Compile Include="classes\ExcelMaker.cs" />
     <Compile Include="classes\FormSizeSaver.cs" />
-    <Compile Include="classes\RabnetConfig.cs" />
+    <Compile Include="classes\RabnetConfig\DataSource.cs" />
+    <Compile Include="classes\RabnetConfig\sParams.cs" />
+    <Compile Include="classes\RabnetConfig\RabnetConfig.cs" />
     <Compile Include="forms\AddRabVacForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -194,10 +196,10 @@
     <Compile Include="panels\FarmsPanel.Designer.cs">
       <DependentUpon>FarmsPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="panels\RabInfoPanels\RIVaccinePanel.cs">
+    <Compile Include="panels\RIVaccinePanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="panels\RabInfoPanels\RIVaccinePanel.Designer.cs">
+    <Compile Include="panels\RIVaccinePanel.Designer.cs">
       <DependentUpon>RIVaccinePanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -554,8 +556,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="panels\FarmsPanel.resx">
       <DependentUpon>FarmsPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>FarmsPanel1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="panels\RabInfoPanels\RIVaccinePanel.resx">
+    <EmbeddedResource Include="panels\RIVaccinePanel.resx">
       <DependentUpon>RIVaccinePanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -831,6 +836,11 @@
     <Content Include="changeLog.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\ff_add.png" />
+    <None Include="Resources\ff_edit.png" />
+    <None Include="Resources\ff_delete.png" />
+    <None Include="Resources\ff_check.png" />
+    <None Include="Resources\ff_cancel.png" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">

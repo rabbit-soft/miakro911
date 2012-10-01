@@ -29,18 +29,39 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FarmNewForm));
-            this.farmsPanel1 = new rabnet.panels.FarmsPanel();
+            this.btCancel = new System.Windows.Forms.Button();
+            this.btOk = new System.Windows.Forms.Button();
+            this.farmsPanel1 = new rabnet.FarmsPanel();
             this.SuspendLayout();
+            // 
+            // btCancel
+            // 
+            resources.ApplyResources(this.btCancel, "btCancel");
+            this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btCancel.Name = "btCancel";
+            this.btCancel.UseVisualStyleBackColor = true;
+            // 
+            // btOk
+            // 
+            resources.ApplyResources(this.btOk, "btOk");
+            this.btOk.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btOk.Name = "btOk";
+            this.btOk.UseVisualStyleBackColor = true;
+            this.btOk.Click += new System.EventHandler(this.btOk_Click);
             // 
             // farmsPanel1
             // 
             resources.ApplyResources(this.farmsPanel1, "farmsPanel1");
+            this.farmsPanel1.MaximumSize = new System.Drawing.Size(0, 315);
+            this.farmsPanel1.MinimumSize = new System.Drawing.Size(340, 315);
             this.farmsPanel1.Name = "farmsPanel1";
             // 
             // FarmNewForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btOk);
+            this.Controls.Add(this.btCancel);
             this.Controls.Add(this.farmsPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -52,6 +73,8 @@
 
         #endregion
 
-        private panels.FarmsPanel farmsPanel1;
+        private FarmsPanel farmsPanel1;
+        private System.Windows.Forms.Button btCancel;
+        private System.Windows.Forms.Button btOk;
     }
 }

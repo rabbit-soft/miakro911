@@ -24,8 +24,8 @@ namespace rabnet
             int ind=-1;
             foreach (CatalogData.Row r in _vacc.Rows)
             {              
-                cbVaccineType.Items.Add(r.data[0]);
-                if (forceId != -1 && r.key != forceId)
+                cbVaccineType.Items.Add(r.data[1]);
+                if (forceId != -1 && r.key == forceId)
                     ind=cbVaccineType.Items.Count-1;
             }
             if (forceId != -1)

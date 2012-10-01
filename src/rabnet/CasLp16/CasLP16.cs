@@ -1844,10 +1844,10 @@ namespace CAS
         public int DeleteMSGbyID(int id)
         {
             return ReturnCode.NOT_SUPPORTED;// НА весах пишется "POC",вводишь 2символа, пишется лого.При этом данные не отдает
-            MSG msg = GetMSGbyID(id);
-            if (msg == null) return ReturnCode.MSG_IS_NOT_EXISTS;
-            _msgList.Remove(msg);
-            return deleteMSG(msg);
+            //MSG msg = GetMSGbyID(id);
+            //if (msg == null) return ReturnCode.MSG_IS_NOT_EXISTS;
+            //_msgList.Remove(msg);
+            //return deleteMSG(msg);
         }
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
     }

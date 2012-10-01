@@ -368,7 +368,7 @@ ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;",
         {
             return String.Format(@"CREATE TEMPORARY TABLE aaa  SELECT 
     rb.r_id, r_parent,rabname(r_id,{0:s}) name, rabplace(r_id) place, (TO_DAYS(NOW())-TO_DAYS(r_born)) age, v.v_id,
-    to_days(NOW()) - to_days(COALESCE((SELECT date FROM rab_vac WHERE r_id=rb.r_id AND v_id=v.v_id),Date_Add(r_born,INTERVAL {2:s} DAY))) srok, #сколько дней не выполнена работа
+    to_days(NOW()) - to_days(COALESCE((SELECT MAX(date) FROM rab_vac WHERE r_id=rb.r_id AND v_id=v.v_id),Date_Add(r_born,INTERVAL {2:s} DAY))) srok, #сколько дней не выполнена работа
     ( SELECT `date` FROM rab_vac rv         #показываем дату прививки
       WHERE rv.v_id=v.v_id AND rv.r_id=rb.r_id AND unabled!=1       #если ее сделали кролику
         AND CAST(v.v_duration as SIGNED)-CAST(to_days(NOW())-to_days(date) AS SIGNED)>0     #и она еще не кончилась

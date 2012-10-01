@@ -60,7 +60,11 @@ namespace rabnet
         /// </summary>
         public virtual void deactivate()
         {
-            _rsb.filterPanel = null;
+            if (_rsb.filterPanel != null)
+            {
+                _rsb.filterPanel.Visible = false;
+                _rsb.filterPanel = null;
+            }
             _rsb.prepareGet -= this.prepareGet;
             _rsb.itemGet -= this.itemGet;
         }

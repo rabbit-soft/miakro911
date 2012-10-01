@@ -22,7 +22,7 @@ namespace rabnet
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool ShowWindow(IntPtr hWnd, int mode);
 
-        static ILog log = null;
+        static ILog _logger = null;
 
         /// <summary>
         /// The main entry point for the application.
@@ -30,6 +30,8 @@ namespace rabnet
         [STAThread]
         static void Main(string[] args)
         {
+            log4net.Config.XmlConfigurator.Configure();
+            _logger = LogManager.GetLogger(typeof(Program));
             bool new_instance;
             using (System.Threading.Mutex mutex = new System.Threading.Mutex(true, "RabNetApplication", out new_instance))
             {
@@ -38,9 +40,7 @@ namespace rabnet
 #if !NOCATCH
                     AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Unhandled);
                     Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Threaded);
-#endif
-                    log4net.Config.XmlConfigurator.Configure();
-                    log = LogManager.GetLogger(typeof(Program));
+#endif                   
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
 #if PROTECTED
@@ -120,7 +120,7 @@ namespace rabnet
             {
                 MessageBox.Show("Произошла ошибка. Программа будет закрыта.\n\r" + ex.Message);
             }
-            log.Fatal(ex.Message, ex);
+            _logger.Fatal(ex.Message, ex);
         }
 
         static void Threaded(object sender, System.Threading.ThreadExceptionEventArgs e)

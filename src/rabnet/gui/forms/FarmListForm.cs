@@ -5,14 +5,19 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using rabnet.RNC;
 
 namespace rabnet
 {
     public partial class FarmListForm : Form
     {
+        private RabnetConfig _rnc;
+
         public FarmListForm()
         {
             InitializeComponent();
+            _rnc = new RabnetConfig();
+            _rnc.LoadDataSources();
             updateList();
         }
 
@@ -20,7 +25,7 @@ namespace rabnet
         {
             listView1.Tag = 1;
             listView1.Items.Clear();
-            foreach (RabnetConfig.rabDataSource ds in RabnetConfig.DataSources)
+            foreach (DataSource ds in _rnc.DataSources)
             {
                 ListViewItem li = listView1.Items.Add(ds.Name);
                 li.Checked = !ds.Hidden;
@@ -33,10 +38,10 @@ namespace rabnet
 
         private void button1_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem li in listView1.Items)
-                ((RabnetConfig.rabDataSource)li.Tag).Hidden = !li.Checked;
-            RabnetConfig.SaveDataSources();
-            Close();
+            //foreach (ListViewItem li in listView1.Items)
+            //    ((RabnetConfig.rabDataSource)li.Tag).Hidden = !li.Checked;
+            //RabnetConfig.SaveDataSources();
+            //Close();
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -52,7 +57,7 @@ namespace rabnet
         private void button3_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count != 1) return;
-            new FarmChangeForm((RabnetConfig.rabDataSource)listView1.SelectedItems[0].Tag).ShowDialog();
+            new FarmChangeForm((DataSource)listView1.SelectedItems[0].Tag).ShowDialog();
             updateList();
         }
 
@@ -67,7 +72,7 @@ namespace rabnet
         private void button4_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count != 1) return;
-            RabnetConfig.DataSources.Remove((RabnetConfig.rabDataSource)listView1.SelectedItems[0].Tag);
+            _rnc.DataSources.Remove((DataSource)listView1.SelectedItems[0].Tag);
             updateList();
         }
     }

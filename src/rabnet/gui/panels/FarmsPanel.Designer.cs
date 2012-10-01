@@ -1,4 +1,4 @@
-﻿namespace rabnet.panels
+﻿namespace rabnet
 {
     partial class FarmsPanel
     {
@@ -31,12 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FarmsPanel));
             this.cbName = new System.Windows.Forms.ComboBox();
-            this.btAdd = new System.Windows.Forms.CheckBox();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.btEdit = new System.Windows.Forms.CheckBox();
             this.btDelete = new System.Windows.Forms.Button();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.gbAdmin = new System.Windows.Forms.GroupBox();
             this.chCreate = new System.Windows.Forms.CheckBox();
             this.tbAdminPass = new System.Windows.Forms.TextBox();
@@ -54,6 +51,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btOk = new System.Windows.Forms.Button();
             this.btCancel = new System.Windows.Forms.Button();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.btAdd = new System.Windows.Forms.CheckBox();
             this.gbAdmin.SuspendLayout();
             this.gbConn.SuspendLayout();
             this.SuspendLayout();
@@ -66,33 +65,9 @@
             this.cbName.FormattingEnabled = true;
             this.cbName.Location = new System.Drawing.Point(80, 9);
             this.cbName.Name = "cbName";
-            this.cbName.Size = new System.Drawing.Size(149, 21);
+            this.cbName.Size = new System.Drawing.Size(145, 21);
             this.cbName.TabIndex = 0;
             this.cbName.SelectedIndexChanged += new System.EventHandler(this.cbName_SelectedIndexChanged);
-            // 
-            // btAdd
-            // 
-            this.btAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btAdd.Appearance = System.Windows.Forms.Appearance.Button;
-            this.btAdd.ImageIndex = 0;
-            this.btAdd.ImageList = this.imageList1;
-            this.btAdd.Location = new System.Drawing.Point(235, 3);
-            this.btAdd.Name = "btAdd";
-            this.btAdd.Size = new System.Drawing.Size(30, 30);
-            this.btAdd.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.btAdd, "Добавить новое");
-            this.btAdd.UseVisualStyleBackColor = true;
-            this.btAdd.CheckedChanged += new System.EventHandler(this.btAdd_CheckedChanged);
-            // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "round_plus.png");
-            this.imageList1.Images.SetKeyName(1, "cog_icon.png");
-            this.imageList1.Images.SetKeyName(2, "delete.png");
-            this.imageList1.Images.SetKeyName(3, "round_checkmark.png");
-            this.imageList1.Images.SetKeyName(4, "round_delete.png");
             // 
             // label1
             // 
@@ -108,13 +83,11 @@
             this.btEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btEdit.Appearance = System.Windows.Forms.Appearance.Button;
             this.btEdit.Enabled = false;
-            this.btEdit.ImageIndex = 1;
-            this.btEdit.ImageList = this.imageList1;
-            this.btEdit.Location = new System.Drawing.Point(271, 3);
+            this.btEdit.Image = ((System.Drawing.Image)(resources.GetObject("btEdit.Image")));
+            this.btEdit.Location = new System.Drawing.Point(267, 3);
             this.btEdit.Name = "btEdit";
             this.btEdit.Size = new System.Drawing.Size(30, 30);
             this.btEdit.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.btEdit, "Редактировать БД");
             this.btEdit.UseVisualStyleBackColor = true;
             this.btEdit.CheckedChanged += new System.EventHandler(this.btAdd_CheckedChanged);
             // 
@@ -122,22 +95,14 @@
             // 
             this.btDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btDelete.Enabled = false;
-            this.btDelete.ImageIndex = 2;
-            this.btDelete.ImageList = this.imageList1;
-            this.btDelete.Location = new System.Drawing.Point(307, 3);
+            this.btDelete.Image = ((System.Drawing.Image)(resources.GetObject("btDelete.Image")));
+            this.btDelete.Location = new System.Drawing.Point(303, 3);
+            this.btDelete.Margin = new System.Windows.Forms.Padding(3, 3, 7, 3);
             this.btDelete.Name = "btDelete";
             this.btDelete.Size = new System.Drawing.Size(30, 30);
             this.btDelete.TabIndex = 6;
-            this.toolTip1.SetToolTip(this.btDelete, "Удалить");
             this.btDelete.UseVisualStyleBackColor = true;
             this.btDelete.Click += new System.EventHandler(this.btDelete_Click);
-            // 
-            // toolTip1
-            // 
-            this.toolTip1.AutoPopDelay = 5000;
-            this.toolTip1.InitialDelay = 1000;
-            this.toolTip1.IsBalloon = true;
-            this.toolTip1.ReshowDelay = 100;
             // 
             // gbAdmin
             // 
@@ -212,7 +177,7 @@
             this.gbConn.Controls.Add(this.label4);
             this.gbConn.Controls.Add(this.label3);
             this.gbConn.Controls.Add(this.label2);
-            this.gbConn.Location = new System.Drawing.Point(40, 128);
+            this.gbConn.Location = new System.Drawing.Point(40, 133);
             this.gbConn.Name = "gbConn";
             this.gbConn.Size = new System.Drawing.Size(260, 140);
             this.gbConn.TabIndex = 8;
@@ -294,10 +259,9 @@
             // btOk
             // 
             this.btOk.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.btOk.Image = ((System.Drawing.Image)(resources.GetObject("btOk.Image")));
             this.btOk.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btOk.ImageIndex = 3;
-            this.btOk.ImageList = this.imageList1;
-            this.btOk.Location = new System.Drawing.Point(173, 274);
+            this.btOk.Location = new System.Drawing.Point(173, 279);
             this.btOk.Name = "btOk";
             this.btOk.Size = new System.Drawing.Size(75, 25);
             this.btOk.TabIndex = 9;
@@ -310,9 +274,9 @@
             // btCancel
             // 
             this.btCancel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.btCancel.ImageKey = "round_delete.png";
-            this.btCancel.ImageList = this.imageList1;
-            this.btCancel.Location = new System.Drawing.Point(92, 274);
+            this.btCancel.Image = ((System.Drawing.Image)(resources.GetObject("btCancel.Image")));
+            this.btCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btCancel.Location = new System.Drawing.Point(92, 279);
             this.btCancel.Name = "btCancel";
             this.btCancel.Size = new System.Drawing.Size(75, 25);
             this.btCancel.TabIndex = 10;
@@ -321,6 +285,18 @@
             this.btCancel.UseVisualStyleBackColor = true;
             this.btCancel.Visible = false;
             this.btCancel.Click += new System.EventHandler(this.btCancel_Click);
+            // 
+            // btAdd
+            // 
+            this.btAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btAdd.Appearance = System.Windows.Forms.Appearance.Button;
+            this.btAdd.Image = ((System.Drawing.Image)(resources.GetObject("btAdd.Image")));
+            this.btAdd.Location = new System.Drawing.Point(231, 3);
+            this.btAdd.Name = "btAdd";
+            this.btAdd.Size = new System.Drawing.Size(30, 30);
+            this.btAdd.TabIndex = 1;
+            this.btAdd.UseVisualStyleBackColor = true;
+            this.btAdd.CheckedChanged += new System.EventHandler(this.btAdd_CheckedChanged);
             // 
             // FarmsPanel
             // 
@@ -335,7 +311,6 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btAdd);
             this.Controls.Add(this.cbName);
-            this.MaximumSize = new System.Drawing.Size(0, 315);
             this.MinimumSize = new System.Drawing.Size(340, 315);
             this.Name = "FarmsPanel";
             this.Size = new System.Drawing.Size(340, 315);
@@ -352,11 +327,9 @@
 
         private System.Windows.Forms.ComboBox cbName;
         private System.Windows.Forms.CheckBox btAdd;
-        private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox btEdit;
         private System.Windows.Forms.Button btDelete;
-        private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.GroupBox gbAdmin;
         private System.Windows.Forms.TextBox tbAdminPass;
         private System.Windows.Forms.TextBox tbAdmin;
@@ -374,5 +347,6 @@
         private System.Windows.Forms.Button btOk;
         private System.Windows.Forms.Button btCancel;
         private System.Windows.Forms.CheckBox chCreate;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
