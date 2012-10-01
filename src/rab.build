@@ -358,6 +358,7 @@
 	<target name="rabdump" description="rabnet db dumper">		
 		<copy file="${party3d.path}/ccxmlrpc.dll" tofile="${bin_dir}/RabDump/ccxmlrpc.dll" />
 		<copy file="${bin_dir}/RabNet/db.Interface.dll" tofile="${bin_dir}/RabDump/db.Interface.dll" />
+		<copy file="${bin_dir}/RabNet/db.mysql.dll" tofile="${bin_dir}/RabDump/db.mysql.dll" />
 		<copy file="${bin_dir}/RabNet/engine.dll" tofile="${bin_dir}/RabDump/engine.dll" />
 		<csc target="winexe" output="${bin_dir}/RabDump/rabdump.exe" win32icon="${curdir}/rabdump/icon_white.ico" define="${compile_flag}" optimize="true">
 			<sources>

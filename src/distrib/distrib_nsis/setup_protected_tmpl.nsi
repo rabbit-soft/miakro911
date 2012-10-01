@@ -96,6 +96,7 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     SetOverwrite on
     File ..\..\..\bin\@bin_type@\RabNet\rabnet.exe
 	File ..\..\..\bin\@bin_type@\RabNet\rabnet.exe.config
+	File ..\..\..\bin\@bin_type@\RabNet\db.Interface.dll
     File ..\..\..\bin\@bin_type@\RabNet\db.mysql.dll
     File ..\..\..\bin\@bin_type@\RabNet\engine.dll
 #    File ..\..\..\bin\@bin_type@\gui_genetics.dll
@@ -165,6 +166,7 @@ Section  $(SEC_RabDump_NAME) SEC_RabDump
     File ..\..\..\bin\@bin_type@\RabDump\log4net.dll
 	File ..\..\..\bin\@bin_type@\RabDump\ccxmlrpc.dll
 	File ..\..\..\bin\@bin_type@\RabDump\engine.dll
+	File ..\..\..\bin\@bin_type@\RabDump\db.Interface.dll
 	File ..\..\..\bin\@bin_type@\RabDump\db.mysql.dll
 #    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage32.dll
 #    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage64.dll
@@ -380,6 +382,7 @@ Section /o "-un.rabdump" UNSEC_RabDump
     Delete /REBOOTOK $INSTDIR\RabDump\GrdAPI64.DLL
 	Delete /REBOOTOK $INSTDIR\RabDump\log4net.dll
 	Delete /REBOOTOK $INSTDIR\RabDump\ccxmlrpc.dll
+	Delete /REBOOTOK $INSTDIR\RabDump\db.Interface.dll
 	Delete /REBOOTOK $INSTDIR\RabDump\db.mysql.dll
 	Delete /REBOOTOK $INSTDIR\RabDump\engine.dll
     Delete /REBOOTOK $INSTDIR\RabDump\rabdump.exe
@@ -423,6 +426,7 @@ Section /o "-un.rabnet" UNSEC_Rabnet
 
     Delete /REBOOTOK $INSTDIR\RabNet\rabnet.exe
 	Delete /REBOOTOK $INSTDIR\RabNet\rabnet.exe.config
+	Delete /REBOOTOK $INSTDIR\RabNet\db.Interface.dll
     Delete /REBOOTOK $INSTDIR\RabNet\db.mysql.dll
     Delete /REBOOTOK $INSTDIR\RabNet\engine.dll
     Delete /REBOOTOK $INSTDIR\RabNet\MySql.Data.dll
