@@ -11,7 +11,6 @@ namespace rabnet.RNC
     public class ArchiveJob
     {
         //[System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
-
         public readonly string Guid = "";
         public bool Busy = false;       
         public DateTime LastWork = DateTime.MinValue;        

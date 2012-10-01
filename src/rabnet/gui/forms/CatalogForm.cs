@@ -441,7 +441,6 @@ namespace rabnet
 
         private void vaccines_RowEdited(DataGridViewRow editRow)
         {
-            int check = 0;
             string col0 = "", col1 = "", col2 = "", col3 = "";
             if (editRow.Cells[_hiddenId].Value == null)
             {

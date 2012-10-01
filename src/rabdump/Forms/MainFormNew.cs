@@ -341,7 +341,7 @@ namespace rabdump
         {
             AppUpdater au = new AppUpdater(RabServWorker.ReqSender, getUpdatePath());
             au.DeleteOldFiles();
-            au.UpdateFinish += new AppUpdater.UpdateFinishDelegate(au_UpdateFinish);
+            au.UpdateFinish += new AppUpdater.UpdateFinishDelegate(au_UpdateFinish);          
             au.Check();
         }
 

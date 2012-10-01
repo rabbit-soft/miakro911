@@ -40,7 +40,7 @@
 
 	<property name="root_bin" value="${curdir}/../bin"/>
 	<property name="all_i_need" value="${build.root}/allineed"/>
-	<property name="tools_dir" value="${root_bin}/tools" />
+	<!--property name="tools_dir" value="${root_bin}/tools" /-->
 	<property name="plugin_dir" value="${root_bin}/PlugIns" />
 	<property name="distrib_dir" value="${root_bin}/distrib" />
 	
@@ -105,8 +105,13 @@
 
 	<!-- TARGETS !-->
 
-	<target name="build" depends="clear,buildall,tools" description="Full build"/>
+	<target name="build" depends="clear,buildall" description="Full build"/>
 
+	<!--target name="buildall" depends="svn_rev,release,protected,tools,release_zip" description="Build all projects"/-->
+	<target name="buildall" depends="svn_rev,protected,demo" description="Build all projects">
+		<delete dir="${curdir}/_tmp"/>
+	</target>
+	
 	<target name="clear" description="Clear build directories">
 		<delete dir="${root_bin}" />
 	</target>
@@ -116,11 +121,17 @@
 		<delete dir="${bin_dir}"/>
 		<mkdir dir="${bin_dir}"/>
 		<mkdir dir="${bin_dir}/7z"/>
-		<mkdir dir="${bin_dir}/RabNet"/>
+		<mkdir dir="${bin_dir}/Guardant"/>
+		<mkdir dir="${bin_dir}/bin"/>
+		<property name="bin_dir_bin" value="${bin_dir}/bin" />
+		<property name="log4net.use" value="${bin_dir_bin}/${log4net.lib}" />
+		<property name="mysql.use" value="${bin_dir_bin}/${mysql.lib}" />
+		<property name="rep.use" value="${bin_dir_bin}/${rep.lib}" />
+		<property name="repeng.use" value="${bin_dir_bin}/${repeng.lib}" />
+		<!--mkdir dir="${bin_dir}/RabNet"/>
 		<mkdir dir="${bin_dir}/RabNet/reports"/>
 		<mkdir dir="${bin_dir}/RabDump"/>
-		<mkdir dir="${bin_dir}/Tools"/>
-		<mkdir dir="${bin_dir}/Guardant"/>
+		<mkdir dir="${bin_dir}/Tools"/>		
 		<mkdir dir="${bin_dir}/Genetics"/>
 		<property name="log4net.use" value="${bin_dir}/RabNet/${log4net.lib}" />
 		<property name="log4net.d.use" value="${bin_dir}/RabDump/${log4net.lib}" />
@@ -128,34 +139,35 @@
 		<property name="mysql.d.use" value="${bin_dir}/RabDump/${mysql.lib}" />
 		<property name="mysql.t.use" value="${bin_dir}/Tools/${mysql.lib}" />
 		<property name="rep.use" value="${bin_dir}/RabNet/${rep.lib}" />
-		<property name="repeng.use" value="${bin_dir}/RabNet/${repeng.lib}" />
-		<copy file="${log4net.ass}" tofile="${log4net.use}" />
-		<copy file="${log4net.ass}" tofile="${log4net.d.use}" />
-		<copy file="${mysql.ass}" tofile="${mysql.use}" />
+		<property name="repeng.use" value="${bin_dir}/RabNet/${repeng.lib}" /-->
+		
+		<!--copy file="${log4net.ass}" tofile="${log4net.d.use}" />
 		<copy file="${mysql.ass}" tofile="${mysql.d.use}" />
-		<copy file="${mysql.ass}" tofile="${mysql.t.use}" />
+		<copy file="${mysql.ass}" tofile="${mysql.t.use}" /-->
+		<copy file="${log4net.ass}" tofile="${log4net.use}" />
+		<copy file="${mysql.ass}" tofile="${mysql.use}" />		
 		<copy file="${rep.ass}" tofile="${rep.use}" />
 		<copy file="${repeng.ass}" tofile="${repeng.use}" />
-		<copy file="${office.core.path}" tofile="${bin_dir}/RabNet/${office.core.name}" />
-		<copy file="${office.excel.path}" tofile="${bin_dir}/RabNet/${office.excel.name}" />
-		<copy file="${grd_path.lib}/${guardant2.lib}" tofile="${bin_dir}/RabNet/${guardant2.lib}" />
-		<copy file="${grd_lib64_path}/${guardant2_64.lib}" tofile="${bin_dir}/RabNet/${guardant2_64.lib}" />
-		<copy file="${grd_path.lib}/${guardantNET.lib}" tofile="${bin_dir}/RabNet/${guardantNET.lib}" />
-		<copy file="${grd_path.lib}/${guardant2.lib}" tofile="${bin_dir}/RabDump/${guardant2.lib}" />
-		<copy file="${grd_lib64_path}/${guardant2_64.lib}" tofile="${bin_dir}/RabDump/${guardant2_64.lib}" />
-		<copy file="${grd_path.lib}/${guardantNET.lib}" tofile="${bin_dir}/RabDump/${guardantNET.lib}" />
+		<copy file="${office.core.path}" tofile="${bin_dir_bin}/${office.core.name}" />
+		<copy file="${office.excel.path}" tofile="${bin_dir_bin}/${office.excel.name}" />
+		<copy file="${grd_path.lib}/${guardant2.lib}" tofile="${bin_dir_bin}/${guardant2.lib}" />
+		<copy file="${grd_lib64_path}/${guardant2_64.lib}" tofile="${bin_dir_bin}/${guardant2_64.lib}" />
+		<copy file="${grd_path.lib}/${guardantNET.lib}" tofile="${bin_dir_bin}/${guardantNET.lib}" />
+		<copy file="${grd_path.lib}/${guardant2.lib}" tofile="${bin_dir_bin}/${guardant2.lib}" />
+		<!--copy file="${grd_lib64_path}/${guardant2_64.lib}" tofile="${bin_dir}/RabDump/${guardant2_64.lib}" />
+		<copy file="${grd_path.lib}/${guardantNET.lib}" tofile="${bin_dir}/RabDump/${guardantNET.lib}" /-->
 		
 		<copy file="${GrdTruSource}" tofile="${bin_dir}/Guardant/${GrdTru}" />
 		<copy file="${GrdSrvSource}" tofile="${bin_dir}/Guardant/${GrdSrv}" />
-		<!--copy file="${GrdMonSource}" tofile="${bin_dir}/Guardant/${GrdMon}" /-->
-		<copy file="${curdir}/rabnet/gui/${grdClientConf}" tofile="${bin_dir}/RabNet/${grdClientConf}" />
+		<copy file="${GrdMonSource}" tofile="${bin_dir}/Guardant/${GrdMon}" />
+		<copy file="${curdir}/rabnet/gui/${grdClientConf}" tofile="${bin_dir_bin}/${grdClientConf}" />
 		
-		<copy todir="${bin_dir}/RabNet/reports">
+		<copy todir="${bin_dir_bin}/reports">
 			<fileset basedir="${curdir}/rabnet/gui/reports">
 				<include name="*.rdl"/>
 			</fileset>
 		</copy>
-		<copy todir="${bin_dir}/RabNet">
+		<copy todir="${bin_dir_bin}">
 			<fileset basedir="${curdir}/../help/rabnet_help">
 				<include name="*.chm"/>
 			</fileset>
@@ -171,15 +183,17 @@
 		<mkdir dir="${root_bin}"/>
 		<delete dir="${bin_dir}"/>
 		<mkdir dir="${bin_dir}"/>
-		<mkdir dir="${bin_dir}/Tools"/>
-		<mkdir dir="${bin_dir}/RabNet"/>
-		<property name="log4net.use" value="${bin_dir}/RabNet/${log4net.lib}" />
-		<property name="mysql.use" value="${bin_dir}/RabNet/${mysql.lib}" />
-		<property name="mysql.t.use" value="${bin_dir}/Tools/${mysql.lib}" />
+		<mkdir dir="${bin_dir}/bin"/>
+		<!--mkdir dir="${bin_dir}/Tools"/>
+		<mkdir dir="${bin_dir}/RabNet"/-->
+		<property name="bin_dir_bin" value="${bin_dir}/bin" />
+		<property name="log4net.use" value="${bin_dir_bin}/${log4net.lib}" />
+		<property name="mysql.use" value="${bin_dir_bin}/${mysql.lib}" />
+		<!--property name="mysql.t.use" value="${bin_dir}/Tools/${mysql.lib}" /-->
 		<copy file="${log4net.ass}" tofile="${log4net.use}" />
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
-		<copy file="${mysql.ass}" tofile="${mysql.t.use}" />
-		<copy todir="${bin_dir}/RabNet">
+		<!--copy file="${mysql.ass}" tofile="${mysql.t.use}" /-->
+		<copy todir="${bin_dir_bin}">
 			<fileset basedir="${curdir}/../help/rabnet_help">
 				<include name="*.chm"/>
 			</fileset>
@@ -191,20 +205,7 @@
 		<property name="bin_dir" value="${root_bin}/release" />
 		<call target="prepare_bin_dir"/>
 		<call target="compile"/>
-	</target>
-	<!--target name="release_zip" description="Zip RELEASE">
-		<property name="bin_dir" value="${root_bin}/release"/>
-		<zip zipfile="${root_bin}/release.rev.${revision}${obfuscated}.zip" failonerror="false">
-			<fileset basedir="${bin_dir}">
-				<include name="**/*"/>
-			</fileset>
-		</zip>
-	</target-->
-	
-	<!--target name="buildall" depends="svn_rev,release,protected,tools,release_zip" description="Build all projects"/-->
-	<target name="buildall" depends="svn_rev,protected,demo,tools" description="Build all projects">
-		<delete dir="${curdir}/_tmp"/>
-	</target>
+	</target>		
 	
 	<target name="protected" description="Build PROTECTED">
 		<property name="compile_flag" value="PROTECTED" />
@@ -220,7 +221,7 @@
 		<call target="compile_demo"/>
 	</target>
 	
-	<target name="tools" description="Build TOOLS">
+	<!--target name="tools" description="Build TOOLS">
 		<mkdir dir="${root_bin}"/>
 		<delete dir="${tools_dir}"/>
 		<mkdir dir="${tools_dir}"/>
@@ -229,22 +230,21 @@
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
 		<copy file="${log4net.ass}" tofile="${bin_dir}/${log4net.lib}" />
 		<call target="updater" />
-		<call target="plugins" />
-		<!--delete file=""${mysql.use}/-->
-	</target>
+		<call target="plugins" />		
+	</target-->
 
-	<target name="compile" depends="miaconv,rabnet,rabdump"/>
+	<target name="compile" depends="miaconv,updater,rabnet,rabdump,plugins"/>
 
 	<target name="compile_demo" depends="miaconv,rabnet_demo">
-		<xmlpoke file="${root_bin}/demo/RabNet/rabnet.exe.config" xpath="/configuration/log4net/root/level/@value" value="ERROR" />
+		<!--xmlpoke file="${root_bin}/demo/RabNet/rabnet.exe.config" xpath="/configuration/log4net/root/level/@value" value="ERROR" /-->
 	</target>
 
 	<target name="miaconv" description="Make mia converter project">
 		<copy file="${curdir}/mia_conv/rabnet_db_fmt.sql" tofile="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
-		<copy file="${log4net.use}" tofile="${bin_dir}/Tools/${log4net.lib}" />
-		<csc target="winexe" output="${bin_dir}/Tools/mia_conv.exe" win32icon="${curdir}/mia_conv/icon_yell_red.ico" define="${compile_flag}" optimize="true">
+		<!--copy file="${log4net.use}" tofile="${bin_dir}/Tools/${log4net.lib}" /-->
+		<csc target="winexe" output="${bin_dir_bin}/mia_conv.exe" win32icon="${curdir}/mia_conv/icon_yell_red.ico" define="${compile_flag}" optimize="true">
 			<sources>
-				<include name="${curdir}/_tmp/*.cs"/>
+				<include name="${curdir}/_tmp/VersionInfo.cs"/>
 				<include name="${curdir}/mia_conv/*.cs"/>				
 			</sources>
 			<resources>
@@ -256,7 +256,7 @@
 				<include name="${log4net.use}"/>
 			</references>
 		</csc>
-		<copy file="${curdir}/mia_conv/app.config" tofile="${bin_dir}/Tools/mia_conv.exe.config" />
+		<copy file="${curdir}/mia_conv/app.config" tofile="${bin_dir_bin}/mia_conv.exe.config" />
 		<delete file="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
 	</target>
 
@@ -266,7 +266,7 @@
 	<target name="rabnet_demo" description="make rabnet application" depends="db.Interface,db.mysql,engine,pickers,gui"/>
 	
 	<target name="pickers" description="pickers library for rabnet">
-		<csc target="library" output="${bin_dir}/RabNet/Pickers.dll" define="${compile_flag}" optimize="true">
+		<csc target="library" output="${bin_dir_bin}/Pickers.dll" define="${compile_flag}" optimize="true">
 			<sources>
 				<include name="${curdir}/libs/pickers/*.cs"/>
 				<include name="${curdir}/libs/pickers/ComboBoxAppearance/*.cs"/>
@@ -276,27 +276,26 @@
 	</target>
 
 	<target name="db.Interface" description="interface for all data layer">
-		<csc target="library" output="${bin_dir}/RabNet/db.Interface.dll" define="${compile_flag}" optimize="true">
+		<csc target="library" output="${bin_dir_bin}/db.Interface.dll" define="${compile_flag}" optimize="true">
 			<sources>
+				<include name="${curdir}/_tmp/VersionInfo.cs"/>
 				<include name="${curdir}/rabnet/db.Interface/*.cs"/>
 				<include name="${curdir}/rabnet/db.Interface/Properties/*.cs"/>
 			</sources>
-			<references>
-				<include name="${log4net.use}"/>
-				<include name="${mysql.use}"/>
-			</references>
+			
 		</csc>
 	</target>
 	
 	<target name="db.mysql" description="mysql data layer">
-		<csc target="library" output="${bin_dir}/RabNet/db.mysql.dll" define="${compile_flag}" optimize="true">
+		<csc target="library" output="${bin_dir_bin}/db.mysql.dll" define="${compile_flag}" optimize="true">
 			<sources>
+				<include name="${curdir}/_tmp/VersionInfo.cs"/>
 				<include name="${curdir}/rabnet/db.mysql/*.cs"/>
 				<include name="${curdir}/rabnet/db.mysql/CatalogData/*.cs"/>
 				<include name="${curdir}/rabnet/db.mysql/Properties/*.cs"/>
 			</sources>
 			<references>
-				<include name="${bin_dir}/RabNet/db.Interface.dll" />
+				<include name="${bin_dir_bin}/db.Interface.dll" />
 				<include name="${log4net.use}"/>
 				<include name="${mysql.use}"/>
 			</references>
@@ -304,7 +303,7 @@
 	</target>
 	
 	<target name="cas" description="scale">
-		<csc target="library" output="${bin_dir}/RabNet/CAS.dll" define="${compile_flag}" optimize="true">
+		<csc target="library" output="${bin_dir_bin}/CAS.dll" define="${compile_flag}" optimize="true">
 			<sources>
 				<include name="${curdir}/rabnet/CasLp16/*.cs"/>
 				<include name="${curdir}/rabnet/CasLp16/Properties/*.cs"/>
@@ -319,24 +318,25 @@
 	</target>
 
 	<target name="engine" description="engine">
-		<csc target="library" output="${bin_dir}/RabNet/engine.dll" define="${compile_flag}" optimize="true">
+		<csc target="library" output="${bin_dir_bin}/engine.dll" define="${compile_flag}" optimize="true">
 			<sources>
+				<include name="${curdir}/_tmp/VersionInfo.cs"/>
 				<include name="${curdir}/rabnet/engine/*.cs"/>
 				<include name="${curdir}/rabnet/engine/Properties/*.cs"/>
 			</sources>
 			<references>
 				<include name="${log4net.use}"/>
-				<include name="${bin_dir}/RabNet/db.Interface.dll" />
-				<include name="${bin_dir}/db.miafile.dll" />
+				<include name="${bin_dir_bin}/db.Interface.dll" />
+				<!--include name="${bin_dir}/db.miafile.dll" /-->
 			</references>
 		</csc>
 	</target>
 
 	<target name="gui_genetics" description="rabnet gui genetics">
-		<csc target="library" output="${bin_dir}/Genetics/gui_genetics.dll" define="${compile_flag}" optimize="true">
+		<csc target="library" output="${bin_dir_bin}/gui_genetics.dll" define="${compile_flag}" optimize="true">
 			<sources>
 				<include name="${curdir}/rabnet/gui_genetics/*.cs"/>
-				<include name="${curdir}/rabnet/gui/Engine.cs"/>
+				<!--include name="${curdir}/rabnet/gui/Engine.cs"/-->
 				<include name="${curdir}/rabnet/gui_genetics/Properties/*.cs"/>
 				<include name="${curdir}/rabnet/gui_genetics/Components/*.cs"/>
 				<include name="${curdir}/rabnet/gui_genetics/Forms/*.cs"/>
@@ -346,23 +346,23 @@
 				<include name="${curdir}/rabnet/gui_genetics/Components/*.resx"/>
 			</resources>
 			<references>
-				<include name="${log4net.use}"/>
-				<include name="${rep.use}"/>
-				<include name="${repeng.use}"/>
-				<include name="${bin_dir}/RabNet/db.Interface.dll" />
-				<include name="${bin_dir}/RabNet/engine.dll" />
+				<include name="${log4net.use}"/>				
+				<include name="${bin_dir_bin}/db.Interface.dll" />
+				<include name="${bin_dir_bin}/engine.dll" />
+				<!--include name="${rep.use}"/>
+				<include name="${repeng.use}"/-->
 			</references>
 		</csc>
 	</target>
 
 	<target name="rabdump" description="rabnet db dumper">		
-		<copy file="${party3d.path}/ccxmlrpc.dll" tofile="${bin_dir}/RabDump/ccxmlrpc.dll" />
-		<copy file="${bin_dir}/RabNet/db.Interface.dll" tofile="${bin_dir}/RabDump/db.Interface.dll" />
+		<copy file="${party3d.path}/ccxmlrpc.dll" tofile="${bin_dir_bin}/ccxmlrpc.dll" />
+		<!--copy file="${bin_dir}/RabNet/db.Interface.dll" tofile="${bin_dir}/RabDump/db.Interface.dll" />
 		<copy file="${bin_dir}/RabNet/db.mysql.dll" tofile="${bin_dir}/RabDump/db.mysql.dll" />
-		<copy file="${bin_dir}/RabNet/engine.dll" tofile="${bin_dir}/RabDump/engine.dll" />
-		<csc target="winexe" output="${bin_dir}/RabDump/rabdump.exe" win32icon="${curdir}/rabdump/icon_white.ico" define="${compile_flag}" optimize="true">
+		<copy file="${bin_dir}/RabNet/engine.dll" tofile="${bin_dir}/RabDump/engine.dll" /-->
+		<csc target="winexe" output="${bin_dir_bin}/rabdump.exe" win32icon="${curdir}/rabdump/icon_white.ico" define="${compile_flag}" optimize="true">
 			<sources>
-				<include name="${curdir}/_tmp/*.cs"/>
+				<include name="${curdir}/_tmp/VersionInfo.cs"/>
 				<include name="${curdir}/rabdump/*.cs"/>				
 				<include name="${curdir}/rabdump/classes/*.cs"/>
 				<include name="${curdir}/rabdump/panels/*.cs"/>
@@ -400,20 +400,20 @@
 				<include name="${curdir}/GrdRemoteUpdate/Admin/gui/form/AddDongleForm.resx"/>
 			</resources>
 			<references>
-				<include name="${bin_dir}/RabDump/${guardantNET.lib}" />
 				<include name="${log4net.use}"/>
+				<include name="${bin_dir_bin}/${guardantNET.lib}" />												
+				<include name="${bin_dir_bin}/db.Interface.dll"/>
+				<include name="${bin_dir_bin}/engine.dll"/>
 				<include name="${party3d.path}/ccxmlrpc.dll"/>
-				<include name="${bin_dir}/RabDump/engine.dll"/>
-				<include name="${bin_dir}/RabDump/db.Interface.dll"/>
 			</references>
 		</csc>
-		<copy file="${curdir}/rabdump/clean_config/rabdump.exe.config" tofile="${bin_dir}/RabDump/rabdump.exe.config" />
+		<copy file="${curdir}/rabdump/clean_config/rabdump.exe.config" tofile="${bin_dir_bin}/rabdump.exe.config" />
 	</target>
 
 	<target name="gui" description="rabnet gui">
-		<csc target="winexe" output="${bin_dir}/RabNet/rabnet.exe" win32icon="${curdir}/rabnet/gui/icon_green.ico" define="${compile_flag}" optimize="true">
+		<csc target="winexe" output="${bin_dir_bin}/rabnet.exe" win32icon="${curdir}/rabnet/gui/icon_green.ico" define="${compile_flag}" optimize="true">
 			<sources>
-				<include name="${curdir}/_tmp/*.cs"/>
+				<include name="${curdir}/_tmp/VersionInfo.cs"/>
 				<include name="${curdir}/rabnet/gui/Program.cs"/>
 				<include name="${curdir}/rabnet/gui/classes/*.cs"/>
 				<include name="${curdir}/rabnet/gui/classes/RabnetConfig/*.cs"/>				
@@ -441,44 +441,41 @@
 			</resources>
 			<references>		
 				<include name="${log4net.use}"/>
+				<include name="${bin_dir_bin}/${guardantNET.lib}" />
+				<include name="${bin_dir_bin}/db.Interface.dll" />
+				<include name="${bin_dir_bin}/engine.dll" />
 				<include name="${rep.use}"/>
 				<include name="${repeng.use}"/>
-				<include name="${bin_dir}/RabNet/Pickers.dll" />
-				<include name="${bin_dir}/RabNet/db.Interface.dll" />
-				<include name="${bin_dir}/RabNet/engine.dll" />
-				<include name="${bin_dir}/RabNet/CAS.dll" />
-				<include name="${bin_dir}/Genetics/gui_genetics.dll" />
-				<include name="${bin_dir}/RabNet/${guardantNET.lib}" />				
+				<include name="${bin_dir_bin}/Pickers.dll" />				
+				<include name="${bin_dir_bin}/CAS.dll" />
+				<include name="${bin_dir_bin}/gui_genetics.dll" />								
 				<include name="${office.core.path} "/>
 				<include name="${office.excel.path} "/>				
 			</references>
 		</csc>
-		<copy file="${curdir}/rabnet/gui/clean_config/rabnet.exe.config" tofile="${bin_dir}/RabNet/rabnet.exe.config" />
-		<copy file="${curdir}/rabnet/gui/changeLog.txt" tofile="${bin_dir}/RabNet/changeLog.txt" />
+		<copy file="${curdir}/rabnet/gui/clean_config/rabnet.exe.config" tofile="${bin_dir_bin}/rabnet.exe.config" />
+		<copy file="${curdir}/rabnet/gui/changeLog.txt" tofile="${bin_dir_bin}/changeLog.txt" />
 		<!--move file="${bin_dir}/RabNet/CAS.dll" tofile="${bin_dir}/Tools/CAS.dll" failonerror="false" /-->
 	</target>
 
 	<target name="obfuscate" depends="buildall" description="Binary Obfuscation">
-		<!--exec program="${obfuscator}">
-			<arg value="${root_bin}/protected/Rabnet/db.mysql.dll" />
-			<arg value="${root_bin}/protected/Rabnet/engine.dll" />
-			<arg value="${root_bin}/protected/Rabnet/rabnet.exe" />
-		</exec-->
+		<property name="dir_bin" value="${root_bin}/protected/bin"/>
+		
 		<exec program="${obfuscator}">
-			<arg value="${root_bin}/protected/RabDump/rabdump.exe" />
+			<!--arg value="${dir_bin}/rabdump.exe" />
+		</exec>
+		<exec program="${obfuscator}"-->
+			<arg value="${dir_bin}/mia_conv.exe" />
+		<!--/exec>
+		<exec program="${obfuscator}"-->
+			<arg value="${dir_bin}/updater.exe" />
 		</exec>
 		<exec program="${obfuscator}">
-			<arg value="${root_bin}/protected/Tools/mia_conv.exe" />
-		</exec>
-		<exec program="${obfuscator}">
-			<arg value="${tools_dir}/updater.exe" />
-		</exec>
-		<exec program="${obfuscator}">
-			<arg value="${root_bin}/demo/Tools/mia_conv.exe" />
-			<arg value="${root_bin}/demo/Rabnet/db.Interface.dll" />
-			<arg value="${root_bin}/demo/Rabnet/db.mysql.dll" />
-			<arg value="${root_bin}/demo/Rabnet/engine.dll" />
-			<arg value="${root_bin}/demo/Rabnet/rabnet.exe" />
+			<arg value="${root_bin}/demo/bin/rabnet.exe" />
+			<arg value="${root_bin}/demo/bin/mia_conv.exe" />
+			<arg value="${root_bin}/demo/bin/db.Interface.dll" />			
+			<arg value="${root_bin}/demo/bin/db.mysql.dll" />
+			<arg value="${root_bin}/demo/bin/engine.dll" />							
 		</exec>
 		<!--exec program="${grd_ob}">
 			<arg value="/INIT" />
@@ -509,19 +506,21 @@
 			<!--arg value="/MAP=${root_bin}/protected/RabNet/rabnet.map" /-->
 			<!--arg value="/EL=${curdir}/GRDConfigs/rabnet/config.cfp" /-->
 			<!--arg value="/IL=${curdir}/GRDConfigs/rabnet/rabnet.ifp" /-->
-			<arg value="/OUT=${root_bin}/protected/RabNet/" />
-			<arg value="${root_bin}/protected/RabNet/db.Interface.dll" />
-			<arg value="${root_bin}/protected/RabNet/db.mysql.dll" />
-			<arg value="${root_bin}/protected/RabNet/engine.dll" />
-			<arg value="${root_bin}/protected/RabNet/rabnet.exe" />		
+			<arg value="/OUT=${dir_bin}/" />
+			<arg value="${dir_bin}/db.Interface.dll" />
+			<arg value="${dir_bin}/db.mysql.dll" />
+			<arg value="${dir_bin}/engine.dll" />
+			<arg value="${dir_bin}/rabnet.exe" />	
+			<arg value="${dir_bin}/rabdump.exe" />			
 		</exec>
 
-		<delete file="${root_bin}/protected/RabNet/rabnet.exe.old"/>	
-		<delete file="${root_bin}/protected/RabNet/db.Interface.dll.old"/>
-		<delete file="${root_bin}/protected/RabNet/db.mysql.dll.old"/>
-		<delete file="${root_bin}/protected/RabNet/engine.dll.old"/>
-		<delete file="${root_bin}/protected/RabNet/rabnet.map"/>
-
+		<delete file="${dir_bin}/rabnet.exe.old"/>			
+		<delete file="${dir_bin}/db.Interface.dll.old"/>
+		<delete file="${dir_bin}/db.mysql.dll.old"/>
+		<delete file="${dir_bin}/engine.dll.old"/>
+		<delete file="${dir_bin}/rabdump.exe.old"/>
+		<delete file="${dir_bin}/rabnet.map"/>
+		
 		<!--exec program="${grd_ob}">
 			<arg value="/INIT" />
 			<arg value="/MSG=C:\Program Files\Guardant\Guardant 5\PLAT_T+\bin\licensewizard.msg" />
@@ -549,17 +548,15 @@
 			<arg value="/OUT=${root_bin}/protected/RabDump/" />
 		</exec--> 
 
-		<delete file="${root_bin}/protected/RabDump/rabdump.exe.old"/>
-
 		<property name="obfuscated" value=".ob" />
 		<!--call target="release_zip"/-->
 	</target>
 
 	<target name="updater" description="Make updater project">
-		<csc target="winexe" output="${tools_dir}/updater.exe" win32icon="${curdir}/updater/icon_update_white.ico" optimize="true">
+		<csc target="winexe" output="${bin_dir_bin}/updater.exe" win32icon="${curdir}/updater/icon_update_white.ico" optimize="true">
 			<sources>
-				<include name="${curdir}/updater/*.cs"/>
-				<include name="${curdir}/_tmp/*.cs"/>
+				<include name="${curdir}/_tmp/VersionInfo.cs"/>
+				<include name="${curdir}/updater/*.cs"/>			
 				<include name="${curdir}/mia_conv/miaExitCode.cs"/>
 				<include name="${curdir}/rabnet/gui/classes/RabnetConfig/*.cs"/>
 			</sources>
@@ -572,7 +569,7 @@
 				<include name="${log4net.use}"/>
 			</references>
 		</csc>
-		<copy file="${curdir}/updater/app.config" tofile="${tools_dir}/updater.exe.config" />
+		<copy file="${curdir}/updater/app.config" tofile="${bin_dir_bin}/updater.exe.config" />
 	</target>
 	
 	<target name="butcher" description="Make the Butcher Factory">		
@@ -624,9 +621,9 @@
 				<include name="${plugin_dir}/TestPlugIn.test.rdl"/>
 			</resources>
 			<references>
-				<include name="${root_bin}/Protected/RabNet/rabnet.exe" />
-				<include name="${root_bin}/Protected/RabNet/db.Interface.dll" />
-				<include name="${root_bin}/Protected/RabNet/engine.dll" />
+				<include name="${root_bin}/Protected/bin/rabnet.exe" />
+				<include name="${root_bin}/Protected/bin/db.Interface.dll" />
+				<include name="${root_bin}/Protected/bin/engine.dll" />
 			</references>
 		</csc>
 		<delete file="${plugin_dir}/TestPlugIn.test.rdl"/>
@@ -643,9 +640,9 @@
 				<include name="${plugin_dir}/PopulationPlugIn.population.rdl"/>
 			</resources>
 			<references>
-				<include name="${root_bin}/Protected/RabNet/rabnet.exe" />
-				<include name="${root_bin}/Protected/RabNet/db.Interface.dll" />
-				<include name="${root_bin}/Protected/RabNet/engine.dll" />
+				<include name="${root_bin}/Protected/bin/rabnet.exe" />
+				<include name="${root_bin}/Protected/bin/db.Interface.dll" />
+				<include name="${root_bin}/Protected/bin/engine.dll" />
 			</references>
 		</csc>
 		<delete file="${plugin_dir}/PopulationPlugIn.population.rdl"/>
@@ -662,9 +659,9 @@
 				<include name="${plugin_dir}/OkrolPlanPlugIn.okrolplan.rdl"/>
 			</resources>
 			<references>
-				<include name="${root_bin}/Protected/RabNet/rabnet.exe" />
-				<include name="${root_bin}/Protected/RabNet/db.Interface.dll" />
-				<include name="${root_bin}/Protected/RabNet/engine.dll" />
+				<include name="${root_bin}/Protected/bin/rabnet.exe" />
+				<include name="${root_bin}/Protected/bin/db.Interface.dll" />
+				<include name="${root_bin}/Protected/bin/engine.dll" />
 			</references>
 		</csc>
 		<delete file="${plugin_dir}/OkrolPlanPlugIn.okrolplan.rdl"/>
@@ -693,21 +690,7 @@
 			<!--touch file="../build.ok" /-->
 			<echo message="${datetime::now()}" file="..\build.ok" />
 		</if>
-	</target>
-
-	<!--target name="miakro_911_release" depends="obfuscate">
-		<property name="dist_type" value="rabnet_no_protect"/>
-		<property name="bin_dir" value="${root_bin}\release"/>
-		<property name="bin_type" value="release"/>
-		<call target="nsis_bld"/>
-	</target>
-
-	<target name="miakro_911_release_no" depends="buildall">
-		<property name="dist_type" value="rabnet_no_protect"/>
-		<property name="bin_dir" value="${root_bin}\release"/>
-		<property name="bin_type" value="release"/>
-		<call target="nsis_bld"/>
-	</target-->
+	</target>	
 
 	<target name="nsis_bld">
 		<mkdir dir="${root_bin}"/>
@@ -777,36 +760,7 @@
 		</if>
 	</target>
 
-	<!-- FILL DATA!-->
-	<target name="filldata" depends="build" description="filling developer databases">
-		<unzip zipfile="${data_dir}/Farm_30.zip" todir="${data_dir}" />
-		<exec program="${root_bin}/release/mia_conv.exe">
-			<arg value="${data_dir}/Farm 3_0.mia" />
-			<arg value="localhost;krol30;kroliki;krol;root;;" />
-			<arg value="зоотехник;" />
-			<arg value="${data_dir}/data_30.sql" />
-			<arg value="quiet" />
-		</exec>
-		<delete file="${data_dir}\Farm 3_0.mia" />
-		<unzip zipfile="${data_dir}/Farm_main.zip" todir="${data_dir}" />
-		<exec program="${root_bin}/release/mia_conv.exe">
-			<arg value="${data_dir}\Farm.mia" />
-			<arg value="localhost;kroliki;kroliki;krol;root;;" />
-			<arg value="зоотехник;" />
-			<arg value="${data_dir}\data_main.sql" />
-			<arg value="quiet" />
-		</exec>
-		<delete file="${data_dir}/Farm.mia" />
-		<!--unzip zipfile="${data_dir}/Farm_last.zip" todir="${data_dir}" />
-		<exec program="${root_bin}/release/mia_conv.exe">
-			<arg value="${data_dir}\Farm.mia" />
-			<arg value="localhost;krol_last;kroliki;krol;root;;" />
-			<arg value="зоотехник;" />
-			<arg value="${data_dir}\data_last.sql" />
-			<arg value="quiet" />
-		</exec>
-		<delete file="${data_dir}/Farm.mia" /-->
-	</target>
+	
 
 	<!-- RELEASES -->
 	<target name="version" description="making Rabnet distributed release">
@@ -855,5 +809,41 @@
 		<property name="fullver" value="${build.version}.${revision}" if="${property::exists('build.version')}"/>
 		<echo message="Build version: ${fullver}" />
 	</target>
+	
+	<!--target name="miakro_911_release" depends="obfuscate">
+		<property name="dist_type" value="rabnet_no_protect"/>
+		<property name="bin_dir" value="${root_bin}\release"/>
+		<property name="bin_type" value="release"/>
+		<call target="nsis_bld"/>
+	</target>
+
+	<target name="miakro_911_release_no" depends="buildall">
+		<property name="dist_type" value="rabnet_no_protect"/>
+		<property name="bin_dir" value="${root_bin}\release"/>
+		<property name="bin_type" value="release"/>
+		<call target="nsis_bld"/>
+	</target-->
+	
+	<!-- FILL DATA!-->
+	<!--target name="filldata" depends="build" description="filling developer databases">
+		<unzip zipfile="${data_dir}/Farm_30.zip" todir="${data_dir}" />
+		<exec program="${root_bin}/release/mia_conv.exe">
+			<arg value="${data_dir}/Farm 3_0.mia" />
+			<arg value="localhost;krol30;kroliki;krol;root;;" />
+			<arg value="зоотехник;" />
+			<arg value="${data_dir}/data_30.sql" />
+			<arg value="quiet" />
+		</exec>
+		<delete file="${data_dir}\Farm 3_0.mia" />
+		<unzip zipfile="${data_dir}/Farm_main.zip" todir="${data_dir}" />
+		<exec program="${root_bin}/release/mia_conv.exe">
+			<arg value="${data_dir}\Farm.mia" />
+			<arg value="localhost;kroliki;kroliki;krol;root;;" />
+			<arg value="зоотехник;" />
+			<arg value="${data_dir}\data_main.sql" />
+			<arg value="quiet" />
+		</exec>
+		<delete file="${data_dir}/Farm.mia" />
+	</target-->
 	
 </project>
