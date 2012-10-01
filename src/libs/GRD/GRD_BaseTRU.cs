@@ -25,7 +25,7 @@ namespace RabGRD
                             out quest.hash);    // pointer to Hash of previous data		8 bytes 
 
             logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
+            _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if(retCode != GrdE.OK) return (int)retCode;
 
@@ -50,7 +50,7 @@ namespace RabGRD
                                                 buf);       // answer data update buffer prepared and encrypted by GrdTRU_EncryptAnswer 
 
             logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
+            _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK) return (int)retCode;
 
@@ -60,7 +60,7 @@ namespace RabGRD
             logStr = "Testing new mask by GrdTransform test: ";
             retCode = GrdApi.GrdTransform(_grdHandle, 0, 8, buffer, 0, initVector);
             logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
+            _logger.Debug(logStr);
             return (int)ErrorHandling(_grdHandle, retCode);          
         }
     }

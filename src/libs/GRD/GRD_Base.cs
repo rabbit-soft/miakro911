@@ -31,7 +31,7 @@ namespace RabGRD
             SAASVersion = 1 << 7,
         }
 
-        protected ILog log = LogManager.GetLogger(typeof(GRD));
+        protected ILog _logger = LogManager.GetLogger(typeof(GRD));
 
         protected const string DEV_MARKER = "9-bits RabSoft";
 
@@ -84,7 +84,7 @@ namespace RabGRD
             logStr = "Initialize this copy of GrdAPI : ";
             retCode = GrdApi.GrdStartup(_findPropRemoteMode); // + GrdFMR.Remote if you want to use network dongles
             logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
+            _logger.Debug(logStr);
             ErrorHandling(new Handle(0), retCode);
             if (retCode != GrdE.OK && retCode != GrdE.AlreadyInitialized)
             {
@@ -96,13 +96,13 @@ namespace RabGRD
             if (_grdHandle.Address == 0) // Some error found?
             {
                 logStr += GrdApi.PrintResult((int)GrdE.MemoryAllocation);
-                log.Debug(logStr);
+                _logger.Debug(logStr);
                 return ErrorHandling(new Handle(0), GrdE.MemoryAllocation);
             }
             else
             {
                 logStr += GrdApi.PrintResult((int)GrdE.OK);
-                log.Debug(logStr);
+                _logger.Debug(logStr);
                 ErrorHandling(_grdHandle, GrdE.OK); // Print success information
             }
             logStr = "Storing dongle codes in Guardant protected container : ";
@@ -110,7 +110,7 @@ namespace RabGRD
                                             PublicCode + CryptPu,   // Public code, should always be specified
                                             ReadCode + CryptRd);*/    // Private read code; you can omit this code and all following via using of overloaded function;
             logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
+            _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK)
             {
@@ -135,7 +135,7 @@ namespace RabGRD
                                             _findPropDongleModel,
                                             _findPropDongleInterface);
             logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
+            _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK)
             {
@@ -174,14 +174,14 @@ namespace RabGRD
             if (marker != DEV_MARKER)
             {
                 logStr += "; No correct marker";
-                log.Debug(logStr);
+                _logger.Debug(logStr);
                 valid = false;
                 retCode = ErrorHandling(_grdHandle, GrdE.VerifyError);               
             }
             else
             {
                 logStr += "; Correct marker";
-                log.Debug(logStr);
+                _logger.Debug(logStr);
                 valid = true;
                 retCode = ErrorHandling(_grdHandle, retCode);                
             }
@@ -206,7 +206,7 @@ namespace RabGRD
             logStr = "Closing dongle handle: ";
             retCode = GrdApi.GrdCloseHandle(_grdHandle);
             logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
+            _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
 
             // -----------------------------------------------------------------
@@ -216,7 +216,7 @@ namespace RabGRD
             logStr = "Deinitializing this copy of GrdAPI : ";
             retCode = GrdApi.GrdCleanup();
             logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
+            _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
 
             //Console.ReadLine();
@@ -238,21 +238,21 @@ namespace RabGRD
             string logStr = "";         
             if (nRet != GrdE.OK)
             {
-                log.Warn("ErrorHandling : " + GrdApi.PrintResult((int)nRet));
+                _logger.Warn("ErrorHandling : " + GrdApi.PrintResult((int)nRet));
                 if (hGrd.Address != 0)	// Perform some cleanup operations if hGrd handle exists
                 {
                     // Close hGrd handle, log out from dongle/server, free allocated memory
                     logStr = ("Closing handle: ");
                     nRet = GrdApi.GrdCloseHandle(hGrd);
                     logStr += GrdApi.PrintResult((int)nRet);
-                    log.Debug(logStr);
+                    _logger.Debug(logStr);
                 }
 
                 // Deinitialize this copy of GrdAPI. GrdCleanup() must be called after last GrdAPI call before program termination
                 logStr = "Deinitializing this copy of GrdAPI : ";
                 nRet = GrdApi.GrdCleanup();
                 logStr += GrdApi.PrintResult((int)nRet);
-                log.Debug(logStr);
+                _logger.Debug(logStr);
 
                 // Terminate application
                 //Environment.Exit((int)nRet);
@@ -281,7 +281,7 @@ namespace RabGRD
                 logStr += string.Format("; CNT = {0:D}", farms);
                 farmCnt = (int)farms;
             }
-            log.Debug(logStr);
+            _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
 
             _farmCntCache = farmCnt;
@@ -314,7 +314,7 @@ namespace RabGRD
         public string GetOrganizationName()
         {
             uint addr = USER_DATA_BEGINING + ORGANIZATION_NAME_OFFSET;
-            log.Debug("Reading Org Name: ");
+            _logger.Debug("Reading Org Name: ");
             return ReadStringCp1251(addr, MAX_BUILDINGS_COUNT_OFFSET - ORGANIZATION_NAME_OFFSET);
         }
 
@@ -344,7 +344,7 @@ namespace RabGRD
                                     Convert.ToString(bts[3], 2));
                 res = bts[byteNum];
             }
-            log.Debug(logStr);
+            _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
 
             return res;
@@ -387,7 +387,7 @@ namespace RabGRD
                     }
                 }
             }
-            log.Debug(logStr);
+            _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
 
             return res;
@@ -398,8 +398,8 @@ namespace RabGRD
             FlagType flags = (FlagType)GetFlags(0);
             FlagType flagsTemp = (FlagType)GetTempFlags(0);
 
-            log.Debug("========================> " + flags.ToString() + " " + ((int)flags).ToString());
-            log.Debug("========================> " + flagsTemp.ToString() + " " + ((int)flagsTemp).ToString());
+            _logger.Debug("========================> " + flags.ToString() + " " + ((int)flags).ToString());
+            _logger.Debug("========================> " + flagsTemp.ToString() + " " + ((int)flagsTemp).ToString());
 
             return ((flags & ft) == ft) || ((flagsTemp & ft) == ft);
         }
@@ -408,21 +408,21 @@ namespace RabGRD
         {
             uint addr = USER_DATA_BEGINING + DEV_MARKER_OFFSET;
 
-            log.Debug("Reading customer id: ");
+            _logger.Debug("Reading customer id: ");
             return ReadUInt(addr);
         }
 
         public DateTime GetDateStart()
         {
             uint addr = USER_DATA_BEGINING + FARM_START_DATE_OFFSET;
-            log.Debug("Reading Date start: ");
+            _logger.Debug("Reading Date start: ");
             return ReadDate(addr);
         }
 
         public DateTime GetDateEnd()
         {
             uint addr = USER_DATA_BEGINING + FARM_STOP_DATE_OFFSET;
-            log.Debug("Reading Date end: ");
+            _logger.Debug("Reading Date end: ");
             return ReadDate(addr);
         }
 
@@ -444,20 +444,20 @@ namespace RabGRD
         {
             DateTime dt = new DateTime();
             byte[] bts = new byte[12];
-            log.Debug("Reading date: ");
+            _logger.Debug("Reading date: ");
             if (ReadBytes(out bts, offset, 12)==0)
             {
                 string nm = Cp1251BytesToString(bts, 0, 12);
-                log.Debug("Date  string = " + nm);
+                _logger.Debug("Date  string = " + nm);
                 DateTimeFormatInfo dtfi = new CultureInfo("en-US", false).DateTimeFormat;
                 try
                 {
                     dt = Convert.ToDateTime(nm, dtfi);
-                    log.Debug("Date = " + dt.ToString());
+                    _logger.Debug("Date = " + dt.ToString());
                 }
                 catch (Exception e)
                 {
-                    log.Debug("Cannot convert date; " + e.Message);
+                    _logger.Debug("Cannot convert date; " + e.Message);
                 }
             }
             return dt;
@@ -468,7 +468,7 @@ namespace RabGRD
             string logStr = "Reading Bytes : ";
             GrdE retCode = GrdApi.GrdRead(_grdHandle, offset, (int)length, out buffer);
             logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
+            _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
 
             return (int)retCode;
@@ -480,12 +480,12 @@ namespace RabGRD
             if (ReadBytes(out buffer, offset, length)==0)
             {
                 string str = AsciiBytesToString(buffer, 0, (int)length);
-                log.Debug("Got string : " + str);
+                _logger.Debug("Got string : " + str);
                 return str;
             }
             else
             {
-                log.Debug("Got NO string");
+                _logger.Debug("Got NO string");
                 return "";
             }
         }
@@ -496,12 +496,12 @@ namespace RabGRD
             if (ReadBytes(out buffer, offset, length)==0)
             {
                 string str = Cp1251BytesToString(buffer, 0, (int)length);
-                log.Debug("Got string : " + str);
+                _logger.Debug("Got string : " + str);
                 return str;
             }
             else
             {
-                log.Debug("Got NO string");
+                _logger.Debug("Got NO string");
                 return "";
             }
         }
@@ -511,12 +511,12 @@ namespace RabGRD
             byte[] buffer;
             if (ReadBytes(out buffer, offset, 4)==0)
             {
-                log.Debug("Got UInt : " + BitConverter.ToUInt32(buffer, 0).ToString());
+                _logger.Debug("Got UInt : " + BitConverter.ToUInt32(buffer, 0).ToString());
                 return BitConverter.ToUInt32(buffer, 0);
             }
             else
             {
-                log.Debug("Got No UInt");
+                _logger.Debug("Got No UInt");
                 return 0;
             }
         }
@@ -526,12 +526,12 @@ namespace RabGRD
             byte[] buffer;
             if (ReadBytes(out buffer, offset, 4)==0)
             {
-                log.Debug("Got Int : " + BitConverter.ToInt32(buffer, 0).ToString());
+                _logger.Debug("Got Int : " + BitConverter.ToInt32(buffer, 0).ToString());
                 return BitConverter.ToInt32(buffer, 0);
             }
             else
             {
-                log.Debug("Got No UInt");
+                _logger.Debug("Got No UInt");
                 return 0;
             }
         }
@@ -571,7 +571,19 @@ namespace RabGRD
 
     public class GRD:GRD_Base
     {
-        public static readonly GRD Instance = new GRD();
+        public static GRD _grd;
+
+        public static GRD Instance
+        {
+            get
+            {
+                if (_grd == null)
+                {
+                    _grd = new GRD();
+                }
+                return _grd;
+            }
+        }
 
         /// <summary>
         /// Private constructor prevents instantiation from other classes
@@ -580,14 +592,14 @@ namespace RabGRD
         {
             try
             {
-                log = LogManager.GetLogger(typeof(GRD));
+                _logger = LogManager.GetLogger(typeof(GRD));
                 connect();
             }
             catch (Exception e)
             {
 
                 MessageBox.Show(e.InnerException.Message, "Фатальная ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                log.Error(e.InnerException.Message);
+                _logger.Error(e.InnerException.Message);
                 Environment.Exit(100);                               
             }
         }
@@ -621,6 +633,7 @@ namespace RabGRD
             {
                 logStr += string.Format("; Found dongle with following ID : {0,8:X}", _findPropDongleID);
                 _keyId = _findPropDongleID;
+                _logger.Debug(logStr);
             }
             else
             {
@@ -633,7 +646,7 @@ namespace RabGRD
             logStr = "Searching for the specified local or remote dongle and log in : ";
             retCode = GrdApi.GrdLogin(_grdHandle, 0, GrdLM.PerStation);
             logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
+            _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK)
             {
