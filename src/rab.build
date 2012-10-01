@@ -233,7 +233,7 @@
 		<!--delete file=""${mysql.use}/-->
 	</target>
 
-	<target name="compile" depends="miaconv,rabnet,rabdump,butcher"/>
+	<target name="compile" depends="miaconv,rabnet,rabdump"/>
 
 	<target name="compile_demo" depends="miaconv,rabnet_demo">
 		<xmlpoke file="${root_bin}/demo/RabNet/rabnet.exe.config" xpath="/configuration/log4net/root/level/@value" value="ERROR" />
@@ -364,9 +364,11 @@
 				<include name="${curdir}/_tmp/*.cs"/>
 				<include name="${curdir}/rabdump/*.cs"/>				
 				<include name="${curdir}/rabdump/classes/*.cs"/>
+				<include name="${curdir}/rabdump/panels/*.cs"/>
 				<include name="${curdir}/rabdump/remote/*.cs"/>		
 				<include name="${curdir}/rabdump/Forms/*.cs"/>				
 				<include name="${curdir}/rabdump/Properties/AssemblyInfo.cs"/>
+				
 				<include name="${curdir}/libs/GRD/GRD_Base.cs"/>
 				<include name="${curdir}/libs/GRD/GRD_BaseTRU.cs"/>
 				<include name="${curdir}/libs/GRD/GRD_BaseCodes.cs"/>
@@ -377,18 +379,24 @@
 				<include name="${curdir}/libs/pEngine/Helper.cs"/>
 				<include name="${curdir}/libs/pEngine/pException.cs"/>
 				<include name="${curdir}/libs/pEngine/AppUpdater.cs"/>
+				
 				<include name="${curdir}/mia_conv/miaExitCode.cs"/>				
-				<include name="${curdir}/rabnet/gui/classes/RabnetConfig.cs"/>
-				<include name="${curdir}/rabnet/gui/forms/FarmChangeForm.cs"/>
-				<include name="${curdir}/rabnet/gui/forms/FarmChangeForm.Designer.cs"/>
+				<include name="${curdir}/rabnet/gui/classes/RabnetConfig/*.cs"/>
+				<include name="${curdir}/rabnet/gui/panels/FarmsPanel.cs"/>
+				<include name="${curdir}/rabnet/gui/panels/FarmsPanel.Designer.cs"/>
+				<!--include name="${curdir}/rabnet/gui/forms/FarmChangeForm.cs"/>
+				<include name="${curdir}/rabnet/gui/forms/FarmChangeForm.Designer.cs"/-->
 				<include name="${curdir}/GrdRemoteUpdate/Admin/engine/Structures.cs"/>
 				<include name="${curdir}/GrdRemoteUpdate/Admin/gui/form/AddDongleForm.cs"/>
 				<include name="${curdir}/GrdRemoteUpdate/Admin/gui/form/AddDongleForm.designer.cs"/>
 			</sources>
 			<resources>
 				<include name="${curdir}/rabdump/*.resx"/>
+				<include name="${curdir}/rabdump/Properties/*.resx"/>
 				<include name="${curdir}/rabdump/Forms/*.resx"/>
-				<include name="${curdir}/rabnet/gui/forms/FarmChangeForm.resx"/>
+				<include name="${curdir}/rabdump/panels/*.resx"/>
+				<!--include name="${curdir}/rabnet/gui/forms/FarmChangeForm.resx"/-->
+				<include name="${curdir}/rabnet/gui/panels/FarmsPanel.resx"/>
 				<include name="${curdir}/GrdRemoteUpdate/Admin/gui/form/AddDongleForm.resx"/>
 			</resources>
 			<references>
@@ -405,9 +413,10 @@
 	<target name="gui" description="rabnet gui">
 		<csc target="winexe" output="${bin_dir}/RabNet/rabnet.exe" win32icon="${curdir}/rabnet/gui/icon_green.ico" define="${compile_flag}" optimize="true">
 			<sources>
+				<include name="${curdir}/_tmp/*.cs"/>
 				<include name="${curdir}/rabnet/gui/Program.cs"/>
 				<include name="${curdir}/rabnet/gui/classes/*.cs"/>
-				<include name="${curdir}/_tmp/*.cs"/>
+				<include name="${curdir}/rabnet/gui/classes/RabnetConfig/*.cs"/>				
 				<include name="${curdir}/rabnet/gui/Properties/AssemblyInfo.cs"/>
 				<include name="${curdir}/rabnet/gui/components/*.cs"/>
 				<include name="${curdir}/rabnet/gui/components/Pickers/*.cs"/>
@@ -425,6 +434,7 @@
 			</sources>
 			<resources>
 				<include name="${curdir}/rabnet/gui/forms/*.resx"/>
+				<include name="${curdir}/rabnet/gui/panels/*.resx"/>
 				<include name="${curdir}/rabnet/gui/components/*.resx"/>
 				<include name="${curdir}/rabnet/gui/forms/ReportViewForm.resx"/>
 				<include name="${curdir}/rabnet/gui/components/ColorPickerColumn/*.resx"/>
@@ -551,7 +561,7 @@
 				<include name="${curdir}/updater/*.cs"/>
 				<include name="${curdir}/_tmp/*.cs"/>
 				<include name="${curdir}/mia_conv/miaExitCode.cs"/>
-				<include name="${curdir}/rabnet/gui/classes/RabnetConfig.cs"/>
+				<include name="${curdir}/rabnet/gui/classes/RabnetConfig/*.cs"/>
 			</sources>
 			<resources>
 				<include name="${curdir}/updater/sql/*.sql"/>

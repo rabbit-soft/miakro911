@@ -128,10 +128,16 @@ namespace pEngine
         public string Path;
         public string md5;
         public string Version;
+        
         [XmlRpcMissingMapping(MappingAction.Ignore)]
         public string PathName
         {
             get { return Path + Name; }
         }
+
+        [XmlRpcMissingMapping(MappingAction.Ignore)]
+        public string LocalFilePath;
+        [XmlRpcMissingMapping(MappingAction.Ignore)]
+        public string LocalFileMD5;
     }
 }
