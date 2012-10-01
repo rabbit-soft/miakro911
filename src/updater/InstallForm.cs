@@ -165,57 +165,12 @@ namespace updater
         {
             Program.RNC.LoadDataSources();
             Program.RNC.SaveDataSource(System.Guid.NewGuid().ToString(), tbName.Text, tbHost.Text, tbDb.Text, tbUser.Text, tbPwd.Text);
-            Program.RNC.SaveDataSources();
-            /*try
-            {
-                XmlElement dsRabDump = _xmlRabDump.CreateElement("db");
-                dsRabDump.AppendChild(_xmlRabDump.CreateElement("name")).AppendChild(_xmlRabDump.CreateTextNode(tbName.Text));
-                dsRabDump.AppendChild(_xmlRabDump.CreateElement("host")).AppendChild(_xmlRabDump.CreateTextNode(tbHost.Text));
-                dsRabDump.AppendChild(_xmlRabDump.CreateElement("db")).AppendChild(_xmlRabDump.CreateTextNode(tbDb.Text));
-                dsRabDump.AppendChild(_xmlRabDump.CreateElement("user")).AppendChild(_xmlRabDump.CreateTextNode(tbUser.Text));
-                dsRabDump.AppendChild(_xmlRabDump.CreateElement("password")).AppendChild(_xmlRabDump.CreateTextNode(tbPwd.Text));
-                _optsRabDump.AppendChild(dsRabDump);
-                _xmlRabDump.Save(FilenameRabDump);
-            }
-            catch 
-            {
-            }
-
-            try
-            {
-                XmlElement dsRabNet = _xmlRabNet.CreateElement("dataSource");
-
-                XmlElement dsRabNetDS = null;
-
-                foreach (XmlNode n in _optsRabNet.ChildNodes)
-                {
-                    if (n.Name == "rabnetds")
-                    {
-                        dsRabNetDS = (XmlElement)n;
-                    }
-                }
-                if (dsRabNetDS==null)
-                {
-                    dsRabNetDS = _xmlRabNet.CreateElement("rabnetds");
-                    _optsRabNet.AppendChild(dsRabNetDS);
-                }
-
-                dsRabNet.Attributes.Append(_xmlRabNet.CreateAttribute("default")).Value = "1";
-                dsRabNet.Attributes.Append(_xmlRabNet.CreateAttribute("name")).Value = tbName.Text;
-                dsRabNet.Attributes.Append(_xmlRabNet.CreateAttribute("type")).Value = "db.mysql";
-                String param = "host=" + tbHost.Text + ";database=" + tbDb.Text + ";uid=" + tbUser.Text + ";pwd=" + tbPwd.Text + ";charset=utf8";
-                dsRabNet.Attributes.Append(_xmlRabNet.CreateAttribute("param")).Value = param;
-                dsRabNetDS.AppendChild(dsRabNet);
-                _xmlRabNet.Save(FilenameRabNet);
-            }
-            catch
-            {
-            }*/
+            Program.RNC.SaveDataSources();          
 
             Close();
         }
 
-        private void RunMia(String prm)
+        private void RunMia(String prm) //в RabDump есть аналогичная функция
         {
             String prms = "\"" + prm + "\" " + tbHost.Text + ';' + tbDb.Text + ';' + tbUser.Text + ';' + tbPwd.Text + ';' + tbRoot.Text + ';' + tbRPwd.Text;
             prms += " зоотехник;";

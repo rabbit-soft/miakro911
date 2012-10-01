@@ -22,8 +22,8 @@ CREATE  TABLE `rab_vac` (
 
 SET @end_vac = (SELECT o_value FROM Options WHERE o_subname='vaccine_time');
 SET @v_age = (SELECT o_value FROM Options WHERE o_subname='vacc');
-INSERT INTO vaccines(v_id,v_name,v_duration,v_age,v_zootech) VALUES(1,'Прививка',@end_vac,@v_age,1);
-INSERT INTO rab_vac(r_id,v_id,date) (SELECT r_id,1,r_vaccine_end - INTERVAL @end_vac day from rabbits);
+#INSERT INTO vaccines(v_id,v_name,v_duration,v_age,v_zootech) VALUES(1,'Прививка',@end_vac,@v_age,1);
+#INSERT INTO rab_vac(r_id,v_id,date) (SELECT r_id,1,r_vaccine_end - INTERVAL @end_vac day from rabbits);
 
 
 ALTER TABLE rabbits DROP COLUMN `r_vaccine_end` ;
