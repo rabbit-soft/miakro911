@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 
 <project name="rabnet" default="full_build" basedir=".">
 	<description>rabnet project makefile</description>
@@ -470,12 +470,12 @@
 		<exec program="${obfuscator}"-->
 			<arg value="${dir_bin}/updater.exe" />
 		</exec>
-		<exec program="${obfuscator}">
-			<arg value="${root_bin}/demo/bin/rabnet.exe" />
+		<exec program="${obfuscator}">			
 			<arg value="${root_bin}/demo/bin/mia_conv.exe" />
 			<arg value="${root_bin}/demo/bin/db.Interface.dll" />			
 			<arg value="${root_bin}/demo/bin/db.mysql.dll" />
-			<arg value="${root_bin}/demo/bin/engine.dll" />							
+			<arg value="${root_bin}/demo/bin/engine.dll" />	
+			<arg value="${root_bin}/demo/bin/rabnet.exe" />						
 		</exec>
 		<!--exec program="${grd_ob}">
 			<arg value="/INIT" />
