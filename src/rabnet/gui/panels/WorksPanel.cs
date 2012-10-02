@@ -54,6 +54,7 @@ namespace rabnet
                 //f["vactime"] = Engine.opt().getOption(Options.OPT_ID.VACCINE_TIME);
                 f[Filters.BOYS_BY_ONE] = Engine.opt().getOption(Options.OPT_ID.BOYS_BY_ONE);
                 f[Filters.VACC_MOTH] = Engine.opt().getBoolOption(Options.OPT_ID.VACC_MOTHER)?"1":"0";
+                
                 f[Filters.VACC_SHOW] = "";
                 foreach (CatalogData.Row row in Engine.db().getVaccines().Get().Rows)
                 {
@@ -61,6 +62,7 @@ namespace rabnet
                         f[Filters.VACC_SHOW] += String.Format("{0:d},", row.key);
                 }
                 f[Filters.VACC_SHOW] = f[Filters.VACC_SHOW].TrimEnd(',');
+
                 itm = -1;
                 if (lvZooTech.SelectedItems.Count == 1)
                     itm = lvZooTech.SelectedItems[0].Index;

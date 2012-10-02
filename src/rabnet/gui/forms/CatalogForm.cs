@@ -451,7 +451,6 @@ namespace rabnet
                 col2 = getIntVal(editRow.Cells[D4].Value);
                 if (editRow.Cells[D5].Value != null)
                     col3 = editRow.Cells[D5].Value.ToString();
-
                 editRow.Cells[_hiddenId].Value = /*Engine.db().getBreeds().*/ _catalog.Add(col0, col1, col2,col3);
                 editRow.Cells[D1].Value = editRow.Cells[_hiddenId].Value;
                 editRow.Cells[D3].Value = 0;
@@ -545,7 +544,7 @@ namespace rabnet
             }
         }
 
-        private string getIntVal(object cellValue)
+        protected string getIntVal(object cellValue)
         {
             int intVal = 0;
             string result = cellValue == null ? "0" : cellValue.ToString();
