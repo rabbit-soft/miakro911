@@ -35,7 +35,7 @@ namespace updater
 #if !TFPF
             String flRabDump = Path.GetDirectoryName(Application.ExecutablePath) + @"\..\RabDump\rabdump.exe.config";
             String flRabNet = Path.GetDirectoryName(Application.ExecutablePath) + @"\..\RabNet\rabnet.exe.config";
-#else
+#else           
             String flRabDump = @"C:\Program Files\Miakro911\RabDump\rabdump.exe.config";
             String flRabNet = @"C:\Program Files\Miakro911\RabNet\rabnet.exe.config";
 #endif

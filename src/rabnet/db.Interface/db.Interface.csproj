@@ -66,7 +66,6 @@
     <Compile Include="LogList.cs" />
     <Compile Include="Meal.cs" />
     <Compile Include="Names.cs" />
-    <Compile Include="Properties\VerInfo.cs" />
     <Compile Include="RabVac.cs" />
     <Compile Include="Report.cs" />
     <Compile Include="Users.cs" />
