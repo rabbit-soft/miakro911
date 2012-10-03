@@ -109,6 +109,7 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
 	File ..\..\..\bin\@bin_type@\bin\Interop.Microsoft.Office.Core.dll
     File ..\..\..\bin\@bin_type@\bin\GrdAPI32.DLL
     File ..\..\..\bin\@bin_type@\bin\GrdAPI64.DLL
+	File ..\..\..\bin\@bin_type@\bin\gnclient.ini
 	File ..\..\..\bin\@bin_type@\bin\CAS.DLL
     SetOutPath $INSTDIR\bin\reports
     File ..\..\..\bin\@bin_type@\bin\reports\age.rdl
@@ -163,6 +164,7 @@ Section  $(SEC_RabDump_NAME) SEC_RabDump
 	File ..\..\..\bin\@bin_type@\bin\engine.dll
 	File ..\..\..\bin\@bin_type@\bin\db.Interface.dll
 	File ..\..\..\bin\@bin_type@\bin\db.mysql.dll
+	File ..\..\..\bin\@bin_type@\bin\gnclient.ini
 #    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage32.dll
 #    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage64.dll
 #    File ..\..\..\bin\@bin_type@\key.dll
