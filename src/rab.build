@@ -235,7 +235,7 @@
 
 	<target name="compile" depends="miaconv,updater,rabnet,rabdump,plugins"/>
 
-	<target name="compile_demo" depends="miaconv,rabnet_demo">
+	<target name="compile_demo" depends="miaconv,updater,rabnet_demo">
 		<!--xmlpoke file="${root_bin}/demo/RabNet/rabnet.exe.config" xpath="/configuration/log4net/root/level/@value" value="ERROR" /-->
 	</target>
 
@@ -501,6 +501,7 @@
 			<arg value="/RC=1" />
 			<arg value="/ATR=2" />
 			<arg value="/GS3S" />
+			<arg value="/GN3S" />
 			<arg value="/UN=1" />
 			<arg value="/SIGN" />
 			<!--arg value="/MAP=${root_bin}/protected/RabNet/rabnet.map" /-->

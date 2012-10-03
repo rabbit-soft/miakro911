@@ -88,22 +88,22 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
 
     Call CloseRabNet
 
-    SetOutPath $INSTDIR\RabNet
+    SetOutPath $INSTDIR\bin
     SetOverwrite on
-    File ..\..\..\bin\@bin_type@\RabNet\rabnet.exe
-    File ..\..\..\bin\@bin_type@\RabNet\db.mysql.dll
-    File ..\..\..\bin\@bin_type@\RabNet\engine.dll
+    File ..\..\..\bin\@bin_type@\bin\rabnet.exe
+    File ..\..\..\bin\@bin_type@\bin\db.mysql.dll
+    File ..\..\..\bin\@bin_type@\bin\engine.dll
 #    File ..\..\..\bin\@bin_type@\gui_genetics.dll
-    File ..\..\..\bin\@bin_type@\RabNet\MySql.Data.dll
-    File ..\..\..\bin\@bin_type@\RabNet\Pickers.dll
-    File ..\..\..\bin\@bin_type@\RabNet\rabHelp.chm
-    File ..\..\..\bin\@bin_type@\RabNet\log4net.dll
-    SetOutPath $INSTDIR\RabNet
+    File ..\..\..\bin\@bin_type@\bin\MySql.Data.dll
+    File ..\..\..\bin\@bin_type@\bin\Pickers.dll
+    File ..\..\..\bin\@bin_type@\bin\rabHelp.chm
+    File ..\..\..\bin\@bin_type@\bin\log4net.dll
+    SetOutPath $INSTDIR\bin
 #    SetOverwrite off
-    File ..\..\..\bin\@bin_type@\RabNet\rabnet.exe.config
+    File ..\..\..\bin\@bin_type@\bin\rabnet.exe.config
     SetOutPath $SMPROGRAMS\$StartMenuGroup
-    CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Prog_NAME).lnk $INSTDIR\RabNet\rabnet.exe
-    CreateShortcut $DESKTOP\$(SM_Prog_NAME).lnk $INSTDIR\RabNet\rabnet.exe
+    CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Prog_NAME).lnk $INSTDIR\bin\rabnet.exe
+    CreateShortcut $DESKTOP\$(SM_Prog_NAME).lnk $INSTDIR\bin\rabnet.exe
 #    WriteRegStr HKEY_CURRENT_USER Software\hzkakzvat\rabnet Path "C:\Program Files\7-Zip"
     WriteRegStr HKLM "${REGKEY}\Components" "rabnet" 1
 
@@ -112,8 +112,8 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     ######## Temporary fix of bug M0000308
     ExpandEnvStrings $2 "%USERNAME%" 
     
-    ExecWait 'cacls "$INSTDIR\RabNet" /E /G "$2":F'
-    ExecWait 'cacls "$INSTDIR\RabNet\rabnet.exe.config" /E /G "$2":F'
+    ExecWait 'cacls "$INSTDIR\bin" /E /G "$2":F'
+    ExecWait 'cacls "$INSTDIR\bin\rabnet.exe.config" /E /G "$2":F'
     ######## end
 
 SectionEnd
@@ -140,14 +140,14 @@ Section -com_comps SEC_Common
 #    SetOutPath $INSTDIR
     SetOverwrite on
 #    File ..\..\..\bin\@bin_type@\log4net.dll
-    SetOutPath $INSTDIR\Tools
-    File ..\..\..\bin\@bin_type@\Tools\mia_conv.exe
-	File ..\..\..\bin\@bin_type@\Tools\mia_conv.exe.config
-    File ..\..\..\bin\@bin_type@\Tools\MySql.Data.dll
-    File ..\..\..\bin\tools\updater.exe
-	File ..\..\..\bin\tools\log4net.dll
-    CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Conv_NAME).lnk $INSTDIR\Tools\mia_conv.exe
-    CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Up_NAME).lnk $INSTDIR\Tools\updater.exe
+    SetOutPath $INSTDIR\bin
+    File ..\..\..\bin\@bin_type@\bin\mia_conv.exe
+	File ..\..\..\bin\@bin_type@\bin\mia_conv.exe.config
+    File ..\..\..\bin\@bin_type@\bin\MySql.Data.dll
+    File ..\..\..\bin\@bin_type@\bin\updater.exe
+	File ..\..\..\bin\@bin_type@\bin\log4net.dll
+    CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Conv_NAME).lnk $INSTDIR\bin\mia_conv.exe
+    CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Up_NAME).lnk $INSTDIR\bin\updater.exe
     WriteRegStr HKLM "${REGKEY}\Components" com_comps 1
 SectionEnd
 
@@ -258,10 +258,10 @@ done${SECTION_ID}:
 
 # Uninstaller sections
 Section /o -un.com_comps UNSEC_Common
-    Delete /REBOOTOK $INSTDIR\Tools\mia_conv.exe
-	Delete /REBOOTOK $INSTDIR\Tools\mia_conv.exe.config
-    Delete /REBOOTOK $INSTDIR\Tools\MySql.Data.dll
-    RmDir /REBOOTOK /r $INSTDIR\Tools
+    Delete /REBOOTOK $INSTDIR\bin\mia_conv.exe
+	Delete /REBOOTOK $INSTDIR\bin\mia_conv.exe.config
+    Delete /REBOOTOK $INSTDIR\bin\MySql.Data.dll
+    RmDir /REBOOTOK /r $INSTDIR\bin
 #    Delete /REBOOTOK $INSTDIR\Guardant\GrdTRU.exe
 #    Delete /REBOOTOK $INSTDIR\mia_conv.exe
 #   Delete /REBOOTOK $INSTDIR\log4net.dll
@@ -295,17 +295,17 @@ Section /o "-un.rabnet" UNSEC_Rabnet
 ;    Delete /REBOOTOK $INSTDIR\reports\age.rdl
 
 
-    Delete /REBOOTOK $INSTDIR\RabNet\rabnet.exe
-	Delete /REBOOTOK $INSTDIR\RabNet\rabnet.exe.config
-    Delete /REBOOTOK $INSTDIR\RabNet\db.mysql.dll
-    Delete /REBOOTOK $INSTDIR\RabNet\engine.dll
-    Delete /REBOOTOK $INSTDIR\RabNet\MySql.Data.dll
-    Delete /REBOOTOK $INSTDIR\RabNet\Pickers.dll
-    Delete /REBOOTOK $INSTDIR\RabNet\rabHelp.chm
-    Delete /REBOOTOK $INSTDIR\RabNet\log4net.dll
+    Delete /REBOOTOK $INSTDIR\bin\rabnet.exe
+	Delete /REBOOTOK $INSTDIR\bin\rabnet.exe.config
+    Delete /REBOOTOK $INSTDIR\bin\db.mysql.dll
+    Delete /REBOOTOK $INSTDIR\bin\engine.dll
+    Delete /REBOOTOK $INSTDIR\bin\MySql.Data.dll
+    Delete /REBOOTOK $INSTDIR\bin\Pickers.dll
+    Delete /REBOOTOK $INSTDIR\bin\rabHelp.chm
+    Delete /REBOOTOK $INSTDIR\bin\log4net.dll
 
-    RmDir /REBOOTOK /r $INSTDIR\RabNet\upd
-	RmDir /REBOOTOK /r $INSTDIR\RabNet
+    RmDir /REBOOTOK /r $INSTDIR\bin\upd
+	RmDir /REBOOTOK /r $INSTDIR\bin
 
     DeleteRegValue HKLM "${REGKEY}\Components" "rabnet"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(SM_Prog_NAME).lnk"
@@ -432,7 +432,7 @@ FunctionEnd
 # Section Descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC_Rabnet} $(SEC_Rabnet_DESC)
-!insertmacro MUI_DESCRIPTION_TEXT ${SEC_RabDump} $(SEC_RabDump_DESC)
+#!insertmacro MUI_DESCRIPTION_TEXT ${SEC_RabDump} $(SEC_RabDump_DESC)
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC_Mysql} $(SEC_Mysql_DESC)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
@@ -531,7 +531,7 @@ VIProductVersion "@AppVer@"
  ; output, top of stack (replaces, with e.g. whatever)
  ; modifies no other variables.
  
-Function GetParameters
+/*Function GetParameters
  
   Push $R0
   Push $R1
@@ -566,7 +566,7 @@ Function GetParameters
   Pop $R1
   Exch $R0
  
-FunctionEnd
+FunctionEnd*/
 
 
 
@@ -600,7 +600,7 @@ FunctionEnd
 ;$R4 - result from StrStr calls
 ;$R5 - search for ' ' or '"'
  
-Function GetParameterValue
+/* Function GetParameterValue
   Exch $R0  ; get the top of the stack(default parameter) into R0
   Exch      ; exchange the top of the stack(default) with
             ; the second in the stack(parameter to search for)
@@ -678,7 +678,7 @@ done:
   Pop $R2
   Pop $R1
   Exch $R0 ; put the value in $R0 at the top of the stack
-FunctionEnd
+FunctionEnd */
 
 
 !define StrStr "!insertmacro StrStr"
@@ -690,15 +690,15 @@ FunctionEnd
   Pop `${ResultVar}`
 !macroend
  
-Function StrStr
-/*After this point:
-  ------------------------------------------
-  $R0 = SubString (input)
-  $R1 = String (input)
-  $R2 = SubStringLen (temp)
-  $R3 = StrLen (temp)
-  $R4 = StartCharPos (temp)
-  $R5 = TempStr (temp)*/
+/*Function StrStr
+;After this point:
+;  ------------------------------------------
+;  $R0 = SubString (input)
+;  $R1 = String (input)
+;  $R2 = SubStringLen (temp)
+;  $R3 = StrLen (temp)
+;  $R4 = StartCharPos (temp)
+;  $R5 = TempStr (temp)
  
   ;Get input from user
   Exch $R0
@@ -729,9 +729,9 @@ Function StrStr
     Goto loop
   done:
  
-/*After this point:
-  ------------------------------------------
-  $R0 = ResultVar (output)*/
+;  After this point:
+;  ------------------------------------------
+;  $R0 = ResultVar (output)
  
   ;Remove part before "SubString" on "String" (if there has one)
   StrCpy $R0 $R1 `` $R4
@@ -743,5 +743,5 @@ Function StrStr
   Pop $R2
   Pop $R1
   Exch $R0
-FunctionEnd
+FunctionEnd*/
 
