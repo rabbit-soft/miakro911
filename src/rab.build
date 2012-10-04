@@ -99,9 +99,12 @@
 	<property name="mysqlInstallerDest" value="${installersPath}${slash}${mysqlInstaller}"/>
 	<property name="MSIInstallerDest" value="${installersPath}${slash}${MSIInstaller}"/>
 
-	<property name="NSIS" value="${NSISPath}\makensis.exe"/>
-
+	<property name="NSIS" value="${NSISPath}\makensis.exe"/>	
 	<property name="nant.settings.currentframework" value="net-2.0" />
+	
+	<property name="help_setup" value="Руководство по установке программы Miakro 9.11.docx" />
+	<property name="help_rcdb" value="Создание Резервных Копий Базы Данных.docx" />
+	<property name="help_gtru" value="Руководство по обновлению Ключей Защиты.docx" />
 
 	<!-- TARGETS !-->
 
@@ -673,13 +676,20 @@
 		<property name="bin_dir" value="${root_bin}\protected"/>
 		<property name="bin_type" value="protected"/>
 		<property name="setup_suff" value=""/>
+		<copy file="${curdir}/../help/${help_rcdb}" tofile="${root_bin}/miakro_911_${bin_type}/${help_rcdb}"/>			
+		<copy file="${curdir}/../help/${help_gtru}" tofile="${root_bin}/miakro_911_${bin_type}/${help_gtru}"/>
 		<call target="nsis_bld"/>
+		
 		<property name="dist_type" value="rabnet_protected"/>
 		<property name="bin_dir" value="${root_bin}\demo"/>
 		<property name="bin_type" value="demo"/>
 		<property name="build_no_up" value="1"/>
 		<property name="setup_suff" value="_demo"/>
 		<call target="nsis_bld"/>
+		
+		<!-- удаляем временные файлы -->
+		<delete file="${curdir}/distrib/distrib_nsis/setup_bld.nsi"/>
+		<delete file="${curdir}/distrib/distrib_nsis/setup.exe"/>
 	</target>
 
 	<target name="clean_mark">
@@ -705,11 +715,7 @@
 		<mkdir dir="${root_bin}/miakro_911_${bin_type}/mysql"/>
 		<copy file="${dotnetInstallerSource}" tofile="${root_bin}/miakro_911_${bin_type}/dotnetfx20/${dotnetInstallerDest}"/>
 		<copy file="${mysqlInstallerSource}" tofile="${root_bin}/miakro_911_${bin_type}/mysql/${mysqlInstallerDest}"/>
-		<copy file="${curdir}/../help/Руководство по установке программы Miakro 9.11.docx" tofile="${root_bin}/miakro_911_${bin_type}/Руководство по установке программы Miakro 9.11.docx"/>
-		<if test="${bin_type=='protected'}">
-			<copy file="${curdir}/../help/Создание Резервных Копий Базы Данных.docx" tofile="${root_bin}/miakro_911_${bin_type}/Создание Резервных Копий Базы Данных.docx"/>			
-			<copy file="${curdir}/../help/Руководство по обновлению Ключей Защиты.docx" tofile="${root_bin}/miakro_911_${bin_type}/Руководство по обновлению Ключей Защиты.docx"/>
-		</if>
+		<copy file="${curdir}/../help/${help_setup}" tofile="${root_bin}/miakro_911_${bin_type}/${help_setup}"/>
 		<!--property name="dist_type" value="rabnet"/>
 		<property name="bin_dir" value="${root_bin}\release"/>
 		<property name="minver" value="1"/>
@@ -732,7 +738,6 @@
 					<token key="Copys" value="(C) ${companyname} 2010" />
 					<token key="Copys_en" value="(C) ${companyname_en} 2010" />
 					<token key="bin_type" value="${bin_type}" />
-
 					<!--token key="Comments" value="" /-->
 				</replacetokens>
 				<!--tabstospaces /-->
@@ -758,7 +763,7 @@
 			<xmlpoke file="${root_bin}/miakro_911_${bin_type}_up/updates.xml" xpath="/update/bundle/file[@name = 'setup.exe']/@md5" value="${distr.md5}" />
 			<xmlpoke file="${root_bin}/miakro_911_${bin_type}_up/updates.xml" xpath="/update/bundle/file[@name = 'setup.exe']/@uri" value="http://update.rabbit-soft.ru/rab/setup.${fullver}.exe" />
 			<xmlpoke file="${root_bin}/miakro_911_${bin_type}_up/updates.xml" xpath="/update/bundle/version/@number" value="${fullver}" />
-		</if>
+		</if>		
 	</target>
 
 	

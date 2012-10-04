@@ -101,16 +101,18 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     File ..\..\..\bin\@bin_type@\bin\RdlEngine.dll
     File ..\..\..\bin\@bin_type@\bin\log4net.dll
     File ..\..\..\bin\@bin_type@\bin\RdlViewer.dll
-    File ..\..\..\bin\@bin_type@\bin\CodeStorage32.dll
-    File ..\..\..\bin\@bin_type@\bin\CodeStorage64.dll
-    File ..\..\..\bin\@bin_type@\bin\GuardantDotNetApi.dll
+
 	File ..\..\..\bin\@bin_type@\bin\changeLog.txt
 	File ..\..\..\bin\@bin_type@\bin\Interop.Microsoft.Office.Interop.Excel.dll
 	File ..\..\..\bin\@bin_type@\bin\Interop.Microsoft.Office.Core.dll
+	File ..\..\..\bin\@bin_type@\bin\CAS.DLL
     File ..\..\..\bin\@bin_type@\bin\GrdAPI32.DLL
     File ..\..\..\bin\@bin_type@\bin\GrdAPI64.DLL
+	File ..\..\..\bin\@bin_type@\bin\CodeStorage32.dll
+    File ..\..\..\bin\@bin_type@\bin\CodeStorage64.dll
+    File ..\..\..\bin\@bin_type@\bin\GuardantDotNetApi.dll
 	File ..\..\..\bin\@bin_type@\bin\gnclient.ini
-	File ..\..\..\bin\@bin_type@\bin\CAS.DLL
+	
     SetOutPath $INSTDIR\bin\reports
     File ..\..\..\bin\@bin_type@\bin\reports\age.rdl
     File ..\..\..\bin\@bin_type@\bin\reports\breeds.rdl
@@ -156,15 +158,18 @@ Section  $(SEC_RabDump_NAME) SEC_RabDump
     SetOverwrite on
 	File ..\..\..\bin\@bin_type@\bin\rabdump.exe
 	File ..\..\..\bin\@bin_type@\bin\rabdump.exe.config
-	File ..\..\..\bin\@bin_type@\bin\ccxmlrpc.dll
-    File ..\..\..\bin\@bin_type@\bin\GrdAPI32.DLL
-    File ..\..\..\bin\@bin_type@\bin\GrdAPI64.DLL   
+	File ..\..\..\bin\@bin_type@\bin\ccxmlrpc.dll    	
     File ..\..\..\bin\@bin_type@\bin\GuardantDotNetApi.dll
     File ..\..\..\bin\@bin_type@\bin\log4net.dll	
 	File ..\..\..\bin\@bin_type@\bin\engine.dll
 	File ..\..\..\bin\@bin_type@\bin\db.Interface.dll
 	File ..\..\..\bin\@bin_type@\bin\db.mysql.dll
+	
 	File ..\..\..\bin\@bin_type@\bin\gnclient.ini
+	File ..\..\..\bin\@bin_type@\bin\GrdAPI32.DLL
+    File ..\..\..\bin\@bin_type@\bin\GrdAPI64.DLL 
+	File ..\..\..\bin\@bin_type@\bin\CodeStorage32.dll
+    File ..\..\..\bin\@bin_type@\bin\CodeStorage64.dll
 #    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage32.dll
 #    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage64.dll
 #    File ..\..\..\bin\@bin_type@\key.dll
