@@ -92,6 +92,7 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     SetOverwrite on
     File ..\..\..\bin\@bin_type@\bin\rabnet.exe
     File ..\..\..\bin\@bin_type@\bin\db.mysql.dll
+	File ..\..\..\bin\@bin_type@\bin\db.Interface.dll
     File ..\..\..\bin\@bin_type@\bin\engine.dll
 #    File ..\..\..\bin\@bin_type@\gui_genetics.dll
     File ..\..\..\bin\@bin_type@\bin\MySql.Data.dll
@@ -255,7 +256,6 @@ done${SECTION_ID}:
     Pop $R0
 !macroend
 
-
 # Uninstaller sections
 Section /o -un.com_comps UNSEC_Common
     Delete /REBOOTOK $INSTDIR\bin\mia_conv.exe
@@ -298,6 +298,7 @@ Section /o "-un.rabnet" UNSEC_Rabnet
     Delete /REBOOTOK $INSTDIR\bin\rabnet.exe
 	Delete /REBOOTOK $INSTDIR\bin\rabnet.exe.config
     Delete /REBOOTOK $INSTDIR\bin\db.mysql.dll
+	Delete /REBOOTOK $INSTDIR\bin\db.Interface.dll
     Delete /REBOOTOK $INSTDIR\bin\engine.dll
     Delete /REBOOTOK $INSTDIR\bin\MySql.Data.dll
     Delete /REBOOTOK $INSTDIR\bin\Pickers.dll
@@ -419,7 +420,6 @@ Function CloseRabNet
     Pop $5
 
 FunctionEnd
-
 
 # Uninstaller functions
 Function un.onInit
