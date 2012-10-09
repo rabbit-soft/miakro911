@@ -34,8 +34,8 @@ namespace mia_conv
         
         public int Rabbyname(int nid)
         {
-            C.CommandText="SELECT r_id FROM rabbits WHERE r_name="+nid.ToString()+";";
-            MySqlDataReader rd = C.ExecuteReader();
+            _cmd.CommandText="SELECT r_id FROM rabbits WHERE r_name="+nid.ToString()+";";
+            MySqlDataReader rd = _cmd.ExecuteReader();
             int res = 0;
             if (rd.Read())
                 res = rd.GetInt32(0);
@@ -46,8 +46,8 @@ namespace mia_conv
         public int GetTier(int farm, int level)
         {
 
-            C.CommandText = "SELECT " + (level == 1 ? "m_lower" : "m_upper") + " FROM minifarms WHERE m_id=" + farm.ToString() + ";";
-            MySqlDataReader rd = C.ExecuteReader();
+            _cmd.CommandText = "SELECT " + (level == 1 ? "m_lower" : "m_upper") + " FROM minifarms WHERE m_id=" + farm.ToString() + ";";
+            MySqlDataReader rd = _cmd.ExecuteReader();
             rd.Read();
             int res = rd.GetInt32(0);
             rd.Close();
@@ -56,15 +56,15 @@ namespace mia_conv
 
         public void Settieruser(int tier,int busy,int rabbit)
         {
-            C.CommandText="UPDATE tiers SET t_busy"+(busy+1).ToString()+"="+rabbit.ToString()+
+            _cmd.CommandText="UPDATE tiers SET t_busy"+(busy+1).ToString()+"="+rabbit.ToString()+
                 " WHERE t_id="+tier.ToString()+";";
-            C.ExecuteNonQuery();
+            _cmd.ExecuteNonQuery();
         }
 
         public void Setnameuser(int nameid,int rabbit)
         {
-            C.CommandText="UPDATE names SET n_use="+rabbit.ToString()+" WHERE n_id="+nameid.ToString()+";";
-            C.ExecuteNonQuery();
+            _cmd.CommandText="UPDATE names SET n_use="+rabbit.ToString()+" WHERE n_id="+nameid.ToString()+";";
+            _cmd.ExecuteNonQuery();
         }
 
         public int MakeGenesis(List<ushort> gen)
@@ -75,8 +75,8 @@ namespace mia_conv
                 s += gen[i].ToString();
                 if (i < gen.Count - 1) s += " ";
             }
-            C.CommandText = "SELECT g_id FROM genesis WHERE g_key=MD5('"+s+"');";
-            MySqlDataReader rd = C.ExecuteReader();
+            _cmd.CommandText = "SELECT g_id FROM genesis WHERE g_key=MD5('"+s+"');";
+            MySqlDataReader rd = _cmd.ExecuteReader();
             int res = 0;
             if (rd.HasRows)
             {
@@ -87,16 +87,16 @@ namespace mia_conv
             else
             {
                 rd.Close();
-                C.CommandText = "INSERT INTO genesis(g_notes) VALUES('');";
-                C.ExecuteNonQuery();
-                res = (int)C.LastInsertedId;
+                _cmd.CommandText = "INSERT INTO genesis(g_notes) VALUES('');";
+                _cmd.ExecuteNonQuery();
+                res = (int)_cmd.LastInsertedId;
                 foreach (ushort g in gen)
                 {
-                    C.CommandText = "INSERT INTO genoms(g_id,g_genom) VALUES("+res.ToString()+","+g.ToString()+");";
-                    C.ExecuteNonQuery();
+                    _cmd.CommandText = "INSERT INTO genoms(g_id,g_genom) VALUES("+res.ToString()+","+g.ToString()+");";
+                    _cmd.ExecuteNonQuery();
                 }
-                C.CommandText = "UPDATE genesis SET g_key=(SELECT MD5(GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ')) FROM genoms WHERE g_id="+res.ToString()+") WHERE g_id=" + res.ToString() + ";";
-                C.ExecuteNonQuery();
+                _cmd.CommandText = "UPDATE genesis SET g_key=(SELECT MD5(GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ')) FROM genoms WHERE g_id="+res.ToString()+") WHERE g_id=" + res.ToString() + ";";
+                _cmd.ExecuteNonQuery();
             }
             return res;
         }
@@ -104,8 +104,8 @@ namespace mia_conv
         public int MakeWorker(String wname)
         {
             if (wname == "") return 0;
-            C.CommandText = "SELECT w_id FROM workers WHERE w_name='" + wname + "';";
-            MySqlDataReader rd = C.ExecuteReader();
+            _cmd.CommandText = "SELECT w_id FROM workers WHERE w_name='" + wname + "';";
+            MySqlDataReader rd = _cmd.ExecuteReader();
             int res=0;
             if (rd.HasRows)
             {
@@ -116,42 +116,42 @@ namespace mia_conv
             else
             {
                 rd.Close();
-                C.CommandText = "INSERT INTO workers(w_name) VALUES('"+wname+"');";
-                C.ExecuteNonQuery();
-                res = (int)C.LastInsertedId;
+                _cmd.CommandText = "INSERT INTO workers(w_name) VALUES('"+wname+"');";
+                _cmd.ExecuteNonQuery();
+                res = (int)_cmd.LastInsertedId;
             }
             return res;
         }
 
         public void FillRabWeight(Rabbit r,int crab)
         {
-            C.CommandText = "ALTER TABLE `weights` DISABLE KEYS;";
-            C.ExecuteNonQuery();
+            _cmd.CommandText = "ALTER TABLE `weights` DISABLE KEYS;";
+            _cmd.ExecuteNonQuery();
             for (int i = 0; i < r.weights.Count; i++)
             {
                 ushort weight=(ushort)(r.weights[i] & 0xFFFF);
                 ushort dt=(ushort)((r.weights[i] >> 16)& 0xFFFF);
                 DateTime sdt = (new DateTime(1899, 12, 30)).AddDays(dt);
-                C.CommandText = String.Format("INSERT INTO weights(w_rabid,w_date,w_weight) VALUES({0:d},{1:s},{2:d});",crab,Convdt(sdt),weight);
-                C.ExecuteNonQuery();
+                _cmd.CommandText = String.Format("INSERT INTO weights(w_rabid,w_date,w_weight) VALUES({0:d},{1:s},{2:d});",crab,Convdt(sdt),weight);
+                _cmd.ExecuteNonQuery();
             }
-            C.CommandText = "ALTER TABLE `weights` ENABLE KEYS;";
-            C.ExecuteNonQuery();
+            _cmd.CommandText = "ALTER TABLE `weights` ENABLE KEYS;";
+            _cmd.ExecuteNonQuery();
         }
 
         private int FindDead(String name,int breed,List<ushort> genesis)
         {
-            C.CommandText = "SELECT r_id FROM dead,names WHERE r_name=n_id AND n_name='"+name+"';";
-            MySqlDataReader rd = C.ExecuteReader();
+            _cmd.CommandText = "SELECT r_id FROM dead,names WHERE r_name=n_id AND n_name='"+name+"';";
+            MySqlDataReader rd = _cmd.ExecuteReader();
             int res = 0;
             if (rd.Read())
             {
                 res = rd.GetInt32(0);
                 rd.Close();
                 int gen=MakeGenesis(genesis);
-                C.CommandText = String.Format("UPDATE dead SET r_breed={0:d},r_genesis={1:d} WHERE r_id={2:d};",
+                _cmd.CommandText = String.Format("UPDATE dead SET r_breed={0:d},r_genesis={1:d} WHERE r_id={2:d};",
                     Findbreed(breed), gen, res);
-                C.ExecuteNonQuery();
+                _cmd.ExecuteNonQuery();
             }
             else
                 rd.Close();
@@ -161,8 +161,8 @@ namespace mia_conv
 
         public void FillRabFuckers(Rabbit r, int crab,bool sukrol)
         {
-            C.CommandText = "ALTER TABLE `fucks` DISABLE KEYS;";
-            C.ExecuteNonQuery();
+            _cmd.CommandText = "ALTER TABLE `fucks` DISABLE KEYS;";
+            _cmd.ExecuteNonQuery();
             foreach (Fucker f in r.female.fuckers)
             {
                 if (f.fucks.value() > 0 || f.my_fuck_is_last.value()==1)
@@ -185,15 +185,15 @@ namespace mia_conv
                     String type = "vyazka";
                     if ((r.female.borns.value() == 0)||(r.female.borns.value()==1 && state!="sukrol") )
                         type = "sluchka";
-                    C.CommandText = String.Format(@"INSERT INTO fucks(f_rabid,f_partner,f_times,f_children,f_dead,f_state,f_last,f_type) 
+                    _cmd.CommandText = String.Format(@"INSERT INTO fucks(f_rabid,f_partner,f_times,f_children,f_dead,f_state,f_last,f_type) 
 VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d},'{7:d}');", 
                       crab, link, (int)f.fucks.value()+(sukrol?1:0),f.children.value(),dead,state,
                       f.my_fuck_is_last.value(),type);
-                    C.ExecuteNonQuery();
+                    _cmd.ExecuteNonQuery();
                 }
             }
-            C.CommandText = "ALTER TABLE `fucks` ENABLE KEYS;";
-            C.ExecuteNonQuery();
+            _cmd.CommandText = "ALTER TABLE `fucks` ENABLE KEYS;";
+            _cmd.ExecuteNonQuery();
             
         }
 
@@ -255,9 +255,9 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d},'{7:d}');",
                     edt, r.female.lost_babies.value(), r.female.overall_babies.value());//,  ,{5:d},{0:d}
                 //makeWorker(r.female.worker.value()));  //r.female.child_count.value(),
             }
-            C.CommandText = cmd + ") " + vals + ");";
-            C.ExecuteNonQuery();
-            int crab = (int)C.LastInsertedId;
+            _cmd.CommandText = cmd + ") " + vals + ");";
+            _cmd.ExecuteNonQuery();
+            int crab = (int)_cmd.LastInsertedId;
             r.notes.tag = crab;
             _curRabbit = crab + 1;
             if (dead)
@@ -276,16 +276,16 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d},'{7:d}');",
         public void NormalizeFuckers()
         {
             
-            C.CommandText = "UPDATE fucks SET f_partner=(SELECT n_use FROM names WHERE n_id=fucks.f_partner),f_dead=0 WHERE f_dead=1;";
-            C.ExecuteNonQuery();
-            C.CommandText = "UPDATE rabbits SET r_vaccine_end=NOW()+interval 365 day WHERE r_flags LIKE '__2__' OR r_flags LIKE '__3__';";
-            C.ExecuteNonQuery();
-            C.CommandText = "UPDATE rabbits SET r_vaccine_end=NOW() WHERE r_flags LIKE '__0__';";
-            C.ExecuteNonQuery();
-            C.CommandText = "UPDATE rabbits SET r_flags=CONCAT(SUBSTR(r_flags,1,1),SUBSTR(r_flags,2,1),'0',SUBSTR(r_flags,4,1),SUBSTR(r_flags,5,1)) where r_flags LIKE '__2__';";
-            C.ExecuteNonQuery();
-            C.CommandText = "UPDATE rabbits SET r_flags=CONCAT(SUBSTR(r_flags,1,1),SUBSTR(r_flags,2,1),'1',SUBSTR(r_flags,4,1),SUBSTR(r_flags,5,1)) where r_flags LIKE '__3__'";
-            C.ExecuteNonQuery();
+            _cmd.CommandText = "UPDATE fucks SET f_partner=(SELECT n_use FROM names WHERE n_id=fucks.f_partner),f_dead=0 WHERE f_dead=1;";
+            _cmd.ExecuteNonQuery();
+            _cmd.CommandText = "UPDATE rabbits SET r_vaccine_end=NOW()+interval 365 day WHERE r_flags LIKE '__2__' OR r_flags LIKE '__3__';";
+            _cmd.ExecuteNonQuery();
+            _cmd.CommandText = "UPDATE rabbits SET r_vaccine_end=NOW() WHERE r_flags LIKE '__0__';";
+            _cmd.ExecuteNonQuery();
+            _cmd.CommandText = "UPDATE rabbits SET r_flags=CONCAT(SUBSTR(r_flags,1,1),SUBSTR(r_flags,2,1),'0',SUBSTR(r_flags,4,1),SUBSTR(r_flags,5,1)) where r_flags LIKE '__2__';";
+            _cmd.ExecuteNonQuery();
+            _cmd.CommandText = "UPDATE rabbits SET r_flags=CONCAT(SUBSTR(r_flags,1,1),SUBSTR(r_flags,2,1),'1',SUBSTR(r_flags,4,1),SUBSTR(r_flags,5,1)) where r_flags LIKE '__3__'";
+            _cmd.ExecuteNonQuery();
             /*
             c.CommandText = "UPDATE rabbits SET r_mother=(SELECT COALESCE(n_use,0) FROM names WHERE n_id=rabbits.r_surname AND n_sex='female') WHERE r_mother=0;";
             c.ExecuteNonQuery();
@@ -305,31 +305,31 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d},'{7:d}');",
             Debug("fill rabbits");
             int cnt=Mia.Rabbits.rabbits.Count;
             int i=0;
-            C.CommandText = "ALTER TABLE `rabbits` DISABLE KEYS;";
-            C.ExecuteNonQuery();
+            _cmd.CommandText = "ALTER TABLE `rabbits` DISABLE KEYS;";
+            _cmd.ExecuteNonQuery();
             foreach (Rabbit r in Mia.Rabbits.rabbits)
             {
                 i++;
                 Mia.Setpb(i,cnt);
                 FillRabbit(r, 0, false);
             }
-            C.CommandText = "ALTER TABLE `rabbits` ENABLE KEYS;";
-            C.ExecuteNonQuery();
+            _cmd.CommandText = "ALTER TABLE `rabbits` ENABLE KEYS;";
+            _cmd.ExecuteNonQuery();
             Debug("normalizing fuckers");
             NormalizeFuckers();
         }
 
         public void FillDead()
         {
-            C.CommandText = "ALTER TABLE `dead` DISABLE KEYS;";
-            C.ExecuteNonQuery();
+            _cmd.CommandText = "ALTER TABLE `dead` DISABLE KEYS;";
+            _cmd.ExecuteNonQuery();
             Debug("fill dead");
             foreach (Rabbit r in Mia.Arcform.dead.rabbits)
             {
                 FillRabbit(r, 0, true);
             }
-            C.CommandText = "ALTER TABLE `dead` ENABLE KEYS;";
-            C.ExecuteNonQuery();
+            _cmd.CommandText = "ALTER TABLE `dead` ENABLE KEYS;";
+            _cmd.ExecuteNonQuery();
         }
 
     }

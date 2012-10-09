@@ -126,7 +126,7 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
                 string pswd = dbpar[3];
                 string root = dbpar[4];
                 string rpswd = dbpar[5];
-            Environment.ExitCode = miaExitCode.OK;
+            //Environment.ExitCode = miaExitCode.OK;
             String[] us = args[2].Split(';');
             if (us.Length < 2)           
                 return miaExitCode.EXPECTED_ONE_USER;            
@@ -138,7 +138,9 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
             MDCreator cr = new MDCreator();
             try
             {
-                cr.Prepare(true, host, user, pswd, db, root, rpswd, true);
+                int res = cr.Prepare(true, host, user, pswd, db, root, rpswd, false,false);
+                if (res != miaExitCode.OK)
+                    return res;
                 cr.SetUsers(us);
             }
             catch (Exception exc)
@@ -155,7 +157,7 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
         /// <returns>miaExitCode</returns>
         static int dropdb(string[] args)
         {
-            Environment.ExitCode = miaExitCode.OK;
+            //Environment.ExitCode = miaExitCode.OK;
             String[] dbpar = args[1].Split(';');
             string host = dbpar[0];
             string db = dbpar[1];
