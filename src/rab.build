@@ -385,6 +385,7 @@
 				
 				<include name="${curdir}/mia_conv/miaExitCode.cs"/>				
 				<include name="${curdir}/rabnet/gui/classes/RabnetConfig/*.cs"/>
+				<include name="${curdir}/rabnet/gui/classes/Run.cs"/>
 				<include name="${curdir}/rabnet/gui/panels/FarmsPanel.cs"/>
 				<include name="${curdir}/rabnet/gui/panels/FarmsPanel.Designer.cs"/>
 				<!--include name="${curdir}/rabnet/gui/forms/FarmChangeForm.cs"/>
@@ -563,6 +564,7 @@
 				<include name="${curdir}/updater/*.cs"/>			
 				<include name="${curdir}/mia_conv/miaExitCode.cs"/>
 				<include name="${curdir}/rabnet/gui/classes/RabnetConfig/*.cs"/>
+				<include name="${curdir}/rabnet/gui/classes/Run.cs"/>
 			</sources>
 			<resources>
 				<include name="${curdir}/updater/sql/*.sql"/>
