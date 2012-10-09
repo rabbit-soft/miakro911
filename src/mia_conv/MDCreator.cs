@@ -105,8 +105,6 @@ namespace mia_conv
                     _sql.Close();
                 _sql = null;
             }
-            _sql.Close();
-            _sql = null;
             return miaExitCode.OK;
         }
 
