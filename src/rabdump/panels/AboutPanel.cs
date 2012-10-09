@@ -5,20 +5,20 @@ using System.Windows.Forms;
 using RabGRD;
 #endif
 
-namespace rabnet
+namespace rabdump
 {
-    partial class AboutForm : Form
+    public partial class AboutPanel : UserControl
     {
-        public AboutForm()
+        public AboutPanel()
         {
             InitializeComponent();
             //this.Text = String.Format("About {0} {0}", AssemblyTitle);
             labelProductName.Text = AssemblyProduct + " (" + AssemblyTitle+")";
             labelVersion.Text = String.Format("Версия {0}", AssemblyVersion);
             labelCopyright.Text = AssemblyCopyright;
+            labelCompanyName.Text = "Разработчик: "+AssemblyCompany;
             //            labelCompanyName.Text = AssemblyCompany;
             textBoxDescription.Text = AssemblyDescription;
-            linkLabel.Links.Add(18,18,"www.rabbit-soft.ru");
         }
 
         public string licFarms()
@@ -26,7 +26,7 @@ namespace rabnet
 #if PROTECTED
             string info = "";
             //            return String.Format("Лицензия - {0:d} ферм",PClient.get().farms());
-            info += "Лицензия:";
+            info += "Лицензия:"+Environment.NewLine;
             info += String.Format("Владелец - {0}", GRD.Instance.GetOrganizationName());
             info += Environment.NewLine;
             info += String.Format("Ограничение на количство ферм - {0:d}", GRD.Instance.GetFarmsCnt());
@@ -76,9 +76,9 @@ namespace rabnet
                 object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
                 if (attributes.Length == 0)
                 {
-                    return ""+licFarms();
+                    return "" + licFarms();
                 }
-                return ((AssemblyDescriptionAttribute)attributes[0]).Description+licFarms();
+                return ((AssemblyDescriptionAttribute)attributes[0]).Description + licFarms();
             }
         }
 
@@ -121,19 +121,5 @@ namespace rabnet
             }
         }
         #endregion
-
-        private void linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start(e.Link.LinkData.ToString());
-        }
-
-        private void okButton_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-
- 
-
     }
 }

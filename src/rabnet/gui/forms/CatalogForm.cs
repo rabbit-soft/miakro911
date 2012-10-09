@@ -36,7 +36,7 @@ namespace rabnet
 
         /// <summary>
         /// Типы справочников
-        /// </summary>
+        /// </summary>C
         public enum CatalogType { NONE, BREEDS, ZONES, DEAD, PRODUCTS, VACCINES };
         private ICatalog _catalog;
         private DataTable ds = new DataTable();

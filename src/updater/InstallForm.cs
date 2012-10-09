@@ -5,11 +5,13 @@ using System.IO;
 using System.Diagnostics;
 using Microsoft.Win32;
 using System.Collections;
+using log4net;
 
 namespace updater
 {
     public partial class InstallForm : Form
     {
+        private ILog _logger = LogManager.GetLogger(typeof(UpdateForm));
         //bool _batch = false;
         public int Result = 0;
         //public string FilenameRabDump = "";
@@ -128,13 +130,13 @@ namespace updater
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            tbComp.Enabled = radioButton2.Checked;
-            tbFile.Enabled = btFile.Enabled = radioButton3.Checked;
-            if (radioButton3.Checked)
+            tbComp.Enabled = rbRemoteDb.Checked;
+            tbFile.Enabled = btFile.Enabled = rbImportFromMia.Checked;
+            if (rbImportFromMia.Checked)
             {
                 btCheck.Enabled = tbFile.Text != "";
             }
-            else if (radioButton2.Checked)
+            else if (rbRemoteDb.Checked)
             {
                 btCheck.Enabled = tbComp.Text != "";
             }
@@ -172,61 +174,75 @@ namespace updater
 
         private void RunMia(String prm) //в RabDump есть аналогичная функция
         {
-            String prms = "\"" + prm + "\" " + tbHost.Text + ';' + tbDb.Text + ';' + tbUser.Text + ';' + tbPwd.Text + ';' + tbRoot.Text + ';' + tbRPwd.Text;
-            prms += " зоотехник;";
-            String prg = Path.GetDirectoryName(Application.ExecutablePath) + @"\mia_conv.exe";
-#if DEBUG
-            if (!File.Exists(prg))//нужно для того чтобы из под дебага можно было запустить Mia_Conv
+            try
             {
-                string path = Path.GetFullPath(Application.ExecutablePath);
-                bool recurs = true;
-                string[] drives = Directory.GetLogicalDrives();
-                while (recurs)
-                {
-                    foreach (string d in drives)
-                    {
-                        if (d.ToLower() == path)
-                            recurs = false;
-                    }
-                    if (!recurs) break;
-                    path = Directory.GetParent(path).FullName;
-                    string[] dirs = Directory.GetDirectories(path);
-                    if (Directory.Exists(path + @"\bin\protected\Tools"))
-                    {
-                        prg = path + @"\bin\protected\Tools\mia_conv.exe";
-                        recurs = false;
-                        break;
-                    }
-                }
+                rabnet.Run.DBCreate(prm, tbHost.Text, tbDb.Text, tbUser.Text, tbPwd.Text, tbRoot.Text, tbRPwd.Text);
             }
-#endif
-            Process p = Process.Start(prg, prms);
-            p.WaitForExit();
-            if (p.ExitCode != 0)
-                throw new ApplicationException("Ошибка создания БД. " + miaExitCode.GetText(p.ExitCode));
+            catch (Exception exc)
+            {
+                _logger.Error(exc);
+                MessageBox.Show(exc.Message);
+            }
         }
+
+//        private void RunMia(String prm) //в RabDump есть аналогичная функция
+//        {
+//            String prms = "\"" + prm + "\" " + tbHost.Text + ';' + tbDb.Text + ';' + tbUser.Text + ';' + tbPwd.Text + ';' + tbRoot.Text + ';' + tbRPwd.Text;
+//            prms += " зоотехник;";
+//            String prg = Path.GetDirectoryName(Application.ExecutablePath) + @"\mia_conv.exe";
+//#if DEBUG
+//            if (!File.Exists(prg))//нужно для того чтобы из под дебага можно было запустить Mia_Conv
+//            {
+//                string path = Path.GetFullPath(Application.ExecutablePath);
+//                bool recurs = true;
+//                string[] drives = Directory.GetLogicalDrives();
+//                while (recurs)
+//                {
+//                    foreach (string d in drives)
+//                    {
+//                        if (d.ToLower() == path)
+//                            recurs = false;
+//                    }
+//                    if (!recurs) break;
+//                    path = Directory.GetParent(path).FullName;
+//                    string[] dirs = Directory.GetDirectories(path);
+//                    if (Directory.Exists(path + @"\bin\protected\Tools"))
+//                    {
+//                        prg = path + @"\bin\protected\Tools\mia_conv.exe";
+//                        recurs = false;
+//                        break;
+//                    }
+//                }
+//            }
+//#endif
+//            Process p = Process.Start(prg, prms);
+//            p.WaitForExit();
+//            if (p.ExitCode != 0)
+//                throw new ApplicationException("Ошибка создания БД. " + miaExitCode.GetText(p.ExitCode));
+//        }
 
         private void btCheck_Click(object sender, EventArgs e)
         {
             try
             {
                 TopMost = false;
-                if (radioButton4.Checked)
+                if (rbJustExit.Checked)
                 {
                     //Application.Exit(
                     Environment.Exit(10);
                 }
                 if (tbName.Text == "")
                     throw new ApplicationException("Введите название фермы");
-                if (radioButton2.Checked && tbComp.Text=="")
+                if (rbRemoteDb.Checked && tbComp.Text=="")
                     throw new ApplicationException("Введите адрес компьютера");
-                if (radioButton3.Checked && tbFile.Text == "")
+                if (rbImportFromMia.Checked && tbFile.Text == "")
                     throw new ApplicationException("Выберите файл");
-                if (radioButton1.Checked)
+
+                if (rbMakeNew.Checked)
                 {
                     RunMia("nudb");
                 }
-                else if (radioButton3.Checked)
+                else if (rbImportFromMia.Checked)
                 {
                     RunMia(tbFile.Text);
                 }

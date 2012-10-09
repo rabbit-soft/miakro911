@@ -196,6 +196,19 @@ namespace rabdump
 
 
         #region mi_click
+        private void miRunRabnet_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                rabnet.Run.Rabnet();
+            }
+            catch (Exception exc)
+            {
+                logger.Warn(exc.Message);
+                MessageBox.Show(exc.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
         private void miShowMainForm_Click(object sender, EventArgs e)
         {
             _manual = false;
@@ -359,22 +372,6 @@ namespace rabdump
                 messageCb(msg, "Ошибка", 2, false);
             }
         }
-
-        //public static void RunRabnet(string param)
-        //{
-        //    try
-        //    {
-        //        Process p = Process.Start(Path.GetDirectoryName(Application.ExecutablePath) + @"\..\RabNet\rabnet.exe", param);
-        //        if (param == "dbedit")
-        //        {
-        //            p.WaitForExit();
-        //            Options.Inst.Load();
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show("Ошибка: "+ex.Message);
-        //    }
-        //}  
+            
     }
 }

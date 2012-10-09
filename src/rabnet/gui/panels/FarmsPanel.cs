@@ -190,55 +190,18 @@ namespace rabnet
             return exists;
         }
 
-        /// <summary>
-        /// Запустить mia_conv
-        /// </summary>
         private bool runmia(String prm)
         {
-            String prms = "\"" + prm + "\" " + tbHost.Text + ';' + tbDB.Text + ';' + tbUser.Text + ';' + tbPass.Text + ';' + tbAdmin.Text + ';' + tbAdminPass.Text;
-            prms += " зоотехник;";
             try
             {
-                String prg = Path.GetDirectoryName(Application.ExecutablePath) + @"\..\Tools\mia_conv.exe";
-#if DEBUG
-                if (!File.Exists(prg))//нужно для того чтобы из под дебага можно было запустить Mia_Conv
-                {
-                    string path = Path.GetFullPath(Application.ExecutablePath);
-                    bool recurs = true;
-                    string[] drives = Directory.GetLogicalDrives();
-                    while (recurs)
-                    {
-                        foreach (string d in drives)
-                        {
-                            if (d.ToLower() == path)
-                                recurs = false;
-                        }
-                        if (!recurs) break;
-                        path = Directory.GetParent(path).FullName;
-                        string[] dirs = Directory.GetDirectories(path);
-                        if (Directory.Exists(path + @"\bin\protected\Tools"))
-                        {
-                            prg = path + @"\bin\protected\Tools\mia_conv.exe";
-                            recurs = false;
-                            break;
-                        }
-                    }
-                }
-#endif
-                Process p = Process.Start(prg, prms);
-                p.WaitForExit();
-                if (p.ExitCode != 0)
-                    throw new ApplicationException("Ошибка создания БД. " + miaExitCode.GetText(p.ExitCode));
-
+                Run.DBCreate(prm, tbHost.Text, tbDB.Text, tbUser.Text, tbPass.Text, tbAdmin.Text, tbAdminPass.Text);
             }
-            catch (Exception ex)
+            catch (Exception exc)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(exc.Message);
                 return false;
             }
             return true;
         }
-
-        
     }
 }

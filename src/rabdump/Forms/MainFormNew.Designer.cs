@@ -34,9 +34,11 @@
             this.tpGeneral = new System.Windows.Forms.TabPage();
             this.tpDataSources = new System.Windows.Forms.TabPage();
             this.tpArchiveJobs = new System.Windows.Forms.TabPage();
+            this.tpInfo = new System.Windows.Forms.TabPage();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miShowMainForm = new System.Windows.Forms.ToolStripMenuItem();
+            this.miRunRabnet = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.miJobStart = new System.Windows.Forms.ToolStripMenuItem();
             this.miRestore = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,10 +56,12 @@
             this.generalPanel1 = new rabdump.GeneralPanel();
             this.farmsPanel1 = new rabnet.FarmsPanel();
             this.archiveJobsPanel1 = new rabdump.ArchiveJobsPanel();
+            this.aboutPanel1 = new rabdump.AboutPanel();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.tpDataSources.SuspendLayout();
             this.tpArchiveJobs.SuspendLayout();
+            this.tpInfo.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,6 +73,7 @@
             this.tabControl1.Controls.Add(this.tpGeneral);
             this.tabControl1.Controls.Add(this.tpDataSources);
             this.tabControl1.Controls.Add(this.tpArchiveJobs);
+            this.tabControl1.Controls.Add(this.tpInfo);
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(1);
             this.tabControl1.Name = "tabControl1";
@@ -105,6 +110,15 @@
             this.tpArchiveJobs.TabIndex = 2;
             this.tpArchiveJobs.Text = "Расписания";
             // 
+            // tpInfo
+            // 
+            this.tpInfo.Controls.Add(this.aboutPanel1);
+            this.tpInfo.Location = new System.Drawing.Point(4, 22);
+            this.tpInfo.Name = "tpInfo";
+            this.tpInfo.Size = new System.Drawing.Size(353, 344);
+            this.tpInfo.TabIndex = 3;
+            this.tpInfo.Text = "О программе";
+            // 
             // notifyIcon1
             // 
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
@@ -117,6 +131,7 @@
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miShowMainForm,
+            this.miRunRabnet,
             this.toolStripMenuItem3,
             this.miJobStart,
             this.miRestore,
@@ -137,6 +152,13 @@
             this.miShowMainForm.Size = new System.Drawing.Size(210, 22);
             this.miShowMainForm.Text = "Настройки";
             this.miShowMainForm.Click += new System.EventHandler(this.miShowMainForm_Click);
+            // 
+            // miRunRabnet
+            // 
+            this.miRunRabnet.Name = "miRunRabnet";
+            this.miRunRabnet.Size = new System.Drawing.Size(210, 22);
+            this.miRunRabnet.Text = "Запустить Miakro9.11";
+            this.miRunRabnet.Click += new System.EventHandler(this.miRunRabnet_Click);
             // 
             // toolStripMenuItem3
             // 
@@ -256,6 +278,16 @@
             this.archiveJobsPanel1.Size = new System.Drawing.Size(353, 344);
             this.archiveJobsPanel1.TabIndex = 0;
             // 
+            // aboutPanel1
+            // 
+            this.aboutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.aboutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.aboutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.aboutPanel1.MinimumSize = new System.Drawing.Size(340, 0);
+            this.aboutPanel1.Name = "aboutPanel1";
+            this.aboutPanel1.Size = new System.Drawing.Size(353, 344);
+            this.aboutPanel1.TabIndex = 0;
+            // 
             // MainFormNew
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -281,6 +313,7 @@
             this.tpGeneral.ResumeLayout(false);
             this.tpDataSources.ResumeLayout(false);
             this.tpArchiveJobs.ResumeLayout(false);
+            this.tpInfo.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -312,5 +345,8 @@
         private GeneralPanel generalPanel1;
         private rabnet.FarmsPanel farmsPanel1;
         private ArchiveJobsPanel archiveJobsPanel1;
+        private System.Windows.Forms.ToolStripMenuItem miRunRabnet;
+        private System.Windows.Forms.TabPage tpInfo;
+        private AboutPanel aboutPanel1;
     }
 }

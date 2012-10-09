@@ -160,6 +160,7 @@
     <Compile Include="classes\RabnetConfig\DataSource.cs" />
     <Compile Include="classes\RabnetConfig\sParams.cs" />
     <Compile Include="classes\RabnetConfig\RabnetConfig.cs" />
+    <Compile Include="classes\Run.cs" />
     <Compile Include="forms\AddRabVacForm.cs">
       <SubType>Form</SubType>
     </Compile>

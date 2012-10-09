@@ -81,6 +81,9 @@
     <Compile Include="..\rabnet\gui\classes\RabnetConfig\sParams.cs">
       <Link>sParams.cs</Link>
     </Compile>
+    <Compile Include="..\rabnet\gui\classes\Run.cs">
+      <Link>Run.cs</Link>
+    </Compile>
     <Compile Include="InstallForm.cs">
       <SubType>Form</SubType>
     </Compile>

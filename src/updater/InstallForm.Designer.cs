@@ -31,14 +31,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InstallForm));
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
+            this.rbJustExit = new System.Windows.Forms.RadioButton();
             this.tbFile = new System.Windows.Forms.TextBox();
             this.btFile = new System.Windows.Forms.Button();
             this.tbComp = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.rbImportFromMia = new System.Windows.Forms.RadioButton();
+            this.rbRemoteDb = new System.Windows.Forms.RadioButton();
+            this.rbMakeNew = new System.Windows.Forms.RadioButton();
             this.btCheck = new System.Windows.Forms.Button();
             this.btExtended = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -73,14 +73,14 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.radioButton4);
+            this.groupBox1.Controls.Add(this.rbJustExit);
             this.groupBox1.Controls.Add(this.tbFile);
             this.groupBox1.Controls.Add(this.btFile);
             this.groupBox1.Controls.Add(this.tbComp);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.radioButton3);
-            this.groupBox1.Controls.Add(this.radioButton2);
-            this.groupBox1.Controls.Add(this.radioButton1);
+            this.groupBox1.Controls.Add(this.rbImportFromMia);
+            this.groupBox1.Controls.Add(this.rbRemoteDb);
+            this.groupBox1.Controls.Add(this.rbMakeNew);
             this.groupBox1.Location = new System.Drawing.Point(12, 70);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(488, 172);
@@ -88,16 +88,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Создание фермы";
             // 
-            // radioButton4
+            // rbJustExit
             // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(38, 146);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(227, 17);
-            this.radioButton4.TabIndex = 7;
-            this.radioButton4.TabStop = true;
-            this.radioButton4.Text = "Просто завершить работу установщика";
-            this.radioButton4.UseVisualStyleBackColor = true;
+            this.rbJustExit.AutoSize = true;
+            this.rbJustExit.Location = new System.Drawing.Point(38, 146);
+            this.rbJustExit.Name = "rbJustExit";
+            this.rbJustExit.Size = new System.Drawing.Size(227, 17);
+            this.rbJustExit.TabIndex = 7;
+            this.rbJustExit.TabStop = true;
+            this.rbJustExit.Text = "Просто завершить работу установщика";
+            this.rbJustExit.UseVisualStyleBackColor = true;
             // 
             // tbFile
             // 
@@ -138,40 +138,40 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Адрес компьютера";
             // 
-            // radioButton3
+            // rbImportFromMia
             // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(38, 98);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(191, 17);
-            this.radioButton3.TabIndex = 2;
-            this.radioButton3.Text = "Импортировать ферму из файла";
-            this.radioButton3.UseVisualStyleBackColor = true;
-            this.radioButton3.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            this.rbImportFromMia.AutoSize = true;
+            this.rbImportFromMia.Location = new System.Drawing.Point(38, 98);
+            this.rbImportFromMia.Name = "rbImportFromMia";
+            this.rbImportFromMia.Size = new System.Drawing.Size(191, 17);
+            this.rbImportFromMia.TabIndex = 2;
+            this.rbImportFromMia.Text = "Импортировать ферму из файла";
+            this.rbImportFromMia.UseVisualStyleBackColor = true;
+            this.rbImportFromMia.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
-            // radioButton2
+            // rbRemoteDb
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(38, 49);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(254, 17);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.Text = "Использовать ферму на другом компьютере";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            this.rbRemoteDb.AutoSize = true;
+            this.rbRemoteDb.Location = new System.Drawing.Point(38, 49);
+            this.rbRemoteDb.Name = "rbRemoteDb";
+            this.rbRemoteDb.Size = new System.Drawing.Size(254, 17);
+            this.rbRemoteDb.TabIndex = 1;
+            this.rbRemoteDb.Text = "Использовать ферму на другом компьютере";
+            this.rbRemoteDb.UseVisualStyleBackColor = true;
+            this.rbRemoteDb.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
-            // radioButton1
+            // rbMakeNew
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Checked = true;
-            this.radioButton1.Location = new System.Drawing.Point(38, 26);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(250, 17);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Создать пустую ферму на этом компьютере";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            this.rbMakeNew.AutoSize = true;
+            this.rbMakeNew.Checked = true;
+            this.rbMakeNew.Location = new System.Drawing.Point(38, 26);
+            this.rbMakeNew.Name = "rbMakeNew";
+            this.rbMakeNew.Size = new System.Drawing.Size(250, 17);
+            this.rbMakeNew.TabIndex = 0;
+            this.rbMakeNew.TabStop = true;
+            this.rbMakeNew.Text = "Создать пустую ферму на этом компьютере";
+            this.rbMakeNew.UseVisualStyleBackColor = true;
+            this.rbMakeNew.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
             // btCheck
             // 
@@ -371,9 +371,9 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.RadioButton radioButton3;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton rbImportFromMia;
+        private System.Windows.Forms.RadioButton rbRemoteDb;
+        private System.Windows.Forms.RadioButton rbMakeNew;
         private System.Windows.Forms.Button btCheck;
         private System.Windows.Forms.Button btFile;
         private System.Windows.Forms.TextBox tbComp;
@@ -396,6 +396,6 @@
         private System.Windows.Forms.TextBox tbDb;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.OpenFileDialog ofd;
-        private System.Windows.Forms.RadioButton radioButton4;
+        private System.Windows.Forms.RadioButton rbJustExit;
     }
 }

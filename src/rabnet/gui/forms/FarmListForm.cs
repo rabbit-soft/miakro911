@@ -9,6 +9,7 @@ using rabnet.RNC;
 
 namespace rabnet
 {
+    [Obsolete("НЕ ИСПОЛЬЗУЕТСЯ В ВЕРСИИ 1.1.*")]
     public partial class FarmListForm : Form
     {
         private RabnetConfig _rnc;

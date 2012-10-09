@@ -142,7 +142,7 @@
             this.gbAJProperties.Controls.Add(this.cbDataBase);
             this.gbAJProperties.Controls.Add(this.label6);
             this.gbAJProperties.Enabled = false;
-            this.gbAJProperties.Location = new System.Drawing.Point(6, 39);
+            this.gbAJProperties.Location = new System.Drawing.Point(7, 39);
             this.gbAJProperties.Name = "gbAJProperties";
             this.gbAJProperties.Size = new System.Drawing.Size(327, 299);
             this.gbAJProperties.TabIndex = 12;

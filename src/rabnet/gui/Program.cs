@@ -71,10 +71,7 @@ namespace rabnet
                         }
                         //MessageBox.Show(String.Format("HAS {0:d} FARMS",PClient.get().farms()));
 #endif
-                        bool dbedit = false;
-                        if (args.Length > 0 && args[0] == "dbedit")
-                            dbedit = true;
-                        LoginForm lf = new LoginForm(dbedit);
+                        LoginForm lf = new LoginForm();
                         LoginForm.stop = false;
                         while (!LoginForm.stop)
                         {

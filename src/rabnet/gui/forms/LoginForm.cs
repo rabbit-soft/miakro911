@@ -18,20 +18,12 @@ namespace rabnet
         protected static readonly ILog log = LogManager.GetLogger(typeof(LoginForm));
         private RabnetConfig _rnc;
         private Dictionary<int, DataSource> _dss;
-        /// <summary>
-        /// Вызывается ли форма для того чтобы редактировать подключения
-        /// </summary>
-        private bool dbedit=false;
 
         public LoginForm()
         {
             InitializeComponent();
             log.Debug("inited");
             _rnc = new RabnetConfig();
-        }
-        public LoginForm(bool dbedit):this()
-        {
-            this.dbedit = dbedit;
         }
 
         public void readConfig()
@@ -61,20 +53,7 @@ namespace rabnet
                         cbFarm_SelectedIndexChanged(null, null);
                     }
                 }
-            }
-
-/*          MessageBox.Show("Farms -> " + GRD.Instance.GetFarmsCnt().ToString());
-            MessageBox.Show("Genetics -> " + GRD.Instance.GetFlagGenetics().ToString());
-            MessageBox.Show("Zootech -> " + GRD.Instance.GetFlagZootech().ToString());
-
-            MessageBox.Show("Prog -> " + GRD.Instance.GetProgType().ToString());
-            MessageBox.Show("DateStart -> " + GRD.Instance.GetDateStart().ToString());
-            MessageBox.Show("DateEnd -> " + GRD.Instance.GetDateEnd().ToString());
-            MessageBox.Show("Org -> " + GRD.Instance.GetOrgName());
- */
-
-            //GRD.Instance.ValidKey();
-            
+            }            
         }
 
         private void cbFarm_SelectedIndexChanged(object sender, EventArgs e)
@@ -219,24 +198,14 @@ namespace rabnet
             readConfig();
         }
 
-        private void btExit_Click(object sender, EventArgs e)
-        {
-        }
-
         private void LoginForm_Shown(object sender, EventArgs e)
         {
             readConfig();
             tbPassword.SelectAll();
             tbPassword.Focus();
-            if (dbedit)
-            {
-                new FarmChangeForm(null).ShowDialog();
-                stop = true;
-                DialogResult = DialogResult.Cancel;
-            }
             if (cbFarm.Items.Count == 0)
             {
-                new FarmChangeForm(true).ShowDialog();
+                new FarmNewForm().ShowDialog();
                 readConfig();
             }
         }

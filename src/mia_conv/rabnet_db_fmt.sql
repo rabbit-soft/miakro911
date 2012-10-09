@@ -336,7 +336,7 @@ CREATE  TABLE `rab_vac` (
 
 #DATA
 
-INSERT INTO vaccines(v_id,v_name,v_duration,v_zootech) VALUES(1,'Прививка',356,1);
+INSERT INTO vaccines(v_id,v_name,v_duration,v_age,v_zootech) VALUES(1,'Прививка',356,45,1);
 
 INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','10');
 INSERT INTO options(o_name,o_subname,o_value) VALUES
