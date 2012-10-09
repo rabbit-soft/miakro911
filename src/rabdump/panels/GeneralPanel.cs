@@ -31,7 +31,8 @@ namespace rabdump
             tbMysqlPath.Text = folderBrowserDialog1.SelectedPath = opts.MySqlPath;
             tb7zPath.Text =  opts.Path7Z;
             tbServerUrl.Text = opts.ServerUrl;
-            openFileDialog1.InitialDirectory = System.IO.Path.GetDirectoryName(tb7zPath.Text);
+            if (tb7zPath.Text!="")
+                openFileDialog1.InitialDirectory = System.IO.Path.GetDirectoryName(tb7zPath.Text);
             chStartUp.Checked = opts.StartAtStart;
             _manual = true;
         }
