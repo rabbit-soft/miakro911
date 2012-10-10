@@ -49,7 +49,8 @@ namespace rabnet
                 if (_rnc.DataSources[i].Default)
                     def = i;
             }
-         
+
+            _manual = true;
             if (cbName.Items.Count > 0)
             {
                 cbName.SelectedIndex = 0;
@@ -57,7 +58,7 @@ namespace rabnet
                 if (def != -1)
                     cbName.SelectedIndex = def;
             }
-            _manual = true;
+            
         }
 
         private void cbName_SelectedIndexChanged(object sender, EventArgs e)
