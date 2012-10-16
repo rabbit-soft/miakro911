@@ -278,10 +278,10 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d},'{7:d}');",
             
             _cmd.CommandText = "UPDATE fucks SET f_partner=(SELECT n_use FROM names WHERE n_id=fucks.f_partner),f_dead=0 WHERE f_dead=1;";
             _cmd.ExecuteNonQuery();
-            _cmd.CommandText = "UPDATE rabbits SET r_vaccine_end=NOW()+interval 365 day WHERE r_flags LIKE '__2__' OR r_flags LIKE '__3__';";
-            _cmd.ExecuteNonQuery();
-            _cmd.CommandText = "UPDATE rabbits SET r_vaccine_end=NOW() WHERE r_flags LIKE '__0__';";
-            _cmd.ExecuteNonQuery();
+            //_cmd.CommandText = "UPDATE rabbits SET r_vaccine_end=NOW()+interval 365 day WHERE r_flags LIKE '__2__' OR r_flags LIKE '__3__';";
+            //_cmd.ExecuteNonQuery();
+            //_cmd.CommandText = "UPDATE rabbits SET r_vaccine_end=NOW() WHERE r_flags LIKE '__0__';";
+            //_cmd.ExecuteNonQuery();
             _cmd.CommandText = "UPDATE rabbits SET r_flags=CONCAT(SUBSTR(r_flags,1,1),SUBSTR(r_flags,2,1),'0',SUBSTR(r_flags,4,1),SUBSTR(r_flags,5,1)) where r_flags LIKE '__2__';";
             _cmd.ExecuteNonQuery();
             _cmd.CommandText = "UPDATE rabbits SET r_flags=CONCAT(SUBSTR(r_flags,1,1),SUBSTR(r_flags,2,1),'1',SUBSTR(r_flags,4,1),SUBSTR(r_flags,5,1)) where r_flags LIKE '__3__'";
