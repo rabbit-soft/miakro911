@@ -398,8 +398,8 @@ namespace RabGRD
             FlagType flags = (FlagType)GetFlags(0);
             FlagType flagsTemp = (FlagType)GetTempFlags(0);
 
-            _logger.Debug("========================> " + flags.ToString() + " " + ((int)flags).ToString());
-            _logger.Debug("========================> " + flagsTemp.ToString() + " " + ((int)flagsTemp).ToString());
+            //_logger.Debug("========================> " + flags.ToString() + " " + ((int)flags).ToString());
+            //_logger.Debug("========================> " + flagsTemp.ToString() + " " + ((int)flagsTemp).ToString());
 
             return ((flags & ft) == ft) || ((flagsTemp & ft) == ft);
         }
@@ -408,21 +408,21 @@ namespace RabGRD
         {
             uint addr = USER_DATA_BEGINING + DEV_MARKER_OFFSET;
 
-            _logger.Debug("Reading customer id: ");
+            //_logger.Debug("Reading customer id: ");
             return ReadUInt(addr);
         }
 
         public DateTime GetDateStart()
         {
             uint addr = USER_DATA_BEGINING + FARM_START_DATE_OFFSET;
-            _logger.Debug("Reading Date start: ");
+            //_logger.Debug("Reading Date start: ");
             return ReadDate(addr);
         }
 
         public DateTime GetDateEnd()
         {
             uint addr = USER_DATA_BEGINING + FARM_STOP_DATE_OFFSET;
-            _logger.Debug("Reading Date end: ");
+            //_logger.Debug("Reading Date end: ");
             return ReadDate(addr);
         }
 
@@ -597,9 +597,8 @@ namespace RabGRD
             }
             catch (Exception e)
             {
-
-                MessageBox.Show(e.InnerException.Message, "Фатальная ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 _logger.Error(e.InnerException.Message);
+                MessageBox.Show(e.InnerException.Message, "Фатальная ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);                
                 Environment.Exit(100);                               
             }
         }

@@ -32,6 +32,7 @@ namespace rabnet
         {
             log4net.Config.XmlConfigurator.Configure();
             _logger = LogManager.GetLogger(typeof(Program));
+            _logger.Info("----- Application Starts -----");
             bool new_instance;
             using (System.Threading.Mutex mutex = new System.Threading.Mutex(true, "RabNetApplication", out new_instance))
             {
@@ -109,6 +110,7 @@ namespace rabnet
 #if !NOCATCH
         static void Excepted(Exception ex)
         {
+            _logger.Fatal(ex.Message, ex);
             if (ex.Source == "MySql.Data")
             {
                 MessageBox.Show("Соединение с сервером было разорвано.\n\rПрграмма будет закрыта");
@@ -116,8 +118,7 @@ namespace rabnet
             else
             {
                 MessageBox.Show("Произошла ошибка. Программа будет закрыта.\n\r" + ex.Message);
-            }
-            _logger.Fatal(ex.Message, ex);
+            }         
         }
 
         static void Threaded(object sender, System.Threading.ThreadExceptionEventArgs e)
@@ -128,7 +129,6 @@ namespace rabnet
             }
             finally
             {
-                //Application.Exit();
                 Environment.Exit(0);
             }
         }
@@ -141,7 +141,6 @@ namespace rabnet
             }
             finally
             {
-                //Application.Exit();
                 Environment.Exit(0);
             }
         }

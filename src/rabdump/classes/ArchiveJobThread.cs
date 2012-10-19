@@ -230,10 +230,10 @@ namespace rabdump
             _logger.Info("Making dump for " + _j.JobName + " to " + ffname);
             ///Делайем дамп с помошью mysqldump
             String md = Options.Inst.MySqlDumpPath;
-            if (md == "")
+            if (md == "" || !File.Exists(md))
             {
                 _logger.Error("MySQLDump not specified " + md);
-                throw new ApplicationException("Путь к MySQLDump не настроен");
+                throw new ApplicationException("Путь к MySQLDump указан не корректно");
             }
             String pr = String.Format("{0:s} {1:s} {2:s} {3:s} --ignore-table={0:s}.allrabbits", db.Params.DataBase, (db.Params.Host == "" ? "" : "-h " + db.Params.Host),
                 (db.Params.User == "" ? "" : "-u " + db.Params.User), (db.Params.Password == "" ? "" : "--password=" + db.Params.Password));
@@ -319,7 +319,7 @@ namespace rabdump
            
             String sql = Options.Inst.MySqlExePath;              
             if (sql == "" || !File.Exists(sql))
-                throw new ApplicationException("Путь к MySQL не настроен"); 
+                throw new ApplicationException("Путь к MySQL указан не корректно"); 
          
             //String pth=Path.GetDirectoryName(file);
             String fl = Path.GetFileName(file);

@@ -13,7 +13,7 @@ namespace rabdump
 {
     static class Program
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(Program).Name);
+        private static ILog _logger;
 
         /// <summary>
         /// The main entry point for the application.
@@ -22,6 +22,8 @@ namespace rabdump
         static void Main()
         {
             log4net.Config.XmlConfigurator.Configure();
+            _logger = LogManager.GetLogger(typeof(Program).Name);
+            _logger.Info("----- Application Starts -----");
             System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("ru-RU", false);
             bool new_instance;
             using (System.Threading.Mutex mutex = new System.Threading.Mutex(true, "RabDumpApplication", out new_instance))
@@ -70,7 +72,7 @@ namespace rabdump
                     }
                     catch (Exception e)
                     {
-                        log.Error("<exp>", e);
+                        _logger.Error("<exp>", e);
                         MessageBox.Show(e.Message + e.StackTrace);
                     }
 #endif
@@ -81,7 +83,7 @@ namespace rabdump
 #if !NOCATCH
         private static void Excepted(Exception ex)
         {
-            log.Fatal(ex);
+            _logger.Fatal(ex);
             string msg ="Произошла ошибка. Программа будет закрыта.\n\r" + ex.Message;
             if (ex.Source == "MySql.Data")            
                 msg="Соединение с сервером было разорвано.\n\rПрграмма будет закрыта";
