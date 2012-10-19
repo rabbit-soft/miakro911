@@ -56,7 +56,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Protected|AnyCPU' ">
     <OutputPath>..\bin\Protected\rabdump\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;PROTECTED</DefineConstants>
+    <DefineConstants>TRACE;PROTECTED</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>

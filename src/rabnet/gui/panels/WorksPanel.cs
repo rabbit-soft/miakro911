@@ -36,7 +36,7 @@ namespace rabnet
                 f[Filters.OKROL] = Engine.opt().getOption(Options.OPT_ID.OKROL);
                 f[Filters.PRE_OKROL] = Engine.opt().getOption(Options.OPT_ID.PRE_OKROL);
                 f[Filters.VUDVOR] = Engine.opt().getOption(Options.OPT_ID.NEST_OUT);
-                f[Filters.NEST_OUT_IF_SUKROL] = Engine.opt().getOption(Options.OPT_ID.NEST_OUT_IF_SUKROL);
+                f[Filters.NEST_OUT_IF_SUKROL] = Engine.opt().getBoolOption(Options.OPT_ID.NEST_OUT_IF_SUKROL)?"1":"0";
                 f[Filters.COUNT1] = Engine.opt().getOption(Options.OPT_ID.COUNT1);
                 f[Filters.COUNT2] = Engine.opt().getOption(Options.OPT_ID.COUNT2);
                 f[Filters.COUNT3] = Engine.opt().getOption(Options.OPT_ID.COUNT3);
@@ -83,32 +83,39 @@ namespace rabnet
 
         protected override void onItem(IData data)
         {
-            ZooTehNullItem it = data as ZooTehNullItem;
-            if (it == null)
+            try
             {
-                colSort.Restore();
-                if (itm > -1 && lvZooTech.Items.Count > itm)
+                ZooTehNullItem it = data as ZooTehNullItem;
+                if (it == null)
                 {
-                    lvZooTech.Items[itm].Selected = true;
-                    lvZooTech.Items[itm].EnsureVisible();
+                    colSort.Restore();
+                    if (itm > -1 && lvZooTech.Items.Count > itm)
+                    {
+                        lvZooTech.Items[itm].Selected = true;
+                        lvZooTech.Items[itm].EnsureVisible();
+                    }
+                    lvZooTech.Focus();
+                    return;
                 }
-                lvZooTech.Focus();
-                return;
+                Filters f = runF;
+                foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f, it.id))
+                {
+                    ListViewItem li = lvZooTech.Items.Add(j.Days.ToString());
+                    li.SubItems.Add(j.JobName);
+                    li.SubItems.Add(j.Address);
+                    li.SubItems.Add(j.RabName);
+                    li.SubItems.Add(j.RabAge.ToString());
+                    li.SubItems.Add(j.RabBreed);
+                    li.SubItems.Add(j.Comment);
+                    li.SubItems.Add(j.Partners);
+                    li.Tag = j;
+                }
+                colSort.SemiReady();
             }
-            Filters f = runF;
-            foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f,it.id))
+            catch (Exception exc)
             {
-                ListViewItem li = lvZooTech.Items.Add(j.Days.ToString());
-                li.SubItems.Add(j.JobName);
-                li.SubItems.Add(j.Address);
-                li.SubItems.Add(j.RabName);
-                li.SubItems.Add(j.RabAge.ToString());
-                li.SubItems.Add(j.RabBreed);
-                li.SubItems.Add(j.Comment);
-                li.SubItems.Add(j.Partners);
-                li.Tag = j;
+                int i =0;
             }
-			colSort.SemiReady();
         }
 
         /// <summary>

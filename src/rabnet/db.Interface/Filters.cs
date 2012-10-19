@@ -99,7 +99,13 @@ namespace rabnet
         }
         public String safeValue(String key) { return safeValue(key, ""); }
 
-        public int safeInt(String key, int def) { return int.Parse(safeValue(key, def.ToString())); }//TODO не безопасно
+        public int safeInt(String key, int def) 
+        {
+            int result = 0;
+            string val = safeValue(key, def.ToString());
+            int.TryParse(val, out result);
+            return result; 
+        }//TODO не безопасно
         public int safeInt(String key) { return safeInt(key, 0); }
 
         public bool safeBool(String key, bool def) { return (safeInt(key, (def ? 1 : 0)) == 1); }

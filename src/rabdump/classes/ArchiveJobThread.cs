@@ -24,6 +24,8 @@ namespace rabdump
         private static readonly ILog _logger = LogManager.GetLogger(typeof(ArchiveJobThread));
         readonly String _tmppath = "";
 
+        public static event MessageSenderCallbackDelegate OnMessage;
+
         public ArchiveJobThread(ArchiveJob job)
         {
             _j = job;
@@ -152,16 +154,18 @@ namespace rabdump
         /// </summary>
         public void Run()
         {
-            _logger.Debug("Run dump for " + _j.JobName);
-            //if (_j.DataSrc == DataBase.AllDataBases)
-            //{
-            //    List<DataSource> dbs = Options.Get().Databases;
-            //    for (int i = 0; i < dbs.Count - 1; i++)
-            //        DumpDB(dbs[i]);
-            //}
-            //else
-            DumpDB(_j.DataSrc);
-            _jobber.OnEndJob();
+            try
+            {
+                _logger.Debug("Run dump for " + _j.JobName);
+                DumpDB(_j.DataSrc);
+                _jobber.OnEndJob();
+            }
+            catch (Exception exc)
+            {
+                _j.Busy = false;
+                _logger.Error(exc);
+                callOnMessage(exc.Message, "Ошибка", 2);
+            }
         }
 
         /// <summary>
@@ -172,6 +176,7 @@ namespace rabdump
             _j.Busy = false;
             _j.LastWork = DateTime.Now;
             _logger.Debug("End of making dump " + _j.JobName);
+            callOnMessage("Зарезервировано","",0);
         }
 
         /// <summary>
@@ -201,6 +206,22 @@ namespace rabdump
             string md5;
             return GetLatestDump(out md5);
         }
+
+        /// <summary>
+        /// Запускает событие
+        /// </summary>
+        /// <param name="msg">Сообщение</param>
+        /// <param name="ttl">Заголовок</param>
+        /// <param name="type">Тип(none,info,warning,error)</param>
+        /// <param name="hide">Спрятать Значок в трее</param>
+        private void callOnMessage(string msg, string ttl, int type, bool hide)
+        {
+            if (OnMessage != null)
+            {
+                OnMessage(msg, ttl, type, hide);
+            }
+        }
+        private void callOnMessage(string msg, string ttl, int type) { callOnMessage(msg, ttl, type, false); }
 
         #region static
         /// <summary>
@@ -257,7 +278,7 @@ namespace rabdump
             }
             catch (Exception ex)
             {
-                _logger.Error("Error while " + md + ":" + ex.GetType().ToString() + ":" + ex.Message);
+                //_logger.Error("Error while " + md + ":" + ex.GetType().ToString() + ":" + ex.Message);
                 try
                 {
                     File.Delete(fname + ".dump");
@@ -267,12 +288,13 @@ namespace rabdump
                     _logger.Error("Error while " + md + ":" + ex2.GetType().ToString() + ":" + ex2.Message);
                     //return "";
                 }
-                return "";
+                //return "";
+                throw ex;
             }
             ///Упаковываем в архив
             bool is7z = false;
             md = Options.Inst.Path7Z;
-            if (md == "")///если путь к 7zip не настроен, то в папку BackUps копируется .dump-файл
+            if (md == "" || !File.Exists(md))///если путь к 7zip не настроен, то в папку BackUps копируется .dump-файл
                 _logger.Warn("7z not specified");
             else
             {
@@ -287,7 +309,7 @@ namespace rabdump
                     Process p = Process.Start(inf);
                     p.WaitForExit();
                     if (p.ExitCode != 0)
-                        throw new ApplicationException("Ошибка при разархивации: " + p.ExitCode.ToString());
+                        throw new ApplicationException("Ошибка при архивации: " + p.ExitCode.ToString());
                     File.Delete(fname + ".dump");
                     is7z = true;
                 }
@@ -356,7 +378,7 @@ namespace rabdump
                     throw new ApplicationException("7z вернул результат: " + z7err(res));
                 }
 
-                f = CheckDumpPath(ff);
+                f = checkDumpPath(ff);
                 if (f == "")
                 {
                     throw new ApplicationException("Ошибка при разархивировании");
@@ -430,7 +452,7 @@ namespace rabdump
                     _logger.ErrorFormat("7z error: {0:s}", z7err(res));
                     return "";
                 }
-                return CheckDumpPath(targPath);
+                return checkDumpPath(targPath);
             }
         }
 
@@ -481,7 +503,7 @@ namespace rabdump
         /// <param name="dumpPath">Ориентировочный путь к дампу</param>
         /// <returns> Путь к Дампу
         /// Если пустая строка,значит произошла ошибка</returns>
-        private static string CheckDumpPath(string dumpPath)
+        private static string checkDumpPath(string dumpPath)
         {
             if (!File.Exists(dumpPath))
             {

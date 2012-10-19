@@ -85,8 +85,8 @@ namespace rabdump
         {
             _logger.Fatal(ex);
             string msg ="Произошла ошибка. Программа будет закрыта.\n\r" + ex.Message;
-            if (ex.Source == "MySql.Data")            
-                msg="Соединение с сервером было разорвано.\n\rПрграмма будет закрыта";
+            if (ex.Source == "MySql.Data")
+                msg = "Соединение с MySQL-сервером было разорвано.\n\rПрграмма будет закрыта";
             MessageBox.Show(msg, "Серьезная ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);           
         }
 

@@ -30,7 +30,7 @@ namespace rabdump
         //public String MySqlExePath = "";
         //public String MySqlDumpPath = "";
 
-        private String _myPath = @"C:\Program Files\MySQL\MySQL Server 5.1"; 
+        private String _myPath = "";//@"C:\Program Files\MySQL\MySQL Server 5.1"; 
         private String _p7 = "";
         private String _servUrl;
         private bool _sas = false;
@@ -59,7 +59,14 @@ namespace rabdump
 
         public String MySqlPath
         {
-            get { return _myPath; }
+            get 
+            {
+                if (_myPath == null || _myPath == "")
+                {
+                    //TODO попробывать найти mysql server в реестре либо на диске
+                }
+                return _myPath; 
+            }
             set
             {
                 if(Directory.Exists(value) )

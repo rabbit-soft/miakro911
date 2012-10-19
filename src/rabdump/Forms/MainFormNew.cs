@@ -30,6 +30,7 @@ namespace rabdump
             InitializeComponent();
             RabServWorker.Url = Options.Inst.ServerUrl;
             RabServWorker.OnMessage += new MessageSenderCallbackDelegate(messageCb);
+            ArchiveJobThread.OnMessage += new MessageSenderCallbackDelegate(messageCb);
 #if PROTECTED
             //miSendGlobRep.Enabled = GRD.Instance.GetFlag(GRD_Base.FlagType.WebReports);
             miSendGlobRep.Visible =
