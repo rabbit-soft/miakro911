@@ -21,6 +21,7 @@ namespace rabdump
         public enum Rubool { Да, Нет };
         private static Options _oops = null;
         //const String Opt = "Настройки";
+        const String Z7_NAME = @"7z\7za.exe";
         const String RD_OPTIONS = "rabdumpOptions";
         const String MYSQL_EXE = @"\bin\mysql.exe";
         const String MYSQL_DUMP = @"\bin\mysqldump.exe";
@@ -70,7 +71,18 @@ namespace rabdump
         public string ServerUrl { get { return _servUrl; } set { _servUrl = value; } }
         public String Path7Z
         {
-            get { return _p7; }
+            get 
+            {
+                if (_p7==null || _p7 == "")
+                {
+                    string search = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
+                    DirectoryInfo di = Directory.GetParent(search);
+                    search = Path.Combine(di.FullName, Z7_NAME);
+                    if (File.Exists(search))
+                        return search;
+                }
+                return _p7; 
+            }
             set 
             { 
                 if(File.Exists(value))

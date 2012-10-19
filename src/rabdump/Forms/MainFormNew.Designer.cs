@@ -32,9 +32,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainFormNew));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpGeneral = new System.Windows.Forms.TabPage();
+            this.generalPanel1 = new rabdump.GeneralPanel();
             this.tpDataSources = new System.Windows.Forms.TabPage();
+            this.farmsPanel1 = new rabnet.FarmsPanel();
             this.tpArchiveJobs = new System.Windows.Forms.TabPage();
+            this.archiveJobsPanel1 = new rabdump.ArchiveJobsPanel();
             this.tpInfo = new System.Windows.Forms.TabPage();
+            this.aboutPanel1 = new rabdump.AboutPanel();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miShowMainForm = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,10 +57,6 @@
             this.btOK = new System.Windows.Forms.Button();
             this.tDumper = new System.Windows.Forms.Timer(this.components);
             this.tUpdater = new System.Windows.Forms.Timer(this.components);
-            this.generalPanel1 = new rabdump.GeneralPanel();
-            this.farmsPanel1 = new rabnet.FarmsPanel();
-            this.archiveJobsPanel1 = new rabdump.ArchiveJobsPanel();
-            this.aboutPanel1 = new rabdump.AboutPanel();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.tpDataSources.SuspendLayout();
@@ -92,6 +92,14 @@
             this.tpGeneral.TabIndex = 0;
             this.tpGeneral.Text = "Основное";
             // 
+            // generalPanel1
+            // 
+            this.generalPanel1.Location = new System.Drawing.Point(6, 4);
+            this.generalPanel1.MinimumSize = new System.Drawing.Size(340, 315);
+            this.generalPanel1.Name = "generalPanel1";
+            this.generalPanel1.Size = new System.Drawing.Size(340, 315);
+            this.generalPanel1.TabIndex = 0;
+            // 
             // tpDataSources
             // 
             this.tpDataSources.Controls.Add(this.farmsPanel1);
@@ -100,6 +108,15 @@
             this.tpDataSources.Size = new System.Drawing.Size(353, 344);
             this.tpDataSources.TabIndex = 1;
             this.tpDataSources.Text = "Подключения";
+            // 
+            // farmsPanel1
+            // 
+            this.farmsPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.farmsPanel1.Location = new System.Drawing.Point(0, 0);
+            this.farmsPanel1.MinimumSize = new System.Drawing.Size(340, 315);
+            this.farmsPanel1.Name = "farmsPanel1";
+            this.farmsPanel1.Size = new System.Drawing.Size(340, 315);
+            this.farmsPanel1.TabIndex = 0;
             // 
             // tpArchiveJobs
             // 
@@ -110,6 +127,15 @@
             this.tpArchiveJobs.TabIndex = 2;
             this.tpArchiveJobs.Text = "Расписания";
             // 
+            // archiveJobsPanel1
+            // 
+            this.archiveJobsPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.archiveJobsPanel1.Location = new System.Drawing.Point(0, 0);
+            this.archiveJobsPanel1.MinimumSize = new System.Drawing.Size(340, 315);
+            this.archiveJobsPanel1.Name = "archiveJobsPanel1";
+            this.archiveJobsPanel1.Size = new System.Drawing.Size(353, 344);
+            this.archiveJobsPanel1.TabIndex = 0;
+            // 
             // tpInfo
             // 
             this.tpInfo.Controls.Add(this.aboutPanel1);
@@ -118,6 +144,16 @@
             this.tpInfo.Size = new System.Drawing.Size(353, 344);
             this.tpInfo.TabIndex = 3;
             this.tpInfo.Text = "О программе";
+            // 
+            // aboutPanel1
+            // 
+            this.aboutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.aboutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.aboutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.aboutPanel1.MinimumSize = new System.Drawing.Size(340, 0);
+            this.aboutPanel1.Name = "aboutPanel1";
+            this.aboutPanel1.Size = new System.Drawing.Size(340, 74);
+            this.aboutPanel1.TabIndex = 0;
             // 
             // notifyIcon1
             // 
@@ -251,42 +287,6 @@
             // tUpdater
             // 
             this.tUpdater.Interval = 10800000;
-            // 
-            // generalPanel1
-            // 
-            this.generalPanel1.Location = new System.Drawing.Point(6, 4);
-            this.generalPanel1.MinimumSize = new System.Drawing.Size(340, 315);
-            this.generalPanel1.Name = "generalPanel1";
-            this.generalPanel1.Size = new System.Drawing.Size(340, 315);
-            this.generalPanel1.TabIndex = 0;
-            // 
-            // farmsPanel1
-            // 
-            this.farmsPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.farmsPanel1.Location = new System.Drawing.Point(0, 0);
-            this.farmsPanel1.MinimumSize = new System.Drawing.Size(340, 315);
-            this.farmsPanel1.Name = "farmsPanel1";
-            this.farmsPanel1.Size = new System.Drawing.Size(353, 344);
-            this.farmsPanel1.TabIndex = 0;
-            // 
-            // archiveJobsPanel1
-            // 
-            this.archiveJobsPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.archiveJobsPanel1.Location = new System.Drawing.Point(0, 0);
-            this.archiveJobsPanel1.MinimumSize = new System.Drawing.Size(340, 315);
-            this.archiveJobsPanel1.Name = "archiveJobsPanel1";
-            this.archiveJobsPanel1.Size = new System.Drawing.Size(353, 344);
-            this.archiveJobsPanel1.TabIndex = 0;
-            // 
-            // aboutPanel1
-            // 
-            this.aboutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.aboutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.aboutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.aboutPanel1.MinimumSize = new System.Drawing.Size(340, 0);
-            this.aboutPanel1.Name = "aboutPanel1";
-            this.aboutPanel1.Size = new System.Drawing.Size(353, 344);
-            this.aboutPanel1.TabIndex = 0;
             // 
             // MainFormNew
             // 

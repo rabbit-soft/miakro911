@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
 using System.Text;
+using System.IO;
 using System.Windows.Forms;
 using rabnet.RNC;
 #if PROTECTED
@@ -107,7 +106,8 @@ namespace rabdump
                 else
                 {
                     cbName.Text = "";
-                    btDumpPath.Text = "C:\\";
+                    tbDumpPath.Text = getDefaultDumpPath();
+                    folderBrowserDialog1.RootFolder = Environment.SpecialFolder.MyDocuments;
                     cbArcType.SelectedIndex = 0;
                     nudCountLimit.Value = nudSizeLimit.Value = 0;
                 }
@@ -234,6 +234,16 @@ namespace rabdump
             //int add = (int)dtpDate.Value.DayOfWeek > ind ? 7 - (int)dtpDate.Value.DayOfWeek +ind : ind - (int)dtpDate.Value.DayOfWeek;
             int add = ind - (int)dtpDate.Value.DayOfWeek;
             dtpDate.Value = dtpDate.Value.AddDays(add);
+        }
+
+        private string getDefaultDumpPath()
+        {
+                string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                path = Path.Combine(path, @"Miakro911\dumps");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                return path;
+            
         }
     }
 }
