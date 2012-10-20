@@ -105,7 +105,7 @@ namespace rabnet.RNC
 
         internal void RelocateRegOptions()
         {
-            RegistryKey sourceKey = Registry.LocalMachine.CreateSubKey(REGISTRY_PATH);
+            RegistryKey sourceKey = Registry.LocalMachine.OpenSubKey(REGISTRY_PATH);
             if (sourceKey == null) return;
             RegistryKey destinationKey = _regKey.CreateSubKey(REGISTRY_PATH);           
             recurseCopyKey(sourceKey, destinationKey);

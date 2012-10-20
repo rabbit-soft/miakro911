@@ -125,39 +125,43 @@ namespace rabdump
 
         private void btOk_Click(object sender, EventArgs e)
         {
-            cbName.Text = cbName.Text.Replace(ArchiveJobThread.SPACE_REPLACE, '\0');
-            if (cbName.Text == "")
+            try
             {
-                MessageBox.Show("Название не должно быть пустым");
-                return;
-            }
-            ArchiveJob aj;
-            if (btAdd.Checked)
-            {
-                if (isNameExists())
+                cbName.Text = cbName.Text.Replace(ArchiveJobThread.SPACE_REPLACE, '\0');
+                if (cbName.Text == "")               
+                    throw new Exception("Название не должно быть пустым");
+                if (cbDataBase.SelectedIndex == -1)
+                    throw new Exception("Не выбрана \"Ферма\"");
+                ArchiveJob aj;
+                if (btAdd.Checked)
                 {
-                    MessageBox.Show("Расписание с таким именем уже существует");
-                    return;
+                    if (isNameExists())                    
+                        throw new Exception("Расписание с таким именем уже существует");
+                    
+                    aj = new ArchiveJob(Guid.NewGuid().ToString(), cbName.Text, _ds_dict[cbDataBase.SelectedIndex], tbDumpPath.Text, getDT().ToLongDateString(),
+                        cbArcType.SelectedIndex, (int)nudCountLimit.Value, (int)nudSizeLimit.Value, chServerSend.Checked);
+                    _rnc.ArchiveJobs.Add(aj);
                 }
-                aj = new ArchiveJob(Guid.NewGuid().ToString(), cbName.Text , _ds_dict[cbDataBase.SelectedIndex], tbDumpPath.Text, getDT().ToLongDateString(),
-                    cbArcType.SelectedIndex, (int)nudCountLimit.Value, (int)nudSizeLimit.Value, chServerSend.Checked);
-                _rnc.ArchiveJobs.Add(aj);
+                else if (btEdit.Checked)
+                {
+                    aj = _aj_dict[_sInd];
+                    aj.JobName = cbName.Text;
+                    aj.DataSrc = _ds_dict[cbDataBase.SelectedIndex];
+                    aj.DumpPath = tbDumpPath.Text;
+                    aj.StartTime = getDT();
+                    aj.ArcType = cbArcType.SelectedIndex;
+                    aj.CountLimit = (int)nudCountLimit.Value;
+                    aj.SizeLimit = (int)nudSizeLimit.Value;
+                    aj.SendToServ = chServerSend.Checked;
+                }
+                //RabnetConfig.SaveDataSources();
+                btCancel_Click(null, null);
+                init();
             }
-            else if (btEdit.Checked)
+            catch (Exception exc)
             {
-                aj = _aj_dict[_sInd];
-                aj.JobName = cbName.Text;
-                aj.DataSrc = _ds_dict[cbDataBase.SelectedIndex];
-                aj.DumpPath =tbDumpPath.Text;
-                aj.StartTime =getDT();
-                aj.ArcType = cbArcType.SelectedIndex;
-                aj.CountLimit = (int)nudCountLimit.Value;
-                aj.SizeLimit = (int)nudSizeLimit.Value;
-                aj.SendToServ = chServerSend.Checked;
+                MessageBox.Show(exc.Message);
             }
-            //RabnetConfig.SaveDataSources();
-            btCancel_Click(null, null);
-            init();
         }
 
         private void btDelete_Click(object sender, EventArgs e)

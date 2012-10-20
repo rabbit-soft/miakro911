@@ -254,7 +254,7 @@ namespace rabdump
             if (md == "" || !File.Exists(md))
             {
                 _logger.Error("MySQLDump not specified " + md);
-                throw new ApplicationException("Путь к MySQLDump указан не корректно");
+                throw new ApplicationException("Путь к MySQL указан не корректно");
             }
             String pr = String.Format("{0:s} {1:s} {2:s} {3:s} --ignore-table={0:s}.allrabbits", db.Params.DataBase, (db.Params.Host == "" ? "" : "-h " + db.Params.Host),
                 (db.Params.User == "" ? "" : "-u " + db.Params.User), (db.Params.Password == "" ? "" : "--password=" + db.Params.Password));
