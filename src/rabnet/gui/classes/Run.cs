@@ -42,5 +42,15 @@ namespace rabnet
             Process p = Process.Start(path);
             p.WaitForExit();
         }
+
+        public static string SerachConfig(string p)
+        {
+            return Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), p + ".exe.config");//TODO дописать
+        }
+
+        //private static string searchConfig()
+        //{
+        //    return "";
+        //}
     }
 }

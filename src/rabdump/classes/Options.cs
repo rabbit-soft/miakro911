@@ -59,14 +59,7 @@ namespace rabdump
 
         public String MySqlPath
         {
-            get 
-            {
-                if (_myPath == null || _myPath == "")
-                {
-                    //TODO попробывать найти mysql server в реестре либо на диске
-                }
-                return _myPath; 
-            }
+            get { return _myPath;}
             set
             {
                 if(Directory.Exists(value) )
@@ -144,163 +137,12 @@ namespace rabdump
 
         private string prettyServer(string result)
         {
+            if(result==null || result=="") return "";
+
             if (!result.StartsWith("http://")) result = "http://" + result;
             result = result.Replace('\\', '/');
             if (!result.EndsWith("/")) result += "/";
             return result;
         }
-
-        //private void loadDBs()
-        //{
-        //    Databases.Clear();
-        //    _rnc.LoadDataSources();
-        //    foreach (DataSource ds in _rnc.DataSources)
-        //    {
-        //        sParams p = ds.Params;
-        //        DataSource db = new DataSource(ds.Guid, p.Host, p.DataBase, p.User, p.Password, ds.Name);
-        //        db.WebReport = ds.WebReport;// ? Options.Rubool.Да : Options.Rubool.Нет;
-        //        Databases.Add(db);
-        //    }
-        //}
-
-        //private void saveDBs()
-        //{
-        //    foreach (DataSource db in Databases)
-        //    {
-        //        if (db.Guid == "")
-        //            db.Guid = System.Guid.NewGuid().ToString();
-        //        DataSource newDS = new DataSource(db.Guid, db.Name, db.Params.Host, db.Params.DataBase, db.Params.User, db.Params.Password);
-        //        newDS.WebReport = db.WebReport ;//== Options.Rubool.Да;
-        //        _rnc.SaveDataSource(newDS);
-
-        //    }
-        //    ///Удаляем удаленные
-        //    string remove = "";
-        //    foreach (DataSource ds in _rnc.DataSources)
-        //    {
-        //        bool contains = false;
-        //        foreach (DataSource db2 in Databases)
-        //        {
-        //            if (db2.Guid == ds.Guid)
-        //            {
-        //                contains = true;
-        //                break;
-        //            }
-        //        }
-        //        if (!contains)
-        //            remove = ds.Guid;
-        //    }
-        //    if (remove != "")
-        //        _rnc.DeleteDataSource(remove);
-        //    _rnc.SaveDataSources();
-        //}
-
-        //private DataSource getDataBase(string guid)
-        //{
-        //    //if (guid == DataBase.AllDataBases.Name)
-        //    //    return DataBase.AllDataBases;
-        //    foreach (DataSource db in Databases)
-        //    {
-        //        if (db.Guid == guid)
-        //            return db;
-        //    }
-        //    return null;
-        //}
-
-        /// <summary>
-        /// Загружает из реестра Расписания Резервирования.
-        /// </summary>
-        /// <param name="dbc">Коллекция Настроек Подключения к БД. 
-        /// Нужна для того, чтобы не отображать Расписания из реестра тех БД, 
-        /// которых не существует в передаваемой Коллекции
-        /// </param>
-        //private void loadAJs()
-        //{
-        //    _rnc.LoadArchiveJobs();
-        //    foreach (ArchiveJob raj in _rnc.ArchiveJobs)
-        //    {
-        //        DataSource ds =  getDataBase(raj.DataSrc.Guid);
-        //        if (ds == null) continue;
-        //        ArchiveJobs.Add(new ArchiveJob(raj.Guid,
-        //            raj.JobName,
-        //            ds,
-        //            raj.DumpPath,
-        //            raj.StartTime.ToShortDateString(),
-        //            raj.ArcType,
-        //            raj.CountLimit,
-        //            raj.SizeLimit,
-        //            raj.Repeat,
-        //            raj.ServTime.ToShortDateString(), raj.ServType));
-        //    }
-        //}
-
-        /// <summary>
-        /// Сохранение в реестре Расписаний резервирования
-        /// </summary>
-        /// <param name="dbc">Коллекция Настроек Подключения к БД. 
-        /// Нужна для того, чтобы удалить Расписания из реестра тех БД, 
-        /// которых не существует в передаваемой Коллекции
-        /// </param>
-        //private void saveAJs(List<DataSource> dbc)
-        //{
-        //    ///Удаляем из THIS те Расписания, в которых указана Не существующая БД
-        //    ArchiveJob removeAJ;
-        //    do
-        //    {
-        //        removeAJ = null;
-        //        foreach (ArchiveJob aj in _jobs)
-        //        {
-        //            if (/*aj.DataSrc != DataBase.AllDataBases &&*/ !dbc.Contains(aj.DataSrc))
-        //            {
-        //                removeAJ = aj;
-        //                break;
-        //            }
-        //        }
-        //        if (removeAJ != null)
-        //            _jobs.Remove(removeAJ);
-        //    }
-        //    while (removeAJ != null);
-
-        //    ///Сохраняем расписания из THIS в RabnetConfig.ArchiveJobs
-        //    foreach (ArchiveJob aj in _jobs)
-        //    {
-        //        if (aj.Guid == "" || aj.Guid == null)
-        //            aj.Guid = System.Guid.NewGuid().ToString();
-        //        //_rnc.SaveArchiveJob(aj.Guid, aj.JobName, aj.DataSrc.Guid, aj.DumpPath, aj.StartTime.ToString(), aj.IntType(), aj.CountLimit, aj.SizeLimit, aj.Repeat, aj.ServTime.ToString(), aj.ServType);
-        //    }
-
-        //    ///Удаляем из RabnetConfig.ArchiveJobs то, что удалили из THIS
-        //    ArchiveJob removeRAJ;
-        //    do
-        //    {
-        //        removeRAJ = null;
-        //        foreach (ArchiveJob raj in _rnc.ArchiveJobs)
-        //        {
-        //            bool contains = false;
-        //            //проверяем содержит ли в RabnetConfig.ArchiveJobs  элемент которого нет в THIS
-        //            foreach (ArchiveJob aj in _jobs)
-        //            {
-        //                if (aj.Guid == raj.Guid)
-        //                {
-        //                    contains = true;
-        //                    break;
-        //                }
-        //            }
-        //            //если RabnetConfig.ArchiveJobs содержит элемент которого нет в THIS
-        //            if (!contains)
-        //            {
-        //                removeRAJ = raj;
-        //                break;
-        //            }
-        //        }
-        //        if (removeRAJ != null)
-        //            _rnc.DeleteArchiveJob(removeRAJ.Guid);
-        //    }
-        //    while (removeRAJ != null);
-        //    _rnc.SaveArchiveJobs();
-        //}
-
-
-
     }
 }

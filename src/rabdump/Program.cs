@@ -87,6 +87,9 @@ namespace rabdump
             string msg ="Произошла ошибка. Программа будет закрыта.\n\r" + ex.Message;
             if (ex.Source == "MySql.Data")
                 msg = "Соединение с MySQL-сервером было разорвано.\n\rПрграмма будет закрыта";
+            else if (ex is UnauthorizedAccessException)
+                msg = "Произошла ошибка доступа" + Environment.NewLine + 
+                    "Программу необходимо запустить от Имени администратора";       
             MessageBox.Show(msg, "Серьезная ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);           
         }
 

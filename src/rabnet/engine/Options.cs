@@ -83,7 +83,7 @@ namespace rabnet
                                    new Option(OPT_ID.COUNT2,OPT_LEVEL.FARM,"count2"), 
                                    new Option(OPT_ID.COUNT3,OPT_LEVEL.FARM,"count3"), 
                                    new Option(OPT_ID.MAKE_BRIDE,OPT_LEVEL.FARM,"bride"), 
-                                   new Option(OPT_ID.DEAD_FILTER,OPT_LEVEL.USER,"dead_filter"), 
+                                   new Option(OPT_ID.DEAD_FILTER,OPT_LEVEL.USER,"dead_filter"),
                                    new Option(OPT_ID.PRE_OKROL,OPT_LEVEL.FARM,"preokrol"), 
                                    new Option(OPT_ID.ZOO_FILTER,OPT_LEVEL.USER,"zoo_filter"), 
                                    new Option(OPT_ID.COMBINE_AGE,OPT_LEVEL.FARM,"combage"), 

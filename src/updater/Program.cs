@@ -31,23 +31,18 @@ namespace updater
             }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            ///Определяет пути к файлам конфигураций 
-#if !TFPF
-            String flRabDump = Path.GetDirectoryName(Application.ExecutablePath) + @"\..\RabDump\rabdump.exe.config";
-            String flRabNet = Path.GetDirectoryName(Application.ExecutablePath) + @"\..\RabNet\rabnet.exe.config";
-#else           
-            String flRabDump = @"C:\Program Files\Miakro911\RabDump\rabdump.exe.config";
-            String flRabNet = @"C:\Program Files\Miakro911\RabNet\rabnet.exe.config";
-#endif
-            ///Определяет существуют ли файлы.
-            bool hasRabNet = File.Exists(flRabNet);
-            bool hasRabDump = File.Exists(flRabDump);
-            ///Извлекаем настройки из файлов конфигурации
-            if (hasRabNet && InstallForm.TestRabNetConfig(flRabNet))
-                _rnc.ExtractConfig(flRabNet);
-            if (hasRabDump && InstallForm.TestRabDumpConfig(flRabDump))
-                _rnc.ExtractConfig(flRabDump);
+            ///Определяет пути к файлам конфигураций     
+            String flRabDump = rabnet.Run.SerachConfig("rabdump");
+            String flRabNet = rabnet.Run.SerachConfig("rabdump");
             
+            ///Извлекаем настройки из файлов конфигурации
+            if ( flRabNet!="" && InstallForm.TestRabNetConfig(flRabNet))
+                _rnc.ExtractConfig(flRabNet);
+            if (flRabNet != "" && InstallForm.TestRabDumpConfig(flRabDump))
+                _rnc.ExtractConfig(flRabDump);
+
+            _rnc.RelocateRegOptions();
+
             /*bool update = hasRabNet || hasRabDump;
             if (hasRabNet && !hasRabDump)           
                 if (Directory.Exists(Path.GetDirectoryName(Application.ExecutablePath) + @"\..\RabDump"))               

@@ -20,8 +20,8 @@ namespace updater
         /// Версия до которой надо обновиться
         /// </summary>
         private int _curver = 0;
-        private string _filenameRabDump = "";
-        private string _filenameRabNet = "";
+        //private string _filenameRabDump = "";
+        //private string _filenameRabNet = "";
         private bool _needUpdateSomebody = true;
         private Dictionary<int, String> _scripts = new Dictionary<int, string>();
         private MySqlConnection _sql = null;

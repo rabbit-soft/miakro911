@@ -24,7 +24,7 @@ namespace rabnet.RNC
         }
 
         private readonly ILog _logger = LogManager.GetLogger(typeof(RabnetConfig));
-
+        public RegistryKey _regKey = Registry.CurrentUser;
         public const string STARTUP = @"Software\Microsoft\Windows\CurrentVersion\Run";
         public const string REGISTRY_PATH = @"Software\9-Bits\Miakro911";
         public const string DATASOURCES_PATH = REGISTRY_PATH + "\\datasources";
@@ -39,13 +39,17 @@ namespace rabnet.RNC
         
         public string GetOption(OptionType optionType)
         {
-            RegistryKey k = Registry.LocalMachine.CreateSubKey(REGISTRY_PATH);
+            RegistryKey k = _regKey.CreateSubKey(REGISTRY_PATH);
             switch (optionType)
             {
-                case OptionType.MysqlPath: return (string)k.GetValue("mysql");
+                case OptionType.MysqlPath:
+                    string val = (string)k.GetValue("mysql");
+                    if (val == null || val == "")
+                        val= tryToDetectMysqlPath();
+                    return val ;
                 case OptionType.zip7path: return (string)k.GetValue("z7");
                 case OptionType.rabdump_startupPath:
-                    k = Registry.LocalMachine.CreateSubKey(STARTUP);
+                    k = _regKey.CreateSubKey(STARTUP);
                     return (string)k.GetValue("rabdump", "");
                 case OptionType.serverUrl:
                     return (string)k.GetValue("sUrl", "");
@@ -53,16 +57,21 @@ namespace rabnet.RNC
             return "";
         }
 
+        private string tryToDetectMysqlPath()
+        {
+            return "";            
+        }
+
         public void SaveOption(OptionType optionType, string val)
         {
             if (val == null) val = "";
-            RegistryKey k = Registry.LocalMachine.CreateSubKey(REGISTRY_PATH);
+            RegistryKey k = _regKey.CreateSubKey(REGISTRY_PATH);
             switch (optionType)
             {
                 case OptionType.MysqlPath: k.SetValue("mysql", val); break;
                 case OptionType.zip7path: k.SetValue("z7", val); break;
                 case OptionType.rabdump_startupPath:
-                    k = Registry.LocalMachine.CreateSubKey(STARTUP);
+                    k = _regKey.CreateSubKey(STARTUP);
                     if (val == "") k.DeleteValue("rabdump", false);
                     else k.SetValue("rabdump", val);
                     break;
@@ -89,10 +98,10 @@ namespace rabnet.RNC
         public void LoadDataSources()
         {            
             _dataSources.Clear();
-            RegistryKey rKey = Registry.LocalMachine.CreateSubKey(DATASOURCES_PATH);
+            RegistryKey rKey = _regKey.CreateSubKey(DATASOURCES_PATH);
             foreach (string guid in rKey.GetSubKeyNames())
             {
-                RegistryKey k = Registry.LocalMachine.CreateSubKey(DATASOURCES_PATH + "\\" + guid);
+                RegistryKey k = _regKey.CreateSubKey(DATASOURCES_PATH + "\\" + guid);
                 DataSource ds = new DataSource(guid, (string)k.GetValue("name"), (string)k.GetValue("type"), (string)k.GetValue("params"));
                 ds.Default = (string)k.GetValue("def", false) == true.ToString();
                 ds.Hidden = (string)k.GetValue("hidden", false) == true.ToString();
@@ -111,13 +120,13 @@ namespace rabnet.RNC
         public void SaveDataSources()
         {
             //_logger.Info("saving DataSources");
-            RegistryKey rKey = Registry.LocalMachine.CreateSubKey(DATASOURCES_PATH);
+            RegistryKey rKey = _regKey.CreateSubKey(DATASOURCES_PATH);
             List<string> noDeleted = new List<string>();
             foreach (DataSource ds in _dataSources)
             {
                 if (ds.Guid == "")
                     ds.Guid = System.Guid.NewGuid().ToString();
-                RegistryKey k = Registry.LocalMachine.CreateSubKey(DATASOURCES_PATH + "\\" + ds.Guid);
+                RegistryKey k = _regKey.CreateSubKey(DATASOURCES_PATH + "\\" + ds.Guid);
                 k.SetValue("name", ds.Name, RegistryValueKind.String);
                 k.SetValue("type", ds.Type, RegistryValueKind.String);
                 k.SetValue("params", ds.Params.ToString(), RegistryValueKind.String);
@@ -244,7 +253,8 @@ namespace rabnet.RNC
             return null;
         }
 
-        #endregion datasources       
+        #endregion datasources           
+            
     }
 
 }

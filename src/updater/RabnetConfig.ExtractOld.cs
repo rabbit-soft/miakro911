@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using Microsoft.Win32;
 
 namespace rabnet.RNC
 {
@@ -97,37 +98,35 @@ namespace rabnet.RNC
                             _dataSources.Add(db);
 
                         break;
-                    //case "job":
-                    //    ArchiveJob aj = new ArchiveJob("",
-                    //        nd.SelectSingleNode("name").InnerText,
-                    //        nd.SelectSingleNode("db").InnerText,
-                    //        nd.SelectSingleNode("path").InnerText,
-                    //        nd.SelectSingleNode("start").InnerText,
-                    //        getAJTypeInt(nd.SelectSingleNode("type").InnerText),
-                    //        int.Parse(nd.SelectSingleNode("countlim").InnerText),
-                    //        int.Parse(nd.SelectSingleNode("sizelim").InnerText),
-                    //        int.Parse(nd.SelectSingleNode("repeat").InnerText),
-                    //        DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 5);
-                    //    if (aj.DBguid == "[все]")
-                    //        aj.DBguid = ALL_DB;
-
-                    //    if (compareArchivejobs(aj) == "")//если не имеется идентичных Расписаний
-                    //    {
-                    //        if (aj.DBguid != ALL_DB)
-                    //        {   //назначаем расписанию Guid Подключения к БД
-                    //            List<string> dbguids = getGuidsByDBName(aj.DBguid);
-                    //            if (dbguids.Count == 0) break;
-                    //            aj.DBguid = dbguids[0];
-                    //        }
-                    //    }
-                    //    else break;
-                    //    aj.Guid = System.Guid.NewGuid().ToString();
-                    //    _archiveJobs.Add(aj);
-                    //    break;
                 }
             }
             SaveDataSources();
-            //SaveArchiveJobs();
+        }
+
+        internal void RelocateRegOptions()
+        {
+            RegistryKey sourceKey = Registry.LocalMachine.CreateSubKey(REGISTRY_PATH);
+            if (sourceKey == null) return;
+            RegistryKey destinationKey = _regKey.CreateSubKey(REGISTRY_PATH);           
+            recurseCopyKey(sourceKey, destinationKey);
+            Registry.LocalMachine.DeleteSubKeyTree(REGISTRY_PATH);
+        }
+
+        private void recurseCopyKey(RegistryKey sourceKey, RegistryKey destinationKey)
+        {
+            foreach (string valueName in sourceKey.GetValueNames())
+            {
+                object objValue = sourceKey.GetValue(valueName);
+                RegistryValueKind valKind = sourceKey.GetValueKind(valueName);
+                destinationKey.SetValue(valueName, objValue, valKind);
+            }
+ 
+            foreach (string sourceSubKeyName in sourceKey.GetSubKeyNames())
+            {
+                RegistryKey sourceSubKey = sourceKey.OpenSubKey(sourceSubKeyName);
+                RegistryKey destSubKey = destinationKey.CreateSubKey(sourceSubKeyName);
+                recurseCopyKey(sourceSubKey, destSubKey);
+            }
         }
     }
 }
