@@ -202,7 +202,7 @@ namespace rabnet
             if (name == "")
                 throw new ApplicationException("Пустое имя.");
             if (db().hasUser(name))
-                throw new ApplicationException("Пользователь уже существует.");
+                throw new ApplicationException("Пользователь с таким именем уже существует.");
             if (!isAdmin())
                 throw new ApplicationException("Нет прав доступа.");
             db().addUser(name, group, password);

@@ -357,23 +357,26 @@ r_group FROM rabbits WHERE {0:s} ORDER BY r_farm,r_tier_id,r_area;",where);
             int user = f.safeInt("user");
             string period = "";
             string format = "";
+            string worker = f.safeInt("user", 0)>0 ? "f_worker="+f.safeInt("user"):"";
             if (f.safeValue("dttp") == "m")
             {
                 DateTime dt = DateTime.Parse(f.safeValue("dtval"));
-                period = String.Format("AND (MONTH(f_end_date)={0:MM} AND YEAR(f_end_date)={0:yyyy})", dt);
+                period = String.Format("(MONTH(f_end_date)={0:MM} AND YEAR(f_end_date)={0:yyyy})", dt);
                 format = "%d";
             }
             else if (f.safeValue("dttp") == "y")
             {
-                period = String.Format("AND YEAR(f_end_date)={0}", f.safeValue("dtval"));
+                period = String.Format("YEAR(f_end_date)={0}", f.safeValue("dtval"));
                 format = "%m";
             }
+            if (worker != "")
+                period = " AND " + period;
             string result = String.Format(@"SELECT 
     CONCAT(' ',anyname(f_partner,0)) name,
     DATE_FORMAT(f_end_date,'{2}') dt,
     IF (f_state='okrol',f_children,IF(f_state='proholost','п','-')) state 
 FROM fucks 
-WHERE f_worker={0:d} {1} ORDER BY name,dt;", f.safeValue("user"), period,format);
+WHERE {0:s} {1:s} ORDER BY name,dt;",worker , period, format);
 
             return result;
         }

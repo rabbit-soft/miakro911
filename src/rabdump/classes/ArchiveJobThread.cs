@@ -52,11 +52,11 @@ namespace rabdump
         /// Возвращает информацию по дампам расписания:
         /// Количество дампов, Общий размер дампов, Название позднего или Раннего файла
         /// </summary>
-        /// <param name="sz">Общий размер дампов расписания</param>
+        /// <param name="totalSize">Общий размер дампов расписания</param>
         /// <param name="resFile">Имя файла, зафисит от параметра minimum</param>
         /// <param name="minimum">Самый старый файл дампа, принадлежащий расписанию, или самый новый</param>
         /// <returns>Количество дампов данного расписания</returns>
-        public int CountBackups(out int sz,out String resFile, bool minimum)
+        public int CountBackups(out int totalSize,out String resFile, bool minimum)
         {
             _logger.Debug("count backups in " + _j.DumpPath);
             if (!Directory.Exists(_j.DumpPath))
@@ -98,7 +98,7 @@ namespace rabdump
                     }
                 }
             }           
-            sz =(int)Math.Round((double)fsz/(1024 * 1024));
+            totalSize =(int)Math.Round((double)fsz/(1024 * 1024));
             return cnt;
         }
         public int CountBackups(out int sz, out String File)
@@ -133,6 +133,7 @@ namespace rabdump
                     {
                         File.Delete(Path.Combine(_j.DumpPath,min));
                         _logger.InfoFormat("Deleting file: {0:s}\\{1:s}", _j.DumpPath, min);
+                        cnt = CountBackups(out sz, out min);
                     }
                 //CountBackups(out sz, out min);
                 if (_j.SizeLimit > 0)

@@ -8,6 +8,8 @@ namespace rabnet
 {
     public partial class OkrolUser : Form
     {
+        List<int> _ids = new List<int>();
+
         public myDatePeriod Period
         {
             get 
@@ -44,17 +46,17 @@ namespace rabnet
             }
         }
 
-        List<int> ids = new List<int>();
+        
         public OkrolUser()
         {
             InitializeComponent();
-            //dtpFrom.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            //dtpTo.Value = dtpFrom.Value.AddMonths(1).AddDays(-1);
+            comboBox1.Items.Add("--- ВСЕ ---");
+            _ids.Add(0);
             List<sUser> usrs = Engine.db().GetUsers();
             for (int i = 0; i < usrs.Count; i++)
             {
                 comboBox1.Items.Add(usrs[i].Name);
-                ids.Add(usrs[i].Id);
+                _ids.Add(usrs[i].Id);
             }
             comboBox1.SelectedIndex = 0;                    
         }
@@ -86,7 +88,7 @@ namespace rabnet
         public int getUser()
         {
             if (comboBox1.SelectedIndex < 0) return 0;
-            return ids[comboBox1.SelectedIndex];
+            return _ids[comboBox1.SelectedIndex];
         }
 
         public XmlDocument getXml()
