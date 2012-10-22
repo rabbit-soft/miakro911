@@ -41,7 +41,9 @@ namespace db.mysql
                 case myReportType.TEST: query = testQuery(f); break;
                 case myReportType.USER_OKROLS: return userOkrolRpt(UserOkrols(f));
             }
+#if DEBUG
             log.Debug(query);
+#endif
             return makeStdReportXml(query);
         }
 
@@ -132,6 +134,7 @@ namespace db.mysql
             //el2.AppendChild(dok_out.CreateElement("state")).AppendChild(dok_out.CreateTextNode(state.ToString()));
             return doc;
         }
+
         /// <summary>
         /// Окролы по пользователям - Обработка
         /// </summary>

@@ -193,6 +193,7 @@ namespace rabnet
 
         private void lvZooTech_SelectedIndexChanged(object sender, EventArgs e)
         {
+            MainForm.StillWorking();
             if (lvZooTech.SelectedItems.Count != 1)
             {
                 setMenu(JobType.NONE);

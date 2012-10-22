@@ -513,7 +513,11 @@ namespace rabnet
                         Engine.get().db().makeReport(myReportType.USER_OKROLS,f),
                         dlg.getXml()
                     }
+#if DEBUG
+                    )).Show();
+#else
                     )).ShowDialog();
+#endif
             }
 #else
             DemoErr.DemoNoReportMsg();
@@ -566,6 +570,22 @@ namespace rabnet
             }
 #endif
         }
+
+//        private void showRepport(myReportType type)
+//        {
+//            Filters f = new Filters();
+//            ReportViewForm dlg = null;
+//            switch (type)
+//            {
+//                case myReportType.AGE: break;
+//            }
+//            if (dlg == null) return;
+//#if DEBUG
+//            dlg.Show();
+//#else
+//            dlg.ShowDialog();
+//#endif
+//        }
 
 #endregion reports
 

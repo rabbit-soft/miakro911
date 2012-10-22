@@ -196,7 +196,7 @@ namespace rabnet
             nokuk.Checked = _rab.NoKuk;
             nolact.Checked = _rab.NoLact;
             okrolCount.Value = _rab.Status;
-            if (_rab.Status<1)
+            if (_rab.Status < 1 || _rab.Last_Fuck_Okrol == DateTime.MinValue)
             {
                 okrolDd.Enabled = false;
             }

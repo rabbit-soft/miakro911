@@ -7,6 +7,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using System.IO;
+using System.Globalization;
+using System.Runtime.InteropServices;
 
 namespace rabnet
 {
@@ -715,42 +717,42 @@ namespace rabnet
 #endif
         }
 
-        private void логЗаписиToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (!Directory.Exists("zapis")) Directory.CreateDirectory("zapis");
-                string path = "zapis/log_" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt";
-                StreamWriter rw = new StreamWriter(path);
+        //private void логЗаписиToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (!Directory.Exists("zapis")) Directory.CreateDirectory("zapis");
+        //        string path = "zapis/log_" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt";
+        //        StreamWriter rw = new StreamWriter(path);
 
-                foreach (ListViewItem x in listView1.Items)
-                {
-                    string s = x.SubItems[1].Text;
-                    for (int i = 1; i < x.SubItems.Count - 1; i++) 
-                    {
-                        if (i==2 || i==8) continue;
-                        if (i == 1 || x.SubItems[i].Text.StartsWith("С"))
-                        {
-                            s += "|С";
-                            continue;
-                        }
-                        s += "|" + x.SubItems[i].Text;
-                    }
+        //        foreach (ListViewItem x in listView1.Items)
+        //        {
+        //            string s = x.SubItems[1].Text;
+        //            for (int i = 1; i < x.SubItems.Count - 1; i++) 
+        //            {
+        //                if (i==2 || i==8) continue;
+        //                if (i == 1 || x.SubItems[i].Text.StartsWith("С"))
+        //                {
+        //                    s += "|С";
+        //                    continue;
+        //                }
+        //                s += "|" + x.SubItems[i].Text;
+        //            }
                     
-                    rw.WriteLine(s);
-                }
-                rw.Close();
-                MessageBox.Show("Запись прошла успешно\n\rИмя файла: " + path, "Сохранение в файл");
+        //            rw.WriteLine(s);
+        //        }
+        //        rw.Close();
+        //        MessageBox.Show("Запись прошла успешно\n\rИмя файла: " + path, "Сохранение в файл");
 
-            }
-            catch (Exception exep)
-            {
-                MessageBox.Show(exep.Message);
-            }
+        //    }
+        //    catch (Exception exep)
+        //    {
+        //        MessageBox.Show(exep.Message);
+        //    }
             
-        }
+        //}
 
-        private void показатьНомерToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiIDshow_Click(object sender, EventArgs e)
         {
             MessageBox.Show("r_id = "+listView1.SelectedItems[0].Tag.ToString());
         }
@@ -760,6 +762,16 @@ namespace rabnet
 #if !DEMO
             ExcelMaker.MakeExcelFromLV(listView1, "Поголовье");
 #endif
-        }     
+        }
+
+        private void listView1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Alt || e.Shift || e.Control|| !char.IsLetter((char)e.KeyValue)) return;
+
+            //KeysConverter ks = new KeysConverter();
+            //CultureInfo ci = CultureInfo.CurrentUICulture;
+            //string letter = cic.ConvertToString(e.KeyData);//todo при нажатии русской буквы переходить к строке
+            //listView1.FindItemWithText("п").EnsureVisible(); 
+        }
     }
 }

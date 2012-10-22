@@ -92,7 +92,7 @@ namespace rabnet
             {
                 if (Group > 1)
                     throw new ExNotOne("переименовать");
-                _eng.logs().log(RabNetLogs.LogType.RENAME, RabID, 0, "", "", _eng.db().makeName(_rab.wasname, 0, 0, 1, _rab.Sex));
+                _eng.logs().log(RabNetLogs.LogType.RENAME, RabID, 0, _rab.AddressSmall, "", _eng.db().makeName(_rab.wasname, 0, 0, 1, _rab.Sex));
             }
             else _eng.logs().log(RabNetLogs.LogType.RAB_CHANGE, RabID);
             _eng.db().SetRabbit(_rab);
@@ -459,15 +459,15 @@ namespace rabnet
         /// <param name="added">Количество появившихся</param>
         /// <param name="atall">Всего кроликов</param>
         /// <param name="age">Возраст детей</param>
-        /// <param name="yid">ID детей</param>
-        public void CountKids(int dead,int killed,int added,int atall,int age,int yid)
+        /// <param name="yInd">Индекс детей</param>
+        public void CountKids(int dead,int killed,int added,int atall,int age,int yInd)
         {
             const byte DR_ON_COUNT=5;//deadreason "при подсчете"
             if (Sex != Rabbit.SexType.FEMALE)
                 throw new ExNotFemale(this);
-            _eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, RabID, 0, "", "", String.Format("возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, прибавилось {4:d})",age,atall,dead,killed,added));            
+            _eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, RabID, _rab.youngers[yInd].ID, _rab.AddressSmall, String.Format("возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, прибавилось {4:d})", age, atall, dead, killed, added));            
             if (dead == 0 && killed == 0 && added == 0) return;
-            YoungRabbit y = _rab.youngers[yid];
+            YoungRabbit y = _rab.youngers[yInd];
             RabNetEngRabbit r = _eng.getRabbit(y.ID);        
             if (atall == 0)
             {
@@ -481,7 +481,7 @@ namespace rabnet
                 clone.KillIt(DateTime.Now, DR_ON_COUNT, "при подсчете", clone.Group);
                 //!!!тут надо списывать
                 if(added>0)
-                    _eng.db().СountKids(_id,dead, killed, added, _rab.youngers[yid].ID);             
+                    _eng.db().СountKids(_id,dead, killed, added, _rab.youngers[yInd].ID);             
             }
         }
 
