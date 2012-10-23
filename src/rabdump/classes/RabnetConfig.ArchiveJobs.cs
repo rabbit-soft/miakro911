@@ -19,11 +19,11 @@ namespace rabnet.RNC
         {
             //_logger.Info("loading archiveJobs");
             _archiveJobs.Clear();
-            RegistryKey rKey = Registry.LocalMachine.CreateSubKey(ARCHIVEJOBS_PATH);
+            RegistryKey rKey = _regKey.CreateSubKey(ARCHIVEJOBS_PATH);
             DataSource ds;
             foreach (string s in rKey.GetSubKeyNames())
             {
-                RegistryKey r = Registry.LocalMachine.CreateSubKey(RabnetConfig.ARCHIVEJOBS_PATH + "\\" + s);
+                RegistryKey r = _regKey.CreateSubKey(RabnetConfig.ARCHIVEJOBS_PATH + "\\" + s);
                 ds = getDBbyGUID((string)r.GetValue("db"));
                 if (ds == null) continue; //todo удалить AJ
                 _archiveJobs.Add(new ArchiveJob(s,
@@ -46,12 +46,12 @@ namespace rabnet.RNC
         public void SaveArchiveJobs()
         {
             //_logger.Info("saving archiveJobs");
-            RegistryKey rKey = Registry.LocalMachine.CreateSubKey(RabnetConfig.ARCHIVEJOBS_PATH);
+            RegistryKey rKey = _regKey.CreateSubKey(RabnetConfig.ARCHIVEJOBS_PATH);
             foreach (ArchiveJob raj in _archiveJobs)
             {
                 //if (raj.Guid == "" || raj.Guid == null)
                 //raj.Guid = System.Guid.NewGuid().ToString();
-                RegistryKey r = Registry.LocalMachine.CreateSubKey(RabnetConfig.ARCHIVEJOBS_PATH + "\\" + raj.Guid);
+                RegistryKey r = _regKey.CreateSubKey(RabnetConfig.ARCHIVEJOBS_PATH + "\\" + raj.Guid);
                 r.SetValue("name", raj.JobName, RegistryValueKind.String);
                 r.SetValue("db", raj.DataSrc.Guid, RegistryValueKind.String);
                 r.SetValue("path", raj.DumpPath, RegistryValueKind.String);
@@ -67,7 +67,7 @@ namespace rabnet.RNC
             ///Удаляем удаленные Расписания
             foreach (string s in rKey.GetSubKeyNames())
             {
-                RegistryKey r = Registry.LocalMachine.CreateSubKey(RabnetConfig.ARCHIVEJOBS_PATH + "\\" + s);
+                RegistryKey r = _regKey.CreateSubKey(RabnetConfig.ARCHIVEJOBS_PATH + "\\" + s);
                 string dbName = (string)r.GetValue("db");
                 bool contains = false;
                 foreach (ArchiveJob raj in _archiveJobs)
