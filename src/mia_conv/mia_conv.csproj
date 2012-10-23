@@ -93,7 +93,7 @@
     <Compile Include="MDOptions.cs" />
     <Compile Include="MDRabbits.cs" />
     <Compile Include="miaExitCode.cs" />
-    <Compile Include="miaRepair.cs" />
+    <Compile Include="miaRepair\miaRepair.cs" />
     <Compile Include="miaRepair\FuckList.cs" />
     <Compile Include="miaRepair\NameList.cs" />
     <Compile Include="miaRepair\RabbitList.cs" />
