@@ -94,6 +94,9 @@
     <Compile Include="MDRabbits.cs" />
     <Compile Include="miaExitCode.cs" />
     <Compile Include="miaRepair.cs" />
+    <Compile Include="miaRepair\FuckList.cs" />
+    <Compile Include="miaRepair\NameList.cs" />
+    <Compile Include="miaRepair\RabbitList.cs" />
     <Compile Include="mia_file.cs" />
     <Compile Include="mia_file_complex.cs" />
     <Compile Include="mia_file_simple.cs" />

@@ -356,7 +356,7 @@ INSERT INTO options(o_name,o_subname,o_value) VALUES
 ('opt', 'boysout', 80),
 ('opt', 'statefuck', 80),
 ('opt', 'firstfuck', 60),
-('opt', 'gentree', 10),
+('opt', 'gentree', 1),
 ('opt', 'confirmexit', 0),
 ('opt', 'confirmkill', 1),
 ('opt', 'confirmreplace', 0),

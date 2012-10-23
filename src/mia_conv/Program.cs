@@ -44,13 +44,27 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
             _log.Debug("ARGS: " + String.Join(" | ", args));
             if (args.Length >= 1)
             {
-                if (args.Length<3)
+                if (args.Length < 2)
+                {
+                    MessageBox.Show("we need two"); //todo проверка на режим
+                    Environment.ExitCode = miaExitCode.ERROR;
+                    return;
+                }
+                file = args[0];
+                if (file == "repair")
+                {
+                    Environment.ExitCode = repair(args);
+                    return;
+                }
+
+                if (args.Length < 3)
                 {
                     MessageBox.Show(usage());
                     Environment.ExitCode = miaExitCode.ERROR;
                     return;
                 }
-                file = args[0];
+
+
                 if (file == "nudb")
                 {
                     Environment.ExitCode = nudb(args);
@@ -112,6 +126,26 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1(auto,file,host,db,user,pswd,root,rpswd,users,scr));
+        }
+
+        static int repair(string[] args)
+        {
+            //Environment.ExitCode = miaExitCode.OK;
+            String[] dbpar = args[1].Split(';');
+            string host = dbpar[0];
+            string db = dbpar[1];
+            string user = dbpar[2];
+            string pswd = dbpar[3];
+            try
+            {
+                miaRepair.Go(host, user, pswd, db);
+            }
+            catch (Exception exc)
+            {
+                _log.Error(exc);
+                return miaExitCode.ERROR;
+            }
+            return miaExitCode.OK;
         }
 
         /// <summary>
