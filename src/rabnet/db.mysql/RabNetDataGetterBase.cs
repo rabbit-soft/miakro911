@@ -10,7 +10,7 @@ namespace db.mysql
 {
     public abstract class RabNetDataGetterBase : IDataGetter
     {
-        protected static ILog log = log4net.LogManager.GetLogger(typeof(RabNetDataGetterBase));
+        protected static ILog _logger = log4net.LogManager.GetLogger(typeof(RabNetDataGetterBase));
         protected int count;
         protected int count2;
         protected int count3; //+gambit  понадобилось для подсчета кормилиц
@@ -22,7 +22,7 @@ namespace db.mysql
 
         protected void Debug(String s)
         {
-            log.Debug(this.GetType().ToString()+" "+s);
+            _logger.Debug(this.GetType().ToString()+" "+s);
         }
 
         public RabNetDataGetterBase(MySqlConnection sql,Filters filters) 

@@ -5,7 +5,7 @@ CREATE  TABLE `vaccines` (
   `v_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `v_name` VARCHAR(45) NULL ,
   `v_duration` INT UNSIGNED NOT NULL COMMENT 'Продолжительность прививки в Днях' ,
-  `v_age` INT UNSIGNED NOT NULL COMMENT 'Назначать с (дней)' ,
+  `v_age` INT UNSIGNED NOT NULL DEFAULT 45 COMMENT 'Назначать с (дней)' ,
   `v_zootech` BIT NOT NULL DEFAULT 0 COMMENT 'Отображать в Зоотехплане',
   PRIMARY KEY (`v_id`) ,
   UNIQUE INDEX `v_name_UNIQUE` (`v_name` ASC) 
@@ -22,8 +22,15 @@ CREATE  TABLE `rab_vac` (
 
 SET @end_vac = (SELECT o_value FROM Options WHERE o_subname='vaccine_time');
 SET @v_age = (SELECT o_value FROM Options WHERE o_subname='vacc');
-INSERT INTO vaccines(v_id,v_name,v_duration,v_age,v_zootech) VALUES(1,'Прививка',@end_vac,@v_age,1);
-INSERT INTO rab_vac(r_id,v_id,date) (SELECT r_id,1,r_vaccine_end - INTERVAL @end_vac day from rabbits);
+
+CREATE TEMPORARY TABLE aaa (SELECT r_id, (r_vaccine_end - INTERVAL @end_vac day) v_start
+	FROM rabbits
+	WHERE r_vaccine_end IS NOT NULL 
+		AND r_born<(r_vaccine_end - INTERVAL @end_vac day) 		#--дата предполагаемой вакцинации должна быть позже дня рождения
+		AND (to_days(r_vaccine_end - INTERVAL @end_vac day) - to_days(r_born))>@v_age #--возраст когда сделали прививку должен быть мень чем в настройках
+);
+
+INSERT INTO rab_vac(r_id,v_id,date) (SELECT r_id,1,v_start FROM aaa);
 
 
 ALTER TABLE rabbits DROP COLUMN `r_vaccine_end` ;

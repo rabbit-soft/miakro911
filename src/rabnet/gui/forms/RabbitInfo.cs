@@ -145,8 +145,8 @@ namespace rabnet
         {
             setSex(1);        
             if (_rab.Status == 2) maleStatus.SelectedIndex = 2;
-                else if (_rab.Status == 1 || _rab.Age >= _mkcandidate) maleStatus.SelectedIndex = 1;
-                else maleStatus.SelectedIndex = 0;
+            else if (_rab.Status == 1 || _rab.Age >= _mkcandidate) maleStatus.SelectedIndex = 1;
+            else maleStatus.SelectedIndex = 0;
             maleStatus.Enabled = groupBox4.Enabled = _rab.Age > _mkcandidate;
             //maleStatus.SelectedIndex = rab.status;
             //maleStatus.Enabled = rab.age > 100 && rab.name != 0;

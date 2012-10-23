@@ -318,7 +318,7 @@ CREATE  TABLE `vaccines` (
   `v_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `v_name` VARCHAR(45) NULL ,
   `v_duration` INT UNSIGNED NOT NULL COMMENT 'Продолжительность прививки в Днях' ,
-  `v_age` INT UNSIGNED NOT NULL COMMENT 'Назначать с (дней)' ,
+  `v_age` INT UNSIGNED NOT NULL DEFAULT 45 COMMENT 'Назначать с (дней)' ,
   `v_zootech` BIT NOT NULL DEFAULT 0 COMMENT 'Отображать в Зоотехплане',
   PRIMARY KEY (`v_id`) ,
   UNIQUE INDEX `v_name_UNIQUE` (`v_name` ASC) 

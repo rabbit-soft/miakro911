@@ -69,7 +69,7 @@ WHERE n_name='{2:s}';",name,surname,orgName),sql);
         public static bool unblockName(MySqlConnection sql, int id)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format("SELECT COUNT(*) FROM rabbits WHERE r_name={0:d} OR r_surname={0:d} OR r_secname={0:d};",id), sql);
-            log.Debug(cmd.CommandText);
+            _logger.Debug(cmd.CommandText);
             if (cmd.ExecuteScalar().ToString() != "0") return false;
             cmd.CommandText = String.Format("UPDATE names SET n_block_date=null WHERE n_id={0:d};",id);
             cmd.ExecuteNonQuery();

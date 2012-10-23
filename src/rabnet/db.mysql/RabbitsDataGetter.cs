@@ -14,9 +14,9 @@ namespace db.mysql
         {
             return new AdultRabbit(rd.GetInt32("r_id"), rd.GetString("name"), rd.GetString("r_sex"),
                 rd.IsDBNull(rd.GetOrdinal("r_born")) ? DateTime.MinValue : rd.GetDateTime("r_born"),
-                rd.GetString("breed"), rd.GetInt32("r_group"), rd.GetInt32("r_rate"),
+                rd.GetString("breed"), rd.GetInt32("r_group"), 
                 rd.GetString("r_bon"), rd.GetString("place"), rd.GetString("r_notes"),
-                rd.GetString("r_flags"), rd.GetInt32("weight"), rd.GetInt32("r_status"),
+                rd.GetInt32("r_rate"), rd.GetString("r_flags"), rd.GetInt32("weight"), rd.GetInt32("r_status"),
                 rd.IsDBNull(rd.GetOrdinal("r_event_date")) ? DateTime.MinValue : rd.GetDateTime("r_event_date"),
                 rd.IsDBNull(rd.GetOrdinal("suckers")) ? 0 : rd.GetInt32("suckers"),
                 rd.IsDBNull(rd.GetOrdinal("aage")) ? 0 : rd.GetInt32("aage"),
@@ -169,48 +169,56 @@ r_status,r_flags,r_event_date,r_breed
 
         public static TreeData getRabbitGen(int rabbit, MySqlConnection con)
         {
-            if (rabbit == 0) return null;
-            MySqlCommand cmd = new MySqlCommand(@"SELECT
+            try
+            {
+                if (rabbit == 0) return null;
+                MySqlCommand cmd = new MySqlCommand(@"SELECT
                                                     rabname(r_id,1),
                                                     r_mother,
                                                     r_father,
                                                     r_bon,
                                                     TO_DAYS(NOW())-TO_DAYS(r_born)
                                                 FROM rabbits WHERE r_id=" + rabbit.ToString() + " LIMIT 1;", con);
-            MySqlDataReader rd = cmd.ExecuteReader();
-            if (!rd.HasRows)
-            {
-                rd.Close();
-                cmd.CommandText = @"SELECT
+                MySqlDataReader rd = cmd.ExecuteReader();
+                if (!rd.HasRows)
+                {
+                    rd.Close();
+                    cmd.CommandText = @"SELECT
                                         deadname(r_id,1),
                                         r_mother,
                                         r_father,
                                         r_bon,
                                         TO_DAYS(NOW())-TO_DAYS(r_born)
                                    FROM dead WHERE r_id=" + rabbit.ToString() + " LIMIT 1;";
-                rd = cmd.ExecuteReader();
-            }
-            TreeData res = new TreeData();
-            if (rd.Read())
-            {
-                res.caption = rd.GetString(0) + ", " + rd.GetInt32(4).ToString() + "," + Rabbit.GetFBon(rd.GetString("r_bon"), true);
-                int mom = rd.IsDBNull(1) ? 0 : rd.GetInt32(1);
-                int dad = rd.IsDBNull(2) ? 0 : rd.GetInt32(2);
+                    rd = cmd.ExecuteReader();
+                }
+                TreeData res = new TreeData();
+                if (rd.Read())
+                {
+                    res.caption = rd.GetString(0) + ", " + rd.GetInt32(4).ToString() + "," + Rabbit.GetFBon(rd.GetString("r_bon"), true);
+                    int mom = rd.IsDBNull(1) ? 0 : rd.GetInt32(1);
+                    int dad = rd.IsDBNull(2) ? 0 : rd.GetInt32(2);
+                    rd.Close();
+                    TreeData m = getRabbitGen(mom, con);
+                    TreeData d = getRabbitGen(dad, con);
+                    if (m == null)
+                    {
+                        m = d;
+                        d = null;
+                    }
+                    if (m != null)
+                    {
+                        res.items = new TreeData[] { m, d };
+                    }
+                }
                 rd.Close();
-                TreeData m = getRabbitGen(mom, con);
-                TreeData d = getRabbitGen(dad, con);
-                if (m == null)
-                {
-                    m = d;
-                    d = null;
-                }
-                if (m != null)
-                {
-                    res.items = new TreeData[] { m, d };
-                }
+                return res;
             }
-            rd.Close();
-            return res;
+            catch (StackOverflowException exc)
+            {
+                _logger.Error(exc);
+                return null;
+            }
         }
 
         //public static String getRSex(String sx)

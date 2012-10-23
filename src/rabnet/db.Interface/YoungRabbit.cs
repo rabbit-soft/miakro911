@@ -18,18 +18,5 @@ namespace rabnet
             ParentName = pname;
             Neighbours = nbrs;
         }
-
-        //internal YoungRabbit(MySqlDataReader rd, Filters f)
-        //    : this(rd.GetInt32("r_id"), rd.GetString("name"),
-        //        rd.GetString("r_sex"), rd.GetDateTime("r_born"), rd.GetString("breed"),
-        //        rd.GetInt32("r_group"), rd.GetString("r_bon"), rd.GetString("rplace"), rd.GetString("r_notes"),
-        //        rd.GetInt32("r_parent"), rd.GetString("parent"), rd.GetInt32("neighbours"))
-        //{
-        //    if (f == null) return;
-        //    s_short = f.safeBool(Filters.SHORT);
-        //    s_adrTier = f.safeBool(Filters.SHOW_BLD_TIERS);
-        //    s_adrDesc = f.safeBool(Filters.SHOW_BLD_DESCR);
-        //}
-        //internal YoungRabbit(MySqlDataReader rd) : this(rd, null) { }
     }
 }

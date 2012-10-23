@@ -248,10 +248,6 @@ namespace rabnet
                 {
                     return false;
                 }
-
-
-
-
             }
             catch (Exception exMessage)
             {

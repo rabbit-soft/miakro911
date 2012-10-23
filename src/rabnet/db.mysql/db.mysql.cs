@@ -75,7 +75,7 @@ namespace db.mysql
         /// <returns>Количество затронутых строк</returns>
         public int Exec(String cmd)
         {
-            log.Debug("exec query:" + cmd);
+            //log.Debug("exec query:" + cmd);
             MySqlCommand c = new MySqlCommand(cmd, sql);
             return c.ExecuteNonQuery();
         }

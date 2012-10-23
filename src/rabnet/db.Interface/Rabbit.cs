@@ -148,10 +148,11 @@ namespace rabnet
             ID = id;
         }*/
 
-        public AdultRabbit(int id, string rabname, string sex, DateTime born, string breedname, int group, int rate, String bon, string rawAddress, string notes,
-                string flags, int weight, int status, DateTime eventDate, int kidsCount, int kidsAge, string vacFlags)
+        public AdultRabbit(int id, string rabname, string sex, DateTime born, string breedname, int group, String bon, string rawAddress, string notes,
+                int rate, string flags, int weight, int status, DateTime eventDate, int kidsCount, int kidsAge, string vacFlags)
             : base(id, rabname, sex, born, breedname, group, bon, rawAddress, notes)
         {
+            _rate = rate;
             _flags = flags;
             _weight = weight;
             _status = status;
@@ -159,6 +160,7 @@ namespace rabnet
             _kidsCount = kidsCount;
             _kidsAge = kidsAge;
             _vacFlags = vacFlags;
+           
         }
 
         #region properties
@@ -285,7 +287,7 @@ namespace rabnet
         public OneRabbit(int id, string sx, DateTime born, int rate, string flags, int nameId, int surnameId, int secnameId, string rawAddress, int group, int brd, int zone, String notes,
             String genom, int status, DateTime lastFuckOkrol, String eventType, DateTime eventDate, int overAllBabys, int lostBabys, String fullName, String breedName,
             String bon, int parent, int okrol, int weight, DateTime weightDate)
-            : base(id, fullName, sx, born, breedName, group, rate, bon, rawAddress, notes, flags, weight, status, eventDate, 0, -1, "")
+            : base(id, fullName, sx, born, breedName, group, bon, rawAddress, notes, rate, flags, weight, status, eventDate, 0, -1, "")
         {
             this.parentId = parent;
             tag = "";
