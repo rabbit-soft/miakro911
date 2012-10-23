@@ -185,7 +185,7 @@ namespace db.mysql
 
         public TreeData rabbitGenTree(int rabbit)
         {
-            return RabbitsDataGetter.getRabbitGen(rabbit,sql);
+            return RabbitsDataGetter.GetRabbitGen(rabbit,sql);
         }
 
         public TreeData buildingsTree()

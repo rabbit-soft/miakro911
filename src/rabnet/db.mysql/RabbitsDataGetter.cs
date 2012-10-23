@@ -165,60 +165,93 @@ rabname(r_id,2) name,r_group,
 (SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight,
 r_status,r_flags,r_event_date,r_breed
  FROM rabbits WHERE r_parent=0) c" + makeWhere() + ";";
-        }   
+        }
 
-        public static TreeData getRabbitGen(int rabbit, MySqlConnection con)
+        /// <summary>
+        /// Получает родословную кролика с заданным rabId
+        /// </summary>
+        /// <param name="rabId">ID кролика</param>
+        /// <param name="con"></param>
+        /// <param name="lineage">Стэк родословной для предотвращения рекурсии</param>
+        /// <returns></returns>
+        private static TreeData getRabbitGen(int rabId, MySqlConnection con,Stack<int> lineage)//, int level)
         {
-            try
+            if (rabId == 0) return null;
+            //проверка на рекурсию, которая могла возникнуть после конвертации из старой mia-файла
+            if (lineage.Contains(rabId))
             {
-                if (rabbit == 0) return null;
-                MySqlCommand cmd = new MySqlCommand(@"SELECT
+                //unlinkProcreator(lineage.Pop(),rabId,con);
+                return null;
+            }
+            else lineage.Push(rabId);
+            
+
+            MySqlCommand cmd = new MySqlCommand(@"SELECT
                                                     rabname(r_id,1),
                                                     r_mother,
                                                     r_father,
                                                     r_bon,
                                                     TO_DAYS(NOW())-TO_DAYS(r_born)
-                                                FROM rabbits WHERE r_id=" + rabbit.ToString() + " LIMIT 1;", con);
-                MySqlDataReader rd = cmd.ExecuteReader();
-                if (!rd.HasRows)
-                {
-                    rd.Close();
-                    cmd.CommandText = @"SELECT
+                                                FROM rabbits WHERE r_id=" + rabId.ToString() + " LIMIT 1;", con);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            if (!rd.HasRows)
+            {
+                rd.Close();
+                cmd.CommandText = @"SELECT
                                         deadname(r_id,1),
                                         r_mother,
                                         r_father,
                                         r_bon,
                                         TO_DAYS(NOW())-TO_DAYS(r_born)
-                                   FROM dead WHERE r_id=" + rabbit.ToString() + " LIMIT 1;";
-                    rd = cmd.ExecuteReader();
-                }
-                TreeData res = new TreeData();
-                if (rd.Read())
-                {
-                    res.caption = rd.GetString(0) + ", " + rd.GetInt32(4).ToString() + "," + Rabbit.GetFBon(rd.GetString("r_bon"), true);
-                    int mom = rd.IsDBNull(1) ? 0 : rd.GetInt32(1);
-                    int dad = rd.IsDBNull(2) ? 0 : rd.GetInt32(2);
-                    rd.Close();
-                    TreeData m = getRabbitGen(mom, con);
-                    TreeData d = getRabbitGen(dad, con);
-                    if (m == null)
-                    {
-                        m = d;
-                        d = null;
-                    }
-                    if (m != null)
-                    {
-                        res.items = new TreeData[] { m, d };
-                    }
-                }
-                rd.Close();
-                return res;
+                                   FROM dead WHERE r_id=" + rabId.ToString() + " LIMIT 1;";
+                rd = cmd.ExecuteReader();
             }
-            catch (StackOverflowException exc)
+            TreeData res = new TreeData();
+            if (rd.Read())
             {
-                _logger.Error(exc);
-                return null;
+                res.caption = rd.GetString(0) + ", " + rd.GetInt32(4).ToString() + "," + Rabbit.GetFBon(rd.GetString("r_bon"), true);
+                int mom = rd.IsDBNull(1) ? 0 : rd.GetInt32(1);
+                int dad = rd.IsDBNull(2) ? 0 : rd.GetInt32(2);
+                rd.Close();
+                TreeData m = getRabbitGen(mom, con, lineage);
+                TreeData d = getRabbitGen(dad, con, lineage);
+                if (m == null)
+                {
+                    m = d;
+                    d = null;
+                }
+                if (m != null)
+                {
+                    res.items = new TreeData[] { m, d };
+                }
             }
+            rd.Close();
+            return res;
+        }
+
+        private static void unlinkProcreator(int descendantID, int ascendantID,MySqlConnection sql)
+        {
+            OneRabbit descRabbit = RabbitGetter.GetRabbit(sql, descendantID,RabbitGetter.RabType.ALIVE);
+            OneRabbit ascRabbit = RabbitGetter.GetRabbit(sql, ascendantID,RabbitGetter.RabType.ALIVE);           
+            if (descRabbit == null)
+                _logger.WarnFormat("rabbit with ID:{0:d} does not exists", descendantID);
+            if (ascRabbit == null)
+                _logger.WarnFormat("rabbit with ID:{0:d} does not exists", ascendantID);
+            if (descRabbit != null && ascRabbit != null)
+            {
+                if (descRabbit.Age < ascRabbit.Age)
+                    _logger.Info("child rabbit is younger than parent rabbit. We can unlink it with no doubt.");
+            }
+            MySqlCommand cmd = new MySqlCommand(String.Format(
+                @"UPDATE rabbits SET r_father=0 WHERE r_id={0:d} AND r_father={1:d};
+                  UPDATE rabbits SET r_mother=0 WHERE r_id={2:d} AND r_mother={3:d};", descendantID, ascendantID, descendantID, ascendantID), sql);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static TreeData GetRabbitGen(int rabbit, MySqlConnection con)//, int level)
+        {
+            Stack<int> lineage = new Stack<int>();
+            return getRabbitGen(rabbit, con, lineage);
         }
 
         //public static String getRSex(String sx)

@@ -19,9 +19,7 @@ namespace rabnet
         /// Номер колонки, в которой содержится чекбокс с установкой гнездовья
         /// </summary>
         public const int NESTFIELD = 7;
-        class RPList : List<RP>
-        {
-        }
+        class RPList : List<RP> { }
 
         class RP
         {
