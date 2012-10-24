@@ -177,14 +177,14 @@ r_status,r_flags,r_event_date,r_breed
         private static TreeData getRabbitGen(int rabId, MySqlConnection con,Stack<int> lineage)//, int level)
         {
             if (rabId == 0) return null;
-            //проверка на рекурсию, которая могла возникнуть после конвертации из старой mia-файла
-            if (lineage.Contains(rabId))
+            //проверка на рекурсию, которая могла возникнуть после конвертации из старой mia-файла                        
+            if (lineage.Count > 700)
             {
-                //unlinkProcreator(lineage.Pop(),rabId,con);
+                _logger.Warn("cnt:" + lineage.Count.ToString() + " we have suspect infinity inheritance loop: " + String.Join(",", Array.ConvertAll<int, string>(lineage.ToArray(), new Converter<int, string>(convIntToString))));
+                fixInheritance(lineage);
                 return null;
-            }
-            else lineage.Push(rabId);
-            
+            }           
+            lineage.Push(rabId);           
 
             MySqlCommand cmd = new MySqlCommand(@"SELECT
                                                     rabname(r_id,1),
@@ -229,23 +229,9 @@ r_status,r_flags,r_event_date,r_breed
             return res;
         }
 
-        private static void unlinkProcreator(int descendantID, int ascendantID,MySqlConnection sql)
+        private static void fixInheritance(Stack<int> lineage)
         {
-            OneRabbit descRabbit = RabbitGetter.GetRabbit(sql, descendantID,RabbitGetter.RabType.ALIVE);
-            OneRabbit ascRabbit = RabbitGetter.GetRabbit(sql, ascendantID,RabbitGetter.RabType.ALIVE);           
-            if (descRabbit == null)
-                _logger.WarnFormat("rabbit with ID:{0:d} does not exists", descendantID);
-            if (ascRabbit == null)
-                _logger.WarnFormat("rabbit with ID:{0:d} does not exists", ascendantID);
-            if (descRabbit != null && ascRabbit != null)
-            {
-                if (descRabbit.Age < ascRabbit.Age)
-                    _logger.Info("child rabbit is younger than parent rabbit. We can unlink it with no doubt.");
-            }
-            MySqlCommand cmd = new MySqlCommand(String.Format(
-                @"UPDATE rabbits SET r_father=0 WHERE r_id={0:d} AND r_father={1:d};
-                  UPDATE rabbits SET r_mother=0 WHERE r_id={2:d} AND r_mother={3:d};", descendantID, ascendantID, descendantID, ascendantID), sql);
-            cmd.ExecuteNonQuery();
+            //todo fixInheritance 
         }
 
         public static TreeData GetRabbitGen(int rabbit, MySqlConnection con)//, int level)
@@ -253,6 +239,11 @@ r_status,r_flags,r_event_date,r_breed
             Stack<int> lineage = new Stack<int>();
             return getRabbitGen(rabbit, con, lineage);
         }
+
+        private static String convIntToString(int i)
+        {
+            return i.ToString();
+        } 
 
         //public static String getRSex(String sx)
         //{

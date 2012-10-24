@@ -325,7 +325,7 @@ namespace rabnet
         }
 
         /// <summary>
-        /// Заволняет ComboBox с новыми адресами
+        /// Заполняет ComboBox с новыми адресами
         /// </summary>
         public void getBuildings()
         {

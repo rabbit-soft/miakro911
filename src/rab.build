@@ -248,7 +248,8 @@
 		<csc target="winexe" output="${bin_dir_bin}/mia_conv.exe" win32icon="${curdir}/mia_conv/icon_yell_red.ico" define="${compile_flag}" optimize="true">
 			<sources>
 				<include name="${curdir}/_tmp/VersionInfo.cs"/>
-				<include name="${curdir}/mia_conv/*.cs"/>				
+				<include name="${curdir}/mia_conv/*.cs"/>	
+				<include name="${curdir}/mia_conv/miaRepair/*.cs"/>					
 			</sources>
 			<resources>
 				<include name="${curdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>

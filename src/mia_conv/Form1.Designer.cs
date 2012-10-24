@@ -29,7 +29,7 @@ namespace mia_conv
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.tb1 = new System.Windows.Forms.TextBox();
+            this.tbMiaFile = new System.Windows.Forms.TextBox();
             this.btOpenMIAfile = new System.Windows.Forms.Button();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.log = new System.Windows.Forms.TextBox();
@@ -69,12 +69,12 @@ namespace mia_conv
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tb1
+            // tbMiaFile
             // 
-            this.tb1.Location = new System.Drawing.Point(89, 9);
-            this.tb1.Name = "tb1";
-            this.tb1.Size = new System.Drawing.Size(496, 20);
-            this.tb1.TabIndex = 0;
+            this.tbMiaFile.Location = new System.Drawing.Point(89, 9);
+            this.tbMiaFile.Name = "tbMiaFile";
+            this.tbMiaFile.Size = new System.Drawing.Size(496, 20);
+            this.tbMiaFile.TabIndex = 0;
             // 
             // btOpenMIAfile
             // 
@@ -433,7 +433,7 @@ namespace mia_conv
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.btOpenMIAfile);
-            this.Controls.Add(this.tb1);
+            this.Controls.Add(this.tbMiaFile);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -455,7 +455,7 @@ namespace mia_conv
 
         #endregion
 
-        private System.Windows.Forms.TextBox tb1;
+        private System.Windows.Forms.TextBox tbMiaFile;
         private System.Windows.Forms.Button btOpenMIAfile;
         private System.Windows.Forms.OpenFileDialog ofd;
         private System.Windows.Forms.TextBox log;

@@ -207,7 +207,7 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) and t_id=" + tier.ToSt
             MySqlCommand cmd = new MySqlCommand(@"SELECT 
 t_id,m_upper,m_lower,m_id,t_type,t_delims,t_nest,t_heater,t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4 
 FROM minifarms,tiers 
-WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 AND "+busy+";", sql);
+WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 AND "+busy+" ORDER BY m_id;", sql);
             _logger.Debug("free Buildings cmd:"+cmd.CommandText);
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())

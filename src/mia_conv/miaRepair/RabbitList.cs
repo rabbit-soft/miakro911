@@ -38,14 +38,19 @@ r_born,
 r_parent,
 COALESCE(r_event_date,'0001-01-01') ev_date,
 rabname(r_id,2) nm,
-to_days(NOW())-to_days(r_born) age 
-            FROM rabbits ORDER BY r_id ASC;");
+to_days(NOW())-to_days(r_born) age,
+r_breed,
+bd.b_name
+            FROM rabbits 
+            INNER JOIN breeds bd ON r_breed=bd.b_id
+            ORDER BY r_id ASC;");
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
             {
                 this.Add(new repRabbit(rd.GetInt32("r_id"), rd.GetInt32("r_mother"), rd.GetInt32("r_father"),
                                         rd.GetString("r_sex"), rd.GetInt32("r_name"), rd.GetInt32("r_surname"), rd.GetInt32("r_secname"),
-                                        rd.GetDateTime("r_born"), rd.GetInt32("r_parent"), rd.GetDateTime("ev_date"), rd.GetString("nm"), rd.GetInt32("age"))
+                                        rd.GetDateTime("r_born"), rd.GetInt32("r_parent"), rd.GetDateTime("ev_date"), rd.GetString("nm"), rd.GetInt32("age"),
+                                        rd.GetInt32("r_breed"), rd.GetString("b_name"))
                             );
             }
             rd.Close();
@@ -122,14 +127,19 @@ r_secname,
 r_born,
 r_parent,
 deadname(r_id,2) nm,
-to_days(NOW())-to_days(r_born) age 
-            FROM dead ORDER BY r_id DESC;");
+to_days(NOW())-to_days(r_born) age, 
+r_breed,
+bd.b_name
+            FROM dead 
+            INNER JOIN breeds bd ON r_breed=bd.b_id
+            ORDER BY r_id DESC;");
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
             {
                 this.Add(new repRabbit(rd.GetInt32("r_id"), rd.GetInt32("r_mother"), rd.GetInt32("r_father"),
                                         rd.GetString("r_sex"), rd.GetInt32("r_name"), rd.GetInt32("r_surname"), rd.GetInt32("r_secname"),
-                                        rd.GetDateTime("r_born"), rd.GetInt32("r_parent"), DateTime.MinValue, rd.GetString("nm"), rd.GetInt32("age"))
+                                        rd.GetDateTime("r_born"), rd.GetInt32("r_parent"), DateTime.MinValue, rd.GetString("nm"), rd.GetInt32("age"),
+                                        rd.GetInt32("r_breed"), rd.GetString("b_name"))
                             );
             }
             rd.Close();
@@ -157,8 +167,11 @@ to_days(NOW())-to_days(r_born) age
         internal DateTime EventDate;
         internal string Name;
         internal int Age;
+        internal int BreedID;
+        internal string BreedName;
 
-        internal repRabbit(int rid, int mother, int father, string sex, int name, int surname, int secname, DateTime born, int parent, DateTime ev_date, string namestr, int age)
+        internal repRabbit(int rid, int mother, int father, string sex, int name, int surname, int secname, DateTime born, int parent, DateTime ev_date, 
+            string namestr, int age,int breedId, string breedName)
         {
             this.rID = rid;
             this.Mother = mother;
@@ -177,6 +190,8 @@ to_days(NOW())-to_days(r_born) age
             this.EventDate = ev_date;
             this.Name = namestr;
             this.Age = age;
+            this.BreedID = breedId;
+            this.BreedName = breedName;
         }
     }
 }

@@ -38,7 +38,7 @@ namespace mia_conv
             if (auto)
             {
                 Text += " - Авто режим";
-                tb1.Text = file;
+                tbMiaFile.Text = file;
                 tbHost.Text = h;
                 tbDB.Text = db;
                 tbUser.Text = u;
@@ -64,17 +64,17 @@ namespace mia_conv
         {
             if (ofd.ShowDialog()==DialogResult.OK)
             {
-                tb1.Text = ofd.FileName;
+                tbMiaFile.Text = ofd.FileName;
                 button2.Enabled = true;
                 button2.PerformClick();
-                Text = "Импорт фермы " + tb1.Text;
+                Text = "Импорт фермы " + tbMiaFile.Text;
             }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             _mia = new MiaFile(clb1,pb,label11);
-            _mia.LoadFromFile(tb1.Text, log);
+            _mia.LoadFromFile(tbMiaFile.Text, log);
             btStart.Enabled = true;
         }
 
@@ -106,14 +106,14 @@ namespace mia_conv
                 int code = crt.Prepare(dbnew.Checked, tbHost.Text, tbUser.Text, tbPassword.Text, tbDB.Text, textRoot.Text, textRootPswd.Text,false,Quiet);
                 if (code == miaExitCode.OK)
                 {
-                    groupBox1.Enabled = false;
+                    groupBox1.Enabled= btOpenMIAfile.Enabled=tbMiaFile.Enabled = false;
                     //crt.oldid = oldid.Checked;
                     crt.Mia = _mia;
                     crt.SetUsers(Udata);
                     crt.FillAll();
                     crt.Finish(tbScript.Text);
-                    pb.Value = 0;                 
-                    groupBox1.Enabled = true;
+                    pb.Value = 0;
+                    groupBox1.Enabled = btOpenMIAfile.Enabled = tbMiaFile.Enabled = true;
                     Environment.ExitCode = miaExitCode.OK;
                 }
                 else MessageBox.Show(miaExitCode.GetText(code), "Ошибка");              

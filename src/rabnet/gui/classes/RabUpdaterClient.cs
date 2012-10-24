@@ -253,7 +253,7 @@ namespace rabnet
             {
                 // Display any possible error
                 Debug.WriteLine(exMessage.Message);
-                _log.Error("Failed to get update info: " + exMessage.Message);
+                _log.Warn("Failed to get update info: " + exMessage.Message);
             }
             
             _tcpClient.Close();

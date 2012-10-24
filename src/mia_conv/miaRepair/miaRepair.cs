@@ -57,7 +57,7 @@ namespace mia_conv
                 repairMotherAndFather_bySurnameAndSecname();
                 repairFucksEndDate_byYoungers();
                 repairFucksStartDate_byRabEventDate();
-                repairFucksIfChildrenThenOkrol();
+                repairFucks_IfChildrenThenOkrol();               
                 saveRabbits(cmd);
                 saveFucks(cmd);
                 //_sql.Close();
@@ -66,12 +66,12 @@ namespace mia_conv
             catch (Exception ex)
             {
                 //_sql.Close();
-                _logger.ErrorFormat("Exception: {0}", ex.Message);
-                log("---Произошла ошибка при востановлении связей.");
-                log("---Это не очень критичная ошибка");
-                log("---Но все таки советуем обратится к разработчику");
-                log("");
-                log("Нажмите любую клавишу чтобы продолжить");
+                _logger.Error(ex);
+                //log("---Произошла ошибка при востановлении связей.");
+                //log("---Это не очень критичная ошибка");
+                //log("---Но все таки советуем обратится к разработчику");
+                //log("");
+                //log("Нажмите любую клавишу чтобы продолжить");
             }
 #endif
             //FreeConsole();
@@ -82,23 +82,24 @@ namespace mia_conv
         /// </summary>
         private static void repairMotherAndFather_bySurnameAndSecname()
         {
-            log("searching Mother And Father by Surname and Secname");
+            const int CAN_FUCK_AGE = 70;
+            _logger.InfoFormat("searching Mother And Father by Surname and Secname");
             foreach (repRabbit rab in _rabbits)
             {
                 if (rab.SecnameID == 0 && rab.SurnameID == 0) continue;
                 repRabbit mbMother = null, mbFather = null;
-                log("searching mother for: {0:d} | name:            {1:s}", rab.rID, rab.Name);
+                _logger.InfoFormat("searching mother for: {0:d} | name:    {1:s} age:{2:d}", rab.rID, rab.Name,rab.Age);
                 if (rab.SurnameID != 0)
                 {
                     mbMother = _rabbits.GetRabbitByID(_names.GetSurnameUse(rab.SurnameID));
-                    if (mbMother.Age <= rab.Age)
+                    if (mbMother != null && mbMother.Age <= rab.Age)
                     {
-                        log("   we find name user rID:{0:d} name:{1:s} age:{2:d} but is to young",mbMother.rID,mbMother.Name,mbMother.Age);
+                        _logger.InfoFormat("        we find name user rID:{0:d} name:{1:s} age:{2:d} but she is to young",mbMother.rID,mbMother.Name,mbMother.Age);
                         mbMother = null;
                     }
                     if (mbMother == null)//если нет живого кандидата на мать, то ищем в мертвых
                     {
-                        log("   we not find aliveMother, now searching in dead");
+                        _logger.InfoFormat("   we not find aliveMother, now searching in dead");
                         List<repRabbit> candidates = new List<repRabbit>();
                         foreach (repRabbit ded in _deads)
                         {
@@ -107,50 +108,27 @@ namespace mia_conv
                         }
                         if (candidates.Count == 1)
                         {
-                            //log("   we find only one dead Mother: {0:d}|name [{1:s}]  and we write he in Mother", candidates[0].rID,candidates[0].Name);
+                            _logger.InfoFormat("   we find only one dead Mother: {0:d} name:{1:s} age:{2:d} and we write she in Mother", candidates[0].rID, candidates[0].Name, candidates[0].Age);
                             mbMother = candidates[0];
                         }
                         else if (candidates.Count > 1)
                         {
-
-                            foreach (repRabbit c in candidates)
+                            //todo search by fucks
+                            _logger.InfoFormat("   we find next dead mother candidates:");
+                            for (int i=0;i<candidates.Count;)
                             {
-                                if (mbMother == null)
-                                    mbMother = c;
-                                if (mbMother.rID < c.rID)
-                                    mbMother = c;
-                            }
-
-                            /*log("   we find a {0:d} motherCandidate", candidates.Count);
-                            log("   #       name");
-                            foreach (Rabbit c in candidates)
-                            {
-                                log("   {0:d}        {1:d}     ", c.rID, c.Name);
-                            }
-                            while (true)//_deadMotherNames
-                            {
-                                log("you nead a type '№ of candMother' or type 'n' to next");
-                                string ans = Console.ReadLine();
-                                if (ans == "n")
+                                _logger.InfoFormat("       id:{0:d} name:{1:s} age:{2:d} breed:{3:s}", candidates[i].rID, candidates[i].Name, candidates[i].Age, candidates[i].BreedName);
+                                if ((candidates[i].Age - rab.Age) <= CAN_FUCK_AGE )
                                 {
-                                    log("   you chose nobody");
-                                    break;
+                                    _logger.InfoFormat("            we remove ID:{0:d} beacause he is young to be parent of...", candidates[i].rID);
+                                    candidates.RemoveAt(i);
+                                    continue;
                                 }
-                                int n = 0;
-                                int.TryParse(ans, out n);
-                                bool exitloop = false;
-                                foreach (Rabbit c in candidates)
-                                {
-                                    if (c.rID == n)
-                                    {
-                                        mbMother = c;
-                                        exitloop = true;
-                                        break;
-                                    }
-                                }
-                                if (exitloop) break;
-                                log("   you type a wrong symbol, Idiot!");
-                            }*/
+                                i++;
+                            }
+                            if (candidates.Count == 1)
+                                mbMother = candidates[0];
+                        
                         }
                     }// if (mbMother == 0)
                 }
@@ -158,9 +136,14 @@ namespace mia_conv
                 if (rab.SecnameID != 0)
                 {
                     mbFather = _deads.GetRabbitByID(_names.GetSecnameUse(rab.SecnameID));
+                    if (mbFather!= null && mbFather.Age <= rab.Age)
+                    {
+                        _logger.InfoFormat("        we find name user rID:{0:d} name:{1:s} age:{2:d} but he is to young", mbFather.rID, mbFather.Name, mbFather.Age);
+                        mbFather = null;
+                    }
                     if (mbFather == null)//если нет живого кандидата на отца, то ищем в мертвых
                     {
-                        log("   we not find aliveFather, now searching in dead");
+                        _logger.InfoFormat("   we not find aliveFather, now searching in dead");
                         List<repRabbit> candidates = new List<repRabbit>();
                         foreach (repRabbit ded in _deads)
                         {
@@ -169,48 +152,27 @@ namespace mia_conv
                         }
                         if (candidates.Count == 1)
                         {
+                            _logger.InfoFormat("   we find only one dead Father: {0:d} name:{1:s} age:{2:d} and we write he in Father", candidates[0].rID, candidates[0].Name,candidates[0].Age);
                             mbFather = candidates[0];
                         }
                         else if (candidates.Count > 1)
                         {
+                            //todo search by fucks
+                            _logger.InfoFormat("   we find next dead mother candidates:");
                             foreach (repRabbit c in candidates)
                             {
-                                if (mbFather == null)
-                                    mbFather = c;
-                                if (mbFather.rID < c.rID)
-                                    mbFather = c;
+                                _logger.InfoFormat("       id:{0:d} name:{1:s} age:{2:d} breed:{3:s}", c.rID, c.Name, c.Age,c.BreedName);
+                                //if (rab.rID < c.rID)
+                                    //mbFather = c;
                             }
                         }
                     }//if(mbFather==0)
                 }
-                log("   here what we find:");
-                log("                     mother: {0:s}", mbMother == null ? "-" : mbMother.Name);
-                log("                     father: {0:s}", mbFather == null ? "-" : mbFather.Name);
-#if ASK
-                while (true)
-                {
-                    string ans = "y";
-                    if (needAccept)
-                    {
-                        log("   do you accept this Parents? [y/n], to cancel ask type 'q' ");
-                        ans = Console.ReadLine();
-                        if (ans == "q")
-                            needAccept = false;
-                    }
-                    if (ans == "n")
-                        break;
-                    else if (ans == "y")
-                    {
-#endif
+                _logger.InfoFormat("   here what we find:");
+                _logger.InfoFormat("                     mother: {0:s} age:{1:d}", mbMother == null ? "-" : mbMother.Name, mbMother == null ? -1 : mbMother.Age);
+                _logger.InfoFormat("                     father: {0:s} age:{1:d}", mbFather == null ? "-" : mbFather.Name, mbFather == null ? -1 : mbFather.Age);
                 rab.Mother = mbMother == null ? 0 : mbMother.rID;
                 rab.Father = mbFather == null ? 0 : mbFather.rID;
-#if ASK
-                        break;
-                    }
-                    else log("   you type a wrong symbol, Idiot!");
-                }
-#endif
-
             }
         }
 
@@ -225,12 +187,12 @@ namespace mia_conv
                     {
                         if (r.rID == n.useRabbit)
                         {
-                            log("   OK.name:{0:d} is fine", n.nID);
+                            _logger.InfoFormat("   OK.name:{0:d} is fine", n.nID);
                             break;
                         }
                         else
                         {
-                            log("   replacing current n_use: {0:d} by {0:d}", n.useRabbit, r.rID);
+                            _logger.InfoFormat("   replacing current n_use: {0:d} by {0:d}", n.useRabbit, r.rID);
                             n.useRabbit = r.rID;
                         }
                     }
@@ -245,10 +207,10 @@ namespace mia_conv
         /// </summary>
         private static void repairFucksStartDate_byRabEventDate()
         {
-            log("--rapair fucks Start_Date by Mother event_date --");
+            _logger.InfoFormat("--rapair fucks Start_Date by Mother event_date --");
             foreach (repRabbit rab in _rabbits.SukrolMothers)
             {
-                log("searching fuck mother: {0:d}", rab.rID);
+                _logger.InfoFormat("searching fuck mother: {0:d}", rab.rID);
                 List<repFuck> candidates = new List<repFuck>();
 
                 int maxCand = 0;
@@ -265,19 +227,19 @@ namespace mia_conv
                 }
                 if (candidates.Count == 0)
                 {
-                    log("   we find nothing");
+                    _logger.InfoFormat("   we find nothing");
                     continue;
                 }
                 else if (candidates.Count == 1)
                 {
-                    log("   we find only one fuck: {0:d}  and we write it in start_date", candidates[0].fID);
+                    _logger.InfoFormat("   we find only one fuck: {0:d}  and we write it in start_date", candidates[0].fID);
                     candidates[0].StartDate = rab.EventDate;
                     candidates[0].Children = 0;
                     continue;
                 }
                 else if (candidates.Count > 1)
                 {
-                    log("   we find a {0:d} fucks", candidates.Count);
+                    _logger.InfoFormat("   we find a {0:d} fucks", candidates.Count);
                     foreach (repFuck f in candidates)
                     {
                         if (f.fID == maxCand)
@@ -297,17 +259,17 @@ namespace mia_conv
         }
 
         /// <summary>
-        /// Устанавливает в таблице fucks дату в поле f_end_date, крольчихе.
+        /// Устанавливает в таблице fucks дату в поле f_end_date, крольчихе у которой есть дети
         /// Строчка находится по Матери и Отчу
         /// </summary>
         private static void repairFucksEndDate_byYoungers()
         {
-            log("--rapair fucks End_Date by Father and Mother of Younger--");
+            _logger.InfoFormat("--rapair fucks End_Date by Father and Mother of Younger--");
             List<repRabbit> youngers = _rabbits.Yongers;
             foreach (repRabbit yng in youngers)
             {
                 if (yng.Mother == 0 || yng.Father == 0) continue;
-                log("searching fuck where m:{0:d}|f:{1:d}", yng.Mother, yng.Father);
+                _logger.InfoFormat("searching fuck where m:{0:d}|f:{1:d}", yng.Mother, yng.Father);
                 ///заполняем массив факов где f_rabid и f_parther совпадают с r_mother и r_father 
                 int maxCand = 0;
                 List<repFuck> candidates = new List<repFuck>();
@@ -324,24 +286,24 @@ namespace mia_conv
                 ///разбираем кандидатов
                 if (candidates.Count == 0)
                 {
-                    log("   we find nothing");
+                    _logger.InfoFormat("   we find nothing");
                     continue;
                 }
                 else if (candidates.Count == 1)
                 {
-                    log("   we find only one fuck: {0:d}  and we write it in end_date", candidates[0].fID);
+                    _logger.InfoFormat("   we find only one fuck: {0:d}  and we write it in end_date", candidates[0].fID);
                     candidates[0].EndDate = yng.Born;
                     candidates[0].fState = repFuck.State.Okrol;
                     continue;
                 }
                 else if (candidates.Count > 1)
                 {
-                    log("   we find a {0:d} fucks", candidates.Count);
+                    _logger.InfoFormat("   we find a {0:d} fucks", candidates.Count);
                     foreach (repFuck f in candidates)
                     {
                         if (f.fID == maxCand)
                         {
-                            log("fuck: {0:d} we write it in end_date", f.fID);
+                            _logger.InfoFormat("fuck: {0:d} we write it in end_date", f.fID);
                             f.EndDate = yng.Born;
                             f.fState = repFuck.State.Okrol;
                             break;
@@ -354,14 +316,14 @@ namespace mia_conv
         /// <summary>
         /// UPDATE fucks SET f_state='okrol' WHERE f_state='sucrol' AND f_children>0;
         /// </summary>
-        private static void repairFucksIfChildrenThenOkrol()
+        private static void repairFucks_IfChildrenThenOkrol()
         {
-            log("--searching fucks where state is 'sukrol'  and childrens<>0--");
+            _logger.InfoFormat("--searching fucks where state is 'sukrol'  and childrens<>0--");
             foreach (repFuck f in _fucks)
             {
                 if (f.fState == repFuck.State.Sukrol && f.Children != 0)
                 {
-                    log("   fixing a bug. chldrn: {0:d}| state: {1:s}", f.Children, f.fState.ToString());
+                    _logger.InfoFormat("   fixing a bug. chldrn: {0:d}| state: {1:s}", f.Children, f.fState.ToString());
                     f.fState = repFuck.State.Okrol;
                 }
             }
@@ -369,7 +331,7 @@ namespace mia_conv
 
         private static void saveRabbits(MySqlCommand cmd)
         {
-            log("--saving rabbits--");
+            _logger.InfoFormat("--saving rabbits--");
             foreach (repRabbit rab in _rabbits)
             {
                 cmd.CommandText = String.Format("UPDATE rabbits SET r_mother={0:d},r_father={1:d} WHERE r_id={2:d};", rab.Mother, rab.Father, rab.rID);
@@ -379,7 +341,7 @@ namespace mia_conv
 
         private static void saveFucks(MySqlCommand cmd)
         {
-            log("--saving fucks--");
+            _logger.InfoFormat("--saving fucks--");
             foreach (repFuck f in _fucks)
             {
                 cmd.CommandText = String.Format("UPDATE fucks SET {0:s} {1:s} f_state='{2}',f_children={4:d} WHERE f_id={3:d};",
@@ -393,7 +355,7 @@ namespace mia_conv
         private static void giveABreak()
         {
 #if !NOBREAK
-            log("--lets take a 10sec break--");
+            _logger.InfoFormat("--lets take a 10sec break--");
             System.Threading.Thread.Sleep(10000);
 #endif
         }
@@ -405,30 +367,30 @@ namespace mia_conv
             _logger.Info(s);
         }
 
-        internal static void log(string s, object arg0)
+        internal static void log(string s, params object[] args)
         {
-            log(String.Format(s, arg0));
+            log(String.Format(s, args));
         }
 
-        internal static void log(string s, object arg0, object arg1)
-        {
-            log(String.Format(s, arg0, arg1));
-        }
+        //internal static void log(string s, object arg0, object arg1)
+        //{
+        //    log(String.Format(s, arg0, arg1));
+        //}
 
-        internal static void log(string s, object arg0, object arg1, object arg2)
-        {
-            log(String.Format(s, arg0, arg1, arg2));
-        }
+        //internal static void log(string s, object arg0, object arg1, object arg2)
+        //{
+        //    log(String.Format(s, arg0, arg1, arg2));
+        //}
 
-        internal static void log(string s, object arg0, object arg1, object arg2, object arg3)
-        {
-            log(String.Format(s, arg0, arg1, arg2, arg3));
-        }
+        //internal static void log(string s, object arg0, object arg1, object arg2, object arg3)
+        //{
+        //    log(String.Format(s, arg0, arg1, arg2, arg3));
+        //}
 
-        internal static void log(string s, object arg0, object arg1, object arg2, object arg3, object arg4, object arg5)
-        {
-            log(String.Format(s, arg0, arg1, arg2, arg3, arg4, arg5));
-        }
+        //internal static void log(string s, object arg0, object arg1, object arg2, object arg3, object arg4, object arg5)
+        //{
+        //    log(String.Format(s, arg0, arg1, arg2, arg3, arg4, arg5));
+        //}
         #endregion     
     }
 
