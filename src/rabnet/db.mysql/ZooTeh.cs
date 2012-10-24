@@ -147,7 +147,7 @@ namespace db.mysql
         private void fillVacc(MySqlDataReader rd)
         {
             ID2 = rd.GetInt32("v_id");
-            Comment = rd.GetString("v_name");
+            Comment = "\"" + rd.GetString("v_name")+"\"  [" + rd.GetString("r_group") + "]";           
         }               
 
         /// <summary>
@@ -368,12 +368,14 @@ ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;",
         {
             string show = _flt.safeValue(Filters.VACC_SHOW, "1")!="" ?_flt.safeValue(Filters.VACC_SHOW, "1"):"1";
             return String.Format(@"CREATE TEMPORARY TABLE aaa  SELECT 
-    rb.r_id, r_parent,rabname(r_id,{0:s}) name, rabplace(r_id) place, (TO_DAYS(NOW())-TO_DAYS(r_born)) age, v.v_id,
+    rb.r_id, r_parent,rabname(r_id,{0:s}) name, rabplace(r_id) place, (TO_DAYS(NOW())-TO_DAYS(r_born)) age, v.v_id, r_group,
     to_days(NOW()) - to_days(COALESCE((SELECT MAX(date) FROM rab_vac WHERE r_id=rb.r_id AND v_id=v.v_id),Date_Add(r_born,INTERVAL v_age DAY))) srok, #сколько дней не выполнена работа
     ( SELECT `date` FROM rab_vac rv         #показываем дату прививки
       WHERE rv.v_id=v.v_id AND rv.r_id=rb.r_id AND unabled!=1       #если ее сделали кролику
         AND CAST(v.v_duration as SIGNED)-CAST(to_days(NOW())-to_days(date) AS SIGNED)>0     #и она еще не кончилась
-    ) dt, v_age, v_name, {1:s}
+    ) dt, 
+    v_age, 
+    v_name, {1:s}
   FROM rabbits rb,vaccines v WHERE v_id in({2:s});
 {3:s}
 SELECT * FROM aaa WHERE age>=v_age AND dt is NULL {4:s};
