@@ -28,34 +28,99 @@ namespace mia_conv
     {
         internal enum State { Sukrol, Okrol, Proholost };
 
-        internal int fID;
+        private readonly int _fID;
+        private int _SheID;
+        private int _HeID;
+        private DateTime _StartDate;
+        private DateTime _EndDate;
+        private State _fState;
+        private int _Children;
+        private bool _modified;
+
+        internal int fID
+        {
+            get { return _fID; }
+        }
         /// <summary>
         /// ID крольчихи
         /// </summary>
-        internal int SheID;
+        internal int SheID
+        {
+            get { return _SheID; }
+            set 
+            {
+                _modified = true;
+                _SheID = value;
+            }
+        }
         /// <summary>
         /// ID самца
         /// </summary>
-        internal int HeID;
-        internal DateTime StartDate;
-        internal DateTime EndDate;
-        internal State fState;
-        internal int Children;
+        internal int HeID
+        {
+            get { return _HeID; }
+            set
+            {
+                _modified = true;
+                _HeID = value;
+            }
+        }
+        internal DateTime StartDate
+        {
+            get { return _StartDate; }
+            set
+            {
+                _modified = true;
+                _StartDate = value;
+            }
+        }
+        internal DateTime EndDate
+        {
+            get { return _EndDate; }
+            set
+            {
+                _modified = true;
+                _EndDate = value;
+            }
+        }
+        internal State fState
+        {
+            get { return _fState; }
+            set
+            {
+                _modified = true;
+                _fState = value;
+            }
+        }
+        internal int Children
+        {
+            get { return _Children; }
+            set
+            {
+                _modified = true;
+                _Children = value;
+            }
+        }
+        internal bool Modifyed
+        {
+            get { return _modified; }
+        }
+
 
         internal repFuck(int id, int rabid, int partner, DateTime date, DateTime end_date, string state, int children)
         {
-            this.fID = id;
-            this.SheID = rabid;
-            this.HeID = partner;
-            this.StartDate = date;
-            this.EndDate = end_date;
+            _fID = id;
+            _SheID = rabid;
+            _HeID = partner;
+            _StartDate = date;
+            _EndDate = end_date;
             switch (state)
             {
-                case "okrol": this.fState = State.Okrol; break;
-                case "sukrol": this.fState = State.Sukrol; break;
-                case "proholost": this.fState = State.Proholost; break;
+                case "okrol": _fState = State.Okrol; break;
+                case "sukrol": _fState = State.Sukrol; break;
+                case "proholost": _fState = State.Proholost; break;
             }
-            this.Children = children;
+            _Children = children;
         }
     }
 }

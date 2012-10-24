@@ -40,7 +40,7 @@ users: user1;password1[;user2;password2[;user3;passowrd3...]] - create users
             String scr = "";
             int auto = 0;
             Environment.ExitCode = miaExitCode.OK;
-
+            
             _log.Debug("ARGS: " + String.Join(" | ", args));
             if (args.Length >= 1)
             {
