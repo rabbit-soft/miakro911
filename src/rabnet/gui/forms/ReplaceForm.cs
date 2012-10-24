@@ -10,17 +10,7 @@ namespace rabnet
 {
     public partial class ReplaceForm : Form
     {
-        /// <summary>
-        /// Номер колонки, в которой содержится адрес, по которому переселят кролика
-        /// (номер считается от 0)
-        /// </summary>
-        public const int PLACEFIELD = 5;
-        /// <summary>
-        /// Номер колонки, в которой содержится чекбокс с установкой гнездовья
-        /// </summary>
-        public const int NESTFIELD = 7;
-        class RPList : List<RP> { }
-
+        public enum Action { NONE, CHANGE, BOYSOUT, SET_NEST, ONE_GIRL_OUT }
         class RP
         {
             /// <summary>
@@ -36,11 +26,11 @@ namespace rabnet
             /// <summary>
             /// ID кормилицы
             /// </summary>
-            public int Parent=0;
+            public int Parent = 0;
             /// <summary>
             /// ID новой кормилицы
             /// </summary>
-            public int NewParent=0;
+            public int NewParent = 0;
             /// <summary>
             /// Количество кроликов в группе
             /// </summary>
@@ -66,11 +56,12 @@ namespace rabnet
             /// Текущий адрес кролика
             /// </summary>
             public string Address;
+            public string BreedName;
             /// <summary>
             /// Новый адрес кролика
             /// </summary>
-            public string NewAddress="";
-            public string Action="остается";
+            public string NewAddress = "";
+            public string Action = "остается";
             /// <summary>
             /// Является ли группа молодняком
             /// </summary>
@@ -87,7 +78,8 @@ namespace rabnet
             public RP PlaceWith = null;
             public RPList List = null;
             public RPList Children = new RPList();
-            public RP(RPList list,int id, string name, string address, int count, Rabbit.SexType sex,int age)
+
+            public RP(RPList list, int id, string name, string address, int count, Rabbit.SexType sex, int age, string breedName)
             {
                 this.List = list;
                 this.ID = id;
@@ -99,10 +91,11 @@ namespace rabnet
                 NewSex = sex;
                 this.Age = age;
                 this.CanHaveNest = canTierHaveNest(address);
+                this.BreedName = breedName;
             }
 
             public static bool canTierHaveNest(string place)
-            {              
+            {
                 if (place.Contains(BuildingType.DualFemale_Rus) || place.Contains(BuildingType.Female_Rus)) return true;
                 if (place.Contains(BuildingType.Jurta_Rus))
                 {
@@ -113,20 +106,21 @@ namespace rabnet
                 return false;
             }
 
-            public RP(RPList list, int id, string name, string address, int count, Rabbit.SexType sex, int age, bool nest):
-                this(list, id, name, address, count, sex, age)
+            public RP(RPList list, int id, string name, string address, int count, Rabbit.SexType sex, int age, string breedName, bool nest)
+                : this(list, id, name, address, count, sex, age, breedName)
             {
                 this.SetNest = nest;
             }
 
-            public RP(RPList list,int id, string name, string address, int count, Rabbit.SexType sex,int age,int parent):
-                this(list,id,name,address,count,sex,age)
+            public RP(RPList list, int id, string name, string address, int count, Rabbit.SexType sex, int age, string breedName, int parent)
+                : this(list, id, name, address, count, sex, age, breedName)
             {
                 Younger = true;
                 this.Parent = parent;
                 NewParent = parent;
             }
-            public RP(RP fromrp, int count):this(fromrp.List,fromrp.ID,fromrp.Name,fromrp.CurAddress,count,fromrp.Sex,fromrp.Age,fromrp.Parent)
+            public RP(RP fromrp, int count)
+                : this(fromrp.List, fromrp.ID, fromrp.Name, fromrp.CurAddress, count, fromrp.Sex, fromrp.Age, fromrp.BreedName, fromrp.Parent)
             {
                 MadeFrom = fromrp;
                 fromrp.NewCount -= count;
@@ -171,15 +165,15 @@ namespace rabnet
 
             public string CurAddress
             {
-                get { return NewAddress == "" ? Address : NewAddress; } 
+                get { return NewAddress == "" ? Address : NewAddress; }
                 set
                 {
                     if (value == this.Address || (value == "" || value == "бомж"))
                         NewAddress = "";
-                    else this.NewAddress = value;                 
+                    else this.NewAddress = value;
                     if (this.ID == 0) return;
                     foreach (RP r in List)//далее ищет детей и присваивает их адресу - новый адрес матери.
-                        if (r.Parent == this.ID && r != this )
+                        if (r.Parent == this.ID && r != this)
                         {
                             if (r.CurAddress != this.Address) continue;//если детям назначили адрес раньше матери
                             String cur = r.Address;
@@ -191,7 +185,7 @@ namespace rabnet
             }
 
             public bool Replaced { get { return CurAddress != Address; } }
-            public string Name { get { return (Younger?" - ":"")+SName; } set { SName = value; } }
+            public string Name { get { return (Younger ? " - " : "") + SName; } set { SName = value; } }
             public string Status
             {
                 get
@@ -199,7 +193,7 @@ namespace rabnet
                     string res = NewCount > 1 ? "остаются" : "остается";
                     if (CurAddress != Address)
                     {
-                        if (Younger)res = "отсадка";                      
+                        if (Younger) res = "отсадка";
                         else res = "пересадка";
                         if (PlaceTo != null) res = "подсадка";
                     }
@@ -213,11 +207,22 @@ namespace rabnet
             public RP SplitGroup(int num)
             {
                 if (ID == 0) return null;
-                if (num<1 || num>=NewCount) return null;
+                if (num < 1 || num >= NewCount) return null;
                 return new RP(this, num);
             }
         }
 
+        /// <summary>
+        /// Номер колонки, в которой содержится адрес, по которому переселят кролика
+        /// (номер считается от 0)
+        /// </summary>
+        public const int FIELD_NEWPLACE = 5;
+        /// <summary>
+        /// Номер колонки, в которой содержится чекбокс с установкой гнездовья
+        /// </summary>
+        public const int FIELD_NEST = 7;
+        class RPList : List<RP> { }
+      
         private bool _manual = false;
         private int girlout = 0;
         private List<RabNetEngRabbit> rbs = new List<RabNetEngRabbit>();
@@ -227,8 +232,7 @@ namespace rabnet
         /// Комбобокс с новыми адресами, который добавляется к новой строке
         /// </summary>
         private DataGridViewComboBoxColumn dgcbNewAddress = new DataGridViewComboBoxColumn();        
-        private Building[] bs = null;
-        public enum Action { NONE,CHANGE,BOYSOUT,SET_NEST,ONE_GIRL_OUT}
+        private Building[] bs = null;       
         private Action _action = Action.NONE;
         private bool globalError=false;
         private bool noboys = false;
@@ -243,9 +247,9 @@ namespace rabnet
             _dataSet.Columns.Add("Пол", typeof(string));
             _dataSet.Columns.Add("Количество", typeof(int));
             _dataSet.Columns.Add("Старый адрес", typeof(string));
-            _dataSet.Columns.Add("Новый адрес", typeof(string));
+            _dataSet.Columns.Add("Новый адрес", typeof(string));//FIELD_PLACE
             _dataSet.Columns.Add("Статус", typeof(string));
-            _dataSet.Columns.Add("Гнездовье", typeof(bool));
+            _dataSet.Columns.Add("Гнездовье", typeof(bool));    //FIELD_NEST
             dataGridView1.DataSource = _dataSet;
             cbFilter.Tag = 1;
             cbFilter.SelectedIndex = 0;
@@ -280,10 +284,10 @@ namespace rabnet
             _replaceList.Clear();
             foreach (RabNetEngRabbit r in rbs)
             {
-                _replaceList.Add(new RP(_replaceList,r.RabID, r.FullName, r.medAddress, r.Group, r.Sex, r.Age,r.SetNest));
+                _replaceList.Add(new RP(_replaceList, r.RabID, r.FullName, r.medAddress, r.Group, r.Sex, r.Age, r.BreedName, r.SetNest));
                 //Engine.get().db().getBuilding(r.Address);
                 foreach (YoungRabbit y in r.Youngers)
-                    _replaceList.Add(new RP(_replaceList,y.ID, y.NameFull, r.medAddress, y.Group, y.Sex,DateTime.Now.Subtract(y.BirthDay).Days, r.RabID));
+                    _replaceList.Add(new RP(_replaceList, y.ID, y.NameFull, r.medAddress, y.Group, y.Sex, DateTime.Now.Subtract(y.BirthDay).Days, r.BreedName, r.RabID));
             }
         }
         public void setAction(Action act)
@@ -397,12 +401,12 @@ namespace rabnet
             if (reget)
             {
                 getBuildings();
-                dataGridView1.Columns.RemoveAt(PLACEFIELD);
+                dataGridView1.Columns.RemoveAt(FIELD_NEWPLACE);
                 dgcbNewAddress.MaxDropDownItems = 20;
                 dgcbNewAddress.HeaderText = "Новый адрес";
                 dgcbNewAddress.DataPropertyName = "Новый адрес";
                 dgcbNewAddress.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                dataGridView1.Columns.Insert(PLACEFIELD, dgcbNewAddress);
+                dataGridView1.Columns.Insert(FIELD_NEWPLACE, dgcbNewAddress);
             }
             foreach (RP r in _replaceList)
             {
@@ -468,8 +472,8 @@ namespace rabnet
 
         private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            if (e.ColumnIndex != NESTFIELD ||(e.ColumnIndex == NESTFIELD && !canHaveNest(e.RowIndex)))
-                e.Cancel = (e.ColumnIndex != PLACEFIELD);
+            if (e.ColumnIndex != FIELD_NEST ||(e.ColumnIndex == FIELD_NEST && !canHaveNest(e.RowIndex)))
+                e.Cancel = (e.ColumnIndex != FIELD_NEWPLACE);
         }
         private void ReplaceForm_Load(object sender, EventArgs e)
         {
@@ -487,18 +491,18 @@ namespace rabnet
         /// <param name="e"></param>
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            if ((e.ColumnIndex != PLACEFIELD && e.ColumnIndex != NESTFIELD) || _dataSet.Rows.Count == 0)
+            if ((e.ColumnIndex != FIELD_NEWPLACE && e.ColumnIndex != FIELD_NEST) || _dataSet.Rows.Count == 0)
                 return;
             DataRow rw = _dataSet.Rows[e.RowIndex];
             RP r = _replaceList[e.RowIndex];
-            if (e.ColumnIndex == PLACEFIELD) 
-                r.CurAddress = (string)rw[PLACEFIELD];
-            if (e.ColumnIndex == PLACEFIELD && r.Address == r.CurAddress)
+            if (e.ColumnIndex == FIELD_NEWPLACE) 
+                r.CurAddress = (string)rw[FIELD_NEWPLACE];
+            if (e.ColumnIndex == FIELD_NEWPLACE && r.Address == r.CurAddress)
                 return;
             r.CanHaveNest = canHaveNest(e.RowIndex);
             if (!r.CanHaveNest)
                 r.SetNest = false;
-            else r.SetNest = (bool)rw[NESTFIELD];
+            else r.SetNest = (bool)rw[FIELD_NEST];
             update();
         }
         /// <summary>
@@ -507,7 +511,7 @@ namespace rabnet
         /// <param name="rowIndex">Номер строки</param>
         private bool canHaveNest(int rowIndex)
         {
-            string place = dataGridView1.Rows[rowIndex].Cells[PLACEFIELD].Value.ToString();
+            string place = dataGridView1.Rows[rowIndex].Cells[FIELD_NEWPLACE].Value.ToString();
             return RP.canTierHaveNest(place);
         }
 
@@ -842,7 +846,7 @@ namespace rabnet
 
         private void dataGridView1_CurrentCellDirtyStateChanged(object sender, EventArgs e)
         {
-            if (!_manual || dataGridView1.CurrentCell.ColumnIndex != PLACEFIELD) return;
+            if (!_manual || dataGridView1.CurrentCell.ColumnIndex != FIELD_NEWPLACE) return;
             _manual = false;
             dataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);
             _manual = true;

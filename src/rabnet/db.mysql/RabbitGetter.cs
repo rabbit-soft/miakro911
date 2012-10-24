@@ -20,7 +20,7 @@ namespace db.mysql
         internal static OneRabbit fillOneRabbit(MySqlDataReader rd)
         {
             return new OneRabbit(rd.GetInt32("r_id"), rd.GetString("r_sex"), rd.GetDateTime("r_born"), rd.GetInt32("r_rate"),
-                rd.GetString("r_flags"), rd.GetInt32("r_name"), rd.GetInt32("r_surname"), rd.GetInt32("r_secname"),
+                rd.GetString("r_flags"), rd.GetInt32("r_name"), rd.GetInt32("r_surname"), rd.GetInt32("r_secname"),               
                 rd.GetString("address"), rd.GetInt32("r_group"), rd.GetInt32("r_breed"),
                 rd.GetInt32("r_zone"),
                 rd.IsDBNull(rd.GetOrdinal("r_notes")) ? "" : rd.GetString("r_notes"),
@@ -37,7 +37,8 @@ namespace db.mysql
                 rd.GetInt32("r_parent"),
                 rd.GetInt32("r_okrol"), 
                 rd.IsDBNull(rd.GetOrdinal("weight")) ? 0 :rd.GetInt32("weight"),
-                rd.IsDBNull(rd.GetOrdinal("weight_date")) ?  DateTime.MinValue: rd.GetDateTime("weight_date"));
+                rd.IsDBNull(rd.GetOrdinal("weight_date")) ?  DateTime.MinValue: rd.GetDateTime("weight_date"),
+                rd.GetInt32("r_mother"), rd.GetInt32("r_father"));
         }
 
         public static bool isDeadRabbit(MySqlConnection con, int rid)
@@ -471,40 +472,47 @@ WHERE r_parent={1:d} AND r_id={2:d};", added, rid, yid), sql);
 
         public static void combineGroups(MySqlConnection sql, int rabfrom, int rabto)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT r_mother,r_father,r_okrol from rabbits where r_id={0:d};", rabfrom), sql);
-            MySqlDataReader rd = cmd.ExecuteReader();
+            MySqlCommand cmd = new MySqlCommand("", sql);//(String.Format("SELECT r_mother,r_father,r_okrol from rabbits where r_id={0:d};", rabfrom), sql);
+            MySqlDataReader rd; //= cmd.ExecuteReader();
+            OneRabbit rabFrom = GetRabbit(sql,rabfrom);
+            OneRabbit rabTo = GetRabbit(sql, rabto);
+            //int[] Arabfrom = new int[3];
+            //if (rd.Read())
+            //{
+            //    Arabfrom[0] = rd.GetInt32("r_mother");
+            //    Arabfrom[1] = rd.GetInt32("r_father");
+            //    Arabfrom[2] = rd.GetInt32("r_okrol");
+            //}
+            //rd.Close();
+            //cmd.CommandText = String.Format("select r_mother,r_father,r_okrol from rabbits where r_id={0:d};", rabto);
+            //rd = cmd.ExecuteReader();
+            //int[] Arabto = new int[3];
+            //if (rd.Read())
+            //{
+            //    Arabto[0] = rd.GetInt32("r_mother");
+            //    Arabto[1] = rd.GetInt32("r_father");
+            //    Arabto[2] = rd.GetInt32("r_okrol");
+            //}
+            //rd.Close();
 
-            int[] Arabfrom = new int[3];
-            if (rd.Read())
+            //if (Arabfrom[0] == Arabto[0] && Arabfrom[1] == Arabto[1] && Arabfrom[2] == Arabto[2])
+            ///если это ранее разбитые кролики на 2 группы
+            if (rabFrom.MotherID == rabTo.MotherID && 
+                rabFrom.FatherID == rabTo.FatherID && 
+                rabFrom.Okrol == rabTo.Okrol && 
+                rabFrom.Sex == rabTo.Sex &&
+                rabFrom.BreedID == rabTo.BreedID)
             {
-                Arabfrom[0] = rd.GetInt32("r_mother");
-                Arabfrom[1] = rd.GetInt32("r_father");
-                Arabfrom[2] = rd.GetInt32("r_okrol");
-            }
-            rd.Close();
-            cmd.CommandText = String.Format("select r_mother,r_father,r_okrol from rabbits where r_id={0:d};", rabto);
-            rd = cmd.ExecuteReader();
-            int[] Arabto = new int[3];
-            if (rd.Read())
-            {
-                Arabto[0] = rd.GetInt32("r_mother");
-                Arabto[1] = rd.GetInt32("r_father");
-                Arabto[2] = rd.GetInt32("r_okrol");
-            }
-            rd.Close();
-
-            if (Arabfrom[0] == Arabto[0] && Arabfrom[1] == Arabto[1] && Arabfrom[2] == Arabto[2])
-            {
-                cmd.CommandText = String.Format("SELECT r_group FROM rabbits WHERE r_id={0:d};", rabfrom);
-                rd = cmd.ExecuteReader();
-                int cnt = 0;
-                if (rd.Read())
-                    cnt = rd.GetInt32(0);
-                rd.Close();
-                cmd.CommandText = String.Format("UPDATE rabbits SET r_group=r_group+{0:d} WHERE r_id={1:d};", cnt, rabto);
+                //cmd.CommandText = String.Format("SELECT r_group FROM rabbits WHERE r_id={0:d};", rabfrom);
+                //rd = cmd.ExecuteReader();
+                //int cnt = 0;
+                //if (rd.Read())
+                //    cnt = rd.GetInt32(0);
+                //rd.Close();
+                cmd.CommandText = String.Format("UPDATE rabbits SET r_group=r_group+{0:d} WHERE r_id={1:d};", rabFrom.Group, rabto);
                 cmd.ExecuteNonQuery();
                 freeTier(sql, rabfrom);
-                cmd.CommandText = String.Format("CALL killRabbit({0:d},2,'{1:d}');", rabfrom, "Объединен с " + rabto);
+                cmd.CommandText = String.Format("CALL killRabbit({0:d},2,'{1:d}');", rabfrom, String.Format("Объединен с {0:s} [{1:d}] в {2:s}",rabTo.NameFull,rabTo.ID,rabTo.AddressSmall));
                 cmd.ExecuteNonQuery();
             }
             else
@@ -694,6 +702,7 @@ WHERE r_id={0:d} ORDER BY date", rabId), sql);
             return String.Format(@"r_id,
     r_sex, r_born, r_rate,
     r_flags, r_name, r_surname, r_secname,
+    r_mother,r_father,
     {1:s}place(r_id) address, r_group, r_breed, 
     r_zone,
     r_notes,

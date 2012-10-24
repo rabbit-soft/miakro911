@@ -116,9 +116,6 @@ namespace db.mysql
                     ReportHelper.Append(el, doc, "name", name);
                     ReportHelper.Append(el, doc, "dt", dt);
                     ReportHelper.Append(el, doc, "state", state.ToString());
-                    //el.AppendChild(dok_out.CreateElement("name")).AppendChild(dok_out.CreateTextNode(name));
-                    //el.AppendChild(dok_out.CreateElement("dt")).AppendChild(dok_out.CreateTextNode(dt));
-                    //el.AppendChild(dok_out.CreateElement("state")).AppendChild(dok_out.CreateTextNode(state.ToString()));
 
                     name = nd.FirstChild.FirstChild.Value;
                     dt = nd.FirstChild.NextSibling.FirstChild.Value;
@@ -129,9 +126,6 @@ namespace db.mysql
             ReportHelper.Append(el2, doc, "name", name);
             ReportHelper.Append(el2, doc, "dt", dt);
             ReportHelper.Append(el2, doc, "state", state.ToString());
-            //el2.AppendChild(dok_out.CreateElement("name")).AppendChild(dok_out.CreateTextNode(name));
-            //el2.AppendChild(dok_out.CreateElement("dt")).AppendChild(dok_out.CreateTextNode(dt));
-            //el2.AppendChild(dok_out.CreateElement("state")).AppendChild(dok_out.CreateTextNode(state.ToString()));
             return doc;
         }
 
@@ -171,9 +165,6 @@ namespace db.mysql
                 ReportHelper.Append(rw, doc, "name", k);
                 ReportHelper.Append(rw, doc, "dt", "Cум.");
                 ReportHelper.Append(rw, doc, "state", sums[k].ToString());
-                //rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(k));
-                //rw.AppendChild(doc.CreateElement("dt")).AppendChild(doc.CreateTextNode("Cум."));
-                //rw.AppendChild(doc.CreateElement("state")).AppendChild(doc.CreateTextNode(sums[k].ToString()));
             }
             foreach (String k in cnts.Keys)
             {
@@ -181,9 +172,6 @@ namespace db.mysql
                 ReportHelper.Append(rw, doc, "name", k);
                 ReportHelper.Append(rw, doc, "dt", "К.Окр.");
                 ReportHelper.Append(rw, doc, "state", cnts[k].ToString());
-                //rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(k));
-                //rw.AppendChild(doc.CreateElement("dt")).AppendChild(doc.CreateTextNode("К.Окр."));
-                //rw.AppendChild(doc.CreateElement("state")).AppendChild(doc.CreateTextNode(cnts[k].ToString()));
             }
             sums.Clear();
             foreach (XmlNode nd in lst)
@@ -201,9 +189,6 @@ namespace db.mysql
                 ReportHelper.Append(rw, doc, "name", "итого");
                 ReportHelper.Append(rw, doc, "dt", k);
                 ReportHelper.Append(rw, doc, "state", sums[k].ToString());
-                //rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode("итого"));
-                //rw.AppendChild(doc.CreateElement("dt")).AppendChild(doc.CreateTextNode(k));
-                //rw.AppendChild(doc.CreateElement("state")).AppendChild(doc.CreateTextNode(sums[k].ToString()));
             }
             return doc;
         }
@@ -283,31 +268,35 @@ FROM fucks WHERE f_partner={0:d} AND f_end_date>={1:s} AND f_end_date<={2:s});",
 
         private String deadQuery(Filters f)
         {
-            string period = "";
+            string where = "";
             string format = "%d.%m.%Y";        
             if (f.safeValue("dttp") == "d")
             {
                 DateTime dt = DateTime.Parse(f.safeValue("dtval"));
-                period = String.Format("WHERE DATE(d_date)='{0:yyyy-MM-dd}'", dt);
+                where = String.Format("DATE(d_date)='{0:yyyy-MM-dd}'", dt);
             }
             else if (f.safeValue("dttp") == "y")
             {
                 //format = "%m";
-                period = String.Format("WHERE YEAR(d_date)={0}", f.safeValue("dtval"));
+                where = String.Format("YEAR(d_date)={0}", f.safeValue("dtval"));
             }
             else if (f.safeValue("dttp") == "m")
             {
                 DateTime dt = DateTime.Parse(f.safeValue("dtval"));
                 format = "%d";
-                period = String.Format("WHERE MONTH(d_date)={0:MM} AND YEAR(d_date)={0:yyyy}", dt);
+                where = String.Format("MONTH(d_date)={0:MM} AND YEAR(d_date)={0:yyyy}", dt);
             }
-            
+            where += String.Format(" AND d_reason!={0:d}",DeadReason_Static.CombineGroups);
+            if(where != "")
+                where = "WHERE " + where;
+
             return String.Format(@"SELECT DATE_FORMAT(d_date,'{1}') date,
     deadname(r_id,2) name,
     r_group,
     (SELECT d_name FROM deadreasons WHERE d_id=d_reason) reason,
     d_notes 
-FROM dead {0} ORDER BY d_date ASC;", period,format);
+FROM dead {0:s} 
+ORDER BY d_date ASC;", where,format);
             
         }
 
@@ -417,16 +406,10 @@ WHERE {0:s} {1:s} ORDER BY name,dt;",worker , period, format);
             ReportHelper.Append(rw, doc, "name", type);
             ReportHelper.Append(rw, doc, "type", "идеал");
             ReportHelper.Append(rw, doc, "value", ideal.ToString());
-            //rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(type));
-            //rw.AppendChild(doc.CreateElement("type")).AppendChild(doc.CreateTextNode("идеал"));
-            //rw.AppendChild(doc.CreateElement("value")).AppendChild(doc.CreateTextNode(ideal.ToString()));
             rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
             ReportHelper.Append(rw, doc, "name", type);
             ReportHelper.Append(rw, doc, "type", "реально");
             ReportHelper.Append(rw, doc, "value", real.ToString());
-            //rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(type));
-            //rw.AppendChild(doc.CreateElement("type")).AppendChild(doc.CreateTextNode("реально"));
-            //rw.AppendChild(doc.CreateElement("value")).AppendChild(doc.CreateTextNode(real.ToString()));
         }
 
         private XmlDocument shedReport(Filters f)

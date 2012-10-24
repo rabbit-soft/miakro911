@@ -25,4 +25,37 @@ namespace rabnet
             group = grp;
         }
     }
+
+    public static class DeadReason_Static
+    {
+        /// <summary>
+        /// Списан из старой программы
+        /// </summary>
+        public static int DeadFromOldApp = 1;
+
+        /// <summary>
+        /// Объединение
+        /// </summary>
+        public static int CombineGroups = 2;
+        
+        /// <summary>
+        /// На убой
+        /// </summary>
+        public static int Killed = 3;
+        
+        /// <summary>
+        /// Продажа племенного поголовья
+        /// </summary>
+        public static int Selled = 4;
+        
+        /// <summary>
+        /// Падеж при подсчете
+        /// </summary>
+        public static int Dead_KidsCount = 5;
+
+        /// <summary>
+        /// Падеж
+        /// </summary>
+        public static int Dead = 6;
+    }
 }

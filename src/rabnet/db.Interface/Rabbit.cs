@@ -239,17 +239,6 @@ namespace rabnet
     public class OneRabbit : AdultRabbit
     {
         #region prop
-        //protected string _flags;
-        //public Rabbit.Sex sex;
-        /// <summary>
-        /// Дата рождения
-        /// </summary>
-        //public DateTime born;
-        /// <summary>
-        /// Рэйтинг
-        /// </summary>
-        //public int Rate;
-        //public int ID;
         /// <summary>
         /// Кормилица
         /// </summary>
@@ -260,10 +249,6 @@ namespace rabnet
         public int secname;
         public int BreedID;
         public int zone;
-        /// <summary>
-        /// Заметки
-        /// </summary>
-        //public String notes;
         public string gens;
         public DateTime lastfuckokrol;
         public int evtype;
@@ -279,14 +264,15 @@ namespace rabnet
         public string nuaddr = "";
         protected DateTime _weightDate;
         protected string _newAddress = "";
-        /// <summary>
-        /// Каким окролом родился
-        /// </summary>
+        
         private int _okrol;
+        private int _motherId;
+        private int _fatherId;
         #endregion prop
+
         public OneRabbit(int id, string sx, DateTime born, int rate, string flags, int nameId, int surnameId, int secnameId, string rawAddress, int group, int brd, int zone, String notes,
             String genom, int status, DateTime lastFuckOkrol, String eventType, DateTime eventDate, int overAllBabys, int lostBabys, String fullName, String breedName,
-            String bon, int parent, int okrol, int weight, DateTime weightDate)
+            String bon, int parent, int okrol, int weight, DateTime weightDate, int motherID, int fatherID)
             : base(id, fullName, sx, born, breedName, group, bon, rawAddress, notes, rate, flags, weight, status, eventDate, 0, -1, "")
         {
             this.parentId = parent;
@@ -305,7 +291,12 @@ namespace rabnet
             kidsOverAll = overAllBabys;
             kidsLost = lostBabys;
             WeightDate = weightDate;
+            _motherId = motherID;
+            _fatherId = fatherID;
         }
+        /// <summary>
+        /// Каким окролом родился
+        /// </summary>
         public int Okrol { get { return _okrol; } }
         public DateTime WeightDate { get { return _weightDate; } set { _weightDate = value; } }
         public override string Address
@@ -334,6 +325,7 @@ namespace rabnet
         {
             get { return WeightDate.Subtract(BirthDay).Days; }
         }
+
         #region flags
         /// <summary>
         /// Готовая продукция
@@ -370,5 +362,8 @@ namespace rabnet
         #endregion flags
 
         public string RawAddress { get { return _rawAddress; } }
+
+        public int MotherID { get { return _motherId; } }
+        public int FatherID { get { return _fatherId; } }
     }
 }

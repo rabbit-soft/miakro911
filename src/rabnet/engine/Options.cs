@@ -45,7 +45,7 @@ namespace rabnet
             /// Размеры формы пересадок в формате W:H
             /// <example>600:400</example>
             /// </summary>
-            FS_REPLACE, FS_KILL, FS_REPLACE_YOUNG, FS_FUCK
+            FS_REPLACE, FS_KILL, FS_REPLACE_YOUNG, FS_FUCK,FS_DEAD_ARCH
         }
         public enum OPT_LEVEL {FARM,USER};
         public class ExOptionNotFound:ApplicationException
@@ -122,10 +122,12 @@ namespace rabnet
                                    new Option(OPT_ID.XLS_FOLDER,OPT_LEVEL.USER,"xls_folder"),
                                    new Option(OPT_ID.BUILD_FILL_ZERO,OPT_LEVEL.USER,"build_fill_zero"),
                                    new Option(OPT_ID.BUCHER_TYPE,OPT_LEVEL.FARM,"butcher_type"),
+
                                    new Option(OPT_ID.FS_REPLACE,OPT_LEVEL.USER,"fs_replace"),
                                    new Option(OPT_ID.FS_KILL,OPT_LEVEL.USER,"fs_kill"),
                                    new Option(OPT_ID.FS_REPLACE_YOUNG,OPT_LEVEL.USER,"fc_replace_young"),
                                    new Option(OPT_ID.FS_FUCK,OPT_LEVEL.USER,"fc_fuck"),
+                                   new Option(OPT_ID.FS_DEAD_ARCH,OPT_LEVEL.USER,"fc_dead_arch"),
                                    };
         public Options(RabNetEngine eng)
         {

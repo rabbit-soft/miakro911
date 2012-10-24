@@ -75,7 +75,6 @@
     <Compile Include="Filters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AdultRabbit.cs" />
-    <Compile Include="OneRabbit.cs" />
     <Compile Include="Rabbit.cs" />
     <Compile Include="RabbitGen.cs" />
   </ItemGroup>
