@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Data;
 using System.Text;
@@ -11,23 +10,25 @@ namespace rabnet
     public partial class RISuckersPanel : UserControl
     {
         RabNetEngRabbit _rab = null;
+        Catalog _breeds = null;
 
         public RISuckersPanel()
         {
             InitializeComponent();
         }
 
-        public void Fill(int rabId, RabNetEngRabbit rab)
+        public void Fill(RabNetEngRabbit rab)
         {
             _rab = rab;
-            if (rabId <= 0) return;
-            fill();
+            fill(false);
         }
 
-        private void fill()
+        private void fill(bool reget)
         {
+            if (reget)
+                _rab.YoungersUpdate();
             lvSuckers.Items.Clear();
-            foreach (YoungRabbit y in Engine.db().GetYoungers(_rab.RabID))
+            foreach (YoungRabbit y in _rab.Youngers)
             {
                 ListViewItem li = lvSuckers.Items.Add(y.NameFull);
                 li.SubItems.Add(y.Group.ToString());
@@ -38,25 +39,51 @@ namespace rabnet
             }
         }
 
+        public void SetBreeds(Catalog breeds)
+        {
+            _breeds = breeds;
+            foreach (KeyValuePair<int,string> kvp in _breeds)            
+                cbBreeds.Items.Add(kvp.Value);
+            
+        }
+
         private void btChangeBreed_Click(object sender, EventArgs e)
         {
             try
             {
                 if (lvSuckers.SelectedItems.Count == 0) throw new Exception("Не выбрано ни одной строчки");
                 if (lvSuckers.SelectedItems.Count > 1) throw new Exception("Выберите одну строчку");
+                if (cbBreeds.SelectedIndex < 0) throw new Exception("Выберите породу");
 
                 int yId = (int)lvSuckers.SelectedItems[0].Tag;
                 RabNetEngRabbit yng = Engine.get().getRabbit(yId);
 
-                //todo смена породы
-                //yng.Breed = 2;
-                //yng.Commit();
-                fill();
+                if (MessageBox.Show(String.Format("Вы действительно хотите назначить{2:s}породу \"{0:s}\"{2:s}группе детей:{1:s}", cbBreeds.Text, yng.FullName,Environment.NewLine), 
+                    "Подтверждение",MessageBoxButtons.YesNo,MessageBoxIcon.Question) == DialogResult.No) return;
+
+                yng.Breed = getBreedID(cbBreeds.Text);
+                yng.Commit();
+                fill(true);
             }
             catch (Exception exc)
             {
                 MessageBox.Show(exc.Message);
             }
+        }
+
+        private int getBreedID(string breedName)
+        {
+            foreach (KeyValuePair<int, string> kvp in _breeds)
+                if (kvp.Value == breedName)
+                    return kvp.Key;
+            throw new Exception("Порода не найдена");
+        }
+
+        private void lvSuckers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            label1.Enabled = 
+                cbBreeds.Enabled = 
+                btChangeBreed.Enabled = lvSuckers.SelectedItems.Count > 0; 
         }
     }
 }

@@ -475,7 +475,7 @@ namespace rabnet
             const byte DR_ON_COUNT=5;//deadreason "при подсчете"
             if (Sex != Rabbit.SexType.FEMALE)
                 throw new ExNotFemale(this);
-            _eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, RabID, _rab.youngers[yInd].ID, _rab.AddressSmall, String.Format("возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, прибавилось {4:d})", age, atall, dead, killed, added));            
+            _eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, RabID, _rab.youngers[yInd].ID, _rab.AddressSmall,"", String.Format("  возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, прибавилось {4:d})", age, atall, dead, killed, added));            
             if (dead == 0 && killed == 0 && added == 0) return;
             YoungRabbit y = _rab.youngers[yInd];
             RabNetEngRabbit r = _eng.getRabbit(y.ID);        
@@ -557,6 +557,14 @@ namespace rabnet
                 _rab.youngers = _eng.db().GetYoungers(_id);
             }
             _rab.rabVacs = _eng.db().GetRabVac(_id);                        
+        }
+
+        /// <summary>
+        /// Обновляет данные с сервера по подсосным
+        /// </summary>
+        public void YoungersUpdate()
+        {
+            _rab.youngers = Engine.db().GetYoungers(_id);
         }
     }
 }

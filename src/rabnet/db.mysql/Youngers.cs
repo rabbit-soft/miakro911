@@ -61,7 +61,7 @@ FROM rabbits WHERE r_parent!=0 ORDER BY name;", getFieldSet_Youngers(options.saf
         public static YoungRabbit[] GetYoungers(MySqlConnection sql, int id)//TODO проверить
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT {0:s}
-FROM rabbits WHERE r_parent={1:d} ORDER BY name;",getFieldSet_Youngers(true,true),id), sql);
+FROM rabbits WHERE r_parent={1:d} ORDER BY name;",getFieldSet_Youngers(true,false),id), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             List<YoungRabbit> y = new List<YoungRabbit>();
             while(rd.Read())

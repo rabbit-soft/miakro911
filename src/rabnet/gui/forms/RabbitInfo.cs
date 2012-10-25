@@ -12,11 +12,11 @@ namespace rabnet
     {
         const String RABDEAD = "Списан";
         private int _rabId = 0;
-        private Catalog breeds = null;
-        private Catalog zones = null;
-        private Catalog names = null;
-        private Catalog surnames = null;
-        private Catalog secnames = null;
+        private Catalog _breeds = null;
+        private Catalog _zones = null;
+        private Catalog _names = null;
+        private Catalog _surnames = null;
+        private Catalog _secnames = null;
         private RabNetEngRabbit _rab = null;
         /*private TabPage _tpMale;
         private TabPage _tpFemale;
@@ -239,7 +239,12 @@ namespace rabnet
                 li.Tag = f;
             }
             changeFucker.Enabled = false;
-            riSuckersPanel1.Fill(_rabId,_rab);            
+
+            if (_rabId > 0)
+            {
+                riSuckersPanel1.SetBreeds(_breeds);
+                riSuckersPanel1.Fill(_rab);
+            }
         }
 
         private void FillList(ComboBox cb,Catalog c,int key)
@@ -262,10 +267,10 @@ namespace rabnet
         private void fillCatalogs(int what)
         {
             ICatalogs cts = Engine.db().catalogs();
-            breeds = cts.getBreeds();
-            FillList(breed,breeds,_rab.Breed);
-            zones = cts.getZones();
-            FillList(zone, zones, _rab.Zone);
+            _breeds = cts.getBreeds();
+            FillList(breed,_breeds,_rab.Breed);
+            _zones = cts.getZones();
+            FillList(zone, _zones, _rab.Zone);
             int sx=0;
             String end="";
             if (_rab.Sex==Rabbit.SexType.MALE)
@@ -277,10 +282,10 @@ namespace rabnet
             }
             if (_rab.Group>1)
                 end="ы";
-            surnames = cts.getSurNames(2, end);
-            secnames = cts.getSurNames(1, end);
-            FillList(surname, surnames, _rab.Surname);
-            FillList(secname, secnames, _rab.SecondName);
+            _surnames = cts.getSurNames(2, end);
+            _secnames = cts.getSurNames(1, end);
+            FillList(surname, _surnames, _rab.Surname);
+            FillList(secname, _secnames, _rab.SecondName);
             fillNames(sx);
         }
 
@@ -288,8 +293,8 @@ namespace rabnet
         {
             if (sx != 0 && _rab.Group == 1)
             {
-                names = Engine.db().catalogs().getFreeNames(sx, _rab.WasName);
-                FillList(name, names, _rab.Name);
+                _names = Engine.db().catalogs().getFreeNames(sx, _rab.WasName);
+                FillList(name, _names, _rab.Name);
                 if (_rab.Name == 0)
                     name.Enabled = button16.Enabled=true;
             }
@@ -352,11 +357,11 @@ namespace rabnet
             _rab.Defect = defect.Checked;
             _rab.Realization = cbRealization.Checked;
             _rab.Rate = (int)rate.Value;
-            _rab.Name = getCatValue(names, name.Text);
-            _rab.Surname = getCatValue(surnames, surname.Text);
-            _rab.SecondName = getCatValue(secnames, secname.Text);
-            _rab.Breed = getCatValue(breeds, breed.Text);
-            _rab.Zone = getCatValue(zones, zone.Text);
+            _rab.Name = getCatValue(_names, name.Text);
+            _rab.Surname = getCatValue(_surnames, surname.Text);
+            _rab.SecondName = getCatValue(_secnames, secname.Text);
+            _rab.Breed = getCatValue(_breeds, breed.Text);
+            _rab.Zone = getCatValue(_zones, zone.Text);
             _curzone = _rab.Zone;
             _rab.Born = bdate.DateValue.Date;
             _rab.Group = (int)group.Value;

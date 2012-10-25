@@ -244,18 +244,5 @@ r_status,r_flags,r_event_date,r_breed
         {
             return i.ToString();
         } 
-
-        //public static String getRSex(String sx)
-        //{
-        //    String res = "?";
-        //    if (sx == "male") res = "м";
-        //    if (sx == "female") res = "ж";
-        //    return res;
-        //}
-
-        //private string Separate(string s)
-        //{
-        //    if (s.Length != 0) return ","; else return "";
-        //}
     }
 }
