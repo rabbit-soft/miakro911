@@ -280,6 +280,7 @@ namespace rabnet
                 return false;
             } 
         }       
+        
         /// <summary>
         /// Полное имя (Азалия Гамбитова-Явина,0)
         /// </summary>
@@ -291,14 +292,17 @@ namespace rabnet
                 return _rab.NameFull; 
             } 
         }
+        
         /// <summary>
         /// Порода
         /// </summary>
         public String BreedName { get { return _rab.BreedName; } }
+        
         /// <summary>
         /// Бонитировка
         /// </summary>
         public String Bon { get { return _rab.Bon; } }
+        
         /// <summary>
         /// Возраст
         /// </summary>
@@ -306,6 +310,7 @@ namespace rabnet
         {
             get { return _rab.Age; } 
         }
+        
         /// <summary>
         /// Общее моличество подсосных крольчат (если это Кормилица)
         /// </summary>
@@ -319,6 +324,7 @@ namespace rabnet
                 return c;
             } 
         }
+        
         /// <summary>
         /// Лист с группами подсосных
         /// </summary>
@@ -346,6 +352,7 @@ namespace rabnet
                 _eng.db().setBon(_id, bon);
             }
         }
+        
         /// <summary>
         /// Отметить вязку самки
         /// </summary>
@@ -371,6 +378,7 @@ namespace rabnet
             _eng.logs().log(RabNetLogs.LogType.FUCK, RabID, otherrab, SmallAddress, f.SmallAddress);
             _eng.db().makeFuck(this._id, f.RabID, when.Date, _eng.userId);
         }
+        
         /// <summary>
         /// Отметить прохолост (самка не окролилась)
         /// </summary>
@@ -386,6 +394,7 @@ namespace rabnet
             _eng.logs().log(RabNetLogs.LogType.PROHOLOST, RabID);
             _eng.db().makeProholost(this._id, when);
         }
+        
         /// <summary>
         /// Принять окрол
         /// </summary>
@@ -497,7 +506,7 @@ namespace rabnet
         }
 
         /// <summary>
-        /// Отделяет несколько кроликов и создает новую группу
+        /// Отделяет несколько кроликов от Текущей группы и создает новую группу
         /// </summary>
         /// <param name="count">Сколько кроликов в новой группе</param>
         /// <param name="farm">ID фермы</param>
@@ -506,12 +515,14 @@ namespace rabnet
         /// <returns></returns>
         public int Clone(int count,int farm,int tier,int sec)
         {
-           if (Group < count) throw new ExBadCount();
+            if (Group <= count) throw new ExBadCount(); //todo вставил проверку на = , надо попроверять
+
            int nid = _eng.db().cloneRabbit(_id, count, farm, tier, sec, Rabbit.SexType.VOID, 0);
            RabNetEngRabbit rab = Engine.get().getRabbit(nid);       //+gambit
            _eng.logs().log(RabNetLogs.LogType.CLONE_GROUP, _id, nid, SmallAddress, rab.SmallAddress, String.Format("{0:d} и {1:d}", Group-count ,count));
            return nid;
         }
+        
         /// <summary>
         /// Обьединить с группой
         /// </summary>

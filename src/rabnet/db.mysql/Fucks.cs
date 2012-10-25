@@ -58,7 +58,10 @@ r_breed,
 {4:s} fucks,
 {5:s} children
 FROM rabbits 
-WHERE r_sex='male' AND r_status>0 AND (r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol)>={1:d}){2:s}{3:s} ORDER BY fullname;",
+WHERE r_sex='male' AND r_status>0 AND (r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol)>={1:d})
+{2:s}
+{3:s} 
+ORDER BY fullname;",
 female,
 malewait,
 (geterosis ? "" : String.Format(" AND r_breed=(SELECT r2.r_breed FROM rabbits r2 WHERE r_id={0:d})",female)),

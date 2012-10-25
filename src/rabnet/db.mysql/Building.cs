@@ -195,6 +195,7 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) and t_id=" + tier.ToSt
                 type = "t_type='" + f.safeValue("tp") + "' AND ";
             if (f.ContainsKey("nest"))
                 type = String.Format("(t_type='{0}' OR t_type='{1}' OR t_type='{2}') AND",BuildingType.Jurta,BuildingType.Female,BuildingType.DualFemale);
+            
             String busy = "(("+type+"(t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0))";
             if (f.safeInt("rcnt") > 0)
                 for (int i = 0; i < f.safeInt("rcnt"); i++)
@@ -204,6 +205,7 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) and t_id=" + tier.ToSt
                         busy += String.Format(" OR (t_busy1={0:d} OR t_busy2={0:d} OR t_busy3={0:d} OR t_busy4={0:d})", r);
                 }
             busy += ")";
+
             MySqlCommand cmd = new MySqlCommand(@"SELECT 
 t_id,m_upper,m_lower,m_id,t_type,t_delims,t_nest,t_heater,t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4 
 FROM minifarms,tiers 

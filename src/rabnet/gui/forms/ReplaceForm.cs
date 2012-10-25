@@ -120,7 +120,7 @@ namespace rabnet
                 NewParent = parent;
             }
             public RP(RP fromrp, int count)
-                : this(fromrp.List, 0, fromrp.Name, fromrp.CurAddress, count, fromrp.Sex, fromrp.Age, fromrp.BreedName, fromrp.Parent)
+                : this(fromrp.List, /*fromrp.ID*/ -1, fromrp.Name, fromrp.CurAddress, count, fromrp.Sex, fromrp.Age, fromrp.BreedName, fromrp.Parent)
             {
                 MadeFrom = fromrp;
                 fromrp.NewCount -= count;
@@ -233,14 +233,14 @@ namespace rabnet
       
         private bool _manual = false;
         private int girlout = 0;
-        private List<RabNetEngRabbit> rbs = new List<RabNetEngRabbit>();
+        private List<RabNetEngRabbit> _rabERs = new List<RabNetEngRabbit>();
         private RPList _replaceList = new RPList();
         private DataTable _dataSet = new DataTable();
         /// <summary>
         /// Комбобокс с новыми адресами, который добавляется к новой строке
         /// </summary>
         private DataGridViewComboBoxColumn dgcbNewAddress = new DataGridViewComboBoxColumn();        
-        private Building[] bs = null;       
+        private Building[] _freeBuildings = null;       
         private Action _action = Action.NONE;
         private bool globalError=false;
         private bool noboys = false;
@@ -284,7 +284,7 @@ namespace rabnet
         /// <param name="r">Объект символизирующий кролика или группу</param>
         public void AddRabbit(RabNetEngRabbit r)
         {
-            rbs.Add(r);
+            _rabERs.Add(r);
             clear();
         }
         /// <summary>
@@ -293,7 +293,7 @@ namespace rabnet
         public void clear()
         {
             _replaceList.Clear();
-            foreach (RabNetEngRabbit r in rbs)
+            foreach (RabNetEngRabbit r in _rabERs)
             {
                 _replaceList.Add(new RP(_replaceList, r.RabID, r.FullName, r.medAddress, r.Group, r.Sex, r.Age, r.BreedName, r.SetNest));
                 //Engine.get().db().getBuilding(r.Address);
@@ -308,7 +308,7 @@ namespace rabnet
 
         public bool myrab(int i)
         {
-            foreach (RabNetEngRabbit r in rbs)
+            foreach (RabNetEngRabbit r in _rabERs)
                 if (r.RabID == i)return true;
             return false;
         }
@@ -344,10 +344,12 @@ namespace rabnet
         /// </summary>
         public void getBuildings()
         {
+            //добавляем в фильтры ID кроликов, чтобы их клетки тоже быть в _freeBuildings
             Filters f = new Filters();
-            f["rcnt"] = rbs.Count.ToString();
-            for (int i = 0; i < rbs.Count; i++) 
-                f["r" + i.ToString()] = rbs[i].RabID.ToString();
+            f["rcnt"] = _rabERs.Count.ToString();
+            for (int i = 0; i < _rabERs.Count; i++) 
+                f["r" + i.ToString()] = _rabERs[i].RabID.ToString();
+
             String tp = "";
             cbFilter.Tag = 1;
             //if (_action == Action.SET_NEST && cbFilter.SelectedIndex != 4 && cbFilter.SelectedIndex != 2 && cbFilter.SelectedIndex !=1)
@@ -375,10 +377,10 @@ namespace rabnet
             {
                 f["nest"] = "1";
             }
-            bs = Engine.db().getFreeBuilding(f);
+            _freeBuildings = Engine.db().getFreeBuilding(f);
             dgcbNewAddress.Items.Clear();
             dgcbNewAddress.Items.Add(Rabbit.NULL_ADDRESS);
-            foreach (Building b in bs)
+            foreach (Building b in _freeBuildings)
             {
                 for (int i = 0; i < b.secs(); i++)
                 {
@@ -409,6 +411,7 @@ namespace rabnet
                 selectedRow = dataGridView1.SelectedRows[0].Index; 
             globalError = false;
             _dataSet.Rows.Clear();
+
             if (reget)
             {
                 getBuildings();
@@ -419,6 +422,7 @@ namespace rabnet
                 dgcbNewAddress.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 dataGridView1.Columns.Insert(FIELD_NEWPLACE, dgcbNewAddress);
             }
+
             foreach (RP r in _replaceList)
             {
                 string stat = r.Status;
@@ -574,7 +578,7 @@ namespace rabnet
                 {
                     btUniteUp.Enabled = btUniteDown.Enabled=true;
                 }
-                btUniteUp.Enabled = btUniteDown.Enabled = true;//(r1.ID != 0 && r2.ID != 0);
+                btUniteUp.Enabled = btUniteDown.Enabled = (r1.ID != 0 && r2.ID != 0);
             }
             if (dataGridView1.SelectedRows.Count == 1)
             {
@@ -612,17 +616,18 @@ namespace rabnet
         /// <summary>
         /// Преобразует строку адреса типа  555а[Кварта] в масссив цифр
         /// </summary>
-        /// <param name="s">Название клетки</param>
+        /// <param name="rp">По какой записи ищут клетку</param>
         /// <returns>Массив (Номер фермы, Ярус, Клетка)</returns>
-        private int[] getAddress(String s)
+        private int[] getAddress(RP rp)
         {
+            string s = rp.CurAddress;
             if (s == Rabbit.NULL_ADDRESS)
                 return new int[] { 0, 0, 0 };
-            for (int i = 0; i < bs.Length; i++)
-                for (int j = 0; j < bs[i].secs();j++ )
-                    if (bs[i].medname[j] == s)
+            for (int i = 0; i < _freeBuildings.Length; i++)
+                for (int j = 0; j < _freeBuildings[i].secs(); j++ )
+                    if (_freeBuildings[i].medname[j] == s)
                     {
-                        return new int[]{(int)bs[i].farm(),bs[i].tier_id(),j};
+                        return new int[]{(int)_freeBuildings[i].farm(), _freeBuildings[i].tier_id(), j};
                     }
             return null;
         }
@@ -666,27 +671,13 @@ namespace rabnet
 
             if (rp.ID == 0)
             {
-                int[] a = getAddress(rp.CurAddress);
-                rbs[_replaceList.IndexOf(rp)].ReplaceRabbit(a[0], a[1], a[2], rp.CurAddress);
+                int[] a = getAddress(rp);
+                _rabERs[_replaceList.IndexOf(rp)].ReplaceRabbit(a[0], a[1], a[2], rp.CurAddress);
                 rp.Saved = true;
                 return;
             }
             RabNetEngRabbit rb = Engine.get().getRabbit(id == 0 ? rp.ID : id);
-            RabNetEngRabbit par = null;
-
-            //if (rp.Clones.Count > 0)
-                //foreach (RP c in rp.Clones)
-            while (rp.Clones.Count > 0)
-            {
-                RP c = rp.Clones[0];
-                int[] a = getAddress(c.CurAddress);
-                int cid = rb.Clone(c.Count, a[0], a[1], a[2]);
-                c.ID = cid;
-                commitRabbit(c, cid, allowReplace);
-                if (_action == Action.ONE_GIRL_OUT && girlout == 0 && c.Sex == Rabbit.SexType.FEMALE && c.Count == 1)
-                    girlout = cid;
-                rp.Clones.RemoveAt(0);
-            }
+            RabNetEngRabbit par = null;           
 
             if (rp.Younger)
                 par = Engine.get().getRabbit(rp.Parent);
@@ -708,7 +699,7 @@ namespace rabnet
 
             if (rp.Replaced && !allowReplace)
             {
-                int[] a = getAddress(rp.CurAddress);
+                int[] a = getAddress(rp);
                 if (rp.Younger)
                     par.ReplaceYounger(rb.RabID, a[0], a[1], a[2], rp.CurAddress);
                 else
@@ -736,13 +727,25 @@ namespace rabnet
 
             if (rp.NewSex != rp.Sex)
                 rb.SetSex(rp.NewSex);
+
+            while (rp.Clones.Count > 0)
+            {
+                RP c = rp.Clones[0];
+                int[] a = getAddress(c);
+                int cid = rb.Clone(c.Count, a[0], a[1], a[2]);
+                c.ID = cid;
+                commitRabbit(c, cid, allowReplace);
+                if (_action == Action.ONE_GIRL_OUT && girlout == 0 && c.Sex == Rabbit.SexType.FEMALE && c.Count == 1)
+                    girlout = cid;
+                rp.Clones.RemoveAt(0);
+            }
             //if (rp.Clones.Count > 0)
             //    foreach (RP c in rp.Clones)
             //    {
-            //        int[] a=getAddress(c.CurAddress);
-            //        int cid = rb.Clone(c.Count, a[0],a[1],a[2]);
+            //        int[] a = getAddress(c.CurAddress); //если остается а тот от кого клонировали
+            //        int cid = rb.Clone(c.Count, a[0], a[1], a[2]);
             //        c.ID = cid;
-            //        commitRabbit(c, cid,allowReplace);
+            //        commitRabbit(c, cid, allowReplace);
             //        if (_action == Action.ONE_GIRL_OUT && girlout == 0 && c.Sex == Rabbit.SexType.FEMALE && c.Count == 1)
             //            girlout = cid;
             //    }
@@ -843,13 +846,34 @@ namespace rabnet
 
         private void btUniteUp_Click(object sender, EventArgs e)
         {
-            не должно собираться тут еще не int правильно все работает
             if (dataGridView1.SelectedRows.Count != 2) return;
-            RP rWith = rp(dataGridView1.SelectedRows[(sender == btUniteUp ? 1 : 0)].Index); //BUG selectedIndex меньше у того, кого раньше выделили, он не привязан к позиции в DGLV
-            RP r2 = rp(dataGridView1.SelectedRows[(sender == btUniteUp ? 0 : 1)].Index);
-            r2.PlaceWith = rWith;
+            RP rUp, rDown;
+            if (dataGridView1.SelectedRows[0].Index < dataGridView1.SelectedRows[1].Index)
+            {
+                rUp = rp(dataGridView1.SelectedRows[0].Index);
+                rDown = rp(dataGridView1.SelectedRows[1].Index);
+            }
+            else
+            {
+                rUp = rp(dataGridView1.SelectedRows[1].Index);
+                rDown = rp(dataGridView1.SelectedRows[0].Index);
+            }
+            RP rWith, r;
+            if (sender == btUniteUp)
+            {
+                rWith = rUp;
+                r = rDown;
+            }
+            else//if (sender == btUniteUp)
+            {
+                rWith = rDown;
+                r = rUp;
+            }
+            //RP rWith = rp(dataGridView1.SelectedRows[(sender == btUniteUp ? 1 : 0)].Index);
+            //RP rFrom = rp(dataGridView1.SelectedRows[(sender == btUniteUp ? 0 : 1)].Index);
+            r.PlaceWith = rWith;
             rWith.PlaceWith = null;
-            r2.CurAddress = rWith.CurAddress;
+            r.CurAddress = rWith.CurAddress;
             update();
         }
 

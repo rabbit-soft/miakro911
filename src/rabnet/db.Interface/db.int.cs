@@ -89,7 +89,12 @@ namespace rabnet
         int makeOkrol(int female, DateTime when, int children, int dead);
         String makeName(int nm, int sur, int sec, int grp, Rabbit.SexType sex);
         bool unblockName(int id);
-        //YoungRabbit[] getSuckers(int mom);
+
+        /// <summary>
+        /// Получает список всободных клеток. 
+        /// </summary>
+        /// <param name="f"></param>
+        /// <returns></returns>
         Building[] getFreeBuilding(Filters f);
         void replaceRabbit(int rid, int farm, int tier_id, int sec);
         void replaceYounger(int yid, int farm, int tier_id, int sec);
@@ -98,6 +103,7 @@ namespace rabnet
         void updateBuilding(Building b);
         void addName(Rabbit.SexType sex, string name, string surname);
         void changeName(string orgName, string name, string surname);
+
         /// <summary>
         /// Списание кролика
         /// </summary>
@@ -106,6 +112,7 @@ namespace rabnet
         /// <param name="reason">Причина списания</param>
         /// <param name="notes">Заметки</param>
         void KillRabbit(int id,DateTime when,int reason,string notes);
+
         /// <summary>
         /// Подсчет Гнездовых
         /// </summary>
