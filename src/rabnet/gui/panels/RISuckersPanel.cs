@@ -9,8 +9,8 @@ namespace rabnet
 {
     public partial class RISuckersPanel : UserControl
     {
-        RabNetEngRabbit _rab = null;
-        Catalog _breeds = null;
+        private RabNetEngRabbit _rab = null;
+        private Catalog _breeds = null;
 
         public RISuckersPanel()
         {
