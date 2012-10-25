@@ -463,7 +463,7 @@ namespace rabnet
                     b = b2;
                     for (int i = 0; i < b.secs(); i++)
                         if (b.busy(i)>0)
-                            f.addRabbit(b.busy(i));
+                            f.AddRabbit(b.busy(i));
                 }
             }
             if(f.ShowDialog() == DialogResult.OK)

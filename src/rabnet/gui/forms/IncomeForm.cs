@@ -149,7 +149,7 @@ namespace rabnet
         {
             ReplaceForm rpf = new ReplaceForm();
             foreach (RabNetEngRabbit r in rbs)
-                rpf.addRabbit(r);
+                rpf.AddRabbit(r);
             rpf.ShowDialog();
             update(false);
         }

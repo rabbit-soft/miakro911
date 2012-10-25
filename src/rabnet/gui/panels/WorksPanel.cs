@@ -231,7 +231,7 @@ namespace rabnet
                 case JobType.BOYS_OUT:
                 case JobType.GIRLS_OUT:
                     ReplaceForm rf = new ReplaceForm();
-                    rf.addRabbit(job.ID);
+                    rf.AddRabbit(job.ID);
                     if (job.Type==JobType.BOYS_OUT)
                         rf.setAction(ReplaceForm.Action.BOYSOUT);
                     res=rf.ShowDialog();
@@ -293,14 +293,14 @@ namespace rabnet
 
                 case JobType.SET_NEST://установка гнездовья
                     ReplaceForm f = new ReplaceForm();
-                    f.addRabbit(job.ID);
+                    f.AddRabbit(job.ID);
                     f.setAction(ReplaceForm.Action.SET_NEST);
                     res = f.ShowDialog();
                     break;
 
                 case JobType.BOYS_BY_ONE:
                     f = new ReplaceForm();
-                    f.addRabbit(job.ID);
+                    f.AddRabbit(job.ID);
                     res = f.ShowDialog();
                     break;
             }

@@ -277,7 +277,7 @@ namespace rabnet
                 return;
             ReplaceForm rpf = new ReplaceForm();
             foreach (ListViewItem li in listView1.SelectedItems)
-                rpf.addRabbit((int)li.Tag);
+                rpf.AddRabbit((int)li.Tag);
             if(rpf.ShowDialog() == DialogResult.OK)
                 _rsb.run();
         }
@@ -287,8 +287,8 @@ namespace rabnet
             if (listView1.SelectedItems.Count != 2)
                 return;
             ReplaceForm rpf = new ReplaceForm();
-            rpf.addRabbit((int)listView1.SelectedItems[0].Tag);
-            rpf.addRabbit((int)listView1.SelectedItems[1].Tag);
+            rpf.AddRabbit((int)listView1.SelectedItems[0].Tag);
+            rpf.AddRabbit((int)listView1.SelectedItems[1].Tag);
             rpf.setAction(ReplaceForm.Action.CHANGE);
             if (rpf.ShowDialog() == DialogResult.OK)
                 _rsb.run();
@@ -339,7 +339,7 @@ namespace rabnet
             if (listView1.SelectedItems.Count != 1)
                 return;
             ReplaceForm rpf = new ReplaceForm();
-            rpf.addRabbit((int)listView1.SelectedItems[0].Tag);
+            rpf.AddRabbit((int)listView1.SelectedItems[0].Tag);
             rpf.setAction(ReplaceForm.Action.BOYSOUT);
             if (rpf.ShowDialog() == DialogResult.OK)
                 _rsb.run();

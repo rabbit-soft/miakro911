@@ -37,10 +37,14 @@ namespace rabnet
             COUNT1, COUNT2, COUNT3, //COUNT_SUCKERS, 
             //Подсчет подсосных более не требуется, т.к. это делается после выдворения крольчат
             MAKE_BRIDE, DEAD_FILTER, PRE_OKROL, CONFIRM_KILL, CONFIRM_REPLACE, CONFIRM_EXIT,
-            ZOO_FILTER, COMBINE_AGE, BOYS_OUT, GIRLS_OUT, STATE_FUCK, FIRST_FUCK, MALE_WAIT, GEN_TREE,                         
-            CHILD_NEST, RAB_LIST, BUILD_LIST, YOUNG_LIST, DEAD_LIST, REPL_YOUNG_LIST,
-            MAKE_FUCK_LIST, NAMES_LIST, UPDATE_ZOO, ZOO_LIST, FIND_PARTNERS, NEXT_SVID, SVID_HEAD, SVID_GEN_DIR,
+            ZOO_FILTER, COMBINE_AGE, BOYS_OUT, GIRLS_OUT, STATE_FUCK, FIRST_FUCK, MALE_WAIT, GEN_TREE,  CHILD_NEST,              
+            UPDATE_ZOO, ZOO_LIST, FIND_PARTNERS, NEXT_SVID, SVID_HEAD, SVID_GEN_DIR,
             KILL_LIST, SHORT_ZOO, MAKE_CANDIDATE, BUTCHER_LIST, XLS_ASK, XLS_FOLDER, BUILD_FILL_ZERO, BUCHER_TYPE,
+
+            /// <summary>
+            /// Сохранение размера колонок в Поголовье
+            /// </summary>
+            RAB_LIST, BUILD_LIST, YOUNG_LIST, DEAD_LIST, REPL_YOUNG_LIST, MAKE_FUCK_LIST, NAMES_LIST, //REPLACE_LIST,
             /// <summary>
             /// Размеры формы пересадок в формате W:H
             /// <example>600:400</example>
@@ -100,14 +104,7 @@ namespace rabnet
                                    new Option(OPT_ID.CONFIRM_REPLACE,OPT_LEVEL.USER,"confirmreplace"),
                                    //new Option(OPT_ID.COUNT_SUCKERS,OPT_LEVEL.FARM,"suckers"), 
                                    new Option(OPT_ID.NEST_IN,OPT_LEVEL.FARM,"nest"), 
-                                   new Option(OPT_ID.CHILD_NEST,OPT_LEVEL.FARM,"childnest"), 
-                                   new Option(OPT_ID.RAB_LIST,OPT_LEVEL.USER,"rablist"), 
-                                   new Option(OPT_ID.BUILD_LIST,OPT_LEVEL.USER,"buildlist"), 
-                                   new Option(OPT_ID.YOUNG_LIST,OPT_LEVEL.USER,"younglist"), 
-                                   new Option(OPT_ID.DEAD_LIST,OPT_LEVEL.USER,"deadlist"), 
-                                   new Option(OPT_ID.REPL_YOUNG_LIST,OPT_LEVEL.USER,"ryounglist"), 
-                                   new Option(OPT_ID.MAKE_FUCK_LIST,OPT_LEVEL.USER,"mfucklist"), 
-                                   new Option(OPT_ID.NAMES_LIST,OPT_LEVEL.USER,"namelist"), 
+                                   new Option(OPT_ID.CHILD_NEST,OPT_LEVEL.FARM,"childnest"),                                    
                                    new Option(OPT_ID.UPDATE_ZOO,OPT_LEVEL.USER,"updatezoo"), 
                                    new Option(OPT_ID.ZOO_LIST,OPT_LEVEL.USER,"zoolist"), 
                                    new Option(OPT_ID.FIND_PARTNERS,OPT_LEVEL.USER,"findpartner"), 
@@ -122,6 +119,15 @@ namespace rabnet
                                    new Option(OPT_ID.XLS_FOLDER,OPT_LEVEL.USER,"xls_folder"),
                                    new Option(OPT_ID.BUILD_FILL_ZERO,OPT_LEVEL.USER,"build_fill_zero"),
                                    new Option(OPT_ID.BUCHER_TYPE,OPT_LEVEL.FARM,"butcher_type"),
+
+                                   new Option(OPT_ID.RAB_LIST,OPT_LEVEL.USER,"rablist"), 
+                                   new Option(OPT_ID.BUILD_LIST,OPT_LEVEL.USER,"buildlist"), 
+                                   new Option(OPT_ID.YOUNG_LIST,OPT_LEVEL.USER,"younglist"), 
+                                   new Option(OPT_ID.DEAD_LIST,OPT_LEVEL.USER,"deadlist"), 
+                                   new Option(OPT_ID.REPL_YOUNG_LIST,OPT_LEVEL.USER,"ryounglist"), 
+                                   new Option(OPT_ID.MAKE_FUCK_LIST,OPT_LEVEL.USER,"mfucklist"), 
+                                   new Option(OPT_ID.NAMES_LIST,OPT_LEVEL.USER,"namelist"), 
+                                   //new Option(OPT_ID.REPLACE_LIST,OPT_LEVEL.USER,"replacelist"), 
 
                                    new Option(OPT_ID.FS_REPLACE,OPT_LEVEL.USER,"fs_replace"),
                                    new Option(OPT_ID.FS_KILL,OPT_LEVEL.USER,"fs_kill"),
