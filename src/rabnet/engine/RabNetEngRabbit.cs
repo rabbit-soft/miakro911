@@ -530,7 +530,7 @@ namespace rabnet
         public void CombineWidth(int rabto)
         {
             RabNetEngRabbit rab = Engine.get().getRabbit(rabto);    //+gambit
-            _eng.logs().log(RabNetLogs.LogType.COMBINE, _id, rabto, SmallAddress, rab.SmallAddress , "+ " + FullName + " [" + Group.ToString() + "]");
+            _eng.logs().log(RabNetLogs.LogType.COMBINE, _id, rabto, SmallAddress, rab.SmallAddress , rab.FullName);
             _eng.db().combineGroups(_id, rabto);
         }
 

@@ -83,39 +83,32 @@ namespace rabnet
 
         protected override void onItem(IData data)
         {
-            try
+            ZooTehNullItem it = data as ZooTehNullItem;
+            if (it == null)
             {
-                ZooTehNullItem it = data as ZooTehNullItem;
-                if (it == null)
+                colSort.Restore();
+                if (itm > -1 && lvZooTech.Items.Count > itm)
                 {
-                    colSort.Restore();
-                    if (itm > -1 && lvZooTech.Items.Count > itm)
-                    {
-                        lvZooTech.Items[itm].Selected = true;
-                        lvZooTech.Items[itm].EnsureVisible();
-                    }
-                    lvZooTech.Focus();
-                    return;
+                    lvZooTech.Items[itm].Selected = true;
+                    lvZooTech.Items[itm].EnsureVisible();
                 }
-                Filters f = runF;
-                foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f, it.id))
-                {
-                    ListViewItem li = lvZooTech.Items.Add(j.Days.ToString());
-                    li.SubItems.Add(j.JobName);
-                    li.SubItems.Add(j.Address);
-                    li.SubItems.Add(j.RabName);
-                    li.SubItems.Add(j.RabAge.ToString());
-                    li.SubItems.Add(j.RabBreed);
-                    li.SubItems.Add(j.Comment);
-                    li.SubItems.Add(j.Partners);
-                    li.Tag = j;
-                }
-                colSort.SemiReady();
+                lvZooTech.Focus();
+                return;
             }
-            catch (Exception exc)
+            Filters f = runF;
+            foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f, it.id))
             {
-                int i =0;
+                ListViewItem li = lvZooTech.Items.Add(j.Days.ToString());
+                li.SubItems.Add(j.JobName);
+                li.SubItems.Add(j.Address);
+                li.SubItems.Add(j.RabName);
+                li.SubItems.Add(j.RabAge.ToString());
+                li.SubItems.Add(j.RabBreed);
+                li.SubItems.Add(j.Comment);
+                li.SubItems.Add(j.Partners);
+                li.Tag = j;
             }
+            colSort.SemiReady();
         }
 
         /// <summary>

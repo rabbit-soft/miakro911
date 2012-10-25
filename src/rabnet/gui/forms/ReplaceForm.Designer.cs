@@ -284,9 +284,9 @@
             // 
             // btUniteUp
             // 
-            this.btUniteUp.Location = new System.Drawing.Point(5, 48);
+            this.btUniteUp.Location = new System.Drawing.Point(6, 48);
             this.btUniteUp.Name = "btUniteUp";
-            this.btUniteUp.Size = new System.Drawing.Size(108, 23);
+            this.btUniteUp.Size = new System.Drawing.Size(107, 23);
             this.btUniteUp.TabIndex = 1;
             this.btUniteUp.Text = "Объединить верх";
             this.btUniteUp.UseVisualStyleBackColor = true;
