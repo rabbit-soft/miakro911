@@ -203,6 +203,12 @@
     <Compile Include="panels\RIVaccinePanel.Designer.cs">
       <DependentUpon>RIVaccinePanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="panels\RISuckersPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="panels\RISuckersPanel.Designer.cs">
+      <DependentUpon>RISuckersPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -563,6 +569,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="panels\RIVaccinePanel.resx">
       <DependentUpon>RIVaccinePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="panels\RISuckersPanel.resx">
+      <DependentUpon>RISuckersPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

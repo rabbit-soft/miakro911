@@ -239,17 +239,7 @@ namespace rabnet
                 li.Tag = f;
             }
             changeFucker.Enabled = false;
-            ///Заполенение списка подсосных
-            suckers.Items.Clear();
-            if (_rabId>0)
-            foreach (YoungRabbit y in Engine.db().GetYoungers(_rab.RabID))
-            {
-                ListViewItem li=suckers.Items.Add(y.NameFull);
-                li.SubItems.Add(y.Group.ToString());
-                li.SubItems.Add(y.Age.ToString());
-                li.SubItems.Add(y.FSex());
-                li.SubItems.Add(y.BreedName);
-            }
+            riSuckersPanel1.Fill(_rabId,_rab);            
         }
 
         private void FillList(ComboBox cb,Catalog c,int key)

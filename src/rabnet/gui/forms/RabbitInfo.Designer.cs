@@ -44,7 +44,6 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button15 = new System.Windows.Forms.Button();
             this.button14 = new System.Windows.Forms.Button();
-            this.bdate = new rabnet.components.DateDays();
             this.zone = new System.Windows.Forms.ComboBox();
             this.button16 = new System.Windows.Forms.Button();
             this.name = new System.Windows.Forms.ComboBox();
@@ -66,6 +65,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.rate = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbRealization = new System.Windows.Forms.CheckBox();
             this.gp = new System.Windows.Forms.CheckBox();
             this.defect = new System.Windows.Forms.CheckBox();
             this.tpMale = new System.Windows.Forms.TabPage();
@@ -84,7 +84,6 @@
             this.button8 = new System.Windows.Forms.Button();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.okrolDd = new rabnet.components.DateDays();
             this.okrolCount = new System.Windows.Forms.NumericUpDown();
             this.label21 = new System.Windows.Forms.Label();
             this.deadBab = new System.Windows.Forms.NumericUpDown();
@@ -92,7 +91,6 @@
             this.overallBab = new System.Windows.Forms.NumericUpDown();
             this.label19 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.sukrDd = new rabnet.components.DateDays();
             this.sukrType = new System.Windows.Forms.ComboBox();
             this.sukr = new System.Windows.Forms.CheckBox();
             this.nokuk = new System.Windows.Forms.CheckBox();
@@ -119,12 +117,6 @@
             this.miIsNotAProholost = new System.Windows.Forms.ToolStripMenuItem();
             this.showfuckidToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tpYoungers = new System.Windows.Forms.TabPage();
-            this.suckers = new System.Windows.Forms.ListView();
-            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader14 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tpWeight = new System.Windows.Forms.TabPage();
             this.button19 = new System.Windows.Forms.Button();
             this.button18 = new System.Windows.Forms.Button();
@@ -134,7 +126,6 @@
             this.columnHeader17 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader18 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tpVaccines = new System.Windows.Forms.TabPage();
-            this.riVaccinePanel1 = new rabnet.panels.RabInfoPanels.RIVaccinePanel();
             this.btOk = new System.Windows.Forms.Button();
             this.btCancel = new System.Windows.Forms.Button();
             this.notes = new System.Windows.Forms.TextBox();
@@ -146,7 +137,11 @@
             this.lbState = new System.Windows.Forms.Label();
             this.btAccept = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.cbRealization = new System.Windows.Forms.CheckBox();
+            this.bdate = new rabnet.components.DateDays();
+            this.okrolDd = new rabnet.components.DateDays();
+            this.sukrDd = new rabnet.components.DateDays();
+            this.riVaccinePanel1 = new rabnet.panels.RabInfoPanels.RIVaccinePanel();
+            this.riSuckersPanel1 = new rabnet.RISuckersPanel();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -368,21 +363,6 @@
             this.button14.Text = "...";
             this.button14.UseVisualStyleBackColor = true;
             this.button14.Click += new System.EventHandler(this.button14_Click);
-            // 
-            // bdate
-            // 
-            this.bdate.AutoSize = true;
-            this.bdate.DateText = "Дата рожд.";
-            this.bdate.DateValue = new System.DateTime(2012, 9, 24, 0, 0, 0, 0);
-            this.bdate.DaysText = "Возраст";
-            this.bdate.DaysValue = 0;
-            this.bdate.Location = new System.Drawing.Point(13, 111);
-            this.bdate.Maximum = 5000;
-            this.bdate.Name = "bdate";
-            this.bdate.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
-            this.bdate.Size = new System.Drawing.Size(168, 50);
-            this.bdate.Step = 1;
-            this.bdate.TabIndex = 17;
             // 
             // zone
             // 
@@ -630,6 +610,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Флаги";
             // 
+            // cbRealization
+            // 
+            this.cbRealization.AutoSize = true;
+            this.cbRealization.Location = new System.Drawing.Point(11, 65);
+            this.cbRealization.Name = "cbRealization";
+            this.cbRealization.Size = new System.Drawing.Size(128, 17);
+            this.cbRealization.TabIndex = 2;
+            this.cbRealization.Text = "Готов к Реализации";
+            this.cbRealization.UseVisualStyleBackColor = true;
+            // 
             // gp
             // 
             this.gp.AutoSize = true;
@@ -837,21 +827,6 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "окролы";
             // 
-            // okrolDd
-            // 
-            this.okrolDd.AutoSize = true;
-            this.okrolDd.DateText = "Дата";
-            this.okrolDd.DateValue = new System.DateTime(2012, 9, 24, 0, 0, 0, 0);
-            this.okrolDd.DaysText = "Срок";
-            this.okrolDd.DaysValue = 0;
-            this.okrolDd.Location = new System.Drawing.Point(8, 61);
-            this.okrolDd.Maximum = 10000;
-            this.okrolDd.Name = "okrolDd";
-            this.okrolDd.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
-            this.okrolDd.Size = new System.Drawing.Size(136, 48);
-            this.okrolDd.Step = 1;
-            this.okrolDd.TabIndex = 2;
-            // 
             // okrolCount
             // 
             this.okrolCount.Location = new System.Drawing.Point(61, 23);
@@ -923,21 +898,6 @@
             this.groupBox5.TabIndex = 2;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "сукрольность";
-            // 
-            // sukrDd
-            // 
-            this.sukrDd.AutoSize = true;
-            this.sukrDd.DateText = "Дата";
-            this.sukrDd.DateValue = new System.DateTime(2012, 9, 24, 0, 0, 0, 0);
-            this.sukrDd.DaysText = "Срок";
-            this.sukrDd.DaysValue = 0;
-            this.sukrDd.Location = new System.Drawing.Point(0, 46);
-            this.sukrDd.Maximum = 10000;
-            this.sukrDd.Name = "sukrDd";
-            this.sukrDd.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
-            this.sukrDd.Size = new System.Drawing.Size(136, 51);
-            this.sukrDd.Step = 1;
-            this.sukrDd.TabIndex = 5;
             // 
             // sukrType
             // 
@@ -1145,53 +1105,13 @@
             // 
             // tpYoungers
             // 
-            this.tpYoungers.Controls.Add(this.suckers);
+            this.tpYoungers.Controls.Add(this.riSuckersPanel1);
             this.tpYoungers.Location = new System.Drawing.Point(4, 22);
             this.tpYoungers.Name = "tpYoungers";
             this.tpYoungers.Size = new System.Drawing.Size(498, 305);
             this.tpYoungers.TabIndex = 5;
             this.tpYoungers.Text = "Подсосные";
             this.tpYoungers.UseVisualStyleBackColor = true;
-            // 
-            // suckers
-            // 
-            this.suckers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.suckers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader10,
-            this.columnHeader11,
-            this.columnHeader12,
-            this.columnHeader13,
-            this.columnHeader14});
-            this.suckers.FullRowSelect = true;
-            this.suckers.GridLines = true;
-            this.suckers.Location = new System.Drawing.Point(3, 3);
-            this.suckers.MultiSelect = false;
-            this.suckers.Name = "suckers";
-            this.suckers.Size = new System.Drawing.Size(490, 265);
-            this.suckers.TabIndex = 1;
-            this.suckers.UseCompatibleStateImageBehavior = false;
-            this.suckers.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader10
-            // 
-            this.columnHeader10.Text = "Имя";
-            // 
-            // columnHeader11
-            // 
-            this.columnHeader11.Text = "Количество";
-            // 
-            // columnHeader12
-            // 
-            this.columnHeader12.Text = "Возраст";
-            // 
-            // columnHeader13
-            // 
-            this.columnHeader13.Text = "Пол";
-            // 
-            // columnHeader14
-            // 
-            this.columnHeader14.Text = "Порода";
             // 
             // tpWeight
             // 
@@ -1295,14 +1215,6 @@
             this.tpVaccines.TabIndex = 6;
             this.tpVaccines.Text = "Прививки";
             this.tpVaccines.UseVisualStyleBackColor = true;
-            // 
-            // riVaccinePanel1
-            // 
-            this.riVaccinePanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.riVaccinePanel1.Location = new System.Drawing.Point(0, 0);
-            this.riVaccinePanel1.Name = "riVaccinePanel1";
-            this.riVaccinePanel1.Size = new System.Drawing.Size(498, 305);
-            this.riVaccinePanel1.TabIndex = 0;
             // 
             // btOk
             // 
@@ -1410,15 +1322,66 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // cbRealization
+            // bdate
             // 
-            this.cbRealization.AutoSize = true;
-            this.cbRealization.Location = new System.Drawing.Point(11, 65);
-            this.cbRealization.Name = "cbRealization";
-            this.cbRealization.Size = new System.Drawing.Size(128, 17);
-            this.cbRealization.TabIndex = 2;
-            this.cbRealization.Text = "Готов к Реализации";
-            this.cbRealization.UseVisualStyleBackColor = true;
+            this.bdate.AutoSize = true;
+            this.bdate.DateText = "Дата рожд.";
+            this.bdate.DateValue = new System.DateTime(2012, 10, 25, 0, 0, 0, 0);
+            this.bdate.DaysText = "Возраст";
+            this.bdate.DaysValue = 0;
+            this.bdate.Location = new System.Drawing.Point(13, 111);
+            this.bdate.Maximum = 5000;
+            this.bdate.Name = "bdate";
+            this.bdate.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
+            this.bdate.Size = new System.Drawing.Size(168, 50);
+            this.bdate.Step = 1;
+            this.bdate.TabIndex = 17;
+            // 
+            // okrolDd
+            // 
+            this.okrolDd.AutoSize = true;
+            this.okrolDd.DateText = "Дата";
+            this.okrolDd.DateValue = new System.DateTime(2012, 10, 25, 0, 0, 0, 0);
+            this.okrolDd.DaysText = "Срок";
+            this.okrolDd.DaysValue = 0;
+            this.okrolDd.Location = new System.Drawing.Point(8, 61);
+            this.okrolDd.Maximum = 10000;
+            this.okrolDd.Name = "okrolDd";
+            this.okrolDd.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
+            this.okrolDd.Size = new System.Drawing.Size(136, 48);
+            this.okrolDd.Step = 1;
+            this.okrolDd.TabIndex = 2;
+            // 
+            // sukrDd
+            // 
+            this.sukrDd.AutoSize = true;
+            this.sukrDd.DateText = "Дата";
+            this.sukrDd.DateValue = new System.DateTime(2012, 10, 25, 0, 0, 0, 0);
+            this.sukrDd.DaysText = "Срок";
+            this.sukrDd.DaysValue = 0;
+            this.sukrDd.Location = new System.Drawing.Point(0, 46);
+            this.sukrDd.Maximum = 10000;
+            this.sukrDd.Name = "sukrDd";
+            this.sukrDd.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
+            this.sukrDd.Size = new System.Drawing.Size(136, 51);
+            this.sukrDd.Step = 1;
+            this.sukrDd.TabIndex = 5;
+            // 
+            // riVaccinePanel1
+            // 
+            this.riVaccinePanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.riVaccinePanel1.Location = new System.Drawing.Point(0, 0);
+            this.riVaccinePanel1.Name = "riVaccinePanel1";
+            this.riVaccinePanel1.Size = new System.Drawing.Size(498, 305);
+            this.riVaccinePanel1.TabIndex = 0;
+            // 
+            // riSuckersPanel1
+            // 
+            this.riSuckersPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.riSuckersPanel1.Location = new System.Drawing.Point(0, 0);
+            this.riSuckersPanel1.Name = "riSuckersPanel1";
+            this.riSuckersPanel1.Size = new System.Drawing.Size(498, 305);
+            this.riSuckersPanel1.TabIndex = 0;
             // 
             // RabbitInfo
             // 
@@ -1574,12 +1537,6 @@
         private System.Windows.Forms.Button button16;
         private System.Windows.Forms.Button button15;
         private System.Windows.Forms.Button button14;
-        private System.Windows.Forms.ListView suckers;
-        private System.Windows.Forms.ColumnHeader columnHeader10;
-        private System.Windows.Forms.ColumnHeader columnHeader11;
-        private System.Windows.Forms.ColumnHeader columnHeader12;
-        private System.Windows.Forms.ColumnHeader columnHeader13;
-        private System.Windows.Forms.ColumnHeader columnHeader14;
         private System.Windows.Forms.Button btReplace;
         private System.Windows.Forms.ColumnHeader columnHeader15;
         private System.Windows.Forms.ColumnHeader columnHeader16;
@@ -1604,5 +1561,6 @@
         private panels.RabInfoPanels.RIVaccinePanel riVaccinePanel1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.CheckBox cbRealization;
+        private RISuckersPanel riSuckersPanel1;
     }
 }
