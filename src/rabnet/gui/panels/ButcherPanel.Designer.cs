@@ -29,36 +29,50 @@
         protected override void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            this.miMeal = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.label2 = new System.Windows.Forms.Label();
             this.lvVictims = new System.Windows.Forms.ListView();
-            this.chName = new System.Windows.Forms.ColumnHeader();
-            this.chAge = new System.Windows.Forms.ColumnHeader();
-            this.chGroup = new System.Windows.Forms.ColumnHeader();
-            this.chBreed = new System.Windows.Forms.ColumnHeader();
+            this.chName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chAge = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chGroup = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chBreed = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label3 = new System.Windows.Forms.Label();
             this.lvMeat = new System.Windows.Forms.ListView();
-            this.chProduct = new System.Windows.Forms.ColumnHeader();
-            this.chTSell = new System.Windows.Forms.ColumnHeader();
-            this.chTSumm = new System.Windows.Forms.ColumnHeader();
-            this.chTWeight = new System.Windows.Forms.ColumnHeader();
-            this.chUser = new System.Windows.Forms.ColumnHeader();
-            this.miMeal = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.miDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.chProduct = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chTSell = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chTSumm = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chTWeight = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chUser = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label1 = new System.Windows.Forms.Label();
             this.lvButcherDates = new System.Windows.Forms.ListView();
-            this.chDate = new System.Windows.Forms.ColumnHeader();
-            this.chCount = new System.Windows.Forms.ColumnHeader();
-            this.chProd = new System.Windows.Forms.ColumnHeader();
+            this.chDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chProd = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.miMeal.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            this.miMeal.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // miMeal
+            // 
+            this.miMeal.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miDelete});
+            this.miMeal.Name = "actMenu";
+            this.miMeal.Size = new System.Drawing.Size(119, 26);
+            // 
+            // miDelete
+            // 
+            this.miDelete.Name = "miDelete";
+            this.miDelete.Size = new System.Drawing.Size(118, 22);
+            this.miDelete.Text = "Удалить";
+            this.miDelete.Click += new System.EventHandler(this.miDelete_Click);
             // 
             // splitContainer1
             // 
@@ -74,8 +88,8 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.label1);
             this.splitContainer1.Panel2.Controls.Add(this.lvButcherDates);
-            this.splitContainer1.Size = new System.Drawing.Size(662, 455);
-            this.splitContainer1.SplitterDistance = 446;
+            this.splitContainer1.Size = new System.Drawing.Size(909, 614);
+            this.splitContainer1.SplitterDistance = 612;
             this.splitContainer1.SplitterWidth = 10;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -95,8 +109,8 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.label3);
             this.splitContainer2.Panel2.Controls.Add(this.lvMeat);
-            this.splitContainer2.Size = new System.Drawing.Size(446, 455);
-            this.splitContainer2.SplitterDistance = 221;
+            this.splitContainer2.Size = new System.Drawing.Size(612, 614);
+            this.splitContainer2.SplitterDistance = 327;
             this.splitContainer2.SplitterWidth = 10;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -106,7 +120,7 @@
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label2.Location = new System.Drawing.Point(0, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(446, 20);
+            this.label2.Size = new System.Drawing.Size(612, 20);
             this.label2.TabIndex = 2;
             this.label2.Text = "Убитые кролики";
             this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -125,7 +139,7 @@
             this.lvVictims.GridLines = true;
             this.lvVictims.Location = new System.Drawing.Point(0, 23);
             this.lvVictims.Name = "lvVictims";
-            this.lvVictims.Size = new System.Drawing.Size(446, 198);
+            this.lvVictims.Size = new System.Drawing.Size(612, 304);
             this.lvVictims.TabIndex = 0;
             this.lvVictims.UseCompatibleStateImageBehavior = false;
             this.lvVictims.View = System.Windows.Forms.View.Details;
@@ -133,11 +147,12 @@
             // chName
             // 
             this.chName.Text = "Имя";
-            this.chName.Width = 126;
+            this.chName.Width = 164;
             // 
             // chAge
             // 
             this.chAge.Text = "Возраст";
+            this.chAge.Width = 67;
             // 
             // chGroup
             // 
@@ -147,7 +162,7 @@
             // chBreed
             // 
             this.chBreed.Text = "Порода";
-            this.chBreed.Width = 107;
+            this.chBreed.Width = 165;
             // 
             // label3
             // 
@@ -155,7 +170,7 @@
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label3.Location = new System.Drawing.Point(0, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(446, 20);
+            this.label3.Size = new System.Drawing.Size(612, 20);
             this.label3.TabIndex = 3;
             this.label3.Text = "Выходная продукция";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -177,7 +192,7 @@
             this.lvMeat.GridLines = true;
             this.lvMeat.Location = new System.Drawing.Point(0, 23);
             this.lvMeat.Name = "lvMeat";
-            this.lvMeat.Size = new System.Drawing.Size(446, 201);
+            this.lvMeat.Size = new System.Drawing.Size(612, 254);
             this.lvMeat.TabIndex = 0;
             this.lvMeat.UseCompatibleStateImageBehavior = false;
             this.lvMeat.View = System.Windows.Forms.View.Details;
@@ -207,27 +222,13 @@
             this.chUser.Text = "Пользователь";
             this.chUser.Width = 120;
             // 
-            // miMeal
-            // 
-            this.miMeal.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.miDelete});
-            this.miMeal.Name = "actMenu";
-            this.miMeal.Size = new System.Drawing.Size(153, 48);
-            // 
-            // miDelete
-            // 
-            this.miDelete.Name = "miDelete";
-            this.miDelete.Size = new System.Drawing.Size(152, 22);
-            this.miDelete.Text = "Удалить";
-            this.miDelete.Click += new System.EventHandler(this.miDelete_Click);
-            // 
             // label1
             // 
             this.label1.Dock = System.Windows.Forms.DockStyle.Top;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label1.Location = new System.Drawing.Point(0, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(206, 20);
+            this.label1.Size = new System.Drawing.Size(287, 20);
             this.label1.TabIndex = 1;
             this.label1.Text = "Убои";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -247,7 +248,7 @@
             this.lvButcherDates.Location = new System.Drawing.Point(0, 23);
             this.lvButcherDates.MultiSelect = false;
             this.lvButcherDates.Name = "lvButcherDates";
-            this.lvButcherDates.Size = new System.Drawing.Size(206, 432);
+            this.lvButcherDates.Size = new System.Drawing.Size(287, 591);
             this.lvButcherDates.TabIndex = 0;
             this.lvButcherDates.UseCompatibleStateImageBehavior = false;
             this.lvButcherDates.View = System.Windows.Forms.View.Details;
@@ -256,7 +257,7 @@
             // chDate
             // 
             this.chDate.Text = "Дата забоя";
-            this.chDate.Width = 64;
+            this.chDate.Width = 84;
             // 
             // chCount
             // 
@@ -266,7 +267,7 @@
             // chProd
             // 
             this.chProd.Text = "Продукция";
-            this.chProd.Width = 64;
+            this.chProd.Width = 87;
             // 
             // ButcherPanel
             // 
@@ -274,15 +275,15 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.splitContainer1);
             this.Name = "ButcherPanel";
-            this.Size = new System.Drawing.Size(662, 455);
+            this.Size = new System.Drawing.Size(909, 614);
             this.Load += new System.EventHandler(this.ButcherPanel_Load);
+            this.miMeal.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
             this.splitContainer2.ResumeLayout(false);
-            this.miMeal.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

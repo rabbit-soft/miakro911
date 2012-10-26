@@ -44,7 +44,7 @@ namespace rabnet
         {
             colSort.Prepare();
             if (f == null) f = new Filters();
-            f.Add("scale", "1");
+            f.Add("type", Engine.opt().getOption(Options.OPT_ID.BUCHER_TYPE));
             IDataGetter dg = DataThread.db().getButcherDates(f);
             _rsb.setText(1, dg.getCount().ToString() + " дат забоя");
             _rsb.setText(2, dg.getCount2().ToString() + " забито");
@@ -77,7 +77,7 @@ namespace rabnet
             DateTime date = DateTime.Parse(lvButcherDates.SelectedItems[0].SubItems[0].Text);
             Rabbit[] rabbits = Engine.get().db().GetVictims(date);
             lvVictims.Items.Clear();
-            foreach (OneRabbit rab in rabbits)
+            foreach (Rabbit rab in rabbits)
             {
                 ListViewItem lvi = lvVictims.Items.Add(rab.NameFull);
                 lvi.SubItems.Add(rab.Age.ToString());

@@ -12,9 +12,9 @@ namespace db.mysql
 
         public override string getQuery()
         {
-            string table = options["scale"] == "1"?"scaleprod" :"butcher";
-            string dtfield =options["scale"] == "1"?"s_date" :"b_date";
-            string unfield = options["scale"] == "1" ? "appendPLUSell(s_id)" : "b_amount";
+            string table = options.safeInt("type",0) == 1?"scaleprod" :"butcher";
+            string dtfield = options.safeInt("type", 0) == 1 ? "s_date" : "b_date";
+            string unfield = options.safeInt("type", 0) == 1 ? "appendPLUSell(s_id)" : "b_amount";
             /*return String.Format(@"CREATE TEMPORARY TABLE aaa as
 SELECT Date(d_date) dt, SUM(r_group) cnt FROM dead WHERE d_reason=3 GROUP BY dt;
 
@@ -54,14 +54,15 @@ DROP TABLE bbb;",table,dtfield,unfield);
         {
             List<Rabbit> result = new List<Rabbit>();
             MySqlCommand cmd = new MySqlCommand("", sql);
-            cmd.CommandText = String.Format(@"SELECT r_id,#r_last_fuck_okrol,NULL r_event_date,'none' r_event,r_overall_babies,r_lost_babies,r_flags,r_name,r_surname,r_secname,r_zone,r_breed,
+            cmd.CommandText = String.Format(@"SELECT r_id,
+#r_last_fuck_okrol,NULL r_event_date,'none' r_event,r_overall_babies,r_lost_babies,r_flags,r_name,r_surname,r_secname,r_zone,r_breed,
 #(SELECT COALESCE(GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' '),'') FROM genoms WHERE g_id=r_genesis) genom,
-#r_status,r_rate,r_bon,r_parent
+#r_status,r_rate,r_parent
     r_sex,
     r_born,
-    deadplace(r_id) address,r_group,r_notes,
+    deadplace(r_id) address,r_group,r_notes,r_bon,
     deadname(r_id,2) name,
-    (SELECT b_name FROM breeds WHERE b_id=r_breed) breedname,
+    (SELECT b_name FROM breeds WHERE b_id=r_breed) breedname
 FROM dead WHERE d_reason=3 AND DATE(d_date)='{0:yyyy-MM-dd}';", dt);
             MySqlDataReader rd = cmd.ExecuteReader();
             while(rd.Read())

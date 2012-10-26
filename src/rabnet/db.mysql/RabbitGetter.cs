@@ -12,7 +12,7 @@ namespace db.mysql
 
         internal static Rabbit fillRabbit(MySqlDataReader rd)
         {
-            return new Rabbit(rd.GetInt32("r_id"), rd.GetString("name"), rd.GetString("sex"), rd.GetDateTime("r_born"),
+            return new Rabbit(rd.GetInt32("r_id"), rd.GetString("name"), rd.GetString("r_sex"), rd.GetDateTime("r_born"),
                 rd.GetString("breedname"), rd.GetInt32("r_group"),rd.GetString("r_bon"),rd.GetString("address"),
                 rd.GetString("r_notes"));
         }
