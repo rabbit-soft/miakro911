@@ -8,6 +8,17 @@ namespace db.mysql
 {  
     class Logs
     {
+        class Params
+        {
+            public char Rabbit1 = 'r';
+            public char Rabbit2 = 'R';
+            public char Place1 = 'p';
+            public char Place2 = 'P';
+            public char Address1 = 'a';
+            public char Address2 = 'A';
+            public char Notes = 't';
+        }
+
         private MySqlConnection sql;
         public Logs(MySqlConnection sql)
         {
@@ -32,29 +43,30 @@ namespace db.mysql
             if (f.safeValue("lgs") == "") return "";
             String res = "";
             String[] tps = f.safeValue("lgs", "").Split(',');
-            for (int i = 0; i <= tps.Length-1; i++)
-                res += "logs.l_type=" + tps[i]+" OR ";
-            return " WHERE ("+res+"logs.l_type="+tps[tps.Length-1]+")";
+            for (int i = 0; i <= tps.Length - 1; i++)
+                res += "logs.l_type=" + tps[i] + " OR ";
+            return " WHERE (" + res + "logs.l_type=" + tps[tps.Length - 1] + ")";
         }
 
         public LogList getLogs(Filters f)
         {
-            int limit = f.safeInt("lim",100);
-            String qry=String.Format(@"SELECT logs.l_date date,logtypes.l_name name,users.u_name user,logtypes.l_params params,
+            int limit = f.safeInt("lim", 100);
+            String qry = String.Format(@"SELECT logs.l_date date,logtypes.l_name name,users.u_name user,logtypes.l_params params,
 logs.l_rabbit rabbit,logs.l_rabbit2 rabbit2,logs.l_address address,logs.l_address2 address2,
 logs.l_param param,
 anyname(logs.l_rabbit,2) r1,
 anyname(logs.l_rabbit2,2) r2,
 rabplace(logs.l_rabbit) place,
 rabplace(logs.l_rabbit2) place2
-FROM logs LEFT JOIN logtypes ON logs.l_type=logtypes.l_type LEFT JOIN users ON l_user=u_id {1:s} 
-ORDER BY date DESC LIMIT {0:d};", limit,makeWhere(f));
+FROM logs 
+LEFT JOIN logtypes ON logs.l_type=logtypes.l_type LEFT JOIN users ON l_user=u_id {1:s} 
+ORDER BY date DESC LIMIT {0:d};", limit, makeWhere(f));
             MySqlCommand cmd = new MySqlCommand(qry, sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             LogList ll = new LogList();
             while (rd.Read())
             {
-                String np=rd.GetString("params");
+                String np = rd.GetString("params");
                 while (np.IndexOf('$') > -1)
                 {
                     String prms = "";
@@ -67,14 +79,14 @@ ORDER BY date DESC LIMIT {0:d};", limit,makeWhere(f));
                         case 'P': prms += Building.FullPlaceName(rd.GetString("place2"), true, false, false); break;
                         case 'a': prms += rd.GetString("address"); break;
                         case 'A': prms += rd.GetString("address2"); break;
-                        case 't': prms += rd.IsDBNull(8)?"":rd.GetString("param"); break;
+                        case 't': prms += rd.IsDBNull(8) ? "" : rd.GetString("param"); break;
                     }
                     np = np.Replace("$" + c, prms);
                 }
                 String adr = rd.GetString("address");
-                if (adr=="")
+                if (adr == "")
                     adr = Building.FullPlaceName(rd.GetString("place"), true, false, false);
-                ll.addLog(rd.GetDateTime("date"), rd.IsDBNull(2)?"":rd.GetString("user"), rd.GetString("name"), np,adr);
+                ll.addLog(rd.GetDateTime("date"), rd.IsDBNull(2) ? "" : rd.GetString("user"), rd.GetString("name"), np, adr);
             }
             rd.Close();
             return ll;

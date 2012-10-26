@@ -212,6 +212,7 @@ namespace rabnet
                 return new RP(this, num);
             }
         }
+        class RPList : List<RP> { }
 
         public const int FIELD_NAME = 0;
         public const int FIELD_BREED = 1;
@@ -229,22 +230,21 @@ namespace rabnet
         /// Номер колонки, в которой содержится чекбокс с установкой гнездовья
         /// </summary>
         public const int FIELD_NEST = 8;
-        class RPList : List<RP> { }
-      
+  
         private bool _manual = false;
-        private int girlout = 0;
+        private int _girlout = 0;
         private List<RabNetEngRabbit> _rabERs = new List<RabNetEngRabbit>();
         private RPList _replaceList = new RPList();
         private DataTable _dataSet = new DataTable();
         /// <summary>
         /// Комбобокс с новыми адресами, который добавляется к новой строке
         /// </summary>
-        private DataGridViewComboBoxColumn dgcbNewAddress = new DataGridViewComboBoxColumn();        
+        private DataGridViewComboBoxColumn _dgcbNewAddress = new DataGridViewComboBoxColumn();        
         private Building[] _freeBuildings = null;       
         private Action _action = Action.NONE;
-        private bool globalError=false;
-        private bool noboys = false;
-        private int combineage = 0;
+        private bool _globalError=false;
+        private bool _noboys = false;
+        private int _combineage = 0;
 
         public ReplaceForm()
         {
@@ -265,7 +265,7 @@ namespace rabnet
             cbFilter.Tag = 1;
             cbFilter.SelectedIndex = 0;
             cbFilter.Tag = 0;
-            combineage = Engine.get().options().getIntOption(Options.OPT_ID.COMBINE_AGE);
+            _combineage = Engine.get().options().getIntOption(Options.OPT_ID.COMBINE_AGE);
             FormSizeSaver.Append(this);
             _manual = true;
         }
@@ -290,7 +290,7 @@ namespace rabnet
         /// <summary>
         /// Обновление списка кроликов в RPList
         /// </summary>
-        public void clear()
+        private void clear()
         {
             _replaceList.Clear();
             foreach (RabNetEngRabbit r in _rabERs)
@@ -301,12 +301,12 @@ namespace rabnet
                     _replaceList.Add(new RP(_replaceList, y.ID, y.NameFull, r.medAddress, y.Group, y.Sex, DateTime.Now.Subtract(y.BirthDay).Days, r.BreedName, r.RabID));
             }
         }
-        public void setAction(Action act)
+        public void SetAction(Action act)
         {
             _action = act;
         }
 
-        public bool myrab(int i)
+        private bool myrab(int i)
         {
             foreach (RabNetEngRabbit r in _rabERs)
                 if (r.RabID == i)return true;
@@ -342,7 +342,7 @@ namespace rabnet
         /// <summary>
         /// Заполняет ComboBox с новыми адресами
         /// </summary>
-        public void getBuildings()
+        private void getBuildings()
         {
             //добавляем в фильтры ID кроликов, чтобы их клетки тоже быть в _freeBuildings
             Filters f = new Filters();
@@ -378,8 +378,8 @@ namespace rabnet
                 f["nest"] = "1";
             }
             _freeBuildings = Engine.db().getFreeBuilding(f);
-            dgcbNewAddress.Items.Clear();
-            dgcbNewAddress.Items.Add(Rabbit.NULL_ADDRESS);
+            _dgcbNewAddress.Items.Clear();
+            _dgcbNewAddress.Items.Add(Rabbit.NULL_ADDRESS);
             foreach (Building b in _freeBuildings)
             {
                 for (int i = 0; i < b.secs(); i++)
@@ -387,40 +387,40 @@ namespace rabnet
                     if (_action == Action.SET_NEST && b.ftype == BuildingType.Jurta && i == 1)
                         continue;
                     if (b.busy(i)==0 || myrab(b.busy(i))) 
-                        dgcbNewAddress.Items.Add(b.medname[i]);
+                        _dgcbNewAddress.Items.Add(b.medname[i]);
                 }
             }
             foreach (RP r in _replaceList)
             {
-                if (!dgcbNewAddress.Items.Contains(r.CurAddress))
-                    dgcbNewAddress.Items.Add(r.CurAddress);
+                if (!_dgcbNewAddress.Items.Contains(r.CurAddress))
+                    _dgcbNewAddress.Items.Add(r.CurAddress);
             }
         }
 
-        public void updateB() { update(true); }
-        public void update() { update(false); }
+        private void updateB() { update(true); }
+        private void update() { update(false); }
 
         /// <summary>
         /// Обновляет информацию dataGrid
         /// </summary>
         /// <param name="reget">Заполнять ли данными DataGridView</param>
-        public void update(bool reget)
+        private void update(bool reget)
         {
             int selectedRow = -1;
             if (dataGridView1.SelectedRows.Count != 0)
                 selectedRow = dataGridView1.SelectedRows[0].Index; 
-            globalError = false;
+            _globalError = false;
             _dataSet.Rows.Clear();
 
             if (reget)
             {
                 getBuildings();
                 dataGridView1.Columns.RemoveAt(FIELD_NEWPLACE);
-                dgcbNewAddress.MaxDropDownItems = 20;
-                dgcbNewAddress.HeaderText = "Новый адрес";
-                dgcbNewAddress.DataPropertyName = "Новый адрес";
-                dgcbNewAddress.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                dataGridView1.Columns.Insert(FIELD_NEWPLACE, dgcbNewAddress);
+                _dgcbNewAddress.MaxDropDownItems = 20;
+                _dgcbNewAddress.HeaderText = "Новый адрес";
+                _dgcbNewAddress.DataPropertyName = "Новый адрес";
+                _dgcbNewAddress.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dataGridView1.Columns.Insert(FIELD_NEWPLACE, _dgcbNewAddress);
             }
 
             foreach (RP r in _replaceList)
@@ -433,7 +433,7 @@ namespace rabnet
                 bool b = busy(r);
                 if (b)
                 {
-                    globalError = true;
+                    _globalError = true;
                     stat += ",ЗАНЯТО";
                 }
                 DataRow rw = _dataSet.Rows.Add(r.Name,r.BreedName, r.Age, Rabbit.SexToRU(r.NewSex), r.NewCount, r.Address, r.CurAddress, stat, r.SetNest);
@@ -456,7 +456,7 @@ namespace rabnet
             if (_action == Action.BOYSOUT)
             {
 //                action = Action.NONE;
-                btSeparate.Enabled = btChangeAddresses.Enabled = btSeparateByOne.Enabled=noboys;
+                btSeparate.Enabled = btChangeAddresses.Enabled = btSeparateByOne.Enabled=_noboys;
             }
             if (selectedRow != -1 && selectedRow <= dataGridView1.Rows.Count-1)            
                 dataGridView1.CurrentCell = dataGridView1[0, selectedRow];
@@ -539,7 +539,7 @@ namespace rabnet
         {
             clear();
             btSeparate.Enabled = btSeparateByOne.Enabled = (_action != Action.BOYSOUT);
-            noboys = false;
+            _noboys = false;
             update();
         }
 
@@ -574,7 +574,7 @@ namespace rabnet
                 {
                     btCombine.Enabled = true;
                 }
-                if (r1.Sex == r2.Sex && Math.Abs(r1.Age-r2.Age)<=combineage)
+                if (r1.Sex == r2.Sex && Math.Abs(r1.Age-r2.Age)<=_combineage)
                 {
                     btUniteUp.Enabled = btUniteDown.Enabled=true;
                 }
@@ -603,7 +603,7 @@ namespace rabnet
             for (int i = 0; i < dataGridView1.SelectedRows.Count;i++)
                 rp(dataGridView1.SelectedRows[i].Index).clear();
             btSeparate.Enabled=btSeparateByOne.Enabled=(_action!=Action.BOYSOUT);
-            noboys = false;
+            _noboys = false;
             update();
         }
 
@@ -653,7 +653,7 @@ namespace rabnet
             RP nrp = rp().SplitGroup((int)numericUpDown1.Value);
             rp().NewSex = Rabbit.SexType.FEMALE;
             nrp.NewSex = Rabbit.SexType.MALE;
-            noboys = true;
+            _noboys = true;
             btSeparate.Enabled = btSeparateByOne.Enabled = true;
             update();
         }
@@ -735,8 +735,8 @@ namespace rabnet
                 int cid = rb.Clone(c.Count, a[0], a[1], a[2]);
                 c.ID = cid;
                 commitRabbit(c, cid, allowReplace);
-                if (_action == Action.ONE_GIRL_OUT && girlout == 0 && c.Sex == Rabbit.SexType.FEMALE && c.Count == 1)
-                    girlout = cid;
+                if (_action == Action.ONE_GIRL_OUT && _girlout == 0 && c.Sex == Rabbit.SexType.FEMALE && c.Count == 1)
+                    _girlout = cid;
                 rp.Clones.RemoveAt(0);
             }
             //if (rp.Clones.Count > 0)
@@ -769,7 +769,7 @@ namespace rabnet
             }
             try
             {
-                if (globalError)
+                if (_globalError)
                     throw new ApplicationException("Не всем кроликам назначены уникальные клетки для пересадки.");
                 foreach (RP r in _replaceList)
                     commitRabbit(r,0,false);
@@ -822,9 +822,9 @@ namespace rabnet
                     RP r = _replaceList[j];
                     if (busy(r))
                     {
-                        for (int i = 1; i < dgcbNewAddress.Items.Count && busy(r); i++)
-                            if ((string)dgcbNewAddress.Items[i] != r.Address)
-                                r.CurAddress = (string)dgcbNewAddress.Items[i];
+                        for (int i = 1; i < _dgcbNewAddress.Items.Count && busy(r); i++)
+                            if ((string)_dgcbNewAddress.Items[i] != r.Address)
+                                r.CurAddress = (string)_dgcbNewAddress.Items[i];
                     }
                 }
             update();
@@ -879,7 +879,7 @@ namespace rabnet
 
         public int getGirlOut()
         {
-            return girlout;
+            return _girlout;
         }
 
         private void initialHints()

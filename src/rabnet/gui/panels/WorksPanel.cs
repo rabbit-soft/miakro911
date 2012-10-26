@@ -226,7 +226,7 @@ namespace rabnet
                     ReplaceForm rf = new ReplaceForm();
                     rf.AddRabbit(job.ID);
                     if (job.Type==JobType.BOYS_OUT)
-                        rf.setAction(ReplaceForm.Action.BOYSOUT);
+                        rf.SetAction(ReplaceForm.Action.BOYSOUT);
                     res=rf.ShowDialog();
                     break; 
                                   
@@ -287,7 +287,7 @@ namespace rabnet
                 case JobType.SET_NEST://установка гнездовья
                     ReplaceForm f = new ReplaceForm();
                     f.AddRabbit(job.ID);
-                    f.setAction(ReplaceForm.Action.SET_NEST);
+                    f.SetAction(ReplaceForm.Action.SET_NEST);
                     res = f.ShowDialog();
                     break;
 

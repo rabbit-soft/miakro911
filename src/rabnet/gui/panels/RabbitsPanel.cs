@@ -289,7 +289,7 @@ namespace rabnet
             ReplaceForm rpf = new ReplaceForm();
             rpf.AddRabbit((int)listView1.SelectedItems[0].Tag);
             rpf.AddRabbit((int)listView1.SelectedItems[1].Tag);
-            rpf.setAction(ReplaceForm.Action.CHANGE);
+            rpf.SetAction(ReplaceForm.Action.CHANGE);
             if (rpf.ShowDialog() == DialogResult.OK)
                 _rsb.run();
         }
@@ -340,7 +340,7 @@ namespace rabnet
                 return;
             ReplaceForm rpf = new ReplaceForm();
             rpf.AddRabbit((int)listView1.SelectedItems[0].Tag);
-            rpf.setAction(ReplaceForm.Action.BOYSOUT);
+            rpf.SetAction(ReplaceForm.Action.BOYSOUT);
             if (rpf.ShowDialog() == DialogResult.OK)
                 _rsb.run();
         }
