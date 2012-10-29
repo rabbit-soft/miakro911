@@ -382,11 +382,11 @@ namespace rabnet
             _dgcbNewAddress.Items.Add(Rabbit.NULL_ADDRESS);
             foreach (Building b in _freeBuildings)
             {
-                for (int i = 0; i < b.secs(); i++)
+                for (int i = 0; i < b.Sections; i++)
                 {
-                    if (_action == Action.SET_NEST && b.ftype == BuildingType.Jurta && i == 1)
+                    if (_action == Action.SET_NEST && b.TypeName == BuildingType.Jurta && i == 1)
                         continue;
-                    if (b.busy(i)==0 || myrab(b.busy(i))) 
+                    if (b.Busy[i]==0 || myrab(b.Busy[i])) 
                         _dgcbNewAddress.Items.Add(b.medname[i]);
                 }
             }
@@ -624,10 +624,10 @@ namespace rabnet
             if (s == Rabbit.NULL_ADDRESS)
                 return new int[] { 0, 0, 0 };
             for (int i = 0; i < _freeBuildings.Length; i++)
-                for (int j = 0; j < _freeBuildings[i].secs(); j++ )
+                for (int j = 0; j < _freeBuildings[i].Sections; j++)
                     if (_freeBuildings[i].medname[j] == s)
                     {
-                        return new int[]{(int)_freeBuildings[i].farm(), _freeBuildings[i].tier_id(), j};
+                        return new int[]{(int)_freeBuildings[i].Farm, _freeBuildings[i].TierID, j};
                     }
             return null;
         }

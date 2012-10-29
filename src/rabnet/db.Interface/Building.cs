@@ -41,63 +41,63 @@ namespace rabnet
 
     public class Building : IData
     {
-        public int fid;
-        public int ffarm;
-        public int ftid;
-        public int fsecs;
-        public String[] fareas;
+        public readonly int ID;
+        public readonly int Farm;
+        public readonly int TierID;
+        public readonly int Sections;
+        public String[] Areas;
         public String[] fdeps;
-        public string ftype;
-        public string ftypeloc;
-        public string fdelims;
-        public string fnotes;
-        public bool frepair;
-        public string fnests;
-        public string fheaters;
-        public string faddress;
+        public readonly string TypeName;
+        public readonly string TypeName_Rus;
+        public string Delims;
+        public string Notes;
+        public bool Repair;
+        public string Nests;
+        public string Heaters;
+        public string Address;
         public string[] fuses;
-        public int[] fbusies;
-        public int fnhcount;
+        public int[] Busy;
+        public int NestHeaterCount;
         public string[] fullname = new string[4];
         public string[] smallname = new string[4];
         public string[] medname = new string[4];
 
-        public Building(int id, int farm, int tier_id, string type, string typeloc, string delims, string notes, bool repair, int seccnt)
+        public Building(int id, int farm, int tier_id, string type, string typeLoc, string delims, string notes, bool repair, int seccnt)
         {
-            fid = id;
-            ffarm = farm;
-            ftid = tier_id;
-            ftype = type;
-            ftypeloc = typeloc;
-            fdelims = delims;
-            fnotes = notes;
-            frepair = repair;
-            fsecs = seccnt;
-            for (int i = 0; i < fsecs; i++)
+            ID = id;
+            this.Farm = farm;
+            TierID = tier_id;
+            TypeName = type;
+            TypeName_Rus = typeLoc;
+            Delims = delims;
+            Notes = notes;
+            Repair = repair;
+            Sections = seccnt;
+            for (int i = 0; i < Sections; i++)
             {
-                fullname[i] = Building.FullRName(ffarm, ftid, i, ftype, fdelims, false, true, true);
-                smallname[i] = Building.FullRName(ffarm, ftid, i, ftype, fdelims, true, false, false);
-                medname[i] = Building.FullRName(ffarm, ftid, i, ftype, fdelims, false, true, false);
+                fullname[i] = Building.FullRName(Farm, TierID, i, TypeName, Delims, false, true, true);
+                smallname[i] = Building.FullRName(Farm, TierID, i, TypeName, Delims, true, false, false);
+                medname[i] = Building.FullRName(Farm, TierID, i, TypeName, Delims, false, true, false);
             }
         }
         #region IBuilding Members
-        public int id() { return fid; }
-        public int farm() { return ffarm; }
-        public int tier_id() { return ftid; }
-        public string delims() { return fdelims; }
-        public string type() { return ftypeloc; }
-        public string itype() { return ftype; }
-        public string notes() { return fnotes; }
-        public bool repair() { return frepair; }
-        public int secs() { return fsecs; }
-        public string area(int id) { return fareas[id]; }
+        //public int id() { return fid; }
+        //public int farm() { return ffarm; }
+        //public int tier_id() { return ftid; }
+        //public string delims() { return fdelims; }
+        //public string type() { return ftypeloc; }
+        //public string itype() { return ftype; }
+        //public string notes() { return fnotes; }
+        //public bool repair() { return frepair; }
+        //public int secs() { return fsecs; }
+        //public string area(int id) { return Areas[id]; }
         public string dep(int id) { return fdeps[id]; }
-        public string nest() { return fnests; }
-        public string heater() { return fheaters; }
-        public int nest_heater_count() { return fnhcount; }
-        public int busy(int id) { return fbusies[id]; }
+        //public string nest() { return fnests; }
+        //public string heater() { return fheaters; }
+        //public int nest_heater_count() { return fnhcount; }
+        //public int busy(int id) { return fbusies[id]; }
         public string use(int id) { return fuses[id]; }
-        public string address() { return faddress; }
+        //public string address() { return faddress; }
         #endregion
 
         /* Гамбит не знал как лучше сделать строку, которую можно установить в начале программы,

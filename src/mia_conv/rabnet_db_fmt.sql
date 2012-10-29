@@ -444,6 +444,7 @@ INSERT INTO breeds VALUES
 (23,'Бельгийский Фландр','БеФ','SaddleBrown'),
 (24,'Г Бельгийский Фландр','гБеФ','White'),
 (25,'Белая Чернова','БеЧ','White');
+
 INSERT INTO `zones` VALUES 
 (24000,'Красноярск','Крск'),
 (33000,'Владимир','Влад'),
@@ -460,6 +461,7 @@ INSERT INTO `zones` VALUES
 (54000,'Новосибирск','Нск'),
 (62001,'Касимов','Ксм'),
 (73000,'Ульяновск','Улн');
+
 INSERT INTO `names` VALUES 
 (1,'male','Бич','Бичев',0,NULL),
 (2,'male','Баклан','Бакланов',0,NULL),
@@ -498,8 +500,6 @@ INSERT INTO `names` VALUES
 (35,'female','Сабрина','Сабринин',0,NULL),
 (36,'female','Стрелка','Стрелкин',0,NULL),
 (37,'female','Шаня','Шанин',0,NULL);
-
-
 
 #views
 DROP VIEW IF EXISTS allrabbits;

@@ -33,8 +33,8 @@ namespace rabnet
             }
             foreach(Building b in bs)
             {
-                for (int i = 0; i < b.secs();i++ )
-                    if (b.busy(i)==0)
+                for (int i = 0; i < b.Sections; i++)
+                    if (b.Busy[i]==0)
                     comboBox1.Items.Add(b.medname[i]);
             }
             comboBox1.Sorted = true;
@@ -51,10 +51,10 @@ namespace rabnet
             if (s == Rabbit.NULL_ADDRESS)
                 return new int[] { 0, 0, 0 };
             for (int i = 0; i < bs.Length; i++)
-                for (int j = 0; j < bs[i].secs(); j++)
+                for (int j = 0; j < bs[i].Sections; j++)
                     if (bs[i].medname[j] == s)
                     {
-                        return new int[] { (int)bs[i].farm(), bs[i].tier_id(), j };
+                        return new int[] { (int)bs[i].Farm, bs[i].TierID, j };
                     }
             return null;
         }

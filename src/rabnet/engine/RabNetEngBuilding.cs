@@ -39,16 +39,16 @@ namespace rabnet
 
         public void setRepair(bool value)
         {
-            if (b.frepair == value)
+            if (b.Repair == value)
                 return;
             if (value)
             {
-                for (int i = 0; i < b.fsecs; i++)
-                    if (b.busy(i) != 0)
+                for (int i = 0; i < b.Sections; i++)
+                    if (b.Busy[i] != 0)
                         throw new ExFarmNotEmpty();
             }
-            eng.logs().log(value ? RabNetLogs.LogType.REPAIR_ON : RabNetLogs.LogType.REPAIR_OFF, 0, b.ffarm.ToString());
-            b.frepair = value;
+            eng.logs().log(value ? RabNetLogs.LogType.REPAIR_ON : RabNetLogs.LogType.REPAIR_OFF, 0, b.Farm.ToString());
+            b.Repair = value;
             commit();
         }
         /// <summary>
@@ -57,10 +57,10 @@ namespace rabnet
         /// <param name="value">установить или убрать</param>
         public void setNest(bool value)
         {
-            if (b.fnests[0] == (value ? '1' : '0'))
+            if (b.Nests[0] == (value ? '1' : '0'))
                 return;
-            eng.logs().log(value ? RabNetLogs.LogType.NEST_ON : RabNetLogs.LogType.NEST_OFF, b.busy(0), b.smallname[0]);
-            b.fnests = (value ? "1" : "0")+b.fnests.Substring(1);
+            eng.logs().log(value ? RabNetLogs.LogType.NEST_ON : RabNetLogs.LogType.NEST_OFF, b.Busy[0], b.smallname[0]);
+            b.Nests = (value ? "1" : "0")+b.Nests.Substring(1);
             commit();
         }
         /// <summary>
@@ -69,42 +69,42 @@ namespace rabnet
         /// <param name="value">установить или убрать</param>
         public void setNest2(bool value)
         {
-            if (b.fnests[1] == (value ? '1' : '0'))
+            if (b.Nests[1] == (value ? '1' : '0'))
                 return;
-            eng.logs().log(value ? RabNetLogs.LogType.NEST_ON : RabNetLogs.LogType.NEST_OFF, b.busy(1),b.smallname[1]);
-            b.fnests = b.fnests.Substring(0, 1) + (value ? '1' : '0');
+            eng.logs().log(value ? RabNetLogs.LogType.NEST_ON : RabNetLogs.LogType.NEST_OFF, b.Busy[1],b.smallname[1]);
+            b.Nests = b.Nests.Substring(0, 1) + (value ? '1' : '0');
             commit();
         }
 
         public void setHeater(int value)
         {
             if (value == 2) value = 3;
-            if (b.fheaters[0] == value.ToString()[0])
+            if (b.Heaters[0] == value.ToString()[0])
                 return;
             RabNetLogs.LogType tp = RabNetLogs.LogType.HEATER_OUT;
             if (value == 1) tp = RabNetLogs.LogType.HEATER_OFF;
             if (value == 3) tp = RabNetLogs.LogType.HEATER_ON;
-            eng.logs().log(tp, b.busy(0), b.smallname[0]);
-            b.fheaters = String.Format("{0:D1}",value) + b.fheaters.Substring(1);
+            eng.logs().log(tp, b.Busy[0], b.smallname[0]);
+            b.Heaters = String.Format("{0:D1}",value) + b.Heaters.Substring(1);
             commit();
         }
 
         public void setHeater2(int value)
         {
             if (value == 2) value = 3;
-            if (b.fheaters[1] == value.ToString()[0])
+            if (b.Heaters[1] == value.ToString()[0])
                 return;
             RabNetLogs.LogType tp = RabNetLogs.LogType.HEATER_OUT;
             if (value == 1) tp = RabNetLogs.LogType.HEATER_OFF;
             if (value == 3) tp = RabNetLogs.LogType.HEATER_ON;
-            eng.logs().log(tp, b.busy(1), b.smallname[1]);
-            b.fheaters = b.fheaters.Substring(0, 1) + String.Format("{0:D1}", value);
+            eng.logs().log(tp, b.Busy[1], b.smallname[1]);
+            b.Heaters = b.Heaters.Substring(0, 1) + String.Format("{0:D1}", value);
             commit();
         }
 
         public void setDelim(bool value)
         {
-            b.fdelims = (value ? "1" : "0") + b.fdelims.Substring(1);
+            b.Delims = (value ? "1" : "0") + b.Delims.Substring(1);
             commit();
         }
 
@@ -120,17 +120,17 @@ namespace rabnet
 
         public void setDelim2(bool value)
         {
-            b.fdelims = b.fdelims.Substring(0, 1) + (value ? "1" : "0")+b.fdelims.Substring(2);
+            b.Delims = b.Delims.Substring(0, 1) + (value ? "1" : "0")+b.Delims.Substring(2);
             commit();
         }
 
         public void setDelim3(bool value)
         {
-            b.fdelims = b.fdelims.Substring(0,2)+(value ? "1" : "0");
+            b.Delims = b.Delims.Substring(0,2)+(value ? "1" : "0");
             commit();
         }
 
-        public string type { get { return b.ftype; } }
+        public string type { get { return b.TypeName; } }
 
     }
 }

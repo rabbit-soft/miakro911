@@ -33,7 +33,7 @@ namespace db.mysql
             List<string> deps = new List<string>();
             List<int> bus = new List<int>();
             List<String> uses = new List<string>();
-            for (int i = 0; i < b.secs(); i++)
+            for (int i = 0; i < b.Sections; i++)
             {
                 ars.Add((tid == 0 ? "" : (tid == 1 ? "^" : "-")) + Building.GetRSec(tp, i, dl));
                 deps.Add(Building.GetRDescr(tp, shr, i, dl));
@@ -44,14 +44,14 @@ namespace db.mysql
                 else
                     uses.Add("");
             }
-            b.fareas = ars.ToArray();
-            b.fbusies = bus.ToArray();
+            b.Areas = ars.ToArray();
+            b.Busy = bus.ToArray();
             b.fdeps = deps.ToArray();
             b.fuses = uses.ToArray();
-            b.fnhcount = Building.GetRNHCount(tp);
-            b.fnests = rd.GetString("t_nest");
-            b.fheaters = rd.GetString("t_heater");
-            b.faddress = "";
+            b.NestHeaterCount = Building.GetRNHCount(tp);
+            b.Nests = rd.GetString("t_nest");
+            b.Heaters = rd.GetString("t_heater");
+            b.Address = "";
             return b;
         }
 
@@ -221,7 +221,7 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 AND "+busy+" ORDER BY m_id;"
         internal static void updateBuilding(Building b,MySqlConnection sql)
         {
             MySqlCommand cmd=new MySqlCommand(String.Format(@"UPDATE tiers SET t_repair={1:d},t_delims='{2:s}',t_heater='{3:s}',t_nest='{4:s}' WHERE t_id={0:d};",
-                b.fid,b.frepair?1:0,b.fdelims,b.fheaters,b.fnests),sql);
+                b.ID,b.Repair?1:0,b.Delims,b.Heaters,b.Nests),sql);
             cmd.ExecuteNonQuery();
         }
 

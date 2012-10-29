@@ -49,11 +49,11 @@ namespace rabnet
             cbNum.Enabled = false;
             tiers = Engine.db().getTiers(id);
             b1 = Engine.db().getBuilding(tiers[0]);
-            cbUpper.SelectedIndex = idFromType(b1.ftype) - 1;
+            cbUpper.SelectedIndex = idFromType(b1.TypeName) - 1;
             if (tiers[1] != 0)
             {
                 b2 = Engine.db().getBuilding(tiers[1]);
-                cbLower.SelectedIndex = idFromType(b2.ftype);
+                cbLower.SelectedIndex = idFromType(b2.TypeName);
             }
         }
 
@@ -118,8 +118,8 @@ namespace rabnet
             if (b==null)
                 return false;
             //bool res = false;
-            for (int i = 0; i < b.secs(); i++)
-                if (b.busy(i) > 0)
+            for (int i = 0; i < b.Sections; i++)
+                if (b.Busy[i] > 0)
                     return true;
             return false;
         }
@@ -152,10 +152,10 @@ namespace rabnet
             else
             {
                 int change = -1;
-                if (upperType != b1.ftype) 
+                if (upperType != b1.TypeName) 
                     change = checkBuilding(b1);
 
-                if ((b2 != null && lowerType != b2.ftype) || (b2 == null && lowerType != "none"))
+                if ((b2 != null && lowerType != b2.TypeName) || (b2 == null && lowerType != "none"))
                 {
                     if (change<1)
                         change = checkBuilding(b2);

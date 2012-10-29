@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Collections;
 using System.Xml;
+using log4net;
 #if PROTECTED
 using RabGRD;
 #endif
@@ -16,7 +17,7 @@ namespace rabnet
     public partial class BuildingsPanel : RabNetPanel
     {
         /// <summary>
-        /// Нужна потому что под номер клетки отводится 4 знака
+        /// Нужна потому что под номер клетки отводится 6 знаков
         /// Иначе придется изменять форматирование номеров клеток во всей программе
         /// </summary>
         private int MAX_FARMS_COUNT = 999999;
@@ -27,7 +28,8 @@ namespace rabnet
         private const int NEW_FARMS_LIMIT = 0xff;
         public const int DEMO_MAX_FARMS = 10;
         private bool manual = true;
-        const String nuBuild = "Новое строение";
+        protected static readonly ILog _logger = LogManager.GetLogger(typeof(MainForm));
+        const String NEW_BUILDING = "Новое строение";
         List<int> nofarms = new List<int>();
         int nofarm = 1;
         TreeNode nodeToAdd = null;
@@ -111,17 +113,21 @@ namespace rabnet
                 n = treeView1.Nodes.Add(name);
             else
                 n = parent.Nodes.Add(name);
+            int i0=0, i1 = 0;
             if (td.items!=null)
                 for (int i = 0; i < td.items.Length; i++)
                 {
                     String[] st = td.items[i].caption.Split(':');
                     TreeNode child = makenode(n, st[2], td.items[i]);
-                    child.Tag = st[0] + ":" + st[1];
-                    int fid = int.Parse(st[1]);
+                    int.TryParse(st[0], out i0);
+                    int.TryParse(st[1], out i1);
+                    //child.Tag = st[0] + ":" + st[1];
+                    child.Tag = new int[]{i0,i1};
+                    int fid = i1;//int.Parse(st[1]);
                     addNoFarm(fid);
                     if (maxfarm < fid)
                         maxfarm = fid;
-                    if (int.Parse(st[0]) == preBuilding)
+                    if (/*int.Parse(st[0])*/i0 == preBuilding)
                     {
                         treeView1.SelectedNode = child;
                         treeView1.SelectedNode.Expand();
@@ -154,7 +160,7 @@ namespace rabnet
             MainForm.ProtectTest(BuildingsPanel.getFarmsCount(buildTree));
             //treeView1.Sort();
             manual = true;
-            n.Tag="0:0";
+            n.Tag = new int[] { 0, 0 };//"0:0";
             n.Expand();
             f["shr"] = Engine.opt().getOption(Options.OPT_ID.SHORT_NAMES);
             f["dbl"] = Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
@@ -179,7 +185,7 @@ namespace rabnet
             string prevnm="";
             int prevfarm = 0;
 
-            for (int i = 0; i < b.secs(); i++)
+            for (int i = 0; i < b.Sections; i++)
             {
                 /*
                 if (b.id() == 92)
@@ -187,39 +193,39 @@ namespace rabnet
                     String.Format("");
                 }
                  * */
-                if (b.area(i) != prevnm || b.farm()!=prevfarm)
+                if (b.Areas[i] != prevnm || b.Farm!=prevfarm)
                 {
                     manual = false;
-                    ListViewItem it = listView1.Items.Add(Building.Format(b.farm()) + b.area(i));//№
-                    prevfarm = b.farm();
-                    prevnm = b.area(i);
-                    it.Tag = b.id().ToString();
-                    it.SubItems.Add(b.type());//Ярус
+                    ListViewItem it = listView1.Items.Add(Building.Format(b.Farm) + b.Areas[i]);//№
+                    prevfarm = b.Farm;
+                    prevnm = b.Areas[i];
+                    it.Tag = b.ID.ToString();
+                    it.SubItems.Add(b.TypeName_Rus);//Ярус
                     it.SubItems.Add(b.dep(i));//Отделение
                     String stat = "unk";
-                    if (b.repair()) 
+                    if (b.Repair) 
                         stat = "ремонт";
                     else
                     {
-                        if (b.busy(i) == 0) stat = "-";
+                        if (b.Busy[i] == 0) stat = "-";
                         else stat = b.use(i);
                     }
                     it.SubItems.Add(stat);//Статус
                     String nst = "";
                     String htr = "";
-                    if (b.nest_heater_count() > 0)
+                    if (b.NestHeaterCount > 0)
                     {
                         int nid = 0;
-                        if (b.nest_heater_count() > 1) nid = i;
-                        nst = (b.nest()[nid] == '1') ? "да" : "нет";
-                        htr = (b.heater()[nid] == '0' ? "нет" : (b.heater()[nid] == '1' ? "выкл" : "вкл"));
-                        if (b.itype() == BuildingType.Jurta)
-                            if ((b.delims()[0] == '1' && i == 0) || (b.delims()[0] == '0' && i == 1))
+                        if (b.NestHeaterCount > 1) nid = i;
+                        nst = (b.Nests[nid] == '1') ? "да" : "нет";
+                        htr = (b.Heaters[nid] == '0' ? "нет" : (b.Heaters[nid] == '1' ? "выкл" : "вкл"));
+                        if (b.TypeName == BuildingType.Jurta)
+                            if ((b.Delims[0] == '1' && i == 0) || (b.Delims[0] == '0' && i == 1))
                             {
                                 nst = "";
                                 htr = "";
                             }
-                        if (b.itype()==BuildingType.Complex)
+                        if (b.TypeName==BuildingType.Complex)
                             if (i != 0)
                             {
                                 nst = "";
@@ -228,8 +234,8 @@ namespace rabnet
                     }
                     it.SubItems.Add(nst);//Гнездовье
                     it.SubItems.Add(htr);//Грелка
-                    it.SubItems.Add(getAddress(b.farm()));//Адрес
-                    it.SubItems.Add(b.notes());//Заметки
+                    it.SubItems.Add(getAddress(b.Farm));//Адрес
+                    it.SubItems.Add(b.Notes);//Заметки
                     it.Tag = b;
                     manual = true;
                 }
@@ -257,20 +263,25 @@ namespace rabnet
             return res;
         }
 
-        private TreeNode searchFarm(int ifid, TreeNode nd)
+        private TreeNode searchFarm(int MF_id, TreeNode nd)
         {
-            return searchFarm(ifid, -1, nd);
+            return searchFarm(MF_id, -1, nd);
         }
-        private TreeNode searchFarm(int ifid,int bid,TreeNode nd)
+        private TreeNode searchFarm(int MF_id,int bid,TreeNode nd)
         {
-            String[] s = (nd.Tag as string).Split(':');
-            if (int.Parse(s[1]) == ifid || int.Parse(s[0])==bid)
+#if DEBUG
+            //_logger.Debug("Search farm"+nd.Tag.ToString()+"   "+ifid.ToString()+" "+bid.ToString());
+#endif
+            int[] s = (nd.Tag as int[]);//.Split(':');
+            if (s[1] == MF_id || s[0] == bid)
             {
                 return nd;
             }
+
+            TreeNode res = null;
             foreach (TreeNode n in nd.Nodes)
             {
-                TreeNode res = searchFarm(ifid,bid, n);
+                res = searchFarm(MF_id, bid, n);
                 if (res != null)
                     return res;
             }
@@ -279,12 +290,8 @@ namespace rabnet
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {   
-            if (listView1.SelectedItems.Count<1)
-                return;
-            if (listView1.SelectedItems[0] == null)
-                return;
-            if (!manual)
-                return;
+            if (listView1.SelectedItems.Count<1 || listView1.SelectedItems[0] == null || !manual) return;
+
             ListViewItem li = listView1.SelectedItems[0];
             Building b = li.Tag as Building;
             TreeNode tr = treeView1.Nodes[0];
@@ -292,7 +299,9 @@ namespace rabnet
 			tr.Collapse(false);
             //tr.Expand();
             manual = false;
-            treeView1.SelectedNode = searchFarm((int)b.farm(), tr);
+            _logger.Debug("start search");
+            treeView1.SelectedNode = searchFarm((int)b.Farm, tr);
+            _logger.Debug("end search");
             if (treeView1.SelectedNode != null) 
                 treeView1.SelectedNode.Expand();
 			treeView1.EndUpdate();
@@ -304,12 +313,12 @@ namespace rabnet
             List<string> rabs = new List<string>();
             RabNetEngRabbit rner;
             string livesIn = "";
-            for (int i=0;i<b.secs();i++)
+            for (int i = 0; i < b.Sections; i++)
             {
                 livesIn = b.use(i);
-                if (b.fbusies[i] > 0)
+                if (b.Busy[i] > 0)
                 {
-                    rner = Engine.get().getRabbit(b.fbusies[i]);
+                    rner = Engine.get().getRabbit(b.Busy[i]);
                     if (rner.YoungCount != 0)
                     {
                         foreach(YoungRabbit or in rner.Youngers)
@@ -321,7 +330,7 @@ namespace rabnet
                 rabs.Add(livesIn);
             }
            
-            return new FarmDrawer.DrawTier(b.id(),b.itype(),b.delims(),b.nest(),b.heater(),rabs.ToArray(),b.repair());
+            return new FarmDrawer.DrawTier(b.ID,b.TypeName,b.Delims,b.Nests,b.Heaters,rabs.ToArray(),b.Repair);
         }
 
         private void drawFarm(int farm)
@@ -355,10 +364,11 @@ namespace rabnet
             {
                 manual = false;
                 listView1.SelectedItems.Clear();
+                Building b = null;
                 for (int i = 0; i < listView1.Items.Count; i++)
                 {
-                    Building b = listView1.Items[i].Tag as Building;
-                    if ((int)b.farm() == farm)
+                    b = listView1.Items[i].Tag as Building;
+                    if ((int)b.Farm == farm)
                     {
                         listView1.Items[i].Selected = true;
                         listView1.Items[i].EnsureVisible();
@@ -440,9 +450,9 @@ namespace rabnet
                 if (b2 != b)
                 {
                     b = b2;
-                    for (int i = 0; i < b.secs(); i++)
-                        if (b.busy(i)>0)
-                            f.addRabbit(b.busy(i));
+                    for (int i = 0; i < b.Sections; i++)
+                        if (b.Busy[i]>0)
+                            f.addRabbit(b.Busy[i]);
                 }
             }
             if(f.ShowDialog() == DialogResult.OK)
@@ -461,20 +471,20 @@ namespace rabnet
                 if (b2 != b)
                 {
                     b = b2;
-                    for (int i = 0; i < b.secs(); i++)
-                        if (b.busy(i)>0)
-                            f.AddRabbit(b.busy(i));
+                    for (int i = 0; i < b.Sections; i++)
+                        if (b.Busy[i]>0)
+                            f.AddRabbit(b.Busy[i]);
                 }
             }
             if(f.ShowDialog() == DialogResult.OK)
                 _rsb.run();
         }
 
-        private bool isFarm(TreeNode tn){return farmNum(tn)!=0;}
-        private bool isFarm(){return isFarm(treeView1.SelectedNode);}
-        private int farmNum(TreeNode tn){return int.Parse((tn.Tag as String).Split(':')[1]);}
-        private int farmNum(){return farmNum(treeView1.SelectedNode);}
-        private int buildNum(TreeNode tn){return int.Parse((tn.Tag as String).Split(':')[0]);}
+        private bool isFarm(TreeNode tn) { return farmNum(tn) != 0; }
+        private bool isFarm() { return isFarm(treeView1.SelectedNode); }
+        private int farmNum(TreeNode tn) { return (tn.Tag as int[])[1]; }//int.Parse((tn.Tag as String).Split(':')[1]); }
+        private int farmNum() { return farmNum(treeView1.SelectedNode); }
+        private int buildNum(TreeNode tn) { return (tn.Tag as int[])[0]; }//int.Parse((tn.Tag as String).Split(':')[0]); }
         private int buildNum() { return buildNum(treeView1.SelectedNode); }
 
         private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -517,7 +527,7 @@ namespace rabnet
         {
             if (action != 0)
             {
-                if (e.Label == null || e.Label == "")
+                if (e.Label == null || e.Label == "" || e.Label.Contains("/"))
                 {
                     e.CancelEdit = true;
                     treeView1.SelectedNode.Remove();
@@ -529,7 +539,11 @@ namespace rabnet
                 nodeToAdd = null;
                 action = 0;
             }
-            if (e.Label == null || e.Label == "") { e.CancelEdit = true; return; }
+            if (e.Label == null || e.Label == "") 
+            { 
+                e.CancelEdit = true; 
+                return; 
+            }
             if (!manual) return;
             if (e.Node == treeView1.Nodes[0])
             {
@@ -561,9 +575,9 @@ namespace rabnet
                     if (tiers[i]!=0)
                     {
                         Building b = Engine.db().getBuilding(tiers[i]);
-                        for (int j = 0; j < b.secs(); j++)
+                        for (int j = 0; j < b.Sections; j++)
                         {
-                            if (b.busy(j) > 0)
+                            if (b.Busy[j] > 0)
                                 candelete = false;
                         }
                     }
@@ -595,12 +609,14 @@ namespace rabnet
         private void addBuildingMenuItem_Click(object sender, EventArgs e)
         {
             if (treeView1.SelectedNode == null) return;
+
             if (isFarm()) return;
             nodeToAdd = treeView1.SelectedNode;
-            TreeNode nd=nodeToAdd.Nodes.Add(nuBuild);
+            TreeNode nd = nodeToAdd.Nodes.Add(NEW_BUILDING);
             manual = false;
             action = 1;
-            nd.Tag = "0:0:new";
+            nd.Name = "new";
+            nd.Tag = new int[]{0,0};
             treeView1.SelectedNode = nd;
             preBuilding = buildNum(nodeToAdd);
             nd.BeginEdit();
@@ -720,6 +736,7 @@ namespace rabnet
             i++;
             return str.Substring(0, i);
         }
+
         public int Compare(object x, object y)
         {
             string s1 = (x as TreeNode).Text;

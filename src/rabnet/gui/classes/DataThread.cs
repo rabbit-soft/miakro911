@@ -9,7 +9,14 @@ namespace rabnet
 {
     class DataThread
     {
+        /// <summary>
+        /// Объект для Критических секций. Ибо в интернетах говорят что lock(this) использовать не хорошо.
+        /// Предпосылкой данного использования является зависание у Землеведа по не понятным причинам.
+        /// </summary>
+        private object _locker = new object();
+
         private static DataThread thread=null;
+        
         public static DataThread get()
         {
             if (thread == null)
@@ -136,22 +143,22 @@ namespace rabnet
 
         private bool getStop()
         {
-            lock (this)
+            lock (_locker)
             {
                 return is_stop;
             }
         }
 
-        private void setStop(bool val)
+        private void setStop(bool val) 
         {
-            lock (this)
+            lock (_locker)
             {
                 is_stop = val;
             }
         }
         private int getStatus()
         {
-            lock (this)
+            lock (_locker)
             {
                 return status;
             }
@@ -159,7 +166,7 @@ namespace rabnet
 
         private void setStatus(int stat)
         {
-            lock (this)
+            lock (_locker)
             {
                 status = stat;
             }
@@ -167,7 +174,7 @@ namespace rabnet
 
         private int getCount()
         {
-            lock (this)
+            lock (_locker)
             {
                 return gt.getCount();
             }

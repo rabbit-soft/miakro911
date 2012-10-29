@@ -597,8 +597,8 @@ namespace RabGRD
             }
             catch (Exception e)
             {
-                _logger.Error(e.InnerException.Message);
-                MessageBox.Show(e.InnerException.Message, "Фатальная ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);                
+                _logger.Error(e.InnerException == null? e : e.InnerException);
+                MessageBox.Show(e.InnerException == null? e.Message : e.InnerException.Message, "Фатальная ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);                
                 Environment.Exit(100);                               
             }
         }
