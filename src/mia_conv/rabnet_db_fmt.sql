@@ -354,6 +354,7 @@ INSERT INTO options(o_name,o_subname,o_value) VALUES
 ('opt', 'girlsout', 100),
 ('opt', 'suckers', 50),
 ('opt', 'boysout', 80),
+('opt', 'bbone', 90),
 ('opt', 'statefuck', 80),
 ('opt', 'firstfuck', 60),
 ('opt', 'gentree', 1),
