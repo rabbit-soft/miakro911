@@ -43,7 +43,7 @@ namespace rabnet
         /// </summary>
         /// <param name="td"></param>
         /// <returns>Количество ферм</returns>
-        private static int getFarmsCount(TreeData td)
+        public static int GetFarmsCount(TreeData td)
         {
             int res = 0;
             //String[] st = td.caption.Split(':');
@@ -57,7 +57,7 @@ namespace rabnet
             {
                 for (int i = 0; i < td.Childrens.Count; i++)
                 {
-                    res += getFarmsCount(td.Childrens[i]);
+                    res += GetFarmsCount(td.Childrens[i]);
                 }
             }
             return res;
@@ -155,7 +155,7 @@ namespace rabnet
 #endif
             if (nofarm <= MAX_FARMS_COUNT)
                 nofarms.Add(nofarm); 
-            MainForm.ProtectTest(BuildingsPanel.getFarmsCount(buildTree));
+            MainForm.ProtectTest(BuildingsPanel.GetFarmsCount(buildTree));
             //treeView1.Sort();
             manual = true;
             //n.Tag = new int[] { 0, 0 };//"0:0";

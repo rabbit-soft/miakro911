@@ -101,7 +101,7 @@ namespace rabnet
     #endif
 #endif
 #if PROTECTED || DEMO
-            MainForm.ProtectTest(BuildingsPanel.getFarmsCount(Engine.db().buildingsTree()));
+            MainForm.ProtectTest(BuildingsPanel.GetFarmsCount(Engine.db().buildingsTree()));
 #endif
         }
 

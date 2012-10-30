@@ -248,7 +248,9 @@ namespace db.mysql
                 }
                 if (m != null)
                 {
-                    res.Childrens = new List<TreeData>() { m, d };
+                    res.Childrens = new List<TreeData>();
+                    res.Childrens.Add(m);
+                    res.Childrens.Add(d);
                 }
             }
             rd.Close();
