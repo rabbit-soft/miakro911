@@ -220,7 +220,7 @@
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
             this.dateDays1.Location = new System.Drawing.Point(12, 12);
-            this.dateDays1.Maximum = 100000;
+            this.dateDays1.Maximum = 10000;
             this.dateDays1.Name = "dateDays1";
             this.dateDays1.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
             this.dateDays1.Size = new System.Drawing.Size(146, 54);

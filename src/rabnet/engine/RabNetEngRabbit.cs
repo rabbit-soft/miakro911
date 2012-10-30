@@ -550,10 +550,13 @@ namespace rabnet
         public void SetVaccine(int vid, DateTime date, bool withChildrens)
         {
             _eng.db().SetRabbitVaccine(_id,vid,date);
+            _eng.logs().log(RabNetLogs.LogType.VACCINE, RabID, 0, SmallAddress, "", "v"+vid);
             if (withChildrens)
             {
                 foreach (YoungRabbit r in Youngers)
+                {
                     _eng.db().SetRabbitVaccine(r.ID, vid, date);
+                }
                 _rab.youngers = _eng.db().GetYoungers(_id);
             }
             _rab.rabVacs = _eng.db().GetRabVac(_id);                        

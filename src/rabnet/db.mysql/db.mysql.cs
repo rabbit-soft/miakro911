@@ -185,7 +185,7 @@ namespace db.mysql
 
         public TreeData rabbitGenTree(int rabbit)
         {
-            return RabbitsDataGetter.GetRabbitGen(rabbit,sql);
+            return RabbitGenGetter.GetRabbitGen(sql,rabbit);
         }
 
         public TreeData buildingsTree()
@@ -318,10 +318,10 @@ namespace db.mysql
             return new Products(sql);
         }
 
-        public ICatalog getVaccines()
-        {
-            return new Vaccines(sql);
-        }
+        //public ICatalog getVaccines()
+        //{
+        //    return new Vaccines(sql);
+        //}
 
         public string makeName(int nm, int sur, int sec, int grp, Rabbit.SexType sex)
         {
@@ -539,6 +539,21 @@ namespace db.mysql
         public void SetRabbitVaccine(int rid, int vid,DateTime date)
         {
             RabbitGetter.SetRabbitVaccine(sql,rid,vid,date);
+        }
+
+        public List<Vaccine> GetVaccines()
+        {
+            return new Vaccines(sql).Get();
+        }
+
+        public int AddVaccine(string name, int duration, int age, int after, bool zoo)
+        {
+            return new Vaccines(sql).Add(name, duration, age, after, zoo);
+        }
+
+        public void EditVaccine(int id, string name, int duration, int age, int after, bool zoo)
+        {
+            new Vaccines(sql).Edit(id, name, duration, age, after, zoo);
         }
 #endregion vaccines
 

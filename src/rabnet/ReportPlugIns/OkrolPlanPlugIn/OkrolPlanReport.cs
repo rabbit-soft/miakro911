@@ -56,7 +56,7 @@ namespace rabnet
             rvf.ShowDialog();
         }
 
-        private string getSQL(String build)
+        private string getSQL(int build)
         {
             return String.Format(@"SELECT rabname(r_id,2) name,
 (SELECT b_short_name FROM breeds where r_breed=b_id) brd,
@@ -64,7 +64,8 @@ rabplace(r_id) address,
 Date_Format(DATE_ADD(r_event_date,interval {0:d} day),'%m %d') dt,
 '+' plus
 FROM rabbits 
-WHERE r_event_date is not null AND DATE_ADD(r_event_date,interval {0:d} day)>NOW() AND inBuilding({1:s},substr(rabplace(r_id),1,INSTR(rabplace(r_id),',')-1))
+WHERE r_event_date is not null AND DATE_ADD(r_event_date,interval {0:d} day)>NOW() 
+    AND inBuilding({1:d},substr(rabplace(r_id),1,INSTR(rabplace(r_id),',')-1))
 ORDER BY r_event_date;", Engine.opt().getIntOption(Options.OPT_ID.NEST_IN), build);
         }
 

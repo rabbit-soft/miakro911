@@ -25,7 +25,7 @@ namespace rabnet
         /// <summary>
         /// Обработчик XL из вне
         /// </summary>
-        private ExcelMaker.DataFillCallBack _xclDataFill;
+        private ExcelMaker.DataFillCallBack _xclDataFill=null;
 
         public bool printed = false;
         public ReportViewForm()

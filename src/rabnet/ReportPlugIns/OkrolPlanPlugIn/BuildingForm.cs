@@ -30,20 +30,21 @@ namespace rabnet
                 n = treeView1.Nodes.Add(name);
             else
                 n = parent.Nodes.Add(name);
-            if (td.items != null)
-                for (int i = 0; i < td.items.Length; i++)
+            if (td.Childrens != null)
+                for (int i = 0; i < td.Childrens.Count; i++)
                 {
-                    String[] st = td.items[i].caption.Split(':');
-                    if (st[1] != "0")
+                    //String[] st = td.items[i].caption.Split(':');
+                    TreeData td1 = td.Childrens[i];
+                    if (td1.TierID != 0)
                         continue;
-                    TreeNode child = makenode(n, st[2], td.items[i]);
-                    
-                    child.Tag = st[0] + ":" + st[1];
+                    TreeNode child = makenode(n, td1.Name, td.Childrens[i]);
+
+                    child.Tag = td1;
                 }
             return n;
         }
 
-        public string Build { get { return (tn.Tag as String).Split(':')[0]; } }
+        public int Build { get { return (tn.Tag as TreeData).BldID; } }
 
         private void button1_Click(object sender, EventArgs e)
         {

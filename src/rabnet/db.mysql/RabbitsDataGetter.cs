@@ -9,23 +9,10 @@ namespace db.mysql
     class RabbitsDataGetter : RabNetDataGetterBase
     {
         public RabbitsDataGetter(MySqlConnection sql, Filters opts) : base(sql, opts) { }
-
-        internal static AdultRabbit fillAdultRabbit(MySqlDataReader rd)
-        {
-            return new AdultRabbit(rd.GetInt32("r_id"), rd.GetString("name"), rd.GetString("r_sex"),
-                rd.IsDBNull(rd.GetOrdinal("r_born")) ? DateTime.MinValue : rd.GetDateTime("r_born"),
-                rd.GetString("breed"), rd.GetInt32("r_group"), 
-                rd.GetString("r_bon"), rd.GetString("place"), rd.GetString("r_notes"),
-                rd.GetInt32("r_rate"), rd.GetString("r_flags"), rd.GetInt32("weight"), rd.GetInt32("r_status"),
-                rd.IsDBNull(rd.GetOrdinal("r_event_date")) ? DateTime.MinValue : rd.GetDateTime("r_event_date"),
-                rd.IsDBNull(rd.GetOrdinal("suckers")) ? 0 : rd.GetInt32("suckers"),
-                rd.IsDBNull(rd.GetOrdinal("aage")) ? 0 : rd.GetInt32("aage"),
-                rd.GetString("vaccines"));
-        }
-
+      
         public override IData nextItem() /*получение одной записи в Поголовье*/
         {
-            return fillAdultRabbit(rd);
+            return RabbitGetter.fillAdultRabbit(rd);
         }
 
         public override string getQuery()
@@ -165,84 +152,6 @@ rabname(r_id,2) name,r_group,
 (SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight,
 r_status,r_flags,r_event_date,r_breed
  FROM rabbits WHERE r_parent=0) c" + makeWhere() + ";";
-        }
-
-        /// <summary>
-        /// Получает родословную кролика с заданным rabId
-        /// </summary>
-        /// <param name="rabId">ID кролика</param>
-        /// <param name="con"></param>
-        /// <param name="lineage">Стэк родословной для предотвращения рекурсии</param>
-        /// <returns></returns>
-        private static TreeData getRabbitGen(int rabId, MySqlConnection con,Stack<int> lineage)//, int level)
-        {
-            if (rabId == 0) return null;
-            //проверка на рекурсию, которая могла возникнуть после конвертации из старой mia-файла                        
-            if (lineage.Count > 700)
-            {
-                _logger.Warn("cnt:" + lineage.Count.ToString() + " we have suspect infinity inheritance loop: " + String.Join(",", Array.ConvertAll<int, string>(lineage.ToArray(), new Converter<int, string>(convIntToString))));
-                fixInheritance(lineage);
-                return null;
-            }           
-            lineage.Push(rabId);           
-
-            MySqlCommand cmd = new MySqlCommand(@"SELECT
-                                                    rabname(r_id,1),
-                                                    r_mother,
-                                                    r_father,
-                                                    r_bon,
-                                                    TO_DAYS(NOW())-TO_DAYS(r_born)
-                                                FROM rabbits WHERE r_id=" + rabId.ToString() + " LIMIT 1;", con);
-            MySqlDataReader rd = cmd.ExecuteReader();
-            if (!rd.HasRows)
-            {
-                rd.Close();
-                cmd.CommandText = @"SELECT
-                                        deadname(r_id,1),
-                                        r_mother,
-                                        r_father,
-                                        r_bon,
-                                        TO_DAYS(NOW())-TO_DAYS(r_born)
-                                   FROM dead WHERE r_id=" + rabId.ToString() + " LIMIT 1;";
-                rd = cmd.ExecuteReader();
-            }
-            TreeData res = new TreeData();
-            if (rd.Read())
-            {
-                res.caption = rd.GetString(0) + ", " + rd.GetInt32(4).ToString() + "," + Rabbit.GetFBon(rd.GetString("r_bon"), true);
-                int mom = rd.IsDBNull(1) ? 0 : rd.GetInt32(1);
-                int dad = rd.IsDBNull(2) ? 0 : rd.GetInt32(2);
-                rd.Close();
-                TreeData m = getRabbitGen(mom, con, lineage);
-                TreeData d = getRabbitGen(dad, con, lineage);
-                if (m == null)
-                {
-                    m = d;
-                    d = null;
-                }
-                if (m != null)
-                {
-                    res.items = new TreeData[] { m, d };
-                }
-            }
-            rd.Close();
-            return res;
-        }
-
-        private static void fixInheritance(Stack<int> lineage)
-        {
-            //todo fixInheritance 
-        }
-
-        public static TreeData GetRabbitGen(int rabbit, MySqlConnection con)//, int level)
-        {
-            Stack<int> lineage = new Stack<int>();
-            return getRabbitGen(rabbit, con, lineage);
-        }
-
-        private static String convIntToString(int i)
-        {
-            return i.ToString();
-        } 
+        }       
     }
 }

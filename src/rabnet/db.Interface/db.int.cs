@@ -79,12 +79,12 @@ namespace rabnet
         OneRabbit GetRabbit(int rid);
         void SetRabbit(OneRabbit r);
         ICatalogs catalogs();
-        void RabNetLog(int type, int user, int r1,int r2,string a1,string a2,String text);
+        void RabNetLog(int type, int user, int r1, int r2, string a1, string a2, String text);
         Fucks getFucks(int rabbit);
         void cancelFuckEnd(int fuckID);
         Fucks allFuckers(int female,bool geterosis,bool inbreeding,int malewait);
         void setBon(int rabbit,String bon);
-        void makeFuck(int female, int male,DateTime date,int worker);
+        void makeFuck(int female, int male, DateTime date, int worker);
         void makeProholost(int female, DateTime when);
         int makeOkrol(int female, DateTime when, int children, int dead);
         String makeName(int nm, int sur, int sec, int grp, Rabbit.SexType sex);
@@ -146,7 +146,12 @@ namespace rabnet
         void ChangeFarm(int fid,String uppertype,String lowertype);
         void deleteFarm(int fid);             
         String[] getWeights(int rabbit);
+
         RabVac[] GetRabVac(int rabId);
+        List<Vaccine> GetVaccines();
+        int AddVaccine(string name, int duration, int age, int after, bool zoo);
+        void EditVaccine(int id, string name, int duration, int age, int after, bool zoo);
+
         void addWeight(int rabbit, int weight, DateTime date);
         void deleteWeight(int rabbit, DateTime date);
         OneRabbit[] getParents(int rabbit,int age);
@@ -166,7 +171,7 @@ namespace rabnet
         ICatalog getBreeds();
         ICatalog getZones();
         ICatalog getProductTypes();
-        ICatalog getVaccines();
+        //ICatalog getVaccines();
 
         //for buther
         List<sMeal> getMealPeriods();
@@ -187,6 +192,7 @@ namespace rabnet
         void SetRabbitVaccine(int rid, int vid,DateTime date);
 
         IRabNetDataLayer Clone();
+
     }
 
 }

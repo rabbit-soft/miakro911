@@ -21,6 +21,7 @@ namespace rabnet
         public const string IMAGE_MARKER = "#image#";
         public const string COLOR_MARKER = "#color#";
         public const string BOOL_MARKER = "#bool#";
+        public const string VACAFTER_MARKER = "#vacafter#";
 
         /// <summary>
         /// Одна строка DataGridView. Имеет, ID и массив значений ячеек

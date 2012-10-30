@@ -100,7 +100,8 @@ namespace rabnet
         //public string address() { return faddress; }
         #endregion
 
-        /* Гамбит не знал как лучше сделать строку, которую можно установить в начале программы,
+        /**
+         * Гамбит не знал как лучше сделать строку, которую можно установить в начале программы,
          * ее мог использовать класс Building и BuildingPanel    
          */
         #region format

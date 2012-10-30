@@ -96,11 +96,11 @@
             // 
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2012, 9, 19, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2012, 10, 30, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
             this.dateDays1.Location = new System.Drawing.Point(45, 12);
-            this.dateDays1.Maximum = 100000;
+            this.dateDays1.Maximum = 10000;
             this.dateDays1.Name = "dateDays1";
             this.dateDays1.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
             this.dateDays1.Size = new System.Drawing.Size(158, 54);

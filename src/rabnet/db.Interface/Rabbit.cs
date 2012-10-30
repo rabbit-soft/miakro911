@@ -119,6 +119,7 @@ namespace rabnet
         }
         protected static void commaConcat(ref string ser, string app)
         {
+            if (app == null || app == "") return;
             if (ser.Length != 0)
                 ser += "," + app;
             else

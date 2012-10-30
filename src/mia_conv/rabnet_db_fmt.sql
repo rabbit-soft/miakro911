@@ -317,6 +317,7 @@ DROP TABLE IF EXISTS `vaccines`;
 CREATE  TABLE `vaccines` (
   `v_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `v_name` VARCHAR(45) NULL ,
+  `v_do_after` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'делать после рождения(0) или после прививки с ID',
   `v_duration` INT UNSIGNED NOT NULL COMMENT 'Продолжительность прививки в Днях' ,
   `v_age` INT UNSIGNED NOT NULL DEFAULT 45 COMMENT 'Назначать с (дней)' ,
   `v_zootech` BIT NOT NULL DEFAULT 0 COMMENT 'Отображать в Зоотехплане',
@@ -338,7 +339,7 @@ CREATE  TABLE `rab_vac` (
 
 INSERT INTO vaccines(v_id,v_name,v_duration,v_age,v_zootech) VALUES(1,'Прививка',356,45,1);
 
-INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','10');
+INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','11');
 INSERT INTO options(o_name,o_subname,o_value) VALUES
 ('opt', 'okrol', 30),
 ('opt', 'vudvor', 30),
@@ -416,7 +417,8 @@ INSERT INTO logtypes(l_name,l_params) VALUES
 ('предокрольный осмотр','$r ($p)'),
 ('объединение групп','$r -> $t($p)'),
 ('подсадка','$r к $R($P)'),
-("Изменение причины списания","$r");
+('Изменение причины списания','$r'),
+('Прививка','$r ($t)');
 
 INSERT INTO breeds VALUES 
 (1,'Гибрид','---','Red'),

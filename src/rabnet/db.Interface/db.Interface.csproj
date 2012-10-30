@@ -69,6 +69,7 @@
     <Compile Include="RabVac.cs" />
     <Compile Include="Report.cs" />
     <Compile Include="Users.cs" />
+    <Compile Include="Vaccine.cs" />
     <Compile Include="YoungRabbit.cs" />
     <Compile Include="ZooTech.cs" />
     <Compile Include="db.int.cs" />

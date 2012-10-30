@@ -6,18 +6,32 @@ namespace rabnet
 {
     public class TreeData
     {
-        public String caption;
-        public TreeData[] items;
-        public TreeData() { }
-        /// <summary>
-        /// Данные о ветке, представляют собой 3 значения, разделенные ":"
-        /// 1 - Id строения
-        /// 2 - Id яруса (tier)
-        /// 3 - Название
-        /// </summary>
-        public TreeData(String text): this()
+        private const char PATH_SPLITTER = '.';
+        //public String caption;
+        public int BldID;
+        public int TierID;
+        public string Name;
+        public List<TreeData> Childrens;
+        private string _pPath = null;
+        
+        public TreeData(int bldId,int tierId,string name,string pPath): this()
         {
-            caption = text;
+            this.BldID = bldId;
+            this.TierID = tierId;
+            this.Name = name;
+            _pPath = pPath;
+        }
+        public TreeData(int bldId, int tierId, string name) 
+            : this(bldId, tierId, name, null) { }        
+        public TreeData() { }
+
+        public string Path
+        {
+            get
+            {
+                if (_pPath == null) return BldID.ToString();
+                return String.Concat(_pPath, PATH_SPLITTER, BldID.ToString());              
+            }
         }
     }
 

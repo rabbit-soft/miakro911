@@ -17,6 +17,19 @@ namespace db.mysql
                 rd.GetString("r_notes"));
         }
 
+        internal static AdultRabbit fillAdultRabbit(MySqlDataReader rd)
+        {
+            return new AdultRabbit(rd.GetInt32("r_id"), rd.GetString("name"), rd.GetString("r_sex"),
+                rd.IsDBNull(rd.GetOrdinal("r_born")) ? DateTime.MinValue : rd.GetDateTime("r_born"),
+                rd.GetString("breed"), rd.GetInt32("r_group"),
+                rd.GetString("r_bon"), rd.GetString("place"), rd.GetString("r_notes"),
+                rd.GetInt32("r_rate"), rd.GetString("r_flags"), rd.GetInt32("weight"), rd.GetInt32("r_status"),
+                rd.IsDBNull(rd.GetOrdinal("r_event_date")) ? DateTime.MinValue : rd.GetDateTime("r_event_date"),
+                rd.IsDBNull(rd.GetOrdinal("suckers")) ? 0 : rd.GetInt32("suckers"),
+                rd.IsDBNull(rd.GetOrdinal("aage")) ? 0 : rd.GetInt32("aage"),
+                rd.GetString("vaccines"));
+        }
+
         internal static OneRabbit fillOneRabbit(MySqlDataReader rd)
         {
             return new OneRabbit(rd.GetInt32("r_id"), rd.GetString("r_sex"), rd.GetDateTime("r_born"), rd.GetInt32("r_rate"),
@@ -87,8 +100,10 @@ FROM {1:s} WHERE r_id={2:d};", getOneRabbit_FieldsSet(type), (type == RabType.AL
         public static OneRabbit[] getNeighbors(MySqlConnection con, int rabOwner) //TODO не исправлено
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT {0:s}
-FROM rabbits 
-WHERE rabplace(r_id)=rabplace({1:d}) AND r_id!={1:d} AND r_parent=0;",getOneRabbit_FieldsSet(RabType.ALIVE), rabOwner), con);
+FROM rabbits r
+INNER JOIN (SELECT r_farm,r_tier,r_tier_id,r_area FROM rabbits WHERE r_id={1:d}) rp ON rp.r_farm=r.r_farm 
+	AND rp.r_tier=r.r_tier AND rp.r_tier_id=r.r_tier_id AND rp.r_area=r.r_area
+WHERE r_id!={1:d} AND r_parent=0;", getOneRabbit_FieldsSet(RabType.ALIVE), rabOwner), con);
             List<OneRabbit> rbs = new List<OneRabbit>();
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
@@ -556,7 +571,7 @@ WHERE suckers>0 AND ABS(aage-{0:d})<={1:d};
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read()) //TODO проверить
             {
-                rbs.Add(RabbitsDataGetter.fillAdultRabbit(rd));
+                rbs.Add(fillAdultRabbit(rd));
             }
             rd.Close();
             return rbs.ToArray();

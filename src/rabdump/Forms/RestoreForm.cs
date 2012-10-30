@@ -110,8 +110,8 @@ namespace rabdump
 #if PROTECTED ||DEBUG
                 try
                 {
-                    sDump[] dmps = RabServWorker.ReqSender.ExecuteMethod(MethodName.GetDumpList).Value as sDump[];
-                    servDumps = new List<sDump>(dmps);
+                    //sDump[] dmps = RabServWorker.ReqSender.ExecuteMethod(MethodName.GetDumpList).Value as sDump[];
+                    //servDumps = new List<sDump>(dmps);
                 }
                 catch (Exception exc)
                 {

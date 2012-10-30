@@ -56,10 +56,10 @@ namespace rabnet
                 f[Filters.VACC_MOTH] = Engine.opt().getBoolOption(Options.OPT_ID.VACC_MOTHER)?"1":"0";
                 
                 f[Filters.VACC_SHOW] = "";
-                foreach (CatalogData.Row row in Engine.db().getVaccines().Get().Rows)
+                foreach (Vaccine v in Engine.db().GetVaccines())
                 {
-                    if (row.data[4] == "1") //todo опасно vaccines
-                        f[Filters.VACC_SHOW] += String.Format("{0:d},", row.key);
+                    if (v.Zoo) //todo опасно vaccines
+                        f[Filters.VACC_SHOW] += String.Format("{0:d},", v.ID);
                 }
                 f[Filters.VACC_SHOW] = f[Filters.VACC_SHOW].TrimEnd(',');
 
@@ -268,7 +268,7 @@ namespace rabnet
                     res=(new OkrolForm(job.ID)).ShowDialog();
                     break;
 
-                case JobType.VACC:
+                case JobType.VACC://прививка
                     RabNetEngRabbit rab = Engine.get().getRabbit(job.ID);
                     AddRabVacForm dlg = new AddRabVacForm(rab,false,job.ID2);
                     res=dlg.ShowDialog();

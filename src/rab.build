@@ -6,7 +6,7 @@
   <!-- properties defines !-->
 	
 	<property name="version" value="1.0"/>
-	<property name="minver_p" value="5"/>
+	<property name="minver_p" value="6"/>
 	<property name="minver" value="${minver_p}.0"/>
 	<property name="fullver" value="${version}.${minver}"/>
 

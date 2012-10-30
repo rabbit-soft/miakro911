@@ -193,5 +193,77 @@ namespace db.mysql
 			rd.Close();
 			return Dict;
 		}
+
+        /// <summary>
+        /// Получает родословную кролика с заданным rabId
+        /// </summary>
+        /// <param name="rabId">ID кролика</param>
+        /// <param name="con"></param>
+        /// <param name="lineage">Стэк родословной для предотвращения рекурсии</param>
+        /// <returns></returns>
+        private static TreeData getRabbitGen(MySqlConnection con, int rabId, Stack<int> lineage)//, int level)
+        {
+            if (rabId == 0) return null;
+            //проверка на рекурсию, которая могла возникнуть после конвертации из старой mia-файла                        
+            if (lineage.Count > 700)
+            {
+                //_logger.Warn("cnt:" + lineage.Count.ToString() + " we have suspect infinity inheritance loop: " + String.Join(",", Array.ConvertAll<int, string>(lineage.ToArray(), new Converter<int, string>(convIntToString))));
+                return null;
+            }
+            lineage.Push(rabId);
+
+            MySqlCommand cmd = new MySqlCommand(@"SELECT
+                                                    rabname(r_id,1),
+                                                    r_mother,
+                                                    r_father,
+                                                    r_bon,
+                                                    TO_DAYS(NOW())-TO_DAYS(r_born)
+                                                FROM rabbits WHERE r_id=" + rabId.ToString() + " LIMIT 1;", con);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            if (!rd.HasRows)
+            {
+                rd.Close();
+                cmd.CommandText = @"SELECT
+                                        deadname(r_id,1),
+                                        r_mother,
+                                        r_father,
+                                        r_bon,
+                                        TO_DAYS(NOW())-TO_DAYS(r_born)
+                                   FROM dead WHERE r_id=" + rabId.ToString() + " LIMIT 1;";
+                rd = cmd.ExecuteReader();
+            }
+            TreeData res = new TreeData();
+            if (rd.Read())
+            {
+                res.Name = rd.GetString(0) + ", " + rd.GetInt32(4).ToString() + "," + Rabbit.GetFBon(rd.GetString("r_bon"), true);
+                int mom = rd.IsDBNull(1) ? 0 : rd.GetInt32(1);
+                int dad = rd.IsDBNull(2) ? 0 : rd.GetInt32(2);
+                rd.Close();
+                TreeData m = getRabbitGen(con, mom, lineage);
+                TreeData d = getRabbitGen(con, dad, lineage);
+                if (m == null)
+                {
+                    m = d;
+                    d = null;
+                }
+                if (m != null)
+                {
+                    res.Childrens = new List<TreeData>() { m, d };
+                }
+            }
+            rd.Close();
+            return res;
+        }
+
+        public static TreeData GetRabbitGen(MySqlConnection con,int rabbit)//, int level)
+        {
+            Stack<int> lineage = new Stack<int>();
+            return getRabbitGen(con, rabbit, lineage);
+        }
+
+        private static String convIntToString(int i)
+        {
+            return i.ToString();
+        } 
 	}
 }

@@ -14,7 +14,7 @@ namespace rabnet
         /// <summary>
         /// Необходимой  версия БД (options o_name='db',o_subname='version')
         /// </summary>
-        const int NEED_DB_VERSION = 10;
+        const int NEED_DB_VERSION = 11;
         private IRabNetDataLayer data = null;
         private IRabNetDataLayer data2 = null;
         private ILog _logger = null;
@@ -50,19 +50,11 @@ namespace rabnet
             _logger.Debug("initing engine data to " + dbType + " param=" + param);
             if (dbType == "db.mysql")
             {
-                //data = new RabNetDbMySql(param);
-                //data2 = new RabNetDbMySql(param);
                 data = getDataLayer("db.mysql");               
                 data2 = data.Clone();
                 data.Init(param);
                 data2.Init(param);
             }
-            /*
-            else if (dbext == "db.miafile")
-            {
-                data = new RabNetDBMiaFile(param);
-                data2 = data;
-            }*/
             else
             {
                 throw new ExDBDriverNotFoud(dbType);

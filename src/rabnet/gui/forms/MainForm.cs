@@ -378,7 +378,8 @@ namespace rabnet
         private void tsmiVaccines_Click(object sender, EventArgs e)
         {
 #if !DEMO
-            new CatalogForm(CatalogForm.CatalogType.VACCINES).ShowDialog();
+            //new CatalogForm(CatalogForm.CatalogType.VACCINES).ShowDialog();
+            new VaccinesCatalogForm().ShowDialog();
 #else
             DemoErr.DemoNoReportMsg();
 #endif

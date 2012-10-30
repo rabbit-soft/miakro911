@@ -10,6 +10,8 @@ namespace rabnet.components
 {
     public partial class DateDays : UserControl
     {
+        private bool _manual = true;
+
         public enum DDPosition{ALL_UD,LABELS_LR,ALL_LR}
 
         public DateDays()
@@ -31,7 +33,7 @@ namespace rabnet.components
 
         private void reposition()
         {
-            Rectangle r1 = new Rectangle(0,0,label1.Width,label1.Height);
+            Rectangle r1 = new Rectangle(0, 0, label1.Width, label1.Height);
             Rectangle r2 = new Rectangle(0, 0, dateTimePicker1.Width, dateTimePicker1.Height);
             Rectangle r3 = new Rectangle(0, 0, label2.Width, label2.Height);
             Rectangle r4 = new Rectangle(0, 0, numericUpDown1.Width, numericUpDown1.Height);
@@ -78,13 +80,13 @@ namespace rabnet.components
         {
             get { return dateTimePicker1.Value; }
             set {
-                if (value.Date > DateTime.Now.Date)
-                {
-                    MessageBox.Show("Дата не может быть в будущем.");
-                    value = DateTime.Now.Date;
-                }
-                dateTimePicker1.Value = value.Date;
-                dateTimePicker1_ValueChanged(null, null);
+                    if (value.Date > DateTime.Now.Date)
+                    {
+                        MessageBox.Show("Дата не может быть в будущем.");
+                        value = DateTime.Now.Date;
+                    }
+                    dateTimePicker1.Value = value.Date;
+                    dateTimePicker1_ValueChanged(null, null);
                 }
         }
         public int DaysValue
@@ -103,7 +105,11 @@ namespace rabnet.components
         public int Maximum
         {
             get { return (int)numericUpDown1.Maximum; }
-            set { numericUpDown1.Maximum = value; }
+            set 
+            { 
+                numericUpDown1.Maximum = value;
+                dateTimePicker1.MinDate = DateTime.Now.Date.AddDays(-value);
+            }
         }
         public int Step
         {
@@ -113,19 +119,21 @@ namespace rabnet.components
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
+            if (!_manual) return;
+
+            _manual = false;
             numericUpDown1.Value = (DateTime.Now - dateTimePicker1.Value).Days;
+            _manual = true;
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            dateTimePicker1.Value = (DateTime.Now.Subtract(new TimeSpan((int)numericUpDown1.Value, 0, 0, 0))).Date;
+            if (!_manual) return;
+
+            _manual = false;
+            TimeSpan ts = new TimeSpan((int)numericUpDown1.Value, 0, 0, 0);
+            dateTimePicker1.Value = (DateTime.Now.Subtract(ts)).Date;
+            _manual = true;
         }
-/*
-        public new bool Enabled
-        {
-            get { return dateTimePicker1.Enabled; }
-            set { dateTimePicker1.Enabled = numericUpDown1.Enabled = value; }
-        }
- **/
     }
 }

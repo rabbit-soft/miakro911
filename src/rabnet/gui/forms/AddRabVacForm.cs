@@ -10,22 +10,22 @@ namespace rabnet
 {
     public partial class AddRabVacForm : Form
     {
-        private CatalogData _vacc;
+        private List<Vaccine> _vacc;
         private RabNetEngRabbit _rab;
         //private int _forceVacId=-1;
 
         public AddRabVacForm(RabNetEngRabbit rab,bool withChildrens,int forceId)
         {
             InitializeComponent();
-            //_forceVacId = forceId;
+            dateDays1.Maximum = rab.Age;
             chWithChildren.Enabled = withChildrens;
             _rab = rab;
-            _vacc = Engine.db().getVaccines().Get();
+            _vacc = Engine.db().GetVaccines();
             int ind=-1;
-            foreach (CatalogData.Row r in _vacc.Rows)
+            foreach (Vaccine v in _vacc)
             {              
-                cbVaccineType.Items.Add(r.data[1]);
-                if (forceId != -1 && r.key == forceId)
+                cbVaccineType.Items.Add(v.Name);
+                if (forceId != -1 && v.ID == forceId)
                     ind=cbVaccineType.Items.Count-1;
             }
             if (forceId != -1)
@@ -36,7 +36,7 @@ namespace rabnet
         }
         public AddRabVacForm(RabNetEngRabbit rab):this(rab,true,-1) { }
 
-        public int VacID { get { return _vacc.Rows[cbVaccineType.SelectedIndex].key; } }
+        public int VacID { get { return _vacc[cbVaccineType.SelectedIndex].ID; } }
         public bool VacChildren { get { return chWithChildren.Checked; } }
 
         private void cbVaccineType_SelectedIndexChanged(object sender, EventArgs e)

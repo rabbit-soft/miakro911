@@ -98,9 +98,9 @@
     <Compile Include="Building.cs" />
     <Compile Include="Butcher.cs" />
     <Compile Include="CatalogData\Catalogs.cs" />
-    <Compile Include="CatalogData\Vaccines.cs" />
     <Compile Include="RabbitGetter.cs" />
     <Compile Include="RabbitsDataGetter.cs" />
+    <Compile Include="Vaccines.cs" />
     <Compile Include="WebReports.cs" />
     <Compile Include="Meal.cs" />
     <Compile Include="CatalogData\Products.cs" />

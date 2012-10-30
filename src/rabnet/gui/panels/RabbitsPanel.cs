@@ -87,12 +87,12 @@ namespace rabnet
 
         private void insertNode(TreeNode nd,TreeData data)
         {
-            if (data.items!=null)
-            for (int i = 0; i < data.items.Length; i++)
-                if (data.items[i] != null)
+            if (data.Childrens!=null)
+            for (int i = 0; i < data.Childrens.Count; i++)
+                if (data.Childrens[i] != null)
                 {
-                    TreeNode n = nd.Nodes.Add(data.items[i].caption);
-                    insertNode(n, data.items[i]);
+                    TreeNode n = nd.Nodes.Add(data.Childrens[i].Name);
+                    insertNode(n, data.Childrens[i]);
                 }
         }
 
@@ -145,9 +145,9 @@ namespace rabnet
             while (genTree.Nodes.Count > gentree)
                 genTree.Nodes.RemoveAt(gentree);
             TreeData dt = Engine.db().rabbitGenTree((int)listView1.SelectedItems[0].Tag);
-            if (dt != null && dt.caption != null)
+            if (dt != null && dt.Name != null)
             {
-                TreeNode tn = genTree.Nodes.Insert(0, dt.caption);
+                TreeNode tn = genTree.Nodes.Insert(0, dt.Name);
                 tn.ForeColor = Color.Blue;
                 insertNode(tn, dt);
                 tn.ExpandAll();
