@@ -384,11 +384,13 @@ ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;",
       WHERE rv.v_id=v.v_id AND rv.r_id=rb.r_id AND unabled!=1       #если ее сделали кролику
         AND CAST(v.v_duration as SIGNED)-CAST(to_days(NOW())-to_days(date) AS SIGNED)>0     #и она еще не кончилась
     ) dt, 
+    (SELECT COUNT(*) FROM rab_vac rv WHERE rv.v_id=v.v_id AND rv.r_id=rb.r_id) times,
     v_age, 
+    v_do_times,
     v_name, {1:s}
   FROM rabbits rb,vaccines v WHERE v_id in({2:s});
 {3:s}
-SELECT * FROM aaa WHERE age>=v_age AND dt is NULL AND srok IS NOT NULL AND srok>=0 {4:s} ORDER BY srok;
+SELECT * FROM aaa WHERE age>=v_age AND dt is NULL AND srok IS NOT NULL AND srok>=0 AND (v_do_times=0 OR (times<v_do_times)) {4:s} ORDER BY srok;
 DROP TEMPORARY TABLE IF EXISTS aaa; {5:s}", getnm(), brd(), show,
     _flt.safeBool(Filters.VACC_MOTH, true) ? "CREATE TEMPORARY TABLE bbb SELECT DISTINCT r_parent FROM aaa WHERE r_parent !=0;" : "",
     _flt.safeBool(Filters.VACC_MOTH, true) ? "AND r_id not in (select r_parent FROM bbb)" : "",

@@ -59,7 +59,7 @@ namespace db.mysql
         {
             try
             {
-                bool shr = options.safeBool("shr");
+                bool shr = options.safeBool(Filters.SHORT);
                 return GetBuilding(rd, shr,true);
             }
             catch (Exception ex)
@@ -70,8 +70,7 @@ namespace db.mysql
         }
 
         internal String makeWhere()
-        {
-            
+        {            
             String res = "";
             if (options.ContainsKey("frm"))
             {               
@@ -126,15 +125,13 @@ namespace db.mysql
         /// <returns>Возвращает запрос, который выполняется объектом класса RabNetDataGetterBase.</returns>
         public override string getQuery()
         {
-            string nm = "1";
-            if (options.safeBool("dbl"))
-                nm = "2";
-            return @"SELECT t_id,m_upper,m_lower,m_id,t_type,t_delims,t_nest,t_heater,
+            int nm = options.safeBool(Filters.DBL_SURNAME) ? 2 : 1;
+            return String.Format(@"SELECT t_id,m_upper,m_lower,m_id,t_type,t_delims,t_nest,t_heater,
 t_repair,
 t_notes,
 t_busy1,t_busy2,t_busy3,t_busy4,
-rabname(t_busy1," + nm + @") r1, rabname(t_busy2," + nm + @") r2,rabname(t_busy3," + nm + @") r3,rabname(t_busy4," + nm + @") r4
-FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) "+makeWhere()+"ORDER BY m_id;";
+rabname(t_busy1,{0:d}) r1, rabname(t_busy2,{0:d}) r2,rabname(t_busy3,{0:d}) r3,rabname(t_busy4,{0:d}) r4
+FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) {1:s} ORDER BY m_id;",nm,makeWhere());
         }
 
         public override string countQuery()
@@ -234,8 +231,7 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 AND "+busy+" ORDER BY m_id;"
         /// <param name="name">Имя ветки</param>
         /// <param name="farm">Номер фермы</param>
         internal static void addBuilding(MySqlConnection sql, int parent, String name,int farm)
-        {
-            
+        {           
             int frm = farm;
             MySqlCommand cmd = new MySqlCommand(String.Format(@"INSERT INTO buildings(b_name,b_parent,b_level,b_farm) VALUES(
 '{0:s}',{1:d},{3:s},{2:d});",name,parent,frm,(parent==0?"0":String.Format("(SELECT b2.b_level+1 FROM buildings b2 WHERE b2.b_id={0:d})",parent))), sql);
@@ -380,7 +376,7 @@ t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}'{4:s} WHERE t_id={3:d};", type, 
         }
 
         /// <param name="count">Сколько клеток доступны для заселения</param>
-        internal static string getBusyString(byte count)
+        private static string getBusyString(byte count)
         {
             string result ="";
             for (int i = 1; i <= 4;i++ )

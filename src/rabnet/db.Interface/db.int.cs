@@ -149,8 +149,9 @@ namespace rabnet
 
         RabVac[] GetRabVac(int rabId);
         List<Vaccine> GetVaccines();
-        int AddVaccine(string name, int duration, int age, int after, bool zoo);
-        void EditVaccine(int id, string name, int duration, int age, int after, bool zoo);
+        Vaccine GetVaccine(int vid);
+        int AddVaccine(string name, int duration, int age, int after, bool zoo,int times);
+        void EditVaccine(int id, string name, int duration, int age, int after, bool zoo,int times);
 
         void addWeight(int rabbit, int weight, DateTime date);
         void deleteWeight(int rabbit, DateTime date);

@@ -385,14 +385,18 @@ namespace rabnet
         /// <param name="when">Дата установки прохолоста</param>
         public void ProholostIt(DateTime when)
         {
-            if (Sex != Rabbit.SexType.FEMALE)
-                throw new ExNotFemale(this);
-            if (EventDate == DateTime.MinValue)
-                throw new ExNotFucked(this);
-            if (when > DateTime.Now)
-                throw new ExBadDate(when);
+            if (Sex != Rabbit.SexType.FEMALE) throw new ExNotFemale(this);
+            if (EventDate == DateTime.MinValue) throw new ExNotFucked(this);
+            if (when > DateTime.Now) throw new ExBadDate(when);
+
             _eng.logs().log(RabNetLogs.LogType.PROHOLOST, RabID);
             _eng.db().makeProholost(this._id, when);
+            if(_eng.options().getBoolOption(Options.OPT_ID.NEST_OUT_IF_PROHOLOST))
+            {
+                //todo пиздец и говнокод и опасно но...
+                RabNetEngBuilding rnd = RabNetEngBuilding.FromPlace(_rab.RawAddress, _eng);
+                rnd.RabbitNestOut(_rab.ID);
+            }
         }
         
         /// <summary>
@@ -550,7 +554,8 @@ namespace rabnet
         public void SetVaccine(int vid, DateTime date, bool withChildrens)
         {
             _eng.db().SetRabbitVaccine(_id,vid,date);
-            _eng.logs().log(RabNetLogs.LogType.VACCINE, RabID, 0, SmallAddress, "", "v"+vid);
+            Vaccine v =_eng.db().GetVaccine(vid);
+            _eng.logs().log(RabNetLogs.LogType.VACCINE, RabID, 0, SmallAddress, "", v.Name);
             if (withChildrens)
             {
                 foreach (YoungRabbit r in Youngers)

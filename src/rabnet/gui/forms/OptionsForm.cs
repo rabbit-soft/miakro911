@@ -18,7 +18,7 @@ namespace rabnet
             [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
             private int ok,_nout,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,gt,n,cn,tt,cand,bbone;
             private string gd, sh,xf;
-            private RUBOOL ce, ck,crp, uz,sp,ask, fbz,vIs,vacMoth;
+            private RUBOOL ce, ck,crp, uz,sp,ask, fbz,vIs,vacMoth, _nestOut_proholost;
             private BuchTp bt;
 
             #region zooTime
@@ -28,6 +28,9 @@ namespace rabnet
             [Category("Зоотехнические сроки"),DisplayName("Выдворение"),
             Description("Назначать Удаление родильного ящика из клетки, где гнездовые крольчата достигли указанного возраста.")]
             public int NestOut { get { return _nout; } set { _nout = value; } }
+            [Category("Зоотехнические сроки"), DisplayName("Выдворение при прохолосте"),
+            Description("При прохолсте крольчихи, удалять окрольный ящик из клетки, в которой сидит крольчиха.")]
+            public RUBOOL NestOutIfProholost { get { return _nestOut_proholost; } set { _nestOut_proholost = value; } }
             [Category("Зоотехнические сроки"), DisplayName("Выдворение при сукрольной"),
             Description("Назначать Выдворение даже если крольчиха сукрольна")]
             public RUBOOL NestOutIfSukrol { get { return vIs; } set { vIs = value; } }
@@ -196,6 +199,7 @@ namespace rabnet
                 Okrol=o.getIntOption(Options.OPT_ID.OKROL);
                 NestOut = o.getIntOption(Options.OPT_ID.NEST_OUT);
                 NestOutIfSukrol = toR(o.getIntOption(Options.OPT_ID.NEST_OUT_IF_SUKROL));
+                NestOutIfProholost = toR(o.getIntOption(Options.OPT_ID.NEST_OUT_IF_PROHOLOST));
                 Count1 = o.getIntOption(Options.OPT_ID.COUNT1);
                 Count2 = o.getIntOption(Options.OPT_ID.COUNT2);
                 Count3 = o.getIntOption(Options.OPT_ID.COUNT3);
@@ -207,11 +211,8 @@ namespace rabnet
                 StateFuck = o.getIntOption(Options.OPT_ID.STATE_FUCK);
                 FirstFuck = o.getIntOption(Options.OPT_ID.FIRST_FUCK);
                 MaleWait = o.getIntOption(Options.OPT_ID.MALE_WAIT);
-                //Vacc = o.getIntOption(Options.OPT_ID.VACC);
-                //suck = o.getIntOption(Options.OPT_ID.COUNT_SUCKERS);
                 NestIn = o.getIntOption(Options.OPT_ID.NEST_IN);
                 ChildNest = o.getIntOption(Options.OPT_ID.CHILD_NEST);
-                //VaccineTime = o.getIntOption(Options.OPT_ID.VACCINE_TIME);
                 VaccWithMother = toR(o.getBoolOption(Options.OPT_ID.VACC_MOTHER));
                 Candidate = o.getIntOption(Options.OPT_ID.MAKE_CANDIDATE);
                 bbone = o.getIntOption(Options.OPT_ID.BOYS_BY_ONE);
@@ -245,6 +246,7 @@ namespace rabnet
                 o.setOption(Options.OPT_ID.OKROL, Okrol);
                 o.setOption(Options.OPT_ID.NEST_OUT, NestOut);
                 o.setOption(Options.OPT_ID.NEST_OUT_IF_SUKROL, fromR(NestOutIfSukrol));
+                o.setOption(Options.OPT_ID.NEST_OUT_IF_PROHOLOST, fromR(NestOutIfProholost));
                 o.setOption(Options.OPT_ID.COUNT1, Count1);
                 o.setOption(Options.OPT_ID.COUNT2, Count2);
                 o.setOption(Options.OPT_ID.COUNT3, Count3);

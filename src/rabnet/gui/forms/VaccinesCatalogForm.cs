@@ -16,6 +16,7 @@ namespace rabnet
         private const int FIELD_AGE = 3;
         private const int FIELD_AFTER = 4;
         private const int FIELD_ZOO = 5;
+        private const int FIELD_TIMES = 6;
         /// <summary>
         /// Вносятся ли изменения пользователем
         /// </summary>
@@ -52,6 +53,7 @@ namespace rabnet
                 dataGridView1.Rows[rowNumber].Cells[FIELD_AGE].Value = v.Age;
                 dataGridView1.Rows[rowNumber].Cells[FIELD_AFTER].Value = chAfter.Items[v.After];
                 dataGridView1.Rows[rowNumber].Cells[FIELD_ZOO].Value = v.Zoo;
+                dataGridView1.Rows[rowNumber].Cells[FIELD_TIMES].Value = v.DoTimes==1;
                 dataGridView1.Rows[rowNumber].Tag = v;
             }
 
@@ -60,7 +62,7 @@ namespace rabnet
 
         private void dataGridView1_CurrentCellDirtyStateChanged(object sender, EventArgs e)
         {
-            if (dataGridView1.CurrentCell.ColumnIndex == FIELD_ZOO)
+            if (dataGridView1.CurrentCell.ColumnIndex == FIELD_ZOO||dataGridView1.CurrentCell.ColumnIndex ==FIELD_TIMES)
             {
                 _manual = false;
                 dataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);
@@ -75,7 +77,7 @@ namespace rabnet
             DataGridViewRow editRow = dataGridView1.Rows[e.RowIndex];
 
             string name = "";
-            int duration = 0, age = 0, after = 0;
+            int duration = 0, age = 0, after = 0,times=0;
             bool zoo = false;
 
             if (editRow.Cells[FIELD_NAME].Value != null)
@@ -92,15 +94,17 @@ namespace rabnet
 
             if (editRow.Cells[FIELD_ZOO].Value != null)
                 zoo = (bool)editRow.Cells[FIELD_ZOO].Value;
+            if (editRow.Cells[FIELD_TIMES].Value != null)
+                times = (bool)editRow.Cells[FIELD_TIMES].Value ?1:0;
 
             if (editRow.Cells[FIELD_ID].Value == null)
             {
-                editRow.Cells[FIELD_ID].Value = Engine.db().AddVaccine(name, duration, age, after, zoo);
+                editRow.Cells[FIELD_ID].Value = Engine.db().AddVaccine(name, duration, age, after, zoo,times);
                 fillTable();
             }
             else
             {
-                Engine.db().EditVaccine(Convert.ToInt32(editRow.Cells[FIELD_ID].Value), name, duration, age, after, zoo);
+                Engine.db().EditVaccine(Convert.ToInt32(editRow.Cells[FIELD_ID].Value), name, duration, age, after, zoo,times);
                 dataGridView1.Refresh();
             }
         }

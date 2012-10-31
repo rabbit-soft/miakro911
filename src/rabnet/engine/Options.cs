@@ -30,6 +30,7 @@ namespace rabnet
             /// </summary>
             NEST_OUT,
             NEST_OUT_IF_SUKROL,
+            NEST_OUT_IF_PROHOLOST,
             /// <summary>
             /// Установка гнездовья
             /// </summary>
@@ -83,6 +84,7 @@ namespace rabnet
                                    new Option(OPT_ID.OKROL,OPT_LEVEL.FARM,"okrol"), 
                                    new Option(OPT_ID.NEST_OUT,OPT_LEVEL.FARM,"vudvor"),
                                    new Option(OPT_ID.NEST_OUT_IF_SUKROL,OPT_LEVEL.FARM,"vudvor_if_sukrol"),
+                                   new Option(OPT_ID.NEST_OUT_IF_PROHOLOST,OPT_LEVEL.FARM,"vudvor_if_proholost"),
                                    new Option(OPT_ID.COUNT1,OPT_LEVEL.FARM,"count1"), 
                                    new Option(OPT_ID.COUNT2,OPT_LEVEL.FARM,"count2"), 
                                    new Option(OPT_ID.COUNT3,OPT_LEVEL.FARM,"count3"), 
@@ -97,12 +99,10 @@ namespace rabnet
                                    new Option(OPT_ID.FIRST_FUCK,OPT_LEVEL.FARM,"firstfuck"), 
                                    new Option(OPT_ID.MALE_WAIT,OPT_LEVEL.FARM,"malewait"), 
                                    new Option(OPT_ID.GEN_TREE,OPT_LEVEL.USER,"gentree"), 
-                                   new Option(OPT_ID.CONFIRM_EXIT,OPT_LEVEL.USER,"confirmexit"), 
-                                   //new Option(OPT_ID.VACC,OPT_LEVEL.FARM,"vacc"),
+                                   new Option(OPT_ID.CONFIRM_EXIT,OPT_LEVEL.USER,"confirmexit"),
                                    new Option(OPT_ID.VACC_MOTHER,OPT_LEVEL.FARM,"vacc_moth"), 
                                    new Option(OPT_ID.CONFIRM_KILL,OPT_LEVEL.USER,"confirmkill"), 
                                    new Option(OPT_ID.CONFIRM_REPLACE,OPT_LEVEL.USER,"confirmreplace"),
-                                   //new Option(OPT_ID.COUNT_SUCKERS,OPT_LEVEL.FARM,"suckers"), 
                                    new Option(OPT_ID.NEST_IN,OPT_LEVEL.FARM,"nest"), 
                                    new Option(OPT_ID.CHILD_NEST,OPT_LEVEL.FARM,"childnest"),                                    
                                    new Option(OPT_ID.UPDATE_ZOO,OPT_LEVEL.USER,"updatezoo"), 
@@ -126,8 +126,7 @@ namespace rabnet
                                    new Option(OPT_ID.DEAD_LIST,OPT_LEVEL.USER,"deadlist"), 
                                    new Option(OPT_ID.REPL_YOUNG_LIST,OPT_LEVEL.USER,"ryounglist"), 
                                    new Option(OPT_ID.MAKE_FUCK_LIST,OPT_LEVEL.USER,"mfucklist"), 
-                                   new Option(OPT_ID.NAMES_LIST,OPT_LEVEL.USER,"namelist"), 
-                                   //new Option(OPT_ID.REPLACE_LIST,OPT_LEVEL.USER,"replacelist"), 
+                                   new Option(OPT_ID.NAMES_LIST,OPT_LEVEL.USER,"namelist"),
 
                                    new Option(OPT_ID.FS_REPLACE,OPT_LEVEL.USER,"fs_replace"),
                                    new Option(OPT_ID.FS_KILL,OPT_LEVEL.USER,"fs_kill"),

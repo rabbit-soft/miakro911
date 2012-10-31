@@ -160,8 +160,8 @@ namespace rabnet
             manual = true;
             //n.Tag = new int[] { 0, 0 };//"0:0";
             n.Expand();
-            f["shr"] = Engine.opt().getOption(Options.OPT_ID.SHORT_NAMES);
-            f["dbl"] = Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
+            f[Filters.SHORT] = Engine.opt().getOption(Options.OPT_ID.SHORT_NAMES);
+            f[Filters.DBL_SURNAME] = Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
             colSort.Prepare();
             IDataGetter dg = DataThread.db().getBuildings(f);
             _rsb.setText(1, dg.getCount().ToString() + " МИНИфермы");

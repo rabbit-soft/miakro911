@@ -545,15 +545,23 @@ namespace db.mysql
         {
             return new Vaccines(sql).Get();
         }
-
-        public int AddVaccine(string name, int duration, int age, int after, bool zoo)
+        public Vaccine GetVaccine(int vid)
         {
-            return new Vaccines(sql).Add(name, duration, age, after, zoo);
+            List<Vaccine> vaccs = new Vaccines(sql).Get();
+            foreach (Vaccine v in vaccs)
+                if (v.ID == vid)
+                    return v;
+            return null;
         }
 
-        public void EditVaccine(int id, string name, int duration, int age, int after, bool zoo)
+        public int AddVaccine(string name, int duration, int age, int after, bool zoo, int times)
         {
-            new Vaccines(sql).Edit(id, name, duration, age, after, zoo);
+            return new Vaccines(sql).Add(name, duration, age, after, zoo, times);
+        }
+
+        public void EditVaccine(int id, string name, int duration, int age, int after, bool zoo, int times)
+        {
+            new Vaccines(sql).Edit(id, name, duration, age, after, zoo, times);
         }
 #endregion vaccines
 

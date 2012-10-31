@@ -30,8 +30,6 @@
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btAddRow = new System.Windows.Forms.Button();
-            this.chAfter = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.chZoo = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -40,6 +38,9 @@
             this.chName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.chAge = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.chDuration = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.chAfter = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.chZoo = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.chDoOnce = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -57,18 +58,20 @@
             this.chAge,
             this.chDuration,
             this.chAfter,
-            this.chZoo});
+            this.chZoo,
+            this.chDoOnce});
             this.dataGridView1.Location = new System.Drawing.Point(12, 12);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(560, 309);
+            this.dataGridView1.Size = new System.Drawing.Size(600, 309);
             this.dataGridView1.TabIndex = 1;
             this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
             this.dataGridView1.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridView1_CurrentCellDirtyStateChanged);
             // 
             // btAddRow
             // 
+            this.btAddRow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btAddRow.Location = new System.Drawing.Point(12, 327);
             this.btAddRow.Name = "btAddRow";
             this.btAddRow.Size = new System.Drawing.Size(115, 23);
@@ -76,19 +79,6 @@
             this.btAddRow.Text = "Добавить новую";
             this.btAddRow.UseVisualStyleBackColor = true;
             this.btAddRow.Click += new System.EventHandler(this.btAddRow_Click);
-            // 
-            // chAfter
-            // 
-            this.chAfter.HeaderText = "После";
-            this.chAfter.Name = "chAfter";
-            this.chAfter.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.chAfter.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // chZoo
-            // 
-            this.chZoo.HeaderText = "Назначать в ЗооТехПлане";
-            this.chZoo.Name = "chZoo";
-            this.chZoo.Width = 80;
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -140,11 +130,30 @@
             this.chDuration.Name = "chDuration";
             this.chDuration.Width = 110;
             // 
+            // chAfter
+            // 
+            this.chAfter.HeaderText = "После";
+            this.chAfter.Name = "chAfter";
+            this.chAfter.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.chAfter.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // chZoo
+            // 
+            this.chZoo.HeaderText = "Назначать в ЗооТехПлане";
+            this.chZoo.Name = "chZoo";
+            this.chZoo.Width = 80;
+            // 
+            // chDoOnce
+            // 
+            this.chDoOnce.HeaderText = "Назначать единожды";
+            this.chDoOnce.Name = "chDoOnce";
+            this.chDoOnce.Width = 80;
+            // 
             // VaccinesCatalogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 362);
+            this.ClientSize = new System.Drawing.Size(624, 362);
             this.Controls.Add(this.btAddRow);
             this.Controls.Add(this.dataGridView1);
             this.Name = "VaccinesCatalogForm";
@@ -169,5 +178,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn chDuration;
         private System.Windows.Forms.DataGridViewComboBoxColumn chAfter;
         private System.Windows.Forms.DataGridViewCheckBoxColumn chZoo;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn chDoOnce;
     }
 }

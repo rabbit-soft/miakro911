@@ -146,7 +146,7 @@ namespace rabnet
 
         public RabNetEngBuilding getBuilding(string place)
         {
-            return RabNetEngBuilding.fromPlace(place, this);
+            return RabNetEngBuilding.FromPlace(place, this);
         }
 
         /// <summary>

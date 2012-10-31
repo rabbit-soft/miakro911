@@ -41,7 +41,11 @@ rabplace(r_id) place,
 r_notes,
 r_born,
 r_breed,
-Coalesce((SELECT GROUP_CONCAT('v',v_id ORDER BY v_id) FROM rab_vac rv WHERE rv.r_id=r.r_id ),'') vaccines
+Coalesce((
+    SELECT GROUP_CONCAT('v',rv.v_id ORDER BY rv.v_id)      
+    FROM rab_vac rv 
+    INNER JOIN vaccines v1 ON v1.v_id=rv.v_id
+    WHERE rv.r_id=r.r_id AND unabled!=1 AND (Date_Add(rv.`date`,INTERVAL v1.v_duration DAY)>=NOW())),'') vaccines
 FROM rabbits r WHERE r_parent=0 ORDER BY name) c {2:s};", (options.safeBool("dbl") ? "2" : "1"), fld, makeWhere());
         }
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace rabnet
 {
-    public class RabNetEngBuilding
+    public class RabNetEngBuilding 
     {
         public class ExBadBuildingType : ApplicationException
         {
@@ -18,13 +18,14 @@ namespace rabnet
         private int id = 0;
         private Building b;
         private RabNetEngine eng;
+
         public RabNetEngBuilding(int tid,RabNetEngine eng)
         {
             this.id=tid;
             this.eng = eng;
             b = eng.db().getBuilding(id);
         }
-        public static RabNetEngBuilding fromPlace(string place,RabNetEngine eng)
+        public static RabNetEngBuilding FromPlace(string place,RabNetEngine eng)
         {
             String[] p = place.Split(',');
             int[] tiers = eng.db().getTiers(int.Parse(p[0]));
@@ -132,5 +133,28 @@ namespace rabnet
 
         public string type { get { return b.TypeName; } }
 
+        /// <summary>
+        /// Удаляет гнездовье там где сидит кролик
+        /// </summary>
+        /// <param name="rId"></param>
+        public void RabbitNestOut(int rId)
+        {
+            int ind = -1;
+            for (int i = 0; i < b.Busy.Length;i++ )          
+                if (b.Busy[i] == rId)
+                {
+                    ind = i;
+                    break;
+                }
+            if (ind == -1 || ind>=b.Nests.Length) return;
+
+            if (b.Nests[ind] == '1')
+            {
+                if (ind == 0)
+                    setNest(false);
+                else if (ind == 1)
+                    setNest2(false);
+            }           
+        }
     }
 }

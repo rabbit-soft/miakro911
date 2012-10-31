@@ -12,8 +12,9 @@ namespace rabnet
         public int Age = 0;
         public int After = 0;
         public bool Zoo = true;
+        public int DoTimes = 0;
 
-        public Vaccine(int id,string name,int duration,int age,int after,bool zoo)
+        public Vaccine(int id,string name,int duration,int age,int after,bool zoo,int times)
         {
             this.ID = id;
             this.Name = name;
@@ -21,6 +22,7 @@ namespace rabnet
             this.Age = age;
             this.After = after;
             this.Zoo = zoo;
+            this.DoTimes = times;
         }
     }
 }

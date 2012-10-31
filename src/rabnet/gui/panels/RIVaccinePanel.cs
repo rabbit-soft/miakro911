@@ -29,7 +29,7 @@ namespace rabnet.panels.RabInfoPanels
             foreach (RabVac rv in _rab.Vaccines)
             {
                 ListViewItem lvi = lvVaccine.Items.Add(rv.date.ToShortDateString());
-                lvi.SubItems.Add(rv.name);
+                lvi.SubItems.Add(String.Format("{0:d}:{1:s}",rv.vid,rv.name));
                 lvi.SubItems.Add(rv.remains.ToString());
                 lvi.SubItems.Add(rv.unabled?"ДА":"-");
             }
