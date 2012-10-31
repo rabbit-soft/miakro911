@@ -366,7 +366,7 @@ ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;",
 
         private string qVacc()
         {
-            string show = _flt.safeValue(Filters.VACC_SHOW, "1")!="" ?_flt.safeValue(Filters.VACC_SHOW, "1"):"1";
+            string show = _flt.safeValue(Filters.VACC_SHOW, "1") != "" ? _flt.safeValue(Filters.VACC_SHOW, "1") : "1";
             return String.Format(@"CREATE TEMPORARY TABLE aaa  SELECT 
     rb.r_id, r_parent,rabname(r_id,{0:s}) name, rabplace(r_id) place, (TO_DAYS(NOW())-TO_DAYS(r_born)) age, v.v_id, r_group,
     to_days(NOW()) - to_days(

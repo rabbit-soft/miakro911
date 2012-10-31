@@ -1,10 +1,10 @@
 ﻿DROP TABLE IF EXISTS users;
 CREATE TABLE users(
-u_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-u_name VARCHAR(50),
-u_password VARCHAR(50),
-u_group enum('worker','admin','zootech','butcher') NOT NULL DEFAULT 'admin',
-KEY(u_name)
+	u_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	u_name VARCHAR(50),
+	u_password VARCHAR(50),
+	u_group enum('worker','admin','zootech','butcher') NOT NULL DEFAULT 'admin',
+	KEY(u_name)
 );
 
 DROP TABLE IF EXISTS options;
@@ -329,11 +329,9 @@ DROP TABLE IF EXISTS `rab_vac`;
 CREATE  TABLE `rab_vac` (
   `r_id` INT UNSIGNED NOT NULL ,
   `v_id` INT UNSIGNED NOT NULL COMMENT 'Тип прививки' ,
-  `date` DATETIME NULL COMMENT 'Когда была сделана прививка',
+  `date` DATE NULL COMMENT 'Когда была сделана прививка',
   `unabled` BIT NOT NULL DEFAULT 0 COMMENT 'Отменена ли прививка'
 )ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COMMENT = 'Какие прививки делались кролику';
-
-
 
 #DATA
 

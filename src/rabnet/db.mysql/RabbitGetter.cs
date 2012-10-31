@@ -340,23 +340,26 @@ WHERE r_id={4:d};", farm, tier_id, sec, ntr, rabbit);
             cmd.ExecuteNonQuery();
         }
 
-        public static int cloneRabbit(MySqlConnection sql, int rabbit, int count, int farm, int tier_id, int sec, Rabbit.SexType sex, int mom)
+        public static int cloneRabbit(MySqlConnection sql, int rabFromID, int count, int farm, int tier_id, int sec, Rabbit.SexType sex, int mom)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"INSERT INTO rabbits
 (r_parent,r_father,r_mother,r_name,r_surname,r_secname,r_sex,r_bon,r_okrol,r_breed,r_rate,r_group,
 r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date,r_notes) 
 SELECT {1:d},r_father,r_mother,0,r_surname,r_secname,r_sex,r_bon,r_okrol,r_breed,r_rate,{2:d},
 r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date,r_notes
-FROM rabbits WHERE r_id={0:d};", rabbit, mom, count), sql);
+FROM rabbits WHERE r_id={0:d};", rabFromID, mom, count), sql);
             cmd.ExecuteNonQuery();
-            int nid = (int)cmd.LastInsertedId;
-            cmd.CommandText = String.Format("UPDATE rabbits SET r_group=r_group-{0:d} WHERE r_id={1:d};", count, rabbit);
+            int cloneID = (int)cmd.LastInsertedId;
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_group=r_group-{0:d} WHERE r_id={1:d};", count, rabFromID);
+            cmd.ExecuteNonQuery();
+            //клонируем прививки
+            cmd.CommandText = String.Format("INSERT INTO rab_vac(r_id,v_id,`date`,unabled) SELECT {0:d},v_id,`date`,unabled FROM rab_vac WHERE r_id={1:d};",cloneID,rabFromID);
             cmd.ExecuteNonQuery();
             if (sex != Rabbit.SexType.VOID)
-                setRabbitSex(sql, rabbit, sex);
+                setRabbitSex(sql, rabFromID, sex);
             if (mom == 0 && farm != 0)
-                placeRabbit(sql, nid, farm, tier_id, sec);
-            return nid;
+                placeRabbit(sql, cloneID, farm, tier_id, sec);
+            return cloneID;
         }
 
         public static void replaceRabbit(MySqlConnection sql, int rabbit, int farm, int tier_id, int sec)
@@ -676,7 +679,7 @@ WHERE r_id={0:d} ORDER BY date", rabId), sql);
 
         internal static void SetRabbitVaccine(MySqlConnection sql, int rid, int vid, DateTime date)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO rab_vac(r_id,v_id,date) VALUES({0:d},{1:d},{2:s});", rid, vid, DBHelper.DateToMyString(date)), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO rab_vac(r_id,v_id,`date`) VALUES({0:d},{1:d},{2:s});", rid, vid, DBHelper.DateToMyString(date)), sql);
             cmd.ExecuteNonQuery();
         }
 
