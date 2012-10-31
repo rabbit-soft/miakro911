@@ -115,12 +115,16 @@ namespace rabnet
 
         private void btAddRow_Click(object sender, EventArgs e)
         {
+#if !DEMO
             _manual = false;
             int rind = dataGridView1.Rows.Add();
             dataGridView1.Rows[rind].Cells[FIELD_DURA].Value = 180;
             dataGridView1.Rows[rind].Cells[FIELD_AGE].Value = 45;
             dataGridView1.Rows[rind].Cells[FIELD_AFTER].Value = chAfter.Items[0];
             _manual = true;
+#else
+            DemoErr.DemoNoModuleMsg();
+#endif
         }
     }
 }
