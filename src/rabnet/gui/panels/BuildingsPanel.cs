@@ -445,7 +445,7 @@ namespace rabnet
                 }
             }
             if(f.ShowDialog() == DialogResult.OK)
-                _rsb.run();
+                _rsb.Run();
         }
 
         private void replaceMenuItem_Click(object sender, EventArgs e)
@@ -466,7 +466,7 @@ namespace rabnet
                 }
             }
             if(f.ShowDialog() == DialogResult.OK)
-                _rsb.run();
+                _rsb.Run();
         }
 
         private bool isFarm(TreeNode tn) { return farmNum(tn) != 0; }
@@ -509,7 +509,7 @@ namespace rabnet
                 int bid = buildNum(child);
                 int to = buildNum(newpar);
                 Engine.db().replaceBuilding(bid, to);
-                _rsb.run();
+                _rsb.Run();
             }
         }
 
@@ -579,7 +579,7 @@ namespace rabnet
                     {
                         preBuilding = buildNum(sNode.Parent);
                         Engine.db().deleteFarm(farmNum());
-                        _rsb.run();
+                        _rsb.Run();
                     }
                 }
                 else
@@ -593,7 +593,7 @@ namespace rabnet
                 {
                     preBuilding = buildNum(sNode.Parent);
                     Engine.db().deleteBuilding(buildNum());
-                    _rsb.run();
+                    _rsb.Run();
                 }
             }
         }
@@ -618,7 +618,7 @@ namespace rabnet
         private void timer1_Tick(object sender, EventArgs e)
         {
             timer1.Stop();
-            _rsb.run();
+            _rsb.Run();
         }
 
         private void treeView1_Enter(object sender, EventArgs e)
@@ -647,7 +647,7 @@ namespace rabnet
                 return;
             }
             if(new MiniFarmForm(buildNum(), nofarms.ToArray()).ShowDialog() == DialogResult.OK)
-                _rsb.run();
+                _rsb.Run();
         }
 
         private void changeFarmMenuItem_Click(object sender, EventArgs e)
@@ -656,7 +656,7 @@ namespace rabnet
             if (!isFarm()) return;
             int fid = farmNum();
             MainForm.ProtectTest(Engine.db().getMFCount());
-            if (new MiniFarmForm(fid).ShowDialog() == DialogResult.OK) _rsb.run();
+            if (new MiniFarmForm(fid).ShowDialog() == DialogResult.OK) _rsb.Run();
         }
 
         private XmlDocument getBuildDoc(int bid)

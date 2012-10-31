@@ -12,8 +12,8 @@ namespace rabnet
     {
         private const int FIELD_ID = 0;
         private const int FIELD_NAME = 1;
-        private const int FIELD_DURA = 2;
-        private const int FIELD_AGE = 3;
+        private const int FIELD_AGE = 2;
+        private const int FIELD_DURA = 3;       
         private const int FIELD_AFTER = 4;
         private const int FIELD_ZOO = 5;
         private const int FIELD_TIMES = 6;
@@ -49,8 +49,8 @@ namespace rabnet
                 int rowNumber = dataGridView1.Rows.Add();
                 dataGridView1.Rows[rowNumber].Cells[FIELD_ID].Value = v.ID;
                 dataGridView1.Rows[rowNumber].Cells[FIELD_NAME].Value = v.Name;
-                dataGridView1.Rows[rowNumber].Cells[FIELD_DURA].Value = v.Duration;
                 dataGridView1.Rows[rowNumber].Cells[FIELD_AGE].Value = v.Age;
+                dataGridView1.Rows[rowNumber].Cells[FIELD_DURA].Value = v.Duration;               
                 dataGridView1.Rows[rowNumber].Cells[FIELD_AFTER].Value = chAfter.Items[v.After];
                 dataGridView1.Rows[rowNumber].Cells[FIELD_ZOO].Value = v.Zoo;
                 dataGridView1.Rows[rowNumber].Cells[FIELD_TIMES].Value = v.DoTimes==1;

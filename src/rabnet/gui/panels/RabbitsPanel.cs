@@ -158,7 +158,7 @@ namespace rabnet
                 MessageBox.Show(@"Не возможно найти информацию по данной записи.
 Возможно данного кролика списал другой сетевой пользователь программы.
 Во избежании проблем, придется обновить Лист поголовья", "Не могу найти запись");
-                _rsb.run();
+                _rsb.Run();
             }
         }
 
@@ -226,7 +226,7 @@ namespace rabnet
                 return;
             RabbitInfo ri = new RabbitInfo((int)listView1.SelectedItems[0].Tag);
             if (ri.ShowDialog() == DialogResult.OK)
-                _rsb.run();
+                _rsb.Run();
         }
 
         private void listView1_DoubleClick(object sender, EventArgs e)
@@ -242,7 +242,7 @@ namespace rabnet
                 return;
             int rid=(int)listView1.SelectedItems[0].Tag;
             if( (new BonForm(rid)).ShowDialog() == DialogResult.OK)
-                _rsb.run();
+                _rsb.Run();
         }
 
         private void proholostMenuItem_Click(object sender, EventArgs e)
@@ -251,7 +251,7 @@ namespace rabnet
                 return;
             int rid = (int)listView1.SelectedItems[0].Tag;
             if((new Proholost(rid)).ShowDialog() == DialogResult.OK)
-                _rsb.run();
+                _rsb.Run();
         }
 
         private void newRab_Click(object sender, EventArgs e)
@@ -261,7 +261,7 @@ namespace rabnet
             {
 #endif
                 if ((new IncomeForm()).ShowDialog() == DialogResult.OK)
-                    _rsb.run();
+                    _rsb.Run();
 #if !DEBUG
             }
             catch (Exception ex)
@@ -279,7 +279,7 @@ namespace rabnet
             foreach (ListViewItem li in listView1.SelectedItems)
                 rpf.AddRabbit((int)li.Tag);
             if(rpf.ShowDialog() == DialogResult.OK)
-                _rsb.run();
+                _rsb.Run();
         }
 
         private void placeChMenuItem_Click(object sender, EventArgs e)
@@ -291,7 +291,7 @@ namespace rabnet
             rpf.AddRabbit((int)listView1.SelectedItems[1].Tag);
             rpf.SetAction(ReplaceForm.Action.CHANGE);
             if (rpf.ShowDialog() == DialogResult.OK)
-                _rsb.run();
+                _rsb.Run();
         }
 
         private void KillMenuItem_Click(object sender, EventArgs e)
@@ -306,7 +306,7 @@ namespace rabnet
             foreach (ListViewItem li in listView1.SelectedItems)
                 f.addRabbit((int)li.Tag);
             if(f.ShowDialog() == DialogResult.OK)
-                _rsb.run();
+                _rsb.Run();
         }
 
         private void countKidsMenuItem_Click(object sender, EventArgs e)
@@ -315,7 +315,7 @@ namespace rabnet
                 return;
             CountKids f = new CountKids((int)listView1.SelectedItems[0].Tag);
             if (f.ShowDialog() == DialogResult.OK)
-                _rsb.run();
+                _rsb.Run();
         }
 
         private void okrolMenuItem_Click(object sender, EventArgs e)
@@ -323,7 +323,7 @@ namespace rabnet
             if (listView1.SelectedItems.Count != 1)
                 return;
             if ((new OkrolForm((int)listView1.SelectedItems[0].Tag)).ShowDialog() == DialogResult.OK)
-                _rsb.run();
+                _rsb.Run();
         }
 
         private void fuckMenuItem_Click(object sender, EventArgs e)
@@ -331,7 +331,7 @@ namespace rabnet
             if (listView1.SelectedItems.Count != 1)
                 return;
             if((new MakeFuckForm((int)listView1.SelectedItems[0].Tag)).ShowDialog() == DialogResult.OK)
-                _rsb.run();
+                _rsb.Run();
         }
 
         private void boysoutMenuItem_Click(object sender, EventArgs e)
@@ -342,14 +342,14 @@ namespace rabnet
             rpf.AddRabbit((int)listView1.SelectedItems[0].Tag);
             rpf.SetAction(ReplaceForm.Action.BOYSOUT);
             if (rpf.ShowDialog() == DialogResult.OK)
-                _rsb.run();
+                _rsb.Run();
         }
 
         private void replaceYoungersMenuItem_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count != 1) return;
             if(PreReplaceYoungersForm.MakeChoice((int)listView1.SelectedItems[0].Tag) == DialogResult.OK)
-                _rsb.run();
+                _rsb.Run();
         }
 
         private int GroupCount()

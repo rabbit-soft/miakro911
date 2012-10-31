@@ -304,7 +304,7 @@ namespace rabnet
                 if (idx<lvZooTech.Items.Count)
                     lvZooTech.Items[idx].Selected = true;
                 fullUpdate = needUpdate;
-                _rsb.run();
+                _rsb.Run();
             }
         }
 

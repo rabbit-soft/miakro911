@@ -111,8 +111,7 @@ namespace rabnet
 #if PROTECTED
             if (GRD.Instance.GetFlag(GRD.FlagType.ReportPlugIns))
             {
-#endif
-            
+#endif          
                 if (ReportBase.CheckPlugins() != 0)
                 {
                     tsmiReports.DropDownItems.Add(new ToolStripSeparator());
@@ -158,7 +157,7 @@ namespace rabnet
             if (sender == shortZooMenuItem) id = Options.OPT_ID.SHORT_ZOO;
             Engine.opt().setOption(id, ((sender as ToolStripMenuItem).Checked ? 1 : 0));
             if (reshow)
-                rabStatusBar1.run();
+                rabStatusBar1.Run();
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -332,14 +331,14 @@ namespace rabnet
             {
                 Options op = Engine.opt();
                 Building.SetDefFmt(op.getIntOption(Options.OPT_ID.BUILD_FILL_ZERO) == 1 ? '0' : ' ');
-                rabStatusBar1.run();
+                rabStatusBar1.Run();
             }
         }
 
         private void tsmiDeadsArchive_Click(object sender, EventArgs e)
         {
             new DeadForm().ShowDialog();
-            rabStatusBar1.run();
+            rabStatusBar1.Run();
         }
 
         private void namesMenuItem_Click(object sender, EventArgs e)
@@ -380,6 +379,7 @@ namespace rabnet
 #if !DEMO
             //new CatalogForm(CatalogForm.CatalogType.VACCINES).ShowDialog();
             new VaccinesCatalogForm().ShowDialog();
+            rabStatusBar1.Run();
 #else
             DemoErr.DemoNoReportMsg();
 #endif

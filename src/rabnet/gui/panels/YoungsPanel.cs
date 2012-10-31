@@ -129,7 +129,7 @@ namespace rabnet
         {
             if (listView1.SelectedItems.Count != 1) return;
             if (new ReplaceYoungersForm((int)listView1.SelectedItems[0].Tag).ShowDialog() == DialogResult.OK)
-                _rsb.run();
+                _rsb.Run();
         }
 
         private void listView1_ItemDrag(object sender, ItemDragEventArgs e)
@@ -162,13 +162,13 @@ namespace rabnet
                     "Ошибка", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     if (new ReplaceYoungersForm((int)from.Tag).ShowDialog() == DialogResult.OK)
-                        _rsb.run();
+                        _rsb.Run();
                 }
                 return;
             }
             RabNetEngRabbit r = Engine.get().getRabbit((int)to.Tag);
             if (new ReplaceYoungersForm((int)from.Tag, r.Parent).ShowDialog() == DialogResult.OK)
-                _rsb.run();
+                _rsb.Run();
         }
 
         private void makeSelectedCount()

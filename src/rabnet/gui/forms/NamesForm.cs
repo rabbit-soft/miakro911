@@ -42,7 +42,7 @@ namespace rabnet
             button1.Text = btext[0];
             this.originName = this.originSurname = null;
             button1.Enabled = button2.Enabled = false;
-            rabStatusBar1.run();
+            rabStatusBar1.Run();
         }
 
         private IDataGetter rabStatusBar1_prepareGet(object sender, EventArgs e)
@@ -199,7 +199,7 @@ namespace rabnet
                 MessageBox.Show("Невозможно разблокировать имя."+Environment.NewLine+"Возможно оно входит в состав чьей-то фамилии.");
                 return;
             }
-            rabStatusBar1.run();
+            rabStatusBar1.Run();
         }
 
     }

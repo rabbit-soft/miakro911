@@ -126,7 +126,7 @@ namespace rabnet
         {
             labels[item].Text=text;
         }
-        public void run()
+        public void Run()
         {
             if (btnStatus==0)
                 btn.PerformClick();
@@ -194,7 +194,7 @@ namespace rabnet
                 Parent.Controls.Remove(fpan);
                 fpan.Visible = false;
                 filt.Checked = false;
-                run();
+                Run();
             }
         }
         public void filterShow()

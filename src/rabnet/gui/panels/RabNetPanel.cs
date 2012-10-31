@@ -53,7 +53,7 @@ namespace rabnet
             Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             _rsb.itemGet+=new RabStatusBar.RSBItemEventHandler(this.itemGet);
             _rsb.prepareGet += new RabStatusBar.RSBPrepareEventHandler(this.prepareGet);
-            _rsb.run();
+            _rsb.Run();
         }
         /// <summary>
         /// Отвязывает, Фильтр, prepareGet, itemGet

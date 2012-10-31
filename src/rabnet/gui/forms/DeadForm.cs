@@ -51,7 +51,7 @@ namespace rabnet
 
         private void DeadForm_Activated(object sender, EventArgs e)
         {
-            rsb.run();
+            rsb.Run();
         }
 
         private void miRestore_Click(object sender, EventArgs e)
@@ -61,7 +61,7 @@ namespace rabnet
                 int rid = (int)li.Tag;
                 Engine.get().resurrect(rid);
             }
-            rsb.run();
+            rsb.Run();
         }
 
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
