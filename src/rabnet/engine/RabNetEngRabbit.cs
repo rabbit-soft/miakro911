@@ -59,7 +59,9 @@ namespace rabnet
             _eng = dl;
             _rab = _eng.db().GetRabbit(rid);
             if (_rab == null)
+            {              
                 throw new ExNoRabbit();
+            }
         }
 
         public RabNetEngRabbit(RabNetEngine dl,Rabbit.SexType sx)

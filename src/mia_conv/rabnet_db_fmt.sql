@@ -344,6 +344,7 @@ INSERT INTO options(o_name,o_subname,o_value) VALUES
 ('opt','vudvor', 30),
 ('opt','vudvor_if_sukrol', 0),
 ('opt','vudvor_if_proholost', 0),
+('opt','vudvor_heater', 0),
 ('opt','vd_sukr', 0),
 ('opt','count1', 3),
 ('opt','count2', 6),

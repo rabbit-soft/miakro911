@@ -36,6 +36,7 @@ namespace rabnet
             if (op == Options.OPT_ID.NONE) return;
             String val = Engine.opt().getOption(op);
             if (val == "" || val =="0") return;
+
             String[] cls=val.Split(',');
             int i;
             for (i=0;i<lv.Columns.Count;i++)
@@ -51,10 +52,12 @@ namespace rabnet
                     return;
                 }
                 cs.SortColumn = sc;
-                int so=int.Parse(cls[i+1]);
+                int sort = 0;
+                if(i+1<cls.Length)
+                    int.TryParse(cls[i+1],out sort);
                 cs.Order=SortOrder.None;
-                if (so==1) cs.Order=SortOrder.Ascending;
-                if (so==2) cs.Order=SortOrder.Descending;
+                if (sort==1) cs.Order=SortOrder.Ascending;
+                if (sort==2) cs.Order=SortOrder.Descending;
                 lv.Sort();
             }
         }

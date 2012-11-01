@@ -33,12 +33,12 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
+            this.chName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chAddress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chSex = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chAge = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chKillCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
@@ -47,6 +47,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.dateDays1 = new rabnet.components.DateDays();
+            this.chBreed = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -90,12 +91,13 @@
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4,
-            this.columnHeader5,
-            this.columnHeader6});
+            this.chName,
+            this.chBreed,
+            this.chAddress,
+            this.chSex,
+            this.chAge,
+            this.chCount,
+            this.chKillCount});
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.HideSelection = false;
@@ -109,32 +111,32 @@
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
-            // columnHeader1
+            // chName
             // 
-            this.columnHeader1.Text = "Имя";
+            this.chName.Text = "Имя";
             // 
-            // columnHeader2
+            // chAddress
             // 
-            this.columnHeader2.Text = "Адрес";
+            this.chAddress.Text = "Адрес";
             // 
-            // columnHeader3
+            // chSex
             // 
-            this.columnHeader3.Text = "Пол";
-            this.columnHeader3.Width = 41;
+            this.chSex.Text = "Пол";
+            this.chSex.Width = 41;
             // 
-            // columnHeader4
+            // chAge
             // 
-            this.columnHeader4.Text = "Возраст";
-            this.columnHeader4.Width = 61;
+            this.chAge.Text = "Возраст";
+            this.chAge.Width = 61;
             // 
-            // columnHeader5
+            // chCount
             // 
-            this.columnHeader5.Text = "Количество";
-            this.columnHeader5.Width = 67;
+            this.chCount.Text = "Количество";
+            this.chCount.Width = 67;
             // 
-            // columnHeader6
+            // chKillCount
             // 
-            this.columnHeader6.Text = "Списать";
+            this.chKillCount.Text = "Списать";
             // 
             // button2
             // 
@@ -216,7 +218,7 @@
             // 
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2011, 2, 21, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2012, 11, 1, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
             this.dateDays1.Location = new System.Drawing.Point(12, 12);
@@ -226,6 +228,10 @@
             this.dateDays1.Size = new System.Drawing.Size(146, 54);
             this.dateDays1.Step = 1;
             this.dateDays1.TabIndex = 0;
+            // 
+            // chBreed
+            // 
+            this.chBreed.Text = "Порода";
             // 
             // KillForm
             // 
@@ -269,18 +275,19 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.ColumnHeader chName;
+        private System.Windows.Forms.ColumnHeader chAddress;
+        private System.Windows.Forms.ColumnHeader chSex;
+        private System.Windows.Forms.ColumnHeader chAge;
+        private System.Windows.Forms.ColumnHeader chCount;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.ColumnHeader columnHeader6;
+        private System.Windows.Forms.ColumnHeader chKillCount;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ColumnHeader chBreed;
     }
 }

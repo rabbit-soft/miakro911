@@ -58,7 +58,7 @@ r_breed,
 {4:s} fucks,
 {5:s} children
 FROM rabbits 
-WHERE r_sex='male' AND r_status>0 AND (r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol)>={1:d})
+WHERE r_sex='male' AND r_status>0 AND (r_last_fuck_okrol IS NULL OR Date(NOW())>Date(Date_Add(r_last_fuck_okrol,INTERVAL {1:d} DAY)))
 {2:s}
 {3:s} 
 ORDER BY fullname;",

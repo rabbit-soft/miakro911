@@ -83,7 +83,7 @@ namespace db.mysql
             ID2 = rd.GetInt32("r_area");
             if (ID2 == 1 && rd.GetString("t_type") == BuildingType.Jurta)
                 ID2 = 0;
-            Comment = String.Format("№{0:s} {1:s}{2:s}", rd.GetString("r_status"), _flt.safeInt("shr") == 0 ? "подсосных" : "+", rd.GetString("suckers"));
+            Comment = String.Format("№{0:s} {1:s}{2:s}", rd.GetString("r_status"), _flt.safeInt(Filters.SHORT) == 0 ? "подсосных" : "+", rd.GetString("suckers"));
         }
 
         private void fillBoysByOne(MySqlDataReader rd)
@@ -101,7 +101,7 @@ namespace db.mysql
         {           
             ID = rd.GetInt32("r_parent");
             ID2 = rd.GetInt32("r_id");
-            Comment = (_flt.safeInt("shr") == 0 ? "количество " : "+") + rd.GetString("r_group");
+            Comment = (_flt.safeInt(Filters.SHORT) == 0 ? "количество " : "+") + rd.GetString("r_group");
         }
 
         private void fillFuck(MySqlDataReader rd)
@@ -110,6 +110,7 @@ namespace db.mysql
             int fromok = rd.IsDBNull(6) ? 0 : rd.GetInt32("fromokrol");
             int suck = rd.IsDBNull(4) ? 0 : rd.GetInt32("suckers");
             int srok = 0;
+            int group = rd.GetInt32("r_group");
             if (status == 0)
                 srok = this.RabAge - _flt.safeInt("brideAge");
             else if (status > 0)
@@ -121,13 +122,15 @@ namespace db.mysql
 
             Days = srok; //если в common не определится срок и произойдет ошибка
             JobName = status == 0 ? "Случка" : "Вязка";
-            Comment = _flt.safeInt("shr") == 1 ? "Нвс" : "Невеста";
+            Comment = _flt.safeInt(Filters.SHORT) == 1 ? "Нвс" : "Невеста";
+            if(group>1)
+                Comment += String.Format(" [{0:d}]", group);
             if (status > 0)
-                Comment = _flt.safeInt("shr") == 1 ? "Прк" : "Первокролка";
+                Comment = _flt.safeInt(Filters.SHORT) == 1 ? "Прк" : "Первокролка";
             if (status > 1)
-                Comment = _flt.safeInt("shr") == 1 ? "Штн" : "Штатная";
+                Comment = _flt.safeInt(Filters.SHORT) == 1 ? "Штн" : "Штатная";
             Partners = rd.IsDBNull(7) ? "" : zooFuckPartnerAddressParce(rd.GetString("partners"));
-            Flag = rd.GetInt32("r_group");
+            Flag = group;
         }
 
         private void fillSetNest(MySqlDataReader rd)
@@ -138,7 +141,7 @@ namespace db.mysql
             if (children > 0)
             {
                 Days = sukr - _flt.safeInt("cnest");
-                Comment += " " + (_flt.safeInt("shr") == 0 ? " подсосных" : "+") + children.ToString();
+                Comment += " " + (_flt.safeInt(Filters.SHORT) == 0 ? " подсосных" : "+") + children.ToString();
             }
             else
                 Days=sukr - _flt.safeInt("nest");
@@ -351,8 +354,7 @@ ORDER BY age DESC,0+LEFT(place,LOCATE(',',place)) ASC;",
         r_status,
         TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol) fromokrol," +
             (_flt.safeValue("prt") == "1" ? @"(SELECT GROUP_CONCAT( CONCAT(rabname(r_id,0),'&', rabplace(r_id)) ORDER BY rabname(r5.r_id,0) SEPARATOR '|') FROM rabbits r5
-            WHERE r5.r_sex='male' AND r_status>0 AND 
-            (r5.r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r5.r_last_fuck_okrol)>={3:d}){4:s}{5:s}) partners" : "'' partners") + @"
+            WHERE r5.r_sex='male' AND r_status>0 AND (r5.r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r5.r_last_fuck_okrol)>={3:d}){4:s}{5:s}) partners" : "'' partners") + @"
         ,r_group,
         (SELECT {6:s} FROM breeds WHERE b_id=r_breed) breed, 0 srok 
     FROM rabbits WHERE r_sex='female' AND r_event_date IS NULL AND r_status{7:s}) c 
@@ -361,7 +363,8 @@ ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;",
     _flt.safeInt("brideAge"), _flt.safeInt("ffuck"), _flt.safeInt("sfuck"), _flt.safeInt("mwait"),
 (_flt.safeBool("heter") ? "" : String.Format(" AND r5.r_breed=rabbits.r_breed")),
 (_flt.safeBool("inbr") ? "" : String.Format(@" AND (SELECT COUNT(g_genom) FROM genoms WHERE g_id=rabbits.r_genesis AND g_genom IN (SELECT g2.g_genom FROM genoms g2 WHERE g2.g_id=r5.r_genesis))=0")),
-(_flt.safeInt("shr") == 0 ? "b_name" : "b_short_name"), (_flt.safeInt("type") == 1 ? ">0" : "=0"));
+(_flt.safeInt(Filters.SHORT) == 0 ? "b_name" : "b_short_name"), 
+(_flt.safeInt(Filters.TYPE) == 1 ? ">0" : "=0"));
         }
 
         private string qVacc()

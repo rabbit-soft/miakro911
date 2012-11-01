@@ -335,10 +335,10 @@ namespace rabnet
             List<String> fuckers = new List<string>();
             XmlDocument rep = new XmlDocument();
             rep.AppendChild(rep.CreateElement("Rows")).AppendChild(rep.CreateElement("Row")).AppendChild(rep.CreateElement("date")).AppendChild(rep.CreateTextNode(repdate.ToLongDateString()+" "+repdate.ToLongTimeString()));
-            XmlDocument xml = new XmlDocument();
+            XmlDocument doc = new XmlDocument();
             XmlDocument fucks = new XmlDocument();
-            XmlElement root = xml.CreateElement("Rows");
-            xml.AppendChild(root);
+            XmlElement root = doc.CreateElement("Rows");
+            doc.AppendChild(root);
             XmlElement fuck = fucks.CreateElement("Rows");
             fucks.AppendChild(fuck);
             XmlElement rw;
@@ -346,22 +346,23 @@ namespace rabnet
             {
                 ListViewItem li = lvZooTech.Items[i];
                 ZootehJob j=(ZootehJob)li.Tag;
-                rw = xml.CreateElement("Row");
-                rw.AppendChild(xml.CreateElement("type")).AppendChild(xml.CreateTextNode(((int)j.Type).ToString()));
-                rw.AppendChild(xml.CreateElement("days")).AppendChild(xml.CreateTextNode(j.Days.ToString()));
-                rw.AppendChild(xml.CreateElement("name")).AppendChild(xml.CreateTextNode(j.JobName));
-                rw.AppendChild(xml.CreateElement("rabbit")).AppendChild(xml.CreateTextNode(j.RabName));
-                rw.AppendChild(xml.CreateElement("address")).AppendChild(xml.CreateTextNode(j.Address));
-                //rw.AppendChild(xml.CreateElement("comment")).AppendChild(xml.CreateTextNode(""));
-                rw.AppendChild(xml.CreateElement("breed")).AppendChild(xml.CreateTextNode(j.RabBreed));
-                rw.AppendChild(xml.CreateElement("age")).AppendChild(xml.CreateTextNode(j.RabAge.ToString()));
+                rw = doc.CreateElement("Row");
+                rw.AppendChild(doc.CreateElement("type")).AppendChild(doc.CreateTextNode(((int)j.Type).ToString()));
+                rw.AppendChild(doc.CreateElement("days")).AppendChild(doc.CreateTextNode(j.Days.ToString()));
+                //ReportHelper.Append(
+                rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(j.JobName));
+                rw.AppendChild(doc.CreateElement("rabbit")).AppendChild(doc.CreateTextNode(j.RabName));
+                rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(j.Address));
+                rw.AppendChild(doc.CreateElement("breed")).AppendChild(doc.CreateTextNode(j.RabBreed));
+                rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(j.RabAge.ToString()));
                 if (j.Type == JobType.FUCK)
                 {
                     int id = getFuckerId(j.Partners, fuckers);
-                    rw.AppendChild(xml.CreateElement("comment")).AppendChild(xml.CreateTextNode("см. "+(id+1).ToString()));
+                    string cmt = String.Format("см. {0:d}{1:d}",(id + 1),j.Flag>1 ? Environment.NewLine+"N"+j.Flag.ToString():"");
+                    rw.AppendChild(doc.CreateElement("comment")).AppendChild(doc.CreateTextNode(cmt));
                 }
                 else
-                    rw.AppendChild(xml.CreateElement("comment")).AppendChild(xml.CreateTextNode(j.Comment));
+                    rw.AppendChild(doc.CreateElement("comment")).AppendChild(doc.CreateTextNode(j.Comment));
                 root.AppendChild(rw);
             }
             for (int i = 0; i < fuckers.Count; i++)
@@ -371,12 +372,12 @@ namespace rabnet
                 rw.AppendChild(fucks.CreateElement("names")).AppendChild(fucks.CreateTextNode(fuckers[i]));
                 fuck.AppendChild(rw);
             }
-            XmlDocument[] xmls = new XmlDocument[] { xml, rep, fucks };
+            XmlDocument[] xmls = new XmlDocument[] { doc, rep, fucks };
             String plan = "zooteh";
             if (fuckers.Count == 0)
             {
                 plan += "_nofuck";
-                xmls = new XmlDocument[] { xml, rep };
+                xmls = new XmlDocument[] { doc, rep };
             }
             new ReportViewForm("Зоотехплан " + repdate.ToLongDateString() + " " + repdate.ToLongTimeString(), plan,xmls).ShowDialog();
 #else 

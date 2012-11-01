@@ -92,7 +92,7 @@ namespace rabnet
         public const string INBREEDING = "inbr";
         public const string MALE_WAIT = "mwait";
         public const string BOYS_BY_ONE = "bbone";
-
+        public const string TYPE = "type";
         public const string TIER = "yar"; 
         #endregion const
 

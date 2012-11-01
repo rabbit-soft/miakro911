@@ -18,7 +18,7 @@ namespace rabnet
             [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
             private int ok,_nout,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,gt,n,cn,tt,cand,bbone;
             private string gd, sh,xf;
-            private RUBOOL ce, ck,crp, uz,sp,ask, fbz,vIs,vacMoth, _nestOut_proholost;
+            private RUBOOL ce, ck, crp, uz, sp, ask, fbz, vIs, vacMoth, _nestOut_proholost, _nestOut_heater;
             private BuchTp bt;
 
             #region zooTime
@@ -34,6 +34,9 @@ namespace rabnet
             [Category("Зоотехнические сроки"), DisplayName("Выдворение при сукрольной"),
             Description("Назначать Выдворение даже если крольчиха сукрольна")]
             public RUBOOL NestOutIfSukrol { get { return vIs; } set { vIs = value; } }
+            [Category("Зоотехнические сроки"), DisplayName("Выдворение с грелкой"),
+            Description("При выдворении убирать из гнездовье грелку.")]
+            public RUBOOL NestOutHeater { get { return _nestOut_heater; } set { _nestOut_heater = value; } }
             [Category("Зоотехнические сроки"),DisplayName("1й подсчет гнездовых"),
             Description("Проверка изменения числа рожденных крольчат в 1ый раз")]
             public int Count1 { get { return c1; } set { c1=value;} }
@@ -200,6 +203,7 @@ namespace rabnet
                 NestOut = o.getIntOption(Options.OPT_ID.NEST_OUT);
                 NestOutIfSukrol = toR(o.getIntOption(Options.OPT_ID.NEST_OUT_IF_SUKROL));
                 NestOutIfProholost = toR(o.getIntOption(Options.OPT_ID.NEST_OUT_IF_PROHOLOST));
+                NestOutHeater = toR(o.getIntOption(Options.OPT_ID.NEST_OUT_WITH_HEATER));
                 Count1 = o.getIntOption(Options.OPT_ID.COUNT1);
                 Count2 = o.getIntOption(Options.OPT_ID.COUNT2);
                 Count3 = o.getIntOption(Options.OPT_ID.COUNT3);
@@ -247,6 +251,7 @@ namespace rabnet
                 o.setOption(Options.OPT_ID.NEST_OUT, NestOut);
                 o.setOption(Options.OPT_ID.NEST_OUT_IF_SUKROL, fromR(NestOutIfSukrol));
                 o.setOption(Options.OPT_ID.NEST_OUT_IF_PROHOLOST, fromR(NestOutIfProholost));
+                o.setOption(Options.OPT_ID.NEST_OUT_WITH_HEATER, fromR(NestOutHeater));
                 o.setOption(Options.OPT_ID.COUNT1, Count1);
                 o.setOption(Options.OPT_ID.COUNT2, Count2);
                 o.setOption(Options.OPT_ID.COUNT3, Count3);

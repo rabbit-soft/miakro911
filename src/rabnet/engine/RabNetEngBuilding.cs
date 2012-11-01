@@ -6,6 +6,10 @@ namespace rabnet
 {
     public class RabNetEngBuilding 
     {
+        private const int HEATER_UNSET = 0;
+        private const int HEATER_OFF = 1;
+        private const int HEATER_ON = 3;
+
         public class ExBadBuildingType : ApplicationException
         {
             public ExBadBuildingType() : base("Неверный тип минифермы.") { }
@@ -17,12 +21,12 @@ namespace rabnet
 
         private int id = 0;
         private Building b;
-        private RabNetEngine eng;
+        private RabNetEngine _eng;
 
         public RabNetEngBuilding(int tid,RabNetEngine eng)
         {
             this.id=tid;
-            this.eng = eng;
+            this._eng = eng;
             b = eng.db().getBuilding(id);
         }
         public static RabNetEngBuilding FromPlace(string place,RabNetEngine eng)
@@ -35,7 +39,7 @@ namespace rabnet
 
         public void commit()
         {
-            eng.db().updateBuilding(b);
+            _eng.db().updateBuilding(b);
         }
 
         public void setRepair(bool value)
@@ -48,7 +52,7 @@ namespace rabnet
                     if (b.Busy[i] != 0)
                         throw new ExFarmNotEmpty();
             }
-            eng.logs().log(value ? RabNetLogs.LogType.REPAIR_ON : RabNetLogs.LogType.REPAIR_OFF, 0, b.Farm.ToString());
+            _eng.logs().log(value ? RabNetLogs.LogType.REPAIR_ON : RabNetLogs.LogType.REPAIR_OFF, 0, b.Farm.ToString());
             b.Repair = value;
             commit();
         }
@@ -60,9 +64,12 @@ namespace rabnet
         {
             if (b.Nests[0] == (value ? '1' : '0'))
                 return;
-            eng.logs().log(value ? RabNetLogs.LogType.NEST_ON : RabNetLogs.LogType.NEST_OFF, b.Busy[0], b.smallname[0]);
+            _eng.logs().log(value ? RabNetLogs.LogType.NEST_ON : RabNetLogs.LogType.NEST_OFF, b.Busy[0], b.smallname[0]);
             b.Nests = (value ? "1" : "0")+b.Nests.Substring(1);
             commit();
+
+            if (!value && _eng.options().getBoolOption(Options.OPT_ID.NEST_OUT_WITH_HEATER))
+                setHeater(HEATER_UNSET);
         }
         /// <summary>
         /// Установка гнездовья в клетку Б
@@ -72,33 +79,36 @@ namespace rabnet
         {
             if (b.Nests[1] == (value ? '1' : '0'))
                 return;
-            eng.logs().log(value ? RabNetLogs.LogType.NEST_ON : RabNetLogs.LogType.NEST_OFF, b.Busy[1],b.smallname[1]);
+            _eng.logs().log(value ? RabNetLogs.LogType.NEST_ON : RabNetLogs.LogType.NEST_OFF, b.Busy[1],b.smallname[1]);
             b.Nests = b.Nests.Substring(0, 1) + (value ? '1' : '0');
             commit();
+
+            if(!value && _eng.options().getBoolOption(Options.OPT_ID.NEST_OUT_WITH_HEATER))
+                setHeater2(HEATER_UNSET);
         }
 
         public void setHeater(int value)
         {
-            if (value == 2) value = 3;
+            if (value == 2 || value>3) value = 3;
             if (b.Heaters[0] == value.ToString()[0])
                 return;
             RabNetLogs.LogType tp = RabNetLogs.LogType.HEATER_OUT;
             if (value == 1) tp = RabNetLogs.LogType.HEATER_OFF;
             if (value == 3) tp = RabNetLogs.LogType.HEATER_ON;
-            eng.logs().log(tp, b.Busy[0], b.smallname[0]);
+            _eng.logs().log(tp, b.Busy[0], b.smallname[0]);
             b.Heaters = String.Format("{0:D1}",value) + b.Heaters.Substring(1);
             commit();
         }
 
         public void setHeater2(int value)
         {
-            if (value == 2) value = 3;
+            if (value == 2 || value > 3) value = 3;
             if (b.Heaters[1] == value.ToString()[0])
                 return;
             RabNetLogs.LogType tp = RabNetLogs.LogType.HEATER_OUT;
             if (value == 1) tp = RabNetLogs.LogType.HEATER_OFF;
             if (value == 3) tp = RabNetLogs.LogType.HEATER_ON;
-            eng.logs().log(tp, b.Busy[1], b.smallname[1]);
+            _eng.logs().log(tp, b.Busy[1], b.smallname[1]);
             b.Heaters = b.Heaters.Substring(0, 1) + String.Format("{0:D1}", value);
             commit();
         }

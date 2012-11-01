@@ -10,6 +10,10 @@ namespace rabnet
 {
     public partial class KillForm : Form
     {
+        private const int IND_AGE = 4;
+        private const int IND_COUNT = 5;
+        private const int IND_KILL_COUNT = 6;
+
         private List<RabNetEngRabbit> rbs = new List<RabNetEngRabbit>();
         private List<int> youngers = new List<int>();
         bool confirm = true;
@@ -24,7 +28,7 @@ namespace rabnet
             cbDeadReason.Items.Add("");
             for (int i = 0; i < c.Count; i++)
                 cbDeadReason.Items.Add(c[i+3]);
-            cs = new ListViewColumnSorter(listView1, new int[] { 3,4, 5 }, Options.OPT_ID.KILL_LIST);
+            cs = new ListViewColumnSorter(listView1, new int[] { IND_AGE, IND_COUNT, IND_KILL_COUNT }, Options.OPT_ID.KILL_LIST);
             update();
             FormSizeSaver.Append(this);
         }
@@ -74,6 +78,7 @@ namespace rabnet
             foreach (RabNetEngRabbit r in rbs)
             {
                 ListViewItem li = listView1.Items.Add(r.FullName);
+                li.SubItems.Add(r.BreedName);
                 li.Tag=r.RabID;
                 li.SubItems.Add(r.Tag);
                 String sex = "?";
@@ -100,8 +105,8 @@ namespace rabnet
             button1.Enabled = false;
             if (listView1.SelectedItems.Count ==1)
             {
-                numericUpDown1.Maximum = int.Parse(listView1.SelectedItems[0].SubItems[4].Text);
-                numericUpDown1.Value = int.Parse(listView1.SelectedItems[0].SubItems[5].Text);
+                numericUpDown1.Maximum = int.Parse(listView1.SelectedItems[0].SubItems[IND_COUNT].Text);
+                numericUpDown1.Value = int.Parse(listView1.SelectedItems[0].SubItems[IND_KILL_COUNT].Text);
                 numericUpDown1.Enabled = true;
                 button1.Enabled = true;
             }
@@ -143,7 +148,7 @@ namespace rabnet
                 foreach (ListViewItem li in listView1.Items)
                 {
                     RabNetEngRabbit r = Engine.get().getRabbit((int)li.Tag);
-                    int cnt = int.Parse(listView1.Items[i].SubItems[5].Text);
+                    int cnt = int.Parse(listView1.Items[i].SubItems[IND_KILL_COUNT].Text);
                     if (cnt != 0)
                     {
                         int reason = 0;
@@ -165,7 +170,7 @@ namespace rabnet
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count != 1) return;
-            listView1.SelectedItems[0].SubItems[5].Text = numericUpDown1.Value.ToString();
+            listView1.SelectedItems[0].SubItems[IND_KILL_COUNT].Text = numericUpDown1.Value.ToString();
             updateLabels();
         }
 
@@ -190,7 +195,7 @@ namespace rabnet
             int cnt = 0;
             for (int i = 0; i < listView1.Items.Count; i++)
             {
-                int c = int.Parse(listView1.Items[i].SubItems[5].Text);
+                int c = int.Parse(listView1.Items[i].SubItems[IND_KILL_COUNT].Text);
                 cnt += c;
                 str +=(c != 0 ? 1 : 0);
             }

@@ -31,6 +31,7 @@ namespace rabnet
             NEST_OUT,
             NEST_OUT_IF_SUKROL,
             NEST_OUT_IF_PROHOLOST,
+            NEST_OUT_WITH_HEATER,
             /// <summary>
             /// Установка гнездовья
             /// </summary>
@@ -85,6 +86,7 @@ namespace rabnet
                                    new Option(OPT_ID.NEST_OUT,OPT_LEVEL.FARM,"vudvor"),
                                    new Option(OPT_ID.NEST_OUT_IF_SUKROL,OPT_LEVEL.FARM,"vudvor_if_sukrol"),
                                    new Option(OPT_ID.NEST_OUT_IF_PROHOLOST,OPT_LEVEL.FARM,"vudvor_if_proholost"),
+                                   new Option(OPT_ID.NEST_OUT_WITH_HEATER,OPT_LEVEL.FARM,"vudvor_heater"),
                                    new Option(OPT_ID.COUNT1,OPT_LEVEL.FARM,"count1"), 
                                    new Option(OPT_ID.COUNT2,OPT_LEVEL.FARM,"count2"), 
                                    new Option(OPT_ID.COUNT3,OPT_LEVEL.FARM,"count3"), 
