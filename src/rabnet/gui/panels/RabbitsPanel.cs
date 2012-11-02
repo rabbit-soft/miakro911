@@ -85,16 +85,16 @@ namespace rabnet
 			colSort.SemiReady();
         }
 
-        private void insertNode(TreeNode nd,TreeData data)
-        {
-            if (data.Childrens!=null)
-            for (int i = 0; i < data.Childrens.Count; i++)
-                if (data.Childrens[i] != null)
-                {
-                    TreeNode n = nd.Nodes.Add(data.Childrens[i].Name);
-                    insertNode(n, data.Childrens[i]);
-                }
-        }
+        //private void insertNode(TreeNode nd,TreeData data)
+        //{
+        //    if (data.Childrens!=null)
+        //    for (int i = 0; i < data.Childrens.Count; i++)
+        //        if (data.Childrens[i] != null)
+        //        {
+        //            TreeNode n = nd.Nodes.Add(data.Childrens[i].Name);
+        //            insertNode(n, data.Childrens[i]);
+        //        }
+        //}
 
         private bool isGirl()
         {
@@ -117,42 +117,43 @@ namespace rabnet
             {
                 return;
             }
-            if (gentree < 0)
-            {
-                genTree.Nodes.Clear();
-                return;
-            }
+            //if (gentree < 0)
+            //{
+            //    genTree.Nodes.Clear();
+            //    return;
+            //}
             //проверка дерева кроликов на совпадения
-            if (listView1.SelectedItems[0].SubItems[0].Text.IndexOf("-") == 0) return;
+            //if (listView1.SelectedItems[0].SubItems[0].Text.IndexOf("-") == 0) return;
 
-            for (int ind = 0; ind < genTree.Nodes.Count; ind++)
-            {
-                int len;
-                len = genTree.Nodes[ind].Text.IndexOf("-");
-                if (len == -1)
-                    len = genTree.Nodes[ind].Text.IndexOf(",");
-                else if (genTree.Nodes[ind].Text.IndexOf(",") < len)
-                    len = genTree.Nodes[ind].Text.IndexOf(",");
-                string str = genTree.Nodes[ind].Text.Remove(len);
-                if (listView1.SelectedItems[0].SubItems[NAMEFIELD].Text.StartsWith(str))
-                {
-                    if (ind == 0) return;
-                    genTree.Nodes.RemoveAt(ind);
-                    break;
-                }
-            }
-            if (genTree.Nodes.Count > 0)
-                genTree.Nodes[0].ForeColor = Color.Gray;
-            while (genTree.Nodes.Count > gentree)
-                genTree.Nodes.RemoveAt(gentree);
-            TreeData dt = Engine.db().rabbitGenTree((int)listView1.SelectedItems[0].Tag);
+            //for (int ind = 0; ind < genTree.Nodes.Count; ind++)
+            //{
+            //    int len;
+            //    len = genTree.Nodes[ind].Text.IndexOf("-");
+            //    if (len == -1)
+            //        len = genTree.Nodes[ind].Text.IndexOf(",");
+            //    else if (genTree.Nodes[ind].Text.IndexOf(",") < len)
+            //        len = genTree.Nodes[ind].Text.IndexOf(",");
+            //    string str = genTree.Nodes[ind].Text.Remove(len);
+            //    if (listView1.SelectedItems[0].SubItems[NAMEFIELD].Text.StartsWith(str))
+            //    {
+            //        if (ind == 0) return;
+            //        genTree.Nodes.RemoveAt(ind);
+            //        break;
+            //    }
+            //}
+            //if (genTree.Nodes.Count > 0)
+            //    genTree.Nodes[0].ForeColor = Color.Gray;
+            //while (genTree.Nodes.Count > gentree)
+            //    genTree.Nodes.RemoveAt(gentree);
+            RabTreeData dt = Engine.db().rabbitGenTree((int)listView1.SelectedItems[0].Tag);
             if (dt != null && dt.Name != null)
             {
-                TreeNode tn = genTree.Nodes.Insert(0, dt.Name);
+                TreeNode tn = tvGens.InsertNode(dt, true);
+                //TreeNode tn = genTree.Nodes.Insert(0, dt.Name);
                 tn.ForeColor = Color.Blue;
-                insertNode(tn, dt);
-                tn.ExpandAll();
-                tn.EnsureVisible();
+                //insertNode(tn, dt);
+                //tn.ExpandAll();
+                //tn.EnsureVisible();
             }
             else
             {
