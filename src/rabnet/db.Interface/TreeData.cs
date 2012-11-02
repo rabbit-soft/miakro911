@@ -26,6 +26,7 @@ namespace rabnet
     public class RabTreeData : TreeData
     {
         public int BreedId = 0;
+        public String BreedShortName ="";
         public int NameId = 0;
         public int Age = 0;
         public String Bon = "";

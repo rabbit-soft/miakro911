@@ -628,11 +628,6 @@ namespace rabnet
             okrolDd.Enabled = (okrolCount.Value!=0);
         }
 
-        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             button19.Enabled = weightList.SelectedItems.Count == 1;

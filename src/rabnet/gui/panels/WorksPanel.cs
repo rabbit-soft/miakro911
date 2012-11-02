@@ -48,7 +48,7 @@ namespace rabnet
                 f[Filters.CHILD_NEST] = Engine.opt().getOption(Options.OPT_ID.CHILD_NEST);
                 f[Filters.STATE_FUCK] = Engine.opt().getOption(Options.OPT_ID.STATE_FUCK);
                 f[Filters.FIRST_FUCK] = Engine.opt().getOption(Options.OPT_ID.FIRST_FUCK);
-                f[Filters.GETEROSIS] = Engine.opt().getOption(Options.OPT_ID.GETEROSIS);
+                f[Filters.HETEROSIS] = Engine.opt().getOption(Options.OPT_ID.GETEROSIS);
                 f[Filters.INBREEDING] = Engine.opt().getOption(Options.OPT_ID.INBREEDING);
                 f[Filters.MALE_WAIT] = Engine.opt().getOption(Options.OPT_ID.MALE_WAIT);
                 //f["vactime"] = Engine.opt().getOption(Options.OPT_ID.VACCINE_TIME);

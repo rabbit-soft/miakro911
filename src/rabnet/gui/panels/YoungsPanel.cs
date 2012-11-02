@@ -11,7 +11,7 @@ namespace rabnet
 {
     public partial class YoungsPanel : RabNetPanel
     {
-        private int gentree = 10;
+        //private int gentree = 10;
         private bool manual = true;
         public YoungsPanel():base()
         {
@@ -26,14 +26,14 @@ namespace rabnet
 
         protected override IDataGetter onPrepare(Filters f)
         {
-            gentree = Engine.opt().getIntOption(Options.OPT_ID.GEN_TREE)-1;
+            tvGens.MaxNodesCount = Engine.opt().getIntOption(Options.OPT_ID.GEN_TREE)-1;
             f = new Filters();
             Options op = Engine.opt();
-            f["shr"] = op.getOption(Options.OPT_ID.SHORT_NAMES);
-            f["sht"] = op.getOption(Options.OPT_ID.SHOW_TIER_TYPE);
-            f["sho"] = op.getOption(Options.OPT_ID.SHOW_TIER_SEC);
-            f["dbl"] = op.getOption(Options.OPT_ID.DBL_SURNAME);
-            f["num"] = op.getOption(Options.OPT_ID.SHOW_NUMBERS);
+            f[Filters.SHORT] = op.getOption(Options.OPT_ID.SHORT_NAMES);
+            f[Filters.SHOW_BLD_TIERS] = op.getOption(Options.OPT_ID.SHOW_TIER_TYPE);
+            f[Filters.SHOW_BLD_DESCR] = op.getOption(Options.OPT_ID.SHOW_TIER_SEC);
+            f[Filters.DBL_SURNAME] = op.getOption(Options.OPT_ID.DBL_SURNAME);
+            f[Filters.SHOW_OKROL_NUM] = op.getOption(Options.OPT_ID.SHOW_NUMBERS);
             _runF = f;
             colSort.Prepare();
             IDataGetter dg = DataThread.db().GetYoungers(f); 
@@ -79,36 +79,35 @@ namespace rabnet
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!manual)
-                return;
+            if (!manual) return;
             setMenu();
             makeSelectedCount();
-            if (listView1.SelectedItems.Count != 1)
-                return;
+            if (listView1.SelectedItems.Count != 1) return;
 
-            for (int ind = 0; ind < genTree.Nodes.Count; ind++)
-            {
-                int len = genTree.Nodes[ind].Text.IndexOf("-");
-                string str = genTree.Nodes[ind].Text.Remove(len);
-                if (listView1.SelectedItems[0].SubItems[0].Text.StartsWith(str))
-                {
-                    if (ind == 0) return;
-                    genTree.Nodes.RemoveAt(ind);
-                    break;
-                }
-            }
-            if (genTree.Nodes.Count > 0)
-                genTree.Nodes[0].ForeColor = Color.Gray;
-            if (genTree.Nodes.Count > gentree)
-                genTree.Nodes.RemoveAt(gentree);
+            //for (int ind = 0; ind < tvGens.Nodes.Count; ind++)
+            //{
+            //    int len = tvGens.Nodes[ind].Text.IndexOf("-");
+            //    string str = tvGens.Nodes[ind].Text.Remove(len);
+            //    if (listView1.SelectedItems[0].SubItems[0].Text.StartsWith(str))
+            //    {
+            //        if (ind == 0) return;
+            //        tvGens.Nodes.RemoveAt(ind);
+            //        break;
+            //    }
+            //}
+            //if (tvGens.Nodes.Count > 0)
+            //    tvGens.Nodes[0].ForeColor = Color.Gray;
+            //if (tvGens.Nodes.Count > gentree)
+            //    tvGens.Nodes.RemoveAt(gentree);
             RabTreeData dt = Engine.db().rabbitGenTree((int)listView1.SelectedItems[0].Tag);
             if (dt != null)
             {
-                TreeNode tn = genTree.Nodes.Insert(0, dt.Name);
+                TreeNode tn = tvGens.InsertNode(dt, true);
+                //TreeNode tn = tvGens.Nodes.Insert(0, dt.Name);
                 tn.ForeColor = Color.Blue;
-                insertNode(tn, dt);
-                tn.ExpandAll();
-                tn.EnsureVisible();
+                //insertNode(tn, dt);
+                //tn.ExpandAll();
+                //tn.EnsureVisible();
             }
         }
 

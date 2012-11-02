@@ -185,7 +185,7 @@ namespace db.mysql
 
         public RabTreeData rabbitGenTree(int rabbit)
         {
-            return RabbitGenGetter.GetRabbitGen(sql,rabbit);
+            return RabbitGenGetter.GetRabbitGenTree(sql,rabbit);
         }
 
         public BldTreeData buildingsTree()
@@ -577,7 +577,7 @@ namespace db.mysql
 
 		public RabbitGen getRabbitGen(int rid)
 		{
-			return RabbitGenGetter.GetRabbit(sql, rid);
+			return RabbitGenGetter.GetRabbitGen(sql, rid);
 		}
 
 		public Dictionary<int, Color> getBreedColors()

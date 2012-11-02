@@ -134,14 +134,14 @@ r_flags='{7:d}',r_rate={8:d},r_born={9:s} ", r.nameID, r.surname, r.secname, r.B
             qry += String.Format(" WHERE r_id={0:d};", r.ID);
             MySqlCommand cmd = new MySqlCommand(qry, con);
             cmd.ExecuteNonQuery();
-            int gen = DBHelper.makeGenesis(con, r.gens);
-            cmd.CommandText = "UPDATE rabbits SET r_genesis=" + gen.ToString() + " WHERE r_id=" + r.ID.ToString() + ";";
+            int gen = RabbitGenGetter.MakeGenesis(con, r.gens);
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_genesis={0:d} WHERE r_id={1:d};", gen,r.ID);
             cmd.ExecuteNonQuery();
             if (r.wasname != r.nameID)
             {
-                cmd.CommandText = "UPDATE names SET n_use=0,n_block_date=NULL WHERE n_id=" + r.wasname.ToString() + ";";
+                cmd.CommandText = String.Format("UPDATE names SET n_use=0,n_block_date=NULL WHERE n_id={0:d};", r.wasname);
                 cmd.ExecuteNonQuery();
-                cmd.CommandText = "UPDATE names SET n_use=" + r.ID.ToString() + " WHERE n_id=" + r.nameID.ToString() + ";";
+                cmd.CommandText = String.Format("UPDATE names SET n_use={0:d} WHERE n_id={1:d};", r.ID, r.nameID);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -187,6 +187,7 @@ r_flags='{7:d}',r_rate={8:d},r_born={9:s} ", r.nameID, r.surname, r.secname, r.B
 f_children={1:d},f_dead={2:d} WHERE f_rabid={3:d} AND f_state='sukrol';",
                        DBHelper.DateToMyString(date), children, dead, rabbit), sql);
             cmd.ExecuteNonQuery();
+
             OneRabbit fml = GetRabbit(sql, rabbit);
             OneRabbit ml = GetRabbit(sql, father, RabType.ANY);
             int rt = children - 8;
@@ -199,12 +200,13 @@ f_children={1:d},f_dead={2:d} WHERE f_rabid={3:d} AND f_state='sukrol';",
             rt -= dead;
             if (children > 0 && date.Month > 8 && date.Month < 12)
                 rt += 2;
-            cmd.CommandText = String.Format(@"UPDATE rabbits SET r_event_date=NULL,r_event='none',
-r_status=r_status+1,r_last_fuck_okrol={1:s},r_overall_babies=COALESCE(r_overall_babies+{2:d},1),
-r_lost_babies=COALESCE(r_lost_babies+{3:d},1),r_rate=r_rate+{4:d} WHERE r_id={0:d};",
+            cmd.CommandText = String.Format(@"UPDATE rabbits SET r_event_date=NULL, r_event='none',
+r_status=r_status+1, r_last_fuck_okrol={1:s}, r_overall_babies=COALESCE(r_overall_babies+{2:d},1),
+r_lost_babies=COALESCE(r_lost_babies+{3:d},1), r_rate=r_rate+{4:d} WHERE r_id={0:d};",
                 rabbit, DBHelper.DateToMyString(date), children, dead, rt);
             fml.Rate += rt;
             cmd.ExecuteNonQuery();
+
             if (children > 0)
             {
                 int brd = 1;
@@ -212,13 +214,12 @@ r_lost_babies=COALESCE(r_lost_babies+{3:d},1),r_rate=r_rate+{4:d} WHERE r_id={0:
                     brd = fml.BreedID;
                 int rate = fml.Rate + (ml == null ? fml.Rate : ml.Rate) / 2;
                 int okrol = fml.Status;
-                cmd.CommandText = String.Format(@"INSERT INTO rabbits(r_parent,r_mother,r_father,r_born,r_sex,r_group,
-r_bon,r_genesis,r_name,r_surname,r_secname,r_breed,r_okrol,r_rate,r_notes
-) 
-VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d},{10:d},{11:d},''
-);",
-      rabbit, rabbit, father, DBHelper.DateToMyString(date), children, DBHelper.commonBon(fml.Bon.ToString(), ml != null ? ml.Bon.ToString() : fml.Bon.ToString()),
-      DBHelper.makeCommonGenesis(sql, fml.gens, (ml != null ? ml.gens : fml.gens), fml.zone), fml.nameID, (ml != null ? ml.nameID : 0), brd, okrol, rate/*,DBHelper.DateToMyString(date)*/);
+                cmd.CommandText = String.Format(@"INSERT 
+INTO rabbits(r_parent,r_mother,r_father,r_born,r_sex,r_group,r_bon,r_genesis,r_name,r_surname,r_secname,r_breed,r_okrol,r_rate,r_notes) 
+VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d},{10:d},{11:d},'');",
+      rabbit, rabbit, father, DBHelper.DateToMyString(date), children, DBHelper.commonBon(fml.Bon.ToString(), (ml != null ? ml.Bon.ToString() : fml.Bon.ToString())),
+      RabbitGenGetter.MakeCommonGenesis(sql, fml.gens, (ml != null ? ml.gens : fml.gens), fml.zone),
+      fml.nameID, (ml != null ? ml.nameID : 0), brd, okrol, rate/*,DBHelper.DateToMyString(date)*/);
                 cmd.ExecuteNonQuery();
                 return (int)cmd.LastInsertedId;
             }

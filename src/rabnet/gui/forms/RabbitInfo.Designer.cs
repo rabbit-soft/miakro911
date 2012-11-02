@@ -1176,7 +1176,6 @@
             this.dateWeight.Name = "dateWeight";
             this.dateWeight.Size = new System.Drawing.Size(129, 20);
             this.dateWeight.TabIndex = 1;
-            this.dateWeight.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
             // 
             // weightList
             // 

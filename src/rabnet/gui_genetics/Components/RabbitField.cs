@@ -67,55 +67,35 @@ namespace rabnet.Components
 		public void DrawRabbit(RabbitGen rbt)
 		{
 			Dictionary<int, Color> b_colors = new Dictionary<int, Color>();
-
 			b_colors = Engine.db().getBreedColors();
-
 			ProgressPanel.Visible = true;
 			RabbitsHolder.Visible = false;
-
 			_rootRabbitData = rbt;
-
 			_rootRabbit = new RabbitBar();
 			_rootRabbit.SetRabbit(rbt);
-
 			_rootRabbit.ReplaceGenomeColors(b_colors);
-
 			_rootRabbit.BackColor = this.BackColor;
-
-			_rootRabbit.WindowRabbitID = rbt.rid;
-
-			
+    		_rootRabbit.WindowRabbitID = rbt.ID;			
 			RabbitsHolder.Controls.Add(_rootRabbit);
 
 			RabbitPair rp = new RabbitPair();
 			_rootRabbitPair = rp;
-
-			_rootRabbitPair.WindowRabbitID = rbt.rid;
-
+			_rootRabbitPair.WindowRabbitID = rbt.ID;
 			_rootRabbitPair.SearchGoingOn+=new EvSearchGoingOn(SearchProc);
-
-
 			rp.Location = new Point(1000, 100);
 
 			int cnt = 0;
-
 			_RabbitPairs.Clear();
-
 			_RabbitPairs.Add(cnt, rp);
-
 			rp.ReplaceGenomeColors(b_colors);
 
-			RabbitGen rabbF = Engine.db().getRabbitGen(rbt.r_father);
-
-			RabbitGen rabbM = Engine.db().getRabbitGen(rbt.r_mother);
+			RabbitGen rabbF = Engine.db().getRabbitGen(rbt.FatherId);
+			RabbitGen rabbM = Engine.db().getRabbitGen(rbt.MotherId);
 
 			rp.SetMom(rabbM);
 			rp.SetDad(rabbF);
-
 			rp._id = cnt;
-
 			RabbitsHolder.SuspendLayout();
-
 			rp.SetParentControl(RabbitsHolder);
 			GetPairData(rp, ref cnt);
 
@@ -128,7 +108,6 @@ namespace rabnet.Components
 			this.ScrollControlIntoView(_rootRabbit);
 			this.ActiveControl = _rootRabbit;
 			//RabbitsHolder.AutoScrollMinSize
-
 		}
 
 		void _RootRabbitPair_SearchGoingOn(object sender, EventArgs e)
@@ -193,9 +172,9 @@ namespace rabnet.Components
 			{
 				log.Debug(string.Format("Rabbit pair #{0:d} has mom.", c));
 
-				RabbitGen rabbM = Engine.db().getRabbitGen(mrp.GetMom().r_mother);
+				RabbitGen rabbM = Engine.db().getRabbitGen(mrp.GetMom().MotherId);
 
-				RabbitGen rabbF = Engine.db().getRabbitGen(mrp.GetMom().r_father);
+				RabbitGen rabbF = Engine.db().getRabbitGen(mrp.GetMom().FatherId);
 
 				if ((rabbM != null) || (rabbF != null))
 				{
@@ -232,9 +211,8 @@ namespace rabnet.Components
 			{
 				log.Debug(string.Format("Rabbit pair #{0:d} has dad.", c));
 
-				RabbitGen rabbM = Engine.db().getRabbitGen(mrp.GetDad().r_mother);
-
-				RabbitGen rabbF = Engine.db().getRabbitGen(mrp.GetDad().r_father);
+				RabbitGen rabbM = Engine.db().getRabbitGen(mrp.GetDad().MotherId);
+				RabbitGen rabbF = Engine.db().getRabbitGen(mrp.GetDad().FatherId);
 
 				if ((rabbM != null) || (rabbF != null))
 				{

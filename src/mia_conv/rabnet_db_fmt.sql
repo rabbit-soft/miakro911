@@ -120,7 +120,7 @@ CREATE TABLE rabbits(
 	r_rate INTEGER NOT NULL default 0,
 	r_group INTEGER UNSIGNED NOT NULL DEFAULT 1,
 	r_breed INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	r_flags VARCHAR(10) NOT NULL DEFAULT '00000', #butcher | risk | multi(brak|vakcin) | nokuk | nolack
+	r_flags VARCHAR(10) NOT NULL DEFAULT '00000' COMMENT '[0]Готовая Продукция [1]Готов к реализации [2]Брак [3]Не куковать [4]Потеря лактации',
 	r_zone INTEGER UNSIGNED NOT NULL DEFAULT 0,
 	r_born DATETIME,
 	r_genesis INTEGER UNSIGNED NOT NULL DEFAULT 0,

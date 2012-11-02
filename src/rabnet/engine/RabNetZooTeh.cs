@@ -69,8 +69,8 @@ namespace rabnet
         /// <param name="type">0- Случка, 1-Вязка</param>
         private void getFucks(JobHolder jh,int type)
         {
-            f["brideAge"] = eng.brideAge().ToString();
-            f["type"] = type.ToString();
+            f[Filters.BRIDE_AGE] = eng.brideAge().ToString();
+            f[Filters.TYPE] = type.ToString();
             jh.AddRange(eng.db2().GetZooTechJobs(f,JobType.FUCK));//ztGetZooFuck(f));
         }
     }

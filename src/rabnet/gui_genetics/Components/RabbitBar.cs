@@ -45,9 +45,9 @@ namespace rabnet
 			UpdateTooltip();
 			_exists = true;
 			TabStop = true;
-			label1.Text = rab.rid.ToString();
-			label2.Text = rab.r_father.ToString();
-			label3.Text = rab.r_mother.ToString();
+			label1.Text = rab.ID.ToString();
+			label2.Text = rab.FatherId.ToString();
+			label3.Text = rab.MotherId.ToString();
 			RedrawMe();
 		}
 		public RabbitGen GetRabbit()
@@ -81,11 +81,11 @@ namespace rabnet
 			if (_rabbit != null)
 			{
 				string sex = "-";
-                if (_rabbit.sex == Rabbit.SexType.MALE)
+                if (_rabbit.Sex == Rabbit.SexType.MALE)
 				{
 					sex = "мужской";
 				}
-                if (_rabbit.sex == Rabbit.SexType.FEMALE)
+                if (_rabbit.Sex == Rabbit.SexType.FEMALE)
 				{
 					sex = "женский";
 				}
@@ -93,14 +93,14 @@ namespace rabnet
 Пол: {1}
 Порода: {2}
 Приплод: {3:f2}
-Родительские качества: {4:f2}", _rabbit.rid, sex, _rabbit.breed_name, _rabbit.PriplodK, _rabbit.RodK);
-				ttl = _rabbit.fullname;
+Родительские качества: {4:f2}", _rabbit.ID, sex, _rabbit.BreedName, _rabbit.PriplodK, _rabbit.RodK);
+				ttl = _rabbit.Fullname;
 				
 				dead = _rabbit.IsDead;
 
 				if (dead)
 				{
-                    if (_rabbit.sex == Rabbit.SexType.FEMALE)
+                    if (_rabbit.Sex == Rabbit.SexType.FEMALE)
 					{
 						ttl += " (списана)";
 					}
@@ -478,11 +478,11 @@ namespace rabnet
 			{
 				if (_rabbit != null)
 				{
-                    if (_rabbit.sex == Rabbit.SexType.MALE)
+                    if (_rabbit.Sex == Rabbit.SexType.MALE)
 					{
 						gender = 1;
 					}
-                    if (_rabbit.sex == Rabbit.SexType.FEMALE)
+                    if (_rabbit.Sex == Rabbit.SexType.FEMALE)
 					{
 						gender = 2;
 					}
@@ -669,7 +669,7 @@ namespace rabnet
 				{
 					RabbitCommandMessage cmd=new RabbitCommandMessage();
 					cmd.Command=RabbitCommandMessage.Commands.Highlight;
-					cmd.TargetRabbitID=_rabbit.rid;
+					cmd.TargetRabbitID=_rabbit.ID;
 					cmd.SourceWindowRabbitID = _windowRabbitID;
 					_parentPair.SearchFromChild(cmd);
 				}
@@ -686,7 +686,7 @@ namespace rabnet
 				{
 					RabbitCommandMessage cmd=new RabbitCommandMessage();
 					cmd.Command=RabbitCommandMessage.Commands.Unhighlight;
-					cmd.TargetRabbitID=_rabbit.rid;
+					cmd.TargetRabbitID=_rabbit.ID;
 					cmd.SourceWindowRabbitID = _windowRabbitID;
 					_parentPair.SearchFromChild(cmd);
 				}
@@ -699,7 +699,7 @@ namespace rabnet
 			{
 				RabbitCommandMessage cmd = new RabbitCommandMessage();
 				cmd.Command = RabbitCommandMessage.Commands.FindClone;
-				cmd.TargetRabbitID = _rabbit.rid;
+				cmd.TargetRabbitID = _rabbit.ID;
 				cmd.SourceWindowRabbitID = _windowRabbitID;
 				if (_parentPair.SearchFromChild(cmd))
 				{
@@ -715,7 +715,7 @@ namespace rabnet
 			Boolean res = false;
 			if (_rabbit != null)
 			{
-				if (cmd.TargetRabbitID== _rabbit.rid)
+				if (cmd.TargetRabbitID== _rabbit.ID)
 				{
 					if (cmd.Command== RabbitCommandMessage.Commands.Highlight)
 					{

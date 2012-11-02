@@ -7,29 +7,30 @@ namespace rabnet
 {
     public class RabbitGen
     {
-        public Rabbit.SexType sex;
-        public int rid;
-        public int r_mother;
-        public int r_father;
-        public string name;
-        public string surname;
-        public string secname;
-        public string breed_color_name;
-        public Color breed_color;
-        public int breed;
-        public string breed_name;
+        public Rabbit.SexType Sex;
+        public int ID;
+        public int MotherId;
+        public int FatherId;
+        public string Name;
+        public string Surname;
+        public string Secname;
+        public string BreedColorName;
+        public Color BreedColor;
+        public int BreedId;
+        public string BreedName;
         public Boolean IsDead;
-        public string t;
+        //public string t;
         public float PriplodK;
         public float RodK;
-        public string fullname
+
+        public string Fullname
         {
             get
             {
-                string n = name;
-                string surn = surname;
-                string secn = secname;
-                if (sex == Rabbit.SexType.FEMALE)
+                string n = Name;
+                string surn = Surname;
+                string secn = Secname;
+                if (Sex == Rabbit.SexType.FEMALE)
                 {
                     if (surn != "")
                     {

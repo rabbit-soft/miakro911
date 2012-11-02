@@ -34,7 +34,7 @@ namespace rabnet
 			_rabbitID = id;
 			_rabbit = Engine.db().getRabbitGen(id);
 
-			this.Text = string.Format("Родословная '{0}' ({1:D})", _rabbit.fullname, _rabbit.rid);
+			this.Text = string.Format("Родословная '{0}' ({1:D})", _rabbit.Fullname, _rabbit.ID);
 		}
 
 		private Boolean _batchClose = false;

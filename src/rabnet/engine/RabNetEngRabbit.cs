@@ -409,12 +409,10 @@ namespace rabnet
         /// <param name="dead">Количество родившихся мертвых крольчат</param>
         public void OkrolIt(DateTime when, int children, int dead)
         {
-            if (Sex != Rabbit.SexType.FEMALE)
-                throw new ExNotFemale(this);
-            if (EventDate == DateTime.MinValue)
-                throw new ExNotFucked(this);
-            if (when > DateTime.Now)
-                throw new ExBadDate(when);           
+            if (Sex != Rabbit.SexType.FEMALE) throw new ExNotFemale(this);
+            if (EventDate == DateTime.MinValue) throw new ExNotFucked(this);
+            if (when > DateTime.Now) throw new ExBadDate(when);  
+         
             int born = _eng.db().makeOkrol(this._id, when, children, dead);
             _eng.logs().log(RabNetLogs.LogType.OKROL, RabID, born, SmallAddress, "", String.Format("живых {0:d}, мертвых {1:d}", children, dead));
         }

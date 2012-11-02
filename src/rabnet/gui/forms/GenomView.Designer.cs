@@ -29,22 +29,22 @@
         private void InitializeComponent()
         {
             this.button1 = new System.Windows.Forms.Button();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
+            this.lbHeterosis = new System.Windows.Forms.Label();
+            this.lbInbreeding = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tvFemale = new rabnet.RabGenTreeView();
             this.lbFemaleName = new System.Windows.Forms.Label();
             this.lbFemaleBreed = new System.Windows.Forms.Label();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.tvMale = new rabnet.RabGenTreeView();
             this.lbMaleName = new System.Windows.Forms.Label();
             this.lbMaleBreed = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.tvChildren = new rabnet.RabGenTreeView();
             this.lbChildName = new System.Windows.Forms.Label();
             this.lbChildBreed = new System.Windows.Forms.Label();
-            this.tvFemale = new rabnet.RabGenTreeView();
-            this.tvMale = new rabnet.RabGenTreeView();
-            this.tvChildren = new rabnet.RabGenTreeView();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -61,32 +61,32 @@
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button1.Location = new System.Drawing.Point(582, 501);
+            this.button1.Location = new System.Drawing.Point(582, 381);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
             this.button1.Text = "Закрыть";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // label10
+            // lbHeterosis
             // 
-            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(15, 506);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(83, 13);
-            this.label10.TabIndex = 4;
-            this.label10.Text = "Гетерозис: нет";
+            this.lbHeterosis.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lbHeterosis.AutoSize = true;
+            this.lbHeterosis.Location = new System.Drawing.Point(15, 386);
+            this.lbHeterosis.Name = "lbHeterosis";
+            this.lbHeterosis.Size = new System.Drawing.Size(66, 13);
+            this.lbHeterosis.TabIndex = 4;
+            this.lbHeterosis.Text = "Гетерозис: ";
             // 
-            // label11
+            // lbInbreeding
             // 
-            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(124, 506);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(85, 13);
-            this.label11.TabIndex = 5;
-            this.label11.Text = "Инбридинг: нет";
+            this.lbInbreeding.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lbInbreeding.AutoSize = true;
+            this.lbInbreeding.Location = new System.Drawing.Point(124, 386);
+            this.lbInbreeding.Name = "lbInbreeding";
+            this.lbInbreeding.Size = new System.Drawing.Size(68, 13);
+            this.lbInbreeding.TabIndex = 5;
+            this.lbInbreeding.Text = "Инбридинг: ";
             // 
             // splitContainer1
             // 
@@ -103,7 +103,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(645, 483);
+            this.splitContainer1.Size = new System.Drawing.Size(645, 363);
             this.splitContainer1.SplitterDistance = 206;
             this.splitContainer1.TabIndex = 6;
             // 
@@ -115,10 +115,21 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(206, 483);
+            this.groupBox1.Size = new System.Drawing.Size(206, 363);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Самка";
+            // 
+            // tvFemale
+            // 
+            this.tvFemale.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tvFemale.Location = new System.Drawing.Point(6, 82);
+            this.tvFemale.MaxNodesCount = 1;
+            this.tvFemale.Name = "tvFemale";
+            this.tvFemale.Size = new System.Drawing.Size(194, 275);
+            this.tvFemale.TabIndex = 3;
             // 
             // lbFemaleName
             // 
@@ -151,7 +162,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.groupBox3);
-            this.splitContainer2.Size = new System.Drawing.Size(435, 483);
+            this.splitContainer2.Size = new System.Drawing.Size(435, 363);
             this.splitContainer2.SplitterDistance = 213;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -163,10 +174,21 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(213, 483);
+            this.groupBox2.Size = new System.Drawing.Size(213, 363);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Самец";
+            // 
+            // tvMale
+            // 
+            this.tvMale.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tvMale.Location = new System.Drawing.Point(6, 82);
+            this.tvMale.MaxNodesCount = 1;
+            this.tvMale.Name = "tvMale";
+            this.tvMale.Size = new System.Drawing.Size(201, 275);
+            this.tvMale.TabIndex = 4;
             // 
             // lbMaleName
             // 
@@ -194,10 +216,21 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(0, 0);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(218, 483);
+            this.groupBox3.Size = new System.Drawing.Size(218, 363);
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Потомство";
+            // 
+            // tvChildren
+            // 
+            this.tvChildren.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tvChildren.Location = new System.Drawing.Point(6, 82);
+            this.tvChildren.MaxNodesCount = 1;
+            this.tvChildren.Name = "tvChildren";
+            this.tvChildren.Size = new System.Drawing.Size(206, 275);
+            this.tvChildren.TabIndex = 5;
             // 
             // lbChildName
             // 
@@ -217,45 +250,15 @@
             this.lbChildBreed.TabIndex = 2;
             this.lbChildBreed.Text = "Порода: ";
             // 
-            // tvFemale
-            // 
-            this.tvFemale.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.tvFemale.Location = new System.Drawing.Point(6, 82);
-            this.tvFemale.Name = "tvFemale";
-            this.tvFemale.Size = new System.Drawing.Size(194, 395);
-            this.tvFemale.TabIndex = 3;
-            // 
-            // tvMale
-            // 
-            this.tvMale.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.tvMale.Location = new System.Drawing.Point(6, 82);
-            this.tvMale.Name = "tvMale";
-            this.tvMale.Size = new System.Drawing.Size(201, 395);
-            this.tvMale.TabIndex = 4;
-            // 
-            // tvChildren
-            // 
-            this.tvChildren.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.tvChildren.Location = new System.Drawing.Point(6, 82);
-            this.tvChildren.Name = "tvChildren";
-            this.tvChildren.Size = new System.Drawing.Size(206, 395);
-            this.tvChildren.TabIndex = 5;
-            // 
             // GenomView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button1;
-            this.ClientSize = new System.Drawing.Size(671, 532);
+            this.ClientSize = new System.Drawing.Size(671, 412);
             this.Controls.Add(this.splitContainer1);
-            this.Controls.Add(this.label11);
-            this.Controls.Add(this.label10);
+            this.Controls.Add(this.lbInbreeding);
+            this.Controls.Add(this.lbHeterosis);
             this.Controls.Add(this.button1);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -283,8 +286,8 @@
         #endregion
 
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label lbHeterosis;
+        private System.Windows.Forms.Label lbInbreeding;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label lbFemaleName;

@@ -12,6 +12,7 @@ namespace rabnet
 	{
 		protected static readonly ILog log = LogManager.GetLogger(typeof(GeneticsManager));
 		private static Dictionary<int, GeneticsMainForm> _GenForms = new Dictionary<int, GeneticsMainForm>();
+
         /// <summary>Добавляет новое окно генетики.</summary>
         /// <param name="rabID">Номер кролика, чью генетику показать</param>
         /// <returns>Успешность операции</returns>

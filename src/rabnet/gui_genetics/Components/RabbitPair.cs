@@ -52,7 +52,7 @@ namespace rabnet
 			if (r != null)
 			{
 				_mom = r;
-				FemaleRabbit.Genom = r.breed.ToString();
+				FemaleRabbit.Genom = r.BreedId.ToString();
 				FemaleRabbit.SetRabbit(r);
 				if (_treeParentPair != null)
 				{
@@ -66,7 +66,7 @@ namespace rabnet
 			if (r != null)
 			{
 				_dad = r;
-				MaleRabbit.Genom = r.breed.ToString();
+				MaleRabbit.Genom = r.BreedId.ToString();
 				MaleRabbit.SetRabbit(r);
 				if (_treeParentPair != null)
 				{

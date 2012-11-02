@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chState = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chBreed = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chFucksCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chChildren = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chHeterosis = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chInbreeding = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -56,13 +56,13 @@
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4,
-            this.columnHeader5,
-            this.columnHeader6,
-            this.columnHeader7});
+            this.chName,
+            this.chState,
+            this.chBreed,
+            this.chFucksCount,
+            this.chChildren,
+            this.chHeterosis,
+            this.chInbreeding});
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(12, 37);
@@ -76,33 +76,33 @@
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             this.listView1.DoubleClick += new System.EventHandler(this.listView1_DoubleClick);
             // 
-            // columnHeader1
+            // chName
             // 
-            this.columnHeader1.Text = "Имя";
+            this.chName.Text = "Имя";
             // 
-            // columnHeader2
+            // chState
             // 
-            this.columnHeader2.Text = "Статус";
+            this.chState.Text = "Статус";
             // 
-            // columnHeader3
+            // chBreed
             // 
-            this.columnHeader3.Text = "Порода";
+            this.chBreed.Text = "Порода";
             // 
-            // columnHeader4
+            // chFucksCount
             // 
-            this.columnHeader4.Text = "Случек";
+            this.chFucksCount.Text = "Случек";
             // 
-            // columnHeader5
+            // chChildren
             // 
-            this.columnHeader5.Text = "Детей";
+            this.chChildren.Text = "Детей";
             // 
-            // columnHeader6
+            // chHeterosis
             // 
-            this.columnHeader6.Text = "Гетерозис";
+            this.chHeterosis.Text = "Гетерозис";
             // 
-            // columnHeader7
+            // chInbreeding
             // 
-            this.columnHeader7.Text = "Инбридинг";
+            this.chInbreeding.Text = "Инбридинг NГ";
             // 
             // label1
             // 
@@ -203,7 +203,7 @@
             this.dateDays1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2012, 9, 24, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2012, 11, 2, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
             this.dateDays1.Location = new System.Drawing.Point(356, 274);
@@ -281,13 +281,13 @@
         #endregion
 
         private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.ColumnHeader columnHeader5;
-        private System.Windows.Forms.ColumnHeader columnHeader6;
-        private System.Windows.Forms.ColumnHeader columnHeader7;
+        private System.Windows.Forms.ColumnHeader chName;
+        private System.Windows.Forms.ColumnHeader chState;
+        private System.Windows.Forms.ColumnHeader chBreed;
+        private System.Windows.Forms.ColumnHeader chFucksCount;
+        private System.Windows.Forms.ColumnHeader chChildren;
+        private System.Windows.Forms.ColumnHeader chHeterosis;
+        private System.Windows.Forms.ColumnHeader chInbreeding;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button1;

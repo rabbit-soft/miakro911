@@ -14,6 +14,7 @@ namespace rabnet
         private Catalog _msn = Engine.db().catalogs().getSurNames(1, "ы");
         private Catalog _fsn = Engine.db().catalogs().getSurNames(2, "ы");
         private Color _bcolor = Color.Crimson;
+        private bool _inbreeding = false;
 
         public GenomView()
         {
@@ -45,6 +46,8 @@ namespace rabnet
             childNode.Nodes.Add(mTn.Clone() as TreeNode);
             tvChildren.Nodes.Add(childNode);
             tvChildren.ExpandAll();
+
+            lbInbreeding.Text += _inbreeding ? "ДА" : "НЕТ";
         }
 
         private string getChildrenName(int femaleNameId, int maleNameId)
@@ -75,6 +78,7 @@ namespace rabnet
                 if ((femaleTn.Tag as RabTreeData).ID == (maleParent.Tag as RabTreeData).ID)
                 {
                     //maleParent.BackColor = femaleTn.BackColor = _bcolor; //todo если ID равны,то можно красить всю ветку
+                    _inbreeding = true;
                     colorNode(femaleTn);
                     colorNode(maleParent);
                     continue;

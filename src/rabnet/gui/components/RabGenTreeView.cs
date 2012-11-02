@@ -4,16 +4,45 @@ namespace rabnet
 {
     public partial class RabGenTreeView : TreeView
     {
+        private int _maxCnt=1;
+
         public RabGenTreeView()
         {
             InitializeComponent();
+        }
+
+        public int MaxNodesCount
+        {
+            get { return _maxCnt; }
+            set
+            {
+                if (value <= 1)
+                    value = 1;
+                _maxCnt = value;
+            }
         }
 
         public TreeNode InsertNode(RabTreeData data, bool append)
         {
             if (!append)
                 this.Nodes.Clear();
-            TreeNode tn = this.Nodes.Add(data.NameCombined);
+            else
+            {
+                //проверка на уже существование данной ветки
+                for (int i = 0; i < this.Nodes.Count; )
+                {
+                    if ((this.Nodes[i].Tag != null) && (this.Nodes[i].Tag as RabTreeData).ID == data.ID)
+                    {
+                        this.Nodes[i].Remove();
+                        continue;
+                    }
+                    i++;
+                }
+                //удаляем последнюю если
+                while (this.Nodes.Count >= _maxCnt)
+                    this.Nodes.RemoveAt(this.Nodes.Count-1);
+            }
+            TreeNode tn = this.Nodes.Insert(0,data.NameCombined);
             insertNode(tn,data);
             tn.ExpandAll();
             tn.EnsureVisible();

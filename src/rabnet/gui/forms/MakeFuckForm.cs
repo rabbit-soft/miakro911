@@ -10,6 +10,9 @@ namespace rabnet
 {
     public partial class MakeFuckForm : Form
     {
+        private const int IND_FUCKS = 3;
+        private const int IND_CHILDREN = 4;
+
         private RabNetEngRabbit rab1 = null;
         private Catalog brds;
         private int rtosel=0;
@@ -31,7 +34,7 @@ namespace rabnet
             cbInbreed.Checked = (Engine.opt().getIntOption(Options.OPT_ID.INBREEDING) == 1);
             malewait = Engine.opt().getIntOption(Options.OPT_ID.MALE_WAIT);
             manual = true;
-            cs = new ListViewColumnSorter(listView1, new int[] { 3,4 },Options.OPT_ID.MAKE_FUCK_LIST);
+            cs = new ListViewColumnSorter(listView1, new int[] { IND_FUCKS, IND_CHILDREN }, Options.OPT_ID.MAKE_FUCK_LIST);
             listView1.ListViewItemSorter = cs;
             FormSizeSaver.Append(this);
         }

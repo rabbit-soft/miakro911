@@ -344,16 +344,25 @@ namespace rabnet
             get { return _flags[1] == '1'; }
             set { _flags = replaceChar(_flags, 1, value ? '1' : '0'); }
         }
+        /// <summary>
+        /// Брак
+        /// </summary>
         public bool Defect
         {
             get { return _flags[2] == '1' || _flags[2] == '3'; }
             set { _flags = replaceChar(_flags, 2, value ? '1' : '0'); }
         }
+        /// <summary>
+        /// Не куковать. Что это не понятно.
+        /// </summary>
         public bool NoKuk
         {
             get { return _flags[3] == '1'; }
             set { _flags = replaceChar(_flags, 3, value ? '1' : '0'); }
         }
+        /// <summary>
+        /// Потеря лактации
+        /// </summary>
         public bool NoLact
         {
             get { return _flags[4] == '1'; }
