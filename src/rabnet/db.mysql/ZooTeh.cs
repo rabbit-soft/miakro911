@@ -1,4 +1,5 @@
-﻿using System;
+﻿#define NEW_QUERY
+using System;
 using System.Text;
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
@@ -353,27 +354,58 @@ ORDER BY age DESC,0+LEFT(place,LOCATE(',',place)) ASC;",
 
         private string qFuck() ///да запрос долгий но переписать его как не знаю пока что
         {
-            return String.Format(@"SET group_concat_max_len=4096;   SELECT * FROM (
-        SELECT r_id,rabname(r_id," + getnm(1) + @") name,rabplace(r_id) place,TO_DAYS(NOW())-TO_DAYS(r_born) age,
+            return String.Format(@"SET group_concat_max_len=4096; DROP TABLE IF EXISTS tPartn; DROP TABLE IF EXISTS aaa;
+CREATE TEMPORARY TABLE tPartn SELECT rabname(r_id,0) pname, 
+		rabplace(r_id) pplace,
+		r_breed pbreed,
+		r_genesis pgens
+	FROM rabbits
+	WHERE r_sex='male' AND r_status>0 AND (r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol)>={3:d});
+  
+CREATE TEMPORARY TABLE aaa SELECT r_id,rabname(r_id,{8:s}) name,rabplace(r_id) place,TO_DAYS(NOW())-TO_DAYS(r_born) age,
         coalesce((SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id),null,0) suckers,
         r_status,
-        TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol) fromokrol," +
-            (_flt.safeBool(Filters.FIND_PARTNERS) ? @"
-        (SELECT GROUP_CONCAT( CONCAT(rabname(r_id,0),'&', rabplace(r_id)) ORDER BY rabname(r5.r_id,0) SEPARATOR '|') FROM rabbits r5
-            WHERE r5.r_sex='male' AND r_status>0 AND (r5.r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r5.r_last_fuck_okrol)>={3:d}){4:s}{5:s}) partners" : "'' partners") + @"
-        ,r_group,
+        TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol) fromokrol," + (_flt.safeBool(Filters.FIND_PARTNERS) ? @"
+        (SELECT GROUP_CONCAT( CONCAT(pname,'&', pplace) ORDER BY pname SEPARATOR '|') FROM tPartn
+            WHERE {4:s}{5:s})" : "''") + @" partners,
+        r_group,
         (SELECT {6:s} FROM breeds WHERE b_id=r_breed) breed, 0 srok 
-        FROM rabbits WHERE Substr(r_flags,1,1)='0' AND Substr(r_flags,3,1)='0' AND r_sex='female' AND r_event_date IS NULL AND r_status{7:s}) c 
-WHERE age>{0:d} AND r_status=0 OR (r_status=1 AND (suckers=0 OR fromokrol>={1:d})) OR (r_status>1 AND (suckers=0 OR fromokrol>={2:d}))
-ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;",
+    FROM rabbits 
+    WHERE Substr(r_flags,1,1)='0' AND Substr(r_flags,3,1)='0' AND r_sex='female' AND r_event_date IS NULL AND r_status{7:s};
+		
+SELECT * FROM aaa WHERE age>{0:d} AND r_status=0 OR (r_status=1 AND (suckers=0 OR fromokrol>={1:d})) OR (r_status>1 AND (suckers=0 OR fromokrol>={2:d}))
+ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;", 
     _flt.safeInt(Filters.BRIDE_AGE), _flt.safeInt(Filters.FIRST_FUCK), _flt.safeInt(Filters.STATE_FUCK), 
     
     _flt.safeInt(Filters.MALE_WAIT),//3
-    (_flt.safeBool(Filters.HETEROSIS) ? "" : String.Format(" AND r5.r_breed=rabbits.r_breed")),
-    (_flt.safeBool(Filters.INBREEDING) ? "" : String.Format(@" AND (SELECT COUNT(g_genom) FROM genoms WHERE g_id=rabbits.r_genesis AND g_genom IN (SELECT g2.g_genom FROM genoms g2 WHERE g2.g_id=r5.r_genesis))=0")),
+    (_flt.safeBool(Filters.HETEROSIS) ? "" : String.Format("pbreed=rabbits.r_breed")),//4
+    (_flt.safeBool(Filters.INBREEDING) ? "" : String.Format("{0:s}(SELECT COUNT(g_genom) FROM genoms WHERE g_id=rabbits.r_genesis AND g_genom IN (SELECT g2.g_genom FROM genoms g2 WHERE g2.g_id=pgens))=0", _flt.safeBool(Filters.HETEROSIS) ?"": " AND ")),
     
     (_flt.safeInt(Filters.SHORT) == 0 ? "b_name" : "b_short_name"),//6 
-    (_flt.safeInt(Filters.TYPE) == 1 ? ">0" : "=0"));//7
+    (_flt.safeInt(Filters.TYPE) == 1 ? ">0" : "=0"), getnm(1) );
+
+//            return String.Format(@"SET group_concat_max_len=4096;   SELECT * FROM (
+//        SELECT r_id,rabname(r_id," + getnm(1) + @") name,rabplace(r_id) place,TO_DAYS(NOW())-TO_DAYS(r_born) age,
+//        coalesce((SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id),null,0) suckers,
+//        r_status,
+//        TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol) fromokrol," +
+//            (_flt.safeBool(Filters.FIND_PARTNERS) ? @"
+//        (SELECT GROUP_CONCAT( CONCAT(rabname(r_id,0),'&', rabplace(r_id)) ORDER BY rabname(r5.r_id,0) SEPARATOR '|') FROM rabbits r5
+//            WHERE r5.r_sex='male' AND r_status>0 AND (r5.r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r5.r_last_fuck_okrol)>={3:d}){4:s}{5:s}) partners" : "'' partners") + @"
+//        ,r_group,
+//        (SELECT {6:s} FROM breeds WHERE b_id=r_breed) breed, 0 srok 
+//        FROM rabbits WHERE Substr(r_flags,1,1)='0' AND Substr(r_flags,3,1)='0' AND r_sex='female' AND r_event_date IS NULL AND r_status{7:s}) c 
+//WHERE age>{0:d} AND r_status=0 OR (r_status=1 AND (suckers=0 OR fromokrol>={1:d})) OR (r_status>1 AND (suckers=0 OR fromokrol>={2:d}))
+//ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;",
+//    _flt.safeInt(Filters.BRIDE_AGE), _flt.safeInt(Filters.FIRST_FUCK), _flt.safeInt(Filters.STATE_FUCK), 
+    
+//    _flt.safeInt(Filters.MALE_WAIT),//3
+//    (_flt.safeBool(Filters.HETEROSIS) ? "" : String.Format(" AND r5.r_breed=rabbits.r_breed")),
+//    (_flt.safeBool(Filters.INBREEDING) ? "" : String.Format(@" AND (SELECT COUNT(g_genom) FROM genoms WHERE g_id=rabbits.r_genesis AND g_genom IN (SELECT g2.g_genom FROM genoms g2 WHERE g2.g_id=r5.r_genesis))=0")),
+    
+//    (_flt.safeInt(Filters.SHORT) == 0 ? "b_name" : "b_short_name"),//6 
+//    (_flt.safeInt(Filters.TYPE) == 1 ? ">0" : "=0"));//7
+
         }
 
         private string qVacc()
