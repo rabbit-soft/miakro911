@@ -85,14 +85,14 @@ namespace rabnet
 			colSort.SemiReady();
         }
 
-        private void insertNode(TreeNode nd,TreeData data)
+        private void insertNode(TreeNode nd,RabTreeData data)
         {
-            if (data.Childrens!=null)
-            for (int i = 0; i < data.Childrens.Count; i++)
-                if (data.Childrens[i] != null)
+            if (data.Parents!=null)
+            for (int i = 0; i < data.Parents.Count; i++)
+                if (data.Parents[i] != null)
                 {
-                    TreeNode n = nd.Nodes.Add(data.Childrens[i].Name);
-                    insertNode(n, data.Childrens[i]);
+                    TreeNode n = nd.Nodes.Add(data.Parents[i].NameCombined);
+                    insertNode(n, data.Parents[i]);
                 }
         }
 
@@ -110,8 +110,8 @@ namespace rabnet
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!manual)
-                return;
+            if (!manual) return;
+
             makeSelectedCount();
             if (listView1.SelectedItems.Count != 1)
             {
@@ -119,35 +119,35 @@ namespace rabnet
             }
             if (gentree < 0)
             {
-                genTree.Nodes.Clear();
+                tvGens.Nodes.Clear();
                 return;
             }
             //проверка дерева кроликов на совпадения
             if (listView1.SelectedItems[0].SubItems[0].Text.IndexOf("-") == 0) return;
-            for (int ind = 0; ind < genTree.Nodes.Count; ind++)
+            for (int ind = 0; ind < tvGens.Nodes.Count; ind++)
             {
                 int len;
-                len = genTree.Nodes[ind].Text.IndexOf("-");
+                len = tvGens.Nodes[ind].Text.IndexOf("-");
                 if (len == -1)
-                    len = genTree.Nodes[ind].Text.IndexOf(",");
-                else if (genTree.Nodes[ind].Text.IndexOf(",") < len)
-                    len = genTree.Nodes[ind].Text.IndexOf(",");
-                string str = genTree.Nodes[ind].Text.Remove(len);
+                    len = tvGens.Nodes[ind].Text.IndexOf(",");
+                else if (tvGens.Nodes[ind].Text.IndexOf(",") < len)
+                    len = tvGens.Nodes[ind].Text.IndexOf(",");
+                string str = tvGens.Nodes[ind].Text.Remove(len);
                 if (listView1.SelectedItems[0].SubItems[NAMEFIELD].Text.StartsWith(str))
                 {
                     if (ind == 0) return;
-                    genTree.Nodes.RemoveAt(ind);
+                    tvGens.Nodes.RemoveAt(ind);
                     break;
                 }
             }
-            if (genTree.Nodes.Count > 0)
-                genTree.Nodes[0].ForeColor = Color.Gray;
-            while (genTree.Nodes.Count > gentree)
-                genTree.Nodes.RemoveAt(gentree);
-            TreeData dt = Engine.db().rabbitGenTree((int)listView1.SelectedItems[0].Tag);
+            if (tvGens.Nodes.Count > 0)
+                tvGens.Nodes[0].ForeColor = Color.Gray;
+            while (tvGens.Nodes.Count > gentree)
+                tvGens.Nodes.RemoveAt(gentree);
+            RabTreeData dt = Engine.db().rabbitGenTree((int)listView1.SelectedItems[0].Tag);
             if (dt != null && dt.Name != null)
             {
-                TreeNode tn = genTree.Nodes.Insert(0, dt.Name);
+                TreeNode tn = tvGens.Nodes.Insert(0, dt.NameCombined);
                 tn.ForeColor = Color.Blue;
                 insertNode(tn, dt);
                 tn.ExpandAll();

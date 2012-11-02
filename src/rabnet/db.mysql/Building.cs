@@ -139,28 +139,28 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) {1:s} ORDER BY m_id;",
             return "SELECT COUNT(t_id) FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id)" + makeWhere() + ";";
         }
 
-        internal static TreeData getTree(int parent,MySqlConnection con,TreeData par)
+        internal static BldTreeData getTree(int parent,MySqlConnection con,BldTreeData par)
         {
             MySqlCommand cmd = new MySqlCommand(@"SELECT b_id,b_farm,b_name FROM buildings WHERE b_parent=" + parent.ToString() + " ORDER BY b_farm ASC;", con);
             MySqlDataReader rd = cmd.ExecuteReader();
-            TreeData res=par;
+            BldTreeData res=par;
             if (par == null)           
-                res = new TreeData(0,0,"farm");
+                res = new BldTreeData(0,0,"farm");
             
-            List<TreeData> lst = new List<TreeData>();
+            List<BldTreeData> lst = new List<BldTreeData>();
             while (rd.Read())
             {               
                 int frm = rd.GetInt32(1);
                 String nm = rd.GetString(2);
-                TreeData dt = new TreeData(rd.GetInt32(0), frm, (frm == 0 ? nm : "№" + Building.Format(nm.Remove(0, 1))),res.Path);
+                BldTreeData dt = new BldTreeData(rd.GetInt32(0), frm, (frm == 0 ? nm : "№" + Building.Format(nm.Remove(0, 1))),res.Path);
                 lst.Add(dt);
             }
             rd.Close();
             if (lst.Count > 0)
             {
-                foreach (TreeData td in lst)               
-                    getTree(td.BldID, con, td);                
-                res.Childrens = lst;
+                foreach (BldTreeData td in lst)               
+                    getTree(td.ID, con, td);                
+                res.ChildNodes = lst;
             }
             return res;
         }

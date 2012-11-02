@@ -520,7 +520,8 @@ namespace rabnet
                 nm += " " + lbSecname.Text.Split(':')[1];
             if (lbSurname.Text!="")
                 nm += "-" + lbSurname.Text.Split(':')[1];
-            (new GenomView(_rab.Breed, f.breed, _rab.Genom, f.rgenom, nm, f.partner)).ShowDialog();
+            //(new GenomView(_rab.Breed, f.breed, _rab.Genom, f.rgenom, nm, f.partner)).ShowDialog();
+            (new GenomView(_rab.RabID, f.partnerid)).ShowDialog();
         }
 
         private void button13_Click(object sender, EventArgs e)

@@ -66,14 +66,14 @@ namespace rabnet
 			colSort.SemiReady();
 		}
 
-        private void insertNode(TreeNode nd, TreeData data)
+        private void insertNode(TreeNode nd, RabTreeData data)
         {
-            if (data.Childrens != null)
-                for (int i = 0; i < data.Childrens.Count; i++)
-                    if (data.Childrens[i] != null)
+            if (data.Parents != null)
+                for (int i = 0; i < data.Parents.Count; i++)
+                    if (data.Parents[i] != null)
                     {
-                        TreeNode n = nd.Nodes.Add(data.Childrens[i].Name);
-                        insertNode(n, data.Childrens[i]);
+                        TreeNode n = nd.Nodes.Add(data.Parents[i].Name);
+                        insertNode(n, data.Parents[i]);
                     }
         }
 
@@ -101,7 +101,7 @@ namespace rabnet
                 genTree.Nodes[0].ForeColor = Color.Gray;
             if (genTree.Nodes.Count > gentree)
                 genTree.Nodes.RemoveAt(gentree);
-            TreeData dt = Engine.db().rabbitGenTree((int)listView1.SelectedItems[0].Tag);
+            RabTreeData dt = Engine.db().rabbitGenTree((int)listView1.SelectedItems[0].Tag);
             if (dt != null)
             {
                 TreeNode tn = genTree.Nodes.Insert(0, dt.Name);

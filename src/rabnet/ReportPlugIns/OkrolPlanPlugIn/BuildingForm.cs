@@ -9,7 +9,7 @@ namespace rabnet
         public BuildingForm()
         {
             InitializeComponent();
-            TreeData buildTree = Engine.db().buildingsTree();
+            BldTreeData buildTree = Engine.db().buildingsTree();
             TreeNode n = makenode(null, "Ферма", buildTree);
             n.Tag = "0:0";
             n.Expand();
@@ -23,28 +23,28 @@ namespace rabnet
         /// <param name="name">Название фетки</param>
         /// <param name="td"></param>
         /// <returns></returns>
-        private TreeNode makenode(TreeNode parent, String name, TreeData td)
+        private TreeNode makenode(TreeNode parent, String name, BldTreeData td)
         {
             TreeNode n = null;
             if (parent == null)
                 n = treeView1.Nodes.Add(name);
             else
                 n = parent.Nodes.Add(name);
-            if (td.Childrens != null)
-                for (int i = 0; i < td.Childrens.Count; i++)
+            if (td.ChildNodes != null)
+                for (int i = 0; i < td.ChildNodes.Count; i++)
                 {
                     //String[] st = td.items[i].caption.Split(':');
-                    TreeData td1 = td.Childrens[i];
+                    BldTreeData td1 = td.ChildNodes[i];
                     if (td1.TierID != 0)
                         continue;
-                    TreeNode child = makenode(n, td1.Name, td.Childrens[i]);
+                    TreeNode child = makenode(n, td1.Name, td.ChildNodes[i]);
 
                     child.Tag = td1;
                 }
             return n;
         }
 
-        public int Build { get { return (tn.Tag as TreeData).BldID; } }
+        public int Build { get { return (tn.Tag as TreeData).ID; } }
 
         private void button1_Click(object sender, EventArgs e)
         {

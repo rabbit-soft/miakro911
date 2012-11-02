@@ -161,6 +161,12 @@
     <Compile Include="classes\RabnetConfig\sParams.cs" />
     <Compile Include="classes\RabnetConfig\RabnetConfig.cs" />
     <Compile Include="classes\Run.cs" />
+    <Compile Include="components\RabGenTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="components\RabGenTreeView.Designer.cs">
+      <DependentUpon>RabGenTreeView.cs</DependentUpon>
+    </Compile>
     <Compile Include="forms\AddRabVacForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -185,6 +191,7 @@
     <Compile Include="forms\MealForm.Designer.cs">
       <DependentUpon>MealForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="forms\RabGenTreeView.cs" />
     <Compile Include="forms\VaccinesCatalogForm.cs">
       <SubType>Form</SubType>
     </Compile>

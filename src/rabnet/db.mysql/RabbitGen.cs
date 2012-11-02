@@ -201,7 +201,7 @@ namespace db.mysql
         /// <param name="con"></param>
         /// <param name="lineage">Стэк родословной для предотвращения рекурсии</param>
         /// <returns></returns>
-        private static TreeData getRabbitGen(MySqlConnection con, int rabId, Stack<int> lineage)//, int level)
+        private static RabTreeData getRabbitGen(MySqlConnection con, int rabId, Stack<int> lineage)//, int level)
         {
             if (rabId == 0) return null;
             //проверка на рекурсию, которая могла возникнуть после конвертации из старой mia-файла                        
@@ -211,36 +211,39 @@ namespace db.mysql
                 return null;
             }
             lineage.Push(rabId);
+            const string query = @"SELECT
+        r_id,
+        r_name,
+        {0:s}(r_id,1) name,
+        r_mother,
+        r_father,
+        r_bon,
+        r_breed,
+        TO_DAYS(NOW())-TO_DAYS(r_born) age
+    FROM {1:s} WHERE r_id={2:d} LIMIT 1;";
 
-            MySqlCommand cmd = new MySqlCommand(@"SELECT
-                                                    rabname(r_id,1),
-                                                    r_mother,
-                                                    r_father,
-                                                    r_bon,
-                                                    TO_DAYS(NOW())-TO_DAYS(r_born)
-                                                FROM rabbits WHERE r_id=" + rabId.ToString() + " LIMIT 1;", con);
+            MySqlCommand cmd = new MySqlCommand(String.Format(query,"rabname","rabbits",rabId), con);
             MySqlDataReader rd = cmd.ExecuteReader();
             if (!rd.HasRows)
             {
                 rd.Close();
-                cmd.CommandText = @"SELECT
-                                        deadname(r_id,1),
-                                        r_mother,
-                                        r_father,
-                                        r_bon,
-                                        TO_DAYS(NOW())-TO_DAYS(r_born)
-                                   FROM dead WHERE r_id=" + rabId.ToString() + " LIMIT 1;";
+                cmd.CommandText = String.Format(query,"deadname","dead",rabId);
                 rd = cmd.ExecuteReader();
             }
-            TreeData res = new TreeData();
+            RabTreeData res = new RabTreeData();
             if (rd.Read())
             {
-                res.Name = rd.GetString(0) + ", " + rd.GetInt32(4).ToString() + "," + Rabbit.GetFBon(rd.GetString("r_bon"), true);
-                int mom = rd.IsDBNull(1) ? 0 : rd.GetInt32(1);
-                int dad = rd.IsDBNull(2) ? 0 : rd.GetInt32(2);
+                res.ID = rd.GetInt32("r_id"); 
+                res.Name = rd.GetString("name");
+                res.NameId = rd.GetInt32("r_name");
+                res.Age = rd.GetInt32("age");
+                res.Bon = Rabbit.GetFBon(rd.GetString("r_bon"), true);
+                res.BreedId = rd.GetInt32("r_breed");
+                int mom = rd.IsDBNull(rd.GetOrdinal("r_mother")) ? 0 : rd.GetInt32("r_mother");
+                int dad = rd.IsDBNull(rd.GetOrdinal("r_father")) ? 0 : rd.GetInt32("r_father");
                 rd.Close();
-                TreeData m = getRabbitGen(con, mom, lineage);
-                TreeData d = getRabbitGen(con, dad, lineage);
+                RabTreeData m = getRabbitGen(con, mom, lineage);
+                RabTreeData d = getRabbitGen(con, dad, lineage);
                 if (m == null)
                 {
                     m = d;
@@ -248,16 +251,16 @@ namespace db.mysql
                 }
                 if (m != null)
                 {
-                    res.Childrens = new List<TreeData>();
-                    res.Childrens.Add(m);
-                    res.Childrens.Add(d);
+                    res.Parents = new List<RabTreeData>();
+                    res.Parents.Add(m);
+                    res.Parents.Add(d);
                 }
             }
             rd.Close();
             return res;
         }
 
-        public static TreeData GetRabbitGen(MySqlConnection con,int rabbit)//, int level)
+        public static RabTreeData GetRabbitGen(MySqlConnection con,int rabbit)//, int level)
         {
             Stack<int> lineage = new Stack<int>();
             return getRabbitGen(con, rabbit, lineage);

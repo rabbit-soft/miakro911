@@ -67,7 +67,7 @@
             this.miGenetic = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.показатьНомерToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.genTree = new System.Windows.Forms.TreeView();
+            this.tvGens = new System.Windows.Forms.TreeView();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -86,7 +86,7 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.genTree);
+            this.splitContainer1.Panel2.Controls.Add(this.tvGens);
             this.splitContainer1.Size = new System.Drawing.Size(853, 550);
             this.splitContainer1.SplitterDistance = 709;
             this.splitContainer1.TabIndex = 2;
@@ -374,15 +374,15 @@
             this.показатьНомерToolStripMenuItem.Visible = false;
             this.показатьНомерToolStripMenuItem.Click += new System.EventHandler(this.tsmiIDshow_Click);
             // 
-            // genTree
+            // tvGens
             // 
-            this.genTree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.tvGens.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.genTree.Location = new System.Drawing.Point(3, 3);
-            this.genTree.Name = "genTree";
-            this.genTree.Size = new System.Drawing.Size(134, 544);
-            this.genTree.TabIndex = 1;
+            this.tvGens.Location = new System.Drawing.Point(3, 3);
+            this.tvGens.Name = "tvGens";
+            this.tvGens.Size = new System.Drawing.Size(134, 544);
+            this.tvGens.TabIndex = 1;
             // 
             // RabbitsPanel
             // 
@@ -416,7 +416,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader11;
         private System.Windows.Forms.ColumnHeader columnHeader12;
         private System.Windows.Forms.ColumnHeader columnHeader13;
-        private System.Windows.Forms.TreeView genTree;
+        private System.Windows.Forms.TreeView tvGens;
         private System.Windows.Forms.ContextMenuStrip actMenu;
         private System.Windows.Forms.ToolStripMenuItem passportMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newRab;

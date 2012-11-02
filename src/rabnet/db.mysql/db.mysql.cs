@@ -183,12 +183,12 @@ namespace db.mysql
                 type,name,filter.toString()));
         }
 
-        public TreeData rabbitGenTree(int rabbit)
+        public RabTreeData rabbitGenTree(int rabbit)
         {
             return RabbitGenGetter.GetRabbitGen(sql,rabbit);
         }
 
-        public TreeData buildingsTree()
+        public BldTreeData buildingsTree()
         {
             return Buildings.getTree(0, sql, null);
         }

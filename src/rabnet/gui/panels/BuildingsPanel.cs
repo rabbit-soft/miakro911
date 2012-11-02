@@ -43,7 +43,7 @@ namespace rabnet
         /// </summary>
         /// <param name="td"></param>
         /// <returns>Количество ферм</returns>
-        public static int GetFarmsCount(TreeData td)
+        public static int GetFarmsCount(BldTreeData td)
         {
             int res = 0;
             //String[] st = td.caption.Split(':');
@@ -53,11 +53,11 @@ namespace rabnet
                     res++;
                     return res;
                 }
-            if (td.Childrens != null)
+            if (td.ChildNodes != null)
             {
-                for (int i = 0; i < td.Childrens.Count; i++)
+                for (int i = 0; i < td.ChildNodes.Count; i++)
                 {
-                    res += GetFarmsCount(td.Childrens[i]);
+                    res += GetFarmsCount(td.ChildNodes[i]);
                 }
             }
             return res;
@@ -105,7 +105,7 @@ namespace rabnet
         /// <param name="name">Название фетки</param>
         /// <param name="td"></param>
         /// <returns></returns>
-        private TreeNode makeNode(TreeNode parent, String name, TreeData td)
+        private TreeNode makeNode(TreeNode parent, String name, BldTreeData td)
         {
             TreeNode n = null;
             if (parent == null)
@@ -114,22 +114,22 @@ namespace rabnet
                 n = parent.Nodes.Add(name);
 
             TreeNode child;
-            if (td.Childrens!=null)
+            if (td.ChildNodes!=null)
                 //for (int i = 0; i < td.Childrens.Count; i++)
-                while (td.Childrens.Count>0)
+                while (td.ChildNodes.Count>0)
                 {
-                    child = makeNode(n, td.Childrens[0].Name, td.Childrens[0]);
-                    child.Tag = td.Childrens[0];                  
-                    int fid = td.Childrens[0].TierID;
+                    child = makeNode(n, td.ChildNodes[0].Name, td.ChildNodes[0]);
+                    child.Tag = td.ChildNodes[0];                  
+                    int fid = td.ChildNodes[0].TierID;
                     addNoFarm(fid);
                     if (maxfarm < fid)
                         maxfarm = fid;
-                    if (td.Childrens[0].BldID == preBuilding)
+                    if (td.ChildNodes[0].ID == preBuilding)
                     {
                         treeView1.SelectedNode = child;
                         treeView1.SelectedNode.Expand();
                     }
-                    td.Childrens.RemoveAt(0);
+                    td.ChildNodes.RemoveAt(0);
                 }
             n.Tag = td;
             return n;
@@ -145,7 +145,7 @@ namespace rabnet
             nofarms.Clear();
             nofarm = 1;
             maxfarm = 0;
-            TreeData buildTree = Engine.db().buildingsTree();
+            BldTreeData buildTree = Engine.db().buildingsTree();
             TreeNode n = makeNode(null, "Ферма", buildTree);
 #if PROTECTED
 //            if (nofarm<=PClient.get().farms())
@@ -265,8 +265,8 @@ namespace rabnet
         }
         private TreeNode searchFarm(int tierID,int bid,TreeNode nd)
         {
-            TreeData td = (nd.Tag as TreeData);//.Split(':');
-            if (td.TierID == tierID || td.BldID == bid)
+            BldTreeData td = (nd.Tag as BldTreeData);//.Split(':');
+            if (td.TierID == tierID || td.ID == bid)
             {
                 return nd;
             }
@@ -471,9 +471,9 @@ namespace rabnet
 
         private bool isFarm(TreeNode tn) { return farmNum(tn) != 0; }
         private bool isFarm() { return isFarm(treeView1.SelectedNode); }
-        private int farmNum(TreeNode tn) { return (tn.Tag as TreeData).TierID; }
+        private int farmNum(TreeNode tn) { return (tn.Tag as BldTreeData).TierID; }
         private int farmNum() { return farmNum(treeView1.SelectedNode); }
-        private int buildNum(TreeNode tn) { return (tn.Tag as TreeData).BldID; }
+        private int buildNum(TreeNode tn) { return (tn.Tag as BldTreeData).ID; }
         private int buildNum() { return buildNum(treeView1.SelectedNode); }
 
         private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)

@@ -56,8 +56,8 @@ namespace rabnet
         /// </summary>
         /// <returns></returns>
         int getMFCount();
-        TreeData rabbitGenTree(int rabbit);
-        TreeData buildingsTree();       
+        RabTreeData rabbitGenTree(int rabbit);
+        BldTreeData buildingsTree();       
         YoungRabbit[] GetYoungers(int momId);
         int[] getTiers(int farm);
         Building getBuilding(int tier);       
