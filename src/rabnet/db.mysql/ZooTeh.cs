@@ -344,17 +344,19 @@ WHERE l_type=21 AND DATE(l_date)>=DATE(rabbits.r_event_date)) ORDER BY srok DESC
         private string qBoysGirlsOut()
         {
             return String.Format(@"SELECT if(r_parent!=0,r_parent,r_id) r_id, 0 srok,
-rabname(if(r_parent!=0,r_parent,r_id),{3:s}) name, 
-rabplace(if(r_parent!=0,r_parent,r_id)) place, 
-TO_DAYS(NOW())-TO_DAYS(r_born) age,{2:s} 
+    rabname(if(r_parent!=0,r_parent,r_id),{3:s}) name, 
+    rabplace(if(r_parent!=0,r_parent,r_id)) place, 
+    TO_DAYS(NOW())-TO_DAYS(r_born) age,{2:s} 
 FROM rabbits WHERE {0:s} AND (TO_DAYS(NOW())-TO_DAYS(r_born))>={1:d} 
 ORDER BY age DESC,0+LEFT(place,LOCATE(',',place)) ASC;",
-                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "(r_sex='female' and r_parent<>0)" : "(r_sex='void' OR (r_sex='male' and r_parent<>0))"), _flt.safeInt(Filters.BOYS_OUT), brd(), getnm());
+                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "(r_sex='female' and r_parent<>0)" : "(r_sex='void' OR (r_sex='male' and r_parent<>0))"),
+                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT)), brd(), getnm());
         }
 
         private string qFuck() ///да запрос долгий но переписать его как не знаю пока что
         {
-            return String.Format(@"SET group_concat_max_len=4096; DROP TABLE IF EXISTS tPartn; DROP TABLE IF EXISTS aaa;
+            return String.Format(@"SET group_concat_max_len=4096; 
+DROP TABLE IF EXISTS tPartn; 
 CREATE TEMPORARY TABLE tPartn SELECT rabname(r_id,0) pname, 
 		rabplace(r_id) pplace,
 		r_breed pbreed,
@@ -374,7 +376,8 @@ CREATE TEMPORARY TABLE aaa SELECT r_id,rabname(r_id,{8:s}) name,rabplace(r_id) p
     WHERE Substr(r_flags,1,1)='0' AND Substr(r_flags,3,1)='0' AND r_sex='female' AND r_event_date IS NULL AND r_status{7:s};
 		
 SELECT * FROM aaa WHERE age>{0:d} AND r_status=0 OR (r_status=1 AND (suckers=0 OR fromokrol>={1:d})) OR (r_status>1 AND (suckers=0 OR fromokrol>={2:d}))
-ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;", 
+ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;
+DROP TABLE IF EXISTS aaa;", 
     _flt.safeInt(Filters.BRIDE_AGE), _flt.safeInt(Filters.FIRST_FUCK), _flt.safeInt(Filters.STATE_FUCK), 
     
     _flt.safeInt(Filters.MALE_WAIT),//3
@@ -432,7 +435,7 @@ ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;",
     v_age, 
     v_do_times,
     v_name, {1:s}
-  FROM rabbits rb,vaccines v WHERE v_id in({2:s});
+  FROM rabbits rb,vaccines v WHERE v_id in({2:s}) AND v_id>0;
 {3:s}
 SELECT * FROM aaa WHERE age>=v_age AND dt is NULL AND srok IS NOT NULL AND srok>=0 AND (v_do_times=0 OR (times<v_do_times)) {4:s} ORDER BY srok;
 DROP TEMPORARY TABLE IF EXISTS aaa; {5:s}", getnm(), brd(), show,
