@@ -29,14 +29,14 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutForm));
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.lbBuildDate = new System.Windows.Forms.Label();
             this.logoPictureBox = new System.Windows.Forms.PictureBox();
             this.labelProductName = new System.Windows.Forms.Label();
             this.labelVersion = new System.Windows.Forms.Label();
-            this.labelCopyright = new System.Windows.Forms.Label();
             this.textBoxDescription = new System.Windows.Forms.TextBox();
-            this.okButton = new System.Windows.Forms.Button();
+            this.labelCopyright = new System.Windows.Forms.Label();
             this.linkLabel = new System.Windows.Forms.LinkLabel();
-            this.lbBuildDate = new System.Windows.Forms.Label();
+            this.okButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
             this.SuspendLayout();
@@ -67,6 +67,18 @@
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel.Size = new System.Drawing.Size(618, 226);
             this.tableLayoutPanel.TabIndex = 0;
+            // 
+            // lbBuildDate
+            // 
+            this.lbBuildDate.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbBuildDate.Location = new System.Drawing.Point(284, 34);
+            this.lbBuildDate.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
+            this.lbBuildDate.MaximumSize = new System.Drawing.Size(0, 17);
+            this.lbBuildDate.Name = "lbBuildDate";
+            this.lbBuildDate.Size = new System.Drawing.Size(331, 17);
+            this.lbBuildDate.TabIndex = 26;
+            this.lbBuildDate.Text = "Дата сборки: ";
+            this.lbBuildDate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // logoPictureBox
             // 
@@ -104,18 +116,6 @@
             this.labelVersion.Text = "Version";
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // labelCopyright
-            // 
-            this.labelCopyright.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelCopyright.Location = new System.Drawing.Point(284, 51);
-            this.labelCopyright.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
-            this.labelCopyright.MaximumSize = new System.Drawing.Size(0, 17);
-            this.labelCopyright.Name = "labelCopyright";
-            this.labelCopyright.Size = new System.Drawing.Size(331, 17);
-            this.labelCopyright.TabIndex = 21;
-            this.labelCopyright.Text = "Copyright";
-            this.labelCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // textBoxDescription
             // 
             this.textBoxDescription.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -130,16 +130,17 @@
             this.textBoxDescription.TabStop = false;
             this.textBoxDescription.Text = "Description";
             // 
-            // okButton
+            // labelCopyright
             // 
-            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.okButton.Location = new System.Drawing.Point(540, 203);
-            this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size(75, 20);
-            this.okButton.TabIndex = 24;
-            this.okButton.Text = "&OK";
-            this.okButton.Click += new System.EventHandler(this.okButton_Click);
+            this.labelCopyright.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelCopyright.Location = new System.Drawing.Point(284, 51);
+            this.labelCopyright.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
+            this.labelCopyright.MaximumSize = new System.Drawing.Size(0, 17);
+            this.labelCopyright.Name = "labelCopyright";
+            this.labelCopyright.Size = new System.Drawing.Size(331, 17);
+            this.labelCopyright.TabIndex = 21;
+            this.labelCopyright.Text = "Copyright";
+            this.labelCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // linkLabel
             // 
@@ -153,17 +154,16 @@
             this.linkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_LinkClicked);
             // 
-            // lbBuildDate
+            // okButton
             // 
-            this.lbBuildDate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbBuildDate.Location = new System.Drawing.Point(284, 34);
-            this.lbBuildDate.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
-            this.lbBuildDate.MaximumSize = new System.Drawing.Size(0, 17);
-            this.lbBuildDate.Name = "lbBuildDate";
-            this.lbBuildDate.Size = new System.Drawing.Size(331, 17);
-            this.lbBuildDate.TabIndex = 26;
-            this.lbBuildDate.Text = "Дата сборки: ";
-            this.lbBuildDate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.okButton.Location = new System.Drawing.Point(540, 203);
+            this.okButton.Name = "okButton";
+            this.okButton.Size = new System.Drawing.Size(75, 20);
+            this.okButton.TabIndex = 24;
+            this.okButton.Text = "&OK";
+            this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
             // AboutForm
             // 

@@ -31,19 +31,19 @@
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chSex = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chAge = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chBreed = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chWeight = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chFlags = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chAverAge = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chRate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chClass = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chAddress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chNotes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.actMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.passportMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newRab = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,7 +67,7 @@
             this.miGenetic = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.показатьНомерToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tvGens = new RabGenTreeView();
+            this.tvGens = new rabnet.RabGenTreeView();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -97,19 +97,19 @@
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4,
-            this.columnHeader5,
-            this.columnHeader6,
-            this.columnHeader7,
-            this.columnHeader8,
-            this.columnHeader9,
-            this.columnHeader10,
-            this.columnHeader11,
-            this.columnHeader12,
-            this.columnHeader13});
+            this.chName,
+            this.chSex,
+            this.chAge,
+            this.chBreed,
+            this.chWeight,
+            this.chStatus,
+            this.chFlags,
+            this.chCount,
+            this.chAverAge,
+            this.chRate,
+            this.chClass,
+            this.chAddress,
+            this.chNotes});
             this.listView1.ContextMenuStrip = this.actMenu;
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
@@ -127,70 +127,70 @@
             this.listView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseDown);
             this.listView1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseUp);
             // 
-            // columnHeader1
+            // chName
             // 
-            this.columnHeader1.Text = "Имя";
-            this.columnHeader1.Width = 122;
+            this.chName.Text = "Имя";
+            this.chName.Width = 122;
             // 
-            // columnHeader2
+            // chSex
             // 
-            this.columnHeader2.Text = "Пол";
-            this.columnHeader2.Width = 41;
+            this.chSex.Text = "Пол";
+            this.chSex.Width = 41;
             // 
-            // columnHeader3
+            // chAge
             // 
-            this.columnHeader3.Text = "Возраст";
-            this.columnHeader3.Width = 47;
+            this.chAge.Text = "Возраст";
+            this.chAge.Width = 47;
             // 
-            // columnHeader4
+            // chBreed
             // 
-            this.columnHeader4.Text = "Порода";
-            this.columnHeader4.Width = 48;
+            this.chBreed.Text = "Порода";
+            this.chBreed.Width = 48;
             // 
-            // columnHeader5
+            // chWeight
             // 
-            this.columnHeader5.Text = "Вес";
-            this.columnHeader5.Width = 38;
+            this.chWeight.Text = "Вес";
+            this.chWeight.Width = 38;
             // 
-            // columnHeader6
+            // chStatus
             // 
-            this.columnHeader6.Text = "Статус";
-            this.columnHeader6.Width = 50;
+            this.chStatus.Text = "Статус";
+            this.chStatus.Width = 50;
             // 
-            // columnHeader7
+            // chFlags
             // 
-            this.columnHeader7.Text = "Б/Г";
-            this.columnHeader7.Width = 35;
+            this.chFlags.Text = "Пометки";
+            this.chFlags.Width = 35;
             // 
-            // columnHeader8
+            // chCount
             // 
-            this.columnHeader8.Text = "N";
-            this.columnHeader8.Width = 31;
+            this.chCount.Text = "N";
+            this.chCount.Width = 31;
             // 
-            // columnHeader9
+            // chAverAge
             // 
-            this.columnHeader9.Text = "СрВ";
-            this.columnHeader9.Width = 36;
+            this.chAverAge.Text = "СрВ";
+            this.chAverAge.Width = 36;
             // 
-            // columnHeader10
+            // chRate
             // 
-            this.columnHeader10.Text = "Рейтинг";
-            this.columnHeader10.Width = 46;
+            this.chRate.Text = "Рейтинг";
+            this.chRate.Width = 46;
             // 
-            // columnHeader11
+            // chClass
             // 
-            this.columnHeader11.Text = "Класс";
-            this.columnHeader11.Width = 41;
+            this.chClass.Text = "Класс";
+            this.chClass.Width = 41;
             // 
-            // columnHeader12
+            // chAddress
             // 
-            this.columnHeader12.Text = "Адрес";
-            this.columnHeader12.Width = 90;
+            this.chAddress.Text = "Адрес";
+            this.chAddress.Width = 90;
             // 
-            // columnHeader13
+            // chNotes
             // 
-            this.columnHeader13.Text = "Заметки";
-            this.columnHeader13.Width = 64;
+            this.chNotes.Text = "Заметки";
+            this.chNotes.Width = 64;
             // 
             // actMenu
             // 
@@ -380,6 +380,7 @@
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.tvGens.Location = new System.Drawing.Point(3, 3);
+            this.tvGens.MaxNodesCount = 1;
             this.tvGens.Name = "tvGens";
             this.tvGens.Size = new System.Drawing.Size(134, 544);
             this.tvGens.TabIndex = 1;
@@ -403,19 +404,19 @@
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.ColumnHeader columnHeader5;
-        private System.Windows.Forms.ColumnHeader columnHeader6;
-        private System.Windows.Forms.ColumnHeader columnHeader7;
-        private System.Windows.Forms.ColumnHeader columnHeader8;
-        private System.Windows.Forms.ColumnHeader columnHeader9;
-        private System.Windows.Forms.ColumnHeader columnHeader10;
-        private System.Windows.Forms.ColumnHeader columnHeader11;
-        private System.Windows.Forms.ColumnHeader columnHeader12;
-        private System.Windows.Forms.ColumnHeader columnHeader13;
+        private System.Windows.Forms.ColumnHeader chName;
+        private System.Windows.Forms.ColumnHeader chSex;
+        private System.Windows.Forms.ColumnHeader chAge;
+        private System.Windows.Forms.ColumnHeader chBreed;
+        private System.Windows.Forms.ColumnHeader chWeight;
+        private System.Windows.Forms.ColumnHeader chStatus;
+        private System.Windows.Forms.ColumnHeader chFlags;
+        private System.Windows.Forms.ColumnHeader chCount;
+        private System.Windows.Forms.ColumnHeader chAverAge;
+        private System.Windows.Forms.ColumnHeader chRate;
+        private System.Windows.Forms.ColumnHeader chClass;
+        private System.Windows.Forms.ColumnHeader chAddress;
+        private System.Windows.Forms.ColumnHeader chNotes;
         private RabGenTreeView tvGens;
         private System.Windows.Forms.ContextMenuStrip actMenu;
         private System.Windows.Forms.ToolStripMenuItem passportMenuItem;

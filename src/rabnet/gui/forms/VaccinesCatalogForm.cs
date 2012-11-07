@@ -107,6 +107,8 @@ namespace rabnet
                 string tmp = editRow.Cells[FIELD_AFTER].Value.ToString().Split(':')[0];
                 if (tmp != editRow.Cells[FIELD_ID].Value.ToString())//не является ли после себя самого
                     after = int.Parse(tmp);
+                else
+                    editRow.Cells[FIELD_AFTER].Value = chAfter.Items[0];
             }
 
             if (editRow.Cells[FIELD_ZOO].Value != null)
@@ -131,6 +133,8 @@ namespace rabnet
             int intVal = 0;
             string result = cellValue == null ? "0" : cellValue.ToString();
             int.TryParse(result, out intVal);
+            if (intVal < 0)
+                intVal = 0;
             return intVal;
         }
 

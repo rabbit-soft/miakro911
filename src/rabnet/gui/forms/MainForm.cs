@@ -27,7 +27,7 @@ namespace rabnet
         /// </summary>
         private RabNetPanel curpanel=null;
         private static MainForm me = null;
-        private bool mustclose = false;
+        private bool _mustclose = false;
 
         public MainForm()
         {
@@ -55,7 +55,7 @@ namespace rabnet
         private void ChangeFarmMenuItem_Click(object sender, EventArgs e)
         {
             LoginForm.stop = false;
-            mustclose = true;
+            _mustclose = true;
             Close();
         }
 
@@ -200,7 +200,8 @@ namespace rabnet
 #endif
             if (Engine.opt().getIntOption(Options.OPT_ID.CONFIRM_EXIT) == 0)
                 return;
-            if (mustclose) return;
+            if (_mustclose) return;
+
             DialogResult dlr = MessageBox.Show("Вы уверены что хотите Выйти?", "Выход", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dlr == DialogResult.No)
             {
@@ -225,7 +226,7 @@ namespace rabnet
         private void tNoWorking_Tick(object sender, EventArgs e)
         {
             LoginForm.stop = false;
-            mustclose = true;
+            _mustclose = true;
             Close();
         }
         /// <summary>
@@ -338,7 +339,8 @@ namespace rabnet
         private void tsmiDeadsArchive_Click(object sender, EventArgs e)
         {
             new DeadForm().ShowDialog();
-            rabStatusBar1.Run();
+            if(!_mustclose)
+                rabStatusBar1.Run();
         }
 
         private void namesMenuItem_Click(object sender, EventArgs e)
@@ -379,7 +381,8 @@ namespace rabnet
 #if !DEMO
             //new CatalogForm(CatalogForm.CatalogType.VACCINES).ShowDialog();
             new VaccinesCatalogForm().ShowDialog();
-            rabStatusBar1.Run();
+            if (!_mustclose)
+                rabStatusBar1.Run();
 #else
             DemoErr.DemoNoReportMsg();
 #endif
