@@ -15,6 +15,7 @@ namespace rabnet
         /// Необходимой  версия БД (options o_name='db',o_subname='version')
         /// </summary>
         const int NEED_DB_VERSION = 12;
+
         private IRabNetDataLayer data = null;
         private IRabNetDataLayer data2 = null;
         private ILog _logger = null;

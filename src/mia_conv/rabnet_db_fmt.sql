@@ -336,7 +336,8 @@ CREATE  TABLE `rab_vac` (
 
 #DATA
 
-INSERT INTO vaccines(v_id,v_name,v_duration,v_age,v_zootech) VALUES(1,'Прививка',356,45,1);
+INSERT INTO `vaccines`(v_id,v_name,v_do_after,v_duration,v_age,v_zootech,v_do_times) VALUES(-1,'Стимуляция самки',0,3,2,0,0);
+INSERT INTO `vaccines`(v_id,v_name,v_do_after,v_duration,v_age,v_zootech,v_do_times) VALUES(1,'Прививка',0,180,45,1,0);
 
 INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','12');
 INSERT INTO options(o_name,o_subname,o_value) VALUES
@@ -504,8 +505,6 @@ INSERT INTO `names` VALUES
 (35,'female','Сабрина','Сабринин',0,NULL),
 (36,'female','Стрелка','Стрелкин',0,NULL),
 (37,'female','Шаня','Шанин',0,NULL);
-
-INSERT INTO `vaccines`(v_id,v_name,v_do_after,v_duration,v_age,v_zootech,v_do_times) VALUES(-1,'Стимуляция самки',0,3,2,0,0);
 
 #views
 
