@@ -28,7 +28,7 @@ namespace rabnet
         private const int NEW_FARMS_LIMIT = 0xff;
         public const int DEMO_MAX_FARMS = 10;
         private bool manual = true;
-        protected static readonly ILog _logger = LogManager.GetLogger(typeof(MainForm));
+        //protected static readonly ILog _logger = LogManager.GetLogger(typeof(MainForm));
         const String NEW_BUILDING = "Новое строение";
         List<int> nofarms = new List<int>();
         int nofarm = 1;

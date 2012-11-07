@@ -31,7 +31,7 @@ namespace rabnet
 
         public MainForm()
         {
-            InitializeComponent();
+            InitializeComponent(); 
             me = this;
             log.Debug("Program started");
             panels=new RabNetPanel[]

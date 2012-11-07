@@ -19,6 +19,7 @@ namespace rabnet
             //            labelCompanyName.Text = AssemblyCompany;
             textBoxDescription.Text = AssemblyDescription;
             linkLabel.Links.Add(18,18,"www.rabbit-soft.ru");
+            lbBuildDate.Text += MainForm.BuildDate.ToLongDateString();
         }
 
         public string licFarms()

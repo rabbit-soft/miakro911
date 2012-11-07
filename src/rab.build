@@ -110,9 +110,14 @@
 
 	<target name="build" depends="clear,buildall" description="Full build"/>
 
-	<!--target name="buildall" depends="svn_rev,release,protected,tools,release_zip" description="Build all projects"/-->
-	<target name="buildall" depends="svn_rev,protected,demo" description="Build all projects">
-		<delete dir="${curdir}/_tmp"/>
+	<target name="buildall" depends="make_tmp_dir,svn_rev,bld_date,protected,demo" description="Build all projects">
+		<!--delete dir="${tmpdir}"/-->
+	</target>
+	
+	<target name="make_tmp_dir">
+		<property name="tmpdir" value="${curdir}/_tmp" />
+		<delete dir="${tmpdir}"/>
+		<mkdir dir="${tmpdir}"/>
 	</target>
 	
 	<target name="clear" description="Clear build directories">
@@ -131,22 +136,6 @@
 		<property name="mysql.use" value="${bin_dir_bin}/${mysql.lib}" />
 		<property name="rep.use" value="${bin_dir_bin}/${rep.lib}" />
 		<property name="repeng.use" value="${bin_dir_bin}/${repeng.lib}" />
-		<!--mkdir dir="${bin_dir}/RabNet"/>
-		<mkdir dir="${bin_dir}/RabNet/reports"/>
-		<mkdir dir="${bin_dir}/RabDump"/>
-		<mkdir dir="${bin_dir}/Tools"/>		
-		<mkdir dir="${bin_dir}/Genetics"/>
-		<property name="log4net.use" value="${bin_dir}/RabNet/${log4net.lib}" />
-		<property name="log4net.d.use" value="${bin_dir}/RabDump/${log4net.lib}" />
-		<property name="mysql.use" value="${bin_dir}/RabNet/${mysql.lib}" />
-		<property name="mysql.d.use" value="${bin_dir}/RabDump/${mysql.lib}" />
-		<property name="mysql.t.use" value="${bin_dir}/Tools/${mysql.lib}" />
-		<property name="rep.use" value="${bin_dir}/RabNet/${rep.lib}" />
-		<property name="repeng.use" value="${bin_dir}/RabNet/${repeng.lib}" /-->
-		
-		<!--copy file="${log4net.ass}" tofile="${log4net.d.use}" />
-		<copy file="${mysql.ass}" tofile="${mysql.d.use}" />
-		<copy file="${mysql.ass}" tofile="${mysql.t.use}" /-->
 		<copy file="${log4net.ass}" tofile="${log4net.use}" />
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />		
 		<copy file="${rep.ass}" tofile="${rep.use}" />
@@ -157,8 +146,6 @@
 		<copy file="${grd_lib64_path}/${guardant2_64.lib}" tofile="${bin_dir_bin}/${guardant2_64.lib}" />
 		<copy file="${grd_path.lib}/${guardantNET.lib}" tofile="${bin_dir_bin}/${guardantNET.lib}" />
 		<copy file="${grd_path.lib}/${guardant2.lib}" tofile="${bin_dir_bin}/${guardant2.lib}" />
-		<!--copy file="${grd_lib64_path}/${guardant2_64.lib}" tofile="${bin_dir}/RabDump/${guardant2_64.lib}" />
-		<copy file="${grd_path.lib}/${guardantNET.lib}" tofile="${bin_dir}/RabDump/${guardantNET.lib}" /-->
 		
 		<copy file="${GrdTruSource}" tofile="${bin_dir}/Guardant/${GrdTru}" />
 		<copy file="${GrdSrvSource}" tofile="${bin_dir}/Guardant/${GrdSrv}" />
@@ -223,18 +210,6 @@
 		<call target="prepare_bin_dir_demo"/>
 		<call target="compile_demo"/>
 	</target>
-	
-	<!--target name="tools" description="Build TOOLS">
-		<mkdir dir="${root_bin}"/>
-		<delete dir="${tools_dir}"/>
-		<mkdir dir="${tools_dir}"/>
-		<property name="bin_dir" value="${tools_dir}"/>
-		<property name="mysql.use" value="${bin_dir}/${mysql.lib}" />
-		<copy file="${mysql.ass}" tofile="${mysql.use}" />
-		<copy file="${log4net.ass}" tofile="${bin_dir}/${log4net.lib}" />
-		<call target="updater" />
-		<call target="plugins" />		
-	</target-->
 
 	<target name="compile" depends="miaconv,updater,rabnet,rabdump,plugins"/>
 
@@ -247,7 +222,7 @@
 		<!--copy file="${log4net.use}" tofile="${bin_dir}/Tools/${log4net.lib}" /-->
 		<csc target="winexe" output="${bin_dir_bin}/mia_conv.exe" win32icon="${curdir}/mia_conv/icon_yell_red.ico" define="${compile_flag}" optimize="true">
 			<sources>
-				<include name="${curdir}/_tmp/VersionInfo.cs"/>
+				<include name="${tmpdir}/VersionInfo.cs"/>
 				<include name="${curdir}/mia_conv/*.cs"/>	
 				<include name="${curdir}/mia_conv/miaRepair/*.cs"/>					
 			</sources>
@@ -282,7 +257,7 @@
 	<target name="db.Interface" description="interface for all data layer">
 		<csc target="library" output="${bin_dir_bin}/db.Interface.dll" define="${compile_flag}" optimize="true">
 			<sources>
-				<include name="${curdir}/_tmp/VersionInfo.cs"/>
+				<include name="${tmpdir}/VersionInfo.cs"/>
 				<include name="${curdir}/rabnet/db.Interface/*.cs"/>
 				<include name="${curdir}/rabnet/db.Interface/Properties/*.cs"/>
 			</sources>
@@ -293,7 +268,7 @@
 	<target name="db.mysql" description="mysql data layer">
 		<csc target="library" output="${bin_dir_bin}/db.mysql.dll" define="${compile_flag}" optimize="true">
 			<sources>
-				<include name="${curdir}/_tmp/VersionInfo.cs"/>
+				<include name="${tmpdir}/VersionInfo.cs"/>
 				<include name="${curdir}/rabnet/db.mysql/*.cs"/>
 				<include name="${curdir}/rabnet/db.mysql/CatalogData/*.cs"/>
 				<include name="${curdir}/rabnet/db.mysql/Properties/*.cs"/>
@@ -324,7 +299,7 @@
 	<target name="engine" description="engine">
 		<csc target="library" output="${bin_dir_bin}/engine.dll" define="${compile_flag}" optimize="true">
 			<sources>
-				<include name="${curdir}/_tmp/VersionInfo.cs"/>
+				<include name="${tmpdir}/VersionInfo.cs"/>
 				<include name="${curdir}/rabnet/engine/*.cs"/>
 				<include name="${curdir}/rabnet/engine/Properties/*.cs"/>
 			</sources>
@@ -361,12 +336,9 @@
 
 	<target name="rabdump" description="rabnet db dumper">		
 		<copy file="${party3d.path}/ccxmlrpc.dll" tofile="${bin_dir_bin}/ccxmlrpc.dll" />
-		<!--copy file="${bin_dir}/RabNet/db.Interface.dll" tofile="${bin_dir}/RabDump/db.Interface.dll" />
-		<copy file="${bin_dir}/RabNet/db.mysql.dll" tofile="${bin_dir}/RabDump/db.mysql.dll" />
-		<copy file="${bin_dir}/RabNet/engine.dll" tofile="${bin_dir}/RabDump/engine.dll" /-->
 		<csc target="winexe" output="${bin_dir_bin}/rabdump.exe" win32icon="${curdir}/rabdump/icon_white.ico" define="${compile_flag}" optimize="true">
 			<sources>
-				<include name="${curdir}/_tmp/VersionInfo.cs"/>
+				<include name="${tmpdir}/VersionInfo.cs"/>
 				<include name="${curdir}/rabdump/*.cs"/>				
 				<include name="${curdir}/rabdump/classes/*.cs"/>
 				<include name="${curdir}/rabdump/panels/*.cs"/>
@@ -389,8 +361,6 @@
 				<include name="${curdir}/rabnet/gui/classes/Run.cs"/>
 				<include name="${curdir}/rabnet/gui/panels/FarmsPanel.cs"/>
 				<include name="${curdir}/rabnet/gui/panels/FarmsPanel.Designer.cs"/>
-				<!--include name="${curdir}/rabnet/gui/forms/FarmChangeForm.cs"/>
-				<include name="${curdir}/rabnet/gui/forms/FarmChangeForm.Designer.cs"/-->
 				<include name="${curdir}/GrdRemoteUpdate/Admin/engine/Structures.cs"/>
 				<include name="${curdir}/GrdRemoteUpdate/Admin/gui/form/AddDongleForm.cs"/>
 				<include name="${curdir}/GrdRemoteUpdate/Admin/gui/form/AddDongleForm.designer.cs"/>
@@ -400,7 +370,6 @@
 				<include name="${curdir}/rabdump/Properties/*.resx"/>
 				<include name="${curdir}/rabdump/Forms/*.resx"/>
 				<include name="${curdir}/rabdump/panels/*.resx"/>
-				<!--include name="${curdir}/rabnet/gui/forms/FarmChangeForm.resx"/-->
 				<include name="${curdir}/rabnet/gui/panels/FarmsPanel.resx"/>
 				<include name="${curdir}/GrdRemoteUpdate/Admin/gui/form/AddDongleForm.resx"/>
 			</resources>
@@ -418,7 +387,8 @@
 	<target name="gui" description="rabnet gui">
 		<csc target="winexe" output="${bin_dir_bin}/rabnet.exe" win32icon="${curdir}/rabnet/gui/icon_green.ico" define="${compile_flag}" optimize="true">
 			<sources>
-				<include name="${curdir}/_tmp/VersionInfo.cs"/>
+				<include name="${tmpdir}/VersionInfo.cs"/>
+				<include name="${tmpdir}/MainForm.BuildDate.cs"/>
 				<include name="${curdir}/rabnet/gui/Program.cs"/>
 				<include name="${curdir}/rabnet/gui/classes/*.cs"/>
 				<include name="${curdir}/rabnet/gui/classes/RabnetConfig/*.cs"/>				
@@ -482,23 +452,6 @@
 			<arg value="${root_bin}/demo/bin/engine.dll" />	
 			<arg value="${root_bin}/demo/bin/rabnet.exe" />						
 		</exec>
-		<!--exec program="${grd_ob}">
-			<arg value="/INIT" />
-			<arg value="/MSG=C:\Program Files\Guardant\Guardant 5\PLAT_T+\bin\licensewizard.msg" />
-			<arg value="/SO" />
-			<arg value="/SE" />
-			<arg value="/RC=1" />
-			<arg value="/ATR=2" />
-			<arg value="/GS3S" />
-			<arg value="/UN=1" />
-			<arg value="/SIGN" />
-			<arg value="/OUT=${root_bin}/protected/RabNet/" />
-			<!-arg value="/SO_CFG=${curdir}/GRDConfigs/rabnet/config.cfo" /->
-			<arg value="/MAP=${root_bin}/protected/RabNet/rabnet.map" />
-			<!-arg value="${root_bin}/protected/RabNet/rabnet.exe" /->
-			<!-arg value="${root_bin}/protected/RabNet/engine.dll" />
-			<arg value="${root_bin}/protected/RabNet/db.mysql.dll" /->
-		</exec-->
 		<exec program="${grd_prot}">
 			<arg value="/INIT" />
 			<arg value="/MSG=${grd_path.bin}\licensewizard.msg" />
@@ -526,33 +479,6 @@
 		<delete file="${dir_bin}/engine.dll.old"/>
 		<delete file="${dir_bin}/rabdump.exe.old"/>
 		<delete file="${dir_bin}/rabnet.map"/>
-		
-		<!--exec program="${grd_ob}">
-			<arg value="/INIT" />
-			<arg value="/MSG=C:\Program Files\Guardant\Guardant 5\PLAT_T+\bin\licensewizard.msg" />
-			<arg value="/SO" />
-			<arg value="/SE" />
-			<arg value="/RC=1" />
-			<arg value="/ATR=2" />
-			<arg value="/GS3S" />
-			<arg value="/UN=1" />
-			<arg value="/SIGN" />
-			<arg value="${root_bin}/protected/RabDump/rabdump.exe" />
-			<arg value="/OUT=${root_bin}/protected/RabDump/" />
-			<arg value="/SO_CFG=${curdir}/GRDConfigs/rabdump/config.cfo" />
-		</exec-->
-		<!--exec program="${grd_prot}">
-			<arg value="/INIT" />
-			<arg value="/MSG=C:\Program Files\Guardant\Guardant 5\PLAT_T+\bin\licensewizard.msg" />
-			<arg value="/PER=50" />
-			<arg value="/RC=1" />
-			<arg value="/ATR=2" />
-			<arg value="/GS3S" />
-			<arg value="/UN=1" />
-			<arg value="/SIGN" />
-			<arg value="${root_bin}/protected/RabDump/rabdump.exe" />
-			<arg value="/OUT=${root_bin}/protected/RabDump/" />
-		</exec--> 
 
 		<property name="obfuscated" value=".ob" />
 		<!--call target="release_zip"/-->
@@ -561,7 +487,7 @@
 	<target name="updater" description="Make updater project">
 		<csc target="winexe" output="${bin_dir_bin}/updater.exe" win32icon="${curdir}/updater/icon_update_white.ico" optimize="true">
 			<sources>
-				<include name="${curdir}/_tmp/VersionInfo.cs"/>
+				<include name="${tmpdir}/VersionInfo.cs"/>
 				<include name="${curdir}/updater/*.cs"/>			
 				<include name="${curdir}/mia_conv/miaExitCode.cs"/>
 				<include name="${curdir}/rabnet/gui/classes/RabnetConfig/*.cs"/>
@@ -641,7 +567,7 @@
 		<csc target="library" output="${plugin_dir}/PopulationPlugIn.dll" define="RELEASE" optimize="true">
 			<sources>
 				<include name="${curdir}/rabnet/ReportPlugIns/PopulationPlugIn/*.cs"/>
-				<include name="${curdir}/_tmp/VersionInfo.cs"/>
+				<include name="${tmpdir}/VersionInfo.cs"/>
 			</sources>
 			<resources>
 				<include name="${plugin_dir}/PopulationPlugIn.population.rdl"/>
@@ -660,7 +586,7 @@
 		<csc target="library" output="${plugin_dir}/OkrolPlanPlugIn.dll" define="RELEASE" optimize="true">
 			<sources>
 				<include name="${curdir}/rabnet/ReportPlugIns/OkrolPlanPlugIn/*.cs"/>
-				<include name="${curdir}/_tmp/VersionInfo.cs"/>
+				<include name="${tmpdir}/VersionInfo.cs"/>
 			</sources>
 			<resources>
 				<include name="${plugin_dir}/OkrolPlanPlugIn.okrolplan.rdl"/>
@@ -788,10 +714,8 @@
 		<delete dir="${vdir}/.svn" />
 	</target>
 	
-	<target name="svn_rev" description="set revision number in assembly info">
-		<delete dir="${curdir}/_tmp"/>
-		<mkdir dir="${curdir}/_tmp"/>
-		<asminfo output="${curdir}/_tmp/VersionInfo.cs.tmp" language="CSharp">
+	<target name="svn_rev" description="set revision number in assembly info">		
+		<asminfo output="${tmpdir}/VersionInfo.cs.tmp" language="CSharp">
 			<imports>
 				<import namespace="System.Reflection" />
 			</imports>
@@ -802,16 +726,16 @@
 		</asminfo>
 		<exec program="subWCrev">
 			<arg value="${build.root}" />
-			<arg value="${curdir}/_tmp/VersionInfo.cs.tmp" />
-			<arg value="${curdir}/_tmp/VersionInfo.cs" />
+			<arg value="${tmpdir}/VersionInfo.cs.tmp" />
+			<arg value="${tmpdir}/VersionInfo.cs" />
 		</exec>
-		<echo file="${curdir}/_tmp/rev.tmp">$WCREV$</echo>
+		<echo file="${tmpdir}/rev.tmp">$WCREV$</echo>
 		<exec program="subWCrev">
 			<arg value="${build.root}" />
-			<arg value="${curdir}/_tmp/rev.tmp" />
-			<arg value="${curdir}/_tmp/rev.txt" />
+			<arg value="${tmpdir}/rev.tmp" />
+			<arg value="${tmpdir}/rev.txt" />
 		</exec>
-		<loadfile file="${curdir}/_tmp/rev.txt" property="revision" />
+		<loadfile file="${tmpdir}/rev.txt" property="revision" />
 		<echo message="Using Subversion revision number: ${revision}"/>
 		<property name="minver" value="${minver_p}.${revision}"/>
 		<property name="fullver" value="${version}.${minver}"/>
@@ -819,40 +743,22 @@
 		<echo message="Build version: ${fullver}" />
 	</target>
 	
-	<!--target name="miakro_911_release" depends="obfuscate">
-		<property name="dist_type" value="rabnet_no_protect"/>
-		<property name="bin_dir" value="${root_bin}\release"/>
-		<property name="bin_type" value="release"/>
-		<call target="nsis_bld"/>
+	<target name="bld_date" description="write build date into program for unsupport old keys">
+		<echo file="${tmpdir}/MainForm.BuildDate.cs.tmp">
+using System;			
+namespace rabnet
+{
+	public partial class MainForm
+	{
+		public readonly static DateTime BuildDate = DateTime.Parse("$WCNOW$");
+	}
+}
+		</echo>
+		<exec program="subWCrev">
+			<arg value="${build.root}" />
+			<arg value="${tmpdir}/MainForm.BuildDate.cs.tmp" />
+			<arg value="${tmpdir}/MainForm.BuildDate.cs" />
+		</exec>
 	</target>
-
-	<target name="miakro_911_release_no" depends="buildall">
-		<property name="dist_type" value="rabnet_no_protect"/>
-		<property name="bin_dir" value="${root_bin}\release"/>
-		<property name="bin_type" value="release"/>
-		<call target="nsis_bld"/>
-	</target-->
-	
-	<!-- FILL DATA!-->
-	<!--target name="filldata" depends="build" description="filling developer databases">
-		<unzip zipfile="${data_dir}/Farm_30.zip" todir="${data_dir}" />
-		<exec program="${root_bin}/release/mia_conv.exe">
-			<arg value="${data_dir}/Farm 3_0.mia" />
-			<arg value="localhost;krol30;kroliki;krol;root;;" />
-			<arg value="зоотехник;" />
-			<arg value="${data_dir}/data_30.sql" />
-			<arg value="quiet" />
-		</exec>
-		<delete file="${data_dir}\Farm 3_0.mia" />
-		<unzip zipfile="${data_dir}/Farm_main.zip" todir="${data_dir}" />
-		<exec program="${root_bin}/release/mia_conv.exe">
-			<arg value="${data_dir}\Farm.mia" />
-			<arg value="localhost;kroliki;kroliki;krol;root;;" />
-			<arg value="зоотехник;" />
-			<arg value="${data_dir}\data_main.sql" />
-			<arg value="quiet" />
-		</exec>
-		<delete file="${data_dir}/Farm.mia" />
-	</target-->
 	
 </project>

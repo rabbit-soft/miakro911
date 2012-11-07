@@ -17,7 +17,7 @@ namespace rabnet
         {
             [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
             private int ok,_nout,c1,c2,c3,br,pok,com,bo,go,sf,ff,mw,gt,n,cn,tt,cand,bbone;
-            private string gd, sh,xf;
+            private string gd, sh, xf;
             private RUBOOL ce, ck, crp, uz, sp, ask, fbz, vIs, vacMoth, _nestOut_proholost, _nestOut_heater;
             private BuchTp bt;
 
