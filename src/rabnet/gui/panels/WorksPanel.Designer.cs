@@ -47,6 +47,7 @@
             this.boysOutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.girlsOutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fuckMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miLust = new System.Windows.Forms.ToolStripMenuItem();
             this.vaccMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setNestMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.miBoysByOne = new System.Windows.Forms.ToolStripMenuItem();
@@ -137,12 +138,14 @@
             this.boysOutMenuItem,
             this.girlsOutMenuItem,
             this.fuckMenuItem,
+            this.miLust,
             this.vaccMenuItem,
             this.setNestMenuItem,
             this.miBoysByOne,
             this.printMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(265, 268);
+            this.actMenu.Size = new System.Drawing.Size(265, 312);
+            this.actMenu.Opening += new System.ComponentModel.CancelEventHandler(this.actMenu_Opening);
             // 
             // okrolMenuItem
             // 
@@ -199,6 +202,13 @@
             this.fuckMenuItem.Size = new System.Drawing.Size(264, 22);
             this.fuckMenuItem.Text = "Случить";
             this.fuckMenuItem.Click += new System.EventHandler(this.MenuItem_Click);
+            // 
+            // miLust
+            // 
+            this.miLust.Name = "miLust";
+            this.miLust.Size = new System.Drawing.Size(264, 22);
+            this.miLust.Text = "Стимуляция";
+            this.miLust.Click += new System.EventHandler(this.miLust_Click);
             // 
             // vaccMenuItem
             // 
@@ -352,6 +362,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader7;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripMenuItem miBoysByOne;
+        private System.Windows.Forms.ToolStripMenuItem miLust;
 
     }
 }

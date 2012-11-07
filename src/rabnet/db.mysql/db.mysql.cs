@@ -541,6 +541,11 @@ namespace db.mysql
             RabbitGetter.SetRabbitVaccine(sql,rid,vid,date);
         }
 
+        public void SetRabbitVaccine(int rid, int vid)
+        {
+            RabbitGetter.SetRabbitVaccine(sql, rid, vid);
+        }
+
         public List<Vaccine> GetVaccines()
         {
             return new Vaccines(sql).Get();

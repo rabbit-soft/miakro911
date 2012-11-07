@@ -13,7 +13,7 @@ namespace rabnet
     {
         private DateTime repdate = DateTime.Now;
         public WorksPanel():base(){}
-        public int makeFlag = 0;
+        public int _makeFlag = 0;
         private bool fullUpdate=true;
         private Filters runF = null;
         private int itm = -1;
@@ -150,7 +150,7 @@ namespace rabnet
             okrolMenuItem.Visible = vudvorMenuItem.Visible= miBoysByOne.Visible=
                 countsMenuItem.Visible = preokrolMenuItem.Visible=
                 boysOutMenuItem.Visible = girlsOutMenuItem.Visible=
-                vaccMenuItem.Visible = fuckMenuItem.Visible =
+                vaccMenuItem.Visible = fuckMenuItem.Visible =miLust.Visible=
                 setNestMenuItem.Visible = countChangedMenuItem.Visible=false;
             switch (type)
             {
@@ -165,6 +165,7 @@ namespace rabnet
                         fuckMenuItem.Text = "Случить";
                     else
                         fuckMenuItem.Text = "Вязать";
+                    miLust.Visible = true;
                     break;
                 case JobType.VACC: vaccMenuItem.Visible = true; break;
                 case JobType.SET_NEST: vaccMenuItem.Visible = true; break;
@@ -184,6 +185,14 @@ namespace rabnet
             return  (lvZooTech.SelectedItems[0].Tag) as ZootehJob;
         }
 
+        private int getFuckerId(String f, List<String> lst)
+        {
+            for (int i = 0; i < lst.Count; i++)
+                if (lst[i] == f) return i;
+            lst.Add(f);
+            return lst.Count - 1;
+        }
+
         private void lvZooTech_SelectedIndexChanged(object sender, EventArgs e)
         {
             MainForm.StillWorking();
@@ -194,6 +203,7 @@ namespace rabnet
             }
             setMenu(getCurJob().Type,getCurJob());
         }
+
         /// <summary>
         /// Выполняет одну из зоотехнических работ
         /// </summary>
@@ -236,7 +246,7 @@ namespace rabnet
                     int id2 = 0;
                     for (int i = 0; i < rrr.Youngers.Length; i++)
                         if (rrr.Youngers[i].ID == job.ID2) id2 = i;
-                    if (makeFlag == 0)
+                    if (_makeFlag == 0)
                     {
                         rrr.CountKids(0, 0, 0, rrr.Youngers[id2].Group, rrr.Youngers[id2].Age, 0);
                         needUpdate = false;
@@ -251,6 +261,14 @@ namespace rabnet
 
                 case JobType.FUCK:
                     int id = job.ID;
+                    if (_makeFlag == -1)
+                    {
+                        needUpdate = false;
+                        Engine.db().SetRabbitVaccine(id, Vaccine.V_ID_LUST);
+                        res = DialogResult.OK;
+                        break;
+                    }
+
                     if (job.Flag > 1)
                     {
                         id = 0;
@@ -260,8 +278,8 @@ namespace rabnet
                             id = rb.getGirlOut();
                         res = DialogResult.Cancel;
                     }
-                    if (id!=0) 
-                        res=(new MakeFuckForm(id)).ShowDialog();
+                    if (id != 0)
+                        res = (new MakeFuckForm(id)).ShowDialog();
                     break;    
                                 
                 case JobType.OKROL:
@@ -310,23 +328,20 @@ namespace rabnet
 
         private void MenuItem_Click(object sender, EventArgs e)
         {
-            makeFlag = 0;
+            _makeFlag = 0;
             makeJob();
         }
 
-        //private void lvZooTech_DoubleClick(object sender, EventArgs e)
-        //{
-        //    makeFlag = 0;
-        //    makeJob();
-
-        //}
-
-        private int getFuckerId(String f,List<String> lst)
+        private void countChangedMenuItem_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < lst.Count; i++)
-                if (lst[i] == f) return i;
-            lst.Add(f);
-            return lst.Count - 1;
+            _makeFlag = 1;
+            makeJob();
+        }
+
+        private void miLust_Click(object sender, EventArgs e)
+        {
+            _makeFlag = -1;
+            makeJob();
         }
 
         private void printMenuItem_Click(object sender, EventArgs e)
@@ -384,13 +399,7 @@ namespace rabnet
             DemoErr.DemoNoReportMsg();
 #endif
         }
-
-        private void countChangedMenuItem_Click(object sender, EventArgs e)
-        {
-            makeFlag = 1;
-            makeJob();
-        }
-
+     
         private void makeExcel()
         {
 #if !DEMO
@@ -402,5 +411,21 @@ namespace rabnet
         {
             MainForm.ProtectTest(Engine.db().getMFCount());
         }
+
+        private void actMenu_Opening(object sender, CancelEventArgs e)
+        {
+            if (lvZooTech.SelectedItems.Count == 0)
+            {
+                e.Cancel = true;
+                return;
+            }
+            ZootehJob zJob = lvZooTech.SelectedItems[0].Tag as ZootehJob;
+            if (zJob.Type == JobType.FUCK)
+            {
+                miLust.Visible = zJob.Flag2 == 0;
+            }
+        }
+
+        
     }
 }

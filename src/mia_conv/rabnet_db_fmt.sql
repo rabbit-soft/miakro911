@@ -315,7 +315,7 @@ CREATE TABLE meal (
 
 DROP TABLE IF EXISTS `vaccines`;
 CREATE  TABLE `vaccines` (
-  `v_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `v_id` TINYINT NOT NULL AUTO_INCREMENT ,
   `v_name` VARCHAR(45) NULL ,
   `v_do_after` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'делать после рождения(0) или после прививки с ID',
   `v_duration` INT UNSIGNED NOT NULL COMMENT 'Продолжительность прививки в Днях' ,
@@ -329,7 +329,7 @@ CREATE  TABLE `vaccines` (
 DROP TABLE IF EXISTS `rab_vac`;
 CREATE  TABLE `rab_vac` (
   `r_id` INT UNSIGNED NOT NULL ,
-  `v_id` INT UNSIGNED NOT NULL COMMENT 'Тип прививки' ,
+  `v_id` TINYINT NOT NULL COMMENT 'Тип прививки' ,
   `date` DATE NULL COMMENT 'Когда была сделана прививка',
   `unabled` BIT NOT NULL DEFAULT 0 COMMENT 'Отменена ли прививка'
 )ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COMMENT = 'Какие прививки делались кролику';
@@ -338,7 +338,7 @@ CREATE  TABLE `rab_vac` (
 
 INSERT INTO vaccines(v_id,v_name,v_duration,v_age,v_zootech) VALUES(1,'Прививка',356,45,1);
 
-INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','11');
+INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','12');
 INSERT INTO options(o_name,o_subname,o_value) VALUES
 ('opt','okrol', 30),
 ('opt','vudvor', 30),
@@ -505,7 +505,10 @@ INSERT INTO `names` VALUES
 (36,'female','Стрелка','Стрелкин',0,NULL),
 (37,'female','Шаня','Шанин',0,NULL);
 
+INSERT INTO `vaccines`(v_id,v_name,v_do_after,v_duration,v_age,v_zootech,v_do_times) VALUES(-1,'Стимуляция самки',0,3,2,0,0);
+
 #views
+
 DROP VIEW IF EXISTS allrabbits;
 CREATE VIEW allrabbits AS
   (SELECT r_id,r_sex,r_bon,r_name,r_surname,r_secname,

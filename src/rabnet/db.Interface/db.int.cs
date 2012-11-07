@@ -191,6 +191,7 @@ namespace rabnet
         DateTime GetFarmStartTime();
 
         void SetRabbitVaccine(int rid, int vid,DateTime date);
+        void SetRabbitVaccine(int rid, int vid);
 
         IRabNetDataLayer Clone();
 

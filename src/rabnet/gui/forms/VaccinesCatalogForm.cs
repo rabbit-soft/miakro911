@@ -17,6 +17,8 @@ namespace rabnet
         private const int FIELD_AFTER = 4;
         private const int FIELD_ZOO = 5;
         private const int FIELD_TIMES = 6;
+
+        private const int WIDTH_ADD = 210;
         /// <summary>
         /// Вносятся ли изменения пользователем
         /// </summary>
@@ -25,6 +27,11 @@ namespace rabnet
         public VaccinesCatalogForm()
         {
             InitializeComponent();
+            if (nudAge.Value > nudLustDuration.Value)
+                nudAge.Value = nudLustDuration.Value;
+            nudAge.Maximum = nudLustDuration.Value;
+            dataGridView1.Anchor = dataGridView1.Anchor | AnchorStyles.Right;
+            gbLust.Anchor = dataGridView1.Anchor | AnchorStyles.Right;
             fillTable();
         }
 
@@ -41,19 +48,29 @@ namespace rabnet
             chAfter.Items.Clear();
             chAfter.Items.Add("Рождения");
             foreach (Vaccine v in vaccs)
+            {
+                if (v.ID < 0) continue;
                 chAfter.Items.Add(v.ID + ":" + v.Name);
-            
+            }
+
             dataGridView1.Rows.Clear();
             foreach (Vaccine v in vaccs)
             {
+                if (v.ID == Vaccine.V_ID_LUST)
+                {
+                    nudLustDuration.Value = v.Duration;
+                    nudAge.Value = v.Age;
+                    continue;
+                }
+
                 int rowNumber = dataGridView1.Rows.Add();
                 dataGridView1.Rows[rowNumber].Cells[FIELD_ID].Value = v.ID;
                 dataGridView1.Rows[rowNumber].Cells[FIELD_NAME].Value = v.Name;
                 dataGridView1.Rows[rowNumber].Cells[FIELD_AGE].Value = v.Age;
-                dataGridView1.Rows[rowNumber].Cells[FIELD_DURA].Value = v.Duration;               
+                dataGridView1.Rows[rowNumber].Cells[FIELD_DURA].Value = v.Duration;
                 dataGridView1.Rows[rowNumber].Cells[FIELD_AFTER].Value = chAfter.Items[v.After];
                 dataGridView1.Rows[rowNumber].Cells[FIELD_ZOO].Value = v.Zoo;
-                dataGridView1.Rows[rowNumber].Cells[FIELD_TIMES].Value = v.DoTimes==1;
+                dataGridView1.Rows[rowNumber].Cells[FIELD_TIMES].Value = v.DoTimes == 1;
                 dataGridView1.Rows[rowNumber].Tag = v;
             }
 
@@ -120,6 +137,12 @@ namespace rabnet
         private void btAddRow_Click(object sender, EventArgs e)
         {
 #if !DEMO
+            //надо быть отчаянным вакцинатором чтобы вывести это сообщение
+            if (dataGridView1.Rows.Count > Vaccine.MAX_VACS_COUNT)
+            {
+                MessageBox.Show("Достигнуто максимальное количествово прививок");
+                return;
+            }
             _manual = false;
             int rind = dataGridView1.Rows.Add();
             dataGridView1.Rows[rind].Cells[FIELD_DURA].Value = 180;
@@ -129,6 +152,44 @@ namespace rabnet
 #else
             DemoErr.DemoNoModuleMsg();
 #endif
+        }
+
+        private void btSpetial_Click(object sender, EventArgs e)
+        {
+            dataGridView1.Anchor -= AnchorStyles.Right;
+            btSpetial.Anchor -= AnchorStyles.Right;
+            btSpetial.Anchor = btSpetial.Anchor | AnchorStyles.Left;
+            gbLust.Anchor -= AnchorStyles.Right;
+            gbLust.Anchor = gbLust.Anchor | AnchorStyles.Left;
+
+            if (btSpetial.Tag.ToString()== "0")
+            {                            
+                this.Width += WIDTH_ADD;
+                btSpetial.Text = "<< Cкрыть";
+                btSpetial.Tag = "1";
+            }
+            else
+            {
+                this.Width -= WIDTH_ADD;
+                btSpetial.Text = "Спец. уколы >>";
+                btSpetial.Tag = "0";
+            }
+
+            dataGridView1.Anchor = dataGridView1.Anchor | AnchorStyles.Right;
+            btSpetial.Anchor -= AnchorStyles.Left;
+            btSpetial.Anchor = btSpetial.Anchor | AnchorStyles.Right;
+            gbLust.Anchor -= AnchorStyles.Left;
+            gbLust.Anchor = gbLust.Anchor | AnchorStyles.Right;
+        }
+
+        private void btLustSave_Click(object sender, EventArgs e)
+        {
+            Engine.db().EditVaccine(Vaccine.V_ID_LUST, "Стимуляция", (int)nudLustDuration.Value, (int)nudAge.Value, 0, false, 0);
+        }
+
+        private void nudLustDuration_ValueChanged(object sender, EventArgs e)
+        {
+            nudAge.Maximum = nudLustDuration.Value;
         }
     }
 }

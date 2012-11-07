@@ -108,8 +108,8 @@ namespace db.mysql
         private void fillFuck(MySqlDataReader rd)
         {
             int status = rd.GetInt32("r_status");
-            int fromok = rd.IsDBNull(6) ? 0 : rd.GetInt32("fromokrol");
-            int suck = rd.IsDBNull(4) ? 0 : rd.GetInt32("suckers");
+            int fromok = rd.IsDBNull(rd.GetOrdinal("fromokrol")) ? 0 : rd.GetInt32("fromokrol");
+            int suck = rd.IsDBNull(rd.GetOrdinal("suckers")) ? 0 : rd.GetInt32("suckers");
             int srok = 0;
             int group = rd.GetInt32("r_group");
             if (status == 0)
@@ -130,13 +130,19 @@ namespace db.mysql
                 Comment = _flt.safeInt(Filters.SHORT) == 1 ? "Прк" : "Первокролка";
             if (status > 1)
                 Comment = _flt.safeInt(Filters.SHORT) == 1 ? "Штн" : "Штатная";
-            Partners = rd.IsDBNull(7) ? "" : zooFuckPartnerAddressParce(rd.GetString("partners"));
+            if (!rd.IsDBNull(rd.GetOrdinal("lsrok")))
+            {
+                Comment += "  {Стим." + rd.GetString("lsrok") + "дн.}"; //че-то String.Format ругается  
+                Flag2 = -1;
+            }
+            Partners = rd.IsDBNull(rd.GetOrdinal("partners")) ? "" : zooFuckPartnerAddressParce(rd.GetString("partners"));
             Flag = group;
+
         }
 
         private void fillSetNest(MySqlDataReader rd)
         {
-            int children = rd.IsDBNull(5) ? 0 : rd.GetInt32("children");
+            int children = rd.IsDBNull(rd.GetOrdinal("children")) ? 0 : rd.GetInt32("children");
             int sukr = rd.GetInt32("sukr");
             Comment = "C-" + sukr.ToString();
             if (children > 0)
@@ -353,39 +359,59 @@ ORDER BY age DESC,0+LEFT(place,LOCATE(',',place)) ASC;",
                 (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT)), brd(), getnm());
         }
 
-        private string qFuck() ///да запрос долгий но переписать его как не знаю пока что
+        private string qFuck()
         {
-            return String.Format(@"SET group_concat_max_len=4096; 
-DROP TABLE IF EXISTS tPartn; 
+            return String.Format(
+            (_flt.safeBool(Filters.FIND_PARTNERS) ? @"SET group_concat_max_len=4096; 
 CREATE TEMPORARY TABLE tPartn SELECT rabname(r_id,0) pname, 
-		rabplace(r_id) pplace,
-		r_breed pbreed,
-		r_genesis pgens
-	FROM rabbits
-	WHERE r_sex='male' AND r_status>0 AND (r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol)>={3:d});
+	rabplace(r_id) pplace,
+	r_breed pbreed,
+	r_genesis pgens
+FROM rabbits
+WHERE r_sex='male' AND r_status>0 AND (r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol)>={3:d});":"")+
   
-CREATE TEMPORARY TABLE aaa SELECT r_id,rabname(r_id,{8:s}) name,rabplace(r_id) place,TO_DAYS(NOW())-TO_DAYS(r_born) age,
-        coalesce((SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id),null,0) suckers,
+@"CREATE TEMPORARY TABLE aaa 
+    SELECT r.r_id,rabname(r_id,{8:s}) name,rabplace(r_id) place,TO_DAYS(NOW())-TO_DAYS(r_born) age,
+        coalesce((SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=r.r_id),null,0) suckers,
         r_status,
         TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol) fromokrol," + (_flt.safeBool(Filters.FIND_PARTNERS) ? @"
         (SELECT GROUP_CONCAT( CONCAT(pname,'&', pplace) ORDER BY pname SEPARATOR '|') FROM tPartn
             WHERE {4:s}{5:s})" : "''") + @" partners,
         r_group,
-        (SELECT {6:s} FROM breeds WHERE b_id=r_breed) breed, 0 srok 
-    FROM rabbits 
-    WHERE Substr(r_flags,1,1)='0' AND Substr(r_flags,3,1)='0' AND r_sex='female' AND r_event_date IS NULL AND r_status{7:s};
+        (SELECT {6:s} FROM breeds WHERE b_id=r_breed) breed, 
+        0 srok,
+        lsrok,
+        lshow
+    FROM rabbits r
+    LEFT JOIN   #пытаемся найти стимуляцию
+        (SELECT rv.r_id AS lrid, To_Days(NOW())-To_Days(Max(date)) AS lsrok, v_duration AS ldura, v_age AS lshow 
+            FROM rab_vac rv
+            INNER JOIN vaccines v ON v.v_id= rv.v_id
+            WHERE rv.v_id=-1 #стимуляция (lust)
+            GROUP BY rv.r_id
+        ) vc ON lrid=r.r_id AND lsrok<=ldura
+    WHERE Substr(r_flags,1,1)='0'       #не брак
+        AND Substr(r_flags,3,1)='0'     #не готовая продукция
+        AND r_sex='female' AND r_event_date IS NULL AND r_status{7:s};
 		
-SELECT * FROM aaa WHERE age>{0:d} AND r_status=0 OR (r_status=1 AND (suckers=0 OR fromokrol>={1:d})) OR (r_status>1 AND (suckers=0 OR fromokrol>={2:d}))
+SELECT * FROM aaa 
+WHERE (lsrok IS NULL OR lsrok=lshow)
+    AND (age>{0:d} AND r_status=0                           #невеста
+        OR (r_status=1 AND (suckers=0 OR fromokrol>={1:d})) #первокролка
+        OR (r_status>1 AND (suckers=0 OR fromokrol>={2:d})) #штатная
+    )
 ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;
+
+DROP TABLE IF EXISTS tPartn; 
 DROP TABLE IF EXISTS aaa;", 
-    _flt.safeInt(Filters.BRIDE_AGE), _flt.safeInt(Filters.FIRST_FUCK), _flt.safeInt(Filters.STATE_FUCK), 
+        _flt.safeInt(Filters.BRIDE_AGE), _flt.safeInt(Filters.FIRST_FUCK), _flt.safeInt(Filters.STATE_FUCK), 
     
-    _flt.safeInt(Filters.MALE_WAIT),//3
-    (_flt.safeBool(Filters.HETEROSIS) ? "" : String.Format("pbreed=rabbits.r_breed")),//4
-    (_flt.safeBool(Filters.INBREEDING) ? "" : String.Format("{0:s}(SELECT COUNT(g_genom) FROM genoms WHERE g_id=rabbits.r_genesis AND g_genom IN (SELECT g2.g_genom FROM genoms g2 WHERE g2.g_id=pgens))=0", _flt.safeBool(Filters.HETEROSIS) ?"": " AND ")),
+        _flt.safeInt(Filters.MALE_WAIT),//3
+        (_flt.safeBool(Filters.HETEROSIS) ? "" : String.Format("pbreed=r.r_breed")),//4
+        (_flt.safeBool(Filters.INBREEDING) ? "" : String.Format("{0:s}(SELECT COUNT(g_genom) FROM genoms WHERE g_id=r.r_genesis AND g_genom IN (SELECT g2.g_genom FROM genoms g2 WHERE g2.g_id=pgens))=0", _flt.safeBool(Filters.HETEROSIS) ?"": " AND ")),
     
-    (_flt.safeInt(Filters.SHORT) == 0 ? "b_name" : "b_short_name"),//6 
-    (_flt.safeInt(Filters.TYPE) == 1 ? ">0" : "=0"), getnm(1) );
+        (_flt.safeInt(Filters.SHORT) == 0 ? "b_name" : "b_short_name"),//6 
+        (_flt.safeInt(Filters.TYPE) == 1 ? ">0" : "=0"), getnm(1) );
 
 //            return String.Format(@"SET group_concat_max_len=4096;   SELECT * FROM (
 //        SELECT r_id,rabname(r_id," + getnm(1) + @") name,rabplace(r_id) place,TO_DAYS(NOW())-TO_DAYS(r_born) age,

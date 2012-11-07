@@ -22,77 +22,80 @@ namespace rabnet
             private BuchTp bt;
 
             #region zooTime
-            [Category("Зоотехнические сроки"),DisplayName("Окрол"),
+            [Category("Зоотехплан"),DisplayName("Окрол"),
             Description("Время от случки(вязки) до окрола")]
 			public int Okrol { get { return ok; } set { ok = value; } }
-            [Category("Зоотехнические сроки"),DisplayName("Выдворение"),
+            [Category("Зоотехплан"),DisplayName("Выдворение"),
             Description("Назначать Удаление родильного ящика из клетки, где гнездовые крольчата достигли указанного возраста.")]
             public int NestOut { get { return _nout; } set { _nout = value; } }
-            [Category("Зоотехнические сроки"), DisplayName("Выдворение при прохолосте"),
+            [Category("Зоотехплан"), DisplayName("Выдворение при прохолосте"),
             Description("При прохолсте крольчихи, удалять окрольный ящик из клетки, в которой сидит крольчиха.")]
             public RUBOOL NestOutIfProholost { get { return _nestOut_proholost; } set { _nestOut_proholost = value; } }
-            [Category("Зоотехнические сроки"), DisplayName("Выдворение при сукрольной"),
+            [Category("Зоотехплан"), DisplayName("Выдворение при сукрольной"),
             Description("Назначать Выдворение даже если крольчиха сукрольна")]
             public RUBOOL NestOutIfSukrol { get { return vIs; } set { vIs = value; } }
-            [Category("Зоотехнические сроки"), DisplayName("Выдворение с грелкой"),
+            [Category("Зоотехплан"), DisplayName("Выдворение с грелкой"),
             Description("При выдворении убирать из гнездовье грелку.")]
             public RUBOOL NestOutHeater { get { return _nestOut_heater; } set { _nestOut_heater = value; } }
-            [Category("Зоотехнические сроки"),DisplayName("1й подсчет гнездовых"),
+            [Category("Зоотехплан"),DisplayName("1й подсчет гнездовых"),
             Description("Проверка изменения числа рожденных крольчат в 1ый раз")]
             public int Count1 { get { return c1; } set { c1=value;} }
-            [Category("Зоотехнические сроки"),DisplayName("2й подсчет гнездовых"),
+            [Category("Зоотехплан"),DisplayName("2й подсчет гнездовых"),
             Description("Проверка изменения числа рожденных крольчат в 2ый раз")]
             public int Count2 { get { return c2; } set { c2 = value; } }
-            [Category("Зоотехнические сроки"),DisplayName("3й подсчет гнездовых"),
+            [Category("Зоотехплан"),DisplayName("3й подсчет гнездовых"),
             Description("Проверка изменения числа рожденных крольчат в 3ый раз")]
             public int Count3 { get { return c3; } set { c3 = value; } }
-            [Category("Зоотехнические сроки"),DisplayName("Возведение в невесты"),
+            [Category("Зоотехплан"),DisplayName("Возведение в невесты"),
             Description("Присвоить самкам со статусом Девочка, статус Невеста, достигших указанного возраста")]
             public int Brides { get { return br; } set { br = value; } }
-            [Category("Зоотехнические сроки"), DisplayName("Возведение в кандидаты"),
+            [Category("Зоотехплан"), DisplayName("Возведение в кандидаты"),
             Description("Присвоить самцам со статусом Мальчик, статус Кандидат, достигших указанного возраста")]
             public int Candidate { get { return cand; } set { cand = value; } }
-            [Category("Зоотехнические сроки"), DisplayName("Предокрольный осмотр"),
+            [Category("Зоотехплан"), DisplayName("Предокрольный осмотр"),
             Description("Проверка перед окролом грелки, наличие пригодного сена и состояния крольчихи, в указанный срок")]
             public int Preokrol { get { return pok; } set { pok = value; } }
-            [Category("Зоотехнические сроки"), DisplayName("Объединение группы"),
+            [Category("Зоотехплан"), DisplayName("Объединение группы"),
             Description("Максимально допустимая разница в возрасте двух объединяемых групп гнездовых/подсосных крольчат")]
             public int Combine { get { return com; } set { com = value; } }
-            [Category("Зоотехнические сроки"), DisplayName("Отсадка мальчиков"),
+            [Category("Зоотехплан"), DisplayName("Отсадка мальчиков"),
             Description("Назначить пересадку мальчиков из клетки кормилицы, достигших указанного возраста")]
             public int BoysOut { get { return bo; } set { bo = value; } }
-            [Category("Зоотехнические сроки"), DisplayName("Отсадка девочек"),
+            [Category("Зоотехплан"), DisplayName("Отсадка девочек"),
             Description("Назначить пересдку девочек из клетки кормилицы, достигших указанного возраста")]
             public int GirlsOut { get { return go; } set { go = value; } }
-            [Category("Зоотехнические сроки"), DisplayName("Назначение штатной на вязку"),
+            [Category("Зоотехплан"), DisplayName("Назначение штатной на вязку"),
             Description("Назначить Штатную на вязку, если молодняк, сидящий с ней, достигает указанного возраста")]
             public int StateFuck { get { return sf; } set { sf = value; } }
-            [Category("Зоотехнические сроки"), DisplayName("Назначение первокролки на вязку"),
+            [Category("Зоотехплан"), DisplayName("Назначение первокролки на вязку"),
             Description("Назначить Перкокролку на вязку, если молодняк, сидящий с ней, достигает указанного возраста")]
             public int FirstFuck { get { return ff; } set { ff = value; } }
-            [Category("Зоотехнические сроки"), DisplayName("Отдых самца"),
+            [Category("Зоотехплан"), DisplayName("Отдых самца"),
             Description("Сколько суток отдыхает отработавший самец до назначения на работу")]
             public int MaleWait { get { return mw; } set { mw = value; } }
-            //[Category("Зоотехнические сроки"), DisplayName("Прививка"),
+            [Category("Зоотехплан"), DisplayName("Показывать партнеров"),
+            Description("Подбирать в Зоотехплане возможных патнеров для Случек и Вязок. Влияющие настройки \"Разрешен Гетерозис\" и \"Разрешен Инбридинг\"")]
+            public RUBOOL ShowPartners { get { return sp; } set { sp = value; } }
+            //[Category("Зоотехплан"), DisplayName("Прививка"),
             //Description("Назначить на прививку молодняк, достигший указанного возраста")]
             //public int Vacc { get { return vac; } set { vac = value; } }
-            [Category("Зоотехнические сроки"), DisplayName("Привививать мать вместе с детьми"),
+            [Category("Зоотехплан"), DisplayName("Привививать мать вместе с детьми"),
             Description("В зоотех плане на вакцинацию будут назначаться только дети. При прививке детей, будет привита и мать, с которой они сидят в однорй клетке")]
             public RUBOOL VaccWithMother { get { return vacMoth; } set { vacMoth = value; } }
-            [Category("Зоотехнические сроки"), DisplayName("Подсчет подсосных"),
+            [Category("Зоотехплан"), DisplayName("Подсчет подсосных"),
             //Description("Возведение гнездовых крольчат в подсосных и подсчет их количества")]
             Description("Данная опция больше не автивна. Возведение в подсосные происходит при выдворении")]
             public int CountSuckers { get { return NestOut/*su; } set { su = value*/; } } //TODO удалить версий через 90
-            [Category("Зоотехнические сроки"), DisplayName("Установка гнездовья"),
+            [Category("Зоотехплан"), DisplayName("Установка гнездовья"),
             Description("Пересадить крольчиху в Юрту(А)")]
             public int NestIn { get { return n; } set { n = value; } }
-            [Category("Зоотехнические сроки"), DisplayName("Установка гнездовья при молодняке"),
+            [Category("Зоотехплан"), DisplayName("Установка гнездовья при молодняке"),
             Description("Пересадить крольчиху в Юрту(А) если у нее есть подсосные")]
             public int ChildNest { get { return cn; } set { cn = value; } }
-            /*[Category("Зоотехнические сроки"), DisplayName("Действие Прививки"),
+            /*[Category("Зоотехплан"), DisplayName("Действие Прививки"),
             Description("Количество дней, сколько действует прививка")]
             public int VaccineTime { get { return vactime; } set { vactime = value; } }*/
-            [Category("Зоотехнические сроки"), DisplayName("Рассадка мальчиков по одному"),
+            [Category("Зоотехплан"), DisplayName("Рассадка мальчиков по одному"),
             Description("Назначать всем группам мальчиков,достигших указанного возраста, рассадку по одному")]
             public int BoysByOne { get { return bbone; } set { bbone = value; } }
             #endregion zooTime
@@ -116,11 +119,7 @@ namespace rabnet
             [Category("Вид"),
             DisplayName("Обновлять зоотехплан"),
             Description("Будет ли обновляться зоотех план после отметки работы. Внимание!!! Не стоит выключать опцию при работе по сети нескольких человек")]
-            public RUBOOL UpdateZoo { get { return uz; } set { uz = value; } }
-            [Category("Вид"),
-            DisplayName("Показывать партнеров"),
-            Description("Подбирать в Зоотехплане возможных патнеров для Случек и Вязок")]
-            public RUBOOL ShowPartners { get { return sp; } set { sp = value; } }
+            public RUBOOL UpdateZoo { get { return uz; } set { uz = value; } }          
             [Category("Вид"),
             DisplayName("Заполнять адреса нулями"),
             Description("Заполнять ли символом '0' пробелы в адресе")]

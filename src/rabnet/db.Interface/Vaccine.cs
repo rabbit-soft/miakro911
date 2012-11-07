@@ -6,6 +6,9 @@ namespace rabnet
 {
     public class Vaccine
     {
+        public const int MAX_VACS_COUNT = 127;
+        public const int V_ID_LUST = -1;
+
         public readonly int ID=0;
         public string Name;
         public int Duration = 0;

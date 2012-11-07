@@ -684,6 +684,12 @@ WHERE r_id={0:d} ORDER BY date", rabId), sql);
             cmd.ExecuteNonQuery();
         }
 
+        internal static void SetRabbitVaccine(MySqlConnection sql, int rid, int vid)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO rab_vac(r_id,v_id,`date`) VALUES({0:d},{1:d},NOW());", rid, vid), sql);
+            cmd.ExecuteNonQuery();
+        }
+
         /// <summary>
         /// Функция проверяет стоит ли в последней записи из таблице fucks по данному кролику начало траха.
         /// </summary>

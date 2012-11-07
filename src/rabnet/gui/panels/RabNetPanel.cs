@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Text;
+using log4net;
 
 namespace rabnet
 {
@@ -12,6 +13,7 @@ namespace rabnet
         private FilterPanel fp = null;
         protected ListViewColumnSorter colSort = null;
         protected ListViewColumnSorter colSort2 = null;
+        protected ILog _logger;
         /// <summary>
         /// Делегат определяющий обработчик, когда жмут на кнопку Excel.
         /// Если наследники присвоят обработчик, то кнопка Excel покажется.
@@ -20,6 +22,7 @@ namespace rabnet
         public RabNetPanel()
         {
             InitializeComponent();
+            _logger = LogManager.GetLogger(this.GetType());
         }
         public RabNetPanel(RabStatusBar sb,FilterPanel fp):this()
         {
