@@ -251,7 +251,6 @@
             // KillMenuItem
             // 
             this.KillMenuItem.Name = "KillMenuItem";
-            this.KillMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
             this.KillMenuItem.Size = new System.Drawing.Size(236, 22);
             this.KillMenuItem.Text = "Списание";
             this.KillMenuItem.Click += new System.EventHandler(this.KillMenuItem_Click);

@@ -22,10 +22,9 @@ namespace rabnet
             private BuchTp bt;
 
             #region zooTime
-            [Category("Зоотехплан"),DisplayName("Окрол"),
-            Description("Время от случки(вязки) до окрола")]
+            [Category("Зоотехплан"),DisplayName("Окрол"), Description("Время от случки(вязки) до окрола")]
 			public int Okrol { get { return ok; } set { ok = value; } }
-            [Category("Зоотехплан"),DisplayName("Выдворение"),
+            [Category("Зоотехплан"), DisplayName("Выдворение"),
             Description("Назначать Удаление родильного ящика из клетки, где гнездовые крольчата достигли указанного возраста.")]
             public int NestOut { get { return _nout; } set { _nout = value; } }
             [Category("Зоотехплан"), DisplayName("Выдворение при прохолосте"),
@@ -100,8 +99,7 @@ namespace rabnet
             public int BoysByOne { get { return bbone; } set { bbone = value; } }
             #endregion zooTime
             #region view
-            [Category("Вид"),
-            DisplayName("Подтверждение выхода"),
+            [Category("Вид"), DisplayName("Подтверждение выхода"),
             Description("Спрашивать подтверждение закрытия программы")]
             public RUBOOL ConfirmExit { get { return ce; } set { ce = value; } }
             [Category("Вид"),
@@ -109,11 +107,10 @@ namespace rabnet
             Description("Спрашивать подтверждение при списании кроликов")]
             public RUBOOL ConfirmKill { get { return ck; } set { ck = value; } }
             [Category("Вид"),
-            DisplayName("Подтверждение пересадку"),
+            DisplayName("Подтверждение пересадки"),
             Description("Спрашивать подтверждение при пересадке/отсадке кролика")]
             public RUBOOL ConfirmReplace { get { return crp; } set { crp = value; } }
-            [Category("Вид"), 
-            DisplayName("Деревья роословной"),
+            [Category("Вид"), DisplayName("Деревья роословной"),
             Description("Количество отображаемых Деревьев родословной в Поголовье и Молодняке")]
             public int GenTree { get { return gt; } set { gt = value; } }
             [Category("Вид"),

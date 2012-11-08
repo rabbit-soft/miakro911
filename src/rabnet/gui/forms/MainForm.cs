@@ -27,7 +27,9 @@ namespace rabnet
         /// </summary>
         private RabNetPanel curpanel=null;
         private static MainForm me = null;
-        private bool _mustclose = false;
+        private static bool _mustclose = false;
+
+        public static bool MustClose { get { return _mustclose; } }
 
         public MainForm()
         {
