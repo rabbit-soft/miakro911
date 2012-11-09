@@ -1,6 +1,6 @@
 ﻿namespace rabnet
 {
-    partial class GenomView
+    partial class GenomViewForm
     {
         /// <summary>
         /// Required designer variable.

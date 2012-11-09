@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace rabnet
 {
-    public partial class GenomView : Form
+    public partial class GenomViewForm : Form
     {
         private Catalog _brds = Engine.db().catalogs().getBreeds();
         private Catalog _msn = Engine.db().catalogs().getSurNames(1, "ы");
@@ -16,12 +16,13 @@ namespace rabnet
         private Color _bcolor = Color.Crimson;
         private bool _inbreeding = false;
 
-        public GenomView()
+        public GenomViewForm()
         {
             InitializeComponent();
+            FormSizeSaver.Append(this);
         }
 
-        public GenomView(int rFemaleId,int rMaleId)
+        public GenomViewForm(int rFemaleId,int rMaleId)
             : this()
         {
             //RabNetEngRabbit rb1 = Engine.get().getRabbit(r1);
@@ -52,7 +53,7 @@ namespace rabnet
 
         private string getChildrenName(int femaleNameId, int maleNameId)
         {
-            return _fsn[femaleNameId] + "-" + _msn[maleNameId];
+            return _fsn[femaleNameId] + "-" + (maleNameId != 0 ? _msn[maleNameId] : "<Имя кандидата>");
         }
 
         private void checkRootInbreeding(TreeNode femaleTn, TreeNode maleTn)

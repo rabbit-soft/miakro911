@@ -21,6 +21,7 @@ namespace rabnet
             else if (sender is ReplaceYoungersForm) opt = Options.OPT_ID.FS_REPLACE_YOUNG;
             else if (sender is MakeFuckForm) opt = Options.OPT_ID.FS_FUCK;
             else if (sender is DeadForm) opt = Options.OPT_ID.FS_DEAD_ARCH;
+            else if (sender is GenomViewForm) opt = Options.OPT_ID.FS_GENOM_VIEW;
             else return false;
             return true;
         }
@@ -48,8 +49,5 @@ namespace rabnet
                 frm.Height = h;
             }
         } 
-
-
-
     }
 }

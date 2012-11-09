@@ -48,7 +48,7 @@ FROM fucks WHERE f_rabid={0:d} AND isdead(f_partner)=0 ORDER BY f_date);", rabbi
             return f;
         }
 
-        public static Fucks AllFuckers(MySqlConnection sql, int female, bool geterosis, bool inbreeding, int malewait)
+        public static Fucks AllFuckers(MySqlConnection sql, int femaleId, bool geterosis, bool inbreeding, int malewait)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT 
     r_id,
@@ -56,25 +56,29 @@ FROM fucks WHERE f_rabid={0:d} AND isdead(f_partner)=0 ORDER BY f_date);", rabbi
     r_status,
     r_breed,
     (SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=r_genesis) genom,
-    {4:s} fucks,
-    {5:s} children
+    Coalesce(fcs.fucks,0) fucks,
+    Coalesce(fcs.children,0) children
 FROM rabbits 
+LEFT JOIN (SELECT f_partner, SUM(f_times) fucks, SUM(f_children) children FROM fucks WHERE f_rabid={0:d} GROUP BY f_partner)fcs ON f_partner=r_id
 WHERE r_sex='male' AND r_status>0 AND ( r_last_fuck_okrol IS NULL OR Date(NOW())>Date(Date_Add(r_last_fuck_okrol,INTERVAL {1:d} DAY)) )
     {2:s}
     {3:s} 
 ORDER BY fullname;",
-female,
-malewait,
-(geterosis ? "" : String.Format(" AND r_breed=(SELECT r2.r_breed FROM rabbits r2 WHERE r_id={0:d})",female)),
-(inbreeding ? "" : String.Format(@" AND (SELECT COUNT(g_genom) FROM genoms WHERE g_id=r_genesis AND g_genom IN 
-    (SELECT g2.g_genom FROM genoms g2 WHERE g2.g_id=(SELECT r3.r_genesis from rabbits r3 WHERE r3.r_id={0:d})))=0",female)),
-(female !=0 ? String.Format("(SELECT SUM(f_times)     FROM fucks WHERE f_partner=r_id AND f_rabid={0:d})",female): "'0'"),
-(female !=0 ? String.Format("(SELECT SUM(f_children)  FROM fucks WHERE f_partner=r_id AND f_rabid={0:d})",female): "'0'")
-), sql);
+    femaleId,
+    malewait,
+    (geterosis ? "" : String.Format(" AND r_breed=(SELECT r2.r_breed FROM rabbits r2 WHERE r_id={0:d})",femaleId)),
+    (inbreeding ? "" : String.Format(@" AND (SELECT COUNT(g_genom) FROM genoms WHERE g_id=r_genesis AND g_genom IN 
+        (SELECT g2.g_genom FROM genoms g2 WHERE g2.g_id=(SELECT r3.r_genesis from rabbits r3 WHERE r3.r_id={0:d})))=0",femaleId))
+    //,(femaleId !=0 ? String.Format("(SELECT SUM(f_times)     FROM fucks WHERE f_partner=r_id AND f_rabid={0:d})",femaleId): "'0'"),
+    //(femaleId !=0 ? String.Format("(SELECT SUM(f_children)  FROM fucks WHERE f_partner=r_id AND f_rabid={0:d})",femaleId): "'0'")
+    ), sql);
 #if DEBUG
             _logger.Debug(cmd.CommandText);
 #endif
             MySqlDataReader rd = cmd.ExecuteReader();
+#if DEBUG
+            _logger.Debug("query is executed");
+#endif
             Fucks f = new Fucks();
             while (rd.Read())
             {

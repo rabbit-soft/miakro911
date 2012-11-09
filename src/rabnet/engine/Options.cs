@@ -51,7 +51,7 @@ namespace rabnet
             /// Размеры формы пересадок в формате W:H
             /// <example>600:400</example>
             /// </summary>
-            FS_REPLACE, FS_KILL, FS_REPLACE_YOUNG, FS_FUCK,FS_DEAD_ARCH
+            FS_REPLACE, FS_KILL, FS_REPLACE_YOUNG, FS_FUCK,FS_DEAD_ARCH,FS_GENOM_VIEW
         }
         public enum OPT_LEVEL {FARM,USER};
         public class ExOptionNotFound:ApplicationException
@@ -135,6 +135,7 @@ namespace rabnet
                                    new Option(OPT_ID.FS_REPLACE_YOUNG,OPT_LEVEL.USER,"fc_replace_young"),
                                    new Option(OPT_ID.FS_FUCK,OPT_LEVEL.USER,"fc_fuck"),
                                    new Option(OPT_ID.FS_DEAD_ARCH,OPT_LEVEL.USER,"fc_dead_arch"),
+                                   new Option(OPT_ID.FS_GENOM_VIEW,OPT_LEVEL.USER,"fc_genom_view"),
                                    };
         public Options(RabNetEngine eng)
         {

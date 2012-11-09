@@ -138,7 +138,7 @@ namespace rabnet
                 return;
             }
             int r2 = (listView1.SelectedItems[0].Tag as Fucks.Fuck).partnerid;
-            (new GenomView(rab1.RabID, r2)).ShowDialog();
+            (new GenomViewForm(rab1.RabID, r2)).ShowDialog();
         }
 
         private void btCancel_Click(object sender, EventArgs e)
