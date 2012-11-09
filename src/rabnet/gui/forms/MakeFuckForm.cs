@@ -5,11 +5,14 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using log4net;
 
 namespace rabnet
 {
     public partial class MakeFuckForm : Form
     {
+        private ILog _logger = LogManager.GetLogger(typeof(MakeFuckForm));
+
         private const int IND_FUCKS = 3;
         private const int IND_CHILDREN = 4;
 
@@ -38,31 +41,28 @@ namespace rabnet
             listView1.ListViewItemSorter = cs;
             FormSizeSaver.Append(this);
         }
-        public MakeFuckForm(int r1)
-            : this(r1,0)
-        {
-        }
+        public MakeFuckForm(int r1): this(r1,0) { }
 
         private void initialHints()
         {
             ToolTip toolTip = new ToolTip();
             toolTip.InitialDelay = 1000;
-            toolTip.SetToolTip(button3, "Показать гены выбранного самца");
+            toolTip.SetToolTip(btGens, "Показать гены выбранного самца");
         }
 
         private void fillNames()
         {
-            comboBox1.Items.Clear();
+            cbName.Items.Clear();
             names = Engine.db().catalogs().getFreeNames(2, rab1.Name);
-            comboBox1.Items.Add("");
-            comboBox1.SelectedIndex = 0;
+            cbName.Items.Add("");
+            cbName.SelectedIndex = 0;
             foreach (int key in names.Keys)
             {
-                comboBox1.Items.Add(names[key]);
+                cbName.Items.Add(names[key]);
                 if (key == rab1.Name)
-                    comboBox1.SelectedIndex = comboBox1.Items.Count - 1;
+                    cbName.SelectedIndex = cbName.Items.Count - 1;
             }
-            comboBox1.Enabled = button4.Enabled = rab1.Name == 0;
+            cbName.Enabled = btNames.Enabled = rab1.Name == 0;
         }
 
         public MakeFuckForm(int r1, int r2):this()
@@ -73,7 +73,7 @@ namespace rabnet
             rtosel = r2;
             fillTable();
             if (rab1.Status > 0)
-                Text = button1.Text = "Вязать";
+                Text = btOk.Text = "Вязать";
             fillNames();
         }
         public MakeFuckForm(int r1, int r2, int action):this(r1,r2)
@@ -84,7 +84,11 @@ namespace rabnet
         private void fillTable()
         {
             cs.Prepare();
-            Fucks fs = Engine.db().allFuckers(rab1.RabID,cbHeter.Checked,cbInbreed.Checked,malewait);
+            Fucks fs = Engine.db().GetAllFuckers(rab1.RabID,cbHeter.Checked,cbInbreed.Checked,malewait);
+#if DEBUG
+            _logger.Debug("Starting to fill fucker list");
+#endif
+            listView1.BeginUpdate();
             foreach (Fucks.Fuck f in fs.fucks)
             {
                 bool heter=(f.breed != rab1.Breed);
@@ -114,15 +118,19 @@ namespace rabnet
                  }
                 //}
             }
+            listView1.EndUpdate();
+#if DEBUG
+            _logger.Debug("end to fill fucker list");
+#endif
             cs.Restore();
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            button1.Enabled=button3.Enabled=(listView1.SelectedItems.Count==1);
+            btOk.Enabled=btGens.Enabled=(listView1.SelectedItems.Count==1);
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void btGens_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count == 0)
             {
@@ -133,29 +141,41 @@ namespace rabnet
             (new GenomView(rab1.RabID, r2)).ShowDialog();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btCancel_Click(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btOk_Click(object sender, EventArgs e)
+        {
+            makeFuck(false);
+        }
+
+        private void miSyntetic_Click(object sender, EventArgs e)
+        {
+            makeFuck(true);
+        }
+
+        private void makeFuck(bool syntetic)
         {
             try
             {
                 if (listView1.SelectedItems.Count != 1)
                     throw new ApplicationException("Выберите самца");
-                if (rab1.Name == 0 && comboBox1.SelectedIndex != 0)
+                if (rab1.Name == 0 && cbName.SelectedIndex != 0)
                 {
                     foreach (int k in names.Keys)
-                        if (comboBox1.Text == names[k])
+                        if (cbName.Text == names[k])
                             rab1.Name = k;
                     rab1.Commit();
                 }
-                
+
                 int r2 = (listView1.SelectedItems[0].Tag as Fucks.Fuck).partnerid;
                 selected = r2;
-                if (action==0)
-                    rab1.FuckIt(r2, dateDays1.DateValue);
+                if (action == 0)
+                    rab1.FuckIt(r2, dateDays1.DateValue,syntetic);
+
+                this.DialogResult = DialogResult.OK;
                 Close();
             }
             catch (ApplicationException ex)
@@ -175,16 +195,15 @@ namespace rabnet
         private void listView1_DoubleClick(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count==1)
-                button3.PerformClick();
+                btGens.PerformClick();
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void btNames_Click(object sender, EventArgs e)
         {
             new NamesForm(1).ShowDialog();
             fillNames();
         }
 
         public int SelectedFucker { get { return selected; } }
-
     }
 }

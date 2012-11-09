@@ -41,7 +41,7 @@ namespace rabnet
             if (cbDateFrom.Checked) f["Dt"] = nudDateFrom.Value.ToString();
             if (cbWeightFrom.Checked) f["wg"] = nudWeightFrom.Value.ToString();
             if (cbWeightTo.Checked) f["Wg"] = nudWeightTo.Value.ToString();
-            if (cobWorks.SelectedIndex != 0) f["wr"] = cobWorks.SelectedIndex.ToString();
+            //if (cbWorks.SelectedIndex != 0) f["wr"] = cbWorks.SelectedIndex.ToString();
             if (!cbMaleBoy.Checked || !cbMaleCandidate.Checked || !cbMaleProducer.Checked)
                 f[Filters.MALE] = String.Format("{0:s}{1:s}{2:s}", cbMaleBoy.Checked ? "b" : "", cbMaleCandidate.Checked ? "c" : "", cbMaleProducer.Checked ? "p" : "");
             if (f.safeValue(Filters.MALE) == "") f.Remove(Filters.MALE);
@@ -87,7 +87,7 @@ namespace rabnet
             cbWeightTo.Checked = f.ContainsKey("Wg"); cbWeightTo_CheckedChanged(null, null);
             if (cbWeightTo.Checked) 
                 nudWeightTo.Value = f.safeInt("Wg", 5000);
-            cobWorks.SelectedIndex = f.safeInt("wr");
+            //cbWorks.SelectedIndex = f.safeInt("wr");
 
             cbMaleBoy.Checked = f.safeValue(Filters.MALE, "bcp").Contains("b");
             cbMaleCandidate.Checked = f.safeValue(Filters.MALE, "bcp").Contains("c");
@@ -124,7 +124,7 @@ namespace rabnet
             cbDateTo_CheckedChanged(null, null);
             cbWeightFrom.Checked = cbWeightTo.Checked = false;
             cbWeightFrom_CheckedChanged(null, null); cbWeightTo_CheckedChanged(null, null);
-            cobWorks.SelectedIndex = 0;
+            //cbWorks.SelectedIndex = 0;
             cbMaleBoy.Checked = cbMaleCandidate.Checked = cbMaleProducer.Checked = true;          
             cobPregnant.SelectedIndex = 0;
             cbPregFrom.Checked = cbPregTo.Checked = false;

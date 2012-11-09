@@ -82,9 +82,17 @@ namespace rabnet
         void RabNetLog(int type, int user, int r1, int r2, string a1, string a2, String text);
         Fucks getFucks(int rabbit);
         void cancelFuckEnd(int fuckID);
-        Fucks allFuckers(int female,bool geterosis,bool inbreeding,int malewait);
+        Fucks GetAllFuckers(int female,bool geterosis,bool inbreeding,int malewait);
         void setBon(int rabbit,String bon);
-        void makeFuck(int female, int male, DateTime date, int worker);
+        /// <summary>
+        /// Случает крольчиху
+        /// </summary>
+        /// <param name="femaleId">ID крольчихи</param>
+        /// <param name="maleId">ID самца</param>
+        /// <param name="date">Дата случки</param>
+        /// <param name="worker">ID пользователя (работника)</param>
+		/// <param name="syntetic);">Искусственное осеменение</param>
+        void MakeFuck(int femaleId, int maleId, DateTime date, int worker, bool syntetic);
         void makeProholost(int female, DateTime when);
         int makeOkrol(int female, DateTime when, int children, int dead);
         String makeName(int nm, int sur, int sec, int grp, Rabbit.SexType sex);

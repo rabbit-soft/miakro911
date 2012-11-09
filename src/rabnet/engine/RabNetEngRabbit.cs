@@ -358,9 +358,10 @@ namespace rabnet
         /// <summary>
         /// Отметить вязку самки
         /// </summary>
-        /// <param name="otherrab">ID самца</param>
+        /// <param name="maleId">ID самца</param>
         /// <param name="when">Дата вязки</param>
-        public void FuckIt(int otherrab, DateTime when)
+        /// <param name="syntetic">Искусственное осеменение</param>
+        public void FuckIt(int maleId, DateTime when,bool syntetic)
         {
             if (Sex != Rabbit.SexType.FEMALE)
                 throw new ExNotFemale(this);
@@ -370,15 +371,20 @@ namespace rabnet
                 throw new ExAlreadyFucked(this);
             if (Name == 0) throw new ExNoName();
             if (Group > 1) throw new ExNotOne("случить");
-            RabNetEngRabbit f = _eng.getRabbit(otherrab);
+            RabNetEngRabbit f = _eng.getRabbit(maleId);
             if (f.Sex != Rabbit.SexType.MALE)
                 throw new ExNotMale(f);
             if (f.Status < 1)
                 throw new ExNotFucker(f);
             if (when > DateTime.Now)
                 throw new ExBadDate(when);
-            _eng.logs().log(RabNetLogs.LogType.FUCK, RabID, otherrab, SmallAddress, f.SmallAddress);
-            _eng.db().makeFuck(this._id, f.RabID, when.Date, _eng.userId);
+            _eng.logs().log(RabNetLogs.LogType.FUCK, RabID, maleId, SmallAddress, f.SmallAddress,syntetic?"ИО":"стд.");
+            _eng.db().MakeFuck(this._id, f.RabID, when.Date, _eng.userId,syntetic);
+        }
+
+        public void FuckIt(int otherrab, DateTime when)
+        {
+            FuckIt(otherrab, when,false);
         }
         
         /// <summary>

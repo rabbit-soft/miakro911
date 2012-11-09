@@ -30,7 +30,7 @@ namespace rabnet
             comboBox1.Items.Clear();
             ids.Clear();
             int sid = 0;
-            Fucks ff = Engine.db().allFuckers(0, true, true, 0);
+            Fucks ff = Engine.db().GetAllFuckers(0, true, true, 0);
             foreach (Fucks.Fuck f in ff.fucks)
             {
                 comboBox1.Items.Add(f.partner);

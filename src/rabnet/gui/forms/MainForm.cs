@@ -282,7 +282,7 @@ namespace rabnet
             {
                 MessageBox.Show(this, msg + "\nПрограмма будет закрыта.", "Ошибка защиты", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 LoginForm.stop = true;
-                mustclose = true;
+                _mustclose = true;
                 Close();//Environment.Exit(100);
             }
 /*            if (!PClient.get().canwork())

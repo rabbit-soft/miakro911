@@ -42,11 +42,13 @@ r_notes,
 r_born,
 r_breed,
 Coalesce((
-    SELECT GROUP_CONCAT('v',rv.v_id ORDER BY rv.v_id)      
+    SELECT GROUP_CONCAT('v',{3:s} ORDER BY rv.v_id)      
     FROM rab_vac rv 
-    INNER JOIN vaccines v1 ON v1.v_id>0 AND v1.v_id=rv.v_id
-    WHERE rv.r_id=r.r_id AND unabled!=1 AND (Date_Add(rv.`date`,INTERVAL v1.v_duration DAY)>=NOW())),'') vaccines
-FROM rabbits r WHERE r_parent=0 ORDER BY name) c {2:s};", (options.safeBool("dbl") ? "2" : "1"), fld, makeWhere());
+    INNER JOIN vaccines v1 ON v1.v_id=rv.v_id #AND v1.v_id>0
+    WHERE rv.r_id=r.r_id AND unabled!=1 
+        AND (Date_Add(rv.`date`,INTERVAL v1.v_duration DAY)>=NOW())),'') vaccines
+FROM rabbits r WHERE r_parent=0 ORDER BY name) c {2:s};", (options.safeBool("dbl") ? "2" : "1"), fld, makeWhere(),
+            String.Format("IF(rv.v_id={0:d},'S',rv.v_id)", Vaccine.V_ID_LUST));///чтобы не перегружать текст SQL запроса
         }
 
         public String makeWhere()

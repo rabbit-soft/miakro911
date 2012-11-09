@@ -13,6 +13,8 @@ namespace rabnet
             public const string Vyazka_rus = "вязка";
             public const string Sluchka_ENG = "sluchka";
             public const string Sluchka_rus = "случка";
+            public const string Syntetic_ENG = "syntetic";
+            public const string Syntetic_rus = "искусственное осеменение";
             public const string Kuk_ENG = "kuk";
             public const string Kuk_rus = "кук";
             public const string Okrol_ENG = "okrol";
@@ -50,14 +52,22 @@ namespace rabnet
                 worker = wrk;
                 times = tms;
                 when = s; enddate = e;
-                type = "нет";
-                if (tp == "vyazka") type = "вязка";
-                if (tp == "sluchka") type = "случка";
-                if (tp == "kuk") type = "кук";
-                status = "сукрольна";
-                if (st == "okrol") status = "окрол";
-                if (st == "proholost") status = "прохолостание";
-                children = ch; dead = dd;
+                type = Type.Null;
+                switch (tp)
+                {
+                    case Type.Vyazka_ENG: type = Type.Vyazka_rus; break;
+                    case Type.Sluchka_ENG: type = Type.Sluchka_rus; break;
+                    case Type.Syntetic_ENG: type = Type.Syntetic_rus; break;
+                    case Type.Kuk_ENG: type = Type.Kuk_rus; break;
+                }
+                //if (tp == Type.Vyazka_ENG) type = Type.Vyazka_rus;
+                //if (tp == Type.Sluchka_ENG) type = Type.Sluchka_rus;
+                //if (tp == Type.Kuk_ENG) type = Type.Kuk_rus;
+                status = Type.Sukrol_rus;
+                if (st == Type.Okrol_ENG) status = Type.Okrol_rus;
+                if (st == Type.Proholost_ENG) status = Type.Proholost_rus;
+                children = ch; 
+                dead = dd;
                 isDead = isdead;
                 killed = kl;
                 added = add;

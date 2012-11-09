@@ -7,9 +7,10 @@ using rabnet;
 
 namespace db.mysql
 { 
-
     class FucksGetter
     {
+        private static ILog _logger = LogManager.GetLogger(typeof(FucksGetter));
+
         public static Fucks GetFucks(MySqlConnection sql, int rabbit)
         {
 
@@ -47,20 +48,20 @@ FROM fucks WHERE f_rabid={0:d} AND isdead(f_partner)=0 ORDER BY f_date);", rabbi
             return f;
         }
 
-        public static Fucks AllFuckers(MySqlConnection sql, int female,bool geterosis,bool inbreeding,int malewait)
+        public static Fucks AllFuckers(MySqlConnection sql, int female, bool geterosis, bool inbreeding, int malewait)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT 
-r_id,
-rabname(r_id,2) fullname,
-r_status,
-r_breed,
-(SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=r_genesis) genom,
-{4:s} fucks,
-{5:s} children
+    r_id,
+    rabname(r_id,2) fullname,
+    r_status,
+    r_breed,
+    (SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=r_genesis) genom,
+    {4:s} fucks,
+    {5:s} children
 FROM rabbits 
-WHERE r_sex='male' AND r_status>0 AND (r_last_fuck_okrol IS NULL OR Date(NOW())>Date(Date_Add(r_last_fuck_okrol,INTERVAL {1:d} DAY)))
-{2:s}
-{3:s} 
+WHERE r_sex='male' AND r_status>0 AND ( r_last_fuck_okrol IS NULL OR Date(NOW())>Date(Date_Add(r_last_fuck_okrol,INTERVAL {1:d} DAY)) )
+    {2:s}
+    {3:s} 
 ORDER BY fullname;",
 female,
 malewait,
@@ -70,6 +71,9 @@ malewait,
 (female !=0 ? String.Format("(SELECT SUM(f_times)     FROM fucks WHERE f_partner=r_id AND f_rabid={0:d})",female): "'0'"),
 (female !=0 ? String.Format("(SELECT SUM(f_children)  FROM fucks WHERE f_partner=r_id AND f_rabid={0:d})",female): "'0'")
 ), sql);
+#if DEBUG
+            _logger.Debug(cmd.CommandText);
+#endif
             MySqlDataReader rd = cmd.ExecuteReader();
             Fucks f = new Fucks();
             while (rd.Read())
@@ -176,25 +180,30 @@ malewait,
             cmd.ExecuteNonQuery();
         }
 
-        public static void makeFuck(MySqlConnection sql, int female, int male, DateTime date, int worker)
+        public static void MakeFuck(MySqlConnection sql, int femaleId, int maleId, DateTime date, int worker,bool syntetic)
         {
-            OneRabbit f = RabbitGetter.GetRabbit(sql, female);
-            String type = "sluchka";
-            if (f.Status > 0)
-                type = "vyazka";
-            MySqlCommand cmd = new MySqlCommand(String.Format("UPDATE fucks SET f_last=0 WHERE f_rabid={0:d};", female), sql);
+            OneRabbit f = RabbitGetter.GetRabbit(sql, femaleId);
+            String type = Fucks.Type.Sluchka_ENG;
+            if (syntetic)
+                type = Fucks.Type.Syntetic_ENG;
+            else if (f.Status > 0)
+                type = Fucks.Type.Vyazka_ENG;
+            MySqlCommand cmd = new MySqlCommand(String.Format("UPDATE fucks SET f_last=0 WHERE f_rabid={0:d};", femaleId), sql);
             cmd.ExecuteNonQuery();
             cmd.CommandText = String.Format(@"INSERT INTO fucks(f_rabid,f_date,f_partner,f_state,f_type,f_last,f_notes,f_worker) 
-VALUES({0:d},{1:s},{2:d},'sukrol','{3:s}',1,'',{4:d});", female, DBHelper.DateToMyString(date), male, type, worker);
+VALUES({0:d},{1:s},{2:d},'sukrol','{3:s}',1,'',{4:d});", femaleId, DBHelper.DateToMyString(date), maleId, type, worker);
             cmd.ExecuteNonQuery();
             //            cmd.CommandText = String.Format("SELECT r_status,TODAYS(r_last_fuck_okrol FROM rabbits WHERE r_id=");
             int rate = 1;
-            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date={0:s},r_event='{1:s}',r_rate=r_rate+{3:d} WHERE r_id={2:d};",
-                DBHelper.DateToMyString(date), type, female, rate);
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date={0:s}, r_event='{1:s}', r_rate=r_rate+{3:d} WHERE r_id={2:d};",
+                DBHelper.DateToMyString(date), type, femaleId, rate);
             cmd.ExecuteNonQuery();
-            cmd.CommandText = String.Format("UPDATE rabbits SET r_last_fuck_okrol={0:s},r_rate=r_rate+1 WHERE r_id={1:d};",
-                DBHelper.DateToMyString(date), male);
-            cmd.ExecuteNonQuery();
+            if (!syntetic)///если ИО то не ставим, что самец работал
+            {
+                cmd.CommandText = String.Format("UPDATE rabbits SET r_last_fuck_okrol={0:s}, r_rate=r_rate+1 WHERE r_id={1:d};",
+                    DBHelper.DateToMyString(date), maleId);
+                cmd.ExecuteNonQuery();
+            }
         }
     }
 }

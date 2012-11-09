@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.listView1 = new System.Windows.Forms.ListView();
             this.chName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chState = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -38,16 +39,19 @@
             this.chInbreeding = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btCancel = new System.Windows.Forms.Button();
+            this.btGens = new System.Windows.Forms.Button();
             this.cbHeter = new System.Windows.Forms.CheckBox();
             this.cbInbreed = new System.Windows.Forms.CheckBox();
             this.cbCand = new System.Windows.Forms.CheckBox();
             this.dateDays1 = new rabnet.components.DateDays();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbName = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btNames = new System.Windows.Forms.Button();
+            this.btOk = new ExoticControls.SplitButton();
+            this.cmsOk = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miSyntetic = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsOk.SuspendLayout();
             this.SuspendLayout();
             // 
             // listView1
@@ -125,41 +129,28 @@
             this.label2.Text = "label2";
             this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // button1
+            // btCancel
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(418, 331);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Случить";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btCancel.Location = new System.Drawing.Point(337, 331);
+            this.btCancel.Name = "btCancel";
+            this.btCancel.Size = new System.Drawing.Size(75, 23);
+            this.btCancel.TabIndex = 4;
+            this.btCancel.Text = "Отмена";
+            this.btCancel.UseVisualStyleBackColor = true;
+            this.btCancel.Click += new System.EventHandler(this.btCancel_Click);
             // 
-            // button2
+            // btGens
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(337, 331);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "Отмена";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button3
-            // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button3.Location = new System.Drawing.Point(15, 331);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 5;
-            this.button3.Text = "Гены";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btGens.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btGens.Location = new System.Drawing.Point(15, 331);
+            this.btGens.Name = "btGens";
+            this.btGens.Size = new System.Drawing.Size(75, 23);
+            this.btGens.TabIndex = 5;
+            this.btGens.Text = "Гены";
+            this.btGens.UseVisualStyleBackColor = true;
+            this.btGens.Click += new System.EventHandler(this.btGens_Click);
             // 
             // cbHeter
             // 
@@ -204,7 +195,7 @@
             this.dateDays1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2012, 11, 7, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2012, 11, 9, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
             this.dateDays1.Location = new System.Drawing.Point(356, 274);
@@ -215,16 +206,16 @@
             this.dateDays1.Step = 1;
             this.dateDays1.TabIndex = 6;
             // 
-            // comboBox1
+            // cbName
             // 
-            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(162, 6);
-            this.comboBox1.MaxDropDownItems = 20;
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 10;
+            this.cbName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbName.FormattingEnabled = true;
+            this.cbName.Location = new System.Drawing.Point(162, 6);
+            this.cbName.MaxDropDownItems = 20;
+            this.cbName.Name = "cbName";
+            this.cbName.Size = new System.Drawing.Size(121, 21);
+            this.cbName.TabIndex = 10;
             // 
             // label3
             // 
@@ -236,34 +227,62 @@
             this.label3.TabIndex = 11;
             this.label3.Text = "Имя";
             // 
-            // button4
+            // btNames
             // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(290, 6);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(25, 20);
-            this.button4.TabIndex = 12;
-            this.button4.Text = "...";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.btNames.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btNames.Location = new System.Drawing.Point(290, 6);
+            this.btNames.Name = "btNames";
+            this.btNames.Size = new System.Drawing.Size(25, 20);
+            this.btNames.TabIndex = 12;
+            this.btNames.Text = "...";
+            this.btNames.UseVisualStyleBackColor = true;
+            this.btNames.Click += new System.EventHandler(this.btNames_Click);
+            // 
+            // btOk
+            // 
+            this.btOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btOk.ContextMenuStrip = this.cmsOk;
+            this.btOk.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btOk.ImageKey = "Normal";
+            this.btOk.Location = new System.Drawing.Point(418, 331);
+            this.btOk.Name = "btOk";
+            this.btOk.Size = new System.Drawing.Size(75, 23);
+            this.btOk.TabIndex = 13;
+            this.btOk.Text = "Случка";
+            this.btOk.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.btOk.UseVisualStyleBackColor = true;
+            this.btOk.ButtonClick += new System.EventHandler(this.btOk_Click);
+            // 
+            // cmsOk
+            // 
+            this.cmsOk.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miSyntetic});
+            this.cmsOk.Name = "cmsOk";
+            this.cmsOk.Size = new System.Drawing.Size(230, 26);
+            // 
+            // miSyntetic
+            // 
+            this.miSyntetic.Name = "miSyntetic";
+            this.miSyntetic.Size = new System.Drawing.Size(229, 22);
+            this.miSyntetic.Text = "Искусственное Осеменение";
+            this.miSyntetic.Click += new System.EventHandler(this.miSyntetic_Click);
             // 
             // MakeFuckForm
             // 
-            this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.button2;
+            this.CancelButton = this.btCancel;
             this.ClientSize = new System.Drawing.Size(505, 366);
-            this.Controls.Add(this.button4);
+            this.Controls.Add(this.btNames);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cbName);
             this.Controls.Add(this.cbCand);
             this.Controls.Add(this.cbInbreed);
+            this.Controls.Add(this.btOk);
             this.Controls.Add(this.cbHeter);
             this.Controls.Add(this.dateDays1);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btGens);
+            this.Controls.Add(this.btCancel);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listView1);
@@ -274,6 +293,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Случить";
+            this.cmsOk.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -291,15 +311,17 @@
         private System.Windows.Forms.ColumnHeader chInbreeding;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btCancel;
+        private System.Windows.Forms.Button btGens;
         private rabnet.components.DateDays dateDays1;
         private System.Windows.Forms.CheckBox cbHeter;
         private System.Windows.Forms.CheckBox cbInbreed;
         private System.Windows.Forms.CheckBox cbCand;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cbName;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btNames;
+        private ExoticControls.SplitButton btOk;
+        private System.Windows.Forms.ContextMenuStrip cmsOk;
+        private System.Windows.Forms.ToolStripMenuItem miSyntetic;
     }
 }

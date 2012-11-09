@@ -131,6 +131,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\party3d\RdlViewer.dll</HintPath>
     </Reference>
+    <Reference Include="SplitButton">
+      <HintPath>..\..\..\party3d\SplitButton.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />

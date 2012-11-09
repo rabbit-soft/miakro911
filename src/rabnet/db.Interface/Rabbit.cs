@@ -72,17 +72,17 @@ namespace rabnet
         public static String GetEventName(int evtype)
         {
             String ev = "none";
-            if (evtype == 1) ev = "sluchka";
-            if (evtype == 2) ev = "vyazka";
-            if (evtype == 2) ev = "kuk";
+            if (evtype == 1) ev = Fucks.Type.Sluchka_ENG;
+            if (evtype == 2) ev = Fucks.Type.Vyazka_ENG;
+            if (evtype == 2) ev = Fucks.Type.Kuk_ENG;
             return ev;
         }
         public static int GetEventType(String eventType)
         {
             int evtype = 0;
-            if (eventType == "sluchka") evtype = 1;
-            if (eventType == "vyazka") evtype = 2;
-            if (eventType == "kuk") evtype = 3;
+            if (eventType == Fucks.Type.Sluchka_ENG) evtype = 1;
+            if (eventType == Fucks.Type.Vyazka_ENG) evtype = 2;
+            if (eventType == Fucks.Type.Kuk_ENG) evtype = 3;
             return evtype;
         }
         public static Rabbit.SexType GetSexType(string sex)
@@ -285,7 +285,8 @@ namespace rabnet
             BreedID = brd;
             this.zone = zone;
             gens = genom;
-            if (sx == "void") status = Age < 50 ? 0 : 1; //TODO проверить на необходимость
+            if (sx == "void") 
+                status = Age < 50 ? 0 : 1; //TODO проверить на необходимость
             lastfuckokrol = lastFuckOkrol;
             evtype = Rabbit.GetEventType(eventType);
             _okrol = okrol;

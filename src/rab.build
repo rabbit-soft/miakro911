@@ -416,6 +416,7 @@
 			</resources>
 			<references>		
 				<include name="${log4net.use}"/>
+				<include name="${party3d.path}/SplitButton.dll"/>
 				<include name="${bin_dir_bin}/${guardantNET.lib}" />
 				<include name="${bin_dir_bin}/db.Interface.dll" />
 				<include name="${bin_dir_bin}/engine.dll" />

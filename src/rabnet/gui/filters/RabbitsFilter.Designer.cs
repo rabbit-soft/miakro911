@@ -50,8 +50,6 @@
             this.cbMaleProducer = new System.Windows.Forms.CheckBox();
             this.cbMaleCandidate = new System.Windows.Forms.CheckBox();
             this.cbMaleBoy = new System.Windows.Forms.CheckBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.cobWorks = new System.Windows.Forms.ComboBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.nudWeightTo = new System.Windows.Forms.NumericUpDown();
             this.nudWeightFrom = new System.Windows.Forms.NumericUpDown();
@@ -79,7 +77,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudPregFrom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPregTo)).BeginInit();
             this.groupBox5.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudWeightTo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWeightFrom)).BeginInit();
@@ -352,29 +349,6 @@
             this.cbMaleBoy.Text = "Мальчики";
             this.cbMaleBoy.UseVisualStyleBackColor = true;
             this.cbMaleBoy.CheckedChanged += new System.EventHandler(this.cbMaleBoy_CheckedChanged);
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.cobWorks);
-            this.groupBox4.Location = new System.Drawing.Point(391, 31);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(119, 75);
-            this.groupBox4.TabIndex = 6;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Плановые работы";
-            // 
-            // cobWorks
-            // 
-            this.cobWorks.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cobWorks.FormattingEnabled = true;
-            this.cobWorks.Items.AddRange(new object[] {
-            "Не важно",
-            "Есть",
-            "Нет"});
-            this.cobWorks.Location = new System.Drawing.Point(6, 31);
-            this.cobWorks.Name = "cobWorks";
-            this.cobWorks.Size = new System.Drawing.Size(107, 21);
-            this.cobWorks.TabIndex = 0;
             // 
             // groupBox3
             // 
@@ -706,7 +680,6 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
-            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -724,7 +697,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudPregTo)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudWeightTo)).EndInit();
@@ -765,8 +737,6 @@
         private System.Windows.Forms.CheckBox cbMaleProducer;
         private System.Windows.Forms.CheckBox cbMaleCandidate;
         private System.Windows.Forms.CheckBox cbMaleBoy;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.ComboBox cobWorks;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.NumericUpDown nudWeightTo;
         private System.Windows.Forms.NumericUpDown nudWeightFrom;

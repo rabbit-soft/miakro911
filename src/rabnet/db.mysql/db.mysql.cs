@@ -283,7 +283,7 @@ namespace db.mysql
             return FucksGetter.GetFucks(sql, rabbit);
         }
 
-        public Fucks allFuckers(int female,bool geterosis,bool inbreeding,int malewait)
+        public Fucks GetAllFuckers(int female,bool geterosis,bool inbreeding,int malewait)
         {
             return FucksGetter.AllFuckers(sql, female,geterosis,inbreeding,malewait);
         }
@@ -293,9 +293,9 @@ namespace db.mysql
             RabbitGetter.setBon(sql, rabbit, bon);
         }
 
-        public void makeFuck(int female, int male, DateTime date,int worker)
+        public void MakeFuck(int female, int male, DateTime date,int worker,bool syntetic)
         {
-            FucksGetter.makeFuck(sql, female, male, date,worker);
+            FucksGetter.MakeFuck(sql, female, male, date, worker, syntetic);
         }
 
         public void makeProholost(int female, DateTime when)
