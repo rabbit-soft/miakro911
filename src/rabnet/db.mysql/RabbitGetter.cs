@@ -495,26 +495,6 @@ WHERE r_parent={1:d} AND r_id={2:d};", added, rid, yid), sql);
             MySqlDataReader rd; //= cmd.ExecuteReader();
             OneRabbit rabFrom = GetRabbit(sql,rabfrom);
             OneRabbit rabTo = GetRabbit(sql, rabto);
-            //int[] Arabfrom = new int[3];
-            //if (rd.Read())
-            //{
-            //    Arabfrom[0] = rd.GetInt32("r_mother");
-            //    Arabfrom[1] = rd.GetInt32("r_father");
-            //    Arabfrom[2] = rd.GetInt32("r_okrol");
-            //}
-            //rd.Close();
-            //cmd.CommandText = String.Format("select r_mother,r_father,r_okrol from rabbits where r_id={0:d};", rabto);
-            //rd = cmd.ExecuteReader();
-            //int[] Arabto = new int[3];
-            //if (rd.Read())
-            //{
-            //    Arabto[0] = rd.GetInt32("r_mother");
-            //    Arabto[1] = rd.GetInt32("r_father");
-            //    Arabto[2] = rd.GetInt32("r_okrol");
-            //}
-            //rd.Close();
-
-            //if (Arabfrom[0] == Arabto[0] && Arabfrom[1] == Arabto[1] && Arabfrom[2] == Arabto[2])
             ///если это ранее разбитые кролики на 2 группы
             if (rabFrom.MotherID == rabTo.MotherID && 
                 rabFrom.FatherID == rabTo.FatherID && 
@@ -522,12 +502,6 @@ WHERE r_parent={1:d} AND r_id={2:d};", added, rid, yid), sql);
                 rabFrom.Sex == rabTo.Sex &&
                 rabFrom.BreedID == rabTo.BreedID)
             {
-                //cmd.CommandText = String.Format("SELECT r_group FROM rabbits WHERE r_id={0:d};", rabfrom);
-                //rd = cmd.ExecuteReader();
-                //int cnt = 0;
-                //if (rd.Read())
-                //    cnt = rd.GetInt32(0);
-                //rd.Close();
                 cmd.CommandText = String.Format("UPDATE rabbits SET r_group=r_group+{0:d} WHERE r_id={1:d};", rabFrom.Group, rabto);
                 cmd.ExecuteNonQuery();
                 freeTier(sql, rabfrom);

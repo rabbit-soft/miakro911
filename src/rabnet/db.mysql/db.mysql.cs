@@ -183,6 +183,11 @@ namespace db.mysql
                 type,name,filter.toString()));
         }
 
+        public String GetRabGenoms(int rId)
+        {
+            return RabbitGenGetter.GetRabGenoms(sql, rId);
+        }
+
         public RabTreeData rabbitGenTree(int rabbit)
         {
             return RabbitGenGetter.GetRabbitGenTree(sql,rabbit);
@@ -355,6 +360,11 @@ namespace db.mysql
         public LogList getLogs(Filters f)
         {
             return (new Logs(sql).getLogs(f));
+        }
+
+        public void ArchLogs()
+        {
+            (new Logs(sql)).ArchLogs();
         }
 
         public void addName(Rabbit.SexType sex, string name, string surname)

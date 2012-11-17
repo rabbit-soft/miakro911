@@ -41,9 +41,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btCancel = new System.Windows.Forms.Button();
             this.btGens = new System.Windows.Forms.Button();
-            this.cbHeter = new System.Windows.Forms.CheckBox();
-            this.cbInbreed = new System.Windows.Forms.CheckBox();
-            this.cbCand = new System.Windows.Forms.CheckBox();
+            this.chHetererosis = new System.Windows.Forms.CheckBox();
+            this.chInbreed = new System.Windows.Forms.CheckBox();
+            this.chCandidates = new System.Windows.Forms.CheckBox();
             this.dateDays1 = new rabnet.components.DateDays();
             this.cbName = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -152,50 +152,50 @@
             this.btGens.UseVisualStyleBackColor = true;
             this.btGens.Click += new System.EventHandler(this.btGens_Click);
             // 
-            // cbHeter
+            // chHetererosis
             // 
-            this.cbHeter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cbHeter.AutoSize = true;
-            this.cbHeter.Location = new System.Drawing.Point(115, 274);
-            this.cbHeter.Name = "cbHeter";
-            this.cbHeter.Size = new System.Drawing.Size(78, 17);
-            this.cbHeter.TabIndex = 7;
-            this.cbHeter.Text = "гетерозис";
-            this.cbHeter.UseVisualStyleBackColor = true;
-            this.cbHeter.CheckedChanged += new System.EventHandler(this.cbCand_CheckedChanged);
+            this.chHetererosis.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chHetererosis.AutoSize = true;
+            this.chHetererosis.Location = new System.Drawing.Point(115, 274);
+            this.chHetererosis.Name = "chHetererosis";
+            this.chHetererosis.Size = new System.Drawing.Size(78, 17);
+            this.chHetererosis.TabIndex = 7;
+            this.chHetererosis.Text = "гетерозис";
+            this.chHetererosis.UseVisualStyleBackColor = true;
+            this.chHetererosis.CheckedChanged += new System.EventHandler(this.cbCand_CheckedChanged);
             // 
-            // cbInbreed
+            // chInbreed
             // 
-            this.cbInbreed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cbInbreed.AutoSize = true;
-            this.cbInbreed.Location = new System.Drawing.Point(207, 274);
-            this.cbInbreed.Name = "cbInbreed";
-            this.cbInbreed.Size = new System.Drawing.Size(79, 17);
-            this.cbInbreed.TabIndex = 8;
-            this.cbInbreed.Text = "инбридинг";
-            this.cbInbreed.UseVisualStyleBackColor = true;
-            this.cbInbreed.CheckedChanged += new System.EventHandler(this.cbCand_CheckedChanged);
+            this.chInbreed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chInbreed.AutoSize = true;
+            this.chInbreed.Location = new System.Drawing.Point(207, 274);
+            this.chInbreed.Name = "chInbreed";
+            this.chInbreed.Size = new System.Drawing.Size(79, 17);
+            this.chInbreed.TabIndex = 8;
+            this.chInbreed.Text = "инбридинг";
+            this.chInbreed.UseVisualStyleBackColor = true;
+            this.chInbreed.CheckedChanged += new System.EventHandler(this.cbCand_CheckedChanged);
             // 
-            // cbCand
+            // chCandidates
             // 
-            this.cbCand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cbCand.AutoSize = true;
-            this.cbCand.Checked = true;
-            this.cbCand.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbCand.Location = new System.Drawing.Point(15, 274);
-            this.cbCand.Name = "cbCand";
-            this.cbCand.Size = new System.Drawing.Size(81, 17);
-            this.cbCand.TabIndex = 9;
-            this.cbCand.Text = "кандидаты";
-            this.cbCand.UseVisualStyleBackColor = true;
-            this.cbCand.CheckedChanged += new System.EventHandler(this.cbCand_CheckedChanged);
+            this.chCandidates.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chCandidates.AutoSize = true;
+            this.chCandidates.Checked = true;
+            this.chCandidates.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chCandidates.Location = new System.Drawing.Point(15, 274);
+            this.chCandidates.Name = "chCandidates";
+            this.chCandidates.Size = new System.Drawing.Size(81, 17);
+            this.chCandidates.TabIndex = 9;
+            this.chCandidates.Text = "кандидаты";
+            this.chCandidates.UseVisualStyleBackColor = true;
+            this.chCandidates.CheckedChanged += new System.EventHandler(this.cbCand_CheckedChanged);
             // 
             // dateDays1
             // 
             this.dateDays1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2012, 11, 9, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2012, 11, 15, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
             this.dateDays1.Location = new System.Drawing.Point(356, 274);
@@ -276,10 +276,10 @@
             this.Controls.Add(this.btNames);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.cbName);
-            this.Controls.Add(this.cbCand);
-            this.Controls.Add(this.cbInbreed);
+            this.Controls.Add(this.chCandidates);
+            this.Controls.Add(this.chInbreed);
             this.Controls.Add(this.btOk);
-            this.Controls.Add(this.cbHeter);
+            this.Controls.Add(this.chHetererosis);
             this.Controls.Add(this.dateDays1);
             this.Controls.Add(this.btGens);
             this.Controls.Add(this.btCancel);
@@ -314,9 +314,9 @@
         private System.Windows.Forms.Button btCancel;
         private System.Windows.Forms.Button btGens;
         private rabnet.components.DateDays dateDays1;
-        private System.Windows.Forms.CheckBox cbHeter;
-        private System.Windows.Forms.CheckBox cbInbreed;
-        private System.Windows.Forms.CheckBox cbCand;
+        private System.Windows.Forms.CheckBox chHetererosis;
+        private System.Windows.Forms.CheckBox chInbreed;
+        private System.Windows.Forms.CheckBox chCandidates;
         private System.Windows.Forms.ComboBox cbName;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btNames;

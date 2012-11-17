@@ -11,8 +11,8 @@ namespace rabnet
     {
         public enum OPT_ID
         {
-            NONE, GETEROSIS, INBREEDING, SHORT_NAMES, DBL_SURNAME, SHOW_TIER_TYPE, SHOW_TIER_SEC, RAB_FILTER,
-            SHOW_NUMBERS, BUILD_FILTER, 
+            NONE, GETEROSIS, INBREEDING, SHORT_NAMES, DBL_SURNAME, RAB_FILTER,
+            SHOW_TIER_TYPE, SHOW_TIER_SEC, SHOW_NUMBERS, BUILD_FILTER, 
             /// <summary>
             /// День принятия Окрола
             /// </summary>
@@ -41,7 +41,11 @@ namespace rabnet
             MAKE_BRIDE, DEAD_FILTER, PRE_OKROL, CONFIRM_KILL, CONFIRM_REPLACE, CONFIRM_EXIT,
             ZOO_FILTER, COMBINE_AGE, BOYS_OUT, GIRLS_OUT, STATE_FUCK, FIRST_FUCK, MALE_WAIT, GEN_TREE,  CHILD_NEST,              
             UPDATE_ZOO, ZOO_LIST, FIND_PARTNERS, NEXT_SVID, SVID_HEAD, SVID_GEN_DIR,
-            KILL_LIST, SHORT_ZOO, MAKE_CANDIDATE, BUTCHER_LIST, XLS_ASK, XLS_FOLDER, BUILD_FILL_ZERO, BUCHER_TYPE,
+            KILL_LIST, SHORT_ZOO, MAKE_CANDIDATE, BUTCHER_LIST, XLS_ASK, XLS_FOLDER, BUILD_FILL_ZERO, BUCHER_TYPE, 
+            /// <summary>
+            /// Отображать по умолчанию кандидатов в форме вязок
+            /// </summary>
+            SHOW_CANDIDATES,
 
             /// <summary>
             /// Сохранение размера колонок в Поголовье
@@ -79,6 +83,7 @@ namespace rabnet
                                    new Option(OPT_ID.DBL_SURNAME,OPT_LEVEL.USER,"dbl_surname"), 
                                    new Option(OPT_ID.SHOW_TIER_TYPE,OPT_LEVEL.USER,"sh_tier_t"), 
                                    new Option(OPT_ID.SHOW_TIER_SEC,OPT_LEVEL.USER,"sh_tier_s"), 
+                                   new Option(OPT_ID.SHOW_CANDIDATES,OPT_LEVEL.USER,"sh_cand"), 
                                    new Option(OPT_ID.RAB_FILTER,OPT_LEVEL.USER,"rab_filter"), 
                                    new Option(OPT_ID.SHOW_NUMBERS,OPT_LEVEL.USER,"sh_num"),
                                    new Option(OPT_ID.BUILD_FILTER,OPT_LEVEL.USER,"build_filter"),
@@ -179,7 +184,7 @@ namespace rabnet
             return safeIntOption(name, subname, getUidOfLevel(level), 0);
         }
 
-        
+
         public void setOption(String name, String subname, uint uid, String value)
         {
             eng.db().setOption(name, subname, uid, value);

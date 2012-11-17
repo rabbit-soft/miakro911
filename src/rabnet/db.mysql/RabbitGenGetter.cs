@@ -270,11 +270,11 @@ LIMIT 1;";
             MySqlCommand c = new MySqlCommand("", sql);
             c.CommandText = "SELECT g_id FROM genesis WHERE g_key=MD5('" + gens + "');";
             MySqlDataReader rd = c.ExecuteReader();
-            int res = 0;
+            int genID = 0;
             if (rd.HasRows)
             {
                 rd.Read();
-                res = rd.GetInt32(0);
+                genID = rd.GetInt32(0);
                 rd.Close();
             }
             else ///если такого набора генов в базе нет
@@ -282,18 +282,18 @@ LIMIT 1;";
                 rd.Close();
                 c.CommandText = "INSERT INTO genesis(g_notes) VALUES('');";
                 c.ExecuteNonQuery();
-                res = (int)c.LastInsertedId;
+                genID = (int)c.LastInsertedId;
                 String[] gen = gens.Split(' ');
-                foreach (string g in gen)
-                {
-                    c.CommandText = String.Format("INSERT INTO genoms(g_id,g_genom) VALUES({0:d},{1:s});", res, g);
-                    c.ExecuteNonQuery();
-                }
+                c.CommandText = "INSERT INTO genoms(g_id,g_genom) VALUES";
+                foreach (string g in gen)               
+                    c.CommandText += String.Format("({0:d},{1:s}),", genID, g);
+                c.CommandText = c.CommandText.TrimEnd(',')+';';
+                c.ExecuteNonQuery();
                 c.CommandText = String.Format(@"UPDATE genesis SET g_key=(SELECT MD5(GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ')) 
-            FROM genoms WHERE g_id={0:d}) WHERE g_id={0:d};", res);
+            FROM genoms WHERE g_id={0:d}) WHERE g_id={0:d};", genID);
                 c.ExecuteNonQuery();
             }
-            return res;
+            return genID;
         }
         public static int MakeCommonGenesis(MySqlConnection sql, int r1, int r2)
         {
@@ -382,5 +382,11 @@ LIMIT 1;";
         //    return i.ToString();
         //}
 
-	}
+
+        internal static string GetRabGenoms(MySqlConnection sql, int rId)
+        {
+            MySqlCommand cmd = new MySqlCommand("", sql);//todo реализовать новые геномы
+            return rId.ToString();
+        }
+    }
 }

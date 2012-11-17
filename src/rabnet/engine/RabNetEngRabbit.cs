@@ -50,6 +50,7 @@ namespace rabnet
         #endregion exceptions
         private int _id;
         private OneRabbit _rab = null;
+        private String _rabGenoms="";
         private RabNetEngine _eng = null;
         public int Mom = 0;
 
@@ -343,7 +344,17 @@ namespace rabnet
         {
             get { return _rab.neighbors; }
         }
-        
+
+        public String RabGenoms
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(_rabGenoms))
+                    _rabGenoms = _eng.db().GetRabGenoms(_id);
+                return _rabGenoms;
+            }
+        }
+
         public void SetBon(String bon)
         {
             if (RabID == 0)

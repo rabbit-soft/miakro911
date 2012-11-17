@@ -19,8 +19,8 @@ namespace rabnet
         private RabNetEngRabbit rab1 = null;
         private Catalog brds;
         private int rtosel=0;
-        bool manual = true;
-        int malewait = 0;
+        bool _manual = true;
+        int _malewait = 0;
         ListViewColumnSorter cs;
         Catalog names = null;
         int selected = 0;
@@ -32,11 +32,14 @@ namespace rabnet
             initialHints();
             dateDays1.DateValue = DateTime.Now;
             brds = Engine.db().catalogs().getBreeds();
-            manual = false;
-            cbHeter.Checked=(Engine.opt().getIntOption(Options.OPT_ID.GETEROSIS)==1);
-            cbInbreed.Checked = (Engine.opt().getIntOption(Options.OPT_ID.INBREEDING) == 1);
-            malewait = Engine.opt().getIntOption(Options.OPT_ID.MALE_WAIT);
-            manual = true;
+
+            _manual = false;
+            chCandidates.Checked = Engine.opt().getBoolOption(Options.OPT_ID.SHOW_CANDIDATES);
+            chHetererosis.Checked = Engine.opt().getBoolOption(Options.OPT_ID.GETEROSIS);
+            chInbreed.Checked = Engine.opt().getBoolOption(Options.OPT_ID.INBREEDING);
+            _malewait = Engine.opt().getIntOption(Options.OPT_ID.MALE_WAIT);
+            _manual = true;
+
             cs = new ListViewColumnSorter(listView1, new int[] { IND_FUCKS, IND_CHILDREN }, Options.OPT_ID.MAKE_FUCK_LIST);
             listView1.ListViewItemSorter = cs;
             FormSizeSaver.Append(this);
@@ -84,20 +87,13 @@ namespace rabnet
         private void fillTable()
         {
             cs.Prepare();
-            Fucks fs = Engine.db().GetAllFuckers(rab1.RabID,cbHeter.Checked,cbInbreed.Checked,malewait);
-#if DEBUG
-            _logger.Debug("Starting to fill fucker list");
-#endif
+            Fucks fs = Engine.db().GetAllFuckers(rab1.RabID,chHetererosis.Checked,chInbreed.Checked,_malewait);
             listView1.BeginUpdate();
             foreach (Fucks.Fuck f in fs.fucks)
             {
                 bool heter=(f.breed != rab1.Breed);
                 bool inbr=RabNetEngHelper.inbreeding(rab1.Genom,f.rgenom);
-                /*
-                if ((!inbr || cbInbreed.Checked) && (!heter || cbHeter.Checked) &&
-                    (f.dead>1 || cbCand.Checked) || f.partnerid==rtosel)
-                {
-                 */
+
                 ListViewItem li = listView1.Items.Add(f.partner);
                 li.Tag = f;
                 String stat="Мальчик";
@@ -116,12 +112,8 @@ namespace rabnet
                     li.Selected = true;
                     li.EnsureVisible();
                  }
-                //}
             }
             listView1.EndUpdate();
-#if DEBUG
-            _logger.Debug("end to fill fucker list");
-#endif
             cs.Restore();
         }
 
@@ -187,8 +179,8 @@ namespace rabnet
 
         private void cbCand_CheckedChanged(object sender, EventArgs e)
         {
-            if (!manual)
-                return;
+            if (!_manual) return;
+            Engine.opt().setOption(Options.OPT_ID.SHOW_CANDIDATES, chCandidates.Checked?1:0);
             fillTable();
         }
 

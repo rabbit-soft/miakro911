@@ -98,6 +98,7 @@
       <DependentUpon>UpdateForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="UpdateThread.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="InstallForm.resx">
@@ -112,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon_update_white.ico" />
+    <EmbeddedResource Include="sql\12.sql" />
     <EmbeddedResource Include="sql\11.sql" />
   </ItemGroup>
   <ItemGroup>

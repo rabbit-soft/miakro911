@@ -79,6 +79,7 @@ namespace rabnet
             manual = true;
             rabStatusBar1.setText(0, Engine.db().now().ToShortDateString());
             this.Text = Engine.get().farmName();
+            Engine.db().ArchLogs();
 #if DEMO
             this.Text += " Демонстрационная версия";
 #endif

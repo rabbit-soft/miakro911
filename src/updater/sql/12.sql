@@ -9,3 +9,26 @@ ALTER TABLE `fucks` CHANGE `f_type`  `f_type` ENUM('sluchka', 'vyazka', 'kuk', '
 ALTER TABLE `rabbits` CHANGE `r_event`  `r_event` ENUM('none','sluchka','vyazka','kuk','syntetic') NULL DEFAULT NULL;
 
 UPDATE logtypes SET l_params='$r   + $R ($t)' WHERE l_type=5; #вязка
+
+CREATE TABLE logs_arch(
+	l_id INTEGER UNSIGNED NOT NULL PRIMARY KEY,
+	l_date DATETIME NOT NULL,
+	l_type INTEGER UNSIGNED NOT NULL,
+	l_user INTEGER UNSIGNED NOT NULL,
+	l_rabbit INTEGER UNSIGNED,
+	l_address VARCHAR(50) NOT NULL DEFAULT '',
+	l_rabbit2 INTEGER UNSIGNED,
+	l_address2 VARCHAR(50) NOT NULL DEFAULT '',
+	l_param TEXT,
+	KEY(l_rabbit),
+	KEY(l_rabbit2),
+	KEY(l_address),
+	KEY(l_address2),
+	KEY(l_date),
+	KEY(l_type)
+);
+
+INSERT INTO logs_arch(l_id,l_date,l_type,l_user,l_rabbit,l_address,l_rabbit2,l_address2,l_param)
+  	(SELECT l_id,l_date,l_type,l_user,l_rabbit,l_address,l_rabbit2,l_address2,l_param FROM logs WHERE l_date<Date_Add(NOW(), INTERVAL -6 month));
+
+DELETE FROM logs WHERE l_date<Date_Add(NOW(), INTERVAL -6 month);

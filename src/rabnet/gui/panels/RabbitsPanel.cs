@@ -110,7 +110,7 @@ namespace rabnet
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!manual) return;
+            if (!manual || MainForm.MustClose) return;
 
             makeSelectedCount();
             if (listView1.SelectedItems.Count != 1)
@@ -227,7 +227,7 @@ namespace rabnet
             if (listView1.SelectedItems.Count != 1)
                 return;
             RabbitInfo ri = new RabbitInfo((int)listView1.SelectedItems[0].Tag);
-            if (ri.ShowDialog() == DialogResult.OK)
+            if (ri.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                 _rsb.Run();
         }
 
@@ -252,7 +252,7 @@ namespace rabnet
             if (listView1.SelectedItems.Count != 1)
                 return;
             int rid = (int)listView1.SelectedItems[0].Tag;
-            if((new Proholost(rid)).ShowDialog() == DialogResult.OK)
+            if ((new Proholost(rid)).ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                 _rsb.Run();
         }
 
@@ -262,7 +262,7 @@ namespace rabnet
             try
             {
 #endif
-                if ((new IncomeForm()).ShowDialog() == DialogResult.OK)
+            if ((new IncomeForm()).ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
 #if !DEBUG
             }
@@ -280,7 +280,7 @@ namespace rabnet
             ReplaceForm rpf = new ReplaceForm();
             foreach (ListViewItem li in listView1.SelectedItems)
                 rpf.AddRabbit((int)li.Tag);
-            if(rpf.ShowDialog() == DialogResult.OK)
+            if (rpf.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                 _rsb.Run();
         }
 
@@ -292,7 +292,7 @@ namespace rabnet
             rpf.AddRabbit((int)listView1.SelectedItems[0].Tag);
             rpf.AddRabbit((int)listView1.SelectedItems[1].Tag);
             rpf.SetAction(ReplaceForm.Action.CHANGE);
-            if (rpf.ShowDialog() == DialogResult.OK)
+            if (rpf.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                 _rsb.Run();
         }
 
@@ -307,7 +307,7 @@ namespace rabnet
             KillForm f = new KillForm();
             foreach (ListViewItem li in listView1.SelectedItems)
                 f.addRabbit((int)li.Tag);
-            if(f.ShowDialog() == DialogResult.OK)
+            if (f.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                 _rsb.Run();
         }
 
@@ -316,7 +316,7 @@ namespace rabnet
             if (listView1.SelectedItems.Count != 1)
                 return;
             CountKids f = new CountKids((int)listView1.SelectedItems[0].Tag);
-            if (f.ShowDialog() == DialogResult.OK)
+            if (f.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                 _rsb.Run();
         }
 
@@ -324,7 +324,8 @@ namespace rabnet
         {
             if (listView1.SelectedItems.Count != 1)
                 return;
-            if ((new OkrolForm((int)listView1.SelectedItems[0].Tag)).ShowDialog() == DialogResult.OK)
+            OkrolForm dlg =new OkrolForm((int)listView1.SelectedItems[0].Tag);
+            if (dlg.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                 _rsb.Run();
         }
 
@@ -332,7 +333,8 @@ namespace rabnet
         {
             if (listView1.SelectedItems.Count != 1)
                 return;
-            if((new MakeFuckForm((int)listView1.SelectedItems[0].Tag)).ShowDialog() == DialogResult.OK)
+            MakeFuckForm dlg = new MakeFuckForm((int)listView1.SelectedItems[0].Tag);
+            if (dlg.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                 _rsb.Run();
         }
 
@@ -343,14 +345,15 @@ namespace rabnet
             ReplaceForm rpf = new ReplaceForm();
             rpf.AddRabbit((int)listView1.SelectedItems[0].Tag);
             rpf.SetAction(ReplaceForm.Action.BOYSOUT);
-            if (rpf.ShowDialog() == DialogResult.OK)
+            if (rpf.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                 _rsb.Run();
         }
 
         private void replaceYoungersMenuItem_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count != 1) return;
-            if(PreReplaceYoungersForm.MakeChoice((int)listView1.SelectedItems[0].Tag) == DialogResult.OK)
+
+            if (PreReplaceYoungersForm.MakeChoice((int)listView1.SelectedItems[0].Tag) == DialogResult.OK && !MainForm.MustClose)
                 _rsb.Run();
         }
 

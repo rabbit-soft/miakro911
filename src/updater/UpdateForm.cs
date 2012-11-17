@@ -25,7 +25,7 @@ namespace updater
         private bool _needUpdateSomebody = true;
         private Dictionary<int, String> _scripts = new Dictionary<int, string>();
         private MySqlConnection _sql = null;
-        public enum UpdateStatus { Before, Procs, After }
+        //public enum UpdateStatus { Before, Procs, After }
 
         public UpdateForm()
         {
@@ -164,60 +164,106 @@ namespace updater
         private void btUpdate_Click(object sender, EventArgs e)
         {
             _logger.Info("start to Updating");
-			btUpdate.Enabled = false;
+            btUpdate.Enabled = false;
+            progressBar1.Show();
             btClose.Enabled = !_batch;
+            List<UpRow> uprows = new List<UpRow>();
             foreach (ListViewItem li in lv.Items)
-            if ((int)li.Tag == 0)
             {
-                int preVer = int.Parse(li.SubItems[2].Text);
-                String prm = li.SubItems[1].Text + ";Allow User Variables=True";
-                String nm = li.SubItems[0].Text;
-                Status("Обновляется БД "+nm);
-                while (preVer < _curver)
-                {
-                    preVer++;
-                    foreach(int k in _scripts.Keys)
-                        if (k == preVer)
-                        {
-                            try
-                            {
-                                Status(String.Format("Обновление {0:s} {1:d}->{2:d}",nm,preVer-1,preVer));
-                                _sql = new MySqlConnection(prm);
-                                _sql.Open();
-                                MySqlCommand c = new MySqlCommand("", _sql);
-                                OnUpdate(preVer, _sql,UpdateStatus.Before);
-                                String[] cmds = _scripts[k].Split(new string[] { "#DELIMITER |" }, StringSplitOptions.RemoveEmptyEntries);
-                                c.CommandText = cmds[0];
-                                c.ExecuteNonQuery();
-                                if (cmds.Length > 1)
-                                {
-                                    OnUpdate(preVer, _sql, UpdateStatus.Procs);
-                                    MySqlScript sc = new MySqlScript(_sql, cmds[1]);
-                                    sc.Delimiter = "|";
-                                    sc.Execute();
-                                }
-                                OnUpdate(preVer, _sql,UpdateStatus.After);
-                                _sql.Close();
-                                _logger.DebugFormat("update success db:{0:s}|script:{1:#}|",li.SubItems[0].Text ,k);
-                            }
-                            catch (Exception ex)
-                            {
-                                _logger.Error(ex);
-                                MessageBox.Show("Во время обновления БД произошла ошибка: "+ex.Message);
-                                _batch = false;
-                            }
-                        }
-                }
+                if ((int)li.Tag != 0) continue;
+                uprows.Add(new UpRow(int.Parse(li.SubItems[2].Text), li.SubItems[0].Text, li.SubItems[1].Text));
             }
-            UpdateList();
-			btUpdate.Enabled = true;
-            btClose.Enabled = true;
+            //int preVer = int.Parse(li.SubItems[2].Text);
+            //String prm = li.SubItems[1].Text + ";Allow User Variables=True";
+            //String nm = li.SubItems[0].Text;
+            //Status("Обновляется БД " + nm);
+            UpdateThread ut = new UpdateThread(uprows,_curver,_scripts);
+            ut.Error += new ErrorEventHandler(upError);
+            ut.Progress += new ProgressEventHandler(upProgress);
+            ut.EndUpdate += new EndUpdateEventHandler(upEnd);
+            ut.StartUpdate();
+            //while (preVer < _curver)
+            //{
+            //    preVer++;
+            //    foreach (int k in _scripts.Keys)
+            //        if (k == preVer)
+            //        {
+            //            try
+            //            {
+            //                Status(String.Format("Обновление {0:s} {1:d}->{2:d}", nm, preVer - 1, preVer));
+            //                _sql = new MySqlConnection(prm);
+            //                _sql.Open();
+            //                MySqlCommand c = new MySqlCommand("", _sql);
+            //                c.CommandTimeout = 600;
+            //                OnUpdate(preVer, _sql, UpdateStatus.Before);
+            //                String[] cmds = _scripts[k].Split(new string[] { "#DELIMITER |" }, StringSplitOptions.RemoveEmptyEntries);
+            //                c.CommandText = cmds[0];
+            //                c.ExecuteNonQuery();
+            //                if (cmds.Length > 1)
+            //                {
+            //                    OnUpdate(preVer, _sql, UpdateStatus.Procs);
+            //                    MySqlScript sc = new MySqlScript(_sql, cmds[1]);
+            //                    sc.Delimiter = "|";
+            //                    sc.Execute();
+            //                }
+            //                OnUpdate(preVer, _sql, UpdateStatus.After);
+
+            //                _logger.DebugFormat("update success db:{0:s}|script:{1:#}|", li.SubItems[0].Text, k);
+            //            }
+            //            catch (Exception ex)
+            //            {
+            //                _logger.Error(ex);
+            //                MessageBox.Show("Во время обновления БД произошла ошибка: " + ex.Message);
+            //                _batch = false;
+            //            }
+            //            finally
+            //            {
+            //                _sql.Close();
+            //            }
+            //        }
+            //}
+
+
+            //UpdateList();
+            //btUpdate.Enabled = true;
+            //btClose.Enabled = true;
+        }
+
+        private void upProgress(string Name, int PreVer, int ver)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new ProgressEventHandler(upProgress), new object[] { Name, PreVer, ver });
+            }
+            else
+                Status(String.Format("Обновление '{0:s}' {1:d}->{2:d}", Name, PreVer, ver));
+        }
+
+        private void upError(string db,Exception exc)
+        {           
+            MessageBox.Show(String.Format("Произошла ошибка при обновлении базы '{0:s}'. {1:s}", db, exc.Message));
+            //upEnd();
+        }
+
+        private void upEnd()
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new EndUpdateEventHandler(upEnd));
+            }
+            else
+            {
+                UpdateList();
+                progressBar1.Hide();
+                btUpdate.Enabled = true;
+                btClose.Enabled = true;
+            }
         }
         
-        private static void OnUpdate(int tover,MySqlConnection con,UpdateStatus status)
-        {
-			Application.DoEvents();
-        }
+        //private static void OnUpdate(int tover,MySqlConnection con,UpdateStatus status)
+        //{
+        //    Application.DoEvents();
+        //}
 
         private void btClose_Click(object sender, EventArgs e)
         {
@@ -386,5 +432,6 @@ namespace updater
         //    }
         //    btUpdate.Enabled = true;
         //}
+
     }
 }

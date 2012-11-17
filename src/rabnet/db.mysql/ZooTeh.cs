@@ -240,7 +240,7 @@ namespace db.mysql
                 while (rd.Read())
                     res.Add(new ZootehJob_MySql(_flt, type, rd));
                 rd.Close();
-            #if !DEBUG
+#if !DEBUG
             }
             catch(Exception err)
             {
@@ -327,7 +327,7 @@ ORDER BY srok DESC,0+LEFT(place,LOCATE(',',place)) ASC;", getnm(),brd(),
     + brd("(SELECT r7.r_breed FROM rabbits r7 WHERE r7.r_id=rabbits.r_parent)") + @",
     TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d} srok,
     r_id
-FROM rabbits 
+FROM rabbits
 WHERE r_parent<>0 AND (TO_DAYS(NOW())-TO_DAYS(r_born)>={0:d}{1:s}) 
     AND r_parent NOT IN (
                             SELECT l_rabbit FROM logs 
@@ -339,12 +339,19 @@ ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", _flt.safeInt("days"), 
 
         private string qPreOkrol()
         {
-            return String.Format(@"SELECT r_id,rabname(r_id," + getnm() + @") name,rabplace(r_id) place,
-(TO_DAYS(NOW())-TO_DAYS(r_event_date)) srok,r_status,(TO_DAYS(NOW())-TO_DAYS(r_born)) age," + brd() + @" 
-FROM rabbits WHERE r_sex='female' AND (TO_DAYS(NOW())-TO_DAYS(r_event_date))>={0:d} AND (TO_DAYS(NOW())-TO_DAYS(r_event_date))<{1:d} AND
-r_id NOT IN (SELECT l_rabbit FROM logs 
-WHERE l_type=21 AND DATE(l_date)>=DATE(rabbits.r_event_date)) ORDER BY srok DESC
-,0+LEFT(place,LOCATE(',',place)) ASC;", _flt.safeInt("preok"), _flt.safeInt("okrol"));
+            return String.Format(@"SELECT r_id,
+    rabname(r_id,{2:s}) name,
+    rabplace(r_id) place,
+    (TO_DAYS(NOW())-TO_DAYS(r_event_date)) srok,
+    r_status,
+    (TO_DAYS(NOW())-TO_DAYS(r_born)) age,
+    {3:s}
+FROM rabbits 
+WHERE r_sex='female' 
+    AND (TO_DAYS(NOW())-TO_DAYS(r_event_date))>={0:d} 
+    AND (TO_DAYS(NOW())-TO_DAYS(r_event_date))<{1:d} 
+    AND r_id NOT IN (SELECT l_rabbit FROM logs WHERE l_type=21 AND DATE(l_date)>=DATE(rabbits.r_event_date)) 
+ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", _flt.safeInt("preok"), _flt.safeInt("okrol"), getnm(), brd());
         }
 
         private string qBoysGirlsOut()
@@ -360,10 +367,10 @@ ORDER BY age DESC,0+LEFT(place,LOCATE(',',place)) ASC;",
         }
 
         private string qFuck()
-        {
-            return String.Format(
-            (_flt.safeBool(Filters.FIND_PARTNERS) ? @"SET group_concat_max_len=4096; 
-CREATE TEMPORARY TABLE tPartn SELECT rabname(r_id,0) pname, 
+        {   ///todo необходимо получать партнеров на уровне выше отдельным запросом и сравнивать гетерозис и инбридинг программно.
+            return String.Format( 
+            (_flt.safeBool(Filters.FIND_PARTNERS) ? @"SET group_concat_max_len=15000; 
+CREATE TEMPORARY TABLE tPartn SELECT rabname(r_id,1) pname, 
 	rabplace(r_id) pplace,
 	r_breed pbreed,
 	r_genesis pgens
@@ -376,7 +383,7 @@ WHERE r_sex='male' AND r_status>0 AND (r_last_fuck_okrol IS NULL OR TO_DAYS(NOW(
         r_status,
         TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol) fromokrol," + (_flt.safeBool(Filters.FIND_PARTNERS) ? @"
         (SELECT GROUP_CONCAT( CONCAT(pname,'&', pplace) ORDER BY pname SEPARATOR '|') FROM tPartn
-            WHERE {4:s}{5:s})" : "''") + @" partners,
+            {9:s} {4:s}{5:s})" : "''") + @" partners,
         r_group,
         (SELECT {6:s} FROM breeds WHERE b_id=r_breed) breed, 
         0 srok,
@@ -411,7 +418,8 @@ DROP TABLE IF EXISTS aaa;",
         (_flt.safeBool(Filters.INBREEDING) ? "" : String.Format("{0:s}(SELECT COUNT(g_genom) FROM genoms WHERE g_id=r.r_genesis AND g_genom IN (SELECT g2.g_genom FROM genoms g2 WHERE g2.g_id=pgens))=0", _flt.safeBool(Filters.HETEROSIS) ?"": " AND ")),
     
         (_flt.safeInt(Filters.SHORT) == 0 ? "b_name" : "b_short_name"),//6 
-        (_flt.safeInt(Filters.TYPE) == 1 ? ">0" : "=0"), getnm(1) );
+        (_flt.safeInt(Filters.TYPE) == 1 ? ">0" : "=0"), getnm(1),
+        !_flt.safeBool(Filters.HETEROSIS) || !_flt.safeBool(Filters.INBREEDING)? "WHERE" : "");
 
 //            return String.Format(@"SET group_concat_max_len=4096;   SELECT * FROM (
 //        SELECT r_id,rabname(r_id," + getnm(1) + @") name,rabplace(r_id) place,TO_DAYS(NOW())-TO_DAYS(r_born) age,

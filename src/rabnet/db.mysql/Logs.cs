@@ -116,5 +116,13 @@ ORDER BY date DESC LIMIT {0:d};", limit, makeWhere(f));
             DateTime.TryParse(res,out result);
             return result;
         }
+
+        public void ArchLogs()
+        {
+            MySqlCommand cmd = new MySqlCommand(@"INSERT INTO logs_arch(l_id,l_date,l_type,l_user,l_rabbit,l_address,l_rabbit2,l_address2,l_param)
+  	(SELECT l_id,l_date,l_type,l_user,l_rabbit,l_address,l_rabbit2,l_address2,l_param FROM logs WHERE l_date<Date_Add(NOW(), INTERVAL -6 month) ORDER BY l_id LIMIT 1000);
+    DELETE FROM logs WHERE l_date<Date_Add(NOW(), INTERVAL -6 month) ORDER BY l_id LIMIT 1000;", sql);
+            cmd.ExecuteNonQuery();
+        }
     }
 }

@@ -39,7 +39,7 @@ namespace rabnet
         /// <param name="dbext">Тип</param>
         /// <param name="param">Строка подключения</param>
         /// <returns></returns>
-        public IRabNetDataLayer initEngine(String dbType,String param)
+        public IRabNetDataLayer InitEngine(String dbType,String param)
         {
             if (data!=null)
             {
@@ -74,7 +74,7 @@ namespace rabnet
 
         public IRabNetDataLayer initEngine(String param)
         {
-            return initEngine("db.mysql", param);
+            return InitEngine("db.mysql", param);
         }
 
         public IRabNetDataLayer db()
@@ -100,7 +100,7 @@ namespace rabnet
             return uid;
         }
 
-        public String farmName(){return uname+"@"+farmname;}
+        public String farmName() { return uname + "@" + farmname; }
 
         public int userId { get { return uid; } }
 
@@ -157,6 +157,7 @@ namespace rabnet
         {
             return options().getIntOption(Options.OPT_ID.MAKE_BRIDE);
         }
+
         /// <summary>
         /// Возраст при котором возводят в Кандидаты
         /// </summary>

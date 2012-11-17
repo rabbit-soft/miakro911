@@ -56,6 +56,7 @@ namespace rabnet
         /// </summary>
         /// <returns></returns>
         int getMFCount();
+        string GetRabGenoms(int rId);
         RabTreeData rabbitGenTree(int rabbit);
         BldTreeData buildingsTree();       
         YoungRabbit[] GetYoungers(int momId);
@@ -107,7 +108,8 @@ namespace rabnet
         void replaceRabbit(int rid, int farm, int tier_id, int sec);
         void replaceYounger(int yid, int farm, int tier_id, int sec);
         int newRabbit(OneRabbit r,int mom);
-        LogList getLogs(Filters f);       
+        LogList getLogs(Filters f);
+        void ArchLogs();
         void updateBuilding(Building b);
         void addName(Rabbit.SexType sex, string name, string surname);
         void changeName(string orgName, string name, string surname);
@@ -201,8 +203,7 @@ namespace rabnet
         void SetRabbitVaccine(int rid, int vid,DateTime date);
         void SetRabbitVaccine(int rid, int vid);
 
-        IRabNetDataLayer Clone();
-
+        IRabNetDataLayer Clone();        
     }
 
 }

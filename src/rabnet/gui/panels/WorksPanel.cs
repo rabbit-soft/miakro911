@@ -95,6 +95,7 @@ namespace rabnet
                 lvZooTech.Focus();
                 return;
             }
+
             Filters f = runF;
             foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f, it.id))
             {
@@ -105,7 +106,7 @@ namespace rabnet
                 li.SubItems.Add(j.RabAge.ToString());
                 li.SubItems.Add(j.RabBreed);
                 li.SubItems.Add(j.Comment);
-                li.SubItems.Add(j.Partners);
+                li.SubItems.Add(j.Partners);/// todo партнеров получать gh
                 li.Tag = j;
             }
             colSort.SemiReady();

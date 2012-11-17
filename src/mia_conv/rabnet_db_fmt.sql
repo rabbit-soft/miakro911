@@ -273,6 +273,24 @@ CREATE TABLE logs(
 	KEY(l_type)
 );
 
+CREATE TABLE logs_arch(
+	l_id INTEGER UNSIGNED NOT NULL PRIMARY KEY,
+	l_date DATETIME NOT NULL,
+	l_type INTEGER UNSIGNED NOT NULL,
+	l_user INTEGER UNSIGNED NOT NULL,
+	l_rabbit INTEGER UNSIGNED,
+	l_address VARCHAR(50) NOT NULL DEFAULT '',
+	l_rabbit2 INTEGER UNSIGNED,
+	l_address2 VARCHAR(50) NOT NULL DEFAULT '',
+	l_param TEXT,
+	KEY(l_rabbit),
+	KEY(l_rabbit2),
+	KEY(l_address),
+	KEY(l_address2),
+	KEY(l_date),
+	KEY(l_type)
+);
+
 DROP TABLE IF EXISTS income;
 CREATE TABLE `income` (
   `t_rab_id` INTEGER UNSIGNED NOT NULL,

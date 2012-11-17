@@ -69,7 +69,7 @@ namespace rabnet
                     if (d.Name == cbFarm.Text)
                         xs = d;
                 if (xs == null) return;
-                Engine.get().initEngine(xs.Type, xs.Params.ToString());
+                Engine.get().InitEngine(xs.Type, xs.Params.ToString());
                 cbUser.Items.Clear();
                 cbUser.Enabled = false;
                 tbPassword.Enabled = false;
