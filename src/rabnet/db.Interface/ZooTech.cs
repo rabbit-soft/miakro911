@@ -40,7 +40,6 @@ namespace rabnet
         public int ID2;
         public int Flag = 0;
         public int Flag2 = 0;
-        public ZootehJob() { }
     }
 
     /// <summary>
