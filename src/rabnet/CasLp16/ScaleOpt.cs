@@ -7,7 +7,7 @@ namespace CAS
 {
     static class ScaleOpt
     {
-        private static RegistryKey _reg = Registry.LocalMachine.CreateSubKey(@"Software\9-Bits\lp16");
+        private static RegistryKey _reg = Registry.CurrentUser.CreateSubKey(@"Software\9-Bits\lp16");
 
         public enum OptType { ScaleAddres, ScalePort, 
                               ScanPLUFrom, ScanPLUUntil,
