@@ -10,7 +10,7 @@ ALTER TABLE `rabbits` CHANGE `r_event`  `r_event` ENUM('none','sluchka','vyazka'
 
 UPDATE logtypes SET l_params='$r   + $R ($t)' WHERE l_type=5; #вязка
 
-CREATE TABLE logs_arch(
+CREATE TABLE IF NOT EXISTS logs_arch(
 	l_id INTEGER UNSIGNED NOT NULL PRIMARY KEY,
 	l_date DATETIME NOT NULL,
 	l_type INTEGER UNSIGNED NOT NULL,
