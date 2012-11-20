@@ -221,21 +221,21 @@ namespace rabnet
             if (_rabId>0)
             foreach (Fucks.Fuck f in Engine.db().getFucks(_rab.RabID).fucks)
             {
-                ListViewItem li = fucks.Items.Add(f.when == DateTime.MinValue ? "" : f.when.ToShortDateString());
-                li.SubItems.Add(f.type);
-                li.SubItems.Add(f.partner);
-                if (f.isDead)
+                ListViewItem li = fucks.Items.Add(f.When == DateTime.MinValue ? "" : f.When.ToShortDateString());
+                li.SubItems.Add(f.FuckType);
+                li.SubItems.Add(f.PartnerName);
+                if (f.IsDead)
                     li.SubItems.Add(RABDEAD);
                 else
-                    li.SubItems.Add(f.status);
-                li.SubItems.Add(f.enddate == DateTime.MinValue ? "" : f.enddate.ToShortDateString());
-                li.SubItems.Add(f.children.ToString());
-                li.SubItems.Add(f.dead.ToString());
-                li.SubItems.Add(f.killed.ToString());
-                li.SubItems.Add(f.added.ToString());
-                li.SubItems.Add(f.breed == _rab.Breed ? "-" : "Да");
-                li.SubItems.Add(RabNetEngHelper.inbreeding(f.rgenom, _rab.Genom) ? "Да" : "-");
-                li.SubItems.Add(f.worker);
+                    li.SubItems.Add(f.Status);
+                li.SubItems.Add(f.EndDate == DateTime.MinValue ? "" : f.EndDate.ToShortDateString());
+                li.SubItems.Add(f.Children.ToString());
+                li.SubItems.Add(f.Dead.ToString());
+                li.SubItems.Add(f.Killed.ToString());
+                li.SubItems.Add(f.Added.ToString());
+                li.SubItems.Add(f.Breed == _rab.Breed ? "-" : "Да");
+                li.SubItems.Add(RabNetEngHelper.inbreeding(f.rGenom, _rab.Genom) ? "Да" : "-");
+                li.SubItems.Add(f.Worker);
                 li.Tag = f;
             }
             changeFucker.Enabled = false;
@@ -521,7 +521,7 @@ namespace rabnet
             if (lbSurname.Text!="")
                 nm += "-" + lbSurname.Text.Split(':')[1];
             //(new GenomView(_rab.Breed, f.breed, _rab.Genom, f.rgenom, nm, f.partner)).ShowDialog();
-            (new GenomViewForm(_rab.RabID, f.partnerid)).ShowDialog();
+            (new GenomViewForm(_rab.RabID, f.PartnerId)).ShowDialog();
         }
 
         private void button13_Click(object sender, EventArgs e)
@@ -555,7 +555,7 @@ namespace rabnet
         private void btFuckHer_Click(object sender, EventArgs e)
         {
             Fucks.Fuck f = fucks.SelectedItems[0].Tag as Fucks.Fuck;
-            (new MakeFuckForm(_rab.RabID,f.partnerid)).ShowDialog();
+            (new MakeFuckForm(_rab.RabID,f.PartnerId)).ShowDialog();
             updateData();
         }
 
@@ -682,9 +682,9 @@ namespace rabnet
         {
             if (fucks.SelectedItems.Count!=1) return;
             Fucks.Fuck f = fucks.SelectedItems[0].Tag as Fucks.Fuck;
-            MakeFuckForm mf = new MakeFuckForm(_rab.RabID, f.partnerid, 1);
-            if (mf.ShowDialog() == DialogResult.OK && mf.SelectedFucker!=f.id)
-                Engine.db().changeFucker(f.id, mf.SelectedFucker);
+            MakeFuckForm mf = new MakeFuckForm(_rab.RabID, f.PartnerId, 1);
+            if (mf.ShowDialog() == DialogResult.OK && mf.SelectedFucker!=f.Id)
+                Engine.db().changeFucker(f.Id, mf.SelectedFucker);
             updateData();
         }
 
@@ -692,9 +692,9 @@ namespace rabnet
         {
             if (fucks.SelectedItems.Count != 1) return;
             Fucks.Fuck f = fucks.SelectedItems[0].Tag as Fucks.Fuck;
-            SelectUserForm sf = new SelectUserForm(f.worker);
-            if (sf.ShowDialog() == DialogResult.OK && sf.SelectedUser!=0 && sf.SelectedUserName!=f.worker)
-                Engine.db().changeWorker(f.id, sf.SelectedUser);
+            SelectUserForm sf = new SelectUserForm(f.Worker);
+            if (sf.ShowDialog() == DialogResult.OK && sf.SelectedUser!=0 && sf.SelectedUserName!=f.Worker)
+                Engine.db().changeWorker(f.Id, sf.SelectedUser);
             updateData();
         }
 
@@ -743,7 +743,7 @@ namespace rabnet
                 }
                 if (MessageBox.Show("Данная функция отменит прохолост текущей крольчихи и восстановит сукрольность." + Environment.NewLine +
                     "Продолжить?", "Отмена прохолоста", MessageBoxButtons.YesNo) == DialogResult.No) return;
-                Engine.db().cancelFuckEnd(f.id);
+                Engine.db().cancelFuckEnd(f.Id);
                 this.updateData();
                 //(new OkrolForm(this.rid)).ShowDialog();
             }
@@ -753,7 +753,7 @@ namespace rabnet
         {
             foreach (ListViewItem lvi in fucks.Items)
             {
-                if ((lvi.Tag as Fucks.Fuck).id > f.id)
+                if ((lvi.Tag as Fucks.Fuck).Id > f.Id)
                     return false;
             }
             return true;

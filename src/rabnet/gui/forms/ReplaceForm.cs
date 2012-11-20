@@ -377,7 +377,8 @@ namespace rabnet
             {
                 f["nest"] = "1";
             }
-            _freeBuildings = Engine.db().getFreeBuilding(f);
+            f[Filters.FREE] = "1";
+            _freeBuildings = Engine.db().getBuildings(f);
             _dgcbNewAddress.Items.Clear();
             _dgcbNewAddress.Items.Add(Rabbit.NULL_ADDRESS);
             foreach (Building b in _freeBuildings)

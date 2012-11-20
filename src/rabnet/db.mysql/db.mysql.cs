@@ -151,7 +151,7 @@ namespace db.mysql
             return new RabbitsDataGetter(sql, filters);
         }
 
-        public IDataGetter getBuildings(Filters filters)
+        public IDataGetter getBuildingsRows(Filters filters)
         {
             return new Buildings(sql, filters);
         }
@@ -288,9 +288,9 @@ namespace db.mysql
             return FucksGetter.GetFucks(sql, rabbit);
         }
 
-        public Fucks GetAllFuckers(int female,bool geterosis,bool inbreeding,int malewait)
+        public Fucks GetAllFuckers(Filters f)
         {
-            return FucksGetter.AllFuckers(sql, female,geterosis,inbreeding,malewait);
+            return FucksGetter.AllFuckers(sql, f);
         }
 
         public void setBon(int rabbit, string bon)
@@ -298,19 +298,19 @@ namespace db.mysql
             RabbitGetter.setBon(sql, rabbit, bon);
         }
 
-        public void MakeFuck(int female, int male, DateTime date,int worker,bool syntetic)
+        public void MakeFuck(int female, int male, int daysPast,int worker,bool syntetic)
         {
-            FucksGetter.MakeFuck(sql, female, male, date, worker, syntetic);
+            FucksGetter.MakeFuck(sql, female, male, daysPast, worker, syntetic);
         }
 
-        public void makeProholost(int female, DateTime when)
+        public void makeProholost(int female, int daysPast)
         {
-            RabbitGetter.MakeProholost(sql, female, when);
+            RabbitGetter.MakeProholost(sql, female, daysPast);
         }
 
-        public int makeOkrol(int female, DateTime when, int children, int dead)
+        public int makeOkrol(int female, int daysPast, int children, int dead)
         {
-            return RabbitGetter.MakeOkrol(sql, female, when, children, dead);
+            return RabbitGetter.MakeOkrol(sql, female, daysPast, children, dead);
         }
 
         public ICatalog getZones()
@@ -377,9 +377,9 @@ namespace db.mysql
             Names.changeName(sql, orgName, name, surname);            
         }
 
-        public void KillRabbit(int id, DateTime when, int reason, string notes)
+        public void KillRabbit(int id, int daysPast, int reason, string notes)
         {
-            RabbitGetter.killRabbit(sql, id, when, reason, notes);
+            RabbitGetter.killRabbit(sql, id, daysPast, reason, notes);
         }
 
         public void СountKids(int rid, int dead, int killed, int added,int yid)
@@ -476,9 +476,9 @@ namespace db.mysql
         {
             return Buildings.GetMFCount(sql);
         }
-        public Building[] getFreeBuilding(Filters f)
+        public Building[] getBuildings(Filters f)
         {
-            return Buildings.getFreeBuildings(sql, f);
+            return Buildings.getBuildings(sql, f);
         }
         public void setBuildingName(int bid, string name)
         {

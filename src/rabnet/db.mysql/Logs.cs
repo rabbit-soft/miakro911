@@ -38,28 +38,41 @@ namespace db.mysql
             cmd.ExecuteNonQuery();
         }
 
-        public String makeWhere(Filters f)
+        private String makeWhere(Filters f)
         {
-            if (f.safeValue("lgs") == "") return "";
             String res = "";
-            String[] tps = f.safeValue("lgs", "").Split(',');
-            for (int i = 0; i <= tps.Length - 1; i++)
-                res += "logs.l_type=" + tps[i] + " OR ";
-            return " WHERE (" + res + "logs.l_type=" + tps[tps.Length - 1] + ")";
+            if (f.safeValue(Filters.LOGS) != "")///если пустая то показывать все логи
+            {
+                string tmp = "";
+                String[] tps = f.safeValue(Filters.LOGS, "").Split(',');
+                for (int i = 0; i < tps.Length - 1; i++)
+                    tmp += String.Format("logs.l_type={0:s} OR ", tps[i]);
+                res += String.Format("({0:s} logs.l_type={1:s})", tmp, tps[tps.Length - 1]);
+            }
+            if(f.ContainsKey(Filters.RAB_ID))
+                res += String.Format("{0:s}(l_rabbit={1:s} OR l_rabbit2={1:s})", (res != "" ? " AND " : ""), f[Filters.RAB_ID]);
+            if(f.ContainsKey(Filters.DATE_FROM) && f.ContainsKey(Filters.DATE_TO))
+                res += String.Format("{0:s}Date(l_date) BETWEEN '{1:s}' AND '{2:s}'", (res != "" ? " AND " : ""), f[Filters.DATE_FROM], f[Filters.DATE_TO]);
+            if(f.ContainsKey(Filters.ADDRESS))
+                res += String.Format("{0:s}(Trim(l_address)='{1:s}' OR Trim(l_address2)='{1:s}')", (res != "" ? " AND " : ""), f[Filters.ADDRESS]);
+            if(res!="")
+                res = "WHERE "+res;
+            return res;
         }
 
         public LogList getLogs(Filters f)
         {
             int limit = f.safeInt("lim", 100);
-            String qry = String.Format(@"SELECT logs.l_date date,logtypes.l_name name,users.u_name user,logtypes.l_params params,
-logs.l_rabbit rabbit,logs.l_rabbit2 rabbit2,logs.l_address address,logs.l_address2 address2,
-logs.l_param param,
-anyname(logs.l_rabbit,2) r1,
-anyname(logs.l_rabbit2,2) r2,
-rabplace(logs.l_rabbit) place,
-rabplace(logs.l_rabbit2) place2
+            String qry = String.Format(@"SELECT logs.l_date date, logtypes.l_name name, users.u_name user, logtypes.l_params params,
+    logs.l_rabbit rabbit, logs.l_rabbit2 rabbit2, logs.l_address address, logs.l_address2 address2,
+    logs.l_param param,
+    anyname(logs.l_rabbit,2) r1,
+    anyname(logs.l_rabbit2,2) r2,
+    rabplace(logs.l_rabbit) place,
+    rabplace(logs.l_rabbit2) place2
 FROM logs 
-LEFT JOIN logtypes ON logs.l_type=logtypes.l_type LEFT JOIN users ON l_user=u_id {1:s} 
+LEFT JOIN logtypes ON logs.l_type=logtypes.l_type LEFT JOIN users ON l_user=u_id 
+{1:s} 
 ORDER BY date DESC LIMIT {0:d};", limit, makeWhere(f));
             MySqlCommand cmd = new MySqlCommand(qry, sql);
             MySqlDataReader rd = cmd.ExecuteReader();

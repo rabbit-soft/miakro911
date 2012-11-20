@@ -10,12 +10,12 @@ namespace db.mysql
     {
         public RabbitsDataGetter(MySqlConnection sql, Filters opts) : base(sql, opts) { }
       
-        public override IData nextItem() /*получение одной записи в Поголовье*/
+        public override IData NextItem() /*получение одной записи в Поголовье*/
         {
             return RabbitGetter.fillAdultRabbit(rd);
         }
 
-        public override string getQuery()
+        protected override string getQuery()
         {
             String fld = "b_name";
             if (options.safeBool("shr"))
@@ -151,7 +151,7 @@ FROM rabbits r WHERE r_parent=0 ORDER BY name) c {2:s};", (options.safeBool("dbl
             return " WHERE " + res;
         }
 
-        public override string countQuery()
+        protected override string countQuery()
         {
             return @"SELECT COUNT(*),SUM(r_group) FROM (SELECT r_sex,r_born,
 rabname(r_id,2) name,r_group,

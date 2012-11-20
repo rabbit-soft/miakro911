@@ -152,13 +152,14 @@ r_flags='{7:d}',r_rate={8:d},r_born={9:s} ", r.nameID, r.surname, r.secname, r.B
             cmd.ExecuteNonQuery();
         }      
 
-        public static void MakeProholost(MySqlConnection sql, int rabbit, DateTime date)
+        public static void MakeProholost(MySqlConnection sql, int rabbit, int daysPast)
         {
             int male = WhosChildren(sql, rabbit);
+            string when = DBHelper.DaysPastMySQLDate(daysPast);
             MySqlCommand cmd = new MySqlCommand("", sql);
             checkStartEvDate(sql, rabbit);
             cmd.CommandText = String.Format(@"UPDATE fucks SET f_state='proholost',f_end_date={0:s} WHERE f_state='sukrol' AND f_rabid={1:d};",
-                DBHelper.DateToMyString(date), rabbit);
+                when, rabbit);
             cmd.ExecuteNonQuery();
             cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date=NULL,r_event='none',r_rate=r_rate-2 WHERE r_id={0:d};", rabbit);
             cmd.ExecuteNonQuery();
@@ -180,12 +181,15 @@ r_flags='{7:d}',r_rate={8:d},r_born={9:s} ", r.nameID, r.surname, r.secname, r.B
             return res;
         }
 
-        public static int MakeOkrol(MySqlConnection sql, int rabbit, DateTime date, int children, int dead)
+        public static int MakeOkrol(MySqlConnection sql, int rabbit, int daysPast, int children, int dead)
         {
+            const int AUTUMN_OKROL_RATE = 2;
             int father = WhosChildren(sql, rabbit);
+            string when = DBHelper.DaysPastMySQLDate(daysPast);
+
             MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE fucks SET f_state='okrol',f_end_date={0:s},
 f_children={1:d},f_dead={2:d} WHERE f_rabid={3:d} AND f_state='sukrol';",
-                       DBHelper.DateToMyString(date), children, dead, rabbit), sql);
+                       when, children, dead, rabbit), sql);
             cmd.ExecuteNonQuery();
 
             OneRabbit fml = GetRabbit(sql, rabbit);
@@ -198,13 +202,14 @@ f_children={1:d},f_dead={2:d} WHERE f_rabid={3:d} AND f_state='sukrol';",
                 ml.Rate += rt;
             }
             rt -= dead;
-            if (children > 0 && date.Month > 8 && date.Month < 12)
-                rt += 2;
+            if (children > 0) //&& date.Month > 8 && date.Month < 12)
+                fml.Rate += AUTUMN_OKROL_RATE;
+                //rt += 2;
             cmd.CommandText = String.Format(@"UPDATE rabbits SET r_event_date=NULL, r_event='none',
 r_status=r_status+1, r_last_fuck_okrol={1:s}, r_overall_babies=COALESCE(r_overall_babies+{2:d},1),
-r_lost_babies=COALESCE(r_lost_babies+{3:d},1), r_rate=r_rate+{4:d} WHERE r_id={0:d};",
-                rabbit, DBHelper.DateToMyString(date), children, dead, rt);
-            fml.Rate += rt;
+r_lost_babies=COALESCE(r_lost_babies+{3:d},1), r_rate=r_rate+IF(MONTH(Now()) BETWEEN 8 AND 12,{4:d},0) 
+WHERE r_id={0:d};",
+                rabbit, when, children, dead, AUTUMN_OKROL_RATE);           
             cmd.ExecuteNonQuery();
 
             if (children > 0)
@@ -217,7 +222,7 @@ r_lost_babies=COALESCE(r_lost_babies+{3:d},1), r_rate=r_rate+{4:d} WHERE r_id={0
                 cmd.CommandText = String.Format(@"INSERT 
 INTO rabbits(r_parent,r_mother,r_father,r_born,r_sex,r_group,r_bon,r_genesis,r_name,r_surname,r_secname,r_breed,r_okrol,r_rate,r_notes) 
 VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d},{10:d},{11:d},'');",
-      rabbit, rabbit, father, DBHelper.DateToMyString(date), children, DBHelper.commonBon(fml.Bon.ToString(), (ml != null ? ml.Bon.ToString() : fml.Bon.ToString())),
+      rabbit, rabbit, father, when, children, DBHelper.commonBon(fml.Bon.ToString(), (ml != null ? ml.Bon.ToString() : fml.Bon.ToString())),
       RabbitGenGetter.MakeCommonGenesis(sql, fml.gens, (ml != null ? ml.gens : fml.gens), fml.zone),
       fml.nameID, (ml != null ? ml.nameID : 0), brd, okrol, rate/*,DBHelper.DateToMyString(date)*/);
                 cmd.ExecuteNonQuery();
@@ -415,8 +420,9 @@ FROM rabbits WHERE r_id={0:d};", rabFromID, mom, count), sql);
         /// <param name="when">Дата списания</param>
         /// <param name="reason">Причина списания</param>
         /// <param name="notes">Заметки</param>
-        public static void killRabbit(MySqlConnection sql, int rid, DateTime when, int reason, string notes)
+        public static void killRabbit(MySqlConnection sql, int rid, int daysPast, int reason, string notes)
         {
+            string when = DBHelper.DaysPastMySQLDate(daysPast);
             int[] place = freeTier(sql, rid);
             freeName(sql, rid);
             MySqlCommand cmd = new MySqlCommand(String.Format("SELECT r_parent FROM rabbits WHERE r_id={0:d};", rid), sql);
@@ -444,8 +450,8 @@ FROM rabbits WHERE r_id={0:d};", rabFromID, mom, count), sql);
             }
             cmd.CommandText = String.Format("UPDATE rabbits SET r_parent=0,r_farm={1:d},r_tier={2:d},r_area={3:d},r_tier={4:d} WHERE r_parent={0:d};", rid, place[0], place[1], place[2], place[3]);
             cmd.ExecuteNonQuery();
-            cmd.CommandText = String.Format(@"COMMIT;CALL killRabbitDate({0:d},{1:d},'{2:s}',{3:s});",
-                rid, reason, notes, DBHelper.DateToMyString(when));
+            cmd.CommandText = String.Format(@"COMMIT; CALL killRabbitDate({0:d},{1:d},'{2:s}',{3:s});",
+                rid, reason, notes, when);
 
             cmd.ExecuteNonQuery();
         }

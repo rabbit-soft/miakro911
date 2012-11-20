@@ -13,14 +13,19 @@ namespace rabnet
     {
         private ILog _logger = LogManager.GetLogger(typeof(MakeFuckForm));
 
+        private const int IND_NAME = 0;
+        private const int IND_STATE = 1;
+        private const int IND_BREED = 2;
         private const int IND_FUCKS = 3;
         private const int IND_CHILDREN = 4;
+        private const int IND_INBR = 6;
 
         private RabNetEngRabbit rab1 = null;
         private Catalog brds;
         private int rtosel=0;
         bool _manual = true;
         int _malewait = 0;
+        int _makeCand = 0;
         ListViewColumnSorter cs;
         Catalog names = null;
         int selected = 0;
@@ -38,6 +43,7 @@ namespace rabnet
             chHetererosis.Checked = Engine.opt().getBoolOption(Options.OPT_ID.GETEROSIS);
             chInbreed.Checked = Engine.opt().getBoolOption(Options.OPT_ID.INBREEDING);
             _malewait = Engine.opt().getIntOption(Options.OPT_ID.MALE_WAIT);
+            _makeCand = Engine.opt().getIntOption(Options.OPT_ID.MAKE_CANDIDATE);
             _manual = true;
 
             cs = new ListViewColumnSorter(listView1, new int[] { IND_FUCKS, IND_CHILDREN }, Options.OPT_ID.MAKE_FUCK_LIST);
@@ -87,27 +93,45 @@ namespace rabnet
         private void fillTable()
         {
             cs.Prepare();
-            Fucks fs = Engine.db().GetAllFuckers(rab1.RabID,chHetererosis.Checked,chInbreed.Checked,_malewait);
+            Filters flt = new Filters();
+            flt[Filters.RAB_ID] = rab1.RabID.ToString();
+            flt[Filters.HETEROSIS] = chHetererosis.Checked ? "1" : "0";
+            flt[Filters.INBREEDING] = chInbreed.Checked ? "1" : "0";
+            flt[Filters.MALE_WAIT] = _malewait.ToString();
+            flt[Filters.MAKE_CANDIDATE] = _makeCand.ToString();
+            flt[Filters.SHOW_CANDIDATE] = chCandidates.Checked ? "1" : "0";
+            flt[Filters.SHOW_REST] = chRest.Checked ? "1" : "0";
+            //TODO здесь трахатели идеалогически неверно передаются через объекты Трыхов
+            Fucks fs = Engine.db().GetAllFuckers(flt);
             listView1.BeginUpdate();
             foreach (Fucks.Fuck f in fs.fucks)
             {
-                bool heter=(f.breed != rab1.Breed);
-                bool inbr=RabNetEngHelper.inbreeding(rab1.Genom,f.rgenom);
+                bool heter=(f.Breed != rab1.Breed);
+                bool inbr = RabNetEngHelper.inbreeding(rab1.Genom, f.rGenom);
 
-                ListViewItem li = listView1.Items.Add(f.partner);
+                ListViewItem li = listView1.Items.Add(f.PartnerName);
+                li.UseItemStyleForSubItems = false;
+                if (f.When != DateTime.MinValue && f.When.Date.AddDays(_malewait) >= DateTime.Now.Date)
+                    li.SubItems[IND_NAME].ForeColor = chRest.ForeColor;
                 li.Tag = f;
-                String stat="Мальчик";
-                if (f.dead==1)
-                    stat="Кандидат";
-                if (f.dead==2)
-                    stat="Производитель";
-                li.SubItems.Add(stat);
-                li.SubItems.Add(brds[f.breed]);
-                li.SubItems.Add(f.times.ToString());
-                li.SubItems.Add(f.children.ToString());
+                li.SubItems.Add("Мальчик");
+                if (f.Dead == 1 || (f.Dead == 0 && f.Killed >= _makeCand))
+                {
+                    li.SubItems[IND_STATE].Text = "Кандидат";
+                    li.SubItems[IND_STATE].ForeColor = chCandidates.ForeColor;
+                }
+                if (f.Dead==2)
+                    li.SubItems[IND_STATE].Text = "Производитель";
+                li.SubItems.Add(brds[f.Breed]);
+                li.SubItems.Add(f.Times.ToString());
+                li.SubItems.Add(f.Children.ToString());
                 li.SubItems.Add(heter? "ДА" : "-");
                 li.SubItems.Add(inbr ? "ДА" : "-");
-                if (rtosel == f.partnerid)
+                if (heter)
+                    li.SubItems[IND_BREED].ForeColor = chHetererosis.ForeColor;
+                if (inbr)
+                    li.SubItems[IND_INBR].ForeColor = chInbreed.ForeColor;
+                if (rtosel == f.PartnerId)
                  {
                     li.Selected = true;
                     li.EnsureVisible();
@@ -129,7 +153,7 @@ namespace rabnet
                 MessageBox.Show("Партнер не выбран");
                 return;
             }
-            int r2 = (listView1.SelectedItems[0].Tag as Fucks.Fuck).partnerid;
+            int r2 = (listView1.SelectedItems[0].Tag as Fucks.Fuck).PartnerId;
             (new GenomViewForm(rab1.RabID, r2)).ShowDialog();
         }
 
@@ -162,10 +186,10 @@ namespace rabnet
                     rab1.Commit();
                 }
 
-                int r2 = (listView1.SelectedItems[0].Tag as Fucks.Fuck).partnerid;
+                int r2 = (listView1.SelectedItems[0].Tag as Fucks.Fuck).PartnerId;
                 selected = r2;
                 if (action == 0)
-                    rab1.FuckIt(r2, dateDays1.DateValue,syntetic);
+                    rab1.FuckIt(r2, dateDays1.DaysValue,syntetic);
 
                 this.DialogResult = DialogResult.OK;
                 Close();
@@ -177,10 +201,12 @@ namespace rabnet
             }
         }
 
-        private void cbCand_CheckedChanged(object sender, EventArgs e)
+        private void cb_CheckedChanged(object sender, EventArgs e)
         {
             if (!_manual) return;
-            Engine.opt().setOption(Options.OPT_ID.SHOW_CANDIDATES, chCandidates.Checked?1:0);
+
+            if(sender == chCandidates)
+                Engine.opt().setOption(Options.OPT_ID.SHOW_CANDIDATES, chCandidates.Checked?1:0);
             fillTable();
         }
 
@@ -197,5 +223,6 @@ namespace rabnet
         }
 
         public int SelectedFucker { get { return selected; } }
+
     }
 }

@@ -12,7 +12,7 @@ namespace db.mysql
         {
         }
 
-        public override IData nextItem()
+        public override IData NextItem()
         {
             return new Dead(rd.GetInt32("r_id"), rd.GetString("name"), rd.GetString("place"),
                 rd.GetInt32("age"), rd.GetDateTime("d_date"),
@@ -30,7 +30,7 @@ namespace db.mysql
             return " WHERE "+wh;
         }
 
-        public override string getQuery()
+        protected override string getQuery()
         {
             int max = options.safeInt("max", 1000);
             return String.Format(@"SELECT r_id,deadname(r_id,2) name,deadplace(r_id) place,
@@ -41,7 +41,7 @@ d_notes,r_group
 FROM dead{0:s} ORDER BY d_date DESC LIMIT {1:d};", makeWhere(),max);
         }
 
-        public override string countQuery()
+        protected override string countQuery()
         {
             return String.Format(@"SELECT COUNT(*) FROM (SELECT r_id,deadname(r_id,2),d_date,TO_DAYS(d_date)-TO_DAYS(r_born) age 
 FROM dead{0:s} LIMIT {1:d}) c;", makeWhere(), options.safeInt("max", 1000));

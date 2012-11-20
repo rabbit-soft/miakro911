@@ -85,7 +85,7 @@ namespace rabnet
             else
             {
                 sb.progress(progress);
-                IData it = gt.getNextItem();
+                IData it = gt.GetNextItem();
                 onitem(it, null);
                 if (it == null) setStop(true);
             }

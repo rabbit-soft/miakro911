@@ -27,59 +27,59 @@ namespace rabnet
 
         public class Fuck
         {
-            public String partner;
-            public int partnerid;
-            public int id;
-            public int times;
-            public DateTime when;
-            public String type;
-            public DateTime enddate;
-            public String status;
-            public int children;
-            public int dead;
-            public int killed;
-            public int added;
-            public int breed;
-            public String rgenom;
-            public bool isDead;
-            public string worker;
-            public Fuck(int id, String p, int pid, int tms, DateTime s, DateTime e, String st, int ch, int dd,
-                int brd, String gen, String tp, int kl, int add, bool isdead, string wrk)
+            public String PartnerName;
+            public int PartnerId;
+            public int Id;
+            public int Times;
+            public DateTime When;
+            public String FuckType;
+            public DateTime EndDate;
+            public String Status;
+            public int Children;
+            public int Dead;
+            public int Killed;
+            public int Added;
+            public int Breed;
+            public String rGenom;
+            public bool IsDead;
+            public string Worker;
+            public Fuck(int id, String partnerName, int pid, int tms, DateTime startDate, DateTime endDate, String state, int children, int dead,
+                int brd, String gen, String tp, int killed, int added, bool isDead, string worker)
             {
-                this.id = id;
-                partner = p;
-                partnerid = pid;
-                worker = wrk;
-                times = tms;
-                when = s; enddate = e;
-                type = Type.Null;
+                this.Id = id;
+                PartnerName = partnerName;
+                PartnerId = pid;
+                Worker = worker;
+                Times = tms;
+                When = startDate; EndDate = endDate;
+                FuckType = Type.Null;
                 switch (tp)
                 {
-                    case Type.Vyazka_ENG: type = Type.Vyazka_rus; break;
-                    case Type.Sluchka_ENG: type = Type.Sluchka_rus; break;
-                    case Type.Syntetic_ENG: type = Type.Syntetic_rus; break;
-                    case Type.Kuk_ENG: type = Type.Kuk_rus; break;
+                    case Type.Vyazka_ENG: FuckType = Type.Vyazka_rus; break;
+                    case Type.Sluchka_ENG: FuckType = Type.Sluchka_rus; break;
+                    case Type.Syntetic_ENG: FuckType = Type.Syntetic_rus; break;
+                    case Type.Kuk_ENG: FuckType = Type.Kuk_rus; break;
                 }
                 //if (tp == Type.Vyazka_ENG) type = Type.Vyazka_rus;
                 //if (tp == Type.Sluchka_ENG) type = Type.Sluchka_rus;
                 //if (tp == Type.Kuk_ENG) type = Type.Kuk_rus;
-                status = Type.Sukrol_rus;
-                if (st == Type.Okrol_ENG) status = Type.Okrol_rus;
-                if (st == Type.Proholost_ENG) status = Type.Proholost_rus;
-                children = ch; 
-                dead = dd;
-                isDead = isdead;
-                killed = kl;
-                added = add;
-                breed = brd;
-                rgenom = gen;
+                Status = Type.Sukrol_rus;
+                if (state == Type.Okrol_ENG) Status = Type.Okrol_rus;
+                if (state == Type.Proholost_ENG) Status = Type.Proholost_rus;
+                Children = children; 
+                Dead = dead;
+                IsDead = isDead;
+                Killed = killed;
+                Added = added;
+                Breed = brd;
+                rGenom = gen;
             }
         }
         public List<Fuck> fucks = new List<Fuck>();
-        public void AddFuck(int id, String p, int pid, int tms, DateTime s, DateTime e, String st, int ch, int dd,
+        public void AddFuck(int id, String partnerName, int pId, int times, DateTime startDate, DateTime endDate, String state, int childrens, int dd,
             int brd, String gen, String tp, int kl, int add, bool dead, String wrk)
         {
-            fucks.Add(new Fuck(id, p, pid, tms, s, e, st, ch, dd, brd, gen, tp, kl, add, dead, wrk));
+            fucks.Add(new Fuck(id, partnerName, pId, times, startDate, endDate, state, childrens, dd, brd, gen, tp, kl, add, dead, wrk));
         }
 
         public Fuck LastFuck
@@ -88,7 +88,7 @@ namespace rabnet
             {
                 Fuck result = null;
                 foreach (Fuck f in this.fucks)
-                    if (result == null || result.when < f.when)
+                    if (result == null || result.When < f.When)
                         result = f;
                 return result;
             }

@@ -33,7 +33,7 @@ namespace rabnet
         int getCount3(); //+gambit
         float getCount4(); //
         void stop();
-        IData getNextItem();
+        IData GetNextItem();
     }
 
     public interface IRabNetDataLayer
@@ -68,7 +68,7 @@ namespace rabnet
         /// </summary>
         IDataGetter GetYoungers(Filters filters);
         IDataGetter getRabbits(Filters filters);
-        IDataGetter getBuildings(Filters filters);
+        IDataGetter getBuildingsRows(Filters filters);
         IDataGetter getNames(Filters filters);
         IDataGetter zooTeh(Filters f);
         IDataGetter getButcherDates(Filters f);
@@ -83,7 +83,8 @@ namespace rabnet
         void RabNetLog(int type, int user, int r1, int r2, string a1, string a2, String text);
         Fucks getFucks(int rabbit);
         void cancelFuckEnd(int fuckID);
-        Fucks GetAllFuckers(int female,bool geterosis,bool inbreeding,int malewait);
+        //Fucks GetAllFuckers(int female,bool geterosis,bool inbreeding,int malewait);
+        Fucks GetAllFuckers(Filters f);
         void setBon(int rabbit,String bon);
         /// <summary>
         /// Случает крольчиху
@@ -93,18 +94,13 @@ namespace rabnet
         /// <param name="date">Дата случки</param>
         /// <param name="worker">ID пользователя (работника)</param>
 		/// <param name="syntetic);">Искусственное осеменение</param>
-        void MakeFuck(int femaleId, int maleId, DateTime date, int worker, bool syntetic);
-        void makeProholost(int female, DateTime when);
-        int makeOkrol(int female, DateTime when, int children, int dead);
+        void MakeFuck(int femaleId, int maleId, int daysPast, int worker, bool syntetic);
+        void makeProholost(int female, int daysPast);
+        int makeOkrol(int female, int daysPast, int children, int dead);
         String makeName(int nm, int sur, int sec, int grp, Rabbit.SexType sex);
         bool unblockName(int id);
 
-        /// <summary>
-        /// Получает список всободных клеток. 
-        /// </summary>
-        /// <param name="f"></param>
-        /// <returns></returns>
-        Building[] getFreeBuilding(Filters f);
+        Building[] getBuildings(Filters f);
         void replaceRabbit(int rid, int farm, int tier_id, int sec);
         void replaceYounger(int yid, int farm, int tier_id, int sec);
         int newRabbit(OneRabbit r,int mom);
@@ -121,7 +117,7 @@ namespace rabnet
         /// <param name="when">Дата списания</param>
         /// <param name="reason">Причина списания</param>
         /// <param name="notes">Заметки</param>
-        void KillRabbit(int id,DateTime when,int reason,string notes);
+        void KillRabbit(int id, int daysPast,int reason,string notes);
 
         /// <summary>
         /// Подсчет Гнездовых

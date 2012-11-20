@@ -12,7 +12,7 @@ namespace db.mysql
         {
         }
 
-        public override IData nextItem()
+        public override IData NextItem()
         {
            return new RabName(rd.GetInt32("n_id"),rd.GetString("n_name"),rd.GetString("n_surname"),
                rd.GetString("n_sex"),rd.GetInt32("n_use"),rd.IsDBNull(5)?DateTime.MinValue:rd.GetDateTime("n_block_date"));
@@ -36,12 +36,12 @@ namespace db.mysql
             return w;
         }
 
-        public override string getQuery()
+        protected override string getQuery()
         {
             return "SELECT n_id,n_sex,n_name,n_surname,n_use,n_block_date FROM names "+makeWhereClause()+"ORDER BY n_name;";
         }
 
-        public override string countQuery()
+        protected override string countQuery()
         {
             MySqlCommand cmd = new MySqlCommand("UPDATE names SET n_block_date=NULL WHERE n_use=0 AND n_block_date<NOW();", sql);
             cmd.ExecuteNonQuery();

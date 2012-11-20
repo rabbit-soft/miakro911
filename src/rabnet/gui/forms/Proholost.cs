@@ -40,7 +40,7 @@ namespace rabnet
         {
             try
             {
-                r1.ProholostIt(dateDays1.DateValue);
+                r1.ProholostIt(dateDays1.DaysValue);
                 Close();
             }
             catch (ApplicationException ex)

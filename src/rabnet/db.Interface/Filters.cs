@@ -10,6 +10,13 @@ namespace rabnet
     public class Filters : Dictionary<String, String>
     {
         #region const
+        public const string ID = "id";
+        public const string RAB_ID = "rab_id";
+        public const string DATE_FROM = "dateFrom";
+        public const string DATE_TO = "dateTo";
+        public const string LIMIT = "limit";
+        public const string ADDRESS = "adr";
+        public const string FREE = "free"; 
         /// <summary>
         /// Сокращения
         /// </summary>
@@ -20,11 +27,9 @@ namespace rabnet
         public const string SHOW_BLD_DESCR = "sho";
         public const string SHOW_OKROL_NUM = "num";
         public const string MAKE_CANDIDATE = "cand";
+        public const string SHOW_CANDIDATE = "sh_cand";
+        public const string SHOW_REST = "sh_rest";
         public const string MAKE_BRIDE = "brd";
-        /// <summary>
-        /// Какого возраста крольчатам назначать прививку
-        /// </summary>
-        //public const string VACC_DAYS = "vacc";
         /// <summary>
         /// Прививать крольчат с матерью
         /// </summary>
@@ -63,7 +68,8 @@ namespace rabnet
         public const string MALE_WAIT = "mwait";
         public const string BOYS_BY_ONE = "bbone";
         public const string TYPE = "type";
-        public const string TIER = "yar"; 
+        public const string TIER = "yar";
+        public const string LOGS = "lgs"; 
         #endregion const
 
         public Filters() : base() { }

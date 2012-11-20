@@ -53,7 +53,7 @@ namespace rabnet
 
         private string getChildrenName(int femaleNameId, int maleNameId)
         {
-            return _fsn[femaleNameId] + "-" + (maleNameId != 0 ? _msn[maleNameId] : "<Имя кандидата>");
+            return (femaleNameId!=0?_fsn[femaleNameId]:"<Имя Самки>") + "-" + (maleNameId != 0 ? _msn[maleNameId] : "<Имя кандидата>");
         }
 
         private void checkRootInbreeding(TreeNode femaleTn, TreeNode maleTn)

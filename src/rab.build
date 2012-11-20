@@ -44,8 +44,10 @@
 	<property name="plugin_dir" value="${root_bin}/PlugIns" />
 	<property name="distrib_dir" value="${root_bin}/distrib" />
 	
-	<property name="log4net.lib" value="log4net.dll" />
+	<property name="log4net.lib" value="log4net.dll" />	
 	<property name="log4net.ass" value="${log4net.path}/${log4net.lib}" />
+	<property name="sb.lib" value="SplitButton.dll" />
+	<property name="sb.ass" value="${party3d.path}/${sb.lib}" />
 	<property name="mysql.lib" value="MySql.Data.dll" />
 	<property name="mysql.ass" value="${mysql.path}/${mysql.lib}" />
 
@@ -133,10 +135,12 @@
 		<mkdir dir="${bin_dir}/bin"/>
 		<property name="bin_dir_bin" value="${bin_dir}/bin" />
 		<property name="log4net.use" value="${bin_dir_bin}/${log4net.lib}" />
+		<property name="sb.use" value="${bin_dir_bin}/${sb.lib}" />
 		<property name="mysql.use" value="${bin_dir_bin}/${mysql.lib}" />
 		<property name="rep.use" value="${bin_dir_bin}/${rep.lib}" />
 		<property name="repeng.use" value="${bin_dir_bin}/${repeng.lib}" />
 		<copy file="${log4net.ass}" tofile="${log4net.use}" />
+		<copy file="${sb.ass}" tofile="${sb.use}" />
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />		
 		<copy file="${rep.ass}" tofile="${rep.use}" />
 		<copy file="${repeng.ass}" tofile="${repeng.use}" />
@@ -178,9 +182,11 @@
 		<mkdir dir="${bin_dir}/RabNet"/-->
 		<property name="bin_dir_bin" value="${bin_dir}/bin" />
 		<property name="log4net.use" value="${bin_dir_bin}/${log4net.lib}" />
+		<property name="sb.use" value="${bin_dir_bin}/${sb.lib}" />
 		<property name="mysql.use" value="${bin_dir_bin}/${mysql.lib}" />
 		<!--property name="mysql.t.use" value="${bin_dir}/Tools/${mysql.lib}" /-->
 		<copy file="${log4net.ass}" tofile="${log4net.use}" />
+		<copy file="${sb.ass}" tofile="${sb.use}" />
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
 		<!--copy file="${mysql.ass}" tofile="${mysql.t.use}" /-->
 		<copy todir="${bin_dir_bin}">
@@ -416,7 +422,7 @@
 			</resources>
 			<references>		
 				<include name="${log4net.use}"/>
-				<include name="${party3d.path}/SplitButton.dll"/>
+				<include name="${sb.use}"/>
 				<include name="${bin_dir_bin}/${guardantNET.lib}" />
 				<include name="${bin_dir_bin}/db.Interface.dll" />
 				<include name="${bin_dir_bin}/engine.dll" />

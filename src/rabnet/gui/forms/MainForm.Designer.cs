@@ -88,6 +88,7 @@
             this.tpButcher = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
+            this.miLogs = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -153,6 +154,7 @@
             this.параметрыToolStripMenuItem,
             this.tsmiDeadsArchive,
             this.miMeal,
+            this.miLogs,
             this.toolStripMenuItem2,
             this.namesMenuItem,
             this.breedsMenuItem,
@@ -571,6 +573,13 @@
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
             // 
+            // miLogs
+            // 
+            this.miLogs.Name = "miLogs";
+            this.miLogs.Size = new System.Drawing.Size(208, 22);
+            this.miLogs.Text = "Логи";
+            this.miLogs.Click += new System.EventHandler(this.miLogs_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -655,6 +664,7 @@
         private System.Windows.Forms.ToolStripMenuItem miMeal;
         private System.Windows.Forms.ToolStripMenuItem miScale;
         private System.Windows.Forms.ToolStripMenuItem tsmiVaccines;
+        private System.Windows.Forms.ToolStripMenuItem miLogs;
     }
 }
 

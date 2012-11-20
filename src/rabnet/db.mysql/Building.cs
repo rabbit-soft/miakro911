@@ -10,7 +10,6 @@ namespace db.mysql
 
     public class Buildings : RabNetDataGetterBase
     {             
-
         internal Buildings(MySqlConnection sql, Filters filters):base(sql,filters){}
 
         internal static Building GetBuilding(MySqlDataReader rd,bool shr,bool rabbits)
@@ -55,12 +54,12 @@ namespace db.mysql
             return b;
         }
 
-        public override IData nextItem()
+        public override IData NextItem()
         {
             try
             {
                 bool shr = options.safeBool(Filters.SHORT);
-                return GetBuilding(rd, shr,true);
+                return GetBuilding(rd, shr, true);
             }
             catch (Exception ex)
             {
@@ -69,7 +68,7 @@ namespace db.mysql
             }
         }
 
-        internal String makeWhere()
+        private String makeWhere()
         {            
             String res = "";
             if (options.ContainsKey("frm"))
@@ -123,7 +122,7 @@ namespace db.mysql
         /// Строка запроса для вкладки "Строения"
         /// </summary>
         /// <returns>Возвращает запрос, который выполняется объектом класса RabNetDataGetterBase.</returns>
-        public override string getQuery()
+        protected override string getQuery()
         {
             int nm = options.safeBool(Filters.DBL_SURNAME) ? 2 : 1;
             return String.Format(@"SELECT t_id,m_upper,m_lower,m_id,t_type,t_delims,t_nest,t_heater,
@@ -134,7 +133,7 @@ rabname(t_busy1,{0:d}) r1, rabname(t_busy2,{0:d}) r2,rabname(t_busy3,{0:d}) r3,r
 FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) {1:s} ORDER BY m_id;",nm,makeWhere());
         }
 
-        public override string countQuery()
+        protected override string countQuery()
         {
             return "SELECT COUNT(t_id) FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id)" + makeWhere() + ";";
         }
@@ -179,7 +178,7 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) and t_id=" + tier.ToSt
             return b;
         }
 
-        internal static Building[] getFreeBuildings(MySqlConnection sql,Filters f)
+        internal static Building[] getBuildings(MySqlConnection sql,Filters f)
         {
             List<Building> bld = new List<Building>();
             String type = "";
@@ -187,21 +186,23 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) and t_id=" + tier.ToSt
                 type = "t_type='" + f.safeValue("tp") + "' AND ";
             if (f.ContainsKey("nest"))
                 type = String.Format("(t_type='{0}' OR t_type='{1}' OR t_type='{2}') AND",BuildingType.Jurta,BuildingType.Female,BuildingType.DualFemale);
-            
-            String busy = "(("+type+"(t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0))";
-            if (f.safeInt("rcnt") > 0)
-                for (int i = 0; i < f.safeInt("rcnt"); i++)
-                {
-                    int r=f.safeInt("r"+i.ToString());
-                    if (r > 0)
-                        busy += String.Format(" OR (t_busy1={0:d} OR t_busy2={0:d} OR t_busy3={0:d} OR t_busy4={0:d})", r);
-                }
-            busy += ")";
-
-            MySqlCommand cmd = new MySqlCommand(@"SELECT 
+            String busy = "";
+            if (f.ContainsKey(Filters.FREE))
+            {
+                busy = "((" + type + "(t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0))";
+                if (f.safeInt("rcnt") > 0)
+                    for (int i = 0; i < f.safeInt("rcnt"); i++)
+                    {
+                        int r = f.safeInt("r" + i.ToString());
+                        if (r > 0)
+                            busy += String.Format(" OR (t_busy1={0:d} OR t_busy2={0:d} OR t_busy3={0:d} OR t_busy4={0:d})", r);
+                    }
+                busy += ")";
+            }
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT 
 t_id,m_upper,m_lower,m_id,t_type,t_delims,t_nest,t_heater,t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4 
 FROM minifarms,tiers 
-WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 AND "+busy+" ORDER BY m_id;", sql);
+WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 {0:s} ORDER BY m_id;",busy!=""?"AND "+busy:""), sql);
             _logger.Debug("free Buildings cmd:"+cmd.CommandText);
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())

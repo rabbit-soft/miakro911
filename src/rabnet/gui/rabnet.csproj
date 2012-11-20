@@ -164,6 +164,12 @@
     <Compile Include="classes\RabnetConfig\sParams.cs" />
     <Compile Include="classes\RabnetConfig\RabnetConfig.cs" />
     <Compile Include="classes\Run.cs" />
+    <Compile Include="components\LogsCheckBoxList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\LogsCheckBoxList.Designer.cs">
+      <DependentUpon>LogsCheckBoxList.cs</DependentUpon>
+    </Compile>
     <Compile Include="components\RabGenTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -187,6 +193,12 @@
     </Compile>
     <Compile Include="forms\FarmNewForm.Designer.cs">
       <DependentUpon>FarmNewForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\LogsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\LogsForm.Designer.cs">
+      <DependentUpon>LogsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="forms\MealForm.cs">
       <SubType>Form</SubType>
@@ -538,6 +550,9 @@
       <DependentUpon>FarmDrawer.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="components\LogsCheckBoxList.resx">
+      <DependentUpon>LogsCheckBoxList.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="filters\BuildingsFilter.resx">
       <DependentUpon>BuildingsFilter.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -571,6 +586,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\FarmNewForm.resx">
       <DependentUpon>FarmNewForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\LogsForm.resx">
+      <DependentUpon>LogsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\MealForm.resx">
       <DependentUpon>MealForm.cs</DependentUpon>

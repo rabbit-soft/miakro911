@@ -36,7 +36,7 @@
             this.chFucksCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chChildren = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chHeterosis = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.chInbreeding = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chInbr = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btCancel = new System.Windows.Forms.Button();
@@ -51,6 +51,7 @@
             this.btOk = new ExoticControls.SplitButton();
             this.cmsOk = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miSyntetic = new System.Windows.Forms.ToolStripMenuItem();
+            this.chRest = new System.Windows.Forms.CheckBox();
             this.cmsOk.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,7 +67,7 @@
             this.chFucksCount,
             this.chChildren,
             this.chHeterosis,
-            this.chInbreeding});
+            this.chInbr});
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(12, 37);
@@ -104,10 +105,10 @@
             // 
             this.chHeterosis.Text = "Гетерозис";
             // 
-            // chInbreeding
+            // chInbr
             // 
-            this.chInbreeding.Text = "Инбридинг NГ";
-            this.chInbreeding.Width = 90;
+            this.chInbr.Text = "Инбридинг NГ";
+            this.chInbr.Width = 90;
             // 
             // label1
             // 
@@ -156,46 +157,47 @@
             // 
             this.chHetererosis.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chHetererosis.AutoSize = true;
+            this.chHetererosis.ForeColor = System.Drawing.Color.SlateBlue;
             this.chHetererosis.Location = new System.Drawing.Point(115, 274);
             this.chHetererosis.Name = "chHetererosis";
-            this.chHetererosis.Size = new System.Drawing.Size(78, 17);
+            this.chHetererosis.Size = new System.Drawing.Size(79, 17);
             this.chHetererosis.TabIndex = 7;
-            this.chHetererosis.Text = "гетерозис";
+            this.chHetererosis.Text = "Гетерозис";
             this.chHetererosis.UseVisualStyleBackColor = true;
-            this.chHetererosis.CheckedChanged += new System.EventHandler(this.cbCand_CheckedChanged);
+            this.chHetererosis.CheckedChanged += new System.EventHandler(this.cb_CheckedChanged);
             // 
             // chInbreed
             // 
             this.chInbreed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chInbreed.AutoSize = true;
-            this.chInbreed.Location = new System.Drawing.Point(207, 274);
+            this.chInbreed.ForeColor = System.Drawing.Color.Crimson;
+            this.chInbreed.Location = new System.Drawing.Point(115, 297);
             this.chInbreed.Name = "chInbreed";
-            this.chInbreed.Size = new System.Drawing.Size(79, 17);
+            this.chInbreed.Size = new System.Drawing.Size(81, 17);
             this.chInbreed.TabIndex = 8;
-            this.chInbreed.Text = "инбридинг";
+            this.chInbreed.Text = "Инбридинг";
             this.chInbreed.UseVisualStyleBackColor = true;
-            this.chInbreed.CheckedChanged += new System.EventHandler(this.cbCand_CheckedChanged);
+            this.chInbreed.CheckedChanged += new System.EventHandler(this.cb_CheckedChanged);
             // 
             // chCandidates
             // 
             this.chCandidates.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chCandidates.AutoSize = true;
-            this.chCandidates.Checked = true;
-            this.chCandidates.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chCandidates.ForeColor = System.Drawing.Color.DarkGoldenrod;
             this.chCandidates.Location = new System.Drawing.Point(15, 274);
             this.chCandidates.Name = "chCandidates";
-            this.chCandidates.Size = new System.Drawing.Size(81, 17);
+            this.chCandidates.Size = new System.Drawing.Size(82, 17);
             this.chCandidates.TabIndex = 9;
-            this.chCandidates.Text = "кандидаты";
+            this.chCandidates.Text = "Кандидаты";
             this.chCandidates.UseVisualStyleBackColor = true;
-            this.chCandidates.CheckedChanged += new System.EventHandler(this.cbCand_CheckedChanged);
+            this.chCandidates.CheckedChanged += new System.EventHandler(this.cb_CheckedChanged);
             // 
             // dateDays1
             // 
             this.dateDays1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2012, 11, 15, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2012, 11, 20, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
             this.dateDays1.Location = new System.Drawing.Point(356, 274);
@@ -267,12 +269,26 @@
             this.miSyntetic.Text = "Искусственное Осеменение";
             this.miSyntetic.Click += new System.EventHandler(this.miSyntetic_Click);
             // 
+            // chRest
+            // 
+            this.chRest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chRest.AutoSize = true;
+            this.chRest.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.chRest.Location = new System.Drawing.Point(15, 297);
+            this.chRest.Name = "chRest";
+            this.chRest.Size = new System.Drawing.Size(93, 17);
+            this.chRest.TabIndex = 14;
+            this.chRest.Text = "Отдыхающие";
+            this.chRest.UseVisualStyleBackColor = true;
+            this.chRest.CheckedChanged += new System.EventHandler(this.cb_CheckedChanged);
+            // 
             // MakeFuckForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btCancel;
             this.ClientSize = new System.Drawing.Size(505, 366);
+            this.Controls.Add(this.chRest);
             this.Controls.Add(this.btNames);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.cbName);
@@ -308,7 +324,7 @@
         private System.Windows.Forms.ColumnHeader chFucksCount;
         private System.Windows.Forms.ColumnHeader chChildren;
         private System.Windows.Forms.ColumnHeader chHeterosis;
-        private System.Windows.Forms.ColumnHeader chInbreeding;
+        private System.Windows.Forms.ColumnHeader chInbr;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btCancel;
@@ -323,5 +339,6 @@
         private ExoticControls.SplitButton btOk;
         private System.Windows.Forms.ContextMenuStrip cmsOk;
         private System.Windows.Forms.ToolStripMenuItem miSyntetic;
+        private System.Windows.Forms.CheckBox chRest;
     }
 }

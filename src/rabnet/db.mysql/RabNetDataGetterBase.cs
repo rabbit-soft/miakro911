@@ -77,17 +77,17 @@ namespace db.mysql
             Debug("closed");
             rd.Close();
         }
-        public abstract IData nextItem();
-        public abstract String getQuery();
-        public abstract String countQuery();
-        public IData getNextItem()
+        protected abstract String getQuery();
+        protected abstract String countQuery();
+        public abstract IData NextItem();        
+        public IData GetNextItem()
         {
             if (!rd.Read())
             {
                 Debug("NULL next item");
                 return null;
             }
-            return nextItem();
+            return NextItem();
         }
         internal static String addWhereAnd(String str, String adder)
         {

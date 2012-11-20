@@ -10,7 +10,7 @@ namespace db.mysql
     {
         public Butcher(MySqlConnection sql,Filters f) : base(sql,f) { }
 
-        public override string getQuery()
+        protected override string getQuery()
         {
             string table = options.safeInt("type",0) == 1?"scaleprod" :"butcher";
             string dtfield = options.safeInt("type", 0) == 1 ? "s_date" : "b_date";
@@ -30,7 +30,7 @@ DROP TABLE aaa;
 DROP TABLE bbb;",table,dtfield,unfield);
         }
 
-        public override string countQuery()
+        protected override string countQuery()
         {
             return @"SELECT (SELECT COUNT(DISTINCT Date(d_date)) FROM dead WHERE d_reason=3) cols,
                             (SELECT COUNT(r_group) FROM dead WHERE d_reason=3) cnt;";
@@ -41,7 +41,7 @@ DROP TABLE bbb;",table,dtfield,unfield);
             return new ButcherDate(rd.GetDateTime("dt"), rd.GetInt32("cnt"), rd.GetInt32("prod"));
         }
 
-        public override IData nextItem()
+        public override IData NextItem()
         {
             return getBucherDate(rd);
         }

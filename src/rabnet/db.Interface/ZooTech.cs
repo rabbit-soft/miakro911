@@ -85,7 +85,7 @@ namespace rabnet
         /// Возвращает объект класса ZooTehNullItem, который содержит только параметр "id"
         /// </summary>
         /// <returns></returns>
-        public IData getNextItem()
+        public IData GetNextItem()
         {
             val++;
             if (val > ZOOTEHITEMS) return null;

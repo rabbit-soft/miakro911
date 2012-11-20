@@ -18,7 +18,7 @@ namespace rabnet
             initialHint();
             _rabbit = Engine.get().getRabbit(r1);
             label1.Text = _rabbit.FullName;
-            TimeSpan days = DateTime.Now.Subtract(Engine.db().getFucks(_rabbit.RabID).LastFuck.when);
+            TimeSpan days = DateTime.Now.Subtract(Engine.db().getFucks(_rabbit.RabID).LastFuck.When);
             dateDays1.Maximum = days.Days;
         }
 
@@ -41,7 +41,7 @@ namespace rabnet
         {
             try
             {
-                _rabbit.ProholostIt(dateDays1.DateValue);
+                _rabbit.ProholostIt(dateDays1.DaysValue);
                 Close();
             }
             catch (ApplicationException ex)
@@ -54,7 +54,7 @@ namespace rabnet
         {
             try
             {
-                _rabbit.OkrolIt(dateDays1.DateValue, (int)numericUpDown1.Value, (int)numericUpDown2.Value);
+                _rabbit.OkrolIt(dateDays1.DaysValue, (int)numericUpDown1.Value, (int)numericUpDown2.Value);
                 Close();
             }
             catch (ApplicationException ex)

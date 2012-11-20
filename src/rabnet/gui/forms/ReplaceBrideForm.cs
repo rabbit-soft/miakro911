@@ -22,7 +22,9 @@ namespace rabnet
         public void FillAddresses()
         {
             comboBox1.Items.Clear();
-            bs=Engine.db().getFreeBuilding(new Filters());
+            Filters f = new Filters();
+            f[Filters.FREE] = "1";
+            bs=Engine.db().getBuildings(f);
             if (bs.Length == 0)
             {
                 MessageBox.Show(@"Не возможно пересадить, т.к. все клетки заняты.

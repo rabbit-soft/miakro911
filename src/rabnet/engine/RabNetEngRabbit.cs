@@ -11,6 +11,10 @@ namespace rabnet
         {
             public ExNotFemale(RabNetEngRabbit r):base("Кролик "+r.FullName+" не является самкой"){}
         }
+        public class ExBadPastDays : ApplicationException
+        {
+            public ExBadPastDays() : base("Дни не могут быть меньше нуля") { }
+        }
         public class ExNotMale : ApplicationException
         {
             public ExNotMale(RabNetEngRabbit r) : base("Кролик " + r.FullName + " не является самцом") { }
@@ -372,7 +376,7 @@ namespace rabnet
         /// <param name="maleId">ID самца</param>
         /// <param name="when">Дата вязки</param>
         /// <param name="syntetic">Искусственное осеменение</param>
-        public void FuckIt(int maleId, DateTime when,bool syntetic)
+        public void FuckIt(int maleId, int daysPast,bool syntetic)
         {
             if (Sex != Rabbit.SexType.FEMALE)
                 throw new ExNotFemale(this);
@@ -387,29 +391,30 @@ namespace rabnet
                 throw new ExNotMale(f);
             if (f.Status < 1)
                 throw new ExNotFucker(f);
-            if (when > DateTime.Now)
-                throw new ExBadDate(when);
+            //if (daysPast <0)
+                //throw new ExBadDate(daysPast.ToString());
             _eng.logs().log(RabNetLogs.LogType.FUCK, RabID, maleId, SmallAddress, f.SmallAddress,syntetic?"ИО":"стд.");
-            _eng.db().MakeFuck(this._id, f.RabID, when.Date, _eng.userId,syntetic);
+            _eng.db().MakeFuck(this._id, f.RabID, daysPast, _eng.userId, syntetic);
         }
 
-        public void FuckIt(int otherrab, DateTime when)
+        public void FuckIt(int otherrab, int daysPast)
         {
-            FuckIt(otherrab, when,false);
+            FuckIt(otherrab, daysPast, false);
         }
         
         /// <summary>
         /// Отметить прохолост (самка не окролилась)
         /// </summary>
         /// <param name="when">Дата установки прохолоста</param>
-        public void ProholostIt(DateTime when)
+        public void ProholostIt(int daysPast)
         {
             if (Sex != Rabbit.SexType.FEMALE) throw new ExNotFemale(this);
             if (EventDate == DateTime.MinValue) throw new ExNotFucked(this);
-            if (when > DateTime.Now) throw new ExBadDate(when);
+            //if (when > DateTime.Now) throw new ExBadDate(when);
+            if (daysPast < 0) throw new ExBadPastDays();
 
             _eng.logs().log(RabNetLogs.LogType.PROHOLOST, RabID);
-            _eng.db().makeProholost(this._id, when);
+            _eng.db().makeProholost(this._id, daysPast);
             if(_eng.options().getBoolOption(Options.OPT_ID.NEST_OUT_IF_PROHOLOST))
             {
                 //todo пиздец и говнокод и опасно но...
@@ -424,13 +429,13 @@ namespace rabnet
         /// <param name="when">Дата принятия окрола</param>
         /// <param name="children">Количество родившихся живых крольчат</param>
         /// <param name="dead">Количество родившихся мертвых крольчат</param>
-        public void OkrolIt(DateTime when, int children, int dead)
+        public void OkrolIt(int daysPast, int children, int dead)
         {
             if (Sex != Rabbit.SexType.FEMALE) throw new ExNotFemale(this);
             if (EventDate == DateTime.MinValue) throw new ExNotFucked(this);
-            if (when > DateTime.Now) throw new ExBadDate(when);  
-         
-            int born = _eng.db().makeOkrol(this._id, when, children, dead);
+            //if (when > DateTime.Now) throw new ExBadDate(when);  
+
+            int born = _eng.db().makeOkrol(this._id, daysPast, children, dead);
             _eng.logs().log(RabNetLogs.LogType.OKROL, RabID, born, SmallAddress, "", String.Format("живых {0:d}, мертвых {1:d}", children, dead));
         }
 
@@ -466,19 +471,19 @@ namespace rabnet
         /// <param name="reason">Причина списания</param>
         /// <param name="notes">Заметки по данному списанию</param>
         /// <param name="count">Количество списанных кроликов</param>
-        public void KillIt(DateTime when, int reason, string notes,int count)
+        public void KillIt(int daysPast, int reason, string notes,int count)
         {
             if (count == Group)
             {
                 _eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, RabID, 0, SmallAddress == Rabbit.NULL_ADDRESS ? CloneAddress : SmallAddress, "", String.Format(" {0:s}[{1:d}] {2:s})",FullName, Group, notes));
-                _eng.db().KillRabbit(_id, when, reason, notes);
+                _eng.db().KillRabbit(_id, daysPast, reason, notes);
             }
             else
             {
                 int nid = Clone(count, 0, 0, 0);
                 RabNetEngRabbit nr = new RabNetEngRabbit(nid, _eng);
                 nr.CloneAddress = SmallAddress;
-                nr.KillIt(when, reason, notes, count);
+                nr.KillIt(daysPast, reason, notes, count);
             }
         }
 
@@ -503,13 +508,13 @@ namespace rabnet
             if (atall == 0)
             {
                 r.CloneAddress = SmallAddress;
-                r.KillIt(DateTime.Now, DR_ON_COUNT, "при подсчете", y.Group);
+                r.KillIt(0, DR_ON_COUNT, "при подсчете", y.Group);
             }
             else
             {
                 RabNetEngRabbit clone = _eng.getRabbit(r.Clone(dead + killed, 0, 0, 0));
                 clone.CloneAddress = SmallAddress;
-                clone.KillIt(DateTime.Now, DR_ON_COUNT, "при подсчете", clone.Group);
+                clone.KillIt(0, DR_ON_COUNT, "при подсчете", clone.Group);
                 //!!!тут надо списывать
                 if(added>0)
                     _eng.db().СountKids(_id,dead, killed, added, _rab.youngers[yInd].ID);             

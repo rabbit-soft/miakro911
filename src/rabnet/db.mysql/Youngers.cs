@@ -28,7 +28,7 @@ namespace db.mysql
         }
         internal static YoungRabbit fillYounger(MySqlDataReader rd) { return fillYounger(rd,false, false, false);}
 
-        public override IData nextItem()
+        public override IData NextItem()
         {
             //bool shr = options.safeBool("shr");
             return fillYounger(rd,options.safeBool(Filters.SHORT), options.safeBool(Filters.SHOW_BLD_TIERS), options.safeBool(Filters.SHOW_BLD_DESCR));
@@ -37,7 +37,7 @@ namespace db.mysql
         /// Строка запроса к БД, для получения данных о Молодняке
         /// </summary>
         /// <returns>sql-запрос</returns>
-        public override string getQuery()
+        protected override string getQuery()
         {
             return String.Format(@"SELECT {0:s}
 FROM rabbits WHERE r_parent!=0 ORDER BY name;", getFieldSet_Youngers(options.safeBool("dbl"), options.safeBool("shr")));
@@ -49,7 +49,7 @@ FROM rabbits WHERE r_parent!=0 ORDER BY name;", getFieldSet_Youngers(options.saf
         ///     общее количество кормилиц.
         /// </summary>
         /// <returns>sql-запрос</returns>
-        public override string countQuery()
+        protected override string countQuery()
         {
             //return "SELECT COUNT(*),SUM(r_group) FROM rabbits WHERE r_parent!=0;";
             return @"SELECT COUNT(*),

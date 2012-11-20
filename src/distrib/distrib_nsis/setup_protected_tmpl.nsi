@@ -100,6 +100,7 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     File ..\..\..\bin\@bin_type@\bin\rabHelp.chm
     File ..\..\..\bin\@bin_type@\bin\RdlEngine.dll
     File ..\..\..\bin\@bin_type@\bin\log4net.dll
+	File ..\..\..\bin\@bin_type@\bin\SplitButton.dll
     File ..\..\..\bin\@bin_type@\bin\RdlViewer.dll
 
 	File ..\..\..\bin\@bin_type@\bin\changeLog.txt
@@ -446,6 +447,7 @@ Section /o "-un.rabnet" UNSEC_Rabnet
 	Delete /REBOOTOK $INSTDIR\bin\Interop.Microsoft.Office.Interop.Excel.dll
 	Delete /REBOOTOK $INSTDIR\bin\Interop.Microsoft.Office.Core.dll
 	Delete /REBOOTOK $INSTDIR\bin\changeLog.txt
+	Delete /REBOOTOK $INSTDIR\bin\SplitButton.dll
 	Delete /REBOOTOK $INSTDIR\bin\CAS.dll
 	
     RmDir /REBOOTOK /r $INSTDIR\bin\upd

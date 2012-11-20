@@ -654,5 +654,10 @@ namespace rabnet
         {
             Engine.db2().addPLUSummary(pluID,pluPN1,pluTSell,TSumm,TWeight,LastClear);
         }
+
+        private void miLogs_Click(object sender, EventArgs e)
+        {
+            (new LogsForm()).ShowDialog();
+        }
     }
 }

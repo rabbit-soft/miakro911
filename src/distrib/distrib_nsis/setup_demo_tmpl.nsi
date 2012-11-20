@@ -99,6 +99,7 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     File ..\..\..\bin\@bin_type@\bin\Pickers.dll
     File ..\..\..\bin\@bin_type@\bin\rabHelp.chm
     File ..\..\..\bin\@bin_type@\bin\log4net.dll
+	File ..\..\..\bin\@bin_type@\bin\SplitButton.dll
     SetOutPath $INSTDIR\bin
 #    SetOverwrite off
     File ..\..\..\bin\@bin_type@\bin\rabnet.exe.config
@@ -304,7 +305,7 @@ Section /o "-un.rabnet" UNSEC_Rabnet
     Delete /REBOOTOK $INSTDIR\bin\Pickers.dll
     Delete /REBOOTOK $INSTDIR\bin\rabHelp.chm
     Delete /REBOOTOK $INSTDIR\bin\log4net.dll
-
+	Delete /REBOOTOK $INSTDIR\bin\SplitButton.dll
     RmDir /REBOOTOK /r $INSTDIR\bin\upd
 	RmDir /REBOOTOK /r $INSTDIR\bin
 
