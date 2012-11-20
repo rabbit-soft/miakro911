@@ -34,13 +34,13 @@ namespace rabnet
         {
             InitializeComponent();
             initialHints();            
-            /*_tpMale = tabControl1.TabPages[1];
-            _tpFemale = tabControl1.TabPages[2];
-            _tpOkrol = tabControl1.TabPages[3];
-            _tpSuckers = tabControl1.TabPages[4];
-            _tpWeight = tabControl1.TabPages[5];
+            //_tpMale = tabControl1.TabPages[1];
+            //_tpFemale = tabControl1.TabPages[2];
+            //_tpOkrol = tabControl1.TabPages[3];
+            //_tpSuckers = tabControl1.TabPages[4];
+            //_tpWeight = tabControl1.TabPages[5];
             while(tabControl1.TabPages.Count>1)
-                tabControl1.TabPages.RemoveAt(1);*/
+                tabControl1.TabPages.RemoveAt(1);
             _mkbrides = Engine.get().brideAge();
             _mkcandidate = Engine.opt().getIntOption(Options.OPT_ID.MAKE_CANDIDATE);
             //makesuck = Engine.opt().getIntOption(Options.OPT_ID.COUNT_SUCKERS);
@@ -110,6 +110,36 @@ namespace rabnet
             return "Нет";
         }
 
+        private void updateData()
+        {
+            if (_rab != null && _rab.RabID == 0)
+            {
+                btBon.Enabled =
+                btReplace.Enabled = false;
+            }
+            int idx = tabControl1.SelectedIndex;
+            //while (tabControl1.TabPages.Count > 1)
+            //tabControl1.TabPages.RemoveAt(1);
+            if (_rabId != 0)
+                _rab = Engine.get().getRabbit(_rabId);
+            fillCatalogs(0);
+            updateStd();
+            if (_rab.Sex == Rabbit.SexType.VOID)
+            {
+                setSex(0);
+                //label7.Text = "Статус:" + (rab.age < makesuck ? "Гнездовые" : "Подсосные");
+                lbState.Text = "Статус: Бесполые";
+            }
+            else if (_rab.Sex == Rabbit.SexType.MALE)
+                updateMale();
+            else if (_rab.Sex == Rabbit.SexType.FEMALE)
+                updateFemale();
+            tabControl1.SelectedIndex = idx;
+            sex.Enabled = (_rab.Name == 0 && _rab.Last_Fuck_Okrol == DateTime.MinValue);
+            if (_rabId == 0)
+                UpdateNew();
+        }
+
         private void updateStd()
         {
             defect.Checked = _rab.Defect;
@@ -144,19 +174,18 @@ namespace rabnet
         private void updateMale()
         {
             setSex(1);        
-            if (_rab.Status == 2) maleStatus.SelectedIndex = 2;
-            else if (_rab.Status == 1 || _rab.Age >= _mkcandidate) maleStatus.SelectedIndex = 1;
-            else maleStatus.SelectedIndex = 0;
+            if (_rab.Status == 2) 
+                maleStatus.SelectedIndex = 2;
+            else if (_rab.Status == 1 || _rab.Age >= _mkcandidate) 
+                maleStatus.SelectedIndex = 1;
+            else 
+                maleStatus.SelectedIndex = 0;
             maleStatus.Enabled = groupBox4.Enabled = _rab.Age > _mkcandidate;
-            //maleStatus.SelectedIndex = rab.status;
-            //maleStatus.Enabled = rab.age > 100 && rab.name != 0;
             lbState.Text = "Статус: " + maleStatus.Text;
             if (_rab.Group != 1) return;
-            tabControl1.TabPages.Remove(tpFemale);
-            tabControl1.TabPages.Remove(tpYoungers);
-            tabControl1.TabPages.Remove(tpFucks);
-            /*tabControl1.TabPages.Add(_tpMale);
-            tabControl1.TabPages.Add(_tpWeight);*/         
+
+            tabControl1.TabPages.Add(tpMale);
+            tabControl1.TabPages.Add(tpWeight);      
             lastFuckNever.Checked = _rab.Last_Fuck_Okrol == DateTime.MinValue;
             lastFuckNever_CheckedChanged(null, null);
             if (!lastFuckNever.Checked)
@@ -189,10 +218,11 @@ namespace rabnet
                     tpFucks.Text = "Вязки/Окролы";
             }            
             if (_rab.Group != 1) return;
-            /*tabControl1.TabPages.Add(_tpOkrol);
-            tabControl1.TabPages.Add(_tpFemale);           
-            tabControl1.TabPages.Add(_tpSuckers);
-            tabControl1.TabPages.Add(_tpWeight);*/
+
+            tabControl1.TabPages.Add(tpFucks);
+            tabControl1.TabPages.Add(tpFemale);           
+            tabControl1.TabPages.Add(tpYoungers);
+            tabControl1.TabPages.Add(tpWeight);
             nokuk.Checked = _rab.NoKuk;
             nolact.Checked = _rab.NoLact;
             okrolCount.Value = _rab.Status;
@@ -309,36 +339,6 @@ namespace rabnet
             button8.Enabled = false;
             groupBox5.Enabled = groupBox6.Enabled = true;
             _manual = true;
-        }
-
-        private void updateData()
-        {
-            if (_rab != null && _rab.RabID == 0)
-            {
-                btBon.Enabled = 
-                btReplace.Enabled = false;
-            }
-            int idx = tabControl1.SelectedIndex;
-            //while (tabControl1.TabPages.Count > 1)
-                //tabControl1.TabPages.RemoveAt(1);
-            if (_rabId!=0)
-                _rab=Engine.get().getRabbit(_rabId);
-            fillCatalogs(0);
-            updateStd();
-            if (_rab.Sex == Rabbit.SexType.VOID)
-            {
-                setSex(0);
-                //label7.Text = "Статус:" + (rab.age < makesuck ? "Гнездовые" : "Подсосные");
-                lbState.Text = "Статус: Бесполые";
-            }
-            if (_rab.Sex == Rabbit.SexType.MALE)
-                updateMale();
-            if (_rab.Sex == Rabbit.SexType.FEMALE)
-                updateFemale();
-            tabControl1.SelectedIndex = idx;
-            sex.Enabled = (_rab.Name == 0 && _rab.Last_Fuck_Okrol == DateTime.MinValue);
-            if (_rabId == 0)
-                UpdateNew();
         }
 
         private int getCatValue(Catalog c,string value)

@@ -23,6 +23,10 @@ namespace rabnet
             fill(false);
         }
 
+        /// <summary>
+        /// Список подсосных обновить с сервера
+        /// </summary>
+        /// <param name="reget"></param>
         private void fill(bool reget)
         {
             if (reget)
@@ -84,6 +88,17 @@ namespace rabnet
             label1.Enabled = 
                 cbBreeds.Enabled = 
                 btChangeBreed.Enabled = lvSuckers.SelectedItems.Count > 0; 
+        }
+
+        private void lvSuckers_DoubleClick(object sender, EventArgs e)
+        {
+            if (lvSuckers.SelectedItems.Count != 1) return;
+
+            int id = (int)lvSuckers.SelectedItems[0].Tag;
+            RabbitInfo dlg = new RabbitInfo(id);
+            if (dlg.ShowDialog() == DialogResult.OK)
+                fill(true);
+            
         }
     }
 }

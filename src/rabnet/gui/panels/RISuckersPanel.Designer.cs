@@ -60,6 +60,7 @@
             this.lvSuckers.UseCompatibleStateImageBehavior = false;
             this.lvSuckers.View = System.Windows.Forms.View.Details;
             this.lvSuckers.SelectedIndexChanged += new System.EventHandler(this.lvSuckers_SelectedIndexChanged);
+            this.lvSuckers.DoubleClick += new System.EventHandler(this.lvSuckers_DoubleClick);
             // 
             // chName
             // 
