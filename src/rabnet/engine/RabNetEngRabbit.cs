@@ -361,7 +361,7 @@ namespace rabnet
             if(_origin!=null && _origin.Sex != this.Sex)           
                 _eng.logs().log(RabNetLogs.LogType.SET_SEX, ID, 0, this.AddressSmall, "",String.Format("{0:s} -> {1:s}", Rabbit.SexToRU(_origin.Sex), Rabbit.SexToRU(this.Sex)));               
             if(_origin!=null && _origin.BirthDay!=this.BirthDay)
-                _eng.logs().log(RabNetLogs.LogType.CH_BIRTH, ID, 0, this.AddressSmall,"",String.Format("{0:s} -> {1:s}", _origin.BirthDay.ToShortDateString(), this.BirthDay.ToShortDateString())));               
+                _eng.logs().log(RabNetLogs.LogType.CH_BIRTH, ID, 0, this.AddressSmall,"",String.Format("{0:s} -> {1:s}", _origin.BirthDay.ToShortDateString(), this.BirthDay.ToShortDateString()));               
             if(_origin!=null && _origin.BreedID!=this.BreedID)
                 _eng.logs().log(RabNetLogs.LogType.CH_BREED, ID, 0, this.AddressSmall,"",String.Format("{0:s} -> {1:s}", _origin.BreedName, this.BreedName));               
             if(_origin!=null && _origin.Group !=this.Group)
