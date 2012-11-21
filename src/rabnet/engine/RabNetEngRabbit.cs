@@ -355,23 +355,28 @@ namespace rabnet
 
             if (this.WasNameID != this.NameID)
             {
-                if (Group > 1)
-                    throw new ExNotOne("переименовать");
+                if (Group > 1) throw new ExNotOne("переименовать");
                 _eng.logs().log(RabNetLogs.LogType.RENAME, ID, 0, this.AddressSmall, "", _eng.db().makeName(this.WasNameID, 0, 0, 1, this.Sex));
             }
-            if (_origin.Sex != this.Sex)           
-                _eng.logs().log(RabNetLogs.LogType.SET_SEX, ID, 0, this.AddressSmall, String.Format("{0:s} -> {1:s}", Rabbit.SexToRU(_origin.Sex), Rabbit.SexToRU(this.Sex)));               
-            
-            ///todo
-            ///дата рождения
-            ///количество
-            ///порода
-            ///зона
-            ///рейтинг
-            ///материнская фамилия
-            ///отцовская фамилия
-            ///статус
-            _eng.logs().log(RabNetLogs.LogType.RAB_CHANGE, ID);
+            if(_origin!=null && _origin.Sex != this.Sex)           
+                _eng.logs().log(RabNetLogs.LogType.SET_SEX, ID, 0, this.AddressSmall, "",String.Format("{0:s} -> {1:s}", Rabbit.SexToRU(_origin.Sex), Rabbit.SexToRU(this.Sex)));               
+            if(_origin!=null && _origin.BirthDay!=this.BirthDay)
+                _eng.logs().log(RabNetLogs.LogType.CH_BIRTH, ID, 0, this.AddressSmall,"",String.Format("{0:s} -> {1:s}", _origin.BirthDay.ToShortDateString(), this.BirthDay.ToShortDateString())));               
+            if(_origin!=null && _origin.BreedID!=this.BreedID)
+                _eng.logs().log(RabNetLogs.LogType.CH_BREED, ID, 0, this.AddressSmall,"",String.Format("{0:s} -> {1:s}", _origin.BreedName, this.BreedName));               
+            if(_origin!=null && _origin.Group !=this.Group)
+                _eng.logs().log(RabNetLogs.LogType.CH_GROUP, ID, 0, this.AddressSmall,"",String.Format("{0:s} -> {1:s}", _origin.Group, this.Group));               
+            if(_origin!=null && _origin.SurnameID !=this.SurnameID)
+                _eng.logs().log(RabNetLogs.LogType.CH_SURNAME, ID, 0, this.AddressSmall,"",String.Format("{0:s} -> {1:s}", _origin.SurnameID, this.SurnameID));  
+            if(_origin!=null && _origin.SecnameID !=this.SecnameID)
+                _eng.logs().log(RabNetLogs.LogType.CH_SECNAME, ID, 0, this.AddressSmall,"",String.Format("{0:s} -> {1:s}", _origin.SecnameID, this.SecnameID));  
+            if(_origin!=null && _origin.Zone !=this.Zone)
+                _eng.logs().log(RabNetLogs.LogType.CH_ZONE, ID, 0, this.AddressSmall,"",String.Format("{0:s} -> {1:s}", _origin.Zone, this.Zone));  
+            if(_origin!=null && _origin.Rate !=this.Rate)
+                _eng.logs().log(RabNetLogs.LogType.CH_RATE, ID, 0, this.AddressSmall,"",String.Format("{0:s} -> {1:s}", _origin.Rate, this.Rate));  
+            if(_origin!=null && _origin.Status !=this.Status)
+                _eng.logs().log(RabNetLogs.LogType.CH_STATE, ID, 0, this.AddressSmall,"",String.Format("{0:s} -> {1:s}", _origin.FStatus(), this.FStatus()));  
+            //_eng.logs().log(RabNetLogs.LogType.RAB_CHANGE, ID);
             _eng.db().SetRabbit(this);
             loadData();
             //_origin = _eng.db().GetRabbit(_id);

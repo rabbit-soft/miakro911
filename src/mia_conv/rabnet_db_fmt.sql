@@ -358,7 +358,7 @@ CREATE  TABLE `rab_vac` (
 INSERT INTO `vaccines`(v_id,v_name,v_do_after,v_duration,v_age,v_zootech,v_do_times) VALUES(-1,'Стимуляция самки',0,3,2,0,0);
 INSERT INTO `vaccines`(v_id,v_name,v_do_after,v_duration,v_age,v_zootech,v_do_times) VALUES(1,'Прививка',0,180,45,1,0);
 
-INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','12');
+INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','13');
 INSERT INTO options(o_name,o_subname,o_value) VALUES
 ('opt','okrol', 30),
 ('opt','vudvor', 30),
@@ -440,7 +440,14 @@ INSERT INTO logtypes(l_type,l_name,l_params) VALUES
 (22,'объединение групп','$r -> $t($p)'),
 (23,'подсадка','$r к $R($P)'),
 (24,'Изменение причины списания','$r'),
-(25,'Прививка','$r ($t)');
+(25,'Прививка','$r ($t)'),
+(26,'изменение Даты рождения','$r ($t)'),
+(27,'изменение Породы','$r ($t)'),
+(28,'изменение Количества','$r ($t)'),
+(29,'изменение Фамилии по Матери','$r ($t)'),
+(30,'изменение Зоны прибытия','$r ($t)'),
+(31,'изменение Рейтинга','$r ($t)'),
+(30,'изменение Статуса','$r ($t)');
 
 INSERT INTO breeds VALUES 
 (1,'Гибрид','---','Red'),
