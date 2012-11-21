@@ -34,6 +34,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.listView1 = new System.Windows.Forms.ListView();
             this.chName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chBreed = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chAddress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chSex = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chAge = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -47,7 +48,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.dateDays1 = new rabnet.components.DateDays();
-            this.chBreed = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,35 +55,36 @@
             // 
             this.cbDeadReason.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDeadReason.FormattingEnabled = true;
-            this.cbDeadReason.Location = new System.Drawing.Point(215, 13);
+            this.cbDeadReason.Location = new System.Drawing.Point(294, 12);
             this.cbDeadReason.Name = "cbDeadReason";
             this.cbDeadReason.Size = new System.Drawing.Size(177, 21);
             this.cbDeadReason.TabIndex = 1;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(161, 16);
+            this.label1.Location = new System.Drawing.Point(222, 12);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(48, 13);
+            this.label1.Size = new System.Drawing.Size(66, 21);
             this.label1.TabIndex = 2;
-            this.label1.Text = "причина";
+            this.label1.Text = "Причина:";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(480, 13);
+            this.textBox1.Location = new System.Drawing.Point(294, 35);
+            this.textBox1.MaxLength = 200;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(156, 20);
+            this.textBox1.Size = new System.Drawing.Size(268, 20);
             this.textBox1.TabIndex = 3;
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(398, 16);
+            this.label2.Location = new System.Drawing.Point(205, 36);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(76, 13);
+            this.label2.Size = new System.Drawing.Size(83, 21);
             this.label2.TabIndex = 4;
-            this.label2.Text = "комментарий";
+            this.label2.Text = "Комментарий:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // listView1
             // 
@@ -114,6 +115,10 @@
             // chName
             // 
             this.chName.Text = "Имя";
+            // 
+            // chBreed
+            // 
+            this.chBreed.Text = "Порода";
             // 
             // chAddress
             // 
@@ -217,21 +222,17 @@
             // dateDays1
             // 
             this.dateDays1.AutoSize = true;
-            this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2012, 11, 1, 0, 0, 0, 0);
-            this.dateDays1.DaysText = "Дней";
+            this.dateDays1.DateText = "Дата списания";
+            this.dateDays1.DateValue = new System.DateTime(2012, 11, 21, 0, 0, 0, 0);
+            this.dateDays1.DaysText = "Дней назад";
             this.dateDays1.DaysValue = 0;
             this.dateDays1.Location = new System.Drawing.Point(12, 12);
             this.dateDays1.Maximum = 10000;
             this.dateDays1.Name = "dateDays1";
             this.dateDays1.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
-            this.dateDays1.Size = new System.Drawing.Size(146, 54);
+            this.dateDays1.Size = new System.Drawing.Size(187, 46);
             this.dateDays1.Step = 1;
             this.dateDays1.TabIndex = 0;
-            // 
-            // chBreed
-            // 
-            this.chBreed.Text = "Порода";
             // 
             // KillForm
             // 

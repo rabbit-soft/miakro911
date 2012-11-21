@@ -376,7 +376,7 @@ namespace rabnet
         /// <param name="maleId">ID самца</param>
         /// <param name="when">Дата вязки</param>
         /// <param name="syntetic">Искусственное осеменение</param>
-        public void FuckIt(int maleId, int daysPast,bool syntetic)
+        public void FuckIt(int maleId, int daysPast, bool syntetic)
         {
             if (Sex != Rabbit.SexType.FEMALE)
                 throw new ExNotFemale(this);
@@ -393,7 +393,8 @@ namespace rabnet
                 throw new ExNotFucker(f);
             //if (daysPast <0)
                 //throw new ExBadDate(daysPast.ToString());
-            _eng.logs().log(RabNetLogs.LogType.FUCK, RabID, maleId, SmallAddress, f.SmallAddress,syntetic?"ИО":"стд.");
+            _eng.logs().log(RabNetLogs.LogType.FUCK, RabID, maleId, SmallAddress, f.SmallAddress, 
+                (syntetic ? "ИО" : "стд.") + (daysPast != 0 ? String.Format(" {0:d} дней назад", daysPast) : ""));
             _eng.db().MakeFuck(this._id, f.RabID, daysPast, _eng.userId, syntetic);
         }
 
@@ -413,7 +414,7 @@ namespace rabnet
             //if (when > DateTime.Now) throw new ExBadDate(when);
             if (daysPast < 0) throw new ExBadPastDays();
 
-            _eng.logs().log(RabNetLogs.LogType.PROHOLOST, RabID);
+            _eng.logs().log(RabNetLogs.LogType.PROHOLOST, RabID, 0, SmallAddress, "", daysPast != 0 ? String.Format(" {0:d} дней назад", daysPast) : "");
             _eng.db().makeProholost(this._id, daysPast);
             if(_eng.options().getBoolOption(Options.OPT_ID.NEST_OUT_IF_PROHOLOST))
             {
@@ -436,7 +437,8 @@ namespace rabnet
             //if (when > DateTime.Now) throw new ExBadDate(when);  
 
             int born = _eng.db().makeOkrol(this._id, daysPast, children, dead);
-            _eng.logs().log(RabNetLogs.LogType.OKROL, RabID, born, SmallAddress, "", String.Format("живых {0:d}, мертвых {1:d}", children, dead));
+            _eng.logs().log(RabNetLogs.LogType.OKROL, RabID, born, SmallAddress, "", 
+                String.Format("живых {0:d}, мертвых {1:d}{2:s}", children, dead, daysPast != 0 ? String.Format(" {0:d} дней назад",daysPast) : ""));
         }
 
         public void ReplaceRabbit(int farm,int tier_id,int sec,string address)
@@ -475,7 +477,8 @@ namespace rabnet
         {
             if (count == Group)
             {
-                _eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, RabID, 0, SmallAddress == Rabbit.NULL_ADDRESS ? CloneAddress : SmallAddress, "", String.Format(" {0:s}[{1:d}] {2:s})",FullName, Group, notes));
+                _eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, RabID, 0, SmallAddress == Rabbit.NULL_ADDRESS ? CloneAddress : SmallAddress, "",
+                    String.Format(" {0:s}[{1:d}] {2:s} {3:s}", FullName, Group, notes, (daysPast != 0 ? String.Format(" {0:d} дней назад", daysPast) : "")));
                 _eng.db().KillRabbit(_id, daysPast, reason, notes);
             }
             else

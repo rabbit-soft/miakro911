@@ -184,8 +184,7 @@ namespace rabnet
             lbState.Text = "Статус: " + maleStatus.Text;
             if (_rab.Group != 1) return;
 
-            tabControl1.TabPages.Add(tpMale);
-            tabControl1.TabPages.Add(tpWeight);      
+            addMaleTabs();     
             lastFuckNever.Checked = _rab.Last_Fuck_Okrol == DateTime.MinValue;
             lastFuckNever_CheckedChanged(null, null);
             if (!lastFuckNever.Checked)
@@ -218,11 +217,8 @@ namespace rabnet
                     tpFucks.Text = "Вязки/Окролы";
             }            
             if (_rab.Group != 1) return;
-
-            tabControl1.TabPages.Add(tpFucks);
-            tabControl1.TabPages.Add(tpFemale);           
-            tabControl1.TabPages.Add(tpYoungers);
-            tabControl1.TabPages.Add(tpWeight);
+            
+            addFemaleTabs();
             nokuk.Checked = _rab.NoKuk;
             nolact.Checked = _rab.NoLact;
             okrolCount.Value = _rab.Status;
@@ -247,11 +243,11 @@ namespace rabnet
             deadBab.Value = _rab.Lost;
             okrolCount.Value = _rab.Status;
             ///Заполнение списка случек
-            fucks.Items.Clear();
+            lvFucks.Items.Clear();
             if (_rabId>0)
             foreach (Fucks.Fuck f in Engine.db().getFucks(_rab.RabID).fucks)
             {
-                ListViewItem li = fucks.Items.Add(f.When == DateTime.MinValue ? "" : f.When.ToShortDateString());
+                ListViewItem li = lvFucks.Items.Add(f.When == DateTime.MinValue ? "" : f.When.ToShortDateString());
                 li.SubItems.Add(f.FuckType);
                 li.SubItems.Add(f.PartnerName);
                 if (f.IsDead)
@@ -272,9 +268,29 @@ namespace rabnet
 
             if (_rabId > 0)
             {
-                riSuckersPanel1.SetBreeds(_breeds);
+                //riSuckersPanel1.SetBreeds(_breeds);
                 riSuckersPanel1.Fill(_rab);
             }
+        }
+
+        private void addMaleTabs()
+        {
+            if (!tabControl1.TabPages.Contains(tpMale))  
+                tabControl1.TabPages.Add(tpMale);
+            if (!tabControl1.TabPages.Contains(tpWeight)) 
+                tabControl1.TabPages.Add(tpWeight); 
+        }
+
+        private void addFemaleTabs()
+        {
+            if (!tabControl1.TabPages.Contains(tpFucks))          
+                tabControl1.TabPages.Add(tpFucks);
+            if (!tabControl1.TabPages.Contains(tpFemale)) 
+                tabControl1.TabPages.Add(tpFemale);
+            if (!tabControl1.TabPages.Contains(tpYoungers)) 
+                tabControl1.TabPages.Add(tpYoungers);
+            if (!tabControl1.TabPages.Contains(tpWeight)) 
+                tabControl1.TabPages.Add(tpWeight);           
         }
 
         private void FillList(ComboBox cb,Catalog c,int key)
@@ -500,12 +516,12 @@ namespace rabnet
         private void fucks_SelectedIndexChanged(object sender, EventArgs e)
         {
             btChangeWorker.Enabled = changeFucker.Enabled = false;
-            if (fucks.SelectedItems.Count == 1)
+            if (lvFucks.SelectedItems.Count == 1)
             {
-                bool dead = (fucks.SelectedItems[0].SubItems[3].Text == RABDEAD);
+                bool dead = (lvFucks.SelectedItems[0].SubItems[3].Text == RABDEAD);
                 btGens.Enabled = true;
                 btFuckHer.Enabled = !sukr.Checked && !dead;
-                changeFucker.Enabled=fucks.SelectedItems[0].SubItems[3].Text=="сукрольна";
+                changeFucker.Enabled = lvFucks.SelectedItems[0].SubItems[3].Text == "сукрольна";
                 btChangeWorker.Enabled = true;
             }
             else
@@ -514,7 +530,7 @@ namespace rabnet
 
         private void btGens_Click(object sender, EventArgs e)
         {
-            Fucks.Fuck f=fucks.SelectedItems[0].Tag as Fucks.Fuck;
+            Fucks.Fuck f=lvFucks.SelectedItems[0].Tag as Fucks.Fuck;
             String nm=lbName.Text.Split(':')[1];
             if (lbSecname.Text!="")
                 nm += " " + lbSecname.Text.Split(':')[1];
@@ -554,14 +570,14 @@ namespace rabnet
 
         private void btFuckHer_Click(object sender, EventArgs e)
         {
-            Fucks.Fuck f = fucks.SelectedItems[0].Tag as Fucks.Fuck;
+            Fucks.Fuck f = lvFucks.SelectedItems[0].Tag as Fucks.Fuck;
             (new MakeFuckForm(_rab.RabID,f.PartnerId)).ShowDialog();
             updateData();
         }
 
         private void fucks_DoubleClick(object sender, EventArgs e)
         {
-            if (fucks.SelectedItems.Count == 1)
+            if (lvFucks.SelectedItems.Count == 1)
                 btGens.PerformClick();
         }
 
@@ -680,8 +696,8 @@ namespace rabnet
 
         private void changeFucker_Click(object sender, EventArgs e)
         {
-            if (fucks.SelectedItems.Count!=1) return;
-            Fucks.Fuck f = fucks.SelectedItems[0].Tag as Fucks.Fuck;
+            if (lvFucks.SelectedItems.Count!=1) return;
+            Fucks.Fuck f = lvFucks.SelectedItems[0].Tag as Fucks.Fuck;
             MakeFuckForm mf = new MakeFuckForm(_rab.RabID, f.PartnerId, 1);
             if (mf.ShowDialog() == DialogResult.OK && mf.SelectedFucker!=f.Id)
                 Engine.db().changeFucker(f.Id, mf.SelectedFucker);
@@ -690,8 +706,8 @@ namespace rabnet
 
         private void changeWorker_Click(object sender, EventArgs e)
         {
-            if (fucks.SelectedItems.Count != 1) return;
-            Fucks.Fuck f = fucks.SelectedItems[0].Tag as Fucks.Fuck;
+            if (lvFucks.SelectedItems.Count != 1) return;
+            Fucks.Fuck f = lvFucks.SelectedItems[0].Tag as Fucks.Fuck;
             SelectUserForm sf = new SelectUserForm(f.Worker);
             if (sf.ShowDialog() == DialogResult.OK && sf.SelectedUser!=0 && sf.SelectedUserName!=f.Worker)
                 Engine.db().changeWorker(f.Id, sf.SelectedUser);
@@ -733,9 +749,9 @@ namespace rabnet
 
         private void miIsNotAProholost_Click(object sender, EventArgs e)
         {
-            if (fucks.SelectedItems.Count == 1)
+            if (lvFucks.SelectedItems.Count == 1)
             {
-                Fucks.Fuck f = (fucks.SelectedItems[0].Tag as Fucks.Fuck);
+                Fucks.Fuck f = (lvFucks.SelectedItems[0].Tag as Fucks.Fuck);
                 if (!isLastEvent(f))
                 {
                     MessageBox.Show("Отменить прохолостание можно лишь последней записи");
@@ -751,7 +767,7 @@ namespace rabnet
 
         private bool isLastEvent(Fucks.Fuck f)
         {
-            foreach (ListViewItem lvi in fucks.Items)
+            foreach (ListViewItem lvi in lvFucks.Items)
             {
                 if ((lvi.Tag as Fucks.Fuck).Id > f.Id)
                     return false;
@@ -761,7 +777,7 @@ namespace rabnet
 
         private void msFucks_Opening(object sender, CancelEventArgs e)
         {
-            if (fucks.SelectedItems.Count != 1 || fucks.SelectedItems[0].SubItems[3].Text != Fucks.Type.Proholost_rus)          
+            if (lvFucks.SelectedItems.Count != 1 || lvFucks.SelectedItems[0].SubItems[3].Text != Fucks.Type.Proholost_rus)          
                 e.Cancel = true;                       
         }
 

@@ -38,7 +38,9 @@ namespace rabnet
             NEST_IN,
             COUNT1, COUNT2, COUNT3, //COUNT_SUCKERS, 
             //Подсчет подсосных более не требуется, т.к. это делается после выдворения крольчат
-            MAKE_BRIDE, DEAD_FILTER, PRE_OKROL, CONFIRM_KILL, CONFIRM_REPLACE, CONFIRM_EXIT,
+            MAKE_BRIDE, DEAD_FILTER, 
+            PRE_OKROL,
+            CONFIRM_KILL, CONFIRM_REPLACE, CONFIRM_EXIT,
             ZOO_FILTER, COMBINE_AGE, BOYS_OUT, GIRLS_OUT, STATE_FUCK, FIRST_FUCK, MALE_WAIT, GEN_TREE,  CHILD_NEST,              
             UPDATE_ZOO, ZOO_LIST, FIND_PARTNERS, NEXT_SVID, SVID_HEAD, SVID_GEN_DIR,
             KILL_LIST, SHORT_ZOO, MAKE_CANDIDATE, BUTCHER_LIST, XLS_ASK, XLS_FOLDER, BUILD_FILL_ZERO, BUCHER_TYPE, 

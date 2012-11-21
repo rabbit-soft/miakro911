@@ -34,9 +34,6 @@
             this.chAge = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chSex = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chBreed = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.btChangeBreed = new System.Windows.Forms.Button();
-            this.cbBreeds = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lvSuckers
@@ -59,7 +56,6 @@
             this.lvSuckers.TabIndex = 2;
             this.lvSuckers.UseCompatibleStateImageBehavior = false;
             this.lvSuckers.View = System.Windows.Forms.View.Details;
-            this.lvSuckers.SelectedIndexChanged += new System.EventHandler(this.lvSuckers_SelectedIndexChanged);
             this.lvSuckers.DoubleClick += new System.EventHandler(this.lvSuckers_DoubleClick);
             // 
             // chName
@@ -86,52 +82,14 @@
             this.chBreed.Text = "Порода";
             this.chBreed.Width = 130;
             // 
-            // btChangeBreed
-            // 
-            this.btChangeBreed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btChangeBreed.Enabled = false;
-            this.btChangeBreed.Location = new System.Drawing.Point(249, 286);
-            this.btChangeBreed.Name = "btChangeBreed";
-            this.btChangeBreed.Size = new System.Drawing.Size(74, 21);
-            this.btChangeBreed.TabIndex = 3;
-            this.btChangeBreed.Text = "Изменить";
-            this.btChangeBreed.UseVisualStyleBackColor = true;
-            this.btChangeBreed.Click += new System.EventHandler(this.btChangeBreed_Click);
-            // 
-            // cbBreeds
-            // 
-            this.cbBreeds.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cbBreeds.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbBreeds.Enabled = false;
-            this.cbBreeds.FormattingEnabled = true;
-            this.cbBreeds.Location = new System.Drawing.Point(122, 286);
-            this.cbBreeds.Name = "cbBreeds";
-            this.cbBreeds.Size = new System.Drawing.Size(121, 21);
-            this.cbBreeds.TabIndex = 4;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.AutoSize = true;
-            this.label1.Enabled = false;
-            this.label1.Location = new System.Drawing.Point(3, 289);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(114, 13);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Изменить породу на:";
-            // 
             // RISuckersPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.cbBreeds);
-            this.Controls.Add(this.btChangeBreed);
             this.Controls.Add(this.lvSuckers);
             this.Name = "RISuckersPanel";
             this.Size = new System.Drawing.Size(520, 312);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -143,8 +101,5 @@
         private System.Windows.Forms.ColumnHeader chAge;
         private System.Windows.Forms.ColumnHeader chSex;
         private System.Windows.Forms.ColumnHeader chBreed;
-        private System.Windows.Forms.Button btChangeBreed;
-        private System.Windows.Forms.ComboBox cbBreeds;
-        private System.Windows.Forms.Label label1;
     }
 }

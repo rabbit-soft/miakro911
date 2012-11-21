@@ -124,15 +124,15 @@
             // dateDays1
             // 
             this.dateDays1.AutoSize = true;
-            this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2012, 2, 2, 0, 0, 0, 0);
-            this.dateDays1.DaysText = "Дней";
+            this.dateDays1.DateText = "Дата окрола";
+            this.dateDays1.DateValue = new System.DateTime(2012, 11, 21, 0, 0, 0, 0);
+            this.dateDays1.DaysText = "Дней назад";
             this.dateDays1.DaysValue = 0;
-            this.dateDays1.Location = new System.Drawing.Point(96, 34);
+            this.dateDays1.Location = new System.Drawing.Point(61, 33);
             this.dateDays1.Maximum = 100;
             this.dateDays1.Name = "dateDays1";
             this.dateDays1.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
-            this.dateDays1.Size = new System.Drawing.Size(146, 61);
+            this.dateDays1.Size = new System.Drawing.Size(175, 48);
             this.dateDays1.Step = 1;
             this.dateDays1.TabIndex = 1;
             // 
