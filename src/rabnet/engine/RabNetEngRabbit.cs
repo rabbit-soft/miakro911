@@ -71,7 +71,12 @@ namespace rabnet
         {
             _id = rid;
             _eng = dl;
-            _origin = _eng.db().GetRabbit(rid);           
+            loadData();            
+        }
+
+        private void loadData()
+        {
+            _origin = _eng.db().GetRabbit(_id);
             if (_origin == null) throw new ExNoRabbit();
 
             cloneOnThis(_origin);
@@ -240,7 +245,7 @@ namespace rabnet
         {
             get
             {
-                string[] values = _origin.RawAddress.Split(',');
+                string[] values = this.RawAddress.Split(',');
                 return values[3];
             }
         }
@@ -255,7 +260,7 @@ namespace rabnet
         { 
             get 
             {
-                string[] values = _origin.RawAddress.Split(',');
+                string[] values = this.RawAddress.Split(',');
                 if (values.Length < 3)
                     return false;
                 if (values[3] == BuildingType.Jurta && values[2] == "0" && values[5] == "1")
@@ -276,7 +281,7 @@ namespace rabnet
             get
             {
                 if (_id == 0) return _eng.db().makeName(_nameID, _surnameID, _secnameID, Group, Sex);
-                return _origin.NameFull; 
+                return this.NameFull; 
             } 
         }
 
@@ -348,15 +353,28 @@ namespace rabnet
         {
             if (_id == 0) return;
 
-            if (_origin.WasNameID != _origin.NameID)
+            if (this.WasNameID != this.NameID)
             {
                 if (Group > 1)
                     throw new ExNotOne("переименовать");
-                _eng.logs().log(RabNetLogs.LogType.RENAME, ID, 0, _origin.AddressSmall, "", _eng.db().makeName(_origin.WasNameID, 0, 0, 1, _origin.Sex));
+                _eng.logs().log(RabNetLogs.LogType.RENAME, ID, 0, this.AddressSmall, "", _eng.db().makeName(this.WasNameID, 0, 0, 1, this.Sex));
             }
-            else _eng.logs().log(RabNetLogs.LogType.RAB_CHANGE, ID);
-            _eng.db().SetRabbit(_origin);
-            _origin = _eng.db().GetRabbit(_id);
+            if (_origin.Sex != this.Sex)           
+                _eng.logs().log(RabNetLogs.LogType.SET_SEX, ID, 0, this.AddressSmall, String.Format("{0:s} -> {1:s}", Rabbit.SexToRU(_origin.Sex), Rabbit.SexToRU(this.Sex)));               
+            
+            ///todo
+            ///дата рождения
+            ///количество
+            ///порода
+            ///зона
+            ///рейтинг
+            ///материнская фамилия
+            ///отцовская фамилия
+            ///статус
+            _eng.logs().log(RabNetLogs.LogType.RAB_CHANGE, ID);
+            _eng.db().SetRabbit(this);
+            loadData();
+            //_origin = _eng.db().GetRabbit(_id);
         }
 
         /// <summary>
@@ -365,15 +383,16 @@ namespace rabnet
         public void CommitNew()
         {
             if (_id != 0) return;
-            _id = _eng.db().newRabbit(_origin, Mom);
-            _origin.ID = _id;
+
+            _id = _eng.db().newRabbit(this, Mom);
+            //_origin.ID = _id;
             _eng.logs().log(RabNetLogs.LogType.INCOME, _id);
         }
 
         public void SetBon(String bon)
         {
             if (ID == 0)
-                _origin.Bon = bon;
+                this.Bon = bon;
             else
             {
                 _eng.logs().log(RabNetLogs.LogType.BON, ID, 0, "", "", bon);
@@ -429,8 +448,8 @@ namespace rabnet
             if(_eng.options().getBoolOption(Options.OPT_ID.NEST_OUT_IF_PROHOLOST))
             {
                 //todo пиздец и говнокод и опасно но...
-                RabNetEngBuilding rnd = RabNetEngBuilding.FromPlace(_origin.RawAddress, _eng);
-                rnd.RabbitNestOut(_origin.ID);
+                RabNetEngBuilding rnd = RabNetEngBuilding.FromPlace(this.RawAddress, _eng);
+                rnd.RabbitNestOut(this.ID);
             }
         }
         
@@ -455,12 +474,12 @@ namespace rabnet
         {
             if (_id == 0)
             {
-                _origin.Address = address;
-                _origin.NewAddress = String.Format("{0:d}|{1:d}|{2:d}", farm, tier_id, sec);
+                this.Address = address;
+                this.NewAddress = String.Format("{0:d}|{1:d}|{2:d}", farm, tier_id, sec);
             }
             else
             {
-                _eng.logs().log(RabNetLogs.LogType.REPLACE, ID, 0, _origin.AddressSmall, address.TrimEnd(' ').Substring(0,address.LastIndexOf(' ')));
+                _eng.logs().log(RabNetLogs.LogType.REPLACE, ID, 0, this.AddressSmall, address.TrimEnd(' ').Substring(0,address.LastIndexOf(' ')));
                 _eng.db().replaceRabbit(ID, farm, tier_id, sec);
             }
             _tag = "";
@@ -514,7 +533,7 @@ namespace rabnet
             const byte DR_ON_COUNT=5;//deadreason "при подсчете"
             if (Sex != Rabbit.SexType.FEMALE)
                 throw new ExNotFemale(this);
-            _eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, ID, _youngers[yInd].ID, _origin.AddressSmall,"", String.Format("  возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, прибавилось {4:d})", age, atall, dead, killed, added));            
+            _eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, ID, _youngers[yInd].ID, this.AddressSmall,"", String.Format("  возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, прибавилось {4:d})", age, atall, dead, killed, added));            
             if (dead == 0 && killed == 0 && added == 0) return;
             YoungRabbit y = _youngers[yInd];
             RabNetEngRabbit r = _eng.getRabbit(y.ID);        

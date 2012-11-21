@@ -557,21 +557,26 @@ namespace rabnet
 
         private void button9_Click(object sender, EventArgs e)
         {
-            if((new OkrolForm(_rab.ID)).ShowDialog() != DialogResult.Abort)
+            OkrolForm dlg = new OkrolForm(_rab.ID);
+            if (dlg.ShowDialog() != DialogResult.Abort)
                 btCancel.Enabled = false;
             updateData();
         }
 
         private void button8_Click(object sender, EventArgs e)
         {
-            (new MakeFuckForm(_rab.ID)).ShowDialog();
+            MakeFuckForm dlg = new MakeFuckForm(_rab.ID);
+            if (dlg.ShowDialog() == DialogResult.OK)
+                btCancel.Enabled = false;
             updateData();
         }
 
         private void btFuckHer_Click(object sender, EventArgs e)
         {
             Fucks.Fuck f = lvFucks.SelectedItems[0].Tag as Fucks.Fuck;
-            (new MakeFuckForm(_rab.ID,f.PartnerId)).ShowDialog();
+            MakeFuckForm dlg = new MakeFuckForm(_rab.ID, f.PartnerId);
+            if (dlg.ShowDialog() == DialogResult.OK)
+                btCancel.Enabled = false;
             updateData();
         }
 
