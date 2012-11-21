@@ -407,24 +407,6 @@ Section /o "-un.rabnet" UNSEC_Rabnet
     ;DeleteRegValue HKEY_CURRENT_USER Software\hzkakzvat\rabnet Path
     Delete /REBOOTOK $SMPROGRAMS\$StartMenuGroup\rabnet.lnk
     Delete /REBOOTOK $DESKTOP\$(SM_Prog_NAME).lnk
-;    Delete /REBOOTOK $INSTDIR\reports\zooteh_nofuck.rdl
-;    Delete /REBOOTOK $INSTDIR\reports\zooteh.rdl
-;    Delete /REBOOTOK $INSTDIR\reports\shed.rdl
-;    Delete /REBOOTOK $INSTDIR\reports\replace_plan.rdl
-;    Delete /REBOOTOK $INSTDIR\reports\realization.rdl
-;    Delete /REBOOTOK $INSTDIR\reports\rabbit.rdl
-;    Delete /REBOOTOK $INSTDIR\reports\plem.rdl
-;    Delete /REBOOTOK $INSTDIR\reports\okrol_user.rdl
-;    Delete /REBOOTOK $INSTDIR\reports\fucks_by_date.rdl
-;    Delete /REBOOTOK $INSTDIR\reports\fucker.rdl
-;    Delete /REBOOTOK $INSTDIR\reports\empty_rev.rdl
-;    Delete /REBOOTOK $INSTDIR\reports\deadreason.rdl
-;    Delete /REBOOTOK $INSTDIR\reports\dead.rdl
-;    Delete /REBOOTOK $INSTDIR\reports\by_month.rdl
-;    Delete /REBOOTOK $INSTDIR\reports\breeds.rdl
-;    Delete /REBOOTOK $INSTDIR\reports\age.rdl
-
-
     RmDir /REBOOTOK /r $INSTDIR\bin\reports
 
     Delete /REBOOTOK $INSTDIR\bin\rabnet.exe
