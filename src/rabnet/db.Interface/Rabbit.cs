@@ -10,15 +10,15 @@ namespace rabnet
         public const string NULL_ADDRESS = "бомж";
         public const string NULL_BON = "00000";
         public const string NULL_FLAGS = "00000";
-        protected int _id;
-        protected String _nameFull;
-        protected Rabbit.SexType _sex;
+        protected int _id=0;
+        protected String _nameFull="";
+        protected Rabbit.SexType _sex = SexType.VOID;
         protected DateTime _birthDay;
-        protected String _breedName;
-        protected string _notes;
-        protected int _group;
-        protected String _bon;
-        protected String _rawAddress;
+        protected String _breedName = "";
+        protected string _notes = "";
+        protected int _group = 1;
+        protected String _bon="";
+        protected String _rawAddress="";
 
         public Rabbit() { }
         public Rabbit(int id, string rabname, string sex, DateTime born, string breedname, int group, String bon, string rawAddress, string notes)
@@ -48,6 +48,7 @@ namespace rabnet
         public virtual String AddressFull { get { return _rawAddress == "" ? NULL_ADDRESS : Building.FullPlaceName(_rawAddress, false, true, true); } }
         public virtual String Address { get { return _rawAddress == "" ? NULL_ADDRESS : Building.FullPlaceName(_rawAddress, false, true, false); } set { } }
         public virtual String AddressSmall { get { return _rawAddress == "" ? NULL_ADDRESS : Building.FullPlaceName(_rawAddress, true, false, false); } }
+        
         public virtual String FAddress(bool s_adrTier, bool s_adrDesc) { return Building.FullPlaceName(_rawAddress, false, s_adrTier, s_adrDesc); }
         public virtual String FAddress() { return FAddress(false, false); }
         public virtual string FBon(bool s_short) { return Rabbit.GetFBon(_bon, s_short); }
@@ -135,10 +136,10 @@ namespace rabnet
         //private static int s_brideAge = 122;
         //private static int s_candAge = 120;
         #endregion static
-        protected int _rate;
-        protected String _flags;
-        protected int _weight;
-        protected int _status;
+        protected int _rate=0;
+        protected String _flags="00000";
+        protected int _weight=0;
+        protected int _status=0;
         protected DateTime _eventDate;
         private int _kidsAge = -1;
         private int _kidsCount = 0;
@@ -163,6 +164,7 @@ namespace rabnet
             _vacFlags = vacFlags;
            
         }
+        public AdultRabbit() { }
 
         #region properties
         public int Rate { get { return _rate; } set { _rate = value; } }
@@ -179,8 +181,6 @@ namespace rabnet
                 res = String.Format("[{0,2:d}]", Group);
             return res;
         }
-
-
         public string FFlags()
         {
             String flg = _flags;
@@ -191,7 +191,6 @@ namespace rabnet
             if (flg[1] != '0') res = "<" + res + ">";
             return res;
         }
-
         public String FStatus(bool s_short, int s_candAge, int s_brideAge)
         {
             string res = "";
@@ -243,70 +242,64 @@ namespace rabnet
         /// <summary>
         /// Кормилица
         /// </summary>
-        public int parentId;
-        public int nameID;
-        public int wasname;
-        public int surname;
-        public int secname;
-        public int BreedID;
-        public int zone;
-        public string gens;
-        public DateTime lastfuckokrol;
-        public int evtype;
-        public int kidsOverAll;
-        public int kidsLost;
+        protected int _parentID = 0;
+        protected int _wasNameID = 0;
+        protected int _nameID = 0;
+        protected int _surnameID = 0;
+        protected int _secnameID = 0;
+        protected int _breedID = 0;
+        protected int _zone = 0;
+        protected string _genoms = "";
+        protected DateTime _lastFuckOkrol;
+        protected int _eventType = 0;
+        protected int _kidsOverAll = 0;
+        protected int _kidsLost = 0;
         /// <summary>
         /// молодняк
         /// </summary>
-        public YoungRabbit[] youngers = null;
-        public OneRabbit[] neighbors;
-        public RabVac[] rabVacs;
-        public string tag;
-        public string nuaddr = "";
+        //public YoungRabbit[] Youngers = null;
+        //public OneRabbit[] Neighbors;
+        //public RabVac[] RabVacs;
+        //public string Tag="";
+        public string NewAddress = "";
+
         protected DateTime _weightDate;
-        protected string _newAddress = "";
-        
+        protected string _newAddress = "";        
         private int _okrol;
         private int _motherId;
         private int _fatherId;
         #endregion prop
 
-        public OneRabbit(int id, string sx, DateTime born, int rate, string flags, int nameId, int surnameId, int secnameId, string rawAddress, int group, int brd, int zone, String notes,
-            String genom, int status, DateTime lastFuckOkrol, String eventType, DateTime eventDate, int overAllBabys, int lostBabys, String fullName, String breedName,
-            String bon, int parent, int okrol, int weight, DateTime weightDate, int motherID, int fatherID)
+        public OneRabbit(int id, string sx, DateTime born, int rate, string flags, int nameId, int surnameId, int secnameId, string rawAddress, int group, 
+            int brd, int zone, String notes, String genom, int status, DateTime lastFuckOkrol, String eventType, DateTime eventDate, int overAllBabys, 
+            int lostBabys, String fullName, String breedName, String bon, int parent, int okrol, int weight, DateTime weightDate, int motherID, int fatherID)
             : base(id, fullName, sx, born, breedName, group, bon, rawAddress, notes, rate, flags, weight, status, eventDate, 0, -1, "")
         {
-            this.parentId = parent;
-            tag = "";
-            nameID = nameId;
-            wasname = nameID;
-            surname = surnameId;
-            secname = secnameId;
-            BreedID = brd;
-            this.zone = zone;
-            gens = genom;
+            this._parentID = parent;
+            _nameID = 
+                _wasNameID = nameId;
+            _surnameID = surnameId;
+            _secnameID = secnameId;
+            _breedID = brd;
+            this._zone = zone;
+            _genoms = genom;
             if (sx == "void") 
                 status = Age < 50 ? 0 : 1; //TODO проверить на необходимость
-            lastfuckokrol = lastFuckOkrol;
-            evtype = Rabbit.GetEventType(eventType);
+            _lastFuckOkrol = lastFuckOkrol;
+            _eventType = Rabbit.GetEventType(eventType);
             _okrol = okrol;
-            kidsOverAll = overAllBabys;
-            kidsLost = lostBabys;
-            WeightDate = weightDate;
+            _kidsOverAll = overAllBabys;
+            _kidsLost = lostBabys;
+            _weightDate = weightDate;
             _motherId = motherID;
             _fatherId = fatherID;
         }
+        public OneRabbit() { }
         /// <summary>
         /// Каким окролом родился
         /// </summary>
         public int Okrol { get { return _okrol; } }
-        public DateTime WeightDate { get { return _weightDate; } set { _weightDate = value; } }
-        public override string Address
-        {
-            get { return _newAddress == "" ? base.Address : _newAddress; }
-            set { _newAddress = value; }
-        }
-
+        public DateTime WeightDate { get { return _weightDate; } set { _weightDate = value; } }      
         public string Bon
         {
             get { return _bon; }
@@ -326,6 +319,67 @@ namespace rabnet
         public int WeightAge
         {
             get { return WeightDate.Subtract(BirthDay).Days; }
+        }
+
+        public int ParentID { get { return _parentID; } }
+        public int WasNameID { get { return _wasNameID; } }
+        public int NameID
+        {
+            get { return _nameID; }
+            set { _nameID = value; }
+        }
+        /// <summary>
+        /// Фамили по отцу
+        /// </summary>
+        public int SurnameID
+        {
+            get { return _surnameID; }
+            set { _surnameID = value; }
+        }
+        /// <summary>
+        /// Фамилия по матери
+        /// </summary>
+        public int SecnameID
+        {
+            get { return _secnameID; }
+            set { _secnameID = value; }
+        }
+        /// <summary>
+        /// Порода кролика
+        /// </summary>
+        public int BreedID
+        {
+            get { return _breedID; }
+            set { _breedID = value; }
+        }
+        public int Zone
+        {
+            get { return _zone; }
+            set { _zone = value; }
+        }
+        public String Genoms
+        {
+            get { return _genoms; }
+            set { _genoms = value; }
+        }
+        /// <summary>
+        /// Заметки
+        /// </summary>               
+        public DateTime LastFuckOkrol
+        {
+            get { return _lastFuckOkrol; }
+            set { _lastFuckOkrol = value; }
+        }
+        public int EventType { get { return _eventType; } }
+        public int KidsOverAll
+        {
+            get { return _kidsOverAll; }
+            set { _kidsOverAll = value; }
+        }
+        public int KidsLost
+        {
+            get { return _kidsLost; }
+            set { _kidsLost = value; }
         }
 
         #region flags
@@ -373,6 +427,11 @@ namespace rabnet
         #endregion flags
 
         public string RawAddress { get { return _rawAddress; } }
+        public override string Address
+        {
+            get { return _newAddress == "" ? base.Address : _newAddress; }
+            set { _newAddress = value; }
+        }
 
         public int MotherID { get { return _motherId; } }
         public int FatherID { get { return _fatherId; } }

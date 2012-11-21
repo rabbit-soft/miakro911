@@ -295,10 +295,10 @@ namespace rabnet
             _replaceList.Clear();
             foreach (RabNetEngRabbit r in _rabERs)
             {
-                _replaceList.Add(new RP(_replaceList, r.RabID, r.FullName, r.medAddress, r.Group, r.Sex, r.Age, r.BreedName, r.SetNest));
+                _replaceList.Add(new RP(_replaceList, r.ID, r.FullName, r.Address, r.Group, r.Sex, r.Age, r.BreedName, r.SetNest));
                 //Engine.get().db().getBuilding(r.Address);
                 foreach (YoungRabbit y in r.Youngers)
-                    _replaceList.Add(new RP(_replaceList, y.ID, y.NameFull, r.medAddress, y.Group, y.Sex, DateTime.Now.Subtract(y.BirthDay).Days, r.BreedName, r.RabID));
+                    _replaceList.Add(new RP(_replaceList, y.ID, y.NameFull, r.Address, y.Group, y.Sex, DateTime.Now.Subtract(y.BirthDay).Days, r.BreedName, r.ID));
             }
         }
         public void SetAction(Action act)
@@ -309,7 +309,7 @@ namespace rabnet
         private bool myrab(int i)
         {
             foreach (RabNetEngRabbit r in _rabERs)
-                if (r.RabID == i)return true;
+                if (r.ID == i)return true;
             return false;
         }
 
@@ -348,7 +348,7 @@ namespace rabnet
             Filters f = new Filters();
             f["rcnt"] = _rabERs.Count.ToString();
             for (int i = 0; i < _rabERs.Count; i++) 
-                f["r" + i.ToString()] = _rabERs[i].RabID.ToString();
+                f["r" + i.ToString()] = _rabERs[i].ID.ToString();
 
             String tp = "";
             cbFilter.Tag = 1;
@@ -702,7 +702,7 @@ namespace rabnet
             {
                 int[] a = getAddress(rp);
                 if (rp.Younger)
-                    par.ReplaceYounger(rb.RabID, a[0], a[1], a[2], rp.CurAddress);
+                    par.ReplaceYounger(rb.ID, a[0], a[1], a[2], rp.CurAddress);
                 else
                     rb.ReplaceRabbit(a[0], a[1], a[2], rp.CurAddress);               
             }
@@ -711,9 +711,9 @@ namespace rabnet
             {
                 if (!rp.Younger || (rp.Younger && rp.Replaced))
                 {
-                    RabNetEngRabbit rr = Engine.get().getRabbit(rb.RabID);
-                    RabNetEngBuilding rbe = Engine.get().getBuilding(rr.JustAddress);
-                    string[] vals = rr.JustAddress.Split(',');
+                    RabNetEngRabbit rr = Engine.get().getRabbit(rb.ID);
+                    RabNetEngBuilding rbe = Engine.get().getBuilding(rr.RawAddress);
+                    string[] vals = rr.RawAddress.Split(',');
                     if (vals[3] == BuildingType.Jurta || vals[3] == BuildingType.Female)
                         rbe.setNest(rp.SetNest);
                     else if (vals[3] == BuildingType.DualFemale)

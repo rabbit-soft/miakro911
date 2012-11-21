@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Reflection;
 
 namespace rabnet
 {
-    public class RabNetEngRabbit
+    public class RabNetEngRabbit:OneRabbit
     {
         #region exceptions
         public class ExNotFemale : ApplicationException
@@ -52,21 +53,28 @@ namespace rabnet
             public ExNoRabbit() : base("Кролик не существует.") { }
         }
         #endregion exceptions
-        private int _id;
-        private OneRabbit _rab = null;
+        //private int _id;
+        private OneRabbit _origin = null;
         private String _rabGenoms="";
+        private YoungRabbit[] _youngers = null;
+        private RabVac[] _rabVacs=null;
+        private string _tag = "";
+        private OneRabbit[] _neighbors=null;
         private RabNetEngine _eng = null;
         public int Mom = 0;
+        /// <summary>
+        /// Нужно для логирования при Клонировании
+        /// </summary>
+        internal string CloneAddress="";
 
         public RabNetEngRabbit(int rid,RabNetEngine dl)
         {
             _id = rid;
             _eng = dl;
-            _rab = _eng.db().GetRabbit(rid);
-            if (_rab == null)
-            {              
-                throw new ExNoRabbit();
-            }
+            _origin = _eng.db().GetRabbit(rid);           
+            if (_origin == null) throw new ExNoRabbit();
+
+            cloneOnThis(_origin);
         }
 
         public RabNetEngRabbit(RabNetEngine dl,Rabbit.SexType sx)
@@ -76,206 +84,178 @@ namespace rabnet
             String s="void";
             if (sx == Rabbit.SexType.FEMALE) s = "female";
             if (sx == Rabbit.SexType.MALE) s = "male";
-            _rab = new OneRabbit(0, s, DateTime.Now, 0, Rabbit.NULL_FLAGS, 0, 0, 0, "", 1, 1, 0, "", "", 0, DateTime.MinValue, "", 
-                DateTime.MinValue, 0, 0, "", "", Rabbit.NULL_BON,0,1,-1,DateTime.MinValue,0,0);
-            _rab.youngers=new YoungRabbit[0];
+            //_rab = new OneRabbit(0, s, DateTime.Now, 0, Rabbit.NULL_FLAGS, 0, 0, 0, "", 1, 1, 0, "", "", 0, DateTime.MinValue, "", 
+              //  DateTime.MinValue, 0, 0, "", "", Rabbit.NULL_BON,0,1,-1,DateTime.MinValue,0,0);
+            _youngers=new YoungRabbit[0];
         }
-
-        public void newCommit()
-        {
-            if (_id != 0) return;
-            _id = _eng.db().newRabbit(_rab, Mom);
-            _rab.ID = _id;
-            _eng.logs().log(RabNetLogs.LogType.INCOME, _id);
-        }
-
-        /// <summary>
-        /// Сохраняет изменение данных на сервере
-        /// </summary>
-        public void Commit()
-        {
-            if (RabID == 0)
-                return;
-            if (_rab.wasname != _rab.nameID)
-            {
-                if (Group > 1)
-                    throw new ExNotOne("переименовать");
-                _eng.logs().log(RabNetLogs.LogType.RENAME, RabID, 0, _rab.AddressSmall, "", _eng.db().makeName(_rab.wasname, 0, 0, 1, _rab.Sex));
-            }
-            else _eng.logs().log(RabNetLogs.LogType.RAB_CHANGE, RabID);
-            _eng.db().SetRabbit(_rab);
-            _rab=_eng.db().GetRabbit(_id);
-        }
-
         //TODO Сделать это на уровне OneRabbit
-        #region properties
-        public Rabbit.SexType Sex
-        {   
-            get { return _rab.Sex; }
-            set { _rab.Sex=value; }
-        }
-        public DateTime Born
-        {
-            get { return _rab.BirthDay; }
-            set { _rab.BirthDay = value; }
-        }
-        public int Rate
-        {
-            get { return _rab.Rate; }
-            set { _rab.Rate = value; }
-        }
-        public bool Defect
-        {
-            get { return _rab.Defect; }
-            set { _rab.Defect = value; }
-        }
-        public bool Production
-        {
-            get { return _rab.Production; }
-            set { _rab.Production = value; }
-        }
-        public bool Realization
-        {
-            get { return _rab.RealizeReady; }
-            set { _rab.RealizeReady = value; }
-        }
-        /*public bool Spec
-        {
-            get { return _rab.spec; }
-            set { _rab.spec = value; }
-        }*/
-        public int Name
-        {
-            get { return _rab.nameID; }
-            set { _rab.nameID = value; }
-        }
-        /// <summary>
-        /// Фамили по отцу
-        /// </summary>
-        public int Surname
-        {
-            get { return _rab.surname; }
-            set { _rab.surname = value; }
-        }
-        /// <summary>
-        /// Фамилия по матери
-        /// </summary>
-        public int SecondName
-        {
-            get { return _rab.secname; }
-            set { _rab.secname = value; }
-        }
-        /// <summary>
-        /// Количество кроликов в группе
-        /// </summary>
-        public int Group
-        {
-            get { return _rab.Group; }
-            set { _rab.Group = value; }
-        }
-        /// <summary>
-        /// Порода кролика
-        /// </summary>
-        public int Breed
-        {
-            get { return _rab.BreedID;}
-            set {_rab.BreedID=value;}
-        }
-        public int Zone
-        {
-            get { return _rab.zone; }
-            set { _rab.zone = value; }
-        }
-        /// <summary>
-        /// Заметки
-        /// </summary>
-        public String Notes
-        {
-            get { return _rab.Notes; }
-            set { _rab.Notes = value; }
-        }
-        public int Status
-        {
-            get { return _rab.Status; }
-            set { _rab.Status = value; }
-        }
-        public DateTime Last_Fuck_Okrol
-        {
-            get { return _rab.lastfuckokrol; }
-            set { _rab.lastfuckokrol = value; }
-        }
-        /// <summary>
-        /// Прививки кролика
-        /// </summary>
-        public RabVac[] Vaccines
-        {
-            get 
-            {
-                if (_rab.rabVacs == null)
-                    _rab.rabVacs = _eng.db().GetRabVac(_id);
-                return _rab.rabVacs; 
-            }
-            //set { rab.rabVacs = value; }
-        }
-        public String Genom
-        {
-            get { return _rab.gens; }
-            set { _rab.gens = value; }
-        }
-        public bool NoLact
-        {
-            get { return _rab.NoLact; }
-            set { _rab.NoLact = value; }
-        }
-        public bool NoKuk
-        {
-            get { return _rab.NoKuk; }
-            set { _rab.NoKuk = value; }
-        }
-        public int Babies
-        {
-            get { return _rab.kidsOverAll; }
-            set { _rab.kidsOverAll = value; }
-        }
-        public int Lost
-        {
-            get { return _rab.kidsLost; }
-            set { _rab.kidsLost = value; }
-        }
-        public string Tag
-        {
-            get { return _rab.tag; }
-            set { _rab.tag = value; }
-        }
-        public string SmallAddress{get{return _rab.AddressSmall;}}
-        public string JustAddress{get{return _rab.RawAddress;}}
-        /// <summary>
-        /// Нужно для логирования при Клонировании
-        /// </summary>
-        public string CloneAddress;
+        
+        #region inherited_properties
+
+        //public int ID { get { return _rab.ID; } }
+        //public Rabbit.SexType Sex
+        //{   
+        //    get { return _rab.Sex; }
+        //    set { _rab.Sex=value; }
+        //}
+        ///// <summary>
+        ///// Количество кроликов в группе
+        ///// </summary>
+        //public int Group
+        //{
+        //    get { return _rab.Group; }
+        //    set { _rab.Group = value; }
+        //}
+        ///// <summary>
+        ///// Возраст
+        ///// </summary>
+        //public int Age { get { return _rab.Age; } }
+        //public DateTime BirthDay
+        //{
+        //    get { return _rab.BirthDay; }
+        //    set { _rab.BirthDay = value; }
+        //}
+        ///// <summary>
+        ///// Порода
+        ///// </summary>
+        //public String BreedName { get { return _rab.BreedName; } }      
+        //public String Notes
+        //{
+        //    get { return _rab.Notes; }
+        //    set { _rab.Notes = value; }
+        //}
+
+        //public int Rate
+        //{
+        //    get { return _rab.Rate; }
+        //    set { _rab.Rate = value; }
+        //}
+
+        //public int Parent { get { return _rab.ParentID; } }
+        //public int WasNameID { get { return _rab.WasNameID; } }
+        //public int NameID
+        //{
+        //    get { return _rab.NameID; }
+        //    set { _rab.NameID = value; }
+        //}
+        ///// <summary>
+        ///// Фамили по отцу
+        ///// </summary>
+        //public int SurnameID
+        //{
+        //    get { return _rab.SurnameID; }
+        //    set { _rab.SurnameID = value; }
+        //}
+        ///// <summary>
+        ///// Фамилия по матери
+        ///// </summary>
+        //public int SecnameID
+        //{
+        //    get { return _rab.SecnameID; }
+        //    set { _rab.SecnameID = value; }
+        //}      
+        ///// <summary>
+        ///// Порода кролика
+        ///// </summary>
+        //public int BreedID
+        //{
+        //    get { return _rab.BreedID;}
+        //    set {_rab.BreedID=value;}
+        //}
+        //public int Zone
+        //{
+        //    get { return _rab.Zone; }
+        //    set { _rab.Zone = value; }
+        //}
+        //public String Genoms
+        //{
+        //    get { return _rab.Genoms; }
+        //    set { _rab.Genoms = value; }
+        //}
+        ///// <summary>
+        ///// Заметки
+        ///// </summary>               
+        //public DateTime LastFuckOkrol
+        //{
+        //    get { return _rab.LastFuckOkrol; }
+        //    set { _rab.LastFuckOkrol = value; }
+        //}
+        //public int EventType { get { return _rab.EventType; } }
+        //public int KidsOverAll
+        //{
+        //    get { return _rab.KidsOverAll; }
+        //    set { _rab.KidsOverAll = value; }
+        //}
+        //public int KidsLost
+        //{
+        //    get { return _rab.KidsLost; }
+        //    set { _rab.KidsLost = value; }
+        //}
+
+        ///// <summary>
+        ///// Бонитировка
+        ///// </summary>
+        //public String Bon { get { return _rab.Bon; } }
+        //public DateTime EventDate { get { return _rab.EventDate; } }
+        //public int Status
+        //{
+        //    get { return _rab.Status; }
+        //    set { _rab.Status = value; }
+        //}
+                     
+        //public bool Production
+        //{
+        //    get { return _rab.Production; }
+        //    set { _rab.Production = value; }
+        //}
+        //public bool RealizeReady
+        //{
+        //    get { return _rab.RealizeReady; }
+        //    set { _rab.RealizeReady = value; }
+        //}
+        //public bool Defect
+        //{
+        //    get { return _rab.Defect; }
+        //    set { _rab.Defect = value; }
+        //}
+        //public bool NoKuk
+        //{
+        //    get { return _rab.NoKuk; }
+        //    set { _rab.NoKuk = value; }
+        //}
+        //public bool NoLact
+        //{
+        //    get { return _rab.NoLact; }
+        //    set { _rab.NoLact = value; }
+        //}        
+        
+        //public string RawAddress { get { return _rab.RawAddress; } }
+        //public String Address { get { return _rab.Address; } }
+        //public String NewAddress { get { return _rab.NewAddress; } }
+        //public string AddressSmall { get { return _rab.AddressSmall; } }
+        #endregion inherited_properties
+
+        #region own_props
         public string TierType
         {
             get
             {
-                string[] values = _rab.RawAddress.Split(',');
+                string[] values = _origin.RawAddress.Split(',');
                 return values[3];
             }
         }
-        public string medAddress { get { return _rab.Address; } }
-        public int Parent { get { return _rab.parentId; } }
-        public int RabID { get { return _rab.ID; } }
-        public int EventType { get { return _rab.evtype; } }
-        public DateTime EventDate { get { return _rab.EventDate; } }
-        public int WasName { get { return _rab.wasname; } }
-        public String Address { get { return _rab.Address; } }
-        public String NewAddress { get { return _rab.nuaddr; } }
-        #endregion propertie
+
+        public string Tag
+        {
+            get { return _tag; }
+            set { _tag = value; }
+        }
 
         public bool SetNest
         { 
             get 
             {
-                string[] values = _rab.RawAddress.Split(',');
+                string[] values = _origin.RawAddress.Split(',');
                 if (values.Length < 3)
                     return false;
                 if (values[3] == BuildingType.Jurta && values[2] == "0" && values[5] == "1")
@@ -295,27 +275,22 @@ namespace rabnet
         {
             get
             {
-                if (_id == 0) return _eng.db().makeName(Name, Surname, SecondName, Group, Sex);
-                return _rab.NameFull; 
+                if (_id == 0) return _eng.db().makeName(_nameID, _surnameID, _secnameID, Group, Sex);
+                return _origin.NameFull; 
             } 
         }
-        
+
         /// <summary>
-        /// Порода
+        /// Прививки кролика
         /// </summary>
-        public String BreedName { get { return _rab.BreedName; } }
-        
-        /// <summary>
-        /// Бонитировка
-        /// </summary>
-        public String Bon { get { return _rab.Bon; } }
-        
-        /// <summary>
-        /// Возраст
-        /// </summary>
-        public int Age 
+        public RabVac[] Vaccines
         {
-            get { return _rab.Age; } 
+            get
+            {
+                if (_rabVacs == null)
+                    _rabVacs = _eng.db().GetRabVac(_id);
+                return _rabVacs;
+            }
         }
         
         /// <summary>
@@ -339,14 +314,19 @@ namespace rabnet
         { 
             get 
             { 
-                if(_rab.youngers ==null)
-                    return _rab.youngers = _eng.db().GetYoungers(_id);
-                return _rab.youngers; 
+                if(_youngers ==null)
+                    return _youngers = _eng.db().GetYoungers(_id);
+                return _youngers; 
             } 
         }
         public OneRabbit[] Neighbors
         {
-            get { return _rab.neighbors; }
+            get 
+            {
+                if (_neighbors == null)
+                    _neighbors = _eng.db().GetNeighbors(_id);
+                return _neighbors; 
+            }
         }
 
         public String RabGenoms
@@ -358,14 +338,45 @@ namespace rabnet
                 return _rabGenoms;
             }
         }
+        #endregion own_props
+
+        #region methods
+        /// <summary>
+        /// Сохраняет изменение данных на сервере
+        /// </summary>
+        public void Commit()
+        {
+            if (_id == 0) return;
+
+            if (_origin.WasNameID != _origin.NameID)
+            {
+                if (Group > 1)
+                    throw new ExNotOne("переименовать");
+                _eng.logs().log(RabNetLogs.LogType.RENAME, ID, 0, _origin.AddressSmall, "", _eng.db().makeName(_origin.WasNameID, 0, 0, 1, _origin.Sex));
+            }
+            else _eng.logs().log(RabNetLogs.LogType.RAB_CHANGE, ID);
+            _eng.db().SetRabbit(_origin);
+            _origin = _eng.db().GetRabbit(_id);
+        }
+
+        /// <summary>
+        /// Создать нового кролика из текущего объекта
+        /// </summary>
+        public void CommitNew()
+        {
+            if (_id != 0) return;
+            _id = _eng.db().newRabbit(_origin, Mom);
+            _origin.ID = _id;
+            _eng.logs().log(RabNetLogs.LogType.INCOME, _id);
+        }
 
         public void SetBon(String bon)
         {
-            if (RabID == 0)
-                _rab.Bon = bon;
+            if (ID == 0)
+                _origin.Bon = bon;
             else
             {
-                _eng.logs().log(RabNetLogs.LogType.BON, RabID, 0, "", "", bon);
+                _eng.logs().log(RabNetLogs.LogType.BON, ID, 0, "", "", bon);
                 _eng.db().setBon(_id, bon);
             }
         }
@@ -384,7 +395,7 @@ namespace rabnet
                 throw new ExNotFucker(this);
             if (EventDate != DateTime.MinValue)
                 throw new ExAlreadyFucked(this);
-            if (Name == 0) throw new ExNoName();
+            if (_nameID == 0) throw new ExNoName();
             if (Group > 1) throw new ExNotOne("случить");
             RabNetEngRabbit f = _eng.getRabbit(maleId);
             if (f.Sex != Rabbit.SexType.MALE)
@@ -393,11 +404,10 @@ namespace rabnet
                 throw new ExNotFucker(f);
             //if (daysPast <0)
                 //throw new ExBadDate(daysPast.ToString());
-            _eng.logs().log(RabNetLogs.LogType.FUCK, RabID, maleId, SmallAddress, f.SmallAddress, 
+            _eng.logs().log(RabNetLogs.LogType.FUCK, ID, maleId, AddressSmall, f.AddressSmall, 
                 (syntetic ? "ИО" : "стд.") + (daysPast != 0 ? String.Format(" {0:d} дней назад", daysPast) : ""));
-            _eng.db().MakeFuck(this._id, f.RabID, daysPast, _eng.userId, syntetic);
+            _eng.db().MakeFuck(this._id, f.ID, daysPast, _eng.userId, syntetic);
         }
-
         public void FuckIt(int otherrab, int daysPast)
         {
             FuckIt(otherrab, daysPast, false);
@@ -414,13 +424,13 @@ namespace rabnet
             //if (when > DateTime.Now) throw new ExBadDate(when);
             if (daysPast < 0) throw new ExBadPastDays();
 
-            _eng.logs().log(RabNetLogs.LogType.PROHOLOST, RabID, 0, SmallAddress, "", daysPast != 0 ? String.Format(" {0:d} дней назад", daysPast) : "");
+            _eng.logs().log(RabNetLogs.LogType.PROHOLOST, ID, 0, AddressSmall, "", daysPast != 0 ? String.Format(" {0:d} дней назад", daysPast) : "");
             _eng.db().makeProholost(this._id, daysPast);
             if(_eng.options().getBoolOption(Options.OPT_ID.NEST_OUT_IF_PROHOLOST))
             {
                 //todo пиздец и говнокод и опасно но...
-                RabNetEngBuilding rnd = RabNetEngBuilding.FromPlace(_rab.RawAddress, _eng);
-                rnd.RabbitNestOut(_rab.ID);
+                RabNetEngBuilding rnd = RabNetEngBuilding.FromPlace(_origin.RawAddress, _eng);
+                rnd.RabbitNestOut(_origin.ID);
             }
         }
         
@@ -437,7 +447,7 @@ namespace rabnet
             //if (when > DateTime.Now) throw new ExBadDate(when);  
 
             int born = _eng.db().makeOkrol(this._id, daysPast, children, dead);
-            _eng.logs().log(RabNetLogs.LogType.OKROL, RabID, born, SmallAddress, "", 
+            _eng.logs().log(RabNetLogs.LogType.OKROL, ID, born, AddressSmall, "", 
                 String.Format("живых {0:d}, мертвых {1:d}{2:s}", children, dead, daysPast != 0 ? String.Format(" {0:d} дней назад",daysPast) : ""));
         }
 
@@ -445,15 +455,15 @@ namespace rabnet
         {
             if (_id == 0)
             {
-                _rab.Address = address;
-                _rab.nuaddr = String.Format("{0:d}|{1:d}|{2:d}", farm, tier_id, sec);
+                _origin.Address = address;
+                _origin.NewAddress = String.Format("{0:d}|{1:d}|{2:d}", farm, tier_id, sec);
             }
             else
             {
-                _eng.logs().log(RabNetLogs.LogType.REPLACE, RabID, 0, _rab.AddressSmall, address.TrimEnd(' ').Substring(0,address.LastIndexOf(' ')));
-                _eng.db().replaceRabbit(RabID, farm, tier_id, sec);
+                _eng.logs().log(RabNetLogs.LogType.REPLACE, ID, 0, _origin.AddressSmall, address.TrimEnd(' ').Substring(0,address.LastIndexOf(' ')));
+                _eng.db().replaceRabbit(ID, farm, tier_id, sec);
             }
-            _rab.tag = "";
+            _tag = "";
         }
 
         public void ReplaceYounger(int yid, int farm, int tier, int sec, string address)
@@ -477,7 +487,7 @@ namespace rabnet
         {
             if (count == Group)
             {
-                _eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, RabID, 0, SmallAddress == Rabbit.NULL_ADDRESS ? CloneAddress : SmallAddress, "",
+                _eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, ID, 0, AddressSmall == Rabbit.NULL_ADDRESS ? CloneAddress : AddressSmall, "",
                     String.Format(" {0:s}[{1:d}] {2:s} {3:s}", FullName, Group, notes, (daysPast != 0 ? String.Format(" {0:d} дней назад", daysPast) : "")));
                 _eng.db().KillRabbit(_id, daysPast, reason, notes);
             }
@@ -485,7 +495,7 @@ namespace rabnet
             {
                 int nid = Clone(count, 0, 0, 0);
                 RabNetEngRabbit nr = new RabNetEngRabbit(nid, _eng);
-                nr.CloneAddress = SmallAddress;
+                nr.CloneAddress = AddressSmall;
                 nr.KillIt(daysPast, reason, notes, count);
             }
         }
@@ -504,23 +514,23 @@ namespace rabnet
             const byte DR_ON_COUNT=5;//deadreason "при подсчете"
             if (Sex != Rabbit.SexType.FEMALE)
                 throw new ExNotFemale(this);
-            _eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, RabID, _rab.youngers[yInd].ID, _rab.AddressSmall,"", String.Format("  возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, прибавилось {4:d})", age, atall, dead, killed, added));            
+            _eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, ID, _youngers[yInd].ID, _origin.AddressSmall,"", String.Format("  возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, прибавилось {4:d})", age, atall, dead, killed, added));            
             if (dead == 0 && killed == 0 && added == 0) return;
-            YoungRabbit y = _rab.youngers[yInd];
+            YoungRabbit y = _youngers[yInd];
             RabNetEngRabbit r = _eng.getRabbit(y.ID);        
             if (atall == 0)
             {
-                r.CloneAddress = SmallAddress;
+                r.CloneAddress = AddressSmall;
                 r.KillIt(0, DR_ON_COUNT, "при подсчете", y.Group);
             }
             else
             {
                 RabNetEngRabbit clone = _eng.getRabbit(r.Clone(dead + killed, 0, 0, 0));
-                clone.CloneAddress = SmallAddress;
+                clone.CloneAddress = AddressSmall;
                 clone.KillIt(0, DR_ON_COUNT, "при подсчете", clone.Group);
                 //!!!тут надо списывать
                 if(added>0)
-                    _eng.db().СountKids(_id,dead, killed, added, _rab.youngers[yInd].ID);             
+                    _eng.db().СountKids(_id,dead, killed, added, _youngers[yInd].ID);             
             }
         }
 
@@ -548,7 +558,7 @@ namespace rabnet
 
            int nid = _eng.db().cloneRabbit(_id, count, farm, tier, sec, Rabbit.SexType.VOID, 0);
            RabNetEngRabbit rab = Engine.get().getRabbit(nid);       //+gambit
-           _eng.logs().log(RabNetLogs.LogType.CLONE_GROUP, _id, nid, SmallAddress, rab.SmallAddress, String.Format("{0:d} и {1:d}", Group-count ,count));
+           _eng.logs().log(RabNetLogs.LogType.CLONE_GROUP, _id, nid, AddressSmall, rab.AddressSmall, String.Format("{0:d} и {1:d}", Group-count ,count));
            return nid;
         }
         
@@ -559,14 +569,14 @@ namespace rabnet
         public void CombineWidth(int rabto)
         {
             RabNetEngRabbit rab = Engine.get().getRabbit(rabto);    //+gambit
-            _eng.logs().log(RabNetLogs.LogType.COMBINE, _id, rabto, SmallAddress, rab.SmallAddress , rab.FullName);
+            _eng.logs().log(RabNetLogs.LogType.COMBINE, _id, rabto, AddressSmall, rab.AddressSmall , rab.FullName);
             _eng.db().combineGroups(_id, rabto);
         }
 
         public void PlaceSuckerTo(int mother)
         {
             RabNetEngRabbit mom_to = Engine.get().getRabbit(mother);
-            _eng.logs().log(RabNetLogs.LogType.PLACE_SUCK, _id, mother, "", mom_to.SmallAddress);
+            _eng.logs().log(RabNetLogs.LogType.PLACE_SUCK, _id, mother, "", mom_to.AddressSmall);
             _eng.db().placeSucker(_id, mother);
         }
 
@@ -580,16 +590,16 @@ namespace rabnet
         {
             _eng.db().SetRabbitVaccine(_id,vid,date);
             Vaccine v =_eng.db().GetVaccine(vid);
-            _eng.logs().log(RabNetLogs.LogType.VACCINE, RabID, 0, SmallAddress, "", v.Name);
+            _eng.logs().log(RabNetLogs.LogType.VACCINE, ID, 0, AddressSmall, "", v.Name);
             if (withChildrens)
             {
                 foreach (YoungRabbit r in Youngers)
                 {
                     _eng.db().SetRabbitVaccine(r.ID, vid, date);
                 }
-                _rab.youngers = _eng.db().GetYoungers(_id);
+                _youngers = _eng.db().GetYoungers(_id);
             }
-            _rab.rabVacs = _eng.db().GetRabVac(_id);                        
+            _rabVacs = _eng.db().GetRabVac(_id);                        
         }
 
         /// <summary>
@@ -597,7 +607,19 @@ namespace rabnet
         /// </summary>
         public void YoungersUpdate()
         {
-            _rab.youngers = Engine.db().GetYoungers(_id);
+            _youngers = Engine.db().GetYoungers(_id);
+        }
+        #endregion methods
+
+        private void cloneOnThis(OneRabbit r)
+        {
+            Type t = r.GetType();
+
+            FieldInfo[] fis = t.GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+            foreach (FieldInfo f in fis)
+            {
+                f.SetValue(this, f.GetValue(r));
+            }
         }
     }
 }

@@ -166,7 +166,7 @@ namespace rabnet
                 return;
             }
             RabNetEngRabbit r = Engine.get().getRabbit((int)to.Tag);
-            if (new ReplaceYoungersForm((int)from.Tag, r.Parent).ShowDialog() == DialogResult.OK)
+            if (new ReplaceYoungersForm((int)from.Tag, r.ParentID).ShowDialog() == DialogResult.OK)
                 _rsb.Run();
         }
 

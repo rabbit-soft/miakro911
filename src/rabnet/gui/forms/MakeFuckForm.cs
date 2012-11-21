@@ -62,16 +62,16 @@ namespace rabnet
         private void fillNames()
         {
             cbName.Items.Clear();
-            names = Engine.db().catalogs().getFreeNames(2, rab1.Name);
+            names = Engine.db().catalogs().getFreeNames(2, rab1.NameID);
             cbName.Items.Add("");
             cbName.SelectedIndex = 0;
             foreach (int key in names.Keys)
             {
                 cbName.Items.Add(names[key]);
-                if (key == rab1.Name)
+                if (key == rab1.NameID)
                     cbName.SelectedIndex = cbName.Items.Count - 1;
             }
-            cbName.Enabled = btNames.Enabled = rab1.Name == 0;
+            cbName.Enabled = btNames.Enabled = rab1.NameID == 0;
         }
 
         public MakeFuckForm(int r1, int r2):this()
@@ -94,7 +94,7 @@ namespace rabnet
         {
             cs.Prepare();
             Filters flt = new Filters();
-            flt[Filters.RAB_ID] = rab1.RabID.ToString();
+            flt[Filters.RAB_ID] = rab1.ID.ToString();
             flt[Filters.HETEROSIS] = chHetererosis.Checked ? "1" : "0";
             flt[Filters.INBREEDING] = chInbreed.Checked ? "1" : "0";
             flt[Filters.MALE_WAIT] = _malewait.ToString();
@@ -106,8 +106,8 @@ namespace rabnet
             listView1.BeginUpdate();
             foreach (Fucks.Fuck f in fs.fucks)
             {
-                bool heter=(f.Breed != rab1.Breed);
-                bool inbr = RabNetEngHelper.inbreeding(rab1.Genom, f.rGenom);
+                bool heter=(f.Breed != rab1.BreedID);
+                bool inbr = RabNetEngHelper.inbreeding(rab1.Genoms, f.rGenom);
 
                 ListViewItem li = listView1.Items.Add(f.PartnerName);
                 li.UseItemStyleForSubItems = false;
@@ -154,7 +154,7 @@ namespace rabnet
                 return;
             }
             int r2 = (listView1.SelectedItems[0].Tag as Fucks.Fuck).PartnerId;
-            (new GenomViewForm(rab1.RabID, r2)).ShowDialog();
+            (new GenomViewForm(rab1.ID, r2)).ShowDialog();
         }
 
         private void btCancel_Click(object sender, EventArgs e)
@@ -178,11 +178,11 @@ namespace rabnet
             {
                 if (listView1.SelectedItems.Count != 1)
                     throw new ApplicationException("Выберите самца");
-                if (rab1.Name == 0 && cbName.SelectedIndex != 0)
+                if (rab1.NameID == 0 && cbName.SelectedIndex != 0)
                 {
                     foreach (int k in names.Keys)
                         if (cbName.Text == names[k])
-                            rab1.Name = k;
+                            rab1.NameID = k;
                     rab1.Commit();
                 }
 

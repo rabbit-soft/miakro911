@@ -294,9 +294,9 @@ namespace rabnet
                     if ( res== DialogResult.OK)
                     {
                         rab.SetVaccine(dlg.VacID, dlg.VacDate,false);
-                        if (rab.Parent != 0 && Engine.opt().getBoolOption(Options.OPT_ID.VACC_MOTHER))
+                        if (rab.ParentID != 0 && Engine.opt().getBoolOption(Options.OPT_ID.VACC_MOTHER))
                         {
-                            RabNetEngRabbit r2 = Engine.get().getRabbit(rab.Parent);
+                            RabNetEngRabbit r2 = Engine.get().getRabbit(rab.ParentID);
                             r2.SetVaccine(dlg.VacID, dlg.VacDate,false);
                         }                       
                     }

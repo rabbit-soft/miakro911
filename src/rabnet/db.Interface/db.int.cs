@@ -60,6 +60,7 @@ namespace rabnet
         RabTreeData rabbitGenTree(int rabbit);
         BldTreeData buildingsTree();       
         YoungRabbit[] GetYoungers(int momId);
+        OneRabbit[] GetNeighbors(int rabId);
         int[] getTiers(int farm);
         Building getBuilding(int tier);       
         List<sMeat> getMeats(DateTime date);

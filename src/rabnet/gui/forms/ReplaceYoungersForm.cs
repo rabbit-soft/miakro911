@@ -44,7 +44,7 @@ namespace rabnet
             listView1.Items.Clear();
             foreach (AdultRabbit moth in Engine.db().getMothers(r.Age, ad))
             {
-                if (moth.ID != r.Parent)
+                if (moth.ID != r.ParentID)
                 {
                     ListViewItem li = listView1.Items.Add(moth.NameFull);
                     li.SubItems.Add(moth.Age.ToString());
@@ -119,7 +119,7 @@ namespace rabnet
                         }
                         else
                         {
-                            rr = Engine.get().getRabbit(r.RabID);
+                            rr = Engine.get().getRabbit(r.ID);
                             rr = Engine.get().getRabbit(rr.Clone(vl, 0, 0, 0));
                         }
                         rr.PlaceSuckerTo((int)listView1.Items[i].Tag);

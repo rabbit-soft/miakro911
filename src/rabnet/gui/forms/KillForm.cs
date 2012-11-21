@@ -79,7 +79,7 @@ namespace rabnet
             {
                 ListViewItem li = listView1.Items.Add(r.FullName);
                 li.SubItems.Add(r.BreedName);
-                li.Tag=r.RabID;
+                li.Tag=r.ID;
                 li.SubItems.Add(r.Tag);
                 String sex = "?";
                 if (r.Sex == Rabbit.SexType.FEMALE) sex = "Ж";
@@ -154,7 +154,7 @@ namespace rabnet
                         int reason = 0;
                         if (cbDeadReason.SelectedIndex > 0)
                             reason = cbDeadReason.SelectedIndex + 2;//1- списан из старой программы; 2- Обьединение
-                        r.KillIt(dateDays1.DaysValue, reason, r.SmallAddress + " " + (textBox1.Text!=""?textBox1.Text:cbDeadReason.Text), cnt);
+                        r.KillIt(dateDays1.DaysValue, reason, r.AddressSmall + " " + (textBox1.Text!=""?textBox1.Text:cbDeadReason.Text), cnt);
                     }
                     i++;
                 }
@@ -180,7 +180,7 @@ namespace rabnet
             int id=(int)listView1.SelectedItems[0].Tag;
             foreach (RabNetEngRabbit r in rbs)
             {
-                if (r.RabID==id)
+                if (r.ID==id)
                 {
                     rbs.Remove(r);
                     update();

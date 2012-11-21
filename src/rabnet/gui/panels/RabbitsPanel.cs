@@ -440,7 +440,7 @@ namespace rabnet
             doc.DocumentElement.AppendChild(rw);
             if (er != null)
             {
-                or = Engine.db().getLiveDeadRabbit(er.RabID);
+                or = Engine.db().getLiveDeadRabbit(er.ID);
                 if (hasdoc==null)
                 {
                     ReportHelper.Append(rw, doc, "header", Engine.opt().getOption(Options.OPT_ID.SVID_HEAD));
@@ -462,15 +462,15 @@ namespace rabnet
                 ReportHelper.Append(rw, doc, "name", er.FullName);
                 ReportHelper.Append(rw, doc, "breed", er.BreedName);
                 ReportHelper.Append(rw, doc, "born_place", zones.ContainsKey(er.Zone) ? zones[er.Zone] : "-");
-                ReportHelper.Append(rw, doc, "born_date", er.Born.ToShortDateString());
+                ReportHelper.Append(rw, doc, "born_date", er.BirthDay.ToShortDateString());
                 ReportHelper.Append(rw, doc, "age", er.Age.ToString());
-                ReportHelper.Append(rw, doc, "address", er.SmallAddress);
+                ReportHelper.Append(rw, doc, "address", er.AddressSmall);
                 ReportHelper.Append(rw, doc, "weight", or.FWeight().ToString());
                 ReportHelper.Append(rw, doc, "weight_date", or.WeightDate.Date.ToShortDateString());
                 ReportHelper.Append(rw, doc, "weight_age", or.WeightAge.ToString());
-                ReportHelper.Append(rw, doc, "born", or.kidsOverAll.ToString());//сколько родила
+                ReportHelper.Append(rw, doc, "born", or.KidsOverAll.ToString());//сколько родила
                 ReportHelper.Append(rw, doc, "okrol", or.Okrol.ToString());
-                ReportHelper.Append(rw, doc, "genom", er.Genom.Replace(' ', ','));
+                ReportHelper.Append(rw, doc, "genom", er.Genoms.Replace(' ', ','));
                 ReportHelper.Append(rw, doc, "wclass", getBon("" + er.Bon[1]));
                 ReportHelper.Append(rw, doc, "bclass", getBon("" + er.Bon[1]));
                 ReportHelper.Append(rw, doc, "hclass", getBon("" + er.Bon[3]));
@@ -517,7 +517,7 @@ namespace rabnet
             else if (or != null)
             {
                 ReportHelper.Append(rw, doc, "sex", or.Sex==Rabbit.SexType.MALE?"male":"female");
-                ReportHelper.Append(rw, doc, "age", or.Status.ToString()+(or.zone==1?"(списан)":""));
+                ReportHelper.Append(rw, doc, "age", or.Status.ToString()+(or.Zone==1?"(списан)":""));
                 ReportHelper.Append(rw, doc, "weight", or.Rate.ToString());
                 ReportHelper.Append(rw, doc, "class", getBon(or.Bon));
                 ReportHelper.Append(rw, doc, "name", or.NameFull);
@@ -570,7 +570,7 @@ namespace rabnet
             XmlDocument[] docs=new XmlDocument[7];
             RabNetEngRabbit r=Engine.get().getRabbit((int)listView1.SelectedItems[0].Tag);
             docs[0]=rabToXml(r,null);
-            OneRabbit[] p1 = Engine.db().getParents(r.RabID, r.Age);
+            OneRabbit[] p1 = Engine.db().getParents(r.ID, r.Age);
             docs[1] = rabToXml(null, p1[0]);
             docs[2] = rabToXml(null, p1[1]);
             OneRabbit[] p2;

@@ -206,6 +206,10 @@ namespace db.mysql
         {
             return Youngers.GetYoungers(sql,momId);
         }
+        public OneRabbit[] GetNeighbors(int rabId)
+        {
+            return RabbitGetter.GetNeighbors(sql, rabId);
+        }
 
         public int[] getTiers(int farm)
         {

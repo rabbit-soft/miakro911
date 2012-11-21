@@ -84,7 +84,7 @@ namespace rabnet
                 li.SubItems.Add(rbs[i].Group.ToString());
                 li.Tag=rbs[i];
                 li.SubItems.Add(rbs[i].FullName);
-                li.SubItems.Add(brd[rbs[i].Breed]);
+                li.SubItems.Add(brd[rbs[i].BreedID]);
                 li.SubItems.Add(rbs[i].Address);
             }
             if (plast)
@@ -120,7 +120,7 @@ namespace rabnet
             if (listView1.SelectedItems.Count != 1)
                 return;
             RabbitInfo dlg = new RabbitInfo(listView1.SelectedItems[0].Tag as RabNetEngRabbit);
-            if (dlg.ShowDialog() == DialogResult.Cancel && (listView1.SelectedItems[0].Tag as RabNetEngRabbit).Name==0)
+            if (dlg.ShowDialog() == DialogResult.Cancel && (listView1.SelectedItems[0].Tag as RabNetEngRabbit).NameID==0)
                 rbs.RemoveAt(rbs.Count-1);
             update(false);
         }
@@ -162,7 +162,7 @@ namespace rabnet
         private void commit(RabNetEngRabbit r1)
         {
             if (r1.Tag != "done")
-                r1.newCommit();
+                r1.CommitNew();
             r1.Tag = "done";
         }
 
@@ -176,14 +176,14 @@ namespace rabnet
                 bool same_names = false;
                 foreach (RabNetEngRabbit r in rbs)
                 {
-                    if (r.Name == 0 && r.Surname==0) no_names = true;
+                    if (r.NameID == 0 && r.SurnameID==0) no_names = true;
                     if (r.Address == Rabbit.NULL_ADDRESS) no_addresses = true;
-                    if (r.Genom == "") no_gens = true;
+                    if (r.Genoms == "") no_gens = true;
                     if (!same_names)
                     {
                         foreach (RabNetEngRabbit r2 in rbs)
                         {
-                            if (r != r2 && r.Name == r2.Name)
+                            if (r != r2 && r.NameID == r2.NameID)
                                 same_names = true;
                         }
                     }
@@ -217,7 +217,7 @@ namespace rabnet
                             RabNetEngRabbit chl = r2;
                             if (isMom(r2)) { chl = r; mom = r2; }
                             commit(mom);
-                            chl.Mom=mom.RabID;
+                            chl.Mom=mom.ID;
                             commit(chl);
                         }
                     }
