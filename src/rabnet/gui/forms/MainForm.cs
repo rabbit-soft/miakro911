@@ -28,6 +28,10 @@ namespace rabnet
         private RabNetPanel curpanel=null;
         private static MainForm me = null;
         private static bool _mustclose = false;
+#if PROTECTED
+        private DateTime _lastPTest = DateTime.MinValue;
+        private const int PTEST_DELAY_SEC =5*60;
+#endif
 
         public static bool MustClose { get { return _mustclose; } }
 
@@ -240,13 +244,23 @@ namespace rabnet
             tNoWorking.Stop();
             tNoWorking.Start();
 #if PROTECTED
-            if ((DateTime.Today < GRD.Instance.GetDateStart()) || (DateTime.Today > GRD.Instance.GetDateEnd()))
+            if (timeToPTest() && (DateTime.Today < GRD.Instance.GetDateStart() || DateTime.Today > GRD.Instance.GetDateEnd()))
             {
                 MessageBox.Show("Срок дейсвия лицензии истек!" + Environment.NewLine +
                                 "Ваша лицензия позволяла работать с " + GRD.Instance.GetDateStart().ToShortDateString() + " по " + GRD.Instance.GetDateEnd().ToShortDateString() + Environment.NewLine +
                                 "Для продления обратитесь к продавцу у которого вы приобрели программу." + Environment.NewLine + "Программа будет закрыта.", "Истекла лицензия", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 Environment.Exit(101);
             }
+
+        }
+
+        private bool timeToPTest()
+        {
+            TimeSpan testDelay = DateTime.Now.Subtract(_lastPTest);           
+            bool res = testDelay.TotalSeconds >= PTEST_DELAY_SEC; 
+            if(res)
+                _lastPTest = DateTime.Now;
+            return res;
 #endif
         }
         /// <summary>
