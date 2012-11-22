@@ -45,24 +45,24 @@
             this.chAddress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chNotes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.actMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.passportMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newRab = new System.Windows.Forms.ToolStripMenuItem();
-            this.makeBon = new System.Windows.Forms.ToolStripMenuItem();
+            this.miPassport = new System.Windows.Forms.ToolStripMenuItem();
+            this.miIncome = new System.Windows.Forms.ToolStripMenuItem();
+            this.miBon = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.KillMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.replaceMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.boysoutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.replaceYoungersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.placeChMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fuckMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miKill = new System.Windows.Forms.ToolStripMenuItem();
+            this.miReplace = new System.Windows.Forms.ToolStripMenuItem();
+            this.miBoysOut = new System.Windows.Forms.ToolStripMenuItem();
+            this.miYoungersOut = new System.Windows.Forms.ToolStripMenuItem();
+            this.miPlaceGhange = new System.Windows.Forms.ToolStripMenuItem();
+            this.miFucks = new System.Windows.Forms.ToolStripMenuItem();
             this.proholostMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.okrolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.countKidsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miCountKids = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.svidMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.plemMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.realizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.replacePlanMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miRealize = new System.Windows.Forms.ToolStripMenuItem();
+            this.miPlanReplace = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.miGenetic = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -195,24 +195,24 @@
             // actMenu
             // 
             this.actMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.passportMenuItem,
-            this.newRab,
-            this.makeBon,
+            this.miPassport,
+            this.miIncome,
+            this.miBon,
             this.toolStripSeparator1,
-            this.KillMenuItem,
-            this.replaceMenuItem,
-            this.boysoutMenuItem,
-            this.replaceYoungersMenuItem,
-            this.placeChMenuItem,
-            this.fuckMenuItem,
+            this.miKill,
+            this.miReplace,
+            this.miBoysOut,
+            this.miYoungersOut,
+            this.miPlaceGhange,
+            this.miFucks,
             this.proholostMenuItem,
             this.okrolMenuItem,
-            this.countKidsMenuItem,
+            this.miCountKids,
             this.toolStripSeparator2,
             this.svidMenuItem,
             this.plemMenuItem,
-            this.realizeMenuItem,
-            this.replacePlanMenuItem,
+            this.miRealize,
+            this.miPlanReplace,
             this.toolStripSeparator3,
             this.miGenetic,
             this.toolStripSeparator4,
@@ -221,75 +221,75 @@
             this.actMenu.Size = new System.Drawing.Size(237, 446);
             this.actMenu.Opening += new System.ComponentModel.CancelEventHandler(this.actMenu_Opening);
             // 
-            // passportMenuItem
+            // miPassport
             // 
-            this.passportMenuItem.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-            this.passportMenuItem.Name = "passportMenuItem";
-            this.passportMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.passportMenuItem.Text = "Паспорт";
-            this.passportMenuItem.Click += new System.EventHandler(this.passportMenuItem_Click);
+            this.miPassport.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.miPassport.Name = "miPassport";
+            this.miPassport.Size = new System.Drawing.Size(236, 22);
+            this.miPassport.Text = "Паспорт";
+            this.miPassport.Click += new System.EventHandler(this.miPassport_Click);
             // 
-            // newRab
+            // miIncome
             // 
-            this.newRab.Name = "newRab";
-            this.newRab.Size = new System.Drawing.Size(236, 22);
-            this.newRab.Text = "Привоз";
-            this.newRab.Click += new System.EventHandler(this.newRab_Click);
+            this.miIncome.Name = "miIncome";
+            this.miIncome.Size = new System.Drawing.Size(236, 22);
+            this.miIncome.Text = "Привоз";
+            this.miIncome.Click += new System.EventHandler(this.miIncome_Click);
             // 
-            // makeBon
+            // miBon
             // 
-            this.makeBon.Name = "makeBon";
-            this.makeBon.Size = new System.Drawing.Size(236, 22);
-            this.makeBon.Text = "Бонитировка";
-            this.makeBon.Click += new System.EventHandler(this.makeBon_Click);
+            this.miBon.Name = "miBon";
+            this.miBon.Size = new System.Drawing.Size(236, 22);
+            this.miBon.Text = "Бонитировка";
+            this.miBon.Click += new System.EventHandler(this.miBon_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(233, 6);
             // 
-            // KillMenuItem
+            // miKill
             // 
-            this.KillMenuItem.Name = "KillMenuItem";
-            this.KillMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.KillMenuItem.Text = "Списание";
-            this.KillMenuItem.Click += new System.EventHandler(this.KillMenuItem_Click);
+            this.miKill.Name = "miKill";
+            this.miKill.Size = new System.Drawing.Size(236, 22);
+            this.miKill.Text = "Списание";
+            this.miKill.Click += new System.EventHandler(this.miKill_Click);
             // 
-            // replaceMenuItem
+            // miReplace
             // 
-            this.replaceMenuItem.Name = "replaceMenuItem";
-            this.replaceMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.replaceMenuItem.Text = "Пересадить";
-            this.replaceMenuItem.Click += new System.EventHandler(this.replaceMenuItem_Click);
+            this.miReplace.Name = "miReplace";
+            this.miReplace.Size = new System.Drawing.Size(236, 22);
+            this.miReplace.Text = "Пересадить";
+            this.miReplace.Click += new System.EventHandler(this.miReplace_Click);
             // 
-            // boysoutMenuItem
+            // miBoysOut
             // 
-            this.boysoutMenuItem.Name = "boysoutMenuItem";
-            this.boysoutMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.boysoutMenuItem.Text = "Отсадить мальчиков";
-            this.boysoutMenuItem.Visible = false;
-            this.boysoutMenuItem.Click += new System.EventHandler(this.boysoutMenuItem_Click);
+            this.miBoysOut.Name = "miBoysOut";
+            this.miBoysOut.Size = new System.Drawing.Size(236, 22);
+            this.miBoysOut.Text = "Отсадить мальчиков";
+            this.miBoysOut.Visible = false;
+            this.miBoysOut.Click += new System.EventHandler(this.miBoysOut_Click);
             // 
-            // replaceYoungersMenuItem
+            // miYoungersOut
             // 
-            this.replaceYoungersMenuItem.Name = "replaceYoungersMenuItem";
-            this.replaceYoungersMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.replaceYoungersMenuItem.Text = "Отсадить молодняк";
-            this.replaceYoungersMenuItem.Click += new System.EventHandler(this.replaceYoungersMenuItem_Click);
+            this.miYoungersOut.Name = "miYoungersOut";
+            this.miYoungersOut.Size = new System.Drawing.Size(236, 22);
+            this.miYoungersOut.Text = "Отсадить молодняк";
+            this.miYoungersOut.Click += new System.EventHandler(this.miYoungersOut_Click);
             // 
-            // placeChMenuItem
+            // miPlaceGhange
             // 
-            this.placeChMenuItem.Name = "placeChMenuItem";
-            this.placeChMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.placeChMenuItem.Text = "Жилобмен";
-            this.placeChMenuItem.Click += new System.EventHandler(this.placeChMenuItem_Click);
+            this.miPlaceGhange.Name = "miPlaceGhange";
+            this.miPlaceGhange.Size = new System.Drawing.Size(236, 22);
+            this.miPlaceGhange.Text = "Жилобмен";
+            this.miPlaceGhange.Click += new System.EventHandler(this.miPlaceGhange_Click);
             // 
-            // fuckMenuItem
+            // miFucks
             // 
-            this.fuckMenuItem.Name = "fuckMenuItem";
-            this.fuckMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.fuckMenuItem.Text = "Случка";
-            this.fuckMenuItem.Click += new System.EventHandler(this.fuckMenuItem_Click);
+            this.miFucks.Name = "miFucks";
+            this.miFucks.Size = new System.Drawing.Size(236, 22);
+            this.miFucks.Text = "Случка";
+            this.miFucks.Click += new System.EventHandler(this.miFucks_Click);
             // 
             // proholostMenuItem
             // 
@@ -305,12 +305,12 @@
             this.okrolMenuItem.Text = "Принять окрол";
             this.okrolMenuItem.Click += new System.EventHandler(this.okrolMenuItem_Click);
             // 
-            // countKidsMenuItem
+            // miCountKids
             // 
-            this.countKidsMenuItem.Name = "countKidsMenuItem";
-            this.countKidsMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.countKidsMenuItem.Text = "Подсчет гнездовых";
-            this.countKidsMenuItem.Click += new System.EventHandler(this.countKidsMenuItem_Click);
+            this.miCountKids.Name = "miCountKids";
+            this.miCountKids.Size = new System.Drawing.Size(236, 22);
+            this.miCountKids.Text = "Подсчет гнездовых";
+            this.miCountKids.Click += new System.EventHandler(this.countKidsMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -331,19 +331,19 @@
             this.plemMenuItem.Text = "Племенной список";
             this.plemMenuItem.Click += new System.EventHandler(this.plemMenuItem_Click);
             // 
-            // realizeMenuItem
+            // miRealize
             // 
-            this.realizeMenuItem.Name = "realizeMenuItem";
-            this.realizeMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.realizeMenuItem.Text = "Кандидаты на реализацию";
-            this.realizeMenuItem.Click += new System.EventHandler(this.realizeMenuItem_Click);
+            this.miRealize.Name = "miRealize";
+            this.miRealize.Size = new System.Drawing.Size(236, 22);
+            this.miRealize.Text = "Кандидаты на реализацию";
+            this.miRealize.Click += new System.EventHandler(this.miRealize_Click);
             // 
-            // replacePlanMenuItem
+            // miPlanReplace
             // 
-            this.replacePlanMenuItem.Name = "replacePlanMenuItem";
-            this.replacePlanMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.replacePlanMenuItem.Text = "План пересадок";
-            this.replacePlanMenuItem.Click += new System.EventHandler(this.replacePlanMenuItem_Click);
+            this.miPlanReplace.Name = "miPlanReplace";
+            this.miPlanReplace.Size = new System.Drawing.Size(236, 22);
+            this.miPlanReplace.Text = "План пересадок";
+            this.miPlanReplace.Click += new System.EventHandler(this.miPlanReplace_Click);
             // 
             // toolStripSeparator3
             // 
@@ -355,7 +355,7 @@
             this.miGenetic.Name = "miGenetic";
             this.miGenetic.Size = new System.Drawing.Size(236, 22);
             this.miGenetic.Text = "Показать родословную";
-            this.miGenetic.Click += new System.EventHandler(this.GeneticsToolStripMenuItem_Click);
+            this.miGenetic.Click += new System.EventHandler(this.miGenetic_Click);
             // 
             // toolStripSeparator4
             // 
@@ -418,26 +418,26 @@
         private System.Windows.Forms.ColumnHeader chNotes;
         private RabGenTreeView tvGens;
         private System.Windows.Forms.ContextMenuStrip actMenu;
-        private System.Windows.Forms.ToolStripMenuItem passportMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem newRab;
-        private System.Windows.Forms.ToolStripMenuItem makeBon;
+        private System.Windows.Forms.ToolStripMenuItem miPassport;
+        private System.Windows.Forms.ToolStripMenuItem miIncome;
+        private System.Windows.Forms.ToolStripMenuItem miBon;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem proholostMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripMenuItem replaceMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem placeChMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem KillMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem countKidsMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem fuckMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem miReplace;
+        private System.Windows.Forms.ToolStripMenuItem miPlaceGhange;
+        private System.Windows.Forms.ToolStripMenuItem miKill;
+        private System.Windows.Forms.ToolStripMenuItem miCountKids;
+        private System.Windows.Forms.ToolStripMenuItem miFucks;
         private System.Windows.Forms.ToolStripMenuItem okrolMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem boysoutMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem replaceYoungersMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem miBoysOut;
+        private System.Windows.Forms.ToolStripMenuItem miYoungersOut;
         private System.Windows.Forms.ToolStripMenuItem svidMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem realizeMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem miRealize;
 		private System.Windows.Forms.ToolStripMenuItem miGenetic;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem plemMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem replacePlanMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem miPlanReplace;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem показатьНомерToolStripMenuItem;
     }

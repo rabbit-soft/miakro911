@@ -43,6 +43,7 @@
             this.параметрыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDeadsArchive = new System.Windows.Forms.ToolStripMenuItem();
             this.miMeal = new System.Windows.Forms.ToolStripMenuItem();
+            this.miLogs = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.namesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.breedsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -88,7 +89,6 @@
             this.tpButcher = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rabStatusBar1 = new rabnet.RabStatusBar();
-            this.miLogs = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -196,6 +196,13 @@
             this.miMeal.Size = new System.Drawing.Size(208, 22);
             this.miMeal.Text = "Учет кормов";
             this.miMeal.Click += new System.EventHandler(this.miMeal_Click);
+            // 
+            // miLogs
+            // 
+            this.miLogs.Name = "miLogs";
+            this.miLogs.Size = new System.Drawing.Size(208, 22);
+            this.miLogs.Text = "Логи";
+            this.miLogs.Click += new System.EventHandler(this.miLogs_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -572,13 +579,6 @@
             this.rabStatusBar1.Size = new System.Drawing.Size(914, 23);
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
-            // 
-            // miLogs
-            // 
-            this.miLogs.Name = "miLogs";
-            this.miLogs.Size = new System.Drawing.Size(208, 22);
-            this.miLogs.Text = "Логи";
-            this.miLogs.Click += new System.EventHandler(this.miLogs_Click);
             // 
             // MainForm
             // 

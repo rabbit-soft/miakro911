@@ -113,11 +113,13 @@ namespace rabnet
             _logger.Fatal(ex.Message, ex);
             if (ex.Source == "MySql.Data")
             {
-                MessageBox.Show("Соединение с сервером было разорвано.\n\rПрграмма будет закрыта");
+                MessageBox.Show("Соединение с сервером было разорвано."+Environment.NewLine+
+                    "Программа будет закрыта");
+                Environment.Exit(0);
             }
             else
             {
-                MessageBox.Show("Произошла ошибка. Программа будет закрыта.\n\r" + ex.Message);
+                MessageBox.Show("Произошла необработанная ошибка."+Environment.NewLine + ex.Message);
             }         
         }
 
@@ -129,7 +131,7 @@ namespace rabnet
             }
             finally
             {
-                Environment.Exit(0);
+                //Environment.Exit(0);
             }
         }
 
@@ -141,7 +143,7 @@ namespace rabnet
             }
             finally
             {
-                Environment.Exit(0);
+                //Environment.Exit(0);
             }
         }
 #endif

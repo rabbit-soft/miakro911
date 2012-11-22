@@ -19,7 +19,7 @@ namespace rabnet
 {
     public partial class MainForm : Form
     {
-        protected static readonly ILog log = LogManager.GetLogger(typeof(MainForm));
+        protected static readonly ILog _logger = LogManager.GetLogger(typeof(MainForm));
         private bool manual = false;
         private RabNetPanel[] panels =null;
         /// <summary>
@@ -39,7 +39,7 @@ namespace rabnet
         {
             InitializeComponent(); 
             me = this;
-            log.Debug("Program started");
+            _logger.Debug("Program started");
             panels=new RabNetPanel[]
             {
                 new RabbitsPanel(rabStatusBar1),
@@ -79,6 +79,7 @@ namespace rabnet
                 CAS.ScaleForm.StartMonitoring();
             }
 #endif
+            _mustclose = false;
             usersMenuItem.Visible = Engine.get().isAdmin();
             manual = true;
             rabStatusBar1.setText(0, Engine.db().now().ToShortDateString());
@@ -216,7 +217,7 @@ namespace rabnet
                 e.Cancel = true;
             }
 
-            log.Debug("CloseReason: " + e.CloseReason.ToString());
+            _logger.Debug("CloseReason: " + e.CloseReason.ToString());
         }
 
         private void usersMenuItem_Click(object sender, EventArgs e)
@@ -228,12 +229,11 @@ namespace rabnet
         /// <summary>
         /// При срабатывании таймера, происходит выход в меню выбора юзера
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void tNoWorking_Tick(object sender, EventArgs e)
         {
             LoginForm.stop = false;
-            _mustclose = true;
+            _logger.Debug("closing by wait timeout");
+            _mustclose = true;            
             Close();
         }
         /// <summary>
@@ -242,7 +242,7 @@ namespace rabnet
         public void Working()
         {
             tNoWorking.Stop();
-            tNoWorking.Start();
+            tNoWorking.Start();            
 #if PROTECTED
             if (timeToPTest() && (DateTime.Today < GRD.Instance.GetDateStart() || DateTime.Today > GRD.Instance.GetDateEnd()))
             {

@@ -50,7 +50,7 @@ namespace rabnet
         }
         public class ExNoRabbit : ApplicationException
         {
-            public ExNoRabbit() : base("Кролик не существует.") { }
+            public ExNoRabbit() : base("Кролик не существует или списан.") { }
         }
         #endregion exceptions
         //private int _id;

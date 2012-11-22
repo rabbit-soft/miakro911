@@ -172,13 +172,13 @@ namespace rabnet
         /// <param name="kids"></param>
         private void setMenu(int sex,int multi,bool kids)
         {
-            makeBon.Visible = passportMenuItem.Visible=proholostMenuItem.Visible=false;
-            replaceMenuItem.Visible = placeChMenuItem.Visible= false;
-            KillMenuItem.Visible = countKidsMenuItem.Visible=false;
-            okrolMenuItem.Visible = fuckMenuItem.Visible= false;
-            boysoutMenuItem.Visible = replaceYoungersMenuItem.Visible= false;
-            svidMenuItem.Visible = realizeMenuItem.Visible= false;
-            plemMenuItem.Visible = replacePlanMenuItem.Visible= false;
+            miBon.Visible = miPassport.Visible=proholostMenuItem.Visible=false;
+            miReplace.Visible = miPlaceGhange.Visible= false;
+            miKill.Visible = miCountKids.Visible=false;
+            okrolMenuItem.Visible = miFucks.Visible= false;
+            miBoysOut.Visible = miYoungersOut.Visible= false;
+            svidMenuItem.Visible = miRealize.Visible= false;
+            plemMenuItem.Visible = miPlanReplace.Visible= false;
             toolStripSeparator1.Visible = toolStripSeparator2.Visible = toolStripSeparator3.Visible = false;//separators
             miGenetic.Visible = false;
 
@@ -186,22 +186,22 @@ namespace rabnet
             toolStripSeparator1.Visible = true;
             miGenetic.Visible = toolStripSeparator3.Visible = true;
             plemMenuItem.Visible = true;
-            KillMenuItem.Visible = true;
-            realizeMenuItem.Visible = true;
-            replaceMenuItem.Visible = true;
-            countKidsMenuItem.Visible = replaceYoungersMenuItem.Visible = toolStripSeparator2.Visible = kids;
+            miKill.Visible = true;
+            miRealize.Visible = true;
+            miReplace.Visible = true;
+            miCountKids.Visible = miYoungersOut.Visible = toolStripSeparator2.Visible = kids;
             if (multi==1)
-                makeBon.Visible = true;
+                miBon.Visible = true;
             if (multi == 2)
-                placeChMenuItem.Visible = true;
+                miPlaceGhange.Visible = true;
             if (sex != 3 && multi == 1)
             {
-                passportMenuItem.Visible = true;
+                miPassport.Visible = true;
             }
             if (sex == 2 && multi == 1)
             {
-                fuckMenuItem.Text = isBride() ? "Случка" : "Вязка";
-                fuckMenuItem.Visible = !isGirl() && GroupCount()==1;
+                miFucks.Text = isBride() ? "Случка" : "Вязка";
+                miFucks.Visible = !isGirl() && GroupCount()==1;
             }
             if ((sex == 1 || sex == 2 || sex==4) && multi == 1)
             {
@@ -213,7 +213,7 @@ namespace rabnet
                 okrolMenuItem.Visible = true;
             }
             if (multi > 1 || (multi==1 && listView1.SelectedItems[0].SubItems[NFIELD].Text[0]=='['))
-                replacePlanMenuItem.Visible=true;
+                miPlanReplace.Visible=true;
         }
 
         public override ContextMenuStrip getMenu()
@@ -222,140 +222,28 @@ namespace rabnet
             return actMenu;
         }
 
-        private void passportMenuItem_Click(object sender, EventArgs e)
+        private void miPassport_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count != 1)
-                return;
-            RabbitInfo ri = new RabbitInfo((int)listView1.SelectedItems[0].Tag);
-            if (ri.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+            if (listView1.SelectedItems.Count != 1) return;
+            try
+            {
+                RabbitInfo ri = new RabbitInfo((int)listView1.SelectedItems[0].Tag);
+                if (ri.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                    _rsb.Run();
+            }
+            catch(Exception exc)
+            {
+                MessageBox.Show(exc.Message);
                 _rsb.Run();
+            }
         }
 
         private void listView1_DoubleClick(object sender, EventArgs e)
         {
             listView1_SelectedIndexChanged(null, null);
             actMenu_Opening(null, null);
-            passportMenuItem.PerformClick();
-        }
-
-        private void makeBon_Click(object sender, EventArgs e)
-        {
-            if (listView1.SelectedItems.Count!=1)
-                return;
-            int rid=(int)listView1.SelectedItems[0].Tag;
-            if( (new BonForm(rid)).ShowDialog() == DialogResult.OK)
-                _rsb.Run();
-        }
-
-        private void proholostMenuItem_Click(object sender, EventArgs e)
-        {
-            if (listView1.SelectedItems.Count != 1)
-                return;
-            int rid = (int)listView1.SelectedItems[0].Tag;
-            if ((new Proholost(rid)).ShowDialog() == DialogResult.OK && !MainForm.MustClose)
-                _rsb.Run();
-        }
-
-        private void newRab_Click(object sender, EventArgs e)
-        {
-#if !DEBUG
-            try
-            {
-#endif
-            if ((new IncomeForm()).ShowDialog() == DialogResult.OK && !MainForm.MustClose)
-                    _rsb.Run();
-#if !DEBUG
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-#endif
-        }
-
-        private void replaceMenuItem_Click(object sender, EventArgs e)
-        {
-            if (listView1.SelectedItems.Count < 1) return;
-
-            ReplaceForm rpf = new ReplaceForm();
-            foreach (ListViewItem li in listView1.SelectedItems)
-                rpf.AddRabbit((int)li.Tag);
-            if (rpf.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
-                _rsb.Run();
-        }
-
-        private void placeChMenuItem_Click(object sender, EventArgs e)
-        {
-            if (listView1.SelectedItems.Count != 2) return;
-
-            ReplaceForm rpf = new ReplaceForm();
-            rpf.AddRabbit((int)listView1.SelectedItems[0].Tag);
-            rpf.AddRabbit((int)listView1.SelectedItems[1].Tag);
-            rpf.SetAction(ReplaceForm.Action.CHANGE);
-            if (rpf.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
-                _rsb.Run();
-        }
-
-        private void KillMenuItem_Click(object sender, EventArgs e)
-        {
-            if (listView1.SelectedItems.Count < 1) return;
-            if (Engine.db().getDeadReasons().Get().ColNames.Length == 0)
-            {
-                MessageBox.Show("Нет ни одной причины списания. Вы можете добавить их в  меню Вид->Причины списания");
-                return;
-            }
-            KillForm f = new KillForm();
-            foreach (ListViewItem li in listView1.SelectedItems)
-                f.addRabbit((int)li.Tag);
-            if (f.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
-                _rsb.Run();
-        }
-
-        private void countKidsMenuItem_Click(object sender, EventArgs e)
-        {
-            if (listView1.SelectedItems.Count != 1)
-                return;
-            CountKids f = new CountKids((int)listView1.SelectedItems[0].Tag);
-            if (f.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
-                _rsb.Run();
-        }
-
-        private void okrolMenuItem_Click(object sender, EventArgs e)
-        {
-            if (listView1.SelectedItems.Count != 1)
-                return;
-            OkrolForm dlg =new OkrolForm((int)listView1.SelectedItems[0].Tag);
-            if (dlg.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
-                _rsb.Run();
-        }
-
-        private void fuckMenuItem_Click(object sender, EventArgs e)
-        {
-            if (listView1.SelectedItems.Count != 1)
-                return;
-            MakeFuckForm dlg = new MakeFuckForm((int)listView1.SelectedItems[0].Tag);
-            if (dlg.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
-                _rsb.Run();
-        }
-
-        private void boysoutMenuItem_Click(object sender, EventArgs e)
-        {
-            if (listView1.SelectedItems.Count != 1)
-                return;
-            ReplaceForm rpf = new ReplaceForm();
-            rpf.AddRabbit((int)listView1.SelectedItems[0].Tag);
-            rpf.SetAction(ReplaceForm.Action.BOYSOUT);
-            if (rpf.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
-                _rsb.Run();
-        }
-
-        private void replaceYoungersMenuItem_Click(object sender, EventArgs e)
-        {
-            if (listView1.SelectedItems.Count != 1) return;
-
-            if (PreReplaceYoungersForm.MakeChoice((int)listView1.SelectedItems[0].Tag) == DialogResult.OK && !MainForm.MustClose)
-                _rsb.Run();
-        }
+            miPassport.PerformClick();
+        }  
 
         private int GroupCount()
         {
@@ -562,111 +450,7 @@ namespace rabnet
             }
             return doc;
         }
-
-        private void svidMenuItem_Click(object sender, EventArgs e)
-        {
-#if !DEMO
-            if (listView1.SelectedItems.Count != 1) return;
-            XmlDocument[] docs=new XmlDocument[7];
-            RabNetEngRabbit r=Engine.get().getRabbit((int)listView1.SelectedItems[0].Tag);
-            docs[0]=rabToXml(r,null);
-            OneRabbit[] p1 = Engine.db().getParents(r.ID, r.Age);
-            docs[1] = rabToXml(null, p1[0]);
-            docs[2] = rabToXml(null, p1[1]);
-            OneRabbit[] p2;
-            if (p1[0] != null)
-                p2 = Engine.db().getParents(p1[0].ID, p1[0].Age);
-            else
-                p2 = new OneRabbit[] { null, null };
-            docs[3] = rabToXml(null, p2[0]);
-            docs[4] = rabToXml(null, p2[1]);
-            if (p1[1] != null)
-                p2 = Engine.db().getParents(p1[1].ID, p1[1].Age);
-            else
-                p2 = new OneRabbit[] { null, null };
-            docs[5] = rabToXml(null, p2[0]);
-            docs[6] = rabToXml(null, p2[1]);
-            ReportViewForm rf = new ReportViewForm(myReportType.RABBIT, docs);
-            rf.ShowDialog();
-            if (rf.printed)
-            {
-                int num = Engine.opt().getIntOption(Options.OPT_ID.NEXT_SVID);
-                Engine.opt().setOption(Options.OPT_ID.NEXT_SVID, num + 1);
-            }
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
-        }
-
-        private void plemMenuItem_Click(object sender, EventArgs e)
-        {
-#if !DEMO
-            if (listView1.SelectedItems.Count < 1) return;
-            XmlDocument doc = new XmlDocument();
-            doc.AppendChild(doc.CreateElement("Rows"));
-            int cnt = 0;
-            string brd = "";
-            foreach (ListViewItem li in listView1.SelectedItems)
-            {
-                RabNetEngRabbit r = Engine.get().getRabbit((int)li.Tag);
-                cnt += r.Group;
-                if (brd == "")
-                    brd = r.BreedName;
-                if (r.BreedName != brd)
-                    brd = "none";
-                rabToXml(r, null, doc);
-            }
-            XmlDocument doc2 = new XmlDocument();
-            XmlElement rw = (XmlElement)doc2.AppendChild(doc2.CreateElement("Rows")).AppendChild(doc2.CreateElement("Row"));
-            ReportHelper.Append(rw, doc2, "date", DateTime.Now.Date.ToShortDateString() + " " + DateTime.Now.ToLongTimeString());
-            ReportHelper.Append(rw, doc2, "breed", brd);
-            ReportHelper.Append(rw, doc2, "count", cnt.ToString());
-            //rw.AppendChild(doc2.CreateElement("date")).AppendChild(doc2.CreateTextNode(DateTime.Now.Date.ToShortDateString()+" "+DateTime.Now.ToLongTimeString()));
-            //rw.AppendChild(doc2.CreateElement("breed")).AppendChild(doc2.CreateTextNode(brd));
-            //rw.AppendChild(doc2.CreateElement("count")).AppendChild(doc2.CreateTextNode(cnt.ToString()));
-            new ReportViewForm(myReportType.PRIDE, new XmlDocument[] { doc, doc2 }).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
-        }
-
-        private void realizeMenuItem_Click(object sender, EventArgs e)
-        {
-#if !DEMO
-            if (listView1.SelectedItems.Count < 1) return;
-            Filters f = new Filters();
-            f["cnt"] = listView1.SelectedItems.Count.ToString();
-            for (int i = 0; i < listView1.SelectedItems.Count; i++)
-                f["r" + i.ToString()] = ((int)listView1.SelectedItems[i].Tag).ToString();
-            new ReportViewForm(myReportType.REALIZE, Engine.db().makeReport(myReportType.REALIZE, f)).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
-        }
-
-		private void GeneticsToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (listView1.SelectedItems.Count < 1) return;
-#if PROTECTED
-            if (!RabGRD.GRD.Instance.GetFlag(RabGRD.GRD_Base.FlagType.Genetics))
-            {
-                MessageBox.Show("Текущая лицензия не распространяется на данный модуль");
-                return;
-            }
-#endif
-            if (GeneticsManagerSafe.GeneticsModuleTest())
-			{
-				for (int i = 0; i < listView1.SelectedItems.Count; i++)
-				{
-                    GeneticsManagerSafe.AddNewGenetics(((int)listView1.SelectedItems[i].Tag));
-				}
-			}
-			else
-			{
-				MessageBox.Show("Не найден модуль 'gui_genetics.dll'!\nПроверьте правильность установки программы.", "Модуль генетики", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-		}
-
+       
         private void actMenu_Opening(object sender, CancelEventArgs e)
         {
             if (listView1.SelectedItems.Count < 1)
@@ -692,32 +476,6 @@ namespace rabnet
             if (listView1.SelectedItems.Count == 1 && listView1.SelectedItems[0].SubItems[NFIELD].Text[0] == '+')
                 kids = true;
             setMenu(isx, listView1.SelectedItems.Count, kids);
-        }
-
-        private void replacePlanMenuItem_Click(object sender, EventArgs e)
-        {
-#if !DEMO
-            if (listView1.SelectedItems.Count < 1) return;
-            XmlDocument doc = new XmlDocument();
-            doc.AppendChild(doc.CreateElement("Rows"));
-            foreach (ListViewItem li in listView1.SelectedItems)
-            {
-                XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
-                ReportHelper.Append(rw, doc, "age", li.SubItems[2].Text); //rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(li.SubItems[2].Text));
-                String cn=li.SubItems[11].Text;
-                if (cn.IndexOf('[') > -1)
-                    cn = cn.Remove(cn.IndexOf('['));
-                ReportHelper.Append(rw, doc, "address", cn); //rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(cn));
-                cn=li.SubItems[NFIELD].Text;
-                if (cn[0]=='[')
-                    cn=int.Parse(cn.Substring(1,cn.Length-2)).ToString();
-                if (cn == "-") cn = "1";
-                ReportHelper.Append(rw, doc, "count", cn);//rw.AppendChild(doc.CreateElement("count")).AppendChild(doc.CreateTextNode(cn));
-            }
-            new ReportViewForm(myReportType.REPLACE, doc).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
         }
 
         //private void логЗаписиToolStripMenuItem_Click(object sender, EventArgs e)
@@ -757,6 +515,8 @@ namespace rabnet
 
         private void tsmiIDshow_Click(object sender, EventArgs e)
         {
+            if (listView1.SelectedItems.Count != 1) return;
+
             MessageBox.Show("r_id = "+listView1.SelectedItems[0].Tag.ToString());
         }
 
@@ -776,5 +536,359 @@ namespace rabnet
             //string letter = cic.ConvertToString(e.KeyData);//todo при нажатии русской буквы переходить к строке
             //listView1.FindItemWithText("п").EnsureVisible(); 
         }
+
+        #region menuItems
+
+        private void miIncome_Click(object sender, EventArgs e)
+        {
+#if !DEBUG
+            try
+            {
+#endif
+                if ((new IncomeForm()).ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                    _rsb.Run();
+#if !DEBUG
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+                _logger.Warn(exc);
+                _rsb.Run();
+            }
+#endif
+        }
+
+        private void miReplace_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count < 1) return;
+
+            try
+            {
+                ReplaceForm rpf = new ReplaceForm();
+                foreach (ListViewItem li in listView1.SelectedItems)
+                    rpf.AddRabbit((int)li.Tag);
+                if (rpf.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                    _rsb.Run();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+                _logger.Warn(exc);
+                _rsb.Run();
+            }
+        }
+
+        private void miPlaceGhange_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 2) return;
+
+            try
+            {
+                ReplaceForm rpf = new ReplaceForm();
+                rpf.AddRabbit((int)listView1.SelectedItems[0].Tag);
+                rpf.AddRabbit((int)listView1.SelectedItems[1].Tag);
+                rpf.SetAction(ReplaceForm.Action.CHANGE);
+                if (rpf.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                    _rsb.Run();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+                _logger.Warn(exc);
+                _rsb.Run();
+            }
+        }
+
+        private void miKill_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count < 1) return;
+
+            try
+            {
+                if (Engine.db().getDeadReasons().Get().ColNames.Length == 0)
+                    throw new Exception("Нет ни одной причины списания. Вы можете добавить их в  меню Вид->Причины списания");
+
+                KillForm f = new KillForm();
+                foreach (ListViewItem li in listView1.SelectedItems)
+                    f.addRabbit((int)li.Tag);
+                if (f.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                    _rsb.Run();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+                _logger.Warn(exc);
+                _rsb.Run();
+            }
+        }
+
+        private void miYoungersOut_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1) return;
+
+            try
+            {
+                if (PreReplaceYoungersForm.MakeChoice((int)listView1.SelectedItems[0].Tag) == DialogResult.OK && !MainForm.MustClose)
+                    _rsb.Run();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+                _rsb.Run();
+            }
+        }
+
+        private void svidMenuItem_Click(object sender, EventArgs e)
+        {
+#if !DEMO
+            if (listView1.SelectedItems.Count != 1) return;
+            XmlDocument[] docs = new XmlDocument[7];
+            RabNetEngRabbit r = Engine.get().getRabbit((int)listView1.SelectedItems[0].Tag);
+            docs[0] = rabToXml(r, null);
+            OneRabbit[] p1 = Engine.db().getParents(r.ID, r.Age);
+            docs[1] = rabToXml(null, p1[0]);
+            docs[2] = rabToXml(null, p1[1]);
+            OneRabbit[] p2;
+            if (p1[0] != null)
+                p2 = Engine.db().getParents(p1[0].ID, p1[0].Age);
+            else
+                p2 = new OneRabbit[] { null, null };
+            docs[3] = rabToXml(null, p2[0]);
+            docs[4] = rabToXml(null, p2[1]);
+            if (p1[1] != null)
+                p2 = Engine.db().getParents(p1[1].ID, p1[1].Age);
+            else
+                p2 = new OneRabbit[] { null, null };
+            docs[5] = rabToXml(null, p2[0]);
+            docs[6] = rabToXml(null, p2[1]);
+            ReportViewForm rf = new ReportViewForm(myReportType.RABBIT, docs);
+            rf.ShowDialog();
+            if (rf.printed)
+            {
+                int num = Engine.opt().getIntOption(Options.OPT_ID.NEXT_SVID);
+                Engine.opt().setOption(Options.OPT_ID.NEXT_SVID, num + 1);
+            }
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
+        }
+
+        private void plemMenuItem_Click(object sender, EventArgs e)
+        {
+#if !DEMO
+            if (listView1.SelectedItems.Count < 1) return;
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.AppendChild(doc.CreateElement("Rows"));
+                int cnt = 0;
+                string brd = "";
+                foreach (ListViewItem li in listView1.SelectedItems)
+                {
+                    RabNetEngRabbit r = Engine.get().getRabbit((int)li.Tag);
+                    cnt += r.Group;
+                    if (brd == "")
+                        brd = r.BreedName;
+                    if (r.BreedName != brd)
+                        brd = "none";
+                    rabToXml(r, null, doc);
+                }
+                XmlDocument doc2 = new XmlDocument();
+                XmlElement rw = (XmlElement)doc2.AppendChild(doc2.CreateElement("Rows")).AppendChild(doc2.CreateElement("Row"));
+                ReportHelper.Append(rw, doc2, "date", DateTime.Now.Date.ToShortDateString() + " " + DateTime.Now.ToLongTimeString());
+                ReportHelper.Append(rw, doc2, "breed", brd);
+                ReportHelper.Append(rw, doc2, "count", cnt.ToString());
+                //rw.AppendChild(doc2.CreateElement("date")).AppendChild(doc2.CreateTextNode(DateTime.Now.Date.ToShortDateString()+" "+DateTime.Now.ToLongTimeString()));
+                //rw.AppendChild(doc2.CreateElement("breed")).AppendChild(doc2.CreateTextNode(brd));
+                //rw.AppendChild(doc2.CreateElement("count")).AppendChild(doc2.CreateTextNode(cnt.ToString()));
+                new ReportViewForm(myReportType.PRIDE, new XmlDocument[] { doc, doc2 }).ShowDialog();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+                _logger.Warn(exc);
+                _rsb.Run();
+            }
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
+        }
+
+        private void miRealize_Click(object sender, EventArgs e)
+        {
+#if !DEMO
+            if (listView1.SelectedItems.Count < 1) return;
+            Filters f = new Filters();
+            f["cnt"] = listView1.SelectedItems.Count.ToString();
+            for (int i = 0; i < listView1.SelectedItems.Count; i++)
+                f["r" + i.ToString()] = ((int)listView1.SelectedItems[i].Tag).ToString();
+            new ReportViewForm(myReportType.REALIZE, Engine.db().makeReport(myReportType.REALIZE, f)).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
+        }
+
+        private void miGenetic_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count < 1) return;
+
+            try
+            {
+#if PROTECTED
+                if (!RabGRD.GRD.Instance.GetFlag(RabGRD.GRD_Base.FlagType.Genetics))                
+                    throw new Exception("Текущая лицензия не распространяется на данный модуль");
+
+#endif
+                if (GeneticsManagerSafe.GeneticsModuleTest())
+                {
+                    for (int i = 0; i < listView1.SelectedItems.Count; i++)                    
+                        GeneticsManagerSafe.AddNewGenetics(((int)listView1.SelectedItems[i].Tag));                   
+                }
+                else                
+                    throw new Exception("Не найден модуль 'gui_genetics.dll'!\nПроверьте правильность установки программы.");               
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+                _logger.Warn(exc);
+                _rsb.Run();
+            }
+        }
+
+        private void miPlanReplace_Click(object sender, EventArgs e)
+        {
+#if !DEMO
+            if (listView1.SelectedItems.Count < 1) return;
+
+            XmlDocument doc = new XmlDocument();
+            doc.AppendChild(doc.CreateElement("Rows"));
+            foreach (ListViewItem li in listView1.SelectedItems)
+            {
+                XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
+                ReportHelper.Append(rw, doc, "age", li.SubItems[2].Text); //rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(li.SubItems[2].Text));
+                String cn = li.SubItems[11].Text;
+                if (cn.IndexOf('[') > -1)
+                    cn = cn.Remove(cn.IndexOf('['));
+                ReportHelper.Append(rw, doc, "address", cn); //rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(cn));
+                cn = li.SubItems[NFIELD].Text;
+                if (cn[0] == '[')
+                    cn = int.Parse(cn.Substring(1, cn.Length - 2)).ToString();
+                if (cn == "-") cn = "1";
+                ReportHelper.Append(rw, doc, "count", cn);//rw.AppendChild(doc.CreateElement("count")).AppendChild(doc.CreateTextNode(cn));
+            }
+            new ReportViewForm(myReportType.REPLACE, doc).ShowDialog();
+#else
+            DemoErr.DemoNoReportMsg();
+#endif
+        }
+
+        private void miBon_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1) return;
+            try
+            {
+                int rid = (int)listView1.SelectedItems[0].Tag;
+                if ((new BonForm(rid)).ShowDialog() == DialogResult.OK)
+                    _rsb.Run();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+                _logger.Warn(exc);
+                _rsb.Run();
+            }
+        }
+
+        private void proholostMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1) return;
+            try
+            {
+                int rid = (int)listView1.SelectedItems[0].Tag;
+                if ((new Proholost(rid)).ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                    _rsb.Run();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+                _logger.Warn(exc);
+                _rsb.Run();
+            }
+        }
+
+        private void countKidsMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1) return;
+            try
+            {
+                CountKids f = new CountKids((int)listView1.SelectedItems[0].Tag);
+                if (f.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                    _rsb.Run();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+                _logger.Warn(exc);
+                _rsb.Run();
+            }
+        }
+
+        private void okrolMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1) return;
+
+            try
+            {
+                OkrolForm dlg = new OkrolForm((int)listView1.SelectedItems[0].Tag);
+                if (dlg.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                    _rsb.Run();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+                _logger.Warn(exc);
+                _rsb.Run();
+            }
+        }
+
+        private void miFucks_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1) return;
+
+            try
+            {
+                MakeFuckForm dlg = new MakeFuckForm((int)listView1.SelectedItems[0].Tag);
+                if (dlg.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                    _rsb.Run();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+                _logger.Warn(exc);
+                _rsb.Run();
+            }
+        }
+
+        private void miBoysOut_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1) return;
+
+            try
+            {
+                ReplaceForm rpf = new ReplaceForm();
+                rpf.AddRabbit((int)listView1.SelectedItems[0].Tag);
+                rpf.SetAction(ReplaceForm.Action.BOYSOUT);
+                if (rpf.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                    _rsb.Run();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+                _logger.Warn(exc);
+                _rsb.Run();
+            }
+        }  
+
+        #endregion menuItems
     }
 }
