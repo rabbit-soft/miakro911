@@ -5,8 +5,8 @@ Name $(SM_Prog_NAME)
 !define NameInt "Miakro911"
 !define DirName "Miakro911"
 !define CompName "9-Bits"
+!define BinDir "..\..\..\bin\@bin_type@\"
 #!define DirName "@ProgDirName@"
-
 
 #!define SHORT_APP_NAME "Xobni Analytics"
 #!define SUPPORT_EMAIL "support@xobni.com"
@@ -17,29 +17,23 @@ CRCCheck on
 
 RequestExecutionLevel admin
 
-# TargetMinimalOS 5.1
-
 # General Symbol Definitions
 !define REGKEY_old "SOFTWARE\${NameInt}"
 !define REGKEY "SOFTWARE\${CompName}\${NameInt}"
-
 # MUI Symbol Definitions
 !define MUI_ICON "..\art\icon_green.ico"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_UNICON "..\art\icon_no_green.ico"
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
-
 !define MUI_COMPONENTSPAGE_SMALLDESC
 
 
 Caption "$(Prog_NAME)"
 BrandingText "$(Branding)"
 
-
 # Included files
 !include Sections.nsh
 !include MUI2.nsh
-
 !include StrRep.nsh
 !include ReplaceInFile.nsh
 
@@ -65,6 +59,10 @@ Var Inst_code
 !insertmacro MUI_LANGUAGE Russian
 
 !include "DotNETLoc.nsh"
+!include include\LangStrings.nsh
+!include include\Macros.nsh
+!include include\Common.nsh
+!include include\Party3d.nsh
 
 # Installer attributes
 OutFile setup.exe
@@ -85,55 +83,46 @@ InstType $(SEC_PackFull_NAME)
 Section $(SEC_Rabnet_NAME) SEC_Rabnet
     SectionIn 1 4
 
-    Call CloseRabNet
+    Call CloseAll
 
     SetOutPath $INSTDIR\bin
     SetOverwrite on
-    File ..\..\..\bin\@bin_type@\bin\rabnet.exe
-	File ..\..\..\bin\@bin_type@\bin\rabnet.exe.config
-	File ..\..\..\bin\@bin_type@\bin\db.Interface.dll
-    File ..\..\..\bin\@bin_type@\bin\db.mysql.dll
-    File ..\..\..\bin\@bin_type@\bin\engine.dll
-#    File ..\..\..\bin\@bin_type@\gui_genetics.dll
-    File ..\..\..\bin\@bin_type@\bin\MySql.Data.dll
-    File ..\..\..\bin\@bin_type@\bin\Pickers.dll
-    File ..\..\..\bin\@bin_type@\bin\rabHelp.chm
-    File ..\..\..\bin\@bin_type@\bin\RdlEngine.dll
-    File ..\..\..\bin\@bin_type@\bin\log4net.dll
-	File ..\..\..\bin\@bin_type@\bin\SplitButton.dll
-    File ..\..\..\bin\@bin_type@\bin\RdlViewer.dll
-
-	File ..\..\..\bin\@bin_type@\bin\changeLog.txt
-	File ..\..\..\bin\@bin_type@\bin\Interop.Microsoft.Office.Interop.Excel.dll
-	File ..\..\..\bin\@bin_type@\bin\Interop.Microsoft.Office.Core.dll
-	File ..\..\..\bin\@bin_type@\bin\CAS.DLL
-    File ..\..\..\bin\@bin_type@\bin\GrdAPI32.DLL
-    File ..\..\..\bin\@bin_type@\bin\GrdAPI64.DLL
-	File ..\..\..\bin\@bin_type@\bin\CodeStorage32.dll
-    File ..\..\..\bin\@bin_type@\bin\CodeStorage64.dll
-    File ..\..\..\bin\@bin_type@\bin\GuardantDotNetApi.dll
-	File ..\..\..\bin\@bin_type@\bin\gnclient.ini
+	
+	Call InstBothReqFiles
+	Call InstGrdFiles
+	
+    File ${BinDir}\bin\rabnet.exe
+	File ${BinDir}\bin\rabnet.exe.config	   
+      
+    File ${BinDir}\bin\RdlEngine.dll
+    File ${BinDir}\bin\RdlViewer.dll
+	File ${BinDir}\bin\SplitButton.dll	
+	File ${BinDir}\bin\Interop.Microsoft.Office.Interop.Excel.dll
+	File ${BinDir}\bin\Interop.Microsoft.Office.Core.dll
+	File ${BinDir}\bin\CAS.DLL
+	#File ${BinDir}\gui_genetics.dll   
+	#File ${BinDir}\bin\Pickers.dll 
+	File ${BinDir}\bin\changeLog.txt
+    File ${BinDir}\bin\rabHelp.chm
 	
     SetOutPath $INSTDIR\bin\reports
-    File ..\..\..\bin\@bin_type@\bin\reports\age.rdl
-    File ..\..\..\bin\@bin_type@\bin\reports\breeds.rdl
-    File ..\..\..\bin\@bin_type@\bin\reports\by_month.rdl
-    File ..\..\..\bin\@bin_type@\bin\reports\dead.rdl
-    File ..\..\..\bin\@bin_type@\bin\reports\deadreason.rdl
-    File ..\..\..\bin\@bin_type@\bin\reports\empty_rev.rdl
-    File ..\..\..\bin\@bin_type@\bin\reports\fucker.rdl
-    File ..\..\..\bin\@bin_type@\bin\reports\fucks_by_date.rdl
-    File ..\..\..\bin\@bin_type@\bin\reports\okrol_user.rdl
-    File ..\..\..\bin\@bin_type@\bin\reports\plem.rdl
-    File ..\..\..\bin\@bin_type@\bin\reports\rabbit.rdl
-    File ..\..\..\bin\@bin_type@\bin\reports\realization.rdl
-    File ..\..\..\bin\@bin_type@\bin\reports\replace_plan.rdl
-    File ..\..\..\bin\@bin_type@\bin\reports\shed.rdl
-    File ..\..\..\bin\@bin_type@\bin\reports\zooteh.rdl
-    File ..\..\..\bin\@bin_type@\bin\reports\zooteh_nofuck.rdl
+    File ${BinDir}\bin\reports\age.rdl
+    File ${BinDir}\bin\reports\breeds.rdl
+    File ${BinDir}\bin\reports\by_month.rdl
+    File ${BinDir}\bin\reports\dead.rdl
+    File ${BinDir}\bin\reports\deadreason.rdl
+    File ${BinDir}\bin\reports\empty_rev.rdl
+    File ${BinDir}\bin\reports\fucker.rdl
+    File ${BinDir}\bin\reports\fucks_by_date.rdl
+    File ${BinDir}\bin\reports\okrol_user.rdl
+    File ${BinDir}\bin\reports\plem.rdl
+    File ${BinDir}\bin\reports\rabbit.rdl
+    File ${BinDir}\bin\reports\realization.rdl
+    File ${BinDir}\bin\reports\replace_plan.rdl
+    File ${BinDir}\bin\reports\shed.rdl
+    File ${BinDir}\bin\reports\zooteh.rdl
+    File ${BinDir}\bin\reports\zooteh_nofuck.rdl
     SetOutPath $INSTDIR\bin
-#    SetOverwrite off
-#   File ..\..\..\bin\@bin_type@\bin\rabnet.exe.config
     
     ######## Temporary fix of bug M0000308
     ExpandEnvStrings $2 "%USERNAME%"
@@ -153,44 +142,28 @@ Section  $(SEC_RabDump_NAME) SEC_RabDump
 #Section /o $(SEC_RabDump_NAME) SEC_RabDump
     SectionIn 2 3 4
 
-    Call CloseRabDump
+    Call CloseAll
 
     SetOutPath $INSTDIR\bin
     SetOverwrite on
-	File ..\..\..\bin\@bin_type@\bin\rabdump.exe
-	File ..\..\..\bin\@bin_type@\bin\rabdump.exe.config
-	File ..\..\..\bin\@bin_type@\bin\ccxmlrpc.dll    	
-    File ..\..\..\bin\@bin_type@\bin\GuardantDotNetApi.dll
-    File ..\..\..\bin\@bin_type@\bin\log4net.dll	
-	File ..\..\..\bin\@bin_type@\bin\engine.dll
-	File ..\..\..\bin\@bin_type@\bin\db.Interface.dll
-	File ..\..\..\bin\@bin_type@\bin\db.mysql.dll
 	
-	File ..\..\..\bin\@bin_type@\bin\gnclient.ini
-	File ..\..\..\bin\@bin_type@\bin\GrdAPI32.DLL
-    File ..\..\..\bin\@bin_type@\bin\GrdAPI64.DLL 
-	File ..\..\..\bin\@bin_type@\bin\CodeStorage32.dll
-    File ..\..\..\bin\@bin_type@\bin\CodeStorage64.dll
-#    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage32.dll
-#    File ..\..\..\bin\@bin_type@\RabDump\CodeStorage64.dll
-#    File ..\..\..\bin\@bin_type@\key.dll
+	Call InstBothReqFiles
+	Call InstGrdFiles
+	
+	File ${BinDir}\bin\rabdump.exe
+	File ${BinDir}\bin\rabdump.exe.config
+	File ${BinDir}\bin\ccxmlrpc.dll    	   	
+	#File ${BinDir}\bin\gnclient.ini
 
     SetOutPath $INSTDIR\7z
-    File ..\..\..\bin\@bin_type@\7z\7-zip.chm
-    File ..\..\..\bin\@bin_type@\7z\7za.exe
-    File ..\..\..\bin\@bin_type@\7z\copying.txt
-    File ..\..\..\bin\@bin_type@\7z\license.txt
-    File ..\..\..\bin\@bin_type@\7z\readme.txt
+    File ${BinDir}\7z\7-zip.chm
+    File ${BinDir}\7z\7za.exe
+    File ${BinDir}\7z\copying.txt
+    File ${BinDir}\7z\license.txt
+    File ${BinDir}\7z\readme.txt
 
-    #SetOutPath $INSTDIR
-    #SetOverwrite off
-    #File ..\..\..\bin\@bin_type@\rabdump.exe.config
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Dump_NAME).lnk $INSTDIR\bin\rabdump.exe
     WriteRegStr HKLM "${REGKEY}\Components" "rabdump" 1
-#    DetailPrint $(UPDATER_Run)
-#    ExecWait '"$INSTDIR\updater.exe"'
-
-#    !insertmacro ReplaceInFile "$INSTDIR\rabdump.conf" "[7z_bin]" "$INSTDIR\7z\7za.exe"
 
     ######## Temporary fix of bug M0000308
     ExpandEnvStrings $2 "%USERNAME%"
@@ -198,9 +171,7 @@ Section  $(SEC_RabDump_NAME) SEC_RabDump
     ExecWait 'cacls "$INSTDIR\bin" /E /G "$2":F'
     ######## end
 
-    !insertmacro SelectSection "SEC_Updater"
-
-    
+    !insertmacro SelectSection "SEC_Updater"  
 SectionEnd
 
 Section $(SEC_Mysql_NAME) SEC_Mysql
@@ -222,41 +193,16 @@ Section $(SEC_Mysql_NAME) SEC_Mysql
 SectionEnd
     
 Section -com_comps SEC_Common
-#    SetOutPath $INSTDIR
-    SetOverwrite on
-#    File ..\..\..\bin\@bin_type@\log4net.dll
-    SetOutPath $INSTDIR\Guardant
-    File ..\..\..\bin\@bin_type@\Guardant\GrdTRU.exe
-	File ..\..\..\bin\@bin_type@\Guardant\grdmon.exe
-	File ..\..\..\bin\@bin_type@\Guardant\grdsrv.exe
-    SetOutPath $INSTDIR\bin
-    File ..\..\..\bin\@bin_type@\bin\mia_conv.exe
-	File ..\..\..\bin\@bin_type@\bin\mia_conv.exe.config
-    File ..\..\..\bin\@bin_type@\bin\MySql.Data.dll
-    File ..\..\..\bin\@bin_type@\bin\updater.exe
-	File ..\..\..\bin\@bin_type@\bin\updater.exe.config	
-	File ..\..\..\bin\@bin_type@\bin\log4net.dll
+    SetOverwrite on  
+    Call InstCommonFiles
 	
+	SetOutPath $INSTDIR\Guardant
+    File ${BinDir}\Guardant\GrdTRU.exe
+	File ${BinDir}\Guardant\grdmon.exe
+	File ${BinDir}\Guardant\grdsrv.exe
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Conv_NAME).lnk $INSTDIR\bin\mia_conv.exe
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Up_NAME).lnk $INSTDIR\bin\updater.exe
     WriteRegStr HKLM "${REGKEY}\Components" com_comps 1
-SectionEnd
-
-Section -post SEC_Sys
-    !insertmacro CheckDotNET
-    WriteRegStr HKLM "${REGKEY}" Path $INSTDIR
-    WriteRegStr HKLM "${REGKEY}\Components" "Main" 1
-    SetOutPath $INSTDIR
-    WriteUninstaller $INSTDIR\uninstall.exe
-    SetOutPath $SMPROGRAMS\$StartMenuGroup
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^UninstallLink).lnk" $INSTDIR\uninstall.exe
-    WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayName "$(^Name)"
-    WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayIcon $INSTDIR\uninstall.exe
-    WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" UninstallString $INSTDIR\uninstall.exe
-    WriteRegDWORD HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoModify 1
-    WriteRegDWORD HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoRepair 1
-
-    DeleteRegKey HKLM "${REGKEY_old}"
 SectionEnd
 
 Section /o -sec_updater SEC_Updater
@@ -273,54 +219,6 @@ Section /o -sec_updater SEC_Updater
 SectionEnd
 
 # Macro for selecting uninstaller sections
-!macro SELECT_UNSECTION_old SECTION_NAME UNSECTION_ID
-    Push $R0
-    ReadRegStr $R0 HKLM "${REGKEY_old}\Components" "${SECTION_NAME}"
-    StrCmp $R0 1 0 nextold${UNSECTION_ID}
-    !insertmacro SelectSection "${UNSECTION_ID}"
-    GoTo doneold${UNSECTION_ID}
-nextold${UNSECTION_ID}:
-    !insertmacro UnselectSection "${UNSECTION_ID}"
-doneold${UNSECTION_ID}:
-    Pop $R0
-!macroend
-
-!macro SELECT_UNSECTION SECTION_NAME UNSECTION_ID
-    Push $R0
-    ReadRegStr $R0 HKLM "${REGKEY}\Components" "${SECTION_NAME}"
-    StrCmp $R0 1 0 next${UNSECTION_ID}
-    !insertmacro SelectSection "${UNSECTION_ID}"
-    GoTo done${UNSECTION_ID}
-next${UNSECTION_ID}:
-    !insertmacro UnselectSection "${UNSECTION_ID}"
-done${UNSECTION_ID}:
-    Pop $R0
-!macroend
-
-!macro SELECT_SECTION_old SECTION_NAME SECTION_ID
-    Push $R0
-    ReadRegStr $R0 HKLM "${REGKEY_old}\Components" "${SECTION_NAME}"
-    StrCmp $R0 1 0 nextold${SECTION_ID}
-    !insertmacro SelectSection "${SECTION_ID}"
-    GoTo doneold${SECTION_ID}
-nextold${SECTION_ID}:
-    !insertmacro UnselectSection "${SECTION_ID}"
-doneold${SECTION_ID}:
-    Pop $R0
-!macroend
-
-!macro SELECT_SECTION SECTION_NAME SECTION_ID
-    Push $R0
-    ReadRegStr $R0 HKLM "${REGKEY}\Components" "${SECTION_NAME}"
-    StrCmp $R0 1 0 next${SECTION_ID}
-    !insertmacro SelectSection "${SECTION_ID}"
-    GoTo done${SECTION_ID}
-next${SECTION_ID}:
-    !insertmacro UnselectSection "${SECTION_ID}"
-done${SECTION_ID}:
-    Pop $R0
-!macroend
-
 !macro SELECT_SECTION_TEST 
     Push $R0
     ReadRegStr $R0 HKLM "${REGKEY}\Components" "Main"
@@ -358,41 +256,38 @@ doneold${SECTION_ID}:
 
 
 # Uninstaller sections
-Section /o -un.com_comps UNSEC_Common
-    RmDir /REBOOTOK /r $INSTDIR\Guardant
+Section /o -un.com_comps UNSEC_Common   
     Delete /REBOOTOK $INSTDIR\bin\mia_conv.exe
 	Delete /REBOOTOK $INSTDIR\bin\mia_conv.exe.config
-#    Delete /REBOOTOK $INSTDIR\bin\MySql.Data.dll
 	Delete /REBOOTOK $INSTDIR\bin\log4net.dll
 	Delete /REBOOTOK $INSTDIR\bin\updater.exe
 	Delete /REBOOTOK $INSTDIR\bin\updater.exe.config
-	
-	
-#    RmDir /REBOOTOK /r $INSTDIR\Tools
-#    Delete /REBOOTOK $INSTDIR\Guardant\GrdTRU.exe
-#    Delete /REBOOTOK $INSTDIR\mia_conv.exe
-#    Delete /REBOOTOK $INSTDIR\log4net.dll
+	RmDir /REBOOTOK /r $INSTDIR\Guardant
     Delete /REBOOTOK $SMPROGRAMS\$StartMenuGroup\$(SM_Conv_NAME).lnk
     Delete /REBOOTOK $SMPROGRAMS\$StartMenuGroup\$(SM_Up_NAME).lnk
     DeleteRegValue HKLM "${REGKEY}\Components" com_comps
 SectionEnd
 
-Section /o "-un.rabdump" UNSEC_RabDump
+Section /o -un.rabdump UNSEC_RabDump
 
-    Call un.CloseRabDump
+    Call un.CloseAll
 
     Delete /REBOOTOK $INSTDIR\bin\GrdAPI32.DLL
     Delete /REBOOTOK $INSTDIR\bin\GrdAPI64.DLL
+#    Delete /REBOOTOK $INSTDIR\bin\CodeStorage32.dll
+#    Delete /REBOOTOK $INSTDIR\bin\CodeStorage64.dll
+	Delete /REBOOTOK $INSTDIR\bin\GuardantDotNetApi.dll
+	
 	Delete /REBOOTOK $INSTDIR\bin\log4net.dll
-	Delete /REBOOTOK $INSTDIR\bin\ccxmlrpc.dll
+	
 	Delete /REBOOTOK $INSTDIR\bin\db.Interface.dll
 	Delete /REBOOTOK $INSTDIR\bin\db.mysql.dll
 	Delete /REBOOTOK $INSTDIR\bin\engine.dll
+	
+	Delete /REBOOTOK $INSTDIR\bin\ccxmlrpc.dll
     Delete /REBOOTOK $INSTDIR\bin\rabdump.exe
 	Delete /REBOOTOK $INSTDIR\bin\rabdump.exe.config
-#    Delete /REBOOTOK $INSTDIR\bin\CodeStorage32.dll
-#    Delete /REBOOTOK $INSTDIR\bin\CodeStorage64.dll
-    Delete /REBOOTOK $INSTDIR\bin\GuardantDotNetApi.dll
+
     RmDir /REBOOTOK /r $INSTDIR\7z
     RmDir /REBOOTOK /r $INSTDIR\bin\updates
 	RmDir /REBOOTOK /r $INSTDIR\bin
@@ -402,12 +297,13 @@ SectionEnd
 
 Section /o "-un.rabnet" UNSEC_Rabnet
 
-    Call un.CloseRabNet
+    Call un.CloseAll
 
     ;DeleteRegValue HKEY_CURRENT_USER Software\hzkakzvat\rabnet Path
     Delete /REBOOTOK $SMPROGRAMS\$StartMenuGroup\rabnet.lnk
     Delete /REBOOTOK $DESKTOP\$(SM_Prog_NAME).lnk
-    RmDir /REBOOTOK /r $INSTDIR\bin\reports
+	
+	Call un.Reports   
 
     Delete /REBOOTOK $INSTDIR\bin\rabnet.exe
 	Delete /REBOOTOK $INSTDIR\bin\rabnet.exe.config
@@ -483,35 +379,9 @@ Function .onInit
     
 FunctionEnd
 
-Function un.CloseRabDump
-
-    Push $5
-
-    push "rabdump.exe"
-    processwork::existsprocess
-    pop $5
-    IntCmp $5 0 done
-
-    loop:
-        push "rabdump.exe"
-        processwork::existsprocess
-        pop $5
-        IntCmp $5 0 done
-
-        DetailPrint $(KillRabDump)
-
-        push "rabdump.exe"
-;        processwork::CloseProcess
-        processwork::KillProcess
-        Sleep 2000
-        Goto loop
-
-    BailOut:
-        Abort
-
-    done:
-    Pop $5
-
+Function CloseAll
+	Call CloseRabNet
+	Call CloseRabDump
 FunctionEnd
 
 Function CloseRabDump
@@ -549,69 +419,12 @@ Function CloseRabDump
 
 FunctionEnd
 
-Function un.CloseRabNet
-    Push $5
-
-    push "rabnet.exe"
-    processwork::existsprocess
-    pop $5
-    IntCmp $5 0 done
-
-    loop:
-        push "rabnet.exe"
-        processwork::existsprocess
-        pop $5
-        IntCmp $5 0 done
-
-        DetailPrint $(KillRabNet)
-
-        push "rabnet.exe"
-;        processwork::CloseProcess
-        processwork::KillProcess
-        Sleep 2000
-        Goto loop
-
-    BailOut:
-        Abort
-
-    done:
-    Pop $5
-
-FunctionEnd
-
-Function CloseRabNet
-    Push $5
-
-    push "rabnet.exe"
-    processwork::existsprocess
-    pop $5
-    IntCmp $5 0 done
-
-    push "rabnet.exe"
-    processwork::CloseProcess
-;    processwork::KillProcess
-    Sleep 5000
-
-    loop:
-        push "rabnet.exe"
-        processwork::existsprocess
-        pop $5
-        IntCmp $5 0 done
-
-        DetailPrint $(KillRabNet)
-
-        push "rabnet.exe"
-;        processwork::CloseProcess
-        processwork::KillProcess
-        Sleep 2000
-        Goto loop
-
-    BailOut:
-        Abort
-
-    done:
-    Pop $5
-
+Function InstGrdFiles
+	File ${BinDir}\bin\GrdAPI32.DLL
+    File ${BinDir}\bin\GrdAPI64.DLL
+	File ${BinDir}\bin\CodeStorage32.dll
+    File ${BinDir}\bin\CodeStorage64.dll
+    File ${BinDir}\bin\GuardantDotNetApi.dll
 FunctionEnd
 
 # Uninstaller functions
@@ -623,322 +436,67 @@ Function un.onInit
     !insertmacro SELECT_UNSECTION "com_comps" ${UNSEC_Common}
 FunctionEnd
 
+Function un.Reports
+    Delete /REBOOTOK $INSTDIR\bin\reports\zooteh_nofuck.rdl
+    Delete /REBOOTOK $INSTDIR\bin\reports\zooteh.rdl
+    Delete /REBOOTOK $INSTDIR\bin\reports\shed.rdl
+    Delete /REBOOTOK $INSTDIR\bin\reports\replace_plan.rdl
+    Delete /REBOOTOK $INSTDIR\bin\reports\realization.rdl
+    Delete /REBOOTOK $INSTDIR\bin\reports\rabbit.rdl
+    Delete /REBOOTOK $INSTDIR\bin\reports\plem.rdl
+    Delete /REBOOTOK $INSTDIR\bin\reports\okrol_user.rdl
+    Delete /REBOOTOK $INSTDIR\bin\reports\fucks_by_date.rdl
+    Delete /REBOOTOK $INSTDIR\bin\reports\fucker.rdl
+    Delete /REBOOTOK $INSTDIR\bin\reports\empty_rev.rdl
+    Delete /REBOOTOK $INSTDIR\bin\reports\deadreason.rdl
+    Delete /REBOOTOK $INSTDIR\bin\reports\dead.rdl
+    Delete /REBOOTOK $INSTDIR\bin\reports\by_month.rdl
+    Delete /REBOOTOK $INSTDIR\bin\reports\breeds.rdl
+    Delete /REBOOTOK $INSTDIR\bin\reports\age.rdl
+	
+	RmDir /REBOOTOK  $INSTDIR\bin\reports
+FunctionEnd
+
+Function un.CloseAll
+	Call un.CloseRabNet
+	Call un.CloseRabDump
+FunctionEnd
+
+Function un.CloseRabDump
+
+    Push $5
+
+    push "rabdump.exe"
+    processwork::existsprocess
+    pop $5
+    IntCmp $5 0 done
+
+    loop:
+        push "rabdump.exe"
+        processwork::existsprocess
+        pop $5
+        IntCmp $5 0 done
+
+        DetailPrint $(KillRabDump)
+
+        push "rabdump.exe"
+;        processwork::CloseProcess
+        processwork::KillProcess
+        Sleep 2000
+        Goto loop
+
+    BailOut:
+        Abort
+
+    done:
+    Pop $5
+
+FunctionEnd
+
 # Section Descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC_Rabnet} $(SEC_Rabnet_DESC)
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC_RabDump} $(SEC_RabDump_DESC)
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC_Mysql} $(SEC_Mysql_DESC)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
-
-# Installer Language Strings
-# TODO Update the Language Strings with the appropriate translations.
-
-LangString ^UninstallLink ${LANG_ENGLISH} "Uninstall $(^Name)"
-LangString ^UninstallLink ${LANG_RUSSIAN} "Удаление $(^Name)"
-
-LangString SEC_Rabnet_DESC ${LANG_ENGLISH} "It is installed on computers in the network that are working livestock"
-LangString SEC_Rabnet_DESC ${LANG_RUSSIAN} "Устанавливается на компьютеры в сети с которыми работают зоотехники"
-
-LangString SEC_RabDump_DESC ${LANG_ENGLISH} "It is installed on the server that stores and runs the database"
-LangString SEC_RabDump_DESC ${LANG_RUSSIAN} "Устанавливается на сервер на котором хранится и работает база данных"
-
-LangString SEC_Mysql_DESC ${LANG_ENGLISH} "Database. It is installed on the Miakro-9.11 server"
-LangString SEC_Mysql_DESC ${LANG_RUSSIAN} "База данных. Устанавливается на сервер обслуживающий Миакро-9.11"
-
-LangString SEC_Rabnet_NAME ${LANG_ENGLISH} "Miakro-9.11 client"
-LangString SEC_Rabnet_NAME ${LANG_RUSSIAN} "Миакро-9.11 клиентская часть"
-
-LangString SEC_RabDump_NAME ${LANG_ENGLISH} "Miakro-9.11 server tools"
-LangString SEC_RabDump_NAME ${LANG_RUSSIAN} "Миакро-9.11 серверные приложения"
-
-LangString SEC_Mysql_NAME ${LANG_ENGLISH} "MySQL Server 5.1"
-LangString SEC_Mysql_NAME ${LANG_RUSSIAN} "MySQL Server 5.1"
-
-LangString SEC_PackClient_NAME ${LANG_ENGLISH} "Working PC"
-LangString SEC_PackClient_NAME ${LANG_RUSSIAN} "Рабочий компьютер"
-
-LangString SEC_PackServer_NAME ${LANG_ENGLISH} "Server"
-LangString SEC_PackServer_NAME ${LANG_RUSSIAN} "Сервер"
-
-LangString SEC_PackServerFull_NAME ${LANG_ENGLISH} "Server Full (+MySQL)"
-LangString SEC_PackServerFull_NAME ${LANG_RUSSIAN} "Сервер Полный (+MySQL)"
-
-LangString SEC_PackFull_NAME ${LANG_ENGLISH} "Full (Client+Server+MySQL)"
-LangString SEC_PackFull_NAME ${LANG_RUSSIAN} "Полный набор (Клиент+Сервер+MySQL)"
-
-LangString MYSQLINSTALLER_Start ${LANG_ENGLISH} "Installing MySQL..."
-LangString MYSQLINSTALLER_Start ${LANG_RUSSIAN} "Установка MySQL..."
-
-LangString MYSQLINSTALLER_Done ${LANG_ENGLISH} "MySQL installed successfully"
-LangString MYSQLINSTALLER_Done ${LANG_RUSSIAN} "MySQL установлен"
-
-LangString MYSQLINSTALLER_Configure ${LANG_ENGLISH} "Configuring MySQL..."
-LangString MYSQLINSTALLER_Configure ${LANG_RUSSIAN} "Настройка MySQL..."
-
-LangString UPDATER_Run ${LANG_ENGLISH} "Starting Updater..."
-LangString UPDATER_Run ${LANG_RUSSIAN} "Запуск Updater..."
-
-LangString Prog_NAME ${LANG_ENGLISH} "Miakro-9.11 (@AppVer@)"
-LangString Prog_NAME ${LANG_RUSSIAN} "Миакро-9.11 (@AppVer@)"
-
-LangString SM_Prog_NAME ${LANG_ENGLISH} "Miakro-9.11"
-LangString SM_Prog_NAME ${LANG_RUSSIAN} "Миакро-9.11"
-
-LangString SM_Dump_NAME ${LANG_ENGLISH} "RabDump"
-LangString SM_Dump_NAME ${LANG_RUSSIAN} "Резервные копии"
-
-LangString SM_Conv_NAME ${LANG_ENGLISH} ".mia Converter"
-LangString SM_Conv_NAME ${LANG_RUSSIAN} "Конвертер из .mia"
-
-LangString SM_Up_NAME ${LANG_ENGLISH} "DB Updater"
-LangString SM_Up_NAME ${LANG_RUSSIAN} "Обновление БД"
-
-LangString KillRabDump ${LANG_ENGLISH} "Killing RabDump..."
-LangString KillRabDump ${LANG_RUSSIAN} "Закрываем Резервные копии..."
-
-LangString KillRabNet ${LANG_ENGLISH} "Killing RabNet..."
-LangString KillRabNet ${LANG_RUSSIAN} "Закрываем Rabnet..."
-
-LangString Branding ${LANG_ENGLISH} "@CompanyName_en@"
-LangString Branding ${LANG_RUSSIAN} "@CompanyName@"
-
-
-
-VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "@AppName_en@"
-#VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" "A test comment"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "@CompanyName_en@"
-#VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalTrademarks" "Test Application is a trademark of Fake company"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "@Copys_en@"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "@FileDescr_en@"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "@AppVer@"
-
-VIAddVersionKey /LANG=${LANG_RUSSIAN} "ProductName" "@AppName@"
-#VIAddVersionKey /LANG=${LANG_RUSSIAN} "Comments" "A test comment"
-VIAddVersionKey /LANG=${LANG_RUSSIAN} "CompanyName" "@CompanyName@"
-#VIAddVersionKey /LANG=${LANG_RUSSIAN} "LegalTrademarks" "Test Application is a trademark of Fake company"
-VIAddVersionKey /LANG=${LANG_RUSSIAN} "LegalCopyright" "@Copys@"
-VIAddVersionKey /LANG=${LANG_RUSSIAN} "FileDescription" "@FileDescr@"
-VIAddVersionKey /LANG=${LANG_RUSSIAN} "FileVersion" "@AppVer@"
-
-VIProductVersion "@AppVer@"
-
-
- ; GetParameters
- ; input, none
- ; output, top of stack (replaces, with e.g. whatever)
- ; modifies no other variables.
- 
-Function GetParameters
- 
-  Push $R0
-  Push $R1
-  Push $R2
-  Push $R3
- 
-  StrCpy $R2 1
-  StrLen $R3 $CMDLINE
- 
-  ;Check for quote or space
-  StrCpy $R0 $CMDLINE $R2
-  StrCmp $R0 '"' 0 +3
-    StrCpy $R1 '"'
-    Goto loop
-  StrCpy $R1 " "
- 
-  loop:
-    IntOp $R2 $R2 + 1
-    StrCpy $R0 $CMDLINE 1 $R2
-    StrCmp $R0 $R1 get
-    StrCmp $R2 $R3 get
-    Goto loop
- 
-  get:
-    IntOp $R2 $R2 + 1
-    StrCpy $R0 $CMDLINE 1 $R2
-    StrCmp $R0 " " get
-    StrCpy $R0 $CMDLINE "" $R2
- 
-  Pop $R3
-  Pop $R2
-  Pop $R1
-  Exch $R0
- 
-FunctionEnd
-
-
-
-; GetParameterValue
-; Chris Morgan<cmorgan@alum.wpi.edu> 5/10/2004
-; -Updated 4/7/2005 to add support for retrieving a command line switch
-;  and additional documentation
-;
-; Searches the command line input, retrieved using GetParameters, for the
-; value of an option given the option name.  If no option is found the
-; default value is placed on the top of the stack upon function return.
-;
-; This function can also be used to detect the existence of just a
-; command line switch like /OUTPUT  Pass the default and "OUTPUT"
-; on the stack like normal.  An empty return string "" will indicate
-; that the switch was found, the default value indicates that
-; neither a parameter or switch was found.
-;
-; Inputs - Top of stack is default if parameter isn't found,
-;  second in stack is parameter to search for, ex. "OUTPUT"
-; Outputs - Top of the stack contains the value of this parameter
-;  So if the command line contained /OUTPUT=somedirectory, "somedirectory"
-;  will be on the top of the stack when this function returns
-;
-; Register usage
-;$R0 - default return value if the parameter isn't found
-;$R1 - input parameter, for example OUTPUT from the above example
-;$R2 - the length of the search, this is the search parameter+2
-;      as we have '/OUTPUT='
-;$R3 - the command line string
-;$R4 - result from StrStr calls
-;$R5 - search for ' ' or '"'
- 
-Function GetParameterValue
-  Exch $R0  ; get the top of the stack(default parameter) into R0
-  Exch      ; exchange the top of the stack(default) with
-            ; the second in the stack(parameter to search for)
-  Exch $R1  ; get the top of the stack(search parameter) into $R1
- 
-  ;Preserve on the stack the registers used in this function
-  Push $R2
-  Push $R3
-  Push $R4
-  Push $R5
- 
-  Strlen $R2 $R1+2    ; store the length of the search string into R2
- 
-  Call GetParameters  ; get the command line parameters
-  Pop $R3             ; store the command line string in R3
- 
-  # search for quoted search string
-  StrCpy $R5 '"'      ; later on we want to search for a open quote
-  Push $R3            ; push the 'search in' string onto the stack
-  Push '"/$R1='       ; push the 'search for'
-  Call StrStr         ; search for the quoted parameter value
-  Pop $R4
-  StrCpy $R4 $R4 "" 1   ; skip over open quote character, "" means no maxlen
-  StrCmp $R4 "" "" next ; if we didn't find an empty string go to next
- 
-  # search for non-quoted search string
-  StrCpy $R5 ' '      ; later on we want to search for a space since we
-                      ; didn't start with an open quote '"' we shouldn't
-                      ; look for a close quote '"'
-  Push $R3            ; push the command line back on the stack for searching
-  Push '/$R1='        ; search for the non-quoted search string
-  Call StrStr
-  Pop $R4
- 
-  ; $R4 now contains the parameter string starting at the search string,
-  ; if it was found
-next:
-  StrCmp $R4 "" check_for_switch ; if we didn't find anything then look for
-                                 ; usage as a command line switch
-  # copy the value after /$R1= by using StrCpy with an offset of $R2,
-  # the length of '/OUTPUT='
-  StrCpy $R0 $R4 "" $R2  ; copy commandline text beyond parameter into $R0
-  # search for the next parameter so we can trim this extra text off
-  Push $R0
-  Push $R5            ; search for either the first space ' ', or the first
-                      ; quote '"'
-                      ; if we found '"/output' then we want to find the
-                      ; ending ", as in '"/output=somevalue"'
-                      ; if we found '/output' then we want to find the first
-                      ; space after '/output=somevalue'
-  Call StrStr         ; search for the next parameter
-  Pop $R4
-  StrCmp $R4 "" done  ; if 'somevalue' is missing, we are done
-  StrLen $R4 $R4      ; get the length of 'somevalue' so we can copy this
-                      ; text into our output buffer
-  StrCpy $R0 $R0 -$R4 ; using the length of the string beyond the value,
-                      ; copy only the value into $R0
-  goto done           ; if we are in the parameter retrieval path skip over
-                      ; the check for a command line switch
- 
-; See if the parameter was specified as a command line switch, like '/output'
-check_for_switch:
-  Push $R3            ; push the command line back on the stack for searching
-  Push '/$R1'         ; search for the non-quoted search string
-  Call StrStr
-  Pop $R4
-  StrCmp $R4 "" done  ; if we didn't find anything then use the default
-  StrCpy $R0 ""       ; otherwise copy in an empty string since we found the
-                      ; parameter, just didn't find a value
- 
-done:
-  Pop $R5
-  Pop $R4
-  Pop $R3
-  Pop $R2
-  Pop $R1
-  Exch $R0 ; put the value in $R0 at the top of the stack
-FunctionEnd
-
-
-!define StrStr "!insertmacro StrStr"
- 
-!macro StrStr ResultVar String SubString
-  Push `${String}`
-  Push `${SubString}`
-  Call StrStr
-  Pop `${ResultVar}`
-!macroend
- 
-Function StrStr
-/*After this point:
-  ------------------------------------------
-  $R0 = SubString (input)
-  $R1 = String (input)
-  $R2 = SubStringLen (temp)
-  $R3 = StrLen (temp)
-  $R4 = StartCharPos (temp)
-  $R5 = TempStr (temp)*/
- 
-  ;Get input from user
-  Exch $R0
-  Exch
-  Exch $R1
-  Push $R2
-  Push $R3
-  Push $R4
-  Push $R5
- 
-  ;Get "String" and "SubString" length
-  StrLen $R2 $R0
-  StrLen $R3 $R1
-  ;Start "StartCharPos" counter
-  StrCpy $R4 0
- 
-  ;Loop until "SubString" is found or "String" reaches its end
-  loop:
-    ;Remove everything before and after the searched part ("TempStr")
-    StrCpy $R5 $R1 $R2 $R4
- 
-    ;Compare "TempStr" with "SubString"
-    StrCmp $R5 $R0 done
-    ;If not "SubString", this could be "String"'s end
-    IntCmp $R4 $R3 done 0 done
-    ;If not, continue the loop
-    IntOp $R4 $R4 + 1
-    Goto loop
-  done:
- 
-/*After this point:
-  ------------------------------------------
-  $R0 = ResultVar (output)*/
- 
-  ;Remove part before "SubString" on "String" (if there has one)
-  StrCpy $R0 $R1 `` $R4
- 
-  ;Return output to user
-  Pop $R5
-  Pop $R4
-  Pop $R3
-  Pop $R2
-  Pop $R1
-  Exch $R0
-FunctionEnd
 

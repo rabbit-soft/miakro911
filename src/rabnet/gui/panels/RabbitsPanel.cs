@@ -275,8 +275,8 @@ namespace rabnet
 
         private void replaceMenuItem_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count < 1)
-                return;
+            if (listView1.SelectedItems.Count < 1) return;
+
             ReplaceForm rpf = new ReplaceForm();
             foreach (ListViewItem li in listView1.SelectedItems)
                 rpf.AddRabbit((int)li.Tag);
@@ -286,8 +286,8 @@ namespace rabnet
 
         private void placeChMenuItem_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count != 2)
-                return;
+            if (listView1.SelectedItems.Count != 2) return;
+
             ReplaceForm rpf = new ReplaceForm();
             rpf.AddRabbit((int)listView1.SelectedItems[0].Tag);
             rpf.AddRabbit((int)listView1.SelectedItems[1].Tag);
@@ -693,8 +693,6 @@ namespace rabnet
                 kids = true;
             setMenu(isx, listView1.SelectedItems.Count, kids);
         }
-
-        
 
         private void replacePlanMenuItem_Click(object sender, EventArgs e)
         {

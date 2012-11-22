@@ -46,6 +46,10 @@
           <DataField>d_notes</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="dage">
+          <DataField>dage</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
     </DataSet>
     <DataSet Name="Data2">
@@ -84,19 +88,22 @@
         </Style>
         <TableColumns>
           <TableColumn>
-            <Width>68.4pt</Width>
+            <Width>61.2pt</Width>
           </TableColumn>
           <TableColumn>
             <Width>149.1pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>48.6pt</Width>
+            <Width>39.8pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>156.2pt</Width>
+            <Width>46.2pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>153.5pt</Width>
+            <Width>145.8pt</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>148.0pt</Width>
           </TableColumn>
         </TableColumns>
         <Header>
@@ -141,6 +148,22 @@
                     <Textbox Name="Textbox4">
                       <Value>Кол-во</Value>
                       <Style>
+                        <TextAlign>Center</TextAlign>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontWeight>Bold</FontWeight>
+                        <BorderColor />
+                        <BorderWidth />
+                      </Style>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox22">
+                      <Value>Возраст</Value>
+                      <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
                         <TextAlign>Center</TextAlign>
                         <BorderStyle>
                           <Default>Solid</Default>
@@ -234,6 +257,23 @@
                           <Default>Solid</Default>
                         </BorderStyle>
                         <PaddingLeft>2pt</PaddingLeft>
+                        <BorderColor />
+                        <BorderWidth />
+                      </Style>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox23">
+                      <Value>=Fields!dage.Value</Value>
+                      <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <BorderColor />
+                        <BorderWidth />
                       </Style>
                     </Textbox>
                   </ReportItems>
@@ -315,6 +355,19 @@
                         </BorderStyle>
                       </Style>
                       <Value>=Sum(Fields!r_group)</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox24">
+                      <Value>
+                      </Value>
+                      <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                      </Style>
                     </Textbox>
                   </ReportItems>
                 </TableCell>
@@ -572,16 +625,17 @@
         <Left>137.0pt</Left>
         <Top>10.7pt</Top>
       </Table>
-      <Textbox Name="Textbox21" >
+      <Textbox Name="Textbox21">
         <Height>12.75pt</Height>
         <Width>123.37pt</Width>
         <Value>=Globals!ExecutionTime</Value>
         <ZIndex>1</ZIndex>
-        <Left>472.6pt</Left>
-        <Top>0.0pt</Top>
+        <Left>471.4pt</Left>
+        <Top>4.1pt</Top>
       </Textbox>
     </ReportItems>
     <Height>85.2pt</Height>
+    <Columns >1</Columns>
   </Body>
   <PageFooter>
     <Height>14pt</Height>
@@ -601,4 +655,6 @@
     <PrintOnFirstPage>true</PrintOnFirstPage>
     <PrintOnLastPage>true</PrintOnLastPage>
   </PageFooter>
+  <DataElementName >Report</DataElementName>
+  <DataElementStyle >AttributeNormal</DataElementStyle>
 </Report>

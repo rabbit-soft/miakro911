@@ -293,10 +293,11 @@ FROM fucks WHERE f_partner={0:d} AND f_end_date>={1:s} AND f_end_date<={2:s});",
             return String.Format(@"SELECT DATE_FORMAT(d_date,'{1}') date,
     deadname(r_id,2) name,
     r_group,
+    To_Days(d_date)-To_Days(r_born) dage,
     (SELECT d_name FROM deadreasons WHERE d_id=d_reason) reason,
     d_notes 
 FROM dead {0:s} 
-ORDER BY d_date ASC;", where,format);
+ORDER BY d_reason,d_date ASC;", where,format);
             
         }
 

@@ -626,6 +626,7 @@
 		<!-- удаляем временные файлы -->
 		<delete file="${curdir}/distrib/distrib_nsis/setup_bld.nsi"/>
 		<delete file="${curdir}/distrib/distrib_nsis/setup.exe"/>
+		<delete file="${curdir}/distrib/distrib_nsis/include/LangStrings.nsh.exe"/>
 	</target>
 
 	<target name="clean_mark">
@@ -664,7 +665,7 @@
 		<copy file="${curdir}/distrib/distrib_nsis/setup_${bin_type}_tmpl.nsi" tofile="${curdir}/distrib/distrib_nsis/setup_bld.nsi">
 			<filterchain>
 				<replacetokens>
-					<token key="AppVer" value="${fullver}" />
+					<!--token key="AppVer" value="${fullver}" />
 					<token key="AppName" value="${appname}" />
 					<token key="AppName_en" value="${appname_en}" />
 					<token key="FileDescr" value="Программа установки ${appname} ${version}" />
@@ -672,13 +673,29 @@
 					<token key="CompanyName" value="${companyname}" />
 					<token key="CompanyName_en" value="${companyname_en}" />
 					<token key="Copys" value="(C) ${companyname} 2010" />
-					<token key="Copys_en" value="(C) ${companyname_en} 2010" />
+					<token key="Copys_en" value="(C) ${companyname_en} 2010" /-->
 					<token key="bin_type" value="${bin_type}" />
 					<!--token key="Comments" value="" /-->
 				</replacetokens>
 				<!--tabstospaces /-->
 			</filterchain>
-		</copy>		
+		</copy>
+		<copy file="${curdir}/distrib/distrib_nsis/include/LangStrings.tmp.nsh" tofile="${curdir}/distrib/distrib_nsis/include/LangStrings.nsh">
+			<filterchain>
+				<replacetokens>
+					<token key="AppVer" value="${fullver}" />
+					<token key="AppName" value="${appname}" />
+					<token key="AppName_en" value="${appname_en}" />
+					<token key="CompanyName" value="${companyname}" />
+					<token key="CompanyName_en" value="${companyname_en}" />
+					<token key="Copys" value="(C) ${companyname} 2010" />
+					<token key="Copys_en" value="(C) ${companyname_en} 2010" />					
+					<token key="FileDescr" value="Программа установки ${appname} ${version}" />
+					<token key="FileDescr_en" value="${appname_en} ${version} Installer" />
+				</replacetokens>
+				<!--tabstospaces /-->
+			</filterchain>
+		</copy>			
 
 		<exec program="${NSIS}">
 			<arg value="/V3" />
