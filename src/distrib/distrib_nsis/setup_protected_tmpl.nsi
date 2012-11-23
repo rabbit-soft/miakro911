@@ -257,12 +257,14 @@ doneold${SECTION_ID}:
 
 # Uninstaller sections
 Section /o -un.com_comps UNSEC_Common   
-    Delete /REBOOTOK $INSTDIR\bin\mia_conv.exe
+	RmDir /REBOOTOK /r $INSTDIR\Guardant
+    
+	Delete /REBOOTOK $INSTDIR\bin\mia_conv.exe
 	Delete /REBOOTOK $INSTDIR\bin\mia_conv.exe.config
 	Delete /REBOOTOK $INSTDIR\bin\log4net.dll
 	Delete /REBOOTOK $INSTDIR\bin\updater.exe
 	Delete /REBOOTOK $INSTDIR\bin\updater.exe.config
-	RmDir /REBOOTOK /r $INSTDIR\Guardant
+	
     Delete /REBOOTOK $SMPROGRAMS\$StartMenuGroup\$(SM_Conv_NAME).lnk
     Delete /REBOOTOK $SMPROGRAMS\$StartMenuGroup\$(SM_Up_NAME).lnk
     DeleteRegValue HKLM "${REGKEY}\Components" com_comps
