@@ -45,10 +45,11 @@ namespace rabnet
                 dataGridView1.Rows[dataGridView1.Rows.Count - 1].Tag = m;
                 dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[3].Style.ForeColor = m.Type == sMeal.MoveType.In ? Color.Green : Color.Crimson;
             }
-            if (this.dataGridView1.Rows.Count!=0) 
-                dataGridView1.CurrentCell = this.dataGridView1[0, this.dataGridView1.Rows.Count - 1];
-            dtpStartDate.MaxDate = DateTime.Now;
-            lbSummary.Text = sumTextRus + (summary/scnt).ToString("0.0000");
+            if (this.dataGridView1.Rows.Count != 0)
+                dataGridView1.CurrentCell = this.dataGridView1[0, this.dataGridView1.Rows.Count - 1];              
+            if(scnt!=0)
+                lbSummary.Text = sumTextRus + (summary / scnt).ToString("0.0000");
+            dtpStartDate.MaxDate = DateTime.Now;           
         }
 
         private void btClose_Click(object sender, EventArgs e)
