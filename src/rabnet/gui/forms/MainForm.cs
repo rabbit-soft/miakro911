@@ -88,7 +88,7 @@ namespace rabnet
             bool curDate = Math.Round(timeDiff.TotalDays) > 0;
             if (curDate)
             {
-                _logger.WarnFormat("serv and local date mismatc {}h");
+                _logger.WarnFormat("serv and local date mismatc s:{0:s} l:{1:s}", srvNow.ToShortDateString(), DateTime.Now.ToShortDateString());
                 MessageBox.Show(String.Format(@"Дата на сервере не совпадает с датой на данном компьютере.
 Это может повлечь за собой непоправимые ошибки.
 Рекомендуется установить корректную дату.
