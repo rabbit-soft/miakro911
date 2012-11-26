@@ -20,7 +20,7 @@ namespace rabnet
     public partial class MainForm : Form
     {
         protected static readonly ILog _logger = LogManager.GetLogger(typeof(MainForm));
-        private bool manual = false;
+        private bool _manual = false;
         private RabNetPanel[] panels =null;
         /// <summary>
         /// Панель, активная в данныймомент
@@ -81,16 +81,19 @@ namespace rabnet
 #endif
             _mustclose = false;
             usersMenuItem.Visible = Engine.get().isAdmin();
-            manual = true;
+            _manual = true;
 
             DateTime srvNow = Engine.db().now();
             TimeSpan timeDiff = DateTime.Now.Subtract(srvNow);
             bool curDate = Math.Round(timeDiff.TotalDays) > 0;
             if (curDate)
             {
-                MessageBox.Show(@"Дата на сервере не совпадает с датой на данном компьютере.
+                _logger.WarnFormat("serv and local date mismatc {}h");
+                MessageBox.Show(String.Format(@"Дата на сервере не совпадает с датой на данном компьютере.
 Это может повлечь за собой непоправимые ошибки.
-Рекомендуется установить корректную дату.","Даты не совпадает",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+Рекомендуется установить корректную дату.
+Дата на сервере: {0:s}
+Дата локальная:  {1:s}", srvNow.ToShortDateString(), DateTime.Now.ToShortDateString()), "Даты не совпадают", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             rabStatusBar1.SetText(0, srvNow.ToShortDateString(),curDate);    
         
@@ -110,7 +113,7 @@ namespace rabnet
             shortZooMenuItem.Checked = (op.safeIntOption(Options.OPT_ID.SHORT_ZOO,1) == 1);
             Building.SetDefFmt(op.getIntOption(Options.OPT_ID.BUILD_FILL_ZERO) == 1 ? '0' : ' ');
             //rabStatusBar1.run();
-            manual = false;
+            _manual = false;
 #if !DEMO
             checkPlugins();
     #if PROTECTED
@@ -163,8 +166,8 @@ namespace rabnet
 #endif
         private void showTierTMenuItem_CheckedChanged(object sender, EventArgs e)
         {
-            if (manual)
-                return;
+            if (_manual) return;
+
             bool reshow = true;
             Options.OPT_ID id=Options.OPT_ID.SHOW_TIER_TYPE;
             if (sender == showTierSMenuItem)id = Options.OPT_ID.SHOW_TIER_SEC;
