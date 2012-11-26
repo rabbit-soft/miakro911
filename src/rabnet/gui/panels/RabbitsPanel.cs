@@ -45,8 +45,8 @@ namespace rabnet
             _runF = f;
             colSort.Prepare();
             IDataGetter dg = DataThread.db().getRabbits(f);
-            _rsb.setText(1, dg.getCount().ToString() + " записей");
-            _rsb.setText(2, dg.getCount2().ToString() + " кроликов");
+            _rsb.SetText(1, dg.getCount().ToString() + " записей");
+            _rsb.SetText(2, dg.getCount2().ToString() + " кроликов");
             return dg;
         }
 
@@ -112,48 +112,15 @@ namespace rabnet
         {
             if (!manual || MainForm.MustClose) return;
 
+            MainForm.StillWorking();
             makeSelectedCount();
-            if (listView1.SelectedItems.Count != 1)
-            {
-                return;
-            }
-            //if (gentree < 0)
-            //{
-            //    genTree.Nodes.Clear();
-            //    return;
-            //}
-            //проверка дерева кроликов на совпадения
-            //if (listView1.SelectedItems[0].SubItems[0].Text.IndexOf("-") == 0) return;
-
-            //for (int ind = 0; ind < genTree.Nodes.Count; ind++)
-            //{
-            //    int len;
-            //    len = genTree.Nodes[ind].Text.IndexOf("-");
-            //    if (len == -1)
-            //        len = genTree.Nodes[ind].Text.IndexOf(",");
-            //    else if (genTree.Nodes[ind].Text.IndexOf(",") < len)
-            //        len = genTree.Nodes[ind].Text.IndexOf(",");
-            //    string str = genTree.Nodes[ind].Text.Remove(len);
-            //    if (listView1.SelectedItems[0].SubItems[NAMEFIELD].Text.StartsWith(str))
-            //    {
-            //        if (ind == 0) return;
-            //        genTree.Nodes.RemoveAt(ind);
-            //        break;
-            //    }
-            //}
-            //if (genTree.Nodes.Count > 0)
-            //    genTree.Nodes[0].ForeColor = Color.Gray;
-            //while (genTree.Nodes.Count > gentree)
-            //    genTree.Nodes.RemoveAt(gentree);
+            if (listView1.SelectedItems.Count != 1) return;
+            
             RabTreeData dt = Engine.db().rabbitGenTree((int)listView1.SelectedItems[0].Tag);
             if (dt != null && dt.Name != null)
             {
                 TreeNode tn = tvGens.InsertNode(dt, true);
-                //TreeNode tn = genTree.Nodes.Insert(0, dt.Name);
                 tn.ForeColor = Color.Blue;
-                //insertNode(tn, dt);
-                //tn.ExpandAll();
-                //tn.EnsureVisible();
             }
             else
             {
@@ -268,7 +235,7 @@ namespace rabnet
             int cnt = 0;
             foreach (ListViewItem li in listView1.SelectedItems)
                 cnt += selCount(li.Index);
-            _rsb.setText(3, String.Format("Выбрано {0:d} строк - {1:d} кроликов",rows,cnt));
+            _rsb.SetText(3, String.Format("Выбрано {0:d} строк - {1:d} кроликов",rows,cnt));
         }
 
         private void listView1_MouseDown(object sender, MouseEventArgs e)

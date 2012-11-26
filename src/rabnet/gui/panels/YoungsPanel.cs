@@ -38,10 +38,10 @@ namespace rabnet
             colSort.Prepare();
             IDataGetter dg = DataThread.db().GetYoungers(f); 
             //отображение общей инфы в статус баре
-            _rsb.setText(1, dg.getCount().ToString() + " строк");
-            _rsb.setText(2, dg.getCount2().ToString() + " кроликов");
-            _rsb.setText(3, dg.getCount3().ToString() + " кормилиц");
-            _rsb.setText(4, String.Format("{0:f2} среднее количество подсосных", dg.getCount4()));
+            _rsb.SetText(1, dg.getCount().ToString() + " строк");
+            _rsb.SetText(2, dg.getCount2().ToString() + " кроликов");
+            _rsb.SetText(3, dg.getCount3().ToString() + " кормилиц");
+            _rsb.SetText(4, String.Format("{0:f2} среднее количество подсосных", dg.getCount4()));
             return dg;
         }
 
@@ -179,7 +179,7 @@ namespace rabnet
                 int c = int.Parse(li.SubItems[1].Text);
                 cnt += c;
             }
-            _rsb.setText(3, String.Format("Выбрано {0:d} строк - {1:d} кроликов", rows, cnt));
+            _rsb.SetText(3, String.Format("Выбрано {0:d} строк - {1:d} кроликов", rows, cnt));
         }
 
         private void listView1_MouseDown(object sender, MouseEventArgs e)

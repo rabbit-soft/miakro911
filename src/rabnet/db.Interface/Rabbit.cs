@@ -168,7 +168,7 @@ namespace rabnet
 
         #region properties
         public int Rate { get { return _rate; } set { _rate = value; } }
-        public int Sukrol { get { return DateTime.Now.Subtract(_eventDate).Days; } }
+        public int Sukrol { get { return DateTime.Now.Subtract(_eventDate).Days; } }///todo тут нужен Date
         public virtual int KidsCount { get { return _kidsCount; } }
         public virtual int KidsAge { get { return _kidsCount > 0 ? _kidsAge : -1; } }
 

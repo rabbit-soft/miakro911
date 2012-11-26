@@ -30,7 +30,7 @@ namespace rabnet
         private static bool _mustclose = false;
 #if PROTECTED
         private DateTime _lastPTest = DateTime.MinValue;
-        private const int PTEST_DELAY_SEC =5*60;
+        private const int PTEST_DELAY_SEC =5*60;       
 #endif
 
         public static bool MustClose { get { return _mustclose; } }
@@ -82,7 +82,18 @@ namespace rabnet
             _mustclose = false;
             usersMenuItem.Visible = Engine.get().isAdmin();
             manual = true;
-            rabStatusBar1.setText(0, Engine.db().now().ToShortDateString());
+
+            DateTime srvNow = Engine.db().now();
+            TimeSpan timeDiff = DateTime.Now.Subtract(srvNow);
+            bool curDate = Math.Round(timeDiff.TotalDays) > 0;
+            if (curDate)
+            {
+                MessageBox.Show(@"Дата на сервере не совпадает с датой на данном компьютере.
+Это может повлечь за собой непоправимые ошибки.
+Рекомендуется установить корректную дату.","Даты не совпадает",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+            }
+            rabStatusBar1.SetText(0, srvNow.ToShortDateString(),curDate);    
+        
             this.Text = Engine.get().farmName();
             Engine.db().ArchLogs();
 #if DEMO
@@ -173,7 +184,7 @@ namespace rabnet
             DataThread.get().stop();
             curpanel.deactivate();
             for (int i = 1; i < 5;i++ )
-                rabStatusBar1.setText(i, "");
+                rabStatusBar1.SetText(i, "");
             panel1.Controls.Remove(curpanel);
             curpanel = panels[tabControl1.SelectedIndex];
             panel1.Controls.Add(curpanel);

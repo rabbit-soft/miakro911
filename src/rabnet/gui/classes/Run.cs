@@ -14,11 +14,11 @@ namespace rabnet
         /// <summary>
         /// Создает структуру БД для программы rabnet
         /// </summary>
-        /// <param name="connParams">Параметры программы mia_conv</param>
+        /// <param name="miaParams">Параметры программы mia_conv</param>
         /// <exception cref="Exception">При неудачном создании БД</exception>
-        public static void DBCreate(String connParams, String host, String db, String user, String pwd, String admin, String apwd)
+        public static void DBCreate(String miaParams, String host, String db, String user, String pwd, String admin, String apwd)
         {
-            String prms = String.Format("\"{0:s}\" {1:s};{2:s};{3:s};{4:s};{5:s};{6:s};", connParams, host, db, user, pwd, admin, apwd);
+            String prms = String.Format("\"{0:s}\" {1:s};{2:s};{3:s};{4:s};{5:s};{6:s};", miaParams, host, db, user, pwd, admin, apwd);
             prms += " зоотехник;";
 
             String prg = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), MIA_CONV);

@@ -12,39 +12,12 @@ namespace updater
     public partial class InstallForm : Form
     {
         private ILog _logger = LogManager.GetLogger(typeof(UpdateForm));
-        //bool _batch = false;
         public int Result = 0;
-        //public string FilenameRabDump = "";
-        //public string FilenameRabNet = "";
-        //private XmlDocument _xmlRabDump = new XmlDocument();
-        //private XmlDocument _xmlRabNet = new XmlDocument();
-        //XmlElement _optsRabDump = null;
-        //XmlElement _optsRabNet = null;
 
         public InstallForm()
         {
             InitializeComponent();
         }
-
-        /*public InstallForm(String flRabDump, string flRabNet ,bool bt):this()
-        {
-            //_batch = bt;
-            FilenameRabDump = flRabDump;
-            FilenameRabNet = flRabNet;
-            PrepareXmlRabDump();
-            PrepareXmlRabNet();
-            radioButton4.Visible = !bt;
-            radioButton4.Enabled = !bt;
-        }*/
-
-        /*private const string ConfRabDump ="<?xml version=\"1.0\" encoding=\"utf-8\" ?><configuration><configSections>"+
-"<section name=\"rabdumpOptions\" type=\"rabdump.RabdumpConfigHandler,rabdump\"/>"+
-"<section name=\"log4net\" type=\"log4net.Config.Log4NetConfigurationSectionHandler,Log4net\"/>"+
-"</configSections><rabdumpOptions></rabdumpOptions><log4net><appender name=\"FileAppender\" type=\"log4net.Appender.FileAppender\">"+
-"<file value=\"dumplog.txt\" /><appendToFile value=\"true\" /><lockingModel type=\"log4net.Appender.FileAppender+MinimalLock\" />"+
-"<layout type=\"log4net.Layout.PatternLayout\"><conversionPattern value=\"%date [%thread] %-5level %logger{2} [%property{NDC}] - %message%newline\" />"+
-"</layout></appender><root><level value=\"DEBUG\" /><appender-ref ref=\"FileAppender\" /></root></log4net></configuration>";*/
-
 
         public class ReverseComparer : IComparer
         {
@@ -53,25 +26,6 @@ namespace updater
                 return -((IComparable)object1).CompareTo(object2);
             }
         }
-
-        /*private void PrepareXmlRabNet()
-        {
-            try
-            {
-                _xmlRabNet.Load(FilenameRabNet);
-                //xml.LoadXml(conf);
-                //            _xmlRabNet.Save(filename);
-//                foreach (XmlNode n in _xmlRabNet.DocumentElement.ChildNodes)
-//                {
-//                    if (n.Name == "rabnetds")
-//                    {
-                        _optsRabNet = (XmlElement) _xmlRabNet.DocumentElement.FirstChild.ParentNode;
-//                        _optsRabNet = (XmlElement)n;
-                //                    }
-//                }
-            } 
-            catch{}
-        }*/
 
         /// <summary>
         /// Проверяет содержит ли XML-файл элемент 'rabnetds'
@@ -172,7 +126,7 @@ namespace updater
             Close();
         }
 
-        private void RunMia(String prm) //в RabDump есть аналогичная функция
+        private void runMia(String prm) //в RabDump есть аналогичная функция
         {
             try
             {
@@ -185,42 +139,6 @@ namespace updater
             }
         }
 
-//        private void RunMia(String prm) //в RabDump есть аналогичная функция
-//        {
-//            String prms = "\"" + prm + "\" " + tbHost.Text + ';' + tbDb.Text + ';' + tbUser.Text + ';' + tbPwd.Text + ';' + tbRoot.Text + ';' + tbRPwd.Text;
-//            prms += " зоотехник;";
-//            String prg = Path.GetDirectoryName(Application.ExecutablePath) + @"\mia_conv.exe";
-//#if DEBUG
-//            if (!File.Exists(prg))//нужно для того чтобы из под дебага можно было запустить Mia_Conv
-//            {
-//                string path = Path.GetFullPath(Application.ExecutablePath);
-//                bool recurs = true;
-//                string[] drives = Directory.GetLogicalDrives();
-//                while (recurs)
-//                {
-//                    foreach (string d in drives)
-//                    {
-//                        if (d.ToLower() == path)
-//                            recurs = false;
-//                    }
-//                    if (!recurs) break;
-//                    path = Directory.GetParent(path).FullName;
-//                    string[] dirs = Directory.GetDirectories(path);
-//                    if (Directory.Exists(path + @"\bin\protected\Tools"))
-//                    {
-//                        prg = path + @"\bin\protected\Tools\mia_conv.exe";
-//                        recurs = false;
-//                        break;
-//                    }
-//                }
-//            }
-//#endif
-//            Process p = Process.Start(prg, prms);
-//            p.WaitForExit();
-//            if (p.ExitCode != 0)
-//                throw new ApplicationException("Ошибка создания БД. " + miaExitCode.GetText(p.ExitCode));
-//        }
-
         private void btCheck_Click(object sender, EventArgs e)
         {
             try
@@ -228,7 +146,6 @@ namespace updater
                 TopMost = false;
                 if (rbJustExit.Checked)
                 {
-                    //Application.Exit(
                     Environment.Exit(10);
                 }
                 if (tbName.Text == "")
@@ -240,11 +157,11 @@ namespace updater
 
                 if (rbMakeNew.Checked)
                 {
-                    RunMia("nudb");
+                    runMia("nudb");
                 }
                 else if (rbImportFromMia.Checked)
                 {
-                    RunMia(tbFile.Text);
+                    runMia(tbFile.Text);
                 }
                 AddFarm();
                 Close();

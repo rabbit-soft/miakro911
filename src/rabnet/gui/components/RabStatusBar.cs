@@ -122,10 +122,17 @@ namespace rabnet
             btExcel.ToolTipText = "Сохранить содержимое списка в Excel";
         }
 
-        public void setText(int item,String text)
+        public void SetText(int item,String text)
         {
-            labels[item].Text=text;
+            SetText(item, text, false);
         }
+        public void SetText(int item, String text,bool error)
+        {
+            labels[item].Text = text;
+            if(error)
+                labels[item].ForeColor = Color.Crimson;
+        }
+
         public void Run()
         {
             if (btnStatus==0)

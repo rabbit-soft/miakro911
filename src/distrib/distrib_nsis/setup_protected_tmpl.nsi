@@ -207,7 +207,7 @@ SectionEnd
 
 Section /o -sec_updater SEC_Updater
     DetailPrint $(UPDATER_Run)
-    ExecWait '"$INSTDIR\bin\updater.exe" batch'
+    ExecWait '"$INSTDIR\bin\updater.exe" /d'
   
     Exec "$INSTDIR\bin\rabdump.exe"
 

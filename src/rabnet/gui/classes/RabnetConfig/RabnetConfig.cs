@@ -8,6 +8,7 @@ using Microsoft.Win32;
 using System.Xml;
 using System.Configuration;
 using log4net;
+using System.IO;
 
 namespace rabnet.RNC
 {
@@ -25,8 +26,8 @@ namespace rabnet.RNC
 
         private readonly ILog _logger = LogManager.GetLogger(typeof(RabnetConfig));
         public RegistryKey _regKey = Registry.CurrentUser;
-        public const string STARTUP = @"Software\Microsoft\Windows\CurrentVersion\Run";
-        public const string REGISTRY_PATH = @"Software\9-Bits\Miakro911";
+        public const string STARTUP = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
+        public const string REGISTRY_PATH = @"SOFTWARE\9-Bits\Miakro911";
         public const string DATASOURCES_PATH = REGISTRY_PATH + "\\datasources";
         private const string ALL_DB = "[ВСЕ]";
 
@@ -44,7 +45,7 @@ namespace rabnet.RNC
             {
                 case OptionType.MysqlPath:
                     string val = (string)k.GetValue("mysql");
-                    if (val == null || val == "")
+                    if (String.IsNullOrEmpty(val))
                         val= tryToDetectMysqlPath();
                     return val ;
                 case OptionType.zip7path: return (string)k.GetValue("z7");
@@ -59,7 +60,17 @@ namespace rabnet.RNC
 
         private string tryToDetectMysqlPath()
         {
-            return "";            
+            const string MYSQL_SRV_PATH = @"MySQL AB\MySQL Server 5.1";
+            const string NODE64 = "Wow6432Node";
+            const string LOC = "Location";
+
+            RegistryKey mKey = Registry.LocalMachine.OpenSubKey("SOFTWARE");
+            RegistryKey tryKey = mKey.OpenSubKey(MYSQL_SRV_PATH);
+            if(tryKey==null)
+                tryKey = mKey.OpenSubKey(Path.Combine(NODE64,MYSQL_SRV_PATH));
+            if (tryKey == null) return "";
+
+            return tryKey.GetValue(LOC).ToString();
         }
 
         public void SaveOption(OptionType optionType, string val)

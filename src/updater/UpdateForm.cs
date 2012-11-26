@@ -20,24 +20,14 @@ namespace updater
         /// Версия до которой надо обновиться
         /// </summary>
         private int _curver = 0;
-        //private string _filenameRabDump = "";
-        //private string _filenameRabNet = "";
         private bool _needUpdateSomebody = true;
         private Dictionary<int, String> _scripts = new Dictionary<int, string>();
         private MySqlConnection _sql = null;
-        //public enum UpdateStatus { Before, Procs, After }
 
         public UpdateForm()
         {
             InitializeComponent();
         }
-
-        /*public UpdateForm(String flRabDump,string flRabNet,bool bt):this()
-        {
-            _batch = bt;
-            _filenameRabDump = flRabDump;
-            _filenameRabNet = flRabNet;
-        }*/
 
         /// <summary>
         /// Загружает список скриптов Обновлений
@@ -173,60 +163,11 @@ namespace updater
                 if ((int)li.Tag != 0) continue;
                 uprows.Add(new UpRow(int.Parse(li.SubItems[2].Text), li.SubItems[0].Text, li.SubItems[1].Text));
             }
-            //int preVer = int.Parse(li.SubItems[2].Text);
-            //String prm = li.SubItems[1].Text + ";Allow User Variables=True";
-            //String nm = li.SubItems[0].Text;
-            //Status("Обновляется БД " + nm);
             UpdateThread ut = new UpdateThread(uprows,_curver,_scripts);
             ut.Error += new ErrorEventHandler(upError);
             ut.Progress += new ProgressEventHandler(upProgress);
             ut.EndUpdate += new EndUpdateEventHandler(upEnd);
-            ut.StartUpdate();
-            //while (preVer < _curver)
-            //{
-            //    preVer++;
-            //    foreach (int k in _scripts.Keys)
-            //        if (k == preVer)
-            //        {
-            //            try
-            //            {
-            //                Status(String.Format("Обновление {0:s} {1:d}->{2:d}", nm, preVer - 1, preVer));
-            //                _sql = new MySqlConnection(prm);
-            //                _sql.Open();
-            //                MySqlCommand c = new MySqlCommand("", _sql);
-            //                c.CommandTimeout = 600;
-            //                OnUpdate(preVer, _sql, UpdateStatus.Before);
-            //                String[] cmds = _scripts[k].Split(new string[] { "#DELIMITER |" }, StringSplitOptions.RemoveEmptyEntries);
-            //                c.CommandText = cmds[0];
-            //                c.ExecuteNonQuery();
-            //                if (cmds.Length > 1)
-            //                {
-            //                    OnUpdate(preVer, _sql, UpdateStatus.Procs);
-            //                    MySqlScript sc = new MySqlScript(_sql, cmds[1]);
-            //                    sc.Delimiter = "|";
-            //                    sc.Execute();
-            //                }
-            //                OnUpdate(preVer, _sql, UpdateStatus.After);
-
-            //                _logger.DebugFormat("update success db:{0:s}|script:{1:#}|", li.SubItems[0].Text, k);
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                _logger.Error(ex);
-            //                MessageBox.Show("Во время обновления БД произошла ошибка: " + ex.Message);
-            //                _batch = false;
-            //            }
-            //            finally
-            //            {
-            //                _sql.Close();
-            //            }
-            //        }
-            //}
-
-
-            //UpdateList();
-            //btUpdate.Enabled = true;
-            //btClose.Enabled = true;
+            ut.StartUpdate();           
         }
 
         private void upProgress(string Name, int PreVer, int ver)
@@ -280,158 +221,5 @@ namespace updater
                 e.Cancel = true;
             }
         }
-
-        //private void UpdateList()
-        //{
-        //    btUpdate.Enabled = false;
-        //    int needcount = 0;
-        //    btUpdate.Enabled = false;
-        //    Status("Проверка версий баз данных");
-        //    lv.Items.Clear();
-        //    XmlDocument xml = new XmlDocument();
-        //    try
-        //    {
-        //        //загружаем данные из файла rabDump.exe.config
-        //        xml.Load(_filenameRabDump);
-        //        foreach (XmlNode n in xml.DocumentElement.ChildNodes)
-        //        {
-        //            if (n.Name == "rabdumpOptions")
-        //            {
-        //                foreach (XmlNode ds in n.ChildNodes)
-        //                {
-        //                    if (ds.Name == "db")
-        //                    {
-        //                        String nm = "";
-        //                        String prm = "";
-        //                        foreach (XmlNode nd in ds.ChildNodes)
-        //                            switch (nd.Name)
-        //                            {
-        //                                case "name":
-        //                                    nm = nd.FirstChild != null ? nd.FirstChild.Value : "";
-        //                                    break;
-        //                                case "host":
-        //                                    prm += "host=" + (nd.FirstChild != null ? nd.FirstChild.Value : "") + ";";
-        //                                    break;
-        //                                case "db":
-        //                                    prm += "database=" + (nd.FirstChild != null ? nd.FirstChild.Value : "") + ";";
-        //                                    break;
-        //                                case "user":
-        //                                    prm += "uid=" + (nd.FirstChild != null ? nd.FirstChild.Value : "") + ";";
-        //                                    break;
-        //                                case "password":
-        //                                    prm += "pwd=" + (nd.FirstChild != null ? nd.FirstChild.Value : "") + ";";
-        //                                    break;
-        //                            }
-        //                        prm += "charset=utf8";
-          
-        //                        ListViewItem li = lv.Items.Add(nm);
-        //                        li.SubItems.Add(prm);
-        //                        li.Tag = 0;
-        //                        _sql = new MySqlConnection(prm);
-        //                        int hasver = 0;
-        //                        lv.Update();
-        //                        try
-        //                        {
-        //                            _sql.Open();
-        //                            MySqlCommand cmd = new MySqlCommand("SELECT o_value FROM options WHERE o_name='db' AND o_subname='version';", _sql);
-        //                            MySqlDataReader rd = cmd.ExecuteReader();
-        //                            if (rd.Read())
-        //                                hasver = rd.GetInt32(0);
-        //                            rd.Close();
-        //                            _sql.Close();
-        //                            li.SubItems.Add(hasver.ToString());
-        //                            if (hasver == _curver)
-        //                            {
-        //                                li.ForeColor = Color.Green;
-        //                                li.Tag = 1;
-        //                            }
-        //                            else if (hasver > _curver)
-        //                            {
-        //                                li.ForeColor = Color.YellowGreen;
-        //                                li.Tag = 2;
-        //                            }
-        //                            else needcount++;
-        //                        }
-        //                        catch (Exception)
-        //                        {
-        //                            _sql.Close();
-        //                            li.Tag = 3;
-        //                            li.ForeColor = Color.Red;
-        //                            li.SubItems.Add("нет доступа");
-        //                        }
-        //                        li.SubItems.Add(_curver.ToString());
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch
-        //    {
-        //        //загружаем данные из файла rabNet.exe.config
-        //        xml.Load(_filenameRabNet);
-        //        foreach (XmlNode n in xml.DocumentElement.ChildNodes)
-        //        {
-        //            if (n.Name == "rabnetds")
-        //            {
-        //                foreach (XmlNode ds in n.ChildNodes)
-        //                {
-        //                    if (ds.Name == "dataSource")
-        //                    {
-        //                        String nm = ds.Attributes["name"].Value;
-        //                        String prm = ds.Attributes["param"].Value; 
-        //                        ListViewItem li = lv.Items.Add(nm);
-        //                        li.SubItems.Add(prm);
-        //                        li.Tag = 0;
-        //                        _sql = new MySqlConnection(prm);
-        //                        int hasver = 0;
-        //                        lv.Update();
-        //                        try
-        //                        {
-        //                            _sql.Open();
-        //                            MySqlCommand cmd = new MySqlCommand("SELECT o_value FROM options WHERE o_name='db' AND o_subname='version';", _sql);
-        //                            MySqlDataReader rd = cmd.ExecuteReader();
-        //                            if (rd.Read())
-        //                                hasver = rd.GetInt32(0);
-        //                            rd.Close();
-        //                            _sql.Close();
-        //                            li.SubItems.Add(hasver.ToString());
-        //                            if (hasver == _curver)
-        //                            {
-        //                                li.ForeColor = Color.Green;
-        //                                li.Tag = 1;
-        //                            }
-        //                            else if (hasver > _curver)
-        //                            {
-        //                                li.ForeColor = Color.YellowGreen;
-        //                                li.Tag = 2;
-        //                            }
-        //                            else needcount++;
-        //                        }
-        //                        catch (Exception)
-        //                        {
-        //                            _sql.Close();
-        //                            li.Tag = 3;
-        //                            li.ForeColor = Color.Red;
-        //                            li.SubItems.Add("нет доступа");
-        //                        }
-        //                        li.SubItems.Add(_curver.ToString());
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    if (needcount>0)
-        //    {
-        //        Status("Требуется обновить " + needcount.ToString() + " БД");
-        //        btUpdate.Enabled = true;
-        //    }
-        //    else
-        //    {
-        //        Status("Обновления не требуются");
-        //        //button2.Enabled = true;
-        //    }
-        //    btUpdate.Enabled = true;
-        //}
-
     }
 }

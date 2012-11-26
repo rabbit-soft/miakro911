@@ -24,11 +24,6 @@ namespace updater
             _rnc = new RabnetConfig();
 
             _logger.Info("STARTING");
-            bool batch = false;
-            if (args.Length > 0)
-            {
-                batch = args[0] == "batch";
-            }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ///Определяет пути к файлам конфигураций     
@@ -40,34 +35,44 @@ namespace updater
                 _rnc.ExtractConfig(flRabNet);
             if (flRabNet != "" && InstallForm.TestRabDumpConfig(flRabDump))
                 _rnc.ExtractConfig(flRabDump);
-
             _rnc.RelocateRegOptions();
-
-            /*bool update = hasRabNet || hasRabDump;
-            if (hasRabNet && !hasRabDump)           
-                if (Directory.Exists(Path.GetDirectoryName(Application.ExecutablePath) + @"\..\RabDump"))               
-                    update = false;*/                         
+                        
             int res = 0;
             if (_rnc.HaveDataSources())
             {
                 _logger.Info("have datasources");
-                UpdateForm uf = new UpdateForm(/*flRabDump, flRabNet, batch*/);
+                UpdateForm uf = new UpdateForm();
                 Application.Run(uf);
                 res = uf.Result;
             }
             else
             {
-                _logger.Info("not have datasources");
-                InstallForm ifr = new InstallForm();
-                Application.Run(ifr);
-                res = ifr.Result;
+                try
+                {
+                    _logger.Info("not have datasources");
+                    if (args.Length > 0 && args[0] == "/d")
+                    {
+                        _logger.Info("default config");
+                        rabnet.Run.DBCreate("nudb", "localhost", "kroliki", "kroliki", "krol", "root", "");
+                        Program.RNC.LoadDataSources();
+                        Program.RNC.SaveDataSource(System.Guid.NewGuid().ToString(), "Новая ферма", "localhost", "kroliki", "kroliki", "krol");
+                        Program.RNC.SaveDataSources();
+                    }
+                    else
+                    {
+                        InstallForm ifr = new InstallForm();
+                        Application.Run(ifr);
+                        res = ifr.Result;
+                    }
+                }
+                catch (Exception exc)
+                {
+                    _logger.Error(exc);
+                    MessageBox.Show(exc.Message);
+                    Environment.ExitCode = 1;
+                }
             }
             Environment.ExitCode = res;
-            //            }
-            //            catch (Exception e)
-            //            {
-            //                MessageBox.Show(e.Message + e.StackTrace);
-            //            }
         }
     }
 }

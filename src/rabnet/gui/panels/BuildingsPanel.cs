@@ -164,7 +164,7 @@ namespace rabnet
             f[Filters.DBL_SURNAME] = Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
             colSort.Prepare();
             IDataGetter dg = DataThread.db().getBuildingsRows(f);
-            _rsb.setText(1, dg.getCount().ToString() + " МИНИфермы");
+            _rsb.SetText(1, dg.getCount().ToString() + " МИНИфермы");
             return dg;
         }
 
