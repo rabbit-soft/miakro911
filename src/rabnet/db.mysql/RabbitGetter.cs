@@ -724,7 +724,7 @@ WHERE r_id={0:d} ORDER BY date", rabId), sql);
     r_okrol,
     (SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight,
     (SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id) weight_date", 
-            (type == RabType.ALIVE ? "r_event_date,r_event" : "NULL r_event_date,'none' r_event"),
+            (type == RabType.ALIVE ? "r_event_date, r_event" : "NULL r_event_date, 'none' r_event"),
             (type == RabType.ALIVE ? "rab" : "dead"), (type == RabType.ALIVE ? "rabbits" : "dead"));
         }
     }

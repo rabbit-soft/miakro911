@@ -75,7 +75,7 @@ namespace rabnet
             String ev = "none";
             if (evtype == 1) ev = Fucks.Type.Sluchka_ENG;
             if (evtype == 2) ev = Fucks.Type.Vyazka_ENG;
-            if (evtype == 2) ev = Fucks.Type.Kuk_ENG;
+            if (evtype == 3) ev = Fucks.Type.Kuk_ENG;
             return ev;
         }
         public static int GetEventType(String eventType)
@@ -168,7 +168,7 @@ namespace rabnet
 
         #region properties
         public int Rate { get { return _rate; } set { _rate = value; } }
-        public int Sukrol { get { return DateTime.Now.Subtract(_eventDate).Days; } }///todo тут нужен Date
+        public int Sukrol { get { return DateTime.Now.Subtract(_eventDate.Date).Days; } }
         public virtual int KidsCount { get { return _kidsCount; } }
         public virtual int KidsAge { get { return _kidsCount > 0 ? _kidsAge : -1; } }
 
@@ -294,6 +294,7 @@ namespace rabnet
             _motherId = motherID;
             _fatherId = fatherID;
         }
+
         public OneRabbit() { }
         /// <summary>
         /// Каким окролом родился
@@ -307,8 +308,8 @@ namespace rabnet
         }
         public DateTime EventDate
         {
-            get { return _eventDate; }
-            set { _eventDate = value; }
+            get { return _eventDate.Date; }
+            set { _eventDate = value.Date; }
         }
         public int Status
         {
@@ -367,8 +368,8 @@ namespace rabnet
         /// </summary>               
         public DateTime LastFuckOkrol
         {
-            get { return _lastFuckOkrol; }
-            set { _lastFuckOkrol = value; }
+            get { return _lastFuckOkrol.Date; }
+            set { _lastFuckOkrol = value.Date; }
         }
         public int EventType { get { return _eventType; } }
         public int KidsOverAll

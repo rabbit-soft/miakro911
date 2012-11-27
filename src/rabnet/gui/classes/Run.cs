@@ -10,6 +10,7 @@ namespace rabnet
     {
         private const string MIA_CONV = "mia_conv.exe";
         private const String RABNET = "rabnet.exe";
+        private const String UPDATER = "updater.exe";
 
         /// <summary>
         /// Создает структуру БД для программы rabnet
@@ -52,5 +53,13 @@ namespace rabnet
         //{
         //    return "";
         //}
+
+        internal static void Updater()
+        {
+            String prg = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), UPDATER);
+            if (!File.Exists(prg))
+                throw new Exception(String.Format("Не удается найти программу {0:s}{1:s}БД не будет обновлена", prg, Environment.NewLine));
+            Process p = Process.Start(prg);
+        }
     }
 }
