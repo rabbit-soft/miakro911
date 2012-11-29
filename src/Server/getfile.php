@@ -20,5 +20,3 @@ if(isset($_POST['getfile']) && file_exists(Conf::$UPDATE_PATH.$_POST['getfile'])
     $rawdata = gzdeflate($rawdata);
     exit($rawdata);
 }
-
-?>

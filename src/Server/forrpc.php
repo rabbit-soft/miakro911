@@ -17,13 +17,13 @@ try
     //$log->debug("request: ".$request);
 	if (!isset($UID) || $UID==-1) // проверка на пользователя
 		throw new pException("Не верный пользователь",pErrCode::IncorrectUser);
-    if($UID==0)
+    $params = xmlrpc_decode_request($request,$methodName);
+    if($UID==0 && $methodName=="get.update.files")
     {
         $responce = MC::callMethod("get.update.files");
     }
     else
     {
-        $params = xmlrpc_decode_request($request,$methodName); //$log->info(var_export($request,true).$methodName);
         $responce = MC::callMethod($methodName,$params);
     }
     $result = XMLRPC_Response($responce);

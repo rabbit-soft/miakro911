@@ -13,9 +13,7 @@ class Conf
     public static $DB_PWD = "";
     public static $DB_NAME = "rabserv";
     public static $LOG_QRS =true;
-    public static $UPDATE_PATH="../tmp/rabbit_bin/";
+    public static $UPDATE_PATH="_update/";
     public static $DONG_UPDATE_HOST = '192.168.0.115'; //где находится новая программа
     public static $DUMPS_DIR = './dumps/';
 }
-
-?>

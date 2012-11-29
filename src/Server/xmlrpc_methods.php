@@ -41,7 +41,7 @@ class MC
             case "dongle.update.success": $return_value = self::dongle_update_success($params[0],$params[1]); break;
             case "webrep.get.lastdate": $return_value = self::GetWebRep_LastDate($params[0]); break;
             case "webrep.send.global": self::ParseWebReport($params[0],$params[1]); break;
-            default:return self::methodNotFound($methodName);
+            default: throw new pException("called method not exists",pErrCode::ServerMethodNotFound);
         }
         $log->trace("callMethod->return_value\n".var_export($return_value,true));
         if($logThis)
@@ -349,4 +349,3 @@ class MC
         return $result;
     }
 }
-?>
