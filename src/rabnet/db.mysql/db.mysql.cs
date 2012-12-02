@@ -623,7 +623,7 @@ namespace db.mysql
         {
             return new Butcher(sql, f);
         }
-        public Rabbit[] GetVictims(DateTime dt)
+        public AdultRabbit[] GetVictims(DateTime dt)
         {
             return Butcher.getVictims(sql,dt);
         }

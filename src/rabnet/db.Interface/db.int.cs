@@ -169,7 +169,7 @@ namespace rabnet
         void changeWorker(int fid, int worker);
 		RabbitGen getRabbitGen(int rid);
 		Dictionary<int, Color> getBreedColors();
-        Rabbit[] GetVictims(DateTime dt);
+        AdultRabbit[] GetVictims(DateTime dt);
 
         //zooTech
         ZootehJob[] GetZooTechJobs(Filters f, JobType type);

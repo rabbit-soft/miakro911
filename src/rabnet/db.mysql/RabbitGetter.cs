@@ -727,5 +727,30 @@ WHERE r_id={0:d} ORDER BY date", rabId), sql);
             (type == RabType.ALIVE ? "r_event_date, r_event" : "NULL r_event_date, 'none' r_event"),
             (type == RabType.ALIVE ? "rab" : "dead"), (type == RabType.ALIVE ? "rabbits" : "dead"));
         }
+
+        internal static string getAdultRabbit_FieldsSet(RabType type)
+        {
+            return String.Format(@"r_id,
+    {1:s}name(r_id,2) name,
+    r_sex,
+    r_born,
+    (SELECT b_name FROM breeds WHERE b_id=r_breed) breed,
+    r_group,
+    r_rate,
+    r_bon,
+    {1:s}place(r_id) place,
+    r_notes,
+    r_flags,
+    '-1' weight,
+    r_status,
+    {0:s},
+    {2:s},
+    {3:s},
+    '' vaccines", 
+            (type == RabType.ALIVE ? "r_event_date" : "NULL r_event_date"),
+            (type == RabType.ALIVE ? "rab" : "dead"),
+            (type == RabType.ALIVE ? "(SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) suckers" : "0 suckers"),
+            (type == RabType.ALIVE ? "(SELECT AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) aage" : "0 aage"));
+        }
     }
 }

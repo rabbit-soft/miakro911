@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using X_Tools;
 using rabnet.RNC;
+using gamlib;
 
 namespace rabdump
 {
@@ -111,7 +112,7 @@ namespace rabdump
             string path = Path.Combine(_j.DumpPath, filename);
             if (File.Exists(path))
             {
-                return pEngine.Helper.GetMD5FromFile(path) == md5;
+                return Helper.GetMD5FromFile(path) == md5;
             }
             else return false;
         }
@@ -198,7 +199,7 @@ namespace rabdump
             else
             {
                 string path = _j.DumpPath + "\\" + file;
-                md5 = pEngine.Helper.GetMD5FromFile(path);
+                md5 = Helper.GetMD5FromFile(path);
                 return path;
             }
         }

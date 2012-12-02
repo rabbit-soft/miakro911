@@ -43,7 +43,7 @@ namespace rabnet
             CONFIRM_KILL, CONFIRM_REPLACE, CONFIRM_EXIT,
             ZOO_FILTER, COMBINE_AGE, BOYS_OUT, GIRLS_OUT, STATE_FUCK, FIRST_FUCK, MALE_WAIT, GEN_TREE,  CHILD_NEST,              
             UPDATE_ZOO, ZOO_LIST, FIND_PARTNERS, NEXT_SVID, SVID_HEAD, SVID_GEN_DIR,
-            KILL_LIST, SHORT_ZOO, MAKE_CANDIDATE, BUTCHER_LIST, XLS_ASK, XLS_FOLDER, BUILD_FILL_ZERO, BUCHER_TYPE, 
+            KILL_LIST, SHORT_ZOO, MAKE_CANDIDATE, XLS_ASK, XLS_FOLDER, BUILD_FILL_ZERO, BUCHER_TYPE, 
             /// <summary>
             /// Отображать по умолчанию кандидатов в форме вязок
             /// </summary>
@@ -52,7 +52,7 @@ namespace rabnet
             /// <summary>
             /// Сохранение размера колонок в Поголовье
             /// </summary>
-            RAB_LIST, BUILD_LIST, YOUNG_LIST, DEAD_LIST, REPL_YOUNG_LIST, MAKE_FUCK_LIST, NAMES_LIST, //REPLACE_LIST,
+            RAB_LIST, BUILD_LIST, YOUNG_LIST, DEAD_LIST, REPL_YOUNG_LIST, MAKE_FUCK_LIST, NAMES_LIST, BUTCHER_DATE_LIST, VICTIMS_LIST, //REPLACE_LIST,
             /// <summary>
             /// Размеры формы пересадок в формате W:H
             /// <example>600:400</example>
@@ -123,7 +123,7 @@ namespace rabnet
                                    new Option(OPT_ID.KILL_LIST,OPT_LEVEL.USER,"killlist"), 
                                    new Option(OPT_ID.SHORT_ZOO,OPT_LEVEL.USER,"short_zoo"),
                                    new Option(OPT_ID.MAKE_CANDIDATE,OPT_LEVEL.FARM,"candidate"),
-								   new Option(OPT_ID.BUTCHER_LIST,OPT_LEVEL.USER,"butcherlist"),
+								   new Option(OPT_ID.VICTIMS_LIST,OPT_LEVEL.USER,"butcherlist"),
                                    new Option(OPT_ID.XLS_ASK,OPT_LEVEL.USER,"xls_ask"),
                                    new Option(OPT_ID.XLS_FOLDER,OPT_LEVEL.USER,"xls_folder"),
                                    new Option(OPT_ID.BUILD_FILL_ZERO,OPT_LEVEL.USER,"build_fill_zero"),
@@ -136,6 +136,8 @@ namespace rabnet
                                    new Option(OPT_ID.REPL_YOUNG_LIST,OPT_LEVEL.USER,"ryounglist"), 
                                    new Option(OPT_ID.MAKE_FUCK_LIST,OPT_LEVEL.USER,"mfucklist"), 
                                    new Option(OPT_ID.NAMES_LIST,OPT_LEVEL.USER,"namelist"),
+                                   new Option(OPT_ID.BUTCHER_DATE_LIST,OPT_LEVEL.USER,"list_butcher_date"),
+                                   new Option(OPT_ID.VICTIMS_LIST,OPT_LEVEL.USER,"list_victims"),
 
                                    new Option(OPT_ID.FS_REPLACE,OPT_LEVEL.USER,"fs_replace"),
                                    new Option(OPT_ID.FS_KILL,OPT_LEVEL.USER,"fs_kill"),

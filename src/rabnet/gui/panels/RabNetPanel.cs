@@ -11,8 +11,8 @@ namespace rabnet
         protected Filters _runF;
         protected RabStatusBar _rsb = null;
         private FilterPanel fp = null;
-        protected ListViewColumnSorter colSort = null;
-        protected ListViewColumnSorter colSort2 = null;
+        protected ListViewColumnSorter _colSort = null;
+        protected ListViewColumnSorter _colSort2 = null;
         protected ILog _logger;
         /// <summary>
         /// Делегат определяющий обработчик, когда жмут на кнопку Excel.

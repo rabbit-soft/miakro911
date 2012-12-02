@@ -90,54 +90,63 @@ namespace rabnet
 
         public int Compare(object x, object y)
         {
-            int compareResult=0;
-            ListViewItem listviewX, listviewY;
+            try
+            {
+                int compareResult = 0;
+                ListViewItem listviewX, listviewY;
 
-            listviewX = (ListViewItem)x;
-            listviewY = (ListViewItem)y;
+                listviewX = (ListViewItem)x;
+                listviewY = (ListViewItem)y;
 
-            for (int i = 0; i < intSorts.Length;i++ )
-                if (intSorts[i] == ColumnToSort)
+                for (int i = 0; i < intSorts.Length; i++)
                 {
-                    int i1, i2;
-                    if (listviewX.SubItems[ColumnToSort].Text == "-" || listviewX.SubItems[ColumnToSort].Text == "") i1 = -1;
+                    if (intSorts[i] == ColumnToSort)
+                    {
+                        int i1, i2;
+                        if (listviewX.SubItems[ColumnToSort].Text == "-" || listviewX.SubItems[ColumnToSort].Text == "") i1 = -1;
                         else i1 = int.Parse(listviewX.SubItems[ColumnToSort].Text);
-                    if (listviewY.SubItems[ColumnToSort].Text == "-" || listviewY.SubItems[ColumnToSort].Text == "") i2 = -1;
-                        else i2 = int.Parse(listviewY.SubItems[ColumnToSort].Text);                                                
-                    compareResult=i1 - i2;
-                    if (OrderOfSort == SortOrder.Ascending)
-                    {
-                        return compareResult;
-                    }
-                    else if (OrderOfSort == SortOrder.Descending)
-                    {
-                        return (-compareResult);
-                    }
-                    else
-                    {
-                        return 0;
+                        if (listviewY.SubItems[ColumnToSort].Text == "-" || listviewY.SubItems[ColumnToSort].Text == "") i2 = -1;
+                        else i2 = int.Parse(listviewY.SubItems[ColumnToSort].Text);
+                        compareResult = i1 - i2;
+                        if (OrderOfSort == SortOrder.Ascending)
+                        {
+                            return compareResult;
+                        }
+                        else if (OrderOfSort == SortOrder.Descending)
+                        {
+                            return (-compareResult);
+                        }
+                        else
+                        {
+                            return 0;
+                        }
                     }
                 }
-            
-            DateTime dt1,dt2;
-            if (DateTime.TryParse(listviewX.SubItems[ColumnToSort].Text, out dt1) && DateTime.TryParse(listviewY.SubItems[ColumnToSort].Text,out dt2))
-            {
-                compareResult = DateTime.Compare(dt1, dt2);
-            }
-            else
-            {          
-                compareResult = ObjectCompare.Compare(listviewX.SubItems[ColumnToSort].Text, listviewY.SubItems[ColumnToSort].Text);
-            }
 
-            if (OrderOfSort == SortOrder.Ascending)
-            {
-                return compareResult;
+                DateTime dt1, dt2;
+                if (DateTime.TryParse(listviewX.SubItems[ColumnToSort].Text, out dt1) && DateTime.TryParse(listviewY.SubItems[ColumnToSort].Text, out dt2))
+                {
+                    compareResult = DateTime.Compare(dt1, dt2);
+                }
+                else
+                {
+                    compareResult = ObjectCompare.Compare(listviewX.SubItems[ColumnToSort].Text, listviewY.SubItems[ColumnToSort].Text);
+                }
+
+                if (OrderOfSort == SortOrder.Ascending)
+                {
+                    return compareResult;
+                }
+                else if (OrderOfSort == SortOrder.Descending)
+                {
+                    return (-compareResult);
+                }
+                else
+                {
+                    return 0;
+                }
             }
-            else if (OrderOfSort == SortOrder.Descending)
-            {
-                return (-compareResult);
-            }
-            else
+            catch (Exception)
             {
                 return 0;
             }

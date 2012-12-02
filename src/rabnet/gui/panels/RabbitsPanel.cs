@@ -24,7 +24,7 @@ namespace rabnet
         public RabbitsPanel(): base() { }
         public RabbitsPanel(RabStatusBar rsb):base(rsb,new RabbitsFilter(rsb))
         {
-            colSort = new ListViewColumnSorter(listView1, new int[] {2,8,9 },Options.OPT_ID.RAB_LIST);
+            _colSort = new ListViewColumnSorter(listView1, new int[] {2,8,9 },Options.OPT_ID.RAB_LIST);
             listView1.ListViewItemSorter = null;
 			miGenetic.Enabled = GeneticsManagerSafe.GeneticsModuleTest();
             MakeExcel = new RabStatusBar.ExcelButtonClickDelegate(this.makeExcel);
@@ -43,7 +43,7 @@ namespace rabnet
             //flt["suc"] = op.getOption(Options.OPT_ID.COUNT_SUCKERS);
             f[Filters.MAKE_CANDIDATE] = op.getOption(Options.OPT_ID.MAKE_CANDIDATE);
             _runF = f;
-            colSort.Prepare();
+            _colSort.Prepare();
             IDataGetter dg = DataThread.db().getRabbits(f);
             _rsb.SetText(1, dg.getCount().ToString() + " записей");
             _rsb.SetText(2, dg.getCount2().ToString() + " кроликов");
@@ -64,7 +64,7 @@ namespace rabnet
 
             if (data == null)
             {
-                colSort.Restore();
+                _colSort.Restore();
                 return;
             }
             AdultRabbit rab = (data as AdultRabbit);
@@ -82,7 +82,7 @@ namespace rabnet
             li.SubItems.Add(rab.FBon(_runF.safeBool(Filters.SHORT)));
             li.SubItems.Add(rab.FAddress(_runF.safeBool(Filters.SHOW_BLD_TIERS), _runF.safeBool(Filters.SHOW_BLD_TIERS)));
             li.SubItems.Add(rab.Notes);
-			colSort.SemiReady();
+			_colSort.SemiReady();
         }
 
         //private void insertNode(TreeNode nd,TreeData data)

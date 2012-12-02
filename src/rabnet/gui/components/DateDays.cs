@@ -85,6 +85,9 @@ namespace rabnet.components
                         MessageBox.Show("Дата не может быть в будущем.");
                         value = DateTime.Now.Date;
                     }
+                    if (value == DateTime.MinValue)                   
+                        value = DateTime.Now.Date;
+                    
                     dateTimePicker1.Value = value.Date;
                     dateTimePicker1_ValueChanged(null, null);
                 }

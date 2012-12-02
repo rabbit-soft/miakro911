@@ -37,8 +37,8 @@
             this.lvVictims = new System.Windows.Forms.ListView();
             this.chName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chAge = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.chGroup = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chBreed = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chGroup = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label3 = new System.Windows.Forms.Label();
             this.lvMeat = new System.Windows.Forms.ListView();
             this.chProduct = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -51,6 +51,7 @@
             this.chDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chProd = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chAddress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.miMeal.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -133,8 +134,9 @@
             this.lvVictims.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chName,
             this.chAge,
+            this.chBreed,
             this.chGroup,
-            this.chBreed});
+            this.chAddress});
             this.lvVictims.FullRowSelect = true;
             this.lvVictims.GridLines = true;
             this.lvVictims.Location = new System.Drawing.Point(0, 23);
@@ -143,6 +145,7 @@
             this.lvVictims.TabIndex = 0;
             this.lvVictims.UseCompatibleStateImageBehavior = false;
             this.lvVictims.View = System.Windows.Forms.View.Details;
+            this.lvVictims.SelectedIndexChanged += new System.EventHandler(this.lvVictims_SelectedIndexChanged);
             // 
             // chName
             // 
@@ -154,15 +157,15 @@
             this.chAge.Text = "Возраст";
             this.chAge.Width = 67;
             // 
-            // chGroup
-            // 
-            this.chGroup.Text = "Количество";
-            this.chGroup.Width = 85;
-            // 
             // chBreed
             // 
             this.chBreed.Text = "Порода";
             this.chBreed.Width = 165;
+            // 
+            // chGroup
+            // 
+            this.chGroup.Text = "Количество";
+            this.chGroup.Width = 85;
             // 
             // label3
             // 
@@ -269,6 +272,10 @@
             this.chProd.Text = "Продукция";
             this.chProd.Width = 87;
             // 
+            // chAddress
+            // 
+            this.chAddress.Text = "Адрес";
+            // 
             // ButcherPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -312,5 +319,6 @@
         private System.Windows.Forms.ColumnHeader chTSumm;
         private System.Windows.Forms.ColumnHeader chTWeight;
         private System.Windows.Forms.ToolStripMenuItem miDelete;
+        private System.Windows.Forms.ColumnHeader chAddress;
     }
 }

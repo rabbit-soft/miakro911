@@ -20,9 +20,9 @@ namespace rabnet
 
         public WorksPanel(RabStatusBar sb): base(sb, new ZootehFilter(sb))
         {           
-            colSort = new ListViewColumnSorter(lvZooTech, new int[] {0,4},Options.OPT_ID.ZOO_LIST);
-            colSort2 = new ListViewColumnSorter(lvZooTech, new int[] { 0, 4 }, Options.OPT_ID.ZOO_LIST);
-            lvZooTech.ListViewItemSorter = colSort;
+            _colSort = new ListViewColumnSorter(lvZooTech, new int[] {0,4},Options.OPT_ID.ZOO_LIST);
+            _colSort2 = new ListViewColumnSorter(lvZooTech, new int[] { 0, 4 }, Options.OPT_ID.ZOO_LIST);
+            lvZooTech.ListViewItemSorter = _colSort;
             MakeExcel = new RabStatusBar.ExcelButtonClickDelegate(this.makeExcel);
         }
 
@@ -66,7 +66,7 @@ namespace rabnet
                 itm = -1;
                 if (lvZooTech.SelectedItems.Count == 1)
                     itm = lvZooTech.SelectedItems[0].Index;
-                colSort.Prepare();
+                _colSort.Prepare();
                 lvZooTech.Items.Clear();
                 repdate = DateTime.Now;
             }
@@ -86,7 +86,7 @@ namespace rabnet
             ZooTehNullItem it = data as ZooTehNullItem;
             if (it == null)
             {
-                colSort.Restore();
+                _colSort.Restore();
                 if (itm > -1 && lvZooTech.Items.Count > itm)
                 {
                     lvZooTech.Items[itm].Selected = true;
@@ -109,7 +109,7 @@ namespace rabnet
                 li.SubItems.Add(j.Partners);/// todo партнеров получать gh
                 li.Tag = j;
             }
-            colSort.SemiReady();
+            _colSort.SemiReady();
         }
 
         /// <summary>

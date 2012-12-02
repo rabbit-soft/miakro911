@@ -65,7 +65,7 @@ namespace rabnet
 
         public BuildingsPanel(RabStatusBar bsb):base(bsb, new BuildingsFilter(bsb))
         {
-            colSort = new ListViewColumnSorter(listView1, new int[] { },Options.OPT_ID.BUILD_LIST);
+            _colSort = new ListViewColumnSorter(listView1, new int[] { },Options.OPT_ID.BUILD_LIST);
             listView1.ListViewItemSorter = null;
             treeView1.TreeViewNodeSorter = new TVNodeSorter();
             MakeExcel = new RabStatusBar.ExcelButtonClickDelegate(this.makeExcel);
@@ -162,7 +162,7 @@ namespace rabnet
             n.Expand();
             f[Filters.SHORT] = Engine.opt().getOption(Options.OPT_ID.SHORT_NAMES);
             f[Filters.DBL_SURNAME] = Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
-            colSort.Prepare();
+            _colSort.Prepare();
             IDataGetter dg = DataThread.db().getBuildingsRows(f);
             _rsb.SetText(1, dg.getCount().ToString() + " МИНИфермы");
             return dg;
@@ -176,7 +176,7 @@ namespace rabnet
         {
             if (data==null)
             {
-                colSort.Restore();
+                _colSort.Restore();
                 return;
             }
             Building b = data as Building;
@@ -233,7 +233,7 @@ namespace rabnet
                 }
             }
 
-			colSort.SemiReady();
+			_colSort.SemiReady();
         }
 
         

@@ -53,7 +53,7 @@ namespace X_Tools
                     return true;
                 else return false;
             }
-            else return false;           
+            else return false;
         }
 
         public static string GetFileMD5(string file)
@@ -68,17 +68,17 @@ namespace X_Tools
                 return BitConverter.ToString(fileHash).Replace("-", "").ToLower();
             }
             else return "nofile";
-            
+
         }
 
-        public static string RusMonthTo(string mon)
+        public static int RusMonthTo(string mon)
         {
             for (int i = 1; i <= 12; i++)
             {
                 if (mon == toRusMonth(i.ToString()))
-                    return i.ToString();            
+                    return i;            
             }
-            return "0";
+            return 0;
         }
 
         public static string toRusMonth(string dt)

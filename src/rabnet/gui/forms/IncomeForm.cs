@@ -10,16 +10,16 @@ namespace rabnet
 {
     public partial class IncomeForm : Form
     {
-        private Catalog zns = null;
-        private Catalog brd = null;
+        private Catalog _zones = null;
+        private Catalog _breeds = null;
         private List<RabNetEngRabbit> rbs = new List<RabNetEngRabbit>();
         public IncomeForm()
         {
             InitializeComponent();
             initialHint();
-            zns = Engine.db().catalogs().getZones();
-            brd = Engine.db().catalogs().getBreeds();
-            if (brd.Count == 0)
+            _zones = Engine.db().catalogs().getZones();
+            _breeds = Engine.db().catalogs().getBreeds();
+            if (_breeds.Count == 0)
                 throw new ApplicationException(@"Справочник пород пуст
 Добавьте породу в форме Пород (Вид->Породы)
 и попытайтесь снова");
@@ -47,16 +47,16 @@ namespace rabnet
             String tx = zones.Text;
             zones.Items.Clear();
             zones.Items.Add("");
-            foreach (int k in zns.Keys)
-                zones.Items.Add(zns[k]);
+            foreach (int k in _zones.Keys)
+                zones.Items.Add(_zones[k]);
             zones.Text = tx;
         }
 
         private int getZone()
         {
             if (zones.Text=="") return 0;
-            foreach (int k in zns.Keys)
-                if (zones.Text == zns[k])
+            foreach (int k in _zones.Keys)
+                if (zones.Text == _zones[k])
                     return k;
             return 0;
         }
@@ -84,7 +84,7 @@ namespace rabnet
                 li.SubItems.Add(rbs[i].Group.ToString());
                 li.Tag=rbs[i];
                 li.SubItems.Add(rbs[i].FullName);
-                li.SubItems.Add(brd[rbs[i].BreedID]);
+                li.SubItems.Add(_breeds.ContainsKey(rbs[i].BreedID) ? _breeds[rbs[i].BreedID] : _breeds[1]);//ГИБРИД
                 li.SubItems.Add(rbs[i].Address);
             }
             if (plast)

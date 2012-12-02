@@ -361,6 +361,7 @@
 				<include name="${curdir}/libs/pEngine/Helper.cs"/>
 				<include name="${curdir}/libs/pEngine/pException.cs"/>
 				<include name="${curdir}/libs/pEngine/AppUpdater.cs"/>
+				<include name="${curdir}/libs/gamlib/Helper.cs"/>
 				
 				<include name="${curdir}/mia_conv/miaExitCode.cs"/>				
 				<include name="${curdir}/rabnet/gui/classes/RabnetConfig/*.cs"/>

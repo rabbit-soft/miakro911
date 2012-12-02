@@ -353,10 +353,10 @@ namespace rabdump
 
         private void miCheckForUpdate_Click(object sender, EventArgs e)
         {
-            AppUpdater au = new AppUpdater(RabServWorker.ReqSender, getUpdatePath());
-            au.DeleteOldFiles();
-            au.UpdateFinish += new AppUpdater.UpdateFinishDelegate(au_UpdateFinish);          
-            au.Check();
+            //AppUpdater au = new AppUpdater(RabServWorker.ReqSender, getUpdatePath());
+            //au.DeleteOldFiles();
+            //au.UpdateFinish += new AppUpdater.UpdateFinishDelegate(au_UpdateFinish);          
+            //au.Check();
         }
 
         void au_UpdateFinish(bool success, string msg)

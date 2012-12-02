@@ -10,10 +10,14 @@ namespace rabnet
 {
     public partial class ButcherPanel : RabNetPanel
     {
+        const int AGE_FIELD = 1;
+        const int NFIELD = 3;
+
         public ButcherPanel() : base() { }
         public ButcherPanel(RabStatusBar sb): base(sb)
         {
-            colSort = new ListViewColumnSorter(lvButcherDates, new int[] {  }, Options.OPT_ID.BUTCHER_LIST);
+            _colSort = new ListViewColumnSorter(lvButcherDates, new int[] {  }, Options.OPT_ID.BUTCHER_DATE_LIST);
+            _colSort2 = new ListViewColumnSorter(lvVictims, new int[] { AGE_FIELD, NFIELD }, Options.OPT_ID.VICTIMS_LIST);
             lvButcherDates.ListViewItemSorter = null;
             MakeExcel = new RabStatusBar.ExcelButtonClickDelegate(this.makeExcel);
         }
@@ -42,7 +46,7 @@ namespace rabnet
 
         protected override IDataGetter onPrepare(Filters f)
         {
-            colSort.Prepare();
+            _colSort.Prepare();
             if (f == null) f = new Filters();
             f.Add("type", Engine.opt().getOption(Options.OPT_ID.BUCHER_TYPE));
             IDataGetter dg = DataThread.db().getButcherDates(f);
@@ -55,7 +59,7 @@ namespace rabnet
         {
             if (data == null)
             {
-                colSort.Restore();
+                _colSort.Restore();
                 return;
             }
             if (data == null) return;
@@ -75,14 +79,15 @@ namespace rabnet
         {
             if (lvButcherDates.SelectedItems.Count == 0) return;
             DateTime date = DateTime.Parse(lvButcherDates.SelectedItems[0].SubItems[0].Text);
-            Rabbit[] rabbits = Engine.get().db().GetVictims(date);
+            AdultRabbit[] rabbits = Engine.get().db().GetVictims(date);
             lvVictims.Items.Clear();
-            foreach (Rabbit rab in rabbits)
+            foreach (AdultRabbit rab in rabbits)
             {
                 ListViewItem lvi = lvVictims.Items.Add(rab.NameFull);
                 lvi.SubItems.Add(rab.Age.ToString());
-                lvi.SubItems.Add(rab.Group.ToString());
                 lvi.SubItems.Add(rab.BreedName);
+                lvi.SubItems.Add(rab.FGroup());
+                lvi.SubItems.Add(rab.AddressSmall);
             }
 
             lvMeat.Items.Clear();
@@ -146,6 +151,30 @@ namespace rabnet
             DateTime lc = CAS.CasLP16.Instance.GetPLUbyID(pid).LastClear;
             Engine.db().deletePLUsummary(sid,lc);
 #endif
+        }
+
+        private void lvVictims_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            makeSelectedCount();
+        }
+
+        private void makeSelectedCount()
+        {
+            int rows = lvVictims.SelectedItems.Count;
+            int cnt = 0;
+            foreach (ListViewItem li in lvVictims.SelectedItems)
+                cnt += selCount(li.Index);
+            _rsb.SetText(3, String.Format("Выбрано {0:d} строк - {1:d} кроликов", rows, cnt));
+        }
+
+        private int selCount(int index)
+        {
+            if (index < 0) return 0;
+            String s = lvVictims.Items[index].SubItems[NFIELD].Text;
+            int c = 1;
+            if (s[0] == '+') c += int.Parse(s.Substring(1));
+            if (s[0] == '[') c = int.Parse(s.Substring(1, s.Length - 2));
+            return c;
         }
     }
 }

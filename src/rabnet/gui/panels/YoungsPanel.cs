@@ -19,7 +19,7 @@ namespace rabnet
 
         public YoungsPanel(RabStatusBar sb): base(sb, null)
         {
-            colSort = new ListViewColumnSorter(listView1, new int[] { 1,2, 8 },Options.OPT_ID.YOUNG_LIST);
+            _colSort = new ListViewColumnSorter(listView1, new int[] { 1,2, 8 },Options.OPT_ID.YOUNG_LIST);
             listView1.ListViewItemSorter = null;
             MakeExcel = new RabStatusBar.ExcelButtonClickDelegate(this.makeExcel);
         }
@@ -35,7 +35,7 @@ namespace rabnet
             f[Filters.DBL_SURNAME] = op.getOption(Options.OPT_ID.DBL_SURNAME);
             f[Filters.SHOW_OKROL_NUM] = op.getOption(Options.OPT_ID.SHOW_NUMBERS);
             _runF = f;
-            colSort.Prepare();
+            _colSort.Prepare();
             IDataGetter dg = DataThread.db().GetYoungers(f); 
             //отображение общей инфы в статус баре
             _rsb.SetText(1, dg.getCount().ToString() + " строк");
@@ -49,7 +49,7 @@ namespace rabnet
         {
             if (data == null)
             {
-                colSort.Restore();
+                _colSort.Restore();
                 return;
             }
             YoungRabbit rab = (data as YoungRabbit);
@@ -63,7 +63,7 @@ namespace rabnet
             li.SubItems.Add(rab.ParentName);
             li.SubItems.Add(rab.Neighbours == 0 ? "-" : rab.Neighbours.ToString());
             li.Tag = rab.ID;
-			colSort.SemiReady();
+			_colSort.SemiReady();
 		}
 
         private void insertNode(TreeNode nd, RabTreeData data)

@@ -12,6 +12,7 @@ using System.Collections.Specialized;
 using System.Globalization;
 using rabnet.RNC;
 using pEngine;
+using gamlib;
 #if PROTECTED
     using RabGRD;   
 #endif

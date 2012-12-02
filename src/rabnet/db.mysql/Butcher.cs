@@ -50,24 +50,16 @@ DROP TABLE bbb;",table,dtfield,unfield);
         /// Получает список забитых кроликов
         /// </summary>
         /// <param name="dt">Дата забива</param>
-        public static Rabbit[] getVictims(MySqlConnection sql, DateTime dt)
+        public static AdultRabbit[] getVictims(MySqlConnection sql, DateTime dt)
         {
-            List<Rabbit> result = new List<Rabbit>();
+            List<AdultRabbit> result = new List<AdultRabbit>();
             MySqlCommand cmd = new MySqlCommand("", sql);
-            cmd.CommandText = String.Format(@"SELECT r_id,
-#r_last_fuck_okrol,NULL r_event_date,'none' r_event,r_overall_babies,r_lost_babies,r_flags,r_name,r_surname,r_secname,r_zone,r_breed,
-#(SELECT COALESCE(GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' '),'') FROM genoms WHERE g_id=r_genesis) genom,
-#r_status,r_rate,r_parent
-    r_sex,
-    r_born,
-    deadplace(r_id) address,r_group,r_notes,r_bon,
-    deadname(r_id,2) name,
-    (SELECT b_name FROM breeds WHERE b_id=r_breed) breedname
-FROM dead WHERE d_reason=3 AND DATE(d_date)='{0:yyyy-MM-dd}';", dt);
+            cmd.CommandText = String.Format(@"SELECT {1:s}
+FROM dead WHERE d_reason=3 AND DATE(d_date)='{0:yyyy-MM-dd}';", dt,RabbitGetter.getAdultRabbit_FieldsSet(RabbitGetter.RabType.DEAD));
             MySqlDataReader rd = cmd.ExecuteReader();
             while(rd.Read())
             {
-                result.Add(RabbitGetter.fillRabbit(rd));
+                result.Add(RabbitGetter.fillAdultRabbit(rd));
             }
             rd.Close();
             return result.ToArray();

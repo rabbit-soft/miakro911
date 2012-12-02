@@ -123,6 +123,9 @@
       <Link>Forms\AddDongleForm.designer.cs</Link>
       <DependentUpon>AddDongleForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="..\libs\gamlib\Helper.cs">
+      <Link>classes\Helper.cs</Link>
+    </Compile>
     <Compile Include="..\libs\GRD\GRDCommon.cs">
       <Link>classes\GRDCommon.cs</Link>
     </Compile>
@@ -134,12 +137,6 @@
     </Compile>
     <Compile Include="..\libs\GRD\GRD_BaseTRU.cs">
       <Link>classes\GRD_BaseTRU.cs</Link>
-    </Compile>
-    <Compile Include="..\libs\pEngine\AppUpdater.cs">
-      <Link>remote\AppUpdater.cs</Link>
-    </Compile>
-    <Compile Include="..\libs\pEngine\Helper.cs">
-      <Link>remote\Helper.cs</Link>
     </Compile>
     <Compile Include="..\libs\pEngine\pException.cs">
       <Link>remote\pException.cs</Link>
