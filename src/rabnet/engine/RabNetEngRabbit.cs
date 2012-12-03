@@ -86,9 +86,10 @@ namespace rabnet
         {
             _id = 0;
             _eng = dl;
-            String s="void";
-            if (sx == Rabbit.SexType.FEMALE) s = "female";
-            if (sx == Rabbit.SexType.MALE) s = "male";
+            _sex = sx;
+            //String s="void";
+            //if (sx == Rabbit.SexType.FEMALE) s = "female";
+            //if (sx == Rabbit.SexType.MALE) s = "male";
             //_rab = new OneRabbit(0, s, DateTime.Now, 0, Rabbit.NULL_FLAGS, 0, 0, 0, "", 1, 1, 0, "", "", 0, DateTime.MinValue, "", 
               //  DateTime.MinValue, 0, 0, "", "", Rabbit.NULL_BON,0,1,-1,DateTime.MinValue,0,0);
             _youngers=new YoungRabbit[0];

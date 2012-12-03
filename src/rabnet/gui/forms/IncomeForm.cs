@@ -78,14 +78,17 @@ namespace rabnet
             for (int i = 0; i < rbs.Count; i++)
             {
                 String name = "Бесполые";
-                if (rbs[i].Sex == Rabbit.SexType.MALE) name = rbs[i].Group==1 ? "Самец" : "Самцы";
-                if (rbs[i].Sex == Rabbit.SexType.FEMALE) name = rbs[i].Group == 1 ? "Самка" : "Самки";
+                if (rbs[i].Sex == Rabbit.SexType.MALE) 
+                    name = rbs[i].Group==1 ? "Самец" : "Самцы";
+                if (rbs[i].Sex == Rabbit.SexType.FEMALE) 
+                    name = rbs[i].Group == 1 ? "Самка" : "Самки";
+
                 ListViewItem li = listView1.Items.Add(name);
-                li.SubItems.Add(rbs[i].Group.ToString());
-                li.Tag=rbs[i];
+                li.SubItems.Add(rbs[i].Group.ToString());                
                 li.SubItems.Add(rbs[i].FullName);
                 li.SubItems.Add(_breeds.ContainsKey(rbs[i].BreedID) ? _breeds[rbs[i].BreedID] : _breeds[1]);//ГИБРИД
                 li.SubItems.Add(rbs[i].Address);
+                li.Tag = rbs[i];
             }
             if (plast)
             {
