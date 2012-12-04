@@ -36,7 +36,7 @@ namespace rabnet
             f[Filters.SHOW_OKROL_NUM] = op.getOption(Options.OPT_ID.SHOW_NUMBERS);
             _runF = f;
             _colSort.Prepare();
-            IDataGetter dg = DataThread.db().GetYoungers(f); 
+            IDataGetter dg = DataThread.Db().GetYoungers(f); 
             //отображение общей инфы в статус баре
             _rsb.SetText(1, dg.getCount().ToString() + " строк");
             _rsb.SetText(2, dg.getCount2().ToString() + " кроликов");

@@ -49,7 +49,7 @@ namespace rabnet
             _colSort.Prepare();
             if (f == null) f = new Filters();
             f.Add("type", Engine.opt().getOption(Options.OPT_ID.BUCHER_TYPE));
-            IDataGetter dg = DataThread.db().getButcherDates(f);
+            IDataGetter dg = DataThread.Db().getButcherDates(f);
             _rsb.SetText(1, dg.getCount().ToString() + " дат забоя");
             _rsb.SetText(2, dg.getCount2().ToString() + " забито");
             return dg;

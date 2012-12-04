@@ -184,7 +184,7 @@ namespace rabnet
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DataThread.get().stop();
+            DataThread.Get().Stop();
             curpanel.deactivate();
             for (int i = 1; i < 5;i++ )
                 rabStatusBar1.SetText(i, "");
@@ -200,7 +200,7 @@ namespace rabnet
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            DataThread.get().stop();
+            DataThread.Get().Stop();
             for (int i = 0; i < panels.Length; i++)
                 panels[i].close();
         }

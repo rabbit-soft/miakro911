@@ -9,104 +9,91 @@ namespace rabnet
 {
     class DataThread
     {
+        delegate void initCallBack();
+        delegate void progressCallBack(int i);
+
         /// <summary>
         /// Объект для Критических секций. Ибо в интернетах говорят что lock(this) использовать не хорошо.
         /// Предпосылкой данного использования является зависание у Землеведа по не понятным причинам.
         /// </summary>
         private object _locker = new object();
+        private static DataThread _instance=null;
+        private int _status = 0;
+        private RabStatusBar _sb = null;
+        private IDataGetter _gt = null;
+        private Thread _t = null;
+        private EventHandler _onItem = null;
+        private EventHandler _stopEvent = null;
+        private bool _isStop = false;
 
-        private static DataThread thread=null;
-        
-        public static DataThread get()
+        private DataThread()
         {
-            if (thread == null)
-                thread = new DataThread();
-            return thread;
+            _stopEvent = new EventHandler(this.stopClick);
         }
-        public static DataThread get4run()
+
+        public static DataThread Get()
         {
-            DataThread th = DataThread.get();
-            th.stop();
+            if (_instance == null)
+                _instance = new DataThread();
+            return _instance;
+        }
+        public static DataThread Get4run()
+        {
+            DataThread th = DataThread.Get();
+            th.Stop();
             return th;
         }
-        public static IRabNetDataLayer db()
+        public static IRabNetDataLayer Db()
         {
             return Engine.db2();
-        }
-        private int status=0;
-        private RabStatusBar sb = null;
-        private IDataGetter gt = null;
-        private Thread t = null;
-        private EventHandler onitem = null;
-        private EventHandler stopev = null;
-        private bool is_stop = false;
-        delegate void initCallBack();
-        delegate void progressCallBack(int i);
-
-        public DataThread()
+        }       
+       
+        public void SetInit()
         {
-            stopev=new EventHandler(this.StopClick);
-        }
-
-        private void threadProc()
-        {
-            setStatus(1);
-            int count=getCount();
-            setInit();
-            for (int i = 0; (i < count) && (!getStop()); i++)
+            if (_sb.InvokeRequired)
             {
-                setProgress(i);
-            }
-            setRelease();
-            setStatus(0);
-        }
-
-        public void setInit()
-        {
-            if (sb.InvokeRequired)
-            {
-                initCallBack d = new initCallBack(setInit);
-                sb.Invoke(d);
+                initCallBack d = new initCallBack(SetInit);
+                _sb.Invoke(d);
             }
             else
             {
-                sb.initProgress(gt.getCount());
-                sb.stopClick += stopev;
+                _sb.initProgress(_gt.getCount());
+                _sb.stopClick += _stopEvent;
             }
         }
 
-        public void setProgress(int progress)
+        public void SetProgress(int progress)
         {
-            if (sb.InvokeRequired)
+            if (_sb.InvokeRequired)
             {
-                progressCallBack d = new progressCallBack(setProgress);
-                sb.Invoke(d, new object[] { progress });
+                progressCallBack d = new progressCallBack(SetProgress);
+                _sb.Invoke(d, new object[] { progress });
             }
             else
             {
-                sb.progress(progress);
-                IData it = gt.GetNextItem();
-                onitem(it, null);
+                _sb.progress(progress);
+                IData it = _gt.GetNextItem();
+                _onItem(it, null);
                 if (it == null) setStop(true);
             }
         }
 
-        public void setRelease()
+        public void SetRelease()
         {
-            if (sb.InvokeRequired)
+            if (_sb.InvokeRequired)
             {
-                initCallBack d = new initCallBack(setRelease);
-                sb.Invoke(d);
+                initCallBack d = new initCallBack(SetRelease);
+                _sb.Invoke(d);
             }
             else
             {
-                gt.stop();
+                _gt.stop();
                 if (getStop())
-                    sb.emergencyStop();
+                    _sb.emergencyStop();
                 else
-                    sb.endProgress();
-                sb.stopClick -= stopev;
-                onitem(null, null);
+                    _sb.endProgress();
+                _sb.stopClick -= _stopEvent;
+                _onItem(null, null);
             }
         }
 
@@ -114,25 +101,25 @@ namespace rabnet
         {
             while (getStatus() != 0) 
             { 
-                stop(); 
+                Stop(); 
                 Thread.Sleep(100); 
             }
-            gt = getter;
-            if (gt==null)
+            _gt = getter;
+            if (_gt==null)
                 return;
-            this.sb = sb;
-            this.onitem = onItem;
-            is_stop = false;
-            t = new Thread(new ThreadStart(threadProc));
-            t.Start();
+            this._sb = sb;
+            this._onItem = onItem;
+            _isStop = false;
+            _t = new Thread(new ThreadStart(threadProc));
+            _t.Start();
         }
 
-        private void StopClick(object sender, EventArgs e)
+        public bool IsWorking()
         {
-            stop();
+            return (getStatus() != 0);
         }
 
-        public void stop()
+        public void Stop()
         {
             if (getStatus() == 0)
                 return;
@@ -141,11 +128,31 @@ namespace rabnet
                 Application.DoEvents();
         }
 
+        private void threadProc()
+        {
+            setStatus(1);
+            int count = getCount();
+            SetInit();
+            for (int i = 0; (i < count) && (!getStop()); i++)
+            {
+                SetProgress(i);
+            }
+            SetRelease();
+            setStatus(0);
+        }
+
+
+        private void stopClick(object sender, EventArgs e)
+        {
+            Stop();
+        }
+       
+
         private bool getStop()
         {
             lock (_locker)
             {
-                return is_stop;
+                return _isStop;
             }
         }
 
@@ -153,14 +160,14 @@ namespace rabnet
         {
             lock (_locker)
             {
-                is_stop = val;
+                _isStop = val;
             }
         }
         private int getStatus()
         {
             lock (_locker)
             {
-                return status;
+                return _status;
             }
         }
 
@@ -168,7 +175,7 @@ namespace rabnet
         {
             lock (_locker)
             {
-                status = stat;
+                _status = stat;
             }
         }
 
@@ -176,13 +183,8 @@ namespace rabnet
         {
             lock (_locker)
             {
-                return gt.getCount();
+                return _gt.getCount();
             }
-        }
-
-        public bool IsWorking()
-        {
-            return (getStatus() != 0);
-        }
+        }        
     }
 }

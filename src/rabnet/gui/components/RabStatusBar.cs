@@ -210,7 +210,7 @@ namespace rabnet
             {
                 Parent.Controls.Add(fpan);
                 if (btnStatus != 0)
-                    DataThread.get().stop();
+                    DataThread.Get().Stop();
                 fpan.Left = filt.Bounds.Left;
                 fpan.Top = Top - fpan.Height;
                 fpan.Visible = true;
@@ -237,7 +237,7 @@ namespace rabnet
                     refreshClick(this, null);
                 if (prepareGet != null)
                 {
-                    DataThread.get4run().Run(prepareGet(this, null), this, this.OnItem);
+                    DataThread.Get4run().Run(prepareGet(this, null), this, this.OnItem);
                 }
             }
             else

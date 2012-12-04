@@ -163,7 +163,7 @@ namespace rabnet
             f[Filters.SHORT] = Engine.opt().getOption(Options.OPT_ID.SHORT_NAMES);
             f[Filters.DBL_SURNAME] = Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
             _colSort.Prepare();
-            IDataGetter dg = DataThread.db().getBuildingsRows(f);
+            IDataGetter dg = DataThread.Db().getBuildingsRows(f);
             _rsb.SetText(1, dg.getCount().ToString() + " МИНИфермы");
             return dg;
         }

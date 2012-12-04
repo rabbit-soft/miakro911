@@ -44,7 +44,7 @@ namespace rabnet
             f[Filters.MAKE_CANDIDATE] = op.getOption(Options.OPT_ID.MAKE_CANDIDATE);
             _runF = f;
             _colSort.Prepare();
-            IDataGetter dg = DataThread.db().getRabbits(f);
+            IDataGetter dg = DataThread.Db().getRabbits(f);
             _rsb.SetText(1, dg.getCount().ToString() + " записей");
             _rsb.SetText(2, dg.getCount2().ToString() + " кроликов");
             return dg;

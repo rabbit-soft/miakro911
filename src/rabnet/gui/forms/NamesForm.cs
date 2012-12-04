@@ -54,7 +54,7 @@ namespace rabnet
             if (tabControl1.SelectedIndex == 0) f["sex"] = "1"; else f["sex"] = "2";         
             if (comboBox2.SelectedIndex!=0)
                 f["state"] = comboBox2.SelectedIndex.ToString();
-            IDataGetter gt = DataThread.db().getNames(f);
+            IDataGetter gt = DataThread.Db().getNames(f);
             rabStatusBar1.SetText(1, gt.getCount().ToString() + " имен");
             return gt;
         }

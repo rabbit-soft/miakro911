@@ -25,7 +25,7 @@ namespace rabnet
         {
             cs.Prepare();
             Filters f = fp.getFilters();
-            IDataGetter gt = DataThread.db().getDead(f);
+            IDataGetter gt = DataThread.Db().getDead(f);
             rsb.SetText(1, gt.getCount().ToString() + " записей");
             return gt;
         }
