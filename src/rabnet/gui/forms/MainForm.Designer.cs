@@ -570,7 +570,7 @@
             // 
             // rabStatusBar1
             // 
-            this.rabStatusBar1.dExcelButtonClick = null;
+            this.rabStatusBar1.ExcelButtonClick = null;
             this.rabStatusBar1.filterPanel = null;
             this.rabStatusBar1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
             this.rabStatusBar1.Location = new System.Drawing.Point(0, 481);

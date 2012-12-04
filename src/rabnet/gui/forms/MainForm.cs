@@ -192,7 +192,7 @@ namespace rabnet
             curpanel = panels[tabControl1.SelectedIndex];
             panel1.Controls.Add(curpanel);
             tsmiActions.DropDown = curpanel.getMenu();
-            rabStatusBar1.dExcelButtonClick = curpanel.MakeExcel;
+            rabStatusBar1.ExcelButtonClick = curpanel.MakeExcel;
             curpanel.activate();
             Working();
             ProtectTest();
@@ -354,7 +354,7 @@ namespace rabnet
 
         private void tsmiFilter_Click(object sender, EventArgs e)
         {
-            rabStatusBar1.filterSwitch();
+            rabStatusBar1.FilterSwitch();
         }
 
         private void paramsMenuItem1_Click(object sender, EventArgs e)

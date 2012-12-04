@@ -11,14 +11,20 @@ namespace rabnet
     public partial class RabStatusBar : StatusStrip
     {
         delegate void progressCallBack2(int min,int max);
+        public delegate IDataGetter RSBPrepareEventHandler(object sender, EventArgs e);
+        public delegate void RSBEventHandler(object sender, RSBClickEvent e);
+        public delegate void ExcelButtonClickDelegate();
+
         private ToolStripProgressBar pb = new ToolStripProgressBar();
         private ToolStripButton btn = new ToolStripButton();
         private ToolStripButton filt = new ToolStripButton();
         private ToolStripButton btExcel = new ToolStripButton();
         private List<ToolStripLabel> labels = new List<ToolStripLabel>();
         private int btnStatus=0;
-        public event EventHandler stopClick;
-        public event EventHandler refreshClick;
+
+        public event EventHandler StopClick;
+        public event EventHandler RefreshClick;
+
         public class RSBClickEvent : EventArgs
         {
             public int type;
@@ -27,20 +33,16 @@ namespace rabnet
                 this.type = type;
             }
         }
-        public delegate void RSBEventHandler(object sender,RSBClickEvent e);
-        public event RSBEventHandler stopRefreshClick;
-
-        public delegate IDataGetter RSBPrepareEventHandler(object sender, EventArgs e);
-        public event RSBPrepareEventHandler prepareGet;
-
-        public delegate void ExcelButtonClickDelegate();
-        public ExcelButtonClickDelegate excelButtonClick = null;
+        
+        public event RSBEventHandler StopRefreshClick;       
+        public event RSBPrepareEventHandler PrepareGet;       
+        private ExcelButtonClickDelegate excelButtonClick = null;
 
         /// <summary>
         /// Делегат нажатия на кнопку Excel, если 'null' то кнопка не видна. 
         /// Подробнее: RabNetPanel.MakeExcel
         /// </summary>
-        public ExcelButtonClickDelegate dExcelButtonClick
+        public ExcelButtonClickDelegate ExcelButtonClick
         {
             get {return excelButtonClick; }
             set 
@@ -109,9 +111,9 @@ namespace rabnet
             Items.Add(new ToolStripSeparator());
             Items.Add(labels[4]);
             btnStatus=0;
-            btn.Click += new EventHandler(this.OnBtnClick);
-            filt.Click += new EventHandler(this.OnFiltClick);
-            btExcel.Click += new EventHandler(this.OnExcelClick);
+            btn.Click += new EventHandler(this.onBtnClick);
+            filt.Click += new EventHandler(this.onFiltClick);
+            btExcel.Click += new EventHandler(this.onExcelClick);
         }
 
         private void initialHints()
@@ -163,38 +165,39 @@ namespace rabnet
             catch (Exception) { }
 #endif
         }
-        public void initProgress(int max)
+        public void InitProgress(int max)
         {
             initProgress(0, max);
         }
-        public void initProgress()
+        public void InitProgress()
         {
             initProgress(0, 100);
         }
-        public void progress(int progress)
+        public void Progress(int progress)
         {
             pb.Value = progress;
             pb.Invalidate();
         }
-        public void endProgress()
+        public void EndProgress()
         {
             pb.Value = pb.Minimum;
             pb.Invalidate();
             btn.Image = imageList1.Images[1];
             btnStatus=0;
         }
-        public void emergencyStop()
+        public void EmergencyStop()
         {
             btn.Image = imageList1.Images[1];
             btnStatus=0;
         }
 
-        private void OnItem(object sender, EventArgs e)
+        private void onItem(object sender, EventArgs e)
         {
             if (itemGet != null)
                 itemGet(this, new RSBItemEvent(sender as IData));
         }
-        public void filterHide()
+
+        public void FilterHide()
         {
             if (fpan != null)
             {
@@ -204,7 +207,8 @@ namespace rabnet
                 Run();
             }
         }
-        public void filterShow()
+
+        public void FilterShow()
         {
             if (fpan != null)
             {
@@ -219,49 +223,49 @@ namespace rabnet
             }
         }
 
-        public void filterSwitch()
+        public void FilterSwitch()
         {
             filt.PerformClick();
         }
 
         #region clicks
 
-        private void OnBtnClick(object sender, EventArgs e)
+        private void onBtnClick(object sender, EventArgs e)
         {
             RSBClickEvent ev = new RSBClickEvent(btnStatus);
-            if (stopRefreshClick != null)
-                stopRefreshClick(this, ev);
+            if (StopRefreshClick != null)
+                StopRefreshClick(this, ev);
             if (btnStatus == 0)
             {
-                if (refreshClick != null)
-                    refreshClick(this, null);
-                if (prepareGet != null)
+                if (RefreshClick != null)
+                    RefreshClick(this, null);
+                if (PrepareGet != null)
                 {
-                    DataThread.Get4run().Run(prepareGet(this, null), this, this.OnItem);
+                    DataThread.Get4run().Run(PrepareGet(this, null), this, this.onItem);
                 }
             }
             else
             {
-                if (stopClick != null)
-                    stopClick(this, null);
+                if (StopClick != null)
+                    StopClick(this, null);
             }
         }
 
-        private void OnFiltClick(object sender, EventArgs e)
+        private void onFiltClick(object sender, EventArgs e)
         {
             if (fpan!=null)
             {
                 if (fpan.Visible)
-                    filterHide();
+                    FilterHide();
                 else
-                    filterShow();
+                    FilterShow();
             }
         }
 
-        private void OnExcelClick(object sender, EventArgs e)
+        private void onExcelClick(object sender, EventArgs e)
         {
             this.Parent.Enabled = false;
-            dExcelButtonClick();
+            ExcelButtonClick();
             this.Parent.Enabled = true;
         }
 

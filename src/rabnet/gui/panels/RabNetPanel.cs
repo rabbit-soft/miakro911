@@ -55,7 +55,7 @@ namespace rabnet
             Size = Parent.Size;
             Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             _rsb.itemGet+=new RabStatusBar.RSBItemEventHandler(this.itemGet);
-            _rsb.prepareGet += new RabStatusBar.RSBPrepareEventHandler(this.prepareGet);
+            _rsb.PrepareGet += new RabStatusBar.RSBPrepareEventHandler(this.prepareGet);
             _rsb.Run();
         }
         /// <summary>
@@ -68,7 +68,7 @@ namespace rabnet
                 _rsb.filterPanel.Visible = false;
                 _rsb.filterPanel = null;
             }
-            _rsb.prepareGet -= this.prepareGet;
+            _rsb.PrepareGet -= this.prepareGet;
             _rsb.itemGet -= this.itemGet;
         }
         /// <summary>
@@ -98,9 +98,8 @@ namespace rabnet
         /// Выполняет обработку одной строчки из результата обращения к БД
         /// </summary>
         /// <param name="data"></param>
-        protected virtual void onItem(IData data)
-        {
-        }
+        protected virtual void onItem(IData data) { }
+
         /// <summary>
         /// Тело метода содержится в наследниках класса RabNetPanel.
         /// Выполняется перед началом получения данных из Базы Данных

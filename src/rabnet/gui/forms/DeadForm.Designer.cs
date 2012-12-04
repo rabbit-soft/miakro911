@@ -129,7 +129,7 @@
             // 
             // rsb
             // 
-            this.rsb.dExcelButtonClick = null;
+            this.rsb.ExcelButtonClick = null;
             this.rsb.filterPanel = null;
             this.rsb.Location = new System.Drawing.Point(0, 463);
             this.rsb.Name = "rsb";
@@ -138,7 +138,7 @@
             this.rsb.TabIndex = 0;
             this.rsb.Text = "rabStatusBar1";
             this.rsb.itemGet += new rabnet.RabStatusBar.RSBItemEventHandler(this.rsb_itemGet);
-            this.rsb.prepareGet += new rabnet.RabStatusBar.RSBPrepareEventHandler(this.rsb_prepareGet);
+            this.rsb.PrepareGet += new rabnet.RabStatusBar.RSBPrepareEventHandler(this.rsb_prepareGet);
             // 
             // DeadForm
             // 

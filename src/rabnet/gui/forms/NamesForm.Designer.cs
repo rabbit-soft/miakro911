@@ -238,7 +238,7 @@
             // 
             // rabStatusBar1
             // 
-            this.rabStatusBar1.dExcelButtonClick = null;
+            this.rabStatusBar1.ExcelButtonClick = null;
             this.rabStatusBar1.filterPanel = null;
             this.rabStatusBar1.Location = new System.Drawing.Point(0, 339);
             this.rabStatusBar1.Name = "rabStatusBar1";
@@ -247,7 +247,7 @@
             this.rabStatusBar1.TabIndex = 0;
             this.rabStatusBar1.Text = "rabStatusBar1";
             this.rabStatusBar1.itemGet += new rabnet.RabStatusBar.RSBItemEventHandler(this.rabStatusBar1_itemGet);
-            this.rabStatusBar1.prepareGet += new rabnet.RabStatusBar.RSBPrepareEventHandler(this.rabStatusBar1_prepareGet);
+            this.rabStatusBar1.PrepareGet += new rabnet.RabStatusBar.RSBPrepareEventHandler(this.rabStatusBar1_prepareGet);
             // 
             // NamesForm
             // 

@@ -37,7 +37,7 @@ namespace rabnet
 
         public void hide()
         {
-            rsb.filterHide();
+            rsb.FilterHide();
         }
 
         public virtual Filters getFilters() { return null; }
