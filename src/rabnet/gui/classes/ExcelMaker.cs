@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using Excel = Microsoft.Office.Interop.Excel;
 using X_Tools;
+using gamlib;
 
 namespace rabnet
 {
@@ -32,7 +33,7 @@ namespace rabnet
             string path = location();
             if (path == "") return;
 
-            path = XTools.DuplicateName(path+ "\\" + filename());
+            path = Helper.DuplicateName(path+ "\\" + filename());
             object misValue = Type.Missing;
             Excel.Application xlApp = new Excel.ApplicationClass();
             Excel.Workbook xlWorkBook = xlApp.Workbooks.Add(misValue);
@@ -93,7 +94,7 @@ namespace rabnet
             {
                 string path = location();
                 if (path == "") return;
-                path = XTools.DuplicateName(path + "\\" + name + " " + DateTime.Now.ToShortDateString() + ".xls");
+                path = Helper.DuplicateName(path + "\\" + name + " " + DateTime.Now.ToShortDateString() + ".xls");
                 wf.Flush(); wf.MaxValue = 100; wf.Show(); wf.Style = ProgressBarStyle.Blocks;
                 int rate = lv.Items.Count / 100;
                 int cols = lv.Columns.Count;//для обеспечения быстроты заполнения

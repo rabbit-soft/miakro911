@@ -22,8 +22,8 @@ namespace pEngine
         [XmlRpcMethod("get.dumplist")]
         sDump[] GetDumpList();
 
-        [XmlRpcMethod("get.update.files")]
-        sUpdateFile[] GetUpdateFiles();
+        //[XmlRpcMethod("get.update.files")]
+        //sUpdateFile[] GetUpdateFiles();
 
         [XmlRpcMethod("vendor.update.dongle")]
         string VendorUpdateDongle(string base64_question, string clientId, string farms, string flags, string startDate, string endDate, string dongleId);

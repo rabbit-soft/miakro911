@@ -101,13 +101,13 @@ namespace rabdump
             _servUrl = prettyServer(_servUrl);
             _rnc.SaveDataSources();
             _rnc.SaveArchiveJobs();
-            _rnc.SaveOption(RabnetConfig.OptionType.MysqlPath, _myPath);
-            _rnc.SaveOption(RabnetConfig.OptionType.zip7path, _p7);
-            _rnc.SaveOption(RabnetConfig.OptionType.serverUrl, _servUrl);
+            _rnc.SaveOption(RabnetConfig.RNCOption.MysqlPath, _myPath);
+            _rnc.SaveOption(RabnetConfig.RNCOption.zip7path, _p7);
+            _rnc.SaveOption(RabnetConfig.RNCOption.serverUrl, _servUrl);
             string s = "";
             if (StartAtStart == true)
                 s = Application.ExecutablePath;
-            _rnc.SaveOption(RabnetConfig.OptionType.rabdump_startupPath, s);
+            _rnc.SaveOption(RabnetConfig.RNCOption.rabdump_startupPath, s);
         }
 
         /// <summary>
@@ -117,14 +117,14 @@ namespace rabdump
         {
             _rnc = new RabnetConfig();
             _rnc.LoadDataSources();
-            _rnc.LoadArchiveJobs();            
-            MySqlPath = _rnc.GetOption(RabnetConfig.OptionType.MysqlPath);
-            _p7 = _rnc.GetOption(RabnetConfig.OptionType.zip7path);
-            _servUrl = _rnc.GetOption(RabnetConfig.OptionType.serverUrl);
+            _rnc.LoadArchiveJobs();
+            MySqlPath = _rnc.GetOption(RabnetConfig.RNCOption.MysqlPath);
+            _p7 = _rnc.GetOption(RabnetConfig.RNCOption.zip7path);
+            _servUrl = _rnc.GetOption(RabnetConfig.RNCOption.serverUrl);
 
             StartAtStart = false;
 
-            string val = _rnc.GetOption(RabnetConfig.OptionType.rabdump_startupPath);
+            string val = _rnc.GetOption(RabnetConfig.RNCOption.rabdump_startupPath);
             if (val != null)
                 if (val == Application.ExecutablePath)
                     StartAtStart = true;

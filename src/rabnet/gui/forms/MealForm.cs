@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using gamlib;
 
 namespace rabnet
 {
@@ -22,7 +23,7 @@ namespace rabnet
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            X_Tools.XTools.checkIntNumber(sender, e);
+            Helper.checkIntNumber(sender, e);
         }
 
         private void fillPeriods()

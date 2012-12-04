@@ -17,15 +17,15 @@ using RabGRD;
 
 namespace rabdump
 {
-    public partial class MainFormNew : Form
+    public partial class MainForm : Form
     {
-        private static readonly ILog logger = LogManager.GetLogger(typeof(MainFormNew));
+        private static readonly ILog logger = LogManager.GetLogger(typeof(MainForm));
         //private RabServWorker _rabSW;
         private bool _canclose = false;
         private bool _manual = true;
         long _updDelayCnt = 0;
 
-        public MainFormNew()
+        public MainForm()
         {
             InitializeComponent();
             RabServWorker.Url = Options.Inst.ServerUrl;

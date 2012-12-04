@@ -115,29 +115,4 @@ namespace pEngine
         [XmlRpcMember("md5dump")]
         public string MD5;
     }
-
-    public class sUpdateFile
-    {
-        public string Name;
-        /// <summary>
-        /// Каталог в папке обновления, в котором находится файл.
-        /// <remarks>
-        /// Не должен начинаться прямой косой черты(/).
-        /// Должен заканчиваться на прямую косую черту(/).</remarks>
-        /// </summary>
-        public string Path;
-        public string md5;
-        public string Version;
-        
-        [XmlRpcMissingMapping(MappingAction.Ignore)]
-        public string PathName
-        {
-            get { return Path + Name; }
-        }
-
-        [XmlRpcMissingMapping(MappingAction.Ignore)]
-        public string LocalFilePath;
-        [XmlRpcMissingMapping(MappingAction.Ignore)]
-        public string LocalFileMD5;
-    }
 }

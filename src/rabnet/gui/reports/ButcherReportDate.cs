@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using X_Tools;
+using gamlib;
 
 namespace rabnet
 {
@@ -68,7 +69,7 @@ namespace rabnet
                 foreach (String dt in dates)
                 {
                     string[] vals = dt.Split('.');
-                    cbMonth.Items.Add(XTools.toRusMonth(vals[0]) + vals[1]);
+                    cbMonth.Items.Add(Helper.toRusMonth(vals[0]) + vals[1]);
                     if (!cbYear.Items.Contains(vals[1]))
                         cbYear.Items.Add(vals[1]);
                 }

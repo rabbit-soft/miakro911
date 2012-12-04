@@ -15,7 +15,7 @@ namespace rabnet.RNC
     [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
     public partial class RabnetConfig
     {
-        public enum OptionType
+        public enum RNCOption
         {
             MysqlPath,
             zip7path,
@@ -38,21 +38,21 @@ namespace rabnet.RNC
             get { return _dataSources; }
         }
         
-        public string GetOption(OptionType optionType)
+        public string GetOption(RNCOption optionType)
         {
             RegistryKey k = _regKey.CreateSubKey(REGISTRY_PATH);
             switch (optionType)
             {
-                case OptionType.MysqlPath:
+                case RNCOption.MysqlPath:
                     string val = (string)k.GetValue("mysql");
                     if (String.IsNullOrEmpty(val))
                         val= tryToDetectMysqlPath();
                     return val ;
-                case OptionType.zip7path: return (string)k.GetValue("z7");
-                case OptionType.rabdump_startupPath:
+                case RNCOption.zip7path: return (string)k.GetValue("z7");
+                case RNCOption.rabdump_startupPath:
                     k = _regKey.CreateSubKey(STARTUP);
                     return (string)k.GetValue("rabdump", "");
-                case OptionType.serverUrl:
+                case RNCOption.serverUrl:
                     return (string)k.GetValue("sUrl", "");
             }
             return "";
@@ -73,20 +73,20 @@ namespace rabnet.RNC
             return tryKey.GetValue(LOC).ToString();
         }
 
-        public void SaveOption(OptionType optionType, string val)
+        public void SaveOption(RNCOption optionType, string val)
         {
             if (val == null) val = "";
             RegistryKey k = _regKey.CreateSubKey(REGISTRY_PATH);
             switch (optionType)
             {
-                case OptionType.MysqlPath: k.SetValue("mysql", val); break;
-                case OptionType.zip7path: k.SetValue("z7", val); break;
-                case OptionType.rabdump_startupPath:
+                case RNCOption.MysqlPath: k.SetValue("mysql", val); break;
+                case RNCOption.zip7path: k.SetValue("z7", val); break;
+                case RNCOption.rabdump_startupPath:
                     k = _regKey.CreateSubKey(STARTUP);
                     if (val == "") k.DeleteValue("rabdump", false);
                     else k.SetValue("rabdump", val);
                     break;
-                case OptionType.serverUrl:
+                case RNCOption.serverUrl:
                     k.SetValue("sUrl", val); break;
             }
         }

@@ -58,7 +58,9 @@ namespace rabnet
                                     "Ключ защиты", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) == DialogResult.Cancel)
                             {
                                 hkey = -1;
+                                break;
                             }
+                            GRD.Instance.Reconnect();
                         }
                         //              if (PClient.get().farms() == -1)
                         if (GRD.Instance.GetFarmsCnt() == -1)

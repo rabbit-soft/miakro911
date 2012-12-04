@@ -677,6 +677,12 @@ namespace RabGRD
             ValidKey(out retCode);
             return retCode;
         }
+
+        public void Reconnect()
+        {
+            disconnect();
+            connect();
+        }
     }
 }
 #endif 

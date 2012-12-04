@@ -82,10 +82,10 @@ namespace rabnet.RNC
                 switch (nd.Name)
                 {
                     case "mysql":
-                        SaveOption(OptionType.MysqlPath, nd.InnerText.Replace(@"\bin\mysql.exe", ""));
+                        SaveOption(RNCOption.MysqlPath, nd.InnerText.Replace(@"\bin\mysql.exe", ""));
                         break;
                     case "z7":
-                        SaveOption(OptionType.zip7path, nd.InnerText);
+                        SaveOption(RNCOption.zip7path, nd.InnerText);
                         break;
                     case "db":
                         DataSource db = new DataSource("",

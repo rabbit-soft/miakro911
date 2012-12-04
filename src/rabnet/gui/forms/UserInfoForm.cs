@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using gamlib;
 
 namespace rabnet
 {
@@ -83,7 +84,7 @@ namespace rabnet
         private void tbPass1_TextChanged(object sender, EventArgs e)
         {
             if (cbUserType.SelectedIndex != 2) return;
-            X_Tools.XTools.checkFloatNumber(sender, e);
+            Helper.checkFloatNumber(sender, e);
         }
 
         private void cbUserType_SelectedIndexChanged(object sender, EventArgs e)

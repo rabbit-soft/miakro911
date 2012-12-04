@@ -4,7 +4,7 @@ using System;
 
 namespace gamlib
 {
-    static class Helper
+    static partial class Helper
     {
         public static bool isInteger(string str)
         {
@@ -73,6 +73,55 @@ namespace gamlib
                 if (c == curChar)               
                     ++temp;
             return temp;
+        }
+
+        public static string toRusMonth(string dt)
+        {
+            try
+            {
+                string result = "";
+                switch (int.Parse(dt))
+                {
+                    case 1: result += "Январь "; break;
+                    case 2: result += "Февраль "; break;
+                    case 3: result += "Март "; break;
+                    case 4: result += "Апрель "; break;
+                    case 5: result += "Май "; break;
+                    case 6: result += "Июнь "; break;
+                    case 7: result += "Июль "; break;
+                    case 8: result += "Август "; break;
+                    case 9: result += "Сентябрь "; break;
+                    case 10: result += "Октябрь "; break;
+                    case 11: result += "Ноябрь "; break;
+                    case 12: result += "Декабрь "; break;
+                }
+                return result;
+            }
+            catch
+            {
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// Проверяет есть ли указанный файл, если есть то возвращает имя 'Файл (1)'
+        /// </summary>
+        /// <param name="s">Полный путь</param>
+        public static string DuplicateName(string s)
+        {
+            int i = 1;
+            string path = s.Remove(s.LastIndexOf('.'));
+            string ext = s.Substring(s.LastIndexOf('.'));
+            string append = "";
+            while (true)
+            {
+                if (File.Exists(path + append + ext))
+                {
+                    append = " (" + i.ToString() + ")";
+                    i++;
+                }
+                else return path + append + ext;
+            }
         }
     }
 }

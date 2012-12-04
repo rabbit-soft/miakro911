@@ -145,6 +145,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\libs\gamlib\Helper.Forms.cs">
+      <Link>classes\Helper.Forms.cs</Link>
+    </Compile>
+    <Compile Include="..\..\libs\gamlib\Helper.Other.cs">
+      <Link>classes\Helper.Other.cs</Link>
+    </Compile>
     <Compile Include="..\..\libs\GRD\GRD_Base.cs">
       <Link>classes\GRD_Base.cs</Link>
     </Compile>
@@ -153,9 +159,6 @@
     </Compile>
     <Compile Include="..\..\mia_conv\miaExitCode.cs">
       <Link>classes\miaExitCode.cs</Link>
-    </Compile>
-    <Compile Include="..\..\rabdump\classes\x_tools.cs">
-      <Link>classes\x_tools.cs</Link>
     </Compile>
     <Compile Include="classes\Demo.cs" />
     <Compile Include="classes\ExcelMaker.cs" />

@@ -59,7 +59,7 @@ namespace rabdump
                             return;
                         }
 #endif
-                        Application.Run(new MainFormNew());
+                        Application.Run(new MainForm());
 #if PROTECTED
                         if (!GRD.Instance.ValidKey())
                         {
@@ -102,7 +102,7 @@ namespace rabdump
             finally
             {
                 //Application.Exit();
-                Environment.Exit(1);
+                //Environment.Exit(1);
             }
         }
 
@@ -115,7 +115,7 @@ namespace rabdump
             finally
             {
                 //Application.Exit();
-                Environment.Exit(1);
+                //Environment.Exit(1);
             }
         }
 #endif

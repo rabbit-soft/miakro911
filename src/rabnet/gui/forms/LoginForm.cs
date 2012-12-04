@@ -125,61 +125,61 @@ namespace rabnet
                 
 //                System.Diagnostics.Debug.WriteLine(RabnetConfigHandler.ds[comboBox1.SelectedIndex].getParamHost());
 
-#if !DEMO
-                RabUpdaterClient.Get().SetIP(_rnc.DataSources[cbFarm.SelectedIndex].Params.Host);
+//#if !DEMO
+//                RabUpdaterClient.Get().SetIP(_rnc.DataSources[cbFarm.SelectedIndex].Params.Host);
                 
-                bool upRes=RabUpdaterClient.Get().CheckUpdate();
+//                bool upRes=RabUpdaterClient.Get().CheckUpdate();
                 
-                System.Diagnostics.Debug.WriteLine(upRes.ToString());
+//                System.Diagnostics.Debug.WriteLine(upRes.ToString());
 
-                if (upRes)
-                {
-                    DialogResult = DialogResult.Cancel;
-                    Hide();
-                    LoginForm.stop = false;
-                    ProgressForm prg = new ProgressForm();
-                    RabUpdaterClient.Get().progressUp = prg.progressUp;
-                    prg.progressUp(0);
-                    prg.Show();
-                    RabUpdaterClient.Get().GetUpdate();
-                    while (RabUpdaterClient.Get().GetUpRes() == RabUpdaterClient.UpErrStillWorking)
-                    {
-                        Application.DoEvents();
+//                if (upRes)
+//                {
+//                    DialogResult = DialogResult.Cancel;
+//                    Hide();
+//                    LoginForm.stop = false;
+//                    ProgressForm prg = new ProgressForm();
+//                    RabUpdaterClient.Get().progressUp = prg.progressUp;
+//                    prg.progressUp(0);
+//                    prg.Show();
+//                    RabUpdaterClient.Get().GetUpdate();
+//                    while (RabUpdaterClient.Get().GetUpRes() == RabUpdaterClient.UpErrStillWorking)
+//                    {
+//                        Application.DoEvents();
 
-                    }
-                    prg.Close();
-                    prg = null;
-                    int upProcRes = RabUpdaterClient.Get().GetUpRes();
-                    if (upProcRes != RabUpdaterClient.UpErrFinishedOK)
-                    {
-                        if (upProcRes != RabUpdaterClient.UpErrBadMD5OnServer)
-                        {
-                            MessageBox.Show("При обновлении возникла ошибка." + Environment.NewLine + "Поробуйте перезапустить программу и обновить снова, если ошибка будет повторяться, то установите обновление вручную.", "Неполадки при обновлении", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            LoginForm.stop = true;
-                            Close();
-                        }
-                        else
-                        {
-                            MessageBox.Show("При обновлении возникла ошибка." + Environment.NewLine + "Файл обновлений на сервере поврежден, обратитесь к администратору!", "Неполадки при обновлении", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            LoginForm.stop = true;
-                            Close();
-                        }
-                    }
-                    else
-                    {
-                        Process.Start(RabUpdaterClient.Get().GetUpFilePath(), "/S"); //Batch Mode
-                        LoginForm.stop = true;
-                        Close();
-                    }
-                }
-                else
-                {
-#endif
+//                    }
+//                    prg.Close();
+//                    prg = null;
+//                    int upProcRes = RabUpdaterClient.Get().GetUpRes();
+//                    if (upProcRes != RabUpdaterClient.UpErrFinishedOK)
+//                    {
+//                        if (upProcRes != RabUpdaterClient.UpErrBadMD5OnServer)
+//                        {
+//                            MessageBox.Show("При обновлении возникла ошибка." + Environment.NewLine + "Поробуйте перезапустить программу и обновить снова, если ошибка будет повторяться, то установите обновление вручную.", "Неполадки при обновлении", MessageBoxButtons.OK, MessageBoxIcon.Error);
+//                            LoginForm.stop = true;
+//                            Close();
+//                        }
+//                        else
+//                        {
+//                            MessageBox.Show("При обновлении возникла ошибка." + Environment.NewLine + "Файл обновлений на сервере поврежден, обратитесь к администратору!", "Неполадки при обновлении", MessageBoxButtons.OK, MessageBoxIcon.Error);
+//                            LoginForm.stop = true;
+//                            Close();
+//                        }
+//                    }
+//                    else
+//                    {
+//                        Process.Start(RabUpdaterClient.Get().GetUpFilePath(), "/S"); //Batch Mode
+//                        LoginForm.stop = true;
+//                        Close();
+//                    }
+//                }
+//                else
+//                {
+//#endif
                     DialogResult = DialogResult.OK;
                     Close();
-#if !DEMO
-                }
-#endif
+//#if !DEMO
+//                }
+//#endif
                 return;
             }
             MessageBox.Show("Неверное имя пользователя или пароль","Ошибка авторизации",MessageBoxButtons.OK,MessageBoxIcon.Error);

@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using X_Tools;
+using gamlib;
 
 namespace rabnet
 {
@@ -177,7 +178,7 @@ namespace rabnet
             TextBox tb = new TextBox();
             tb.Text = cbNum.Text;
             tb.SelectionStart = cbNum.SelectionStart;
-            XTools.checkIntNumber(tb,e);
+            Helper.checkIntNumber(tb,e);
             cbNum.Text = tb.Text;
             cbNum.SelectionStart = tb.SelectionStart;
 

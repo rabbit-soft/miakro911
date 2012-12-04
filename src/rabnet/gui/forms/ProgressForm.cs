@@ -20,8 +20,8 @@ namespace rabnet
         {
             if (this.InvokeRequired)
             {
-                RabUpdaterClient.progressUpCB d = new RabUpdaterClient.progressUpCB(progressUp);
-                this.Invoke(d, new object[] { p });
+                //RabUpdaterClient.progressUpCB d = new RabUpdaterClient.progressUpCB(progressUp);
+                //this.Invoke(d, new object[] { p });
             }
             else
             {
