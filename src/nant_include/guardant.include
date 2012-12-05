@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="grd" default="full_build" basedir=".">
+	<property name="grd_path.bin" value="${grd_path}\Bin" />
+	<property name="grd_path.lib" value="${grd_path}\Lib" />
+	<property name="grd_path.lib64" value="${grd_path}\Lib\x64" />	
+	<property name="grd_path.drivers" value="${grd_path}\Drivers" />	
+	
+	<property name="guardant2.lib" value="GrdAPI32.DLL" />
+	<property name="guardant2_64.lib" value="GrdAPI64.DLL" />
+	<property name="guardantNET.lib" value="GuardantDotNetApi.dll" />
+	<property name="grdClientConf" value="gnclient.ini" />
+	
+	<property name="grd_ob" value="${grd_path.bin}/CodeObfuscator.exe" />
+	<property name="grd_prot" value="${grd_path.bin}/CodeProtect.exe" />
+	
+	<property name="GrdTru" value="GrdTRU.exe"/>
+	<property name="GrdSrv" value="grdsrv.exe"/>
+	<property name="GrdMon" value="grdmon.exe"/>	
+	<property name="GrdTruSource" value="${grd_path.bin}/${GrdTru}"/>
+	<property name="GrdSrvSource" value="${grd_path.bin}/${GrdSrv}"/>
+	<property name="GrdMonSource" value="${grd_path.bin}/${GrdMon}"/>
+	
+	<property name="GrdDriverName" value="GrdDriversRU"/>
+	<property name="GrdDriver32Path" value="${grd_path.drivers}/x86/Windows/rus/${GrdDriverName}.msi"/>
+	<property name="GrdDriver64Path" value="${grd_path.drivers}/x64/Windows/rus/${GrdDriverName}.msi"/>
+	
+	<target name="include_grd_tools">
+		<property name="bin_grd_tools" value="${bin_dir}/Guardant"/>
+		
+		<copy file="${GrdTruSource}" tofile="${bin_grd_tools}/${GrdTru}" />
+		<copy file="${GrdSrvSource}" tofile="${bin_grd_tools}/${GrdSrv}" />
+		<copy file="${GrdMonSource}" tofile="${bin_grd_tools}/${GrdMon}" />
+		
+		<copy file="${GrdDriver32Path}" tofile="${bin_grd_tools}/drivers/${GrdDriverName}_32.msi" />
+		<copy file="${GrdDriver64Path}" tofile="${bin_grd_tools}/drivers/${GrdDriverName}_64.msi" />
+	</target>
+	
+</project>
