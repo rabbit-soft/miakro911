@@ -1,14 +1,12 @@
 ﻿#if !DEMO
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using System.Collections;
 using System.Diagnostics;
 using System.IO;
 using Excel = Microsoft.Office.Interop.Excel;
-using X_Tools;
 using gamlib;
 using rabnet.forms;
 

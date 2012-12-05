@@ -3,7 +3,7 @@
 <project name="rabnet" default="full_build" basedir=".">
 	<description>rabnet project makefile</description>
 	
-  <!-- properties defines !-->
+	<!-- properties defines !-->
 	
 	<property name="version" value="1.0"/>
 	<property name="minver_p" value="7"/>
@@ -27,9 +27,7 @@
 	</if>
 
 	<include buildfile="${build.root}/host_spec.include"/>
-	<!--include buildfile="${host_spec_path}/host_spec.include"/-->
-
-	<!--echo message="${path::get-file-name(directory::get-parent-directory(project::get-base-directory()))}"/-->
+	<include buildfile="${curdir}/nant_include/guardant.include"/>
 
 	<if test="${path::get-file-name(directory::get-parent-directory(project::get-base-directory()))!='trunk'}">
 		<property name="build.version" value="${path::get-file-name(directory::get-parent-directory(project::get-base-directory()))}" unless="${property::exists('build.version')}"/>
@@ -56,23 +54,12 @@
 	<property name="office.core.path" value="${Office.path}/${office.core.name}" />
 	<property name="office.excel.path" value="${Office.path}/${office.excel.name}" />
 	
-	<property name="grd_path.bin" value="${grd_path}\Bin" />
-	<property name="grd_path.lib" value="${grd_path}\Lib" />
-	<property name="grd_lib64_path" value="${grd_path}\Lib\x64" />	
-	<property name="guardant2.lib" value="GrdAPI32.DLL" />
-	<property name="guardant2_64.lib" value="GrdAPI64.DLL" />
-	<property name="guardantNET.lib" value="GuardantDotNetApi.dll" />
-	<property name="grdClientConf" value="gnclient.ini" />
-
 	<property name="rep.lib" value="RdlViewer.dll" />
 	<property name="rep.ass" value="${rep.path}/${rep.lib}" />
 	<property name="repeng.lib" value="RdlEngine.dll" />
 	<property name="repeng.ass" value="${rep.path}/${repeng.lib}" />
 	<property name="obfuscator" value="Eazfuscator.NET.exe" />
 	
-	<property name="grd_ob" value="${grd_path.bin}\CodeObfuscator.exe" />
-	<property name="grd_prot" value="${grd_path.bin}\CodeProtect.exe" />
-
 	<property name="nant_contrib" value="${all_i_need}/NAnt/NAnt.Contrib.Tasks.dll" />
 
 	<property name="obfuscated" value="" />
@@ -85,14 +72,7 @@
 	<property name="dotnetInstallerSource" value="${party3d.path}/${dotnetInstaller}"/>
 	<property name="mysqlInstallerSource" value="${party3d.path}/${mysqlInstaller}"/>
 	<property name="MSIInstallerSource" value="${party3d.path}/${MSIInstaller}"/>
-	
-	<property name="GrdTru" value="GrdTRU.exe"/>
-	<property name="GrdSrv" value="grdsrv.exe"/>
-	<property name="GrdMon" value="grdmon.exe"/>
-	<property name="GrdTruSource" value="${grd_path.bin}/${GrdTru}"/>
-	<property name="GrdSrvSource" value="${grd_path.bin}/${GrdSrv}"/>
-	<property name="GrdMonSource" value="${grd_path.bin}/${GrdMon}"/>
-	
+		
 	<property name="Bin7zSource" value="${party3d.path}/7z"/>
 
 	<property name="installersPath" value=""/>
@@ -147,13 +127,12 @@
 		<copy file="${office.core.path}" tofile="${bin_dir_bin}/${office.core.name}" />
 		<copy file="${office.excel.path}" tofile="${bin_dir_bin}/${office.excel.name}" />
 		<copy file="${grd_path.lib}/${guardant2.lib}" tofile="${bin_dir_bin}/${guardant2.lib}" />
-		<copy file="${grd_lib64_path}/${guardant2_64.lib}" tofile="${bin_dir_bin}/${guardant2_64.lib}" />
+		<copy file="${grd_path.lib64}/${guardant2_64.lib}" tofile="${bin_dir_bin}/${guardant2_64.lib}" />
 		<copy file="${grd_path.lib}/${guardantNET.lib}" tofile="${bin_dir_bin}/${guardantNET.lib}" />
 		<copy file="${grd_path.lib}/${guardant2.lib}" tofile="${bin_dir_bin}/${guardant2.lib}" />
 		
-		<copy file="${GrdTruSource}" tofile="${bin_dir}/Guardant/${GrdTru}" />
-		<copy file="${GrdSrvSource}" tofile="${bin_dir}/Guardant/${GrdSrv}" />
-		<copy file="${GrdMonSource}" tofile="${bin_dir}/Guardant/${GrdMon}" />
+		<call target="include_grd_tools"/>
+		
 		<copy file="${curdir}/rabnet/gui/${grdClientConf}" tofile="${bin_dir_bin}/${grdClientConf}" />
 		
 		<copy todir="${bin_dir_bin}/reports">
@@ -420,7 +399,7 @@
 				<include name="${curdir}/libs/GRD/GRD_Base.cs"/>
 				<include name="${curdir}/libs/GRD/GRD_BaseCodes.cs"/>
 				
-				<include name="${curdir}/rabdump/classes/x_tools.cs"/>
+				<!--include name="${curdir}/rabdump/classes/x_tools.cs"/-->
 				<include name="${curdir}/mia_conv/miaExitCode.cs"/>
 			</sources>
 			<resources>
@@ -448,58 +427,7 @@
 		<copy file="${curdir}/rabnet/gui/clean_config/rabnet.exe.config" tofile="${bin_dir_bin}/rabnet.exe.config" />
 		<copy file="${curdir}/rabnet/gui/changeLog.txt" tofile="${bin_dir_bin}/changeLog.txt" />
 		<!--move file="${bin_dir}/RabNet/CAS.dll" tofile="${bin_dir}/Tools/CAS.dll" failonerror="false" /-->
-	</target>
-
-	<target name="obfuscate" depends="buildall" description="Binary Obfuscation">
-		<property name="dir_bin" value="${root_bin}/protected/bin"/>
-		
-		<exec program="${obfuscator}">
-			<!--arg value="${dir_bin}/rabdump.exe" />
-		</exec>
-		<exec program="${obfuscator}"-->
-			<arg value="${dir_bin}/mia_conv.exe" />
-		<!--/exec>
-		<exec program="${obfuscator}"-->
-			<arg value="${dir_bin}/updater.exe" />
-		</exec>
-		<exec program="${obfuscator}">			
-			<arg value="${root_bin}/demo/bin/mia_conv.exe" />
-			<arg value="${root_bin}/demo/bin/db.Interface.dll" />			
-			<arg value="${root_bin}/demo/bin/db.mysql.dll" />
-			<arg value="${root_bin}/demo/bin/engine.dll" />	
-			<arg value="${root_bin}/demo/bin/rabnet.exe" />						
-		</exec>
-		<exec program="${grd_prot}">
-			<arg value="/INIT" />
-			<arg value="/MSG=${grd_path.bin}\licensewizard.msg" />
-			<arg value="/PER=20" />
-			<arg value="/RC=1" />
-			<arg value="/ATR=2" />
-			<arg value="/GS3S" />
-			<arg value="/GN3S" />
-			<arg value="/UN=1" />
-			<arg value="/SIGN" />
-			<!--arg value="/MAP=${root_bin}/protected/RabNet/rabnet.map" /-->
-			<!--arg value="/EL=${curdir}/GRDConfigs/rabnet/config.cfp" /-->
-			<!--arg value="/IL=${curdir}/GRDConfigs/rabnet/rabnet.ifp" /-->
-			<arg value="/OUT=${dir_bin}/" />
-			<arg value="${dir_bin}/db.Interface.dll" />
-			<arg value="${dir_bin}/db.mysql.dll" />
-			<arg value="${dir_bin}/engine.dll" />
-			<arg value="${dir_bin}/rabnet.exe" />	
-			<arg value="${dir_bin}/rabdump.exe" />			
-		</exec>
-
-		<delete file="${dir_bin}/rabnet.exe.old"/>			
-		<delete file="${dir_bin}/db.Interface.dll.old"/>
-		<delete file="${dir_bin}/db.mysql.dll.old"/>
-		<delete file="${dir_bin}/engine.dll.old"/>
-		<delete file="${dir_bin}/rabdump.exe.old"/>
-		<delete file="${dir_bin}/rabnet.map"/>
-
-		<property name="obfuscated" value=".ob" />
-		<!--call target="release_zip"/-->
-	</target>
+	</target>	
 
 	<target name="updater" description="Make updater project">
 		<csc target="winexe" output="${bin_dir_bin}/updater.exe" win32icon="${curdir}/updater/icon_update_white.ico" optimize="true">
@@ -639,6 +567,57 @@
 		<delete file="${curdir}/distrib/distrib_nsis/include/LangStrings.nsh.exe"/>
 	</target>
 
+	<target name="obfuscate" depends="buildall" description="Binary Obfuscation">
+		<property name="dir_bin" value="${root_bin}/protected/bin"/>
+		
+		<exec program="${obfuscator}">
+			<!--arg value="${dir_bin}/rabdump.exe" />
+				</exec>
+			<exec program="${obfuscator}"-->
+			<arg value="${dir_bin}/mia_conv.exe" />
+			<!--/exec>
+			<exec program="${obfuscator}"-->
+			<arg value="${dir_bin}/updater.exe" />
+		</exec>
+		<exec program="${obfuscator}">			
+			<arg value="${root_bin}/demo/bin/mia_conv.exe" />
+			<arg value="${root_bin}/demo/bin/db.Interface.dll" />			
+			<arg value="${root_bin}/demo/bin/db.mysql.dll" />
+			<arg value="${root_bin}/demo/bin/engine.dll" />	
+			<arg value="${root_bin}/demo/bin/rabnet.exe" />						
+		</exec>
+		<exec program="${grd_prot}">
+			<arg value="/INIT" />
+			<arg value="/MSG=${grd_path.bin}\licensewizard.msg" />
+			<arg value="/PER=20" />
+			<arg value="/RC=1" />
+			<arg value="/ATR=2" />
+			<arg value="/GS3S" />
+			<arg value="/GN3S" />
+			<arg value="/UN=1" />
+			<arg value="/SIGN" />
+			<!--arg value="/MAP=${root_bin}/protected/RabNet/rabnet.map" /-->
+			<!--arg value="/EL=${curdir}/GRDConfigs/rabnet/config.cfp" /-->
+			<!--arg value="/IL=${curdir}/GRDConfigs/rabnet/rabnet.ifp" /-->
+			<arg value="/OUT=${dir_bin}/" />
+			<arg value="${dir_bin}/db.Interface.dll" />
+			<arg value="${dir_bin}/db.mysql.dll" />
+			<arg value="${dir_bin}/engine.dll" />
+			<arg value="${dir_bin}/rabnet.exe" />	
+			<arg value="${dir_bin}/rabdump.exe" />			
+		</exec>
+		
+		<delete file="${dir_bin}/rabnet.exe.old"/>			
+		<delete file="${dir_bin}/db.Interface.dll.old"/>
+		<delete file="${dir_bin}/db.mysql.dll.old"/>
+		<delete file="${dir_bin}/engine.dll.old"/>
+		<delete file="${dir_bin}/rabdump.exe.old"/>
+		<delete file="${dir_bin}/rabnet.map"/>
+		
+		<property name="obfuscated" value=".ob" />
+		<!--call target="release_zip"/-->
+	</target>
+	
 	<target name="clean_mark">
 		<delete file="../build.ok" />
 	</target>
@@ -728,8 +707,6 @@
 			<xmlpoke file="${root_bin}/miakro_911_${bin_type}_up/updates.xml" xpath="/update/bundle/version/@number" value="${fullver}" />
 		</if>		
 	</target>
-
-	
 
 	<!-- RELEASES -->
 	<target name="version" description="making Rabnet distributed release">

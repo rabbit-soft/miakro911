@@ -77,7 +77,6 @@
       <DependentUpon>ScaleForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ScaleOpt.cs" />
-    <Compile Include="x_tools.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="PLUForm.resx">

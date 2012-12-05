@@ -1,16 +1,9 @@
 ﻿//#define PROTECTED
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using log4net;
 using System.Xml;
-using X_Tools;
-using System.IO;
-using System.Reflection;
+
 #if PROTECTED
 using RabGRD;
 #endif

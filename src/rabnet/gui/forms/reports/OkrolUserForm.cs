@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
-using X_Tools;
 using gamlib;
 
 namespace rabnet.forms
