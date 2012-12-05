@@ -283,7 +283,7 @@
             this.тестовыйToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.тестовыйToolStripMenuItem.Text = "Тестовый";
             this.тестовыйToolStripMenuItem.Visible = false;
-            this.тестовыйToolStripMenuItem.Click += new System.EventHandler(this.тестовыйToolStripMenuItem_Click);
+            this.тестовыйToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
             // tsmiBreeds
             // 

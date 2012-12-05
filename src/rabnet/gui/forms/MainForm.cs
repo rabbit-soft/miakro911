@@ -417,7 +417,7 @@ namespace rabnet.forms
 
 #region reports
 
-        private void тестовыйToolStripMenuItem_Click(object sender, EventArgs e)
+        private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
 #if !DEMO
             (new ReportViewForm(myReportType.TEST,Engine.get().db().makeReport(myReportType.TEST, null))).ShowDialog();

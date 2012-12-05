@@ -147,6 +147,10 @@
 			<param name="Name" value="&Oacute;&divide;&aring;&ograve; &ecirc;&icirc;&eth;&igrave;&icirc;&acirc;">
 			<param name="Local" value="list40_Meal.htm">
 			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&Acirc;&agrave;&ecirc;&ouml;&egrave;&iacute;&ucirc;">
+			<param name="Local" value="list43_vaccines.htm">
+			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&Icirc;&ograve;&divide;&aring;&ograve;&ucirc;">
