@@ -564,7 +564,7 @@
 		<!-- удаляем временные файлы -->
 		<delete file="${curdir}/distrib/distrib_nsis/setup_bld.nsi"/>
 		<delete file="${curdir}/distrib/distrib_nsis/setup.exe"/>
-		<delete file="${curdir}/distrib/distrib_nsis/include/LangStrings.nsh.exe"/>
+		<delete file="${curdir}/distrib/distrib_nsis/include/LangStrings.nsh"/>
 	</target>
 
 	<target name="obfuscate" depends="buildall" description="Binary Obfuscation">
