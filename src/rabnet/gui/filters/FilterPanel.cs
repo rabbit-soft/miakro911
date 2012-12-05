@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Text;
+using rabnet.components;
 
-namespace rabnet
+namespace rabnet.filters
 {
     public class FilterPanel:UserControl
     {

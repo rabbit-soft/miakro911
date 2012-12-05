@@ -10,7 +10,7 @@ using System.Diagnostics;
 using Microsoft.Win32;
 using rabnet.RNC;
 
-namespace rabnet
+namespace rabnet.forms
 {
     public partial class LoginForm : Form
     {

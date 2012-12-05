@@ -1,4 +1,5 @@
-﻿namespace rabnet
+﻿using rabnet.components;
+namespace rabnet.forms
 {
     partial class NamesForm
     {
@@ -48,7 +49,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpMale = new System.Windows.Forms.TabPage();
             this.tpFemale = new System.Windows.Forms.TabPage();
-            this.rabStatusBar1 = new rabnet.RabStatusBar();
+            this.rabStatusBar1 = new rabnet.components.RabStatusBar();
             this.contextMenuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -246,8 +247,8 @@
             this.rabStatusBar1.Size = new System.Drawing.Size(634, 23);
             this.rabStatusBar1.TabIndex = 0;
             this.rabStatusBar1.Text = "rabStatusBar1";
-            this.rabStatusBar1.itemGet += new rabnet.RabStatusBar.RSBItemEventHandler(this.rabStatusBar1_itemGet);
-            this.rabStatusBar1.PrepareGet += new rabnet.RabStatusBar.RSBPrepareEventHandler(this.rabStatusBar1_prepareGet);
+            this.rabStatusBar1.itemGet += new rabnet.components.RabStatusBar.RSBItemEventHandler(this.rabStatusBar1_itemGet);
+            this.rabStatusBar1.PrepareGet += new rabnet.components.RabStatusBar.RSBPrepareEventHandler(this.rabStatusBar1_prepareGet);
             // 
             // NamesForm
             // 

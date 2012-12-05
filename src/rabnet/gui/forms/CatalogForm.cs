@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using ColorPickerCombo;
 using System.IO;
 
-namespace rabnet
+namespace rabnet.forms
 {
 	[System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
 	public partial class CatalogForm : Form

@@ -2,6 +2,7 @@
 using System.Text;
 using System.Xml;
 using System.Windows.Forms;
+using rabnet.forms;
 
 namespace rabnet
 {

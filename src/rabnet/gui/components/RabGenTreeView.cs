@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace rabnet
+namespace rabnet.components
 {
     public partial class RabGenTreeView : TreeView
     {

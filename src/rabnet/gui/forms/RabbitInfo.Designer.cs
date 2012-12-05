@@ -1,4 +1,4 @@
-﻿namespace rabnet
+﻿namespace rabnet.forms
 {
     partial class RabbitInfo
     {
@@ -131,7 +131,7 @@
             this.chDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chWeight = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tpVaccines = new System.Windows.Forms.TabPage();
-            this.riVaccinePanel1 = new rabnet.panels.RabInfoPanels.RIVaccinePanel();
+            this.riVaccinePanel1 = new rabnet.RIVaccinePanel();
             this.btOk = new System.Windows.Forms.Button();
             this.btCancel = new System.Windows.Forms.Button();
             this.notes = new System.Windows.Forms.TextBox();
@@ -1570,7 +1570,7 @@
         private System.Windows.Forms.ToolStripMenuItem miIsNotAProholost;
         private System.Windows.Forms.ToolStripMenuItem showfuckidToolStripMenuItem;
         private System.Windows.Forms.TabPage tpVaccines;
-        private panels.RabInfoPanels.RIVaccinePanel riVaccinePanel1;
+        private rabnet.RIVaccinePanel riVaccinePanel1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.CheckBox cbRealization;
         private RISuckersPanel riSuckersPanel1;

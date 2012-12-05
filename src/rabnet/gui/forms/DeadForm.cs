@@ -5,8 +5,10 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using rabnet.filters;
+using rabnet.components;
 
-namespace rabnet
+namespace rabnet.forms
 {
     public partial class DeadForm : Form
     {

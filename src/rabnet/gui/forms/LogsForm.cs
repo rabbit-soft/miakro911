@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using gamlib;
 
-namespace rabnet
+namespace rabnet.forms
 {
     public partial class LogsForm : Form
     {

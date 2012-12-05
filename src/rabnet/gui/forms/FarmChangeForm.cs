@@ -10,7 +10,7 @@ using System.IO;
 using rabnet.RNC;
 using log4net;
 
-namespace rabnet
+namespace rabnet.forms
 {
     [Obsolete("НЕ ИСПОЛЬЗУЕТСЯ В ВЕРСИИ 1.1.*")]
     public partial class FarmChangeForm : Form

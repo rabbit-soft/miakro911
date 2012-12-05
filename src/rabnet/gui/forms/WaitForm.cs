@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace rabnet
+namespace rabnet.forms
 {
     /// <summary>
     /// Форма - ПрограсБар

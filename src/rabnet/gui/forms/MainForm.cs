@@ -15,7 +15,7 @@ using System.Reflection;
 using RabGRD;
 #endif
 
-namespace rabnet
+namespace rabnet.forms
 {
     public partial class MainForm : Form
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace rabnet
+namespace rabnet.forms
 {
     public partial class MainForm
     {

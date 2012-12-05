@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using log4net;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using rabnet.forms;
 #if PROTECTED
 using RabGRD;
 #endif

@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace rabnet
+namespace rabnet.forms
 {
     public partial class FuckerForm : Form
     {

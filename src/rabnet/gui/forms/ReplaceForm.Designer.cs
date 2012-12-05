@@ -1,4 +1,4 @@
-﻿namespace rabnet
+﻿namespace rabnet.forms
 {
     partial class ReplaceForm
     {

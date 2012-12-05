@@ -1,4 +1,4 @@
-﻿namespace rabnet.panels.RabInfoPanels
+﻿namespace rabnet
 {
     partial class RIVaccinePanel
     {

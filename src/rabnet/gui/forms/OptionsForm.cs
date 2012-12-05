@@ -8,7 +8,7 @@ using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
-namespace rabnet
+namespace rabnet.forms
 {
     public partial class OptionsForm : Form
     {

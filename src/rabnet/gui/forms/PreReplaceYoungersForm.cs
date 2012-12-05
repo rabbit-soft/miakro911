@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace rabnet
+namespace rabnet.forms
 {
     public partial class PreReplaceYoungersForm : Form
     {

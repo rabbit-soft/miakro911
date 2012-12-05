@@ -44,7 +44,7 @@
             this.replaceYoungersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.replacePlanMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tvGens = new rabnet.RabGenTreeView();
+            this.tvGens = new rabnet.components.RabGenTreeView();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -196,7 +196,7 @@
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ListView listView1;
-        private RabGenTreeView tvGens;
+        private components.RabGenTreeView tvGens;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;

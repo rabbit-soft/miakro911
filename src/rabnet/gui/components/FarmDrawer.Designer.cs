@@ -1,4 +1,4 @@
-﻿namespace rabnet
+﻿namespace rabnet.components
 {
     partial class FarmDrawer
     {
@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
-			this.bc2 = new rabnet.BuildingControl();
-			this.bc1 = new rabnet.BuildingControl();
+            this.bc2 = new rabnet.components.BuildingControl();
+            this.bc1 = new rabnet.components.BuildingControl();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -63,7 +63,7 @@
 			this.bc2.TabIndex = 2;
 			this.bc2.vigul = false;
 			this.bc2.Visible = false;
-			this.bc2.ValueChanged += new rabnet.BuildingControl.BCEventHandler(this.bc_ValueChanged);
+            this.bc2.ValueChanged += new rabnet.components.BuildingControl.BCEventHandler(this.bc_ValueChanged);
 			// 
 			// bc1
 			// 
@@ -84,7 +84,7 @@
 			this.bc1.TabIndex = 1;
 			this.bc1.vigul = false;
 			this.bc1.Visible = false;
-			this.bc1.ValueChanged += new rabnet.BuildingControl.BCEventHandler(this.bc_ValueChanged);
+            this.bc1.ValueChanged += new rabnet.components.BuildingControl.BCEventHandler(this.bc_ValueChanged);
 			// 
 			// FarmDrawer
 			// 

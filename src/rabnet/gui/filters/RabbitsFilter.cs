@@ -5,8 +5,9 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using rabnet.components;
 
-namespace rabnet
+namespace rabnet.filters
 {
     public partial class RabbitsFilter : FilterPanel
     {

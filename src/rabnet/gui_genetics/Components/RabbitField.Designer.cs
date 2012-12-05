@@ -1,4 +1,4 @@
-﻿namespace rabnet.Components
+﻿namespace rabnet.components
 {
 	partial class RabbitField
 	{

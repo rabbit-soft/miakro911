@@ -10,6 +10,7 @@ using System.IO;
 using Excel = Microsoft.Office.Interop.Excel;
 using X_Tools;
 using gamlib;
+using rabnet.forms;
 
 namespace rabnet
 {

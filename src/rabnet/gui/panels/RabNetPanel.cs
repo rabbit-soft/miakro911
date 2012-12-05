@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Text;
 using log4net;
+using rabnet.filters;
+using rabnet.components;
 
 namespace rabnet
 {

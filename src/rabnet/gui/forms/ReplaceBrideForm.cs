@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 
 
-namespace rabnet
+namespace rabnet.forms
 {
     public partial class ReplaceBrideForm : Form
     {

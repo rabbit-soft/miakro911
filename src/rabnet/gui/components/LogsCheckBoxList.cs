@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 
-namespace rabnet
+namespace rabnet.components
 {
     public partial class LogsCheckBoxList : UserControl
     {

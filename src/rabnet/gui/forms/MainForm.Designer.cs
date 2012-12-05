@@ -1,4 +1,4 @@
-﻿namespace rabnet
+﻿namespace rabnet.forms
 {
     partial class MainForm
     {
@@ -88,7 +88,7 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tpButcher = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.rabStatusBar1 = new rabnet.RabStatusBar();
+            this.rabStatusBar1 = new rabnet.components.RabStatusBar();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -632,7 +632,7 @@
         private System.Windows.Forms.ToolStripMenuItem geterosisMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inbreedingMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmiAboutPO;
-        private RabStatusBar rabStatusBar1;
+        private components.RabStatusBar rabStatusBar1;
         private System.Windows.Forms.Timer tNoWorking;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;

@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using log4net;
 using System;
 
-namespace rabnet.Components
+namespace rabnet.components
 {
 	public partial class RabbitField : UserControl
 	{

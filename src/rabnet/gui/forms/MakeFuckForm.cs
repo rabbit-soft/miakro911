@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using log4net;
 
-namespace rabnet
+namespace rabnet.forms
 {
     public partial class MakeFuckForm : Form
     {

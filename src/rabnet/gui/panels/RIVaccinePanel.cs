@@ -5,8 +5,10 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using rabnet.components;
+using rabnet.forms;
 
-namespace rabnet.panels.RabInfoPanels
+namespace rabnet
 {
     public partial class RIVaccinePanel : UserControl
     {

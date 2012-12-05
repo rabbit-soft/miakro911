@@ -32,7 +32,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.rabbitField1 = new rabnet.Components.RabbitField();
+            this.rabbitField1 = new rabnet.components.RabbitField();
             this.rabbitBar1 = new rabnet.RabbitBar();
             this.rabbitPair1 = new rabnet.RabbitPair();
             this.panel1.SuspendLayout();
@@ -136,7 +136,7 @@
 
 		private RabbitPair rabbitPair1;
 		private RabbitBar rabbitBar1;
-		private rabnet.Components.RabbitField rabbitField1;
+		private rabnet.components.RabbitField rabbitField1;
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.CheckBox checkBox1;
 		private System.Windows.Forms.Button button1;

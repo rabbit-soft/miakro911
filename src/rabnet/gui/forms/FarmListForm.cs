@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using rabnet.RNC;
 
-namespace rabnet
+namespace rabnet.forms
 {
     [Obsolete("НЕ ИСПОЛЬЗУЕТСЯ В ВЕРСИИ 1.1.*")]
     public partial class FarmListForm : Form

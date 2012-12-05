@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using RabGRD;
 #endif
 
-namespace rabnet
+namespace rabnet.forms
 {
     partial class AboutForm : Form
     {

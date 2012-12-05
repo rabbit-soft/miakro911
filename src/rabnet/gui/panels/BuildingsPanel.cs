@@ -8,6 +8,9 @@ using System.Windows.Forms;
 using System.Collections;
 using System.Xml;
 using log4net;
+using rabnet.components;
+using rabnet.forms;
+using rabnet.filters;
 #if PROTECTED
 using RabGRD;
 #endif

@@ -412,6 +412,7 @@
 				<include name="${curdir}/rabnet/gui/panels/*.cs"/>
 				<include name="${curdir}/rabnet/gui/panels/RabInfoPanels/*.cs"/>
 				<include name="${curdir}/rabnet/gui/forms/*.cs"/>
+				<include name="${curdir}/rabnet/gui/forms/reports/*.cs"/>
 				<include name="${curdir}/rabnet/gui/reports/*.cs"/>
 				
 				<include name="${curdir}/libs/gamlib/*.cs"/>
@@ -779,7 +780,7 @@
 	<target name="bld_date" description="write build date into program for unsupport old keys">
 		<echo file="${tmpdir}/MainForm.BuildDate.cs.tmp">
 using System;			
-namespace rabnet
+namespace rabnet.forms
 {
 	public partial class MainForm
 	{

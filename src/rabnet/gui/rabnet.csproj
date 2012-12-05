@@ -209,7 +209,6 @@
     <Compile Include="forms\MealForm.Designer.cs">
       <DependentUpon>MealForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="forms\RabGenTreeView.cs" />
     <Compile Include="forms\VaccinesCatalogForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -248,11 +247,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="reports\ButcherReportDate.cs">
+    <Compile Include="forms\reports\ButcherReportDateForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="reports\ButcherReportDate.Designer.cs">
-      <DependentUpon>ButcherReportDate.cs</DependentUpon>
+    <Compile Include="forms\reports\ButcherReportDateForm.Designer.cs">
+      <DependentUpon>ButcherReportDateForm.cs</DependentUpon>
     </Compile>
     <Compile Include="forms\ProgressForm.cs">
       <SubType>Form</SubType>
@@ -356,7 +355,7 @@
     <Compile Include="forms\CatalogForm.Designer.cs">
       <DependentUpon>CatalogForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="forms\ColumnSorter.cs">
+    <Compile Include="classes\ColumnSorter.cs">
     </Compile>
     <Compile Include="classes\DataThread.cs" />
     <Compile Include="forms\CountKids.cs">
@@ -401,7 +400,7 @@
     <Compile Include="forms\KillForm.Designer.cs">
       <DependentUpon>KillForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="forms\ListViewSaver.cs" />
+    <Compile Include="classes\ListViewSaver.cs" />
     <Compile Include="forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -521,23 +520,23 @@
       <DependentUpon>RabStatusBar.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="reports\FuckerForm.cs">
+    <Compile Include="forms\reports\FuckerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="reports\FuckerForm.Designer.cs">
+    <Compile Include="forms\reports\FuckerForm.Designer.cs">
       <DependentUpon>FuckerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="classes\ReportBase.cs" />
-    <Compile Include="reports\OkrolUser.cs">
+    <Compile Include="forms\reports\OkrolUserForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="reports\OkrolUser.Designer.cs">
-      <DependentUpon>OkrolUser.cs</DependentUpon>
+    <Compile Include="forms\reports\OkrolUserForm.Designer.cs">
+      <DependentUpon>OkrolUserForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="reports\PeriodForm.cs">
+    <Compile Include="forms\reports\PeriodForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="reports\PeriodForm.Designer.cs">
+    <Compile Include="forms\reports\PeriodForm.Designer.cs">
       <DependentUpon>PeriodForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\VerInfo.cs" />
@@ -621,8 +620,8 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="reports\ButcherReportDate.resx">
-      <DependentUpon>ButcherReportDate.cs</DependentUpon>
+    <EmbeddedResource Include="forms\reports\ButcherReportDateForm.resx">
+      <DependentUpon>ButcherReportDateForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\CatalogForm.resx">
@@ -753,15 +752,15 @@
       <DependentUpon>YoungsPanel.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="reports\FuckerForm.resx">
+    <EmbeddedResource Include="forms\reports\FuckerForm.resx">
       <DependentUpon>FuckerForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="reports\OkrolUser.resx">
-      <DependentUpon>OkrolUser.cs</DependentUpon>
+    <EmbeddedResource Include="forms\reports\OkrolUserForm.resx">
+      <DependentUpon>OkrolUserForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="reports\PeriodForm.resx">
+    <EmbeddedResource Include="forms\reports\PeriodForm.resx">
       <DependentUpon>PeriodForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>

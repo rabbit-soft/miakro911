@@ -67,7 +67,7 @@
             this.miGenetic = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.показатьНомерToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tvGens = new rabnet.RabGenTreeView();
+            this.tvGens = new rabnet.components.RabGenTreeView();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -416,7 +416,7 @@
         private System.Windows.Forms.ColumnHeader chClass;
         private System.Windows.Forms.ColumnHeader chAddress;
         private System.Windows.Forms.ColumnHeader chNotes;
-        private RabGenTreeView tvGens;
+        private components.RabGenTreeView tvGens;
         private System.Windows.Forms.ContextMenuStrip actMenu;
         private System.Windows.Forms.ToolStripMenuItem miPassport;
         private System.Windows.Forms.ToolStripMenuItem miIncome;

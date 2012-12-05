@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.farmDrawer1 = new rabnet.FarmDrawer();
+            this.farmDrawer1 = new rabnet.components.FarmDrawer();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
@@ -85,7 +85,7 @@
             this.farmDrawer1.Name = "farmDrawer1";
             this.farmDrawer1.Size = new System.Drawing.Size(648, 215);
             this.farmDrawer1.TabIndex = 4;
-            this.farmDrawer1.ValueChanged += new rabnet.FarmDrawer.FDEventHandler(this.farmDrawer1_ValueChanged);
+            this.farmDrawer1.ValueChanged += new rabnet.components.FarmDrawer.FDEventHandler(this.farmDrawer1_ValueChanged);
             // 
             // listView1
             // 
@@ -269,7 +269,7 @@
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TreeView treeView1;
-        private FarmDrawer farmDrawer1;
+        private rabnet.components.FarmDrawer farmDrawer1;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;

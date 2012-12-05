@@ -9,7 +9,7 @@ using System.Xml;
 using X_Tools;
 using gamlib;
 
-namespace rabnet
+namespace rabnet.forms
 {
     public enum myDatePeriod { Day,Month, Year }
 

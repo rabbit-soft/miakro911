@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
+namespace rabnet
+{
     /// <summary>
     /// Класс содержащий список возможных ExitCode, Которые возвращает mia_conv.
     /// </summary>
@@ -24,7 +26,7 @@ using System.Text;
             return GetText(code, new string[0]);
         }
 
-        public static string GetText(int code,string[] args)
+        public static string GetText(int code, string[] args)
         {
             switch (code)
             {
@@ -42,4 +44,5 @@ using System.Text;
             }
         }
     }
+}
 

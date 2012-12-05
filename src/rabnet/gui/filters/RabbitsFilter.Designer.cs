@@ -1,4 +1,4 @@
-﻿namespace rabnet
+﻿namespace rabnet.filters
 {
     partial class RabbitsFilter
     {

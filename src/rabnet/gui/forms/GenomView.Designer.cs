@@ -1,4 +1,4 @@
-﻿namespace rabnet
+﻿namespace rabnet.forms
 {
     partial class GenomViewForm
     {
@@ -33,16 +33,16 @@
             this.lbInbreeding = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.tvFemale = new rabnet.RabGenTreeView();
+            this.tvFemale = new rabnet.components.RabGenTreeView();
             this.lbFemaleName = new System.Windows.Forms.Label();
             this.lbFemaleBreed = new System.Windows.Forms.Label();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.tvMale = new rabnet.RabGenTreeView();
+            this.tvMale = new rabnet.components.RabGenTreeView();
             this.lbMaleName = new System.Windows.Forms.Label();
             this.lbMaleBreed = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.tvChildren = new rabnet.RabGenTreeView();
+            this.tvChildren = new rabnet.components.RabGenTreeView();
             this.lbChildName = new System.Windows.Forms.Label();
             this.lbChildBreed = new System.Windows.Forms.Label();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -299,8 +299,8 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label lbChildName;
         private System.Windows.Forms.Label lbChildBreed;
-        private RabGenTreeView tvFemale;
-        private RabGenTreeView tvMale;
-        private RabGenTreeView tvChildren;
+        private components.RabGenTreeView tvFemale;
+        private components.RabGenTreeView tvMale;
+        private components.RabGenTreeView tvChildren;
     }
 }

@@ -9,7 +9,7 @@ using System.Xml;
 using X_Tools;
 using gamlib;
 
-namespace rabnet
+namespace rabnet.forms
 {
     public partial class PeriodForm : Form
     {

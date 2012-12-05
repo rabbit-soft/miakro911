@@ -1,4 +1,4 @@
-﻿namespace rabnet
+﻿namespace rabnet.forms
 {
     partial class LogsForm
     {
@@ -35,21 +35,21 @@
             this.columnHeader15 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader14 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.gbSearch = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.dtpDateTo = new System.Windows.Forms.DateTimePicker();
+            this.chPeriod = new System.Windows.Forms.CheckBox();
+            this.dtpDateFrom = new System.Windows.Forms.DateTimePicker();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cbAddress = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.nudLogLim = new System.Windows.Forms.NumericUpDown();
             this.btSearch = new System.Windows.Forms.Button();
             this.tbRabID = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.lgTypes = new rabnet.components.LogsCheckBoxList();
             this.btShowTypes = new System.Windows.Forms.Button();
-            this.cbAddress = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.dtpDateFrom = new System.Windows.Forms.DateTimePicker();
-            this.chPeriod = new System.Windows.Forms.CheckBox();
-            this.dtpDateTo = new System.Windows.Forms.DateTimePicker();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.lgTypes = new rabnet.LogsCheckBoxList();
             this.gbSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudLogLim)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -121,6 +121,71 @@
             this.gbSearch.Size = new System.Drawing.Size(730, 68);
             this.gbSearch.TabIndex = 2;
             this.gbSearch.TabStop = false;
+            // 
+            // label5
+            // 
+            this.label5.Location = new System.Drawing.Point(277, 42);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(45, 20);
+            this.label5.TabIndex = 25;
+            this.label5.Text = "по дату";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label4
+            // 
+            this.label4.Location = new System.Drawing.Point(79, 42);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(45, 20);
+            this.label4.TabIndex = 24;
+            this.label4.Text = "с даты";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // dtpDateTo
+            // 
+            this.dtpDateTo.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.dtpDateTo.Location = new System.Drawing.Point(328, 42);
+            this.dtpDateTo.Name = "dtpDateTo";
+            this.dtpDateTo.Size = new System.Drawing.Size(141, 20);
+            this.dtpDateTo.TabIndex = 23;
+            // 
+            // chPeriod
+            // 
+            this.chPeriod.AutoSize = true;
+            this.chPeriod.Checked = true;
+            this.chPeriod.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chPeriod.Location = new System.Drawing.Point(9, 44);
+            this.chPeriod.Name = "chPeriod";
+            this.chPeriod.Size = new System.Drawing.Size(64, 17);
+            this.chPeriod.TabIndex = 22;
+            this.chPeriod.Text = "Период";
+            this.chPeriod.UseVisualStyleBackColor = true;
+            this.chPeriod.CheckedChanged += new System.EventHandler(this.chPeriod_CheckedChanged);
+            // 
+            // dtpDateFrom
+            // 
+            this.dtpDateFrom.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.dtpDateFrom.Location = new System.Drawing.Point(130, 42);
+            this.dtpDateFrom.Name = "dtpDateFrom";
+            this.dtpDateFrom.Size = new System.Drawing.Size(141, 20);
+            this.dtpDateFrom.TabIndex = 20;
+            // 
+            // label3
+            // 
+            this.label3.Location = new System.Drawing.Point(158, 16);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(45, 20);
+            this.label3.TabIndex = 19;
+            this.label3.Text = "Адрес";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // cbAddress
+            // 
+            this.cbAddress.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbAddress.FormattingEnabled = true;
+            this.cbAddress.Location = new System.Drawing.Point(209, 16);
+            this.cbAddress.Name = "cbAddress";
+            this.cbAddress.Size = new System.Drawing.Size(93, 21);
+            this.cbAddress.TabIndex = 18;
             // 
             // label2
             // 
@@ -198,6 +263,16 @@
             this.splitContainer1.SplitterDistance = 656;
             this.splitContainer1.TabIndex = 4;
             // 
+            // lgTypes
+            // 
+            this.lgTypes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lgTypes.Location = new System.Drawing.Point(0, 0);
+            this.lgTypes.Margin = new System.Windows.Forms.Padding(0);
+            this.lgTypes.MinimumSize = new System.Drawing.Size(100, 100);
+            this.lgTypes.Name = "lgTypes";
+            this.lgTypes.Size = new System.Drawing.Size(100, 100);
+            this.lgTypes.TabIndex = 0;
+            // 
             // btShowTypes
             // 
             this.btShowTypes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -209,81 +284,6 @@
             this.btShowTypes.Text = "Показать типы лого";
             this.btShowTypes.UseVisualStyleBackColor = true;
             this.btShowTypes.Click += new System.EventHandler(this.btShowTypes_Click);
-            // 
-            // cbAddress
-            // 
-            this.cbAddress.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbAddress.FormattingEnabled = true;
-            this.cbAddress.Location = new System.Drawing.Point(209, 16);
-            this.cbAddress.Name = "cbAddress";
-            this.cbAddress.Size = new System.Drawing.Size(93, 21);
-            this.cbAddress.TabIndex = 18;
-            // 
-            // label3
-            // 
-            this.label3.Location = new System.Drawing.Point(158, 16);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(45, 20);
-            this.label3.TabIndex = 19;
-            this.label3.Text = "Адрес";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // dtpDateFrom
-            // 
-            this.dtpDateFrom.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.dtpDateFrom.Location = new System.Drawing.Point(130, 42);
-            this.dtpDateFrom.Name = "dtpDateFrom";
-            this.dtpDateFrom.Size = new System.Drawing.Size(141, 20);
-            this.dtpDateFrom.TabIndex = 20;
-            // 
-            // chPeriod
-            // 
-            this.chPeriod.AutoSize = true;
-            this.chPeriod.Checked = true;
-            this.chPeriod.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chPeriod.Location = new System.Drawing.Point(9, 44);
-            this.chPeriod.Name = "chPeriod";
-            this.chPeriod.Size = new System.Drawing.Size(64, 17);
-            this.chPeriod.TabIndex = 22;
-            this.chPeriod.Text = "Период";
-            this.chPeriod.UseVisualStyleBackColor = true;
-            this.chPeriod.CheckedChanged += new System.EventHandler(this.chPeriod_CheckedChanged);
-            // 
-            // dtpDateTo
-            // 
-            this.dtpDateTo.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.dtpDateTo.Location = new System.Drawing.Point(328, 42);
-            this.dtpDateTo.Name = "dtpDateTo";
-            this.dtpDateTo.Size = new System.Drawing.Size(141, 20);
-            this.dtpDateTo.TabIndex = 23;
-            // 
-            // label4
-            // 
-            this.label4.Location = new System.Drawing.Point(79, 42);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(45, 20);
-            this.label4.TabIndex = 24;
-            this.label4.Text = "с даты";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label5
-            // 
-            this.label5.Location = new System.Drawing.Point(277, 42);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(45, 20);
-            this.label5.TabIndex = 25;
-            this.label5.Text = "по дату";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lgTypes
-            // 
-            this.lgTypes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lgTypes.Location = new System.Drawing.Point(0, 0);
-            this.lgTypes.Margin = new System.Windows.Forms.Padding(0);
-            this.lgTypes.MinimumSize = new System.Drawing.Size(100, 100);
-            this.lgTypes.Name = "lgTypes";
-            this.lgTypes.Size = new System.Drawing.Size(100, 100);
-            this.lgTypes.TabIndex = 0;
             // 
             // LogsForm
             // 
@@ -323,7 +323,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btSearch;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private rabnet.LogsCheckBoxList lgTypes;
+        private rabnet.components.LogsCheckBoxList lgTypes;
         private System.Windows.Forms.NumericUpDown nudLogLim;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btShowTypes;

@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.Drawing.Printing;
 using Excel = Microsoft.Office.Interop.Excel;
 
-namespace rabnet
+namespace rabnet.forms
 {
     public partial class ReportViewForm : Form
     {

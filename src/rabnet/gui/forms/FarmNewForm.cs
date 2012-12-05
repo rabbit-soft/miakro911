@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using rabnet.RNC;
 
-namespace rabnet
+namespace rabnet.forms
 {
     public partial class FarmNewForm : Form
     {

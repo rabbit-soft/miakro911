@@ -1,4 +1,4 @@
-﻿namespace rabnet
+﻿namespace rabnet.forms
 {
     partial class DeadForm
     {
@@ -41,7 +41,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miRestore = new System.Windows.Forms.ToolStripMenuItem();
             this.miChangeReason = new System.Windows.Forms.ToolStripMenuItem();
-            this.rsb = new rabnet.RabStatusBar();
+            this.rsb = new rabnet.components.RabStatusBar();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -137,8 +137,8 @@
             this.rsb.Size = new System.Drawing.Size(778, 23);
             this.rsb.TabIndex = 0;
             this.rsb.Text = "rabStatusBar1";
-            this.rsb.itemGet += new rabnet.RabStatusBar.RSBItemEventHandler(this.rsb_itemGet);
-            this.rsb.PrepareGet += new rabnet.RabStatusBar.RSBPrepareEventHandler(this.rsb_prepareGet);
+            this.rsb.itemGet += new rabnet.components.RabStatusBar.RSBItemEventHandler(this.rsb_itemGet);
+            this.rsb.PrepareGet += new rabnet.components.RabStatusBar.RSBPrepareEventHandler(this.rsb_prepareGet);
             // 
             // DeadForm
             // 
@@ -161,7 +161,7 @@
 
         #endregion
 
-        private RabStatusBar rsb;
+        private components.RabStatusBar rsb;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
