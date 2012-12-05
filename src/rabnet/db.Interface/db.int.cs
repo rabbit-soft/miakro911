@@ -188,9 +188,9 @@ namespace rabnet
         void deleteMeal(int id);
 
         //for scale
-        List<ScalePLUSummary> getPluSummarys(DateTime date);
-        void addPLUSummary(int prodid, string prodname, int tsell, int tsumm, int tweight, DateTime cleared);
-        void deletePLUsummary(int sid,DateTime lastClear);
+        //List<ScalePLUSummary> getPluSummarys(DateTime date);
+        //void addPLUSummary(int prodid, string prodname, int tsell, int tsumm, int tweight, DateTime cleared);
+        //void deletePLUsummary(int sid,DateTime lastClear);
 
         //for webreports
         string WebReportGlobal(DateTime dt);

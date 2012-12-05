@@ -652,20 +652,20 @@ namespace db.mysql
         {
             Meal.DeleteMeal(sql, id);
         }
-        public void addPLUSummary(int prodid, string prodname, int tsell, int tsumm, int tweight, DateTime cleared)
-        {
-            Scale.addPLUSummary(sql, prodid, prodname, tsell, tsumm, tweight, cleared);
-        }
+        //public void addPLUSummary(int prodid, string prodname, int tsell, int tsumm, int tweight, DateTime cleared)
+        //{
+        //    Scale.addPLUSummary(sql, prodid, prodname, tsell, tsumm, tweight, cleared);
+        //}
 
-        public List<ScalePLUSummary> getPluSummarys(DateTime date)
-        {
-            return Scale.getPluSummarys(sql, date);
-        }
+        //public List<ScalePLUSummary> getPluSummarys(DateTime date)
+        //{
+        //    return Scale.getPluSummarys(sql, date);
+        //}
 
-        public void deletePLUsummary(int sid, DateTime lastClear)
-        {
-            Scale.DeletePLUsumary(sql, sid, lastClear);
-        }
+        //public void deletePLUsummary(int sid, DateTime lastClear)
+        //{
+        //    Scale.DeletePLUsumary(sql, sid, lastClear);
+        //}
 #endregion butcher
 
         public XmlDocument makeReport(myReportType type, Filters f)

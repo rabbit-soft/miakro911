@@ -61,7 +61,7 @@ namespace rabnet.forms
         private void MainForm_Load(object sender, EventArgs e)
         {
 #if !DEMO
-            CAS.ScaleForm.SummarySaving += new CAS.AddPLUSummaryHandler(AddPluSummary);
+            //CAS.ScaleForm.SummarySaving += new CAS.AddPLUSummaryHandler(AddPluSummary);
             if (
     #if PROTECTED
                 GRD.Instance.GetFlag(GRD.FlagType.Butcher) && 
@@ -69,7 +69,7 @@ namespace rabnet.forms
                 Engine.opt().getIntOption(Options.OPT_ID.BUCHER_TYPE)==1)
             {
                 
-                CAS.ScaleForm.StartMonitoring();
+                //CAS.ScaleForm.StartMonitoring();
             }
 #endif
             _mustclose = false;
@@ -211,7 +211,7 @@ namespace rabnet.forms
                 GRD.Instance.GetFlag(GRD.FlagType.Butcher) && 
     #endif
                 Engine.opt().getIntOption(Options.OPT_ID.BUCHER_TYPE)==1)
-                CAS.ScaleForm.StopMonitoring();
+                //CAS.ScaleForm.StopMonitoring();
 #endif
             if (Engine.opt().getIntOption(Options.OPT_ID.CONFIRM_EXIT) == 0)
                 return;
@@ -653,7 +653,7 @@ namespace rabnet.forms
         {
 #if !DEMO
             tNoWorking.Stop();
-            (new CAS.ScaleForm()).ShowDialog();
+            //(new CAS.ScaleForm()).ShowDialog();
             tNoWorking.Start();
 #endif
         }
@@ -671,10 +671,10 @@ namespace rabnet.forms
 #endif
         }
 
-        private void AddPluSummary(int pluID, string pluPN1, int pluTSell, int TSumm, int TWeight, DateTime LastClear)
-        {
-            Engine.db2().addPLUSummary(pluID,pluPN1,pluTSell,TSumm,TWeight,LastClear);
-        }
+        //private void AddPluSummary(int pluID, string pluPN1, int pluTSell, int TSumm, int TWeight, DateTime LastClear)
+        //{
+        //    Engine.db2().addPLUSummary(pluID,pluPN1,pluTSell,TSumm,TWeight,LastClear);
+        //}
 
         private void miLogs_Click(object sender, EventArgs e)
         {

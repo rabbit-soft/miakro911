@@ -107,45 +107,45 @@ FROM butcher WHERE DATE(b_date)='{0:yyy-MM-dd}' ORDER by b_date DESC;",dt), sql)
         }
     }
 
-    class Scale
-    {
-        public static List<ScalePLUSummary> getPluSummarys(MySqlConnection sql,DateTime date)
-        {
-            List<ScalePLUSummary> result = new List<ScalePLUSummary>();
-            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT s_id,s_date,s_plu_id,s_plu_name,appendPLUSumm(s_id) asm,appendPLUSell(s_id) asl,appendPLUWeight(s_id)aw,s_cleared FROM scaleprod WHERE DATE(s_date)='{0:yyyy-MM-dd}' ORDER BY s_id DESC;", date), sql);
-            MySqlDataReader rd = cmd.ExecuteReader();
-            while(rd.Read())
-            {
-                result.Add(new ScalePLUSummary(
-                    rd.GetInt32("s_id"),
-                    rd.GetDateTime("s_date"),
-                    rd.GetInt32("s_plu_id"),
-                    rd.GetString("s_plu_name"),
-                    rd.GetInt32("asl"),
-                    rd.GetInt32("asm"),              
-                    rd.GetInt32("aw"),
-                    rd.GetDateTime("s_cleared")));
-            }
-            rd.Close();
-            return result;
-        }
+    //class Scale
+    //{
+    //    public static List<ScalePLUSummary> getPluSummarys(MySqlConnection sql,DateTime date)
+    //    {
+    //        List<ScalePLUSummary> result = new List<ScalePLUSummary>();
+    //        MySqlCommand cmd = new MySqlCommand(String.Format("SELECT s_id,s_date,s_plu_id,s_plu_name,appendPLUSumm(s_id) asm,appendPLUSell(s_id) asl,appendPLUWeight(s_id)aw,s_cleared FROM scaleprod WHERE DATE(s_date)='{0:yyyy-MM-dd}' ORDER BY s_id DESC;", date), sql);
+    //        MySqlDataReader rd = cmd.ExecuteReader();
+    //        while(rd.Read())
+    //        {
+    //            result.Add(new ScalePLUSummary(
+    //                rd.GetInt32("s_id"),
+    //                rd.GetDateTime("s_date"),
+    //                rd.GetInt32("s_plu_id"),
+    //                rd.GetString("s_plu_name"),
+    //                rd.GetInt32("asl"),
+    //                rd.GetInt32("asm"),              
+    //                rd.GetInt32("aw"),
+    //                rd.GetDateTime("s_cleared")));
+    //        }
+    //        rd.Close();
+    //        return result;
+    //    }
 
-        public static void addPLUSummary(MySqlConnection sql, int prodid, string prodname, int tsell, int tsumm, int tweight, DateTime cleared)
-        {
-            try
-            {
-                MySqlCommand cmd = new MySqlCommand("", sql);
-                cmd.CommandText = String.Format(@"call addPLUSummary({0:d},'{1:s}',{2:d},{3:d},{4:d},'{5:yyyy-MM-dd hh:mm}');",
-                                                                prodid, prodname, tsell, tsumm, tweight, cleared);
-                cmd.ExecuteNonQuery();
-            }
-            catch {}
-        }
+    //    public static void addPLUSummary(MySqlConnection sql, int prodid, string prodname, int tsell, int tsumm, int tweight, DateTime cleared)
+    //    {
+    //        try
+    //        {
+    //            MySqlCommand cmd = new MySqlCommand("", sql);
+    //            cmd.CommandText = String.Format(@"call addPLUSummary({0:d},'{1:s}',{2:d},{3:d},{4:d},'{5:yyyy-MM-dd hh:mm}');",
+    //                                                            prodid, prodname, tsell, tsumm, tweight, cleared);
+    //            cmd.ExecuteNonQuery();
+    //        }
+    //        catch {}
+    //    }
 
-        public static void DeletePLUsumary(MySqlConnection sql, int sid,DateTime lc)
-        {
-            MySqlCommand cmd = new MySqlCommand(String.Format("call deletePLUsumary({0:d},{1:yyyy-MM-dd hh-mm-ss});",sid,lc), sql);
-            cmd.ExecuteNonQuery();
-        }
-    }
+    //    public static void DeletePLUsumary(MySqlConnection sql, int sid,DateTime lc)
+    //    {
+    //        MySqlCommand cmd = new MySqlCommand(String.Format("call deletePLUsumary({0:d},{1:yyyy-MM-dd hh-mm-ss});",sid,lc), sql);
+    //        cmd.ExecuteNonQuery();
+    //    }
+    //}
 }

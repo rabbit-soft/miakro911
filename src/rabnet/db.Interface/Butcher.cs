@@ -39,32 +39,32 @@ namespace rabnet
         }
     }
 
-    public class ScalePLUSummary
-    {
-        private int _id;
-        private int _prodId;
-        public int Id { get { return _id; } }
-        public int ProdId
-        {
-            get { return _prodId; }
-        }
-        public DateTime Date;
-        public string ProdName;
-        public int TotalSell;
-        public int TotalSumm;
-        public int TotalWeight;
-        public DateTime Cleared;
+    //public class ScalePLUSummary
+    //{
+    //    private int _id;
+    //    private int _prodId;
+    //    public int Id { get { return _id; } }
+    //    public int ProdId
+    //    {
+    //        get { return _prodId; }
+    //    }
+    //    public DateTime Date;
+    //    public string ProdName;
+    //    public int TotalSell;
+    //    public int TotalSumm;
+    //    public int TotalWeight;
+    //    public DateTime Cleared;
 
-        public ScalePLUSummary(int id, DateTime date, int prodid, string prodname, int tsell, int tsumm, int tweight, DateTime clear)
-        {
-            this._id = id;
-            this._prodId = prodid;
-            this.Date = date;
-            this.ProdName = prodname;
-            this.TotalSell = tsell;
-            this.TotalSumm = tsumm;
-            this.TotalWeight = tweight;
-            this.Cleared = clear;
-        }
-    }
+    //    public ScalePLUSummary(int id, DateTime date, int prodid, string prodname, int tsell, int tsumm, int tweight, DateTime clear)
+    //    {
+    //        this._id = id;
+    //        this._prodId = prodid;
+    //        this.Date = date;
+    //        this.ProdName = prodname;
+    //        this.TotalSell = tsell;
+    //        this.TotalSumm = tsumm;
+    //        this.TotalWeight = tweight;
+    //        this.Cleared = clear;
+    //    }
+    //}
 }

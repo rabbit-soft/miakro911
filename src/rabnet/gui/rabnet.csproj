@@ -770,10 +770,6 @@
       <Project>{9F02BE5E-50CC-487D-9092-2EE15E952B08}</Project>
       <Name>Pickers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CasLp16\CAS.csproj">
-      <Project>{308BE49D-06D9-4CB9-ACAF-B133C815EB99}</Project>
-      <Name>CAS</Name>
-    </ProjectReference>
     <ProjectReference Include="..\db.Interface\db.Interface.csproj">
       <Project>{F23F4D6E-203C-419D-8A18-32DCABFA4175}</Project>
       <Name>db.Interface</Name>

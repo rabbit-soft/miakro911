@@ -112,14 +112,14 @@ namespace rabnet
             }
             else
             {
-                List<ScalePLUSummary> summarys = Engine.get().db().getPluSummarys(date);
-                foreach (ScalePLUSummary sm in summarys)
-                {
-                    ListViewItem lvi = lvMeat.Items.Add(String.Format("[{0:d}] {1:s}", sm.ProdId, sm.ProdName));
-                    lvi.SubItems.Add(sm.TotalSell.ToString());
-                    lvi.SubItems.Add(sm.TotalSumm.ToString());
-                    lvi.SubItems.Add(sm.TotalWeight.ToString());
-                }
+                //List<ScalePLUSummary> summarys = Engine.get().db().getPluSummarys(date);
+                //foreach (ScalePLUSummary sm in summarys)
+                //{
+                //    ListViewItem lvi = lvMeat.Items.Add(String.Format("[{0:d}] {1:s}", sm.ProdId, sm.ProdName));
+                //    lvi.SubItems.Add(sm.TotalSell.ToString());
+                //    lvi.SubItems.Add(sm.TotalSumm.ToString());
+                //    lvi.SubItems.Add(sm.TotalWeight.ToString());
+                //}
             }
         }
 
@@ -138,19 +138,19 @@ namespace rabnet
         private void miDelete_Click(object sender, EventArgs e)
         {
 #if !DEMO
-            if (lvMeat.SelectedItems.Count == 0) return;
-            if (!CAS.CasLP16.Instance.Connected)
-            {
-                MessageBox.Show("Соединение с весами не установлено");
-                return;
-            }
-            CAS.ScaleForm.StopMonitoring(false);
-            int pid = (lvMeat.SelectedItems[0].Tag as ScalePLUSummary).ProdId;
-            int sid = (lvMeat.SelectedItems[0].Tag as ScalePLUSummary).Id;
-            CAS.CasLP16.Instance.CleadPLUSummary(pid);
-            CAS.CasLP16.Instance.LoadPLUs();
-            DateTime lc = CAS.CasLP16.Instance.GetPLUbyID(pid).LastClear;
-            Engine.db().deletePLUsummary(sid,lc);
+            //if (lvMeat.SelectedItems.Count == 0) return;
+            //if (!CAS.CasLP16.Instance.Connected)
+            //{
+            //    MessageBox.Show("Соединение с весами не установлено");
+            //    return;
+            //}
+            //CAS.ScaleForm.StopMonitoring(false);
+            //int pid = (lvMeat.SelectedItems[0].Tag as ScalePLUSummary).ProdId;
+            //int sid = (lvMeat.SelectedItems[0].Tag as ScalePLUSummary).Id;
+            //CAS.CasLP16.Instance.CleadPLUSummary(pid);
+            //CAS.CasLP16.Instance.LoadPLUs();
+            //DateTime lc = CAS.CasLP16.Instance.GetPLUbyID(pid).LastClear;
+            //Engine.db().deletePLUsummary(sid,lc);
 #endif
         }
 

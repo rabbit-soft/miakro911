@@ -225,7 +225,7 @@
 	</target>
 
 	<!--target name="rabnet" description="make rabnet application" depends="db.mysql,engine,gui"/-->
-	<target name="rabnet" description="make rabnet application" depends="db.Interface,db.mysql,engine,pickers,gui_genetics,cas,gui"/>
+	<target name="rabnet" description="make rabnet application" depends="db.Interface,db.mysql,engine,pickers,gui_genetics,gui"/>
 
 	<target name="rabnet_demo" description="make rabnet application" depends="db.Interface,db.mysql,engine,pickers,gui"/>
 	
@@ -418,7 +418,7 @@
 				<include name="${rep.use}"/>
 				<include name="${repeng.use}"/>
 				<include name="${bin_dir_bin}/Pickers.dll" />				
-				<include name="${bin_dir_bin}/CAS.dll" />
+				<!--include name="${bin_dir_bin}/CAS.dll" /-->
 				<include name="${bin_dir_bin}/gui_genetics.dll" />								
 				<include name="${office.core.path} "/>
 				<include name="${office.excel.path} "/>				

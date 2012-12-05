@@ -5,7 +5,7 @@ namespace CAS
 {
     internal partial class PLUForm : Form
     {
-        private CasLP16.PLU _plu;
+        private PLU _plu;
         private int[] _IDs;
         private bool _manual = true;
 
@@ -17,7 +17,7 @@ namespace CAS
         /// Добавление новой записи
         /// </summary>
         /// <param name="plu"></param>
-        public PLUForm(CasLP16.PLU plu,int[] messageIDs,int[]existIDs): this()
+        public PLUForm(PLU plu,int[] messageIDs,int[]existIDs): this()
         {
             _plu = plu;
             tbID.Text = plu.ID.ToString();
@@ -28,7 +28,7 @@ namespace CAS
         /// <summary>
         /// Изменение имеющейся
         /// </summary>
-        public PLUForm(CasLP16.PLU plu, int[] messageIDs):this()
+        public PLUForm(PLU plu, int[] messageIDs):this()
         {
             _plu = plu;
             mIdsFill(messageIDs);

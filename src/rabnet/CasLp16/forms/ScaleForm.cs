@@ -7,7 +7,6 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 using log4net;
-using CAS;
 
 namespace CAS
 {
@@ -140,16 +139,16 @@ namespace CAS
                 CasLP16.Instance.SetScaleAddress(ScaleOpt.GetStrOpt(ScaleOpt.OptType.ScaleAddres), ScaleOpt.GetIntOpt(ScaleOpt.OptType.ScalePort));
                 _lastAnswer = CasLP16.Instance.Connect();
                 _logger.DebugFormat("Connection: {0:d}",_lastAnswer);
-                if (_lastAnswer != CasLP16.ReturnCode.SUCCESS) return;
+                if (_lastAnswer != ReturnCode.SUCCESS) return;
             }
             _lastAnswer = CasLP16.Instance.LoadPLUs(ScaleOpt.GetIntOpt(ScaleOpt.OptType.ScanPLUFrom), ScaleOpt.GetIntOpt(ScaleOpt.OptType.ScanPLUUntil));
              _logger.DebugFormat("loadPLU: {0:d}",_lastAnswer);
-            if (_lastAnswer != CasLP16.ReturnCode.SUCCESS) return;
+            if (_lastAnswer != ReturnCode.SUCCESS) return;
             if (loadMsg)
             {
                 _lastAnswer = CasLP16.Instance.LoadMSGs(ScaleOpt.GetIntOpt(ScaleOpt.OptType.ScanMSGFrom), ScaleOpt.GetIntOpt(ScaleOpt.OptType.ScanMSGUntil));
                 _logger.DebugFormat("loadMSG: {0:d}",_lastAnswer);
-                if (_lastAnswer != CasLP16.ReturnCode.SUCCESS) return;
+                if (_lastAnswer != ReturnCode.SUCCESS) return;
             }
         }
         private static void loadfromscale()
@@ -157,14 +156,13 @@ namespace CAS
             loadfromscale(true);
         }
 
-
         private static void saveSummarys()
         {
             if (SummarySaving == null) return;
             foreach (int id in CasLP16.Instance.getIDsOfPLUs())
             {
                 if (id == 0) continue;
-                CasLP16.PLU plu = CasLP16.Instance.GetPLUbyID(id);
+                PLU plu = CasLP16.Instance.GetPLUbyID(id);
                 _logger.DebugFormat("plu: {0:d},clear: {1:yyyy-MM-dd hh:mm:ss}", plu.ID, plu.LastClear);
                 if (plu.TotalSell == 0 && plu.TotalSumm == 0 && plu.TotalWeight == 0)continue; 
                 if (!sumSaveded.needSend(plu.ID,plu.TotalSell, plu.TotalSumm, plu.TotalWeight)) continue;
@@ -200,7 +198,7 @@ namespace CAS
                 tLoadFromScaleChecker.Stop();
                 if (_lastAnswer != 0)
                 {
-                    writeMessage(CasLP16.ReturnCode.getDescription(_lastAnswer));
+                    writeMessage(ReturnCode.getDescription(_lastAnswer));
                     return;
                 }
                 updateLists();
@@ -216,7 +214,7 @@ namespace CAS
             listView1.Items.Clear();
             foreach (int id in CasLP16.Instance.getIDsOfPLUs())
             {
-                CasLP16.PLU plu = CasLP16.Instance.GetPLUbyID(id);
+                PLU plu = CasLP16.Instance.GetPLUbyID(id);
                 ListViewItem lvi = listView1.Items.Add(plu.ID.ToString());
                 lvi.SubItems.Add(plu.Code.ToString());
                 lvi.SubItems.Add(plu.ProductName1);
@@ -232,7 +230,7 @@ namespace CAS
             lvMSG.Items.Clear();
             foreach (int id in CasLP16.Instance.getIDsOfMSGs())
             {
-                CasLP16.MSG msg = CasLP16.Instance.GetMSGbyID(id);
+                MSG msg = CasLP16.Instance.GetMSGbyID(id);
                 ListViewItem lvi = lvMSG.Items.Add(msg.ID.ToString());
                 lvi.SubItems.Add(msg.Text);
                 lvi.Tag = msg;
@@ -261,11 +259,11 @@ namespace CAS
         private void listView1_DoubleClick(object sender, EventArgs e)
         {       
             if (listView1.SelectedItems.Count > 0)
-                (new PLUForm((listView1.SelectedItems[0].Tag as CasLP16.PLU), CasLP16.Instance.getIDsOfMSGs())).ShowDialog();
+                (new PLUForm((listView1.SelectedItems[0].Tag as PLU), CasLP16.Instance.getIDsOfMSGs())).ShowDialog();
             else
             {
-                CasLP16.PLU newPlu = new CasLP16.PLU();
-                newPlu.ID = (listView1.Items[listView1.Items.Count - 1].Tag as CasLP16.PLU).ID + 1;
+                PLU newPlu = new PLU();
+                newPlu.ID = (listView1.Items[listView1.Items.Count - 1].Tag as PLU).ID + 1;
                 if ((new PLUForm(newPlu,CasLP16.Instance.getIDsOfMSGs(), CasLP16.Instance.getIDsOfPLUs())).ShowDialog() == DialogResult.OK)
                 {
                     CasLP16.Instance.AddPLU(newPlu);
@@ -302,7 +300,7 @@ namespace CAS
             {
                 if (lvMSG.SelectedItems.Count == 0) return;
                 string s = tbMessage.Text.TrimEnd(new char[] { '\r', '\n' });
-                (lvMSG.SelectedItems[0].Tag as CasLP16.MSG).Text = s;
+                (lvMSG.SelectedItems[0].Tag as MSG).Text = s;
                 tbMessage.Clear();
                 tbMessage.Enabled = false;
                 updateLists();
@@ -321,7 +319,7 @@ namespace CAS
                 listView1_DoubleClick(sender, e);
             else
             {
-                (listView1.SelectedItems[0].Tag as CasLP16.PLU).Delete = true;
+                (listView1.SelectedItems[0].Tag as PLU).Delete = true;
                 listView1.Items.Remove(listView1.SelectedItems[0]);            
             }
 
@@ -456,9 +454,9 @@ namespace CAS
         private void btTest_Click(object sender, EventArgs e)
         {
             CasLP16.Instance.ClearSumarys();
-            CasLP16.Summary sm = CasLP16.Instance.GetSummary();
-            CasLP16.FactoryConfig fc = CasLP16.Instance.GetFactoryConfig();
-            CasLP16.State st = CasLP16.Instance.GetState();
+            Summary sm = CasLP16.Instance.GetSummary();
+            FactoryConfig fc = CasLP16.Instance.GetFactoryConfig();
+            State st = CasLP16.Instance.GetState();
         }
 
         private void ScaleForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -507,7 +505,7 @@ namespace CAS
                 int newID = int.Parse(lvMSG.Items[lvMSG.Items.Count - 1].SubItems[0].Text) + 1;
                 ListViewItem lvi = lvMSG.Items.Add(newID.ToString());
                 lvi.SubItems.Add(newTXT);
-                CasLP16.Instance.AddMSG(new CasLP16.MSG(newID, newTXT));
+                CasLP16.Instance.AddMSG(new MSG(newID, newTXT));
                 lvi.Tag = CasLP16.Instance.GetMSGbyID(newID);
             }
             catch(Exception ex)
