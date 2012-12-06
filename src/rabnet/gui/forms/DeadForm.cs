@@ -26,7 +26,7 @@ namespace rabnet.forms
 
         private IDataGetter rsb_prepareGet()
         {
-            cs.Prepare();
+            cs.PrepareForUpdate();
             Filters f = fp.getFilters();
             IDataGetter gt = Engine.db2().getDead(f);
             rsb.SetText(1, gt.getCount().ToString() + " записей");
@@ -37,7 +37,7 @@ namespace rabnet.forms
         {
             if (data == null)
             {
-                cs.Restore();
+                cs.RestoreAfterUpdate();
                 return;
             }
             Dead d = (data as Dead);

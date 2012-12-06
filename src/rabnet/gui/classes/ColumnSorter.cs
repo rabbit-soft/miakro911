@@ -42,15 +42,16 @@ namespace rabnet
             ListViewSaver.load(op, lv);
         }
 
-        public void Prepare()
+        public void PrepareForUpdate()
         {
-            MainForm.StillWorking();
+            //MainForm.StillWorking();
             _selItem = ListViewSaver.saveItem(_listView);
             _listView.ListViewItemSorter = null;
             _listView.Items.Clear();
 			_listView.BeginUpdate();
         }
-        public void Restore()
+
+        public void RestoreAfterUpdate()
         {
 			ListViewSaver.load(option, _listView);
 			_listView.ListViewItemSorter = this;
@@ -147,7 +148,6 @@ namespace rabnet
                 return 0;
             }
         }
-
 
         public int SortColumn
         {

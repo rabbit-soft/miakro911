@@ -47,7 +47,7 @@ namespace rabnet
 
         protected override IDataGetter onPrepare(Filters f)
         {
-            _colSort.Prepare();
+            _colSort.PrepareForUpdate();
             if (f == null) f = new Filters();
             f.Add("type", Engine.opt().getOption(Options.OPT_ID.BUCHER_TYPE));
             IDataGetter dg = Engine.db2().getButcherDates(f);
@@ -60,7 +60,7 @@ namespace rabnet
         {
             if (data == null)
             {
-                _colSort.Restore();
+                _colSort.RestoreAfterUpdate();
                 return;
             }
             if (data == null) return;

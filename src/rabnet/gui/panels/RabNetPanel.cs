@@ -131,6 +131,8 @@ namespace rabnet
         /// <returns></returns>
         protected virtual IDataGetter onPrepare(Filters f)
         {
+            _colSort.PrepareForUpdate();
+            this.Enabled = false;
             return null;
         }
 
@@ -143,7 +145,8 @@ namespace rabnet
             }
             else
             {
-                _colSort.Restore();
+                _colSort.RestoreAfterUpdate();
+                this.Enabled = true;
             }
         }
 

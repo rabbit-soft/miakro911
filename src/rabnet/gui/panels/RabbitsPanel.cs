@@ -35,6 +35,7 @@ namespace rabnet
 
         protected override IDataGetter onPrepare(Filters f)
         {
+            base.onPrepare(f);           
             gentree = Engine.opt().getIntOption(Options.OPT_ID.GEN_TREE)-1;
             Options op = Engine.opt();
             f[Filters.SHORT] = op.getOption(Options.OPT_ID.SHORT_NAMES);
@@ -45,16 +46,12 @@ namespace rabnet
             f[Filters.MAKE_BRIDE] = op.getOption(Options.OPT_ID.MAKE_BRIDE);
             //flt["suc"] = op.getOption(Options.OPT_ID.COUNT_SUCKERS);
             f[Filters.MAKE_CANDIDATE] = op.getOption(Options.OPT_ID.MAKE_CANDIDATE);
-            _runF = f;
-            _colSort.Prepare();
+            _runF = f;           
             IDataGetter dg = Engine.db2().getRabbits(f);
             _rsb.SetText(1, dg.getCount().ToString() + " записей");
             _rsb.SetText(2, dg.getCount2().ToString() + " кроликов");
             return dg;
         }
-
-        private delegate void onItemDelegate(IData data);
-
 
         protected override void onItem(IData data)
         {

@@ -40,7 +40,7 @@ namespace rabnet.forms
         public void updateMothers()
         {
             int ad = Engine.opt().getIntOption(Options.OPT_ID.COMBINE_AGE);
-            cs.Prepare();
+            cs.PrepareForUpdate();
             listView1.Items.Clear();
             foreach (AdultRabbit moth in Engine.db().getMothers(r.Age, ad))
             {
@@ -81,7 +81,7 @@ namespace rabnet.forms
             listView1.Items[0].SubItems[REPLCOL].Text = "10";
             //listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             listView1.Items[0].SubItems[REPLCOL].Text = txt;
-            cs.Restore();
+            cs.RestoreAfterUpdate();
         }
 
         private void button2_Click(object sender, EventArgs e)

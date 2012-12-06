@@ -67,7 +67,7 @@ namespace rabnet.forms
 
         public void update()
         {
-            cs.Prepare();
+            cs.PrepareForUpdate();
             listView1.Items.Clear();
             foreach (RabNetEngRabbit r in rbs)
             {
@@ -84,7 +84,7 @@ namespace rabnet.forms
                 li.SubItems.Add(r.Group.ToString());
             }
             //listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            cs.Restore();
+            cs.RestoreAfterUpdate();
             updateLabels();
         }
 

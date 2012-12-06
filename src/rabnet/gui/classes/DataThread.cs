@@ -7,6 +7,8 @@ namespace rabnet
 {
     public delegate void DTProgressHandler(int progress);
 
+    public delegate void DTItemProgressHandler(IData data,int progress);
+
     class DataThread
     {
         delegate void initCallBack();
@@ -21,9 +23,9 @@ namespace rabnet
         private Thread _thr = null;        
         private bool _stopRequired = false;
         public event RSBEventHandler OnFinish;
-        public event RSBItemEventHandler OnItem;
+        public event DTItemProgressHandler OnItem;
         public event DTProgressHandler InitMaxProgress;
-        public event DTProgressHandler Progress;
+        //public event DTProgressHandler Progress;
        
         /// <summary>
         /// Запускает отдельный поток, который получает данные.
@@ -64,11 +66,11 @@ namespace rabnet
 
             for (int i = 0; (i < count) && (!_stopRequired); i++)
             {
-                if (Progress!=null)
-                    Progress(i);
+                //if (Progress!=null)
+                    //Progress(i);
                 IData it = _dataGetter.GetNextItem();
-                if(OnItem!=null)
-                    OnItem(it);
+                if(OnItem!=null &&!_stopRequired)
+                    OnItem(it,i);
                 if (it == null)
                     break;
             }

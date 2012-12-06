@@ -17,7 +17,7 @@ namespace rabnet.components
     public partial class RabStatusBar : StatusStrip
     {
         const int LABELS_COUNT = 5;
-        delegate void progressCallBack2(int min,int max);
+        //delegate void progressCallBack2(int min,int max);
         
         private ToolStripProgressBar pb = new ToolStripProgressBar();
         private ToolStripButton btRefreshStop = new ToolStripButton();
@@ -37,7 +37,7 @@ namespace rabnet.components
         public event RSBEventHandler OnFinishUpdate;
         public event RSBItemEventHandler ItemGet;
         private RSBEventHandler _excelButtonClick = null;
-        private DTProgressHandler _progressInvoker = null;
+        //private DTProgressHandler _progressInvoker = null;
 
         /// <summary>
         /// Конструктор статусБара
@@ -53,7 +53,9 @@ namespace rabnet.components
             ///добавляем компоненты на статус бар
             Items.Add(_labels[0]);
             Items.Add(new ToolStripSeparator());
+            ///progress Bar
             Items.Add(pb);
+            pb.Step = 1;
 
             ///кнопка Обновить\Остановить
             Items.Add(btRefreshStop);
@@ -120,6 +122,17 @@ namespace rabnet.components
             }
         }
 
+        public void Run()
+        {
+            if ((int)btRefreshStop.Tag == 0)
+                btRefreshStop.PerformClick();
+        }
+
+        public void Stop()
+        {
+            stopDataThread();
+        }
+
         public void SetText(int item,String text)
         {
             SetText(item, text, false);
@@ -131,41 +144,27 @@ namespace rabnet.components
                 _labels[item].ForeColor = Color.Crimson;
         }
 
-        public void Run()
-        {
-            if ((int)btRefreshStop.Tag==0)
-                btRefreshStop.PerformClick();
-        }
-
-        public void Stop()
-        {
-            stopDataThread();
-        }
-
-        private void initProgress(int min, int max)
+        #region progress
+        private void initProgress(int max)
         {
             if (this.InvokeRequired)
             {
-                progressCallBack2 d = new progressCallBack2(initProgress);
-                this.Invoke(d, new object[] { min, max });
+                DTProgressHandler d = new DTProgressHandler(initProgress);
+                this.Invoke(d, new object[] { max });
             }
             else
             {
-                pb.Minimum = min;
+                pb.Minimum = 0;
                 pb.Maximum = max;
-                pb.Value = min;
-
+                pb.Value = 0;
+                
                 btRefreshStop.Image = imageList1.Images[0];
                 btRefreshStop.Tag = 1;
             }
         }
-        private void initProgress(int max)
-        {
-            initProgress(0, max);
-        }
 
         private void progress(int prss)
-                    
+        {
             pb.Value = prss;
             pb.Invalidate();
         }
@@ -178,17 +177,14 @@ namespace rabnet.components
             }
             else
             {
+                ///если загрузку останавливает пользователь, то прогресс бар застывает и не сбразывается
                 pb.Value = pb.Minimum;
                 pb.Invalidate();
                 btRefreshStop.Image = imageList1.Images[1];
                 btRefreshStop.Tag = 0;
             }
         }
-        //public void EmergencyStop()
-        //{
-        //    btn.Image = imageList1.Images[1];
-        //    btn.Tag=0;
-        //}
+        #endregion progress
 
         private void filterHide()
         {
@@ -234,6 +230,7 @@ namespace rabnet.components
             else
             {
                 stopDataThread();
+                _dataThread_OnFinish();
             }
         }
 
@@ -262,10 +259,10 @@ namespace rabnet.components
             if (_dataThread != null)
                 stopDataThread();
             _dataThread = new DataThread();
-            _dataThread.OnItem +=new RSBItemEventHandler(_dataThread_onItem);
+            _dataThread.OnItem += new DTItemProgressHandler(_dataThread_onItem);
             _dataThread.OnFinish += new RSBEventHandler(_dataThread_OnFinish);
             _dataThread.InitMaxProgress+=new DTProgressHandler(initProgress);    
-            _dataThread.Progress +=new DTProgressHandler(progress);
+            //_dataThread.Progress +=new DTProgressHandler(progress);
             _dataThread.Run(dg);
         }
 
@@ -276,17 +273,27 @@ namespace rabnet.components
             endProgress();   
         }
 
-        void _dataThread_onItem(IData data)
+        void _dataThread_onItem(IData data,int progr)
         {
-            if (ItemGet != null)
-                ItemGet(data);
+            if (_dataThread == null) return;
+            if (this.InvokeRequired)
+            {
+                DTItemProgressHandler d = new DTItemProgressHandler(_dataThread_onItem);
+                this.Invoke(d, new object[] { data,progr });
+            }
+            else
+            {
+                if (ItemGet != null)
+                    ItemGet(data);
+                progress(progr);
+            }
         }
 
         public void stopDataThread()
         {
             if (_dataThread == null) return;
-
-            _dataThread.Stop();
+           
+            _dataThread.Stop();            
             _dataThread = null;
         }
     }

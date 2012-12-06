@@ -92,7 +92,7 @@ namespace rabnet.forms
 
         private void fillTable()
         {
-            cs.Prepare();
+            cs.PrepareForUpdate();
             Filters flt = new Filters();
             flt[Filters.RAB_ID] = rab1.ID.ToString();
             flt[Filters.HETEROSIS] = chHetererosis.Checked ? "1" : "0";
@@ -138,7 +138,7 @@ namespace rabnet.forms
                  }
             }
             listView1.EndUpdate();
-            cs.Restore();
+            cs.RestoreAfterUpdate();
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)

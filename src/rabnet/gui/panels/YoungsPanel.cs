@@ -37,7 +37,7 @@ namespace rabnet
             f[Filters.DBL_SURNAME] = op.getOption(Options.OPT_ID.DBL_SURNAME);
             f[Filters.SHOW_OKROL_NUM] = op.getOption(Options.OPT_ID.SHOW_NUMBERS);
             _runF = f;
-            _colSort.Prepare();
+            _colSort.PrepareForUpdate();
             IDataGetter dg = Engine.db2().GetYoungers(f); 
             //отображение общей инфы в статус баре
             _rsb.SetText(1, dg.getCount().ToString() + " строк");
