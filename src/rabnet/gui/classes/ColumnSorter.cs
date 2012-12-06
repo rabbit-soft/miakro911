@@ -14,20 +14,20 @@ namespace rabnet
         int ColumnToSort;
         SortOrder OrderOfSort;
         CaseInsensitiveComparer ObjectCompare;
-        private ListView lv = null;
+        private ListView _listView = null;
         /// <summary>
         /// Номера столбцок, которые надо сортировать как целочисленные 
         /// </summary>
-        int[] intSorts = null;
-        int selItem = 0;
+        int[] _intSorts = null;
+        int _selItem = 0;
         Options.OPT_ID option = Options.OPT_ID.NONE;
         public ListViewColumnSorter(ListView lv,int[] intsorts,Options.OPT_ID op)
         {
             ColumnToSort = 0;
             OrderOfSort = SortOrder.None;
             ObjectCompare = new CaseInsensitiveComparer();
-            this.intSorts = intsorts;
-            this.lv = lv;
+            _intSorts = intsorts;
+            _listView = lv;
             lv.ListViewItemSorter = this;
             option = op;
 			for (int i = 0; i < lv.Columns.Count; i++)
@@ -45,25 +45,20 @@ namespace rabnet
         public void Prepare()
         {
             MainForm.StillWorking();
-            selItem = ListViewSaver.saveItem(lv);
-            lv.ListViewItemSorter = null;
-            lv.Items.Clear();
-			lv.BeginUpdate();
+            _selItem = ListViewSaver.saveItem(_listView);
+            _listView.ListViewItemSorter = null;
+            _listView.Items.Clear();
+			_listView.BeginUpdate();
         }
         public void Restore()
         {
-			ListViewSaver.load(option, lv);
-			lv.ListViewItemSorter = this;
-            lv.Sort();
-            ListViewSaver.loadItem(lv, selItem);
-			lv.EndUpdate();
-            lv.Focus();
+			ListViewSaver.load(option, _listView);
+			_listView.ListViewItemSorter = this;
+            _listView.Sort();
+            ListViewSaver.loadItem(_listView, _selItem);
+			_listView.EndUpdate();
+            _listView.Focus();
         }
-
-		public void SemiReady()
-		{
-
-		}
 
         public ListViewColumnSorter Clear()
         {
@@ -84,9 +79,9 @@ namespace rabnet
                 SortColumn = e.Column;
                 Order = SortOrder.Ascending;
             }
-            ListViewSaver.save(option, lv);
+            ListViewSaver.save(option, _listView);
             (sender as ListView).Sort();
-            lv.Refresh();
+            _listView.Refresh();
         }
 
         public int Compare(object x, object y)
@@ -99,9 +94,9 @@ namespace rabnet
                 listviewX = (ListViewItem)x;
                 listviewY = (ListViewItem)y;
 
-                for (int i = 0; i < intSorts.Length; i++)
+                for (int i = 0; i < _intSorts.Length; i++)
                 {
-                    if (intSorts[i] == ColumnToSort)
+                    if (_intSorts[i] == ColumnToSort)
                     {
                         int i1, i2;
                         if (listviewX.SubItems[ColumnToSort].Text == "-" || listviewX.SubItems[ColumnToSort].Text == "") i1 = -1;
@@ -180,8 +175,8 @@ namespace rabnet
 
         private void OnColumnWidthChanged(object sender, ColumnWidthChangedEventArgs e)
         {
-            if (!lv.Focused) return;
-            ListViewSaver.save(option, lv);
+            if (!_listView.Focused) return;
+            ListViewSaver.save(option, _listView);
         }
 
         private void OnDrawHeader(object sender, DrawListViewColumnHeaderEventArgs e)

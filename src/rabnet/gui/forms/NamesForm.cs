@@ -46,7 +46,7 @@ namespace rabnet.forms
             rabStatusBar1.Run();
         }
 
-        private IDataGetter rabStatusBar1_prepareGet(object sender, EventArgs e)
+        private IDataGetter rabStatusBar1_prepareGet()
         {
             listView1.Items.Clear();
             listView1.Hide();
@@ -55,21 +55,21 @@ namespace rabnet.forms
             if (tabControl1.SelectedIndex == 0) f["sex"] = "1"; else f["sex"] = "2";         
             if (comboBox2.SelectedIndex!=0)
                 f["state"] = comboBox2.SelectedIndex.ToString();
-            IDataGetter gt = DataThread.Db().getNames(f);
+            IDataGetter gt = Engine.db2().getNames(f);
             rabStatusBar1.SetText(1, gt.getCount().ToString() + " имен");
             return gt;
         }
 
-        private void rabStatusBar1_itemGet(object sender, RabStatusBar.RSBItemEvent e)
+        private void rabStatusBar1_itemGet(IData data)
         {
-            if (e.data == null)
+            if (data == null)
             {
                 listView1.ListViewItemSorter = cs.Clear();
                 listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
                 listView1.Show();
                 return;
             }
-            RabName nm=(e.data as RabName);
+            RabName nm=(data as RabName);
             ListViewItem li = listView1.Items.Add(nm.name);
             li.Tag = nm.id;
             li.SubItems.Add(nm.surname);

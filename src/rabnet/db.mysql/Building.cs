@@ -59,7 +59,7 @@ namespace db.mysql
             try
             {
                 bool shr = options.safeBool(Filters.SHORT);
-                return GetBuilding(rd, shr, true);
+                return GetBuilding(_rd, shr, true);
             }
             catch (Exception ex)
             {

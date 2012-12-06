@@ -11,7 +11,7 @@ namespace rabnet.filters
 {
     public partial class DeadFilter : FilterPanel
     {
-        public DeadFilter(RabStatusBar sb):base(sb,"deads",Options.OPT_ID.DEAD_FILTER)
+        public DeadFilter():base("deads",Options.OPT_ID.DEAD_FILTER)
         {
             //InitializeComponent();
         }

@@ -240,15 +240,15 @@ namespace rabnet.forms
             // rabStatusBar1
             // 
             this.rabStatusBar1.ExcelButtonClick = null;
-            this.rabStatusBar1.filterPanel = null;
+            this.rabStatusBar1.FilterPanel = null;
             this.rabStatusBar1.Location = new System.Drawing.Point(0, 339);
             this.rabStatusBar1.Name = "rabStatusBar1";
             this.rabStatusBar1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.rabStatusBar1.Size = new System.Drawing.Size(634, 23);
             this.rabStatusBar1.TabIndex = 0;
             this.rabStatusBar1.Text = "rabStatusBar1";
-            this.rabStatusBar1.itemGet += new rabnet.components.RabStatusBar.RSBItemEventHandler(this.rabStatusBar1_itemGet);
-            this.rabStatusBar1.PrepareGet += new rabnet.components.RabStatusBar.RSBPrepareEventHandler(this.rabStatusBar1_prepareGet);
+            this.rabStatusBar1.ItemGet += new rabnet.components.RSBItemEventHandler(this.rabStatusBar1_itemGet);
+            this.rabStatusBar1.PrepareGet += new rabnet.components.RSBPrepareHandler(this.rabStatusBar1_prepareGet);
             // 
             // NamesForm
             // 

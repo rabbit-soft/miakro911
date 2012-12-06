@@ -11,11 +11,7 @@ namespace rabnet.filters
 {
     public partial class RabbitsFilter : FilterPanel
     {
-        public RabbitsFilter(RabStatusBar sb):base(sb,"rabbits",Options.OPT_ID.RAB_FILTER)
-        {
-            //InitializeComponent();
-        }
-        public RabbitsFilter() : base() {}
+        public RabbitsFilter() : base("rabbits", Options.OPT_ID.RAB_FILTER) { }
 
         #region filter_form_process
 

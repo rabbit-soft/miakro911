@@ -14,10 +14,10 @@ namespace db.mysql
 
         public override IData NextItem()
         {
-            return new Dead(rd.GetInt32("r_id"), rd.GetString("name"), rd.GetString("place"),
-                rd.GetInt32("age"), rd.GetDateTime("d_date"),
-                rd.IsDBNull(6) ? "" : rd.GetString("reason"), rd.IsDBNull(7) ? "" : rd.GetString("d_notes"),
-                rd.GetString("breed"),rd.GetInt32("r_group"));
+            return new Dead(_rd.GetInt32("r_id"), _rd.GetString("name"), _rd.GetString("place"),
+                _rd.GetInt32("age"), _rd.GetDateTime("d_date"),
+                _rd.IsDBNull(6) ? "" : _rd.GetString("reason"), _rd.IsDBNull(7) ? "" : _rd.GetString("d_notes"),
+                _rd.GetString("breed"),_rd.GetInt32("r_group"));
         }
 
         public string makeWhere()

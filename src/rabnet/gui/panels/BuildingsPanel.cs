@@ -66,12 +66,12 @@ namespace rabnet
             return res;
         }
 
-        public BuildingsPanel(RabStatusBar bsb):base(bsb, new BuildingsFilter(bsb))
+        public BuildingsPanel(RabStatusBar bsb):base(bsb, new BuildingsFilter())
         {
             _colSort = new ListViewColumnSorter(listView1, new int[] { },Options.OPT_ID.BUILD_LIST);
             listView1.ListViewItemSorter = null;
             treeView1.TreeViewNodeSorter = new TVNodeSorter();
-            MakeExcel = new RabStatusBar.ExcelButtonClickDelegate(this.makeExcel);
+            MakeExcel = new RSBEventHandler(this.makeExcel);
         }
         
         private void addNoFarm(int farm)
@@ -166,7 +166,7 @@ namespace rabnet
             f[Filters.SHORT] = Engine.opt().getOption(Options.OPT_ID.SHORT_NAMES);
             f[Filters.DBL_SURNAME] = Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
             _colSort.Prepare();
-            IDataGetter dg = DataThread.Db().getBuildingsRows(f);
+            IDataGetter dg = Engine.db2().getBuildingsRows(f);
             _rsb.SetText(1, dg.getCount().ToString() + " МИНИфермы");
             return dg;
         }
@@ -177,11 +177,6 @@ namespace rabnet
         /// <param name="data">Одна запись</param>
         protected override void onItem(IData data)
         {
-            if (data==null)
-            {
-                _colSort.Restore();
-                return;
-            }
             Building b = data as Building;
             string prevnm="";
             int prevfarm = 0;
@@ -235,11 +230,7 @@ namespace rabnet
                     manual = true;
                 }
             }
-
-			_colSort.SemiReady();
         }
-
-        
 
         private String getAddress(int ifid,int bid)
         {

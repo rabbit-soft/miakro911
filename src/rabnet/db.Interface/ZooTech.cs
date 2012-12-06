@@ -77,7 +77,7 @@ namespace rabnet
             return 0;
         }
 
-        public void stop()
+        public void Close()
         {
 
         }

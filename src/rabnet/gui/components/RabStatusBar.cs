@@ -5,86 +5,39 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using rabnet.filters;
 
 namespace rabnet.components
 {
+    public delegate IDataGetter RSBPrepareHandler();
+    public delegate void RSBEventHandler();
+    //public delegate void RSBExcelClickDelegate();
+    public delegate void RSBItemEventHandler(IData data);
+
     public partial class RabStatusBar : StatusStrip
     {
+        const int LABELS_COUNT = 5;
         delegate void progressCallBack2(int min,int max);
-        public delegate IDataGetter RSBPrepareEventHandler(object sender, EventArgs e);
-        public delegate void RSBEventHandler(object sender, RSBClickEvent e);
-        public delegate void ExcelButtonClickDelegate();
-
-        private ToolStripProgressBar pb = new ToolStripProgressBar();
-        private ToolStripButton btn = new ToolStripButton();
-        private ToolStripButton filt = new ToolStripButton();
-        private ToolStripButton btExcel = new ToolStripButton();
-        private List<ToolStripLabel> labels = new List<ToolStripLabel>();
-        private int btnStatus=0;
-
-        public event EventHandler StopClick;
-        public event EventHandler RefreshClick;
-
-        public class RSBClickEvent : EventArgs
-        {
-            public int type;
-            public RSBClickEvent(int type):base()
-            {
-                this.type = type;
-            }
-        }
         
-        public event RSBEventHandler StopRefreshClick;       
-        public event RSBPrepareEventHandler PrepareGet;       
-        private ExcelButtonClickDelegate excelButtonClick = null;
+        private ToolStripProgressBar pb = new ToolStripProgressBar();
+        private ToolStripButton btRefreshStop = new ToolStripButton();
+        private ToolStripButton btFilter = new ToolStripButton();
+        private ToolStripButton btExcel = new ToolStripButton();
+        private List<ToolStripLabel> _labels = new List<ToolStripLabel>();
+        //private int btnStatus=0;
+        private FilterPanel _filterPanel;
+        private DataThread _dataThread;
 
+        //public event RSBEventHandler StopClick;
         /// <summary>
-        /// Делегат нажатия на кнопку Excel, если 'null' то кнопка не видна. 
-        /// Подробнее: RabNetPanel.MakeExcel
+        /// Необходим.
+        /// Происходит перед началом получения данных
         /// </summary>
-        public ExcelButtonClickDelegate ExcelButtonClick
-        {
-            get {return excelButtonClick; }
-            set 
-            {
-                excelButtonClick = value;
-                if (value == null)
-                    btExcel.Visible = false;
-                else btExcel.Visible = true;
-            }
-        }
-
-        public class RSBItemEvent:EventArgs
-        {
-            public IData data;
-            public RSBItemEvent(IData data)
-            {
-                this.data = data;
-            }
-        }
-        public delegate void RSBItemEventHandler(object sender, RSBItemEvent e);
-        public event RSBItemEventHandler itemGet;
-        private UserControl fpan;
-        public UserControl filterPanel
-        {
-            get
-            {
-                return fpan;
-            }
-            set
-            {
-                fpan = value;
-                if (fpan != null)
-                {
-                    filt.Visible = true;
-                    if (!DesignMode)
-                        fpan.Visible = false;
-                    fpan.BorderStyle = BorderStyle.FixedSingle;
-                }
-                else
-                    filt.Visible = false;              
-            }
-        }
+        public event RSBPrepareHandler PrepareGet;
+        public event RSBEventHandler OnFinishUpdate;
+        public event RSBItemEventHandler ItemGet;
+        private RSBEventHandler _excelButtonClick = null;
+        private DTProgressHandler _progressInvoker = null;
 
         /// <summary>
         /// Конструктор статусБара
@@ -92,36 +45,79 @@ namespace rabnet.components
         public RabStatusBar()
         {
             InitializeComponent();
-            
+
             RenderMode = ToolStripRenderMode.Professional;
-            for (int i = 0; i < 5; i++)
-                labels.Add(new ToolStripLabel());
-            Items.Add(labels[0]);
+            ///создаем Лэйблы для дальнейшего использования
+            for (int i = 0; i < LABELS_COUNT; i++)
+                _labels.Add(new ToolStripLabel());
+            ///добавляем компоненты на статус бар
+            Items.Add(_labels[0]);
             Items.Add(new ToolStripSeparator());
             Items.Add(pb);
-            Items.Add(btn); btn.Image = imageList1.Images[1];
-            Items.Add(filt); filt.Image = imageList1.Images[2]; filt.Visible = false;
-            Items.Add(btExcel); btExcel.Image = imageList1.Images[3]; btExcel.Visible = false;
+
+            ///кнопка Обновить\Остановить
+            Items.Add(btRefreshStop);
+            btRefreshStop.Image = imageList1.Images[1];
+            btRefreshStop.Tag = 0;
+            btRefreshStop.ToolTipText = "Обновить список";
+            ///кнопка фильтров
+            Items.Add(btFilter);
+            btFilter.Image = imageList1.Images[2];
+            btFilter.Visible = false;
+            btFilter.ToolTipText = "Показать фильт";
+            ///кнопка Excel
+            Items.Add(btExcel);
+            btExcel.Image = imageList1.Images[3];
+            btExcel.Visible = false;
+            btExcel.ToolTipText = "Сохранить содержимое списка в Excel";
+            ///надписи
             Items.Add(new ToolStripSeparator());
-            Items.Add(labels[1]);
+            Items.Add(_labels[1]);
             Items.Add(new ToolStripSeparator());
-            Items.Add(labels[2]);
+            Items.Add(_labels[2]);
             Items.Add(new ToolStripSeparator());
-            Items.Add(labels[3]);
+            Items.Add(_labels[3]);
             Items.Add(new ToolStripSeparator());
-            Items.Add(labels[4]);
-            btnStatus=0;
-            btn.Click += new EventHandler(this.onBtnClick);
-            filt.Click += new EventHandler(this.onFiltClick);
-            btExcel.Click += new EventHandler(this.onExcelClick);
+            Items.Add(_labels[4]);
+
+            btRefreshStop.Click += new EventHandler(this.btn_Click);
+            btFilter.Click += new EventHandler(this.filt_Click);
+            btExcel.Click += new EventHandler(this.excel_Click);
         }
 
-        private void initialHints()
+        /// <summary>
+        /// Делегат нажатия на кнопку Excel, если 'null' то кнопка не видна. 
+        /// Подробнее: RabNetPanel.MakeExcel
+        /// </summary>
+        public RSBEventHandler ExcelButtonClick
         {
-
-            btn.ToolTipText = "Обновить список";
-            filt.ToolTipText = "Показать фильт";
-            btExcel.ToolTipText = "Сохранить содержимое списка в Excel";
+            get {return _excelButtonClick; }
+            set 
+            {
+                _excelButtonClick = value;
+                if (value == null)
+                    btExcel.Visible = false;
+                else btExcel.Visible = true;
+            }
+        }
+       
+        public FilterPanel FilterPanel
+        {
+            get { return _filterPanel; }
+            set
+            {
+                _filterPanel = value;
+                if (_filterPanel != null)
+                {
+                    btFilter.Visible = true;
+                    if (!DesignMode)
+                        _filterPanel.Visible = false;
+                    _filterPanel.BorderStyle = BorderStyle.FixedSingle;
+                    _filterPanel.OnHide +=new RSBEventHandler(filterHide);
+                }
+                else
+                    btFilter.Visible = false;              
+            }
         }
 
         public void SetText(int item,String text)
@@ -130,139 +126,129 @@ namespace rabnet.components
         }
         public void SetText(int item, String text,bool error)
         {
-            labels[item].Text = text;
+            _labels[item].Text = text;
             if(error)
-                labels[item].ForeColor = Color.Crimson;
+                _labels[item].ForeColor = Color.Crimson;
         }
 
         public void Run()
         {
-            if (btnStatus==0)
-                btn.PerformClick();
+            if ((int)btRefreshStop.Tag==0)
+                btRefreshStop.PerformClick();
         }
-        public void initProgress(int min,int max)
-        {
-#if DEBUG
-            try
-            {
-#endif
-                if (this.InvokeRequired)
-                {
-                    progressCallBack2 d = new progressCallBack2(initProgress);
-                    this.Invoke(d, new object[] { min, max });
-                }
-                else
-                {
-                    pb.Minimum = min;
-                    pb.Maximum = max;
-                    pb.Value = min;
 
-                    btn.Image = imageList1.Images[0];
-                    btnStatus = 1;
-                }
-#if DEBUG
-            }
-            catch (Exception) { }
-#endif
+        public void Stop()
+        {
+            stopDataThread();
         }
-        public void InitProgress(int max)
+
+        private void initProgress(int min, int max)
+        {
+            if (this.InvokeRequired)
+            {
+                progressCallBack2 d = new progressCallBack2(initProgress);
+                this.Invoke(d, new object[] { min, max });
+            }
+            else
+            {
+                pb.Minimum = min;
+                pb.Maximum = max;
+                pb.Value = min;
+
+                btRefreshStop.Image = imageList1.Images[0];
+                btRefreshStop.Tag = 1;
+            }
+        }
+        private void initProgress(int max)
         {
             initProgress(0, max);
         }
-        public void InitProgress()
-        {
-            initProgress(0, 100);
-        }
-        public void Progress(int progress)
-        {
-            pb.Value = progress;
+
+        private void progress(int prss)
+                    
+            pb.Value = prss;
             pb.Invalidate();
         }
-        public void EndProgress()
+        private void endProgress()
         {
-            pb.Value = pb.Minimum;
-            pb.Invalidate();
-            btn.Image = imageList1.Images[1];
-            btnStatus=0;
-        }
-        public void EmergencyStop()
-        {
-            btn.Image = imageList1.Images[1];
-            btnStatus=0;
-        }
-
-        private void onItem(object sender, EventArgs e)
-        {
-            if (itemGet != null)
-                itemGet(this, new RSBItemEvent(sender as IData));
-        }
-
-        public void FilterHide()
-        {
-            if (fpan != null)
+            if (this.InvokeRequired)
             {
-                Parent.Controls.Remove(fpan);
-                fpan.Visible = false;
-                filt.Checked = false;
-                Run();
+                RSBEventHandler d = new RSBEventHandler(endProgress);
+                this.Invoke(d);
+            }
+            else
+            {
+                pb.Value = pb.Minimum;
+                pb.Invalidate();
+                btRefreshStop.Image = imageList1.Images[1];
+                btRefreshStop.Tag = 0;
             }
         }
+        //public void EmergencyStop()
+        //{
+        //    btn.Image = imageList1.Images[1];
+        //    btn.Tag=0;
+        //}
 
-        public void FilterShow()
+        private void filterHide()
         {
-            if (fpan != null)
-            {
-                Parent.Controls.Add(fpan);
-                if (btnStatus != 0)
-                    DataThread.Get().Stop();
-                fpan.Left = filt.Bounds.Left;
-                fpan.Top = Top - fpan.Height;
-                fpan.Visible = true;
-                filt.Checked = true;
-                fpan.BringToFront();
-            }
+            if (_filterPanel == null) return;
+
+            Parent.Controls.Remove(_filterPanel);
+            _filterPanel.Visible = false;
+            btFilter.Checked = false;
+            Run();
+        }
+
+        private void filterShow()
+        {
+            if (_filterPanel == null) return;
+
+            Parent.Controls.Add(_filterPanel);
+            if ((int)btRefreshStop.Tag != 0)
+                stopDataThread();
+            _filterPanel.Left = btFilter.Bounds.Left;
+            _filterPanel.Top = Top - _filterPanel.Height;
+            _filterPanel.Visible = true;
+            btFilter.Checked = true;
+            _filterPanel.BringToFront();
         }
 
         public void FilterSwitch()
         {
-            filt.PerformClick();
+            btFilter.PerformClick();
         }
-
         #region clicks
 
-        private void onBtnClick(object sender, EventArgs e)
+        private void btn_Click(object sender, EventArgs e)
         {
-            RSBClickEvent ev = new RSBClickEvent(btnStatus);
-            if (StopRefreshClick != null)
-                StopRefreshClick(this, ev);
-            if (btnStatus == 0)
+            ///если кнопка имеет вид "Обновить"
+            if ((int)btRefreshStop.Tag == 0)
             {
-                if (RefreshClick != null)
-                    RefreshClick(this, null);
                 if (PrepareGet != null)
                 {
-                    DataThread.Get4run().Run(PrepareGet(this, null), this, this.onItem);
+                    IDataGetter dg = PrepareGet();
+                    startDataThread(dg);
                 }
             }
             else
             {
-                if (StopClick != null)
-                    StopClick(this, null);
+                stopDataThread();
             }
         }
 
-        private void onFiltClick(object sender, EventArgs e)
+        private void filt_Click(object sender, EventArgs e)
         {
-            if (fpan!=null)
+            if (_filterPanel!=null)
             {
-                if (fpan.Visible)
-                    FilterHide();
+                if (_filterPanel.Visible)
+                    filterHide();
                 else
-                    FilterShow();
+                    filterShow();
             }
         }
 
-        private void onExcelClick(object sender, EventArgs e)
+        private void excel_Click(object sender, EventArgs e)
         {
             this.Parent.Enabled = false;
             ExcelButtonClick();
@@ -271,5 +257,56 @@ namespace rabnet.components
 
         #endregion clicks
 
+        private void startDataThread(IDataGetter dg)
+        {
+            if (_dataThread != null)
+                stopDataThread();
+            _dataThread = new DataThread();
+            _dataThread.OnItem +=new RSBItemEventHandler(_dataThread_onItem);
+            _dataThread.OnFinish += new RSBEventHandler(_dataThread_OnFinish);
+            _dataThread.InitMaxProgress+=new DTProgressHandler(initProgress);    
+            _dataThread.Progress +=new DTProgressHandler(progress);
+            _dataThread.Run(dg);
+        }
+
+        void _dataThread_OnFinish()
+        {
+            if (OnFinishUpdate != null)
+                OnFinishUpdate();
+            endProgress();   
+        }
+
+        void _dataThread_onItem(IData data)
+        {
+            if (ItemGet != null)
+                ItemGet(data);
+        }
+
+        public void stopDataThread()
+        {
+            if (_dataThread == null) return;
+
+            _dataThread.Stop();
+            _dataThread = null;
+        }
     }
+
+    //public class RSBClickEvent : EventArgs
+    //{
+    //    public int type;
+    //    public RSBClickEvent(int type)
+    //        : base()
+    //    {
+    //        this.type = type;
+    //    }
+    //}
+
+    //public class RSBItemEvent : EventArgs
+    //{
+    //    public IData data;
+    //    public RSBItemEvent(IData data)
+    //    {
+    //        this.data = data;
+    //    }
+    //}
 }

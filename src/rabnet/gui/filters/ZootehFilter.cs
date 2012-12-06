@@ -12,8 +12,8 @@ namespace rabnet.filters
     public partial class ZootehFilter : FilterPanel
     {
         const String itemFlags = "OVCPRFfvNB";
-        public ZootehFilter(RabStatusBar sb)
-            : base(sb, "zooteh", Options.OPT_ID.ZOO_FILTER)
+        public ZootehFilter()
+            : base("zooteh", Options.OPT_ID.ZOO_FILTER)
         {
             //InitializeComponent();
         }

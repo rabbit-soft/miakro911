@@ -14,8 +14,8 @@ namespace db.mysql
 
         public override IData NextItem()
         {
-           return new RabName(rd.GetInt32("n_id"),rd.GetString("n_name"),rd.GetString("n_surname"),
-               rd.GetString("n_sex"),rd.GetInt32("n_use"),rd.IsDBNull(5)?DateTime.MinValue:rd.GetDateTime("n_block_date"));
+           return new RabName(_rd.GetInt32("n_id"),_rd.GetString("n_name"),_rd.GetString("n_surname"),
+               _rd.GetString("n_sex"),_rd.GetInt32("n_use"),_rd.IsDBNull(5)?DateTime.MinValue:_rd.GetDateTime("n_block_date"));
         }
 
         private String makeWhereClause()
@@ -43,7 +43,7 @@ namespace db.mysql
 
         protected override string countQuery()
         {
-            MySqlCommand cmd = new MySqlCommand("UPDATE names SET n_block_date=NULL WHERE n_use=0 AND n_block_date<NOW();", sql);
+            MySqlCommand cmd = new MySqlCommand("UPDATE names SET n_block_date=NULL WHERE n_use=0 AND n_block_date<NOW();", _sql);
             cmd.ExecuteNonQuery();
             return "SELECT COUNT(*) FROM names" + makeWhereClause() + ";";
         }

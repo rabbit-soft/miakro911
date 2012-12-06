@@ -21,12 +21,12 @@ namespace rabnet
         private Filters runF = null;
         private int itm = -1;
 
-        public WorksPanel(RabStatusBar sb): base(sb, new ZootehFilter(sb))
+        public WorksPanel(RabStatusBar sb): base(sb, new ZootehFilter())
         {           
             _colSort = new ListViewColumnSorter(lvZooTech, new int[] {0,4},Options.OPT_ID.ZOO_LIST);
             _colSort2 = new ListViewColumnSorter(lvZooTech, new int[] { 0, 4 }, Options.OPT_ID.ZOO_LIST);
             lvZooTech.ListViewItemSorter = _colSort;
-            MakeExcel = new RabStatusBar.ExcelButtonClickDelegate(this.makeExcel);
+            MakeExcel = new RSBEventHandler(this.makeExcel);
         }
 
         protected override IDataGetter onPrepare(Filters f)
@@ -75,29 +75,18 @@ namespace rabnet
             }
             runF = f;
             fillLogs(f);
-            DataThread.Get().Stop();
+            //DataThread.Get().Stop();
             if (!fullUpdate)
             {
                 fullUpdate = true;
                 return null;
             }
-            return DataThread.Db().zooTeh(f);//возвращает ZooTehNullGetter
+            return Engine.db2().zooTeh(f);//возвращает ZooTehNullGetter
         }
 
         protected override void onItem(IData data)
         {
-            ZooTehNullItem it = data as ZooTehNullItem;
-            if (it == null)
-            {
-                _colSort.Restore();
-                if (itm > -1 && lvZooTech.Items.Count > itm)
-                {
-                    lvZooTech.Items[itm].Selected = true;
-                    lvZooTech.Items[itm].EnsureVisible();
-                }
-                lvZooTech.Focus();
-                return;
-            }
+            ZooTehNullItem it = data as ZooTehNullItem;            
 
             Filters f = runF;
             foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f, it.id))
@@ -112,7 +101,17 @@ namespace rabnet
                 li.SubItems.Add(j.Partners);/// todo партнеров получать gh
                 li.Tag = j;
             }
-            _colSort.SemiReady();
+        }
+
+        protected override void onFinishUpdate()
+        {
+            _colSort.Restore();
+            if (itm > -1 && lvZooTech.Items.Count > itm)
+            {
+                lvZooTech.Items[itm].Selected = true;
+                lvZooTech.Items[itm].EnsureVisible();
+            }
+            lvZooTech.Focus();
         }
 
         /// <summary>

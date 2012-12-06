@@ -12,7 +12,7 @@ namespace db.mysql
       
         public override IData NextItem() /*получение одной записи в Поголовье*/
         {
-            return RabbitGetter.fillAdultRabbit(rd);
+            return RabbitGetter.fillAdultRabbit(_rd);
         }
 
         protected override string getQuery()

@@ -43,7 +43,7 @@ DROP TABLE bbb;",table,dtfield,unfield);
 
         public override IData NextItem()
         {
-            return getBucherDate(rd);
+            return getBucherDate(_rd);
         }
 
         /// <summary>

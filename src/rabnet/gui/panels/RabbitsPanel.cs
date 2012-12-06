@@ -25,12 +25,12 @@ namespace rabnet
         const int NAMEFIELD = 0;
 
         public RabbitsPanel(): base() { }
-        public RabbitsPanel(RabStatusBar rsb):base(rsb,new RabbitsFilter(rsb))
+        public RabbitsPanel(RabStatusBar rsb):base(rsb,new RabbitsFilter())
         {
             _colSort = new ListViewColumnSorter(listView1, new int[] {2,8,9 },Options.OPT_ID.RAB_LIST);
             listView1.ListViewItemSorter = null;
 			miGenetic.Enabled = GeneticsManagerSafe.GeneticsModuleTest();
-            MakeExcel = new RabStatusBar.ExcelButtonClickDelegate(this.makeExcel);
+            MakeExcel = new RSBEventHandler(this.makeExcel);
         }
 
         protected override IDataGetter onPrepare(Filters f)
@@ -47,7 +47,7 @@ namespace rabnet
             f[Filters.MAKE_CANDIDATE] = op.getOption(Options.OPT_ID.MAKE_CANDIDATE);
             _runF = f;
             _colSort.Prepare();
-            IDataGetter dg = DataThread.Db().getRabbits(f);
+            IDataGetter dg = Engine.db2().getRabbits(f);
             _rsb.SetText(1, dg.getCount().ToString() + " записей");
             _rsb.SetText(2, dg.getCount2().ToString() + " кроликов");
             return dg;
@@ -58,18 +58,6 @@ namespace rabnet
 
         protected override void onItem(IData data)
         {
-            if (this.listView1.InvokeRequired)
-            {
-                onItemDelegate onItemDelegateV = new onItemDelegate(onItem);
-                this.listView1.Invoke(onItemDelegateV, new object[] { data });
-                return;
-            }
-
-            if (data == null)
-            {
-                _colSort.Restore();
-                return;
-            }
             AdultRabbit rab = (data as AdultRabbit);
             ListViewItem li = listView1.Items.Add(rab.NameFull);
             li.Tag = rab.ID;
@@ -85,19 +73,7 @@ namespace rabnet
             li.SubItems.Add(rab.FBon(_runF.safeBool(Filters.SHORT)));
             li.SubItems.Add(rab.FAddress(_runF.safeBool(Filters.SHOW_BLD_TIERS), _runF.safeBool(Filters.SHOW_BLD_TIERS)));
             li.SubItems.Add(rab.Notes);
-			_colSort.SemiReady();
         }
-
-        //private void insertNode(TreeNode nd,TreeData data)
-        //{
-        //    if (data.Childrens!=null)
-        //    for (int i = 0; i < data.Childrens.Count; i++)
-        //        if (data.Childrens[i] != null)
-        //        {
-        //            TreeNode n = nd.Nodes.Add(data.Childrens[i].Name);
-        //            insertNode(n, data.Childrens[i]);
-        //        }
-        //}
 
         private bool isGirl()
         {
@@ -447,41 +423,6 @@ namespace rabnet
                 kids = true;
             setMenu(isx, listView1.SelectedItems.Count, kids);
         }
-
-        //private void логЗаписиToolStripMenuItem_Click(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        if (!Directory.Exists("zapis")) Directory.CreateDirectory("zapis");
-        //        string path = "zapis/log_" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt";
-        //        StreamWriter rw = new StreamWriter(path);
-
-        //        foreach (ListViewItem x in listView1.Items)
-        //        {
-        //            string s = x.SubItems[1].Text;
-        //            for (int i = 1; i < x.SubItems.Count - 1; i++) 
-        //            {
-        //                if (i==2 || i==8) continue;
-        //                if (i == 1 || x.SubItems[i].Text.StartsWith("С"))
-        //                {
-        //                    s += "|С";
-        //                    continue;
-        //                }
-        //                s += "|" + x.SubItems[i].Text;
-        //            }
-                    
-        //            rw.WriteLine(s);
-        //        }
-        //        rw.Close();
-        //        MessageBox.Show("Запись прошла успешно\n\rИмя файла: " + path, "Сохранение в файл");
-
-        //    }
-        //    catch (Exception exep)
-        //    {
-        //        MessageBox.Show(exep.Message);
-        //    }
-            
-        //}
 
         private void tsmiIDshow_Click(object sender, EventArgs e)
         {
@@ -860,5 +801,52 @@ namespace rabnet
         }  
 
         #endregion menuItems
+
+
+        //private void insertNode(TreeNode nd,TreeData data)
+        //{
+        //    if (data.Childrens!=null)
+        //    for (int i = 0; i < data.Childrens.Count; i++)
+        //        if (data.Childrens[i] != null)
+        //        {
+        //            TreeNode n = nd.Nodes.Add(data.Childrens[i].Name);
+        //            insertNode(n, data.Childrens[i]);
+        //        }
+        //}
+
+        //private void логЗаписиToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (!Directory.Exists("zapis")) Directory.CreateDirectory("zapis");
+        //        string path = "zapis/log_" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt";
+        //        StreamWriter rw = new StreamWriter(path);
+
+        //        foreach (ListViewItem x in listView1.Items)
+        //        {
+        //            string s = x.SubItems[1].Text;
+        //            for (int i = 1; i < x.SubItems.Count - 1; i++) 
+        //            {
+        //                if (i==2 || i==8) continue;
+        //                if (i == 1 || x.SubItems[i].Text.StartsWith("С"))
+        //                {
+        //                    s += "|С";
+        //                    continue;
+        //                }
+        //                s += "|" + x.SubItems[i].Text;
+        //            }
+
+        //            rw.WriteLine(s);
+        //        }
+        //        rw.Close();
+        //        MessageBox.Show("Запись прошла успешно\n\rИмя файла: " + path, "Сохранение в файл");
+
+        //    }
+        //    catch (Exception exep)
+        //    {
+        //        MessageBox.Show(exep.Message);
+        //    }
+
+        //}
     }
 }

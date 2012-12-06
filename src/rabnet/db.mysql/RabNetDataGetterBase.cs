@@ -16,8 +16,8 @@ namespace db.mysql
         protected int count3; //+gambit  понадобилось для подсчета кормилиц
         protected float count4; //+gambit  надо для подсчета среднего кол-ва детей
         protected int citem=0;
-        protected MySqlConnection sql;
-        protected MySqlDataReader rd;
+        protected MySqlConnection _sql;
+        protected MySqlDataReader _rd;
         protected Filters options = null; 
 
         protected void Debug(String s)
@@ -28,33 +28,32 @@ namespace db.mysql
         public RabNetDataGetterBase(MySqlConnection sql,Filters filters) 
         {
             options = filters;
-            this.sql = sql;
+            this._sql = sql;
             String qcmd = countQuery();//получить количество записей
 #if DEBUG
             Debug("QCount: " + qcmd);
 #endif
             MySqlCommand cmd = new MySqlCommand(qcmd, sql);
-            rd = cmd.ExecuteReader();
-            rd.Read();
-            count = (int)rd.GetInt32(0);
+            _rd = cmd.ExecuteReader();
+            _rd.Read();
+            count = (int)_rd.GetInt32(0);
             count2 = 0;
-            if (rd.FieldCount > 1)
-                count2 = rd.IsDBNull(1) ? 0 : rd.GetInt32(1);
-            if (rd.FieldCount > 2)                                  //+gambit
+            if (_rd.FieldCount > 1)
+                count2 = _rd.IsDBNull(1) ? 0 : _rd.GetInt32(1);
+            if (_rd.FieldCount > 2)                                  //+gambit
             {
-                count3 = rd.IsDBNull(2) ? 0 : rd.GetInt32(2);
+                count3 = _rd.IsDBNull(2) ? 0 : _rd.GetInt32(2);
                 count4 = (float)count2 / (float)count3;
             }
-            rd.Close();
+            _rd.Close();
             cmd.CommandText = getQuery();
 #if DEBUG
             Debug("QGetIData:" + cmd.CommandText);
 #endif
-            rd = cmd.ExecuteReader();
+            _rd = cmd.ExecuteReader();
         }
         public int getCount()
         {
-            //Debug("count = "+count.ToString());
             return count;
         }
         public int getCount2()
@@ -72,23 +71,26 @@ namespace db.mysql
             return count4;
         }
 
-        public void stop()
-        {
-            Debug("closed");
-            rd.Close();
-        }
-        protected abstract String getQuery();
-        protected abstract String countQuery();
-        public abstract IData NextItem();        
         public IData GetNextItem()
         {
-            if (!rd.Read())
+            if (!_rd.Read())
             {
                 Debug("NULL next item");
                 return null;
             }
             return NextItem();
         }
+
+        public void Close()
+        {
+            Debug("closed");
+            _rd.Close();
+        }
+
+        protected abstract String getQuery();
+        protected abstract String countQuery();
+        public abstract IData NextItem();        
+        
         internal static String addWhereAnd(String str, String adder)
         {
             if (str != "") str += " AND ";

@@ -20,7 +20,7 @@ namespace rabnet
             _colSort = new ListViewColumnSorter(lvButcherDates, new int[] {  }, Options.OPT_ID.BUTCHER_DATE_LIST);
             _colSort2 = new ListViewColumnSorter(lvVictims, new int[] { AGE_FIELD, NFIELD }, Options.OPT_ID.VICTIMS_LIST);
             lvButcherDates.ListViewItemSorter = null;
-            MakeExcel = new RabStatusBar.ExcelButtonClickDelegate(this.makeExcel);
+            MakeExcel = new RSBEventHandler(this.makeExcel);
         }
 
         private void drawMealList()
@@ -50,7 +50,7 @@ namespace rabnet
             _colSort.Prepare();
             if (f == null) f = new Filters();
             f.Add("type", Engine.opt().getOption(Options.OPT_ID.BUCHER_TYPE));
-            IDataGetter dg = DataThread.Db().getButcherDates(f);
+            IDataGetter dg = Engine.db2().getButcherDates(f);
             _rsb.SetText(1, dg.getCount().ToString() + " дат забоя");
             _rsb.SetText(2, dg.getCount2().ToString() + " забито");
             return dg;

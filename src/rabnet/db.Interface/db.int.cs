@@ -19,9 +19,7 @@ namespace rabnet
     /// <summary>
     /// Интерфейс который представляет собой одну строку IDataGetter
     /// </summary>
-    public interface IData
-    {
-    }
+    public interface IData { }
 
     /// <summary>
     /// Интерфейс который представляет собой результат(MySqlDataReader) для заполнения информацией одну из панелей.
@@ -32,7 +30,13 @@ namespace rabnet
         int getCount2();
         int getCount3(); //+gambit
         float getCount4(); //
-        void stop();
+        /// <summary>
+        /// Закрывает DataReader
+        /// </summary>
+        void Close();
+        /// <summary>
+        /// Получить следующую строчку
+        /// </summary>
         IData GetNextItem();
     }
 

@@ -20,7 +20,7 @@ namespace rabnet
         /// Делегат определяющий обработчик, когда жмут на кнопку Excel.
         /// Если наследники присвоят обработчик, то кнопка Excel покажется.
         /// </summary>
-        public RabStatusBar.ExcelButtonClickDelegate MakeExcel = null;
+        public RSBEventHandler MakeExcel = null;
         public RabNetPanel()
         {
             InitializeComponent();
@@ -53,11 +53,13 @@ namespace rabnet
         /// </summary>
         public virtual void activate()
         {
-            _rsb.filterPanel = fp;
+            _rsb.FilterPanel = fp;
             Size = Parent.Size;
             Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-            _rsb.itemGet+=new RabStatusBar.RSBItemEventHandler(this.itemGet);
-            _rsb.PrepareGet += new RabStatusBar.RSBPrepareEventHandler(this.prepareGet);
+            _rsb.ItemGet += new RSBItemEventHandler(onItem_Invoker);
+            _rsb.PrepareGet += new RSBPrepareHandler(prepareGet);
+            _rsb.OnFinishUpdate += new RSBEventHandler(onFinishUpdate_Invoker);
+            _rsb.ExcelButtonClick = MakeExcel;
             _rsb.Run();
         }
         /// <summary>
@@ -65,36 +67,55 @@ namespace rabnet
         /// </summary>
         public virtual void deactivate()
         {
-            if (_rsb.filterPanel != null)
+            _rsb.Stop();
+            if (_rsb.FilterPanel != null)
             {
-                _rsb.filterPanel.Visible = false;
-                _rsb.filterPanel = null;
+                _rsb.FilterPanel.Visible = false;
+                _rsb.FilterPanel = null;
             }
-            _rsb.PrepareGet -= this.prepareGet;
-            _rsb.itemGet -= this.itemGet;
+            _rsb.PrepareGet -= prepareGet;
+            _rsb.ItemGet -= onItem_Invoker;
+            _rsb.OnFinishUpdate -= onFinishUpdate_Invoker;
+            _rsb.ExcelButtonClick = null;
         }
         /// <summary>
         /// Выполняет виртуальный метод  "onPrepare"  текущей активной панели
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         /// <returns>Возвращает результат запроса.(Фактически представляет собой MySqlDataReader)</returns>
-        private IDataGetter prepareGet(object sender, EventArgs e)
+        private IDataGetter prepareGet()
         {
             Filters f = null;
             if (fp!=null)
                 f = fp.getFilters();
             return onPrepare(f);
         }
-        /// <summary>
-        /// Выполняет виртуальный метод  "onItem"  текущей активной панели
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void itemGet(object sender, RabStatusBar.RSBItemEvent e)
+
+        private void onItem_Invoker(IData data)
         {
-            onItem(e.data);
+            if (this.InvokeRequired)
+            {
+                RSBItemEventHandler d = new RSBItemEventHandler(onItem_Invoker);
+                this.Invoke(d, new object[] { data });
+            }
+            else
+            {
+                onItem(data);
+            }
         }
+
+        private void onFinishUpdate_Invoker()
+        {
+            if (this.InvokeRequired)
+            {
+                RSBEventHandler d = new RSBEventHandler(onFinishUpdate_Invoker);
+                this.Invoke(d);
+            }
+            else
+            {
+                onFinishUpdate();
+            }
+        }
+
         /// <summary>
         /// Тело метода содержится в наследниках класса RabNetPanel
         /// Выполняет обработку одной строчки из результата обращения к БД
@@ -111,6 +132,19 @@ namespace rabnet
         protected virtual IDataGetter onPrepare(Filters f)
         {
             return null;
+        }
+
+        protected virtual void onFinishUpdate() 
+        {
+            if (this.InvokeRequired)
+            {
+                RSBEventHandler d = new RSBEventHandler(onFinishUpdate);
+                this.Invoke(d);
+            }
+            else
+            {
+                _colSort.Restore();
+            }
         }
 
         public virtual ContextMenuStrip getMenu()

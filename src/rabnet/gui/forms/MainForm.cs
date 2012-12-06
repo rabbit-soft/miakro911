@@ -176,16 +176,14 @@ namespace rabnet.forms
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            DataThread.Get().Stop();
+        {          
             curpanel.deactivate();
             for (int i = 1; i < 5;i++ )
                 rabStatusBar1.SetText(i, "");
             panel1.Controls.Remove(curpanel);
             curpanel = panels[tabControl1.SelectedIndex];
             panel1.Controls.Add(curpanel);
-            tsmiActions.DropDown = curpanel.getMenu();
-            rabStatusBar1.ExcelButtonClick = curpanel.MakeExcel;
+            tsmiActions.DropDown = curpanel.getMenu();           
             curpanel.activate();
             Working();
             ProtectTest();
@@ -193,7 +191,7 @@ namespace rabnet.forms
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            DataThread.Get().Stop();
+            //DataThread.Get().Stop();
             for (int i = 0; i < panels.Length; i++)
                 panels[i].close();
         }

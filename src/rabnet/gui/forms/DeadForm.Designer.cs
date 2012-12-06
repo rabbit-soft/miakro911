@@ -130,15 +130,15 @@
             // rsb
             // 
             this.rsb.ExcelButtonClick = null;
-            this.rsb.filterPanel = null;
+            this.rsb.FilterPanel = null;
             this.rsb.Location = new System.Drawing.Point(0, 463);
             this.rsb.Name = "rsb";
             this.rsb.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.rsb.Size = new System.Drawing.Size(778, 23);
             this.rsb.TabIndex = 0;
             this.rsb.Text = "rabStatusBar1";
-            this.rsb.itemGet += new rabnet.components.RabStatusBar.RSBItemEventHandler(this.rsb_itemGet);
-            this.rsb.PrepareGet += new rabnet.components.RabStatusBar.RSBPrepareEventHandler(this.rsb_prepareGet);
+            this.rsb.ItemGet += new rabnet.components.RSBItemEventHandler(this.rsb_itemGet);
+            this.rsb.PrepareGet += new rabnet.components.RSBPrepareHandler(this.rsb_prepareGet);
             // 
             // DeadForm
             // 

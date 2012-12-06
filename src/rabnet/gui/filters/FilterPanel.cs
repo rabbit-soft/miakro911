@@ -8,15 +8,15 @@ namespace rabnet.filters
 {
     public class FilterPanel:UserControl
     {
-        private RabStatusBar rsb = null;
+        //private RabStatusBar rsb = null;
+        public event RSBEventHandler OnHide;
         private String fname = "";
         private Options.OPT_ID opid=Options.OPT_ID.NONE;
-        public FilterPanel(RabStatusBar rsb,String name,Options.OPT_ID opid):this()
+        public FilterPanel(String name,Options.OPT_ID opid):this()
         {
             initAgain();
             fname = name;
             this.opid=opid;
-            this.rsb = rsb;
             clearFilters();
             loadFilters();
             String s = Engine.opt().getOption(opid);
@@ -34,11 +34,6 @@ namespace rabnet.filters
         public virtual void close()
         {
             Engine.opt().setOption(opid, getFilters().toString());
-        }
-
-        public void hide()
-        {
-            rsb.FilterHide();
         }
 
         public virtual Filters getFilters() { return null; }
@@ -77,7 +72,8 @@ namespace rabnet.filters
 
         private void hideClick(Object sender,EventArgs e)
         {
-            hide();
+            if (OnHide != null)
+                OnHide();
         }
         private void saveClick(Object sender, EventArgs e)
         {

@@ -11,12 +11,11 @@ namespace rabnet.filters
 {
     public partial class BuildingsFilter : FilterPanel
     {
-        public BuildingsFilter(RabStatusBar sb): base(sb, "buildings", Options.OPT_ID.BUILD_FILTER)
+        public BuildingsFilter(): base("buildings", Options.OPT_ID.BUILD_FILTER)
         {
             //InitializeComponent();
         }
 
-        public BuildingsFilter() : base() { }
 
         public override Filters getFilters()
         {

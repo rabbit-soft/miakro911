@@ -31,7 +31,7 @@ namespace db.mysql
         public override IData NextItem()
         {
             //bool shr = options.safeBool("shr");
-            return fillYounger(rd,options.safeBool(Filters.SHORT), options.safeBool(Filters.SHOW_BLD_TIERS), options.safeBool(Filters.SHOW_BLD_DESCR));
+            return fillYounger(_rd,options.safeBool(Filters.SHORT), options.safeBool(Filters.SHOW_BLD_TIERS), options.safeBool(Filters.SHOW_BLD_DESCR));
         }
         /// <summary>
         /// Строка запроса к БД, для получения данных о Молодняке

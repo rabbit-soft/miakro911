@@ -14,32 +14,33 @@ namespace rabnet.forms
     {
         public FilterPanel fp =null;
         public ListViewColumnSorter cs = null;
+
         public DeadForm()
         {
             InitializeComponent();
-            fp = new DeadFilter(rsb);
-            rsb.filterPanel = fp;
+            fp = new DeadFilter();
+            rsb.FilterPanel = fp;
             cs = new ListViewColumnSorter(listView1, new int[] { 2, 3 },Options.OPT_ID.DEAD_LIST);
             FormSizeSaver.Append(this);
         }
 
-        private IDataGetter rsb_prepareGet(object sender, EventArgs e)
+        private IDataGetter rsb_prepareGet()
         {
             cs.Prepare();
             Filters f = fp.getFilters();
-            IDataGetter gt = DataThread.Db().getDead(f);
+            IDataGetter gt = Engine.db2().getDead(f);
             rsb.SetText(1, gt.getCount().ToString() + " записей");
             return gt;
         }
 
-        private void rsb_itemGet(object sender, RabStatusBar.RSBItemEvent e)
+        private void rsb_itemGet(IData data)
         {
-            if (e.data == null)
+            if (data == null)
             {
                 cs.Restore();
                 return;
             }
-            Dead d = (e.data as Dead);
+            Dead d = (data as Dead);
             ListViewItem li = listView1.Items.Add(d.name);
             li.Tag = d.id;
             li.SubItems.Add(d.deadDate.ToShortDateString());
