@@ -318,8 +318,8 @@ Section /o "-un.rabnet" UNSEC_Rabnet
     Delete /REBOOTOK $INSTDIR\bin\RdlEngine.dll
     Delete /REBOOTOK $INSTDIR\bin\log4net.dll
     Delete /REBOOTOK $INSTDIR\bin\RdlViewer.dll
-    Delete /REBOOTOK $INSTDIR\bin\CodeStorage32.dll
-    Delete /REBOOTOK $INSTDIR\bin\CodeStorage64.dll
+#    Delete /REBOOTOK $INSTDIR\bin\CodeStorage32.dll
+#    Delete /REBOOTOK $INSTDIR\bin\CodeStorage64.dll
     Delete /REBOOTOK $INSTDIR\bin\GuardantDotNetApi.dll
     Delete /REBOOTOK $INSTDIR\bin\GrdAPI32.DLL
     Delete /REBOOTOK $INSTDIR\bin\GrdAPI64.DLL
@@ -424,8 +424,8 @@ FunctionEnd
 Function InstGrdFiles
 	File ${BinDir}\bin\GrdAPI32.DLL
     File ${BinDir}\bin\GrdAPI64.DLL
-	File ${BinDir}\bin\CodeStorage32.dll
-    File ${BinDir}\bin\CodeStorage64.dll
+	#File ${BinDir}\bin\CodeStorage32.dll
+    #File ${BinDir}\bin\CodeStorage64.dll
     File ${BinDir}\bin\GuardantDotNetApi.dll
 FunctionEnd
 
