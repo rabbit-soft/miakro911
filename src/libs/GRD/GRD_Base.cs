@@ -200,40 +200,35 @@ namespace RabGRD
             GrdE retCode;                       // Error code for all Guardant API functions
             string logStr = "";
 
-            // -----------------------------------------------------------------
-            // Close hGrd handle. Log out from dongle/server & free allocated memory
-            // -----------------------------------------------------------------
+            /// Close hGrd handle. Log out from dongle/server & free allocated memory
             logStr = "Closing dongle handle: ";
             retCode = GrdApi.GrdCloseHandle(_grdHandle);
             logStr += GrdApi.PrintResult((int)retCode);
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
 
-            // -----------------------------------------------------------------
-            // Deinitialize this copy of GrdAPI. 
-            // GrdCleanup() must be called after last GrdAPI call before program termination
-            // -----------------------------------------------------------------
+            /// Deinitialize this copy of GrdAPI. 
+            /// GrdCleanup() must be called after last GrdAPI call before program termination
             logStr = "Deinitializing this copy of GrdAPI : ";
             retCode = GrdApi.GrdCleanup();
             logStr += GrdApi.PrintResult((int)retCode);
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
 
-            //Console.ReadLine();
-
+            _grdHandle = new Handle();
             return GrdE.OK;
         }
 
         /// <summary>
         /// Handle errors
-        /// Prints operation result, closes handle and forces program termination on error  
+        /// Prints operation result
         /// </summary>
         /// <param name="hGrd">Handle to Guardant protected Container</param>
         /// <param name="nRet">error code</param>
         /// <returns>error code</returns>                
         protected GrdE ErrorHandling(Handle hGrd, GrdE nRet)
         {
-            // print the result of last executed function
+            ///Print the result of last executed function
             //log.Debug(GrdApi.PrintResult((int)nRet));
             string logStr = "";         
             if (nRet != GrdE.OK)
@@ -243,19 +238,16 @@ namespace RabGRD
                 {
                     // Close hGrd handle, log out from dongle/server, free allocated memory
                     logStr = ("Closing handle: ");
-                    nRet = GrdApi.GrdCloseHandle(hGrd);
+                    //nRet = GrdApi.GrdCloseHandle(hGrd); // при каждой ошибке закрывать не обязательно. Наверное
                     logStr += GrdApi.PrintResult((int)nRet);
                     _logger.Debug(logStr);
                 }
 
-                // Deinitialize this copy of GrdAPI. GrdCleanup() must be called after last GrdAPI call before program termination
+                /// Deinitialize this copy of GrdAPI. GrdCleanup() must be called after last GrdAPI call before program termination
                 logStr = "Deinitializing this copy of GrdAPI : ";
-                nRet = GrdApi.GrdCleanup();
+                //nRet = GrdApi.GrdCleanup();
                 logStr += GrdApi.PrintResult((int)nRet);
                 _logger.Debug(logStr);
-
-                // Terminate application
-                //Environment.Exit((int)nRet);
             }
             return nRet;
         }
@@ -615,17 +607,26 @@ namespace RabGRD
         protected GrdE connect()
         {           
             GrdE retCode;
-            string logStr;
-            FindInfo findInfo;
 
             _findPropRemoteMode = GrdFMR.Local | GrdFMR.Remote;
             _findPropDongleType = GrdDT.GSII64;
             
-            prepareHandle();
+            retCode = prepareHandle();
+            if (retCode != GrdE.OK) return retCode;
 
-            // -----------------------------------------------------------------
-            // Search for all specified dongles and print ID's
-            // -----------------------------------------------------------------
+            retCode = serchDongle();
+            if (retCode != GrdE.OK) return retCode;
+
+            ValidKey(out retCode);
+            return retCode;
+        }
+
+        private GrdE serchDongle()
+        {
+            GrdE retCode;
+            string logStr;
+            FindInfo findInfo;
+            /// Search for all specified dongles and print ID's
             logStr = "Searching for all specified dongles and print info about it's : ";
             retCode = GrdApi.GrdFind(_grdHandle, GrdF.First, out _findPropDongleID, out findInfo);
             if (retCode == GrdE.OK) // Print table header if at least one dongle found
@@ -637,45 +638,17 @@ namespace RabGRD
             else
             {
                 return ErrorHandling(_grdHandle, retCode);
-            }    
+            }
 
-            // -----------------------------------------------------------------
-            // Search for the specified local or remote dongle and log in
-            // -----------------------------------------------------------------
+            /// Search for the specified local or remote dongle and log in
             logStr = "Searching for the specified local or remote dongle and log in : ";
             retCode = GrdApi.GrdLogin(_grdHandle, 0, GrdLM.PerStation);
             logStr += GrdApi.PrintResult((int)retCode);
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
-            if (retCode != GrdE.OK)
-            {
+            if (retCode != GrdE.OK)            
                 return retCode;
-            }
-
-            /*byte[] bts = new byte[32];
-            string marker = "";
-
-            logStr = "Reading Marker : ";
-            retCode = GrdApi.GrdRead(_grdHandle, USER_DATA_BEGINING + DEV_MARKER_OFFSET, 16, out bts);
-            logStr += GrdApi.PrintResult((int)retCode);
-            if (retCode == GrdE.OK)
-            {
-                marker = AsciiBytesToString(bts, 0, 32);
-                logStr += "; \"" + marker + "\"";
-            }
-            if (marker != MUST_DEV_LABEL)
-            {
-                logStr += "; No correct marker";
-                log.Debug(logStr);
-                return ErrorHandling(_grdHandle, GrdE.VerifyError);
-            }
-            else
-            {
-                logStr += "; Correct marker";
-                log.Debug(logStr);
-            }*/
-            ValidKey(out retCode);
-            return retCode;
+            return GrdE.OK;
         }
 
         public void Reconnect()
