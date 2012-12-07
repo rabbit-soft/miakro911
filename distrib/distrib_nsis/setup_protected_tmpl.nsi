@@ -5,7 +5,7 @@ Name $(SM_Prog_NAME)
 !define NameInt "Miakro911"
 !define DirName "Miakro911"
 !define CompName "9-Bits"
-!define BinDir "..\..\..\bin\@bin_type@\"
+!define BinDir "..\..\bin\@bin_type@\"
 #!define DirName "@ProgDirName@"
 
 #!define SHORT_APP_NAME "Xobni Analytics"
@@ -46,7 +46,7 @@ Var Inst_code
 
 # Installer pages
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE ..\..\docs\licenseansi.rtf
+!insertmacro MUI_PAGE_LICENSE ..\licenseansi.rtf
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
