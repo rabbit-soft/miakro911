@@ -21,6 +21,7 @@
 	<property name="host_spec_path" value=".." overwrite="false"/>	
 	<property name="trunkdir" value="${srcdir}/.."/>
 	<property name="bindir" value="${srcdir}/../bin"/>
+	<property name="helpdir" value="${srcdir}/../help"/>
 	<property name="bindir.plugins" value="${bindir}/PlugIns" />
 	
 	<if test="${not property::exists('build.root')}">
@@ -54,11 +55,8 @@
 	<property name="rep.ass" value="${rep.path}/${rep.lib}" />
 	<property name="repeng.lib" value="RdlEngine.dll" />
 	<property name="repeng.ass" value="${rep.path}/${repeng.lib}" />
-	<property name="obfuscator" value="Eazfuscator.NET.exe" />
-	
-	<property name="nant_contrib" value="${all_i_need}/NAnt/NAnt.Contrib.Tasks.dll" />
 
-	<property name="obfuscated" value="" />
+	<property name="nant_contrib" value="${all_i_need}/NAnt/NAnt.Contrib.Tasks.dll" />
 
 	<property name="compile_flag" value="" />
 	<property name="dotnetInstaller" value="dotnetfx.exe"/>
@@ -93,7 +91,7 @@
 	</target>
 	
 	<target name="make_tmp_dir">
-		<property name="tmpdir" value="${srcdir}/_tmp" />
+		<property name="tmpdir" value="${trunkdir}/_tmp" />
 		<delete dir="${tmpdir}"/>
 		<mkdir dir="${tmpdir}"/>
 	</target>
@@ -122,10 +120,8 @@
 		<copy file="${repeng.ass}" tofile="${repeng.use}" />
 		<copy file="${office.core.path}" tofile="${bin_dir_bin}/${office.core.name}" />
 		<copy file="${office.excel.path}" tofile="${bin_dir_bin}/${office.excel.name}" />
-		<copy file="${grd_path.lib}/${guardant2.lib}" tofile="${bin_dir_bin}/${guardant2.lib}" />
-		<copy file="${grd_path.lib64}/${guardant2_64.lib}" tofile="${bin_dir_bin}/${guardant2_64.lib}" />
-		<copy file="${grd_path.lib}/${guardantNET.lib}" tofile="${bin_dir_bin}/${guardantNET.lib}" />
-		<copy file="${grd_path.lib}/${guardant2.lib}" tofile="${bin_dir_bin}/${guardant2.lib}" />
+		
+		<call target="include_grd_libs" />
 		
 		<call target="include_grd_tools"/>
 		
@@ -137,7 +133,7 @@
 			</fileset>
 		</copy>
 		<copy todir="${bin_dir_bin}">
-			<fileset basedir="${srcdir}/../help/rabnet_help">
+			<fileset basedir="${helpdir}/rabnet_help">
 				<include name="*.chm"/>
 			</fileset>
 		</copy>
@@ -165,7 +161,7 @@
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
 		<!--copy file="${mysql.ass}" tofile="${mysql.t.use}" /-->
 		<copy todir="${bin_dir_bin}">
-			<fileset basedir="${srcdir}/../help/rabnet_help">
+			<fileset basedir="${helpdir}/rabnet_help">
 				<include name="*.chm"/>
 			</fileset>
 		</copy>
@@ -198,28 +194,6 @@
 		<!--xmlpoke file="${bindir}/demo/RabNet/rabnet.exe.config" xpath="/configuration/log4net/root/level/@value" value="ERROR" /-->
 	</target>
 
-	<target name="miaconv" description="Make mia converter project">
-		<copy file="${srcdir}/mia_conv/rabnet_db_fmt.sql" tofile="${srcdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
-		<!--copy file="${log4net.use}" tofile="${bin_dir}/Tools/${log4net.lib}" /-->
-		<csc target="winexe" output="${bin_dir_bin}/mia_conv.exe" win32icon="${srcdir}/mia_conv/icon_yell_red.ico" define="${compile_flag}" optimize="true">
-			<sources>
-				<include name="${tmpdir}/VersionInfo.cs"/>
-				<include name="${srcdir}/mia_conv/*.cs"/>	
-				<include name="${srcdir}/mia_conv/miaRepair/*.cs"/>					
-			</sources>
-			<resources>
-				<include name="${srcdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
-				<include name="${srcdir}/mia_conv/*.resx"/>
-			</resources>
-			<references>
-				<include name="${mysql.use}"/>
-				<include name="${log4net.use}"/>
-			</references>
-		</csc>
-		<copy file="${srcdir}/mia_conv/app.config" tofile="${bin_dir_bin}/mia_conv.exe.config" />
-		<delete file="${srcdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
-	</target>
-
 	<!--target name="rabnet" description="make rabnet application" depends="db.mysql,engine,gui"/-->
 	<target name="rabnet" description="make rabnet application" depends="db.Interface,db.mysql,engine,pickers,gui_genetics,gui"/>
 
@@ -235,13 +209,13 @@
 		</csc>
 	</target>
 
-	<target name="distrib_nsis" depends="obfuscate">
+	<target name="distrib_nsis" depends="protect">
 		<property name="dist_type" value="rabnet_protected"/>
 		<property name="bin_dir" value="${bindir}\protected"/>
 		<property name="bin_type" value="protected"/>
 		<property name="setup_suff" value=""/>
-		<copy file="${srcdir}/../help/${help_rcdb}" tofile="${bindir}/miakro_911_${bin_type}/${help_rcdb}"/>			
-		<copy file="${srcdir}/../help/${help_gtru}" tofile="${bindir}/miakro_911_${bin_type}/${help_gtru}"/>
+		<copy file="${helpdir}/${help_rcdb}" tofile="${bindir}/miakro_911_${bin_type}/${help_rcdb}"/>			
+		<copy file="${helpdir}/${help_gtru}" tofile="${bindir}/miakro_911_${bin_type}/${help_gtru}"/>
 		<call target="nsis_bld"/>
 		
 		<property name="dist_type" value="rabnet_protected"/>
@@ -255,50 +229,7 @@
 		<delete file="${trunkdir}/distrib/distrib_nsis/setup_bld.nsi"/>
 		<delete file="${trunkdir}/distrib/distrib_nsis/setup.exe"/>
 		<delete file="${trunkdir}/distrib/distrib_nsis/include/LangStrings.nsh"/>
-	</target>
-
-	<target name="obfuscate" depends="buildall" description="Binary Obfuscation">
-		<property name="dir_bin" value="${bindir}/protected/bin"/>
-		
-		<exec program="${obfuscator}">
-			<arg value="${dir_bin}/mia_conv.exe" />
-			<arg value="${dir_bin}/updater.exe" />
-		</exec>
-		<exec program="${obfuscator}">			
-			<arg value="${bindir}/demo/bin/mia_conv.exe" />
-			<arg value="${bindir}/demo/bin/db.Interface.dll" />			
-			<arg value="${bindir}/demo/bin/db.mysql.dll" />
-			<arg value="${bindir}/demo/bin/engine.dll" />	
-			<arg value="${bindir}/demo/bin/rabnet.exe" />						
-		</exec>
-		<exec program="${grd_prot}">
-			<arg value="/INIT" />
-			<arg value="/MSG=${grd_path.bin}\licensewizard.msg" />
-			<arg value="/PER=20" />
-			<arg value="/RC=1" />
-			<arg value="/ATR=2" />
-			<arg value="/GS3S" />
-			<arg value="/GN3S" />
-			<arg value="/UN=1" />
-			<arg value="/SIGN" />
-			<arg value="/OUT=${dir_bin}/" />
-			<arg value="${dir_bin}/db.Interface.dll" />
-			<arg value="${dir_bin}/db.mysql.dll" />
-			<arg value="${dir_bin}/engine.dll" />
-			<arg value="${dir_bin}/rabnet.exe" />	
-			<arg value="${dir_bin}/rabdump.exe" />			
-		</exec>
-		
-		<delete file="${dir_bin}/rabnet.exe.old"/>			
-		<delete file="${dir_bin}/db.Interface.dll.old"/>
-		<delete file="${dir_bin}/db.mysql.dll.old"/>
-		<delete file="${dir_bin}/engine.dll.old"/>
-		<delete file="${dir_bin}/rabdump.exe.old"/>
-		<delete file="${dir_bin}/rabnet.map"/>
-		
-		<property name="obfuscated" value=".ob" />
-		<!--call target="release_zip"/-->
-	</target>
+	</target>	
 	
 	<target name="clean_mark">
 		<delete file="../build.ok" />
@@ -323,7 +254,7 @@
 		<mkdir dir="${bindir}/miakro_911_${bin_type}/mysql"/>
 		<copy file="${dotnetInstallerSource}" tofile="${bindir}/miakro_911_${bin_type}/dotnetfx20/${dotnetInstallerDest}"/>
 		<copy file="${mysqlInstallerSource}" tofile="${bindir}/miakro_911_${bin_type}/mysql/${mysqlInstallerDest}"/>
-		<copy file="${srcdir}/../help/${help_setup}" tofile="${bindir}/miakro_911_${bin_type}/${help_setup}"/>
+		<copy file="${helpdir}/${help_setup}" tofile="${bindir}/miakro_911_${bin_type}/${help_setup}"/>
 		<delete file="${trunkdir}/distrib/distrib_nsis/setup_bld.nsi"/>
 		<delete file="${trunkdir}/distrib/distrib_nsis/setup.exe"/>
 		<copy file="${trunkdir}/distrib/distrib_nsis/setup_${bin_type}_tmpl.nsi" tofile="${trunkdir}/distrib/distrib_nsis/setup_bld.nsi">

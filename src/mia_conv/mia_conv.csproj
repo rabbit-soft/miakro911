@@ -9,8 +9,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>mia_conv</RootNamespace>
     <AssemblyName>mia_conv</AssemblyName>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject>mia_conv.Program</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>

@@ -34,12 +34,7 @@ namespace rabnet.forms
         }
 
         private void rsb_itemGet(IData data)
-        {
-            if (data == null)
-            {
-                cs.RestoreAfterUpdate();
-                return;
-            }
+        {           
             Dead d = (data as Dead);
             ListViewItem li = listView1.Items.Add(d.name);
             li.Tag = d.id;
@@ -99,6 +94,11 @@ namespace rabnet.forms
                 Engine.get().logs().log(RabNetLogs.LogType.CHANGE_DEADREASON, id);
                 Engine.db().changeDeadReason(id, frm.NewReason);
             }
+        }
+
+        private void rsb_OnFinishUpdate()
+        {
+            cs.RestoreAfterUpdate();
         }
 
     }

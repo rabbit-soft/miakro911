@@ -8,6 +8,7 @@ using rabnet;
 
 namespace db.mysql
 {    
+#if !DEMO
     class Reports
     {
         MySqlConnection sql = null;
@@ -565,4 +566,5 @@ FROM butcher
 {0} ORDER BY b_date DESC;", period);
         }
     }
+#endif
 }

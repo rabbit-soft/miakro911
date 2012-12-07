@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Xml;
 using log4net;
 using MySql.Data.MySqlClient;
 using rabnet;
+using System.Xml;
 
 namespace db.mysql
 {
@@ -238,12 +238,7 @@ namespace db.mysql
         {
             return new ZooTehNullGetter();
         }
-
-        public List<String> getButcherMonths()
-        {
-            return Butcher.getButcherMonths(sql);
-        }
-
+       
         public List<String> getFuckMonths()
         {
             return FucksGetter.getFuckMonths(sql);
@@ -360,17 +355,7 @@ namespace db.mysql
         {
             return RabbitGetter.newRabbit(sql, r, mom);
         }
-
-        public LogList getLogs(Filters f)
-        {
-            return (new Logs(sql).getLogs(f));
-        }
-
-        public void ArchLogs()
-        {
-            (new Logs(sql)).ArchLogs();
-        }
-
+       
         public void addName(Rabbit.SexType sex, string name, string surname)
         {
             Names.addName(sql, sex, name, surname);
@@ -524,12 +509,7 @@ namespace db.mysql
             Buildings.deleteFarm(sql, fid);
         }
 #endregion buildings
-
-        public string[] logNames()
-        {
-            return new Logs(sql).logNames();
-        }
-
+        
         public string[] getWeights(int rabbit)
         {
             return new Weight(sql).getWeights(rabbit);
@@ -572,11 +552,12 @@ namespace db.mysql
                     return v;
             return null;
         }
-
+#if !DEMO
         public int AddVaccine(string name, int duration, int age, int after, bool zoo, int times)
         {
             return new Vaccines(sql).Add(name, duration, age, after, zoo, times);
         }
+#endif
 
         public void EditVaccine(int id, string name, int duration, int age, int after, bool zoo, int times)
         {
@@ -618,7 +599,41 @@ namespace db.mysql
         {
             FucksGetter.changeWorker(sql,fid, worker);
         }
-#region butcher
+
+        public DateTime GetFarmStartTime()
+        {
+            return Logs.getFarmStartTime(sql);
+        }
+
+        public IRabNetDataLayer Clone()
+        {
+            return this.MemberwiseClone() as IRabNetDataLayer;
+        }
+
+        public LogList getLogs(Filters f)
+        {
+            return (new Logs(sql).getLogs(f));
+        }
+
+#if !DEMO
+
+        public List<String> getButcherMonths()
+        {
+            return Butcher.getButcherMonths(sql);
+        }
+
+        
+
+        public string[] logNames()
+        {
+            return new Logs(sql).logNames();
+        }
+        public void ArchLogs()
+        {
+            (new Logs(sql)).ArchLogs();
+        }
+
+        #region butcher
         public IDataGetter getButcherDates(Filters f)
         {
             return new Butcher(sql, f);
@@ -666,7 +681,7 @@ namespace db.mysql
         //{
         //    Scale.DeletePLUsumary(sql, sid, lastClear);
         //}
-#endregion butcher
+        #endregion butcher
 
         public XmlDocument makeReport(myReportType type, Filters f)
         {
@@ -687,16 +702,8 @@ namespace db.mysql
         {
             return WebReports.GetGlobals(sql, dt, days);
         }
+#endif
 
-        public DateTime GetFarmStartTime()
-        {
-            return Logs.getFarmStartTime(sql);
-        }
-
-        public IRabNetDataLayer Clone()
-        {
-            return this.MemberwiseClone() as IRabNetDataLayer;
-        }
         #endregion IRabNetDataLayer Members
     }        
 }

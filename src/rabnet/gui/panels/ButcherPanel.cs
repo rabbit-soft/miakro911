@@ -48,27 +48,28 @@ namespace rabnet
         protected override IDataGetter onPrepare(Filters f)
         {
             _colSort.PrepareForUpdate();
+#if !DEMO
             if (f == null) f = new Filters();
             f.Add("type", Engine.opt().getOption(Options.OPT_ID.BUCHER_TYPE));
             IDataGetter dg = Engine.db2().getButcherDates(f);
             _rsb.SetText(1, dg.getCount().ToString() + " дат забоя");
             _rsb.SetText(2, dg.getCount2().ToString() + " забито");
             return dg;
+#else
+            return null;
+#endif
+
         }
 
         protected override void onItem(IData data)
         {
-            if (data == null)
-            {
-                _colSort.RestoreAfterUpdate();
-                return;
-            }
+#if !DEMO
             if (data == null) return;
             ButcherDate bd = (data as ButcherDate);
             ListViewItem lvi = lvButcherDates.Items.Add(bd.Date.ToShortDateString());
             lvi.SubItems.Add(bd.Victims.ToString());
             lvi.SubItems.Add(bd.Products.ToString());
-            //colSort.SemiReady();
+#endif
         }
 
         public override ContextMenuStrip getMenu()
@@ -78,6 +79,7 @@ namespace rabnet
 
         private void lvButcherDates_SelectedIndexChanged(object sender, EventArgs e)
         {
+#if !DEMO
             if (lvButcherDates.SelectedItems.Count == 0) return;
             DateTime date = DateTime.Parse(lvButcherDates.SelectedItems[0].SubItems[0].Text);
             AdultRabbit[] rabbits = Engine.get().db().GetVictims(date);
@@ -121,6 +123,7 @@ namespace rabnet
                 //    lvi.SubItems.Add(sm.TotalWeight.ToString());
                 //}
             }
+#endif
         }
 
         private void makeExcel()

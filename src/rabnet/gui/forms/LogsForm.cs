@@ -49,6 +49,7 @@ namespace rabnet.forms
         /// <param name="f">Коллекция фильтров</param>
         private void fillLogs()
         {
+#if !DEMO
             Filters f = getFilter();
             lvLogs.Items.Clear();
             foreach (LogList.OneLog l in Engine.db().getLogs(f).logs)
@@ -60,6 +61,7 @@ namespace rabnet.forms
                 li.SubItems.Add(l.user);
             }
             //lvLogs.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+#endif
         }
 
         private Filters getFilter()

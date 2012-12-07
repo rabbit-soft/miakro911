@@ -41,9 +41,9 @@ namespace rabnet.forms
                 new WorksPanel(rabStatusBar1),
                 new ButcherPanel(rabStatusBar1)
             };
-            curpanel = panels[0];
-            tabControl1.SelectedIndex = 0;
-            tabControl1_SelectedIndexChanged(null, null);
+            //curpanel = panels[0];
+            //tabControl1.SelectedIndex = 0;
+            //tabControl1_SelectedIndexChanged(null, null);
         }
 
         private void ExitMenuItem_Click(object sender, EventArgs e)
@@ -90,8 +90,7 @@ namespace rabnet.forms
             }
             rabStatusBar1.SetText(0, srvNow.ToShortDateString(),curDate);    
         
-            this.Text = Engine.get().farmName();
-            Engine.db().ArchLogs();
+            this.Text = Engine.get().farmName();            
 #if DEMO
             this.Text += " Демонстрационная версия";
 #endif
@@ -108,6 +107,7 @@ namespace rabnet.forms
             //rabStatusBar1.run();
             _manual = false;
 #if !DEMO
+            Engine.db().ArchLogs();
             checkPlugins();
     #if PROTECTED
             uint elapsed =(uint) GRD.Instance.GetDateEnd().Subtract(DateTime.Now).Days;
@@ -115,9 +115,13 @@ namespace rabnet.forms
                 MessageBox.Show(String.Format("Срок лицензии истекает через {0:d} дней", elapsed));
     #endif
 #endif
+
 #if PROTECTED || DEMO
             MainForm.ProtectTest(BuildingsPanel.GetFarmsCount(Engine.db().buildingsTree()));
 #endif
+
+            tabControl1.SelectedIndex = 0;//раньше было в конструкторе
+            tabControl1_SelectedIndexChanged(null, null);
         }
 
 #if !DEMO 
@@ -176,11 +180,14 @@ namespace rabnet.forms
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {          
-            curpanel.deactivate();
-            for (int i = 1; i < 5;i++ )
+        {
+            if (curpanel != null)
+            {
+                curpanel.deactivate();
+                panel1.Controls.Remove(curpanel);
+            }
+            for (int i = 1; i < 5; i++)
                 rabStatusBar1.SetText(i, "");
-            panel1.Controls.Remove(curpanel);
             curpanel = panels[tabControl1.SelectedIndex];
             panel1.Controls.Add(curpanel);
             tsmiActions.DropDown = curpanel.getMenu();           
@@ -360,6 +367,8 @@ namespace rabnet.forms
 
         private void tsmiDeadsArchive_Click(object sender, EventArgs e)
         {
+            if (rabStatusBar1.Working) return;
+
             new DeadForm().ShowDialog();
             if(!_mustclose)
                 rabStatusBar1.Run();
@@ -367,6 +376,7 @@ namespace rabnet.forms
 
         private void namesMenuItem_Click(object sender, EventArgs e)
         {
+            if (rabStatusBar1.Working) return;
             new NamesForm().ShowDialog();
         }
 
@@ -644,7 +654,11 @@ namespace rabnet.forms
 
         private void miMeal_Click(object sender, EventArgs e)
         {
+#if !DEMO
             (new MealForm()).ShowDialog();
+#else
+            DemoErr.DemoNoModuleMsg();
+#endif
         }
 
         private void miScale_Click(object sender, EventArgs e)
@@ -676,7 +690,12 @@ namespace rabnet.forms
 
         private void miLogs_Click(object sender, EventArgs e)
         {
+#if !DEMO
             (new LogsForm()).Show();
+#else
+            DemoErr.DemoNoModuleMsg();
+#endif
+
         }
     }
 }

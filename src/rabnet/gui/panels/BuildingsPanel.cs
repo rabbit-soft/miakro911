@@ -33,8 +33,8 @@ namespace rabnet
         private bool manual = true;
         //protected static readonly ILog _logger = LogManager.GetLogger(typeof(MainForm));
         const String NEW_BUILDING = "Новое строение";
-        List<int> nofarms = new List<int>();
-        int nofarm = 1;
+        List<int> _nofarmsList = new List<int>();
+        int _nofarm = 1;
         TreeNode nodeToAdd = null;
         int action = 0;
         int preBuilding = 0;
@@ -76,17 +76,17 @@ namespace rabnet
         
         private void addNoFarm(int farm)
         {
-            if (farm == nofarm)
+            if (farm == _nofarm)
             {
-                nofarm++;
+                _nofarm++;
                 return;
             }
-            if (farm < nofarm)
+            if (farm < _nofarm)
             {
-                nofarms.Remove(farm);
+                _nofarmsList.Remove(farm);
                 return;
             }
-            for (int i = nofarm; i < farm; i++)
+            for (int i = _nofarm; i < farm; i++)
             {
 #if PROTECTED
                 //if (i <= PClient.get().farms())
@@ -94,11 +94,11 @@ namespace rabnet
 #elif DEMO
                 if (i <= DEMO_MAX_FARMS)
 #endif              
-                if (nofarms.Count<NEW_FARMS_LIMIT)
-                    nofarms.Add(i);
-                else nofarms[NEW_FARMS_LIMIT-1]=i;
+                if (_nofarmsList.Count<NEW_FARMS_LIMIT)
+                    _nofarmsList.Add(i);
+                else _nofarmsList[NEW_FARMS_LIMIT-1]=i;
             }
-            nofarm = farm + 1;
+            _nofarm = farm + 1;
         }
 
         /// <summary>
@@ -145,19 +145,19 @@ namespace rabnet
         {
             manual = false;
             treeView1.Nodes.Clear();
-            nofarms.Clear();
-            nofarm = 1;
+            _nofarmsList.Clear();
+            _nofarm = 1;
             maxfarm = 0;
             BldTreeData buildTree = Engine.db().buildingsTree();
             TreeNode n = makeNode(null, "Ферма", buildTree);
 #if PROTECTED
 //            if (nofarm<=PClient.get().farms())
-            if (nofarm <= GRD.Instance.GetFarmsCnt())
+            if (_nofarm <= GRD.Instance.GetFarmsCnt())
 #elif DEMO
             if (Engine.db().getMFCount() <= DEMO_MAX_FARMS)
 #endif
-            if (nofarm <= MAX_FARMS_COUNT)
-                nofarms.Add(nofarm); 
+            if (_nofarm <= MAX_FARMS_COUNT)
+                _nofarmsList.Add(_nofarm); 
             MainForm.ProtectTest(BuildingsPanel.GetFarmsCount(buildTree));
             //treeView1.Sort();
             manual = true;
@@ -629,7 +629,7 @@ namespace rabnet
         {
             if (treeView1.SelectedNode == null) return;
             if (isFarm()) return;
-            if (nofarms.Count == 0 
+            if (_nofarmsList.Count == 0 
 #if DEMO
                 || Engine.db().getMFCount() >= DEMO_MAX_FARMS
 #elif PROTECTED
@@ -640,7 +640,7 @@ namespace rabnet
                 MessageBox.Show("Достигнуто максимальное количество ферм.");
                 return;
             }
-            if(new MiniFarmForm(buildNum(), nofarms.ToArray()).ShowDialog() == DialogResult.OK)
+            if(new MiniFarmForm(buildNum(), _nofarmsList.ToArray()).ShowDialog() == DialogResult.OK)
                 _rsb.Run();
         }
 

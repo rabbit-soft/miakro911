@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !DEMO
+using System;
 using System.Collections.Generic;
 using System.Text;
 using MySql.Data.MySqlClient;
@@ -6,7 +7,6 @@ using rabnet;
 
 namespace db.mysql
 {
-
     class Meal
     {
         public static List<sMeal> getMealPeriods(MySqlConnection sql)
@@ -88,3 +88,4 @@ namespace db.mysql
 
     }
 }
+#endif

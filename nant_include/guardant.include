@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project name="grd" default="full_build" basedir=".">
+
+	<!--property name="obfuscated" value="" /-->
+	<property name="obfuscator_eaz" value="Eazfuscator.NET.exe" />
+	
 	<property name="grd_path.bin" value="${grd_path}\Bin" />
 	<property name="grd_path.lib" value="${grd_path}\Lib" />
 	<property name="grd_path.lib64" value="${grd_path}\Lib\x64" />	
 	<property name="grd_path.drivers" value="${grd_path}\Drivers" />	
 	
-	<property name="guardant2.lib" value="GrdAPI32.DLL" />
-	<property name="guardant2_64.lib" value="GrdAPI64.DLL" />
-	<property name="guardantNET.lib" value="GuardantDotNetApi.dll" />
+	<property name="grd_lib.CS_32" value="CodeStorage32.dll" />
+	<property name="grd_lib.CS_64" value="CodeStorage64.dll" />
+	<property name="grd_lib.Api_32" value="GrdAPI32.DLL" />
+	<property name="grd_lib.Api_64" value="GrdAPI64.DLL" />	
+	<property name="grd_lib.NET" value="GuardantDotNetApi.dll" />
 	<property name="grdClientConf" value="gnclient.ini" />
 	
-	<property name="grd_ob" value="${grd_path.bin}/CodeObfuscator.exe" />
+	<property name="grd_obfusc" value="${grd_path.bin}/CodeObfuscator.exe" />
 	<property name="grd_prot" value="${grd_path.bin}/CodeProtect.exe" />
 	
 	<property name="GrdTru" value="GrdTRU.exe"/>
@@ -24,6 +30,7 @@
 	<property name="GrdDriver32Path" value="${grd_path.drivers}/x86/Windows/rus/${GrdDriverName}.msi"/>
 	<property name="GrdDriver64Path" value="${grd_path.drivers}/x64/Windows/rus/${GrdDriverName}.msi"/>
 	
+	
 	<target name="include_grd_tools">
 		<property name="bin_grd_tools" value="${bin_dir}/Guardant"/>
 		
@@ -33,6 +40,106 @@
 		
 		<copy file="${GrdDriver32Path}" tofile="${bin_grd_tools}/drivers/${GrdDriverName}_32.msi" />
 		<copy file="${GrdDriver64Path}" tofile="${bin_grd_tools}/drivers/${GrdDriverName}_64.msi" />
+	</target>
+	
+	<target name="include_grd_libs">
+		<copy file="${grd_path.bin}/${grd_lib.CS_32}" tofile="${bin_dir_bin}/${grd_lib.CS_32}" />
+		<copy file="${grd_path.bin}/${grd_lib.CS_64}" tofile="${bin_dir_bin}/${grd_lib.CS_64}" />
+		<copy file="${grd_path.lib}/${grd_lib.Api_32}" tofile="${bin_dir_bin}/${grd_lib.Api_32}" />
+		<copy file="${grd_path.lib64}/${grd_lib.Api_64}" tofile="${bin_dir_bin}/${grd_lib.Api_64}" />
+		<copy file="${grd_path.lib}/${grd_lib.NET}" tofile="${bin_dir_bin}/${grd_lib.NET}" />		
+	</target>
+	
+	
+	<target name="protect" depends="buildall,protect_demo" description="Obfuscate and Protect code">
+		<property name="dir_bin" value="${bindir}/protected/bin"/>
+			
+		<!--уxec program="${obfuscator_eaz}">
+			<arg value="${dir_bin}/mia_conv.exe" />
+			<arg value="${dir_bin}/updater.exe" />
+		</exec-->	
+		
+		<call target="obfuscate_grd"/>
+		
+		<!--exec program="${grd_prot}">
+			<arg value="/INIT" />
+			<arg value="/MSG=${grd_path.bin}\licensewizard.msg" />
+			<arg value="/PER=20" />
+			<arg value="/RC=1" />
+			<arg value="/ATR=2" />
+			<arg value="/GS3S" />
+			<arg value="/GN3S" />
+			<arg value="/UN=1" />
+			<arg value="/SIGN" />
+			<arg value="/OUT=${dir_bin}/" />
+			<arg value="${dir_bin}/db.Interface.dll" />
+			<arg value="${dir_bin}/db.mysql.dll" />
+			<arg value="${dir_bin}/engine.dll" />
+			<arg value="${dir_bin}/rabnet.exe" />	
+			<arg value="${dir_bin}/rabdump.exe" />			
+		</exec-->
+		
+		<delete>
+			<fileset>
+				<include name="${dir_bin}/*.old" />
+			</fileset>
+		</delete>
+		
+		<!--property name="obfuscated" value=".ob" /-->
+		<!--call target="release_zip"/-->
+	</target>
+	
+	<target name="protect_demo" description="demo obfuscation">
+		<exec program="${obfuscator_eaz}">			
+			<arg value="${bindir}/demo/bin/mia_conv.exe" />
+			<arg value="${bindir}/demo/bin/db.Interface.dll" />			
+			<arg value="${bindir}/demo/bin/db.mysql.dll" />
+			<arg value="${bindir}/demo/bin/engine.dll" />	
+			<arg value="${bindir}/demo/bin/rabnet.exe" />						
+		</exec>
+	</target>
+	
+	<target name="obfuscate_grd">
+	
+		<exec program="${grd_obfusc}">
+			<arg value="/INIT" />
+			<arg value="/SO" />
+			<arg value="/OP" />
+			<arg value="/MAP=${tmpdir}/grd_tools.map" />
+			<arg value="/OUT=${dir_bin}/" />
+			<arg value="${dir_bin}/mia_conv.exe" />
+			<arg value="${dir_bin}/updater.exe" />
+		</exec>
+		
+		<exec program="${grd_obfusc}">
+			<arg value="/INIT" />			
+			<arg value="/SO" />
+			<!--arg value="/SE" /--> <!-- Обфускация Строковых Констант: сильно уменьшает скорость db.mysql.dll -->
+			<arg value="/OP"/>
+			<arg value="/GS3S" />
+			<arg value="/GN3S" />
+			<arg value="/MAP=${tmpdir}/grd_obfuscate.map" />
+			<arg value="/OUT=${dir_bin}/" />
+			<arg value="${dir_bin}/db.Interface.dll" />
+			<arg value="${dir_bin}/db.mysql.dll" />	
+			<arg value="${dir_bin}/engine.dll" />			
+			<arg value="${dir_bin}/rabnet.exe" />
+			<arg value="${dir_bin}/rabdump.exe" />
+		</exec>
+		
+		<!--exec program="${grd_obfusc}">
+			<arg value="/INIT" />			
+			<arg value="/SO" />
+			<arg value="/OP" />			
+			<arg value="/GS3S" />
+			<arg value="/GN3S" />
+			<arg value="/MAP=${tmpdir}/grd_obfuscate.map" />
+			<arg value="/OUT=${dir_bin}/" />				
+			<arg value="${dir_bin}/engine.dll" />			
+			<arg value="${dir_bin}/rabnet.exe" />
+			<arg value="${dir_bin}/rabdump.exe" />	
+		</exec-->
+		
 	</target>
 	
 </project>

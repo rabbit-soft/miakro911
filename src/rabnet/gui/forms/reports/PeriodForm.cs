@@ -14,21 +14,10 @@ namespace rabnet.forms
     {
         //public enum enumReportType { DeadReasons, Deads,Fucks };
         public static XmlDocument nullDocument = new XmlDocument();
-        public static XmlElement nullElem = nullDocument.CreateElement("none");
-
+        public static XmlElement nullElem = nullDocument.CreateElement("none");        
+                
+#if !DEMO
         public readonly myReportType ReportType = myReportType.TEST;
-        
-        private PeriodForm()
-        {
-            InitializeComponent();
-        }
-
-        public PeriodForm(string caption) : this()
-        {
-            lbReportName.Text = caption;
-            fillDates();
-            rbDay_CheckedChanged(null, null);
-        }
 
         public PeriodForm(myReportType type) : this()
         {
@@ -46,6 +35,19 @@ namespace rabnet.forms
                     break;
             }
             this.ReportType = type;
+        }
+#endif
+        private PeriodForm()
+        {
+            InitializeComponent();
+        }
+
+        public PeriodForm(string caption)
+            : this()
+        {
+            lbReportName.Text = caption;
+            fillDates();
+            rbDay_CheckedChanged(null, null);
         }
 
         /// <summary>
@@ -143,6 +145,7 @@ namespace rabnet.forms
 
         private void fillDates()
         {
+#if !DEMO
             cbMonth.Items.Clear();
             cbYear.Items.Clear();
 
@@ -173,6 +176,7 @@ namespace rabnet.forms
                 this.DialogResult = DialogResult.Cancel;
                 this.Close();
             }
+#endif
         }
 
         public DateTime MaxDate { get { return dtpDay.MaxDate; } }
@@ -211,4 +215,5 @@ namespace rabnet.forms
         }
 
     }
+
 }

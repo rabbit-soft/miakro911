@@ -122,6 +122,11 @@ namespace rabnet.components
             }
         }
 
+        public bool Working
+        {
+            get { return _dataThread != null; }
+        }
+
         public void Run()
         {
             if ((int)btRefreshStop.Tag == 0)
@@ -130,7 +135,8 @@ namespace rabnet.components
 
         public void Stop()
         {
-            stopDataThread();
+            if ((int)btRefreshStop.Tag == 1)
+                btRefreshStop.PerformClick();
         }
 
         public void SetText(int item,String text)
@@ -170,19 +176,11 @@ namespace rabnet.components
         }
         private void endProgress()
         {
-            if (this.InvokeRequired)
-            {
-                RSBEventHandler d = new RSBEventHandler(endProgress);
-                this.Invoke(d);
-            }
-            else
-            {
-                ///если загрузку останавливает пользователь, то прогресс бар застывает и не сбразывается
-                pb.Value = pb.Minimum;
-                pb.Invalidate();
-                btRefreshStop.Image = imageList1.Images[1];
-                btRefreshStop.Tag = 0;
-            }
+            ///если загрузку останавливает пользователь, то прогресс бар застывает и не сбразывается
+            pb.Value = pb.Minimum;
+            pb.Invalidate();
+            btRefreshStop.Image = imageList1.Images[1];
+            btRefreshStop.Tag = 0;
         }
         #endregion progress
 
@@ -214,8 +212,8 @@ namespace rabnet.components
         {
             btFilter.PerformClick();
         }
+        
         #region clicks
-
         private void btn_Click(object sender, EventArgs e)
         {
             ///если кнопка имеет вид "Обновить"
@@ -236,24 +234,24 @@ namespace rabnet.components
 
         private void filt_Click(object sender, EventArgs e)
         {
-            if (_filterPanel!=null)
-            {
-                if (_filterPanel.Visible)
-                    filterHide();
-                else
-                    filterShow();
-            }
+            if (_filterPanel == null || Working) return;
+
+            if (_filterPanel.Visible)
+                filterHide();
+            else
+                filterShow();
         }
 
         private void excel_Click(object sender, EventArgs e)
         {
+            if (Working) return;
+
             this.Parent.Enabled = false;
             ExcelButtonClick();
             this.Parent.Enabled = true;
         }
 
         #endregion clicks
-
         private void startDataThread(IDataGetter dg)
         {
             if (_dataThread != null)
@@ -268,9 +266,18 @@ namespace rabnet.components
 
         void _dataThread_OnFinish()
         {
-            if (OnFinishUpdate != null)
-                OnFinishUpdate();
-            endProgress();   
+            if (this.InvokeRequired)
+            {
+                RSBEventHandler d = new RSBEventHandler(_dataThread_OnFinish);
+                this.Invoke(d);
+            }
+            else
+            {
+                if (OnFinishUpdate != null)
+                    OnFinishUpdate();
+                endProgress();
+                _dataThread = null;
+            }
         }
 
         void _dataThread_onItem(IData data,int progr)

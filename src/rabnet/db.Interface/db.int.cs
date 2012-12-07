@@ -67,7 +67,7 @@ namespace rabnet
         OneRabbit[] GetNeighbors(int rabId);
         int[] getTiers(int farm);
         Building getBuilding(int tier);       
-        List<sMeat> getMeats(DateTime date);
+        
         /// <summary>
         /// Список Молодняка
         /// </summary>
@@ -75,10 +75,8 @@ namespace rabnet
         IDataGetter getRabbits(Filters filters);
         IDataGetter getBuildingsRows(Filters filters);
         IDataGetter getNames(Filters filters);
-        IDataGetter zooTeh(Filters f);
-        IDataGetter getButcherDates(Filters f);
-        IDataGetter getDead(Filters filters);
-        List<String> getButcherMonths();
+        IDataGetter zooTeh(Filters f);        
+        IDataGetter getDead(Filters filters);        
         List<String> getFuckMonths();
         void changeDeadReason(int rid, int reason);
         List<String> getDeadsMonths();
@@ -91,14 +89,16 @@ namespace rabnet
         //Fucks GetAllFuckers(int female,bool geterosis,bool inbreeding,int malewait);
         Fucks GetAllFuckers(Filters f);
         void setBon(int rabbit,String bon);
+
         /// <summary>
         /// Случает крольчиху
         /// </summary>
         /// <param name="femaleId">ID крольчихи</param>
         /// <param name="maleId">ID самца</param>
-        /// <param name="date">Дата случки</param>
+        /// <param name="daysPast">Дней прошло</param>
         /// <param name="worker">ID пользователя (работника)</param>
-		/// <param name="syntetic);">Искусственное осеменение</param>
+        /// <param name="syntetic);">Искусственное осеменение</param>
+        /// <param name="syntetic">Искуственное осеменение</param>
         void MakeFuck(int femaleId, int maleId, int daysPast, int worker, bool syntetic);
         void makeProholost(int female, int daysPast);
         int makeOkrol(int female, int daysPast, int children, int dead);
@@ -109,8 +109,7 @@ namespace rabnet
         void replaceRabbit(int rid, int farm, int tier_id, int sec);
         void replaceYounger(int yid, int farm, int tier_id, int sec);
         int newRabbit(OneRabbit r,int mom);
-        LogList getLogs(Filters f);
-        void ArchLogs();
+                
         void updateBuilding(Building b);
         void addName(Rabbit.SexType sex, string name, string surname);
         void changeName(string orgName, string name, string surname);
@@ -119,7 +118,7 @@ namespace rabnet
         /// Списание кролика
         /// </summary>
         /// <param name="id">ID кролика</param>
-        /// <param name="when">Дата списания</param>
+        /// <param name="daysPast">Дней прошло</param>
         /// <param name="reason">Причина списания</param>
         /// <param name="notes">Заметки</param>
         void KillRabbit(int id, int daysPast,int reason,string notes);
@@ -144,10 +143,8 @@ namespace rabnet
         void resurrect(int rid);       
         void placeSucker(int sucker, int mother);
         void combineGroups(int rabfrom, int rabto);
-        XmlDocument makeReport(myReportType type, Filters f);
-        XmlDocument makeReport(string query);
-        AdultRabbit[] getMothers(int age,int agediff);        
-        String[] logNames();        
+
+        AdultRabbit[] getMothers(int age,int agediff);                 
         void setBuildingName(int bid,String name);
         void addBuilding(int parent, String name);
         void replaceBuilding(int bid, int toBuilding);
@@ -158,11 +155,14 @@ namespace rabnet
         void deleteFarm(int fid);             
         String[] getWeights(int rabbit);
 
+        // vaccines
         RabVac[] GetRabVac(int rabId);
         List<Vaccine> GetVaccines();
         Vaccine GetVaccine(int vid);
-        int AddVaccine(string name, int duration, int age, int after, bool zoo,int times);
         void EditVaccine(int id, string name, int duration, int age, int after, bool zoo,int times);
+#if !DEMO
+        int AddVaccine(string name, int duration, int age, int after, bool zoo,int times);
+#endif
 
         void addWeight(int rabbit, int weight, DateTime date);
         void deleteWeight(int rabbit, DateTime date);
@@ -172,8 +172,7 @@ namespace rabnet
         void changeFucker(int fid, int fucker);
         void changeWorker(int fid, int worker);
 		RabbitGen getRabbitGen(int rid);
-		Dictionary<int, Color> getBreedColors();
-        AdultRabbit[] GetVictims(DateTime dt);
+		Dictionary<int, Color> getBreedColors();       
 
         //zooTech
         ZootehJob[] GetZooTechJobs(Filters f, JobType type);
@@ -184,6 +183,23 @@ namespace rabnet
         ICatalog getZones();
         ICatalog getProductTypes();
         //ICatalog getVaccines();
+
+        void SetRabbitVaccine(int rid, int vid, DateTime date);
+        void SetRabbitVaccine(int rid, int vid);
+
+        LogList getLogs(Filters f);
+#if !DEMO
+        void ArchLogs();
+        String[] logNames();
+        
+
+        IDataGetter getButcherDates(Filters f);
+        List<String> getButcherMonths();
+        List<sMeat> getMeats(DateTime date);
+        AdultRabbit[] GetVictims(DateTime dt);
+
+        XmlDocument makeReport(myReportType type, Filters f);
+        XmlDocument makeReport(string query);
 
         //for buther
         List<sMeal> getMealPeriods();
@@ -201,9 +217,9 @@ namespace rabnet
         string[] WebReportsGlobal(DateTime dt,int days);
         DateTime GetFarmStartTime();
 
-        void SetRabbitVaccine(int rid, int vid,DateTime date);
-        void SetRabbitVaccine(int rid, int vid);
+        
 
+#endif
         IRabNetDataLayer Clone();        
     }
 

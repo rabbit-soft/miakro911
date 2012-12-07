@@ -118,7 +118,9 @@ namespace rabnet.forms
 
             if (editRow.Cells[FIELD_ID].Value == null)
             {
+#if !DEMO
                 editRow.Cells[FIELD_ID].Value = Engine.db().AddVaccine(name, duration, age, after, zoo,times);
+#endif
                 fillTable();
             }
             else

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !DEMO
+using System;
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 using System.Text;
@@ -149,3 +150,4 @@ FROM butcher WHERE DATE(b_date)='{0:yyy-MM-dd}' ORDER by b_date DESC;",dt), sql)
     //    }
     //}
 }
+#endif

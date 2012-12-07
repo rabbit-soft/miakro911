@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project name="compilation" default="full_build" basedir=".">	
+	
+	<target name="miaconv" description="Make mia converter project">
+		<copy file="${srcdir}/mia_conv/rabnet_db_fmt.sql" tofile="${srcdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
+		<!--copy file="${log4net.use}" tofile="${bin_dir}/Tools/${log4net.lib}" /-->
+		<csc target="winexe" output="${bin_dir_bin}/mia_conv.exe" win32icon="${srcdir}/mia_conv/icon_yell_red.ico" define="${compile_flag}" optimize="true">
+			<sources>
+				<include name="${tmpdir}/VersionInfo.cs"/>
+				<include name="${srcdir}/mia_conv/*.cs"/>	
+				<include name="${srcdir}/mia_conv/miaRepair/*.cs"/>					
+			</sources>
+			<resources>
+				<include name="${srcdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
+				<include name="${srcdir}/mia_conv/*.resx"/>
+			</resources>
+			<references>
+				<include name="${mysql.use}"/>
+				<include name="${log4net.use}"/>
+			</references>
+		</csc>
+		<copy file="${srcdir}/mia_conv/app.config" tofile="${bin_dir_bin}/mia_conv.exe.config" />
+		<delete file="${srcdir}/mia_conv/mia_conv.rabnet_db_fmt.sql"/>
+	</target>
+	
 	<target name="db.Interface" description="interface for all data layer">
 		<csc target="library" output="${bin_dir_bin}/db.Interface.dll" define="${compile_flag}" optimize="true">
 			<sources>
@@ -124,7 +147,7 @@
 			</resources>
 			<references>
 				<include name="${log4net.use}"/>
-				<include name="${bin_dir_bin}/${guardantNET.lib}" />												
+				<include name="${bin_dir_bin}/${grd_lib.NET}" />												
 				<include name="${bin_dir_bin}/db.Interface.dll"/>
 				<include name="${bin_dir_bin}/engine.dll"/>
 				<include name="${party3d.path}/ccxmlrpc.dll"/>
@@ -172,7 +195,7 @@
 			<references>		
 				<include name="${log4net.use}"/>
 				<include name="${sb.use}"/>
-				<include name="${bin_dir_bin}/${guardantNET.lib}" />
+				<include name="${bin_dir_bin}/${grd_lib.NET}" />
 				<include name="${bin_dir_bin}/db.Interface.dll" />
 				<include name="${bin_dir_bin}/engine.dll" />
 				<include name="${rep.use}"/>

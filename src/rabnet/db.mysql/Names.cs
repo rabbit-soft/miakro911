@@ -8,9 +8,7 @@ namespace db.mysql
 {
     class Names:RabNetDataGetterBase
     {
-        public Names(MySqlConnection sql, Filters opts) : base(sql, opts) 
-        {
-        }
+        public Names(MySqlConnection sql, Filters opts) : base(sql, opts) { }
 
         public override IData NextItem()
         {

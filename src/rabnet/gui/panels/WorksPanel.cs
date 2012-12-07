@@ -69,7 +69,7 @@ namespace rabnet
                 itm = -1;
                 if (lvZooTech.SelectedItems.Count == 1)
                     itm = lvZooTech.SelectedItems[0].Index;
-                _colSort.PrepareForUpdate();
+                base.onPrepare(f);
                 lvZooTech.Items.Clear();
                 repdate = DateTime.Now;
             }
@@ -105,7 +105,7 @@ namespace rabnet
 
         protected override void onFinishUpdate()
         {
-            _colSort.RestoreAfterUpdate();
+            base.onFinishUpdate();
             if (itm > -1 && lvZooTech.Items.Count > itm)
             {
                 lvZooTech.Items[itm].Selected = true;

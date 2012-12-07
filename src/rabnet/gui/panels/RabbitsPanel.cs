@@ -244,7 +244,7 @@ namespace rabnet
                     minbon = "" + b[i];
             return getBon(minbon);
         }
-
+#if !DEMO
         private XmlDocument rabToXml(RabNetEngRabbit er, OneRabbit or)
         {
             return rabToXml(er, or, null);
@@ -306,44 +306,6 @@ namespace rabnet
                 ReportHelper.Append(rw, doc, "bclass", getBon("" + er.Bon[1]));
                 ReportHelper.Append(rw, doc, "hclass", getBon("" + er.Bon[3]));
                 ReportHelper.Append(rw, doc, "cclass", getBon("" + er.Bon[4]));
-                #region old
-                //rw.AppendChild(doc.CreateElement("sex")).AppendChild(doc.CreateTextNode(er.Sex == Rabbit.SexType.MALE ? "male" : (er.Sex == Rabbit.SexType.FEMALE ? "female" : "void")));
-                //rw.AppendChild(doc.CreateElement("class")).AppendChild(doc.CreateTextNode());
-                //rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(er.FullName));
-                //rw.AppendChild(doc.CreateElement("breed")).AppendChild(doc.CreateTextNode(er.BreedName));
-                //rw.AppendChild(doc.CreateElement("born_place")).AppendChild(doc.CreateTextNode(zones.ContainsKey(er.Zone)?zones[er.Zone]:"-"));
-                //rw.AppendChild(doc.CreateElement("born_date")).AppendChild(doc.CreateTextNode(er.Born.ToShortDateString()));
-                //rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(er.age.ToString()));
-                //rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(er.SmallAddress));
-                //rw.AppendChild(doc.CreateElement("weight")).AppendChild(doc.CreateTextNode(or.Rate.ToString()));
-                //rw.AppendChild(doc.CreateElement("weight_date")).AppendChild(doc.CreateTextNode(or.EventDate.Date.ToShortDateString()));
-                //rw.AppendChild(doc.CreateElement("weight_age")).AppendChild(doc.CreateTextNode(or.weight_age.ToString()));
-                //rw.AppendChild(doc.CreateElement("born")).AppendChild(doc.CreateTextNode(or.kidsOverAll.ToString()));
-                //rw.AppendChild(doc.CreateElement("okrol")).AppendChild(doc.CreateTextNode(or.BreedID.ToString()));
-                //rw.AppendChild(doc.CreateElement("genom")).AppendChild(doc.CreateTextNode(er.Genom.Replace(' ',',')));
-                //rw.AppendChild(doc.CreateElement("wclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[1])));
-                //rw.AppendChild(doc.CreateElement("bclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[2])));
-                //rw.AppendChild(doc.CreateElement("hclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[3])));
-                //rw.AppendChild(doc.CreateElement("cclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[4])));
-                //rw.AppendChild(doc.CreateElement("sex")).AppendChild(doc.CreateTextNode(er.Sex == Rabbit.SexType.MALE ? "male" : (er.Sex == Rabbit.SexType.FEMALE ? "female" : "void")));
-                //rw.AppendChild(doc.CreateElement("class")).AppendChild(doc.CreateTextNode(getBon(er.Bon)));
-                //rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(er.FullName));
-                //rw.AppendChild(doc.CreateElement("breed")).AppendChild(doc.CreateTextNode(er.BreedName));
-                //rw.AppendChild(doc.CreateElement("born_place")).AppendChild(doc.CreateTextNode(zones.ContainsKey(er.Zone)?zones[er.Zone]:"-"));
-                //rw.AppendChild(doc.CreateElement("born_date")).AppendChild(doc.CreateTextNode(er.Born.ToShortDateString()));
-                //rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(er.age.ToString()));
-                //rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(er.SmallAddress));
-                //rw.AppendChild(doc.CreateElement("weight")).AppendChild(doc.CreateTextNode(or.Rate.ToString()));
-                //rw.AppendChild(doc.CreateElement("weight_date")).AppendChild(doc.CreateTextNode(or.EventDate.Date.ToShortDateString()));
-                //rw.AppendChild(doc.CreateElement("weight_age")).AppendChild(doc.CreateTextNode(or.weight_age.ToString()));
-                //rw.AppendChild(doc.CreateElement("born")).AppendChild(doc.CreateTextNode(or.kidsOverAll.ToString()));
-                //rw.AppendChild(doc.CreateElement("okrol")).AppendChild(doc.CreateTextNode(or.BreedID.ToString()));
-                //rw.AppendChild(doc.CreateElement("genom")).AppendChild(doc.CreateTextNode(er.Genom.Replace(' ',',')));
-                //rw.AppendChild(doc.CreateElement("wclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[1])));
-                //rw.AppendChild(doc.CreateElement("bclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[2])));
-                //rw.AppendChild(doc.CreateElement("hclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[3])));
-                //rw.AppendChild(doc.CreateElement("cclass")).AppendChild(doc.CreateTextNode(getBon("" + er.Bon[4])));
-                #endregion old
             }
             else if (or != null)
             {
@@ -356,17 +318,6 @@ namespace rabnet
                 ReportHelper.Append(rw, doc, "bclass", getBon("" + or.Bon[1]));
                 ReportHelper.Append(rw, doc, "hclass", getBon("" + or.Bon[3]));
                 ReportHelper.Append(rw, doc, "cclass", getBon("" + or.Bon[4]));
-                #region old
-                //rw.AppendChild(doc.CreateElement("sex")).AppendChild(doc.CreateTextNode(or.Sex==Rabbit.SexType.MALE?"male":"female"));
-                //rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(or.Status.ToString()+(or.zone==1?"(списан)":"")));
-                //rw.AppendChild(doc.CreateElement("weight")).AppendChild(doc.CreateTextNode(or.Rate.ToString()));
-                //rw.AppendChild(doc.CreateElement("class")).AppendChild(doc.CreateTextNode(getBon(or.Bon)));
-                //rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(or.NameFull));
-                //rw.AppendChild(doc.CreateElement("wclass")).AppendChild(doc.CreateTextNode(getBon(""+or.Bon[1])));
-                //rw.AppendChild(doc.CreateElement("bclass")).AppendChild(doc.CreateTextNode(getBon("" + or.Bon[2])));
-                //rw.AppendChild(doc.CreateElement("hclass")).AppendChild(doc.CreateTextNode(getBon("" + or.Bon[3])));
-                //rw.AppendChild(doc.CreateElement("cclass")).AppendChild(doc.CreateTextNode(getBon("" + or.Bon[4])));
-                #endregion old
             }
             else
             {
@@ -379,21 +330,10 @@ namespace rabnet
                 ReportHelper.Append(rw, doc, "bclass", "");
                 ReportHelper.Append(rw, doc, "hclass", "");
                 ReportHelper.Append(rw, doc, "cclass", "");
-                #region old
-                //rw.AppendChild(doc.CreateElement("sex")).AppendChild(doc.CreateTextNode("none"));
-                //rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(""));
-                //rw.AppendChild(doc.CreateElement("weight")).AppendChild(doc.CreateTextNode(""));
-                //rw.AppendChild(doc.CreateElement("class")).AppendChild(doc.CreateTextNode(""));
-                //rw.AppendChild(doc.CreateElement("name")).AppendChild(doc.CreateTextNode(""));
-                //rw.AppendChild(doc.CreateElement("wclass")).AppendChild(doc.CreateTextNode(""));
-                //rw.AppendChild(doc.CreateElement("bclass")).AppendChild(doc.CreateTextNode(""));
-                //rw.AppendChild(doc.CreateElement("hclass")).AppendChild(doc.CreateTextNode(""));
-                //rw.AppendChild(doc.CreateElement("cclass")).AppendChild(doc.CreateTextNode(""));
-                #endregion old
             }
             return doc;
         }
-       
+#endif
         private void actMenu_Opening(object sender, CancelEventArgs e)
         {
             if (listView1.SelectedItems.Count < 1)

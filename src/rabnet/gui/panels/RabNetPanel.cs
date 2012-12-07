@@ -136,18 +136,10 @@ namespace rabnet
             return null;
         }
 
-        protected virtual void onFinishUpdate() 
+        protected virtual void onFinishUpdate()
         {
-            if (this.InvokeRequired)
-            {
-                RSBEventHandler d = new RSBEventHandler(onFinishUpdate);
-                this.Invoke(d);
-            }
-            else
-            {
-                _colSort.RestoreAfterUpdate();
-                this.Enabled = true;
-            }
+            _colSort.RestoreAfterUpdate();
+            this.Enabled = true;
         }
 
         public virtual ContextMenuStrip getMenu()

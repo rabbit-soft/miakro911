@@ -28,6 +28,7 @@ namespace rabnet.forms
 
         private void fillPeriods()
         {
+#if !DEMO
             dataGridView1.Rows.Clear();
             List<sMeal> per = Engine.get().db().getMealPeriods();
             double summary = 0;
@@ -50,7 +51,8 @@ namespace rabnet.forms
                 dataGridView1.CurrentCell = this.dataGridView1[0, this.dataGridView1.Rows.Count - 1];              
             if(scnt!=0)
                 lbSummary.Text = sumTextRus + (summary / scnt).ToString("0.0000");
-            dtpStartDate.MaxDate = DateTime.Now;           
+            dtpStartDate.MaxDate = DateTime.Now;       
+#endif
         }
 
         private void btClose_Click(object sender, EventArgs e)
@@ -60,6 +62,7 @@ namespace rabnet.forms
 
         private void btAdd_Click(object sender, EventArgs e)
         {
+#if !DEMO
             if (!(rbIn.Checked || rbSell.Checked)) { MessageBox.Show("Выберите \"Привоз\" или \"Продажа\""); return; }
             if (tbAmount.Text == "" || tbAmount.Text == "0") { MessageBox.Show("Заполните данными поле \"Объем\""); return; }
             if (rbIn.Checked)
@@ -80,6 +83,7 @@ namespace rabnet.forms
                 dtpStartDate.Value = dtpStartDate.MaxDate;
             }
             rbIn.Checked = rbSell.Checked = false;
+
         }
 
         private bool canAddMealOut()
@@ -120,20 +124,22 @@ namespace rabnet.forms
                 
             }
             return !(remain < 0);
+#endif
         }
 
         private void miDelete_Click(object sender, EventArgs e)
         {
+#if !DEMO
             if (dataGridView1.SelectedRows.Count == 0) return;
             int d = (dataGridView1.SelectedRows[0].Tag as sMeal).Id;
             Engine.db().deleteMeal(d);
             fillPeriods();
+#endif
         }
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
             MainForm.StillWorking();
         }
-
     }
 }

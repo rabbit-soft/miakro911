@@ -21,6 +21,7 @@ namespace rabnet
         int[] _intSorts = null;
         int _selItem = 0;
         Options.OPT_ID option = Options.OPT_ID.NONE;
+
         public ListViewColumnSorter(ListView lv,int[] intsorts,Options.OPT_ID op)
         {
             ColumnToSort = 0;

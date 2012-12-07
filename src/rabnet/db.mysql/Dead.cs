@@ -138,7 +138,7 @@ m_id={2:d} AND ((t_id=m_upper AND {1:d}<>1)OR(t_id=m_lower AND {1:d}=1));",sec+1
         internal static void changeDeadReason(MySqlConnection sql, int rid, int reason)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format("UPDATE dead SET d_reason={1:d} WHERE r_id={0:d};", rid, reason), sql);
-            cmd.ExecuteNonQuery();
+            cmd.ExecuteNonQuery();///todo эта операция выполняется очень долго и выпадает 
         }
     }
 }

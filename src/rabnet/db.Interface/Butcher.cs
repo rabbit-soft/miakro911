@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿#if !DEMO
+using System;
 
 namespace rabnet
 {
@@ -68,3 +67,4 @@ namespace rabnet
     //    }
     //}
 }
+#endif

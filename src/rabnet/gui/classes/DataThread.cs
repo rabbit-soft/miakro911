@@ -51,9 +51,13 @@ namespace rabnet
         public void Stop()
         {
             _stopRequired=true;
-            _thr.Abort();
-            _thr = null;
-            _dataGetter.Close();
+            if (_thr != null)
+            {
+                _thr.Abort();
+                _thr = null;
+            }
+            if(_dataGetter!=null)
+                _dataGetter.Close();
         }
 
         private void threadProc()
