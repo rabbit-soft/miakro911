@@ -269,7 +269,7 @@
 		<copy file="${trunkdir}/distrib/distrib_nsis/include/LangStrings.tmp.nsh" tofile="${trunkdir}/distrib/distrib_nsis/include/LangStrings.nsh" overwrite="true">
 			<filterchain>
 				<replacetokens>
-					<token key="AppVer" value="500.700.800.900" />
+					<token key="AppVer" value="${fullver}" />
 					<token key="AppName" value="${appname}" />
 					<token key="AppName_en" value="${appname_en}" />
 					<token key="CompanyName" value="${companyname}" />
