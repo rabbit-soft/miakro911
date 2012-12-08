@@ -43,8 +43,6 @@
 	</target>
 	
 	<target name="include_grd_libs">
-		<!--copy file="${grd_path.bin}/${grd_lib.CS_32}" tofile="${bin_dir_bin}/${grd_lib.CS_32}" />
-		<copy file="${grd_path.bin}/${grd_lib.CS_64}" tofile="${bin_dir_bin}/${grd_lib.CS_64}" /-->
 		<copy file="${grd_path.lib}/${grd_lib.Api_32}" tofile="${bin_dir_bin}/${grd_lib.Api_32}" />
 		<copy file="${grd_path.lib64}/${grd_lib.Api_64}" tofile="${bin_dir_bin}/${grd_lib.Api_64}" />
 		<copy file="${grd_path.lib}/${grd_lib.NET}" tofile="${bin_dir_bin}/${grd_lib.NET}" />		

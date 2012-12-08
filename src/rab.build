@@ -257,7 +257,8 @@
 		<copy file="${helpdir}/${help_setup}" tofile="${bindir}/miakro_911_${bin_type}/${help_setup}"/>
 		<delete file="${trunkdir}/distrib/distrib_nsis/setup_bld.nsi"/>
 		<delete file="${trunkdir}/distrib/distrib_nsis/setup.exe"/>
-		<copy file="${trunkdir}/distrib/distrib_nsis/setup_${bin_type}_tmpl.nsi" tofile="${trunkdir}/distrib/distrib_nsis/setup_bld.nsi">
+		
+		<copy file="${trunkdir}/distrib/distrib_nsis/setup_${bin_type}_tmpl.nsi" tofile="${trunkdir}/distrib/distrib_nsis/setup_bld.nsi" overwrite="true">
 			<filterchain>
 				<replacetokens>
 					<token key="bin_type" value="${bin_type}" />
@@ -265,10 +266,10 @@
 				<!--tabstospaces /-->
 			</filterchain>
 		</copy>
-		<copy file="${trunkdir}/distrib/distrib_nsis/include/LangStrings.tmp.nsh" tofile="${trunkdir}/distrib/distrib_nsis/include/LangStrings.nsh">
+		<copy file="${trunkdir}/distrib/distrib_nsis/include/LangStrings.tmp.nsh" tofile="${trunkdir}/distrib/distrib_nsis/include/LangStrings.nsh" overwrite="true">
 			<filterchain>
 				<replacetokens>
-					<token key="AppVer" value="${fullver}" />
+					<token key="AppVer" value="500.700.800.900" />
 					<token key="AppName" value="${appname}" />
 					<token key="AppName_en" value="${appname_en}" />
 					<token key="CompanyName" value="${companyname}" />
