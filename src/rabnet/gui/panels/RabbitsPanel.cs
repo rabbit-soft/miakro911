@@ -171,6 +171,7 @@ namespace rabnet
             try
             {
                 RabbitInfo ri = new RabbitInfo((int)listView1.SelectedItems[0].Tag);
+                ri.Working += new WorkingHandler(MainForm.StillWorking);
                 if (ri.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
             }
@@ -179,6 +180,11 @@ namespace rabnet
                 MessageBox.Show(exc.Message);
                 _rsb.Run();
             }
+        }
+
+        void ri_Working()
+        {
+            throw new NotImplementedException();
         }
 
         private void listView1_DoubleClick(object sender, EventArgs e)

@@ -18,27 +18,18 @@ namespace rabnet.forms
         private Catalog _surnames = null;
         private Catalog _secnames = null;
         private RabNetEngRabbit _rab = null;
-        /*private TabPage _tpMale;
-        private TabPage _tpFemale;
-        private TabPage _tpOkrol;
-        private TabPage _tpSuckers;
-        private TabPage _tpWeight;*/
         private int _curzone = 0;
         private int _mkbrides = 122;
         private int _mkcandidate = 120;
-        //private int makesuck = 50; ваще не понятно зачем это тут надо
         private bool _can_commit;
         bool _manual = true;
+
+        internal event WorkingHandler Working;
 
         public RabbitInfo()
         {
             InitializeComponent();
-            initialHints();            
-            //_tpMale = tabControl1.TabPages[1];
-            //_tpFemale = tabControl1.TabPages[2];
-            //_tpOkrol = tabControl1.TabPages[3];
-            //_tpSuckers = tabControl1.TabPages[4];
-            //_tpWeight = tabControl1.TabPages[5];
+            initialHints();
             while(tabControl1.TabPages.Count>1)
                 tabControl1.TabPages.RemoveAt(1);
             _mkbrides = Engine.get().brideAge();
@@ -166,9 +157,7 @@ namespace rabnet.forms
             String[] wgh = Engine.db().getWeights(_rab.ID);
             for (int i = 0; i < wgh.Length / 2; i++)
                 weightList.Items.Add(wgh[i * 2]).SubItems.Add(wgh[i*2+1]);
-            //spec.Checked  = _rab.Spec;//+gambit
             riVaccinePanel1.SetRabbit(_rab);
-            //dtp_vacEnd.Value = rab.VaccineEnd; //+gambit
         }
 
         private void updateMale()
@@ -608,6 +597,7 @@ namespace rabnet.forms
 
         private void group_ValueChanged(object sender, EventArgs e)
         {
+            working();
             if (group.Value == 1)
             {
                 name.Enabled = false;
@@ -719,29 +709,6 @@ namespace rabnet.forms
             updateData();
         }
 
-        /*private void spec_CheckedChanged(object sender, EventArgs e)
-        {
-            if (spec.Checked)
-            {
-                dtp_vacEnd.Enabled = true;
-                dtp_vacEnd.Value = DateTime.Now.AddDays(Engine.opt().getIntOption(Options.OPT_ID.VACCINE_TIME));
-            }
-            else
-            {
-                dtp_vacEnd.Enabled = false;
-                dtp_vacEnd.Value = DateTime.Now;
-            }
-        }*/
-
-        /*private void dtp_vacEnd_CloseUp(object sender, EventArgs e)
-        {
-            if (dtp_vacEnd.Value.Date <= DateTime.Now.Date)
-            {
-                dtp_vacEnd.Enabled = spec.Checked = false;
-                dtp_vacEnd.Value = DateTime.Now.Date;
-            }
-        }*/
-
         private void maleStatus_TextChanged(object sender, EventArgs e)
         { 
             if (_rab.NameID == 0 && maleStatus.SelectedIndex == 2)
@@ -784,6 +751,17 @@ namespace rabnet.forms
         {
             if (lvFucks.SelectedItems.Count != 1 || lvFucks.SelectedItems[0].SubItems[3].Text != Fucks.Type.Proholost_rus)          
                 e.Cancel = true;                       
+        }
+
+        private void working()
+        {
+            if (Working != null)
+                Working();
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            working();
         }
 
     }

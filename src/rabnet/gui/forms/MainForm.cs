@@ -10,6 +10,8 @@ using RabGRD;
 
 namespace rabnet.forms
 {
+    internal delegate void WorkingHandler();
+
     public partial class MainForm : Form
     {
         protected static readonly ILog _logger = LogManager.GetLogger(typeof(MainForm));
