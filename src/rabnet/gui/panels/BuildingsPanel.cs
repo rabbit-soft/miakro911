@@ -33,13 +33,16 @@ namespace rabnet
         private bool manual = true;
         //protected static readonly ILog _logger = LogManager.GetLogger(typeof(MainForm));
         const String NEW_BUILDING = "Новое строение";
-        List<int> _nofarmsList = new List<int>();
-        int _nofarm = 1;
+        /// <summary>
+        /// Предлагаемые Номера новых клеток
+        /// </summary>
+        List<int> _freeFarmsId = new List<int>();
+        //int _nofarm = 1;
         TreeNode nodeToAdd = null;
         int action = 0;
         int preBuilding = 0;
         public BuildingsPanel(): base(){}
-        int maxfarm = 0;
+        //int _maxfarm = 0;
 
         /// <summary>
         /// Считает количество ферм в Дереве строений
@@ -73,33 +76,6 @@ namespace rabnet
             treeView1.TreeViewNodeSorter = new TVNodeSorter();
             MakeExcel = new RSBEventHandler(this.makeExcel);
         }
-        
-        private void addNoFarm(int farm)
-        {
-            if (farm == _nofarm)
-            {
-                _nofarm++;
-                return;
-            }
-            if (farm < _nofarm)
-            {
-                _nofarmsList.Remove(farm);
-                return;
-            }
-            for (int i = _nofarm; i < farm; i++)
-            {
-#if PROTECTED
-                //if (i <= PClient.get().farms())
-                if (i <= GRD.Instance.GetFarmsCntCache())
-#elif DEMO
-                if (i <= DEMO_MAX_FARMS)
-#endif              
-                if (_nofarmsList.Count<NEW_FARMS_LIMIT)
-                    _nofarmsList.Add(i);
-                else _nofarmsList[NEW_FARMS_LIMIT-1]=i;
-            }
-            _nofarm = farm + 1;
-        }
 
         /// <summary>
         /// Создает ветку в дереве строений.
@@ -108,7 +84,7 @@ namespace rabnet
         /// <param name="name">Название фетки</param>
         /// <param name="td"></param>
         /// <returns></returns>
-        private TreeNode makeNode(TreeNode parent, String name, BldTreeData td)
+        private TreeNode makeNode(TreeNode parent, String name, BldTreeData td, List<int> idList)
         {
             TreeNode n = null;
             if (parent == null)
@@ -118,15 +94,12 @@ namespace rabnet
 
             TreeNode child;
             if (td.ChildNodes!=null)
-                //for (int i = 0; i < td.Childrens.Count; i++)
                 while (td.ChildNodes.Count>0)
                 {
-                    child = makeNode(n, td.ChildNodes[0].Name, td.ChildNodes[0]);
-                    child.Tag = td.ChildNodes[0];                  
-                    int fid = td.ChildNodes[0].TierID;
-                    addNoFarm(fid);
-                    if (maxfarm < fid)
-                        maxfarm = fid;
+                    child = makeNode(n, td.ChildNodes[0].Name, td.ChildNodes[0], idList);
+                    child.Tag = td.ChildNodes[0];
+                    if (td.ChildNodes[0].TierID != 0)
+                        idList.Add(td.ChildNodes[0].TierID);
                     if (td.ChildNodes[0].ID == preBuilding)
                     {
                         treeView1.SelectedNode = child;
@@ -144,24 +117,30 @@ namespace rabnet
         protected override IDataGetter onPrepare(Filters f)
         {
             manual = false;
+            this.Enabled = false;
             treeView1.Nodes.Clear();
-            _nofarmsList.Clear();
-            _nofarm = 1;
-            maxfarm = 0;
+            _freeFarmsId.Clear();
             BldTreeData buildTree = Engine.db().buildingsTree();
-            TreeNode n = makeNode(null, "Ферма", buildTree);
+            List<int> busyFarmsId = new List<int>();
+            TreeNode n = makeNode(null, "Ферма", buildTree, busyFarmsId);
+            MainForm.ProtectTest(busyFarmsId.Count);
+            ///ищем предлагаемые имена
+            _freeFarmsId = getNewFarmCandidates(busyFarmsId);
+            int allowFarms = 0;
 #if PROTECTED
-//            if (nofarm<=PClient.get().farms())
-            if (_nofarm <= GRD.Instance.GetFarmsCnt())
+            allowFarms = GRD.Instance.GetFarmsCnt() - Engine.db().getMFCount();
 #elif DEMO
-            if (Engine.db().getMFCount() <= DEMO_MAX_FARMS)
+            allowFarms = GRD.Instance.GetFarmsCnt() - DEMO_MAX_FARMS;
 #endif
-            if (_nofarm <= MAX_FARMS_COUNT)
-                _nofarmsList.Add(_nofarm); 
+            if (allowFarms > 0 && _freeFarmsId.Count > allowFarms)
+            {
+                int last = _freeFarmsId[_freeFarmsId.Count-1];
+                _freeFarmsId = _freeFarmsId.GetRange(0, allowFarms - 1);
+                _freeFarmsId.Add(last);
+            }
+
             MainForm.ProtectTest(BuildingsPanel.GetFarmsCount(buildTree));
-            //treeView1.Sort();
             manual = true;
-            //n.Tag = new int[] { 0, 0 };//"0:0";
             n.Expand();
             f[Filters.SHORT] = Engine.opt().getOption(Options.OPT_ID.SHORT_NAMES);
             f[Filters.DBL_SURNAME] = Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
@@ -169,6 +148,33 @@ namespace rabnet
             IDataGetter dg = Engine.db2().getBuildingsRows(f);
             _rsb.SetText(1, dg.getCount().ToString() + " МИНИфермы");
             return dg;
+        }
+
+        /// <summary>
+        /// Из списка занятых клеток получает список ID которые можно присвоить новой МИНИферме
+        /// </summary>
+        /// <param name="busyFarmsId">Список имеющихся МИНИферм</param>
+        /// <returns>Список ID предлагаемых МИНИферм</returns>
+        private List<int> getNewFarmCandidates(List<int> busyFarmsId)
+        {
+            busyFarmsId.Sort();
+            List<int> result = new List<int>();
+            int fId=1,j=0;
+            for (int i = 0; i < busyFarmsId.Count; i++)
+            {               
+                if (fId < busyFarmsId[i])
+                {
+                    for (j = fId; j < busyFarmsId[i]; j++)
+                        result.Add(j);
+                    fId = busyFarmsId[i];
+                }
+                fId++;
+            }
+            if (result.Count > MAX_FARMS_COUNT - 1)
+                result = result.GetRange(0, MAX_FARMS_COUNT - 1);
+            if (fId <= MAX_FARMS_COUNT)
+                result.Add(fId);
+            return result;
         }
 
         /// <summary>
@@ -629,7 +635,7 @@ namespace rabnet
         {
             if (treeView1.SelectedNode == null) return;
             if (isFarm()) return;
-            if (_nofarmsList.Count == 0 
+            if (_freeFarmsId.Count == 0 
 #if DEMO
                 || Engine.db().getMFCount() >= DEMO_MAX_FARMS
 #elif PROTECTED
@@ -640,7 +646,7 @@ namespace rabnet
                 MessageBox.Show("Достигнуто максимальное количество ферм.");
                 return;
             }
-            if(new MiniFarmForm(buildNum(), _nofarmsList.ToArray()).ShowDialog() == DialogResult.OK)
+            if(new MiniFarmForm(buildNum(), _freeFarmsId.ToArray()).ShowDialog() == DialogResult.OK)
                 _rsb.Run();
         }
 

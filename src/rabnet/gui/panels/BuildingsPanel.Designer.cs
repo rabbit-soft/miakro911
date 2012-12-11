@@ -32,14 +32,14 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.farmDrawer1 = new rabnet.components.FarmDrawer();
             this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.actMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.replaceMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.killMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -161,7 +161,7 @@
             this.shedReportMenuItem,
             this.emptyRevMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(222, 186);
+            this.actMenu.Size = new System.Drawing.Size(222, 208);
             // 
             // replaceMenuItem
             // 
@@ -181,7 +181,7 @@
             // 
             this.addFarmMenuItem.Name = "addFarmMenuItem";
             this.addFarmMenuItem.Size = new System.Drawing.Size(221, 22);
-            this.addFarmMenuItem.Text = "Добавить миниферму";
+            this.addFarmMenuItem.Text = "Добавить МИНИферму";
             this.addFarmMenuItem.Click += new System.EventHandler(this.addFarmMenuItem_Click);
             // 
             // addBuildingMenuItem
@@ -238,12 +238,12 @@
             this.treeView1.Size = new System.Drawing.Size(178, 533);
             this.treeView1.TabIndex = 0;
             this.treeView1.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.treeView1_AfterLabelEdit);
-            this.treeView1.Enter += new System.EventHandler(this.treeView1_Enter);
-            this.treeView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView1_DragDrop);
+            this.treeView1.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.treeView1_ItemDrag);
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
-            this.treeView1.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.treeView1_ItemDrag);
+            this.treeView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView1_DragDrop);
             this.treeView1.DragOver += new System.Windows.Forms.DragEventHandler(this.treeView1_DragOver_1);
+            this.treeView1.Enter += new System.EventHandler(this.treeView1_Enter);
             // 
             // timer1
             // 

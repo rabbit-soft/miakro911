@@ -11,7 +11,6 @@ namespace rabnet.components
 {
     public delegate IDataGetter RSBPrepareHandler();
     public delegate void RSBEventHandler();
-    //public delegate void RSBExcelClickDelegate();
     public delegate void RSBItemEventHandler(IData data);
 
     public partial class RabStatusBar : StatusStrip

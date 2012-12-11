@@ -401,7 +401,7 @@ t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}'{4:s} WHERE t_id={3:d};", type, 
             int frm = id;
             int t1 = addNewTier(sql,uppertype);
             int t2 = addNewTier(sql, lowertype);
-            int res = 0;
+            int res = 0;            
             MySqlCommand cmd =new MySqlCommand(String.Format("INSERT INTO minifarms(m_upper,m_lower{2:s}) VALUES({0:d},{1:d}{3:s});",
                 t1,t2,(frm==0?"":",m_id"),(frm==0?"":String.Format(",{0:d}",frm))),sql);
             _logger.Debug("db.mysql.Building: "+cmd.CommandText);

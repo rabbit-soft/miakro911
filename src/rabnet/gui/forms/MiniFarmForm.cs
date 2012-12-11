@@ -110,9 +110,8 @@ namespace rabnet.forms
         /// </summary>
         private bool hasRabbits(Building b)
         {
-            if (b==null)
-                return false;
-            //bool res = false;
+            if (b==null) return false;
+
             for (int i = 0; i < b.Sections; i++)
                 if (b.Busy[i] > 0)
                     return true;

@@ -293,9 +293,9 @@ namespace rabnet.forms
         /// Проверяет допустимо ли количество Ферм
         /// </summary>
         /// <param name="farms">Количество ферм</param>
-        public static void ProtectTest(int farms)
+        public static void ProtectTest(int farmsCount)
         {
-            me.ptest(farms);
+            me.ptest(farmsCount);
         }
 
         public void ptest(int farms)
