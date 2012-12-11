@@ -93,12 +93,13 @@ namespace rabnet
                 }
                 else cbName.Text = "";
                 btEdit.Enabled = btDelete.Enabled = !btAdd.Checked;
+                cbName.Focus();
             }
             else if (cb == btEdit)
             {
                 btAdd.Enabled = btDelete.Enabled = !btEdit.Checked;
                 _sInd = cbName.SelectedIndex;
-            }
+            }           
         }
 
         private void showButtons(bool p)

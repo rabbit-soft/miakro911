@@ -602,7 +602,7 @@ namespace rabnet
             manual = false;
             action = 1;
             nd.Name = "new";
-            nd.Tag = new int[]{0,0};
+            nd.Tag = new BldTreeData(0, 0, "");
             treeView1.SelectedNode = nd;
             preBuilding = buildNum(nodeToAdd);
             nd.BeginEdit();

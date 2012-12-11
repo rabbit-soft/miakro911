@@ -28,15 +28,6 @@ namespace rabnet.forms
 
         public void readConfig()
         {
-            /*try
-            {
-                ConfigurationManager.GetSection("rabnetds");
-            }
-            catch(Exception e)
-            {
-                log.Error("Read config error: "+e.Message);
-                return;
-            }*/
             _dss = new Dictionary<int, DataSource>();
             _rnc.LoadDataSources();
             cbFarm.Items.Clear();
@@ -53,7 +44,7 @@ namespace rabnet.forms
                         cbFarm_SelectedIndexChanged(null, null);
                     }
                 }
-            }            
+            }
         }
 
         private void cbFarm_SelectedIndexChanged(object sender, EventArgs e)
