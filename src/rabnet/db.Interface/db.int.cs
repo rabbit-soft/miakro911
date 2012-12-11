@@ -5,17 +5,6 @@ using System.Drawing;
 
 namespace rabnet
 {
-    public class ExDBDriverNotFoud : Exception
-    {
-        public ExDBDriverNotFoud(String driver) : base("Database Driver " + driver + " not found!") { }
-    }
-    public class ExDBBadVersion : Exception
-    {
-        public ExDBBadVersion(int need,int has) : base(String.Format(@"Не верная версия базы данных {0:d}.
-Требуется версия {1:d}.
-Обновите программу и базу данных до последних версий.",has,need)) { }
-    }
-
     /// <summary>
     /// Интерфейс который представляет собой одну строку IDataGetter
     /// </summary>

@@ -58,7 +58,7 @@ namespace rabnet
             }
             else
             {
-                throw new ExDBDriverNotFoud(dbType);
+                throw new DBDriverNotFoudException(dbType);
             }
             int ver = options().getIntOption("db", "version", Options.OPT_LEVEL.FARM);
             if (ver != NEED_DB_VERSION)
@@ -67,7 +67,7 @@ namespace rabnet
                 if (data != null) data.Close();
                 if (data2 != null) data2.Close();
                 data = data2 = null;
-                throw new ExDBBadVersion(NEED_DB_VERSION, ver);
+                throw new DBBadVersionException(NEED_DB_VERSION, ver);
             }
             return data;
         }

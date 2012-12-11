@@ -130,7 +130,7 @@ namespace rabnet
 #if PROTECTED
             allowFarms = GRD.Instance.GetFarmsCnt() - Engine.db().getMFCount();
 #elif DEMO
-            allowFarms = GRD.Instance.GetFarmsCnt() - DEMO_MAX_FARMS;
+            allowFarms = DEMO_MAX_FARMS - Engine.db().getMFCount();
 #endif
             if (allowFarms > 0 && _freeFarmsId.Count > allowFarms)
             {
