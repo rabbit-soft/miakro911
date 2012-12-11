@@ -68,7 +68,7 @@ namespace db.mysql
 
         public float getCount4()
         {
-            return count4;
+            return (float.IsNaN(count4) ? 0 : count4);
         }
 
         public IData GetNextItem()

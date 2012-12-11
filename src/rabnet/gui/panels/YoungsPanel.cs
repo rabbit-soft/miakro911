@@ -75,35 +75,16 @@ namespace rabnet
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!manual) return;
+            if (!manual || listView1.SelectedItems.Count==0) return;
             setMenu();
             makeSelectedCount();
             if (listView1.SelectedItems.Count != 1) return;
 
-            //for (int ind = 0; ind < tvGens.Nodes.Count; ind++)
-            //{
-            //    int len = tvGens.Nodes[ind].Text.IndexOf("-");
-            //    string str = tvGens.Nodes[ind].Text.Remove(len);
-            //    if (listView1.SelectedItems[0].SubItems[0].Text.StartsWith(str))
-            //    {
-            //        if (ind == 0) return;
-            //        tvGens.Nodes.RemoveAt(ind);
-            //        break;
-            //    }
-            //}
-            //if (tvGens.Nodes.Count > 0)
-            //    tvGens.Nodes[0].ForeColor = Color.Gray;
-            //if (tvGens.Nodes.Count > gentree)
-            //    tvGens.Nodes.RemoveAt(gentree);
             RabTreeData dt = Engine.db().rabbitGenTree((int)listView1.SelectedItems[0].Tag);
             if (dt != null)
             {
                 TreeNode tn = tvGens.InsertNode(dt, true);
-                //TreeNode tn = tvGens.Nodes.Insert(0, dt.Name);
                 tn.ForeColor = Color.Blue;
-                //insertNode(tn, dt);
-                //tn.ExpandAll();
-                //tn.EnsureVisible();
             }
         }
 
