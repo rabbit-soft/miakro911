@@ -49,8 +49,8 @@ namespace rabnet.forms
 
         private void cbFarm_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbFarm.SelectedIndex < 0)
-                return;
+            if (cbFarm.SelectedIndex < 0) return;
+
             cbUser.Focus();
             try
             {
