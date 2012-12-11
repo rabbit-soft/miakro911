@@ -62,13 +62,6 @@ namespace rabnet.forms
 
         private void rabStatusBar1_itemGet(IData data)
         {
-            if (data == null)
-            {
-                listView1.ListViewItemSorter = cs.Clear();
-                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                listView1.Show();
-                return;
-            }
             RabName nm=(data as RabName);
             ListViewItem li = listView1.Items.Add(nm.name);
             li.Tag = nm.id;
@@ -201,6 +194,13 @@ namespace rabnet.forms
                 return;
             }
             rabStatusBar1.Run();
+        }
+
+        private void rabStatusBar1_OnFinishUpdate()
+        {
+            listView1.ListViewItemSorter = cs.Clear();
+            listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            listView1.Show();
         }
 
     }

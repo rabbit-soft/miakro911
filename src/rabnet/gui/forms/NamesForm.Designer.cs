@@ -31,11 +31,11 @@ namespace rabnet.forms
         {
             this.components = new System.ComponentModel.Container();
             this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miUnBlock = new System.Windows.Forms.ToolStripMenuItem();
             this.button2 = new System.Windows.Forms.Button();
@@ -56,9 +56,9 @@ namespace rabnet.forms
             // 
             // listView1
             // 
-            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
@@ -247,8 +247,9 @@ namespace rabnet.forms
             this.rabStatusBar1.Size = new System.Drawing.Size(634, 23);
             this.rabStatusBar1.TabIndex = 0;
             this.rabStatusBar1.Text = "rabStatusBar1";
-            this.rabStatusBar1.ItemGet += new rabnet.components.RSBItemEventHandler(this.rabStatusBar1_itemGet);
             this.rabStatusBar1.PrepareGet += new rabnet.components.RSBPrepareHandler(this.rabStatusBar1_prepareGet);
+            this.rabStatusBar1.OnFinishUpdate += new rabnet.components.RSBEventHandler(this.rabStatusBar1_OnFinishUpdate);
+            this.rabStatusBar1.ItemGet += new rabnet.components.RSBItemEventHandler(this.rabStatusBar1_itemGet);
             // 
             // NamesForm
             // 
