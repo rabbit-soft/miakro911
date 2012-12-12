@@ -56,7 +56,7 @@ DROP TABLE bbb;",table,dtfield,unfield);
             List<AdultRabbit> result = new List<AdultRabbit>();
             MySqlCommand cmd = new MySqlCommand("", sql);
             cmd.CommandText = String.Format(@"SELECT {1:s}
-FROM dead WHERE d_reason=3 AND DATE(d_date)='{0:yyyy-MM-dd}';", dt,RabbitGetter.getAdultRabbit_FieldsSet(RabbitGetter.RabType.DEAD));
+FROM dead WHERE d_reason=3 AND DATE(d_date)='{0:yyyy-MM-dd}';", dt,RabbitGetter.getAdultRabbit_FieldsSet(RabAliveState.DEAD));
             MySqlDataReader rd = cmd.ExecuteReader();
             while(rd.Read())
             {

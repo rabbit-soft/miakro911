@@ -14,7 +14,7 @@ namespace rabnet
 
         public override void MakeReport()
         {
-            BuildingForm dlg = new BuildingForm();
+            BuildTreeForm dlg = new BuildTreeForm();
             if (dlg.ShowDialog() != DialogResult.OK)
                 return;
 

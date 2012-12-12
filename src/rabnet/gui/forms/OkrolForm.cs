@@ -18,7 +18,7 @@ namespace rabnet.forms
             initialHint();
             _rabbit = Engine.get().getRabbit(r1);
             label1.Text = _rabbit.FullName;
-            TimeSpan days = DateTime.Now.Subtract(Engine.db().getFucks(_rabbit.ID).LastFuck.When);
+            TimeSpan days = DateTime.Now.Subtract(Engine.db().GetFucks(new Filters(Filters.RAB_ID + "=" + _rabbit.ID)).LastFuck.When);
             dateDays1.Maximum = days.Days;
         }
 

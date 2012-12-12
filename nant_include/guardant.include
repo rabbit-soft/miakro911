@@ -4,6 +4,7 @@
 	<!--property name="obfuscated" value="" /-->
 	<property name="obfuscator_eaz" value="Eazfuscator.NET.exe" />
 	
+	<property name="grd_path.conf" value="${trunkdir}\distrib\guardant_config" />
 	<property name="grd_path.bin" value="${grd_path}\Bin" />
 	<property name="grd_path.lib" value="${grd_path}\Lib" />
 	<property name="grd_path.lib64" value="${grd_path}\Lib\x64" />	
@@ -52,17 +53,17 @@
 	<target name="protect" depends="buildall,protect_demo" description="Obfuscate and Protect code">
 		<property name="dir_bin" value="${bindir}/protected/bin"/>
 			
-		<!--уxec program="${obfuscator_eaz}">
+		<exec program="${obfuscator_eaz}">
 			<arg value="${dir_bin}/mia_conv.exe" />
 			<arg value="${dir_bin}/updater.exe" />
-		</exec-->	
+		</exec>	
 		
 		<call target="obfuscate_grd"/>
 		
-		<!--exec program="${grd_prot}">
-			<arg value="/INIT" />
-			<arg value="/MSG=${grd_path.bin}\licensewizard.msg" />
-			<arg value="/PER=20" />
+		<!--exec program="${grd_prot}">			
+			<arg value="/MSG=${grd_path.conf}\grd_rus.msg" />
+			<arg value="/MAP=${tmpdir}\grd_obfuscate.map" />
+			<arg value="/IL=${grd_path.conf}\rabnet.gpp" />
 			<arg value="/RC=1" />
 			<arg value="/ATR=2" />
 			<arg value="/GS3S" />
@@ -90,6 +91,7 @@
 	<target name="protect_demo" description="demo obfuscation">
 		<exec program="${obfuscator_eaz}">			
 			<arg value="${bindir}/demo/bin/mia_conv.exe" />
+			<arg value="${bindir}/demo/bin/updater.exe" />
 			<arg value="${bindir}/demo/bin/db.Interface.dll" />			
 			<arg value="${bindir}/demo/bin/db.mysql.dll" />
 			<arg value="${bindir}/demo/bin/engine.dll" />	
@@ -97,23 +99,11 @@
 		</exec>
 	</target>
 	
-	<target name="obfuscate_grd">
-	
-		<exec program="${grd_obfusc}">
-			<arg value="/INIT" />
-			<arg value="/SO" />
-			<arg value="/OP" />
-			<arg value="/MAP=${tmpdir}/grd_tools.map" />
-			<arg value="/OUT=${dir_bin}/" />
-			<arg value="${dir_bin}/mia_conv.exe" />
-			<arg value="${dir_bin}/updater.exe" />
-		</exec>
+	<target name="obfuscate_grd">	
 		
 		<exec program="${grd_obfusc}">
 			<arg value="/INIT" />			
 			<arg value="/SO" />
-			<!--arg value="/SE" /--> <!-- Обфускация Строковых Констант: сильно уменьшает скорость db.mysql.dll -->
-			<arg value="/OP"/>
 			<arg value="/GS3S" />
 			<arg value="/GN3S" />
 			<arg value="/MAP=${tmpdir}/grd_obfuscate.map" />
@@ -123,21 +113,7 @@
 			<arg value="${dir_bin}/engine.dll" />			
 			<arg value="${dir_bin}/rabnet.exe" />
 			<arg value="${dir_bin}/rabdump.exe" />
-		</exec>
-		
-		<!--exec program="${grd_obfusc}">
-			<arg value="/INIT" />			
-			<arg value="/SO" />
-			<arg value="/OP" />			
-			<arg value="/GS3S" />
-			<arg value="/GN3S" />
-			<arg value="/MAP=${tmpdir}/grd_obfuscate.map" />
-			<arg value="/OUT=${dir_bin}/" />				
-			<arg value="${dir_bin}/engine.dll" />			
-			<arg value="${dir_bin}/rabnet.exe" />
-			<arg value="${dir_bin}/rabdump.exe" />	
-		</exec-->
-		
+		</exec>		
 	</target>
 	
 </project>

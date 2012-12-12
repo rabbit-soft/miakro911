@@ -27,6 +27,7 @@ namespace rabnet
 
         public class Fuck
         {
+            public String FemaleName;
             public String PartnerName;
             public int PartnerId;
             public int Id;
@@ -43,7 +44,7 @@ namespace rabnet
             public String rGenom;
             public bool IsDead;
             public string Worker;
-            public Fuck(int id, String partnerName, int pid, int tms, DateTime startDate, DateTime endDate, String state, int children, int dead,
+            public Fuck(int id, String femaleName,String partnerName, int pid, int tms, DateTime startDate, DateTime endDate, String state, int children, int dead,
                 int brd, String gen, String tp, int killed, int added, bool isDead, string worker)
             {
                 this.Id = id;
@@ -76,10 +77,10 @@ namespace rabnet
             }
         }
         public List<Fuck> fucks = new List<Fuck>();
-        public void AddFuck(int id, String partnerName, int pId, int times, DateTime startDate, DateTime endDate, String state, int childrens, int dd,
+        public void AddFuck(int id, String femaleName, String partnerName, int pId, int times, DateTime startDate, DateTime endDate, String state, int childrens, int dd,
             int brd, String gen, String tp, int kl, int add, bool dead, String wrk)
         {
-            fucks.Add(new Fuck(id, partnerName, pId, times, startDate, endDate, state, childrens, dd, brd, gen, tp, kl, add, dead, wrk));
+            fucks.Add(new Fuck(id, femaleName,partnerName, pId, times, startDate, endDate, state, childrens, dd, brd, gen, tp, kl, add, dead, wrk));
         }
 
         public Fuck LastFuck

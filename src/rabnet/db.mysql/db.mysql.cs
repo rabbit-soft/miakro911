@@ -282,9 +282,9 @@ namespace db.mysql
             Logs.addLog(sql,type,user,r1,r2,a1,a2,text);
         }
 
-        public Fucks getFucks(int rabbit)
+        public Fucks GetFucks(Filters f)
         {
-            return FucksGetter.GetFucks(sql, rabbit);
+            return FucksGetter.GetFucks(sql, f);
         }
 
         public Fucks GetAllFuckers(Filters f)

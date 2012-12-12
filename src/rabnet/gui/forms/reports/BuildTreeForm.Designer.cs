@@ -1,6 +1,6 @@
 ﻿namespace rabnet
 {
-    partial class BuildingForm
+    partial class BuildTreeForm
     {
         /// <summary>
         /// Required designer variable.
@@ -67,7 +67,7 @@
             this.treeView1.Size = new System.Drawing.Size(201, 220);
             this.treeView1.TabIndex = 7;
             // 
-            // BuildingForm
+            // BuildTreeForm
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -79,7 +79,9 @@
             this.Controls.Add(this.button1);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "BuildingForm";
+            this.Name = "BuildTreeForm";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.Text = "Выбрать площадку";
             this.ResumeLayout(false);
 

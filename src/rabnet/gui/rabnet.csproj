@@ -209,6 +209,12 @@
     <Compile Include="forms\MealForm.Designer.cs">
       <DependentUpon>MealForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="forms\reports\BuildTreeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\reports\BuildTreeForm.Designer.cs">
+      <DependentUpon>BuildTreeForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="forms\VaccinesCatalogForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -594,6 +600,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\MealForm.resx">
       <DependentUpon>MealForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\reports\BuildTreeForm.resx">
+      <DependentUpon>BuildTreeForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\VaccinesCatalogForm.resx">

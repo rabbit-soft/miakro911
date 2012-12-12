@@ -7,6 +7,11 @@ using System.Windows.Forms;
 
 namespace rabnet
 {
+    public class ReportPlugInException : Exception 
+    {
+        public ReportPlugInException(string message) : base(message) { }
+    }
+
     public abstract class ReportBase
     {
         const string FOLDER = "reports\\";
@@ -43,34 +48,28 @@ namespace rabnet
 
         private void checkFile()
         {
-            try
-            {             
-                string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath),FOLDER) + _name + ".rdl";
-                Stream stream = getAssembly();
-                if (File.Exists(path))
-                {
-                    FileInfo fi = new FileInfo(path);
-                    if (fi.Length != stream.Length)
-                        File.Delete(path);
-                }
-                
-                if (!File.Exists(path))
-                {
-                    if (stream != null && stream.Length != 0)
-                    {
-                        FileStream fileStream = new FileStream(path, FileMode.CreateNew);
-                        for (int i = 0; i < stream.Length; i++)
-                            fileStream.WriteByte((byte)stream.ReadByte());
-                        fileStream.Close();
-                    }
-                }
-                stream.Close();
-
-            }
-            catch (Exception ex)
+            string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), FOLDER) + _name + ".rdl";
+            Stream stream = getAssembly();
+            if (stream == null)
+                throw new ReportPlugInException("Не удалочь извлечь файл отчета");
+            if (File.Exists(path))
             {
-                MessageBox.Show( ex.Message);
+                FileInfo fi = new FileInfo(path);
+                if (fi.Length != stream.Length)
+                    File.Delete(path);
             }
+
+            if (!File.Exists(path))
+            {
+                if (stream != null && stream.Length != 0)
+                {
+                    FileStream fileStream = new FileStream(path, FileMode.CreateNew);
+                    for (int i = 0; i < stream.Length; i++)
+                        fileStream.WriteByte((byte)stream.ReadByte());
+                    fileStream.Close();
+                }
+            }
+            stream.Close();
         }
 
         #region static_members

@@ -18,8 +18,8 @@ namespace rabnet
             Filters f = new Filters();
             if (dlg.ShowDialog() == DialogResult.OK)
             {
-                f["dttp"] = dlg.PeriodChar;
-                f["dtval"] = dlg.DateValue;
+                f[Filters.DATE_PERIOD] = dlg.PeriodChar;
+                f[Filters.DATE_VALUE] = dlg.DateValue;
                 (new ReportViewForm(MenuText, FileName, new XmlDocument[]
                 {
                    Engine.db().makeReport(getSQL(f)),
@@ -33,20 +33,21 @@ namespace rabnet
         private string getSQL(Filters f)
         {
             string period = "";
-            if (f.safeValue("dttp") == "d")
+            if (f.safeValue(Filters.DATE_PERIOD) == "d")
             {
-                DateTime dt = DateTime.Parse(f.safeValue("dtval"));
+                DateTime dt = DateTime.Parse(f.safeValue(Filters.DATE_VALUE));
                 period = String.Format("DATE(d_date)='{0:yyyy-MM-dd}'", dt);
             }
-            else if (f.safeValue("dttp") == "y")
+            else if (f.safeValue(Filters.DATE_PERIOD) == "m")
             {
-                period = String.Format("YEAR(d_date)={0}", f.safeValue("dtval"));
-            }
-            else
-            {
-                DateTime dt = DateTime.Parse(f.safeValue("dtval"));
+                DateTime dt = DateTime.Parse(f.safeValue(Filters.DATE_VALUE));
                 period = String.Format("MONTH(d_date)={0:MM} AND YEAR(d_date)={0:yyyy}", dt);
             }
+            else if (f.safeValue(Filters.DATE_PERIOD) == "y")
+            {
+                period = String.Format("YEAR(d_date)={0}", f.safeValue(Filters.DATE_VALUE));
+            }
+
             string s = String.Format(@"
     (SELECT SUM(r_group) grp,
     d_reason,

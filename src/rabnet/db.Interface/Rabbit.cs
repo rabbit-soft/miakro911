@@ -4,6 +4,8 @@ using System.Text;
 
 namespace rabnet
 {
+    public enum RabAliveState { ALIVE, DEAD, ANY }
+
     public class Rabbit
     {
         public enum SexType { VOID, MALE, FEMALE };

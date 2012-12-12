@@ -269,62 +269,62 @@ FROM fucks WHERE f_partner={0:d} AND f_end_date>={1:s} AND f_end_date<={2:s});",
 
         private String deadQuery(Filters f)
         {
-            string where = "";
-            string format = "%d.%m.%Y";        
-            if (f.safeValue("dttp") == "d")
-            {
-                DateTime dt = DateTime.Parse(f.safeValue("dtval"));
-                where = String.Format("DATE(d_date)='{0:yyyy-MM-dd}'", dt);
-            }
-            else if (f.safeValue("dttp") == "y")
-            {
-                //format = "%m";
-                where = String.Format("YEAR(d_date)={0}", f.safeValue("dtval"));
-            }
-            else if (f.safeValue("dttp") == "m")
-            {
-                DateTime dt = DateTime.Parse(f.safeValue("dtval"));
-                format = "%d";
-                where = String.Format("MONTH(d_date)={0:MM} AND YEAR(d_date)={0:yyyy}", dt);
-            }
-            where += String.Format(" AND d_reason!={0:d}",DeadReason_Static.CombineGroups);
-            if(where != "")
-                where = "WHERE " + where;
+            string where = DBHelper.MakeDatePeriod(f, "d_date");   
+    
+            //if (f.safeValue(Filters.DATE_PERIOD) == "d")
+            //{
+            //    DateTime dt = DateTime.Parse(f.safeValue(Filters.DATE_VALUE));
+            //    where = String.Format("DATE(d_date)='{0:yyyy-MM-dd}'", dt);
+            //}
+            //else if (f.safeValue(Filters.DATE_PERIOD) == "y")
+            //{
+            //    where = String.Format("YEAR(d_date)={0}", f.safeValue(Filters.DATE_VALUE));
+            //}
+            //else if (f.safeValue(Filters.DATE_PERIOD) == "m")
+            //{
+            //    DateTime dt = DateTime.Parse(f.safeValue(Filters.DATE_VALUE));
+            //    where = String.Format("MONTH(d_date)={0:MM} AND YEAR(d_date)={0:yyyy}", dt);
+            //}
 
-            return String.Format(@"SELECT DATE_FORMAT(d_date,'{1}') date,
+            where = "WHERE " + String.Format("d_reason!={0:d}", DeadReason_Static.CombineGroups) + (where!="" ? " AND "+where:"");
+
+            return String.Format(@"SELECT DATE_FORMAT(d_date,'%d.%m.%Y') date,
     deadname(r_id,2) name,
     r_group,
     To_Days(d_date)-To_Days(r_born) dage,
     (SELECT d_name FROM deadreasons WHERE d_id=d_reason) reason,
     d_notes 
 FROM dead {0:s} 
-ORDER BY d_reason,d_date ASC;", where,format);
+ORDER BY d_reason,d_date ASC;", where);
             
         }
 
         private String deadReasonsQuery(Filters f)
         {
             //getDates(f);
-            string period = "";
-            if (f.safeValue("dttp") == "d")
-            {
-                DateTime dt = DateTime.Parse(f.safeValue("dtval"));
-                period = String.Format("DATE(d_date)='{0:yyyy-MM-dd}'", dt);
-            }
-            else if (f.safeValue("dttp") == "y")
-            {
-                period = String.Format("YEAR(d_date)={0}", f.safeValue("dtval"));
-            }
-            else
-            {
-                DateTime dt = DateTime.Parse(f.safeValue("dtval"));
-                period = String.Format("MONTH(d_date)={0:MM} AND YEAR(d_date)={0:yyyy}", dt);
-            }
+            string period = DBHelper.MakeDatePeriod(f, "d_date");
+
+            //if (f.safeValue(Filters.DATE_PERIOD) == "d")
+            //{
+            //    DateTime dt = DateTime.Parse(f.safeValue(Filters.DATE_VALUE));
+            //    period = String.Format("DATE(d_date)='{0:yyyy-MM-dd}'", dt);
+            //}
+            //else if (f.safeValue(Filters.DATE_PERIOD) == "y")
+            //{
+            //    period = String.Format("YEAR(d_date)={0}", f.safeValue(Filters.DATE_VALUE));
+            //}
+            //else
+            //{
+            //    DateTime dt = DateTime.Parse(f.safeValue(Filters.DATE_VALUE));
+            //    period = String.Format("MONTH(d_date)={0:MM} AND YEAR(d_date)={0:yyyy}", dt);
+            //}
+            if (period != "")
+                period = "WHERE " + period;
             string s = String.Format(@"(SELECT 
     SUM(r_group) grp,
     d_reason,
     (SELECT d_name FROM deadreasons WHERE d_reason=d_id) reason 
-FROM dead WHERE {0} GROUP BY d_reason);",period);
+FROM dead {0} GROUP BY d_reason);",period);
             return s;
         }
 
@@ -352,17 +352,19 @@ r_group FROM rabbits WHERE {0:s} ORDER BY r_farm,r_tier_id,r_area;",where);
             string period = "";
             string format = "";
             string worker = f.safeInt("user", 0)>0 ? "f_worker="+f.safeInt("user"):"";
-            if (f.safeValue("dttp") == "m")
+
+            if (f.safeValue(Filters.DATE_PERIOD) == "m")
             {
-                DateTime dt = DateTime.Parse(f.safeValue("dtval"));
+                DateTime dt = DateTime.Parse(f.safeValue(Filters.DATE_VALUE));
                 period = String.Format("(MONTH(f_end_date)={0:MM} AND YEAR(f_end_date)={0:yyyy})", dt);
                 format = "%d";
             }
-            else if (f.safeValue("dttp") == "y")
+            else if (f.safeValue(Filters.DATE_PERIOD) == "y")
             {
-                period = String.Format("YEAR(f_end_date)={0}", f.safeValue("dtval"));
+                period = String.Format("YEAR(f_end_date)={0}", f.safeValue(Filters.DATE_VALUE));
                 format = "%m";
             }
+
             if (worker != "")
                 period = " AND " + period;
             string result = String.Format(@"SELECT 
@@ -516,22 +518,24 @@ FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AN
 
         private string fucksByDate(Filters f)
         {
-            string period = "";
-            if (f.safeValue("dttp") == "m")
-            {
-                DateTime dt = DateTime.Parse(f.safeValue("dtval"));
-                period = String.Format("AND (MONTH(f_date)={0:MM} AND YEAR(f_date)={0:yyyy})", dt);
+            string period = " AND "+DBHelper.MakeDatePeriod(f, "f_date");
 
-            }
-            else if (f.safeValue("dttp") == "y")
-            {
-                period = String.Format("AND YEAR(f_date)={0}", f.safeValue("dtval"));
-            }
-            else if (f.safeValue("dttp") == "d")
-            {
-                DateTime dt = DateTime.Parse(f.safeValue("dtval"));
-                period = String.Format("AND DATE(f_date)='{0:yyyy-MM-dd}'", dt);
-            }
+            //if (f.safeValue(Filters.DATE_PERIOD) == "d")
+            //{
+            //    DateTime dt = DateTime.Parse(f.safeValue(Filters.DATE_VALUE));
+            //    period = String.Format("AND DATE(f_date)='{0:yyyy-MM-dd}'", dt);
+            //}
+            //else if (f.safeValue(Filters.DATE_PERIOD) == "m")
+            //{
+            //    DateTime dt = DateTime.Parse(f.safeValue(Filters.DATE_VALUE));
+            //    period = String.Format("AND (MONTH(f_date)={0:MM} AND YEAR(f_date)={0:yyyy})", dt);
+
+            //}
+            //else if (f.safeValue(Filters.DATE_PERIOD) == "y")
+            //{
+            //    period = String.Format("AND YEAR(f_date)={0}", f.safeValue(Filters.DATE_VALUE));
+            //}
+
             return String.Format(@"SELECT DATE_FORMAT(f_date,'%d.%m.%Y')date,anyname(f_rabid,2) name,
                                     (SELECT n_name FROM names WHERE n_use=f_partner) partner,
                                     (SELECT u_name FROM users WHERE u_id=f_worker) worker 
@@ -540,22 +544,25 @@ FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AN
 
         private string butcherQuery(Filters f)
         {
-            string period = "";
-            if (f.safeValue("dttp") == "m")
-            {
-                DateTime dt = DateTime.Parse(f.safeValue("dtval"));
-                period = String.Format("WHERE (MONTH(b_date)={0:MM} AND YEAR(b_date)={0:yyyy})", dt);
+            string period = DBHelper.MakeDatePeriod(f, "b_date");
 
-            }
-            else if (f.safeValue("dttp") == "y")
-            {
-                period = String.Format("WHERE YEAR(b_date)={0}", f.safeValue("dtval"));
-            }
-            else if (f.safeValue("dttp") == "d")
-            {
-                DateTime dt = DateTime.Parse(f.safeValue("dtval"));
-                period = String.Format("WHERE DATE(b_date)='{0:yyyy-MM-dd}'", dt);
-            }
+            //if (f.safeValue(Filters.DATE_PERIOD) == "d")
+            //{
+            //    DateTime dt = DateTime.Parse(f.safeValue(Filters.DATE_VALUE));
+            //    period = String.Format("DATE(b_date)='{0:yyyy-MM-dd}'", dt);
+            //}
+            //if (f.safeValue(Filters.DATE_PERIOD) == "m")
+            //{
+            //    DateTime dt = DateTime.Parse(f.safeValue(Filters.DATE_VALUE));
+            //    period = String.Format("(MONTH(b_date)={0:MM} AND YEAR(b_date)={0:yyyy})", dt);
+            //}
+            //else if (f.safeValue(Filters.DATE_PERIOD) == "y")
+            //{
+            //    period = String.Format("YEAR(b_date)={0}", f.safeValue(Filters.DATE_VALUE));
+            //}
+             
+            if(period!="")
+                period = "WHERE " + period;
             return String.Format(@"SELECT 
     DATE_FORMAT(b_date,'%d.%m.%Y')date,
     (SELECT p_name FROM products WHERE p_id=b_prodtype) prod,

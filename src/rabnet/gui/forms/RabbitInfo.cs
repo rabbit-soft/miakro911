@@ -234,7 +234,7 @@ namespace rabnet.forms
             ///Заполнение списка случек
             lvFucks.Items.Clear();
             if (_rabId>0)
-            foreach (Fucks.Fuck f in Engine.db().getFucks(_rab.ID).fucks)
+            foreach (Fucks.Fuck f in Engine.db().GetFucks(new Filters(Filters.RAB_ID+"="+_rab.ID)).fucks)
             {
                 ListViewItem li = lvFucks.Items.Add(f.When == DateTime.MinValue ? "" : f.When.ToShortDateString());
                 li.SubItems.Add(f.FuckType);

@@ -4,14 +4,14 @@ using System.Windows.Forms;
 
 namespace rabnet
 {
-    public partial class BuildingForm : Form
+    public partial class BuildTreeForm : Form
     {
-        public BuildingForm()
+        public BuildTreeForm()
         {
             InitializeComponent();
             BldTreeData buildTree = Engine.db().buildingsTree();
             TreeNode n = makenode(null, "Ферма", buildTree);
-            n.Tag = "0:0";
+            n.Tag = new BldTreeData(0,0,"Ферма");
             n.Expand();
             treeView1.Sort();
         }
@@ -33,10 +33,8 @@ namespace rabnet
             if (td.ChildNodes != null)
                 for (int i = 0; i < td.ChildNodes.Count; i++)
                 {
-                    //String[] st = td.items[i].caption.Split(':');
                     BldTreeData td1 = td.ChildNodes[i];
-                    if (td1.TierID != 0)
-                        continue;
+                    if (td1.TierID != 0) continue;
                     TreeNode child = makenode(n, td1.Name, td.ChildNodes[i]);
 
                     child.Tag = td1;

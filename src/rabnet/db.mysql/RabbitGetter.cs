@@ -7,8 +7,7 @@ using rabnet;
 namespace db.mysql
 {
     class RabbitGetter
-    {
-        public enum RabType { ALIVE, DEAD, ANY }
+    {        
 
         internal static Rabbit fillRabbit(MySqlDataReader rd)
         {
@@ -65,13 +64,13 @@ namespace db.mysql
             return dead;
         }    
 
-        public static OneRabbit GetRabbit(MySqlConnection sql, int rid, RabType type)
+        public static OneRabbit GetRabbit(MySqlConnection sql, int rid, RabAliveState type)
         {
             if (rid == 0) return null;
-            if (type == RabType.ANY)
-                type = (isDeadRabbit(sql, rid) ? RabType.DEAD : RabType.ALIVE);
+            if (type == RabAliveState.ANY)
+                type = (isDeadRabbit(sql, rid) ? RabAliveState.DEAD : RabAliveState.ALIVE);
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT {0:s}
-FROM {1:s} WHERE r_id={2:d};", getOneRabbit_FieldsSet(type), (type == RabType.ALIVE ? "rabbits" : "dead"), rid), sql);
+FROM {1:s} WHERE r_id={2:d};", getOneRabbit_FieldsSet(type), (type == RabAliveState.ALIVE ? "rabbits" : "dead"), rid), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             if (!rd.Read())
             {
@@ -88,7 +87,7 @@ FROM {1:s} WHERE r_id={2:d};", getOneRabbit_FieldsSet(type), (type == RabType.AL
         }
         public static OneRabbit GetRabbit(MySqlConnection con, int rid)
         {
-            return GetRabbit(con, rid, RabType.ALIVE);
+            return GetRabbit(con, rid, RabAliveState.ALIVE);
         }
         
         /// <summary>
@@ -103,7 +102,7 @@ FROM {1:s} WHERE r_id={2:d};", getOneRabbit_FieldsSet(type), (type == RabType.AL
 FROM rabbits r
 INNER JOIN (SELECT r_farm,r_tier,r_tier_id,r_area FROM rabbits WHERE r_id={1:d}) rp ON rp.r_farm=r.r_farm 
 	AND rp.r_tier=r.r_tier AND rp.r_tier_id=r.r_tier_id AND rp.r_area=r.r_area
-WHERE r_id!={1:d} AND r_parent=0;", getOneRabbit_FieldsSet(RabType.ALIVE), rabOwner), con);
+WHERE r_id!={1:d} AND r_parent=0;", getOneRabbit_FieldsSet(RabAliveState.ALIVE), rabOwner), con);
             List<OneRabbit> rbs = new List<OneRabbit>();
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
@@ -194,7 +193,7 @@ f_children={1:d},f_dead={2:d} WHERE f_rabid={3:d} AND f_state='sukrol';",
             cmd.ExecuteNonQuery();
 
             OneRabbit fml = GetRabbit(sql, rabbit);
-            OneRabbit ml = GetRabbit(sql, father, RabType.ANY);
+            OneRabbit ml = GetRabbit(sql, father, RabAliveState.ANY);
             int rt = children - 8;
             if (rt != 0 && ml != null)
             {
@@ -601,7 +600,7 @@ TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d}+1000 ORDER BY age ASC;", nameId, minAge);
                 dead = rd.GetBoolean(0);
             rd.Close();
             cmd.CommandText = String.Format(@"SELECT {0:s} 
-FROM {1:s} WHERE r_id={2:d};", getOneRabbit_FieldsSet(dead ? RabType.DEAD : RabType.ALIVE), (dead ? "dead" : "rabbits"), rabbit);
+FROM {1:s} WHERE r_id={2:d};", getOneRabbit_FieldsSet(dead ? RabAliveState.DEAD : RabAliveState.ALIVE), (dead ? "dead" : "rabbits"), rabbit);
             rd = cmd.ExecuteReader();
             if (!rd.Read())
             {
@@ -703,7 +702,7 @@ WHERE r_id={0:d} ORDER BY date", rabId), sql);
             if (!rd.IsClosed) rd.Close();
         }
 
-        private static string getOneRabbit_FieldsSet(RabType type)
+        private static string getOneRabbit_FieldsSet(RabAliveState type)
         {
             return String.Format(@"r_id,
     r_sex, r_born, r_rate,
@@ -724,11 +723,11 @@ WHERE r_id={0:d} ORDER BY date", rabId), sql);
     r_okrol,
     (SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight,
     (SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id) weight_date", 
-            (type == RabType.ALIVE ? "r_event_date, r_event" : "NULL r_event_date, 'none' r_event"),
-            (type == RabType.ALIVE ? "rab" : "dead"), (type == RabType.ALIVE ? "rabbits" : "dead"));
+            (type == RabAliveState.ALIVE ? "r_event_date, r_event" : "NULL r_event_date, 'none' r_event"),
+            (type == RabAliveState.ALIVE ? "rab" : "dead"), (type == RabAliveState.ALIVE ? "rabbits" : "dead"));
         }
 
-        internal static string getAdultRabbit_FieldsSet(RabType type)
+        internal static string getAdultRabbit_FieldsSet(RabAliveState type)
         {
             return String.Format(@"r_id,
     {1:s}name(r_id,2) name,
@@ -747,10 +746,10 @@ WHERE r_id={0:d} ORDER BY date", rabId), sql);
     {2:s},
     {3:s},
     '' vaccines", 
-            (type == RabType.ALIVE ? "r_event_date" : "NULL r_event_date"),
-            (type == RabType.ALIVE ? "rab" : "dead"),
-            (type == RabType.ALIVE ? "(SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) suckers" : "0 suckers"),
-            (type == RabType.ALIVE ? "(SELECT AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) aage" : "0 aage"));
+            (type == RabAliveState.ALIVE ? "r_event_date" : "NULL r_event_date"),
+            (type == RabAliveState.ALIVE ? "rab" : "dead"),
+            (type == RabAliveState.ALIVE ? "(SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) suckers" : "0 suckers"),
+            (type == RabAliveState.ALIVE ? "(SELECT AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) aage" : "0 aage"));
         }
     }
 }

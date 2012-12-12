@@ -106,7 +106,7 @@ namespace rabnet.forms
             shNumMenuItem.Checked = (op.getIntOption(Options.OPT_ID.SHOW_NUMBERS) == 1);
             shortZooMenuItem.Checked = (op.safeIntOption(Options.OPT_ID.SHORT_ZOO,1) == 1);
             Building.SetDefFmt(op.getIntOption(Options.OPT_ID.BUILD_FILL_ZERO) == 1 ? '0' : ' ');
-            //rabStatusBar1.run();
+
             _manual = false;
 #if !DEMO
             Engine.db().ArchLogs();
@@ -151,16 +151,24 @@ namespace rabnet.forms
 
         private void reportPluginMenu_Click(object sender, EventArgs e)
         {
-#if PROTECTED
-            if (GRD.Instance.GetFlag(GRD.FlagType.ReportPlugIns))
+            try
             {
-#endif
-                ReportBase p = ReportBase.GetPluginByName((sender as ToolStripMenuItem).Tag.ToString());
-                if (p != null)
-                    p.MakeReport();
 #if PROTECTED
-            }
+                if (GRD.Instance.GetFlag(GRD.FlagType.ReportPlugIns))
+                {
 #endif
+                    ReportBase p = ReportBase.GetPluginByName((sender as ToolStripMenuItem).Tag.ToString());
+                    if (p != null)
+                        p.MakeReport();
+#if PROTECTED
+                }
+#endif
+            }
+            catch (Exception exc)
+            {
+                _logger.Error(exc);
+                MessageBox.Show(exc.Message);
+            }
         }
 #endif
         private void showTierTMenuItem_CheckedChanged(object sender, EventArgs e)
@@ -213,16 +221,16 @@ namespace rabnet.forms
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
 #if !DEMO
-            if(
+            if (
     #if PROTECTED
-                GRD.Instance.GetFlag(GRD.FlagType.Butcher) && 
+                GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
     #endif
-                Engine.opt().getIntOption(Options.OPT_ID.BUCHER_TYPE)==1)
+                Engine.opt().getIntOption(Options.OPT_ID.BUCHER_TYPE) == 1)
+            {
                 //CAS.ScaleForm.StopMonitoring();
+            }
 #endif
-            if (Engine.opt().getIntOption(Options.OPT_ID.CONFIRM_EXIT) == 0)
-                return;
-            if (_mustclose) return;
+            if (Engine.opt().getIntOption(Options.OPT_ID.CONFIRM_EXIT) == 0 || _mustclose ) return;
 
             DialogResult dlr = MessageBox.Show("Вы уверены что хотите Выйти?", "Выход", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dlr == DialogResult.No)
@@ -314,19 +322,6 @@ namespace rabnet.forms
                 _mustclose = true;
                 Close();//Environment.Exit(100);
             }
-/*            if (!PClient.get().canwork())
-                msg = "Ключ защиты не найден.";
-            if (farms > 0 && farms > PClient.get().farms())
-                msg = "Превышено количество разрешенных ферм.";
-            if (msg != "")
-            {
-                MessageBox.Show(this, msg + "\nПрограмма будет закрыта.", "Ошибка защиты", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                //TODO Надо сделать выход более доброжелательным
-//                LoginForm.stop = true;
-//                mustclose = true;
-//                Close();
-                Environment.Exit(100);
-            }*/
 #endif
 #if DEMO
             if (farms > BuildingsPanel.DEMO_MAX_FARMS)
@@ -424,7 +419,6 @@ namespace rabnet.forms
 
 #endregion Views 
 
-
 #region reports
 
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
@@ -496,8 +490,8 @@ namespace rabnet.forms
             PeriodForm dlg = new PeriodForm(myReportType.DEADREASONS);
             if (dlg.ShowDialog() == DialogResult.OK)
             {
-                f["dttp"] = dlg.PeriodChar;
-                f["dtval"] = dlg.DateValue;
+                f[Filters.DATE_PERIOD] = dlg.PeriodChar;
+                f[Filters.DATE_VALUE] = dlg.DateValue;
                 (new ReportViewForm(myReportType.DEADREASONS, new XmlDocument[]
                 {
                     Engine.db().makeReport(myReportType.DEADREASONS,f),
@@ -520,8 +514,8 @@ namespace rabnet.forms
             PeriodForm dlg = new PeriodForm(myReportType.DEAD);
             if (dlg.ShowDialog() == DialogResult.OK)
             {
-                f["dttp"] = dlg.PeriodChar;
-                f["dtval"] = dlg.DateValue;
+                f[Filters.DATE_PERIOD] = dlg.PeriodChar;
+                f[Filters.DATE_VALUE] = dlg.DateValue;
                 (new ReportViewForm(myReportType.DEAD,
                     new XmlDocument[]
                     {
@@ -543,19 +537,16 @@ namespace rabnet.forms
             {
                 Filters f = new Filters();
                 f["user"] = dlg.getUser().ToString();
-                f["dttp"] = dlg.PeriodChar;
-                f["dtval"] = dlg.DateValue;
+                f[Filters.DATE_PERIOD] = dlg.PeriodChar;
+                f[Filters.DATE_VALUE] = dlg.DateValue;
                 (new ReportViewForm(myReportType.USER_OKROLS, 
                     new XmlDocument[]
                     {
                         Engine.get().db().makeReport(myReportType.USER_OKROLS,f),
                         dlg.getXml()
                     }
-#if DEBUG
                     )).Show();
-#else
-                    )).ShowDialog();
-#endif
+
             }
 #else
             DemoErr.DemoNoReportMsg();
@@ -569,8 +560,8 @@ namespace rabnet.forms
             PeriodForm dlg = new PeriodForm(myReportType.FUCKS_BY_DATE);
             if (dlg.ShowDialog() == DialogResult.OK)
             {
-                f["dttp"] = dlg.PeriodChar;
-                f["dtval"] = dlg.DateValue;
+                f[Filters.DATE_PERIOD] = dlg.PeriodChar;
+                f[Filters.DATE_VALUE] = dlg.DateValue;
                 (new ReportViewForm(myReportType.FUCKS_BY_DATE, new XmlDocument[]
                 {
                     Engine.get().db().makeReport(myReportType.FUCKS_BY_DATE,f)
@@ -592,8 +583,8 @@ namespace rabnet.forms
                 if (brd.ShowDialog() == DialogResult.OK)
                 {
                     Filters f = new Filters();
-                    f["dttp"] = brd.PeriodChar;
-                    f["dtval"] = brd.DateValue;
+                    f[Filters.DATE_PERIOD] = brd.PeriodChar;
+                    f[Filters.DATE_VALUE] = brd.DateValue;
                     (new ReportViewForm("Отчет по стерильному цеху", "butcher",new XmlDocument[]
                     { 
                         Engine.get().db().makeReport(myReportType.BUTCHER_PERIOD, f),

@@ -11,30 +11,23 @@ namespace db.mysql
     {
         private static ILog _logger = LogManager.GetLogger(typeof(FucksGetter));
 
-        public static Fucks GetFucks(MySqlConnection sql, int rabbit)
+        public static Fucks GetFucks(MySqlConnection sql, Filters flt)
         {
+           string query = String.Format(@"
+    ({0:s} FROM fucks 
+    WHERE isdead(f_partner)=0 {2:s} {3:s} ORDER BY f_rabid,f_date)
+    UNION
+    ({1:s} FROM fucks 
+    WHERE isdead(f_partner)=1 {2:s} {3:s} ORDER BY f_rabid,f_date);", fuckFields(true), fuckFields(false),
+                                                      (flt.safeInt(Filters.RAB_ID, 0) != 0 ? "AND f_rabid=" + flt.safeValue(Filters.RAB_ID) : ""),
+                                                      DBHelper.MakeDatePeriod(flt,"f_date"));
 
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"(SELECT f_id,f_date,f_partner,f_times,f_state,f_date,f_end_date,
-(SELECT u_name FROM users WHERE u_id=f_worker) worker, 
-f_children,f_dead,f_type,
-deadname(f_partner,2) partner,
-(SELECT r_breed FROM dead WHERE r_id=f_partner) breed,
-(SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=(SELECT r_genesis FROM dead WHERE r_id=f_partner)) genom,
-f_killed,f_added,1 dead
-FROM fucks WHERE f_rabid={0:d} AND isdead(f_partner)=1 ORDER BY f_date)
-UNION
-(SELECT f_id,f_date,f_partner,f_times,f_state,f_date,f_end_date,
-(SELECT u_name FROM users WHERE u_id=f_worker) worker,f_children,f_dead,f_type,
-rabname(f_partner,2) partner,
-(SELECT r_breed FROM rabbits WHERE r_id=f_partner) breed,
-(SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=(SELECT r_genesis FROM rabbits WHERE r_id=f_partner)) genom,
-f_killed,f_added,0 dead
-FROM fucks WHERE f_rabid={0:d} AND isdead(f_partner)=0 ORDER BY f_date);", rabbit), sql);
+            MySqlCommand cmd = new MySqlCommand(query, sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             Fucks f = new Fucks();
             while (rd.Read())
             {
-                f.AddFuck(rd.GetInt32("f_id"), rd.GetString("partner"), rd.GetInt32("f_partner"), rd.GetInt32("f_times"),
+                f.AddFuck(rd.GetInt32("f_id"), rd.GetString("name"),rd.GetString("partner"), rd.GetInt32("f_partner"), rd.GetInt32("f_times"),
                     rd.IsDBNull(rd.GetOrdinal("f_date")) ? DateTime.MinValue : rd.GetDateTime("f_date"),
                     rd.IsDBNull(rd.GetOrdinal("f_end_date")) ? DateTime.MinValue : rd.GetDateTime("f_end_date"),
                     rd.GetString("f_state"), rd.GetInt32("f_children"), rd.GetInt32("f_dead"),
@@ -46,6 +39,19 @@ FROM fucks WHERE f_rabid={0:d} AND isdead(f_partner)=0 ORDER BY f_date);", rabbi
             }
             rd.Close();
             return f;
+        }
+
+        private static string fuckFields(bool alive)
+        {
+            return String.Format(@"SELECT 
+        rabname(f_rabid,2) name,
+        f_id,f_date,f_partner,f_times,f_state,f_date,f_end_date,
+        (SELECT u_name FROM users WHERE u_id=f_worker) worker, 
+        f_children,f_dead,f_type,
+        {0:s}name(f_partner,2) partner,
+        (SELECT r_breed FROM {1:s} WHERE r_id=f_partner) breed,
+        (SELECT GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ') FROM genoms WHERE g_id=(SELECT r_genesis FROM dead WHERE r_id=f_partner)) genom,
+        f_killed,f_added,{2:d} dead", (alive ? "rab" : "dead"), (alive ? "rabbits" : "dead"), (alive ? 0 : 1));
         }
 
         public static Fucks AllFuckers(MySqlConnection sql, Filters flt)
@@ -91,7 +97,7 @@ ORDER BY fullname;",
             Fucks f = new Fucks();
             while (rd.Read())
             {
-                f.AddFuck(0, rd.GetString("fullname"), rd.GetInt32("r_id"), rd.GetInt32("fucks"), 
+                f.AddFuck(0, "",rd.GetString("fullname"), rd.GetInt32("r_id"), rd.GetInt32("fucks"), 
                     rd.IsDBNull(rd.GetOrdinal("fuckDate"))?DateTime.MinValue : rd.GetDateTime("fuckDate"),
                     DateTime.MinValue, "", rd.GetInt32("children"), rd.GetInt32("r_status"), rd.GetInt32("r_breed"),
                     rd.IsDBNull(rd.GetOrdinal("genom")) ? "" : rd.GetString("genom"), "", rd.GetInt32("age"), 0, false, "");

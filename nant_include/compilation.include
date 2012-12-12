@@ -268,6 +268,7 @@
 		<call target="testplugin"/>
 		<call target="populationplugin"/>
 		<call target="okrolplanplugin"/>
+		<call target="FemaleSummary" />
 		<!--еще плагины добавлять здесь,-->
 	</target>	
 	
@@ -291,14 +292,14 @@
 	</target>
 	
 	<target name="populationplugin" description="Population report plugin for Tatishevo">
-		<copy file="${srcdir}/rabnet/ReportPlugIns/PopulationPlugIn/population.rdl" tofile="${bindir.plugins}/PopulationPlugIn.population.rdl"/>
+		<copy file="${srcdir}/rabnet/ReportPlugIns/PopulationPlugIn/population.rdl" tofile="${tmpdir}/PopulationPlugIn.population.rdl"/>
 		<csc target="library" output="${bindir.plugins}/PopulationPlugIn.dll" define="RELEASE" optimize="true">
 			<sources>
 				<include name="${srcdir}/rabnet/ReportPlugIns/PopulationPlugIn/*.cs"/>
 				<include name="${tmpdir}/VersionInfo.cs"/>
 			</sources>
 			<resources>
-				<include name="${bindir.plugins}/PopulationPlugIn.population.rdl"/>
+				<include name="${tmpdir}/PopulationPlugIn.population.rdl"/>
 			</resources>
 			<references>
 				<include name="${bindir}/Protected/bin/rabnet.exe" />
@@ -306,18 +307,38 @@
 				<include name="${bindir}/Protected/bin/engine.dll" />
 			</references>
 		</csc>
-		<delete file="${bindir.plugins}/PopulationPlugIn.population.rdl"/>
 	</target>
 	
 	<target name="okrolplanplugin" description="OkrolPlan report plugin for Tatishevo">
-		<copy file="${srcdir}/rabnet/ReportPlugIns/OkrolPlanPlugIn/okrolplan.rdl" tofile="${bindir.plugins}/OkrolPlanPlugIn.okrolplan.rdl"/>
+		<copy file="${srcdir}/rabnet/ReportPlugIns/OkrolPlanPlugIn/okrolplan.rdl" tofile="${tmpdir}/OkrolPlanPlugIn.okrolplan.rdl"/>
 		<csc target="library" output="${bindir.plugins}/OkrolPlanPlugIn.dll" define="RELEASE" optimize="true">
 			<sources>
 				<include name="${srcdir}/rabnet/ReportPlugIns/OkrolPlanPlugIn/*.cs"/>
+				<include name="${srcdir}/rabnet/gui/forms/BuildTreeForm.cs"/>
+				<include name="${srcdir}/rabnet/gui/forms/BuildTreeForm.Designer.cs"/>
 				<include name="${tmpdir}/VersionInfo.cs"/>
 			</sources>
 			<resources>
-				<include name="${bindir.plugins}/OkrolPlanPlugIn.okrolplan.rdl"/>
+				<include name="${tmpdir}/OkrolPlanPlugIn.okrolplan.rdl"/>
+				<include name="${srcdir}/rabnet/gui/forms/BuildTreeForm.resx"/>
+			</resources>
+			<references>
+				<include name="${bindir}/Protected/bin/rabnet.exe" />
+				<include name="${bindir}/Protected/bin/db.Interface.dll" />
+				<include name="${bindir}/Protected/bin/engine.dll" />				
+			</references>
+		</csc>
+	</target>
+	
+	<target name="FemaleSummary" description="FemaleSummary report plugin for Zemleed">
+		<copy file="${srcdir}/rabnet/ReportPlugIns/FemaleSummaryPlugIn/female_summary.rdl" tofile="${tmpdir}/FemaleSummaryPlugIn.female_summary.rdl"/>
+		<csc target="library" output="${bindir.plugins}/FemaleSummaryPlugIn.dll" define="RELEASE" optimize="true">
+			<sources>
+				<include name="${srcdir}/rabnet/ReportPlugIns/FemaleSummaryPlugIn/*.cs"/>
+				<include name="${tmpdir}/VersionInfo.cs"/>
+			</sources>
+			<resources>
+				<include name="${tmpdir}/FemaleSummaryPlugIn.okrolplan.rdl"/>
 			</resources>
 			<references>
 				<include name="${bindir}/Protected/bin/rabnet.exe" />
@@ -325,6 +346,5 @@
 				<include name="${bindir}/Protected/bin/engine.dll" />
 			</references>
 		</csc>
-		<delete file="${bindir.plugins}/OkrolPlanPlugIn.okrolplan.rdl"/>
 	</target>
 </project>	

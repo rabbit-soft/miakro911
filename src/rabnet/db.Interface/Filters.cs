@@ -69,7 +69,9 @@ namespace rabnet
         public const string BOYS_BY_ONE = "bbone";
         public const string TYPE = "type";
         public const string TIER = "yar";
-        public const string LOGS = "lgs"; 
+        public const string LOGS = "lgs";
+        public const string DATE_PERIOD = "dttp";
+        public const string DATE_VALUE = "dtval"; 
         #endregion const
 
         public Filters() : base() { }
