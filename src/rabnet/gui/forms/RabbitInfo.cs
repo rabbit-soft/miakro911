@@ -366,6 +366,7 @@ namespace rabnet.forms
             _rab.SurnameID = getCatValue(_surnames, surname.Text);
             _rab.SecnameID = getCatValue(_secnames, secname.Text);
             _rab.BreedID = getCatValue(_breeds, breed.Text);
+            _rab.BreedName = breed.Text;
             _rab.Zone = getCatValue(_zones, zone.Text);
             _curzone = _rab.Zone;
             _rab.BirthDay = bdate.DateValue.Date;

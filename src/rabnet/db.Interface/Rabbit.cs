@@ -348,7 +348,7 @@ namespace rabnet
         /// <summary>
         /// Порода кролика
         /// </summary>
-        public int BreedID
+        public virtual int BreedID
         {
             get { return _breedID; }
             set { _breedID = value; }

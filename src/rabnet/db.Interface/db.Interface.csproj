@@ -83,11 +83,11 @@
     <Compile Include="Butcher.cs" />
     <Compile Include="Catalog.cs" />
     <Compile Include="Dead.cs" />
+    <Compile Include="Exceptions.cs" />
     <Compile Include="Fucks.cs" />
     <Compile Include="LogList.cs" />
     <Compile Include="Meal.cs" />
     <Compile Include="Names.cs" />
-    <Compile Include="RabNetException.cs" />
     <Compile Include="RabVac.cs" />
     <Compile Include="Report.cs" />
     <Compile Include="TreeData.cs" />
