@@ -273,14 +273,15 @@
 	</target>	
 	
 	<target name="testplugin" description="test report plugin">
-		<copy file="${srcdir}/rabnet/ReportPlugIns/TestPlugIn/test.rdl" tofile="${bindir.plugins}/TestPlugIn.test.rdl"/>
+		<property name="rdlfile" value="${bindir.plugins}/TestPlugIn.test.rdl" />
+		<copy file="${srcdir}/rabnet/ReportPlugIns/TestPlugIn/test.rdl" tofile="${rdlfile}"/>
 		<csc target="library" output="${bindir.plugins}/TestPlugIn.dll" define="RELEASE" optimize="true">
 			<sources>
 				<include name="${srcdir}/rabnet/ReportPlugIns/TestPlugIn/*.cs"/>
 				<include name="${srcdir}/rabnet/ReportPlugIns/TestPlugIn/Properties/*.cs"/>
 			</sources>
 			<resources>
-				<include name="${bindir.plugins}/TestPlugIn.test.rdl"/>
+				<include name="${rdlfile}"/>
 			</resources>
 			<references>
 				<include name="${bindir}/Protected/bin/rabnet.exe" />
@@ -292,14 +293,15 @@
 	</target>
 	
 	<target name="populationplugin" description="Population report plugin for Tatishevo">
-		<copy file="${srcdir}/rabnet/ReportPlugIns/PopulationPlugIn/population.rdl" tofile="${tmpdir}/PopulationPlugIn.population.rdl"/>
+		<property name="rdlfile" value="${tmpdir}/PopulationPlugIn.population.rdl" />
+		<copy file="${srcdir}/rabnet/ReportPlugIns/PopulationPlugIn/population.rdl" tofile="${rdlfile}"/>
 		<csc target="library" output="${bindir.plugins}/PopulationPlugIn.dll" define="RELEASE" optimize="true">
 			<sources>
 				<include name="${srcdir}/rabnet/ReportPlugIns/PopulationPlugIn/*.cs"/>
 				<include name="${tmpdir}/VersionInfo.cs"/>
 			</sources>
 			<resources>
-				<include name="${tmpdir}/PopulationPlugIn.population.rdl"/>
+				<include name="${rdlfile}"/>
 			</resources>
 			<references>
 				<include name="${bindir}/Protected/bin/rabnet.exe" />
@@ -310,7 +312,8 @@
 	</target>
 	
 	<target name="okrolplanplugin" description="OkrolPlan report plugin for Tatishevo">
-		<copy file="${srcdir}/rabnet/ReportPlugIns/OkrolPlanPlugIn/okrolplan.rdl" tofile="${tmpdir}/OkrolPlanPlugIn.okrolplan.rdl"/>
+		<property name="rdlfile" value="${tmpdir}/OkrolPlanPlugIn.okrolplan.rdl" />
+		<copy file="${srcdir}/rabnet/ReportPlugIns/OkrolPlanPlugIn/okrolplan.rdl" tofile="${rdlfile}"/>
 		<csc target="library" output="${bindir.plugins}/OkrolPlanPlugIn.dll" define="RELEASE" optimize="true">
 			<sources>
 				<include name="${srcdir}/rabnet/ReportPlugIns/OkrolPlanPlugIn/*.cs"/>
@@ -319,7 +322,7 @@
 				<include name="${tmpdir}/VersionInfo.cs"/>
 			</sources>
 			<resources>
-				<include name="${tmpdir}/OkrolPlanPlugIn.okrolplan.rdl"/>
+				<include name="${rdlfile}"/>
 				<include name="${srcdir}/rabnet/gui/forms/BuildTreeForm.resx"/>
 			</resources>
 			<references>
@@ -331,14 +334,15 @@
 	</target>
 	
 	<target name="FemaleSummary" description="FemaleSummary report plugin for Zemleed">
-		<copy file="${srcdir}/rabnet/ReportPlugIns/FemaleSummaryPlugIn/female_summary.rdl" tofile="${tmpdir}/FemaleSummaryPlugIn.female_summary.rdl"/>
+		<property name="rdlfile" value="${tmpdir}/FemaleSummaryPlugIn.female_summary.rdl" />
+		<copy file="${srcdir}/rabnet/ReportPlugIns/FemaleSummaryPlugIn/female_summary.rdl" tofile="${rdlfile}"/>
 		<csc target="library" output="${bindir.plugins}/FemaleSummaryPlugIn.dll" define="RELEASE" optimize="true">
 			<sources>
 				<include name="${srcdir}/rabnet/ReportPlugIns/FemaleSummaryPlugIn/*.cs"/>
 				<include name="${tmpdir}/VersionInfo.cs"/>
 			</sources>
 			<resources>
-				<include name="${tmpdir}/FemaleSummaryPlugIn.okrolplan.rdl"/>
+				<include name="${rdlfile}"/>
 			</resources>
 			<references>
 				<include name="${bindir}/Protected/bin/rabnet.exe" />
