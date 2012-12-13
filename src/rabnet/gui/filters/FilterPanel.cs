@@ -9,7 +9,7 @@ namespace rabnet.filters
     public class FilterPanel:UserControl
     {
         //private RabStatusBar rsb = null;
-        public event RSBEventHandler OnHide;
+        public RSBEventHandler OnHide;
         private String fname = "";
         private Options.OPT_ID opid=Options.OPT_ID.NONE;
         public FilterPanel(String name,Options.OPT_ID opid):this()

@@ -114,7 +114,7 @@ namespace rabnet.components
                     if (!DesignMode)
                         _filterPanel.Visible = false;
                     _filterPanel.BorderStyle = BorderStyle.FixedSingle;
-                    _filterPanel.OnHide +=new RSBEventHandler(filterHide);
+                    _filterPanel.OnHide =new RSBEventHandler(filterHide);
                 }
                 else
                     btFilter.Visible = false;              
@@ -185,7 +185,7 @@ namespace rabnet.components
 
         private void filterHide()
         {
-            if (_filterPanel == null) return;
+            if (_filterPanel == null || !_filterPanel.Visible) return;
 
             Parent.Controls.Remove(_filterPanel);
             _filterPanel.Visible = false;
