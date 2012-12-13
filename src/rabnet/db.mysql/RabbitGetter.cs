@@ -53,7 +53,7 @@ namespace db.mysql
                 rd.GetInt32("r_mother"), rd.GetInt32("r_father"));
         }
 
-        public static bool isDeadRabbit(MySqlConnection con, int rid)
+        private static bool isDeadRabbit(MySqlConnection con, int rid)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT isdead({0:d});", rid), con);
             MySqlDataReader rd = cmd.ExecuteReader();
@@ -154,36 +154,25 @@ r_flags='{7:d}',r_rate={8:d},r_born={9:s} ", r.NameID, r.SurnameID, r.SecnameID,
 
         public static void MakeProholost(MySqlConnection sql, int rabbit, int daysPast)
         {
-            int male = WhosChildren(sql, rabbit);
+            int male = whosChildren(sql, rabbit);
             string when = DBHelper.DaysPastMySQLDate(daysPast);
             MySqlCommand cmd = new MySqlCommand("", sql);
             checkStartEvDate(sql, rabbit);
             cmd.CommandText = String.Format(@"UPDATE fucks SET f_state='proholost',f_end_date={0:s} WHERE f_state='sukrol' AND f_rabid={1:d};",
                 when, rabbit);
             cmd.ExecuteNonQuery();
-            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date=NULL,r_event='none',r_rate=r_rate-2 WHERE r_id={0:d};", rabbit);
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date=NULL,r_event='none',r_rate=r_rate+{1:d} WHERE r_id={0:d};", rabbit,Rate.PROHOLOST_RATE);
             cmd.ExecuteNonQuery();
             if (male != 0)
             {
-                cmd.CommandText = String.Format("UPDATE rabbits SET r_rate=r_rate-2 WHERE r_id={0:d};", male);
+                cmd.CommandText = String.Format("UPDATE rabbits SET r_rate=r_rate+{1:d} WHERE r_id={0:d};", male,Rate.PROHOLOST_RATE);
                 cmd.ExecuteNonQuery();
             }
-        }
-
-        public static int WhosChildren(MySqlConnection sql, int rabbit)
-        {
-            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT f_partner FROM fucks WHERE f_state='sukrol' AND f_rabid={0:d};", rabbit), sql);
-            MySqlDataReader rd = cmd.ExecuteReader();
-            int res = 0;
-            if (rd.Read())
-                res = rd.GetInt32(0);
-            rd.Close();
-            return res;
-        }
+        }       
 
         public static int MakeOkrol(MySqlConnection sql, int rabbit, int daysPast, int children, int dead)
         {            
-            int father = WhosChildren(sql, rabbit);
+            int father = whosChildren(sql, rabbit);
             string when = DBHelper.DaysPastMySQLDate(daysPast);
 
             MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE fucks SET f_state='okrol',f_end_date={0:s},
@@ -193,14 +182,15 @@ f_children={1:d},f_dead={2:d} WHERE f_rabid={3:d} AND f_state='sukrol';",
 
             OneRabbit fml = GetRabbit(sql, rabbit);
             OneRabbit ml = GetRabbit(sql, father, RabAliveState.ANY);
-            int rt = Math.Abs(children - 8);
+            int rt = Rate.CalcRate(children, dead, false);
             if (rt != 0 && ml != null)
             {
                 cmd.CommandText = String.Format(@"UPDATE rabbits SET r_rate=r_rate+{0:d} WHERE r_id={1:d};", rt, ml.ID);
                 cmd.ExecuteNonQuery();
                 ml.Rate += rt;
             }
-            rt -= dead;
+
+            rt = Rate.CalcRate(children, dead, true);
             fml.Rate += rt;
             //if (children > 0)
                 //fml.Rate += AUTUMN_OKROL_RATE;
@@ -216,18 +206,45 @@ WHERE r_id={0:d};",
                 int brd = 1;
                 if (ml != null && fml.BreedID == ml.BreedID)
                     brd = fml.BreedID;
-                int rate = fml.Rate + (ml == null ? fml.Rate : ml.Rate) / 10;//было 2, стало 10% 
+                int chRate = Rate.CalcChildrenRate(fml.Rate, ml == null ? 0 : ml.Rate);
                 int okrol = fml.Status;
                 cmd.CommandText = String.Format(@"INSERT 
 INTO rabbits(r_parent,r_mother,r_father,r_born,r_sex,r_group,r_bon,r_genesis,r_name,r_surname,r_secname,r_breed,r_okrol,r_rate,r_notes) 
 VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d},{10:d},{11:d},'');",
       rabbit, rabbit, father, when, children, DBHelper.commonBon(fml.Bon.ToString(), (ml != null ? ml.Bon.ToString() : fml.Bon.ToString())),
       RabbitGenGetter.MakeCommonGenesis(sql, fml.Genoms, (ml != null ? ml.Genoms : fml.Genoms), fml.Zone),
-      fml.NameID, (ml != null ? ml.NameID : 0), brd, okrol, rate/*,DBHelper.DateToMyString(date)*/);
+      fml.NameID, (ml != null ? ml.NameID : 0), brd, okrol, chRate/*,DBHelper.DateToMyString(date)*/);
                 cmd.ExecuteNonQuery();
                 return (int)cmd.LastInsertedId;
             }
             return 0;
+        }
+
+        private static int whosChildren(MySqlConnection sql, int rabbit)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT f_partner FROM fucks WHERE f_state='sukrol' AND f_rabid={0:d};", rabbit), sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            int res = 0;
+            if (rd.Read())
+                res = rd.GetInt32(0);
+            rd.Close();
+            return res;
+        }
+
+        public static Rabbit[] GetDescendants(MySqlConnection sql, int ascendantId)
+        {
+            List<Rabbit> res = new List<Rabbit>();
+            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT r_id,r_born,r_okrol FROM rabbits WHERE r_mother={0:d} OR r_father={0:d}",ascendantId),sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            while (rd.Read())
+            {
+                Rabbit r = new Rabbit();
+                r.ID = rd.GetInt32("r_id");
+                r.BirthDay = rd.GetDateTime("r_born");
+                res.Add(r);
+            }
+            rd.Close();
+            return res.ToArray();
         }
 
         public static String makeName(MySqlConnection con, int nm, int sur, int sec, int grp, Rabbit.SexType sex)
@@ -327,7 +344,7 @@ WHERE r_id={4:d};", farm, tier_id, sec, ntr, rabbit);
             cmd.ExecuteNonQuery();
         }
 
-        public static void removeParent(MySqlConnection sql, int rabbit)
+        private static void removeParent(MySqlConnection sql, int rabbit)
         {
             MySqlCommand cmd = new MySqlCommand("UPDATE rabbits SET r_parent=0 WHERE r_id=" + rabbit.ToString() + ";", sql);
             cmd.ExecuteNonQuery();
@@ -394,7 +411,7 @@ FROM rabbits WHERE r_id={0:d};", rabFromID, mom, count), sql);
         /// Освобождает имя
         /// </summary>
         /// <param name="rid">ID кролика</param>
-        public static void freeName(MySqlConnection sql, int rid)
+        private static void freeName(MySqlConnection sql, int rid)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT r_name FROM rabbits WHERE r_id={0:d};", rid), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
@@ -421,6 +438,8 @@ FROM rabbits WHERE r_id={0:d};", rabFromID, mom, count), sql);
         /// <param name="notes">Заметки</param>
         public static void killRabbit(MySqlConnection sql, int rid, int daysPast, int reason, string notes)
         {
+            if (rid == 0) return;
+
             string when = DBHelper.DaysPastMySQLDate(daysPast);
             int[] place = freeTier(sql, rid);
             freeName(sql, rid);

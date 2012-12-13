@@ -639,26 +639,26 @@ namespace rabnet
 
         public void CancelFuckEnd(Fuck f)
         {
+            if (f.FEndType == FuckEndType.Sukrol) return;
+
             if (DateTime.Now.Subtract(f.EndDate).TotalDays > 2)
                 throw new RabNetException("Отменять можно только в течение 2 дней");
 
             if (f.FEndType == FuckEndType.Okrol)
             {
-                int delYid = 0;
-                foreach (YoungRabbit y in Youngers)
+                foreach (Rabbit y in _eng.db().GetDescendants(_id))
                 {
                     if (y.BirthDay == f.EndDate)
                     {
-                        if (delYid != 0)
-                            throw new RabNetException("Не возможно разобрать кого из подсосных надо списать.");
-                        delYid = y.ID;
+                        _eng.db().KillRabbit(y.ID,0, DeadReason_Static.DeadFromOldApp, "Отмена окрола");
                     }
                 }
-                ///todo если к крольчихе подселят детей от другой матери, которые тоже родились сегодня
-                ///todo что если от крольчихи ее детей уже отсадили
-                if (delYid != 0)
-                    _eng.db().KillRabbit(delYid, 0, DeadReason_Static.DeadFromOldApp, "Отмена окрола");
+                _eng.logs().log(LogType.OKROL, ID, 0, AddressSmall, "", "-=![[Отмена окрола]!=-");
             }
+            else
+                _eng.logs().log(LogType.PROHOLOST, ID, 0, AddressSmall, "", "-=![Отмена прохолоста]!=-");
+
+            
             Engine.db().CancelFuckEnd(f.Id);
         }
         #endregion methods

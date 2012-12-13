@@ -224,8 +224,7 @@ ORDER BY fullname;",
         }
 
         public static void MakeFuck(MySqlConnection sql, int femaleId, int maleId, int daysPast, int worker,bool syntetic)
-        {
-            const int AUTUMN_FUCK_RATE = 2;
+        {            
             OneRabbit f = RabbitGetter.GetRabbit(sql, femaleId);
             String type = Fuck.GetFuckTypeStr(FuckType.Sluchka);
             string when = DBHelper.DaysPastMySQLDate(daysPast);
@@ -241,7 +240,7 @@ VALUES({0:d},{1:s},{2:d},'sukrol','{3:s}',1,'',{4:d});", femaleId, when, maleId,
             cmd.ExecuteNonQuery();
             //            cmd.CommandText = String.Format("SELECT r_status,TODAYS(r_last_fuck_okrol FROM rabbits WHERE r_id=");
             cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date={0:s}, r_event='{1:s}', r_rate=r_rate+IF(MONTH(r_event_date) BETWEEN 8 AND 12,{3:d},0) WHERE r_id={2:d};",
-                when, type, femaleId, AUTUMN_FUCK_RATE);
+                when, type, femaleId, Rate.AUTUMN_FUCK_RATE);
             cmd.ExecuteNonQuery();
             if (!syntetic)///если ИО то не ставим, что самец работал
             {

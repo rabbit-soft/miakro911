@@ -620,6 +620,11 @@ namespace db.mysql
             return (new Logs(sql).getLogs(f));
         }
 
+        public Rabbit[] GetDescendants(int ascendantId)
+        {
+            return RabbitGetter.GetDescendants(sql, ascendantId);
+        }
+
 #if !DEMO
 
         public List<String> getButcherMonths()

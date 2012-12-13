@@ -317,8 +317,6 @@ namespace rabdump
             }
             catch (Exception ex)
             {
-//                DialogResult = DialogResult.None;
-//                MessageBox.Show(ex.Message);
                 RestoreThrCb(false, ex);
                 return;
             }

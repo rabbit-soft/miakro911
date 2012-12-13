@@ -129,8 +129,8 @@ namespace rabnet
             btGens.Enabled = true;
             btFuckHer.Enabled = (_rab.EventDate != DateTime.MinValue) && !dead;            
             changeFucker.Enabled = lvFucks.SelectedItems[0].SubItems[3].Text == Fuck.GetFuckEndTypeStr(FuckEndType.Sukrol);//todo не правильно
+            btCancelFuckEnd.Enabled = lvFucks.SelectedItems[0].SubItems[3].Text != Fuck.GetFuckEndTypeStr(FuckEndType.Sukrol,false) && (lvFucks.SelectedItems[0].Index == lvFucks.Items.Count - 1);
             btChangeWorker.Enabled = true;
-            btCancelFuckEnd.Enabled = (lvFucks.SelectedItems[0].Index == lvFucks.Items.Count-1);
         }
 
         private void updateData()

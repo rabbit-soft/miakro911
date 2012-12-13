@@ -177,6 +177,8 @@ namespace rabnet
         void SetRabbitVaccine(int rid, int vid);
 
         LogList getLogs(Filters f);
+
+        Rabbit[] GetDescendants(int ascendantId);
 #if !DEMO
         void ArchLogs();
         String[] logNames();
@@ -204,10 +206,7 @@ namespace rabnet
         //for webreports
         string WebReportGlobal(DateTime dt);
         string[] WebReportsGlobal(DateTime dt,int days);
-        DateTime GetFarmStartTime();
-
-        
-
+        DateTime GetFarmStartTime();      
 #endif
         IRabNetDataLayer Clone();        
     }

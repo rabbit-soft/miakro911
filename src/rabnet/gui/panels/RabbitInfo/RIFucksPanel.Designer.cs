@@ -56,6 +56,7 @@
             // btChangeWorker
             // 
             this.btChangeWorker.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btChangeWorker.Enabled = false;
             this.btChangeWorker.Location = new System.Drawing.Point(287, 291);
             this.btChangeWorker.Name = "btChangeWorker";
             this.btChangeWorker.Size = new System.Drawing.Size(123, 23);
@@ -105,9 +106,9 @@
             // 
             // lvFucks
             // 
-            this.lvFucks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvFucks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lvFucks.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
@@ -193,8 +194,8 @@
             // showfuckidToolStripMenuItem
             // 
             this.showfuckidToolStripMenuItem.Name = "showfuckidToolStripMenuItem";
-            this.showfuckidToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.Z)));
+            this.showfuckidToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.Z)));
             this.showfuckidToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
             this.showfuckidToolStripMenuItem.Text = "show_fuck_id";
             this.showfuckidToolStripMenuItem.Visible = false;
@@ -202,6 +203,7 @@
             // btCancelFuckEnd
             // 
             this.btCancelFuckEnd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btCancelFuckEnd.Enabled = false;
             this.btCancelFuckEnd.Location = new System.Drawing.Point(416, 291);
             this.btCancelFuckEnd.Name = "btCancelFuckEnd";
             this.btCancelFuckEnd.Size = new System.Drawing.Size(75, 23);

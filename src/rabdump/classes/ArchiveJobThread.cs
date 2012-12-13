@@ -346,23 +346,23 @@ namespace rabdump
                 throw new ApplicationException("Путь к MySQL указан не корректно"); 
          
             //String pth=Path.GetDirectoryName(file);
-            String fl = Path.GetFileName(file);
+            //String fl = Path.GetFileName(file);
             String ext = Path.GetExtension(file);
-            String f = tmppath + fl;
-            _logger.Debug("copy "+file+" to "+f);
-            File.Copy(file,f,true);
+            String tmpFile = Path.Combine(tmppath, Path.GetFileName(file));
+            _logger.Debug("copy "+file+" to "+tmpFile);
+            File.Copy(file,tmpFile,true);
 
             if (ext == ".7z")//распаковка файла если расширение .7z
             {
                 _logger.Debug("decompress 7z");
                 String z7 = Options.Inst.Path7Z;
-                String ff = tmppath + Path.GetFileNameWithoutExtension(f) + ".dump";
+                String ff = tmppath + Path.GetFileNameWithoutExtension(tmpFile) + ".dump";
                 if (z7 == "" || !File.Exists(z7))
                 {
                     throw new ApplicationException("Путь к 7z не настроен");
                 }
                 //ExtractDump(f);
-                ProcessStartInfo inf = new ProcessStartInfo(z7, " e -p" + ZIP_PASSWORD + " \"" + f + "\"");
+                ProcessStartInfo inf = new ProcessStartInfo(z7, " e -p" + ZIP_PASSWORD + " \"" + tmpFile + "\"");
 
                 inf.WorkingDirectory = tmppath;
                 inf.CreateNoWindow = true;
@@ -373,19 +373,19 @@ namespace rabdump
                 p.WaitForExit();
                 int res = p.ExitCode;
                 p.Close();
-                File.Delete(f);
+                File.Delete(tmpFile);
                 if (res != 0)
                 {
                     File.Delete(ff);
                     throw new ApplicationException("7z вернул результат: " + z7err(res));
                 }
 
-                f = checkDumpPath(ff);
-                if (f == "")
+                tmpFile = checkDumpPath(ff);
+                if (tmpFile == "")
                 {
                     throw new ApplicationException("Ошибка при разархивировании");
                 }
-                _logger.Debug("dumpname: "+f);
+                _logger.Debug("dumpname: "+tmpFile);
             }
             _logger.Debug("mysql");
             
@@ -401,12 +401,13 @@ namespace rabdump
                 pinf.RedirectStandardError = true;
 
                 Process mp = Process.Start(pinf);
-                FileStream rd = new FileStream(f, FileMode.Open);
+                FileStream rd = new FileStream(tmpFile, FileMode.Open);
                 byte[] buf = new byte[rd.Length];
                 rd.Read(buf, 0, (int)rd.Length);
                 rd.Close();
-                byte[] b2 = buf;// Encoding.Convert(Encoding.UTF8, Encoding.ASCII, buf);
-                mp.StandardInput.BaseStream.Write(b2, 0, b2.Length);
+                //byte[] b2 = buf;// Encoding.Convert(Encoding.UTF8, Encoding.ASCII, buf);
+                //mp.StandardInput.BaseStream.Write(b2, 0, b2.Length);
+                mp.StandardInput.BaseStream.Write(buf, 0, buf.Length);///throws "канал был закрыт"
                 mp.StandardInput.Close();
                 String mout = mp.StandardError.ReadToEnd();
                 mp.WaitForExit();
@@ -417,10 +418,10 @@ namespace rabdump
             }
             catch(Exception ex)
             {
-                File.Delete(f);
+                File.Delete(tmpFile);
                 throw ex;
             }
-            File.Delete(f);
+            File.Delete(tmpFile);
         }
 
         /// <summary>

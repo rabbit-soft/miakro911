@@ -89,6 +89,7 @@
     <Compile Include="Meal.cs" />
     <Compile Include="Names.cs" />
     <Compile Include="RabVac.cs" />
+    <Compile Include="Rate.cs" />
     <Compile Include="Report.cs" />
     <Compile Include="TreeData.cs" />
     <Compile Include="Users.cs" />
