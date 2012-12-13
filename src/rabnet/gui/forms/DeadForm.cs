@@ -91,7 +91,7 @@ namespace rabnet.forms
             DeadReasonChangeForm frm = new DeadReasonChangeForm(id,name,reason);
             if (frm.ShowDialog() == DialogResult.OK)
             {
-                Engine.get().logs().log(RabNetLogs.LogType.CHANGE_DEADREASON, id);
+                Engine.get().logs().log(LogType.CHANGE_DEADREASON, id);
                 Engine.db().changeDeadReason(id, frm.NewReason);
             }
         }

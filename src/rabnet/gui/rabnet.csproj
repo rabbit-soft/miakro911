@@ -236,16 +236,22 @@
     <Compile Include="panels\FarmsPanel.Designer.cs">
       <DependentUpon>FarmsPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="panels\RIVaccinePanel.cs">
+    <Compile Include="panels\RabbitInfo\RIFucksPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="panels\RIVaccinePanel.Designer.cs">
+    <Compile Include="panels\RabbitInfo\RIFucksPanel.Designer.cs">
+      <DependentUpon>RIFucksPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="panels\RabbitInfo\RIVaccinePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="panels\RabbitInfo\RIVaccinePanel.Designer.cs">
       <DependentUpon>RIVaccinePanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="panels\RISuckersPanel.cs">
+    <Compile Include="panels\RabbitInfo\RISuckersPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="panels\RISuckersPanel.Designer.cs">
+    <Compile Include="panels\RabbitInfo\RISuckersPanel.Designer.cs">
       <DependentUpon>RISuckersPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -619,10 +625,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>FarmsPanel1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="panels\RIVaccinePanel.resx">
+    <EmbeddedResource Include="panels\RabbitInfo\RIFucksPanel.resx">
+      <DependentUpon>RIFucksPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="panels\RabbitInfo\RIVaccinePanel.resx">
       <DependentUpon>RIVaccinePanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="panels\RISuckersPanel.resx">
+    <EmbeddedResource Include="panels\RabbitInfo\RISuckersPanel.resx">
       <DependentUpon>RISuckersPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

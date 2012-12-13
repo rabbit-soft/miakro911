@@ -77,15 +77,15 @@ namespace rabnet.filters
         }
         private void saveClick(Object sender, EventArgs e)
         {
-            if (fs.SelectedIndex==0 || fs.Text=="")
-                return;
+            if (fs.SelectedIndex==0 || fs.Text=="") return;
+
             Engine.db().setFilter(fname, fs.Text, getFilters());
             loadFilters();
         }
         private void filterSelect(Object sender, EventArgs e)
         {
-            if (fs.Text == "")
-                return;
+            if (fs.Text == "") return;
+
             if (fs.SelectedIndex == 0)
             {
                 fs.SelectedIndex = -1;

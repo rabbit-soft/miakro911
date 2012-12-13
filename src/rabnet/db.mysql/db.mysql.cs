@@ -244,7 +244,7 @@ namespace db.mysql
             return FucksGetter.getFuckMonths(sql);
         }
 
-        public void cancelFuckEnd(int fuckID)
+        public void CancelFuckEnd(int fuckID)
         {
             FucksGetter.cancelFuckEnd(sql, fuckID);
         }

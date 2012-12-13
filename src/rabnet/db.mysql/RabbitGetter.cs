@@ -182,8 +182,7 @@ r_flags='{7:d}',r_rate={8:d},r_born={9:s} ", r.NameID, r.SurnameID, r.SecnameID,
         }
 
         public static int MakeOkrol(MySqlConnection sql, int rabbit, int daysPast, int children, int dead)
-        {
-            const int AUTUMN_OKROL_RATE = 2;
+        {            
             int father = WhosChildren(sql, rabbit);
             string when = DBHelper.DaysPastMySQLDate(daysPast);
 
@@ -194,7 +193,7 @@ f_children={1:d},f_dead={2:d} WHERE f_rabid={3:d} AND f_state='sukrol';",
 
             OneRabbit fml = GetRabbit(sql, rabbit);
             OneRabbit ml = GetRabbit(sql, father, RabAliveState.ANY);
-            int rt = children - 8;
+            int rt = Math.Abs(children - 8);
             if (rt != 0 && ml != null)
             {
                 cmd.CommandText = String.Format(@"UPDATE rabbits SET r_rate=r_rate+{0:d} WHERE r_id={1:d};", rt, ml.ID);
@@ -202,14 +201,14 @@ f_children={1:d},f_dead={2:d} WHERE f_rabid={3:d} AND f_state='sukrol';",
                 ml.Rate += rt;
             }
             rt -= dead;
-            if (children > 0) //&& date.Month > 8 && date.Month < 12)
-                fml.Rate += AUTUMN_OKROL_RATE;
-                //rt += 2;
+            fml.Rate += rt;
+            //if (children > 0)
+                //fml.Rate += AUTUMN_OKROL_RATE;
             cmd.CommandText = String.Format(@"UPDATE rabbits SET r_event_date=NULL, r_event='none',
 r_status=r_status+1, r_last_fuck_okrol={1:s}, r_overall_babies=COALESCE(r_overall_babies+{2:d},1),
-r_lost_babies=COALESCE(r_lost_babies+{3:d},1), r_rate=r_rate+IF(MONTH(Now()) BETWEEN 8 AND 12,{4:d},0) 
+r_lost_babies=COALESCE(r_lost_babies+{3:d},1), r_rate=r_rate+{4:d}
 WHERE r_id={0:d};",
-                rabbit, when, children, dead, AUTUMN_OKROL_RATE);           
+                rabbit, when, children, dead, rt);           
             cmd.ExecuteNonQuery();
 
             if (children > 0)
@@ -217,7 +216,7 @@ WHERE r_id={0:d};",
                 int brd = 1;
                 if (ml != null && fml.BreedID == ml.BreedID)
                     brd = fml.BreedID;
-                int rate = fml.Rate + (ml == null ? fml.Rate : ml.Rate) / 2;
+                int rate = fml.Rate + (ml == null ? fml.Rate : ml.Rate) / 10;//было 2, стало 10% 
                 int okrol = fml.Status;
                 cmd.CommandText = String.Format(@"INSERT 
 INTO rabbits(r_parent,r_mother,r_father,r_born,r_sex,r_group,r_bon,r_genesis,r_name,r_surname,r_secname,r_breed,r_okrol,r_rate,r_notes) 
@@ -553,7 +552,7 @@ WHERE suckers>0 AND ABS(aage-{0:d})<={1:d};
 ", age, agediff), sql);
             List<AdultRabbit> rbs = new List<AdultRabbit>();
             MySqlDataReader rd = cmd.ExecuteReader();
-            while (rd.Read()) //TODO проверить
+            while (rd.Read())
             {
                 rbs.Add(fillAdultRabbit(rd));
             }

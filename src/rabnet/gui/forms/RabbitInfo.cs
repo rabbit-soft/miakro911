@@ -8,9 +8,10 @@ using System.Windows.Forms;
 
 namespace rabnet.forms
 {
+    internal delegate void RIHandler();
+
     public partial class RabbitInfo : Form
-    {
-        const String RABDEAD = "Списан";
+    {        
         private int _rabId = 0;
         private Catalog _breeds = null;
         private Catalog _zones = null;
@@ -36,6 +37,14 @@ namespace rabnet.forms
             _mkcandidate = Engine.opt().getIntOption(Options.OPT_ID.MAKE_CANDIDATE);
             //makesuck = Engine.opt().getIntOption(Options.OPT_ID.COUNT_SUCKERS);
             dateWeight.Value = DateTime.Now.Date;
+
+            riFucksPanel1.UncanceledEvent+=new RIHandler(cancelUnable);
+            riFucksPanel1.UpdateRequire += new RIHandler(updateData);
+        }
+
+        private void cancelUnable()
+        {
+            btCancel.Enabled = false;
         }
 
         private void initialHints()
@@ -43,8 +52,6 @@ namespace rabnet.forms
             ToolTip toolTip = new ToolTip();
             
             toolTip.InitialDelay = 1000;
-            toolTip.SetToolTip(btGens,"Показать генетику выделенного самца");
-            toolTip.SetToolTip(btFuckHer,"Выбрать партнера для соития");
             toolTip.SetToolTip(overallBab,"Сколько родила живых крольчат вообщем");
             toolTip.SetToolTip(btBon,"Определение классности");
             toolTip.SetToolTip(group,"Количество кроликов в клетке");
@@ -61,7 +68,7 @@ namespace rabnet.forms
             //toolTip.SetToolTip(dtp_vacEnd,"Дата окончания прививки");
             toolTip.SetToolTip(sex, "Пол одного или группы кроликов");
             toolTip.SetToolTip(rate, "Рейтинг кролика");
-            toolTip.SetToolTip(btChangeWorker, "Изменить работника, который случал");
+            
         }
 
         public RabbitInfo(int id)
@@ -137,7 +144,7 @@ namespace rabnet.forms
             gp.Checked = _rab.Production;
             cbRealization.Checked = _rab.RealizeReady;
             rate.Value = _rab.Rate;
-            group.Value = _rab.Group;
+            group.Value = _rab.Group == 0 ? 1 : _rab.Group;//защита на всякий случай
             lbName.Text = "Имя:" + name.Text;
             lbSecname.Text = "Ж.Фам:" + surname.Text;
             lbSurname.Text = "М.Фам:" + secname.Text;
@@ -201,7 +208,7 @@ namespace rabnet.forms
                 lbState.Text = "Статус: Штатная";
             if (_rab.Status > 0)
             {
-                button8.Text = btFuckHer.Text = "Вязать";
+                button8.Text = "Вязать";
                 if (_rab.Status>1) 
                     tpFucks.Text = "Вязки/Окролы";
             }            
@@ -230,35 +237,13 @@ namespace rabnet.forms
                 button8.Enabled = true;
             overallBab.Value = _rab.KidsOverAll;
             deadBab.Value = _rab.KidsLost;
-            okrolCount.Value = _rab.Status;
-            ///Заполнение списка случек
-            lvFucks.Items.Clear();
-            if (_rabId>0)
-            foreach (Fucks.Fuck f in Engine.db().GetFucks(new Filters(Filters.RAB_ID+"="+_rab.ID)).fucks)
-            {
-                ListViewItem li = lvFucks.Items.Add(f.When == DateTime.MinValue ? "" : f.When.ToShortDateString());
-                li.SubItems.Add(f.FuckType);
-                li.SubItems.Add(f.PartnerName);
-                if (f.IsDead)
-                    li.SubItems.Add(RABDEAD);
-                else
-                    li.SubItems.Add(f.Status);
-                li.SubItems.Add(f.EndDate == DateTime.MinValue ? "" : f.EndDate.ToShortDateString());
-                li.SubItems.Add(f.Children.ToString());
-                li.SubItems.Add(f.Dead.ToString());
-                li.SubItems.Add(f.Killed.ToString());
-                li.SubItems.Add(f.Added.ToString());
-                li.SubItems.Add(f.Breed == _rab.BreedID ? "-" : "Да");
-                li.SubItems.Add(RabNetEngHelper.inbreeding(f.rGenom, _rab.Genoms) ? "Да" : "-");
-                li.SubItems.Add(f.Worker);
-                li.Tag = f;
-            }
-            changeFucker.Enabled = false;
+            okrolCount.Value = _rab.Status;            
 
             if (_rabId > 0)
             {
                 //riSuckersPanel1.SetBreeds(_breeds);
                 riSuckersPanel1.Fill(_rab);
+                riFucksPanel1.SetRabbit(_rab);
             }
         }
 
@@ -503,32 +488,9 @@ namespace rabnet.forms
                 addgen(curzone);*/
         }
 
-        private void fucks_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            btChangeWorker.Enabled = changeFucker.Enabled = false;
-            if (lvFucks.SelectedItems.Count == 1)
-            {
-                bool dead = (lvFucks.SelectedItems[0].SubItems[3].Text == RABDEAD);
-                btGens.Enabled = true;
-                btFuckHer.Enabled = !sukr.Checked && !dead;
-                changeFucker.Enabled = lvFucks.SelectedItems[0].SubItems[3].Text == "сукрольна";
-                btChangeWorker.Enabled = true;
-            }
-            else
-                 btGens.Enabled = btFuckHer.Enabled = false;
-        }
+        
 
-        private void btGens_Click(object sender, EventArgs e)
-        {
-            Fucks.Fuck f=lvFucks.SelectedItems[0].Tag as Fucks.Fuck;
-            String nm=lbName.Text.Split(':')[1];
-            if (lbSecname.Text!="")
-                nm += " " + lbSecname.Text.Split(':')[1];
-            if (lbSurname.Text!="")
-                nm += "-" + lbSurname.Text.Split(':')[1];
-            //(new GenomView(_rab.Breed, f.breed, _rab.Genom, f.rgenom, nm, f.partner)).ShowDialog();
-            (new GenomViewForm(_rab.ID, f.PartnerId)).ShowDialog();
-        }
+        
 
         private void button13_Click(object sender, EventArgs e)
         {
@@ -559,22 +521,7 @@ namespace rabnet.forms
             if (dlg.ShowDialog() == DialogResult.OK)
                 btCancel.Enabled = false;
             updateData();
-        }
-
-        private void btFuckHer_Click(object sender, EventArgs e)
-        {
-            Fucks.Fuck f = lvFucks.SelectedItems[0].Tag as Fucks.Fuck;
-            MakeFuckForm dlg = new MakeFuckForm(_rab.ID, f.PartnerId);
-            if (dlg.ShowDialog() == DialogResult.OK)
-                btCancel.Enabled = false;
-            updateData();
-        }
-
-        private void fucks_DoubleClick(object sender, EventArgs e)
-        {
-            if (lvFucks.SelectedItems.Count == 1)
-                btGens.PerformClick();
-        }
+        }              
 
         private void button14_Click(object sender, EventArgs e)
         {
@@ -690,26 +637,6 @@ namespace rabnet.forms
             _manual = true;
         }
 
-        private void changeFucker_Click(object sender, EventArgs e)
-        {
-            if (lvFucks.SelectedItems.Count!=1) return;
-            Fucks.Fuck f = lvFucks.SelectedItems[0].Tag as Fucks.Fuck;
-            MakeFuckForm mf = new MakeFuckForm(_rab.ID, f.PartnerId, 1);
-            if (mf.ShowDialog() == DialogResult.OK && mf.SelectedFucker!=f.Id)
-                Engine.db().changeFucker(f.Id, mf.SelectedFucker);
-            updateData();
-        }
-
-        private void changeWorker_Click(object sender, EventArgs e)
-        {
-            if (lvFucks.SelectedItems.Count != 1) return;
-            Fucks.Fuck f = lvFucks.SelectedItems[0].Tag as Fucks.Fuck;
-            SelectUserForm sf = new SelectUserForm(f.Worker);
-            if (sf.ShowDialog() == DialogResult.OK && sf.SelectedUser!=0 && sf.SelectedUserName!=f.Worker)
-                Engine.db().changeWorker(f.Id, sf.SelectedUser);
-            updateData();
-        }
-
         private void maleStatus_TextChanged(object sender, EventArgs e)
         { 
             if (_rab.NameID == 0 && maleStatus.SelectedIndex == 2)
@@ -718,40 +645,6 @@ namespace rabnet.forms
                 if (_rab.Status == 1 || _rab.Age >= _mkcandidate) maleStatus.SelectedIndex = 1;
                     else maleStatus.SelectedIndex = 0;
             }
-        }
-
-        private void miIsNotAProholost_Click(object sender, EventArgs e)
-        {
-            if (lvFucks.SelectedItems.Count == 1)
-            {
-                Fucks.Fuck f = (lvFucks.SelectedItems[0].Tag as Fucks.Fuck);
-                if (!isLastEvent(f))
-                {
-                    MessageBox.Show("Отменить прохолостание можно лишь последней записи");
-                    return;
-                }
-                if (MessageBox.Show("Данная функция отменит прохолост текущей крольчихи и восстановит сукрольность." + Environment.NewLine +
-                    "Продолжить?", "Отмена прохолоста", MessageBoxButtons.YesNo) == DialogResult.No) return;
-                Engine.db().cancelFuckEnd(f.Id);
-                this.updateData();
-                //(new OkrolForm(this.rid)).ShowDialog();
-            }
-        }
-
-        private bool isLastEvent(Fucks.Fuck f)
-        {
-            foreach (ListViewItem lvi in lvFucks.Items)
-            {
-                if ((lvi.Tag as Fucks.Fuck).Id > f.Id)
-                    return false;
-            }
-            return true;
-        }
-
-        private void msFucks_Opening(object sender, CancelEventArgs e)
-        {
-            if (lvFucks.SelectedItems.Count != 1 || lvFucks.SelectedItems[0].SubItems[3].Text != Fucks.Type.Proholost_rus)          
-                e.Cancel = true;                       
         }
 
         private void working()

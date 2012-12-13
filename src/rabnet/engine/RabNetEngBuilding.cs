@@ -52,7 +52,7 @@ namespace rabnet
                     if (b.Busy[i] != 0)
                         throw new ExFarmNotEmpty();
             }
-            _eng.logs().log(value ? RabNetLogs.LogType.REPAIR_ON : RabNetLogs.LogType.REPAIR_OFF, 0, b.Farm.ToString());
+            _eng.logs().log(value ? LogType.REPAIR_ON : LogType.REPAIR_OFF, 0, b.Farm.ToString());
             b.Repair = value;
             commit();
         }
@@ -64,7 +64,7 @@ namespace rabnet
         {
             if (b.Nests[0] == (value ? '1' : '0'))
                 return;
-            _eng.logs().log(value ? RabNetLogs.LogType.NEST_ON : RabNetLogs.LogType.NEST_OFF, b.Busy[0], b.smallname[0]);
+            _eng.logs().log(value ? LogType.NEST_ON : LogType.NEST_OFF, b.Busy[0], b.smallname[0]);
             b.Nests = (value ? "1" : "0")+b.Nests.Substring(1);
             commit();
 
@@ -79,7 +79,7 @@ namespace rabnet
         {
             if (b.Nests[1] == (value ? '1' : '0'))
                 return;
-            _eng.logs().log(value ? RabNetLogs.LogType.NEST_ON : RabNetLogs.LogType.NEST_OFF, b.Busy[1],b.smallname[1]);
+            _eng.logs().log(value ? LogType.NEST_ON : LogType.NEST_OFF, b.Busy[1],b.smallname[1]);
             b.Nests = b.Nests.Substring(0, 1) + (value ? '1' : '0');
             commit();
 
@@ -92,9 +92,9 @@ namespace rabnet
             if (value == 2 || value>3) value = 3;
             if (b.Heaters[0] == value.ToString()[0])
                 return;
-            RabNetLogs.LogType tp = RabNetLogs.LogType.HEATER_OUT;
-            if (value == 1) tp = RabNetLogs.LogType.HEATER_OFF;
-            if (value == 3) tp = RabNetLogs.LogType.HEATER_ON;
+            LogType tp = LogType.HEATER_OUT;
+            if (value == 1) tp = LogType.HEATER_OFF;
+            if (value == 3) tp = LogType.HEATER_ON;
             _eng.logs().log(tp, b.Busy[0], b.smallname[0]);
             b.Heaters = String.Format("{0:D1}",value) + b.Heaters.Substring(1);
             commit();
@@ -105,9 +105,9 @@ namespace rabnet
             if (value == 2 || value > 3) value = 3;
             if (b.Heaters[1] == value.ToString()[0])
                 return;
-            RabNetLogs.LogType tp = RabNetLogs.LogType.HEATER_OUT;
-            if (value == 1) tp = RabNetLogs.LogType.HEATER_OFF;
-            if (value == 3) tp = RabNetLogs.LogType.HEATER_ON;
+            LogType tp = LogType.HEATER_OUT;
+            if (value == 1) tp = LogType.HEATER_OFF;
+            if (value == 3) tp = LogType.HEATER_ON;
             _eng.logs().log(tp, b.Busy[1], b.smallname[1]);
             b.Heaters = b.Heaters.Substring(0, 1) + String.Format("{0:D1}", value);
             commit();

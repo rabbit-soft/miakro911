@@ -6,7 +6,6 @@ namespace rabnet
 {
     public class YoungRabbit : Rabbit, IData
     {
-        //public String fe = "";
         public readonly int ParentId;
         public readonly string ParentName;
         public readonly int Neighbours;

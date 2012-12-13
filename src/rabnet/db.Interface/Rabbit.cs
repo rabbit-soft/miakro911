@@ -12,6 +12,7 @@ namespace rabnet
         public const string NULL_ADDRESS = "бомж";
         public const string NULL_BON = "00000";
         public const string NULL_FLAGS = "00000";
+
         protected int _id=0;
         protected String _nameFull="";
         protected Rabbit.SexType _sex = SexType.VOID;
@@ -74,19 +75,21 @@ namespace rabnet
 
         public static String GetEventName(int evtype)
         {
-            String ev = "none";
-            if (evtype == 1) ev = Fucks.Type.Sluchka_ENG;
-            if (evtype == 2) ev = Fucks.Type.Vyazka_ENG;
-            if (evtype == 3) ev = Fucks.Type.Kuk_ENG;
-            return ev;
+            //String ev = "none";
+            //if (evtype == 1) ev = FuckType.Sluchka_ENG;
+            //if (evtype == 2) ev = FuckType.Vyazka_ENG;
+            //if (evtype == 3) ev = FuckType.Kuk_ENG;
+            //return ev;
+            return Fuck.GetFuckTypeStr((FuckType)evtype,true);
         }
         public static int GetEventType(String eventType)
         {
-            int evtype = 0;
-            if (eventType == Fucks.Type.Sluchka_ENG) evtype = 1;
-            if (eventType == Fucks.Type.Vyazka_ENG) evtype = 2;
-            if (eventType == Fucks.Type.Kuk_ENG) evtype = 3;
-            return evtype;
+            //int evtype = 0;
+            //if (eventType == FuckType.Sluchka_ENG) evtype = 1;
+            //if (eventType == FuckType.Vyazka_ENG) evtype = 2;
+            //if (eventType == FuckType.Kuk_ENG) evtype = 3;
+            //return evtype;
+            return (int)Fuck.ParceFuckType(eventType);
         }
         public static Rabbit.SexType GetSexType(string sex)
         {
@@ -133,11 +136,6 @@ namespace rabnet
 
     public class AdultRabbit : Rabbit, IData
     {
-        #region static
-        //private static bool s_showNum = false;
-        //private static int s_brideAge = 122;
-        //private static int s_candAge = 120;
-        #endregion static
         protected int _rate=0;
         protected String _flags="00000";
         protected int _weight=0;

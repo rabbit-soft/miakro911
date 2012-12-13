@@ -74,7 +74,7 @@ namespace rabnet
         ICatalogs catalogs();
         void RabNetLog(int type, int user, int r1, int r2, string a1, string a2, String text);
         Fucks GetFucks(Filters f);
-        void cancelFuckEnd(int fuckID);
+        void CancelFuckEnd(int fuckID);
         //Fucks GetAllFuckers(int female,bool geterosis,bool inbreeding,int malewait);
         Fucks GetAllFuckers(Filters f);
         void setBon(int rabbit,String bon);

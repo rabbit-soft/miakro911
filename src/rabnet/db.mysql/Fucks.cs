@@ -14,11 +14,11 @@ namespace db.mysql
         public static Fucks GetFucks(MySqlConnection sql, Filters flt)
         {
            string query = String.Format(@"
-    ({0:s} FROM fucks 
-    WHERE isdead(f_partner)=0 {2:s} {3:s} ORDER BY f_rabid,f_date)
+    (SELECT {0:s} FROM fucks 
+    WHERE isdead(f_partner)=0 {2:s} {3:s})
     UNION
-    ({1:s} FROM fucks 
-    WHERE isdead(f_partner)=1 {2:s} {3:s} ORDER BY f_rabid,f_date);", fuckFields(true), fuckFields(false),
+    (SELECT {1:s} FROM fucks 
+    WHERE isdead(f_partner)=1 {2:s} {3:s}) ORDER BY name,f_date;", fuckFields(true), fuckFields(false),
                                                       (flt.safeInt(Filters.RAB_ID, 0) != 0 ? "AND f_rabid=" + flt.safeValue(Filters.RAB_ID) : ""),
                                                       DBHelper.MakeDatePeriod(flt,"f_date"));
 
@@ -27,25 +27,30 @@ namespace db.mysql
             Fucks f = new Fucks();
             while (rd.Read())
             {
-                f.AddFuck(rd.GetInt32("f_id"), rd.GetString("name"),rd.GetString("partner"), rd.GetInt32("f_partner"), rd.GetInt32("f_times"),
-                    rd.IsDBNull(rd.GetOrdinal("f_date")) ? DateTime.MinValue : rd.GetDateTime("f_date"),
-                    rd.IsDBNull(rd.GetOrdinal("f_end_date")) ? DateTime.MinValue : rd.GetDateTime("f_end_date"),
-                    rd.GetString("f_state"), rd.GetInt32("f_children"), rd.GetInt32("f_dead"),
-                    rd.IsDBNull(rd.GetOrdinal("breed")) ? 1 :rd.GetInt32("breed"),
-                    rd.IsDBNull(rd.GetOrdinal("genom")) ? "" : rd.GetString("genom"), 
-                    rd.GetString("f_type"),
-                    rd.GetInt32("f_killed"), rd.GetInt32("f_added"), (rd.GetInt32("dead") == 1), rd.IsDBNull(7) ? "" : rd.GetString("worker")
-                    );
+                f.Add(fillFuck(rd));
             }
             rd.Close();
             return f;
         }
 
+        private static Fuck fillFuck(MySqlDataReader rd)
+        {
+            return new Fuck(rd.GetInt32("f_id"), rd.GetInt32("f_rabid"), rd.GetString("name"), rd.GetInt32("f_partner"), rd.GetString("partner"), rd.GetInt32("f_times"),
+                    rd.IsDBNull(rd.GetOrdinal("f_date")) ? DateTime.MinValue : rd.GetDateTime("f_date"),
+                    rd.IsDBNull(rd.GetOrdinal("f_end_date")) ? DateTime.MinValue : rd.GetDateTime("f_end_date"),
+                    rd.GetString("f_state"), rd.GetInt32("f_children"), rd.GetInt32("f_dead"),
+                    rd.IsDBNull(rd.GetOrdinal("breed")) ? 1 : rd.GetInt32("breed"),
+                    rd.IsDBNull(rd.GetOrdinal("genom")) ? "" : rd.GetString("genom"),
+                    rd.GetString("f_type"),
+                    rd.GetInt32("f_killed"), rd.GetInt32("f_added"), (rd.GetInt32("dead") == 1),
+                    rd.IsDBNull(rd.GetOrdinal("worker")) ? "" : rd.GetString("worker"));
+        }
+
         private static string fuckFields(bool alive)
         {
-            return String.Format(@"SELECT 
+            return String.Format(@"f_rabid, f_date,
         rabname(f_rabid,2) name,
-        f_id,f_date,f_partner,f_times,f_state,f_date,f_end_date,
+        f_id,f_partner,f_times,f_state,f_end_date,
         (SELECT u_name FROM users WHERE u_id=f_worker) worker, 
         f_children,f_dead,f_type,
         {0:s}name(f_partner,2) partner,
@@ -97,7 +102,7 @@ ORDER BY fullname;",
             Fucks f = new Fucks();
             while (rd.Read())
             {
-                f.AddFuck(0, "",rd.GetString("fullname"), rd.GetInt32("r_id"), rd.GetInt32("fucks"), 
+                f.AddFuck(0, 0,"",rd.GetInt32("r_id"),rd.GetString("fullname"),  rd.GetInt32("fucks"), 
                     rd.IsDBNull(rd.GetOrdinal("fuckDate"))?DateTime.MinValue : rd.GetDateTime("fuckDate"),
                     DateTime.MinValue, "", rd.GetInt32("children"), rd.GetInt32("r_status"), rd.GetInt32("r_breed"),
                     rd.IsDBNull(rd.GetOrdinal("genom")) ? "" : rd.GetString("genom"), "", rd.GetInt32("age"), 0, false, "");
@@ -173,52 +178,70 @@ ORDER BY fullname;",
         }
 
         /// <summary>
-        /// Отменяет Конец Случки, т.е. продолжает сукрольность.
+        /// Отменяет Прохолост, т.е. продолжает сукрольность.
         /// </summary>
         public static void cancelFuckEnd(MySqlConnection sql, int fuckId)
         {
-            DateTime ev_date = DateTime.MinValue;
-            int rabID = 0;
-            string type ="";
             MySqlCommand cmd = new MySqlCommand("", sql);
-            // достаем информацию, которую нужно востановить в таблице rabbits по данной крольчихе
-            cmd.CommandText = String.Format("SELECT f_rabid,f_date,f_type FROM fucks f WHERE f_id={0:#};",fuckId);
+            /// достаем информацию, которую нужно востановить в таблице rabbits по данной крольчихе
+            cmd.CommandText = String.Format("SELECT {0:s} FROM fucks f WHERE f_id={1:d};",fuckFields(true),fuckId);
             MySqlDataReader rd = cmd.ExecuteReader();
-
+            Fuck f=null;
             if (rd.Read())
             {
-                rabID = rd.GetInt32("f_rabid");
-                if (!rd.IsDBNull(1))
-                    ev_date = rd.GetDateTime("f_date");
-                else ev_date = DateTime.Now.AddDays(-30);
-                type = rd.GetString("f_type");
+                f = fillFuck(rd);
+                //rabID = rd.GetInt32("f_rabid");
+                //if (!rd.IsDBNull(rd.GetOrdinal("f_date")))
+                //    ev_date = rd.GetDateTime("f_date");
+                //else 
+                //    ev_date = DateTime.Now.AddDays(-30);
+                //type = rd.GetString("f_type");
+                //status = Fuck.ParceFuckEndType(rd.GetString("f_state"));
+            }
+            else
+            {
+                rd.Close();
+                return;
             }
             rd.Close();
-            cmd.CommandText = String.Format("UPDATE fucks SET f_end_date=null, f_state='sukrol', f_notes='proholost cancel' WHERE f_id={0:#};", fuckId);
+            int rate = 2;
+            if (f.FEndType == FuckEndType.Sukrol) return;
+            if (f.FEndType == FuckEndType.Okrol)
+            {
+                rate = -(Math.Abs(f.Children - 8) - f.Dead);
+                cmd.CommandText = String.Format(@"UPDATE rabbits SET r_rate=r_rate+{0:d} WHERE r_id={1:d};", rate, f.PartnerId);
+                cmd.ExecuteNonQuery();
+            }
+            cmd.CommandText = String.Format("UPDATE fucks SET f_end_date=null, f_state='sukrol', f_notes='{1:s} cancel' WHERE f_id={0:#};", fuckId, Fuck.GetFuckEndTypeStr(f.FEndType));
             cmd.ExecuteNonQuery();
-            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date='{0}',r_event='{2}',r_rate=r_rate+2 WHERE r_id={1:d};", ev_date.ToString("yyyy-MM-dd"), rabID, type);
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date='{0}',r_event='{2}',r_rate=r_rate+{3:d} WHERE r_id={1:d};", 
+                f.EventDate.ToString("yyyy-MM-dd"), 
+                f.FemaleId, 
+                Fuck.GetFuckTypeStr(f.FType),
+                rate
+            );
             cmd.ExecuteNonQuery();
         }
 
         public static void MakeFuck(MySqlConnection sql, int femaleId, int maleId, int daysPast, int worker,bool syntetic)
         {
+            const int AUTUMN_FUCK_RATE = 2;
             OneRabbit f = RabbitGetter.GetRabbit(sql, femaleId);
-            String type = Fucks.Type.Sluchka_ENG;
+            String type = Fuck.GetFuckTypeStr(FuckType.Sluchka);
             string when = DBHelper.DaysPastMySQLDate(daysPast);
 
             if (syntetic)
-                type = Fucks.Type.Syntetic_ENG;
+                type = Fuck.GetFuckTypeStr(FuckType.Syntetic);
             else if (f.Status > 0)
-                type = Fucks.Type.Vyazka_ENG;
+                type = Fuck.GetFuckTypeStr(FuckType.Vyazka);
             MySqlCommand cmd = new MySqlCommand(String.Format("UPDATE fucks SET f_last=0 WHERE f_rabid={0:d};", femaleId), sql);
             cmd.ExecuteNonQuery();
             cmd.CommandText = String.Format(@"INSERT INTO fucks(f_rabid,f_date,f_partner,f_state,f_type,f_last,f_notes,f_worker) 
 VALUES({0:d},{1:s},{2:d},'sukrol','{3:s}',1,'',{4:d});", femaleId, when, maleId, type, worker);
             cmd.ExecuteNonQuery();
             //            cmd.CommandText = String.Format("SELECT r_status,TODAYS(r_last_fuck_okrol FROM rabbits WHERE r_id=");
-            int rate = 1;
-            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date={0:s}, r_event='{1:s}', r_rate=r_rate+{3:d} WHERE r_id={2:d};",
-                when, type, femaleId, rate);
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date={0:s}, r_event='{1:s}', r_rate=r_rate+IF(MONTH(r_event_date) BETWEEN 8 AND 12,{3:d},0) WHERE r_id={2:d};",
+                when, type, femaleId, AUTUMN_FUCK_RATE);
             cmd.ExecuteNonQuery();
             if (!syntetic)///если ИО то не ставим, что самец работал
             {

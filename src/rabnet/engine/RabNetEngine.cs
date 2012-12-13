@@ -204,13 +204,13 @@ namespace rabnet
 
         public void resurrect(int rid)
         {
-            logs().log(RabNetLogs.LogType.RESURRECT, rid);
+            logs().log(LogType.RESURRECT, rid);
             db().resurrect(rid);
         }
 
         public void preOkrol(int rid)
         {
-            logs().log(RabNetLogs.LogType.PREOKROL, rid);
+            logs().log(LogType.PREOKROL, rid);
         }
 
         private IRabNetDataLayer getDataLayer(string asmName)
@@ -218,7 +218,7 @@ namespace rabnet
             string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, asmName+".dll");
             if (!File.Exists(filePath))
                 throw new Exception("MySQL DataLayer dll is not exists");
-            //todo проверка на уже загруженность сборки
+            ///todo проверка на уже загруженность сборки
             Assembly Asm = Assembly.LoadFile(filePath);//загружаем Сборку
             //Type AsmType = Asm.GetType();
             foreach (Type AsmType in Asm.GetTypes())//Проверяем все имеющиеся типы данных (классы)

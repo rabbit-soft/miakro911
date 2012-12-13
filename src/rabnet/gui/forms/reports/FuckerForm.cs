@@ -31,7 +31,7 @@ namespace rabnet.forms
             ids.Clear();
             int sid = 0;
             Fucks ff = Engine.db().GetAllFuckers(new Filters());
-            foreach (Fucks.Fuck f in ff.fucks)
+            foreach (Fuck f in ff)
             {
                 comboBox1.Items.Add(f.PartnerName);
                 ids.Add(f.PartnerId);

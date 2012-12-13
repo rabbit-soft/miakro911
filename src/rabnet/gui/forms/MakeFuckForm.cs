@@ -104,14 +104,14 @@ namespace rabnet.forms
             //TODO здесь трахатели идеалогически неверно передаются через объекты Трыхов
             Fucks fs = Engine.db().GetAllFuckers(flt);
             listView1.BeginUpdate();
-            foreach (Fucks.Fuck f in fs.fucks)
+            foreach (Fuck f in fs)
             {
                 bool heter=(f.Breed != rab1.BreedID);
                 bool inbr = RabNetEngHelper.inbreeding(rab1.Genoms, f.rGenom);
 
                 ListViewItem li = listView1.Items.Add(f.PartnerName);
                 li.UseItemStyleForSubItems = false;
-                if (f.When != DateTime.MinValue && f.When.Date.AddDays(_malewait) >= DateTime.Now.Date)
+                if (f.EventDate != DateTime.MinValue && f.EventDate.Date.AddDays(_malewait) >= DateTime.Now.Date)
                     li.SubItems[IND_NAME].ForeColor = chRest.ForeColor;
                 li.Tag = f;
                 li.SubItems.Add("Мальчик");
@@ -153,7 +153,7 @@ namespace rabnet.forms
                 MessageBox.Show("Партнер не выбран");
                 return;
             }
-            int r2 = (listView1.SelectedItems[0].Tag as Fucks.Fuck).PartnerId;
+            int r2 = (listView1.SelectedItems[0].Tag as Fuck).PartnerId;
             (new GenomViewForm(rab1.ID, r2)).ShowDialog();
         }
 
@@ -186,7 +186,7 @@ namespace rabnet.forms
                     rab1.Commit();
                 }
 
-                int r2 = (listView1.SelectedItems[0].Tag as Fucks.Fuck).PartnerId;
+                int r2 = (listView1.SelectedItems[0].Tag as Fuck).PartnerId;
                 selected = r2;
                 if (action == 0)
                     rab1.FuckIt(r2, dateDays1.DaysValue,syntetic);

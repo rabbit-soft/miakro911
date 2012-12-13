@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpGeneral = new System.Windows.Forms.TabPage();
             this.sex = new System.Windows.Forms.ComboBox();
@@ -99,26 +98,6 @@
             this.nokuk = new System.Windows.Forms.CheckBox();
             this.nolact = new System.Windows.Forms.CheckBox();
             this.tpFucks = new System.Windows.Forms.TabPage();
-            this.btChangeWorker = new System.Windows.Forms.Button();
-            this.changeFucker = new System.Windows.Forms.Button();
-            this.btFuckHer = new System.Windows.Forms.Button();
-            this.btGens = new System.Windows.Forms.Button();
-            this.lvFucks = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader15 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader16 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader19 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.msFucks = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.miIsNotAProholost = new System.Windows.Forms.ToolStripMenuItem();
-            this.showfuckidToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tpYoungers = new System.Windows.Forms.TabPage();
             this.riSuckersPanel1 = new rabnet.RISuckersPanel();
             this.tpWeight = new System.Windows.Forms.TabPage();
@@ -142,7 +121,7 @@
             this.lbAddress = new System.Windows.Forms.Label();
             this.lbState = new System.Windows.Forms.Label();
             this.btAccept = new System.Windows.Forms.Button();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.riFucksPanel1 = new rabnet.RIFucksPanel();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -161,7 +140,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.overallBab)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.tpFucks.SuspendLayout();
-            this.msFucks.SuspendLayout();
             this.tpYoungers.SuspendLayout();
             this.tpWeight.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudWeight)).BeginInit();
@@ -369,7 +347,7 @@
             // 
             this.bdate.AutoSize = true;
             this.bdate.DateText = "Дата рожд.";
-            this.bdate.DateValue = new System.DateTime(2012, 12, 11, 0, 0, 0, 0);
+            this.bdate.DateValue = new System.DateTime(2012, 12, 13, 0, 0, 0, 0);
             this.bdate.DaysText = "Возраст";
             this.bdate.DaysValue = 0;
             this.bdate.Location = new System.Drawing.Point(13, 111);
@@ -847,7 +825,7 @@
             // 
             this.okrolDd.AutoSize = true;
             this.okrolDd.DateText = "Дата";
-            this.okrolDd.DateValue = new System.DateTime(2012, 12, 11, 0, 0, 0, 0);
+            this.okrolDd.DateValue = new System.DateTime(2012, 12, 13, 0, 0, 0, 0);
             this.okrolDd.DaysText = "Срок";
             this.okrolDd.DaysValue = 0;
             this.okrolDd.Location = new System.Drawing.Point(8, 61);
@@ -934,7 +912,7 @@
             // 
             this.sukrDd.AutoSize = true;
             this.sukrDd.DateText = "Дата";
-            this.sukrDd.DateValue = new System.DateTime(2012, 12, 11, 0, 0, 0, 0);
+            this.sukrDd.DateValue = new System.DateTime(2012, 12, 13, 0, 0, 0, 0);
             this.sukrDd.DaysText = "Срок";
             this.sukrDd.DaysValue = 0;
             this.sukrDd.Location = new System.Drawing.Point(0, 46);
@@ -991,165 +969,12 @@
             // 
             // tpFucks
             // 
-            this.tpFucks.Controls.Add(this.btChangeWorker);
-            this.tpFucks.Controls.Add(this.changeFucker);
-            this.tpFucks.Controls.Add(this.btFuckHer);
-            this.tpFucks.Controls.Add(this.btGens);
-            this.tpFucks.Controls.Add(this.lvFucks);
+            this.tpFucks.Controls.Add(this.riFucksPanel1);
             this.tpFucks.Location = new System.Drawing.Point(4, 22);
             this.tpFucks.Name = "tpFucks";
             this.tpFucks.Size = new System.Drawing.Size(496, 305);
             this.tpFucks.TabIndex = 3;
             this.tpFucks.Text = "Случки/Окролы";
-            // 
-            // btChangeWorker
-            // 
-            this.btChangeWorker.Location = new System.Drawing.Point(287, 279);
-            this.btChangeWorker.Name = "btChangeWorker";
-            this.btChangeWorker.Size = new System.Drawing.Size(123, 23);
-            this.btChangeWorker.TabIndex = 4;
-            this.btChangeWorker.Text = "Изменить работника";
-            this.btChangeWorker.UseVisualStyleBackColor = true;
-            this.btChangeWorker.Click += new System.EventHandler(this.changeWorker_Click);
-            // 
-            // changeFucker
-            // 
-            this.changeFucker.Enabled = false;
-            this.changeFucker.Location = new System.Drawing.Point(165, 279);
-            this.changeFucker.Name = "changeFucker";
-            this.changeFucker.Size = new System.Drawing.Size(116, 23);
-            this.changeFucker.TabIndex = 3;
-            this.changeFucker.Text = "Изменить партнера";
-            this.changeFucker.UseVisualStyleBackColor = true;
-            this.changeFucker.Click += new System.EventHandler(this.changeFucker_Click);
-            // 
-            // btFuckHer
-            // 
-            this.btFuckHer.Enabled = false;
-            this.btFuckHer.Location = new System.Drawing.Point(84, 279);
-            this.btFuckHer.Name = "btFuckHer";
-            this.btFuckHer.Size = new System.Drawing.Size(75, 23);
-            this.btFuckHer.TabIndex = 2;
-            this.btFuckHer.Text = "Случить";
-            this.btFuckHer.UseVisualStyleBackColor = true;
-            this.btFuckHer.Click += new System.EventHandler(this.btFuckHer_Click);
-            // 
-            // btGens
-            // 
-            this.btGens.Enabled = false;
-            this.btGens.Location = new System.Drawing.Point(3, 279);
-            this.btGens.Name = "btGens";
-            this.btGens.Size = new System.Drawing.Size(75, 23);
-            this.btGens.TabIndex = 1;
-            this.btGens.Text = "Гены";
-            this.btGens.UseVisualStyleBackColor = true;
-            this.btGens.Click += new System.EventHandler(this.btGens_Click);
-            // 
-            // lvFucks
-            // 
-            this.lvFucks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.lvFucks.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4,
-            this.columnHeader5,
-            this.columnHeader6,
-            this.columnHeader7,
-            this.columnHeader8,
-            this.columnHeader9,
-            this.columnHeader15,
-            this.columnHeader16,
-            this.columnHeader19});
-            this.lvFucks.ContextMenuStrip = this.msFucks;
-            this.lvFucks.FullRowSelect = true;
-            this.lvFucks.GridLines = true;
-            this.lvFucks.Location = new System.Drawing.Point(3, 3);
-            this.lvFucks.MultiSelect = false;
-            this.lvFucks.Name = "lvFucks";
-            this.lvFucks.Size = new System.Drawing.Size(490, 270);
-            this.lvFucks.TabIndex = 0;
-            this.lvFucks.UseCompatibleStateImageBehavior = false;
-            this.lvFucks.View = System.Windows.Forms.View.Details;
-            this.lvFucks.SelectedIndexChanged += new System.EventHandler(this.fucks_SelectedIndexChanged);
-            this.lvFucks.DoubleClick += new System.EventHandler(this.fucks_DoubleClick);
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Дата соития";
-            this.columnHeader1.Width = 80;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Тип соития";
-            this.columnHeader2.Width = 67;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Партнер";
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "Статус";
-            // 
-            // columnHeader5
-            // 
-            this.columnHeader5.Text = "Дата окрола";
-            // 
-            // columnHeader6
-            // 
-            this.columnHeader6.Text = "Крольчат";
-            // 
-            // columnHeader7
-            // 
-            this.columnHeader7.Text = "Мертвых";
-            // 
-            // columnHeader8
-            // 
-            this.columnHeader8.Text = "Затоптала";
-            // 
-            // columnHeader9
-            // 
-            this.columnHeader9.Text = "Прибавилось";
-            // 
-            // columnHeader15
-            // 
-            this.columnHeader15.Text = "Гетерозис";
-            // 
-            // columnHeader16
-            // 
-            this.columnHeader16.Text = "Инбридинг";
-            // 
-            // columnHeader19
-            // 
-            this.columnHeader19.Text = "работник";
-            // 
-            // msFucks
-            // 
-            this.msFucks.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.miIsNotAProholost,
-            this.showfuckidToolStripMenuItem});
-            this.msFucks.Name = "msFucks";
-            this.msFucks.Size = new System.Drawing.Size(219, 48);
-            this.msFucks.Opening += new System.ComponentModel.CancelEventHandler(this.msFucks_Opening);
-            // 
-            // miIsNotAProholost
-            // 
-            this.miIsNotAProholost.Name = "miIsNotAProholost";
-            this.miIsNotAProholost.Size = new System.Drawing.Size(218, 22);
-            this.miIsNotAProholost.Text = "Отменить прохолостание";
-            this.miIsNotAProholost.Click += new System.EventHandler(this.miIsNotAProholost_Click);
-            // 
-            // showfuckidToolStripMenuItem
-            // 
-            this.showfuckidToolStripMenuItem.Name = "showfuckidToolStripMenuItem";
-            this.showfuckidToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.Z)));
-            this.showfuckidToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
-            this.showfuckidToolStripMenuItem.Text = "show_fuck_id";
-            this.showfuckidToolStripMenuItem.Visible = false;
             // 
             // tpYoungers
             // 
@@ -1390,10 +1215,13 @@
             this.btAccept.UseVisualStyleBackColor = true;
             this.btAccept.Click += new System.EventHandler(this.button5_Click);
             // 
-            // contextMenuStrip1
+            // riFucksPanel1
             // 
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            this.riFucksPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.riFucksPanel1.Location = new System.Drawing.Point(0, 0);
+            this.riFucksPanel1.Name = "riFucksPanel1";
+            this.riFucksPanel1.Size = new System.Drawing.Size(496, 305);
+            this.riFucksPanel1.TabIndex = 0;
             // 
             // RabbitInfo
             // 
@@ -1449,7 +1277,6 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.tpFucks.ResumeLayout(false);
-            this.msFucks.ResumeLayout(false);
             this.tpYoungers.ResumeLayout(false);
             this.tpWeight.ResumeLayout(false);
             this.tpWeight.PerformLayout();
@@ -1526,18 +1353,6 @@
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.ListView lvFucks;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.ColumnHeader columnHeader5;
-        private System.Windows.Forms.ColumnHeader columnHeader6;
-        private System.Windows.Forms.ColumnHeader columnHeader7;
-        private System.Windows.Forms.Button btGens;
-        private System.Windows.Forms.ColumnHeader columnHeader8;
-        private System.Windows.Forms.ColumnHeader columnHeader9;
-        private System.Windows.Forms.Button btFuckHer;
         private rabnet.components.DateDays bdate;
         private rabnet.components.DateDays okrolDd;
         private rabnet.components.DateDays sukrDd;
@@ -1551,8 +1366,6 @@
         private System.Windows.Forms.Button button15;
         private System.Windows.Forms.Button button14;
         private System.Windows.Forms.Button btReplace;
-        private System.Windows.Forms.ColumnHeader columnHeader15;
-        private System.Windows.Forms.ColumnHeader columnHeader16;
         private System.Windows.Forms.NumericUpDown nudWeight;
         private System.Windows.Forms.DateTimePicker dateWeight;
         private System.Windows.Forms.ListView weightList;
@@ -1564,17 +1377,11 @@
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label maleProd;
         private System.Windows.Forms.Label maleKids;
-        private System.Windows.Forms.ColumnHeader columnHeader19;
-        private System.Windows.Forms.Button changeFucker;
-        private System.Windows.Forms.Button btChangeWorker;
-        private System.Windows.Forms.ContextMenuStrip msFucks;
-        private System.Windows.Forms.ToolStripMenuItem miIsNotAProholost;
-        private System.Windows.Forms.ToolStripMenuItem showfuckidToolStripMenuItem;
         private System.Windows.Forms.TabPage tpVaccines;
         private rabnet.RIVaccinePanel riVaccinePanel1;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.CheckBox cbRealization;
         private RISuckersPanel riSuckersPanel1;
         private System.Windows.Forms.Label label2;
+        private RIFucksPanel riFucksPanel1;
     }
 }

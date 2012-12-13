@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace rabnet
-{
+{   
     public class LogList
     {
         public class OneLog

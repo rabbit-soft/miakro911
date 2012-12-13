@@ -4,12 +4,20 @@ using System.Text;
 
 namespace rabnet
 {
-    public class RabNetLogs
+    /// <summary>
+    /// Типы логов в БД
+    /// <reamrks>Последовательность данных типов логов полностью совпадает с БД</reamrks>
+    /// </summary>
+    public enum LogType
     {
-        public enum LogType {NONE,INCOME,REPLACE,BON,RENAME,FUCK,OKROL,PROHOLOST,RAB_CHANGE,NEST_ON,NEST_OFF,
-            HEATER_OUT,HEATER_OFF,HEATER_ON,REPAIR_ON,REPAIR_OFF,RABBIT_KILLED,COUNT_KIDS,
-            SET_SEX,CLONE_GROUP,RESURRECT,PREOKROL,COMBINE,PLACE_SUCK,CHANGE_DEADREASON, VACCINE,
-            CH_BIRTH, CH_BREED, CH_GROUP, CH_SURNAME, CH_SECNAME, CH_ZONE, CH_RATE,CH_STATE};
+        NONE, INCOME, REPLACE, BON, RENAME, FUCK, OKROL, PROHOLOST, RAB_CHANGE, NEST_ON, NEST_OFF,
+        HEATER_OUT, HEATER_OFF, HEATER_ON, REPAIR_ON, REPAIR_OFF, RABBIT_KILLED, COUNT_KIDS,
+        SET_SEX, CLONE_GROUP, RESURRECT, PREOKROL, COMBINE, PLACE_SUCK, CHANGE_DEADREASON, VACCINE,
+        CH_RAB_BIRTH, CH_RAB_BREED, CH_RAB_GROUP, CH_RAB_SURNAME, CH_RAB_SECNAME, CH_RAB_ZONE, CH_RAB_RATE, CH_RAB_STATE
+    };
+
+    public class RabNetLogs
+    {       
         private RabNetEngine eng; 
         public RabNetLogs(RabNetEngine eng)
         {

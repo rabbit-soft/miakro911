@@ -8,50 +8,57 @@ namespace rabnet
     public class RabNetEngRabbit:OneRabbit
     {
         #region exceptions
-        public class ExNotFemale : ApplicationException
+
+        public class RabNetException : Exception
+        {
+            public RabNetException(string message) : base(message) { }
+        }
+
+        public class ExNotFemale : RabNetException
         {
             public ExNotFemale(RabNetEngRabbit r):base("Кролик "+r.FullName+" не является самкой"){}
         }
-        public class ExBadPastDays : ApplicationException
+        public class ExBadPastDays : RabNetException
         {
             public ExBadPastDays() : base("Дни не могут быть меньше нуля") { }
         }
-        public class ExNotMale : ApplicationException
+        public class ExNotMale : RabNetException
         {
             public ExNotMale(RabNetEngRabbit r) : base("Кролик " + r.FullName + " не является самцом") { }
         }
-        public class ExNotFucker : ApplicationException
+        public class ExNotFucker : RabNetException
         {
             public ExNotFucker(RabNetEngRabbit r) : base("Кролик " + r.FullName + " не является половозрелым") { }
         }
-        public class ExBadDate : ApplicationException
+        public class ExBadDate : RabNetException
         {
             public ExBadDate(DateTime dt) : base("Дата " + dt.ToShortDateString() + " в будущем") { }
         }
-        public class ExAlreadyFucked:ApplicationException
+        public class ExAlreadyFucked : RabNetException
         {
             public ExAlreadyFucked(RabNetEngRabbit r):base("Крольчиха "+r.FullName+" уже сукрольна"){}
         }
-        public class ExNotFucked : ApplicationException
+        public class ExNotFucked : RabNetException
         {
             public ExNotFucked(RabNetEngRabbit r) : base("Крольчиха " + r.FullName + " не сукрольна") { }
         }
-        public class ExNoName : ApplicationException
+        public class ExNoName : RabNetException
         {
             public ExNoName():base("У сукрольной крольчихи должно быть имя"){}
         }
-        public class ExNotOne : ApplicationException
+        public class ExNotOne : RabNetException
         {
             public ExNotOne(String action) : base("Нельзя "+action+" группу крольчих") { }
         }
-        public class ExBadCount : ApplicationException
+        public class ExBadCount : RabNetException
         {
             public ExBadCount():base("Неверное количество."){}
         }
-        public class ExNoRabbit : ApplicationException
+        public class ExNoRabbit : RabNetException
         {
             public ExNoRabbit() : base("Кролик не существует или списан.") { }
         }
+
         #endregion exceptions
         //private int _id;
         private OneRabbit _origin = null;
@@ -352,26 +359,26 @@ namespace rabnet
             if (this.WasNameID != this.NameID)
             {
                 if (Group > 1) throw new ExNotOne("переименовать");
-                _eng.logs().log(RabNetLogs.LogType.RENAME, ID, 0, this.AddressSmall, "", _eng.db().makeName(this.WasNameID, 0, 0, 1, this.Sex));
+                _eng.logs().log(LogType.RENAME, ID, 0, this.AddressSmall, "", _eng.db().makeName(this.WasNameID, 0, 0, 1, this.Sex));
             }
             if(_origin!=null && _origin.Sex != this.Sex)           
-                _eng.logs().log(RabNetLogs.LogType.SET_SEX, ID, 0, this.AddressSmall, "",String.Format("{0:s} -> {1:s}", Rabbit.SexToRU(_origin.Sex), Rabbit.SexToRU(this.Sex)));               
+                _eng.logs().log(LogType.SET_SEX, ID, 0, this.AddressSmall, "",String.Format("{0:s} -> {1:s}", Rabbit.SexToRU(_origin.Sex), Rabbit.SexToRU(this.Sex)));               
             if(_origin!=null && _origin.BirthDay!=this.BirthDay)
-                _eng.logs().log(RabNetLogs.LogType.CH_BIRTH, ID, 0, this.AddressSmall,"",String.Format("{0:s} -> {1:s}", _origin.BirthDay.ToShortDateString(), this.BirthDay.ToShortDateString()));               
+                _eng.logs().log(LogType.CH_RAB_BIRTH, ID, 0, this.AddressSmall,"",String.Format("{0:s} -> {1:s}", _origin.BirthDay.ToShortDateString(), this.BirthDay.ToShortDateString()));               
             if(_origin!=null && _origin.BreedID!=this.BreedID)
-                _eng.logs().log(RabNetLogs.LogType.CH_BREED, ID, 0, this.AddressSmall,"",String.Format("{0:s} -> {1:s}", _origin.BreedName, this.BreedName));               
+                _eng.logs().log(LogType.CH_RAB_BREED, ID, 0, this.AddressSmall,"",String.Format("{0:s} -> {1:s}", _origin.BreedName, this.BreedName));               
             if(_origin!=null && _origin.Group !=this.Group)
-                _eng.logs().log(RabNetLogs.LogType.CH_GROUP, ID, 0, this.AddressSmall,"",String.Format("{0:d} -> {1:d}", _origin.Group, this.Group));               
+                _eng.logs().log(LogType.CH_RAB_GROUP, ID, 0, this.AddressSmall,"",String.Format("{0:d} -> {1:d}", _origin.Group, this.Group));               
             if(_origin!=null && _origin.SurnameID !=this.SurnameID)
-                _eng.logs().log(RabNetLogs.LogType.CH_SURNAME, ID, 0, this.AddressSmall,"",String.Format("{0:d} -> {1:d}", _origin.SurnameID, this.SurnameID));  
+                _eng.logs().log(LogType.CH_RAB_SURNAME, ID, 0, this.AddressSmall,"",String.Format("{0:d} -> {1:d}", _origin.SurnameID, this.SurnameID));  
             if(_origin!=null && _origin.SecnameID !=this.SecnameID)
-                _eng.logs().log(RabNetLogs.LogType.CH_SECNAME, ID, 0, this.AddressSmall,"",String.Format("{0:d} -> {1:d}", _origin.SecnameID, this.SecnameID));  
+                _eng.logs().log(LogType.CH_RAB_SECNAME, ID, 0, this.AddressSmall,"",String.Format("{0:d} -> {1:d}", _origin.SecnameID, this.SecnameID));  
             if(_origin!=null && _origin.Zone !=this.Zone)
-                _eng.logs().log(RabNetLogs.LogType.CH_ZONE, ID, 0, this.AddressSmall,"",String.Format("{0:d} -> {1:d}", _origin.Zone, this.Zone));  
+                _eng.logs().log(LogType.CH_RAB_ZONE, ID, 0, this.AddressSmall,"",String.Format("{0:d} -> {1:d}", _origin.Zone, this.Zone));  
             if(_origin!=null && _origin.Rate !=this.Rate)
-                _eng.logs().log(RabNetLogs.LogType.CH_RATE, ID, 0, this.AddressSmall,"",String.Format("{0:d} -> {1:d}", _origin.Rate, this.Rate));  
+                _eng.logs().log(LogType.CH_RAB_RATE, ID, 0, this.AddressSmall,"",String.Format("{0:d} -> {1:d}", _origin.Rate, this.Rate));  
             if(_origin!=null && _origin.Status !=this.Status)
-                _eng.logs().log(RabNetLogs.LogType.CH_STATE, ID, 0, this.AddressSmall,"",String.Format("{0:s} -> {1:s}", _origin.FStatus(), this.FStatus()));  
+                _eng.logs().log(LogType.CH_RAB_STATE, ID, 0, this.AddressSmall,"",String.Format("{0:s} -> {1:s}", _origin.FStatus(), this.FStatus()));  
             //_eng.logs().log(RabNetLogs.LogType.RAB_CHANGE, ID);
             _eng.db().SetRabbit(this);
             loadData();
@@ -387,7 +394,7 @@ namespace rabnet
 
             _id = _eng.db().newRabbit(this, Mom);
             //_origin.ID = _id;
-            _eng.logs().log(RabNetLogs.LogType.INCOME, _id);
+            _eng.logs().log(LogType.INCOME, _id);
         }
 
         public void SetBon(String bon)
@@ -396,7 +403,7 @@ namespace rabnet
                 this.Bon = bon;
             else
             {
-                _eng.logs().log(RabNetLogs.LogType.BON, ID, 0, "", "", bon);
+                _eng.logs().log(LogType.BON, ID, 0, "", "", bon);
                 _eng.db().setBon(_id, bon);
             }
         }
@@ -424,7 +431,7 @@ namespace rabnet
                 throw new ExNotFucker(f);
             //if (daysPast <0)
                 //throw new ExBadDate(daysPast.ToString());
-            _eng.logs().log(RabNetLogs.LogType.FUCK, ID, maleId, AddressSmall, f.AddressSmall, 
+            _eng.logs().log(LogType.FUCK, ID, maleId, AddressSmall, f.AddressSmall, 
                 (syntetic ? "ИО" : "стд.") + (daysPast != 0 ? String.Format(" {0:d} дней назад", daysPast) : ""));
             _eng.db().MakeFuck(this._id, f.ID, daysPast, _eng.userId, syntetic);
         }
@@ -444,7 +451,7 @@ namespace rabnet
             //if (when > DateTime.Now) throw new ExBadDate(when);
             if (daysPast < 0) throw new ExBadPastDays();
 
-            _eng.logs().log(RabNetLogs.LogType.PROHOLOST, ID, 0, AddressSmall, "", daysPast != 0 ? String.Format(" {0:d} дней назад", daysPast) : "");
+            _eng.logs().log(LogType.PROHOLOST, ID, 0, AddressSmall, "", daysPast != 0 ? String.Format(" {0:d} дней назад", daysPast) : "");
             _eng.db().makeProholost(this._id, daysPast);
             if(_eng.options().getBoolOption(Options.OPT_ID.NEST_OUT_IF_PROHOLOST))
             {
@@ -467,7 +474,7 @@ namespace rabnet
             //if (when > DateTime.Now) throw new ExBadDate(when);  
 
             int born = _eng.db().makeOkrol(this._id, daysPast, children, dead);
-            _eng.logs().log(RabNetLogs.LogType.OKROL, ID, born, AddressSmall, "", 
+            _eng.logs().log(LogType.OKROL, ID, born, AddressSmall, "", 
                 String.Format("живых {0:d}, мертвых {1:d}{2:s}", children, dead, daysPast != 0 ? String.Format(" {0:d} дней назад",daysPast) : ""));
         }
 
@@ -480,7 +487,7 @@ namespace rabnet
             }
             else
             {
-                _eng.logs().log(RabNetLogs.LogType.REPLACE, ID, 0, this.AddressSmall, address.TrimEnd(' ').Substring(0,address.LastIndexOf(' ')));
+                _eng.logs().log(LogType.REPLACE, ID, 0, this.AddressSmall, address.TrimEnd(' ').Substring(0,address.LastIndexOf(' ')));
                 _eng.db().replaceRabbit(ID, farm, tier_id, sec);
             }
             _tag = "";
@@ -493,7 +500,7 @@ namespace rabnet
                 if (y.ID == yid)
                     y.tag = "";*/
             OneRabbit r = _eng.db().GetRabbit(yid);
-            _eng.logs().log(RabNetLogs.LogType.REPLACE, yid,0,r.AddressSmall,address);
+            _eng.logs().log(LogType.REPLACE, yid,0,r.AddressSmall,address);
         }
 
         /// <summary>
@@ -507,7 +514,7 @@ namespace rabnet
         {
             if (count == Group)
             {
-                _eng.logs().log(RabNetLogs.LogType.RABBIT_KILLED, ID, 0, AddressSmall == Rabbit.NULL_ADDRESS ? CloneAddress : AddressSmall, "",
+                _eng.logs().log(LogType.RABBIT_KILLED, ID, 0, AddressSmall == Rabbit.NULL_ADDRESS ? CloneAddress : AddressSmall, "",
                     String.Format(" {0:s}[{1:d}] {2:s} {3:s}", FullName, Group, notes, (daysPast != 0 ? String.Format(" {0:d} дней назад", daysPast) : "")));
                 _eng.db().KillRabbit(_id, daysPast, reason, notes);
             }
@@ -534,7 +541,7 @@ namespace rabnet
             const byte DR_ON_COUNT=5;//deadreason "при подсчете"
             if (Sex != Rabbit.SexType.FEMALE)
                 throw new ExNotFemale(this);
-            _eng.logs().log(RabNetLogs.LogType.COUNT_KIDS, ID, _youngers[yInd].ID, this.AddressSmall,"", String.Format("  возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, прибавилось {4:d})", age, atall, dead, killed, added));            
+            _eng.logs().log(LogType.COUNT_KIDS, ID, _youngers[yInd].ID, this.AddressSmall,"", String.Format("  возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, прибавилось {4:d})", age, atall, dead, killed, added));            
             if (dead == 0 && killed == 0 && added == 0) return;
             YoungRabbit y = _youngers[yInd];
             RabNetEngRabbit r = _eng.getRabbit(y.ID);        
@@ -560,7 +567,7 @@ namespace rabnet
         /// <param name="sex">Новый пол</param>
         public void SetSex(Rabbit.SexType sex)
         {
-            _eng.logs().log(RabNetLogs.LogType.SET_SEX, _id, 0, "", "", Rabbit.SexToRU(sex));
+            _eng.logs().log(LogType.SET_SEX, _id, 0, "", "", Rabbit.SexToRU(sex));
             _eng.db().setRabbitSex(_id, sex);
         }
 
@@ -578,7 +585,7 @@ namespace rabnet
 
            int nid = _eng.db().cloneRabbit(_id, count, farm, tier, sec, Rabbit.SexType.VOID, 0);
            RabNetEngRabbit rab = Engine.get().getRabbit(nid);       //+gambit
-           _eng.logs().log(RabNetLogs.LogType.CLONE_GROUP, _id, nid, AddressSmall, rab.AddressSmall, String.Format("{0:d} и {1:d}", Group-count ,count));
+           _eng.logs().log(LogType.CLONE_GROUP, _id, nid, AddressSmall, rab.AddressSmall, String.Format("{0:d} и {1:d}", Group-count ,count));
            return nid;
         }
         
@@ -589,14 +596,14 @@ namespace rabnet
         public void CombineWidth(int rabto)
         {
             RabNetEngRabbit rab = Engine.get().getRabbit(rabto);    //+gambit
-            _eng.logs().log(RabNetLogs.LogType.COMBINE, _id, rabto, AddressSmall, rab.AddressSmall , rab.FullName);
+            _eng.logs().log(LogType.COMBINE, _id, rabto, AddressSmall, rab.AddressSmall , rab.FullName);
             _eng.db().combineGroups(_id, rabto);
         }
 
         public void PlaceSuckerTo(int mother)
         {
             RabNetEngRabbit mom_to = Engine.get().getRabbit(mother);
-            _eng.logs().log(RabNetLogs.LogType.PLACE_SUCK, _id, mother, "", mom_to.AddressSmall);
+            _eng.logs().log(LogType.PLACE_SUCK, _id, mother, "", mom_to.AddressSmall);
             _eng.db().placeSucker(_id, mother);
         }
 
@@ -610,7 +617,7 @@ namespace rabnet
         {
             _eng.db().SetRabbitVaccine(_id,vid,date);
             Vaccine v =_eng.db().GetVaccine(vid);
-            _eng.logs().log(RabNetLogs.LogType.VACCINE, ID, 0, AddressSmall, "", v.Name);
+            _eng.logs().log(LogType.VACCINE, ID, 0, AddressSmall, "", v.Name);
             if (withChildrens)
             {
                 foreach (YoungRabbit r in Youngers)
@@ -629,6 +636,31 @@ namespace rabnet
         {
             _youngers = Engine.db().GetYoungers(_id);
         }
+
+        public void CancelFuckEnd(Fuck f)
+        {
+            if (DateTime.Now.Subtract(f.EndDate).TotalDays > 2)
+                throw new RabNetException("Отменять можно только в течение 2 дней");
+
+            if (f.FEndType == FuckEndType.Okrol)
+            {
+                int delYid = 0;
+                foreach (YoungRabbit y in Youngers)
+                {
+                    if (y.BirthDay == f.EndDate)
+                    {
+                        if (delYid != 0)
+                            throw new RabNetException("Не возможно разобрать кого из подсосных надо списать.");
+                        delYid = y.ID;
+                    }
+                }
+                ///todo если к крольчихе подселят детей от другой матери, которые тоже родились сегодня
+                ///todo что если от крольчихи ее детей уже отсадили
+                if (delYid != 0)
+                    _eng.db().KillRabbit(delYid, 0, DeadReason_Static.DeadFromOldApp, "Отмена окрола");
+            }
+            Engine.db().CancelFuckEnd(f.Id);
+        }
         #endregion methods
 
         private void cloneOnThis(OneRabbit r)
@@ -640,6 +672,6 @@ namespace rabnet
             {
                 f.SetValue(this, f.GetValue(r));
             }
-        }
+        }        
     }
 }
