@@ -90,43 +90,55 @@ namespace db.mysql
             XmlNodeList lst = doc_in.ChildNodes[0].ChildNodes;
             string name = "";
             string dt = "";
-            int state = 0;
+            int totalChildren = 0;
+            int pCount = 0;
             foreach (XmlNode nd in lst)
             {
-                if (name == "" && dt == "")
-                {
-                    name = nd.FirstChild.FirstChild.Value;
-                    dt = nd.FirstChild.NextSibling.FirstChild.Value;
-                    state = nd.FirstChild.NextSibling.NextSibling.FirstChild.Value == "п" ? state = 0 : state = int.Parse(nd.FirstChild.NextSibling.NextSibling.FirstChild.Value);
-                    continue;
-                }
+                //if (name == "" && dt == "")
+                //{
+                //    name = nd.FirstChild.FirstChild.Value;
+                //    dt = nd.FirstChild.NextSibling.FirstChild.Value;
+                //    if(nd.FirstChild.NextSibling.NextSibling.FirstChild.Value == "п")
+                //    {
+                //        totalChildren = 0;
+                //        pCount++;
+                //    }
+                //    else
+                //        totalChildren = int.Parse(nd.FirstChild.NextSibling.NextSibling.FirstChild.Value);
+                //    continue;
+                //}
                 
                 if (nd.FirstChild.FirstChild.Value == name && nd.FirstChild.NextSibling.FirstChild.Value == dt)
                 {
                     if (nd.FirstChild.NextSibling.NextSibling.FirstChild.Value == "п")
                     {
-                        state += 0;
-                        continue;
+                        pCount++;
                     }
-                    state += int.Parse(nd.FirstChild.NextSibling.NextSibling.FirstChild.Value);
+                    else
+                        totalChildren += int.Parse(nd.FirstChild.NextSibling.NextSibling.FirstChild.Value);
                     continue;
                 }
-                else 
+                else if(name != "" && dt != "")
                 {
                     XmlElement el = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
                     ReportHelper.Append(el, doc, "name", name);
                     ReportHelper.Append(el, doc, "dt", dt);
-                    ReportHelper.Append(el, doc, "state", state.ToString());
+                    ReportHelper.Append(el, doc, "state", String.Format("{0:s}{1:s}", totalChildren > 0 ? totalChildren.ToString() : "", pCount > 0 ? "п" + pCount.ToString() : "").Trim());                 
+                }
 
-                    name = nd.FirstChild.FirstChild.Value;
-                    dt = nd.FirstChild.NextSibling.FirstChild.Value;
-                    state = nd.FirstChild.NextSibling.NextSibling.FirstChild.Value == "п" ? state = 0 : state = int.Parse(nd.FirstChild.NextSibling.NextSibling.FirstChild.Value);
-                }               
+                totalChildren = 0;
+                pCount = 0;
+                name = nd.FirstChild.FirstChild.Value;
+                dt = nd.FirstChild.NextSibling.FirstChild.Value;
+                if (nd.FirstChild.NextSibling.NextSibling.FirstChild.Value == "п")                
+                    pCount++;               
+                else
+                    totalChildren = int.Parse(nd.FirstChild.NextSibling.NextSibling.FirstChild.Value);
             }
             XmlElement el2 = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
             ReportHelper.Append(el2, doc, "name", name);
             ReportHelper.Append(el2, doc, "dt", dt);
-            ReportHelper.Append(el2, doc, "state", state.ToString());
+            ReportHelper.Append(el2, doc, "state", String.Format("{0:s}{1:s}", totalChildren > 0 ? totalChildren.ToString() : "", pCount > 0 ? "п" +(pCount.ToString()) : "").Trim());                 
             return doc;
         }
 
@@ -152,10 +164,15 @@ namespace db.mysql
                     s += int.Parse(v);
                     cnt += 1;
                 }
-                if (sums.ContainsKey(nm)) sums[nm] += s;
-                else sums.Add(nm, s);
-                if (cnts.ContainsKey(nm)) cnts[nm] += cnt;
-                else cnts.Add(nm,cnt);
+                if (sums.ContainsKey(nm)) 
+                    sums[nm] += s;
+                else 
+                    sums.Add(nm, s);
+
+                if (cnts.ContainsKey(nm)) 
+                    cnts[nm] += cnt;
+                else 
+                    cnts.Add(nm,cnt);
                                 
             }
             doc = makeRabOfDate(doc);
@@ -175,13 +192,24 @@ namespace db.mysql
                 ReportHelper.Append(rw, doc, "state", cnts[k].ToString());
             }
             sums.Clear();
+            ///добавляем нижнюю строчку
             foreach (XmlNode nd in lst)
             {
                 String nm = nd.FirstChild.NextSibling.FirstChild.Value;
                 String v = nd.FirstChild.NextSibling.NextSibling.FirstChild.Value;
                 int s = 0;
-                if (v != "п" && v != "-") s += int.Parse(v);
-                if (sums.ContainsKey(nm)) sums[nm] += s;
+                if (v.Contains("п"))
+                {
+                    if (!v.StartsWith("п"))
+                    {
+                        string childrens = v.Split('п')[0].Trim();
+                        s += int.Parse(childrens);
+                    }
+                }
+                else if(v != "-" && v!="") 
+                    s += int.Parse(v);
+                if (sums.ContainsKey(nm)) 
+                    sums[nm] += s;
                 else sums.Add(nm, s);
             }
             foreach (String k in sums.Keys)
