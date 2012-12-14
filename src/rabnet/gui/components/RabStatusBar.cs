@@ -15,6 +15,12 @@ namespace rabnet.components
 
     public partial class RabStatusBar : StatusStrip
     {
+        const int IMG_STOP = 0;
+        const int IMG_REFRESH = 1;
+        const int IMG_FILTER_OFF=2;
+        const int IMG_EXCEL = 3;
+        const int IMG_FILTER_ON = 4;
+        
         const int LABELS_COUNT = 5;
         //delegate void progressCallBack2(int min,int max);
         
@@ -58,17 +64,17 @@ namespace rabnet.components
 
             ///кнопка Обновить\Остановить
             Items.Add(btRefreshStop);
-            btRefreshStop.Image = imageList1.Images[1];
+            btRefreshStop.Image = imageList1.Images[IMG_REFRESH];
             btRefreshStop.Tag = 0;
             btRefreshStop.ToolTipText = "Обновить список";
             ///кнопка фильтров
             Items.Add(btFilter);
-            btFilter.Image = imageList1.Images[2];
+            btFilter.Image = imageList1.Images[IMG_FILTER_OFF];
             btFilter.Visible = false;
             btFilter.ToolTipText = "Показать фильт";
             ///кнопка Excel
             Items.Add(btExcel);
-            btExcel.Image = imageList1.Images[3];
+            btExcel.Image = imageList1.Images[IMG_EXCEL];
             btExcel.Visible = false;
             btExcel.ToolTipText = "Сохранить содержимое списка в Excel";
             ///надписи
@@ -126,6 +132,12 @@ namespace rabnet.components
             get { return _dataThread != null; }
         }
 
+        public bool FilterOn
+        {
+            get { return btFilter.Image == imageList1.Images[IMG_FILTER_OFF]; }
+            set { btFilter.Image = imageList1.Images[value ? IMG_FILTER_ON : IMG_FILTER_OFF]; }
+        }
+
         public void Run()
         {
             if ((int)btRefreshStop.Tag == 0)
@@ -163,7 +175,7 @@ namespace rabnet.components
                 pb.Maximum = max;
                 pb.Value = 0;
                 
-                btRefreshStop.Image = imageList1.Images[0];
+                btRefreshStop.Image = imageList1.Images[IMG_STOP];
                 btRefreshStop.Tag = 1;
             }
         }
@@ -178,7 +190,7 @@ namespace rabnet.components
             ///если загрузку останавливает пользователь, то прогресс бар застывает и не сбразывается
             pb.Value = pb.Minimum;
             pb.Invalidate();
-            btRefreshStop.Image = imageList1.Images[1];
+            btRefreshStop.Image = imageList1.Images[IMG_REFRESH];
             btRefreshStop.Tag = 0;
         }
         #endregion progress

@@ -131,6 +131,7 @@ namespace rabnet
         /// <returns></returns>
         protected virtual IDataGetter onPrepare(Filters f)
         {
+            _rsb.FilterOn = f.Count != 0;
             _colSort.PrepareForUpdate();
             this.Enabled = false;
             return null;

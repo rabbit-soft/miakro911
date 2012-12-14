@@ -41,6 +41,7 @@
             this.imageList1.Images.SetKeyName(1, "refresh.png");
             this.imageList1.Images.SetKeyName(2, "funnel.png");
             this.imageList1.Images.SetKeyName(3, "excel.png");
+            this.imageList1.Images.SetKeyName(4, "funnel2.png");
             this.ResumeLayout(false);
 
         }

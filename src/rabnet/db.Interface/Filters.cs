@@ -71,7 +71,9 @@ namespace rabnet
         public const string TIER = "yar";
         public const string LOGS = "lgs";
         public const string DATE_PERIOD = "dttp";
-        public const string DATE_VALUE = "dtval"; 
+        public const string DATE_VALUE = "dtval";
+        public const string FARM = "frm";
+        public const string HETER = "grlk"; 
         #endregion const
 
         public Filters() : base() { }

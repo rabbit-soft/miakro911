@@ -71,43 +71,43 @@ namespace db.mysql
         private String makeWhere()
         {            
             String res = "";
-            if (options.ContainsKey("frm"))
+            if (options.ContainsKey(Filters.FARM))
             {               
                 String sres = "";
-                if (options["frm"] == "1")
+                if (options[Filters.FARM] == "1")
                     sres = "t_busy1<>0 OR t_busy2<>0 OR t_busy3<>0 OR t_busy4<>0";
                 else sres = "t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0";
                 res = "("+sres+")" ;                
             }
 
-            if (options.ContainsKey("yar"))
+            if (options.ContainsKey(Filters.TIER))
             {
                 String sres = "";
-                if (options.safeValue("yar").Contains("v")) sres = addWhereOr(sres, "t_type='vertep'");
-                if (options.safeValue("yar").Contains("u")) sres = addWhereOr(sres, "t_type='jurta'");
-                if (options.safeValue("yar").Contains("q")) sres = addWhereOr(sres, "t_type='quarta'");
-                if (options.safeValue("yar").Contains("b")) sres = addWhereOr(sres, "t_type='barin'");
-                if (options.safeValue("yar").Contains("k")) sres = addWhereOr(sres, "t_type='female'");
-                if (options.safeValue("yar").Contains("d")) sres = addWhereOr(sres, "t_type='dfemale'");
-                if (options.safeValue("yar").Contains("x")) sres = addWhereOr(sres, "t_type='complex'");
-                if (options.safeValue("yar").Contains("h")) sres = addWhereOr(sres, "t_type='cabin'");
+                if (options.safeValue(Filters.TIER).Contains("v")) sres = addWhereOr(sres, "t_type='vertep'");
+                if (options.safeValue(Filters.TIER).Contains("u")) sres = addWhereOr(sres, "t_type='jurta'");
+                if (options.safeValue(Filters.TIER).Contains("q")) sres = addWhereOr(sres, "t_type='quarta'");
+                if (options.safeValue(Filters.TIER).Contains("b")) sres = addWhereOr(sres, "t_type='barin'");
+                if (options.safeValue(Filters.TIER).Contains("k")) sres = addWhereOr(sres, "t_type='female'");
+                if (options.safeValue(Filters.TIER).Contains("d")) sres = addWhereOr(sres, "t_type='dfemale'");
+                if (options.safeValue(Filters.TIER).Contains("x")) sres = addWhereOr(sres, "t_type='complex'");
+                if (options.safeValue(Filters.TIER).Contains("h")) sres = addWhereOr(sres, "t_type='cabin'");
                 res = addWhereAnd(res, "(" + sres + ")");
             }
 
-            if (options.ContainsKey("grlk"))
+            if (options.ContainsKey(Filters.HETER))
             {
                 String sres = "";
-                if (options["grlk"] == "1") sres = "t_heater='0' OR t_heater='00'";
-                if (options["grlk"] == "2") sres = "t_heater='1' OR t_heater='3'";
-                if (options["grlk"] == "3") sres = "t_heater='1'";
-                if (options["grlk"] == "4") sres = "t_heater='3'";
+                if (options[Filters.HETER] == "1") sres = "t_heater='0' OR t_heater='00'";
+                if (options[Filters.HETER] == "2") sres = "t_heater='1' OR t_heater='3'";
+                if (options[Filters.HETER] == "3") sres = "t_heater='1'";
+                if (options[Filters.HETER] == "4") sres = "t_heater='3'";
                 res = addWhereAnd(res, "(" + sres + ")");
             }
 
-            if (options.ContainsKey("gnzd"))
+            if (options.ContainsKey(Filters.NEST_IN))
             {
                 String sres = "";
-                if (options["gnzd"] == "1") 
+                if (options[Filters.NEST_IN] == "1") 
                     sres = "t_nest<>'1'";
                 else sres = "t_nest='1'";
                 res = addWhereAnd(res, "(" + sres + ")");
