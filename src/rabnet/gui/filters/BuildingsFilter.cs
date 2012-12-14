@@ -21,9 +21,9 @@ namespace rabnet.filters
         public override Filters getFilters()
         {
             Filters f = new Filters();
-            if (cbFarm.SelectedIndex != 0) f["frm"] = cbFarm.SelectedIndex.ToString();
+            if (cbFarm.SelectedIndex != 0) f[Filters.FARM] = cbFarm.SelectedIndex.ToString();
             if (cbGnezdo.SelectedIndex != 0) f[Filters.NEST_IN] = cbGnezdo.SelectedIndex.ToString();
-            if (cbGrelka.SelectedIndex != 0) f["grlk"] = cbGrelka.SelectedIndex.ToString();
+            if (cbGrelka.SelectedIndex != 0) f[Filters.HETER] = cbGrelka.SelectedIndex.ToString();
             if (vertepBox.Checked || urtaBox.Checked || kvartaBox.Checked || barinBox.Checked || krolBox.Checked || dvukrolBox.Checked || komplexBox.Checked || hizhinaBox.Checked)
             {
                 f[Filters.TIER] = string.Format("{0}{1}{2}{3}{4}{5}{6}{7}", 
