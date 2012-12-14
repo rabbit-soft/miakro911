@@ -685,7 +685,7 @@ namespace rabnet
                     Engine.db().makeReport(myReportType.SHED,f),getBuildDoc(bid)
                 });
             dlg.ExcelEnabled = false;
-            dlg.ShowDialog();
+            dlg.Show();
 #else
             DemoErr.DemoNoReportMsg();
 #endif

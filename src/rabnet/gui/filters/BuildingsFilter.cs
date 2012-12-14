@@ -35,7 +35,7 @@ namespace rabnet.filters
                     dvukrolBox.Checked ? "d" : "", 
                     komplexBox.Checked ? "x" : "", 
                     hizhinaBox.Checked ? "h" : "");
-                if (f[Filters.TIER] == BUILD_CHARS)
+                if (f[Filters.TIER] == BUILD_CHARS ||f[Filters.TIER] =="")
                     f.Remove(Filters.TIER);
             }
             return f;

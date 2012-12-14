@@ -413,6 +413,9 @@ WHERE {0:s} {1:s} ORDER BY name,dt;",worker , period, format);
 
         private int getInt32(String query)
         {
+#if DEBUG
+            log.Debug(query);
+#endif
             return int.Parse(getValue(query));
         }
 
@@ -468,35 +471,35 @@ WHERE {0:s} {1:s} ORDER BY name,dt;",worker , period, format);
             addShedRows(doc, "  все", ideal, real);
 
             ideal = fem + 2 * (dfe + jur) + com;
-            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE r_sex='female' AND 
-(r_status>0 OR r_event_date IS NOT NULL) AND inBuilding({0:d},r_farm);",bid));
+            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits 
+WHERE r_sex='female' AND (r_status>0 OR r_event_date IS NOT NULL) AND inBuilding({0:d},r_farm);",bid));
             addShedRows(doc, "  крольчихи", ideal, real);
 
             ideal = round(ideal * PREGN_PER_TIER);
-            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE r_sex='female' AND 
-r_event_date IS NOT NULL AND inBuilding({0:d},r_farm);", bid));
+            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits 
+WHERE r_sex='female' AND r_event_date IS NOT NULL AND inBuilding({0:d},r_farm);", bid));
             addShedRows(doc, "  сукрольные", ideal, real);
 
             ideal = round(alltiers * FEED_GIRLS_PER_TIER);
-            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits,tiers WHERE r_tier=t_id AND 
-(t_type='quarta' OR (r_area=1 AND (t_type='complex' OR t_type='cabin'))) AND r_parent=0 AND r_sex='female'
-AND r_status=0 AND r_event_date IS NULL AND inBuilding({0:d},r_farm);",bid));
+            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits,tiers 
+WHERE r_tier=t_id AND (t_type='quarta' OR (r_area=1 AND (t_type='complex' OR t_type='cabin'))) 
+    AND r_parent=0 AND r_sex='female' AND r_status=0 AND r_event_date IS NULL AND inBuilding({0:d},r_farm);",bid));
             addShedRows(doc, " Д.откорм", ideal, real);
 
             ideal = round(alltiers * FEED_BOYS_PER_TIER);
-            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits,tiers WHERE r_tier=t_id AND 
-(t_type='quarta' OR (r_area=1 AND (t_type='complex' OR t_type='cabin'))) AND r_parent=0 AND r_sex='male'
-AND r_status=0 AND inBuilding({0:d},r_farm);", bid));
+            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits,tiers 
+WHERE r_tier=t_id AND (t_type='quarta' OR (r_area=1 AND (t_type='complex' OR t_type='cabin'))) 
+    AND r_parent=0 AND r_sex='male' AND r_status=0 AND inBuilding({0:d},r_farm);", bid));
             addShedRows(doc, " М.откорм", ideal, real);
 
             ideal = round(UNKN_SUCKS_PER_TIER * alltiers);
-            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)>={1:d} 
-AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent));", bid, nest_out));
+            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits 
+WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)>={1:d} AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent));", bid, nest_out));
             addShedRows(doc, " подсосные", ideal, real);
 
             ideal = round(UNKN_NEST_PER_TIER * alltiers);
-            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d} 
-AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent));", bid, nest_out));            
+            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits 
+WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d} AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent));", bid, nest_out));            
             addShedRows(doc, "гнездовые", ideal, real);
 
             return doc;
