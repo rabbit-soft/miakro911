@@ -172,7 +172,7 @@
 				<include name="${srcdir}/rabnet/gui/components/ColorPickerColumn/*.cs"/>
 				<include name="${srcdir}/rabnet/gui/filters/*.cs"/>
 				<include name="${srcdir}/rabnet/gui/panels/*.cs"/>
-				<include name="${srcdir}/rabnet/gui/panels/RabInfoPanels/*.cs"/>
+				<include name="${srcdir}/rabnet/gui/panels/RabbitInfo/*.cs"/>
 				<include name="${srcdir}/rabnet/gui/forms/*.cs"/>
 				<include name="${srcdir}/rabnet/gui/forms/reports/*.cs"/>
 				<include name="${srcdir}/rabnet/gui/reports/*.cs"/>
@@ -188,8 +188,9 @@
 			<resources>
 				<include name="${srcdir}/rabnet/gui/forms/*.resx"/>
 				<include name="${srcdir}/rabnet/gui/panels/*.resx"/>
+				<include name="${srcdir}/rabnet/gui/panels/RabbitInfo/*.resx"/>
 				<include name="${srcdir}/rabnet/gui/components/*.resx"/>
-				<include name="${srcdir}/rabnet/gui/forms/ReportViewForm.resx"/>
+				<!--include name="${srcdir}/rabnet/gui/forms/ReportViewForm.resx"/-->
 				<include name="${srcdir}/rabnet/gui/components/ColorPickerColumn/*.resx"/>
 			</resources>
 			<references>		
