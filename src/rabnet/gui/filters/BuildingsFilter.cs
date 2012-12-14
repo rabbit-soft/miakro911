@@ -46,7 +46,7 @@ namespace rabnet.filters
             clearFilters();
             cbFarm.SelectedIndex = f.safeInt(Filters.TIER);
             cbGnezdo.SelectedIndex = f.safeInt(Filters.NEST_IN);
-            cbGrelka.SelectedIndex = f.safeInt(Filters.);
+            cbGrelka.SelectedIndex = f.safeInt(Filters.HETER);
             vertepBox.Checked = f.safeValue(Filters.TIER, BUILD_CHARS).Contains("v");
             urtaBox.Checked = f.safeValue(Filters.TIER, BUILD_CHARS).Contains("u");
             kvartaBox.Checked = f.safeValue(Filters.TIER, BUILD_CHARS).Contains("q");
