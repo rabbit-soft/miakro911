@@ -441,12 +441,14 @@ WHERE {0:s} {1:s} ORDER BY name,dt;",worker , period, format);
 
         private XmlDocument shedReport(Filters f)
         {
-            double per_vertep = 3.2;
-            double per_female = 6;              
-            double pregn_per_tier = 0.3114;     
-            double feed_girls_per_tier = 0.6;   
-            double feed_boys_per_tier = 2.0;    
-            double unkn_sucks_per_tier = 2.7;
+            const double PER_VERTEP = 3.2;
+            const double PER_FEMALE = 6;
+            const double PREGN_PER_TIER = 0.3114;
+            const double FEED_GIRLS_PER_TIER = 0.6;
+            const double FEED_BOYS_PER_TIER = 2.0;
+            const double UNKN_SUCKS_PER_TIER = 2;
+            const double UNKN_NEST_PER_TIER = 0.7;
+
             int bid = f.safeInt("bld");
             int nest_out = f.safeInt("nest_out", 38);
             XmlDocument doc = new XmlDocument();
@@ -460,7 +462,7 @@ WHERE {0:s} {1:s} ORDER BY name,dt;",worker , period, format);
             int ver = getBuildCount(BuildingType.Vertep, bid);
             int bar = getBuildCount(BuildingType.Barin, bid);
             int cab = getBuildCount(BuildingType.Cabin, bid);
-            int ideal=round(per_vertep*(ver+bar+4*qua+2*com+cab/2)+per_female* (2 * (dfe + jur) + fem + com + cab));
+            int ideal=round(PER_VERTEP*(ver+bar+4*qua+2*com+cab/2)+PER_FEMALE* (2 * (dfe + jur) + fem + com + cab));
             int real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE (r_parent=0 AND inBuilding({0:d},r_farm))OR
 (r_parent!=0 AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent)));",bid));
             addShedRows(doc, "  все", ideal, real);
@@ -470,31 +472,31 @@ WHERE {0:s} {1:s} ORDER BY name,dt;",worker , period, format);
 (r_status>0 OR r_event_date IS NOT NULL) AND inBuilding({0:d},r_farm);",bid));
             addShedRows(doc, "  крольчихи", ideal, real);
 
-            ideal = round(ideal*pregn_per_tier);
+            ideal = round(ideal * PREGN_PER_TIER);
             real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE r_sex='female' AND 
 r_event_date IS NOT NULL AND inBuilding({0:d},r_farm);", bid));
             addShedRows(doc, "  сукрольные", ideal, real);
 
-            ideal = round(alltiers * feed_girls_per_tier);
+            ideal = round(alltiers * FEED_GIRLS_PER_TIER);
             real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits,tiers WHERE r_tier=t_id AND 
 (t_type='quarta' OR (r_area=1 AND (t_type='complex' OR t_type='cabin'))) AND r_parent=0 AND r_sex='female'
 AND r_status=0 AND r_event_date IS NULL AND inBuilding({0:d},r_farm);",bid));
             addShedRows(doc, " Д.откорм", ideal, real);
 
-            ideal = round(alltiers * feed_boys_per_tier);
+            ideal = round(alltiers * FEED_BOYS_PER_TIER);
             real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits,tiers WHERE r_tier=t_id AND 
 (t_type='quarta' OR (r_area=1 AND (t_type='complex' OR t_type='cabin'))) AND r_parent=0 AND r_sex='male'
 AND r_status=0 AND inBuilding({0:d},r_farm);", bid));
             addShedRows(doc, " М.откорм", ideal, real);
 
-            ideal = round(unkn_sucks_per_tier * alltiers);
+            ideal = round(UNKN_SUCKS_PER_TIER * alltiers);
             real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)>={1:d} 
 AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent));", bid, nest_out));
             addShedRows(doc, " подсосные", ideal, real);
 
+            ideal = round(UNKN_NEST_PER_TIER * alltiers);
             real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d} 
-AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent));", bid, nest_out));
-            ideal = real;
+AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent));", bid, nest_out));            
             addShedRows(doc, "гнездовые", ideal, real);
 
             return doc;
