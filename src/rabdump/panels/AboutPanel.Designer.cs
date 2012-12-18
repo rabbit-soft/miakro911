@@ -42,8 +42,7 @@
             // gbInfo
             // 
             this.gbInfo.Controls.Add(this.tableLayoutPanel);
-            this.gbInfo.Location = new System.Drawing.Point(20, 20);
-            this.gbInfo.Margin = new System.Windows.Forms.Padding(20);
+            this.gbInfo.Location = new System.Drawing.Point(20, 3);
             this.gbInfo.Name = "gbInfo";
             this.gbInfo.Size = new System.Drawing.Size(300, 188);
             this.gbInfo.TabIndex = 0;
@@ -140,9 +139,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.gbInfo);
-            this.MinimumSize = new System.Drawing.Size(340, 0);
             this.Name = "AboutPanel";
-            this.Size = new System.Drawing.Size(340, 243);
+            this.Size = new System.Drawing.Size(340, 204);
             this.gbInfo.ResumeLayout(false);
             this.tableLayoutPanel.ResumeLayout(false);
             this.tableLayoutPanel.PerformLayout();

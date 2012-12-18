@@ -20,7 +20,7 @@ namespace rabnet
         protected String _breedName = "";
         protected string _notes = "";
         protected int _group = 1;
-        protected String _bon="00000";
+        protected String _bon="";
         protected String _rawAddress="";
 
         public Rabbit() { }

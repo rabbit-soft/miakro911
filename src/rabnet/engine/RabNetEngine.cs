@@ -16,8 +16,8 @@ namespace rabnet
         /// </summary>
         const int NEED_DB_VERSION = 14;
 
-        private IRabNetDataLayer data = null;
-        private IRabNetDataLayer data2 = null;
+        private IRabNetDataLayer _data = null;
+        private IRabNetDataLayer _data2 = null;
         private ILog _logger = null;
         private int uid = 0;
         private string group = "none";
@@ -41,20 +41,20 @@ namespace rabnet
         /// <returns></returns>
         public IRabNetDataLayer InitEngine(String dbType,String param)
         {
-            if (data!=null)
+            if (_data!=null)
             {
-                if (data2 == data) data2 = null;
-                data.Close();
-                if (data2 != null) data2.Close();
-                data = data2 = null;
+                if (_data2 == _data) _data2 = null;
+                _data.Close();
+                if (_data2 != null) _data2.Close();
+                _data = _data2 = null;
             }
             _logger.Debug("initing engine data to " + dbType + " param=" + param);
             if (dbType == "db.mysql")
             {
-                data = getDataLayer("db.mysql");               
-                data2 = data.Clone();
-                data.Init(param);
-                data2.Init(param);
+                _data = getDataLayer("db.mysql");               
+                _data2 = _data.Clone();
+                _data.Init(param);
+                _data2.Init(param);
             }
             else
             {
@@ -63,13 +63,13 @@ namespace rabnet
             int ver = options().getIntOption("db", "version", Options.OPT_LEVEL.FARM);
             if (ver != NEED_DB_VERSION)
             {
-                if (data2 == data) data2 = null;
-                if (data != null) data.Close();
-                if (data2 != null) data2.Close();
-                data = data2 = null;
+                if (_data2 == _data) _data2 = null;
+                if (_data != null) _data.Close();
+                if (_data2 != null) _data2.Close();
+                _data = _data2 = null;
                 throw new DBBadVersionException(NEED_DB_VERSION, ver);
             }
-            return data;
+            return _data;
         }
 
         public IRabNetDataLayer initEngine(String param)
@@ -79,12 +79,12 @@ namespace rabnet
 
         public IRabNetDataLayer db()
         {
-            return data;
+            return _data;
         }
 
         public IRabNetDataLayer db2()
         {
-            return data2;
+            return _data2;
         }
 
         public int setUid(String name, String password, String farmName)

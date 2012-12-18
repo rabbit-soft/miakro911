@@ -6,7 +6,7 @@ include 'gamlib/DBworker.php';
 
 function show_loginpage()
 {
-	echo file_get_contents("HTMLS/login_top");
+	echo file_get_contents("HTMLs/login_top");
 	if(isset($_SESSION["error"]))
 		echo "<p align=\"center\" style=\"color:red\" >".$_SESSION["error"]."</p>";
 	echo file_get_contents("HTMLS/login_bottom");
@@ -39,7 +39,7 @@ if(!isset($_SESSION["farmname"]))
 
 ///если пользователь все таки ввел пароль и он подошел, то далее рисуем таблицу
 
-echo file_get_contents("HTMLS/reports_top");
+echo file_get_contents("HTMLs/reports_top");
 echo '<p align="center">Доступные БазыДанных</p><form name="frmTest" action="forrpc.php" method=POST>
 		<p align="center"><select name="checkeddb" style="width : 200" onChange="frmTest.submit()";>';
 $dbs = ServFunc::GetWebRep_DBs($_SESSION["farmname"]);

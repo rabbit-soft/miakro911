@@ -14,7 +14,8 @@ using rabnet.RNC;
 using pEngine;
 using gamlib;
 #if PROTECTED
-    using RabGRD;   
+    using RabGRD;
+	using System.Reflection;   
 #endif
 
 namespace rabdump
@@ -50,18 +51,22 @@ namespace rabdump
     /// <param name="hide">Скрыть ли значек из трея</param>
     public delegate void MessageSenderCallbackDelegate(string msg, string ttl, int type, bool hide);
     public delegate void CloseCallbackDelegate();
+    //public delegate void UpdateCheckedHandler(UpdateInfo info);
+    public delegate void ErrorHandler(Exception exc);
 
     /// <summary>
     /// Класс отсылающий РК и Статистику на сервер
     /// </summary>
-    class RabServWorker
+    partial class RabServWorker
     {
-        private static string _url = "http://192.168.0.95/rabServ/";
+        private static string _url = "http://5.23.104.12/rabserv";
         private static ILog _logger = LogManager.GetLogger(typeof(RabServWorker));
         private static ArchiveJobThread _ajt;
         private static RabReqSender _reqSend = null;
         private static bool _busy = false;
-
+        private static bool _dlUpdate = false;
+        
+        public static event ErrorHandler OnUpdateCheckFail;
         public static event MessageSenderCallbackDelegate OnMessage;
 
         internal static RabReqSender ReqSender
@@ -90,30 +95,29 @@ namespace rabdump
                             Array.Copy(defPass, _reqSend.Key, defPass.Length);
                         }
                     }
-#elif DEBUG
-                    _reqSend.UserID = 1;
-                    _reqSend.Key = new byte[0];
+#elif DEBUG                    
+                    _reqSend.Key = new byte[262];//GRD.KEY_CODE_LENGHT
+                    byte[] defPass = Encoding.UTF8.GetBytes("user_with_old_key");
+                    Array.Copy(defPass, _reqSend.Key, defPass.Length);
 #endif
                 }
                 return _reqSend;
             }
         }
              
-
         /// <summary>
         /// Адрес удаленного сервера
         /// </summary>
         public static string Url
         {
             get { return _url; }
-            set 
-            {
-                if (value == null || value == "")
-                    return;
-                _url = value;
-                if (_reqSend != null) //ГОВНОКОД
-                    _reqSend.Url = _url;
-            }
+            //set 
+            //{
+            //    if (String.IsNullOrEmpty(value)) return;
+            //    _url = value;
+            //    if (_reqSend != null) //ГОВНОКОД
+            //        _reqSend.Url = _url;
+            //}
         }
 
         public static void SendDump(ArchiveJob j)
@@ -442,7 +446,7 @@ namespace rabdump
                     requestStream.Write(buffer, 0, buffer.Length);
                     buffer = Encoding.ASCII.GetBytes(string.Format("Content-Type: {0}{1}{1}", file.ContentType, Environment.NewLine));
                     requestStream.Write(buffer, 0, buffer.Length);
-                    CopyStream(file.Stream,requestStream);
+                    copyStream(file.Stream,requestStream);
                     buffer = Encoding.ASCII.GetBytes(Environment.NewLine);
                     requestStream.Write(buffer, 0, buffer.Length);
                 }
@@ -455,12 +459,12 @@ namespace rabdump
             using (Stream responseStream = response.GetResponseStream())
             using (MemoryStream stream = new MemoryStream())
             {
-                CopyStream(responseStream,stream);
+                copyStream(responseStream,stream);
                 return stream.ToArray();
             }
         }
 
-        public static void CopyStream(Stream input, Stream output)
+        private static void copyStream(Stream input, Stream output)
         {
             byte[] buffer = new byte[32768];
             int read;
@@ -487,6 +491,25 @@ namespace rabdump
         trgSR.Close(); trgFS.Close();*/
         //return trgFile;
         //}
+
+        
+
+        //private static void getUpdateInfo()
+        //{
+        //    try
+        //    {
+        //        object o = ReqSender.ExecuteMethod(MethodName.GetUpdateInfo);
+        //        if (o is UpdateInfo && OnUpdateChecked != null)
+        //            OnUpdateChecked(o as UpdateInfo);
+        //    }
+        //    catch(Exception exc)
+        //    {
+        //        if (OnUpdateCheckFail != null)
+        //            OnUpdateCheckFail(exc);
+        //    }
+        //}
+
+
     }
 
     

@@ -107,7 +107,7 @@ namespace rabdump
             string s = "";
             if (StartAtStart == true)
                 s = Application.ExecutablePath;
-            _rnc.SaveOption(RabnetConfig.RNCOption.rabdump_startupPath, s);
+            _rnc.SaveOption(RabnetConfig.RNCOption.RabDump_StartupPath, s);
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace rabdump
 
             StartAtStart = false;
 
-            string val = _rnc.GetOption(RabnetConfig.RNCOption.rabdump_startupPath);
+            string val = _rnc.GetOption(RabnetConfig.RNCOption.RabDump_StartupPath);
             if (val != null)
                 if (val == Application.ExecutablePath)
                     StartAtStart = true;

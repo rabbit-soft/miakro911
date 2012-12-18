@@ -5,7 +5,7 @@ require_once "log4php/Logger.php";
 Logger::configure('log4php.xml');
 $log = Logger::getLogger("getfile");
 //$log->debug("FILE CONNECT");
-//$log->debug("GET FILE \n".var_export($_POST,true));
+$log->debug("GET FILE \n".var_export($_POST,true));
 //var_dump($_POST); exit();
 if(isset($_POST['getfile']) && file_exists(Conf::$UPDATE_PATH.$_POST['getfile']))
 {
