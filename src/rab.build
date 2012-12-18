@@ -315,7 +315,7 @@
 				<attribute type="AssemblyVersionAttribute" value="${version}.${minver_p}.$WCREV$" />
 			</attributes>
 		</asminfo>
-		<exec program="subWCrev">
+		<exec program="SubWCrev">
 			<arg value="${build.root}" />
 			<arg value="${tmpdir}/VersionInfo.cs.tmp" />
 			<arg value="${tmpdir}/VersionInfo.cs" />

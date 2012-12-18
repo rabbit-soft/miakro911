@@ -287,7 +287,7 @@ namespace db.mysql
             return FucksGetter.GetFucks(sql, f);
         }
 
-        public Fucks GetAllFuckers(Filters f)
+        public FuckPartner[] GetAllFuckers(Filters f)
         {
             return FucksGetter.AllFuckers(sql, f);
         }

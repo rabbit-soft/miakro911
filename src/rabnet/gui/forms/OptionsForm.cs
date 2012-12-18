@@ -42,7 +42,7 @@ namespace rabnet.forms
     class OptionsHolder
     {
         [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
-        private int ok, _nout, c1, c2, c3, br, pok, com, bo, go, sf, ff, mw, gt, n, cn, tt, cand, bbone;
+        private int ok, _nout, c1, c2, c3, br, pok, com, bo, go, sf, ff, mw, gt, n, cn, tt, cand, bbone, numGIgnore;
         private string gd, sh, xf;
         private RUBOOL ce, ck, crp, uz, sp, ask, fbz, vIs, vacMoth, _nestOut_proholost, _nestOut_heater;
         private BuchTp bt;
@@ -147,7 +147,10 @@ namespace rabnet.forms
         DisplayName("Заполнять адреса нулями"),
         Description("Заполнять ли символом '0' пробелы в адресе")]
         public RUBOOL FillByZeroes { get { return fbz; } set { fbz = value; } }
-
+        [Category("Вид"),
+        DisplayName("Поколение без номеров генов"),
+        Description("Если в программе модержится информация о N поколениях предков, то номера генов у следующих поколений не присутствует.")]
+        public int NumGensIgnore { get { return numGIgnore; } set { numGIgnore = value; } }
         #endregion view
         #region plem
         [Category("Племенные свидетельства"), DisplayName("Номер следующего свидетельства"), Description("")]
@@ -250,6 +253,7 @@ namespace rabnet.forms
             UpdateZoo = toR(o.getIntOption(Options.OPT_ID.UPDATE_ZOO));
             ShowPartners = toR(o.getIntOption(Options.OPT_ID.FIND_PARTNERS));
             FillByZeroes = toR(o.getIntOption(Options.OPT_ID.BUILD_FILL_ZERO));
+            NumGensIgnore = o.getIntOption(Options.OPT_ID.RAB_GEN_DEPTH);
 
             //svid
             NextSvid = o.getIntOption(Options.OPT_ID.NEXT_SVID);
@@ -293,6 +297,7 @@ namespace rabnet.forms
             //o.setOption(Options.OPT_ID.VACCINE_TIME, VaccineTime);
             o.setOption(Options.OPT_ID.MAKE_CANDIDATE, Candidate);
             o.setOption(Options.OPT_ID.BOYS_BY_ONE, bbone);
+            o.setOption(Options.OPT_ID.RAB_GEN_DEPTH, numGIgnore);
             //view
             o.setOption(Options.OPT_ID.GEN_TREE, GenTree);
             o.setOption(Options.OPT_ID.CONFIRM_EXIT, fromR(ConfirmExit));

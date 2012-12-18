@@ -102,40 +102,50 @@ namespace rabnet.forms
             flt[Filters.SHOW_CANDIDATE] = chCandidates.Checked ? "1" : "0";
             flt[Filters.SHOW_REST] = chRest.Checked ? "1" : "0";
             //TODO здесь трахатели идеалогически неверно передаются через объекты Трыхов
-            Fucks fs = Engine.db().GetAllFuckers(flt);
+            FuckPartner[] fs = Engine.db().GetAllFuckers(flt);
             listView1.BeginUpdate();
-            foreach (Fuck f in fs)
+            
+            foreach (FuckPartner f in fs)
             {
-                bool heter=(f.Breed != rab1.BreedID);
-                bool inbr = RabNetEngHelper.inbreeding(rab1.Genoms, f.rGenom);
+                bool heter = (f.BreedId != rab1.BreedID);
+                bool inbr = RabNetEngHelper.inbreeding(rab1.Genoms, f.OldGenoms);
 
-                ListViewItem li = listView1.Items.Add(f.PartnerName);
+                ListViewItem li = listView1.Items.Add(f.FullName);
                 li.UseItemStyleForSubItems = false;
-                if (f.EventDate != DateTime.MinValue && f.EventDate.Date.AddDays(_malewait) >= DateTime.Now.Date)
+                if (f.LastFuck != DateTime.MinValue && f.LastFuck.Date.AddDays(_malewait) >= DateTime.Now.Date)
                     li.SubItems[IND_NAME].ForeColor = chRest.ForeColor;
                 li.Tag = f;
                 li.SubItems.Add("Мальчик");
-                if (f.Dead == 1 || (f.Dead == 0 && f.Killed >= _makeCand))
+                if (f.Status == 1 || (f.Status == 0 && f.Age >= _makeCand))
                 {
                     li.SubItems[IND_STATE].Text = "Кандидат";
                     li.SubItems[IND_STATE].ForeColor = chCandidates.ForeColor;
                 }
-                if (f.Dead==2)
+                if (f.Status == 2)
                     li.SubItems[IND_STATE].Text = "Производитель";
-                li.SubItems.Add(brds[f.Breed]);
-                li.SubItems.Add(f.Times.ToString());
-                li.SubItems.Add(f.Children.ToString());
-                li.SubItems.Add(heter? "ДА" : "-");
+                li.SubItems.Add(brds[f.BreedId]);
+                li.SubItems.Add(f.Fucks.ToString());
+                li.SubItems.Add(f.MutualChildren.ToString());
+                li.SubItems.Add(heter ? "ДА" : "-");
                 li.SubItems.Add(inbr ? "ДА" : "-");
+
+                int inbrLevel = 1;
+                if (RabbitGen.DetectInbreeding(rab1.RabGenoms, f.RabGenoms, ref inbrLevel))
+                {
+                    li.SubItems.Add(inbrLevel.ToString() + " поколение");
+                }
+                else
+                    li.SubItems.Add("-");
+
                 if (heter)
                     li.SubItems[IND_BREED].ForeColor = chHetererosis.ForeColor;
                 if (inbr)
                     li.SubItems[IND_INBR].ForeColor = chInbreed.ForeColor;
-                if (rtosel == f.PartnerId)
-                 {
+                if (rtosel == f.Id)
+                {
                     li.Selected = true;
                     li.EnsureVisible();
-                 }
+                }
             }
             listView1.EndUpdate();
             cs.RestoreAfterUpdate();
@@ -144,6 +154,7 @@ namespace rabnet.forms
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             btOk.Enabled=btGens.Enabled=(listView1.SelectedItems.Count==1);
+            MainForm.StillWorking();
         }
 
         private void btGens_Click(object sender, EventArgs e)
@@ -153,7 +164,8 @@ namespace rabnet.forms
                 MessageBox.Show("Партнер не выбран");
                 return;
             }
-            int r2 = (listView1.SelectedItems[0].Tag as Fuck).PartnerId;
+            MainForm.StillWorking();
+            int r2 = (listView1.SelectedItems[0].Tag as FuckPartner).Id;
             (new GenomViewForm(rab1.ID, r2)).ShowDialog();
         }
 

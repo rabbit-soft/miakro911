@@ -68,7 +68,7 @@ namespace rabnet
         private string _tag = "";
         private OneRabbit[] _neighbors=null;
         private RabNetEngine _eng = null;
-        public int Mom = 0;
+        public int Mom = 0;        
         /// <summary>
         /// Нужно для логирования при Клонировании
         /// </summary>
@@ -337,7 +337,7 @@ namespace rabnet
             }
         }
 
-        public String RabGenoms
+        public override String RabGenoms
         {
             get
             {

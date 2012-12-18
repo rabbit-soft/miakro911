@@ -37,7 +37,7 @@ namespace rabnet
                 }
                 ReportViewForm rvf = new ReportViewForm(MenuText, FileName, new XmlDocument[] { doc }, XCL_HEADERS);
                 
-                rvf.ShowDialog();
+                rvf.Show();
             }
 #endif
         }

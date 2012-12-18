@@ -38,7 +38,7 @@ namespace rabnet
                     ListViewItem li = lvFucks.Items.Add(f.EventDate == DateTime.MinValue ? "" : f.EventDate.ToShortDateString());
                     li.SubItems.Add(Fuck.GetFuckTypeStr(f.FType,false));
                     li.SubItems.Add(f.PartnerName);
-                    if (f.IsDead)
+                    if (f.IsPartnerDead)
                         li.SubItems.Add(RABDEAD);
                     else
                         li.SubItems.Add(Fuck.GetFuckEndTypeStr(f.FEndType,false));

@@ -266,7 +266,7 @@ LIMIT 1;";
         {
             if (gens == "") return 0;
 
-            ///гакой набор генов может быть уже в базе, ищем его
+            ///такой набор генов может быть уже в базе, ищем его
             MySqlCommand c = new MySqlCommand("", sql);
             c.CommandText = "SELECT g_id FROM genesis WHERE g_key=MD5('" + gens + "');";
             MySqlDataReader rd = c.ExecuteReader();
@@ -277,7 +277,7 @@ LIMIT 1;";
                 genID = rd.GetInt32(0);
                 rd.Close();
             }
-            else ///если такого набора генов в базе нет
+            else ///если такого набора генов в базе нет, то добавляем
             {
                 rd.Close();
                 c.CommandText = "INSERT INTO genesis(g_notes) VALUES('');";
@@ -377,16 +377,11 @@ LIMIT 1;";
             }
         }
 
-        //private static String convIntToString(int i)
-        //{
-        //    return i.ToString();
-        //}
-
-
         internal static string GetRabGenoms(MySqlConnection sql, int rId)
         {
-            MySqlCommand cmd = new MySqlCommand("", sql);//todo реализовать новые геномы
-            return rId.ToString();
+            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT GetRabGenoms({0:d});",rId), sql);
+            string result = cmd.ExecuteScalar() as string;
+            return result;
         }
     }
 }

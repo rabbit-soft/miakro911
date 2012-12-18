@@ -254,13 +254,6 @@ namespace rabnet
         protected int _eventType = 0;
         protected int _kidsOverAll = 0;
         protected int _kidsLost = 0;
-        /// <summary>
-        /// молодняк
-        /// </summary>
-        //public YoungRabbit[] Youngers = null;
-        //public OneRabbit[] Neighbors;
-        //public RabVac[] RabVacs;
-        //public string Tag="";
         public string NewAddress = "";
 
         protected DateTime _weightDate;
@@ -268,6 +261,8 @@ namespace rabnet
         private int _okrol;
         private int _motherId;
         private int _fatherId;
+
+        protected string _rabGenom = "";
         #endregion prop
 
         public OneRabbit(int id, string sx, DateTime born, int rate, string flags, int nameId, int surnameId, int secnameId, string rawAddress, int group, 
@@ -381,7 +376,7 @@ namespace rabnet
         {
             get { return _kidsLost; }
             set { _kidsLost = value; }
-        }
+        }        
 
         #region flags
         /// <summary>
@@ -436,5 +431,7 @@ namespace rabnet
 
         public int MotherID { get { return _motherId; } }
         public int FatherID { get { return _fatherId; } }
+
+        public virtual string RabGenoms { get { return _rabGenom; } set { _rabGenom = value; } }
     }
 }

@@ -30,12 +30,12 @@ namespace rabnet.forms
             comboBox1.Items.Clear();
             ids.Clear();
             int sid = 0;
-            Fucks ff = Engine.db().GetAllFuckers(new Filters());
-            foreach (Fuck f in ff)
+            FuckPartner[] ff = Engine.db().GetAllFuckers(new Filters());
+            foreach (FuckPartner f in ff)
             {
-                comboBox1.Items.Add(f.PartnerName);
-                ids.Add(f.PartnerId);
-                if (f.PartnerId == fucker) 
+                comboBox1.Items.Add(f.FullName);
+                ids.Add(f.Id);
+                if (f.Id == fucker) 
                     sid = comboBox1.Items.Count - 1;
             }
             if (comboBox1.Items.Count>0) 

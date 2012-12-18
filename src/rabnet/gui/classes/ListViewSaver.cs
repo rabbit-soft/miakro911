@@ -39,7 +39,7 @@ namespace rabnet
 
             String[] cls=val.Split(',');
             int i;
-            for (i=0;i<lv.Columns.Count;i++)
+            for (i = 0; i < lv.Columns.Count && i<cls.Length; i++)
                 lv.Columns[i].Width = int.Parse(cls[i]); //не безопасно
             if (lv.ListViewItemSorter!=null && cls.Length>i)
             {

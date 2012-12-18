@@ -52,6 +52,8 @@
             this.cmsOk = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miSyntetic = new System.Windows.Forms.ToolStripMenuItem();
             this.chRest = new System.Windows.Forms.CheckBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.chtInbrRG = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cmsOk.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,14 +69,15 @@
             this.chFucksCount,
             this.chChildren,
             this.chHeterosis,
-            this.chInbr});
+            this.chInbr,
+            this.chtInbrRG});
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(12, 37);
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
             this.listView1.OwnerDraw = true;
-            this.listView1.Size = new System.Drawing.Size(481, 231);
+            this.listView1.Size = new System.Drawing.Size(526, 231);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -123,7 +126,7 @@
             // label2
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.Location = new System.Drawing.Point(289, 9);
+            this.label2.Location = new System.Drawing.Point(334, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(204, 13);
             this.label2.TabIndex = 2;
@@ -134,7 +137,7 @@
             // 
             this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btCancel.Location = new System.Drawing.Point(337, 331);
+            this.btCancel.Location = new System.Drawing.Point(382, 331);
             this.btCancel.Name = "btCancel";
             this.btCancel.Size = new System.Drawing.Size(75, 23);
             this.btCancel.TabIndex = 4;
@@ -197,10 +200,10 @@
             this.dateDays1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2012, 11, 20, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2012, 12, 17, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
-            this.dateDays1.Location = new System.Drawing.Point(356, 274);
+            this.dateDays1.Location = new System.Drawing.Point(401, 274);
             this.dateDays1.Maximum = 10000;
             this.dateDays1.Name = "dateDays1";
             this.dateDays1.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
@@ -213,7 +216,7 @@
             this.cbName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbName.FormattingEnabled = true;
-            this.cbName.Location = new System.Drawing.Point(162, 6);
+            this.cbName.Location = new System.Drawing.Point(207, 6);
             this.cbName.MaxDropDownItems = 20;
             this.cbName.Name = "cbName";
             this.cbName.Size = new System.Drawing.Size(121, 21);
@@ -223,7 +226,7 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(127, 9);
+            this.label3.Location = new System.Drawing.Point(172, 9);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(29, 13);
             this.label3.TabIndex = 11;
@@ -232,7 +235,7 @@
             // btNames
             // 
             this.btNames.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btNames.Location = new System.Drawing.Point(290, 6);
+            this.btNames.Location = new System.Drawing.Point(335, 6);
             this.btNames.Name = "btNames";
             this.btNames.Size = new System.Drawing.Size(25, 20);
             this.btNames.TabIndex = 12;
@@ -246,7 +249,7 @@
             this.btOk.ContextMenuStrip = this.cmsOk;
             this.btOk.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btOk.ImageKey = "Normal";
-            this.btOk.Location = new System.Drawing.Point(418, 331);
+            this.btOk.Location = new System.Drawing.Point(463, 331);
             this.btOk.Name = "btOk";
             this.btOk.Size = new System.Drawing.Size(75, 23);
             this.btOk.TabIndex = 13;
@@ -282,12 +285,16 @@
             this.chRest.UseVisualStyleBackColor = true;
             this.chRest.CheckedChanged += new System.EventHandler(this.cb_CheckedChanged);
             // 
+            // chtInbrRG
+            // 
+            this.chtInbrRG.Text = "Инбридинг Род.Древ.";
+            // 
             // MakeFuckForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btCancel;
-            this.ClientSize = new System.Drawing.Size(505, 366);
+            this.ClientSize = new System.Drawing.Size(550, 366);
             this.Controls.Add(this.chRest);
             this.Controls.Add(this.btNames);
             this.Controls.Add(this.label3);
@@ -340,5 +347,7 @@
         private System.Windows.Forms.ContextMenuStrip cmsOk;
         private System.Windows.Forms.ToolStripMenuItem miSyntetic;
         private System.Windows.Forms.CheckBox chRest;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ColumnHeader chtInbrRG;
     }
 }

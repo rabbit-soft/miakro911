@@ -192,8 +192,6 @@ f_children={1:d},f_dead={2:d} WHERE f_rabid={3:d} AND f_state='sukrol';",
 
             rt = Rate.CalcRate(children, dead, true);
             fml.Rate += rt;
-            //if (children > 0)
-                //fml.Rate += AUTUMN_OKROL_RATE;
             cmd.CommandText = String.Format(@"UPDATE rabbits SET r_event_date=NULL, r_event='none',
 r_status=r_status+1, r_last_fuck_okrol={1:s}, r_overall_babies=COALESCE(r_overall_babies+{2:d},1),
 r_lost_babies=COALESCE(r_lost_babies+{3:d},1), r_rate=r_rate+{4:d}
@@ -212,12 +210,39 @@ WHERE r_id={0:d};",
 INTO rabbits(r_parent,r_mother,r_father,r_born,r_sex,r_group,r_bon,r_genesis,r_name,r_surname,r_secname,r_breed,r_okrol,r_rate,r_notes) 
 VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d},{10:d},{11:d},'');",
       rabbit, rabbit, father, when, children, DBHelper.commonBon(fml.Bon.ToString(), (ml != null ? ml.Bon.ToString() : fml.Bon.ToString())),
-      RabbitGenGetter.MakeCommonGenesis(sql, fml.Genoms, (ml != null ? ml.Genoms : fml.Genoms), fml.Zone),
+      bornRabbitGenesis(sql,fml,ml),//RabbitGenGetter.MakeCommonGenesis(sql, fml.Genoms, (ml != null ? ml.Genoms : fml.Genoms), fml.Zone),
       fml.NameID, (ml != null ? ml.NameID : 0), brd, okrol, chRate/*,DBHelper.DateToMyString(date)*/);
                 cmd.ExecuteNonQuery();
                 return (int)cmd.LastInsertedId;
             }
             return 0;
+        }
+
+        /// <summary>
+        /// Если 7 поколений рожденных прошло через программу, то номера генов отметаются.
+        /// </summary>
+        /// <returns>Генезис ID</returns>
+        private static int bornRabbitGenesis(MySqlConnection sql,OneRabbit fml,OneRabbit ml)
+        {
+            fml.RabGenoms = RabbitGenGetter.GetRabGenoms(sql, fml.ID);
+            ml.RabGenoms = RabbitGenGetter.GetRabGenoms(sql, ml.ID);
+            int fLevel =0, mLevel =0;
+            RabbitGen.GetFullGenLevels(fml.RabGenoms,ref fLevel);
+            RabbitGen.GetFullGenLevels(ml.RabGenoms, ref mLevel);
+
+            MySqlCommand cmd = new MySqlCommand("SELECT o_value FROM options WHERE o_name='opt' AND o_subname='rab_gen_depth'", sql);
+            object o = cmd.ExecuteScalar();
+            if (o != null)
+            {
+                int rab_gen_depth =0;
+                if(int.TryParse(o.ToString(),out rab_gen_depth))
+                {
+                    if (Math.Min(fLevel, mLevel) >= rab_gen_depth)
+                        return 0;
+                }
+            }
+
+            return RabbitGenGetter.MakeCommonGenesis(sql, fml.Genoms, (ml != null ? ml.Genoms : fml.Genoms), fml.Zone);
         }
 
         private static int whosChildren(MySqlConnection sql, int rabbit)

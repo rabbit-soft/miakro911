@@ -69,23 +69,34 @@ namespace rabnet.forms
             }
         }
 
-        private void checkInbreeding(TreeNode femaleTn, TreeNode maleTn)
+        private bool checkInbreeding(TreeNode femaleTn, TreeNode maleTn)
         {
-            if (maleTn.Nodes.Count == 0) return;
-
+            bool result = false;
+            if ((femaleTn.Tag as RabTreeData).ID == (maleTn.Tag as RabTreeData).ID)
+            {
+                //maleParent.BackColor = femaleTn.BackColor = _bcolor; //todo если ID равны,то можно красить всю ветку
+                _inbreeding = true;
+                colorNode(femaleTn);
+                colorNode(maleTn);
+                result = true;
+            }
+          
             foreach (TreeNode maleParent in maleTn.Nodes)
             {
-                if (maleParent.Tag == null) continue;
-                if ((femaleTn.Tag as RabTreeData).ID == (maleParent.Tag as RabTreeData).ID)
-                {
-                    //maleParent.BackColor = femaleTn.BackColor = _bcolor; //todo если ID равны,то можно красить всю ветку
-                    _inbreeding = true;
-                    colorNode(femaleTn);
-                    colorNode(maleParent);
-                    continue;
-                }
-                checkInbreeding(femaleTn,maleParent);
+                if (maleParent.Tag == null || checkInbreeding(femaleTn, maleParent)) continue;
+                //if ((femaleTn.Tag as RabTreeData).ID == (maleParent.Tag as RabTreeData).ID)
+                //{
+                //    //maleParent.BackColor = femaleTn.BackColor = _bcolor; //todo если ID равны,то можно красить всю ветку
+                //    _inbreeding = true;
+                //    colorNode(femaleTn);
+                //    colorNode(maleParent);
+                //    continue;
+                //}                
+                bool r =checkInbreeding(femaleTn,maleParent);
+                if (!result)
+                    result = r;
             }
+            return result;
         }
 
         private void colorNode(TreeNode node)

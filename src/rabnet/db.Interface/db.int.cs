@@ -76,7 +76,7 @@ namespace rabnet
         Fucks GetFucks(Filters f);
         void CancelFuckEnd(int fuckID);
         //Fucks GetAllFuckers(int female,bool geterosis,bool inbreeding,int malewait);
-        Fucks GetAllFuckers(Filters f);
+        FuckPartner[] GetAllFuckers(Filters f);
         void setBon(int rabbit,String bon);
 
         /// <summary>

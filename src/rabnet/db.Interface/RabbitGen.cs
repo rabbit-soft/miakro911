@@ -61,10 +61,11 @@ namespace rabnet
             }
         }
 
-        public static bool DetectInbreeding(String rabGenom1, String rabGenom2)
+        public static bool DetectInbreeding(String rabGenom1, String rabGenom2,ref int level)
         {
-            if (rabGenom1.Length > rabGenom2.Length)
-                DetectInbreeding(rabGenom2,rabGenom1);
+            //if (rabGenom1.Length > rabGenom2.Length)
+                //return DetectInbreeding(rabGenom2,rabGenom1,ref level);
+            int locLevel = level+1;
             if (rabGenom2.Contains(rabGenom1))
                 return true;
             else
@@ -74,16 +75,29 @@ namespace rabnet
                 ParceGenoms(rabGenom1, out mGens, out fGens);
                 if (!String.IsNullOrEmpty(mGens))
                 {
-                    res = DetectInbreeding(mGens,rabGenom2);
-                    if (res) return true;
+                    res = DetectInbreeding(mGens, rabGenom2, ref locLevel);
+                    if (res)
+                    {
+                        level = locLevel;
+                        return true;
+                    }
                 }
                 if (!String.IsNullOrEmpty(fGens))
                 {
-                    res = DetectInbreeding(fGens, rabGenom2);
-                    if (res) return true;
+                    res = DetectInbreeding(fGens, rabGenom2, ref locLevel);
+                    if (res)
+                    {
+                        level = locLevel;
+                        return true;
+                    }
                 }
                 return false;
             }
+        }
+        public static bool DetectInbreeding(String rabGenom1, String rabGenom2)
+        {
+            int level = 0;
+            return DetectInbreeding(rabGenom1, rabGenom2, ref level);
         }
 
         public static void ParceGenoms(string rabGenoms, out string mGens, out string fGens)
@@ -125,8 +139,9 @@ namespace rabnet
                 }
                 if (canP)
                 {
-                    mGens = rabGenoms.Substring(1, i);
-                    fGens = rabGenoms.Substring(i + 1);
+                    mGens = rabGenoms.Substring(0, i+1);
+                    if(mGens!=rabGenoms)
+                        fGens = rabGenoms.Substring(i + 2);
                 }
                 else
                     mGens = rabGenoms;
@@ -143,6 +158,24 @@ namespace rabnet
                     mGens = rabGenoms;
             }
         }
-       
+
+        /// <summary>
+        /// Сколько полных поколений предков прошло через программу.
+        /// </summary>
+        /// <param name="rabGenoms"></param>
+        /// <param name="level"></param>
+        public static void GetFullGenLevels(string rabGenoms,ref int level)
+        {
+            level++;
+            string mGens,fGens;
+            int mLevel = level, 
+                fLevel = level;
+            ParceGenoms(rabGenoms,out mGens,out fGens);
+            if(!String.IsNullOrEmpty(mGens))
+                GetFullGenLevels(mGens, ref mLevel);
+            if (!String.IsNullOrEmpty(fGens))
+                GetFullGenLevels(fGens, ref fLevel);
+            level = Math.Min(mLevel, fLevel);
+        }
     }
 }

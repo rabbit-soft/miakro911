@@ -42,10 +42,13 @@ namespace rabnet
         public int Dead;
         public int Killed;
         public int Added;
-        public int Breed;
-        public String rGenom;
-        public bool IsDead;
+               
+        public bool IsPartnerDead;
         public string Worker;
+
+        public String rGenom;
+        public int Breed;
+
         public Fuck(int id, int femaleId, String femaleName, int partnerId, String partnerName, int tms, DateTime startDate, DateTime endDate, String fEndType, int children, int dead,
             int brd, String gen, String fType, int killed, int added, bool isDead, string worker)
         {
@@ -58,26 +61,15 @@ namespace rabnet
             Times = tms;
             EventDate = startDate; EndDate = endDate;
             this.FType = ParceFuckType(fType);
-            //this.FType = FuckType.Null;
-            //switch (tp)
-            //{
-            //    case FuckType.Vyazka_ENG: this.FType = FuckType.Vyazka_rus; break;
-            //    case FuckType.Sluchka_ENG: this.FType = FuckType.Sluchka_rus; break;
-            //    case FuckType.Syntetic_ENG: this.FType = FuckType.Syntetic_rus; break;
-            //    case FuckType.Kuk_ENG: this.FType = FuckType.Kuk_rus; break;
-            //}
             this.FEndType = ParceFuckEndType(fEndType);
-            //FEndType = FuckType.Sukrol_rus;
-            //if (fEndType == FuckType.Okrol_ENG) FEndType = FuckType.Okrol_rus;
-            //if (fEndType == FuckType.Proholost_ENG) FEndType = FuckType.Proholost_rus;
             Children = children;
             Dead = dead;
-            IsDead = isDead;
+            IsPartnerDead = isDead;
             Killed = killed;
             Added = added;
             Breed = brd;
             rGenom = gen;
-        }
+        }       
 
         public static string GetFuckTypeStr(FuckType ft, bool english)
         {
@@ -138,13 +130,41 @@ namespace rabnet
         }
     }
 
+    public class FuckPartner
+    {
+        public int Id;
+        public String FullName;
+        public int Fucks;
+        public DateTime LastFuck;
+        public int MutualChildren;
+        public int Status;
+        public int BreedId;
+        public string OldGenoms;
+        public string RabGenoms;
+        public int Age;
+
+        public FuckPartner(int id, String name, int fucks, DateTime lastFuck, int children, int status,int breed, String oldGens, string rabGenoms,int age)
+        {
+            this.Id = id;
+            this.FullName = name;
+            this.Fucks = fucks;
+            this.LastFuck = lastFuck;
+            this.MutualChildren = children;
+            this.Status = status;
+            this.BreedId = breed;
+            this.OldGenoms = oldGens;
+            this.RabGenoms = rabGenoms;
+            this.Age = age;
+        }
+    }
+
     public class Fucks:List<Fuck>
     {
-        public void AddFuck(int id, int fId, String femaleName, int pId, String partnerName, int times, DateTime startDate, DateTime endDate, String state, int childrens, int dd,
+        /*public void AddFuck(int id, int fId, String femaleName, int pId, String partnerName, int times, DateTime startDate, DateTime endDate, String state, int childrens, int dd,
             int brd, String gen, String tp, int kl, int add, bool dead, String wrk)
         {
             this.Add(new Fuck(id, fId, femaleName, pId, partnerName, times, startDate, endDate, state, childrens, dd, brd, gen, tp, kl, add, dead, wrk));
-        }
+        }*/
 
         public Fuck LastFuck
         {
