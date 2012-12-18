@@ -37,6 +37,7 @@
             this.chChildren = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chHeterosis = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chInbr = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chtInbrRG = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btCancel = new System.Windows.Forms.Button();
@@ -53,7 +54,6 @@
             this.miSyntetic = new System.Windows.Forms.ToolStripMenuItem();
             this.chRest = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.chtInbrRG = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cmsOk.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -112,6 +112,10 @@
             // 
             this.chInbr.Text = "Инбридинг NГ";
             this.chInbr.Width = 90;
+            // 
+            // chtInbrRG
+            // 
+            this.chtInbrRG.Text = "Инбридинг Род.Древ.";
             // 
             // label1
             // 
@@ -200,7 +204,7 @@
             this.dateDays1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2012, 12, 17, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2012, 12, 18, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
             this.dateDays1.Location = new System.Drawing.Point(401, 274);
@@ -284,10 +288,6 @@
             this.chRest.Text = "Отдыхающие";
             this.chRest.UseVisualStyleBackColor = true;
             this.chRest.CheckedChanged += new System.EventHandler(this.cb_CheckedChanged);
-            // 
-            // chtInbrRG
-            // 
-            this.chtInbrRG.Text = "Инбридинг Род.Древ.";
             // 
             // MakeFuckForm
             // 

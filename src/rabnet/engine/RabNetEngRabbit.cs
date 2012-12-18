@@ -9,11 +9,6 @@ namespace rabnet
     {
         #region exceptions
 
-        public class RabNetException : Exception
-        {
-            public RabNetException(string message) : base(message) { }
-        }
-
         public class ExNotFemale : RabNetException
         {
             public ExNotFemale(RabNetEngRabbit r):base("Кролик "+r.FullName+" не является самкой"){}

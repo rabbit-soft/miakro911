@@ -189,7 +189,7 @@ namespace rabnet.forms
             try
             {
                 if (listView1.SelectedItems.Count != 1)
-                    throw new ApplicationException("Выберите самца");
+                    throw new RabNetException("Выберите самца");
                 if (rab1.NameID == 0 && cbName.SelectedIndex != 0)
                 {
                     foreach (int k in names.Keys)
@@ -206,7 +206,7 @@ namespace rabnet.forms
                 this.DialogResult = DialogResult.OK;
                 Close();
             }
-            catch (ApplicationException ex)
+            catch (Exception ex)
             {
                 DialogResult = DialogResult.None;
                 MessageBox.Show("Ошибка: " + ex.Message);
