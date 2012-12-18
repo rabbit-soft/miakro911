@@ -58,12 +58,27 @@
 			<arg value="${dir_bin}/updater.exe" />
 		</exec>	
 		
-		<call target="obfuscate_grd"/>
+		<exec program="${grd_obfusc}">
+			<arg value="/INIT" />	
+			<arg value="/MAP=${tmpdir}/grd_obfuscate.map" />
+			<arg value="/XML=${grd_path.conf}/rabnet.gpp" />
+			<arg value="/OUT=${dir_bin}/" />
+			<arg value="/SO" />
+			<!--arg value="/SE" /-->
+			<arg value="/GS3S" />
+			<arg value="/GN3S" />			
+			<arg value="${dir_bin}/db.Interface.dll" />
+			<arg value="${dir_bin}/db.mysql.dll" />	
+			<arg value="${dir_bin}/engine.dll" />			
+			<arg value="${dir_bin}/rabnet.exe" />
+			<arg value="${dir_bin}/rabdump.exe" />
+		</exec>	
 		
-		<!--exec program="${grd_prot}">			
-			<arg value="/MSG=${grd_path.conf}\grd_rus.msg" />
-			<arg value="/MAP=${tmpdir}\grd_obfuscate.map" />
-			<arg value="/IL=${grd_path.conf}\rabnet.gpp" />
+		<exec program="${grd_prot}">			
+			<arg value="/MSG=${grd_path.conf}/grd_rus.msg" />
+			<arg value="/MAP=${tmpdir}/grd_obfuscate.map" />
+			<arg value="/XML=${grd_path.conf}/rabnet.gpp" />
+			<arg value="/PER=30" />
 			<arg value="/RC=1" />
 			<arg value="/ATR=2" />
 			<arg value="/GS3S" />
@@ -76,7 +91,7 @@
 			<arg value="${dir_bin}/engine.dll" />
 			<arg value="${dir_bin}/rabnet.exe" />	
 			<arg value="${dir_bin}/rabdump.exe" />			
-		</exec-->
+		</exec>
 		
 		<delete>
 			<fileset>
@@ -97,23 +112,6 @@
 			<arg value="${bindir}/demo/bin/engine.dll" />	
 			<arg value="${bindir}/demo/bin/rabnet.exe" />						
 		</exec>
-	</target>
-	
-	<target name="obfuscate_grd">	
-		
-		<exec program="${grd_obfusc}">
-			<arg value="/INIT" />			
-			<arg value="/SO" />
-			<arg value="/GS3S" />
-			<arg value="/GN3S" />
-			<arg value="/MAP=${tmpdir}/grd_obfuscate.map" />
-			<arg value="/OUT=${dir_bin}/" />
-			<arg value="${dir_bin}/db.Interface.dll" />
-			<arg value="${dir_bin}/db.mysql.dll" />	
-			<arg value="${dir_bin}/engine.dll" />			
-			<arg value="${dir_bin}/rabnet.exe" />
-			<arg value="${dir_bin}/rabdump.exe" />
-		</exec>		
 	</target>
 	
 </project>
