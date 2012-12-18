@@ -104,7 +104,7 @@ namespace rabnet.forms
             //TODO здесь трахатели идеалогически неверно передаются через объекты Трыхов
             FuckPartner[] fs = Engine.db().GetAllFuckers(flt);
             listView1.BeginUpdate();
-            
+
             foreach (FuckPartner f in fs)
             {
                 bool heter = (f.BreedId != rab1.BreedID);
@@ -198,7 +198,7 @@ namespace rabnet.forms
                     rab1.Commit();
                 }
 
-                int r2 = (listView1.SelectedItems[0].Tag as Fuck).PartnerId;
+                int r2 = (listView1.SelectedItems[0].Tag as FuckPartner).Id;
                 selected = r2;
                 if (action == 0)
                     rab1.FuckIt(r2, dateDays1.DaysValue,syntetic);

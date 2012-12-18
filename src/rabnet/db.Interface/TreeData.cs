@@ -48,6 +48,16 @@ namespace rabnet
                 return String.Format("{0:s}, {1:d},{2:s}", Name,Age, Bon);
             }
         }
+
+        public String NameFormat(string format)
+        {
+            return format.Replace("B", BreedId.ToString())
+                .Replace("b", BreedShortName)
+                .Replace("N", NameId.ToString())
+                .Replace("n", Name)
+                .Replace("A", Age.ToString())
+                .Replace("C",Bon);
+        }
     }
 
     public class BldTreeData:TreeData

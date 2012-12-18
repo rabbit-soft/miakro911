@@ -19,6 +19,8 @@ namespace rabnet.forms
         public GenomViewForm()
         {
             InitializeComponent();
+            tvFemale.NameFormat =
+                tvMale.NameFormat = "n, [b], C";
             FormSizeSaver.Append(this);
         }
 

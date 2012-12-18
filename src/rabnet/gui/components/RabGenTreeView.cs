@@ -6,6 +6,8 @@ namespace rabnet.components
     {
         private int _maxCnt=1;
 
+        public string NameFormat = "n, A, C";
+
         public RabGenTreeView()
         {
             InitializeComponent();
@@ -42,7 +44,7 @@ namespace rabnet.components
                 while (this.Nodes.Count >= _maxCnt)
                     this.Nodes.RemoveAt(this.Nodes.Count-1);
             }
-            TreeNode tn = this.Nodes.Insert(0,data.NameCombined);
+            TreeNode tn = this.Nodes.Insert(0, data.NameFormat(NameFormat));
             insertNode(tn,data);
             tn.ExpandAll();
             tn.EnsureVisible();
@@ -60,7 +62,7 @@ namespace rabnet.components
                 {
                     if (data.Parents[0] != null)
                     {
-                        TreeNode n = nd.Nodes.Add(data.Parents[0].NameCombined);
+                        TreeNode n = nd.Nodes.Add(data.Parents[0].NameFormat(NameFormat));
                         insertNode(n, data.Parents[0]);
                     }
                     data.Parents.RemoveAt(0);
