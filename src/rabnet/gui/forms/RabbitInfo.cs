@@ -31,8 +31,7 @@ namespace rabnet.forms
         {
             InitializeComponent();
             initialHints();
-            while(tabControl1.TabPages.Count>1)
-                tabControl1.TabPages.RemoveAt(1);
+            removeTabsForOneRabbit();
             _mkbrides = Engine.get().brideAge();
             _mkcandidate = Engine.opt().getIntOption(Options.OPT_ID.MAKE_CANDIDATE);
             //makesuck = Engine.opt().getIntOption(Options.OPT_ID.COUNT_SUCKERS);
@@ -247,25 +246,36 @@ namespace rabnet.forms
             }
         }
 
+        #region tabs_modify
+        private void removeTabsForOneRabbit()
+        {
+            tabControl1.TabPages.Remove(tpMale);
+            tabControl1.TabPages.Remove(tpFucks);
+            tabControl1.TabPages.Remove(tpFemale);
+            tabControl1.TabPages.Remove(tpYoungers);
+            tabControl1.TabPages.Remove(tpWeight);
+        }
+
         private void addMaleTabs()
         {
             if (!tabControl1.TabPages.Contains(tpMale))  
-                tabControl1.TabPages.Add(tpMale);
+                tabControl1.TabPages.Insert(1,tpMale);
             if (!tabControl1.TabPages.Contains(tpWeight)) 
-                tabControl1.TabPages.Add(tpWeight); 
+                tabControl1.TabPages.Insert(2,tpWeight); 
         }
 
         private void addFemaleTabs()
         {
-            if (!tabControl1.TabPages.Contains(tpFucks))          
-                tabControl1.TabPages.Add(tpFucks);
-            if (!tabControl1.TabPages.Contains(tpFemale)) 
-                tabControl1.TabPages.Add(tpFemale);
-            if (!tabControl1.TabPages.Contains(tpYoungers)) 
-                tabControl1.TabPages.Add(tpYoungers);
-            if (!tabControl1.TabPages.Contains(tpWeight)) 
-                tabControl1.TabPages.Add(tpWeight);           
+            if (!tabControl1.TabPages.Contains(tpFemale))
+                tabControl1.TabPages.Insert(1,tpFemale);
+            if (!tabControl1.TabPages.Contains(tpFucks))
+                tabControl1.TabPages.Insert(2,tpFucks);            
+            if (!tabControl1.TabPages.Contains(tpYoungers))
+                tabControl1.TabPages.Insert(3,tpYoungers);
+            if (!tabControl1.TabPages.Contains(tpWeight))
+                tabControl1.TabPages.Insert(4,tpWeight);           
         }
+        #endregion tabs_modify
 
         private void FillList(ComboBox cb,Catalog c,int key)
         {

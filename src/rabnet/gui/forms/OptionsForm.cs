@@ -60,7 +60,7 @@ namespace rabnet.forms
         Description("Назначать Выдворение даже если крольчиха сукрольна")]
         public RUBOOL NestOutIfSukrol { get { return vIs; } set { vIs = value; } }
         [Category("Зоотехплан"), DisplayName("Выдворение с грелкой"),
-        Description("При выдворении убирать из гнездовье грелку.")]
+        Description("При выдворении убирать из гнездовья грелку.")]
         public RUBOOL NestOutHeater { get { return _nestOut_heater; } set { _nestOut_heater = value; } }
         [Category("Зоотехплан"), DisplayName("1й подсчет гнездовых"),
         Description("Проверка изменения числа рожденных крольчат в 1ый раз")]
