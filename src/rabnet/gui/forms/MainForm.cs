@@ -575,7 +575,7 @@ namespace rabnet.forms
         private void miButcher_Click(object sender, EventArgs e)
         {            
 #if PROTECTED
-            if (!GRD.Instance.GetFlag(GRD.FlagType.Butcher))
+            if (GRD.Instance.GetFlag(GRD.FlagType.Butcher))
             {
 #endif
 #if !DEMO
@@ -585,18 +585,20 @@ namespace rabnet.forms
                     Filters f = new Filters();
                     f[Filters.DATE_PERIOD] = brd.PeriodChar;
                     f[Filters.DATE_VALUE] = brd.DateValue;
-                    (new ReportViewForm("Отчет по стерильному цеху", "butcher",new XmlDocument[]
+                    (new ReportViewForm("Отчет по стерильному цеху", "butcher", new XmlDocument[]
                     { 
                         Engine.get().db().makeReport(myReportType.BUTCHER_PERIOD, f),
                         //brd.getXml()
                     }
                     )).ShowDialog();
-                }   
+                }
 #else
             DemoErr.DemoNoReportMsg();
 #endif
 #if PROTECTED
             }
+            else
+                MessageBox.Show("Текущая лицензия не распространяется на данный отчет.");
 #endif
         }
 
@@ -620,7 +622,6 @@ namespace rabnet.forms
 
         private void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
         {
-
             if (tabControl1.SelectedTab == tpButcher)
             {
 #if PROTECTED

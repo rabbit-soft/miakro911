@@ -73,7 +73,7 @@ namespace rabnet.forms
             }
             else
             {
-                MessageBox.Show("Нет дат забоя.");
+                MessageBox.Show("Нет информации о продукции");
                 this.Close();
             }
 #endif
