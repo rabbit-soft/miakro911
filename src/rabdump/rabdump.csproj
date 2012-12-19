@@ -56,7 +56,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Protected|AnyCPU' ">
     <OutputPath>..\bin\Protected\rabdump\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;PROTECTED</DefineConstants>
+    <DefineConstants>TRACE;PROTECTED</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -123,12 +123,6 @@
       <Link>Forms\AddDongleForm.designer.cs</Link>
       <DependentUpon>AddDongleForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="..\libs\gamlib\AppUpdater.cs">
-      <Link>remote\AppUpdater.cs</Link>
-    </Compile>
-    <Compile Include="..\libs\gamlib\Helper.Array.cs">
-      <Link>classes\Helper.Array.cs</Link>
-    </Compile>
     <Compile Include="..\libs\gamlib\Helper.Other.cs">
       <Link>classes\Helper.Other.cs</Link>
     </Compile>
@@ -144,9 +138,6 @@
     <Compile Include="..\libs\GRD\GRD_BaseTRU.cs">
       <Link>classes\GRD_BaseTRU.cs</Link>
     </Compile>
-    <Compile Include="..\libs\pEngine\pAppUpdater.cs">
-      <Link>remote\pAppUpdater.cs</Link>
-    </Compile>
     <Compile Include="..\libs\pEngine\pException.cs">
       <Link>remote\pException.cs</Link>
     </Compile>
@@ -158,9 +149,6 @@
     </Compile>
     <Compile Include="..\mia_conv\miaExitCode.cs">
       <Link>classes\miaExitCode.cs</Link>
-    </Compile>
-    <Compile Include="..\rabnet\gui\classes\lan\RabLan.cs">
-      <Link>remote\RabLan.cs</Link>
     </Compile>
     <Compile Include="..\rabnet\gui\classes\RabnetConfig\DataSource.cs">
       <Link>classes\DataSource.cs</Link>
@@ -210,9 +198,6 @@
     </Compile>
     <Compile Include="classes\Options.cs">
     </Compile>
-    <Compile Include="not_for_deploy\MainForm.BuildDate.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="panels\AboutPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -238,8 +223,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="remote\RabDumpLan.cs" />
-    <Compile Include="remote\RabServWorker.AppUpdate.cs" />
     <Compile Include="remote\RabServWorker.cs" />
     <Compile Include="remote\RabUpdater.cs" />
     <Compile Include="Forms\RestoreForm.cs">

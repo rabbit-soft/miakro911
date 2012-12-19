@@ -24,7 +24,6 @@ namespace rabnet.forms
             InitializeComponent();
             log.Debug("inited");
             _rnc = new RabnetConfig();
-            checkUpdate();
         }
 
         public void readConfig()
@@ -118,10 +117,10 @@ namespace rabnet.forms
 //                System.Diagnostics.Debug.WriteLine(RabnetConfigHandler.ds[comboBox1.SelectedIndex].getParamHost());
 
 //#if !DEMO
-                
 //                RabUpdaterClient.Get().SetIP(_rnc.DataSources[cbFarm.SelectedIndex].Params.Host);
                 
-//                bool upRes=RabUpdaterClient.Get().CheckUpdate();                
+//                bool upRes=RabUpdaterClient.Get().CheckUpdate();
+                
 //                System.Diagnostics.Debug.WriteLine(upRes.ToString());
 
 //                if (upRes)
@@ -201,33 +200,5 @@ namespace rabnet.forms
                 readConfig();
             }
         }
-
-        #region update
-        RabNetLan _rnl;
-
-        private void checkUpdate()
-        {
-            string addr = _rnc.GetOption(RabnetConfig.RNCOption.RabDump_Address);
-            if (_rnl == null)
-            {
-                _rnl = new RabNetLan(addr);               
-                _rnl.OnRabDumpFinded += new RabDumpFindedHandler(_rnl_OnRabDumpFinded);
-                _rnl.OnUpdateRequired += new UpdateCheckedHandler(_rnl_OnUpdateRequired);
-                _rnl.Start();
-            }
-            _rnl.CheckUpdate();
-        }
-
-        void _rnl_OnUpdateRequired(bool needUpdate)
-        {
-            MessageBox.Show("Need update");
-        }
-
-        void _rnl_OnRabDumpFinded(string address)
-        {
-            _rnc.SaveOption(RabnetConfig.RNCOption.RabDump_Address, address);
-        }
-
-        #endregion update
     }
 }

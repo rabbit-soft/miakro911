@@ -85,7 +85,7 @@ namespace rabnet
                                 Application.Run(new MainForm());
                             }
 #if PROTECTED
-                            //if (PClient.get().farms() == -1)
+                            //                        if (PClient.get().farms() == -1)
                             if (GRD.Instance.GetFarmsCnt() == -1)
                             {
                                 LoginForm.stop = true;

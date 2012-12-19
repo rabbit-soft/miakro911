@@ -29,7 +29,8 @@ try
     $result = XMLRPC_Response($responce);
     Conf::$LOG_QRS = false;
     $result =Coder::Encrypt($result);
-    //header("Content-type: application/octet-stream; charset=utf-8");
+    ob_clean(); //чтобы не было BOM
+    header("Content-type: application/octet-stream; charset=utf-8");
 	exit($result);
 }
 catch (pException $exc)

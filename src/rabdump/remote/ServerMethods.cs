@@ -22,8 +22,8 @@ namespace pEngine
         [XmlRpcMethod("get.dumplist")]
         sDump[] GetDumpList();
 
-        [XmlRpcMethod("get.update.files")]
-        sUpdateFile[] GetUpdateFiles();
+        //[XmlRpcMethod("get.update.files")]
+        //sUpdateFile[] GetUpdateFiles();
 
         [XmlRpcMethod("vendor.update.dongle")]
         string VendorUpdateDongle(string base64_question, string clientId, string farms, string flags, string startDate, string endDate, string dongleId);
@@ -34,9 +34,6 @@ namespace pEngine
         void WebRep_SendGlobal(string db,sWebRepOneDay[] value);
         [XmlRpcMethod("webrep.get.lastdate")]
         string WebRep_GetLastDate(string db);
-
-        [XmlRpcMethod("get.update.info")]
-        UpdateInfo GetUpdateInfo();
     }
 
     /// <summary>
@@ -85,11 +82,6 @@ namespace pEngine
         /// <para>Return: sPayment[]</para>
         /// </summary>
         GetPayments,
-
-        /// <summary>
-        /// Получает информацию о обновлении
-        /// </summary>
-        GetUpdateInfo,
 
         GetUpdateFiles,
 

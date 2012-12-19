@@ -18,11 +18,10 @@ namespace rabnet.RNC
         public enum RNCOption
         {
             MysqlPath,
-            zip7path,          
+            zip7path,
+            rabdump_startupPath,
             serverUrl,
-            makeWebReport,
-            RabDump_StartupPath,
-            RabDump_Address
+            makeWebReport
         }
 
         private readonly ILog _logger = LogManager.GetLogger(typeof(RabnetConfig));
@@ -50,13 +49,11 @@ namespace rabnet.RNC
                         val= tryToDetectMysqlPath();
                     return val ;
                 case RNCOption.zip7path: return (string)k.GetValue("z7");
-                case RNCOption.RabDump_StartupPath:
+                case RNCOption.rabdump_startupPath:
                     k = _regKey.CreateSubKey(STARTUP);
                     return (string)k.GetValue("rabdump", "");
                 case RNCOption.serverUrl:
                     return (string)k.GetValue("sUrl", "");
-                case RNCOption.RabDump_Address:
-                    return (string)k.GetValue(RNCOption.RabDump_Address.ToString(), "");
             }
             return "";
         }
@@ -84,15 +81,13 @@ namespace rabnet.RNC
             {
                 case RNCOption.MysqlPath: k.SetValue("mysql", val); break;
                 case RNCOption.zip7path: k.SetValue("z7", val); break;
-                case RNCOption.RabDump_StartupPath:
+                case RNCOption.rabdump_startupPath:
                     k = _regKey.CreateSubKey(STARTUP);
                     if (val == "") k.DeleteValue("rabdump", false);
                     else k.SetValue("rabdump", val);
                     break;
                 case RNCOption.serverUrl:
                     k.SetValue("sUrl", val); break;
-                case RNCOption.RabDump_Address:
-                    k.SetValue(RNCOption.RabDump_Address.ToString(), val,RegistryValueKind.String); break;
             }
         }
 

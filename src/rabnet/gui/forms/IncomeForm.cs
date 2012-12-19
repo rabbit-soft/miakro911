@@ -86,7 +86,7 @@ namespace rabnet.forms
                 ListViewItem li = listView1.Items.Add(name);
                 li.SubItems.Add(rbs[i].Group.ToString());                
                 li.SubItems.Add(rbs[i].FullName);
-                li.SubItems.Add(_breeds.ContainsKey(rbs[i].BreedID)? _breeds[rbs[i].BreedID]:_breeds[1]);
+                li.SubItems.Add(_breeds.ContainsKey(rbs[i].BreedID) ? _breeds[rbs[i].BreedID] : _breeds[1]);//ГИБРИД
                 li.SubItems.Add(rbs[i].Address);
                 li.Tag = rbs[i];
             }

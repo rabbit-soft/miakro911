@@ -145,12 +145,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\libs\gamlib\AppUpdater.cs">
-      <Link>classes\lan\AppUpdater.cs</Link>
-    </Compile>
-    <Compile Include="..\..\libs\gamlib\Helper.Array.cs">
-      <Link>classes\Helper.Array.cs</Link>
-    </Compile>
     <Compile Include="..\..\libs\gamlib\Helper.Forms.cs">
       <Link>classes\Helper.Forms.cs</Link>
     </Compile>
@@ -169,8 +163,6 @@
     <Compile Include="classes\Demo.cs" />
     <Compile Include="classes\ExcelMaker.cs" />
     <Compile Include="classes\FormSizeSaver.cs" />
-    <Compile Include="classes\lan\RabLan.cs" />
-    <Compile Include="classes\lan\RabNetLan.cs" />
     <Compile Include="classes\RabnetConfig\DataSource.cs" />
     <Compile Include="classes\RabnetConfig\sParams.cs" />
     <Compile Include="classes\RabnetConfig\RabnetConfig.cs" />

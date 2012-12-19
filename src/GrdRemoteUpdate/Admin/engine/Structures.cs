@@ -27,19 +27,6 @@ namespace pEngine
         public sServer() { }
     }
 
-    public class UpdateInfo
-    {
-        public string Version;
-        public bool NeedUpdateDB;
-        public bool UpdateRequired;
-
-        public UpdateInfo(string version, bool needDbUp)
-        {
-            this.Version = version;
-            NeedUpdateDB=needDbUp;
-        }
-    }
-
     public class sClient
     {
         [XmlRpcMember("c_id")]
