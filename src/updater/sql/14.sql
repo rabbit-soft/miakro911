@@ -2,6 +2,8 @@ UPDATE options SET o_value='14' WHERE o_name='db' AND o_subname='version';
 
 INSERT INTO `options`(o_name,o_subname,o_value) VALUES('opt','rab_gen_depth','7');
 
+#DELIMITER |
+
 drop procedure if exists `FindRabGenoms`|
 CREATE PROCEDURE `FindRabGenoms`(IN rid INT UNSIGNED,INOUT depth SMALLINT UNSIGNED,OUT genoms TEXT)
     READS SQL DATA

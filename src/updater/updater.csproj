@@ -113,6 +113,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon_update_white.ico" />
+    <EmbeddedResource Include="sql\13.sql" />
+    <EmbeddedResource Include="sql\14.sql" />
     <EmbeddedResource Include="sql\12.sql" />
     <EmbeddedResource Include="sql\11.sql" />
   </ItemGroup>

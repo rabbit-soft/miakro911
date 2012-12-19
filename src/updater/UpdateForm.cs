@@ -56,8 +56,9 @@ namespace updater
                     i++;
                 }
             }
-            catch (Exception)
+            catch (Exception exc)
             {
+                _logger.Warn(exc);
                 i--;
             }
             _logger.InfoFormat("get {0:d} scripts",i);
