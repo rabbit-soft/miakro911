@@ -43,6 +43,7 @@ BrandingText "$(Branding)"
 !include MUI2.nsh
 !include StrRep.nsh
 !include ReplaceInFile.nsh
+!include x64.nsh
 
 # Reserved Files
 ReserveFile "${NSISDIR}\Plugins\AdvSplash.dll"
@@ -234,7 +235,6 @@ SectionEnd
 Function .onInit
     
     ;LogSet on
-    
     InitPluginsDir
     StrCpy $StartMenuGroup $(SM_Prog_NAME)
 
@@ -247,7 +247,14 @@ Function .onInit
     advsplash::show 1000 600 400 -1 $PLUGINSDIR\spltmp
     Pop $R1
     Pop $R1
-
+	
+	${If} ${RunningX64} 
+		DetailPrint $(INTALL64)
+		; disable registry redirection (enable access to 64-bit portion of registry)
+		SetRegView 64
+		; change install dir 
+		StrCpy $INSTDIR "$PROGRAMFILES64\${DirName}"
+	${EndIf}
 
     !insertmacro SELECT_SECTION_TEST_old
     !insertmacro SELECT_SECTION_TEST

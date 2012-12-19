@@ -70,6 +70,9 @@ LangString KillRabNet ${LANG_RUSSIAN} "Закрываем Rabnet..."
 LangString Branding ${LANG_ENGLISH} "@CompanyName_en@"
 LangString Branding ${LANG_RUSSIAN} "@CompanyName@"
 
+LangString INTALL64 ${LANG_ENGLISH} "Installer running on 64-bit host"
+LangString INTALL64 ${LANG_RUSSIAN} "Устанавливается на 64-битную систему"
+
 
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "@AppName_en@"
 #VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" "A test comment"
