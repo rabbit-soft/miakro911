@@ -39,7 +39,11 @@ namespace rabnet
                 Thread.Sleep(100);
             }
             _dataGetter = getter;
-            if (_dataGetter == null) return;
+            if (_dataGetter == null)
+            {
+                onFinish();
+                return;
+            }
 
             //_rabStatusBar = sb;
             //_onItem = onItem;
@@ -80,6 +84,11 @@ namespace rabnet
             }
             _dataGetter.Close();
 
+            onFinish();
+        }
+
+        private void onFinish()
+        {
             if (OnFinish != null)
                 OnFinish();
         }

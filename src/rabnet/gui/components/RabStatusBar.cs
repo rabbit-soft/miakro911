@@ -287,7 +287,7 @@ namespace rabnet.components
                 if (OnFinishUpdate != null)
                     OnFinishUpdate();
                 endProgress();
-                _dataThread = null;
+                stopDataThread();
             }
         }
 
