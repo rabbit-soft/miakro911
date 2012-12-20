@@ -71,8 +71,8 @@ InstallDir "$PROGRAMFILES\${DirName}"
 CRCCheck on
 XPStyle on
 ShowInstDetails show
-InstallDirRegKey HKLM "${REGKEY_old}" Path
-InstallDirRegKey HKLM "${REGKEY}" Path
+InstallDirRegKey HKCU "${REGKEY_old}" Path
+InstallDirRegKey HKCU "${REGKEY}" Path
 ShowUninstDetails show
 
 InstType $(SEC_PackClient_NAME)
@@ -136,7 +136,7 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Prog_NAME).lnk $INSTDIR\bin\rabnet.exe
     CreateShortcut $DESKTOP\$(SM_Prog_NAME).lnk $INSTDIR\bin\rabnet.exe
 #    WriteRegStr HKEY_CURRENT_USER Software\hzkakzvat\rabnet Path "C:\Program Files\7-Zip"
-    WriteRegStr HKLM "${REGKEY}\Components" "rabnet" 1
+    WriteRegStr HKCU "${REGKEY}\components" "rabnet" 1
 SectionEnd
 
 Section  $(SEC_RabDump_NAME) SEC_RabDump
@@ -164,7 +164,7 @@ Section  $(SEC_RabDump_NAME) SEC_RabDump
     File ${BinDir}\7z\readme.txt
 
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Dump_NAME).lnk $INSTDIR\bin\rabdump.exe
-    WriteRegStr HKLM "${REGKEY}\Components" "rabdump" 1
+    WriteRegStr HKCU "${REGKEY}\components" "rabdump" 1
 
     ######## Temporary fix of bug M0000308
     ExpandEnvStrings $2 "%USERNAME%"
@@ -203,7 +203,7 @@ Section -com_comps SEC_Common
 	File ${BinDir}\Guardant\grdsrv.exe
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Conv_NAME).lnk $INSTDIR\bin\mia_conv.exe
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Up_NAME).lnk $INSTDIR\bin\updater.exe
-    WriteRegStr HKLM "${REGKEY}\Components" com_comps 1
+    WriteRegStr HKCU "${REGKEY}\components" com_comps 1
 SectionEnd
 
 Section /o -sec_updater SEC_Updater
@@ -222,7 +222,7 @@ SectionEnd
 # Macro for selecting uninstaller sections
 !macro SELECT_SECTION_TEST 
     Push $R0
-    ReadRegStr $R0 HKLM "${REGKEY}\Components" "Main"
+    ReadRegStr $R0 HKCU "${REGKEY}\components" "Main"
     StrCmp $R0 1 0 next${SECTION_ID}
 
     !insertmacro SELECT_UNSECTION "rabnet" ${SEC_Rabnet}
@@ -241,7 +241,7 @@ done${SECTION_ID}:
 
 !macro SELECT_SECTION_TEST_old
     Push $R0
-    ReadRegStr $R0 HKLM "${REGKEY_old}\Components" "Main"
+    ReadRegStr $R0 HKCU "${REGKEY_old}\components" "Main"
     StrCmp $R0 1 0 nextold${SECTION_ID}
 
     !insertmacro SELECT_UNSECTION_old "rabnet" ${SEC_Rabnet}
@@ -268,7 +268,7 @@ Section /o -un.com_comps UNSEC_Common
 	
     Delete /REBOOTOK $SMPROGRAMS\$StartMenuGroup\$(SM_Conv_NAME).lnk
     Delete /REBOOTOK $SMPROGRAMS\$StartMenuGroup\$(SM_Up_NAME).lnk
-    DeleteRegValue HKLM "${REGKEY}\Components" com_comps
+    DeleteRegValue HKCU "${REGKEY}\components" com_comps
 SectionEnd
 
 Section /o -un.rabdump UNSEC_RabDump
@@ -294,7 +294,7 @@ Section /o -un.rabdump UNSEC_RabDump
     RmDir /REBOOTOK /r $INSTDIR\7z
     RmDir /REBOOTOK /r $INSTDIR\bin\updates
 	RmDir /REBOOTOK /r $INSTDIR\bin
-    DeleteRegValue HKLM "${REGKEY}\Components" "rabdump"
+    DeleteRegValue HKCU "${REGKEY}\components" "rabdump"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(SM_Dump_NAME).lnk"
 SectionEnd
 
@@ -333,18 +333,18 @@ Section /o "-un.rabnet" UNSEC_Rabnet
     RmDir /REBOOTOK /r $INSTDIR\bin\upd
 	RmDir /REBOOTOK /r $INSTDIR\bin
 	
-    DeleteRegValue HKLM "${REGKEY}\Components" "rabnet"
+    DeleteRegValue HKCU "${REGKEY}\components" "rabnet"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(SM_Prog_NAME).lnk"
 SectionEnd
 
 Section -un.post UNSEC_Sys
-    DeleteRegKey HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)"
+    DeleteRegKey HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^UninstallLink).lnk"
     Delete /REBOOTOK $INSTDIR\uninstall.exe
-    DeleteRegKey HKLM "${REGKEY_old}"
-    DeleteRegValue HKLM "${REGKEY}" Path
-    DeleteRegKey /IfEmpty HKLM "${REGKEY}\Components"
-    DeleteRegKey /IfEmpty HKLM "${REGKEY}"
+    DeleteRegKey HKCU "${REGKEY_old}"
+    DeleteRegValue HKCU "${REGKEY}" Path
+    DeleteRegKey /IfEmpty HKCU "${REGKEY}\components"
+    DeleteRegKey /IfEmpty HKCU "${REGKEY}"
     RmDir /r /REBOOTOK "$SMPROGRAMS\$StartMenuGroup"
     RmDir /REBOOTOK "$INSTDIR"
 SectionEnd
@@ -356,7 +356,7 @@ Function .onInit
     
     InitPluginsDir
     StrCpy $StartMenuGroup $(SM_Prog_NAME)
-
+	
     #SectionSetText ${SEC_Rabnet} $(SEC_Rabnet_NAME) 
     #SectionSetText ${SEC_RabDump} $(SEC_RabDump_NAME) 
 
@@ -438,7 +438,7 @@ FunctionEnd
 
 # Uninstaller functions
 Function un.onInit
-    ReadRegStr $INSTDIR HKLM "${REGKEY}" Path
+    ReadRegStr $INSTDIR HKCU "${REGKEY}" Path
     StrCpy $StartMenuGroup $(SM_Prog_NAME)
     !insertmacro SELECT_UNSECTION "rabnet" ${UNSEC_Rabnet}
     !insertmacro SELECT_UNSECTION "rabdump" ${UNSEC_RabDump}
