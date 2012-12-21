@@ -320,7 +320,7 @@ namespace rabnet.forms
                 MessageBox.Show(this, msg + "\nПрограмма будет закрыта.", "Ошибка защиты", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 LoginForm.stop = true;
                 _mustclose = true;
-                Close();//Environment.Exit(100);
+                Environment.Exit(100);
             }
 #endif
 #if DEMO
