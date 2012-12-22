@@ -58,7 +58,12 @@ namespace rabnet.RNC
 
         public override string ToString()
         {
-            return String.Format("host={0};database={1};uid={2};pwd={3};charset={4}", Host, DataBase, User, Password, Charset);
+            return String.Format("host={0};database={1};uid={2};pwd={3};charset={4}", 
+                Host, 
+                DataBase, 
+                User, 
+                string.IsNullOrEmpty(Password) ? "''": Password, 
+                Charset);
         }
 
     }

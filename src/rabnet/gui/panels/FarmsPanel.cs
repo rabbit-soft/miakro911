@@ -8,6 +8,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Diagnostics;
 using rabnet.RNC;
+using gamlib;
 
 namespace rabnet
 {
@@ -204,6 +205,11 @@ namespace rabnet
                 return false;
             }
             return true;
+        }
+
+        private void tbUser_TextChanged(object sender, EventArgs e)
+        {
+            Helper.DeleteRusLetters(sender, e);
         }
     }
 }

@@ -59,8 +59,8 @@
             // 
             // cbName
             // 
-            this.cbName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cbName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbName.FormattingEnabled = true;
             this.cbName.Location = new System.Drawing.Point(80, 9);
@@ -219,6 +219,7 @@
             this.tbUser.Size = new System.Drawing.Size(140, 20);
             this.tbUser.TabIndex = 10;
             this.tbUser.Text = "kroliki";
+            this.tbUser.TextChanged += new System.EventHandler(this.tbUser_TextChanged);
             // 
             // label5
             // 
