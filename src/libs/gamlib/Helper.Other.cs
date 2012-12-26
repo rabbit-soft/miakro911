@@ -1,12 +1,23 @@
+using System;
 using System.IO;
 using System.Text;
-using System;
 
 namespace gamlib
 {
-    static partial class Helper
+    public static partial class Helper
     {
-        public static bool isInteger(string str)
+        public static string GetMD5FromFile(string filepath)
+        {
+            if (filepath == "") return "0";
+            FileStream file = new FileStream(filepath, FileMode.Open, FileAccess.Read);
+            System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
+            byte[] retVal = md5.ComputeHash(file);
+            file.Close();
+
+            return ByteArrayToHexString(retVal);
+        }
+
+        public static bool IsInteger(string str)
         {
             try
             {
@@ -22,38 +33,20 @@ namespace gamlib
         public static int N3Ppath_Compare(ref string p1, ref string p2)
         {
             int temp = countOccurencesOfChar(ref p1, '.').CompareTo(countOccurencesOfChar(ref p2, '.'));
-            if (temp == 1)//p1 РёРјРµРµС‚ Р±РѕР»СЊС€Рµ С‚РѕС‡РµРє, С‡РµРј p2
+            if (temp == 1)//p1 имеет больше точек, чем p2
                 return -1;
             else if (temp == -1)
                 return 1;
             else return 0;
         }
 
-        public static bool ArraysEquals(ref byte[] arr1,ref byte[] arr2)
+        private static int countOccurencesOfChar(ref string instance, char c)
         {
-            if (arr1.Length != arr2.Length) return false;
-            for(int i=0;i<arr1.Length;i++)
-                if(arr1[i] != arr2[i]) 
-                    return false;
-            return true;
-        }
-        public static bool ArraysEquals(byte[] arr1, ref byte[] arr2) { return ArraysEquals(ref arr1, ref arr2); }
-
-        public static void ReverseArrayEllements(ref byte[] arr)
-        {
-            for (int i = 0; i < arr.Length; i++)           
-                arr[i] =(byte)(byte.MaxValue-arr[i]);           
-        }
-
-        public static string GetMD5FromFile(string filepath)
-        {
-            if (filepath == "") return "0";
-            FileStream file = new FileStream(filepath, FileMode.Open, FileAccess.Read);
-            System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
-            byte[] retVal = md5.ComputeHash(file);
-            file.Close();
-
-            return ByteArrayToHexString(retVal);
+            int temp = 0;
+            foreach (char curChar in instance)
+                if (c == curChar)
+                    ++temp;
+            return temp;
         }
 
         public static string ByteArrayToHexString(byte[] arr)
@@ -66,13 +59,28 @@ namespace gamlib
             return sb.ToString();
         }
 
-        private static int countOccurencesOfChar(ref string instance, char c)
+        /// <summary>
+        /// Сравнивает версии и возвращает результат сравнения
+        /// </summary>
+        /// <param name="ver1">Версия первого файла</param>
+        /// <param name="ver2">Версия второго файла</param>
+        /// <returns>1- Первый больше второго; 0 - Равны; -1-первый меньше второго</returns>
+        public static int VersionCompare(string ver1, string ver2)
         {
-            int temp = 0;
-            foreach (char curChar in instance)            
-                if (c == curChar)               
-                    ++temp;
-            return temp;
+            if (ver1 == null)
+                ver1 = "";
+            if (ver2 == null)
+                ver2 = "";
+            string[] arr1 = ver1.Split('.');
+            string[] arr2 = ver2.Split('.');
+            int comp = 0;
+            for (int i = 0; i < arr1.Length; i++)
+            {
+                comp = arr1[i].CompareTo(arr2[i]);
+                if (comp != 0)
+                    return comp;
+            }
+            return comp;
         }
 
         public static string toRusMonth(string dt)
@@ -82,18 +90,18 @@ namespace gamlib
                 string result = "";
                 switch (int.Parse(dt))
                 {
-                    case 1: result += "РЇРЅРІР°СЂСЊ "; break;
-                    case 2: result += "Р¤РµРІСЂР°Р»СЊ "; break;
-                    case 3: result += "РњР°СЂС‚ "; break;
-                    case 4: result += "РђРїСЂРµР»СЊ "; break;
-                    case 5: result += "РњР°Р№ "; break;
-                    case 6: result += "РСЋРЅСЊ "; break;
-                    case 7: result += "РСЋР»СЊ "; break;
-                    case 8: result += "РђРІРіСѓСЃС‚ "; break;
-                    case 9: result += "РЎРµРЅС‚СЏР±СЂСЊ "; break;
-                    case 10: result += "РћРєС‚СЏР±СЂСЊ "; break;
-                    case 11: result += "РќРѕСЏР±СЂСЊ "; break;
-                    case 12: result += "Р”РµРєР°Р±СЂСЊ "; break;
+                    case 1: result += "Январь "; break;
+                    case 2: result += "Февраль "; break;
+                    case 3: result += "Март "; break;
+                    case 4: result += "Апрель "; break;
+                    case 5: result += "Май "; break;
+                    case 6: result += "Июнь "; break;
+                    case 7: result += "Июль "; break;
+                    case 8: result += "Август "; break;
+                    case 9: result += "Сентябрь "; break;
+                    case 10: result += "Октябрь "; break;
+                    case 11: result += "Ноябрь "; break;
+                    case 12: result += "Декабрь "; break;
                 }
                 return result;
             }
@@ -104,9 +112,9 @@ namespace gamlib
         }
 
         /// <summary>
-        /// РџСЂРѕРІРµСЂСЏРµС‚ РµСЃС‚СЊ Р»Рё СѓРєР°Р·Р°РЅРЅС‹Р№ С„Р°Р№Р», РµСЃР»Рё РµСЃС‚СЊ С‚Рѕ РІРѕР·РІСЂР°С‰Р°РµС‚ РёРјСЏ 'Р¤Р°Р№Р» (1)'
+        /// Проверяет есть ли указанный файл, если есть то возвращает имя 'Файл (1)'
         /// </summary>
-        /// <param name="s">РџРѕР»РЅС‹Р№ РїСѓС‚СЊ</param>
+        /// <param name="s">Полный путь</param>
         public static string DuplicateName(string s)
         {
             int i = 1;
@@ -125,6 +133,3 @@ namespace gamlib
         }
     }
 }
-
-	
-	
