@@ -68,6 +68,22 @@ namespace gamlib
             }
         }
 
+		public static void DeleteRusLetters(object sender, EventArgs e)
+        {
+            TextBox tb = (sender as TextBox);
+            if (tb == null || tb.Text=="") return;
 
+            int i=0;
+            while (i < tb.Text.Length)
+            {
+                if ((tb.Text[i] < '0' || tb.Text[i] > '9') && (tb.Text[i] < 'A' || tb.Text[i] > 'z'))
+                {
+                    tb.Text = tb.Text.Remove(i, 1);
+                    tb.Select(i, 0);
+                    break;
+                }
+                i++;
+            }
+        }
     }
 }
