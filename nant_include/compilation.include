@@ -182,7 +182,6 @@
 				<include name="${srcdir}/libs/GRD/GRD_Base.cs"/>
 				<include name="${srcdir}/libs/GRD/GRD_BaseCodes.cs"/>
 				
-				<!--include name="${srcdir}/rabdump/classes/x_tools.cs"/-->
 				<include name="${srcdir}/mia_conv/miaExitCode.cs"/>
 			</sources>
 			<resources>
