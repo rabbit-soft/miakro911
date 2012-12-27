@@ -345,12 +345,12 @@ namespace rabnet.forms
 		
 	<target name="full_build" depends="clean_mark distrib_nsis">
 		<if test="${property::exists('build.automated')}">
-			<echo message="${datetime::now()}" file="..\build.ok" />
+			<echo message="${datetime::now()}" file="build.ok" />
 		</if>
 	</target>
 	
 	<target name="clean_mark">
-		<delete file="../build.ok" />
+		<delete file="build.ok" />
 	</target>
 	
 </project>
