@@ -1,0 +1,1 @@
+﻿delete from dead where r_id in (select r_id from rabbits)

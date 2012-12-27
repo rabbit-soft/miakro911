@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="rabnet_distrib" default="build" basedir=".">
+	<property name="svnroot" value="http://svn.9-bits.ru/svn/repos/rabbits"/>
+
+	<property name="netInstaller.path" value="${allineed.path}/dotNetInstaller" />
+	<property name="Office.path" value="${party3d.path}" />
+
+	<property name="grd_path" value="C:\Program Files\Guardant\Guardant 6\PLAT_T+" />
+	<property name="NSISPath" value="C:\Program Files\NSIS"/>
+
+	<target name="svn_co" description="Updating svn">
+		<exec program="tortoiseproc.exe">
+			<arg value="/command:checkout"/>
+			<arg value="/path:${vdir}"/>
+			<arg value="/url:${svnroot}/tags/${rel}"/>
+			<arg value="/closeonend:2"/>
+		</exec>
+	</target>
+
+</project>
