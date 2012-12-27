@@ -5,7 +5,7 @@ Name $(SM_Prog_NAME)
 !define NameInt "Miakro911"
 !define DirName "Miakro911"
 !define CompName "9-Bits"
-!define BinDir "..\..\bin\@bin_type@\"
+!define BinDir "..\..\_bin\@bin_type@\"
 #!define DirName "@ProgDirName@"
 
 #!define SHORT_APP_NAME "Xobni Analytics"
@@ -199,8 +199,8 @@ Section -com_comps SEC_Common
 	
 	SetOutPath $INSTDIR\Guardant
     File ${BinDir}\Guardant\GrdTRU.exe
-	File ${BinDir}\Guardant\grdmon.exe
-	File ${BinDir}\Guardant\grdsrv.exe
+	#File ${BinDir}\Guardant\grdmon.exe
+	#File ${BinDir}\Guardant\grdsrv.exe
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Conv_NAME).lnk $INSTDIR\bin\mia_conv.exe
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Up_NAME).lnk $INSTDIR\bin\updater.exe
     WriteRegStr HKCU "${REGKEY}\components" com_comps 1

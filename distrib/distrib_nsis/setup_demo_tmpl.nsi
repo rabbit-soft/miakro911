@@ -5,7 +5,7 @@ Name $(SM_Prog_NAME)
 !define NameInt "Miakro911"
 !define DirName "Miakro911"
 !define CompName "9-Bits"
-!define BinDir "..\..\bin\@bin_type@\"
+!define BinDir "..\..\_bin\@bin_type@\"
 #!define DirName "@ProgDirName@"
 
 

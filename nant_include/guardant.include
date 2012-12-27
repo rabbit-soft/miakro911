@@ -36,8 +36,13 @@
 		<property name="bin_grd_tools" value="${bin_dir}/Guardant"/>
 		
 		<copy file="${GrdTruSource}" tofile="${bin_grd_tools}/${GrdTru}" />
-		<copy file="${GrdSrvSource}" tofile="${bin_grd_tools}/${GrdSrv}" />
-		<copy file="${GrdMonSource}" tofile="${bin_grd_tools}/${GrdMon}" />
+		<copy todir="${bin_grd_tools}/Server" >
+			<fileset basedir="${grd_path}\Server">
+				<include name="*" />				
+			</fileset>
+		</copy>
+		<!--copy file="${GrdSrvSource}" tofile="${bin_grd_tools}/${GrdSrv}" />
+		<copy file="${GrdMonSource}" tofile="${bin_grd_tools}/${GrdMon}" / -->
 		
 		<copy file="${GrdDriver32Path}" tofile="${bin_grd_tools}/drivers/${GrdDriverName}_32.msi" />
 		<copy file="${GrdDriver64Path}" tofile="${bin_grd_tools}/drivers/${GrdDriverName}_64.msi" />
