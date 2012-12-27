@@ -1,4 +1,4 @@
-# Installer Language Strings
+﻿# Installer Language Strings
 # TODO Update the Language Strings with the appropriate translations.
 
 LangString ^UninstallLink ${LANG_ENGLISH} "Uninstall $(^Name)"
