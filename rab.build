@@ -16,8 +16,8 @@
 
 	<property name="revision" value="none"/>
 
-	<property name="trunkdir" value="." unless="${property::exists(trunkdir)}"/>
-	<property name="bindir" value="${trunkdir}/_bin" unless="${property::exists(bindir)}"/>
+	<property name="trunkdir" value="." />
+	<property name="bindir" value="${trunkdir}/_bin" />
 	<property name="allineed.path" value="${trunkdir}/allineed"/>
 	<property name="party3d.path" value="${trunkdir}/party3d" />	
 	<property name="srcdir" value="${trunkdir}/src" overwrite="false"/>	
