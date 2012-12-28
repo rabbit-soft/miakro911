@@ -95,9 +95,8 @@
       <HintPath>..\..\party3d\ccxmlrpc.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="GuardantDotNetApi, Version=5.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\party3d\GuardantDotNetApi.dll</HintPath>
+    <Reference Include="GuardantDotNetApi">
+      <HintPath>C:\Program Files (x86)\Guardant\Guardant 6.2\PLAT_T+\Lib\GuardantDotNetApi.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -280,13 +279,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\party3d\GrdAPI32.DLL">
+    <None Include="C:\Program Files %28x86%29\Guardant\Guardant 6.2\PLAT_T+\Lib\GrdAPI32.DLL">
+      <Link>GrdAPI32.DLL</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\party3d\GrdAPI64.DLL">
+    </None>
+    <None Include="C:\Program Files %28x86%29\Guardant\Guardant 6.2\PLAT_T+\Lib\x64\GrdAPI64.DLL">
       <Link>GrdAPI64.DLL</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
     <Content Include="icon_white.ico" />
   </ItemGroup>
   <ItemGroup>

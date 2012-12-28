@@ -16,11 +16,11 @@
 
 	<property name="revision" value="none"/>
 
-	<property name="trunkdir" value="."/>
+	<property name="trunkdir" value="." unless="${property::exists(trunkdir)}"/>
+	<property name="bindir" value="${trunkdir}/_bin" unless="${property::exists(bindir)}"/>
 	<property name="allineed.path" value="${trunkdir}/allineed"/>
 	<property name="party3d.path" value="${trunkdir}/party3d" />	
-	<property name="srcdir" value="${trunkdir}/src" overwrite="false"/>
-	<property name="bindir" value="${trunkdir}/_bin"/>
+	<property name="srcdir" value="${trunkdir}/src" overwrite="false"/>	
 	<property name="helpdir" value="${trunkdir}/help"/>
 	<property name="bindir.plugins" value="${bindir}/PlugIns" />
 	
