@@ -122,9 +122,7 @@
 		
 		<call target="include_grd_libs" />
 		
-		<call target="include_grd_tools"/>
-		
-		<copy file="${srcdir}/rabnet/gui/${grdClientConf}" tofile="${bin_dir_bin}/${grdClientConf}" />
+		<call target="include_grd_tools"/>				
 		
 		<copy todir="${bin_dir_bin}/reports">
 			<fileset basedir="${srcdir}/rabnet/gui/reports">
