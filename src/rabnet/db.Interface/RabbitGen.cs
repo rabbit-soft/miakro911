@@ -67,29 +67,44 @@ namespace rabnet
                 //return DetectInbreeding(rabGenom2,rabGenom1,ref level);
             int locLevel = level+1;
             if (rabGenom2.Contains(rabGenom1))
+            {
+                level = locLevel;
                 return true;
+            }
             else
             {
-                bool res=false;
-                string mGens,fGens;
+                bool mInbr=false,fInbr = false;
+                string mGens, fGens;
+                int mLevel = locLevel, fLevel = locLevel;
                 ParceGenoms(rabGenom1, out mGens, out fGens);
                 if (!String.IsNullOrEmpty(mGens))
                 {
-                    res = DetectInbreeding(mGens, rabGenom2, ref locLevel);
-                    if (res)
-                    {
-                        level = locLevel;
-                        return true;
-                    }
+                    mInbr = DetectInbreeding(mGens, rabGenom2, ref mLevel);
+                    //if (res)
+                    //{
+                    //    mLevel = locLevel;
+                    //    return true;
+                    //}
                 }
                 if (!String.IsNullOrEmpty(fGens))
                 {
-                    res = DetectInbreeding(fGens, rabGenom2, ref locLevel);
-                    if (res)
-                    {
-                        level = locLevel;
-                        return true;
-                    }
+                    fInbr = DetectInbreeding(fGens, rabGenom2, ref fLevel);
+                    //if (res)
+                    //{
+                    //    level = locLevel;
+                    //    return true;
+                    //}
+                }
+                ///уровень инбридинка должен быть самый ближайший
+                if (mInbr && fInbr)
+                {
+                    level = Math.Min(mLevel,fLevel);
+                    return true;
+                }
+                else if (mInbr || fInbr)
+                {
+                    level = mInbr ? mLevel : fLevel;
+                    return true;
                 }
                 return false;
             }

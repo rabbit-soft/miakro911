@@ -22,6 +22,7 @@ namespace rabnet.filters
             cobBreeds.Items.Clear();
             cobBreeds.Items.Add("--ВСЕ--");
             cobBreeds.SelectedIndex = 0;
+            cbCount.SelectedIndex = 0;
             foreach (int k in breeds.Keys)
             {
                 cobBreeds.Items.Add(breeds[k]);
@@ -57,6 +58,15 @@ namespace rabnet.filters
                 f["nm"] = tbName.Text;
             if (cobBreeds.SelectedIndex != 0)
                 f["br"] = cobBreeds.SelectedIndex.ToString();
+            if (cbCount.SelectedIndex != 0 || nudCountFrom.Value != 1)
+            {
+                f["cSign"] = cbCount.Text;
+                f["Cf"] = nudCountFrom.Value.ToString();
+                if (cbCount.SelectedIndex == cbCount.Items.Count - 1)
+                {
+                    f["Ct"] = nudCountTo.Value.ToString();
+                }
+            }
             return f;
         }
 
@@ -111,7 +121,16 @@ namespace rabnet.filters
             }
             tbName.Text = f.safeValue("nm");
             cobBreeds.SelectedIndex = f.safeInt("br",0);
+
+            nudCountFrom.Value = f.safeInt("Cf", 1);
+            nudCountTo.Value = f.safeInt("Ct", 20);
+            if (f.ContainsKey("Ct"))
+                cbCount.SelectedIndex = cbCount.Items.Count - 1;
+            else
+                cbCount.Text = f.safeValue("cSign");
+
         }
+
         public override void clearFilters()
         {
             fillBreeds();
@@ -120,16 +139,21 @@ namespace rabnet.filters
             cbDateFrom_CheckedChanged(null, null); 
             cbDateTo_CheckedChanged(null, null);
             cbWeightFrom.Checked = cbWeightTo.Checked = false;
-            cbWeightFrom_CheckedChanged(null, null); cbWeightTo_CheckedChanged(null, null);
+            cbWeightFrom_CheckedChanged(null, null); 
+            cbWeightTo_CheckedChanged(null, null);
             //cbWorks.SelectedIndex = 0;
             cbMaleBoy.Checked = cbMaleCandidate.Checked = cbMaleProducer.Checked = true;          
             cobPregnant.SelectedIndex = 0;
             cbPregFrom.Checked = cbPregTo.Checked = false;
-            cbPregTo_CheckedChanged(null, null); cbPregFrom_CheckedChanged(null, null);
+            cbPregTo_CheckedChanged(null, null); 
+            cbPregFrom_CheckedChanged(null, null);
             cbFemaleBride.Checked = cbFemaleFirst.Checked = cbFemaleGirl.Checked = cbFemaleState.Checked = true;
             cbFilter.Text = "";
             tbName.Text = "";
             cobBreeds.SelectedIndex = 0;
+            cbCount.SelectedIndex = 0;
+            nudCountFrom.Value = 1;
+            nudCountTo.Value = 20;
         }
         
 
@@ -451,6 +475,11 @@ namespace rabnet.filters
         }
 
         #endregion
+
+        private void cbCount_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            nudCountTo.Enabled = cbCount.SelectedIndex == cbCount.Items.Count - 1;
+        }
 
     }
 }

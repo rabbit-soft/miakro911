@@ -147,6 +147,15 @@ FROM rabbits r WHERE r_parent=0 ORDER BY name) c {2:s};", (options.safeBool("dbl
             }
             if (options.ContainsKey("br"))
                 res = addWhereAnd(res, "(r_breed=" + options["br"] + ")");
+            if (options.ContainsKey("Cf"))
+            {
+                if (options.ContainsKey("Ct"))
+                {
+                    res = addWhereAnd(res, String.Format("(r_group BETWEEN {0:s} AND {1:s})", options["Cf"], options["Ct"]));
+                }
+                else
+                    res = addWhereAnd(res, String.Format("r_group{0:s}{1:s}",options["cSign"],options["Cf"]));
+            }
             if (res == "") return "";
             return " WHERE " + res;
         }

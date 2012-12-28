@@ -72,6 +72,10 @@
             this.label7 = new System.Windows.Forms.Label();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.nudCountTo = new System.Windows.Forms.NumericUpDown();
+            this.cbCount = new System.Windows.Forms.ComboBox();
+            this.nudCountFrom = new System.Windows.Forms.NumericUpDown();
             this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPregFrom)).BeginInit();
@@ -86,6 +90,9 @@
             this.groupBox1.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox9.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCountTo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCountFrom)).BeginInit();
             this.SuspendLayout();
             // 
             // label6
@@ -669,9 +676,73 @@
             this.groupBox9.TabIndex = 20;
             this.groupBox9.TabStop = false;
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.nudCountTo);
+            this.groupBox4.Controls.Add(this.cbCount);
+            this.groupBox4.Controls.Add(this.nudCountFrom);
+            this.groupBox4.Location = new System.Drawing.Point(395, 32);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(115, 74);
+            this.groupBox4.TabIndex = 21;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Количество";
+            // 
+            // nudCountTo
+            // 
+            this.nudCountTo.Enabled = false;
+            this.nudCountTo.Location = new System.Drawing.Point(67, 39);
+            this.nudCountTo.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudCountTo.Name = "nudCountTo";
+            this.nudCountTo.Size = new System.Drawing.Size(42, 20);
+            this.nudCountTo.TabIndex = 2;
+            this.nudCountTo.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            // 
+            // cbCount
+            // 
+            this.cbCount.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbCount.FormattingEnabled = true;
+            this.cbCount.Items.AddRange(new object[] {
+            ">=",
+            "=",
+            "<=",
+            "<",
+            "A..Z"});
+            this.cbCount.Location = new System.Drawing.Point(6, 13);
+            this.cbCount.Name = "cbCount";
+            this.cbCount.Size = new System.Drawing.Size(55, 21);
+            this.cbCount.TabIndex = 1;
+            this.cbCount.SelectedIndexChanged += new System.EventHandler(this.cbCount_SelectedIndexChanged);
+            // 
+            // nudCountFrom
+            // 
+            this.nudCountFrom.Location = new System.Drawing.Point(67, 14);
+            this.nudCountFrom.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudCountFrom.Name = "nudCountFrom";
+            this.nudCountFrom.Size = new System.Drawing.Size(42, 20);
+            this.nudCountFrom.TabIndex = 0;
+            this.nudCountFrom.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // RabbitsFilter
             // 
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox9);
             this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.button3);
@@ -711,6 +782,9 @@
             this.groupBox8.PerformLayout();
             this.groupBox9.ResumeLayout(false);
             this.groupBox9.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nudCountTo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCountFrom)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -762,6 +836,10 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.NumericUpDown nudCountTo;
+        private System.Windows.Forms.ComboBox cbCount;
+        private System.Windows.Forms.NumericUpDown nudCountFrom;
 
     }
 }

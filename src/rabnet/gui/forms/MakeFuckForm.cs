@@ -129,7 +129,7 @@ namespace rabnet.forms
                 li.SubItems.Add(heter ? "ДА" : "-");
                 li.SubItems.Add(inbr ? "ДА" : "-");
 
-                int inbrLevel = 1;
+                int inbrLevel = 0;
                 if (RabbitGen.DetectInbreeding(rab1.RabGenoms, f.RabGenoms, ref inbrLevel))
                 {
                     li.SubItems.Add(inbrLevel.ToString() + " поколение");
