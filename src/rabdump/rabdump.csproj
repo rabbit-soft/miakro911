@@ -122,6 +122,9 @@
       <Link>Forms\AddDongleForm.designer.cs</Link>
       <DependentUpon>AddDongleForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="..\libs\gamlib\Helper.Forms.cs">
+      <Link>classes\Helper.Forms.cs</Link>
+    </Compile>
     <Compile Include="..\libs\gamlib\Helper.Other.cs">
       <Link>classes\Helper.Other.cs</Link>
     </Compile>
