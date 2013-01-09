@@ -79,12 +79,12 @@
 			<arg value="${dir_bin}/rabdump.exe" />
 		</exec>	
 		
-		<!--exec program="${grd_prot}">			
+		<exec program="${grd_prot}">			
 			<arg value="/MSG=${grd_path.conf}/grd_rus.msg" />
 			<arg value="/MAP=${tmpdir}/grd_obfuscate.map" />
 			<arg value="/XML=${grd_path.conf}/rabnet.gpp" />
 			<arg value="/PER=30" />
-			<arg value="/RC=1" />
+			<arg value="/RC=3" />
 			<arg value="/ATR=2" />
 			<arg value="/GS3S" />
 			<arg value="/GN3S" />
@@ -96,7 +96,7 @@
 			<arg value="${dir_bin}/engine.dll" />
 			<arg value="${dir_bin}/rabnet.exe" />	
 			<arg value="${dir_bin}/rabdump.exe" />			
-		</exec-->
+		</exec>
 		
 		<delete>
 			<fileset>
