@@ -41,7 +41,10 @@ catch (pException $exc)
 catch (DecryptionException $exc)
 {
     $log->fatal($exc->getMessage());
-	exit("fuck you");
+    if($_SERVER['HTTP_USER_AGENT']!="XML-RPC.NET")
+        header('HTTP/1.1 404 Not Found');
+    else
+	    exit("fuck you");
 }
 catch (Exception $exc)
 {
