@@ -1,6 +1,6 @@
 ﻿#if DEBUG
     #define NOCATCH
-    //#define ONLYONE
+    #define ONLYONE
 #endif
 
 using System;
