@@ -557,7 +557,8 @@ WHERE r_parent={1:d} AND r_id={2:d};", added, rid, yid), sql);
                 rabFrom.FatherID == rabTo.FatherID && 
                 rabFrom.Okrol == rabTo.Okrol && 
                 rabFrom.Sex == rabTo.Sex &&
-                rabFrom.BreedID == rabTo.BreedID)
+                rabFrom.BreedID == rabTo.BreedID &&
+                rabFrom.MotherID!=0 && rabFrom.FatherID!=0)
             {
                 cmd.CommandText = String.Format("UPDATE rabbits SET r_group=r_group+{0:d} WHERE r_id={1:d};", rabFrom.Group, rabto);
                 cmd.ExecuteNonQuery();
