@@ -93,21 +93,7 @@ namespace db.mysql
             int totalChildren = 0;
             int pCount = 0;
             foreach (XmlNode nd in lst)
-            {
-                //if (name == "" && dt == "")
-                //{
-                //    name = nd.FirstChild.FirstChild.Value;
-                //    dt = nd.FirstChild.NextSibling.FirstChild.Value;
-                //    if(nd.FirstChild.NextSibling.NextSibling.FirstChild.Value == "п")
-                //    {
-                //        totalChildren = 0;
-                //        pCount++;
-                //    }
-                //    else
-                //        totalChildren = int.Parse(nd.FirstChild.NextSibling.NextSibling.FirstChild.Value);
-                //    continue;
-                //}
-                
+            {                
                 if (nd.FirstChild.FirstChild.Value == name && nd.FirstChild.NextSibling.FirstChild.Value == dt)
                 {
                     if (nd.FirstChild.NextSibling.NextSibling.FirstChild.Value == "п")
@@ -293,21 +279,6 @@ FROM fucks WHERE f_partner={0:d} AND f_end_date>={1:s} AND f_end_date<={2:s});",
         private String deadQuery(Filters f)
         {
             string where = DBHelper.MakeDatePeriod(f, "d_date");   
-    
-            //if (f.safeValue(Filters.DATE_PERIOD) == "d")
-            //{
-            //    DateTime dt = DateTime.Parse(f.safeValue(Filters.DATE_VALUE));
-            //    where = String.Format("DATE(d_date)='{0:yyyy-MM-dd}'", dt);
-            //}
-            //else if (f.safeValue(Filters.DATE_PERIOD) == "y")
-            //{
-            //    where = String.Format("YEAR(d_date)={0}", f.safeValue(Filters.DATE_VALUE));
-            //}
-            //else if (f.safeValue(Filters.DATE_PERIOD) == "m")
-            //{
-            //    DateTime dt = DateTime.Parse(f.safeValue(Filters.DATE_VALUE));
-            //    where = String.Format("MONTH(d_date)={0:MM} AND YEAR(d_date)={0:yyyy}", dt);
-            //}
 
             where = "WHERE " + String.Format("d_reason!={0:d}", DeadReason_Static.CombineGroups) + (where!="" ? " AND "+where:"");
 
@@ -327,20 +298,6 @@ ORDER BY d_reason,d_date ASC;", where);
             //getDates(f);
             string period = DBHelper.MakeDatePeriod(f, "d_date");
 
-            //if (f.safeValue(Filters.DATE_PERIOD) == "d")
-            //{
-            //    DateTime dt = DateTime.Parse(f.safeValue(Filters.DATE_VALUE));
-            //    period = String.Format("DATE(d_date)='{0:yyyy-MM-dd}'", dt);
-            //}
-            //else if (f.safeValue(Filters.DATE_PERIOD) == "y")
-            //{
-            //    period = String.Format("YEAR(d_date)={0}", f.safeValue(Filters.DATE_VALUE));
-            //}
-            //else
-            //{
-            //    DateTime dt = DateTime.Parse(f.safeValue(Filters.DATE_VALUE));
-            //    period = String.Format("MONTH(d_date)={0:MM} AND YEAR(d_date)={0:yyyy}", dt);
-            //}
             if (period != "")
                 period = "WHERE " + period;
             string s = String.Format(@"(SELECT 
@@ -357,10 +314,17 @@ FROM dead {0} GROUP BY d_reason);",period);
             String where = "r_id=0";
             for (int i = 0; i < cnt; i++)
                 where += " OR r_id=" + f.safeInt("r" + i.ToString()).ToString();
-            return String.Format(@"SELECT rabname(r_id,2) name,TO_DAYS(NOW())-TO_DAYS(r_born) age,
-(SELECT b_name FROM breeds WHERE b_id=r_breed) breed, rabplace(r_id) adr_adress,
-IF(r_sex='male','м',IF(r_sex='female','ж','?')) sex,'' comment,
-r_group FROM rabbits WHERE {0:s} ORDER BY r_farm,r_tier_id,r_area;",where);
+            return String.Format(@"SELECT 
+    rabname(r_id,2) name,
+    TO_DAYS(NOW())-TO_DAYS(r_born) age,
+    (SELECT b_name FROM breeds WHERE b_id=r_breed) breed, 
+    rabplace(r_id) adr_adress,
+    IF(r_sex='male','м',IF(r_sex='female','ж','?')) sex,
+    '' comment,
+    Concat(r_group,IF(yng_sum>0,Concat(' (+',yng_sum,')'),'')) r_group 
+FROM rabbits r
+LEFT JOIN (SELECT r_parent,Coalesce(sum(r_group),0) yng_sum FROM rabbits WHERE r_parent!=0 GROUP BY r_parent) yng ON yng.r_parent=r.r_id
+WHERE {0:s} ORDER BY r_farm,r_tier_id,r_area;", where);
         }
 
         /// <summary>
@@ -526,13 +490,6 @@ FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AN
 
         private string rabByMonth()
         {
-            //return "SELECT DATE_FORMAT(r_born,'%m.%Y') date, sum(r_group) count FROM rabbits GROUP BY date ORDER BY year(r_born) desc,month(r_born) desc;";
-            /*string s = @"SELECT
-                        DATE_FORMAT(r_born,'%m.%Y') date,
-                        (SELECT COALESCE(SUM(r_group),0) FROM dead d WHERE MONTH(d.r_born)=MONTH(rabbits.r_born) AND YEAR(d.r_born)=YEAR(rabbits.r_born))+COALESCE(SUM(r_group),0) count,
-                        COALESCE(SUM(r_group),0) alife
-                        FROM rabbits GROUP BY date ORDER BY year(r_born) desc,month(r_born) desc;";
-            Закоментирован 26.05.2011, раскоментировать месяца через 4 */
             string s = @"SELECT
                 DATE_FORMAT(r_born,'%m.%Y') date,
                 Coalesce(
@@ -548,22 +505,6 @@ FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AN
         {
             string period = " AND "+DBHelper.MakeDatePeriod(f, "f_date");
 
-            //if (f.safeValue(Filters.DATE_PERIOD) == "d")
-            //{
-            //    DateTime dt = DateTime.Parse(f.safeValue(Filters.DATE_VALUE));
-            //    period = String.Format("AND DATE(f_date)='{0:yyyy-MM-dd}'", dt);
-            //}
-            //else if (f.safeValue(Filters.DATE_PERIOD) == "m")
-            //{
-            //    DateTime dt = DateTime.Parse(f.safeValue(Filters.DATE_VALUE));
-            //    period = String.Format("AND (MONTH(f_date)={0:MM} AND YEAR(f_date)={0:yyyy})", dt);
-
-            //}
-            //else if (f.safeValue(Filters.DATE_PERIOD) == "y")
-            //{
-            //    period = String.Format("AND YEAR(f_date)={0}", f.safeValue(Filters.DATE_VALUE));
-            //}
-
             return String.Format(@"SELECT DATE_FORMAT(f_date,'%d.%m.%Y')date,anyname(f_rabid,2) name,
                                     (SELECT n_name FROM names WHERE n_use=f_partner) partner,
                                     (SELECT u_name FROM users WHERE u_id=f_worker) worker 
@@ -573,21 +514,6 @@ FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AN
         private string butcherQuery(Filters f)
         {
             string period = DBHelper.MakeDatePeriod(f, "b_date");
-
-            //if (f.safeValue(Filters.DATE_PERIOD) == "d")
-            //{
-            //    DateTime dt = DateTime.Parse(f.safeValue(Filters.DATE_VALUE));
-            //    period = String.Format("DATE(b_date)='{0:yyyy-MM-dd}'", dt);
-            //}
-            //if (f.safeValue(Filters.DATE_PERIOD) == "m")
-            //{
-            //    DateTime dt = DateTime.Parse(f.safeValue(Filters.DATE_VALUE));
-            //    period = String.Format("(MONTH(b_date)={0:MM} AND YEAR(b_date)={0:yyyy})", dt);
-            //}
-            //else if (f.safeValue(Filters.DATE_PERIOD) == "y")
-            //{
-            //    period = String.Format("YEAR(b_date)={0}", f.safeValue(Filters.DATE_VALUE));
-            //}
              
             if(period!="")
                 period = "WHERE " + period;

@@ -6,6 +6,7 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using rabnet.filters;
+using log4net;
 
 namespace rabnet.components
 {
@@ -23,7 +24,9 @@ namespace rabnet.components
         
         const int LABELS_COUNT = 5;
         //delegate void progressCallBack2(int min,int max);
-        
+
+        protected static readonly ILog _logger = LogManager.GetLogger(typeof(RabStatusBar));
+
         private ToolStripProgressBar pb = new ToolStripProgressBar();
         private ToolStripButton btRefreshStop = new ToolStripButton();
         private ToolStripButton btFilter = new ToolStripButton();
@@ -297,7 +300,7 @@ namespace rabnet.components
             if (this.InvokeRequired)
             {
                 DTItemProgressHandler d = new DTItemProgressHandler(_dataThread_onItem);
-                this.Invoke(d, new object[] { data,progr });
+                this.Invoke(d, new object[] { data, progr });
             }
             else
             {
