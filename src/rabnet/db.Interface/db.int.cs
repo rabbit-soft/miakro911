@@ -187,7 +187,7 @@ namespace rabnet
         IDataGetter getButcherDates(Filters f);
         List<String> getButcherMonths();
         List<sMeat> getMeats(DateTime date);
-        AdultRabbit[] GetVictims(DateTime dt);
+        DeadRabbit[] GetVictims(DateTime dt);
 
         XmlDocument makeReport(myReportType type, Filters f);
         XmlDocument makeReport(string query);

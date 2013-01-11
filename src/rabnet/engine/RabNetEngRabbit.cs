@@ -508,10 +508,10 @@ namespace rabnet
         public void KillIt(int daysPast, int reason, string notes,int count)
         {
             if (count == Group)
-            {
+            {                
+                _eng.db().KillRabbit(_id, daysPast, reason, notes);
                 _eng.logs().log(LogType.RABBIT_KILLED, ID, 0, AddressSmall == Rabbit.NULL_ADDRESS ? CloneAddress : AddressSmall, "",
                     String.Format(" {0:s}[{1:d}] {2:s} {3:s}", FullName, Group, notes, (daysPast != 0 ? String.Format(" {0:d} дней назад", daysPast) : "")));
-                _eng.db().KillRabbit(_id, daysPast, reason, notes);
             }
             else
             {

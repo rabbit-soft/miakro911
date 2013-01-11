@@ -434,4 +434,18 @@ namespace rabnet
 
         public virtual string RabGenoms { get { return _rabGenom; } set { _rabGenom = value; } }
     }
+
+    public class DeadRabbit : Rabbit
+    {
+        protected DateTime _deadDate;
+
+        public DeadRabbit(int id, DateTime deadDate, string deadname, string sex, DateTime born, string breedname, int group, String bon, string rawAddress, string notes)
+            : base(id, deadname, sex, born, breedname, group, bon, rawAddress, notes)
+        {
+            _deadDate = deadDate;
+        }
+
+        public DateTime DeadDate { get { return _deadDate; } }
+        public int DeadAge { get { return DeadDate.Subtract(BirthDay).Days; } }
+    }
 }

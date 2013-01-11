@@ -1,5 +1,6 @@
 ﻿#if DEBUG
     #define NOCATCH
+    #define ONLYONE
 #endif
 
 using System;
@@ -34,15 +35,18 @@ namespace rabnet
             log4net.Config.XmlConfigurator.Configure();
             _logger = LogManager.GetLogger(typeof(Program));
             _logger.Info("----- Application Starts -----");
+#if !ONLYONE
             bool new_instance;
             using (System.Threading.Mutex mutex = new System.Threading.Mutex(true, "RabNetApplication", out new_instance))
             {
+
                 if (new_instance)
                 {
+#endif
 #if !NOCATCH
                     AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Unhandled);
                     Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Threaded);
-#endif                   
+#endif
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
 #if PROTECTED
@@ -63,7 +67,7 @@ namespace rabnet
                             }
                             GRD.Instance.Reconnect();
                         }
-                        //              if (PClient.get().farms() == -1)
+                        
                         if (GRD.Instance.GetFarmsCnt() == -1)
                         {
                             return;
@@ -84,16 +88,14 @@ namespace rabnet
                             {
                                 Application.Run(new MainForm());
                             }
-#if PROTECTED
-                            //                        if (PClient.get().farms() == -1)
+#if PROTECTED                            
                             if (GRD.Instance.GetFarmsCnt() == -1)
                             {
                                 LoginForm.stop = true;
                             }
 #endif
                         }
-#if PROTECTED
-                        //                    if (PClient.get().farms() == -1)
+#if PROTECTED                        
                         if (GRD.Instance.GetFarmsCnt() == -1)
                         {
                             exit = false;
@@ -102,12 +104,14 @@ namespace rabnet
                     while (!exit);
                     
 #endif
+#if !ONLYONE
                 }//new_instance
                 else
                 {
                     SwitchRabWindow();
                 }
             }//using
+#endif
         }
 
 #if !NOCATCH

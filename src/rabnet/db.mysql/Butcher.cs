@@ -50,17 +50,17 @@ DROP TABLE bbb;",table,dtfield,unfield);
         /// <summary>
         /// Получает список забитых кроликов
         /// </summary>
-        /// <param name="dt">Дата забива</param>
-        public static AdultRabbit[] getVictims(MySqlConnection sql, DateTime dt)
+        /// <param name="dt">Дата забоя</param>
+        public static DeadRabbit[] getVictims(MySqlConnection sql, DateTime dt)
         {
-            List<AdultRabbit> result = new List<AdultRabbit>();
+            List<DeadRabbit> result = new List<DeadRabbit>();
             MySqlCommand cmd = new MySqlCommand("", sql);
-            cmd.CommandText = String.Format(@"SELECT {1:s}
+            cmd.CommandText = String.Format(@"SELECT {1:s}, d_date
 FROM dead WHERE d_reason=3 AND DATE(d_date)='{0:yyyy-MM-dd}';", dt,RabbitGetter.getAdultRabbit_FieldsSet(RabAliveState.DEAD));
             MySqlDataReader rd = cmd.ExecuteReader();
             while(rd.Read())
             {
-                result.Add(RabbitGetter.fillAdultRabbit(rd));
+                result.Add(RabbitGetter.fillDeadRabbit(rd));
             }
             rd.Close();
             return result.ToArray();

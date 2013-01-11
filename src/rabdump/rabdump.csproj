@@ -282,11 +282,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="C:\Program Files %28x86%29\Guardant\Guardant 6.2\PLAT_T+\Lib\GrdAPI32.DLL">
+    <None Include="..\..\party3d\GrdAPI32.DLL">
       <Link>GrdAPI32.DLL</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="C:\Program Files %28x86%29\Guardant\Guardant 6.2\PLAT_T+\Lib\x64\GrdAPI64.DLL">
+    <None Include="..\..\party3d\GrdAPI64.DLL">
       <Link>GrdAPI64.DLL</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

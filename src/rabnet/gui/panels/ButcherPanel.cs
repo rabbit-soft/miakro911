@@ -82,14 +82,14 @@ namespace rabnet
 #if !DEMO
             if (lvButcherDates.SelectedItems.Count == 0) return;
             DateTime date = DateTime.Parse(lvButcherDates.SelectedItems[0].SubItems[0].Text);
-            AdultRabbit[] rabbits = Engine.get().db().GetVictims(date);
+            DeadRabbit[] rabbits = Engine.get().db().GetVictims(date);
             lvVictims.Items.Clear();
-            foreach (AdultRabbit rab in rabbits)
+            foreach (DeadRabbit rab in rabbits)
             {
                 ListViewItem lvi = lvVictims.Items.Add(rab.NameFull);
-                lvi.SubItems.Add(rab.Age.ToString());
+                lvi.SubItems.Add(rab.DeadAge.ToString());
                 lvi.SubItems.Add(rab.BreedName);
-                lvi.SubItems.Add(rab.FGroup());
+                lvi.SubItems.Add(rab.Group.ToString());
                 lvi.SubItems.Add(rab.AddressSmall);
             }
 

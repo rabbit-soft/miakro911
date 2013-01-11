@@ -16,6 +16,14 @@ namespace db.mysql
                 rd.GetString("r_notes"));
         }
 
+        internal static DeadRabbit fillDeadRabbit(MySqlDataReader rd)
+        {
+            return new DeadRabbit(rd.GetInt32("r_id"), rd.GetDateTime("d_date"),rd.GetString("name"), rd.GetString("r_sex"),
+                            rd.IsDBNull(rd.GetOrdinal("r_born")) ? DateTime.MinValue : rd.GetDateTime("r_born"),
+                            rd.GetString("breed"), rd.GetInt32("r_group"),
+                            rd.GetString("r_bon"), rd.GetString("place"), rd.GetString("r_notes"));
+        }
+
         internal static AdultRabbit fillAdultRabbit(MySqlDataReader rd)
         {
             return new AdultRabbit(rd.GetInt32("r_id"), rd.GetString("name"), rd.GetString("r_sex"),
