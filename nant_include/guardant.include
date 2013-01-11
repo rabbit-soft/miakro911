@@ -37,8 +37,8 @@
 		
 		<copy file="${GrdTruSource}" tofile="${bin_grd_tools}/${GrdTru}" />
 		<copy todir="${bin_grd_tools}/Server" >
-			<fileset basedir="${grd_path}\Server">
-				<include name="*" />				
+			<fileset basedir="${grd_path}/Server">
+				<include name="*/**" />				
 			</fileset>
 		</copy>
 		<!--copy file="${GrdSrvSource}" tofile="${bin_grd_tools}/${GrdSrv}" />
