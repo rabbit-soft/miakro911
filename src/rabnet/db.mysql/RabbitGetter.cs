@@ -566,7 +566,7 @@ WHERE r_parent={1:d} AND r_id={2:d};", added, rid, yid), sql);
                 cmd.CommandText = String.Format("CALL killRabbit({0:d},2,'{1:d}');", rabfrom, String.Format("Объединен с {0:s} [{1:d}] в {2:s}",rabTo.NameFull,rabTo.ID,rabTo.AddressSmall));
                 cmd.ExecuteNonQuery();
             }
-            else
+            else ///если подселение
             {
                 freeTier(sql, rabfrom);
                 cmd.CommandText = String.Format("SELECT r_farm, r_tier, r_tier_id, r_area FROM rabbits WHERE r_id={0:d};", rabto);

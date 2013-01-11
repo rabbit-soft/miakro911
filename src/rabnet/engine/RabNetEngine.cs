@@ -202,10 +202,10 @@ namespace rabnet
             db().addUser(name, group, password);
         }
 
-        public void resurrect(int rid)
+        public void Resurrect(int rid)
         {
             logs().log(LogType.RESURRECT, rid);
-            db().resurrect(rid);
+            db().ResurrectRabbit(rid);
         }
 
         public void preOkrol(int rid)

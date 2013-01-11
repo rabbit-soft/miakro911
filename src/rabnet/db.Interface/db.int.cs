@@ -129,7 +129,7 @@ namespace rabnet
         bool hasUser(string name);
         int addUser(string name, int group, string password);
         
-        void resurrect(int rid);       
+        void ResurrectRabbit(int rid);       
         void placeSucker(int sucker, int mother);
         void combineGroups(int rabfrom, int rabto);
 

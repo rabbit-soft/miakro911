@@ -59,7 +59,7 @@ FROM dead{0:s} LIMIT {1:d}) c;", makeWhere(), options.safeInt("max", 1000));
         /// Востановление списанного кролика
         /// </summary>
         /// <param name="rabbit">ID кролика</param>
-        public void resurrect(int rabbit)
+        public void ResurrectRabbit(int rabbit)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"CALL resurrectRabbit({0:d});",rabbit), sql);
             cmd.ExecuteNonQuery();

@@ -422,9 +422,9 @@ namespace db.mysql
             DeadHelper.changeDeadReason(sql,rid,reason );
         }
 
-        public void resurrect(int rid)
+        public void ResurrectRabbit(int rid)
         {
-            new DeadHelper(sql).resurrect(rid);
+            new DeadHelper(sql).ResurrectRabbit(rid);
         }
 
         public void placeSucker(int sucker, int mother)

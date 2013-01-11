@@ -298,7 +298,6 @@
             this.MinimizeBox = false;
             this.Name = "LogsForm";
             this.ShowIcon = false;
-            this.ShowInTaskbar = false;
             this.Text = "Поиск в Логах";
             this.gbSearch.ResumeLayout(false);
             this.gbSearch.PerformLayout();

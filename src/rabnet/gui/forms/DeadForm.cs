@@ -54,10 +54,14 @@ namespace rabnet.forms
 
         private void miRestore_Click(object sender, EventArgs e)
         {
+            if (listView1.SelectedItems.Count == 0 ||
+                MessageBox.Show("Вы действительно хотите \"Воскресить\" выбранных кроликов?", "Восстановление списанных",
+                    MessageBoxButtons.YesNo,MessageBoxIcon.Question) == DialogResult.No) return;
+
             foreach (ListViewItem li in listView1.SelectedItems)
             {
                 int rid = (int)li.Tag;
-                Engine.get().resurrect(rid);
+                Engine.get().Resurrect(rid);
             }
             rsb.Run();
         }

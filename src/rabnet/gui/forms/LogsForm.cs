@@ -14,7 +14,7 @@ namespace rabnet.forms
         public LogsForm()
         {
             InitializeComponent();
-            dtpDateTo.Value = dtpDateFrom.Value = DateTime.Now.Date;
+            dtpDateTo.Value = dtpDateTo.MaxDate = dtpDateFrom.Value = dtpDateFrom.MaxDate = DateTime.Now.Date;
             lgTypes.UpdateList();
             getBuildings();
             fillLogs();
