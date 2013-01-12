@@ -10,7 +10,7 @@ using rabnet.forms;
 using rabnet.filters;
 using rabnet.components;
 
-namespace rabnet
+namespace rabnet.panels
 {
     public partial class WorksPanel : RabNetPanel
     {

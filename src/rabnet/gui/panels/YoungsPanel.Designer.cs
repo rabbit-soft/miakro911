@@ -1,4 +1,4 @@
-﻿namespace rabnet
+﻿namespace rabnet.panels
 {
     partial class YoungsPanel
     {

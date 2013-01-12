@@ -36,7 +36,7 @@ namespace rabnet.forms
             return info;
 #else
 #if DEMO
-            return string.Format("Демонстрационная версия{0:s}Ограничение на {1:d} ферм", Environment.NewLine,BuildingsPanel.DEMO_MAX_FARMS);
+            return string.Format("Демонстрационная версия{0:s}Ограничение на {1:d} ферм", Environment.NewLine,panels.BuildingsPanel.DEMO_MAX_FARMS);
 #else
             return "Без ограничений";
 #endif

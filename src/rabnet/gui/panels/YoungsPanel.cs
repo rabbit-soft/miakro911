@@ -9,7 +9,7 @@ using System.Xml;
 using rabnet.forms;
 using rabnet.components;
 
-namespace rabnet
+namespace rabnet.panels
 {
     public partial class YoungsPanel : RabNetPanel
     {

@@ -3,6 +3,7 @@ using System;
 using System.Windows.Forms;
 using log4net;
 using System.Xml;
+using rabnet.panels;
 
 #if PROTECTED
 using RabGRD;

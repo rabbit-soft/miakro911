@@ -15,7 +15,7 @@ using rabnet.filters;
 using RabGRD;
 #endif
 
-namespace rabnet
+namespace rabnet.panels
 {
     public partial class BuildingsPanel : RabNetPanel
     {

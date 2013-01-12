@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using rabnet.components;
 
-namespace rabnet
+namespace rabnet.panels
 {
     public partial class ButcherPanel : RabNetPanel
     {

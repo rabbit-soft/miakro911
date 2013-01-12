@@ -6,7 +6,7 @@ using log4net;
 using rabnet.filters;
 using rabnet.components;
 
-namespace rabnet
+namespace rabnet.panels
 {
     public class RabNetPanel:UserControl
     {
