@@ -1537,7 +1537,7 @@
          </type>
       </module>
    </assembly>
-   <assembly name="db.mysql" expanded="no">
+   <assembly name="db.mysql" expanded="yes">
       <module name="db.mysql.dll" filepath="D:\02_Development\rabbits\trunk\_bin\protected\bin\db.mysql.dll">
          <type name="&lt;Module&gt;" expanded="no">
             <method name="Init" signature="s System.Void(  )">
@@ -4167,14 +4167,14 @@
                </method>
             </type>
          </type>
-         <type name="rabnet.DeadReasons" expanded="no">
-            <method name="Get" signature="i rabnet.CatalogData(  )" code_protection="include">
+         <type name="rabnet.DeadReasons" code_protection="exclude" expanded="no">
+            <method name="Get" signature="i rabnet.CatalogData(  )" code_protection="exclude">
             </method>
-            <method name="Change" signature="i System.Void( System.Int32,System.String[] )">
+            <method name="Change" signature="i System.Void( System.Int32,System.String[] )" code_protection="exclude">
             </method>
-            <method name="Add" signature="i System.Int32( System.String[] )">
+            <method name="Add" signature="i System.Int32( System.String[] )" code_protection="exclude">
             </method>
-            <method name=".ctor" signature="i System.Void( MySql.Data.MySqlClient.MySqlConnection )" code_protection="include">
+            <method name=".ctor" signature="i System.Void( MySql.Data.MySqlClient.MySqlConnection )" code_protection="exclude">
             </method>
             <field name="sql" signature="MySql.Data.MySqlClient.MySqlConnection">
             </field>
@@ -4371,7 +4371,7 @@
             <field name="Весы" signature="rabnet.BuchTp">
             </field>
          </type>
-         <type name="rabnet.Options" code_protection="exclude" expanded="yes">
+         <type name="rabnet.Options" code_protection="exclude" expanded="no">
             <type name="OPT_ID" expanded="no">
                <field name="value__" signature="System.Int32">
                </field>
