@@ -149,13 +149,16 @@ Section  $(SEC_RabDump_NAME) SEC_RabDump
     SetOverwrite on
 	
 	Call InstBothReqFiles
-	Call InstGrdFiles
+	Call InstGrdFiles	
 	
 	File ${BinDir}\bin\rabdump.exe
 	File ${BinDir}\bin\rabdump.exe.config
 	File ${BinDir}\bin\ccxmlrpc.dll    	   	
 	#File ${BinDir}\bin\gnclient.ini
 
+	SetOutPath $INSTDIR\Guardant
+	File /r ${BinDir}\Guardant\Server
+	
     SetOutPath $INSTDIR\7z
     File ${BinDir}\7z\7-zip.chm
     File ${BinDir}\7z\7za.exe
@@ -199,7 +202,7 @@ Section -com_comps SEC_Common
 	
 	SetOutPath $INSTDIR\Guardant
     File ${BinDir}\Guardant\GrdTRU.exe
-	File /r ${BinDir}\Guardant\Server
+	
 	#File ${BinDir}\Guardant\grdmon.exe
 	#File ${BinDir}\Guardant\grdsrv.exe
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Conv_NAME).lnk $INSTDIR\bin\mia_conv.exe
