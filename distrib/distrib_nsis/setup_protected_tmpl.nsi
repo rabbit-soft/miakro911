@@ -335,7 +335,7 @@ Section /o "-un.rabnet" UNSEC_Rabnet
 	Delete /REBOOTOK $INSTDIR\bin\SplitButton.dll
 	
     RmDir /REBOOTOK /r $INSTDIR\bin\upd
-	RmDir /REBOOTOK /r $INSTDIR\bin
+	RmDir /REBOOTOK $INSTDIR\bin
 	
     DeleteRegValue HKCU "${REGKEY}\components" "rabnet"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(SM_Prog_NAME).lnk"

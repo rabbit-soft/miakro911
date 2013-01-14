@@ -5677,7 +5677,7 @@
             <field name="type" signature="System.Object">
             </field>
          </type>
-         <type name="rabnet.forms.MainForm" expanded="yes">
+         <type name="rabnet.forms.MainForm" expanded="no">
             <method name="get_MustClose" signature="s System.Boolean(  )" code_protection="include">
             </method>
             <method name="ExitMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )">
@@ -11950,7 +11950,7 @@
             </method>
             <method name="onItem" signature="i System.Void( rabnet.IData )" code_protection="exclude">
             </method>
-            <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )">
+            <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )" code_protection="exclude">
             </method>
             <method name="onFinishUpdate" signature="i System.Void(  )" code_protection="exclude">
             </method>
@@ -11977,12 +11977,12 @@
             <field name="MakeExcel" signature="rabnet.components.RSBEventHandler">
             </field>
          </type>
-         <type name="rabnet.panels.BuildingsPanel" expanded="no">
+         <type name="rabnet.panels.BuildingsPanel" expanded="yes">
             <method name="GetFarmsCount" signature="s System.Int32( rabnet.BldTreeData )">
             </method>
             <method name="makeNode" signature="i System.Windows.Forms.TreeNode( System.Windows.Forms.TreeNode,System.String,rabnet.BldTreeData,System.Collections.Generic.List`1&lt;System.Int32&gt; )">
             </method>
-            <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )">
+            <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )" code_protection="exclude">
             </method>
             <method name="getNewFarmCandidates" signature="i System.Collections.Generic.List`1&lt;System.Int32&gt;( System.Collections.Generic.List`1&lt;System.Int32&gt; )">
             </method>
@@ -12228,7 +12228,7 @@
             </field>
          </type>
          <type name="rabnet.panels.RabbitsPanel" expanded="no">
-            <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )">
+            <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )" code_protection="exclude">
             </method>
             <method name="onItem" signature="i System.Void( rabnet.IData )" code_protection="exclude">
             </method>
@@ -12406,7 +12406,7 @@
             </field>
          </type>
          <type name="rabnet.panels.WorksPanel" expanded="no">
-            <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )">
+            <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )" code_protection="exclude">
             </method>
             <method name="onItem" signature="i System.Void( rabnet.IData )" code_protection="exclude">
             </method>
@@ -12526,7 +12526,7 @@
             </field>
          </type>
          <type name="rabnet.panels.YoungsPanel" expanded="no">
-            <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )">
+            <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )" code_protection="exclude">
             </method>
             <method name="onItem" signature="i System.Void( rabnet.IData )" code_protection="exclude">
             </method>
