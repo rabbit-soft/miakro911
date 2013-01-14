@@ -1537,7 +1537,7 @@
          </type>
       </module>
    </assembly>
-   <assembly name="db.mysql" expanded="yes">
+   <assembly name="db.mysql" expanded="no">
       <module name="db.mysql.dll" filepath="D:\02_Development\rabbits\trunk\_bin\protected\bin\db.mysql.dll">
          <type name="&lt;Module&gt;" expanded="no">
             <method name="Init" signature="s System.Void(  )">
@@ -4281,7 +4281,7 @@
          </type>
       </module>
    </assembly>
-   <assembly name="engine" expanded="yes">
+   <assembly name="engine" expanded="no">
       <module name="engine.dll" filepath="D:\02_Development\rabbits\trunk\_bin\protected\bin\engine.dll">
          <type name="&lt;Module&gt;" expanded="no">
             <method name="Init" signature="s System.Void(  )">
@@ -5704,7 +5704,7 @@
             </method>
             <method name="tNoWorking_Tick" signature="i System.Void( System.Object,System.EventArgs )">
             </method>
-            <method name="Working" signature="i System.Void(  )" code_protection="include">
+            <method name="Working" signature="i System.Void(  )" code_protection="exclude">
             </method>
             <method name="timeToPTest" signature="i System.Boolean(  )" code_protection="include">
             </method>
