@@ -1537,7 +1537,7 @@
          </type>
       </module>
    </assembly>
-   <assembly name="db.mysql" expanded="yes">
+   <assembly name="db.mysql" expanded="no">
       <module name="db.mysql.dll" filepath="D:\02_Development\rabbits\trunk\_bin\protected\bin\db.mysql.dll">
          <type name="&lt;Module&gt;" expanded="no">
             <method name="Init" signature="s System.Void(  )">
@@ -5665,7 +5665,7 @@
          </type>
       </module>
    </assembly>
-   <assembly name="rabnet" expanded="no">
+   <assembly name="rabnet" expanded="yes">
       <module name="rabnet.exe" filepath="D:\02_Development\rabbits\trunk\_bin\protected\bin\rabnet.exe">
          <type name="&lt;Module&gt;" expanded="no">
             <method name="Init" signature="s System.Void(  )">
@@ -5714,7 +5714,7 @@
             </method>
             <method name="ProtectTest" signature="s System.Void( System.Int32 )" code_protection="include">
             </method>
-            <method name="ptest" signature="i System.Void( System.Int32 )" code_protection="include">
+            <method name="ptest" signature="i System.Void( System.Int32 )" code_protection="exclude">
             </method>
             <method name="MainForm_MouseMove" signature="i System.Void( System.Object,System.Windows.Forms.MouseEventArgs )" code_protection="include">
             </method>
@@ -5937,34 +5937,34 @@
             <field name="_logger" signature="log4net.ILog">
             </field>
          </type>
-         <type name="rabnet.ListViewColumnSorter" expanded="no">
-            <method name="PrepareForUpdate" signature="i System.Void(  )" code_protection="include">
+         <type name="rabnet.ListViewColumnSorter" code_protection="exclude" expanded="yes">
+            <method name="PrepareForUpdate" signature="i System.Void(  )" code_protection="exclude">
             </method>
-            <method name="RestoreAfterUpdate" signature="i System.Void(  )" code_protection="include">
+            <method name="RestoreAfterUpdate" signature="i System.Void(  )" code_protection="exclude">
             </method>
-            <method name="Clear" signature="i rabnet.ListViewColumnSorter(  )">
+            <method name="Clear" signature="i rabnet.ListViewColumnSorter(  )" code_protection="exclude">
             </method>
-            <method name="OnColumnClick" signature="i System.Void( System.Object,System.Windows.Forms.ColumnClickEventArgs )">
+            <method name="OnColumnClick" signature="i System.Void( System.Object,System.Windows.Forms.ColumnClickEventArgs )" code_protection="exclude">
             </method>
-            <method name="Compare" signature="i System.Int32( System.Object,System.Object )" code_protection="include">
+            <method name="Compare" signature="i System.Int32( System.Object,System.Object )" code_protection="exclude">
             </method>
-            <method name="set_SortColumn" signature="i System.Void( System.Int32 )" code_protection="include">
+            <method name="set_SortColumn" signature="i System.Void( System.Int32 )" code_protection="exclude">
             </method>
-            <method name="get_SortColumn" signature="i System.Int32(  )" code_protection="include">
+            <method name="get_SortColumn" signature="i System.Int32(  )" code_protection="exclude">
             </method>
-            <method name="set_Order" signature="i System.Void( System.Windows.Forms.SortOrder )" code_protection="include">
+            <method name="set_Order" signature="i System.Void( System.Windows.Forms.SortOrder )" code_protection="exclude">
             </method>
-            <method name="get_Order" signature="i System.Windows.Forms.SortOrder(  )">
+            <method name="get_Order" signature="i System.Windows.Forms.SortOrder(  )" code_protection="exclude">
             </method>
-            <method name="OnColumnWidthChanged" signature="i System.Void( System.Object,System.Windows.Forms.ColumnWidthChangedEventArgs )" code_protection="include">
+            <method name="OnColumnWidthChanged" signature="i System.Void( System.Object,System.Windows.Forms.ColumnWidthChangedEventArgs )" code_protection="exclude">
             </method>
-            <method name="OnDrawHeader" signature="i System.Void( System.Object,System.Windows.Forms.DrawListViewColumnHeaderEventArgs )" code_protection="include">
+            <method name="OnDrawHeader" signature="i System.Void( System.Object,System.Windows.Forms.DrawListViewColumnHeaderEventArgs )" code_protection="exclude">
             </method>
-            <method name="OnDrawItem" signature="i System.Void( System.Object,System.Windows.Forms.DrawListViewItemEventArgs )" code_protection="include">
+            <method name="OnDrawItem" signature="i System.Void( System.Object,System.Windows.Forms.DrawListViewItemEventArgs )" code_protection="exclude">
             </method>
-            <method name="OnDrawSubItem" signature="i System.Void( System.Object,System.Windows.Forms.DrawListViewSubItemEventArgs )" code_protection="include">
+            <method name="OnDrawSubItem" signature="i System.Void( System.Object,System.Windows.Forms.DrawListViewSubItemEventArgs )" code_protection="exclude">
             </method>
-            <method name=".ctor" signature="i System.Void( System.Windows.Forms.ListView,System.Int32[],rabnet.Options/OPT_ID )" code_protection="include">
+            <method name=".ctor" signature="i System.Void( System.Windows.Forms.ListView,System.Int32[],rabnet.Options/OPT_ID )" code_protection="exclude">
             </method>
             <field name="ColumnToSort" signature="System.Int32">
             </field>
@@ -6782,11 +6782,11 @@
             </method>
             <method name="SetText" signature="i System.Void( System.Int32,System.String,System.Boolean )" code_protection="include">
             </method>
-            <method name="initProgress" signature="i System.Void( System.Int32 )">
+            <method name="initProgress" signature="i System.Void( System.Int32 )" code_protection="exclude">
             </method>
             <method name="progress" signature="i System.Void( System.Int32 )" code_protection="exclude">
             </method>
-            <method name="endProgress" signature="i System.Void(  )" code_protection="include">
+            <method name="endProgress" signature="i System.Void(  )" code_protection="exclude">
             </method>
             <method name="filterHide" signature="i System.Void(  )" code_protection="include">
             </method>
@@ -6802,7 +6802,7 @@
             </method>
             <method name="startDataThread" signature="i System.Void( rabnet.IDataGetter )" code_protection="include">
             </method>
-            <method name="_dataThread_OnFinish" signature="i System.Void(  )" code_protection="include">
+            <method name="_dataThread_OnFinish" signature="i System.Void(  )" code_protection="exclude">
             </method>
             <method name="_dataThread_onItem" signature="i System.Void( rabnet.IData,System.Int32 )" code_protection="exclude">
             </method>
@@ -7443,7 +7443,7 @@
             <field name="button1" signature="System.Windows.Forms.Button">
             </field>
          </type>
-         <type name="rabnet.RabNetPanel" expanded="no">
+         <type name="rabnet.RabNetPanel" expanded="yes">
             <method name="close" signature="i System.Void(  )" code_protection="include">
             </method>
             <method name="InitializeComponent" signature="i System.Void(  )">
@@ -7456,13 +7456,13 @@
             </method>
             <method name="onItem_Invoker" signature="i System.Void( rabnet.IData )" code_protection="exclude">
             </method>
-            <method name="onFinishUpdate_Invoker" signature="i System.Void(  )" code_protection="include">
+            <method name="onFinishUpdate_Invoker" signature="i System.Void(  )" code_protection="exclude">
             </method>
             <method name="onItem" signature="i System.Void( rabnet.IData )" code_protection="exclude">
             </method>
             <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )" code_protection="include">
             </method>
-            <method name="onFinishUpdate" signature="i System.Void(  )" code_protection="include">
+            <method name="onFinishUpdate" signature="i System.Void(  )" code_protection="exclude">
             </method>
             <method name="getMenu" signature="i System.Windows.Forms.ContextMenuStrip(  )">
             </method>
@@ -11944,15 +11944,15 @@
             </method>
             <method name="prepareGet" signature="i rabnet.IDataGetter(  )">
             </method>
-            <method name="onItem_Invoker" signature="i System.Void( rabnet.IData )">
+            <method name="onItem_Invoker" signature="i System.Void( rabnet.IData )" code_protection="exclude">
             </method>
-            <method name="onFinishUpdate_Invoker" signature="i System.Void(  )">
+            <method name="onFinishUpdate_Invoker" signature="i System.Void(  )" code_protection="exclude">
             </method>
-            <method name="onItem" signature="i System.Void( rabnet.IData )">
+            <method name="onItem" signature="i System.Void( rabnet.IData )" code_protection="exclude">
             </method>
             <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )">
             </method>
-            <method name="onFinishUpdate" signature="i System.Void(  )">
+            <method name="onFinishUpdate" signature="i System.Void(  )" code_protection="exclude">
             </method>
             <method name="getMenu" signature="i System.Windows.Forms.ContextMenuStrip(  )">
             </method>
@@ -11986,7 +11986,7 @@
             </method>
             <method name="getNewFarmCandidates" signature="i System.Collections.Generic.List`1&lt;System.Int32&gt;( System.Collections.Generic.List`1&lt;System.Int32&gt; )">
             </method>
-            <method name="onItem" signature="i System.Void( rabnet.IData )">
+            <method name="onItem" signature="i System.Void( rabnet.IData )" code_protection="exclude">
             </method>
             <method name="getAddress" signature="i System.String( System.Int32,System.Int32 )">
             </method>
@@ -12148,7 +12148,7 @@
             </method>
             <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )">
             </method>
-            <method name="onItem" signature="i System.Void( rabnet.IData )">
+            <method name="onItem" signature="i System.Void( rabnet.IData )" code_protection="exclude">
             </method>
             <method name="getMenu" signature="i System.Windows.Forms.ContextMenuStrip(  )">
             </method>
@@ -12230,7 +12230,7 @@
          <type name="rabnet.panels.RabbitsPanel" expanded="no">
             <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )">
             </method>
-            <method name="onItem" signature="i System.Void( rabnet.IData )">
+            <method name="onItem" signature="i System.Void( rabnet.IData )" code_protection="exclude">
             </method>
             <method name="isGirl" signature="i System.Boolean(  )">
             </method>
@@ -12408,7 +12408,7 @@
          <type name="rabnet.panels.WorksPanel" expanded="no">
             <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )">
             </method>
-            <method name="onItem" signature="i System.Void( rabnet.IData )">
+            <method name="onItem" signature="i System.Void( rabnet.IData )" code_protection="exclude">
             </method>
             <method name="onFinishUpdate" signature="i System.Void(  )">
             </method>
@@ -12528,7 +12528,7 @@
          <type name="rabnet.panels.YoungsPanel" expanded="no">
             <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )">
             </method>
-            <method name="onItem" signature="i System.Void( rabnet.IData )">
+            <method name="onItem" signature="i System.Void( rabnet.IData )" code_protection="exclude">
             </method>
             <method name="insertNode" signature="i System.Void( System.Windows.Forms.TreeNode,rabnet.RabTreeData )">
             </method>
