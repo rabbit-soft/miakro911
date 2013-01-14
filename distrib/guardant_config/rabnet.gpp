@@ -1549,7 +1549,7 @@
             <field name="type" signature="System.Object">
             </field>
          </type>
-         <type name="db.mysql.RabNetDataGetterBase" expanded="yes">
+         <type name="db.mysql.RabNetDataGetterBase" expanded="no">
             <method name="Debug" signature="i System.Void( System.String )" code_protection="include">
             </method>
             <method name="getCount" signature="i System.Int32(  )" code_protection="include">
@@ -3323,7 +3323,7 @@
                </method>
             </type>
          </type>
-         <type name="db.mysql.RabbitsDataGetter" code_protection="include" expanded="yes">
+         <type name="db.mysql.RabbitsDataGetter" code_protection="include" expanded="no">
             <method name="NextItem" signature="i rabnet.IData(  )" code_protection="exclude">
             </method>
             <method name="getQuery" signature="i System.String(  )" code_protection="include">
@@ -4281,7 +4281,7 @@
          </type>
       </module>
    </assembly>
-   <assembly name="engine" expanded="no">
+   <assembly name="engine" expanded="yes">
       <module name="engine.dll" filepath="D:\02_Development\rabbits\trunk\_bin\protected\bin\engine.dll">
          <type name="&lt;Module&gt;" expanded="no">
             <method name="Init" signature="s System.Void(  )">
@@ -4371,7 +4371,7 @@
             <field name="Весы" signature="rabnet.BuchTp">
             </field>
          </type>
-         <type name="rabnet.Options" expanded="no">
+         <type name="rabnet.Options" code_protection="exclude" expanded="yes">
             <type name="OPT_ID" expanded="no">
                <field name="value__" signature="System.Int32">
                </field>
@@ -4530,77 +4530,77 @@
                <field name="name" signature="System.String">
                </field>
             </type>
-            <method name="getUidOfLevel" signature="i System.UInt32( rabnet.Options/OPT_LEVEL )" code_protection="include">
+            <method name="getUidOfLevel" signature="i System.UInt32( rabnet.Options/OPT_LEVEL )" code_protection="exclude">
             </method>
-            <method name="getOptionById" signature="i rabnet.Options/Option( rabnet.Options/OPT_ID )" code_protection="include">
+            <method name="getOptionById" signature="i rabnet.Options/Option( rabnet.Options/OPT_ID )" code_protection="exclude">
             </method>
-            <method name="safeIntOption" signature="i System.Int32( System.String,System.String,System.UInt32,System.Int32 )" code_protection="include">
+            <method name="safeIntOption" signature="i System.Int32( System.String,System.String,System.UInt32,System.Int32 )" code_protection="exclude">
             </method>
-            <method name="safeIntOption" signature="i System.Int32( System.String,System.String,rabnet.Options/OPT_LEVEL,System.Int32 )" code_protection="include">
+            <method name="safeIntOption" signature="i System.Int32( System.String,System.String,rabnet.Options/OPT_LEVEL,System.Int32 )" code_protection="exclude">
             </method>
-            <method name="safeIntOption" signature="i System.Int32( System.String,System.String,rabnet.Options/OPT_LEVEL )">
+            <method name="safeIntOption" signature="i System.Int32( System.String,System.String,rabnet.Options/OPT_LEVEL )" code_protection="exclude">
             </method>
-            <method name="setOption" signature="i System.Void( System.String,System.String,System.UInt32,System.String )" code_protection="include">
+            <method name="setOption" signature="i System.Void( System.String,System.String,System.UInt32,System.String )" code_protection="exclude">
             </method>
-            <method name="setOption" signature="i System.Void( System.String,System.String,System.UInt32,System.Int32 )" code_protection="include">
+            <method name="setOption" signature="i System.Void( System.String,System.String,System.UInt32,System.Int32 )" code_protection="exclude">
             </method>
-            <method name="setOption" signature="i System.Void( System.String,System.String,System.UInt32,System.Double )">
+            <method name="setOption" signature="i System.Void( System.String,System.String,System.UInt32,System.Double )" code_protection="exclude">
             </method>
-            <method name="setOption" signature="i System.Void( System.String,System.String,rabnet.Options/OPT_LEVEL,System.String )" code_protection="include">
+            <method name="setOption" signature="i System.Void( System.String,System.String,rabnet.Options/OPT_LEVEL,System.String )" code_protection="exclude">
             </method>
-            <method name="setOption" signature="i System.Void( System.String,System.String,rabnet.Options/OPT_LEVEL,System.Int32 )" code_protection="include">
+            <method name="setOption" signature="i System.Void( System.String,System.String,rabnet.Options/OPT_LEVEL,System.Int32 )" code_protection="exclude">
             </method>
-            <method name="setOption" signature="i System.Void( System.String,System.String,rabnet.Options/OPT_LEVEL,System.Double )">
+            <method name="setOption" signature="i System.Void( System.String,System.String,rabnet.Options/OPT_LEVEL,System.Double )" code_protection="exclude">
             </method>
-            <method name="setOption" signature="i System.Void( System.String,rabnet.Options/OPT_ID,System.String )" code_protection="include">
+            <method name="setOption" signature="i System.Void( System.String,rabnet.Options/OPT_ID,System.String )" code_protection="exclude">
             </method>
-            <method name="setOption" signature="i System.Void( System.String,rabnet.Options/OPT_ID,System.Int32 )" code_protection="include">
+            <method name="setOption" signature="i System.Void( System.String,rabnet.Options/OPT_ID,System.Int32 )" code_protection="exclude">
             </method>
-            <method name="setOption" signature="i System.Void( System.String,rabnet.Options/OPT_ID,System.Double )">
+            <method name="setOption" signature="i System.Void( System.String,rabnet.Options/OPT_ID,System.Double )" code_protection="exclude">
             </method>
-            <method name="setOption" signature="i System.Void( rabnet.Options/OPT_ID,System.String )" code_protection="include">
+            <method name="setOption" signature="i System.Void( rabnet.Options/OPT_ID,System.String )" code_protection="exclude">
             </method>
-            <method name="setOption" signature="i System.Void( rabnet.Options/OPT_ID,System.Int32 )" code_protection="include">
+            <method name="setOption" signature="i System.Void( rabnet.Options/OPT_ID,System.Int32 )" code_protection="exclude">
             </method>
-            <method name="setOption" signature="i System.Void( rabnet.Options/OPT_ID,System.Double )">
+            <method name="setOption" signature="i System.Void( rabnet.Options/OPT_ID,System.Double )" code_protection="exclude">
             </method>
-            <method name="getOption" signature="i System.String( System.String,System.String,System.UInt32 )" code_protection="include">
+            <method name="getOption" signature="i System.String( System.String,System.String,System.UInt32 )" code_protection="exclude">
             </method>
-            <method name="getOption" signature="i System.String( System.String,System.String,rabnet.Options/OPT_LEVEL )" code_protection="include">
+            <method name="getOption" signature="i System.String( System.String,System.String,rabnet.Options/OPT_LEVEL )" code_protection="exclude">
             </method>
-            <method name="getOption" signature="i System.String( System.String,rabnet.Options/OPT_ID )" code_protection="include">
+            <method name="getOption" signature="i System.String( System.String,rabnet.Options/OPT_ID )" code_protection="exclude">
             </method>
-            <method name="getOption" signature="i System.String( rabnet.Options/OPT_ID )" code_protection="include">
+            <method name="getOption" signature="i System.String( rabnet.Options/OPT_ID )" code_protection="exclude">
             </method>
-            <method name="getIntOption" signature="i System.Int32( System.String,System.String,System.UInt32 )" code_protection="include">
+            <method name="getIntOption" signature="i System.Int32( System.String,System.String,System.UInt32 )" code_protection="exclude">
             </method>
-            <method name="getIntOption" signature="i System.Int32( System.String,System.String,rabnet.Options/OPT_LEVEL )" code_protection="include">
+            <method name="getIntOption" signature="i System.Int32( System.String,System.String,rabnet.Options/OPT_LEVEL )" code_protection="exclude">
             </method>
-            <method name="getIntOption" signature="i System.Int32( System.String,rabnet.Options/OPT_ID )" code_protection="include">
+            <method name="getIntOption" signature="i System.Int32( System.String,rabnet.Options/OPT_ID )" code_protection="exclude">
             </method>
-            <method name="getIntOption" signature="i System.Int32( rabnet.Options/OPT_ID )" code_protection="include">
+            <method name="getIntOption" signature="i System.Int32( rabnet.Options/OPT_ID )" code_protection="exclude">
             </method>
-            <method name="getFloatOption" signature="i System.Double( System.String,System.String,System.UInt32 )">
+            <method name="getFloatOption" signature="i System.Double( System.String,System.String,System.UInt32 )" code_protection="exclude">
             </method>
-            <method name="getFloatOption" signature="i System.Double( System.String,System.String,rabnet.Options/OPT_LEVEL )">
+            <method name="getFloatOption" signature="i System.Double( System.String,System.String,rabnet.Options/OPT_LEVEL )" code_protection="exclude">
             </method>
-            <method name="getFloatOption" signature="i System.Double( System.String,rabnet.Options/OPT_ID )">
+            <method name="getFloatOption" signature="i System.Double( System.String,rabnet.Options/OPT_ID )" code_protection="exclude">
             </method>
-            <method name="getFloatOption" signature="i System.Double( rabnet.Options/OPT_ID )">
+            <method name="getFloatOption" signature="i System.Double( rabnet.Options/OPT_ID )" code_protection="exclude">
             </method>
-            <method name="getBoolOption" signature="i System.Boolean( rabnet.Options/OPT_ID )" code_protection="include">
+            <method name="getBoolOption" signature="i System.Boolean( rabnet.Options/OPT_ID )" code_protection="exclude">
             </method>
-            <method name="safeIntOption" signature="i System.Int32( System.String,rabnet.Options/OPT_ID,System.Int32 )" code_protection="include">
+            <method name="safeIntOption" signature="i System.Int32( System.String,rabnet.Options/OPT_ID,System.Int32 )" code_protection="exclude">
             </method>
-            <method name="safeIntOption" signature="i System.Int32( System.String,rabnet.Options/OPT_ID )">
+            <method name="safeIntOption" signature="i System.Int32( System.String,rabnet.Options/OPT_ID )" code_protection="exclude">
             </method>
-            <method name="safeIntOption" signature="i System.Int32( rabnet.Options/OPT_ID,System.Int32 )" code_protection="include">
+            <method name="safeIntOption" signature="i System.Int32( rabnet.Options/OPT_ID,System.Int32 )" code_protection="exclude">
             </method>
-            <method name="safeIntOption" signature="i System.Int32( rabnet.Options/OPT_ID )">
+            <method name="safeIntOption" signature="i System.Int32( rabnet.Options/OPT_ID )" code_protection="exclude">
             </method>
-            <method name=".ctor" signature="i System.Void( rabnet.RabNetEngine )" code_protection="include">
+            <method name=".ctor" signature="i System.Void( rabnet.RabNetEngine )" code_protection="exclude">
             </method>
-            <method name=".cctor" signature="s System.Void(  )" code_protection="include">
+            <method name=".cctor" signature="s System.Void(  )" code_protection="exclude">
             </method>
             <field name="defNameSpace" signature="System.String">
             </field>
@@ -5677,7 +5677,7 @@
             <field name="type" signature="System.Object">
             </field>
          </type>
-         <type name="rabnet.forms.MainForm" expanded="no">
+         <type name="rabnet.forms.MainForm" expanded="yes">
             <method name="get_MustClose" signature="s System.Boolean(  )" code_protection="include">
             </method>
             <method name="ExitMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )">
@@ -5698,7 +5698,7 @@
             </method>
             <method name="tsmiAboutPO_Click" signature="i System.Void( System.Object,System.EventArgs )">
             </method>
-            <method name="MainForm_FormClosing" signature="i System.Void( System.Object,System.Windows.Forms.FormClosingEventArgs )" code_protection="include">
+            <method name="MainForm_FormClosing" signature="i System.Void( System.Object,System.Windows.Forms.FormClosingEventArgs )" code_protection="exclude">
             </method>
             <method name="usersMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )">
             </method>
@@ -5937,7 +5937,7 @@
             <field name="_logger" signature="log4net.ILog">
             </field>
          </type>
-         <type name="rabnet.ListViewColumnSorter" code_protection="exclude" expanded="yes">
+         <type name="rabnet.ListViewColumnSorter" code_protection="exclude" expanded="no">
             <method name="PrepareForUpdate" signature="i System.Void(  )" code_protection="exclude">
             </method>
             <method name="RestoreAfterUpdate" signature="i System.Void(  )" code_protection="exclude">
