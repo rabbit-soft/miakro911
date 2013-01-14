@@ -231,7 +231,7 @@ namespace rabnet.forms
                 //CAS.ScaleForm.StopMonitoring();
             }
 #endif
-            if(rabStatusBar1.Working)
+            if(!rabStatusBar1.IsDisposed && rabStatusBar1.Working)
                 rabStatusBar1.Stop();
             if (Engine.opt().getIntOption(Options.OPT_ID.CONFIRM_EXIT) == 0 || _mustclose ) return;
 
