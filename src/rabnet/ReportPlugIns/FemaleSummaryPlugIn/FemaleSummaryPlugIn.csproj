@@ -20,7 +20,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\bin\Debug\rabnet\reports\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -55,7 +55,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\bin\Debug\rabnet\reports\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -124,14 +124,17 @@
     <ProjectReference Include="..\..\db.Interface\db.Interface.csproj">
       <Project>{F23F4D6E-203C-419D-8A18-32DCABFA4175}</Project>
       <Name>db.Interface</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\engine\engine.csproj">
       <Project>{241724AB-0674-41CF-A8AD-224EEC248E40}</Project>
       <Name>engine</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\gui\rabnet.csproj">
       <Project>{EFCCE992-8AB2-43AB-87DD-1BEC3E429345}</Project>
       <Name>rabnet</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

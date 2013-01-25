@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using log4net;
 
 namespace rabnet
 {
@@ -75,6 +76,7 @@ namespace rabnet
         #region static_members
 
         public static List<ReportBase> Plugins = new List<ReportBase>();
+        private static ILog _logger = LogManager.GetLogger(typeof(Program));
 
         public static int CheckPlugins() 
         {
@@ -93,7 +95,11 @@ namespace rabnet
                         }
                     }
                 }
-                catch { continue; }
+                catch(Exception exc) 
+                {
+                    _logger.Warn(exc);
+                    continue; 
+                }
             }
             return Plugins.Count;
         }
