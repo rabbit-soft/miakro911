@@ -40,7 +40,7 @@ namespace rabnet
     r_overall_babies kids,
     r_lost_babies lost,
     Coalesce(pCount,0) proholosts,
-    Coalesce(status,0) okrols
+    Coalesce(r_status,0) okrols
     FROM rabbits
     INNER JOIN breeds ON r_breed=b_id
     LEFT JOIN (SELECT f_rabid as p_rab,Count(*) pCount FROM fucks WHERE f_state='proholost' GROUP BY f_rabid) proh ON p_rab=r_id
