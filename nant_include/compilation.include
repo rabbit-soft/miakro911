@@ -178,6 +178,7 @@
 				<include name="${srcdir}/rabnet/gui/reports/*.cs"/>
 				
 				<include name="${srcdir}/libs/gamlib/*.cs"/>
+				<include name="${srcdir}/libs/pEngine/xxTEA.cs"/>
 				
 				<include name="${srcdir}/libs/GRD/GRD_Base.cs"/>
 				<include name="${srcdir}/libs/GRD/GRD_BaseCodes.cs"/>
