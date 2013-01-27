@@ -20,9 +20,21 @@ namespace rabnet
     }
     public class DBBadVersionException : RabNetException
     {
-        public DBBadVersionException(int need, int has)
-            : base(String.Format(@"Не верная версия базы данных {0:d}.
-Требуется версия {1:d}.
-Обновите программу и базу данных до последних версий.", has, need)) { }
+        public readonly int Has;
+        public readonly int Need;
+
+        public DBBadVersionException(int need, int has) 
+            :base(need > has ? String.Format(@"Не верная версия Базы Данных {0:d}.{2:s}Требуется версия {1:d}.", has, need, Environment.NewLine)
+                : String.Format(@"Необходимо обновить программу для работы с версией Базы Данных {0:d}.", has)) 
+        {
+            this.Has = has;
+            this.Need = need;
+            
+        }
+
+        public bool NeedDbUpdate
+        {
+            get { return Need > Has; }
+        }
     }
 }
