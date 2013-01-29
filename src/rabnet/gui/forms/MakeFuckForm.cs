@@ -18,7 +18,7 @@ namespace rabnet.forms
         private const int IND_BREED = 2;
         private const int IND_FUCKS = 3;
         private const int IND_CHILDREN = 4;
-        private const int IND_INBR = 6;
+        private const int IND_INBR = 5;
 
         private RabNetEngRabbit rab1 = null;
         private Catalog brds;
@@ -126,7 +126,6 @@ namespace rabnet.forms
                 li.SubItems.Add(brds[f.BreedId]);
                 li.SubItems.Add(f.Fucks.ToString());
                 li.SubItems.Add(f.MutualChildren.ToString());
-                li.SubItems.Add(heter ? "ДА" : "-");
                 li.SubItems.Add(inbr ? "ДА" : "-");
 
                 int inbrLevel = 0;

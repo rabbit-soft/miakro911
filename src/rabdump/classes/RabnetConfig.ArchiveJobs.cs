@@ -17,7 +17,6 @@ namespace rabnet.RNC
 
         public void LoadArchiveJobs()
         {
-            //_logger.Info("loading archiveJobs");
             _archiveJobs.Clear();
             RegistryKey rKey = _regKey.CreateSubKey(ARCHIVEJOBS_PATH);
             DataSource ds;
@@ -35,9 +34,9 @@ namespace rabnet.RNC
                         (int)r.GetValue("cntlimit"),
                         (int)r.GetValue("szlimit"),
                         //(int)r.GetValue("repeat"),
-                        (int)r.GetValue("srv_send",0)==1));
+                        (int)r.GetValue("srv_send",0)==1,
+                        (int)r.GetValue("srv_days",3)));
             }
-            //_logger.Info("loading archiveJobs finish");
         }
 
         /// <summary>
@@ -59,10 +58,8 @@ namespace rabnet.RNC
                 r.SetValue("type", raj.ArcType, RegistryValueKind.DWord);
                 r.SetValue("cntlimit", raj.CountLimit, RegistryValueKind.DWord);
                 r.SetValue("szlimit", raj.SizeLimit, RegistryValueKind.DWord);
-                //r.SetValue("repeat", raj.Repeat, RegistryValueKind.DWord);
                 r.SetValue("srv_send", raj.SendToServ?1:0, RegistryValueKind.DWord);
-                //r.SetValue("srvtm", raj.ServTime, RegistryValueKind.String);
-                //r.SetValue("srvtp", raj.ServType, RegistryValueKind.DWord);
+                r.SetValue("srv_days", raj.SendEachDays, RegistryValueKind.DWord);
             }
             ///Удаляем удаленные Расписания
             foreach (string s in rKey.GetSubKeyNames())

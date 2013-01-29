@@ -139,7 +139,7 @@ namespace rabdump
                         throw new Exception("Расписание с таким именем уже существует");
                     
                     aj = new ArchiveJob(Guid.NewGuid().ToString(), cbName.Text, _ds_dict[cbDataBase.SelectedIndex], tbDumpPath.Text, getDT().ToLongDateString(),
-                        cbArcType.SelectedIndex, (int)nudCountLimit.Value, (int)nudSizeLimit.Value, chServerSend.Checked);
+                        cbArcType.SelectedIndex, (int)nudCountLimit.Value, (int)nudSizeLimit.Value, chServerSend.Checked,(int)nudSrvDump.Value);
                     _rnc.ArchiveJobs.Add(aj);
                 }
                 else if (btEdit.Checked)
@@ -248,6 +248,11 @@ namespace rabdump
                     Directory.CreateDirectory(path);
                 return path;
             
+        }
+
+        private void chServerSend_CheckedChanged(object sender, EventArgs e)
+        {
+            nudSrvDump.Enabled = chServerSend.Checked;
         }
     }
 }

@@ -58,10 +58,13 @@
             this.label6 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.nudSrvDump = new System.Windows.Forms.NumericUpDown();
+            this.label8 = new System.Windows.Forms.Label();
             this.gbAJProperties.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSizeLimit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCountLimit)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSrvDump)).BeginInit();
             this.SuspendLayout();
             // 
             // btDelete
@@ -181,6 +184,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.nudSrvDump);
             this.groupBox1.Controls.Add(this.chServerSend);
             this.groupBox1.Controls.Add(this.cbWeekDay);
             this.groupBox1.Controls.Add(this.dtpTime);
@@ -189,7 +194,7 @@
             this.groupBox1.Controls.Add(this.cbArcType);
             this.groupBox1.Location = new System.Drawing.Point(6, 147);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(315, 99);
+            this.groupBox1.Size = new System.Drawing.Size(315, 115);
             this.groupBox1.TabIndex = 27;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Рассписание";
@@ -199,12 +204,13 @@
             this.chServerSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.chServerSend.AutoSize = true;
             this.chServerSend.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chServerSend.Location = new System.Drawing.Point(169, 77);
+            this.chServerSend.Location = new System.Drawing.Point(6, 92);
             this.chServerSend.Name = "chServerSend";
             this.chServerSend.Size = new System.Drawing.Size(140, 17);
             this.chServerSend.TabIndex = 34;
             this.chServerSend.Text = "Отправлять на сервер";
             this.chServerSend.UseVisualStyleBackColor = true;
+            this.chServerSend.CheckedChanged += new System.EventHandler(this.chServerSend_CheckedChanged);
             // 
             // cbWeekDay
             // 
@@ -383,6 +389,37 @@
             this.toolTip1.IsBalloon = true;
             this.toolTip1.ReshowDelay = 100;
             // 
+            // nudSrvDump
+            // 
+            this.nudSrvDump.Location = new System.Drawing.Point(243, 89);
+            this.nudSrvDump.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nudSrvDump.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudSrvDump.Name = "nudSrvDump";
+            this.nudSrvDump.Size = new System.Drawing.Size(37, 20);
+            this.nudSrvDump.TabIndex = 35;
+            this.nudSrvDump.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(157, 93);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(80, 13);
+            this.label8.TabIndex = 36;
+            this.label8.Text = "каждые (дней)";
+            // 
             // ArchiveJobsPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -402,6 +439,7 @@
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSizeLimit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCountLimit)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSrvDump)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -437,5 +475,7 @@
         private System.Windows.Forms.Button btOk;
         private System.Windows.Forms.CheckBox chServerSend;
         private System.Windows.Forms.Button btCancel;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.NumericUpDown nudSrvDump;
     }
 }

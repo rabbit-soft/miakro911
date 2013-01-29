@@ -35,7 +35,6 @@
             this.chBreed = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chFucksCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chChildren = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.chHeterosis = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chInbr = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chtInbrRG = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label1 = new System.Windows.Forms.Label();
@@ -68,7 +67,6 @@
             this.chBreed,
             this.chFucksCount,
             this.chChildren,
-            this.chHeterosis,
             this.chInbr,
             this.chtInbrRG});
             this.listView1.FullRowSelect = true;
@@ -77,7 +75,7 @@
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
             this.listView1.OwnerDraw = true;
-            this.listView1.Size = new System.Drawing.Size(526, 231);
+            this.listView1.Size = new System.Drawing.Size(588, 249);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -87,14 +85,17 @@
             // chName
             // 
             this.chName.Text = "Имя";
+            this.chName.Width = 89;
             // 
             // chState
             // 
             this.chState.Text = "Статус";
+            this.chState.Width = 71;
             // 
             // chBreed
             // 
             this.chBreed.Text = "Порода";
+            this.chBreed.Width = 71;
             // 
             // chFucksCount
             // 
@@ -104,10 +105,6 @@
             // 
             this.chChildren.Text = "Детей";
             // 
-            // chHeterosis
-            // 
-            this.chHeterosis.Text = "Гетерозис";
-            // 
             // chInbr
             // 
             this.chInbr.Text = "Инбридинг NГ";
@@ -116,6 +113,7 @@
             // chtInbrRG
             // 
             this.chtInbrRG.Text = "Инбридинг Род.Древ.";
+            this.chtInbrRG.Width = 124;
             // 
             // label1
             // 
@@ -130,7 +128,7 @@
             // label2
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.Location = new System.Drawing.Point(334, 9);
+            this.label2.Location = new System.Drawing.Point(396, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(204, 13);
             this.label2.TabIndex = 2;
@@ -141,7 +139,7 @@
             // 
             this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btCancel.Location = new System.Drawing.Point(382, 331);
+            this.btCancel.Location = new System.Drawing.Point(444, 349);
             this.btCancel.Name = "btCancel";
             this.btCancel.Size = new System.Drawing.Size(75, 23);
             this.btCancel.TabIndex = 4;
@@ -152,7 +150,7 @@
             // btGens
             // 
             this.btGens.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btGens.Location = new System.Drawing.Point(15, 331);
+            this.btGens.Location = new System.Drawing.Point(15, 349);
             this.btGens.Name = "btGens";
             this.btGens.Size = new System.Drawing.Size(75, 23);
             this.btGens.TabIndex = 5;
@@ -165,7 +163,7 @@
             this.chHetererosis.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chHetererosis.AutoSize = true;
             this.chHetererosis.ForeColor = System.Drawing.Color.SlateBlue;
-            this.chHetererosis.Location = new System.Drawing.Point(115, 274);
+            this.chHetererosis.Location = new System.Drawing.Point(115, 292);
             this.chHetererosis.Name = "chHetererosis";
             this.chHetererosis.Size = new System.Drawing.Size(79, 17);
             this.chHetererosis.TabIndex = 7;
@@ -178,7 +176,7 @@
             this.chInbreed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chInbreed.AutoSize = true;
             this.chInbreed.ForeColor = System.Drawing.Color.Crimson;
-            this.chInbreed.Location = new System.Drawing.Point(115, 297);
+            this.chInbreed.Location = new System.Drawing.Point(115, 315);
             this.chInbreed.Name = "chInbreed";
             this.chInbreed.Size = new System.Drawing.Size(81, 17);
             this.chInbreed.TabIndex = 8;
@@ -191,7 +189,7 @@
             this.chCandidates.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chCandidates.AutoSize = true;
             this.chCandidates.ForeColor = System.Drawing.Color.DarkGoldenrod;
-            this.chCandidates.Location = new System.Drawing.Point(15, 274);
+            this.chCandidates.Location = new System.Drawing.Point(15, 292);
             this.chCandidates.Name = "chCandidates";
             this.chCandidates.Size = new System.Drawing.Size(82, 17);
             this.chCandidates.TabIndex = 9;
@@ -204,10 +202,10 @@
             this.dateDays1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2012, 12, 18, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2013, 1, 29, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
-            this.dateDays1.Location = new System.Drawing.Point(401, 274);
+            this.dateDays1.Location = new System.Drawing.Point(463, 292);
             this.dateDays1.Maximum = 10000;
             this.dateDays1.Name = "dateDays1";
             this.dateDays1.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
@@ -220,7 +218,7 @@
             this.cbName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbName.FormattingEnabled = true;
-            this.cbName.Location = new System.Drawing.Point(207, 6);
+            this.cbName.Location = new System.Drawing.Point(269, 6);
             this.cbName.MaxDropDownItems = 20;
             this.cbName.Name = "cbName";
             this.cbName.Size = new System.Drawing.Size(121, 21);
@@ -230,7 +228,7 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(172, 9);
+            this.label3.Location = new System.Drawing.Point(234, 9);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(29, 13);
             this.label3.TabIndex = 11;
@@ -239,7 +237,7 @@
             // btNames
             // 
             this.btNames.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btNames.Location = new System.Drawing.Point(335, 6);
+            this.btNames.Location = new System.Drawing.Point(397, 6);
             this.btNames.Name = "btNames";
             this.btNames.Size = new System.Drawing.Size(25, 20);
             this.btNames.TabIndex = 12;
@@ -253,7 +251,7 @@
             this.btOk.ContextMenuStrip = this.cmsOk;
             this.btOk.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btOk.ImageKey = "Normal";
-            this.btOk.Location = new System.Drawing.Point(463, 331);
+            this.btOk.Location = new System.Drawing.Point(525, 349);
             this.btOk.Name = "btOk";
             this.btOk.Size = new System.Drawing.Size(75, 23);
             this.btOk.TabIndex = 13;
@@ -281,7 +279,7 @@
             this.chRest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chRest.AutoSize = true;
             this.chRest.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.chRest.Location = new System.Drawing.Point(15, 297);
+            this.chRest.Location = new System.Drawing.Point(15, 315);
             this.chRest.Name = "chRest";
             this.chRest.Size = new System.Drawing.Size(93, 17);
             this.chRest.TabIndex = 14;
@@ -294,7 +292,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btCancel;
-            this.ClientSize = new System.Drawing.Size(550, 366);
+            this.ClientSize = new System.Drawing.Size(612, 384);
             this.Controls.Add(this.chRest);
             this.Controls.Add(this.btNames);
             this.Controls.Add(this.label3);
@@ -330,7 +328,6 @@
         private System.Windows.Forms.ColumnHeader chBreed;
         private System.Windows.Forms.ColumnHeader chFucksCount;
         private System.Windows.Forms.ColumnHeader chChildren;
-        private System.Windows.Forms.ColumnHeader chHeterosis;
         private System.Windows.Forms.ColumnHeader chInbr;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;

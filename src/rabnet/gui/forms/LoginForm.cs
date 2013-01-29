@@ -95,19 +95,28 @@ namespace rabnet.forms
                 string message = String.Format("{0:s}{1:s}{2:s}",bex.Message,
                     bex.NeedDbUpdate?Environment.NewLine:"",
                     bex.NeedDbUpdate?"Желаете обновить?":"");
-                if (MessageBox.Show(message, "Не верная версия Базы данных", 
-                    bex.NeedDbUpdate?MessageBoxButtons.YesNo:MessageBoxButtons.OK, 
-                    bex.NeedDbUpdate?MessageBoxIcon.Question:MessageBoxIcon.Information) == DialogResult.Yes)
+                if (MessageBox.Show(message, "Не верная версия Базы данных",
+                    bex.NeedDbUpdate ? MessageBoxButtons.YesNo : MessageBoxButtons.OK,
+                    bex.NeedDbUpdate ? MessageBoxIcon.Question : MessageBoxIcon.Information) == DialogResult.Yes)
+                {
                     Run.Updater();
+                    unselectConn();
+                }
             }
             catch (Exception ex)
             {
-                cbUser.SelectedIndex = cbFarm.SelectedIndex = -1;
-                cbFarm.Text = cbUser.Text = tbPassword.Text = "";
-                cbFarm.Focus();
                 //string message = ex.GetType().ToString() + ": " + ex.Message;
                 MessageBox.Show(ex.Message, "Ошибка подключения", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                unselectConn();
             }
+        }
+
+        private void unselectConn()
+        {
+
+            cbUser.SelectedIndex = cbFarm.SelectedIndex = -1;
+            cbFarm.Text = cbUser.Text = tbPassword.Text = "";
+            cbFarm.Focus();
         }
 
         private void cbUser_SelectedIndexChanged(object sender, EventArgs e)

@@ -51,7 +51,7 @@ namespace updater
                                     Progress(ur.Name, ur.PreVer - 1, ur.PreVer);
 
                                 MySqlCommand c = new MySqlCommand("", _sql);
-                                c.CommandTimeout = 600;
+                                c.CommandTimeout = 1200;
                                 String[] cmds = _scripts[k].Split(new string[] { "#DELIMITER |" }, StringSplitOptions.RemoveEmptyEntries);
                                 c.CommandText = cmds[0];
                                 c.ExecuteNonQuery();

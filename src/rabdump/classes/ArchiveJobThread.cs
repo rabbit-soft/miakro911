@@ -184,29 +184,21 @@ namespace rabdump
         /// <summary>
         /// Получить путь к самому позднему файлу дампа
         /// </summary>
-        /// <param name="md5">Хэш дампа</param>
         /// <returns>Полный путь</returns>
-        public string GetLatestDump(out string md5)
+        public string GetLatestDump()
         {
             int sz;
             string file;
             int count = CountBackups(out sz, out file, false);
             if (count == 0)
             {
-                md5 = "";
                 return "";
             }
             else
             {
                 string path = _j.DumpPath + "\\" + file;
-                md5 = Helper.GetMD5FromFile(path);
                 return path;
             }
-        }
-        public string GetLatestDump()
-        {
-            string md5;
-            return GetLatestDump(out md5);
         }
 
         /// <summary>

@@ -17,6 +17,7 @@ namespace db.mysql
         private DateTime TO = DateTime.Now;
         private String DFROM = "NOW()";
         private String DTO = "NOW()";
+        private const String PROH = "п";
 
         public Reports(MySqlConnection sql)
         {
@@ -40,7 +41,7 @@ namespace db.mysql
                 case myReportType.REVISION: return revision(f);               
                 case myReportType.SHED: return shedReport(f);
                 case myReportType.TEST: query = testQuery(f); break;
-                case myReportType.USER_OKROLS: return userOkrolRpt(UserOkrols(f));
+                case myReportType.USER_OKROLS: return userOkrolRpt(qUserOkrols(f));
             }
 #if DEBUG
             log.Debug(query);
@@ -83,6 +84,9 @@ namespace db.mysql
             return xml;
         }
 
+        /// <summary>
+        /// Создает строчку отчета по каждому самцу
+        /// </summary>
         private XmlDocument makeRabOfDate(XmlDocument doc_in)
         {
             XmlDocument doc = new XmlDocument();
@@ -91,17 +95,21 @@ namespace db.mysql
             string name = "";
             string dt = "";
             int totalChildren = 0;
-            int pCount = 0;
+            bool okrolWas = false;
+            int pCount = 0;        
             foreach (XmlNode nd in lst)
             {                
                 if (nd.FirstChild.FirstChild.Value == name && nd.FirstChild.NextSibling.FirstChild.Value == dt)
                 {
-                    if (nd.FirstChild.NextSibling.NextSibling.FirstChild.Value == "п")
+                    if (nd.FirstChild.NextSibling.NextSibling.FirstChild.Value == PROH)
                     {
                         pCount++;
                     }
                     else
+                    {
                         totalChildren += int.Parse(nd.FirstChild.NextSibling.NextSibling.FirstChild.Value);
+                        okrolWas = true;
+                    }
                     continue;
                 }
                 else if(name != "" && dt != "")
@@ -109,22 +117,26 @@ namespace db.mysql
                     XmlElement el = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
                     ReportHelper.Append(el, doc, "name", name);
                     ReportHelper.Append(el, doc, "dt", dt);
-                    ReportHelper.Append(el, doc, "state", String.Format("{0:s}{1:s}", totalChildren > 0 ? totalChildren.ToString() : "", pCount > 0 ? "п" + pCount.ToString() : "").Trim());                 
+                    ReportHelper.Append(el, doc, "state", String.Format("{0:s}{1:s}", okrolWas ? totalChildren.ToString() : "", pCount > 0 ? PROH + pCount.ToString() : "").Trim());                 
                 }
 
                 totalChildren = 0;
                 pCount = 0;
+                okrolWas = false;
                 name = nd.FirstChild.FirstChild.Value;
                 dt = nd.FirstChild.NextSibling.FirstChild.Value;
-                if (nd.FirstChild.NextSibling.NextSibling.FirstChild.Value == "п")                
-                    pCount++;               
+                if (nd.FirstChild.NextSibling.NextSibling.FirstChild.Value == PROH)
+                    pCount++;
                 else
+                {
                     totalChildren = int.Parse(nd.FirstChild.NextSibling.NextSibling.FirstChild.Value);
+                    okrolWas = true;
+                }
             }
             XmlElement el2 = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
             ReportHelper.Append(el2, doc, "name", name);
             ReportHelper.Append(el2, doc, "dt", dt);
-            ReportHelper.Append(el2, doc, "state", String.Format("{0:s}{1:s}", totalChildren > 0 ? totalChildren.ToString() : "", pCount > 0 ? "п" +(pCount.ToString()) : "").Trim());                 
+            ReportHelper.Append(el2, doc, "state", String.Format("{0:s}{1:s}", totalChildren > 0 ? totalChildren.ToString() : "", pCount > 0 ? PROH +(pCount.ToString()) : "").Trim());                 
             return doc;
         }
 
@@ -139,17 +151,30 @@ namespace db.mysql
             XmlNodeList lst = doc.ChildNodes[0].ChildNodes;
             Dictionary<String, int> sums = new Dictionary<String, int>();//кл-во детей
             Dictionary<String, int> cnts = new Dictionary<String, int>();//кл-во окролов
+            Dictionary<String, int> proh = new Dictionary<String, int>();//кл-во прохолостов
+
+            ///вычисляем общие данные по каждому самцу
             foreach (XmlNode nd in lst)
             {
                 String nm = nd.FirstChild.FirstChild.Value;
                 String v = nd.FirstChild.NextSibling.NextSibling.FirstChild.Value;
                 int s = 0;
                 int cnt = 0;
-                if (v != "п" && v != "-")
+
+                if (v == PROH)
+                {                    
+                    if (proh.ContainsKey(nm))
+                        proh[nm] ++;
+                    else
+                        proh.Add(nm, 1);
+                    continue;
+                }
+                else if (v != "-")
                 {
                     s += int.Parse(v);
                     cnt += 1;
-                }
+                }                
+
                 if (sums.ContainsKey(nm)) 
                     sums[nm] += s;
                 else 
@@ -158,11 +183,12 @@ namespace db.mysql
                 if (cnts.ContainsKey(nm)) 
                     cnts[nm] += cnt;
                 else 
-                    cnts.Add(nm,cnt);
-                                
+                    cnts.Add(nm,cnt);                                
             }
+
             doc = makeRabOfDate(doc);
             lst = doc.ChildNodes[0].ChildNodes;
+            ///создаем стобец "Сумма рожденных крольчат"
             foreach (String k in sums.Keys)
             {
                 XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
@@ -170,23 +196,32 @@ namespace db.mysql
                 ReportHelper.Append(rw, doc, "dt", "Cум.");
                 ReportHelper.Append(rw, doc, "state", sums[k].ToString());
             }
+            ///создаем стобец "Общее количество окролов"
             foreach (String k in cnts.Keys)
             {
                 XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
                 ReportHelper.Append(rw, doc, "name", k);
-                ReportHelper.Append(rw, doc, "dt", "К.Окр.");
+                ReportHelper.Append(rw, doc, "dt", "О");
                 ReportHelper.Append(rw, doc, "state", cnts[k].ToString());
             }
-            sums.Clear();
-            ///добавляем нижнюю строчку
+            ///создаем стобец "Общее количество прохолостов"
+            foreach (String k in proh.Keys)
+            {
+                XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
+                ReportHelper.Append(rw, doc, "name", k);
+                ReportHelper.Append(rw, doc, "dt", "П");
+                ReportHelper.Append(rw, doc, "state", proh[k].ToString());
+            }
+            ///добавляем самую нижнюю суммирующую строчку
+            sums.Clear();            
             foreach (XmlNode nd in lst)
             {
                 String nm = nd.FirstChild.NextSibling.FirstChild.Value;
                 String v = nd.FirstChild.NextSibling.NextSibling.FirstChild.Value;
                 int s = 0;
-                if (v.Contains("п"))
+                if (v.Contains(PROH))
                 {
-                    if (!v.StartsWith("п"))
+                    if (!v.StartsWith(PROH))
                     {
                         string childrens = v.Split('п')[0].Trim();
                         s += int.Parse(childrens);
@@ -332,7 +367,7 @@ WHERE {0:s} ORDER BY r_farm,r_tier_id,r_area;", where);
         /// </summary>
         /// <param name="f"></param>
         /// <returns>SQL-запрос на получение окролов</returns>
-        private String UserOkrols(Filters f)
+        private String qUserOkrols(Filters f)
         {
             //getDates(f);
             int user = f.safeInt("user");
