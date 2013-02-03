@@ -98,6 +98,7 @@
             this.nokuk = new System.Windows.Forms.CheckBox();
             this.nolact = new System.Windows.Forms.CheckBox();
             this.tpFucks = new System.Windows.Forms.TabPage();
+            this.riFucksPanel1 = new rabnet.RIFucksPanel();
             this.tpYoungers = new System.Windows.Forms.TabPage();
             this.riSuckersPanel1 = new rabnet.RISuckersPanel();
             this.tpWeight = new System.Windows.Forms.TabPage();
@@ -121,7 +122,6 @@
             this.lbAddress = new System.Windows.Forms.Label();
             this.lbState = new System.Windows.Forms.Label();
             this.btAccept = new System.Windows.Forms.Button();
-            this.riFucksPanel1 = new rabnet.RIFucksPanel();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -148,8 +148,8 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tpGeneral);
             this.tabControl1.Controls.Add(this.tpMale);
             this.tabControl1.Controls.Add(this.tpFemale);
@@ -200,8 +200,8 @@
             // 
             // label23
             // 
-            this.label23.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label23.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label23.AutoSize = true;
             this.label23.Location = new System.Drawing.Point(186, 279);
             this.label23.Name = "label23";
@@ -281,8 +281,8 @@
             // 
             // checkBox5
             // 
-            this.checkBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBox5.AutoSize = true;
             this.checkBox5.Location = new System.Drawing.Point(170, 1);
             this.checkBox5.Name = "checkBox5";
@@ -347,7 +347,7 @@
             // 
             this.bdate.AutoSize = true;
             this.bdate.DateText = "Дата рожд.";
-            this.bdate.DateValue = new System.DateTime(2012, 12, 13, 0, 0, 0, 0);
+            this.bdate.DateValue = new System.DateTime(2013, 2, 3, 0, 0, 0, 0);
             this.bdate.DaysText = "Возраст";
             this.bdate.DaysValue = 0;
             this.bdate.Location = new System.Drawing.Point(13, 111);
@@ -435,8 +435,8 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.button4);
             this.groupBox3.Controls.Add(this.button3);
             this.groupBox3.Controls.Add(this.numericUpDown3);
@@ -472,8 +472,8 @@
             // 
             // numericUpDown3
             // 
-            this.numericUpDown3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.numericUpDown3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.numericUpDown3.Location = new System.Drawing.Point(9, 208);
             this.numericUpDown3.Maximum = new decimal(new int[] {
             1000,
@@ -491,8 +491,8 @@
             // 
             // gens
             // 
-            this.gens.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.gens.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gens.FormattingEnabled = true;
             this.gens.Location = new System.Drawing.Point(9, 17);
             this.gens.Name = "gens";
@@ -565,8 +565,8 @@
             // 
             // label6
             // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(15, 279);
             this.label6.Name = "label6";
@@ -741,7 +741,8 @@
             this.maleStatus.Name = "maleStatus";
             this.maleStatus.Size = new System.Drawing.Size(121, 21);
             this.maleStatus.TabIndex = 0;
-            this.maleStatus.TextChanged += new System.EventHandler(this.maleStatus_TextChanged);
+            this.maleStatus.SelectedIndexChanged += new System.EventHandler(this.maleStatus_SelectedIndexChanged);
+            this.maleStatus.TextChanged += new System.EventHandler(this.maleStatus_SelectedIndexChanged);
             // 
             // tpFemale
             // 
@@ -825,7 +826,7 @@
             // 
             this.okrolDd.AutoSize = true;
             this.okrolDd.DateText = "Дата";
-            this.okrolDd.DateValue = new System.DateTime(2012, 12, 13, 0, 0, 0, 0);
+            this.okrolDd.DateValue = new System.DateTime(2013, 2, 3, 0, 0, 0, 0);
             this.okrolDd.DaysText = "Срок";
             this.okrolDd.DaysValue = 0;
             this.okrolDd.Location = new System.Drawing.Point(8, 61);
@@ -912,7 +913,7 @@
             // 
             this.sukrDd.AutoSize = true;
             this.sukrDd.DateText = "Дата";
-            this.sukrDd.DateValue = new System.DateTime(2012, 12, 13, 0, 0, 0, 0);
+            this.sukrDd.DateValue = new System.DateTime(2013, 2, 3, 0, 0, 0, 0);
             this.sukrDd.DaysText = "Срок";
             this.sukrDd.DaysValue = 0;
             this.sukrDd.Location = new System.Drawing.Point(0, 46);
@@ -975,6 +976,14 @@
             this.tpFucks.Size = new System.Drawing.Size(496, 305);
             this.tpFucks.TabIndex = 3;
             this.tpFucks.Text = "Случки/Окролы";
+            // 
+            // riFucksPanel1
+            // 
+            this.riFucksPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.riFucksPanel1.Location = new System.Drawing.Point(0, 0);
+            this.riFucksPanel1.Name = "riFucksPanel1";
+            this.riFucksPanel1.Size = new System.Drawing.Size(496, 305);
+            this.riFucksPanel1.TabIndex = 0;
             // 
             // tpYoungers
             // 
@@ -1070,8 +1079,8 @@
             // 
             // weightList
             // 
-            this.weightList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.weightList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.weightList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chDate,
             this.chWeight});
@@ -1141,9 +1150,9 @@
             // 
             // notes
             // 
-            this.notes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.notes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.notes.Location = new System.Drawing.Point(8, 406);
             this.notes.Multiline = true;
             this.notes.Name = "notes";
@@ -1214,14 +1223,6 @@
             this.btAccept.Text = "Применить";
             this.btAccept.UseVisualStyleBackColor = true;
             this.btAccept.Click += new System.EventHandler(this.button5_Click);
-            // 
-            // riFucksPanel1
-            // 
-            this.riFucksPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.riFucksPanel1.Location = new System.Drawing.Point(0, 0);
-            this.riFucksPanel1.Name = "riFucksPanel1";
-            this.riFucksPanel1.Size = new System.Drawing.Size(496, 305);
-            this.riFucksPanel1.TabIndex = 0;
             // 
             // RabbitInfo
             // 

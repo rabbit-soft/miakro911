@@ -457,7 +457,7 @@ namespace rabnet.forms
                 f["dfr"] = dlg.getFromDate();
                 f["dto"] = dlg.getToDate();
                 (new ReportViewForm(myReportType.FUCKER, new XmlDocument[]{
-                    Engine.get().db().makeReport(myReportType.FUCKER, f),dlg.getXml()})).ShowDialog();
+                    Engine.get().db().makeReport(myReportType.FUCKER, f),dlg.getXml()})).Show();
             }
 #else
             DemoErr.DemoNoReportMsg();

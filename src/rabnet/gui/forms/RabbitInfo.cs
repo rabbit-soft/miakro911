@@ -168,7 +168,8 @@ namespace rabnet.forms
 
         private void updateMale()
         {
-            setSex(1);        
+            setSex(1);
+            _manual = false;
             if (_rab.Status == 2) 
                 maleStatus.SelectedIndex = 2;
             else if (_rab.Status == 1 || _rab.Age >= _mkcandidate) 
@@ -189,6 +190,7 @@ namespace rabnet.forms
             double[] d = Engine.db().getMaleChildrenProd(_rab.ID);
             maleKids.Text = String.Format("Количество крольчат: {0:f0}",d[0]);
             maleProd.Text = String.Format("Продуктивность соития: {0:f5}",d[1]);
+            _manual = true;
         }
 
         /// <summary>
@@ -632,6 +634,7 @@ namespace rabnet.forms
         private void sex_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!_manual) return;
+
             if (MessageBox.Show(this, "Сменить пол?", "Смена пола", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 Rabbit.SexType sx=Rabbit.SexType.VOID;
@@ -654,14 +657,18 @@ namespace rabnet.forms
             _manual = true;
         }
 
-        private void maleStatus_TextChanged(object sender, EventArgs e)
-        { 
+        private void maleStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!_manual) return;
+
+            _manual = false;
             if (_rab.NameID == 0 && maleStatus.SelectedIndex == 2)
             {               
                 MessageBox.Show("У Производителя должно быть имя");
                 if (_rab.Status == 1 || _rab.Age >= _mkcandidate) maleStatus.SelectedIndex = 1;
                     else maleStatus.SelectedIndex = 0;
             }
+            _manual = true;
         }
 
         private void working()
