@@ -533,7 +533,6 @@ namespace rabnet
         /// <param name="yInd">Индекс детей</param>
         public void CountKids(int dead,int killed,int added,int atall,int age,int yInd)
         {
-            const byte DR_ON_COUNT=5;//deadreason "при подсчете"
             if (Sex != Rabbit.SexType.FEMALE)
                 throw new ExNotFemale(this);
             _eng.logs().log(LogType.COUNT_KIDS, ID, _youngers[yInd].ID, this.AddressSmall,"", String.Format("  возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, прибавилось {4:d})", age, atall, dead, killed, added));            
@@ -543,14 +542,13 @@ namespace rabnet
             if (atall == 0)
             {
                 r.CloneAddress = AddressSmall;
-                r.KillIt(0, DR_ON_COUNT, "при подсчете", y.Group);
+                r.KillIt(0, DeadReason_Static.Dead_KidsCount, "при подсчете", y.Group);
             }
             else
             {
                 RabNetEngRabbit clone = _eng.getRabbit(r.Clone(dead + killed, 0, 0, 0));
                 clone.CloneAddress = AddressSmall;
-                clone.KillIt(0, DR_ON_COUNT, "при подсчете", clone.Group);
-                //!!!тут надо списывать
+                clone.KillIt(0, DeadReason_Static.Dead_KidsCount, "при подсчете", clone.Group);
                 if(added>0)
                     _eng.db().СountKids(_id,dead, killed, added, _youngers[yInd].ID);             
             }
@@ -645,7 +643,8 @@ namespace rabnet
                 {
                     if (y.BirthDay == f.EndDate)
                     {
-                        _eng.db().KillRabbit(y.ID,0, DeadReason_Static.DeadFromOldApp, "Отмена окрола");
+                        ///todo по идее, надо удалять из базы совсем.
+                        _eng.db().KillRabbit(y.ID,0, DeadReason_Static.CombineGroups, "Отмена окрола");
                     }
                 }
                 _eng.logs().log(LogType.OKROL, ID, 0, AddressSmall, "", "-=![[Отмена окрола]!=-");

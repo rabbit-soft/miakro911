@@ -315,9 +315,10 @@ namespace rabnet.panels
             }
             else if (or != null)
             {
-                ReportHelper.Append(rw, doc, "sex", or.Sex==Rabbit.SexType.MALE?"male":"female");
-                ReportHelper.Append(rw, doc, "age", or.Status.ToString()+(or.Zone==1?"(списан)":""));
-                ReportHelper.Append(rw, doc, "weight", or.Rate.ToString());
+                ReportHelper.Append(rw, doc, "sex", or.Sex == Rabbit.SexType.MALE ? "male" : "female");
+                //ReportHelper.Append(rw, doc, "age", or.Status.ToString()+(or.Zone==1?"(списан)":""));
+                ReportHelper.Append(rw, doc, "age", or.Age.ToString());
+                ReportHelper.Append(rw, doc, "weight", or.FWeight());
                 ReportHelper.Append(rw, doc, "class", getBon(or.Bon));
                 ReportHelper.Append(rw, doc, "name", or.NameFull);
                 ReportHelper.Append(rw, doc, "wclass", getBon("" + or.Bon[1]));
