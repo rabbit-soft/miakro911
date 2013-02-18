@@ -270,42 +270,52 @@ namespace mia_conv
         /// </summary>
         public void FillAll()
         {   
-            const int of = 9;
-            Mia.Setpbpart(0, of);
+            const int of = 8;
+            int pgs = 0;
+            Mia.Setpbpart(pgs++, of);
+
             Mia.SetLabelName("Породы");
             FillBreeds();
             Mia.SetLabelName("Имена");
             FillNames();
-            Mia.Setpbpart(1, of);
+            Mia.Setpbpart(pgs++, of);
+
             Mia.SetLabelName("Зоны");
             FillZones();
-            Mia.Setpbpart(2, of);
+            Mia.Setpbpart(pgs++, of);
+
             Mia.SetLabelName("Строения");
             FillBuildings();
-            Mia.Setpbpart(3, of);
-            Mia.SetLabelName("Переводы");
-            FillTransfers();
-            Mia.Setpbpart(4, of);
+            Mia.Setpbpart(pgs++, of);
+
+            //Mia.SetLabelName("Переводы");
+            //FillTransfers();
+            //Mia.Setpbpart(pgs++, of);
+
             Mia.SetLabelName("Мертвые Кролики");
             FillDeadFromLost();
-            Mia.Setpbpart(5, of);
+            Mia.Setpbpart(pgs++, of);
+
             Mia.SetLabelName("Живые Кролики");
             FillRabbits();
-            Mia.Setpbpart(6, of);
-            Mia.SetLabelName("ПереФормы");
-            FillTransForm();
+            Mia.Setpbpart(pgs++, of);
+
+            //Mia.SetLabelName("ПереФормы");
+            //FillTransForm();
             Mia.SetLabelName("Настройки");
             FillOptions();
-            Mia.Setpbpart(7, of);
+            Mia.Setpbpart(pgs++, of);
+
             //fillZooForm();
-            Mia.SetLabelName("ГрафФормы");
-            FillGraphForm();
+            //Mia.SetLabelName("ГрафФормы");
+            //FillGraphForm();
             Mia.SetLabelName("АркФормы");
             FillArcForm();
-            Mia.Setpbpart(8, of);
+            Mia.Setpbpart(pgs++, of);
+
             Mia.SetLabelName("Наладка связей");
             miaRepair.Go(_cmd);
-            Mia.Setpbpart(9, of);
+            Mia.Setpbpart(pgs++, of);
             Mia.SetLabelName("");
         }
 
@@ -401,7 +411,7 @@ namespace mia_conv
                 try
                 {
                     c++;
-                    int upp = Savetier(fm.Upper);
+                    int upp = saveTier(fm.Upper);
                     int low = 0;
                     if (fm.ID > maxid)
                     {
@@ -409,7 +419,7 @@ namespace mia_conv
                     }
                     if (fm.Haslower == 1)
                     {
-                        low = Savetier(fm.Lower);
+                        low = saveTier(fm.Lower);
                     }
                     _cmd.CommandText = String.Format("INSERT INTO minifarms(m_id,m_upper,m_lower) VALUES({0:d},{1:d},{2:d});", fm.ID, upp, low);
                     _cmd.ExecuteNonQuery();
@@ -427,101 +437,6 @@ namespace mia_conv
             _cmd.ExecuteNonQuery();
             Debug("buildings=" + maxid.ToString() + "\r\nfill buildings tree");
             ProcTreeNode(Mia.BuildPlan.Value(), 0, 0);
-        }
-
-        public void FillTransfers()
-        {
-            return;
-            /*
-            debug("fill transfers");
-            foreach (Trans t in mia.trans_table.transes)
-            {
-                Application.DoEvents();
-                String add = "";
-                String cmd= "INSERT INTO transfers(t_notes,t_date,t_units,t_type";
-                String vals = String.Format("VALUES('{0:s}',{1:s},{2:d},",t.notes.value(),convdt(t.when.value()),t.units.value());
-                switch (t.transferType)
-                {
-                    case 0:
-                        cmd+=",t_sold,t_age,t_weight,t_partner,t_price";
-                        vals += String.Format("'meat',1,{0:d},{1:d},{2:d},{3:s}", t.age.value(), t.lweight.value(), getCatalogValue("partner", 'm', t.partner.value()), t.price.value().Replace(',', '.'));
-                        break;
-                    case 1:
-                        cmd+=",t_sold,t_age,t_kind,t_partner,t_price";
-                        vals += String.Format("'skin',1,{0:d},{1:d},{2:d},{3:s}", t.age.value(), t.skintype.value(), getCatalogValue("partner", 's', t.partner.value()), t.price.value().Replace(',', '.'));
-                        break;
-                    case 2:
-                        cmd += ",t_sold,t_age,t_name,t_breed,t_weight,t_partner,t_price,t_str";
-                        vals += String.Format("'rabbits',{0:d},{1:d},{2:d},{3:d},{4:d},{5:d},{6:F2},'{7:s}'",
-                            t.issold.value(),t.age.value(),findname(t.name.value(),ref add),findbreed((int)t.breed.value()),
-                            t.sweight.value(),getCatalogValue("partner",(t.issold.value()==1?'r':'R'),t.partner.value()),
-                            t.price.value().Replace(',','.'),add);
-                        break;
-                    case 3:
-                        cmd += ",t_age,t_name,t_weight,t_kind,t_partner,t_price";
-                        vals += String.Format("'feed',{0:d},{1:d},{2:d},{3:d},{4:d},{5:s}",t.age.value(),
-                            getCatalogValue("name",'f',t.name.value()),t.lweight.value(),getCatalogValue("kind",'f',t.kind.value()),
-                            getCatalogValue("partner", 'f', t.partner.value()), t.price.value().Replace(',', '.'));
-                        break;
-                    case 4:
-                        cmd += ",t_sold,t_age,t_name,t_weight,t_kind,t_partner,t_price";
-                        bool issold = t.issold.value() == 1;
-                        vals += String.Format("'other',{0:d},{1:d},{2:d},{3:d},{4:d},{5:d},{6:s}", t.issold.value(),t.age.value(),
-                            getCatalogValue("name", issold ? 'o' : 'O', t.name.value()), t.lweight.value(), getCatalogValue("kind", issold ? 'o' : 'O', t.kind.value()),
-                            getCatalogValue("partner", issold ? 'o' : 'O', t.partner.value()), t.price.value().Replace(',', '.'));
-                        break;
-                    case 5:
-                        cmd += ",t_sold,t_age,t_mdate,t_weight,t_weight2,t_name,t_str";
-                        vals += String.Format("'meat',0,{0:d},{1:s},{2:d},{3:d},{4:d},'{5:s}'",
-                            t.age.value(),convdt(t.murder.value()),t.brutto.value(),t.netto.value(),
-                            findname(t.name.value(),ref add),add+" "+t.address.value());
-                        break;
-                    case 6:
-                        cmd += ",t_sold,t_age,t_mdate,t_sex,t_breed,t_kind,t_name,t_str";
-                        vals += String.Format("'skin',0,{0:d},{1:s},{2:d},{3:d},{4:d},{5:d},'{6:s}'",t.age.value(),
-                            convdt(t.murder.value()),t.sex.value(),findbreed((int)t.breed.value()),t.skintype.value(),
-                            findname(t.name.value(),ref add),add+" "+t.address.value());
-                        break;
-                    case 7:
-                        cmd += ",t_age,t_name,t_weight,t_kind";
-                        vals += String.Format("'feed_use',{0:d},{1:d},{2:d},{3:d}",t.age.value(),
-                            getCatalogValue("name",'f',t.name.value()),t.lweight.value(),
-                            getCatalogValue("kind",'f',t.name.value()));
-                        break;
-                    case 8:
-                        cmd += ",t_sold,t_age,t_weight,t_partner,t_kind,t_price";
-                        vals += String.Format("'otsev',{0:d},{1:d},{2:d},{3:d},{4:d},{5:s}",t.issold.value(),t.age.value(),
-                            t.lweight.value(),getCatalogValue("partner",'x',t.partner.value()),
-                            getCatalogValue("kind", 'x', t.kind.value()), t.price.value().Replace(',', '.'));
-                        break;
-                }
-                c.CommandText = cmd + ") " + vals + ");";
-                c.ExecuteNonQuery();
-            }
-             * */
-        }
-
-        public void FillTransForm()
-        {
-            /*
-            debug("fill transform");
-            for (int i=0;i<mia.transform.skinnames.Count;i++)
-                setOption("price","skin"+i.ToString(),mia.transform.skinnames[i].value());
-            setOption("price", "meat", mia.transform.pricePerKilo.value());
-            setOption("price", "feed", mia.transform.feedPrice.value());
-            setCatList(mia.transform.skinBuyers, "partner", "s");
-            setCatList(mia.transform.bodyBuyers, "partner", "m");
-            setCatList(mia.transform.rabbitPartner, "partner", "rR");
-            setCatList(mia.transform.feedPartner, "partner", "f");
-            setCatList(mia.transform.kind, "kind", "x");
-            setCatList(mia.transform.otherPartner, "partner", "oO");
-            setCatList(mia.transform.feedType, "name", "f");
-            setCatList(mia.transform.otherKind, "kind", "oO");
-            setCatList(mia.transform.otherProduct, "name", "oO");
-            setCatList(mia.transform.usedFeedType, "name", "f");
-            setCatList(mia.transform.usedFeedSpec, "kind", "f");
-            setCatList(mia.transform.otsevBuyer, "partner", "x");
-             * */
         }
 
         public void FillZooForm()
@@ -591,24 +506,16 @@ namespace mia_conv
         {
             //deleteTableContent(Tables.DeadReasons);
             Debug("filling Dead Rabbits From Lost List");
-            _cmd.CommandText = "ALTER TABLE `deadreasons` DISABLE KEYS;";
-            _cmd.ExecuteNonQuery();
-            for (int i = 0; i < Mia.Graphform.reasons.size.value(); i++)
-            {
-                //Application.DoEvents();
-                MFListItem li = Mia.Graphform.reasons.items[i];
-                _cmd.CommandText = String.Format("INSERT INTO deadreasons(d_name,d_rate) VALUES('{0:s}',{1:s});", li.caption.value(), li.subs[0].value());
-                _cmd.ExecuteNonQuery();
-            }
-            _cmd.CommandText = "ALTER TABLE `deadreasons` ENABLE KEYS;";
-            _cmd.ExecuteNonQuery();
+
+            fillDeadReasons();
+
             int cnt = (int)Mia.Graphform.lost.size.value();
             _cmd.CommandText = "ALTER TABLE `rabbits` DISABLE KEYS;";
             _cmd.ExecuteNonQuery();
+
             for (int i = 0; i < Mia.Graphform.lost.size.value(); i++)
             {
                 Mia.Setpb(i, cnt);
-                //Application.DoEvents();
                 MFListItem li = Mia.Graphform.lost.items[i];
                 String sex = "void";
                 if (li.subs[2].value() == "м") sex = "male";
@@ -650,9 +557,9 @@ namespace mia_conv
                 String[] nms = nm.Split('-');
                 if (nms.Length > 0)
                     if (nms[0].Trim() != "")
-                        suid = Findsurname(nms[0].Trim(), sex, group, 2);
+                        suid = FindSurname(nms[0].Trim(), sex, group, 2);
                 if (nms.Length > 1 && nms[1].Trim() != "")
-                    seid = Findsurname(nms[1].Trim(), sex, group, 1);
+                    seid = FindSurname(nms[1].Trim(), sex, group, 1);
                 int farm = 0;
                 int tier = 0;
                 int tierID = 0;
@@ -673,52 +580,30 @@ namespace mia_conv
 VALUES('{0:s}',{1:d},{2:d},{3:d},'{4:s}',{5:d},{6:s}-INTERVAL {7:d} DAY,{8:d},{9:d},{10:d},{11:d},1);",
                                   sex, nid, suid, seid, notes, group, Convdt(ddt), age, farm, tierID, tier, area);
                 _cmd.ExecuteNonQuery();
-                uint lid = (uint)_cmd.LastInsertedId;
-                _cmd.CommandText = "CALL killRabbitDate(" + lid.ToString() + ",1,''," + Convdt(ddt) + ");";
+                long lid = _cmd.LastInsertedId;
+                _cmd.CommandText = String.Format("CALL killRabbitDate({0:d},1,'',{1:s});", lid, Convdt(ddt));
                 _cmd.ExecuteNonQuery();
             }
             _cmd.CommandText = "ALTER TABLE `rabbits` ENABLE KEYS;";
             _cmd.ExecuteNonQuery();
         }
 
-        public void FillGraphForm()
+        private void fillDeadReasons()
         {
-            /*
-            debug("fill GraphForm");
-            for (int i = 0; i < mia.graphform.workers.size.value(); i++)
+            _cmd.CommandText = "ALTER TABLE `deadreasons` DISABLE KEYS;";
+            _cmd.ExecuteNonQuery();
+
+            for (int i = 0; i < Mia.Graphform.reasons.size.value(); i++)
             {
-                Application.DoEvents();
-                MFListItem li = mia.graphform.workers.items[i];
-                int wid = getWorker(li.caption.value(),true);
-                int rate = int.Parse(li.subs[0].value());
-                c.CommandText = "UPDATE workers SET w_rate=" + rate.ToString() + " WHERE w_id=" + wid.ToString() + ";";
-                c.ExecuteNonQuery();
+                //Application.DoEvents();
+                MFListItem li = Mia.Graphform.reasons.items[i];
+                _cmd.CommandText = String.Format("INSERT INTO deadreasons(d_name,d_rate) VALUES('{0:s}',{1:s});", li.caption.value(), li.subs[0].value());
+                _cmd.ExecuteNonQuery();
             }
-             * */
-            /*
-            int cnt = (int)mia.graphform.lost.size.value();
-            for (int i = 0; i < mia.graphform.lost.size.value(); i++)
-            {
-                mia.setpb(100 *i/ cnt);
-                Application.DoEvents();
-                MFListItem li = mia.graphform.lost.items[i];
-                String sex = "void";
-                if (li.subs[2].value() == "м") sex = "male";
-                if (li.subs[2].value() == "ж") sex = "female";
-                int weight = 0;
-                if (!int.TryParse(li.subs[5].value(),out weight))
-                {
-                    weight=0;
-                }                c.CommandText = String.Format("INSERT INTO drops(d_date,d_name,d_address,d_sex,d_state,d_age,d_weight,d_notes,d_reason,d_worker) "+
-                    "VALUES({0:s},'{1:s}','{2:s}','{3:s}','{4:s}',{5:d},{6:d},'{7:s}',{8:d},{9:d});",
-                    convdt(li.caption.value()),li.subs[0].value(),li.subs[1].value(),sex,li.subs[3].value(),
-                    int.Parse(li.subs[4].value()),weight,(li.subitems.value()>=9?li.subs[8].value():""),
-                    getReason(li.subs[6].value()),getWorker(li.subs[7].value(),false)
-                    );
-                c.ExecuteNonQuery();
-            }
-             * */
+            _cmd.CommandText = "ALTER TABLE `deadreasons` ENABLE KEYS;";
+            _cmd.ExecuteNonQuery();
         }
+       
 
         public void FillJobs(MFStringList arc, DateTime date)
         {
@@ -777,7 +662,7 @@ VALUES({0:s},{1:d},0,{2:d},'{3:s}');", Convdt(date), jid, r, adr);
             _cmd.CommandText = "ALTER TABLE `logs` ENABLE KEYS;";
             _cmd.ExecuteNonQuery();
             //FillDead();
-        }
+        }        
 
 #endregion fill
 
@@ -808,7 +693,7 @@ VALUES({0:s},{1:d},0,{2:d},'{3:s}');", Convdt(date), jid, r, adr);
             }
         }
 
-        public int Savetier(Tier tr)
+        private int saveTier(Tier tr)
         {
             //Application.DoEvents();
             String tp = "unk";
@@ -911,39 +796,7 @@ VALUES({0:s},{1:d},0,{2:d},'{3:s}');", Convdt(date), jid, r, adr);
             return Convdt(String.Format("{0:D2}.{1:D2}.{2:D2}", dt.Day, dt.Month, dt.Year));
         }
 
-        public int GetCatalogValue(String type, Char flag, String value)
-        {
-            return 0;
-            /*
-            c.CommandText = "SELECT c_id,c_flags FROM catalogs WHERE c_type='"+type+"' AND c_value='"+value+"'";
-            MySqlDataReader rd = c.ExecuteReader();
-            int res = 0;
-            if (rd.HasRows)
-            {
-                rd.Read();
-                res = rd.GetInt32(0);
-                String flgs = rd.GetString(1);
-                rd.Close();
-                for (int i = 0; (i < flgs.Length) && flag != '\0'; i++)
-                    if (flgs[i]==flag) flag='\0';
-                if (flag != '\0')
-                {
-                    c.CommandText = "UPDATE catalogs SET c_flags=c_flags+'" + flag + "' WHERE c_id=" + res.ToString() + ";";
-                    c.ExecuteNonQuery();
-                }
 
-            }
-            else
-            {
-                rd.Close();
-                c.CommandText = String.Format("INSERT INTO catalogs(c_type,c_flags,c_value) VALUES('{0:s}','{1:s}','{2:s}');",
-                    type,""+flag,value);
-                c.ExecuteNonQuery();
-                res = (int)c.LastInsertedId;
-            }
-            return res;
-             * */
-        }
 
         public uint Findname(String name, ref String addNm)
         {
@@ -962,7 +815,7 @@ VALUES({0:s},{1:d},0,{2:d},'{3:s}');", Convdt(date), jid, r, adr);
             return res;
         }
 
-        public uint Findsurname(string sur, String sex, int cnt, int tp)
+        public uint FindSurname(string sur, String sex, int cnt, int tp)
         {
             if (sur == "") return 0;
             if (cnt > 1) sur = sur.TrimEnd('ы');
@@ -981,7 +834,7 @@ VALUES({0:s},{1:d},0,{2:d},'{3:s}');", Convdt(date), jid, r, adr);
             return res;
         }
 
-        public int Findbreed(int breed)
+        public int FindBreed(int breed)
         {
             if (breed > _maxbreed)
                 breed = 0;
@@ -1009,16 +862,7 @@ VALUES({0:s},{1:d},0,{2:d},'{3:s}');", Convdt(date), jid, r, adr);
         public void SetOption(String name, String subname, float value)
         {
             SetOption(name, subname, value.ToString());
-        }
-
-        public void SetCatList(MFStringList lst, String type, String flag)
-        {
-            for (int i = 0; i < lst.strings.Count; i++)
-            {
-                for (int j = 0; j < flag.Length; j++)
-                    GetCatalogValue(type, flag[j], lst.strings[i].value());
-            }
-        }      
+        }            
 
         public int GetUniqueRabbit(int unique)
         {
@@ -1036,34 +880,7 @@ VALUES({0:s},{1:d},0,{2:d},'{3:s}');", Convdt(date), jid, r, adr);
                     return r.notes.tag;
             }
             return 0;
-        }
-       
-        public int GetWorker(String name, bool insert)
-        {
-            return 0;
-            /*
-            if (name == "") name = "undefined";
-            c.CommandText = "SELECT w_id FROM workers WHERE w_name='"+name+"';";
-            MySqlDataReader rd = c.ExecuteReader();
-            int res=0;
-            if (rd.HasRows)
-            {
-                rd.Read();
-                res = rd.GetInt32(0);
-                rd.Close();
-            }
-            else
-            {
-                rd.Close();
-                if (!insert)
-                    return 0;
-                c.CommandText = "INSERT INTO workers(w_name) VALUES('" + name + "');";
-                c.ExecuteNonQuery();
-                res = (int)c.LastInsertedId;
-            }
-            return res;
-             * */
-        }
+        }   
 
         public int GetReason(String name)
         {
@@ -1125,6 +942,201 @@ VALUES({0:s},{1:d},0,{2:d},'{3:s}');", Convdt(date), jid, r, adr);
             }
             return 0;
         }
+
+        //public int GetWorker(String name, bool insert)
+        //{
+        //    if (name == "") name = "undefined";
+        //    _cmd.CommandText = "SELECT w_id FROM workers WHERE w_name='"+name+"';";
+        //    MySqlDataReader rd = _cmd.ExecuteReader();
+        //    int res=0;
+        //    if (rd.HasRows)
+        //    {
+        //        rd.Read();
+        //        res = rd.GetInt32(0);
+        //        rd.Close();
+        //    }
+        //    else
+        //    {
+        //        rd.Close();
+        //        if (!insert)
+        //            return 0;
+        //        _cmd.CommandText = "INSERT INTO workers(w_name) VALUES('" + name + "');";
+        //        _cmd.ExecuteNonQuery();
+        //        res = (int)_cmd.LastInsertedId;
+        //    }
+        //    return res;
+        //}
+
+        //public void SetCatList(MFStringList lst, String type, String flag)
+        //{
+        //    for (int i = 0; i < lst.strings.Count; i++)
+        //    {
+        //        for (int j = 0; j < flag.Length; j++)
+        //            GetCatalogValue(type, flag[j], lst.strings[i].value());
+        //    }
+        //}  
+
+        //public int GetCatalogValue(String type, Char flag, String value)
+        //{            
+        //    _cmd.CommandText = "SELECT c_id,c_flags FROM catalogs WHERE c_type='"+type+"' AND c_value='"+value+"'";
+        //    MySqlDataReader rd = _cmd.ExecuteReader();
+        //    int res = 0;
+        //    if (rd.HasRows)
+        //    {
+        //        rd.Read();
+        //        res = rd.GetInt32(0);
+        //        String flgs = rd.GetString(1);
+        //        rd.Close();
+        //        for (int i = 0; (i < flgs.Length) && flag != '\0'; i++)
+        //            if (flgs[i]==flag) flag='\0';
+        //        if (flag != '\0')
+        //        {
+        //            c.CommandText = "UPDATE catalogs SET c_flags=c_flags+'" + flag + "' WHERE c_id=" + res.ToString() + ";";
+        //            c.ExecuteNonQuery();
+        //        }
+
+        //    }
+        //    else
+        //    {
+        //        rd.Close();
+        //        _cmd.CommandText = String.Format("INSERT INTO catalogs(c_type,c_flags,c_value) VALUES('{0:s}','{1:s}','{2:s}');",
+        //            type,""+flag,value);
+        //        _cmd.ExecuteNonQuery();
+        //        res = (int)_cmd.LastInsertedId;
+        //    }
+        //    return res;
+        //}
+
+        //public void FillTransfers()
+        //{           
+        //    Debug("fill transfers");
+        //    foreach (Trans t in Mia.TransTable.Transes)
+        //    {
+        //        Application.DoEvents();
+        //        String add = "";
+        //        String cmd= "INSERT INTO transfers(t_notes,t_date,t_units,t_type";
+        //        String vals = String.Format("VALUES('{0:s}',{1:s},{2:d},",t.notes.value(),convdt(t.when.value()),t.units.value());
+        //        switch (t.TransferType)
+        //        {
+        //            case 0:
+        //                cmd+=",t_sold,t_age,t_weight,t_partner,t_price";
+        //                vals += String.Format("'meat',1,{0:d},{1:d},{2:d},{3:s}", t.age.value(), t.lweight.value(), getCatalogValue("partner", 'm', t.partner.value()), t.price.value().Replace(',', '.'));
+        //                break;
+        //            case 1:
+        //                cmd+=",t_sold,t_age,t_kind,t_partner,t_price";
+        //                vals += String.Format("'skin',1,{0:d},{1:d},{2:d},{3:s}", t.age.value(), t.skintype.value(), getCatalogValue("partner", 's', t.partner.value()), t.price.value().Replace(',', '.'));
+        //                break;
+        //            case 2:
+        //                cmd += ",t_sold,t_age,t_name,t_breed,t_weight,t_partner,t_price,t_str";
+        //                vals += String.Format("'rabbits',{0:d},{1:d},{2:d},{3:d},{4:d},{5:d},{6:F2},'{7:s}'",
+        //                    t.issold.value(),t.age.value(),findname(t.name.value(),ref add),findbreed((int)t.breed.value()),
+        //                    t.sweight.value(),getCatalogValue("partner",(t.issold.value()==1?'r':'R'),t.partner.value()),
+        //                    t.price.value().Replace(',','.'),add);
+        //                break;
+        //            case 3:
+        //                cmd += ",t_age,t_name,t_weight,t_kind,t_partner,t_price";
+        //                vals += String.Format("'feed',{0:d},{1:d},{2:d},{3:d},{4:d},{5:s}",t.age.value(),
+        //                    getCatalogValue("name",'f',t.name.value()),t.lweight.value(),getCatalogValue("kind",'f',t.kind.value()),
+        //                    getCatalogValue("partner", 'f', t.partner.value()), t.price.value().Replace(',', '.'));
+        //                break;
+        //            case 4:
+        //                cmd += ",t_sold,t_age,t_name,t_weight,t_kind,t_partner,t_price";
+        //                bool issold = t.issold.value() == 1;
+        //                vals += String.Format("'other',{0:d},{1:d},{2:d},{3:d},{4:d},{5:d},{6:s}", t.issold.value(),t.age.value(),
+        //                    getCatalogValue("name", issold ? 'o' : 'O', t.name.value()), t.lweight.value(), getCatalogValue("kind", issold ? 'o' : 'O', t.kind.value()),
+        //                    getCatalogValue("partner", issold ? 'o' : 'O', t.partner.value()), t.price.value().Replace(',', '.'));
+        //                break;
+        //            case 5:
+        //                cmd += ",t_sold,t_age,t_mdate,t_weight,t_weight2,t_name,t_str";
+        //                vals += String.Format("'meat',0,{0:d},{1:s},{2:d},{3:d},{4:d},'{5:s}'",
+        //                    t.age.value(),convdt(t.murder.value()),t.brutto.value(),t.netto.value(),
+        //                    findname(t.name.value(),ref add),add+" "+t.address.value());
+        //                break;
+        //            case 6:
+        //                cmd += ",t_sold,t_age,t_mdate,t_sex,t_breed,t_kind,t_name,t_str";
+        //                vals += String.Format("'skin',0,{0:d},{1:s},{2:d},{3:d},{4:d},{5:d},'{6:s}'",t.age.value(),
+        //                    convdt(t.murder.value()),t.sex.value(),findbreed((int)t.breed.value()),t.skintype.value(),
+        //                    findname(t.name.value(),ref add),add+" "+t.address.value());
+        //                break;
+        //            case 7:
+        //                cmd += ",t_age,t_name,t_weight,t_kind";
+        //                vals += String.Format("'feed_use',{0:d},{1:d},{2:d},{3:d}",t.age.value(),
+        //                    getCatalogValue("name",'f',t.name.value()),t.lweight.value(),
+        //                    getCatalogValue("kind",'f',t.name.value()));
+        //                break;
+        //            case 8:
+        //                cmd += ",t_sold,t_age,t_weight,t_partner,t_kind,t_price";
+        //                vals += String.Format("'otsev',{0:d},{1:d},{2:d},{3:d},{4:d},{5:s}",t.issold.value(),t.age.value(),
+        //                    t.lweight.value(),getCatalogValue("partner",'x',t.partner.value()),
+        //                    getCatalogValue("kind", 'x', t.kind.value()), t.price.value().Replace(',', '.'));
+        //                break;
+        //        }
+        //        _cmd.CommandText = cmd + ") " + vals + ");";
+        //        _cmd.ExecuteNonQuery();
+        //    }
+        //}
+
+        //public void FillTransForm()
+        //{
+        /*
+        debug("fill transform");
+        for (int i=0;i<mia.transform.skinnames.Count;i++)
+            setOption("price","skin"+i.ToString(),mia.transform.skinnames[i].value());
+        setOption("price", "meat", mia.transform.pricePerKilo.value());
+        setOption("price", "feed", mia.transform.feedPrice.value());
+        setCatList(mia.transform.skinBuyers, "partner", "s");
+        setCatList(mia.transform.bodyBuyers, "partner", "m");
+        setCatList(mia.transform.rabbitPartner, "partner", "rR");
+        setCatList(mia.transform.feedPartner, "partner", "f");
+        setCatList(mia.transform.kind, "kind", "x");
+        setCatList(mia.transform.otherPartner, "partner", "oO");
+        setCatList(mia.transform.feedType, "name", "f");
+        setCatList(mia.transform.otherKind, "kind", "oO");
+        setCatList(mia.transform.otherProduct, "name", "oO");
+        setCatList(mia.transform.usedFeedType, "name", "f");
+        setCatList(mia.transform.usedFeedSpec, "kind", "f");
+        setCatList(mia.transform.otsevBuyer, "partner", "x");
+         * */
+        //}
+
+        //public void FillGraphForm()
+        //{
+        /*
+        debug("fill GraphForm");
+        for (int i = 0; i < mia.graphform.workers.size.value(); i++)
+        {
+            Application.DoEvents();
+            MFListItem li = mia.graphform.workers.items[i];
+            int wid = getWorker(li.caption.value(),true);
+            int rate = int.Parse(li.subs[0].value());
+            c.CommandText = "UPDATE workers SET w_rate=" + rate.ToString() + " WHERE w_id=" + wid.ToString() + ";";
+            c.ExecuteNonQuery();
+        }
+         * */
+        /*
+        int cnt = (int)mia.graphform.lost.size.value();
+        for (int i = 0; i < mia.graphform.lost.size.value(); i++)
+        {
+            mia.setpb(100 *i/ cnt);
+            Application.DoEvents();
+            MFListItem li = mia.graphform.lost.items[i];
+            String sex = "void";
+            if (li.subs[2].value() == "м") sex = "male";
+            if (li.subs[2].value() == "ж") sex = "female";
+            int weight = 0;
+            if (!int.TryParse(li.subs[5].value(),out weight))
+            {
+                weight=0;
+            }                c.CommandText = String.Format("INSERT INTO drops(d_date,d_name,d_address,d_sex,d_state,d_age,d_weight,d_notes,d_reason,d_worker) "+
+                "VALUES({0:s},'{1:s}','{2:s}','{3:s}','{4:s}',{5:d},{6:d},'{7:s}',{8:d},{9:d});",
+                convdt(li.caption.value()),li.subs[0].value(),li.subs[1].value(),sex,li.subs[3].value(),
+                int.Parse(li.subs[4].value()),weight,(li.subitems.value()>=9?li.subs[8].value():""),
+                getReason(li.subs[6].value()),getWorker(li.subs[7].value(),false)
+                );
+            c.ExecuteNonQuery();
+        }
+         * */
+        //}
 
     }
 }

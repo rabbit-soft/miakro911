@@ -77,10 +77,12 @@ namespace mia_conv
         public Byte[] Nests=new Byte[2];
         public Byte[] Delims=new Byte[3];
         public Byte NestWbig=new Byte();
+
         public Tier(BinaryReader br, float ver)
         {
             Read(br, ver);
         }
+
         public void Read(BinaryReader br,float ver)
         {
             Type=br.ReadByte();

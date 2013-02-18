@@ -198,6 +198,7 @@ namespace mia_conv
         public RabFemale female = null;
         private MFRabNames males = null;
         private MFRabNames females = null;
+
         public Rabbit(BinaryReader br, float ver, MFRabNames nmales,MFRabNames nfemales)
         {
             males = nmales;
@@ -222,9 +223,10 @@ namespace mia_conv
             proplist.Add(breed);
             proplist.Add(multi);
             proplist.Add(zone);
-            read(br, ver);
+            Read(br, ver);
         }
-        public void read(BinaryReader br,float ver)
+
+        public void Read(BinaryReader br,float ver)
         {
             sex.read(br,ver);
             DBG.dbg1(sex.log());

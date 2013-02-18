@@ -12,28 +12,32 @@ namespace pEngine
         [XmlRpcMethod("client.get.update")]
         string ClientGetUpdate(string question,string dongleId);
 
-        [XmlRpcMethod("clients.get")]
-        sClient[] GetClient(string clientId);
-        [XmlRpcMethod("get.payments")]
-        sPayment[] GetPayments(string clientId);
-        [XmlRpcMethod("get.costs")]
-        string[] GetCosts();
+        //[XmlRpcMethod("clients.get")]
+        //sClient[] GetClient(string clientId);
+        //[XmlRpcMethod("get.payments")]
+        //sPayment[] GetPayments(string clientId);
+        //[XmlRpcMethod("get.costs")]
+        //string[] GetCosts();
 
         [XmlRpcMethod("get.dumplist")]
         sDump[] GetDumpList();
 
-        //[XmlRpcMethod("get.update.files")]
-        //sUpdateFile[] GetUpdateFiles();
+        [XmlRpcMethod("get.update.files")]
+        sUpdateFile[] GetUpdateFiles();
 
-        [XmlRpcMethod("vendor.update.dongle")]
-        string VendorUpdateDongle(string base64_question, string clientId, string farms, string flags, string startDate, string endDate, string dongleId);
-        [XmlRpcMethod("dongle.update.success")]
-        void SuccessUpdate(string dongleId);
+        //[XmlRpcMethod("vendor.update.dongle")]
+        //string VendorUpdateDongle(string base64_question, string clientId, string farms, string flags, string startDate, string endDate, string dongleId);
+
+        //[XmlRpcMethod("dongle.update.success")]
+        //void SuccessUpdate(string dongleId);
 
         [XmlRpcMethod("webrep.send.global")]
         void WebRep_SendGlobal(string db,sWebRepOneDay[] value);
         [XmlRpcMethod("webrep.get.lastdate")]
         string WebRep_GetLastDate(string db);
+
+        //[XmlRpcMethod("get.update.info")]
+        //UpdateInfo GetUpdateInfo();
     }
 
     /// <summary>
@@ -68,20 +72,25 @@ namespace pEngine
         /// <para>PARAM: int dongleId - ID ключа</para>
         /// <para>Return: string - base64 ответ</para>
         /// </summary>
-        VendorUpdateDongle,
+        //VendorUpdateDongle,
 
         /// <summary>
         /// Получает стоимость ферм.
         /// <para>Return: string[2] {box,saas} </para>
         /// </summary>
-        GetCosts,
+        //GetCosts,
 
         /// <summary>
         /// Получает операции по счету указанного клиента
         /// <para>PARAM: int clientId - ID организации</para>
         /// <para>Return: sPayment[]</para>
         /// </summary>
-        GetPayments,
+        //GetPayments,
+
+        /// <summary>
+        /// Получает информацию о обновлении
+        /// </summary>
+        //GetUpdateInfo,
 
         GetUpdateFiles,
 
@@ -95,12 +104,12 @@ namespace pEngine
         /// Сообщает серверу, что обновления ключа прошло успешно
         /// <para>PARAM: int dongleId - ID ключа</para>
         /// </summary>
-        SuccessUpdate,
+        //SuccessUpdate,
 
         WebRep_GetLastDate,
         WebRep_SendGlobal,
         ClientGetUpdate,
-        GetClient
+        //GetClient
     }
 
     /// <summary>
