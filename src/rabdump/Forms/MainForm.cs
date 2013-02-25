@@ -31,21 +31,21 @@ namespace rabdump
         private bool _canclose = false;
         private bool _manual = true;
         long _updDelayCnt = 0;
-        RabDumpLan _rdl;
+        //RabDumpLan _rdl;
 
         public MainForm()
         {
             InitializeComponent();
             //RabServWorker.Url = Options.Inst.ServerUrl;
-            _rdl = new RabDumpLan();
-            _rdl.RabDumpAlreadyInLan += new RabDumpAlreadyInLanHandle(_rdl_RabDumpAlreadyInLan);
-            _rdl.Start();
-            pAppUpdater.DeleteOldFiles(AppDomain.CurrentDomain.BaseDirectory);
+            //_rdl = new RabDumpLan();
+            //_rdl.RabDumpAlreadyInLan += new RabDumpAlreadyInLanHandle(_rdl_RabDumpAlreadyInLan);
+            //_rdl.Start();
+            //pAppUpdater.DeleteOldFiles(AppDomain.CurrentDomain.BaseDirectory);
 
-            RabServWorker.OnMessage += new MessageSenderCallbackDelegate(messageCb);
-            RabServWorker.OnUpdateChecked += new UpdateCheckedHandler(RabServWorker_OnUpdateChecked);
-            RabServWorker.OnUpdateCheckFail += new ErrorHandler(RabServWorker_OnUpdateCheckFail);
-            RabServWorker.OnUpdateFinished += new UpdateFinishedHandler(RabServWorker_OnUpdateFinished);
+            //RabServWorker.OnMessage += new MessageSenderCallbackDelegate(messageCb);
+            //RabServWorker.OnUpdateChecked += new UpdateCheckedHandler(RabServWorker_OnUpdateChecked);
+            //RabServWorker.OnUpdateCheckFail += new ErrorHandler(RabServWorker_OnUpdateCheckFail);
+            //RabServWorker.OnUpdateFinished += new UpdateFinishedHandler(RabServWorker_OnUpdateFinished);
 
             ArchiveJobThread.OnMessage += new MessageSenderCallbackDelegate(messageCb);
 #if PROTECTED
@@ -402,99 +402,99 @@ namespace rabdump
         }
 
         #region event_handlers
-        void RabServWorker_OnUpdateCheckFail(Exception exc)
-        {
-            if (this.InvokeRequired)
-            {
-                ErrorHandler d = RabServWorker_OnUpdateCheckFail;
-                Invoke(d, new object[] { exc });
-            }
-            else
-            {
-                pbUpdate.Visible = false;
-                miCheckForUpdate.Enabled = true;
-                _logger.Error(exc);
-                if (exc.InnerException != null)
-                    exc = exc.InnerException;
-                tbUpdateInfo.Text = "Ошибка: " + exc.Message;
-                messageCb(exc.Message, miCheckForUpdate.Tag.ToString() == "0" ? "Проверка обновления" : "Установка обновления", PUP_WARN, false);
-            }
-        }
+        //void RabServWorker_OnUpdateCheckFail(Exception exc)
+        //{
+        //    if (this.InvokeRequired)
+        //    {
+        //        ErrorHandler d = RabServWorker_OnUpdateCheckFail;
+        //        Invoke(d, new object[] { exc });
+        //    }
+        //    else
+        //    {
+        //        pbUpdate.Visible = false;
+        //        miCheckForUpdate.Enabled = true;
+        //        _logger.Error(exc);
+        //        if (exc.InnerException != null)
+        //            exc = exc.InnerException;
+        //        tbUpdateInfo.Text = "Ошибка: " + exc.Message;
+        //        messageCb(exc.Message, miCheckForUpdate.Tag.ToString() == "0" ? "Проверка обновления" : "Установка обновления", PUP_WARN, false);
+        //    }
+        //}
 
-        void RabServWorker_OnUpdateChecked(UpdateInfo info)
-        {
-            if (this.InvokeRequired)
-            {
-                UpdateCheckedHandler d = RabServWorker_OnUpdateChecked;
-                Invoke(d, new object[] { info });
-            }
-            else
-            {
-                pbUpdate.Visible = false;
-                btDloadUpdate.Visible = info.UpdateRequired;
-                string message = String.Format(@"Версия на сервере: {0:s}{1:s}", info.Version.ToString(),
-                    Environment.NewLine + (!info.UpdateRequired ? "Обновление не требуется" : "Требуется обновление"));
-                tbUpdateInfo.Text = message;
-                tbUpdateInfo.Visible = 
-                    miCheckForUpdate.Enabled = true;
-                messageCb(message, "Проверка обновления", PUP_INFO);
+        //void RabServWorker_OnUpdateChecked(UpdateInfo info)
+        //{
+        //    if (this.InvokeRequired)
+        //    {
+        //        UpdateCheckedHandler d = RabServWorker_OnUpdateChecked;
+        //        Invoke(d, new object[] { info });
+        //    }
+        //    else
+        //    {
+        //        pbUpdate.Visible = false;
+        //        btDloadUpdate.Visible = info.UpdateRequired;
+        //        string message = String.Format(@"Версия на сервере: {0:s}{1:s}", info.Version.ToString(),
+        //            Environment.NewLine + (!info.UpdateRequired ? "Обновление не требуется" : "Требуется обновление"));
+        //        tbUpdateInfo.Text = message;
+        //        tbUpdateInfo.Visible = 
+        //            miCheckForUpdate.Enabled = true;
+        //        messageCb(message, "Проверка обновления", PUP_INFO);
 
-                miCheckForUpdate.Text = "Установить обновление";
-                miCheckForUpdate.Tag = "1";
-            }
-        }
+        //        miCheckForUpdate.Text = "Установить обновление";
+        //        miCheckForUpdate.Tag = "1";
+        //    }
+        //}
 
-        void RabServWorker_OnUpdateFinished()
-        {
-            if (this.InvokeRequired)
-            {
-                UpdateFinishedHandler d = RabServWorker_OnUpdateFinished;
-                Invoke(d);
-            }
-            else
-            {
-                messageCb("Необходима перезагрузка", "Программа обновлена", 1);
-                Run.Updater();
-                _logger.Info("Updating Finished");               
-                Program.ReleaseMutex();
-                Run.RabDump();
-                _canclose = true;
-                this.Close();
-            }
-        }
+        //void RabServWorker_OnUpdateFinished()
+        //{
+        //    if (this.InvokeRequired)
+        //    {
+        //        UpdateFinishedHandler d = RabServWorker_OnUpdateFinished;
+        //        Invoke(d);
+        //    }
+        //    else
+        //    {
+        //        messageCb("Необходима перезагрузка", "Программа обновлена", 1);
+        //        Run.Updater();
+        //        _logger.Info("Updating Finished");               
+        //        Program.ReleaseMutex();
+        //        Run.RabDump();
+        //        _canclose = true;
+        //        this.Close();
+        //    }
+        //}
 
-        void _rdl_RabDumpAlreadyInLan(string hostName)
-        {
-            if (this.InvokeRequired)
-            {
-                RabDumpAlreadyInLanHandle d = _rdl_RabDumpAlreadyInLan;
-                Invoke(d, new object[] { hostName });
-            }
-            else
-            {
-                MessageBox.Show(String.Format("В данной локальной сети уже запущено приложение RabDump на компьютере '{0:s}'.", hostName),
-                    "Приложение будет закрыто", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                _logger.Info("RabDump already in Lan");
-                Options.Inst.StartAtStart = false;
-                Options.Inst.Save();
-                _canclose = true;
-                this.Close();
-            }
-        }
+        //void _rdl_RabDumpAlreadyInLan(string hostName)
+        //{
+        //    if (this.InvokeRequired)
+        //    {
+        //        RabDumpAlreadyInLanHandle d = _rdl_RabDumpAlreadyInLan;
+        //        Invoke(d, new object[] { hostName });
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show(String.Format("В данной локальной сети уже запущено приложение RabDump на компьютере '{0:s}'.", hostName),
+        //            "Приложение будет закрыто", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+        //        _logger.Info("RabDump already in Lan");
+        //        Options.Inst.StartAtStart = false;
+        //        Options.Inst.Save();
+        //        _canclose = true;
+        //        this.Close();
+        //    }
+        //}
         #endregion event_handlers
 
         private void btDloadUpdate_Click(object sender, EventArgs e)
         {
-            pbUpdate.Left = btCheckUpdate.Left;
-            pbUpdate.Visible = true;
-            RabServWorker.CheckForUpdate(true);
+            //pbUpdate.Left = btCheckUpdate.Left;
+            //pbUpdate.Visible = true;
+            //RabServWorker.CheckForUpdate(true);
         }
 
         private void btCheckUpdate_Click(object sender, EventArgs e)
         {
-            pbUpdate.Left = btDloadUpdate.Left;
-            pbUpdate.Visible = true;            
-            RabServWorker.CheckForUpdate(false);
+            //pbUpdate.Left = btDloadUpdate.Left;
+            //pbUpdate.Visible = true;            
+            //RabServWorker.CheckForUpdate(false);
         }
     }
 }
