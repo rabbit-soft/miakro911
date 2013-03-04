@@ -430,8 +430,8 @@ namespace rabnet.panels
 
         private void killMenuItem_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count < 1)
-                return;
+            if (listView1.SelectedItems.Count < 1) return;
+
             Building b=null;
             KillForm f = new KillForm();
             foreach (ListViewItem li in listView1.SelectedItems)

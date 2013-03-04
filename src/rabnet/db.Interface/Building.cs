@@ -75,7 +75,7 @@ namespace rabnet
             medname = new string[Sections];
             Notes = new string[Sections];
 
-            string[] ntsTmp = notes.Split(new char[]{'|'},StringSplitOptions.RemoveEmptyEntries);
+            string[] ntsTmp = notes.Split(new char[]{'|'});
             for (int i = 0; i < Sections; i++)
             {
                 fullname[i] = Building.FullRName(Farm, TierID, i, TypeName, Delims, false, true, true);
