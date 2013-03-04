@@ -43,6 +43,7 @@
             this.actMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.replaceMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.killMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miNotesEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.addFarmMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addBuildingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeFarmMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -147,12 +148,14 @@
             // columnHeader8
             // 
             this.columnHeader8.Text = "Заметки";
+            this.columnHeader8.Width = 102;
             // 
             // actMenu
             // 
             this.actMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.replaceMenuItem,
             this.killMenuItem,
+            this.miNotesEdit,
             this.addFarmMenuItem,
             this.addBuildingMenuItem,
             this.changeFarmMenuItem,
@@ -161,7 +164,7 @@
             this.shedReportMenuItem,
             this.emptyRevMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(222, 208);
+            this.actMenu.Size = new System.Drawing.Size(222, 230);
             // 
             // replaceMenuItem
             // 
@@ -176,6 +179,13 @@
             this.killMenuItem.Size = new System.Drawing.Size(221, 22);
             this.killMenuItem.Text = "Списать";
             this.killMenuItem.Click += new System.EventHandler(this.killMenuItem_Click);
+            // 
+            // miNotesEdit
+            // 
+            this.miNotesEdit.Name = "miNotesEdit";
+            this.miNotesEdit.Size = new System.Drawing.Size(221, 22);
+            this.miNotesEdit.Text = "Редактировать заметки";
+            this.miNotesEdit.Click += new System.EventHandler(this.miNotesEdit_Click);
             // 
             // addFarmMenuItem
             // 
@@ -290,6 +300,7 @@
         private System.Windows.Forms.ToolStripSeparator tsSplitter;
         private System.Windows.Forms.ToolStripMenuItem shedReportMenuItem;
         private System.Windows.Forms.ToolStripMenuItem emptyRevMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem miNotesEdit;
 
 
 

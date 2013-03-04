@@ -19,6 +19,8 @@ namespace rabnet.panels
 {
     public partial class BuildingsPanel : RabNetPanel
     {
+        private const int FIELD_NOTES = 7;
+
         /// <summary>
         /// Нужна потому что под номер клетки отводится 6 знаков
         /// Иначе придется изменять форматирование номеров клеток во всей программе
@@ -194,7 +196,7 @@ namespace rabnet.panels
                     ListViewItem it = listView1.Items.Add(Building.Format(b.Farm) + b.Areas[i]);//№
                     prevfarm = b.Farm;
                     prevnm = b.Areas[i];
-                    it.Tag = b.ID.ToString();
+                    //it.Tag = b.ID.ToString();
                     it.SubItems.Add(b.TypeName_Rus);//Ярус
                     it.SubItems.Add(b.dep(i));//Отделение
                     String stat = "unk";
@@ -230,7 +232,7 @@ namespace rabnet.panels
                     it.SubItems.Add(nst);//Гнездовье
                     it.SubItems.Add(htr);//Грелка
                     it.SubItems.Add(getAddress(b.Farm));//Адрес
-                    it.SubItems.Add(b.Notes);//Заметки
+                    it.SubItems.Add(b.Notes[i]);//Заметки
                     it.Tag = b;
                     manual = true;
                 }
@@ -412,10 +414,10 @@ namespace rabnet.panels
             killMenuItem.Visible = replaceMenuItem.Visible =  tsSplitter.Visible =
                 addBuildingMenuItem.Visible = addFarmMenuItem.Visible=
                 changeFarmMenuItem.Visible = deleteBuildingMenuItem.Visible =
-                shedReportMenuItem.Visible = emptyRevMenuItem.Visible = false;
+                shedReportMenuItem.Visible = emptyRevMenuItem.Visible =  miNotesEdit.Visible =false;
             if (listView1.Focused)
             {
-                killMenuItem.Visible = replaceMenuItem.Visible = (listView1.SelectedItems.Count > 0);
+                killMenuItem.Visible = replaceMenuItem.Visible = miNotesEdit.Visible = (listView1.SelectedItems.Count > 0);
             }
             else if (treeView1.Focused && treeView1.SelectedNode!=null)
             {
@@ -711,6 +713,27 @@ namespace rabnet.panels
 #if !DEMO
             ExcelMaker.MakeExcelFromLV(listView1, "Строения");
 #endif
+        }
+
+        private void miNotesEdit_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0) return;
+
+            Building b = listView1.SelectedItems[0].Tag as Building;
+            BuildingNotesEdit dlg = new BuildingNotesEdit(listView1.SelectedItems[0].SubItems[0].Text, listView1.SelectedItems[0].SubItems[FIELD_NOTES].Text);
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                listView1.SelectedItems[0].SubItems[FIELD_NOTES].Text = dlg.Notes;
+                for (int i = 0; i < b.Sections; i++)
+                {
+                    if (listView1.SelectedItems[0].SubItems[0].Text == Building.Format(b.Farm) + b.Areas[i])
+                    {
+                        b.Notes[i]=dlg.Notes;
+                        break;
+                    }
+                }
+                Engine.db().updateBuilding(b);
+            }
         }
     }
 

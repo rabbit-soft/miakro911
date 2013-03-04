@@ -129,7 +129,10 @@ namespace db.mysql
 t_repair,
 t_notes,
 t_busy1,t_busy2,t_busy3,t_busy4,
-rabname(t_busy1,{0:d}) r1, rabname(t_busy2,{0:d}) r2,rabname(t_busy3,{0:d}) r3,rabname(t_busy4,{0:d}) r4
+rabname(t_busy1,{0:d}) r1, 
+rabname(t_busy2,{0:d}) r2,
+rabname(t_busy3,{0:d}) r3,
+rabname(t_busy4,{0:d}) r4
 FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) {1:s} ORDER BY m_id;",nm,makeWhere());
         }
 
@@ -213,8 +216,8 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 {0:s} ORDER BY m_id;",busy!=
 
         internal static void updateBuilding(Building b,MySqlConnection sql)
         {
-            MySqlCommand cmd=new MySqlCommand(String.Format(@"UPDATE tiers SET t_repair={1:d},t_delims='{2:s}',t_heater='{3:s}',t_nest='{4:s}' WHERE t_id={0:d};",
-                b.ID,b.Repair?1:0,b.Delims,b.Heaters,b.Nests),sql);
+            MySqlCommand cmd=new MySqlCommand(String.Format(@"UPDATE tiers SET t_repair={1:d},t_delims='{2:s}',t_heater='{3:s}',t_nest='{4:s}',t_notes='{5:s}' WHERE t_id={0:d};",
+                b.ID,b.Repair?1:0,b.Delims,b.Heaters,b.Nests,String.Join("|",b.Notes)),sql);
             cmd.ExecuteNonQuery();
         }
 

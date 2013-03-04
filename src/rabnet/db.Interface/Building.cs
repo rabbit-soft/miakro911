@@ -48,7 +48,7 @@ namespace rabnet
         public readonly string TypeName;
         public readonly string TypeName_Rus;
         public string Delims;
-        public string Notes;
+        public string[] Notes;
         public bool Repair;
         public string Nests;
         public string Heaters;
@@ -56,9 +56,9 @@ namespace rabnet
         public string[] fuses;
         public int[] Busy;
         public int NestHeaterCount;
-        public string[] fullname = new string[4];
-        public string[] smallname = new string[4];
-        public string[] medname = new string[4];
+        public string[] fullname;
+        public string[] smallname;
+        public string[] medname;
 
         public Building(int id, int farm, int tier_id, string type, string typeLoc, string delims, string notes, bool repair, int seccnt)
         {
@@ -67,35 +67,27 @@ namespace rabnet
             TierID = tier_id;
             TypeName = type;
             TypeName_Rus = typeLoc;
-            Delims = delims;
-            Notes = notes;
+            Delims = delims;            
             Repair = repair;
             Sections = seccnt;
+            fullname = new string[Sections];
+            smallname = new string[Sections];
+            medname = new string[Sections];
+            Notes = new string[Sections];
+
+            string[] ntsTmp = notes.Split(new char[]{'|'},StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < Sections; i++)
             {
                 fullname[i] = Building.FullRName(Farm, TierID, i, TypeName, Delims, false, true, true);
                 smallname[i] = Building.FullRName(Farm, TierID, i, TypeName, Delims, true, false, false);
                 medname[i] = Building.FullRName(Farm, TierID, i, TypeName, Delims, false, true, false);
+                Notes[i] = i<ntsTmp.Length?ntsTmp[i]:"";
             }
+            
         }
         #region IBuilding Members
-        //public int id() { return fid; }
-        //public int farm() { return ffarm; }
-        //public int tier_id() { return ftid; }
-        //public string delims() { return fdelims; }
-        //public string type() { return ftypeloc; }
-        //public string itype() { return ftype; }
-        //public string notes() { return fnotes; }
-        //public bool repair() { return frepair; }
-        //public int secs() { return fsecs; }
-        //public string area(int id) { return Areas[id]; }
         public string dep(int id) { return fdeps[id]; }
-        //public string nest() { return fnests; }
-        //public string heater() { return fheaters; }
-        //public int nest_heater_count() { return fnhcount; }
-        //public int busy(int id) { return fbusies[id]; }
         public string use(int id) { return fuses[id]; }
-        //public string address() { return faddress; }
         #endregion
 
         /**
