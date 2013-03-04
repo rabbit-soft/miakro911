@@ -35,9 +35,9 @@ namespace rabnet
             cmd.ExecuteNonQuery();
         }
 
-        public List<Vaccine> Get()
+        public List<Vaccine> Get(bool withSpec)
         {           
-            MySqlCommand cmd = new MySqlCommand("SELECT v_id,v_name,v_duration,v_age,v_do_after,v_zootech,v_do_times FROM vaccines;", _sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT v_id,v_name,v_duration,v_age,v_do_after,v_zootech,v_do_times FROM vaccines {0};",withSpec?"":"WHERE v_id>0"), _sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             List<Vaccine> vaccs = new List<Vaccine>();
             while (rd.Read())

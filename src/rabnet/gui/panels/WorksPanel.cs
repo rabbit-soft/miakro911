@@ -59,7 +59,7 @@ namespace rabnet.panels
                 f[Filters.VACC_MOTH] = Engine.opt().getBoolOption(Options.OPT_ID.VACC_MOTHER)?"1":"0";
                 
                 f[Filters.VACC_SHOW] = "";
-                foreach (Vaccine v in Engine.db().GetVaccines())
+                foreach (Vaccine v in Engine.db().GetVaccines(true))
                 {
                     if (v.Zoo) //todo опасно vaccines
                         f[Filters.VACC_SHOW] += String.Format("{0:d},", v.ID);

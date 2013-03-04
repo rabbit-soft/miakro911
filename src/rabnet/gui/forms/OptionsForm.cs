@@ -141,7 +141,7 @@ namespace rabnet.forms
         public int GenTree { get { return gt; } set { gt = value; } }
         [Category("Вид"),
         DisplayName("Обновлять зоотехплан"),
-        Description("Будет ли обновляться зоотех план после отметки работы. Внимание!!! Не стоит выключать опцию при работе по сети нескольких человек")]
+        Description("Будет ли обновляться зоотех план после отметки работы. Внимание!!! Не стоит выключать это опцию при работе по сети нескольких человек")]
         public RUBOOL UpdateZoo { get { return uz; } set { uz = value; } }
         [Category("Вид"),
         DisplayName("Заполнять адреса нулями"),
@@ -149,7 +149,7 @@ namespace rabnet.forms
         public RUBOOL FillByZeroes { get { return fbz; } set { fbz = value; } }
         [Category("Вид"),
         DisplayName("Поколение без номеров генов"),
-        Description("Если в программе модержится информация о N поколениях предков, то номера генов у следующих поколений не присутствует.")]
+        Description("Если в программе содержится информация о N поколениях предков, то номера генов у следующих поколений не присутствует.")]
         public int NumGensIgnore { get { return numGIgnore; } set { numGIgnore = value; } }
         #endregion view
         #region plem

@@ -42,7 +42,7 @@ namespace rabnet.forms
         private void fillTable()
         {
             _manual = false;
-            List<Vaccine> vaccs = Engine.get().db().GetVaccines();
+            List<Vaccine> vaccs = Engine.get().db().GetVaccines(true);
             //int colorExist=-1,imageExist = -1, boolExist=-1; //чтобы удалить слово #color#
 
             chAfter.Items.Clear();
@@ -100,7 +100,7 @@ namespace rabnet.forms
             if (editRow.Cells[FIELD_NAME].Value != null)
                 name = editRow.Cells[FIELD_NAME].Value.ToString();
             if (name == "") return;
-            duration = getIntVal(editRow.Cells[FIELD_DURA].Value);
+            duration = getIntVal(editRow.Cells[FIELD_DURA].Value);///todo если введено не число, то сразу исправлять
             age = getIntVal(editRow.Cells[FIELD_AGE].Value);
             if (editRow.Cells[FIELD_AFTER].Value != null && editRow.Cells[FIELD_AFTER].Value.ToString().IndexOf(':') != -1)
             {
@@ -121,7 +121,7 @@ namespace rabnet.forms
 #if !DEMO
                 editRow.Cells[FIELD_ID].Value = Engine.db().AddVaccine(name, duration, age, after, zoo,times);
 #endif
-                fillTable();
+                //fillTable();
             }
             else
             {
@@ -196,6 +196,21 @@ namespace rabnet.forms
         private void nudLustDuration_ValueChanged(object sender, EventArgs e)
         {
             nudAge.Maximum = nudLustDuration.Value;
+        }
+
+        private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if (!_manual) return;
+
+            if (e.ColumnIndex == FIELD_DURA || e.ColumnIndex == FIELD_AGE)
+            {
+                int o = 0;
+                if (!int.TryParse(e.FormattedValue.ToString(), out o) || o<0)
+                {
+                    e.Cancel = true;
+                    MessageBox.Show("Значение должно быть положительным числом");
+                }
+            }
         }
     }
 }

@@ -146,7 +146,7 @@ namespace rabnet
 
         // vaccines
         RabVac[] GetRabVac(int rabId);
-        List<Vaccine> GetVaccines();
+        List<Vaccine> GetVaccines(bool withSpec);
         Vaccine GetVaccine(int vid);
         void EditVaccine(int id, string name, int duration, int age, int after, bool zoo,int times);
 #if !DEMO
@@ -175,6 +175,7 @@ namespace rabnet
 
         void SetRabbitVaccine(int rid, int vid, DateTime date);
         void SetRabbitVaccine(int rid, int vid);
+        void RabVacUnable(int rid, int vid, bool unable);
 
         LogList getLogs(Filters f);
 

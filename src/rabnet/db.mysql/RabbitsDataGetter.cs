@@ -41,14 +41,15 @@ rabplace(r_id) place,
 r_notes,
 r_born,
 r_breed,
-Coalesce((
-    SELECT GROUP_CONCAT('v',{3:s} ORDER BY rv.v_id)      
-    FROM rab_vac rv 
-    INNER JOIN vaccines v1 ON v1.v_id=rv.v_id #AND v1.v_id>0
-    WHERE rv.r_id=r.r_id AND unabled!=1 
-        AND (Date_Add(rv.`date`,INTERVAL v1.v_duration DAY)>=NOW())),'') vaccines
-FROM rabbits r WHERE r_parent=0 ORDER BY name) c {2:s};", (options.safeBool("dbl") ? "2" : "1"), fld, makeWhere(),
-            String.Format("IF(rv.v_id={0:d},'S',rv.v_id)", Vaccine.V_ID_LUST));///чтобы не перегружать текст SQL запроса
+Coalesce(Group_concat('v',{3}),'') vaccines
+FROM rabbits r 
+LEFT JOIN (
+	SELECT rv.v_id,rv.r_id rv_id, Max(rv.`date`) FROM rab_vac rv
+	INNER JOIN vaccines v1 ON v1.v_id=rv.v_id
+	WHERE unabled!=1 AND (Date_Add(rv.`date`,INTERVAL v1.v_duration DAY)>=NOW()) GROUP BY v_id,r_id
+) rvac ON rv_id=r.r_id
+WHERE r_parent=0 GROUP by r_id ORDER BY name) c {2:s};", (options.safeBool("dbl") ? "2" : "1"), fld, makeWhere(),
+            String.Format("IF(rvac.v_id={0:d},'S',rvac.v_id)", Vaccine.V_ID_LUST));///чтобы не перегружать текст SQL запроса
         }
 
         public String makeWhere()

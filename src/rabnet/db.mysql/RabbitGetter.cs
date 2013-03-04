@@ -722,6 +722,12 @@ WHERE r_id={0:d} ORDER BY date", rabId), sql);
             cmd.ExecuteNonQuery();
         }
 
+        internal static void RabVacUnable(MySqlConnection sql, int rid, int vid, bool unable)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format("UPDATE rab_vac SET unabled={2:d} WHERE r_id={0:d} AND v_id={1:d}", rid, vid,unable?1:0), sql);
+            cmd.ExecuteNonQuery();
+        }
+
         /// <summary>
         /// Функция проверяет стоит ли в последней записи из таблице fucks по данному кролику начало траха.
         /// </summary>

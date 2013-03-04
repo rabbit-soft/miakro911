@@ -36,7 +36,7 @@
             this.chUnable = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btAddVac = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.отменаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miCancelRabVac = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,6 +50,7 @@
             this.chName,
             this.chDuration,
             this.chUnable});
+            this.lvVaccine.ContextMenuStrip = this.contextMenuStrip1;
             this.lvVaccine.FullRowSelect = true;
             this.lvVaccine.GridLines = true;
             this.lvVaccine.Location = new System.Drawing.Point(3, 3);
@@ -94,15 +95,18 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.отменаToolStripMenuItem});
+            this.miCancelRabVac});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(117, 26);
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
-            // отменаToolStripMenuItem
+            // miCancelRabVac
             // 
-            this.отменаToolStripMenuItem.Name = "отменаToolStripMenuItem";
-            this.отменаToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.отменаToolStripMenuItem.Text = "Отмена";
+            this.miCancelRabVac.Name = "miCancelRabVac";
+            this.miCancelRabVac.Size = new System.Drawing.Size(152, 22);
+            this.miCancelRabVac.Tag = "1";
+            this.miCancelRabVac.Text = "Отмена";
+            this.miCancelRabVac.Click += new System.EventHandler(this.miCancelRabVac_Click);
             // 
             // RIVaccinePanel
             // 
@@ -126,6 +130,6 @@
         private System.Windows.Forms.ColumnHeader chUnable;
         private System.Windows.Forms.Button btAddVac;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem отменаToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem miCancelRabVac;
     }
 }

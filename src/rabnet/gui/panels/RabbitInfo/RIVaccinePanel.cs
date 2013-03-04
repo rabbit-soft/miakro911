@@ -37,6 +37,7 @@ namespace rabnet
                     lvi.SubItems.Add(rv.name);
                 lvi.SubItems.Add(rv.remains.ToString());
                 lvi.SubItems.Add(rv.unabled?"ДА":"-");
+                lvi.Tag = rv;
             }
         }
 
@@ -47,6 +48,43 @@ namespace rabnet
             {               
                 _rab.SetVaccine(dlg.VacID, dlg.VacDate, dlg.VacChildren);
                 updateRabVac();
+            }
+        }
+
+        private void miCancelRabVac_Click(object sender, EventArgs e)
+        {
+            if (lvVaccine.SelectedItems.Count == 0) return;
+            RabVac rv = lvVaccine.SelectedItems[0].Tag as RabVac;
+            if (rv.vid < 0) return;
+
+            rv.unabled = (int)miCancelRabVac.Tag == 1;
+            Engine.db().RabVacUnable(_rab.ID, rv.vid, rv.unabled);
+            
+            updateRabVac();
+        }
+
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+            if (lvVaccine.SelectedItems.Count == 0)
+            {
+                e.Cancel = true;
+                return;
+            }
+            RabVac rv =lvVaccine.SelectedItems[0].Tag as RabVac;
+            if (rv.vid < 0)
+            {
+                e.Cancel = true;
+                return;
+            }
+            if(rv.unabled)
+            {
+                miCancelRabVac.Text = "Восстановить";
+                miCancelRabVac.Tag = 0;
+            }
+            else
+            {
+                miCancelRabVac.Text = "Отмена";
+                miCancelRabVac.Tag = 1;
             }
         }
     }

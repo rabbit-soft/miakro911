@@ -10,7 +10,7 @@ namespace rabnet
         public readonly DateTime date;
         public readonly string name;
         public readonly int remains;
-        public readonly bool unabled;
+        public bool unabled;
 
         public RabVac(int vid, DateTime dateTime, string nm, int remains, bool un)
         {

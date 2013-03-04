@@ -545,13 +545,18 @@ namespace db.mysql
             RabbitGetter.SetRabbitVaccine(sql, rid, vid);
         }
 
-        public List<Vaccine> GetVaccines()
+        public void RabVacUnable(int rid, int vid,bool unable)
         {
-            return new Vaccines(sql).Get();
+            RabbitGetter.RabVacUnable(sql, rid, vid,unable);
+        }
+
+        public List<Vaccine> GetVaccines(bool withSpec)
+        {
+            return new Vaccines(sql).Get(withSpec);
         }
         public Vaccine GetVaccine(int vid)
         {
-            List<Vaccine> vaccs = new Vaccines(sql).Get();
+            List<Vaccine> vaccs = new Vaccines(sql).Get(true);
             foreach (Vaccine v in vaccs)
                 if (v.ID == vid)
                     return v;

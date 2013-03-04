@@ -18,12 +18,15 @@ namespace rabnet.forms
         {
             InitializeComponent();
             dateDays1.Maximum = rab.Age;
-            chWithChildren.Enabled = withChildrens;
+            if (rab.YoungCount > 0)
+                chWithChildren.Enabled = withChildrens;
+            else
+                chWithChildren.Visible = false;
             _rab = rab;
-            _vacc = Engine.db().GetVaccines();
+            _vacc = Engine.db().GetVaccines(false);
             int ind=-1;
             foreach (Vaccine v in _vacc)
-            {              
+            {
                 cbVaccineType.Items.Add(v.Name);
                 if (forceId != -1 && v.ID == forceId)
                     ind=cbVaccineType.Items.Count-1;
@@ -52,8 +55,8 @@ namespace rabnet.forms
             {
                 if (rv.vid == this.VacID && !rv.unabled && rv.remains != 0)
                 {
-                    MessageBox.Show("Данный кролик уже привит данной прививкой", "", MessageBoxButtons.OK);
-                    this.DialogResult = DialogResult.None;
+                    if(MessageBox.Show("Данный кролик уже привит данной прививкой. Желаете сделать ревакцинацию", "Вакцинация", MessageBoxButtons.YesNo)!=DialogResult.Yes)
+                        this.DialogResult = DialogResult.None;
                 }
             }
         }
