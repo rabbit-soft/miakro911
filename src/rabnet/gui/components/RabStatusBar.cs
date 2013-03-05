@@ -191,7 +191,7 @@ namespace rabnet.components
         }
         private void endProgress()
         {
-            ///если загрузку останавливает пользователь, то прогресс бар застывает и не сбразывается
+            ///если загрузку останавливает пользователь, то прогресс бар застывает и не сбраcывается
             pb.Value = pb.Minimum;
             pb.Invalidate();
             btRefreshStop.Image = imageList1.Images[IMG_REFRESH];
