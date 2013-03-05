@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Reflection;
 using System.Windows.Forms;
+using pEngine;
+using System.IO;
 #if PROTECTED
 using RabGRD;
 #endif
@@ -12,6 +14,11 @@ namespace rabdump
         public AboutPanel()
         {
             InitializeComponent();
+            Refresh();
+        }
+
+        public void Refresh()
+        {
             //this.Text = String.Format("About {0} {0}", AssemblyTitle);
             labelProductName.Text = AssemblyProduct + " (" + AssemblyTitle+")";
             labelVersion.Text = String.Format("Версия {0}", AssemblyVersion);

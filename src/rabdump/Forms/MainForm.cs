@@ -86,8 +86,8 @@ namespace rabdump
             //miServDump.DropDownItems.Clear();
             foreach (ArchiveJob j in Options.Inst.Jobs)
             {
-                miJobStart.DropDownItems.Add(j.JobName, null, miJobDo_Click);
-                miRestore.DropDownItems.Add(j.JobName, null, miRestore_Click);
+                miJobStart.DropDownItems.Add(j.Name, null, miJobDo_Click);
+                miRestore.DropDownItems.Add(j.Name, null, miRestore_Click);
                 //#if PROTECTED
                 //                if(GRD.Instance.GetFlag(GRD_Base.FlagType.ServerDump))
                 //#endif
@@ -166,7 +166,7 @@ namespace rabdump
         /// <param name="j"></param>
         private void doDump(ArchiveJob j)
         {
-            notifyIcon1.ShowBalloonTip(5000, "Резервирование", j.JobName, ToolTipIcon.Info);
+            notifyIcon1.ShowBalloonTip(5000, "Резервирование", j.Name, ToolTipIcon.Info);
             ArchiveJobThread.MakeJob(j);
 #if PROTECTED
             //if (GRD.Instance.GetFlag(GRD.FlagType.ServerDump))
@@ -237,7 +237,7 @@ namespace rabdump
         private void miJobDo_Click(object sender, EventArgs e)
         {
             foreach (ArchiveJob j in Options.Inst.Jobs)
-                if (/*sender == jobnowMenuItem ||*/ j.JobName == ((ToolStripMenuItem)sender).Text)
+                if (/*sender == jobnowMenuItem ||*/ j.Name == ((ToolStripMenuItem)sender).Text)
                 {
                     if (!j.Busy)
                         doDump(j);

@@ -78,15 +78,15 @@ namespace gamlib
                         curFI = FileVersionInfo.GetVersionInfo(ufiles[i].LocalFilePath);
                         ufiles[i].LocalFileMD5 = Helper.GetMD5FromFile(ufiles[i].LocalFilePath);
                         int versComp = Helper.VersionCompare(curFI.FileVersion, ufiles[i].Version);
-                        if (versComp > 0 || (versComp == 0 && ufiles[i].LocalFileMD5 == ufiles[i].MD5)) //если версия текущего файла больше или равна версии файла на сервере
+                        if (versComp > 0 || (versComp == 0 && ufiles[i].LocalFileMD5 == ufiles[i].md5)) //если версия текущего файла больше или равна версии файла на сервере
                         {
-                            _log.DebugFormat("update no required for file {0:s} SrvVer: {1:s} CurVer: {2:s}", ufiles[i].RelativePath + ufiles[i].Name, ufiles[i].Version, curFI.FileVersion);
+                            _log.DebugFormat("update no required for file {0:s} SrvVer: {1:s} CurVer: {2:s}", ufiles[i].Path + ufiles[i].Name, ufiles[i].Version, curFI.FileVersion);
                             ufiles.RemoveAt(i);
                             continue;
                         }
                         else
                             _log.DebugFormat("need to update file {0:s}  versions: {1:s}=>{2:s} md5: {3:s}=>{4:s}",
-                                ufiles[i].Name, curFI.FileVersion, ufiles[i].Version, ufiles[i].LocalFileMD5, ufiles[i].MD5);
+                                ufiles[i].Name, curFI.FileVersion, ufiles[i].Version, ufiles[i].LocalFileMD5, ufiles[i].md5);
                     }
                     i++;
                 }
@@ -113,7 +113,7 @@ namespace gamlib
                     //проверяем скачанный файл на правильность
                     FileVersionInfo newFI = FileVersionInfo.GetVersionInfo(ufiles[i].LocalFilePath + NEW);
                     string newMD5 = Helper.GetMD5FromFile(ufiles[i].LocalFilePath + NEW);
-                    if ((newFI.FileVersion == null ? "" : newFI.FileVersion) != ufiles[i].Version || newMD5 != ufiles[i].MD5)
+                    if ((newFI.FileVersion == null ? "" : newFI.FileVersion) != ufiles[i].Version || newMD5 != ufiles[i].md5)
                     {
                         _log.DebugFormat("downloaded updateFile '{0:s}' is corrupt, try again to download ", ufiles[i].PathName);
                         File.Delete(ufiles[i].LocalFilePath + NEW);
@@ -225,25 +225,27 @@ namespace gamlib
         /// Не должен начинаться прямой косой черты(/).
         /// Должен заканчиваться на прямую косую черту(/).</remarks>
         /// </summary>
-        public string RelativePath;
-        public string MD5;
+        public string Path;
+        public string md5;
         public string Version;
+        public double Size;
 
         protected string _localFilePath;
         protected string _localFileMD5;
 
         public UpdateFile() { }
-        public UpdateFile(string name,string path,string version,string md5)
+        public UpdateFile(string name,string path,string version,string md5,long size)
         {
             this.Name = name;
-            this.RelativePath = path;
+            this.Path = path;
             this.Version = version;
-            this.MD5 = md5;
+            this.md5 = md5;
+            this.Size = (double)size;
         }
 
         public virtual string PathName
         {
-            get { return Path.Combine(RelativePath , Name); }
+            get { return System.IO.Path.Combine(this.Path , Name); }
         }
 
         public virtual string LocalFilePath
@@ -258,4 +260,5 @@ namespace gamlib
             set { _localFileMD5 = value; }
         }
     }
+    
 }

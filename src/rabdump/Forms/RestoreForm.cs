@@ -33,7 +33,7 @@ namespace rabdump
             SetMode(true);
             foreach (ArchiveJob j in Options.Inst.Jobs)
             {
-                cbJobName.Items.Add(j.JobName);
+                cbJobName.Items.Add(j.Name);
             }
             if (cbJobName.Items.Count > 0)
             {
@@ -76,7 +76,7 @@ namespace rabdump
             listView1.Items.Clear();
 
             foreach (ArchiveJob j in Options.Inst.Jobs)
-                if (j.JobName == cbJobName.Text)
+                if (j.Name == cbJobName.Text)
                 {
                     _jj = j;
                     //if (j.DataSrc == DataSource.AllDataBases) //TODO вернуть
@@ -101,7 +101,7 @@ namespace rabdump
         {
             listView1.Items.Clear();
             DirectoryInfo di = new DirectoryInfo(j.DumpPath);
-            string searchName = j.JobName.Replace(' ', ArchiveJobThread.SPACE_REPLACE) + "_" + db.Replace(' ', ArchiveJobThread.SPACE_REPLACE);
+            string searchName = j.Name.Replace(' ', ArchiveJobThread.SPACE_REPLACE) + "_" + db.Replace(' ', ArchiveJobThread.SPACE_REPLACE);
             List<sDump> servDumps = null;
 #if PROTECTED           
             if (GRD.Instance.GetFlag(GRD.FlagType.ServerDump))

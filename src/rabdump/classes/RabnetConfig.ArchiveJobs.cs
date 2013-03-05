@@ -17,6 +17,7 @@ namespace rabnet.RNC
 
         public void LoadArchiveJobs()
         {
+            //_logger.Info("loading archiveJobs");
             _archiveJobs.Clear();
             RegistryKey rKey = _regKey.CreateSubKey(ARCHIVEJOBS_PATH);
             DataSource ds;
@@ -27,16 +28,16 @@ namespace rabnet.RNC
                 if (ds == null) continue; //todo удалить AJ
                 _archiveJobs.Add(new ArchiveJob(s,
                         (string)r.GetValue("name"),
-                        ds,//(string)r.GetValue("db"),
+                        ds,
                         (string)r.GetValue("path"),
                         (string)r.GetValue("start"),
                         (int)r.GetValue("type"),
                         (int)r.GetValue("cntlimit"),
                         (int)r.GetValue("szlimit"),
-                        //(int)r.GetValue("repeat"),
                         (int)r.GetValue("srv_send",0)==1,
-                        (int)r.GetValue("srv_days",3)));
+                        (int)r.GetValue("srv_day_delay",1)));
             }
+            //_logger.Info("loading archiveJobs finish");
         }
 
         /// <summary>
@@ -51,7 +52,7 @@ namespace rabnet.RNC
                 //if (raj.Guid == "" || raj.Guid == null)
                 //raj.Guid = System.Guid.NewGuid().ToString();
                 RegistryKey r = _regKey.CreateSubKey(RabnetConfig.ARCHIVEJOBS_PATH + "\\" + raj.Guid);
-                r.SetValue("name", raj.JobName, RegistryValueKind.String);
+                r.SetValue("name", raj.Name, RegistryValueKind.String);
                 r.SetValue("db", raj.DataSrc.Guid, RegistryValueKind.String);
                 r.SetValue("path", raj.DumpPath, RegistryValueKind.String);
                 r.SetValue("start", raj.StartTime.ToString("yyyy-MM-dd HH:mm"), RegistryValueKind.String);
@@ -59,7 +60,7 @@ namespace rabnet.RNC
                 r.SetValue("cntlimit", raj.CountLimit, RegistryValueKind.DWord);
                 r.SetValue("szlimit", raj.SizeLimit, RegistryValueKind.DWord);
                 r.SetValue("srv_send", raj.SendToServ?1:0, RegistryValueKind.DWord);
-                r.SetValue("srv_days", raj.SendEachDays, RegistryValueKind.DWord);
+                r.SetValue("srv_day_delay", raj.SendDayDelay, RegistryValueKind.DWord);
             }
             ///Удаляем удаленные Расписания
             foreach (string s in rKey.GetSubKeyNames())
@@ -102,7 +103,7 @@ namespace rabnet.RNC
             {
                 if (raj.Guid == newAJ.Guid)
                 {
-                    raj.JobName = newAJ.JobName;
+                    raj.Name = newAJ.Name;
                     raj.DataSrc.Guid = newAJ.DataSrc.Guid;
                     raj.DumpPath = newAJ.DumpPath;
                     raj.StartTime = newAJ.StartTime;
@@ -152,7 +153,7 @@ namespace rabnet.RNC
                     }
                     if (!sameDBguids) continue;
                 }
-                if (raj.JobName == aj.JobName &&
+                if (raj.Name == aj.Name &&
                     raj.DumpPath == aj.DumpPath &&
                     raj.CountLimit == aj.CountLimit &&
                     raj.SizeLimit == aj.SizeLimit &&

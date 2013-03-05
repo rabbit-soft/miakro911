@@ -44,7 +44,7 @@ namespace rabdump
             for (int i = 0; i < _rnc.ArchiveJobs.Count; i++)
             {
                 _aj_dict.Add(i, _rnc.ArchiveJobs[i]);
-                cbName.Items.Add(_rnc.ArchiveJobs[i].JobName);
+                cbName.Items.Add(_rnc.ArchiveJobs[i].Name);
             }
 
             for (int i = 0; i < _rnc.DataSources.Count; i++)
@@ -145,7 +145,7 @@ namespace rabdump
                 else if (btEdit.Checked)
                 {
                     aj = _aj_dict[_sInd];
-                    aj.JobName = cbName.Text;
+                    aj.Name = cbName.Text;
                     aj.DataSrc = _ds_dict[cbDataBase.SelectedIndex];
                     aj.DumpPath = tbDumpPath.Text;
                     aj.StartTime = getDT();
@@ -166,7 +166,7 @@ namespace rabdump
 
         private void btDelete_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show(String.Format("Вы уверены что хотите удалить расписание '{0:s}' ?", _aj_dict[cbName.SelectedIndex].JobName), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
+            if (MessageBox.Show(String.Format("Вы уверены что хотите удалить расписание '{0:s}' ?", _aj_dict[cbName.SelectedIndex].Name), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
 
             _rnc.ArchiveJobs.Remove(_aj_dict[cbName.SelectedIndex]);
             //RabnetConfig.SaveDataSources();
@@ -193,7 +193,7 @@ namespace rabdump
             bool exists = false;
             foreach (ArchiveJob aj in _aj_dict.Values)
             {
-                if (cbName.Text == aj.JobName)
+                if (cbName.Text == aj.Name)
                 {
                     exists = true;
                     break;

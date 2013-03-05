@@ -13,7 +13,7 @@ namespace rabnet.RNC
         public readonly string Guid = "";
         public bool Busy = false;       
         public DateTime LastWork = DateTime.MinValue;        
-        public String JobName;
+        public String Name;
         public DataSource DataSrc;
         public int SizeLimit;
         public int CountLimit;
@@ -21,7 +21,7 @@ namespace rabnet.RNC
         public DateTime StartTime;
         public int ArcType;
         public bool SendToServ=false;
-        public int SendEachDays = 3;
+        public int SendDayDelay = 10;
 
         public ArchiveType ArcAType
         {
@@ -30,11 +30,11 @@ namespace rabnet.RNC
         }        
 
         public ArchiveJob() {}
-        public ArchiveJob(string guid, string name, DataSource db, string path, string startAj, int type, int countlimit, int sizelimit, bool sendToserv,int sendEachDays)
+        public ArchiveJob(string guid, string name, DataSource db, string path, string startAj, int type, int countlimit, int sizelimit, bool sendToserv,int sendDelay)
             : this()
         {
             this.Guid = guid;
-            JobName = name;
+            Name = name;
             DataSrc = db;
             DumpPath = path;
             DateTime.TryParse(startAj,out StartTime);
@@ -42,7 +42,7 @@ namespace rabnet.RNC
             CountLimit = countlimit;
             SizeLimit = sizelimit;
             SendToServ = sendToserv;
-            this.SendEachDays = sendEachDays;
+            this.SendDayDelay = sendDelay;
         }     
     }
 

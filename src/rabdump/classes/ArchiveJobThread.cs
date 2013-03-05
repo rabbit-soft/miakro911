@@ -40,13 +40,9 @@ namespace rabdump
                 _j.Busy = false;
         }
 
-        public bool JobIsBusy
+        public ArchiveJob Job
         {
-            get { return _j.Busy; }
-        }
-        public string JobName
-        {
-            get { return _j.JobName; }
+            get { return _j; }
         }
 
         /// <summary>
@@ -73,7 +69,7 @@ namespace rabdump
             foreach(FileInfo fi in inf.GetFiles("*_*_*_*_*_*.7z"))
             {
                 String[] nm = ParseDumpName(fi.FullName);
-                if (nm[0]==_j.JobName)
+                if (nm[0]==_j.Name)
                 {
                     cnt++;
                     fsz += fi.Length;
@@ -158,7 +154,7 @@ namespace rabdump
         {
             try
             {
-                _logger.Debug("Run dump for " + _j.JobName);
+                _logger.Debug("Run dump for " + _j.Name);
                 DumpDB(_j.DataSrc);
                 _jobber.OnEndJob();
             }
@@ -177,7 +173,7 @@ namespace rabdump
         {
             _j.Busy = false;
             _j.LastWork = DateTime.Now;
-            _logger.Debug("End of making dump " + _j.JobName);
+            _logger.Debug("End of making dump " + _j.Name);
             callOnMessage("Зарезервировано","",0);
         }
 
@@ -185,20 +181,27 @@ namespace rabdump
         /// Получить путь к самому позднему файлу дампа
         /// </summary>
         /// <returns>Полный путь</returns>
-        public string GetLatestDump()
+        public string GetLatestDump(out string md5)
         {
             int sz;
             string file;
             int count = CountBackups(out sz, out file, false);
             if (count == 0)
             {
+                md5 = "";
                 return "";
             }
             else
             {
                 string path = _j.DumpPath + "\\" + file;
+                md5 = Helper.GetMD5FromFile(path);
                 return path;
             }
+        }
+        public string GetLatestDump()
+        {
+            string md5;
+            return GetLatestDump(out md5);
         }
 
         /// <summary>
@@ -237,12 +240,12 @@ namespace rabdump
         public string DumpDB(DataSource db)
         {
             Directory.CreateDirectory(_j.DumpPath);
-            String ffname = String.Format("{0:s}_{1:s}_{2:yyyy_MM_dd_HHmmss}", _j.JobName.Replace(' ', SPACE_REPLACE), db.Name.Replace(' ', SPACE_REPLACE), DateTime.Now);
+            String ffname = String.Format("{0:s}_{1:s}_{2:yyyy_MM_dd_HHmmss}", _j.Name.Replace(' ', SPACE_REPLACE), db.Name.Replace(' ', SPACE_REPLACE), DateTime.Now);
 
             ffname = XTools.SafeFileName(ffname, "-");
 
             String fname = _tmppath + ffname;
-            _logger.Info("Making dump for " + _j.JobName + " to " + ffname);
+            _logger.Info("Making dump for " + _j.Name + " to " + ffname);
             ///Делайем дамп с помошью mysqldump
             String md = Options.Inst.MySqlDumpPath;
             if (md == "" || !File.Exists(md))
@@ -533,6 +536,14 @@ namespace rabdump
             for (int i = 0; i < result.Length; i++)
                 result[i] = result[i].Replace(SPACE_REPLACE, ' ');
             return result;
+        }
+
+        public static DateTime ParseDumpDate(string fullName)
+        {
+            string[] nm = Path.GetFileName(fullName).Split('_', '.');
+            for (int i = 0; i < nm.Length; i++)
+                nm[i] = nm[i].Replace(SPACE_REPLACE, ' ');
+            return DateTime.Parse(String.Format("{0}-{1}-{2} {3}:{4}:{5}", nm[2], nm[3], nm[4], nm[5].Substring(0, 2), nm[5].Substring(2, 2), nm[5].Substring(4, 2)));
         }
 
         private static string z7err(int res)

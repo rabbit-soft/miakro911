@@ -1,5 +1,5 @@
 ﻿#if DEBUG
-//#define NOCATCH
+    #define NOCATCH
 #endif
 using System;
 using System.Collections.Generic;
@@ -15,6 +15,7 @@ using pEngine;
 using gamlib;
 #if PROTECTED
     using RabGRD;   
+    using System.Reflection;   
 #endif
 
 namespace rabdump
@@ -28,18 +29,6 @@ namespace rabdump
         }
     }
 
-    public class UploadFile
-    {
-        public UploadFile()
-        {
-            ContentType = "application/octet-stream";
-        }
-        public string Name;
-        public string Filename;
-        public string ContentType;
-        public Stream Stream;
-    }
-
     /// <summary>
     /// Нужен для отправки сообщения из классов,
     /// работающих с сервером, основной программе
@@ -50,18 +39,24 @@ namespace rabdump
     /// <param name="hide">Скрыть ли значек из трея</param>
     public delegate void MessageSenderCallbackDelegate(string msg, string ttl, int type, bool hide);
     public delegate void CloseCallbackDelegate();
+    //public delegate void UpdateCheckedHandler(UpdateInfo info);
+    public delegate void ErrorHandler(Exception exc);
 
     /// <summary>
     /// Класс отсылающий РК и Статистику на сервер
     /// </summary>
-    class RabServWorker
+    partial class RabServWorker
     {
-        private static string _url = "http://192.168.0.95/rabServ/";
+        private static string _url = "http://5.23.104.12/rabserv";
         private static ILog _logger = LogManager.GetLogger(typeof(RabServWorker));
-        private static ArchiveJobThread _ajt;
+        //private static ArchiveJobThread _ajt;
         private static RabReqSender _reqSend = null;
         private static bool _busy = false;
+        private static bool _dlUpdate = false;
 
+        private static object _sendDumpLoacker = new object();
+
+        public static event ErrorHandler OnUpdateCheckFail;
         public static event MessageSenderCallbackDelegate OnMessage;
 
         internal static RabReqSender ReqSender
@@ -86,20 +81,20 @@ namespace rabdump
                             }
                         if (empty)
                         {
-                            byte[] defPass = Encoding.UTF8.GetBytes("user_with_old_key");
+                            byte[] defPass = Encoding.UTF8.GetBytes("user_with_old_key_10578vnr/* ekei");
                             Array.Copy(defPass, _reqSend.Key, defPass.Length);
                         }
                     }
 #elif DEBUG
-                    _reqSend.UserID = 1;
-                    _reqSend.Key = new byte[0];
+                    _reqSend.Key = new byte[262];//GRD.KEY_CODE_LENGHT
+                    byte[] defPass = Encoding.UTF8.GetBytes("user_with_old_key");
+                    Array.Copy(defPass, _reqSend.Key, defPass.Length);
 #endif
                 }
                 return _reqSend;
             }
         }
              
-
         /// <summary>
         /// Адрес удаленного сервера
         /// </summary>
@@ -108,8 +103,7 @@ namespace rabdump
             get { return _url; }
             set 
             {
-                if (value == null || value == "")
-                    return;
+                if (String.IsNullOrEmpty(value)) return;
                 _url = value;
                 if (_reqSend != null) //ГОВНОКОД
                     _reqSend.Url = _url;
@@ -118,11 +112,12 @@ namespace rabdump
 
         public static void SendDump(ArchiveJob j)
         {
-            while (j.Busy)
-                Thread.Sleep(2000);
-            //_crossData = new ServData();
-            Thread t = new Thread(sendDump);
-            t.Start();
+            lock (_sendDumpLoacker)
+            {
+                Thread t = new Thread(new ParameterizedThreadStart(sendDump));
+                t.Name = "DumpSender";
+                t.Start(j);
+            }
         }
 
         /// <summary>
@@ -243,27 +238,47 @@ namespace rabdump
             return reps.ToArray();
         }
 
-        private static void sendDump()
+        private static void sendDump(object archJob)
         {
+            if (!(archJob is ArchiveJob)) return;
+            
+            ArchiveJobThread ajt = new ArchiveJobThread(archJob as ArchiveJob);
+            while (ajt.Job.Busy)///todo говнокод, нужно делать на ивентах
+                Thread.Sleep(2000);
             try
             {
                 if (!System.IO.File.Exists(Options.Inst.Path7Z))
                     throw new Exception("Путь к 7zip не корректен");
-                while (_ajt.JobIsBusy)
-                    Thread.Sleep(2000);
-                _logger.Debug("ServerDump start");
-                callOnMessage("Начало отсылки" + Environment.NewLine + _ajt.JobName, "Отправка", 1, false);
 
-                string dumpPath = _ajt.GetLatestDump();
-                if (dumpPath != "")
+                string dumpPath = ajt.GetLatestDump();
+                if (dumpPath == "")
                 {
+                    _logger.Info("There is no local dump to send.");
+                    return;
+                }
+
+                DateTime lastReservDate = ArchiveJobThread.ParseDumpDate(Path.GetFileName(dumpPath));
+                sDump[] dmps = RabServWorker.ReqSender.ExecuteMethod(MethodName.GetDumpList).Value as sDump[];
+                if (dmps != null && dmps.Length > 0)
+                {
+                    DateTime lastSendDate = DateTime.Parse(dmps[dmps.Length - 1].Datetime);
+                    if (lastReservDate.Subtract(lastSendDate).TotalDays < ajt.Job.SendDayDelay)
+                    {
+                        _logger.Info("Servdump canseled. Because DayDelay not reached.");
+                        return;
+                    }
+                }
+
+                _logger.Debug("ServerDump start");
+                callOnMessage("Начало отсылки" + Environment.NewLine + ajt.Job.Name, "Отправка", 1, false);
+
+
                     string dump = ArchiveJobThread.ExtractDump(dumpPath);
                     string md5Dump = Helper.GetMD5FromFile(dump);
                     File.Delete(dump);
                     uploadDump(dumpPath, md5Dump);
                     callOnMessage("Файл отправлен успешно", "Успех", 1);
                 }           
-            }
             catch (Exception exc)
             {
                 _logger.Error(exc);
@@ -281,7 +296,7 @@ namespace rabdump
         /// который находится по пути downloadTo</param>
         private static void downloadDump(string filename,string downloadTo, long offset)
         {
-            string address = Path.Combine(ReqSender.Url, "getdump.php");
+            string address = Helper.UriCombine(ReqSender.Url, "getdump.php");
             byte[] responce;
             
             WebClient wc = new WebClient();
@@ -387,7 +402,7 @@ namespace rabdump
 
         private static void uploadDump(string dumpPath, string md5dump)
         {
-            string address = Path.Combine(ReqSender.Url, "uploader.php");
+            string address = Helper.UriCombine(ReqSender.Url,"uploader.php");
 
             using (FileStream stream = File.Open(dumpPath, FileMode.Open))
             {
@@ -407,66 +422,7 @@ namespace rabdump
 #endif
                 values.Add("md5dump", md5dump);
 
-                byte[] result = uploadFiles(address, files, values);
-            }
-        }
-
-        private static byte[] uploadFiles(string address, IEnumerable<UploadFile> files, NameValueCollection values)
-        {
-            WebRequest request = WebRequest.Create(address);
-            request.Timeout = 5000; //TODO сообщить если не удалось подключиться
-            request.Method = "POST";
-            string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x", NumberFormatInfo.InvariantInfo);
-            request.ContentType = "multipart/form-data; boundary=" + boundary;
-            boundary = "--" + boundary;
-
-            using (Stream requestStream = request.GetRequestStream())
-            {
-                // Write the values
-                foreach (string name in values.Keys)
-                {
-                    byte[] buffer = Encoding.ASCII.GetBytes(boundary + Environment.NewLine);
-                    requestStream.Write(buffer, 0, buffer.Length);
-                    buffer = Encoding.ASCII.GetBytes(string.Format("Content-Disposition: form-data; name=\"{0}\"{1}{1}", name, Environment.NewLine));
-                    requestStream.Write(buffer, 0, buffer.Length);
-                    buffer = Encoding.UTF8.GetBytes(values[name] + Environment.NewLine);
-                    requestStream.Write(buffer, 0, buffer.Length);
-                }
-
-                // Write the files
-                foreach (UploadFile file in files)
-                {
-                    byte[] buffer = Encoding.ASCII.GetBytes(boundary + Environment.NewLine);
-                    requestStream.Write(buffer, 0, buffer.Length);
-                    buffer = Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"{2}", file.Name, file.Filename, Environment.NewLine));
-                    requestStream.Write(buffer, 0, buffer.Length);
-                    buffer = Encoding.ASCII.GetBytes(string.Format("Content-Type: {0}{1}{1}", file.ContentType, Environment.NewLine));
-                    requestStream.Write(buffer, 0, buffer.Length);
-                    CopyStream(file.Stream,requestStream);
-                    buffer = Encoding.ASCII.GetBytes(Environment.NewLine);
-                    requestStream.Write(buffer, 0, buffer.Length);
-                }
-
-                byte[] boundaryBuffer = Encoding.ASCII.GetBytes(boundary + "--");
-                requestStream.Write(boundaryBuffer, 0, boundaryBuffer.Length);
-            }
-
-            using (WebResponse response = request.GetResponse())
-            using (Stream responseStream = response.GetResponseStream())
-            using (MemoryStream stream = new MemoryStream())
-            {
-                CopyStream(responseStream,stream);
-                return stream.ToArray();
-            }
-        }
-
-        public static void CopyStream(Stream input, Stream output)
-        {
-            byte[] buffer = new byte[32768];
-            int read;
-            while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
-            {
-                output.Write(buffer, 0, read);
+                byte[] result = Helper.UploadFiles(address, files, values);
             }
         }
 
