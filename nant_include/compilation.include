@@ -122,7 +122,7 @@
 				<include name="${srcdir}/libs/pEngine/xxTEA.cs"/>
 				<include name="${srcdir}/libs/pEngine/Helper.cs"/>
 				<include name="${srcdir}/libs/pEngine/pException.cs"/>
-				<!--include name="${srcdir}/libs/pEngine/pAppUpdater.cs" /-->
+				<include name="${srcdir}/libs/pEngine/pAppUpdater.cs" />
 				
 				<include name="${srcdir}/libs/gamlib/*.cs"/>
 				
