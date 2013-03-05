@@ -110,6 +110,18 @@ namespace rabnet
         {
             rw.AppendChild(doc.CreateElement(name)).AppendChild(doc.CreateTextNode(value));
         }
+
+        public static string GetChildNodeVal(XmlNode rw, string name)
+        {
+            return rw[name].InnerText;
+        }
+
+        internal static void AppendAttribute(XmlElement node, XmlDocument doc, string name, string value)
+        {
+            XmlAttribute attr = doc.CreateAttribute(name);
+            attr.Value = value;
+            node.Attributes.Append(attr);
+        }
     }
 #endif
 }

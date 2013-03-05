@@ -356,7 +356,7 @@ namespace db.mysql
             return RabbitGetter.newRabbit(sql, r, mom);
         }
        
-        public void addName(Rabbit.SexType sex, string name, string surname)
+        public void AddName(Rabbit.SexType sex, string name, string surname)
         {
             Names.addName(sql, sex, name, surname);
         }

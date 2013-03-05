@@ -100,7 +100,7 @@ namespace rabnet
         int NewRabbit(OneRabbit r,int mom);
                 
         void updateBuilding(Building b);
-        void addName(Rabbit.SexType sex, string name, string surname);
+        void AddName(Rabbit.SexType sex, string name, string surname);
         void changeName(string orgName, string name, string surname);
 
         /// <summary>

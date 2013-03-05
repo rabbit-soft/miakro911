@@ -4,7 +4,7 @@ using System.Text;
 
 namespace rabnet
 {
-    public enum RabAliveState { ALIVE, DEAD, ANY }
+    public enum RabAliveState { ALIVE, DEAD, IMPORTED_ASCENDANT, ANY }
 
     public class Rabbit
     {
@@ -254,6 +254,7 @@ namespace rabnet
         protected int _eventType = 0;
         protected int _kidsOverAll = 0;
         protected int _kidsLost = 0;
+        protected int _birthPlace = 0;
         public string NewAddress = "";
 
         protected DateTime _weightDate;
@@ -267,7 +268,7 @@ namespace rabnet
 
         public OneRabbit(int id, string sx, DateTime born, int rate, string flags, int nameId, int surnameId, int secnameId, string rawAddress, int group, 
             int brd, int zone, String notes, String genom, int status, DateTime lastFuckOkrol, String eventType, DateTime eventDate, int overAllBabys, 
-            int lostBabys, String fullName, String breedName, String bon, int parent, int okrol, int weight, DateTime weightDate, int motherID, int fatherID)
+            int lostBabys, String fullName, String breedName, String bon, int parent, int okrol, int weight, DateTime weightDate, int motherID, int fatherID,int exportFrom)
             : base(id, fullName, sx, born, breedName, group, bon, rawAddress, notes, rate, flags, weight, status, eventDate, 0, -1, "")
         {
             this._parentID = parent;
@@ -288,6 +289,7 @@ namespace rabnet
             _weightDate = weightDate;
             _motherId = motherID;
             _fatherId = fatherID;
+            _birthPlace = exportFrom;
         }
 
         public OneRabbit() { }
@@ -429,11 +431,21 @@ namespace rabnet
             set { _newAddress = value; }
         }
 
-        public int MotherID { get { return _motherId; } }
-        public int FatherID { get { return _fatherId; } }
+        public int MotherID { get { return _motherId; } set { _motherId = value; } }
+        public int FatherID { get { return _fatherId; } set { _fatherId = value; } }        
 
         public virtual string RabGenoms { get { return _rabGenom; } set { _rabGenom = value; } }
-    }
+    	
+		public int BirthPlace
+        {
+            get { return _birthPlace; }
+            set
+            {
+                if (_birthPlace != 0) return;
+                _birthPlace = value;
+            }
+        }
+}
 
     public class DeadRabbit : Rabbit
     {

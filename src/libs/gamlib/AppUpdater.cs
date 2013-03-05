@@ -14,7 +14,7 @@ namespace gamlib
     public delegate void UpdateFinishHandler();
     public delegate void UpdateFailHandler(Exception exc);
     /// <returns>Продолжать ли обновление</returns>
-    public delegate bool FilesCheckedHandler(UpdateFile[] ufiles);
+    public delegate bool FilesCheckedHandler(List<UpdateFile> ufiles);
 
     /// <summary>
     /// Занимается обновлением программы
@@ -206,7 +206,7 @@ namespace gamlib
         protected void onFilesChecked(List<UpdateFile> files)
         {
             if (FilesChecked != null)
-                FilesChecked(files.ToArray());
+                FilesChecked(files);
         }       
 
         public virtual void Dispose()

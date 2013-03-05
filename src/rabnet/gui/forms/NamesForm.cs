@@ -63,19 +63,19 @@ namespace rabnet.forms
         private void rabStatusBar1_itemGet(IData data)
         {
             RabName nm=(data as RabName);
-            ListViewItem li = listView1.Items.Add(nm.name);
-            li.Tag = nm.id;
-            li.SubItems.Add(nm.surname);
-            li.SubItems.Add(nm.sex);
+            ListViewItem li = listView1.Items.Add(nm.Name);
+            li.Tag = nm.ID;
+            li.SubItems.Add(nm.Surname);
+            li.SubItems.Add(Rabbit.SexToRU(nm.Sex));
             string state="занято";
-            if (nm.use==0)
+            if (nm.Use==0)
             {
                 state = "свободно";
-                if (nm.td != DateTime.MinValue)
+                if (nm.ReleaseDate != DateTime.MinValue)
                     state = "освобождается";
             }
             li.SubItems.Add(state);
-            li.SubItems.Add((nm.use!=0 || nm.td==DateTime.MinValue)?"-":nm.td.ToShortDateString());
+            li.SubItems.Add((nm.Use!=0 || nm.ReleaseDate==DateTime.MinValue)?"-":nm.ReleaseDate.ToShortDateString());
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -114,7 +114,7 @@ namespace rabnet.forms
                     Rabbit.SexType sx = Rabbit.SexType.MALE;
                     if (tabControl1.SelectedIndex == 1) 
                         sx = Rabbit.SexType.FEMALE;
-                    Engine.get().db().addName(sx, textBox1.Text.Trim(), textBox2.Text.Trim());
+                    Engine.get().db().AddName(sx, textBox1.Text.Trim(), textBox2.Text.Trim());
                 }
                 else
                 {
