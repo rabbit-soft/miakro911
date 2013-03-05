@@ -82,7 +82,7 @@ namespace db.mysql
             Days = this.Days - _flt.safeInt("vudvor");
             ID = rd.GetInt32("t_id");
             ID2 = rd.GetInt32("r_area");
-            if (ID2 == 1 && rd.GetString("t_type") == BuildingType.Jurta)
+            if (ID2 == 1 && Building.ParseType(rd.GetString("t_type")) == BuildingType.Jurta)
                 ID2 = 0;
             Comment = String.Format("№{0:s} {1:s}{2:s}", rd.GetString("r_status"), _flt.safeInt(Filters.SHORT) == 0 ? "подсосных" : "+", rd.GetString("suckers"));
         }

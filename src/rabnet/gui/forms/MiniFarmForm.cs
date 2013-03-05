@@ -44,11 +44,11 @@ namespace rabnet.forms
             cbNum.Enabled = false;
             tiers = Engine.db().getTiers(id);
             b1 = Engine.db().getBuilding(tiers[0]);
-            cbUpper.SelectedIndex = idFromType(b1.TypeName) - 1;
+            cbUpper.SelectedIndex = idFromType(b1.Type) - 1;
             if (tiers[1] != 0)
             {
                 b2 = Engine.db().getBuilding(tiers[1]);
-                cbLower.SelectedIndex = idFromType(b2.TypeName);
+                cbLower.SelectedIndex = idFromType(b2.Type);
             }
         }
 
@@ -57,7 +57,7 @@ namespace rabnet.forms
             Close();
         }
 
-        private int idFromType(String type)
+        private int idFromType(BuildingType type)
         {
             switch(type)
             {
@@ -73,7 +73,7 @@ namespace rabnet.forms
             return 0;
         }
 
-        private String getType(int id)
+        private BuildingType getType(int id)
         {
             switch(id)
             {
@@ -86,13 +86,13 @@ namespace rabnet.forms
                 case 7: return BuildingType.Complex;
                 case 8: return BuildingType.Cabin;
             }
-            return "none";
+            return BuildingType.None;
         }
 
         /// <summary>
         /// Выбраный пользователем Верхний ярус
         /// </summary>
-        private String upperType
+        private BuildingType upperType
         {
             get { return getType(cbUpper.SelectedIndex + 1); }
         }
@@ -100,7 +100,7 @@ namespace rabnet.forms
         /// <summary>
         /// Выбраный пользователем Нижний ярус
         /// </summary>
-        private String lowerType
+        private BuildingType lowerType
         {
             get{return getType(cbLower.SelectedIndex);}
         }
@@ -113,7 +113,7 @@ namespace rabnet.forms
             if (b==null) return false;
 
             for (int i = 0; i < b.Sections; i++)
-                if (b.Busy[i] > 0)
+                if (b.Busy[i].ID > 0)
                     return true;
             return false;
         }
@@ -146,10 +146,10 @@ namespace rabnet.forms
             else
             {
                 int change = -1;
-                if (upperType != b1.TypeName) 
+                if (upperType != b1.Type) 
                     change = checkBuilding(b1);
 
-                if ((b2 != null && lowerType != b2.TypeName) || (b2 == null && lowerType != "none"))
+                if ((b2 != null && lowerType != b2.Type) || (b2 == null && lowerType != BuildingType.None))
                 {
                     if (change<1)
                         change = checkBuilding(b2);

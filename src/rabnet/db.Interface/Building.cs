@@ -1,94 +1,130 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace rabnet
 {
-    public static class BuildingType
+
+    public enum BuildingType
     {
-        public const string Female = "female";
-        public const string Female_Rus = "Крольчихин";
-        public const string Female_Short = "крлч";
-
-        public const string DualFemale = "dfemale";
-        public const string DualFemale_Rus = "Двукрольчихин";
-        public const string DualFemale_Short = "2крл";
-
-        public const string Jurta = "jurta";
-        public const string Jurta_Rus = "Юрта";
-        public const string Jurta_Short = "юрта";
-
-        public const string Quarta = "quarta";
-        public const string Quarta_Rus = "Кварта";
-        public const string Quarta_Short = "кврт";
-
-        public const string Vertep = "vertep";
-        public const string Vertep_Rus = "Вертеп";
-        public const string Vertep_Short = "вртп";
-
-        public const string Barin = "barin";
-        public const string Barin_Rus = "Барин";
-        public const string Barin_Short = "барн";
-
-        public const string Cabin = "cabin";
-        public const string Cabin_Rus = "Хижина";
-        public const string Cabin_Short = "хижн";
-
-        public const string Complex = "complex";
-        public const string Complex_Rus = "Комплексный";
-        public const string Complex_Short = "кмпл";
+        None, Female, DualFemale, Jurta, Quarta, Vertep, Barin, Cabin, Complex
     }
 
     public class Building : IData
     {
+        #region consts
+        public const string FEMALE_Eng = "female";
+        public const string FEMALE_Rus = "Крольчихин";
+        public const string FEMALE_Short = "крлч";
+
+        public const string DOUBLE_Female_Eng = "dfemale";
+        public const string DOUBLE_Female_Rus = "Двукрольчихин";
+        public const string DOUBLE_Female_Short = "2крл";
+
+        public const string JURTA_Eng = "jurta";
+        public const string JURTA_Rus = "Юрта";
+        public const string JURTA_Short = "юрта";
+
+        public const string QUARTA_Eng = "quarta";
+        public const string QUARTA_Rus = "Кварта";
+        public const string QUARTA_Short = "кврт";
+
+        public const string VERTEP_Eng = "vertep";
+        public const string VERTEP_Rus = "Вертеп";
+        public const string Vertep_Short = "вртп";
+
+        public const string Barin_Eng = "barin";
+        public const string Barin_Rus = "Барин";
+        public const string Barin_Short = "барн";
+
+        public const string Cabin_Eng = "cabin";
+        public const string Cabin_Rus = "Хижина";
+        public const string Cabin_Short = "хижн";
+
+        public const string Complex_Eng = "complex";
+        public const string Complex_Rus = "Комплексный";
+        public const string Complex_Short = "кмпл";
+        #endregion consts
+
         public readonly int ID;
         public readonly int Farm;
         public readonly int TierID;
         public readonly int Sections;
-        public String[] Areas;
-        public String[] fdeps;
-        public readonly string TypeName;
-        public readonly string TypeName_Rus;
+        //public String[] Areas;
+        //public String[] Descr;
+        public readonly BuildingType Type;
+        //public readonly string TypeName_Rus;
         public string Delims;
         public string[] Notes;
+
         public bool Repair;
         public string Nests;
         public string Heaters;
-        public string Address;
-        public string[] fuses;
-        public int[] Busy;
-        public int NestHeaterCount;
-        public string[] fullname;
-        public string[] smallname;
-        public string[] medname;
+        //public string Address;
+        //public string[] fuses;
+        public RabInBuild[] Busy;
+        //public int NestHeaterCount;
+        //public string[] FullName = new string[4];
+        //public string[] SmallName = new string[4];
+        //public string[] MedName = new string[4];
 
-        public Building(int id, int farm, int tier_id, string type, string typeLoc, string delims, string notes, bool repair, int seccnt)
+        public Building(int id, int farm, int tier_id, BuildingType type, string delims, string notes, bool repair)
         {
             ID = id;
             this.Farm = farm;
             TierID = tier_id;
-            TypeName = type;
-            TypeName_Rus = typeLoc;
-            Delims = delims;            
-            Repair = repair;
-            Sections = seccnt;
-            fullname = new string[Sections];
-            smallname = new string[Sections];
-            medname = new string[Sections];
-            Notes = new string[Sections];
+            Type = type;
+            //TypeName_Rus = typeLoc;
+            Delims = delims;
 
-            string[] ntsTmp = notes.Split(new char[]{'|'});
+            Repair = repair;
+            Sections = GetRSecCount(Type);
+            //for (int i = 0; i < Sections; i++)
+            //{
+            //    FullName[i] = Building.FullRName(Farm, TierID, i, TypeName, Delims, false, true, true);
+            //    SmallName[i] = Building.FullRName(Farm, TierID, i, TypeName, Delims, true, false, false);
+            //    MedName[i] = Building.FullRName(Farm, TierID, i, TypeName, Delims, false, true, false);
+            //}
+            Notes = new string[Sections];
+            string[] tmpNotes = notes.Split(new char[] { '|' });
             for (int i = 0; i < Sections; i++)
-            {
-                fullname[i] = Building.FullRName(Farm, TierID, i, TypeName, Delims, false, true, true);
-                smallname[i] = Building.FullRName(Farm, TierID, i, TypeName, Delims, true, false, false);
-                medname[i] = Building.FullRName(Farm, TierID, i, TypeName, Delims, false, true, false);
-                Notes[i] = i<ntsTmp.Length?ntsTmp[i]:"";
-            }
-            
+                Notes[i] = i < tmpNotes.Length ? tmpNotes[i] : "";
+
         }
-        #region IBuilding Members
-        public string dep(int id) { return fdeps[id]; }
-        public string use(int id) { return fuses[id]; }
-        #endregion
+
+        public string Areas(int sec)
+        {
+            if (sec > Sections) return "";
+            return (TierID == 0 ? "" : (TierID == 1 ? "^" : "-")) + Building.GetSecRus(Type, sec, Delims);
+        }
+
+        public string Descr(int sec, bool shr)
+        {
+            if (sec > Sections) return "";
+            return Building.GetDescrRus(Type, shr, sec, Delims);
+        }
+
+        public int NestHeaterCount
+        {
+            get { return Building.GetRNHCount(Type); }
+        }
+
+        public string FullName(int sec)
+        {
+            if (sec > Sections) return "";
+            return Building.FullNameRus(Farm, TierID, sec, Type, Delims, false, true, true);
+        }
+        public string MedName(int sec)
+        {
+            if (sec > Sections) return "";
+            return Building.FullNameRus(Farm, TierID, sec, Type, Delims, false, true, false);
+        }
+        public string SmallName(int sec)
+        {
+            if (sec > Sections) return "";
+            return Building.FullNameRus(Farm, TierID, sec, Type, Delims, true, false, false);
+        }
+
+        //public string use(int id) { return fuses[id]; }
 
         /**
          * Гамбит не знал как лучше сделать строку, которую можно установить в начале программы,
@@ -155,9 +191,9 @@ namespace rabnet
 
         #endregion
 
-#region static
+        #region static
 
-        public static bool HasNest(String type, int sec, String nests)
+        public static bool HasNest(BuildingType type, int sec, String nests)
         {
             int c = GetRNHCount(type);
             if (c == 0) return false;
@@ -165,8 +201,15 @@ namespace rabnet
                 return (nests[sec] == '1');
             return (nests[0] == '1');
         }
-
-        public static String GetRDescr(String type, bool shr, int sec, String delims)
+        /// <summary>
+        /// Описание клетки
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="shr"></param>
+        /// <param name="sec"></param>
+        /// <param name="delims"></param>
+        /// <returns></returns>
+        public static String GetDescrRus(BuildingType type, bool shr, int sec, String delims)
         {
             String res = "";
             switch (type)
@@ -200,10 +243,18 @@ namespace rabnet
             }
             return res;
         }
-        public static String GetRSec(String type, int sec, String delims)
+
+        /// <summary>
+        /// Секции на русском
+        /// </summary>
+        /// <param name="type">Тип яруса</param>
+        /// <param name="sec">Количество секций</param>
+        /// <param name="delims">Перегородки</param>
+        /// <returns></returns>
+        public static String GetSecRus(BuildingType type, int sec, String delims)
         {
-            if (type == BuildingType.Female)
-                return "";
+            if (type == BuildingType.Female) return "";
+
             String secnames = "абвг";
             String res = "" + secnames[sec];
             if (type == BuildingType.Quarta && delims != "111")
@@ -217,27 +268,16 @@ namespace rabnet
                 res = "аб";
             return res;
         }
-        public static String GetRName(String type, bool shr)
+        public static String GetSecRus(string type, int sec, String delims)
         {
-            String res = "Нет";
-            switch (type)
-            {
-                case BuildingType.Female: res = shr ? BuildingType.Female_Short : BuildingType.Female_Rus; break;
-                case BuildingType.DualFemale: res = shr ? BuildingType.DualFemale_Short : BuildingType.DualFemale_Rus; break;
-                case BuildingType.Complex: res = shr ? BuildingType.Complex_Short : BuildingType.Complex_Rus; break;
-                case BuildingType.Jurta: res = shr ? BuildingType.Jurta_Short : BuildingType.Jurta_Rus; break;
-                case BuildingType.Quarta: res = shr ? BuildingType.Quarta_Short : BuildingType.Quarta_Rus; break;
-                case BuildingType.Vertep: res = shr ? BuildingType.Vertep_Short : BuildingType.Vertep_Rus; break;
-                case BuildingType.Barin: res = shr ? BuildingType.Barin_Short : BuildingType.Barin_Rus; break;
-                case BuildingType.Cabin: res = shr ? BuildingType.Cabin_Short : BuildingType.Cabin_Rus; break;
-            }
-            return res;
+            return GetSecRus(ParseType(type), sec, delims);
+
         }
 
         /// <summary>
         /// Возвращает количество секций у данного типа МИНИфермы
         /// </summary>
-        public static int GetRSecCount(String type)
+        public static int GetRSecCount(BuildingType type)
         {
             int res = 2;
             switch (type)
@@ -249,8 +289,12 @@ namespace rabnet
             }
             return res;
         }
+        public static int GetRSecCount(string type)
+        {
+            return GetRSecCount(ParseType(type));
+        }
 
-        public static int GetRNHCount(String type)
+        public static int GetRNHCount(BuildingType type)
         {
             int res = 1;
             switch (type)
@@ -263,30 +307,29 @@ namespace rabnet
             return res;
         }
 
-        public static String FullRName(int farm, int tierid, int sec, String type, String delims, bool shrt, bool showTier, bool ShowDescr)
+        public static String FullNameRus(int farm, int tierid, int sec, BuildingType type, String delims, bool shrt, bool showTier, bool ShowDescr)
         {
             String res = Building.Format(farm);
             if (tierid == 1) res += "^";
             if (tierid == 2) res += "-";
-            res += GetRSec(type, sec, delims);
+            res += GetSecRus(type, sec, delims);
             if (showTier)
-                res += " [" + GetRName(type, shrt) + "]";
+                res += " [" + GetNameRus(type, shrt) + "]";
             if (ShowDescr)
-                res += " (" + GetRDescr(type, shrt, sec, delims) + ")";
+                res += " (" + GetDescrRus(type, shrt, sec, delims) + ")";
             return res;
         }
 
-        public static String FullPlaceName(String rabplace, bool shrt, bool showTier, bool showDescr)
+        public static String FullPlaceName(String rawAddres, bool shrt, bool showTier, bool showDescr)
         {
-            if (rabplace == "")
-                return Rabbit.NULL_ADDRESS;
-            String[] dts = rabplace.Split(',');
-            return FullRName(int.Parse(dts[0]), int.Parse(dts[1]), int.Parse(dts[2]), dts[3], dts[4], shrt, showTier, showDescr);
-        }
+            if (rawAddres == "") return Rabbit.NULL_ADDRESS;
 
-        public static String FullPlaceName(String rabplace)
+            String[] dts = rawAddres.Split(',');
+            return FullNameRus(int.Parse(dts[0]), int.Parse(dts[1]), int.Parse(dts[2]), Building.ParseType(dts[3]), dts[4], shrt, showTier, showDescr);
+        }
+        public static String FullPlaceName(String rawAddres)
         {
-            return FullPlaceName(rabplace, false, false, false);
+            return FullPlaceName(rawAddres, false, false, false);
         }
 
         public static bool HasNest(String rabplace)
@@ -294,9 +337,121 @@ namespace rabnet
             if (rabplace == "")
                 return false;
             String[] dts = rabplace.Split(',');
-            return HasNest(dts[3], int.Parse(dts[2]), dts[5]);
+            return HasNest(ParseType(dts[3]), int.Parse(dts[2]), dts[5]);
         }
 
-#endregion static
+        /// <summary>
+        /// Преобразует строковое название типа клетки в enum
+        /// </summary>
+        /// <param name="type">Название на русском или английском</param>
+        /// <returns>Тип клетки. None если не смог распарсить</returns>
+        public static BuildingType ParseType(string type)
+        {
+            switch (type)
+            {
+                case FEMALE_Eng:
+                case FEMALE_Rus: return BuildingType.Female;
+                case DOUBLE_Female_Eng:
+                case DOUBLE_Female_Rus: return BuildingType.DualFemale;
+                case JURTA_Eng:
+                case JURTA_Rus: return BuildingType.Jurta;
+                case QUARTA_Eng:
+                case QUARTA_Rus: return BuildingType.Quarta;
+                case VERTEP_Eng:
+                case VERTEP_Rus: return BuildingType.Vertep;
+                case Barin_Eng:
+                case Barin_Rus: return BuildingType.Barin;
+                case Cabin_Eng:
+                case Cabin_Rus: return BuildingType.Cabin;
+                case Complex_Eng:
+                case Complex_Rus: return BuildingType.Complex;
+                default: return BuildingType.None;
+            }
+        }
+
+        public static string GetName(BuildingType type)
+        {
+            String res = "Нет";
+            switch (type)
+            {
+                case BuildingType.Female: res = FEMALE_Eng; break;
+                case BuildingType.DualFemale: res = DOUBLE_Female_Eng; break;
+                case BuildingType.Jurta: res = JURTA_Eng; break;
+                case BuildingType.Quarta: res = QUARTA_Eng; break;
+                case BuildingType.Vertep: res = VERTEP_Eng; break;
+                case BuildingType.Barin: res = Barin_Eng; break;
+                case BuildingType.Cabin: res = Cabin_Eng; break;
+                case BuildingType.Complex: res = Complex_Eng; break;
+            }
+            return res;
+        }
+
+        public static String GetNameRus(BuildingType type, bool shr)
+        {
+            String res = "Нет";
+            switch (type)
+            {
+                case BuildingType.Female: res = shr ? FEMALE_Short : FEMALE_Rus; break;
+                case BuildingType.DualFemale: res = shr ? DOUBLE_Female_Short : DOUBLE_Female_Rus; break;
+                case BuildingType.Jurta: res = shr ? JURTA_Short : JURTA_Rus; break;
+                case BuildingType.Quarta: res = shr ? QUARTA_Short : QUARTA_Rus; break;
+                case BuildingType.Vertep: res = shr ? Vertep_Short : VERTEP_Rus; break;
+                case BuildingType.Barin: res = shr ? Barin_Short : Barin_Rus; break;
+                case BuildingType.Cabin: res = shr ? Cabin_Short : Cabin_Rus; break;
+                case BuildingType.Complex: res = shr ? Complex_Short : Complex_Rus; break;
+            }
+            return res;
+        }
+        public static String GetNameRus(BuildingType type)
+        {
+            return GetNameRus(type, false);
+        }
+
+
+        #endregion static
+
+
+    }
+
+    public class RabInBuild
+    {
+        public int ID;
+        public string Name;
+
+        public RabInBuild(int id, string name)
+        {
+            this.ID = id;
+            this.Name = name;
+        }
+    }
+
+    public class BuildingList : List<Building>
+    {
+        public Address SearchByMedName(string medAddress)
+        {
+            if (medAddress == Rabbit.NULL_ADDRESS) return null;
+
+            for (int b = 0; b < this.Count; b++)
+                for (int sec = 0; sec < this[b].Sections; sec++)
+                    if (this[b].MedName(sec) == medAddress)
+                    {
+                        return new Address(this[b].Farm, this[b].TierID, sec);
+                    }
+            return new Address(0, 0, 0);
+        }
+    }
+
+    public class Address
+    {
+        public int Farm;
+        public int Tier;
+        public int Section;
+
+        public Address(int farm, int tier, int sec)
+        {
+            this.Farm = farm;
+            this.Tier = tier;
+            this.Section = sec;
+        }
     }
 }

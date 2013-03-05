@@ -148,6 +148,7 @@ namespace rabnet.panels
             f[Filters.DBL_SURNAME] = Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
             IDataGetter dg = Engine.db2().getBuildingsRows(f);
             _rsb.SetText(1, dg.getCount().ToString() + " МИНИфермы");
+            _runF = f;
             return dg;
         }
 
@@ -190,22 +191,20 @@ namespace rabnet.panels
 
             for (int i = 0; i < b.Sections; i++)
             {
-                if (b.Areas[i] != prevnm || b.Farm!=prevfarm)
+                if (b.Areas(i) != prevnm || b.Farm!=prevfarm)
                 {
                     manual = false;
-                    ListViewItem it = listView1.Items.Add(Building.Format(b.Farm) + b.Areas[i]);//№
+                    ListViewItem it = listView1.Items.Add(Building.Format(b.Farm) + b.Areas(i));//№
                     prevfarm = b.Farm;
-                    prevnm = b.Areas[i];
-                    //it.Tag = b.ID.ToString();
-                    it.SubItems.Add(b.TypeName_Rus);//Ярус
-                    it.SubItems.Add(b.dep(i));//Отделение
+                    prevnm = b.Areas(i);
+                    it.SubItems.Add(Building.GetNameRus(b.Type, _runF.safeBool(Filters.SHORT)));//Ярус
+                    it.SubItems.Add(b.Descr(i,_runF.safeBool(Filters.SHORT)));//Отделение
                     String stat = "unk";
                     if (b.Repair) 
                         stat = "ремонт";
                     else
                     {
-                        if (b.Busy[i] == 0) stat = "-";
-                        else stat = b.use(i);
+                        stat = b.Busy[i].ID == 0 ? "-" : b.Busy[i].Name;
                     }
                     it.SubItems.Add(stat);//Статус
                     String nst = "";
@@ -216,13 +215,13 @@ namespace rabnet.panels
                         if (b.NestHeaterCount > 1) nid = i;
                         nst = (b.Nests[nid] == '1') ? "да" : "нет";
                         htr = (b.Heaters[nid] == '0' ? "нет" : (b.Heaters[nid] == '1' ? "выкл" : "вкл"));
-                        if (b.TypeName == BuildingType.Jurta)
+                        if (b.Type == BuildingType.Jurta)
                             if ((b.Delims[0] == '1' && i == 0) || (b.Delims[0] == '0' && i == 1))
                             {
                                 nst = "";
                                 htr = "";
                             }
-                        if (b.TypeName==BuildingType.Complex)
+                        if (b.Type==BuildingType.Complex)
                             if (i != 0)
                             {
                                 nst = "";
@@ -307,10 +306,10 @@ namespace rabnet.panels
             string livesIn = "";
             for (int i = 0; i < b.Sections; i++)
             {
-                livesIn = b.use(i);
-                if (b.Busy[i] > 0)
+                livesIn = b.Busy[i].Name;
+                if (b.Busy[i].ID > 0)
                 {
-                    rner = Engine.get().getRabbit(b.Busy[i]);
+                    rner = Engine.get().getRabbit(b.Busy[i].ID);
                     if (rner.YoungCount != 0)
                     {
                         foreach(YoungRabbit or in rner.Youngers)
@@ -322,7 +321,7 @@ namespace rabnet.panels
                 rabs.Add(livesIn);
             }
            
-            return new FarmDrawer.DrawTier(b.ID,b.TypeName,b.Delims,b.Nests,b.Heaters,rabs.ToArray(),b.Repair);
+            return new FarmDrawer.DrawTier(b.ID,b.Type,b.Delims,b.Nests,b.Heaters,rabs.ToArray(),b.Repair);
         }
 
         private void drawFarm(int farm)
@@ -441,8 +440,8 @@ namespace rabnet.panels
                 {
                     b = b2;
                     for (int i = 0; i < b.Sections; i++)
-                        if (b.Busy[i]>0)
-                            f.addRabbit(b.Busy[i]);
+                        if (b.Busy[i].ID>0)
+                            f.addRabbit(b.Busy[i].ID);
                 }
             }
             if(f.ShowDialog() == DialogResult.OK)
@@ -462,8 +461,8 @@ namespace rabnet.panels
                 {
                     b = b2;
                     for (int i = 0; i < b.Sections; i++)
-                        if (b.Busy[i]>0)
-                            f.AddRabbit(b.Busy[i]);
+                        if (b.Busy[i].ID>0)
+                            f.AddRabbit(b.Busy[i].ID);
                 }
             }
             if(f.ShowDialog() == DialogResult.OK)
@@ -570,7 +569,7 @@ namespace rabnet.panels
                         Building b = Engine.db().getBuilding(tiers[i]);
                         for (int j = 0; j < b.Sections; j++)
                         {
-                            if (b.Busy[j] > 0)
+                            if (b.Busy[j].ID > 0)
                                 candelete = false;
                         }
                     }
@@ -726,7 +725,7 @@ namespace rabnet.panels
                 listView1.SelectedItems[0].SubItems[FIELD_NOTES].Text = dlg.Notes;
                 for (int i = 0; i < b.Sections; i++)
                 {
-                    if (listView1.SelectedItems[0].SubItems[0].Text == Building.Format(b.Farm) + b.Areas[i])
+                    if (listView1.SelectedItems[0].SubItems[0].Text == Building.Format(b.Farm) + b.Areas(i))
                     {
                         b.Notes[i]=dlg.Notes;
                         break;

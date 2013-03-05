@@ -24,11 +24,11 @@ namespace rabnet.forms
         {
             cbAddress.Items.Clear();
             cbAddress.Items.Add("Любой");
-            Building[] builds = Engine.db().getBuildings(new Filters());
+            BuildingList builds = Engine.db().getBuildings(new Filters());
             foreach (Building b in builds)
             {
                 for (int i = 0; i < b.Sections; i++)                
-                    cbAddress.Items.Add(b.smallname[i]);               
+                    cbAddress.Items.Add(b.SmallName(i));               
             }
             cbAddress.SelectedIndex = 0;
         }

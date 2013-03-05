@@ -7,7 +7,7 @@ namespace rabnet.forms
     public partial class ReplaceBrideForm : Form
     {
         RabNetEngRabbit r = null;
-        Building[] bs;
+        BuildingList bs;
         int girlOut = 0;
         public ReplaceBrideForm()
         {
@@ -25,7 +25,7 @@ namespace rabnet.forms
             Filters f = new Filters();
             f[Filters.FREE] = "1";
             bs=Engine.db().getBuildings(f);
-            if (bs.Length == 0)
+            if (bs.Count == 0)
             {
                 MessageBox.Show(@"Не возможно пересадить, т.к. все клетки заняты.
 Освободите одну или несколько клеток и попробуйте снова.","Нет свободных клеток",MessageBoxButtons.OK,MessageBoxIcon.Asterisk);
@@ -36,8 +36,8 @@ namespace rabnet.forms
             foreach(Building b in bs)
             {
                 for (int i = 0; i < b.Sections; i++)
-                    if (b.Busy[i]==0)
-                    comboBox1.Items.Add(b.medname[i]);
+                    if (b.Busy[i].ID==0)
+                    comboBox1.Items.Add(b.MedName(i));
             }
             comboBox1.Sorted = true;
             comboBox1.SelectedIndex = 0;
@@ -52,9 +52,9 @@ namespace rabnet.forms
         {
             if (s == Rabbit.NULL_ADDRESS)
                 return new int[] { 0, 0, 0 };
-            for (int i = 0; i < bs.Length; i++)
+            for (int i = 0; i < bs.Count; i++)
                 for (int j = 0; j < bs[i].Sections; j++)
-                    if (bs[i].medname[j] == s)
+                    if (bs[i].MedName(j) == s)
                     {
                         return new int[] { (int)bs[i].Farm, bs[i].TierID, j };
                     }

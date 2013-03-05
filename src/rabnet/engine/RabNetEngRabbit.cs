@@ -91,153 +91,7 @@ namespace rabnet
             _sex = sx;
             _youngers=new YoungRabbit[0];
         }
-        //TODO Сделать это на уровне OneRabbit
         
-        #region inherited_properties
-
-        //public int ID { get { return _rab.ID; } }
-        //public Rabbit.SexType Sex
-        //{   
-        //    get { return _rab.Sex; }
-        //    set { _rab.Sex=value; }
-        //}
-        ///// <summary>
-        ///// Количество кроликов в группе
-        ///// </summary>
-        //public int Group
-        //{
-        //    get { return _rab.Group; }
-        //    set { _rab.Group = value; }
-        //}
-        ///// <summary>
-        ///// Возраст
-        ///// </summary>
-        //public int Age { get { return _rab.Age; } }
-        //public DateTime BirthDay
-        //{
-        //    get { return _rab.BirthDay; }
-        //    set { _rab.BirthDay = value; }
-        //}
-        ///// <summary>
-        ///// Порода
-        ///// </summary>
-        //public String BreedName { get { return _rab.BreedName; } }      
-        //public String Notes
-        //{
-        //    get { return _rab.Notes; }
-        //    set { _rab.Notes = value; }
-        //}
-
-        //public int Rate
-        //{
-        //    get { return _rab.Rate; }
-        //    set { _rab.Rate = value; }
-        //}
-
-        //public int Parent { get { return _rab.ParentID; } }
-        //public int WasNameID { get { return _rab.WasNameID; } }
-        //public int NameID
-        //{
-        //    get { return _rab.NameID; }
-        //    set { _rab.NameID = value; }
-        //}
-        ///// <summary>
-        ///// Фамили по отцу
-        ///// </summary>
-        //public int SurnameID
-        //{
-        //    get { return _rab.SurnameID; }
-        //    set { _rab.SurnameID = value; }
-        //}
-        ///// <summary>
-        ///// Фамилия по матери
-        ///// </summary>
-        //public int SecnameID
-        //{
-        //    get { return _rab.SecnameID; }
-        //    set { _rab.SecnameID = value; }
-        //}      
-        ///// <summary>
-        ///// Порода кролика
-        ///// </summary>
-        //public int BreedID
-        //{
-        //    get { return _rab.BreedID;}
-        //    set {_rab.BreedID=value;}
-        //}
-        //public int Zone
-        //{
-        //    get { return _rab.Zone; }
-        //    set { _rab.Zone = value; }
-        //}
-        //public String Genoms
-        //{
-        //    get { return _rab.Genoms; }
-        //    set { _rab.Genoms = value; }
-        //}
-        ///// <summary>
-        ///// Заметки
-        ///// </summary>               
-        //public DateTime LastFuckOkrol
-        //{
-        //    get { return _rab.LastFuckOkrol; }
-        //    set { _rab.LastFuckOkrol = value; }
-        //}
-        //public int EventType { get { return _rab.EventType; } }
-        //public int KidsOverAll
-        //{
-        //    get { return _rab.KidsOverAll; }
-        //    set { _rab.KidsOverAll = value; }
-        //}
-        //public int KidsLost
-        //{
-        //    get { return _rab.KidsLost; }
-        //    set { _rab.KidsLost = value; }
-        //}
-
-        ///// <summary>
-        ///// Бонитировка
-        ///// </summary>
-        //public String Bon { get { return _rab.Bon; } }
-        //public DateTime EventDate { get { return _rab.EventDate; } }
-        //public int Status
-        //{
-        //    get { return _rab.Status; }
-        //    set { _rab.Status = value; }
-        //}
-                     
-        //public bool Production
-        //{
-        //    get { return _rab.Production; }
-        //    set { _rab.Production = value; }
-        //}
-        //public bool RealizeReady
-        //{
-        //    get { return _rab.RealizeReady; }
-        //    set { _rab.RealizeReady = value; }
-        //}
-        //public bool Defect
-        //{
-        //    get { return _rab.Defect; }
-        //    set { _rab.Defect = value; }
-        //}
-        //public bool NoKuk
-        //{
-        //    get { return _rab.NoKuk; }
-        //    set { _rab.NoKuk = value; }
-        //}
-        //public bool NoLact
-        //{
-        //    get { return _rab.NoLact; }
-        //    set { _rab.NoLact = value; }
-        //}        
-        
-        //public string RawAddress { get { return _rab.RawAddress; } }
-        //public String Address { get { return _rab.Address; } }
-        //public String NewAddress { get { return _rab.NewAddress; } }
-        //public string AddressSmall { get { return _rab.AddressSmall; } }
-        #endregion inherited_properties
-
         #region own_props
         public string TierType
         {
@@ -261,11 +115,11 @@ namespace rabnet
                 string[] values = this.RawAddress.Split(',');
                 if (values.Length < 3)
                     return false;
-                if (values[3] == BuildingType.Jurta && values[2] == "0" && values[5] == "1")
+                if (Building.ParseType(values[3]) == BuildingType.Jurta && values[2] == "0" && values[5] == "1")
                     return true;
-                if (values[3] == BuildingType.Female && values[5] == "1")
+                if (Building.ParseType(values[3]) == BuildingType.Female && values[5] == "1")
                     return true;
-                if (values[3] == BuildingType.DualFemale && ((values[2] == "0" && values[5][0] == '1') || (values[2] == "1" && values[5][1] == '1')))
+                if (Building.ParseType(values[3]) == BuildingType.DualFemale && ((values[2] == "0" && values[5][0] == '1') || (values[2] == "1" && values[5][1] == '1')))
                     return true;
                 return false;
             } 
@@ -387,7 +241,7 @@ namespace rabnet
         {
             if (_id != 0) return;
 
-            _id = _eng.db().newRabbit(this, Mom);
+            _id = _eng.db().NewRabbit(this, Mom);
             //_origin.ID = _id;
             _eng.logs().log(LogType.INCOME, _id);
         }

@@ -94,10 +94,10 @@ namespace rabnet
         String makeName(int nm, int sur, int sec, int grp, Rabbit.SexType sex);
         bool unblockName(int id);
 
-        Building[] getBuildings(Filters f);
+        BuildingList getBuildings(Filters f);
         void replaceRabbit(int rid, int farm, int tier_id, int sec);
         void replaceYounger(int yid, int farm, int tier_id, int sec);
-        int newRabbit(OneRabbit r,int mom);
+        int NewRabbit(OneRabbit r,int mom);
                 
         void updateBuilding(Building b);
         void addName(Rabbit.SexType sex, string name, string surname);
@@ -138,9 +138,9 @@ namespace rabnet
         void addBuilding(int parent, String name);
         void replaceBuilding(int bid, int toBuilding);
         void deleteBuilding(int bid);
-        int addFarm(int parent,String uppertype, String lowertype,String name,int id);
+        int addFarm(int parent, BuildingType uppertype, BuildingType lowertype, String name, int id);
         bool FarmExists(int id);
-        void ChangeFarm(int fid,String uppertype,String lowertype);
+        void ChangeFarm(int fid, BuildingType uppertype, BuildingType lowertype);
         void deleteFarm(int fid);             
         String[] getWeights(int rabbit);
 

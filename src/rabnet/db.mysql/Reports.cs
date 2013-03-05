@@ -418,10 +418,10 @@ WHERE {0:s} {1:s} ORDER BY name,dt;",worker , period, format);
             return int.Parse(getValue(query));
         }
 
-        private int getBuildCount(String type,int bid)
+        private int getBuildCount(BuildingType type,int bid)
         {
             return getInt32(String.Format(@"SELECT COUNT(t_id) FROM tiers,minifarms WHERE
-(t_id=m_upper OR t_id=m_lower) AND inBuilding({0:d},m_id){1:s};",bid, type==""?"":" AND t_type='"+type+"'"));
+(t_id=m_upper OR t_id=m_lower) AND inBuilding({0:d},m_id){1:s};",bid, type==BuildingType.None?"":" AND t_type='"+Building.GetName(type)+"'"));
         }
 
         private int round(double d)
@@ -455,7 +455,7 @@ WHERE {0:s} {1:s} ORDER BY name,dt;",worker , period, format);
             int nest_out = f.safeInt("nest_out", 38);
             XmlDocument doc = new XmlDocument();
             doc.AppendChild(doc.CreateElement("Rows"));
-            int alltiers = getBuildCount("", bid);
+            int alltiers = getBuildCount(BuildingType.None, bid);
             int fem = getBuildCount(BuildingType.Female, bid); 
             int dfe = getBuildCount(BuildingType.DualFemale, bid);
             int com = getBuildCount(BuildingType.Complex, bid);
@@ -517,7 +517,7 @@ FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AN
                     if (rd.GetInt32(i + 2) == 0)
                     {
                         doc.DocumentElement.AppendChild(doc.CreateElement("Row")).AppendChild(
-                            doc.CreateElement("address")).AppendChild(doc.CreateTextNode(rd.GetString(0)+Building.GetRSec(rd.GetString(1),i,"000")));
+                            doc.CreateElement("address")).AppendChild(doc.CreateTextNode(rd.GetString(0)+Building.GetSecRus(rd.GetString(1),i,"000")));
                     }
             rd.Close();
             return doc;

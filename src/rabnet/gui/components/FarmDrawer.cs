@@ -17,7 +17,7 @@ namespace rabnet.components
 
         public class DrawTier
         {
-            private String type;
+            private BuildingType type;
             private String delims;
             private String nests;
             private String heaters;
@@ -29,7 +29,7 @@ namespace rabnet.components
 //            private Font f = new Font("Arial", 8);
 			private Font f = SystemFonts.DefaultFont;
 
-			public DrawTier(int id, String type, String delims, String nests, String heaters, String[] residents, bool repair)
+            public DrawTier(int id, BuildingType type, String delims, String nests, String heaters, String[] residents, bool repair)
             {
                 this.id = id;
                 this.repair=repair;

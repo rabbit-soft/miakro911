@@ -351,7 +351,7 @@ namespace db.mysql
             RabbitGetter.replaceYounger(sql, rid, farm, tier_id, sec);
         }
 
-        public int newRabbit(OneRabbit r, int mom)
+        public int NewRabbit(OneRabbit r, int mom)
         {
             return RabbitGetter.newRabbit(sql, r, mom);
         }
@@ -465,7 +465,7 @@ namespace db.mysql
         {
             return Buildings.GetMFCount(sql);
         }
-        public Building[] getBuildings(Filters f)
+        public BuildingList getBuildings(Filters f)
         {
             return Buildings.getBuildings(sql, f);
         }
@@ -489,7 +489,7 @@ namespace db.mysql
             Buildings.deleteBuilding(sql, bid);
         }
 
-        public int addFarm(int parent, string uppertype, string lowertype, string name, int id)
+        public int addFarm(int parent, BuildingType uppertype, BuildingType lowertype, string name, int id)
         {
 #if DEMO
             const int DEMO_MAX_FARMS = 10;
@@ -504,7 +504,7 @@ namespace db.mysql
             return Buildings.farmExists(sql, id);
         }
 
-        public void ChangeFarm(int fid, string uppertype, string lowertype)
+        public void ChangeFarm(int fid, BuildingType uppertype, BuildingType lowertype)
         {
             Buildings.changeFarm(sql, fid, uppertype, lowertype);
         }

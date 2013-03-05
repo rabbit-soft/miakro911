@@ -49,7 +49,7 @@ namespace rabnet
             if (value)
             {
                 for (int i = 0; i < b.Sections; i++)
-                    if (b.Busy[i] != 0)
+                    if (b.Busy[i].ID != 0)
                         throw new ExFarmNotEmpty();
             }
             _eng.logs().log(value ? LogType.REPAIR_ON : LogType.REPAIR_OFF, 0, b.Farm.ToString());
@@ -64,7 +64,7 @@ namespace rabnet
         {
             if (b.Nests[0] == (value ? '1' : '0'))
                 return;
-            _eng.logs().log(value ? LogType.NEST_ON : LogType.NEST_OFF, b.Busy[0], b.smallname[0]);
+            _eng.logs().log(value ? LogType.NEST_ON : LogType.NEST_OFF, b.Busy[0].ID, b.SmallName(0));
             b.Nests = (value ? "1" : "0")+b.Nests.Substring(1);
             commit();
 
@@ -79,7 +79,7 @@ namespace rabnet
         {
             if (b.Nests[1] == (value ? '1' : '0'))
                 return;
-            _eng.logs().log(value ? LogType.NEST_ON : LogType.NEST_OFF, b.Busy[1],b.smallname[1]);
+            _eng.logs().log(value ? LogType.NEST_ON : LogType.NEST_OFF, b.Busy[1].ID,b.SmallName(1));
             b.Nests = b.Nests.Substring(0, 1) + (value ? '1' : '0');
             commit();
 
@@ -95,7 +95,7 @@ namespace rabnet
             LogType tp = LogType.HEATER_OUT;
             if (value == 1) tp = LogType.HEATER_OFF;
             if (value == 3) tp = LogType.HEATER_ON;
-            _eng.logs().log(tp, b.Busy[0], b.smallname[0]);
+            _eng.logs().log(tp, b.Busy[0].ID, b.SmallName(0));
             b.Heaters = String.Format("{0:D1}",value) + b.Heaters.Substring(1);
             commit();
         }
@@ -108,7 +108,7 @@ namespace rabnet
             LogType tp = LogType.HEATER_OUT;
             if (value == 1) tp = LogType.HEATER_OFF;
             if (value == 3) tp = LogType.HEATER_ON;
-            _eng.logs().log(tp, b.Busy[1], b.smallname[1]);
+            _eng.logs().log(tp, b.Busy[1].ID, b.SmallName(1));
             b.Heaters = b.Heaters.Substring(0, 1) + String.Format("{0:D1}", value);
             commit();
         }
@@ -141,7 +141,7 @@ namespace rabnet
             commit();
         }
 
-        public string type { get { return b.TypeName; } }
+        public BuildingType type { get { return b.Type; } }
 
         /// <summary>
         /// Удаляет гнездовье там где сидит кролик
@@ -151,7 +151,7 @@ namespace rabnet
         {
             int ind = -1;
             for (int i = 0; i < b.Busy.Length;i++ )          
-                if (b.Busy[i] == rId)
+                if (b.Busy[i].ID == rId)
                 {
                     ind = i;
                     break;

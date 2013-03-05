@@ -96,8 +96,8 @@ namespace rabnet.forms
 
             public static bool canTierHaveNest(string place)
             {
-                if (place.Contains(BuildingType.DualFemale_Rus) || place.Contains(BuildingType.Female_Rus)) return true;
-                if (place.Contains(BuildingType.Jurta_Rus))
+                if (place.Contains(Building.DOUBLE_Female_Rus) || place.Contains(Building.FEMALE_Rus)) return true;
+                if (place.Contains(Building.JURTA_Rus))
                 {
                     place = place.Remove(place.LastIndexOf(" ["));
                     if (place.Contains("а"))
@@ -240,7 +240,7 @@ namespace rabnet.forms
         /// Комбобокс с новыми адресами, который добавляется к новой строке
         /// </summary>
         private DataGridViewComboBoxColumn _dgcbNewAddress = new DataGridViewComboBoxColumn();        
-        private Building[] _freeBuildings = null;       
+        private BuildingList _freeBuildings = null;       
         private Action _action = Action.NONE;
         private bool _globalError=false;
         private bool _noboys = false;
@@ -350,7 +350,7 @@ namespace rabnet.forms
             for (int i = 0; i < _rabERs.Count; i++) 
                 f["r" + i.ToString()] = _rabERs[i].ID.ToString();
 
-            String tp = "";
+            BuildingType tp = BuildingType.None;
             cbFilter.Tag = 1;
             //if (_action == Action.SET_NEST && cbFilter.SelectedIndex != 4 && cbFilter.SelectedIndex != 2 && cbFilter.SelectedIndex !=1)
             //    cbFilter.SelectedIndex = 4;
@@ -370,7 +370,7 @@ namespace rabnet.forms
                         case 7: tp = BuildingType.Barin; break;
                         case 8: tp = BuildingType.Cabin; break;
                     }
-                    f["tp"] = tp;
+                    f["tp"] = Building.GetName(tp);
                 }
             }
             else
@@ -385,10 +385,10 @@ namespace rabnet.forms
             {
                 for (int i = 0; i < b.Sections; i++)
                 {
-                    if (_action == Action.SET_NEST && b.TypeName == BuildingType.Jurta && i == 1)
+                    if (_action == Action.SET_NEST && b.Type == BuildingType.Jurta && i == 1)
                         continue;
-                    if (b.Busy[i]==0 || myrab(b.Busy[i])) 
-                        _dgcbNewAddress.Items.Add(b.medname[i]);
+                    if (b.Busy[i].ID==0 || myrab(b.Busy[i].ID)) 
+                        _dgcbNewAddress.Items.Add(b.MedName(i));
                 }
             }
             foreach (RP r in _replaceList)
@@ -619,19 +619,19 @@ namespace rabnet.forms
         /// </summary>
         /// <param name="rp">По какой записи ищут клетку</param>
         /// <returns>Массив (Номер фермы, Ярус, Клетка)</returns>
-        private int[] getAddress(RP rp)
-        {
-            string s = rp.CurAddress;
-            if (s == Rabbit.NULL_ADDRESS)
-                return new int[] { 0, 0, 0 };
-            for (int i = 0; i < _freeBuildings.Length; i++)
-                for (int j = 0; j < _freeBuildings[i].Sections; j++)
-                    if (_freeBuildings[i].medname[j] == s)
-                    {
-                        return new int[]{(int)_freeBuildings[i].Farm, _freeBuildings[i].TierID, j};
-                    }
-            return null;
-        }
+        //private int[] getAddress(RP rp)
+        //{
+        //    string s = rp.CurAddress;
+        //    if (s == Rabbit.NULL_ADDRESS)
+        //        return new int[] { 0, 0, 0 };
+        //    for (int i = 0; i < _freeBuildings.Count; i++)
+        //        for (int j = 0; j < _freeBuildings[i].Sections; j++)
+        //            if (_freeBuildings[i].MedName(j) == s)
+        //            {
+        //                return new int[]{(int)_freeBuildings[i].Farm, _freeBuildings[i].TierID, j};
+        //            }
+        //    return null;
+        //}
 
         private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
@@ -672,8 +672,9 @@ namespace rabnet.forms
 
             if (rp.ID == 0)
             {
-                int[] a = getAddress(rp);
-                _rabERs[_replaceList.IndexOf(rp)].ReplaceRabbit(a[0], a[1], a[2], rp.CurAddress);
+                //int[] a = getAddress(rp);
+                Address a = _freeBuildings.SearchByMedName(rp.CurAddress);
+                _rabERs[_replaceList.IndexOf(rp)].ReplaceRabbit(a.Farm, a.Tier, a.Section, rp.CurAddress);
                 rp.Saved = true;
                 return;
             }
@@ -700,11 +701,12 @@ namespace rabnet.forms
 
             if (rp.Replaced && !allowReplace)
             {
-                int[] a = getAddress(rp);
+                //int[] a = getAddress(rp);
+                Address a = _freeBuildings.SearchByMedName(rp.CurAddress);
                 if (rp.Younger)
-                    par.ReplaceYounger(rb.ID, a[0], a[1], a[2], rp.CurAddress);
+                    par.ReplaceYounger(rb.ID, a.Farm, a.Tier, a.Section, rp.CurAddress);
                 else
-                    rb.ReplaceRabbit(a[0], a[1], a[2], rp.CurAddress);               
+                    rb.ReplaceRabbit(a.Farm, a.Tier, a.Section, rp.CurAddress);               
             }
 
             if (rp.CanHaveNest)
@@ -713,10 +715,12 @@ namespace rabnet.forms
                 {
                     RabNetEngRabbit rr = Engine.get().getRabbit(rb.ID);
                     RabNetEngBuilding rbe = Engine.get().getBuilding(rr.RawAddress);
-                    string[] vals = rr.RawAddress.Split(',');
-                    if (vals[3] == BuildingType.Jurta || vals[3] == BuildingType.Female)
+
+                    string[] vals = rr.RawAddress.Split(','); ///todo создать функцию building from rawstr
+                    BuildingType tp = Building.ParseType(vals[3]);
+                    if (tp == BuildingType.Jurta || tp == BuildingType.Female)
                         rbe.setNest(rp.SetNest);
-                    else if (vals[3] == BuildingType.DualFemale)
+                    else if (tp == BuildingType.DualFemale)
                     {                        
                         if (vals[2] == "0")
                             rbe.setNest(rp.SetNest);
@@ -732,8 +736,9 @@ namespace rabnet.forms
             while (rp.Clones.Count > 0)
             {
                 RP c = rp.Clones[0];
-                int[] a = getAddress(c);
-                int cid = rb.Clone(c.Count, a[0], a[1], a[2]);
+                //int[] a = getAddress(c);
+                Address a = _freeBuildings.SearchByMedName(rp.CurAddress);
+                int cid = rb.Clone(c.Count, a.Farm, a.Tier, a.Section);
                 c.ID = cid;
                 commitRabbit(c, cid, allowReplace);
                 if (_action == Action.ONE_GIRL_OUT && _girlout == 0 && c.Sex == Rabbit.SexType.FEMALE && c.Count == 1)

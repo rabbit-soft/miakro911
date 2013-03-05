@@ -68,7 +68,7 @@ namespace rabnet.components
             set { cbVigul.SelectedIndex = (value ? 1 : 0); }
         }
 
-        public void setType(String type)
+        public void setType(BuildingType type)
         {
             grDelim.Visible = grDelims.Visible = grNest.Visible = grNest2.Visible = grVigul.Visible = false;
             switch (type)
