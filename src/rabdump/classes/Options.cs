@@ -104,10 +104,7 @@ namespace rabdump
             _rnc.SaveOption(RabnetConfig.RNCOption.MysqlPath, _myPath);
             _rnc.SaveOption(RabnetConfig.RNCOption.zip7path, _p7);
             _rnc.SaveOption(RabnetConfig.RNCOption.serverUrl, _servUrl);
-            string s = "";
-            if (StartAtStart == true)
-                s = Application.ExecutablePath;
-            _rnc.SaveOption(RabnetConfig.RNCOption.rabdump_startupPath, s);
+            _rnc.SaveOption(RabnetConfig.RNCOption.RabDump_StartupAtStart, _sas.ToString());
         }
 
         /// <summary>
@@ -121,13 +118,7 @@ namespace rabdump
             MySqlPath = _rnc.GetOption(RabnetConfig.RNCOption.MysqlPath);
             _p7 = _rnc.GetOption(RabnetConfig.RNCOption.zip7path);
             _servUrl = _rnc.GetOption(RabnetConfig.RNCOption.serverUrl);
-
-            StartAtStart = false;
-
-            string val = _rnc.GetOption(RabnetConfig.RNCOption.rabdump_startupPath);
-            if (val != null)
-                if (val == Application.ExecutablePath)
-                    StartAtStart = true;
+            bool.TryParse(_rnc.GetOption(RabnetConfig.RNCOption.RabDump_StartupAtStart),out _sas);
         }
 
         internal RabnetConfig GetRabnetConfig()
