@@ -79,7 +79,7 @@ namespace rabnet
         private void loadData()
         {
             _origin = _eng.db().GetRabbit(_id);
-            if (_origin == null) throw new ExNoRabbit();
+            if (_origin == null) throw new ExNoRabbit();       
 
             cloneOnThis(_origin);
         }
@@ -364,7 +364,7 @@ namespace rabnet
             if (count == Group)
             {                
                 _eng.db().KillRabbit(_id, daysPast, reason, notes);
-                _eng.logs().log(LogType.RABBIT_KILLED, ID, 0, AddressSmall == Rabbit.NULL_ADDRESS ? CloneAddress : AddressSmall, "",
+                _eng.logs().log(LogType.RABBIT_KILLED, ID, 0, AddressSmall == Rabbit.NULL_ADDRESS ? this.CloneAddress : AddressSmall, "",
                     String.Format(" {0:s}[{1:d}] {2:s} {3:s}", FullName, Group, notes, (daysPast != 0 ? String.Format(" {0:d} дней назад", daysPast) : "")));
             }
             else
