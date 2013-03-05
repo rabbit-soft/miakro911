@@ -10,7 +10,7 @@ namespace pEngine
     public interface IServerProxy : IXmlRpcProxy
     {
         [XmlRpcMethod("client.get.update")]
-        string ClientGetUpdate(string question,string dongleId);
+        string ClientGetUpdate(string question);
 
         //[XmlRpcMethod("clients.get")]
         //sClient[] GetClient(string clientId);
@@ -22,22 +22,21 @@ namespace pEngine
         [XmlRpcMethod("get.dumplist")]
         sDump[] GetDumpList();
 
-        //[XmlRpcMethod("get.update.files")]
-        //sUpdateFile[] GetUpdateFiles();
+        [XmlRpcMethod("get.update.files")]
+        sUpdateFile[] GetUpdateFiles();
 
-        //[XmlRpcMethod("vendor.update.dongle")]
-        //string VendorUpdateDongle(string base64_question, string clientId, string farms, string flags, string startDate, string endDate, string dongleId);
-
-        //[XmlRpcMethod("dongle.update.success")]
-        //void SuccessUpdate(string dongleId);
+        [XmlRpcMethod("vendor.update.dongle")]
+        string VendorUpdateDongle(string base64_question, string clientId, string farms, string flags, string startDate, string endDate, string dongleId);
+        [XmlRpcMethod("dongle.update.success")]
+        void SuccessUpdate(string dongleId);
 
         [XmlRpcMethod("webrep.send.global")]
         void WebRep_SendGlobal(string db,sWebRepOneDay[] value);
         [XmlRpcMethod("webrep.get.lastdate")]
         string WebRep_GetLastDate(string db);
 
-        //[XmlRpcMethod("get.update.info")]
-        //UpdateInfo GetUpdateInfo();
+        [XmlRpcMethod("get.update.info")]
+        UpdateInfo GetUpdateInfo();
     }
 
     /// <summary>
@@ -104,7 +103,7 @@ namespace pEngine
         /// Сообщает серверу, что обновления ключа прошло успешно
         /// <para>PARAM: int dongleId - ID ключа</para>
         /// </summary>
-        //SuccessUpdate,
+        SuccessUpdate,
 
         WebRep_GetLastDate,
         WebRep_SendGlobal,

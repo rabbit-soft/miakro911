@@ -38,7 +38,12 @@
             this.tpArchiveJobs = new System.Windows.Forms.TabPage();
             this.archiveJobsPanel1 = new rabdump.ArchiveJobsPanel();
             this.tpInfo = new System.Windows.Forms.TabPage();
+            this.scAbout = new System.Windows.Forms.SplitContainer();
             this.aboutPanel1 = new rabdump.AboutPanel();
+            this.pbUpdate = new System.Windows.Forms.ProgressBar();
+            this.btDloadUpdate = new System.Windows.Forms.Button();
+            this.tbUpdateInfo = new System.Windows.Forms.TextBox();
+            this.btCheckUpdate = new System.Windows.Forms.Button();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miShowMainForm = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,7 +53,6 @@
             this.miRestore = new System.Windows.Forms.ToolStripMenuItem();
             this.miRemoteSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.miSendGlobRep = new System.Windows.Forms.ToolStripMenuItem();
-            this.miManage = new System.Windows.Forms.ToolStripMenuItem();
             this.miUpdateKey = new System.Windows.Forms.ToolStripMenuItem();
             this.miCheckForUpdate = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -62,14 +66,17 @@
             this.tpDataSources.SuspendLayout();
             this.tpArchiveJobs.SuspendLayout();
             this.tpInfo.SuspendLayout();
+            this.scAbout.Panel1.SuspendLayout();
+            this.scAbout.Panel2.SuspendLayout();
+            this.scAbout.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tpGeneral);
             this.tabControl1.Controls.Add(this.tpDataSources);
             this.tabControl1.Controls.Add(this.tpArchiveJobs);
@@ -138,12 +145,33 @@
             // 
             // tpInfo
             // 
-            this.tpInfo.Controls.Add(this.aboutPanel1);
+            this.tpInfo.Controls.Add(this.scAbout);
             this.tpInfo.Location = new System.Drawing.Point(4, 22);
             this.tpInfo.Name = "tpInfo";
             this.tpInfo.Size = new System.Drawing.Size(353, 344);
             this.tpInfo.TabIndex = 3;
             this.tpInfo.Text = "О программе";
+            // 
+            // scAbout
+            // 
+            this.scAbout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.scAbout.Location = new System.Drawing.Point(0, 0);
+            this.scAbout.Name = "scAbout";
+            this.scAbout.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // scAbout.Panel1
+            // 
+            this.scAbout.Panel1.Controls.Add(this.aboutPanel1);
+            // 
+            // scAbout.Panel2
+            // 
+            this.scAbout.Panel2.Controls.Add(this.pbUpdate);
+            this.scAbout.Panel2.Controls.Add(this.btDloadUpdate);
+            this.scAbout.Panel2.Controls.Add(this.tbUpdateInfo);
+            this.scAbout.Panel2.Controls.Add(this.btCheckUpdate);
+            this.scAbout.Size = new System.Drawing.Size(192, 74);
+            this.scAbout.SplitterDistance = 41;
+            this.scAbout.TabIndex = 0;
             // 
             // aboutPanel1
             // 
@@ -152,8 +180,49 @@
             this.aboutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.aboutPanel1.MinimumSize = new System.Drawing.Size(340, 0);
             this.aboutPanel1.Name = "aboutPanel1";
-            this.aboutPanel1.Size = new System.Drawing.Size(340, 74);
-            this.aboutPanel1.TabIndex = 0;
+            this.aboutPanel1.Size = new System.Drawing.Size(340, 41);
+            this.aboutPanel1.TabIndex = 1;
+            // 
+            // pbUpdate
+            // 
+            this.pbUpdate.Location = new System.Drawing.Point(179, 3);
+            this.pbUpdate.Name = "pbUpdate";
+            this.pbUpdate.Size = new System.Drawing.Size(151, 23);
+            this.pbUpdate.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.pbUpdate.TabIndex = 4;
+            this.pbUpdate.Visible = false;
+            // 
+            // btDloadUpdate
+            // 
+            this.btDloadUpdate.Location = new System.Drawing.Point(179, 3);
+            this.btDloadUpdate.Name = "btDloadUpdate";
+            this.btDloadUpdate.Size = new System.Drawing.Size(151, 23);
+            this.btDloadUpdate.TabIndex = 3;
+            this.btDloadUpdate.Text = "Установить обновление";
+            this.btDloadUpdate.UseVisualStyleBackColor = true;
+            this.btDloadUpdate.Visible = false;
+            this.btDloadUpdate.Click += new System.EventHandler(this.btDloadUpdate_Click);
+            // 
+            // tbUpdateInfo
+            // 
+            this.tbUpdateInfo.BackColor = System.Drawing.SystemColors.Control;
+            this.tbUpdateInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tbUpdateInfo.Location = new System.Drawing.Point(8, 32);
+            this.tbUpdateInfo.Multiline = true;
+            this.tbUpdateInfo.Name = "tbUpdateInfo";
+            this.tbUpdateInfo.Size = new System.Drawing.Size(337, 91);
+            this.tbUpdateInfo.TabIndex = 2;
+            this.tbUpdateInfo.Visible = false;
+            // 
+            // btCheckUpdate
+            // 
+            this.btCheckUpdate.Location = new System.Drawing.Point(22, 3);
+            this.btCheckUpdate.Name = "btCheckUpdate";
+            this.btCheckUpdate.Size = new System.Drawing.Size(151, 23);
+            this.btCheckUpdate.TabIndex = 0;
+            this.btCheckUpdate.Text = "Проверить обновление";
+            this.btCheckUpdate.UseVisualStyleBackColor = true;
+            this.btCheckUpdate.Click += new System.EventHandler(this.btCheckUpdate_Click);
             // 
             // notifyIcon1
             // 
@@ -173,13 +242,12 @@
             this.miRestore,
             this.miRemoteSeparator,
             this.miSendGlobRep,
-            this.miManage,
             this.miUpdateKey,
             this.miCheckForUpdate,
             this.toolStripSeparator2,
             this.exitMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(211, 242);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(211, 220);
             // 
             // miShowMainForm
             // 
@@ -224,22 +292,18 @@
             this.miSendGlobRep.Size = new System.Drawing.Size(210, 22);
             this.miSendGlobRep.Text = "Послать отчет на сервер";
             // 
-            // miManage
-            // 
-            this.miManage.Name = "miManage";
-            this.miManage.Size = new System.Drawing.Size(210, 22);
-            this.miManage.Text = "Управление лецензиями";
-            // 
             // miUpdateKey
             // 
             this.miUpdateKey.Name = "miUpdateKey";
             this.miUpdateKey.Size = new System.Drawing.Size(210, 22);
             this.miUpdateKey.Text = "Обновить лицензию";
+            this.miUpdateKey.Click += new System.EventHandler(this.miUpdateKey_Click);
             // 
             // miCheckForUpdate
             // 
             this.miCheckForUpdate.Name = "miCheckForUpdate";
             this.miCheckForUpdate.Size = new System.Drawing.Size(210, 22);
+            this.miCheckForUpdate.Tag = "0";
             this.miCheckForUpdate.Text = "Проверить обновление";
             this.miCheckForUpdate.Click += new System.EventHandler(this.miCheckForUpdate_Click);
             // 
@@ -314,6 +378,10 @@
             this.tpDataSources.ResumeLayout(false);
             this.tpArchiveJobs.ResumeLayout(false);
             this.tpInfo.ResumeLayout(false);
+            this.scAbout.Panel1.ResumeLayout(false);
+            this.scAbout.Panel2.ResumeLayout(false);
+            this.scAbout.Panel2.PerformLayout();
+            this.scAbout.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -337,7 +405,6 @@
         private System.Windows.Forms.ToolStripMenuItem miRestore;
         private System.Windows.Forms.ToolStripSeparator miRemoteSeparator;
         private System.Windows.Forms.ToolStripMenuItem miSendGlobRep;
-        private System.Windows.Forms.ToolStripMenuItem miManage;
         private System.Windows.Forms.ToolStripMenuItem miUpdateKey;
         private System.Windows.Forms.ToolStripMenuItem miCheckForUpdate;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
@@ -347,6 +414,11 @@
         private ArchiveJobsPanel archiveJobsPanel1;
         private System.Windows.Forms.ToolStripMenuItem miRunRabnet;
         private System.Windows.Forms.TabPage tpInfo;
+        private System.Windows.Forms.SplitContainer scAbout;
         private AboutPanel aboutPanel1;
+        private System.Windows.Forms.TextBox tbUpdateInfo;
+        private System.Windows.Forms.Button btCheckUpdate;
+        private System.Windows.Forms.Button btDloadUpdate;
+        private System.Windows.Forms.ProgressBar pbUpdate;
     }
 }

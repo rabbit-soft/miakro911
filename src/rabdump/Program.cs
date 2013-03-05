@@ -4,6 +4,7 @@
 #endif
 using System;
 using System.Windows.Forms;
+using System.Threading;
 using log4net;
 #if PROTECTED
 using RabGRD;
@@ -13,6 +14,7 @@ namespace rabdump
 {
     static class Program
     {
+        private const string MUTEX_NAME = "RabDumpApplication";
         private static ILog _logger;
 
         /// <summary>
@@ -26,7 +28,7 @@ namespace rabdump
             _logger.Info("----- Application Starts -----");
             System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("ru-RU", false);
             bool new_instance;
-            using (System.Threading.Mutex mutex = new System.Threading.Mutex(true, "RabDumpApplication", out new_instance))
+            using (Mutex mutex = new Mutex(true, MUTEX_NAME, out new_instance))
             {
                 if (new_instance)
                 {
@@ -78,8 +80,17 @@ namespace rabdump
 #endif
                 }
                 //else MessageBox.Show("Программа уже запущена");
+                Environment.Exit(0);
             }
         }
+
+        internal static void ReleaseMutex()
+        {
+            Mutex m = Mutex.OpenExisting(MUTEX_NAME);
+            m.ReleaseMutex();
+        }
+
+
 #if !NOCATCH
         private static void Excepted(Exception ex)
         {

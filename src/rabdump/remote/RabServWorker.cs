@@ -282,7 +282,9 @@ namespace rabdump
             catch (Exception exc)
             {
                 _logger.Error(exc);
-                callOnMessage("Ошибка при отправлении файла\n"+exc.Message, "Внимание", 2);
+                if (exc.InnerException != null)
+                    exc = exc.InnerException;
+                callOnMessage(exc.Message, "Внимание", 2);                
             }
             _logger.Debug("ServerDump end");
         }

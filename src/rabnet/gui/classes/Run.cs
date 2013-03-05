@@ -9,6 +9,7 @@ namespace rabnet
     static class Run
     {
         private const string MIA_CONV = "mia_conv.exe";
+        private const String RABDUMP = "rabdump.exe";
         private const String RABNET = "rabnet.exe";
         private const String UPDATER = "updater.exe";
 
@@ -31,6 +32,15 @@ namespace rabnet
                 throw new Exception("Ошибка создания БД. " + miaExitCode.GetText(p.ExitCode));
         }
 
+        public static void RabDump()
+        {
+            String path = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), RABDUMP);
+            if (!File.Exists(path))
+                throw new Exception("Не удается найти файл " + path);
+            Process p = Process.Start(path);
+            //p.WaitForExit();
+        }
+
         /// <summary>
         /// Запускает программу Rabnet
         /// </summary>
@@ -41,7 +51,7 @@ namespace rabnet
             if (!File.Exists(path))
                 throw new Exception("Не удается найти файл "+path);
             Process p = Process.Start(path);
-            p.WaitForExit();
+            //p.WaitForExit();
         }
 
         public static string SerachConfig(string p)
