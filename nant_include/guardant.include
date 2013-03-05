@@ -72,13 +72,11 @@
 			<!--arg value="/SE" /-->
 			<arg value="/GS3S" />
 			<arg value="/GN3S" />			
-			<!--arg value="${dir_bin}/db.Interface.dll" />
+			<arg value="${dir_bin}/db.Interface.dll" />
 			<arg value="${dir_bin}/db.mysql.dll" />	
 			<arg value="${dir_bin}/engine.dll" />			
 			<arg value="${dir_bin}/rabnet.exe" />
-			<arg value="${dir_bin}/rabdump.exe" /-->
-			<arg value="${dir_bin}/log4net.dll" />			
-			<arg value="${dir_bin}/MySql.Data.dll" />
+			<arg value="${dir_bin}/rabdump.exe" />
 		</exec>	
 		
 		<exec program="${grd_prot}">				
@@ -94,12 +92,10 @@
 			<arg value="/SIGN" />
 			<arg value="/OUT=${dir_bin}/" />
 			<!--arg value="${dir_bin}/db.Interface.dll" /-->
-			<!--arg value="${dir_bin}/db.mysql.dll" />
+			<arg value="${dir_bin}/db.mysql.dll" />
 			<arg value="${dir_bin}/engine.dll" />
 			<arg value="${dir_bin}/rabnet.exe" />	
-			<arg value="${dir_bin}/rabdump.exe" /-->			
-			<arg value="${dir_bin}/log4net.dll" />			
-			<arg value="${dir_bin}/MySql.Data.dll" />
+			<arg value="${dir_bin}/rabdump.exe" />
 		</exec>
 		
 		<delete>

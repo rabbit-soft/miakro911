@@ -31,7 +31,7 @@ namespace rabnet.forms
                 nudAge.Value = nudLustDuration.Value;
             nudAge.Maximum = nudLustDuration.Value;
             dataGridView1.Anchor = dataGridView1.Anchor | AnchorStyles.Right;
-            gbLust.Anchor = dataGridView1.Anchor | AnchorStyles.Right;
+            //gbLust.Anchor = dataGridView1.Anchor | AnchorStyles.Right;
             fillTable();
         }
 

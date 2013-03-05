@@ -30,10 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.chID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chAge = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chDuration = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.chAfter = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.chZoo = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.chDoOnce = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -52,6 +48,10 @@
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.chID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.chName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.chAge = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.chDuration = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.gbLust.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudAge)).BeginInit();
@@ -82,31 +82,6 @@
             this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
             this.dataGridView1.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridView1_CellValidating);
             this.dataGridView1.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridView1_CurrentCellDirtyStateChanged);
-            // 
-            // chID
-            // 
-            this.chID.HeaderText = "№";
-            this.chID.Name = "chID";
-            this.chID.ReadOnly = true;
-            this.chID.Width = 40;
-            // 
-            // chName
-            // 
-            this.chName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.chName.HeaderText = "Название";
-            this.chName.Name = "chName";
-            // 
-            // chAge
-            // 
-            this.chAge.HeaderText = "Назначать с...(дней)";
-            this.chAge.Name = "chAge";
-            this.chAge.Width = 80;
-            // 
-            // chDuration
-            // 
-            this.chDuration.HeaderText = "Срок действия (дней)";
-            this.chDuration.Name = "chDuration";
-            this.chDuration.Width = 110;
             // 
             // chAfter
             // 
@@ -152,7 +127,7 @@
             // 
             // gbLust
             // 
-            this.gbLust.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.gbLust.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.gbLust.Controls.Add(this.btLustSave);
             this.gbLust.Controls.Add(this.label3);
             this.gbLust.Controls.Add(this.label4);
@@ -274,6 +249,31 @@
             this.dataGridViewTextBoxColumn4.HeaderText = "Срок действия (дней)";
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.Width = 110;
+            // 
+            // chID
+            // 
+            this.chID.HeaderText = "№";
+            this.chID.Name = "chID";
+            this.chID.ReadOnly = true;
+            this.chID.Width = 40;
+            // 
+            // chName
+            // 
+            this.chName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.chName.HeaderText = "Название";
+            this.chName.Name = "chName";
+            // 
+            // chAge
+            // 
+            this.chAge.HeaderText = "Назначать с...(дней)";
+            this.chAge.Name = "chAge";
+            this.chAge.Width = 80;
+            // 
+            // chDuration
+            // 
+            this.chDuration.HeaderText = "Срок действия (дней)";
+            this.chDuration.Name = "chDuration";
+            this.chDuration.Width = 110;
             // 
             // VaccinesCatalogForm
             // 

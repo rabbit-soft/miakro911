@@ -167,6 +167,7 @@ namespace rabnet.components
         #region progress
         private void initProgress(int max)
         {
+            if (!this.IsHandleCreated) return;
             if (this.InvokeRequired)
             {
                 DTProgressHandler d = new DTProgressHandler(initProgress);
