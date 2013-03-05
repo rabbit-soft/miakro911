@@ -41,7 +41,7 @@ namespace RabGRD
                                                 0xDE, 0xB9, 0x39, 0x7C, 0x2F, 0x97, 0x41, 0xCB, 0x9B, 0xAB };
         public GRDVendorKey()
         {
-            log = LogManager.GetLogger(typeof(GRDVendorKey));
+            _logger = LogManager.GetLogger(typeof(GRDVendorKey));
             _findPropDongleType = GrdDT.TRU;
             connect();
         }
@@ -121,7 +121,7 @@ namespace RabGRD
             logStr = "Searching for the specified local or remote dongle and log in : ";
             retCode = GrdApi.GrdLogin(_grdHandle, GrdLM.PerStation);
             logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
+            _logger.Debug(logStr);
             if (retCode != GrdE.OK)
             {
                 return ErrorHandling(_grdHandle, retCode); ;
@@ -153,7 +153,7 @@ namespace RabGRD
         public int SetTRUKey()
         {
             GrdE retCode = GrdApi.GrdTRU_SetKey(_grdHandle, _keyTRU);
-            log.Debug("Setting TruKey " + retCode.ToString() + " " + GrdApi.PrintResult((byte)retCode));
+            _logger.Debug("Setting TruKey " + retCode.ToString() + " " + GrdApi.PrintResult((byte)retCode));
             ErrorHandling(_grdHandle, retCode);
             return (int)retCode;
         }
@@ -206,7 +206,7 @@ namespace RabGRD
                                                     qq.hash);        // pointer to Hash of previous 16 bytes	8 bytes 
 
             logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
+            _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK)
                 return retCode;
@@ -227,7 +227,7 @@ namespace RabGRD
 
 
             logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
+            _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK)
                 return retCode;
@@ -248,7 +248,7 @@ namespace RabGRD
                                                   out answer,                   // pointer to the buffer for Answer data 
                                                   out ansSize);                 // IN: Maximum buffer size for Answer data, OUT: Size of pAnswer buffer 
             logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
+            _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK)
                 return retCode;
@@ -418,7 +418,7 @@ namespace RabGRD
                                       pbyWholeMask);
 
             logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
+            _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK) return (int)retCode;
 
@@ -430,11 +430,11 @@ namespace RabGRD
                                         0,
                                         (uint)GrdGF.HID, IntPtr.Zero);
             logStr += GrdApi.PrintResult((int)retCode);
-            log.Debug(logStr);
+            _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK) return (int)retCode;
 
-            log.Debug(" ====> " + (protectLength).ToString());
+            _logger.Debug(" ====> " + (protectLength).ToString());
             return (int)retCode;
         }
 

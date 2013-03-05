@@ -25,7 +25,7 @@ namespace RabGRD
             Genetics = 1 << 1,      //1 bit
             RabDump = 1 << 2,       //2 bit
             Butcher = 1 << 3,       //3 bit
-            ReportPlugIns = 1 << 4,  //4 bit
+            ReportPlugIns = 1 << 4, //4 bit
             ServerDump = 1 << 5,    //5 bit
             WebReports = 1 << 6,   	//6 bit
             SAASVersion = 1 << 7,
@@ -35,7 +35,8 @@ namespace RabGRD
 
         protected const string DEV_MARKER = "9-bits RabSoft";
 
-        //Далее список адресов данных в ключе
+        ///Далее список адресов данных в ключе
+        
         protected const uint USER_DATA_BEGINING = 1180;
         protected const uint CLIENT_ID_OFFSET = 0;
         protected const uint DEV_MARKER_OFFSET = 2;
@@ -53,16 +54,16 @@ namespace RabGRD
         protected uint WHOLE_MASK_LENGTH { get { return USER_DATA_BEGINING + USER_DATA_LENGTH; } }
 
         // Variables to use in GrdSetFindMode() 
-        protected GrdFMR _findPropRemoteMode = GrdFMR.Local;         // Operation mode flags                    
-        protected GrdFM _findPropDongleFlags = GrdFM.Type;         // Operation mode flags                    
-        protected uint _findPropProgramNumber = 0;    // Program number                          
-        protected uint _findPropProgramVersion = 0;   // Version                                 
-        protected uint _findPropDongleID = 0;         // Dongle ID
-        protected uint _findPropSerialNumber = 0;         // Serial number                           
-        protected uint _findPropBitMask = 0;              // Bit mask                                
-        protected GrdDT _findPropDongleType = GrdDT.GSII64;          // Dongle type                             
-        protected GrdFMM _findPropDongleModel = GrdFMM.ALL;        // Dongle model                             
-        protected GrdFMI _findPropDongleInterface = GrdFMI.ALL;    // Dongle interface   
+        protected GrdFMR _findPropRemoteMode = GrdFMR.Local;    // Operation mode flags                    
+        protected GrdFM _findPropDongleFlags = GrdFM.Type;      // Operation mode flags                    
+        protected uint _findPropProgramNumber = 0;              // Program number                          
+        protected uint _findPropProgramVersion = 0;             // Version                                 
+        protected uint _findPropDongleID = 0;                   // Dongle ID
+        protected uint _findPropSerialNumber = 0;               // Serial number                           
+        protected uint _findPropBitMask = 0;                    // Bit mask                                
+        protected GrdDT _findPropDongleType = GrdDT.GSII64;     // Dongle type                             
+        protected GrdFMM _findPropDongleModel = GrdFMM.ALL;     // Dongle model                             
+        protected GrdFMI _findPropDongleInterface = GrdFMI.ALL; // Dongle interface   
 
         protected virtual GrdE setAccessCodes()
         {
