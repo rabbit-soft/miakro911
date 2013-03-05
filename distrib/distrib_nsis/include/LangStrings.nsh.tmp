@@ -53,7 +53,7 @@ LangString SM_Prog_NAME ${LANG_ENGLISH} "Miakro-9.11"
 LangString SM_Prog_NAME ${LANG_RUSSIAN} "Миакро-9.11"
 
 LangString SM_Dump_NAME ${LANG_ENGLISH} "RabDump"
-LangString SM_Dump_NAME ${LANG_RUSSIAN} "Резервные копии"
+LangString SM_Dump_NAME ${LANG_RUSSIAN} "RabDump"
 
 LangString SM_Conv_NAME ${LANG_ENGLISH} ".mia Converter"
 LangString SM_Conv_NAME ${LANG_RUSSIAN} "Конвертер из .mia"
@@ -62,7 +62,7 @@ LangString SM_Up_NAME ${LANG_ENGLISH} "DB Updater"
 LangString SM_Up_NAME ${LANG_RUSSIAN} "Обновление БД"
 
 LangString KillRabDump ${LANG_ENGLISH} "Killing RabDump..."
-LangString KillRabDump ${LANG_RUSSIAN} "Закрываем Резервные копии..."
+LangString KillRabDump ${LANG_RUSSIAN} "Закрываем RabDump..."
 
 LangString KillRabNet ${LANG_ENGLISH} "Killing RabNet..."
 LangString KillRabNet ${LANG_RUSSIAN} "Закрываем Rabnet..."

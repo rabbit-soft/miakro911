@@ -74,6 +74,9 @@ namespace rabnet
         public const string DATE_VALUE = "dtval";
         public const string FARM = "frm";
         public const string HETER = "grlk"; 
+        public const string CLIENT = "client";
+        public const string OLD_RID = "old_rid";
+        public const string GUID = "guid";
         #endregion const
 
         public Filters() : base() { }
@@ -81,6 +84,14 @@ namespace rabnet
             : base()
         {
             fromString(s);
+        }
+
+        public Filters(params object[] args)
+        {
+            if (args.Length % 2 != 0) throw new RabNetException("Параметры фильтра не парны");
+
+            for (int i = 0; i < args.Length; )
+                this.Add(args[i++].ToString(), args[i++].ToString());
         }
 
         public static Filters makeFromString(String s)

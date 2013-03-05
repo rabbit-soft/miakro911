@@ -59,5 +59,27 @@ namespace rabnet
             cmd.ExecuteNonQuery();
             return (int)cmd.LastInsertedId;
         }
+
+        internal static BreedsList GetBreeds(MySqlConnection sql)
+        {
+            BreedsList result = new BreedsList();
+            MySqlCommand cmd = new MySqlCommand("SELECT b_id,b_name,b_short_name FROM breeds;", sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            while (rd.Read())
+            {
+                result.Add(new Breed(rd.GetInt32("b_id"), rd.GetString("b_name"), rd.GetString("b_short_name")));
+            }
+            rd.Close();
+
+            return result;
+        }
+
+        internal static int AddBreed(MySqlConnection sql,string name,string shrt,string color)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO breeds(b_name,b_short_name,b_color) VALUES('{0:s}','{1:s}','{2:s}');",name,shrt,color), sql);
+            cmd.ExecuteNonQuery();
+
+            return (int)cmd.LastInsertedId;
+        }
     }
 }

@@ -46,11 +46,14 @@ namespace db.mysql
             return "SELECT COUNT(*) FROM names" + makeWhereClause() + ";";
         }
 
-        public static void addName(MySqlConnection sql, Rabbit.SexType sex, String name, String surname)
+        public static int AddName(MySqlConnection sql, Rabbit.SexType sex, String name, String surname)
         {
             MySqlCommand cmd=new MySqlCommand(String.Format(@"INSERT INTO names(n_sex,n_name,n_surname,n_block_date) 
-VALUES('{0:s}','{1:s}','{2:s}',NULL)",(sex==Rabbit.SexType.FEMALE)?"female":"male",name,surname),sql);
+VALUES('{0:s}','{1:s}','{2:s}',NULL);", (sex==Rabbit.SexType.FEMALE)?"female":"male",name,surname),sql);
             cmd.ExecuteNonQuery();
+            if (cmd.LastInsertedId > int.MaxValue) ///it can't be
+                throw new RabNetException("ID нового имени больше максимально допустимого значения");
+            return (int)cmd.LastInsertedId;
         }
         public static void changeName(MySqlConnection sql, string orgName, string name, string surname)
         {
@@ -74,5 +77,20 @@ WHERE n_name='{2:s}';",name,surname,orgName),sql);
             return true;
         }
 
+
+        internal static RabNamesList GetNames(MySqlConnection sql)
+        {
+            RabNamesList result = new RabNamesList();
+            MySqlCommand cmd = new MySqlCommand("SELECT n_id,n_sex,n_name,n_surname,n_use,n_block_date FROM names ORDER BY n_name;",sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            while (rd.Read())
+            {
+                result.Add(new RabName(rd.GetInt32("n_id"), rd.GetString("n_name"), rd.GetString("n_surname"),
+                    rd.GetString("n_sex"), rd.GetInt32("n_use"), rd.IsDBNull(5) ? DateTime.MinValue : rd.GetDateTime("n_block_date")));
+            }
+            rd.Close();
+
+            return result;
+        }
     }
 }

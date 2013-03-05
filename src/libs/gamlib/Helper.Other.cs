@@ -17,6 +17,12 @@ namespace gamlib
             return ByteArrayToHexString(retVal);
         }
 
+        public static byte[] GetMD5(byte[] buff)
+        {
+            System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
+            return md5.ComputeHash(buff);
+        }
+
         public static bool IsInteger(string str)
         {
             try

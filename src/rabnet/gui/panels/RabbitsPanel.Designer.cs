@@ -64,6 +64,7 @@
             this.miRealize = new System.Windows.Forms.ToolStripMenuItem();
             this.miPlanReplace = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.miEPasportMake = new System.Windows.Forms.ToolStripMenuItem();
             this.miGenetic = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.показатьНомерToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -214,11 +215,12 @@
             this.miRealize,
             this.miPlanReplace,
             this.toolStripSeparator3,
+            this.miEPasportMake,
             this.miGenetic,
             this.toolStripSeparator4,
             this.показатьНомерToolStripMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(237, 446);
+            this.actMenu.Size = new System.Drawing.Size(237, 468);
             this.actMenu.Opening += new System.ComponentModel.CancelEventHandler(this.actMenu_Opening);
             // 
             // miPassport
@@ -350,6 +352,13 @@
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(233, 6);
             // 
+            // miEPasportMake
+            // 
+            this.miEPasportMake.Name = "miEPasportMake";
+            this.miEPasportMake.Size = new System.Drawing.Size(236, 22);
+            this.miEPasportMake.Text = "Экспорт";
+            this.miEPasportMake.Click += new System.EventHandler(this.miEPasportMake_Click);
+            // 
             // miGenetic
             // 
             this.miGenetic.Name = "miGenetic";
@@ -440,5 +449,6 @@
         private System.Windows.Forms.ToolStripMenuItem miPlanReplace;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem показатьНомерToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem miEPasportMake;
     }
 }

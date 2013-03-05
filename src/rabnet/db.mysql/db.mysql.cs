@@ -268,6 +268,12 @@ namespace db.mysql
         {
             return RabbitGetter.GetRabbit(sql, rid);
         }
+
+        public OneRabbit GetRabbit(int rid, RabAliveState state)
+        {
+            return RabbitGetter.GetRabbit(sql, rid, state);
+        }
+
         public void SetRabbit(OneRabbit r)
         {
             RabbitGetter.SetRabbit(sql,r);
@@ -337,6 +343,16 @@ namespace db.mysql
             return Names.unblockName(sql, id);
         }
 
+        public RabNamesList GetNames()
+        {
+            return Names.GetNames(sql);
+        }
+
+        public BreedsList GetBreeds()
+        {
+            return Breeds.GetBreeds(sql);
+        }
+
         //public YoungRabbit[] getSuckers(int mom)
         //{
         //    return Youngers.GetYoungers(sql, mom);
@@ -353,12 +369,14 @@ namespace db.mysql
 
         public int NewRabbit(OneRabbit r, int mom)
         {
-            return RabbitGetter.newRabbit(sql, r, mom);
+            int rId = RabbitGetter.newRabbit(sql, r, mom);
+            Import.RabbitImp(sql, rId, r.Group);
+            return rId;
         }
        
-        public void AddName(Rabbit.SexType sex, string name, string surname)
+        public int AddName(Rabbit.SexType sex, string name, string surname)
         {
-            Names.addName(sql, sex, name, surname);
+            return Names.AddName(sql, sex, name, surname);
         }
 
         public void changeName(string orgName, string name, string surname)
@@ -717,8 +735,71 @@ namespace db.mysql
         {
             return WebReports.GetGlobals(sql, dt, days);
         }
+
+        public ClientsList GetClients()
+        {
+            ClientsList result = new ClientsList();
+            MySqlCommand cmd = new MySqlCommand("SELECT c_id,c_org,c_address FROM clients;", sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            while (rd.Read())
+            {
+                result.Add(new Client(rd.GetInt32("c_id"), rd.GetString("c_org"), rd.GetString("c_address")));
+            }
+            rd.Close();
+
+            return result;
+        }
+
+        public void AddClient(int id, string name, string address)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO clients(c_id,c_org,c_address) VALUES({0:d},'{1:s}','{2:s}');",id,name,address), sql);
+            cmd.ExecuteNonQuery();
+        }
+
+        public void ImportRabbit(int rId, int count)
+        {
+            Import.RabbitImp(sql,rId,count);
+        }
+
+        public void ImportRabbit(int rId, int count, int clientId, int oldRID, string fileGuid)
+        {
+            Import.RabbitImp(sql, rId, count,clientId, oldRID, fileGuid);
+        }
+
+        public void ImportAscendant(OneRabbit r)
+        {
+            Import.AscendantImp(sql, r);
+        }
+
+        public List<OneImport> ImportSearch(Filters f)
+        {
+            return Import.Search(sql,f);
+        }
+
+        public bool ImportAscendantExists(int rabId,int clientId)
+        {
+            return Import.AscendantExists(sql, rabId, clientId);
+        }
+
+        public int NewRabbit(OneRabbit r, int mom, int clientId,  string fileGuid)
+        {
+            int oldId = r.ID;
+            int rId = RabbitGetter.newRabbit(sql,r,mom);
+            Import.RabbitImp(sql, rId, r.Group, clientId, oldId, fileGuid);
+            if(Import.AscendantExists(sql,oldId,clientId))
+            {               
+                Import.AdaptExportedAscendant(sql, oldId, clientId,rId,r.Sex);
+            }
+            return rId;
+        }
 #endif
 
         #endregion IRabNetDataLayer Members
+
+
+        public int AddBreed(string name, string shrt, string color)
+        {
+            return Breeds.AddBreed(sql,name,shrt,color);
+        }
     }        
 }

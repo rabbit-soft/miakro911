@@ -70,6 +70,7 @@ namespace rabnet
         void changeDeadReason(int rid, int reason);
         List<String> getDeadsMonths();
         OneRabbit GetRabbit(int rid);
+        OneRabbit GetRabbit(int rid,RabAliveState state);
         void SetRabbit(OneRabbit r);
         ICatalogs catalogs();
         void RabNetLog(int type, int user, int r1, int r2, string a1, string a2, String text);
@@ -100,8 +101,9 @@ namespace rabnet
         int NewRabbit(OneRabbit r,int mom);
                 
         void updateBuilding(Building b);
-        void AddName(Rabbit.SexType sex, string name, string surname);
+        int AddName(Rabbit.SexType sex, string name, string surname);
         void changeName(string orgName, string name, string surname);
+        RabNamesList GetNames();
 
         /// <summary>
         /// Списание кролика
@@ -208,8 +210,22 @@ namespace rabnet
         string WebReportGlobal(DateTime dt);
         string[] WebReportsGlobal(DateTime dt,int days);
         DateTime GetFarmStartTime();      
+
+        void ImportRabbit(int rId, int count);
+        void ImportRabbit(int rId, int count, int clientId, int oldRID, string fileGuid);
+        void ImportAscendant(OneRabbit r);
+        List<OneImport> ImportSearch(Filters f);
+        bool ImportAscendantExists(int rabId, int clientId);        
+
+        int NewRabbit(OneRabbit r, int mom, int clientId, string fileGuid);
 #endif
         IRabNetDataLayer Clone();        
+
+        ClientsList GetClients();
+        BreedsList GetBreeds();
+        int AddBreed(string name,string shrt,string color);
+
+        void AddClient(int id, string name, string address);
     }
 
 }

@@ -400,7 +400,13 @@ namespace rabnet.panels
             try
             {
 #endif
-                if ((new IncomeForm()).ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+            DialogResult res = (new IncomeForm()).ShowDialog();
+            if (res == DialogResult.Ignore)
+            {
+                if (new EPasportForm(true).ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                    _rsb.Run();
+            }
+            else if (res == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
 #if !DEBUG
             }
@@ -743,6 +749,27 @@ namespace rabnet.panels
                 _rsb.Run();
             }
         }  
+
+        private void miEPasportMake_Click(object sender, EventArgs e)
+        {
+#if !DEMO
+            if (listView1.SelectedItems.Count == 0) return;
+            
+            try
+            {
+                List<int> rIds = new List<int>();
+                foreach (ListViewItem it in listView1.SelectedItems)
+                    rIds.Add((int)it.Tag);
+                (new EPasportForm(rIds)).ShowDialog();
+            }
+            catch(RabNetException exc)
+            {
+                MessageBox.Show(exc.Message, "Ошибка", MessageBoxButtons.OK,MessageBoxIcon.Stop);
+            }
+#else
+            DemoErr.DemoNoModuleMsg();
+#endif
+        }
 
         #endregion menuItems
 

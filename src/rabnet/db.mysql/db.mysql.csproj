@@ -98,6 +98,7 @@
     <Compile Include="Building.cs" />
     <Compile Include="Butcher.cs" />
     <Compile Include="CatalogData\Catalogs.cs" />
+    <Compile Include="Import.cs" />
     <Compile Include="RabbitGetter.cs" />
     <Compile Include="RabbitsDataGetter.cs" />
     <Compile Include="Vaccines.cs" />
