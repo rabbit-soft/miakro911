@@ -396,6 +396,7 @@ namespace rabnet.panels
 
         private void miIncome_Click(object sender, EventArgs e)
         {
+#if !DEMO
 #if !DEBUG
             try
             {
@@ -416,6 +417,9 @@ namespace rabnet.panels
                 _logger.Warn(exc);
                 _rsb.Run();
             }
+#endif
+#else
+            DemoErr.DemoNoModuleMsg();
 #endif
         }
 

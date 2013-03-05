@@ -53,12 +53,11 @@ namespace rabnet.forms
         Color EXISTS_NOT_ID_MATCH = Color.BlueViolet;
         Color EXISTS_IN_USE = Color.Olive;
         Color EXISTS_NOT_ID_MATCH_IN_USE = Color.Red;
-        
-#if !DEMO
 
-        //ColumnHeader chrLocalBreedAnalog;
-        //ColumnHeader chrNewRabName;
-        //ColumnHeader chrNewRabAddress;
+
+        bool _export = true;
+        bool _manual = true;
+#if !DEMO
 
         readonly byte[] FILE_MARK = new byte[] { 0x19, 0xBE, 0xF8 };
         readonly byte[] KEY_CODE = Encoding.UTF8.GetBytes("035gja[ yeuql");
@@ -66,8 +65,7 @@ namespace rabnet.forms
         RabNamesList _names;
         RabExporter _rabExport;
         BuildingList _freeBuildings;
-        bool _export = true;
-        bool _manual = true;
+        
         string _importFileGuid;
         //int _clientId = int.MaxValue;
 
@@ -161,11 +159,6 @@ namespace rabnet.forms
             lvBreeds.Sort();
         }        
 
-        private void nudExportCnt_ValueChanged(object sender, EventArgs e)
-        {
-            lvExportRabbits.SelectedItems[0].SubItems[EXP_CNT_INDEX].Text = nudExportCnt.Value.ToString();
-        }
-
         private RabNamesList getNamesForExport()
         {
             RabNamesList result = new RabNamesList();
@@ -229,97 +222,6 @@ namespace rabnet.forms
         }
 
         #endregion export
-#endif
-        #region addexp
-        private void addExpRabbit(OneRabbit r, List<int> breedsIds, List<int> nameIds)
-        {
-            if (!breedsIds.Contains(r.BreedID))
-                breedsIds.Add(r.BreedID);
-            addExpNameId(r, nameIds);
-
-            addRabbitToLV(r);                  
-        }
-
-        private void addRabbitToLV(OneRabbit r)
-        {
-            ListViewItem lvi = lvExportRabbits.Items.Add(r.NameFull);
-            lvi.SubItems.Add(r.BreedName);
-            lvi.SubItems.Add(r.Sex== Rabbit.SexType.MALE? "м":"ж");
-            lvi.SubItems.Add(r.Age.ToString());
-            lvi.SubItems.Add(r.Group.ToString());
-            lvi.SubItems.Add(_export ? "1" : "");
-            if (!_export)
-                lvi.SubItems.Add("");
-            lvi.Tag = r; 
-        }
-
-        private void addExpAscend(OneRabbit m)
-        {
-            ListViewItem lviM = lvAscendants.Items.Add(m.NameFull);
-            lviM.SubItems.Add(m.BreedName);
-            lviM.SubItems.Add(m.FSex());
-            lviM.Tag = m;
-        }
-
-        private void addExpName(RabName n, Color cl)
-        {
-            ListViewItem lvi = lvNames.Items.Add(n.Name);
-            lvi.SubItems.Add(n.Surname);
-            lvi.SubItems.Add(Rabbit.SexToRU(n.Sex));
-            lvi.Tag = n;
-            lvi.ForeColor = cl;
-        }
-        private void addExpName(RabName n) { addExpName(n, Color.Black); }
-
-        private void addExpBreed(Breed b, Color cl)
-        {
-            ListViewItem lvi = lvBreeds.Items.Add(b.Name);
-            if (!_export)
-                lvi.SubItems.Add("");
-            lvi.Tag = b;
-            lvi.ForeColor = cl;
-        }
-        private void addExpBreed(Breed b) { addExpBreed(b, Color.Black); }
-
-        private void addAscends(OneRabbit r, List<int> noNeedAsc, List<int> breedsIds, List<int> nameIds)
-        {
-            //r.BirthPlace = _clientId;
-
-            if (!breedsIds.Contains(r.BreedID))
-                breedsIds.Add(r.BreedID);
-
-            addExpNameId(r,nameIds);
-
-            if (r.MotherID != 0 && !noNeedAsc.Contains(r.MotherID))
-            {
-                OneRabbit m = Engine.db().GetRabbit(r.MotherID, RabAliveState.ANY);
-                addExpAscend(m);
-
-                noNeedAsc.Add(r.MotherID);
-                addAscends(m, noNeedAsc, breedsIds, nameIds);
-            }
-
-            if (r.FatherID != 0 && !noNeedAsc.Contains(r.FatherID))
-            {
-                OneRabbit f = Engine.db().GetRabbit(r.FatherID, RabAliveState.ANY);
-                addExpAscend(f);
-
-                noNeedAsc.Add(r.FatherID);
-                addAscends(f, noNeedAsc, breedsIds, nameIds);
-            }
-        }
-
-        private void addExpNameId(OneRabbit r,List<int> nameIds)
-        {
-            if (r.NameID != 0 && !nameIds.Contains(r.NameID))
-                nameIds.Add(r.NameID);
-            if (r.SurnameID != 0 && !nameIds.Contains(r.SurnameID))
-                nameIds.Add(r.SurnameID);
-            if (r.SecnameID != 0 && !nameIds.Contains(r.SecnameID))
-                nameIds.Add(r.SecnameID);
-        }
-        #endregion addexp
-                     
         #region import
 
         public EPasportForm(bool import)
@@ -568,63 +470,97 @@ namespace rabnet.forms
 
         #endregion import
 
-        private void lvExportRabbits_SelectedIndexChanged(object sender, EventArgs e)
+        #region addexp
+        private void addExpRabbit(OneRabbit r, List<int> breedsIds, List<int> nameIds)
         {
-            if (lvExportRabbits.SelectedItems.Count != 1) return;
-            _manual = false;
-            ListViewItem lvi = lvExportRabbits.SelectedItems[0];
-            OneRabbit r = lvi.Tag as OneRabbit;
-            if (_export)
-            {                
-                nudExportCnt.Enabled = r.Group != 1;
-                nudExportCnt.Maximum = r.Group;
-            }
-            else
-            {
-                cbNewName.Enabled = r.Group == 1;
-                updateNewNames(r.Sex);
-                cbNewName.Text = lvi.SubItems[IMP_NEW_NAME].Text;
-                cbFreeBuildings.Text = lvi.SubItems[IMP_ADDRESS].Text;
-                cbNewName.Enabled 
-                    = cbFreeBuildings.Enabled = !(lvi.ForeColor == IMPORTED_RAB_RAB /*|| lvi.ForeColor == IMPORTED_RAB_ASC*/);
-            }
-            _manual = true;
+            if (!breedsIds.Contains(r.BreedID))
+                breedsIds.Add(r.BreedID);
+            addExpNameId(r, nameIds);
+
+            addRabbitToLV(r);                  
         }
 
-        private void btOk_Click(object sender, EventArgs e)
+        private void addRabbitToLV(OneRabbit r)
         {
-#if !NOCATCH
-            try
-            {
-#endif
-                if (_export)
-                {
-                    exportToFile();
-                }
-                else
-                {
-                    string msg = "";
-                    bool b = importToBaseTest(out msg);
-                    if (msg != "" && MessageBox.Show(msg + (b ? "Продолжить ?" : ""),
-                        b ? "Имеются сомнения" : "Ошибки",
-                        b ? MessageBoxButtons.YesNo : MessageBoxButtons.OK,
-                        b ? MessageBoxIcon.Question : MessageBoxIcon.Warning) != DialogResult.Yes)
-                    {
-                        this.DialogResult = DialogResult.None;
-                        return;
-                    }
-                    importToBase();
-                }
-#if !NOCATCH
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.DialogResult = DialogResult.None;
-            }
-#endif
+            ListViewItem lvi = lvExportRabbits.Items.Add(r.NameFull);
+            lvi.SubItems.Add(r.BreedName);
+            lvi.SubItems.Add(r.Sex== Rabbit.SexType.MALE? "м":"ж");
+            lvi.SubItems.Add(r.Age.ToString());
+            lvi.SubItems.Add(r.Group.ToString());
+            lvi.SubItems.Add(_export ? "1" : "");
+            if (!_export)
+                lvi.SubItems.Add("");
+            lvi.Tag = r; 
         }
 
+        private void addExpAscend(OneRabbit m)
+        {
+            ListViewItem lviM = lvAscendants.Items.Add(m.NameFull);
+            lviM.SubItems.Add(m.BreedName);
+            lviM.SubItems.Add(m.FSex());
+            lviM.Tag = m;
+        }
+
+        private void addExpName(RabName n, Color cl)
+        {
+            ListViewItem lvi = lvNames.Items.Add(n.Name);
+            lvi.SubItems.Add(n.Surname);
+            lvi.SubItems.Add(Rabbit.SexToRU(n.Sex));
+            lvi.Tag = n;
+            lvi.ForeColor = cl;
+        }
+        private void addExpName(RabName n) { addExpName(n, Color.Black); }
+
+        private void addExpBreed(Breed b, Color cl)
+        {
+            ListViewItem lvi = lvBreeds.Items.Add(b.Name);
+            if (!_export)
+                lvi.SubItems.Add("");
+            lvi.Tag = b;
+            lvi.ForeColor = cl;
+        }
+        private void addExpBreed(Breed b) { addExpBreed(b, Color.Black); }
+
+        private void addAscends(OneRabbit r, List<int> noNeedAsc, List<int> breedsIds, List<int> nameIds)
+        {
+            //r.BirthPlace = _clientId;
+
+            if (!breedsIds.Contains(r.BreedID))
+                breedsIds.Add(r.BreedID);
+
+            addExpNameId(r,nameIds);
+
+            if (r.MotherID != 0 && !noNeedAsc.Contains(r.MotherID))
+            {
+                OneRabbit m = Engine.db().GetRabbit(r.MotherID, RabAliveState.ANY);
+                addExpAscend(m);
+
+                noNeedAsc.Add(r.MotherID);
+                addAscends(m, noNeedAsc, breedsIds, nameIds);
+            }
+
+            if (r.FatherID != 0 && !noNeedAsc.Contains(r.FatherID))
+            {
+                OneRabbit f = Engine.db().GetRabbit(r.FatherID, RabAliveState.ANY);
+                addExpAscend(f);
+
+                noNeedAsc.Add(r.FatherID);
+                addAscends(f, noNeedAsc, breedsIds, nameIds);
+            }
+        }
+
+        private void addExpNameId(OneRabbit r,List<int> nameIds)
+        {
+            if (r.NameID != 0 && !nameIds.Contains(r.NameID))
+                nameIds.Add(r.NameID);
+            if (r.SurnameID != 0 && !nameIds.Contains(r.SurnameID))
+                nameIds.Add(r.SurnameID);
+            if (r.SecnameID != 0 && !nameIds.Contains(r.SecnameID))
+                nameIds.Add(r.SecnameID);
+        }
+        #endregion addexp
+
+        #region methods
         /// <summary>
         /// Добавляет все данные в базу
         /// </summary>
@@ -819,25 +755,6 @@ namespace rabnet.forms
             }
         }
 
-        private void btOpenFile_Click(object sender, EventArgs e)
-        {
-            if (_export || openFileDialog1.ShowDialog() == DialogResult.Cancel) return;
-            
-            try
-            {
-                tbFileFrom.Text = openFileDialog1.FileName;
-                Stream s = openFileDialog1.OpenFile();
-                string data = parseImportFile(s);
-                checkExporter(data);
-                import(data);
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                btCancel.PerformClick();
-            }
-        }
-
         private void checkExporter(string data)
         {
             Client exporter = _rabExport.GetExporterInfo(data);
@@ -855,8 +772,101 @@ namespace rabnet.forms
                 }
             }
             if (!exists)
-                Engine.db().AddClient(exporter.ID,exporter.Name,exporter.Address);
+                Engine.db().AddClient(exporter.ID, exporter.Name, exporter.Address);
         }
+        #endregion  methods
+#endif
+
+        private void nudExportCnt_ValueChanged(object sender, EventArgs e)
+        {
+            lvExportRabbits.SelectedItems[0].SubItems[EXP_CNT_INDEX].Text = nudExportCnt.Value.ToString();
+        }
+
+        private void lvExportRabbits_SelectedIndexChanged(object sender, EventArgs e)
+        {
+#if !DEMO
+            if (lvExportRabbits.SelectedItems.Count != 1) return;
+            _manual = false;
+            ListViewItem lvi = lvExportRabbits.SelectedItems[0];
+            OneRabbit r = lvi.Tag as OneRabbit;
+            if (_export)
+            {                
+                nudExportCnt.Enabled = r.Group != 1;
+                nudExportCnt.Maximum = r.Group;
+            }
+            else
+            {
+                cbNewName.Enabled = r.Group == 1;
+                updateNewNames(r.Sex);
+                cbNewName.Text = lvi.SubItems[IMP_NEW_NAME].Text;
+                cbFreeBuildings.Text = lvi.SubItems[IMP_ADDRESS].Text;
+                cbNewName.Enabled 
+                    = cbFreeBuildings.Enabled = !(lvi.ForeColor == IMPORTED_RAB_RAB /*|| lvi.ForeColor == IMPORTED_RAB_ASC*/);
+            }
+            _manual = true;
+#endif
+        }
+
+        private void btOk_Click(object sender, EventArgs e)
+        {
+            #if !DEMO
+#if !NOCATCH
+            try
+            {
+#endif
+                if (_export)
+                {
+                    exportToFile();
+                }
+                else
+                {
+                    string msg = "";
+                    bool b = importToBaseTest(out msg);
+                    if (msg != "" && MessageBox.Show(msg + (b ? "Продолжить ?" : ""),
+                        b ? "Имеются сомнения" : "Ошибки",
+                        b ? MessageBoxButtons.YesNo : MessageBoxButtons.OK,
+                        b ? MessageBoxIcon.Question : MessageBoxIcon.Warning) != DialogResult.Yes)
+                    {
+                        this.DialogResult = DialogResult.None;
+                        return;
+                    }
+                    importToBase();
+                }
+#if !NOCATCH
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.DialogResult = DialogResult.None;
+            }
+#endif
+#endif
+        }
+
+        
+
+        private void btOpenFile_Click(object sender, EventArgs e)
+        {
+#if !DEMO
+            if (_export || openFileDialog1.ShowDialog() == DialogResult.Cancel) return;
+            
+            try
+            {
+                tbFileFrom.Text = openFileDialog1.FileName;
+                Stream s = openFileDialog1.OpenFile();
+                string data = parseImportFile(s);
+                checkExporter(data);
+                import(data);
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                btCancel.PerformClick();
+            }
+#endif
+        }
+
+        
 
         private void lvBreeds_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -885,6 +895,7 @@ namespace rabnet.forms
 
         private void cbNewName_SelectedIndexChanged(object sender, EventArgs e)
         {
+#if !DEMO
             if (_export || lvExportRabbits.SelectedItems.Count == 0 || !_manual) return;
 
             _manual = false;
@@ -902,10 +913,12 @@ namespace rabnet.forms
             lvExportRabbits.SelectedItems[0].SubItems[IMP_NEW_NAME].Text = cbNewName.Text;
             checkImportDataAfterLoad();
             _manual = true;
+#endif
         }
 
         private void cbFreeBuildings_SelectedIndexChanged(object sender, EventArgs e)
         {
+            #if !DEMO
             if (_export || lvExportRabbits.SelectedItems.Count == 0 || !_manual) return;
 
             _manual = false;
@@ -920,6 +933,7 @@ namespace rabnet.forms
                     }
             lvExportRabbits.SelectedItems[0].SubItems[IMP_ADDRESS].Text = cbFreeBuildings.Text;
             _manual = true;
+#endif
         }
 
         private void EPasportForm_Load(object sender, EventArgs e)
@@ -935,7 +949,6 @@ namespace rabnet.forms
                 this.DialogResult = DialogResult.No;
             }
         }
-
     }
 }
 

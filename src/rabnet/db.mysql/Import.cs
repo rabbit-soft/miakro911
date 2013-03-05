@@ -6,6 +6,7 @@ using rabnet;
 
 namespace db.mysql
 {
+#if !DEMO
     static class Import
     {
 
@@ -92,5 +93,7 @@ namespace db.mysql
             cmd.CommandText = String.Format(query,"rabbits");
             cmd.ExecuteNonQuery();
         }
+
     }
+#endif
 }

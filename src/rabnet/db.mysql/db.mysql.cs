@@ -370,7 +370,9 @@ namespace db.mysql
         public int NewRabbit(OneRabbit r, int mom)
         {
             int rId = RabbitGetter.newRabbit(sql, r, mom);
+#if !DEMO
             Import.RabbitImp(sql, rId, r.Group);
+#endif
             return rId;
         }
        

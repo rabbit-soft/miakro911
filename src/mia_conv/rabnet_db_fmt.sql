@@ -301,7 +301,7 @@ CREATE TABLE `import` (
   `t_count` INTEGER UNSIGNED,
   `t_client` INT NULL DEFAULT NULL COMMENT 'id клиента из которой экспортирован, с которой привsезен кролик',  
   `t_old_r_id` INT NULL DEFAULT NULL COMMENT 'id кролика в программе экспортера',
-  `t_file_guid` VARCHAR(40) NULL COMMENT  'guid файла экспорта';
+  `t_file_guid` VARCHAR(40) NULL COMMENT  'guid файла экспорта',
   PRIMARY KEY (`t_rab_id`)
 ) ENGINE = InnoDB COMMENT = 'Таблица привозов';
 
@@ -391,7 +391,7 @@ CREATE TABLE IF NOT EXISTS `import_ascendants` (
 INSERT INTO `vaccines`(v_id,v_name,v_do_after,v_duration,v_age,v_zootech,v_do_times) VALUES(-1,'Стимуляция самки',0,3,2,0,0);
 INSERT INTO `vaccines`(v_id,v_name,v_do_after,v_duration,v_age,v_zootech,v_do_times) VALUES(1,'Прививка',0,180,45,1,0);
 
-INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','14');
+INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','15');
 INSERT INTO options(o_name,o_subname,o_value) VALUES
 ('opt','okrol', 30),
 ('opt','vudvor', 30),

@@ -218,14 +218,14 @@ namespace rabnet
         bool ImportAscendantExists(int rabId, int clientId);        
 
         int NewRabbit(OneRabbit r, int mom, int clientId, string fileGuid);
-#endif
-        IRabNetDataLayer Clone();        
 
         ClientsList GetClients();
-        BreedsList GetBreeds();
-        int AddBreed(string name,string shrt,string color);
-
         void AddClient(int id, string name, string address);
+#endif
+        IRabNetDataLayer Clone();        
+        
+        BreedsList GetBreeds();
+        int AddBreed(string name,string shrt,string color);      
     }
 
 }
