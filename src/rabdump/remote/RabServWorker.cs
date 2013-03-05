@@ -14,8 +14,8 @@ using rabnet.RNC;
 using pEngine;
 using gamlib;
 #if PROTECTED
-    using RabGRD;   
-    using System.Reflection;   
+    using RabGRD;
+	using System.Reflection;  
 #endif
 
 namespace rabdump
@@ -443,6 +443,25 @@ namespace rabdump
         trgSR.Close(); trgFS.Close();*/
         //return trgFile;
         //}
+
+        
+
+        //private static void getUpdateInfo()
+        //{
+        //    try
+        //    {
+        //        object o = ReqSender.ExecuteMethod(MethodName.GetUpdateInfo);
+        //        if (o is UpdateInfo && OnUpdateChecked != null)
+        //            OnUpdateChecked(o as UpdateInfo);
+        //    }
+        //    catch(Exception exc)
+        //    {
+        //        if (OnUpdateCheckFail != null)
+        //            OnUpdateCheckFail(exc);
+        //    }
+        //}
+
+
     }
 
     
