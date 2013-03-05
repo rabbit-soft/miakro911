@@ -9,6 +9,7 @@ using System.Xml;
 using System.Configuration;
 using log4net;
 using System.IO;
+using System.Reflection;
 
 namespace rabnet.RNC
 {
@@ -19,14 +20,15 @@ namespace rabnet.RNC
         {
             MysqlPath,
             zip7path,
-            rabdump_startupPath,
             serverUrl,
-            makeWebReport
+            makeWebReport,
+            RabDump_StartupAtStart,
+            RabDump_Address
         }
 
         private readonly ILog _logger = LogManager.GetLogger(typeof(RabnetConfig));
         public RegistryKey _regKey = Registry.CurrentUser;
-        public const string STARTUP = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
+        public const string SYS_STARTUP = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
         public const string REGISTRY_PATH = @"SOFTWARE\9-Bits\Miakro911";
         public const string DATASOURCES_PATH = REGISTRY_PATH + "\\datasources";
         private const string ALL_DB = "[ВСЕ]";
@@ -49,11 +51,14 @@ namespace rabnet.RNC
                         val= tryToDetectMysqlPath();
                     return val ;
                 case RNCOption.zip7path: return (string)k.GetValue("z7");
-                case RNCOption.rabdump_startupPath:
-                    k = _regKey.CreateSubKey(STARTUP);
-                    return (string)k.GetValue("rabdump", "");
+                case RNCOption.RabDump_StartupAtStart:
+                    k = _regKey.OpenSubKey(SYS_STARTUP);
+                    string runp = (string)k.GetValue("rabdump", "");
+                    return (runp == Assembly.GetEntryAssembly().Location).ToString();
                 case RNCOption.serverUrl:
                     return (string)k.GetValue("sUrl", "");
+                case RNCOption.RabDump_Address:
+                    return (string)k.GetValue(RNCOption.RabDump_Address.ToString(), "");
             }
             return "";
         }
@@ -81,13 +86,17 @@ namespace rabnet.RNC
             {
                 case RNCOption.MysqlPath: k.SetValue("mysql", val); break;
                 case RNCOption.zip7path: k.SetValue("z7", val); break;
-                case RNCOption.rabdump_startupPath:
-                    k = _regKey.CreateSubKey(STARTUP);
-                    if (val == "") k.DeleteValue("rabdump", false);
-                    else k.SetValue("rabdump", val);
+                case RNCOption.RabDump_StartupAtStart:
+                    k = _regKey.OpenSubKey(SYS_STARTUP,true);
+                    if (bool.Parse(val)) 
+                        k.SetValue("rabdump", Assembly.GetExecutingAssembly().Location);
+                    else
+                        k.DeleteValue("rabdump", false);
                     break;
                 case RNCOption.serverUrl:
                     k.SetValue("sUrl", val); break;
+                case RNCOption.RabDump_Address:
+                    k.SetValue(RNCOption.RabDump_Address.ToString(), val,RegistryValueKind.String); break;
             }
         }
 
