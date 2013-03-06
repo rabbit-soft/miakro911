@@ -1,10 +1,15 @@
 ﻿using System.Windows.Forms;
+using System.Drawing;
 
 namespace rabnet.components
 {
     public partial class RabGenTreeView : TreeView
     {
+        private Color DEAD = Color.Brown;
+        private Color IA = Color.SteelBlue;
+
         private int _maxCnt=1;
+        private bool _showStateColors = true;
 
         public string NameFormat = "n, A, C";
 
@@ -22,6 +27,12 @@ namespace rabnet.components
                     value = 1;
                 _maxCnt = value;
             }
+        }
+
+        public bool ShowStateColors
+        {
+            get { return _showStateColors; }
+            set { _showStateColors = value; }
         }
 
         public TreeNode InsertNode(RabTreeData data, bool append)
@@ -44,8 +55,8 @@ namespace rabnet.components
                 while (this.Nodes.Count >= _maxCnt)
                     this.Nodes.RemoveAt(this.Nodes.Count-1);
             }
-            TreeNode tn = this.Nodes.Insert(0, data.NameFormat(NameFormat));
-            insertNode(tn,data);
+            //TreeNode tn = this.Nodes.Insert(0, data.NameFormat(NameFormat));
+            TreeNode tn =insertNode(null,data);
             tn.ExpandAll();
             tn.EnsureVisible();
             return tn;
@@ -55,19 +66,36 @@ namespace rabnet.components
             return InsertNode(data, false);
         }
 
-        private void insertNode(TreeNode nd, RabTreeData data)
+        private TreeNode insertNode(TreeNode parentNode, RabTreeData data)
         {
-            if (data.Parents != null)
-                while (data.Parents.Count > 0)
+            TreeNode tn;
+            if (parentNode == null)
+                tn = this.Nodes.Insert(0, data.NameFormat(NameFormat));
+            else
+                tn = parentNode.Nodes.Add(data.NameFormat(NameFormat));
+
+            if (_showStateColors)
                 {
-                    if (data.Parents[0] != null)
+                if (data.State == RabAliveState.DEAD)
+                    tn.ForeColor = DEAD;
+                else if (data.State == RabAliveState.IMPORTED_ASCENDANT)
+                    tn.ForeColor = IA;
+            }
+
+            if (data.Mother != null)
                     {
-                        TreeNode n = nd.Nodes.Add(data.Parents[0].NameFormat(NameFormat));
-                        insertNode(n, data.Parents[0]);
+                //TreeNode n = parentNode.Nodes.Add(data.Mother.NameFormat(NameFormat));
+                //insertNode(n, data.Mother);
+                insertNode(tn, data.Mother);
                     }
-                    data.Parents.RemoveAt(0);
+            if (data.Father != null)
+            {
+                //TreeNode n = parentNode.Nodes.Add(data.Father.NameFormat(NameFormat));
+                //insertNode(n, data.Father);
+                insertNode(tn, data.Father);
                 }
-            nd.Tag = data;
+            tn.Tag = data;
+            return tn;
         }
     }
 }

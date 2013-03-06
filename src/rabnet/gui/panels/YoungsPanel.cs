@@ -60,18 +60,7 @@ namespace rabnet.panels
             li.SubItems.Add(rab.ParentName);
             li.SubItems.Add(rab.Neighbours == 0 ? "-" : rab.Neighbours.ToString());
             li.Tag = rab.ID;
-		}
-
-        private void insertNode(TreeNode nd, RabTreeData data)
-        {
-            if (data.Parents != null)
-                for (int i = 0; i < data.Parents.Count; i++)
-                    if (data.Parents[i] != null)
-                    {
-                        TreeNode n = nd.Nodes.Add(data.Parents[i].Name);
-                        insertNode(n, data.Parents[i]);
-                    }
-        }
+		}       
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
