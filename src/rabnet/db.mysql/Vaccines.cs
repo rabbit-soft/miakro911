@@ -16,8 +16,10 @@ namespace rabnet
 
         public int Add(string name, int duration, int age, int after, bool zoo, int times)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO vaccines(v_name,v_duration,v_age,v_do_after,v_zootech,v_do_times) VALUES('{0:s}',{1:d},{2:d},{3:d},{4},{5:d});",
-                name, duration, age, after, zoo,times), _sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO vaccines(v_name,v_duration,v_age,v_do_after,v_zootech,v_do_times) VALUES(@name,{0:d},{1:d},{2:d},{3},{4:d});",
+                duration, age, after, zoo,times), _sql);
+            cmd.Prepare();
+            cmd.Parameters.AddWithValue("@name",name);
             cmd.ExecuteNonQuery();
             return (int)cmd.LastInsertedId;
         }

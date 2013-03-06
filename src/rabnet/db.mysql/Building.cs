@@ -217,8 +217,10 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 {0:s} ORDER BY m_id;",busy!=
 
         internal static void updateBuilding(Building b,MySqlConnection sql)
         {
-            MySqlCommand cmd=new MySqlCommand(String.Format(@"UPDATE tiers SET t_repair={1:d},t_delims='{2:s}',t_heater='{3:s}',t_nest='{4:s}',t_notes='{5:s}' WHERE t_id={0:d};",
-                b.ID,b.Repair?1:0,b.Delims,b.Heaters,b.Nests,String.Join("|",b.Notes)),sql);
+            MySqlCommand cmd=new MySqlCommand(String.Format(@"UPDATE tiers SET t_repair={1:d},t_delims='{2:s}',t_heater='{3:s}',t_nest='{4:s}',t_notes=@notes WHERE t_id={0:d};",
+                b.ID,b.Repair?1:0,b.Delims,b.Heaters,b.Nests),sql);
+            cmd.Prepare();
+            cmd.Parameters.AddWithValue("@notes",String.Join("|",b.Notes));
             cmd.ExecuteNonQuery();
         }
 
