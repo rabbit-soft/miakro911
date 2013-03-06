@@ -50,57 +50,59 @@ namespace rabnet.forms
         private void cbFarm_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbFarm.SelectedIndex < 0) return;
-
-            cbUser.Focus();
             try
             {
-                Application.DoEvents();
-                DataSource xs = null;
-                foreach (DataSource d in _rnc.DataSources)
-                    if (d.Name == cbFarm.Text)
-                        xs = d;
-                if (xs == null) return;
-                Engine.get().InitEngine(xs.Type, xs.Params.ToString());
-                cbUser.Items.Clear();
-                cbUser.Enabled = false;
-                tbPassword.Enabled = false;
-                List<sUser> usrs = Engine.db().GetUsers();
-                if (usrs != null)
+                cbUser.Focus();
+                try
                 {
-                    cbUser.Enabled = true;
-                    tbPassword.Enabled = true;
-                    foreach (sUser s in usrs)
+                    Application.DoEvents();
+                    DataSource xs = null;
+                    foreach (DataSource d in _rnc.DataSources)
+                        if (d.Name == cbFarm.Text)
+                            xs = d;
+                    if (xs == null) return;
+                    Engine.get().InitEngine(xs.Type, xs.Params.ToString());
+                    cbUser.Items.Clear();
+                    cbUser.Enabled = false;
+                    tbPassword.Enabled = false;
+                    List<sUser> usrs = Engine.db().GetUsers();
+                    if (usrs != null)
                     {
-                        if (s.Group == sUser.Butcher) continue;
-                        cbUser.Items.Add(s.Name);
-                        if (xs.DefUser != "" && xs.DefUser == s.Name)
+                        cbUser.Enabled = true;
+                        tbPassword.Enabled = true;
+                        foreach (sUser s in usrs)
                         {
-                            cbUser.SelectedIndex = cbUser.Items.Count - 1;
-                            if (xs.DefPassword != "")
+                            if (s.Group == sUser.Butcher) continue;
+                            cbUser.Items.Add(s.Name);
+                            if (xs.DefUser != "" && xs.DefUser == s.Name)
                             {
-                                tbPassword.Text = xs.DefPassword;
+                                cbUser.SelectedIndex = cbUser.Items.Count - 1;
+                                if (xs.DefPassword != "")
+                                {
+                                    tbPassword.Text = xs.DefPassword;
+                                }
+                                tbPassword.Focus();
+                                tbPassword.SelectAll();
                             }
-                            tbPassword.Focus();
-                            tbPassword.SelectAll();
                         }
                     }
+                    else
+                    {
+                        btEnter.Enabled = true;
+                    }
                 }
-                else
+                catch (DBBadVersionException bex)
                 {
-                    btEnter.Enabled = true;
-                }
-            }
-            catch (DBBadVersionException bex)
-            {
-                string message = String.Format("{0:s}{1:s}{2:s}",bex.Message,
-                    bex.NeedDbUpdate?Environment.NewLine:"",
-                    bex.NeedDbUpdate?"Желаете обновить?":"");
-                if (MessageBox.Show(message, "Не верная версия Базы данных",
-                    bex.NeedDbUpdate ? MessageBoxButtons.YesNo : MessageBoxButtons.OK,
-                    bex.NeedDbUpdate ? MessageBoxIcon.Question : MessageBoxIcon.Information) == DialogResult.Yes)
-                {
-                    Run.Updater();
-                    unselectConn();
+                    string message = String.Format("{0:s}{1:s}{2:s}", bex.Message,
+                        bex.NeedDbUpdate ? Environment.NewLine : "",
+                        bex.NeedDbUpdate ? "Желаете обновить?" : "");
+                    if (MessageBox.Show(message, "Не верная версия Базы данных",
+                        bex.NeedDbUpdate ? MessageBoxButtons.YesNo : MessageBoxButtons.OK,
+                        bex.NeedDbUpdate ? MessageBoxIcon.Question : MessageBoxIcon.Information) == DialogResult.Yes)
+                    {
+                        Run.Updater();
+                        unselectConn();
+                    }
                 }
             }
             catch (Exception ex)

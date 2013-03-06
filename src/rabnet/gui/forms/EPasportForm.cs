@@ -585,8 +585,9 @@ namespace rabnet.forms
                 {
                     bID = _breeds.Search(lviBreed.SubItems[0].Text).ID;                   
                 }
-                adaptBreed(wasBecome);
+                wasBecome.Add(new KeyValuePair<int, int>(b.ID, bID));
             }
+            adaptBreed(wasBecome);
 
             ///добавляем имена и переопределяем ID имен и фамилий относительно текущей базы
             wasBecome = new List<KeyValuePair<int, int>>();
@@ -751,6 +752,7 @@ namespace rabnet.forms
                 {
                     r.BreedID = kvp.Value;
                     br = true;
+                    ///todo по идее тут должен быть break но я че-то забыл как тут все работает, так что не поставил
                 }
             }
         }

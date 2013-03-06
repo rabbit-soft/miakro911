@@ -247,7 +247,7 @@
             this.toolStripSeparator2,
             this.exitMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(211, 220);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(211, 198);
             // 
             // miShowMainForm
             // 
