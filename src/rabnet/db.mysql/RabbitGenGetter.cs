@@ -220,10 +220,11 @@ LIMIT 1;";
     FROM {1:s} 
     INNER JOIN breeds ON b_id=r_breed
     WHERE r_id={2:d} LIMIT 1;";
+#if !DEMO
             if (birthplace != 0)//если ищем импортированного кролика 
             {
                 List<OneImport> lst= Import.Search(con, new Filters(Filters.RAB_ID,rabId.ToString()));
-                inFarm = lst.Count > 0;//если кролик не был импортирован в поголовье
+                inFarm = lst.Count > 0;///если кролик не был импортирован в поголовье
                 ///может возникнуть ситуация, что импортированный кролик имеет id родителя, который содержится и в import_ascendants и в imports
                 if(inFarm && Import.AscendantExists(con, rabId, birthplace)) ///устранение неоднозначности
                 {
@@ -231,6 +232,7 @@ LIMIT 1;";
                 }
                 
             }
+#endif
 
             if (inFarm)
             {

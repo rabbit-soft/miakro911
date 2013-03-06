@@ -694,5 +694,15 @@ namespace rabnet.forms
 #endif
 
         }
+
+        private void miRabExport_Click(object sender, EventArgs e)
+        {
+#if !DEMO
+            if (new EPasportForm(true).ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                rabStatusBar1.Run();
+#else
+            DemoErr.DemoNoModuleMsg();
+#endif
+        }
     }
 }

@@ -81,7 +81,7 @@ namespace mia_conv
                 _sql.Open();
                 MySqlCommand cmd = new MySqlCommand("DROP DATABASE IF EXISTS " + db + ";", _sql);
                 cmd.ExecuteNonQuery();
-                cmd.CommandText = "CREATE DATABASE " + db + " DEFAULT CHARACTER SET CP1251;";
+                cmd.CommandText = String.Format("CREATE DATABASE {0:s} DEFAULT CHARACTER SET UTF8;", db);
                 cmd.ExecuteNonQuery();
                 Debug("database created\r\nMaking db user");
                 cmd.CommandText = "GRANT ALL ON " + db + ".* TO " + user + " IDENTIFIED BY '" + pswd + "';";

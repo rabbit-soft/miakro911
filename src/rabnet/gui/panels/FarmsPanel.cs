@@ -87,12 +87,18 @@ namespace rabnet
             showButtons(cb.Checked);
             if (cb == btAdd)
             {
+                ///если редактирование отменено
                 if (!cb.Checked && cbName.Items.Count > 0)
                 {
                     cbName.SelectedIndex = 0;
                     updateSelectedItem();
                 }
-                else cbName.Text = "";
+                else
+                {
+                    cbName.Text = "";
+                    setConToDefault();
+                }
+
                 btEdit.Enabled = btDelete.Enabled = !btAdd.Checked;
                 cbName.Focus();
             }
@@ -101,6 +107,14 @@ namespace rabnet
                 btAdd.Enabled = btDelete.Enabled = !btEdit.Checked;
                 _sInd = cbName.SelectedIndex;
             }           
+        }
+
+        private void setConToDefault()
+        {
+            tbHost.Text = "localhost";
+            tbDB.Text = "kroliki";
+            tbUser.Text = "kroliki";
+            tbPass.Text = "krol";
         }
 
         private void showButtons(bool p)
@@ -117,6 +131,10 @@ namespace rabnet
                 btOk.Top = addStyle ? btCancelOK_DEF_Y : btCancelOK_DEF_Y - DEF_Y_SUB; ;
         }
 
+        /// <summary>
+        /// Можно ли редактировать настройки подключения.
+        /// </summary>
+        /// <param name="readOnly"></param>
         private void setConnFieldsRO(bool readOnly)
         {
             tbHost.ReadOnly =

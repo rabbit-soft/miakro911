@@ -88,6 +88,7 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tpButcher = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.miRabImport = new System.Windows.Forms.ToolStripMenuItem();
             this.rabStatusBar1 = new rabnet.components.RabStatusBar();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -155,6 +156,7 @@
             this.tsmiDeadsArchive,
             this.miMeal,
             this.miLogs,
+            this.miRabImport,
             this.toolStripMenuItem2,
             this.namesMenuItem,
             this.breedsMenuItem,
@@ -568,9 +570,17 @@
             this.panel1.Size = new System.Drawing.Size(906, 423);
             this.panel1.TabIndex = 7;
             // 
+            // miRabImport
+            // 
+            this.miRabImport.Name = "miRabImport";
+            this.miRabImport.Size = new System.Drawing.Size(208, 22);
+            this.miRabImport.Text = "Импорт кроликов";
+            this.miRabImport.Click += new System.EventHandler(this.miRabExport_Click);
+            // 
             // rabStatusBar1
             // 
             this.rabStatusBar1.ExcelButtonClick = null;
+            this.rabStatusBar1.FilterOn = false;
             this.rabStatusBar1.FilterPanel = null;
             this.rabStatusBar1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
             this.rabStatusBar1.Location = new System.Drawing.Point(0, 481);
@@ -665,6 +675,7 @@
         private System.Windows.Forms.ToolStripMenuItem miScale;
         private System.Windows.Forms.ToolStripMenuItem tsmiVaccines;
         private System.Windows.Forms.ToolStripMenuItem miLogs;
+        private System.Windows.Forms.ToolStripMenuItem miRabImport;
     }
 }
 
