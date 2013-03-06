@@ -125,8 +125,11 @@ WHERE r_id!={1:d} AND r_parent=0;", getOneRabbit_FieldsSet(RabAliveState.ALIVE),
             int multi = (r.Defect ? 1 : 0);
             String flags = String.Format("{0:D1}{1:D1}{2:D1}{3:D1}{4:D1}", r.Production ? 1 : 0, r.RealizeReady ? 1 : 0, multi, r.NoKuk ? 1 : 0, r.NoLact ? 1 : 0);//TODO возможен косяк
             String query = String.Format(@"UPDATE rabbits SET 
-r_name={0:d},r_surname={1:d},r_secname={2:d},r_breed={3:d},r_zone={4:d},r_group={5:d},r_notes='{6:s}',
-r_flags='{7:d}',r_rate={8:d},r_born={9:s} ", r.NameID, r.SurnameID, r.SecnameID, r.BreedID, r.Zone, r.Group, r.Notes, flags, r.Rate, DBHelper.DateToMyString(r.BirthDay));
+r_name={0:d},r_surname={1:d},r_secname={2:d},r_breed={3:d},r_zone={4:d},r_group={5:d},r_notes=@notes,
+r_flags='{6:d}',r_rate={7:d},r_born={8:s} ", r.NameID, r.SurnameID, r.SecnameID, r.BreedID, r.Zone, r.Group, /*r.Notes,*/ flags, r.Rate, DBHelper.DateToMyString(r.BirthDay));
+
+
+
             if (r.Sex != Rabbit.SexType.VOID)
             {
                 query += String.Format(",r_status={0:d},r_last_fuck_okrol={1:s}", r.Status, DBHelper.DateToMyString(r.LastFuckOkrol));
@@ -136,8 +139,12 @@ r_flags='{7:d}',r_rate={8:d},r_born={9:s} ", r.NameID, r.SurnameID, r.SecnameID,
                 query += String.Format(",r_event='{0:s}',r_event_date={1:s},r_lost_babies={2:d},r_overall_babies={3:d}", Rabbit.GetEventName(r.EventType), DBHelper.DateToMyString(r.EventDate), r.KidsLost, r.KidsOverAll);
             }
             query += String.Format(" WHERE r_id={0:d};", r.ID);
+
             MySqlCommand cmd = new MySqlCommand(query, con);
+            cmd.Prepare();
+            cmd.Parameters.AddWithValue("@notes", r.Notes);
             cmd.ExecuteNonQuery();
+
             int gen = RabbitGenGetter.MakeGenesis(con, r.Genoms);
             cmd.CommandText = String.Format("UPDATE rabbits SET r_genesis={0:d} WHERE r_id={1:d};", gen,r.ID);
             cmd.ExecuteNonQuery();

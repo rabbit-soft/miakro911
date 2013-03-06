@@ -761,7 +761,7 @@ namespace rabnet.forms
         {
             Client exporter = _rabExport.GetExporterInfo(data);
             if (exporter.ID == 0)
-                throw new RabNetException("Нельзя импортировать поголовье от не зарегистрированного пользователя.");
+                throw new RabNetException("Нельзя импортировать поголовье от незарегистрированного пользователя.");
             ///проверяем есть ли клиент в базе, если нет, то добавляем
             ClientsList list = Engine.db().GetClients();
             bool exists = false;
