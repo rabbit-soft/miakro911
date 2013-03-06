@@ -226,11 +226,11 @@ namespace rabnet.forms
             else
                 okrolDd.DateValue = _rab.LastFuckOkrol;
             sukr.Checked=(_rab.EventDate != DateTime.MinValue);
-            sukrType.SelectedIndex = 0;
+            cbSukrType.SelectedIndex = 0;
             button8.Enabled = button9.Enabled = button10.Enabled = false;
             if (sukr.Checked)
             {
-                sukrType.SelectedIndex = _rab.EventType;
+                cbSukrType.SelectedIndex = _rab.EventType;
                 sukrDd.DateValue = _rab.EventDate.Date;
                 button9.Enabled = button10.Enabled=true;
             }

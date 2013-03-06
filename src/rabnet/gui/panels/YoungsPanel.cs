@@ -15,9 +15,7 @@ namespace rabnet.panels
     {
         //private int gentree = 10;
         private bool manual = true;
-        public YoungsPanel():base()
-        {
-        }
+        public YoungsPanel() : base() { }
 
         public YoungsPanel(RabStatusBar sb): base(sb, null)
         {
