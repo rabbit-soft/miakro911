@@ -29,5 +29,15 @@ namespace rabnet
             }
             return false;
         }
+
+        public string GetName(int cId)
+        {
+            foreach (Client c in this)
+            {
+                if (c.ID == cId)
+                    return c.Name;
+            }
+            return "";
+        }
     }
 }

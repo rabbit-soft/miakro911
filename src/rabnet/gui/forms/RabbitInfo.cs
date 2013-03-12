@@ -279,7 +279,7 @@ namespace rabnet.forms
         }
         #endregion tabs_modify
 
-        private void FillList(ComboBox cb,Catalog c,int key)
+        private void fillList(ComboBox cb,Catalog c,int key)
         {
             cb.Items.Clear();
             if (cb != breed)
@@ -300,9 +300,16 @@ namespace rabnet.forms
         {
             ICatalogs cts = Engine.db().catalogs();
             _breeds = cts.getBreeds();
-            FillList(breed,_breeds,_rab.BreedID);
+            fillList(breed,_breeds,_rab.BreedID);
             _zones = cts.getZones();
-            FillList(zone, _zones, _rab.Zone);
+            if (_rab.BirthPlace == 0)
+                fillList(cbZone, _zones, _rab.Zone);
+            else
+            {
+                ClientsList cl = Engine.db().GetClients();
+                cbZone.Items.Add(cl.GetName(_rab.BirthPlace));
+                cbZone.SelectedIndex = 0;
+            }
             int sx=0;
             String end="";
             if (_rab.Sex==Rabbit.SexType.MALE)
@@ -316,8 +323,8 @@ namespace rabnet.forms
                 end="ы";
             _surnames = cts.getSurNames(2, end);
             _secnames = cts.getSurNames(1, end);
-            FillList(surname, _surnames, _rab.SurnameID);
-            FillList(secname, _secnames, _rab.SecnameID);
+            fillList(surname, _surnames, _rab.SurnameID);
+            fillList(secname, _secnames, _rab.SecnameID);
             fillNames(sx);
         }
 
@@ -326,7 +333,7 @@ namespace rabnet.forms
             if (sx != 0 && _rab.Group == 1)
             {
                 _names = Engine.db().catalogs().getFreeNames(sx, _rab.WasNameID);
-                FillList(name, _names, _rab.NameID);
+                fillList(name, _names, _rab.NameID);
                 if (_rab.NameID == 0)
                     name.Enabled = button16.Enabled=true;
             }
@@ -364,7 +371,7 @@ namespace rabnet.forms
             _rab.SecnameID = getCatValue(_secnames, secname.Text);
             _rab.BreedID = getCatValue(_breeds, breed.Text);
             _rab.BreedName = breed.Text;
-            _rab.Zone = getCatValue(_zones, zone.Text);
+            _rab.Zone = getCatValue(_zones, cbZone.Text);
             _curzone = _rab.Zone;
             _rab.BirthDay = bdate.DateValue.Date;
             _rab.Group = (int)group.Value;

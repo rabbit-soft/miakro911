@@ -239,7 +239,7 @@ namespace rabnet.forms
 
             Text = "ИМПОРТ информации о кроликах из файла.";
             lFile.Visible = tbFileFrom.Visible = btOpenFile.Visible = true;
-            lCount.Visible = nudExportCnt.Visible = chKill.Visible = chPrintPasport.Visible =false;
+            lCount.Visible = nudExportCnt.Visible = chKill.Visible = false;
            
             lvExportRabbits.Columns.Remove(chrExportCount);          
 
