@@ -304,12 +304,14 @@ namespace rabnet.forms
             _zones = cts.getZones();
             if (_rab.BirthPlace == 0)
                 fillList(cbZone, _zones, _rab.Zone);
+#if !DEMO
             else
             {
                 ClientsList cl = Engine.db().GetClients();
                 cbZone.Items.Add(cl.GetName(_rab.BirthPlace));
                 cbZone.SelectedIndex = 0;
             }
+#endif
             int sx=0;
             String end="";
             if (_rab.Sex==Rabbit.SexType.MALE)
