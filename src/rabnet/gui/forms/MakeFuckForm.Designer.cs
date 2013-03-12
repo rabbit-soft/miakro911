@@ -112,7 +112,7 @@
             // 
             // chtInbrRG
             // 
-            this.chtInbrRG.Text = "Инбридинг Род.Древ.";
+            this.chtInbrRG.Text = "Инбридинг Рельный";
             this.chtInbrRG.Width = 124;
             // 
             // label1
@@ -202,7 +202,7 @@
             this.dateDays1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.dateDays1.AutoSize = true;
             this.dateDays1.DateText = "Дата";
-            this.dateDays1.DateValue = new System.DateTime(2013, 1, 29, 0, 0, 0, 0);
+            this.dateDays1.DateValue = new System.DateTime(2013, 3, 12, 0, 0, 0, 0);
             this.dateDays1.DaysText = "Дней";
             this.dateDays1.DaysValue = 0;
             this.dateDays1.Location = new System.Drawing.Point(463, 292);
