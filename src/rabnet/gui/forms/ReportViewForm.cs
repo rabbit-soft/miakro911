@@ -27,7 +27,8 @@ namespace rabnet.forms
         /// </summary>
         private ExcelMaker.DataFillCallBack _xclDataFill=null;
 
-        public bool printed = false;
+        public bool IsPrinted = false;
+
         public ReportViewForm()
         {
             InitializeComponent();
@@ -44,7 +45,7 @@ namespace rabnet.forms
         /// <summary>
         /// Отправляет данные ввиде XML
         /// </summary>
-        public void setData()
+        private void setData()
         {
             fyiReporting.RDL.DataSets ds = rdlViewer1.Report.DataSets;
             ds["Data"].SetData(_xmls[0]);
@@ -159,7 +160,7 @@ namespace rabnet.forms
                 if (options && (pd.PrinterSettings.PrintRange == PrintRange.Selection))
                     pd.PrinterSettings.FromPage = rdlViewer1.PageCurrent;
                 rdlViewer1.Print(pd);
-                printed = true;
+                IsPrinted = true;
             }
             catch (Exception ex)
             {

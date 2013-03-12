@@ -231,116 +231,26 @@ namespace rabnet.panels
             listView1_SelectedIndexChanged(null, null);
         }
 
-        private String getBon(String b) //todo проверить на схожесть с RabbitBon
-        {
-            if (b.Length == 1)
-            {
-                switch (b)
-                {
-                    case "1": return "III";
-                    case "2": return "II";
-                    case "3": return "I";
-                    case "4": return "Элита";
-                }
-                return "Нет";
-            }
-            string minbon="5";
-            for (int i = 1; i<b.Length; i++)
-                if (b[i] < minbon[0])
-                    minbon = "" + b[i];
-            return getBon(minbon);
-        }
-#if !DEMO
-        private XmlDocument rabToXml(RabNetEngRabbit er, OneRabbit or)
-        {
-            return rabToXml(er, or, null);
-        }
+        //private String getBon(String b) //todo проверить на схожесть с RabbitBon
+        //{
+        //    if (b.Length == 1)
+        //    {
+        //        switch (b)
+        //        {
+        //            case "1": return "III";
+        //            case "2": return "II";
+        //            case "3": return "I";
+        //            case "4": return "Элита";
+        //        }
+        //        return "Нет";
+        //    }
+        //    string minbon="5";
+        //    for (int i = 1; i<b.Length; i++)
+        //        if (b[i] < minbon[0])
+        //            minbon = "" + b[i];
+        //    return getBon(minbon);
+        //}
 
-        /// <summary>
-        /// Нужно для отчета Племенное свидетельство
-        /// </summary>
-        /// <param name="er"></param>
-        /// <param name="or"></param>
-        /// <param name="hasdoc"></param>
-        /// <returns></returns>
-        private XmlDocument rabToXml(RabNetEngRabbit er, OneRabbit or, XmlDocument hasdoc)
-        {
-            XmlDocument doc = null;
-            if (hasdoc == null)
-            {
-                doc = new XmlDocument();
-                doc.AppendChild(doc.CreateElement("Rows"));
-            }
-            else
-                doc = hasdoc;
-            XmlElement rw=doc.CreateElement("Row");
-            doc.DocumentElement.AppendChild(rw);
-            if (er != null)
-            {
-                or = Engine.db().getLiveDeadRabbit(er.ID);
-                if (hasdoc==null)
-                {
-                    ReportHelper.Append(rw, doc, "header", Engine.opt().getOption(Options.OPT_ID.SVID_HEAD));
-                    ReportHelper.Append(rw, doc, "num", Engine.opt().getOption(Options.OPT_ID.NEXT_SVID));
-                    ReportHelper.Append(rw, doc, "date", DateTime.Now.Date.ToShortDateString());
-                    ReportHelper.Append(rw, doc, "director", Engine.opt().getOption(Options.OPT_ID.SVID_GEN_DIR));
-                    //rw.AppendChild(doc.CreateElement("header")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.SVID_HEAD)));
-                    //rw.AppendChild(doc.CreateElement("num")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.NEXT_SVID)));
-                    //rw.AppendChild(doc.CreateElement("date")).AppendChild(doc.CreateTextNode(DateTime.Now.Date.ToShortDateString()));
-                    //rw.AppendChild(doc.CreateElement("director")).AppendChild(doc.CreateTextNode(Engine.opt().getOption(Options.OPT_ID.SVID_GEN_DIR)));
-                }
-                else
-                {
-                    rw.AppendChild(doc.CreateElement("group")).AppendChild(doc.CreateTextNode(er.Group.ToString()));
-                }
-                Catalog zones = Engine.db().catalogs().getZones();
-                ReportHelper.Append(rw, doc, "sex", er.Sex == Rabbit.SexType.MALE ? "male" : (er.Sex == Rabbit.SexType.FEMALE ? "female" : "void"));
-                ReportHelper.Append(rw, doc, "class", getBon(er.Bon));
-                ReportHelper.Append(rw, doc, "name", er.FullName);
-                ReportHelper.Append(rw, doc, "breed", er.BreedName);
-                ReportHelper.Append(rw, doc, "born_place", zones.ContainsKey(er.Zone) ? zones[er.Zone] : "-");
-                ReportHelper.Append(rw, doc, "born_date", er.BirthDay.ToShortDateString());
-                ReportHelper.Append(rw, doc, "age", er.Age.ToString());
-                ReportHelper.Append(rw, doc, "address", er.AddressSmall);
-                ReportHelper.Append(rw, doc, "weight", or.FWeight().ToString());
-                ReportHelper.Append(rw, doc, "weight_date", or.WeightDate.Date.ToShortDateString());
-                ReportHelper.Append(rw, doc, "weight_age", or.WeightAge.ToString());
-                ReportHelper.Append(rw, doc, "born", or.KidsOverAll.ToString());//сколько родила
-                ReportHelper.Append(rw, doc, "okrol", or.Okrol.ToString());
-                ReportHelper.Append(rw, doc, "genom", er.Genoms.Replace(' ', ','));
-                ReportHelper.Append(rw, doc, "wclass", getBon("" + er.Bon[1]));
-                ReportHelper.Append(rw, doc, "bclass", getBon("" + er.Bon[1]));
-                ReportHelper.Append(rw, doc, "hclass", getBon("" + er.Bon[3]));
-                ReportHelper.Append(rw, doc, "cclass", getBon("" + er.Bon[4]));
-            }
-            else if (or != null)
-            {
-                ReportHelper.Append(rw, doc, "sex", or.Sex == Rabbit.SexType.MALE ? "male" : "female");
-                //ReportHelper.Append(rw, doc, "age", or.Status.ToString()+(or.Zone==1?"(списан)":""));
-                ReportHelper.Append(rw, doc, "age", or.Age.ToString());
-                ReportHelper.Append(rw, doc, "weight", or.FWeight());
-                ReportHelper.Append(rw, doc, "class", getBon(or.Bon));
-                ReportHelper.Append(rw, doc, "name", or.NameFull);
-                ReportHelper.Append(rw, doc, "wclass", getBon("" + or.Bon[1]));
-                ReportHelper.Append(rw, doc, "bclass", getBon("" + or.Bon[1]));
-                ReportHelper.Append(rw, doc, "hclass", getBon("" + or.Bon[3]));
-                ReportHelper.Append(rw, doc, "cclass", getBon("" + or.Bon[4]));
-            }
-            else
-            {
-                ReportHelper.Append(rw, doc, "sex", "none");
-                ReportHelper.Append(rw, doc, "age", "");
-                ReportHelper.Append(rw, doc, "weight", "");
-                ReportHelper.Append(rw, doc, "class", "");
-                ReportHelper.Append(rw, doc, "name", "");
-                ReportHelper.Append(rw, doc, "wclass", "");
-                ReportHelper.Append(rw, doc, "bclass", "");
-                ReportHelper.Append(rw, doc, "hclass", "");
-                ReportHelper.Append(rw, doc, "cclass", "");
-            }
-            return doc;
-        }
-#endif
         private void actMenu_Opening(object sender, CancelEventArgs e)
         {
             if (listView1.SelectedItems.Count < 1)
@@ -507,28 +417,11 @@ namespace rabnet.panels
         {
 #if !DEMO
             if (listView1.SelectedItems.Count != 1) return;
-            XmlDocument[] docs = new XmlDocument[7];
-            RabNetEngRabbit r = Engine.get().getRabbit((int)listView1.SelectedItems[0].Tag);
-            docs[0] = rabToXml(r, null);
-            OneRabbit[] p1 = Engine.db().getParents(r.ID, r.Age);
-            docs[1] = rabToXml(null, p1[0]);
-            docs[2] = rabToXml(null, p1[1]);
-            OneRabbit[] p2;
-            if (p1[0] != null)
-                p2 = Engine.db().getParents(p1[0].ID, p1[0].Age);
-            else
-                p2 = new OneRabbit[] { null, null };
-            docs[3] = rabToXml(null, p2[0]);
-            docs[4] = rabToXml(null, p2[1]);
-            if (p1[1] != null)
-                p2 = Engine.db().getParents(p1[1].ID, p1[1].Age);
-            else
-                p2 = new OneRabbit[] { null, null };
-            docs[5] = rabToXml(null, p2[0]);
-            docs[6] = rabToXml(null, p2[1]);
+
+            XmlDocument[] docs = ReportHelperExt.GetRabbitPlem((int)listView1.SelectedItems[0].Tag);
             ReportViewForm rf = new ReportViewForm(myReportType.RABBIT, docs);
             rf.ShowDialog();
-            if (rf.printed)
+            if (rf.IsPrinted)
             {
                 int num = Engine.opt().getIntOption(Options.OPT_ID.NEXT_SVID);
                 Engine.opt().setOption(Options.OPT_ID.NEXT_SVID, num + 1);
@@ -556,7 +449,7 @@ namespace rabnet.panels
                         brd = r.BreedName;
                     if (r.BreedName != brd)
                         brd = "none";
-                    rabToXml(r, null, doc);
+                    ReportHelperExt.rabToXml(r, null, doc);
                 }
                 XmlDocument doc2 = new XmlDocument();
                 XmlElement rw = (XmlElement)doc2.AppendChild(doc2.CreateElement("Rows")).AppendChild(doc2.CreateElement("Row"));

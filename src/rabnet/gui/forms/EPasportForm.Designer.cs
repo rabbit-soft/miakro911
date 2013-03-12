@@ -569,7 +569,7 @@
             this.chKill.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.chKill.Checked = true;
             this.chKill.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chKill.Location = new System.Drawing.Point(485, 731);
+            this.chKill.Location = new System.Drawing.Point(485, 724);
             this.chKill.Name = "chKill";
             this.chKill.Size = new System.Drawing.Size(156, 17);
             this.chKill.TabIndex = 12;

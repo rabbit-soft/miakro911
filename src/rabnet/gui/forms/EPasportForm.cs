@@ -239,7 +239,7 @@ namespace rabnet.forms
 
             Text = "ИМПОРТ информации о кроликах из файла.";
             lFile.Visible = tbFileFrom.Visible = btOpenFile.Visible = true;
-            lCount.Visible = nudExportCnt.Visible = false;
+            lCount.Visible = nudExportCnt.Visible = chKill.Visible = chPrintPasport.Visible =false;
            
             lvExportRabbits.Columns.Remove(chrExportCount);          
 
@@ -837,6 +837,7 @@ namespace rabnet.forms
                                 killID = Engine.db().cloneRabbit(r.ID, int.Parse(lvi.SubItems[EXP_CNT_INDEX].Text), 0, 0, 0, r.Sex, 0);
                             }
                             Engine.db().KillRabbit(killID, 0, DeadReason_Static.Selled, " экспорт");
+
                         }
                     }
                 }

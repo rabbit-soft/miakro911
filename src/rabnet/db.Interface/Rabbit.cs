@@ -114,7 +114,9 @@ namespace rabnet
             }
             return (shr ? "-" : "Нет");
         }
+        public static String GetFBon(String bon) { return GetFBon(bon,false); }
         public static String GetFBon(int bon, bool shr) { return GetFBon(bon.ToString(), shr); }
+        
         #endregion static
 
         #region private_help

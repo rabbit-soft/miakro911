@@ -132,7 +132,8 @@ namespace rabnet
         {
             get
             {
-                if (_id == 0) return _eng.db().makeName(_nameID, _surnameID, _secnameID, Group, Sex);
+                if (_id == 0) 
+                    return _eng.db().makeName(_nameID, _surnameID, _secnameID, Group, Sex);
                 return this.NameFull; 
             } 
         }

@@ -180,6 +180,7 @@
     <Compile Include="classes\RabnetConfig\sParams.cs" />
     <Compile Include="classes\RabnetConfig\RabnetConfig.cs" />
     <Compile Include="classes\lan\RabNetLan.cs" />
+    <Compile Include="classes\ReportHelperExt.cs" />
     <Compile Include="classes\Run.cs" />
     <Compile Include="components\LogsCheckBoxList.cs">
       <SubType>UserControl</SubType>

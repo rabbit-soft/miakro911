@@ -11,7 +11,7 @@ namespace rabnet
         TEST, BREEDS, AGE, FUCKER, DEAD, DEADREASONS, REALIZE, USER_OKROLS, SHED, REPLACE, REVISION, BY_MONTH, FUCKS_BY_DATE, BUTCHER_PERIOD, RABBIT, PRIDE, ZOOTECH
     }
 
-    public static class ReportHelper
+    public class ReportHelper
     {
         public static string GetRusName(myReportType type)
         {
