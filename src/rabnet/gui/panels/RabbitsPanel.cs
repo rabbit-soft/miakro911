@@ -764,7 +764,8 @@ namespace rabnet.panels
                 List<int> rIds = new List<int>();
                 foreach (ListViewItem it in listView1.SelectedItems)
                     rIds.Add((int)it.Tag);
-                (new EPasportForm(rIds)).ShowDialog();
+                if ((new EPasportForm(rIds)).ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                    _rsb.Run();
             }
             catch(RabNetException exc)
             {

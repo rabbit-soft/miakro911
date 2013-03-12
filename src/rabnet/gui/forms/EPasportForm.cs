@@ -40,7 +40,7 @@ namespace rabnet.forms
             }
         }
 
-
+        const int COUNT_INDEX = 4;
         const int EXP_CNT_INDEX = 5;
         const int IMP_NEW_NAME = 5;
         const int IMP_ADDRESS = 6;
@@ -92,14 +92,16 @@ namespace rabnet.forms
         }
 
         #region export
-        public EPasportForm(List<int> rIds):this()
+        public EPasportForm(List<int> rIds)
+            : this()
         {
             _export = true;
             Text = "ЭКСПОРТ информации о кроликах в файл.";
-            
+
             lvBreeds.Height += 30;
-            lNewName.Visible = cbNewName.Visible =
-                lBreedAnalog.Visible = cbBreedAnalog.Visible = 
+            lExists.Visible = lExistIDNotMatch.Visible = lMatchInUse.Visible = lNotMatchInUse.Visible = lNotExists.Visible =
+                lNewName.Visible = cbNewName.Visible =
+                lBreedAnalog.Visible = cbBreedAnalog.Visible =
                 lReplace.Visible = cbFreeBuildings.Visible = false;
 
             lvBreeds.Columns.Remove(chrLocalBreedAnalog);
@@ -121,6 +123,8 @@ namespace rabnet.forms
             foreach (int rid in rIds)
             {
                 OneRabbit r = Engine.db().GetRabbit(rid);
+                if (r == null)
+                    continue;
                 if (r.EventDate != DateTime.MinValue)
                     throw new RabNetException("Нельзя экспортировать сукрольную крольчиху.");
                 if(r.Sex == Rabbit.SexType.VOID)
@@ -195,19 +199,20 @@ namespace rabnet.forms
             return result;
         }
 
-        private void exportToFile()
+        private bool exportToFile()
         {
-            saveFileDialog1.FileName = String.Format("{0:s}_{1:s}",
+            saveFileDialog1.FileName = String.Format("{0:s}_{1:s}_{2:s}",
 #if PROTECTED
                     GRD.Instance.GetOrganizationName(),
 #else
                     "Гамбито ферма \"Пыщт-Пыщь\" ",
 #endif
-            DateTime.Now.ToShortDateString()).Replace("\"", "");
-            if (saveFileDialog1.ShowDialog() != DialogResult.OK) return;
+                Engine.get().FarmName, DateTime.Now.ToShortDateString()).Replace("\"", "");
+            if (saveFileDialog1.ShowDialog() != DialogResult.OK) return false;
 
             string data = _rabExport.Export(getRabForExport(), getAscendantsForExport(), getBreedsForExport(), getNamesForExport());
             makeExportFile(saveFileDialog1.OpenFile(), data);
+            return true;
         }
 
         private void makeExportFile(Stream s, string data)
@@ -222,6 +227,7 @@ namespace rabnet.forms
         }
 
         #endregion export
+
         #region import
 
         public EPasportForm(bool import)
@@ -818,7 +824,21 @@ namespace rabnet.forms
 #endif
                 if (_export)
                 {
-                    exportToFile();
+                    if(!exportToFile()) return;
+                    if (chKill.Checked)
+                    {
+                        OneRabbit r;
+                        foreach (ListViewItem lvi in lvExportRabbits.Items)
+                        {
+                            r = lvi.Tag as OneRabbit;
+                            int killID=r.ID;
+                            if (lvi.SubItems[COUNT_INDEX].Text != lvi.SubItems[EXP_CNT_INDEX].Text)
+                            {
+                                killID = Engine.db().cloneRabbit(r.ID, int.Parse(lvi.SubItems[EXP_CNT_INDEX].Text), 0, 0, 0, r.Sex, 0);
+                            }
+                            Engine.db().KillRabbit(killID, 0, DeadReason_Static.Selled, " экспорт");
+                        }
+                    }
                 }
                 else
                 {
@@ -844,9 +864,7 @@ namespace rabnet.forms
 #endif
 #endif
         }
-
         
-
         private void btOpenFile_Click(object sender, EventArgs e)
         {
 #if !DEMO
@@ -867,9 +885,7 @@ namespace rabnet.forms
             }
 #endif
         }
-
-        
-
+      
         private void lvBreeds_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (_export || lvBreeds.SelectedItems.Count == 0 || !_manual) return;

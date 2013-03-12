@@ -17,7 +17,7 @@ namespace rabnet.forms
 #if !DEMO
         public delegate void ExcelCallBack(XmlNode[] xmls);
 
-        private XmlDocument[] xmls = null;
+        private XmlDocument[] _xmls = null;
         private myReportType _repType = myReportType.TEST;
         private string _repName = "";
         private string _repFile = "";
@@ -47,9 +47,9 @@ namespace rabnet.forms
         public void setData()
         {
             fyiReporting.RDL.DataSets ds = rdlViewer1.Report.DataSets;
-            ds["Data"].SetData(xmls[0]);
-            for (int i = 1; i < xmls.Length; i++)
-                ds["Data" + (i + 1).ToString()].SetData(xmls[i]);
+            ds["Data"].SetData(_xmls[0]);
+            for (int i = 1; i < _xmls.Length; i++)
+                ds["Data" + (i + 1).ToString()].SetData(_xmls[i]);
         }
         
         public ReportViewForm(myReportType type, XmlDocument xml): this(type,new XmlDocument[]{xml}){}
@@ -78,7 +78,7 @@ namespace rabnet.forms
 
         private void build(XmlDocument[] xml)
         {
-            xmls = xml;
+            _xmls = xml;
             string fn = Path.GetDirectoryName(Application.ExecutablePath) + "\\reports\\" + _repFile + ".rdl";
             rdlViewer1.SourceFile = fn;
             setData();
@@ -242,7 +242,7 @@ namespace rabnet.forms
         private void tbExcel_Click(object sender, EventArgs e)
         {
 #if !DEMO
-            ExcelMaker.MakeExcelFromXML(xmls, _repName, _xclHeaders,_xclDataFill);     
+            ExcelMaker.MakeExcelFromXML(_xmls, _repName, _xclHeaders,_xclDataFill);     
 #else
             DemoErr.DemoNoModuleMsg();
 #endif

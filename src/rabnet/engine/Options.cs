@@ -157,7 +157,7 @@ namespace rabnet
         private uint getUidOfLevel(OPT_LEVEL level)
         {
             if (level==OPT_LEVEL.FARM) return 0;
-            int res = eng.userId;
+            int res = eng.UserID;
             if (res < 0) return 0;
             return (uint)res;
         }

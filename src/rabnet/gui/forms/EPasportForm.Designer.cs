@@ -75,6 +75,7 @@
             this.lNotMatchInUse = new System.Windows.Forms.Label();
             this.lNotExists = new System.Windows.Forms.Label();
             this.lMatchInUse = new System.Windows.Forms.Label();
+            this.chKill = new System.Windows.Forms.CheckBox();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -125,8 +126,8 @@
             // 
             // tbFileFrom
             // 
-            this.tbFileFrom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbFileFrom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.tbFileFrom.Location = new System.Drawing.Point(118, 14);
             this.tbFileFrom.Name = "tbFileFrom";
             this.tbFileFrom.Size = new System.Drawing.Size(650, 20);
@@ -145,9 +146,9 @@
             // 
             // lvExportRabbits
             // 
-            this.lvExportRabbits.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvExportRabbits.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.lvExportRabbits.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chrName,
             this.chrBreed,
@@ -208,9 +209,9 @@
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.Location = new System.Drawing.Point(12, 40);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -290,8 +291,8 @@
             // 
             // lCount
             // 
-            this.lCount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lCount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.lCount.AutoSize = true;
             this.lCount.Location = new System.Drawing.Point(702, 28);
             this.lCount.Name = "lCount";
@@ -302,8 +303,8 @@
             // 
             // nudExportCnt
             // 
-            this.nudExportCnt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudExportCnt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.nudExportCnt.Enabled = false;
             this.nudExportCnt.Location = new System.Drawing.Point(718, 44);
             this.nudExportCnt.Minimum = new decimal(new int[] {
@@ -341,9 +342,9 @@
             // 
             // lvAscendants
             // 
-            this.lvAscendants.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvAscendants.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.lvAscendants.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
@@ -406,9 +407,9 @@
             // 
             // lvNames
             // 
-            this.lvNames.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvNames.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.lvNames.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader4,
             this.columnHeader5,
@@ -480,9 +481,9 @@
             // 
             // lvBreeds
             // 
-            this.lvBreeds.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvBreeds.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.lvBreeds.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chrBreedName,
             this.chrLocalBreedAnalog});
@@ -562,6 +563,19 @@
             this.lMatchInUse.TabIndex = 11;
             this.lMatchInUse.Text = "Имеется в базе ID совпадают, Используется";
             // 
+            // chKill
+            // 
+            this.chKill.AutoSize = true;
+            this.chKill.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chKill.Checked = true;
+            this.chKill.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chKill.Location = new System.Drawing.Point(485, 731);
+            this.chKill.Name = "chKill";
+            this.chKill.Size = new System.Drawing.Size(156, 17);
+            this.chKill.TabIndex = 12;
+            this.chKill.Text = "Списать экспортируемых";
+            this.chKill.UseVisualStyleBackColor = true;
+            // 
             // EPasportForm
             // 
             this.AcceptButton = this.btOk;
@@ -569,6 +583,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btCancel;
             this.ClientSize = new System.Drawing.Size(815, 762);
+            this.Controls.Add(this.chKill);
             this.Controls.Add(this.lMatchInUse);
             this.Controls.Add(this.lNotExists);
             this.Controls.Add(this.lNotMatchInUse);
@@ -653,5 +668,6 @@
         private System.Windows.Forms.ColumnHeader chrNewRabName;
         private System.Windows.Forms.ColumnHeader chrNewRabAddress;
         private System.Windows.Forms.ColumnHeader chrLocalBreedAnalog;
+        private System.Windows.Forms.CheckBox chKill;
     }
 }

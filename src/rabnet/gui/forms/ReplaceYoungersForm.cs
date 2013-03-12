@@ -120,7 +120,7 @@ namespace rabnet.forms
                         else
                         {
                             rr = Engine.get().getRabbit(r.ID);
-                            rr = Engine.get().getRabbit(rr.Clone(vl, 0, 0, 0));
+                            rr = Engine.get().getRabbit(rr.Clone(vl));
                         }
                         rr.PlaceSuckerTo((int)listView1.Items[i].Tag);
                     }

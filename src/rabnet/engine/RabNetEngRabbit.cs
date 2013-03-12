@@ -282,7 +282,7 @@ namespace rabnet
                 //throw new ExBadDate(daysPast.ToString());
             _eng.logs().log(LogType.FUCK, ID, maleId, AddressSmall, f.AddressSmall, 
                 (syntetic ? "ИО" : "стд.") + (daysPast != 0 ? String.Format(" {0:d} дней назад", daysPast) : ""));
-            _eng.db().MakeFuck(this._id, f.ID, daysPast, _eng.userId, syntetic);
+            _eng.db().MakeFuck(this._id, f.ID, daysPast, _eng.UserID, syntetic);
         }
         public void FuckIt(int otherrab, int daysPast)
         {
@@ -369,7 +369,7 @@ namespace rabnet
             }
             else
             {
-                int nid = Clone(count, 0, 0, 0);
+                int nid = Clone(count);
                 RabNetEngRabbit nr = new RabNetEngRabbit(nid, _eng);
                 nr.CloneAddress = AddressSmall;
                 nr.KillIt(daysPast, reason, notes, count);
@@ -400,7 +400,7 @@ namespace rabnet
             }
             else
             {
-                RabNetEngRabbit clone = _eng.getRabbit(r.Clone(dead + killed, 0, 0, 0));
+                RabNetEngRabbit clone = _eng.getRabbit(r.Clone(dead + killed));
                 clone.CloneAddress = AddressSmall;
                 clone.KillIt(0, DeadReason_Static.Dead_KidsCount, "при подсчете", clone.Group);
                 if(added>0)
@@ -430,11 +430,13 @@ namespace rabnet
         {
             if (Group <= count) throw new ExBadCount(); //todo вставил проверку на = , надо попроверять
 
-           int nid = _eng.db().cloneRabbit(_id, count, farm, tier, sec, Rabbit.SexType.VOID, 0);
+           int nid = _eng.db().cloneRabbit(_id, count, farm, tier, sec, this.Sex, 0);
            RabNetEngRabbit rab = Engine.get().getRabbit(nid);       //+gambit
            _eng.logs().log(LogType.CLONE_GROUP, _id, nid, AddressSmall, rab.AddressSmall, String.Format("{0:d} и {1:d}", Group-count ,count));
            return nid;
         }
+        public int Clone(int count) { return Clone(count, 0, 0, 0); }
+
         
         /// <summary>
         /// Обьединить с группой

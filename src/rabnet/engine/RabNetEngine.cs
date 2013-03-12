@@ -21,8 +21,8 @@ namespace rabnet
         private ILog _logger = null;
         private int uid = 0;
         private string group = "none";
-        private String uname;
-        private String farmname;
+        private String _uname;
+        private String _farmname;
         private Options opts=null;
         private RabNetLogs logger = null;
         private RabEngZooTeh zooteh = null;
@@ -94,15 +94,17 @@ namespace rabnet
             if (uid != 0)
             {
                 group = db().userGroup(uid);
-                uname = name;
-                farmname = farmName;
+                _uname = name;
+                _farmname = farmName;
             }
             return uid;
         }
 
-        public String farmName() { return uname + "@" + farmname; }
+        public String farmName() { return _uname + "@" + _farmname; }
 
-        public int userId { get { return uid; } }
+        public int UserID { get { return uid; } }
+        public string UserName { get { return _uname; } }
+        public string FarmName { get { return _farmname; } }
 
         public Options options()
         {
@@ -173,7 +175,7 @@ namespace rabnet
 
         public void delUser(int uid)
         {
-            if (uid == userId)
+            if (uid == UserID)
                 throw new ApplicationException("Нельзя удалить себя.");
             if (!isAdmin())
                 throw new ApplicationException("Нет прав доступа.");
@@ -182,7 +184,7 @@ namespace rabnet
 
         public void updateUser(int uid, string name, int group, string password, bool chpass)
         {
-            if (uid == userId && group != 0)
+            if (uid == UserID && group != 0)
                 throw new ApplicationException("Нельзя сменить группу администратора.");
             if (name == "")
                 throw new ApplicationException("Пустое имя.");
