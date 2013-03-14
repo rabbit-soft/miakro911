@@ -445,11 +445,11 @@ namespace RabGRD
         protected DateTime ReadDate(uint offset)
         {
             DateTime dt = new DateTime();
-            byte[] bts = new byte[12];
+            byte[] bts = new byte[DATE_FIELD_LENGTH];
             _logger.Debug("Reading date: ");
-            if (ReadBytes(out bts, offset, 12)==0)
+            if (ReadBytes(out bts, offset, DATE_FIELD_LENGTH) == 0)
             {
-                string nm = Cp1251BytesToString(bts, 0, 12);
+                string nm = Cp1251BytesToString(bts, 0, (int)DATE_FIELD_LENGTH);
                 _logger.Debug("Date  string = " + nm);
                 DateTimeFormatInfo dtfi = new CultureInfo("en-US", false).DateTimeFormat;
                 try

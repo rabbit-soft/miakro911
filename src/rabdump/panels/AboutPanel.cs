@@ -39,6 +39,8 @@ namespace rabdump
             info += String.Format("Ограничение на количство ферм - {0:d}", GRD.Instance.GetFarmsCnt());
             info += Environment.NewLine;
             info += String.Format("Период действия - с {0} по {1}", GRD.Instance.GetDateStart().ToShortDateString(), GRD.Instance.GetDateEnd().ToShortDateString());
+            info += Environment.NewLine;
+            info += String.Format("Поддержка до {0}", GRD.Instance.GetSupportEnd().ToShortDateString());
             return info;
 #else
 #if DEMO
