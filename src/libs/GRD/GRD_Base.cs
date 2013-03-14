@@ -36,7 +36,7 @@ namespace RabGRD
         protected const string DEV_MARKER = "9-bits RabSoft";
 
         ///Далее список адресов данных в ключе
-        
+        #region user_mask
         protected const uint USER_DATA_BEGINING = 1180;
         protected const uint CLIENT_ID_OFFSET = 0;
         protected const uint DEV_MARKER_OFFSET = 2;
@@ -48,10 +48,13 @@ namespace RabGRD
         protected const uint TEMP_FLAGS_MASK_OFFSET = 170;
         protected const uint TEMP_FLAGS_END_OFFSET = 178;
         protected const uint KEY_CODE_OFFSET = 190;
+        protected const uint SUPPORT_END_DATE_OFFSET = 450;
         
+        protected const uint DATE_FIELD_LENGTH = 12;
         protected const uint KEY_CODE_LENGTH = 262;
-        protected uint USER_DATA_LENGTH { get { return KEY_CODE_OFFSET + KEY_CODE_LENGTH; } }
+        protected uint USER_DATA_LENGTH { get { return SUPPORT_END_DATE_OFFSET + DATE_FIELD_LENGTH; } }
         protected uint WHOLE_MASK_LENGTH { get { return USER_DATA_BEGINING + USER_DATA_LENGTH; } }
+        #endregion user_mask
 
         // Variables to use in GrdSetFindMode() 
         protected GrdFMR _findPropRemoteMode = GrdFMR.Local;    // Operation mode flags                    
@@ -428,6 +431,12 @@ namespace RabGRD
             byte[] result = new byte[KEY_CODE_LENGTH];
             ReadBytes(out result, (USER_DATA_BEGINING+ KEY_CODE_OFFSET), KEY_CODE_LENGTH);
             return result;
+        }
+
+        public DateTime GetSupportEnd()
+        {
+            uint addr = USER_DATA_BEGINING + SUPPORT_END_DATE_OFFSET;            
+            return ReadDate(addr);
         }
 
         #endregion get_user_data

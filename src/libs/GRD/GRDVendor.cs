@@ -1,4 +1,7 @@
-﻿#define LOCALDEBUG
+﻿/**
+ * Build this only on x86 platform. Because WriteMask builded on 32-bits
+ */
+#define LOCALDEBUG
 #define WriteEnable
 using System;
 using System.Collections.Generic;
@@ -186,7 +189,8 @@ namespace RabGRD
             return writeMask(pbyWholeMask, protectLength, wNumberOfItems);
         }
 
-        public GrdE GetTRUAnswer(out string base64_answer, string base64_question, int orgId,string orgName, int farms, int flags, DateTime startDate, DateTime endDate,byte[] keyCode)
+
+        public GrdE GetTRUAnswer(out string base64_answer, string base64_question, int orgId,string orgName, int farms, int flags, DateTime startDate, DateTime endDate,byte[] keyCode, DateTime endSuppors)
         {            
             byte[] buf = Convert.FromBase64String(base64_question);
 
@@ -213,7 +217,7 @@ namespace RabGRD
 
             uint protectLength;
             ushort wNumberOfItems;
-            byte[] userBuff = makeUserBuff(orgId,orgName, farms, flags, startDate, endDate,keyCode);
+            byte[] userBuff = makeUserBuff(orgId,orgName, farms, flags, startDate, endDate,keyCode, endSuppors);
             byte[] pbyWholeMask = makeNewMask(userBuff, out protectLength, out wNumberOfItems);
 
             logStr = "Set Init & Protect parameters for Trusted Remote Update: ";
@@ -290,10 +294,12 @@ namespace RabGRD
 
             return userBuff;
         }
-        private byte[] makeUserBuff(int orgId,string orgName, int farms, int flags, DateTime startDate, DateTime endDate, byte[] keyCode)
+        private byte[] makeUserBuff(int orgId,string orgName, int farms, int flags, DateTime startDate, DateTime endDate, byte[] keyCode,DateTime endSupport)
         {
             byte[] res = makeUserBuff(orgId,orgName,farms,flags,startDate,endDate);
             Array.Copy(keyCode, 0, res, KEY_CODE_OFFSET, keyCode.Length);
+            byte [] tmp = Encoding.GetEncoding(1251).GetBytes(startDate.ToString("yyyy-MM-dd"));
+            Array.Copy(tmp, 0, res, SUPPORT_END_DATE_OFFSET, tmp.Length);
             return res;
         }
         
