@@ -298,7 +298,7 @@ namespace RabGRD
         {
             byte[] res = makeUserBuff(orgId,orgName,farms,flags,startDate,endDate);
             Array.Copy(keyCode, 0, res, KEY_CODE_OFFSET, keyCode.Length);
-            byte [] tmp = Encoding.GetEncoding(1251).GetBytes(startDate.ToString("yyyy-MM-dd"));
+            byte[] tmp = Encoding.GetEncoding(1251).GetBytes(endSupport.ToString("yyyy-MM-dd"));
             Array.Copy(tmp, 0, res, SUPPORT_END_DATE_OFFSET, tmp.Length);
             return res;
         }
