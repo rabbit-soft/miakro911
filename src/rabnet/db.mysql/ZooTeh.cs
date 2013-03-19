@@ -63,8 +63,8 @@ namespace db.mysql
 
         private void fillCommonData(MySqlDataReader rd)
         {
- 	        Days = rd.GetInt32("srok");
-            ID=rd.GetInt32("r_id");
+            Days = rd.GetInt32("srok");
+            ID = rd.GetInt32("r_id");
             RabName = rd.GetString("name");
             Address = Building.FullPlaceName(rd.GetString("place"));
             RabAge = rd.GetInt32("age");
@@ -100,9 +100,12 @@ namespace db.mysql
 
         private void fillCounts(MySqlDataReader rd)
         {           
-            ID = rd.GetInt32("r_parent");
-            ID2 = rd.GetInt32("r_id");
-            Comment = (_flt.safeInt(Filters.SHORT) == 0 ? "количество " : "+") + rd.GetString("r_group");
+            int tmp = !rd.IsDBNull(rd.GetOrdinal("suckGroups")) ? rd.GetInt32("suckGroups"):0;
+            this.ID2 = tmp;
+            Comment = String.Format("{0:s}{1:2,d}{2:s}",
+                (_flt.safeInt(Filters.SHORT) == 0 ? "количество: " : "+"),
+                rd.GetString("suckers"),
+                tmp>1 ? String.Format(" ({0:d})",tmp):"");
         }
 
         private void fillFuck(MySqlDataReader rd)
@@ -318,23 +321,32 @@ ORDER BY srok DESC,0+LEFT(place,LOCATE(',',place)) ASC;", getnm(),brd(),
 
         private string qCounts()
         {
+            const int COUNT_KIDS_LOG=17;
             return String.Format(@"SELECT 
-    r_parent,
+    TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d} srok,
+    prnt AS r_id,
     rabname(r_parent,{2:s}) name,
     rabplace(r_parent) place,
-    r_group,
-    (SELECT TO_DAYS(NOW())-TO_DAYS(r3.r_born) FROM rabbits r3 WHERE r3.r_id=rabbits.r_parent) age,"
-    + brd("(SELECT r7.r_breed FROM rabbits r7 WHERE r7.r_id=rabbits.r_parent)") + @",
-    TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d} srok,
-    r_id
-FROM rabbits
+    aage AS age,
+    {4:s},
+    suckers,    
+    suckGroups    
+    
+FROM rabbits r
+LEFT JOIN (SELECT r_parent AS prnt,SUM(r2.r_group) suckers, COUNT(*) suckGroups, AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) aage FROM rabbits r2 GROUP BY r_parent) sc ON prnt=r.r_parent
 WHERE r_parent<>0 AND (TO_DAYS(NOW())-TO_DAYS(r_born)>={0:d}{1:s}) 
-    AND r_parent NOT IN (
-                            SELECT l_rabbit FROM logs 
-                            WHERE l_type=17 AND (DATE(l_date)<=DATE(NOW()) 
-                                AND DATE(l_date)>=DATE( NOW()- INTERVAL (TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d}) DAY) )
-                        )
-ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", _flt.safeInt("days"), (_flt.safeInt("next") == -1 ? "" : String.Format(" AND TO_DAYS(NOW())-TO_DAYS(r_born)<{0:d}", _flt.safeInt("next"))), getnm());
+    AND r_id NOT IN (
+                        SELECT l_rabbit2 FROM logs 
+                        WHERE l_type={3:d} AND (DATE(l_date)<=DATE(NOW()) 
+                            AND DATE(l_date)>=DATE( NOW()- INTERVAL (TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d}) DAY) )
+                    )
+GROUP BY r_parent
+ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", 
+                _flt.safeInt("days"), 
+                (_flt.safeInt("next") == -1 ? "" : String.Format(" AND TO_DAYS(NOW())-TO_DAYS(r_born)<{0:d}", _flt.safeInt("next"))), 
+                getnm(),
+                COUNT_KIDS_LOG,
+                brd("(SELECT r7.r_breed FROM rabbits r7 WHERE r7.r_id=r.r_parent)"));
         }
 
         private string qPreOkrol()

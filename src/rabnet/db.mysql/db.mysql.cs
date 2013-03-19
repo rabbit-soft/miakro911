@@ -202,7 +202,7 @@ namespace db.mysql
         {
             return new Youngers(sql, filters);
         }
-        public YoungRabbit[] GetYoungers(int momId)
+        public YoungRabbitList GetYoungers(int momId)
         {
             return Youngers.GetYoungers(sql,momId);
         }

@@ -144,7 +144,8 @@ namespace rabnet
         protected int _status=0;
         protected DateTime _eventDate;
         private int _kidsAge = -1;
-        private int _kidsCount = 0;
+        private int _kidsTotalCount = 0;
+        private int _kidsGroupCount = 1;
         private string _vacFlags = "";
 
         /*public Rabbit(int id)
@@ -153,7 +154,7 @@ namespace rabnet
         }*/
 
         public AdultRabbit(int id, string rabname, string sex, DateTime born, string breedname, int group, String bon, string rawAddress, string notes,
-                int rate, string flags, int weight, int status, DateTime eventDate, int kidsCount, int kidsAge, string vacFlags)
+                int rate, string flags, int weight, int status, DateTime eventDate, int kidsCount, int kidsGroupCount,int kidsAge, string vacFlags)
             : base(id, rabname, sex, born, breedname, group, bon, rawAddress, notes)
         {
             _rate = rate;
@@ -161,24 +162,26 @@ namespace rabnet
             _weight = weight;
             _status = status;
             _eventDate = eventDate;
-            _kidsCount = kidsCount;
+            _kidsTotalCount = kidsCount;
+            _kidsGroupCount = kidsGroupCount;
             _kidsAge = kidsAge;
-            _vacFlags = vacFlags;
-           
+            _vacFlags = vacFlags;                     
         }
         public AdultRabbit() { }
 
         #region properties
         public int Rate { get { return _rate; } set { _rate = value; } }
         public int Sukrol { get { return DateTime.Now.Subtract(_eventDate.Date).Days; } }
-        public virtual int KidsCount { get { return _kidsCount; } }
-        public virtual int KidsAge { get { return _kidsCount > 0 ? _kidsAge : -1; } }
+        public virtual int KidsCount { get { return _kidsTotalCount; } }
+        public virtual int KidsAge { get { return _kidsTotalCount > 0 ? _kidsAge : -1; } }
 
         public String FGroup()
         {
             string res = "-";
-            if (Sex == Rabbit.SexType.FEMALE && _kidsCount > 0)
-                res = String.Format("+{0,2:d}", _kidsCount);
+            if (Sex == Rabbit.SexType.FEMALE && _kidsTotalCount > 0)
+            {
+                res = String.Format("+{0,2:d}{1:s}", _kidsTotalCount, _kidsGroupCount > 1 ? String.Format(" ({0:d})", _kidsGroupCount) : "");
+            }
             else if (Group > 1)
                 res = String.Format("[{0,2:d}]", Group);
             return res;
@@ -271,7 +274,7 @@ namespace rabnet
         public OneRabbit(int id, string sx, DateTime born, int rate, string flags, int nameId, int surnameId, int secnameId, string rawAddress, int group, 
             int brd, int zone, String notes, String genom, int status, DateTime lastFuckOkrol, String eventType, DateTime eventDate, int overAllBabys, 
             int lostBabys, String fullName, String breedName, String bon, int parent, int okrol, int weight, DateTime weightDate, int motherID, int fatherID,int exportFrom)
-            : base(id, fullName, sx, born, breedName, group, bon, rawAddress, notes, rate, flags, weight, status, eventDate, 0, -1, "")
+            : base(id, fullName, sx, born, breedName, group, bon, rawAddress, notes, rate, flags, weight, status, eventDate, 0, -1, 1,"")
         {
             this._parentID = parent;
             _nameID = 

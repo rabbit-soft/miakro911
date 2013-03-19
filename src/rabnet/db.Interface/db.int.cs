@@ -52,7 +52,7 @@ namespace rabnet
         string GetRabGenoms(int rId);
         RabTreeData rabbitGenTree(int rabbit);
         BldTreeData buildingsTree();       
-        YoungRabbit[] GetYoungers(int momId);
+        YoungRabbitList GetYoungers(int momId);
         OneRabbit[] GetNeighbors(int rabId);
         int[] getTiers(int farm);
         Building getBuilding(int tier);       

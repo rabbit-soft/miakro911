@@ -33,6 +33,7 @@ namespace db.mysql
                 rd.GetInt32("r_rate"), rd.GetString("r_flags"), rd.GetInt32("weight"), rd.GetInt32("r_status"),
                 rd.IsDBNull(rd.GetOrdinal("r_event_date")) ? DateTime.MinValue : rd.GetDateTime("r_event_date"),
                 rd.IsDBNull(rd.GetOrdinal("suckers")) ? 0 : rd.GetInt32("suckers"),
+                rd.IsDBNull(rd.GetOrdinal("suckGroups")) ? 0 : rd.GetInt32("suckGroups"),
                 rd.IsDBNull(rd.GetOrdinal("aage")) ? 0 : rd.GetInt32("aage"),
                 rd.GetString("vaccines"));
         }
@@ -596,24 +597,27 @@ WHERE r_parent={1:d} AND r_id={2:d};", added, rid, yid), sql);
         public static AdultRabbit[] getMothers(MySqlConnection sql, int age, int agediff)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT * FROM (SELECT r_id,
-    rabname(r_id,2) name,
-    r_sex,
-    r_born,
-    (SELECT b_name FROM breeds WHERE b_id=r_breed) breed,
-    r_group,
-    r_rate,
-    r_bon,
-    rabplace(r_id) place,
-    r_notes,
-    r_flags,
-    '-1' weight,
-    r_status,
-    r_event_date,
-    (SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) suckers,
-    (SELECT AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) aage,
-    '' vaccines
-FROM rabbits WHERE r_sex='female' AND r_group=1 AND (r_status>0 OR (r_status=0 AND r_event_date IS NOT NULL))) c 
-WHERE suckers>0 AND ABS(aage-{0:d})<={1:d};
+        rabname(r_id,2) name,
+        r_sex,
+        r_born,
+        (SELECT b_name FROM breeds WHERE b_id=r_breed) breed,
+        r_group,
+        r_rate,
+        r_bon,
+        rabplace(r_id) place,
+        r_notes,
+        r_flags,
+        '-1' weight,
+        r_status,
+        r_event_date,
+        suckers,
+        suckGroups,
+        aage,
+        '' vaccines
+    FROM rabbits r
+    LEFT JOIN (SELECT r_parent prnt,SUM(r2.r_group) suckers,COUNT(*) suckGroups, AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) aage FROM rabbits r2 GROUP BY r_parent) sc ON prnt=r.r_id
+    WHERE r_sex='female' AND r_group=1 AND (r_status>0 OR (r_status=0 AND r_event_date IS NOT NULL))
+) c WHERE suckers>0 AND ABS(aage-{0:d})<={1:d};
 ", age, agediff), sql);
             List<AdultRabbit> rbs = new List<AdultRabbit>();
             MySqlDataReader rd = cmd.ExecuteReader();

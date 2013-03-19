@@ -18,4 +18,15 @@ namespace rabnet
             Neighbours = nbrs;
         }
     }
+
+    public class YoungRabbitList : List<YoungRabbit>
+    {
+        public YoungRabbit GetByID(int id)
+        {
+            foreach (YoungRabbit y in this)
+                if (y.ID == id)
+                    return y;
+            return null;
+        }
+    }
 }

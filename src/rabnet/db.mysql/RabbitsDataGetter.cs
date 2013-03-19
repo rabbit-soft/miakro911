@@ -33,8 +33,9 @@ Coalesce((SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX
 r_status,
 r_flags,
 r_group,
-Coalesce((SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=r.r_id),0) suckers,
-Coalesce((SELECT AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) FROM rabbits r2 WHERE r2.r_parent=r.r_id),-1) aage,
+suckers,
+suckGroups,
+aage,
 r_rate,
 r_bon,
 rabplace(r_id) place,
@@ -43,6 +44,7 @@ r_born,
 r_breed,
 Coalesce(Group_concat('v',{3}),'') vaccines
 FROM rabbits r 
+LEFT JOIN (SELECT r_parent prnt,SUM(r2.r_group) suckers,COUNT(*) suckGroups, AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) aage FROM rabbits r2 GROUP BY r_parent) sc ON prnt=r.r_id
 LEFT JOIN (
 	SELECT rv.v_id,rv.r_id rv_id, Max(rv.`date`) FROM rab_vac rv
 	INNER JOIN vaccines v1 ON v1.v_id=rv.v_id

@@ -58,7 +58,7 @@ namespace rabnet
         //private int _id;
         private OneRabbit _origin = null;
         private String _rabGenoms="";
-        private YoungRabbit[] _youngers = null;
+        private YoungRabbitList _youngers = null;
         private RabVac[] _rabVacs=null;
         private string _tag = "";
         private OneRabbit[] _neighbors=null;
@@ -89,7 +89,7 @@ namespace rabnet
             _id = 0;
             _eng = dl;
             _sex = sx;
-            _youngers=new YoungRabbit[0];
+            _youngers=new YoungRabbitList();
         }
         
         #region own_props
@@ -168,7 +168,7 @@ namespace rabnet
         /// <summary>
         /// Лист с группами подсосных
         /// </summary>
-        public YoungRabbit[] Youngers 
+        public YoungRabbitList Youngers 
         { 
             get 
             { 
@@ -384,15 +384,16 @@ namespace rabnet
         /// <param name="killed">Количество притоптанных</param>
         /// <param name="added">Количество появившихся</param>
         /// <param name="atall">Всего кроликов</param>
-        /// <param name="age">Возраст детей</param>
-        /// <param name="yInd">Индекс детей</param>
-        public void CountKids(int dead,int killed,int added,int atall,int age,int yInd)
+        /// <param name="age">Возраст детей</param>        
+        public void CountKids(int dead,int killed,int added,int atall,int age,int yID)
         {
             if (Sex != Rabbit.SexType.FEMALE)
                 throw new ExNotFemale(this);
-            _eng.logs().log(LogType.COUNT_KIDS, ID, _youngers[yInd].ID, this.AddressSmall,"", String.Format("  возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, прибавилось {4:d})", age, atall, dead, killed, added));            
-            if (dead == 0 && killed == 0 && added == 0) return;
-            YoungRabbit y = _youngers[yInd];
+            YoungRabbit y = _youngers.GetByID(yID);
+            if (y == null) throw new ExNoRabbit();
+
+            _eng.logs().log(LogType.COUNT_KIDS, ID, y.ID, this.AddressSmall,"", String.Format("  возраст {0:d} всего {1:d} (умерло {2:d}, притоптано {3:d}, прибавилось {4:d})", age, atall, dead, killed, added));            
+            if (dead == 0 && killed == 0 && added == 0) return;           
             RabNetEngRabbit r = _eng.getRabbit(y.ID);        
             if (atall == 0)
             {
@@ -405,7 +406,7 @@ namespace rabnet
                 clone.CloneAddress = AddressSmall;
                 clone.KillIt(0, DeadReason_Static.Dead_KidsCount, "при подсчете", clone.Group);
                 if(added>0)
-                    _eng.db().СountKids(_id,dead, killed, added, _youngers[yInd].ID);             
+                    _eng.db().СountKids(_id,dead, killed, added, y.ID);             
             }
         }
 

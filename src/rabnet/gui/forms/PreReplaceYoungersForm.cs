@@ -19,8 +19,8 @@ namespace rabnet.forms
         public static DialogResult MakeChoice(int rid)
         {
             RabNetEngRabbit r = Engine.get().getRabbit(rid);
-            if (r.Youngers.Length == 0) return DialogResult.Cancel;
-            if (r.Youngers.Length == 1)
+            if (r.Youngers.Count == 0) return DialogResult.Cancel;
+            if (r.Youngers.Count == 1)
                 return new ReplaceYoungersForm(r.Youngers[0].ID).ShowDialog();
             return new PreReplaceYoungersForm(r).ShowDialog();
         }
@@ -28,16 +28,14 @@ namespace rabnet.forms
         public PreReplaceYoungersForm(RabNetEngRabbit rab):this()
         {
             r = rab;
-            for (int i = 0; i < r.Youngers.Length; i++)
+            for (int i = 0; i < r.Youngers.Count; i++)
             {
                 comboBox1.Items.Add(r.Youngers[i].NameFull);
             }
             comboBox1.SelectedIndex = 0;
         }
 
-        public PreReplaceYoungersForm(int rid):this(Engine.get().getRabbit(rid))
-        {
-        }
+        //public PreReplaceYoungersForm(int rid) : this(Engine.get().getRabbit(rid)) { }
 
         private void button1_Click(object sender, EventArgs e)
         {

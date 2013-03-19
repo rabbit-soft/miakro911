@@ -206,8 +206,18 @@ namespace rabnet.panels
             if (index < 0) return 0;
             String s = listView1.Items[index].SubItems[NFIELD].Text;
             int c = 1;
-            if (s[0] == '+') c += int.Parse(s.Substring(1));
-            if (s[0] == '[') c = int.Parse(s.Substring(1, s.Length - 2));
+            if (s[0] == '+')
+            {
+                if (s.Contains("("))
+                {
+                    string[] tmp = s.Split(' ');
+                    int.TryParse(tmp[0],out c);
+                }
+                else
+                    c += int.Parse(s.Substring(1));
+            }
+            if (s[0] == '[') 
+                int.TryParse(s.Substring(1, s.Length - 2), out c); //c = int.Parse(s.Substring(1, s.Length - 2));
             return c;
         }
 

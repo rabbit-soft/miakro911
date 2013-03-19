@@ -17,7 +17,7 @@ namespace rabnet.panels
         private DateTime repdate = DateTime.Now;
         public WorksPanel():base(){}
         public int _makeFlag = 0;
-        private bool fullUpdate=true;
+        private bool _fullUpdate=true;
         private Filters runF = null;
         private int itm = -1;
 
@@ -31,7 +31,7 @@ namespace rabnet.panels
 
         protected override IDataGetter onPrepare(Filters f)
         {
-            if (fullUpdate)
+            if (_fullUpdate)
             {
                 f[Filters.SHORT] = Engine.opt().safeIntOption(Options.OPT_ID.SHORT_ZOO, 1).ToString();
                 f[Filters.DBL_SURNAME] = f[Filters.SHORT] == "1" ? "0" : "1";//Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
@@ -76,9 +76,9 @@ namespace rabnet.panels
             runF = f;
             fillLogs(f);
             //DataThread.Get().Stop();
-            if (!fullUpdate)
+            if (!_fullUpdate)
             {
-                fullUpdate = true;
+                _fullUpdate = true;
                 return null;
             }
             return Engine.db2().zooTeh(f);//возвращает ZooTehNullGetter
@@ -216,7 +216,7 @@ namespace rabnet.panels
             ZootehJob job = getCurJob();
             if (job == null)
                 return;
-            fullUpdate = true;
+            _fullUpdate = true;
             bool needUpdate = Engine.opt().getIntOption(Options.OPT_ID.UPDATE_ZOO) == 1;
             switch (job.Type)
             {                
@@ -245,19 +245,21 @@ namespace rabnet.panels
                                   
                 case JobType.COUNT_KIDS:
                     RabNetEngRabbit rrr = Engine.get().getRabbit(job.ID);
-                    CountKids ck;
+                    CountKids ck = new CountKids(job.ID);
                     int id2 = 0;
-                    for (int i = 0; i < rrr.Youngers.Length; i++)
+                    for (int i = 0; i < rrr.Youngers.Count; i++)
                         if (rrr.Youngers[i].ID == job.ID2) id2 = i;
                     if (_makeFlag == 0)
                     {
-                        rrr.CountKids(0, 0, 0, rrr.Youngers[id2].Group, rrr.Youngers[id2].Age, 0);
+                        //rrr.CountKids(0, 0, 0, rrr.Youngers[id2].Group, rrr.Youngers[id2].Age, 0);
+                        ck.MakeCount();
+                        ck.Dispose();
                         needUpdate = false;
                     }
                     else
                     {
-                        ck = new CountKids(job.ID, job.Flag == 1);
-                        ck.setGrp(id2);
+                        //ck = new CountKids(job.ID, job.Flag == 1);
+                        //ck.SetGroup(id2);
                         res = ck.ShowDialog();
                     }
                     break;
@@ -324,7 +326,7 @@ namespace rabnet.panels
                 lvZooTech.SelectedItems[0].Remove();
                 if (idx<lvZooTech.Items.Count)
                     lvZooTech.Items[idx].Selected = true;
-                fullUpdate = needUpdate;
+                _fullUpdate = needUpdate;
                 _rsb.Run();
             }
         }
