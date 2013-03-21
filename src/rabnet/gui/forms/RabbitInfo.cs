@@ -142,7 +142,10 @@ namespace rabnet.forms
             defect.Checked = _rab.Defect;
             gp.Checked = _rab.Production;
             cbRealization.Checked = _rab.RealizeReady;
-            rate.Value = _rab.Rate;
+            if (_rab.Rate > rate.Maximum || _rab.Rate < rate.Minimum)
+                rate.Value = _rab.Rate > 0 ? rate.Maximum : rate.Minimum;
+            else
+                rate.Value = _rab.Rate;
             group.Value = _rab.Group == 0 ? 1 : _rab.Group;//защита на всякий случай
             lbName.Text = "Имя:" + name.Text;
             lbSecname.Text = "Ж.Фам:" + surname.Text;

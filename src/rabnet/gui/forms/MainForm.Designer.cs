@@ -44,6 +44,7 @@
             this.tsmiDeadsArchive = new System.Windows.Forms.ToolStripMenuItem();
             this.miMeal = new System.Windows.Forms.ToolStripMenuItem();
             this.miLogs = new System.Windows.Forms.ToolStripMenuItem();
+            this.miRabImport = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.namesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.breedsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -88,8 +89,8 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tpButcher = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.miRabImport = new System.Windows.Forms.ToolStripMenuItem();
             this.rabStatusBar1 = new rabnet.components.RabStatusBar();
+            this.miChangeLog = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -205,6 +206,13 @@
             this.miLogs.Size = new System.Drawing.Size(208, 22);
             this.miLogs.Text = "Логи";
             this.miLogs.Click += new System.EventHandler(this.miLogs_Click);
+            // 
+            // miRabImport
+            // 
+            this.miRabImport.Name = "miRabImport";
+            this.miRabImport.Size = new System.Drawing.Size(208, 22);
+            this.miRabImport.Text = "Импорт кроликов";
+            this.miRabImport.Click += new System.EventHandler(this.miRabExport_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -469,7 +477,8 @@
             // 
             this.tsmiAbout.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiAboutPO,
-            this.tsmiHelp});
+            this.tsmiHelp,
+            this.miChangeLog});
             this.tsmiAbout.Name = "tsmiAbout";
             this.tsmiAbout.Size = new System.Drawing.Size(65, 20);
             this.tsmiAbout.Text = "Справка";
@@ -570,13 +579,6 @@
             this.panel1.Size = new System.Drawing.Size(906, 423);
             this.panel1.TabIndex = 7;
             // 
-            // miRabImport
-            // 
-            this.miRabImport.Name = "miRabImport";
-            this.miRabImport.Size = new System.Drawing.Size(208, 22);
-            this.miRabImport.Text = "Импорт кроликов";
-            this.miRabImport.Click += new System.EventHandler(this.miRabExport_Click);
-            // 
             // rabStatusBar1
             // 
             this.rabStatusBar1.ExcelButtonClick = null;
@@ -589,6 +591,13 @@
             this.rabStatusBar1.Size = new System.Drawing.Size(914, 23);
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
+            // 
+            // miChangeLog
+            // 
+            this.miChangeLog.Name = "miChangeLog";
+            this.miChangeLog.Size = new System.Drawing.Size(161, 22);
+            this.miChangeLog.Text = "Изменения";
+            this.miChangeLog.Click += new System.EventHandler(this.miChangeLog_Click);
             // 
             // MainForm
             // 
@@ -676,6 +685,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiVaccines;
         private System.Windows.Forms.ToolStripMenuItem miLogs;
         private System.Windows.Forms.ToolStripMenuItem miRabImport;
+        private System.Windows.Forms.ToolStripMenuItem miChangeLog;
     }
 }
 

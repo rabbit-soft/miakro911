@@ -929,10 +929,10 @@
       <Link>GrdAPI64.DLL</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="icon_green.ico" />
-    <Content Include="changeLog.txt">
+    <None Include="changeLog.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
+    <Content Include="icon_green.ico" />
     <None Include="Resources\ff_add.png" />
     <None Include="Resources\ff_edit.png" />
     <None Include="Resources\ff_delete.png" />

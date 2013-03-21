@@ -209,7 +209,7 @@
 			</references>
 		</csc>
 		<copy file="${srcdir}/rabnet/gui/clean_config/rabnet.exe.config" tofile="${bin_dir_bin}/rabnet.exe.config" />
-		<copy file="${srcdir}/rabnet/gui/changeLog.txt" tofile="${bin_dir_bin}/changeLog.txt" />
+		<copy file="${srcdir}/rabnet/gui/changeLog.html" tofile="${bin_dir_bin}/changeLog.html" />
 		<!--move file="${bin_dir}/RabNet/CAS.dll" tofile="${bin_dir}/Tools/CAS.dll" failonerror="false" /-->
 	</target>	
 

@@ -704,5 +704,12 @@ namespace rabnet.forms
             DemoErr.DemoNoModuleMsg();
 #endif
         }
+
+        private void miChangeLog_Click(object sender, EventArgs e)
+        {
+            string path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"changeLog.html");
+            if(System.IO.File.Exists(path))
+                System.Diagnostics.Process.Start(path);
+        }
     }
 }
