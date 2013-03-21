@@ -103,7 +103,7 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
 	#File ${BinDir}\bin\CAS.DLL
 	#File ${BinDir}\gui_genetics.dll   
 	#File ${BinDir}\bin\Pickers.dll 
-	File ${BinDir}\bin\changeLog.txt
+	File ${BinDir}\bin\changeLog.html
     File ${BinDir}\bin\rabHelp.chm
 	
     SetOutPath $INSTDIR\bin\reports
