@@ -473,7 +473,7 @@ DROP TABLE IF EXISTS aaa;",
         )
     ) srok,     #сколько дней не выполнена работа
 
-    ( SELECT `date` FROM rab_vac rv         #находим дату прививки
+    ( SELECT Max(`date`) FROM rab_vac rv         #находим дату прививки
       WHERE rv.v_id=v.v_id AND rv.r_id=rb.r_id AND unabled!=1       #если ее сделали кролику
         AND CAST(v.v_duration as SIGNED)-CAST(to_days(NOW())-to_days(date) AS SIGNED)>0     #и она еще не кончилась
     ) dt, 
