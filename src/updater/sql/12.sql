@@ -30,6 +30,6 @@ CREATE TABLE IF NOT EXISTS logs_arch(
 );
 
 INSERT INTO logs_arch(l_id,l_date,l_type,l_user,l_rabbit,l_address,l_rabbit2,l_address2,l_param)
-  	(SELECT l_id,l_date,l_type,l_user,l_rabbit,l_address,l_rabbit2,l_address2,l_param FROM logs WHERE l_date<Date_Add(NOW(), INTERVAL -6 month));
+  	(SELECT l_id,l_date,l_type,l_user,l_rabbit,l_address,l_rabbit2,l_address2,l_param FROM logs WHERE l_date<Date_Add(NOW(), INTERVAL -12 month));
 
-DELETE FROM logs WHERE l_date<Date_Add(NOW(), INTERVAL -6 month);
+DELETE FROM logs WHERE l_date<Date_Add(NOW(), INTERVAL -12 month);
