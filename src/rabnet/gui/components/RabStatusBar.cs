@@ -167,7 +167,6 @@ namespace rabnet.components
         #region progress
         private void initProgress(int max)
         {
-            if (!this.IsHandleCreated) return;
             if (this.InvokeRequired)
             {
                 DTProgressHandler d = new DTProgressHandler(initProgress);
@@ -175,6 +174,10 @@ namespace rabnet.components
             }
             else
             {
+                while (!this.IsHandleCreated) 
+                {
+                    System.Threading.Thread.Sleep(500);///todo не знаю хорошее ли это решение может быть DeadLock
+                }
                 pb.Minimum = 0;
                 pb.Maximum = max;
                 pb.Value = 0;
@@ -186,7 +189,7 @@ namespace rabnet.components
 
         private void progress(int prss)
         {
-            pb.Value = prss;
+            pb.Value = pb.Maximum > prss ? prss : pb.Maximum;
             pb.Invalidate();
         }
         private void endProgress()

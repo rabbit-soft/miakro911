@@ -103,10 +103,13 @@ namespace rabdump
             get { return _url; }
             set 
             {
-                if (String.IsNullOrEmpty(value)) return;
-                _url = value;
-                if (_reqSend != null) //ГОВНОКОД
-                    _reqSend.Url = _url;
+                Uri uri;
+                if (Uri.TryCreate(value, UriKind.Absolute, out uri))
+                {
+                    _url = uri.AbsolutePath;
+                    if (_reqSend != null) ///todo ГОВНОКОД
+                        _reqSend.Url = uri.AbsolutePath;
+                }
             }
         }
 

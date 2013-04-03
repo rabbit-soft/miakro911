@@ -60,10 +60,17 @@ namespace rabnet
 
         protected void sendUdpMessage(string msg,IPEndPoint addr)
         {
-            byte[] sendBuff = Encoding.UTF8.GetBytes(msg);
-            UdpClient udpSender = new UdpClient();
-            addr.Port = MSG_PORT;
-            udpSender.Send(sendBuff, sendBuff.Length, addr);
+            try
+            {
+                byte[] sendBuff = Encoding.UTF8.GetBytes(msg);
+                UdpClient udpSender = new UdpClient();
+                addr.Port = MSG_PORT;
+                udpSender.Send(sendBuff, sendBuff.Length, addr);
+            }
+            catch (Exception exc)
+            {
+                _logger.Error(String.Format("fail to send msg:'{0:s}' to {1:s}",msg,addr.ToString()),exc);
+            }
         }
 
         protected void sendUdpMessage(string msg)

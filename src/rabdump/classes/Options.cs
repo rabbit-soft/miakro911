@@ -98,7 +98,6 @@ namespace rabdump
         /// </summary>
         public void Save()
         {
-            _servUrl = prettyServer(_servUrl);
             _rnc.SaveDataSources();
             _rnc.SaveArchiveJobs();
             _rnc.SaveOption(RabnetConfig.RNCOption.MysqlPath, _myPath);
@@ -124,16 +123,6 @@ namespace rabdump
         internal RabnetConfig GetRabnetConfig()
         {
             return _rnc;
-        }
-
-        private string prettyServer(string result)
-        {
-            if(result==null || result=="") return "";
-
-            if (!result.StartsWith("http://")) result = "http://" + result;
-            result = result.Replace('\\', '/');
-            if (!result.EndsWith("/")) result += "/";
-            return result;
         }
     }
 }
