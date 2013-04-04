@@ -110,26 +110,27 @@
             this.miRestore,
             this.miChangeReason});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(173, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(174, 48);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // miRestore
             // 
             this.miRestore.Name = "miRestore";
-            this.miRestore.Size = new System.Drawing.Size(172, 22);
+            this.miRestore.Size = new System.Drawing.Size(173, 22);
             this.miRestore.Text = "Восстановить";
             this.miRestore.Click += new System.EventHandler(this.miRestore_Click);
             // 
             // miChangeReason
             // 
             this.miChangeReason.Name = "miChangeReason";
-            this.miChangeReason.Size = new System.Drawing.Size(172, 22);
+            this.miChangeReason.Size = new System.Drawing.Size(173, 22);
             this.miChangeReason.Text = "Изменит причину";
             this.miChangeReason.Click += new System.EventHandler(this.miChangeReason_Click);
             // 
             // rsb
             // 
             this.rsb.ExcelButtonClick = null;
+            this.rsb.FilterOn = false;
             this.rsb.FilterPanel = null;
             this.rsb.Location = new System.Drawing.Point(0, 463);
             this.rsb.Name = "rsb";
@@ -153,7 +154,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Архив списаний";
-            this.Activated += new System.EventHandler(this.DeadForm_Activated);
+            this.Load += new System.EventHandler(this.DeadForm_Load);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -47,11 +47,6 @@ namespace rabnet.forms
             li.SubItems.Add(d.notes);
         }
 
-        private void DeadForm_Activated(object sender, EventArgs e)
-        {
-            rsb.Run();
-        }
-
         private void miRestore_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count == 0 ||
@@ -103,6 +98,11 @@ namespace rabnet.forms
         private void rsb_OnFinishUpdate()
         {
             cs.RestoreAfterUpdate();
+        }
+
+        private void DeadForm_Load(object sender, EventArgs e)
+        {
+            rsb.Run();
         }
 
     }
