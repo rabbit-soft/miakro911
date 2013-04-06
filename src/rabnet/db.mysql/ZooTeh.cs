@@ -468,7 +468,7 @@ DROP TABLE IF EXISTS aaa;",
             If(
                 v_do_after=0, 
                 Date_Add(r_born,INTERVAL v_age DAY), 
-                (SELECT Date_Add(`date`,INTERVAL v_age DAY) FROM rab_vac WHERE r_id=rb.r_id AND v_id=v_do_after)    #может получиться NULL если не было сделано предыдущей прививки
+                (SELECT Date_Add(Max(`date`),INTERVAL v_age DAY) FROM rab_vac WHERE r_id=rb.r_id AND v_id=v_do_after)    #может получиться NULL если не было сделано предыдущей прививки
             )
         )
     ) srok,     #сколько дней не выполнена работа
