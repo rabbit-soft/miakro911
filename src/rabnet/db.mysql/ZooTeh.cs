@@ -464,7 +464,7 @@ DROP TABLE IF EXISTS aaa;",
     rb.r_id, r_parent,rabname(r_id,{0:s}) name, rabplace(r_id) place, (TO_DAYS(NOW())-TO_DAYS(r_born)) age, v.v_id, r_group,
     to_days(NOW()) - to_days(
         COALESCE(
-            (SELECT MAX(`date`) FROM rab_vac WHERE r_id=rb.r_id AND v_id=v.v_id),
+            dt,
             If(
                 v_do_after=0, 
                 Date_Add(r_born,INTERVAL v_age DAY), 
@@ -473,15 +473,16 @@ DROP TABLE IF EXISTS aaa;",
         )
     ) srok,     #сколько дней не выполнена работа
 
-    ( SELECT Max(`date`) FROM rab_vac rv         #находим дату прививки
-      WHERE rv.v_id=v.v_id AND rv.r_id=rb.r_id AND unabled!=1       #если ее сделали кролику
-        AND CAST(v.v_duration as SIGNED)-CAST(to_days(NOW())-to_days(date) AS SIGNED)>0     #и она еще не кончилась
-    ) dt, 
-    (SELECT COUNT(*) FROM rab_vac rv WHERE rv.v_id=v.v_id AND rv.r_id=rb.r_id) times,
+    dt, 
+    times,
     v_age, 
     v_do_times,
     v_name, {1:s}
-  FROM rabbits rb,vaccines v WHERE v_id in({2:s}) AND v_id>0;
+FROM rabbits rb
+CROSS JOIN vaccines v
+LEFT JOIN (SELECT r_id rvr_id, v_id rvv_id, Max(`date`) dt, COUNT(*) times FROM rab_vac rv WHERE unabled!=1 GROUP BY r_id,v_id) mxdt 
+    ON rvv_id=v.v_id AND rvr_id=rb.r_id AND CAST(v.v_duration as SIGNED)-CAST(to_days(NOW())-to_days(dt) AS SIGNED)>0
+WHERE v_id in({2:s}) AND v_id>0;
 {3:s}
 SELECT * FROM aaa WHERE age>=v_age AND dt is NULL AND srok IS NOT NULL AND srok>=0 AND (v_do_times=0 OR (times<v_do_times)) {4:s} ORDER BY srok;
 DROP TEMPORARY TABLE IF EXISTS aaa; {5:s}", getnm(), brd(), show,
