@@ -93,7 +93,7 @@ namespace rabnet.forms
 
             oc.Dead = (int)nudDead.Value;
             oc.Killed = (int)nudKilled.Value;
-            oc.Added = (int)nudKilled.Value;
+            oc.Added = (int)nudAdd.Value;
 
             tbAlive.Text = oc.Atall.ToString();
             nudKilled.Maximum = oc.Younger.Group - oc.Dead;
