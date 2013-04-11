@@ -211,10 +211,10 @@ namespace rabnet.panels
                 if (s.Contains("("))
                 {
                     string[] tmp = s.Split(' ');
-                    int.TryParse(tmp[0],out c);
+                    int.TryParse(tmp[1], out c);
                 }
                 else
-                    c += int.Parse(s.Substring(1));
+                    c += int.Parse(s.TrimStart('+'));
             }
             if (s[0] == '[') 
                 int.TryParse(s.Substring(1, s.Length - 2), out c); //c = int.Parse(s.Substring(1, s.Length - 2));
