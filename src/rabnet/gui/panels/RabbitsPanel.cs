@@ -316,16 +316,21 @@ namespace rabnet.panels
 
         private void miIncome_Click(object sender, EventArgs e)
         {
-#if !DEMO
+
 #if !DEBUG
             try
             {
 #endif
             DialogResult res = (new IncomeForm()).ShowDialog();
+
             if (res == DialogResult.Ignore)
             {
+#if !DEMO
                 if (new EPasportForm(true).ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
+#else
+                DemoErr.DemoNoModuleMsg();
+#endif
             }
             else if (res == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
@@ -338,9 +343,7 @@ namespace rabnet.panels
                 _rsb.Run();
             }
 #endif
-#else
-            DemoErr.DemoNoModuleMsg();
-#endif
+
         }
 
         private void miReplace_Click(object sender, EventArgs e)
