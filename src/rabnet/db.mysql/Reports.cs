@@ -513,12 +513,16 @@ WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d} AND inBuilding({0:d},
 FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AND (t_id=m_upper OR t_id=m_lower) AND inBuilding({0:d},m_id);",bld),sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
+            {
                 for (int i = 0; i < Building.GetRSecCount(rd.GetString(1)); i++)
-                    if (rd.GetInt32(i + 2) == 0)
+                {
+                    if (rd.IsDBNull(i + 2) || rd.GetInt32(i + 2) == 0)///NULL быть не должно
                     {
                         doc.DocumentElement.AppendChild(doc.CreateElement("Row")).AppendChild(
-                            doc.CreateElement("address")).AppendChild(doc.CreateTextNode(rd.GetString(0)+Building.GetSecRus(rd.GetString(1),i,"000")));
+                            doc.CreateElement("address")).AppendChild(doc.CreateTextNode(rd.GetString(0) + Building.GetSecRus(rd.GetString(1), i, "000")));
                     }
+                }
+            }
             rd.Close();
             return doc;
         }
