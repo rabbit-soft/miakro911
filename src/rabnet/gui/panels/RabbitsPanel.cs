@@ -208,13 +208,14 @@ namespace rabnet.panels
             int c = 1;
             if (s[0] == '+')
             {
+                int t=0;
                 if (s.Contains("("))
                 {
-                    string[] tmp = s.Split(' ');
-                    int.TryParse(tmp[1], out c);
+                    int.TryParse(s.Split(' ')[1], out t);                    
                 }
-                else
-                    c += int.Parse(s.TrimStart('+'));
+                else                
+                    int.TryParse(s.TrimStart('+'),out t);                
+                c += t;
             }
             if (s[0] == '[') 
                 int.TryParse(s.Substring(1, s.Length - 2), out c); //c = int.Parse(s.Substring(1, s.Length - 2));
