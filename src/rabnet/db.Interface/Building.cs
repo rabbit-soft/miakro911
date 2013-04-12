@@ -61,13 +61,13 @@ namespace rabnet
         public string Heaters;
         //public string Address;
         //public string[] fuses;
-        public RabInBuild[] Busy;
+        public readonly RabInBuild[] Busy;
         //public int NestHeaterCount;
         //public string[] FullName = new string[4];
         //public string[] SmallName = new string[4];
         //public string[] MedName = new string[4];
 
-        public Building(int id, int farm, int tier_id, BuildingType type, string delims, string notes, bool repair)
+        public Building(int id, int farm, int tier_id, BuildingType type, string delims, string notes, bool repair,string nests,string heaters)
         {
             ID = id;
             this.Farm = farm;
@@ -75,9 +75,13 @@ namespace rabnet
             Type = type;
             //TypeName_Rus = typeLoc;
             Delims = delims;
-
+            
             Repair = repair;
+            Nests = nests;
+            Heaters = heaters;
+
             Sections = GetRSecCount(Type);
+            Busy = new RabInBuild[Sections];
             //for (int i = 0; i < Sections; i++)
             //{
             //    FullName[i] = Building.FullRName(Farm, TierID, i, TypeName, Delims, false, true, true);

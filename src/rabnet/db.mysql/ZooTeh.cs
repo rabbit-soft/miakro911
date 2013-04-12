@@ -461,10 +461,10 @@ DROP TABLE IF EXISTS aaa;",
         {
             string show = _flt.safeValue(Filters.VACC_SHOW, "1") != "" ? _flt.safeValue(Filters.VACC_SHOW, "1") : "1";
             return String.Format(@"CREATE TEMPORARY TABLE aaa  SELECT 
-    rb.r_id, r_parent,rabname(r_id,{0:s}) name, rabplace(r_id) place, (TO_DAYS(NOW())-TO_DAYS(r_born)) age, v.v_id, r_group,
+    rb.r_id, r_parent,rabname(r_id,{0:s}) name, rabplace(r_id) place, (TO_DAYS(NOW())-TO_DAYS(r_born)) age, r_group,
     to_days(NOW()) - to_days(
         COALESCE(
-            dt,
+            Date_Add(dt, INTERVAL v.v_duration DAY),
             If(
                 v_do_after=0, 
                 Date_Add(r_born,INTERVAL v_age DAY), 
@@ -473,18 +473,20 @@ DROP TABLE IF EXISTS aaa;",
         )
     ) srok,     #сколько дней не выполнена работа
 
-    dt, 
-    times,
+    dt,     #когда последний раз делали прививку
+    Coalesce(rv_times,0) times,  #сколько раз уже делали данную прививку
+    v.v_id,
     v_age, 
     v_do_times,
+    v_do_after,
     v_name, {1:s}
 FROM rabbits rb
 CROSS JOIN vaccines v
-LEFT JOIN (SELECT r_id rvr_id, v_id rvv_id, Max(`date`) dt, COUNT(*) times FROM rab_vac rv WHERE unabled!=1 GROUP BY r_id,v_id) mxdt 
-    ON rvv_id=v.v_id AND rvr_id=rb.r_id AND CAST(v.v_duration as SIGNED)-CAST(to_days(NOW())-to_days(dt) AS SIGNED)>0
+LEFT JOIN (SELECT r_id rvr_id, v_id rvv_id, Max(`date`) dt, COUNT(*) rv_times FROM rab_vac rv WHERE unabled!=1 GROUP BY r_id,v_id) mxdt 
+    ON rvv_id=v.v_id AND rvr_id=rb.r_id #AND CAST(v.v_duration as SIGNED)-CAST(to_days(NOW())-to_days(dt) AS SIGNED)>0
 WHERE v_id in({2:s}) AND v_id>0;
 {3:s}
-SELECT * FROM aaa WHERE age>=v_age AND dt is NULL AND srok IS NOT NULL AND srok>=0 AND (v_do_times=0 OR (times<v_do_times)) {4:s} ORDER BY srok;
+SELECT * FROM aaa WHERE (srok IS NOT NULL AND srok>=0) AND (v_do_times=0 OR (times<v_do_times)) {4:s} ORDER BY srok;
 DROP TEMPORARY TABLE IF EXISTS aaa; {5:s}", getnm(), brd(), show,
     _flt.safeBool(Filters.VACC_MOTH, true) ? "CREATE TEMPORARY TABLE bbb SELECT DISTINCT r_parent FROM aaa WHERE r_parent !=0;" : "",
     _flt.safeBool(Filters.VACC_MOTH, true) ? "AND r_id not in (select r_parent FROM bbb)" : "",

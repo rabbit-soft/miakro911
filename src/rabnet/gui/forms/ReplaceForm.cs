@@ -711,16 +711,16 @@ namespace rabnet.forms
 
             if (rp.CanHaveNest)
             {
-                if (!rp.Younger || (rp.Younger && rp.Replaced))
+                if (!rp.Younger || (rp.Younger && rp.Replaced && rp.PlaceTo==null))
                 {
                     RabNetEngRabbit rr = Engine.get().getRabbit(rb.ID);
                     RabNetEngBuilding rbe = Engine.get().getBuilding(rr.RawAddress);
 
-                    string[] vals = rr.RawAddress.Split(','); ///todo создать функцию building from rawstr
-                    BuildingType tp = Building.ParseType(vals[3]);
-                    if (tp == BuildingType.Jurta || tp == BuildingType.Female)
+                    string[] vals = rr.RawAddress.Split(','); ///todo ГОВНОКОД нужно переделывать движок построек
+                    //BuildingType tp = Building.ParseType(vals[3]);
+                    if (rbe.Type == BuildingType.Jurta || rbe.Type == BuildingType.Female)
                         rbe.setNest(rp.SetNest);
-                    else if (tp == BuildingType.DualFemale)
+                    else if (rbe.Type == BuildingType.DualFemale)
                     {                        
                         if (vals[2] == "0")
                             rbe.setNest(rp.SetNest);

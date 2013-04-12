@@ -14,6 +14,7 @@ namespace db.mysql
 
         internal static Building GetBuilding(MySqlDataReader rd,bool shr,bool rabbits)
         {
+            const int BUSY_START = 10;
             int id = rd.GetInt32(0);
             int farm = rd.GetInt32(3);
             int tid = 0;
@@ -26,7 +27,7 @@ namespace db.mysql
             BuildingType tp = Building.ParseType(rd.GetString("t_type"));
             String dl = rd.GetString("t_delims");
             Building building = new Building(id, farm, tid, tp, dl, rd.GetString("t_notes"),
-                (rd.GetInt32("t_repair") == 0 ? false : true));
+                (rd.GetInt32("t_repair") == 0 ? false : true), rd.GetString("t_nest"), rd.GetString("t_heater"));
             //List<string> ars = new List<string>();
             //List<string> deps = new List<string>();
             RabInBuild[] bus = new RabInBuild[building.Sections];
@@ -35,9 +36,9 @@ namespace db.mysql
             {
                 //ars.Add((tid == 0 ? "" : (tid == 1 ? "^" : "-")) + Building.GetSecRus(tp, i, dl));
                 //deps.Add(Building.GetDescrRus(tp, shr, i, dl));
-                int rn = (rd.IsDBNull(10+i) ? -1 : rd.GetInt32("t_busy" + (i + 1).ToString()));
+                int rn = rd.IsDBNull(BUSY_START+i) ? -1 : rd.GetInt32("t_busy" + (i + 1).ToString());
                 string name = rabbits ? rd.GetString("r" + (i + 1).ToString()) : "";
-                bus[i] = new RabInBuild(rn,name);
+                building.Busy[i] = new RabInBuild(rn, name);
                 //bus.Add(rn);
                 //if (rabbits)
                     //uses.Add(rd.GetString("r" + (i + 1).ToString()));
@@ -45,12 +46,12 @@ namespace db.mysql
                     //uses.Add("");
             }
             //b.Areas = ars.ToArray();
-            building.Busy = bus;//.ToArray();
+            //building.Busy = bus;//.ToArray();
             //b.Descr = deps.ToArray();
             //building.fuses = uses.ToArray();
             //building.NestHeaterCount = Building.GetRNHCount(tp);
-            building.Nests = rd.GetString("t_nest");
-            building.Heaters = rd.GetString("t_heater");
+            //building.Nests = rd.GetString("t_nest");
+            //building.Heaters = rd.GetString("t_heater");
             //building.Address = "";
             return building;
         }
@@ -218,7 +219,7 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 {0:s} ORDER BY m_id;",busy!=
         internal static void updateBuilding(Building b,MySqlConnection sql)
         {
             MySqlCommand cmd=new MySqlCommand(String.Format(@"UPDATE tiers SET t_repair={1:d},t_delims='{2:s}',t_heater='{3:s}',t_nest='{4:s}',t_notes=@notes WHERE t_id={0:d};",
-                b.ID,b.Repair?1:0,b.Delims,b.Heaters,b.Nests),sql);
+                b.ID, b.Repair?1:0, b.Delims, b.Heaters, b.Nests),sql);
             cmd.Prepare();
             cmd.Parameters.AddWithValue("@notes",String.Join("|",b.Notes));
             cmd.ExecuteNonQuery();

@@ -141,7 +141,7 @@ namespace rabnet
             commit();
         }
 
-        public BuildingType type { get { return b.Type; } }
+        public BuildingType Type { get { return b.Type; } }
 
         /// <summary>
         /// Удаляет гнездовье там где сидит кролик

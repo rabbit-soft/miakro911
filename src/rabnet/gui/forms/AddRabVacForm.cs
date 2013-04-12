@@ -23,21 +23,23 @@ namespace rabnet.forms
             else
                 chWithChildren.Visible = false;
             _rab = rab;
-            _vacc = Engine.db().GetVaccines(false);
+            _vacc = Engine.db().GetVaccines(true);
             int ind=-1;
             foreach (Vaccine v in _vacc)
             {
+                if (v.ID == Vaccine.V_ID_LUST && _rab.Sex != Rabbit.SexType.FEMALE)
+                    continue;
                 cbVaccineType.Items.Add(v.Name);
-                if (forceId != -1 && v.ID == forceId)
+                if (forceId != 0 && v.ID == forceId)
                     ind=cbVaccineType.Items.Count-1;
             }
-            if (forceId != -1)
+            if (forceId != 0)
             {
                 cbVaccineType.SelectedIndex = ind;
                 cbVaccineType.Enabled = false;
             }
         }
-        public AddRabVacForm(RabNetEngRabbit rab):this(rab,true,-1) { }
+        public AddRabVacForm(RabNetEngRabbit rab):this(rab,true,0) { }
 
         public int VacID { get { return _vacc[cbVaccineType.SelectedIndex].ID; } }
         public bool VacChildren { get { return chWithChildren.Checked; } }
@@ -50,7 +52,7 @@ namespace rabnet.forms
         public DateTime VacDate { get { return dateDays1.DateValue; } }
 
         private void btOk_Click(object sender, EventArgs e)
-        {
+        {                      
             foreach (RabVac rv in _rab.Vaccines)
             {
                 if (rv.vid == this.VacID && !rv.unabled && rv.remains != 0)
