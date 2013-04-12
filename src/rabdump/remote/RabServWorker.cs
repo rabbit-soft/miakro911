@@ -47,7 +47,7 @@ namespace rabdump
     /// </summary>
     partial class RabServWorker
     {
-        private static string _url = "http://5.23.104.12/rabserv";
+        private static string _url = "http://trunk.rab_srv.wd2.9-bits.ru/";
         private static ILog _logger = LogManager.GetLogger(typeof(RabServWorker));
         //private static ArchiveJobThread _ajt;
         private static RabReqSender _reqSend = null;
