@@ -52,11 +52,11 @@
 	<target name="cas" description="scale">
 		<csc target="library" output="${bin_dir_bin}/CAS.dll" define="${compile_flag}" optimize="true">
 			<sources>
-				<include name="${srcdir}/rabnet/CasLp16/*.cs"/>
-				<include name="${srcdir}/rabnet/CasLp16/Properties/*.cs"/>
+				<include name="${srcdir}/CasLp16/*.cs"/>
+				<include name="${srcdir}/CasLp16/Properties/*.cs"/>
 			</sources>
 			<resources>
-				<include name="${srcdir}/rabnet/CasLp16/*.resx"/>
+				<include name="${srcdir}/CasLp16/*.resx"/>
 			</resources>
 			<references>
 				<include name="${log4net.ass}" />

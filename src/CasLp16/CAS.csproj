@@ -62,9 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\libs\gamlib\BitHelper.cs">
-      <Link>BitHelper.cs</Link>
-    </Compile>
+    <Compile Include="BitHelper.cs" />
     <Compile Include="classes\CasLP16.cs" />
     <Compile Include="classes\FactoryConfig.cs" />
     <Compile Include="classes\Info.cs" />
