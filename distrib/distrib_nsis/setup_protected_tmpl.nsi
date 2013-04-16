@@ -52,7 +52,10 @@ Var Inst_code
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
+
+#uninstaller pages
 !insertmacro MUI_UNPAGE_CONFIRM
+;!insertmacro MUI_UNPAGE_COMPONENTS
 !insertmacro MUI_UNPAGE_INSTFILES
 
 # Installer languages
@@ -139,7 +142,7 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     WriteRegStr HKCU "${REGKEY}\components" "rabnet" 1
 SectionEnd
 
-Section  $(SEC_RabDump_NAME) SEC_RabDump
+Section $(SEC_RabDump_NAME) SEC_RabDump
 #Section /o $(SEC_RabDump_NAME) SEC_RabDump
     SectionIn 2 3 4
 
@@ -210,7 +213,7 @@ Section -com_comps SEC_Common
     WriteRegStr HKCU "${REGKEY}\components" com_comps 1
 SectionEnd
 
-Section /o -sec_updater SEC_Updater
+Section -sec_updater SEC_Updater
     DetailPrint $(UPDATER_Run)
     ExecWait '"$INSTDIR\bin\updater.exe" /d'
   
@@ -261,49 +264,7 @@ doneold${SECTION_ID}:
 
 
 # Uninstaller sections
-Section /o -un.com_comps UNSEC_Common   
-	RmDir /REBOOTOK /r $INSTDIR\Guardant
-    
-	Delete /REBOOTOK $INSTDIR\bin\mia_conv.exe
-	Delete /REBOOTOK $INSTDIR\bin\mia_conv.exe.config
-	Delete /REBOOTOK $INSTDIR\bin\log4net.dll
-	Delete /REBOOTOK $INSTDIR\bin\updater.exe
-	Delete /REBOOTOK $INSTDIR\bin\updater.exe.config
-	
-    Delete /REBOOTOK $SMPROGRAMS\$StartMenuGroup\$(SM_Conv_NAME).lnk
-    Delete /REBOOTOK $SMPROGRAMS\$StartMenuGroup\$(SM_Up_NAME).lnk
-    DeleteRegValue HKCU "${REGKEY}\components" com_comps
-SectionEnd
-
-Section /o -un.rabdump UNSEC_RabDump
-
-    Call un.CloseAll
-
-    Delete /REBOOTOK $INSTDIR\bin\GrdAPI32.DLL
-    Delete /REBOOTOK $INSTDIR\bin\GrdAPI64.DLL
-#    Delete /REBOOTOK $INSTDIR\bin\CodeStorage32.dll
-#    Delete /REBOOTOK $INSTDIR\bin\CodeStorage64.dll
-	Delete /REBOOTOK $INSTDIR\bin\GuardantDotNetApi.dll
-	
-	Delete /REBOOTOK $INSTDIR\bin\log4net.dll
-	
-	Delete /REBOOTOK $INSTDIR\bin\db.Interface.dll
-	Delete /REBOOTOK $INSTDIR\bin\db.mysql.dll
-	Delete /REBOOTOK $INSTDIR\bin\engine.dll
-	
-	Delete /REBOOTOK $INSTDIR\bin\ccxmlrpc.dll
-    Delete /REBOOTOK $INSTDIR\bin\rabdump.exe
-	Delete /REBOOTOK $INSTDIR\bin\rabdump.exe.config
-
-    RmDir /REBOOTOK /r $INSTDIR\7z
-    RmDir /REBOOTOK /r $INSTDIR\bin\updates
-	RmDir /REBOOTOK /r $INSTDIR\bin
-    DeleteRegValue HKCU "${REGKEY}\components" "rabdump"
-    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(SM_Dump_NAME).lnk"
-SectionEnd
-
-Section /o "-un.rabnet" UNSEC_Rabnet
-
+Section un.$(SEC_Rabnet_NAME) UNSEC_Rabnet
     Call un.CloseAll
 
     ;DeleteRegValue HKEY_CURRENT_USER Software\hzkakzvat\rabnet Path
@@ -341,7 +302,47 @@ Section /o "-un.rabnet" UNSEC_Rabnet
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(SM_Prog_NAME).lnk"
 SectionEnd
 
-Section -un.post UNSEC_Sys
+Section un.$(SEC_RabDump_NAME) UNSEC_RabDump
+    Call un.CloseAll
+
+    Delete /REBOOTOK $INSTDIR\bin\GrdAPI32.DLL
+    Delete /REBOOTOK $INSTDIR\bin\GrdAPI64.DLL
+#    Delete /REBOOTOK $INSTDIR\bin\CodeStorage32.dll
+#    Delete /REBOOTOK $INSTDIR\bin\CodeStorage64.dll
+	Delete /REBOOTOK $INSTDIR\bin\GuardantDotNetApi.dll
+	
+	Delete /REBOOTOK $INSTDIR\bin\log4net.dll
+	
+	Delete /REBOOTOK $INSTDIR\bin\db.Interface.dll
+	Delete /REBOOTOK $INSTDIR\bin\db.mysql.dll
+	Delete /REBOOTOK $INSTDIR\bin\engine.dll
+	
+	Delete /REBOOTOK $INSTDIR\bin\ccxmlrpc.dll
+    Delete /REBOOTOK $INSTDIR\bin\rabdump.exe
+	Delete /REBOOTOK $INSTDIR\bin\rabdump.exe.config
+
+    RmDir /REBOOTOK /r $INSTDIR\7z
+    RmDir /REBOOTOK /r $INSTDIR\bin\updates
+	RmDir /REBOOTOK /r $INSTDIR\bin
+    DeleteRegValue HKCU "${REGKEY}\components" "rabdump"
+    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(SM_Dump_NAME).lnk"
+SectionEnd
+
+Section un.com_comps UNSEC_Common
+	RmDir /REBOOTOK /r $INSTDIR\Guardant
+    
+	Delete /REBOOTOK $INSTDIR\bin\mia_conv.exe
+	Delete /REBOOTOK $INSTDIR\bin\mia_conv.exe.config
+	Delete /REBOOTOK $INSTDIR\bin\log4net.dll
+	Delete /REBOOTOK $INSTDIR\bin\updater.exe
+	Delete /REBOOTOK $INSTDIR\bin\updater.exe.config
+	
+    Delete /REBOOTOK $SMPROGRAMS\$StartMenuGroup\$(SM_Conv_NAME).lnk
+    Delete /REBOOTOK $SMPROGRAMS\$StartMenuGroup\$(SM_Up_NAME).lnk
+    DeleteRegValue HKCU "${REGKEY}\components" com_comps
+SectionEnd
+
+Section un.post UNSEC_Sys	
     DeleteRegKey HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^UninstallLink).lnk"
     Delete /REBOOTOK $INSTDIR\uninstall.exe
@@ -444,9 +445,9 @@ FunctionEnd
 Function un.onInit
     ReadRegStr $INSTDIR HKCU "${REGKEY}" Path
     StrCpy $StartMenuGroup $(SM_Prog_NAME)
-    !insertmacro SELECT_UNSECTION "rabnet" ${UNSEC_Rabnet}
-    !insertmacro SELECT_UNSECTION "rabdump" ${UNSEC_RabDump}
-    !insertmacro SELECT_UNSECTION "com_comps" ${UNSEC_Common}
+    ;!insertmacro SELECT_UNSECTION "rabnet" ${UNSEC_Rabnet}
+    ;!insertmacro SELECT_UNSECTION "rabdump" ${UNSEC_RabDump}
+    ;!insertmacro SELECT_UNSECTION "com_comps" ${UNSEC_Common}
 FunctionEnd
 
 Function un.Reports
@@ -508,8 +509,8 @@ FunctionEnd
 
 # Section Descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-!insertmacro MUI_DESCRIPTION_TEXT ${SEC_Rabnet} $(SEC_Rabnet_DESC)
-!insertmacro MUI_DESCRIPTION_TEXT ${SEC_RabDump} $(SEC_RabDump_DESC)
-!insertmacro MUI_DESCRIPTION_TEXT ${SEC_Mysql} $(SEC_Mysql_DESC)
+	!insertmacro MUI_DESCRIPTION_TEXT ${SEC_Rabnet} $(SEC_Rabnet_DESC)
+	!insertmacro MUI_DESCRIPTION_TEXT ${SEC_RabDump} $(SEC_RabDump_DESC)
+	!insertmacro MUI_DESCRIPTION_TEXT ${SEC_Mysql} $(SEC_Mysql_DESC)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
