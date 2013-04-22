@@ -25,13 +25,17 @@ namespace rabnet.forms
             _rab = rab;
             _vacc = Engine.db().GetVaccines(true);
             int ind=-1;
-            foreach (Vaccine v in _vacc)
+            for (int i = 0; i < _vacc.Count; )
             {
-                if (v.ID == Vaccine.V_ID_LUST && _rab.Sex != Rabbit.SexType.FEMALE)
+                if (_vacc[i].ID == Vaccine.V_ID_LUST && _rab.Sex != Rabbit.SexType.FEMALE)
+                {
+                    _vacc.Remove(_vacc[i]);
                     continue;
-                cbVaccineType.Items.Add(v.Name);
-                if (forceId != 0 && v.ID == forceId)
-                    ind=cbVaccineType.Items.Count-1;
+                }
+                cbVaccineType.Items.Add(_vacc[i].Name);
+                if (forceId != 0 && _vacc[i].ID == forceId)
+                    ind = cbVaccineType.Items.Count - 1;
+                i++;
             }
             if (forceId != 0)
             {
