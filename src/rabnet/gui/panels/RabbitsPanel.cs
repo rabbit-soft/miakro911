@@ -68,7 +68,7 @@ namespace rabnet.panels
             li.SubItems.Add(rab.KidsAge == -1 ? "" : rab.KidsAge.ToString());
             li.SubItems.Add(rab.Rate.ToString());
             li.SubItems.Add(rab.FBon(_runF.safeBool(Filters.SHORT)));
-            li.SubItems.Add(rab.FAddress(_runF.safeBool(Filters.SHOW_BLD_TIERS), _runF.safeBool(Filters.SHOW_BLD_TIERS)));
+            li.SubItems.Add(rab.FAddress(_runF.safeBool(Filters.SHOW_BLD_TIERS), _runF.safeBool(Filters.SHOW_BLD_DESCR)));
             li.SubItems.Add(rab.Notes);
         }
 

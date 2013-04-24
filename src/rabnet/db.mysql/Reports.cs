@@ -304,10 +304,12 @@ union SELECT 'Итого',sum(r_group) FROM rabbits;";
             getDates(f);
             int partner = f.safeInt("prt");           
             return String.Format(@"(SELECT rabname(f_rabid,2) name,f_children,
-IF(f_type='vyazka','Вязка','случка') type,
-IF(f_state='proholost','Прохолостание','Окрол') state,
-DATE_FORMAT(f_date,'%d.%m.%Y') start,DATE_FORMAT(f_end_date,'%d.%m.%Y') stop 
-FROM fucks WHERE f_partner={0:d} AND f_end_date>={1:s} AND f_end_date<={2:s});",
+    IF(f_type='vyazka','Вязка','случка') type,
+    IF(f_state='proholost','Прохолостание','Окрол') state,
+    DATE_FORMAT(f_date,'%d.%m.%Y') start,
+    DATE_FORMAT(f_end_date,'%d.%m.%Y') stop 
+FROM fucks 
+WHERE f_partner={0:d} AND f_end_date>={1:s} AND f_end_date<={2:s});",
               partner,DFROM,DTO);
         }
 
@@ -547,7 +549,7 @@ FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AN
             return String.Format(@"SELECT DATE_FORMAT(f_date,'%d.%m.%Y')date,anyname(f_rabid,2) name,
                                     (SELECT n_name FROM names WHERE n_use=f_partner) partner,
                                     (SELECT u_name FROM users WHERE u_id=f_worker) worker 
-                                FROM fucks WHERE f_date is not null {0} ORDER BY f_date DESC, f_worker;",period);
+                                FROM fucks WHERE f_date is not null {0} ORDER BY f_date DESC, partner;",period);
         }
 
         private string butcherQuery(Filters f)

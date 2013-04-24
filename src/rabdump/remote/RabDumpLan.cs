@@ -67,16 +67,23 @@ namespace rabdump
 
         private void upFilesThread()
         {
-            _tcpListener = new TcpListener(IPAddress.Any,UPDATE_FILES_PORT);
-            _tcpListener.Start();
-            while (true)
+            try
             {
-                TcpClient client = _tcpListener.AcceptTcpClient();
-                Thread t = new Thread(new ParameterizedThreadStart(readWaiter));
-                t.Start(client);
-                //NetworkStream netStream = client.GetStream();
-                //byte[] buffer = new byte[4096];
-                //netStream.BeginRead(buffer, 0, buffer.Length, new AsyncCallback(readWaiter), new MyAsyncState(netStream,buffer));
+                _tcpListener = new TcpListener(IPAddress.Any, UPDATE_FILES_PORT);
+                _tcpListener.Start();
+                while (true)
+                {
+                    TcpClient client = _tcpListener.AcceptTcpClient();
+                    Thread t = new Thread(new ParameterizedThreadStart(readWaiter));
+                    t.Start(client);
+                    //NetworkStream netStream = client.GetStream();
+                    //byte[] buffer = new byte[4096];
+                    //netStream.BeginRead(buffer, 0, buffer.Length, new AsyncCallback(readWaiter), new MyAsyncState(netStream,buffer));
+                }
+            }
+            catch (Exception exc)
+            {
+                _logger.Error(exc);
             }
         }
 
