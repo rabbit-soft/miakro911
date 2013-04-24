@@ -108,7 +108,7 @@
             // 
             // columnHeader2
             // 
-            this.columnHeader2.Text = "№";
+            this.columnHeader2.Text = "N";
             // 
             // columnHeader3
             // 
@@ -174,6 +174,7 @@
             this.tvGens.Location = new System.Drawing.Point(3, 3);
             this.tvGens.MaxNodesCount = 1;
             this.tvGens.Name = "tvGens";
+            this.tvGens.ShowStateColors = true;
             this.tvGens.Size = new System.Drawing.Size(160, 534);
             this.tvGens.TabIndex = 0;
             // 

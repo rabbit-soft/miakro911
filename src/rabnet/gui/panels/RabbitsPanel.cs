@@ -33,7 +33,7 @@ namespace rabnet.panels
             MakeExcel = new RSBEventHandler(this.makeExcel);
         }
 
-        protected override IDataGetter onPrepare(Filters f)
+        protected override IDa{FUCK}etter onPrepare(Filters f)
         {
             base.onPrepare(f);           
             gentree = Engine.opt().getIntOption(Options.OPT_ID.GEN_TREE)-1;
@@ -47,7 +47,7 @@ namespace rabnet.panels
             //flt["suc"] = op.getOption(Options.OPT_ID.COUNT_SUCKERS);
             f[Filters.MAKE_CANDIDATE] = op.getOption(Options.OPT_ID.MAKE_CANDIDATE);
             _runF = f;           
-            IDataGetter dg = Engine.db2().getRabbits(f);
+            IDa{FUCK}etter dg = Engine.db2().getRabbits(f);
             _rsb.SetText(1, dg.getCount().ToString() + " записей");
             _rsb.SetText(2, dg.getCount2().ToString() + " кроликов");
             return dg;
@@ -57,7 +57,7 @@ namespace rabnet.panels
         {
             AdultRabbit rab = (data as AdultRabbit);
             ListViewItem li = listView1.Items.Add(rab.NameFull);
-            li.Tag = rab.ID;
+            li.Tag = rab;
             li.SubItems.Add(rab.FSex());
             li.SubItems.Add(rab.Age.ToString());
             li.SubItems.Add(rab.BreedName);
@@ -92,7 +92,7 @@ namespace rabnet.panels
             makeSelectedCount();
             if (listView1.SelectedItems.Count != 1) return;
             
-            RabTreeData dt = Engine.db().rabbitGenTree((int)listView1.SelectedItems[0].Tag);
+            RabTreeData dt = Engine.db().rabbitGenTree((int)listView1.SelectedItems[0].{FUCK});
             if (dt != null && dt.Name != null)
             {
                 TreeNode tn = tvGens.InsertNode(dt, true);
@@ -115,45 +115,52 @@ namespace rabnet.panels
         /// <param name="kids"></param>
         private void setMenu(int sex,int multi,bool kids)
         {
-            miBon.Visible = miPassport.Visible=proholostMenuItem.Visible=false;
-            miReplace.Visible = miPlaceGhange.Visible= false;
-            miKill.Visible = miCountKids.Visible=false;
-            okrolMenuItem.Visible = miFucks.Visible= false;
-            miBoysOut.Visible = miYoungersOut.Visible= false;
-            svidMenuItem.Visible = miRealize.Visible= false;
-            plemMenuItem.Visible = miPlanReplace.Visible= false;
-            toolStripSeparator1.Visible = toolStripSeparator2.Visible = toolStripSeparator3.Visible = false;//separators
-            miGenetic.Visible = false;
+            ///miIncome.Visible alvays true
+            miPassport.Visible = miBon.Visible =  
+                proholostMenuItem.Visible = miCountKids.Visible = okrolMenuItem.Visible = miFucks.Visible = miLust.Visible = 
+                miBoysOut.Visible = miYoungersOut.Visible = misFemale.Visible=
+                miKill.Visible =
+                svidMenuItem.Visible = miRealize.Visible = plemMenuItem.Visible = miPlanReplace.Visible = misPrint.Visible =
+                miPlaceExchange.Visible =miReplace.Visible =  misExtra.Visible = miExport.Visible=
+                miGenetic.Visible = false;
 
             if (sex < 0) return;
-            toolStripSeparator1.Visible = true;
-            miGenetic.Visible = toolStripSeparator3.Visible = true;
-            plemMenuItem.Visible = true;
-            miKill.Visible = true;
-            miRealize.Visible = true;
-            miReplace.Visible = true;
-            miCountKids.Visible = miYoungersOut.Visible = toolStripSeparator2.Visible = kids;
-            if (multi==1)
+            misPrint.Visible =             
+                plemMenuItem.Visible = 
+                miKill.Visible = 
+                miRealize.Visible =
+                miReplace.Visible = 
+                misExtra.Visible =
+                miExport.Visible =
+                miGenetic.Visible = true;
+
+            miCountKids.Visible = miYoungersOut.Visible = misFemale.Visible = kids;
+
+            if (multi == 1)
+            {
                 miBon.Visible = true;
-            if (multi == 2)
-                miPlaceGhange.Visible = true;
-            if (sex != 3 && multi == 1)
-            {
-                miPassport.Visible = true;
+                if (sex != 3)
+                {
+                    miPassport.Visible = true;
+                }
+                if (sex == 2 )
+                {
+                    misFemale.Visible = true;
+                    miFucks.Text = isBride() ? "Случка" : "Вязка";
+                    miLust.Visible = !isGirl();
+                    miFucks.Visible = !isGirl() && GroupCount() == 1;
+                }
+                if (sex == 1 || sex == 2 || sex == 4)
+                {
+                    svidMenuItem.Visible = true;
+                }
             }
-            if (sex == 2 && multi == 1)
-            {
-                miFucks.Text = isBride() ? "Случка" : "Вязка";
-                miFucks.Visible = !isGirl() && GroupCount()==1;
-            }
-            if ((sex == 1 || sex == 2 || sex==4) && multi == 1)
-            {
-                svidMenuItem.Visible = true;
-            }
+            else if (multi == 2)
+                miPlaceExchange.Visible = true;
+                                  
             if (sex == 4)
             {
-                proholostMenuItem.Visible = true;
-                okrolMenuItem.Visible = true;
+                misFemale.Visible = proholostMenuItem.Visible = okrolMenuItem.Visible = true;
             }
             if (multi > 1 || (multi==1 && listView1.SelectedItems[0].SubItems[NFIELD].Text[0]=='['))
                 miPlanReplace.Visible=true;
@@ -170,7 +177,7 @@ namespace rabnet.panels
             if (listView1.SelectedItems.Count != 1) return;
             try
             {
-                RabbitInfo ri = new RabbitInfo((int)listView1.SelectedItems[0].Tag);
+                RabbitInfo ri = new RabbitInfo((int)listView1.SelectedItems[0].{FUCK});
                 ri.Working += new WorkingHandler(MainForm.StillWorking);
                 if (ri.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
@@ -273,7 +280,7 @@ namespace rabnet.panels
             for (int i = 0; i < listView1.SelectedItems.Count && sx.Length < 2; i++)
             {
                 String s = listView1.SelectedItems[i].SubItems[SEXFIELD].Text;
-                if (s[0] == 'С' || s[0] == 'C')
+                if (s[0] == 'C'/*rus*/)
                     s = "S";
                 if (!sx.Contains(s))
                     sx += s;
@@ -293,7 +300,7 @@ namespace rabnet.panels
         {
             if (listView1.SelectedItems.Count != 1) return;
 
-            MessageBox.Show("r_id = "+listView1.SelectedItems[0].Tag.ToString());
+            MessageBox.Show("r_id = "+listView1.SelectedItems[0].{FUCK}.ToString());
         }
 
         private void makeExcel()
@@ -355,7 +362,7 @@ namespace rabnet.panels
             {
                 ReplaceForm rpf = new ReplaceForm();
                 foreach (ListViewItem li in listView1.SelectedItems)
-                    rpf.AddRabbit((int)li.Tag);
+                    rpf.AddRabbit((int)li.{FUCK});
                 if (rpf.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
             }
@@ -374,8 +381,8 @@ namespace rabnet.panels
             try
             {
                 ReplaceForm rpf = new ReplaceForm();
-                rpf.AddRabbit((int)listView1.SelectedItems[0].Tag);
-                rpf.AddRabbit((int)listView1.SelectedItems[1].Tag);
+                rpf.AddRabbit((int)listView1.SelectedItems[0].{FUCK});
+                rpf.AddRabbit((int)listView1.SelectedItems[1].{FUCK});
                 rpf.SetAction(ReplaceForm.Action.CHANGE);
                 if (rpf.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
@@ -399,7 +406,7 @@ namespace rabnet.panels
 
                 KillForm f = new KillForm();
                 foreach (ListViewItem li in listView1.SelectedItems)
-                    f.addRabbit((int)li.Tag);
+                    f.addRabbit((int)li.{FUCK});
                 if (f.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
             }
@@ -417,7 +424,7 @@ namespace rabnet.panels
 
             try
             {
-                if (PreReplaceYoungersForm.MakeChoice((int)listView1.SelectedItems[0].Tag) == DialogResult.OK && !MainForm.MustClose)
+                if (PreReplaceYoungersForm.MakeChoice((int)listView1.SelectedItems[0].{FUCK}) == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
             }
             catch (Exception exc)
@@ -432,7 +439,7 @@ namespace rabnet.panels
 #if !DEMO
             if (listView1.SelectedItems.Count != 1) return;
 
-            XmlDocument[] docs = ReportHelperExt.GetRabbitPlem((int)listView1.SelectedItems[0].Tag);
+            XmlDocument[] docs = ReportHelperExt.GetRabbitPlem((int)listView1.SelectedItems[0].{FUCK});
             ReportViewForm rf = new ReportViewForm(myReportType.RABBIT, docs);
             rf.ShowDialog();
             if (rf.IsPrinted)
@@ -457,7 +464,7 @@ namespace rabnet.panels
                 string brd = "";
                 foreach (ListViewItem li in listView1.SelectedItems)
                 {
-                    RabNetEngRabbit r = Engine.get().getRabbit((int)li.Tag);
+                    RabNetEngRabbit r = Engine.get().getRabbit((int)li.{FUCK});
                     cnt += r.Group;
                     if (brd == "")
                         brd = r.BreedName;
@@ -493,7 +500,7 @@ namespace rabnet.panels
             Filters f = new Filters();
             f["cnt"] = listView1.SelectedItems.Count.ToString();
             for (int i = 0; i < listView1.SelectedItems.Count; i++)
-                f["r" + i.ToString()] = ((int)listView1.SelectedItems[i].Tag).ToString();
+                f["r" + i.ToString()] = ((int)listView1.SelectedItems[i].{FUCK}).ToString();
             new ReportViewForm(myReportType.REALIZE, Engine.db().makeReport(myReportType.REALIZE, f)).ShowDialog();
 #else
             DemoErr.DemoNoReportMsg();
@@ -514,7 +521,7 @@ namespace rabnet.panels
                 if (GeneticsManagerSafe.GeneticsModuleTest())
                 {
                     for (int i = 0; i < listView1.SelectedItems.Count; i++)                    
-                        GeneticsManagerSafe.AddNewGenetics(((int)listView1.SelectedItems[i].Tag));                   
+                        GeneticsManagerSafe.AddNewGenetics(((int)listView1.SelectedItems[i].{FUCK}));                   
                 }
                 else                
                     throw new Exception("Не найден модуль 'gui_genetics.dll'!\nПроверьте правильность установки программы.");               
@@ -559,7 +566,7 @@ namespace rabnet.panels
             if (listView1.SelectedItems.Count != 1) return;
             try
             {
-                int rid = (int)listView1.SelectedItems[0].Tag;
+                int rid = (int)listView1.SelectedItems[0].{FUCK};
                 if ((new BonForm(rid)).ShowDialog() == DialogResult.OK)
                     _rsb.Run();
             }
@@ -576,7 +583,7 @@ namespace rabnet.panels
             if (listView1.SelectedItems.Count != 1) return;
             try
             {
-                int rid = (int)listView1.SelectedItems[0].Tag;
+                int rid = (int)listView1.SelectedItems[0].{FUCK};
                 if ((new Proholost(rid)).ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
             }
@@ -593,7 +600,7 @@ namespace rabnet.panels
             if (listView1.SelectedItems.Count != 1) return;
             try
             {
-                CountKids f = new CountKids((int)listView1.SelectedItems[0].Tag);
+                CountKids f = new CountKids((int)listView1.SelectedItems[0].{FUCK});
                 if (f.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
             }
@@ -611,7 +618,7 @@ namespace rabnet.panels
 
             try
             {
-                OkrolForm dlg = new OkrolForm((int)listView1.SelectedItems[0].Tag);
+                OkrolForm dlg = new OkrolForm((int)listView1.SelectedItems[0].{FUCK});
                 if (dlg.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
             }
@@ -629,7 +636,7 @@ namespace rabnet.panels
 
             try
             {
-                MakeFuckForm dlg = new MakeFuckForm((int)listView1.SelectedItems[0].Tag);
+                MakeFuckForm dlg = new MakeFuckForm((int)listView1.SelectedItems[0].{FUCK});
                 if (dlg.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
             }
@@ -641,6 +648,16 @@ namespace rabnet.panels
             }
         }
 
+        private void miLust_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1) return;
+
+            int rid = (int)listView1.SelectedItems[0].{FUCK};
+            Engine.db().SetRabbitVaccine(rid, Vaccine.V_ID_LUST);
+            if(!MainForm.MustClose)
+                _rsb.Run();
+        }
+
         private void miBoysOut_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count != 1) return;
@@ -648,7 +665,7 @@ namespace rabnet.panels
             try
             {
                 ReplaceForm rpf = new ReplaceForm();
-                rpf.AddRabbit((int)listView1.SelectedItems[0].Tag);
+                rpf.AddRabbit((int)listView1.SelectedItems[0].{FUCK});
                 rpf.SetAction(ReplaceForm.Action.BOYSOUT);
                 if (rpf.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
@@ -670,7 +687,7 @@ namespace rabnet.panels
             {
                 List<int> rIds = new List<int>();
                 foreach (ListViewItem it in listView1.SelectedItems)
-                    rIds.Add((int)it.Tag);
+                    rIds.Add((int)it.{FUCK});
                 if ((new EPasportForm(rIds)).ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
             }
@@ -684,6 +701,8 @@ namespace rabnet.panels
         }
 
         #endregion menuItems
+
+        
 
 
         //private void insertNode(TreeNode nd,TreeData data)
