@@ -190,7 +190,10 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) and t_id=" + tier.ToSt
             if (f.safeValue("tp") != "")
                 type = "t_type='" + f.safeValue("tp") + "' AND ";
             if (f.ContainsKey("nest"))
-                type = String.Format("(t_type='{0}' OR t_type='{1}' OR t_type='{2}') AND",BuildingType.Jurta,BuildingType.Female,BuildingType.DualFemale);
+                type = String.Format("(t_type='{0}' OR t_type='{1}' OR t_type='{2}') AND",
+                    Building.GetName(BuildingType.Jurta),
+                    Building.GetName(BuildingType.Female),
+                    Building.GetName(BuildingType.DualFemale));
             String busy = "";
             if (f.ContainsKey(Filters.FREE))
             {

@@ -171,7 +171,7 @@ namespace rabnet.panels
                     miLust.Visible = true;
                     break;
                 case JobType.VACC: vaccMenuItem.Visible = true; break;
-                case JobType.SET_NEST: vaccMenuItem.Visible = true; break;
+                case JobType.SET_NEST: setNestMenuItem.Visible = true; break;
                 case JobType.BOYS_BY_ONE: miBoysByOne.Visible = true; break;
             }
         }
