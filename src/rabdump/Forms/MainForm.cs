@@ -381,11 +381,12 @@ namespace rabdump
         
         private void miUpdateKey_Click(object sender, EventArgs e)
         {
-
+#if PROTECTED
             Thread t = new Thread(dongleUpdateThread);
             t.IsBackground = false;
             t.Name = "DongleUpdateThread";
             t.Start();
+#endif
         }
 
         private void miCheckForUpdate_Click(object sender, EventArgs e)

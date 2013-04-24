@@ -51,9 +51,8 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\party3d\log4net.dll</HintPath>
+    <Reference Include="log4net">
+      <HintPath>..\..\party3d\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -62,7 +61,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BitHelper.cs" />
+    <Compile Include="..\libs\gamlib\BitHelper.cs">
+      <Link>BitHelper.cs</Link>
+    </Compile>
     <Compile Include="classes\CasLP16.cs" />
     <Compile Include="classes\FactoryConfig.cs" />
     <Compile Include="classes\Info.cs" />
