@@ -33,7 +33,7 @@ namespace rabnet.panels
             MakeExcel = new RSBEventHandler(this.makeExcel);
         }
 
-        protected override IDa{FUCK}etter onPrepare(Filters f)
+        protected override IDataGetter onPrepare(Filters f)
         {
             base.onPrepare(f);           
             gentree = Engine.opt().getIntOption(Options.OPT_ID.GEN_TREE)-1;
@@ -47,7 +47,7 @@ namespace rabnet.panels
             //flt["suc"] = op.getOption(Options.OPT_ID.COUNT_SUCKERS);
             f[Filters.MAKE_CANDIDATE] = op.getOption(Options.OPT_ID.MAKE_CANDIDATE);
             _runF = f;           
-            IDa{FUCK}etter dg = Engine.db2().getRabbits(f);
+            IDataGetter dg = Engine.db2().getRabbits(f);
             _rsb.SetText(1, dg.getCount().ToString() + " записей");
             _rsb.SetText(2, dg.getCount2().ToString() + " кроликов");
             return dg;
@@ -92,7 +92,7 @@ namespace rabnet.panels
             makeSelectedCount();
             if (listView1.SelectedItems.Count != 1) return;
             
-            RabTreeData dt = Engine.db().rabbitGenTree((int)listView1.SelectedItems[0].{FUCK});
+            RabTreeData dt = Engine.db().rabbitGenTree((listView1.SelectedItems[0].Tag as AdultRabbit).ID);
             if (dt != null && dt.Name != null)
             {
                 TreeNode tn = tvGens.InsertNode(dt, true);
@@ -147,7 +147,6 @@ namespace rabnet.panels
                 {
                     misFemale.Visible = true;
                     miFucks.Text = isBride() ? "Случка" : "Вязка";
-                    miLust.Visible = !isGirl();
                     miFucks.Visible = !isGirl() && GroupCount() == 1;
                 }
                 if (sex == 1 || sex == 2 || sex == 4)
@@ -164,6 +163,8 @@ namespace rabnet.panels
             }
             if (multi > 1 || (multi==1 && listView1.SelectedItems[0].SubItems[NFIELD].Text[0]=='['))
                 miPlanReplace.Visible=true;
+            if (sex == 2)
+                misFemale.Visible = miLust.Visible = true;
         }
 
         public override ContextMenuStrip getMenu()
@@ -177,7 +178,7 @@ namespace rabnet.panels
             if (listView1.SelectedItems.Count != 1) return;
             try
             {
-                RabbitInfo ri = new RabbitInfo((int)listView1.SelectedItems[0].{FUCK});
+                RabbitInfo ri = new RabbitInfo((listView1.SelectedItems[0].Tag as AdultRabbit).ID);
                 ri.Working += new WorkingHandler(MainForm.StillWorking);
                 if (ri.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
@@ -276,6 +277,7 @@ namespace rabnet.panels
                 setMenu(-1, 0, false);
                 return;
             }
+
             string sx = "";
             for (int i = 0; i < listView1.SelectedItems.Count && sx.Length < 2; i++)
             {
@@ -300,7 +302,7 @@ namespace rabnet.panels
         {
             if (listView1.SelectedItems.Count != 1) return;
 
-            MessageBox.Show("r_id = "+listView1.SelectedItems[0].{FUCK}.ToString());
+            MessageBox.Show("r_id = "+(listView1.SelectedItems[0].Tag as AdultRabbit).ID.ToString());
         }
 
         private void makeExcel()
@@ -362,7 +364,7 @@ namespace rabnet.panels
             {
                 ReplaceForm rpf = new ReplaceForm();
                 foreach (ListViewItem li in listView1.SelectedItems)
-                    rpf.AddRabbit((int)li.{FUCK});
+                    rpf.AddRabbit((li.Tag as AdultRabbit).ID);
                 if (rpf.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
             }
@@ -381,8 +383,8 @@ namespace rabnet.panels
             try
             {
                 ReplaceForm rpf = new ReplaceForm();
-                rpf.AddRabbit((int)listView1.SelectedItems[0].{FUCK});
-                rpf.AddRabbit((int)listView1.SelectedItems[1].{FUCK});
+                rpf.AddRabbit((listView1.SelectedItems[0].Tag as AdultRabbit).ID);
+                rpf.AddRabbit((listView1.SelectedItems[1].Tag as AdultRabbit).ID);
                 rpf.SetAction(ReplaceForm.Action.CHANGE);
                 if (rpf.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
@@ -406,7 +408,7 @@ namespace rabnet.panels
 
                 KillForm f = new KillForm();
                 foreach (ListViewItem li in listView1.SelectedItems)
-                    f.addRabbit((int)li.{FUCK});
+                    f.addRabbit((li.Tag as AdultRabbit).ID);
                 if (f.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
             }
@@ -424,7 +426,7 @@ namespace rabnet.panels
 
             try
             {
-                if (PreReplaceYoungersForm.MakeChoice((int)listView1.SelectedItems[0].{FUCK}) == DialogResult.OK && !MainForm.MustClose)
+                if (PreReplaceYoungersForm.MakeChoice((listView1.SelectedItems[0].Tag  as AdultRabbit).ID) == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
             }
             catch (Exception exc)
@@ -439,7 +441,7 @@ namespace rabnet.panels
 #if !DEMO
             if (listView1.SelectedItems.Count != 1) return;
 
-            XmlDocument[] docs = ReportHelperExt.GetRabbitPlem((int)listView1.SelectedItems[0].{FUCK});
+            XmlDocument[] docs = ReportHelperExt.GetRabbitPlem((listView1.SelectedItems[0].Tag  as AdultRabbit).ID);
             ReportViewForm rf = new ReportViewForm(myReportType.RABBIT, docs);
             rf.ShowDialog();
             if (rf.IsPrinted)
@@ -464,7 +466,7 @@ namespace rabnet.panels
                 string brd = "";
                 foreach (ListViewItem li in listView1.SelectedItems)
                 {
-                    RabNetEngRabbit r = Engine.get().getRabbit((int)li.{FUCK});
+                    RabNetEngRabbit r = Engine.get().getRabbit((li.Tag as AdultRabbit).ID);
                     cnt += r.Group;
                     if (brd == "")
                         brd = r.BreedName;
@@ -500,7 +502,7 @@ namespace rabnet.panels
             Filters f = new Filters();
             f["cnt"] = listView1.SelectedItems.Count.ToString();
             for (int i = 0; i < listView1.SelectedItems.Count; i++)
-                f["r" + i.ToString()] = ((int)listView1.SelectedItems[i].{FUCK}).ToString();
+                f["r" + i.ToString()] = ((listView1.SelectedItems[i].Tag as AdultRabbit).ID).ToString();
             new ReportViewForm(myReportType.REALIZE, Engine.db().makeReport(myReportType.REALIZE, f)).ShowDialog();
 #else
             DemoErr.DemoNoReportMsg();
@@ -521,7 +523,7 @@ namespace rabnet.panels
                 if (GeneticsManagerSafe.GeneticsModuleTest())
                 {
                     for (int i = 0; i < listView1.SelectedItems.Count; i++)                    
-                        GeneticsManagerSafe.AddNewGenetics(((int)listView1.SelectedItems[i].{FUCK}));                   
+                        GeneticsManagerSafe.AddNewGenetics(((listView1.SelectedItems[i].Tag as AdultRabbit).ID));                   
                 }
                 else                
                     throw new Exception("Не найден модуль 'gui_genetics.dll'!\nПроверьте правильность установки программы.");               
@@ -566,7 +568,7 @@ namespace rabnet.panels
             if (listView1.SelectedItems.Count != 1) return;
             try
             {
-                int rid = (int)listView1.SelectedItems[0].{FUCK};
+                int rid = (listView1.SelectedItems[0].Tag as AdultRabbit).ID;
                 if ((new BonForm(rid)).ShowDialog() == DialogResult.OK)
                     _rsb.Run();
             }
@@ -583,7 +585,7 @@ namespace rabnet.panels
             if (listView1.SelectedItems.Count != 1) return;
             try
             {
-                int rid = (int)listView1.SelectedItems[0].{FUCK};
+                int rid = (listView1.SelectedItems[0].Tag  as AdultRabbit).ID;
                 if ((new Proholost(rid)).ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
             }
@@ -600,7 +602,7 @@ namespace rabnet.panels
             if (listView1.SelectedItems.Count != 1) return;
             try
             {
-                CountKids f = new CountKids((int)listView1.SelectedItems[0].{FUCK});
+                CountKids f = new CountKids((listView1.SelectedItems[0].Tag  as AdultRabbit).ID);
                 if (f.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
             }
@@ -618,7 +620,7 @@ namespace rabnet.panels
 
             try
             {
-                OkrolForm dlg = new OkrolForm((int)listView1.SelectedItems[0].{FUCK});
+                OkrolForm dlg = new OkrolForm((listView1.SelectedItems[0].Tag  as AdultRabbit).ID);
                 if (dlg.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
             }
@@ -636,7 +638,7 @@ namespace rabnet.panels
 
             try
             {
-                MakeFuckForm dlg = new MakeFuckForm((int)listView1.SelectedItems[0].{FUCK});
+                MakeFuckForm dlg = new MakeFuckForm((listView1.SelectedItems[0].Tag as AdultRabbit).ID);
                 if (dlg.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
             }
@@ -650,10 +652,14 @@ namespace rabnet.panels
 
         private void miLust_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count != 1) return;
+            if (listView1.SelectedItems.Count == 0) return;
 
-            int rid = (int)listView1.SelectedItems[0].{FUCK};
-            Engine.db().SetRabbitVaccine(rid, Vaccine.V_ID_LUST);
+            foreach (ListViewItem it in listView1.SelectedItems)
+            {
+                AdultRabbit rab = it.Tag as AdultRabbit;
+                if(rab.Sex == Rabbit.SexType.FEMALE && !rab.FFlags().Contains("vS"))
+                    Engine.db().SetRabbitVaccine(rab.ID, Vaccine.V_ID_LUST);
+            }
             if(!MainForm.MustClose)
                 _rsb.Run();
         }
@@ -665,7 +671,7 @@ namespace rabnet.panels
             try
             {
                 ReplaceForm rpf = new ReplaceForm();
-                rpf.AddRabbit((int)listView1.SelectedItems[0].{FUCK});
+                rpf.AddRabbit((listView1.SelectedItems[0].Tag  as AdultRabbit).ID);
                 rpf.SetAction(ReplaceForm.Action.BOYSOUT);
                 if (rpf.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
@@ -687,7 +693,7 @@ namespace rabnet.panels
             {
                 List<int> rIds = new List<int>();
                 foreach (ListViewItem it in listView1.SelectedItems)
-                    rIds.Add((int)it.{FUCK});
+                    rIds.Add((it.Tag as AdultRabbit).ID);
                 if ((new EPasportForm(rIds)).ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
             }
