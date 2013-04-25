@@ -123,5 +123,12 @@ namespace rabnet
             node.Attributes.Append(attr);
         }
     }
+
+    public class FuckerSummary
+    {
+        public int Born = 0;
+        public int Proholosts = 0;
+        public int Okrols = 0;
+    }
 #endif
 }

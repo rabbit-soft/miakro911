@@ -317,7 +317,7 @@
         <Left>9.2pt</Left>
         <Top>22.0pt</Top>
       </Table>
-      <Textbox Name="Textbox6" >
+      <Textbox Name="Textbox6">
         <Height>12.75pt</Height>
         <Width>123.37pt</Width>
         <Value>=Globals!ExecutionTime</Value>
@@ -329,7 +329,7 @@
     <Columns>1</Columns>
   </Body>
   <PageFooter>
-    <Height>14pt</Height>
+    <Height>15.8pt</Height>
     <ReportItems>
       <Textbox Name="Textbox5">
         <Top>1pt</Top>
@@ -341,6 +341,14 @@
           <FontSize>10pt</FontSize>
           <FontWeight>Normal</FontWeight>
         </Style>
+      </Textbox>
+      <Textbox Name="Textbox8" >
+        <Height>13.51pt</Height>
+        <Width>261.16pt</Width>
+        <Value>C-Сумма;О-окролы;П-прохолосты;Ф-фертильность</Value>
+        <ZIndex>1</ZIndex>
+        <Left>341.5pt</Left>
+        <Top>0.8pt</Top>
       </Textbox>
     </ReportItems>
     <PrintOnFirstPage>true</PrintOnFirstPage>

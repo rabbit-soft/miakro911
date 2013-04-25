@@ -147,98 +147,102 @@ namespace db.mysql
         /// <returns></returns>
         private XmlDocument userOkrolRpt(String query)
         {
+            const string SUMM = "C", TOTAL="итого";
             XmlDocument doc = makeStdReportXml(query);
             XmlNodeList lst = doc.ChildNodes[0].ChildNodes;
-            Dictionary<String, int> sums = new Dictionary<String, int>();//кл-во детей
-            Dictionary<String, int> cnts = new Dictionary<String, int>();//кл-во окролов
-            Dictionary<String, int> proh = new Dictionary<String, int>();//кл-во прохолостов
+            Dictionary<String, FuckerSummary> summary = new Dictionary<String, FuckerSummary>();
+            Dictionary<String, int> dates = new Dictionary<String, int>();
+            //Dictionary<String, int> cnts = new Dictionary<String, int>();//кл-во окролов
+            //Dictionary<String, int> proh = new Dictionary<String, int>();//кл-во прохолостов
+            //Dictionary<String, float> firt = new Dictionary<String, float>();//фиртильность
 
             ///вычисляем общие данные по каждому самцу
             foreach (XmlNode nd in lst)
             {
-                String nm = nd.FirstChild.FirstChild.Value;
-                String v = nd.FirstChild.NextSibling.NextSibling.FirstChild.Value;
-                int s = 0;
-                int cnt = 0;
+                String name = nd.FirstChild.FirstChild.Value;
+                String date = nd.FirstChild.NextSibling.FirstChild.Value;
+                String val = nd.FirstChild.NextSibling.NextSibling.FirstChild.Value;                            
 
-                if (v == PROH)
-                {                    
-                    if (proh.ContainsKey(nm))
-                        proh[nm] ++;
-                    else
-                        proh.Add(nm, 1);
+                if (!summary.ContainsKey(name))
+                    summary.Add(name, new FuckerSummary());
+
+                if (val == PROH)
+                {
+                    summary[name].Proholosts++;
                     continue;
                 }
-                else if (v != "-")
+                else if (val != "-")
                 {
-                    s += int.Parse(v);
-                    cnt += 1;
-                }                
+                    summary[name].Okrols++;
+                    summary[name].Born += int.Parse(val);
+                }
 
-                if (sums.ContainsKey(nm)) 
-                    sums[nm] += s;
-                else 
-                    sums.Add(nm, s);
-
-                if (cnts.ContainsKey(nm)) 
-                    cnts[nm] += cnt;
-                else 
-                    cnts.Add(nm,cnt);                                
+                if (!dates.ContainsKey(date))
+                    dates.Add(date, int.Parse(val));
+                else
+                    dates[date] += int.Parse(val);
             }
-
             doc = makeRabOfDate(doc);
             lst = doc.ChildNodes[0].ChildNodes;
+
             ///создаем стобец "Сумма рожденных крольчат"
-            foreach (String k in sums.Keys)
+            int totalBorn=0, totalOkrols=0, totalProholosts=0;
+            foreach (String k in summary.Keys)
             {
                 XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
                 ReportHelper.Append(rw, doc, "name", k);
-                ReportHelper.Append(rw, doc, "dt", "Cум.");
-                ReportHelper.Append(rw, doc, "state", sums[k].ToString());
-            }
-            ///создаем стобец "Общее количество окролов"
-            foreach (String k in cnts.Keys)
-            {
-                XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
+                ReportHelper.Append(rw, doc, "dt", SUMM);///
+                ReportHelper.Append(rw, doc, "state", summary[k].Born.ToString());
+                totalBorn += summary[k].Born;
+                
+                rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
                 ReportHelper.Append(rw, doc, "name", k);
                 ReportHelper.Append(rw, doc, "dt", "О");
-                ReportHelper.Append(rw, doc, "state", cnts[k].ToString());
-            }
-            ///создаем стобец "Общее количество прохолостов"
-            foreach (String k in proh.Keys)
-            {
-                XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
+                ReportHelper.Append(rw, doc, "state", summary[k].Okrols.ToString());
+                totalOkrols += summary[k].Okrols;
+                
+                rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
                 ReportHelper.Append(rw, doc, "name", k);
                 ReportHelper.Append(rw, doc, "dt", "П");
-                ReportHelper.Append(rw, doc, "state", proh[k].ToString());
+                ReportHelper.Append(rw, doc, "state", summary[k].Proholosts.ToString());
+                totalProholosts += summary[k].Proholosts;
+
+                rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
+                ReportHelper.Append(rw, doc, "name", k);
+                ReportHelper.Append(rw, doc, "dt", "Ф");
+                double fert = Math.Round((double)summary[k].Okrols/(double)(summary[k].Proholosts + summary[k].Okrols),2);
+                ReportHelper.Append(rw, doc, "state", fert.ToString());
             }
+
             ///добавляем самую нижнюю суммирующую строчку
-            sums.Clear();            
-            foreach (XmlNode nd in lst)
-            {
-                String nm = nd.FirstChild.NextSibling.FirstChild.Value;
-                String v = nd.FirstChild.NextSibling.NextSibling.FirstChild.Value;
-                int s = 0;
-                if (v.Contains(PROH))
-                {
-                    if (!v.StartsWith(PROH))
-                    {
-                        string childrens = v.Split('п')[0].Trim();
-                        s += int.Parse(childrens);
-                    }
-                }
-                else if(v != "-" && v!="") 
-                    s += int.Parse(v);
-                if (sums.ContainsKey(nm)) 
-                    sums[nm] += s;
-                else sums.Add(nm, s);
-            }
-            foreach (String k in sums.Keys)
+
+            XmlElement ttlRow = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
+            ReportHelper.Append(ttlRow, doc, "name", TOTAL);
+            ReportHelper.Append(ttlRow, doc, "dt", SUMM);
+            ReportHelper.Append(ttlRow, doc, "state", totalBorn.ToString());
+
+            ttlRow = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
+            ReportHelper.Append(ttlRow, doc, "name", TOTAL);
+            ReportHelper.Append(ttlRow, doc, "dt", "О");
+            ReportHelper.Append(ttlRow, doc, "state", totalOkrols.ToString());
+
+            ttlRow = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
+            ReportHelper.Append(ttlRow, doc, "name", TOTAL);
+            ReportHelper.Append(ttlRow, doc, "dt", "П");
+            ReportHelper.Append(ttlRow, doc, "state", totalProholosts.ToString());
+
+            ttlRow = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
+            ReportHelper.Append(ttlRow, doc, "name", TOTAL);
+            ReportHelper.Append(ttlRow, doc, "dt", "Ф");
+            double totalFert = Math.Round((double)totalOkrols / (double)(totalProholosts + totalOkrols), 2);
+            ReportHelper.Append(ttlRow, doc, "state", totalFert.ToString());
+
+            foreach (String k in dates.Keys)
             {
                 XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
-                ReportHelper.Append(rw, doc, "name", "итого");
+                ReportHelper.Append(rw, doc, "name", TOTAL);
                 ReportHelper.Append(rw, doc, "dt", k);
-                ReportHelper.Append(rw, doc, "state", sums[k].ToString());
+                ReportHelper.Append(rw, doc, "state", dates[k].ToString());
             }
             return doc;
         }
