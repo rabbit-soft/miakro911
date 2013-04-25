@@ -221,17 +221,19 @@ namespace rabnet
 
         ClientsList GetClients();
         void AddClient(int id, string name, string address);
-#endif
-        IRabNetDataLayer Clone();        
-        
-        BreedsList GetBreeds();
-        int AddBreed(string name,string shrt,string color);
 
         /// <summary>
         /// Взять сперму у самцов для искусственного осеменения
         /// </summary>
         /// <param name="rId"></param>
         void SpermTake(int rId);
+#endif
+        IRabNetDataLayer Clone();        
+        
+        BreedsList GetBreeds();
+        int AddBreed(string name,string shrt,string color);
+
+        
     }
 
 }

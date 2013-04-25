@@ -319,9 +319,14 @@ namespace rabnet.panels
                     break;
 
                 case JobType.SPERM_TAKE:
+#if !DEMO
                     RabNetEngRabbit r = Engine.get().getRabbit(job.ID);
                     r.SperTake();
                     needUpdate = false;
+                    
+#else
+                    DemoErr.DemoNoModuleMsg();
+#endif
                     break;
             }
             if (res != DialogResult.Cancel)
