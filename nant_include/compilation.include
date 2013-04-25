@@ -270,6 +270,7 @@
 		<call target="populationplugin"/>
 		<call target="okrolplanplugin"/>
 		<call target="FemaleSummary" />
+		<call target="TotalRevisionPlugIn" />
 		<!--еще плагины добавлять здесь,-->
 	</target>	
 	
@@ -340,6 +341,25 @@
 		<csc target="library" output="${bindir.plugins}/FemaleSummaryPlugIn.dll" define="RELEASE" optimize="true">
 			<sources>
 				<include name="${srcdir}/rabnet/ReportPlugIns/FemaleSummaryPlugIn/*.cs"/>
+				<include name="${tmpdir}/VersionInfo.cs"/>
+			</sources>
+			<resources>
+				<include name="${rdlfile}"/>
+			</resources>
+			<references>
+				<include name="${bindir}/Protected/bin/rabnet.exe" />
+				<include name="${bindir}/Protected/bin/db.Interface.dll" />
+				<include name="${bindir}/Protected/bin/engine.dll" />
+			</references>
+		</csc>
+	</target>
+	
+	<target name="TotalRevisionPlugIn" description="report plugin for AG">
+		<property name="rdlfile" value="${tmpdir}/TotalRevisionPlugIn.total_revision.rdl" />
+		<copy file="${srcdir}/rabnet/ReportPlugIns/TotalRevisionPlugIn/total_revision.rdl" tofile="${rdlfile}"/>
+		<csc target="library" output="${bindir.plugins}/TotalRevisionPlugIn.dll" define="RELEASE" optimize="true">
+			<sources>
+				<include name="${srcdir}/rabnet/ReportPlugIns/TotalRevisionPlugIn/*.cs"/>
 				<include name="${tmpdir}/VersionInfo.cs"/>
 			</sources>
 			<resources>
