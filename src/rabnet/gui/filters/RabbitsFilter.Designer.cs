@@ -28,6 +28,7 @@
         /// </summary>
         protected override void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label6 = new System.Windows.Forms.Label();
             this.tbName = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -76,6 +77,7 @@
             this.nudCountTo = new System.Windows.Forms.NumericUpDown();
             this.cbCount = new System.Windows.Forms.ComboBox();
             this.nudCountFrom = new System.Windows.Forms.NumericUpDown();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPregFrom)).BeginInit();
@@ -470,11 +472,6 @@
             // nudDateFrom
             // 
             this.nudDateFrom.Enabled = false;
-            this.nudDateFrom.Increment = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
             this.nudDateFrom.Location = new System.Drawing.Point(135, 40);
             this.nudDateFrom.Maximum = new decimal(new int[] {
             5000,
@@ -489,6 +486,7 @@
             this.nudDateFrom.Name = "nudDateFrom";
             this.nudDateFrom.Size = new System.Drawing.Size(44, 20);
             this.nudDateFrom.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.nudDateFrom, "Старше ... дней");
             this.nudDateFrom.Value = new decimal(new int[] {
             100,
             0,
@@ -504,6 +502,7 @@
             this.dtpDateFrom.Name = "dtpDateFrom";
             this.dtpDateFrom.Size = new System.Drawing.Size(79, 20);
             this.dtpDateFrom.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.dtpDateFrom, "Дата рождения не раньше чем...");
             this.dtpDateFrom.ValueChanged += new System.EventHandler(this.dtpDateFrom_ValueChanged);
             // 
             // cbDateFrom
@@ -515,17 +514,13 @@
             this.cbDateFrom.Size = new System.Drawing.Size(39, 17);
             this.cbDateFrom.TabIndex = 3;
             this.cbDateFrom.Text = "От";
+            this.toolTip1.SetToolTip(this.cbDateFrom, "Дата рождения не раньше чем...");
             this.cbDateFrom.UseVisualStyleBackColor = true;
             this.cbDateFrom.CheckedChanged += new System.EventHandler(this.cbDateFrom_CheckedChanged);
             // 
             // nudDateTo
             // 
             this.nudDateTo.Enabled = false;
-            this.nudDateTo.Increment = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
             this.nudDateTo.Location = new System.Drawing.Point(135, 15);
             this.nudDateTo.Maximum = new decimal(new int[] {
             5000,
@@ -540,6 +535,7 @@
             this.nudDateTo.Name = "nudDateTo";
             this.nudDateTo.Size = new System.Drawing.Size(44, 20);
             this.nudDateTo.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.nudDateTo, "Младше ... дней");
             this.nudDateTo.Value = new decimal(new int[] {
             200,
             0,
@@ -567,6 +563,7 @@
             this.dtpDateTo.Name = "dtpDateTo";
             this.dtpDateTo.Size = new System.Drawing.Size(79, 20);
             this.dtpDateTo.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.dtpDateTo, "Дата рождения не позже чем...");
             this.dtpDateTo.ValueChanged += new System.EventHandler(this.dtpDateTo_ValueChanged);
             // 
             // groupBox1
@@ -840,6 +837,7 @@
         private System.Windows.Forms.NumericUpDown nudCountTo;
         private System.Windows.Forms.ComboBox cbCount;
         private System.Windows.Forms.NumericUpDown nudCountFrom;
+        private System.Windows.Forms.ToolTip toolTip1;
 
     }
 }

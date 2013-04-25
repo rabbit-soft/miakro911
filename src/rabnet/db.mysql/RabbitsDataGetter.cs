@@ -68,10 +68,12 @@ WHERE r_parent=0 GROUP by r_id ORDER BY name) c {2:s};", (options.safeBool("dbl"
                     sres = addWhereOr(sres, "r_sex='void'");
                 res = "(" + sres + ")";
             }
+
             if (options.ContainsKey("dt"))
-                res = addWhereAnd(res, "(r_born>=NOW()-INTERVAL " + options["dt"] + " DAY)");
+                res = addWhereAnd(res, "(r_born<=NOW()-INTERVAL " + options["dt"] + " DAY)");//старше
             if (options.ContainsKey("Dt"))
-                res = addWhereAnd(res, "(r_born<=NOW()-INTERVAL " + options["Dt"] + " DAY)");
+                res = addWhereAnd(res, "(r_born>=NOW()-INTERVAL " + options["Dt"] + " DAY)");//младше         
+
             if (options.ContainsKey("wg"))
                 res = addWhereAnd(res, "(weight>=" + options["wg"] + ")");
             if (options.ContainsKey("Wg"))

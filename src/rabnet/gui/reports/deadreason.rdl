@@ -81,6 +81,9 @@
           <TableColumn>
             <Width>109.0pt</Width>
           </TableColumn>
+          <TableColumn>
+            <Width>109.0pt</Width>
+          </TableColumn>
         </TableColumns>
         <Header>
           <TableRows>
@@ -108,6 +111,22 @@
                     <Textbox Name="Textbox4">
                       <Value>Количество</Value>
                       <Style>
+                        <TextAlign>Center</TextAlign>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontWeight>Bold</FontWeight>
+                        <BorderColor />
+                        <BorderWidth />
+                      </Style>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox16">
+                      <Value>%</Value>
+                      <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
                         <TextAlign>Center</TextAlign>
                         <BorderStyle>
                           <Default>Solid</Default>
@@ -161,6 +180,21 @@
                     </Textbox>
                   </ReportItems>
                 </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox17">
+                      <Value>=Round(Fields!grp/Sum(Fields!grp)*100,2)</Value>
+                      <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <BorderColor />
+                        <BorderWidth />
+                      </Style>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
               </TableCells>
             </TableRow>
           </TableRows>
@@ -202,6 +236,23 @@
                         <FontWeight>Bold</FontWeight>
                       </Style>
                       <Value>=Sum(Fields!grp)</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Textbox18">
+                      <Value>100</Value>
+                      <Style xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <BorderColor />
+                        <BorderWidth />
+                        <TextAlign>Right</TextAlign>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
                     </Textbox>
                   </ReportItems>
                 </TableCell>
@@ -429,7 +480,7 @@
         <Left>170.9pt</Left>
         <Top>9.2pt</Top>
       </Table>
-      <Textbox Name="Textbox15" >
+      <Textbox Name="Textbox15">
         <Height>12.75pt</Height>
         <Width>123.37pt</Width>
         <Value>=Globals!ExecutionTime</Value>

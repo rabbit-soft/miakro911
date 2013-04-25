@@ -35,8 +35,8 @@ namespace rabnet.filters
             if (!cbSexFemale.Checked || !cbSexMale.Checked || !cbSexVoid.Checked)
                 f["sx"] = String.Format("{0:s}{1:s}{2:s}", cbSexMale.Checked ? "m" : "", cbSexFemale.Checked ? "f" : "", cbSexVoid.Checked ? "v" : "");
             if (f.safeValue("sx") == "") f.Remove("sx");
-            if (cbDateTo.Checked) f["dt"] = nudDateTo.Value.ToString();
-            if (cbDateFrom.Checked) f["Dt"] = nudDateFrom.Value.ToString();
+            if (cbDateFrom.Checked) f["dt"] = nudDateFrom.Value.ToString();
+            if (cbDateTo.Checked) f["Dt"] = nudDateTo.Value.ToString();           
             if (cbWeightFrom.Checked) f["wg"] = nudWeightFrom.Value.ToString();
             if (cbWeightTo.Checked) f["Wg"] = nudWeightTo.Value.ToString();
             //if (cbWorks.SelectedIndex != 0) f["wr"] = cbWorks.SelectedIndex.ToString();
@@ -76,18 +76,22 @@ namespace rabnet.filters
             cbSexMale.Checked = f.safeValue("sx", "mfv").Contains("m");
             cbSexFemale.Checked = f.safeValue("sx", "mfv").Contains("f");
             cbSexVoid.Checked = f.safeValue("sx", "mfv").Contains("v");
-            cbDateTo.Checked = f.ContainsKey("dt"); cbDateFrom_CheckedChanged(null, null);
+
+            cbDateTo.Checked = f.ContainsKey("Dt");
+            cbDateFrom_CheckedChanged(null, null);
             if (cbDateTo.Checked)
             { 
-                nudDateTo.Value = f.safeInt("dt", 100); 
+                nudDateTo.Value = f.safeInt("Dt", 100); 
                 nudDateFrom_ValueChanged(null, null);
             }
-            cbDateFrom.Checked = f.ContainsKey("Dt"); cbDateTo_CheckedChanged(null, null);
+            cbDateFrom.Checked = f.ContainsKey("dt"); 
+            cbDateTo_CheckedChanged(null, null);
             if (cbDateFrom.Checked)
             { 
-                nudDateFrom.Value = f.safeInt("Dt", 60); 
+                nudDateFrom.Value = f.safeInt("dt", 60); 
                 nudDateTo_ValueChanged(null, null); 
             }
+
             cbWeightFrom.Checked = f.ContainsKey("wg"); cbWeightFrom_CheckedChanged(null, null);
             if (cbWeightFrom.Checked) 
                 nudWeightFrom.Value = f.safeInt("wg", 1000);
@@ -217,7 +221,8 @@ namespace rabnet.filters
             }
             if (cbDateFrom.Checked)
             {
-                if (nudDateTo.Value < nudDateFrom.Value)nudDateTo.Value = nudDateFrom.Value;               
+                if (nudDateTo.Value < nudDateFrom.Value)
+                    nudDateTo.Value = nudDateFrom.Value;               
                 nudDateFrom.Maximum = nudDateTo.Value;
                 nudDateTo.Minimum = nudDateFrom.Value;
             }
