@@ -19,18 +19,18 @@ namespace rabnet
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 f[Filters.DATE_PERIOD] = dlg.PeriodChar;
-                f[Filters.DATE_VALUE] = dlg.DateValue;
+                f[Filters.DATE_VALUE] = dlg.PeriodValue;
                 (new ReportViewForm(MenuText, FileName, new XmlDocument[]
                 {
                    Engine.db().makeReport(getSQL(f)),
-                   dlg.getXml()
+                   dlg.GetXml()
                 }
                 )).ShowDialog();
             }
 #endif
         }
 
-        private string getSQL(Filters f)
+        protected override string getSQL(Filters f)
         {
             string period = "";
             if (f.safeValue(Filters.DATE_PERIOD) == "d")

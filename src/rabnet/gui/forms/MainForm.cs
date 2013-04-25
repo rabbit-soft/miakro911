@@ -494,11 +494,11 @@ namespace rabnet.forms
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 f[Filters.DATE_PERIOD] = dlg.PeriodChar;
-                f[Filters.DATE_VALUE] = dlg.DateValue;
+                f[Filters.DATE_VALUE] = dlg.PeriodValue;
                 (new ReportViewForm(myReportType.DEADREASONS, new XmlDocument[]
                 {
                     Engine.db().makeReport(myReportType.DEADREASONS,f),
-                    dlg.getXml()
+                    dlg.GetXml()
                 })).ShowDialog();
             }
 #else
@@ -518,12 +518,12 @@ namespace rabnet.forms
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 f[Filters.DATE_PERIOD] = dlg.PeriodChar;
-                f[Filters.DATE_VALUE] = dlg.DateValue;
+                f[Filters.DATE_VALUE] = dlg.PeriodValue;
                 (new ReportViewForm(myReportType.DEAD,
                     new XmlDocument[]
                     {
                         Engine.db().makeReport(myReportType.DEAD,f),
-                        dlg.getXml()
+                        dlg.GetXml()
                     }
                  )).ShowDialog();
             }
@@ -564,7 +564,7 @@ namespace rabnet.forms
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 f[Filters.DATE_PERIOD] = dlg.PeriodChar;
-                f[Filters.DATE_VALUE] = dlg.DateValue;
+                f[Filters.DATE_VALUE] = dlg.PeriodValue;
                 (new ReportViewForm(myReportType.FUCKS_BY_DATE, new XmlDocument[]
                 {
                     Engine.get().db().makeReport(myReportType.FUCKS_BY_DATE,f)

@@ -127,17 +127,17 @@ WHERE r_id!={1:d} AND r_parent=0;", getOneRabbit_FieldsSet(RabAliveState.ALIVE),
             String flags = String.Format("{0:D1}{1:D1}{2:D1}{3:D1}{4:D1}", r.Production ? 1 : 0, r.RealizeReady ? 1 : 0, multi, r.NoKuk ? 1 : 0, r.NoLact ? 1 : 0);//TODO возможен косяк
             String query = String.Format(@"UPDATE rabbits SET 
 r_name={0:d},r_surname={1:d},r_secname={2:d},r_breed={3:d},r_zone={4:d},r_group={5:d},r_notes=@notes,
-r_flags='{6:d}',r_rate={7:d},r_born={8:s} ", r.NameID, r.SurnameID, r.SecnameID, r.BreedID, r.Zone, r.Group, /*r.Notes,*/ flags, r.Rate, DBHelper.DateToMyString(r.BirthDay));
+r_flags='{6:d}',r_rate={7:d},r_born={8:s} ", r.NameID, r.SurnameID, r.SecnameID, r.BreedID, r.Zone, r.Group, /*r.Notes,*/ flags, r.Rate, DBHelper.DateToSqlString(r.BirthDay));
 
 
 
             if (r.Sex != Rabbit.SexType.VOID)
             {
-                query += String.Format(",r_status={0:d},r_last_fuck_okrol={1:s}", r.Status, DBHelper.DateToMyString(r.LastFuckOkrol));
+                query += String.Format(",r_status={0:d},r_last_fuck_okrol={1:s}", r.Status, DBHelper.DateToSqlString(r.LastFuckOkrol));
             }
             if (r.Sex == Rabbit.SexType.FEMALE)
             {
-                query += String.Format(",r_event='{0:s}',r_event_date={1:s},r_lost_babies={2:d},r_overall_babies={3:d}", Rabbit.GetEventName(r.EventType), DBHelper.DateToMyString(r.EventDate), r.KidsLost, r.KidsOverAll);
+                query += String.Format(",r_event='{0:s}',r_event_date={1:s},r_lost_babies={2:d},r_overall_babies={3:d}", Rabbit.GetEventName(r.EventType), DBHelper.DateToSqlString(r.EventDate), r.KidsLost, r.KidsOverAll);
             }
             query += String.Format(" WHERE r_id={0:d};", r.ID);
 
@@ -168,7 +168,7 @@ r_flags='{6:d}',r_rate={7:d},r_born={8:s} ", r.NameID, r.SurnameID, r.SecnameID,
         public static void MakeProholost(MySqlConnection sql, int rabbit, int daysPast)
         {
             int male = whosChildren(sql, rabbit);
-            string when = DBHelper.DaysPastMySQLDate(daysPast);
+            string when = DBHelper.DaysPastSqlDate(daysPast);
             MySqlCommand cmd = new MySqlCommand("", sql);
             checkStartEvDate(sql, rabbit);
             cmd.CommandText = String.Format(@"UPDATE fucks SET f_state='proholost',f_end_date={0:s} WHERE f_state='sukrol' AND f_rabid={1:d};",
@@ -186,7 +186,7 @@ r_flags='{6:d}',r_rate={7:d},r_born={8:s} ", r.NameID, r.SurnameID, r.SecnameID,
         public static int MakeOkrol(MySqlConnection sql, int rabbit, int daysPast, int children, int dead)
         {            
             int father = whosChildren(sql, rabbit);
-            string when = DBHelper.DaysPastMySQLDate(daysPast);
+            string when = DBHelper.DaysPastSqlDate(daysPast);
 
             MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE fucks SET f_state='okrol',f_end_date={0:s},
 f_children={1:d},f_dead={2:d} WHERE f_rabid={3:d} AND f_state='sukrol';",
@@ -486,7 +486,7 @@ FROM rabbits WHERE r_id={0:d};", rabFromID, mom, count), sql);
         {
             if (rid == 0) return;
 
-            string when = DBHelper.DaysPastMySQLDate(daysPast);
+            string when = DBHelper.DaysPastSqlDate(daysPast);
             int[] place = freeTier(sql, rid);
             freeName(sql, rid);
             MySqlCommand cmd = new MySqlCommand(String.Format("SELECT r_parent FROM rabbits WHERE r_id={0:d};", rid), sql);
@@ -728,7 +728,7 @@ WHERE r_id={0:d} ORDER BY date", rabId), sql);
 
         internal static void SetRabbitVaccine(MySqlConnection sql, int rid, int vid, DateTime date)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO rab_vac(r_id,v_id,`date`) VALUES({0:d},{1:d},{2:s});", rid, vid, DBHelper.DateToMyString(date)), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO rab_vac(r_id,v_id,`date`) VALUES({0:d},{1:d},{2:s});", rid, vid, DBHelper.DateToSqlString(date)), sql);
             cmd.ExecuteNonQuery();
         }
 

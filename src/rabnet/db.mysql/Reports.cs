@@ -294,8 +294,8 @@ union SELECT 'Итого',sum(r_group) FROM rabbits;";
             DateTime dto = DateTime.Parse(f.safeValue("dto", DateTime.Now.ToShortDateString()));
             FROM=dfrom;
             TO=dto;
-            DFROM = DBHelper.DateToMyString(FROM);
-            DTO = DBHelper.DateToMyString(TO);
+            DFROM = DBHelper.DateToSqlString(FROM);
+            DTO = DBHelper.DateToSqlString(TO);
             return new DateTime[] { dfrom, dto };
         }
 

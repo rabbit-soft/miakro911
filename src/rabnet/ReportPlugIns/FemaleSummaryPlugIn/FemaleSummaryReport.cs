@@ -14,7 +14,7 @@ namespace rabnet
 
         public override void MakeReport()
         {
-            XmlDocument doc = Engine.db().makeReport(getSQL());
+            XmlDocument doc = Engine.db().makeReport(getSQL(null));
 
             ReportViewForm rvf = new ReportViewForm(MenuText, FileName, new XmlDocument[] { doc });
             rvf.ExcelEnabled = false;
@@ -27,7 +27,7 @@ namespace rabnet
             return System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("FemaleSummaryPlugIn.female_summary.rdl");
         }
 
-        private string getSQL()
+        protected override string getSQL(Filters f)
         {
             return @"select * FROM (SELECT r_id,rabname(r_id,2) name,
     b_name AS breed,

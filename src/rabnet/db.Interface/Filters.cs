@@ -64,7 +64,6 @@ namespace rabnet
         public const string FIRST_FUCK = "ffuck";
         public const string HETEROSIS = "heter";
         public const string INBREEDING = "inbr";
-        public const string BRIDE_AGE = "brideAge";
         public const string MALE_WAIT = "mwait";
         public const string BOYS_BY_ONE = "bbone";
         public const string TYPE = "type";

@@ -106,6 +106,7 @@
     <Compile Include="Butcher.cs" />
     <Compile Include="Catalog.cs" />
     <Compile Include="Client.cs" />
+    <Compile Include="DBHelper.cs" />
     <Compile Include="Dead.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="Fucks.cs" />

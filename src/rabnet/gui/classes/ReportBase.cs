@@ -17,11 +17,13 @@ namespace rabnet
     {
         const string FOLDER = "reports\\";
 
+        private string _projectName = "";
         private string _name = "";
         private string _menuText = "";
 
-        public ReportBase(string nm,string mt)
+        public ReportBase(/*string pn,*/string nm,string mt)
         {
+            //_projectName = pn;
             _name = nm;
             _menuText = mt;
         }
@@ -45,6 +47,12 @@ namespace rabnet
 
         public abstract void MakeReport();
 
+        protected abstract String getSQL(Filters flt);
+
+        /// <summary>
+        /// Данная функция должна быть реализована в каждой dll отдельно, т.к. GetExecutingAssembly должен вернуть текущую dll
+        /// </summary>
+        /// <returns></returns>
         protected abstract Stream getAssembly();
 
         private void checkFile()

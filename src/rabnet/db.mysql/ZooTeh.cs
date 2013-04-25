@@ -423,7 +423,7 @@ ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;
 
 DROP TABLE IF EXISTS tPartn; 
 DROP TABLE IF EXISTS aaa;", 
-        _flt.safeInt(Filters.BRIDE_AGE), _flt.safeInt(Filters.FIRST_FUCK), _flt.safeInt(Filters.STATE_FUCK), 
+        _flt.safeInt(Filters.MAKE_BRIDE), _flt.safeInt(Filters.FIRST_FUCK), _flt.safeInt(Filters.STATE_FUCK), 
     
         _flt.safeInt(Filters.MALE_WAIT),//3
         (_flt.safeBool(Filters.HETEROSIS) ? "" : String.Format("pbreed=r.r_breed")),//4

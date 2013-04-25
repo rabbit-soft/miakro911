@@ -106,7 +106,7 @@ namespace rabnet.forms
             }
         }
 
-        public string DateValue
+        public string PeriodValue
         {
             get
             {
@@ -123,7 +123,7 @@ namespace rabnet.forms
             }
         }
 
-        public XmlDocument getXml()
+        public XmlDocument GetXml()
         {
             /*XmlDocument doc = new XmlDocument();
             XmlElement rows = doc.CreateElement("Rows");
@@ -136,7 +136,7 @@ namespace rabnet.forms
             XmlDocument doc = new XmlDocument();
             XmlElement row = doc.CreateElement("Row");
             doc.AppendChild(doc.CreateElement("Rows")).AppendChild(row);
-            row.AppendChild(doc.CreateElement("datefrom")).AppendChild(doc.CreateTextNode(DateValue));
+            row.AppendChild(doc.CreateElement("datefrom")).AppendChild(doc.CreateTextNode(PeriodValue));
             row.AppendChild(doc.CreateElement("dateto")).AppendChild(doc.CreateTextNode(""));
             return doc;
         }

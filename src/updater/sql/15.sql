@@ -83,3 +83,36 @@ BEGIN
   END IF;
   RETURN(res);
 END |
+
+CREATE PROCEDURE `fixKidsCountLogs`()
+BEGIN
+	DECLARE done INT DEFAULT FALSE;
+	DECLARE par, kid INT;
+	DECLARE born DATETIME;
+	DECLARE cnt1, cnt2,cnt3 INT;
+	DECLARE cur1 CURSOR FOR SELECT r_parent,r_id,r_born FROM rabbits WHERE r_parent!=0;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+	
+	SELECT o_value INTO cnt1 FROM options WHERE o_subname='count1';
+	SELECT o_value INTO cnt2 FROM options WHERE o_subname='count2';
+	SELECT o_value INTO cnt3 FROM options WHERE o_subname='count3';
+	
+	OPEN cur1;
+	
+	read_loop: LOOP
+		FETCH cur1 INTO par, kid, born;
+		IF done THEN
+		  LEAVE read_loop;
+		END IF;
+		UPDATE logs SET l_rabbit2=kid WHERE l_type=17 AND l_rabbit=par AND l_rabbit2=0 AND Date_add(born,interval cnt1 day)=date(l_date) LIMIT 1;
+		UPDATE logs SET l_rabbit2=kid WHERE l_type=17 AND l_rabbit=par AND l_rabbit2=0 AND Date_add(born,interval cnt2 day)=date(l_date) LIMIT 1;
+		UPDATE logs SET l_rabbit2=kid WHERE l_type=17 AND l_rabbit=par AND l_rabbit2=0 AND Date_add(born,interval cnt3 day)=date(l_date) LIMIT 1;
+	END LOOP;
+	
+	CLOSE cur1;
+END |
+
+#DELIMITER ;
+
+CALL fixKidsCountLogs();
+DROP PROCEDURE IF EXISTS `fixKidsCountLogs`;

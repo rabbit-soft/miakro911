@@ -163,7 +163,7 @@ ORDER BY fullname;",
             cmd.ExecuteNonQuery();
             if (dt > ud)
             {
-                cmd.CommandText = String.Format(@"UPDATE rabbits SET r_event_date={0:s} WHERE r_id={1:d};",DBHelper.DateToMyString(dt),fucker);
+                cmd.CommandText = String.Format(@"UPDATE rabbits SET r_event_date={0:s} WHERE r_id={1:d};",DBHelper.DateToSqlString(dt),fucker);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -231,7 +231,7 @@ ORDER BY fullname;",
         {            
             OneRabbit f = RabbitGetter.GetRabbit(sql, femaleId);
             String type = Fuck.GetFuckTypeStr(FuckType.Sluchka);
-            string when = DBHelper.DaysPastMySQLDate(daysPast);
+            string when = DBHelper.DaysPastSqlDate(daysPast);
 
             if (syntetic)
                 type = Fuck.GetFuckTypeStr(FuckType.Syntetic);

@@ -17,8 +17,8 @@ namespace rabnet
             BuildTreeForm dlg = new BuildTreeForm();
             if (dlg.ShowDialog() != DialogResult.OK)
                 return;
-
-            XmlDocument doc = Engine.db().makeReport(getSQL(dlg.Build));
+            Filters f = new Filters("build", dlg.Build.ToString());
+            XmlDocument doc = Engine.db().makeReport(getSQL(f));
             Dictionary<String, int> dict = new Dictionary<string, int>();
             int total = 0;
             foreach (XmlNode nd in doc.FirstChild.ChildNodes)
@@ -58,7 +58,7 @@ namespace rabnet
             rvf.ShowDialog();
         }
 
-        private string getSQL(int build)
+        protected override string getSQL(Filters f)
         {
             return String.Format(@"SELECT rabname(r_id,2) name,
 (SELECT b_short_name FROM breeds where r_breed=b_id) brd,
@@ -68,7 +68,7 @@ Date_Format(DATE_ADD(r_event_date,interval {0:d} day),'%m %d') dt,
 FROM rabbits 
 WHERE r_event_date is not null AND DATE_ADD(r_event_date,interval {0:d} day)>NOW() 
     AND inBuilding({1:d},substr(rabplace(r_id),1,INSTR(rabplace(r_id),',')-1))
-ORDER BY r_event_date;", Engine.opt().getIntOption(Options.OPT_ID.NEST_IN), build);
+ORDER BY r_event_date;", Engine.opt().getIntOption(Options.OPT_ID.NEST_IN), f.safeInt("build"));
         }
 
         private XmlDocument toMatrixRep(XmlDocument doc)

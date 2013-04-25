@@ -108,7 +108,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RabbitGenGetter.cs" />
     <Compile Include="db.mysql.cs" />
-    <Compile Include="DBHelper.cs" />
     <Compile Include="Dead.cs" />
     <Compile Include="CatalogData\DeadReasons.cs" />
     <Compile Include="Fucks.cs" />

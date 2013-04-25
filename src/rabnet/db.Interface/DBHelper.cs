@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using MySql.Data.MySqlClient;
 using System.Text;
 using rabnet;
 
-namespace db.mysql
+namespace rabnet
 {
-    class DBHelper
+    public class DBHelper
     {       
-        public static String DateToMyString(DateTime dt)
+        public static String DateToSqlString(DateTime dt)
         {
             if (dt == DateTime.MinValue)
                 return "NULL";
@@ -17,7 +16,7 @@ namespace db.mysql
             return String.Format("'{0:D4}-{1:D2}-{2:D2}'",dt.Year,dt.Month,dt.Day);
         }
 
-        public static String DaysPastMySQLDate(int daysPast)
+        public static String DaysPastSqlDate(int daysPast)
         {
             return daysPast <= 0 ? "Date(NOW())" : String.Format("Date_Add(Date(NOW()),INTERVAL -{0:d} DAY)", daysPast);
         }
@@ -30,10 +29,10 @@ namespace db.mysql
             return res;
         }
 
-        public static String escape(String str)
-        {
-            return MySqlHelper.EscapeString(str);
-        }
+        //public static String escape(String str)
+        //{
+        //    return MySqlHelper.EscapeString(str);
+        //}
 
         public static string MakeDatePeriod(Filters f, string dateField)
         {

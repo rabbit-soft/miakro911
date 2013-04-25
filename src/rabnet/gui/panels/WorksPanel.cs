@@ -19,7 +19,7 @@ namespace rabnet.panels
         public int _makeFlag = 0;
         private bool _fullUpdate=true;
         private Filters runF = null;
-        private int itm = -1;
+        private int _selectedItem = -1;
 
         public WorksPanel(RabStatusBar sb): base(sb, new ZootehFilter())
         {           
@@ -66,13 +66,13 @@ namespace rabnet.panels
                 }
                 f[Filters.VACC_SHOW] = f[Filters.VACC_SHOW].TrimEnd(',');
 
-                itm = -1;
-                if (lvZooTech.SelectedItems.Count == 1)
-                    itm = lvZooTech.SelectedItems[0].Index;
+                _selectedItem = -1;                
                 base.onPrepare(f);
                 lvZooTech.Items.Clear();
                 repdate = DateTime.Now;
             }
+            if (lvZooTech.SelectedItems.Count == 1)
+                _selectedItem = lvZooTech.SelectedItems[0].Index;
             runF = f;
             fillLogs(f);
             //DataThread.Get().Stop();
@@ -106,10 +106,10 @@ namespace rabnet.panels
         protected override void onFinishUpdate()
         {
             base.onFinishUpdate();
-            if (itm > -1 && lvZooTech.Items.Count > itm)
+            if (_selectedItem > -1 && lvZooTech.Items.Count > _selectedItem)
             {
-                lvZooTech.Items[itm].Selected = true;
-                lvZooTech.Items[itm].EnsureVisible();
+                lvZooTech.Items[_selectedItem].Selected = true;
+                lvZooTech.Items[_selectedItem].EnsureVisible();
             }
             lvZooTech.Focus();
         }

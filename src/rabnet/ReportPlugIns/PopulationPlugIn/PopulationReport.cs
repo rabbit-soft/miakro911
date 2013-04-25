@@ -19,7 +19,7 @@ namespace rabnet
             dlg.PeriodConstrain = 4;
             if (dlg.ShowDialog() == DialogResult.OK)
             {
-                int year = int.Parse(dlg.DateValue);
+                int year = int.Parse(dlg.PeriodValue);
                 XmlDocument doc = new XmlDocument();
                 DateTime dt = new DateTime(year,1,1);
                 while (dt.Year == year && dt.Date <= DateTime.Now.Date )
@@ -29,10 +29,11 @@ namespace rabnet
                         dt = dt.AddMonths(1);
                         continue;
                     }
+                    Filters f = new Filters("date", dt.ToString("yyyy-MM-dd"));
                     if(doc.ChildNodes.Count == 0)
-                        doc = Engine.db().makeReport(getSQL(dt));
+                        doc = Engine.db().makeReport(getSQL(f));
                     else 
-                        doc.FirstChild.AppendChild(doc.ImportNode(Engine.db().makeReport(getSQL(dt)).SelectSingleNode("Rows/Row"),true));
+                        doc.FirstChild.AppendChild(doc.ImportNode(Engine.db().makeReport(getSQL(f)).SelectSingleNode("Rows/Row"),true));
                     dt = dt.AddMonths(1);
                 }
                 ReportViewForm rvf = new ReportViewForm(MenuText, FileName, new XmlDocument[] { doc }, XCL_HEADERS);
@@ -42,8 +43,9 @@ namespace rabnet
 #endif
         }
 
-        private string getSQL(DateTime dt)
+        protected override string getSQL(Filters f)
         {
+            DateTime dt = DateTime.Parse(f.safeValue("date"));
             return String.Format(@"create temporary table aaa as SELECT
   CONCAT('{2:s}',IF(Month(NOW())='{4:d}' AND Year(NOW())={3:d},' (now)','')) month,
   '{3:d}' year,
