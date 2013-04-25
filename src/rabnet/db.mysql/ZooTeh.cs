@@ -39,6 +39,7 @@ namespace db.mysql
                 case JobType.VACC: return "Прививка";
                 case JobType.SET_NEST: return !_flt.safeBool(Filters.SHORT) ? "Установка гнездовья" : "уст.Гнезд";
                 case JobType.BOYS_BY_ONE: return !_flt.safeBool(Filters.SHORT) ? "Рассадка мальчиков по одному" : "Рсд.М.по1";
+                case JobType.SPERM_TAKE: return !_flt.safeBool(Filters.SHORT) ? "Забор материала у самцов" : "самДойк";
                 default: return "[UJ]";
             }
         }
@@ -57,7 +58,8 @@ namespace db.mysql
                 case JobType.FUCK: fillFuck(rd); break;
                 case JobType.VACC: fillVacc(rd); break;               
                 case JobType.SET_NEST: fillSetNest(rd); break;                
-                case JobType.BOYS_BY_ONE: fillBoysByOne(rd); break;               
+                case JobType.BOYS_BY_ONE: fillBoysByOne(rd); break;
+                case JobType.SPERM_TAKE: fillSpermTake(rd); break; 
             }
         }
 
@@ -161,7 +163,13 @@ namespace db.mysql
         {
             ID2 = rd.GetInt32("v_id");
             Comment = "\"" + rd.GetString("v_name")+"\"  [" + rd.GetString("r_group") + "]";           
-        }               
+        }
+
+
+        private void fillSpermTake(MySqlDataReader rd)
+        {
+            
+        }
 
         /// <summary>
         /// По просьбе Татищево, надо указать у партнеров адрес.
@@ -278,17 +286,19 @@ namespace db.mysql
                 case JobType.VACC: return qVacc();
                 case JobType.SET_NEST: return qSetNest();
                 case JobType.BOYS_BY_ONE: return qBoysByOne();
+                case JobType.SPERM_TAKE: return qSpermTake();
                 default: return "";
             }
-        }
+        }       
 
         private string qOkrol()
         {
             return String.Format(@"SELECT r_id,rabname(r_id," + getnm() + @") name,rabplace(r_id) place,
-(TO_DAYS(NOW())-TO_DAYS(r_event_date)) srok,
-r_status,(TO_DAYS(NOW())-TO_DAYS(r_born)) age,{1:s}
-FROM rabbits WHERE r_sex='female' AND (TO_DAYS(NOW())-TO_DAYS(r_event_date))>={0:d} ORDER BY srok DESC,
-0+LEFT(place,LOCATE(',',place)) ASC;", _flt.safeInt(Filters.OKROL), brd());
+    (TO_DAYS(NOW())-TO_DAYS(r_event_date)) srok,
+    r_status,(TO_DAYS(NOW())-TO_DAYS(r_born)) age,{1:s}
+FROM rabbits 
+WHERE r_sex='female' AND (TO_DAYS(NOW())-TO_DAYS(r_event_date))>={0:d} ORDER BY srok DESC,
+    0+LEFT(place,LOCATE(',',place)) ASC;", _flt.safeInt(Filters.OKROL), brd());
         }
 
         private string qVudvod()
@@ -425,36 +435,13 @@ DROP TABLE IF EXISTS tPartn;
 DROP TABLE IF EXISTS aaa;", 
         _flt.safeInt(Filters.MAKE_BRIDE), _flt.safeInt(Filters.FIRST_FUCK), _flt.safeInt(Filters.STATE_FUCK), 
     
-        _flt.safeInt(Filters.MALE_WAIT),//3
+        _flt.safeInt(Filters.MALE_REST),//3
         (_flt.safeBool(Filters.HETEROSIS) ? "" : String.Format("pbreed=r.r_breed")),//4
         (_flt.safeBool(Filters.INBREEDING) ? "" : String.Format("{0:s}(SELECT COUNT(g_genom) FROM genoms WHERE g_id=r.r_genesis AND g_genom IN (SELECT g2.g_genom FROM genoms g2 WHERE g2.g_id=pgens))=0", _flt.safeBool(Filters.HETEROSIS) ?"": " AND ")),
     
         (_flt.safeInt(Filters.SHORT) == 0 ? "b_name" : "b_short_name"),//6 
         (_flt.safeInt(Filters.TYPE) == 1 ? ">0" : "=0"), getnm(1),
         !_flt.safeBool(Filters.HETEROSIS) || !_flt.safeBool(Filters.INBREEDING)? "WHERE" : "");
-
-//            return String.Format(@"SET group_concat_max_len=4096;   SELECT * FROM (
-//        SELECT r_id,rabname(r_id," + getnm(1) + @") name,rabplace(r_id) place,TO_DAYS(NOW())-TO_DAYS(r_born) age,
-//        coalesce((SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id),null,0) suckers,
-//        r_status,
-//        TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol) fromokrol," +
-//            (_flt.safeBool(Filters.FIND_PARTNERS) ? @"
-//        (SELECT GROUP_CONCAT( CONCAT(rabname(r_id,0),'&', rabplace(r_id)) ORDER BY rabname(r5.r_id,0) SEPARATOR '|') FROM rabbits r5
-//            WHERE r5.r_sex='male' AND r_status>0 AND (r5.r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r5.r_last_fuck_okrol)>={3:d}){4:s}{5:s}) partners" : "'' partners") + @"
-//        ,r_group,
-//        (SELECT {6:s} FROM breeds WHERE b_id=r_breed) breed, 0 srok 
-//        FROM rabbits WHERE Substr(r_flags,1,1)='0' AND Substr(r_flags,3,1)='0' AND r_sex='female' AND r_event_date IS NULL AND r_status{7:s}) c 
-//WHERE age>{0:d} AND r_status=0 OR (r_status=1 AND (suckers=0 OR fromokrol>={1:d})) OR (r_status>1 AND (suckers=0 OR fromokrol>={2:d}))
-//ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;",
-//    _flt.safeInt(Filters.BRIDE_AGE), _flt.safeInt(Filters.FIRST_FUCK), _flt.safeInt(Filters.STATE_FUCK), 
-    
-//    _flt.safeInt(Filters.MALE_WAIT),//3
-//    (_flt.safeBool(Filters.HETEROSIS) ? "" : String.Format(" AND r5.r_breed=rabbits.r_breed")),
-//    (_flt.safeBool(Filters.INBREEDING) ? "" : String.Format(@" AND (SELECT COUNT(g_genom) FROM genoms WHERE g_id=rabbits.r_genesis AND g_genom IN (SELECT g2.g_genom FROM genoms g2 WHERE g2.g_id=r5.r_genesis))=0")),
-    
-//    (_flt.safeInt(Filters.SHORT) == 0 ? "b_name" : "b_short_name"),//6 
-//    (_flt.safeInt(Filters.TYPE) == 1 ? ">0" : "=0"));//7
-
         }
 
         private string qVacc()
@@ -510,10 +497,19 @@ ORDER BY sukr DESC,0+LEFT(place,LOCATE(',',place)) ASC;", _flt.safeInt("nest"), 
         private string qBoysByOne()
         {
             return String.Format(@"SELECT 
-r_id, rabname(r_id,{0:s}) name, rabplace(r_id) place, r_group,
-(TO_DAYS(NOW())-TO_DAYS(r_born)-{1:d}) srok,
-(TO_DAYS(NOW())-TO_DAYS(r_born)) age,{2:s}
-FROM rabbits WHERE (TO_DAYS(NOW())-TO_DAYS(r_born))>={1:d} and r_group>1 and r_sex='male' ;", getnm(), _flt.safeInt("bbone"), brd());
-        }      
+    r_id, rabname(r_id,{0:s}) name, rabplace(r_id) place, r_group,
+    (TO_DAYS(NOW())-TO_DAYS(r_born)-{1:d}) srok,
+    (TO_DAYS(NOW())-TO_DAYS(r_born)) age,{2:s}
+FROM rabbits WHERE (TO_DAYS(NOW())-TO_DAYS(r_born))>={1:d} and r_group>1 and r_sex='male' ;", getnm(), _flt.safeInt(Filters.BOYS_BY_ONE), brd());
+        }
+
+        private string qSpermTake()
+        {
+            return String.Format(@"SELECT 
+    r_id, rabname(r_id,{0:s}) name, rabplace(r_id) place, r_group,
+    0 srok, (TO_DAYS(NOW())-TO_DAYS(r_born)) age,{2:s}
+FROM rabbits
+WHERE r_sex='male' AND r_status=2 AND Date_Add(r_last_fuck_okrol,INTERVAL {1:d} DAY)<Now();", getnm(), _flt.safeInt(Filters.MALE_REST, 2), brd());
+        }
     }
 }

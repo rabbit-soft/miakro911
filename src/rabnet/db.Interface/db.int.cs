@@ -225,7 +225,13 @@ namespace rabnet
         IRabNetDataLayer Clone();        
         
         BreedsList GetBreeds();
-        int AddBreed(string name,string shrt,string color);      
+        int AddBreed(string name,string shrt,string color);
+
+        /// <summary>
+        /// Взять сперму у самцов для искусственного осеменения
+        /// </summary>
+        /// <param name="rId"></param>
+        void SpermTake(int rId);
     }
 
 }

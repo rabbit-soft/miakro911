@@ -513,6 +513,13 @@ namespace rabnet
             
             Engine.db().CancelFuckEnd(f.Id);
         }
+
+        public void SperTake()
+        {
+            if (this.Sex != SexType.MALE) throw new ExNotMale(this);
+            Engine.db().SpermTake(this.ID);
+            ///todo логи на забор спермы
+        }
         #endregion methods
 
         private void cloneOnThis(OneRabbit r)

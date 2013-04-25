@@ -11,7 +11,7 @@ namespace rabnet.filters
 {
     public partial class ZootehFilter : FilterPanel
     {
-        const String itemFlags = "OVCPRFfvNB";
+        const String ITEM_FLAGS = "OVCPRFfvNBS";
         public ZootehFilter()
             : base("zooteh", Options.OPT_ID.ZOO_FILTER)
         {
@@ -38,7 +38,7 @@ namespace rabnet.filters
             for (int i = 0; i < lbZoo.Items.Count; i++)
             {
                 if (lbZoo.GetItemChecked(i))
-                    f["act"] += itemFlags[i];
+                    f["act"] += ITEM_FLAGS[i];
                 else
                     ac = false;
             }
@@ -73,7 +73,7 @@ namespace rabnet.filters
         public override void setFilters(Filters f)
         {
             for (int i = 0; i < lbZoo.Items.Count; i++)
-                lbZoo.SetItemChecked(i, f.safeValue("act", itemFlags).Contains("" + itemFlags[i]));
+                lbZoo.SetItemChecked(i, f.safeValue("act", ITEM_FLAGS).Contains("" + ITEM_FLAGS[i]));
             String[] nums = f.safeValue("lgs", "0").Split(',');
             for (int i = 0; i < lbLogs.Items.Count; i++)
                 lbLogs.SetItemChecked(i, hasnum(nums, i + 1));

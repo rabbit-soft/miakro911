@@ -43,6 +43,8 @@ namespace rabnet
                 zjobs.AddRange(eng.db2().GetZooTechJobs(f,JobType.SET_NEST));
             if (f.safeValue("act", "B").Contains("B") && type == 9)
                 zjobs.AddRange(eng.db2().GetZooTechJobs(f,JobType.BOYS_BY_ONE));
+            if (f.safeValue("act", "S").Contains("S") && type == 10)
+                zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.SPERM_TAKE));
             return zjobs.ToArray();
         }
 

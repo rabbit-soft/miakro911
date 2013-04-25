@@ -794,6 +794,12 @@ namespace db.mysql
             }
             return rId;
         }
+
+        public void SpermTake(int rId)
+        {
+            FucksGetter.SpermTake(sql,rId);
+        }
+
 #endif
 
         #endregion IRabNetDataLayer Members

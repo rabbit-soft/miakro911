@@ -97,7 +97,7 @@ namespace rabnet.forms
             flt[Filters.RAB_ID] = rab1.ID.ToString();
             flt[Filters.HETEROSIS] = chHetererosis.Checked ? "1" : "0";
             flt[Filters.INBREEDING] = chInbreed.Checked ? "1" : "0";
-            flt[Filters.MALE_WAIT] = _malewait.ToString();
+            flt[Filters.MALE_REST] = _malewait.ToString();
             flt[Filters.MAKE_CANDIDATE] = _makeCand.ToString();
             flt[Filters.SHOW_CANDIDATE] = chCandidates.Checked ? "1" : "0";
             flt[Filters.SHOW_REST] = chRest.Checked ? "1" : "0";

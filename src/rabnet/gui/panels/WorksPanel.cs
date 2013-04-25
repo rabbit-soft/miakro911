@@ -43,18 +43,15 @@ namespace rabnet.panels
                 f[Filters.COUNT1] = Engine.opt().getOption(Options.OPT_ID.COUNT1);
                 f[Filters.COUNT2] = Engine.opt().getOption(Options.OPT_ID.COUNT2);
                 f[Filters.COUNT3] = Engine.opt().getOption(Options.OPT_ID.COUNT3);
-                //f["count3"] = Engine.opt().getOption(Options.OPT_ID.COUNT_SUCKERS);
                 f[Filters.BOYS_OUT] = Engine.opt().getOption(Options.OPT_ID.BOYS_OUT);
                 f[Filters.GIRLS_OUT] = Engine.opt().getOption(Options.OPT_ID.GIRLS_OUT);
-                //f[Filters.VACC_DAYS] = Engine.opt().getOption(Options.OPT_ID.VACC);
                 f[Filters.NEST_IN] = Engine.opt().getOption(Options.OPT_ID.NEST_IN);
                 f[Filters.CHILD_NEST] = Engine.opt().getOption(Options.OPT_ID.CHILD_NEST);
                 f[Filters.STATE_FUCK] = Engine.opt().getOption(Options.OPT_ID.STATE_FUCK);
                 f[Filters.FIRST_FUCK] = Engine.opt().getOption(Options.OPT_ID.FIRST_FUCK);
                 f[Filters.HETEROSIS] = Engine.opt().getOption(Options.OPT_ID.GETEROSIS);
                 f[Filters.INBREEDING] = Engine.opt().getOption(Options.OPT_ID.INBREEDING);
-                f[Filters.MALE_WAIT] = Engine.opt().getOption(Options.OPT_ID.MALE_WAIT);
-                //f["vactime"] = Engine.opt().getOption(Options.OPT_ID.VACCINE_TIME);
+                f[Filters.MALE_REST] = Engine.opt().getOption(Options.OPT_ID.MALE_WAIT);
                 f[Filters.BOYS_BY_ONE] = Engine.opt().getOption(Options.OPT_ID.BOYS_BY_ONE);
                 f[Filters.VACC_MOTH] = Engine.opt().getBoolOption(Options.OPT_ID.VACC_MOTHER)?"1":"0";
                 
@@ -154,7 +151,7 @@ namespace rabnet.panels
                 countsMenuItem.Visible = preokrolMenuItem.Visible=
                 boysOutMenuItem.Visible = girlsOutMenuItem.Visible=
                 vaccMenuItem.Visible = fuckMenuItem.Visible =miLust.Visible=
-                setNestMenuItem.Visible = countChangedMenuItem.Visible=false;
+                setNestMenuItem.Visible = countChangedMenuItem.Visible= miSpermTake.Visible=false;
             switch (type)
             {
                 case JobType.OKROL: okrolMenuItem.Visible = true; break;
@@ -173,6 +170,7 @@ namespace rabnet.panels
                 case JobType.VACC: vaccMenuItem.Visible = true; break;
                 case JobType.SET_NEST: setNestMenuItem.Visible = true; break;
                 case JobType.BOYS_BY_ONE: miBoysByOne.Visible = true; break;
+                case JobType.SPERM_TAKE: miSpermTake.Visible = true; break;
             }
         }
 
@@ -318,6 +316,12 @@ namespace rabnet.panels
                     f = new ReplaceForm();
                     f.AddRabbit(job.ID);
                     res = f.ShowDialog();
+                    break;
+
+                case JobType.SPERM_TAKE:
+                    RabNetEngRabbit r = Engine.get().getRabbit(job.ID);
+                    r.SperTake();
+                    needUpdate = false;
                     break;
             }
             if (res != DialogResult.Cancel)

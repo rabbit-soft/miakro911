@@ -60,6 +60,7 @@
             this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader15 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader14 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.miSpermTake = new System.Windows.Forms.ToolStripMenuItem();
             this.actMenu.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -142,9 +143,10 @@
             this.vaccMenuItem,
             this.setNestMenuItem,
             this.miBoysByOne,
+            this.miSpermTake,
             this.printMenuItem});
             this.actMenu.Name = "actMenu";
-            this.actMenu.Size = new System.Drawing.Size(265, 312);
+            this.actMenu.Size = new System.Drawing.Size(265, 334);
             this.actMenu.Opening += new System.ComponentModel.CancelEventHandler(this.actMenu_Opening);
             // 
             // okrolMenuItem
@@ -315,6 +317,13 @@
             // 
             this.columnHeader14.Text = "Пользователь";
             // 
+            // miSpermTake
+            // 
+            this.miSpermTake.Name = "miSpermTake";
+            this.miSpermTake.Size = new System.Drawing.Size(264, 22);
+            this.miSpermTake.Text = "Забор материала у самца";
+            this.miSpermTake.Click += new System.EventHandler(this.MenuItem_Click);
+            // 
             // WorksPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -363,6 +372,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripMenuItem miBoysByOne;
         private System.Windows.Forms.ToolStripMenuItem miLust;
+        private System.Windows.Forms.ToolStripMenuItem miSpermTake;
 
     }
 }
