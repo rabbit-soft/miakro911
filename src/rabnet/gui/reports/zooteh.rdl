@@ -316,7 +316,7 @@
             <Width>35pt</Width>
           </TableColumn>
           <TableColumn>
-            <Width>45pt</Width>
+            <Width>46.6pt</Width>
           </TableColumn>
           <TableColumn>
             <Width>50pt</Width>
@@ -466,7 +466,7 @@
         <Details>
           <TableRows>
             <TableRow>
-              <Height>16pt</Height>
+              <Height>18.4pt</Height>
               <TableCells>
                 <TableCell>
                   <ReportItems>
@@ -610,7 +610,7 @@
         <Left>1.4pt</Left>
         <Top>46.1pt</Top>
       </Table>
-      <Textbox Name="Textbox3" >
+      <Textbox Name="Textbox3">
         <Height>12.75pt</Height>
         <Width>123.37pt</Width>
         <Value>=Globals!ExecutionTime</Value>

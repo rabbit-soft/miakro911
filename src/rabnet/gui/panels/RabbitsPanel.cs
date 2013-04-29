@@ -250,26 +250,6 @@ namespace rabnet.panels
             listView1_SelectedIndexChanged(null, null);
         }
 
-        //private String getBon(String b) //todo проверить на схожесть с RabbitBon
-        //{
-        //    if (b.Length == 1)
-        //    {
-        //        switch (b)
-        //        {
-        //            case "1": return "III";
-        //            case "2": return "II";
-        //            case "3": return "I";
-        //            case "4": return "Элита";
-        //        }
-        //        return "Нет";
-        //    }
-        //    string minbon="5";
-        //    for (int i = 1; i<b.Length; i++)
-        //        if (b[i] < minbon[0])
-        //            minbon = "" + b[i];
-        //    return getBon(minbon);
-        //}
-
         private void actMenu_Opening(object sender, CancelEventArgs e)
         {
             if (listView1.SelectedItems.Count < 1)
@@ -707,54 +687,5 @@ namespace rabnet.panels
         }
 
         #endregion menuItems
-
-        
-
-
-        //private void insertNode(TreeNode nd,TreeData data)
-        //{
-        //    if (data.Childrens!=null)
-        //    for (int i = 0; i < data.Childrens.Count; i++)
-        //        if (data.Childrens[i] != null)
-        //        {
-        //            TreeNode n = nd.Nodes.Add(data.Childrens[i].Name);
-        //            insertNode(n, data.Childrens[i]);
-        //        }
-        //}
-
-        //private void логЗаписиToolStripMenuItem_Click(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        if (!Directory.Exists("zapis")) Directory.CreateDirectory("zapis");
-        //        string path = "zapis/log_" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt";
-        //        StreamWriter rw = new StreamWriter(path);
-
-        //        foreach (ListViewItem x in listView1.Items)
-        //        {
-        //            string s = x.SubItems[1].Text;
-        //            for (int i = 1; i < x.SubItems.Count - 1; i++) 
-        //            {
-        //                if (i==2 || i==8) continue;
-        //                if (i == 1 || x.SubItems[i].Text.StartsWith("С"))
-        //                {
-        //                    s += "|С";
-        //                    continue;
-        //                }
-        //                s += "|" + x.SubItems[i].Text;
-        //            }
-
-        //            rw.WriteLine(s);
-        //        }
-        //        rw.Close();
-        //        MessageBox.Show("Запись прошла успешно\n\rИмя файла: " + path, "Сохранение в файл");
-
-        //    }
-        //    catch (Exception exep)
-        //    {
-        //        MessageBox.Show(exep.Message);
-        //    }
-
-        //}
     }
 }

@@ -51,6 +51,7 @@
             this.vaccMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setNestMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.miBoysByOne = new System.Windows.Forms.ToolStripMenuItem();
+            this.miSpermTake = new System.Windows.Forms.ToolStripMenuItem();
             this.printMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.label1 = new System.Windows.Forms.Label();
@@ -60,7 +61,6 @@
             this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader15 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader14 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.miSpermTake = new System.Windows.Forms.ToolStripMenuItem();
             this.actMenu.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -233,6 +233,13 @@
             this.miBoysByOne.Text = "Рассадка по одному";
             this.miBoysByOne.Click += new System.EventHandler(this.MenuItem_Click);
             // 
+            // miSpermTake
+            // 
+            this.miSpermTake.Name = "miSpermTake";
+            this.miSpermTake.Size = new System.Drawing.Size(264, 22);
+            this.miSpermTake.Text = "Забор спермы";
+            this.miSpermTake.Click += new System.EventHandler(this.MenuItem_Click);
+            // 
             // printMenuItem
             // 
             this.printMenuItem.Name = "printMenuItem";
@@ -316,13 +323,6 @@
             // columnHeader14
             // 
             this.columnHeader14.Text = "Пользователь";
-            // 
-            // miSpermTake
-            // 
-            this.miSpermTake.Name = "miSpermTake";
-            this.miSpermTake.Size = new System.Drawing.Size(264, 22);
-            this.miSpermTake.Text = "Забор материала у самца";
-            this.miSpermTake.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // WorksPanel
             // 

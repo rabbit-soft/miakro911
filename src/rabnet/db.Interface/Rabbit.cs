@@ -196,7 +196,7 @@ namespace rabnet
             if (flg[1] != '0') res = "<" + res + ">";
             return res;
         }
-        public String FStatus(bool s_short, int s_candAge, int s_brideAge)
+        public String FStatus(bool s_short, int s_candAge, int s_brideAge)//todo сделать enum статусы
         {
             string res = "";
             if (Sex == Rabbit.SexType.VOID)

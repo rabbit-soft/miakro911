@@ -39,7 +39,7 @@ namespace db.mysql
                 case JobType.VACC: return "Прививка";
                 case JobType.SET_NEST: return !_flt.safeBool(Filters.SHORT) ? "Установка гнездовья" : "уст.Гнезд";
                 case JobType.BOYS_BY_ONE: return !_flt.safeBool(Filters.SHORT) ? "Рассадка мальчиков по одному" : "Рсд.М.по1";
-                case JobType.SPERM_TAKE: return !_flt.safeBool(Filters.SHORT) ? "Забор материала у самцов" : "самДойк";
+                case JobType.SPERM_TAKE: return !_flt.safeBool(Filters.SHORT) ? "Забор спермы" : "самДойк";
                 default: return "[UJ]";
             }
         }
