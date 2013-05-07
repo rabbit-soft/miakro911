@@ -24,35 +24,35 @@ namespace rabnet
 		{
 			_start = true;
 			_end = true;
-			RedrawMe();
+			Redraw();
 		}
 
 		public void SetStart()
 		{
 			_start = true;
 			_end = false;
-			RedrawMe();
+			Redraw();
 		}
 
 		public void SetEnd()
 		{
 			_start = false;
 			_end = true;
-			RedrawMe();
+			Redraw();
 		}
 
 		public void SetLeft()
 		{
 			_left = true;
 			_right = false;
-			RedrawMe();
+			Redraw();
 		}
 
 		public void SetRight()
 		{
 			_left = false;
 			_right = true;
-			RedrawMe();
+			Redraw();
 		}
 
 		public int WidthA

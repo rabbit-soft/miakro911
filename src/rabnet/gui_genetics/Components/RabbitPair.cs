@@ -380,6 +380,8 @@ namespace rabnet
 
 		public void SetTreeChildFPair(RabbitPair p)
 		{
+            if (p == null) return;
+
 			_treeChildFPair = p;
 
 			_treeFArrow = new ArrowImg();
@@ -400,6 +402,8 @@ namespace rabnet
 
 		public void SetTreeChildMPair(RabbitPair p)
 		{
+            if (p == null) return; 
+
 			_treeChildMPair = p;
 
 			_treeMArrow = new ArrowImg();
@@ -449,8 +453,8 @@ namespace rabnet
 
 		public void RedrawMe()
 		{
-			FemaleRabbit.RedrawMe();
-			MaleRabbit.RedrawMe();
+			FemaleRabbit.Redraw();
+			MaleRabbit.Redraw();
 		}
 
 		public Boolean SearchFromChild(RabbitCommandMessage cmd)

@@ -11,24 +11,22 @@ namespace rabnet
 	{
 		private Graphics _graph;
 
-		public virtual void DrawingProc(Graphics g)
-		{
-		}
+        public virtual void DrawingProc(Graphics g) { }
 
-		public CustomGraphCmp()
-		{
-			InitializeComponent();
+        public CustomGraphCmp()
+        {
+            InitializeComponent();
 
-			this.SetStyle(
-			 ControlStyles.UserPaint |
-			 ControlStyles.AllPaintingInWmPaint |
-			 ControlStyles.OptimizedDoubleBuffer, true);
+            this.SetStyle(
+             ControlStyles.UserPaint |
+             ControlStyles.AllPaintingInWmPaint |
+             ControlStyles.OptimizedDoubleBuffer, true);
 
-			_graph = CreateGraphics();
-			InitBuffer();
-		}
+            _graph = CreateGraphics();
+            initBuffer();
+        }
 
-		private void InitBuffer()
+		private void initBuffer()
 		{
 			SolidBrush bgBrush = new SolidBrush(this.BackColor);
 			//SolidBrush BgBrush = new SolidBrush(Color.Pink);
@@ -42,15 +40,15 @@ namespace rabnet
 			// Draw On ManagedBackBuffer.Graphics;
 			//Debug.WriteLine(count++);
 			//base.OnPaint(e);
-//			InitBuffer();
+//			initBuffer();
 			SolidBrush bgBrush = new SolidBrush(this.BackColor);
 			e.Graphics.FillRectangle(bgBrush, new Rectangle(0, 0, this.Width, this.Height));
 			DrawingProc(e.Graphics);
 		}
 
-		public virtual void RedrawMe()
+		public virtual void Redraw()
 		{
-			InitBuffer();
+			initBuffer();
 		}
 
 		protected override void OnSizeChanged(EventArgs e)
@@ -73,6 +71,5 @@ namespace rabnet
 				_graph = CreateGraphics();
 			}
 		}
-
 	}
 }

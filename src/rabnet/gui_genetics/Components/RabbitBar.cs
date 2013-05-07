@@ -40,7 +40,12 @@ namespace rabnet
 		}
 
 		private RabbitGen _rabbit;
-		public void SetRabbit(RabbitGen rab){
+        /// <summary>
+        /// Устанавливает данные по генам данного кролика и вызывает функцию отрисовки.
+        /// </summary>
+        /// <param name="rab"></param>
+		public void SetRabbit(RabbitGen rab)
+        {
 			_rabbit=rab;
 			UpdateTooltip();
 			_exists = true;
@@ -48,7 +53,7 @@ namespace rabnet
 			label1.Text = rab.ID.ToString();
 			label2.Text = rab.FatherId.ToString();
 			label3.Text = rab.MotherId.ToString();
-			RedrawMe();
+			Redraw();
 		}
 		public RabbitGen GetRabbit()
 		{
@@ -134,7 +139,7 @@ namespace rabnet
 			set
 			{
 				_orderedGenom = value;
-				this.RedrawMe();
+				this.Redraw();
 			}
 		}
 	
@@ -145,7 +150,7 @@ namespace rabnet
 			_genomColors.Clear();
 			_genomColors = new Dictionary<int, Color>(gcs);
 
-			RedrawMe();
+			Redraw();
 		}
 
 		public Dictionary<int, Color> GetGenomColors()
@@ -177,7 +182,7 @@ namespace rabnet
 					_genomArr = _genom.Split(new Char[] { ';' });
 					_genomOrderedArr = OrderGenom(_genomArr);
 				}
-				this.RedrawMe();
+				this.Redraw();
 			}
 		}
 
@@ -249,9 +254,6 @@ namespace rabnet
 			brush = new SolidBrush(Color.FromArgb(255,255-r,g,0));
 			
 			gr.FillRectangle(brush,new Rectangle(point,new Size((int)(size.Width * k / 100), size.Height)));
-
-
-
 			gr.DrawLine(penGr, point, new Point(point.X + size.Width, point.Y));
 			gr.DrawLine(penGr, point, new Point(point.X, point.Y + size.Height));
 			gr.DrawLine(penGr, new Point(point.X,point.Y + size.Height), new Point(point.X + size.Width, point.Y + size.Height));
@@ -260,16 +262,12 @@ namespace rabnet
 
 			SizeF txtsize = gr.MeasureString(txt, SystemFonts.DefaultFont);
 
-
 			if (txtsize.Width > size.Width)
 			{
 				txtsize.Width = size.Width;
 			}
 
-
 			gr.DrawString(txt, SystemFonts.DefaultFont, Brushes.Black, new RectangleF((size.Width - txtsize.Width) / 2 + point.X, (size.Height - txtsize.Height) / 2 + point.Y, txtsize.Width, txtsize.Height));
-
-
 		}
 
 		private Boolean IsPowerOf2(int x)
@@ -320,7 +318,6 @@ namespace rabnet
 			if (genoms.Length > 0)
 			{
 				int[][] ids = { };
-				//int i = 0;
 
 				foreach (string g in genoms)
 				{
@@ -407,19 +404,14 @@ namespace rabnet
 						cl = Color.White;
 					}
 					SolidBrush brush = new SolidBrush(cl);
-
-					gr.FillRectangle(brush, new RectangleF(point.X+cgl,point.Y+0,gl,size.Height));
-					
-					cgl = cgl + gl;
-					 
+					gr.FillRectangle(brush, new RectangleF(point.X+cgl,point.Y+0,gl,size.Height));					
+					cgl = cgl + gl;					 
 				}
 			}
-
 		}
 
 		public void DrawBadge(Graphics g, Point p)
 		{
-
 			Pen pen = new Pen(Color.Black);
 			Brush brush = new SolidBrush(Color.White);
 
@@ -437,7 +429,10 @@ namespace rabnet
 
 		}
 
-
+        /// <summary>
+        /// Непосредственно рисует информацию по кролику
+        /// </summary>
+        /// <param name="g"></param>
 		public override void DrawingProc(Graphics g)
 		{
 			Pen pen = new Pen(Color.Black);
@@ -457,15 +452,12 @@ namespace rabnet
 
 			SizeF priplsize = g.MeasureString(pripl, SystemFonts.DefaultFont);
 
-
 			if (priplsize.Width > this.Width / 3)
 			{
 				priplsize.Width = this.Width / 3;
 			}
 
-
 			GraphicsPath p = new GraphicsPath();
-
 			p.StartFigure();
 
 			int gender = 0;
@@ -518,7 +510,6 @@ namespace rabnet
 			{
 				p.AddRectangle(new Rectangle(0, 0, this.Width, this.Height));
 			}
-
 			p.CloseFigure();
 
 			Color cl = Color.FromArgb(255, _fgColor);
@@ -537,6 +528,7 @@ namespace rabnet
 			}
 			if (_rabbit != null)
 			{
+                ///рисуем мертвым красный фон
 				if (_rabbit.IsDead)
 				{
 					cl = Color.FromArgb(50, Color.Red);
@@ -594,7 +586,6 @@ namespace rabnet
 					DrawColorBar(g, new Point((int)(this.Width / 3) + 2, (int)(this.Height / 2) + 2), new Size((int)((this.Width / 3 * 2) - (this.Height / 2 * 0.65)) - 5, (int)(this.Height / 2) - 5), rodk);
 
 					g.DrawString(pripl, SystemFonts.DefaultFont, textbrush, new RectangleF(((this.Width / 3) - priplsize.Width) / 2, ((this.Height / 2 - 1) - priplsize.Height) / 2 + (this.Height / 2), priplsize.Width, priplsize.Height + (this.Height / 2)));
-
 				}
 			}
 			else //Unknown gender;
@@ -626,7 +617,8 @@ namespace rabnet
 				g.FillPath(brush, p);
 				g.SmoothingMode = SmoothingMode.None;
 				//				pen = new Pen(Color.Red,2);
-			} else if (_highlight)
+			}
+            else if (_highlight)
 			{
 				cl = Color.FromArgb(150, SystemColors.Highlight);
 //				cl = Color.FromArgb(150, SystemColors.MenuHighlight);
@@ -662,7 +654,7 @@ namespace rabnet
 		private void RabbitBar_Enter(object sender, EventArgs e)
 		{
 			_active = true;
-			RedrawMe();
+			Redraw();
 			if (_rabbit != null)
 			{
 				if (_parentPair != null)
@@ -679,7 +671,7 @@ namespace rabnet
 		private void RabbitBar_Leave(object sender, EventArgs e)
 		{
 			_active = false;
-			RedrawMe();
+			Redraw();
 			if (_rabbit != null)
 			{
 				if (_parentPair != null)
@@ -704,7 +696,7 @@ namespace rabnet
 				if (_parentPair.SearchFromChild(cmd))
 				{
 					_duplicated = true;
-					RedrawMe();
+					Redraw();
 				}
 			}
 		}
@@ -720,12 +712,12 @@ namespace rabnet
 					if (cmd.Command== RabbitCommandMessage.Commands.Highlight)
 					{
 						_highlight = true;
-						RedrawMe();
+						Redraw();
 					}
 					if (cmd.Command == RabbitCommandMessage.Commands.Unhighlight)
 					{
 						_highlight = false;
-						RedrawMe();
+						Redraw();
 					}
 					if (cmd.Command == RabbitCommandMessage.Commands.FindClone)
 					{
@@ -734,7 +726,7 @@ namespace rabnet
 						if (!_CommonWith.ContainsKey(cmd.SourceWindowRabbitID))
 						{
 							_CommonWith.Add(cmd.SourceWindowRabbitID, true);
-							RedrawMe();
+							Redraw();
 						}
 					}
 				}
@@ -743,7 +735,7 @@ namespace rabnet
 					_CommonWith.Remove(cmd.SourceWindowRabbitID);
 					_duplicated = (_CommonWith.Count > 0);
 					res = true;
-					RedrawMe();
+					Redraw();
 				}
 			}
 			return res;

@@ -73,9 +73,7 @@
 			this.DoubleBuffered = true;
 			this.Name = "RabbitField";
 			this.Size = new System.Drawing.Size(636, 407);
-			this.Scroll += new System.Windows.Forms.ScrollEventHandler(this.RabbitField_Scroll);
 			this.Resize += new System.EventHandler(this.RabbitField_Resize);
-			this.SizeChanged += new System.EventHandler(this.RabbitField_SizeChanged);
 			this.ProgressPanel.ResumeLayout(false);
 			this.ResumeLayout(false);
 

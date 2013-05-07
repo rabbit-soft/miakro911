@@ -15,9 +15,6 @@ namespace CAS
 {
     public sealed partial class CasLP16
     {
-        
-            
-
         /// <summary>
         /// Сохранить все товары
         /// </summary>
@@ -118,17 +115,26 @@ namespace CAS
         /// </summary>
         public State GetState()
         {
-            return getScaleState();
+            byte[] cmd = new byte[1] { Info.Commands.STATE_GET };
+            byte[] state = new byte[Info.Sizes.STATE_LENGTH];
+            execCommand(cmd, ref state, 1);
+            return new State(state);
         }
 
         public FactoryConfig GetFactoryConfig()
         {
-            return getFactoryConf();
+            byte[] cmd = new byte[1] { Info.Commands.FACTORY_CONF_GET };
+            byte[] state = new byte[Info.Sizes.FACTORY_CONF_LENGTH];
+            execCommand(cmd, ref state, 1);
+            return new FactoryConfig(state);
         }
 
         public Summary GetSummary()
         {
-            return getSummary();
+            byte[] cmd = new byte[1] { Info.Commands.SUMMARY_GET };
+            byte[] state = new byte[Info.Sizes.SUMMARY_LENGTH];
+            execCommand(cmd, ref state, 1);
+            return new Summary(state);
         }
         /// <summary>
         /// Стирание сумарного итога продаж по всем товарам
@@ -194,32 +200,30 @@ namespace CAS
 #endif
         }
 
-        /// <summary>
-        /// Текущее состояние весов
-        /// </summary>
-        private State getScaleState()
-        {
-            byte[] cmd = new byte[1]{Info.Commands.STATE_GET};
-            byte[] state = new byte[Info.Sizes.STATE_LENGTH];
-            execCommand(cmd, ref state, 1);
-            return new State(state);
-        }
+        
+        //private State getScaleState()
+        //{
+        //    byte[] cmd = new byte[1]{Info.Commands.STATE_GET};
+        //    byte[] state = new byte[Info.Sizes.STATE_LENGTH];
+        //    execCommand(cmd, ref state, 1);
+        //    return new State(state);
+        //}
 
-        private FactoryConfig getFactoryConf()
-        {
-            byte[] cmd = new byte[1] { Info.Commands.FACTORY_CONF_GET };
-            byte[] state = new byte[Info.Sizes.FACTORY_CONF_LENGTH];
-            execCommand(cmd, ref state, 1);
-            return new FactoryConfig(state);
-        }
+        //private FactoryConfig getFactoryConf()
+        //{
+        //    byte[] cmd = new byte[1] { Info.Commands.FACTORY_CONF_GET };
+        //    byte[] state = new byte[Info.Sizes.FACTORY_CONF_LENGTH];
+        //    execCommand(cmd, ref state, 1);
+        //    return new FactoryConfig(state);
+        //}
 
-        private Summary getSummary()
-        {
-            byte[] cmd = new byte[1] { Info.Commands.SUMMARY_GET };
-            byte[] state = new byte[Info.Sizes.SUMMARY_LENGTH];
-            execCommand(cmd, ref state, 1);
-            return new Summary(state);
-        }
+        //private Summary getSummary()
+        //{
+        //    byte[] cmd = new byte[1] { Info.Commands.SUMMARY_GET };
+        //    byte[] state = new byte[Info.Sizes.SUMMARY_LENGTH];
+        //    execCommand(cmd, ref state, 1);
+        //    return new Summary(state);
+        //}
 
         /// <summary>
         /// Нужен для соблюдения интерсала между посылом команд

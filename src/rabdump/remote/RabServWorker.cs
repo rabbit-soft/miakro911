@@ -106,7 +106,7 @@ namespace rabdump
                 Uri uri;
                 if (Uri.TryCreate(value, UriKind.Absolute, out uri))
                 {
-                    _url = uri.AbsolutePath;
+                    _url = uri.AbsoluteUri;
                     if (_reqSend != null) ///todo ГОВНОКОД
                         _reqSend.Url = uri.AbsolutePath;
                 }

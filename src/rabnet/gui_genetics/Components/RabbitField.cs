@@ -12,7 +12,7 @@ namespace rabnet.components
 
 		public event EvSearchGoingOn SearchGoingOn;
 
-		private RabbitGen _rootRabbitData;
+		//private RabbitGen _rootRabbitData;
 		private RabbitBar _rootRabbit;
 		private RabbitPair _rootRabbitPair;
 		private Dictionary<int, RabbitPair> _RabbitPairs = new Dictionary<int, RabbitPair>();
@@ -70,34 +70,34 @@ namespace rabnet.components
 			b_colors = Engine.db().getBreedColors();
 			ProgressPanel.Visible = true;
 			RabbitsHolder.Visible = false;
-			_rootRabbitData = rbt;
+			//_rootRabbitData = rbt;
 			_rootRabbit = new RabbitBar();
 			_rootRabbit.SetRabbit(rbt);
 			_rootRabbit.ReplaceGenomeColors(b_colors);
 			_rootRabbit.BackColor = this.BackColor;
     		_rootRabbit.WindowRabbitID = rbt.ID;			
 			RabbitsHolder.Controls.Add(_rootRabbit);
-
-			RabbitPair rp = new RabbitPair();
-			_rootRabbitPair = rp;
+            ///рисуем мать и отца выделенного кролика
+			RabbitPair parents = new RabbitPair();
+			_rootRabbitPair = parents;
 			_rootRabbitPair.WindowRabbitID = rbt.ID;
 			_rootRabbitPair.SearchGoingOn+=new EvSearchGoingOn(SearchProc);
-			rp.Location = new Point(1000, 100);
+			parents.Location = new Point(1000, 100);
 
 			int cnt = 0;
 			_RabbitPairs.Clear();
-			_RabbitPairs.Add(cnt, rp);
-			rp.ReplaceGenomeColors(b_colors);
+			_RabbitPairs.Add(cnt, parents);
+			parents.ReplaceGenomeColors(b_colors);
 
 			RabbitGen rabbF = Engine.db().getRabbitGen(rbt.FatherId);
 			RabbitGen rabbM = Engine.db().getRabbitGen(rbt.MotherId);
 
-			rp.SetMom(rabbM);
-			rp.SetDad(rabbF);
-			rp._id = cnt;
+			parents.SetMom(rabbM);
+			parents.SetDad(rabbF);
+			parents._id = cnt;
 			RabbitsHolder.SuspendLayout();
-			rp.SetParentControl(RabbitsHolder);
-			GetPairData(rp, ref cnt);
+			parents.SetParentControl(RabbitsHolder);
+			GetPairData(parents, ref cnt);
 
 			CenterTree();
 			CenterHolder();
@@ -160,103 +160,66 @@ namespace rabnet.components
 			_rootRabbit.Genom = _rootRabbitPair.Genom;
 		}
 
-		public void GetPairData(RabbitPair mrp, ref int c)
+        /// <summary>
+        /// Рекурсивно рисует данные по предкам пары Сацец-Самка
+        /// </summary>
+        /// <param name="mrp"></param>
+        /// <param name="pairsCount"></param>
+		public void GetPairData(RabbitPair mrp, ref int pairsCount)
 		{
-
-			log.Debug(string.Format("Getting data for rabbit pair. (cnt:{0:d})",c));
-
+			log.Debug(string.Format("Getting data for rabbit pair. (cnt:{0:d})",pairsCount));
 			Application.DoEvents();
-
 
 			if (mrp.GetMom() != null)
 			{
-				log.Debug(string.Format("Rabbit pair #{0:d} has mom.", c));
-
-				RabbitGen rabbM = Engine.db().getRabbitGen(mrp.GetMom().MotherId);
-
-				RabbitGen rabbF = Engine.db().getRabbitGen(mrp.GetMom().FatherId);
-
-				if ((rabbM != null) || (rabbF != null))
-				{
-
-					c++;
-
-					RabbitPair rp = new RabbitPair();
-					rp._id = c;
-
-					_RabbitPairs.Add(c, rp);
-
-
-					rp.SetParentControl(RabbitsHolder);
-					mrp.SetTreeChildFPair(rp);
-
-					rp.SetMom(rabbM);
-					rp.SetDad(rabbF);
-					//RabbitsHolder.Controls.Add(rp);
-
-					log.Debug(string.Format("Getting parents for rabbit pair #{0:d} mom.", c));
-
-
-					GetPairData(rp, ref c);
-					log.Debug(string.Format("Getting parents for rabbit pair #{0:d} mom.... Done", c));
-				}
-				else
-				{
-					log.Debug(string.Format("There's no parents :(", c));
-				}
-
+                log.Debug(string.Format("Rabbit pair #{0:d} has mom.", pairsCount));
+                RabbitPair rp = GetHalhPairData(mrp.GetMom(),ref pairsCount);
+                mrp.SetTreeChildFPair(rp);
 			}
 
 			if (mrp.GetDad() != null)
 			{
-				log.Debug(string.Format("Rabbit pair #{0:d} has dad.", c));
-
-				RabbitGen rabbM = Engine.db().getRabbitGen(mrp.GetDad().MotherId);
-				RabbitGen rabbF = Engine.db().getRabbitGen(mrp.GetDad().FatherId);
-
-				if ((rabbM != null) || (rabbF != null))
-				{
-					c++;
-
-					RabbitPair rp = new RabbitPair();
-					rp._id = c;
-					_RabbitPairs.Add(c, rp);
-
-					rp.SetParentControl(RabbitsHolder);
-					mrp.SetTreeChildMPair(rp);
-
-					rp.SetMom(rabbM);
-					rp.SetDad(rabbF);
-
-					//RabbitsHolder.Controls.Add(rp);
-
-					log.Debug(string.Format("Getting parents for rabbit pair #{0:d} dad.", c));
-
-					GetPairData(rp, ref c);
-					log.Debug(string.Format("Getting parents for rabbit pair #{0:d} dad.... Done", c));
-				}
-				else
-				{
-					log.Debug(string.Format("There's no parents :(", c));
-				}
-
+                log.Debug(string.Format("Rabbit pair #{0:d} has dad.", pairsCount));
+                RabbitPair rp = GetHalhPairData(mrp.GetDad(), ref pairsCount);
+                mrp.SetTreeChildMPair(rp);
 			}
+		}		
 
-		}
+        public RabbitPair GetHalhPairData(RabbitGen rg,ref int pairsCount)
+        {
+            RabbitGen rabbM = Engine.db().getRabbitGen(rg.MotherId);
+            RabbitGen rabbF = Engine.db().getRabbitGen(rg.FatherId);
 
-		private void RabbitField_SizeChanged(object sender, System.EventArgs e)
-		{
-		}
+            if ((rabbM != null) || (rabbF != null))
+            {
+                pairsCount++;
 
-		private void RabbitField_Resize(object sender, System.EventArgs e)
-		{
-			CenterHolder();
-			ProgressPanel.Left = (int)((this.Width - ProgressPanel.Width)/2);
-			ProgressPanel.Top = (int)((this.Height - ProgressPanel.Height)/2);
-		}
+                RabbitPair rp = new RabbitPair();
+                rp._id = pairsCount;
+                _RabbitPairs.Add(pairsCount, rp);
 
-		private void RabbitField_Scroll(object sender, ScrollEventArgs e)
-		{
-		}
+                rp.SetParentControl(RabbitsHolder);
+
+                rp.SetMom(rabbM);
+                rp.SetDad(rabbF);
+
+                log.Debug(string.Format("Getting parents for rabbit pair #{0:d} mom.", pairsCount));
+                GetPairData(rp, ref pairsCount);
+
+                return rp;
+            }
+            else
+            {
+                log.Debug(string.Format("There's no parents :(", pairsCount));
+                return null;
+            }
+        }
+
+        private void RabbitField_Resize(object sender, System.EventArgs e)
+        {
+            CenterHolder();
+            ProgressPanel.Left = (int)((this.Width - ProgressPanel.Width) / 2);
+            ProgressPanel.Top = (int)((this.Height - ProgressPanel.Height) / 2);
+        }
 	}
 }
