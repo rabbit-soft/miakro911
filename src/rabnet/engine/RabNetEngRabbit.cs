@@ -67,7 +67,7 @@ namespace rabnet
         /// <summary>
         /// Нужно для логирования при Клонировании
         /// </summary>
-        internal string CloneAddress="";
+        //internal string CloneAddress="";
 
         public RabNetEngRabbit(int rid,RabNetEngine dl)
         {
@@ -365,14 +365,14 @@ namespace rabnet
             if (count == Group)
             {                
                 _eng.db().KillRabbit(_id, daysPast, reason, notes);
-                _eng.logs().log(LogType.RABBIT_KILLED, ID, 0, AddressSmall == Rabbit.NULL_ADDRESS ? this.CloneAddress : AddressSmall, "",
+                _eng.logs().log(LogType.RABBIT_KILLED, ID, 0, /*AddressSmall == Rabbit.NULL_ADDRESS ? this.CloneAddress : */AddressSmall, "",
                     String.Format(" {0:s}[{1:d}] {2:s} {3:s}", FullName, Group, notes, (daysPast != 0 ? String.Format(" {0:d} дней назад", daysPast) : "")));
             }
             else
             {
                 int nid = Clone(count);
                 RabNetEngRabbit nr = new RabNetEngRabbit(nid, _eng);
-                nr.CloneAddress = AddressSmall;
+                //nr.CloneAddress = AddressSmall;
                 nr.KillIt(daysPast, reason, notes, count);
             }
         }
@@ -397,13 +397,13 @@ namespace rabnet
             RabNetEngRabbit r = _eng.getRabbit(y.ID);        
             if (atall == 0)
             {
-                r.CloneAddress = AddressSmall;
+                //r.CloneAddress = AddressSmall;
                 r.KillIt(0, DeadReason_Static.Dead_KidsCount, "при подсчете", y.Group);
             }
             else
             {
                 RabNetEngRabbit clone = _eng.getRabbit(r.Clone(dead + killed));
-                clone.CloneAddress = AddressSmall;
+                //clone.CloneAddress = AddressSmall;
                 clone.KillIt(0, DeadReason_Static.Dead_KidsCount, "при подсчете", clone.Group);
                 if(added>0)
                     _eng.db().СountKids(_id,dead, killed, added, y.ID);             
@@ -432,7 +432,7 @@ namespace rabnet
         {
             if (Group <= count) throw new ExBadCount(); //todo вставил проверку на = , надо попроверять
 
-           int nid = _eng.db().cloneRabbit(_id, count, farm, tier, sec, this.Sex, 0);
+           int nid = _eng.db().CloneRabbit(_id, count, farm, tier, sec, this.Sex, 0);
            RabNetEngRabbit rab = Engine.get().getRabbit(nid);       //+gambit
            _eng.logs().log(LogType.CLONE_GROUP, _id, nid, AddressSmall, rab.AddressSmall, String.Format("{0:d} и {1:d}", Group-count ,count));
            return nid;

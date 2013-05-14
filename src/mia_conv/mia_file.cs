@@ -131,8 +131,10 @@ namespace mia_conv
         {
             if (nm == "")
                 _label_nm = "";
-            if(_label_nm !="")
+            if (_label_nm != "")
                 _label_total = Environment.NewLine + _label_nm + " [OK]" + _label_total;
+            else
+                _label_total = "";
             lbl.Text = nm;
             _label_nm = nm;
             Application.DoEvents();

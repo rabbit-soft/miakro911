@@ -273,7 +273,7 @@ namespace mia_conv
             const int of = 8;
             int pgs = 0;
             Mia.Setpbpart(pgs++, of);
-
+            
             Mia.SetLabelName("Породы");
             FillBreeds();
             Mia.SetLabelName("Имена");
@@ -707,49 +707,52 @@ VALUES({0:s},{1:d},0,{2:d},'{3:s}');", Convdt(date), jid, r, adr);
                 case 0: tp = "none";
                     break;
                 case 1: tp = "female";
-                    b1 = "'" + tr.Busies[0].ToString() + "'";
+                    b1 = tierBusyWrap(tr,0);//"'" + tr.Busies[0].ToString() + "'";
                     heater = tr.Heaters[0].ToString(d);
                     nest = tr.Nests[0].ToString(d);
                     break;
                 case 2: tp = "dfemale";
-                    b1 = "'" + tr.Busies[0].ToString() + "'";
-                    b2 = "'" + tr.Busies[1].ToString() + "'";
+                    b1 = tierBusyWrap(tr,0);//"'" + tr.Busies[0].ToString() + "'";
+                    b2 = tierBusyWrap(tr,1);//"'" + tr.Busies[1].ToString() + "'";
                     heater = tr.Heaters[0].ToString(d) + tr.Heaters[1].ToString(d);
                     nest = tr.Nests[0].ToString(d) + tr.Nests[1].ToString(d);
                     break;
                 case 3: tp = "complex";
-                    b1 = "'" + tr.Busies[0].ToString() + "'";
-                    b2 = "'" + tr.Busies[1].ToString() + "'";
-                    b3 = "'" + tr.Busies[2].ToString() + "'";
+                    b1 = tierBusyWrap(tr,0);//"'" + tr.Busies[0].ToString() + "'";
+                    b2 = tierBusyWrap(tr,1);//"'" + tr.Busies[1].ToString() + "'";
+                    b3 = tierBusyWrap(tr,2);//"'" + tr.Busies[2].ToString() + "'";
                     heater = tr.Heaters[0].ToString(d);
                     nest = tr.Nests[0].ToString(d);
                     break;
                 case 4: tp = "jurta";
-                    b1 = "'" + tr.Busies[0].ToString() + "'";
-                    b2 = "'" + tr.Busies[1].ToString() + "'";
+                    b1 = tierBusyWrap(tr,0);//"'" + tr.Busies[0].ToString() + "'";
+                    b2 = tierBusyWrap(tr,1);//"'" + tr.Busies[1].ToString() + "'";
                     heater = tr.Heaters[0].ToString(d);
                     nest = tr.Nests[0].ToString(d);
                     delims = tr.NestWbig.ToString(d);
                     break;
                 case 5: tp = "quarta";
-                    b1 = "'" + tr.Busies[0].ToString() + "'";
-                    b2 = "'" + tr.Busies[1].ToString() + "'";
-                    b3 = "'" + tr.Busies[2].ToString() + "'";
-                    b4 = "'" + tr.Busies[3].ToString() + "'";
                     delims = tr.Delims[0].ToString(d) + tr.Delims[1].ToString(d) + tr.Delims[2].ToString(d);
+                    b1 = tierBusyWrap(tr,0);//"'" + tr.Busies[0].ToString() + "'";
+                    if(delims[0]=='1')
+                        b2 = tierBusyWrap(tr,1);//"'" + tr.Busies[1].ToString() + "'";
+                    if (delims[1] == '1')
+                        b3 = tierBusyWrap(tr,2);//"'" + tr.Busies[2].ToString() + "'";
+                    if (delims[2] == '1')
+                        b4 = tierBusyWrap(tr,3);//"'" + tr.Busies[3].ToString() + "'";                    
                     break;
                 case 6: tp = "vertep";
-                    b1 = "'" + tr.Busies[0].ToString() + "'";
-                    b2 = "'" + tr.Busies[1].ToString() + "'";
+                    b1 = tierBusyWrap(tr,0);//"'" + tr.Busies[0].ToString() + "'";
+                    b2 = tierBusyWrap(tr,1);//"'" + tr.Busies[1].ToString() + "'";
                     break;
                 case 7: tp = "barin";
-                    b1 = "'" + tr.Busies[0].ToString() + "'";
-                    b2 = "'" + tr.Busies[1].ToString() + "'";
+                    b1 = tierBusyWrap(tr,0);//"'" + tr.Busies[0].ToString() + "'";
+                    b2 = tierBusyWrap(tr,1);//"'" + tr.Busies[1].ToString() + "'";
                     delims = tr.Delims[0].ToString(d);
                     break;
                 case 8: tp = "cabin";
-                    b1 = "'" + tr.Busies[0].ToString() + "'";
-                    b2 = "'" + tr.Busies[1].ToString() + "'";
+                    b1 = tierBusyWrap(tr,0);//"'" + tr.Busies[0].ToString() + "'";
+                    b2 = tierBusyWrap(tr,1);//"'" + tr.Busies[1].ToString() + "'";
                     heater = tr.Heaters[0].ToString(d);
                     nest = tr.Nests[0].ToString(d);
                     break;
@@ -943,200 +946,12 @@ VALUES({0:s},{1:d},0,{2:d},'{3:s}');", Convdt(date), jid, r, adr);
             return 0;
         }
 
-        //public int GetWorker(String name, bool insert)
-        //{
-        //    if (name == "") name = "undefined";
-        //    _cmd.CommandText = "SELECT w_id FROM workers WHERE w_name='"+name+"';";
-        //    MySqlDataReader rd = _cmd.ExecuteReader();
-        //    int res=0;
-        //    if (rd.HasRows)
-        //    {
-        //        rd.Read();
-        //        res = rd.GetInt32(0);
-        //        rd.Close();
-        //    }
-        //    else
-        //    {
-        //        rd.Close();
-        //        if (!insert)
-        //            return 0;
-        //        _cmd.CommandText = "INSERT INTO workers(w_name) VALUES('" + name + "');";
-        //        _cmd.ExecuteNonQuery();
-        //        res = (int)_cmd.LastInsertedId;
-        //    }
-        //    return res;
-        //}
-
-        //public void SetCatList(MFStringList lst, String type, String flag)
-        //{
-        //    for (int i = 0; i < lst.strings.Count; i++)
-        //    {
-        //        for (int j = 0; j < flag.Length; j++)
-        //            GetCatalogValue(type, flag[j], lst.strings[i].value());
-        //    }
-        //}  
-
-        //public int GetCatalogValue(String type, Char flag, String value)
-        //{            
-        //    _cmd.CommandText = "SELECT c_id,c_flags FROM catalogs WHERE c_type='"+type+"' AND c_value='"+value+"'";
-        //    MySqlDataReader rd = _cmd.ExecuteReader();
-        //    int res = 0;
-        //    if (rd.HasRows)
-        //    {
-        //        rd.Read();
-        //        res = rd.GetInt32(0);
-        //        String flgs = rd.GetString(1);
-        //        rd.Close();
-        //        for (int i = 0; (i < flgs.Length) && flag != '\0'; i++)
-        //            if (flgs[i]==flag) flag='\0';
-        //        if (flag != '\0')
-        //        {
-        //            c.CommandText = "UPDATE catalogs SET c_flags=c_flags+'" + flag + "' WHERE c_id=" + res.ToString() + ";";
-        //            c.ExecuteNonQuery();
-        //        }
-
-        //    }
-        //    else
-        //    {
-        //        rd.Close();
-        //        _cmd.CommandText = String.Format("INSERT INTO catalogs(c_type,c_flags,c_value) VALUES('{0:s}','{1:s}','{2:s}');",
-        //            type,""+flag,value);
-        //        _cmd.ExecuteNonQuery();
-        //        res = (int)_cmd.LastInsertedId;
-        //    }
-        //    return res;
-        //}
-
-        //public void FillTransfers()
-        //{           
-        //    Debug("fill transfers");
-        //    foreach (Trans t in Mia.TransTable.Transes)
-        //    {
-        //        Application.DoEvents();
-        //        String add = "";
-        //        String cmd= "INSERT INTO transfers(t_notes,t_date,t_units,t_type";
-        //        String vals = String.Format("VALUES('{0:s}',{1:s},{2:d},",t.notes.value(),convdt(t.when.value()),t.units.value());
-        //        switch (t.TransferType)
-        //        {
-        //            case 0:
-        //                cmd+=",t_sold,t_age,t_weight,t_partner,t_price";
-        //                vals += String.Format("'meat',1,{0:d},{1:d},{2:d},{3:s}", t.age.value(), t.lweight.value(), getCatalogValue("partner", 'm', t.partner.value()), t.price.value().Replace(',', '.'));
-        //                break;
-        //            case 1:
-        //                cmd+=",t_sold,t_age,t_kind,t_partner,t_price";
-        //                vals += String.Format("'skin',1,{0:d},{1:d},{2:d},{3:s}", t.age.value(), t.skintype.value(), getCatalogValue("partner", 's', t.partner.value()), t.price.value().Replace(',', '.'));
-        //                break;
-        //            case 2:
-        //                cmd += ",t_sold,t_age,t_name,t_breed,t_weight,t_partner,t_price,t_str";
-        //                vals += String.Format("'rabbits',{0:d},{1:d},{2:d},{3:d},{4:d},{5:d},{6:F2},'{7:s}'",
-        //                    t.issold.value(),t.age.value(),findname(t.name.value(),ref add),findbreed((int)t.breed.value()),
-        //                    t.sweight.value(),getCatalogValue("partner",(t.issold.value()==1?'r':'R'),t.partner.value()),
-        //                    t.price.value().Replace(',','.'),add);
-        //                break;
-        //            case 3:
-        //                cmd += ",t_age,t_name,t_weight,t_kind,t_partner,t_price";
-        //                vals += String.Format("'feed',{0:d},{1:d},{2:d},{3:d},{4:d},{5:s}",t.age.value(),
-        //                    getCatalogValue("name",'f',t.name.value()),t.lweight.value(),getCatalogValue("kind",'f',t.kind.value()),
-        //                    getCatalogValue("partner", 'f', t.partner.value()), t.price.value().Replace(',', '.'));
-        //                break;
-        //            case 4:
-        //                cmd += ",t_sold,t_age,t_name,t_weight,t_kind,t_partner,t_price";
-        //                bool issold = t.issold.value() == 1;
-        //                vals += String.Format("'other',{0:d},{1:d},{2:d},{3:d},{4:d},{5:d},{6:s}", t.issold.value(),t.age.value(),
-        //                    getCatalogValue("name", issold ? 'o' : 'O', t.name.value()), t.lweight.value(), getCatalogValue("kind", issold ? 'o' : 'O', t.kind.value()),
-        //                    getCatalogValue("partner", issold ? 'o' : 'O', t.partner.value()), t.price.value().Replace(',', '.'));
-        //                break;
-        //            case 5:
-        //                cmd += ",t_sold,t_age,t_mdate,t_weight,t_weight2,t_name,t_str";
-        //                vals += String.Format("'meat',0,{0:d},{1:s},{2:d},{3:d},{4:d},'{5:s}'",
-        //                    t.age.value(),convdt(t.murder.value()),t.brutto.value(),t.netto.value(),
-        //                    findname(t.name.value(),ref add),add+" "+t.address.value());
-        //                break;
-        //            case 6:
-        //                cmd += ",t_sold,t_age,t_mdate,t_sex,t_breed,t_kind,t_name,t_str";
-        //                vals += String.Format("'skin',0,{0:d},{1:s},{2:d},{3:d},{4:d},{5:d},'{6:s}'",t.age.value(),
-        //                    convdt(t.murder.value()),t.sex.value(),findbreed((int)t.breed.value()),t.skintype.value(),
-        //                    findname(t.name.value(),ref add),add+" "+t.address.value());
-        //                break;
-        //            case 7:
-        //                cmd += ",t_age,t_name,t_weight,t_kind";
-        //                vals += String.Format("'feed_use',{0:d},{1:d},{2:d},{3:d}",t.age.value(),
-        //                    getCatalogValue("name",'f',t.name.value()),t.lweight.value(),
-        //                    getCatalogValue("kind",'f',t.name.value()));
-        //                break;
-        //            case 8:
-        //                cmd += ",t_sold,t_age,t_weight,t_partner,t_kind,t_price";
-        //                vals += String.Format("'otsev',{0:d},{1:d},{2:d},{3:d},{4:d},{5:s}",t.issold.value(),t.age.value(),
-        //                    t.lweight.value(),getCatalogValue("partner",'x',t.partner.value()),
-        //                    getCatalogValue("kind", 'x', t.kind.value()), t.price.value().Replace(',', '.'));
-        //                break;
-        //        }
-        //        _cmd.CommandText = cmd + ") " + vals + ");";
-        //        _cmd.ExecuteNonQuery();
-        //    }
-        //}
-
-        //public void FillTransForm()
-        //{
-        /*
-        debug("fill transform");
-        for (int i=0;i<mia.transform.skinnames.Count;i++)
-            setOption("price","skin"+i.ToString(),mia.transform.skinnames[i].value());
-        setOption("price", "meat", mia.transform.pricePerKilo.value());
-        setOption("price", "feed", mia.transform.feedPrice.value());
-        setCatList(mia.transform.skinBuyers, "partner", "s");
-        setCatList(mia.transform.bodyBuyers, "partner", "m");
-        setCatList(mia.transform.rabbitPartner, "partner", "rR");
-        setCatList(mia.transform.feedPartner, "partner", "f");
-        setCatList(mia.transform.kind, "kind", "x");
-        setCatList(mia.transform.otherPartner, "partner", "oO");
-        setCatList(mia.transform.feedType, "name", "f");
-        setCatList(mia.transform.otherKind, "kind", "oO");
-        setCatList(mia.transform.otherProduct, "name", "oO");
-        setCatList(mia.transform.usedFeedType, "name", "f");
-        setCatList(mia.transform.usedFeedSpec, "kind", "f");
-        setCatList(mia.transform.otsevBuyer, "partner", "x");
-         * */
-        //}
-
-        //public void FillGraphForm()
-        //{
-        /*
-        debug("fill GraphForm");
-        for (int i = 0; i < mia.graphform.workers.size.value(); i++)
+        private string tierBusyWrap(Tier tr, int bInd)
         {
-            Application.DoEvents();
-            MFListItem li = mia.graphform.workers.items[i];
-            int wid = getWorker(li.caption.value(),true);
-            int rate = int.Parse(li.subs[0].value());
-            c.CommandText = "UPDATE workers SET w_rate=" + rate.ToString() + " WHERE w_id=" + wid.ToString() + ";";
-            c.ExecuteNonQuery();
+            if (bInd > tr.Busies.Length) 
+                throw new Exception("incorrect tierBusyWrap index");
+            return String.Format("'{0:d}'",tr.Busies[bInd]);
         }
-         * */
-        /*
-        int cnt = (int)mia.graphform.lost.size.value();
-        for (int i = 0; i < mia.graphform.lost.size.value(); i++)
-        {
-            mia.setpb(100 *i/ cnt);
-            Application.DoEvents();
-            MFListItem li = mia.graphform.lost.items[i];
-            String sex = "void";
-            if (li.subs[2].value() == "м") sex = "male";
-            if (li.subs[2].value() == "ж") sex = "female";
-            int weight = 0;
-            if (!int.TryParse(li.subs[5].value(),out weight))
-            {
-                weight=0;
-            }                c.CommandText = String.Format("INSERT INTO drops(d_date,d_name,d_address,d_sex,d_state,d_age,d_weight,d_notes,d_reason,d_worker) "+
-                "VALUES({0:s},'{1:s}','{2:s}','{3:s}','{4:s}',{5:d},{6:d},'{7:s}',{8:d},{9:d});",
-                convdt(li.caption.value()),li.subs[0].value(),li.subs[1].value(),sex,li.subs[3].value(),
-                int.Parse(li.subs[4].value()),weight,(li.subitems.value()>=9?li.subs[8].value():""),
-                getReason(li.subs[6].value()),getWorker(li.subs[7].value(),false)
-                );
-            c.ExecuteNonQuery();
-        }
-         * */
-        //}
 
     }
 }

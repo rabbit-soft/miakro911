@@ -10,6 +10,31 @@ namespace rabnet.components
 {
     public partial class BuildingControl : UserControl
     {
+        public delegate void BCEventHandler(object sender, BCEvent e);
+
+        public class BCEvent : EventArgs
+        {
+            public enum EVTYPE { REPAIR, NEST, NEST2, HEATER, HEATER2, DELIM, DELIM1, DELIM2, DELIM3, VIGUL };            
+            public int value;
+            public EVTYPE type;
+            public int farm;
+            public int tier;
+            public BCEvent(EVTYPE type, int val)
+            {
+                this.type = type;
+                value = val;
+            }
+            public BCEvent(EVTYPE type, bool val) : this(type, val ? 1 : 0) { }
+            public bool val()
+            {
+                return value == 1;
+            }
+        }
+
+        bool _manual = true;
+
+        public event BCEventHandler ValueChanged = null;
+
         public BuildingControl()
         {
             InitializeComponent();
@@ -19,18 +44,18 @@ namespace rabnet.components
         }
         public bool repair
         {
-            get { return cbRepair.Checked; }
-            set { cbRepair.Checked = value; }
+            get { return chRepair.Checked; }
+            set { chRepair.Checked = value; }
         }
         public bool nest
         {
-            get { return cbNest.Checked; }
-            set { cbNest.Checked = value; }
+            get { return chNest.Checked; }
+            set { chNest.Checked = value; }
         }
         public bool nest2
         {
-            get { return cbNest2.Checked; }
-            set { cbNest2.Checked = value; }
+            get { return chNest2.Checked; }
+            set { chNest2.Checked = value; }
         }
         public int heater
         {
@@ -44,23 +69,23 @@ namespace rabnet.components
         }
         public bool delim
         {
-            get { return cbDelim.Checked; }
-            set { cbDelim.Checked = value; }
+            get { return chDelim.Checked; }
+            set { chDelim.Checked = value; }
         }
         public bool delim1
         {
-            get { return cbDelim1.Checked; }
-            set { cbDelim1.Checked = value; }
+            get { return chDelim1.Checked; }
+            set { chDelim1.Checked = value; }
         }
         public bool delim2
         {
-            get { return cbDelim2.Checked; }
-            set { cbDelim2.Checked = value; }
+            get { return chDelim2.Checked; }
+            set { chDelim2.Checked = value; }
         }
         public bool delim3
         {
-            get { return cbDelim3.Checked; }
-            set { cbDelim3.Checked = value; }
+            get { return chDelim3.Checked; }
+            set { chDelim3.Checked = value; }
         }
         public bool vigul
         {
@@ -68,61 +93,59 @@ namespace rabnet.components
             set { cbVigul.SelectedIndex = (value ? 1 : 0); }
         }
 
-        public void setType(BuildingType type)
+        public void SetType(BuildingType type)
         {
-            grDelim.Visible = grDelims.Visible = grNest.Visible = grNest2.Visible = grVigul.Visible = false;
+            gbOneDelim.Visible = gbDelims.Visible = grNest.Visible = gbNest2.Visible = grVigul.Visible = false;
             switch (type)
             {
                 case BuildingType.Female:
-                case BuildingType.Complex: 
-                case BuildingType.Jurta:               
-                case BuildingType.DualFemale: grNest.Visible = true;
-                    if (type == BuildingType.Jurta) grVigul.Visible = true;
-                    if (type == BuildingType.DualFemale) grNest2.Visible = true;
+                    grNest.Visible = true;
+                    break;                
+                case BuildingType.Jurta:
+                    grNest.Visible = grVigul.Visible = true;
                     break;
-                case BuildingType.Cabin:
-                case BuildingType.Quarta:
+                case BuildingType.DualFemale: 
+                    grNest.Visible = gbNest2.Visible = true;
+                    break;
+                case BuildingType.Complex:
+                    grNest.Visible = true;                    
+                    break;
+                case BuildingType.Cabin:            
                 case BuildingType.Barin: 
                 case BuildingType.Vertep:
-                    //grDelim.Visible = true;  
+                    break;
+                case BuildingType.Quarta:
+                    gbDelims.Visible = true;
                     break;
             }
-        }
-
-        public class BCEvent : EventArgs
-        {
-            public enum EVTYPE{REPAIR,NEST,NEST2,HEATER,HEATER2,DELIM,DELIM1,DELIM2,DELIM3,VIGUL};
-            public int value;
-            public EVTYPE type;
-            public int farm;
-            public int tier;
-            public BCEvent(EVTYPE type,int val)
-            {
-                this.type=type;
-                value=val;
-            }
-            public BCEvent(EVTYPE type,bool val):this(type,val?1:0){}
-            public bool val()
-            {
-                return value==1;
-            }
-        }
-        public delegate void BCEventHandler(object sender, BCEvent e);
-        public event BCEventHandler ValueChanged=null;
+        }        
 
         private void makeCBEvent(object sender, EventArgs e)
         {
-            if (ValueChanged == null) return;
+            if (!_manual || ValueChanged == null) return;
+
             CheckBox cb=sender as CheckBox;
-            BCEvent.EVTYPE type=BCEvent.EVTYPE.REPAIR;
-            if (cb == cbRepair) type=BCEvent.EVTYPE.REPAIR;
-            if (cb == cbNest) type = BCEvent.EVTYPE.NEST;
-            if (cb == cbNest2) type = BCEvent.EVTYPE.NEST2;
-            if (cb == cbDelim) type = BCEvent.EVTYPE.DELIM;
-            if (cb == cbDelim1) type = BCEvent.EVTYPE.DELIM1;
-            if (cb == cbDelim2) type = BCEvent.EVTYPE.DELIM2;
-            if (cb == cbDelim3) type = BCEvent.EVTYPE.DELIM3;
-            ValueChanged(this,new BCEvent(type,cb.Checked));
+
+            BCEvent.EVTYPE type = BCEvent.EVTYPE.REPAIR;
+            if (cb == chRepair) type=BCEvent.EVTYPE.REPAIR;
+            if (cb == chNest)   type = BCEvent.EVTYPE.NEST;
+            if (cb == chNest2)  type = BCEvent.EVTYPE.NEST2;
+            if (cb == chDelim)  type = BCEvent.EVTYPE.DELIM;
+            if (cb == chDelim1) type = BCEvent.EVTYPE.DELIM1;
+            if (cb == chDelim2) type = BCEvent.EVTYPE.DELIM2;
+            if (cb == chDelim3) type = BCEvent.EVTYPE.DELIM3;
+
+            try
+            {
+                ValueChanged(this, new BCEvent(type, cb.Checked));
+            }
+            catch (Exception exc)
+            {                
+                MessageBox.Show(exc.Message,"Действие невозможно",MessageBoxButtons.OK,MessageBoxIcon.Asterisk);
+                _manual = false;
+                cb.Checked = !cb.Checked;
+                _manual = true;
+            }
         }
 
         private void makeComboEvent(object sender, EventArgs e)

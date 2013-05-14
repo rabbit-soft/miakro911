@@ -257,16 +257,16 @@ namespace rabnet
         /// <returns></returns>
         public static String GetSecRus(BuildingType type, int sec, String delims)
         {
-            if (type == BuildingType.Female) return "";
+            if (type == BuildingType.Female || type== BuildingType.Cabin) return "";
 
-            String secnames = "абвг";
-            String res = "" + secnames[sec];
+            const String SECNAMES = "абвг";
+            String res = "" + SECNAMES[sec];
             if (type == BuildingType.Quarta && delims != "111")
             {
                 for (int i = sec - 1; i >= 0 && (delims[i] == '1'); i--)
-                    if (delims[i] == '0') res = secnames[i] + res;
+                    if (delims[i] == '0') res = SECNAMES[i] + res;
                 for (int i = sec; i < 3 && delims[i] == '1'; i++)
-                    if (delims[i] == '0') res = res + secnames[i + 1];
+                    if (delims[i] == '0') res = res + SECNAMES[i + 1];
             }
             else if (type == BuildingType.Barin && delims[0] == '0')
                 res = "аб";

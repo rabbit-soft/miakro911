@@ -11,111 +11,119 @@ namespace rabnet.components
 {
     public partial class FarmDrawer : UserControl
     {
+        public delegate void FDEventHandler(object sender, BuildingControl.BCEvent e);
+
+        public event FDEventHandler ValueChanged = null;
+
         const char N = 'N';
 
-        private bool manual=false;
+        private bool _manual=false;
 
         public class DrawTier
         {
-            private BuildingType type;
-            private String delims;
-            private String nests;
-            private String heaters;
-            private string[] rbs;   
+            private Building _build;
+            //private BuildingType _type;
+            //private String _delims;
+            //private String _nests;
+            //private String _heaters;
+            private string[] _rbs;   
             private Graphics _graf;
             private Rectangle _rect;
-            private bool repair;
-            public int id = 0;
+            //private bool _repair;
+            //public int _id = 0;
 //            private Font f = new Font("Arial", 8);
 			private Font f = SystemFonts.DefaultFont;
 
-            public DrawTier(int id, BuildingType type, String delims, String nests, String heaters, String[] residents, bool repair)
+            public DrawTier(Building b,List<string> rabs)
             {
-                this.id = id;
-                this.repair=repair;
-                this.type = type;
-                this.delims = delims;
-                this.nests = nests;
-                rbs=residents;
-                this.heaters = heaters;
+                _build = b;
+                _rbs = rabs.ToArray();
+                //_id = id;
+                //_repair=repair;
+                //_type = type;
+                //_delims = delims;
+                //_nests = nests;
+                //_rbs=residents;
+                //_heaters = heaters;
             }
 
-            public void Draw(Graphics g, Rectangle r,BuildingControl p)
-            {              
+            public Building Building { get { return _build; } }
 
-                this._graf=g;
-                this._rect=r;
-                p.setType(type);
-                p.repair = repair;
-                switch (type)
+            public void Draw(Graphics g, Rectangle r,BuildingControl bControl)
+            {              
+                _graf=g;
+                _rect=r;
+                bControl.SetType(_build.Type);
+                bControl.repair = _build.Repair;
+                switch (_build.Type)
                 {
                     case BuildingType.Female:
-                        DrawPart(0,1,"",rbs[0],nests[0],heaters[0],null);
-                        setNest(p, nests[0], heaters[0], false);
+                        DrawPart(0, 1, "", _rbs[0], _build.Nests[0], _build.Heaters[0], null);
+                        setNest(bControl, _build.Nests[0], _build.Heaters[0], false);
                         break;
                     case BuildingType.DualFemale:
-                        DrawPart(0, 0.5,"а",rbs[0],nests[0],heaters[0],null);
-                        DrawPart(0.5, 0.5,"б",rbs[1],nests[1],heaters[1],null);
+                        DrawPart(0, 0.5, "а", _rbs[0], _build.Nests[0], _build.Heaters[0], null);
+                        DrawPart(0.5, 0.5, "б", _rbs[1], _build.Nests[1], _build.Heaters[1], null);
 						DrawWall(0, 0.5);
 						DrawWall(0.5, 0.5);
-						setNest(p, nests[0], heaters[0], false);
-                        setNest(p, nests[1], heaters[1], true);
+                        setNest(bControl, _build.Nests[0], _build.Heaters[0], false);
+                        setNest(bControl, _build.Nests[1], _build.Heaters[1], true);
                         break;
                     case BuildingType.Complex:
-                        DrawPart(0, 0.5, "а", rbs[0], nests[0], heaters[0], null);
-                        DrawPart(0.5, 0.25, "б", rbs[1], N, N, null);
-                        DrawPart(0.75, 0.25, "в", rbs[2], N, N, null);
+                        DrawPart(0, 0.5, "а", _rbs[0], _build.Nests[0], _build.Heaters[0], null);
+                        DrawPart(0.5, 0.25, "б", _rbs[1], N, N, null);
+                        DrawPart(0.75, 0.25, "в", _rbs[2], N, N, null);
 						DrawWall(0, 0.5);
 						DrawWall(0.5, 0.25);
 						//drawWall(0.75, 0.25);
-						setNest(p, nests[0], heaters[0], false);
+                        setNest(bControl, _build.Nests[0], _build.Heaters[0], false);
                         break;
                     case BuildingType.Jurta:
-                        bool fst = delims[0] == '1';
+                        bool fst = _build.Delims[0] == '1';
                         if (fst)
                         {
-                            DrawPart(0, 0.25, "а", rbs[0], N, N, null);
-                            DrawPart(0.25, 0.75, "б", rbs[1], nests[0], heaters[0], new double[]{0.62});
+                            DrawPart(0, 0.25, "а", _rbs[0], N, N, null);
+                            DrawPart(0.25, 0.75, "б", _rbs[1], _build.Nests[0], _build.Heaters[0], new double[] { 0.62 });
 							DrawWall(0, 0.25);
 							//drawWall(0.25, 0.75);
 						}
                         else
                         {
-                            DrawPart(0, 0.62, "а", rbs[0], nests[0], heaters[0], new double[] { 0.25 });
-                            DrawPart(0.62, 0.38, "б", rbs[1], N, N, null);
+                            DrawPart(0, 0.62, "а", _rbs[0], _build.Nests[0], _build.Heaters[0], new double[] { 0.25 });
+                            DrawPart(0.62, 0.38, "б", _rbs[1], N, N, null);
 							DrawWall(0, 0.62);
 							//drawWall(0.62, 0.38);
 						}
-                        setNest(p, nests[0], heaters[0], false);
-                        setVigul(p, delims[0]);
+                        setNest(bControl, _build.Nests[0], _build.Heaters[0], false);
+                        setVigul(bControl, _build.Delims[0]);
                         break;
                     case BuildingType.Quarta:
                         DrawQuarta();
-                        setDelims(p, delims);
+                        setDelims(bControl, _build.Delims);
                         break;
                     case BuildingType.Vertep:
-                        DrawPart(0, 0.5, "а", rbs[0], N, N, null);
-                        DrawPart(0.5, 0.5, "б", rbs[1], N, N, null);
+                        DrawPart(0, 0.5, "а", _rbs[0], N, N, null);
+                        DrawPart(0.5, 0.5, "б", _rbs[1], N, N, null);
 						DrawWall(0, 0.5);
 						//drawWall(0.5, 0.5);
 						break;
                     case BuildingType.Barin:
-						if (delims[0] == '1')
+						if (_build.Delims[0] == '1')
 						{
-							DrawPart(0, 0.5, "а", rbs[0], N, N, null);
-							DrawPart(0.5, 0.5, "б", rbs[1], N, N, null);
+							DrawPart(0, 0.5, "а", _rbs[0], N, N, null);
+							DrawPart(0.5, 0.5, "б", _rbs[1], N, N, null);
 							DrawWall(0, 0.5);
 							//drawWall(0.5, 0.5);
 						}
 						else
 						{
-							DrawPart(0, 1, "аб", rbs[0], N, N, new double[] { 0.5 });
+							DrawPart(0, 1, "аб", _rbs[0], N, N, new double[] { 0.5 });
 							DrawWall(0, 1);
 						}
-						setDelim(p, delims[0]);
+                        setDelim(bControl, _build.Delims[0]);
                         break;
                     case BuildingType.Cabin:
-                        DrawPart(0, 1, "а", rbs[0], N, N, null);
+                        DrawPart(0, 1, "а", _rbs[0], N, N, null);
                         //drawPart(0.65, 0.35, "б", rbs[1], N, N, null);
 						//drawWall(0, 1);
 						//drawWall(0.65, 0.35);
@@ -125,39 +133,41 @@ namespace rabnet.components
             }
             public void DrawQuarta()
             {
-                int i = 0;
-                double x = 0.25;
+                const double UNIT = 0.25;
+                double size = UNIT;
                 double start = 0.0;
                 string names="абвг";
-                string nm="а";
-                List<double> dl=new List<double>();
-				Dictionary<double,double> wls=new Dictionary<double,double>();
+                string nm="";
+                List<double> deleted = new List<double>();
+                Dictionary<double, double> walls = new Dictionary<double, double>();
+                bool preDel = false;
 
-                while (i < 3)
+                for (int i = 0; i < _build.Sections; i++)
                 {
-                    if (delims[i] == '1')
+                    nm += names[i];
+                    if (i + 1 <= _build.Sections - 1 && _build.Delims[i] == '0')
                     {
-                        DrawPart(start, x, nm, rbs[i], N, N, dl.ToArray());
-						wls.Add(start,x);
-						i++;
-                        start += x;
-                        nm = ""+names[i];
-                        dl.Clear();
-					}
+                        deleted.Add(size);
+                        preDel = true;
+                        size += UNIT;
+                    }
                     else
                     {
-                        i++;
-                        dl.Add(x);
-                        x += 0.25;
-                        nm += names[i];
+                        DrawPart(start, size, nm, _rbs[i+(preDel?-1:0)], N, N, deleted.ToArray());                        
+                        walls.Add(start,size);
+                        start += size;
+                        size = UNIT;
+                        deleted.Clear();
+                        preDel = false;
+                        nm = "";
                     }
+                                        
                 }
-                DrawPart(start, x, nm, rbs[i], N, N, dl.ToArray());
-				wls.Add(start, x);
-				foreach (KeyValuePair<double, double> wl in wls)
-				{
-					DrawWall(wl.Key, wl.Value);
-				}
+                ///рисуем реальные перегородки
+                foreach (KeyValuePair<double, double> wl in walls)
+                {
+                    DrawWall(wl.Key, wl.Value);
+                }
 			}
 
             /// <summary>
@@ -186,20 +196,22 @@ namespace rabnet.components
             /// <param name="start">Нало рисования (%)</param>
             /// <param name="sz">Ширина клетки (%)</param>
             /// <param name="area">А Б В Г</param>
-            /// <param name="rabbit">Имя кролика</param>
+            /// <param name="rabName">Имя кролика</param>
             /// <param name="nest">Гнездовье?</param>
             /// <param name="heater">Грелка?</param>
-            public void DrawPart(double start,double sz,String area,String rabbit,Char nest,Char heater,double[] fd)
+            /// <param name="deletedWalls">Удаленные перегородки</param>
+            public void DrawPart(double start,double sz,String area,String rabName,Char nest,Char heater,double[] deletedWalls)
             {
                 Rectangle rct = _rect;
 				RectangleF rctF = _rect;
                 int wdth = 0; //Лекарство от захождения Секции за правую стенку
                 if ((Math.Round(_rect.Width * start) + Math.Round(_rect.Width * sz)) > _rect.Width)
                     wdth = (int)(_rect.Width - Math.Round(_rect.Width * start));
-                else wdth = (int)Math.Round(_rect.Width * sz);
+                else 
+                    wdth = (int)Math.Round(_rect.Width * sz);
                 rct.Offset((int)Math.Round(_rect.Width * start), 0);//Установка начала области
                 rct.Width = wdth;
-				if (repair)
+				if (_build.Repair)
 				{
 					_graf.FillRectangle(Brushes.Silver, rct);
 				}
@@ -207,16 +219,18 @@ namespace rabnet.components
 				{
 					_graf.FillRectangle(Brushes.White, rct);
 				}
-				if (fd != null && fd.Length > 0)
+                ///рисуем убраные стенки
+                if (deletedWalls != null && deletedWalls.Length > 0)
 				{
-					for (int i = 0; i < fd.Length; i++)
+                    for (int i = 0; i < deletedWalls.Length; i++)
 					{
-						int xpos = (int)Math.Round(_rect.Width * fd[i]);
+                        int xpos = (int)Math.Round(rct.X + _rect.Width * deletedWalls[i]);
 						_graf.DrawLine(Pens.Lavender, new Point(xpos, rct.Top + 1), new Point(xpos, rct.Bottom - 1));
 					}
 				}
                 _graf.DrawString(area, f, Brushes.Black, rct.X, rct.Y);
-                FarmDrawer.DrawText(rabbit, rct, 8, _graf,false);//пишем имена кроликов сидящих в клетке
+                //пишем имена кроликов сидящих в клетке
+                FarmDrawer.DrawText(rabName, rct, 8, _graf, false);
                 Rectangle nrct = rct;
                 nrct.Height = (int)Math.Round(rct.Height * 0.2);
                 nrct.Offset(0, (int)Math.Round(rct.Height * 0.8));
@@ -279,19 +293,19 @@ namespace rabnet.components
             }
         }
 
-        private DrawTier t1 = null;
-        private DrawTier t2 = null;
+        private DrawTier _t1 = null;
+        private DrawTier _t2 = null;
         private int id = 0;
 
         public FarmDrawer()
         {
             InitializeComponent();
-        }
+        }        
 
         public void SetFarm(int id,DrawTier t1,DrawTier t2)
         {
-            this.t1 = t1;
-            this.t2 = t2;
+            this._t1 = t1;
+            this._t2 = t2;
             this.id = id;
             bc1.Visible = bc2.Visible = false;
             Refresh();
@@ -301,11 +315,11 @@ namespace rabnet.components
         {
 //			e.Graphics.Clear(Color.White);
 			e.Graphics.Clear(SystemColors.Control);
-            if (t1!=null)
+            if (_t1!=null)
             {
-                manual = true;
+                _manual = true;
                 drawHouse(e.Graphics,e.ClipRectangle);
-                manual = false;
+                _manual = false;
             }
         }
 
@@ -361,16 +375,16 @@ namespace rabnet.components
 
 			bc1.Top = r2[0].Top + pictureBox1.Top;// +1;
             bc1.Height = r2[0].Height+1;
-            t1.Draw(g, r2[0], bc1);
+            _t1.Draw(g, r2[0], bc1);
 			bc1.Visible = true;
-            if (t2 != null)
+            if (_t2 != null)
             {
 				bc2.Top = r2[1].Top + pictureBox1.Top;// +2;
 				bc2.Height = r2[1].Height+1;
 				r2[1].Offset(0,1);
 				r2[1].Height -= 1;
 				g.DrawRectangle(new Pen(Color.Black, 1), r2[1]);
-                t2.Draw(g, r2[1],bc2);
+                _t2.Draw(g, r2[1],bc2);
                 bc2.Visible = true;
             }
         }
@@ -388,17 +402,14 @@ namespace rabnet.components
         private void FarmDrawer_Paint(object sender, PaintEventArgs e)
         {
             pictureBox1.Refresh();
-        }
-
-        public delegate void FDEventHandler(object sender, BuildingControl.BCEvent e);
-        public event FDEventHandler ValueChanged = null;
+        }        
 
         private void bc_ValueChanged(object sender, BuildingControl.BCEvent e)
         {
-            if (manual)
-                return;
+            if (_manual) return;
+
             e.farm = id;
-            e.tier = (sender == bc1 ? t1.id : t2.id);
+            e.tier = (sender == bc1 ? _t1.Building.ID : _t2.Building.ID);
             if (ValueChanged != null)
                 ValueChanged(this, e);
 		}

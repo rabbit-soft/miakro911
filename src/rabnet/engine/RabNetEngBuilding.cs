@@ -10,13 +10,17 @@ namespace rabnet
         private const int HEATER_OFF = 1;
         private const int HEATER_ON = 3;
 
-        public class ExBadBuildingType : ApplicationException
+        public class ExBadBuildingType : RabNetException
         {
             public ExBadBuildingType() : base("Неверный тип минифермы.") { }
         }
-        public class ExFarmNotEmpty : ApplicationException
+        public class ExFarmNotEmpty : RabNetException
         {
             public ExFarmNotEmpty() : base("Ферма не пуста") { }
+        }
+        public class ExDelimSetDenied : RabNetException
+        {
+            public ExDelimSetDenied() : base("Необходимо сначала расселить смежные клетки.") { }
         }
 
         private int id = 0;
@@ -113,30 +117,36 @@ namespace rabnet
             commit();
         }
 
-        public void setDelim(bool value)
+        public void SetOneDelim(bool value)
         {
+            if (b.Busy[0].ID != 0 || b.Busy[1].ID != 0)
+                throw new ExDelimSetDenied();
             b.Delims = (value ? "1" : "0") + b.Delims.Substring(1);
             commit();
         }
 
-        public void setDelim1(bool value)
-        {
-            setDelim(value);
-        }
-
         public void setVigul(int value)
         {
-            setDelim(value == 1);
+            SetOneDelim(value == 1);
         }
 
-        public void setDelim2(bool value)
+        public void SetDelim1(bool value)
         {
+            SetOneDelim(value);
+        }
+      
+        public void SetDelim2(bool value)
+        {
+            if (b.Busy[1].ID != 0 || b.Busy[2].ID != 0)
+                throw new ExDelimSetDenied();
             b.Delims = b.Delims.Substring(0, 1) + (value ? "1" : "0")+b.Delims.Substring(2);
             commit();
         }
 
-        public void setDelim3(bool value)
+        public void SetDelim3(bool value)
         {
+            if (b.Busy[2].ID != 0 || b.Busy[3].ID != 0)
+                throw new ExDelimSetDenied();
             b.Delims = b.Delims.Substring(0,2)+(value ? "1" : "0");
             commit();
         }

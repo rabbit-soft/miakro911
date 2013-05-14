@@ -237,11 +237,15 @@ VALUES({0:d},{1:d},{2:d},{3:s},'void',{4:d},'{5:s}',{6:d},0,{7:d},{8:d},{9:d},{1
         /// <returns>Генезис ID</returns>
         private static int bornRabbitGenesis(MySqlConnection sql,OneRabbit fml,OneRabbit ml)
         {
+            int fLevel = 0, mLevel = 0;           
             fml.RabGenoms = RabbitGenGetter.GetRabGenoms(sql, fml.ID);
-            ml.RabGenoms = RabbitGenGetter.GetRabGenoms(sql, ml.ID);
-            int fLevel =0, mLevel =0;
-            RabbitGen.GetFullGenLevels(fml.RabGenoms,ref fLevel);
-            RabbitGen.GetFullGenLevels(ml.RabGenoms, ref mLevel);
+            RabbitGen.GetFullGenLevels(fml.RabGenoms, ref fLevel);
+            
+            if (ml != null)
+            {
+                ml.RabGenoms = RabbitGenGetter.GetRabGenoms(sql, ml.ID);
+                RabbitGen.GetFullGenLevels(ml.RabGenoms, ref mLevel);
+            }
 
             MySqlCommand cmd = new MySqlCommand("SELECT o_value FROM options WHERE o_name='opt' AND o_subname='rab_gen_depth'", sql);
             object o = cmd.ExecuteScalar();
@@ -403,10 +407,12 @@ WHERE r_id={4:d};", farm, tier_id, sec, ntr, rabbit);
         public static int cloneRabbit(MySqlConnection sql, int rabFromID, int count, int farm, int tier_id, int sec, Rabbit.SexType sex, int mom)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"INSERT INTO rabbits
-(r_parent,r_father,r_mother,r_name,r_surname,r_secname,r_sex,r_bon,r_okrol,r_breed,r_rate,r_group,
-r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date,r_notes) 
+    (r_parent,r_father,r_mother,r_name,r_surname,r_secname,r_sex,r_bon,r_okrol,r_breed,r_rate,r_group,
+    r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date,r_notes,
+    r_farm,r_tier,r_tier_id,r_area) 
 SELECT {1:d},r_father,r_mother,0,r_surname,r_secname,r_sex,r_bon,r_okrol,r_breed,r_rate,{2:d},
-r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date,r_notes
+    r_flags,r_zone,r_born,r_genesis,r_status,r_last_fuck_okrol,r_event,r_event_date,r_notes,
+    r_farm,r_tier,r_tier_id,r_area
 FROM rabbits WHERE r_id={0:d};", rabFromID, mom, count), sql);
             cmd.ExecuteNonQuery();
             int cloneID = (int)cmd.LastInsertedId;

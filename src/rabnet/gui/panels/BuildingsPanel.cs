@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Collections;
 using System.Xml;
 using log4net;
+using rabnet;
 using rabnet.components;
 using rabnet.forms;
 using rabnet.filters;
@@ -309,19 +310,29 @@ namespace rabnet.panels
                 livesIn = b.Busy[i].Name;
                 if (b.Busy[i].ID > 0)
                 {
-                    rner = Engine.get().getRabbit(b.Busy[i].ID);
-                    if (rner.YoungCount != 0)
+                    try
                     {
-                        foreach(YoungRabbit or in rner.Youngers)
-                            livesIn += String.Format(" (+{0:d} в:{1:d})", or.Group,or.Age);
+                        rner = Engine.get().getRabbit(b.Busy[i].ID);
+                        if (rner.YoungCount != 0)
+                        {
+                            foreach (YoungRabbit or in rner.Youngers)
+                                livesIn += String.Format(" (+{0:d} в:{1:d})", or.Group, or.Age);
+                        }
+                        foreach (OneRabbit n in rner.Neighbors)
+                            livesIn += String.Format("{0:s}[{1:s}]", Environment.NewLine, n.NameFull);                        
                     }
-                    foreach (OneRabbit n in rner.Neighbors)
-                        livesIn += String.Format("{0:s}[{1:s}]",Environment.NewLine,n.NameFull); ;
+                    catch (RabNetException exc)
+                    {
+                        _logger.Warn(exc);
+                        livesIn = "[!"+exc.Message+"!]";
+                    }
                 }
                 rabs.Add(livesIn);
+                //if (b.Type == BuildingType.Quarta && i > 0 && b.Delims[i - 1] == '0')
+                    //i++;
             }
            
-            return new FarmDrawer.DrawTier(b.ID,b.Type,b.Delims,b.Nests,b.Heaters,rabs.ToArray(),b.Repair);
+            return new FarmDrawer.DrawTier(b,rabs);
         }
 
         private void drawFarm(int farm)
@@ -378,15 +389,15 @@ namespace rabnet.panels
                 switch (e.type)
                 {
                     case BuildingControl.BCEvent.EVTYPE.REPAIR: b.setRepair(e.val()); break;
-                    case BuildingControl.BCEvent.EVTYPE.NEST: b.setNest(e.val()); break;
-                    case BuildingControl.BCEvent.EVTYPE.NEST2: b.setNest2(e.val()); break;
+                    case BuildingControl.BCEvent.EVTYPE.NEST:   b.setNest(e.val()); break;
+                    case BuildingControl.BCEvent.EVTYPE.NEST2:  b.setNest2(e.val()); break;
                     case BuildingControl.BCEvent.EVTYPE.HEATER: b.setHeater(e.value); break;
-                    case BuildingControl.BCEvent.EVTYPE.HEATER2: b.setHeater2(e.value); break;
-                    case BuildingControl.BCEvent.EVTYPE.DELIM: b.setDelim(e.val()); break;
-                    case BuildingControl.BCEvent.EVTYPE.DELIM1: b.setDelim1(e.val()); break;
-                    case BuildingControl.BCEvent.EVTYPE.DELIM2: b.setDelim2(e.val()); break;
-                    case BuildingControl.BCEvent.EVTYPE.DELIM3: b.setDelim3(e.val()); break;
-                    case BuildingControl.BCEvent.EVTYPE.VIGUL: b.setVigul(e.value); break;
+                    case BuildingControl.BCEvent.EVTYPE.HEATER2:b.setHeater2(e.value); break;
+                    case BuildingControl.BCEvent.EVTYPE.DELIM:  b.SetOneDelim(e.val()); break;
+                    case BuildingControl.BCEvent.EVTYPE.DELIM1: b.SetDelim1(e.val()); break;
+                    case BuildingControl.BCEvent.EVTYPE.DELIM2: b.SetDelim2(e.val()); break;
+                    case BuildingControl.BCEvent.EVTYPE.DELIM3: b.SetDelim3(e.val()); break;
+                    case BuildingControl.BCEvent.EVTYPE.VIGUL:  b.setVigul(e.value); break;
                 }
             }
             catch (RabNetEngBuilding.ExFarmNotEmpty ex)

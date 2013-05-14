@@ -401,7 +401,7 @@ namespace db.mysql
             RabbitGetter.setRabbitSex(sql, rid, sex);
         }
 
-        public int cloneRabbit(int rid, int count, int farm, int tier, int sec, Rabbit.SexType sex, int mom)
+        public int CloneRabbit(int rid, int count, int farm, int tier, int sec, Rabbit.SexType sex, int mom)
         {
             return RabbitGetter.cloneRabbit(sql, rid, count, farm, tier, sec, sex, mom);
         }

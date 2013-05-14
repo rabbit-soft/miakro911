@@ -387,7 +387,7 @@ namespace rabnet.forms
                 {
                     if (_action == Action.SET_NEST && b.Type == BuildingType.Jurta && i == 1)
                         continue;
-                    if (b.Busy[i].ID==0 || myrab(b.Busy[i].ID)) 
+                    if ((b.Busy[i].ID==0 && (i==0 || b.Delims[i-1]=='1')) || myrab(b.Busy[i].ID)) 
                         _dgcbNewAddress.Items.Add(b.MedName(i));
                 }
             }

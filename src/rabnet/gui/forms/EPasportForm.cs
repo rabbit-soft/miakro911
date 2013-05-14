@@ -834,7 +834,7 @@ namespace rabnet.forms
                             int killID=r.ID;
                             if (lvi.SubItems[COUNT_INDEX].Text != lvi.SubItems[EXP_CNT_INDEX].Text)
                             {
-                                killID = Engine.db().cloneRabbit(r.ID, int.Parse(lvi.SubItems[EXP_CNT_INDEX].Text), 0, 0, 0, r.Sex, 0);
+                                killID = Engine.db().CloneRabbit(r.ID, int.Parse(lvi.SubItems[EXP_CNT_INDEX].Text), 0, 0, 0, r.Sex, 0);
                             }
                             Engine.db().KillRabbit(killID, 0, DeadReason_Static.Selled, " экспорт");
 
