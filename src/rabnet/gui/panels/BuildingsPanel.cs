@@ -192,7 +192,7 @@ namespace rabnet.panels
 
             for (int i = 0; i < b.Sections; i++)
             {
-                if (b.Areas(i) != prevnm || b.Farm!=prevfarm)
+                if ((b.Areas(i) != prevnm || b.Farm!=prevfarm) && !b.IsAbsorbed(i))
                 {
                     manual = false;
                     ListViewItem it = listView1.Items.Add(Building.Format(b.Farm) + b.Areas(i));//№

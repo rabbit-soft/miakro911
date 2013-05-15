@@ -128,6 +128,20 @@ namespace rabnet
             return Building.FullNameRus(Farm, TierID, sec, Type, Delims, true, false, false);
         }
 
+        /// <summary>
+        /// Объединена ли с другой клеткой путем удаления перегородки.
+        /// </summary>
+        /// <param name="sec">Номер секции. Начиная от 0</param>
+        /// <returns></returns>
+        public bool IsAbsorbed(int sec)
+        {
+            if (this.Type == BuildingType.Quarta)
+            {
+                return sec != 0 && this.Delims[sec-1]=='0';
+            }
+            return false;
+        }
+
         //public string use(int id) { return fuses[id]; }
 
         /**
@@ -257,16 +271,28 @@ namespace rabnet
         /// <returns></returns>
         public static String GetSecRus(BuildingType type, int sec, String delims)
         {
-            if (type == BuildingType.Female || type== BuildingType.Cabin) return "";
+            if (type == BuildingType.Female || type == BuildingType.Cabin) return "";
 
             const String SECNAMES = "абвг";
             String res = "" + SECNAMES[sec];
             if (type == BuildingType.Quarta && delims != "111")
             {
-                for (int i = sec - 1; i >= 0 && (delims[i] == '1'); i--)
-                    if (delims[i] == '0') res = SECNAMES[i] + res;
-                for (int i = sec; i < 3 && delims[i] == '1'; i++)
-                    if (delims[i] == '0') res = res + SECNAMES[i + 1];
+                for (int i = sec - 1; i >= 0; i--)
+                {
+                    if (delims[i] == '0')
+                        res = SECNAMES[i] + res;
+                    else
+                        break;
+                }
+
+                for (int i = sec; i < 3; i++) ///todo тройку в константу
+                {
+                    if (delims[i] == '0')
+                        res = res + SECNAMES[i + 1];
+                    else
+                        break;
+                }
+
             }
             else if (type == BuildingType.Barin && delims[0] == '0')
                 res = "аб";
