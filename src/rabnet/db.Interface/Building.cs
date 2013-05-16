@@ -142,6 +142,11 @@ namespace rabnet
             return false;
         }
 
+        public bool HasNest(int sec)
+        {
+            return Building.HasNest(this.Type, sec, this.Nests);
+        }
+
         //public string use(int id) { return fuses[id]; }
 
         /**
