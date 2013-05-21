@@ -11,6 +11,7 @@ namespace rabnet
 {
     public partial class RIFucksPanel : UserControl
     {
+        private const int IND_PARTNER = 2;
         const String RABDEAD = "Списан";
         internal event RIHandler UpdateRequire;
         internal event RIHandler UncanceledEvent;
@@ -35,14 +36,18 @@ namespace rabnet
             if (_rab.ID > 0)
                 foreach (Fuck f in Engine.db().GetFucks(new Filters(Filters.RAB_ID + "=" + _rab.ID)))
                 {
-                    ListViewItem li = lvFucks.Items.Add(f.EventDate == DateTime.MinValue ? "" : f.EventDate.ToShortDateString());
+                    ListViewItem li = lvFucks.Items.Add(f.EventDate == DateTime.MinValue ? "-" : f.EventDate.ToShortDateString());
                     li.SubItems.Add(Fuck.GetFuckTypeStr(f.FType,false));
-                    li.SubItems.Add(f.PartnerName);
+                    li.SubItems.Add(string.IsNullOrEmpty(f.PartnerName) ? "-" : f.PartnerName);
+                    
+                    li.SubItems.Add(Fuck.GetFuckEndTypeStr(f.FEndType,false));
                     if (f.IsPartnerDead)
-                        li.SubItems.Add(RABDEAD);
-                    else
-                        li.SubItems.Add(Fuck.GetFuckEndTypeStr(f.FEndType,false));
-                    li.SubItems.Add(f.EndDate == DateTime.MinValue ? "" : f.EndDate.ToShortDateString());
+                    {
+                        li.UseItemStyleForSubItems = false;
+                        li.SubItems[IND_PARTNER].ForeColor = Color.Brown;
+                    }
+                    
+                    li.SubItems.Add(f.EndDate == DateTime.MinValue ? "-" : f.EndDate.ToShortDateString());
                     li.SubItems.Add(f.Children.ToString());
                     li.SubItems.Add(f.Dead.ToString());
                     li.SubItems.Add(f.Killed.ToString());
