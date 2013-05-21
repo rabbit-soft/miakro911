@@ -96,16 +96,7 @@ namespace rabnet.forms
                 this.DialogResult = btOk.DialogResult;
                 Close();
             }
-        }
-
-        private String getbon(char bon)
-        {
-            if (bon == '1') return "III";
-            if (bon == '2') return "II";
-            if (bon == '3') return "I";
-            if (bon == '4') return "Элита";
-            return "Нет";
-        }
+        }        
 
         private void updateData()
         {
@@ -158,10 +149,10 @@ namespace rabnet.forms
             foreach (string s in gns)
                 if (s!="")
                     addgen(int.Parse(s));
-            label11.Text = "Вес:" + getbon(_rab.Bon[1]);
-            label12.Text = "Телосложение:" + getbon(_rab.Bon[2]);
-            label18.Text = "Шкура:" + getbon(_rab.Bon[3]);
-            label17.Text = "Окраска:" + getbon(_rab.Bon[4]);
+            label11.Text = "Вес:" + _rab.Bon_Weight;
+            label12.Text = "Телосложение:" + _rab.Bon_Body;
+            label18.Text = "Шкура:" + _rab.Bon_Hair;
+            label17.Text = "Окраска:" + _rab.Bon_Color;
             weightList.Items.Clear();
             String[] wgh = Engine.db().getWeights(_rab.ID);
             for (int i = 0; i < wgh.Length / 2; i++)

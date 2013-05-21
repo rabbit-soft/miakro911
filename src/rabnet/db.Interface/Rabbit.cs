@@ -102,9 +102,14 @@ namespace rabnet
         public static String GetFBon(String bon, bool shr)
         {
             Char fbon = '5';
-            for (int i = 1; i < bon.Length; i++)
-                if (bon[i] < fbon)
-                    fbon = bon[i];
+            if (bon.Length == 5)
+            {
+                for (int i = 1; i < bon.Length; i++)
+                    if (bon[i] < fbon)
+                        fbon = bon[i];
+            }
+            else if (bon.Length == 1)
+                fbon = bon[0];
             switch (fbon)
             {
                 case '1': return "III";
@@ -114,6 +119,7 @@ namespace rabnet
             }
             return (shr ? "-" : "Нет");
         }
+        public static String GetFBon(char bon) { return GetFBon(bon.ToString(), false); }
         public static String GetFBon(String bon) { return GetFBon(bon,false); }
         public static String GetFBon(int bon, bool shr) { return GetFBon(bon.ToString(), shr); }
         
@@ -302,12 +308,26 @@ namespace rabnet
         /// Каким окролом родился
         /// </summary>
         public int Okrol { get { return _okrol; } }
-        public DateTime WeightDate { get { return _weightDate; } set { _weightDate = value; } }      
+        public DateTime WeightDate { get { return _weightDate; } set { _weightDate = value; } }    
+        /// <summary>
+        /// Бонитировка
+        /// 0 - НЕ ИЗВЕСТНО
+        /// 1 - Вес
+        /// 2 - Телосложение
+        /// 3 - Густота
+        /// 4 - Окраска
+        /// </summary>
         public string Bon
         {
             get { return _bon; }
             set { _bon = value; }
         }
+
+        public string Bon_Weight { get { return Rabbit.GetFBon(_bon[1]); } }
+        public string Bon_Body { get { return Rabbit.GetFBon(_bon[2]); } }
+        public string Bon_Hair { get { return Rabbit.GetFBon(_bon[3]); } }
+        public string Bon_Color { get { return Rabbit.GetFBon(_bon[4]); } }
+
         public DateTime EventDate
         {
             get { return _eventDate.Date; }

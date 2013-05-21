@@ -66,10 +66,10 @@ namespace rabnet
                 ReportHelper.Append(rw, doc, "born", or.KidsOverAll.ToString());//сколько родила
                 ReportHelper.Append(rw, doc, "okrol", or.Okrol.ToString());
                 ReportHelper.Append(rw, doc, "genom", er.Genoms.Replace(' ', ','));
-                ReportHelper.Append(rw, doc, "wclass", Rabbit.GetFBon("" + er.Bon[1]));
-                ReportHelper.Append(rw, doc, "bclass", Rabbit.GetFBon("" + er.Bon[1]));
-                ReportHelper.Append(rw, doc, "hclass", Rabbit.GetFBon("" + er.Bon[3]));
-                ReportHelper.Append(rw, doc, "cclass", Rabbit.GetFBon("" + er.Bon[4]));
+                ReportHelper.Append(rw, doc, "wclass", er.Bon_Weight);
+                ReportHelper.Append(rw, doc, "bclass", er.Bon_Body);
+                ReportHelper.Append(rw, doc, "hclass", er.Bon_Hair);
+                ReportHelper.Append(rw, doc, "cclass", er.Bon_Color);
             }
             else if (or != null)
             {
