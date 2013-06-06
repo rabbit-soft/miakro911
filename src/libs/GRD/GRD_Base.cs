@@ -9,6 +9,11 @@ using log4net;
 
 namespace RabGRD
 {
+    public class GrdException : Exception
+    {
+        public GrdException(string message) : base(message) { }
+    }
+
     /// <summary>
     /// Thread-safe singleton example created at first call
     /// </summary>

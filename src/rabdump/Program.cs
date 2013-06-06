@@ -31,50 +31,51 @@ namespace rabdump
             using (Mutex mutex = new Mutex(true, MUTEX_NAME, out new_instance))
             {
                 if (new_instance)
-                {
+                {                                        
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+#if PROTECTED
 #if !NOCATCH
+                    AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Unhandled);
+                    Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Threaded);
                     try
                     {
 #endif
-                    Application.EnableVisualStyles();
-                    Application.SetCompatibleTextRenderingDefault(false);
+                        bool exit;
+                        do
+                        {
+                            exit = true;
+
+                            if (!GRD.Instance.ValidKey())
+                            {
+                                throw new GrdException("Ключ защиты не найден!");
+                            }
+                            if (!GRD.Instance.GetFlag(GRD.FlagType.RabDump))
+                            {
+                                throw new GrdException("Данный ключ защиты не позволяет запуск приложения!");
+                            }
+#endif
+                            Application.Run(new MainForm());
+#if PROTECTED
+                            if (!GRD.Instance.ValidKey())
+                            {
+                                exit = false;
+                            }
+                        }
+                        while (!exit);
+#endif
 #if !NOCATCH
-                        AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Unhandled);
-                        Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Threaded);
-#endif
-#if PROTECTED
-                    bool exit;
-                    do
-                    {
-                        exit = true;
-                        //                            int end = 0;
-                        if (!GRD.Instance.ValidKey())
-                        {
-                            MessageBox.Show(null, "Ключ защиты не найден!\nРабота программы будет завершена!",
-                                            "Ключ защиты", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
-                        if (!GRD.Instance.GetFlag(GRD.FlagType.RabDump))
-                        {
-                            MessageBox.Show(null, "Данный ключ защиты не позволяет запуск приложения!\n",
-                                            "Ключ защиты", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
-#endif
-                        Application.Run(new MainForm());
-#if PROTECTED
-                        if (!GRD.Instance.ValidKey())
-                        {
-                            exit = false;
-                        }
                     }
-                    while (!exit);
-#endif
-#if !NOCATCH
+                    catch (GrdException exc)
+                    {
+                        _logger.Error(exc);
+                        MessageBox.Show(exc.Message + Environment.NewLine + "Пробуем удаленно обновить лицензию",
+                            "Ключ защиты",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                        mf.DongleUpdateThread();
                     }
                     catch (Exception e)
                     {
-                        _logger.Error("<exp>", e);
+                        _logger.Error("<exp>", e);                        
                         MessageBox.Show(e.Message + e.StackTrace);
                     }
 #endif

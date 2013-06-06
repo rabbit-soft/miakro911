@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReportViewForm));
-            this.rdlViewer1 = new fyiReporting.RdlViewer.RdlViewer();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tbSave = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -63,41 +62,10 @@
             this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripMenuItem();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.rdlViewer1 = new fyiReporting.RdlViewer.RdlViewer();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // rdlViewer1
-            // 
-            this.rdlViewer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.rdlViewer1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.rdlViewer1.Folder = null;
-            this.rdlViewer1.HighlightAll = false;
-            this.rdlViewer1.HighlightAllColor = System.Drawing.Color.Fuchsia;
-            this.rdlViewer1.HighlightCaseSensitive = false;
-            this.rdlViewer1.HighlightItemColor = System.Drawing.Color.Aqua;
-            this.rdlViewer1.HighlightPageItem = null;
-            this.rdlViewer1.HighlightText = null;
-            this.rdlViewer1.Location = new System.Drawing.Point(0, 52);
-            this.rdlViewer1.Name = "rdlViewer1";
-            this.rdlViewer1.PageCurrent = 1;
-            this.rdlViewer1.Parameters = null;
-            this.rdlViewer1.ReportName = null;
-            this.rdlViewer1.ScrollMode = fyiReporting.RdlViewer.ScrollModeEnum.Continuous;
-            this.rdlViewer1.SelectTool = false;
-            this.rdlViewer1.ShowFindPanel = false;
-            this.rdlViewer1.ShowParameterPanel = false;
-            this.rdlViewer1.ShowWaitDialog = false;
-            this.rdlViewer1.Size = new System.Drawing.Size(787, 418);
-            this.rdlViewer1.SourceFile = null;
-            this.rdlViewer1.SourceRdl = null;
-            this.rdlViewer1.TabIndex = 0;
-            this.rdlViewer1.Text = "rdlViewer1";
-            this.rdlViewer1.UseTrueMargins = true;
-            this.rdlViewer1.Zoom = 0.3704159F;
-            this.rdlViewer1.ZoomMode = fyiReporting.RdlViewer.ZoomEnum.FitPage;
             // 
             // toolStrip1
             // 
@@ -359,6 +327,38 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // rdlViewer1
+            // 
+            this.rdlViewer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.rdlViewer1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.rdlViewer1.Folder = null;
+            this.rdlViewer1.HighlightAll = false;
+            this.rdlViewer1.HighlightAllColor = System.Drawing.Color.Fuchsia;
+            this.rdlViewer1.HighlightCaseSensitive = false;
+            this.rdlViewer1.HighlightItemColor = System.Drawing.Color.Aqua;
+            this.rdlViewer1.HighlightPageItem = null;
+            this.rdlViewer1.HighlightText = null;
+            this.rdlViewer1.Location = new System.Drawing.Point(0, 52);
+            this.rdlViewer1.Name = "rdlViewer1";
+            this.rdlViewer1.PageCurrent = 1;
+            this.rdlViewer1.Parameters = null;
+            this.rdlViewer1.ReportName = null;
+            this.rdlViewer1.ScrollMode = fyiReporting.RdlViewer.ScrollModeEnum.Continuous;
+            this.rdlViewer1.SelectTool = false;
+            this.rdlViewer1.ShowFindPanel = false;
+            this.rdlViewer1.ShowParameterPanel = false;
+            this.rdlViewer1.ShowWaitDialog = false;
+            this.rdlViewer1.Size = new System.Drawing.Size(787, 418);
+            this.rdlViewer1.SourceFile = null;
+            this.rdlViewer1.SourceRdl = null;
+            this.rdlViewer1.TabIndex = 0;
+            this.rdlViewer1.Text = "rdlViewer1";
+            this.rdlViewer1.UseTrueMargins = true;
+            this.rdlViewer1.Zoom = 0.3704159F;
+            this.rdlViewer1.ZoomMode = fyiReporting.RdlViewer.ZoomEnum.FitPage;
+            // 
             // ReportViewForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -384,7 +384,6 @@
 
         #endregion
 
-        private fyiReporting.RdlViewer.RdlViewer rdlViewer1;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton tbSave;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
@@ -417,5 +416,6 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ToolStripButton tbExcel;
+        private fyiReporting.RdlViewer.RdlViewer rdlViewer1;
     }
 }

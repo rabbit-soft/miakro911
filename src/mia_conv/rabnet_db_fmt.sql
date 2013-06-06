@@ -5,7 +5,7 @@ CREATE TABLE users(
 	u_password VARCHAR(50),
 	u_group enum('worker','admin','zootech','butcher') NOT NULL DEFAULT 'admin',
 	KEY(u_name)
-);
+) DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS options;
 CREATE TABLE options(
@@ -15,7 +15,7 @@ CREATE TABLE options(
 	o_value TEXT ,
 	KEY(o_name,o_subname),
 	KEY(o_uid)
-);
+) DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS filters;
 CREATE TABLE filters(
@@ -24,7 +24,7 @@ CREATE TABLE filters(
 	f_filter TEXT,
 	KEY(f_type),
 	KEY(f_name)
-);
+) DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS breeds;
 CREATE TABLE breeds(
@@ -32,7 +32,7 @@ CREATE TABLE breeds(
 	b_name VARCHAR(50) NOT NULL,
 	b_short_name VARCHAR(20) NOT NULL,
 	b_color VARCHAR(100) NOT NULL default "White"
-);
+) DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS names;
 CREATE TABLE names(
@@ -46,7 +46,7 @@ CREATE TABLE names(
 	UNIQUE(n_name,n_sex),
 	KEY(n_use),
 	KEY(n_block_date)
-);
+) DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS tiers;
 CREATE TABLE tiers(
@@ -69,7 +69,7 @@ CREATE TABLE tiers(
 	KEY(t_busy4),
 	KEY(t_heater),
 	KEY(t_nest)
-);
+) DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS minifarms;
 CREATE TABLE minifarms(
@@ -78,7 +78,7 @@ CREATE TABLE minifarms(
 	m_lower INTEGER UNSIGNED NULL DEFAULT NULL,
 	KEY(m_upper),
 	KEY(m_lower)
-);
+) DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS buildings;
 CREATE TABLE buildings(
@@ -91,14 +91,14 @@ CREATE TABLE buildings(
 	KEY(b_parent),
 	KEY(b_level),
 	KEY(b_farm)
-);
+) DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS zones;
 CREATE TABLE zones(
 	z_id INTEGER UNSIGNED NOT NULL PRIMARY KEY,
 	z_name VARCHAR(50) NOT NULL,
 	z_short_name VARCHAR(20) NOT NULL
-);
+) DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS rabbits;
 CREATE TABLE rabbits(
@@ -142,7 +142,7 @@ CREATE TABLE rabbits(
 	KEY(r_zone),
 	KEY(r_status),
 	KEY(r_born)
-) ENGINE = MyISAM;
+) ENGINE = MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS fucks;
 CREATE TABLE fucks(
@@ -167,7 +167,7 @@ CREATE TABLE fucks(
 	KEY(f_type),
 	KEY(f_children),
 	KEY(f_dead)
-);
+) DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS genesis;
 CREATE TABLE genesis(
@@ -176,7 +176,7 @@ CREATE TABLE genesis(
 	g_key VARCHAR(50),
 	KEY(g_id),
 	KEY(g_key)
-);
+) DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS genoms;
 CREATE TABLE genoms(
@@ -185,7 +185,7 @@ CREATE TABLE genoms(
 	KEY(g_id),
 	KEY(g_genom),
 	UNIQUE(g_id,g_genom)
-);
+) DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS weights;
 CREATE TABLE weights(
@@ -193,14 +193,14 @@ CREATE TABLE weights(
 	w_date DATETIME NOT NULL,
 	w_weight INTEGER UNSIGNED NOT NULL,
 	KEY(w_rabid)
-);
+) DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS deadreasons;
 CREATE TABLE deadreasons(
 	d_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	d_name VARCHAR(50) NOT NULL,
 	d_rate INTEGER NOT NULL default 0
-);
+) DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS dead;
 CREATE TABLE dead(
@@ -246,7 +246,7 @@ CREATE TABLE dead(
 	KEY(r_born),
 	KEY(d_date),
 	KEY(d_reason)
-);
+) DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS logtypes;
 CREATE TABLE logtypes(
@@ -254,7 +254,7 @@ CREATE TABLE logtypes(
 	l_name VARCHAR(30) NOT NULL,
 	l_params TEXT,
 	KEY(l_name)
-);
+) DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS logs;
 CREATE TABLE logs(
@@ -273,7 +273,7 @@ CREATE TABLE logs(
 	KEY(l_address2),
 	KEY(l_date),
 	KEY(l_type)
-);
+) DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS logs_arch;
 CREATE TABLE logs_arch(
@@ -292,7 +292,7 @@ CREATE TABLE logs_arch(
 	KEY(l_address2),
 	KEY(l_date),
 	KEY(l_type)
-);
+) DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS import;
 CREATE TABLE `import` (
@@ -303,7 +303,7 @@ CREATE TABLE `import` (
   `t_old_r_id` INT NULL DEFAULT NULL COMMENT 'id кролика в программе экспортера',
   `t_file_guid` VARCHAR(40) NULL COMMENT  'guid файла экспорта',
   PRIMARY KEY (`t_rab_id`)
-) ENGINE = InnoDB COMMENT = 'Таблица привозов';
+) ENGINE = InnoDB  DEFAULT CHARSET=utf8 COMMENT = 'Таблица привозов';
 
 DROP TABLE IF EXISTS products;
 CREATE TABLE products (
@@ -313,7 +313,7 @@ CREATE TABLE products (
   p_image BLOB COMMENT 'изображение',
   p_imgsize INTEGER UNSIGNED  COMMENT 'размер изображения',
   PRIMARY KEY (p_id)
-)ENGINE = InnoDB COMMENT = 'продукция получаемая из кролика';
+)ENGINE = InnoDB  DEFAULT CHARSET=utf8 COMMENT = 'продукция получаемая из кролика';
 
 DROP TABLE IF EXISTS butcher;
 CREATE TABLE butcher (
@@ -323,7 +323,7 @@ CREATE TABLE butcher (
   b_amount FLOAT UNSIGNED NOT NULL COMMENT 'количество ГП',
   b_user INTEGER UNSIGNED NOT NULL COMMENT 'пользователь',
   PRIMARY KEY (b_id)
-)ENGINE = InnoDB COMMENT = 'готовая продукция';
+)ENGINE = InnoDB  DEFAULT CHARSET=utf8 COMMENT = 'готовая продукция';
 
 DROP TABLE IF EXISTS meal;
 CREATE TABLE meal (
@@ -334,7 +334,7 @@ CREATE TABLE meal (
   m_amount INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'в КилоГраммах',
   m_rate FLOAT UNSIGNED NULL COMMENT 'кг комбикорма съедает кролик в день',
   PRIMARY KEY (m_id)
-)ENGINE = InnoDB COMMENT = 'Таблица расчета кормов';
+)ENGINE = InnoDB  DEFAULT CHARSET=utf8 COMMENT = 'Таблица расчета кормов';
 
 DROP TABLE IF EXISTS `vaccines`;
 CREATE  TABLE `vaccines` (
@@ -347,7 +347,7 @@ CREATE  TABLE `vaccines` (
   `v_do_times` SMALLINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'сколько раз назначать прививку в Зоотехплане(0-всегда)',
   PRIMARY KEY (`v_id`) ,
   UNIQUE INDEX `v_name_UNIQUE` (`v_name` ASC) 
-)ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COMMENT = 'Список имеющихся прививок';
+)ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = 'Список имеющихся прививок';
 
 DROP TABLE IF EXISTS `rab_vac`;
 CREATE  TABLE `rab_vac` (
@@ -355,7 +355,7 @@ CREATE  TABLE `rab_vac` (
   `v_id` TINYINT NOT NULL COMMENT 'Тип прививки' ,
   `date` DATE NULL COMMENT 'Когда была сделана прививка',
   `unabled` BIT NOT NULL DEFAULT 0 COMMENT 'Отменена ли прививка'
-)ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COMMENT = 'Какие прививки делались кролику';
+)ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = 'Какие прививки делались кролику';
 
 CREATE TABLE IF NOT EXISTS `clients` (
   `c_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
