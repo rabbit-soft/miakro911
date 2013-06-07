@@ -71,7 +71,6 @@ namespace rabdump
                         _logger.Error(exc);
                         MessageBox.Show(exc.Message + Environment.NewLine + "Пробуем удаленно обновить лицензию",
                             "Ключ защиты",MessageBoxButtons.OK,MessageBoxIcon.Error);
-                        mf.DongleUpdateThread();
                     }
                     catch (Exception e)
                     {
