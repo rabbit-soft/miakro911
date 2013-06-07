@@ -385,7 +385,7 @@ namespace rabnet.forms
             {
                 for (int i = 0; i < b.Sections; i++)
                 {
-                    if (_action == Action.SET_NEST && !b.HasNest(i))
+                    if (_action == Action.SET_NEST && !b.CanHaveNest(i))
                         continue;
                     if ((b.Busy[i].ID==0) || myrab(b.Busy[i].ID)) 
                         _dgcbNewAddress.Items.Add(b.MedName(i));

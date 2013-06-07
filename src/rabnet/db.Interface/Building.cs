@@ -142,6 +142,21 @@ namespace rabnet
             return false;
         }
 
+        /// <summary>
+        /// Можно ли установить гнездовье в данную секцию
+        /// </summary>
+        /// <param name="sec"></param>
+        /// <returns></returns>
+        public bool CanHaveNest(int sec)
+        {
+            return Building.CanHaveNest(this.Type, sec);
+        }
+
+        /// <summary>
+        /// Установлено ли гнездовье в секции
+        /// </summary>
+        /// <param name="sec">Индекс секции (с Нуля)</param>
+        /// <returns></returns>
         public bool HasNest(int sec)
         {
             return Building.HasNest(this.Type, sec, this.Nests);
@@ -216,10 +231,16 @@ namespace rabnet
 
         #region static
 
-        public static bool HasNest(BuildingType type, int sec, String nests)
+        public static bool CanHaveNest(BuildingType type, int sec)
         {
             int c = GetRNHCount(type);
-            if (c == 0) return false;
+            return c > sec;
+        }
+
+        public static bool HasNest(BuildingType type, int sec, String nests)
+        {
+            if (!Building.CanHaveNest(type, sec))
+                return false;
             if (type == BuildingType.DualFemale)
                 return (nests[sec] == '1');
             return (nests[0] == '1');
