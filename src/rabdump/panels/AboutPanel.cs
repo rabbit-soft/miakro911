@@ -14,10 +14,10 @@ namespace rabdump
         public AboutPanel()
         {
             InitializeComponent();
-            Refresh();
+            Reload();
         }
 
-        public void Refresh()
+        public void Reload()
         {
             //this.Text = String.Format("About {0} {0}", AssemblyTitle);
             labelProductName.Text = AssemblyProduct + " (" + AssemblyTitle+")";
