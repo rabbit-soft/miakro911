@@ -392,11 +392,11 @@ WHERE r_id={4:d};", farm, tier_id, sec, ntr, rabbit);
             cmd.ExecuteNonQuery();
         }
 
-        public static void replaceYounger(MySqlConnection sql, int rabbit, int farm, int tier_id, int sec)
-        {
-            removeParent(sql, rabbit);
-            placeRabbit(sql, rabbit, farm, tier_id, sec);
-        }
+        //public static void replaceYounger(MySqlConnection sql, int rabbit, int farm, int tier_id, int sec)
+        //{
+        //    removeParent(sql, rabbit);
+        //    placeRabbit(sql, rabbit, farm, tier_id, sec);
+        //}
 
         public static void setRabbitSex(MySqlConnection sql, int rabbit, Rabbit.SexType sex)
         {
@@ -404,7 +404,7 @@ WHERE r_id={4:d};", farm, tier_id, sec, ntr, rabbit);
             cmd.ExecuteNonQuery();
         }
 
-        public static int cloneRabbit(MySqlConnection sql, int rabFromID, int count, int farm, int tier_id, int sec, Rabbit.SexType sex, int mom)
+        public static int cloneRabbit(MySqlConnection sql, int rabFromID, int count, Rabbit.SexType sex, int mom)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"INSERT INTO rabbits
     (r_parent,r_father,r_mother,r_name,r_surname,r_secname,r_sex,r_bon,r_okrol,r_breed,r_rate,r_group,
@@ -422,14 +422,13 @@ FROM rabbits WHERE r_id={0:d};", rabFromID, mom, count), sql);
             cmd.CommandText = String.Format("INSERT INTO rab_vac(r_id,v_id,`date`,unabled) SELECT {0:d},v_id,`date`,unabled FROM rab_vac WHERE r_id={1:d};",cloneID,rabFromID);
             cmd.ExecuteNonQuery();
             if (sex != Rabbit.SexType.VOID)
-                setRabbitSex(sql, rabFromID, sex);
-            if (mom == 0 && farm != 0)
-                placeRabbit(sql, cloneID, farm, tier_id, sec);
+                setRabbitSex(sql, rabFromID, sex);            
             return cloneID;
         }
 
         public static void replaceRabbit(MySqlConnection sql, int rabbit, int farm, int tier_id, int sec)
         {
+            removeParent(sql, rabbit);
             freeTier(sql, rabbit);
             placeRabbit(sql, rabbit, farm, tier_id, sec);
         }

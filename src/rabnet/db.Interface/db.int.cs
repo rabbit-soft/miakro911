@@ -97,7 +97,7 @@ namespace rabnet
 
         BuildingList getBuildings(Filters f);
         void replaceRabbit(int rid, int farm, int tier_id, int sec);
-        void replaceYounger(int yid, int farm, int tier_id, int sec);
+        //void replaceYounger(int yid, int farm, int tier_id, int sec);
         int NewRabbit(OneRabbit r,int mom);
                 
         void updateBuilding(Building b);
@@ -124,7 +124,7 @@ namespace rabnet
         /// <param name="yid">К какой группе подсосных</param>
         void CountKids(int rid, int dead, int killed, int added,int yid);       
         void setRabbitSex(int rid,Rabbit.SexType sex);
-        int CloneRabbit(int rid, int count, int farm, int tier, int sec, Rabbit.SexType sex, int mom);
+        int CloneRabbit(int rid, int count, Rabbit.SexType sex, int mom);
         string userGroup(int uid);
         void deleteUser(int uid);
         void changeUser(int uid, string name, int group, string password, bool chpass);

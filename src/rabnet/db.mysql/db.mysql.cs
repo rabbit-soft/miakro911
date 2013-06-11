@@ -362,10 +362,10 @@ namespace db.mysql
         {
             RabbitGetter.replaceRabbit(sql, rid, farm, tier_id, sec);
         }
-        public void replaceYounger(int rid, int farm, int tier_id, int sec)
-        {
-            RabbitGetter.replaceYounger(sql, rid, farm, tier_id, sec);
-        }
+        //public void replaceYounger(int rid, int farm, int tier_id, int sec)
+        //{
+        //    RabbitGetter.replaceYounger(sql, rid, farm, tier_id, sec);
+        //}
 
         public int NewRabbit(OneRabbit r, int mom)
         {
@@ -401,9 +401,9 @@ namespace db.mysql
             RabbitGetter.setRabbitSex(sql, rid, sex);
         }
 
-        public int CloneRabbit(int rid, int count, int farm, int tier, int sec, Rabbit.SexType sex, int mom)
+        public int CloneRabbit(int rid, int count, Rabbit.SexType sex, int mom)
         {
-            return RabbitGetter.cloneRabbit(sql, rid, count, farm, tier, sec, sex, mom);
+            return RabbitGetter.cloneRabbit(sql, rid, count, sex, mom);
         }
 #region users
         public string userGroup(int uid)

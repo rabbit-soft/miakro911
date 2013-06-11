@@ -332,26 +332,26 @@ namespace rabnet
         {
             if (_id == 0)
             {
-                this.Address = address;
+                this.Address = address;//todo избавится от этой переменной
                 this.NewAddress = String.Format("{0:d}|{1:d}|{2:d}", farm, tier_id, sec);
             }
             else
             {
-                _eng.logs().log(LogType.REPLACE, ID, 0, this.AddressSmall, address.TrimEnd(' ').Substring(0,address.LastIndexOf(' ')));
                 _eng.db().replaceRabbit(ID, farm, tier_id, sec);
+                _eng.logs().log(LogType.REPLACE, ID, 0, this.AddressSmall, _eng.getRabbit(this.ID).AddressSmall);  //todo сделать хорошо              
             }
             _tag = "";
         }
 
-        public void ReplaceYounger(int yid, int farm, int tier, int sec, string address)
-        {
-            _eng.db().replaceYounger(yid, farm, tier, sec);
-            /*foreach (YoungRabbit y in Youngers) //TODO warning removing tag
-                if (y.ID == yid)
-                    y.tag = "";*/
-            OneRabbit r = _eng.db().GetRabbit(yid);
-            _eng.logs().log(LogType.REPLACE, yid,0,r.AddressSmall,address);
-        }
+        //public void ReplaceYounger(int yid, int farm, int tier, int sec, string address)
+        //{
+        //    _eng.db().replaceYounger(yid, farm, tier, sec);
+        //    /*foreach (YoungRabbit y in Youngers) //TODO warning removing tag
+        //        if (y.ID == yid)
+        //            y.tag = "";*/
+        //    OneRabbit r = _eng.db().GetRabbit(yid);
+        //    _eng.logs().log(LogType.REPLACE, yid,0,r.AddressSmall,address);
+        //}
 
         /// <summary>
         /// Списать кролика
@@ -432,10 +432,11 @@ namespace rabnet
         {
             if (Group <= count) throw new ExBadCount(); //todo вставил проверку на = , надо попроверять
 
-           int nid = _eng.db().CloneRabbit(this.ID, count, farm, tier, sec, this.Sex, this.ParentID);
-           RabNetEngRabbit rab = Engine.get().getRabbit(nid);       //+gambit
-           _eng.logs().log(LogType.CLONE_GROUP, _id, nid, AddressSmall, rab.AddressSmall, String.Format("{0:d} и {1:d}", Group-count ,count));
-           return nid;
+            int nid = _eng.db().CloneRabbit(this.ID, count, this.Sex, this.ParentID);
+            RabNetEngRabbit rab = Engine.get().getRabbit(nid);       //+gambit
+            rab.ReplaceRabbit(farm, tier, sec,"");
+            _eng.logs().log(LogType.CLONE_GROUP, _id, nid, AddressSmall, rab.AddressSmall, String.Format("{0:d} и {1:d}", Group-count ,count));
+            return nid;
         }
         public int Clone(int count) { return Clone(count, 0, 0, 0); }
 

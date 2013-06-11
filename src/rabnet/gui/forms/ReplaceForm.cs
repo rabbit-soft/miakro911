@@ -385,7 +385,8 @@ namespace rabnet.forms
             {
                 for (int i = 0; i < b.Sections; i++)
                 {
-                    if (_action == Action.SET_NEST && !b.CanHaveNest(i))
+                    if ((_action == Action.SET_NEST && !b.CanHaveNest(i))||
+                        b.IsAbsorbed(i))
                         continue;
                     if ((b.Busy[i].ID==0) || myrab(b.Busy[i].ID)) 
                         _dgcbNewAddress.Items.Add(b.MedName(i));
@@ -703,9 +704,9 @@ namespace rabnet.forms
             {
                 //int[] a = getAddress(rp);
                 Address a = _freeBuildings.SearchByMedName(rp.CurAddress);
-                if (rp.Younger)
-                    par.ReplaceYounger(rb.ID, a.Farm, a.Tier, a.Section, rp.CurAddress);
-                else
+                //if (rp.Younger)
+                    //par.ReplaceYounger(rb.ID, a.Farm, a.Tier, a.Section, rp.CurAddress);
+                //else
                     rb.ReplaceRabbit(a.Farm, a.Tier, a.Section, rp.CurAddress);               
             }
 
