@@ -122,7 +122,7 @@ namespace rabnet
         /// <param name="killed">Количество Затоптоных</param>
         /// <param name="added">Прибавилось</param>
         /// <param name="yid">К какой группе подсосных</param>
-        void СountKids(int rid, int dead, int killed, int added,int yid);       
+        void CountKids(int rid, int dead, int killed, int added,int yid);       
         void setRabbitSex(int rid,Rabbit.SexType sex);
         int CloneRabbit(int rid, int count, int farm, int tier, int sec, Rabbit.SexType sex, int mom);
         string userGroup(int uid);

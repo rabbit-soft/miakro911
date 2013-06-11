@@ -391,7 +391,7 @@ namespace db.mysql
             RabbitGetter.killRabbit(sql, id, daysPast, reason, notes);
         }
 
-        public void СountKids(int rid, int dead, int killed, int added,int yid)
+        public void CountKids(int rid, int dead, int killed, int added,int yid)
         {
             RabbitGetter.countKids(sql, rid, dead, killed, added, yid);
         }
