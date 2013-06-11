@@ -9,6 +9,7 @@ using System.IO;
 using Excel = Microsoft.Office.Interop.Excel;
 using gamlib;
 using rabnet.forms;
+using rabnet.RNC;
 
 namespace rabnet
 {
@@ -25,14 +26,14 @@ namespace rabnet
         private static string _repName;
 
         public static void MakeExcelFromXML(XmlNode[] xmls, String repName, string[] headers) { MakeExcelFromXML(xmls, repName, headers, null); }
-        public static void MakeExcelFromXML(XmlNode[] xmls,String repName,string[] headers,DataFillCallBack dataFill)///Для плагинов сделать excel тоже наверное нужны делегаты или еще что
+        public static void MakeExcelFromXML(XmlNode[] xmls, String repName, string[] headers, DataFillCallBack dataFill)///Для плагинов сделать excel тоже наверное нужны делегаты или еще что
         {
             _repName = repName;
             _xmls = xmls;
-            string path = location();
+            string path = getXlsFolderPath();
             if (path == "") return;
-
             path = Helper.DuplicateName(path+ "\\" + filename());
+
             object misValue = Type.Missing;
             Excel.Application xlApp = new Excel.ApplicationClass();
             Excel.Workbook xlWorkBook = xlApp.Workbooks.Add(misValue);
@@ -91,10 +92,15 @@ namespace rabnet
             Excel.Worksheet xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
             try
             {
-                string path = location();
+                string path = getXlsFolderPath();
                 if (path == "") return;
                 path = Helper.DuplicateName(path + "\\" + name + " " + DateTime.Now.ToShortDateString() + ".xls");
-                wf.Flush(); wf.MaxValue = 100; wf.Show(); wf.Style = ProgressBarStyle.Blocks;
+                
+                wf.Flush(); 
+                wf.MaxValue = 100; 
+                wf.Show(); 
+                wf.Style = ProgressBarStyle.Blocks;
+
                 int rate = lv.Items.Count / 100;
                 int cols = lv.Columns.Count;//для обеспечения быстроты заполнения
 
@@ -134,25 +140,28 @@ namespace rabnet
             killExcelProcess();
         }
 
-        private static string location()
+        private static string getXlsFolderPath()
         {
+            String path = "";
             if (Engine.opt().getIntOption(Options.OPT_ID.XLS_ASK) == 1)
             {
                 FolderBrowserDialog dlg = new FolderBrowserDialog();
                 if (dlg.ShowDialog() == DialogResult.OK)
-                    return dlg.SelectedPath;
-                else return "";
+                    return dlg.SelectedPath;                
             }
             else
             {
-                string path = Engine.opt().getOption(Options.OPT_ID.XLS_FOLDER);
+                path = Engine.opt().getOption(Options.OPT_ID.XLS_FOLDER);
                 if (!Directory.Exists(path))
                 {
-                    Engine.opt().setOption(Options.OPT_ID.XLS_FOLDER, Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
-                    return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                }
-                else return path;
+                    path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                    path = Helper.PathCombine(path,RabnetConfig.MY_DOCUMENTS_APP_FOLDER,"excel");
+                    Engine.opt().setOption(Options.OPT_ID.XLS_FOLDER, path);
+                }                
             }
+            if (path != "" && !Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            return path;
         }
 
         private static string[,] doMegaMAtr(XmlNode roteNode)

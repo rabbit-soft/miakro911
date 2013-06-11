@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using rabnet.RNC;
 #if PROTECTED
     using RabGRD;
+using gamlib;
 #endif
 
 namespace rabdump
@@ -242,12 +243,11 @@ namespace rabdump
 
         private string getDefaultDumpPath()
         {
-                string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                path = Path.Combine(path, @"Miakro911\dumps");
-                if (!Directory.Exists(path))
-                    Directory.CreateDirectory(path);
-                return path;
-            
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            path = Helper.PathCombine(path, RabnetConfig.MY_DOCUMENTS_APP_FOLDER, RabnetConfig.MY_DUMPS_FOLDER);
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            return path;            
         }
 
         private void chServerSend_CheckedChanged(object sender, EventArgs e)

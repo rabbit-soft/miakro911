@@ -16,6 +16,12 @@ namespace rabnet.RNC
     [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
     public partial class RabnetConfig
     {
+        /// <summary>
+        /// Название папки в "Мои документы"
+        /// </summary>
+        public const string MY_DOCUMENTS_APP_FOLDER = "Miakro911";
+        public const string MY_DUMPS_FOLDER = "dumps";
+
         public enum RNCOption
         {
             MysqlPath,

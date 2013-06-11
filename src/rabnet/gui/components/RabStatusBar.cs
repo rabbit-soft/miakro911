@@ -322,23 +322,4 @@ namespace rabnet.components
             _dataThread = null;
         }
     }
-
-    //public class RSBClickEvent : EventArgs
-    //{
-    //    public int type;
-    //    public RSBClickEvent(int type)
-    //        : base()
-    //    {
-    //        this.type = type;
-    //    }
-    //}
-
-    //public class RSBItemEvent : EventArgs
-    //{
-    //    public IData data;
-    //    public RSBItemEvent(IData data)
-    //    {
-    //        this.data = data;
-    //    }
-    //}
 }

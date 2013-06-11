@@ -137,5 +137,13 @@ namespace gamlib
                 else return path + append + ext;
             }
         }
+
+        public static string PathCombine(params string[] args)
+        {
+            string result = "";
+            for (int i = 0; i < args.Length; i++)
+                result = Path.Combine(result, args[i]);
+            return result;
+        }
     }
 }
