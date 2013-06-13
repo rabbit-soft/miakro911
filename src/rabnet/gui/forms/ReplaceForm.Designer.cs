@@ -280,6 +280,7 @@
             this.btUniteDown.TabIndex = 2;
             this.btUniteDown.Text = "Объединить низ";
             this.btUniteDown.UseVisualStyleBackColor = true;
+            this.btUniteDown.Visible = false;
             this.btUniteDown.Click += new System.EventHandler(this.btUniteUp_Click);
             // 
             // btUniteUp
@@ -290,6 +291,7 @@
             this.btUniteUp.TabIndex = 1;
             this.btUniteUp.Text = "Объединить верх";
             this.btUniteUp.UseVisualStyleBackColor = true;
+            this.btUniteUp.Visible = false;
             this.btUniteUp.Click += new System.EventHandler(this.btUniteUp_Click);
             // 
             // btCombine

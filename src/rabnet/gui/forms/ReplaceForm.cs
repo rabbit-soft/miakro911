@@ -461,8 +461,7 @@ namespace rabnet.forms
                 btSeparate.Enabled = btChangeAddresses.Enabled = btSeparateByOne.Enabled=_noboys;
             }
             if (selectedRow != -1 && selectedRow <= dataGridView1.Rows.Count-1)            
-                dataGridView1.CurrentCell = dataGridView1[0, selectedRow];
-            
+                dataGridView1.CurrentCell = dataGridView1[0, selectedRow];            
         }
 
         private RP rp(int idx)
@@ -615,24 +614,6 @@ namespace rabnet.forms
             rp().SplitGroup((int)numericUpDown1.Value);
             update();
         }
-        /// <summary>
-        /// Преобразует строку адреса типа  555а[Кварта] в масссив цифр
-        /// </summary>
-        /// <param name="rp">По какой записи ищут клетку</param>
-        /// <returns>Массив (Номер фермы, Ярус, Клетка)</returns>
-        //private int[] getAddress(RP rp)
-        //{
-        //    string s = rp.CurAddress;
-        //    if (s == Rabbit.NULL_ADDRESS)
-        //        return new int[] { 0, 0, 0 };
-        //    for (int i = 0; i < _freeBuildings.Count; i++)
-        //        for (int j = 0; j < _freeBuildings[i].Sections; j++)
-        //            if (_freeBuildings[i].MedName(j) == s)
-        //            {
-        //                return new int[]{(int)_freeBuildings[i].Farm, _freeBuildings[i].TierID, j};
-        //            }
-        //    return null;
-        //}
 
         private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
@@ -777,7 +758,12 @@ namespace rabnet.forms
             try
             {
                 if (_globalError)
-                    throw new ApplicationException("Не всем кроликам назначены уникальные клетки для пересадки.");
+                {
+                    //throw new ApplicationException("Не всем кроликам назначены уникальные клетки для пересадки.");
+                    if (MessageBox.Show("Не всем кроликам назначены уникальные клетки для пересадки." + Environment.NewLine + "Жедаете продолжить?", 
+                        "Внимание", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) != DialogResult.OK)
+                        return;
+                }
                 foreach (RP r in _replaceList)
                     commitRabbit(r,0,false);
                 foreach (RP r in _replaceList)
@@ -853,35 +839,33 @@ namespace rabnet.forms
 
         private void btUniteUp_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.SelectedRows.Count != 2) return;
-            RP rUp, rDown;
-            if (dataGridView1.SelectedRows[0].Index < dataGridView1.SelectedRows[1].Index)
-            {
-                rUp = rp(dataGridView1.SelectedRows[0].Index);
-                rDown = rp(dataGridView1.SelectedRows[1].Index);
-            }
-            else
-            {
-                rUp = rp(dataGridView1.SelectedRows[1].Index);
-                rDown = rp(dataGridView1.SelectedRows[0].Index);
-            }
-            RP rWith, r;
-            if (sender == btUniteUp)
-            {
-                rWith = rUp;
-                r = rDown;
-            }
-            else//if (sender == btUniteUp)
-            {
-                rWith = rDown;
-                r = rUp;
-            }
-            //RP rWith = rp(dataGridView1.SelectedRows[(sender == btUniteUp ? 1 : 0)].Index);
-            //RP rFrom = rp(dataGridView1.SelectedRows[(sender == btUniteUp ? 0 : 1)].Index);
-            r.PlaceWith = rWith;
-            rWith.PlaceWith = null;
-            r.CurAddress = rWith.CurAddress;
-            update();
+            //if (dataGridView1.SelectedRows.Count != 2) return;
+            //RP rUp, rDown;
+            //if (dataGridView1.SelectedRows[0].Index < dataGridView1.SelectedRows[1].Index)
+            //{
+            //    rUp = rp(dataGridView1.SelectedRows[0].Index);
+            //    rDown = rp(dataGridView1.SelectedRows[1].Index);
+            //}
+            //else
+            //{
+            //    rUp = rp(dataGridView1.SelectedRows[1].Index);
+            //    rDown = rp(dataGridView1.SelectedRows[0].Index);
+            //}
+            //RP rWith, r;
+            //if (sender == btUniteUp)
+            //{
+            //    rWith = rUp;
+            //    r = rDown;
+            //}
+            //else//if (sender == btUniteUp)
+            //{
+            //    rWith = rDown;
+            //    r = rUp;
+            //}
+            //r.PlaceWith = rWith;
+            //rWith.PlaceWith = null;
+            //r.CurAddress = rWith.CurAddress;
+            //update();
         }
 
         public int getGirlOut()
