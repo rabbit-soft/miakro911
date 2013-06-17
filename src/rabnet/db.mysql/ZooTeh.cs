@@ -30,7 +30,7 @@ namespace db.mysql
  	        switch(type)
             {
                 case JobType.OKROL: return !_flt.safeBool(Filters.SHORT) ? "Принять окрол" : "Окрол";
-                case JobType.VUDVOR: return !_flt.safeBool(Filters.SHORT) ? "Выдворение" : "Вдв";
+                case JobType.NEST_OUT: return !_flt.safeBool(Filters.SHORT) ? "Выдворение" : "Вдв";
                 case JobType.COUNT_KIDS: return !_flt.safeBool(Filters.SHORT) ? "Подсчет гнездовых" : "счтГнезд";
                 case JobType.PRE_OKROL: return !_flt.safeBool(Filters.SHORT) ? "Предокрольный осмотр" : "ПредОкрОс";
                 case JobType.GIRLS_OUT: return !_flt.safeBool(Filters.SHORT) ? "Отсадка девочек" : "отсадДев";
@@ -50,7 +50,7 @@ namespace db.mysql
             switch (type)
             {
                 case JobType.OKROL: fillOkrol(rd); break;
-                case JobType.VUDVOR: fillVudvor(rd); break;
+                case JobType.NEST_OUT: fillVudvor(rd); break;
                 case JobType.COUNT_KIDS: fillCounts(rd); break;
                 case JobType.PRE_OKROL: break;                
                 case JobType.GIRLS_OUT: //fall through
@@ -86,7 +86,7 @@ namespace db.mysql
             ID2 = rd.GetInt32("r_area");
             if (ID2 == 1 && Building.ParseType(rd.GetString("t_type")) == BuildingType.Jurta)
                 ID2 = 0;
-            Comment = String.Format("№{0:s} {1:s}{2:s}", rd.GetString("r_status"), _flt.safeInt(Filters.SHORT) == 0 ? "подсосных" : "+", rd.GetString("suckers"));
+            Comment = String.Format("№{0:s} {1:s}{2:s}", rd.GetString("r_status"), _flt.safeInt(Filters.SHORT) == 0 ? "подсосных:" : "+", rd.GetString("suckers"));
         }
 
         private void fillBoysByOne(MySqlDataReader rd)
@@ -273,7 +273,7 @@ namespace db.mysql
             switch (type)
             {
                 case JobType.OKROL: return qOkrol();
-                case JobType.VUDVOR: return qVudvod();
+                case JobType.NEST_OUT: return qVudvod();
                 case JobType.COUNT_KIDS: return qCounts();
                 case JobType.PRE_OKROL: return qPreOkrol();
                 case JobType.GIRLS_OUT:

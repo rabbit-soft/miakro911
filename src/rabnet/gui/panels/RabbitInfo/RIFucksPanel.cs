@@ -96,7 +96,7 @@ namespace rabnet
         private void btFuckHer_Click(object sender, EventArgs e)
         {
             Fuck f = lvFucks.SelectedItems[0].Tag as Fuck;
-            MakeFuckForm dlg = new MakeFuckForm(_rab.ID, f.PartnerId);
+            FuckForm dlg = new FuckForm(_rab.ID, f.PartnerId);
             if (dlg.ShowDialog() == DialogResult.OK)
                 cancelUnable();
             cancelUnable();
@@ -107,7 +107,7 @@ namespace rabnet
         {
             if (lvFucks.SelectedItems.Count != 1) return;
             Fuck f = lvFucks.SelectedItems[0].Tag as Fuck;
-            MakeFuckForm mf = new MakeFuckForm(_rab.ID, f.PartnerId, 1);
+            FuckForm mf = new FuckForm(_rab.ID, f.PartnerId, 1);
             if (mf.ShowDialog() == DialogResult.OK && mf.SelectedFucker != f.Id)
                 Engine.db().changeFucker(f.Id, mf.SelectedFucker);
             cancelUnable();

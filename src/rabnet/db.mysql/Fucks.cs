@@ -89,7 +89,7 @@ ORDER BY fullname;",
         ? String.Format("(r_status>0 OR (r_status=0 AND r_group=1 AND (To_Days(NOW())-To_Days(r_born))>{0:d}) )",flt.safeInt(Filters.MAKE_CANDIDATE,120)) 
         : "r_status=2"),
     (flt.safeBool(Filters.SHOW_REST,false) ? "" ///показывать ли отдыхающих
-        : String.Format("AND ( r_last_fuck_okrol IS NULL OR Date(NOW()) > Date(Date_Add(r_last_fuck_okrol,INTERVAL {0:d} DAY)) )",flt.safeInt(Filters.MALE_REST,0)) )
+        : String.Format("AND ( r_last_fuck_okrol IS NULL OR NOW() > Date(Date_Add(r_last_fuck_okrol,INTERVAL {0:d} DAY)) )",flt.safeInt(Filters.MALE_REST,0)) )
     //,(femaleId !=0 ? String.Format("(SELECT SUM(f_times)     FROM fucks WHERE f_partner=r_id AND f_rabid={0:d})",femaleId): "'0'"),
     //(femaleId !=0 ? String.Format("(SELECT SUM(f_children)  FROM fucks WHERE f_partner=r_id AND f_rabid={0:d})",femaleId): "'0'")
     ), sql);

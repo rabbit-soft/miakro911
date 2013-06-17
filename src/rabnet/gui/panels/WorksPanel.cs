@@ -155,7 +155,7 @@ namespace rabnet.panels
             switch (type)
             {
                 case JobType.OKROL: okrolMenuItem.Visible = true; break;
-                case JobType.VUDVOR: vudvorMenuItem.Visible = true; break;
+                case JobType.NEST_OUT: vudvorMenuItem.Visible = true; break;
                 case JobType.COUNT_KIDS: countChangedMenuItem.Visible=countsMenuItem.Visible = true; break;
                 case JobType.PRE_OKROL: preokrolMenuItem.Visible = true; break;
                 case JobType.BOYS_OUT: boysOutMenuItem.Visible = true; break;
@@ -218,7 +218,7 @@ namespace rabnet.panels
             bool needUpdate = Engine.opt().getIntOption(Options.OPT_ID.UPDATE_ZOO) == 1;
             switch (job.Type)
             {                
-                case JobType.VUDVOR:
+                case JobType.NEST_OUT:
                     RabNetEngBuilding b = Engine.get().getBuilding(job.ID);
                     if (job.ID2 == 0)
                         b.setNest(false);
@@ -282,7 +282,7 @@ namespace rabnet.panels
                         res = DialogResult.Cancel;
                     }
                     if (id != 0)
-                        res = (new MakeFuckForm(id)).ShowDialog();
+                        res = (new FuckForm(id)).ShowDialog();
                     break;    
                                 
                 case JobType.OKROL:

@@ -1,6 +1,6 @@
 ﻿namespace rabnet.forms
 {
-    partial class MakeFuckForm
+    partial class FuckForm
     {
         /// <summary>
         /// Required designer variable.

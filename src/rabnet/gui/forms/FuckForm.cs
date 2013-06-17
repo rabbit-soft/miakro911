@@ -9,9 +9,9 @@ using log4net;
 
 namespace rabnet.forms
 {
-    public partial class MakeFuckForm : Form
+    public partial class FuckForm : Form
     {
-        private ILog _logger = LogManager.GetLogger(typeof(MakeFuckForm));
+        private ILog _logger = LogManager.GetLogger(typeof(FuckForm));
 
         private const int IND_NAME = 0;
         private const int IND_STATE = 1;
@@ -31,7 +31,7 @@ namespace rabnet.forms
         int selected = 0;
         int action = 0;
 
-        public MakeFuckForm()
+        public FuckForm()
         {
             InitializeComponent();
             initialHints();
@@ -50,7 +50,7 @@ namespace rabnet.forms
             listView1.ListViewItemSorter = cs;
             FormSizeSaver.Append(this);
         }
-        public MakeFuckForm(int r1): this(r1,0) { }
+        public FuckForm(int r1): this(r1,0) { }
 
         private void initialHints()
         {
@@ -74,7 +74,7 @@ namespace rabnet.forms
             cbName.Enabled = btNames.Enabled = rab1.NameID == 0;
         }
 
-        public MakeFuckForm(int r1, int r2):this()
+        public FuckForm(int r1, int r2):this()
         {
             rab1 = Engine.get().getRabbit(r1);
             label1.Text = rab1.FullName;
@@ -85,7 +85,7 @@ namespace rabnet.forms
                 Text = btOk.Text = "Вязать";
             fillNames();
         }
-        public MakeFuckForm(int r1, int r2, int action):this(r1,r2)
+        public FuckForm(int r1, int r2, int action):this(r1,r2)
         {
             this.action = action;
         }
@@ -101,7 +101,7 @@ namespace rabnet.forms
             flt[Filters.MAKE_CANDIDATE] = _makeCand.ToString();
             flt[Filters.SHOW_CANDIDATE] = chCandidates.Checked ? "1" : "0";
             flt[Filters.SHOW_REST] = chRest.Checked ? "1" : "0";
-            //TODO здесь трахатели идеалогически неверно передаются через объекты Трыхов
+            //TODO здесь трахатели идеалогически неверно передаются через объекты Трахов
             FuckPartner[] fs = Engine.db().GetAllFuckers(flt);
             listView1.BeginUpdate();
 
@@ -112,7 +112,7 @@ namespace rabnet.forms
 
                 ListViewItem li = listView1.Items.Add(f.FullName);
                 li.UseItemStyleForSubItems = false;
-                if (f.LastFuck != DateTime.MinValue && f.LastFuck.Date.AddDays(_malewait) >= DateTime.Now.Date)
+                if (f.LastFuck != DateTime.MinValue && DateTime.Now < f.LastFuck.Date.AddDays(_malewait) )
                     li.SubItems[IND_NAME].ForeColor = chRest.ForeColor;
                 li.Tag = f;
                 li.SubItems.Add("Мальчик");

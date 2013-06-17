@@ -21,7 +21,7 @@ namespace rabnet
     {
         NONE,
         OKROL,
-        VUDVOR,
+        NEST_OUT,
         COUNT_KIDS,
         PRE_OKROL,
         BOYS_OUT,

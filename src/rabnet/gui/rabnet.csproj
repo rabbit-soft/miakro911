@@ -452,11 +452,11 @@
     <Compile Include="forms\LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="forms\MakeFuckForm.cs">
+    <Compile Include="forms\FuckForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\MakeFuckForm.Designer.cs">
-      <DependentUpon>MakeFuckForm.cs</DependentUpon>
+    <Compile Include="forms\FuckForm.Designer.cs">
+      <DependentUpon>FuckForm.cs</DependentUpon>
     </Compile>
     <Compile Include="forms\MiniFarmForm.cs">
       <SubType>Form</SubType>
@@ -716,8 +716,8 @@
       <DependentUpon>LoginForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\MakeFuckForm.resx">
-      <DependentUpon>MakeFuckForm.cs</DependentUpon>
+    <EmbeddedResource Include="forms\FuckForm.resx">
+      <DependentUpon>FuckForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\MiniFarmForm.resx">

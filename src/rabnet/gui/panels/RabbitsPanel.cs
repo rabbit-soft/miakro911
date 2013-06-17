@@ -618,7 +618,7 @@ namespace rabnet.panels
 
             try
             {
-                MakeFuckForm dlg = new MakeFuckForm((listView1.SelectedItems[0].Tag as AdultRabbit).ID);
+                FuckForm dlg = new FuckForm((listView1.SelectedItems[0].Tag as AdultRabbit).ID);
                 if (dlg.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
                     _rsb.Run();
             }

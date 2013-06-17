@@ -539,7 +539,7 @@ namespace rabnet.forms
 
         private void button8_Click(object sender, EventArgs e)
         {
-            MakeFuckForm dlg = new MakeFuckForm(_rab.ID);
+            FuckForm dlg = new FuckForm(_rab.ID);
             if (dlg.ShowDialog() == DialogResult.OK)
                 btCancel.Enabled = false;
             updateData();

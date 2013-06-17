@@ -26,7 +26,7 @@ namespace rabnet
             if (f.safeValue("act", "O").Contains("O") && type == 0)
                 zjobs.AddRange(eng.db2().GetZooTechJobs(f,JobType.OKROL));
             if (f.safeValue("act", "V").Contains("V") && type == 1)
-                zjobs.AddRange(eng.db2().GetZooTechJobs(f,JobType.VUDVOR));
+                zjobs.AddRange(eng.db2().GetZooTechJobs(f,JobType.NEST_OUT));
             if (f.safeValue("act", "C").Contains("C") && type == 2)
                 getCounts(zjobs);
             if (f.safeValue("act", "P").Contains("P") && type == 3)
