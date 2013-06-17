@@ -21,6 +21,15 @@ namespace gamlib
             for (int i = 0; i < arr.Length; i++)           
                 arr[i] =(byte)(byte.MaxValue-arr[i]);           
         }
-        
+
+        public static bool Array_IsEmpty(byte[] arr)
+        {
+            for (int i = 0; i < arr.Length; i++)
+                if (arr[i] != 0)
+                {
+                    return false;
+                }
+            return true;
+        }
     }
 }

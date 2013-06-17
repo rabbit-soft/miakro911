@@ -71,15 +71,8 @@ namespace rabdump
                     _reqSend.UserID = GRD.Instance.GetClientID();
                     _reqSend.Key = GRD.Instance.GetKeyCode();
                     if (_reqSend.UserID == 0) // если старый ключ
-                    {
-                        bool empty=true;
-                        for(int i=0;i<_reqSend.Key.Length;i++)
-                            if (_reqSend.Key[i]!=0)
-                            {
-                                empty = false;
-                                break;
-                            }
-                        if (empty)
+                    {                        
+                        if (Helper.Array_IsEmpty(_reqSend.Key))
                         {
                             byte[] defPass = Encoding.UTF8.GetBytes("user_with_old_key_10578vnr/* ekei");
                             Array.Copy(defPass, _reqSend.Key, defPass.Length);
