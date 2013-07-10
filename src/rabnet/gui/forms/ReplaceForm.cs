@@ -760,7 +760,7 @@ namespace rabnet.forms
                 if (_globalError)
                 {
                     //throw new ApplicationException("Не всем кроликам назначены уникальные клетки для пересадки.");
-                    if (MessageBox.Show("Не всем кроликам назначены уникальные клетки для пересадки." + Environment.NewLine + "Жедаете продолжить?", 
+                    if (MessageBox.Show("Не всем кроликам назначены уникальные клетки для пересадки." + Environment.NewLine + "Желаете продолжить?", 
                         "Внимание", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) != DialogResult.OK)
                         return;
                 }

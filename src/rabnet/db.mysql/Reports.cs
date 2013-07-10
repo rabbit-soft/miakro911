@@ -515,8 +515,10 @@ WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d} AND inBuilding({0:d},
             int bld = f.safeInt("bld");
             XmlDocument doc=new XmlDocument();
             doc.AppendChild(doc.CreateElement("Rows"));
-            MySqlCommand cmd=new MySqlCommand(String.Format(@"SELECT m_id,t_type,t_busy1,t_busy2,t_busy3,t_busy4 
-FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AND (t_id=m_upper OR t_id=m_lower) AND inBuilding({0:d},m_id);",bld),sql);
+            MySqlCommand cmd=new MySqlCommand(String.Format(@"SELECT m_id, t_type, t_busy1, t_busy2, t_busy3, t_busy4, t_delims
+                FROM tiers,minifarms 
+                WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AND (t_id=m_upper OR t_id=m_lower) AND inBuilding({0:d},m_id)
+                ORDER BY m_id;",bld),sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read())
             {
@@ -525,7 +527,7 @@ FROM tiers,minifarms WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AN
                     if (rd.IsDBNull(i + 2) || rd.GetInt32(i + 2) == 0)///NULL быть не должно
                     {
                         doc.DocumentElement.AppendChild(doc.CreateElement("Row")).AppendChild(
-                            doc.CreateElement("address")).AppendChild(doc.CreateTextNode(rd.GetString(0) + Building.GetSecRus(rd.GetString(1), i, "000")));
+                            doc.CreateElement("address")).AppendChild(doc.CreateTextNode(rd.GetString("m_id") + Building.GetSecRus(rd.GetString("t_type"), i, rd.GetString("t_delims"))));
                     }
                 }
             }
