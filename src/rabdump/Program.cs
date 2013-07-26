@@ -34,13 +34,14 @@ namespace rabdump
                 {                                        
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
-#if PROTECTED
+
 #if !NOCATCH
                     AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Unhandled);
                     Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Threaded);
                     try
                     {
 #endif
+#if PROTECTED
                         bool exit;
                         do
                         {
