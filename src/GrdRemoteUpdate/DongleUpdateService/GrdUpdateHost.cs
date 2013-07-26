@@ -23,24 +23,23 @@ namespace DongleUpdateService
                 throw new Exception("Не верный форматы даты окончания поддержки.");
             byte[] keyCode = Convert.FromBase64String(base64key);
             _log.Info(String.Format("Request For UpdateDongle {5:d} {0:s} {1:d} {2:d} {3:s} {4:s}", orgName, farms, flags, startDate, endDate, orgId));
-            GRDVendorKey key = new GRDVendorKey();
-            string ans="";
-            try
-            {
-                key.GetTRUAnswer(out ans, base64_question, orgId, orgName, farms, flags,
+            GRDVendorKey key = new GRDVendorKey();           
+            //try
+            //{
+                string ans = key.GetTRUAnswer(base64_question, orgId, orgName, farms, flags,
                     dtStart,
                     dtEnd,
                     keyCode,
                     dtSupport);
                 key.Dispose();
-            }
-            catch (Exception exc)
-            {
-                _log.Error(exc);
-            }
+            //}
+            //catch (Exception exc)
+            //{ 
+            //    _log.Error(exc);
+            //}
             key.Dispose();
             if (ans == "")
-                throw new Exception("Ошибка генерации числа-ответа на сервере");
+                throw new Exception("Сервис обновления ключей");
             return ans;
         }
 

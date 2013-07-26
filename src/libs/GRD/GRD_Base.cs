@@ -11,7 +11,16 @@ namespace RabGRD
 {
     public class GrdException : Exception
     {
+        private int _code = 0;
+
         public GrdException(string message) : base(message) { }
+        public GrdException(string message, int code)
+            : this(message)
+        {
+            _code = code;
+        }
+
+        public int Code { get { return _code; } }
     }
 
     /// <summary>

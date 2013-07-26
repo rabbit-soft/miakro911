@@ -58,38 +58,6 @@ namespace RabGRD
                                            MasterCode + CryptMs);
         }
 
-        #region delete
-        /*public void CleanUserBuf()
-        {
-            _userBuf = new byte[4096];
-            _userBufSize = 0;
-        }*/
-
-        /*public GRDVendorKey(uint keyID, byte[] truKey)
-        {
-            uint len = 16;
-            if (truKey.Length < 16)
-            {
-                len = (uint)truKey.Length;
-            }
-            Array.Copy(truKey, _keyTRU, len);
-            _findPropDongleFlags = GrdFM.ID;
-            _findPropDongleID = keyID;
-            _findPropDongleType = GrdDT.TRU;
-            connect();
-        }*/
-
-        /*public uint UAMOffset
-        {
-            get { return _uamOffset; }
-        }*/
-
-        /*public uint ProgID
-        {
-            get { return _prog; }
-        }*/
-        #endregion delete
-
         /// <summary>
         /// Подключается к первому найденному ключу
         /// </summary>
@@ -189,14 +157,25 @@ namespace RabGRD
             return writeMask(pbyWholeMask, protectLength, wNumberOfItems);
         }
 
-
-        public GrdE GetTRUAnswer(out string base64_answer, string base64_question, int orgId,string orgName, int farms, int flags, DateTime startDate, DateTime endDate,byte[] keyCode, DateTime endSuppors)
+        /// <summary>
+        /// Создает число-ответ для удаленного обновления ключа защиты (TRU)
+        /// </summary>
+        /// <param name="base64_question">Число-вопрос</param>
+        /// <param name="orgId">ID клиента</param>
+        /// <param name="orgName">Название организации</param>
+        /// <param name="farms">Количество ферм</param>
+        /// <param name="flags">Маска опций</param>
+        /// <param name="startDate">Дата регистрации</param>
+        /// <param name="endDate">Дата окончания лицензии</param>
+        /// <param name="keyCode">Индивидуальный ключ шифрования посылки для клиента 262байта</param>
+        /// <param name="endSuppors">Дата окончания поддержки</param>
+        /// <returns>BASE46 string key</returns>
+        public string GetTRUAnswer(string base64_question, int orgId,string orgName, int farms, int flags, DateTime startDate, DateTime endDate,byte[] keyCode, DateTime endSuppors)
         {            
             byte[] buf = Convert.FromBase64String(base64_question);
 
             TRUQuestionStruct qq = (TRUQuestionStruct)GRDUtils.RawDeserialize(buf, typeof(TRUQuestionStruct));
 
-            base64_answer = "";
             GrdE retCode; // Error code for all Guardant API functions
             string logStr = "Decrypt and validate question: ";
 
@@ -213,7 +192,10 @@ namespace RabGRD
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK)
-                return retCode;
+            {
+                int code = (int)retCode;
+                throw new GrdException(GrdApi.PrintResult(code), code);
+            }                
 
             uint protectLength;
             ushort wNumberOfItems;
@@ -234,7 +216,10 @@ namespace RabGRD
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK)
-                return retCode;
+            {
+                int code = (int)retCode;
+                throw new GrdException(GrdApi.PrintResult(code), code);
+            }    
 
             byte[] answer = new byte[pbyWholeMask.Length * 3 + 128];
             int ansSize = answer.Length;
@@ -255,11 +240,12 @@ namespace RabGRD
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK)
-                return retCode;
+            {
+                int code = (int)retCode;
+                throw new GrdException(GrdApi.PrintResult(code), code);
+            }    
 
-            //string base64data = 
-            base64_answer = Convert.ToBase64String(answer, 0, ansSize, Base64FormattingOptions.InsertLineBreaks);
-            return GrdE.OK;
+            return Convert.ToBase64String(answer, 0, ansSize, Base64FormattingOptions.InsertLineBreaks);            
         }
 
         private byte[] makeUserBuff(int orgId,string orgName, int farms, int flags, DateTime startDate, DateTime endDate)
