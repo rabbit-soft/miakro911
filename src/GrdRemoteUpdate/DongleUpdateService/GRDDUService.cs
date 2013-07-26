@@ -21,11 +21,12 @@ namespace DongleUpdateService
         protected ILog _logger = LogManager.GetLogger(typeof(GRDDUService));
         private string _srv = "http://*:11000/";//rpc2/";
         HttpListener _listener;
-        string _appName = "GRDDUService";
 
         public GRDDUService()
         {
             InitializeComponent();
+            addSysLog("приветик"); 
+            Environment.Exit(0);
 #if DEBUG
             startListen();
 #endif
@@ -45,10 +46,6 @@ namespace DongleUpdateService
             try
             {
                 addSysLog("stoping");
-                if (EventLog.SourceExists(_appName))
-                {
-                    EventLog.DeleteEventSource(_appName);
-                }
                 if (_listener != null && _listener.IsListening)
                     _listener.Stop();
             }
@@ -62,29 +59,21 @@ namespace DongleUpdateService
 #endif
 
         private void addSysLog(string log,EventLogEntryType type)
-        {
-            string appName = "GRDDUService";
+        {            
             try
-            {
-                if (EventLog.SourceExists(appName))
-                {
-                    EventLog.DeleteEventSource(appName);
-                }
-
-                if (!EventLog.SourceExists(appName))
+            {                
+                if (!EventLog.SourceExists(this.eventLog1.Source))
                 {
                     _logger.Debug("creating event source");
-                    EventLog.CreateEventSource(appName, appName);
+                    EventLog.CreateEventSource(this.eventLog1.Source, this.eventLog1.Log);                    
                 }
-
-                eventLog1.Source = appName;
-                eventLog1.Log = appName;
+                
                 eventLog1.WriteEntry(log, type);
             }
             catch (Exception exc)
             {
                 _logger.Error(exc);
-                addSysLog(exc.StackTrace, EventLogEntryType.Error);
+                //addSysLog(exc.StackTrace, EventLogEntryType.Error);
             }
         }
         private void addSysLog(string log)
@@ -129,11 +118,12 @@ namespace DongleUpdateService
             // 
             // eventLog1
             // 
-            this.eventLog1.Log = "GRDDUService";
-            this.eventLog1.Source = "GRDDUService";
+            this.eventLog1.Log = "Application";
+            this.eventLog1.Source = "DongleUpdateService";
             ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).EndInit();
 
         }
+
 
         private EventLog eventLog1;
     }

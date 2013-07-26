@@ -40,7 +40,7 @@
             // serviceInstaller1
             // 
             this.serviceInstaller1.Description = "Сервис удаленного обнавления ключей Guardant для программы Miakro 9.11";
-            this.serviceInstaller1.ServiceName = "GRDDUService";
+            this.serviceInstaller1.ServiceName = "DongleUpdateService";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller

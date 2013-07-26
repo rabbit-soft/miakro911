@@ -13,13 +13,16 @@ namespace DongleUpdateService
         static void Main()
         {
             log4net.Config.XmlConfigurator.Configure();
-            //ServiceBase[] ServicesToRun;
-            //ServicesToRun = new ServiceBase[] 
-            //{ 
-            //    new GRDDUService() 
-            //};
-            //ServiceBase.Run(ServicesToRun);
+#if !DEBUG
+            ServiceBase[] ServicesToRun;
+            ServicesToRun = new ServiceBase[] 
+            { 
+                new GRDDUService() 
+            };
+            ServiceBase.Run(ServicesToRun);
+#else
             new GRDDUService(); //test
+#endif
         }
     }
 }
