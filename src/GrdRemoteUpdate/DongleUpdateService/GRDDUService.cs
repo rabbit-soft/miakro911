@@ -25,8 +25,6 @@ namespace DongleUpdateService
         public GRDDUService()
         {
             InitializeComponent();
-            addSysLog("приветик"); 
-            Environment.Exit(0);
 #if DEBUG
             startListen();
 #endif
@@ -52,7 +50,7 @@ namespace DongleUpdateService
             catch (Exception exc)
             {
                 _logger.Error(exc);
-                addSysLog(exc.StackTrace, EventLogEntryType.Error);
+                addSysLog(exc.ToString(),EventLogEntryType.Error);
             }
 
         }
@@ -81,14 +79,16 @@ namespace DongleUpdateService
             addSysLog(log,EventLogEntryType.Information);
         }
 
-
         private void startListen()
         {
             try
             {
-                _listener = new HttpListener();
-                _listener.Prefixes.Add(_srv);
-                _listener.Start();
+                if (_listener == null)
+                {
+                    _listener = new HttpListener();
+                    _listener.Prefixes.Add(_srv);
+                    _listener.Start();
+                }
                
                 while (_listener.IsListening)
                 {
