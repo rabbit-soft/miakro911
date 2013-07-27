@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Windows.Forms;
 using Guardant;
 using log4net;
 
@@ -25,20 +24,23 @@ namespace RabGRD
 
         /// <summary>
         /// Этот ключ-обновления записан во все проданые ключи
+        /// Необходим для удаленного обновления ключей
         /// </summary>
         private byte[] _keyTRU = new byte[]{    0xC6, 0x3B, 0x04, 0xF0, 0xB0, 0x37, 0x56, 0x88, 
                                                 0x76, 0x89, 0x8A, 0x2F, 0xAE, 0xD1, 0x8E, 0x07 };
 
         /// <summary>
         /// Этот ключ авто-шифрования записан во все проданые ключи
+        /// Необходим для удаленного обновления ключей
         /// </summary>
         private byte[] _keyGSII64 = new byte[]{ 0x97, 0xA1, 0x16, 0xD8, 0xCF, 0xE2, 0x42, 0xE1,
                                                 0xD2, 0x73, 0x2A, 0xBE, 0x39, 0x6F, 0x43, 0xEF };
 
-        private byte[] _keyHash = new byte[]   {0x34, 0x3D, 0xBC, 0x24, 0xA5, 0x91, 0x87, 0x62,
+        private byte[] _keyHash64 = new byte[]{ 0x34, 0x3D, 0xBC, 0x24, 0xA5, 0x91, 0x87, 0x62,
                                                 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20 };
         /// <summary>
         /// Этот секретный ключ ЭЦП записан во все проданные ключи
+        /// Неоходим для автоматической защиты
         /// </summary>
         private byte[] _keyEcc160 = new byte[] {0xF5, 0xC1, 0x4B, 0x1F, 0x18, 0x8D, 0x24, 0x54, 0xF2, 0x43, 
                                                 0xDE, 0xB9, 0x39, 0x7C, 0x2F, 0x97, 0x41, 0xCB, 0x9B, 0xAB };
@@ -70,7 +72,9 @@ namespace RabGRD
             uint dongleID;
             string logStr = "";
 
-            prepareHandle();
+            retCode = prepareHandle();
+            if (retCode != GrdE.OK)
+                return retCode;
 
             logStr = "Searching for all specified dongles and print info about it's : ";
             retCode = GrdApi.GrdFind(_grdHandle, GrdF.First, out dongleID, out findInfo);
@@ -142,7 +146,7 @@ namespace RabGRD
         }
 
         /// <summary>
-        /// Записывает пользовательские данные в ключ-Guardant
+        /// Записывает данные клиента в ключ-Guardant
         /// </summary>
         public int WriteMask(int orgId,string orgName, int farms, int flags, DateTime startDate, DateTime endDate)
         {
@@ -192,10 +196,7 @@ namespace RabGRD
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK)
-            {
-                int code = (int)retCode;
-                throw new GrdException(GrdApi.PrintResult(code), code);
-            }                
+                throw new GrdException(GrdApi.PrintResult((int)retCode), (uint)retCode);             
 
             uint protectLength;
             ushort wNumberOfItems;
@@ -216,10 +217,7 @@ namespace RabGRD
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK)
-            {
-                int code = (int)retCode;
-                throw new GrdException(GrdApi.PrintResult(code), code);
-            }    
+                throw new GrdException(GrdApi.PrintResult((int)retCode), (uint)retCode);   
 
             byte[] answer = new byte[pbyWholeMask.Length * 3 + 128];
             int ansSize = answer.Length;
@@ -241,8 +239,7 @@ namespace RabGRD
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK)
             {
-                int code = (int)retCode;
-                throw new GrdException(GrdApi.PrintResult(code), code);
+                throw new GrdException(GrdApi.PrintResult((int)retCode), (uint)retCode);
             }    
 
             return Convert.ToBase64String(answer, 0, ansSize, Base64FormattingOptions.InsertLineBreaks);            
@@ -339,7 +336,7 @@ namespace RabGRD
                          0, 0, 0, 0,
                          null, null, null, null,
                          0, 0,
-                         forUser ? _keyHash : _keyTRU,
+                         forUser ? _keyHash64 : _keyTRU,
                          ref wMaskSize,
                          ref wASTSize,
                          ref wNumberOfItems);

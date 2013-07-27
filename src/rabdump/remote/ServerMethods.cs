@@ -7,17 +7,10 @@ using System.IO;
 
 namespace pEngine
 {
-    public interface IServerProxy : IXmlRpcProxy
+    public partial interface IServerProxy : IXmlRpcProxy
     {
         [XmlRpcMethod("client.get.update")]
         string ClientGetUpdate(string question);
-
-        //[XmlRpcMethod("clients.get")]
-        //sClient[] GetClient(string clientId);
-        //[XmlRpcMethod("get.payments")]
-        //sPayment[] GetPayments(string clientId);
-        //[XmlRpcMethod("get.costs")]
-        //string[] GetCosts();
 
         [XmlRpcMethod("get.dumplist")]
         sDump[] GetDumpList();
@@ -59,38 +52,6 @@ namespace pEngine
     /// <see cref="IServerProxy"/>
     public enum MethodName
     {
-
-        /// <summary>
-        /// Прошивает ключ указанный ключ. Возвращает число-ответ
-        /// <para>PARAM: string base64_question - число вопрос</para>
-        /// <para>PARAM: int clientId - ID организации</para>
-        /// <para>PARAM: int farms - количество ферм</para>
-        /// <para>PARAM: int flags - маска ролей</para>
-        /// <para>PARAM: MysqlDate startDate - начало работы ключа</para>
-        /// <para>PARAM: MysqlDate endDate - окончание работы ключа</para>
-        /// <para>PARAM: int dongleId - ID ключа</para>
-        /// <para>Return: string - base64 ответ</para>
-        /// </summary>
-        //VendorUpdateDongle,
-
-        /// <summary>
-        /// Получает стоимость ферм.
-        /// <para>Return: string[2] {box,saas} </para>
-        /// </summary>
-        //GetCosts,
-
-        /// <summary>
-        /// Получает операции по счету указанного клиента
-        /// <para>PARAM: int clientId - ID организации</para>
-        /// <para>Return: sPayment[]</para>
-        /// </summary>
-        //GetPayments,
-
-        /// <summary>
-        /// Получает информацию о обновлении
-        /// </summary>
-        //GetUpdateInfo,
-
         GetUpdateFiles,
 
         /// <summary>
@@ -103,12 +64,11 @@ namespace pEngine
         /// Сообщает серверу, что обновления ключа прошло успешно
         /// <para>PARAM: int dongleId - ID ключа</para>
         /// </summary>
-        SuccessUpdate,
+        //SuccessUpdate,
 
         WebRep_GetLastDate,
         WebRep_SendGlobal,
-        ClientGetUpdate,
-        //GetClient
+        ClientGetUpdate
     }
 
     /// <summary>

@@ -47,6 +47,7 @@ namespace rabdump
     /// </summary>
     partial class RabServWorker
     {
+        private const string DEF_PWD ="user_with_old_key_10578vnr/* ekei";
         private static string _url = "http://trunk.rab_srv.wd2.9-bits.ru/";
         private static ILog _logger = LogManager.GetLogger(typeof(RabServWorker));
         //private static ArchiveJobThread _ajt;
@@ -74,7 +75,7 @@ namespace rabdump
                     {                        
                         if (Helper.Array_IsEmpty(_reqSend.Key))
                         {
-                            byte[] defPass = Encoding.UTF8.GetBytes("user_with_old_key_10578vnr/* ekei");
+                            byte[] defPass = Encoding.UTF8.GetBytes(DEF_PWD);
                             Array.Copy(defPass, _reqSend.Key, defPass.Length);
                         }
                     }
@@ -422,44 +423,7 @@ namespace rabdump
 
                 byte[] result = Helper.UploadFiles(address, files, values);
             }
-        }
-
-        /// <summary>
-        /// Файл должен делать патч
-        /// </summary>
-        /// <param name="srcFile">Старый файл</param>
-        /// <param name="trgFile">Новый Файл</param>
-        /// <returns>Путь к файлу с Дифом</returns>
-        //private static string makeDiff(string srcFile, string trgFile)
-        //{
-        //TODO реализовать diff
-        /*FileStream srcFS = new FileStream(srcFile, FileMode.Open, FileAccess.Read);
-        StreamReader srcSR = new StreamReader(srcFile);
-        FileStream trgFS = new FileStream(trgFile, FileMode.Open, FileAccess.Read);
-        StreamReader trgSR = new StreamReader(trgFile);
-        srcSR.Close(); srcFS.Close();
-        trgSR.Close(); trgFS.Close();*/
-        //return trgFile;
-        //}
-
-        
-
-        //private static void getUpdateInfo()
-        //{
-        //    try
-        //    {
-        //        object o = ReqSender.ExecuteMethod(MethodName.GetUpdateInfo);
-        //        if (o is UpdateInfo && OnUpdateChecked != null)
-        //            OnUpdateChecked(o as UpdateInfo);
-        //    }
-        //    catch(Exception exc)
-        //    {
-        //        if (OnUpdateCheckFail != null)
-        //            OnUpdateCheckFail(exc);
-        //    }
-        //}
-
-
+        }        
     }
 
     

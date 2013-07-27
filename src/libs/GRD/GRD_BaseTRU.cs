@@ -10,11 +10,11 @@ namespace RabGRD
         /// Генерирует число вопрос для Удаленного Обновления Ключа(TRU)
         /// </summary>
         /// <param name="answer">Число вопрос (base64string)</param>
-        public int GetTRUQuestion(out string answer)
+        public string GetTRUQuestion()
         {
             GrdE retCode; // Error code for all Guardant API functions
             string logStr = "Generate encrypted question and initialize remote update procedure: ";
-            answer = "";
+            
             TRUQuestionStruct quest = new TRUQuestionStruct();
 
             retCode = GrdApi.GrdTRU_GenerateQuestion(
@@ -27,7 +27,8 @@ namespace RabGRD
             logStr += GrdApi.PrintResult((int)retCode);
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
-            if(retCode != GrdE.OK) return (int)retCode;
+            if(retCode != GrdE.OK)
+                throw new GrdException(GrdApi.PrintResult((int)retCode), (uint)retCode);
 
             quest.type = _keyType;
             quest.lanRes = _lanRes;
@@ -35,12 +36,14 @@ namespace RabGRD
 
             byte[] buf = GRDUtils.RawSerialize(quest);
 
-            answer = Convert.ToBase64String(buf, 0, buf.Length, Base64FormattingOptions.None);
-            return 0;
+            return Convert.ToBase64String(buf, 0, buf.Length, Base64FormattingOptions.None);            
         }
 
-        public int SetTRUAnswer(string base64_answer)
+        public void SetTRUAnswer(string base64_answer)
         {
+            if (String.IsNullOrEmpty(base64_answer))
+                throw new GrdException(GrdApi.PrintResult((int)GrdE.InvalidArg),(uint)GrdE.InvalidArg);
+
             byte[] buf = Convert.FromBase64String(base64_answer);
             GrdE retCode; // Error code for all Guardant API functions
             string logStr = "Apply encrypted answer data: ";
@@ -52,7 +55,9 @@ namespace RabGRD
             logStr += GrdApi.PrintResult((int)retCode);
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
-            if (retCode != GrdE.OK) return (int)retCode;
+            if (retCode != GrdE.OK)
+                throw new GrdException(GrdApi.PrintResult((int)retCode), (uint)retCode);
+                
 
             byte[] buffer = new byte[16];
             byte[] initVector = new byte[16];
@@ -61,7 +66,8 @@ namespace RabGRD
             retCode = GrdApi.GrdTransform(_grdHandle, 0, 8, buffer, 0, initVector);
             logStr += GrdApi.PrintResult((int)retCode);
             _logger.Debug(logStr);
-            return (int)ErrorHandling(_grdHandle, retCode);          
+            if (retCode != GrdE.OK)
+                throw new GrdException(GrdApi.PrintResult((int)retCode), (uint)retCode);         
         }
     }
 }

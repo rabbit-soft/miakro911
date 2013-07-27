@@ -3,7 +3,6 @@ using System;
 using System.Globalization;
 using System.Text;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using Guardant;
 using log4net;
 
@@ -11,16 +10,21 @@ namespace RabGRD
 {
     public class GrdException : Exception
     {
-        private int _code = 0;
+        private uint _code = 0;
 
         public GrdException(string message) : base(message) { }
-        public GrdException(string message, int code)
+        public GrdException(string message, uint code)
             : this(message)
         {
             _code = code;
         }
 
-        public int Code { get { return _code; } }
+        public uint ErrorCode { get { return _code; } }
+
+        public override string ToString()
+        {
+            return String.Format("[{1:s}] ErrorCode:{3:d}: {2:s}{0:s}{4:s}", Environment.NewLine, this.GetType().Name, this.Message, this.ErrorCode, this.StackTrace);
+        }
     }
 
     /// <summary>
@@ -602,21 +606,22 @@ namespace RabGRD
         }
 
         /// <summary>
-        /// Private constructor prevents instantiation from other classes
+        /// Private constructor prevents instantiation from other classes                
         /// </summary>
         private GRD()
         {
-            try
-            {
+            //try
+            //{
                 _logger = LogManager.GetLogger(typeof(GRD));
                 connect();
-            }
-            catch (Exception e)
-            {
-                _logger.Error(e.InnerException == null? e : e.InnerException);
-                MessageBox.Show(e.InnerException == null? e.Message : e.InnerException.Message, "Фатальная ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);                
-                Environment.Exit(100);                               
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    if (e.InnerException != null)
+            //        e = e.InnerException;
+            //    _logger.Error(e.InnerException == null? e : e.InnerException);
+            //    throw new GrdException("Фатальная ошибка! " + e.Message);                                                             
+            //}
         }
 
         ~GRD()
