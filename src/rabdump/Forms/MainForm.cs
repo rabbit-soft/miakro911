@@ -425,9 +425,7 @@ namespace rabdump
             {
 #if PROTECTED
 
-                string q;
-                if (GRD.Instance.GetTRUQuestion(out q) != 0)
-                    throw new Exception("Не удалось сгенерировать число-вопрос для локального ключа защиты");
+                string q = GRD.Instance.GetTRUQuestion();
                 ResponceItem ri = RabServWorker.ReqSender.ExecuteMethod(MethodName.ClientGetUpdate,
                     MPN.question, q);
                 GRD.Instance.SetTRUAnswer(ri.Value as String);
