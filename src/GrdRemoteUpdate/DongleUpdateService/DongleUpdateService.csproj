@@ -93,18 +93,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\libs\GRD\GRDCommon.cs">
-      <Link>GRD\GRDCommon.cs</Link>
+      <Link>GRDCommon.cs</Link>
     </Compile>
     <Compile Include="..\..\libs\GRD\GRDVendor.cs">
-      <Link>GRD\GRDVendor.cs</Link>
+      <Link>GRDVendor.cs</Link>
     </Compile>
     <Compile Include="..\..\libs\GRD\GRD_Base.cs">
-      <Link>GRD\GRD_Base.cs</Link>
+      <Link>GRD_Base.cs</Link>
     </Compile>
     <Compile Include="..\..\libs\GRD\GRD_BaseTRU.cs">
-      <Link>GRD\GRD_BaseTRU.cs</Link>
+      <Link>GRD_BaseTRU.cs</Link>
     </Compile>
-    <Compile Include="GRD\GRD_Codes.cs" />
+    <Compile Include="..\..\libs\GRD\GRD_VendorCodes.cs">
+      <Link>GRD_VendorCodes.cs</Link>
+    </Compile>
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -39,7 +39,7 @@ namespace DongleUpdateService
             //}
             key.Dispose();
             if (ans == "")
-                throw new Exception("Сервис обновления ключей");
+                throw new Exception("Сервис обновления ключей не смог создать число-ответ");
             return ans;
         }
 
