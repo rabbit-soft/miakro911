@@ -69,7 +69,7 @@ namespace RabGRD
         protected const uint SUPPORT_END_DATE_OFFSET = 450;
         
         protected const uint DATE_FIELD_LENGTH = 12;
-        protected const uint KEY_CODE_LENGTH = 262;
+        public const uint KEY_CODE_LENGTH = 262;
         protected uint USER_DATA_LENGTH { get { return SUPPORT_END_DATE_OFFSET + DATE_FIELD_LENGTH; } }
         protected uint WHOLE_MASK_LENGTH { get { return USER_DATA_BEGINING + USER_DATA_LENGTH; } }
         #endregion user_mask

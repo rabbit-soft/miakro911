@@ -423,7 +423,7 @@ namespace RabGRD
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK) return (int)retCode;
 
-            _logger.Debug(" ====> " + (protectLength).ToString());
+            _logger.Debug("protectLength ====> " + (protectLength).ToString());
             return (int)retCode;
         }
 

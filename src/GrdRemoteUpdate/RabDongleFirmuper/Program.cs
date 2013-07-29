@@ -28,22 +28,36 @@ namespace RabDongleFirmuper
         {
             log4net.Config.XmlConfigurator.Configure();
             _logger = LogManager.GetLogger("RabDongleFirmuper");
-            ///todo аргументы. прошить ключ для хоста или клиента               
+            int errCode = 0;
             try
-            {
-                Console.WriteLine("Поиск ключа Guardant...");
+            {                
+                if (args.Length == 0 || args[0] == "-h")
+                {
+                    printHelp();
+                    Environment.Exit(-1);
+                }
+                _logger.Debug("----------  START ----------");
                 _grd = new GRDVendorKey();
-
-                dongleUpdate();
-                _grd.Dispose();
-                _logger.Info(" --- SUCCESS ---");
-                Console.WriteLine("Все прошло успешно");                
+                if (args[0] == "-s")
+                {
+                    _grd.WriteTRUHostMask();
+                }
+                else if (args[0] == "-c")
+                {
+                    if (args.Length>1 && args[1] == "-u" && !String.IsNullOrEmpty(args[2]))
+                    {
+                        _url = args[2];
+                    }
+                    /// записываем 2 ключа алгоритмов TRU
+                    _grd.WriteTRUHostMask();
+                    dongleUpdate();
+                }              
             }
             catch (GrdException exc)
             {
                 _logger.Error(exc);
-                Console.WriteLine("Grd Error: "+exc.Message);
-                Environment.Exit(2);
+                Console.WriteLine("Grd Error: " + exc.Message);
+                errCode = 1;
             }
             catch (Exception exc)
             {
@@ -51,29 +65,40 @@ namespace RabDongleFirmuper
                 if (exc.InnerException != null)
                     exc = exc.InnerException;
                 Console.WriteLine("Error: " + exc.Message);
-                Environment.Exit(1);
+                errCode = 2;
             }
-//            Console.ReadKey();
+            finally
+            {
+                if(_grd!=null)
+                    _grd.Dispose();                
+                _logger.Debug("----------  END ----------");
+                Environment.Exit(errCode);
+            }
         }
 
         private static void dongleUpdate()
         {
-
             VenReqSender reqSend = new VenReqSender();
             reqSend.Url = _url;
             reqSend.UserID = 0;
-            reqSend.Key = _grd.GetKeyCode();
+            reqSend.Key = new byte[GRD_Base.KEY_CODE_LENGTH];
             
             byte[] defPass = Encoding.UTF8.GetBytes(DEF_PWD);
             Array.Copy(defPass, reqSend.Key, defPass.Length);
                        
-
             string q = _grd.GetTRUQuestion();
             ResponceItem ri = reqSend.ExecuteMethod(MethodName.ClientGetUpdate,
                 MPN.question, q);
             if (String.IsNullOrEmpty(ri.Value as String))
                 throw new Exception("Получен пустой ответ от сервера");
             _grd.SetTRUAnswer(ri.Value as String);
+        }
+
+        private static void printHelp()
+        {
+            Console.WriteLine(@"-s Записать маску для сервиса обновления ключей
+-c Записать маску для для клиента
+    -u Адрес сайта статистики RabServ (http://trunk.rab_srv.wd2.9-bits.ru/) обязательно должен заканчиваться прямым слешем(/)");
         }
     }
 }
