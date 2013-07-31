@@ -461,6 +461,9 @@ namespace rabnet
 
         public virtual string RabGenoms { get { return _rabGenom; } set { _rabGenom = value; } }
     	
+        /// <summary>
+        /// ID клиента, на ферме которого родился кролик
+        /// </summary>
 		public int BirthPlace
         {
             get { return _birthPlace; }

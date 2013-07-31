@@ -27,8 +27,11 @@ namespace rabnet.forms
 #if PROTECTED
             string info = "";
             //            return String.Format("Лицензия - {0:d} ферм",PClient.get().farms());
-            info += "Лицензия:";
-            info += String.Format("Владелец - {0}", GRD.Instance.GetOrganizationName());
+            info += String.Format("Лицензия{0:s}:", GRD.Instance.GetClientID()>0?" зарегистрирована":"");
+            info += Environment.NewLine;
+            info += String.Format("Владелец - "+ GRD.Instance.GetClientName());
+            info += Environment.NewLine;
+            info += String.Format("Адрес - "+GRD.Instance.GetClientAddress());
             info += Environment.NewLine;
             info += String.Format("Ограничение на количство ферм - {0:d}", GRD.Instance.GetFarmsCnt());
             info += Environment.NewLine;

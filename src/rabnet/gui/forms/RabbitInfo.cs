@@ -287,7 +287,8 @@ namespace rabnet.forms
                 if (key == k)
                     cb.SelectedIndex = id;
             }
-            if (cb.SelectedIndex < 0) cb.SelectedIndex = 0;
+            if (cb.SelectedIndex < 0) 
+                cb.SelectedIndex = 0;
         }
 
         private void fillCatalogs(int what)
@@ -297,15 +298,26 @@ namespace rabnet.forms
             fillList(breed,_breeds,_rab.BreedID);
             _zones = cts.getZones();
             if (_rab.BirthPlace == 0)
-                fillList(cbZone, _zones, _rab.Zone);
+            {
+                if (_rab.Zone != 0)
+                    fillList(cbZone, _zones, _rab.Zone);
 #if !DEMO
-            else
+    #if PROTECTED
+                else
+                {
+                    cbZone.Items.Add(EPasportForm.GetThisClient().Name);
+                    cbZone.SelectedIndex = 0;
+                }
+    #endif
+            }
+            else //если кролик импортирован
             {
                 ClientsList cl = Engine.db().GetClients();
                 cbZone.Items.Add(cl.GetName(_rab.BirthPlace));
                 cbZone.SelectedIndex = 0;
-            }
 #endif
+            }
+
             int sx=0;
             String end="";
             if (_rab.Sex==Rabbit.SexType.MALE)

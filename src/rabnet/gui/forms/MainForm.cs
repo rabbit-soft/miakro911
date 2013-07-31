@@ -110,6 +110,7 @@ namespace rabnet.forms
 
             _manual = false;
 #if !DEMO
+            EPasportForm.CheckSelfCidInDb();
             Engine.db().ArchLogs();
             checkPlugins();
     #if PROTECTED

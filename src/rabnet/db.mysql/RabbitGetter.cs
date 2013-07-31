@@ -203,6 +203,7 @@ f_children={1:d},f_dead={2:d} WHERE f_rabid={3:d} AND f_state='sukrol';",
                 ml.Rate += rt;
             }
 
+            // mother status update
             rt = Rate.CalcRate(children, dead, true);
             fml.Rate += rt;
             cmd.CommandText = String.Format(@"UPDATE rabbits SET r_event_date=NULL, r_event='none',

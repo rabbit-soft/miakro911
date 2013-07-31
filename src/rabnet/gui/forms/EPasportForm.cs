@@ -67,22 +67,22 @@ namespace rabnet.forms
         BuildingList _freeBuildings;
         
         string _importFileGuid;
-        //int _clientId = int.MaxValue;
 
         protected EPasportForm()
         {
             InitializeComponent();
 #if PROTECTED
-            int clientId = GRD.Instance.GetClientID();
-            string clientName = GRD.Instance.GetOrganizationName();
-            if (clientId == 0)
+            //int clientId = GRD.Instance.GetClientID();
+            //string clientName = GRD.Instance.GetOrganizationName();
+            Client c = GetThisClient();
+            if (c.ID == 0)
                 throw new RabNetException("Клиент не зарегистрирован. Чтобы экспортировать кролика, вам необходимо зарегистрировать свою ферму на сервере разработчика.");
 #else
             int clientId = int.MaxValue;
             string clientName = "Гамбито ферма";
 #endif
 
-            _rabExport = new RabExporter(clientId, clientName,Engine.get().GetDBGuid());
+            _rabExport = new RabExporter(c,Engine.get().GetDBGuid());
             _breeds = Engine.db().GetBreeds();
             _names = Engine.db().GetNames();            
 
@@ -90,6 +90,41 @@ namespace rabnet.forms
                 lvNames.ListViewItemSorter =
                 lvBreeds.ListViewItemSorter = new LVSorter();    
         }
+#if PROTECTED
+        public static Client GetThisClient()
+        {
+            int id = GRD.Instance.GetClientID();
+            string name = GRD.Instance.GetClientName();
+            string address = GRD.Instance.GetClientAddress();
+            return new Client(id,name,address);
+        }
+
+        public static void CheckSelfCidInDb()
+        {
+            Client c = EPasportForm.GetThisClient();
+            if (c.ID != 0)
+            {
+                checkClientInDb(c);
+            }
+        }
+
+        private static void checkClientInDb(Client client)
+        {
+            ClientsList list = Engine.db().GetClients();
+            bool exists = false;
+            foreach (Client c in list)
+            {
+                if (c.ID == client.ID)
+                {
+                    exists = true;
+                    break;
+                }
+            }
+            if (!exists)
+                Engine.db().AddClient(client.ID, client.Name, client.Address);
+            
+        }
+#endif
 
         #region export
         public EPasportForm(List<int> rIds)
@@ -203,7 +238,7 @@ namespace rabnet.forms
         {
             saveFileDialog1.FileName = String.Format("{0:s}_{1:s}_{2:s}",
 #if PROTECTED
-                    GRD.Instance.GetOrganizationName(),
+                    GRD.Instance.GetClientName(),
 #else
                     "Гамбито ферма \"Пыщт-Пыщь\" ",
 #endif
@@ -769,18 +804,7 @@ namespace rabnet.forms
             if (exporter.ID == 0)
                 throw new RabNetException("Нельзя импортировать поголовье от незарегистрированного пользователя.");
             ///проверяем есть ли клиент в базе, если нет, то добавляем
-            ClientsList list = Engine.db().GetClients();
-            bool exists = false;
-            foreach (Client c in list)
-            {
-                if (c.ID == exporter.ID)
-                {
-                    exists = true;
-                    break;
-                }
-            }
-            if (!exists)
-                Engine.db().AddClient(exporter.ID, exporter.Name, exporter.Address);
+            checkClientInDb(exporter);
         }
         #endregion  methods
 #endif

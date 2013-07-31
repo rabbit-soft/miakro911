@@ -30,7 +30,7 @@ namespace RabGRD
     /// <summary>
     /// Thread-safe singleton example created at first call
     /// </summary>
-    public partial class GRD_Base
+    public abstract partial class GRD_Base
     {
         /// <summary>
         /// Достпные функции. Добавил тут - измени метод GetFlag
@@ -55,22 +55,27 @@ namespace RabGRD
 
         ///Далее список адресов данных в ключе
         #region user_mask
+        public const uint FLAGS_FIELD_LENGTH = 8;
+        public const uint DATE_FIELD_LENGTH = 12;
+        public const uint KEY_CODE_LENGTH = 262;
+        public const uint NAME_FIELD_LENGTH = 100;
+        public const uint CLIENT_ADDRESS_FIELD_LENGTH = 100;
+
         protected const uint USER_DATA_BEGINING = 1180;
         protected const uint CLIENT_ID_OFFSET = 0;
         protected const uint DEV_MARKER_OFFSET = 2;
-        protected const uint ORGANIZATION_NAME_OFFSET = 34;
+        protected const uint CLIENT_NAME_OFFSET = 34;
         protected const uint MAX_BUILDINGS_COUNT_OFFSET = 134;
         protected const uint FLAGS_MASK_OFFSET = 138;
         protected const uint FARM_START_DATE_OFFSET = 146;
         protected const uint FARM_STOP_DATE_OFFSET = 158;
-        protected const uint TEMP_FLAGS_MASK_OFFSET = 170;
-        protected const uint TEMP_FLAGS_END_OFFSET = 178;
-        protected const uint KEY_CODE_OFFSET = 190;
-        protected const uint SUPPORT_END_DATE_OFFSET = 450;
-        
-        protected const uint DATE_FIELD_LENGTH = 12;
-        public const uint KEY_CODE_LENGTH = 262;
-        protected uint USER_DATA_LENGTH { get { return SUPPORT_END_DATE_OFFSET + DATE_FIELD_LENGTH; } }
+        protected uint TEMP_FLAGS_MASK_OFFSET   { get { return FARM_STOP_DATE_OFFSET    + DATE_FIELD_LENGTH;  } }
+        protected uint TEMP_FLAGS_END_OFFSET    { get { return TEMP_FLAGS_MASK_OFFSET   + FLAGS_FIELD_LENGTH; } }
+        protected uint KEY_CODE_OFFSET          { get { return TEMP_FLAGS_END_OFFSET    + DATE_FIELD_LENGTH;  } }
+        protected uint SUPPORT_END_DATE_OFFSET  { get { return KEY_CODE_OFFSET          + KEY_CODE_LENGTH;    } }
+        protected uint CLIENT_ADDRESS_FIELD_OFFSET { get { return SUPPORT_END_DATE_OFFSET + DATE_FIELD_LENGTH; } }
+                
+        protected uint USER_DATA_LENGTH { get { return CLIENT_ADDRESS_FIELD_OFFSET + CLIENT_ADDRESS_FIELD_LENGTH; } }
         protected uint WHOLE_MASK_LENGTH { get { return USER_DATA_BEGINING + USER_DATA_LENGTH; } }
         #endregion user_mask
 
@@ -325,11 +330,18 @@ namespace RabGRD
         /// Получить название организации,
         /// на которую выписан ключ
         /// </summary>
-        public string GetOrganizationName()
+        public string GetClientName()
         {
-            uint addr = USER_DATA_BEGINING + ORGANIZATION_NAME_OFFSET;
+            uint addr = USER_DATA_BEGINING + CLIENT_NAME_OFFSET;
             _logger.Debug("Reading Org Name: ");
-            return ReadStringCp1251(addr, MAX_BUILDINGS_COUNT_OFFSET - ORGANIZATION_NAME_OFFSET);
+            return ReadStringCp1251(addr, NAME_FIELD_LENGTH);
+        }
+
+        public string GetClientAddress()
+        {
+            uint addr = USER_DATA_BEGINING + CLIENT_ADDRESS_FIELD_OFFSET;
+            _logger.Debug("Reading Client Address");
+            return ReadStringCp1251(addr, CLIENT_ADDRESS_FIELD_LENGTH);
         }
 
         /// <summary>
@@ -418,13 +430,13 @@ namespace RabGRD
             return ((flags & ft) == ft) || ((flagsTemp & ft) == ft);
         }
 
-        public uint GetCustomerID()
-        {
-            uint addr = USER_DATA_BEGINING + DEV_MARKER_OFFSET;
+        //public uint GetCustomerID()
+        //{
+        //    uint addr = USER_DATA_BEGINING + DEV_MARKER_OFFSET;
 
-            //_logger.Debug("Reading customer id: ");
-            return ReadUInt(addr);
-        }
+        //    //_logger.Debug("Reading customer id: ");
+        //    return ReadUInt(addr);
+        //}
 
         public DateTime GetDateStart()
         {

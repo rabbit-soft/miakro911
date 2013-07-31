@@ -51,12 +51,34 @@ namespace rabnet
                 {
                     rw.AppendChild(doc.CreateElement("group")).AppendChild(doc.CreateTextNode(er.Group.ToString()));
                 }
-                Catalog zones = Engine.db().catalogs().getZones();
+                
                 ReportHelper.Append(rw, doc, "sex", er.Sex == Rabbit.SexType.MALE ? "male" : (er.Sex == Rabbit.SexType.FEMALE ? "female" : "void"));
                 ReportHelper.Append(rw, doc, "class", Rabbit.GetFBon(er.Bon));
                 ReportHelper.Append(rw, doc, "name", er.NameFull);
                 ReportHelper.Append(rw, doc, "breed", er.BreedName);
-                ReportHelper.Append(rw, doc, "born_place", zones.ContainsKey(er.Zone) ? zones[er.Zone] : "-");
+                if (er.BirthPlace != 0)
+                {
+                    //todo по хорошему надо писать born_place кролику при рождении на данной ферме
+                    ClientsList list = Engine.db().GetClients();
+                    foreach (Client c in list)
+                    {
+                        if (c.ID == er.BirthPlace)
+                        {
+                            ReportHelper.Append(rw, doc, "born_place", c.Name);
+                            break;
+                        }
+                    }
+                }
+                else if (er.Zone != 0)
+                {
+                    Catalog zones = Engine.db().catalogs().getZones();
+                    ReportHelper.Append(rw, doc, "born_place", zones[er.Zone]);
+                }
+                else
+                {
+                    ReportHelper.Append(rw, doc, "born_place", RabGRD.GRD.Instance.GetClientName()); //todо не очень хорошо использовать обращения к ключу здесь
+                }
+
                 ReportHelper.Append(rw, doc, "born_date", er.BirthDay.ToShortDateString());
                 ReportHelper.Append(rw, doc, "age", er.Age.ToString());
                 ReportHelper.Append(rw, doc, "address", er.AddressSmall);

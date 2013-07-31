@@ -8,14 +8,16 @@ namespace rabnet
 #if !DEMO
     public class RabExporter
     {
-        private int _myClientId = 0;
-        private string _myClientName;
+        private Client _client = null;
+        //private int _myClientId = 0;
+        //private string _myClientName;
         private string _myDbGuid = "";
 
-        public RabExporter(int myClientId, string clientName, string myDbGuid)
+        public RabExporter(Client thisClient, string myDbGuid)
         {
-            _myClientId = myClientId;
-            _myClientName = clientName;
+            this._client = thisClient;
+            //_myClientId = myClientId;
+            //_myClientName = clientName;
             _myDbGuid = myDbGuid;
         }
 
@@ -25,8 +27,9 @@ namespace rabnet
             doc.AppendChild(doc.CreateXmlDeclaration("1.0","UTF-8","no"));
             XmlElement rootNode = doc.CreateElement("export_rabbits");
             
-            ReportHelper.AppendAttribute(rootNode, doc, "clientId", _myClientId.ToString());
-            ReportHelper.AppendAttribute(rootNode, doc, "clientName", _myClientName.ToString());
+            ReportHelper.AppendAttribute(rootNode, doc, "clientId", _client.ID.ToString());
+            ReportHelper.AppendAttribute(rootNode, doc, "clientName", _client.Name.ToString());
+            ReportHelper.AppendAttribute(rootNode, doc, "clientAddress", _client.Address.ToString());
             ReportHelper.AppendAttribute(rootNode, doc, "dbGuid", _myDbGuid.ToString());
             ReportHelper.AppendAttribute(rootNode, doc, "fileGuid", Guid.NewGuid().ToString());
 
@@ -70,7 +73,8 @@ namespace rabnet
             int fromClientId = 0;
             int.TryParse(rootNode.Attributes["clientId"].Value, out  fromClientId);
             string name = rootNode.Attributes["clientName"].Value;
-            return new Client(fromClientId, name, "");
+            string address = rootNode.Attributes["clientAddress"].Value;
+            return new Client(fromClientId, name, address);
         }
 
         public string Import(string data, out List<OneRabbit> exportRab, out List<OneRabbit> ascendants, out BreedsList breeds, out RabNamesList names)
@@ -86,7 +90,7 @@ namespace rabnet
             int fromClientId;           
             XmlNode rootNode = doc.FirstChild.NextSibling;
             int.TryParse(rootNode.Attributes["clientId"].Value, out  fromClientId);
-            if (fromClientId == _myClientId && rootNode.Attributes["dbGuid"].Value == _myDbGuid)
+            if (fromClientId == _client.ID && rootNode.Attributes["dbGuid"].Value == _myDbGuid)
                 throw new RabNetException("Файл был экспортирован с этой же фермы");
 
             XmlNode tmpNode = rootNode.SelectSingleNode("exports");
