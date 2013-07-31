@@ -174,7 +174,7 @@ namespace RabGRD
         /// <param name="keyCode">Индивидуальный ключ шифрования посылки для клиента 262байта</param>
         /// <param name="endSuppors">Дата окончания поддержки</param>
         /// <returns>BASE46 string key</returns>
-        public string GetTRUAnswer(string base64_question, int orgId,string orgName, int farms, int flags, DateTime startDate, DateTime endDate,byte[] keyCode, DateTime endSuppors)
+        public string GetTRUAnswer(string base64_question, int orgId,string orgName, int farms, int flags, DateTime startDate, DateTime endDate,byte[] keyCode, DateTime endSuppors, string address)
         {            
             byte[] buf = Convert.FromBase64String(base64_question);
 
@@ -200,7 +200,7 @@ namespace RabGRD
 
             uint protectLength;
             ushort wNumberOfItems;
-            byte[] userBuff = makeUserBuff(orgId,orgName, farms, flags, startDate, endDate,keyCode, endSuppors);
+            byte[] userBuff = makeUserBuff(orgId,orgName, farms, flags, startDate, endDate,keyCode, endSuppors,address);
             byte[] pbyWholeMask = makeNewMask(userBuff, out protectLength, out wNumberOfItems);
 
             logStr = "Set Init & Protect parameters for Trusted Remote Update: ";
@@ -255,7 +255,7 @@ namespace RabGRD
             Array.Copy(tmp, 0,userBuff,DEV_MARKER_OFFSET, tmp.Length);
 
             tmp = Encoding.GetEncoding(1251).GetBytes(orgName);
-            Array.Copy(tmp, 0, userBuff, ORGANIZATION_NAME_OFFSET, tmp.Length);
+            Array.Copy(tmp, 0, userBuff, CLIENT_NAME_OFFSET, tmp.Length);
 
             tmp = BitConverter.GetBytes(farms);
             Array.Copy(tmp, 0, userBuff, MAX_BUILDINGS_COUNT_OFFSET, tmp.Length);
@@ -277,12 +277,17 @@ namespace RabGRD
 
             return userBuff;
         }
-        private byte[] makeUserBuff(int orgId,string orgName, int farms, int flags, DateTime startDate, DateTime endDate, byte[] keyCode,DateTime endSupport)
+        private byte[] makeUserBuff(int orgId,string orgName, int farms, int flags, DateTime startDate, DateTime endDate, byte[] keyCode,DateTime endSupport,string address)
         {
             byte[] res = makeUserBuff(orgId,orgName,farms,flags,startDate,endDate);
             Array.Copy(keyCode, 0, res, KEY_CODE_OFFSET, keyCode.Length);
+            // пишем дату окончания лицензии
             byte[] tmp = Encoding.GetEncoding(1251).GetBytes(endSupport.ToString("yyyy-MM-dd"));
             Array.Copy(tmp, 0, res, SUPPORT_END_DATE_OFFSET, tmp.Length);
+            // пишем адрес окончания лицензии
+            tmp = Encoding.GetEncoding(1251).GetBytes(address);
+            Array.Copy(tmp, 0, res, CLIENT_ADDRESS_FIELD_OFFSET, tmp.Length);
+
             return res;
         }
         

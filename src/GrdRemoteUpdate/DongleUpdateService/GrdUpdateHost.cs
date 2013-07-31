@@ -14,7 +14,7 @@ namespace DongleUpdateService
 
 
         [XmlRpcMethod("dongle.update")]
-        public string DongleUpdate(string base64_question, int orgId, string orgName, int farms, int flags, string startDate, string endDate, string base64key, string endSupport)
+        public string DongleUpdate(string base64_question, int orgId, string orgName, int farms, int flags, string startDate, string endDate, string base64key, string endSupport,string address)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace DongleUpdateService
                     dtStart,
                     dtEnd,
                     keyCode,
-                    dtSupport);
+                    dtSupport,address);
                 key.Dispose();
                 if (ans == "")
                     throw new XmlRpcFaultException(-1,"Сервис обновления ключей не смог создать число-ответ");
