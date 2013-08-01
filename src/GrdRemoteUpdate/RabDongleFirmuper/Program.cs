@@ -33,8 +33,9 @@ namespace RabDongleFirmuper
             {                
                 if (args.Length == 0 || args[0] == "-h")
                 {
-                    printHelp();
-                    Environment.Exit(-1);
+                    _logger.Debug("print help");
+                    printHelp(); 
+                    Environment.Exit(0);
                 }
                 _logger.Debug("----------  START ----------");
                 _grd = new GRDVendorKey();
@@ -48,9 +49,10 @@ namespace RabDongleFirmuper
                     {
                         _url = args[2];
                     }
-                    /// записываем 2 ключа алгоритмов TRU
-                    _grd.WriteTRUHostMask();
+                    
+                    _grd.SetTRUKey();
                     dongleUpdate();
+                    Console.WriteLine("Success");
                 }              
             }
             catch (GrdException exc)
@@ -98,7 +100,7 @@ namespace RabDongleFirmuper
         {
             Console.WriteLine(@"-s Записать маску для сервиса обновления ключей
 -c Записать маску для для клиента
-    -u Адрес сайта статистики RabServ (http://trunk.rab_srv.wd2.9-bits.ru/) обязательно должен заканчиваться прямым слешем(/)");
+-u Адрес сайта статистики RabServ (http://trunk.rab_srv.wd2.9-bits.ru/) обязательно должен заканчиваться прямым слешем(/)");
         }
     }
 }

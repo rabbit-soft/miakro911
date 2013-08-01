@@ -14,7 +14,7 @@ using log4net;
 namespace RabGRD
 {
 
-    public sealed partial class GRDVendorKey : GRD_Base, IDisposable
+    public partial class GRDVendorKey : GRD_Base, IDisposable
     {
         const ushort TRUAlgoNumGSII64 = 0;
         const ushort TRUAlgoNumHash64 = 1;
@@ -277,6 +277,7 @@ namespace RabGRD
 
             return userBuff;
         }
+
         private byte[] makeUserBuff(int orgId,string orgName, int farms, int flags, DateTime startDate, DateTime endDate, byte[] keyCode,DateTime endSupport,string address)
         {
             byte[] res = makeUserBuff(orgId,orgName,farms,flags,startDate,endDate);
