@@ -568,15 +568,25 @@ namespace mia_conv
                 int area = 0;
                 string sa = "";
                 int j = 0;
-                while (address[j] >= '0' && address[j] <= '9') { sa += address[j]; j++; }
+                while (j < address.Length && address[j] >= '0' && address[j] <= '9')
+                { 
+                    sa += address[j]; 
+                    j++; 
+                }
                 if (sa != "")
                 {
                     farm = int.Parse(sa);
-                    if (address[j] == '^') { tierID = 1; j++; }
-                    if (address[j] == '-') { tierID = 2; j++; }
-                    if (address[j] == 'б') area = 1;
-                    if (address[j] == 'в') area = 2;
-                    if (address[j] == 'г') area = 3;
+                    if (j < address.Length)
+                    {
+                        switch (address[j])
+                        {
+                            case '^': tierID = 1; j++; break;
+                            case '-': tierID = 2; j++; break;
+                            case 'б': area = 1; break;
+                            case 'в': area = 2; break;
+                            case 'г': area = 3; break;
+                        }
+                    }
                 }
                 _cmd.CommandText = String.Format(@"INSERT INTO rabbits(r_sex,r_name,r_surname,r_secname,r_notes,r_group,r_born,r_farm,r_tier_id,r_tier,r_area,r_breed) 
 VALUES('{0:s}',{1:d},{2:d},{3:d},'{4:s}',{5:d},{6:s}-INTERVAL {7:d} DAY,{8:d},{9:d},{10:d},{11:d},1);",
