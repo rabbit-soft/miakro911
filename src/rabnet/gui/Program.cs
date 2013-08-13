@@ -77,12 +77,12 @@ namespace rabnet
                             MessageBox.Show("Программа не может работать с данным ключом защиты");
                             return;
                         }
-                        if (GRD.Instance.GetSupportEnd() < DateTime.Now)
-                        {
-                            MessageBox.Show("Дата поддержки истекла. Свежие версии не доступны для данной лицензии. Свяжитесь с разработчиком.");
-                            return;
-                        }
-                        //MessageBox.Show(String.Format("HAS {0:d} FARMS",PClient.get().farms()));
+                        //if (GRD.Instance.GetSupportEnd() < MainForm.BuildDate)
+                        //{
+                        //    _logger.WarnFormat("Support is ending. BuildDate:{0:yyyy-MM-dd} SupportDate: {1:yyyy-MM-dd}", MainForm.BuildDate, GRD.Instance.GetSupportEnd());
+                        //    MessageBox.Show("Дата поддержки истекла. Свежие версии не доступны для данной лицензии. Свяжитесь с разработчиком.");
+                        //    return;
+                        //}                        
 #endif
                         LoginForm lf = new LoginForm();
                         LoginForm.stop = false;

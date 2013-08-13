@@ -553,11 +553,13 @@ namespace mia_conv
                         nm = names[1];
                 }
 
-                uint suid = 0; uint seid = 0;
+                uint suid = 0, seid = 0;
                 String[] nms = nm.Split('-');
                 if (nms.Length > 0)
+                {
                     if (nms[0].Trim() != "")
                         suid = FindSurname(nms[0].Trim(), sex, group, 2);
+                }
                 if (nms.Length > 1 && nms[1].Trim() != "")
                     seid = FindSurname(nms[1].Trim(), sex, group, 1);
                 int farm = 0;
