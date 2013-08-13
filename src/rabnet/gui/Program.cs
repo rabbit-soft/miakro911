@@ -77,6 +77,11 @@ namespace rabnet
                             MessageBox.Show("Программа не может работать с данным ключом защиты");
                             return;
                         }
+                        if (GRD.Instance.GetSupportEnd() < DateTime.Now)
+                        {
+                            MessageBox.Show("Дата поддержки истекла. Свежие версии не доступны для данной лицензии. Свяжитесь с разработчиком.");
+                            return;
+                        }
                         //MessageBox.Show(String.Format("HAS {0:d} FARMS",PClient.get().farms()));
 #endif
                         LoginForm lf = new LoginForm();

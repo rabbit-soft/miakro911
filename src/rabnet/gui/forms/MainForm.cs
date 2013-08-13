@@ -63,22 +63,22 @@ namespace rabnet.forms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-#if !DEMO
-            //CAS.ScaleForm.SummarySaving += new CAS.AddPLUSummaryHandler(AddPluSummary);
-            if (
-    #if PROTECTED
-                GRD.Instance.GetFlag(GRD.FlagType.Butcher) && 
-    #endif
-                Engine.opt().getIntOption(Options.OPT_ID.BUCHER_TYPE)==1)
-            {
+//#if !DEMO
+//            //CAS.ScaleForm.SummarySaving += new CAS.AddPLUSummaryHandler(AddPluSummary);
+//            if (
+//    #if PROTECTED
+//                GRD.Instance.GetFlag(GRD.FlagType.Butcher) && 
+//    #endif
+//                Engine.opt().getIntOption(Options.OPT_ID.BUCHER_TYPE)==1)
+//            {
                 
-                //CAS.ScaleForm.StartMonitoring();
-            }
-#endif
+//                //CAS.ScaleForm.StartMonitoring();
+//            }
+//#endif
             _mustclose = false;
             usersMenuItem.Visible = Engine.get().isAdmin();
             _manual = true;
-
+            ///проверяем соответстви дат на сервере, и на локальном компьютере. Актуально если ведется работа по сети
             DateTime srvNow = Engine.db().now();
             TimeSpan timeDiff = DateTime.Now.Subtract(srvNow);
             bool curDate = Math.Round(timeDiff.TotalDays) > 0;
@@ -92,10 +92,11 @@ namespace rabnet.forms
 Дата локальная:  {1:s}", srvNow.ToShortDateString(), DateTime.Now.ToShortDateString()), "Даты не совпадают", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             rabStatusBar1.SetText(0, srvNow.ToShortDateString(),curDate);    
-        
-            this.Text = Engine.get().farmName();            
+                               
 #if DEMO
             this.Text += " Демонстрационная версия";
+#else
+            this.Text = Engine.get().farmName(); 
 #endif
             Options op = Engine.opt();
             showTierTMenuItem.Checked = (op.getIntOption(Options.OPT_ID.SHOW_TIER_TYPE) == 1);
