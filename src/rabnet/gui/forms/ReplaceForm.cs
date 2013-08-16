@@ -715,11 +715,11 @@ namespace rabnet.forms
             if (rp.NewSex != rp.Sex)
                 rb.SetSex(rp.NewSex);
 
+            /// рассаживаем отделеных
             while (rp.Clones.Count > 0)
             {
                 RP c = rp.Clones[0];
-                //int[] a = getAddress(c);
-                Address a = _freeBuildings.SearchByMedName(rp.CurAddress);
+                Address a = _freeBuildings.SearchByMedName(c.CurAddress);
                 int cid = rb.Clone(c.Count, a.Farm, a.Tier, a.Section);
                 c.ID = cid;
                 commitRabbit(c, cid, allowReplace);
@@ -727,16 +727,6 @@ namespace rabnet.forms
                     _girlout = cid;
                 rp.Clones.RemoveAt(0);
             }
-            //if (rp.Clones.Count > 0)
-            //    foreach (RP c in rp.Clones)
-            //    {
-            //        int[] a = getAddress(c.CurAddress); //если остается а тот от кого клонировали
-            //        int cid = rb.Clone(c.Count, a[0], a[1], a[2]);
-            //        c.ID = cid;
-            //        commitRabbit(c, cid, allowReplace);
-            //        if (_action == Action.ONE_GIRL_OUT && girlout == 0 && c.Sex == Rabbit.SexType.FEMALE && c.Count == 1)
-            //            girlout = cid;
-            //    }
             rp.Saved = true;
         }
 
