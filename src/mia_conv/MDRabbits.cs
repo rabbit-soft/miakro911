@@ -232,8 +232,11 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d},'{7:d}');",
                 flags += "00";
 
             int tier = GetTier((int)r.where.value(), (int)r.tier_id.value());
-            if (parent==0)
-                vals += String.Format(",{0:d},{1:d},{2:d},{3:d}",r.where.value(),r.tier_id.value(),tier,r.area.value());
+            if (parent == 0)
+            {
+                int tier_id = r.tier_id.value() == 1 ? 2 : 1; //здесь перепутаны местами нежели в строениях
+                vals += String.Format(",{0:d},{1:d},{2:d},{3:d}", r.where.value(), tier_id, tier, r.area.value());
+            }
             else
                 vals += String.Format(",{0:d},{1:d},{2:d},{3:d}", 0, 0, 0, 0);
             vals += String.Format(",{0:d},{1:d},{2:d},'{3:s}',{4:d}", 0/*r.rate.value()*/, r.group.value(),
@@ -270,7 +273,7 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d},'{7:d}');",
             _cmd.CommandText = query + ") " + vals + ");";
             _cmd.ExecuteNonQuery();
 
-            int crab = (int)_cmd.LastInsertedId;           
+            int crab = (int)_cmd.LastInsertedId;
             r.notes.tag = crab;
             //_curRabbit = crab + 1;
             if (dead) return;
