@@ -110,11 +110,11 @@ namespace rabnet.forms
             Building.SetDefFmt(op.getIntOption(Options.OPT_ID.BUILD_FILL_ZERO) == 1 ? '0' : ' ');
 
             _manual = false;
-#if !DEMO
-            EPasportForm.CheckSelfCidInDb();
+#if !DEMO            
             Engine.db().ArchLogs();
             checkPlugins();
     #if PROTECTED
+            EPasportForm.CheckSelfCidInDb();
             uint elapsed =(uint) GRD.Instance.GetDateEnd().Subtract(DateTime.Now).Days;
             if (elapsed <= 10)
                 MessageBox.Show(String.Format("Срок лицензии истекает через {0:d} дней", elapsed));

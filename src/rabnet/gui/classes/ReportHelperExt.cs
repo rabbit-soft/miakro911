@@ -69,15 +69,21 @@ namespace rabnet
                         }
                     }
                 }
-                else if (er.Zone != 0)
+                else 
+#if PROTECTED
+                    if (er.Zone != 0)
+#endif
                 {
                     Catalog zones = Engine.db().catalogs().getZones();
                     ReportHelper.Append(rw, doc, "born_place", zones[er.Zone]);
                 }
+#if PROTECTED
                 else
                 {
+
                     ReportHelper.Append(rw, doc, "born_place", RabGRD.GRD.Instance.GetClientName()); //todо не очень хорошо использовать обращения к ключу здесь
                 }
+#endif
 
                 ReportHelper.Append(rw, doc, "born_date", er.BirthDay.ToShortDateString());
                 ReportHelper.Append(rw, doc, "age", er.Age.ToString());

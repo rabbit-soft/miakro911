@@ -77,9 +77,8 @@ namespace rabnet.forms
             Client c = GetThisClient();
             if (c.ID == 0)
                 throw new RabNetException("Клиент не зарегистрирован. Чтобы экспортировать кролика, вам необходимо зарегистрировать свою ферму на сервере разработчика.");
-#else
-            int clientId = int.MaxValue;
-            string clientName = "Гамбито ферма";
+#elif DEBUG
+            Client c = new Client(int.MaxValue, "Гамбито ферма", "Here");
 #endif
 
             _rabExport = new RabExporter(c,Engine.get().GetDBGuid());
@@ -107,7 +106,7 @@ namespace rabnet.forms
                 checkClientInDb(c);
             }
         }
-
+#endif
         private static void checkClientInDb(Client client)
         {
             ClientsList list = Engine.db().GetClients();
@@ -124,7 +123,6 @@ namespace rabnet.forms
                 Engine.db().AddClient(client.ID, client.Name, client.Address);
             
         }
-#endif
 
         #region export
         public EPasportForm(List<int> rIds)
@@ -804,6 +802,7 @@ namespace rabnet.forms
             if (exporter.ID == 0)
                 throw new RabNetException("Нельзя импортировать поголовье от незарегистрированного пользователя.");
             ///проверяем есть ли клиент в базе, если нет, то добавляем
+
             checkClientInDb(exporter);
         }
         #endregion  methods
