@@ -1,6 +1,6 @@
 ﻿//#define PROTECTED
 #if DEBUG
-    #define NOCATCH
+    //#define NOCATCH
 #endif
 using System;
 using System.Windows.Forms;
@@ -72,6 +72,7 @@ namespace rabdump
                         _logger.Error(exc);
                         MessageBox.Show(exc.Message + Environment.NewLine + "Пробуем удаленно обновить лицензию",
                             "Ключ защиты",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                        //todo запуск обновления
                     }
                     catch (Exception e)
                     {
