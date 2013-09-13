@@ -81,6 +81,7 @@
             this.tsmiAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAboutPO = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.miChangeLog = new System.Windows.Forms.ToolStripMenuItem();
             this.tNoWorking = new System.Windows.Forms.Timer(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -90,7 +91,6 @@
             this.tpButcher = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rabStatusBar1 = new rabnet.components.RabStatusBar();
-            this.miChangeLog = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -254,6 +254,7 @@
             this.tsmiProductTypesView.Name = "tsmiProductTypesView";
             this.tsmiProductTypesView.Size = new System.Drawing.Size(208, 22);
             this.tsmiProductTypesView.Text = "Виды продукции";
+            this.tsmiProductTypesView.Visible = false;
             this.tsmiProductTypesView.Click += new System.EventHandler(this.tsmiProductTypesView_Click);
             // 
             // tsmiVaccines
@@ -498,6 +499,13 @@
             this.tsmiHelp.Text = "Помощь";
             this.tsmiHelp.Click += new System.EventHandler(this.tsmiHelp_Click);
             // 
+            // miChangeLog
+            // 
+            this.miChangeLog.Name = "miChangeLog";
+            this.miChangeLog.Size = new System.Drawing.Size(161, 22);
+            this.miChangeLog.Text = "Изменения";
+            this.miChangeLog.Click += new System.EventHandler(this.miChangeLog_Click);
+            // 
             // tNoWorking
             // 
             this.tNoWorking.Interval = 480000;
@@ -591,13 +599,6 @@
             this.rabStatusBar1.Size = new System.Drawing.Size(914, 23);
             this.rabStatusBar1.TabIndex = 5;
             this.rabStatusBar1.Text = "rabStatusBar1";
-            // 
-            // miChangeLog
-            // 
-            this.miChangeLog.Name = "miChangeLog";
-            this.miChangeLog.Size = new System.Drawing.Size(161, 22);
-            this.miChangeLog.Text = "Изменения";
-            this.miChangeLog.Click += new System.EventHandler(this.miChangeLog_Click);
             // 
             // MainForm
             // 
