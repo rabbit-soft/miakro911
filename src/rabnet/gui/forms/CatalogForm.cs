@@ -132,7 +132,7 @@ namespace rabnet.forms
 					}
                     else if (cd.ColNames[j].StartsWith(CatalogData.IMAGE_MARKER))
                     {
-                        if (cd.Rows[i].data.Length == 0) continue;
+                        if (cd.Rows[i].data[j].Length == 0) continue;
                         MemoryStream ms = new MemoryStream(Convert.FromBase64String(cd.Rows[i].data[j]));
                         Image img = Image.FromStream(ms);
                         dataGridView1.Rows[rownumber].Cells[j].Value = img;
