@@ -114,7 +114,7 @@
             this.tpDataSources.Name = "tpDataSources";
             this.tpDataSources.Size = new System.Drawing.Size(353, 344);
             this.tpDataSources.TabIndex = 1;
-            this.tpDataSources.Text = "Подключения";
+            this.tpDataSources.Text = "Фермы";
             // 
             // farmsPanel1
             // 
@@ -122,7 +122,7 @@
             this.farmsPanel1.Location = new System.Drawing.Point(0, 0);
             this.farmsPanel1.MinimumSize = new System.Drawing.Size(340, 315);
             this.farmsPanel1.Name = "farmsPanel1";
-            this.farmsPanel1.Size = new System.Drawing.Size(340, 315);
+            this.farmsPanel1.Size = new System.Drawing.Size(353, 344);
             this.farmsPanel1.TabIndex = 0;
             // 
             // tpArchiveJobs
@@ -169,8 +169,8 @@
             this.scAbout.Panel2.Controls.Add(this.btDloadUpdate);
             this.scAbout.Panel2.Controls.Add(this.tbUpdateInfo);
             this.scAbout.Panel2.Controls.Add(this.btCheckUpdate);
-            this.scAbout.Size = new System.Drawing.Size(192, 74);
-            this.scAbout.SplitterDistance = 41;
+            this.scAbout.Size = new System.Drawing.Size(353, 344);
+            this.scAbout.SplitterDistance = 190;
             this.scAbout.TabIndex = 0;
             // 
             // aboutPanel1
@@ -180,7 +180,7 @@
             this.aboutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.aboutPanel1.MinimumSize = new System.Drawing.Size(340, 0);
             this.aboutPanel1.Name = "aboutPanel1";
-            this.aboutPanel1.Size = new System.Drawing.Size(340, 41);
+            this.aboutPanel1.Size = new System.Drawing.Size(353, 190);
             this.aboutPanel1.TabIndex = 1;
             // 
             // pbUpdate
