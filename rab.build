@@ -212,9 +212,11 @@
 		<property name="bin_dir" value="${bindir}\protected"/>
 		<property name="bin_type" value="protected"/>
 		<property name="setup_suff" value=""/>
+		
+		<call target="nsis_bld"/>
+		
 		<copy file="${helpdir}/${help_rcdb}" tofile="${bindir}/miakro_911_${bin_type}/${help_rcdb}"/>			
 		<copy file="${helpdir}/${help_gtru}" tofile="${bindir}/miakro_911_${bin_type}/${help_gtru}"/>
-		<call target="nsis_bld"/>
 		
 		<property name="dist_type" value="rabnet_protected"/>
 		<property name="bin_dir" value="${bindir}\demo"/>
