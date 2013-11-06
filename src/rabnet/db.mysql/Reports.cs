@@ -41,6 +41,7 @@ namespace db.mysql
                 case myReportType.REVISION: return revision(f);               
                 case myReportType.SHED: return shedReport(f);
                 case myReportType.TEST: query = testQuery(f); break;
+                case myReportType.USER_OKROLS_YEAR:
                 case myReportType.USER_OKROLS: return userOkrolRpt(qUserOkrols(f));
             }
 #if DEBUG

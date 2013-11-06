@@ -21,6 +21,9 @@ namespace rabnet.forms
             }
         }
 
+        /// <summary>
+        /// d, m, y
+        /// </summary>
         public string PeriodChar
         {
             get

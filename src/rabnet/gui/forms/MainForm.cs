@@ -544,10 +544,12 @@ namespace rabnet.forms
                 f["user"] = dlg.getUser().ToString();
                 f[Filters.DATE_PERIOD] = dlg.PeriodChar;
                 f[Filters.DATE_VALUE] = dlg.DateValue;
-                (new ReportViewForm(myReportType.USER_OKROLS, 
+                myReportType type = dlg.PeriodChar == "y" ? myReportType.USER_OKROLS_YEAR : myReportType.USER_OKROLS;
+
+                (new ReportViewForm(type, 
                     new XmlDocument[]
                     {
-                        Engine.get().db().makeReport(myReportType.USER_OKROLS,f),
+                        Engine.get().db().makeReport(type,f),
                         dlg.getXml()
                     }
                     )).Show();

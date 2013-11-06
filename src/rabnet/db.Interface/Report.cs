@@ -8,7 +8,8 @@ namespace rabnet
 #if !DEMO
     public enum myReportType
     {
-        TEST, BREEDS, AGE, FUCKER, DEAD, DEADREASONS, REALIZE, USER_OKROLS, SHED, REPLACE, REVISION, BY_MONTH, FUCKS_BY_DATE, BUTCHER_PERIOD, RABBIT, PRIDE, ZOOTECH
+        TEST, BREEDS, AGE, FUCKER, DEAD, DEADREASONS, REALIZE, SHED, REPLACE, REVISION, BY_MONTH, FUCKS_BY_DATE, BUTCHER_PERIOD, RABBIT, PRIDE, ZOOTECH,
+        USER_OKROLS, USER_OKROLS_YEAR
     }
 
     public class ReportHelper
@@ -31,6 +32,7 @@ namespace rabnet
                 case myReportType.REPLACE: return "План пересадок";
                 case myReportType.REVISION: return "Ревизия свободных клеток";
                 case myReportType.SHED: return "Шедовый отчет";
+                case myReportType.USER_OKROLS_YEAR:
                 case myReportType.USER_OKROLS: return "Окролы по пользователям";
                 default: return "test";
             }
@@ -55,6 +57,7 @@ namespace rabnet
                 case myReportType.REVISION: return "empty_rev";
                 case myReportType.SHED: return "shed";
                 case myReportType.USER_OKROLS: return "okrol_user";
+                case myReportType.USER_OKROLS_YEAR: return "okrol_user_year";
                 default: return "test";
             }
         }
