@@ -110,22 +110,7 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     File ${BinDir}\bin\rabHelp.chm
 	
     SetOutPath $INSTDIR\bin\reports
-    File ${BinDir}\bin\reports\age.rdl
-    File ${BinDir}\bin\reports\breeds.rdl
-    File ${BinDir}\bin\reports\by_month.rdl
-    File ${BinDir}\bin\reports\dead.rdl
-    File ${BinDir}\bin\reports\deadreason.rdl
-    File ${BinDir}\bin\reports\empty_rev.rdl
-    File ${BinDir}\bin\reports\fucker.rdl
-    File ${BinDir}\bin\reports\fucks_by_date.rdl
-    File ${BinDir}\bin\reports\okrol_user.rdl
-    File ${BinDir}\bin\reports\plem.rdl
-    File ${BinDir}\bin\reports\rabbit.rdl
-    File ${BinDir}\bin\reports\realization.rdl
-    File ${BinDir}\bin\reports\replace_plan.rdl
-    File ${BinDir}\bin\reports\shed.rdl
-    File ${BinDir}\bin\reports\zooteh.rdl
-    File ${BinDir}\bin\reports\zooteh_nofuck.rdl
+    File ${BinDir}\bin\reports\*.rdl
     SetOutPath $INSTDIR\bin
     
     ######## Temporary fix of bug M0000308
