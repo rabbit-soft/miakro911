@@ -152,7 +152,7 @@ namespace rabdump
         }
 
         /// <summary>
-        /// Отправляет Веб-отчет
+        /// Отправляет Веб-отчет 
         /// </summary>
         private static void sendWebReport()
         {
@@ -167,7 +167,12 @@ namespace rabdump
                 sWebRepOneDay[] reps = null;
                 foreach (DataSource rds in dataSources)
                 {
-                    if (!rds.WebReport) continue;
+                    if (!rds.WebReport)
+                    {
+                        _logger.Debug("Data source no need to WebReport");
+                        continue;
+                    }
+
                     string webRepLD = RabServWorker.ReqSender.ExecuteMethod(MethodName.WebRep_GetLastDate,
                         MPN.db, rds.Params.DataBase).Value as string;
 
@@ -175,10 +180,14 @@ namespace rabdump
 
 
                     DateTime stDate = DateTime.MaxValue;
-                    if (webRepLD == "")
+                    if (String.IsNullOrEmpty(webRepLD))
                     {
                         stDate = rabnet.Engine.db().GetFarmStartTime();
-                        if (stDate == DateTime.MaxValue) continue;
+                        if (stDate == DateTime.MaxValue)
+                        {
+                            _logger.Debug("No Farm start Time");
+                            continue;
+                        }
                         if (DateTime.Now.Date.Subtract(stDate.Date).Days > MAX_DAYS)
                             stDate = DateTime.Now.AddDays(-MAX_DAYS);
                     }
@@ -212,6 +221,8 @@ namespace rabdump
             catch (Exception exc)
             {
                 _logger.Error(exc);
+                if (exc.InnerException != null)
+                    exc = exc.InnerException;
                 callOnMessage(exc.Message, "Ошибка", 3);
             }
             finally

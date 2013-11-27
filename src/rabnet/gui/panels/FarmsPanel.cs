@@ -9,6 +9,9 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using rabnet.RNC;
 using gamlib;
+#if PROTECTED
+using RabGRD;
+#endif
 
 namespace rabnet
 {
@@ -75,6 +78,9 @@ namespace rabnet
             tbDB.Text = ds.Params.DataBase;
             tbUser.Text = ds.Params.User;
             tbPass.Text = ds.Params.Password;
+#if PROTECTED
+            chWebReport.Checked = ds.WebReport;
+#endif
         }
 
         private void btAdd_CheckedChanged(object sender, EventArgs e)
@@ -115,6 +121,7 @@ namespace rabnet
             tbDB.Text = "kroliki";
             tbUser.Text = "kroliki";
             tbPass.Text = "krol";
+            chWebReport.Checked = false;
         }
 
         private void showButtons(bool p)
@@ -128,7 +135,7 @@ namespace rabnet
             gbAdmin.Visible = addStyle;
             gbConn.Top = addStyle ? gbConn_DEF_Y : gbConn_DEF_Y - DEF_Y_SUB;
             btCancel.Top =
-                btOk.Top = addStyle ? btCancelOK_DEF_Y : btCancelOK_DEF_Y - DEF_Y_SUB; ;
+                btOk.Top = addStyle ? btCancelOK_DEF_Y : btCancelOK_DEF_Y - DEF_Y_SUB;
         }
 
         /// <summary>
@@ -141,6 +148,10 @@ namespace rabnet
                 tbDB.ReadOnly =
                 tbUser.ReadOnly =
                 tbPass.ReadOnly = readOnly;
+#if PROTECTED
+            if(GRD.Instance.GetFlag(GRD.FlagType.WebReports))
+                chWebReport.Enabled = !readOnly;
+#endif
         }
 
         private void chCreate_CheckedChanged(object sender, EventArgs e)
@@ -191,6 +202,9 @@ namespace rabnet
                 ds = _ds_dict[_sInd];
                 ds.Name = cbName.Text;
                 ds.Params = new sParams(tbHost.Text, tbDB.Text, tbUser.Text, tbPass.Text);
+#if PROTECTED
+                ds.WebReport = chWebReport.Checked;
+#endif
             }
             //RabnetConfig.SaveDataSources();
             btCancel_Click(null,null);

@@ -51,9 +51,9 @@ namespace rabdump
 
             ArchiveJobThread.OnMessage += new MessageSenderCallbackDelegate(messageCb);
 #if PROTECTED
-            //miSendGlobRep.Enabled = GRD.Instance.GetFlag(GRD_Base.FlagType.WebReports);
-            miSendGlobRep.Visible =
-                miRemoteSeparator.Visible = false;
+            miSendGlobRep.Enabled = GRD.Instance.GetFlag(GRD_Base.FlagType.WebReports);
+            //miSendGlobRep.Visible =
+                //miRemoteSeparator.Visible = false;
 #endif
             //_rupd = new RabUpdater();
             //_rupd.MessageSenderCallback = MessageCb;          
@@ -415,6 +415,11 @@ namespace rabdump
             pbUpdate.Visible = true;
             RabServWorker.CheckForUpdate(false);
         }
+
+        private void miSendGlobRep_Click(object sender, EventArgs e)
+        {
+            RabServWorker.SendWebReport();
+        }
 		#endregion handlers
 
 		#region threading
@@ -540,7 +545,7 @@ namespace rabdump
                 this.Close();
             }
         }
-        #endregion net_event_handlers
+        #endregion net_event_handlers        
 
     }
 }

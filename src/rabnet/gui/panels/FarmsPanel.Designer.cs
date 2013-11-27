@@ -53,14 +53,15 @@
             this.btCancel = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btAdd = new System.Windows.Forms.CheckBox();
+            this.chWebReport = new System.Windows.Forms.CheckBox();
             this.gbAdmin.SuspendLayout();
             this.gbConn.SuspendLayout();
             this.SuspendLayout();
             // 
             // cbName
             // 
-            this.cbName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.cbName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbName.FormattingEnabled = true;
             this.cbName.Location = new System.Drawing.Point(80, 9);
@@ -113,7 +114,7 @@
             this.gbAdmin.Controls.Add(this.label6);
             this.gbAdmin.Location = new System.Drawing.Point(40, 39);
             this.gbAdmin.Name = "gbAdmin";
-            this.gbAdmin.Size = new System.Drawing.Size(260, 83);
+            this.gbAdmin.Size = new System.Drawing.Size(260, 73);
             this.gbAdmin.TabIndex = 7;
             this.gbAdmin.TabStop = false;
             this.gbAdmin.Text = "Создание БД";
@@ -169,6 +170,7 @@
             // gbConn
             // 
             this.gbConn.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.gbConn.Controls.Add(this.chWebReport);
             this.gbConn.Controls.Add(this.tbPass);
             this.gbConn.Controls.Add(this.tbHost);
             this.gbConn.Controls.Add(this.tbDB);
@@ -299,6 +301,18 @@
             this.btAdd.UseVisualStyleBackColor = true;
             this.btAdd.CheckedChanged += new System.EventHandler(this.btAdd_CheckedChanged);
             // 
+            // chWebReport
+            // 
+            this.chWebReport.AutoSize = true;
+            this.chWebReport.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chWebReport.Enabled = false;
+            this.chWebReport.Location = new System.Drawing.Point(122, 120);
+            this.chWebReport.Name = "chWebReport";
+            this.chWebReport.Size = new System.Drawing.Size(124, 17);
+            this.chWebReport.TabIndex = 13;
+            this.chWebReport.Text = "Отправлять отчеты";
+            this.chWebReport.UseVisualStyleBackColor = true;
+            // 
             // FarmsPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -349,5 +363,6 @@
         private System.Windows.Forms.Button btCancel;
         private System.Windows.Forms.CheckBox chCreate;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.CheckBox chWebReport;
     }
 }

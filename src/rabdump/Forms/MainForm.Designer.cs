@@ -291,6 +291,7 @@
             this.miSendGlobRep.Name = "miSendGlobRep";
             this.miSendGlobRep.Size = new System.Drawing.Size(210, 22);
             this.miSendGlobRep.Text = "Послать отчет на сервер";
+            this.miSendGlobRep.Click += new System.EventHandler(this.miSendGlobRep_Click);
             // 
             // miUpdateKey
             // 

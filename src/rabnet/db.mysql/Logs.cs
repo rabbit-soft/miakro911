@@ -123,10 +123,14 @@ ORDER BY date DESC LIMIT {0:d};", limit, makeWhere(f));
         /// </summary>
         public static DateTime getFarmStartTime(MySqlConnection sql)
         {
-            MySqlCommand cmd = new MySqlCommand("SELECT l_date FROM logs ORDER BY l_id ASC LIMIT 1;",sql);
-            string res = cmd.ExecuteScalar().ToString();
             DateTime result = DateTime.MaxValue;
-            DateTime.TryParse(res,out result);
+            MySqlCommand cmd = new MySqlCommand("SELECT l_date FROM logs ORDER BY l_id ASC LIMIT 1;",sql);
+            object o = cmd.ExecuteScalar();
+            if (o != null)
+            {
+                string res = 0.ToString();
+                DateTime.TryParse(res, out result);
+            }
             return result;
         }
 
