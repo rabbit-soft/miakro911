@@ -9,26 +9,26 @@ namespace pEngine
 {
     public partial interface IServerProxy : IXmlRpcProxy
     {
-        [XmlRpcMethod("client.get.update")]
+        [XmlRpcMethod("client_get_update")]
         string ClientGetUpdate(string question);
 
-        [XmlRpcMethod("get.dumplist")]
+        [XmlRpcMethod("get_dumplist")]
         sDump[] GetDumpList();
 
-        [XmlRpcMethod("get.update.files")]
+        [XmlRpcMethod("get_update_files")]
         sUpdateFile[] GetUpdateFiles();
 
-        [XmlRpcMethod("vendor.update.dongle")]
+        [XmlRpcMethod("vendor_update_dongle")]
         string VendorUpdateDongle(string base64_question, string clientId, string farms, string flags, string startDate, string endDate, string dongleId);
-        [XmlRpcMethod("dongle.update.success")]
+        [XmlRpcMethod("dongle_update_success")]
         void SuccessUpdate(string dongleId);
 
-        [XmlRpcMethod("webrep.send.global")]
+        [XmlRpcMethod("webrep_send_global")]
         void WebRep_SendGlobal(string db,sWebRepOneDay[] value);
-        [XmlRpcMethod("webrep.get.lastdate")]
+        [XmlRpcMethod("webrep_get_lastdate")]
         string WebRep_GetLastDate(string db);
 
-        [XmlRpcMethod("get.update.info")]
+        [XmlRpcMethod("get_update_info")]
         UpdateInfo GetUpdateInfo();
     }
 
