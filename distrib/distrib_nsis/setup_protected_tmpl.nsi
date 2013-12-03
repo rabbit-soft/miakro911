@@ -104,8 +104,8 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
 	File ${BinDir}\bin\Interop.Microsoft.Office.Interop.Excel.dll
 	File ${BinDir}\bin\Interop.Microsoft.Office.Core.dll
 	#File ${BinDir}\bin\CAS.DLL
-	#File ${BinDir}\gui_genetics.dll   
-	#File ${BinDir}\bin\Pickers.dll 
+	File ${BinDir}\bin\gui_genetics.dll   
+	File ${BinDir}\bin\Pickers.dll 
 	File ${BinDir}\bin\changeLog.html
     File ${BinDir}\bin\rabHelp.chm
 	
