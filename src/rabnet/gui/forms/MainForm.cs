@@ -94,7 +94,7 @@ namespace rabnet.forms
             rabStatusBar1.SetText(0, srvNow.ToShortDateString(),curDate);    
                                
 #if DEMO
-            this.Text += " Демонстрационная версия";
+            this.Text = " Демонстрационная версия";
 #else
             this.Text = Engine.get().farmName(); 
 #endif
