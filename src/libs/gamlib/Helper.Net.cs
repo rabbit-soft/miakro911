@@ -133,6 +133,15 @@ namespace gamlib
             u = new Uri(u, file);
             return u.AbsoluteUri;
         }
+
+        public static string UriNormalize(string host)
+        {            
+            if(!host.StartsWith("http://"))
+                host = "http://" + host;      
+            if(!host.EndsWith("/"))
+                host += "/";      
+            return host;
+        }
     }
 
     public class UploadFile

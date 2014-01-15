@@ -52,6 +52,9 @@
     <Compile Include="..\..\libs\gamlib\Helper.Array.cs">
       <Link>Helper.Array.cs</Link>
     </Compile>
+    <Compile Include="..\..\libs\gamlib\Helper.Net.cs">
+      <Link>Helper.Net.cs</Link>
+    </Compile>
     <Compile Include="..\..\libs\GRD\GRDCommon.cs">
       <Link>GRDCommon.cs</Link>
     </Compile>

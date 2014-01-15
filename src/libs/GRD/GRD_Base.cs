@@ -112,19 +112,19 @@ namespace RabGRD
             retCode = GrdApi.GrdStartup(_findPropRemoteMode); // + GrdFMR.Remote if you want to use network dongles
             logStr += GrdApi.PrintResult((int)retCode);
             _logger.Debug(logStr);
-            ErrorHandling(new Handle(0), retCode);
+            ErrorHandling(new Handle(IntPtr.Zero), retCode);
             if (retCode != GrdE.OK && retCode != GrdE.AlreadyInitialized)
             {
                 return retCode;
             }
 
             logStr = "Create Guardant protected container : ";
-            _grdHandle = GrdApi.GrdCreateHandle(_grdHandle, GrdCHM.MultiThread);
-            if (_grdHandle.Address == 0) // Some error found?
+            _grdHandle = GrdApi.GrdCreateHandle(GrdCHM.MultiThread);
+            if (_grdHandle.Address == IntPtr.Zero) // Some error found?
             {
                 logStr += GrdApi.PrintResult((int)GrdE.MemoryAllocation);
                 _logger.Debug(logStr);
-                return ErrorHandling(new Handle(0), GrdE.MemoryAllocation);
+                return ErrorHandling(new Handle(IntPtr.Zero), GrdE.MemoryAllocation);
             }
             else
             {
@@ -223,7 +223,7 @@ namespace RabGRD
 
         protected GrdE disconnect()
         {
-            if (_grdHandle.Address == 0) return GrdE.OK;
+            if (_grdHandle.Address == IntPtr.Zero) return GrdE.OK;
             GrdE retCode;                       // Error code for all Guardant API functions
             string logStr = "";
 
@@ -261,7 +261,7 @@ namespace RabGRD
             if (nRet != GrdE.OK)
             {
                 _logger.Warn("ErrorHandling : " + GrdApi.PrintResult((int)nRet));
-                if (hGrd.Address != 0)	// Perform some cleanup operations if hGrd handle exists
+                if (hGrd.Address != IntPtr.Zero)	// Perform some cleanup operations if hGrd handle exists
                 {
                     // Close hGrd handle, log out from dongle/server, free allocated memory
                     logStr = ("Closing handle: ");

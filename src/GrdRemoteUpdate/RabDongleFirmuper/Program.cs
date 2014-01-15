@@ -81,7 +81,7 @@ namespace RabDongleFirmuper
         private static void dongleUpdate()
         {
             VenReqSender reqSend = new VenReqSender();
-            reqSend.Url = _url;
+            reqSend.Url = Helper.UriNormalize(_url);
             reqSend.UserID = 0;
             reqSend.Key = new byte[GRD_Base.KEY_CODE_LENGTH];
             

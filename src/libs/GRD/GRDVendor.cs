@@ -185,8 +185,8 @@ namespace RabGRD
 
             retCode = GrdApi.GrdTRU_DecryptQuestion(_grdHandle,      // handle to Guardant protected container of dongle that contains 
                                                                      // GSII64 algorithm with the same key as in remote dongle 
-                                                    TRUAlgoNumGSII64,// dongle GSII64 algorithm number with same TRUkey as in remote dongle 
-                                                    TRUAlgoNumHash64,// dongle HASH64 algorithm number with same TRUkey as in remote dongle 
+                                                    new GrdAlgNum(TRUAlgoNumGSII64),// dongle GSII64 algorithm number with same TRUkey as in remote dongle 
+                                                    new GrdAlgNum(TRUAlgoNumHash64),// dongle HASH64 algorithm number with same TRUkey as in remote dongle 
                                                     qq.question,     // pointer to Question					8 bytes (64 bit) 
                                                     qq.id,           // ID									4 bytes 
                                                     qq.pubKey,       // Public Code							4 bytes 
@@ -227,13 +227,13 @@ namespace RabGRD
                                                                                 // GSII64 algorithm with the same key as in remote dongle 
                                                                                 // and pre-stored GrdTRU_SetAnswerProperties data if needed 
                                                   GRDConst.GrdSAMToUAM,         // starting address for writing in dongle 
-                                                  (int)pbyWholeMask.Length,     // size of data to be written 
+                                                  //(int)pbyWholeMask.Length,     // size of data to be written 
                                                   pbyWholeMask,                 // buffer for data to be written 
                                                   qq.question,                  // pointer to decrypted Question 
                                                   TRUAlgoNumGSII64,             // dongle GSII64 algorithm number with the same key as in remote dongle 
                                                   TRUAlgoNumHash64,             // dongle HASH64 algorithm number with the same key as in remote dongle 
-                                                  out answer,                   // pointer to the buffer for Answer data 
-                                                  out ansSize);                 // IN: Maximum buffer size for Answer data, OUT: Size of pAnswer buffer 
+                                                  out answer/*,                   // pointer to the buffer for Answer data 
+                                                  out ansSize*/);                 // IN: Maximum buffer size for Answer data, OUT: Size of pAnswer buffer 
             logStr += GrdApi.PrintResult((int)retCode);
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
@@ -317,7 +317,7 @@ namespace RabGRD
 
             AddAlgorithm(abyMask,
                          abyMaskHeader,
-                         (ushort)GrdAN.GSII64, //номер алгоритма по умолчанию
+                         Convert.ToUInt16(GrdAN.GSII64), //номер алгоритма по умолчанию
                          (byte)GRDConst.nsafl.ST_III,
                          (ushort)0,
                          GRDConst.RsAlgo.GSII64,
@@ -333,7 +333,7 @@ namespace RabGRD
 
             AddAlgorithm(abyMask,
                          abyMaskHeader,
-                         (ushort)GrdAN.HASH64,
+                         Convert.ToUInt16(GrdAN.HASH64),
                          (byte)GRDConst.nsafl.ST_III,
                          (ushort)0,
                          GRDConst.RsAlgo.HASH64,
@@ -349,7 +349,7 @@ namespace RabGRD
             if (forUser)
                 AddAlgorithm(abyMask,
                              abyMaskHeader,
-                             (ushort)GrdAN.ECC160,
+                             Convert.ToUInt16(GrdAN.ECC160),
                              (byte)(GRDConst.nsafl.ST_III + GRDConst.nsafl.ActivationSrv + GRDConst.nsafl.DeactivationSrv),
                              (ushort)(GRDConst.nsafh.ReadSrv + GRDConst.nsafh.ReadPwd),
                              GRDConst.RsAlgo.ECC160,
@@ -408,8 +408,8 @@ namespace RabGRD
 
             logStr = "Writing user buffer : ";
             retCode = GrdApi.GrdWrite(_grdHandle,
-                                      (uint)0,
-                                      pbyWholeMask.Length,
+                                      GrdUAM.AlgoAddr,//(uint)0,
+                                      //pbyWholeMask.Length,
                                       pbyWholeMask);
 
             logStr += GrdApi.PrintResult((int)retCode);
@@ -418,12 +418,13 @@ namespace RabGRD
             if (retCode != GrdE.OK) return (int)retCode;
 
             logStr = "Protecting : ";
-            retCode = GrdApi.GrdProtect(new IntPtr(_grdHandle.Address),
+            retCode = GrdApi.GrdProtect(_grdHandle,
                                         protectLength,
                                         protectLength,
                                         wNumberOfItems,
                                         0,
-                                        (uint)GrdGF.HID, IntPtr.Zero);
+                                        (uint)GrdGF.HID/*, 
+                                        IntPtr.Zero*/);
             logStr += GrdApi.PrintResult((int)retCode);
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);

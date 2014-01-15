@@ -63,7 +63,7 @@ namespace RabGRD
             byte[] initVector = new byte[16];
 
             logStr = "Testing new mask by GrdTransform test: ";
-            retCode = GrdApi.GrdTransform(_grdHandle, 0, 8, buffer, 0, initVector);
+            retCode = GrdApi.GrdTransform(_grdHandle, 0, /*8,*/ buffer, GrdAM.ECB, initVector);
             logStr += GrdApi.PrintResult((int)retCode);
             _logger.Debug(logStr);
             if (retCode != GrdE.OK)
