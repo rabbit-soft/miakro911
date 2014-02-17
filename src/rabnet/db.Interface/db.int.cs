@@ -96,7 +96,7 @@ namespace rabnet
         bool unblockName(int id);
 
         BuildingList getBuildings(Filters f);
-        void replaceRabbit(int rid, int farm, int tier_id, int sec);
+        void replaceRabbit(int rid, int farm, int floor, int sec);
         //void replaceYounger(int yid, int farm, int tier_id, int sec);
         int NewRabbit(OneRabbit r,int mom);
                 

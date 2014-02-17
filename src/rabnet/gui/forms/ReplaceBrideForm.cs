@@ -76,7 +76,7 @@ namespace rabnet.forms
                 Close();
                 return;
             }
-            girlOut = r.Clone(1, adr.Farm, adr.Tier, adr.Section);
+            girlOut = r.Clone(1, adr.Farm, adr.Floor, adr.Section);
         }
 
         private void ReplaceBride_Load(object sender, EventArgs e)

@@ -4,6 +4,13 @@ using System.Collections.Generic;
 namespace rabnet
 {
 
+    public static class TierFloor
+    {
+        public static int None  = 0;
+        public static int Upper = 1;
+        public static int Lower = 2;
+    }
+
     public enum BuildingType
     {
         None, Female, DualFemale, Jurta, Quarta, Vertep, Barin, Cabin, Complex
@@ -47,7 +54,10 @@ namespace rabnet
 
         public readonly int ID;
         public readonly int Farm;
-        public readonly int TierID;
+        /// <summary>
+        /// Тут записан этаж,но по стечению обстоятельств это зазывается tier_id
+        /// </summary>
+        public readonly int Floor;
         public readonly int Sections;
         //public String[] Areas;
         //public String[] Descr;
@@ -71,7 +81,7 @@ namespace rabnet
         {
             ID = id;
             this.Farm = farm;
-            TierID = tier_id;
+            Floor = tier_id;
             Type = type;
             //TypeName_Rus = typeLoc;
             Delims = delims;
@@ -98,7 +108,7 @@ namespace rabnet
         public string Areas(int sec)
         {
             if (sec > Sections) return "";
-            return (TierID == 0 ? "" : (TierID == 1 ? "^" : "-")) + Building.GetSecRus(Type, sec, Delims);
+            return (Floor == 0 ? "" : (Floor == 1 ? "^" : "-")) + Building.GetSecRus(Type, sec, Delims);
         }
 
         public string Descr(int sec, bool shr)
@@ -115,17 +125,17 @@ namespace rabnet
         public string FullName(int sec)
         {
             if (sec > Sections) return "";
-            return Building.FullNameRus(Farm, TierID, sec, Type, Delims, false, true, true);
+            return Building.FullNameRus(Farm, Floor, sec, Type, Delims, false, true, true);
         }
         public string MedName(int sec)
         {
             if (sec > Sections) return "";
-            return Building.FullNameRus(Farm, TierID, sec, Type, Delims, false, true, false);
+            return Building.FullNameRus(Farm, Floor, sec, Type, Delims, false, true, false);
         }
         public string SmallName(int sec)
         {
             if (sec > Sections) return "";
-            return Building.FullNameRus(Farm, TierID, sec, Type, Delims, true, false, false);
+            return Building.FullNameRus(Farm, Floor, sec, Type, Delims, true, false, false);
         }
 
         /// <summary>
@@ -363,11 +373,11 @@ namespace rabnet
             return res;
         }
 
-        public static String FullNameRus(int farm, int tierid, int sec, BuildingType type, String delims, bool shrt, bool showTier, bool ShowDescr)
+        public static String FullNameRus(int farm, int tireFloor, int sec, BuildingType type, String delims, bool shrt, bool showTier, bool ShowDescr)
         {
             String res = Building.Format(farm);
-            if (tierid == 1) res += "^";
-            if (tierid == 2) res += "-";
+            if (tireFloor == TierFloor.Upper) res += "^";
+            if (tireFloor == TierFloor.Lower) res += "-";
             res += GetSecRus(type, sec, delims);
             if (showTier)
                 res += " [" + GetNameRus(type, shrt) + "]";
@@ -491,7 +501,7 @@ namespace rabnet
                 for (int sec = 0; sec < this[b].Sections; sec++)
                     if (this[b].MedName(sec) == medAddress)
                     {
-                        return new Address(this[b].Farm, this[b].TierID, sec);
+                        return new Address(this[b].Farm, this[b].Floor, sec);
                     }
             return new Address(0, 0, 0);
         }
@@ -500,13 +510,13 @@ namespace rabnet
     public class Address
     {
         public int Farm;
-        public int Tier;
+        public int Floor;
         public int Section;
 
-        public Address(int farm, int tier, int sec)
+        public Address(int farm, int floor, int sec)
         {
             this.Farm = farm;
-            this.Tier = tier;
+            this.Floor = floor;
             this.Section = sec;
         }
     }

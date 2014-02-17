@@ -656,7 +656,7 @@ namespace rabnet.forms
             {
                 //int[] a = getAddress(rp);
                 Address a = _freeBuildings.SearchByMedName(rp.CurAddress);
-                _rabERs[_replaceList.IndexOf(rp)].ReplaceRabbit(a.Farm, a.Tier, a.Section, rp.CurAddress);
+                _rabERs[_replaceList.IndexOf(rp)].ReplaceRabbit(a.Farm, a.Floor, a.Section, rp.CurAddress);
                 rp.Saved = true;
                 return;
             }
@@ -688,7 +688,7 @@ namespace rabnet.forms
                 //if (rp.Younger)
                     //par.ReplaceYounger(rb.ID, a.Farm, a.Tier, a.Section, rp.CurAddress);
                 //else
-                    rb.ReplaceRabbit(a.Farm, a.Tier, a.Section, rp.CurAddress);               
+                    rb.ReplaceRabbit(a.Farm, a.Floor, a.Section, rp.CurAddress);               
             }
 
             if (rp.CanHaveNest)
@@ -720,7 +720,7 @@ namespace rabnet.forms
             {
                 RP c = rp.Clones[0];
                 Address a = _freeBuildings.SearchByMedName(c.CurAddress);
-                int cid = rb.Clone(c.Count, a.Farm, a.Tier, a.Section);
+                int cid = rb.Clone(c.Count, a.Farm, a.Floor, a.Section);
                 c.ID = cid;
                 commitRabbit(c, cid, allowReplace);
                 if (_action == Action.ONE_GIRL_OUT && _girlout == 0 && c.Sex == Rabbit.SexType.FEMALE && c.Count == 1)

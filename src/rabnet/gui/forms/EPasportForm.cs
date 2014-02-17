@@ -663,7 +663,7 @@ namespace rabnet.forms
                 Engine.db().NewRabbit(r, r.ParentID, r.BirthPlace, _importFileGuid);
                 ///селим по назначенный адрес
                 Address a = _freeBuildings.SearchByMedName(lviRab.SubItems[IMP_ADDRESS].Text);
-                Engine.db().replaceRabbit(r.ID, a.Farm, a.Tier, a.Section);
+                Engine.db().replaceRabbit(r.ID, a.Farm, a.Floor, a.Section);
                 Engine.get().logs().log(LogType.REPLACE, r.ID, 0, lviRab.SubItems[IMP_ADDRESS].Text);
                 lviRab.ForeColor = IMPORTED_RAB_RAB;
                 adaptParent(r, oldRid);

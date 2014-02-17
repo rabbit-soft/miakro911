@@ -358,9 +358,9 @@ namespace db.mysql
         //    return Youngers.GetYoungers(sql, mom);
         //}
 
-        public void replaceRabbit(int rid, int farm, int tier_id, int sec)
+        public void replaceRabbit(int rid, int farm, int tierFloor, int sec)
         {
-            RabbitGetter.replaceRabbit(sql, rid, farm, tier_id, sec);
+            RabbitGetter.replaceRabbit(sql, rid, farm, tierFloor, sec);
         }
         //public void replaceYounger(int rid, int farm, int tier_id, int sec)
         //{

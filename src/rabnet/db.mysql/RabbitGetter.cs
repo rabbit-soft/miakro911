@@ -365,7 +365,7 @@ r_area,t_busy1,t_busy2,t_busy3,t_busy4,m_upper,m_lower,m_id FROM rabbits,tiers,m
             return new int[] { frm, tid, sc, tr };
         }
 
-        public static void placeRabbit(MySqlConnection sql, int rabbit, int farm, int tier_id, int sec)
+        public static void placeRabbit(MySqlConnection sql, int rabbit, int farm, int tierFloor, int sec)
         {
             if (farm == 0)
             {
@@ -373,17 +373,16 @@ r_area,t_busy1,t_busy2,t_busy3,t_busy4,m_upper,m_lower,m_id FROM rabbits,tiers,m
                 c.ExecuteNonQuery();
                 return;
             }
-            MySqlCommand cmd = new MySqlCommand("", sql);
-            cmd.CommandText = String.Format("SELECT {0:s} FROM minifarms WHERE m_id={1:d};", tier_id == 2 ? "m_lower" : "m_upper", farm);
+            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT {0:s} FROM minifarms WHERE m_id={1:d};", tierFloor == TierFloor.Lower ? "m_lower" : "m_upper", farm), sql);            
             MySqlDataReader rd = cmd.ExecuteReader();
             rd.Read();
-            int ntr = rd.GetInt32(0);
+            int tierId = rd.GetInt32(0);
             rd.Close();
-            cmd.CommandText = String.Format(@"UPDATE rabbits SET r_farm={0:d},r_tier_id={1:d},r_area={2:d},r_tier={3:d} 
-WHERE r_id={4:d};", farm, tier_id, sec, ntr, rabbit);
+
+            cmd.CommandText = String.Format(@"UPDATE rabbits SET r_farm={0:d}, r_tier_id={1:d}, r_area={2:d}, r_tier={3:d} WHERE r_id={4:d};", farm, tierFloor, sec, tierId, rabbit);
             cmd.ExecuteNonQuery();
             if (farm != 0)
-                cmd.CommandText = String.Format("UPDATE tiers SET t_busy{0:d}={1:d} WHERE t_id={2:d};", sec + 1, rabbit, ntr);
+                cmd.CommandText = String.Format("UPDATE tiers SET t_busy{0:d}={1:d} WHERE t_id={2:d};", sec + 1, rabbit, tierId);
             cmd.ExecuteNonQuery();
         }
 
@@ -427,11 +426,11 @@ FROM rabbits WHERE r_id={0:d};", rabFromID, mom, count), sql);
             return cloneID;
         }
 
-        public static void replaceRabbit(MySqlConnection sql, int rabbit, int farm, int tier_id, int sec)
+        public static void replaceRabbit(MySqlConnection sql, int rabbit, int farm, int tierFloor, int sec)
         {
             removeParent(sql, rabbit);
             freeTier(sql, rabbit);
-            placeRabbit(sql, rabbit, farm, tier_id, sec);
+            placeRabbit(sql, rabbit, farm, tierFloor, sec);
         }
 
         public static int newRabbit(MySqlConnection sql, OneRabbit r, int mom)
