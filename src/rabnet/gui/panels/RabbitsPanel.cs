@@ -214,15 +214,19 @@ namespace rabnet.panels
             if (index < 0) return 0;
             String s = listView1.Items[index].SubItems[NFIELD].Text;
             int c = 1;
+            // если есть подсосные\гнездовые
             if (s[0] == '+')
             {
                 int t=0;
-                if (s.Contains("("))
+                string sTmp = s.TrimStart('+');
+                if (sTmp.Contains("("))
                 {
-                    int.TryParse(s.Split(' ')[1], out t);                    
+                    int.TryParse(sTmp.Split(' ')[0], out t);
                 }
-                else                
-                    int.TryParse(s.TrimStart('+'),out t);                
+                else
+                {
+                    int.TryParse(sTmp, out t);
+                }
                 c += t;
             }
             if (s[0] == '[') 
