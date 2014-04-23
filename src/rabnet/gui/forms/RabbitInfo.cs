@@ -100,6 +100,7 @@ namespace rabnet.forms
 
         private void updateData()
         {
+            _manual = false;
             if (_rab != null && _rab.ID == 0)
             {
                 btBon.Enabled =
@@ -126,6 +127,7 @@ namespace rabnet.forms
             sex.Enabled = (_rab.NameID == 0 && _rab.LastFuckOkrol == DateTime.MinValue);
             if (_rabId == 0)
                 UpdateNew();
+            _manual = true;
         }
 
         private void updateStd()
@@ -162,8 +164,7 @@ namespace rabnet.forms
 
         private void updateMale()
         {
-            setSex(1);
-            _manual = false;
+            setSex(1);            
             if (_rab.Status == 2) 
                 maleStatus.SelectedIndex = 2;
             else if (_rab.Status == 1 || _rab.Age >= _mkcandidate) 
@@ -183,8 +184,7 @@ namespace rabnet.forms
             }
             double[] d = Engine.db().getMaleChildrenProd(_rab.ID);
             maleKids.Text = String.Format("Количество крольчат: {0:f0}",d[0]);
-            maleProd.Text = String.Format("Продуктивность соития: {0:f5}",d[1]);
-            _manual = true;
+            maleProd.Text = String.Format("Продуктивность соития: {0:f5}",d[1]);           
         }
 
         /// <summary>
@@ -631,7 +631,7 @@ namespace rabnet.forms
             foreach(ListViewItem li in weightList.Items)
                 if (DateTime.Parse(li.SubItems[0].Text).Date == dateWeight.Value.Date)
                 {
-                    MessageBox.Show("Кролик уже взсешен "+li.SubItems[0].Text);
+                    MessageBox.Show("Кролик уже взвешен "+li.SubItems[0].Text);
                     return;
                 }
             Engine.db().addWeight(_rab.ID, (int)nudWeight.Value, dateWeight.Value.Date);
