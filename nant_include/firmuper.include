@@ -28,6 +28,7 @@
 				<include name="${srcdir}/libs/pEngine/xxTEA.cs"/>								
 				
 				<include name="${srcdir}/libs/gamlib/Helper.Array.cs"/>				
+				<include name="${srcdir}/libs/gamlib/Helper.Net.cs"/>		
 			</sources>
 			<resources></resources>
 			<references>
