@@ -5,9 +5,9 @@ using System.Text;
 using System.IO;
 using System.Windows.Forms;
 using rabnet.RNC;
+using gamlib;
 #if PROTECTED
     using RabGRD;
-using gamlib;
 #endif
 
 namespace rabdump
