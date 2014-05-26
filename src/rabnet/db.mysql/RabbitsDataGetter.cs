@@ -20,37 +20,43 @@ namespace db.mysql
             String fld = "b_name";
             if (options.safeBool("shr"))
                 fld = "b_short_name";
-            return String.Format(@" SELECT * FROM (SELECT r_id, 
-rabname(r_id,{0:s}) name,
-r_okrol,
-r_sex,
-r_event_date,
-TO_DAYS(NOW())-TO_DAYS(r_event_date) sukr,
-r_event,
-TO_DAYS(NOW())-TO_DAYS(r_born) age,
-(SELECT {1:s} FROM breeds WHERE b_id=r_breed) breed,
-Coalesce((SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)),-1) weight,
-r_status,
-r_flags,
-r_group,
-suckers,
-suckGroups,
-aage,
-r_rate,
-r_bon,
-rabplace(r_id) place,
-r_notes,
-r_born,
-r_breed,
-Coalesce(Group_concat('v',{3}),'') vaccines
-FROM rabbits r 
-LEFT JOIN (SELECT r_parent prnt,SUM(r2.r_group) suckers,COUNT(*) suckGroups, AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) aage FROM rabbits r2 GROUP BY r_parent) sc ON prnt=r.r_id
-LEFT JOIN (
-	SELECT rv.v_id,rv.r_id rv_id, Max(rv.`date`) FROM rab_vac rv
-	INNER JOIN vaccines v1 ON v1.v_id=rv.v_id
-	WHERE unabled!=1 AND (Date_Add(rv.`date`,INTERVAL v1.v_duration DAY)>=NOW()) GROUP BY v_id,r_id
-) rvac ON rv_id=r.r_id
-WHERE r_parent=0 GROUP by r_id ORDER BY name) c {2:s};", (options.safeBool("dbl") ? "2" : "1"), fld, makeWhere(),
+            return String.Format(@"SELECT * FROM (
+    SELECT 
+        r_id, 
+        rabname(r_id,{0:s}) name,
+        r_okrol,
+        r_sex,
+        r_event_date,
+        TO_DAYS(NOW())-TO_DAYS(r_event_date) sukr,
+        r_event,
+        TO_DAYS(NOW())-TO_DAYS(r_born) age,
+        (SELECT {1:s} FROM breeds WHERE b_id=r_breed) breed,
+        Coalesce((SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)),-1) weight,
+        r_status,
+        r_flags,
+        r_group,
+        suckers,
+        suckGroups,
+        aage,
+        r_rate,
+        r_bon,
+        rabplace(r_id) place,
+        r_notes,
+        r_born,
+        r_breed,
+        Coalesce(Group_concat('v',{3}),'') vaccines
+    FROM rabbits r 
+        LEFT JOIN (SELECT r_parent prnt,SUM(r2.r_group) suckers,COUNT(*) suckGroups, AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) aage FROM rabbits r2 GROUP BY r_parent) sc ON prnt=r.r_id
+        LEFT JOIN (
+	        SELECT rv.v_id,rv.r_id rv_id, Max(rv.`date`) FROM rab_vac rv
+	        INNER JOIN vaccines v1 ON v1.v_id=rv.v_id
+	        WHERE unabled!=1 AND (Date_Add(rv.`date`,INTERVAL v1.v_duration DAY)>=NOW()) GROUP BY v_id,r_id
+        ) rvac ON rv_id=r.r_id
+    WHERE r_parent=0 
+    GROUP by r_id  #-- для вакцин
+    ORDER BY name
+) c {2:s};", 
+            (options.safeBool("dbl") ? "2" : "1"), fld, makeWhere(),
             String.Format("IF(rvac.v_id={0:d},'S',rvac.v_id)", Vaccine.V_ID_LUST));///чтобы не перегружать текст SQL запроса
         }
 
@@ -167,11 +173,17 @@ WHERE r_parent=0 GROUP by r_id ORDER BY name) c {2:s};", (options.safeBool("dbl"
 
         protected override string countQuery()
         {
-            return @"SELECT COUNT(*),SUM(r_group) FROM (SELECT r_sex,r_born,
-rabname(r_id,2) name,r_group,
-(SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight,
-r_status,r_flags,r_event_date,r_breed
- FROM rabbits WHERE r_parent=0) c" + makeWhere() + ";";
+            return String.Format(@"SELECT COUNT(*),SUM(r_group) FROM (
+    SELECT 
+        r_sex,r_born, rabname(r_id,{0:s}) name, r_group, 
+        r_status, r_flags, r_event_date, r_breed,
+        (SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight
+    FROM rabbits 
+    WHERE r_parent=0
+) c {1};",
+        (options.safeBool("dbl") ? "2" : "1"),
+        makeWhere()
+            );
         }       
     }
 }

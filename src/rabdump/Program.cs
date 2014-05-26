@@ -1,6 +1,6 @@
 ﻿//#define PROTECTED
 #if DEBUG
-    //#define NOCATCH
+    #define NOCATCH
 #endif
 using System;
 using System.Windows.Forms;
