@@ -6,6 +6,9 @@ using System.Windows.Forms;
 
 namespace rabnet
 {
+    /// <summary>
+    /// Сохраняет пользовательскую конфигурацию Таблиц и колонок в панелях
+    /// </summary>
     class ListViewSaver
     {
 

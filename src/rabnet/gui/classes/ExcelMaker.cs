@@ -10,11 +10,17 @@ using Excel = Microsoft.Office.Interop.Excel;
 using gamlib;
 using rabnet.forms;
 using rabnet.RNC;
+using System.Text;
 
 namespace rabnet
 {
     public static class ExcelMaker
     {
+        const string EXPORT_FOLDER = "export";
+        const string SEPARATOR = ";";
+        const string EXTENTION = ".csv";
+        const string TARG_ENCODING = "win1251";
+
         /// <summary>
         /// Если отчет должен быть заполнен данными иначе нежели стандартный отчет. 
         /// Данный делегат используется в MakeExcelFromXML для передачи функции не стандартной обработки.
@@ -26,30 +32,33 @@ namespace rabnet
         private static string _repName;
 
         public static void MakeExcelFromXML(XmlNode[] xmls, String repName, string[] headers) { MakeExcelFromXML(xmls, repName, headers, null); }
+
         public static void MakeExcelFromXML(XmlNode[] xmls, String repName, string[] headers, DataFillCallBack dataFill)///Для плагинов сделать excel тоже наверное нужны делегаты или еще что
         {
             _repName = repName;
             _xmls = xmls;
-            string path = getXlsFolderPath();
-            if (path == "") return;
-            path = Helper.DuplicateName(path+ "\\" + filename());
+            string path = getExportFolderPath();
 
-            object misValue = Type.Missing;
-            Excel.Application xlApp = new Excel.ApplicationClass();
-            Excel.Workbook xlWorkBook = xlApp.Workbooks.Add(misValue);
-            Excel.Worksheet xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+            if (path == "") return;
+            path = Helper.DuplicateName(Path.Combine(path, filename()));
+
+            //object misValue = Type.Missing;
+            //Excel.Application xlApp = new Excel.ApplicationClass();
+            //Excel.Workbook xlWorkBook = xlApp.Workbooks.Add(misValue);
+            //Excel.Worksheet xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
             WaitForm wf = new WaitForm();
             try
             {
                 wf.Flush(); wf.MaxValue = 100; wf.Show(); wf.Style = ProgressBarStyle.Blocks;
+
                 int row, col;
                 if (dataFill != null)
                 {
-                    dataFill(xmls, ref xlWorkSheet);
+                    //dataFill(xmls, ref xlWorkSheet);
                 }
                 else
                 {
-                    drawHeader(headers, ref xlWorkSheet);
+                    //drawHeader(headers, ref xlWorkSheet);
                     row = 2;
                     wf.MaxValue = xmls[0].FirstChild.ChildNodes.Count;
                     foreach (XmlNode nd in xmls[0].FirstChild.ChildNodes)
@@ -57,7 +66,7 @@ namespace rabnet
                         col = 1;
                         foreach (XmlNode nd2 in nd.ChildNodes)
                         {
-                            xlWorkSheet.Cells[row, col] = nd2.InnerText;
+                            //xlWorkSheet.Cells[row, col] = nd2.InnerText;
                             col++;
                         }
                         row++;
@@ -67,81 +76,94 @@ namespace rabnet
 
                 wf.Hide();
 
-                xlWorkSheet.Columns.AutoFit();
-                xlWorkBook.SaveAs(path, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-                xlWorkBook.Close(true, misValue, misValue);
+                //xlWorkSheet.Columns.AutoFit();
+                //xlWorkBook.SaveAs(path, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                //xlWorkBook.Close(true, misValue, misValue);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Произошла ошибка");
                 wf.Visible = false;
             }
-            xlApp.Quit();
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(xlWorkSheet);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(xlWorkBook);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(xlApp);
-            killExcelProcess();
+            //xlApp.Quit();
+            //System.Runtime.InteropServices.Marshal.ReleaseComObject(xlWorkSheet);
+            //System.Runtime.InteropServices.Marshal.ReleaseComObject(xlWorkBook);
+            //System.Runtime.InteropServices.Marshal.ReleaseComObject(xlApp);
+            //killExcelProcess();
         }
 
+
         public static void MakeExcelFromLV(ListView lv, string name)
-        {
+        {            
+            int refreshRate = lv.Items.Count / 100;
+
             WaitForm wf = new WaitForm();
-            object misValue = Type.Missing;
-            Excel.Application xlApp = new Excel.ApplicationClass();
-            Excel.Workbook xlWorkBook = xlApp.Workbooks.Add(misValue);
-            Excel.Worksheet xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+
+            //object misValue = Type.Missing;
+            //Excel.Application xlApp = new Excel.ApplicationClass();
+            //Excel.Workbook xlWorkBook = xlApp.Workbooks.Add(misValue);
+            //Excel.Worksheet xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);            
+
             try
             {
-                string path = getXlsFolderPath();
+                string path = getExportFolderPath();
                 if (path == "") return;
-                path = Helper.DuplicateName(path + "\\" + name + " " + DateTime.Now.ToShortDateString() + ".xls");
-                
-                wf.Flush(); 
-                wf.MaxValue = 100; 
-                wf.Show(); 
-                wf.Style = ProgressBarStyle.Blocks;
 
-                int rate = lv.Items.Count / 100;
+                path = Helper.DuplicateName(Path.Combine(path,name + " " + DateTime.Now.ToShortDateString() + EXTENTION));                
+
+                wf.Flush(); wf.MaxValue = 100; wf.Show(); wf.Style = ProgressBarStyle.Blocks;
+
+                StreamWriter sw = new StreamWriter(new FileStream(path,FileMode.Create));
+                
                 int cols = lv.Columns.Count;//для обеспечения быстроты заполнения
 
-                for (int h = 0; h < lv.Columns.Count; h++)//Заполнение названиями когонок
+                /// Заполнение названиями когонок    
+                string row = "";
+                for (int h = 0; h < lv.Columns.Count; h++)
                 {
-                    xlWorkSheet.Cells[1, h + 1] = lv.Columns[h].Text;
+                    row += String.Format("\"{0}\"{1}", lv.Columns[h].Text, h != lv.Columns.Count - 1 ? SEPARATOR : "");
                 }
-                ((Excel.Range)xlWorkSheet.Rows[1, Type.Missing]).Font.Bold = true;
+                sw.WriteLine(row);                
+                //((Excel.Range)xlWorkSheet.Rows[1, Type.Missing]).Font.Bold = true;
                     
                 for (int i = 0; i < lv.Items.Count; i++)
                 {
+                    row = "";
                     for (int j = 0; j < cols; j++)
                     {
-                        xlWorkSheet.Cells[i + 2, j + 1] = lv.Items[i].SubItems[j].Text;
+                        //xlWorkSheet.Cells[i + 2, j + 1] = lv.Items[i].SubItems[j].Text;
+                        row += String.Format("\"{0}\"{1}", lv.Items[i].SubItems[j].Text, j != cols - 1 ? SEPARATOR : "");
                     }
-                    if (rate != 0 && (i % rate == 0 || i == lv.Items.Count))
+                    sw.WriteLine(row);
+                    if (refreshRate != 0 && (i % refreshRate == 0 || i == lv.Items.Count))
                     {
                         Application.DoEvents();
                         if(!wf.isFull)
                             wf.Inc();
                     }
                 }
+                sw.Flush();
+                sw.Close();
+
                 wf.Hide();
-                xlWorkSheet.Columns.AutoFit();
-                xlWorkBook.SaveAs(path, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-                xlWorkBook.Close(true, misValue, misValue);
+                //xlWorkSheet.Columns.AutoFit();
+                //xlWorkBook.SaveAs(path, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                //xlWorkBook.Close(true, misValue, misValue);
             }
             catch (Exception ex)
             {
                 wf.Hide();
                 MessageBox.Show(ex.Message, "Произошла ошибка");
             }
-            xlApp.Quit();
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(xlWorkSheet);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(xlWorkBook);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(xlApp);
-            killExcelProcess();
+            //xlApp.Quit();
+            //System.Runtime.InteropServices.Marshal.ReleaseComObject(xlWorkSheet);
+            //System.Runtime.InteropServices.Marshal.ReleaseComObject(xlWorkBook);
+            //System.Runtime.InteropServices.Marshal.ReleaseComObject(xlApp);
+            //killExcelProcess();
         }
 
-        private static string getXlsFolderPath()
-        {
+        private static string getExportFolderPath()
+        {            
             String path = "";
             if (Engine.opt().getIntOption(Options.OPT_ID.XLS_ASK) == 1)
             {
@@ -155,7 +177,7 @@ namespace rabnet
                 if (!Directory.Exists(path))
                 {
                     path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                    path = Helper.PathCombine(path,RabnetConfig.MY_DOCUMENTS_APP_FOLDER,"excel");
+                    path = Helper.PathCombine(path,RabnetConfig.MY_DOCUMENTS_APP_FOLDER,EXPORT_FOLDER);
                     Engine.opt().setOption(Options.OPT_ID.XLS_FOLDER, path);
                 }                
             }
@@ -164,7 +186,7 @@ namespace rabnet
             return path;
         }
 
-        private static string[,] doMegaMAtr(XmlNode roteNode)
+        private static string[,] doMegaMatr(XmlNode roteNode)
         {
             try
             {
@@ -200,27 +222,27 @@ namespace rabnet
         /// <summary>
         /// Убивает процесс excel, т.к. она сам че-то не убивается
         /// </summary>
-        private static void killExcelProcess()
-        {
+        //private static void killExcelProcess()
+        //{
             
-            Hashtable myHashtable = new Hashtable();
-            Process[] AllProcesses = Process.GetProcessesByName("excel");
-            int iCount = 0;
-            foreach (Process ExcelProcess in AllProcesses)
-            {
-                myHashtable.Add(ExcelProcess.Id, iCount);
-                iCount = iCount + 1;
-            }
+        //    Hashtable myHashtable = new Hashtable();
+        //    Process[] AllProcesses = Process.GetProcessesByName("excel");
+        //    int iCount = 0;
+        //    foreach (Process ExcelProcess in AllProcesses)
+        //    {
+        //        myHashtable.Add(ExcelProcess.Id, iCount);
+        //        iCount = iCount + 1;
+        //    }
 
-            AllProcesses = Process.GetProcessesByName("excel");
-            // check to kill the right process
-            foreach (Process ExcelProcess in AllProcesses)
-            {
-                if (myHashtable.ContainsKey(ExcelProcess.Id))
-                    ExcelProcess.Kill();
-            }
-            AllProcesses = null;
-        }
+        //    AllProcesses = Process.GetProcessesByName("excel");
+        //    // check to kill the right process
+        //    foreach (Process ExcelProcess in AllProcesses)
+        //    {
+        //        if (myHashtable.ContainsKey(ExcelProcess.Id))
+        //            ExcelProcess.Kill();
+        //    }
+        //    AllProcesses = null;
+        //}
 
         private static string filename()
         {
