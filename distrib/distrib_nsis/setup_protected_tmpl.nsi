@@ -100,9 +100,7 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
       
     File ${BinDir}\bin\RdlEngine.dll
     File ${BinDir}\bin\RdlViewer.dll
-	File ${BinDir}\bin\SplitButton.dll	
-	File ${BinDir}\bin\Interop.Microsoft.Office.Interop.Excel.dll
-	File ${BinDir}\bin\Interop.Microsoft.Office.Core.dll
+	File ${BinDir}\bin\SplitButton.dll			
 	#File ${BinDir}\bin\CAS.DLL
 	File ${BinDir}\bin\gui_genetics.dll   
 	File ${BinDir}\bin\Pickers.dll 
@@ -274,9 +272,7 @@ Section un.$(SEC_Rabnet_NAME) UNSEC_Rabnet
     Delete /REBOOTOK $INSTDIR\bin\GuardantDotNetApi.dll
     Delete /REBOOTOK $INSTDIR\bin\GrdAPI32.DLL
     Delete /REBOOTOK $INSTDIR\bin\GrdAPI64.DLL
-	#Delete /REBOOTOK $INSTDIR\bin\CAS.dll
-	Delete /REBOOTOK $INSTDIR\bin\Interop.Microsoft.Office.Interop.Excel.dll
-	Delete /REBOOTOK $INSTDIR\bin\Interop.Microsoft.Office.Core.dll
+	#Delete /REBOOTOK $INSTDIR\bin\CAS.dll		
 	Delete /REBOOTOK $INSTDIR\bin\changeLog.txt
 	Delete /REBOOTOK $INSTDIR\bin\SplitButton.dll
 	

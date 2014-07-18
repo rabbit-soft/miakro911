@@ -203,9 +203,7 @@
 				<include name="${repeng.use}"/>
 				<include name="${bin_dir_bin}/Pickers.dll" />				
 				<!--include name="${bin_dir_bin}/CAS.dll" /-->
-				<include name="${bin_dir_bin}/gui_genetics.dll" />								
-				<include name="${office.core.path} "/>
-				<include name="${office.excel.path} "/>				
+				<include name="${bin_dir_bin}/gui_genetics.dll" />																
 			</references>
 		</csc>
 		<copy file="${srcdir}/rabnet/gui/clean_config/rabnet.exe.config" tofile="${bin_dir_bin}/rabnet.exe.config" />

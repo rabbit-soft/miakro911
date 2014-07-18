@@ -8,7 +8,6 @@ using System.Xml;
 using System.IO;
 using System.Diagnostics;
 using System.Drawing.Printing;
-using Excel = Microsoft.Office.Interop.Excel;
 
 namespace rabnet.forms
 {
@@ -22,10 +21,6 @@ namespace rabnet.forms
         private string _repName = "";
         private string _repFile = "";
         private string[] _xclHeaders;
-        /// <summary>
-        /// Обработчик XL из вне
-        /// </summary>
-        private ExcelMaker.DataFillCallBack _xclDataFill=null;
 
         public bool IsPrinted = false;
 
@@ -53,9 +48,12 @@ namespace rabnet.forms
                 ds["Data" + (i + 1).ToString()].SetData(_xmls[i]);
         }
         
-        public ReportViewForm(myReportType type, XmlDocument xml): this(type,new XmlDocument[]{xml}){}
-        public ReportViewForm(XmlDocument xml) : this(myReportType.TEST, xml) { }
-        public ReportViewForm(myReportType type, XmlDocument[] xml): this()
+        public ReportViewForm(myReportType type, XmlDocument xml)
+            : this(type,new XmlDocument[]{xml}){}
+        public ReportViewForm(XmlDocument xml) 
+            : this(myReportType.TEST, xml) { }
+        public ReportViewForm(myReportType type, XmlDocument[] xml)
+            : this()
         {
             this._repType = type;
             this._repFile = ReportHelper.GetFileName(type);
@@ -65,11 +63,9 @@ namespace rabnet.forms
         }
 
         public ReportViewForm(String name, String fileName, XmlDocument[] xmls) 
-            : this(name, fileName, xmls, new string[] { },null) { }
+            : this(name, fileName, xmls, new string[] { }) { }
         public ReportViewForm(String name, String fileName, XmlDocument[] xmls, string[] xclHeaders) 
-            : this(name, fileName, xmls, xclHeaders, null) { }
-        public ReportViewForm(String name, String fileName, XmlDocument[] xmls, string[] xclHeaders, ExcelMaker.DataFillCallBack dataFill)
-            : this()
+            : this(name, fileName, xmls) 
         {
             _repName = name;
             _repFile = fileName;
@@ -243,7 +239,7 @@ namespace rabnet.forms
         private void tbExcel_Click(object sender, EventArgs e)
         {
 #if !DEMO
-            ExcelMaker.MakeExcelFromXML(_xmls, _repName, _xclHeaders,_xclDataFill);     
+            ExcelMaker.MakeExcelFromXML(_xmls, _repName, _xclHeaders);     
 #else
             DemoErr.DemoNoModuleMsg();
 #endif

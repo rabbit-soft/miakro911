@@ -5,7 +5,7 @@
 	
 	<!-- properties defines !-->		
 	<property name="version" value="1.2"/>
-	<property name="minver_p" value="0"/>
+	<property name="minver_p" value="1"/>
 	<property name="minver" value="${minver_p}.0"/>
 	<property name="fullver" value="${version}.${minver}"/>
 
@@ -45,11 +45,6 @@
 	<property name="sb.ass" value="${party3d.path}/${sb.lib}" />
 	<property name="mysql.lib" value="MySql.Data.dll" />
 	<property name="mysql.ass" value="${party3d.path}/${mysql.lib}" />
-
-	<property name="office.core.name" value="Interop.Microsoft.Office.Core.dll" />
-	<property name="office.excel.name" value="Interop.Microsoft.Office.Interop.Excel.dll" />
-	<property name="office.core.path" value="${Office.path}/${office.core.name}" />
-	<property name="office.excel.path" value="${Office.path}/${office.excel.name}" />
 	
 	<property name="rep.lib" value="RdlViewer.dll" />
 	<property name="rep.ass" value="${party3d.path}/${rep.lib}" />
@@ -117,9 +112,7 @@
 		<copy file="${sb.ass}" tofile="${sb.use}" />
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />		
 		<copy file="${rep.ass}" tofile="${rep.use}" />
-		<copy file="${repeng.ass}" tofile="${repeng.use}" />
-		<copy file="${office.core.path}" tofile="${bin_dir_bin}/${office.core.name}" />
-		<copy file="${office.excel.path}" tofile="${bin_dir_bin}/${office.excel.name}" />
+		<copy file="${repeng.ass}" tofile="${repeng.use}" />				
 		
 		<call target="include_grd_libs" />
 		

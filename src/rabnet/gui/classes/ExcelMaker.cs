@@ -1,12 +1,8 @@
 ﻿#if !DEMO
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
-using System.Collections;
-using System.Diagnostics;
 using System.IO;
-using Excel = Microsoft.Office.Interop.Excel;
 using gamlib;
 using rabnet.forms;
 using rabnet.RNC;
@@ -16,24 +12,17 @@ namespace rabnet
 {
     public static class ExcelMaker
     {
+        // todo сделать эти параметры в настройках
         const string EXPORT_FOLDER = "export";
         const string SEPARATOR = ";";
         const string EXTENTION = ".csv";
-        const string TARG_ENCODING = "win1251";
-
-        /// <summary>
-        /// Если отчет должен быть заполнен данными иначе нежели стандартный отчет. 
-        /// Данный делегат используется в MakeExcelFromXML для передачи функции не стандартной обработки.
-        /// Нужно для матриц.
-        /// </summary>
-        public delegate void DataFillCallBack(XmlNode[] xmls, ref Excel.Worksheet xlWorkSheet);
+        const string TARG_ENCODING = "windows-1251";
 
         private static XmlNode[] _xmls;
         private static string _repName;
 
-        public static void MakeExcelFromXML(XmlNode[] xmls, String repName, string[] headers) { MakeExcelFromXML(xmls, repName, headers, null); }
 
-        public static void MakeExcelFromXML(XmlNode[] xmls, String repName, string[] headers, DataFillCallBack dataFill)///Для плагинов сделать excel тоже наверное нужны делегаты или еще что
+        public static void MakeExcelFromXML(XmlNode[] xmls, String repName, string[] headers)///Для плагинов сделать excel тоже наверное нужны делегаты или еще что
         {
             _repName = repName;
             _xmls = xmls;
@@ -42,67 +31,56 @@ namespace rabnet
             if (path == "") return;
             path = Helper.DuplicateName(Path.Combine(path, filename()));
 
-            //object misValue = Type.Missing;
-            //Excel.Application xlApp = new Excel.ApplicationClass();
-            //Excel.Workbook xlWorkBook = xlApp.Workbooks.Add(misValue);
-            //Excel.Worksheet xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
             WaitForm wf = new WaitForm();
+            StreamWriter sw = new StreamWriter(new FileStream(path, FileMode.Create), Encoding.GetEncoding(TARG_ENCODING));
+
             try
             {
                 wf.Flush(); wf.MaxValue = 100; wf.Show(); wf.Style = ProgressBarStyle.Blocks;
+                wf.MaxValue = xmls[0].FirstChild.ChildNodes.Count;
 
-                int row, col;
-                if (dataFill != null)
+                string row = "";                
+
+                for (int h = 0; h < headers.Length; h++)
                 {
-                    //dataFill(xmls, ref xlWorkSheet);
+                    row += String.Format("\"{0}\"{1}", headers[h], SEPARATOR);
                 }
-                else
+                sw.WriteLine(row.TrimEnd(','));
+                
+                foreach (XmlNode nd in xmls[0].FirstChild.ChildNodes)
                 {
-                    //drawHeader(headers, ref xlWorkSheet);
-                    row = 2;
-                    wf.MaxValue = xmls[0].FirstChild.ChildNodes.Count;
-                    foreach (XmlNode nd in xmls[0].FirstChild.ChildNodes)
+                    row = "";
+                    foreach (XmlNode nd2 in nd.ChildNodes)
                     {
-                        col = 1;
-                        foreach (XmlNode nd2 in nd.ChildNodes)
-                        {
-                            //xlWorkSheet.Cells[row, col] = nd2.InnerText;
-                            col++;
-                        }
-                        row++;
-                        wf.Inc();
+                        row += String.Format("\"{0}\"{1}", nd2.InnerText, SEPARATOR);                        
                     }
+
+                    sw.WriteLine(row.TrimEnd(SEPARATOR.ToCharArray()));
+                    wf.Inc();
                 }
+
+                sw.Flush();
+                sw.Close();
 
                 wf.Hide();
-
-                //xlWorkSheet.Columns.AutoFit();
-                //xlWorkBook.SaveAs(path, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-                //xlWorkBook.Close(true, misValue, misValue);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Произошла ошибка");
                 wf.Visible = false;
             }
-            //xlApp.Quit();
-            //System.Runtime.InteropServices.Marshal.ReleaseComObject(xlWorkSheet);
-            //System.Runtime.InteropServices.Marshal.ReleaseComObject(xlWorkBook);
-            //System.Runtime.InteropServices.Marshal.ReleaseComObject(xlApp);
-            //killExcelProcess();
         }
 
-
+        /// <summary>
+        /// Экспорт в ListView
+        /// </summary>
+        /// <param name="lv"></param>
+        /// <param name="name"></param>
         public static void MakeExcelFromLV(ListView lv, string name)
         {            
             int refreshRate = lv.Items.Count / 100;
 
-            WaitForm wf = new WaitForm();
-
-            //object misValue = Type.Missing;
-            //Excel.Application xlApp = new Excel.ApplicationClass();
-            //Excel.Workbook xlWorkBook = xlApp.Workbooks.Add(misValue);
-            //Excel.Worksheet xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);            
+            WaitForm wf = new WaitForm();           
 
             try
             {
@@ -113,7 +91,7 @@ namespace rabnet
 
                 wf.Flush(); wf.MaxValue = 100; wf.Show(); wf.Style = ProgressBarStyle.Blocks;
 
-                StreamWriter sw = new StreamWriter(new FileStream(path,FileMode.Create));
+                StreamWriter sw = new StreamWriter(new FileStream(path, FileMode.Create), Encoding.GetEncoding(TARG_ENCODING));
                 
                 int cols = lv.Columns.Count;//для обеспечения быстроты заполнения
 
@@ -121,20 +99,18 @@ namespace rabnet
                 string row = "";
                 for (int h = 0; h < lv.Columns.Count; h++)
                 {
-                    row += String.Format("\"{0}\"{1}", lv.Columns[h].Text, h != lv.Columns.Count - 1 ? SEPARATOR : "");
+                    row += String.Format("\"{0}\"{1}", lv.Columns[h].Text, SEPARATOR);
                 }
-                sw.WriteLine(row);                
-                //((Excel.Range)xlWorkSheet.Rows[1, Type.Missing]).Font.Bold = true;
+                sw.WriteLine(row.TrimEnd(SEPARATOR.ToCharArray()));
                     
                 for (int i = 0; i < lv.Items.Count; i++)
                 {
                     row = "";
                     for (int j = 0; j < cols; j++)
                     {
-                        //xlWorkSheet.Cells[i + 2, j + 1] = lv.Items[i].SubItems[j].Text;
                         row += String.Format("\"{0}\"{1}", lv.Items[i].SubItems[j].Text, j != cols - 1 ? SEPARATOR : "");
                     }
-                    sw.WriteLine(row);
+                    sw.WriteLine(row.TrimEnd(SEPARATOR.ToCharArray()));
                     if (refreshRate != 0 && (i % refreshRate == 0 || i == lv.Items.Count))
                     {
                         Application.DoEvents();
@@ -146,20 +122,12 @@ namespace rabnet
                 sw.Close();
 
                 wf.Hide();
-                //xlWorkSheet.Columns.AutoFit();
-                //xlWorkBook.SaveAs(path, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-                //xlWorkBook.Close(true, misValue, misValue);
             }
             catch (Exception ex)
             {
                 wf.Hide();
                 MessageBox.Show(ex.Message, "Произошла ошибка");
             }
-            //xlApp.Quit();
-            //System.Runtime.InteropServices.Marshal.ReleaseComObject(xlWorkSheet);
-            //System.Runtime.InteropServices.Marshal.ReleaseComObject(xlWorkBook);
-            //System.Runtime.InteropServices.Marshal.ReleaseComObject(xlApp);
-            //killExcelProcess();
         }
 
         private static string getExportFolderPath()
@@ -186,64 +154,6 @@ namespace rabnet
             return path;
         }
 
-        private static string[,] doMegaMatr(XmlNode roteNode)
-        {
-            try
-            {
-                List<string> horisontal = new List<string>();
-                horisontal.Add("");
-                List<string> vertical = new List<string>();
-                vertical.Add("");
-                foreach (XmlNode nd in roteNode.FirstChild.ChildNodes)
-                {
-                    if (!horisontal.Contains(nd.SelectSingleNode("dt").InnerText))
-                        horisontal.Add(nd.SelectSingleNode("dt").InnerText);
-                    if (!vertical.Contains(nd.SelectSingleNode("name").InnerText))
-                        vertical.Add(nd.SelectSingleNode("name").InnerText);
-                }
-                horisontal.Sort();
-                vertical.Sort();
-                String[,] megaMatrix = new String[vertical.Count,horisontal.Count];
-                for (int i = 0; i < vertical.Count; i++)
-                    megaMatrix[i, 0] = vertical[i];
-                for (int i = 0; i < horisontal.Count; i++)               
-                    megaMatrix[0, i] = horisontal[i];
-                foreach (XmlNode nd in roteNode.FirstChild.ChildNodes)
-                {
-                    int rowIndex = vertical.IndexOf(nd.SelectSingleNode("name").InnerText);
-                    int colIndex = horisontal.IndexOf(nd.SelectSingleNode("dt").InnerText);             
-                    megaMatrix[rowIndex, colIndex] = nd.SelectSingleNode("state").InnerText;
-                }
-                return megaMatrix;
-            }
-            catch {return new string[0,0];}
-        }
-
-        /// <summary>
-        /// Убивает процесс excel, т.к. она сам че-то не убивается
-        /// </summary>
-        //private static void killExcelProcess()
-        //{
-            
-        //    Hashtable myHashtable = new Hashtable();
-        //    Process[] AllProcesses = Process.GetProcessesByName("excel");
-        //    int iCount = 0;
-        //    foreach (Process ExcelProcess in AllProcesses)
-        //    {
-        //        myHashtable.Add(ExcelProcess.Id, iCount);
-        //        iCount = iCount + 1;
-        //    }
-
-        //    AllProcesses = Process.GetProcessesByName("excel");
-        //    // check to kill the right process
-        //    foreach (Process ExcelProcess in AllProcesses)
-        //    {
-        //        if (myHashtable.ContainsKey(ExcelProcess.Id))
-        //            ExcelProcess.Kill();
-        //    }
-        //    AllProcesses = null;
-        //}
-
         private static string filename()
         {
             string filename = "";
@@ -255,11 +165,11 @@ namespace rabnet
                     foreach (XmlNode nd2 in nd.ChildNodes)
                         filename += nd2.InnerText + " ";
                 }
-                filename += ").xls";
+                filename += ")" + EXTENTION;
             }
             else
             {
-                filename = _repName + " " + DateTime.Now.ToShortDateString() + ".xls";
+                filename = _repName + " " + DateTime.Now.ToShortDateString() + EXTENTION;
             }
             return filename;
         }
@@ -270,15 +180,48 @@ namespace rabnet
         /// </summary>
         /// <param name="repType">Тип отчета</param>
         /// <param name="xlWorkSheet"></param>
-        private static void drawHeader(string[] headers, ref Excel.Worksheet xlWS)
-        {
-            xlWS.get_Range("A1", "Z1").Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Green);
-            xlWS.get_Range("A1", "Z1").Font.Bold = true;
-            int col = 1;
-            int row = 1;
-            foreach (string s in headers)
-                xlWS.Cells[row, col++] = s;
-        }
+        //private static void drawHeader(string[] headers, ref Excel.Worksheet xlWS)
+        //{
+        //    xlWS.get_Range("A1", "Z1").Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Green);
+        //    xlWS.get_Range("A1", "Z1").Font.Bold = true;
+        //    int col = 1;
+        //    int row = 1;
+        //    foreach (string s in headers)
+        //        xlWS.Cells[row, col++] = s;
+        //}
+
+        //private static string[,] doMegaMatr(XmlNode roteNode)
+        //{
+        //    try
+        //    {
+        //        List<string> horisontal = new List<string>();
+        //        horisontal.Add("");
+        //        List<string> vertical = new List<string>();
+        //        vertical.Add("");
+        //        foreach (XmlNode nd in roteNode.FirstChild.ChildNodes)
+        //        {
+        //            if (!horisontal.Contains(nd.SelectSingleNode("dt").InnerText))
+        //                horisontal.Add(nd.SelectSingleNode("dt").InnerText);
+        //            if (!vertical.Contains(nd.SelectSingleNode("name").InnerText))
+        //                vertical.Add(nd.SelectSingleNode("name").InnerText);
+        //        }
+        //        horisontal.Sort();
+        //        vertical.Sort();
+        //        String[,] megaMatrix = new String[vertical.Count,horisontal.Count];
+        //        for (int i = 0; i < vertical.Count; i++)
+        //            megaMatrix[i, 0] = vertical[i];
+        //        for (int i = 0; i < horisontal.Count; i++)               
+        //            megaMatrix[0, i] = horisontal[i];
+        //        foreach (XmlNode nd in roteNode.FirstChild.ChildNodes)
+        //        {
+        //            int rowIndex = vertical.IndexOf(nd.SelectSingleNode("name").InnerText);
+        //            int colIndex = horisontal.IndexOf(nd.SelectSingleNode("dt").InnerText);             
+        //            megaMatrix[rowIndex, colIndex] = nd.SelectSingleNode("state").InnerText;
+        //        }
+        //        return megaMatrix;
+        //    }
+        //    catch {return new string[0,0];}
+        //}
     }
     
 
