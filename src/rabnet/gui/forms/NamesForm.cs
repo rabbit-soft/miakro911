@@ -141,8 +141,8 @@ namespace rabnet.forms
                     txt = Char.ToUpper(txt[0]) + txt.Substring(1);
                 if (i!=0 && Char.IsUpper(txt[i])) 
                     txt = txt.Substring(0,i) + Char.ToLower(txt[i])+txt.Substring(i+1);
-                if ((txt[i] < 'A' || txt[i] > 'z') 
-                    && (txt[i] < 'Ё' || txt[i] > 'ё') 
+                if ((txt[i] < 'A' || txt[i] > 'z')
+                    && (txt[i] < 'А' || txt[i] > 'я') // в Mysql utf8_general_ci проблемы с буквой Ё
                     && (txt[i] < '0' || txt[i] > '9') 
                     && txt[i] != '-')
                 {

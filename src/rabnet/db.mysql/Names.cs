@@ -49,7 +49,7 @@ namespace db.mysql
         public static int AddName(MySqlConnection sql, Rabbit.SexType sex, String name, String surname)
         {
             MySqlCommand cmd=new MySqlCommand(String.Format(@"INSERT INTO names(n_sex,n_name,n_surname,n_block_date) 
-VALUES('{0:s}','{1:s}','{2:s}',NULL);", (sex==Rabbit.SexType.FEMALE)?"female":"male",name,surname),sql);
+VALUES('{0:s}','{1:s}','{2:s}',NULL);", (sex==Rabbit.SexType.FEMALE)?"female":"male", name, surname),sql);
             cmd.ExecuteNonQuery();
             if (cmd.LastInsertedId > int.MaxValue) ///it can't be
                 throw new RabNetException("ID нового имени больше максимально допустимого значения");
