@@ -132,17 +132,26 @@ namespace rabnet.forms
         {
             if (!manual) return;
             manual = false;
+
             String txt = textBox1.Text;
-            int i = 0;
+            int i = 0; 
             while (i < txt.Length)
             {
-            
-                if (i==0 && Char.IsLower(txt[0])) txt=Char.ToUpper(txt[0])+txt.Substring(1);
-                if (i!=0 && Char.IsUpper(txt[i])) txt=txt.Substring(0,i)+Char.ToLower(txt[i])+txt.Substring(i+1);
-                if ((txt[i] < 'A' || txt[i] > 'z')&&(txt[i] < 'А' || txt[i] > 'я') && (txt[i] < '0' || txt[i] > '9') && txt[i] != '-')
-                    txt=txt.Remove(i,1);
+                if (i==0 && Char.IsLower(txt[0])) 
+                    txt = Char.ToUpper(txt[0]) + txt.Substring(1);
+                if (i!=0 && Char.IsUpper(txt[i])) 
+                    txt = txt.Substring(0,i) + Char.ToLower(txt[i])+txt.Substring(i+1);
+                if ((txt[i] < 'A' || txt[i] > 'z') 
+                    && (txt[i] < 'Ё' || txt[i] > 'ё') 
+                    && (txt[i] < '0' || txt[i] > '9') 
+                    && txt[i] != '-')
+                {
+                    txt = txt.Remove(i, 1);
+                }
                 else
+                {
                     i++;
+                }
             }
             if (txt != textBox1.Text)
             {
