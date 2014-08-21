@@ -522,10 +522,6 @@ namespace rabnet.forms
                 addgen(curzone);*/
         }
 
-        
-
-        
-
         private void button13_Click(object sender, EventArgs e)
         {
             if (_rab.ID == 0) return;

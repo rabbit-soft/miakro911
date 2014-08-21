@@ -249,7 +249,7 @@ namespace rabnet.forms
         }
 
         private void makeExportFile(Stream s, string data)
-        {
+        {            
             byte[] buff = Encoding.UTF8.GetBytes(data);
             byte[] md5 = Helper.GetMD5(buff);
             buff = XXTEA.Encrypt(buff, KEY_CODE);
@@ -343,7 +343,7 @@ namespace rabnet.forms
                 else if (localAnalog.ID != n.ID)
                 {
                     cl = EXISTS_NOT_ID_MATCH;
-                }
+                }                
 
                 addExpName(n, cl);
             }
@@ -430,6 +430,7 @@ namespace rabnet.forms
         {
             if (s.Length > int.MaxValue)
                 throw new RabNetException("Файл слишком большой");
+
             byte[] buff = new byte[(int)FILE_MARK.Length];
             s.Read(buff, 0, buff.Length);
             if (!Helper.ArraysEquals(buff, FILE_MARK))

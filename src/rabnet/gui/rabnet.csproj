@@ -246,7 +246,6 @@
     <Compile Include="forms\WaitForm.designer.cs">
       <DependentUpon>WaitForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="List.cs" />
     <Compile Include="not_for_deploy\MainForm.BuildDate.cs">
       <SubType>Form</SubType>
     </Compile>
