@@ -12,7 +12,7 @@ namespace db.mysql
     class Reports
     {
         MySqlConnection sql = null;
-        ILog log = log4net.LogManager.GetLogger(typeof(Reports));
+        ILog _logger = log4net.LogManager.GetLogger(typeof(Reports));
         private DateTime FROM = DateTime.Now;
         private DateTime TO = DateTime.Now;
         private String DFROM = "NOW()";
@@ -45,7 +45,7 @@ namespace db.mysql
                 case myReportType.USER_OKROLS: return userOkrolRpt(qUserOkrols(f));
             }
 #if DEBUG
-            log.Debug(query);
+            _logger.Debug(query);
 #endif
             return makeStdReportXml(query);
         }
@@ -383,7 +383,7 @@ WHERE {0:s} ORDER BY r_farm,r_tier_id,r_area;", where);
             string worker = f.safeInt("user", 0)>0 ? "f_worker="+f.safeInt("user"):"";
 
             if (f.safeValue(Filters.DATE_PERIOD) == "m")
-            {
+            {                
                 DateTime dt = DateTime.Parse(f.safeValue(Filters.DATE_VALUE));
                 period = String.Format("(MONTH(f_end_date)={0:MM} AND YEAR(f_end_date)={0:yyyy})", dt);
                 format = "%d";
@@ -420,7 +420,7 @@ WHERE {0:s} {1:s} ORDER BY name,dt;",worker , period, format);
         private int getInt32(String query)
         {
 #if DEBUG
-            log.Debug(query);
+            _logger.Debug(query);
 #endif
             return int.Parse(getValue(query));
         }

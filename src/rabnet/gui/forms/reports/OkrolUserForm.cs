@@ -69,14 +69,16 @@ namespace rabnet.forms
             cbMonth.Items.Clear();
             cbYear.Items.Clear();
             List<String> dates = Engine.get().db().getFuckMonths();
+            DateTime dt;
+
             if (dates.Count > 0)
             {
-                foreach (String dt in dates)
+                foreach (String strDt in dates)
                 {
-                    string[] vals = dt.Split('.');
-                    cbMonth.Items.Add(Helper.toRusMonth(vals[0]) + vals[1]);
-                    if (!cbYear.Items.Contains(vals[1]))
-                        cbYear.Items.Add(vals[1]);
+                    dt = DateTime.Parse(strDt);
+                    cbMonth.Items.Add(dt.ToString("MMMM yyyy"));
+                    if (!cbYear.Items.Contains(dt.Year))
+                        cbYear.Items.Add(dt.Year);
                 }
                 cbMonth.SelectedIndex = 0;
                 rbMonth_CheckedChanged(null, null);

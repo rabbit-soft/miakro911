@@ -89,6 +89,7 @@ namespace gamlib
             return comp;
         }
 
+        [Obsolete("Данный метод очень не подходит для i18n")]
         public static string toRusMonth(string dt)
         {
             try

@@ -42,12 +42,14 @@ namespace rabnet
 
             if (f.safeValue(Filters.DATE_PERIOD) == "d")
             {
-                if (!DateTime.TryParse(f.safeValue(Filters.DATE_VALUE), out dt)) return period;
+                if (!DateTime.TryParse(f.safeValue(Filters.DATE_VALUE), out dt)) 
+                    return period;
                 period = String.Format("DATE({1:s})='{0:yyyy-MM-dd}'", dt, dateField);
             }
             if (f.safeValue(Filters.DATE_PERIOD) == "m")
             {
-                if (!DateTime.TryParse(f.safeValue(Filters.DATE_VALUE), out dt)) return period;
+                if (!DateTime.TryParse(f.safeValue(Filters.DATE_VALUE), out dt)) 
+                    return period;
                 period = String.Format("(MONTH({1:s})={0:MM} AND YEAR({1:s})={0:yyyy})", dt, dateField);
             }
             else if (f.safeValue(Filters.DATE_PERIOD) == "y")

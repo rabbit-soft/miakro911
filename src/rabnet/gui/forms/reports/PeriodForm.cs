@@ -150,6 +150,8 @@ namespace rabnet.forms
             cbYear.Items.Clear();
 
             List<String> dates = null;
+            DateTime dt;
+
             if(ReportType == myReportType.FUCKS_BY_DATE)                
                 dates =Engine.get().db().getFuckMonths();
             else dates = Engine.get().db().getDeadsMonths();
@@ -158,12 +160,13 @@ namespace rabnet.forms
             {
                 dtpDay.MaxDate = DateTime.Parse(dates[0]).AddMonths(1);
                 dtpDay.MinDate = DateTime.Parse(dates[dates.Count - 1]);
-                foreach (String dt in dates)
+                foreach (String strDt in dates)
                 {
-                    string[] vals = dt.Split('.');
-                    cbMonth.Items.Add(Helper.toRusMonth(vals[0]) + vals[1]);
-                    if (!cbYear.Items.Contains(vals[1]))
-                        cbYear.Items.Add(vals[1]);
+                    string[] vals = strDt.Split('.');
+                    dt = DateTime.Parse(strDt);
+                    cbMonth.Items.Add(dt.ToString("MMMM yyyy"));
+                    if (!cbYear.Items.Contains(dt.Year))
+                        cbYear.Items.Add(dt.Year);
                 }
                 cbMonth.SelectedIndex = 0;
                 rbDay_CheckedChanged(null, null);
