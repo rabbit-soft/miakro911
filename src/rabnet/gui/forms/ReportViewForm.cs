@@ -49,9 +49,9 @@ namespace rabnet.forms
         }
         
         public ReportViewForm(myReportType type, XmlDocument xml)
-            : this(type,new XmlDocument[]{xml}){}
+            : this(type, new XmlDocument[]{xml}) {}
         public ReportViewForm(XmlDocument xml) 
-            : this(myReportType.TEST, xml) { }
+            : this(myReportType.TEST, xml) {}
         public ReportViewForm(myReportType type, XmlDocument[] xml)
             : this()
         {
@@ -63,9 +63,9 @@ namespace rabnet.forms
         }
 
         public ReportViewForm(String name, String fileName, XmlDocument[] xmls) 
-            : this(name, fileName, xmls, new string[] { }) { }
-        public ReportViewForm(String name, String fileName, XmlDocument[] xmls, string[] xclHeaders) 
-            : this(name, fileName, xmls) 
+            : this(name, fileName, xmls, new string[]{}) { }
+        public ReportViewForm(String name, String fileName, XmlDocument[] xmls, string[] xclHeaders)
+            :this()
         {
             _repName = name;
             _repFile = fileName;
