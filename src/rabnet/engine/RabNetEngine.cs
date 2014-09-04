@@ -245,13 +245,18 @@ namespace rabnet
             return guid;
         }
 
-        public void ChangeFucker(int fid, int newFucker, DateTime newFuckDate, int earlyFucker, DateTime earlyFuckDate)
+        public void ChangeFucker(Fuck f, int newFucker, DateTime newFuckDate)
         {
-            this._data.changeFucker(fid, newFucker, newFuckDate);
+            this._data.changeFucker(f.Id, newFucker, newFuckDate);
 
-            if (newFucker != earlyFucker) {
-                RabNetEngRabbit eFucker = this.getRabbit(earlyFucker);
-                Fucks fucks = this.db().GetFucks(new Filters(Filters.FIND_PARTNERS, earlyFucker));
+            // меняем крольчихе дату случки
+            RabNetEngRabbit rabFemale = this.getRabbit(f.FemaleId);
+            rabFemale.EventDate = newFuckDate;
+            rabFemale.Commit();
+
+            if (newFucker != f.PartnerId) {
+                RabNetEngRabbit eFucker = this.getRabbit(f.PartnerId);
+                Fucks fucks = this.db().GetFucks(new Filters(Filters.FIND_PARTNERS, f.PartnerId));
                 eFucker.LastFuckOkrol = fucks.LastFuck.EventDate;
                 eFucker.Commit();
             }

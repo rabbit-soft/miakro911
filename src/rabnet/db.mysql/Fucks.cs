@@ -154,12 +154,12 @@ ORDER BY fullname;",
             cmd.ExecuteNonQuery();
         }
 
-        public static void changeFucker(MySqlConnection sql, int femaleId, int maleId, DateTime newFuckDate)
+        public static void changeFucker(MySqlConnection sql, int fuckId, int maleId, DateTime newFuckDate)
         {
             MySqlCommand cmd = new MySqlCommand("", sql);
 
-            cmd.CommandText = String.Format("UPDATE fucks SET f_partner={0:d}, f_date={2} WHERE f_id={1:d};", maleId, femaleId, DBHelper.DateToSqlString(newFuckDate));
-            cmd.ExecuteNonQuery();
+            cmd.CommandText = String.Format("UPDATE fucks SET f_partner={0:d}, f_date={2} WHERE f_id={1:d};", maleId, fuckId, DBHelper.DateToSqlString(newFuckDate));
+            cmd.ExecuteNonQuery();            
 
             cmd.CommandText = String.Format(@"UPDATE rabbits SET r_last_fuck_okrol={0:s} WHERE r_id={1:d};", DBHelper.DateToSqlString(newFuckDate), maleId);
             cmd.ExecuteNonQuery();            
