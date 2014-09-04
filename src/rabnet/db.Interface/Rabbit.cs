@@ -13,15 +13,15 @@ namespace rabnet
         public const string NULL_BON = "00000";
         public const string NULL_FLAGS = "00000";
 
-        protected int _id=0;
-        protected String _nameFull="";
+        protected int _id = 0;
+        protected String _nameFull = "";
         protected Rabbit.SexType _sex = SexType.VOID;
         protected DateTime _birthDay;
         protected String _breedName = "";
         protected string _notes = "";
         protected int _group = 1;
-        protected String _bon="00000";
-        protected String _rawAddress="";
+        protected String _bon = "00000";
+        protected String _rawAddress = "";
 
         public Rabbit() { }
         public Rabbit(int id, string rabname, string sex, DateTime born, string breedname, int group, String bon, string rawAddress, string notes)
@@ -144,10 +144,10 @@ namespace rabnet
 
     public class AdultRabbit : Rabbit, IData
     {
-        protected int _rate=0;
-        protected String _flags="00000";
-        protected int _weight=0;
-        protected int _status=0;
+        protected int _rate = 0;
+        protected String _flags = "00000";
+        protected int _weight = 0;
+        protected int _status = 0;
         protected DateTime _eventDate;
         private int _kidsAge = -1;
         private int _kidsTotalCount = 0;
@@ -266,7 +266,7 @@ namespace rabnet
         protected int _kidsOverAll = 0;
         protected int _kidsLost = 0;
         protected int _birthPlace = 0;
-        public string NewAddress = "";
+        public string NewAddress = ""; //TODO два NewAddress
 
         protected DateTime _weightDate;
         protected string _newAddress = "";        
@@ -328,11 +328,18 @@ namespace rabnet
         public string Bon_Hair { get { return Rabbit.GetFBon(_bon[3]); } }
         public string Bon_Color { get { return Rabbit.GetFBon(_bon[4]); } }
 
+        /// <summary>
+        /// Дато последнего соития
+        /// </summary>
         public DateTime EventDate
         {
             get { return _eventDate.Date; }
             set { _eventDate = value.Date; }
         }
+
+        /// <summary>
+        /// Сколько было окролов (для Самки) или покрытий (для Самца)
+        /// </summary>
         public int Status
         {
             get { return _status; }
@@ -386,7 +393,7 @@ namespace rabnet
             set { _genoms = value; }
         }
         /// <summary>
-        /// Заметки
+        /// Дата последнего окрола (для Самки) или соития (для Самца)
         /// </summary>               
         public DateTime LastFuckOkrol
         {

@@ -244,5 +244,18 @@ namespace rabnet
             }
             return guid;
         }
+
+        public void ChangeFucker(int fid, int newFucker, DateTime newFuckDate, int earlyFucker, DateTime earlyFuckDate)
+        {
+            this._data.changeFucker(fid, newFucker, newFuckDate);
+
+            if (newFucker != earlyFucker) {
+                RabNetEngRabbit eFucker = this.getRabbit(earlyFucker);
+                Fucks fucks = this.db().GetFucks(new Filters(Filters.FIND_PARTNERS, earlyFucker));
+                eFucker.LastFuckOkrol = fucks.LastFuck.EventDate;
+                eFucker.Commit();
+            }
+        }
+
 	}
 }

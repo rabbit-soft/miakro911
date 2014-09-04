@@ -123,7 +123,9 @@ namespace rabnet.components
         public DateTime MinDate
         {
             get { return dateTimePicker1.MinDate; }
-            set { 
+            set {
+                if (value == DateTime.MinValue)
+                    return;
                 dateTimePicker1.MinDate = value;
                 numericUpDown1.Maximum = numericUpDown1.Value + (dateTimePicker1.Value.Subtract(value).Days);
             }

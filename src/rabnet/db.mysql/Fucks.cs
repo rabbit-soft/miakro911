@@ -14,13 +14,24 @@ namespace db.mysql
         public static Fucks GetFucks(MySqlConnection sql, Filters flt)
         {
            string query = String.Format(@"
-    (SELECT {0:s} FROM fucks 
-    WHERE isdead(f_partner)=0 {2:s} {3:s})
+    (
+        SELECT {0:s} 
+        FROM fucks 
+        WHERE isdead(f_partner)=0 {2:s} {3:s} {4:s}
+    )
     UNION
-    (SELECT {1:s} FROM fucks 
-    WHERE isdead(f_partner)=1 {2:s} {3:s}) ORDER BY name,f_date;", fuckFields(true), fuckFields(false),
-                                                      (flt.safeInt(Filters.RAB_ID, 0) != 0 ? "AND f_rabid=" + flt.safeValue(Filters.RAB_ID) : ""),
-                                                      DBHelper.MakeDatePeriod(flt,"f_date"));
+    (
+        SELECT {1:s} 
+        FROM fucks 
+        WHERE isdead(f_partner)=1 {2:s} {3:s} {4:s}
+    ) 
+    ORDER BY name,f_date;", 
+                fuckFields(true), 
+                fuckFields(false),
+                (flt.safeInt(Filters.RAB_ID, 0) != 0 ? "AND f_rabid=" + flt.safeValue(Filters.RAB_ID) : ""),                
+                DBHelper.MakeDatePeriod(flt,"f_date"),
+                (flt.safeInt(Filters.FIND_PARTNERS, 0) != 0 ? "AND f_partner=" + flt.safeValue(Filters.FIND_PARTNERS) : "")
+            );
 
             MySqlCommand cmd = new MySqlCommand(query, sql);
             MySqlDataReader rd = cmd.ExecuteReader();
@@ -143,29 +154,15 @@ ORDER BY fullname;",
             cmd.ExecuteNonQuery();
         }
 
-        public static void changeFucker(MySqlConnection sql, int fid, int fucker)
+        public static void changeFucker(MySqlConnection sql, int femaleId, int maleId, DateTime newFuckDate)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT f_date FROM fucks WHERE f_id={0:d};",fid), sql);
-            MySqlDataReader rd = cmd.ExecuteReader();
-            DateTime dt = DateTime.MinValue;
-            if (rd.Read())
-                if (!rd.IsDBNull(0))
-                    dt=rd.GetDateTime(0);
-            rd.Close();
-            cmd.CommandText = String.Format(@"SELECT r_last_fuck_okrol FROM rabbits WHERE r_id={0:d};", fucker);
-            DateTime ud = DateTime.MinValue;
-            rd = cmd.ExecuteReader();
-            if (rd.Read())
-                if (!rd.IsDBNull(0))
-                    ud = rd.GetDateTime(0);
-            rd.Close();
-            cmd.CommandText = String.Format("UPDATE fucks SET f_partner={0:d} WHERE f_id={1:d};",fucker,fid);
+            MySqlCommand cmd = new MySqlCommand("", sql);
+
+            cmd.CommandText = String.Format("UPDATE fucks SET f_partner={0:d}, f_date={2} WHERE f_id={1:d};", maleId, femaleId, DBHelper.DateToSqlString(newFuckDate));
             cmd.ExecuteNonQuery();
-            if (dt > ud)
-            {
-                cmd.CommandText = String.Format(@"UPDATE rabbits SET r_last_fuck_okrol={0:s} WHERE r_id={1:d};", DBHelper.DateToSqlString(dt), fucker);
-                cmd.ExecuteNonQuery();
-            }
+
+            cmd.CommandText = String.Format(@"UPDATE rabbits SET r_last_fuck_okrol={0:s} WHERE r_id={1:d};", DBHelper.DateToSqlString(newFuckDate), maleId);
+            cmd.ExecuteNonQuery();            
         }
 
         internal static List<string> getFuckMonths(MySqlConnection sql)

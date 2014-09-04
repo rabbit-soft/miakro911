@@ -620,9 +620,9 @@ namespace db.mysql
             return FucksGetter.getMaleChildrenProd(sql, male);
         }
 
-        public void changeFucker(int fid, int fucker)
+        public void changeFucker(int fid, int fucker, DateTime newFuckDate)
         {
-            FucksGetter.changeFucker(sql,fid, fucker);
+            FucksGetter.changeFucker(sql, fid, fucker, newFuckDate);
         }
 
         public void changeWorker(int fid, int worker)

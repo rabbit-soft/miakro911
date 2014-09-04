@@ -107,9 +107,9 @@ namespace rabnet
         {
             if (lvFucks.SelectedItems.Count != 1) return;
             Fuck f = lvFucks.SelectedItems[0].Tag as Fuck;
-            FuckForm mf = new FuckForm(_rab.ID, f.PartnerId, 1);
+            FuckForm mf = new FuckForm(_rab, f.PartnerId, false);
             if (mf.ShowDialog() == DialogResult.OK && mf.SelectedFucker != f.Id)
-                Engine.db().changeFucker(f.Id, mf.SelectedFucker);
+                Engine.get().ChangeFucker(f.Id, mf.SelectedFucker, mf.FuckDate, f.PartnerId, f.EventDate);
             cancelUnable();
             updateData();
         }

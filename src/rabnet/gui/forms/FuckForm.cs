@@ -20,37 +20,75 @@ namespace rabnet.forms
         private const int IND_CHILDREN = 4;
         private const int IND_INBR = 5;
 
-        private RabNetEngRabbit rab1 = null;
-        private Catalog brds;
-        private int rtosel=0;
+        private RabNetEngRabbit _rabFemale = null;
+        private Catalog _breeds;
+        private int _rabMaleId = 0;
         bool _manual = true;
-        int _malewait = 0;
-        int _makeCand = 0;
+        int _opt_malewait = 0;
+        int _opt_makeCand = 0;
         ListViewColumnSorter cs;
-        Catalog names = null;
-        int selected = 0;
-        int action = 0;
+        Catalog names = null;               
+        bool _needCommit = true;
 
-        public FuckForm()
+        private FuckForm()
         {
             InitializeComponent();
             initialHints();
             dateDays1.DateValue = DateTime.Now;
-            brds = Engine.db().catalogs().getBreeds();
+            _breeds = Engine.db().catalogs().getBreeds();
 
             _manual = false;
             chCandidates.Checked = Engine.opt().getBoolOption(Options.OPT_ID.SHOW_CANDIDATES);
             chHetererosis.Checked = Engine.opt().getBoolOption(Options.OPT_ID.GETEROSIS);
             chInbreed.Checked = Engine.opt().getBoolOption(Options.OPT_ID.INBREEDING);
-            _malewait = Engine.opt().getIntOption(Options.OPT_ID.MALE_WAIT);
-            _makeCand = Engine.opt().getIntOption(Options.OPT_ID.MAKE_CANDIDATE);
+            _opt_malewait = Engine.opt().getIntOption(Options.OPT_ID.MALE_WAIT);
+            _opt_makeCand = Engine.opt().getIntOption(Options.OPT_ID.MAKE_CANDIDATE);
             _manual = true;
 
             cs = new ListViewColumnSorter(listView1, new int[] { IND_FUCKS, IND_CHILDREN }, Options.OPT_ID.MAKE_FUCK_LIST);
             listView1.ListViewItemSorter = cs;
             FormSizeSaver.Append(this);
         }
-        public FuckForm(int r1): this(r1,0) { }
+        public FuckForm(int r1)
+            :this(r1, 0) 
+        { }
+
+        public FuckForm(int r1, int r2)
+            : this()
+        {            
+            _rabFemale = Engine.get().getRabbit(r1);
+            _rabMaleId = r2;
+            init();
+        }
+        public FuckForm(RabNetEngRabbit rab)
+            : this()
+        {
+            _rabFemale = rab;
+            init();
+        }
+
+        public FuckForm(RabNetEngRabbit rab, int r2, bool needCommit)
+            : this()
+        {
+            _rabFemale = rab;
+            _rabMaleId = r2;
+            _needCommit = needCommit;
+            init();            
+        }
+
+        private void init()
+        {
+            label1.Text = _rabFemale.FullName;
+            label2.Text = _rabFemale.BreedName;            
+            this.dateDays1.MinDate = _rabFemale.LastFuckOkrol;
+            if (_rabFemale.EventDate > _rabFemale.LastFuckOkrol)
+                this.dateDays1.DateValue = _rabFemale.EventDate;
+
+            fillTable();
+            if (_rabFemale.Status > 0)
+                this.Text = btOk.Text = "Вязать";
+            fillNames();
+        }
 
         private void initialHints()
         {
@@ -62,74 +100,58 @@ namespace rabnet.forms
         private void fillNames()
         {
             cbName.Items.Clear();
-            names = Engine.db().catalogs().getFreeNames(2, rab1.NameID);
+            names = Engine.db().catalogs().getFreeNames(2, _rabFemale.NameID);
             cbName.Items.Add("");
             cbName.SelectedIndex = 0;
             foreach (int key in names.Keys)
             {
                 cbName.Items.Add(names[key]);
-                if (key == rab1.NameID)
+                if (key == _rabFemale.NameID)
                     cbName.SelectedIndex = cbName.Items.Count - 1;
             }
-            cbName.Enabled = btNames.Enabled = rab1.NameID == 0;
+            cbName.Enabled = btNames.Enabled = _rabFemale.NameID == 0;
         }
-
-        public FuckForm(int r1, int r2):this()
-        {
-            rab1 = Engine.get().getRabbit(r1);
-            label1.Text = rab1.FullName;
-            label2.Text = rab1.BreedName;
-            rtosel = r2;
-            fillTable();
-            if (rab1.Status > 0)
-                Text = btOk.Text = "Вязать";
-            fillNames();
-        }
-        public FuckForm(int r1, int r2, int action):this(r1,r2)
-        {
-            this.action = action;
-        }
-
+            
         private void fillTable()
         {
             cs.PrepareForUpdate();
             Filters flt = new Filters();
-            flt[Filters.RAB_ID] = rab1.ID.ToString();
+            flt[Filters.RAB_ID] = _rabFemale.ID.ToString();
             flt[Filters.HETEROSIS] = chHetererosis.Checked ? "1" : "0";
             flt[Filters.INBREEDING] = chInbreed.Checked ? "1" : "0";
-            flt[Filters.MALE_REST] = _malewait.ToString();
-            flt[Filters.MAKE_CANDIDATE] = _makeCand.ToString();
+            flt[Filters.MALE_REST] = _opt_malewait.ToString();
+            flt[Filters.MAKE_CANDIDATE] = _opt_makeCand.ToString();
             flt[Filters.SHOW_CANDIDATE] = chCandidates.Checked ? "1" : "0";
             flt[Filters.SHOW_REST] = chRest.Checked ? "1" : "0";
             //TODO здесь трахатели идеалогически неверно передаются через объекты Трахов
             FuckPartner[] fs = Engine.db().GetAllFuckers(flt);
             listView1.BeginUpdate();
 
-            foreach (FuckPartner f in fs)
+            foreach (FuckPartner fP in fs)
             {
-                bool heter = (f.BreedId != rab1.BreedID);
-                bool inbr = RabNetEngHelper.inbreeding(rab1.Genoms, f.OldGenoms);
+                bool heter = (fP.BreedId != _rabFemale.BreedID);
+                bool inbr = RabNetEngHelper.inbreeding(_rabFemale.Genoms, fP.OldGenoms);
 
-                ListViewItem li = listView1.Items.Add(f.FullName);
+                ListViewItem li = listView1.Items.Add(fP.FullName);
                 li.UseItemStyleForSubItems = false;
-                if (f.LastFuck != DateTime.MinValue && DateTime.Now < f.LastFuck.Date.AddDays(_malewait) )
+                if (fP.LastFuck != DateTime.MinValue && DateTime.Now < fP.LastFuck.Date.AddDays(_opt_malewait) )
                     li.SubItems[IND_NAME].ForeColor = chRest.ForeColor;
-                li.Tag = f;
+                li.Tag = fP;
                 li.SubItems.Add("Мальчик");
-                if (f.Status == 1 || (f.Status == 0 && f.Age >= _makeCand))
+                if (fP.Status == 1 || (fP.Status == 0 && fP.Age >= _opt_makeCand))
                 {
                     li.SubItems[IND_STATE].Text = "Кандидат";
                     li.SubItems[IND_STATE].ForeColor = chCandidates.ForeColor;
                 }
-                if (f.Status == 2)
+                if (fP.Status == 2)
                     li.SubItems[IND_STATE].Text = "Производитель";
-                li.SubItems.Add(brds[f.BreedId]);
-                li.SubItems.Add(f.Fucks.ToString());
-                li.SubItems.Add(f.MutualChildren.ToString());
+                li.SubItems.Add(_breeds[fP.BreedId]);
+                li.SubItems.Add(fP.Fucks.ToString());
+                li.SubItems.Add(fP.MutualChildren.ToString());
                 li.SubItems.Add(inbr ? "ДА" : "-");
 
                 int inbrLevel = 0;
-                if (RabbitGen.DetectInbreeding(rab1.RabGenoms, f.RabGenoms, ref inbrLevel))
+                if (RabbitGen.DetectInbreeding(_rabFemale.RabGenoms, fP.RabGenoms, ref inbrLevel))
                 {
                     li.SubItems.Add(inbrLevel.ToString() + " поколение");
                 }
@@ -140,19 +162,25 @@ namespace rabnet.forms
                     li.SubItems[IND_BREED].ForeColor = chHetererosis.ForeColor;
                 if (inbr)
                     li.SubItems[IND_INBR].ForeColor = chInbreed.ForeColor;
-                if (rtosel == f.Id)
+                if (_rabMaleId == fP.Id)
                 {
                     li.Selected = true;
                     li.EnsureVisible();
                 }
             }
+            // если был передан партнер, но его нет в списке, то обнуляем его, т.к. он не был выбран
+            if (listView1.SelectedItems.Count == 0)
+                _rabMaleId = 0;
+            else
+                listView1_SelectedIndexChanged(null,null);
+
             listView1.EndUpdate();
             cs.RestoreAfterUpdate();
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            btOk.Enabled=btGens.Enabled=(listView1.SelectedItems.Count==1);
+            btOk.Enabled = btGens.Enabled = (listView1.SelectedItems.Count == 1);
             MainForm.StillWorking();
         }
 
@@ -165,7 +193,7 @@ namespace rabnet.forms
             }
             MainForm.StillWorking();
             int r2 = (listView1.SelectedItems[0].Tag as FuckPartner).Id;
-            (new GenomViewForm(rab1.ID, r2)).ShowDialog();
+            (new GenomViewForm(_rabFemale.ID, r2)).ShowDialog();
         }
 
         private void btCancel_Click(object sender, EventArgs e)
@@ -189,18 +217,18 @@ namespace rabnet.forms
             {
                 if (listView1.SelectedItems.Count != 1)
                     throw new RabNetException("Выберите самца");
-                if (rab1.NameID == 0 && cbName.SelectedIndex != 0)
+
+                if (_rabFemale.NameID == 0 && cbName.SelectedIndex != 0)
                 {
                     foreach (int k in names.Keys)
                         if (cbName.Text == names[k])
-                            rab1.NameID = k;
-                    rab1.Commit();
+                            _rabFemale.NameID = k;
+                    _rabFemale.Commit();
                 }
 
-                int r2 = (listView1.SelectedItems[0].Tag as FuckPartner).Id;
-                selected = r2;
-                if (action == 0)
-                    rab1.FuckIt(r2, dateDays1.DaysValue,syntetic);
+                _rabMaleId = (listView1.SelectedItems[0].Tag as FuckPartner).Id;                 
+                if (_needCommit)
+                    _rabFemale.FuckIt(_rabMaleId, dateDays1.DaysValue, syntetic);
 
                 this.DialogResult = DialogResult.OK;
                 Close();
@@ -233,7 +261,9 @@ namespace rabnet.forms
             fillNames();
         }
 
-        public int SelectedFucker { get { return selected; } }
+        public int SelectedFucker { get { return _rabMaleId; } }
+
+        public DateTime FuckDate { get { return dateDays1.DateValue; } }
 
     }
 }
