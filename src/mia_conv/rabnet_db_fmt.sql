@@ -4,6 +4,7 @@ CREATE TABLE users(
 	u_name VARCHAR(50),
 	u_password VARCHAR(50),
 	u_group enum('worker','admin','zootech','butcher') NOT NULL DEFAULT 'admin',
+	u_deleted TINYINT(1) NOT NULL DEFAULT '0',
 	KEY(u_name)
 ) DEFAULT CHARSET=utf8;
 

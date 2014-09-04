@@ -153,7 +153,7 @@ namespace rabnet.forms
             DateTime dt;
 
             if(ReportType == myReportType.FUCKS_BY_DATE)                
-                dates =Engine.get().db().getFuckMonths();
+                dates = Engine.get().db().getFuckMonths();
             else dates = Engine.get().db().getDeadsMonths();
 
             if (dates.Count > 0)

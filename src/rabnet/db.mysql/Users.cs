@@ -31,7 +31,7 @@ namespace db.mysql
         /// </summary>
         public List<sUser> getUsers()
         {
-            MySqlDataReader rd = reader("SELECT u_name,u_group,u_id FROM users;");
+            MySqlDataReader rd = reader("SELECT u_name,u_group,u_id,u_deleted FROM users WHERE u_deleted=0;");
             List<sUser> res = new List<sUser>();
             while (rd.Read())
             {
@@ -79,7 +79,8 @@ namespace db.mysql
 
         public void deleteUser(int uid)
         {
-            exec(String.Format("DELETE FROM users WHERE u_id={0:d};",uid));
+            //exec(String.Format("DELETE FROM users WHERE u_id={0:d};", uid));
+            exec(String.Format("UPDATE users SET u_deleted=1 WHERE u_id={0:d};", uid));
         }
 
         

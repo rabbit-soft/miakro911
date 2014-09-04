@@ -551,12 +551,18 @@ WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d} AND inBuilding({0:d},
 
         private string fucksByDate(Filters f)
         {
-            string period = " AND "+DBHelper.MakeDatePeriod(f, "f_date");
+            string period = " AND " + DBHelper.MakeDatePeriod(f, "f_date");
 
-            return String.Format(@"SELECT DATE_FORMAT(f_date,'%d.%m.%Y')date,anyname(f_rabid,2) name,
-                                    (SELECT n_name FROM names WHERE n_use=f_partner) partner,
-                                    (SELECT u_name FROM users WHERE u_id=f_worker) worker 
-                                FROM fucks WHERE f_date is not null {0} ORDER BY f_date DESC, partner;",period);
+            return String.Format(@"SELECT 
+        DATE_FORMAT(f_date,'%d.%m.%Y') date,
+        anyname(f_rabid,2) name,
+        n_name as partner,
+        u_name as worker 
+    FROM fucks 
+        LEFT JOIN names ON n_use = f_partner
+        LEFT JOIN users ON u_id = f_worker
+    WHERE f_date is not null {0} 
+    ORDER BY f_date DESC, partner;", period);
         }
 
         private string butcherQuery(Filters f)
