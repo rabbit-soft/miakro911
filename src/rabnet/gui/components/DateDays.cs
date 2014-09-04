@@ -120,6 +120,15 @@ namespace rabnet.components
             set { numericUpDown1.Increment = value; }
         }
 
+        public DateTime MinDate
+        {
+            get { return dateTimePicker1.MinDate; }
+            set { 
+                dateTimePicker1.MinDate = value;
+                numericUpDown1.Maximum = numericUpDown1.Value + (dateTimePicker1.Value.Subtract(value).Days);
+            }
+        }
+
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
             if (!_manual) return;
