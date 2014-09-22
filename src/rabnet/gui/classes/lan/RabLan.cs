@@ -93,7 +93,7 @@ namespace rabnet
                 IPEndPoint epSender = null;
                 byte[] recBytes = _udpListener.Receive(ref epSender);
                 string msg = Encoding.UTF8.GetString(recBytes);
-                _logger.Debug("income message: " + msg);
+                _logger.DebugFormat("income message: '{0}'. from: ", msg, ep.Address);
                 if (isMyIp(epSender)) continue;
                 onUdpMessage(msg,epSender);
             }
