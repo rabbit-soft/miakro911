@@ -19,11 +19,17 @@ namespace rabnet.forms
         private RabnetConfig _rnc;
         private Dictionary<int, DataSource> _dss;
 
+        private bool isDemo = false;
+
         public LoginForm()
         {
             InitializeComponent();
             log.Debug("inited");
             _rnc = new RabnetConfig();
+#if DEMO
+            this.isDemo = true;
+#endif
+            this.Text = String.Format("{0} [{1}{2}] ", AboutForm.AssemblyProduct, AboutForm.AssemblyVersion, isDemo ? " Demo" : "");
         }
 
         public void readConfig()

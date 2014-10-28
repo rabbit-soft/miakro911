@@ -22,7 +22,7 @@ namespace rabnet.forms
             lbBuildDate.Text += MainForm.BuildDate.ToLongDateString();
         }
 
-        public string licFarms()
+        public static string licFarms()
         {
 #if PROTECTED
             string info = "";
@@ -50,7 +50,7 @@ namespace rabnet.forms
 
         #region Assembly Attribute Accessors
 
-        public string AssemblyTitle
+        public static string AssemblyTitle
         {
             get
             {
@@ -67,7 +67,7 @@ namespace rabnet.forms
             }
         }
 
-        public string AssemblyVersion
+        public static string AssemblyVersion
         {
             get
             {
@@ -75,7 +75,7 @@ namespace rabnet.forms
             }
         }
 
-        public string AssemblyDescription
+        public static string AssemblyDescription
         {
             get
             {
@@ -88,7 +88,7 @@ namespace rabnet.forms
             }
         }
 
-        public string AssemblyProduct
+        public static string AssemblyProduct
         {
             get
             {
@@ -101,7 +101,7 @@ namespace rabnet.forms
             }
         }
 
-        public string AssemblyCopyright
+        public static string AssemblyCopyright
         {
             get
             {
@@ -114,7 +114,7 @@ namespace rabnet.forms
             }
         }
 
-        public string AssemblyCompany
+        public static string AssemblyCompany
         {
             get
             {

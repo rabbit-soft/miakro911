@@ -153,7 +153,7 @@
             this.MinimizeBox = false;
             this.Name = "LoginForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Выберите Базу Данных";
+            this.Text = "Миакро 9.11";
             this.Shown += new System.EventHandler(this.LoginForm_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
