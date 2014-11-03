@@ -39,11 +39,12 @@ namespace rabdump
                     sendUdpMessage(RD_ALREADY_HERE, ep);
                     break;
                 case RD_ALREADY_HERE:
-                    if (RabDumpAlreadyInLan != null)
-                    {
-                        IPHostEntry ent = Dns.GetHostEntry(ep.Address);
-                        RabDumpAlreadyInLan(ent.HostName);
-                    }
+                    // todo тупит на компах с мобильным интернетом
+                    //if (RabDumpAlreadyInLan != null)
+                    //{                        
+                    //    IPHostEntry ent = Dns.GetHostEntry(ep.Address);
+                    //    RabDumpAlreadyInLan(ent.HostName);
+                    //}
                     break;
                 case WHERE_IS_RD:
                         sendUdpMessage(RD_IS_HERE,ep);

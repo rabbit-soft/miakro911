@@ -29,8 +29,18 @@
         protected override void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.nudCountTo = new System.Windows.Forms.NumericUpDown();
+            this.cbCount = new System.Windows.Forms.ComboBox();
+            this.nudCountFrom = new System.Windows.Forms.NumericUpDown();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tbName = new System.Windows.Forms.TextBox();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.cobBreeds = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.button3 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.cbFilter = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -68,16 +78,11 @@
             this.cbSexFemale = new System.Windows.Forms.CheckBox();
             this.cbSexMale = new System.Windows.Forms.CheckBox();
             this.button2 = new System.Windows.Forms.Button();
-            this.cobBreeds = new System.Windows.Forms.ComboBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.nudCountTo = new System.Windows.Forms.NumericUpDown();
-            this.cbCount = new System.Windows.Forms.ComboBox();
-            this.nudCountFrom = new System.Windows.Forms.NumericUpDown();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCountTo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCountFrom)).BeginInit();
+            this.groupBox9.SuspendLayout();
+            this.groupBox8.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPregFrom)).BeginInit();
@@ -90,12 +95,80 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudDateFrom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDateTo)).BeginInit();
             this.groupBox1.SuspendLayout();
-            this.groupBox8.SuspendLayout();
-            this.groupBox9.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudCountTo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudCountFrom)).BeginInit();
             this.SuspendLayout();
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.nudCountTo);
+            this.groupBox4.Controls.Add(this.cbCount);
+            this.groupBox4.Controls.Add(this.nudCountFrom);
+            this.groupBox4.Location = new System.Drawing.Point(395, 32);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(115, 74);
+            this.groupBox4.TabIndex = 21;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Количество";
+            // 
+            // nudCountTo
+            // 
+            this.nudCountTo.Enabled = false;
+            this.nudCountTo.Location = new System.Drawing.Point(67, 39);
+            this.nudCountTo.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudCountTo.Name = "nudCountTo";
+            this.nudCountTo.Size = new System.Drawing.Size(42, 20);
+            this.nudCountTo.TabIndex = 2;
+            this.nudCountTo.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            // 
+            // cbCount
+            // 
+            this.cbCount.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbCount.FormattingEnabled = true;
+            this.cbCount.Items.AddRange(new object[] {
+            ">=",
+            "=",
+            "<=",
+            "<",
+            "A..Z"});
+            this.cbCount.Location = new System.Drawing.Point(6, 13);
+            this.cbCount.Name = "cbCount";
+            this.cbCount.Size = new System.Drawing.Size(55, 21);
+            this.cbCount.TabIndex = 1;
+            this.cbCount.SelectedIndexChanged += new System.EventHandler(this.cbCount_SelectedIndexChanged);
+            // 
+            // nudCountFrom
+            // 
+            this.nudCountFrom.Location = new System.Drawing.Point(67, 14);
+            this.nudCountFrom.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudCountFrom.Name = "nudCountFrom";
+            this.nudCountFrom.Size = new System.Drawing.Size(42, 20);
+            this.nudCountFrom.TabIndex = 0;
+            this.nudCountFrom.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.label6);
+            this.groupBox9.Controls.Add(this.tbName);
+            this.groupBox9.Location = new System.Drawing.Point(240, -2);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(230, 34);
+            this.groupBox9.TabIndex = 20;
+            this.groupBox9.TabStop = false;
             // 
             // label6
             // 
@@ -113,6 +186,48 @@
             this.tbName.Name = "tbName";
             this.tbName.Size = new System.Drawing.Size(110, 20);
             this.tbName.TabIndex = 12;
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.cobBreeds);
+            this.groupBox8.Controls.Add(this.label7);
+            this.groupBox8.Location = new System.Drawing.Point(3, -2);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(223, 34);
+            this.groupBox8.TabIndex = 20;
+            this.groupBox8.TabStop = false;
+            // 
+            // cobBreeds
+            // 
+            this.cobBreeds.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cobBreeds.FormattingEnabled = true;
+            this.cobBreeds.Items.AddRange(new object[] {
+            "-=ВСЕ=-"});
+            this.cobBreeds.Location = new System.Drawing.Point(60, 10);
+            this.cobBreeds.MaxDropDownItems = 12;
+            this.cobBreeds.Name = "cobBreeds";
+            this.cobBreeds.Size = new System.Drawing.Size(150, 21);
+            this.cobBreeds.TabIndex = 15;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label7.Location = new System.Drawing.Point(8, 13);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(45, 13);
+            this.label7.TabIndex = 19;
+            this.label7.Text = "Порода";
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(482, 3);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(30, 23);
+            this.button3.TabIndex = 18;
+            this.button3.Text = "X";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button1
             // 
@@ -528,7 +643,7 @@
             0,
             0});
             this.nudDateTo.Minimum = new decimal(new int[] {
-            60,
+            30,
             0,
             0,
             0});
@@ -621,121 +736,6 @@
             this.button2.Text = "Готово";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // cobBreeds
-            // 
-            this.cobBreeds.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cobBreeds.FormattingEnabled = true;
-            this.cobBreeds.Items.AddRange(new object[] {
-            "-=ВСЕ=-"});
-            this.cobBreeds.Location = new System.Drawing.Point(60, 10);
-            this.cobBreeds.MaxDropDownItems = 12;
-            this.cobBreeds.Name = "cobBreeds";
-            this.cobBreeds.Size = new System.Drawing.Size(150, 21);
-            this.cobBreeds.TabIndex = 15;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(482, 3);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(30, 23);
-            this.button3.TabIndex = 18;
-            this.button3.Text = "X";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label7.Location = new System.Drawing.Point(8, 13);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(45, 13);
-            this.label7.TabIndex = 19;
-            this.label7.Text = "Порода";
-            // 
-            // groupBox8
-            // 
-            this.groupBox8.Controls.Add(this.cobBreeds);
-            this.groupBox8.Controls.Add(this.label7);
-            this.groupBox8.Location = new System.Drawing.Point(3, -2);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(223, 34);
-            this.groupBox8.TabIndex = 20;
-            this.groupBox8.TabStop = false;
-            // 
-            // groupBox9
-            // 
-            this.groupBox9.Controls.Add(this.label6);
-            this.groupBox9.Controls.Add(this.tbName);
-            this.groupBox9.Location = new System.Drawing.Point(240, -2);
-            this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(230, 34);
-            this.groupBox9.TabIndex = 20;
-            this.groupBox9.TabStop = false;
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.nudCountTo);
-            this.groupBox4.Controls.Add(this.cbCount);
-            this.groupBox4.Controls.Add(this.nudCountFrom);
-            this.groupBox4.Location = new System.Drawing.Point(395, 32);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(115, 74);
-            this.groupBox4.TabIndex = 21;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Количество";
-            // 
-            // nudCountTo
-            // 
-            this.nudCountTo.Enabled = false;
-            this.nudCountTo.Location = new System.Drawing.Point(67, 39);
-            this.nudCountTo.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nudCountTo.Name = "nudCountTo";
-            this.nudCountTo.Size = new System.Drawing.Size(42, 20);
-            this.nudCountTo.TabIndex = 2;
-            this.nudCountTo.Value = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            // 
-            // cbCount
-            // 
-            this.cbCount.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbCount.FormattingEnabled = true;
-            this.cbCount.Items.AddRange(new object[] {
-            ">=",
-            "=",
-            "<=",
-            "<",
-            "A..Z"});
-            this.cbCount.Location = new System.Drawing.Point(6, 13);
-            this.cbCount.Name = "cbCount";
-            this.cbCount.Size = new System.Drawing.Size(55, 21);
-            this.cbCount.TabIndex = 1;
-            this.cbCount.SelectedIndexChanged += new System.EventHandler(this.cbCount_SelectedIndexChanged);
-            // 
-            // nudCountFrom
-            // 
-            this.nudCountFrom.Location = new System.Drawing.Point(67, 14);
-            this.nudCountFrom.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nudCountFrom.Name = "nudCountFrom";
-            this.nudCountFrom.Size = new System.Drawing.Size(42, 20);
-            this.nudCountFrom.TabIndex = 0;
-            this.nudCountFrom.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
             // RabbitsFilter
             // 
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -757,6 +757,13 @@
             this.Name = "RabbitsFilter";
             this.SaveButton = this.button1;
             this.Size = new System.Drawing.Size(515, 247);
+            this.groupBox4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nudCountTo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCountFrom)).EndInit();
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.groupBox7.ResumeLayout(false);
@@ -775,13 +782,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudDateTo)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox8.ResumeLayout(false);
-            this.groupBox8.PerformLayout();
-            this.groupBox9.ResumeLayout(false);
-            this.groupBox9.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.nudCountTo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudCountFrom)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

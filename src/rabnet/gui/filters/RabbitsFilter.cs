@@ -233,7 +233,7 @@ namespace rabnet.filters
             dtpDateFrom.Value = DateTime.Now.AddDays(-(double)nudDateFrom.Value).Date;
             if (!cbDateFrom.Checked)
             {
-                nudDateTo.Minimum = 60;
+                nudDateTo.Minimum =30;
                 return;
             }
             if (cbDateTo.Checked)
@@ -295,7 +295,7 @@ namespace rabnet.filters
             dtpDateTo.Value = DateTime.Today.Subtract(new TimeSpan((int)nudDateTo.Value, 0, 0, 0));
             if (cbDateFrom.Checked)
                 nudDateFrom.Maximum = nudDateTo.Value;
-            else nudDateTo.Minimum = 60;
+            else nudDateTo.Minimum = 30;
 
         }
 
