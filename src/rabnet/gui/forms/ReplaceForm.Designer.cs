@@ -37,22 +37,22 @@
             this.btChangeAddresses = new System.Windows.Forms.Button();
             this.btClear = new System.Windows.Forms.Button();
             this.btSeparateByOne = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.gbSeparate = new System.Windows.Forms.GroupBox();
             this.btSetAllBoys = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.btSetAllGirls = new System.Windows.Forms.Button();
             this.btSeparateBoys = new System.Windows.Forms.Button();
             this.btSeparate = new System.Windows.Forms.Button();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.gbCombine = new System.Windows.Forms.GroupBox();
             this.btUniteDown = new System.Windows.Forms.Button();
             this.btUniteUp = new System.Windows.Forms.Button();
             this.btCombine = new System.Windows.Forms.Button();
             this.btAutoReplace = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.groupBox1.SuspendLayout();
+            this.gbSeparate.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            this.groupBox2.SuspendLayout();
+            this.gbCombine.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -173,23 +173,23 @@
             this.btSeparateByOne.UseVisualStyleBackColor = true;
             this.btSeparateByOne.Click += new System.EventHandler(this.btSeparateByOne_Click);
             // 
-            // groupBox1
+            // gbSeparate
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.btSetAllBoys);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.btSetAllGirls);
-            this.groupBox1.Controls.Add(this.btSeparateBoys);
-            this.groupBox1.Controls.Add(this.btSeparate);
-            this.groupBox1.Controls.Add(this.numericUpDown1);
-            this.groupBox1.Controls.Add(this.btSeparateByOne);
-            this.groupBox1.Enabled = false;
-            this.groupBox1.Location = new System.Drawing.Point(766, 137);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(119, 206);
-            this.groupBox1.TabIndex = 9;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Рассадить группу";
+            this.gbSeparate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbSeparate.Controls.Add(this.btSetAllBoys);
+            this.gbSeparate.Controls.Add(this.label2);
+            this.gbSeparate.Controls.Add(this.btSetAllGirls);
+            this.gbSeparate.Controls.Add(this.btSeparateBoys);
+            this.gbSeparate.Controls.Add(this.btSeparate);
+            this.gbSeparate.Controls.Add(this.numericUpDown1);
+            this.gbSeparate.Controls.Add(this.btSeparateByOne);
+            this.gbSeparate.Enabled = false;
+            this.gbSeparate.Location = new System.Drawing.Point(766, 137);
+            this.gbSeparate.Name = "gbSeparate";
+            this.gbSeparate.Size = new System.Drawing.Size(119, 206);
+            this.gbSeparate.TabIndex = 9;
+            this.gbSeparate.TabStop = false;
+            this.gbSeparate.Text = "Рассадить группу";
             // 
             // btSetAllBoys
             // 
@@ -258,19 +258,19 @@
             0,
             0});
             // 
-            // groupBox2
+            // gbCombine
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.btUniteDown);
-            this.groupBox2.Controls.Add(this.btUniteUp);
-            this.groupBox2.Controls.Add(this.btCombine);
-            this.groupBox2.Enabled = false;
-            this.groupBox2.Location = new System.Drawing.Point(766, 349);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(119, 104);
-            this.groupBox2.TabIndex = 10;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Объединить";
+            this.gbCombine.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbCombine.Controls.Add(this.btUniteDown);
+            this.gbCombine.Controls.Add(this.btUniteUp);
+            this.gbCombine.Controls.Add(this.btCombine);
+            this.gbCombine.Enabled = false;
+            this.gbCombine.Location = new System.Drawing.Point(766, 349);
+            this.gbCombine.Name = "gbCombine";
+            this.gbCombine.Size = new System.Drawing.Size(119, 104);
+            this.gbCombine.TabIndex = 10;
+            this.gbCombine.TabStop = false;
+            this.gbCombine.Text = "Объединить";
             // 
             // btUniteDown
             // 
@@ -323,8 +323,8 @@
             this.CancelButton = this.btCancel;
             this.ClientSize = new System.Drawing.Size(892, 516);
             this.Controls.Add(this.btAutoReplace);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.gbCombine);
+            this.Controls.Add(this.gbSeparate);
             this.Controls.Add(this.btClear);
             this.Controls.Add(this.btChangeAddresses);
             this.Controls.Add(this.btClearAll);
@@ -344,10 +344,10 @@
             this.Text = "Пересадки";
             this.Load += new System.EventHandler(this.ReplaceForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.gbSeparate.ResumeLayout(false);
+            this.gbSeparate.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            this.groupBox2.ResumeLayout(false);
+            this.gbCombine.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -364,10 +364,10 @@
         private System.Windows.Forms.Button btChangeAddresses;
         private System.Windows.Forms.Button btClear;
         private System.Windows.Forms.Button btSeparateByOne;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox gbSeparate;
         private System.Windows.Forms.Button btSeparate;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox gbCombine;
         private System.Windows.Forms.Button btUniteUp;
         private System.Windows.Forms.Button btCombine;
         private System.Windows.Forms.Button btSeparateBoys;

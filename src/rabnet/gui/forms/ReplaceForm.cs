@@ -562,39 +562,42 @@ namespace rabnet.forms
         private void dataGridView1_MultiSelectChanged(object sender, EventArgs e)
         {
             MainForm.StillWorking();
-            btChangeAddresses.Enabled = (dataGridView1.SelectedRows.Count == 2 && _action!=Action.ONE_GIRL_OUT);
+            btChangeAddresses.Enabled = (dataGridView1.SelectedRows.Count == 2 && _action != Action.ONE_GIRL_OUT);
             btClear.Enabled = (dataGridView1.SelectedRows.Count >0);
-            groupBox1.Enabled = groupBox2.Enabled = false;
-            if (dataGridView1.SelectedRows.Count == 2 && _action!=Action.ONE_GIRL_OUT)
+            gbSeparate.Enabled = gbCombine.Enabled = false;
+            if (dataGridView1.SelectedRows.Count == 2 && _action != Action.ONE_GIRL_OUT)
             {
-                groupBox2.Enabled = true;
-                btCombine.Enabled = btUniteUp.Enabled = btUniteDown.Enabled=false;
+                gbCombine.Enabled = true;
+                btCombine.Enabled = btUniteUp.Enabled = btUniteDown.Enabled = false;
                 RP r1 = rp(dataGridView1.SelectedRows[0].Index);
                 RP r2 = rp(dataGridView1.SelectedRows[1].Index);
-                if ((r1.Count == 1 && r1.Sex == Rabbit.SexType.FEMALE && r1.Age>r2.Age) || (r2.Count == 1 && r2.Sex == Rabbit.SexType.FEMALE && r2.Age>r1.Age))
+                if (
+                    (r1.Count == 1 && r1.Sex == Rabbit.SexType.FEMALE && r1.Age > r2.Age) ||
+                    (r2.Count == 1 && r2.Sex == Rabbit.SexType.FEMALE && r2.Age > r1.Age)
+                    )
                 {
                     btCombine.Enabled = true;
                 }
-                if (r1.Sex == r2.Sex && Math.Abs(r1.Age-r2.Age)<=_combineage)
+                if (r1.Sex == r2.Sex && Math.Abs(r1.Age - r2.Age) <= _combineage)
                 {
-                    btUniteUp.Enabled = btUniteDown.Enabled=true;
+                    btUniteUp.Enabled = btUniteDown.Enabled = true;
                 }
                 btUniteUp.Enabled = btUniteDown.Enabled = (r1.ID != 0 && r2.ID != 0);
             }
             if (dataGridView1.SelectedRows.Count == 1)
             {
                 int cnt = rp(dataGridView1.SelectedRows[0].Index).NewCount;
-                groupBox1.Enabled = (cnt > 1);
+                gbSeparate.Enabled = (cnt > 1);
                 btSeparateBoys.Enabled = btSetAllGirls.Enabled = btSetAllBoys.Enabled = (rp().NewSex == Rabbit.SexType.VOID);
                 if (cnt > 1)           
                     numericUpDown1.Maximum = cnt - 1;
                 numericUpDown1.Enabled = btSeparate.Enabled = btSeparateBoys.Enabled = btSeparateByOne.Enabled = (cnt > 1) ;                
-                groupBox1.Enabled = (rp().ID != 0);
+                gbSeparate.Enabled = (rp().ID != 0);
                 if (_action == Action.ONE_GIRL_OUT)
                 {
                     numericUpDown1.Value = numericUpDown1.Maximum = numericUpDown1.Minimum = 1;
                     btSeparateBoys.Enabled = btSetAllGirls.Enabled = btSetAllBoys.Enabled = btChangeAddresses.Enabled = false;
-                    groupBox2.Enabled = false;
+                    gbCombine.Enabled = false;
                 }
             }
         }
