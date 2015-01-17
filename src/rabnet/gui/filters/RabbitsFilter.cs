@@ -113,16 +113,18 @@ namespace rabnet.filters
             cbPregFrom_CheckedChanged(null, null);
             cbPregTo.Checked = f.ContainsKey("Pf"); 
             cbPregTo_CheckedChanged(null, null);
+
+            if (cbPregTo.Checked)
+            {
+                nudPregTo.Value = f.safeInt("Pf", 20);
+                nudPregTo_ValueChanged(null, null);
+            }
             if (cbPregFrom.Checked)
             { 
                 nudPregFrom.Value = f.safeInt("pf", 10); 
                 nudPregFrom_ValueChanged(null, null);
             }
-            if (cbPregTo.Checked)
-            { 
-                nudPregTo.Value = f.safeInt("Pf", 20); 
-                nudPregTo_ValueChanged(null, null); 
-            }
+            
             tbName.Text = f.safeValue("nm");
             cobBreeds.SelectedIndex = f.safeInt("br",0);
 
