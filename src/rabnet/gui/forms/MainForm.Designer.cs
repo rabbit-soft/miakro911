@@ -508,7 +508,7 @@
             // 
             // tNoWorking
             // 
-            this.tNoWorking.Interval = 480000;
+            this.tNoWorking.Interval = 600000;
             this.tNoWorking.Tick += new System.EventHandler(this.tNoWorking_Tick);
             // 
             // tabControl1
