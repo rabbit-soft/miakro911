@@ -13,8 +13,8 @@ using gamlib;
 namespace rabdump
 {
     class ArchiveJobThread
-    {       
-        private const String ZIP_PASSWORD="ns471lbNITfq3";
+    {
+        private const String ZIP_PASSWORD = "ns471lbNITfq3";
         //public const int SPLIT_NAMES = 6;
         public const char SPACE_REPLACE = '+';
         /// <summary>
@@ -53,7 +53,7 @@ namespace rabdump
         /// <param name="resFile">Имя файла, зафисит от параметра minimum</param>
         /// <param name="minimum">Самый старый файл дампа, принадлежащий расписанию, или самый новый</param>
         /// <returns>Количество дампов данного расписания</returns>
-        public int CountBackups(out int totalSize,out String resFile, bool minimum)
+        public int CountBackups(out int totalSize, out String resFile, bool minimum)
         {
             _logger.Debug("count backups in " + _j.DumpPath);
             if (!Directory.Exists(_j.DumpPath))
@@ -61,32 +61,27 @@ namespace rabdump
             DirectoryInfo inf = new DirectoryInfo(_j.DumpPath);
             DateTime asDT = minimum ? DateTime.MaxValue : DateTime.MinValue;
             int cnt = 0;// Количество дампов расписания
-/*
-            sz = 0;
-*/
+            /*
+                        sz = 0;
+            */
             resFile = "";
             long fsz = 0;
-            foreach(FileInfo fi in inf.GetFiles("*_*_*_*_*_*.7z"))
-            {
+            foreach (FileInfo fi in inf.GetFiles("*_*_*_*_*_*.7z")) {
                 String[] nm = ParseDumpName(fi.FullName);
-                if (nm[0]==_j.Name)
-                {
+                if (nm[0] == _j.Name) {
                     cnt++;
                     fsz += fi.Length;
                     String h = nm[5].Substring(0, 2);
                     String m = nm[5].Substring(2, 2);
                     String s = nm[5].Substring(4, 2);
                     DateTime dt = new DateTime(int.Parse(nm[2]), int.Parse(nm[3]), int.Parse(nm[4]), int.Parse(h), int.Parse(m), int.Parse(s));
-                    if (minimum)
-                    {
+                    if (minimum) {
                         if (dt < asDT)//если переданная Дата меньше
                         {
                             resFile = Path.GetFileName(fi.FullName);
                             asDT = dt;
                         }
-                    }
-                    else
-                    {
+                    } else {
                         if (dt > asDT)//если переданная Дата больше
                         {
                             resFile = Path.GetFileName(fi.FullName);
@@ -94,8 +89,8 @@ namespace rabdump
                         }
                     }
                 }
-            }           
-            totalSize =(int)Math.Round((double)fsz/(1024 * 1024));
+            }
+            totalSize = (int)Math.Round((double)fsz / (1024 * 1024));
             return cnt;
         }
         public int CountBackups(out int sz, out String File)
@@ -106,11 +101,9 @@ namespace rabdump
         public bool FileExists(string filename, string md5)
         {
             string path = Path.Combine(_j.DumpPath, filename);
-            if (File.Exists(path))
-            {
+            if (File.Exists(path)) {
                 return Helper.GetMD5FromFile(path) == md5;
-            }
-            else return false;
+            } else return false;
         }
 
         /// <summary>
@@ -119,30 +112,25 @@ namespace rabdump
         /// </summary>
         public void CheckLimits()
         {
-            try
-            {
+            try {
                 _logger.Debug("checking limits");
                 int sz = 0;
                 string min = "";
                 int cnt = CountBackups(out sz, out min);
                 if (_j.CountLimit > 0)
-                    while (_j.CountLimit < cnt)
-                    {
-                        File.Delete(Path.Combine(_j.DumpPath,min));
+                    while (_j.CountLimit < cnt) {
+                        File.Delete(Path.Combine(_j.DumpPath, min));
                         _logger.InfoFormat("Deleting file: {0:s}\\{1:s}", _j.DumpPath, min);
                         cnt = CountBackups(out sz, out min);
                     }
                 //CountBackups(out sz, out min);
                 if (_j.SizeLimit > 0)
-                    while (_j.SizeLimit < sz)
-                    {
-                        File.Delete(Path.Combine(_j.DumpPath,min));
+                    while (_j.SizeLimit < sz) {
+                        File.Delete(Path.Combine(_j.DumpPath, min));
                         _logger.InfoFormat("Deleting file: {0:s}\\{1:s}", _j.DumpPath, min);
                         CountBackups(out sz, out min);
                     }
-            }
-            catch (Exception exc)
-            {
+            } catch (Exception exc) {
                 _logger.Error(exc);
             }
         }
@@ -152,14 +140,11 @@ namespace rabdump
         /// </summary>
         public void Run()
         {
-            try
-            {
+            try {
                 _logger.Debug("Run dump for " + _j.Name);
                 DumpDB(_j.DataSrc);
                 _jobber.OnEndJob();
-            }
-            catch (Exception exc)
-            {
+            } catch (Exception exc) {
                 _j.Busy = false;
                 _logger.Error(exc);
                 callOnMessage(exc.Message, "Ошибка", 2);
@@ -174,7 +159,7 @@ namespace rabdump
             _j.Busy = false;
             _j.LastWork = DateTime.Now;
             _logger.Debug("End of making dump " + _j.Name);
-            callOnMessage("Зарезервировано","",0);
+            callOnMessage("Зарезервировано", "", 0);
         }
 
         /// <summary>
@@ -186,13 +171,10 @@ namespace rabdump
             int sz;
             string file;
             int count = CountBackups(out sz, out file, false);
-            if (count == 0)
-            {
+            if (count == 0) {
                 md5 = "";
                 return "";
-            }
-            else
-            {
+            } else {
                 string path = _j.DumpPath + "\\" + file;
                 md5 = Helper.GetMD5FromFile(path);
                 return path;
@@ -213,8 +195,7 @@ namespace rabdump
         /// <param name="hide">Спрятать Значок в трее</param>
         private void callOnMessage(string msg, string ttl, int type, bool hide)
         {
-            if (OnMessage != null)
-            {
+            if (OnMessage != null) {
                 OnMessage(msg, ttl, type, hide);
             }
         }
@@ -248,15 +229,13 @@ namespace rabdump
             _logger.Info("Making dump for " + _j.Name + " to " + ffname);
             ///Делайем дамп с помошью mysqldump
             String md = Options.Inst.MySqlDumpPath;
-            if (md == "" || !File.Exists(md))
-            {
+            if (md == "" || !File.Exists(md)) {
                 _logger.Error("MySQLDump not specified " + md);
                 throw new ApplicationException("Путь к MySQL указан не корректно");
             }
             String pr = String.Format("{0:s} {1:s} {2:s} {3:s} --ignore-table={0:s}.allrabbits", db.Params.DataBase, (db.Params.Host == "" ? "" : "-h " + db.Params.Host),
                 (db.Params.User == "" ? "" : "-u " + db.Params.User), (db.Params.Password == "" ? "" : "--password=" + db.Params.Password));
-            try
-            {
+            try {
                 ProcessStartInfo inf = new ProcessStartInfo(md, pr);
 
                 inf.UseShellExecute = false;
@@ -272,16 +251,11 @@ namespace rabdump
                 if (p.ExitCode != 0)
                     throw new ApplicationException("MySQLDump вернул результат " + p.ExitCode.ToString());
                 p.Close();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 //_logger.Error("Error while " + md + ":" + ex.GetType().ToString() + ":" + ex.Message);
-                try
-                {
+                try {
                     File.Delete(fname + ".dump");
-                }
-                catch (Exception ex2)
-                {
+                } catch (Exception ex2) {
                     _logger.Error("Error while " + md + ":" + ex2.GetType().ToString() + ":" + ex2.Message);
                     //return "";
                 }
@@ -293,10 +267,8 @@ namespace rabdump
             md = Options.Inst.Path7Z;
             if (md == "" || !File.Exists(md))///если путь к 7zip не настроен, то в папку BackUps копируется .dump-файл
                 _logger.Warn("7z not specified");
-            else
-            {
-                try
-                {
+            else {
+                try {
                     ProcessStartInfo inf = new ProcessStartInfo(md, string.Format(" a -mx9 -p{0} \"{1}.7z\" \"{1}.dump\"", ZIP_PASSWORD, fname));
 
                     inf.CreateNoWindow = true;
@@ -309,9 +281,7 @@ namespace rabdump
                         throw new ApplicationException("Ошибка при архивации: " + p.ExitCode.ToString());
                     File.Delete(fname + ".dump");
                     is7z = true;
-                }
-                catch (Exception ex)
-                {
+                } catch (Exception ex) {
                     _logger.Error("Error while " + md + ":" + ex.GetType().ToString() + ":" + ex.Message);
                     //return;
                 }
@@ -328,32 +298,32 @@ namespace rabdump
         /// <summary>
         /// Востановление БД из резервной копии
         /// </summary>
-        public static void UndumpDB(string host,string db,string user,string password,string file)
+        public static void UndumpDB(string host, string db, string user, string password, string file)
         {
             _logger.Debug("undumping " + file + " to " + host + ":" + db + ":" + user + ":" + password);
 
             String tmppath = Path.GetTempPath();
-            if (!Directory.Exists(tmppath))           
+            if (!Directory.Exists(tmppath))
                 Directory.CreateDirectory(tmppath);
-           
-            String sql = Options.Inst.MySqlExePath;              
-            if (sql == "" || !File.Exists(sql))
-                throw new ApplicationException("Путь к MySQL указан не корректно"); 
-         
+
+            String sql = Options.Inst.MySqlExePath;
+            if (sql == "" || !File.Exists(sql)) {
+                throw new ApplicationException("Путь к MySQL указан не корректно");
+            }
+
             //String pth=Path.GetDirectoryName(file);
             //String fl = Path.GetFileName(file);
             String ext = Path.GetExtension(file);
             String tmpFile = Path.Combine(tmppath, Path.GetFileName(file));
-            _logger.Debug("copy "+file+" to "+tmpFile);
-            File.Copy(file,tmpFile,true);
+            _logger.Debug("copy " + file + " to " + tmpFile);
+            File.Copy(file, tmpFile, true);
 
             if (ext == ".7z")//распаковка файла если расширение .7z
             {
                 _logger.Debug("decompress 7z");
                 String z7 = Options.Inst.Path7Z;
                 String ff = tmppath + Path.GetFileNameWithoutExtension(tmpFile) + ".dump";
-                if (z7 == "" || !File.Exists(z7))
-                {
+                if (z7 == "" || !File.Exists(z7)) {
                     throw new ApplicationException("Путь к 7z не настроен");
                 }
                 //ExtractDump(f);
@@ -369,25 +339,22 @@ namespace rabdump
                 int res = p.ExitCode;
                 p.Close();
                 File.Delete(tmpFile);
-                if (res != 0)
-                {
+                if (res != 0) {
                     File.Delete(ff);
                     throw new ApplicationException("7z вернул результат: " + z7err(res));
                 }
 
                 tmpFile = checkDumpPath(ff);
-                if (tmpFile == "")
-                {
+                if (tmpFile == "") {
                     throw new ApplicationException("Ошибка при разархивировании");
                 }
-                _logger.Debug("dumpname: "+tmpFile);
+                _logger.Debug("dumpname: " + tmpFile);
             }
             _logger.Debug("mysql");
-            
+
             ///Заливаем данные из .dump-файла в БД
             String prms = String.Format(@"{1:s} {2:s} {3:s} {0:s}", db, (host != "" ? "-h " + host : ""), (user != "" ? "-u " + user : ""), (password != "" ? "--password=" + password : ""));
-            try
-            {
+            try {
                 ProcessStartInfo pinf = new ProcessStartInfo(sql, prms);
 
                 pinf.UseShellExecute = false;
@@ -408,11 +375,9 @@ namespace rabdump
                 mp.WaitForExit();
                 int res = mp.ExitCode;
                 mp.Close();
-                if (res != 0 || mout!="")
-                    throw new ApplicationException("MySQL вернул результат "+res.ToString()+"\nerror="+mout);
-            }
-            catch(Exception ex)
-            {
+                if (res != 0 || mout != "")
+                    throw new ApplicationException("MySQL вернул результат " + res.ToString() + "\nerror=" + mout);
+            } catch (Exception ex) {
                 File.Delete(tmpFile);
                 throw ex;
             }
@@ -426,11 +391,10 @@ namespace rabdump
         /// <returns></returns>
         public static string ExtractDump(string filePath)
         {
-            _logger.InfoFormat("Extracting file: {0:s}",filePath);
+            _logger.InfoFormat("Extracting file: {0:s}", filePath);
             if (filePath.EndsWith(".dump"))
                 return filePath;
-            else
-            {
+            else {
                 string targPath = Path.GetTempPath() + Path.GetFileNameWithoutExtension(filePath) + ".dump";
                 if (File.Exists(targPath))
                     File.Delete(targPath);
@@ -445,8 +409,7 @@ namespace rabdump
                 p.WaitForExit();
                 int res = p.ExitCode;
                 p.Close();
-                if (res != 0)
-                {
+                if (res != 0) {
                     _logger.ErrorFormat("7z error: {0:s}", z7err(res));
                     return "";
                 }
@@ -465,8 +428,7 @@ namespace rabdump
         {
             _logger.InfoFormat("start Zipping file \"{0:s}\" in {1:s}", filePath, z7type ? "7z" : "zip");
             if (filePath.EndsWith(".zip") || filePath.EndsWith(".7z")) return filePath;
-            try
-            {
+            try {
                 string trgPath = Path.GetTempPath() + Path.GetFileNameWithoutExtension(filePath);
                 ProcessStartInfo inf = new ProcessStartInfo(Options.Inst.Path7Z, string.Format(" a -mx9 -p{0} \"{1}.{2:s}\" \"{1}.dump\"", ZIP_PASSWORD, trgPath, z7type ? "7z" : "zip"));
                 inf.CreateNoWindow = true;
@@ -477,15 +439,12 @@ namespace rabdump
                 p.WaitForExit();
                 int res = p.ExitCode;
                 p.Close();
-                if (res != 0)
-                {
+                if (res != 0) {
                     _logger.ErrorFormat("7z error: {0:s}", z7err(res));
                     return "";
                 }
                 return trgPath + (z7type ? ".7z" : ".zip");
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 _logger.ErrorFormat("ZipFile", ex);
                 return "";
             }
@@ -503,36 +462,31 @@ namespace rabdump
         /// Если пустая строка,значит произошла ошибка</returns>
         private static string checkDumpPath(string dumpPath)
         {
-            if (!File.Exists(dumpPath))
-            {
+            if (!File.Exists(dumpPath)) {
                 string[] files = Directory.GetFiles(Path.GetTempPath(), "*.dump");
                 if (files.Length == 1)
                     return files[0];
                 else if (files.Length == 0)
                     return "";
-                else
-                {
+                else {
                     DateTime dt = DateTime.MinValue;
                     string ourFile = "";
-                    foreach (string s in files)
-                    {
+                    foreach (string s in files) {
                         DateTime ct = File.GetCreationTime(s);
-                        if (ct > dt)
-                        {
+                        if (ct > dt) {
                             dt = ct;
                             ourFile = s;
                         }
                     }
                     return ourFile;
                 }
-            }
-            else
+            } else
                 return dumpPath;
         }
 
         public static string[] ParseDumpName(string fullName)
         {
-            string[] result = Path.GetFileName(fullName).Split('_','.');
+            string[] result = Path.GetFileName(fullName).Split('_', '.');
             for (int i = 0; i < result.Length; i++)
                 result[i] = result[i].Replace(SPACE_REPLACE, ' ');
             return result;
@@ -548,8 +502,7 @@ namespace rabdump
 
         private static string z7err(int res)
         {
-            switch (res)
-            {
+            switch (res) {
                 case 2: return "Архив поврежден";
                 default: return res.ToString();
             }
