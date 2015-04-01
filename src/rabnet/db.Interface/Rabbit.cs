@@ -51,7 +51,7 @@ namespace rabnet
         public virtual String AddressFull { get { return _rawAddress == "" ? NULL_ADDRESS : Building.FullPlaceName(_rawAddress, false, true, true); } }
         public virtual String Address { get { return _rawAddress == "" ? NULL_ADDRESS : Building.FullPlaceName(_rawAddress, false, true, false); } set { } }
         public virtual String AddressSmall { get { return _rawAddress == "" ? NULL_ADDRESS : Building.FullPlaceName(_rawAddress, true, false, false); } }
-        
+
         public virtual String FAddress(bool s_adrTier, bool s_adrDesc) { return Building.FullPlaceName(_rawAddress, false, s_adrTier, s_adrDesc); }
         public virtual String FAddress() { return FAddress(false, false); }
         public virtual string FBon(bool s_short) { return Rabbit.GetFBon(_bon, s_short); }
@@ -80,7 +80,7 @@ namespace rabnet
             //if (evtype == 2) ev = FuckType.Vyazka_ENG;
             //if (evtype == 3) ev = FuckType.Kuk_ENG;
             //return ev;
-            return Fuck.GetFuckTypeStr((FuckType)evtype,true);
+            return Fuck.GetFuckTypeStr((FuckType)evtype, true);
         }
         public static int GetEventType(String eventType)
         {
@@ -102,16 +102,13 @@ namespace rabnet
         public static String GetFBon(String bon, bool shr)
         {
             Char fbon = '5';
-            if (bon.Length == 5)
-            {
+            if (bon.Length == 5) {
                 for (int i = 1; i < bon.Length; i++)
                     if (bon[i] < fbon)
                         fbon = bon[i];
-            }
-            else if (bon.Length == 1)
+            } else if (bon.Length == 1)
                 fbon = bon[0];
-            switch (fbon)
-            {
+            switch (fbon) {
                 case '1': return "III";
                 case '2': return "II";
                 case '3': return "I";
@@ -120,9 +117,9 @@ namespace rabnet
             return (shr ? "-" : "Нет");
         }
         public static String GetFBon(char bon) { return GetFBon(bon.ToString(), false); }
-        public static String GetFBon(String bon) { return GetFBon(bon,false); }
+        public static String GetFBon(String bon) { return GetFBon(bon, false); }
         public static String GetFBon(int bon, bool shr) { return GetFBon(bon.ToString(), shr); }
-        
+
         #endregion static
 
         #region private_help
@@ -160,7 +157,7 @@ namespace rabnet
         }*/
 
         public AdultRabbit(int id, string rabname, string sex, DateTime born, string breedname, int group, String bon, string rawAddress, string notes,
-                int rate, string flags, int weight, int status, DateTime eventDate, int kidsCount, int kidsGroupCount,int kidsAge, string vacFlags)
+                int rate, string flags, int weight, int status, DateTime eventDate, int kidsCount, int kidsGroupCount, int kidsAge, string vacFlags)
             : base(id, rabname, sex, born, breedname, group, bon, rawAddress, notes)
         {
             _rate = rate;
@@ -171,7 +168,7 @@ namespace rabnet
             _kidsTotalCount = kidsCount;
             _kidsGroupCount = kidsGroupCount;
             _kidsAge = kidsAge;
-            _vacFlags = vacFlags;                     
+            _vacFlags = vacFlags;
         }
         public AdultRabbit() { }
 
@@ -184,51 +181,55 @@ namespace rabnet
         public String FGroup()
         {
             string res = "-";
-            if (Sex == Rabbit.SexType.FEMALE && _kidsTotalCount > 0)
-            {
+            if (Sex == Rabbit.SexType.FEMALE && _kidsTotalCount > 0) {
                 res = String.Format("+{0,2:d}{1:s}", _kidsTotalCount, _kidsGroupCount > 1 ? String.Format(" ({0:d})", _kidsGroupCount) : "");
-            }
-            else if (Group > 1)
+            } else if (Group > 1) {
                 res = String.Format("[{0,2:d}]", Group);
+            }
             return res;
         }
         public string FFlags()
         {
             String flg = _flags;
             string res = "";
-            if (flg[2] == '1') commaConcat(ref res, "Б");
-            if (flg[0] != '0') commaConcat(ref res, "ГП");
+            if (flg[2] == '1') {
+                commaConcat(ref res, "Б");
+            }
+            if (flg[0] != '0') {
+                commaConcat(ref res, "ГП");
+            }
             commaConcat(ref res, _vacFlags);
-            if (flg[1] != '0') res = "<" + res + ">";
+            if (flg[1] != '0') {
+                res = "<" + res + ">";
+            }
             return res;
         }
         public String FStatus(bool s_short, int s_candAge, int s_brideAge)//todo сделать enum статусы
         {
             string res = "";
-            if (Sex == Rabbit.SexType.VOID)
-            {
+            if (this.Sex == Rabbit.SexType.VOID) {
                 res = s_short ? "Бпл" : "бесполые";
-            }
-            else if (Sex == Rabbit.SexType.MALE)
-            {
-                if (_status == 2)
+            } else if (this.Sex == Rabbit.SexType.MALE) {
+                if (_status == 2) {
                     res = s_short ? "Прз" : "производитель";
-                else if (_status == 1 || Age >= s_candAge)
+                } else if (_status == 1 || this.Age >= s_candAge) {
                     res = s_short ? "Кнд" : (Group > 1 ? "кандидаты" : "кандидат");
-                else
+                } else {
                     res = s_short ? "Мал" : (Group > 1 ? "мальчики" : "мальчик");
-            }
-            else
-            {
-                if (Age < s_brideAge)
+                }
+            } else { //female
+                if (this.Age < s_brideAge) {
                     res = s_short ? "Дев" : (Group > 1 ? "Девочки" : "Девочка");
-                else
+                } else {
                     res = s_short ? "Нвс" : (Group > 1 ? "Невесты" : "Невеста");
+                }
 
-                if ((_status == 1 && _eventDate == DateTime.MinValue) || (_status == 0 && _eventDate != DateTime.MinValue))
+                if ((_status == 1 && _eventDate == DateTime.MinValue) || (_status == 0 && _eventDate != DateTime.MinValue)) { // были одни роды или беремена
                     res = s_short ? "Прк" : "Первокролка";
-                if (_status > 1 || (_status == 1))
+                }
+                if (_status > 1) {
                     res = s_short ? "Штн" : "Штатная";
+                }
             }
             return res;
         }
@@ -237,12 +238,16 @@ namespace rabnet
         public override String FSex()
         {
             String res = base.FSex();
-            if (Sex == Rabbit.SexType.FEMALE && _eventDate != DateTime.MinValue)
+            if (Sex == Rabbit.SexType.FEMALE && _eventDate != DateTime.MinValue) {
                 res = String.Format("C-{0,2:d}", Sukrol);
+            }
             return res;
         }
 
-        public String FWeight() { return _weight == -1 ? "?" : _weight.ToString(); }
+        public String FWeight()
+        {
+            return _weight == -1 ? "?" : _weight.ToString();
+        }
 
         #endregion properties
     }
@@ -269,7 +274,7 @@ namespace rabnet
         public string NewAddress = ""; //TODO два NewAddress
 
         protected DateTime _weightDate;
-        protected string _newAddress = "";        
+        protected string _newAddress = "";
         private int _okrol;
         private int _motherId;
         private int _fatherId;
@@ -277,20 +282,20 @@ namespace rabnet
         protected string _rabGenom = "";
         #endregion prop
 
-        public OneRabbit(int id, string sx, DateTime born, int rate, string flags, int nameId, int surnameId, int secnameId, string rawAddress, int group, 
-            int brd, int zone, String notes, String genom, int status, DateTime lastFuckOkrol, String eventType, DateTime eventDate, int overAllBabys, 
-            int lostBabys, String fullName, String breedName, String bon, int parent, int okrol, int weight, DateTime weightDate, int motherID, int fatherID,int exportFrom)
-            : base(id, fullName, sx, born, breedName, group, bon, rawAddress, notes, rate, flags, weight, status, eventDate, 0, -1, 1,"")
+        public OneRabbit(int id, string sx, DateTime born, int rate, string flags, int nameId, int surnameId, int secnameId, string rawAddress, int group,
+            int brd, int zone, String notes, String genom, int status, DateTime lastFuckOkrol, String eventType, DateTime eventDate, int overAllBabys,
+            int lostBabys, String fullName, String breedName, String bon, int parent, int okrol, int weight, DateTime weightDate, int motherID, int fatherID, int exportFrom)
+            : base(id, fullName, sx, born, breedName, group, bon, rawAddress, notes, rate, flags, weight, status, eventDate, 0, -1, 1, "")
         {
             this._parentID = parent;
-            _nameID = 
+            _nameID =
                 _wasNameID = nameId;
             _surnameID = surnameId;
             _secnameID = secnameId;
             _breedID = brd;
             this._zone = zone;
             _genoms = genom;
-            if (sx == "void") 
+            if (sx == "void")
                 status = Age < 50 ? 0 : 1; //TODO проверить на необходимость
             _lastFuckOkrol = lastFuckOkrol;
             _eventType = Rabbit.GetEventType(eventType);
@@ -308,7 +313,7 @@ namespace rabnet
         /// Каким окролом родился
         /// </summary>
         public int Okrol { get { return _okrol; } }
-        public DateTime WeightDate { get { return _weightDate; } set { _weightDate = value; } }    
+        public DateTime WeightDate { get { return _weightDate; } set { _weightDate = value; } }
         /// <summary>
         /// Бонитировка
         /// 0 - НЕ ИЗВЕСТНО
@@ -410,7 +415,7 @@ namespace rabnet
         {
             get { return _kidsLost; }
             set { _kidsLost = value; }
-        }        
+        }
 
         #region flags
         /// <summary>
@@ -464,14 +469,14 @@ namespace rabnet
         }
 
         public int MotherID { get { return _motherId; } set { _motherId = value; } }
-        public int FatherID { get { return _fatherId; } set { _fatherId = value; } }        
+        public int FatherID { get { return _fatherId; } set { _fatherId = value; } }
 
         public virtual string RabGenoms { get { return _rabGenom; } set { _rabGenom = value; } }
-    	
+
         /// <summary>
         /// ID клиента, на ферме которого родился кролик
         /// </summary>
-		public int BirthPlace
+        public int BirthPlace
         {
             get { return _birthPlace; }
             set
@@ -480,7 +485,7 @@ namespace rabnet
                 _birthPlace = value;
             }
         }
-}
+    }
 
     public class DeadRabbit : Rabbit
     {

@@ -7,7 +7,7 @@ using log4net;
 using rabnet;
 
 namespace db.mysql
-{   
+{
 
     public class ZootehJob_MySql : ZootehJob
     {
@@ -17,18 +17,17 @@ namespace db.mysql
             this._flt = f;
         }
 
-        public ZootehJob_MySql(Filters f,JobType type,MySqlDataReader rd)
+        public ZootehJob_MySql(Filters f, JobType type, MySqlDataReader rd)
         {
             _flt = f;
             this.Type = type;
             this.JobName = getRusJobName(type);
-            fillData(type,rd);
+            fillData(type, rd);
         }
 
         private string getRusJobName(JobType type)
         {
- 	        switch(type)
-            {
+            switch (type) {
                 case JobType.OKROL: return !_flt.safeBool(Filters.SHORT) ? "Принять окрол" : "Окрол";
                 case JobType.NEST_OUT: return !_flt.safeBool(Filters.SHORT) ? "Выдворение" : "Вдв";
                 case JobType.COUNT_KIDS: return !_flt.safeBool(Filters.SHORT) ? "Подсчет гнездовых" : "счтГнезд";
@@ -47,19 +46,18 @@ namespace db.mysql
         private void fillData(JobType type, MySqlDataReader rd)
         {
             fillCommonData(rd);
-            switch (type)
-            {
+            switch (type) {
                 case JobType.OKROL: fillOkrol(rd); break;
                 case JobType.NEST_OUT: fillVudvor(rd); break;
                 case JobType.COUNT_KIDS: fillCounts(rd); break;
-                case JobType.PRE_OKROL: break;                
+                case JobType.PRE_OKROL: break;
                 case JobType.GIRLS_OUT: //fall through
-                case JobType.BOYS_OUT: fillBoysGirlsOut(rd); break;               
+                case JobType.BOYS_OUT: fillBoysGirlsOut(rd); break;
                 case JobType.FUCK: fillFuck(rd); break;
-                case JobType.VACC: fillVacc(rd); break;               
-                case JobType.SET_NEST: fillSetNest(rd); break;                
+                case JobType.VACC: fillVacc(rd); break;
+                case JobType.SET_NEST: fillSetNest(rd); break;
                 case JobType.BOYS_BY_ONE: fillBoysByOne(rd); break;
-                case JobType.SPERM_TAKE: fillSpermTake(rd); break; 
+                case JobType.SPERM_TAKE: fillSpermTake(rd); break;
             }
         }
 
@@ -76,7 +74,7 @@ namespace db.mysql
         private void fillOkrol(MySqlDataReader rd)
         {
             Days -= _flt.safeInt(Filters.OKROL);
-            Comment = (_flt.safeInt("shr") == 0 ? "окрол " : "№") + (rd.GetInt32("r_status")+1).ToString();
+            Comment = (_flt.safeInt("shr") == 0 ? "окрол " : "№") + (rd.GetInt32("r_status") + 1).ToString();
         }
 
         private void fillVudvor(MySqlDataReader rd)
@@ -91,23 +89,23 @@ namespace db.mysql
 
         private void fillBoysByOne(MySqlDataReader rd)
         {
-            Comment = "кол-во:" + rd.GetString("r_group");           
+            Comment = "кол-во:" + rd.GetString("r_group");
         }
 
         private void fillBoysGirlsOut(MySqlDataReader rd)
         {
             int sub = _flt.safeInt("type") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT);
-            Days = rd.GetInt32("age") - sub ;
+            Days = rd.GetInt32("age") - sub;
         }
 
         private void fillCounts(MySqlDataReader rd)
-        {           
-            int tmp = !rd.IsDBNull(rd.GetOrdinal("suckGroups")) ? rd.GetInt32("suckGroups"):0;
+        {
+            int tmp = !rd.IsDBNull(rd.GetOrdinal("suckGroups")) ? rd.GetInt32("suckGroups") : 0;
             this.ID2 = tmp;
             Comment = String.Format("{0:s}{1:2,d}{2:s}",
                 (_flt.safeInt(Filters.SHORT) == 0 ? "количество: " : "+"),
                 rd.GetString("suckers"),
-                tmp>1 ? String.Format(" ({0:d})",tmp):"");
+                tmp > 1 ? String.Format(" ({0:d})", tmp) : "");
         }
 
         private void fillFuck(MySqlDataReader rd)
@@ -119,8 +117,7 @@ namespace db.mysql
             int group = rd.GetInt32("r_group");
             if (status == 0)
                 srok = this.RabAge - _flt.safeInt("brideAge");
-            else if (status > 0)
-            {
+            else if (status > 0) {
                 if (suck > 0)
                     srok = fromok - (status == 1 ? _flt.safeInt("ffuck") : _flt.safeInt("sfuck"));
                 else srok = fromok;
@@ -129,14 +126,13 @@ namespace db.mysql
             Days = srok; //если в common не определится срок и произойдет ошибка
             JobName = status == 0 ? "Случка" : "Вязка";
             Comment = _flt.safeInt(Filters.SHORT) == 1 ? "Нвс" : "Невеста";
-            if(group>1)
+            if (group > 1)
                 Comment += String.Format(" [{0:d}]", group);
             if (status > 0)
                 Comment = _flt.safeInt(Filters.SHORT) == 1 ? "Прк" : "Первокролка";
             if (status > 1)
                 Comment = _flt.safeInt(Filters.SHORT) == 1 ? "Штн" : "Штатная";
-            if (!rd.IsDBNull(rd.GetOrdinal("lsrok")))
-            {
+            if (!rd.IsDBNull(rd.GetOrdinal("lsrok"))) {
                 Comment += "  {Стим." + rd.GetString("lsrok") + "дн.}"; //че-то String.Format ругается  
                 Flag2 = -1;
             }
@@ -150,25 +146,23 @@ namespace db.mysql
             int children = rd.IsDBNull(rd.GetOrdinal("children")) ? 0 : rd.GetInt32("children");
             int sukr = rd.GetInt32("sukr");
             Comment = "C-" + sukr.ToString();
-            if (children > 0)
-            {
+            if (children > 0) {
                 Days = sukr - _flt.safeInt("cnest");
                 Comment += " " + (_flt.safeInt(Filters.SHORT) == 0 ? " подсосных" : "+") + children.ToString();
-            }
-            else
-                Days=sukr - _flt.safeInt("nest");
-            
+            } else
+                Days = sukr - _flt.safeInt("nest");
+
         }
         private void fillVacc(MySqlDataReader rd)
         {
             ID2 = rd.GetInt32("v_id");
-            Comment = "\"" + rd.GetString("v_name")+"\"  [" + rd.GetString("r_group") + "]";           
+            Comment = "\"" + rd.GetString("v_name") + "\"  [" + rd.GetString("r_group") + "]";
         }
 
 
         private void fillSpermTake(MySqlDataReader rd)
         {
-            
+
         }
 
         /// <summary>
@@ -182,8 +176,7 @@ namespace db.mysql
             if (partners == "") return "";
             string result = "";
             string[] fuckers = partners.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string s in fuckers)
-            {
+            foreach (string s in fuckers) {
                 string[] set = s.Split(new char[] { '&' });
                 result += String.Format(" {0:s} [{1:s}],", set[0].Trim(), Building.FullPlaceName(set[1]));
             }
@@ -192,13 +185,13 @@ namespace db.mysql
             return result;
         }
     }
- 
+
     class ZooTehGetter
     {
         private MySqlConnection sql;
         protected static ILog _logger = log4net.LogManager.GetLogger(typeof(RabNetDataGetterBase));
         private Filters _flt;
-        public ZooTehGetter(MySqlConnection sql,Filters f)
+        public ZooTehGetter(MySqlConnection sql, Filters f)
         {
             this.sql = sql;
             _flt = f;
@@ -207,7 +200,7 @@ namespace db.mysql
         #region helpers
         public MySqlDataReader reader(String qry)
         {
-            MySqlCommand cmd=new MySqlCommand(qry,sql);
+            MySqlCommand cmd = new MySqlCommand(qry, sql);
             return cmd.ExecuteReader();
         }
 
@@ -222,7 +215,7 @@ namespace db.mysql
 
         public String brd(String fld)
         {
-            return String.Format("(SELECT {0:s} FROM breeds WHERE b_id={1:s}) breed", _flt.safeInt("shr") == 1 ? "b_short_name" : "b_name",fld);
+            return String.Format("(SELECT {0:s} FROM breeds WHERE b_id={1:s}) breed", _flt.safeInt("shr") == 1 ? "b_short_name" : "b_name", fld);
         }
         public String brd()
         {
@@ -234,34 +227,28 @@ namespace db.mysql
         {
             List<ZootehJob_MySql> res = new List<ZootehJob_MySql>();
             string query = getQuery(type);
-            if (query == "")
-            {
+            if (query == "") {
                 _logger.Warn("unknown JobType");
                 return res.ToArray();
-            }            
+            }
             MySqlDataReader rd = null;
 #if !DEBUG
-            try
-            {
+            try {
 #else
                 _logger.Debug(type.ToString() + " query: " + query);
 #endif
-                MySqlCommand cmd = new MySqlCommand(query,sql);
+                MySqlCommand cmd = new MySqlCommand(query, sql);
                 rd = cmd.ExecuteReader();
                 while (rd.Read())
                     res.Add(new ZootehJob_MySql(_flt, type, rd));
                 rd.Close();
 #if !DEBUG
-            }
-            catch(Exception err)
-            {
+            } catch (Exception err) {
                 _logger.Error(err.Message);
-            }
-            finally 
-            { 
+            } finally {
 #endif
-                if(rd!=null && !rd.IsClosed)
-                    rd.Close(); 
+                if (rd != null && !rd.IsClosed)
+                    rd.Close();
 #if !DEBUG
             }
 #endif
@@ -270,8 +257,7 @@ namespace db.mysql
 
         private string getQuery(JobType type)
         {
-            switch (type)
-            {
+            switch (type) {
                 case JobType.OKROL: return qOkrol();
                 case JobType.NEST_OUT: return qVudvod();
                 case JobType.COUNT_KIDS: return qCounts();
@@ -289,7 +275,7 @@ namespace db.mysql
                 case JobType.SPERM_TAKE: return qSpermTake();
                 default: return "";
             }
-        }       
+        }
 
         private string qOkrol()
         {
@@ -324,14 +310,14 @@ WHERE
     r_sex='female' AND 
     (TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol))>={2:d} AND
     ((t_busy1=r_id AND t_nest like '1%') OR (t_busy2=r_id AND t_nest like '%1' AND t_type='dfemale'))
-ORDER BY srok DESC,0+LEFT(place,LOCATE(',',place)) ASC;", getnm(),brd(),
+ORDER BY srok DESC,0+LEFT(place,LOCATE(',',place)) ASC;", getnm(), brd(),
                 _flt.safeInt(Filters.VUDVOR),
                 _flt.safeBool(Filters.NEST_OUT_IF_SUKROL) ? String.Format("OR (r_event_date IS NOT NULL AND (to_days(NOW())-to_days(r_event_date))<{0:d})", _flt.safeInt("nest")) : "");
         }
 
         private string qCounts()
         {
-            const int COUNT_KIDS_LOG=17;
+            const int COUNT_KIDS_LOG = 17;
             return String.Format(@"SELECT 
     TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d} srok,
     prnt AS r_id,
@@ -351,9 +337,9 @@ WHERE r_parent<>0 AND (TO_DAYS(NOW())-TO_DAYS(r_born)>={0:d}{1:s})
                             AND DATE(l_date)>=DATE( NOW()- INTERVAL (TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d}) DAY) )
                     )
 GROUP BY r_parent
-ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", 
-                _flt.safeInt("days"), 
-                (_flt.safeInt("next") == -1 ? "" : String.Format(" AND TO_DAYS(NOW())-TO_DAYS(r_born)<{0:d}", _flt.safeInt("next"))), 
+ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
+                _flt.safeInt("days"),
+                (_flt.safeInt("next") == -1 ? "" : String.Format(" AND TO_DAYS(NOW())-TO_DAYS(r_born)<{0:d}", _flt.safeInt("next"))),
                 getnm(),
                 COUNT_KIDS_LOG,
                 brd("(SELECT r7.r_breed FROM rabbits r7 WHERE r7.r_id=r.r_parent)"));
@@ -390,22 +376,32 @@ ORDER BY age DESC,0+LEFT(place,LOCATE(',',place)) ASC;",
 
         private string qFuck()
         {   ///todo необходимо получать партнеров на уровне выше отдельным запросом и сравнивать гетерозис и инбридинг программно.
-            return String.Format( 
-            (_flt.safeBool(Filters.FIND_PARTNERS) ? @"SET group_concat_max_len=15000; 
+
+            string query = "";
+
+            if (_flt.safeBool(Filters.FIND_PARTNERS)) {
+                query += String.Format(@"SET group_concat_max_len = 15000; 
 CREATE TEMPORARY TABLE tPartn SELECT rabname(r_id,1) pname, 
 	rabplace(r_id) pplace,
 	r_breed pbreed,
 	r_genesis pgens
 FROM rabbits
-WHERE r_sex='male' AND r_status>0 AND (r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol)>={3:d});":"")+
-  
+WHERE r_sex='male' 
+    AND r_status>0 
+    AND (r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol)>={0:d});", _flt.safeInt(Filters.MALE_REST)) + Environment.NewLine;
+            }
+
+            query += String.Format(
 @"CREATE TEMPORARY TABLE aaa 
-    SELECT r.r_id,rabname(r_id,{8:s}) name,rabplace(r_id) place,TO_DAYS(NOW())-TO_DAYS(r_born) age,
+    SELECT 
+        r.r_id,
+        rabname(r_id,{8:s}) name, 
+        rabplace(r_id) place, 
+        TO_DAYS(NOW())-TO_DAYS(r_born) age,
         coalesce((SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=r.r_id),null,0) suckers,
         r_status,
-        TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol) fromokrol," + (_flt.safeBool(Filters.FIND_PARTNERS) ? @"
-        (SELECT GROUP_CONCAT( CONCAT(pname,'&', pplace) ORDER BY pname SEPARATOR '|') FROM tPartn
-            {9:s} {4:s}{5:s})" : "''") + @" partners,
+        DATEDIFF(NOW(), r_last_fuck_okrol) fromokrol,
+        " + (_flt.safeBool(Filters.FIND_PARTNERS) ? @"(SELECT GROUP_CONCAT( CONCAT(pname,'&', pplace) ORDER BY pname SEPARATOR '|') FROM tPartn {9:s} {4:s}{5:s})" : "''") + @" partners,
         r_group,
         (SELECT {6:s} FROM breeds WHERE b_id=r_breed) breed, 
         0 srok,
@@ -421,27 +417,35 @@ WHERE r_sex='male' AND r_status>0 AND (r_last_fuck_okrol IS NULL OR TO_DAYS(NOW(
         ) vc ON lrid=r.r_id AND lsrok<=ldura
     WHERE Substr(r_flags,1,1)='0'       #не брак
         AND Substr(r_flags,3,1)='0'     #не готовая продукция
-        AND r_sex='female' AND r_event_date IS NULL AND r_status{7:s};
+        AND r_sex='female' 
+        AND r_event_date IS NULL        #не сукрольна
+        AND r_status{7:s};
 		
 SELECT * FROM aaa 
 WHERE (lsrok IS NULL OR lsrok=lshow)
-    AND (age>{0:d} AND r_status=0                           #невеста
+    AND (
+        age>{0:d} AND r_status=0                            #невеста
         OR (r_status=1 AND (suckers=0 OR fromokrol>={1:d})) #первокролка
         OR (r_status>1 AND (suckers=0 OR fromokrol>={2:d})) #штатная
     )
 ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;
 
 DROP TABLE IF EXISTS tPartn; 
-DROP TABLE IF EXISTS aaa;", 
-        _flt.safeInt(Filters.MAKE_BRIDE), _flt.safeInt(Filters.FIRST_FUCK), _flt.safeInt(Filters.STATE_FUCK), 
-    
-        _flt.safeInt(Filters.MALE_REST),//3
-        (_flt.safeBool(Filters.HETEROSIS) ? "" : String.Format("pbreed=r.r_breed")),//4
-        (_flt.safeBool(Filters.INBREEDING) ? "" : String.Format("{0:s}(SELECT COUNT(g_genom) FROM genoms WHERE g_id=r.r_genesis AND g_genom IN (SELECT g2.g_genom FROM genoms g2 WHERE g2.g_id=pgens))=0", _flt.safeBool(Filters.HETEROSIS) ?"": " AND ")),
-    
-        (_flt.safeInt(Filters.SHORT) == 0 ? "b_name" : "b_short_name"),//6 
-        (_flt.safeInt(Filters.TYPE) == 1 ? ">0" : "=0"), getnm(1),
-        !_flt.safeBool(Filters.HETEROSIS) || !_flt.safeBool(Filters.INBREEDING)? "WHERE" : "");
+DROP TABLE IF EXISTS aaa;",
+                _flt.safeInt(Filters.MAKE_BRIDE), 
+                _flt.safeInt(Filters.FIRST_FUCK), 
+                _flt.safeInt(Filters.STATE_FUCK),
+                _flt.safeInt(Filters.MALE_REST), //3
+                (_flt.safeBool(Filters.HETEROSIS) ? "" : String.Format("pbreed=r.r_breed")),//4
+                (_flt.safeBool(Filters.INBREEDING) ? "" : String.Format("{0:s}(SELECT COUNT(g_genom) FROM genoms WHERE g_id=r.r_genesis AND g_genom IN (SELECT g2.g_genom FROM genoms g2 WHERE g2.g_id=pgens))=0", _flt.safeBool(Filters.HETEROSIS) ? "" : " AND ")),
+
+                (_flt.safeInt(Filters.SHORT) == 0 ? "b_name" : "b_short_name"),//6 
+                (_flt.safeInt(Filters.TYPE) == 1 ? ">0" : "=0"), 
+                getnm(1),
+                !_flt.safeBool(Filters.HETEROSIS) || !_flt.safeBool(Filters.INBREEDING) ? "WHERE" : ""
+            );
+
+            return query;
         }
 
         private string qVacc()
