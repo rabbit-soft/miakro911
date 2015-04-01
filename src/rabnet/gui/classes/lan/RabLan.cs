@@ -1,5 +1,5 @@
 ﻿#if DEBUG
-    //#define NOCATCH
+//#define NOCATCH
 #endif
 using System;
 using System.Collections.Generic;
@@ -17,13 +17,13 @@ namespace rabnet
     {
         public RabLanException(string message) : base(message) { }
     }
-    
-    public delegate void RabLanExceptionHandler(Exception exc);
-    public delegate void RabLanHandler();   
 
-    abstract class RabLan:IDisposable
+    public delegate void RabLanExceptionHandler(Exception exc);
+    public delegate void RabLanHandler();
+
+    abstract class RabLan : IDisposable
     {
-        protected enum TcpStreamDataType { Message,ErrorMessage,Serialize,File}
+        protected enum TcpStreamDataType { Message, ErrorMessage, Serialize, File }
 
         protected static readonly ILog _logger = LogManager.GetLogger(typeof(RabLan));
         protected const string WHERE_IS_RD = "who_is_rabdump";
@@ -31,7 +31,7 @@ namespace rabnet
         protected const string GET_UP_FILES_LIST = "GET_UP_FILES_LIST";
         protected const string GET_UP_FILE = "GET_UP_FILE";
         protected const char MSG_DELIMITER = '|';
-        protected const int UPDATE_FILES_PORT = 9052;     
+        protected const int UPDATE_FILES_PORT = 9052;
         /// <summary>
         /// Сколько первых байт TCP посылки хранят размер передаваеммых данных.
         /// <remarks>При получении TCP посылки нелбхдимо прочитать первые NET_STREAM_PACK_LENGHT байт. 
@@ -40,7 +40,7 @@ namespace rabnet
         /// </summary>
         protected const int NET_STREAM_PACK_LENGHT = 8;
         protected const int NET_STREAM_DATATYPE_LENGHT = 1;
-        protected const int DATATYPE_OFFSET = NET_STREAM_PACK_LENGHT + NET_STREAM_DATATYPE_LENGHT; 
+        protected const int DATATYPE_OFFSET = NET_STREAM_PACK_LENGHT + NET_STREAM_DATATYPE_LENGHT;
 
         private Thread _udpListenThread;
         UdpClient _udpListener;
@@ -49,7 +49,7 @@ namespace rabnet
 
         public event RabLanExceptionHandler OnException;
 
-        protected abstract void onUdpMessage(string message,IPEndPoint ep);
+        protected abstract void onUdpMessage(string message, IPEndPoint ep);
 
         protected void startUdpListen()
         {
@@ -58,18 +58,15 @@ namespace rabnet
             _udpListenThread.Start();
         }
 
-        protected void sendUdpMessage(string msg,IPEndPoint addr)
+        protected void sendUdpMessage(string msg, IPEndPoint addr)
         {
-            try
-            {
+            try {
                 byte[] sendBuff = Encoding.UTF8.GetBytes(msg);
                 UdpClient udpSender = new UdpClient();
                 addr.Port = MSG_PORT;
                 udpSender.Send(sendBuff, sendBuff.Length, addr);
-            }
-            catch (Exception exc)
-            {
-                _logger.Error(String.Format("fail to send msg:'{0:s}' to {1:s}",msg,addr.ToString()),exc);
+            } catch (Exception exc) {
+                _logger.Error(String.Format("fail to send msg:'{0:s}' to {1:s}", msg, addr.ToString()), exc);
             }
         }
 
@@ -81,37 +78,39 @@ namespace rabnet
 
         protected void udpListenThread()
         {
-            if (Helper.CheckUdpPortBinded(MSG_PORT))
-            {
+            if (Helper.CheckUdpPortBinded(MSG_PORT)) {
                 _logger.InfoFormat("UDP Port {0:d} already listen", MSG_PORT);
                 return;
             }
-            IPEndPoint ep = new IPEndPoint(IPAddress.Any, MSG_PORT);            
+            IPEndPoint ep = new IPEndPoint(IPAddress.Any, MSG_PORT);
             _udpListener = new UdpClient(ep);
-            while (true)
-            {               
+            while (true) {
                 IPEndPoint epSender = null;
                 byte[] recBytes = _udpListener.Receive(ref epSender);
                 string msg = Encoding.UTF8.GetString(recBytes);
                 _logger.DebugFormat("income message: '{0}'. from: ", msg, ep.Address);
-                if (isMyIp(epSender)) continue;
-                onUdpMessage(msg,epSender);
+                if (isMyIp(epSender)) {
+                    continue;
+                }
+                onUdpMessage(msg, epSender);
             }
         }
-       
+
         private bool isMyIp(IPEndPoint ep)
         {
             string hostName = Dns.GetHostName();
             IPAddress[] adrs = Dns.GetHostAddresses(hostName);
-            foreach (IPAddress a in adrs)
-                if (a.Equals(ep.Address))
+            foreach (IPAddress a in adrs) {
+                if (a.Equals(ep.Address)) {
                     return true;
+                }
+            }
             return false;
         }
 
         public virtual void Dispose()
         {
-            if(_udpListener!=null)
+            if (_udpListener != null)
                 _udpListener.Close();
             if (_udpListenThread != null)
                 _udpListenThread.Abort();
@@ -120,11 +119,10 @@ namespace rabnet
 
         protected void readWaiter(object obj) ///todo этот метод надо слить с RabNetLan.sendTcpMessage
         {
-            if(!(obj is TcpClient))return;
+            if (!(obj is TcpClient)) return;
 
             NetworkStream netStream = (obj as TcpClient).GetStream();
-            try
-            {
+            try {
                 Stream result = new MemoryStream();
                 byte[] buffer = new byte[1];
 
@@ -133,10 +131,10 @@ namespace rabnet
                 TcpStreamDataType dtype;
                 int offset = 0;
 
-                do
-                {
-                    if (offset == 0)
+                do {
+                    if (offset == 0) {
                         buffer = new byte[65536];
+                    }
                     int len = (lenght < 0 || buffer.Length < (lenght - totalRecBytesCount)) ? buffer.Length : (int)(lenght - totalRecBytesCount);
                     IAsyncResult asyncResult = netStream.BeginRead(buffer, offset, (len - offset), null, null);
 
@@ -145,10 +143,8 @@ namespace rabnet
                     if (!good) continue;
 
                     int recBytesCount = netStream.EndRead(asyncResult) + offset;
-                    if (lenght == -1)
-                    {
-                        if (recBytesCount < DATATYPE_OFFSET)
-                        {
+                    if (lenght == -1) {
+                        if (recBytesCount < DATATYPE_OFFSET) {
                             offset = recBytesCount;
                             continue;
                         }
@@ -161,47 +157,42 @@ namespace rabnet
                     result.Write(buffer, 0, recBytesCount);
                     totalRecBytesCount += recBytesCount;
                 }
-                while (lenght != totalRecBytesCount);
+                while (lenght != totalRecBytesCount); //todo что это ?
 
                 buffer = new byte[result.Length];
                 result.Position = 0;
                 result.Read(buffer, 0, buffer.Length);
                 sendAnswer(netStream, buffer);
-            }
 #if !NOCATCH
-            catch (Exception exc)
-            {
+            } catch (Exception exc) {
                 _logger.Error(exc);
                 if (OnException != null)
                     OnException(exc);
-                if (!(exc is SocketException || exc.InnerException is SocketException))
-                {
+                if (!(exc is SocketException || exc.InnerException is SocketException)) {
                     byte[] errMsg = makeSendBuffer(exc.Message, true);
                     netStream.Write(errMsg, 0, errMsg.Length);
                 }
-            }
 #endif
-            finally
-            {
+            } finally {
                 netStream.Close();
             }
         }
 
         protected virtual void sendAnswer(NetworkStream netStream, byte[] buffer) { }
 
-        protected byte[] makeSendBuffer(string message,bool error)
+        protected byte[] makeSendBuffer(string message, bool error)
         {
             byte[] buff = Encoding.UTF8.GetBytes(message);
-            return makeSendBuffer(buff, error? TcpStreamDataType.ErrorMessage:TcpStreamDataType.Message);
+            return makeSendBuffer(buff, error ? TcpStreamDataType.ErrorMessage : TcpStreamDataType.Message);
         }
-        protected byte[] makeSendBuffer(string message) 
+        protected byte[] makeSendBuffer(string message)
         {
-            return makeSendBuffer( message, false);
+            return makeSendBuffer(message, false);
         }
 
         protected byte[] makeSendBuffer(byte[] buff, TcpStreamDataType dtype)
         {
-            byte[] result = new byte[buff.Length + NET_STREAM_PACK_LENGHT+NET_STREAM_DATATYPE_LENGHT];
+            byte[] result = new byte[buff.Length + NET_STREAM_PACK_LENGHT + NET_STREAM_DATATYPE_LENGHT];
             byte[] length = BitConverter.GetBytes((long)buff.Length);
             ///записываем длинну данных
             Array.Copy(length, result, NET_STREAM_PACK_LENGHT);
@@ -212,8 +203,8 @@ namespace rabnet
             return result;
         }
 
-        protected byte[] parseSendBuffer(byte[] buffer,ref int recCount, out long lenght,out TcpStreamDataType dtp)
-        {           
+        protected byte[] parseSendBuffer(byte[] buffer, ref int recCount, out long lenght, out TcpStreamDataType dtp)
+        {
             lenght = BitConverter.ToInt64(buffer, 0);
             byte[] result = new byte[lenght];
             dtp = (TcpStreamDataType)buffer[NET_STREAM_PACK_LENGHT];

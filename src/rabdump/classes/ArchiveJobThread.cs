@@ -369,14 +369,15 @@ namespace rabdump
                 rd.Close();
                 //byte[] b2 = buf;// Encoding.Convert(Encoding.UTF8, Encoding.ASCII, buf);
                 //mp.StandardInput.BaseStream.Write(b2, 0, b2.Length);
-                mp.StandardInput.BaseStream.Write(buf, 0, buf.Length);///throws "канал был закрыт"
+                mp.StandardInput.BaseStream.Write(buf, 0, buf.Length);///todo throws "канал был закрыт"
                 mp.StandardInput.Close();
                 String mout = mp.StandardError.ReadToEnd();
                 mp.WaitForExit();
                 int res = mp.ExitCode;
                 mp.Close();
-                if (res != 0 || mout != "")
-                    throw new ApplicationException("MySQL вернул результат " + res.ToString() + "\nerror=" + mout);
+                if (res != 0 || mout != "") {
+                    throw new ApplicationException("MySQL вернул результат " + res.ToString() + Environment.NewLine + "error=" + mout);
+                }
             } catch (Exception ex) {
                 File.Delete(tmpFile);
                 throw ex;
@@ -392,9 +393,9 @@ namespace rabdump
         public static string ExtractDump(string filePath)
         {
             _logger.InfoFormat("Extracting file: {0:s}", filePath);
-            if (filePath.EndsWith(".dump"))
+            if (filePath.EndsWith(".dump")) {
                 return filePath;
-            else {
+            } else {
                 string targPath = Path.GetTempPath() + Path.GetFileNameWithoutExtension(filePath) + ".dump";
                 if (File.Exists(targPath))
                     File.Delete(targPath);
