@@ -46,7 +46,15 @@ namespace db.mysql
         r_breed,
         Coalesce(Group_concat('v',{3}),'') vaccines
     FROM rabbits r 
-        LEFT JOIN (SELECT r_parent prnt,SUM(r2.r_group) suckers,COUNT(*) suckGroups, AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) aage FROM rabbits r2 GROUP BY r_parent) sc ON prnt=r.r_id
+        LEFT JOIN (
+            SELECT r_parent prnt, 
+                SUM(r2.r_group) suckers,
+                COUNT(*) suckGroups, 
+                #AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) aage 
+                GROUP_CONCAT(DATEDIFF(NOW(), r2.r_born) ORDER BY r2.r_born DESC SEPARATOR '|') aage
+            FROM rabbits r2             
+            GROUP BY r_parent            
+        ) sc ON prnt=r.r_id
         LEFT JOIN (
 	        SELECT rv.v_id,rv.r_id rv_id, Max(rv.`date`) FROM rab_vac rv
 	        INNER JOIN vaccines v1 ON v1.v_id=rv.v_id

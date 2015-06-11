@@ -34,8 +34,9 @@ namespace db.mysql
                 rd.IsDBNull(rd.GetOrdinal("r_event_date")) ? DateTime.MinValue : rd.GetDateTime("r_event_date"),
                 rd.IsDBNull(rd.GetOrdinal("suckers")) ? 0 : rd.GetInt32("suckers"),
                 rd.IsDBNull(rd.GetOrdinal("suckGroups")) ? 0 : rd.GetInt32("suckGroups"),
-                rd.IsDBNull(rd.GetOrdinal("aage")) ? 0 : rd.GetInt32("aage"),
-                rd.GetString("vaccines"));
+                rd.IsDBNull(rd.GetOrdinal("aage")) ? "" : rd.GetString("aage"),
+                rd.GetString("vaccines")
+            );
         }
 
         internal static OneRabbit fillOneRabbit(MySqlDataReader rd)

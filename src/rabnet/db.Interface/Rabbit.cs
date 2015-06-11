@@ -146,7 +146,7 @@ namespace rabnet
         protected int _weight = 0;
         protected int _status = 0;
         protected DateTime _eventDate;
-        private int _kidsAge = -1;
+        private string[] _kidsAge;
         private int _kidsTotalCount = 0;
         private int _kidsGroupCount = 1;
         private string _vacFlags = "";
@@ -157,7 +157,7 @@ namespace rabnet
         }*/
 
         public AdultRabbit(int id, string rabname, string sex, DateTime born, string breedname, int group, String bon, string rawAddress, string notes,
-                int rate, string flags, int weight, int status, DateTime eventDate, int kidsCount, int kidsGroupCount, int kidsAge, string vacFlags)
+                int rate, string flags, int weight, int status, DateTime eventDate, int kidsCount, int kidsGroupCount, string kidsAge, string vacFlags)
             : base(id, rabname, sex, born, breedname, group, bon, rawAddress, notes)
         {
             _rate = rate;
@@ -167,7 +167,7 @@ namespace rabnet
             _eventDate = eventDate;
             _kidsTotalCount = kidsCount;
             _kidsGroupCount = kidsGroupCount;
-            _kidsAge = kidsAge;
+            _kidsAge = kidsAge.Split('|');
             _vacFlags = vacFlags;
         }
         public AdultRabbit() { }
@@ -176,7 +176,7 @@ namespace rabnet
         public int Rate { get { return _rate; } set { _rate = value; } }
         public int Sukrol { get { return DateTime.Now.Subtract(_eventDate.Date).Days; } }
         public virtual int KidsCount { get { return _kidsTotalCount; } }
-        public virtual int KidsAge { get { return _kidsTotalCount > 0 ? _kidsAge : -1; } }
+        public virtual string KidsAge { get { return _kidsTotalCount > 0 ? String.Join(" | ", _kidsAge) : ""; } }
 
         public String FGroup()
         {
@@ -285,7 +285,7 @@ namespace rabnet
         public OneRabbit(int id, string sx, DateTime born, int rate, string flags, int nameId, int surnameId, int secnameId, string rawAddress, int group,
             int brd, int zone, String notes, String genom, int status, DateTime lastFuckOkrol, String eventType, DateTime eventDate, int overAllBabys,
             int lostBabys, String fullName, String breedName, String bon, int parent, int okrol, int weight, DateTime weightDate, int motherID, int fatherID, int exportFrom)
-            : base(id, fullName, sx, born, breedName, group, bon, rawAddress, notes, rate, flags, weight, status, eventDate, 0, -1, 1, "")
+            : base(id, fullName, sx, born, breedName, group, bon, rawAddress, notes, rate, flags, weight, status, eventDate, 0, -1, "", "")
         {
             this._parentID = parent;
             _nameID =

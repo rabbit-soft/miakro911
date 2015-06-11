@@ -66,7 +66,7 @@ namespace rabnet.panels
             li.SubItems.Add(rab.FStatus(_runF.safeBool(Filters.SHORT), _runF.safeInt(Filters.MAKE_CANDIDATE), _runF.safeInt(Filters.MAKE_BRIDE)));
             li.SubItems.Add(rab.FFlags());
             li.SubItems.Add(rab.FGroup());
-            li.SubItems.Add(rab.KidsAge == -1 ? "" : rab.KidsAge.ToString());
+            li.SubItems.Add(rab.KidsAge.ToString());
             li.SubItems.Add(rab.Rate.ToString());
             li.SubItems.Add(rab.FBon(_runF.safeBool(Filters.SHORT)));
             li.SubItems.Add(rab.FAddress(_runF.safeBool(Filters.SHOW_BLD_TIERS), _runF.safeBool(Filters.SHOW_BLD_DESCR)));
