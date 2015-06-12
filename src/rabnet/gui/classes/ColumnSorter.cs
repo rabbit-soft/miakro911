@@ -22,7 +22,7 @@ namespace rabnet
         int _selItem = 0;
         Options.OPT_ID option = Options.OPT_ID.NONE;
 
-        public ListViewColumnSorter(ListView lv,int[] intsorts,Options.OPT_ID op)
+        public ListViewColumnSorter(ListView lv, int[] intsorts, Options.OPT_ID op)
         {
             ColumnToSort = 0;
             OrderOfSort = SortOrder.None;
@@ -101,10 +101,17 @@ namespace rabnet
                     if (_intSorts[i] == ColumnToSort)
                     {
                         int i1, i2;
-                        if (listviewX.SubItems[ColumnToSort].Text == "-" || listviewX.SubItems[ColumnToSort].Text == "") i1 = -1;
-                        else i1 = int.Parse(listviewX.SubItems[ColumnToSort].Text);
-                        if (listviewY.SubItems[ColumnToSort].Text == "-" || listviewY.SubItems[ColumnToSort].Text == "") i2 = -1;
-                        else i2 = int.Parse(listviewY.SubItems[ColumnToSort].Text);
+                        if (listviewX.SubItems[ColumnToSort].Text == "-" || listviewX.SubItems[ColumnToSort].Text == "") {
+                            i1 = -1;
+                        } else {
+                            i1 = int.Parse(listviewX.SubItems[ColumnToSort].Text);
+                        }
+
+                        if (listviewY.SubItems[ColumnToSort].Text == "-" || listviewY.SubItems[ColumnToSort].Text == "") {
+                            i2 = -1;
+                        } else {
+                            i2 = int.Parse(listviewY.SubItems[ColumnToSort].Text);
+                        }
                         compareResult = i1 - i2;
                         if (OrderOfSort == SortOrder.Ascending)
                         {

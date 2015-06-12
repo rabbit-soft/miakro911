@@ -28,7 +28,7 @@ namespace rabnet.panels
         public RabbitsPanel(RabStatusBar rsb)
             : base(rsb, new RabbitsFilter())
         {
-            _colSort = new ListViewColumnSorter(listView1, new int[] { 2, 8, 9 }, Options.OPT_ID.RAB_LIST);
+            _colSort = new ListViewColumnSorter(listView1, new int[] { 2, /*8,*/ 9 }, Options.OPT_ID.RAB_LIST);
             listView1.ListViewItemSorter = null;
             miGenetic.Enabled = GeneticsManagerSafe.GeneticsModuleTest();
             MakeExcel = new RSBEventHandler(this.makeExcel);
@@ -249,10 +249,12 @@ namespace rabnet.panels
             string sx = "";
             for (int i = 0; i < listView1.SelectedItems.Count && sx.Length < 2; i++) {
                 String s = listView1.SelectedItems[i].SubItems[SEXFIELD].Text;
-                if (s[0] == 'C'/*rus*/)
+                if (s[0] == 'C'/*rus*/) {
                     s = "S";
-                if (!sx.Contains(s))
+                }
+                if (!sx.Contains(s)) {
                     sx += s;
+                }
             }
             int isx = 3;
             if (sx == "?") isx = 0;

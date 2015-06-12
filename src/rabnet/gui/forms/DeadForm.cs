@@ -20,7 +20,7 @@ namespace rabnet.forms
             InitializeComponent();
             fp = new DeadFilter();
             rsb.FilterPanel = fp;
-            cs = new ListViewColumnSorter(listView1, new int[] { 2, 3 },Options.OPT_ID.DEAD_LIST);
+            cs = new ListViewColumnSorter(listView1, new int[] { 2, 3 }, Options.OPT_ID.DEAD_LIST);
             FormSizeSaver.Append(this);
         }
 
