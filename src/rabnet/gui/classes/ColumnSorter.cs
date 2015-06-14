@@ -86,7 +86,7 @@ namespace rabnet
         public int Compare(object x, object y)
         {
             try {
-                bool isInt = false;
+                bool alreadyCompared = false;
                 int compareResult = 0;
                 string listViewVal_X = (x as ListViewItem).SubItems[ColumnToSort].Text,
                        listViewVal_Y = (y as ListViewItem).SubItems[ColumnToSort].Text;
@@ -94,7 +94,7 @@ namespace rabnet
 
                 for (int i = 0; i < _intSorts.Length; i++) {
                     if (_intSorts[i] == ColumnToSort) {
-                        isInt = true;
+                        alreadyCompared = true;
                         int i1 = this.parseIntValue(listViewVal_X), 
                             i2 = this.parseIntValue(listViewVal_Y);
 
@@ -103,7 +103,7 @@ namespace rabnet
                     }
                 }
 
-                if (!isInt) {
+                if (!alreadyCompared) {
                     DateTime dt1, dt2;
                     if (DateTime.TryParse(listViewVal_X, out dt1) && DateTime.TryParse(listViewVal_Y, out dt2)) {
                         compareResult = DateTime.Compare(dt1, dt2);
