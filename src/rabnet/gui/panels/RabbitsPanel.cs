@@ -28,7 +28,7 @@ namespace rabnet.panels
         public RabbitsPanel(RabStatusBar rsb)
             : base(rsb, new RabbitsFilter())
         {
-            _colSort = new ListViewColumnSorter(listView1, new int[] { 2, /*8,*/ 9 }, Options.OPT_ID.RAB_LIST);
+            _colSort = new ListViewColumnSorter(listView1, new int[] { 2, 8, 9 }, Options.OPT_ID.RAB_LIST);
             listView1.ListViewItemSorter = null;
             miGenetic.Enabled = GeneticsManagerSafe.GeneticsModuleTest();
             MakeExcel = new RSBEventHandler(this.makeExcel);

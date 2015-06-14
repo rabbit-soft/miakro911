@@ -31,11 +31,10 @@ namespace rabnet
             _listView = lv;
             lv.ListViewItemSorter = this;
             option = op;
-			for (int i = 0; i < lv.Columns.Count; i++)
-			{
-				lv.Columns[i].AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
-			}
-			lv.ColumnClick += new ColumnClickEventHandler(this.OnColumnClick);
+            for (int i = 0; i < lv.Columns.Count; i++) {
+                lv.Columns[i].AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
+            }
+            lv.ColumnClick += new ColumnClickEventHandler(this.OnColumnClick);
             lv.ColumnWidthChanged += new ColumnWidthChangedEventHandler(this.OnColumnWidthChanged);
             lv.DrawColumnHeader += new DrawListViewColumnHeaderEventHandler(this.OnDrawHeader);
             lv.DrawItem += new DrawListViewItemEventHandler(this.OnDrawItem);
@@ -49,16 +48,16 @@ namespace rabnet
             _selItem = ListViewSaver.saveItem(_listView);
             _listView.ListViewItemSorter = null;
             _listView.Items.Clear();
-			_listView.BeginUpdate();
+            _listView.BeginUpdate();
         }
 
         public void RestoreAfterUpdate()
         {
-			//ListViewSaver.load(option, _listView);
-			_listView.ListViewItemSorter = this;
+            //ListViewSaver.load(option, _listView);
+            _listView.ListViewItemSorter = this;
             _listView.Sort();
             ListViewSaver.loadItem(_listView, _selItem);
-			_listView.EndUpdate();
+            _listView.EndUpdate();
             _listView.Focus();
         }
 
@@ -69,15 +68,13 @@ namespace rabnet
         }
         private void OnColumnClick(object sender, ColumnClickEventArgs e)
         {
-            if (e.Column == SortColumn)
-            {
-                if (Order == SortOrder.Ascending)
+            if (e.Column == SortColumn) {
+                if (Order == SortOrder.Ascending) {
                     Order = SortOrder.Descending;
-                else
+                } else {
                     Order = SortOrder.Ascending;
-            }
-            else
-            {
+                }
+            } else {
                 SortColumn = e.Column;
                 Order = SortOrder.Ascending;
             }
@@ -88,73 +85,57 @@ namespace rabnet
 
         public int Compare(object x, object y)
         {
-            try
-            {
+            try {
+                bool isInt = false;
                 int compareResult = 0;
-                ListViewItem listviewX, listviewY;
+                string listViewVal_X = (x as ListViewItem).SubItems[ColumnToSort].Text,
+                       listViewVal_Y = (y as ListViewItem).SubItems[ColumnToSort].Text;
 
-                listviewX = (ListViewItem)x;
-                listviewY = (ListViewItem)y;
 
-                for (int i = 0; i < _intSorts.Length; i++)
-                {
-                    if (_intSorts[i] == ColumnToSort)
-                    {
-                        int i1, i2;
-                        if (listviewX.SubItems[ColumnToSort].Text == "-" || listviewX.SubItems[ColumnToSort].Text == "") {
-                            i1 = -1;
-                        } else {
-                            i1 = int.Parse(listviewX.SubItems[ColumnToSort].Text);
-                        }
+                for (int i = 0; i < _intSorts.Length; i++) {
+                    if (_intSorts[i] == ColumnToSort) {
+                        isInt = true;
+                        int i1 = this.parseIntValue(listViewVal_X), 
+                            i2 = this.parseIntValue(listViewVal_Y);
 
-                        if (listviewY.SubItems[ColumnToSort].Text == "-" || listviewY.SubItems[ColumnToSort].Text == "") {
-                            i2 = -1;
-                        } else {
-                            i2 = int.Parse(listviewY.SubItems[ColumnToSort].Text);
-                        }
-                        compareResult = i1 - i2;
-                        if (OrderOfSort == SortOrder.Ascending)
-                        {
-                            return compareResult;
-                        }
-                        else if (OrderOfSort == SortOrder.Descending)
-                        {
-                            return (-compareResult);
-                        }
-                        else
-                        {
-                            return 0;
-                        }
+                        compareResult = i1.CompareTo(i2);
+                        break;
                     }
                 }
 
-                DateTime dt1, dt2;
-                if (DateTime.TryParse(listviewX.SubItems[ColumnToSort].Text, out dt1) && DateTime.TryParse(listviewY.SubItems[ColumnToSort].Text, out dt2))
-                {
-                    compareResult = DateTime.Compare(dt1, dt2);
-                }
-                else
-                {
-                    compareResult = ObjectCompare.Compare(listviewX.SubItems[ColumnToSort].Text, listviewY.SubItems[ColumnToSort].Text);
+                if (isInt) {
+                    DateTime dt1, dt2;
+                    if (DateTime.TryParse(listViewVal_X, out dt1) && DateTime.TryParse(listViewVal_Y, out dt2)) {
+                        compareResult = DateTime.Compare(dt1, dt2);
+                    } else {
+                        compareResult = ObjectCompare.Compare(listViewVal_X, listViewVal_Y);
+                    }
                 }
 
-                if (OrderOfSort == SortOrder.Ascending)
-                {
+                if (OrderOfSort == SortOrder.Ascending) {
                     return compareResult;
-                }
-                else if (OrderOfSort == SortOrder.Descending)
-                {
+                } else if (OrderOfSort == SortOrder.Descending) {
                     return (-compareResult);
-                }
-                else
-                {
+                } else {
                     return 0;
                 }
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 return 0;
             }
+        }
+
+        private int parseIntValue(string val)
+        {
+            int result = -1;
+            if (val == "-" || val == "") {
+                result = -1;
+            } else if (!int.TryParse(val, out result)){
+                string[] tmp = val.Split('|');
+                if (tmp.Length > 0) {
+                    int.TryParse(tmp[0], out result);
+                }                
+            }
+            return result;
         }
 
         public int SortColumn
@@ -193,12 +174,13 @@ namespace rabnet
             e.DrawText();
             if (SortColumn != e.ColumnIndex) return;
             if (OrderOfSort == SortOrder.None) return;
-            Image img=null;
-            if (OrderOfSort == SortOrder.Ascending)
+            Image img = null;
+            if (OrderOfSort == SortOrder.Ascending) {
                 img = ArrowDrawer.get().getImage(0);
-            else
+            } else {
                 img = ArrowDrawer.get().getImage(1);
-            Rectangle rect=new Rectangle(e.Bounds.Right-16,e.Bounds.Bottom-16,11,11);
+            }
+            Rectangle rect = new Rectangle(e.Bounds.Right - 16, e.Bounds.Bottom - 16, 11, 11);
             e.Graphics.DrawImage(img, rect);
         }
 
@@ -244,6 +226,7 @@ namespace rabnet
         }
 
         private static ArrowDrawer obj = null;
+
         public static ArrowDrawer get()
         {
             if (obj == null)
@@ -253,8 +236,7 @@ namespace rabnet
 
         public Image getImage(int index)
         {
-            if (index == 0)
-            {
+            if (index == 0) {
                 return _ArrowDown;
             }
             return _ArrowUp;
