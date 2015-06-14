@@ -103,7 +103,7 @@ namespace rabnet
                     }
                 }
 
-                if (isInt) {
+                if (!isInt) {
                     DateTime dt1, dt2;
                     if (DateTime.TryParse(listViewVal_X, out dt1) && DateTime.TryParse(listViewVal_Y, out dt2)) {
                         compareResult = DateTime.Compare(dt1, dt2);
