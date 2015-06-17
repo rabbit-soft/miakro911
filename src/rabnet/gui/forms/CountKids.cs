@@ -19,7 +19,7 @@ namespace rabnet.forms
 
             public OneCount(YoungRabbit y, int dead, int killed, int added)
             {
-                this.Younger =y;
+                this.Younger = y;
                 this.Dead = dead;
                 this.Killed = killed;
                 this.Added = added;
@@ -43,17 +43,18 @@ namespace rabnet.forms
         }
 
         private RabNetEngRabbit _rab = null;
-        private int _grp=0;
+        private int _grp = 0;
         private OneCountList _ocList = new OneCountList();
-        private bool _counted=false;
+        private bool _counted = false;
 
         public CountKids()
         {
             InitializeComponent();
         }
 
-        public CountKids(int id):this(Engine.get().getRabbit(id)/*,suckers*/){}
-        public CountKids(RabNetEngRabbit r):this()
+        public CountKids(int id) : this(Engine.get().getRabbit(id)/*,suckers*/) { }
+        public CountKids(RabNetEngRabbit r)
+            : this()
         {
             this._rab = r;
             foreach (YoungRabbit y in _rab.Youngers)
@@ -61,15 +62,14 @@ namespace rabnet.forms
         }
         public void SetGroup(int grp)
         {
-            this._grp=grp;
+            this._grp = grp;
         }
 
         public void MakeCount()
         {
             if (_counted) return;
 
-            foreach (OneCount oc in _ocList)
-            {
+            foreach (OneCount oc in _ocList) {
                 _rab.CountKids(oc.Dead, oc.Killed, oc.Added, oc.Atall, oc.Younger.Age, oc.Younger.ID);
             }
             _counted = true;
@@ -79,9 +79,8 @@ namespace rabnet.forms
         {
             lParent.Text = _rab.FullName;
             comboBox1.Items.Clear();
-            for (int i = 0; i < _rab.Youngers.Count; i++)
-            {
-                comboBox1.Items.Add(_rab.Youngers[i].NameFull + " (" + _rab.Youngers[i].Group + ")");                
+            for (int i = 0; i < _rab.Youngers.Count; i++) {
+                comboBox1.Items.Add(_rab.Youngers[i].NameFull + " (" + _rab.Youngers[i].Group + ")");
             }
             comboBox1.SelectedIndex = _grp;
         }
@@ -97,7 +96,7 @@ namespace rabnet.forms
 
             tbAlive.Text = oc.Atall.ToString();
             nudKilled.Maximum = oc.Younger.Group - oc.Dead;
-            nudDead.Maximum = oc.Younger.Group - oc.Killed;            
+            nudDead.Maximum = oc.Younger.Group - oc.Killed;
             //int c = _rab.Youngers[s].Group;
             //int x = c - (int)(nudDead.Value + nudKilled.Value)+(int)nudAdd.Value;
             //tbAlive.Text = x.ToString();
@@ -113,13 +112,10 @@ namespace rabnet.forms
 
         private void button1_Click(object sender, EventArgs e)
         {
-            try
-            {
+            try {
                 MakeCount();
                 Close();
-            }
-            catch (ApplicationException ex)
-            {
+            } catch (ApplicationException ex) {
                 MessageBox.Show(ex.Message);
             }
         }
@@ -129,12 +125,12 @@ namespace rabnet.forms
             int i = comboBox1.SelectedIndex;
             OneCount oc = _ocList[i];
 
-            lAge.Text = String.Format("Возраст: {0:d}{1:s}Порода:{2:s}", + oc.Younger.Age,Environment.NewLine, oc.Younger.BreedName);
+            lAge.Text = String.Format("Возраст: {0:d}{1:s}Порода:{2:s}", +oc.Younger.Age, Environment.NewLine, oc.Younger.BreedName);
             tbAlive.Text = oc.Younger.Group.ToString();
             //nudKilled.Value = 
             //    nudDead.Value =
             //    nudAdd.Value = 0;
-            nudKilled.Maximum = 
+            nudKilled.Maximum =
                 nudDead.Maximum = oc.Younger.Group;
 
             nudDead.Value = oc.Dead;

@@ -526,8 +526,9 @@ namespace rabnet.panels
             if (listView1.SelectedItems.Count != 1) return;
             try {
                 int rid = (listView1.SelectedItems[0].Tag as AdultRabbit).ID;
-                if ((new Proholost(rid)).ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                if ((new Proholost(rid)).ShowDialog() == DialogResult.OK && !MainForm.MustClose) {
                     _rsb.Run();
+                }
             } catch (Exception exc) {
                 MessageBox.Show(exc.Message);
                 _logger.Warn(exc);
@@ -540,8 +541,9 @@ namespace rabnet.panels
             if (listView1.SelectedItems.Count != 1) return;
             try {
                 CountKids f = new CountKids((listView1.SelectedItems[0].Tag as AdultRabbit).ID);
-                if (f.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                if (f.ShowDialog() == DialogResult.OK && !MainForm.MustClose) {
                     _rsb.Run();
+                }
             } catch (Exception exc) {
                 MessageBox.Show(exc.Message);
                 _logger.Warn(exc);
@@ -555,8 +557,9 @@ namespace rabnet.panels
 
             try {
                 OkrolForm dlg = new OkrolForm((listView1.SelectedItems[0].Tag as AdultRabbit).ID);
-                if (dlg.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                if (dlg.ShowDialog() == DialogResult.OK && !MainForm.MustClose) {
                     _rsb.Run();
+                }
             } catch (Exception exc) {
                 MessageBox.Show(exc.Message);
                 _logger.Warn(exc);
