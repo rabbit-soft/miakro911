@@ -52,13 +52,16 @@ namespace rabnet.forms
             InitializeComponent();
         }
 
-        public CountKids(int id) : this(Engine.get().getRabbit(id)/*,suckers*/) { }
+        public CountKids(int id) 
+            : this(Engine.get().getRabbit(id)/*,suckers*/) { }
+
         public CountKids(RabNetEngRabbit r)
             : this()
         {
             this._rab = r;
-            foreach (YoungRabbit y in _rab.Youngers)
+            foreach (YoungRabbit y in _rab.Youngers) {
                 _ocList.Add(new OneCount(y, 0, 0, 0));
+            }
         }
         public void SetGroup(int grp)
         {
