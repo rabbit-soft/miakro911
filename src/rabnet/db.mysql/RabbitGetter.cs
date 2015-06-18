@@ -498,6 +498,15 @@ FROM rabbits WHERE r_id={0:d};", rabFromID, mom, count), sql);
             cmd.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Подсчет гнездовых
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="rid"></param>
+        /// <param name="dead"></param>
+        /// <param name="killed"></param>
+        /// <param name="added"></param>
+        /// <param name="yid"></param>
         public static void countKids(MySqlConnection sql, int rid, int dead, int killed, int added, int yid)
         {
             /*MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE rabbits SET 
