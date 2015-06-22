@@ -7,10 +7,10 @@
   <PageHeight>8.5in</PageHeight>
   <PageWidth>11in</PageWidth>
   <Width>10in</Width>
-  <TopMargin>.25in</TopMargin>
-  <LeftMargin>.25in</LeftMargin>
-  <RightMargin>.25in</RightMargin>
-  <BottomMargin>.25in</BottomMargin>
+  <TopMargin>.10in</TopMargin>
+  <LeftMargin>.10in</LeftMargin>
+  <RightMargin>.10in</RightMargin>
+  <BottomMargin>.10in</BottomMargin>
   <DataSets>
     <DataSet Name="Data">
       <Query>
@@ -124,6 +124,7 @@
                     </BorderStyle>
                     <BorderColor />
                     <BorderWidth />
+                    <FontSize>9pt</FontSize>
                   </Style>
                 </Textbox>
               </ReportItems>
@@ -146,6 +147,7 @@
                     <BorderStyle>
                       <Default>Solid</Default>
                     </BorderStyle>
+                    <FontSize>9pt</FontSize>
                   </Style>
                 </Textbox>
               </ReportItems>
@@ -154,7 +156,7 @@
         </RowGroupings>
         <MatrixColumns>
           <MatrixColumn>
-            <Width>23.2pt</Width>
+            <Width>20.8pt</Width>
           </MatrixColumn>
         </MatrixColumns>
         <MatrixRows>
@@ -171,7 +173,7 @@
                       </BorderStyle>
                       <BorderColor />
                       <BorderWidth />
-                      <FontSize>8pt</FontSize>
+                      <FontSize>7pt</FontSize>
                     </Style>
                   </Textbox>
                 </ReportItems>
@@ -179,7 +181,7 @@
             </MatrixCells>
           </MatrixRow>
         </MatrixRows>
-        <Left>1.3pt</Left>
+        <Left>0.0pt</Left>
         <Top>50.4pt</Top>
       </Matrix>
       <Table Name="Table1">
@@ -342,7 +344,7 @@
           <FontWeight>Normal</FontWeight>
         </Style>
       </Textbox>
-      <Textbox Name="Textbox8" >
+      <Textbox Name="Textbox8">
         <Height>13.51pt</Height>
         <Width>261.16pt</Width>
         <Value>C-Сумма;О-окролы;П-прохолосты;Ф-фертильность</Value>

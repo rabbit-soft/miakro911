@@ -146,6 +146,9 @@ namespace rabnet
         void deleteFarm(int fid);             
         String[] getWeights(int rabbit);
 
+        int GetAliveChildrenCount(int rid, Rabbit.SexType parentSex);
+        Dictionary<string, int> GetDeadChildrenCount(int rid, Rabbit.SexType parentSex);        
+
         // vaccines
         RabVac[] GetRabVac(int rabId);
         List<Vaccine> GetVaccines(bool withSpec);
@@ -182,6 +185,7 @@ namespace rabnet
         LogList getLogs(Filters f);
 
         Rabbit[] GetDescendants(int ascendantId);
+
 #if !DEMO
         void ArchLogs();
         String[] logNames();

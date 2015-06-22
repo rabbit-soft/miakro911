@@ -43,7 +43,6 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button15 = new System.Windows.Forms.Button();
             this.button14 = new System.Windows.Forms.Button();
-            this.bdate = new rabnet.components.DateDays();
             this.cbZone = new System.Windows.Forms.ComboBox();
             this.button16 = new System.Windows.Forms.Button();
             this.name = new System.Windows.Forms.ComboBox();
@@ -79,28 +78,29 @@
             this.label16 = new System.Windows.Forms.Label();
             this.maleStatus = new System.Windows.Forms.ComboBox();
             this.tpFemale = new System.Windows.Forms.TabPage();
+            this.nudDeadChildren = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.lvChildrenDeads = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.nudAliveChildren = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
             this.button10 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.okrolDd = new rabnet.components.DateDays();
             this.okrolCount = new System.Windows.Forms.NumericUpDown();
             this.label21 = new System.Windows.Forms.Label();
-            this.deadBab = new System.Windows.Forms.NumericUpDown();
-            this.label20 = new System.Windows.Forms.Label();
             this.overallBab = new System.Windows.Forms.NumericUpDown();
             this.label19 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.sukrDd = new rabnet.components.DateDays();
             this.cbSukrType = new System.Windows.Forms.ComboBox();
             this.sukr = new System.Windows.Forms.CheckBox();
             this.nokuk = new System.Windows.Forms.CheckBox();
             this.nolact = new System.Windows.Forms.CheckBox();
             this.tpFucks = new System.Windows.Forms.TabPage();
-            this.riFucksPanel1 = new rabnet.RIFucksPanel();
             this.tpYoungers = new System.Windows.Forms.TabPage();
-            this.riSuckersPanel1 = new rabnet.RISuckersPanel();
             this.tpWeight = new System.Windows.Forms.TabPage();
             this.label2 = new System.Windows.Forms.Label();
             this.button19 = new System.Windows.Forms.Button();
@@ -111,7 +111,6 @@
             this.chDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chWeight = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tpVaccines = new System.Windows.Forms.TabPage();
-            this.riVaccinePanel1 = new rabnet.RIVaccinePanel();
             this.btOk = new System.Windows.Forms.Button();
             this.btCancel = new System.Windows.Forms.Button();
             this.notes = new System.Windows.Forms.TextBox();
@@ -122,6 +121,13 @@
             this.lbAddress = new System.Windows.Forms.Label();
             this.lbState = new System.Windows.Forms.Label();
             this.btAccept = new System.Windows.Forms.Button();
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.bdate = new rabnet.components.DateDays();
+            this.okrolDd = new rabnet.components.DateDays();
+            this.sukrDd = new rabnet.components.DateDays();
+            this.riFucksPanel1 = new rabnet.RIFucksPanel();
+            this.riSuckersPanel1 = new rabnet.RISuckersPanel();
+            this.riVaccinePanel1 = new rabnet.RIVaccinePanel();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -134,9 +140,10 @@
             this.tpMale.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.tpFemale.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDeadChildren)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudAliveChildren)).BeginInit();
             this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.okrolCount)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.deadBab)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.overallBab)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.tpFucks.SuspendLayout();
@@ -342,21 +349,6 @@
             this.button14.Text = "...";
             this.button14.UseVisualStyleBackColor = true;
             this.button14.Click += new System.EventHandler(this.button14_Click);
-            // 
-            // bdate
-            // 
-            this.bdate.AutoSize = true;
-            this.bdate.DateText = "Дата рожд.";
-            this.bdate.DateValue = new System.DateTime(2013, 3, 21, 0, 0, 0, 0);
-            this.bdate.DaysText = "Возраст";
-            this.bdate.DaysValue = 0;
-            this.bdate.Location = new System.Drawing.Point(13, 111);
-            this.bdate.Maximum = 5000;
-            this.bdate.Name = "bdate";
-            this.bdate.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
-            this.bdate.Size = new System.Drawing.Size(168, 50);
-            this.bdate.Step = 1;
-            this.bdate.TabIndex = 17;
             // 
             // cbZone
             // 
@@ -746,13 +738,16 @@
             // 
             // tpFemale
             // 
+            this.tpFemale.Controls.Add(this.nudDeadChildren);
+            this.tpFemale.Controls.Add(this.label4);
+            this.tpFemale.Controls.Add(this.lvChildrenDeads);
+            this.tpFemale.Controls.Add(this.nudAliveChildren);
+            this.tpFemale.Controls.Add(this.label3);
             this.tpFemale.Controls.Add(this.button10);
             this.tpFemale.Controls.Add(this.button9);
             this.tpFemale.Controls.Add(this.button8);
             this.tpFemale.Controls.Add(this.checkBox4);
             this.tpFemale.Controls.Add(this.groupBox6);
-            this.tpFemale.Controls.Add(this.deadBab);
-            this.tpFemale.Controls.Add(this.label20);
             this.tpFemale.Controls.Add(this.overallBab);
             this.tpFemale.Controls.Add(this.label19);
             this.tpFemale.Controls.Add(this.groupBox5);
@@ -765,23 +760,86 @@
             this.tpFemale.Text = "Самка";
             this.tpFemale.UseVisualStyleBackColor = true;
             // 
+            // nudDeadChildren
+            // 
+            this.nudDeadChildren.Location = new System.Drawing.Point(133, 59);
+            this.nudDeadChildren.Name = "nudDeadChildren";
+            this.nudDeadChildren.ReadOnly = true;
+            this.nudDeadChildren.Size = new System.Drawing.Size(81, 20);
+            this.nudDeadChildren.TabIndex = 18;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 61);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(84, 13);
+            this.label4.TabIndex = 17;
+            this.label4.Text = "Списаные дети";
+            // 
+            // lvChildrenDeads
+            // 
+            this.lvChildrenDeads.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3});
+            this.lvChildrenDeads.FullRowSelect = true;
+            this.lvChildrenDeads.GridLines = true;
+            this.lvChildrenDeads.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.lvChildrenDeads.Location = new System.Drawing.Point(6, 85);
+            this.lvChildrenDeads.MultiSelect = false;
+            this.lvChildrenDeads.Name = "lvChildrenDeads";
+            this.lvChildrenDeads.Size = new System.Drawing.Size(300, 169);
+            this.lvChildrenDeads.TabIndex = 16;
+            this.lvChildrenDeads.UseCompatibleStateImageBehavior = false;
+            this.lvChildrenDeads.View = System.Windows.Forms.View.Details;
+            this.lvChildrenDeads.ColumnWidthChanging += new System.Windows.Forms.ColumnWidthChangingEventHandler(this.lvChildrenDeads_ColumnWidthChanging);
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Причина списания";
+            this.columnHeader1.Width = 200;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Кол-во";
+            this.columnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.columnHeader2.Width = 50;
+            // 
+            // nudAliveChildren
+            // 
+            this.nudAliveChildren.Location = new System.Drawing.Point(133, 33);
+            this.nudAliveChildren.Name = "nudAliveChildren";
+            this.nudAliveChildren.ReadOnly = true;
+            this.nudAliveChildren.Size = new System.Drawing.Size(81, 20);
+            this.nudAliveChildren.TabIndex = 15;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 35);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(91, 13);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "Детей на ферме";
+            // 
             // button10
             // 
             this.button10.Enabled = false;
-            this.button10.Location = new System.Drawing.Point(13, 233);
+            this.button10.Location = new System.Drawing.Point(175, 274);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(100, 23);
+            this.button10.Size = new System.Drawing.Size(80, 23);
             this.button10.TabIndex = 13;
-            this.button10.Text = "Прохолостание";
+            this.button10.Text = "Прохолост";
             this.button10.UseVisualStyleBackColor = true;
             this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // button9
             // 
             this.button9.Enabled = false;
-            this.button9.Location = new System.Drawing.Point(13, 204);
+            this.button9.Location = new System.Drawing.Point(89, 274);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(100, 23);
+            this.button9.Size = new System.Drawing.Size(80, 23);
             this.button9.TabIndex = 12;
             this.button9.Text = "Окрол";
             this.button9.UseVisualStyleBackColor = true;
@@ -790,9 +848,9 @@
             // button8
             // 
             this.button8.Enabled = false;
-            this.button8.Location = new System.Drawing.Point(13, 175);
+            this.button8.Location = new System.Drawing.Point(3, 274);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(100, 23);
+            this.button8.Size = new System.Drawing.Size(80, 23);
             this.button8.TabIndex = 11;
             this.button8.Text = "Случить";
             this.button8.UseVisualStyleBackColor = true;
@@ -801,7 +859,7 @@
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(325, 9);
+            this.checkBox4.Location = new System.Drawing.Point(325, 49);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(64, 17);
             this.checkBox4.TabIndex = 9;
@@ -815,27 +873,12 @@
             this.groupBox6.Controls.Add(this.okrolCount);
             this.groupBox6.Controls.Add(this.label21);
             this.groupBox6.Enabled = false;
-            this.groupBox6.Location = new System.Drawing.Point(317, 11);
+            this.groupBox6.Location = new System.Drawing.Point(317, 51);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(157, 140);
+            this.groupBox6.Size = new System.Drawing.Size(157, 100);
             this.groupBox6.TabIndex = 8;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "окролы";
-            // 
-            // okrolDd
-            // 
-            this.okrolDd.AutoSize = true;
-            this.okrolDd.DateText = "Дата";
-            this.okrolDd.DateValue = new System.DateTime(2013, 3, 21, 0, 0, 0, 0);
-            this.okrolDd.DaysText = "Срок";
-            this.okrolDd.DaysValue = 0;
-            this.okrolDd.Location = new System.Drawing.Point(8, 61);
-            this.okrolDd.Maximum = 10000;
-            this.okrolDd.Name = "okrolDd";
-            this.okrolDd.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
-            this.okrolDd.Size = new System.Drawing.Size(136, 48);
-            this.okrolDd.Step = 1;
-            this.okrolDd.TabIndex = 2;
             // 
             // okrolCount
             // 
@@ -854,43 +897,23 @@
             this.label21.TabIndex = 0;
             this.label21.Text = "Всего";
             // 
-            // deadBab
-            // 
-            this.deadBab.Location = new System.Drawing.Point(13, 131);
-            this.deadBab.Maximum = new decimal(new int[] {
-            2000,
-            0,
-            0,
-            0});
-            this.deadBab.Name = "deadBab";
-            this.deadBab.Size = new System.Drawing.Size(81, 20);
-            this.deadBab.TabIndex = 7;
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(10, 115);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(118, 13);
-            this.label20.TabIndex = 6;
-            this.label20.Text = "Потерянных крольчат";
-            // 
             // overallBab
             // 
-            this.overallBab.Location = new System.Drawing.Point(13, 88);
+            this.overallBab.Location = new System.Drawing.Point(133, 7);
             this.overallBab.Maximum = new decimal(new int[] {
             2000,
             0,
             0,
             0});
             this.overallBab.Name = "overallBab";
+            this.overallBab.ReadOnly = true;
             this.overallBab.Size = new System.Drawing.Size(81, 20);
             this.overallBab.TabIndex = 5;
             // 
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(10, 72);
+            this.label19.Location = new System.Drawing.Point(3, 9);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(114, 13);
             this.label19.TabIndex = 4;
@@ -902,27 +925,12 @@
             this.groupBox5.Controls.Add(this.cbSukrType);
             this.groupBox5.Controls.Add(this.sukr);
             this.groupBox5.Enabled = false;
-            this.groupBox5.Location = new System.Drawing.Point(156, 11);
+            this.groupBox5.Location = new System.Drawing.Point(319, 157);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(155, 140);
             this.groupBox5.TabIndex = 2;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "сукрольность";
-            // 
-            // sukrDd
-            // 
-            this.sukrDd.AutoSize = true;
-            this.sukrDd.DateText = "Дата";
-            this.sukrDd.DateValue = new System.DateTime(2013, 3, 21, 0, 0, 0, 0);
-            this.sukrDd.DaysText = "Срок";
-            this.sukrDd.DaysValue = 0;
-            this.sukrDd.Location = new System.Drawing.Point(0, 46);
-            this.sukrDd.Maximum = 10000;
-            this.sukrDd.Name = "sukrDd";
-            this.sukrDd.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
-            this.sukrDd.Size = new System.Drawing.Size(149, 51);
-            this.sukrDd.Step = 1;
-            this.sukrDd.TabIndex = 5;
+            this.groupBox5.Text = "Cукрольность";
             // 
             // cbSukrType
             // 
@@ -952,7 +960,7 @@
             // nokuk
             // 
             this.nokuk.AutoSize = true;
-            this.nokuk.Location = new System.Drawing.Point(13, 47);
+            this.nokuk.Location = new System.Drawing.Point(325, 5);
             this.nokuk.Name = "nokuk";
             this.nokuk.Size = new System.Drawing.Size(89, 17);
             this.nokuk.TabIndex = 1;
@@ -962,7 +970,7 @@
             // nolact
             // 
             this.nolact.AutoSize = true;
-            this.nolact.Location = new System.Drawing.Point(13, 24);
+            this.nolact.Location = new System.Drawing.Point(325, 26);
             this.nolact.Name = "nolact";
             this.nolact.Size = new System.Drawing.Size(113, 17);
             this.nolact.TabIndex = 0;
@@ -978,14 +986,6 @@
             this.tpFucks.TabIndex = 3;
             this.tpFucks.Text = "Случки/Окролы";
             // 
-            // riFucksPanel1
-            // 
-            this.riFucksPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.riFucksPanel1.Location = new System.Drawing.Point(0, 0);
-            this.riFucksPanel1.Name = "riFucksPanel1";
-            this.riFucksPanel1.Size = new System.Drawing.Size(496, 305);
-            this.riFucksPanel1.TabIndex = 0;
-            // 
             // tpYoungers
             // 
             this.tpYoungers.Controls.Add(this.riSuckersPanel1);
@@ -995,14 +995,6 @@
             this.tpYoungers.TabIndex = 5;
             this.tpYoungers.Text = "Подсосные";
             this.tpYoungers.UseVisualStyleBackColor = true;
-            // 
-            // riSuckersPanel1
-            // 
-            this.riSuckersPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.riSuckersPanel1.Location = new System.Drawing.Point(0, 0);
-            this.riSuckersPanel1.Name = "riSuckersPanel1";
-            this.riSuckersPanel1.Size = new System.Drawing.Size(496, 305);
-            this.riSuckersPanel1.TabIndex = 0;
             // 
             // tpWeight
             // 
@@ -1116,14 +1108,6 @@
             this.tpVaccines.Text = "Прививки";
             this.tpVaccines.UseVisualStyleBackColor = true;
             // 
-            // riVaccinePanel1
-            // 
-            this.riVaccinePanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.riVaccinePanel1.Location = new System.Drawing.Point(0, 0);
-            this.riVaccinePanel1.Name = "riVaccinePanel1";
-            this.riVaccinePanel1.Size = new System.Drawing.Size(496, 305);
-            this.riVaccinePanel1.TabIndex = 0;
-            // 
             // btOk
             // 
             this.btOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -1225,6 +1209,84 @@
             this.btAccept.UseVisualStyleBackColor = true;
             this.btAccept.Click += new System.EventHandler(this.button5_Click);
             // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "%";
+            this.columnHeader3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.columnHeader3.Width = 46;
+            // 
+            // bdate
+            // 
+            this.bdate.AutoSize = true;
+            this.bdate.DateText = "Дата рожд.";
+            this.bdate.DateValue = new System.DateTime(2015, 6, 20, 0, 0, 0, 0);
+            this.bdate.DaysText = "Возраст";
+            this.bdate.DaysValue = 0;
+            this.bdate.Location = new System.Drawing.Point(13, 111);
+            this.bdate.Maximum = 5001;
+            this.bdate.MinDate = new System.DateTime(2001, 10, 10, 0, 0, 0, 0);
+            this.bdate.Name = "bdate";
+            this.bdate.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
+            this.bdate.Size = new System.Drawing.Size(168, 50);
+            this.bdate.Step = 1;
+            this.bdate.TabIndex = 17;
+            // 
+            // okrolDd
+            // 
+            this.okrolDd.AutoSize = true;
+            this.okrolDd.DateText = "Дата";
+            this.okrolDd.DateValue = new System.DateTime(2015, 6, 20, 0, 0, 0, 0);
+            this.okrolDd.DaysText = "Срок";
+            this.okrolDd.DaysValue = 0;
+            this.okrolDd.Location = new System.Drawing.Point(8, 49);
+            this.okrolDd.Maximum = 10001;
+            this.okrolDd.MinDate = new System.DateTime(1988, 2, 1, 0, 0, 0, 0);
+            this.okrolDd.Name = "okrolDd";
+            this.okrolDd.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
+            this.okrolDd.Size = new System.Drawing.Size(136, 48);
+            this.okrolDd.Step = 1;
+            this.okrolDd.TabIndex = 2;
+            // 
+            // sukrDd
+            // 
+            this.sukrDd.AutoSize = true;
+            this.sukrDd.DateText = "Дата";
+            this.sukrDd.DateValue = new System.DateTime(2015, 6, 20, 0, 0, 0, 0);
+            this.sukrDd.DaysText = "Срок";
+            this.sukrDd.DaysValue = 0;
+            this.sukrDd.Location = new System.Drawing.Point(0, 46);
+            this.sukrDd.Maximum = 10001;
+            this.sukrDd.MinDate = new System.DateTime(1988, 2, 1, 0, 0, 0, 0);
+            this.sukrDd.Name = "sukrDd";
+            this.sukrDd.position = rabnet.components.DateDays.DDPosition.LABELS_LR;
+            this.sukrDd.Size = new System.Drawing.Size(149, 51);
+            this.sukrDd.Step = 1;
+            this.sukrDd.TabIndex = 5;
+            // 
+            // riFucksPanel1
+            // 
+            this.riFucksPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.riFucksPanel1.Location = new System.Drawing.Point(0, 0);
+            this.riFucksPanel1.Name = "riFucksPanel1";
+            this.riFucksPanel1.Size = new System.Drawing.Size(496, 305);
+            this.riFucksPanel1.TabIndex = 0;
+            // 
+            // riSuckersPanel1
+            // 
+            this.riSuckersPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.riSuckersPanel1.Location = new System.Drawing.Point(0, 0);
+            this.riSuckersPanel1.Name = "riSuckersPanel1";
+            this.riSuckersPanel1.Size = new System.Drawing.Size(496, 305);
+            this.riSuckersPanel1.TabIndex = 0;
+            // 
+            // riVaccinePanel1
+            // 
+            this.riVaccinePanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.riVaccinePanel1.Location = new System.Drawing.Point(0, 0);
+            this.riVaccinePanel1.Name = "riVaccinePanel1";
+            this.riVaccinePanel1.Size = new System.Drawing.Size(496, 305);
+            this.riVaccinePanel1.TabIndex = 0;
+            // 
             // RabbitInfo
             // 
             this.AcceptButton = this.btOk;
@@ -1271,10 +1333,11 @@
             this.groupBox4.PerformLayout();
             this.tpFemale.ResumeLayout(false);
             this.tpFemale.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDeadChildren)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudAliveChildren)).EndInit();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.okrolCount)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.deadBab)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.overallBab)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
@@ -1343,14 +1406,12 @@
         private System.Windows.Forms.CheckBox sukr;
         private System.Windows.Forms.CheckBox nokuk;
         private System.Windows.Forms.CheckBox nolact;
-        private System.Windows.Forms.Label label20;
         private System.Windows.Forms.NumericUpDown overallBab;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.NumericUpDown okrolCount;
         private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.NumericUpDown deadBab;
         private System.Windows.Forms.ComboBox cbSukrType;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button button9;
@@ -1385,5 +1446,13 @@
         private RISuckersPanel riSuckersPanel1;
         private System.Windows.Forms.Label label2;
         private RIFucksPanel riFucksPanel1;
+        private System.Windows.Forms.NumericUpDown nudAliveChildren;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ListView lvChildrenDeads;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown nudDeadChildren;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
     }
 }

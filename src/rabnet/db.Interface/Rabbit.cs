@@ -29,8 +29,12 @@ namespace rabnet
             _id = id;
             _nameFull = rabname;
             _sex = Rabbit.SexType.VOID;
-            if (sex == "male") _sex = Rabbit.SexType.MALE;
-            if (sex == "female") _sex = Rabbit.SexType.FEMALE;
+            if (sex == "male") { 
+                _sex = Rabbit.SexType.MALE; 
+            }
+            if (sex == "female") {
+                _sex = Rabbit.SexType.FEMALE;
+            }
             _birthDay = born;
             _breedName = breedname;
             _group = group;
@@ -227,7 +231,7 @@ namespace rabnet
                 if ((_status == 1 && _eventDate == DateTime.MinValue) || (_status == 0 && _eventDate != DateTime.MinValue)) { // были одни роды или беремена
                     res = s_short ? "Прк" : "Первокролка";
                 }
-                if (_status > 1) {
+                if (_status > 1 || (_status == 1 && _eventDate != DateTime.MinValue)) {
                     res = s_short ? "Штн" : "Штатная";
                 }
             }
@@ -283,8 +287,9 @@ namespace rabnet
         #endregion prop
 
         public OneRabbit(int id, string sx, DateTime born, int rate, string flags, int nameId, int surnameId, int secnameId, string rawAddress, int group,
-            int brd, int zone, String notes, String genom, int status, DateTime lastFuckOkrol, String eventType, DateTime eventDate, int overAllBabys,
-            int lostBabys, String fullName, String breedName, String bon, int parent, int okrol, int weight, DateTime weightDate, int motherID, int fatherID, int exportFrom)
+            int brd, int zone, String notes, String genom, 
+            int status, DateTime lastFuckOkrol, String eventType, DateTime eventDate, int overAllBabys, int lostBabys, 
+            String fullName, String breedName, String bon, int parent, int okrol, int weight, DateTime weightDate, int motherID, int fatherID, int exportFrom)
             : base(id, fullName, sx, born, breedName, group, bon, rawAddress, notes, rate, flags, weight, status, eventDate, 0, -1, "", "")
         {
             this._parentID = parent;
@@ -295,8 +300,9 @@ namespace rabnet
             _breedID = brd;
             this._zone = zone;
             _genoms = genom;
-            if (sx == "void")
+            if (sx == "void") {
                 status = Age < 50 ? 0 : 1; //TODO проверить на необходимость
+            }
             _lastFuckOkrol = lastFuckOkrol;
             _eventType = Rabbit.GetEventType(eventType);
             _okrol = okrol;
@@ -411,6 +417,8 @@ namespace rabnet
             get { return _kidsOverAll; }
             set { _kidsOverAll = value; }
         }
+
+        [Obsolete("надо пересмотреть")]
         public int KidsLost
         {
             get { return _kidsLost; }

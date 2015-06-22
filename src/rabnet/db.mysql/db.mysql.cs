@@ -23,9 +23,12 @@ namespace db.mysql
         {
             get
             {
-                if (psql == null) return null;
-                if (psql.State == System.Data.ConnectionState.Broken || psql.State == System.Data.ConnectionState.Closed)
+                if (psql == null) {
+                    return null;
+                }
+                if (psql.State == System.Data.ConnectionState.Broken || psql.State == System.Data.ConnectionState.Closed) {
                     psql.Open();
+                }
                 return psql;
             }
         }
@@ -461,6 +464,7 @@ namespace db.mysql
         {
             return RabbitGetter.getMothers(sql, age, agediff);
         }
+
 #region zoo_tech_get
 
         public ZootehJob[] GetZooTechJobs(Filters f, JobType type)
@@ -549,6 +553,7 @@ namespace db.mysql
         {
             new Weight(sql).deleteWeight(rabbit, date);
         }
+
 #region vaccines
         public RabVac[] GetRabVac(int rabId)
         {
@@ -648,6 +653,16 @@ namespace db.mysql
         public Rabbit[] GetDescendants(int ascendantId)
         {
             return RabbitGetter.GetDescendants(sql, ascendantId);
+        }
+
+        public int GetAliveChildrenCount(int rid, Rabbit.SexType parentSex)
+        {
+            return RabbitGetter.GetAliveChildrenCount(sql, rid, parentSex);
+        }
+
+        public Dictionary<string, int> GetDeadChildrenCount(int rid, Rabbit.SexType parentSex)
+        {
+            return RabbitGetter.GetDeadChildrenCount(sql, rid, parentSex);
         }
 
 #if !DEMO

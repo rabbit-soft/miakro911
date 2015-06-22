@@ -23,7 +23,7 @@ namespace rabnet
         private string group = "none";
         private String _uname;
         private String _farmname;
-        private Options opts=null;
+        private Options opts = null;
         private RabNetLogs logger = null;
         private RabEngZooTeh zooteh = null;
 
@@ -39,30 +39,25 @@ namespace rabnet
         /// <param name="dbext">Тип</param>
         /// <param name="param">Строка подключения</param>
         /// <returns></returns>
-        public IRabNetDataLayer InitEngine(String dbType,String param)
+        public IRabNetDataLayer InitEngine(String dbType, String param)
         {
-            if (_data!=null)
-            {
+            if (_data != null) {
                 if (_data2 == _data) _data2 = null;
                 _data.Close();
                 if (_data2 != null) _data2.Close();
                 _data = _data2 = null;
             }
             _logger.Debug("initing engine data to " + dbType + " param=" + param);
-            if (dbType == "db.mysql")
-            {
-                _data = getDataLayer("db.mysql");               
+            if (dbType == "db.mysql") {
+                _data = getDataLayer("db.mysql");
                 _data2 = _data.Clone();
                 _data.Init(param);
                 _data2.Init(param);
-            }
-            else
-            {
+            } else {
                 throw new DBDriverNotFoudException(dbType);
             }
             int ver = options().getIntOption("db", "version", Options.OPT_LEVEL.FARM);
-            if (ver != NEED_DB_VERSION)
-            {
+            if (ver != NEED_DB_VERSION) {
                 if (_data2 == _data) _data2 = null;
                 if (_data != null) _data.Close();
                 if (_data2 != null) _data2.Close();
@@ -90,9 +85,8 @@ namespace rabnet
         public int setUid(String name, String password, String farmName)
         {
             uid = db().checkUser(name, password);
-            _logger.DebugFormat("check uid {0:d} for farm {1:s}", uid,farmName);
-            if (uid != 0)
-            {
+            _logger.DebugFormat("check uid {0:d} for farm {1:s}", uid, farmName);
+            if (uid != 0) {
                 group = db().userGroup(uid);
                 _uname = name;
                 _farmname = farmName;
@@ -179,7 +173,7 @@ namespace rabnet
                 throw new ApplicationException("Нельзя удалить себя.");
             if (!isAdmin())
                 throw new ApplicationException("Нет прав доступа.");
-            db().deleteUser(uid);            
+            db().deleteUser(uid);
         }
 
         public void updateUser(int uid, string name, int group, string password, bool chpass)
@@ -195,12 +189,15 @@ namespace rabnet
 
         public void addUser(string name, int group, string password)
         {
-            if (name == "")
+            if (name == "") {
                 throw new ApplicationException("Пустое имя.");
-            if (db().hasUser(name))
+            }
+            if (db().hasUser(name)) {
                 throw new ApplicationException("Пользователь с таким именем уже существует.");
-            if (!isAdmin())
+            }
+            if (!isAdmin()) {
                 throw new ApplicationException("Нет прав доступа.");
+            }
             db().addUser(name, group, password);
         }
 
@@ -217,7 +214,7 @@ namespace rabnet
 
         private IRabNetDataLayer getDataLayer(string asmName)
         {
-            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, asmName+".dll");
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, asmName + ".dll");
             if (!File.Exists(filePath))
                 throw new Exception("MySQL DataLayer dll is not exists");
             ///todo проверка на уже загруженность сборки
@@ -225,8 +222,7 @@ namespace rabnet
             //Type AsmType = Asm.GetType();
             foreach (Type AsmType in Asm.GetTypes())//Проверяем все имеющиеся типы данных (классы)
             {
-                if (typeof(IRabNetDataLayer).IsAssignableFrom(AsmType))
-                {
+                if (typeof(IRabNetDataLayer).IsAssignableFrom(AsmType)) {
                     IRabNetDataLayer db = (IRabNetDataLayer)Activator.CreateInstance(AsmType);
                     return db;
                 }
@@ -237,10 +233,9 @@ namespace rabnet
         public string GetDBGuid()
         {
             string guid = options().getOption("db", "guid", Options.OPT_LEVEL.FARM);
-            if (guid == "" || guid == "0")
-            {
+            if (guid == "" || guid == "0") {
                 guid = Guid.NewGuid().ToString();
-                options().setOption("db", "guid", Options.OPT_LEVEL.FARM , guid);
+                options().setOption("db", "guid", Options.OPT_LEVEL.FARM, guid);
             }
             return guid;
         }
@@ -262,5 +257,5 @@ namespace rabnet
             }
         }
 
-	}
+    }
 }

@@ -162,11 +162,11 @@
             // 
             // columnHeader7
             // 
-            this.columnHeader7.Text = "Мертвых";
+            this.columnHeader7.Text = "Мертворожденные";
             // 
             // columnHeader8
             // 
-            this.columnHeader8.Text = "Затоптала";
+            this.columnHeader8.Text = "Потеряно";
             // 
             // columnHeader9
             // 

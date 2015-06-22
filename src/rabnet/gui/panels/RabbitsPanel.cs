@@ -1,4 +1,7 @@
-﻿using System;
+﻿#if DEBUG
+    #define NOCATCH
+#endif
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -123,6 +126,7 @@ namespace rabnet.panels
                 miGenetic.Visible = false;
 
             if (sex < 0) return;
+
             misPrint.Visible =
                 plemMenuItem.Visible =
                 miKill.Visible =
@@ -153,10 +157,12 @@ namespace rabnet.panels
             if (sex == 4) {
                 misFemale.Visible = proholostMenuItem.Visible = okrolMenuItem.Visible = true;
             }
-            if (multi > 1 || (multi == 1 && listView1.SelectedItems[0].SubItems[NFIELD].Text[0] == '['))
+            if (multi > 1 || (multi == 1 && listView1.SelectedItems[0].SubItems[NFIELD].Text[0] == '[')) {
                 miPlanReplace.Visible = true;
-            if (sex == 2)
+            }
+            if (sex == 2) {
                 misFemale.Visible = miLust.Visible = true;
+            }
         }
 
         public override ContextMenuStrip getMenu()
@@ -168,15 +174,20 @@ namespace rabnet.panels
         private void miPassport_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count != 1) return;
+#if !NOCATCH
             try {
+#endif
                 RabbitInfo ri = new RabbitInfo((listView1.SelectedItems[0].Tag as AdultRabbit).ID);
                 ri.Working += new WorkingHandler(MainForm.StillWorking);
-                if (ri.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                if (ri.ShowDialog() == DialogResult.OK && !MainForm.MustClose) {
                     _rsb.Run();
+                }
+#if !NOCATCH
             } catch (Exception exc) {
                 MessageBox.Show(exc.Message);
                 _rsb.Run();
             }
+#endif
         }
 
         void ri_Working()
@@ -194,7 +205,9 @@ namespace rabnet.panels
         private int GroupCount()
         {
             String s = listView1.SelectedItems[0].SubItems[NFIELD].Text;
-            if (s[0] == '[') return int.Parse(s.Substring(1, s.Length - 2));
+            if (s[0] == '[') {
+                return int.Parse(s.Substring(1, s.Length - 2));
+            }
             return 1;
         }
 
@@ -214,8 +227,9 @@ namespace rabnet.panels
                 }
                 c += t;
             }
-            if (s[0] == '[')
+            if (s[0] == '[') {
                 int.TryParse(s.Substring(1, s.Length - 2), out c); //c = int.Parse(s.Substring(1, s.Length - 2));
+            }
             return c;
         }
 
@@ -223,8 +237,9 @@ namespace rabnet.panels
         {
             int rows = listView1.SelectedItems.Count;
             int cnt = 0;
-            foreach (ListViewItem li in listView1.SelectedItems)
+            foreach (ListViewItem li in listView1.SelectedItems) {
                 cnt += selCount(li.Index);
+            }
             _rsb.SetText(3, String.Format("Выбрано {0:d} строк - {1:d} кроликов", rows, cnt));
         }
 
@@ -257,13 +272,15 @@ namespace rabnet.panels
                 }
             }
             int isx = 3;
+            //todo switch
             if (sx == "?") isx = 0;
             if (sx == "м") isx = 1;
             if (sx == "ж") isx = 2;
             if (sx == "S") isx = 4;
             bool kids = false;
-            if (listView1.SelectedItems.Count == 1 && listView1.SelectedItems[0].SubItems[NFIELD].Text[0] == '+')
+            if (listView1.SelectedItems.Count == 1 && listView1.SelectedItems[0].SubItems[NFIELD].Text[0] == '+') {
                 kids = true;
+            }
             setMenu(isx, listView1.SelectedItems.Count, kids);
         }
 
@@ -300,19 +317,19 @@ namespace rabnet.panels
             try {
 #endif
 
-                DialogResult res = (new IncomeForm()).ShowDialog();
+            DialogResult res = (new IncomeForm()).ShowDialog();
 
-                if (res == DialogResult.Ignore) {
+            if (res == DialogResult.Ignore) {
 #if !DEMO
-                    if (new EPasportForm(true).ShowDialog() == DialogResult.OK && !MainForm.MustClose) {
-                        _rsb.Run();
-                    }
+                if (new EPasportForm(true).ShowDialog() == DialogResult.OK && !MainForm.MustClose) {
+                    _rsb.Run();
+                }
 #else
                 DemoErr.DemoNoModuleMsg();
 #endif
-                } else if (res == DialogResult.OK && !MainForm.MustClose) {
-                    _rsb.Run();
-                }
+            } else if (res == DialogResult.OK && !MainForm.MustClose) {
+                _rsb.Run();
+            }
 #if !DEBUG
             } catch (Exception exc) {
                 MessageBox.Show(exc.Message);

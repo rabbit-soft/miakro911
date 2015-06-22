@@ -233,8 +233,7 @@ namespace rabnet.forms
             } else {
                 button8.Enabled = true;
             }
-            overallBab.Value = _rab.KidsOverAll;
-            deadBab.Value = _rab.KidsLost;
+            overallBab.Value = _rab.KidsOverAll;            
             okrolCount.Value = _rab.Status;
 
             if (_rabId > 0) {
@@ -242,6 +241,24 @@ namespace rabnet.forms
                 riSuckersPanel1.Fill(_rab);
                 riFucksPanel1.SetRabbit(_rab);
             }
+
+
+            nudAliveChildren.Value = _rab.GetAliveChildrensCount();
+
+            int deadChildrenCount = 0;
+            Dictionary<string, int> dr = _rab.GetDeadChildrensCounts();
+            // счиатем total
+            foreach (KeyValuePair<string, int> kvp in dr) {
+                deadChildrenCount += kvp.Value; 
+            }
+            // заполняем данные и проценты
+            foreach (KeyValuePair<string, int> kvp in dr) {
+                ListViewItem lvi = new ListViewItem(kvp.Key);
+                lvi.SubItems.Add(kvp.Value.ToString());
+                lvi.SubItems.Add(((float)kvp.Value / deadChildrenCount * 100).ToString("F2"));
+                lvChildrenDeads.Items.Add(lvi);
+            }
+            nudDeadChildren.Value = deadChildrenCount;          
         }
 
         #region tabs_modify
@@ -256,22 +273,28 @@ namespace rabnet.forms
 
         private void addMaleTabs()
         {
-            if (!tabControl1.TabPages.Contains(tpMale))
+            if (!tabControl1.TabPages.Contains(tpMale)) {
                 tabControl1.TabPages.Insert(1, tpMale);
-            if (!tabControl1.TabPages.Contains(tpWeight))
+            }
+            if (!tabControl1.TabPages.Contains(tpWeight)) {
                 tabControl1.TabPages.Insert(2, tpWeight);
+            }
         }
 
         private void addFemaleTabs()
         {
-            if (!tabControl1.TabPages.Contains(tpFemale))
+            if (!tabControl1.TabPages.Contains(tpFemale)) {
                 tabControl1.TabPages.Insert(1, tpFemale);
-            if (!tabControl1.TabPages.Contains(tpFucks))
+            }
+            if (!tabControl1.TabPages.Contains(tpFucks)) {
                 tabControl1.TabPages.Insert(2, tpFucks);
-            if (!tabControl1.TabPages.Contains(tpYoungers))
+            }
+            if (!tabControl1.TabPages.Contains(tpYoungers)) {
                 tabControl1.TabPages.Insert(3, tpYoungers);
-            if (!tabControl1.TabPages.Contains(tpWeight))
+            }
+            if (!tabControl1.TabPages.Contains(tpWeight)) {
                 tabControl1.TabPages.Insert(4, tpWeight);
+            }
         }
         #endregion tabs_modify
 
@@ -288,8 +311,9 @@ namespace rabnet.forms
                     cb.SelectedIndex = id;
                 }
             }
-            if (cb.SelectedIndex < 0)
+            if (cb.SelectedIndex < 0) {
                 cb.SelectedIndex = 0;
+            }
         }
 
         private void fillCatalogs(int what)
@@ -317,14 +341,16 @@ namespace rabnet.forms
 
             int sx = 0;
             String end = "";
-            if (_rab.Sex == Rabbit.SexType.MALE)
+            if (_rab.Sex == Rabbit.SexType.MALE) {
                 sx = 1;
+            }
             if (_rab.Sex == Rabbit.SexType.FEMALE) {
                 end = "а";
                 sx = 2;
             }
-            if (_rab.Group > 1)
+            if (_rab.Group > 1) {
                 end = "ы";
+            }
             _surnames = cts.getSurNames(2, end);
             _secnames = cts.getSurNames(1, end);
             fillList(surname, _surnames, _rab.SurnameID);
@@ -405,8 +431,7 @@ namespace rabnet.forms
                 }
                 _rab.NoKuk = nokuk.Checked;
                 _rab.NoLact = nolact.Checked;
-                _rab.KidsOverAll = (int)overallBab.Value;
-                _rab.KidsLost = (int)deadBab.Value;
+                _rab.KidsOverAll = (int)overallBab.Value;                
             }
             //rab.VaccineEnd = dtp_vacEnd.Value.Date;
             _rab.Commit();
@@ -663,7 +688,7 @@ namespace rabnet.forms
             } else {
                 if (_rab.Sex == Rabbit.SexType.VOID) { //todo switch
                     setSex(0);
-                }else if (_rab.Sex == Rabbit.SexType.MALE) {
+                } else if (_rab.Sex == Rabbit.SexType.MALE) {
                     setSex(1);
                 } else if (_rab.Sex == Rabbit.SexType.FEMALE) {
                     setSex(2);
@@ -686,8 +711,8 @@ namespace rabnet.forms
                 MessageBox.Show("У Производителя должно быть имя");
                 if (_rab.Status == 1 || _rab.Age >= _mkcandidate) {
                     maleStatus.SelectedIndex = 1;
-                } else { 
-                    maleStatus.SelectedIndex = 0; 
+                } else {
+                    maleStatus.SelectedIndex = 0;
                 }
             }
             _manual = true;
@@ -703,6 +728,12 @@ namespace rabnet.forms
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             working();
+        }
+
+        private void lvChildrenDeads_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
+        {
+            e.Cancel = true;
+            e.NewWidth = (sender as ListView).Columns[e.ColumnIndex].Width;
         }
 
     }

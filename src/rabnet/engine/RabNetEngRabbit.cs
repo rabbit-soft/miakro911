@@ -63,6 +63,7 @@ namespace rabnet
         private string _tag = "";
         private OneRabbit[] _neighbors = null;
         private RabNetEngine _eng = null;
+
         public int Mom = 0;
         /// <summary>
         /// Нужно для логирования при Клонировании
@@ -113,14 +114,18 @@ namespace rabnet
             get
             {
                 string[] values = this.RawAddress.Split(',');
-                if (values.Length < 3)
+                if (values.Length < 3) {
                     return false;
-                if (Building.ParseType(values[3]) == BuildingType.Jurta && values[2] == "0" && values[5] == "1")
+                }
+                if (Building.ParseType(values[3]) == BuildingType.Jurta && values[2] == "0" && values[5] == "1") {
                     return true;
-                if (Building.ParseType(values[3]) == BuildingType.Female && values[5] == "1")
+                }
+                if (Building.ParseType(values[3]) == BuildingType.Female && values[5] == "1") {
                     return true;
-                if (Building.ParseType(values[3]) == BuildingType.DualFemale && ((values[2] == "0" && values[5][0] == '1') || (values[2] == "1" && values[5][1] == '1')))
+                }
+                if (Building.ParseType(values[3]) == BuildingType.DualFemale && ((values[2] == "0" && values[5][0] == '1') || (values[2] == "1" && values[5][1] == '1'))) {
                     return true;
+                }
                 return false;
             }
         }
@@ -132,8 +137,9 @@ namespace rabnet
         {
             get
             {
-                if (_id == 0)
+                if (_id == 0) {
                     return _eng.db().makeName(_nameID, _surnameID, _secnameID, Group, Sex);
+                }
                 return this.NameFull;
             }
         }
@@ -145,8 +151,9 @@ namespace rabnet
         {
             get
             {
-                if (_rabVacs == null)
+                if (_rabVacs == null) {
                     _rabVacs = _eng.db().GetRabVac(_id);
+                }
                 return _rabVacs;
             }
         }
@@ -159,8 +166,9 @@ namespace rabnet
             get
             {
                 int c = 0;
-                foreach (YoungRabbit r in Youngers)
+                foreach (YoungRabbit r in Youngers) {
                     c += r.Group;
+                }
                 return c;
             }
         }
@@ -172,8 +180,9 @@ namespace rabnet
         {
             get
             {
-                if (_youngers == null)
+                if (_youngers == null) {
                     return _youngers = _eng.db().GetYoungers(_id);
+                }
                 return _youngers;
             }
         }
@@ -181,8 +190,9 @@ namespace rabnet
         {
             get
             {
-                if (_neighbors == null)
+                if (_neighbors == null) {
                     _neighbors = _eng.db().GetNeighbors(_id);
+                }
                 return _neighbors;
             }
         }
@@ -191,8 +201,9 @@ namespace rabnet
         {
             get
             {
-                if (String.IsNullOrEmpty(_rabGenoms))
+                if (String.IsNullOrEmpty(_rabGenoms)) {
                     _rabGenoms = _eng.db().GetRabGenoms(_id);
+                }
                 return _rabGenoms;
             }
         }
@@ -207,27 +218,38 @@ namespace rabnet
             if (_id == 0) return;
 
             if (this.WasNameID != this.NameID) {
-                if (Group > 1) throw new ExNotOne("переименовать");
+                if (Group > 1) {
+                    throw new ExNotOne("переименовать");
+                }
                 _eng.logs().log(LogType.RENAME, ID, 0, this.AddressSmall, "", _eng.db().makeName(this.WasNameID, 0, 0, 1, this.Sex));
             }
-            if (_origin != null && _origin.Sex != this.Sex)
+            if (_origin != null && _origin.Sex != this.Sex) {
                 _eng.logs().log(LogType.SET_SEX, ID, 0, this.AddressSmall, "", String.Format("{0:s} -> {1:s}", Rabbit.SexToRU(_origin.Sex), Rabbit.SexToRU(this.Sex)));
-            if (_origin != null && _origin.BirthDay != this.BirthDay)
+            }
+            if (_origin != null && _origin.BirthDay != this.BirthDay) {
                 _eng.logs().log(LogType.CH_RAB_BIRTH, ID, 0, this.AddressSmall, "", String.Format("{0:s} -> {1:s}", _origin.BirthDay.ToShortDateString(), this.BirthDay.ToShortDateString()));
-            if (_origin != null && _origin.BreedID != this.BreedID)
+            }
+            if (_origin != null && _origin.BreedID != this.BreedID) {
                 _eng.logs().log(LogType.CH_RAB_BREED, ID, 0, this.AddressSmall, "", String.Format("{0:s} -> {1:s}", _origin.BreedName, this.BreedName));
-            if (_origin != null && _origin.Group != this.Group)
+            }
+            if (_origin != null && _origin.Group != this.Group) {
                 _eng.logs().log(LogType.CH_RAB_GROUP, ID, 0, this.AddressSmall, "", String.Format("{0:d} -> {1:d}", _origin.Group, this.Group));
-            if (_origin != null && _origin.SurnameID != this.SurnameID)
+            }
+            if (_origin != null && _origin.SurnameID != this.SurnameID) {
                 _eng.logs().log(LogType.CH_RAB_SURNAME, ID, 0, this.AddressSmall, "", String.Format("{0:d} -> {1:d}", _origin.SurnameID, this.SurnameID));
-            if (_origin != null && _origin.SecnameID != this.SecnameID)
+            }
+            if (_origin != null && _origin.SecnameID != this.SecnameID) {
                 _eng.logs().log(LogType.CH_RAB_SECNAME, ID, 0, this.AddressSmall, "", String.Format("{0:d} -> {1:d}", _origin.SecnameID, this.SecnameID));
-            if (_origin != null && _origin.Zone != this.Zone)
+            }
+            if (_origin != null && _origin.Zone != this.Zone) {
                 _eng.logs().log(LogType.CH_RAB_ZONE, ID, 0, this.AddressSmall, "", String.Format("{0:d} -> {1:d}", _origin.Zone, this.Zone));
-            if (_origin != null && _origin.Rate != this.Rate)
+            }
+            if (_origin != null && _origin.Rate != this.Rate) {
                 _eng.logs().log(LogType.CH_RAB_RATE, ID, 0, this.AddressSmall, "", String.Format("{0:d} -> {1:d}", _origin.Rate, this.Rate));
-            if (_origin != null && _origin.Status != this.Status)
+            }
+            if (_origin != null && _origin.Status != this.Status) {
                 _eng.logs().log(LogType.CH_RAB_STATE, ID, 0, this.AddressSmall, "", String.Format("{0:s} -> {1:s}", _origin.FStatus(), this.FStatus()));
+            }
             //_eng.logs().log(RabNetLogs.LogType.RAB_CHANGE, ID);
             _eng.db().SetRabbit(this);
             loadData();
@@ -248,9 +270,9 @@ namespace rabnet
 
         public void SetBon(String bon)
         {
-            if (ID == 0)
+            if (ID == 0) {
                 this.Bon = bon;
-            else {
+            } else {
                 _eng.logs().log(LogType.BON, ID, 0, "", "", bon);
                 _eng.db().setBon(_id, bon);
             }
@@ -264,19 +286,28 @@ namespace rabnet
         /// <param name="syntetic">Искусственное осеменение</param>
         public void FuckIt(int maleId, int daysPast, bool syntetic)
         {
-            if (Sex != Rabbit.SexType.FEMALE)
+            if (Sex != Rabbit.SexType.FEMALE) {
                 throw new ExNotFemale(this);
-            if (Age < _eng.brideAge())
+            }
+            if (Age < _eng.brideAge()) {
                 throw new ExNotFucker(this);
-            if (EventDate != DateTime.MinValue)
+            }
+            if (EventDate != DateTime.MinValue) {
                 throw new ExAlreadyFucked(this);
-            if (_nameID == 0) throw new ExNoName();
-            if (Group > 1) throw new ExNotOne("случить");
+            }
+            if (_nameID == 0) {
+                throw new ExNoName();
+            }
+            if (Group > 1) {
+                throw new ExNotOne("случить");
+            }
             RabNetEngRabbit f = _eng.getRabbit(maleId);
-            if (f.Sex != Rabbit.SexType.MALE)
+            if (f.Sex != Rabbit.SexType.MALE) {
                 throw new ExNotMale(f);
-            if (f.Status < 1)
+            }
+            if (f.Status < 1) {
                 throw new ExNotFucker(f);
+            }
             //if (daysPast <0)
             //throw new ExBadDate(daysPast.ToString());
             _eng.logs().log(LogType.FUCK, ID, maleId, AddressSmall, f.AddressSmall,
@@ -294,10 +325,16 @@ namespace rabnet
         /// <param name="when">Дата установки прохолоста</param>
         public void ProholostIt(int daysPast)
         {
-            if (Sex != Rabbit.SexType.FEMALE) throw new ExNotFemale(this);
-            if (EventDate == DateTime.MinValue) throw new ExNotFucked(this);
+            if (Sex != Rabbit.SexType.FEMALE) {
+                throw new ExNotFemale(this);
+            }
+            if (EventDate == DateTime.MinValue) {
+                throw new ExNotFucked(this);
+            }
             //if (when > DateTime.Now) throw new ExBadDate(when);
-            if (daysPast < 0) throw new ExBadPastDays();
+            if (daysPast < 0) {
+                throw new ExBadPastDays();
+            }
 
             _eng.logs().log(LogType.PROHOLOST, ID, 0, AddressSmall, "", daysPast != 0 ? String.Format(" {0:d} дней назад", daysPast) : "");
             _eng.db().makeProholost(this._id, daysPast);
@@ -316,8 +353,12 @@ namespace rabnet
         /// <param name="dead">Количество родившихся мертвых крольчат</param>
         public void OkrolIt(int daysPast, int children, int dead)
         {
-            if (Sex != Rabbit.SexType.FEMALE) throw new ExNotFemale(this);
-            if (EventDate == DateTime.MinValue) throw new ExNotFucked(this);
+            if (Sex != Rabbit.SexType.FEMALE) {
+                throw new ExNotFemale(this);
+            }
+            if (EventDate == DateTime.MinValue) {
+                throw new ExNotFucked(this);
+            }
             //if (when > DateTime.Now) throw new ExBadDate(when);  
 
             int born = _eng.db().makeOkrol(this._id, daysPast, children, dead);
@@ -403,7 +444,10 @@ namespace rabnet
                 clone.KillIt(0, DeadReason_Static.Dead_KidsCount, "при подсчете", clone.Group);
             }
 
-            _eng.db().CountKids(_id, dead, killed, added, y.ID);
+            /// todo при родах если есть мертвые крольчата, то они не записываются в рожденые, но пишутся в мертвые
+            /// но если умирает кролик, который при родах был жив, то он тоже пишется в мертвые
+            /// так что здесь мы всех равняем к притоптаным, а это не правильно
+            _eng.db().CountKids(_id, 0, dead + killed, added, y.ID);
         }
 
         /// <summary>
@@ -498,12 +542,24 @@ namespace rabnet
                     }
                 }
                 _eng.logs().log(LogType.OKROL, ID, 0, AddressSmall, "", "-=![[Отмена окрола]!=-");
-            } else
+            } else {
                 _eng.logs().log(LogType.PROHOLOST, ID, 0, AddressSmall, "", "-=![Отмена прохолоста]!=-");
+            }
 
 
             Engine.db().CancelFuckEnd(f.Id);
         }
+
+        public int GetAliveChildrensCount()
+        {
+            return _eng.db().GetAliveChildrenCount(_id, this._origin.Sex);            
+        }
+
+        public Dictionary<string, int> GetDeadChildrensCounts()
+        {            
+            return _eng.db().GetDeadChildrenCount(_id, this.Sex);            
+        }
+
 #if !DEMO
         public void SperTake()
         {

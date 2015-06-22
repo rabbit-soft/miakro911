@@ -67,6 +67,7 @@
             // 
             // nudDead
             // 
+            this.nudDead.Enabled = false;
             this.nudDead.Location = new System.Drawing.Point(118, 127);
             this.nudDead.Name = "nudDead";
             this.nudDead.Size = new System.Drawing.Size(70, 20);
@@ -101,6 +102,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
+            this.label4.Enabled = false;
             this.label4.Location = new System.Drawing.Point(24, 129);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(47, 13);
@@ -112,9 +114,9 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(24, 155);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(67, 13);
+            this.label5.Size = new System.Drawing.Size(56, 13);
             this.label5.TabIndex = 7;
-            this.label5.Text = "Притоптано";
+            this.label5.Text = "Потеряно";
             // 
             // btOk
             // 

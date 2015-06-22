@@ -9,7 +9,7 @@ namespace db.mysql
     class RabbitsDataGetter : RabNetDataGetterBase
     {
         public RabbitsDataGetter(MySqlConnection sql, Filters opts) : base(sql, opts) { }
-      
+
         public override IData NextItem() /*получение одной записи в Поголовье*/
         {
             return RabbitGetter.fillAdultRabbit(_rd);
@@ -18,8 +18,9 @@ namespace db.mysql
         protected override string getQuery()
         {
             String fld = "b_name";
-            if (options.safeBool("shr"))
+            if (options.safeBool("shr")) {
                 fld = "b_short_name";
+            }
             return String.Format(@"SELECT * FROM (
     SELECT 
         r_id, 
@@ -63,7 +64,7 @@ namespace db.mysql
     WHERE r_parent=0 
     GROUP by r_id  #-- для вакцин
     ORDER BY name
-) c {2:s};", 
+) c {2:s};",
             (options.safeBool("dbl") ? "2" : "1"), fld, makeWhere(),
             String.Format("IF(rvac.v_id={0:d},'S',rvac.v_id)", Vaccine.V_ID_LUST));///чтобы не перегружать текст SQL запроса
         }
@@ -71,8 +72,7 @@ namespace db.mysql
         public String makeWhere()
         {
             String res = "";
-            if (options.ContainsKey("sx"))
-            {
+            if (options.ContainsKey("sx")) {
                 String sres = "";
                 if (options["sx"].Contains("m"))
                     sres = "r_sex='male'";
@@ -92,8 +92,7 @@ namespace db.mysql
                 res = addWhereAnd(res, "(weight>=" + options["wg"] + ")");
             if (options.ContainsKey("Wg"))
                 res = addWhereAnd(res, "(weight<=" + options["Wg"] + ")");
-            if (options.ContainsKey(Filters.MALE) && options.safeValue("sx", "m").Contains("m"))
-            {
+            if (options.ContainsKey(Filters.MALE) && options.safeValue("sx", "m").Contains("m")) {
                 String stat = "";
                 if (options[Filters.MALE].Contains("b"))
                     stat = "r_status=0";
@@ -103,8 +102,7 @@ namespace db.mysql
                     stat = addWhereOr(stat, "r_status=2");
                 res = addWhereAnd(res, "(r_sex!='male' OR (r_sex='male' AND (" + stat + ")))");
             }
-            if (options.ContainsKey(Filters.FEMALE) && options.safeValue("sx", "f").Contains("f"))
-            {
+            if (options.ContainsKey(Filters.FEMALE) && options.safeValue("sx", "f").Contains("f")) {
                 String stat = "";
                 if (options[Filters.FEMALE].Contains("g"))
                     stat = "r_born>(NOW()-INTERVAL " + options["brd"] + " DAY)";
@@ -116,8 +114,7 @@ namespace db.mysql
                     stat = addWhereOr(stat, "(r_status>1 OR (r_status=1 AND r_event_date IS NOT NULL))");
                 res = addWhereAnd(res, "(r_sex!='female' OR (r_sex='female' AND (" + stat + ")))");
             }
-            if (options.ContainsKey("ms") && options.safeValue("sx", "m").Contains("m"))
-            {
+            if (options.ContainsKey("ms") && options.safeValue("sx", "m").Contains("m")) {
                 String stat = "";
                 if (options["ms"] == "1")
                     stat = "SUBSTR(r_flags,1,1)='0' AND SUBSTR(r_flags,3,1)!='1'";
@@ -127,8 +124,7 @@ namespace db.mysql
                     stat = "SUBSTR(r_flags,1,1)='1'";
                 res = addWhereAnd(res, "(r_sex!='male' OR (r_sex='male' AND " + stat + "))");
             }
-            if (options.ContainsKey("fs") && options.safeValue("sx", "f").Contains("f"))
-            {
+            if (options.ContainsKey("fs") && options.safeValue("sx", "f").Contains("f")) {
                 String stat = "";
                 if (options["fs"] == "1")
                     stat = "SUBSTR(r_flags,1,1)='0' AND SUBSTR(r_flags,3,1)!='1'";
@@ -142,38 +138,30 @@ namespace db.mysql
                 res = addWhereAnd(res, "(r_sex!='female' OR (r_sex='female' AND SUBSTR(r_flags,4,1)=" + (int.Parse(options["ku"]) + 1).ToString() + "))");
             if (options.ContainsKey("nm"))
                 res = addWhereAnd(res, "(name like '%" + options["nm"] + "%')");
-            if (options.ContainsKey("pr") && options.safeValue("sx", "f").Contains("f"))
-            {
+            if (options.ContainsKey("pr") && options.safeValue("sx", "f").Contains("f")) {
                 String stat = "";
                 if (options["pr"] == "1")
                     stat = "r_event_date IS NULL";
-                if (options["pr"] == "2")
-                {
+                if (options["pr"] == "2") {
 
-                    if (options.ContainsKey("pf") || options.ContainsKey("Pf"))
-                    {
+                    if (options.ContainsKey("pf") || options.ContainsKey("Pf")) {
                         if (options.ContainsKey("pf"))
                             stat = "(r_event_date<=NOW()-INTERVAL " + options["pf"] + " DAY)";
-                        if (options.ContainsKey("Pf"))
-                        {
+                        if (options.ContainsKey("Pf")) {
                             stat = addWhereAnd(stat, "(r_event_date>=NOW()-INTERVAL " + (options.safeInt("Pf") + 1) + " DAY)");
                         }
-                    }
-                    else
+                    } else
                         stat = "r_event_date IS NOT NULL";
                 }
                 res = addWhereAnd(res, "(r_sex!='female' OR (r_sex='female' AND (" + stat + ")))");
             }
             if (options.ContainsKey("br"))
                 res = addWhereAnd(res, "(r_breed=" + options["br"] + ")");
-            if (options.ContainsKey("Cf"))
-            {
-                if (options.ContainsKey("Ct"))
-                {
+            if (options.ContainsKey("Cf")) {
+                if (options.ContainsKey("Ct")) {
                     res = addWhereAnd(res, String.Format("(r_group BETWEEN {0:s} AND {1:s})", options["Cf"], options["Ct"]));
-                }
-                else
-                    res = addWhereAnd(res, String.Format("r_group{0:s}{1:s}",options["cSign"],options["Cf"]));
+                } else
+                    res = addWhereAnd(res, String.Format("r_group{0:s}{1:s}", options["cSign"], options["Cf"]));
             }
             if (res == "") return "";
             return " WHERE " + res;
@@ -192,6 +180,6 @@ namespace db.mysql
         (options.safeBool("dbl") ? "2" : "1"),
         makeWhere()
             );
-        }       
+        }
     }
 }
