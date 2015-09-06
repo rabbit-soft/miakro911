@@ -192,6 +192,18 @@ namespace rabnet
             }
             return res;
         }
+        /// <summary>
+        /// Количество кроликов в клетке
+        /// </summary>
+        /// <returns></returns>
+        public int GroupFullCount()
+        {
+            int res = this.Group;
+            if (Sex == Rabbit.SexType.FEMALE && _kidsTotalCount > 0) {
+                res += _kidsTotalCount;
+            }
+            return res;
+        }
         public string FFlags()
         {
             String flg = _flags;

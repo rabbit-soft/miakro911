@@ -93,7 +93,7 @@ namespace rabnet.panels
             if (!manual || MainForm.MustClose) return;
 
             MainForm.StillWorking();
-            makeSelectedCount();
+            this.makeSelectedCount();
             if (listView1.SelectedItems.Count != 1) return;
 
             RabTreeData dt = Engine.db().rabbitGenTree((listView1.SelectedItems[0].Tag as AdultRabbit).ID);
@@ -116,7 +116,7 @@ namespace rabnet.panels
         /// <param name="kids"></param>
         private void setMenu(int sex, int multi, bool kids)
         {
-            ///miIncome.Visible alvays true
+            ///miIncome.Visible always true
             miPassport.Visible = miBon.Visible =
                 proholostMenuItem.Visible = miCountKids.Visible = okrolMenuItem.Visible = miFucks.Visible = miLust.Visible =
                 miBoysOut.Visible = miYoungersOut.Visible = misFemale.Visible =
@@ -151,8 +151,9 @@ namespace rabnet.panels
                 if (sex == 1 || sex == 2 || sex == 4) {
                     svidMenuItem.Visible = true;
                 }
-            } else if (multi == 2)
+            } else if (multi == 2) {
                 miPlaceExchange.Visible = true;
+            }
 
             if (sex == 4) {
                 misFemale.Visible = proholostMenuItem.Visible = okrolMenuItem.Visible = true;
@@ -211,34 +212,34 @@ namespace rabnet.panels
             return 1;
         }
 
-        private int selCount(int index)
-        {
-            if (index < 0) return 0;
-            String s = listView1.Items[index].SubItems[NFIELD].Text;
-            int c = 1;
-            // если есть подсосные\гнездовые
-            if (s[0] == '+') {
-                int t = 0;
-                string sTmp = s.TrimStart('+');
-                if (sTmp.Contains("(")) {
-                    int.TryParse(sTmp.Split(' ')[0], out t);
-                } else {
-                    int.TryParse(sTmp, out t);
-                }
-                c += t;
-            }
-            if (s[0] == '[') {
-                int.TryParse(s.Substring(1, s.Length - 2), out c); //c = int.Parse(s.Substring(1, s.Length - 2));
-            }
-            return c;
-        }
+        //private int selCount(int index)
+        //{
+        //    if (index < 0) return 0;
+        //    String s = listView1.Items[index].SubItems[NFIELD].Text;
+        //    int c = 1;
+        //    // если есть подсосные\гнездовые
+        //    if (s[0] == '+') {
+        //        int t = 0;
+        //        string sTmp = s.TrimStart('+');
+        //        if (sTmp.Contains("(")) {
+        //            int.TryParse(sTmp.Split(' ')[0], out t);
+        //        } else {
+        //            int.TryParse(sTmp, out t);
+        //        }
+        //        c += t;
+        //    }
+        //    if (s[0] == '[') {
+        //        int.TryParse(s.Substring(1, s.Length - 2), out c); //c = int.Parse(s.Substring(1, s.Length - 2));
+        //    }
+        //    return c;
+        //}
 
         private void makeSelectedCount()
         {
             int rows = listView1.SelectedItems.Count;
-            int cnt = 0;
-            foreach (ListViewItem li in listView1.SelectedItems) {
-                cnt += selCount(li.Index);
+            int cnt = 0;            
+            foreach (ListViewItem li in listView1.SelectedItems) {                
+                cnt += (li.Tag as AdultRabbit).GroupFullCount();
             }
             _rsb.SetText(3, String.Format("Выбрано {0:d} строк - {1:d} кроликов", rows, cnt));
         }
