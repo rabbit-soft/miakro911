@@ -26,11 +26,20 @@ namespace db.mysql
 
         internal static AdultRabbit fillAdultRabbit(MySqlDataReader rd)
         {
-            return new AdultRabbit(rd.GetInt32("r_id"), rd.GetString("name"), rd.GetString("r_sex"),
+            return new AdultRabbit(
+                rd.GetInt32("r_id"), 
+                rd.GetString("name"), 
+                rd.GetString("r_sex"),
                 rd.IsDBNull(rd.GetOrdinal("r_born")) ? DateTime.MinValue : rd.GetDateTime("r_born"),
-                rd.GetString("breed"), rd.GetInt32("r_group"),
-                rd.GetString("r_bon"), rd.GetString("place"), rd.GetString("r_notes"),
-                rd.GetInt32("r_rate"), rd.GetString("r_flags"), rd.GetInt32("weight"), rd.GetInt32("r_status"),
+                rd.GetString("breed"), 
+                rd.GetInt32("r_group"),
+                rd.GetString("r_bon"), 
+                rd.GetString("place"), 
+                rd.GetString("r_notes"),
+                rd.GetInt32("r_rate"), 
+                rd.GetString("r_flags"), 
+                rd.GetInt32("weight"), 
+                rd.GetInt32("r_status"),
                 rd.IsDBNull(rd.GetOrdinal("r_event_date")) ? DateTime.MinValue : rd.GetDateTime("r_event_date"),
                 rd.IsDBNull(rd.GetOrdinal("suckers")) ? 0 : rd.GetInt32("suckers"),
                 rd.IsDBNull(rd.GetOrdinal("suckGroups")) ? 0 : rd.GetInt32("suckGroups"),

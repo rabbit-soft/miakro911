@@ -552,6 +552,9 @@ namespace rabnet
 
         public int GetAliveChildrensCount()
         {
+            if (_id == 0) {
+                return 0;
+            }
             return _eng.db().GetAliveChildrenCount(_id, this._origin.Sex);            
         }
 
