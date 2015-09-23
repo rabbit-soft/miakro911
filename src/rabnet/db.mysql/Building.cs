@@ -124,8 +124,9 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) {1:s} ORDER BY m_id;",
             MySqlCommand cmd = new MySqlCommand(@"SELECT b_id,b_farm,b_name FROM buildings WHERE b_parent=" + parent.ToString() + " ORDER BY b_farm ASC;", con);
             MySqlDataReader rd = cmd.ExecuteReader();
             BldTreeData res = par;
-            if (par == null)
+            if (par == null) {
                 res = new BldTreeData(0, 0, "farm");
+            }
 
             List<BldTreeData> lst = new List<BldTreeData>();
             while (rd.Read()) {
@@ -136,8 +137,9 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) {1:s} ORDER BY m_id;",
             }
             rd.Close();
             if (lst.Count > 0) {
-                foreach (BldTreeData td in lst)
+                foreach (BldTreeData td in lst) {
                     getTree(td.ID, con, td);
+                }
                 res.ChildNodes = lst;
             }
             return res;
@@ -151,8 +153,9 @@ rabname(t_busy1,1) r1, rabname(t_busy2,1) r2,rabname(t_busy3,1) r3,rabname(t_bus
 FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) and t_id=" + tier.ToString() + ";", con);
             MySqlDataReader rd = cmd.ExecuteReader();
             Building b = null;
-            if (rd.Read())
+            if (rd.Read()) {
                 b = GetBuilding(rd, false, true);
+            }
             rd.Close();
             return b;
         }
@@ -161,22 +164,26 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) and t_id=" + tier.ToSt
         {
             BuildingList bld = new BuildingList();
             String type = "";
-            if (f.safeValue("tp") != "")
+            if (f.safeValue("tp") != "") {
                 type = "t_type='" + f.safeValue("tp") + "' AND ";
-            if (f.ContainsKey("nest"))
+            }
+            if (f.ContainsKey("nest")) {
                 type = String.Format("(t_type='{0}' OR t_type='{1}' OR t_type='{2}') AND",
                     Building.GetName(BuildingType.Jurta),
                     Building.GetName(BuildingType.Female),
                     Building.GetName(BuildingType.DualFemale));
+            }
             String busy = "";
             if (f.ContainsKey(Filters.FREE)) {
                 busy = "((" + type + "(t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0))";
-                if (f.safeInt("rcnt") > 0)
+                if (f.safeInt("rcnt") > 0) {
                     for (int i = 0; i < f.safeInt("rcnt"); i++) {
                         int r = f.safeInt("r" + i.ToString());
-                        if (r > 0)
+                        if (r > 0) {
                             busy += String.Format(" OR (t_busy1={0:d} OR t_busy2={0:d} OR t_busy3={0:d} OR t_busy4={0:d})", r);
+                        }
                     }
+                }
                 busy += ")";
             }
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT 
@@ -185,8 +192,9 @@ FROM minifarms,tiers
 WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 {0:s} ORDER BY m_id;", busy != "" ? "AND " + busy : ""), sql);
             _logger.Debug("free Buildings cmd:" + cmd.CommandText);
             MySqlDataReader rd = cmd.ExecuteReader();
-            while (rd.Read())
+            while (rd.Read()) {
                 bld.Add(GetBuilding(rd, false, false) as Building);
+            }
             rd.Close();
             return bld;
         }
@@ -229,11 +237,13 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 {0:s} ORDER BY m_id;", busy 
             cmd.CommandText = String.Format(@"SELECT b_id FROM buildings WHERE b_parent={0:d};", bid);
             List<int> bs = new List<int>();
             MySqlDataReader rd = cmd.ExecuteReader();
-            while (rd.Read())
+            while (rd.Read()) {
                 bs.Add(rd.GetInt32(0));
+            }
             rd.Close();
-            foreach (int b in bs)
+            foreach (int b in bs) {
                 setLevel(sql, b, level + 1);
+            }
         }
 
         internal static void replaceBuilding(MySqlConnection sql, int bid, int toBuilding)
@@ -243,8 +253,9 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 {0:s} ORDER BY m_id;", busy 
             int level = 0;
             if (toBuilding != 0) {
                 rd = cmd.ExecuteReader();
-                if (rd.Read())
+                if (rd.Read()) {
                     level = rd.GetInt32(0) + 1;
+                }
                 rd.Close();
             }
             cmd.CommandText = String.Format(@"UPDATE buildings SET b_parent={0:d} WHERE b_id={1:d};", toBuilding, bid);
@@ -257,8 +268,9 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 {0:s} ORDER BY m_id;", busy 
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT COUNT(b_id) FROM buildings WHERE b_parent={0:d};", bid), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             int cnt = 1;
-            if (rd.Read())
+            if (rd.Read()) {
                 cnt = rd.GetInt32(0);
+            }
             rd.Close();
             if (cnt == 0) {
                 cmd.CommandText = String.Format("DELETE FROM buildings WHERE b_id={0:d};", bid);
@@ -395,8 +407,11 @@ t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}'{4:s} WHERE t_id={3:d};", Buildi
         internal static bool farmExists(MySqlConnection sql, int id)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format("SELECT COUNT(*) FROM minifarms WHERE m_id={0:d};", id), sql);
-            if (cmd.ExecuteScalar().ToString() == "0") return false;
-            else return true;
+            if (cmd.ExecuteScalar().ToString() == "0") {
+                return false;
+            } else {
+                return true;
+            }
         }
 
         internal static bool hasRabbits(MySqlConnection sql, int tid)
@@ -438,14 +453,16 @@ WHERE m_id={0:d};", fid), sql);
             BuildingType t1 = BuildingType.None;
             BuildingType t2 = BuildingType.None;
             MySqlDataReader rd = cmd.ExecuteReader();
-            if (rd.Read())
+            if (rd.Read()) {
                 t1 = Building.ParseType(rd.GetString(0));
+            }
             rd.Close();
             if (t[1] != 0) {
                 cmd.CommandText = String.Format(@"SELECT t_type FROM tiers WHERE t_id={0:d};", t[1]);
                 rd = cmd.ExecuteReader();
-                if (rd.Read())
+                if (rd.Read()) {
                     t2 = Building.ParseType(rd.GetString(0));
+                }
                 rd.Close();
             }
             if (t1 != uppertype && !hasRabbits(sql, t[0]))
@@ -460,7 +477,9 @@ WHERE m_id={0:d};", fid), sql);
                     int nid = addNewTier(sql, lowertype);
                     cmd.CommandText = String.Format("UPDATE minifarms SET m_lower={0:d} WHERE m_id={1:d};", nid, fid);
                     cmd.ExecuteNonQuery();
-                } else changeTierType(sql, t[1], lowertype);
+                } else {
+                    changeTierType(sql, t[1], lowertype);
+                }
             }
         }
 
