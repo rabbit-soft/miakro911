@@ -376,6 +376,7 @@ t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}'{4:s} WHERE t_id={3:d};", Buildi
             }
             return result;
         }
+        
         /// <summary>
         /// Добавляет новую МИНИферму
         /// </summary>
@@ -400,6 +401,7 @@ t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}'{4:s} WHERE t_id={3:d};", Buildi
             addBuilding(sql, parent, (name != "" ? name : String.Format("№{0:d}", res)), res);
             return res;
         }
+        
         /// <summary>
         /// Существует ли миниферма
         /// </summary>
