@@ -109,6 +109,8 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
 	
     SetOutPath $INSTDIR\bin\reports
     File ${BinDir}\bin\reports\*.rdl
+	File ${BinDir}\..\PlugIns\*.dll
+	
     SetOutPath $INSTDIR\bin
     
     ######## Temporary fix of bug M0000308
@@ -432,22 +434,8 @@ Function un.onInit
 FunctionEnd
 
 Function un.Reports
-    Delete /REBOOTOK $INSTDIR\bin\reports\zooteh_nofuck.rdl
-    Delete /REBOOTOK $INSTDIR\bin\reports\zooteh.rdl
-    Delete /REBOOTOK $INSTDIR\bin\reports\shed.rdl
-    Delete /REBOOTOK $INSTDIR\bin\reports\replace_plan.rdl
-    Delete /REBOOTOK $INSTDIR\bin\reports\realization.rdl
-    Delete /REBOOTOK $INSTDIR\bin\reports\rabbit.rdl
-    Delete /REBOOTOK $INSTDIR\bin\reports\plem.rdl
-    Delete /REBOOTOK $INSTDIR\bin\reports\okrol_user.rdl
-    Delete /REBOOTOK $INSTDIR\bin\reports\fucks_by_date.rdl
-    Delete /REBOOTOK $INSTDIR\bin\reports\fucker.rdl
-    Delete /REBOOTOK $INSTDIR\bin\reports\empty_rev.rdl
-    Delete /REBOOTOK $INSTDIR\bin\reports\deadreason.rdl
-    Delete /REBOOTOK $INSTDIR\bin\reports\dead.rdl
-    Delete /REBOOTOK $INSTDIR\bin\reports\by_month.rdl
-    Delete /REBOOTOK $INSTDIR\bin\reports\breeds.rdl
-    Delete /REBOOTOK $INSTDIR\bin\reports\age.rdl
+    Delete /REBOOTOK $INSTDIR\bin\reports\*.rdl	
+	Delete /REBOOTOK $INSTDIR\bin\reports\*.dll
 	
 	RmDir /REBOOTOK  $INSTDIR\bin\reports
 FunctionEnd
