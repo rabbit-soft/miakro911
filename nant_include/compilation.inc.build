@@ -264,33 +264,12 @@
 	<target name="plugins" description="Make report plug ins"> 
 		<delete dir="${bindir.plugins}"/>
 		<mkdir dir="${bindir.plugins}"/>
-		<call target="testplugin"/>
 		<call target="populationplugin"/>
 		<call target="okrolplanplugin"/>
 		<call target="FemaleSummary" />
 		<call target="TotalRevisionPlugIn" />
 		<!--еще плагины добавлять здесь,-->
 	</target>	
-	
-	<target name="testplugin" description="test report plugin">
-		<property name="rdlfile" value="${bindir.plugins}/TestPlugIn.test.rdl" />
-		<copy file="${srcdir}/rabnet/ReportPlugIns/TestPlugIn/test.rdl" tofile="${rdlfile}"/>
-		<csc target="library" output="${bindir.plugins}/TestPlugIn.dll" define="RELEASE" optimize="true">
-			<sources>
-				<include name="${srcdir}/rabnet/ReportPlugIns/TestPlugIn/*.cs"/>
-				<include name="${srcdir}/rabnet/ReportPlugIns/TestPlugIn/Properties/*.cs"/>
-			</sources>
-			<resources>
-				<include name="${rdlfile}"/>
-			</resources>
-			<references>
-				<include name="${bindir}/Protected/bin/rabnet.exe" />
-				<include name="${bindir}/Protected/bin/db.Interface.dll" />
-				<include name="${bindir}/Protected/bin/engine.dll" />
-			</references>
-		</csc>
-		<delete file="${bindir.plugins}/TestPlugIn.test.rdl"/>
-	</target>
 	
 	<target name="populationplugin" description="Population report plugin for Tatishevo">
 		<property name="rdlfile" value="${tmpdir}/PopulationPlugIn.population.rdl" />
