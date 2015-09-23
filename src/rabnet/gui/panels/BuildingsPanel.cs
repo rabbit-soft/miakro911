@@ -160,16 +160,19 @@ namespace rabnet.panels
             int fId = 1, j = 0;
             for (int i = 0; i < busyFarmsId.Count; i++) {
                 if (fId < busyFarmsId[i]) {
-                    for (j = fId; j < busyFarmsId[i]; j++)
+                    for (j = fId; j < busyFarmsId[i]; j++) {
                         result.Add(j);
+                    }
                     fId = busyFarmsId[i];
                 }
                 fId++;
             }
-            if (result.Count > MAX_FARMS_COUNT - 1)
+            if (result.Count > MAX_FARMS_COUNT - 1) {
                 result = result.GetRange(0, MAX_FARMS_COUNT - 1);
-            if (fId <= MAX_FARMS_COUNT)
+            }
+            if (fId <= MAX_FARMS_COUNT) {
                 result.Add(fId);
+            }
             return result;
         }
 
@@ -192,9 +195,9 @@ namespace rabnet.panels
                     it.SubItems.Add(Building.GetNameRus(b.Type, _runF.safeBool(Filters.SHORT)));//Ярус
                     it.SubItems.Add(b.Descr(i, _runF.safeBool(Filters.SHORT)));//Отделение
                     String stat = "unk";
-                    if (b.Repair)
+                    if (b.Repair) {
                         stat = "ремонт";
-                    else {
+                    } else {
                         stat = b.Busy[i].ID == 0 ? "-" : b.Busy[i].Name;
                     }
                     it.SubItems.Add(stat);//Статус
@@ -205,16 +208,18 @@ namespace rabnet.panels
                         if (b.NestHeaterCount > 1) nid = i;
                         nst = (b.Nests[nid] == '1') ? "да" : "нет";
                         htr = (b.Heaters[nid] == '0' ? "нет" : (b.Heaters[nid] == '1' ? "выкл" : "вкл"));
-                        if (b.Type == BuildingType.Jurta)
+                        if (b.Type == BuildingType.Jurta) {
                             if ((b.Delims[0] == '1' && i == 0) || (b.Delims[0] == '0' && i == 1)) {
                                 nst = "";
                                 htr = "";
                             }
-                        if (b.Type == BuildingType.Complex)
+                        }
+                        if (b.Type == BuildingType.Complex) {
                             if (i != 0) {
                                 nst = "";
                                 htr = "";
                             }
+                        }
                     }
                     it.SubItems.Add(nst);//Гнездовье
                     it.SubItems.Add(htr);//Грелка
@@ -234,8 +239,9 @@ namespace rabnet.panels
                 res = nd.Text;
                 while (nd != treeView1.Nodes[0]) {
                     nd = nd.Parent;
-                    if (nd != treeView1.Nodes[0])
+                    if (nd != treeView1.Nodes[0]) {
                         res = nd.Text + "/" + res;
+                    }
                 }
             }
             return res;
@@ -259,8 +265,9 @@ namespace rabnet.panels
             TreeNode res = null;
             foreach (TreeNode n in nd.Nodes) {
                 res = searchFarm(tierID, bid, n);
-                if (res != null)
+                if (res != null) {
                     return res;
+                }
             }
             return null;
         }
@@ -277,8 +284,9 @@ namespace rabnet.panels
             //tr.Expand();
             manual = false;
             treeView1.SelectedNode = searchFarm(b.Farm, treeRoot);
-            if (treeView1.SelectedNode != null)
+            if (treeView1.SelectedNode != null) {
                 treeView1.SelectedNode.Expand();
+            }
             treeView1.EndUpdate();
             manual = true;
         }
@@ -294,11 +302,13 @@ namespace rabnet.panels
                     try {
                         rner = Engine.get().getRabbit(b.Busy[i].ID);
                         if (rner.YoungCount != 0) {
-                            foreach (YoungRabbit or in rner.Youngers)
+                            foreach (YoungRabbit or in rner.Youngers) {
                                 livesIn += String.Format(" (+{0:d} в:{1:d})", or.Group, or.Age);
+                            }
                         }
-                        foreach (OneRabbit n in rner.Neighbors)
+                        foreach (OneRabbit n in rner.Neighbors) {
                             livesIn += String.Format("{0:s}[{1:s}]", Environment.NewLine, n.NameFull);
+                        }
                     } catch (RabNetException exc) {
                         _logger.Warn(exc);
                         livesIn = "[!" + exc.Message + "!]";
@@ -317,8 +327,9 @@ namespace rabnet.panels
             int[] tiers = Engine.db().getTiers(farm);
             FarmDrawer.DrawTier t1 = tierFromBuilding(Engine.db().getBuilding(tiers[0]));
             FarmDrawer.DrawTier t2 = null;
-            if (tiers[1] != 0)
+            if (tiers[1] != 0) {
                 t2 = tierFromBuilding(Engine.db().getBuilding(tiers[1]));
+            }
             farmDrawer1.SetFarm(farm, t1, t2);
             updateMenu();
         }
@@ -410,13 +421,16 @@ namespace rabnet.panels
                 Building b2 = li.Tag as Building;
                 if (b2 != b) {
                     b = b2;
-                    for (int i = 0; i < b.Sections; i++)
-                        if (b.Busy[i].ID > 0)
+                    for (int i = 0; i < b.Sections; i++) {
+                        if (b.Busy[i].ID > 0) {
                             f.addRabbit(b.Busy[i].ID);
+                        }
+                    }
                 }
             }
-            if (f.ShowDialog() == DialogResult.OK)
+            if (f.ShowDialog() == DialogResult.OK) {
                 _rsb.Run();
+            }
         }
 
         private void replaceMenuItem_Click(object sender, EventArgs e)
@@ -429,9 +443,11 @@ namespace rabnet.panels
                 Building b2 = li.Tag as Building;
                 if (b2 != b) {
                     b = b2;
-                    for (int i = 0; i < b.Sections; i++)
-                        if (b.Busy[i].ID > 0)
+                    for (int i = 0; i < b.Sections; i++) {
+                        if (b.Busy[i].ID > 0) {
                             f.AddRabbit(b.Busy[i].ID);
+                        }
+                    }
                 }
             }
             if (f.ShowDialog() == DialogResult.OK)
@@ -447,8 +463,9 @@ namespace rabnet.panels
 
         private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+            if (e.Button == MouseButtons.Right) {
                 treeView1.SelectedNode = e.Node;
+            }
         }
 
         private void treeView1_ItemDrag(object sender, ItemDragEventArgs e)
@@ -458,8 +475,9 @@ namespace rabnet.panels
 
         private void treeView1_DragOver_1(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(TreeNode)))
+            if (e.Data.GetDataPresent(typeof(TreeNode))) {
                 e.Effect = DragDropEffects.Move;
+            }
         }
 
         private void treeView1_DragDrop(object sender, DragEventArgs e)
@@ -527,8 +545,9 @@ namespace rabnet.panels
                     if (tiers[i] != 0) {
                         Building b = Engine.db().getBuilding(tiers[i]);
                         for (int j = 0; j < b.Sections; j++) {
-                            if (b.Busy[j].ID > 0)
+                            if (b.Busy[j].ID > 0) {
                                 candelete = false;
+                            }
                         }
                     }
                 if (candelete) {
@@ -537,12 +556,13 @@ namespace rabnet.panels
                         Engine.db().deleteFarm(farmNum());
                         _rsb.Run();
                     }
-                } else
+                } else {
                     MessageBox.Show(@"Ферма не пуста.");
+                }
             } else {
-                if (sNode.Nodes.Count > 0)
+                if (sNode.Nodes.Count > 0) {
                     MessageBox.Show("Имеются вложенные строения");
-                else if (askDelete()) {
+                } else if (askDelete()) {
                     preBuilding = buildNum(sNode.Parent);
                     Engine.db().deleteBuilding(buildNum());
                     _rsb.Run();
@@ -552,9 +572,13 @@ namespace rabnet.panels
 
         private void addBuildingMenuItem_Click(object sender, EventArgs e)
         {
-            if (treeView1.SelectedNode == null) return;
+            if (treeView1.SelectedNode == null) {
+                return;
+            }
 
-            if (isFarm()) return;
+            if (isFarm()) { 
+                return; 
+            }
             nodeToAdd = treeView1.SelectedNode;
             TreeNode nd = nodeToAdd.Nodes.Add(NEW_BUILDING);
             manual = false;
@@ -597,8 +621,9 @@ namespace rabnet.panels
                 MessageBox.Show("Достигнуто максимальное количество ферм.");
                 return;
             }
-            if (new MiniFarmForm(buildNum(), _freeFarmsId.ToArray()).ShowDialog() == DialogResult.OK)
+            if (new MiniFarmForm(buildNum(), _freeFarmsId.ToArray()).ShowDialog() == DialogResult.OK) {
                 _rsb.Run();
+            }
         }
 
         private void changeFarmMenuItem_Click(object sender, EventArgs e)
@@ -607,7 +632,9 @@ namespace rabnet.panels
             if (!isFarm()) return;
             int fid = farmNum();
             MainForm.ProtectTest(Engine.db().getMFCount());
-            if (new MiniFarmForm(fid).ShowDialog() == DialogResult.OK) _rsb.Run();
+            if (new MiniFarmForm(fid).ShowDialog() == DialogResult.OK) {
+                _rsb.Run();
+            }
         }
 
         private XmlDocument getBuildDoc(int bid)
