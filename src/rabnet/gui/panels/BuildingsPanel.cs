@@ -44,7 +44,7 @@ namespace rabnet.panels
         TreeNode nodeToAdd = null;
         int action = 0;
         int preBuilding = 0;
-        public BuildingsPanel(): base(){}
+        public BuildingsPanel() : base() { }
         //int _maxfarm = 0;
 
         /// <summary>
@@ -57,24 +57,22 @@ namespace rabnet.panels
             int res = 0;
             //String[] st = td.caption.Split(':');
             //if (st.Length == 3)
-                if (td.TierID != 0)
-                {
-                    res++;
-                    return res;
-                }
-            if (td.ChildNodes != null)
-            {
-                for (int i = 0; i < td.ChildNodes.Count; i++)
-                {
+            if (td.TierID != 0) {
+                res++;
+                return res;
+            }
+            if (td.ChildNodes != null) {
+                for (int i = 0; i < td.ChildNodes.Count; i++) {
                     res += GetFarmsCount(td.ChildNodes[i]);
                 }
             }
             return res;
         }
 
-        public BuildingsPanel(RabStatusBar bsb):base(bsb, new BuildingsFilter())
+        public BuildingsPanel(RabStatusBar bsb)
+            : base(bsb, new BuildingsFilter())
         {
-            _colSort = new ListViewColumnSorter(listView1, new int[] { },Options.OPT_ID.BUILD_LIST);
+            _colSort = new ListViewColumnSorter(listView1, new int[] { }, Options.OPT_ID.BUILD_LIST);
             listView1.ListViewItemSorter = null;
             treeView1.TreeViewNodeSorter = new TVNodeSorter();
             MakeExcel = new RSBEventHandler(this.makeExcel);
@@ -96,15 +94,13 @@ namespace rabnet.panels
                 n = parent.Nodes.Add(name);
 
             TreeNode child;
-            if (td.ChildNodes!=null)
-                while (td.ChildNodes.Count>0)
-                {
+            if (td.ChildNodes != null)
+                while (td.ChildNodes.Count > 0) {
                     child = makeNode(n, td.ChildNodes[0].Name, td.ChildNodes[0], idList);
                     child.Tag = td.ChildNodes[0];
                     if (td.ChildNodes[0].TierID != 0)
                         idList.Add(td.ChildNodes[0].TierID);
-                    if (td.ChildNodes[0].ID == preBuilding)
-                    {
+                    if (td.ChildNodes[0].ID == preBuilding) {
                         treeView1.SelectedNode = child;
                         treeView1.SelectedNode.Expand();
                     }
@@ -135,9 +131,8 @@ namespace rabnet.panels
 #elif DEMO
             allowFarms = DEMO_MAX_FARMS - Engine.db().getMFCount();
 #endif
-            if (allowFarms > 0 && _freeFarmsId.Count > allowFarms)
-            {
-                int last = _freeFarmsId[_freeFarmsId.Count-1];
+            if (allowFarms > 0 && _freeFarmsId.Count > allowFarms) {
+                int last = _freeFarmsId[_freeFarmsId.Count - 1];
                 _freeFarmsId = _freeFarmsId.GetRange(0, allowFarms - 1);
                 _freeFarmsId.Add(last);
             }
@@ -162,11 +157,9 @@ namespace rabnet.panels
         {
             busyFarmsId.Sort();
             List<int> result = new List<int>();
-            int fId=1,j=0;
-            for (int i = 0; i < busyFarmsId.Count; i++)
-            {               
-                if (fId < busyFarmsId[i])
-                {
+            int fId = 1, j = 0;
+            for (int i = 0; i < busyFarmsId.Count; i++) {
+                if (fId < busyFarmsId[i]) {
                     for (j = fId; j < busyFarmsId[i]; j++)
                         result.Add(j);
                     fId = busyFarmsId[i];
@@ -187,44 +180,38 @@ namespace rabnet.panels
         protected override void onItem(IData data)
         {
             Building b = data as Building;
-            string prevnm="";
+            string prevnm = "";
             int prevfarm = 0;
 
-            for (int i = 0; i < b.Sections; i++)
-            {
-                if ((b.Areas(i) != prevnm || b.Farm!=prevfarm) && !b.IsAbsorbed(i))
-                {
+            for (int i = 0; i < b.Sections; i++) {
+                if ((b.Areas(i) != prevnm || b.Farm != prevfarm) && !b.IsAbsorbed(i)) {
                     manual = false;
                     ListViewItem it = listView1.Items.Add(Building.Format(b.Farm) + b.Areas(i));//№
                     prevfarm = b.Farm;
                     prevnm = b.Areas(i);
                     it.SubItems.Add(Building.GetNameRus(b.Type, _runF.safeBool(Filters.SHORT)));//Ярус
-                    it.SubItems.Add(b.Descr(i,_runF.safeBool(Filters.SHORT)));//Отделение
+                    it.SubItems.Add(b.Descr(i, _runF.safeBool(Filters.SHORT)));//Отделение
                     String stat = "unk";
-                    if (b.Repair) 
+                    if (b.Repair)
                         stat = "ремонт";
-                    else
-                    {
+                    else {
                         stat = b.Busy[i].ID == 0 ? "-" : b.Busy[i].Name;
                     }
                     it.SubItems.Add(stat);//Статус
                     String nst = "";
                     String htr = "";
-                    if (b.NestHeaterCount > 0)
-                    {
+                    if (b.NestHeaterCount > 0) {
                         int nid = 0;
                         if (b.NestHeaterCount > 1) nid = i;
                         nst = (b.Nests[nid] == '1') ? "да" : "нет";
                         htr = (b.Heaters[nid] == '0' ? "нет" : (b.Heaters[nid] == '1' ? "выкл" : "вкл"));
                         if (b.Type == BuildingType.Jurta)
-                            if ((b.Delims[0] == '1' && i == 0) || (b.Delims[0] == '0' && i == 1))
-                            {
+                            if ((b.Delims[0] == '1' && i == 0) || (b.Delims[0] == '0' && i == 1)) {
                                 nst = "";
                                 htr = "";
                             }
-                        if (b.Type==BuildingType.Complex)
-                            if (i != 0)
-                            {
+                        if (b.Type == BuildingType.Complex)
+                            if (i != 0) {
                                 nst = "";
                                 htr = "";
                             }
@@ -239,15 +226,13 @@ namespace rabnet.panels
             }
         }
 
-        private String getAddress(int ifid,int bid)
+        private String getAddress(int ifid, int bid)
         {
             String res = "";
-            TreeNode nd = searchFarm(ifid,bid, treeView1.Nodes[0]);
-            if (nd!=null)
-            {
+            TreeNode nd = searchFarm(ifid, bid, treeView1.Nodes[0]);
+            if (nd != null) {
                 res = nd.Text;
-                while (nd != treeView1.Nodes[0])
-                {
+                while (nd != treeView1.Nodes[0]) {
                     nd = nd.Parent;
                     if (nd != treeView1.Nodes[0])
                         res = nd.Text + "/" + res;
@@ -264,17 +249,15 @@ namespace rabnet.panels
         {
             return searchFarm(tierID, -1, nd);
         }
-        private TreeNode searchFarm(int tierID,int bid,TreeNode nd)
+        private TreeNode searchFarm(int tierID, int bid, TreeNode nd)
         {
             BldTreeData td = (nd.Tag as BldTreeData);//.Split(':');
-            if (td.TierID == tierID || td.ID == bid)
-            {
+            if (td.TierID == tierID || td.ID == bid) {
                 return nd;
             }
 
             TreeNode res = null;
-            foreach (TreeNode n in nd.Nodes)
-            {
+            foreach (TreeNode n in nd.Nodes) {
                 res = searchFarm(tierID, bid, n);
                 if (res != null)
                     return res;
@@ -305,73 +288,62 @@ namespace rabnet.panels
             List<string> rabs = new List<string>();
             RabNetEngRabbit rner;
             string livesIn = "";
-            for (int i = 0; i < b.Sections; i++)
-            {
+            for (int i = 0; i < b.Sections; i++) {
                 livesIn = b.Busy[i].Name;
-                if (b.Busy[i].ID > 0)
-                {
-                    try
-                    {
+                if (b.Busy[i].ID > 0) {
+                    try {
                         rner = Engine.get().getRabbit(b.Busy[i].ID);
-                        if (rner.YoungCount != 0)
-                        {
+                        if (rner.YoungCount != 0) {
                             foreach (YoungRabbit or in rner.Youngers)
                                 livesIn += String.Format(" (+{0:d} в:{1:d})", or.Group, or.Age);
                         }
                         foreach (OneRabbit n in rner.Neighbors)
-                            livesIn += String.Format("{0:s}[{1:s}]", Environment.NewLine, n.NameFull);                        
-                    }
-                    catch (RabNetException exc)
-                    {
+                            livesIn += String.Format("{0:s}[{1:s}]", Environment.NewLine, n.NameFull);
+                    } catch (RabNetException exc) {
                         _logger.Warn(exc);
-                        livesIn = "[!"+exc.Message+"!]";
+                        livesIn = "[!" + exc.Message + "!]";
                     }
                 }
                 rabs.Add(livesIn);
                 //if (b.Type == BuildingType.Quarta && i > 0 && b.Delims[i - 1] == '0')
-                    //i++;
+                //i++;
             }
-           
-            return new FarmDrawer.DrawTier(b,rabs);
+
+            return new FarmDrawer.DrawTier(b, rabs);
         }
 
         private void drawFarm(int farm)
         {
-            int[] tiers=Engine.db().getTiers(farm);
+            int[] tiers = Engine.db().getTiers(farm);
             FarmDrawer.DrawTier t1 = tierFromBuilding(Engine.db().getBuilding(tiers[0]));
-            FarmDrawer.DrawTier t2=null;
-            if (tiers[1]!=0)
-                t2=tierFromBuilding(Engine.db().getBuilding(tiers[1]));
-            farmDrawer1.SetFarm(farm,t1,t2);
+            FarmDrawer.DrawTier t2 = null;
+            if (tiers[1] != 0)
+                t2 = tierFromBuilding(Engine.db().getBuilding(tiers[1]));
+            farmDrawer1.SetFarm(farm, t1, t2);
             updateMenu();
         }
 
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if (treeView1.SelectedNode == null)
-            {
+            if (treeView1.SelectedNode == null) {
                 farmDrawer1.SetFarm(0, null, null);
                 return;
             }
             preBuilding = buildNum();
             int farm = farmNum();
-            if (farm == 0)
-            {
+            if (farm == 0) {
                 farmDrawer1.SetFarm(0, null, null);
                 updateMenu();
                 return;
             }
-            if (manual)
-            {
+            if (manual) {
                 manual = false;
                 listView1.SelectedItems.Clear();
                 Building b = null;
-                for (int i = 0; i < listView1.Items.Count; i++)
-                {
+                for (int i = 0; i < listView1.Items.Count; i++) {
                     b = listView1.Items[i].Tag as Building;
-                    if ((int)b.Farm == farm)
-                    {
+                    if ((int)b.Farm == farm) {
                         listView1.Items[i].Selected = true;
                         listView1.Items[i].EnsureVisible();
                     }
@@ -383,32 +355,25 @@ namespace rabnet.panels
 
         private void farmDrawer1_ValueChanged(object sender, BuildingControl.BCEvent e)
         {
-            try
-            {
+            try {
                 RabNetEngBuilding b = Engine.get().getBuilding(e.tier);
-                switch (e.type)
-                {
+                switch (e.type) {
                     case BuildingControl.BCEvent.EVTYPE.REPAIR: b.setRepair(e.val()); break;
-                    case BuildingControl.BCEvent.EVTYPE.NEST:   b.setNest(e.val()); break;
-                    case BuildingControl.BCEvent.EVTYPE.NEST2:  b.setNest2(e.val()); break;
+                    case BuildingControl.BCEvent.EVTYPE.NEST: b.setNest(e.val()); break;
+                    case BuildingControl.BCEvent.EVTYPE.NEST2: b.setNest2(e.val()); break;
                     case BuildingControl.BCEvent.EVTYPE.HEATER: b.setHeater(e.value); break;
-                    case BuildingControl.BCEvent.EVTYPE.HEATER2:b.setHeater2(e.value); break;
-                    case BuildingControl.BCEvent.EVTYPE.DELIM:  b.SetOneDelim(e.val()); break;
+                    case BuildingControl.BCEvent.EVTYPE.HEATER2: b.setHeater2(e.value); break;
+                    case BuildingControl.BCEvent.EVTYPE.DELIM: b.SetOneDelim(e.val()); break;
                     case BuildingControl.BCEvent.EVTYPE.DELIM1: b.SetDelim1(e.val()); break;
                     case BuildingControl.BCEvent.EVTYPE.DELIM2: b.SetDelim2(e.val()); break;
                     case BuildingControl.BCEvent.EVTYPE.DELIM3: b.SetDelim3(e.val()); break;
-                    case BuildingControl.BCEvent.EVTYPE.VIGUL:  b.setVigul(e.value); break;
+                    case BuildingControl.BCEvent.EVTYPE.VIGUL: b.setVigul(e.value); break;
                 }
-            }
-            catch (RabNetEngBuilding.ExFarmNotEmpty ex)
-            {
-                if (MessageBox.Show(this, ex.Message + ". Расселить ферму?", "Ферма не пуста", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
+            } catch (RabNetEngBuilding.ExFarmNotEmpty ex) {
+                if (MessageBox.Show(this, ex.Message + ". Расселить ферму?", "Ферма не пуста", MessageBoxButtons.YesNo) == DialogResult.Yes) {
                     replaceMenuItem.PerformClick();
                 }
-            }
-            catch (ApplicationException ex)
-            {
+            } catch (ApplicationException ex) {
                 MessageBox.Show(ex.Message);
             }
             drawFarm(e.farm);
@@ -421,41 +386,36 @@ namespace rabnet.panels
 
         public void updateMenu()
         {
-            killMenuItem.Visible = replaceMenuItem.Visible =  tsSplitter.Visible =
-                addBuildingMenuItem.Visible = addFarmMenuItem.Visible=
+            killMenuItem.Visible = replaceMenuItem.Visible = tsSplitter.Visible =
+                addBuildingMenuItem.Visible = addFarmMenuItem.Visible =
                 changeFarmMenuItem.Visible = deleteBuildingMenuItem.Visible =
-                shedReportMenuItem.Visible = emptyRevMenuItem.Visible =  miNotesEdit.Visible =false;
-            if (listView1.Focused)
-            {
+                shedReportMenuItem.Visible = emptyRevMenuItem.Visible = miNotesEdit.Visible = false;
+            if (listView1.Focused) {
                 killMenuItem.Visible = replaceMenuItem.Visible = miNotesEdit.Visible = (listView1.SelectedItems.Count > 0);
-            }
-            else if (treeView1.Focused && treeView1.SelectedNode!=null)
-            {
+            } else if (treeView1.Focused && treeView1.SelectedNode != null) {
                 addBuildingMenuItem.Visible = addFarmMenuItem.Visible = !isFarm();
                 changeFarmMenuItem.Visible = isFarm();
                 deleteBuildingMenuItem.Visible = true;
-                tsSplitter.Visible = shedReportMenuItem.Visible = emptyRevMenuItem.Visible = !isFarm();                
-            }            
+                tsSplitter.Visible = shedReportMenuItem.Visible = emptyRevMenuItem.Visible = !isFarm();
+            }
         }
 
         private void killMenuItem_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count < 1) return;
 
-            Building b=null;
+            Building b = null;
             KillForm f = new KillForm();
-            foreach (ListViewItem li in listView1.SelectedItems)
-            {
+            foreach (ListViewItem li in listView1.SelectedItems) {
                 Building b2 = li.Tag as Building;
-                if (b2 != b)
-                {
+                if (b2 != b) {
                     b = b2;
                     for (int i = 0; i < b.Sections; i++)
-                        if (b.Busy[i].ID>0)
+                        if (b.Busy[i].ID > 0)
                             f.addRabbit(b.Busy[i].ID);
                 }
             }
-            if(f.ShowDialog() == DialogResult.OK)
+            if (f.ShowDialog() == DialogResult.OK)
                 _rsb.Run();
         }
 
@@ -465,18 +425,16 @@ namespace rabnet.panels
                 return;
             Building b = null;
             ReplaceForm f = new ReplaceForm();
-            foreach (ListViewItem li in listView1.SelectedItems)
-            {
+            foreach (ListViewItem li in listView1.SelectedItems) {
                 Building b2 = li.Tag as Building;
-                if (b2 != b)
-                {
+                if (b2 != b) {
                     b = b2;
                     for (int i = 0; i < b.Sections; i++)
-                        if (b.Busy[i].ID>0)
+                        if (b.Busy[i].ID > 0)
                             f.AddRabbit(b.Busy[i].ID);
                 }
             }
-            if(f.ShowDialog() == DialogResult.OK)
+            if (f.ShowDialog() == DialogResult.OK)
                 _rsb.Run();
         }
 
@@ -508,15 +466,14 @@ namespace rabnet.panels
         {
             if (!e.Data.GetDataPresent(typeof(TreeNode))) return;
 
-            TreeNode child=e.Data.GetData(typeof(TreeNode)) as TreeNode;
-            Point px=treeView1.PointToClient(new Point(e.X,e.Y));
+            TreeNode child = e.Data.GetData(typeof(TreeNode)) as TreeNode;
+            Point px = treeView1.PointToClient(new Point(e.X, e.Y));
             TreeNode newpar = treeView1.GetNodeAt(px);
-            if (newpar == null || child==null) return;
+            if (newpar == null || child == null) return;
             if (child == treeView1.Nodes[0]) return;
             if (isFarm(newpar)) return;
             if (child == newpar) return;
-            if (MessageBox.Show(this, "Переместить " + child.Text + " в " + newpar.Text + "?", "Перемещение", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
+            if (MessageBox.Show(this, "Переместить " + child.Text + " в " + newpar.Text + "?", "Перемещение", MessageBoxButtons.YesNo) == DialogResult.Yes) {
                 int bid = buildNum(child);
                 int to = buildNum(newpar);
                 Engine.db().replaceBuilding(bid, to);
@@ -526,33 +483,26 @@ namespace rabnet.panels
 
         private void treeView1_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            if (action != 0)
-            {
-                if (e.Label == null || e.Label == "" || e.Label.Contains("/"))
-                {
+            if (action != 0) {
+                if (e.Label == null || e.Label == "" || e.Label.Contains("/")) {
                     e.CancelEdit = true;
                     treeView1.SelectedNode.Remove();
-                }
-                else
-                {
+                } else {
                     Engine.db().addBuilding(buildNum(nodeToAdd), e.Label);
                 }
                 nodeToAdd = null;
                 action = 0;
             }
-            if (e.Label == null || e.Label == "") 
-            { 
-                e.CancelEdit = true; 
-                return; 
-            }
-            if (!manual) return;
-            if (e.Node == treeView1.Nodes[0])
-            {
+            if (e.Label == null || e.Label == "") {
                 e.CancelEdit = true;
                 return;
             }
-            if (e.Node.Text != e.Label)
-            {
+            if (!manual) return;
+            if (e.Node == treeView1.Nodes[0]) {
+                e.CancelEdit = true;
+                return;
+            }
+            if (e.Node.Text != e.Label) {
                 Engine.db().setBuildingName(buildNum(e.Node), e.Label);
                 e.CancelEdit = false;
             }
@@ -570,38 +520,29 @@ namespace rabnet.panels
             if (treeView1.SelectedNode == null) return;
 
             TreeNode sNode = treeView1.SelectedNode;
-            if (isFarm())
-            {
+            if (isFarm()) {
                 int[] tiers = Engine.db().getTiers(farmNum());
                 bool candelete = true;
                 for (int i = 0; i < 2; i++)
-                    if (tiers[i]!=0)
-                    {
+                    if (tiers[i] != 0) {
                         Building b = Engine.db().getBuilding(tiers[i]);
-                        for (int j = 0; j < b.Sections; j++)
-                        {
+                        for (int j = 0; j < b.Sections; j++) {
                             if (b.Busy[j].ID > 0)
                                 candelete = false;
                         }
                     }
-                if (candelete)
-                {
-                    if (askDelete())
-                    {
+                if (candelete) {
+                    if (askDelete()) {
                         preBuilding = buildNum(sNode.Parent);
                         Engine.db().deleteFarm(farmNum());
                         _rsb.Run();
                     }
-                }
-                else
+                } else
                     MessageBox.Show(@"Ферма не пуста.");
-            }
-            else
-            {
+            } else {
                 if (sNode.Nodes.Count > 0)
                     MessageBox.Show("Имеются вложенные строения");
-                else if (askDelete())
-                {
+                else if (askDelete()) {
                     preBuilding = buildNum(sNode.Parent);
                     Engine.db().deleteBuilding(buildNum());
                     _rsb.Run();
@@ -646,18 +587,17 @@ namespace rabnet.panels
         {
             if (treeView1.SelectedNode == null) return;
             if (isFarm()) return;
-            if (_freeFarmsId.Count == 0 
+            if (_freeFarmsId.Count == 0
 #if DEMO
                 || Engine.db().getMFCount() >= DEMO_MAX_FARMS
 #elif PROTECTED
                 || Engine.db().getMFCount() >= GRD.Instance.GetFarmsCnt()
 #endif
-                )
-            {
+) {
                 MessageBox.Show("Достигнуто максимальное количество ферм.");
                 return;
             }
-            if(new MiniFarmForm(buildNum(), _freeFarmsId.ToArray()).ShowDialog() == DialogResult.OK)
+            if (new MiniFarmForm(buildNum(), _freeFarmsId.ToArray()).ShowDialog() == DialogResult.OK)
                 _rsb.Run();
         }
 
@@ -683,15 +623,15 @@ namespace rabnet.panels
         private void shedReportMenuItem_Click(object sender, EventArgs e)
         {
 #if !DEMO
-            if (treeView1.SelectedNode==null) return;
+            if (treeView1.SelectedNode == null) return;
             if (isFarm()) return;
             Filters f = new Filters();
-            int bid=buildNum();
+            int bid = buildNum();
             f["bld"] = bid.ToString();
             f["nest_out"] = Engine.opt().getOption(Options.OPT_ID.NEST_OUT);
             //f["suck"] = Engine.opt().getOption(Options.OPT_ID.COUNT_SUCKERS);
-            ReportViewForm dlg =  new ReportViewForm(
-                myReportType.SHED, 
+            ReportViewForm dlg = new ReportViewForm(
+                myReportType.SHED,
                 new XmlDocument[] 
                 { 
                     Engine.db().makeReport(myReportType.SHED,f),getBuildDoc(bid)
@@ -731,14 +671,11 @@ namespace rabnet.panels
 
             Building b = listView1.SelectedItems[0].Tag as Building;
             BuildingNotesEdit dlg = new BuildingNotesEdit(listView1.SelectedItems[0].SubItems[0].Text, listView1.SelectedItems[0].SubItems[FIELD_NOTES].Text);
-            if (dlg.ShowDialog() == DialogResult.OK)
-            {
+            if (dlg.ShowDialog() == DialogResult.OK) {
                 listView1.SelectedItems[0].SubItems[FIELD_NOTES].Text = dlg.Notes;
-                for (int i = 0; i < b.Sections; i++)
-                {
-                    if (listView1.SelectedItems[0].SubItems[0].Text == Building.Format(b.Farm) + b.Areas(i))
-                    {
-                        b.Notes[i]=dlg.Notes;
+                for (int i = 0; i < b.Sections; i++) {
+                    if (listView1.SelectedItems[0].SubItems[0].Text == Building.Format(b.Farm) + b.Areas(i)) {
+                        b.Notes[i] = dlg.Notes;
                         break;
                     }
                 }
@@ -753,8 +690,7 @@ namespace rabnet.panels
         public string strpart(string str)
         {
             int i = str.Length - 1;
-            while (Char.IsDigit(str[i]))
-            {
+            while (Char.IsDigit(str[i])) {
                 i--;
                 if (i == -1) return str;
             }
@@ -768,8 +704,7 @@ namespace rabnet.panels
             string s2 = (y as TreeNode).Text;
             string ss1 = strpart(s1);
             string ss2 = strpart(s2);
-            if (ss1 != ss2)
-            {
+            if (ss1 != ss2) {
                 if (ss2[0] == '№') return -1;
                 if (ss1[0] == '№') return 1;
                 return String.Compare(s1, s2);
