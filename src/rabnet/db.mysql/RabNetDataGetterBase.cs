@@ -15,17 +15,17 @@ namespace db.mysql
         protected int count2;
         protected int count3; //+gambit  понадобилось для подсчета кормилиц
         protected float count4; //+gambit  надо для подсчета среднего кол-ва детей
-        protected int citem=0;
+        protected int citem = 0;
         protected MySqlConnection _sql;
         protected MySqlDataReader _rd;
-        protected Filters options = null; 
+        protected Filters options = null;
 
         protected void Debug(String s)
         {
-            _logger.Debug(this.GetType().ToString()+" "+s);
+            _logger.Debug(this.GetType().ToString() + " " + s);
         }
 
-        public RabNetDataGetterBase(MySqlConnection sql,Filters filters) 
+        public RabNetDataGetterBase(MySqlConnection sql, Filters filters)
         {
             options = filters;
             this._sql = sql;
@@ -38,10 +38,10 @@ namespace db.mysql
             _rd.Read();
             count = (int)_rd.GetInt32(0);
             count2 = 0;
-            if (_rd.FieldCount > 1)
+            if (_rd.FieldCount > 1) {
                 count2 = _rd.IsDBNull(1) ? 0 : _rd.GetInt32(1);
-            if (_rd.FieldCount > 2)                                  //+gambit
-            {
+            }
+            if (_rd.FieldCount > 2) {                                 //+gambit            
                 count3 = _rd.IsDBNull(2) ? 0 : _rd.GetInt32(2);
                 count4 = (float)count2 / (float)count3;
             }
@@ -52,10 +52,13 @@ namespace db.mysql
 #endif
             _rd = cmd.ExecuteReader();
         }
+
+
         public int getCount()
         {
             return count;
         }
+
         public int getCount2()
         {
             return count2;
@@ -73,8 +76,7 @@ namespace db.mysql
 
         public IData GetNextItem()
         {
-            if (!_rd.Read())
-            {
+            if (!_rd.Read()) {
                 Debug("NULL next item");
                 return null;
             }
@@ -88,9 +90,11 @@ namespace db.mysql
         }
 
         protected abstract String getQuery();
+
         protected abstract String countQuery();
-        public abstract IData NextItem();        
-        
+
+        public abstract IData NextItem();
+
         internal static String addWhereAnd(String str, String adder)
         {
             if (str != "") str += " AND ";

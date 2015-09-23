@@ -169,16 +169,17 @@ namespace db.mysql
 
         protected override string countQuery()
         {
-            return String.Format(@"SELECT COUNT(*),SUM(r_group) FROM (
-    SELECT 
-        r_sex,r_born, rabname(r_id,{0:s}) name, r_group, 
-        r_status, r_flags, r_event_date, r_breed,
-        (SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight
-    FROM rabbits 
-    WHERE r_parent=0
-) c {1};",
-        (options.safeBool("dbl") ? "2" : "1"),
-        makeWhere()
+            return String.Format(@"SELECT COUNT(*), SUM(r_group) 
+                    FROM (
+                        SELECT 
+                            r_sex,r_born, rabname(r_id,{0:s}) name, r_group, 
+                            r_status, r_flags, r_event_date, r_breed,
+                            (SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight
+                        FROM rabbits 
+                        WHERE r_parent=0
+                    ) c {1};",
+                (options.safeBool("dbl") ? "2" : "1"),
+                makeWhere()
             );
         }
     }

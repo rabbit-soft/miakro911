@@ -91,7 +91,9 @@ namespace db.mysql
                 res = addWhereAnd(res, "(" + sres + ")");
             }
 
-            if (res != "") res = "AND " + res;
+            if (res != "") {
+                res = "AND " + res;
+            }
 
             return res;
 
@@ -116,7 +118,9 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) {1:s} ORDER BY m_id;",
 
         protected override string countQuery()
         {
-            return "SELECT COUNT(t_id) FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id)" + makeWhere() + ";";
+            return @"SELECT DISTINCT COUNT(DISTINCT m_id) 
+FROM minifarms, tiers 
+WHERE (m_upper=t_id OR m_lower=t_id) " + makeWhere() + ";";
         }
 
         internal static BldTreeData getTree(int parent, MySqlConnection con, BldTreeData par)
