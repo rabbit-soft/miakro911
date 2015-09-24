@@ -23,8 +23,9 @@ namespace rabnet.filters
 #if !DEMO
             lbLogs.Items.Clear();
             String[] lg = Engine.db().logNames();
-            for (int i = 0; i < lg.Length; i++)
+            for (int i = 0; i < lg.Length; i++) {
                 lbLogs.Items.Add(lg[i]);
+            }
 #endif
         }
 
@@ -35,57 +36,68 @@ namespace rabnet.filters
             Filters f = new Filters();
             f["act"] = "";
             bool ac = true; //не понятно что за переменная
-            for (int i = 0; i < lbZoo.Items.Count; i++)
-            {
-                if (lbZoo.GetItemChecked(i))
+            for (int i = 0; i < lbZoo.Items.Count; i++) {
+                if (lbZoo.GetItemChecked(i)) {
                     f["act"] += ITEM_FLAGS[i];
-                else
+                } else {
                     ac = false;
+                }
             }
             if (f["act"] == "" || ac) f.Remove("act");
 
             ac = true;
             f["lgs"] = "";
-            for (int i = 0; i < lbLogs.Items.Count; i++)
-            {
-                if (lbLogs.GetItemChecked(i))
+            for (int i = 0; i < lbLogs.Items.Count; i++) {
+                if (lbLogs.GetItemChecked(i)) {
                     f["lgs"] += "," + (i + 1).ToString();
-                else
+                } else {
                     ac = false;
+                }
             }
             f["lgs"] = f["lgs"].Trim(',');
-            if (f["lgs"] == "" || ac) f.Remove("lgs");
+            if (f["lgs"] == "" || ac) {
+                f.Remove("lgs");
+            }
 
-            if (nudLogLim.Value != 100)
+            if (nudLogLim.Value != 100) {
                 f["lim"] = nudLogLim.Value.ToString();
+            }
             return f;
         }
 
         private bool hasnum(string[] nums, int num)
         {
-            if (nums.Length == 1 && nums[0] == "0") return true;
-            foreach (String nm in nums)
-                if (int.Parse(nm) == num)
+            if (nums.Length == 1 && nums[0] == "0") {
+                return true;
+            }
+            foreach (String nm in nums) {
+                if (int.Parse(nm) == num) {
                     return true;
+                }
+            }
             return false;
         }
 
         public override void setFilters(Filters f)
         {
-            for (int i = 0; i < lbZoo.Items.Count; i++)
+            for (int i = 0; i < lbZoo.Items.Count; i++) {
                 lbZoo.SetItemChecked(i, f.safeValue("act", ITEM_FLAGS).Contains("" + ITEM_FLAGS[i]));
+            }
             String[] nums = f.safeValue("lgs", "0").Split(',');
-            for (int i = 0; i < lbLogs.Items.Count; i++)
+            for (int i = 0; i < lbLogs.Items.Count; i++) {
                 lbLogs.SetItemChecked(i, hasnum(nums, i + 1));
+            }
             nudLogLim.Value = f.safeInt("lim", 100);
         }
 
         public override void clearFilters()
         {
-            for (int i = 0; i < lbZoo.Items.Count; i++)
+            for (int i = 0; i < lbZoo.Items.Count; i++) {
                 lbZoo.SetItemChecked(i, true);
-            for (int i = 0; i < lbLogs.Items.Count; i++)
+            }
+            for (int i = 0; i < lbLogs.Items.Count; i++) {
                 lbLogs.SetItemChecked(i, true);
+            }
             nudLogLim.Value = 100;
         }
         #endregion
