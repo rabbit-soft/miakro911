@@ -18,10 +18,10 @@ namespace rabnet.components
     {
         const int IMG_STOP = 0;
         const int IMG_REFRESH = 1;
-        const int IMG_FILTER_OFF=2;
+        const int IMG_FILTER_OFF = 2;
         const int IMG_EXCEL = 3;
         const int IMG_FILTER_ON = 4;
-        
+
         const int LABELS_COUNT = 5;
         //delegate void progressCallBack2(int min,int max);
 
@@ -56,8 +56,9 @@ namespace rabnet.components
 
             RenderMode = ToolStripRenderMode.Professional;
             ///создаем Лэйблы для дальнейшего использования
-            for (int i = 0; i < LABELS_COUNT; i++)
+            for (int i = 0; i < LABELS_COUNT; i++) {
                 _labels.Add(new ToolStripLabel());
+            }
             ///добавляем компоненты на статус бар
             Items.Add(_labels[0]);
             Items.Add(new ToolStripSeparator());
@@ -101,32 +102,34 @@ namespace rabnet.components
         /// </summary>
         public RSBEventHandler ExcelButtonClick
         {
-            get {return _excelButtonClick; }
-            set 
+            get { return _excelButtonClick; }
+            set
             {
                 _excelButtonClick = value;
-                if (value == null)
+                if (value == null) {
                     btExcel.Visible = false;
-                else btExcel.Visible = true;
+                } else {
+                    btExcel.Visible = true;
+                }
             }
         }
-       
+
         public FilterPanel FilterPanel
         {
             get { return _filterPanel; }
             set
             {
                 _filterPanel = value;
-                if (_filterPanel != null)
-                {
+                if (_filterPanel != null) {
                     btFilter.Visible = true;
-                    if (!DesignMode)
+                    if (!DesignMode) {
                         _filterPanel.Visible = false;
+                    }
                     _filterPanel.BorderStyle = BorderStyle.FixedSingle;
-                    _filterPanel.OnHide =new RSBEventHandler(filterHide);
+                    _filterPanel.OnHide = new RSBEventHandler(filterHide);
+                } else {
+                    btFilter.Visible = false;
                 }
-                else
-                    btFilter.Visible = false;              
             }
         }
 
@@ -143,45 +146,44 @@ namespace rabnet.components
 
         public void Run()
         {
-            if ((int)btRefreshStop.Tag == 0)
+            if ((int)btRefreshStop.Tag == 0) {
                 btRefreshStop.PerformClick();
+            }
         }
 
         public void Stop()
         {
-            if ((int)btRefreshStop.Tag == 1)
+            if ((int)btRefreshStop.Tag == 1) {
                 btRefreshStop.PerformClick();
+            }
         }
 
-        public void SetText(int item,String text)
+        public void SetText(int item, String text)
         {
             SetText(item, text, false);
         }
-        public void SetText(int item, String text,bool error)
+        public void SetText(int item, String text, bool error)
         {
             _labels[item].Text = text;
-            if(error)
+            if (error) {
                 _labels[item].ForeColor = Color.Crimson;
+            }
         }
 
         #region progress
         private void initProgress(int max)
         {
-            if (this.InvokeRequired)
-            {
+            if (this.InvokeRequired) {
                 DTProgressHandler d = new DTProgressHandler(initProgress);
                 this.Invoke(d, new object[] { max });
-            }
-            else
-            {
-                while (!this.IsHandleCreated) 
-                {
+            } else {
+                while (!this.IsHandleCreated) {
                     System.Threading.Thread.Sleep(500);///todo не знаю хорошее ли это решение может быть DeadLock
                 }
                 pb.Minimum = 0;
                 pb.Maximum = max;
                 pb.Value = 0;
-                
+
                 btRefreshStop.Image = imageList1.Images[IMG_STOP];
                 btRefreshStop.Tag = 1;
             }
@@ -217,8 +219,9 @@ namespace rabnet.components
             if (_filterPanel == null) return;
 
             Parent.Controls.Add(_filterPanel);
-            if ((int)btRefreshStop.Tag != 0)
+            if ((int)btRefreshStop.Tag != 0) {
                 stopDataThread();
+            }
             _filterPanel.Left = btFilter.Bounds.Left;
             _filterPanel.Top = Top - _filterPanel.Height;
             _filterPanel.Visible = true;
@@ -230,21 +233,17 @@ namespace rabnet.components
         {
             btFilter.PerformClick();
         }
-        
+
         #region clicks
         private void btn_Click(object sender, EventArgs e)
         {
             ///если кнопка имеет вид "Обновить"
-            if ((int)btRefreshStop.Tag == 0)
-            {
-                if (PrepareGet != null)
-                {
+            if ((int)btRefreshStop.Tag == 0) {
+                if (PrepareGet != null) {
                     IDataGetter dg = PrepareGet();
                     startDataThread(dg);
                 }
-            }
-            else
-            {
+            } else {
                 stopDataThread();
                 _dataThread_OnFinish();
             }
@@ -272,44 +271,41 @@ namespace rabnet.components
         #endregion clicks
         private void startDataThread(IDataGetter dg)
         {
-            if (_dataThread != null)
+            if (_dataThread != null) {
                 stopDataThread();
+            }
             _dataThread = new DataThread();
             _dataThread.OnItem += new DTItemProgressHandler(_dataThread_onItem);
             _dataThread.OnFinish += new RSBEventHandler(_dataThread_OnFinish);
-            _dataThread.InitMaxProgress+=new DTProgressHandler(initProgress);    
+            _dataThread.InitMaxProgress += new DTProgressHandler(initProgress);
             //_dataThread.Progress +=new DTProgressHandler(progress);
             _dataThread.Run(dg);
         }
 
         void _dataThread_OnFinish()
         {
-            if (this.InvokeRequired)
-            {
+            if (this.InvokeRequired) {
                 RSBEventHandler d = new RSBEventHandler(_dataThread_OnFinish);
                 this.Invoke(d);
-            }
-            else
-            {
-                if (OnFinishUpdate != null)
+            } else {
+                if (OnFinishUpdate != null) {
                     OnFinishUpdate();
+                }
                 endProgress();
                 stopDataThread();
             }
         }
 
-        void _dataThread_onItem(IData data,int progr)
+        void _dataThread_onItem(IData data, int progr)
         {
             if (_dataThread == null) return;
-            if (this.InvokeRequired)
-            {
+            if (this.InvokeRequired) {
                 DTItemProgressHandler d = new DTItemProgressHandler(_dataThread_onItem);
                 this.Invoke(d, new object[] { data, progr });
-            }
-            else
-            {
-                if (ItemGet != null)
+            } else {
+                if (ItemGet != null) {
                     ItemGet(data);
+                }
                 progress(progr);
             }
         }
@@ -317,8 +313,8 @@ namespace rabnet.components
         public void stopDataThread()
         {
             if (_dataThread == null) return;
-           
-            _dataThread.Stop();            
+
+            _dataThread.Stop();
             _dataThread = null;
         }
     }
