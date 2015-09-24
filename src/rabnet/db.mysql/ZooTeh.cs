@@ -380,20 +380,23 @@ ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
 
         private string qPreOkrol()
         {
-            return String.Format(@"SELECT r_id,
+            return String.Format(@"SELECT 
+    r_id,
     rabname(r_id,{2:s}) name,
     rabplace(r_id) place,
-    (TO_DAYS(NOW()) - TO_DAYS(r_event_date)) srok,
-    r_status,
+    (TO_DAYS('{4}') - TO_DAYS(r_event_date)) srok,
     (TO_DAYS(NOW()) - TO_DAYS(r_born)) age,
+    r_status,    
     {3:s}
 FROM rabbits 
-WHERE r_sex='female' 
-    AND (TO_DAYS(NOW()) - TO_DAYS(r_event_date)) >= {0:d} 
-    AND (TO_DAYS(NOW()) - TO_DAYS(r_event_date)) < {1:d} 
-    AND r_id NOT IN (SELECT l_rabbit FROM logs WHERE l_type=21 AND DATE(l_date)>=DATE(rabbits.r_event_date)) 
+WHERE r_sex='female' AND r_id NOT IN (SELECT l_rabbit FROM logs WHERE l_type = 21 AND DATE(l_date) >= DATE(rabbits.r_event_date)) 
+HAVING srok >= {0:d} AND srok < {1:d} 
 ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", 
-                _flt.safeInt("preok"), _flt.safeInt("okrol"), getnm(), brd()
+                _flt.safeInt(Filters.PRE_OKROL), 
+                _flt.safeInt(Filters.OKROL), 
+                getnm(), 
+                brd(),
+                _flt[Filters.DATE]
             );
         }
 
@@ -406,7 +409,7 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
 FROM rabbits 
 WHERE {0:s} AND (TO_DAYS(NOW())-TO_DAYS(r_born)) >= {1:d} 
 ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
-                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "(r_sex='female' and r_parent<>0)" : "(r_sex='void' OR (r_sex='male' and r_parent<>0))"),
+                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "(r_sex='female' AND r_parent<>0)" : "(r_sex='void' OR (r_sex='male' AND r_parent<>0))"),
                 (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT)), brd(), getnm()
             );
         }
