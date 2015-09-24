@@ -21,8 +21,9 @@ namespace rabnet.filters
             clearFilters();
             loadFilters();
             String s = Engine.opt().getOption(opid);
-            if (s != "" && s != "0")
+            if (s != "" && s != "0") {
                 setFilters(Filters.makeFromString(s));
+            }
         }
         public FilterPanel()
         {
@@ -41,11 +42,13 @@ namespace rabnet.filters
         public virtual void setFilters(Filters f) { }
         public virtual void loadFilters()
         {
-            if (fs != null)
+            if (fs != null) {
                 fs.Items.Clear();
+            }
             fs.Items.Add("Очистить");
-            foreach (String s in Engine.db().getFilterNames(fname))
+            foreach (String s in Engine.db().getFilterNames(fname)) {
                 fs.Items.Add(s);
+            }
             fs.SelectedIndex = -1;
             fs.Text = "";
         }
@@ -74,12 +77,15 @@ namespace rabnet.filters
 
         private void hideClick(Object sender, EventArgs e)
         {
-            if (OnHide != null)
+            if (OnHide != null) {
                 OnHide();
+            }
         }
         private void saveClick(Object sender, EventArgs e)
         {
-            if (fs.SelectedIndex == 0 || fs.Text == "") return;
+            if (fs.SelectedIndex == 0 || fs.Text == "") {
+                return;
+            }
 
             Engine.db().setFilter(fname, fs.Text, getFilters());
             loadFilters();
