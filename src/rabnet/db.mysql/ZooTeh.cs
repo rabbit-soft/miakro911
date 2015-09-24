@@ -313,12 +313,12 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
     r_id, 
     rabname(r_id,{0:s}) name, 
     rabplace(r_id) place,
+    (TO_DAYS('{4}')-TO_DAYS(r_last_fuck_okrol)) srok,
     (TO_DAYS(NOW())-TO_DAYS(r_born)) age, 
     {1:s},
     r_tier,
     r_area,
-    r_event_date,
-    (TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol)) srok,
+    r_event_date,    
     r_status,   
     t_nest,
     t_id,
@@ -327,16 +327,16 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
     t_delims,
     t_type,
     COALESCE( (SELECT SUM(r3.r_group) FROM rabbits r3 WHERE r3.r_parent=rabbits.r_id) ,0) suckers
-FROM rabbits, tiers
-WHERE 
-    t_id=r_tier AND 
-    (r_event_date IS NULL {3:s}) AND
-    r_sex='female' AND 
-    (TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol))>={2:d} AND
-    ((t_busy1=r_id AND t_nest like '1%') OR (t_busy2=r_id AND t_nest like '%1' AND t_type='dfemale'))
-ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", getnm(), brd(),
+FROM rabbits
+    INNER JOIN tiers ON t_id = r_tier AND ((t_busy1 = r_id AND t_nest like '1%') OR (t_busy2 = r_id AND t_nest like '%1' AND t_type='dfemale'))
+WHERE r_sex = 'female'         
+HAVING srok >= {2:d} AND (r_event_date IS NULL {3:s})
+ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", 
+                getnm(), 
+                brd(),
                 _flt.safeInt(Filters.VUDVOR),
-                _flt.safeBool(Filters.NEST_OUT_IF_SUKROL) ? String.Format("OR (r_event_date IS NOT NULL AND (to_days(NOW())-to_days(r_event_date))<{0:d})", _flt.safeInt("nest")) : ""
+                _flt.safeBool(Filters.NEST_OUT_IF_SUKROL) ? String.Format("OR (r_event_date IS NOT NULL AND srok < {0:d})", _flt.safeInt("nest")) : "",
+                _flt[Filters.DATE]
             );
         }
 
@@ -351,14 +351,17 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", getnm(), brd(),
     aage AS age,
     {4:s},
     suckers,    
-    suckGroups    
-    
+    suckGroups        
 FROM rabbits r
-LEFT JOIN (SELECT r_parent AS prnt,SUM(r2.r_group) suckers, COUNT(*) suckGroups, AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) aage FROM rabbits r2 GROUP BY r_parent) sc ON prnt=r.r_parent
-WHERE r_parent<>0 AND (TO_DAYS(NOW())-TO_DAYS(r_born)>={0:d}{1:s}) 
+LEFT JOIN (
+        SELECT r_parent AS prnt,SUM(r2.r_group) suckers, COUNT(*) suckGroups, AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) aage 
+        FROM rabbits r2 
+        GROUP BY r_parent
+    ) sc ON prnt = r.r_parent
+WHERE r_parent<>0 AND (TO_DAYS(NOW())-TO_DAYS(r_born) >= {0:d}{1:s}) 
     AND r_id NOT IN (
                         SELECT l_rabbit2 FROM logs 
-                        WHERE l_type={3:d} AND (DATE(l_date)<=DATE(NOW()) 
+                        WHERE l_type = {3:d} AND (DATE(l_date) <= DATE(NOW()) 
                             AND DATE(l_date) >= DATE(NOW() - INTERVAL (TO_DAYS(NOW()) - TO_DAYS(r_born) - {0:d}) DAY) )
                     )
 GROUP BY r_parent
