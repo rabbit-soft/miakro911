@@ -6,21 +6,22 @@ using rabnet.components;
 
 namespace rabnet.filters
 {
-    public class FilterPanel:UserControl
+    public class FilterPanel : UserControl
     {
         //private RabStatusBar rsb = null;
         public RSBEventHandler OnHide;
         private String fname = "";
-        private Options.OPT_ID opid=Options.OPT_ID.NONE;
-        public FilterPanel(String name,Options.OPT_ID opid):this()
+        private Options.OPT_ID opid = Options.OPT_ID.NONE;
+        public FilterPanel(String name, Options.OPT_ID opid)
+            : this()
         {
             initAgain();
             fname = name;
-            this.opid=opid;
+            this.opid = opid;
             clearFilters();
             loadFilters();
             String s = Engine.opt().getOption(opid);
-            if (s!="" && s!="0")
+            if (s != "" && s != "0")
                 setFilters(Filters.makeFromString(s));
         }
         public FilterPanel()
@@ -28,8 +29,8 @@ namespace rabnet.filters
             InitializeComponent();
         }
 
-        protected virtual void InitializeComponent(){}
-        protected virtual void initAgain(){}
+        protected virtual void InitializeComponent() { }
+        protected virtual void initAgain() { }
 
         public virtual void close()
         {
@@ -37,10 +38,10 @@ namespace rabnet.filters
         }
 
         public virtual Filters getFilters() { return null; }
-        public virtual void setFilters(Filters f){}
-        public virtual void loadFilters() 
+        public virtual void setFilters(Filters f) { }
+        public virtual void loadFilters()
         {
-            if (fs!=null)
+            if (fs != null)
                 fs.Items.Clear();
             fs.Items.Add("Очистить");
             foreach (String s in Engine.db().getFilterNames(fname))
@@ -48,13 +49,14 @@ namespace rabnet.filters
             fs.SelectedIndex = -1;
             fs.Text = "";
         }
-        public virtual void clearFilters(){
+        public virtual void clearFilters()
+        {
         }
 
         private ComboBox fs;
         public ComboBox FilterCombo
         {
-            get{return fs;}
+            get { return fs; }
             set { fs = value; fs.SelectedIndexChanged += new EventHandler(this.filterSelect); }
         }
         private Button sBtn;
@@ -70,14 +72,14 @@ namespace rabnet.filters
             set { hBtn = value; hBtn.Click += new EventHandler(this.hideClick); }
         }
 
-        private void hideClick(Object sender,EventArgs e)
+        private void hideClick(Object sender, EventArgs e)
         {
             if (OnHide != null)
                 OnHide();
         }
         private void saveClick(Object sender, EventArgs e)
         {
-            if (fs.SelectedIndex==0 || fs.Text=="") return;
+            if (fs.SelectedIndex == 0 || fs.Text == "") return;
 
             Engine.db().setFilter(fname, fs.Text, getFilters());
             loadFilters();
@@ -86,14 +88,13 @@ namespace rabnet.filters
         {
             if (fs.Text == "") return;
 
-            if (fs.SelectedIndex == 0)
-            {
+            if (fs.SelectedIndex == 0) {
                 fs.SelectedIndex = -1;
                 fs.Text = "";
                 clearFilters();
+            } else {
+                setFilters(Engine.db().getFilter(fname, fs.Text));
             }
-            else
-                setFilters(Engine.db().getFilter(fname,fs.Text));
         }
 
     }
