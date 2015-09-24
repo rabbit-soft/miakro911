@@ -293,14 +293,17 @@ namespace db.mysql
     r_id, 
     rabname(r_id," + getnm() + @") name, 
     rabplace(r_id) place,
-    (TO_DAYS(NOW())-TO_DAYS(r_event_date)) srok,
+    (TO_DAYS('{2}')-TO_DAYS(r_event_date)) srok,
     r_status, 
     (TO_DAYS(NOW())-TO_DAYS(r_born)) age, 
     {1:s}
 FROM rabbits 
-WHERE r_sex='female' AND (TO_DAYS(NOW())-TO_DAYS(r_event_date)) >= {0:d} 
+WHERE r_sex='female'
+HAVING srok >= {0:d}
 ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
-                _flt.safeInt(Filters.OKROL), brd()
+                _flt.safeInt(Filters.OKROL), 
+                brd(),
+                _flt.safeValue(Filters.DATE)
             );
         }
 
@@ -508,11 +511,14 @@ DROP TABLE IF EXISTS aaa;",
 FROM rabbits rb
 CROSS JOIN vaccines v
 LEFT JOIN (SELECT r_id rvr_id, v_id rvv_id, Max(`date`) dt, COUNT(*) rv_times FROM rab_vac rv WHERE unabled!=1 GROUP BY r_id,v_id) mxdt 
-    ON rvv_id=v.v_id AND rvr_id=rb.r_id #AND CAST(v.v_duration as SIGNED)-CAST(to_days(NOW())-to_days(dt) AS SIGNED)>0
-WHERE v_id in({2:s}) AND v_id>0;
+    ON rvv_id = v.v_id AND rvr_id = rb.r_id       #AND CAST(v.v_duration as SIGNED)-CAST(to_days(NOW())-to_days(dt) AS SIGNED)>0
+WHERE v_id in({2:s}) AND v_id > 0;
 {3:s}
 SELECT * FROM aaa WHERE (srok IS NOT NULL AND srok>=0) AND (v_do_times=0 OR (times<v_do_times)) {4:s} ORDER BY srok;
-DROP TEMPORARY TABLE IF EXISTS aaa; {5:s}", getnm(), brd(), show,
+DROP TEMPORARY TABLE IF EXISTS aaa; {5:s}", 
+                getnm(), 
+                brd(), 
+                show,
                 _flt.safeBool(Filters.VACC_MOTH, true) ? "CREATE TEMPORARY TABLE bbb SELECT DISTINCT r_parent FROM aaa WHERE r_parent !=0;" : "",
                 _flt.safeBool(Filters.VACC_MOTH, true) ? "AND r_id not in (select r_parent FROM bbb)" : "",
                 _flt.safeBool(Filters.VACC_MOTH, true) ? "DROP TEMPORARY TABLE IF EXISTS bbb;" : ""

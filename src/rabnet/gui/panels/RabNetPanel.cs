@@ -8,11 +8,11 @@ using rabnet.components;
 
 namespace rabnet.panels
 {
-    public class RabNetPanel:UserControl
+    public class RabNetPanel : UserControl
     {
         protected Filters _runF;
         protected RabStatusBar _rsb = null;
-        private FilterPanel fp = null;
+        protected FilterPanel filterPanel = null;
         protected ListViewColumnSorter _colSort = null;
         protected ListViewColumnSorter _colSort2 = null;
         protected ILog _logger;
@@ -26,17 +26,19 @@ namespace rabnet.panels
             InitializeComponent();
             _logger = LogManager.GetLogger(this.GetType());
         }
-        public RabNetPanel(RabStatusBar sb,FilterPanel fp):this()
+        public RabNetPanel(RabStatusBar sb, FilterPanel fp)
+            : this()
         {
-            _rsb=sb;
-            this.fp=fp;
+            _rsb = sb;
+            this.filterPanel = fp;
         }
         public virtual void close()
         {
-            if (fp != null)
-                fp.close();
+            if (filterPanel != null) {
+                filterPanel.close();
+            }
         }
-        public RabNetPanel(RabStatusBar sb):this(sb,null){}
+        public RabNetPanel(RabStatusBar sb) : this(sb, null) { }
         protected virtual void InitializeComponent()
         {
             this.SuspendLayout();
@@ -53,7 +55,7 @@ namespace rabnet.panels
         /// </summary>
         public virtual void activate()
         {
-            _rsb.FilterPanel = fp;
+            _rsb.FilterPanel = filterPanel;
             Size = Parent.Size;
             Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             _rsb.ItemGet += new RSBItemEventHandler(onItem_Invoker);
@@ -68,8 +70,7 @@ namespace rabnet.panels
         public virtual void deactivate()
         {
             _rsb.Stop();
-            if (_rsb.FilterPanel != null)
-            {
+            if (_rsb.FilterPanel != null) {
                 _rsb.FilterPanel.Visible = false;
                 _rsb.FilterPanel = null;
             }
@@ -85,33 +86,28 @@ namespace rabnet.panels
         private IDataGetter prepareGet()
         {
             Filters f = null;
-            if (fp!=null)
-                f = fp.getFilters();
+            if (filterPanel != null) {
+                f = filterPanel.getFilters();
+            }
             return onPrepare(f);
         }
 
         private void onItem_Invoker(IData data)
         {
-            if (this.InvokeRequired)
-            {
+            if (this.InvokeRequired) {
                 RSBItemEventHandler d = new RSBItemEventHandler(onItem_Invoker);
                 this.Invoke(d, new object[] { data });
-            }
-            else
-            {
+            } else {
                 onItem(data);
             }
         }
 
         private void onFinishUpdate_Invoker()
         {
-            if (this.InvokeRequired)
-            {
+            if (this.InvokeRequired) {
                 RSBEventHandler d = new RSBEventHandler(onFinishUpdate_Invoker);
                 this.Invoke(d);
-            }
-            else
-            {
+            } else {
                 onFinishUpdate();
             }
         }

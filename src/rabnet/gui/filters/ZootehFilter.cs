@@ -16,6 +16,8 @@ namespace rabnet.filters
             : base("zooteh", Options.OPT_ID.ZOO_FILTER)
         {
             //InitializeComponent();
+            dtpWork.MinDate = DateTime.Now.Date;
+            dtpWork.MaxDate = dtpWork.MinDate.AddDays(7);
         }
 
         protected override void initAgain()
@@ -34,6 +36,9 @@ namespace rabnet.filters
         public override Filters getFilters()
         {
             Filters f = new Filters();
+
+            f[Filters.DATE] = dtpWork.Value.ToString("yyyy-MM-dd");
+
             f["act"] = "";
             bool ac = true; //не понятно что за переменная
             for (int i = 0; i < lbZoo.Items.Count; i++) {
@@ -100,6 +105,12 @@ namespace rabnet.filters
             }
             nudLogLim.Value = 100;
         }
+
+        public void RefreshDate()
+        {
+            dtpWork.Value = DateTime.Now.Date;
+        }
+
         #endregion
 
         private void button1_Click(object sender, EventArgs e)

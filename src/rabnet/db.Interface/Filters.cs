@@ -12,6 +12,7 @@ namespace rabnet
         #region const
         public const string ID = "id";
         public const string RAB_ID = "rab_id";
+        public const string DATE = "date";
         public const string DATE_FROM = "dateFrom";
         public const string DATE_TO = "dateTo";
         public const string LIMIT = "limit";

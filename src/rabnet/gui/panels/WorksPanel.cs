@@ -14,11 +14,11 @@ namespace rabnet.panels
 {
     public partial class WorksPanel : RabNetPanel
     {
-        private DateTime repdate = DateTime.Now;
+        private DateTime reportDate = DateTime.Now;
         public WorksPanel() : base() { }
         public int _makeFlag = 0;
         private bool _fullUpdate = true;
-        private Filters runF = null;
+        private Filters runF = null;//todo есть же parent._runF
         private int _selectedItem = -1;
 
         public WorksPanel(RabStatusBar sb)
@@ -66,7 +66,14 @@ namespace rabnet.panels
                 _selectedItem = -1;
                 base.onPrepare(f);
                 lvZooTech.Items.Clear();
-                repdate = DateTime.Now;
+                reportDate = DateTime.Parse(f[Filters.DATE]);
+
+                // указываем что зоотехплан не на сегодня
+                if (reportDate.Date != DateTime.Now.Date) {
+                    _rsb.SetText(2, reportDate.ToShortDateString(), true);
+                } else {
+                    _rsb.SetText(2, "");
+                }
             }
             if (lvZooTech.SelectedItems.Count == 1) {
                 _selectedItem = lvZooTech.SelectedItems[0].Index;
@@ -86,7 +93,7 @@ namespace rabnet.panels
             ZooTehNullItem it = data as ZooTehNullItem;
 
             Filters f = runF;
-            foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f, it.id)) {
+            foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f, it.id)) {                
                 ListViewItem li = lvZooTech.Items.Add(j.Days.ToString());
                 li.SubItems.Add(j.JobName);
                 li.SubItems.Add(j.Address);
@@ -96,7 +103,7 @@ namespace rabnet.panels
                 li.SubItems.Add(j.Comment);
                 li.SubItems.Add(j.Partners);/// todo партнеров получать gh
                 li.Tag = j;
-            }
+            }   
         }
 
         protected override void onFinishUpdate()
@@ -107,6 +114,8 @@ namespace rabnet.panels
                 lvZooTech.Items[_selectedItem].EnsureVisible();
             }
             lvZooTech.Focus();
+            _rsb.SetText(1, String.Format("{0:d} записей", lvZooTech.Items.Count));
+            (filterPanel as ZootehFilter).RefreshDate();
         }
 
         /// <summary>
@@ -362,7 +371,7 @@ namespace rabnet.panels
 #if !DEMO
             List<String> fuckers = new List<string>();
             XmlDocument rep = new XmlDocument();
-            rep.AppendChild(rep.CreateElement("Rows")).AppendChild(rep.CreateElement("Row")).AppendChild(rep.CreateElement("date")).AppendChild(rep.CreateTextNode(repdate.ToLongDateString() + " " + repdate.ToLongTimeString()));
+            rep.AppendChild(rep.CreateElement("Rows")).AppendChild(rep.CreateElement("Row")).AppendChild(rep.CreateElement("date")).AppendChild(rep.CreateTextNode(reportDate.ToLongDateString() + " " + reportDate.ToLongTimeString()));
             XmlDocument doc = new XmlDocument();
             XmlDocument fucks = new XmlDocument();
             XmlElement root = doc.CreateElement("Rows");
@@ -403,7 +412,7 @@ namespace rabnet.panels
                 plan += "_nofuck";
                 xmls = new XmlDocument[] { doc, rep };
             }
-            new ReportViewForm("Зоотехплан " + repdate.ToLongDateString() + " " + repdate.ToLongTimeString(), plan, xmls).ShowDialog();
+            new ReportViewForm("Зоотехплан " + reportDate.ToLongDateString() + " " + reportDate.ToLongTimeString(), plan, xmls).ShowDialog();
 #else 
             DemoErr.DemoNoReportMsg();
 #endif

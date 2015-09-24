@@ -38,6 +38,7 @@
             this.okBtn = new System.Windows.Forms.Button();
             this.saveBtn = new System.Windows.Forms.Button();
             this.cbFilters = new System.Windows.Forms.ComboBox();
+            this.dtpWork = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.nudLogLim)).BeginInit();
             this.SuspendLayout();
             // 
@@ -153,10 +154,18 @@
             this.cbFilters.Size = new System.Drawing.Size(121, 21);
             this.cbFilters.TabIndex = 0;
             // 
+            // dtpWork
+            // 
+            this.dtpWork.Location = new System.Drawing.Point(12, 248);
+            this.dtpWork.Name = "dtpWork";
+            this.dtpWork.Size = new System.Drawing.Size(191, 20);
+            this.dtpWork.TabIndex = 17;
+            // 
             // ZootehFilter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.dtpWork);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.nudLogLim);
@@ -190,5 +199,6 @@
         private System.Windows.Forms.NumericUpDown nudLogLim;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.DateTimePicker dtpWork;
     }
 }
