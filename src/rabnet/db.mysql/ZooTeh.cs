@@ -83,8 +83,9 @@ namespace db.mysql
             Days = this.Days - _flt.safeInt("vudvor");
             ID = rd.GetInt32("t_id");
             ID2 = rd.GetInt32("r_area");
-            if (ID2 == 1 && Building.ParseType(rd.GetString("t_type")) == BuildingType.Jurta)
+            if (ID2 == 1 && Building.ParseType(rd.GetString("t_type")) == BuildingType.Jurta) {
                 ID2 = 0;
+            }
             Comment = String.Format("№{0:s} {1:s}{2:s}", rd.GetString("r_status"), _flt.safeInt(Filters.SHORT) == 0 ? "подсосных:" : "+", rd.GetString("suckers"));
         }
 
@@ -116,11 +117,12 @@ namespace db.mysql
             int suck = rd.IsDBNull(rd.GetOrdinal("suckers")) ? 0 : rd.GetInt32("suckers");
             int srok = 0;
             int group = rd.GetInt32("r_group");
+
             if (status == 0) {
-                srok = this.RabAge - _flt.safeInt("brideAge");
+                srok = this.RabAge - _flt.safeInt(Filters.MAKE_BRIDE);
             } else if (status > 0) {
                 if (suck > 0) {
-                    srok = fromok - (status == 1 ? _flt.safeInt("ffuck") : _flt.safeInt("sfuck"));
+                    srok = fromok - (status == 1 ? _flt.safeInt(Filters.FIRST_FUCK) : _flt.safeInt(Filters.STATE_FUCK));
                 } else {
                     srok = fromok;
                 }
@@ -301,7 +303,7 @@ FROM rabbits
 WHERE r_sex='female'
 HAVING srok >= {0:d}
 ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
-                _flt.safeInt(Filters.OKROL), 
+                _flt.safeInt(Filters.OKROL),
                 brd(),
                 _flt.safeValue(Filters.DATE)
             );
@@ -331,8 +333,8 @@ FROM rabbits
     INNER JOIN tiers ON t_id = r_tier AND ((t_busy1 = r_id AND t_nest like '1%') OR (t_busy2 = r_id AND t_nest like '%1' AND t_type='dfemale'))
 WHERE r_sex = 'female'         
 HAVING srok >= {2:d} AND (r_event_date IS NULL {3:s})
-ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", 
-                getnm(), 
+ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
+                getnm(),
                 brd(),
                 _flt.safeInt(Filters.VUDVOR),
                 _flt.safeBool(Filters.NEST_OUT_IF_SUKROL) ? String.Format("OR (r_event_date IS NOT NULL AND srok < {0:d})", _flt.safeInt("nest")) : "",
@@ -395,10 +397,10 @@ ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
 FROM rabbits 
 WHERE r_sex='female' AND r_id NOT IN (SELECT l_rabbit FROM logs WHERE l_type = 21 AND DATE(l_date) >= DATE(rabbits.r_event_date)) 
 HAVING srok >= {0:d} AND srok < {1:d} 
-ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", 
-                _flt.safeInt(Filters.PRE_OKROL), 
-                _flt.safeInt(Filters.OKROL), 
-                getnm(), 
+ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
+                _flt.safeInt(Filters.PRE_OKROL),
+                _flt.safeInt(Filters.OKROL),
+                getnm(),
                 brd(),
                 _flt[Filters.DATE]
             );
@@ -418,8 +420,8 @@ WHERE {0:s}
 HAVING age >= {1:d} 
 ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
                 (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "(r_sex = 'female' AND r_parent <> 0)" : "(r_sex = 'void' OR (r_sex = 'male' AND r_parent <> 0))"),
-                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT)), 
-                brd(), 
+                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT)),
+                brd(),
                 getnm(),
                 _flt[Filters.DATE]
             );
@@ -432,14 +434,15 @@ ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
 
             if (_flt.safeBool(Filters.FIND_PARTNERS)) {
                 query += String.Format(@"SET group_concat_max_len = 15000; 
-CREATE TEMPORARY TABLE tPartn SELECT rabname(r_id,1) pname, 
+CREATE TEMPORARY TABLE tPartn SELECT 
+    rabname(r_id, 1) pname, 
 	rabplace(r_id) pplace,
 	r_breed pbreed,
 	r_genesis pgens
 FROM rabbits
 WHERE r_sex='male' 
-    AND r_status>0 
-    AND (r_last_fuck_okrol IS NULL OR TO_DAYS(NOW()) - TO_DAYS(r_last_fuck_okrol)>={0:d});",
+    AND r_status > 0 
+    AND (r_last_fuck_okrol IS NULL OR TO_DAYS(NOW()) - TO_DAYS(r_last_fuck_okrol) >= {0:d});",
                     _flt.safeInt(Filters.MALE_REST)
                 ) + Environment.NewLine;
             }
@@ -450,36 +453,41 @@ WHERE r_sex='male'
         r.r_id,
         rabname(r_id,{8:s}) name, 
         rabplace(r_id) place, 
-        TO_DAYS(NOW()) - TO_DAYS(r_born) age,
-        coalesce((SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=r.r_id),null,0) suckers,
+        TO_DAYS('{10}') - TO_DAYS(r_born) age,
+        COALESCE((SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent = r.r_id), null, 0) suckers,
         r_status,
-        DATEDIFF(NOW(), r_last_fuck_okrol) fromokrol,
+        DATEDIFF('{10}', r_last_fuck_okrol) fromokrol,
         " + (_flt.safeBool(Filters.FIND_PARTNERS) ? @"(SELECT GROUP_CONCAT( CONCAT(pname,'&', pplace) ORDER BY pname SEPARATOR '|') FROM tPartn {9:s} {4:s}{5:s})" : "''") + @" partners,
         r_group,
-        (SELECT {6:s} FROM breeds WHERE b_id=r_breed) breed, 
-        0 srok,
+        (SELECT {6:s} FROM breeds WHERE b_id = r_breed) breed, 
+        0 srok, # такое поле тупо должно быть в результате
         lsrok,
         lshow
     FROM rabbits r
-    LEFT JOIN   #пытаемся найти стимуляцию
-        (SELECT rv.r_id AS lrid, To_Days(NOW())-TO_DAYS(Max(date)) AS lsrok, v_duration AS ldura, v_age AS lshow 
+    LEFT JOIN (     #пытаемся найти стимуляцию
+            SELECT
+                rv.r_id AS lrid, 
+                TO_DAYS(NOW()) - TO_DAYS(Max(date)) AS lsrok, 
+                v_duration AS ldura, 
+                v_age AS lshow 
             FROM rab_vac rv
             INNER JOIN vaccines v ON v.v_id= rv.v_id
-            WHERE rv.v_id=-1 #стимуляция (lust)
+            WHERE rv.v_id = -1        #стимуляция (lust)
             GROUP BY rv.r_id
-        ) vc ON lrid=r.r_id AND lsrok<=ldura
-    WHERE Substr(r_flags,1,1)='0'       #не брак
-        AND Substr(r_flags,3,1)='0'     #не готовая продукция
-        AND r_sex='female' 
+        ) vc ON lrid = r.r_id AND lsrok <= ldura
+    WHERE Substr(r_flags,1,1) = '0'       #не брак
+        AND Substr(r_flags,3,1) = '0'     #не готовая продукция
+        AND r_sex = 'female' 
         AND r_event_date IS NULL        #не сукрольна
         AND r_status{7:s};
 		
-SELECT * FROM aaa 
-WHERE (lsrok IS NULL OR lsrok=lshow)
+SELECT * 
+FROM aaa 
+WHERE (lsrok IS NULL OR lsrok = lshow)
     AND (
-        age>{0:d} AND r_status=0                            #невеста
-        OR (r_status=1 AND (suckers=0 OR fromokrol>={1:d})) #первокролка
-        OR (r_status>1 AND (suckers=0 OR fromokrol>={2:d})) #штатная
+        age > {0:d} AND r_status=0                                #невеста
+        OR (r_status = 1 AND (suckers = 0 OR fromokrol >= {1:d})) #первокролка
+        OR (r_status > 1 AND (suckers = 0 OR fromokrol >= {2:d})) #штатная
     )
 ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;
 
@@ -495,7 +503,8 @@ DROP TABLE IF EXISTS aaa;",
                 (_flt.safeInt(Filters.SHORT) == 0 ? "b_name" : "b_short_name"),//6 
                 (_flt.safeInt(Filters.TYPE) == 1 ? ">0" : "=0"),
                 getnm(1),
-                !_flt.safeBool(Filters.HETEROSIS) || !_flt.safeBool(Filters.INBREEDING) ? "WHERE" : ""
+                !_flt.safeBool(Filters.HETEROSIS) || !_flt.safeBool(Filters.INBREEDING) ? "WHERE" : "",
+                _flt[Filters.DATE] //10
             );
 
             return query;
@@ -536,9 +545,9 @@ LEFT JOIN (SELECT r_id rvr_id, v_id rvv_id, Max(`date`) dt, COUNT(*) rv_times FR
 WHERE v_id in({2:s}) AND v_id > 0;
 {3:s}
 SELECT * FROM aaa WHERE (srok IS NOT NULL AND srok>=0) AND (v_do_times=0 OR (times<v_do_times)) {4:s} ORDER BY srok;
-DROP TEMPORARY TABLE IF EXISTS aaa; {5:s}", 
-                getnm(), 
-                brd(), 
+DROP TEMPORARY TABLE IF EXISTS aaa; {5:s}",
+                getnm(),
+                brd(),
                 show,
                 _flt.safeBool(Filters.VACC_MOTH, true) ? "CREATE TEMPORARY TABLE bbb SELECT DISTINCT r_parent FROM aaa WHERE r_parent !=0;" : "",
                 _flt.safeBool(Filters.VACC_MOTH, true) ? "AND r_id not in (select r_parent FROM bbb)" : "",
@@ -558,7 +567,7 @@ DROP TEMPORARY TABLE IF EXISTS aaa; {5:s}",
     WHERE r_sex='female' AND r_event_date IS NOT NULL) c
 WHERE ((children IS NULL AND sukr >= {0:d}) OR (children > 0 AND sukr >= {1:d})) AND
     (place NOT LIKE '%,%,0,jurta,%,1%' AND place NOT LIKE '%,%,0,female,%,1%' AND place NOT like '%,%,0,dfemale,%,1%' AND place NOT LIKE '%,%,1,dfemale,%,_1')
-ORDER BY sukr DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", 
+ORDER BY sukr DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
                 _flt.safeInt("nest"), _flt.safeInt("cnest")
             );
         }
@@ -574,7 +583,7 @@ ORDER BY sukr DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
     {2:s}
 FROM rabbits 
 WHERE (TO_DAYS(NOW())-TO_DAYS(r_born)) >= {1:d} AND r_group > 1 AND r_sex = 'male';",
-                getnm(), 
+                getnm(),
                 _flt.safeInt(Filters.BOYS_BY_ONE),
                 brd()
             );
