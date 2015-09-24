@@ -306,7 +306,12 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
 
         private string qVudvod()
         {
-            return String.Format(@"SELECT r_id, rabname(r_id,{0:s}) name, rabplace(r_id) place,(TO_DAYS(NOW())-TO_DAYS(r_born)) age, {1:s},
+            return String.Format(@"SELECT 
+    r_id, 
+    rabname(r_id,{0:s}) name, 
+    rabplace(r_id) place,
+    (TO_DAYS(NOW())-TO_DAYS(r_born)) age, 
+    {1:s},
     r_tier,
     r_area,
     r_event_date,
@@ -326,7 +331,7 @@ WHERE
     r_sex='female' AND 
     (TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol))>={2:d} AND
     ((t_busy1=r_id AND t_nest like '1%') OR (t_busy2=r_id AND t_nest like '%1' AND t_type='dfemale'))
-ORDER BY srok DESC,0+LEFT(place,LOCATE(',',place)) ASC;", getnm(), brd(),
+ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", getnm(), brd(),
                 _flt.safeInt(Filters.VUDVOR),
                 _flt.safeBool(Filters.NEST_OUT_IF_SUKROL) ? String.Format("OR (r_event_date IS NOT NULL AND (to_days(NOW())-to_days(r_event_date))<{0:d})", _flt.safeInt("nest")) : ""
             );
@@ -390,7 +395,7 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
     TO_DAYS(NOW())-TO_DAYS(r_born) age, {2:s} 
 FROM rabbits 
 WHERE {0:s} AND (TO_DAYS(NOW())-TO_DAYS(r_born)) >= {1:d} 
-ORDER BY age DESC,0+LEFT(place,LOCATE(',',place)) ASC;",
+ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
                 (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "(r_sex='female' and r_parent<>0)" : "(r_sex='void' OR (r_sex='male' and r_parent<>0))"),
                 (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT)), brd(), getnm()
             );
@@ -476,7 +481,11 @@ DROP TABLE IF EXISTS aaa;",
         {
             string show = _flt.safeValue(Filters.VACC_SHOW, "1") != "" ? _flt.safeValue(Filters.VACC_SHOW, "1") : "1";
             return String.Format(@"CREATE TEMPORARY TABLE aaa  SELECT 
-    rb.r_id, r_parent,rabname(r_id,{0:s}) name, rabplace(r_id) place, (TO_DAYS(NOW())-TO_DAYS(r_born)) age, r_group,
+    rb.r_id, 
+    r_parent,
+    rabname(r_id,{0:s}) name, 
+    rabplace(r_id) place, 
+    (TO_DAYS(NOW())-TO_DAYS(r_born)) age, r_group,
     to_days(NOW()) - to_days(
         COALESCE(
             Date_Add(dt, INTERVAL v.v_duration DAY),
@@ -487,14 +496,14 @@ DROP TABLE IF EXISTS aaa;",
             )
         )
     ) srok,     #сколько дней не выполнена работа
-
     dt,     #когда последний раз делали прививку
-    Coalesce(rv_times,0) times,  #сколько раз уже делали данную прививку
+    COALESCE(rv_times,0) times,  #сколько раз уже делали данную прививку
     v.v_id,
     v_age, 
     v_do_times,
     v_do_after,
-    v_name, {1:s}
+    v_name, 
+    {1:s}
 FROM rabbits rb
 CROSS JOIN vaccines v
 LEFT JOIN (SELECT r_id rvr_id, v_id rvv_id, Max(`date`) dt, COUNT(*) rv_times FROM rab_vac rv WHERE unabled!=1 GROUP BY r_id,v_id) mxdt 
