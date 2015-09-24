@@ -299,7 +299,7 @@ namespace db.mysql
     {1:s}
 FROM rabbits 
 WHERE r_sex='female' AND (TO_DAYS(NOW())-TO_DAYS(r_event_date)) >= {0:d} 
-ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", 
+ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
                 _flt.safeInt(Filters.OKROL), brd()
             );
         }
@@ -328,7 +328,8 @@ WHERE
     ((t_busy1=r_id AND t_nest like '1%') OR (t_busy2=r_id AND t_nest like '%1' AND t_type='dfemale'))
 ORDER BY srok DESC,0+LEFT(place,LOCATE(',',place)) ASC;", getnm(), brd(),
                 _flt.safeInt(Filters.VUDVOR),
-                _flt.safeBool(Filters.NEST_OUT_IF_SUKROL) ? String.Format("OR (r_event_date IS NOT NULL AND (to_days(NOW())-to_days(r_event_date))<{0:d})", _flt.safeInt("nest")) : "");
+                _flt.safeBool(Filters.NEST_OUT_IF_SUKROL) ? String.Format("OR (r_event_date IS NOT NULL AND (to_days(NOW())-to_days(r_event_date))<{0:d})", _flt.safeInt("nest")) : ""
+            );
         }
 
         private string qCounts()
@@ -358,7 +359,8 @@ ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
                 (_flt.safeInt("next") == -1 ? "" : String.Format(" AND TO_DAYS(NOW())-TO_DAYS(r_born)<{0:d}", _flt.safeInt("next"))),
                 getnm(),
                 COUNT_KIDS_LOG,
-                brd("(SELECT r7.r_breed FROM rabbits r7 WHERE r7.r_id=r.r_parent)"));
+                brd("(SELECT r7.r_breed FROM rabbits r7 WHERE r7.r_id=r.r_parent)")
+            );
         }
 
         private string qPreOkrol()
@@ -375,7 +377,9 @@ WHERE r_sex='female'
     AND (TO_DAYS(NOW()) - TO_DAYS(r_event_date)) >= {0:d} 
     AND (TO_DAYS(NOW()) - TO_DAYS(r_event_date)) < {1:d} 
     AND r_id NOT IN (SELECT l_rabbit FROM logs WHERE l_type=21 AND DATE(l_date)>=DATE(rabbits.r_event_date)) 
-ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", _flt.safeInt("preok"), _flt.safeInt("okrol"), getnm(), brd());
+ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", 
+                _flt.safeInt("preok"), _flt.safeInt("okrol"), getnm(), brd()
+            );
         }
 
         private string qBoysGirlsOut()
@@ -388,7 +392,8 @@ FROM rabbits
 WHERE {0:s} AND (TO_DAYS(NOW())-TO_DAYS(r_born)) >= {1:d} 
 ORDER BY age DESC,0+LEFT(place,LOCATE(',',place)) ASC;",
                 (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "(r_sex='female' and r_parent<>0)" : "(r_sex='void' OR (r_sex='male' and r_parent<>0))"),
-                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT)), brd(), getnm());
+                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT)), brd(), getnm()
+            );
         }
 
         private string qFuck()
@@ -405,7 +410,7 @@ CREATE TEMPORARY TABLE tPartn SELECT rabname(r_id,1) pname,
 FROM rabbits
 WHERE r_sex='male' 
     AND r_status>0 
-    AND (r_last_fuck_okrol IS NULL OR TO_DAYS(NOW()) - TO_DAYS(r_last_fuck_okrol)>={0:d});", 
+    AND (r_last_fuck_okrol IS NULL OR TO_DAYS(NOW()) - TO_DAYS(r_last_fuck_okrol)>={0:d});",
                     _flt.safeInt(Filters.MALE_REST)
                 ) + Environment.NewLine;
             }
@@ -498,9 +503,10 @@ WHERE v_id in({2:s}) AND v_id>0;
 {3:s}
 SELECT * FROM aaa WHERE (srok IS NOT NULL AND srok>=0) AND (v_do_times=0 OR (times<v_do_times)) {4:s} ORDER BY srok;
 DROP TEMPORARY TABLE IF EXISTS aaa; {5:s}", getnm(), brd(), show,
-    _flt.safeBool(Filters.VACC_MOTH, true) ? "CREATE TEMPORARY TABLE bbb SELECT DISTINCT r_parent FROM aaa WHERE r_parent !=0;" : "",
-    _flt.safeBool(Filters.VACC_MOTH, true) ? "AND r_id not in (select r_parent FROM bbb)" : "",
-    _flt.safeBool(Filters.VACC_MOTH, true) ? "DROP TEMPORARY TABLE IF EXISTS bbb;" : "");
+                _flt.safeBool(Filters.VACC_MOTH, true) ? "CREATE TEMPORARY TABLE bbb SELECT DISTINCT r_parent FROM aaa WHERE r_parent !=0;" : "",
+                _flt.safeBool(Filters.VACC_MOTH, true) ? "AND r_id not in (select r_parent FROM bbb)" : "",
+                _flt.safeBool(Filters.VACC_MOTH, true) ? "DROP TEMPORARY TABLE IF EXISTS bbb;" : ""
+            );
         }
 
         private string qSetNest()
@@ -515,7 +521,9 @@ DROP TEMPORARY TABLE IF EXISTS aaa; {5:s}", getnm(), brd(), show,
     WHERE r_sex='female' AND r_event_date IS NOT NULL) c
 WHERE ((children IS NULL AND sukr >= {0:d}) OR (children > 0 AND sukr >= {1:d})) AND
     (place NOT LIKE '%,%,0,jurta,%,1%' AND place NOT LIKE '%,%,0,female,%,1%' AND place NOT like '%,%,0,dfemale,%,1%' AND place NOT LIKE '%,%,1,dfemale,%,_1')
-ORDER BY sukr DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", _flt.safeInt("nest"), _flt.safeInt("cnest"));
+ORDER BY sukr DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", 
+                _flt.safeInt("nest"), _flt.safeInt("cnest")
+            );
         }
 
         private string qBoysByOne()
@@ -528,7 +536,9 @@ ORDER BY sukr DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", _flt.safeInt("nest"),
     (TO_DAYS(NOW())-TO_DAYS(r_born)) age,
     {2:s}
 FROM rabbits 
-WHERE (TO_DAYS(NOW())-TO_DAYS(r_born)) >= {1:d} AND r_group > 1 AND r_sex = 'male';", getnm(), _flt.safeInt(Filters.BOYS_BY_ONE), brd());
+WHERE (TO_DAYS(NOW())-TO_DAYS(r_born)) >= {1:d} AND r_group > 1 AND r_sex = 'male';",
+                getnm(), _flt.safeInt(Filters.BOYS_BY_ONE), brd()
+            );
         }
 
         private string qSpermTake()
@@ -542,7 +552,9 @@ WHERE (TO_DAYS(NOW())-TO_DAYS(r_born)) >= {1:d} AND r_group > 1 AND r_sex = 'mal
     (TO_DAYS(NOW())-TO_DAYS(r_born)) age,
     {2:s}
 FROM rabbits
-WHERE r_sex='male' AND r_status=2 AND Date_Add(r_last_fuck_okrol, INTERVAL {1:d} DAY) < NOW();", getnm(), _flt.safeInt(Filters.MALE_REST, 2), brd());
+WHERE r_sex='male' AND r_status=2 AND Date_Add(r_last_fuck_okrol, INTERVAL {1:d} DAY) < NOW();",
+                getnm(), _flt.safeInt(Filters.MALE_REST, 2), brd()
+            );
         }
     }
 }
