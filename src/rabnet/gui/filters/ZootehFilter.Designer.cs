@@ -158,7 +158,7 @@
             // 
             this.dtpWork.Location = new System.Drawing.Point(12, 248);
             this.dtpWork.Name = "dtpWork";
-            this.dtpWork.Size = new System.Drawing.Size(191, 20);
+            this.dtpWork.Size = new System.Drawing.Size(150, 20);
             this.dtpWork.TabIndex = 17;
             // 
             // ZootehFilter

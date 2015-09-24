@@ -344,7 +344,8 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
         {
             const int COUNT_KIDS_LOG = 17;
             return String.Format(@"SELECT 
-    TO_DAYS(NOW()) - TO_DAYS(r_born) - {0:d} srok,
+    TO_DAYS('{5}') - TO_DAYS(r_born) srok_base,
+    TO_DAYS('{5}') - TO_DAYS(r_born) - {0:d} srok,
     prnt AS r_id,
     rabname(r_parent,{2:s}) name,
     rabplace(r_parent) place,
@@ -354,23 +355,26 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
     suckGroups        
 FROM rabbits r
 LEFT JOIN (
-        SELECT r_parent AS prnt,SUM(r2.r_group) suckers, COUNT(*) suckGroups, AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) aage 
+        SELECT r_parent AS prnt, SUM(r2.r_group) suckers, COUNT(*) suckGroups, AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) aage 
         FROM rabbits r2 
         GROUP BY r_parent
     ) sc ON prnt = r.r_parent
-WHERE r_parent<>0 AND (TO_DAYS(NOW())-TO_DAYS(r_born) >= {0:d}{1:s}) 
-    AND r_id NOT IN (
-                        SELECT l_rabbit2 FROM logs 
-                        WHERE l_type = {3:d} AND (DATE(l_date) <= DATE(NOW()) 
-                            AND DATE(l_date) >= DATE(NOW() - INTERVAL (TO_DAYS(NOW()) - TO_DAYS(r_born) - {0:d}) DAY) )
-                    )
+WHERE r_parent <> 0 
 GROUP BY r_parent
+HAVING (srok_base >= {0:d} {1:s}) 
+    AND r_id NOT IN (
+        SELECT l_rabbit2 
+        FROM logs 
+        WHERE l_type = {3:d} AND (DATE(l_date) <= DATE(NOW()) 
+            AND DATE(l_date) >= DATE(NOW() - INTERVAL srok DAY))
+    )
 ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
                 _flt.safeInt("days"),
-                (_flt.safeInt("next") == -1 ? "" : String.Format(" AND TO_DAYS(NOW())-TO_DAYS(r_born)<{0:d}", _flt.safeInt("next"))),
+                (_flt.safeInt("next") == -1 ? "" : String.Format("AND srok_base < {0:d}", _flt.safeInt("next"))),
                 getnm(),
                 COUNT_KIDS_LOG,
-                brd("(SELECT r7.r_breed FROM rabbits r7 WHERE r7.r_id=r.r_parent)")
+                brd("(SELECT r7.r_breed FROM rabbits r7 WHERE r7.r_id = r.r_parent)"),
+                _flt[Filters.DATE]
             );
         }
 
