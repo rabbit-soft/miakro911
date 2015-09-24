@@ -7,12 +7,12 @@ namespace rabnet
 {
     public delegate void DTProgressHandler(int progress);
 
-    public delegate void DTItemProgressHandler(IData data,int progress);
+    public delegate void DTItemProgressHandler(IData data, int progress);
 
     class DataThread
     {
         delegate void initCallBack();
-        
+
         /// <summary>
         /// Объект для Критических секций. Ибо в интернетах говорят что lock(this) использовать не хорошо.
         /// Предпосылкой данного использования является зависание у Землеведа по не понятным причинам.
@@ -20,27 +20,25 @@ namespace rabnet
         private object _locker = new object();
         //private static DataThread _instance = null;       
         private IDataGetter _dataGetter = null;
-        private Thread _thr = null;        
+        private Thread _thr = null;
         private bool _stopRequired = false;
         public event RSBEventHandler OnFinish;
         public event DTItemProgressHandler OnItem;
         public event DTProgressHandler InitMaxProgress;
         //public event DTProgressHandler Progress;
-       
+
         /// <summary>
         /// Запускает отдельный поток, который получает данные.
         /// </summary>
         /// <param name="getter"></param>
         public void Run(IDataGetter getter/*, RabStatusBar sb, RSBItemEventHandler onItem*/)
         {
-            if(_thr !=null && _thr.IsAlive)
-            {
+            if (_thr != null && _thr.IsAlive) {
                 Stop();
                 Thread.Sleep(100);
             }
             _dataGetter = getter;
-            if (_dataGetter == null)
-            {
+            if (_dataGetter == null) {
                 onFinish();
                 return;
             }
@@ -54,13 +52,12 @@ namespace rabnet
 
         public void Stop()
         {
-            _stopRequired=true;
-            if (_thr != null)
-            {
+            _stopRequired = true;
+            if (_thr != null) {
                 _thr.Abort();
                 _thr = null;
             }
-            if(_dataGetter!=null)
+            if (_dataGetter != null)
                 _dataGetter.Close();
         }
 
@@ -69,16 +66,15 @@ namespace rabnet
             if (_dataGetter == null) return;
 
             int count = _dataGetter.getCount();
-            if(InitMaxProgress!=null)
+            if (InitMaxProgress != null)
                 InitMaxProgress(_dataGetter.getCount());
 
-            for (int i = 0; (i < count) && (!_stopRequired); i++)
-            {
+            for (int i = 0; (i < count) && (!_stopRequired); i++) {
                 //if (Progress!=null)
-                    //Progress(i);
+                //Progress(i);
                 IData it = _dataGetter.GetNextItem();
-                if(OnItem!=null &&!_stopRequired)
-                    OnItem(it,i);
+                if (OnItem != null && !_stopRequired)
+                    OnItem(it, i);
                 if (it == null)
                     break;
             }
