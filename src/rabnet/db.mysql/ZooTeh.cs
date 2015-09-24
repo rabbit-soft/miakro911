@@ -485,7 +485,8 @@ DROP TABLE IF EXISTS aaa;",
     r_parent,
     rabname(r_id,{0:s}) name, 
     rabplace(r_id) place, 
-    (TO_DAYS(NOW())-TO_DAYS(r_born)) age, r_group,
+    (TO_DAYS(NOW())-TO_DAYS(r_born)) age, 
+    r_group,
     to_days(NOW()) - to_days(
         COALESCE(
             Date_Add(dt, INTERVAL v.v_duration DAY),

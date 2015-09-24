@@ -15,15 +15,16 @@ namespace rabnet.panels
     public partial class WorksPanel : RabNetPanel
     {
         private DateTime repdate = DateTime.Now;
-        public WorksPanel():base(){}
+        public WorksPanel() : base() { }
         public int _makeFlag = 0;
-        private bool _fullUpdate=true;
+        private bool _fullUpdate = true;
         private Filters runF = null;
         private int _selectedItem = -1;
 
-        public WorksPanel(RabStatusBar sb): base(sb, new ZootehFilter())
-        {           
-            _colSort = new ListViewColumnSorter(lvZooTech, new int[] {0,4},Options.OPT_ID.ZOO_LIST);
+        public WorksPanel(RabStatusBar sb)
+            : base(sb, new ZootehFilter())
+        {
+            _colSort = new ListViewColumnSorter(lvZooTech, new int[] { 0, 4 }, Options.OPT_ID.ZOO_LIST);
             _colSort2 = new ListViewColumnSorter(lvZooTech, new int[] { 0, 4 }, Options.OPT_ID.ZOO_LIST);
             lvZooTech.ListViewItemSorter = _colSort;
             MakeExcel = new RSBEventHandler(this.makeExcel);
@@ -31,15 +32,14 @@ namespace rabnet.panels
 
         protected override IDataGetter onPrepare(Filters f)
         {
-            if (_fullUpdate)
-            {
+            if (_fullUpdate) {
                 f[Filters.SHORT] = Engine.opt().safeIntOption(Options.OPT_ID.SHORT_ZOO, 1).ToString();
                 f[Filters.DBL_SURNAME] = f[Filters.SHORT] == "1" ? "0" : "1";//Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
                 f[Filters.FIND_PARTNERS] = Engine.opt().getOption(Options.OPT_ID.FIND_PARTNERS);
                 f[Filters.OKROL] = Engine.opt().getOption(Options.OPT_ID.OKROL);
                 f[Filters.PRE_OKROL] = Engine.opt().getOption(Options.OPT_ID.PRE_OKROL);
                 f[Filters.VUDVOR] = Engine.opt().getOption(Options.OPT_ID.NEST_OUT);
-                f[Filters.NEST_OUT_IF_SUKROL] = Engine.opt().getBoolOption(Options.OPT_ID.NEST_OUT_IF_SUKROL)?"1":"0";
+                f[Filters.NEST_OUT_IF_SUKROL] = Engine.opt().getBoolOption(Options.OPT_ID.NEST_OUT_IF_SUKROL) ? "1" : "0";
                 f[Filters.COUNT1] = Engine.opt().getOption(Options.OPT_ID.COUNT1);
                 f[Filters.COUNT2] = Engine.opt().getOption(Options.OPT_ID.COUNT2);
                 f[Filters.COUNT3] = Engine.opt().getOption(Options.OPT_ID.COUNT3);
@@ -53,17 +53,16 @@ namespace rabnet.panels
                 f[Filters.INBREEDING] = Engine.opt().getOption(Options.OPT_ID.INBREEDING);
                 f[Filters.MALE_REST] = Engine.opt().getOption(Options.OPT_ID.MALE_WAIT);
                 f[Filters.BOYS_BY_ONE] = Engine.opt().getOption(Options.OPT_ID.BOYS_BY_ONE);
-                f[Filters.VACC_MOTH] = Engine.opt().getBoolOption(Options.OPT_ID.VACC_MOTHER)?"1":"0";
-                
+                f[Filters.VACC_MOTH] = Engine.opt().getBoolOption(Options.OPT_ID.VACC_MOTHER) ? "1" : "0";
+
                 f[Filters.VACC_SHOW] = "";
-                foreach (Vaccine v in Engine.db().GetVaccines(true))
-                {
+                foreach (Vaccine v in Engine.db().GetVaccines(true)) {
                     if (v.Zoo) //todo опасно vaccines
                         f[Filters.VACC_SHOW] += String.Format("{0:d},", v.ID);
                 }
                 f[Filters.VACC_SHOW] = f[Filters.VACC_SHOW].TrimEnd(',');
 
-                _selectedItem = -1;                
+                _selectedItem = -1;
                 base.onPrepare(f);
                 lvZooTech.Items.Clear();
                 repdate = DateTime.Now;
@@ -73,8 +72,7 @@ namespace rabnet.panels
             runF = f;
             fillLogs(f);
             //DataThread.Get().Stop();
-            if (!_fullUpdate)
-            {
+            if (!_fullUpdate) {
                 _fullUpdate = true;
                 return null;
             }
@@ -83,11 +81,10 @@ namespace rabnet.panels
 
         protected override void onItem(IData data)
         {
-            ZooTehNullItem it = data as ZooTehNullItem;            
+            ZooTehNullItem it = data as ZooTehNullItem;
 
             Filters f = runF;
-            foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f, it.id))
-            {
+            foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f, it.id)) {
                 ListViewItem li = lvZooTech.Items.Add(j.Days.ToString());
                 li.SubItems.Add(j.JobName);
                 li.SubItems.Add(j.Address);
@@ -103,8 +100,7 @@ namespace rabnet.panels
         protected override void onFinishUpdate()
         {
             base.onFinishUpdate();
-            if (_selectedItem > -1 && lvZooTech.Items.Count > _selectedItem)
-            {
+            if (_selectedItem > -1 && lvZooTech.Items.Count > _selectedItem) {
                 lvZooTech.Items[_selectedItem].Selected = true;
                 lvZooTech.Items[_selectedItem].EnsureVisible();
             }
@@ -118,8 +114,7 @@ namespace rabnet.panels
         private void fillLogs(Filters f)
         {
             lvLogs.Items.Clear();
-            foreach (LogList.OneLog l in Engine.db().getLogs(f).logs)
-            {
+            foreach (LogList.OneLog l in Engine.db().getLogs(f).logs) {
                 ListViewItem li = lvLogs.Items.Add(l.date.ToShortDateString() + " " + l.date.ToShortTimeString());
                 li.SubItems.Add(l.work);
                 li.SubItems.Add(l.address);
@@ -145,18 +140,17 @@ namespace rabnet.panels
         /// </summary>
         /// <param name="type">Тип работы</param>
         /// <param name="job"></param>
-        public void setMenu(JobType type,ZootehJob job)
+        public void setMenu(JobType type, ZootehJob job)
         {
-            okrolMenuItem.Visible = vudvorMenuItem.Visible= miBoysByOne.Visible=
-                countsMenuItem.Visible = preokrolMenuItem.Visible=
-                boysOutMenuItem.Visible = girlsOutMenuItem.Visible=
-                vaccMenuItem.Visible = fuckMenuItem.Visible =miLust.Visible=
-                setNestMenuItem.Visible = countChangedMenuItem.Visible= miSpermTake.Visible=false;
-            switch (type)
-            {
+            okrolMenuItem.Visible = vudvorMenuItem.Visible = miBoysByOne.Visible =
+                countsMenuItem.Visible = preokrolMenuItem.Visible =
+                boysOutMenuItem.Visible = girlsOutMenuItem.Visible =
+                vaccMenuItem.Visible = fuckMenuItem.Visible = miLust.Visible =
+                setNestMenuItem.Visible = countChangedMenuItem.Visible = miSpermTake.Visible = false;
+            switch (type) {
                 case JobType.OKROL: okrolMenuItem.Visible = true; break;
                 case JobType.NEST_OUT: vudvorMenuItem.Visible = true; break;
-                case JobType.COUNT_KIDS: countChangedMenuItem.Visible=countsMenuItem.Visible = true; break;
+                case JobType.COUNT_KIDS: countChangedMenuItem.Visible = countsMenuItem.Visible = true; break;
                 case JobType.PRE_OKROL: preokrolMenuItem.Visible = true; break;
                 case JobType.BOYS_OUT: boysOutMenuItem.Visible = true; break;
                 case JobType.GIRLS_OUT: girlsOutMenuItem.Visible = true; break;
@@ -183,7 +177,7 @@ namespace rabnet.panels
         {
             if (lvZooTech.SelectedItems.Count != 1)
                 return null;
-            return  (lvZooTech.SelectedItems[0].Tag) as ZootehJob;
+            return (lvZooTech.SelectedItems[0].Tag) as ZootehJob;
         }
 
         private int getFuckerId(String f, List<String> lst)
@@ -197,12 +191,11 @@ namespace rabnet.panels
         private void lvZooTech_SelectedIndexChanged(object sender, EventArgs e)
         {
             MainForm.StillWorking();
-            if (lvZooTech.SelectedItems.Count != 1)
-            {
+            if (lvZooTech.SelectedItems.Count != 1) {
                 setMenu(JobType.NONE);
                 return;
             }
-            setMenu(getCurJob().Type,getCurJob());
+            setMenu(getCurJob().Type, getCurJob());
         }
 
         /// <summary>
@@ -216,8 +209,7 @@ namespace rabnet.panels
                 return;
             _fullUpdate = true;
             bool needUpdate = Engine.opt().getIntOption(Options.OPT_ID.UPDATE_ZOO) == 1;
-            switch (job.Type)
-            {                
+            switch (job.Type) {
                 case JobType.NEST_OUT:
                     RabNetEngBuilding b = Engine.get().getBuilding(job.ID);
                     if (job.ID2 == 0)
@@ -236,26 +228,23 @@ namespace rabnet.panels
                 case JobType.GIRLS_OUT:
                     ReplaceForm rf = new ReplaceForm();
                     rf.AddRabbit(job.ID);
-                    if (job.Type==JobType.BOYS_OUT)
+                    if (job.Type == JobType.BOYS_OUT)
                         rf.SetAction(ReplaceForm.Action.BOYSOUT);
-                    res=rf.ShowDialog();
-                    break; 
-                                  
+                    res = rf.ShowDialog();
+                    break;
+
                 case JobType.COUNT_KIDS:
                     RabNetEngRabbit rrr = Engine.get().getRabbit(job.ID);
                     CountKids ck = new CountKids(job.ID);
                     int id2 = 0;
                     for (int i = 0; i < rrr.Youngers.Count; i++)
                         if (rrr.Youngers[i].ID == job.ID2) id2 = i;
-                    if (_makeFlag == 0)
-                    {
+                    if (_makeFlag == 0) {
                         //rrr.CountKids(0, 0, 0, rrr.Youngers[id2].Group, rrr.Youngers[id2].Age, 0);
                         ck.MakeCount();
                         ck.Dispose();
                         needUpdate = false;
-                    }
-                    else
-                    {
+                    } else {
                         //ck = new CountKids(job.ID, job.Flag == 1);
                         //ck.SetGroup(id2);
                         res = ck.ShowDialog();
@@ -264,18 +253,16 @@ namespace rabnet.panels
 
                 case JobType.FUCK:
                     int id = job.ID;
-                    if (_makeFlag == -1)
-                    {
+                    if (_makeFlag == -1) {
                         needUpdate = false;
                         Engine.db().SetRabbitVaccine(id, Vaccine.V_ID_LUST);
                         res = DialogResult.OK;
                         break;
                     }
 
-                    if (job.Flag > 1)
-                    {
+                    if (job.Flag > 1) {
                         id = 0;
-                        ReplaceBrideForm rb=new ReplaceBrideForm(job.ID);
+                        ReplaceBrideForm rb = new ReplaceBrideForm(job.ID);
                         res = rb.ShowDialog();
                         if (res == DialogResult.OK)
                             id = rb.getGirlOut();
@@ -283,24 +270,22 @@ namespace rabnet.panels
                     }
                     if (id != 0)
                         res = (new FuckForm(id)).ShowDialog();
-                    break;    
-                                
+                    break;
+
                 case JobType.OKROL:
-                    res=(new OkrolForm(job.ID)).ShowDialog();
+                    res = (new OkrolForm(job.ID)).ShowDialog();
                     break;
 
                 case JobType.VACC://прививка
                     RabNetEngRabbit rab = Engine.get().getRabbit(job.ID);
-                    AddRabVacForm dlg = new AddRabVacForm(rab,false,job.ID2);
-                    res=dlg.ShowDialog();
-                    if ( res== DialogResult.OK)
-                    {
-                        rab.SetVaccine(dlg.VacID, dlg.VacDate,false);
-                        if (rab.ParentID != 0 && Engine.opt().getBoolOption(Options.OPT_ID.VACC_MOTHER))
-                        {
+                    AddRabVacForm dlg = new AddRabVacForm(rab, false, job.ID2);
+                    res = dlg.ShowDialog();
+                    if (res == DialogResult.OK) {
+                        rab.SetVaccine(dlg.VacID, dlg.VacDate, false);
+                        if (rab.ParentID != 0 && Engine.opt().getBoolOption(Options.OPT_ID.VACC_MOTHER)) {
                             RabNetEngRabbit r2 = Engine.get().getRabbit(rab.ParentID);
-                            r2.SetVaccine(dlg.VacID, dlg.VacDate,false);
-                        }                       
+                            r2.SetVaccine(dlg.VacID, dlg.VacDate, false);
+                        }
                     }
                     needUpdate = false;
                     break;
@@ -323,17 +308,16 @@ namespace rabnet.panels
                     RabNetEngRabbit r = Engine.get().getRabbit(job.ID);
                     r.SperTake();
                     needUpdate = false;
-                    
+
 #else
                     DemoErr.DemoNoModuleMsg();
 #endif
                     break;
             }
-            if (res != DialogResult.Cancel)
-            {
+            if (res != DialogResult.Cancel) {
                 int idx = lvZooTech.SelectedItems[0].Index;
                 lvZooTech.SelectedItems[0].Remove();
-                if (idx<lvZooTech.Items.Count)
+                if (idx < lvZooTech.Items.Count)
                     lvZooTech.Items[idx].Selected = true;
                 _fullUpdate = needUpdate;
                 _rsb.Run();
@@ -363,7 +347,7 @@ namespace rabnet.panels
 #if !DEMO
             List<String> fuckers = new List<string>();
             XmlDocument rep = new XmlDocument();
-            rep.AppendChild(rep.CreateElement("Rows")).AppendChild(rep.CreateElement("Row")).AppendChild(rep.CreateElement("date")).AppendChild(rep.CreateTextNode(repdate.ToLongDateString()+" "+repdate.ToLongTimeString()));
+            rep.AppendChild(rep.CreateElement("Rows")).AppendChild(rep.CreateElement("Row")).AppendChild(rep.CreateElement("date")).AppendChild(rep.CreateTextNode(repdate.ToLongDateString() + " " + repdate.ToLongTimeString()));
             XmlDocument doc = new XmlDocument();
             XmlDocument fucks = new XmlDocument();
             XmlElement root = doc.CreateElement("Rows");
@@ -371,10 +355,9 @@ namespace rabnet.panels
             XmlElement fuck = fucks.CreateElement("Rows");
             fucks.AppendChild(fuck);
             XmlElement rw;
-            for (int i = 0; i < lvZooTech.Items.Count; i++)
-            {
+            for (int i = 0; i < lvZooTech.Items.Count; i++) {
                 ListViewItem li = lvZooTech.Items[i];
-                ZootehJob j=(ZootehJob)li.Tag;
+                ZootehJob j = (ZootehJob)li.Tag;
                 rw = doc.CreateElement("Row");
                 rw.AppendChild(doc.CreateElement("type")).AppendChild(doc.CreateTextNode(((int)j.Type).ToString()));
                 rw.AppendChild(doc.CreateElement("days")).AppendChild(doc.CreateTextNode(j.Days.ToString()));
@@ -384,18 +367,15 @@ namespace rabnet.panels
                 rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(j.Address));
                 rw.AppendChild(doc.CreateElement("breed")).AppendChild(doc.CreateTextNode(j.RabBreed));
                 rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(j.RabAge.ToString()));
-                if (j.Type == JobType.FUCK)
-                {
+                if (j.Type == JobType.FUCK) {
                     int id = getFuckerId(j.Partners, fuckers);
-                    string cmt = String.Format("см. {0:d}{1:d}",(id + 1),j.Flag>1 ? Environment.NewLine+"N"+j.Flag.ToString():"");
+                    string cmt = String.Format("см. {0:d}{1:d}", (id + 1), j.Flag > 1 ? Environment.NewLine + "N" + j.Flag.ToString() : "");
                     rw.AppendChild(doc.CreateElement("comment")).AppendChild(doc.CreateTextNode(cmt));
-                }
-                else
+                } else
                     rw.AppendChild(doc.CreateElement("comment")).AppendChild(doc.CreateTextNode(j.Comment));
                 root.AppendChild(rw);
             }
-            for (int i = 0; i < fuckers.Count; i++)
-            {
+            for (int i = 0; i < fuckers.Count; i++) {
                 rw = fucks.CreateElement("Row");
                 rw.AppendChild(fucks.CreateElement("id")).AppendChild(fucks.CreateTextNode((i + 1).ToString()));
                 rw.AppendChild(fucks.CreateElement("names")).AppendChild(fucks.CreateTextNode(fuckers[i]));
@@ -403,17 +383,16 @@ namespace rabnet.panels
             }
             XmlDocument[] xmls = new XmlDocument[] { doc, rep, fucks };
             String plan = "zooteh";
-            if (fuckers.Count == 0)
-            {
+            if (fuckers.Count == 0) {
                 plan += "_nofuck";
                 xmls = new XmlDocument[] { doc, rep };
             }
-            new ReportViewForm("Зоотехплан " + repdate.ToLongDateString() + " " + repdate.ToLongTimeString(), plan,xmls).ShowDialog();
+            new ReportViewForm("Зоотехплан " + repdate.ToLongDateString() + " " + repdate.ToLongTimeString(), plan, xmls).ShowDialog();
 #else 
             DemoErr.DemoNoReportMsg();
 #endif
         }
-     
+
         private void makeExcel()
         {
 #if !DEMO
@@ -428,18 +407,16 @@ namespace rabnet.panels
 
         private void actMenu_Opening(object sender, CancelEventArgs e)
         {
-            if (lvZooTech.SelectedItems.Count == 0)
-            {
+            if (lvZooTech.SelectedItems.Count == 0) {
                 e.Cancel = true;
                 return;
             }
             ZootehJob zJob = lvZooTech.SelectedItems[0].Tag as ZootehJob;
-            if (zJob.Type == JobType.FUCK)
-            {
+            if (zJob.Type == JobType.FUCK) {
                 miLust.Visible = zJob.Flag2 == 0;
             }
         }
 
-        
+
     }
 }
