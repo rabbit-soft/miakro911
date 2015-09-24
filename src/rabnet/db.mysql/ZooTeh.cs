@@ -518,9 +518,9 @@ DROP TABLE IF EXISTS aaa;",
     r_parent,
     rabname(r_id,{0:s}) name, 
     rabplace(r_id) place, 
-    (TO_DAYS(NOW())-TO_DAYS(r_born)) age, 
+    (TO_DAYS('{6}')-TO_DAYS(r_born)) age, 
     r_group,
-    to_days(NOW()) - to_days(
+    TO_DAYS('{6}') - TO_DAYS(
         COALESCE(
             Date_Add(dt, INTERVAL v.v_duration DAY),
             If(
@@ -550,8 +550,9 @@ DROP TEMPORARY TABLE IF EXISTS aaa; {5:s}",
                 brd(),
                 show,
                 _flt.safeBool(Filters.VACC_MOTH, true) ? "CREATE TEMPORARY TABLE bbb SELECT DISTINCT r_parent FROM aaa WHERE r_parent !=0;" : "",
-                _flt.safeBool(Filters.VACC_MOTH, true) ? "AND r_id not in (select r_parent FROM bbb)" : "",
-                _flt.safeBool(Filters.VACC_MOTH, true) ? "DROP TEMPORARY TABLE IF EXISTS bbb;" : ""
+                _flt.safeBool(Filters.VACC_MOTH, true) ? "AND r_id NOT IN (SELECT r_parent FROM bbb)" : "",
+                _flt.safeBool(Filters.VACC_MOTH, true) ? "DROP TEMPORARY TABLE IF EXISTS bbb;" : "",
+                _flt[Filters.DATE]
             );
         }
 
