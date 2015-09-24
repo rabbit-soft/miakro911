@@ -57,8 +57,9 @@ namespace rabnet.panels
 
                 f[Filters.VACC_SHOW] = "";
                 foreach (Vaccine v in Engine.db().GetVaccines(true)) {
-                    if (v.Zoo) //todo опасно vaccines
+                    if (v.Zoo) {//todo опасно vaccines
                         f[Filters.VACC_SHOW] += String.Format("{0:d},", v.ID);
+                    }
                 }
                 f[Filters.VACC_SHOW] = f[Filters.VACC_SHOW].TrimEnd(',');
 
@@ -67,8 +68,9 @@ namespace rabnet.panels
                 lvZooTech.Items.Clear();
                 repdate = DateTime.Now;
             }
-            if (lvZooTech.SelectedItems.Count == 1)
+            if (lvZooTech.SelectedItems.Count == 1) {
                 _selectedItem = lvZooTech.SelectedItems[0].Index;
+            }
             runF = f;
             fillLogs(f);
             //DataThread.Get().Stop();
@@ -175,15 +177,19 @@ namespace rabnet.panels
         /// <returns></returns>
         private ZootehJob getCurJob()
         {
-            if (lvZooTech.SelectedItems.Count != 1)
+            if (lvZooTech.SelectedItems.Count != 1) {
                 return null;
+            }
             return (lvZooTech.SelectedItems[0].Tag) as ZootehJob;
         }
 
         private int getFuckerId(String f, List<String> lst)
         {
-            for (int i = 0; i < lst.Count; i++)
-                if (lst[i] == f) return i;
+            for (int i = 0; i < lst.Count; i++) {
+                if (lst[i] == f) {
+                    return i;
+                }
+            }
             lst.Add(f);
             return lst.Count - 1;
         }
@@ -205,17 +211,19 @@ namespace rabnet.panels
         {
             DialogResult res = DialogResult.OK;
             ZootehJob job = getCurJob();
-            if (job == null)
+            if (job == null) {
                 return;
+            }
             _fullUpdate = true;
             bool needUpdate = Engine.opt().getIntOption(Options.OPT_ID.UPDATE_ZOO) == 1;
             switch (job.Type) {
                 case JobType.NEST_OUT:
                     RabNetEngBuilding b = Engine.get().getBuilding(job.ID);
-                    if (job.ID2 == 0)
+                    if (job.ID2 == 0) {
                         b.setNest(false);
-                    else
+                    } else {
                         b.setNest2(false);
+                    }
                     needUpdate = false;
                     break;
 
@@ -228,8 +236,9 @@ namespace rabnet.panels
                 case JobType.GIRLS_OUT:
                     ReplaceForm rf = new ReplaceForm();
                     rf.AddRabbit(job.ID);
-                    if (job.Type == JobType.BOYS_OUT)
+                    if (job.Type == JobType.BOYS_OUT) {
                         rf.SetAction(ReplaceForm.Action.BOYSOUT);
+                    }
                     res = rf.ShowDialog();
                     break;
 
@@ -237,8 +246,11 @@ namespace rabnet.panels
                     RabNetEngRabbit rrr = Engine.get().getRabbit(job.ID);
                     CountKids ck = new CountKids(job.ID);
                     int id2 = 0;
-                    for (int i = 0; i < rrr.Youngers.Count; i++)
-                        if (rrr.Youngers[i].ID == job.ID2) id2 = i;
+                    for (int i = 0; i < rrr.Youngers.Count; i++) {
+                        if (rrr.Youngers[i].ID == job.ID2) {
+                            id2 = i;
+                        }
+                    }
                     if (_makeFlag == 0) {
                         //rrr.CountKids(0, 0, 0, rrr.Youngers[id2].Group, rrr.Youngers[id2].Age, 0);
                         ck.MakeCount();
@@ -264,12 +276,14 @@ namespace rabnet.panels
                         id = 0;
                         ReplaceBrideForm rb = new ReplaceBrideForm(job.ID);
                         res = rb.ShowDialog();
-                        if (res == DialogResult.OK)
+                        if (res == DialogResult.OK) {
                             id = rb.getGirlOut();
+                        }
                         res = DialogResult.Cancel;
                     }
-                    if (id != 0)
+                    if (id != 0) {
                         res = (new FuckForm(id)).ShowDialog();
+                    }
                     break;
 
                 case JobType.OKROL:
@@ -317,8 +331,9 @@ namespace rabnet.panels
             if (res != DialogResult.Cancel) {
                 int idx = lvZooTech.SelectedItems[0].Index;
                 lvZooTech.SelectedItems[0].Remove();
-                if (idx < lvZooTech.Items.Count)
+                if (idx < lvZooTech.Items.Count) {
                     lvZooTech.Items[idx].Selected = true;
+                }
                 _fullUpdate = needUpdate;
                 _rsb.Run();
             }
@@ -371,8 +386,9 @@ namespace rabnet.panels
                     int id = getFuckerId(j.Partners, fuckers);
                     string cmt = String.Format("см. {0:d}{1:d}", (id + 1), j.Flag > 1 ? Environment.NewLine + "N" + j.Flag.ToString() : "");
                     rw.AppendChild(doc.CreateElement("comment")).AppendChild(doc.CreateTextNode(cmt));
-                } else
+                } else {
                     rw.AppendChild(doc.CreateElement("comment")).AppendChild(doc.CreateTextNode(j.Comment));
+                }
                 root.AppendChild(rw);
             }
             for (int i = 0; i < fuckers.Count; i++) {
