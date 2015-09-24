@@ -585,17 +585,20 @@ ORDER BY sukr DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
         private string qBoysByOne()
         {
             return String.Format(@"SELECT 
-    r_id, rabname(r_id,{0:s}) name, 
+    r_id, 
+    rabname(r_id,{0:s}) name, 
     rabplace(r_id) place, 
     r_group,
-    (TO_DAYS(NOW())-TO_DAYS(r_born)-{1:d}) srok,
-    (TO_DAYS(NOW())-TO_DAYS(r_born)) age,
+    TO_DAYS('{3}') - TO_DAYS(r_born) - {1:d} srok,
+    TO_DAYS('{3}') - TO_DAYS(r_born) age,
     {2:s}
 FROM rabbits 
-WHERE (TO_DAYS(NOW())-TO_DAYS(r_born)) >= {1:d} AND r_group > 1 AND r_sex = 'male';",
+WHERE r_group > 1 AND r_sex = 'male'
+HAVING age >= {1:d};",
                 getnm(),
                 _flt.safeInt(Filters.BOYS_BY_ONE),
-                brd()
+                brd(),
+                _flt[Filters.DATE]
             );
         }
 
