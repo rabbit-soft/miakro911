@@ -70,8 +70,10 @@ namespace rabnet.panels
 
                 // указываем что зоотехплан не на сегодня
                 if (reportDate.Date != DateTime.Now.Date) {
-                    _rsb.SetText(2, reportDate.ToShortDateString(), true);
+                    lvZooTech.BackColor = Color.Linen;
+                    _rsb.SetText(2, reportDate.ToString("dddd, dd MMMM yyyy"), true);
                 } else {
+                    lvZooTech.BackColor = SystemColors.Window;
                     _rsb.SetText(2, "");
                 }
             }

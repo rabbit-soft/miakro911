@@ -294,8 +294,8 @@ namespace db.mysql
     rabname(r_id," + getnm() + @") name, 
     rabplace(r_id) place,
     (TO_DAYS('{2}')-TO_DAYS(r_event_date)) srok,
-    r_status, 
-    (TO_DAYS(NOW())-TO_DAYS(r_born)) age, 
+    (TO_DAYS('{2}')-TO_DAYS(r_born)) age, 
+    r_status,     
     {1:s}
 FROM rabbits 
 WHERE r_sex='female'
@@ -314,7 +314,7 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
     rabname(r_id,{0:s}) name, 
     rabplace(r_id) place,
     (TO_DAYS('{4}')-TO_DAYS(r_last_fuck_okrol)) srok,
-    (TO_DAYS(NOW())-TO_DAYS(r_born)) age, 
+    (TO_DAYS('{4}')-TO_DAYS(r_born)) age, 
     {1:s},
     r_tier,
     r_area,
@@ -355,7 +355,11 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
     suckGroups        
 FROM rabbits r
 LEFT JOIN (
-        SELECT r_parent AS prnt, SUM(r2.r_group) suckers, COUNT(*) suckGroups, AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) aage 
+        SELECT 
+            r_parent AS prnt, 
+            SUM(r2.r_group) suckers, 
+            COUNT(*) suckGroups, 
+            AVG(TO_DAYS('{5}')-TO_DAYS(r2.r_born)) aage 
         FROM rabbits r2 
         GROUP BY r_parent
     ) sc ON prnt = r.r_parent
@@ -385,7 +389,7 @@ ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
     rabname(r_id,{2:s}) name,
     rabplace(r_id) place,
     (TO_DAYS('{4}') - TO_DAYS(r_event_date)) srok,
-    (TO_DAYS(NOW()) - TO_DAYS(r_born)) age,
+    (TO_DAYS('{4}') - TO_DAYS(r_born)) age,
     r_status,    
     {3:s}
 FROM rabbits 
@@ -402,15 +406,22 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
 
         private string qBoysGirlsOut()
         {
-            return String.Format(@"SELECT if(r_parent!=0,r_parent,r_id) r_id, 0 srok,
-    rabname(if(r_parent!=0,r_parent,r_id), {3:s}) name, 
-    rabplace(if(r_parent!=0,r_parent,r_id)) place, 
-    TO_DAYS(NOW())-TO_DAYS(r_born) age, {2:s} 
+            return String.Format(@"SELECT 
+    IF(r_parent != 0, r_parent, r_id) r_id,
+    TO_DAYS('{4}') - TO_DAYS(r_born) age,
+    TO_DAYS('{4}') - TO_DAYS(r_born) - {1:d} srok,     
+    rabname(IF(r_parent != 0, r_parent, r_id), {3:s}) name, 
+    rabplace(IF(r_parent != 0, r_parent, r_id)) place,     
+    {2:s} 
 FROM rabbits 
-WHERE {0:s} AND (TO_DAYS(NOW())-TO_DAYS(r_born)) >= {1:d} 
+WHERE {0:s} 
+HAVING age >= {1:d} 
 ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
-                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "(r_sex='female' AND r_parent<>0)" : "(r_sex='void' OR (r_sex='male' AND r_parent<>0))"),
-                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT)), brd(), getnm()
+                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "(r_sex = 'female' AND r_parent <> 0)" : "(r_sex = 'void' OR (r_sex = 'male' AND r_parent <> 0))"),
+                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT)), 
+                brd(), 
+                getnm(),
+                _flt[Filters.DATE]
             );
         }
 
@@ -563,7 +574,9 @@ ORDER BY sukr DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
     {2:s}
 FROM rabbits 
 WHERE (TO_DAYS(NOW())-TO_DAYS(r_born)) >= {1:d} AND r_group > 1 AND r_sex = 'male';",
-                getnm(), _flt.safeInt(Filters.BOYS_BY_ONE), brd()
+                getnm(), 
+                _flt.safeInt(Filters.BOYS_BY_ONE),
+                brd()
             );
         }
 
