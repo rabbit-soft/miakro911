@@ -12,6 +12,7 @@ namespace db.mysql
     public class ZootehJob_MySql : ZootehJob
     {
         private Filters _flt = null;
+
         public ZootehJob_MySql(Filters f)
         {
             this._flt = f;
@@ -115,23 +116,28 @@ namespace db.mysql
             int suck = rd.IsDBNull(rd.GetOrdinal("suckers")) ? 0 : rd.GetInt32("suckers");
             int srok = 0;
             int group = rd.GetInt32("r_group");
-            if (status == 0)
+            if (status == 0) {
                 srok = this.RabAge - _flt.safeInt("brideAge");
-            else if (status > 0) {
-                if (suck > 0)
+            } else if (status > 0) {
+                if (suck > 0) {
                     srok = fromok - (status == 1 ? _flt.safeInt("ffuck") : _flt.safeInt("sfuck"));
-                else srok = fromok;
+                } else {
+                    srok = fromok;
+                }
             }
 
             Days = srok; //если в common не определится срок и произойдет ошибка
             JobName = status == 0 ? "Случка" : "Вязка";
             Comment = _flt.safeInt(Filters.SHORT) == 1 ? "Нвс" : "Невеста";
-            if (group > 1)
+            if (group > 1) {
                 Comment += String.Format(" [{0:d}]", group);
-            if (status > 0)
+            }
+            if (status > 0) {
                 Comment = _flt.safeInt(Filters.SHORT) == 1 ? "Прк" : "Первокролка";
-            if (status > 1)
+            }
+            if (status > 1) {
                 Comment = _flt.safeInt(Filters.SHORT) == 1 ? "Штн" : "Штатная";
+            }
             if (!rd.IsDBNull(rd.GetOrdinal("lsrok"))) {
                 Comment += "  {Стим." + rd.GetString("lsrok") + "дн.}"; //че-то String.Format ругается  
                 Flag2 = -1;
@@ -149,8 +155,9 @@ namespace db.mysql
             if (children > 0) {
                 Days = sukr - _flt.safeInt("cnest");
                 Comment += " " + (_flt.safeInt(Filters.SHORT) == 0 ? " подсосных" : "+") + children.ToString();
-            } else
+            } else {
                 Days = sukr - _flt.safeInt("nest");
+            }
 
         }
         private void fillVacc(MySqlDataReader rd)
@@ -180,8 +187,9 @@ namespace db.mysql
                 string[] set = s.Split(new char[] { '&' });
                 result += String.Format(" {0:s} [{1:s}],", set[0].Trim(), Building.FullPlaceName(set[1]));
             }
-            if (result[result.Length - 1] == ',')
+            if (result[result.Length - 1] == ',') {
                 result = result.Remove(result.Length - 1);
+            }
             return result;
         }
     }
@@ -235,20 +243,22 @@ namespace db.mysql
 #if !DEBUG
             try {
 #else
-                _logger.Debug(type.ToString() + " query: " + query);
+            _logger.Debug(type.ToString() + " query: " + query);
 #endif
-                MySqlCommand cmd = new MySqlCommand(query, sql);
-                rd = cmd.ExecuteReader();
-                while (rd.Read())
-                    res.Add(new ZootehJob_MySql(_flt, type, rd));
-                rd.Close();
+            MySqlCommand cmd = new MySqlCommand(query, sql);
+            rd = cmd.ExecuteReader();
+            while (rd.Read()) {
+                res.Add(new ZootehJob_MySql(_flt, type, rd));
+            }
+            rd.Close();
 #if !DEBUG
             } catch (Exception err) {
                 _logger.Error(err.Message);
             } finally {
 #endif
-                if (rd != null && !rd.IsClosed)
-                    rd.Close();
+            if (rd != null && !rd.IsClosed) {
+                rd.Close();
+            }
 #if !DEBUG
             }
 #endif
@@ -432,15 +442,15 @@ ORDER BY 0+LEFT(place,LOCATE(',',place)) ASC;
 
 DROP TABLE IF EXISTS tPartn; 
 DROP TABLE IF EXISTS aaa;",
-                _flt.safeInt(Filters.MAKE_BRIDE), 
-                _flt.safeInt(Filters.FIRST_FUCK), 
+                _flt.safeInt(Filters.MAKE_BRIDE),
+                _flt.safeInt(Filters.FIRST_FUCK),
                 _flt.safeInt(Filters.STATE_FUCK),
                 _flt.safeInt(Filters.MALE_REST), //3
                 (_flt.safeBool(Filters.HETEROSIS) ? "" : String.Format("pbreed=r.r_breed")),//4
                 (_flt.safeBool(Filters.INBREEDING) ? "" : String.Format("{0:s}(SELECT COUNT(g_genom) FROM genoms WHERE g_id=r.r_genesis AND g_genom IN (SELECT g2.g_genom FROM genoms g2 WHERE g2.g_id=pgens))=0", _flt.safeBool(Filters.HETEROSIS) ? "" : " AND ")),
 
                 (_flt.safeInt(Filters.SHORT) == 0 ? "b_name" : "b_short_name"),//6 
-                (_flt.safeInt(Filters.TYPE) == 1 ? ">0" : "=0"), 
+                (_flt.safeInt(Filters.TYPE) == 1 ? ">0" : "=0"),
                 getnm(1),
                 !_flt.safeBool(Filters.HETEROSIS) || !_flt.safeBool(Filters.INBREEDING) ? "WHERE" : ""
             );
