@@ -168,10 +168,13 @@ namespace db.mysql
             Comment = "\"" + rd.GetString("v_name") + "\"  [" + rd.GetString("r_group") + "]";
         }
 
-
         private void fillSpermTake(MySqlDataReader rd)
         {
-
+            if (rd.IsDBNull(rd.GetOrdinal("fromfuck"))) {
+                Days = rd.GetInt32("age") - _flt.safeInt(Filters.MAKE_CANDIDATE);
+            } else {
+                Days = rd.GetInt32("fromfuck");
+            }
         }
 
         /// <summary>
@@ -610,11 +613,15 @@ HAVING age >= {1:d};",
     rabplace(r_id) place, 
     r_group,
     0 srok, 
-    (TO_DAYS(NOW())-TO_DAYS(r_born)) age,
+    (TO_DAYS('{3}')-TO_DAYS(r_last_fuck_okrol)) fromfuck,
+    (TO_DAYS('{3}')-TO_DAYS(r_born)) age,
     {2:s}
 FROM rabbits
-WHERE r_sex='male' AND r_status=2 AND Date_Add(r_last_fuck_okrol, INTERVAL {1:d} DAY) < NOW();",
-                getnm(), _flt.safeInt(Filters.MALE_REST, 2), brd()
+WHERE r_sex='male' AND r_status = 2 AND Date_Add(r_last_fuck_okrol, INTERVAL {1:d} DAY) < '{3}';",
+                getnm(),
+                _flt.safeInt(Filters.MALE_REST, 2),
+                brd(),
+                _flt[Filters.DATE]
             );
         }
     }
