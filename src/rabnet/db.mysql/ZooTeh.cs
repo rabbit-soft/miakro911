@@ -289,12 +289,19 @@ namespace db.mysql
 
         private string qOkrol()
         {
-            return String.Format(@"SELECT r_id,rabname(r_id," + getnm() + @") name,rabplace(r_id) place,
+            return String.Format(@"SELECT 
+    r_id, 
+    rabname(r_id," + getnm() + @") name, 
+    rabplace(r_id) place,
     (TO_DAYS(NOW())-TO_DAYS(r_event_date)) srok,
-    r_status,(TO_DAYS(NOW())-TO_DAYS(r_born)) age,{1:s}
+    r_status, 
+    (TO_DAYS(NOW())-TO_DAYS(r_born)) age, 
+    {1:s}
 FROM rabbits 
-WHERE r_sex='female' AND (TO_DAYS(NOW())-TO_DAYS(r_event_date))>={0:d} ORDER BY srok DESC,
-    0+LEFT(place,LOCATE(',',place)) ASC;", _flt.safeInt(Filters.OKROL), brd());
+WHERE r_sex='female' AND (TO_DAYS(NOW())-TO_DAYS(r_event_date)) >= {0:d} 
+ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", 
+                _flt.safeInt(Filters.OKROL), brd()
+            );
         }
 
         private string qVudvod()
@@ -312,8 +319,7 @@ WHERE r_sex='female' AND (TO_DAYS(NOW())-TO_DAYS(r_event_date))>={0:d} ORDER BY 
     t_delims,
     t_type,
     COALESCE( (SELECT SUM(r3.r_group) FROM rabbits r3 WHERE r3.r_parent=rabbits.r_id) ,0) suckers
-FROM 
-    rabbits,tiers
+FROM rabbits, tiers
 WHERE 
     t_id=r_tier AND 
     (r_event_date IS NULL {3:s}) AND
@@ -329,7 +335,7 @@ ORDER BY srok DESC,0+LEFT(place,LOCATE(',',place)) ASC;", getnm(), brd(),
         {
             const int COUNT_KIDS_LOG = 17;
             return String.Format(@"SELECT 
-    TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d} srok,
+    TO_DAYS(NOW()) - TO_DAYS(r_born) - {0:d} srok,
     prnt AS r_id,
     rabname(r_parent,{2:s}) name,
     rabplace(r_parent) place,
@@ -344,7 +350,7 @@ WHERE r_parent<>0 AND (TO_DAYS(NOW())-TO_DAYS(r_born)>={0:d}{1:s})
     AND r_id NOT IN (
                         SELECT l_rabbit2 FROM logs 
                         WHERE l_type={3:d} AND (DATE(l_date)<=DATE(NOW()) 
-                            AND DATE(l_date)>=DATE( NOW()- INTERVAL (TO_DAYS(NOW())-TO_DAYS(r_born)-{0:d}) DAY) )
+                            AND DATE(l_date) >= DATE(NOW() - INTERVAL (TO_DAYS(NOW()) - TO_DAYS(r_born) - {0:d}) DAY) )
                     )
 GROUP BY r_parent
 ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
@@ -360,14 +366,14 @@ ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
             return String.Format(@"SELECT r_id,
     rabname(r_id,{2:s}) name,
     rabplace(r_id) place,
-    (TO_DAYS(NOW())-TO_DAYS(r_event_date)) srok,
+    (TO_DAYS(NOW()) - TO_DAYS(r_event_date)) srok,
     r_status,
-    (TO_DAYS(NOW())-TO_DAYS(r_born)) age,
+    (TO_DAYS(NOW()) - TO_DAYS(r_born)) age,
     {3:s}
 FROM rabbits 
 WHERE r_sex='female' 
-    AND (TO_DAYS(NOW())-TO_DAYS(r_event_date))>={0:d} 
-    AND (TO_DAYS(NOW())-TO_DAYS(r_event_date))<{1:d} 
+    AND (TO_DAYS(NOW()) - TO_DAYS(r_event_date)) >= {0:d} 
+    AND (TO_DAYS(NOW()) - TO_DAYS(r_event_date)) < {1:d} 
     AND r_id NOT IN (SELECT l_rabbit FROM logs WHERE l_type=21 AND DATE(l_date)>=DATE(rabbits.r_event_date)) 
 ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", _flt.safeInt("preok"), _flt.safeInt("okrol"), getnm(), brd());
         }
@@ -375,10 +381,11 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", _flt.safeInt("preok")
         private string qBoysGirlsOut()
         {
             return String.Format(@"SELECT if(r_parent!=0,r_parent,r_id) r_id, 0 srok,
-    rabname(if(r_parent!=0,r_parent,r_id),{3:s}) name, 
+    rabname(if(r_parent!=0,r_parent,r_id), {3:s}) name, 
     rabplace(if(r_parent!=0,r_parent,r_id)) place, 
-    TO_DAYS(NOW())-TO_DAYS(r_born) age,{2:s} 
-FROM rabbits WHERE {0:s} AND (TO_DAYS(NOW())-TO_DAYS(r_born))>={1:d} 
+    TO_DAYS(NOW())-TO_DAYS(r_born) age, {2:s} 
+FROM rabbits 
+WHERE {0:s} AND (TO_DAYS(NOW())-TO_DAYS(r_born)) >= {1:d} 
 ORDER BY age DESC,0+LEFT(place,LOCATE(',',place)) ASC;",
                 (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "(r_sex='female' and r_parent<>0)" : "(r_sex='void' OR (r_sex='male' and r_parent<>0))"),
                 (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT)), brd(), getnm());
@@ -398,7 +405,9 @@ CREATE TEMPORARY TABLE tPartn SELECT rabname(r_id,1) pname,
 FROM rabbits
 WHERE r_sex='male' 
     AND r_status>0 
-    AND (r_last_fuck_okrol IS NULL OR TO_DAYS(NOW())-TO_DAYS(r_last_fuck_okrol)>={0:d});", _flt.safeInt(Filters.MALE_REST)) + Environment.NewLine;
+    AND (r_last_fuck_okrol IS NULL OR TO_DAYS(NOW()) - TO_DAYS(r_last_fuck_okrol)>={0:d});", 
+                    _flt.safeInt(Filters.MALE_REST)
+                ) + Environment.NewLine;
             }
 
             query += String.Format(
@@ -407,7 +416,7 @@ WHERE r_sex='male'
         r.r_id,
         rabname(r_id,{8:s}) name, 
         rabplace(r_id) place, 
-        TO_DAYS(NOW())-TO_DAYS(r_born) age,
+        TO_DAYS(NOW()) - TO_DAYS(r_born) age,
         coalesce((SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=r.r_id),null,0) suckers,
         r_status,
         DATEDIFF(NOW(), r_last_fuck_okrol) fromokrol,
@@ -419,7 +428,7 @@ WHERE r_sex='male'
         lshow
     FROM rabbits r
     LEFT JOIN   #пытаемся найти стимуляцию
-        (SELECT rv.r_id AS lrid, To_Days(NOW())-To_Days(Max(date)) AS lsrok, v_duration AS ldura, v_age AS lshow 
+        (SELECT rv.r_id AS lrid, To_Days(NOW())-TO_DAYS(Max(date)) AS lsrok, v_duration AS ldura, v_age AS lshow 
             FROM rab_vac rv
             INNER JOIN vaccines v ON v.v_id= rv.v_id
             WHERE rv.v_id=-1 #стимуляция (lust)
@@ -468,8 +477,8 @@ DROP TABLE IF EXISTS aaa;",
             Date_Add(dt, INTERVAL v.v_duration DAY),
             If(
                 v_do_after=0, 
-                Date_Add(r_born,INTERVAL v_age DAY), 
-                (SELECT Date_Add(Max(`date`),INTERVAL v_age DAY) FROM rab_vac WHERE r_id=rb.r_id AND v_id=v_do_after)    #может получиться NULL если не было сделано предыдущей прививки
+                Date_Add(r_born, INTERVAL v_age DAY), 
+                (SELECT Date_Add(Max(`date`), INTERVAL v_age DAY) FROM rab_vac WHERE r_id=rb.r_id AND v_id=v_do_after)    #может получиться NULL если не было сделано предыдущей прививки
             )
         )
     ) srok,     #сколько дней не выполнена работа
@@ -497,33 +506,43 @@ DROP TEMPORARY TABLE IF EXISTS aaa; {5:s}", getnm(), brd(), show,
         private string qSetNest()
         {
             return String.Format(@"SELECT * FROM (
-        SELECT r_id,rabname(r_id," + getnm() + @") name,rabplace(r_id) place,
+    SELECT r_id, rabname(r_id," + getnm() + @") name, rabplace(r_id) place,
         (TO_DAYS(NOW())-TO_DAYS(r_born)) age,
         (TO_DAYS(NOW())-TO_DAYS(r_event_date)) sukr,
         (SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) children," + brd() + @",
         0 srok 
-    FROM rabbits WHERE r_sex='female' AND r_event_date IS NOT NULL) c 
-WHERE ((children IS NULL AND sukr>={0:d}) OR (children>0 AND sukr>={1:d})) AND
-    (place NOT like '%,%,0,jurta,%,1%' AND place NOT like '%,%,0,female,%,1%' AND place NOT like '%,%,0,dfemale,%,1%' AND place NOT like '%,%,1,dfemale,%,_1')
-ORDER BY sukr DESC,0+LEFT(place,LOCATE(',',place)) ASC;", _flt.safeInt("nest"), _flt.safeInt("cnest"));
+    FROM rabbits 
+    WHERE r_sex='female' AND r_event_date IS NOT NULL) c
+WHERE ((children IS NULL AND sukr >= {0:d}) OR (children > 0 AND sukr >= {1:d})) AND
+    (place NOT LIKE '%,%,0,jurta,%,1%' AND place NOT LIKE '%,%,0,female,%,1%' AND place NOT like '%,%,0,dfemale,%,1%' AND place NOT LIKE '%,%,1,dfemale,%,_1')
+ORDER BY sukr DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", _flt.safeInt("nest"), _flt.safeInt("cnest"));
         }
 
         private string qBoysByOne()
         {
             return String.Format(@"SELECT 
-    r_id, rabname(r_id,{0:s}) name, rabplace(r_id) place, r_group,
+    r_id, rabname(r_id,{0:s}) name, 
+    rabplace(r_id) place, 
+    r_group,
     (TO_DAYS(NOW())-TO_DAYS(r_born)-{1:d}) srok,
-    (TO_DAYS(NOW())-TO_DAYS(r_born)) age,{2:s}
-FROM rabbits WHERE (TO_DAYS(NOW())-TO_DAYS(r_born))>={1:d} and r_group>1 and r_sex='male' ;", getnm(), _flt.safeInt(Filters.BOYS_BY_ONE), brd());
+    (TO_DAYS(NOW())-TO_DAYS(r_born)) age,
+    {2:s}
+FROM rabbits 
+WHERE (TO_DAYS(NOW())-TO_DAYS(r_born)) >= {1:d} AND r_group > 1 AND r_sex = 'male';", getnm(), _flt.safeInt(Filters.BOYS_BY_ONE), brd());
         }
 
         private string qSpermTake()
         {
             return String.Format(@"SELECT 
-    r_id, rabname(r_id,{0:s}) name, rabplace(r_id) place, r_group,
-    0 srok, (TO_DAYS(NOW())-TO_DAYS(r_born)) age,{2:s}
+    r_id, 
+    rabname(r_id,{0:s}) name, 
+    rabplace(r_id) place, 
+    r_group,
+    0 srok, 
+    (TO_DAYS(NOW())-TO_DAYS(r_born)) age,
+    {2:s}
 FROM rabbits
-WHERE r_sex='male' AND r_status=2 AND Date_Add(r_last_fuck_okrol,INTERVAL {1:d} DAY)<Now();", getnm(), _flt.safeInt(Filters.MALE_REST, 2), brd());
+WHERE r_sex='male' AND r_status=2 AND Date_Add(r_last_fuck_okrol, INTERVAL {1:d} DAY) < NOW();", getnm(), _flt.safeInt(Filters.MALE_REST, 2), brd());
         }
     }
 }
