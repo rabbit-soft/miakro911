@@ -558,18 +558,27 @@ DROP TEMPORARY TABLE IF EXISTS aaa; {5:s}",
 
         private string qSetNest()
         {
-            return String.Format(@"SELECT * FROM (
-    SELECT r_id, rabname(r_id," + getnm() + @") name, rabplace(r_id) place,
-        (TO_DAYS(NOW())-TO_DAYS(r_born)) age,
-        (TO_DAYS(NOW())-TO_DAYS(r_event_date)) sukr,
-        (SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) children," + brd() + @",
-        0 srok 
-    FROM rabbits 
-    WHERE r_sex='female' AND r_event_date IS NOT NULL) c
-WHERE ((children IS NULL AND sukr >= {0:d}) OR (children > 0 AND sukr >= {1:d})) AND
-    (place NOT LIKE '%,%,0,jurta,%,1%' AND place NOT LIKE '%,%,0,female,%,1%' AND place NOT like '%,%,0,dfemale,%,1%' AND place NOT LIKE '%,%,1,dfemale,%,_1')
+            return String.Format(@"SELECT 
+    r_id, 
+    rabname(r_id," + getnm() + @") name, 
+    rabplace(r_id) place,
+    (TO_DAYS('{2}') - TO_DAYS(r_born)) age,
+    (TO_DAYS('{2}') - TO_DAYS(r_event_date)) sukr,
+    (SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) children," + brd() + @",
+    0 srok 
+FROM rabbits 
+WHERE r_sex = 'female' AND r_event_date IS NOT NULL
+HAVING ((children IS NULL AND sukr >= {0:d}) OR (children > 0 AND sukr >= {1:d})) 
+    AND (
+        place NOT LIKE '%,%,0,jurta,%,1%' 
+        AND place NOT LIKE '%,%,0,female,%,1%' 
+        AND place NOT like '%,%,0,dfemale,%,1%' 
+        AND place NOT LIKE '%,%,1,dfemale,%,_1'
+    )
 ORDER BY sukr DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
-                _flt.safeInt("nest"), _flt.safeInt("cnest")
+                _flt.safeInt(Filters.NEST_IN),
+                _flt.safeInt(Filters.CHILD_NEST),
+                _flt[Filters.DATE]
             );
         }
 
