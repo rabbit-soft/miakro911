@@ -118,7 +118,7 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) {1:s} ORDER BY m_id;",
 
         protected override string countQuery()
         {
-            return @"SELECT DISTINCT COUNT(DISTINCT m_id) 
+            return @"SELECT COUNT(t_id), COUNT( DISTINCT m_id ) 
 FROM minifarms, tiers 
 WHERE (m_upper=t_id OR m_lower=t_id) " + makeWhere() + ";";
         }

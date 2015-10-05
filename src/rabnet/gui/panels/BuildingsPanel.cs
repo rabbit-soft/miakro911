@@ -143,7 +143,8 @@ namespace rabnet.panels
             f[Filters.SHORT] = Engine.opt().getOption(Options.OPT_ID.SHORT_NAMES);
             f[Filters.DBL_SURNAME] = Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
             IDataGetter dg = Engine.db2().getBuildingsRows(f);
-            _rsb.SetText(1, dg.getCount().ToString() + " МИНИфермы");
+            _rsb.SetText(1, dg.getCount().ToString() + " ярусов");
+            _rsb.SetText(2, dg.getCount2().ToString() + " МИНИферм");
             _runF = f;
             return dg;
         }
