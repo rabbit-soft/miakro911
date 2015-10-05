@@ -331,7 +331,7 @@ namespace rabnet.panels
                 case JobType.SPERM_TAKE:
 #if !DEMO
                     RabNetEngRabbit r = Engine.get().getRabbit(job.ID);
-                    r.SperTake();
+                    r.SpermTake();
                     needUpdate = false;
 
 #else

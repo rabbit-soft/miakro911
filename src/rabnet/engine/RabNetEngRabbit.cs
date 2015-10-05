@@ -564,7 +564,7 @@ namespace rabnet
         }
 
 #if !DEMO
-        public void SperTake()
+        public void SpermTake()
         {
 
             if (this.Sex != SexType.MALE) throw new ExNotMale(this);
