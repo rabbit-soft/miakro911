@@ -57,26 +57,32 @@ namespace rabnet
                 _thr.Abort();
                 _thr = null;
             }
-            if (_dataGetter != null)
+            if (_dataGetter != null) {
                 _dataGetter.Close();
+            }
         }
 
         private void threadProc()
         {
-            if (_dataGetter == null) return;
+            if (_dataGetter == null) {
+                return;
+            }
 
             int count = _dataGetter.getCount();
-            if (InitMaxProgress != null)
+            if (InitMaxProgress != null) {
                 InitMaxProgress(_dataGetter.getCount());
+            }
 
             for (int i = 0; (i < count) && (!_stopRequired); i++) {
                 //if (Progress!=null)
                 //Progress(i);
                 IData it = _dataGetter.GetNextItem();
-                if (OnItem != null && !_stopRequired)
+                if (OnItem != null && !_stopRequired) {
                     OnItem(it, i);
-                if (it == null)
+                }
+                if (it == null) {
                     break;
+                }
             }
             _dataGetter.Close();
 
@@ -85,138 +91,9 @@ namespace rabnet
 
         private void onFinish()
         {
-            if (OnFinish != null)
+            if (OnFinish != null) {
                 OnFinish();
+            }
         }
-
-        //private int getCount()
-        //{
-        //    lock (_locker)
-        //    {
-        //        return _dataGetter.getCount();
-        //    }
-        //}
-
-        //public static DataThread Get()
-        //{
-        //    if (_instance == null)
-        //        _instance = new DataThread();
-        //    return _instance;
-        //}
-
-        //private int _status = 0;
-        //private RabStatusBar _rabStatusBar = null;
-        //private RSBItemEventHandler _onItem = null;
-        //private RSBEventHandler _stopEvent = null;
-
-        //public DataThread()
-        //{
-        //    _stopEvent = new RSBEventHandler(this.stopClick);
-        //}
-
-        //public static DataThread Get4run()
-        //{
-        //    DataThread th = DataThread.Get();
-        //    th.Stop();
-        //    return th;
-        //}
-
-        //public static IRabNetDataLayer Db()
-        //{
-        //    return Engine.db2();
-        //}
-
-        //public void SetInit()
-        //{
-        //    if (_rabStatusBar.InvokeRequired)
-        //    {
-        //        initCallBack d = new initCallBack(SetInit);
-        //        _rabStatusBar.Invoke(d);
-        //    }
-        //    else
-        //    {
-        //        _rabStatusBar.InitProgress(_dataGetter.getCount());
-        //        _rabStatusBar.StopClick += _stopEvent;
-        //    }
-        //}
-
-        //private void setProgress(int progress)
-        //{
-        //    if (_rabStatusBar.InvokeRequired)
-        //    {
-        //        progressCallBack d = new progressCallBack(setProgress);
-        //        _rabStatusBar.Invoke(d, new object[] { progress });
-        //    }
-        //    else
-        //    {
-        //        _rabStatusBar.Progress(progress);
-        //        IData it = _dataGetter.GetNextItem();
-        //        _onItem(it);
-        //        if (it == null) setStop(true);
-        //    }
-        //}
-
-        //private void setRelease()
-        //{
-        //if (_rabStatusBar.InvokeRequired)
-        //{
-        //    initCallBack d = new initCallBack(setRelease);
-        //    _rabStatusBar.Invoke(d);
-        //}
-        //else
-        //{
-        //_dataGetter.Close();          
-        //if (_stopRequired)
-        //_rabStatusBar.EmergencyStop();
-        //else
-        //_rabStatusBar.EndProgress();
-        //_rabStatusBar.StopClick -= _stopEvent;
-        //_onItem(null);
-
-        //}
-        //}
-
-        //public bool IsWorking()
-        //{
-        //    return (getStatus() != 0);
-        //}
-
-        //private void stopClick()
-        //{
-        //    Stop();
-        //}
-
-
-        //private bool getStop()
-        //{
-        //    lock (_locker)
-        //    {
-        //        return _isStop;
-        //    }
-        //}
-
-        //private void setStop(bool val)
-        //{
-        //    lock (_locker)
-        //    {
-        //        _isStop = val;
-        //    }
-        //}
-
-        //private int getStatus()
-        //{
-        //    lock (_locker)
-        //    {
-        //        return _status;
-        //    }
-        //}
-
-        //private void setStatus(int stat)
-        //{
-        //    lock (_locker)
-        //    {
-        //        _status = stat;
-        //    }
-        //}
     }
 }
