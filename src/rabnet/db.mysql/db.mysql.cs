@@ -8,12 +8,12 @@ using System.Xml;
 
 namespace db.mysql
 {
-    public class RabNetDbMySql:IRabNetDataLayer
+    public class RabNetDbMySql : IRabNetDataLayer
     {
-        private MySqlConnection psql=null;
+        private MySqlConnection psql = null;
         private ILog log = LogManager.GetLogger(typeof(RabNetDbMySql));
 
-        public RabNetDbMySql() 
+        public RabNetDbMySql()
         {
             log4net.Config.XmlConfigurator.Configure();
             log.Debug("created");
@@ -33,7 +33,8 @@ namespace db.mysql
             }
         }
 
-        public RabNetDbMySql(String connectionString): this()
+        public RabNetDbMySql(String connectionString)
+            : this()
         {
             Init(connectionString);
         }
@@ -53,8 +54,7 @@ namespace db.mysql
         /// </summary>
         public void Close()
         {
-            if (psql != null)
-            {
+            if (psql != null) {
                 psql.Close();
                 psql = null;
             }
@@ -66,7 +66,7 @@ namespace db.mysql
         public void Init(String connectionString)
         {
             Close();
-            log.Debug("init from string "+connectionString);
+            log.Debug("init from string " + connectionString);
             psql = new MySqlConnection(connectionString);
             psql.Open();
             new Users(sql).checktb();
@@ -92,7 +92,7 @@ namespace db.mysql
 #if DEBUG
             //log.Debug("reader query:"+cmd);
 #endif
-            MySqlCommand c=new MySqlCommand(cmd,sql);
+            MySqlCommand c = new MySqlCommand(cmd, sql);
             return c.ExecuteReader();
         }
 
@@ -113,31 +113,28 @@ namespace db.mysql
 
         public string getOption(string name, string subname, uint uid)
         {
-            MySqlDataReader rd=reader(String.Format("SELECT o_value FROM options WHERE o_name='{0:s}' AND o_subname='{1:s}' AND (o_uid={2:d} OR o_uid=0) ORDER BY o_uid DESC;",
-                name,subname,uid));
-            string res="";
+            MySqlDataReader rd = reader(String.Format("SELECT o_value FROM options WHERE o_name='{0:s}' AND o_subname='{1:s}' AND (o_uid={2:d} OR o_uid=0) ORDER BY o_uid DESC;",
+                name, subname, uid));
+            string res = "";
             //if(subname=="xls_ask")
-                //res = "";
-            if (rd.Read())
-            {
+            //res = "";
+            if (rd.Read()) {
                 res = rd.GetString(0);
                 rd.Close();
-            }
-            else
-            {
+            } else {
                 rd.Close();
                 MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO options(o_name,o_subname,o_uid,o_value) VALUES('{0:s}','{1:s}',{2:d},'0');", name, subname, uid), sql);
                 cmd.ExecuteNonQuery();
-            }       
+            }
             return res;
         }
 
         public void setOption(string name, string subname, uint uid, string value)
         {
             Exec(String.Format("DELETE FROM options WHERE o_name='{0:s}' AND o_subname='{1:s}' AND o_uid={2:d};",
-                name,subname,uid));
+                name, subname, uid));
             Exec(String.Format("INSERT INTO options(o_name,o_subname,o_uid,o_value) VALUES('{0:s}','{1:s}',{2:d},'{3:s}');",
-                name,subname,uid,value));
+                name, subname, uid, value));
         }
 
         public DateTime now()
@@ -161,29 +158,31 @@ namespace db.mysql
 
         public String[] getFilterNames(string type)
         {
-            MySqlDataReader rd = reader("SELECT f_name FROM filters WHERE f_type='"+type+"';");
-            List<String> nms=new List<string>();
-            while (rd.Read())
+            MySqlDataReader rd = reader("SELECT f_name FROM filters WHERE f_type='" + type + "';");
+            List<String> nms = new List<string>();
+            while (rd.Read()) {
                 nms.Add(rd.GetString(0));
+            }
             rd.Close();
             return nms.ToArray();
         }
 
         public Filters getFilter(string type, string name)
         {
-            MySqlDataReader rd = reader("SELECT f_filter FROM filters WHERE f_type='"+type+"' AND f_name='"+name+"';");
+            MySqlDataReader rd = reader("SELECT f_filter FROM filters WHERE f_type='" + type + "' AND f_name='" + name + "';");
             Filters f = new Filters();
-            if (rd.Read())
+            if (rd.Read()) {
                 f.fromString(rd.GetString(0));
+            }
             rd.Close();
             return f;
         }
 
         public void setFilter(string type, string name, Filters filter)
         {
-            Exec("DELETE FROM filters WHERE f_type='"+type+"' AND f_name='"+name+"';");
+            Exec("DELETE FROM filters WHERE f_type='" + type + "' AND f_name='" + name + "';");
             Exec(String.Format("INSERT INTO filters(f_type,f_name,f_filter) VALUES('{0:s}','{1:s}','{2:s}');",
-                type,name,filter.toString()));
+                type, name, filter.toString()));
         }
 
         public String GetRabGenoms(int rId)
@@ -193,7 +192,7 @@ namespace db.mysql
 
         public RabTreeData rabbitGenTree(int rabbit)
         {
-            return RabbitGenGetter.GetRabbitGenTree(sql,rabbit);
+            return RabbitGenGetter.GetRabbitGenTree(sql, rabbit);
         }
 
         public BldTreeData buildingsTree()
@@ -207,7 +206,7 @@ namespace db.mysql
         }
         public YoungRabbitList GetYoungers(int momId)
         {
-            return Youngers.GetYoungers(sql,momId);
+            return Youngers.GetYoungers(sql, momId);
         }
         public OneRabbit[] GetNeighbors(int rabId)
         {
@@ -221,16 +220,16 @@ namespace db.mysql
             MySqlDataReader rd = reader("SELECT m_upper,m_lower FROM minifarms WHERE m_id=" + farm.ToString() + ";");
             rd.Read();
             int[] trs = new int[] { rd.GetInt32(0), rd.GetInt32(1) };
-/*            if (trs[1] != 0)
-            {
-                trs[0] ^= trs[1];
-                trs[1] ^= trs[0];
-                trs[0] ^= trs[1];
-            }
- */
+            /*            if (trs[1] != 0)
+                        {
+                            trs[0] ^= trs[1];
+                            trs[1] ^= trs[0];
+                            trs[0] ^= trs[1];
+                        }
+             */
             rd.Close();
             return trs;
-        } 
+        }
 
         public IDataGetter getNames(Filters filters)
         {
@@ -241,7 +240,7 @@ namespace db.mysql
         {
             return new ZooTehNullGetter();
         }
-       
+
         public List<String> getFuckMonths()
         {
             return FucksGetter.getFuckMonths(sql);
@@ -279,16 +278,16 @@ namespace db.mysql
 
         public void SetRabbit(OneRabbit r)
         {
-            RabbitGetter.SetRabbit(sql,r);
+            RabbitGetter.SetRabbit(sql, r);
         }
         public ICatalogs catalogs()
         {
             return new Catalogs(sql);
         }
 
-        public void RabNetLog(int type, int user, int r1,int r2,string a1,string a2,string text)
+        public void RabNetLog(int type, int user, int r1, int r2, string a1, string a2, string text)
         {
-            Logs.addLog(sql,type,user,r1,r2,a1,a2,text);
+            Logs.addLog(sql, type, user, r1, r2, a1, a2, text);
         }
 
         public Fucks GetFucks(Filters f)
@@ -306,7 +305,7 @@ namespace db.mysql
             RabbitGetter.setBon(sql, rabbit, bon);
         }
 
-        public void MakeFuck(int female, int male, int daysPast,int worker,bool syntetic)
+        public void MakeFuck(int female, int male, int daysPast, int worker, bool syntetic)
         {
             FucksGetter.MakeFuck(sql, female, male, daysPast, worker, syntetic);
         }
@@ -378,7 +377,7 @@ namespace db.mysql
 #endif
             return rId;
         }
-       
+
         public int AddName(Rabbit.SexType sex, string name, string surname)
         {
             return Names.AddName(sql, sex, name, surname);
@@ -386,7 +385,7 @@ namespace db.mysql
 
         public void changeName(string orgName, string name, string surname)
         {
-            Names.changeName(sql, orgName, name, surname);            
+            Names.changeName(sql, orgName, name, surname);
         }
 
         public void KillRabbit(int id, int daysPast, int reason, string notes)
@@ -394,7 +393,7 @@ namespace db.mysql
             RabbitGetter.killRabbit(sql, id, daysPast, reason, notes);
         }
 
-        public void CountKids(int rid, int dead, int killed, int added,int yid)
+        public void CountKids(int rid, int dead, int killed, int added, int yid)
         {
             RabbitGetter.countKids(sql, rid, dead, killed, added, yid);
         }
@@ -408,7 +407,7 @@ namespace db.mysql
         {
             return RabbitGetter.cloneRabbit(sql, rid, count, sex, mom);
         }
-#region users
+        #region users
         public string userGroup(int uid)
         {
             return new Users(sql).getUserGroup(uid);
@@ -433,7 +432,7 @@ namespace db.mysql
         {
             return new Users(sql).addUser(name, group, password);
         }
-#endregion users
+        #endregion users
 
         public IDataGetter getDead(Filters filters)
         {
@@ -442,7 +441,7 @@ namespace db.mysql
 
         public void changeDeadReason(int rid, int reason)
         {
-            DeadHelper.changeDeadReason(sql,rid,reason );
+            DeadHelper.changeDeadReason(sql, rid, reason);
         }
 
         public void ResurrectRabbit(int rid)
@@ -465,16 +464,16 @@ namespace db.mysql
             return RabbitGetter.getMothers(sql, age, agediff);
         }
 
-#region zoo_tech_get
+        #region zoo_tech_get
 
         public ZootehJob[] GetZooTechJobs(Filters f, JobType type)
         {
             return new ZooTehGetter(sql, f).GetZooTechJobs(type);
         }
 
-#endregion zoo_tech_get
-   
-#region buildings
+        #endregion zoo_tech_get
+
+        #region buildings
         public Building getBuilding(int tier)
         {
             if (tier == 0)
@@ -537,8 +536,8 @@ namespace db.mysql
         {
             Buildings.deleteFarm(sql, fid);
         }
-#endregion buildings
-        
+        #endregion buildings
+
         public string[] getWeights(int rabbit)
         {
             return new Weight(sql).getWeights(rabbit);
@@ -554,15 +553,15 @@ namespace db.mysql
             new Weight(sql).deleteWeight(rabbit, date);
         }
 
-#region vaccines
+        #region vaccines
         public RabVac[] GetRabVac(int rabId)
         {
-            return RabbitGetter.GetRabVacs( sql,rabId);
+            return RabbitGetter.GetRabVacs(sql, rabId);
         }
 
-        public void SetRabbitVaccine(int rid, int vid,DateTime date)
+        public void SetRabbitVaccine(int rid, int vid, DateTime date)
         {
-            RabbitGetter.SetRabbitVaccine(sql,rid,vid,date);
+            RabbitGetter.SetRabbitVaccine(sql, rid, vid, date);
         }
 
         public void SetRabbitVaccine(int rid, int vid)
@@ -570,9 +569,9 @@ namespace db.mysql
             RabbitGetter.SetRabbitVaccine(sql, rid, vid);
         }
 
-        public void RabVacUnable(int rid, int vid,bool unable)
+        public void RabVacUnable(int rid, int vid, bool unable)
         {
-            RabbitGetter.RabVacUnable(sql, rid, vid,unable);
+            RabbitGetter.RabVacUnable(sql, rid, vid, unable);
         }
 
         public List<Vaccine> GetVaccines(bool withSpec)
@@ -598,7 +597,7 @@ namespace db.mysql
         {
             new Vaccines(sql).Edit(id, name, duration, age, after, zoo, times);
         }
-#endregion vaccines
+        #endregion vaccines
 
         public OneRabbit[] getParents(int rabbit, int age)
         {
@@ -607,18 +606,18 @@ namespace db.mysql
 
         public OneRabbit getLiveDeadRabbit(int rabbit)
         {
-            return RabbitGetter.getLiveDeadRabbit(sql,rabbit);
+            return RabbitGetter.getLiveDeadRabbit(sql, rabbit);
         }
 
-		public RabbitGen getRabbitGen(int rid)
-		{
-			return RabbitGenGetter.GetRabbitGen(sql, rid);
-		}
+        public RabbitGen getRabbitGen(int rid)
+        {
+            return RabbitGenGetter.GetRabbitGen(sql, rid);
+        }
 
-		public Dictionary<int, Color> getBreedColors()
-		{
-			return RabbitGenGetter.getBreedColors(sql);
-		}
+        public Dictionary<int, Color> getBreedColors()
+        {
+            return RabbitGenGetter.getBreedColors(sql);
+        }
 
         public double[] getMaleChildrenProd(int male)
         {
@@ -632,7 +631,7 @@ namespace db.mysql
 
         public void changeWorker(int fid, int worker)
         {
-            FucksGetter.changeWorker(sql,fid, worker);
+            FucksGetter.changeWorker(sql, fid, worker);
         }
 
         public DateTime GetFarmStartTime()
@@ -672,7 +671,7 @@ namespace db.mysql
             return Butcher.getButcherMonths(sql);
         }
 
-        
+
 
         public string[] logNames()
         {
@@ -690,12 +689,12 @@ namespace db.mysql
         }
         public DeadRabbit[] GetVictims(DateTime dt)
         {
-            return Butcher.getVictims(sql,dt);
+            return Butcher.getVictims(sql, dt);
         }
 
         public List<sMeat> getMeats(DateTime date)
         {
-            return Butcher.GetMeats(sql,date);
+            return Butcher.GetMeats(sql, date);
         }
 
         public List<sMeal> getMealPeriods()
@@ -758,8 +757,7 @@ namespace db.mysql
             ClientsList result = new ClientsList();
             MySqlCommand cmd = new MySqlCommand("SELECT c_id,c_org,c_address FROM clients;", sql);
             MySqlDataReader rd = cmd.ExecuteReader();
-            while (rd.Read())
-            {
+            while (rd.Read()) {
                 result.Add(new Client(rd.GetInt32("c_id"), rd.GetString("c_org"), rd.GetString("c_address")));
             }
             rd.Close();
@@ -769,18 +767,18 @@ namespace db.mysql
 
         public void AddClient(int id, string name, string address)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO clients(c_id,c_org,c_address) VALUES({0:d},'{1:s}','{2:s}');",id,name,address), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO clients(c_id,c_org,c_address) VALUES({0:d},'{1:s}','{2:s}');", id, name, address), sql);
             cmd.ExecuteNonQuery();
         }
 
         public void ImportRabbit(int rId, int count)
         {
-            Import.RabbitImp(sql,rId,count);
+            Import.RabbitImp(sql, rId, count);
         }
 
         public void ImportRabbit(int rId, int count, int clientId, int oldRID, string fileGuid)
         {
-            Import.RabbitImp(sql, rId, count,clientId, oldRID, fileGuid);
+            Import.RabbitImp(sql, rId, count, clientId, oldRID, fileGuid);
         }
 
         public void ImportAscendant(OneRabbit r)
@@ -790,29 +788,28 @@ namespace db.mysql
 
         public List<OneImport> ImportSearch(Filters f)
         {
-            return Import.Search(sql,f);
+            return Import.Search(sql, f);
         }
 
-        public bool ImportAscendantExists(int rabId,int clientId)
+        public bool ImportAscendantExists(int rabId, int clientId)
         {
             return Import.AscendantExists(sql, rabId, clientId);
         }
 
-        public int NewRabbit(OneRabbit r, int mom, int clientId,  string fileGuid)
+        public int NewRabbit(OneRabbit r, int mom, int clientId, string fileGuid)
         {
             int oldId = r.ID;
-            int rId = RabbitGetter.newRabbit(sql,r,mom);
+            int rId = RabbitGetter.newRabbit(sql, r, mom);
             Import.RabbitImp(sql, rId, r.Group, clientId, oldId, fileGuid);
-            if(Import.AscendantExists(sql,oldId,clientId))
-            {               
-                Import.AdaptExportedAscendant(sql, oldId, clientId,rId,r.Sex);
+            if (Import.AscendantExists(sql, oldId, clientId)) {
+                Import.AdaptExportedAscendant(sql, oldId, clientId, rId, r.Sex);
             }
             return rId;
         }
 
         public void SpermTake(int rId)
         {
-            FucksGetter.SpermTake(sql,rId);
+            FucksGetter.SpermTake(sql, rId);
         }
 
 #endif
@@ -822,7 +819,7 @@ namespace db.mysql
 
         public int AddBreed(string name, string shrt, string color)
         {
-            return Breeds.AddBreed(sql,name,shrt,color);
+            return Breeds.AddBreed(sql, name, shrt, color);
         }
-    }        
+    }
 }
