@@ -12,6 +12,7 @@ using rabnet;
 using rabnet.components;
 using rabnet.forms;
 using rabnet.filters;
+using System.Text.RegularExpressions;
 #if PROTECTED
 using RabGRD;
 #endif
@@ -715,31 +716,38 @@ namespace rabnet.panels
 
     public class TVNodeSorter : IComparer
     {
-        public string strpart(string str)
-        {
-            int i = str.Length - 1;
-            while (Char.IsDigit(str[i])) {
-                i--;
-                if (i == -1) return str;
-            }
-            i++;
-            return str.Substring(0, i);
-        }
+        //public string strpart(string str)
+        //{
+        //    int i = str.Length - 1;
+        //    while (Char.IsDigit(str[i])) {
+        //        i--;
+        //        if (i == -1) {
+        //            return str;
+        //        }
+        //    }
+        //    i++;
+        //    return str.Substring(0, i);
+        //}
 
         public int Compare(object x, object y)
         {
             string s1 = (x as TreeNode).Text;
             string s2 = (y as TreeNode).Text;
-            string ss1 = strpart(s1);
-            string ss2 = strpart(s2);
-            if (ss1 != ss2) {
-                if (ss2[0] == '№') return -1;
-                if (ss1[0] == '№') return 1;
-                return String.Compare(s1, s2);
-            }
-            int i1 = int.Parse(s1.Substring(ss1.Length));
-            int i2 = int.Parse(s2.Substring(ss2.Length));
-            return i1.CompareTo(i2);
+            string ss1 = Regex.Match(s1, @"\d+").Value;
+            string ss2 = Regex.Match(s2, @"\d+").Value;
+            return ss1.CompareTo(ss2);
+            //if (ss1 != ss2) {
+            //    if (ss2[0] == '№') {
+            //        return -1;
+            //    }
+            //    if (ss1[0] == '№') {
+            //        return 1;
+            //    }
+            //    return String.Compare(s1, s2);
+            //}
+            //int i1 = int.Parse(s1.Substring(ss1.Length));
+            //int i2 = int.Parse(s2.Substring(ss2.Length));
+            //return i1.CompareTo(i2);
         }
 
     }
