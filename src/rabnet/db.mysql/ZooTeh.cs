@@ -372,7 +372,7 @@ WHERE r_parent <> 0
 GROUP BY r_parent
 HAVING (srok_base >= {0:d} {1:s}) 
     AND r_id NOT IN (
-        SELECT l_rabbit2 
+        SELECT l_rabbit 
         FROM logs 
         WHERE l_type = {3:d} AND (DATE(l_date) <= DATE(NOW()) 
             AND DATE(l_date) >= DATE(NOW() - INTERVAL srok DAY))
