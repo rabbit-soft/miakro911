@@ -42,11 +42,13 @@
             // 
             // cbFarm
             // 
+            this.cbFarm.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.cbFarm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbFarm.FormattingEnabled = true;
             this.cbFarm.Location = new System.Drawing.Point(12, 25);
             this.cbFarm.Name = "cbFarm";
-            this.cbFarm.Size = new System.Drawing.Size(277, 21);
+            this.cbFarm.Size = new System.Drawing.Size(280, 21);
             this.cbFarm.TabIndex = 1;
             this.cbFarm.SelectedIndexChanged += new System.EventHandler(this.cbFarm_SelectedIndexChanged);
             // 
@@ -70,12 +72,14 @@
             // 
             // cbUser
             // 
+            this.cbUser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.cbUser.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbUser.Enabled = false;
             this.cbUser.FormattingEnabled = true;
             this.cbUser.Location = new System.Drawing.Point(12, 65);
             this.cbUser.Name = "cbUser";
-            this.cbUser.Size = new System.Drawing.Size(277, 21);
+            this.cbUser.Size = new System.Drawing.Size(280, 21);
             this.cbUser.TabIndex = 2;
             this.cbUser.SelectedIndexChanged += new System.EventHandler(this.cbUser_SelectedIndexChanged);
             // 
@@ -90,19 +94,22 @@
             // 
             // tbPassword
             // 
+            this.tbPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.tbPassword.Enabled = false;
             this.tbPassword.Location = new System.Drawing.Point(12, 105);
             this.tbPassword.Name = "tbPassword";
-            this.tbPassword.Size = new System.Drawing.Size(277, 20);
+            this.tbPassword.Size = new System.Drawing.Size(280, 20);
             this.tbPassword.TabIndex = 0;
             this.tbPassword.UseSystemPasswordChar = true;
             // 
             // btEnter
             // 
+            this.btEnter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btEnter.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.btEnter.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btEnter.Enabled = false;
-            this.btEnter.Location = new System.Drawing.Point(214, 131);
+            this.btEnter.Location = new System.Drawing.Point(217, 138);
             this.btEnter.Name = "btEnter";
             this.btEnter.Size = new System.Drawing.Size(75, 23);
             this.btEnter.TabIndex = 7;
@@ -112,8 +119,9 @@
             // 
             // btExit
             // 
+            this.btExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btExit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btExit.Location = new System.Drawing.Point(133, 131);
+            this.btExit.Location = new System.Drawing.Point(136, 138);
             this.btExit.Name = "btExit";
             this.btExit.Size = new System.Drawing.Size(75, 23);
             this.btExit.TabIndex = 8;
@@ -122,7 +130,8 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(12, 131);
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button3.Location = new System.Drawing.Point(12, 138);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 9;
@@ -136,7 +145,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btExit;
-            this.ClientSize = new System.Drawing.Size(301, 165);
+            this.ClientSize = new System.Drawing.Size(304, 172);
             this.ControlBox = false;
             this.Controls.Add(this.button3);
             this.Controls.Add(this.btExit);
@@ -147,10 +156,11 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cbFarm);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(370, 230);
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(320, 210);
             this.Name = "LoginForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Миакро 9.11";
