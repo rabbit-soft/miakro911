@@ -55,9 +55,11 @@ namespace db.mysql
             String res = "";
             if (options.ContainsKey(Filters.FARM)) {
                 String sres = "";
-                if (options[Filters.FARM] == "1")
+                if (options[Filters.FARM] == "1") {
                     sres = "t_busy1<>0 OR t_busy2<>0 OR t_busy3<>0 OR t_busy4<>0";
-                else sres = "t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0";
+                } else {
+                    sres = "t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0";
+                }
                 res = "(" + sres + ")";
             }
 
@@ -105,15 +107,18 @@ namespace db.mysql
         protected override string getQuery()
         {
             int nm = options.safeBool(Filters.DBL_SURNAME) ? 2 : 1;
-            return String.Format(@"SELECT t_id,m_upper,m_lower,m_id,t_type,t_delims,t_nest,t_heater,
-t_repair,
-t_notes,
-t_busy1,t_busy2,t_busy3,t_busy4,
-rabname(t_busy1,{0:d}) r1, 
-rabname(t_busy2,{0:d}) r2,
-rabname(t_busy3,{0:d}) r3,
-rabname(t_busy4,{0:d}) r4
-FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) {1:s} ORDER BY m_id;", nm, makeWhere());
+            return String.Format(@"SELECT 
+    t_id, m_upper, m_lower, m_id, t_type, t_delims, t_nest, t_heater,
+    t_repair,
+    t_notes,
+    t_busy1, t_busy2, t_busy3, t_busy4,
+    rabname(t_busy1,{0:d}) r1, 
+    rabname(t_busy2,{0:d}) r2,
+    rabname(t_busy3,{0:d}) r3,
+    rabname(t_busy4,{0:d}) r4
+FROM minifarms, tiers 
+WHERE (m_upper=t_id OR m_lower=t_id) {1:s} 
+ORDER BY m_id;", nm, makeWhere());
         }
 
         protected override string countQuery()
@@ -151,10 +156,16 @@ WHERE (m_upper=t_id OR m_lower=t_id) " + makeWhere() + ";";
 
         internal static Building getTier(int tier, MySqlConnection con)
         {
-            MySqlCommand cmd = new MySqlCommand(@"SELECT t_id,m_upper,m_lower,m_id,t_type,t_delims,t_nest,t_heater,
-t_repair,coalesce(t_notes,'') t_notes,t_busy1,t_busy2,t_busy3,t_busy4,
-rabname(t_busy1,1) r1, rabname(t_busy2,1) r2,rabname(t_busy3,1) r3,rabname(t_busy4,1) r4
-FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) and t_id=" + tier.ToString() + ";", con);
+            MySqlCommand cmd = new MySqlCommand(@"SELECT 
+    t_id, m_upper, m_lower, m_id, t_type, t_delims, t_nest, t_heater,
+    t_repair,
+    COALESCE(t_notes,'') t_notes, t_busy1, t_busy2, t_busy3, t_busy4,
+    rabname(t_busy1,1) r1, 
+    rabname(t_busy2,1) r2, 
+    rabname(t_busy3,1) r3, 
+    rabname(t_busy4,1) r4
+FROM minifarms, tiers 
+WHERE (m_upper=t_id OR m_lower=t_id) AND t_id=" + tier.ToString() + ";", con);
             MySqlDataReader rd = cmd.ExecuteReader();
             Building b = null;
             if (rd.Read()) {
@@ -191,9 +202,11 @@ FROM minifarms,tiers WHERE (m_upper=t_id OR m_lower=t_id) and t_id=" + tier.ToSt
                 busy += ")";
             }
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT 
-t_id,m_upper,m_lower,m_id,t_type,t_delims,t_nest,t_heater,t_repair,t_notes,t_busy1,t_busy2,t_busy3,t_busy4 
-FROM minifarms,tiers 
-WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 {0:s} ORDER BY m_id;", busy != "" ? "AND " + busy : ""), sql);
+    t_id, m_upper, m_lower, m_id, t_type, t_delims, t_nest, t_heater, t_repair, t_notes, 
+    t_busy1, t_busy2, t_busy3, t_busy4 
+FROM minifarms, tiers 
+WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 {0:s} 
+ORDER BY m_id;", busy != "" ? "AND " + busy : ""), sql);
             _logger.Debug("free Buildings cmd:" + cmd.CommandText);
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read()) {
@@ -289,7 +302,9 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 {0:s} ORDER BY m_id;", busy 
         /// <returns>ID нового яруса</returns>
         internal static int addNewTier(MySqlConnection sql, BuildingType type)
         {
-            if (type == BuildingType.None) return 0;
+            if (type == BuildingType.None) {
+                return 0;
+            }
             string hn = "0";
             string delims = "1";
             string bcols = "";
@@ -297,22 +312,28 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 {0:s} ORDER BY m_id;", busy 
 
             MySqlCommand cmd = new MySqlCommand("", sql);
             switch (type) {
-                case BuildingType.Quarta: delims = "111"; break;
+                case BuildingType.Quarta: 
+                    delims = "111"; 
+                    break;
 
                 case BuildingType.Complex:
                     delims = "11";
-                    bcols = ",t_busy1,t_busy2,t_busy3,t_busy4";
-                    bvals = ",0,0,0,null";
+                    bcols = ",t_busy1, t_busy2, t_busy3, t_busy4";
+                    bvals = ", 0, 0, 0, null";
                     break;
 
                 case BuildingType.Barin:
                 case BuildingType.DualFemale:
                 case BuildingType.Vertep:
                 case BuildingType.Jurta:
-                    if (type == BuildingType.DualFemale) hn = "00";
-                    if (type == BuildingType.Jurta) delims = "0";
-                    bcols = ",t_busy1,t_busy2,t_busy3,t_busy4";
-                    bvals = ",0,0,null,null";
+                    if (type == BuildingType.DualFemale) {
+                        hn = "00";
+                    }
+                    if (type == BuildingType.Jurta) {
+                        delims = "0";
+                    }
+                    bcols = ",t_busy1, t_busy2, t_busy3, t_busy4";
+                    bvals = ", 0, 0, null, null";
                     break;
 
                 case BuildingType.Female:
@@ -322,7 +343,7 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 {0:s} ORDER BY m_id;", busy 
                     bvals = ",0,null,null,null";
                     break;
             }
-            cmd.CommandText = String.Format(@"INSERT INTO tiers(t_type,t_delims,t_heater,t_nest,t_notes{3:s}) 
+            cmd.CommandText = String.Format(@"INSERT INTO tiers(t_type, t_delims, t_heater, t_nest, t_notes {3:s}) 
 VALUES('{0:s}','{1:s}','{2:s}','{2:s}',''{4:s});", Building.GetName(type), delims, hn, bcols, bvals);
             _logger.Debug("db.mysql.Building: " + cmd.CommandText);
             cmd.ExecuteNonQuery();
@@ -396,8 +417,9 @@ t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}'{4:s} WHERE t_id={3:d};", Buildi
             int t1 = addNewTier(sql, uppertype);
             int t2 = addNewTier(sql, lowertype);
             int res = 0;
-            MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO minifarms(m_upper,m_lower{2:s}) VALUES({0:d},{1:d}{3:s});",
-                t1, t2, (frm == 0 ? "" : ",m_id"), (frm == 0 ? "" : String.Format(",{0:d}", frm))), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO minifarms(m_upper, m_lower {2:s}) VALUES({0:d}, {1:d} {3:s});",
+                t1, t2, (frm == 0 ? "" : ", m_id"), (frm == 0 ? "" : String.Format(",{0:d}", frm))), 
+                sql);
             _logger.Debug("db.mysql.Building: " + cmd.CommandText);
             cmd.ExecuteNonQuery();
             res = (int)cmd.LastInsertedId;
@@ -440,7 +462,8 @@ FROM tiers WHERE t_id={0:d};", tid), sql);
 
         internal static int[] getTiersFromFarm(MySqlConnection sql, int fid)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT m_upper,m_lower FROM minifarms 
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT m_upper, m_lower 
+FROM minifarms 
 WHERE m_id={0:d};", fid), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             int t1 = 0, t2 = 0;

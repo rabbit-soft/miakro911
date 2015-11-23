@@ -26,29 +26,31 @@ namespace rabnet.forms
 #endif
         }
 
-        public MiniFarmForm(int parent,int[] ids):this()
+        public MiniFarmForm(int parent, int[] ids)
+            : this()
         {
             _manual = false;
             this.parent = parent;
-            for (int i = 0; i < ids.Length; i++)
+            for (int i = 0; i < ids.Length; i++) {
                 cbNum.Items.Add(ids[i].ToString());
+            }
             cbNum.SelectedIndex = cbNum.Items.Count - 1;
             _manual = true;
         }
 
-        public MiniFarmForm(int id):this()
+        public MiniFarmForm(int id)
+            : this()
         {
             this._id = id;
             cbNum.Items.Add(id.ToString());
             cbNum.SelectedIndex = 0;
-            cbNum.Enabled = false;
+            //cbNum.Enabled = false;
             tiers = Engine.db().getTiers(id);
             b1 = Engine.db().getBuilding(tiers[0]);
             cbUpper.SelectedIndex = idFromType(b1.Type) - 1;
-            if (tiers[1] != 0)
-            {
+            if (tiers[1] != 0) {
                 b2 = Engine.db().getBuilding(tiers[1]);
-                cbLower.SelectedIndex = idFromType(b2.Type);
+                cbLower.SelectedIndex = this.idFromType(b2.Type);
             }
         }
 
@@ -59,15 +61,14 @@ namespace rabnet.forms
 
         private int idFromType(BuildingType type)
         {
-            switch(type)
-            {
+            switch (type) {
                 case BuildingType.Jurta: return 1;
                 case BuildingType.Quarta: return 2;
                 case BuildingType.Vertep: return 3;
                 case BuildingType.Barin: return 4;
                 case BuildingType.Female: return 5;
                 case BuildingType.DualFemale: return 6;
-                case BuildingType.Complex: return 7;                
+                case BuildingType.Complex: return 7;
                 case BuildingType.Cabin: return 8;
             }
             return 0;
@@ -75,8 +76,7 @@ namespace rabnet.forms
 
         private BuildingType getType(int id)
         {
-            switch(id)
-            {
+            switch (id) {
                 case 1: return BuildingType.Jurta;
                 case 2: return BuildingType.Quarta;
                 case 3: return BuildingType.Vertep;
@@ -102,7 +102,7 @@ namespace rabnet.forms
         /// </summary>
         private BuildingType lowerType
         {
-            get{return getType(cbLower.SelectedIndex);}
+            get { return getType(cbLower.SelectedIndex); }
         }
 
         /// <summary>
@@ -110,11 +110,13 @@ namespace rabnet.forms
         /// </summary>
         private bool hasRabbits(Building b)
         {
-            if (b==null) return false;
+            if (b == null) return false;
 
-            for (int i = 0; i < b.Sections; i++)
-                if (b.Busy[i].ID > 0)
+            for (int i = 0; i < b.Sections; i++) {
+                if (b.Busy[i].ID > 0) {
                     return true;
+                }
+            }
             return false;
         }
         /// <summary>
@@ -124,54 +126,55 @@ namespace rabnet.forms
         /// <returns>0-свободна; 1-занята</returns>
         private int checkBuilding(Building b)
         {
-            if (!hasRabbits(b)) return 0;
+            if (!hasRabbits(b)) {
+                return 0;
+            }
             MessageBox.Show("Перед изменением типа яруса расселите его.");
             return 1;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (_id == 0)
-            {
+            if (_id == 0) {
                 int fid = int.Parse(cbNum.Text);
-                if (Engine.db().FarmExists(fid))
-                {
+                if (Engine.db().FarmExists(fid)) {
                     MessageBox.Show("Ферма с таким номером уже существует");
                     this.DialogResult = DialogResult.None;
                     return;
                 }
                 Engine.db().addFarm(parent, upperType, lowerType, "", fid);
-                Close();
-            }
-            else
-            {
+                this.Close();
+            } else {
                 int change = -1;
-                if (upperType != b1.Type) 
+                if (upperType != b1.Type) {
                     change = checkBuilding(b1);
+                }
 
-                if ((b2 != null && lowerType != b2.Type) || (b2 == null && lowerType != BuildingType.None))
-                {
-                    if (change<1)
+                if ((b2 != null && lowerType != b2.Type) || (b2 == null && lowerType != BuildingType.None)) {
+                    if (change < 1) {
                         change = checkBuilding(b2);
+                    }
                 }
 
-                if (change == 0)
-                {
+                if (change == 0) {
                     Engine.db().ChangeFarm(_id, upperType, lowerType);
-                    Close();
+                    this.Close();
+                } else {
+                    this.DialogResult = DialogResult.None;
                 }
-                else this.DialogResult = DialogResult.None;
             }
         }
 
         private void cbNum_TextChanged(object sender, EventArgs e)
         {
-            if (!_manual) return;
+            if (!_manual) {
+                return;
+            }
             _manual = false;
             TextBox tb = new TextBox();
             tb.Text = cbNum.Text;
             tb.SelectionStart = cbNum.SelectionStart;
-            Helper.checkIntNumber(tb,e);
+            Helper.checkIntNumber(tb, e);
             cbNum.Text = tb.Text;
             cbNum.SelectionStart = tb.SelectionStart;
 

@@ -630,8 +630,12 @@ namespace rabnet.panels
 
         private void changeFarmMenuItem_Click(object sender, EventArgs e)
         {
-            if (treeView1.SelectedNode == null) return;
-            if (!isFarm()) return;
+            if (treeView1.SelectedNode == null) {
+                return;
+            }
+            if (!isFarm()) {
+                return;
+            }
             int fid = farmNum();
             MainForm.ProtectTest(Engine.db().getMFCount());
             if (new MiniFarmForm(fid).ShowDialog() == DialogResult.OK) {
