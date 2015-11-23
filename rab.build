@@ -3,7 +3,7 @@
 	<description>rabnet project makefile</description>
 	<!-- properties defines ! -->
 	<property name="version" value="1.2" />
-	<property name="minver_p" value="1" />
+	<property name="minver_p" value="2" />
 	<property name="minver" value="${minver_p}.0" />
 	<property name="fullver" value="${version}.${minver}" />
 	<property name="appname" value="Миакро-9.11" />
