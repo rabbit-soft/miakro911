@@ -1,398 +1,434 @@
 ﻿DROP TABLE IF EXISTS users;
-CREATE TABLE users(
-	u_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	u_name VARCHAR(50),
-	u_password VARCHAR(50),
-	u_group enum('worker','admin','zootech','butcher') NOT NULL DEFAULT 'admin',
-	u_deleted TINYINT(1) NOT NULL DEFAULT '0',
-	KEY(u_name)
-) DEFAULT CHARSET=utf8;
+CREATE TABLE users (
+  u_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  u_name varchar(50) DEFAULT NULL,
+  u_password varchar(50) DEFAULT NULL,
+  u_group enum('worker','admin','zootech','butcher') NOT NULL DEFAULT 'admin',
+  u_deleted tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (u_id),
+  KEY u_name (u_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS options;
-CREATE TABLE options(
-	o_name VARCHAR(30) NOT NULL default '',
-	o_subname VARCHAR(30) NOT NULL default '',
-	o_uid INTEGER UNSIGNED NOT NULL default 0,
-	o_value TEXT ,
-	KEY(o_name,o_subname),
-	KEY(o_uid)
-) DEFAULT CHARSET=utf8;
+CREATE TABLE `options` (
+  o_name varchar(30) NOT NULL DEFAULT '',
+  o_subname varchar(30) NOT NULL DEFAULT '',
+  o_uid int(10) unsigned NOT NULL DEFAULT '0',
+  o_value text,
+  KEY o_name (o_name,o_subname),
+  KEY o_uid (o_uid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS filters;
-CREATE TABLE filters(
-	f_type VARCHAR(30) NOT NULL,
-	f_name VARCHAR(30) NOT NULL,
-	f_filter TEXT,
-	KEY(f_type),
-	KEY(f_name)
-) DEFAULT CHARSET=utf8;
+CREATE TABLE filters (
+  f_type varchar(30) NOT NULL,
+  f_name varchar(30) NOT NULL,
+  f_filter text,
+  KEY f_type (f_type),
+  KEY f_name (f_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS breeds;
-CREATE TABLE breeds(
-	b_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	b_name VARCHAR(50) NOT NULL,
-	b_short_name VARCHAR(20) NOT NULL,
-	b_color VARCHAR(100) NOT NULL default "White"
-) DEFAULT CHARSET=utf8;
+CREATE TABLE breeds (
+  b_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  b_name varchar(50) NOT NULL,
+  b_short_name varchar(20) NOT NULL,
+  b_color varchar(100) NOT NULL DEFAULT 'White',
+  PRIMARY KEY (b_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS names;
-CREATE TABLE names(
-	n_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	n_sex ENUM('male','female') NOT NULL, 
-	n_name VARCHAR(50) NOT NULL,
-	n_surname VARCHAR(50) NOT NULL,
-	n_use INTEGER UNSIGNED NOT NULL default 0,
-	n_block_date DATETIME DEFAULT NULL,
-	KEY(n_sex),
-	UNIQUE(n_name,n_sex),
-	KEY(n_use),
-	KEY(n_block_date)
-) DEFAULT CHARSET=utf8;
+CREATE TABLE `names` (
+  n_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  n_sex enum('male','female') NOT NULL,
+  n_name varchar(50) NOT NULL,
+  n_surname varchar(50) NOT NULL,
+  n_use int(10) unsigned NOT NULL DEFAULT '0',
+  n_block_date datetime DEFAULT NULL,
+  PRIMARY KEY (n_id),
+  UNIQUE KEY n_name (n_name,n_sex),
+  KEY n_sex (n_sex),
+  KEY n_use (n_use),
+  KEY n_block_date (n_block_date)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS tiers;
-CREATE TABLE tiers(
-	t_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	t_type ENUM('none','female','dfemale','complex','jurta','quarta','vertep','barin','cabin') NOT NULL,
-	t_repair BOOL NOT NULL default 0,
-	t_notes TEXT,
-	t_busy1 INTEGER UNSIGNED NULL default 0,
-	t_busy2 INTEGER UNSIGNED NULL default 0,
-	t_busy3 INTEGER UNSIGNED NULL default 0,
-	t_busy4 INTEGER UNSIGNED NULL default 0,
-	t_delims VARCHAR(3) NOT NULL default '000',
-	t_heater VARCHAR(2) NOT NULL default '00',
-	t_nest VARCHAR(2) NOT NULL default '00',
-	KEY(t_type),
-	KEY(t_repair),
-	KEY(t_busy1),
-	KEY(t_busy2),
-	KEY(t_busy3),
-	KEY(t_busy4),
-	KEY(t_heater),
-	KEY(t_nest)
-) DEFAULT CHARSET=utf8;
+CREATE TABLE tiers (
+  t_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  t_type enum('none','female','dfemale','complex','jurta','quarta','vertep','barin','cabin') NOT NULL,
+  t_repair tinyint(1) NOT NULL DEFAULT '0',
+  t_notes text,
+  t_busy1 int(10) unsigned DEFAULT '0',
+  t_busy2 int(10) unsigned DEFAULT '0',
+  t_busy3 int(10) unsigned DEFAULT '0',
+  t_busy4 int(10) unsigned DEFAULT '0',
+  t_delims varchar(3) NOT NULL DEFAULT '000',
+  t_heater varchar(2) NOT NULL DEFAULT '00',
+  t_nest varchar(2) NOT NULL DEFAULT '00',
+  PRIMARY KEY (t_id),
+  KEY t_type (t_type),
+  KEY t_repair (t_repair),
+  KEY t_busy1 (t_busy1),
+  KEY t_busy2 (t_busy2),
+  KEY t_busy3 (t_busy3),
+  KEY t_busy4 (t_busy4),
+  KEY t_heater (t_heater),
+  KEY t_nest (t_nest)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS minifarms;
-CREATE TABLE minifarms(
-	m_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	m_upper INTEGER UNSIGNED NULL DEFAULT NULL,
-	m_lower INTEGER UNSIGNED NULL DEFAULT NULL,
-	KEY(m_upper),
-	KEY(m_lower)
-) DEFAULT CHARSET=utf8;
+CREATE TABLE minifarms (
+  m_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  m_upper int(10) unsigned DEFAULT NULL,
+  m_lower int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (m_id),
+  KEY m_upper (m_upper),
+  KEY m_lower (m_lower)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS buildings;
-CREATE TABLE buildings(
-	b_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	b_name VARCHAR(50),
-	b_parent INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	b_level INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	b_farm INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	KEY(b_name),
-	KEY(b_parent),
-	KEY(b_level),
-	KEY(b_farm)
-) DEFAULT CHARSET=utf8;
+CREATE TABLE buildings (
+  b_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  b_name varchar(50) DEFAULT NULL,
+  b_parent int(10) unsigned NOT NULL DEFAULT '0',
+  b_level int(10) unsigned NOT NULL DEFAULT '0',
+  b_farm int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (b_id),
+  UNIQUE KEY b_farm (b_farm),
+  KEY b_name (b_name),
+  KEY b_parent (b_parent),
+  KEY b_level (b_level)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS zones;
-CREATE TABLE zones(
-	z_id INTEGER UNSIGNED NOT NULL PRIMARY KEY,
-	z_name VARCHAR(50) NOT NULL,
-	z_short_name VARCHAR(20) NOT NULL
-) DEFAULT CHARSET=utf8;
+CREATE TABLE zones (
+  z_id int(10) unsigned NOT NULL,
+  z_name varchar(50) NOT NULL,
+  z_short_name varchar(20) NOT NULL,
+  PRIMARY KEY (z_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS rabbits;
-CREATE TABLE rabbits(
-	r_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	r_parent INTEGER UNSIGNED NOT NULL default 0, #group devision
-	r_mother INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	r_father INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	r_sex ENUM('male','female','void') NOT NULL,
-	r_bon VARCHAR(5) NOT NULL DEFAULT '10000',
-	r_name INTEGER UNSIGNED NOT NULL default 0,
-	r_surname INTEGER UNSIGNED NOT NULL default 0,
-	r_secname INTEGER UNSIGNED NOT NULL default 0,
-	r_notes TEXT,
-	r_okrol INTEGER UNSIGNED NOT NULL default 0,
-	r_farm INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	r_tier INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	r_tier_id TINYINT UNSIGNED NOT NULL DEFAULT 0,
-	r_area INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	r_rate INTEGER NOT NULL default 0,
-	r_group INTEGER UNSIGNED NOT NULL DEFAULT 1,
-	r_breed INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	r_flags VARCHAR(10) NOT NULL DEFAULT '00000' COMMENT '[0]Готовая Продукция [1]Готов к реализации [2]Брак [3]Не куковать [4]Потеря лактации',
-	r_zone INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	r_born DATETIME,
-	r_birthplace INT NULL DEFAULT NULL COMMENT  'программа откуда экспортирован кролик',
-	r_genesis INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	r_status TINYINT UNSIGNED NOT NULL DEFAULT 0,   #boy-status/girl-borns
-	r_last_fuck_okrol DATETIME,
-	r_event ENUM('none','sluchka','vyazka','kuk','syntetic'),
-	r_event_date DATETIME,
-	r_lost_babies INTEGER UNSIGNED,
-	r_overall_babies INTEGER UNSIGNED,
-	KEY(r_parent),
-	KEY(r_mother),
-	KEY(r_father),
-	KEY(r_sex),
-	KEY(r_name),KEY(r_surname),KEY(r_secname),
-	KEY(r_farm),KEY(r_tier),
-	KEY(r_group),
-	KEY(r_breed),
-	KEY(r_zone),
-	KEY(r_status),
-	KEY(r_born)
-) ENGINE = MyISAM DEFAULT CHARSET=utf8;
+CREATE TABLE rabbits (
+  r_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  r_parent int(10) unsigned NOT NULL DEFAULT '0',
+  r_mother int(10) unsigned NOT NULL DEFAULT '0',
+  r_father int(10) unsigned NOT NULL DEFAULT '0',
+  r_sex enum('male','female','void') NOT NULL,
+  r_bon varchar(5) NOT NULL DEFAULT '10000',
+  r_name int(10) unsigned NOT NULL DEFAULT '0',
+  r_surname int(10) unsigned NOT NULL DEFAULT '0',
+  r_secname int(10) unsigned NOT NULL DEFAULT '0',
+  r_notes text,
+  r_okrol int(10) unsigned NOT NULL DEFAULT '0',
+  r_farm int(10) unsigned NOT NULL DEFAULT '0',
+  r_tier int(10) unsigned NOT NULL DEFAULT '0',
+  r_tier_id tinyint(3) unsigned NOT NULL DEFAULT '0',
+  r_area int(10) unsigned NOT NULL DEFAULT '0',
+  r_rate int(11) NOT NULL DEFAULT '0',
+  r_group int(10) unsigned NOT NULL DEFAULT '1',
+  r_breed int(10) unsigned NOT NULL DEFAULT '0',
+  r_flags varchar(10) NOT NULL DEFAULT '00000' COMMENT '[0]Готовая Продукция [1]Готов к реализации [2]Брак [3]Не куковать [4]Потеря лактации',
+  r_zone int(10) unsigned NOT NULL DEFAULT '0',
+  r_born datetime DEFAULT NULL,
+  r_birthplace int(11) DEFAULT NULL COMMENT 'программа откуда экспортирован кролик',
+  r_genesis int(10) unsigned NOT NULL DEFAULT '0',
+  r_status tinyint(3) unsigned NOT NULL DEFAULT '0',
+  r_last_fuck_okrol datetime DEFAULT NULL,
+  r_event enum('none','sluchka','vyazka','kuk','syntetic') DEFAULT NULL,
+  r_event_date datetime DEFAULT NULL,
+  r_lost_babies int(10) unsigned DEFAULT NULL,
+  r_overall_babies int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (r_id),
+  KEY r_parent (r_parent),
+  KEY r_mother (r_mother),
+  KEY r_father (r_father),
+  KEY r_sex (r_sex),
+  KEY r_name (r_name),
+  KEY r_surname (r_surname),
+  KEY r_secname (r_secname),
+  KEY r_farm (r_farm),
+  KEY r_tier (r_tier),
+  KEY r_group (r_group),
+  KEY r_breed (r_breed),
+  KEY r_zone (r_zone),
+  KEY r_status (r_status),
+  KEY r_born (r_born)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS fucks;
-CREATE TABLE fucks(
-	f_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	f_rabid INTEGER UNSIGNED NOT NULL,
-	f_date DATETIME DEFAULT NULL,
-	f_type enum('sluchka','vyazka','kuk','syntetic') NOT NULL default 'vyazka',
-	f_partner INTEGER UNSIGNED NOT NULL,
-	f_times INTEGER UNSIGNED NOT NULL DEFAULT 1,
-	f_state enum('sukrol','proholost','okrol') NOT NULL default 'okrol',
-	f_okrol INTEGER UNSIGNED NOT NULL default 0,
-	f_end_date DATETIME DEFAULT NULL,
-	f_children INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	f_dead INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	f_killed INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	f_added INTEGER NOT NULL DEFAULT 0,
-	f_last BOOL NOT NULL DEFAULT 0,
-	f_worker INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	f_notes TEXT,
-	KEY(f_date),
-	KEY(f_state),
-	KEY(f_type),
-	KEY(f_children),
-	KEY(f_dead)
-) DEFAULT CHARSET=utf8;
+CREATE TABLE fucks (
+  f_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  f_rabid int(10) unsigned NOT NULL,
+  f_date datetime DEFAULT NULL,
+  f_type enum('sluchka','vyazka','kuk','syntetic') NOT NULL DEFAULT 'vyazka',
+  f_partner int(10) unsigned NOT NULL,
+  f_times int(10) unsigned NOT NULL DEFAULT '1',
+  f_state enum('sukrol','proholost','okrol') NOT NULL DEFAULT 'okrol',
+  f_okrol int(10) unsigned NOT NULL DEFAULT '0',
+  f_end_date datetime DEFAULT NULL,
+  f_children int(10) unsigned NOT NULL DEFAULT '0',
+  f_dead int(10) unsigned NOT NULL DEFAULT '0',
+  f_killed int(10) unsigned NOT NULL DEFAULT '0',
+  f_added int(11) NOT NULL DEFAULT '0',
+  f_last tinyint(1) NOT NULL DEFAULT '0',
+  f_worker int(10) unsigned NOT NULL DEFAULT '0',
+  f_notes text,
+  PRIMARY KEY (f_id),
+  KEY f_date (f_date),
+  KEY f_state (f_state),
+  KEY f_type (f_type),
+  KEY f_children (f_children),
+  KEY f_dead (f_dead)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS genesis;
-CREATE TABLE genesis(
-	g_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	g_notes TEXT,
-	g_key VARCHAR(50),
-	KEY(g_id),
-	KEY(g_key)
-) DEFAULT CHARSET=utf8;
+CREATE TABLE genesis (
+  g_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  g_notes text,
+  g_key varchar(50) DEFAULT NULL,
+  PRIMARY KEY (g_id),
+  KEY g_id (g_id),
+  KEY g_key (g_key)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS genoms;
-CREATE TABLE genoms(
-	g_id INTEGER UNSIGNED NOT NULL,
-	g_genom INTEGER UNSIGNED NOT NULL,
-	KEY(g_id),
-	KEY(g_genom),
-	UNIQUE(g_id,g_genom)
-) DEFAULT CHARSET=utf8;
+CREATE TABLE genoms (
+  g_id int(10) unsigned NOT NULL,
+  g_genom int(10) unsigned NOT NULL,
+  UNIQUE KEY g_id_2 (g_id,g_genom),
+  KEY g_id (g_id),
+  KEY g_genom (g_genom)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS weights;
-CREATE TABLE weights(
-	w_rabid INTEGER UNSIGNED NOT NULL,
-	w_date DATETIME NOT NULL,
-	w_weight INTEGER UNSIGNED NOT NULL,
-	KEY(w_rabid)
-) DEFAULT CHARSET=utf8;
+CREATE TABLE weights (
+  w_rabid int(10) unsigned NOT NULL,
+  w_date datetime NOT NULL,
+  w_weight int(10) unsigned NOT NULL,
+  KEY w_rabid (w_rabid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS deadreasons;
-CREATE TABLE deadreasons(
-	d_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	d_name VARCHAR(50) NOT NULL,
-	d_rate INTEGER NOT NULL default 0
-) DEFAULT CHARSET=utf8;
+CREATE TABLE deadreasons (
+  d_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  d_name varchar(50) NOT NULL,
+  d_rate int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (d_id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS dead;
-CREATE TABLE dead(
-	d_date DATETIME NOT NULL,
-	d_reason INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	d_notes TEXT,
-	r_id INTEGER UNSIGNED NOT NULL PRIMARY KEY,
-	r_parent INTEGER UNSIGNED NOT NULL default 0,
-	r_father INTEGER UNSIGNED NOT NULL default 0,
-	r_mother INTEGER UNSIGNED NOT NULL default 0,
-	r_sex ENUM('male','female','void') NOT NULL,
-	r_bon VARCHAR(5) NOT NULL DEFAULT '10000',
-	r_name INTEGER UNSIGNED NOT NULL default 0,
-	r_surname INTEGER UNSIGNED NOT NULL default 0,
-	r_secname INTEGER UNSIGNED NOT NULL default 0,
-	r_notes TEXT,
-	r_okrol INTEGER UNSIGNED NOT NULL default 0,
-	r_farm INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	r_tier INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	r_tier_id TINYINT UNSIGNED NOT NULL DEFAULT 0,
-	r_area INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	r_rate INTEGER NOT NULL default 0,
-	r_group INTEGER UNSIGNED NOT NULL DEFAULT 1,
-	r_breed INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	r_flags VARCHAR(10) NOT NULL DEFAULT '00000',
-	r_zone INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	r_born DATETIME,
-	r_birthplace INT NULL DEFAULT NULL COMMENT  'программа откуда экспортирован кролик',
-	r_genesis INTEGER UNSIGNED NOT NULL DEFAULT 0,
-	r_status TINYINT UNSIGNED NOT NULL DEFAULT 0,
-	r_last_fuck_okrol DATETIME,
-	r_lost_babies INTEGER UNSIGNED,
-	r_overall_babies INTEGER UNSIGNED,
-	UNIQUE(r_id),
-	KEY(r_parent),
-	KEY(r_sex),
-	KEY(r_name),KEY(r_surname),KEY(r_secname),
-	KEY(r_farm),KEY(r_tier),
-	KEY(r_group),
-	KEY(r_breed),
-	KEY(r_zone),
-	KEY(r_status),
-	KEY(r_born),
-	KEY(d_date),
-	KEY(d_reason)
-) DEFAULT CHARSET=utf8;
+CREATE TABLE dead (
+  d_date datetime NOT NULL,
+  d_reason int(10) unsigned NOT NULL DEFAULT '0',
+  d_notes text,
+  r_id int(10) unsigned NOT NULL,
+  r_parent int(10) unsigned NOT NULL DEFAULT '0',
+  r_father int(10) unsigned NOT NULL DEFAULT '0',
+  r_mother int(10) unsigned NOT NULL DEFAULT '0',
+  r_sex enum('male','female','void') NOT NULL,
+  r_bon varchar(5) NOT NULL DEFAULT '10000',
+  r_name int(10) unsigned NOT NULL DEFAULT '0',
+  r_surname int(10) unsigned NOT NULL DEFAULT '0',
+  r_secname int(10) unsigned NOT NULL DEFAULT '0',
+  r_notes text,
+  r_okrol int(10) unsigned NOT NULL DEFAULT '0',
+  r_farm int(10) unsigned NOT NULL DEFAULT '0',
+  r_tier int(10) unsigned NOT NULL DEFAULT '0',
+  r_tier_id tinyint(3) unsigned NOT NULL DEFAULT '0',
+  r_area int(10) unsigned NOT NULL DEFAULT '0',
+  r_rate int(11) NOT NULL DEFAULT '0',
+  r_group int(10) unsigned NOT NULL DEFAULT '1',
+  r_breed int(10) unsigned NOT NULL DEFAULT '0',
+  r_flags varchar(10) NOT NULL DEFAULT '00000',
+  r_zone int(10) unsigned NOT NULL DEFAULT '0',
+  r_born datetime DEFAULT NULL,
+  r_birthplace int(11) DEFAULT NULL COMMENT 'программа откуда экспортирован кролик',
+  r_genesis int(10) unsigned NOT NULL DEFAULT '0',
+  r_status tinyint(3) unsigned NOT NULL DEFAULT '0',
+  r_last_fuck_okrol datetime DEFAULT NULL,
+  r_lost_babies int(10) unsigned DEFAULT NULL,
+  r_overall_babies int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (r_id),
+  UNIQUE KEY r_id (r_id),
+  KEY r_parent (r_parent),
+  KEY r_sex (r_sex),
+  KEY r_name (r_name),
+  KEY r_surname (r_surname),
+  KEY r_secname (r_secname),
+  KEY r_farm (r_farm),
+  KEY r_tier (r_tier),
+  KEY r_group (r_group),
+  KEY r_breed (r_breed),
+  KEY r_zone (r_zone),
+  KEY r_status (r_status),
+  KEY r_born (r_born),
+  KEY d_date (d_date),
+  KEY d_reason (d_reason)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS logtypes;
-CREATE TABLE logtypes(
-	l_type INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	l_name VARCHAR(30) NOT NULL,
-	l_params TEXT,
-	KEY(l_name)
-) DEFAULT CHARSET=utf8;
+CREATE TABLE logtypes (
+  l_type int(10) unsigned NOT NULL AUTO_INCREMENT,
+  l_name varchar(30) NOT NULL,
+  l_params text,
+  PRIMARY KEY (l_type),
+  KEY l_name (l_name)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS logs;
-CREATE TABLE logs(
-	l_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	l_date DATETIME NOT NULL,
-	l_type INTEGER UNSIGNED NOT NULL,
-	l_user INTEGER UNSIGNED NOT NULL,
-	l_rabbit INTEGER UNSIGNED,
-	l_address VARCHAR(50) NOT NULL DEFAULT '',
-	l_rabbit2 INTEGER UNSIGNED,
-	l_address2 VARCHAR(50) NOT NULL DEFAULT '',
-	l_param TEXT,
-	KEY(l_rabbit),
-	KEY(l_rabbit2),
-	KEY(l_address),
-	KEY(l_address2),
-	KEY(l_date),
-	KEY(l_type)
-) DEFAULT CHARSET=utf8;
+CREATE TABLE `logs` (
+  l_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  l_date datetime NOT NULL,
+  l_type int(10) unsigned NOT NULL,
+  l_user int(10) unsigned NOT NULL,
+  l_rabbit int(10) unsigned DEFAULT NULL,
+  l_address varchar(50) NOT NULL DEFAULT '',
+  l_rabbit2 int(10) unsigned DEFAULT NULL,
+  l_address2 varchar(50) NOT NULL DEFAULT '',
+  l_param text,
+  PRIMARY KEY (l_id),
+  KEY l_rabbit (l_rabbit),
+  KEY l_rabbit2 (l_rabbit2),
+  KEY l_address (l_address),
+  KEY l_address2 (l_address2),
+  KEY l_date (l_date),
+  KEY l_type (l_type)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS logs_arch;
-CREATE TABLE logs_arch(
-	l_id INTEGER UNSIGNED NOT NULL PRIMARY KEY,
-	l_date DATETIME NOT NULL,
-	l_type INTEGER UNSIGNED NOT NULL,
-	l_user INTEGER UNSIGNED NOT NULL,
-	l_rabbit INTEGER UNSIGNED,
-	l_address VARCHAR(50) NOT NULL DEFAULT '',
-	l_rabbit2 INTEGER UNSIGNED,
-	l_address2 VARCHAR(50) NOT NULL DEFAULT '',
-	l_param TEXT,
-	KEY(l_rabbit),
-	KEY(l_rabbit2),
-	KEY(l_address),
-	KEY(l_address2),
-	KEY(l_date),
-	KEY(l_type)
-) DEFAULT CHARSET=utf8;
+CREATE TABLE logs_arch (
+  l_id int(10) unsigned NOT NULL,
+  l_date datetime NOT NULL,
+  l_type int(10) unsigned NOT NULL,
+  l_user int(10) unsigned NOT NULL,
+  l_rabbit int(10) unsigned DEFAULT NULL,
+  l_address varchar(50) NOT NULL DEFAULT '',
+  l_rabbit2 int(10) unsigned DEFAULT NULL,
+  l_address2 varchar(50) NOT NULL DEFAULT '',
+  l_param text,
+  PRIMARY KEY (l_id),
+  KEY l_rabbit (l_rabbit),
+  KEY l_rabbit2 (l_rabbit2),
+  KEY l_address (l_address),
+  KEY l_address2 (l_address2),
+  KEY l_date (l_date),
+  KEY l_type (l_type)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS import;
 CREATE TABLE `import` (
-  `t_rab_id` INTEGER UNSIGNED NOT NULL,
-  `t_date` DATETIME NOT NULL,
-  `t_count` INTEGER UNSIGNED,
-  `t_client` INT NULL DEFAULT NULL COMMENT 'id клиента из которой экспортирован, с которой привsезен кролик',  
-  `t_old_r_id` INT NULL DEFAULT NULL COMMENT 'id кролика в программе экспортера',
-  `t_file_guid` VARCHAR(40) NULL COMMENT  'guid файла экспорта',
-  PRIMARY KEY (`t_rab_id`)
-) ENGINE = InnoDB  DEFAULT CHARSET=utf8 COMMENT = 'Таблица привозов';
+  t_rab_id int(10) unsigned NOT NULL,
+  t_date datetime NOT NULL,
+  t_count int(10) unsigned DEFAULT NULL,
+  t_client int(11) DEFAULT NULL COMMENT 'id клиента из которой экспортирован, с которой привsезен кролик',
+  t_old_r_id int(11) DEFAULT NULL COMMENT 'id кролика в программе экспортера',
+  t_file_guid varchar(40) DEFAULT NULL COMMENT 'guid файла экспорта',
+  PRIMARY KEY (t_rab_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Таблица привозов';
 
 DROP TABLE IF EXISTS products;
 CREATE TABLE products (
-  p_id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  p_name VARCHAR(45) NOT NULL DEFAULT '' COMMENT 'название продукции',
-  p_unit VARCHAR(30) NOT NULL DEFAULT '' 'единица измерения',
-  p_image BLOB COMMENT 'изображение',
-  p_imgsize INTEGER UNSIGNED  COMMENT 'размер изображения',
+  p_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  p_name varchar(45) NOT NULL DEFAULT '' COMMENT 'название продукции',
+  p_unit varchar(30) NOT NULL DEFAULT '' COMMENT 'единица измерения',
+  p_image blob COMMENT 'изображение',
+  p_imgsize int(10) unsigned DEFAULT NULL COMMENT 'размер изображения',
   PRIMARY KEY (p_id)
-)ENGINE = InnoDB  DEFAULT CHARSET=utf8 COMMENT = 'продукция получаемая из кролика';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='продукция получаемая из кролика';
 
 DROP TABLE IF EXISTS butcher;
 CREATE TABLE butcher (
-  b_id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  b_date DATETIME NOT NULL COMMENT 'дата взвешивания',
-  b_prodtype INTEGER UNSIGNED NOT NULL COMMENT 'тип продукта',
-  b_amount FLOAT UNSIGNED NOT NULL COMMENT 'количество ГП',
-  b_user INTEGER UNSIGNED NOT NULL COMMENT 'пользователь',
+  b_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  b_date datetime NOT NULL COMMENT 'дата взвешивания',
+  b_prodtype int(10) unsigned NOT NULL COMMENT 'тип продукта',
+  b_amount float unsigned NOT NULL COMMENT 'количество ГП',
+  b_user int(10) unsigned NOT NULL COMMENT 'пользователь',
   PRIMARY KEY (b_id)
-)ENGINE = InnoDB  DEFAULT CHARSET=utf8 COMMENT = 'готовая продукция';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='готовая продукция';
 
 DROP TABLE IF EXISTS meal;
 CREATE TABLE meal (
-  m_id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  m_type ENUM('in','out') NOT NULL DEFAULT 'in',
-  m_start_date DATETIME NOT NULL COMMENT 'дата завоза комбикорма', 
-  m_end_date DATETIME NULL COMMENT 'дата когда комбикорм закончился',
-  m_amount INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'в КилоГраммах',
-  m_rate FLOAT UNSIGNED NULL COMMENT 'кг комбикорма съедает кролик в день',
+  m_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  m_type enum('in','out') NOT NULL DEFAULT 'in',
+  m_start_date datetime NOT NULL COMMENT 'дата завоза комбикорма',
+  m_end_date datetime DEFAULT NULL COMMENT 'дата когда комбикорм закончился',
+  m_amount int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'в КилоГраммах',
+  m_rate float unsigned DEFAULT NULL COMMENT 'кг комбикорма съедает кролик в день',
   PRIMARY KEY (m_id)
-)ENGINE = InnoDB  DEFAULT CHARSET=utf8 COMMENT = 'Таблица расчета кормов';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Таблица расчета кормов';
 
-DROP TABLE IF EXISTS `vaccines`;
-CREATE  TABLE `vaccines` (
-  `v_id` TINYINT NOT NULL AUTO_INCREMENT ,
-  `v_name` VARCHAR(45) NULL ,
-  `v_do_after` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'делать после рождения(0) или после прививки с ID',
-  `v_duration` INT UNSIGNED NOT NULL COMMENT 'Продолжительность прививки в Днях' ,
-  `v_age` INT UNSIGNED NOT NULL DEFAULT 45 COMMENT 'Назначать с (дней)' ,
-  `v_zootech` BIT NOT NULL DEFAULT 0 COMMENT 'Отображать в Зоотехплане',
-  `v_do_times` SMALLINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'сколько раз назначать прививку в Зоотехплане(0-всегда)',
-  PRIMARY KEY (`v_id`) ,
-  UNIQUE INDEX `v_name_UNIQUE` (`v_name` ASC) 
-)ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = 'Список имеющихся прививок';
+DROP TABLE IF EXISTS vaccines;
+CREATE TABLE vaccines (
+  v_id tinyint(4) NOT NULL AUTO_INCREMENT,
+  v_name varchar(45) DEFAULT NULL,
+  v_do_after int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'делать после рождения(0) или после прививки с ID',
+  v_duration int(10) unsigned NOT NULL COMMENT 'Продолжительность прививки в Днях',
+  v_age int(10) unsigned NOT NULL DEFAULT '45' COMMENT 'Назначать с (дней)',
+  v_zootech bit(1) NOT NULL DEFAULT b'0' COMMENT 'Отображать в Зоотехплане',
+  v_do_times smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT 'сколько раз назначать прививку в Зоотехплане(0-всегда)',
+  PRIMARY KEY (v_id),
+  UNIQUE KEY v_name_UNIQUE (v_name)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Список имеющихся прививок';
 
-DROP TABLE IF EXISTS `rab_vac`;
-CREATE  TABLE `rab_vac` (
-  `r_id` INT UNSIGNED NOT NULL ,
-  `v_id` TINYINT NOT NULL COMMENT 'Тип прививки' ,
-  `date` DATE NULL COMMENT 'Когда была сделана прививка',
-  `unabled` BIT NOT NULL DEFAULT 0 COMMENT 'Отменена ли прививка'
-)ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = 'Какие прививки делались кролику';
+DROP TABLE IF EXISTS rab_vac;
+CREATE TABLE rab_vac (
+  r_id int(10) unsigned NOT NULL,
+  v_id tinyint(4) NOT NULL COMMENT 'Тип прививки',
+  `date` date DEFAULT NULL COMMENT 'Когда была сделана прививка',
+  unabled bit(1) NOT NULL DEFAULT b'0' COMMENT 'Отменена ли прививка'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Какие прививки делались кролику';
 
-CREATE TABLE IF NOT EXISTS `clients` (
-  `c_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `c_org` varchar(45) NOT NULL COMMENT 'название организации',
-  `c_address` varchar(100) NOT NULL,
-  PRIMARY KEY (`c_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS clients;
+CREATE TABLE clients (
+  c_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  c_org varchar(45) NOT NULL COMMENT 'название организации',
+  c_address varchar(100) NOT NULL,
+  PRIMARY KEY (c_id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `import_ascendants` (
-  `r_id` int(10) unsigned NOT NULL,
-  `r_mother` int(10) unsigned NOT NULL DEFAULT '0',
-  `r_father` int(10) unsigned NOT NULL DEFAULT '0',
-  `r_sex` enum('male','female','void') NOT NULL,
-  `r_bon` VARCHAR(5) NOT NULL DEFAULT '10000',
-  `r_name` int(10) unsigned NOT NULL DEFAULT '0',
-  `r_surname` int(10) unsigned NOT NULL DEFAULT '0',
-  `r_secname` int(10) unsigned NOT NULL DEFAULT '0',
-  `r_breed` int(10) unsigned NOT NULL DEFAULT '0',
-  `r_born` datetime DEFAULT NULL,
-  `r_birthplace` int(11) unsigned DEFAULT NULL COMMENT 'программа откуда экспортирован кролик',
-  UNIQUE KEY `u_r_id_birtplace` (`r_id`,`r_birthplace`),
-  KEY `r_mother` (`r_mother`),
-  KEY `r_father` (`r_father`),
-  KEY `r_sex` (`r_sex`),
-  KEY `r_name` (`r_name`),
-  KEY `r_surname` (`r_surname`),
-  KEY `r_secname` (`r_secname`),
-  KEY `r_breed` (`r_breed`)
+DROP TABLE IF EXISTS import_ascendants;
+CREATE TABLE import_ascendants (
+  r_id int(10) unsigned NOT NULL,
+  r_mother int(10) unsigned NOT NULL DEFAULT '0',
+  r_father int(10) unsigned NOT NULL DEFAULT '0',
+  r_sex enum('male','female','void') NOT NULL,
+  r_bon varchar(5) NOT NULL DEFAULT '10000',
+  r_name int(10) unsigned NOT NULL DEFAULT '0',
+  r_surname int(10) unsigned NOT NULL DEFAULT '0',
+  r_secname int(10) unsigned NOT NULL DEFAULT '0',
+  r_breed int(10) unsigned NOT NULL DEFAULT '0',
+  r_born datetime DEFAULT NULL,
+  r_birthplace int(11) unsigned DEFAULT NULL COMMENT 'программа откуда экспортирован кролик',
+  UNIQUE KEY u_r_id_birtplace (r_id,r_birthplace),
+  KEY r_mother (r_mother),
+  KEY r_father (r_father),
+  KEY r_sex (r_sex),
+  KEY r_name (r_name),
+  KEY r_surname (r_surname),
+  KEY r_secname (r_secname),
+  KEY r_breed (r_breed)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+ALTER TABLE buildings
+  ADD CONSTRAINT buildings_ibfk_1 FOREIGN KEY (b_farm) REFERENCES minifarms (m_id) ON DELETE SET NULL ON UPDATE CASCADE;
+
+ALTER TABLE logs
+  ADD CONSTRAINT logs_ibfk_1 FOREIGN KEY (l_type) REFERENCES logtypes (l_type) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE minifarms
+  ADD CONSTRAINT minifarms_ibfk_2 FOREIGN KEY (m_lower) REFERENCES tiers (t_id) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT minifarms_ibfk_1 FOREIGN KEY (m_upper) REFERENCES tiers (t_id) ON DELETE SET NULL ON UPDATE CASCADE;
+
+
 
 #DATA
 
 INSERT INTO `vaccines`(v_id,v_name,v_do_after,v_duration,v_age,v_zootech,v_do_times) VALUES(-1,'Стимуляция самки',0,3,2,0,0);
 INSERT INTO `vaccines`(v_id,v_name,v_do_after,v_duration,v_age,v_zootech,v_do_times) VALUES(1,'Прививка',0,180,45,1,0);
 
-INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','16');
+INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','17');
 INSERT INTO options(o_name,o_subname,o_value) VALUES
 ('opt','okrol', 30),
 ('opt','vudvor', 30),
@@ -589,7 +625,7 @@ UNION
 
 #DELIMITER |
 DROP FUNCTION IF EXISTS rabname |
-CREATE FUNCTION rabname (rid INTEGER UNSIGNED ,sur INTEGER) RETURNS CHAR(150)
+CREATE FUNCTION rabname (rid int(10) unsigned ,sur int(10)) RETURNS CHAR(150)
 BEGIN
   DECLARE n,sr,sc,sx,ok CHAR(50);
   DECLARE res CHAR(150);
@@ -604,14 +640,14 @@ BEGIN
   r_group,r_sex,r_okrol INTO n,sr,sc,c,sx,ok FROM rabbits WHERE r_id=rid;
   SET res='';
   IF (n IS NOT NULL) THEN
-	SET res=n;
+  SET res=n;
   END IF;
   IF (sur>0 AND NOT sr IS NULL) THEN
-	IF (res='') THEN
-		SET res=sr;
-	ELSE
-		SET res=CONCAT_WS(' ',res,sr);
-	END IF;
+  IF (res='') THEN
+    SET res=sr;
+  ELSE
+    SET res=CONCAT_WS(' ',res,sr);
+  END IF;
     if (c>1) then
       SET res=CONCAT(res,'ы');
     else
@@ -627,13 +663,13 @@ BEGIN
     end if;
   END IF;
   IF(n IS NULL) THEN
-	SET res=CONCAT_WS('-',res,ok);
+  SET res=CONCAT_WS('-',res,ok);
   END IF;
   RETURN(res);
 END |
 
 DROP FUNCTION IF EXISTS deadname |
-CREATE FUNCTION deadname (rid INTEGER UNSIGNED ,sur INTEGER) RETURNS CHAR(150)
+CREATE FUNCTION deadname (rid int(10) unsigned ,sur int(10)) RETURNS CHAR(150)
 BEGIN
   DECLARE n,sr,sc,sx,ok CHAR(50);
   DECLARE res CHAR(150);
@@ -648,14 +684,14 @@ BEGIN
   r_group,r_sex,r_okrol INTO n,sr,sc,c,sx,ok FROM dead WHERE r_id=rid;
   SET res='';
   IF (n IS NOT NULL) THEN
-	SET res=n;
+  SET res=n;
   END IF;
   IF (sur>0 AND NOT sr IS NULL) THEN
-	IF (res='') THEN
-		SET res=sr;
-	ELSE
-		SET res=CONCAT_WS(' ',res,sr);
-	END IF;
+  IF (res='') THEN
+    SET res=sr;
+  ELSE
+    SET res=CONCAT_WS(' ',res,sr);
+  END IF;
     if (c>1) then
       SET res=CONCAT(res,'ы');
     else
@@ -671,45 +707,45 @@ BEGIN
     end if;
   END IF;
   IF(n IS NULL) THEN
-	SET res=CONCAT_WS('-',res,ok);
+  SET res=CONCAT_WS('-',res,ok);
   END IF;
   RETURN(res);
 END |
 
 
 DROP FUNCTION IF EXISTS isdead |
-CREATE FUNCTION isdead(rid INTEGER UNSIGNED) RETURNS BOOL
+CREATE FUNCTION isdead(rid int(10) unsigned) RETURNS BOOL
 BEGIN
-	DECLARE cnt INTEGER UNSIGNED;
-	SELECT COUNT(r_id) INTO cnt FROM rabbits WHERE r_id=rid;
-	IF (cnt=0) THEN
-		RETURN(1);
-	END IF;
-	RETURN(0);
+  DECLARE cnt int(10) unsigned;
+  SELECT COUNT(r_id) INTO cnt FROM rabbits WHERE r_id=rid;
+  IF (cnt=0) THEN
+    RETURN(1);
+  END IF;
+  RETURN(0);
 END |
 
 DROP FUNCTION IF EXISTS anyname |
-CREATE FUNCTION anyname(rid INTEGER UNSIGNED, sur INTEGER) RETURNS CHAR(150)
+CREATE FUNCTION anyname(rid int(10) unsigned, sur int(10)) RETURNS CHAR(150)
 BEGIN
-	IF (isdead(rid)) THEN
-		RETURN(deadname(rid,sur));
-	END IF;
-	RETURN(rabname(rid,sur));
+  IF (isdead(rid)) THEN
+    RETURN(deadname(rid,sur));
+  END IF;
+  RETURN(rabname(rid,sur));
 END |
 
 DROP FUNCTION IF EXISTS rabplace |
-CREATE FUNCTION rabplace(rid INTEGER UNSIGNED) RETURNS char(150)
+CREATE FUNCTION rabplace(rid int(10) unsigned) RETURNS char(150)
 BEGIN
-  DECLARE res VARCHAR(150);
-  DECLARE i1,i2,i3,tid,s1,s2,s3 VARCHAR(20);
-  DECLARE par INTEGER UNSIGNED;
+  DECLARE res varchar(150);
+  DECLARE i1,i2,i3,tid,s1,s2,s3 varchar(20);
+  DECLARE par int(10) unsigned;
   SELECT r_farm,r_tier_id,r_area,r_tier,r_parent
   INTO i1,i2,i3,tid,par
   FROM rabbits WHERE r_id=rid;
   IF (par<>0) THEN
-	SELECT r_farm,r_tier_id,r_area,r_tier
-	INTO i1,i2,i3,tid
-	FROM rabbits WHERE r_id=par;
+  SELECT r_farm,r_tier_id,r_area,r_tier
+  INTO i1,i2,i3,tid
+  FROM rabbits WHERE r_id=par;
   END IF;
   IF (tid=0) THEN
     RETURN('');
@@ -723,10 +759,10 @@ BEGIN
 END |
 
 DROP FUNCTION IF EXISTS deadplace |
-CREATE FUNCTION deadplace(rid INTEGER UNSIGNED) RETURNS char(150)
+CREATE FUNCTION deadplace(rid int(10) unsigned) RETURNS char(150)
 BEGIN
-  DECLARE res VARCHAR(150);
-  DECLARE i1,i2,i3,tid,s1,s2,s3 VARCHAR(20);
+  DECLARE res varchar(150);
+  DECLARE i1,i2,i3,tid,s1,s2,s3 varchar(20);
   SELECT r_farm,r_tier_id,r_area,r_tier
   INTO i1,i2,i3,tid
   FROM dead WHERE r_id=rid;
@@ -734,9 +770,9 @@ BEGIN
     RETURN('');
   END IF;
   IF (tid<>0) THEN
-	SELECT t_type,t_delims,t_nest INTO s1,s2,s3 FROM tiers WHERE t_id=tid;
+  SELECT t_type,t_delims,t_nest INTO s1,s2,s3 FROM tiers WHERE t_id=tid;
   ELSE
-	SELECT t_type,t_delims,t_nest INTO s1,s2,s3 FROM tiers,minifarms WHERE m_id=i1 AND ((t_id=m_upper AND i2<>1) OR (t_id=m_lower AND i2=1));
+  SELECT t_type,t_delims,t_nest INTO s1,s2,s3 FROM tiers,minifarms WHERE m_id=i1 AND ((t_id=m_upper AND i2<>1) OR (t_id=m_lower AND i2=1));
   END IF;
   IF (ISNULL(s1)) THEN
     RETURN('');
@@ -746,7 +782,7 @@ BEGIN
 END |
 
 DROP PROCEDURE IF EXISTS killRabbitDate |
-CREATE PROCEDURE killRabbitDate (rid INTEGER UNSIGNED,reason INTEGER UNSIGNED,notes TEXT,ddate DATETIME)
+CREATE PROCEDURE killRabbitDate (rid int(10) unsigned,reason int(10) unsigned,notes TEXT,ddate DATETIME)
 BEGIN
   INSERT INTO dead(d_date,d_reason,d_notes,r_id,r_sex,r_bon,r_name,r_surname,r_secname,
  r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,
@@ -760,16 +796,16 @@ END |
 
 
 DROP PROCEDURE IF EXISTS killRabbit |
-CREATE PROCEDURE killRabbit (rid INTEGER UNSIGNED,reason INTEGER UNSIGNED,notes TEXT)
+CREATE PROCEDURE killRabbit (rid int(10) unsigned,reason int(10) unsigned,notes TEXT)
 BEGIN
   CALL killRabbitDate(rid,reason,notes,NOW());
 END |
 
 
 DROP PROCEDURE IF EXISTS resurrectRabbit |
-CREATE PROCEDURE resurrectRabbit(rid INTEGER UNSIGNED)
+CREATE PROCEDURE resurrectRabbit(rid int(10) unsigned)
 BEGIN
-	INSERT INTO rabbits(r_id,r_sex,r_bon,r_name,r_surname,r_secname,
+  INSERT INTO rabbits(r_id,r_sex,r_bon,r_name,r_surname,r_secname,
  r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,
  r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies,r_parent,r_father,r_mother)
  SELECT r_id,r_sex,r_bon,r_name,r_surname,r_secname,
@@ -781,9 +817,9 @@ BEGIN
 END |
 
 DROP FUNCTION IF EXISTS inBuilding |
-CREATE FUNCTION inBuilding(building INTEGER UNSIGNED,farm INTEGER UNSIGNED) RETURNS BOOL
+CREATE FUNCTION inBuilding(building int(10) unsigned,farm int(10) unsigned) RETURNS BOOL
 BEGIN
-  DECLARE cid INTEGER UNSIGNED;
+  DECLARE cid int(10) unsigned;
   IF (farm=0) THEN return 0; END IF;
   SELECT b_id INTO cid FROM buildings WHERE b_farm=farm;
   while cid<>0 DO
@@ -794,132 +830,132 @@ BEGIN
 END |
 
 DROP FUNCTION IF EXISTS mealCalculate |
-CREATE FUNCTION mealCalculate (id INTEGER UNSIGNED) RETURNS FLOAT
+CREATE FUNCTION mealCalculate (id int(10) unsigned) RETURNS FLOAT
 BEGIN
-	DECLARE days,i,a,d,sell INTEGER;
-	DECLARE res,amnt FLOAT;
-	DECLARE sd,ed DateTime;
-	SELECT m_start_date, m_end_date INTO sd,ed FROM meal WHERE m_id=id;
-	IF(isnull(sd) OR isnull(ed)) THEN
-		return 0;
-	END IF;
-	SELECT to_days(m_end_date)-to_days(m_start_date) INTO days FROM meal WHERE m_id=id;
-	IF(days = 0) THEN
-		return 0;
-	END IF;
-	SET i=1; #в день завоза новый корм не расходуется
-	SET res=0;
-	
-	DROP TEMPORARY TABLE IF EXISTS deads;	
-	CREATE TEMPORARY TABLE deads AS
-		SELECT r_group,r_born,d_date FROM dead    WHERE (AddDate(r_born,18)<=sd OR AddDate(r_born,18)<=ed ) AND d_date>=sd ORDER by r_born;
-	
-	DROP TEMPORARY TABLE IF EXISTS alives;
-	CREATE TEMPORARY TABLE alives AS
-		SELECT r_group,r_born  	     FROM rabbits WHERE (AddDate(r_born,18)<=sd OR AddDate(r_born,18)<=ed ) 	 	    ORDER by r_born;
-		
-	SELECT (select count(*) from deads), (select count(*) from alives) INTO a,d;
+  DECLARE days,i,a,d,sell int(10);
+  DECLARE res,amnt FLOAT;
+  DECLARE sd,ed DateTime;
+  SELECT m_start_date, m_end_date INTO sd,ed FROM meal WHERE m_id=id;
+  IF(isnull(sd) OR isnull(ed)) THEN
+    return 0;
+  END IF;
+  SELECT to_days(m_end_date)-to_days(m_start_date) INTO days FROM meal WHERE m_id=id;
+  IF(days = 0) THEN
+    return 0;
+  END IF;
+  SET i=1; #в день завоза новый корм не расходуется
+  SET res=0;
+  
+  DROP TEMPORARY TABLE IF EXISTS deads;  
+  CREATE TEMPORARY TABLE deads AS
+    SELECT r_group,r_born,d_date FROM dead    WHERE (AddDate(r_born,18)<=sd OR AddDate(r_born,18)<=ed ) AND d_date>=sd ORDER by r_born;
+  
+  DROP TEMPORARY TABLE IF EXISTS alives;
+  CREATE TEMPORARY TABLE alives AS
+    SELECT r_group,r_born         FROM rabbits WHERE (AddDate(r_born,18)<=sd OR AddDate(r_born,18)<=ed )          ORDER by r_born;
+    
+  SELECT (select count(*) from deads), (select count(*) from alives) INTO a,d;
 
-	IF a=0 AND d=0 THEN
-		return 0;
-	END IF;	
-		
-	WHILE i<=days DO
-		SELECT COALESCE(SUM(r_group),0) INTO d FROM deads  WHERE (to_days(AddDate(sd,i))-to_days(r_born))>=18 AND d_date>=AddDate(sd,i);
-		SELECT COALESCE(SUM(r_group),0) INTO a FROM alives WHERE (to_days(AddDate(sd,i))-to_days(r_born))>=18;
-		SET res=res+d+a;
-		SET i=i+1;
-	END WHILE;
-	SELECT m_amount INTO amnt FROM meal WHERE m_id=id;
-	SELECT COALESCE(sum(m_amount),0) INTO sell FROM meal WHERE m_type='out' AND m_start_date BETWEEN sd AND ed;
-	SET amnt=amnt-sell;
-	IF (amnt<=0) THEN
-		return 0;
-	END IF;
-	IF res=0 THEN
-		return 0;
-	END IF;
-	return (amnt/res);
+  IF a=0 AND d=0 THEN
+    return 0;
+  END IF;  
+    
+  WHILE i<=days DO
+    SELECT COALESCE(SUM(r_group),0) INTO d FROM deads  WHERE (to_days(AddDate(sd,i))-to_days(r_born))>=18 AND d_date>=AddDate(sd,i);
+    SELECT COALESCE(SUM(r_group),0) INTO a FROM alives WHERE (to_days(AddDate(sd,i))-to_days(r_born))>=18;
+    SET res=res+d+a;
+    SET i=i+1;
+  END WHILE;
+  SELECT m_amount INTO amnt FROM meal WHERE m_id=id;
+  SELECT COALESCE(sum(m_amount),0) INTO sell FROM meal WHERE m_type='out' AND m_start_date BETWEEN sd AND ed;
+  SET amnt=amnt-sell;
+  IF (amnt<=0) THEN
+    return 0;
+  END IF;
+  IF res=0 THEN
+    return 0;
+  END IF;
+  return (amnt/res);
 END|
 
 DROP PROCEDURE IF EXISTS updateMeal |
 CREATE PROCEDURE updateMeal()
 root:BEGIN
-  DECLARE i,oldI,maxId,sell INTEGER;
+  DECLARE i,oldI,maxId,sell int(10);
   DECLARE yngRate FLOAT;
   DECLARE oldSD,oldED,yngSD,yngED DateTime;
   SELECT COALESCE(m_id,0) INTO maxId FROM meal WHERE m_type='in' ORDER BY m_start_date DESC LIMIT 1;
   IF (maxId=0) THEN
-	LEAVE root;
+  LEAVE root;
   END IF;
   SELECT m_id,m_start_date,m_end_date,m_rate INTO i,yngSD,yngED,yngRate FROM meal WHERE m_type='in' ORDER BY m_start_date ASC LIMIT 1;#id of later date
   WHILE (i<>maxId) DO
     SELECT m_id,m_start_date,COALESCE(m_end_date,'9999-12-31') INTO oldI, oldSD,oldED FROM meal WHERE m_type='in' AND m_start_date>yngSD ORDER BY m_start_date ASC LIMIT 1;
-	SELECT COALESCE(sum(m_amount),0) INTO sell FROM meal WHERE m_type='out' AND m_start_date BETWEEN yngSD AND oldED;
-	IF (isnull(yngED) OR yngED<>oldSD OR sell<>0 OR isnull(yngRate)) THEN		
-		UPDATE meal SET m_end_date=oldSD WHERE m_id=i;
-		UPDATE meal SET m_rate=mealCalculate(i) WHERE m_id=i;
-	END IF;	
+  SELECT COALESCE(sum(m_amount),0) INTO sell FROM meal WHERE m_type='out' AND m_start_date BETWEEN yngSD AND oldED;
+  IF (isnull(yngED) OR yngED<>oldSD OR sell<>0 OR isnull(yngRate)) THEN    
+    UPDATE meal SET m_end_date=oldSD WHERE m_id=i;
+    UPDATE meal SET m_rate=mealCalculate(i) WHERE m_id=i;
+  END IF;  
     SET i=oldI;
     SET yngSD=oldSD;
-	SET yngED=oldED;
+  SET yngED=oldED;
   END WHILE;
 END |
 
 ## new inbriding
 
 drop procedure if exists `FindRabGenoms`|
-CREATE PROCEDURE `FindRabGenoms`(IN rid INT UNSIGNED,INOUT depth SMALLINT UNSIGNED,OUT genoms TEXT)
+CREATE PROCEDURE `FindRabGenoms`(IN rid INT unsigned,INOUT depth SMALLINT unsigned,OUT genoms TEXT)
     READS SQL DATA
 root:BEGIN
-	DECLARE cnt,mId,fId,mDpt,fDpt INT UNSIGNED DEFAULT 0;
-	DECLARE mGens,fGens,pGens TEXT DEFAULT '';
-	
-	if @@session.max_sp_recursion_depth=0 THEN SET max_sp_recursion_depth=7; END IF;		
-	if @@session.max_sp_recursion_depth=depth THEN LEAVE root; END IF;		
-	
-	SELECT COUNT(*) INTO cnt FROM rabbits WHERE r_id=rid;
-	IF cnt!=0 THEN
-		SELECT r_mother,r_father INTO mId,fId FROM rabbits WHERE r_id=rid;
-	ELSE
-		SELECT r_mother,r_father INTO mId,fId FROM dead WHERE r_id=rid;
-	END IF;
-	
-	SELECT depth+1,depth+1 INTO mDpt,fDpt;
-	
-	IF mId!=0 THEN CALL FindRabGenoms(mId,mDpt,mGens); END IF;
-	IF fId!=0 THEN CALL FindRabGenoms(fId,fDpt,fGens); END IF;
-	SET mGens = Coalesce(mGens,'');
-	SET fGens = Coalesce(fGens,'');
-	SELECT IF(mDpt<=fDpt,mDpt,fDpt) INTO depth;
-	
-	IF mGens !='' AND fGens!='' THEN        
-		SET pGens = Concat('{',mGens,',',fGens,'}');
-	ELSEIF mGens !='' THEN
-		SET pGens = Concat('{',mGens,'}');
-	ELSEIF fGens !='' THEN
-		SET pGens = Concat('{',fGens,'}');
-	END IF;
-	
-	IF pGens!='' THEN      
-		SELECT Concat(rid,':',pGens) INTO genoms;
-	ELSE 
-		SELECT Concat(rid) INTO genoms;
-	END IF;
+  DECLARE cnt,mId,fId,mDpt,fDpt INT unsigned DEFAULT 0;
+  DECLARE mGens,fGens,pGens TEXT DEFAULT '';
+  
+  if @@session.max_sp_recursion_depth=0 THEN SET max_sp_recursion_depth=7; END IF;    
+  if @@session.max_sp_recursion_depth=depth THEN LEAVE root; END IF;    
+  
+  SELECT COUNT(*) INTO cnt FROM rabbits WHERE r_id=rid;
+  IF cnt!=0 THEN
+    SELECT r_mother,r_father INTO mId,fId FROM rabbits WHERE r_id=rid;
+  ELSE
+    SELECT r_mother,r_father INTO mId,fId FROM dead WHERE r_id=rid;
+  END IF;
+  
+  SELECT depth+1,depth+1 INTO mDpt,fDpt;
+  
+  IF mId!=0 THEN CALL FindRabGenoms(mId,mDpt,mGens); END IF;
+  IF fId!=0 THEN CALL FindRabGenoms(fId,fDpt,fGens); END IF;
+  SET mGens = Coalesce(mGens,'');
+  SET fGens = Coalesce(fGens,'');
+  SELECT IF(mDpt<=fDpt,mDpt,fDpt) INTO depth;
+  
+  IF mGens !='' AND fGens!='' THEN        
+    SET pGens = Concat('{',mGens,',',fGens,'}');
+  ELSEIF mGens !='' THEN
+    SET pGens = Concat('{',mGens,'}');
+  ELSEIF fGens !='' THEN
+    SET pGens = Concat('{',fGens,'}');
+  END IF;
+  
+  IF pGens!='' THEN      
+    SELECT Concat(rid,':',pGens) INTO genoms;
+  ELSE 
+    SELECT Concat(rid) INTO genoms;
+  END IF;
 END|
 
 drop FUNCTION if exists `GetRabGenoms`|
-CREATE FUNCTION `GetRabGenoms`(rid INT UNSIGNED) RETURNS text CHARSET cp1251
+CREATE FUNCTION `GetRabGenoms`(rid INT unsigned) RETURNS text CHARSET cp1251
 BEGIN
-	DECLARE res TEXT;
-	DECLARE depth SMALLINT UNSIGNED DEFAULT 0;
-	SET max_sp_recursion_depth = (SELECT Cast(o_value as SIGNED ) FROM options WHERE o_name='opt' AND o_subname='rab_gen_depth');
-	CALL FindRabGenoms(rid,depth,res);
-	RETURN res;
+  DECLARE res TEXT;
+  DECLARE depth SMALLINT unsigned DEFAULT 0;
+  SET max_sp_recursion_depth = (SELECT Cast(o_value as SIGNED ) FROM options WHERE o_name='opt' AND o_subname='rab_gen_depth');
+  CALL FindRabGenoms(rid,depth,res);
+  RETURN res;
 END|
 
 DROP FUNCTION IF EXISTS `ascname`|
-CREATE FUNCTION `ascname`(rid INTEGER UNSIGNED,cid INTEGER UNSIGNED,sur INTEGER) RETURNS char(150)
+CREATE FUNCTION `ascname`(rid int(10) unsigned,cid int(10) unsigned,sur int(10)) RETURNS char(150)
 BEGIN
   DECLARE n,sr,sc,sx CHAR(50);
   DECLARE res CHAR(150);
@@ -927,20 +963,20 @@ BEGIN
     return '';
   END IF;
   SELECT
-	(SELECT n_name FROM names WHERE n_id=r_name) name,
-	(SELECT n_surname FROM names WHERE n_id=r_surname) surname,
-	(SELECT n_surname FROM names WHERE n_id=r_secname) secname,
-	r_sex INTO n,sr,sc,sx FROM import_ascendants WHERE r_id=rid and r_birthplace=cid;
+  (SELECT n_name FROM names WHERE n_id=r_name) name,
+  (SELECT n_surname FROM names WHERE n_id=r_surname) surname,
+  (SELECT n_surname FROM names WHERE n_id=r_secname) secname,
+  r_sex INTO n,sr,sc,sx FROM import_ascendants WHERE r_id=rid and r_birthplace=cid;
   SET res='';
   IF (n IS NOT NULL) THEN
-	SET res=n;
+  SET res=n;
   END IF;
   IF (sur>0 AND NOT sr IS NULL) THEN
-	IF (res='') THEN
-		SET res=sr;
-	ELSE
-		SET res=CONCAT_WS(' ',res,sr);
-	END IF;
+  IF (res='') THEN
+    SET res=sr;
+  ELSE
+    SET res=CONCAT_WS(' ',res,sr);
+  END IF;
     if (sx='female') then SET res=CONCAT(res,'а'); end if;
   END IF;
   IF (sur>1 AND NOT sc IS NULL) THEN

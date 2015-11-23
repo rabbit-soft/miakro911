@@ -130,7 +130,7 @@ WHERE (m_upper=t_id OR m_lower=t_id) " + makeWhere() + ";";
 
         internal static BldTreeData getTree(int parent, MySqlConnection con, BldTreeData par)
         {
-            MySqlCommand cmd = new MySqlCommand(@"SELECT b_id,b_farm,b_name FROM buildings WHERE b_parent=" + parent.ToString() + " ORDER BY b_farm ASC;", con);
+            MySqlCommand cmd = new MySqlCommand(@"SELECT b_id, b_name, b_farm FROM buildings WHERE b_parent=" + parent.ToString() + " ORDER BY b_farm ASC;", con);
             MySqlDataReader rd = cmd.ExecuteReader();
             BldTreeData res = par;
             if (par == null) {
@@ -139,9 +139,9 @@ WHERE (m_upper=t_id OR m_lower=t_id) " + makeWhere() + ";";
 
             List<BldTreeData> lst = new List<BldTreeData>();
             while (rd.Read()) {
-                int frm = rd.GetInt32(1);
-                String nm = rd.GetString(2);
-                BldTreeData dt = new BldTreeData(rd.GetInt32(0), frm, (frm == 0 ? nm : "№" + Building.Format(nm.Remove(0, 1))), res.Path);
+                int frm = rd.IsDBNull(rd.GetOrdinal("b_farm")) ? 0 : rd.GetInt32(rd.GetOrdinal("b_farm"));
+                String nm = rd.GetString(rd.GetOrdinal("b_name"));
+                BldTreeData dt = new BldTreeData(rd.GetInt32(rd.GetOrdinal("b_id")), frm, (frm == 0 ? nm : "№" + Building.Format(nm.Remove(0, 1))), res.Path);
                 lst.Add(dt);
             }
             rd.Close();
@@ -241,8 +241,15 @@ ORDER BY m_id;", busy != "" ? "AND " + busy : ""), sql);
         internal static void addBuilding(MySqlConnection sql, int parent, String name, int farm)
         {
             int frm = farm;
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"INSERT INTO buildings(b_name,b_parent,b_level,b_farm) VALUES(
-'{0:s}',{1:d},{3:s},{2:d});", name, parent, frm, (parent == 0 ? "0" : String.Format("(SELECT b2.b_level+1 FROM buildings b2 WHERE b2.b_id={0:d})", parent))), sql);
+            MySqlCommand cmd = new MySqlCommand(
+                String.Format(
+                    "INSERT INTO buildings(b_name, b_parent, b_level, b_farm) VALUES('{0}', {1}, {2}, {3});",
+                    name, 
+                    parent, 
+                    (parent == 0 ? "0" : String.Format("(SELECT b2.b_level+1 FROM buildings b2 WHERE b2.b_id={0:d})", parent)), 
+                    (frm == 0 ? "null" : frm.ToString())
+                ), sql
+            );
             _logger.Debug("db.mysql.Building: " + cmd.CommandText);
             cmd.ExecuteNonQuery();
         }
@@ -312,8 +319,8 @@ ORDER BY m_id;", busy != "" ? "AND " + busy : ""), sql);
 
             MySqlCommand cmd = new MySqlCommand("", sql);
             switch (type) {
-                case BuildingType.Quarta: 
-                    delims = "111"; 
+                case BuildingType.Quarta:
+                    delims = "111";
                     break;
 
                 case BuildingType.Complex:
@@ -344,7 +351,7 @@ ORDER BY m_id;", busy != "" ? "AND " + busy : ""), sql);
                     break;
             }
             cmd.CommandText = String.Format(@"INSERT INTO tiers(t_type, t_delims, t_heater, t_nest, t_notes {3:s}) 
-VALUES('{0:s}','{1:s}','{2:s}','{2:s}',''{4:s});", Building.GetName(type), delims, hn, bcols, bvals);
+VALUES('{0:s}', '{1:s}', '{2:s}', '{2:s}', ''{4:s});", Building.GetName(type), delims, hn, bcols, bvals);
             _logger.Debug("db.mysql.Building: " + cmd.CommandText);
             cmd.ExecuteNonQuery();
             return (int)cmd.LastInsertedId;
@@ -387,7 +394,7 @@ VALUES('{0:s}','{1:s}','{2:s}','{2:s}',''{4:s});", Building.GetName(type), delim
 
             }
             MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE tiers SET t_type='{0:s}',
-t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}'{4:s} WHERE t_id={3:d};", Building.GetName(type), delims, hn, tid, busy), sql);
+t_delims='{1:s}', t_heater='{2:s}', t_nest='{2:s}' {4:s} WHERE t_id={3:d};", Building.GetName(type), delims, hn, tid, busy), sql);
             cmd.ExecuteNonQuery();
         }
 
@@ -401,7 +408,7 @@ t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}'{4:s} WHERE t_id={3:d};", Buildi
             }
             return result;
         }
-        
+
         /// <summary>
         /// Добавляет новую МИНИферму
         /// </summary>
@@ -413,13 +420,18 @@ t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}'{4:s} WHERE t_id={3:d};", Buildi
         /// <returns>Номер новой клетки</returns>
         internal static int addFarm(MySqlConnection sql, int parent, BuildingType uppertype, BuildingType lowertype, String name, int id)
         {
-            int frm = id;
-            int t1 = addNewTier(sql, uppertype);
-            int t2 = addNewTier(sql, lowertype);
+            int t1 = Buildings.addNewTier(sql, uppertype);
+            int t2 = Buildings.addNewTier(sql, lowertype);
             int res = 0;
-            MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO minifarms(m_upper, m_lower {2:s}) VALUES({0:d}, {1:d} {3:s});",
-                t1, t2, (frm == 0 ? "" : ", m_id"), (frm == 0 ? "" : String.Format(",{0:d}", frm))), 
-                sql);
+            MySqlCommand cmd = new MySqlCommand(
+                String.Format(
+                    "INSERT INTO minifarms(m_upper, m_lower, m_id) VALUES({0}, {1}, {2});",
+                    (t1 == 0 ? "NULL" : t1.ToString()),
+                    (t2 == 0 ? "NULL" : t2.ToString()), 
+                    id
+                ),
+                sql
+            );
             _logger.Debug("db.mysql.Building: " + cmd.CommandText);
             cmd.ExecuteNonQuery();
             res = (int)cmd.LastInsertedId;
@@ -427,7 +439,7 @@ t_delims='{1:s}',t_heater='{2:s}',t_nest='{2:s}'{4:s} WHERE t_id={3:d};", Buildi
             addBuilding(sql, parent, (name != "" ? name : String.Format("№{0:d}", res)), res);
             return res;
         }
-        
+
         /// <summary>
         /// Существует ли миниферма
         /// </summary>
@@ -527,7 +539,7 @@ WHERE m_id={0:d};", fid), sql);
 
         internal static int GetMFCount(MySqlConnection sql)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT COUNT(*) FROM buildings WHERE b_farm<>0;"), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT COUNT(*) FROM buildings WHERE b_farm IS NOT NULL;"), sql);
             return int.Parse(cmd.ExecuteScalar().ToString());
         }
     }

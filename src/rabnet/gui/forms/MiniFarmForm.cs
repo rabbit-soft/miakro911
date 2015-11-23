@@ -44,7 +44,7 @@ namespace rabnet.forms
             this._id = id;
             cbNum.Items.Add(id.ToString());
             cbNum.SelectedIndex = 0;
-            //cbNum.Enabled = false;
+            cbNum.Enabled = false;
             tiers = Engine.db().getTiers(id);
             b1 = Engine.db().getBuilding(tiers[0]);
             cbUpper.SelectedIndex = idFromType(b1.Type) - 1;

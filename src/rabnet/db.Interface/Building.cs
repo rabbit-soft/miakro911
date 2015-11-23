@@ -6,7 +6,7 @@ namespace rabnet
 
     public static class TierFloor
     {
-        public static int None  = 0;
+        public static int None = 0;
         public static int Upper = 1;
         public static int Lower = 2;
     }
@@ -77,7 +77,7 @@ namespace rabnet
         //public string[] SmallName = new string[4];
         //public string[] MedName = new string[4];
 
-        public Building(int id, int farm, int tier_id, BuildingType type, string delims, string notes, bool repair,string nests,string heaters)
+        public Building(int id, int farm, int tier_id, BuildingType type, string delims, string notes, bool repair, string nests, string heaters)
         {
             ID = id;
             this.Farm = farm;
@@ -85,7 +85,7 @@ namespace rabnet
             Type = type;
             //TypeName_Rus = typeLoc;
             Delims = delims;
-            
+
             Repair = repair;
             Nests = nests;
             Heaters = heaters;
@@ -100,8 +100,9 @@ namespace rabnet
             //}
             Notes = new string[Sections];
             string[] tmpNotes = notes.Split(new char[] { '|' });
-            for (int i = 0; i < Sections; i++)
+            for (int i = 0; i < Sections; i++) {
                 Notes[i] = i < tmpNotes.Length ? tmpNotes[i] : "";
+            }
 
         }
 
@@ -113,7 +114,9 @@ namespace rabnet
 
         public string Descr(int sec, bool shr)
         {
-            if (sec > Sections) return "";
+            if (sec > Sections) {
+                return "";
+            }
             return Building.GetDescrRus(Type, shr, sec, Delims);
         }
 
@@ -124,17 +127,23 @@ namespace rabnet
 
         public string FullName(int sec)
         {
-            if (sec > Sections) return "";
+            if (sec > Sections) {
+                return "";
+            }
             return Building.FullNameRus(Farm, Floor, sec, Type, Delims, false, true, true);
         }
         public string MedName(int sec)
         {
-            if (sec > Sections) return "";
+            if (sec > Sections) {
+                return "";
+            }
             return Building.FullNameRus(Farm, Floor, sec, Type, Delims, false, true, false);
         }
         public string SmallName(int sec)
         {
-            if (sec > Sections) return "";
+            if (sec > Sections) {
+                return "";
+            }
             return Building.FullNameRus(Farm, Floor, sec, Type, Delims, true, false, false);
         }
 
@@ -145,9 +154,8 @@ namespace rabnet
         /// <returns></returns>
         public bool IsAbsorbed(int sec)
         {
-            if (this.Type == BuildingType.Quarta)
-            {
-                return sec != 0 && this.Delims[sec-1]=='0';
+            if (this.Type == BuildingType.Quarta) {
+                return sec != 0 && this.Delims[sec - 1] == '0';
             }
             return false;
         }
@@ -213,8 +221,7 @@ namespace rabnet
             if (defchar == '/' || defchar == '\\') defchar = _dsym;
 
             string res = farmN.ToString();
-            if (res.Length < symbols)
-            {
+            if (res.Length < symbols) {
                 while (symbols != res.Length)
                     res = defchar + res;
             }
@@ -266,8 +273,7 @@ namespace rabnet
         public static String GetDescrRus(BuildingType type, bool shr, int sec, String delims)
         {
             String res = "";
-            switch (type)
-            {
+            switch (type) {
                 case BuildingType.Female:
                 case BuildingType.DualFemale: res = shr ? "гн+выг" : "гнездовое+выгул"; break;
                 case BuildingType.Complex:
@@ -277,14 +283,11 @@ namespace rabnet
                         res = shr ? "отк" : "откормочное";
                     break;
                 case BuildingType.Jurta:
-                    if (sec == 0)
-                    {
+                    if (sec == 0) {
                         if (delims[0] == '0')
                             res = (shr ? "гн" : "гнездовое") + "+";
                         res += shr ? "мвг" : "м.выгул";
-                    }
-                    else
-                    {
+                    } else {
                         if (delims[0] == '1')
                             res = (shr ? "гн" : "гнездовое") + "+";
                         res += shr ? "бвг" : "б.выгул";
@@ -311,10 +314,8 @@ namespace rabnet
 
             const String SECNAMES = "абвг";
             String res = "" + SECNAMES[sec];
-            if (type == BuildingType.Quarta && delims != "111")
-            {
-                for (int i = sec - 1; i >= 0; i--)
-                {
+            if (type == BuildingType.Quarta && delims != "111") {
+                for (int i = sec - 1; i >= 0; i--) {
                     if (delims[i] == '0')
                         res = SECNAMES[i] + res;
                     else
@@ -329,8 +330,7 @@ namespace rabnet
                         break;
                 }
 
-            }
-            else if (type == BuildingType.Barin && delims[0] == '0')
+            } else if (type == BuildingType.Barin && delims[0] == '0')
                 res = "аб";
             return res;
         }
@@ -346,8 +346,7 @@ namespace rabnet
         public static int GetRSecCount(BuildingType type)
         {
             int res = 2;
-            switch (type)
-            {
+            switch (type) {
                 case BuildingType.Cabin:
                 case BuildingType.Female: res = 1; break;
                 case BuildingType.Complex: res = 3; break;
@@ -363,8 +362,7 @@ namespace rabnet
         public static int GetRNHCount(BuildingType type)
         {
             int res = 1;
-            switch (type)
-            {
+            switch (type) {
                 case BuildingType.DualFemale: res = 2; break;
                 case BuildingType.Quarta:
                 case BuildingType.Vertep:
@@ -413,8 +411,7 @@ namespace rabnet
         /// <returns>Тип клетки. None если не смог распарсить</returns>
         public static BuildingType ParseType(string type)
         {
-            switch (type)
-            {
+            switch (type) {
                 case FEMALE_Eng:
                 case FEMALE_Rus: return BuildingType.Female;
                 case DOUBLE_Female_Eng:
@@ -438,8 +435,7 @@ namespace rabnet
         public static string GetName(BuildingType type)
         {
             String res = "Нет";
-            switch (type)
-            {
+            switch (type) {
                 case BuildingType.Female: res = FEMALE_Eng; break;
                 case BuildingType.DualFemale: res = DOUBLE_Female_Eng; break;
                 case BuildingType.Jurta: res = JURTA_Eng; break;
@@ -455,8 +451,7 @@ namespace rabnet
         public static String GetNameRus(BuildingType type, bool shr)
         {
             String res = "Нет";
-            switch (type)
-            {
+            switch (type) {
                 case BuildingType.Female: res = shr ? FEMALE_Short : FEMALE_Rus; break;
                 case BuildingType.DualFemale: res = shr ? DOUBLE_Female_Short : DOUBLE_Female_Rus; break;
                 case BuildingType.Jurta: res = shr ? JURTA_Short : JURTA_Rus; break;
@@ -497,12 +492,13 @@ namespace rabnet
         {
             if (medAddress == Rabbit.NULL_ADDRESS) return null;
 
-            for (int b = 0; b < this.Count; b++)
-                for (int sec = 0; sec < this[b].Sections; sec++)
-                    if (this[b].MedName(sec) == medAddress)
-                    {
+            for (int b = 0; b < this.Count; b++) {
+                for (int sec = 0; sec < this[b].Sections; sec++) {
+                    if (this[b].MedName(sec) == medAddress) {
                         return new Address(this[b].Farm, this[b].Floor, sec);
                     }
+                }
+            }
             return new Address(0, 0, 0);
         }
     }
