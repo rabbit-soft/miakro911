@@ -14,25 +14,25 @@ namespace db.mysql
 
         internal static Building GetBuilding(MySqlDataReader rd, bool shr, bool rabbits)
         {
-            const int BUSY_START = 10;
-            int id = rd.GetInt32(0);
-            int farm = rd.GetInt32(3);
+            int id = rd.GetInt32("t_id");
+            int farm = rd.GetInt32("m_id");
             int tid = 0;
-            if (rd.GetInt32(2) != 0) {
-                if (rd.GetInt32(1) == id)
+            if (rd.IsDBNull(rd.GetOrdinal("m_lower"))) {
+                if (rd.GetInt32("m_upper") == id) {
                     tid = 1;
-                else tid = 2;
+                } else {
+                    tid = 2;
+                }
             }
             BuildingType tp = Building.ParseType(rd.GetString("t_type"));
             String dl = rd.GetString("t_delims");
-            Building building = new Building(id, farm, tid, tp, dl, rd.GetString("t_notes"),
-                (rd.GetInt32("t_repair") != 0), rd.GetString("t_nest"), rd.GetString("t_heater"));
+            Building building = new Building(id, farm, tid, tp, dl, rd.GetString("t_notes"), (rd.GetInt32("t_repair") != 0), rd.GetString("t_nest"), rd.GetString("t_heater"));
             RabInBuild[] bus = new RabInBuild[building.Sections];
 
             for (int i = 0; i < building.Sections; i++) {
                 //ars.Add((tid == 0 ? "" : (tid == 1 ? "^" : "-")) + Building.GetSecRus(tp, i, dl));
                 //deps.Add(Building.GetDescrRus(tp, shr, i, dl));
-                int rn = rd.IsDBNull(BUSY_START + i) ? -1 : rd.GetInt32("t_busy" + (i + 1).ToString());
+                int rn = rd.IsDBNull(rd.GetOrdinal("t_busy" + (i + 1).ToString())) ? -1 : rd.GetInt32("t_busy" + (i + 1).ToString());
                 string name = rabbits ? rd.GetString("r" + (i + 1).ToString()) : "";
                 building.Busy[i] = new RabInBuild(rn, name);
             }
@@ -346,12 +346,15 @@ ORDER BY m_id;", busy != "" ? "AND " + busy : ""), sql);
                 case BuildingType.Female:
                 case BuildingType.Cabin:
                     delims = "0";
-                    bcols = ",t_busy1,t_busy2,t_busy3,t_busy4";
-                    bvals = ",0,null,null,null";
+                    bcols = ", t_busy1, t_busy2, t_busy3, t_busy4";
+                    bvals = ", 0, null, null, null";
                     break;
             }
-            cmd.CommandText = String.Format(@"INSERT INTO tiers(t_type, t_delims, t_heater, t_nest, t_notes {3:s}) 
-VALUES('{0:s}', '{1:s}', '{2:s}', '{2:s}', ''{4:s});", Building.GetName(type), delims, hn, bcols, bvals);
+            cmd.CommandText = String.Format(
+                    @"INSERT INTO tiers(t_type, t_delims, t_heater, t_nest, t_notes {3:s}) 
+                            VALUES('{0:s}', '{1:s}', '{2:s}', '{2:s}', ''{4:s});", 
+                Building.GetName(type), delims, hn, bcols, bvals
+            );
             _logger.Debug("db.mysql.Building: " + cmd.CommandText);
             cmd.ExecuteNonQuery();
             return (int)cmd.LastInsertedId;
@@ -393,8 +396,15 @@ VALUES('{0:s}', '{1:s}', '{2:s}', '{2:s}', ''{4:s});", Building.GetName(type), d
 
 
             }
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE tiers SET t_type='{0:s}',
-t_delims='{1:s}', t_heater='{2:s}', t_nest='{2:s}' {4:s} WHERE t_id={3:d};", Building.GetName(type), delims, hn, tid, busy), sql);
+            MySqlCommand cmd = new MySqlCommand(
+                String.Format(@"
+                    UPDATE tiers 
+                    SET t_type='{0:s}', t_delims='{1:s}', t_heater='{2:s}', t_nest='{2:s}' {4:s} 
+                    WHERE t_id={3:d};", 
+                    Building.GetName(type), delims, hn, tid, busy
+                ), 
+                sql
+            );
             cmd.ExecuteNonQuery();
         }
 
@@ -403,8 +413,11 @@ t_delims='{1:s}', t_heater='{2:s}', t_nest='{2:s}' {4:s} WHERE t_id={3:d};", Bui
         {
             string result = "";
             for (int i = 1; i <= 4; i++) {
-                if (i <= count) result += String.Format(",t_busy{0:s}=0", i.ToString());
-                else result += String.Format(",t_busy{0:s}=NULL", i.ToString());
+                if (i <= count) {
+                    result += String.Format(",t_busy{0:s}=0", i.ToString());
+                } else {
+                    result += String.Format(",t_busy{0:s}=NULL", i.ToString());
+                }
             }
             return result;
         }
@@ -480,8 +493,8 @@ WHERE m_id={0:d};", fid), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             int t1 = 0, t2 = 0;
             if (rd.Read()) {
-                t1 = rd.GetInt32(0);
-                t2 = rd.GetInt32(1);
+                t1 = rd.IsDBNull(rd.GetOrdinal("m_upper")) ? 0 : rd.GetInt32("m_upper");
+                t2 = rd.IsDBNull(rd.GetOrdinal("m_lower")) ? 0 : rd.GetInt32("m_lower");
             }
             rd.Close();
             return new int[] { t1, t2 };
@@ -512,7 +525,7 @@ WHERE m_id={0:d};", fid), sql);
                 if (lowertype == BuildingType.None) {
                     cmd.CommandText = String.Format("DELETE FROM tiers WHERE t_id={0:d};", t[1]);
                     cmd.ExecuteNonQuery();
-                    cmd.CommandText = String.Format("UPDATE minifarms SET m_lower=0 WHERE m_id={0:d};", fid);
+                    cmd.CommandText = String.Format("UPDATE minifarms SET m_lower=NULL WHERE m_id={0:d};", fid);
                     cmd.ExecuteNonQuery();
                 } else if (t2 == BuildingType.None) {
                     int nid = addNewTier(sql, lowertype);

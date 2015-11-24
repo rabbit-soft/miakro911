@@ -48,7 +48,8 @@ namespace db.mysql
         Coalesce(Group_concat('v',{3}),'') vaccines
     FROM rabbits r 
         LEFT JOIN (
-            SELECT r_parent prnt, 
+            SELECT 
+                r_parent prnt, 
                 SUM(r2.r_group) suckers,
                 COUNT(*) suckGroups, 
                 #AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) aage 
@@ -59,9 +60,9 @@ namespace db.mysql
         LEFT JOIN (
 	        SELECT rv.v_id,rv.r_id rv_id, Max(rv.`date`) FROM rab_vac rv
 	        INNER JOIN vaccines v1 ON v1.v_id=rv.v_id
-	        WHERE unabled!=1 AND (Date_Add(rv.`date`,INTERVAL v1.v_duration DAY)>=NOW()) GROUP BY v_id,r_id
+	        WHERE unabled != 1 AND (Date_Add(rv.`date`,INTERVAL v1.v_duration DAY)>=NOW()) GROUP BY v_id,r_id
         ) rvac ON rv_id=r.r_id
-    WHERE r_parent=0 
+    WHERE r_parent IS NULL 
     GROUP by r_id  #-- для вакцин
     ORDER BY name
 ) c {2:s};",
@@ -176,7 +177,7 @@ namespace db.mysql
                             r_status, r_flags, r_event_date, r_breed,
                             (SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight
                         FROM rabbits 
-                        WHERE r_parent=0
+                        WHERE r_parent IS NULL
                     ) c {1};",
                 (options.safeBool("dbl") ? "2" : "1"),
                 makeWhere()

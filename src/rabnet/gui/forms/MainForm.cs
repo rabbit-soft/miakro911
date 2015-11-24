@@ -109,7 +109,9 @@ namespace rabnet.forms
             Building.SetDefFmt(op.getIntOption(Options.OPT_ID.BUILD_FILL_ZERO) == 1 ? '0' : ' ');
 
             _manual = false;
-#if !DEMO
+
+            Engine.db().RabbitsTableAiCheck();
+#if !DEMO            
             Engine.db().ArchLogs();
             checkPlugins();
 #if PROTECTED

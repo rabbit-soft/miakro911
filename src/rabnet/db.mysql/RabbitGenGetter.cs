@@ -6,47 +6,45 @@ using System.Drawing;
 using rabnet;
 
 namespace db.mysql
-{		
-	public class RabbitGenGetter
-	{
-		public static RabbitGen GetRabbitGen(MySqlConnection sql, int rid)
-		{
-			if (rid == 0) return null;
+{
+    public class RabbitGenGetter
+    {
+        public static RabbitGen GetRabbitGen(MySqlConnection sql, int rid)
+        {
+            if (rid == 0) return null;
 
             const string QUERY = @"SELECT	
         r_mother, 
         r_father, 
 		r_sex, 
-		(select n_name from names where n_id=r_name) name, 
-		(select n_surname from names where n_id=r_surname) surname, 
-		(select n_surname from names where n_id=r_secname) secname,
-		(select b_color from breeds where b_id=r_breed) b_color,
+		(SELECT n_name FROM names WHERE n_id=r_name) name, 
+		(SELECT n_surname FROM names WHERE n_id=r_surname) surname, 
+		(SELECT n_surname FROM names WHERE n_id=r_secname) secname,
+		(SELECT b_color FROM breeds WHERE b_id=r_breed) b_color,
 		r_breed,
-		(select b_name from breeds where b_id=r_breed) b_name
+		(SELECT b_name FROM breeds WHERE b_id=r_breed) b_name
 FROM {0:s}
 WHERE r_id={1:d}
 LIMIT 1;";
-			Boolean IsDead = false;
-            MySqlCommand cmd = new MySqlCommand(String.Format(QUERY,"rabbits", rid), sql);
-			MySqlDataReader rd = cmd.ExecuteReader();
+            Boolean IsDead = false;
+            MySqlCommand cmd = new MySqlCommand(String.Format(QUERY, "rabbits", rid), sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
 
-			if (!rd.HasRows)
-			{
-				IsDead = true;
-				rd.Close();
-				rd.Dispose();
-				cmd = new MySqlCommand(String.Format(QUERY,"dead", rid), sql);
-				rd = cmd.ExecuteReader();
-			}
+            if (!rd.HasRows) {
+                IsDead = true;
+                rd.Close();
+                rd.Dispose();
+                cmd = new MySqlCommand(String.Format(QUERY, "dead", rid), sql);
+                rd = cmd.ExecuteReader();
+            }
 
-			RabbitGen r = new RabbitGen();
-			r.ID = rid;
+            RabbitGen r = new RabbitGen();
+            r.ID = rid;
 
-			if (rd.Read())
-			{
-				r.FatherId = rd.GetInt32("r_father"); //0
-				r.MotherId = rd.GetInt32("r_mother"); //1
-				//string sx = rd.GetString("r_sex"); //2
+            if (rd.Read()) {
+                r.FatherId = rd.IsDBNull(rd.GetOrdinal("r_father")) ? 0 : rd.GetInt32("r_father"); //0
+                r.MotherId = rd.IsDBNull(rd.GetOrdinal("r_mother")) ? 0 : rd.GetInt32("r_mother"); //1
+                //string sx = rd.GetString("r_sex"); //2
                 //r.Sex = Rabbit.SexType.VOID;
                 //if (sx == "male")
                 //{
@@ -64,123 +62,108 @@ LIMIT 1;";
                 r.Secname = rd.IsDBNull(rd.GetOrdinal("secname")) ? "" : rd.GetString("secname"); //5
                 r.BreedColorName = rd.IsDBNull(rd.GetOrdinal("b_color")) ? "" : rd.GetString("b_color"); //5
 
-				r.IsDead = IsDead;
+                r.IsDead = IsDead;
 
-				int res;
+                int res;
 
-				if (int.TryParse(r.BreedColorName, System.Globalization.NumberStyles.HexNumber, null, out res))
-				{
-					r.BreedColor = Color.FromArgb(res);
-				}
-				else
-				{
-					r.BreedColor = Color.FromName(r.BreedColorName);
-				}
-				r.BreedId = rd.GetInt32("r_breed"); //6
+                if (int.TryParse(r.BreedColorName, System.Globalization.NumberStyles.HexNumber, null, out res)) {
+                    r.BreedColor = Color.FromArgb(res);
+                } else {
+                    r.BreedColor = Color.FromName(r.BreedColorName);
+                }
+                r.BreedId = rd.GetInt32("r_breed"); //6
                 r.BreedName = rd.IsDBNull(rd.GetOrdinal("b_name")) ? "" : rd.GetString("b_name"); //7
 
-			}
-			else
-			{
-				r = null;
-			}
-//			rd.HasRows
-			rd.Close();
-			if (r != null)
-			{
-				getRabbitPriplodK(sql, ref r);
-				getRabbitRodK(sql, ref r);
-			}
-			return r;
-		}
+            } else {
+                r = null;
+            }
+            //			rd.HasRows
+            rd.Close();
+            if (r != null) {
+                getRabbitPriplodK(sql, ref r);
+                getRabbitRodK(sql, ref r);
+            }
+            return r;
+        }
 
-		public static void getRabbitPriplodK(MySqlConnection sql, ref RabbitGen rabbit)
-		{
-			string f = "f_rabid";
-            if (rabbit.Sex == Rabbit.SexType.MALE)
-			{
-				f = "f_partner";
-			}
+        public static void getRabbitPriplodK(MySqlConnection sql, ref RabbitGen rabbit)
+        {
+            string f = "f_rabid";
+            if (rabbit.Sex == Rabbit.SexType.MALE) {
+                f = "f_partner";
+            }
 
 
-			MySqlCommand cmd = new MySqlCommand(String.Format(@"	SELECT coalesce(sum(f_children)/(sum(f_times)-(	select count(f_state) 
-																													from fucks 
-																													where	{1}={0:d} 
-																															and f_state='sukrol')),0) k  
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"	SELECT coalesce(sum(f_children)/(sum(f_times)-(	SELECT count(f_state) 
+																													FROM fucks 
+																													WHERE	{1}={0:d} 
+																															AND f_state='sukrol')),0) k  
 																	FROM fucks 
-																	where {1}={0:d};", rabbit.ID, f), sql);
-			MySqlDataReader rd = cmd.ExecuteReader();
-			if (rd.Read())
-			{
-				rabbit.PriplodK = rd.GetFloat("k");
+																	WHERE {1}={0:d};", rabbit.ID, f), sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            if (rd.Read()) {
+                rabbit.PriplodK = rd.GetFloat("k");
 
-			}
-			rd.Close();
-		}
-		
-		public static void getRabbitRodK(MySqlConnection sql, ref RabbitGen rabbit)
-		{
-            if (rabbit.Sex == Rabbit.SexType.FEMALE)
-			{
-				MySqlCommand cmd = new MySqlCommand(String.Format(@"	select coalesce((sum(f_children)-sum(f_killed)+sum(f_added))/(sum(f_children)+sum(f_added)),0) k
-																		from fucks 
-																		where f_rabid={0:d};", rabbit.ID), sql);
-				MySqlDataReader rd = cmd.ExecuteReader();
-				if (rd.Read())
-				{
-					rabbit.RodK = rd.GetFloat("k");
-				}
-				rd.Close();
-			}
-            if (rabbit.Sex == Rabbit.SexType.MALE)
-			{
-				MySqlCommand cmd = new MySqlCommand(String.Format(@"	select	(select count(f_state) from fucks where f_partner={0:d} and f_state='okrol' and f_times=1) o,
-																				(select count(f_state) from fucks where f_partner={0:d} and f_state='proholost' and f_times=1) p;", rabbit.ID), sql);
-				MySqlDataReader rd = cmd.ExecuteReader();
-				if (rd.Read())
-				{
-					float o = rd.GetFloat("o");
-					float p = rd.GetFloat("p");
-					if (p + 0 == 0)
-					{
-						rabbit.RodK = 0;
-					}
-					else
-					{
-						rabbit.RodK = o / (o + p);
-					}
-				}
-				rd.Close();
-			}
-		}
-		
+            }
+            rd.Close();
+        }
+
+        public static void getRabbitRodK(MySqlConnection sql, ref RabbitGen rabbit)
+        {
+            if (rabbit.Sex == Rabbit.SexType.FEMALE) {
+                MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT 
+    COALESCE((sum(f_children)-sum(f_killed)+sum(f_added))/(sum(f_children)+sum(f_added)),0) k
+FROM fucks 
+WHERE f_rabid={0:d};", rabbit.ID), sql);
+                MySqlDataReader rd = cmd.ExecuteReader();
+                if (rd.Read()) {
+                    rabbit.RodK = rd.GetFloat("k");
+                }
+                rd.Close();
+            }
+            if (rabbit.Sex == Rabbit.SexType.MALE) {
+                MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT	
+                    (SELECT COUNT(f_state) FROM fucks WHERE f_partner={0:d} AND f_state='okrol' AND f_times=1) o,
+					(SELECT COUNT(f_state) FROM fucks WHERE f_partner={0:d} AND f_state='proholost' AND f_times=1) p;",
+                    rabbit.ID), sql
+                );
+                MySqlDataReader rd = cmd.ExecuteReader();
+                if (rd.Read()) {
+                    float o = rd.GetFloat("o");
+                    float p = rd.GetFloat("p");
+                    if (p + 0 == 0) {
+                        rabbit.RodK = 0;
+                    } else {
+                        rabbit.RodK = o / (o + p);
+                    }
+                }
+                rd.Close();
+            }
+        }
+
         public static Dictionary<int, Color> getBreedColors(MySqlConnection sql)
-		{
-			Dictionary<int, Color> Dict = new Dictionary<int, Color>();
-			Color cl;
-			string cl_name;
-			MySqlCommand cmd = new MySqlCommand(@"	select b_id, b_color from breeds;", sql);
-			MySqlDataReader rd = cmd.ExecuteReader();
-			while (rd.Read())
-			{
+        {
+            Dictionary<int, Color> Dict = new Dictionary<int, Color>();
+            Color cl;
+            string cl_name;
+            MySqlCommand cmd = new MySqlCommand("SELECT b_id, b_color FROM breeds;", sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            while (rd.Read()) {
 
-				cl_name = rd.IsDBNull(1) ? "" : rd.GetString("b_color");
+                cl_name = rd.IsDBNull(1) ? "" : rd.GetString("b_color");
 
-				int res;
+                int res;
 
-				if (int.TryParse(cl_name, System.Globalization.NumberStyles.HexNumber, null, out res))
-				{
-					cl = Color.FromArgb(res);
-				}
-				else
-				{
-					cl = Color.FromName(cl_name);
-				}
-				Dict.Add(rd.GetInt32(0), cl);
-			}
-			rd.Close();
-			return Dict;
-		}
+                if (int.TryParse(cl_name, System.Globalization.NumberStyles.HexNumber, null, out res)) {
+                    cl = Color.FromArgb(res);
+                } else {
+                    cl = Color.FromName(cl_name);
+                }
+                Dict.Add(rd.GetInt32(0), cl);
+            }
+            rd.Close();
+            return Dict;
+        }
 
         /// <summary>
         /// Получает родословную кролика с заданным rabId
@@ -189,12 +172,11 @@ LIMIT 1;";
         /// <param name="con"></param>
         /// <param name="lineage">Стэк родословной для предотвращения рекурсии</param>
         /// <returns></returns>
-        private static RabTreeData getRabbitGenTree(MySqlConnection con, int rabId,int birthplace,int nameId, Stack<int> lineage)//, int level)
+        private static RabTreeData getRabbitGenTree(MySqlConnection con, int rabId, int birthplace, int nameId, Stack<int> lineage)//, int level)
         {
             if (rabId == 0) return null;
             //проверка на рекурсию, которая могла возникнуть после конвертации из старой mia-файла                        
-            if (lineage.Count > 700)
-            {
+            if (lineage.Count > 700) {
                 //_logger.Warn("cnt:" + lineage.Count.ToString() + " we have suspect infinity inheritance loop: " + String.Join(",", Array.ConvertAll<int, string>(lineage.ToArray(), new Converter<int, string>(convIntToString))));
                 return null;
             }
@@ -202,7 +184,7 @@ LIMIT 1;";
             MySqlCommand cmd = new MySqlCommand("", con);
             MySqlDataReader rd = null;
             RabAliveState state = RabAliveState.ALIVE;
-            bool inFarm=true;
+            bool inFarm = true;
             string query = @"SELECT
         r_id,
         r_name,
@@ -223,25 +205,22 @@ LIMIT 1;";
 #if !DEMO
             if (birthplace != 0)//если ищем импортированного кролика 
             {
-                List<OneImport> lst= Import.Search(con, new Filters(Filters.RAB_ID,rabId.ToString()));
+                List<OneImport> lst = Import.Search(con, new Filters(Filters.RAB_ID, rabId.ToString()));
                 inFarm = lst.Count > 0;///если кролик не был импортирован в поголовье
                 ///может возникнуть ситуация, что импортированный кролик имеет id родителя, который содержится и в import_ascendants и в imports
-                if(inFarm && Import.AscendantExists(con, rabId, birthplace)) ///устранение неоднозначности
-                {
+                if (inFarm && Import.AscendantExists(con, rabId, birthplace)) {///устранение неоднозначности                
                     inFarm = RabbitGetter.GetRabbit(con, rabId).NameID == nameId;
                 }
-                
+
             }
 #endif
 
-            if (inFarm)
-            {
-                cmd.CommandText =String.Format(query, "rabname(r_id,1)", "rabbits", rabId);
+            if (inFarm) {
+                cmd.CommandText = String.Format(query, "rabname(r_id,1)", "rabbits", rabId);
                 rd = cmd.ExecuteReader();
 
-            if (!rd.HasRows)
-            {
-                rd.Close();
+                if (!rd.HasRows) {
+                    rd.Close();
                     cmd.CommandText = String.Format(query, "deadname(r_id,1)", "dead", rabId);
                     rd = cmd.ExecuteReader();
                     state = RabAliveState.DEAD;
@@ -249,16 +228,14 @@ LIMIT 1;";
 
             }
 
-            if(!inFarm)
-            {
+            if (!inFarm) {
                 cmd.CommandText = String.Format(query, String.Format("ascname(r_id,{0:d},1)", birthplace), "import_ascendants", rabId);
                 rd = cmd.ExecuteReader();
                 state = RabAliveState.IMPORTED_ASCENDANT;
             }
-            
+
             RabTreeData res = null;
-            if (rd!=null && rd.Read())
-            {
+            if (rd != null && rd.Read()) {
                 res = new RabTreeData(rd.GetInt32("r_id"), rd.GetString("name"), rd.GetInt32("r_name"), rd.GetDateTime("r_born"), rd.GetInt32("r_breed"));
                 res.Bon = Rabbit.GetFBon(rd.GetString("r_bon"), true);
                 res.BreedShortName = rd.GetString("b_short_name");
@@ -271,16 +248,18 @@ LIMIT 1;";
                 res.State = state;
                 RabTreeData m = getRabbitGenTree(con, mom, birthplace, surname, lineage);
                 RabTreeData d = getRabbitGenTree(con, dad, birthplace, secname, lineage);
-                if (m != null)
+                if (m != null) {
                     res.Mother = m;
-                if (d != null)
+                }
+                if (d != null) {
                     res.Father = d;
+                }
             }
             rd.Close();
             return res;
         }
 
-        public static RabTreeData GetRabbitGenTree(MySqlConnection con,int rabbit)//, int level)
+        public static RabTreeData GetRabbitGenTree(MySqlConnection con, int rabbit)//, int level)
         {
             Stack<int> lineage = new Stack<int>();
             MySqlCommand cmd = new MySqlCommand(String.Format("SELECT Coalesce(r_birthplace,0) birthplace, r_name FROM rabbits WHERE r_id={0:d} LIMIT 1;", rabbit), con);
@@ -289,9 +268,9 @@ LIMIT 1;";
             int birthplace = rd.GetInt32("birthplace");
             int nameId = rd.GetInt32("r_name");
             rd.Close();
-            return getRabbitGenTree(con, rabbit, birthplace,nameId, lineage);
+            return getRabbitGenTree(con, rabbit, birthplace, nameId, lineage);
         }
-     
+
         /// <summary>
         /// Получает ID (Genesis) набора генов (Genom).
         /// </summary>
@@ -306,13 +285,11 @@ LIMIT 1;";
             c.CommandText = "SELECT g_id FROM genesis WHERE g_key=MD5('" + gens + "');";
             MySqlDataReader rd = c.ExecuteReader();
             int genID = 0;
-            if (rd.HasRows)
-            {
+            if (rd.HasRows) {
                 rd.Read();
                 genID = rd.GetInt32(0);
                 rd.Close();
-            }
-            else ///если такого набора генов в базе нет, то добавляем
+            } else ///если такого набора генов в базе нет, то добавляем
             {
                 rd.Close();
                 c.CommandText = "INSERT INTO genesis(g_notes) VALUES('');";
@@ -320,9 +297,9 @@ LIMIT 1;";
                 genID = (int)c.LastInsertedId;
                 String[] gen = gens.Split(' ');
                 c.CommandText = "INSERT INTO genoms(g_id,g_genom) VALUES";
-                foreach (string g in gen)               
+                foreach (string g in gen)
                     c.CommandText += String.Format("({0:d},{1:s}),", genID, g);
-                c.CommandText = c.CommandText.TrimEnd(',')+';';
+                c.CommandText = c.CommandText.TrimEnd(',') + ';';
                 c.ExecuteNonQuery();
                 c.CommandText = String.Format(@"UPDATE genesis SET g_key=(SELECT MD5(GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' ')) 
             FROM genoms WHERE g_id={0:d}) WHERE g_id={0:d};", genID);
@@ -399,12 +376,10 @@ LIMIT 1;";
         /// <param name="gensArr">Гены одного из партнеров</param>
         private static void injectGenoms(List<int> gn, string[] gensArr)
         {
-            foreach (string s in gensArr)
-            {
+            foreach (string s in gensArr) {
                 int g = int.Parse(s);
                 int pos = 0;
-                for (int i = 0; i < gn.Count && pos > -1; i++)
-                {
+                for (int i = 0; i < gn.Count && pos > -1; i++) {
                     if (g == gn[i]) pos = -1;
                     if (g < gn[i]) pos++;
                 }
@@ -414,7 +389,7 @@ LIMIT 1;";
 
         internal static string GetRabGenoms(MySqlConnection sql, int rId)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT GetRabGenoms({0:d});",rId), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT GetRabGenoms({0:d});", rId), sql);
             string result = cmd.ExecuteScalar() as string;
             return result;
         }

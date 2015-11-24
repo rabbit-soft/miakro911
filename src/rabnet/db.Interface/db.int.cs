@@ -186,10 +186,14 @@ namespace rabnet
 
         Rabbit[] GetDescendants(int ascendantId);
 
-#if !DEMO
-        void ArchLogs();
-        String[] logNames();
         
+        /// <summary>
+        /// Проверяем не сдился ли AI у таблицы Rabbits
+        /// </summary>
+        void RabbitsTableAiCheck();
+#if !DEMO   
+        void ArchLogs();
+        String[] logNames();        
 
         IDataGetter getButcherDates(Filters f);
         List<String> getButcherMonths();

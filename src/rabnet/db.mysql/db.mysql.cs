@@ -217,9 +217,13 @@ namespace db.mysql
         {
             if (farm == 0)
                 return new int[] { 0, 0 };
-            MySqlDataReader rd = reader("SELECT m_upper,m_lower FROM minifarms WHERE m_id=" + farm.ToString() + ";");
+            MySqlDataReader rd = reader("SELECT m_upper, m_lower FROM minifarms WHERE m_id=" + farm.ToString() + ";");
             rd.Read();
-            int[] trs = new int[] { rd.GetInt32(0), rd.GetInt32(1) };
+
+            int[] trs = new int[] { 
+                (rd.IsDBNull(rd.GetOrdinal("m_upper")) ? 0 : rd.GetInt32("m_upper")), 
+                (rd.IsDBNull(rd.GetOrdinal("m_lower")) ? 0 : rd.GetInt32("m_lower")) 
+            };
             /*            if (trs[1] != 0)
                         {
                             trs[0] ^= trs[1];
@@ -680,6 +684,20 @@ namespace db.mysql
         public void ArchLogs()
         {
             (new Logs(sql)).ArchLogs();
+        }
+
+        public void RabbitsTableAiCheck()
+        {
+            MySqlCommand cmd = new MySqlCommand("SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'kroliki' AND TABLE_NAME = 'rabbits'", sql);
+            int curAi = Convert.ToInt32(cmd.ExecuteScalar());
+
+            cmd.CommandText = "SELECT MAX(r_id) FROM dead;";
+            int maxDeadId = Convert.ToInt32(cmd.ExecuteScalar());
+
+            if (maxDeadId >= curAi) {
+                cmd.CommandText = String.Format("ALTER TABLE `rabbits` AUTO_INCREMENT ={0:d};", maxDeadId + 1);
+                cmd.ExecuteNonQuery();
+            }
         }
 
         #region butcher
