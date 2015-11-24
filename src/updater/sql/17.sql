@@ -35,7 +35,7 @@ ALTER TABLE  `logs`
 ALTER TABLE  `rabbits` ENGINE = INNODB;
 
 ALTER TABLE  `rabbits` CHANGE  `r_parent`  `r_parent` INT( 10 ) UNSIGNED NULL DEFAULT NULL ;
-UPDATE rabbits SET r_parent = NULL WHERE r_parent =0
+UPDATE rabbits SET r_parent = NULL WHERE r_parent =0;
 
 ALTER TABLE  `rabbits` CHANGE  `r_mother`  `r_mother` INT( 10 ) UNSIGNED NULL DEFAULT NULL ;
 ALTER TABLE  `rabbits` CHANGE  `r_father`  `r_father` INT( 10 ) UNSIGNED NULL DEFAULT NULL ;
