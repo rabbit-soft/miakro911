@@ -111,18 +111,18 @@ CREATE TABLE zones (
 DROP TABLE IF EXISTS rabbits;
 CREATE TABLE rabbits (
   r_id int(10) unsigned NOT NULL AUTO_INCREMENT,
-  r_parent int(10) unsigned NOT NULL DEFAULT '0',
-  r_mother int(10) unsigned NOT NULL DEFAULT '0',
-  r_father int(10) unsigned NOT NULL DEFAULT '0',
+  r_parent int(10) unsigned DEFAULT NULL,
+  r_mother int(10) unsigned DEFAULT NULL,
+  r_father int(10) unsigned DEFAULT NULL,
   r_sex enum('male','female','void') NOT NULL,
   r_bon varchar(5) NOT NULL DEFAULT '10000',
-  r_name int(10) unsigned NOT NULL DEFAULT '0',
-  r_surname int(10) unsigned NOT NULL DEFAULT '0',
-  r_secname int(10) unsigned NOT NULL DEFAULT '0',
+  r_name int(10) unsigned DEFAULT NULL,
+  r_surname int(10) unsigned DEFAULT NULL,
+  r_secname int(10) unsigned DEFAULT NULL,
   r_notes text,
   r_okrol int(10) unsigned NOT NULL DEFAULT '0',
-  r_farm int(10) unsigned NOT NULL DEFAULT '0',
-  r_tier int(10) unsigned NOT NULL DEFAULT '0',
+  r_farm int(10) unsigned DEFAULT NULL,
+  r_tier int(10) unsigned DEFAULT NULL,
   r_tier_id tinyint(3) unsigned NOT NULL DEFAULT '0',
   r_area int(10) unsigned NOT NULL DEFAULT '0',
   r_rate int(11) NOT NULL DEFAULT '0',
@@ -130,11 +130,11 @@ CREATE TABLE rabbits (
   r_breed int(10) unsigned NOT NULL DEFAULT '0',
   r_flags varchar(10) NOT NULL DEFAULT '00000' COMMENT '[0]Готовая Продукция [1]Готов к реализации [2]Брак [3]Не куковать [4]Потеря лактации',
   r_zone int(10) unsigned NOT NULL DEFAULT '0',
-  r_born datetime DEFAULT NULL,
+  r_born date DEFAULT NULL,
   r_birthplace int(11) DEFAULT NULL COMMENT 'программа откуда экспортирован кролик',
   r_genesis int(10) unsigned NOT NULL DEFAULT '0',
   r_status tinyint(3) unsigned NOT NULL DEFAULT '0',
-  r_last_fuck_okrol datetime DEFAULT NULL,
+  r_last_fuck_okrol date DEFAULT NULL,
   r_event enum('none','sluchka','vyazka','kuk','syntetic') DEFAULT NULL,
   r_event_date datetime DEFAULT NULL,
   r_lost_babies int(10) unsigned DEFAULT NULL,
@@ -154,7 +154,7 @@ CREATE TABLE rabbits (
   KEY r_zone (r_zone),
   KEY r_status (r_status),
   KEY r_born (r_born)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS fucks;
 CREATE TABLE fucks (
@@ -421,7 +421,14 @@ ALTER TABLE minifarms
   ADD CONSTRAINT minifarms_ibfk_2 FOREIGN KEY (m_lower) REFERENCES tiers (t_id) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT minifarms_ibfk_1 FOREIGN KEY (m_upper) REFERENCES tiers (t_id) ON DELETE SET NULL ON UPDATE CASCADE;
 
-
+ALTER TABLE rabbits
+  ADD CONSTRAINT rabbits_ibfk_1 FOREIGN KEY (r_parent) REFERENCES rabbits (r_id) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT rabbits_ibfk_2 FOREIGN KEY (r_farm) REFERENCES minifarms (m_id) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT rabbits_ibfk_3 FOREIGN KEY (r_tier) REFERENCES tiers (t_id) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT rabbits_ibfk_4 FOREIGN KEY (r_breed) REFERENCES breeds (b_id) ON UPDATE CASCADE,
+  ADD CONSTRAINT rabbits_ibfk_5 FOREIGN KEY (r_name) REFERENCES `names` (n_id) ON UPDATE CASCADE,
+  ADD CONSTRAINT rabbits_ibfk_6 FOREIGN KEY (r_surname) REFERENCES `names` (n_id) ON UPDATE CASCADE,
+  ADD CONSTRAINT rabbits_ibfk_7 FOREIGN KEY (r_secname) REFERENCES `names` (n_id) ON UPDATE CASCADE;
 
 #DATA
 
