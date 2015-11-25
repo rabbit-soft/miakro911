@@ -236,14 +236,20 @@ WHERE f_rabid={0:d};", rabbit.ID), sql);
 
             RabTreeData res = null;
             if (rd != null && rd.Read()) {
-                res = new RabTreeData(rd.GetInt32("r_id"), rd.GetString("name"), rd.GetInt32("r_name"), rd.GetDateTime("r_born"), rd.GetInt32("r_breed"));
+                res = new RabTreeData(
+                    rd.GetInt32("r_id"), 
+                    rd.GetString("name"),
+                    rd.IsDBNull(rd.GetOrdinal("r_name")) ? 0 : rd.GetInt32("r_name"), 
+                    rd.GetDateTime("r_born"), 
+                    rd.GetInt32("r_breed")
+                );
                 res.Bon = Rabbit.GetFBon(rd.GetString("r_bon"), true);
                 res.BreedShortName = rd.GetString("b_short_name");
                 res.BirthPlace = rd.GetInt32("birthplace");
                 int mom = rd.IsDBNull(rd.GetOrdinal("r_mother")) ? 0 : rd.GetInt32("r_mother");
                 int dad = rd.IsDBNull(rd.GetOrdinal("r_father")) ? 0 : rd.GetInt32("r_father");
-                int surname = rd.GetInt32("r_surname");
-                int secname = rd.GetInt32("r_secname");
+                int surname = rd.IsDBNull(rd.GetOrdinal("r_surname")) ? 0 : rd.GetInt32("r_surname");
+                int secname = rd.IsDBNull(rd.GetOrdinal("r_secname")) ? 0 : rd.GetInt32("r_secname");
                 rd.Close();
                 res.State = state;
                 RabTreeData m = getRabbitGenTree(con, mom, birthplace, surname, lineage);
@@ -266,7 +272,7 @@ WHERE f_rabid={0:d};", rabbit.ID), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             rd.Read();
             int birthplace = rd.GetInt32("birthplace");
-            int nameId = rd.GetInt32("r_name");
+            int nameId = rd.IsDBNull(rd.GetOrdinal("r_name")) ? 0 : rd.GetInt32("r_name");
             rd.Close();
             return getRabbitGenTree(con, rabbit, birthplace, nameId, lineage);
         }

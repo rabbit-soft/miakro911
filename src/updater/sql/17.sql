@@ -85,5 +85,9 @@ ALTER TABLE  `rabbits` ADD FOREIGN KEY (`r_secname`) REFERENCES  `names` (`n_id`
 	ON DELETE RESTRICT 
 	ON UPDATE CASCADE ;
 
+	
+ALTER TABLE  `rabbits` CHANGE  `r_born`  `r_born` DATE NULL DEFAULT NULL ;
+ALTER TABLE  `rabbits` CHANGE  `r_last_fuck_okrol`  `r_last_fuck_okrol` DATE NULL DEFAULT NULL ;
+
 
 UPDATE options SET o_value = '17' WHERE o_name = 'db' AND o_subname = 'version';

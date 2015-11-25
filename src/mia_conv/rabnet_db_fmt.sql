@@ -640,27 +640,34 @@ BEGIN
   IF(rid=0 OR rid IS NULL) THEN
     return '';
   END IF;
+
   SELECT
-  (SELECT n_name FROM names WHERE n_id=r_name) name,
-  (SELECT n_surname FROM names WHERE n_id=r_surname) surname,
-  (SELECT n_surname FROM names WHERE n_id=r_secname) secname,
-  r_group,r_sex,r_okrol INTO n,sr,sc,c,sx,ok FROM rabbits WHERE r_id=rid;
+    (SELECT n_name FROM names WHERE n_id=r_name) name,
+    (SELECT n_surname FROM names WHERE n_id=r_surname) surname,
+    (SELECT n_surname FROM names WHERE n_id=r_secname) secname,
+    r_group, r_sex, r_okrol
+  INTO n, sr, sc, c, sx, ok
+  FROM rabbits
+  WHERE r_id = rid;
+
   SET res='';
   IF (n IS NOT NULL) THEN
-  SET res=n;
+    SET res=n;
   END IF;
+
   IF (sur>0 AND NOT sr IS NULL) THEN
-  IF (res='') THEN
-    SET res=sr;
-  ELSE
-    SET res=CONCAT_WS(' ',res,sr);
-  END IF;
+    IF (res='') THEN
+      SET res=sr;
+    ELSE
+      SET res=CONCAT_WS(' ',res,sr);
+    END IF;
     if (c>1) then
       SET res=CONCAT(res,'ы');
     else
       if (sx='female') then SET res=CONCAT(res,'а'); end if;
     end if;
   END IF;
+
   IF (sur>1 AND NOT sc IS NULL) THEN
     SET res=CONCAT_WS('-',res,sc);
     if (c>1) then
@@ -669,9 +676,11 @@ BEGIN
       if (sx='female') then SET res=CONCAT(res,'а'); end if;
     end if;
   END IF;
+
   IF(n IS NULL) THEN
-  SET res=CONCAT_WS('-',res,ok);
+    SET res=CONCAT_WS('-',res,ok);
   END IF;
+
   RETURN(res);
 END |
 
@@ -685,26 +694,31 @@ BEGIN
     return '';
   END IF;
   SELECT
-  (SELECT n_name FROM names WHERE n_id=r_name) name,
-  (SELECT n_surname FROM names WHERE n_id=r_surname) surname,
-  (SELECT n_surname FROM names WHERE n_id=r_secname) secname,
-  r_group,r_sex,r_okrol INTO n,sr,sc,c,sx,ok FROM dead WHERE r_id=rid;
+    (SELECT n_name FROM names WHERE n_id=r_name) name,
+    (SELECT n_surname FROM names WHERE n_id=r_surname) surname,
+    (SELECT n_surname FROM names WHERE n_id=r_secname) secname,
+    r_group, r_sex, r_okrol
+  INTO n,sr,sc,c,sx,ok
+  FROM dead
+  WHERE r_id=rid;
+
   SET res='';
   IF (n IS NOT NULL) THEN
   SET res=n;
   END IF;
   IF (sur>0 AND NOT sr IS NULL) THEN
-  IF (res='') THEN
-    SET res=sr;
-  ELSE
-    SET res=CONCAT_WS(' ',res,sr);
-  END IF;
+    IF (res='') THEN
+      SET res=sr;
+    ELSE
+      SET res=CONCAT_WS(' ',res,sr);
+    END IF;
     if (c>1) then
       SET res=CONCAT(res,'ы');
     else
       if (sx='female') then SET res=CONCAT(res,'а'); end if;
     end if;
   END IF;
+
   IF (sur>1 AND NOT sc IS NULL) THEN
     SET res=CONCAT_WS('-',res,sc);
     if (c>1) then
@@ -713,6 +727,7 @@ BEGIN
       if (sx='female') then SET res=CONCAT(res,'а'); end if;
     end if;
   END IF;
+
   IF(n IS NULL) THEN
   SET res=CONCAT_WS('-',res,ok);
   END IF;
@@ -725,9 +740,11 @@ CREATE FUNCTION isdead(rid int(10) unsigned) RETURNS BOOL
 BEGIN
   DECLARE cnt int(10) unsigned;
   SELECT COUNT(r_id) INTO cnt FROM rabbits WHERE r_id=rid;
+
   IF (cnt=0) THEN
     RETURN(1);
   END IF;
+
   RETURN(0);
 END |
 
@@ -746,22 +763,33 @@ BEGIN
   DECLARE res varchar(150);
   DECLARE i1,i2,i3,tid,s1,s2,s3 varchar(20);
   DECLARE par int(10) unsigned;
-  SELECT r_farm,r_tier_id,r_area,r_tier,r_parent
-  INTO i1,i2,i3,tid,par
-  FROM rabbits WHERE r_id=rid;
+
+  SELECT r_farm, r_tier_id, r_area, r_tier, r_parent
+  INTO i1, i2, i3, tid, par
+  FROM rabbits
+  WHERE r_id = rid;
+
   IF (par<>0) THEN
-  SELECT r_farm,r_tier_id,r_area,r_tier
-  INTO i1,i2,i3,tid
-  FROM rabbits WHERE r_id=par;
+    SELECT r_farm, r_tier_id, r_area, r_tier
+    INTO i1, i2, i3, tid
+    FROM rabbits
+    WHERE r_id = par;
   END IF;
+
   IF (tid=0) THEN
     RETURN('');
   END IF;
-  SELECT t_type,t_delims,t_nest INTO s1,s2,s3 FROM tiers WHERE t_id=tid;
+
+  SELECT t_type, t_delims, t_nest
+  INTO s1, s2, s3
+  FROM tiers
+  WHERE t_id = tid;
+
   IF (ISNULL(s1)) THEN
     RETURN('');
   END IF;
-  SET res=CONCAT_WS(',',i1,i2,i3,s1,s2,s3);
+
+  SET res = CONCAT_WS(',', i1, i2, i3, s1, s2, s3);
   RETURN(res);
 END |
 
@@ -769,22 +797,34 @@ DROP FUNCTION IF EXISTS deadplace |
 CREATE FUNCTION deadplace(rid int(10) unsigned) RETURNS char(150)
 BEGIN
   DECLARE res varchar(150);
-  DECLARE i1,i2,i3,tid,s1,s2,s3 varchar(20);
-  SELECT r_farm,r_tier_id,r_area,r_tier
+  DECLARE i1, i2, i3, tid, s1, s2, s3 varchar(20);
+
+  SELECT r_farm, r_tier_id, r_area, r_tier
   INTO i1,i2,i3,tid
-  FROM dead WHERE r_id=rid;
+  FROM dead
+  WHERE r_id = rid;
+
   IF (tid=0 AND i1=0) THEN
     RETURN('');
   END IF;
+
   IF (tid<>0) THEN
-  SELECT t_type,t_delims,t_nest INTO s1,s2,s3 FROM tiers WHERE t_id=tid;
+    SELECT t_type, t_delims, t_nest
+    INTO s1, s2, s3
+    FROM tiers
+    WHERE t_id=tid;
   ELSE
-  SELECT t_type,t_delims,t_nest INTO s1,s2,s3 FROM tiers,minifarms WHERE m_id=i1 AND ((t_id=m_upper AND i2<>1) OR (t_id=m_lower AND i2=1));
+    SELECT t_type, t_delims, t_nest
+    INTO s1, s2, s3
+    FROM tiers, minifarms
+    WHERE m_id = i1 AND ((t_id=m_upper AND i2<>1) OR (t_id=m_lower AND i2=1));
   END IF;
+
   IF (ISNULL(s1)) THEN
     RETURN('');
   END IF;
-  SET res=CONCAT_WS(',',i1,i2,i3,s1,s2,s3);
+
+  SET res = CONCAT_WS(',', i1, i2, i3, s1, s2, s3);
   RETURN(res);
 END |
 
@@ -819,7 +859,8 @@ BEGIN
  r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,
  r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies,
  r_parent,r_father,r_mother
- FROM dead WHERE r_id=rid;
+ FROM dead
+ WHERE r_id=rid;
  DELETE FROM dead WHERE r_id=rid;
 END |
 
@@ -827,12 +868,17 @@ DROP FUNCTION IF EXISTS inBuilding |
 CREATE FUNCTION inBuilding(building int(10) unsigned,farm int(10) unsigned) RETURNS BOOL
 BEGIN
   DECLARE cid int(10) unsigned;
-  IF (farm=0) THEN return 0; END IF;
+  IF (farm=0) THEN
+    return 0;
+  END IF;
+
   SELECT b_id INTO cid FROM buildings WHERE b_farm=farm;
+
   while cid<>0 DO
     SELECT b_parent INTO cid FROM buildings WHERE b_id=cid;
     IF cid=building THEN return 1; END IF;
   end while;
+
   return 0;
 END |
 
@@ -842,14 +888,19 @@ BEGIN
   DECLARE days,i,a,d,sell int(10);
   DECLARE res,amnt FLOAT;
   DECLARE sd,ed DateTime;
+
   SELECT m_start_date, m_end_date INTO sd,ed FROM meal WHERE m_id=id;
+
   IF(isnull(sd) OR isnull(ed)) THEN
     return 0;
   END IF;
+
   SELECT to_days(m_end_date)-to_days(m_start_date) INTO days FROM meal WHERE m_id=id;
+
   IF(days = 0) THEN
     return 0;
   END IF;
+
   SET i=1; #в день завоза новый корм не расходуется
   SET res=0;
   
@@ -876,9 +927,11 @@ BEGIN
   SELECT m_amount INTO amnt FROM meal WHERE m_id=id;
   SELECT COALESCE(sum(m_amount),0) INTO sell FROM meal WHERE m_type='out' AND m_start_date BETWEEN sd AND ed;
   SET amnt=amnt-sell;
+
   IF (amnt<=0) THEN
     return 0;
   END IF;
+
   IF res=0 THEN
     return 0;
   END IF;
@@ -891,21 +944,25 @@ root:BEGIN
   DECLARE i,oldI,maxId,sell int(10);
   DECLARE yngRate FLOAT;
   DECLARE oldSD,oldED,yngSD,yngED DateTime;
+
   SELECT COALESCE(m_id,0) INTO maxId FROM meal WHERE m_type='in' ORDER BY m_start_date DESC LIMIT 1;
+
   IF (maxId=0) THEN
-  LEAVE root;
+    LEAVE root;
   END IF;
+
   SELECT m_id,m_start_date,m_end_date,m_rate INTO i,yngSD,yngED,yngRate FROM meal WHERE m_type='in' ORDER BY m_start_date ASC LIMIT 1;#id of later date
   WHILE (i<>maxId) DO
     SELECT m_id,m_start_date,COALESCE(m_end_date,'9999-12-31') INTO oldI, oldSD,oldED FROM meal WHERE m_type='in' AND m_start_date>yngSD ORDER BY m_start_date ASC LIMIT 1;
-  SELECT COALESCE(sum(m_amount),0) INTO sell FROM meal WHERE m_type='out' AND m_start_date BETWEEN yngSD AND oldED;
-  IF (isnull(yngED) OR yngED<>oldSD OR sell<>0 OR isnull(yngRate)) THEN    
-    UPDATE meal SET m_end_date=oldSD WHERE m_id=i;
-    UPDATE meal SET m_rate=mealCalculate(i) WHERE m_id=i;
-  END IF;  
-    SET i=oldI;
-    SET yngSD=oldSD;
-  SET yngED=oldED;
+    SELECT COALESCE(sum(m_amount),0) INTO sell FROM meal WHERE m_type='out' AND m_start_date BETWEEN yngSD AND oldED;
+
+    IF (isnull(yngED) OR yngED<>oldSD OR sell<>0 OR isnull(yngRate)) THEN
+      UPDATE meal SET m_end_date=oldSD WHERE m_id=i;
+      UPDATE meal SET m_rate=mealCalculate(i) WHERE m_id=i;
+    END IF;
+      SET i=oldI;
+      SET yngSD=oldSD;
+    SET yngED=oldED;
   END WHILE;
 END |
 
@@ -930,11 +987,18 @@ root:BEGIN
   
   SELECT depth+1,depth+1 INTO mDpt,fDpt;
   
-  IF mId!=0 THEN CALL FindRabGenoms(mId,mDpt,mGens); END IF;
-  IF fId!=0 THEN CALL FindRabGenoms(fId,fDpt,fGens); END IF;
+  IF mId!=0 THEN
+    CALL FindRabGenoms(mId,mDpt,mGens);
+  END IF;
+
+  IF fId!=0 THEN
+    CALL FindRabGenoms(fId,fDpt,fGens);
+  END IF;
+
   SET mGens = Coalesce(mGens,'');
   SET fGens = Coalesce(fGens,'');
-  SELECT IF(mDpt<=fDpt,mDpt,fDpt) INTO depth;
+
+  SELECT IF(mDpt<=fDpt, mDpt, fDpt) INTO depth;
   
   IF mGens !='' AND fGens!='' THEN        
     SET pGens = Concat('{',mGens,',',fGens,'}');
@@ -956,6 +1020,7 @@ CREATE FUNCTION `GetRabGenoms`(rid INT unsigned) RETURNS text CHARSET cp1251
 BEGIN
   DECLARE res TEXT;
   DECLARE depth SMALLINT unsigned DEFAULT 0;
+
   SET max_sp_recursion_depth = (SELECT Cast(o_value as SIGNED ) FROM options WHERE o_name='opt' AND o_subname='rab_gen_depth');
   CALL FindRabGenoms(rid,depth,res);
   RETURN res;
@@ -969,27 +1034,34 @@ BEGIN
   IF(rid=0 OR rid IS NULL) THEN
     return '';
   END IF;
+  
   SELECT
-  (SELECT n_name FROM names WHERE n_id=r_name) name,
-  (SELECT n_surname FROM names WHERE n_id=r_surname) surname,
-  (SELECT n_surname FROM names WHERE n_id=r_secname) secname,
-  r_sex INTO n,sr,sc,sx FROM import_ascendants WHERE r_id=rid and r_birthplace=cid;
+    (SELECT n_name FROM names WHERE n_id=r_name) name,
+    (SELECT n_surname FROM names WHERE n_id=r_surname) surname,
+    (SELECT n_surname FROM names WHERE n_id=r_secname) secname,
+    r_sex
+  INTO n, sr, sc, sx
+  FROM import_ascendants
+  WHERE r_id=rid and r_birthplace=cid;
+
   SET res='';
   IF (n IS NOT NULL) THEN
   SET res=n;
   END IF;
   IF (sur>0 AND NOT sr IS NULL) THEN
-  IF (res='') THEN
-    SET res=sr;
-  ELSE
-    SET res=CONCAT_WS(' ',res,sr);
-  END IF;
+    IF (res='') THEN
+      SET res=sr;
+    ELSE
+      SET res=CONCAT_WS(' ',res,sr);
+    END IF;
     if (sx='female') then SET res=CONCAT(res,'а'); end if;
   END IF;
+
   IF (sur>1 AND NOT sc IS NULL) THEN
-    SET res=CONCAT_WS('-',res,sc);
+    SET res = CONCAT_WS('-', res, sc);
     if (sx='female') then SET res=CONCAT(res,'а'); end if;
   END IF;
+
   RETURN(res);
 END |
 
