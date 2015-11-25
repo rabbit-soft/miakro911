@@ -27,7 +27,7 @@ namespace rabnet.forms
         int _opt_malewait = 0;
         int _opt_makeCand = 0;
         ListViewColumnSorter cs;
-        Catalog names = null;               
+        Catalog names = null;
         bool _needCommit = true;
 
         private FuckForm()
@@ -50,12 +50,12 @@ namespace rabnet.forms
             FormSizeSaver.Append(this);
         }
         public FuckForm(int r1)
-            :this(r1, 0) 
+            : this(r1, 0)
         { }
 
         public FuckForm(int r1, int r2)
             : this()
-        {            
+        {
             _rabFemale = Engine.get().getRabbit(r1);
             _rabMaleId = r2;
             init();
@@ -73,20 +73,22 @@ namespace rabnet.forms
             _rabFemale = rab;
             _rabMaleId = r2;
             _needCommit = needCommit;
-            init();            
+            init();
         }
 
         private void init()
         {
             label1.Text = _rabFemale.FullName;
-            label2.Text = _rabFemale.BreedName;            
+            label2.Text = _rabFemale.BreedName;
             this.dateDays1.MinDate = _rabFemale.LastFuckOkrol;
-            if (_rabFemale.EventDate > _rabFemale.LastFuckOkrol)
+            if (_rabFemale.EventDate > _rabFemale.LastFuckOkrol) {
                 this.dateDays1.DateValue = _rabFemale.EventDate;
+            }
 
             fillTable();
-            if (_rabFemale.Status > 0)
+            if (_rabFemale.Status > 0) {
                 this.Text = btOk.Text = "Вязать";
+            }
             fillNames();
         }
 
@@ -103,15 +105,15 @@ namespace rabnet.forms
             names = Engine.db().catalogs().getFreeNames(2, _rabFemale.NameID);
             cbName.Items.Add("");
             cbName.SelectedIndex = 0;
-            foreach (int key in names.Keys)
-            {
+            foreach (int key in names.Keys) {
                 cbName.Items.Add(names[key]);
-                if (key == _rabFemale.NameID)
+                if (key == _rabFemale.NameID) {
                     cbName.SelectedIndex = cbName.Items.Count - 1;
+                }
             }
             cbName.Enabled = btNames.Enabled = _rabFemale.NameID == 0;
         }
-            
+
         private void fillTable()
         {
             cs.PrepareForUpdate();
@@ -127,52 +129,53 @@ namespace rabnet.forms
             FuckPartner[] fs = Engine.db().GetAllFuckers(flt);
             listView1.BeginUpdate();
 
-            foreach (FuckPartner fP in fs)
-            {
+            foreach (FuckPartner fP in fs) {
                 bool heter = (fP.BreedId != _rabFemale.BreedID);
                 bool inbr = RabNetEngHelper.inbreeding(_rabFemale.Genoms, fP.OldGenoms);
 
                 ListViewItem li = listView1.Items.Add(fP.FullName);
                 li.UseItemStyleForSubItems = false;
-                if (fP.LastFuck != DateTime.MinValue && DateTime.Now < fP.LastFuck.Date.AddDays(_opt_malewait) )
+                if (fP.LastFuck != DateTime.MinValue && DateTime.Now < fP.LastFuck.Date.AddDays(_opt_malewait)) {
                     li.SubItems[IND_NAME].ForeColor = chRest.ForeColor;
+                }
                 li.Tag = fP;
                 li.SubItems.Add("Мальчик");
-                if (fP.Status == 1 || (fP.Status == 0 && fP.Age >= _opt_makeCand))
-                {
+                if (fP.Status == 1 || (fP.Status == 0 && fP.Age >= _opt_makeCand)) {
                     li.SubItems[IND_STATE].Text = "Кандидат";
                     li.SubItems[IND_STATE].ForeColor = chCandidates.ForeColor;
                 }
-                if (fP.Status == 2)
+                if (fP.Status == 2) {
                     li.SubItems[IND_STATE].Text = "Производитель";
+                }
                 li.SubItems.Add(_breeds[fP.BreedId]);
                 li.SubItems.Add(fP.Fucks.ToString());
                 li.SubItems.Add(fP.MutualChildren.ToString());
                 li.SubItems.Add(inbr ? "ДА" : "-");
 
                 int inbrLevel = 0;
-                if (RabbitGen.DetectInbreeding(_rabFemale.RabGenoms, fP.RabGenoms, ref inbrLevel))
-                {
+                if (RabbitGen.DetectInbreeding(_rabFemale.RabGenoms, fP.RabGenoms, ref inbrLevel)) {
                     li.SubItems.Add(inbrLevel.ToString() + " поколение");
-                }
-                else
+                } else {
                     li.SubItems.Add("-");
+                }
 
-                if (heter)
+                if (heter) {
                     li.SubItems[IND_BREED].ForeColor = chHetererosis.ForeColor;
-                if (inbr)
+                }
+                if (inbr) {
                     li.SubItems[IND_INBR].ForeColor = chInbreed.ForeColor;
-                if (_rabMaleId == fP.Id)
-                {
+                }
+                if (_rabMaleId == fP.Id) {
                     li.Selected = true;
                     li.EnsureVisible();
                 }
             }
             // если был передан партнер, но его нет в списке, то обнуляем его, т.к. он не был выбран
-            if (listView1.SelectedItems.Count == 0)
+            if (listView1.SelectedItems.Count == 0) {
                 _rabMaleId = 0;
-            else
-                listView1_SelectedIndexChanged(null,null);
+            } else {
+                listView1_SelectedIndexChanged(null, null);
+            }
 
             listView1.EndUpdate();
             cs.RestoreAfterUpdate();
@@ -186,8 +189,7 @@ namespace rabnet.forms
 
         private void btGens_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count == 0)
-            {
+            if (listView1.SelectedItems.Count == 0) {
                 MessageBox.Show("Партнер не выбран");
                 return;
             }
@@ -213,28 +215,28 @@ namespace rabnet.forms
 
         private void makeFuck(bool syntetic)
         {
-            try
-            {
-                if (listView1.SelectedItems.Count != 1)
+            try {
+                if (listView1.SelectedItems.Count != 1) {
                     throw new RabNetException("Выберите самца");
+                }
 
-                if (_rabFemale.NameID == 0 && cbName.SelectedIndex != 0)
-                {
-                    foreach (int k in names.Keys)
-                        if (cbName.Text == names[k])
+                if (_rabFemale.NameID == 0 && cbName.SelectedIndex != 0) {
+                    foreach (int k in names.Keys) {
+                        if (cbName.Text == names[k]) {
                             _rabFemale.NameID = k;
+                        }
+                    }
                     _rabFemale.Commit();
                 }
 
-                _rabMaleId = (listView1.SelectedItems[0].Tag as FuckPartner).Id;                 
-                if (_needCommit)
+                _rabMaleId = (listView1.SelectedItems[0].Tag as FuckPartner).Id;
+                if (_needCommit) {
                     _rabFemale.FuckIt(_rabMaleId, dateDays1.DaysValue, syntetic);
+                }
 
                 this.DialogResult = DialogResult.OK;
                 Close();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 DialogResult = DialogResult.None;
                 MessageBox.Show("Ошибка: " + ex.Message);
             }
@@ -242,17 +244,21 @@ namespace rabnet.forms
 
         private void cb_CheckedChanged(object sender, EventArgs e)
         {
-            if (!_manual) return;
+            if (!_manual) {
+                return;
+            }
 
-            if(sender == chCandidates)
-                Engine.opt().setOption(Options.OPT_ID.SHOW_CANDIDATES, chCandidates.Checked?1:0);
+            if (sender == chCandidates) {
+                Engine.opt().setOption(Options.OPT_ID.SHOW_CANDIDATES, chCandidates.Checked ? 1 : 0);
+            }
             fillTable();
         }
 
         private void listView1_DoubleClick(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count==1)
+            if (listView1.SelectedItems.Count == 1) {
                 btGens.PerformClick();
+            }
         }
 
         private void btNames_Click(object sender, EventArgs e)

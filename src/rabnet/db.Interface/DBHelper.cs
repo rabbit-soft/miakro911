@@ -6,26 +6,34 @@ using rabnet;
 namespace rabnet
 {
     public class DBHelper
-    {       
+    {
+        public static string Nullable(int v)
+        {
+            return v == 0 ? "NULL" : v.ToString();
+        }
+
         public static String DateToSqlString(DateTime dt)
         {
-            if (dt == DateTime.MinValue)
+            if (dt == DateTime.MinValue) {
                 return "NULL";
-            if (dt.Date == DateTime.Now.Date)
+            }
+            if (dt.Date == DateTime.Now.Date) {
                 return "Date(NOW())";
-            return String.Format("'{0:D4}-{1:D2}-{2:D2}'",dt.Year,dt.Month,dt.Day);
+            }
+            return String.Format("'{0:D4}-{1:D2}-{2:D2}'", dt.Year, dt.Month, dt.Day);
         }
 
         public static String DaysPastSqlDate(int daysPast)
         {
             return daysPast <= 0 ? "Date(NOW())" : String.Format("Date_Add(Date(NOW()),INTERVAL -{0:d} DAY)", daysPast);
         }
-        
+
         public static String commonBon(String b1, String b2)
         {
             string res = "0";
-            for (int i = 1; i < 5; i++)
-                res+= b1[i] < b2[i] ? b1[i] : b2[i];
+            for (int i = 1; i < 5; i++) {
+                res += b1[i] < b2[i] ? b1[i] : b2[i];
+            }
             return res;
         }
 
@@ -38,25 +46,25 @@ namespace rabnet
         {
             DateTime dt;
             string period = "";
-            if (!f.ContainsKey(Filters.DATE_PERIOD) || !f.ContainsKey(Filters.DATE_VALUE)) return period;                                  
+            if (!f.ContainsKey(Filters.DATE_PERIOD) || !f.ContainsKey(Filters.DATE_VALUE)) {
+                return period;
+            }
 
-            if (f.safeValue(Filters.DATE_PERIOD) == "d")
-            {
-                if (!DateTime.TryParse(f.safeValue(Filters.DATE_VALUE), out dt)) 
+            if (f.safeValue(Filters.DATE_PERIOD) == "d") {
+                if (!DateTime.TryParse(f.safeValue(Filters.DATE_VALUE), out dt)) {
                     return period;
+                }
                 period = String.Format("DATE({1:s})='{0:yyyy-MM-dd}'", dt, dateField);
             }
-            if (f.safeValue(Filters.DATE_PERIOD) == "m")
-            {
-                if (!DateTime.TryParse(f.safeValue(Filters.DATE_VALUE), out dt)) 
+            if (f.safeValue(Filters.DATE_PERIOD) == "m") {
+                if (!DateTime.TryParse(f.safeValue(Filters.DATE_VALUE), out dt)) {
                     return period;
+                }
                 period = String.Format("(MONTH({1:s})={0:MM} AND YEAR({1:s})={0:yyyy})", dt, dateField);
-            }
-            else if (f.safeValue(Filters.DATE_PERIOD) == "y")
-            {
+            } else if (f.safeValue(Filters.DATE_PERIOD) == "y") {
                 period = String.Format("YEAR({1:s})={0}", f.safeValue(Filters.DATE_VALUE), dateField);
             }
-            
+
             return period;
         }
 
@@ -67,19 +75,15 @@ namespace rabnet
 
             if (!f.ContainsKey(Filters.DATE_PERIOD) || !f.ContainsKey(Filters.DATE_VALUE)) return;
 
-            if (f.safeValue(Filters.DATE_PERIOD) == "d")
-            {
+            if (f.safeValue(Filters.DATE_PERIOD) == "d") {
                 if (!DateTime.TryParse(f.safeValue(Filters.DATE_VALUE), out from)) return;
                 to = from.AddDays(1);
             }
-            if (f.safeValue(Filters.DATE_PERIOD) == "m")
-            {
+            if (f.safeValue(Filters.DATE_PERIOD) == "m") {
                 if (!DateTime.TryParse(f.safeValue(Filters.DATE_VALUE), out from)) return;
                 to = from.AddMonths(1);
-            }
-            else if (f.safeValue(Filters.DATE_PERIOD) == "y")
-            {
-                if (!DateTime.TryParse(f.safeValue(Filters.DATE_VALUE)+"-01-01",  out from)) return;
+            } else if (f.safeValue(Filters.DATE_PERIOD) == "y") {
+                if (!DateTime.TryParse(f.safeValue(Filters.DATE_VALUE) + "-01-01", out from)) return;
                 to = from.AddYears(1);
             }
         }

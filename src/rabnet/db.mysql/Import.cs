@@ -21,48 +21,68 @@ namespace db.mysql
         {
             MySqlCommand cmd = new MySqlCommand("", sql);
             cmd.CommandText = String.Format(@"INSERT INTO import(t_date,t_rab_id,t_count,t_client,t_old_r_id,t_file_guid) 
-                VALUES(NOW(),{0:d},{1:d},{2:d},{3:d},'{4:s}');", rId, count, clientId, oldRID, fileGuid);
+                VALUES(NOW(), {0:d}, {1:d}, {2:d}, {3:d}, '{4:s}');", rId, count, clientId, oldRID, fileGuid);
             cmd.ExecuteNonQuery();
         }
 
         internal static void AscendantImp(MySqlConnection sql, OneRabbit r)
         {
             MySqlCommand cmd = new MySqlCommand(
-                String.Format(@"INSERT INTO import_ascendants(r_id,r_mother,r_father,r_sex,r_name,r_surname,r_secname,r_breed,r_born,r_birthplace,r_bon) 
-                VALUES({0:d},{1:d},{2:d},'{3:s}',{4:d},{5:d},{6:d},{7:d},'{8:s}',{9:d},{10:s});",r.ID,r.MotherID,r.FatherID,Rabbit.SexToString(r.Sex),
-                r.NameID,r.SurnameID,r.SecnameID,r.BreedID,r.BirthDay.ToString("yyyy-MM-dd"),r.BirthPlace,r.Bon), sql);
+                String.Format(@"INSERT INTO import_ascendants(r_id, r_mother, r_father, r_sex, r_name, r_surname, r_secname, r_breed, r_born, r_birthplace, r_bon) 
+                    VALUES({0}, {1}, {2}, '{3}', {4}, {5}, {6}, {7}, '{8}', {9}, {10});",
+                        r.ID,
+                        DBHelper.Nullable(r.MotherID),
+                        DBHelper.Nullable(r.FatherID), 
+                        Rabbit.SexToString(r.Sex),
+                        DBHelper.Nullable(r.NameID),
+                        DBHelper.Nullable(r.SurnameID),
+                        DBHelper.Nullable(r.SecnameID), 
+                        r.BreedID, 
+                        r.BirthDay.ToString("yyyy-MM-dd"), 
+                        r.BirthPlace, 
+                        r.Bon
+                    ), 
+                sql
+            );            
             cmd.ExecuteNonQuery();
         }
 
         internal static List<OneImport> Search(MySqlConnection sql,Filters f)
         {
             List<OneImport> result = new List<OneImport>();
-            string query = "SELECT t_date,t_rab_id,t_count,t_client,t_old_r_id,t_file_guid FROM import";
+            string query = "SELECT t_date, t_rab_id, t_count, t_client, t_old_r_id, t_file_guid FROM import";
             if(f.Count>0)
             {
                 string where="";
-                if(f.ContainsKey(Filters.RAB_ID))
-                    where+="t_rab_id="+f[Filters.RAB_ID];
-                if(f.ContainsKey(Filters.CLIENT))
-                    where+=" AND t_client="+f[Filters.CLIENT];
-                if(f.ContainsKey(Filters.OLD_RID))
-                    where+=" AND t_old_r_id="+f[Filters.OLD_RID];
-                if(f.ContainsKey(Filters.GUID))
-                    where+=String.Format("AND t_file_guid='{0:s}'",f[Filters.GUID]);
-                if(where!="")
-                    query+=" WHERE "+where.TrimStart(" AND".ToCharArray());
-                if(f.ContainsKey(Filters.LIMIT))
-                    query+=" LIMIT "+f[Filters.LIMIT];
+                if (f.ContainsKey(Filters.RAB_ID)) {
+                    where += "t_rab_id=" + f[Filters.RAB_ID];
+                }
+                if (f.ContainsKey(Filters.CLIENT)) {
+                    where += " AND t_client=" + f[Filters.CLIENT];
+                }
+                if (f.ContainsKey(Filters.OLD_RID)) {
+                    where += " AND t_old_r_id=" + f[Filters.OLD_RID];
+                }
+                if (f.ContainsKey(Filters.GUID)) {
+                    where += String.Format("AND t_file_guid='{0:s}'", f[Filters.GUID]);
+                }
+                if (where != "") {
+                    query += " WHERE " + where.TrimStart(" AND".ToCharArray());
+                }
+                if (f.ContainsKey(Filters.LIMIT)) {
+                    query += " LIMIT " + f[Filters.LIMIT];
+                }
             }
             MySqlCommand cmd = new MySqlCommand(query, sql);
             MySqlDataReader rd = cmd.ExecuteReader();
-            while (rd.Read())
+            while (rd.Read()) {
                 result.Add(new OneImport(rd.GetDateTime("t_date"),
-                    rd.GetInt32("t_rab_id"), 
+                    rd.GetInt32("t_rab_id"),
                     rd.GetInt32("t_count"),
-                    rd.IsDBNull(rd.GetOrdinal("t_client")) ? 0 :rd.GetInt32("t_client"),
-                    rd.IsDBNull(rd.GetOrdinal("t_old_r_id")) ? 0 :rd.GetInt32("t_old_r_id"),
-                    rd.IsDBNull(rd.GetOrdinal("t_file_guid")) ? "" :rd.GetString("t_file_guid")));
+                    rd.IsDBNull(rd.GetOrdinal("t_client")) ? 0 : rd.GetInt32("t_client"),
+                    rd.IsDBNull(rd.GetOrdinal("t_old_r_id")) ? 0 : rd.GetInt32("t_old_r_id"),
+                    rd.IsDBNull(rd.GetOrdinal("t_file_guid")) ? "" : rd.GetString("t_file_guid")));
+            }
             rd.Close();
             return result;
         }

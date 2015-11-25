@@ -50,9 +50,17 @@ namespace db.mysql
 
         internal static OneRabbit fillOneRabbit(MySqlDataReader rd)
         {
-            return new OneRabbit(rd.GetInt32("r_id"), rd.GetString("r_sex"), rd.GetDateTime("r_born"), rd.GetInt32("r_rate"),
-                rd.GetString("r_flags"), rd.GetInt32("r_name"), rd.GetInt32("r_surname"), rd.GetInt32("r_secname"),
-                rd.GetString("address"), rd.GetInt32("r_group"), rd.GetInt32("r_breed"),
+            return new OneRabbit(rd.GetInt32("r_id"), 
+                rd.GetString("r_sex"), 
+                rd.GetDateTime("r_born"), 
+                rd.GetInt32("r_rate"),
+                rd.GetString("r_flags"), 
+                rd.GetInt32("r_name"), 
+                rd.GetInt32("r_surname"), 
+                rd.GetInt32("r_secname"),
+                rd.GetString("address"), 
+                rd.GetInt32("r_group"), 
+                rd.GetInt32("r_breed"),
                 rd.GetInt32("r_zone"),
                 rd.IsDBNull(rd.GetOrdinal("r_notes")) ? "" : rd.GetString("r_notes"),
                 rd.IsDBNull(rd.GetOrdinal("genom")) ? "" : rd.GetString("genom"),
@@ -120,14 +128,18 @@ FROM {1:s} WHERE r_id={2:d};", getOneRabbit_FieldsSet(type), (type == RabAliveSt
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT {0:s}
 FROM rabbits r
-INNER JOIN (SELECT r_farm,r_tier,r_tier_id,r_area FROM rabbits WHERE r_id={1:d}) rp ON rp.r_farm=r.r_farm 
-	AND rp.r_tier=r.r_tier AND rp.r_tier_id=r.r_tier_id AND rp.r_area=r.r_area
+INNER JOIN (
+    SELECT r_farm, r_tier, r_tier_id, r_area 
+    FROM rabbits 
+    WHERE r_id={1:d}) rp ON rp.r_farm=r.r_farm AND rp.r_tier=r.r_tier AND rp.r_tier_id=r.r_tier_id AND rp.r_area=r.r_area
 WHERE r_id!={1:d} AND r_parent IS NULL;", getOneRabbit_FieldsSet(RabAliveState.ALIVE), rabOwner), con);
             List<OneRabbit> rbs = new List<OneRabbit>();
             MySqlDataReader rd = cmd.ExecuteReader();
-            while (rd.Read())
+            while (rd.Read()) {
                 rbs.Add(fillOneRabbit(rd));
+            }
             rd.Close();
+
             return rbs.ToArray();
         }
 
@@ -136,8 +148,12 @@ WHERE r_id!={1:d} AND r_parent IS NULL;", getOneRabbit_FieldsSet(RabAliveState.A
             int multi = (r.Defect ? 1 : 0);
             String flags = String.Format("{0:D1}{1:D1}{2:D1}{3:D1}{4:D1}", r.Production ? 1 : 0, r.RealizeReady ? 1 : 0, multi, r.NoKuk ? 1 : 0, r.NoLact ? 1 : 0);//TODO возможен косяк
             String query = String.Format(@"UPDATE rabbits SET 
-r_name={0:d}, r_surname={1:d}, r_secname={2:d}, r_breed={3:d}, r_zone={4:d}, r_group={5:d}, r_notes=@notes,
-r_flags='{6:d}', r_rate={7:d}, r_born={8:s} ", r.NameID, r.SurnameID, r.SecnameID, r.BreedID, r.Zone, r.Group, /*r.Notes,*/ flags, r.Rate, DBHelper.DateToSqlString(r.BirthDay));
+                r_name={0:d}, r_surname={1:d}, r_secname={2:d}, r_breed={3:d}, r_zone={4:d}, r_group={5:d}, r_notes=@notes, r_flags='{6:d}', r_rate={7:d}, r_born={8:s} ", 
+                DBHelper.Nullable(r.NameID), 
+                DBHelper.Nullable(r.SurnameID), 
+                DBHelper.Nullable(r.SecnameID), 
+                r.BreedID, r.Zone, r.Group, flags, r.Rate, DBHelper.DateToSqlString(r.BirthDay)
+            );
 
             if (r.Sex != Rabbit.SexType.VOID) {
                 query += String.Format(", r_status={0:d}, r_last_fuck_okrol={1:s}", r.Status, DBHelper.DateToSqlString(r.LastFuckOkrol));
@@ -177,10 +193,10 @@ r_flags='{6:d}', r_rate={7:d}, r_born={8:s} ", r.NameID, r.SurnameID, r.SecnameI
             string when = DBHelper.DaysPastSqlDate(daysPast);
             MySqlCommand cmd = new MySqlCommand("", sql);
             checkStartEvDate(sql, rabbit);
-            cmd.CommandText = String.Format(@"UPDATE fucks SET f_state='proholost',f_end_date={0:s} WHERE f_state='sukrol' AND f_rabid={1:d};",
+            cmd.CommandText = String.Format(@"UPDATE fucks SET f_state='proholost', f_end_date={0:s} WHERE f_state='sukrol' AND f_rabid={1:d};",
                 when, rabbit);
             cmd.ExecuteNonQuery();
-            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date=NULL,r_event='none',r_rate=r_rate+{1:d} WHERE r_id={0:d};", rabbit, Rate.PROHOLOST_RATE);
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date=NULL, r_event='none', r_rate=r_rate+{1:d} WHERE r_id={0:d};", rabbit, Rate.PROHOLOST_RATE);
             cmd.ExecuteNonQuery();
             if (male != 0) {
                 cmd.CommandText = String.Format("UPDATE rabbits SET r_rate=r_rate+{1:d} WHERE r_id={0:d};", male, Rate.PROHOLOST_RATE);
@@ -195,7 +211,7 @@ r_flags='{6:d}', r_rate={7:d}, r_born={8:s} ", r.NameID, r.SurnameID, r.SecnameI
 
             MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE fucks SET f_state='okrol', f_end_date={0:s},
 f_children={1:d}, f_dead={2:d} WHERE f_rabid={3:d} AND f_state='sukrol';",
-                       when, children, dead, rabbit), sql);
+                    when, children, dead, rabbit), sql);
             cmd.ExecuteNonQuery();
 
             OneRabbit fml = GetRabbit(sql, rabbit);
@@ -219,16 +235,18 @@ WHERE r_id={0:d};",
 
             if (children > 0) {
                 int brd = 1;
-                if (ml != null && fml.BreedID == ml.BreedID)
+                if (ml != null && fml.BreedID == ml.BreedID) {
                     brd = fml.BreedID;
+                }
                 int chRate = Rate.CalcChildrenRate(fml.Rate, ml == null ? 0 : ml.Rate);
                 int okrol = fml.Status;
                 cmd.CommandText = String.Format(@"INSERT 
 INTO rabbits(r_parent, r_mother, r_father, r_born, r_sex, r_group, r_bon, r_genesis, r_name, r_surname, r_secname, r_breed, r_okrol, r_rate, r_notes) 
-VALUES({0:d}, {1:d}, {2:d}, {3:s}, 'void', {4:d}, '{5:s}', {6:d}, 0, {7:d}, {8:d}, {9:d}, {10:d}, {11:d}, '');",
-      rabbit, rabbit, father, when, children, DBHelper.commonBon(fml.Bon.ToString(), (ml != null ? ml.Bon.ToString() : fml.Bon.ToString())),
-      bornRabbitGenesis(sql, fml, ml),//RabbitGenGetter.MakeCommonGenesis(sql, fml.Genoms, (ml != null ? ml.Genoms : fml.Genoms), fml.Zone),
-      fml.NameID, (ml != null ? ml.NameID : 0), brd, okrol, chRate/*,DBHelper.DateToMyString(date)*/);
+VALUES({0}, {1}, {2}, {3}, 'void', {4}, '{5}', {6}, 0, {7}, {8}, {9}, {10}, {11}, '');",
+      rabbit, rabbit, father, 
+      when, children, DBHelper.commonBon(fml.Bon.ToString(), (ml != null ? ml.Bon.ToString() : fml.Bon.ToString())),
+      bornRabbitGenesis(sql, fml, ml),
+      fml.NameID, (ml != null ? ml.NameID : 0), brd, okrol, chRate);
                 cmd.ExecuteNonQuery();
                 return (int)cmd.LastInsertedId;
             }
@@ -311,8 +329,9 @@ VALUES({0:d}, {1:d}, {2:d}, {3:s}, 'void', {4:d}, '{5:s}', {6:d}, 0, {7:d}, {8:d
                     if (ssec != "") ssec += 'а';
                 }
                 res += ssur;
-                if (ssec != "")
+                if (ssec != "") {
                     res += "-" + ssec;
+                }
             }
             rd.Close();
             return res;
@@ -322,52 +341,54 @@ VALUES({0:d}, {1:d}, {2:d}, {3:s}, 'void', {4:d}, '{5:s}', {6:d}, 0, {7:d}, {8:d
         /// Освобождает клетку, в которой сидел кролик.
         /// </summary>
         /// <param name="rabbit">ID кролика, который сидит в клетке</param>
-        public static int[] freeTier(MySqlConnection sql, int rabbit)
+        public static AddressR freeTier(MySqlConnection sql, int rabbit)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT r_id, r_farm, r_tier, r_tier_id,
-    r_area, t_busy1, t_busy2, t_busy3, t_busy4, m_upper, m_lower, m_id 
-FROM rabbits, tiers, minifarms 
-WHERE r_id={0:d} AND r_tier=t_id AND m_id=r_farm", rabbit), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT 
+    r_id, r_farm, r_tier, r_tier_id, r_area, 
+    t_busy1, t_busy2, t_busy3, t_busy4, 
+    Coalesce(m_upper,0) AS m_upper, 
+    Coalesce(m_lower,0) AS m_lower,
+    m_id 
+FROM rabbits 
+    LEFT JOIN tiers ON r_tier=t_id
+    LEFT JOIN minifarms ON r_farm = m_id
+WHERE r_id={0:d}", rabbit), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
-            int tr = 0;
-            int sc = 0;
-            int frm = 0;
-            int tid = 0;
+            AddressR a = null;
+
             if (rd.Read()) {
-                tr = rd.GetInt32("r_tier");
-                sc = rd.GetInt32("r_area");
-                frm = rd.GetInt32("r_farm");
-                tid = rd.GetInt32("r_tier_id");
-                int bs = rd.GetInt32("t_busy" + (sc + 1).ToString());
+                a = new AddressR(rd.GetInt32("r_farm"), rd.GetInt32("r_tier_id"), rd.GetInt32("r_area"), rd.GetInt32("r_tier"));
+                int bs = rd.GetInt32("t_busy" + (a.Section + 1).ToString());
                 if (bs != rabbit) {
-                    tr = 0;
+                    a.TierId = 0;
                 }
             }
             rd.Close();
 
-            if (tr != 0) {
-                cmd.CommandText = String.Format("UPDATE tiers SET t_busy{0:d}=0 WHERE t_id={1:d};", sc + 1, tr);
+            if (a != null) {
+                cmd.CommandText = String.Format("UPDATE tiers SET t_busy{0:d}=0 WHERE t_id={1:d};", a.Section + 1, a.TierId);
                 cmd.ExecuteNonQuery();///Освобождает клетку
                 ///Проверяет наличие кролика в таблице  rabbits с таким же адресом
                 cmd.CommandText = String.Format(@"SELECT r_id 
 FROM rabbits 
-WHERE r_farm={0:d} AND r_tier={1:d} AND r_tier_id={2:d} AND r_area={3:d} AND r_id<>{4:d} AND r_parent IS NULL LIMIT 1;", frm, tr, tid, sc, rabbit);
+WHERE r_farm={0:d} AND r_tier={1:d} AND r_tier_id={2:d} AND r_area={3:d} AND r_id<>{4:d} AND r_parent IS NULL LIMIT 1;", a.Farm, a.TierId, a.Floor, a.Section, rabbit);
                 rd = cmd.ExecuteReader();
-                if (rd.Read())///если имеется, то клетка в таблице tiers заселяется найденным кроликом
-                {
-                    cmd.CommandText = String.Format("UPDATE tiers SET t_busy{0:d}={2:d} WHERE t_id={1:d};", sc + 1, tr, rd.GetInt32("r_id"));
+                if (rd.Read()) {///если имеется, то клетка в таблице tiers заселяется найденным кроликом                
+                    cmd.CommandText = String.Format("UPDATE tiers SET t_busy{0:d}={2:d} WHERE t_id={1:d};", a.Section + 1, a.TierId, rd.GetInt32("r_id"));
                     rd.Close();
                     cmd.ExecuteNonQuery();
-                } else rd.Close();
+                } else {
+                    rd.Close();
+                }
 
             }
-            return new int[] { frm, tid, sc, tr };
+            return a;
         }
 
         public static void placeRabbit(MySqlConnection sql, int rabbit, int farm, int tierFloor, int sec)
         {
             if (farm == 0) {
-                MySqlCommand c = new MySqlCommand(String.Format("UPDATE rabbits SET r_farm=0,r_tier=0,r_tier_id=0,r_area=0 WHERE r_id={0:d};", rabbit), sql);
+                MySqlCommand c = new MySqlCommand(String.Format("UPDATE rabbits SET r_farm=0, r_tier=0, r_tier_id=0, r_area=0 WHERE r_id={0:d};", rabbit), sql);
                 c.ExecuteNonQuery();
                 return;
             }
@@ -431,7 +452,7 @@ WHERE r_id={0:d};", rabFromID, mom, count), sql);
 
         public static int newRabbit(MySqlConnection sql, OneRabbit r, int mom)
         {
-            String query = String.Format(@"INSERT INTO rabbits(r_sex, r_parent) VALUES('{0}', {1});", Rabbit.SexToString(r.Sex), (mom == 0 ? "null" : mom.ToString()));
+            String query = String.Format(@"INSERT INTO rabbits(r_sex, r_parent) VALUES('{0}', {1});", Rabbit.SexToString(r.Sex), DBHelper.Nullable(mom));
             MySqlCommand cmd = new MySqlCommand(query, sql);
             cmd.ExecuteNonQuery();
             r.ID = (int)cmd.LastInsertedId;
@@ -442,8 +463,8 @@ WHERE r_id={0:d};", rabFromID, mom, count), sql);
             }
             if (r.MotherID != 0 || r.FatherID != 0) {
                 cmd.CommandText = String.Format("UPDATE rabbits SET r_mother={0}, r_father={1} WHERE r_id={2}",
-                    (r.MotherID == 0 ? "NULL" : r.MotherID.ToString()),
-                    (r.FatherID == 0 ? "NULL" : r.FatherID.ToString()), 
+                    DBHelper.Nullable(r.MotherID),
+                    DBHelper.Nullable(r.FatherID), 
                     r.ID
                 );
                 cmd.ExecuteNonQuery();
@@ -490,7 +511,7 @@ WHERE r_id={0:d};", rabFromID, mom, count), sql);
             }
 
             string when = DBHelper.DaysPastSqlDate(daysPast);
-            int[] place = freeTier(sql, rid);
+            AddressR a = freeTier(sql, rid);
             freeName(sql, rid);
             MySqlCommand cmd = new MySqlCommand(String.Format("SELECT COALESCE(r_parent, 0) AS r_parent FROM rabbits WHERE r_id={0:d};", rid), sql);
             if (cmd.ExecuteScalar().ToString() != "0") {//если подсосный            
@@ -501,10 +522,10 @@ WHERE r_id={0:d};", rabFromID, mom, count), sql);
                 cmd = new MySqlCommand(String.Format("SELECT r_id FROM rabbits WHERE r_parent={0:d};", rid), sql);
                 MySqlDataReader rd = cmd.ExecuteReader();
                 if (rd.Read()) {
-                    int c1 = rd.GetInt32(0);
+                    int c1 = rd.GetInt32("r_id");
                     rd.Close();
                     if (c1 != 0) {
-                        RabbitGetter.placeRabbit(sql, c1, place[0], place[1], place[2]);
+                        RabbitGetter.placeRabbit(sql, c1, a.Farm, a.Floor, a.Section);
                         cmd.CommandText = String.Format("UPDATE rabbits SET r_parent = NULL WHERE r_id={0:d};", c1);
                         cmd.ExecuteNonQuery();
                     }
@@ -512,12 +533,12 @@ WHERE r_id={0:d};", rabFromID, mom, count), sql);
                     rd.Close();
                 }
             }
-            cmd.CommandText = String.Format("UPDATE rabbits SET r_parent = NULL, r_farm={1:d}, r_tier={2:d}, r_area={3:d}, r_tier={4:d} WHERE r_parent={0:d};", 
-                rid, place[0], place[1], place[2], place[3]);
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_parent = NULL, r_farm={1}, r_tier={2}, r_area={3}, r_tier_id={4} WHERE r_parent={0};", 
+                rid, DBHelper.Nullable(a.Farm), DBHelper.Nullable(a.TierId), a.Section, a.Floor
+            );
             cmd.ExecuteNonQuery();
-            cmd.CommandText = String.Format(@"COMMIT; CALL killRabbitDate({0:d},{1:d},'{2:s}',{3:s});",
-                rid, reason, notes, when);
 
+            cmd.CommandText = String.Format(@"COMMIT; CALL killRabbitDate({0:d}, {1:d}, '{2:s}', {3:s});", rid, reason, notes, when);
             cmd.ExecuteNonQuery();
         }
 
@@ -586,18 +607,19 @@ WHERE r_parent={1:d} AND r_id={2:d};", added, rid, yid), sql);
                 cmd.CommandText = String.Format("UPDATE rabbits SET r_group=r_group+{0:d} WHERE r_id={1:d};", rabFrom.Group, rabto);
                 cmd.ExecuteNonQuery();
                 freeTier(sql, rabfrom);
-                cmd.CommandText = String.Format("CALL killRabbit({0:d},2,'{1:d}');", rabfrom, String.Format("Объединен с {0:s} [{1:d}] в {2:s}", rabTo.NameFull, rabTo.ID, rabTo.AddressSmall));
+                cmd.CommandText = String.Format("CALL killRabbit({0:d}, 2, '{1:d}');", rabfrom, String.Format("Объединен с {0:s} [{1:d}] в {2:s}", rabTo.NameFull, rabTo.ID, rabTo.AddressSmall));
                 cmd.ExecuteNonQuery();
-            } else ///если подселение
-            {
+            } else {///если подселение            
                 freeTier(sql, rabfrom);
                 cmd.CommandText = String.Format("SELECT r_farm, r_tier, r_tier_id, r_area FROM rabbits WHERE r_id={0:d};", rabto);
                 rd = cmd.ExecuteReader();
                 if (rd.Read()) {
-                    cmd.CommandText = String.Format("UPDATE rabbits SET r_farm={0:d},r_tier={1:d},r_tier_id={2:d},r_area={3:d} WHERE r_id={4:d}", rd.GetInt32("r_farm"), rd.GetInt32("r_tier"), rd.GetInt32("r_tier_id"), rd.GetInt32("r_area"), rabfrom);
+                    cmd.CommandText = String.Format("UPDATE rabbits SET r_farm={0:d}, r_tier={1:d}, r_tier_id={2:d}, r_area={3:d} WHERE r_id={4:d}", rd.GetInt32("r_farm"), rd.GetInt32("r_tier"), rd.GetInt32("r_tier_id"), rd.GetInt32("r_area"), rabfrom);
                     rd.Close();
                     cmd.ExecuteNonQuery();
-                } else rd.Close();
+                } else {
+                    rd.Close();
+                }
             }
         }
 
@@ -697,12 +719,18 @@ FROM {1:s} WHERE r_id={2:d};", getOneRabbit_FieldsSet(dead ? RabAliveState.DEAD 
 
         public static OneRabbit[] getParents(MySqlConnection sql, int rabbit, int age)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT r_mother, r_father, r_surname, r_secname FROM rabbits WHERE r_id={0:d}", rabbit), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT 
+    Coalesce(r_mother, 0) AS r_mother, 
+    Coalesce(r_father, 0) AS r_father, 
+    Coalesce(r_surname, 0) AS r_father 
+    Coalesce(r_secname, 0) AS r_secname 
+FROM rabbits 
+WHERE r_id={0:d}", rabbit), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             int mom = 0, pap = 0, mname = 0, pname = 0;
             if (rd.Read()) {
-                mom = rd.IsDBNull(rd.GetOrdinal("r_mother")) ? 0 : rd.GetInt32("r_mother");
-                pap = rd.IsDBNull(rd.GetOrdinal("r_father")) ? 0 : rd.GetInt32("r_father");
+                mom = rd.GetInt32("r_mother");
+                pap = rd.GetInt32("r_father");
                 mname = rd.GetInt32("r_surname");
                 pname = rd.GetInt32("r_secname");
             }
@@ -711,9 +739,9 @@ FROM {1:s} WHERE r_id={2:d};", getOneRabbit_FieldsSet(dead ? RabAliveState.DEAD 
             if (mom == 0) {
                 mom = getRabByName(sql, mname, age);
             }
-            if (pap == 0){
+            if (pap == 0) {
                 pap = getRabByName(sql, pname, age);
-                }
+            }
             return new OneRabbit[] { getLiveDeadRabbit(sql, mom), getLiveDeadRabbit(sql, pap) };
         }
 
@@ -724,9 +752,11 @@ FROM {1:s} WHERE r_id={2:d};", getOneRabbit_FieldsSet(dead ? RabAliveState.DEAD 
     date,
     v_name,
     Greatest(CAST(v.v_duration as SIGNED)-CAST(to_days(NOW())-to_days(date) AS SIGNED),0),
-    unabled FROM rab_vac rv 
-INNER JOIN vaccines v ON rv.v_id=v.v_id
-WHERE r_id={0:d} ORDER BY date", rabId), sql);
+    unabled 
+FROM rab_vac rv 
+    INNER JOIN vaccines v ON rv.v_id=v.v_id
+WHERE r_id={0:d} 
+ORDER BY date", rabId), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             List<RabVac> result = new List<RabVac>();
             while (rd.Read()) {
@@ -815,9 +845,15 @@ WHERE r_id={0:d} ORDER BY date", rabId), sql);
         {
             return String.Format(@"r_id,
     r_sex, r_born, r_rate,
-    r_flags, r_name, r_surname, r_secname,
-    r_mother, r_father,
-    {1:s}place(r_id) address, r_group, r_breed, 
+    r_flags, 
+    Coalesce(r_name,0) AS r_name,
+    Coalesce(r_surname,0) AS r_surname,
+    Coalesce(r_secname,0) AS r_secname,
+    Coalesce(r_mother,0) AS r_mother,
+    Coalesce(r_father,0) AS r_father,
+    {1:s}place(r_id) address, 
+    r_group, 
+    r_breed, 
     r_zone,
     r_notes,
     (SELECT COALESCE(GROUP_CONCAT(g_genom ORDER BY g_genom ASC SEPARATOR ' '),'') FROM genoms WHERE g_id=r_genesis) genom,

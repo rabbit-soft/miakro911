@@ -30,7 +30,7 @@ ALTER TABLE  `logs`
 		ON UPDATE CASCADE;
 
 
-
+# -- rabbits
 
 ALTER TABLE  `rabbits` ENGINE = INNODB;
 
@@ -46,7 +46,6 @@ UPDATE rabbits SET r_father = NULL WHERE r_father = 0;
 ALTER TABLE  `rabbits` ADD FOREIGN KEY (`r_parent`) REFERENCES  `rabbits` (`r_id`) 
 	ON DELETE SET NULL 
 	ON UPDATE CASCADE;
-
 	
 ALTER TABLE  `rabbits` CHANGE  `r_farm`  `r_farm` INT( 10 ) UNSIGNED NULL DEFAULT NULL ;
 UPDATE rabbits SET r_farm = NULL WHERE r_farm =0;
@@ -89,5 +88,40 @@ ALTER TABLE  `rabbits` ADD FOREIGN KEY (`r_secname`) REFERENCES  `names` (`n_id`
 ALTER TABLE  `rabbits` CHANGE  `r_born`  `r_born` DATE NULL DEFAULT NULL ;
 ALTER TABLE  `rabbits` CHANGE  `r_last_fuck_okrol`  `r_last_fuck_okrol` DATE NULL DEFAULT NULL ;
 
+#--dead
+
+ALTER TABLE  `dead` CHANGE  `r_parent`  `r_parent` INT( 10 ) UNSIGNED NULL DEFAULT NULL ;
+UPDATE dead SET r_parent = NULL WHERE r_parent =0;
+
+ALTER TABLE  `dead` CHANGE  `r_mother`  `r_mother` INT( 10 ) UNSIGNED NULL DEFAULT NULL ;
+ALTER TABLE  `dead` CHANGE  `r_father`  `r_father` INT( 10 ) UNSIGNED NULL DEFAULT NULL ;
+
+UPDATE dead SET r_mother = NULL WHERE r_mother = 0;
+UPDATE dead SET r_father = NULL WHERE r_father = 0;
+	
+ALTER TABLE  `dead` CHANGE  `r_farm`  `r_farm` INT( 10 ) UNSIGNED NULL DEFAULT NULL ;
+UPDATE dead SET r_farm = NULL WHERE r_farm =0;
+	
+ALTER TABLE  `dead` CHANGE  `r_tier`  `r_tier` INT( 10 ) UNSIGNED NULL DEFAULT NULL ;
+UPDATE dead SET r_tier=null WHERE r_tier=0;
+		
+ALTER TABLE  `dead` CHANGE  `r_name`  `r_name` INT( 10 ) UNSIGNED NULL DEFAULT NULL ;
+UPDATE dead SET r_name = NULL WHERE r_name =0;
+	
+ALTER TABLE  `dead` CHANGE  `r_surname`  `r_surname` INT( 10 ) UNSIGNED NULL DEFAULT NULL ;
+UPDATE dead SET r_surname = NULL WHERE r_surname =0;
+	
+ALTER TABLE  `dead` CHANGE  `r_secname`  `r_secname` INT( 10 ) UNSIGNED NULL DEFAULT NULL ;
+UPDATE dead SET r_secname = NULL WHERE r_secname =0;
+
+
+
+ALTER TABLE  `import_ascendants` 
+	CHANGE  `r_mother`  `r_mother` INT( 10 ) UNSIGNED NULL DEFAULT NULL,
+	CHANGE  `r_father`  `r_father` INT( 10 ) UNSIGNED NULL DEFAULT NULL,
+	CHANGE  `r_name`  `r_name` INT( 10 ) UNSIGNED NULL DEFAULT NULL,
+	CHANGE  `r_surname`  `r_surname` INT( 10 ) UNSIGNED NULL DEFAULT NULL,
+	CHANGE  `r_secname`  `r_secname` INT( 10 ) UNSIGNED NULL DEFAULT NULL;
+		
 
 UPDATE options SET o_value = '17' WHERE o_name = 'db' AND o_subname = 'version';

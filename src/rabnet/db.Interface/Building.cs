@@ -108,7 +108,9 @@ namespace rabnet
 
         public string Areas(int sec)
         {
-            if (sec > Sections) return "";
+            if (sec > Sections) {
+                return "";
+            }
             return (Floor == 0 ? "" : (Floor == 1 ? "^" : "-")) + Building.GetSecRus(Type, sec, Delims);
         }
 
@@ -490,7 +492,9 @@ namespace rabnet
     {
         public Address SearchByMedName(string medAddress)
         {
-            if (medAddress == Rabbit.NULL_ADDRESS) return null;
+            if (medAddress == Rabbit.NULL_ADDRESS) {
+                return null;
+            }
 
             for (int b = 0; b < this.Count; b++) {
                 for (int sec = 0; sec < this[b].Sections; sec++) {
@@ -505,15 +509,38 @@ namespace rabnet
 
     public class Address
     {
+        /// <summary>
+        /// МИНИферма
+        /// </summary>
         public int Farm;
+        /// <summary>
+        /// Ярус (1,2)
+        /// </summary>
         public int Floor;
-        public int Section;
+        /// <summary>
+        /// Клетка (1,2,3,4)
+        /// </summary>
+        public int Section;       
 
         public Address(int farm, int floor, int sec)
         {
             this.Farm = farm;
             this.Floor = floor;
             this.Section = sec;
+        }
+    }
+
+    public class AddressR : Address
+    {
+        /// <summary>
+        /// ID яруса в базе
+        /// </summary>
+        public int TierId = 0;
+
+        public AddressR(int farm, int floor, int sec, int tier)
+            :base(farm, floor, sec)
+        {
+            this.TierId = tier;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace db.mysql
             int id = rd.GetInt32("t_id");
             int farm = rd.GetInt32("m_id");
             int tid = 0;
-            if (rd.IsDBNull(rd.GetOrdinal("m_lower"))) {
+            if (rd.GetInt32("m_lower") != 0) {
                 if (rd.GetInt32("m_upper") == id) {
                     tid = 1;
                 } else {
@@ -108,7 +108,10 @@ namespace db.mysql
         {
             int nm = options.safeBool(Filters.DBL_SURNAME) ? 2 : 1;
             return String.Format(@"SELECT 
-    t_id, m_upper, m_lower, m_id, t_type, t_delims, t_nest, t_heater,
+    t_id,
+    Coalesce(m_upper,0) AS m_upper, 
+    Coalesce(m_lower,0) AS m_lower,
+    m_id, t_type, t_delims, t_nest, t_heater,
     t_repair,
     t_notes,
     t_busy1, t_busy2, t_busy3, t_busy4,
@@ -130,7 +133,7 @@ WHERE (m_upper=t_id OR m_lower=t_id) " + makeWhere() + ";";
 
         internal static BldTreeData getTree(int parent, MySqlConnection con, BldTreeData par)
         {
-            MySqlCommand cmd = new MySqlCommand(@"SELECT b_id, b_name, b_farm FROM buildings WHERE b_parent=" + parent.ToString() + " ORDER BY b_farm ASC;", con);
+            MySqlCommand cmd = new MySqlCommand(@"SELECT b_id, b_name, Coalesce(b_farm,0) AS b_farm FROM buildings WHERE b_parent=" + parent.ToString() + " ORDER BY b_farm ASC;", con);
             MySqlDataReader rd = cmd.ExecuteReader();
             BldTreeData res = par;
             if (par == null) {
@@ -139,12 +142,13 @@ WHERE (m_upper=t_id OR m_lower=t_id) " + makeWhere() + ";";
 
             List<BldTreeData> lst = new List<BldTreeData>();
             while (rd.Read()) {
-                int frm = rd.IsDBNull(rd.GetOrdinal("b_farm")) ? 0 : rd.GetInt32(rd.GetOrdinal("b_farm"));
+                int frm = rd.GetInt32(rd.GetOrdinal("b_farm"));
                 String nm = rd.GetString(rd.GetOrdinal("b_name"));
-                BldTreeData dt = new BldTreeData(rd.GetInt32(rd.GetOrdinal("b_id")), frm, (frm == 0 ? nm : "№" + Building.Format(nm.Remove(0, 1))), res.Path);
+                BldTreeData dt = new BldTreeData(rd.GetInt32("b_id"), frm, (frm == 0 ? nm : "№" + Building.Format(nm.Remove(0, 1))), res.Path);
                 lst.Add(dt);
             }
             rd.Close();
+
             if (lst.Count > 0) {
                 foreach (BldTreeData td in lst) {
                     getTree(td.ID, con, td);
@@ -157,7 +161,10 @@ WHERE (m_upper=t_id OR m_lower=t_id) " + makeWhere() + ";";
         internal static Building getTier(int tier, MySqlConnection con)
         {
             MySqlCommand cmd = new MySqlCommand(@"SELECT 
-    t_id, m_upper, m_lower, m_id, t_type, t_delims, t_nest, t_heater,
+    t_id, 
+    Coalesce(m_upper,0) AS m_upper, 
+    Coalesce(m_lower,0) AS m_lower,
+    m_id, t_type, t_delims, t_nest, t_heater,
     t_repair,
     COALESCE(t_notes,'') t_notes, t_busy1, t_busy2, t_busy3, t_busy4,
     rabname(t_busy1,1) r1, 
@@ -202,7 +209,10 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_id=" + tier.ToString() + ";", con);
                 busy += ")";
             }
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT 
-    t_id, m_upper, m_lower, m_id, t_type, t_delims, t_nest, t_heater, t_repair, t_notes, 
+    t_id, 
+    Coalesce(m_upper,0) AS m_upper, 
+    Coalesce(m_lower,0) AS m_lower, 
+    m_id, t_type, t_delims, t_nest, t_heater, t_repair, t_notes, 
     t_busy1, t_busy2, t_busy3, t_busy4 
 FROM minifarms, tiers 
 WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 {0:s} 
@@ -213,6 +223,7 @@ ORDER BY m_id;", busy != "" ? "AND " + busy : ""), sql);
                 bld.Add(GetBuilding(rd, false, false) as Building);
             }
             rd.Close();
+
             return bld;
         }
 
@@ -246,8 +257,8 @@ ORDER BY m_id;", busy != "" ? "AND " + busy : ""), sql);
                     "INSERT INTO buildings(b_name, b_parent, b_level, b_farm) VALUES('{0}', {1}, {2}, {3});",
                     name, 
                     parent, 
-                    (parent == 0 ? "0" : String.Format("(SELECT b2.b_level+1 FROM buildings b2 WHERE b2.b_id={0:d})", parent)), 
-                    (frm == 0 ? "null" : frm.ToString())
+                    (parent == 0 ? "0" : String.Format("(SELECT b2.b_level+1 FROM buildings b2 WHERE b2.b_id={0:d})", parent)),
+                    DBHelper.Nullable(frm)
                 ), sql
             );
             _logger.Debug("db.mysql.Building: " + cmd.CommandText);
@@ -439,8 +450,8 @@ ORDER BY m_id;", busy != "" ? "AND " + busy : ""), sql);
             MySqlCommand cmd = new MySqlCommand(
                 String.Format(
                     "INSERT INTO minifarms(m_upper, m_lower, m_id) VALUES({0}, {1}, {2});",
-                    (t1 == 0 ? "NULL" : t1.ToString()),
-                    (t2 == 0 ? "NULL" : t2.ToString()), 
+                    DBHelper.Nullable(t1),
+                    DBHelper.Nullable(t2), 
                     id
                 ),
                 sql
@@ -487,16 +498,19 @@ FROM tiers WHERE t_id={0:d};", tid), sql);
 
         internal static int[] getTiersFromFarm(MySqlConnection sql, int fid)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT m_upper, m_lower 
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT 
+    Coalesce(m_upper,0) AS m_upper,
+    Coalesce(m_lower,0) AS m_lower
 FROM minifarms 
 WHERE m_id={0:d};", fid), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             int t1 = 0, t2 = 0;
             if (rd.Read()) {
-                t1 = rd.IsDBNull(rd.GetOrdinal("m_upper")) ? 0 : rd.GetInt32("m_upper");
-                t2 = rd.IsDBNull(rd.GetOrdinal("m_lower")) ? 0 : rd.GetInt32("m_lower");
+                t1 = rd.GetInt32("m_upper");
+                t2 = rd.GetInt32("m_lower");
             }
             rd.Close();
+
             return new int[] { t1, t2 };
         }
 

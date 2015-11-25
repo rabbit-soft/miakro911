@@ -118,16 +118,14 @@ namespace gamlib
                         _log.DebugFormat("downloaded updateFile '{0:s}' is corrupt, try again to download ", ufiles[i].PathName);
                         File.Delete(ufiles[i].LocalFilePath + NEW);
                         fail++;
-                        if (fail == 5)
-                        {
+                        if (fail == 5) {
                             _log.ErrorFormat("File " + ufiles[i].PathName + " is corrupt");
                             break;
                         }
                         continue;
                     }
                     _log.DebugFormat("rename file {0:s} to {1:s}  version: {2:s}", ufiles[i].LocalFilePath, ufiles[i].PathName + DEL, curFI != null ? curFI.FileVersion : "null");
-                    if (File.Exists(ufiles[i].LocalFilePath))
-                    {
+                    if (File.Exists(ufiles[i].LocalFilePath)) {
                         if (File.Exists(ufiles[i].LocalFilePath + DEL))
                             File.Delete(ufiles[i].LocalFilePath + DEL);
                         File.Move(ufiles[i].LocalFilePath, ufiles[i].LocalFilePath + DEL);
@@ -140,8 +138,9 @@ namespace gamlib
             catch (Exception exc)
             {
                 _log.Error(exc);
-                if (OnError != null)
+                if (OnError != null) {
                     OnError(exc);
+                }
             }
         }
 

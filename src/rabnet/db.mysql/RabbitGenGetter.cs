@@ -11,20 +11,26 @@ namespace db.mysql
     {
         public static RabbitGen GetRabbitGen(MySqlConnection sql, int rid)
         {
-            if (rid == 0) return null;
+            if (rid == 0) {
+                return null;
+            }
 
             const string QUERY = @"SELECT	
-        r_mother, 
-        r_father, 
+        Coalesce(r_mother,0) AS r_mother,
+        Coalesce(r_father,0) AS r_father,
 		r_sex, 
-		(SELECT n_name FROM names WHERE n_id=r_name) name, 
-		(SELECT n_surname FROM names WHERE n_id=r_surname) surname, 
-		(SELECT n_surname FROM names WHERE n_id=r_secname) secname,
-		(SELECT b_color FROM breeds WHERE b_id=r_breed) b_color,
+		Coalesce(n1.n_name, 0) name, 
+		Coalesce(n2.n_surname, 0) surname, 
+		Coalesce(n2.n_surname, 0) secname,
+		b.b_color,
 		r_breed,
-		(SELECT b_name FROM breeds WHERE b_id=r_breed) b_name
+		b.b_name
 FROM {0:s}
-WHERE r_id={1:d}
+    INNER JOIN breeds b ON b.b_id = r_breed
+    LEFT JOIN names n1 ON n1.n_id = r_name
+    LEFT JOIN names n2 ON n2.n_id = r_surname
+    LEFT JOIN names n3 ON n3.n_id = r_secname
+WHERE r_id = {1:d}
 LIMIT 1;";
             Boolean IsDead = false;
             MySqlCommand cmd = new MySqlCommand(String.Format(QUERY, "rabbits", rid), sql);
@@ -42,8 +48,8 @@ LIMIT 1;";
             r.ID = rid;
 
             if (rd.Read()) {
-                r.FatherId = rd.IsDBNull(rd.GetOrdinal("r_father")) ? 0 : rd.GetInt32("r_father"); //0
-                r.MotherId = rd.IsDBNull(rd.GetOrdinal("r_mother")) ? 0 : rd.GetInt32("r_mother"); //1
+                r.FatherId = rd.GetInt32("r_father"); //0
+                r.MotherId = rd.GetInt32("r_mother"); //1
                 //string sx = rd.GetString("r_sex"); //2
                 //r.Sex = Rabbit.SexType.VOID;
                 //if (sx == "male")
@@ -57,9 +63,9 @@ LIMIT 1;";
                 //}
                 r.Sex = Rabbit.GetSexType(rd.GetString("r_sex"));
 
-                r.Name = rd.IsDBNull(rd.GetOrdinal("name")) ? "" : rd.GetString("name"); //3
-                r.Surname = rd.IsDBNull(rd.GetOrdinal("surname")) ? "" : rd.GetString("surname"); //4
-                r.Secname = rd.IsDBNull(rd.GetOrdinal("secname")) ? "" : rd.GetString("secname"); //5
+                r.Name = rd.GetString("name"); //3
+                r.Surname = rd.GetString("surname"); //4
+                r.Secname = rd.GetString("secname"); //5
                 r.BreedColorName = rd.IsDBNull(rd.GetOrdinal("b_color")) ? "" : rd.GetString("b_color"); //5
 
                 r.IsDead = IsDead;
@@ -79,6 +85,7 @@ LIMIT 1;";
             }
             //			rd.HasRows
             rd.Close();
+
             if (r != null) {
                 getRabbitPriplodK(sql, ref r);
                 getRabbitRodK(sql, ref r);
@@ -174,7 +181,9 @@ WHERE f_rabid={0:d};", rabbit.ID), sql);
         /// <returns></returns>
         private static RabTreeData getRabbitGenTree(MySqlConnection con, int rabId, int birthplace, int nameId, Stack<int> lineage)//, int level)
         {
-            if (rabId == 0) return null;
+            if (rabId == 0) {
+                return null;
+            }
             //проверка на рекурсию, которая могла возникнуть после конвертации из старой mia-файла                        
             if (lineage.Count > 700) {
                 //_logger.Warn("cnt:" + lineage.Count.ToString() + " we have suspect infinity inheritance loop: " + String.Join(",", Array.ConvertAll<int, string>(lineage.ToArray(), new Converter<int, string>(convIntToString))));
@@ -187,12 +196,12 @@ WHERE f_rabid={0:d};", rabbit.ID), sql);
             bool inFarm = true;
             string query = @"SELECT
         r_id,
-        r_name,
-        r_surname,
-        r_secname,
         {0:s} name,
-        r_mother,
-        r_father,
+        Coalesce(r_name,0) AS r_name,
+        Coalesce(r_surname,0) AS r_surname,
+        Coalesce(r_secname,0) AS r_secname,      
+        Coalesce(r_mother, 0) AS r_mother,
+        Coalesce(r_father, 0) AS r_father,
         r_bon,
         r_born,
         r_breed,
@@ -200,11 +209,10 @@ WHERE f_rabid={0:d};", rabbit.ID), sql);
         TO_DAYS(NOW())-TO_DAYS(r_born) age,
         Coalesce(r_birthplace,0) birthplace
     FROM {1:s} 
-    INNER JOIN breeds ON b_id=r_breed
+        INNER JOIN breeds ON b_id = r_breed
     WHERE r_id={2:d} LIMIT 1;";
 #if !DEMO
-            if (birthplace != 0)//если ищем импортированного кролика 
-            {
+            if (birthplace != 0) {//если ищем импортированного кролика             
                 List<OneImport> lst = Import.Search(con, new Filters(Filters.RAB_ID, rabId.ToString()));
                 inFarm = lst.Count > 0;///если кролик не был импортирован в поголовье
                 ///может возникнуть ситуация, что импортированный кролик имеет id родителя, который содержится и в import_ascendants и в imports
@@ -239,18 +247,19 @@ WHERE f_rabid={0:d};", rabbit.ID), sql);
                 res = new RabTreeData(
                     rd.GetInt32("r_id"), 
                     rd.GetString("name"),
-                    rd.IsDBNull(rd.GetOrdinal("r_name")) ? 0 : rd.GetInt32("r_name"), 
+                    rd.GetInt32("r_name"), 
                     rd.GetDateTime("r_born"), 
                     rd.GetInt32("r_breed")
                 );
                 res.Bon = Rabbit.GetFBon(rd.GetString("r_bon"), true);
                 res.BreedShortName = rd.GetString("b_short_name");
                 res.BirthPlace = rd.GetInt32("birthplace");
-                int mom = rd.IsDBNull(rd.GetOrdinal("r_mother")) ? 0 : rd.GetInt32("r_mother");
-                int dad = rd.IsDBNull(rd.GetOrdinal("r_father")) ? 0 : rd.GetInt32("r_father");
-                int surname = rd.IsDBNull(rd.GetOrdinal("r_surname")) ? 0 : rd.GetInt32("r_surname");
-                int secname = rd.IsDBNull(rd.GetOrdinal("r_secname")) ? 0 : rd.GetInt32("r_secname");
+                int mom = rd.GetInt32("r_mother");
+                int dad = rd.GetInt32("r_father");
+                int surname = rd.GetInt32("r_surname");
+                int secname =rd.GetInt32("r_secname");
                 rd.Close();
+
                 res.State = state;
                 RabTreeData m = getRabbitGenTree(con, mom, birthplace, surname, lineage);
                 RabTreeData d = getRabbitGenTree(con, dad, birthplace, secname, lineage);
@@ -268,11 +277,11 @@ WHERE f_rabid={0:d};", rabbit.ID), sql);
         public static RabTreeData GetRabbitGenTree(MySqlConnection con, int rabbit)//, int level)
         {
             Stack<int> lineage = new Stack<int>();
-            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT Coalesce(r_birthplace,0) birthplace, r_name FROM rabbits WHERE r_id={0:d} LIMIT 1;", rabbit), con);
+            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT Coalesce(r_birthplace,0) birthplace, Coalesce(r_name,0) AS r_name FROM rabbits WHERE r_id={0:d} LIMIT 1;", rabbit), con);
             MySqlDataReader rd = cmd.ExecuteReader();
             rd.Read();
             int birthplace = rd.GetInt32("birthplace");
-            int nameId = rd.IsDBNull(rd.GetOrdinal("r_name")) ? 0 : rd.GetInt32("r_name");
+            int nameId = rd.GetInt32("r_name");
             rd.Close();
             return getRabbitGenTree(con, rabbit, birthplace, nameId, lineage);
         }

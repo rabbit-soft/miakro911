@@ -212,7 +212,9 @@ namespace rabnet.forms
                     tpFucks.Text = "Вязки/Окролы";
                 }
             }
-            if (_rab.Group != 1) return;
+            if (_rab.Group != 1) {
+                return;
+            }
 
             addFemaleTabs();
             nokuk.Checked = _rab.NoKuk;
@@ -472,15 +474,17 @@ namespace rabnet.forms
         private void button5_Click(object sender, EventArgs e)
         {
             String ex = "";
-            if (name.Text == "" && surname.Text == "" && secname.Text == "") ex = "У кролика нет имени!\n";
+            if (name.Text == "" && surname.Text == "" && secname.Text == "") {
+                ex = "У кролика нет имени!\n";
+            }
             //if (rab.address == OneRabbit.NullAddress) ex += "У кролика нет места жительства!\n";
             if (gens.Items.Count == 0) {
                 int level = 0;
                 int rab_gen_depth = Engine.opt().getIntOption(Options.OPT_ID.RAB_GEN_DEPTH);
                 RabbitGen.GetFullGenLevels(_rab.RabGenoms, ref level);
-                if (rab_gen_depth > level) {
-                    ex += "У кролика нет ни одного Номера Гена!\n";
-                }
+                //if (rab_gen_depth > level) {
+                //    ex += "У кролика нет ни одного Номера Гена!\n";
+                //}
             }
             if (ex != "") {
                 _can_commit = false;
