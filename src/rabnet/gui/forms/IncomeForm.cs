@@ -19,10 +19,11 @@ namespace rabnet.forms
             initialHint();
             _zones = Engine.db().catalogs().getZones();
             _breeds = Engine.db().catalogs().getBreeds();
-            if (_breeds.Count == 0)
+            if (_breeds.Count == 0) {
                 throw new ApplicationException(@"Справочник пород пуст
 Добавьте породу в форме Пород (Вид->Породы)
 и попытайтесь снова");
+            }
             fillZones();
         }
 
@@ -47,17 +48,22 @@ namespace rabnet.forms
             String tx = zones.Text;
             zones.Items.Clear();
             zones.Items.Add("");
-            foreach (int k in _zones.Keys)
+            foreach (int k in _zones.Keys) {
                 zones.Items.Add(_zones[k]);
+            }
             zones.Text = tx;
         }
 
         private int getZone()
         {
-            if (zones.Text == "") return 0;
-            foreach (int k in _zones.Keys)
-                if (zones.Text == _zones[k])
+            if (zones.Text == "") {
+                return 0;
+            }
+            foreach (int k in _zones.Keys) {
+                if (zones.Text == _zones[k]) {
                     return k;
+                }
+            }
             return 0;
         }
 
@@ -118,11 +124,13 @@ namespace rabnet.forms
 
         private void btPassport_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count != 1)
+            if (listView1.SelectedItems.Count != 1) {
                 return;
+            }
             RabbitInfo dlg = new RabbitInfo(listView1.SelectedItems[0].Tag as RabNetEngRabbit);
-            if (dlg.ShowDialog() == DialogResult.Cancel && (listView1.SelectedItems[0].Tag as RabNetEngRabbit).NameID == 0)
+            if (dlg.ShowDialog() == DialogResult.Cancel && (listView1.SelectedItems[0].Tag as RabNetEngRabbit).NameID == 0) {
                 rbs.RemoveAt(rbs.Count - 1);
+            }
             update(false);
         }
 
@@ -133,13 +141,16 @@ namespace rabnet.forms
 
         private void btDelete_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count != 1)
+            if (listView1.SelectedItems.Count != 1) {
                 return;
+            }
             int i = 0;
             while (i < rbs.Count) {
-                if (rbs[i] == (RabNetEngRabbit)listView1.SelectedItems[0].Tag)
+                if (rbs[i] == (RabNetEngRabbit)listView1.SelectedItems[0].Tag) {
                     rbs.RemoveAt(i);
-                else i++;
+                } else {
+                    i++;
+                }
             }
             //            rbs.Remove(listView1.SelectedItems[0].Tag as RabNetEngRabbit);
             update(false);
