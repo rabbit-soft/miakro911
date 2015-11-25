@@ -1,34 +1,4 @@
-﻿DROP TABLE IF EXISTS users;
-CREATE TABLE users (
-  u_id int(10) unsigned NOT NULL AUTO_INCREMENT,
-  u_name varchar(50) DEFAULT NULL,
-  u_password varchar(50) DEFAULT NULL,
-  u_group enum('worker','admin','zootech','butcher') NOT NULL DEFAULT 'admin',
-  u_deleted tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (u_id),
-  KEY u_name (u_name)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS options;
-CREATE TABLE `options` (
-  o_name varchar(30) NOT NULL DEFAULT '',
-  o_subname varchar(30) NOT NULL DEFAULT '',
-  o_uid int(10) unsigned NOT NULL DEFAULT '0',
-  o_value text,
-  KEY o_name (o_name,o_subname),
-  KEY o_uid (o_uid)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS filters;
-CREATE TABLE filters (
-  f_type varchar(30) NOT NULL,
-  f_name varchar(30) NOT NULL,
-  f_filter text,
-  KEY f_type (f_type),
-  KEY f_name (f_name)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS breeds;
+﻿DROP TABLE IF EXISTS breeds;
 CREATE TABLE breeds (
   b_id int(10) unsigned NOT NULL AUTO_INCREMENT,
   b_name varchar(50) NOT NULL,
@@ -36,55 +6,6 @@ CREATE TABLE breeds (
   b_color varchar(100) NOT NULL DEFAULT 'White',
   PRIMARY KEY (b_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS names;
-CREATE TABLE `names` (
-  n_id int(10) unsigned NOT NULL AUTO_INCREMENT,
-  n_sex enum('male','female') NOT NULL,
-  n_name varchar(50) NOT NULL,
-  n_surname varchar(50) NOT NULL,
-  n_use int(10) unsigned NOT NULL DEFAULT '0',
-  n_block_date datetime DEFAULT NULL,
-  PRIMARY KEY (n_id),
-  UNIQUE KEY n_name (n_name,n_sex),
-  KEY n_sex (n_sex),
-  KEY n_use (n_use),
-  KEY n_block_date (n_block_date)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS tiers;
-CREATE TABLE tiers (
-  t_id int(10) unsigned NOT NULL AUTO_INCREMENT,
-  t_type enum('none','female','dfemale','complex','jurta','quarta','vertep','barin','cabin') NOT NULL,
-  t_repair tinyint(1) NOT NULL DEFAULT '0',
-  t_notes text,
-  t_busy1 int(10) unsigned DEFAULT '0',
-  t_busy2 int(10) unsigned DEFAULT '0',
-  t_busy3 int(10) unsigned DEFAULT '0',
-  t_busy4 int(10) unsigned DEFAULT '0',
-  t_delims varchar(3) NOT NULL DEFAULT '000',
-  t_heater varchar(2) NOT NULL DEFAULT '00',
-  t_nest varchar(2) NOT NULL DEFAULT '00',
-  PRIMARY KEY (t_id),
-  KEY t_type (t_type),
-  KEY t_repair (t_repair),
-  KEY t_busy1 (t_busy1),
-  KEY t_busy2 (t_busy2),
-  KEY t_busy3 (t_busy3),
-  KEY t_busy4 (t_busy4),
-  KEY t_heater (t_heater),
-  KEY t_nest (t_nest)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS minifarms;
-CREATE TABLE minifarms (
-  m_id int(10) unsigned NOT NULL AUTO_INCREMENT,
-  m_upper int(10) unsigned DEFAULT NULL,
-  m_lower int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (m_id),
-  KEY m_upper (m_upper),
-  KEY m_lower (m_lower)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS buildings;
 CREATE TABLE buildings (
@@ -100,20 +21,33 @@ CREATE TABLE buildings (
   KEY b_level (b_level)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS zones;
-CREATE TABLE zones (
-  z_id int(10) unsigned NOT NULL,
-  z_name varchar(50) NOT NULL,
-  z_short_name varchar(20) NOT NULL,
-  PRIMARY KEY (z_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS butcher;
+CREATE TABLE butcher (
+  b_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  b_date datetime NOT NULL COMMENT 'дата взвешивания',
+  b_prodtype int(10) unsigned NOT NULL COMMENT 'тип продукта',
+  b_amount float unsigned NOT NULL COMMENT 'количество ГП',
+  b_user int(10) unsigned NOT NULL COMMENT 'пользователь',
+  PRIMARY KEY (b_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='готовая продукция';
 
-DROP TABLE IF EXISTS rabbits;
-CREATE TABLE rabbits (
-  r_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS clients;
+CREATE TABLE clients (
+  c_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  c_org varchar(45) NOT NULL COMMENT 'название организации',
+  c_address varchar(100) NOT NULL,
+  PRIMARY KEY (c_id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS dead;
+CREATE TABLE IF NOT EXISTS dead (
+  d_date datetime NOT NULL,
+  d_reason int(10) unsigned NOT NULL DEFAULT '0',
+  d_notes text,
+  r_id int(10) unsigned NOT NULL,
   r_parent int(10) unsigned DEFAULT NULL,
-  r_mother int(10) unsigned DEFAULT NULL,
   r_father int(10) unsigned DEFAULT NULL,
+  r_mother int(10) unsigned DEFAULT NULL,
   r_sex enum('male','female','void') NOT NULL,
   r_bon varchar(5) NOT NULL DEFAULT '10000',
   r_name int(10) unsigned DEFAULT NULL,
@@ -128,21 +62,18 @@ CREATE TABLE rabbits (
   r_rate int(11) NOT NULL DEFAULT '0',
   r_group int(10) unsigned NOT NULL DEFAULT '1',
   r_breed int(10) unsigned NOT NULL DEFAULT '0',
-  r_flags varchar(10) NOT NULL DEFAULT '00000' COMMENT '[0]Готовая Продукция [1]Готов к реализации [2]Брак [3]Не куковать [4]Потеря лактации',
+  r_flags varchar(10) NOT NULL DEFAULT '00000',
   r_zone int(10) unsigned NOT NULL DEFAULT '0',
-  r_born date DEFAULT NULL,
+  r_born datetime DEFAULT NULL,
   r_birthplace int(11) DEFAULT NULL COMMENT 'программа откуда экспортирован кролик',
   r_genesis int(10) unsigned NOT NULL DEFAULT '0',
   r_status tinyint(3) unsigned NOT NULL DEFAULT '0',
-  r_last_fuck_okrol date DEFAULT NULL,
-  r_event enum('none','sluchka','vyazka','kuk','syntetic') DEFAULT NULL,
-  r_event_date datetime DEFAULT NULL,
+  r_last_fuck_okrol datetime DEFAULT NULL,
   r_lost_babies int(10) unsigned DEFAULT NULL,
   r_overall_babies int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (r_id),
+  UNIQUE KEY r_id (r_id),
   KEY r_parent (r_parent),
-  KEY r_mother (r_mother),
-  KEY r_father (r_father),
   KEY r_sex (r_sex),
   KEY r_name (r_name),
   KEY r_surname (r_surname),
@@ -153,8 +84,27 @@ CREATE TABLE rabbits (
   KEY r_breed (r_breed),
   KEY r_zone (r_zone),
   KEY r_status (r_status),
-  KEY r_born (r_born)
+  KEY r_born (r_born),
+  KEY d_date (d_date),
+  KEY d_reason (d_reason)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS deadreasons;
+CREATE TABLE deadreasons (
+  d_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  d_name varchar(50) NOT NULL,
+  d_rate int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (d_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS filters;
+CREATE TABLE filters (
+  f_type varchar(30) NOT NULL,
+  f_name varchar(30) NOT NULL,
+  f_filter text,
+  KEY f_type (f_type),
+  KEY f_name (f_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS fucks;
 CREATE TABLE fucks (
@@ -201,80 +151,39 @@ CREATE TABLE genoms (
   KEY g_genom (g_genom)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS weights;
-CREATE TABLE weights (
-  w_rabid int(10) unsigned NOT NULL,
-  w_date datetime NOT NULL,
-  w_weight int(10) unsigned NOT NULL,
-  KEY w_rabid (w_rabid)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS import;
+CREATE TABLE `import` (
+  t_rab_id int(10) unsigned NOT NULL,
+  t_date datetime NOT NULL,
+  t_count int(10) unsigned DEFAULT NULL,
+  t_client int(11) DEFAULT NULL COMMENT 'id клиента из которой экспортирован, с которой привsезен кролик',
+  t_old_r_id int(11) DEFAULT NULL COMMENT 'id кролика в программе экспортера',
+  t_file_guid varchar(40) DEFAULT NULL COMMENT 'guid файла экспорта',
+  PRIMARY KEY (t_rab_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Таблица привозов';
 
-DROP TABLE IF EXISTS deadreasons;
-CREATE TABLE deadreasons (
-  d_id int(10) unsigned NOT NULL AUTO_INCREMENT,
-  d_name varchar(50) NOT NULL,
-  d_rate int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (d_id)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS dead;
-CREATE TABLE dead (
-  d_date datetime NOT NULL,
-  d_reason int(10) unsigned NOT NULL DEFAULT '0',
-  d_notes text,
+DROP TABLE IF EXISTS import_ascendants;
+CREATE TABLE import_ascendants (
   r_id int(10) unsigned NOT NULL,
-  r_parent int(10) unsigned NOT NULL DEFAULT '0',
-  r_father int(10) unsigned NOT NULL DEFAULT '0',
-  r_mother int(10) unsigned NOT NULL DEFAULT '0',
+  r_mother int(10) unsigned DEFAULT NULL,
+  r_father int(10) unsigned DEFAULT NULL,
   r_sex enum('male','female','void') NOT NULL,
   r_bon varchar(5) NOT NULL DEFAULT '10000',
-  r_name int(10) unsigned NOT NULL DEFAULT '0',
-  r_surname int(10) unsigned NOT NULL DEFAULT '0',
-  r_secname int(10) unsigned NOT NULL DEFAULT '0',
-  r_notes text,
-  r_okrol int(10) unsigned NOT NULL DEFAULT '0',
-  r_farm int(10) unsigned NOT NULL DEFAULT '0',
-  r_tier int(10) unsigned NOT NULL DEFAULT '0',
-  r_tier_id tinyint(3) unsigned NOT NULL DEFAULT '0',
-  r_area int(10) unsigned NOT NULL DEFAULT '0',
-  r_rate int(11) NOT NULL DEFAULT '0',
-  r_group int(10) unsigned NOT NULL DEFAULT '1',
+  r_name int(10) unsigned DEFAULT NULL,
+  r_surname int(10) unsigned DEFAULT NULL,
+  r_secname int(10) unsigned DEFAULT NULL,
   r_breed int(10) unsigned NOT NULL DEFAULT '0',
-  r_flags varchar(10) NOT NULL DEFAULT '00000',
-  r_zone int(10) unsigned NOT NULL DEFAULT '0',
   r_born datetime DEFAULT NULL,
-  r_birthplace int(11) DEFAULT NULL COMMENT 'программа откуда экспортирован кролик',
-  r_genesis int(10) unsigned NOT NULL DEFAULT '0',
-  r_status tinyint(3) unsigned NOT NULL DEFAULT '0',
-  r_last_fuck_okrol datetime DEFAULT NULL,
-  r_lost_babies int(10) unsigned DEFAULT NULL,
-  r_overall_babies int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (r_id),
-  UNIQUE KEY r_id (r_id),
-  KEY r_parent (r_parent),
+  r_birthplace int(11) unsigned DEFAULT NULL COMMENT 'программа откуда экспортирован кролик',
+  UNIQUE KEY u_r_id_birtplace (r_id,r_birthplace),
+  KEY r_mother (r_mother),
+  KEY r_father (r_father),
   KEY r_sex (r_sex),
   KEY r_name (r_name),
   KEY r_surname (r_surname),
   KEY r_secname (r_secname),
-  KEY r_farm (r_farm),
-  KEY r_tier (r_tier),
-  KEY r_group (r_group),
-  KEY r_breed (r_breed),
-  KEY r_zone (r_zone),
-  KEY r_status (r_status),
-  KEY r_born (r_born),
-  KEY d_date (d_date),
-  KEY d_reason (d_reason)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS logtypes;
-CREATE TABLE logtypes (
-  l_type int(10) unsigned NOT NULL AUTO_INCREMENT,
-  l_name varchar(30) NOT NULL,
-  l_params text,
-  PRIMARY KEY (l_type),
-  KEY l_name (l_name)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+  KEY r_breed (r_breed)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS logs;
 CREATE TABLE `logs` (
@@ -316,36 +225,14 @@ CREATE TABLE logs_arch (
   KEY l_type (l_type)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS import;
-CREATE TABLE `import` (
-  t_rab_id int(10) unsigned NOT NULL,
-  t_date datetime NOT NULL,
-  t_count int(10) unsigned DEFAULT NULL,
-  t_client int(11) DEFAULT NULL COMMENT 'id клиента из которой экспортирован, с которой привsезен кролик',
-  t_old_r_id int(11) DEFAULT NULL COMMENT 'id кролика в программе экспортера',
-  t_file_guid varchar(40) DEFAULT NULL COMMENT 'guid файла экспорта',
-  PRIMARY KEY (t_rab_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Таблица привозов';
-
-DROP TABLE IF EXISTS products;
-CREATE TABLE products (
-  p_id int(10) unsigned NOT NULL AUTO_INCREMENT,
-  p_name varchar(45) NOT NULL DEFAULT '' COMMENT 'название продукции',
-  p_unit varchar(30) NOT NULL DEFAULT '' COMMENT 'единица измерения',
-  p_image blob COMMENT 'изображение',
-  p_imgsize int(10) unsigned DEFAULT NULL COMMENT 'размер изображения',
-  PRIMARY KEY (p_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='продукция получаемая из кролика';
-
-DROP TABLE IF EXISTS butcher;
-CREATE TABLE butcher (
-  b_id int(10) unsigned NOT NULL AUTO_INCREMENT,
-  b_date datetime NOT NULL COMMENT 'дата взвешивания',
-  b_prodtype int(10) unsigned NOT NULL COMMENT 'тип продукта',
-  b_amount float unsigned NOT NULL COMMENT 'количество ГП',
-  b_user int(10) unsigned NOT NULL COMMENT 'пользователь',
-  PRIMARY KEY (b_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='готовая продукция';
+DROP TABLE IF EXISTS logtypes;
+CREATE TABLE logtypes (
+  l_type int(10) unsigned NOT NULL AUTO_INCREMENT,
+  l_name varchar(30) NOT NULL,
+  l_params text,
+  PRIMARY KEY (l_type),
+  KEY l_name (l_name)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS meal;
 CREATE TABLE meal (
@@ -357,6 +244,142 @@ CREATE TABLE meal (
   m_rate float unsigned DEFAULT NULL COMMENT 'кг комбикорма съедает кролик в день',
   PRIMARY KEY (m_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Таблица расчета кормов';
+
+DROP TABLE IF EXISTS minifarms;
+CREATE TABLE minifarms (
+  m_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  m_upper int(10) unsigned DEFAULT NULL,
+  m_lower int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (m_id),
+  KEY m_upper (m_upper),
+  KEY m_lower (m_lower)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS names;
+CREATE TABLE `names` (
+  n_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  n_sex enum('male','female') NOT NULL,
+  n_name varchar(50) NOT NULL,
+  n_surname varchar(50) NOT NULL,
+  n_use int(10) unsigned NOT NULL DEFAULT '0',
+  n_block_date datetime DEFAULT NULL,
+  PRIMARY KEY (n_id),
+  UNIQUE KEY n_name (n_name,n_sex),
+  KEY n_sex (n_sex),
+  KEY n_use (n_use),
+  KEY n_block_date (n_block_date)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS options;
+CREATE TABLE `options` (
+  o_name varchar(30) NOT NULL DEFAULT '',
+  o_subname varchar(30) NOT NULL DEFAULT '',
+  o_uid int(10) unsigned NOT NULL DEFAULT '0',
+  o_value text,
+  KEY o_name (o_name,o_subname),
+  KEY o_uid (o_uid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS products;
+CREATE TABLE products (
+  p_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  p_name varchar(45) NOT NULL DEFAULT '' COMMENT 'название продукции',
+  p_unit varchar(30) NOT NULL DEFAULT '' COMMENT 'единица измерения',
+  p_image blob COMMENT 'изображение',
+  p_imgsize int(10) unsigned DEFAULT NULL COMMENT 'размер изображения',
+  PRIMARY KEY (p_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='продукция получаемая из кролика';
+
+DROP TABLE IF EXISTS rabbits;
+CREATE TABLE rabbits (
+  r_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  r_parent int(10) unsigned DEFAULT NULL,
+  r_mother int(10) unsigned DEFAULT NULL,
+  r_father int(10) unsigned DEFAULT NULL,
+  r_sex enum('male','female','void') NOT NULL,
+  r_bon varchar(5) NOT NULL DEFAULT '10000',
+  r_name int(10) unsigned DEFAULT NULL,
+  r_surname int(10) unsigned DEFAULT NULL,
+  r_secname int(10) unsigned DEFAULT NULL,
+  r_notes text,
+  r_okrol int(10) unsigned NOT NULL DEFAULT '0',
+  r_farm int(10) unsigned DEFAULT NULL,
+  r_tier int(10) unsigned DEFAULT NULL,
+  r_tier_id tinyint(3) unsigned NOT NULL DEFAULT '0',
+  r_area int(10) unsigned NOT NULL DEFAULT '0',
+  r_rate int(11) NOT NULL DEFAULT '0',
+  r_group int(10) unsigned NOT NULL DEFAULT '1',
+  r_breed int(10) unsigned NOT NULL,
+  r_flags varchar(10) NOT NULL DEFAULT '00000' COMMENT '[0]Готовая Продукция [1]Готов к реализации [2]Брак [3]Не куковать [4]Потеря лактации',
+  r_zone int(10) unsigned NOT NULL DEFAULT '0',
+  r_born date DEFAULT NULL,
+  r_birthplace int(11) DEFAULT NULL COMMENT 'программа откуда экспортирован кролик',
+  r_genesis int(10) unsigned NOT NULL DEFAULT '0',
+  r_status tinyint(3) unsigned NOT NULL DEFAULT '0',
+  r_last_fuck_okrol date DEFAULT NULL,
+  r_event enum('none','sluchka','vyazka','kuk','syntetic') DEFAULT NULL,
+  r_event_date datetime DEFAULT NULL,
+  r_lost_babies int(10) unsigned DEFAULT NULL,
+  r_overall_babies int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (r_id),
+  KEY r_parent (r_parent),
+  KEY r_mother (r_mother),
+  KEY r_father (r_father),
+  KEY r_sex (r_sex),
+  KEY r_name (r_name),
+  KEY r_surname (r_surname),
+  KEY r_secname (r_secname),
+  KEY r_farm (r_farm),
+  KEY r_tier (r_tier),
+  KEY r_group (r_group),
+  KEY r_breed (r_breed),
+  KEY r_zone (r_zone),
+  KEY r_status (r_status),
+  KEY r_born (r_born)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS rab_vac;
+CREATE TABLE rab_vac (
+  r_id int(10) unsigned NOT NULL,
+  v_id tinyint(4) NOT NULL COMMENT 'Тип прививки',
+  `date` date DEFAULT NULL COMMENT 'Когда была сделана прививка',
+  unabled bit(1) NOT NULL DEFAULT b'0' COMMENT 'Отменена ли прививка'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Какие прививки делались кролику';
+
+DROP TABLE IF EXISTS tiers;
+CREATE TABLE tiers (
+  t_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  t_type enum('none','female','dfemale','complex','jurta','quarta','vertep','barin','cabin') NOT NULL,
+  t_repair tinyint(1) NOT NULL DEFAULT '0',
+  t_notes text,
+  t_busy1 int(10) unsigned DEFAULT '0',
+  t_busy2 int(10) unsigned DEFAULT '0',
+  t_busy3 int(10) unsigned DEFAULT '0',
+  t_busy4 int(10) unsigned DEFAULT '0',
+  t_delims varchar(3) NOT NULL DEFAULT '000',
+  t_heater varchar(2) NOT NULL DEFAULT '00',
+  t_nest varchar(2) NOT NULL DEFAULT '00',
+  PRIMARY KEY (t_id),
+  KEY t_type (t_type),
+  KEY t_repair (t_repair),
+  KEY t_busy1 (t_busy1),
+  KEY t_busy2 (t_busy2),
+  KEY t_busy3 (t_busy3),
+  KEY t_busy4 (t_busy4),
+  KEY t_heater (t_heater),
+  KEY t_nest (t_nest)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+  u_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  u_name varchar(50) DEFAULT NULL,
+  u_password varchar(50) DEFAULT NULL,
+  u_group enum('worker','admin','zootech','butcher') NOT NULL DEFAULT 'admin',
+  u_deleted tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (u_id),
+  KEY u_name (u_name)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS vaccines;
 CREATE TABLE vaccines (
@@ -371,44 +394,23 @@ CREATE TABLE vaccines (
   UNIQUE KEY v_name_UNIQUE (v_name)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Список имеющихся прививок';
 
-DROP TABLE IF EXISTS rab_vac;
-CREATE TABLE rab_vac (
-  r_id int(10) unsigned NOT NULL,
-  v_id tinyint(4) NOT NULL COMMENT 'Тип прививки',
-  `date` date DEFAULT NULL COMMENT 'Когда была сделана прививка',
-  unabled bit(1) NOT NULL DEFAULT b'0' COMMENT 'Отменена ли прививка'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Какие прививки делались кролику';
+DROP TABLE IF EXISTS weights;
+CREATE TABLE weights (
+  w_rabid int(10) unsigned NOT NULL,
+  w_date datetime NOT NULL,
+  w_weight int(10) unsigned NOT NULL,
+  KEY w_rabid (w_rabid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS clients;
-CREATE TABLE clients (
-  c_id int(10) unsigned NOT NULL AUTO_INCREMENT,
-  c_org varchar(45) NOT NULL COMMENT 'название организации',
-  c_address varchar(100) NOT NULL,
-  PRIMARY KEY (c_id)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS zones;
+CREATE TABLE zones (
+  z_id int(10) unsigned NOT NULL,
+  z_name varchar(50) NOT NULL,
+  z_short_name varchar(20) NOT NULL,
+  PRIMARY KEY (z_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS import_ascendants;
-CREATE TABLE import_ascendants (
-  r_id int(10) unsigned NOT NULL,
-  r_mother int(10) unsigned NOT NULL DEFAULT '0',
-  r_father int(10) unsigned NOT NULL DEFAULT '0',
-  r_sex enum('male','female','void') NOT NULL,
-  r_bon varchar(5) NOT NULL DEFAULT '10000',
-  r_name int(10) unsigned NOT NULL DEFAULT '0',
-  r_surname int(10) unsigned NOT NULL DEFAULT '0',
-  r_secname int(10) unsigned NOT NULL DEFAULT '0',
-  r_breed int(10) unsigned NOT NULL DEFAULT '0',
-  r_born datetime DEFAULT NULL,
-  r_birthplace int(11) unsigned DEFAULT NULL COMMENT 'программа откуда экспортирован кролик',
-  UNIQUE KEY u_r_id_birtplace (r_id,r_birthplace),
-  KEY r_mother (r_mother),
-  KEY r_father (r_father),
-  KEY r_sex (r_sex),
-  KEY r_name (r_name),
-  KEY r_surname (r_surname),
-  KEY r_secname (r_secname),
-  KEY r_breed (r_breed)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 
 
 ALTER TABLE buildings
