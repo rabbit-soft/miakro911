@@ -1036,7 +1036,7 @@ BEGIN
   IF(rid=0 OR rid IS NULL) THEN
     return '';
   END IF;
-  
+
   SELECT
     (SELECT n_name FROM names WHERE n_id=r_name) name,
     (SELECT n_surname FROM names WHERE n_id=r_surname) surname,

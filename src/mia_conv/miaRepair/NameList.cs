@@ -12,8 +12,7 @@ namespace mia_conv
             miaRepair.log("fill all names");
             cmd.CommandText = String.Format("SELECT n_id,n_sex,n_name,n_use,COALESCE(n_block_date,'0001-01-01')dt FROM names WHERE n_use<>0 ORDER BY n_use ASC;");
             MySqlDataReader rd = cmd.ExecuteReader();
-            while (rd.Read())
-            {
+            while (rd.Read()) {
                 this.Add(new repName(rd.GetInt32("n_id"), rd.GetString("n_sex"),
                                     rd.GetString("n_name"), rd.GetInt32("n_use"), rd.GetDateTime("dt"))
                            );
@@ -24,8 +23,7 @@ namespace mia_conv
 
         internal int GetSurnameUse(int surname)
         {
-            foreach (repName n in this)
-            {
+            foreach (repName n in this) {
                 if (n.nameSex == Sex.Female && n.nID == surname)
                     return n.useRabbit;
             }
@@ -34,8 +32,7 @@ namespace mia_conv
 
         internal int GetSecnameUse(int secname)
         {
-            foreach (repName n in this)
-            {
+            foreach (repName n in this) {
                 if (n.nameSex == Sex.Male && n.nID == secname)
                     return n.useRabbit;
             }
@@ -55,18 +52,18 @@ namespace mia_conv
         internal repName(int id, string sex, string name, int use, DateTime block)
         {
             this.nID = id;
-            switch (sex)
-            {
+            switch (sex) {
                 case "male": this.nameSex = Sex.Male; break;
                 case "female": this.nameSex = Sex.Female; break;
                 case "void": this.nameSex = Sex.Void; break;
             }
             this.NameStr = name;
             this.useRabbit = use;
-            if (block != DateTime.MinValue)
+            if (block != DateTime.MinValue) {
                 this.Blocked = true;
+            }
             this.BlockDate = block;
         }
-    } 
+    }
 
 }

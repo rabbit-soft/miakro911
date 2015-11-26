@@ -12,8 +12,7 @@ namespace mia_conv
             miaRepair.log("fill fucks");
             cmd.CommandText = String.Format("SELECT f_id,f_rabid,f_partner,COALESCE(f_date,'0001-01-01') f_date, COALESCE(f_end_date,'0001-01-01')f_end_date,f_state,f_children FROM fucks ORDER BY f_id ASC;");
             MySqlDataReader rd = cmd.ExecuteReader();
-            while (rd.Read())
-            {
+            while (rd.Read()) {
                 this.Add(new repFuck(rd.GetInt32("f_id"), rd.GetInt32("f_rabid"), rd.GetInt32("f_partner"),
                                     rd.GetDateTime("f_date"), rd.GetDateTime("f_end_date"), rd.GetString("f_state"),
                                     rd.GetInt32("f_children"))
@@ -47,7 +46,7 @@ namespace mia_conv
         internal int SheID
         {
             get { return _SheID; }
-            set 
+            set
             {
                 _modified = true;
                 _SheID = value;
@@ -114,8 +113,7 @@ namespace mia_conv
             _HeID = partner;
             _StartDate = date;
             _EndDate = end_date;
-            switch (state)
-            {
+            switch (state) {
                 case "okrol": _fState = State.Okrol; break;
                 case "sukrol": _fState = State.Sukrol; break;
                 case "proholost": _fState = State.Proholost; break;

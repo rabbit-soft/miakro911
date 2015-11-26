@@ -30,10 +30,11 @@
             SetOption("opt", "findpartner", 1);
             SetOption("opt", "nextsvid", p.next_svid.value());
             SetOption("opt", "svidhead", p.svid_head.value());
-            if (p.subscriber.Count>0)
+            if (p.subscriber.Count > 0) {
                 SetOption("opt", "gendir", p.subscriber[0].Name.value());
-            else
+            } else {
                 SetOption("opt", "gendir", "");
+            }
             //            setOption("opt", "kukunest", p.kukunest.value());
             //            setOption("opt", "otsad_boys_pervo", p.otsad_boys_pervo.value());
             /* //OPTIONS
