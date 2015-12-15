@@ -22,7 +22,7 @@ namespace mia_conv
             body.read(br, ver);
             hair.read(br, ver);
             color.read(br, ver);
-            manual.read(br,ver);
+            manual.read(br, ver);
         }
         public String log()
         {
@@ -49,19 +49,17 @@ namespace mia_conv
         public void read(BinaryReader br, float ver)
         {
             live.read(br, ver);
-            if (live.value()!=0)
-            {
+            if (live.value() != 0) {
                 name_key = new MFUShort("name_key");
                 name_key.read(br, ver);
-            }
-            else
-            {
+            } else {
                 gecnt = new MFUShort("genesis_count");
                 genesis = new List<ushort>();
                 name = new MFString("name");
                 gecnt.read(br, ver);
-                for (int i = 0; i < (int)gecnt.value(); i++)
+                for (int i = 0; i < (int)gecnt.value(); i++) {
                     genesis.Add(br.ReadUInt16());
+                }
                 name.read(br, ver);
             }
             breed.read(br, ver);
@@ -71,19 +69,17 @@ namespace mia_conv
         }
         public String log()
         {
-            String str="-=fucker=-\r\n"+live.log()+"\r\n";
-            if (live.value() != 0)
-            {
-                str += name_key.log() + "\r\n";
-            }
-            else
-            {
+            String str = "-=fucker=-\r\n" + live.log() + Environment.NewLine;
+            if (live.value() != 0) {
+                str += name_key.log() + Environment.NewLine;
+            } else {
                 str += "genesis(" + gecnt.value().ToString() + ")=";
-                for (int i = 0; i < (int)gecnt.value(); i++)
-                    str += String.Format("{0:d} ",genesis[i]);
-                str += "\r\n"+name.log() + "\r\n";
+                for (int i = 0; i < (int)gecnt.value(); i++) {
+                    str += String.Format("{0:d} ", genesis[i]);
+                }
+                str += Environment.NewLine + name.log() + Environment.NewLine;
             }
-            str += breed.log() + "\r\n" + fucks.log() + "\r\n" + children.log() + "\r\n" + my_fuck_is_last.log() + "\r\n";
+            str += breed.log() + Environment.NewLine + fucks.log() + Environment.NewLine + children.log() + Environment.NewLine + my_fuck_is_last.log() + Environment.NewLine;
             return str + "-=fucker_end=-";
         }
     }
@@ -96,7 +92,7 @@ namespace mia_conv
         public MFDate last_okrol = new MFDate("last_okrol");
         public MFByte ev_type = new MFByte("ev_type");
         public MFByte lost_babies = new MFByte("lost_babies");
-        public MFUShort overall_babies= new MFUShort("overall_babies");
+        public MFUShort overall_babies = new MFUShort("overall_babies");
         public MFUShort fuckers_count = new MFUShort("fuckers_count");
         public List<Fucker> fuckers = new List<Fucker>();
         public MFRabbits suckers = null;
@@ -109,38 +105,38 @@ namespace mia_conv
         {
             nmales = males;
             nfemales = females;
-            suckers=new MFRabbits("suckers",nmales,nfemales,null);
+            suckers = new MFRabbits("suckers", nmales, nfemales, null);
             read(br, ver);
         }
         public void read(BinaryReader br, float ver)
         {
-            child_count.read(br,ver);
-            DBG.dbg2(child_count.log(),br);
-            borns.read(br,ver);
+            child_count.read(br, ver);
+            DBG.dbg2(child_count.log(), br);
+            borns.read(br, ver);
             DBG.dbg2(borns.log(), br);
-            ev_date.read(br,ver);
+            ev_date.read(br, ver);
             DBG.dbg2(ev_date.log(), br);
             last_okrol.read(br, ver);
             DBG.dbg2(last_okrol.log(), br);
             ev_type.read(br, ver);
             DBG.dbg2(ev_type.log(), br);
-            if (ver>3.1)
+            if (ver > 3.1) {
                 lost_babies.read(br, ver);
+            }
             DBG.dbg2(lost_babies.log(), br);
-            if (ver>5.1)
+            if (ver > 5.1) {
                 overall_babies.read(br, ver);
+            }
             DBG.dbg2(overall_babies.log(), br);
             suckers.read(br, ver);
             DBG.dbg2(suckers.log(), br);
             fuckers_count.read(br, ver);
             DBG.dbg2(fuckers_count.log(), br);
-            for (int i = 0; i < (int)fuckers_count.value(); i++)
-            {
+            for (int i = 0; i < (int)fuckers_count.value(); i++) {
                 fuckers.Add(new Fucker(br, ver));
                 DBG.dbg2(fuckers[i].log(), br);
             }
-            if (ver > 5.1)
-            {
+            if (ver > 5.1) {
                 worker.read(br, ver);
                 DBG.dbg2(worker.log(), br);
                 no_kuk.read(br, ver);
@@ -151,14 +147,13 @@ namespace mia_conv
         }
         public String log()
         {
-            String str = child_count.log()+"\r\n"+borns.log()+"\r\n"+ev_date.log()+"\r\n"+last_okrol.log()+"\r\n";
-            str += ev_type.log() + "\r\n" + lost_babies.log() + "\r\n"+overall_babies.log()+"\r\n" + fuckers_count.log() + "\r\n";
-            for (int i = 0; i < (int)fuckers_count.value(); i++)
-            {
-                str += fuckers[i].log() + "\r\n";
+            String str = child_count.log() + Environment.NewLine + borns.log() + Environment.NewLine + ev_date.log() + Environment.NewLine + last_okrol.log() + Environment.NewLine;
+            str += ev_type.log() + Environment.NewLine + lost_babies.log() + Environment.NewLine + overall_babies.log() + Environment.NewLine + fuckers_count.log() + Environment.NewLine;
+            for (int i = 0; i < (int)fuckers_count.value(); i++) {
+                str += fuckers[i].log() + Environment.NewLine;
             }
-            str += suckers.log() + "\r\n";
-            str += worker.log() + "\r\n" + no_kuk.log() + "\r\n" + no_lact.log();
+            str += suckers.log() + Environment.NewLine;
+            str += worker.log() + Environment.NewLine + no_kuk.log() + Environment.NewLine + no_lact.log();
             return str;
         }
     }
@@ -199,20 +194,22 @@ namespace mia_conv
         private MFRabNames males = null;
         private MFRabNames females = null;
 
-        public Rabbit(BinaryReader br, float ver, MFRabNames nmales,MFRabNames nfemales)
+        public Rabbit(BinaryReader br, float ver, MFRabNames nmales, MFRabNames nfemales)
         {
             males = nmales;
             females = nfemales;
-            if (ver>3)
+            if (ver > 3) {
                 proplist.Add(number);
+            }
             proplist.Add(unique);
             proplist.Add(namekey);
             proplist.Add(surkey);
             proplist.Add(pathkey);
             proplist.Add(notes);
             proplist.Add(butcher);
-            if (ver > 3)
+            if (ver > 3) {
                 proplist.Add(risk);
+            }
             proplist.Add(okrol_num);
             proplist.Add(where);
             proplist.Add(tier);
@@ -226,110 +223,118 @@ namespace mia_conv
             Read(br, ver);
         }
 
-        public void Read(BinaryReader br,float ver)
+        public void Read(BinaryReader br, float ver)
         {
-            sex.read(br,ver);
+            sex.read(br, ver);
             DBG.dbg1(sex.log());
-            if (ver>3)
+            if (ver > 3) {
                 bon.read(br, ver);
+            }
             DBG.dbg1(bon.log());
-            for (int i = 0; i < proplist.Count; i++)
-            {
+            for (int i = 0; i < proplist.Count; i++) {
                 proplist[i].read(br, ver);
                 DBG.dbg1(proplist[i].log());
             }
             weightcnt = br.ReadUInt16();
-            DBG.dbg1("weight="+weightcnt.ToString());
-            for (int i = 0; i < weightcnt; i++)
-            {
+            DBG.dbg1("weight=" + weightcnt.ToString());
+            for (int i = 0; i < weightcnt; i++) {
                 weights.Add(br.ReadUInt32());
-                DBG.dbg1("weight["+i.ToString()+"]=" + weights[i].ToString());
+                DBG.dbg1("weight[" + i.ToString() + "]=" + weights[i].ToString());
             }
             borndate.read(br, ver);
             DBG.dbg1(borndate.log());
             gencnt = br.ReadUInt16();
-            for (int i = 0; i < gencnt; i++)
+            for (int i = 0; i < gencnt; i++) {
                 genesis.Add(br.ReadUInt16());
-            if (sex.value() == 1)
-            {
+            }
+            if (sex.value() == 1) {
                 lastfuck = new MFDate("lastfuck");
                 status = new MFByte("status");
-                lastfuck.read(br,ver);
-                status.read(br,ver);
+                lastfuck.read(br, ver);
+                status.read(br, ver);
             }
-            if (sex.value() == 2)
+            if (sex.value() == 2) {
                 female = new RabFemale(br, ver, males, females);
+            }
         }
         public String log()
         {
             String str = "-=Rabbit=-\r\n";
-            str += sex.log() +" ("+ sexName[sex.value()] + ")\r\n";
-            str += bon.log() + "\r\n";
-            for (int i = 0; i < proplist.Count; i++)
-            {
+            str += sex.log() + " (" + sexName[sex.value()] + ")\r\n";
+            str += bon.log() + Environment.NewLine;
+            for (int i = 0; i < proplist.Count; i++) {
                 str += proplist[i].log();
-                if (proplist[i] == namekey)
-                {
-                    if (sex.value()==1)
-                        str+=" "+males.Getname((ushort)namekey.value());
-                    if (sex.value()==2)
-                        str+=" "+females.Getname((ushort)namekey.value());
+                if (proplist[i] == namekey) {
+                    if (sex.value() == 1) {
+                        str += " " + males.Getname((ushort)namekey.value());
+                    }
+                    if (sex.value() == 2) {
+                        str += " " + females.Getname((ushort)namekey.value());
+                    }
                 }
-                if (proplist[i] == surkey)
-                {
-                        str += " " + females.Getname((ushort)surkey.value());
+                if (proplist[i] == surkey) {
+                    str += " " + females.Getname((ushort)surkey.value());
                 }
-                if (proplist[i] == pathkey)
-                {
-                        str += " " + males.Getname((ushort)pathkey.value());
+                if (proplist[i] == pathkey) {
+                    str += " " + males.Getname((ushort)pathkey.value());
                 }
-                str += "\r\n";
+                str += Environment.NewLine;
             }
-            str += "weights("+weightcnt.ToString()+")=";
-            for (int i = 0; i < weightcnt;i++ )
-            {
-                ushort weight=(ushort)(weights[i] & 0xFFFF);
-                ushort dt=(ushort)((weights[i] >> 16)& 0xFFFF);
-                DateTime sdt=(new DateTime(1899,12,30)).AddDays(dt);
-                String hlp=String.Format("{0:X}({1:s}-{2:d})",weights[i],sdt.ToShortDateString(),weight);
+            str += "weights(" + weightcnt.ToString() + ")=";
+            for (int i = 0; i < weightcnt; i++) {
+                ushort weight = (ushort)(weights[i] & 0xFFFF);
+                ushort dt = (ushort)((weights[i] >> 16) & 0xFFFF);
+                DateTime sdt = (new DateTime(1899, 12, 30)).AddDays(dt);
+                String hlp = String.Format("{0:X}({1:s}-{2:d})", weights[i], sdt.ToShortDateString(), weight);
                 str += hlp + " ";
             }
-            str += "\r\n" + borndate.log() + "\r\ngenesis(" + gencnt.ToString() + ")=";
-            for (int i = 0; i < gencnt; i++)
+            str += Environment.NewLine + borndate.log() + "\r\ngenesis(" + gencnt.ToString() + ")=";
+            for (int i = 0; i < gencnt; i++) {
                 str += genesis[i].ToString() + " ";
-            str += "\r\n";
-            if (sex.value() == 1)
-            {
-                str += lastfuck.log() + "\r\n";
-                str += status.log() + "\r\n";
             }
-            if (sex.value() == 2)
-                str += female.log() + "\r\n";
+            str += Environment.NewLine;
+            if (sex.value() == 1) {
+                str += lastfuck.log() + Environment.NewLine;
+                str += status.log() + Environment.NewLine;
+            }
+            if (sex.value() == 2) {
+                str += female.log() + Environment.NewLine;
+            }
             str += "-=Rabbit_End=-";
             return str;
         }
     }
 
-    class MFRabbits:MFCommon,IMFCommon
+    class MFRabbits : MFCommon, IMFCommon
     {
-        public MFUShort count=new MFUShort("count");
+        public MFUShort count = new MFUShort("count");
         public List<Rabbit> rabbits = new List<Rabbit>();
         private MFRabNames nmales = null;
         private MFRabNames nfemales = null;
         private MiaFile mf = null;
-        public MFRabbits(String name, MFRabNames males, MFRabNames females,MiaFile mf) : base(name)
-        { nmales = males; nfemales = females; this.mf = mf; }
-        public MFRabbits(String name, int li, MFRabNames males, MFRabNames females,MiaFile mf) : base(name, li)
-        { nmales = males; nfemales = females; this.mf = mf; }
+        public MFRabbits(String name, MFRabNames males, MFRabNames females, MiaFile mf)
+            : base(name)
+        { 
+            nmales = males; 
+            nfemales = females; 
+            this.mf = mf; 
+        }
+        public MFRabbits(String name, int li, MFRabNames males, MFRabNames females, MiaFile mf)
+            : base(name, li)
+        { 
+            nmales = males; 
+            nfemales = females; 
+            this.mf = mf; 
+        }
 
         public void read(BinaryReader br, float ver)
         {
             count.read(br, ver);
             int cnt = (int)count.value();
-            for (int i = 0; i < (int)count.value(); i++)
-            {
-                if (mf != null)
-                    mf.Setpb(i,cnt);
+            for (int i = 0; i < (int)count.value(); i++) {
+                if (mf != null) {
+                    mf.Setpb(i, cnt);
+                }
                 rabbits.Add(new Rabbit(br, ver, nmales, nfemales));
             }
         }
@@ -337,9 +342,10 @@ namespace mia_conv
 
         public override String strval()
         {
-            String str="-=RABBITS=-\r\n"+count.log()+"\r\n";
-            for (int i = 0; i < (int)count.value(); i++)
-                str += rabbits[i].log() + "\r\n";
+            String str = "-=RABBITS=-\r\n" + count.log() + Environment.NewLine;
+            for (int i = 0; i < (int)count.value(); i++) {
+                str += rabbits[i].log() + Environment.NewLine;
+            }
             str += "-=RABBITS_END=-";
             return str;
         }

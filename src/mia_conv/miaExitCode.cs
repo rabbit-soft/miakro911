@@ -28,8 +28,7 @@ namespace rabnet
 
         public static string GetText(int code, string[] args)
         {
-            switch (code)
-            {
+            switch (code) {
                 case OK: return "Операция прошла успешно";
                 case FILE_NOT_EXISTS: return "Ну удается найти mia-файл";
                 case NOT_ENOUGH_ARGS: return "Не достаточно входных параметров";

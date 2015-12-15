@@ -10,7 +10,9 @@ namespace mia_conv
         internal void LoadFucks(MySqlCommand cmd)
         {
             miaRepair.log("fill fucks");
-            cmd.CommandText = String.Format("SELECT f_id,f_rabid,f_partner,COALESCE(f_date,'0001-01-01') f_date, COALESCE(f_end_date,'0001-01-01')f_end_date,f_state,f_children FROM fucks ORDER BY f_id ASC;");
+            cmd.CommandText = String.Format(@"SELECT f_id, f_rabid, f_partner, COALESCE(f_date,'0001-01-01') f_date, COALESCE(f_end_date,'0001-01-01') AS f_end_date, f_state, f_children 
+FROM fucks 
+ORDER BY f_id ASC;");
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read()) {
                 this.Add(new repFuck(rd.GetInt32("f_id"), rd.GetInt32("f_rabid"), rd.GetInt32("f_partner"),

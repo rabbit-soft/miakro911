@@ -11,18 +11,24 @@ namespace mia_conv
 
         public int GetNameId(ushort key, ushort sex, bool name)
         {
-            if (sex == 0)
+            if (sex == 0) {
                 return 0;
-            if (key == 0) return 0;
+            }
+            if (key == 0) {
+                return 0;
+            }
+
             int res = 0;
             MFRabNames rn = (sex == 1 ? Mia.MaleNames : Mia.FemaleNames);
             for (int i = 0; (i < rn.Rabnames.Count) && (res == 0); i++) {
                 if (name) {
-                    if (rn.Rabnames[i].Key.value() == key)
+                    if (rn.Rabnames[i].Key.value() == key) {
                         res = rn.Rabnames[i].Key.tag;
+                    }
                 } else {
-                    if (rn.Rabnames[i].Surkey.value() == key)
+                    if (rn.Rabnames[i].Surkey.value() == key) {
                         res = rn.Rabnames[i].Key.tag;
+                    }
                 }
             }
             return res;
@@ -33,9 +39,11 @@ namespace mia_conv
             _cmd.CommandText = "SELECT r_id FROM rabbits WHERE r_name=" + nid.ToString() + ";";
             MySqlDataReader rd = _cmd.ExecuteReader();
             int res = 0;
-            if (rd.Read())
+            if (rd.Read()) {
                 res = rd.GetInt32(0);
+            }
             rd.Close();
+
             return res;
         }
 
@@ -46,6 +54,7 @@ namespace mia_conv
             rd.Read();
             int res = rd.GetInt32(0);
             rd.Close();
+
             return res;
         }
 
@@ -123,7 +132,7 @@ namespace mia_conv
                 ushort weight = (ushort)(r.weights[i] & 0xFFFF);
                 ushort dt = (ushort)((r.weights[i] >> 16) & 0xFFFF);
                 DateTime sdt = (new DateTime(1899, 12, 30)).AddDays(dt);
-                _cmd.CommandText = String.Format("INSERT INTO weights(w_rabid,w_date,w_weight) VALUES({0:d},{1:s},{2:d});", crab, Convdt(sdt), weight);
+                _cmd.CommandText = String.Format("INSERT INTO weights(w_rabid, w_date, w_weight) VALUES({0:d}, {1:s}, {2:d});", crab, Convdt(sdt), weight);
                 _cmd.ExecuteNonQuery();
             }
             _cmd.CommandText = "ALTER TABLE `weights` ENABLE KEYS;";
@@ -171,8 +180,8 @@ namespace mia_conv
                     if ((r.female.borns.value() == 0) || (r.female.borns.value() == 1 && state != "sukrol")) {
                         type = "sluchka";
                     }
-                    _cmd.CommandText = String.Format(@"INSERT INTO fucks(f_rabid,f_partner,f_times,f_children,f_dead,f_state,f_last,f_type) 
-VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d},'{7:d}');",
+                    _cmd.CommandText = String.Format(@"INSERT INTO fucks(f_rabid, f_partner, f_times, f_children, f_dead, f_state, f_last, f_type) 
+VALUES({0:d}, {1:d}, {2:d}, {3:d}, {4:d}, '{5:s}', {6:d}, '{7:d}');",
                       crab, link, (int)f.fucks.value() + (sukrol ? 1 : 0), f.children.value(), dead, state,
                       f.my_fuck_is_last.value(), type);
                     _cmd.ExecuteNonQuery();
@@ -192,9 +201,9 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d},'{7:d}');",
         public void FillRabbit(Rabbit r, int parent, bool dead)
         {
             //Application.DoEvents();
-            String query = "INSERT INTO " + (dead ? "dead" : "rabbits") + @"(r_sex,r_parent,r_bon,r_name,r_surname,
-                r_secname,r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,
-                r_born,r_status,r_last_fuck_okrol,r_genesis";
+            String query = String.Format(@"INSERT INTO {0} (r_sex, r_parent, r_bon, r_name, r_surname,
+                r_secname, r_notes, r_okrol, r_farm, r_tier_id, r_tier, r_area, r_rate,r_group, r_breed, r_flags, r_zone,
+                r_born, r_status, r_last_fuck_okrol, r_genesis", (dead ? "dead" : "rabbits"));
             String sex = "void";
             if (r.sex.value() == 1) {
                 sex = "male";
@@ -203,11 +212,11 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d},'{7:d}');",
                 sex = "female";
             }
             String bon = String.Format("{0:D1}{1:D1}{2:D1}{3:D1}{4:D1}", r.bon.manual.value(), r.bon.weight.value(), r.bon.body.value(), r.bon.hair.value(), r.bon.color.value());
-            String vals = String.Format("VALUES('{0:s}',{1:d},'{2:s}'", sex, parent, bon);//,{3:d},{4:d}  ,r.number.value(),r.unique.value());
+            String vals = String.Format("VALUES('{0:s}', {1:d}, '{2:s}'", sex, parent, bon);//,{3:d},{4:d}  ,r.number.value(),r.unique.value());
             int name = GetNameId((ushort)r.namekey.value(), (ushort)r.sex.value(), true);
             int surname = GetNameId((ushort)r.surkey.value(), 2, false);
             int secname = GetNameId((ushort)r.pathkey.value(), 1, false);
-            vals += String.Format(",{0:d},{1:d},{2:d},'{3:s}',{4:d}", name, surname, secname, r.notes.value(), r.okrol_num.value());
+            vals += String.Format(", {0:d}, {1:d}, {2:d}, '{3:s}', {4:d}", name, surname, secname, r.notes.value(), r.okrol_num.value());
 
             String flags = String.Format("{0:D1}{1:D1}{2:D1}", r.butcher.value(), r.risk.value(), r.multi.value());
             if (r.sex.value() == 2) {
@@ -219,11 +228,11 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d},'{7:d}');",
             int tier = GetTier((int)r.where.value(), (int)r.tier_id.value());
             if (parent == 0) {
                 int tier_id = r.tier_id.value() == 1 ? 2 : 1; //здесь перепутаны местами нежели в строениях
-                vals += String.Format(",{0:d},{1:d},{2:d},{3:d}", r.where.value(), tier_id, tier, r.area.value());
+                vals += String.Format(", {0:d}, {1:d}, {2:d}, {3:d}", r.where.value(), tier_id, tier, r.area.value());
             } else {
-                vals += String.Format(",{0:d},{1:d},{2:d},{3:d}", 0, 0, 0, 0);
+                vals += String.Format(", {0:d}, {1:d}, {2:d}, {3:d}", 0, 0, 0, 0);
             }
-            vals += String.Format(",{0:d},{1:d},{2:d},'{3:s}',{4:d}", 0/*r.rate.value()*/, r.group.value(),
+            vals += String.Format(", {0:d}, {1:d}, {2:d}, '{3:s}', {4:d}", 0/*r.rate.value()*/, r.group.value(),
                 FindBreed((int)r.breed.value()), flags, r.zone.value());
 
             int status = 0;
@@ -237,9 +246,9 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d},'{7:d}');",
                 lfo = Convdt(r.female.last_okrol.value());
             }
             bool sukrol = false;
-            vals += String.Format(",{0:s},{1:d},{2:s},{3:d}", Convdt(r.borndate.value()), status, lfo, MakeGenesis(r.genesis));
+            vals += String.Format(", {0:s}, {1:d}, {2:s}, {3:d}", Convdt(r.borndate.value()), status, lfo, MakeGenesis(r.genesis));
             if (r.sex.value() == 2) {
-                query += ",r_event,r_event_date,r_lost_babies,r_overall_babies";//,r_worker";,r_children
+                query += ", r_event, r_event_date, r_lost_babies, r_overall_babies";//,r_worker";,r_children
                 String ev = "none";
                 switch (r.female.ev_type.value()) {
                     case 1: ev = "sluchka"; break;
@@ -248,7 +257,7 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d},'{7:d}');",
                 }
                 String edt = Convdt(r.female.ev_date.value());
                 sukrol = (edt != "NULL");
-                vals += String.Format(",'{0:s}',{1:s},{2:d},{3:d}", ev,
+                vals += String.Format(", '{0:s}',{1:s},{2:d},{3:d}", ev,
                     edt, r.female.lost_babies.value(), r.female.overall_babies.value());//,  ,{5:d},{0:d}
                 //makeWorker(r.female.worker.value()));  //r.female.child_count.value(),
             }
@@ -280,15 +289,15 @@ VALUES({0:d},{1:d},{2:d},{3:d},{4:d},'{5:s}',{6:d},'{7:d}');",
         public void NormalizeFuckers()
         {
 
-            _cmd.CommandText = "UPDATE fucks SET f_partner=(SELECT n_use FROM names WHERE n_id=fucks.f_partner),f_dead=0 WHERE f_dead=1;";
+            _cmd.CommandText = "UPDATE fucks SET f_partner=(SELECT n_use FROM names WHERE n_id=fucks.f_partner), f_dead=0 WHERE f_dead=1;";
             _cmd.ExecuteNonQuery();
             //_cmd.CommandText = "UPDATE rabbits SET r_vaccine_end=NOW()+interval 365 day WHERE r_flags LIKE '__2__' OR r_flags LIKE '__3__';";
             //_cmd.ExecuteNonQuery();
             //_cmd.CommandText = "UPDATE rabbits SET r_vaccine_end=NOW() WHERE r_flags LIKE '__0__';";
             //_cmd.ExecuteNonQuery();
-            _cmd.CommandText = "UPDATE rabbits SET r_flags=CONCAT(SUBSTR(r_flags,1,1),SUBSTR(r_flags,2,1),'0',SUBSTR(r_flags,4,1),SUBSTR(r_flags,5,1)) where r_flags LIKE '__2__';";
+            _cmd.CommandText = "UPDATE rabbits SET r_flags=CONCAT(SUBSTR(r_flags,1,1), SUBSTR(r_flags,2,1), '0', SUBSTR(r_flags,4,1),SUBSTR(r_flags,5,1)) WHERE r_flags LIKE '__2__';";
             _cmd.ExecuteNonQuery();
-            _cmd.CommandText = "UPDATE rabbits SET r_flags=CONCAT(SUBSTR(r_flags,1,1),SUBSTR(r_flags,2,1),'1',SUBSTR(r_flags,4,1),SUBSTR(r_flags,5,1)) where r_flags LIKE '__3__'";
+            _cmd.CommandText = "UPDATE rabbits SET r_flags=CONCAT(SUBSTR(r_flags,1,1), SUBSTR(r_flags,2,1), '1', SUBSTR(r_flags,4,1),SUBSTR(r_flags,5,1)) WHERE r_flags LIKE '__3__'";
             _cmd.ExecuteNonQuery();
             /*
             c.CommandText = "UPDATE rabbits SET r_mother=(SELECT COALESCE(n_use,0) FROM names WHERE n_id=rabbits.r_surname AND n_sex='female') WHERE r_mother=0;";

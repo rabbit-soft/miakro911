@@ -1,5 +1,5 @@
 #if DEBUG
-    #define NOCATCH
+#define NOCATCH
 #endif
 using System;
 using System.Data;
@@ -12,48 +12,47 @@ namespace mia_conv
     public partial class Form1 : Form
     {
         private MiaFile _mia = null;
-        public DataTable Udata=new DataTable();
+        public DataTable Udata = new DataTable();
         private bool auto = false;
         private bool _executed = false;
         public bool Quiet = false;
 
         public Form1()
         {
-            Udata.Columns.Add("Пользователь",typeof(String));
+            Udata.Columns.Add("Пользователь", typeof(String));
             Udata.Columns.Add("Пароль", typeof(String));
-            Udata.Rows.Add("зоотехник","");
+            Udata.Rows.Add("зоотехник", "");
             InitializeComponent();
             dataGridView1.DataSource = Udata;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
             dataGridView1.AutoSize = true;
-            for (int i = 0; i < clb1.Items.Count; i++)
+            for (int i = 0; i < clb1.Items.Count; i++) {
                 clb1.SetItemChecked(i, false);
+            }
             clb1.SetItemChecked(clb1.Items.Count - 1, true);
             Environment.ExitCode = miaExitCode.ERROR;
         }
 
-        public Form1(int automode,String file,String h,String db,String u,String p,String r,String rp,String usrs,String scr):this()
+        public Form1(int automode, String file, String h, String db, String u, String p, String r, String rp, String usrs, String scr)
+            : this()
         {
-            auto = automode>0;
+            auto = automode > 0;
             Quiet = automode == 2;
-            if (auto)
-            {
+            if (auto) {
                 Text += " - Авто режим";
                 tbMiaFile.Text = file;
                 tbHost.Text = h;
                 tbDB.Text = db;
                 tbUser.Text = u;
                 tbPassword.Text = p;
-                if (r != "")
-                {
+                if (r != "") {
                     dbnew.Checked = true;
                     textRoot.Text = r;
                     textRootPswd.Text = rp;
                 }
                 Udata.Clear();
                 String[] us = usrs.Split(';');
-                for (int i = 0; i < us.Length / 2; i++)
-                {
+                for (int i = 0; i < us.Length / 2; i++) {
                     Udata.Rows.Add(us[i * 2], us[i * 2 + 1]);
                 }
                 tbScript.Text = scr;
@@ -63,8 +62,7 @@ namespace mia_conv
 
         private void btOpenMIAfile_Click(object sender, EventArgs e)
         {
-            if (ofd.ShowDialog()==DialogResult.OK)
-            {
+            if (ofd.ShowDialog() == DialogResult.OK) {
                 tbMiaFile.Text = ofd.FileName;
                 button2.Enabled = true;
                 button2.PerformClick();
@@ -74,7 +72,7 @@ namespace mia_conv
 
         private void button2_Click(object sender, EventArgs e)
         {
-            _mia = new MiaFile(clb1,pb,label11);
+            _mia = new MiaFile(clb1, pb, label11);
             _mia.LoadFromFile(tbMiaFile.Text, log);
             btStart.Enabled = true;
         }
@@ -103,21 +101,21 @@ namespace mia_conv
             try
             {
 #endif
+            pb.Value = 0;
+            int code = crt.Prepare(dbnew.Checked, tbHost.Text, tbUser.Text, tbPassword.Text, tbDB.Text, textRoot.Text, textRootPswd.Text, false, Quiet);
+            if (code == miaExitCode.OK) {
+                groupBox1.Enabled = btOpenMIAfile.Enabled = tbMiaFile.Enabled = false;
+                //crt.oldid = oldid.Checked;
+                crt.Mia = _mia;
+                crt.SetUsers(Udata);
+                crt.FillAll();
+                crt.Finish(tbScript.Text);
                 pb.Value = 0;
-                int code = crt.Prepare(dbnew.Checked, tbHost.Text, tbUser.Text, tbPassword.Text, tbDB.Text, textRoot.Text, textRootPswd.Text,false,Quiet);
-                if (code == miaExitCode.OK)
-                {
-                    groupBox1.Enabled= btOpenMIAfile.Enabled=tbMiaFile.Enabled = false;
-                    //crt.oldid = oldid.Checked;
-                    crt.Mia = _mia;
-                    crt.SetUsers(Udata);
-                    crt.FillAll();
-                    crt.Finish(tbScript.Text);
-                    pb.Value = 0;
-                    groupBox1.Enabled = btOpenMIAfile.Enabled = tbMiaFile.Enabled = true;
-                    Environment.ExitCode = miaExitCode.OK;
-                }
-                else MessageBox.Show(miaExitCode.GetText(code), "Ошибка");              
+                groupBox1.Enabled = btOpenMIAfile.Enabled = tbMiaFile.Enabled = true;
+                Environment.ExitCode = miaExitCode.OK;
+            } else {
+                MessageBox.Show(miaExitCode.GetText(code), "Ошибка");
+            }
 #if !NOCATCH
             }
             catch (Exception ex)
@@ -131,12 +129,12 @@ namespace mia_conv
 
         private void Form1_Activated(object sender, EventArgs e)
         {
-            if (_executed)
+            if (_executed) {
                 return;
+            }
             _executed = true;
-            if (auto)
-            {
-                dbnew.Checked=true;
+            if (auto) {
+                dbnew.Checked = true;
                 button2.Enabled = true;
                 button2.PerformClick();
                 btStart.PerformClick();
@@ -146,8 +144,9 @@ namespace mia_conv
 
         private void openScriptFile_Click(object sender, EventArgs e)
         {
-            if (ofd2.ShowDialog()==DialogResult.OK)
-                tbScript.Text=ofd2.FileName;
+            if (ofd2.ShowDialog() == DialogResult.OK) {
+                tbScript.Text = ofd2.FileName;
+            }
         }
 
         /*private void runMiaRepair()

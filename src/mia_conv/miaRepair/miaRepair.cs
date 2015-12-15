@@ -133,8 +133,7 @@ namespace mia_conv
                         log("        we find name user rID:{0:d} name:{1:s} age:{2:d} but he is to young", mbFather.rID, mbFather.Name, mbFather.Age);
                         mbFather = null;
                     }
-                    if (mbFather == null)//если нет живого кандидата на отца, то ищем в мертвых
-                    {
+                    if (mbFather == null) { //если нет живого кандидата на отца, то ищем в мертвых
                         log("   we not find aliveFather, now searching in dead");
                         List<repRabbit> candidates = new List<repRabbit>();
                         foreach (repRabbit ded in _deads) {
