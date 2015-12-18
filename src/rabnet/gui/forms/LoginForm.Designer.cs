@@ -142,6 +142,7 @@
             // 
             // btLicense
             // 
+            this.btLicense.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btLicense.Location = new System.Drawing.Point(93, 136);
             this.btLicense.Name = "btLicense";
             this.btLicense.Size = new System.Drawing.Size(23, 23);
