@@ -38,6 +38,7 @@
             this.btEnter = new System.Windows.Forms.Button();
             this.btExit = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.btLicense = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // cbFarm
@@ -109,7 +110,7 @@
             this.btEnter.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.btEnter.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btEnter.Enabled = false;
-            this.btEnter.Location = new System.Drawing.Point(217, 138);
+            this.btEnter.Location = new System.Drawing.Point(217, 136);
             this.btEnter.Name = "btEnter";
             this.btEnter.Size = new System.Drawing.Size(75, 23);
             this.btEnter.TabIndex = 7;
@@ -121,7 +122,7 @@
             // 
             this.btExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btExit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btExit.Location = new System.Drawing.Point(136, 138);
+            this.btExit.Location = new System.Drawing.Point(136, 136);
             this.btExit.Name = "btExit";
             this.btExit.Size = new System.Drawing.Size(75, 23);
             this.btExit.TabIndex = 8;
@@ -131,7 +132,7 @@
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button3.Location = new System.Drawing.Point(12, 138);
+            this.button3.Location = new System.Drawing.Point(12, 136);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 9;
@@ -139,14 +140,24 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // btLicense
+            // 
+            this.btLicense.Location = new System.Drawing.Point(93, 136);
+            this.btLicense.Name = "btLicense";
+            this.btLicense.Size = new System.Drawing.Size(23, 23);
+            this.btLicense.TabIndex = 10;
+            this.btLicense.Text = "₽";
+            this.btLicense.UseVisualStyleBackColor = true;
+            this.btLicense.Click += new System.EventHandler(this.btLicense_Click);
+            // 
             // LoginForm
             // 
             this.AcceptButton = this.btEnter;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btExit;
-            this.ClientSize = new System.Drawing.Size(304, 172);
-            this.ControlBox = false;
+            this.ClientSize = new System.Drawing.Size(304, 171);
+            this.Controls.Add(this.btLicense);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.btExit);
             this.Controls.Add(this.btEnter);
@@ -181,5 +192,6 @@
         private System.Windows.Forms.Button btEnter;
         private System.Windows.Forms.Button btExit;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btLicense;
     }
 }

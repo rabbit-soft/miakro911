@@ -28,6 +28,7 @@ namespace rabnet.forms
             _rnc = new RabnetConfig();
 #if DEMO
             this.isDemo = true;
+            btnLicense.hide();
 #endif
             this.Text = String.Format("{0} [{1}{2}] ", AboutForm.AssemblyProduct, AboutForm.AssemblyVersion, isDemo ? " Demo" : "");
         }
@@ -38,14 +39,11 @@ namespace rabnet.forms
             _rnc.LoadDataSources();
             cbFarm.Items.Clear();
             cbUser.Items.Clear();
-            foreach (DataSource ds in _rnc.DataSources)
-            {
-                if (!ds.Hidden)
-                {
+            foreach (DataSource ds in _rnc.DataSources) {
+                if (!ds.Hidden) {
                     cbFarm.Items.Add(ds.Name);
                     _dss.Add(cbFarm.Items.Count - 1, ds);
-                    if (ds.Default)
-                    {
+                    if (ds.Default) {
                         cbFarm.SelectedIndex = cbFarm.Items.Count - 1;
                         cbFarm_SelectedIndexChanged(null, null);
                     }
@@ -55,64 +53,59 @@ namespace rabnet.forms
 
         private void cbFarm_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbFarm.SelectedIndex < 0) return;
-            try
-            {
+            if (cbFarm.SelectedIndex < 0) {
+                return;
+            }
+
+            try {
                 cbUser.Focus();
-                try
-                {
+                try {
                     Application.DoEvents();
                     DataSource xs = null;
-                    foreach (DataSource d in _rnc.DataSources)
-                        if (d.Name == cbFarm.Text)
+                    foreach (DataSource d in _rnc.DataSources) {
+                        if (d.Name == cbFarm.Text) {
                             xs = d;
-                    if (xs == null) return;
+                        }
+                    }
+                    if (xs == null) {
+                        return;
+                    }
+
                     Engine.get().InitEngine(xs.Type, xs.Params.ToString());
                     cbUser.Items.Clear();
                     cbUser.Enabled = false;
                     tbPassword.Enabled = false;
                     List<sUser> usrs = Engine.db().GetUsers();
-                    if (usrs != null)
-                    {
+                    if (usrs != null) {
                         cbUser.Enabled = true;
                         tbPassword.Enabled = true;
-                        foreach (sUser s in usrs)
-                        {
+                        foreach (sUser s in usrs) {
                             if (s.Group == sUser.Butcher) continue;
                             cbUser.Items.Add(s.Name);
-                            if (xs.DefUser != "" && xs.DefUser == s.Name)
-                            {
+                            if (xs.DefUser != "" && xs.DefUser == s.Name) {
                                 cbUser.SelectedIndex = cbUser.Items.Count - 1;
-                                if (xs.DefPassword != "")
-                                {
+                                if (xs.DefPassword != "") {
                                     tbPassword.Text = xs.DefPassword;
                                 }
                                 tbPassword.Focus();
                                 tbPassword.SelectAll();
                             }
                         }
-                    }
-                    else
-                    {
+                    } else {
                         btEnter.Enabled = true;
                     }
-                }
-                catch (DBBadVersionException bex)
-                {
+                } catch (DBBadVersionException bex) {
                     string message = String.Format("{0:s}{1:s}{2:s}", bex.Message,
                         bex.NeedDbUpdate ? Environment.NewLine : "",
                         bex.NeedDbUpdate ? "Желаете обновить?" : "");
                     if (MessageBox.Show(message, "Не верная версия Базы данных",
                         bex.NeedDbUpdate ? MessageBoxButtons.YesNo : MessageBoxButtons.OK,
-                        bex.NeedDbUpdate ? MessageBoxIcon.Question : MessageBoxIcon.Information) == DialogResult.Yes)
-                    {
+                        bex.NeedDbUpdate ? MessageBoxIcon.Question : MessageBoxIcon.Information) == DialogResult.Yes) {
                         Run.Updater();
                         unselectConn();
                     }
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 //string message = ex.GetType().ToString() + ": " + ex.Message;
                 MessageBox.Show(ex.Message, "Ошибка подключения", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 unselectConn();
@@ -129,7 +122,7 @@ namespace rabnet.forms
 
         private void cbUser_SelectedIndexChanged(object sender, EventArgs e)
         {
-            btEnter.Enabled=(cbUser.Text!="");
+            btEnter.Enabled = (cbUser.Text != "");
             tbPassword.Text = "";
             tbPassword.Focus();
         }
@@ -137,70 +130,69 @@ namespace rabnet.forms
         private void btEnter_Click(object sender, EventArgs e)
         {
             int uid = Engine.get().setUid(cbUser.Text, tbPassword.Text, cbFarm.Text);
-            if (uid != 0)
-            {
+            if (uid != 0) {
                 _rnc.SetDefault(_dss[cbFarm.SelectedIndex], cbUser.Text, tbPassword.Text);
-                
-//                System.Diagnostics.Debug.WriteLine(RabnetConfigHandler.ds[comboBox1.SelectedIndex].getParamHost());
 
-//#if !DEMO
-//                RabUpdaterClient.Get().SetIP(_rnc.DataSources[cbFarm.SelectedIndex].Params.Host);
-                
-//                bool upRes=RabUpdaterClient.Get().CheckUpdate();
-                
-//                System.Diagnostics.Debug.WriteLine(upRes.ToString());
+                //                System.Diagnostics.Debug.WriteLine(RabnetConfigHandler.ds[comboBox1.SelectedIndex].getParamHost());
 
-//                if (upRes)
-//                {
-//                    DialogResult = DialogResult.Cancel;
-//                    Hide();
-//                    LoginForm.stop = false;
-//                    ProgressForm prg = new ProgressForm();
-//                    RabUpdaterClient.Get().progressUp = prg.progressUp;
-//                    prg.progressUp(0);
-//                    prg.Show();
-//                    RabUpdaterClient.Get().GetUpdate();
-//                    while (RabUpdaterClient.Get().GetUpRes() == RabUpdaterClient.UpErrStillWorking)
-//                    {
-//                        Application.DoEvents();
+                //#if !DEMO
+                //                RabUpdaterClient.Get().SetIP(_rnc.DataSources[cbFarm.SelectedIndex].Params.Host);
 
-//                    }
-//                    prg.Close();
-//                    prg = null;
-//                    int upProcRes = RabUpdaterClient.Get().GetUpRes();
-//                    if (upProcRes != RabUpdaterClient.UpErrFinishedOK)
-//                    {
-//                        if (upProcRes != RabUpdaterClient.UpErrBadMD5OnServer)
-//                        {
-//                            MessageBox.Show("При обновлении возникла ошибка." + Environment.NewLine + "Поробуйте перезапустить программу и обновить снова, если ошибка будет повторяться, то установите обновление вручную.", "Неполадки при обновлении", MessageBoxButtons.OK, MessageBoxIcon.Error);
-//                            LoginForm.stop = true;
-//                            Close();
-//                        }
-//                        else
-//                        {
-//                            MessageBox.Show("При обновлении возникла ошибка." + Environment.NewLine + "Файл обновлений на сервере поврежден, обратитесь к администратору!", "Неполадки при обновлении", MessageBoxButtons.OK, MessageBoxIcon.Error);
-//                            LoginForm.stop = true;
-//                            Close();
-//                        }
-//                    }
-//                    else
-//                    {
-//                        Process.Start(RabUpdaterClient.Get().GetUpFilePath(), "/S"); //Batch Mode
-//                        LoginForm.stop = true;
-//                        Close();
-//                    }
-//                }
-//                else
-//                {
-//#endif
-                    DialogResult = DialogResult.OK;
-                    Close();
-//#if !DEMO
-//                }
-//#endif
+                //                bool upRes=RabUpdaterClient.Get().CheckUpdate();
+
+                //                System.Diagnostics.Debug.WriteLine(upRes.ToString());
+
+                //                if (upRes)
+                //                {
+                //                    DialogResult = DialogResult.Cancel;
+                //                    Hide();
+                //                    LoginForm.stop = false;
+                //                    ProgressForm prg = new ProgressForm();
+                //                    RabUpdaterClient.Get().progressUp = prg.progressUp;
+                //                    prg.progressUp(0);
+                //                    prg.Show();
+                //                    RabUpdaterClient.Get().GetUpdate();
+                //                    while (RabUpdaterClient.Get().GetUpRes() == RabUpdaterClient.UpErrStillWorking)
+                //                    {
+                //                        Application.DoEvents();
+
+                //                    }
+                //                    prg.Close();
+                //                    prg = null;
+                //                    int upProcRes = RabUpdaterClient.Get().GetUpRes();
+                //                    if (upProcRes != RabUpdaterClient.UpErrFinishedOK)
+                //                    {
+                //                        if (upProcRes != RabUpdaterClient.UpErrBadMD5OnServer)
+                //                        {
+                //                            MessageBox.Show("При обновлении возникла ошибка." + Environment.NewLine + "Поробуйте перезапустить программу и обновить снова, если ошибка будет повторяться, то установите обновление вручную.", "Неполадки при обновлении", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //                            LoginForm.stop = true;
+                //                            Close();
+                //                        }
+                //                        else
+                //                        {
+                //                            MessageBox.Show("При обновлении возникла ошибка." + Environment.NewLine + "Файл обновлений на сервере поврежден, обратитесь к администратору!", "Неполадки при обновлении", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //                            LoginForm.stop = true;
+                //                            Close();
+                //                        }
+                //                    }
+                //                    else
+                //                    {
+                //                        Process.Start(RabUpdaterClient.Get().GetUpFilePath(), "/S"); //Batch Mode
+                //                        LoginForm.stop = true;
+                //                        Close();
+                //                    }
+                //                }
+                //                else
+                //                {
+                //#endif
+                DialogResult = DialogResult.OK;
+                Close();
+                //#if !DEMO
+                //                }
+                //#endif
                 return;
             }
-            MessageBox.Show("Неверное имя пользователя или пароль","Ошибка авторизации",MessageBoxButtons.OK,MessageBoxIcon.Error);
+            MessageBox.Show("Неверное имя пользователя или пароль", "Ошибка авторизации", MessageBoxButtons.OK, MessageBoxIcon.Error);
             LoginForm.stop = false;
             DialogResult = DialogResult.Retry;
         }
@@ -221,11 +213,17 @@ namespace rabnet.forms
             readConfig();
             tbPassword.SelectAll();
             tbPassword.Focus();
-            if (cbFarm.Items.Count == 0)
-            {
+            if (cbFarm.Items.Count == 0) {
                 new FarmNewForm().ShowDialog();
                 readConfig();
             }
+        }
+
+        private void btLicense_Click(object sender, EventArgs e)
+        {
+#if PROTECTED
+            (new AboutForm()).ShowDialog();
+#endif
         }
     }
 }

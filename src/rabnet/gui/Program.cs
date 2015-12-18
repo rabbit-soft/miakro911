@@ -1,6 +1,6 @@
 ﻿#if DEBUG
-    #define NOCATCH
-    #define ONLYONE
+#define NOCATCH
+#define ONLYONE
 #endif
 
 using System;
@@ -37,11 +37,9 @@ namespace rabnet
             _logger.Info("----- Application Starts -----");
 #if !ONLYONE
             bool new_instance;
-            using (System.Threading.Mutex mutex = new System.Threading.Mutex(true, "RabNetApplication", out new_instance))
-            {
+            using (System.Threading.Mutex mutex = new System.Threading.Mutex(true, "RabNetApplication", out new_instance)) {
 
-                if (new_instance)
-                {
+                if (new_instance) {
 #endif
 #if !NOCATCH
                     AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Unhandled);
@@ -51,29 +49,24 @@ namespace rabnet
                     Application.SetCompatibleTextRenderingDefault(false);
 #if PROTECTED
                     bool exit = true;
-                    do
-                    {
+                    do {
                         exit = true;
                         int hkey = 0;
 
                         //while (PClient.get().farms() == -1 && hkey == 0)
-                        while (GRD.Instance.GetFarmsCnt() == -1 && hkey == 0)
-                        {
+                        while (GRD.Instance.GetFarmsCnt() == -1 && hkey == 0) {
                             if (MessageBox.Show(null, "Ключ защиты не найден!\nВставьте ключ защиты в компьютер и нажмите кнопку повтор.",
-                                    "Ключ защиты", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) == DialogResult.Cancel)
-                            {
+                                    "Ключ защиты", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) == DialogResult.Cancel) {
                                 hkey = -1;
                                 break;
                             }
                             GRD.Instance.Reconnect();
                         }
-                        
-                        if (GRD.Instance.GetFarmsCnt() == -1)
-                        {
+
+                        if (GRD.Instance.GetFarmsCnt() == -1) {
                             return;
                         }
-                        if (!GRD.Instance.GetFlag(GRD_Base.FlagType.RabNet))
-                        {
+                        if (!GRD.Instance.GetFlag(GRD_Base.FlagType.RabNet)) {
                             MessageBox.Show("Программа не может работать с данным ключом защиты");
                             return;
                         }
@@ -86,33 +79,27 @@ namespace rabnet
 #endif
                         LoginForm lf = new LoginForm();
                         LoginForm.stop = false;
-                        while (!LoginForm.stop)
-                        {
+                        while (!LoginForm.stop) {
                             LoginForm.stop = true;
-                            if (lf.ShowDialog() == DialogResult.OK)
-                            {
+                            if (lf.ShowDialog() == DialogResult.OK) {
                                 Application.Run(new MainForm());
                             }
-#if PROTECTED                            
-                            if (GRD.Instance.GetFarmsCnt() == -1)
-                            {
+#if PROTECTED
+                            if (GRD.Instance.GetFarmsCnt() == -1) {
                                 LoginForm.stop = true;
                             }
 #endif
                         }
-#if PROTECTED                        
-                        if (GRD.Instance.GetFarmsCnt() == -1)
-                        {
+#if PROTECTED
+                        if (GRD.Instance.GetFarmsCnt() == -1) {
                             exit = false;
                         }
                     }
                     while (!exit);
-                    
+
 #endif
 #if !ONLYONE
-                }//new_instance
-                else
-                {
+                } else {   //new_instance
                     SwitchRabWindow();
                 }
             }//using
@@ -123,38 +110,29 @@ namespace rabnet
         static void Excepted(Exception ex)
         {
             _logger.Fatal(ex.Message, ex);
-            if (ex.Source == "MySql.Data")
-            {
-                MessageBox.Show("Соединение с сервером было разорвано."+Environment.NewLine+
+            if (ex.Source == "MySql.Data") {
+                MessageBox.Show("Соединение с сервером было разорвано." + Environment.NewLine +
                     "Программа будет закрыта");
                 Environment.Exit(0);
+            } else {
+                MessageBox.Show("Произошла необработанная ошибка." + Environment.NewLine + ex.Message);
             }
-            else
-            {
-                MessageBox.Show("Произошла необработанная ошибка."+Environment.NewLine + ex.Message);
-            }         
         }
 
         static void Threaded(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
-            try
-            {
+            try {
                 Excepted(e.Exception);
-            }
-            finally
-            {
+            } finally {
                 //Environment.Exit(0);
             }
         }
 
         static void Unhandled(object sender, UnhandledExceptionEventArgs e)
         {
-            try
-            {
+            try {
                 Excepted((Exception)e.ExceptionObject);
-            }
-            finally
-            {
+            } finally {
                 //Environment.Exit(0);
             }
         }
@@ -163,8 +141,7 @@ namespace rabnet
         {
             Process cp = Process.GetCurrentProcess();
             foreach (Process p in Process.GetProcessesByName(cp.ProcessName))
-                if (p.Id != cp.Id)
-                {
+                if (p.Id != cp.Id) {
                     SetForegroundWindow(p.MainWindowHandle);
                     ShowWindow(p.MainWindowHandle, 5);
                 }
