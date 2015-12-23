@@ -485,11 +485,13 @@ WHERE r_id={0:d};", rabFromID, mom, count), sql);
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT r_name FROM rabbits WHERE r_id={0:d};", rid), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             int nm = 0;
-            if (rd.Read())
-                nm = rd.GetInt32(0);
+            if (rd.Read() && !rd.IsDBNull(0)) {
+                nm = rd.GetInt32("r_name");
+            }
             rd.Close();
+
             if (nm > 0) {
-                cmd.CommandText = String.Format(@"UPDATE names SET n_use=0,n_block_date=NOW()+INTERVAL 1 YEAR WHERE n_id={0:d};", nm);
+                cmd.CommandText = String.Format(@"UPDATE names SET n_use=0, n_block_date = NOW()+INTERVAL 1 YEAR WHERE n_id = {0:d};", nm);
                 cmd.ExecuteNonQuery();
             }
         }

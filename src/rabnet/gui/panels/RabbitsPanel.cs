@@ -378,22 +378,31 @@ namespace rabnet.panels
 
         private void miKill_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count < 1) return;
+            if (listView1.SelectedItems.Count < 1) {
+                return;
+            }
 
+#if !NOCATCH
             try {
-                if (Engine.db().getDeadReasons().Get().ColNames.Length == 0)
+#endif
+                if (Engine.db().getDeadReasons().Get().ColNames.Length == 0) {
                     throw new Exception("Нет ни одной причины списания. Вы можете добавить их в  меню Вид->Причины списания");
+                }
 
                 KillForm f = new KillForm();
-                foreach (ListViewItem li in listView1.SelectedItems)
+                foreach (ListViewItem li in listView1.SelectedItems) {
                     f.addRabbit((li.Tag as AdultRabbit).ID);
-                if (f.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                }
+                if (f.ShowDialog() == DialogResult.OK && !MainForm.MustClose) {
                     _rsb.Run();
+                }
+#if !NOCATCH
             } catch (Exception exc) {
                 MessageBox.Show(exc.Message);
                 _logger.Warn(exc);
                 _rsb.Run();
             }
+#endif
         }
 
         private void miYoungersOut_Click(object sender, EventArgs e)

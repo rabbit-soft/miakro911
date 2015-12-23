@@ -1,4 +1,8 @@
-﻿using System;
+﻿#if DEBUG
+#define NOCATCH
+#endif
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -26,8 +30,9 @@ namespace rabnet.forms
             confirm = Engine.opt().getIntOption(Options.OPT_ID.CONFIRM_KILL) == 1;
             Catalog c = Engine.db().catalogs().getDeadReasons();
             cbDeadReason.Items.Add("");
-            for (int i = 0; i < c.Count; i++)
+            for (int i = 0; i < c.Count; i++) {
                 cbDeadReason.Items.Add(c[i + 3]);
+            }
             cs = new ListViewColumnSorter(listView1, new int[] { IND_AGE, IND_COUNT, IND_KILL_COUNT }, Options.OPT_ID.KILL_LIST);
             update();
             FormSizeSaver.Append(this);
@@ -121,7 +126,9 @@ namespace rabnet.forms
 
         private void button2_Click(object sender, EventArgs e)
         {
+#if !NOCATCH
             try {
+#endif
                 if (cbDeadReason.SelectedIndex == -1) {
                     MessageBox.Show("Вам необходимо указать причину списания для продолжения", "Не указана причина списания");
                     this.DialogResult = DialogResult.None;
@@ -147,9 +154,11 @@ namespace rabnet.forms
                 }
                 this.DialogResult = DialogResult.OK;
                 Close();
+#if !NOCATCH
             } catch (Exception ex) {
                 MessageBox.Show(ex.Message);
             }
+#endif
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
