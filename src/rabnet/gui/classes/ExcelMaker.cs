@@ -34,25 +34,21 @@ namespace rabnet
             WaitForm wf = new WaitForm();
             StreamWriter sw = new StreamWriter(new FileStream(path, FileMode.Create), Encoding.GetEncoding(TARG_ENCODING));
 
-            try
-            {
+            try {
                 wf.Flush(); wf.MaxValue = 100; wf.Show(); wf.Style = ProgressBarStyle.Blocks;
                 wf.MaxValue = xmls[0].FirstChild.ChildNodes.Count;
 
-                string row = "";                
+                string row = "";
 
-                for (int h = 0; h < headers.Length; h++)
-                {
+                for (int h = 0; h < headers.Length; h++) {
                     row += String.Format("\"{0}\"{1}", headers[h], SEPARATOR);
                 }
                 sw.WriteLine(row.TrimEnd(','));
-                
-                foreach (XmlNode nd in xmls[0].FirstChild.ChildNodes)
-                {
+
+                foreach (XmlNode nd in xmls[0].FirstChild.ChildNodes) {
                     row = "";
-                    foreach (XmlNode nd2 in nd.ChildNodes)
-                    {
-                        row += String.Format("\"{0}\"{1}", nd2.InnerText, SEPARATOR);                        
+                    foreach (XmlNode nd2 in nd.ChildNodes) {
+                        row += String.Format("\"{0}\"{1}", nd2.InnerText, SEPARATOR);
                     }
 
                     sw.WriteLine(row.TrimEnd(SEPARATOR.ToCharArray()));
@@ -63,9 +59,7 @@ namespace rabnet
                 sw.Close();
 
                 wf.Hide();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 MessageBox.Show(ex.Message, "Произошла ошибка");
                 wf.Visible = false;
             }
@@ -77,98 +71,89 @@ namespace rabnet
         /// <param name="lv"></param>
         /// <param name="name"></param>
         public static void MakeExcelFromLV(ListView lv, string name)
-        {            
+        {
             int refreshRate = lv.Items.Count / 100;
 
-            WaitForm wf = new WaitForm();           
+            WaitForm wf = new WaitForm();
 
-            try
-            {
+            try {
                 string path = getExportFolderPath();
-                if (path == "") return;
+                if (path == "") {
+                    return;
+                }
 
-                path = Helper.DuplicateName(Path.Combine(path,name + " " + DateTime.Now.ToShortDateString() + EXTENTION));                
+                path = Helper.DuplicateName(Path.Combine(path, name + " " + DateTime.Now.ToShortDateString() + EXTENTION));
 
                 wf.Flush(); wf.MaxValue = 100; wf.Show(); wf.Style = ProgressBarStyle.Blocks;
 
                 StreamWriter sw = new StreamWriter(new FileStream(path, FileMode.Create), Encoding.GetEncoding(TARG_ENCODING));
-                
+
                 int cols = lv.Columns.Count;//для обеспечения быстроты заполнения
 
                 /// Заполнение названиями когонок    
                 string row = "";
-                for (int h = 0; h < lv.Columns.Count; h++)
-                {
+                for (int h = 0; h < lv.Columns.Count; h++) {
                     row += String.Format("\"{0}\"{1}", lv.Columns[h].Text, SEPARATOR);
                 }
                 sw.WriteLine(row.TrimEnd(SEPARATOR.ToCharArray()));
-                    
-                for (int i = 0; i < lv.Items.Count; i++)
-                {
+
+                for (int i = 0; i < lv.Items.Count; i++) {
                     row = "";
-                    for (int j = 0; j < cols; j++)
-                    {
+                    for (int j = 0; j < cols; j++) {
                         row += String.Format("\"{0}\"{1}", lv.Items[i].SubItems[j].Text, j != cols - 1 ? SEPARATOR : "");
                     }
                     sw.WriteLine(row.TrimEnd(SEPARATOR.ToCharArray()));
-                    if (refreshRate != 0 && (i % refreshRate == 0 || i == lv.Items.Count))
-                    {
+                    if (refreshRate != 0 && (i % refreshRate == 0 || i == lv.Items.Count)) {
                         Application.DoEvents();
-                        if(!wf.isFull)
+                        if (!wf.isFull) {
                             wf.Inc();
+                        }
                     }
                 }
                 sw.Flush();
                 sw.Close();
 
                 wf.Hide();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 wf.Hide();
                 MessageBox.Show(ex.Message, "Произошла ошибка");
             }
         }
 
         private static string getExportFolderPath()
-        {            
+        {
             String path = "";
-            if (Engine.opt().getIntOption(Options.OPT_ID.XLS_ASK) == 1)
-            {
+            if (Engine.opt().getIntOption(Options.OPT_ID.XLS_ASK) == 1) {
                 FolderBrowserDialog dlg = new FolderBrowserDialog();
-                if (dlg.ShowDialog() == DialogResult.OK)
-                    return dlg.SelectedPath;                
-            }
-            else
-            {
+                if (dlg.ShowDialog() == DialogResult.OK) {
+                    return dlg.SelectedPath;
+                }
+            } else {
                 path = Engine.opt().getOption(Options.OPT_ID.XLS_FOLDER);
-                if (!Directory.Exists(path))
-                {
+                if (!Directory.Exists(path)) {
                     path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                    path = Helper.PathCombine(path,RabnetConfig.MY_DOCUMENTS_APP_FOLDER,EXPORT_FOLDER);
+                    path = Helper.PathCombine(path, RabnetConfig.MY_DOCUMENTS_APP_FOLDER, EXPORT_FOLDER);
                     Engine.opt().setOption(Options.OPT_ID.XLS_FOLDER, path);
-                }                
+                }
             }
-            if (path != "" && !Directory.Exists(path))
+            if (path != "" && !Directory.Exists(path)) {
                 Directory.CreateDirectory(path);
+            }
             return path;
         }
 
         private static string filename()
         {
             string filename = "";
-            if (_xmls.Length > 1)
-            {
+            if (_xmls.Length > 1) {
                 filename += _repName + " (";
-                foreach (XmlNode nd in _xmls[1].FirstChild.ChildNodes)
-                {
-                    foreach (XmlNode nd2 in nd.ChildNodes)
+                foreach (XmlNode nd in _xmls[1].FirstChild.ChildNodes) {
+                    foreach (XmlNode nd2 in nd.ChildNodes) {
                         filename += nd2.InnerText + " ";
+                    }
                 }
                 filename += ")" + EXTENTION;
-            }
-            else
-            {
+            } else {
                 filename = _repName + " " + DateTime.Now.ToShortDateString() + EXTENTION;
             }
             return filename;
@@ -223,7 +208,7 @@ namespace rabnet
         //    catch {return new string[0,0];}
         //}
     }
-    
+
 
 }
 #endif
