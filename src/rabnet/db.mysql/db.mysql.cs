@@ -668,6 +668,20 @@ namespace db.mysql
             return RabbitGetter.GetDeadChildrenCount(sql, rid, parentSex);
         }
 
+        public void RabbitsTableAiCheck()
+        {
+            MySqlCommand cmd = new MySqlCommand("SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'kroliki' AND TABLE_NAME = 'rabbits'", sql);
+            int curAi = Convert.ToInt32(cmd.ExecuteScalar());
+
+            cmd.CommandText = "SELECT MAX(r_id) FROM dead;";
+            int maxDeadId = Convert.ToInt32(cmd.ExecuteScalar());
+
+            if (maxDeadId >= curAi) {
+                cmd.CommandText = String.Format("ALTER TABLE `rabbits` AUTO_INCREMENT ={0:d};", maxDeadId + 1);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
 #if !DEMO
 
         public List<String> getButcherMonths()
@@ -684,21 +698,7 @@ namespace db.mysql
         public void ArchLogs()
         {
             (new Logs(sql)).ArchLogs();
-        }
-
-        public void RabbitsTableAiCheck()
-        {
-            MySqlCommand cmd = new MySqlCommand("SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'kroliki' AND TABLE_NAME = 'rabbits'", sql);
-            int curAi = Convert.ToInt32(cmd.ExecuteScalar());
-
-            cmd.CommandText = "SELECT MAX(r_id) FROM dead;";
-            int maxDeadId = Convert.ToInt32(cmd.ExecuteScalar());
-
-            if (maxDeadId >= curAi) {
-                cmd.CommandText = String.Format("ALTER TABLE `rabbits` AUTO_INCREMENT ={0:d};", maxDeadId + 1);
-                cmd.ExecuteNonQuery();
-            }
-        }
+        }        
 
         #region butcher
         public IDataGetter getButcherDates(Filters f)

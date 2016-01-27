@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !DEMO
+using System;
 using System.Text;
 using System.Xml;
 using System.Windows.Forms;
@@ -86,3 +87,4 @@ namespace rabnet
         }
     }
 }
+#endif

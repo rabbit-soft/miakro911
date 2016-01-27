@@ -27,8 +27,7 @@ namespace rabnet.forms
             log.Debug("inited");
             _rnc = new RabnetConfig();
 #if DEMO
-            this.isDemo = true;
-            btnLicense.hide();
+            this.isDemo = true;            
 #elif DEBUG
             this.BackColor = Color.Olive;
 #endif
