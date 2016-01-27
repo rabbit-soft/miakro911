@@ -60,7 +60,8 @@ UPDATE rabbits SET r_tier=null WHERE r_tier=0;
 ALTER TABLE  `rabbits` ADD FOREIGN KEY (`r_tier`) REFERENCES  `tiers` (`t_id`) 
 	ON DELETE SET NULL 
 	ON UPDATE CASCADE ;
-	
+
+ALTER TABLE  `rabbits` CHANGE  `r_breed`  `r_breed` INT( 10 ) UNSIGNED NOT NULL DEFAULT  '1';	
 ALTER TABLE  `rabbits` ADD FOREIGN KEY (`r_breed`) REFERENCES  `breeds` (`b_id`) 
 	ON DELETE RESTRICT 
 	ON UPDATE CASCADE ;
@@ -123,5 +124,8 @@ ALTER TABLE  `import_ascendants`
 	CHANGE  `r_surname`  `r_surname` INT( 10 ) UNSIGNED NULL DEFAULT NULL,
 	CHANGE  `r_secname`  `r_secname` INT( 10 ) UNSIGNED NULL DEFAULT NULL;
 		
+		
+		
+ALTER TABLE  `products` CHANGE  `p_unit`  `p_unit` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  '' COMMENT  'единица измерения';
 
 UPDATE options SET o_value = '17' WHERE o_name = 'db' AND o_subname = 'version';

@@ -668,9 +668,16 @@ namespace db.mysql
             return RabbitGetter.GetDeadChildrenCount(sql, rid, parentSex);
         }
 
+        /// <summary>
+        /// В InnoDB Auto_Increment после перезагрузки устанавливаетс как MAX(r_id).
+        /// при списании кролика могут происходить проблема `duplicate key entry`
+        /// </summary>
         public void RabbitsTableAiCheck()
         {
-            MySqlCommand cmd = new MySqlCommand("SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'kroliki' AND TABLE_NAME = 'rabbits'", sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"
+                SELECT `AUTO_INCREMENT` 
+                FROM  INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = '{0}' AND TABLE_NAME = 'rabbits'", this.sql.Database), sql);
             int curAi = Convert.ToInt32(cmd.ExecuteScalar());
 
             cmd.CommandText = "SELECT MAX(r_id) FROM dead;";

@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS dead (
   r_area int(10) unsigned NOT NULL DEFAULT '0',
   r_rate int(11) NOT NULL DEFAULT '0',
   r_group int(10) unsigned NOT NULL DEFAULT '1',
-  r_breed int(10) unsigned NOT NULL DEFAULT '0',
+  r_breed int(10) unsigned NOT NULL DEFAULT '1',
   r_flags varchar(10) NOT NULL DEFAULT '00000',
   r_zone int(10) unsigned NOT NULL DEFAULT '0',
   r_born datetime DEFAULT NULL,
