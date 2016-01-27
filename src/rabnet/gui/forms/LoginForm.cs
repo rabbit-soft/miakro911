@@ -29,6 +29,12 @@ namespace rabnet.forms
 #if DEMO
             this.isDemo = true;
             btnLicense.hide();
+#elif DEBUG
+            this.BackColor = Color.Olive;
+#endif
+
+#if !PROTECTED
+            this.btLicense.Hide();
 #endif
             this.Text = String.Format("{0} [{1}{2}] ", AboutForm.AssemblyProduct, AboutForm.AssemblyVersion, isDemo ? " Demo" : "");
         }
