@@ -589,18 +589,24 @@ namespace rabnet.panels
 
         private void okrolMenuItem_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count != 1) return;
+            if (listView1.SelectedItems.Count != 1) {
+                return;
+            }
 
+#if !NOCATCH
             try {
+#endif
                 OkrolForm dlg = new OkrolForm((listView1.SelectedItems[0].Tag as AdultRabbit).ID);
                 if (dlg.ShowDialog() == DialogResult.OK && !MainForm.MustClose) {
                     _rsb.Run();
                 }
+#if !NOCATCH
             } catch (Exception exc) {
                 MessageBox.Show(exc.Message);
                 _logger.Warn(exc);
                 _rsb.Run();
             }
+#endif
         }
 
         private void miFucks_Click(object sender, EventArgs e)

@@ -1,4 +1,7 @@
-﻿using System;
+﻿#if DEBUG
+#define NOCATCH
+#endif
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,7 +15,7 @@ namespace rabnet.forms
     {
         private RabNetEngRabbit _rabbit = null;
 
-        public OkrolForm(int r1)           
+        public OkrolForm(int r1)
         {
             InitializeComponent();
             initialHint();
@@ -41,28 +44,26 @@ namespace rabnet.forms
 
         private void button2_Click(object sender, EventArgs e)
         {
-            try
-            {
+            try {
                 _rabbit.ProholostIt(dateDays1.DaysValue);
                 Close();
-            }
-            catch (ApplicationException ex)
-            {
+            } catch (ApplicationException ex) {
                 MessageBox.Show("Ошибка: " + ex.Message);
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            try
-            {
+#if !NOCATCH
+            try {
+#endif
                 _rabbit.OkrolIt(dateDays1.DaysValue, (int)numericUpDown1.Value, (int)numericUpDown2.Value);
                 Close();
-            }
-            catch (ApplicationException ex)
-            {
+#if !NOCATCH
+            } catch (ApplicationException ex) {
                 MessageBox.Show("Ошибка: " + ex.Message);
             }
+#endif
         }
     }
 }

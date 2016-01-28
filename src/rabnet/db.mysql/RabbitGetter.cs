@@ -242,11 +242,11 @@ WHERE r_id={0:d};",
                 int okrol = fml.Status;
                 cmd.CommandText = String.Format(@"INSERT 
 INTO rabbits(r_parent, r_mother, r_father, r_born, r_sex, r_group, r_bon, r_genesis, r_name, r_surname, r_secname, r_breed, r_okrol, r_rate, r_notes) 
-VALUES({0}, {1}, {2}, {3}, 'void', {4}, '{5}', {6}, 0, {7}, {8}, {9}, {10}, {11}, '');",
+VALUES({0}, {1}, {2}, {3}, 'void', {4}, '{5}', {6}, NULL, {7}, {8}, {9}, {10}, {11}, '');",
       rabbit, rabbit, father, 
       when, children, DBHelper.commonBon(fml.Bon.ToString(), (ml != null ? ml.Bon.ToString() : fml.Bon.ToString())),
       bornRabbitGenesis(sql, fml, ml),
-      fml.NameID, (ml != null ? ml.NameID : 0), brd, okrol, chRate);
+      DBHelper.Nullable(fml.NameID), (ml != null ? DBHelper.Nullable(ml.NameID) : "NULL"), brd, okrol, chRate);
                 cmd.ExecuteNonQuery();
                 return (int)cmd.LastInsertedId;
             }

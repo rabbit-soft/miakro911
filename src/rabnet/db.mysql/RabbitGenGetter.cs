@@ -304,8 +304,8 @@ WHERE f_rabid={0:d};", rabbit.ID), sql);
                 rd.Read();
                 genID = rd.GetInt32(0);
                 rd.Close();
-            } else ///если такого набора генов в базе нет, то добавляем
-            {
+            } else {
+                ///если такого набора генов в базе нет, то добавляем            
                 rd.Close();
                 c.CommandText = "INSERT INTO genesis(g_notes) VALUES('');";
                 c.ExecuteNonQuery();
