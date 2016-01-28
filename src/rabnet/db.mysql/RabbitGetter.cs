@@ -400,7 +400,7 @@ WHERE r_farm={0:d} AND r_tier={1:d} AND r_tier_id={2:d} AND r_area={3:d} AND r_i
         public static void placeRabbit(MySqlConnection sql, int rabbit, int farm, int tierFloor, int sec)
         {
             if (farm == 0) {
-                MySqlCommand c = new MySqlCommand(String.Format("UPDATE rabbits SET r_farm=0, r_tier=0, r_tier_id=0, r_area=0 WHERE r_id={0:d};", rabbit), sql);
+                MySqlCommand c = new MySqlCommand(String.Format("UPDATE rabbits SET r_farm = NULL, r_tier = NULL, r_tier_id = 0, r_area = 0 WHERE r_id = {0:d};", rabbit), sql);
                 c.ExecuteNonQuery();
                 return;
             }
@@ -410,10 +410,12 @@ WHERE r_farm={0:d} AND r_tier={1:d} AND r_tier_id={2:d} AND r_area={3:d} AND r_i
             int tierId = rd.GetInt32(0);
             rd.Close();
 
-            cmd.CommandText = String.Format(@"UPDATE rabbits SET r_farm={0:d}, r_tier_id={1:d}, r_area={2:d}, r_tier={3:d} WHERE r_id={4:d};", farm, tierFloor, sec, tierId, rabbit);
+            cmd.CommandText = String.Format(@"UPDATE rabbits SET r_farm = {0:d}, r_tier_id = {1:d}, r_area = {2:d}, r_tier = {3:d} WHERE r_id = {4:d};", 
+                DBHelper.Nullable(farm), tierFloor, sec, DBHelper.Nullable(tierId), rabbit
+            );
             cmd.ExecuteNonQuery();
             if (farm != 0) {
-                cmd.CommandText = String.Format("UPDATE tiers SET t_busy{0:d}={1:d} WHERE t_id={2:d};", sec + 1, rabbit, tierId);
+                cmd.CommandText = String.Format("UPDATE tiers SET t_busy{0:d} = {1:d} WHERE t_id = {2:d};", sec + 1, rabbit, tierId);
             }
             cmd.ExecuteNonQuery();
         }
