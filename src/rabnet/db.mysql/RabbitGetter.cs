@@ -412,8 +412,9 @@ WHERE r_farm={0:d} AND r_tier={1:d} AND r_tier_id={2:d} AND r_area={3:d} AND r_i
 
             cmd.CommandText = String.Format(@"UPDATE rabbits SET r_farm={0:d}, r_tier_id={1:d}, r_area={2:d}, r_tier={3:d} WHERE r_id={4:d};", farm, tierFloor, sec, tierId, rabbit);
             cmd.ExecuteNonQuery();
-            if (farm != 0)
+            if (farm != 0) {
                 cmd.CommandText = String.Format("UPDATE tiers SET t_busy{0:d}={1:d} WHERE t_id={2:d};", sec + 1, rabbit, tierId);
+            }
             cmd.ExecuteNonQuery();
         }
 
