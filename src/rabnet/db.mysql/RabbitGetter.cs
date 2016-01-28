@@ -440,9 +440,9 @@ WHERE r_farm={0:d} AND r_tier={1:d} AND r_tier_id={2:d} AND r_area={3:d} AND r_i
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"INSERT INTO rabbits
     (r_parent, r_father, r_mother, r_name, r_surname, r_secname, r_sex, r_bon, r_okrol, r_breed, r_rate, r_group, r_flags, r_zone, r_born, r_genesis, r_status, r_last_fuck_okrol, r_event, r_event_date, r_notes, r_farm, r_tier, r_tier_id, r_area) 
-SELECT {1:d}, r_father, r_mother, 0, r_surname, r_secname, r_sex, r_bon, r_okrol, r_breed, r_rate, {2:d}, r_flags, r_zone, r_born, r_genesis, r_status, r_last_fuck_okrol, r_event, r_event_date, r_notes, r_farm, r_tier, r_tier_id, r_area
+SELECT {1:d}, r_father, r_mother, NULL, r_surname, r_secname, r_sex, r_bon, r_okrol, r_breed, r_rate, {2:d}, r_flags, r_zone, r_born, r_genesis, r_status, r_last_fuck_okrol, r_event, r_event_date, r_notes, r_farm, r_tier, r_tier_id, r_area
 FROM rabbits 
-WHERE r_id={0:d};", rabFromID, mom, count), sql);
+WHERE r_id={0:d};", rabFromID, DBHelper.Nullable(mom), count), sql);
             cmd.ExecuteNonQuery();
             int cloneID = (int)cmd.LastInsertedId;
             cmd.CommandText = String.Format("UPDATE rabbits SET r_group=r_group-{0:d} WHERE r_id={1:d};", count, rabFromID);

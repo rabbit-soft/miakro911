@@ -67,8 +67,9 @@ namespace rabnet
         internal static void Updater()
         {
             String prg = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), UPDATER);
-            if (!File.Exists(prg))
+            if (!File.Exists(prg)) {
                 throw new Exception(String.Format("Не удается найти программу {0:s}{1:s}БД не будет обновлена", prg, Environment.NewLine));
+            }
             Process p = Process.Start(prg);
         }
     }
