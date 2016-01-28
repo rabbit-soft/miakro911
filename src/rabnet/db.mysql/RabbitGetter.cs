@@ -344,8 +344,15 @@ VALUES({0}, {1}, {2}, {3}, 'void', {4}, '{5}', {6}, 0, {7}, {8}, {9}, {10}, {11}
         public static AddressR freeTier(MySqlConnection sql, int rabbit)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT 
-    r_id, r_farm, r_tier, r_tier_id, r_area, 
-    t_busy1, t_busy2, t_busy3, t_busy4, 
+    r_id, 
+    Coalesce(r_farm,0) AS r_farm, 
+    Coalesce(r_tier,0) AS r_tier, 
+    r_tier_id, 
+    r_area, 
+    Coalesce(t_busy1,0) AS t_busy1, 
+    Coalesce(t_busy2,0) AS t_busy2, 
+    Coalesce(t_busy3,0) AS t_busy3, 
+    Coalesce(t_busy4,0) AS t_busy4, 
     Coalesce(m_upper,0) AS m_upper, 
     Coalesce(m_lower,0) AS m_lower,
     m_id 
@@ -357,7 +364,12 @@ WHERE r_id={0:d}", rabbit), sql);
             AddressR a = null;
 
             if (rd.Read()) {
-                a = new AddressR(rd.GetInt32("r_farm"), rd.GetInt32("r_tier_id"), rd.GetInt32("r_area"), rd.GetInt32("r_tier"));
+                a = new AddressR(
+                    rd.GetInt32("r_farm"), 
+                    rd.GetInt32("r_tier_id"), 
+                    rd.GetInt32("r_area"), 
+                    rd.GetInt32("r_tier")
+                );
                 int bs = rd.GetInt32("t_busy" + (a.Section + 1).ToString());
                 if (bs != rabbit) {
                     a.TierId = 0;

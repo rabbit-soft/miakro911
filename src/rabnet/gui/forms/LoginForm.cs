@@ -1,4 +1,7 @@
-﻿using System;
+﻿#if DEBUG
+#define NOCATCH
+#endif
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -61,8 +64,9 @@ namespace rabnet.forms
             if (cbFarm.SelectedIndex < 0) {
                 return;
             }
-
+#if !NOCATCH
             try {
+#endif
                 cbUser.Focus();
                 try {
                     Application.DoEvents();
@@ -110,11 +114,13 @@ namespace rabnet.forms
                         unselectConn();
                     }
                 }
+#if !NOCATCH
             } catch (Exception ex) {
                 //string message = ex.GetType().ToString() + ": " + ex.Message;
                 MessageBox.Show(ex.Message, "Ошибка подключения", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 unselectConn();
             }
+#endif
         }
 
         private void unselectConn()

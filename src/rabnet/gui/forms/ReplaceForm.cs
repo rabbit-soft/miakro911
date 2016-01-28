@@ -97,11 +97,11 @@ namespace rabnet.forms
             public static bool canTierHaveNest(string place)
             {
                 if (place.Contains(Building.DOUBLE_Female_Rus) || place.Contains(Building.FEMALE_Rus)) return true;
-                if (place.Contains(Building.JURTA_Rus))
-                {
+                if (place.Contains(Building.JURTA_Rus)) {
                     place = place.Remove(place.LastIndexOf(" ["));
-                    if (place.Contains("а"))
+                    if (place.Contains("а")) {
                         return true;
+                    }
                 }
                 return false;
             }
@@ -139,8 +139,7 @@ namespace rabnet.forms
                 foreach (RP r in List)
                     if (r.Parent == ID)
                         r.Address = Address;
-                while (Clones.Count > 0)
-                {
+                while (Clones.Count > 0) {
                     RP f = Clones[0];
                     f.clear();
                     Clones.RemoveAt(0);
@@ -174,8 +173,7 @@ namespace rabnet.forms
                     if (this.ID == 0) return;
 
                     foreach (RP r in List)//далее ищет детей и присваивает их адресу - новый адрес матери.
-                        if (r.Parent == this.ID && r != this)
-                        {
+                        if (r.Parent == this.ID && r != this) {
                             if (r.CurAddress != this.Address) continue;//если детям назначили адрес раньше матери
                             String cur = r.Address;
                             r.Address = this.CurAddress;
@@ -192,8 +190,7 @@ namespace rabnet.forms
                 get
                 {
                     string res = NewCount > 1 ? "остаются" : "остается";
-                    if (CurAddress != Address)
-                    {
+                    if (CurAddress != Address) {
                         if (Younger) res = "отсадка";
                         else res = "пересадка";
                         if (PlaceTo != null) res = "подсадка";
@@ -230,7 +227,7 @@ namespace rabnet.forms
         /// Номер колонки, в которой содержится чекбокс с установкой гнездовья
         /// </summary>
         public const int FIELD_NEST = 8;
-  
+
         private bool _manual = false;
         private int _girlout = 0;
         private List<RabNetEngRabbit> _rabERs = new List<RabNetEngRabbit>();
@@ -239,10 +236,10 @@ namespace rabnet.forms
         /// <summary>
         /// Комбобокс с новыми адресами, который добавляется к новой строке
         /// </summary>
-        private DataGridViewComboBoxColumn _dgcbNewAddress = new DataGridViewComboBoxColumn();        
-        private BuildingList _freeBuildings = null;       
+        private DataGridViewComboBoxColumn _dgcbNewAddress = new DataGridViewComboBoxColumn();
+        private BuildingList _freeBuildings = null;
         private Action _action = Action.NONE;
-        private bool _globalError=false;
+        private bool _globalError = false;
         private bool _noboys = false;
         private int _combineage = 0;
 
@@ -293,8 +290,7 @@ namespace rabnet.forms
         private void clear()
         {
             _replaceList.Clear();
-            foreach (RabNetEngRabbit r in _rabERs)
-            {
+            foreach (RabNetEngRabbit r in _rabERs) {
                 _replaceList.Add(new RP(_replaceList, r.ID, r.FullName, r.Address, r.Group, r.Sex, r.Age, r.BreedName, r.SetNest));
                 //Engine.get().db().getBuilding(r.Address);
                 foreach (YoungRabbit y in r.Youngers)
@@ -309,7 +305,7 @@ namespace rabnet.forms
         private bool myrab(int i)
         {
             foreach (RabNetEngRabbit r in _rabERs)
-                if (r.ID == i)return true;
+                if (r.ID == i) return true;
             return false;
         }
 
@@ -317,14 +313,11 @@ namespace rabnet.forms
         {
             bool res = false;
             if (id.CurAddress == Rabbit.NULL_ADDRESS) return false;
-            foreach (RP r in _replaceList)
-            {
-                if (r.CurAddress == id.CurAddress && r != id && !res)
-                {
+            foreach (RP r in _replaceList) {
+                if (r.CurAddress == id.CurAddress && r != id && !res) {
                     if (!(id.Younger && id.Parent == r.ID) && !(r.Younger && r.Parent == id.ID))
                         res = true;
-                    if (res)
-                    {
+                    if (res) {
                         if (r.PlaceWith == id || id.PlaceWith == r) res = false;
                         if (r.PlaceTo == id || id.PlaceTo == r) res = false;
                         if (r.PlaceTo != null && (id.Younger && r.PlaceTo.ID == id.Parent))
@@ -347,7 +340,7 @@ namespace rabnet.forms
             //добавляем в фильтры ID кроликов, чтобы их клетки тоже быть в _freeBuildings
             Filters f = new Filters();
             f["rcnt"] = _rabERs.Count.ToString();
-            for (int i = 0; i < _rabERs.Count; i++) 
+            for (int i = 0; i < _rabERs.Count; i++)
                 f["r" + i.ToString()] = _rabERs[i].ID.ToString();
 
             BuildingType tp = BuildingType.None;
@@ -355,12 +348,10 @@ namespace rabnet.forms
             //if (_action == Action.SET_NEST && cbFilter.SelectedIndex != 4 && cbFilter.SelectedIndex != 2 && cbFilter.SelectedIndex !=1)
             //    cbFilter.SelectedIndex = 4;
             cbFilter.Tag = 0;
-            if (_action != Action.SET_NEST)
-            {
+            if (_action != Action.SET_NEST) {
                 if (cbFilter.SelectedIndex != 0)//если не выбрано Все
                 {
-                    switch (cbFilter.SelectedIndex)
-                    {
+                    switch (cbFilter.SelectedIndex) {
                         case 1: tp = BuildingType.Female; break;
                         case 2: tp = BuildingType.DualFemale; break;
                         case 3: tp = BuildingType.Complex; break;
@@ -372,28 +363,23 @@ namespace rabnet.forms
                     }
                     f["tp"] = Building.GetName(tp);
                 }
-            }
-            else
-            {
+            } else {
                 f["nest"] = "1";
             }
             f[Filters.FREE] = "1";
             _freeBuildings = Engine.db().getBuildings(f);
             _dgcbNewAddress.Items.Clear();
             _dgcbNewAddress.Items.Add(Rabbit.NULL_ADDRESS);
-            foreach (Building b in _freeBuildings)
-            {
-                for (int i = 0; i < b.Sections; i++)
-                {
-                    if ((_action == Action.SET_NEST && !b.CanHaveNest(i))||
+            foreach (Building b in _freeBuildings) {
+                for (int i = 0; i < b.Sections; i++) {
+                    if ((_action == Action.SET_NEST && !b.CanHaveNest(i)) ||
                         b.IsAbsorbed(i))
                         continue;
-                    if ((b.Busy[i].ID==0) || myrab(b.Busy[i].ID)) 
+                    if ((b.Busy[i].ID == 0) || myrab(b.Busy[i].ID))
                         _dgcbNewAddress.Items.Add(b.MedName(i));
                 }
             }
-            foreach (RP r in _replaceList)
-            {
+            foreach (RP r in _replaceList) {
                 if (!_dgcbNewAddress.Items.Contains(r.CurAddress))
                     _dgcbNewAddress.Items.Add(r.CurAddress);
             }
@@ -410,12 +396,11 @@ namespace rabnet.forms
         {
             int selectedRow = -1;
             if (dataGridView1.SelectedRows.Count != 0)
-                selectedRow = dataGridView1.SelectedRows[0].Index; 
+                selectedRow = dataGridView1.SelectedRows[0].Index;
             _globalError = false;
             _dataSet.Rows.Clear();
 
-            if (reget)
-            {
+            if (reget) {
                 getBuildings();
                 dataGridView1.Columns.RemoveAt(FIELD_NEWPLACE);
                 _dgcbNewAddress.MaxDropDownItems = 20;
@@ -425,43 +410,38 @@ namespace rabnet.forms
                 dataGridView1.Columns.Insert(FIELD_NEWPLACE, _dgcbNewAddress);
             }
 
-            foreach (RP r in _replaceList)
-            {
+            foreach (RP r in _replaceList) {
                 string stat = r.Status;
                 if (r.PlaceTo != null)
                     r.CurAddress = r.PlaceTo.CurAddress;
-                if (r.PlaceWith != null) 
+                if (r.PlaceWith != null)
                     r.CurAddress = r.PlaceWith.CurAddress;
                 bool b = busy(r);
-                if (b)
-                {
+                if (b) {
                     _globalError = true;
                     stat += ",ЗАНЯТО";
                 }
-                DataRow rw = _dataSet.Rows.Add(r.Name,r.BreedName, r.Age, Rabbit.SexToRU(r.NewSex), r.NewCount, r.Address, r.CurAddress, stat, r.SetNest);
-                if (_action == Action.CHANGE && dataGridView1.SelectedRows.Count < 2 && r.Parent==0)
+                DataRow rw = _dataSet.Rows.Add(r.Name, r.BreedName, r.Age, Rabbit.SexToRU(r.NewSex), r.NewCount, r.Address, r.CurAddress, stat, r.SetNest);
+                if (_action == Action.CHANGE && dataGridView1.SelectedRows.Count < 2 && r.Parent == 0)
                     dataGridView1.Rows[dataGridView1.Rows.Count - 1].Selected = true;
-                if (_action == Action.BOYSOUT)
-                {
+                if (_action == Action.BOYSOUT) {
                     dataGridView1.Rows[dataGridView1.Rows.Count - 1].Selected = r.Younger;
                 }
                 if (b)
                     rw.RowError = "занято";
             }
             dataGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
-            if (_action == Action.CHANGE)
-            {
+            if (_action == Action.CHANGE) {
                 _action = Action.NONE;
                 if (dataGridView1.SelectedRows.Count == 2)
                     btChangeAddresses.PerformClick();
             }
-            if (_action == Action.BOYSOUT)
-            {
-//                action = Action.NONE;
-                btSeparate.Enabled = btChangeAddresses.Enabled = btSeparateByOne.Enabled=_noboys;
+            if (_action == Action.BOYSOUT) {
+                //                action = Action.NONE;
+                btSeparate.Enabled = btChangeAddresses.Enabled = btSeparateByOne.Enabled = _noboys;
             }
-            if (selectedRow != -1 && selectedRow <= dataGridView1.Rows.Count-1)            
-                dataGridView1.CurrentCell = dataGridView1[0, selectedRow];            
+            if (selectedRow != -1 && selectedRow <= dataGridView1.Rows.Count - 1)
+                dataGridView1.CurrentCell = dataGridView1[0, selectedRow];
         }
 
         private RP rp(int idx)
@@ -488,14 +468,13 @@ namespace rabnet.forms
 
         private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            if (e.ColumnIndex != FIELD_NEST ||(e.ColumnIndex == FIELD_NEST && !canHaveNest(e.RowIndex)))
+            if (e.ColumnIndex != FIELD_NEST || (e.ColumnIndex == FIELD_NEST && !canHaveNest(e.RowIndex)))
                 e.Cancel = (e.ColumnIndex != FIELD_NEWPLACE);
         }
         private void ReplaceForm_Load(object sender, EventArgs e)
         {
             _manual = false;
-            if (_action == Action.SET_NEST)
-            {
+            if (_action == Action.SET_NEST) {
                 cbFilter.Enabled = false;
                 this.Text += " - Установка гнездовья";
             }
@@ -515,7 +494,7 @@ namespace rabnet.forms
                 return;
             DataRow rw = _dataSet.Rows[e.RowIndex];
             RP r = _replaceList[e.RowIndex];
-            if (e.ColumnIndex == FIELD_NEWPLACE) 
+            if (e.ColumnIndex == FIELD_NEWPLACE)
                 r.CurAddress = (string)rw[FIELD_NEWPLACE];
             if (e.ColumnIndex == FIELD_NEWPLACE && r.Address == r.CurAddress)
                 return;
@@ -546,16 +525,15 @@ namespace rabnet.forms
 
         private void btChangeAddresses_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.SelectedRows.Count != 2)
-            {
+            if (dataGridView1.SelectedRows.Count != 2) {
                 MessageBox.Show("Выберите две строки");
                 return;
             }
             RP r1 = rp(dataGridView1.SelectedRows[0].Index);
             RP r2 = rp(dataGridView1.SelectedRows[1].Index);
             string ca = r1.CurAddress;
-            r1.SetCurAddress(r2.CurAddress,true);
-            r2.SetCurAddress(ca,true);
+            r1.SetCurAddress(r2.CurAddress, true);
+            r2.SetCurAddress(ca, true);
             update();
         }
 
@@ -563,10 +541,9 @@ namespace rabnet.forms
         {
             MainForm.StillWorking();
             btChangeAddresses.Enabled = (dataGridView1.SelectedRows.Count == 2 && _action != Action.ONE_GIRL_OUT);
-            btClear.Enabled = (dataGridView1.SelectedRows.Count >0);
+            btClear.Enabled = (dataGridView1.SelectedRows.Count > 0);
             gbSeparate.Enabled = gbCombine.Enabled = false;
-            if (dataGridView1.SelectedRows.Count == 2 && _action != Action.ONE_GIRL_OUT)
-            {
+            if (dataGridView1.SelectedRows.Count == 2 && _action != Action.ONE_GIRL_OUT) {
                 gbCombine.Enabled = true;
                 btCombine.Enabled = btUniteUp.Enabled = btUniteDown.Enabled = false;
                 RP r1 = rp(dataGridView1.SelectedRows[0].Index);
@@ -574,27 +551,23 @@ namespace rabnet.forms
                 if (
                     (r1.Count == 1 && r1.Sex == Rabbit.SexType.FEMALE && r1.Age > r2.Age) ||
                     (r2.Count == 1 && r2.Sex == Rabbit.SexType.FEMALE && r2.Age > r1.Age)
-                    )
-                {
+                    ) {
                     btCombine.Enabled = true;
                 }
-                if (r1.Sex == r2.Sex && Math.Abs(r1.Age - r2.Age) <= _combineage)
-                {
+                if (r1.Sex == r2.Sex && Math.Abs(r1.Age - r2.Age) <= _combineage) {
                     btUniteUp.Enabled = btUniteDown.Enabled = true;
                 }
                 btUniteUp.Enabled = btUniteDown.Enabled = (r1.ID != 0 && r2.ID != 0);
             }
-            if (dataGridView1.SelectedRows.Count == 1)
-            {
+            if (dataGridView1.SelectedRows.Count == 1) {
                 int cnt = rp(dataGridView1.SelectedRows[0].Index).NewCount;
                 gbSeparate.Enabled = (cnt > 1);
                 btSeparateBoys.Enabled = btSetAllGirls.Enabled = btSetAllBoys.Enabled = (rp().NewSex == Rabbit.SexType.VOID);
-                if (cnt > 1)           
+                if (cnt > 1)
                     numericUpDown1.Maximum = cnt - 1;
-                numericUpDown1.Enabled = btSeparate.Enabled = btSeparateBoys.Enabled = btSeparateByOne.Enabled = (cnt > 1) ;                
+                numericUpDown1.Enabled = btSeparate.Enabled = btSeparateBoys.Enabled = btSeparateByOne.Enabled = (cnt > 1);
                 gbSeparate.Enabled = (rp().ID != 0);
-                if (_action == Action.ONE_GIRL_OUT)
-                {
+                if (_action == Action.ONE_GIRL_OUT) {
                     numericUpDown1.Value = numericUpDown1.Maximum = numericUpDown1.Minimum = 1;
                     btSeparateBoys.Enabled = btSetAllGirls.Enabled = btSetAllBoys.Enabled = btChangeAddresses.Enabled = false;
                     gbCombine.Enabled = false;
@@ -604,9 +577,9 @@ namespace rabnet.forms
 
         private void btClear_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < dataGridView1.SelectedRows.Count;i++)
+            for (int i = 0; i < dataGridView1.SelectedRows.Count; i++)
                 rp(dataGridView1.SelectedRows[i].Index).clear();
-            btSeparate.Enabled=btSeparateByOne.Enabled=(_action!=Action.BOYSOUT);
+            btSeparate.Enabled = btSeparateByOne.Enabled = (_action != Action.BOYSOUT);
             _noboys = false;
             update();
         }
@@ -620,14 +593,14 @@ namespace rabnet.forms
 
         private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
-            e.ThrowException=false;
-            dataGridView1.Rows[e.RowIndex].ErrorText = e.ColumnIndex.ToString()+":"+e.Exception.Message;
+            e.ThrowException = false;
+            dataGridView1.Rows[e.RowIndex].ErrorText = e.ColumnIndex.ToString() + ":" + e.Exception.Message;
         }
 
         private void btSeparateByOne_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count != 1) return;
-            for (int i = 0; i < rp().Count-1;i++)
+            for (int i = 0; i < rp().Count - 1; i++)
                 rp().SplitGroup(1);
             update();
 
@@ -643,7 +616,7 @@ namespace rabnet.forms
             btSeparate.Enabled = btSeparateByOne.Enabled = true;
             update();
         }
-        
+
         /// <summary>
         /// Сохраняет операции, по пересадке кролика
         /// warning full vachanaliation and analizing troubles
@@ -651,12 +624,11 @@ namespace rabnet.forms
         /// <param name="r">Строка кролика</param>
         /// <param name="id"></param>
         /// <param name="allowReplace">Уже перемещен</param>
-        private void commitRabbit(RP rp,int id,bool allowReplace)
+        private void commitRabbit(RP rp, int id, bool allowReplace)
         {
             if (rp.Saved) return;
 
-            if (rp.ID == 0)
-            {
+            if (rp.ID == 0) {
                 //int[] a = getAddress(rp);
                 Address a = _freeBuildings.SearchByMedName(rp.CurAddress);
                 _rabERs[_replaceList.IndexOf(rp)].ReplaceRabbit(a.Farm, a.Floor, a.Section, rp.CurAddress);
@@ -664,40 +636,34 @@ namespace rabnet.forms
                 return;
             }
             RabNetEngRabbit rb = Engine.get().getRabbit(id == 0 ? rp.ID : id);
-            RabNetEngRabbit par = null;           
+            RabNetEngRabbit par = null;
 
             if (rp.Younger)
                 par = Engine.get().getRabbit(rp.Parent);
-            if (rp.PlaceTo != null || rp.PlaceWith != null)
-            {
+            if (rp.PlaceTo != null || rp.PlaceWith != null) {
                 if (!allowReplace) return;
 
-                if (rp.PlaceWith != null)
-                {
+                if (rp.PlaceWith != null) {
                     rb.CombineWidth(rp.PlaceWith.ID);
                     rp.Saved = true;
                     return;
                 }
-                if (rp.PlaceTo != null)
-                {
+                if (rp.PlaceTo != null) {
                     rb.PlaceSuckerTo(rp.PlaceTo.ID);
                 }
             }
 
-            if (rp.Replaced && !allowReplace)
-            {
+            if (rp.Replaced && !allowReplace) {
                 //int[] a = getAddress(rp);
                 Address a = _freeBuildings.SearchByMedName(rp.CurAddress);
                 //if (rp.Younger)
-                    //par.ReplaceYounger(rb.ID, a.Farm, a.Tier, a.Section, rp.CurAddress);
+                //par.ReplaceYounger(rb.ID, a.Farm, a.Tier, a.Section, rp.CurAddress);
                 //else
-                    rb.ReplaceRabbit(a.Farm, a.Floor, a.Section, rp.CurAddress);               
+                rb.ReplaceRabbit(a.Farm, a.Floor, a.Section, rp.CurAddress);
             }
 
-            if (rp.CanHaveNest)
-            {
-                if (!rp.Younger || (rp.Younger && rp.Replaced && rp.PlaceTo==null))
-                {
+            if (rp.CanHaveNest) {
+                if (!rp.Younger || (rp.Younger && rp.Replaced && rp.PlaceTo == null)) {
                     RabNetEngRabbit rr = Engine.get().getRabbit(rb.ID);
                     RabNetEngBuilding rbe = Engine.get().getBuilding(rr.RawAddress);
 
@@ -705,8 +671,7 @@ namespace rabnet.forms
                     //BuildingType tp = Building.ParseType(vals[3]);
                     if (rbe.Type == BuildingType.Jurta || rbe.Type == BuildingType.Female)
                         rbe.setNest(rp.SetNest);
-                    else if (rbe.Type == BuildingType.DualFemale)
-                    {                        
+                    else if (rbe.Type == BuildingType.DualFemale) {
                         if (vals[2] == "0")
                             rbe.setNest(rp.SetNest);
                         else if (vals[2] == "1")
@@ -719,8 +684,7 @@ namespace rabnet.forms
                 rb.SetSex(rp.NewSex);
 
             /// рассаживаем отделеных
-            while (rp.Clones.Count > 0)
-            {
+            while (rp.Clones.Count > 0) {
                 RP c = rp.Clones[0];
                 Address a = _freeBuildings.SearchByMedName(c.CurAddress);
                 int cid = rb.Clone(c.Count, a.Farm, a.Floor, a.Section);
@@ -735,37 +699,30 @@ namespace rabnet.forms
 
         private void btOK_Click(object sender, EventArgs e)
         {
-            if (Engine.opt().getIntOption(Options.OPT_ID.CONFIRM_REPLACE) == 1)
-            {
-                if (MessageBox.Show("Пересадить?", "", MessageBoxButtons.YesNo) == DialogResult.No)
-                {
+            if (Engine.opt().getIntOption(Options.OPT_ID.CONFIRM_REPLACE) == 1) {
+                if (MessageBox.Show("Пересадить?", "", MessageBoxButtons.YesNo) == DialogResult.No) {
                     this.DialogResult = DialogResult.None;
                     return;
                 }
             }
-            if (_action == Action.SET_NEST && !chechOnNest())
-            {
+            if (_action == Action.SET_NEST && !chechOnNest()) {
                 this.DialogResult = DialogResult.None;
                 return;
             }
-            try
-            {
-                if (_globalError)
-                {
+            try {
+                if (_globalError) {
                     //throw new ApplicationException("Не всем кроликам назначены уникальные клетки для пересадки.");
-                    if (MessageBox.Show("Не всем кроликам назначены уникальные клетки для пересадки." + Environment.NewLine + "Желаете продолжить?", 
+                    if (MessageBox.Show("Не всем кроликам назначены уникальные клетки для пересадки." + Environment.NewLine + "Желаете продолжить?",
                         "Внимание", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) != DialogResult.OK)
                         return;
                 }
                 foreach (RP r in _replaceList)
-                    commitRabbit(r,0,false);
+                    commitRabbit(r, 0, false);
                 foreach (RP r in _replaceList)
                     commitRabbit(r, 0, true);
                 Close();
-            }
-            catch (ApplicationException ex)
-            {
-                MessageBox.Show(ex.Message,"Нельзя продолжить",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+            } catch (ApplicationException ex) {
+                MessageBox.Show(ex.Message, "Нельзя продолжить", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 this.DialogResult = DialogResult.None;
             }
         }
@@ -776,22 +733,18 @@ namespace rabnet.forms
         private bool chechOnNest()
         {
             bool error = false;
-            foreach (RP rp in this._replaceList)
-            {
-                if (!rp.CanHaveNest && !rp.SetNest)
-                {
+            foreach (RP rp in this._replaceList) {
+                if (!rp.CanHaveNest && !rp.SetNest) {
                     error = true;
                     break;
                 }
 
             }
-            if (error)
-            {
-                DialogResult dr = MessageBox.Show("Не во всех клетках установлено гнездовье"+Environment.NewLine+"Продолжить выполнение?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (error) {
+                DialogResult dr = MessageBox.Show("Не во всех клетках установлено гнездовье" + Environment.NewLine + "Продолжить выполнение?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dr == DialogResult.Yes) return true;
                 else return false;
-            }
-            else return true;
+            } else return true;
         }
 
         private void btSetAllGirls_Click(object sender, EventArgs e)
@@ -803,16 +756,14 @@ namespace rabnet.forms
 
         private void btAutoReplace_Click(object sender, EventArgs e)
         {
-                for (int j = _replaceList.Count - 1; j > 0;j-- )
-                {
-                    RP r = _replaceList[j];
-                    if (busy(r))
-                    {
-                        for (int i = 1; i < _dgcbNewAddress.Items.Count && busy(r); i++)
-                            if ((string)_dgcbNewAddress.Items[i] != r.Address)
-                                r.CurAddress = (string)_dgcbNewAddress.Items[i];
-                    }
+            for (int j = _replaceList.Count - 1; j > 0; j--) {
+                RP r = _replaceList[j];
+                if (busy(r)) {
+                    for (int i = 1; i < _dgcbNewAddress.Items.Count && busy(r); i++)
+                        if ((string)_dgcbNewAddress.Items[i] != r.Address)
+                            r.CurAddress = (string)_dgcbNewAddress.Items[i];
                 }
+            }
             update();
         }
 
@@ -821,8 +772,7 @@ namespace rabnet.forms
             if (dataGridView1.SelectedRows.Count != 2) return;
             RP mother = rp(dataGridView1.SelectedRows[0].Index);
             RP child = rp(dataGridView1.SelectedRows[1].Index);
-            if (child.Age > mother.Age)
-            {
+            if (child.Age > mother.Age) {
                 RP ex = mother; mother = child; child = ex;
             }
             child.PlaceTo = mother;
@@ -879,7 +829,7 @@ namespace rabnet.forms
             toolTip.SetToolTip(btSeparate, "Отделить от выбранной группы N-количество");
             toolTip.SetToolTip(btSeparateBoys, "Отделить из выбранной группы безполых, N-количество Мальчиков,\nоставшаяся группа будет помечена как Девочки");
             toolTip.SetToolTip(btSetAllGirls, "Пометить группу безполых как Девочки");
-                       
+
         }
 
         private void btSetAllBoys_Click(object sender, EventArgs e)

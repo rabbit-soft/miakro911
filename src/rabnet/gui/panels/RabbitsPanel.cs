@@ -343,24 +343,33 @@ namespace rabnet.panels
 
         private void miReplace_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count < 1) return;
-
+            if (listView1.SelectedItems.Count < 1) {
+                return;
+            }
+#if !NOCATCH
             try {
+#endif
                 ReplaceForm rpf = new ReplaceForm();
-                foreach (ListViewItem li in listView1.SelectedItems)
+                foreach (ListViewItem li in listView1.SelectedItems) {
                     rpf.AddRabbit((li.Tag as AdultRabbit).ID);
-                if (rpf.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                }
+                if (rpf.ShowDialog() == DialogResult.OK && !MainForm.MustClose) {
                     _rsb.Run();
+                }
+#if !NOCATCH
             } catch (Exception exc) {
                 MessageBox.Show(exc.Message);
                 _logger.Warn(exc);
                 _rsb.Run();
             }
+#endif
         }
 
         private void miPlaceGhange_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count != 2) return;
+            if (listView1.SelectedItems.Count != 2) {
+                return;
+            }
 
             try {
                 ReplaceForm rpf = new ReplaceForm();
