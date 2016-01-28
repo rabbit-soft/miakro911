@@ -133,12 +133,13 @@ namespace rabnet.filters
             cbPregTo.Checked = f.ContainsKey("Pf");
             cbPregTo_CheckedChanged(null, null);
 
-            if (cbPregFrom.Checked) {
-                nudPregFrom.Value = f.safeInt("pf", 10);
-            }
+            // todo количество проблем у пользователей 1
             if (cbPregTo.Checked) {
                 nudPregTo.Value = f.safeInt("Pf", 20);
             }
+            if (cbPregFrom.Checked) {
+                nudPregFrom.Value = f.safeInt("pf", 10);
+            }            
             if (cbPregFrom.Checked || cbPregTo.Checked) {
                 nudPregFrom_ValueChanged(null, null);
                 nudPregTo_ValueChanged(null, null);
