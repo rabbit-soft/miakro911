@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using rabnet;
+using System.Data.Common;
 
 namespace rabnet
 {
@@ -10,6 +11,14 @@ namespace rabnet
         public static string Nullable(int v)
         {
             return v == 0 ? "NULL" : v.ToString();
+        }
+
+        public static int GetNullableInt(DbDataReader rd, string fieldName)
+        {
+            if (rd.IsDBNull(rd.GetOrdinal(fieldName))) {
+                return 0;
+            }
+            return rd.GetInt32(rd.GetOrdinal(fieldName));
         }
 
         public static String DateToSqlString(DateTime dt)
