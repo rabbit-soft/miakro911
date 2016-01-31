@@ -115,11 +115,11 @@ FROM dead{0:s} LIMIT {1:d}) c;", makeWhere(), options.safeInt("max", 1000));
             cmd.ExecuteNonQuery();
 
             if (fid != 0) {
-                cmd.CommandText = String.Format(@"UPDATE tiers SET t_busy{0:d} = {1:d} WHERE t_id = {2:d};", sec + 1, rabbit, tid);
+                cmd.CommandText = String.Format(@"UPDATE tiers SET t_busy{0:d} = {1:d} WHERE t_id = {2};", sec + 1, rabbit, DBHelper.Nullable(tid));
                 cmd.ExecuteNonQuery();
-                cmd.CommandText = String.Format(@"UPDATE rabbits SET r_tier = {0:d} WHERE r_id = {1:d};", tid, rabbit);
+                cmd.CommandText = String.Format(@"UPDATE rabbits SET r_tier = {0} WHERE r_id = {1:d};", DBHelper.Nullable(tid), rabbit);
             } else {
-                cmd.CommandText = String.Format(@"UPDATE rabbits SET r_farm = 0, r_tier_id = 0, r_area = 0, r_tier = 0 WHERE r_id = {0:d};", rabbit);
+                cmd.CommandText = String.Format(@"UPDATE rabbits SET r_farm = NULL, r_tier_id = 0, r_area = 0, r_tier = NULL WHERE r_id = {0:d};", rabbit);
             }
             cmd.ExecuteNonQuery();
         }

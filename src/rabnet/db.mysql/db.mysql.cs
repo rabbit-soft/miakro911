@@ -680,7 +680,7 @@ namespace db.mysql
                 WHERE TABLE_SCHEMA = '{0}' AND TABLE_NAME = 'rabbits'", this.sql.Database), sql);
             int curAi = Convert.ToInt32(cmd.ExecuteScalar());
 
-            cmd.CommandText = "SELECT MAX(r_id) FROM dead;";
+            cmd.CommandText = "SELECT Coalesce(MAX(r_id),0) FROM dead;";
             int maxDeadId = Convert.ToInt32(cmd.ExecuteScalar());
 
             if (maxDeadId >= curAi) {
