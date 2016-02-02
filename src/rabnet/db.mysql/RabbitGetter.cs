@@ -174,7 +174,7 @@ WHERE r_id!={1:d} AND r_parent IS NULL;", getOneRabbit_FieldsSet(RabAliveState.A
             cmd.ExecuteNonQuery();
             if (r.WasNameID != r.NameID) {
                 ///todo  проверка на используемость
-                cmd.CommandText = String.Format("UPDATE names SET n_use=0,n_block_date=NULL WHERE n_id={0:d};", r.WasNameID);
+                cmd.CommandText = String.Format("UPDATE names SET n_use=0, n_block_date=NULL WHERE n_id={0:d};", r.WasNameID);
                 cmd.ExecuteNonQuery();
                 cmd.CommandText = String.Format("UPDATE names SET n_use={0:d} WHERE n_id={1:d};", r.ID, r.NameID);
                 cmd.ExecuteNonQuery();
@@ -345,14 +345,14 @@ VALUES({0}, {1}, {2}, {3}, 'void', {4}, '{5}', {6}, NULL, {7}, {8}, {9}, {10}, {
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT 
     r_id, 
-    Coalesce(r_farm,0) AS r_farm, 
-    Coalesce(r_tier,0) AS r_tier, 
+    r_farm, 
+    r_tier, 
     r_tier_id, 
     r_area, 
-    Coalesce(t_busy1,0) AS t_busy1, 
-    Coalesce(t_busy2,0) AS t_busy2, 
-    Coalesce(t_busy3,0) AS t_busy3, 
-    Coalesce(t_busy4,0) AS t_busy4, 
+    t_busy1, 
+    t_busy2, 
+    t_busy3, 
+    t_busy4, 
     Coalesce(m_upper,0) AS m_upper, 
     Coalesce(m_lower,0) AS m_lower,
     m_id 
@@ -365,12 +365,12 @@ WHERE r_id={0:d}", rabbit), sql);
 
             if (rd.Read()) {
                 a = new AddressR(
-                    rd.GetInt32("r_farm"), 
-                    rd.GetInt32("r_tier_id"), 
+                    DBHelper.GetNullableInt(rd,"r_farm"), 
+                    DBHelper.GetNullableInt(rd,"r_tier_id"), 
                     rd.GetInt32("r_area"), 
                     rd.GetInt32("r_tier")
                 );
-                int bs = rd.GetInt32("t_busy" + (a.Section + 1).ToString());
+                int bs = DBHelper.GetNullableInt(rd,"t_busy" + (a.Section + 1).ToString());
                 if (bs != rabbit) {
                     a.TierId = 0;
                 }
@@ -382,9 +382,11 @@ WHERE r_id={0:d}", rabbit), sql);
                 cmd.ExecuteNonQuery();///Освобождает клетку
                 ///Проверяет наличие кролика в таблице  rabbits с таким же адресом
                 cmd.CommandText = String.Format(@"SELECT r_id 
-FROM rabbits 
-WHERE r_farm={0:d} AND r_tier={1:d} AND r_tier_id={2:d} AND r_area={3:d} AND r_id<>{4:d} AND r_parent IS NULL LIMIT 1;", a.Farm, a.TierId, a.Floor, a.Section, rabbit);
+                    FROM rabbits 
+                    WHERE r_farm={0:d} AND r_tier={1:d} AND r_tier_id={2:d} AND r_area={3:d} AND r_id<>{4:d} AND r_parent IS NULL LIMIT 1;",
+                    DBHelper.Nullable(a.Farm), DBHelper.Nullable(a.TierId), a.Floor, a.Section, rabbit);
                 rd = cmd.ExecuteReader();
+
                 if (rd.Read()) {///если имеется, то клетка в таблице tiers заселяется найденным кроликом                
                     cmd.CommandText = String.Format("UPDATE tiers SET t_busy{0:d}={2:d} WHERE t_id={1:d};", a.Section + 1, a.TierId, rd.GetInt32("r_id"));
                     rd.Close();
@@ -630,8 +632,11 @@ WHERE r_parent={1:d} AND r_id={2:d};", added, rid, yid), sql);
                 freeTier(sql, rabfrom);
                 cmd.CommandText = String.Format("SELECT r_farm, r_tier, r_tier_id, r_area FROM rabbits WHERE r_id={0:d};", rabto);
                 rd = cmd.ExecuteReader();
+
                 if (rd.Read()) {
-                    cmd.CommandText = String.Format("UPDATE rabbits SET r_farm={0:d}, r_tier={1:d}, r_tier_id={2:d}, r_area={3:d} WHERE r_id={4:d}", rd.GetInt32("r_farm"), rd.GetInt32("r_tier"), rd.GetInt32("r_tier_id"), rd.GetInt32("r_area"), rabfrom);
+                    cmd.CommandText = String.Format("UPDATE rabbits SET r_farm={0}, r_tier={1}, r_tier_id={2}, r_area={3} WHERE r_id={4}", 
+                        DBHelper.GetNullableInt(rd,"r_farm"), DBHelper.GetNullableInt(rd,"r_tier"), rd.GetInt32("r_tier_id"), rd.GetInt32("r_area"), rabfrom
+                    );
                     rd.Close();
                     cmd.ExecuteNonQuery();
                 } else {

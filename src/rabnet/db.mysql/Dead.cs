@@ -17,28 +17,31 @@ namespace db.mysql
         {
             return new Dead(_rd.GetInt32("r_id"), _rd.GetString("name"), _rd.GetString("place"),
                 _rd.GetInt32("age"), _rd.GetDateTime("d_date"),
-                _rd.IsDBNull(6) ? "" : _rd.GetString("reason"), _rd.IsDBNull(7) ? "" : _rd.GetString("d_notes"),
+                _rd.IsDBNull(6) ? "" : _rd.GetString("reason"), 
+                _rd.IsDBNull(7) ? "" : _rd.GetString("d_notes"),
                 _rd.GetString("breed"), _rd.GetInt32("r_group"));
         }
 
         public string makeWhere()
         {
             string wh = "";
-            if (options.safeValue("nm") != "")
+            if (options.safeValue("nm") != "") {
                 wh = addWhereAnd(wh, "deadname(r_id,2) like '%" + options.safeValue("nm") + "%'");
-            if (wh == "")
+            }
+            if (wh == "") {
                 return "";
+            }
             return " WHERE " + wh;
         }
 
         protected override string getQuery()
         {
             int max = options.safeInt("max", 1000);
-            return String.Format(@"SELECT r_id,deadname(r_id,2) name,deadplace(r_id) place,
-TO_DAYS(d_date)-TO_DAYS(r_born) age,d_date,
+            return String.Format(@"SELECT r_id, deadname(r_id,2) name, deadplace(r_id) place,
+TO_DAYS(d_date)-TO_DAYS(r_born) age, d_date,
 (SELECT b_name FROM breeds WHERE b_id=dead.r_breed) breed,
 (SELECT d_name FROM deadreasons WHERE d_id=dead.d_reason) reason,
-d_notes,r_group
+d_notes, r_group
 FROM dead{0:s} ORDER BY d_date DESC LIMIT {1:d};", makeWhere(), max);
         }
 
