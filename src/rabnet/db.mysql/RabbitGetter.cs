@@ -742,19 +742,19 @@ FROM {1:s} WHERE r_id={2:d};", getOneRabbit_FieldsSet(dead ? RabAliveState.DEAD 
         public static OneRabbit[] getParents(MySqlConnection sql, int rabbit, int age)
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT 
-    Coalesce(r_mother, 0) AS r_mother, 
-    Coalesce(r_father, 0) AS r_father, 
-    Coalesce(r_surname, 0) AS r_father 
-    Coalesce(r_secname, 0) AS r_secname 
+    r_mother, 
+    r_father, 
+    r_surname,
+    r_secname
 FROM rabbits 
 WHERE r_id={0:d}", rabbit), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             int mom = 0, pap = 0, mname = 0, pname = 0;
             if (rd.Read()) {
-                mom = rd.GetInt32("r_mother");
-                pap = rd.GetInt32("r_father");
-                mname = rd.GetInt32("r_surname");
-                pname = rd.GetInt32("r_secname");
+                mom = DBHelper.GetNullableInt(rd, "r_mother");
+                pap = DBHelper.GetNullableInt(rd, "r_father");
+                mname = DBHelper.GetNullableInt(rd, "r_surname");
+                pname = DBHelper.GetNullableInt(rd, "r_secname");
             }
             rd.Close();
 
