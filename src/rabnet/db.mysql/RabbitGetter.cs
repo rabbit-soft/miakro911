@@ -368,7 +368,7 @@ WHERE r_id={0:d}", rabbit), sql);
                     DBHelper.GetNullableInt(rd,"r_farm"), 
                     DBHelper.GetNullableInt(rd,"r_tier_id"), 
                     rd.GetInt32("r_area"), 
-                    rd.GetInt32("r_tier")
+                    DBHelper.GetNullableInt(rd,"r_tier")
                 );
                 int bs = DBHelper.GetNullableInt(rd,"t_busy" + (a.Section + 1).ToString());
                 if (bs != rabbit) {

@@ -15,10 +15,11 @@ namespace rabnet
 
         public static int GetNullableInt(DbDataReader rd, string fieldName)
         {
-            if (rd.IsDBNull(rd.GetOrdinal(fieldName))) {
+            int i = rd.GetOrdinal(fieldName);
+            if (rd.IsDBNull(i)) {
                 return 0;
             }
-            return rd.GetInt32(rd.GetOrdinal(fieldName));
+            return rd.GetInt32(i);
         }
 
         public static String DateToSqlString(DateTime dt)

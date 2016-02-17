@@ -514,7 +514,7 @@ namespace rabnet
         /// </summary>
         public int Farm;
         /// <summary>
-        /// Ярус (1,2)
+        /// Ярус (0,1)
         /// </summary>
         public int Floor;
         /// <summary>
@@ -537,6 +537,13 @@ namespace rabnet
         /// </summary>
         public int TierId = 0;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="farm">ID МИНИфермы</param>
+        /// <param name="floor">Этаж (0,1)</param>
+        /// <param name="sec">Секция</param>
+        /// <param name="tier">ID яруса</param>
         public AddressR(int farm, int floor, int sec, int tier)
             :base(farm, floor, sec)
         {
