@@ -52,9 +52,9 @@ FROM rabbits WHERE r_parent!=0 ORDER BY name;", getFieldSet_Youngers(options.saf
         protected override string countQuery()
         {
             //return "SELECT COUNT(*),SUM(r_group) FROM rabbits WHERE r_parent!=0;";
-            return @"SELECT COUNT(*),
+            return @"SELECT COUNT(1),
                             SUM(r_group), 
-                            (SELECT count(a) FROM (select DISTINCT r_parent a from rabbits where r_parent<>0) t)mc                            
+                            (SELECT COUNT(a) FROM (SELECT DISTINCT r_parent a FROM rabbits WHERE r_parent<>0) t)mc                            
                     FROM rabbits WHERE r_parent!=0;";
         }
 
@@ -64,8 +64,9 @@ FROM rabbits WHERE r_parent!=0 ORDER BY name;", getFieldSet_Youngers(options.saf
 FROM rabbits WHERE r_parent={1:d} ORDER BY name;",getFieldSet_Youngers(true,false),id), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             YoungRabbitList y = new YoungRabbitList();
-            while(rd.Read())
+            while (rd.Read()) {
                 y.Add(fillYounger(rd));
+            }
             rd.Close();
             return y;
         }

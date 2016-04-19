@@ -47,7 +47,7 @@ FROM dead{0:s} ORDER BY d_date DESC LIMIT {1:d};", makeWhere(), max);
 
         protected override string countQuery()
         {
-            return String.Format(@"SELECT COUNT(*) FROM (SELECT r_id,deadname(r_id,2),d_date,TO_DAYS(d_date)-TO_DAYS(r_born) age 
+            return String.Format(@"SELECT COUNT(1) FROM (SELECT r_id, deadname(r_id,2), d_date, TO_DAYS(d_date)-TO_DAYS(r_born) age 
 FROM dead{0:s} LIMIT {1:d}) c;", makeWhere(), options.safeInt("max", 1000));
         }
     }

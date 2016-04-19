@@ -43,7 +43,7 @@ namespace db.mysql
         {
             MySqlCommand cmd = new MySqlCommand("UPDATE names SET n_block_date=NULL WHERE n_use=0 AND n_block_date<NOW();", _sql);
             cmd.ExecuteNonQuery();
-            return "SELECT COUNT(*) FROM names" + makeWhereClause() + ";";
+            return "SELECT COUNT(1) FROM names" + makeWhereClause() + ";";
         }
 
         public static int AddName(MySqlConnection sql, Rabbit.SexType sex, String name, String surname)

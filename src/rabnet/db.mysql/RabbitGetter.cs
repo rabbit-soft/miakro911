@@ -667,7 +667,7 @@ WHERE r_parent={1:d} AND r_id={2:d};", added, rid, yid), sql);
         '' vaccines
     FROM rabbits r
     LEFT JOIN (
-            SELECT r_parent prnt, SUM(r2.r_group) suckers, COUNT(*) suckGroups, AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) aage 
+            SELECT r_parent prnt, SUM(r2.r_group) suckers, COUNT(1) suckGroups, AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) aage 
             FROM rabbits r2 
             GROUP BY r_parent
         ) sc ON prnt = r.r_id
