@@ -83,17 +83,25 @@ namespace rabnet
             from = DateTime.MinValue;
             to = DateTime.MaxValue;
 
-            if (!f.ContainsKey(Filters.DATE_PERIOD) || !f.ContainsKey(Filters.DATE_VALUE)) return;
+            if (!f.ContainsKey(Filters.DATE_PERIOD) || !f.ContainsKey(Filters.DATE_VALUE)) {
+                return;
+            }
 
             if (f.safeValue(Filters.DATE_PERIOD) == "d") {
-                if (!DateTime.TryParse(f.safeValue(Filters.DATE_VALUE), out from)) return;
+                if (!DateTime.TryParse(f.safeValue(Filters.DATE_VALUE), out from)) {
+                    return;
+                }
                 to = from.AddDays(1);
             }
             if (f.safeValue(Filters.DATE_PERIOD) == "m") {
-                if (!DateTime.TryParse(f.safeValue(Filters.DATE_VALUE), out from)) return;
+                if (!DateTime.TryParse(f.safeValue(Filters.DATE_VALUE), out from)) {
+                    return;
+                }
                 to = from.AddMonths(1);
             } else if (f.safeValue(Filters.DATE_PERIOD) == "y") {
-                if (!DateTime.TryParse(f.safeValue(Filters.DATE_VALUE) + "-01-01", out from)) return;
+                if (!DateTime.TryParse(f.safeValue(Filters.DATE_VALUE) + "-01-01", out from)) {
+                    return;
+                }
                 to = from.AddYears(1);
             }
         }
