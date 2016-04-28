@@ -621,15 +621,11 @@ INSERT INTO `names` VALUES
 
 DROP VIEW IF EXISTS allrabbits;
 CREATE VIEW allrabbits AS
-  (SELECT r_id,r_sex,r_bon,r_name,r_surname,r_secname,
- r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,
- r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies,
- NULL,0,'' FROM rabbits)
+  (SELECT r_id,r_sex,r_bon,r_name,r_surname,r_secname, r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone, r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies, d_date, d_reason, d_notes FROM dead);
 UNION
-  (SELECT r_id,r_sex,r_bon,r_name,r_surname,r_secname,
- r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone,
- r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies,
- d_date,d_reason,d_notes FROM dead);
+  (SELECT r_id,r_sex,r_bon,r_name,r_surname,r_secname, r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone, r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies, NULL, 0, '' FROM rabbits)
+
+  
 
 
 #DELIMITER |
@@ -884,116 +880,6 @@ BEGIN
   return 0;
 END |
 
-
-# считает среднесуточный расход корма на одного кролика
-DROP FUNCTION IF EXISTS mealCalculate |
-CREATE FUNCTION mealCalculate (id int(10) unsigned) RETURNS FLOAT
-BEGIN
-  DECLARE days, i, a, d, sell int(10);
-  DECLARE res, amnt FLOAT;
-  DECLARE sd, ed DateTime;
-
-  # получаем временной диапазон за которые будем счтать кроликодни
-  SELECT m_start_date, m_end_date INTO sd, ed FROM meal WHERE m_id=id;
-
-  IF(isnull(sd) OR isnull(ed)) THEN
-    return 0;
-  END IF;
-
-  # получаем количество дней, в которые ели привезенный корм
-  SELECT to_days(m_end_date)-to_days(m_start_date) INTO days FROM meal WHERE m_id=id;
-
-  IF(days = 0) THEN
-    return 0;
-  END IF;
-
-  SET i=1; #в день завоза новый корм не расходуется
-  SET res=0;
-  
-  DROP TEMPORARY TABLE IF EXISTS deads;
-  # анализируем мертвых кроликов, которые ели корм, не учитываем крольчат моложе 18 дней
-  # почему не используется BETWEEN ?
-  # похоже бага в диапазоне дат]
-  CREATE TEMPORARY TABLE deads AS
-    SELECT r_group, r_born, d_date FROM dead WHERE (AddDate(r_born,18)<=sd OR AddDate(r_born,18)<=ed ) AND d_date>=sd ORDER by r_born;
-  
-  DROP TEMPORARY TABLE IF EXISTS alives;
-  # анализируем живых кроликов, которые ели корм, не учитываем крольчат моложе 18 дней
-  CREATE TEMPORARY TABLE alives AS
-    SELECT r_group, r_born FROM rabbits WHERE (AddDate(r_born,18)<=sd OR AddDate(r_born,18)<=ed )  ORDER by r_born;
-    
-  # получаем количество мертвых и живых едунов
-  SELECT (select count(1) from deads), (select count(1) from alives) INTO a, d;
-  
-  IF a=0 AND d=0 THEN
-    return 0;
-  END IF;  
-    
-  WHILE i<=days DO
-	# досчитываем едаков в конкретный день
-    SELECT COALESCE(SUM(r_group),0) INTO d FROM deads WHERE ( to_days(AddDate(sd,i)) - to_days(r_born) )>=18 AND d_date >= AddDate(sd,i);
-    SELECT COALESCE(SUM(r_group),0) INTO a FROM alives WHERE ( to_days(AddDate(sd,i)) - to_days(r_born) )>=18;
-	#обновляем количесто кроликодней
-    SET res=res+d+a;
-    SET i=i+1;
-  END WHILE;
-  
-  # получаем количество корма в период
-  SELECT m_amount INTO amnt FROM meal WHERE m_id = id;
-  SELECT COALESCE(SUM(m_amount),0) INTO sell FROM meal WHERE m_type='out' AND m_start_date BETWEEN sd AND ed;
-  # реальное количество корма
-  SET amnt=amnt-sell;
-
-  IF (amnt<=0) THEN
-    return 0;
-  END IF;
-
-  IF res=0 THEN
-    return 0;
-  END IF;
-  
-  # считаем коэффициэнт
-  return (amnt/res);
-END|
-
-
-DROP PROCEDURE IF EXISTS updateMeal |
-CREATE PROCEDURE updateMeal()
-root:BEGIN
-  DECLARE i, oldI, maxId, sell int(10);
-  DECLARE yngRate FLOAT;
-  DECLARE oldSD, oldED, yngSD, yngED DateTime;
-
-  #выбираем последнюю дату привоза корма
-  SELECT COALESCE(m_id,0) INTO maxId FROM meal WHERE m_type='in' ORDER BY m_start_date DESC LIMIT 1;
-
-  IF (maxId=0) THEN
-    LEAVE root;
-  END IF;
-
-  # выбирираем самый первый привоз корма
-  SELECT m_id, m_start_date, m_end_date, m_rate INTO i, yngSD, yngED, yngRate FROM meal WHERE m_type='in' ORDER BY m_start_date ASC LIMIT 1; #id of later date
-  # начинаем перебирать все строки кормов
-  WHILE (i<>maxId) DO
-	# получаем следующий привоз корма
-    SELECT m_id, m_start_date, COALESCE(m_end_date,'9999-12-31') INTO oldI, oldSD, oldED FROM meal WHERE m_type='in' AND m_start_date>yngSD ORDER BY m_start_date ASC LIMIT 1;
-    # считаем убыток корма между привозами
-	SELECT COALESCE(SUM(m_amount),0) INTO sell FROM meal WHERE m_type='out' AND m_start_date BETWEEN yngSD AND oldED;
-
-	# похоже что мы нашли свежий пивоз корма
-    IF (isnull(yngED) OR yngED<>oldSD OR sell<>0 OR isnull(yngRate)) THEN
-	  # обновляем временные диапазоны привоза
-      UPDATE meal SET m_end_date = oldSD WHERE m_id = i;
-	  # подсчитываем рейтинг за период привоза
-      UPDATE meal SET m_rate = mealCalculate(i) WHERE m_id = i;
-    END IF;
-	
-	# ... и последние станут первыми
-    SET i=oldI;
-    SET yngSD=oldSD;
-    SET yngED=oldED;
-  END WHILE;
-END |
 
 ## new inbriding
 

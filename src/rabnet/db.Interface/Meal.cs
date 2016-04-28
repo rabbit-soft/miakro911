@@ -17,10 +17,6 @@ namespace rabnet
         /// </summary>
         public readonly DateTime StartDate = DateTime.MinValue;
         /// <summary>
-        /// Дата окончания корма
-        /// </summary>
-        public readonly DateTime EndDate = DateTime.MinValue;
-        /// <summary>
         /// Объем кормов (Указывается в КилоГраммах)
         /// </summary>
         public readonly int Amount = 0;
@@ -29,13 +25,12 @@ namespace rabnet
         /// </summary>
         public readonly float Rate = 0;
 
-        public sMeal(int id, DateTime start, DateTime end, int amount, float rate, string type)
+        public sMeal(int id, DateTime start, int amount, float rate, string type)
         {
             this.Id = id;
-            if (start != null)
+            if (start != null) {
                 this.StartDate = start;
-            if (end != null)
-                this.EndDate = end;
+            }
             this.Amount = amount;
             this.Rate = rate;
             this.Type = type == "in" ? MoveType.In : MoveType.Out;

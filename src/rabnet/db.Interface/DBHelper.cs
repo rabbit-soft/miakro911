@@ -22,6 +22,15 @@ namespace rabnet
             return rd.GetInt32(i);
         }
 
+        public static float GetNullableFloat(DbDataReader rd, string fieldName)
+        {
+            int i = rd.GetOrdinal(fieldName);
+            if (rd.IsDBNull(i)) {
+                return 0;
+            }
+            return rd.GetFloat(i);
+        }
+
         public static String DateToSqlString(DateTime dt)
         {
             if (dt == DateTime.MinValue) {

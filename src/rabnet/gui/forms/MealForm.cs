@@ -35,14 +35,13 @@ namespace rabnet.forms
             double summary = 0;
             int scnt = 0;
             foreach (sMeal m in per) {
-                string type = m.Type == sMeal.MoveType.In ? rusIN : rusOUT;
-                string end = m.Type == sMeal.MoveType.In ? (m.EndDate == DateTime.MinValue ? " - " : m.EndDate.ToShortDateString()) : NULL_MARKER;
+                string type = m.Type == sMeal.MoveType.In ? rusIN : rusOUT;                
                 string rate = m.Type == sMeal.MoveType.In ? m.Rate.ToString() : NULL_MARKER;
                 if (m.Type == sMeal.MoveType.In && m.Rate != 0) {
                     summary += m.Rate;
                     scnt++;
                 }
-                dataGridView1.Rows.Add(new string[] { m.StartDate.ToShortDateString(), end, m.Amount.ToString(), type, rate });
+                dataGridView1.Rows.Add(new string[] { m.StartDate.ToShortDateString(), "", m.Amount.ToString(), type, rate });
                 dataGridView1.Rows[dataGridView1.Rows.Count - 1].Tag = m;
                 dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[3].Style.ForeColor = m.Type == sMeal.MoveType.In ? Color.Green : Color.Crimson;
             }

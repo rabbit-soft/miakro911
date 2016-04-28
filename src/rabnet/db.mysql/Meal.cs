@@ -9,17 +9,18 @@ namespace db.mysql
 {
     class Meal
     {
+        /// <summary>
+        /// Во сколько дней кролик начинает есть корм
+        /// </summary>
+        public const int START_EAT = 18;
+
         public static List<sMeal> getMealPeriods(MySqlConnection sql)
         {
             List<sMeal> result = new List<sMeal>();
-            MySqlCommand cmd = new MySqlCommand("SELECT m_start_date, m_end_date, m_amount, m_rate, m_type, m_id FROM meal ORDER BY m_start_date ASC;", sql);
+            MySqlCommand cmd = new MySqlCommand("SELECT m_start_date, m_amount, m_rate, m_type, m_id FROM meal ORDER BY m_start_date ASC;", sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read()) {
-                if (!rd.IsDBNull(1) && !rd.IsDBNull(3)) {
-                    result.Add(new sMeal(rd.GetInt32(5), rd.GetDateTime(0), rd.GetDateTime(1), rd.GetInt32(2), rd.GetFloat(3), rd.GetString(4)));
-                } else {
-                    result.Add(new sMeal(rd.GetInt32(5), rd.GetDateTime(0), rd.GetInt32(2), rd.GetString(4)));
-                }
+                result.Add(new sMeal(rd.GetInt32("m_id"), rd.GetDateTime("m_start_date"), rd.GetInt32("m_amount"), DBHelper.GetNullableFloat(rd, "m_rate"), rd.GetString("m_type")));                
             }
             rd.Close();
             return result;
@@ -48,8 +49,7 @@ namespace db.mysql
                 cmd.CommandText = String.Format("INSERT INTO meal(m_start_date, m_amount, m_type) VALUES('{0:yyyy-MM-dd}', {1:d}, 'in');", start, amount);
                 cmd.ExecuteNonQuery();
             }
-            cmd.CommandText = "CALL updateMeal();";
-            cmd.ExecuteNonQuery();
+            Meal.updateMeal(sql);
         }
         /// <summary>
         /// Добавляет продажу корма
@@ -84,8 +84,48 @@ namespace db.mysql
 
         protected static void updateMeal(MySqlConnection sql)
         {
-            MySqlCommand cmd = new MySqlCommand("CALL updateMeal();", sql);            
-            cmd.ExecuteNonQuery();
+            MySqlCommand cmd = new MySqlCommand("", sql);
+            List<sMeal> meals = getMealPeriods(sql);
+
+            int totalAmount = 0;
+            DateTime dateFrom = DateTime.MinValue;
+            foreach (sMeal m in meals) {
+                if (m.Type.ToString().ToLower() == "in") {
+                    if (totalAmount != 0) {
+                        int rabDays = getRabDays(dateFrom, m.StartDate, sql);
+                        float rate = (float)totalAmount / rabDays;
+                        
+                        cmd.CommandText = String.Format("UPDATE meal SET m_rate = {0} WHERE m_id = {1:d}", rate.ToString("0.0000").Replace(',','.'), m.Id);
+                        cmd.ExecuteNonQuery();
+                        
+                        totalAmount = 0;
+                    }
+                    dateFrom = m.StartDate;
+                    totalAmount += m.Amount;
+                } else {
+                    totalAmount -= m.Amount;
+                }                                
+            }
+
+
+        }
+
+        protected static int getRabDays(DateTime from, DateTime to, MySqlConnection sql)
+        {
+            string query = String.Format(@"SELECT SUM(DATEDIFF(end_eat, adulthood) * cnt)
+FROM (
+    SELECT Coalesce(SUM(r_group),0) cnt, DATE_ADD(Date(r_born), INTERVAL {2:d} DAY) adulthood, IFNULL(Date(d_date), {1}) AS end_eat
+    FROM allrabbits 
+    WHERE d_date IS NULL OR d_date BETWEEN {0} AND {1}
+    GROUP BY adulthood, end_eat
+    HAVING adulthood BETWEEN {0} AND {1} # кролик был старше 18 дней в этот период
+    ORDER BY adulthood, end_eat
+) c
+WHERE end_eat > adulthood", DBHelper.DateToSqlString(from), DBHelper.DateToSqlString(to), Meal.START_EAT);
+
+            MySqlCommand cmd = new MySqlCommand(query, sql);
+            
+            return Convert.ToInt32(cmd.ExecuteScalar());
         }
     }
 }
