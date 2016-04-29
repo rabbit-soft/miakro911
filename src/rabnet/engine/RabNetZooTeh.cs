@@ -23,28 +23,41 @@ namespace rabnet
         {
             JobHolder zjobs = new JobHolder();
             this.f = f;
-            if (f.safeValue("act", "O").Contains("O") && type == 0)
+
+            if (f.safeValue("act", "O").Contains("O") && type == 0) {
                 zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.OKROL));
-            if (f.safeValue("act", "V").Contains("V") && type == 1)
+            }
+            if (f.safeValue("act", "V").Contains("V") && type == 1) {
                 zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.NEST_OUT));
-            if (f.safeValue("act", "C").Contains("C") && type == 2)
+            }
+            if (f.safeValue("act", "C").Contains("C") && type == 2) {
                 getCounts(zjobs);
-            if (f.safeValue("act", "P").Contains("P") && type == 3)
+            }
+            if (f.safeValue("act", "P").Contains("P") && type == 3) {
                 zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.PRE_OKROL));
-            if (f.safeValue("act", "R").Contains("R") && type == 4)
+            }
+            if (f.safeValue("act", "R").Contains("R") && type == 4) {
                 getBoysGirlsOut(zjobs);
-            if (f.safeValue("act", "F").Contains("F") && type == 5)
+            }
+            if (f.safeValue("act", "F").Contains("F") && type == 5) {
                 getFucks(zjobs, 0);
-            if (f.safeValue("act", "f").Contains("f") && type == 6)
+            }
+            if (f.safeValue("act", "f").Contains("f") && type == 6) {
                 getFucks(zjobs, 1);
-            if (f.safeValue("act", "v").Contains("v") && type == 7)
+            }
+            if (f.safeValue("act", "v").Contains("v") && type == 7) {
                 zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.VACC));
-            if (f.safeValue("act", "N").Contains("N") && type == 8)
+            }
+            if (f.safeValue("act", "N").Contains("N") && type == 8) {
                 zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.SET_NEST));
-            if (f.safeValue("act", "B").Contains("B") && type == 9)
+            }
+            if (f.safeValue("act", "B").Contains("B") && type == 9) {
                 zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.BOYS_BY_ONE));
-            if (f.safeValue("act", "S").Contains("S") && type == 10)
+            }
+            if (f.safeValue("act", "S").Contains("S") && type == 10) {
                 zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.SPERM_TAKE));
+            }
+
             return zjobs.ToArray();
         }
 

@@ -128,15 +128,4 @@ ALTER TABLE  `import_ascendants`
 		
 ALTER TABLE  `products` CHANGE  `p_unit`  `p_unit` VARCHAR( 30 ) NOT NULL DEFAULT  '';
 
-DROP PROCEDURE IF EXISTS updateMeal;
-DROP PROCEDURE IF EXISTS mealCalculate;
-
-
-DROP VIEW IF EXISTS allrabbits;
-CREATE VIEW allrabbits AS
-  (SELECT r_id,r_sex,r_bon,r_name,r_surname,r_secname, r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone, r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies, d_date, d_reason, d_notes FROM dead)
-UNION
-  (SELECT r_id,r_sex,r_bon,r_name,r_surname,r_secname, r_notes,r_okrol,r_farm,r_tier_id,r_tier,r_area,r_rate,r_group,r_breed,r_flags,r_zone, r_born,r_genesis,r_status,r_last_fuck_okrol,r_lost_babies,r_overall_babies, NULL, 0, '' FROM rabbits);
-  
-  
 UPDATE options SET o_value = '17' WHERE o_name = 'db' AND o_subname = 'version';

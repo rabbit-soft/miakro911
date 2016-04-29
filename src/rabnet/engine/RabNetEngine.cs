@@ -14,7 +14,7 @@ namespace rabnet
         /// <summary>
         /// Необходимой  версия БД (options o_name='db',o_subname='version')
         /// </summary>
-        const int NEED_DB_VERSION = 17;
+        const int NEED_DB_VERSION = 18;
 
         private IRabNetDataLayer _data = null;
         private IRabNetDataLayer _data2 = null;
@@ -42,9 +42,13 @@ namespace rabnet
         public IRabNetDataLayer InitEngine(String dbType, String param)
         {
             if (_data != null) {
-                if (_data2 == _data) _data2 = null;
+                if (_data2 == _data) {
+                    _data2 = null;
+                }
                 _data.Close();
-                if (_data2 != null) _data2.Close();
+                if (_data2 != null) {
+                    _data2.Close();
+                }
                 _data = _data2 = null;
             }
             _logger.Debug("initing engine data to " + dbType + " param=" + param);
@@ -56,11 +60,18 @@ namespace rabnet
             } else {
                 throw new DBDriverNotFoudException(dbType);
             }
+
             int ver = options().getIntOption("db", "version", Options.OPT_LEVEL.FARM);
             if (ver != NEED_DB_VERSION) {
-                if (_data2 == _data) _data2 = null;
-                if (_data != null) _data.Close();
-                if (_data2 != null) _data2.Close();
+                if (_data2 == _data) {
+                    _data2 = null;
+                }
+                if (_data != null) {
+                    _data.Close();
+                }
+                if (_data2 != null) {
+                    _data2.Close();
+                }
                 _data = _data2 = null;
                 throw new DBBadVersionException(NEED_DB_VERSION, ver);
             }
@@ -102,8 +113,9 @@ namespace rabnet
 
         public Options options()
         {
-            if (opts == null)
+            if (opts == null) {
                 opts = new Options(this);
+            }
             return opts;
         }
 
@@ -114,8 +126,9 @@ namespace rabnet
 
         public RabNetLogs logs()
         {
-            if (logger == null)
+            if (logger == null) {
                 logger = new RabNetLogs(this);
+            }
             return logger;
         }
 
@@ -131,8 +144,9 @@ namespace rabnet
 
         public RabEngZooTeh zoo()
         {
-            if (zooteh == null)
+            if (zooteh == null) {
                 zooteh = new RabEngZooTeh(this);
+            }
             return zooteh;
         }
 
@@ -169,21 +183,26 @@ namespace rabnet
 
         public void delUser(int uid)
         {
-            if (uid == UserID)
+            if (uid == UserID) {
                 throw new ApplicationException("Нельзя удалить себя.");
-            if (!isAdmin())
+            }
+            if (!isAdmin()) {
                 throw new ApplicationException("Нет прав доступа.");
+            }
             db().deleteUser(uid);
         }
 
         public void updateUser(int uid, string name, int group, string password, bool chpass)
         {
-            if (uid == UserID && group != 0)
+            if (uid == UserID && group != 0) {
                 throw new ApplicationException("Нельзя сменить группу администратора.");
-            if (name == "")
+            }
+            if (name == "") {
                 throw new ApplicationException("Пустое имя.");
-            if (!isAdmin())
+            }
+            if (!isAdmin()) {
                 throw new ApplicationException("Нет прав доступа.");
+            }
             db().changeUser(uid, name, group, password, chpass);
         }
 
@@ -215,13 +234,13 @@ namespace rabnet
         private IRabNetDataLayer getDataLayer(string asmName)
         {
             string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, asmName + ".dll");
-            if (!File.Exists(filePath))
+            if (!File.Exists(filePath)) {
                 throw new Exception("MySQL DataLayer dll is not exists");
+            }
             ///todo проверка на уже загруженность сборки
             Assembly Asm = Assembly.LoadFile(filePath);//загружаем Сборку
             //Type AsmType = Asm.GetType();
-            foreach (Type AsmType in Asm.GetTypes())//Проверяем все имеющиеся типы данных (классы)
-            {
+            foreach (Type AsmType in Asm.GetTypes()) {//Проверяем все имеющиеся типы данных (классы)            
                 if (typeof(IRabNetDataLayer).IsAssignableFrom(AsmType)) {
                     IRabNetDataLayer db = (IRabNetDataLayer)Activator.CreateInstance(AsmType);
                     return db;

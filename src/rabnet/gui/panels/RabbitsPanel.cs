@@ -90,11 +90,15 @@ namespace rabnet.panels
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!manual || MainForm.MustClose) return;
+            if (!manual || MainForm.MustClose) {
+                return;
+            }
 
             MainForm.StillWorking();
             this.makeSelectedCount();
-            if (listView1.SelectedItems.Count != 1) return;
+            if (listView1.SelectedItems.Count != 1) {
+                return;
+            }
 
             RabTreeData dt = Engine.db().rabbitGenTree((listView1.SelectedItems[0].Tag as AdultRabbit).ID);
             if (dt != null && dt.Name != null) {
@@ -125,7 +129,9 @@ namespace rabnet.panels
                 miPlaceExchange.Visible = miReplace.Visible = misExtra.Visible = miExport.Visible =
                 miGenetic.Visible = false;
 
-            if (sex < 0) return;
+            if (sex < 0) {
+                return;
+            }
 
             misPrint.Visible =
                 plemMenuItem.Visible =
@@ -174,7 +180,10 @@ namespace rabnet.panels
 
         private void miPassport_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count != 1) return;
+            if (listView1.SelectedItems.Count != 1) {
+                return;
+            }
+
 #if !NOCATCH
             try {
 #endif
@@ -287,7 +296,9 @@ namespace rabnet.panels
 
         private void tsmiIDshow_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count != 1) return;
+            if (listView1.SelectedItems.Count != 1) {
+                return;
+            }
 
             MessageBox.Show("r_id = " + (listView1.SelectedItems[0].Tag as AdultRabbit).ID.ToString());
         }
@@ -376,8 +387,9 @@ namespace rabnet.panels
                 rpf.AddRabbit((listView1.SelectedItems[0].Tag as AdultRabbit).ID);
                 rpf.AddRabbit((listView1.SelectedItems[1].Tag as AdultRabbit).ID);
                 rpf.SetAction(ReplaceForm.Action.CHANGE);
-                if (rpf.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                if (rpf.ShowDialog() == DialogResult.OK && !MainForm.MustClose) {
                     _rsb.Run();
+                }
             } catch (Exception exc) {
                 MessageBox.Show(exc.Message);
                 _logger.Warn(exc);
@@ -416,7 +428,9 @@ namespace rabnet.panels
 
         private void miYoungersOut_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count != 1) return;
+            if (listView1.SelectedItems.Count != 1) {
+                return;
+            }
 
             try {
                 if (PreReplaceYoungersForm.MakeChoice((listView1.SelectedItems[0].Tag as AdultRabbit).ID) == DialogResult.OK && !MainForm.MustClose)
@@ -430,7 +444,9 @@ namespace rabnet.panels
         private void svidMenuItem_Click(object sender, EventArgs e)
         {
 #if !DEMO
-            if (listView1.SelectedItems.Count != 1) return;
+            if (listView1.SelectedItems.Count != 1) {
+                return;
+            }
 
             XmlDocument[] docs = ReportHelperExt.GetRabbitPlem((listView1.SelectedItems[0].Tag as AdultRabbit).ID);
             ReportViewForm rf = new ReportViewForm(myReportType.RABBIT, docs);
@@ -447,7 +463,10 @@ namespace rabnet.panels
         private void plemMenuItem_Click(object sender, EventArgs e)
         {
 #if !DEMO
-            if (listView1.SelectedItems.Count < 1) return;
+            if (listView1.SelectedItems.Count < 1) {
+                return;
+            }
+
             try {
                 XmlDocument doc = new XmlDocument();
                 doc.AppendChild(doc.CreateElement("Rows"));
@@ -456,10 +475,12 @@ namespace rabnet.panels
                 foreach (ListViewItem li in listView1.SelectedItems) {
                     RabNetEngRabbit r = Engine.get().getRabbit((li.Tag as AdultRabbit).ID);
                     cnt += r.Group;
-                    if (brd == "")
+                    if (brd == "") {
                         brd = r.BreedName;
-                    if (r.BreedName != brd)
+                    }
+                    if (r.BreedName != brd) {
                         brd = "none";
+                    }
                     ReportHelperExt.rabToXml(r, null, doc);
                 }
                 XmlDocument doc2 = new XmlDocument();
@@ -484,11 +505,14 @@ namespace rabnet.panels
         private void miRealize_Click(object sender, EventArgs e)
         {
 #if !DEMO
-            if (listView1.SelectedItems.Count < 1) return;
+            if (listView1.SelectedItems.Count < 1) {
+                return;
+            }
             Filters f = new Filters();
             f["cnt"] = listView1.SelectedItems.Count.ToString();
-            for (int i = 0; i < listView1.SelectedItems.Count; i++)
+            for (int i = 0; i < listView1.SelectedItems.Count; i++) {
                 f["r" + i.ToString()] = ((listView1.SelectedItems[i].Tag as AdultRabbit).ID).ToString();
+            }
             new ReportViewForm(myReportType.REALIZE, Engine.db().makeReport(myReportType.REALIZE, f)).ShowDialog();
 #else
             DemoErr.DemoNoReportMsg();
@@ -497,7 +521,9 @@ namespace rabnet.panels
 
         private void miGenetic_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count < 1) return;
+            if (listView1.SelectedItems.Count < 1) {
+                return;
+            }
 
             try {
 #if PROTECTED
@@ -520,7 +546,9 @@ namespace rabnet.panels
         private void miPlanReplace_Click(object sender, EventArgs e)
         {
 #if !DEMO
-            if (listView1.SelectedItems.Count < 1) return;
+            if (listView1.SelectedItems.Count < 1) {
+                return;
+            }
 
             XmlDocument doc = new XmlDocument();
             doc.AppendChild(doc.CreateElement("Rows"));
@@ -545,7 +573,10 @@ namespace rabnet.panels
 
         private void miBon_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count != 1) return;
+            if (listView1.SelectedItems.Count != 1) {
+                return;
+            }
+
             try {
                 int rid = (listView1.SelectedItems[0].Tag as AdultRabbit).ID;
                 if ((new BonForm(rid)).ShowDialog() == DialogResult.OK)

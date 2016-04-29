@@ -10,8 +10,9 @@ namespace rabnet
 
         public static RabNetEngine get()
         {
-            if (eng == null)
+            if (eng == null) {
                 eng = new RabNetEngine();
+            }
             return eng;
         }
         public static IRabNetDataLayer db()

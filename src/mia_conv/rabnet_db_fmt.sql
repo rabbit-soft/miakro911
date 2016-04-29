@@ -437,7 +437,7 @@ ALTER TABLE rabbits
 INSERT INTO `vaccines`(v_id,v_name,v_do_after,v_duration,v_age,v_zootech,v_do_times) VALUES(-1,'Стимуляция самки',0,3,2,0,0);
 INSERT INTO `vaccines`(v_id,v_name,v_do_after,v_duration,v_age,v_zootech,v_do_times) VALUES(1,'Прививка',0,180,45,1,0);
 
-INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','17');
+INSERT INTO options(o_name,o_subname,o_value) VALUES('db','version','18');
 INSERT INTO options(o_name,o_subname,o_value) VALUES
 ('opt','okrol', 30),
 ('opt','vudvor', 30),

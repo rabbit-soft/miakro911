@@ -69,16 +69,16 @@ namespace rabnet
             }
 
             int count = _dataGetter.getCount();
-            if (InitMaxProgress != null) {
-                InitMaxProgress(_dataGetter.getCount());
+            if (this.InitMaxProgress != null) {
+                this.InitMaxProgress(_dataGetter.getCount());
             }
 
             for (int i = 0; (i < count) && (!_stopRequired); i++) {
                 //if (Progress!=null)
                 //Progress(i);
                 IData it = _dataGetter.GetNextItem();
-                if (OnItem != null && !_stopRequired) {
-                    OnItem(it, i);
+                if (this.OnItem != null && !_stopRequired) {
+                    this.OnItem(it, i);
                 }
                 if (it == null) {
                     break;

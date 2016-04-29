@@ -6,14 +6,14 @@ using log4net;
 using rabnet;
 
 namespace db.mysql
-{ 
+{
     class FucksGetter
     {
         private static ILog _logger = LogManager.GetLogger(typeof(FucksGetter));
 
         public static Fucks GetFucks(MySqlConnection sql, Filters flt)
         {
-           string query = String.Format(@"
+            string query = String.Format(@"
     (
         SELECT {0:s} 
         FROM fucks 
@@ -25,19 +25,18 @@ namespace db.mysql
         FROM fucks 
         WHERE isdead(f_partner)=1 {2:s} {3:s} {4:s}
     ) 
-    ORDER BY name,f_date;", 
-                fuckFields(true), 
-                fuckFields(false),
-                (flt.safeInt(Filters.RAB_ID, 0) != 0 ? "AND f_rabid=" + flt.safeValue(Filters.RAB_ID) : ""),                
-                DBHelper.MakeDatePeriod(flt,"f_date"),
-                (flt.safeInt(Filters.FIND_PARTNERS, 0) != 0 ? "AND f_partner=" + flt.safeValue(Filters.FIND_PARTNERS) : "")
-            );
+    ORDER BY name,f_date;",
+                 fuckFields(true),
+                 fuckFields(false),
+                 (flt.safeInt(Filters.RAB_ID, 0) != 0 ? "AND f_rabid=" + flt.safeValue(Filters.RAB_ID) : ""),
+                 DBHelper.MakeDatePeriod(flt, "f_date"),
+                 (flt.safeInt(Filters.FIND_PARTNERS, 0) != 0 ? "AND f_partner=" + flt.safeValue(Filters.FIND_PARTNERS) : "")
+             );
 
             MySqlCommand cmd = new MySqlCommand(query, sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             Fucks f = new Fucks();
-            while (rd.Read())
-            {
+            while (rd.Read()) {
                 f.Add(fillFuck(rd));
             }
             rd.Close();
@@ -93,16 +92,16 @@ WHERE r_sex='male' AND {3:s}
     {4:s}
 ORDER BY fullname;",
     femaleId,
-    (flt.safeBool(Filters.HETEROSIS,true) ? "" : String.Format(" AND r_breed=(SELECT r2.r_breed FROM rabbits r2 WHERE r_id={0:d})",femaleId)),
+    (flt.safeBool(Filters.HETEROSIS, true) ? "" : String.Format(" AND r_breed=(SELECT r2.r_breed FROM rabbits r2 WHERE r_id={0:d})", femaleId)),
     (flt.safeBool(Filters.INBREEDING, true) ? "" : String.Format(@" AND (SELECT COUNT(g_genom) FROM genoms WHERE g_id=r_genesis AND g_genom IN 
-        (SELECT g2.g_genom FROM genoms g2 WHERE g2.g_id=(SELECT r3.r_genesis from rabbits r3 WHERE r3.r_id={0:d})))=0",femaleId)),
-    (flt.safeBool(Filters.SHOW_CANDIDATE, false) 
-        ? String.Format("(r_status>0 OR (r_status=0 AND r_group=1 AND (To_Days(NOW())-To_Days(r_born))>{0:d}) )",flt.safeInt(Filters.MAKE_CANDIDATE,120)) 
+        (SELECT g2.g_genom FROM genoms g2 WHERE g2.g_id=(SELECT r3.r_genesis from rabbits r3 WHERE r3.r_id={0:d})))=0", femaleId)),
+    (flt.safeBool(Filters.SHOW_CANDIDATE, false)
+        ? String.Format("(r_status>0 OR (r_status=0 AND r_group=1 AND (To_Days(NOW())-To_Days(r_born))>{0:d}) )", flt.safeInt(Filters.MAKE_CANDIDATE, 120))
         : "r_status=2"),
-    (flt.safeBool(Filters.SHOW_REST,false) ? "" ///показывать ли отдыхающих
-        : String.Format("AND ( r_last_fuck_okrol IS NULL OR NOW() > Date(Date_Add(r_last_fuck_okrol,INTERVAL {0:d} DAY)) )",flt.safeInt(Filters.MALE_REST,0)) )
-    //,(femaleId !=0 ? String.Format("(SELECT SUM(f_times)     FROM fucks WHERE f_partner=r_id AND f_rabid={0:d})",femaleId): "'0'"),
-    //(femaleId !=0 ? String.Format("(SELECT SUM(f_children)  FROM fucks WHERE f_partner=r_id AND f_rabid={0:d})",femaleId): "'0'")
+    (flt.safeBool(Filters.SHOW_REST, false) ? "" ///показывать ли отдыхающих
+        : String.Format("AND ( r_last_fuck_okrol IS NULL OR NOW() > Date(Date_Add(r_last_fuck_okrol,INTERVAL {0:d} DAY)) )", flt.safeInt(Filters.MALE_REST, 0)))
+                //,(femaleId !=0 ? String.Format("(SELECT SUM(f_times)     FROM fucks WHERE f_partner=r_id AND f_rabid={0:d})",femaleId): "'0'"),
+                //(femaleId !=0 ? String.Format("(SELECT SUM(f_children)  FROM fucks WHERE f_partner=r_id AND f_rabid={0:d})",femaleId): "'0'")
     ), sql);
 #if DEBUG
             _logger.Debug(cmd.CommandText);
@@ -113,10 +112,9 @@ ORDER BY fullname;",
 #endif
             //Fucks f = new Fucks();
             List<FuckPartner> result = new List<FuckPartner>();
-            while (rd.Read())
-            {
-                result.Add(new FuckPartner(rd.GetInt32("r_id"), rd.GetString("fullname"), rd.GetInt32("fucks"), 
-                    rd.IsDBNull(rd.GetOrdinal("fuckDate"))?DateTime.MinValue : rd.GetDateTime("fuckDate"),
+            while (rd.Read()) {
+                result.Add(new FuckPartner(rd.GetInt32("r_id"), rd.GetString("fullname"), rd.GetInt32("fucks"),
+                    rd.IsDBNull(rd.GetOrdinal("fuckDate")) ? DateTime.MinValue : rd.GetDateTime("fuckDate"),
                     rd.GetInt32("children"), rd.GetInt32("r_status"), rd.GetInt32("r_breed"),
                     rd.IsDBNull(rd.GetOrdinal("genom")) ? "" : rd.GetString("genom"),
                     rd.IsDBNull(rd.GetOrdinal("rabGenom")) ? "" : rd.GetString("rabGenom"),
@@ -128,7 +126,7 @@ ORDER BY fullname;",
 
         public static double[] getMaleChildrenProd(MySqlConnection sql, int rabid)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT SUM(f_children) FROM fucks WHERE f_partner={0:d};",rabid), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT SUM(f_children) FROM fucks WHERE f_partner={0:d};", rabid), sql);
             int ch = 0;
             int ok = 0;
             double prod = 0;
@@ -137,7 +135,7 @@ ORDER BY fullname;",
                 if (!rd.IsDBNull(0))
                     ch = rd.GetInt32(0);
             rd.Close();
-            cmd.CommandText = String.Format(@"SELECT COUNT(f_partner) FROM fucks WHERE f_partner={0:d} AND f_state='okrol'",rabid);
+            cmd.CommandText = String.Format(@"SELECT COUNT(f_partner) FROM fucks WHERE f_partner={0:d} AND f_state='okrol'", rabid);
             rd = cmd.ExecuteReader();
             if (rd.Read())
                 if (!rd.IsDBNull(0))
@@ -145,12 +143,12 @@ ORDER BY fullname;",
             rd.Close();
             if (ok != 0)
                 prod = (double)ch / ok;
-            return new double[] {ch, prod};
+            return new double[] { ch, prod };
         }
 
-        public static void changeWorker(MySqlConnection sql,int fid, int wid)
+        public static void changeWorker(MySqlConnection sql, int fid, int wid)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE fucks SET f_worker={0:d} WHERE f_id={1:d};",wid,fid),sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE fucks SET f_worker={0:d} WHERE f_id={1:d};", wid, fid), sql);
             cmd.ExecuteNonQuery();
         }
 
@@ -159,10 +157,10 @@ ORDER BY fullname;",
             MySqlCommand cmd = new MySqlCommand("", sql);
 
             cmd.CommandText = String.Format("UPDATE fucks SET f_partner={0:d}, f_date={2} WHERE f_id={1:d};", maleId, fuckId, DBHelper.DateToSqlString(newFuckDate));
-            cmd.ExecuteNonQuery();            
+            cmd.ExecuteNonQuery();
 
             cmd.CommandText = String.Format(@"UPDATE rabbits SET r_last_fuck_okrol={0:s} WHERE r_id={1:d};", DBHelper.DateToSqlString(newFuckDate), maleId);
-            cmd.ExecuteNonQuery();            
+            cmd.ExecuteNonQuery();
         }
 
         internal static List<string> getFuckMonths(MySqlConnection sql)
@@ -170,8 +168,7 @@ ORDER BY fullname;",
             List<String> result = new List<String>();
             MySqlCommand cmd = new MySqlCommand("SELECT DISTINCT Date_Format(f_date,'%m.%Y')dt FROM fucks WHERE f_date IS NOT null ORDER BY f_date DESC;", sql);
             MySqlDataReader rd = cmd.ExecuteReader();
-            while (rd.Read())
-            {
+            while (rd.Read()) {
                 result.Add(rd.GetString("dt"));
             }
             rd.Close();
@@ -185,11 +182,10 @@ ORDER BY fullname;",
         {
             MySqlCommand cmd = new MySqlCommand("", sql);
             /// достаем информацию, которую нужно востановить в таблице rabbits по данной крольчихе
-            cmd.CommandText = String.Format("SELECT {0:s} FROM fucks f WHERE f_id={1:d};",fuckFields(true),fuckId);
+            cmd.CommandText = String.Format("SELECT {0:s} FROM fucks f WHERE f_id={1:d};", fuckFields(true), fuckId);
             MySqlDataReader rd = cmd.ExecuteReader();
-            Fuck f=null;
-            if (rd.Read())
-            {
+            Fuck f = null;
+            if (rd.Read()) {
                 f = fillFuck(rd);
                 //rabID = rd.GetInt32("f_rabid");
                 //if (!rd.IsDBNull(rd.GetOrdinal("f_date")))
@@ -198,34 +194,31 @@ ORDER BY fullname;",
                 //    ev_date = DateTime.Now.AddDays(-30);
                 //type = rd.GetString("f_type");
                 //status = Fuck.ParceFuckEndType(rd.GetString("f_state"));
-            }
-            else
-            {
+            } else {
                 rd.Close();
                 return;
             }
             rd.Close();
             int rate = 2;
             if (f.FEndType == FuckEndType.Sukrol) return;
-            if (f.FEndType == FuckEndType.Okrol)
-            {
+            if (f.FEndType == FuckEndType.Okrol) {
                 rate = -(Math.Abs(f.Children - 8) - f.Dead);
                 cmd.CommandText = String.Format(@"UPDATE rabbits SET r_rate=r_rate+{0:d} WHERE r_id={1:d};", rate, f.PartnerId);
                 cmd.ExecuteNonQuery();
             }
             cmd.CommandText = String.Format("UPDATE fucks SET f_end_date=null, f_state='sukrol', f_notes='{1:s} cancel', f_children=0,f_dead=0,f_added=0,f_killed=0 WHERE f_id={0:#};", fuckId, Fuck.GetFuckEndTypeStr(f.FEndType));
             cmd.ExecuteNonQuery();
-            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date='{0}',r_event='{2}',r_rate=r_rate+{3:d} WHERE r_id={1:d};", 
-                f.EventDate.ToString("yyyy-MM-dd"), 
-                f.FemaleId, 
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date='{0}',r_event='{2}',r_rate=r_rate+{3:d} WHERE r_id={1:d};",
+                f.EventDate.ToString("yyyy-MM-dd"),
+                f.FemaleId,
                 Fuck.GetFuckTypeStr(f.FType),
                 rate
             );
             cmd.ExecuteNonQuery();
         }
 
-        public static void MakeFuck(MySqlConnection sql, int femaleId, int maleId, int daysPast, int worker,bool syntetic)
-        {            
+        public static void MakeFuck(MySqlConnection sql, int femaleId, int maleId, int daysPast, int worker, bool syntetic)
+        {
             OneRabbit f = RabbitGetter.GetRabbit(sql, femaleId);
             String type = Fuck.GetFuckTypeStr(FuckType.Sluchka);
             string when = DBHelper.DaysPastSqlDate(daysPast);
@@ -253,7 +246,7 @@ VALUES({0:d},{1:s},{2:d},'sukrol','{3:s}',1,'',{4:d});", femaleId, when, maleId,
 
         public static void SpermTake(MySqlConnection sql, int rID)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format("UPDATE rabbits SET r_last_fuck_okrol=Now() WHERE r_sex='male' AND r_id={0:d}",rID), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format("UPDATE rabbits SET r_last_fuck_okrol=Now() WHERE r_sex='male' AND r_id={0:d}", rID), sql);
             cmd.ExecuteNonQuery();
         }
     }
