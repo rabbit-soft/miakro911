@@ -7,7 +7,7 @@ namespace rabnet
 {
     public delegate void DTProgressHandler(int progress);
 
-    public delegate void DTItemProgressHandler(IData data, int progress);
+    public delegate void DTItemsHandler(IDataGetter dataGetter);
 
     class DataThread
     {
@@ -23,7 +23,7 @@ namespace rabnet
         private Thread _thr = null;
         private bool _stopRequired = false;
         public event RSBEventHandler OnFinish;
-        public event DTItemProgressHandler OnItem;
+        public event DTItemsHandler OnItems;
         public event DTProgressHandler InitMaxProgress;
         //public event DTProgressHandler Progress;
 
@@ -73,17 +73,10 @@ namespace rabnet
                 this.InitMaxProgress(_dataGetter.getCount());
             }
 
-            for (int i = 0; (i < count) && (!_stopRequired); i++) {
-                //if (Progress!=null)
-                //Progress(i);
-                IData it = _dataGetter.GetNextItem();
-                if (this.OnItem != null && !_stopRequired) {
-                    this.OnItem(it, i);
-                }
-                if (it == null) {
-                    break;
-                }
+            if (this.OnItems != null) {
+                this.OnItems(_dataGetter);
             }
+            
             _dataGetter.Close();
 
             onFinish();

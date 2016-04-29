@@ -126,6 +126,7 @@ namespace rabnet.panels
         /// <param name="f">Коллекция фильтров</param>
         private void fillLogs(Filters f)
         {
+            lvLogs.BeginUpdate();
             lvLogs.Items.Clear();
             foreach (LogList.OneLog l in Engine.db().getLogs(f).logs) {
                 ListViewItem li = lvLogs.Items.Add(l.date.ToShortDateString() + " " + l.date.ToShortTimeString());
@@ -135,6 +136,7 @@ namespace rabnet.panels
                 li.SubItems.Add(l.user);
             }
             lvLogs.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            lvLogs.EndUpdate();
         }
 
         public override ContextMenuStrip getMenu()

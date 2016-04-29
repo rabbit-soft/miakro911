@@ -194,6 +194,7 @@ namespace rabnet.components
             pb.Value = pb.Maximum > prss ? prss : pb.Maximum;
             pb.Invalidate();
         }
+
         private void endProgress()
         {
             ///если загрузку останавливает пользователь, то прогресс бар застывает и не сбраcывается
@@ -275,7 +276,7 @@ namespace rabnet.components
                 stopDataThread();
             }
             _dataThread = new DataThread();
-            _dataThread.OnItem += new DTItemProgressHandler(_dataThread_onItem);
+            _dataThread.OnItems += new DTItemsHandler(_dataThread_onItems);
             _dataThread.OnFinish += new RSBEventHandler(_dataThread_OnFinish);
             _dataThread.InitMaxProgress += new DTProgressHandler(initProgress);
             //_dataThread.Progress +=new DTProgressHandler(progress);
@@ -296,17 +297,20 @@ namespace rabnet.components
             }
         }
 
-        void _dataThread_onItem(IData data, int progr)
-        {
-            if (_dataThread == null) return;
+        void _dataThread_onItems(IDataGetter dataGetter)
+        {            
             if (this.InvokeRequired) {
-                DTItemProgressHandler d = new DTItemProgressHandler(_dataThread_onItem);
-                this.Invoke(d, new object[] { data, progr });
+                DTItemsHandler d = new DTItemsHandler(_dataThread_onItems);
+                this.Invoke(d, new object[] { dataGetter });
             } else {
-                if (ItemGet != null) {
-                    ItemGet(data);
+                IData it;
+                int progr = 0;
+                while ((it = dataGetter.GetNextItem()) != null) {                    
+                    if (this.ItemGet != null) {
+                        this.ItemGet(it);
+                    }
+                    this.progress(progr++);
                 }
-                progress(progr);
             }
         }
 
