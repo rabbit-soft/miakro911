@@ -136,17 +136,19 @@ namespace rabnet
             docs[1] = ReportHelperExt.rabToXml(null, p1[0]);
             docs[2] = ReportHelperExt.rabToXml(null, p1[1]);
             OneRabbit[] p2;
-            if (p1[0] != null)
+            if (p1[0] != null) {
                 p2 = Engine.db().getParents(p1[0].ID, p1[0].Age);
-            else
+            } else {
                 p2 = new OneRabbit[] { null, null };
+            }
 
             docs[3] = ReportHelperExt.rabToXml(null, p2[0]);
             docs[4] = ReportHelperExt.rabToXml(null, p2[1]);
-            if (p1[1] != null)
+            if (p1[1] != null) {
                 p2 = Engine.db().getParents(p1[1].ID, p1[1].Age);
-            else
+            } else {
                 p2 = new OneRabbit[] { null, null };
+            }
 
             docs[5] = ReportHelperExt.rabToXml(null, p2[0]);
             docs[6] = ReportHelperExt.rabToXml(null, p2[1]);

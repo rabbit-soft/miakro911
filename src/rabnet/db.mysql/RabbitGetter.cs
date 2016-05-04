@@ -602,7 +602,7 @@ WHERE r_parent={1:d} AND r_id={2:d};", added, rid, yid), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             int oldMom = 0;
             if (rd.Read()) {
-                oldMom = rd.IsDBNull(0) ? 0 : rd.GetInt32(0);
+                oldMom = DBHelper.GetNullableInt(rd, "r_parent");
             }
             rd.Close();
 
@@ -688,7 +688,7 @@ WHERE r_parent={1:d} AND r_id={2:d};", added, rid, yid), sql);
         }
 
         /// <summary>
-        /// Ищет ID кролика по ID имени
+        /// Ищет ID кролика по ID имени. Применяется, если не получилось найти родителя по rmother, r_father
         /// </summary>
         /// <param name="sql">MySqlConnection</param>
         /// <param name="nameId">ID имени</param>
@@ -696,20 +696,27 @@ WHERE r_parent={1:d} AND r_id={2:d};", added, rid, yid), sql);
         /// <returns></returns>
         public static int getRabByName(MySqlConnection sql, int nameId, int minAge)
         {
-            if (nameId == 0) return 0;
+            if (nameId == 0) {
+                return 0;
+            }
+
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT r_id FROM rabbits WHERE r_name={0:d} AND TO_DAYS(NOW())-TO_DAYS(r_born)>{1:d};", nameId, minAge), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             int id = 0;
-            if (rd.Read())
+            if (rd.Read()) {
                 id = rd.GetInt32(0);
+            }
             rd.Close();
             if (id == 0) {
-                cmd.CommandText = String.Format(@"SELECT r_id,TO_DAYS(NOW())-TO_DAYS(r_born) age FROM dead 
-WHERE r_name={0:d} AND TO_DAYS(NOW())-TO_DAYS(r_born)>{1:d} AND 
-TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d}+1000 ORDER BY age ASC;", nameId, minAge);
+                cmd.CommandText = String.Format(@"SELECT r_id,  DATEDIFF(NOW(), r_born) age 
+FROM dead 
+WHERE r_name={0:d} 
+HAVING age > {1:d} AND age < {1:d}+1000 
+ORDER BY age ASC;", nameId, minAge);
                 rd = cmd.ExecuteReader();
-                if (rd.Read())
+                if (rd.Read()) {
                     id = rd.GetInt32(0);
+                }
                 rd.Close();
             }
             return id;
@@ -717,7 +724,10 @@ TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d}+1000 ORDER BY age ASC;", nameId, minAge);
 
         public static OneRabbit getLiveDeadRabbit(MySqlConnection sql, int rabbit)
         {
-            if (rabbit == 0) return null;
+            if (rabbit == 0) {
+                return null;
+            }
+
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT isdead({0:d});", rabbit), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             bool dead = false;
@@ -848,8 +858,7 @@ ORDER BY date", rabId), sql);
             cmd.CommandText = String.Format("SELECT f_date,f_id FROM fucks WHERE f_state='sukrol' AND f_rabid={0:d} LIMIT 1;", rabbit);
             MySqlDataReader rd = cmd.ExecuteReader();
             if (rd.Read()) {
-                if (rd.IsDBNull(0))//если ли дата начала сукрольности
-                {
+                if (rd.IsDBNull(0)) {//если ли дата начала сукрольности                
                     int fid = rd.GetInt32("f_id");
                     rd.Close();
                     cmd.CommandText = String.Format("SELECT r_event_date FROM rabbits WHERE r_id={0:d};", rabbit);
