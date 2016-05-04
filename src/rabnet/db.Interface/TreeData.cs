@@ -10,10 +10,10 @@ namespace rabnet
         //public String caption;
         public readonly int ID;
         public readonly string Name;
-        
+
         protected string _pPath = null;
 
-        protected TreeData(int id,string name)
+        protected TreeData(int id, string name)
         {
             this.ID = id;
             this.Name = name;
@@ -32,18 +32,19 @@ namespace rabnet
 
     public class RabTreeData : TreeData
     {
-        public readonly int BreedId = 0;      
+        public readonly int BreedId = 0;
         public readonly int NameId = 0;
         public readonly DateTime BirthDay;
 
-        public String BreedShortName ="";
+        public String BreedShortName = "";
         public String Bon = "";
         public RabTreeData Mother;
         public RabTreeData Father;
         public int BirthPlace;
         public RabAliveState State;
 
-        public RabTreeData(int rId,string name,int nameId,DateTime born, int breedId):base(rId,name)
+        public RabTreeData(int rId, string name, int nameId, DateTime born, int breedId)
+            : base(rId, name)
         {
             this.NameId = nameId;
             this.BirthDay = born;
@@ -54,12 +55,12 @@ namespace rabnet
         {
             get
             {
-                return String.Format("{0:s}, {1:d},{2:s}", Name,Age, Bon);
+                return String.Format("{0:s}, {1:d},{2:s}", Name, Age, Bon);
             }
         }
 
         public virtual int Age { get { return DateTime.Now.Subtract(BirthDay).Days; } }
-        
+
 
         public String NameFormat(string format)
         {
@@ -68,21 +69,23 @@ namespace rabnet
                 .Replace("N", NameId.ToString())
                 .Replace("n", Name)
                 .Replace("A", Age.ToString())
-                .Replace("C",Bon);
+                .Replace("C", Bon);
         }
     }
 
-    public class BldTreeData:TreeData
+    public class BldTreeData : TreeData
     {
-        public int TierID;
+        public int FarmId;
+
         public List<BldTreeData> ChildNodes;
 
-        public BldTreeData(int bldId, int tierId, string name, string pPath):base(bldId,name)
+        public BldTreeData(int bldId, int farmId, string name, string pPath)
+            : base(bldId, name)
         {
-            this.TierID = tierId;
+            this.FarmId = farmId;
             _pPath = pPath;
         }
-        public BldTreeData(int bldId, int tierId, string name)
-            : this(bldId, tierId, name, null) { }
+        public BldTreeData(int bldId, int farmId, string name)
+            : this(bldId, farmId, name, null) { }
     }
 }

@@ -142,8 +142,8 @@ WHERE (m_upper=t_id OR m_lower=t_id) " + makeWhere() + ";";
 
             List<BldTreeData> lst = new List<BldTreeData>();
             while (rd.Read()) {
-                int frm = rd.GetInt32(rd.GetOrdinal("b_farm"));
-                String nm = rd.GetString(rd.GetOrdinal("b_name"));
+                int frm = DBHelper.GetNullableInt(rd, "b_farm");
+                String nm = rd.GetString("b_name");
                 BldTreeData dt = new BldTreeData(rd.GetInt32("b_id"), frm, (frm == 0 ? nm : "№" + Building.Format(nm.Remove(0, 1))), res.Path);
                 lst.Add(dt);
             }

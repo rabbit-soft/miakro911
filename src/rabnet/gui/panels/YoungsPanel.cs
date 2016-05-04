@@ -70,7 +70,9 @@ namespace rabnet.panels
 
             setMenu();
             makeSelectedCount();
-            if (listView1.SelectedItems.Count != 1) return;
+            if (listView1.SelectedItems.Count != 1) {
+                return;
+            }
 
             RabTreeData dt = Engine.db().rabbitGenTree((int)listView1.SelectedItems[0].Tag);
             if (dt != null) {

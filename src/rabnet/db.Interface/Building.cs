@@ -53,6 +53,9 @@ namespace rabnet
         #endregion consts
 
         public readonly int ID;
+        /// <summary>
+        /// Minifarm ID
+        /// </summary>
         public readonly int Farm;
         /// <summary>
         /// Тут записан этаж,но по стечению обстоятельств это зазывается tier_id

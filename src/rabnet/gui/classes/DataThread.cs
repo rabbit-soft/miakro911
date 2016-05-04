@@ -39,7 +39,7 @@ namespace rabnet
             }
             _dataGetter = getter;
             if (_dataGetter == null) {
-                onFinish();
+                this.onFinish();
                 return;
             }
 
@@ -78,13 +78,13 @@ namespace rabnet
             
             _dataGetter.Close();
 
-            onFinish();
+            this.onFinish();
         }
 
         private void onFinish()
         {
-            if (OnFinish != null) {
-                OnFinish();
+            if (this.OnFinish != null) {
+                this.OnFinish();
             }
         }
     }

@@ -64,9 +64,9 @@ namespace rabnet.panels
             _rsb.FilterPanel = filterPanel;
             Size = Parent.Size;
             Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-            _rsb.ItemGet += new RSBItemEventHandler(onItem_Invoker);
+            _rsb.ItemGet += new RSBItemEventHandler(onItem);
             _rsb.PrepareGet += new RSBPrepareHandler(prepareGet);
-            _rsb.OnFinishUpdate += new RSBEventHandler(onFinishUpdate_Invoker);
+            _rsb.OnFinishUpdate += new RSBEventHandler(onFinishUpdate);
             _rsb.ExcelButtonClick = MakeExcel;
             _rsb.Run();
         }
@@ -82,8 +82,8 @@ namespace rabnet.panels
                 _rsb.FilterPanel = null;
             }
             _rsb.PrepareGet -= prepareGet;
-            _rsb.ItemGet -= onItem_Invoker;
-            _rsb.OnFinishUpdate -= onFinishUpdate_Invoker;
+            _rsb.ItemGet -= onItem;
+            _rsb.OnFinishUpdate -= onFinishUpdate;
             _rsb.ExcelButtonClick = null;
         }
 
@@ -100,25 +100,25 @@ namespace rabnet.panels
             return onPrepare(f);
         }
 
-        private void onItem_Invoker(IData data)
-        {
-            if (this.InvokeRequired) {
-                RSBItemEventHandler d = new RSBItemEventHandler(onItem_Invoker);
-                this.Invoke(d, new object[] { data });
-            } else {
-                onItem(data);
-            }
-        }
+        //private void onItem_Invoker(IData data)
+        //{
+        //    if (this.InvokeRequired) {
+        //        RSBItemEventHandler d = new RSBItemEventHandler(onItem_Invoker);
+        //        this.Invoke(d, new object[] { data });
+        //    } else {
+        //        onItem(data);
+        //    }
+        //}
 
-        private void onFinishUpdate_Invoker()
-        {
-            if (this.InvokeRequired) {
-                RSBEventHandler d = new RSBEventHandler(onFinishUpdate_Invoker);
-                this.Invoke(d);
-            } else {
-                onFinishUpdate();
-            }
-        }
+        //private void onFinishUpdate_Invoker()
+        //{
+        //    if (this.InvokeRequired) {
+        //        RSBEventHandler d = new RSBEventHandler(onFinishUpdate_Invoker);
+        //        this.Invoke(d);
+        //    } else {
+        //        onFinishUpdate();
+        //    }
+        //}
 
         /// <summary>
         /// Тело метода содержится в наследниках класса RabNetPanel
