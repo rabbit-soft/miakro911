@@ -302,12 +302,14 @@ namespace db.mysql
             return String.Format(@"SELECT 
     r_id, 
     rabname(r_id," + getnm() + @") name, 
-    rabplace(r_id) place,
+#rabplace(r_id) place,
+    IF(r_farm IS NULL, '', CONCAT_WS(',', r_farm, r_tier_id, r_area, t_type, t_delims, t_nest)) AS place,
     DATEDIFF('{2}', r_event_date) srok,
     DATEDIFF('{2}', r_born) age, 
     r_status,     
     {1:s}
 FROM rabbits 
+    LEFT JOIN tiers ON r_tier = t_id
 WHERE r_sex='female'
 HAVING srok >= {0:d}
 ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
@@ -322,7 +324,8 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
             return String.Format(@"SELECT 
     r_id, 
     rabname(r_id,{0:s}) name, 
-    rabplace(r_id) place,
+#rabplace(r_id) place,
+    IF(r_farm IS NULL, '', CONCAT_WS(',', r_farm, r_tier_id, r_area, t_type, t_delims, t_nest)) AS place,
     DATEDIFF('{4}', r_last_fuck_okrol) srok,
     DATEDIFF('{4}', r_born) age, 
     {1:s},
@@ -373,7 +376,7 @@ LEFT JOIN (
         FROM rabbits r2 
         GROUP BY r_parent
     ) sc ON prnt = r.r_parent
-WHERE r_parent <> 0 
+WHERE r_parent IS NOT NULL 
 GROUP BY r_parent
 HAVING (srok_base >= {0:d} {1:s}) 
     AND r_id NOT IN (
