@@ -6,14 +6,14 @@ using System.Text;
 using rabnet;
 
 namespace db.mysql
-{ 
-    class Butcher:RabNetDataGetterBase
+{
+    class Butcher : RabNetDataGetterBase
     {
-        public Butcher(MySqlConnection sql,Filters f) : base(sql,f) { }
+        public Butcher(MySqlConnection sql, Filters f) : base(sql, f) { }
 
         protected override string getQuery()
         {
-            string table = options.safeInt("type",0) == 1?"scaleprod" :"butcher";
+            string table = options.safeInt("type", 0) == 1 ? "scaleprod" : "butcher";
             string dtfield = options.safeInt("type", 0) == 1 ? "s_date" : "b_date";
             string unfield = options.safeInt("type", 0) == 1 ? "appendPLUSell(s_id)" : "b_amount";
             /*return String.Format(@"CREATE TEMPORARY TABLE aaa as
@@ -28,7 +28,7 @@ CREATE TEMPORARY TABLE bbb as SELECT dt FROM aaa;
 SELECT dt,cnt,(SELECT COUNT(*) FROM {0:s} WHERE DATE({1:s})=dt) prod FROM aaa union
 SELECT DATE({1:s}) dt,0,SUM({2:s}) FROM {0:s} WHERE DATE({1:s}) not in (SELECT dt FROM bbb) GROUP BY dt ORDER BY dt DESC;
 DROP TABLE aaa;
-DROP TABLE bbb;",table,dtfield,unfield);
+DROP TABLE bbb;", table, dtfield, unfield);
         }
 
         protected override string countQuery()
@@ -56,10 +56,9 @@ DROP TABLE bbb;",table,dtfield,unfield);
             List<DeadRabbit> result = new List<DeadRabbit>();
             MySqlCommand cmd = new MySqlCommand("", sql);
             cmd.CommandText = String.Format(@"SELECT {1:s}, d_date
-FROM dead WHERE d_reason=3 AND DATE(d_date)='{0:yyyy-MM-dd}';", dt,RabbitGetter.getAdultRabbit_FieldsSet(RabAliveState.DEAD));
+FROM dead WHERE d_reason=3 AND DATE(d_date)='{0:yyyy-MM-dd}';", dt, RabbitGetter.getAdultRabbit_FieldsSet(RabAliveState.DEAD));
             MySqlDataReader rd = cmd.ExecuteReader();
-            while(rd.Read())
-            {
+            while (rd.Read()) {
                 result.Add(RabbitGetter.fillDeadRabbit(rd));
             }
             rd.Close();
@@ -77,10 +76,9 @@ FROM dead WHERE d_reason=3 AND DATE(d_date)='{0:yyyy-MM-dd}';", dt,RabbitGetter.
     (SELECT p_unit FROM products WHERE p_id=b_prodtype) units,
     (SELECT u_name FROM users WHERE b_user=u_id) user,
     if(DATE(b_date)=DATE(NOW()),'true','false') today 
-FROM butcher WHERE DATE(b_date)='{0:yyy-MM-dd}' ORDER by b_date DESC;",dt), sql);
+FROM butcher WHERE DATE(b_date)='{0:yyy-MM-dd}' ORDER by b_date DESC;", dt), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
-            while (rd.Read())
-            {
+            while (rd.Read()) {
                 result.Add(new sMeat(rd.GetInt32("b_id"),
                     rd.GetDateTime("b_date"),
                     rd.GetString("prod"),
@@ -99,8 +97,7 @@ FROM butcher WHERE DATE(b_date)='{0:yyy-MM-dd}' ORDER by b_date DESC;",dt), sql)
             List<String> result = new List<String>();
             MySqlCommand cmd = new MySqlCommand("SELECT DISTINCT Date_Format(b_date,'%m.%Y')dt FROM butcher ORDER BY b_date;", sql);
             MySqlDataReader rd = cmd.ExecuteReader();
-            while (rd.Read())
-            {
+            while (rd.Read()) {
                 result.Add(rd.GetString("dt"));
             }
             rd.Close();

@@ -74,11 +74,13 @@ FROM rabbits WHERE r_parent={1:d} ORDER BY name;",getFieldSet_Youngers(true,fals
         private static string getFieldSet_Youngers(bool dblNames,bool sror)
         {
             return String.Format(@"r_id,
-    rabname(r_id,{0:s}) name,r_group,r_sex,
+    rabname(r_id,{0:s}) name, r_group, r_sex,
     (SELECT {1:s} FROM breeds WHERE b_id=r_breed) breed,
     r_parent,
     rabname(r_parent,{0:s}) parent,
-    r_notes,TO_DAYS(NOW())-TO_DAYS(r_born) age,r_bon,
+    r_notes, 
+    DATEDIFF(NOW(), r_born) age,
+    r_bon,
     (SELECT SUM(rg.r_group)-rabbits.r_group FROM rabbits rg WHERE rg.r_parent=rabbits.r_parent) neighbours,
     r_born,
     rabplace(r_parent) rplace", (dblNames ? "2" : "1"), sror ? "b_short_name" : "b_name");

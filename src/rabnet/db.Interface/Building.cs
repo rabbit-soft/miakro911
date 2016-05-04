@@ -379,19 +379,28 @@ namespace rabnet
         public static String FullNameRus(int farm, int tireFloor, int sec, BuildingType type, String delims, bool shrt, bool showTier, bool ShowDescr)
         {
             String res = Building.Format(farm);
-            if (tireFloor == TierFloor.Upper) res += "^";
-            if (tireFloor == TierFloor.Lower) res += "-";
+            if (tireFloor == TierFloor.Upper) {
+                res += "^";
+            }
+            if (tireFloor == TierFloor.Lower) {
+                res += "-";
+            }
+
             res += GetSecRus(type, sec, delims);
-            if (showTier)
+            if (showTier) {
                 res += " [" + GetNameRus(type, shrt) + "]";
-            if (ShowDescr)
+            }
+            if (ShowDescr) {
                 res += " (" + GetDescrRus(type, shrt, sec, delims) + ")";
+            }
             return res;
         }
 
         public static String FullPlaceName(String rawAddres, bool shrt, bool showTier, bool showDescr)
         {
-            if (rawAddres == "") return Rabbit.NULL_ADDRESS;
+            if (rawAddres == "") {
+                return Rabbit.NULL_ADDRESS;
+            }
 
             String[] dts = rawAddres.Split(',');
             return FullNameRus(int.Parse(dts[0]), int.Parse(dts[1]), int.Parse(dts[2]), Building.ParseType(dts[3]), dts[4], shrt, showTier, showDescr);
@@ -403,8 +412,10 @@ namespace rabnet
 
         public static bool HasNest(String rabplace)
         {
-            if (rabplace == "")
+            if (rabplace == "") {
                 return false;
+            }
+
             String[] dts = rabplace.Split(',');
             return HasNest(ParseType(dts[3]), int.Parse(dts[2]), dts[5]);
         }
