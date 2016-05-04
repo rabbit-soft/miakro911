@@ -51,6 +51,7 @@ namespace rabnet.panels
             //flt["suc"] = op.getOption(Options.OPT_ID.COUNT_SUCKERS);
             f[Filters.MAKE_CANDIDATE] = op.getOption(Options.OPT_ID.MAKE_CANDIDATE);
             _runF = f;
+            
             IDataGetter dg = Engine.db2().getRabbits(f);
             _rsb.SetText(1, dg.getCount().ToString() + " записей");
             _rsb.SetText(2, dg.getCount2().ToString() + " кроликов");

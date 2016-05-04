@@ -17,16 +17,17 @@ namespace rabnet.panels
         private bool manual = true;
         public YoungsPanel() : base() { }
 
-        public YoungsPanel(RabStatusBar sb): base(sb, null)
+        public YoungsPanel(RabStatusBar sb)
+            : base(sb, null)
         {
-            _colSort = new ListViewColumnSorter(listView1, new int[] { 1,2, 8 },Options.OPT_ID.YOUNG_LIST);
+            _colSort = new ListViewColumnSorter(listView1, new int[] { 1, 2, 8 }, Options.OPT_ID.YOUNG_LIST);
             listView1.ListViewItemSorter = null;
             MakeExcel = new RSBEventHandler(this.makeExcel);
         }
 
         protected override IDataGetter onPrepare(Filters f)
         {
-            tvGens.MaxNodesCount = Engine.opt().getIntOption(Options.OPT_ID.GEN_TREE)-1;
+            tvGens.MaxNodesCount = Engine.opt().getIntOption(Options.OPT_ID.GEN_TREE) - 1;
             f = new Filters();
             Options op = Engine.opt();
             f[Filters.SHORT] = op.getOption(Options.OPT_ID.SHORT_NAMES);
@@ -36,7 +37,8 @@ namespace rabnet.panels
             f[Filters.SHOW_OKROL_NUM] = op.getOption(Options.OPT_ID.SHOW_NUMBERS);
             _runF = f;
             _colSort.PrepareForUpdate();
-            IDataGetter dg = Engine.db2().GetYoungers(f); 
+
+            IDataGetter dg = Engine.db2().GetYoungers(f);
             //отображение общей инфы в статус баре
             _rsb.SetText(1, dg.getCount().ToString() + " строк");
             _rsb.SetText(2, dg.getCount2().ToString() + " кроликов");
@@ -48,7 +50,7 @@ namespace rabnet.panels
         protected override void onItem(IData data)
         {
             YoungRabbit rab = (data as YoungRabbit);
-            ListViewItem li = listView1.Items.Add(rab.NameFull);           
+            ListViewItem li = listView1.Items.Add(rab.NameFull);
             li.SubItems.Add(rab.Group.ToString());
             li.SubItems.Add(rab.Age.ToString());
             li.SubItems.Add(rab.FSex());
@@ -58,18 +60,20 @@ namespace rabnet.panels
             li.SubItems.Add(rab.ParentName);
             li.SubItems.Add(rab.Neighbours == 0 ? "-" : rab.Neighbours.ToString());
             li.Tag = rab.ID;
-		}       
+        }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!manual || listView1.SelectedItems.Count==0) return;
+            if (!manual || listView1.SelectedItems.Count == 0) {
+                return;
+            }
+
             setMenu();
             makeSelectedCount();
             if (listView1.SelectedItems.Count != 1) return;
 
             RabTreeData dt = Engine.db().rabbitGenTree((int)listView1.SelectedItems[0].Tag);
-            if (dt != null)
-            {
+            if (dt != null) {
                 TreeNode tn = tvGens.InsertNode(dt, true);
                 tn.ForeColor = Color.Blue;
             }
@@ -90,56 +94,63 @@ namespace rabnet.panels
 
         private void replaceYoungersMenuItem_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count != 1) return;
-            if (new ReplaceYoungersForm((int)listView1.SelectedItems[0].Tag).ShowDialog() == DialogResult.OK)
+            if (listView1.SelectedItems.Count != 1) {
+                return;
+            }
+
+            if (new ReplaceYoungersForm((int)listView1.SelectedItems[0].Tag).ShowDialog() == DialogResult.OK) {
                 _rsb.Run();
+            }
         }
 
         private void listView1_ItemDrag(object sender, ItemDragEventArgs e)
         {
-            if (listView1.SelectedItems.Count == 1)
+            if (listView1.SelectedItems.Count == 1) {
                 listView1.DoDragDrop(e.Item, DragDropEffects.Link);
+            }
         }
 
         private void listView1_DragOver(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(ListViewItem)))
-            {
+            if (e.Data.GetDataPresent(typeof(ListViewItem))) {
                 e.Effect = DragDropEffects.Link;
             }
         }
 
         private void listView1_DragDrop(object sender, DragEventArgs e)
         {
-            if (!e.Data.GetDataPresent(typeof(ListViewItem))) return;
-            Point p=listView1.PointToClient(new Point(e.X,e.Y));
-            ListViewItem to = listView1.GetItemAt(p.X, p.Y);
-            if (to==null)
+            if (!e.Data.GetDataPresent(typeof(ListViewItem))) {
                 return;
-            ListViewItem from=e.Data.GetData(typeof(ListViewItem)) as ListViewItem;
+            }
+
+            Point p = listView1.PointToClient(new Point(e.X, e.Y));
+            ListViewItem to = listView1.GetItemAt(p.X, p.Y);
+            if (to == null) {
+                return;
+            }
+
+            ListViewItem from = e.Data.GetData(typeof(ListViewItem)) as ListViewItem;
             if (from == null) return;
             if (Math.Abs(int.Parse(to.SubItems[2].Text) - int.Parse(from.SubItems[2].Text)) >
-                Engine.opt().getIntOption(Options.OPT_ID.COMBINE_AGE))
-            {
-                if (MessageBox.Show(this, "Крольчата не подходят по возрасту.\nПоказать возможных кормилиц?",
-                    "Ошибка", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    if (new ReplaceYoungersForm((int)from.Tag).ShowDialog() == DialogResult.OK)
+                Engine.opt().getIntOption(Options.OPT_ID.COMBINE_AGE)) {
+                if (MessageBox.Show(this, "Крольчата не подходят по возрасту.\nПоказать возможных кормилиц?", "Ошибка", MessageBoxButtons.YesNo) == DialogResult.Yes) {
+                    if (new ReplaceYoungersForm((int)from.Tag).ShowDialog() == DialogResult.OK) {
                         _rsb.Run();
+                    }
                 }
                 return;
             }
             RabNetEngRabbit r = Engine.get().getRabbit((int)to.Tag);
-            if (new ReplaceYoungersForm((int)from.Tag, r.ParentID).ShowDialog() == DialogResult.OK)
+            if (new ReplaceYoungersForm((int)from.Tag, r.ParentID).ShowDialog() == DialogResult.OK) {
                 _rsb.Run();
+            }
         }
 
         private void makeSelectedCount()
         {
             int rows = listView1.SelectedItems.Count;
             int cnt = 0;
-            foreach (ListViewItem li in listView1.SelectedItems)
-            {
+            foreach (ListViewItem li in listView1.SelectedItems) {
                 int c = int.Parse(li.SubItems[1].Text);
                 cnt += c;
             }
@@ -160,11 +171,12 @@ namespace rabnet.panels
         private void replacePlanMenuItem_Click(object sender, EventArgs e)
         {
 #if !DEMO
-            if (listView1.SelectedItems.Count < 1) return;
+            if (listView1.SelectedItems.Count < 1) {
+                return;
+            }
             XmlDocument doc = new XmlDocument();
             doc.AppendChild(doc.CreateElement("Rows"));
-            foreach (ListViewItem li in listView1.SelectedItems)
-            {
+            foreach (ListViewItem li in listView1.SelectedItems) {
                 XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
                 rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(li.SubItems[2].Text));
                 rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(li.SubItems[5].Text.Remove(li.SubItems[5].Text.IndexOf("["))));

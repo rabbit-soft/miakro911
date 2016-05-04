@@ -178,7 +178,7 @@ namespace rabnet.components
                 this.Invoke(d, new object[] { max });
             } else {
                 while (!this.IsHandleCreated) {
-                    System.Threading.Thread.Sleep(500);///todo не знаю хорошее ли это решение может быть DeadLock
+                    System.Threading.Thread.Sleep(100);///todo не знаю хорошее ли это решение может быть DeadLock
                 }
                 pb.Minimum = 0;
                 pb.Maximum = max;
@@ -207,7 +207,9 @@ namespace rabnet.components
 
         private void filterHide()
         {
-            if (_filterPanel == null || !_filterPanel.Visible) return;
+            if (_filterPanel == null || !_filterPanel.Visible) {
+                return;
+            }
 
             Parent.Controls.Remove(_filterPanel);
             _filterPanel.Visible = false;
@@ -217,7 +219,9 @@ namespace rabnet.components
 
         private void filterShow()
         {
-            if (_filterPanel == null) return;
+            if (_filterPanel == null) {
+                return;
+            }
 
             Parent.Controls.Add(_filterPanel);
             if ((int)btRefreshStop.Tag != 0) {
@@ -252,17 +256,22 @@ namespace rabnet.components
 
         private void filt_Click(object sender, EventArgs e)
         {
-            if (_filterPanel == null || Working) return;
+            if (_filterPanel == null || Working) {
+                return;
+            }
 
-            if (_filterPanel.Visible)
+            if (_filterPanel.Visible) {
                 filterHide();
-            else
+            } else {
                 filterShow();
+            }
         }
 
         private void excel_Click(object sender, EventArgs e)
         {
-            if (Working) return;
+            if (Working) {
+                return;
+            }
 
             this.Parent.Enabled = false;
             ExcelButtonClick();
@@ -273,7 +282,7 @@ namespace rabnet.components
         private void startDataThread(IDataGetter dg)
         {
             if (_dataThread != null) {
-                stopDataThread();
+                this.stopDataThread();
             }
             _dataThread = new DataThread();
             _dataThread.OnItems += new DTItemsHandler(_dataThread_onItems);
@@ -283,7 +292,7 @@ namespace rabnet.components
             _dataThread.Run(dg);
         }
 
-        void _dataThread_OnFinish()
+        protected void _dataThread_OnFinish()
         {
             if (this.InvokeRequired) {
                 RSBEventHandler d = new RSBEventHandler(_dataThread_OnFinish);
@@ -297,7 +306,7 @@ namespace rabnet.components
             }
         }
 
-        void _dataThread_onItems(IDataGetter dataGetter)
+        protected void _dataThread_onItems(IDataGetter dataGetter)
         {            
             if (this.InvokeRequired) {
                 DTItemsHandler d = new DTItemsHandler(_dataThread_onItems);
@@ -316,7 +325,9 @@ namespace rabnet.components
 
         public void stopDataThread()
         {
-            if (_dataThread == null) return;
+            if (_dataThread == null) {
+                return;
+            }
 
             _dataThread.Stop();
             _dataThread = null;

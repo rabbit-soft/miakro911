@@ -42,6 +42,10 @@
             this.imageList1.Images.SetKeyName(2, "funnel.png");
             this.imageList1.Images.SetKeyName(3, "excel.png");
             this.imageList1.Images.SetKeyName(4, "funnel2.png");
+            // 
+            // RabStatusBar
+            // 
+            this.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.ResumeLayout(false);
 
         }

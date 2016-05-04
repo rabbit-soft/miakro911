@@ -1,6 +1,8 @@
 DROP PROCEDURE IF EXISTS updateMeal;
-DROP PROCEDURE IF EXISTS mealCalculate;
+DROP FUNCTION IF EXISTS mealCalculate;
 
+ALTER TABLE  `dead` CHANGE  `r_born`  `r_born` DATE NULL DEFAULT NULL ;
+ALTER TABLE  `dead` CHANGE  `d_date`  `d_date` DATE NULL DEFAULT NULL ;
 
 DROP VIEW IF EXISTS allrabbits;
 CREATE VIEW allrabbits AS

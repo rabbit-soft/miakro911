@@ -68,7 +68,6 @@ namespace rabnet
                 return;
             }
 
-            int count = _dataGetter.getCount();
             if (this.InitMaxProgress != null) {
                 this.InitMaxProgress(_dataGetter.getCount());
             }

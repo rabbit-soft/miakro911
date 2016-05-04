@@ -87,17 +87,21 @@ namespace db.mysql
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT isdead({0:d});", rid), con);
             MySqlDataReader rd = cmd.ExecuteReader();
             bool dead = false;
-            if (rd.Read())
+            if (rd.Read()) {
                 dead = rd.GetBoolean(0);
+            }
             rd.Close();
             return dead;
         }
 
         public static OneRabbit GetRabbit(MySqlConnection sql, int rid, RabAliveState type)
         {
-            if (rid == 0) return null;
-            if (type == RabAliveState.ANY)
+            if (rid == 0) {
+                return null;
+            }
+            if (type == RabAliveState.ANY) {
                 type = (isDeadRabbit(sql, rid) ? RabAliveState.DEAD : RabAliveState.ALIVE);
+            }
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT {0:s}
 FROM {1:s} WHERE r_id={2:d};", getOneRabbit_FieldsSet(type), (type == RabAliveState.ALIVE ? "rabbits" : "dead"), rid), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
@@ -193,8 +197,7 @@ WHERE r_id!={1:d} AND r_parent IS NULL;", getOneRabbit_FieldsSet(RabAliveState.A
             string when = DBHelper.DaysPastSqlDate(daysPast);
             MySqlCommand cmd = new MySqlCommand("", sql);
             checkStartEvDate(sql, rabbit);
-            cmd.CommandText = String.Format(@"UPDATE fucks SET f_state='proholost', f_end_date={0:s} WHERE f_state='sukrol' AND f_rabid={1:d};",
-                when, rabbit);
+            cmd.CommandText = String.Format(@"UPDATE fucks SET f_state='proholost', f_end_date={0:s} WHERE f_state='sukrol' AND f_rabid={1:d};", when, rabbit);
             cmd.ExecuteNonQuery();
             cmd.CommandText = String.Format("UPDATE rabbits SET r_event_date=NULL, r_event='none', r_rate=r_rate+{1:d} WHERE r_id={0:d};", rabbit, Rate.PROHOLOST_RATE);
             cmd.ExecuteNonQuery();
@@ -287,8 +290,9 @@ VALUES({0}, {1}, {2}, {3}, 'void', {4}, '{5}', {6}, NULL, {7}, {8}, {9}, {10}, {
             MySqlCommand cmd = new MySqlCommand(String.Format("SELECT f_partner FROM fucks WHERE f_state='sukrol' AND f_rabid={0:d};", rabbit), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             int res = 0;
-            if (rd.Read())
+            if (rd.Read()) {
                 res = rd.GetInt32(0);
+            }
             rd.Close();
             return res;
         }

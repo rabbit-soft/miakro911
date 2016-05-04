@@ -46,6 +46,7 @@ namespace db.mysql
                 count4 = (float)count2 / (float)count3;
             }
             _rd.Close();
+
             cmd.CommandText = getQuery();
 #if DEBUG
             Debug("QGetIData:" + cmd.CommandText);

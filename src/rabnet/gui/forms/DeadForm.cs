@@ -28,6 +28,7 @@ namespace rabnet.forms
         {
             cs.PrepareForUpdate();
             Filters f = fp.getFilters();
+
             IDataGetter gt = Engine.db2().getDead(f);
             rsb.SetText(1, gt.getCount().ToString() + " записей");
             return gt;

@@ -21,24 +21,29 @@ namespace rabnet.panels
         /// Если наследники присвоят обработчик, то кнопка Excel покажется.
         /// </summary>
         public RSBEventHandler MakeExcel = null;
+
         public RabNetPanel()
         {
             InitializeComponent();
             _logger = LogManager.GetLogger(this.GetType());
         }
+
         public RabNetPanel(RabStatusBar sb, FilterPanel fp)
             : this()
         {
             _rsb = sb;
             this.filterPanel = fp;
         }
+
         public virtual void close()
         {
             if (filterPanel != null) {
                 filterPanel.close();
             }
         }
+
         public RabNetPanel(RabStatusBar sb) : this(sb, null) { }
+
         protected virtual void InitializeComponent()
         {
             this.SuspendLayout();
@@ -50,6 +55,7 @@ namespace rabnet.panels
             this.ResumeLayout(false);
 
         }
+
         /// <summary>
         /// Назначает событиям (itemGet, prepareGet) которые пренадлежат компоненту rabStatusBar, обработчики из активной, в данный момент, панели.
         /// </summary>
@@ -64,6 +70,7 @@ namespace rabnet.panels
             _rsb.ExcelButtonClick = MakeExcel;
             _rsb.Run();
         }
+
         /// <summary>
         /// Отвязывает, Фильтр, prepareGet, itemGet
         /// </summary>
@@ -79,6 +86,7 @@ namespace rabnet.panels
             _rsb.OnFinishUpdate -= onFinishUpdate_Invoker;
             _rsb.ExcelButtonClick = null;
         }
+
         /// <summary>
         /// Выполняет виртуальный метод  "onPrepare"  текущей активной панели
         /// </summary>
@@ -127,7 +135,7 @@ namespace rabnet.panels
         /// <returns></returns>
         protected virtual IDataGetter onPrepare(Filters f)
         {
-            _rsb.FilterOn = f.Count != 0;
+            _rsb.FilterOn = f.Count != 0;            
             _colSort.PrepareForUpdate();
             this.Enabled = false;
             return null;

@@ -45,6 +45,7 @@ namespace rabnet.panels
         TreeNode nodeToAdd = null;
         int action = 0;
         int preBuilding = 0;
+
         public BuildingsPanel() : base() { }
         //int _maxfarm = 0;
 
@@ -89,10 +90,11 @@ namespace rabnet.panels
         private TreeNode makeNode(TreeNode parent, String name, BldTreeData td, List<int> idList)
         {
             TreeNode n = null;
-            if (parent == null)
+            if (parent == null) {
                 n = treeView1.Nodes.Add(name);
-            else
+            } else {
                 n = parent.Nodes.Add(name);
+            }
 
             TreeNode child;
             if (td.ChildNodes != null)
@@ -143,6 +145,7 @@ namespace rabnet.panels
             n.Expand();
             f[Filters.SHORT] = Engine.opt().getOption(Options.OPT_ID.SHORT_NAMES);
             f[Filters.DBL_SURNAME] = Engine.opt().getOption(Options.OPT_ID.DBL_SURNAME);
+
             IDataGetter dg = Engine.db2().getBuildingsRows(f);
             _rsb.SetText(1, dg.getCount().ToString() + " ярусов");
             _rsb.SetText(2, dg.getCount2().ToString() + " МИНИферм");
@@ -578,8 +581,8 @@ namespace rabnet.panels
                 return;
             }
 
-            if (isFarm()) { 
-                return; 
+            if (isFarm()) {
+                return;
             }
             nodeToAdd = treeView1.SelectedNode;
             TreeNode nd = nodeToAdd.Nodes.Add(NEW_BUILDING);
