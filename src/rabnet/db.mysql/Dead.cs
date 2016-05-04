@@ -38,11 +38,13 @@ namespace db.mysql
         {
             int max = options.safeInt("max", 1000);
             return String.Format(@"SELECT r_id, deadname(r_id,2) name, deadplace(r_id) place,
-TO_DAYS(d_date)-TO_DAYS(r_born) age, d_date,
+DATEDIFF(d_date, r_born) age, 
+d_date,
 (SELECT b_name FROM breeds WHERE b_id=dead.r_breed) breed,
 (SELECT d_name FROM deadreasons WHERE d_id=dead.d_reason) reason,
 d_notes, r_group
-FROM dead{0:s} ORDER BY d_date DESC LIMIT {1:d};", makeWhere(), max);
+FROM dead {0:s} 
+ORDER BY d_date DESC LIMIT {1:d};", makeWhere(), max);
         }
 
         protected override string countQuery()

@@ -11,7 +11,10 @@ namespace db.mysql
     public class RabNetDbMySql : IRabNetDataLayer
     {
         private MySqlConnection psql = null;
+
         private ILog log = LogManager.GetLogger(typeof(RabNetDbMySql));
+
+        private Dictionary<string, object> services = new Dictionary<string, object>();
 
         public RabNetDbMySql()
         {
@@ -131,10 +134,8 @@ namespace db.mysql
 
         public void setOption(string name, string subname, uint uid, string value)
         {
-            Exec(String.Format("DELETE FROM options WHERE o_name='{0:s}' AND o_subname='{1:s}' AND o_uid={2:d};",
-                name, subname, uid));
-            Exec(String.Format("INSERT INTO options(o_name,o_subname,o_uid,o_value) VALUES('{0:s}','{1:s}',{2:d},'{3:s}');",
-                name, subname, uid, value));
+            Exec(String.Format("DELETE FROM options WHERE o_name='{0:s}' AND o_subname='{1:s}' AND o_uid={2:d};", name, subname, uid));
+            Exec(String.Format("INSERT INTO options(o_name,o_subname,o_uid,o_value) VALUES('{0:s}','{1:s}',{2:d},'{3:s}');", name, subname, uid, value));
         }
 
         public DateTime now()
@@ -472,7 +473,10 @@ namespace db.mysql
 
         public ZootehJob[] GetZooTechJobs(Filters f, JobType type)
         {
-            return new ZooTehGetter(sql, f).GetZooTechJobs(type);
+            if (!this.services.ContainsKey("zoo_tech")) {
+                this.services.Add("zoo_tech", new ZooTehGetter(sql));
+            }
+            return (this.services["zoo_tech"] as ZooTehGetter).GetZooTechJobs(f, type);
         }
 
         #endregion zoo_tech_get

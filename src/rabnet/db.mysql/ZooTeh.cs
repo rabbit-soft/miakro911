@@ -185,7 +185,10 @@ namespace db.mysql
         /// <returns></returns>
         private string zooFuckPartnerAddressParce(string partners)
         {
-            if (partners == "") return "";
+            if (partners == "") {
+                return "";
+            }
+
             string result = "";
             string[] fuckers = partners.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in fuckers) {
@@ -204,10 +207,10 @@ namespace db.mysql
         private MySqlConnection sql;
         protected static ILog _logger = log4net.LogManager.GetLogger(typeof(RabNetDataGetterBase));
         private Filters _flt;
-        public ZooTehGetter(MySqlConnection sql, Filters f)
+
+        public ZooTehGetter(MySqlConnection sql)
         {
-            this.sql = sql;
-            _flt = f;
+            this.sql = sql;            
         }
 
         #region helpers
@@ -236,10 +239,12 @@ namespace db.mysql
         }
         #endregion helpers
 
-        public ZootehJob_MySql[] GetZooTechJobs(JobType type)
+        public ZootehJob_MySql[] GetZooTechJobs(Filters f, JobType type)
         {
+            _flt = f;
+
             List<ZootehJob_MySql> res = new List<ZootehJob_MySql>();
-            string query = getQuery(type);
+            string query = this.getQuery(type);
             if (query == "") {
                 _logger.Warn("unknown JobType");
                 return res.ToArray();
@@ -298,8 +303,8 @@ namespace db.mysql
     r_id, 
     rabname(r_id," + getnm() + @") name, 
     rabplace(r_id) place,
-    (TO_DAYS('{2}')-TO_DAYS(r_event_date)) srok,
-    (TO_DAYS('{2}')-TO_DAYS(r_born)) age, 
+    DATEDIFF('{2}', r_event_date) srok,
+    DATEDIFF('{2}', r_born) age, 
     r_status,     
     {1:s}
 FROM rabbits 
@@ -318,8 +323,8 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
     r_id, 
     rabname(r_id,{0:s}) name, 
     rabplace(r_id) place,
-    (TO_DAYS('{4}')-TO_DAYS(r_last_fuck_okrol)) srok,
-    (TO_DAYS('{4}')-TO_DAYS(r_born)) age, 
+    DATEDIFF('{4}', r_last_fuck_okrol) srok,
+    DATEDIFF('{4}', r_born) age, 
     {1:s},
     r_tier,
     r_area,
@@ -349,8 +354,8 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
         {
             const int COUNT_KIDS_LOG = 17;
             return String.Format(@"SELECT 
-    TO_DAYS('{5}') - TO_DAYS(r_born) srok_base,
-    TO_DAYS('{5}') - TO_DAYS(r_born) - {0:d} srok,
+    DATEDIFF('{5}', r_born) srok_base,
+    DATEDIFF('{5}', r_born) - {0:d} srok,
     prnt AS r_id,
     rabname(r_parent,{2:s}) name,
     rabplace(r_parent) place,
@@ -364,7 +369,7 @@ LEFT JOIN (
             r_parent AS prnt, 
             SUM(r2.r_group) suckers, 
             COUNT(*) suckGroups, 
-            AVG(TO_DAYS('{5}')-TO_DAYS(r2.r_born)) aage 
+            AVG(DATEDIFF('{5}', r2.r_born)) aage 
         FROM rabbits r2 
         GROUP BY r_parent
     ) sc ON prnt = r.r_parent
@@ -393,8 +398,8 @@ ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
     r_id,
     rabname(r_id,{2:s}) name,
     rabplace(r_id) place,
-    (TO_DAYS('{4}') - TO_DAYS(r_event_date)) srok,
-    (TO_DAYS('{4}') - TO_DAYS(r_born)) age,
+    DATEDIFF('{4}', r_event_date) srok,
+    DATEDIFF('{4}', r_born) age,
     r_status,    
     {3:s}
 FROM rabbits 
@@ -413,8 +418,8 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
         {
             return String.Format(@"SELECT 
     IF(r_parent != 0, r_parent, r_id) r_id,
-    TO_DAYS('{4}') - TO_DAYS(r_born) age,
-    TO_DAYS('{4}') - TO_DAYS(r_born) - {1:d} srok,     
+    DATEDIFF('{4}', r_born) age,
+    DATEDIFF('{4}', r_born) - {1:d} srok,     
     rabname(IF(r_parent != 0, r_parent, r_id), {3:s}) name, 
     rabplace(IF(r_parent != 0, r_parent, r_id)) place,     
     {2:s} 
@@ -445,7 +450,7 @@ CREATE TEMPORARY TABLE tPartn SELECT
 FROM rabbits
 WHERE r_sex='male' 
     AND r_status > 0 
-    AND (r_last_fuck_okrol IS NULL OR TO_DAYS(NOW()) - TO_DAYS(r_last_fuck_okrol) >= {0:d});",
+    AND (r_last_fuck_okrol IS NULL OR DATEDIFF(NOW(), r_last_fuck_okrol) >= {0:d});",
                     _flt.safeInt(Filters.MALE_REST)
                 ) + Environment.NewLine;
             }
@@ -456,7 +461,7 @@ WHERE r_sex='male'
         r.r_id,
         rabname(r_id,{8:s}) name, 
         rabplace(r_id) place, 
-        TO_DAYS('{10}') - TO_DAYS(r_born) age,
+        DATEDIFF('{10}', r_born) age,
         COALESCE((SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent = r.r_id), null, 0) suckers,
         r_status,
         DATEDIFF('{10}', r_last_fuck_okrol) fromokrol,
@@ -470,7 +475,7 @@ WHERE r_sex='male'
     LEFT JOIN (     #пытаемся найти стимуляцию
             SELECT
                 rv.r_id AS lrid, 
-                TO_DAYS(NOW()) - TO_DAYS(Max(date)) AS lsrok, 
+                DATEDIFF(NOW(), Max(date)) AS lsrok, 
                 v_duration AS ldura, 
                 v_age AS lshow 
             FROM rab_vac rv
@@ -521,7 +526,7 @@ DROP TABLE IF EXISTS aaa;",
     r_parent,
     rabname(r_id,{0:s}) name, 
     rabplace(r_id) place, 
-    (TO_DAYS('{6}')-TO_DAYS(r_born)) age, 
+    DATEDIFF('{6}', r_born) age, 
     r_group,
     TO_DAYS('{6}') - TO_DAYS(
         COALESCE(
@@ -565,8 +570,8 @@ DROP TEMPORARY TABLE IF EXISTS aaa; {5:s}",
     r_id, 
     rabname(r_id," + getnm() + @") name, 
     rabplace(r_id) place,
-    (TO_DAYS('{2}') - TO_DAYS(r_born)) age,
-    (TO_DAYS('{2}') - TO_DAYS(r_event_date)) sukr,
+    DATEDIFF('{2}', r_born) age,
+    DATEDIFF('{2}', r_event_date) sukr,
     (SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) children," + brd() + @",
     0 srok 
 FROM rabbits 
@@ -592,8 +597,8 @@ ORDER BY sukr DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
     rabname(r_id,{0:s}) name, 
     rabplace(r_id) place, 
     r_group,
-    TO_DAYS('{3}') - TO_DAYS(r_born) - {1:d} srok,
-    TO_DAYS('{3}') - TO_DAYS(r_born) age,
+    DATEDIFF('{3}', r_born) - {1:d} srok,
+    DATEDIFF('{3}', r_born) age,
     {2:s}
 FROM rabbits 
 WHERE r_group > 1 AND r_sex = 'male'
@@ -613,8 +618,8 @@ HAVING age >= {1:d};",
     rabplace(r_id) place, 
     r_group,
     0 srok, 
-    (TO_DAYS('{3}')-TO_DAYS(r_last_fuck_okrol)) fromfuck,
-    (TO_DAYS('{3}')-TO_DAYS(r_born)) age,
+    DATEDIFF('{3}', r_last_fuck_okrol) fromfuck,
+    DATEDIFF('{3}', r_born) age,
     {2:s}
 FROM rabbits
 WHERE r_sex='male' AND r_status = 2 AND Date_Add(r_last_fuck_okrol, INTERVAL {1:d} DAY) < '{3}';",

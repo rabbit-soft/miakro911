@@ -102,7 +102,7 @@ namespace rabnet
         public IData GetNextItem()
         {
             val++;
-            if (val > ZOOTEH_ITEMS) {
+            if (val >= ZOOTEH_ITEMS) {
                 return null;
             }
             return new ZooTehNullItem(val);
