@@ -135,8 +135,8 @@ FROM rabbits r
 INNER JOIN (
     SELECT r_farm, r_tier, r_tier_id, r_area 
     FROM rabbits 
-    WHERE r_id={1:d}) rp ON rp.r_farm=r.r_farm AND rp.r_tier=r.r_tier AND rp.r_tier_id=r.r_tier_id AND rp.r_area=r.r_area
-WHERE r_id!={1:d} AND r_parent IS NULL;", getOneRabbit_FieldsSet(RabAliveState.ALIVE), rabOwner), con);
+    WHERE r_id = {1:d}) rp ON rp.r_farm = r.r_farm AND rp.r_tier = r.r_tier AND rp.r_tier_id = r.r_tier_id AND rp.r_area = r.r_area
+WHERE r_id != {1:d} AND r_parent IS NULL;", getOneRabbit_FieldsSet(RabAliveState.ALIVE), rabOwner), con);
             List<OneRabbit> rbs = new List<OneRabbit>();
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read()) {

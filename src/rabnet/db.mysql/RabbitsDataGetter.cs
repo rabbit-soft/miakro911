@@ -29,9 +29,9 @@ namespace db.mysql
         r_okrol,
         r_sex,
         r_event_date,
-        TO_DAYS(NOW())-TO_DAYS(r_event_date) sukr,
+        DATEDIFF(NOW(), r_event_date) sukr,
         r_event,
-        TO_DAYS(NOW())-TO_DAYS(r_born) age,
+        DATEDIFF(NOW(), r_born) age,
         {1:s} AS breed,
         Coalesce((SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)),-1) weight,
         r_status,
@@ -41,14 +41,15 @@ namespace db.mysql
         suckGroups,
         aage,
         r_rate,
-        r_bon,
-        rabplace(r_id) place,
+        r_bon,        
+        IF(r_farm IS NULL, '', CONCAT_WS(',', r_farm, r_tier_id, r_area, t_type, t_delims, t_nest)) place, #rabplace(r_id) place,
         r_notes,
         r_born,
         r_breed,
         Coalesce(Group_concat('v',{3}),'') vaccines
     FROM rabbits r 
         INNER JOIN breeds ON b_id = r_breed
+        LEFT JOIN tiers ON r_tier = t_id #rabplace(r_id) place,
         LEFT JOIN (
             SELECT 
                 r_parent prnt, 
