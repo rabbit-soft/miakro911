@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 using log4net;
 using rabnet;
+using System.Diagnostics;
 
 namespace db.mysql
 {
@@ -254,6 +255,8 @@ namespace db.mysql
             try {
 #else
             _logger.Debug(type.ToString() + " query: " + query);
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
 #endif
             MySqlCommand cmd = new MySqlCommand(query, sql);
             rd = cmd.ExecuteReader();
@@ -261,7 +264,10 @@ namespace db.mysql
                 res.Add(new ZootehJob_MySql(_flt, type, rd));
             }
             rd.Close();
-#if !DEBUG
+#if DEBUG
+            sw.Stop();
+            _logger.DebugFormat("execution time: {0} ZOO_{1}", sw.Elapsed, type);
+#else
             } catch (Exception err) {
                 _logger.Error(err.Message);
             } finally {
@@ -356,28 +362,40 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
         private string qCounts()
         {
             const int COUNT_KIDS_LOG = 17;
+
             return String.Format(@"SELECT 
     DATEDIFF('{5}', r_born) srok_base,
     DATEDIFF('{5}', r_born) - {0:d} srok,
-    prnt AS r_id,
-    rabname(r_parent,{2:s}) name,
-    rabplace(r_parent) place,
+    rp.r_id,
+    rp.name,
+#rabplace(r_parent) place,
+    rp.place,
     aage AS age,
     {4:s},
-    suckers,    
-    suckGroups        
+    sc.suckers,    
+    sc.suckGroups        
 FROM rabbits r
-LEFT JOIN (
+    INNER JOIN (
         SELECT 
-            r_parent AS prnt, 
+            r_id, 
+            rabname(r_id,{2:s}) name,
+            IF(r3.r_farm IS NULL, '', CONCAT_WS(',', r3.r_farm, r3.r_tier_id, r3.r_area, t_type, t_delims, t_nest)) AS place 
+        FROM rabbits r3
+            LEFT JOIN tiers ON r3.r_tier = t_id
+        WHERE r3.r_parent IS NULL
+    ) rp ON rp.r_id = r.r_parent
+    
+    LEFT JOIN (
+        SELECT 
+            r2.r_parent, 
             SUM(r2.r_group) suckers, 
-            COUNT(*) suckGroups, 
+            COUNT(1) suckGroups, 
             AVG(DATEDIFF('{5}', r2.r_born)) aage 
         FROM rabbits r2 
-        GROUP BY r_parent
-    ) sc ON prnt = r.r_parent
-WHERE r_parent IS NOT NULL 
-GROUP BY r_parent
+        GROUP BY r2.r_parent
+    ) sc ON sc.r_parent = r.r_parent
+WHERE r.r_parent IS NOT NULL 
+GROUP BY r.r_parent
 HAVING (srok_base >= {0:d} {1:s}) 
     AND r_id NOT IN (
         SELECT l_rabbit 
