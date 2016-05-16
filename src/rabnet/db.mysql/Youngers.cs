@@ -42,6 +42,7 @@ namespace db.mysql
             return String.Format(@"SELECT {0:s}
 FROM rabbits WHERE r_parent!=0 ORDER BY name;", getFieldSet_Youngers(options.safeBool("dbl"), options.safeBool("shr")));
         }
+
         /// <summary>
         /// Запрос на получение: 
         ///     Общего количества записей, 
@@ -55,7 +56,7 @@ FROM rabbits WHERE r_parent!=0 ORDER BY name;", getFieldSet_Youngers(options.saf
             return @"SELECT COUNT(1),
                             SUM(r_group), 
                             (SELECT COUNT(a) FROM (SELECT DISTINCT r_parent a FROM rabbits WHERE r_parent<>0) t)mc                            
-                    FROM rabbits WHERE r_parent!=0;";
+                    FROM rabbits WHERE r_parent != 0;";
         }
 
         public static YoungRabbitList GetYoungers(MySqlConnection sql, int id)//TODO проверить

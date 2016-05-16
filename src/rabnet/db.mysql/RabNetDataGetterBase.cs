@@ -29,7 +29,9 @@ namespace db.mysql
         {
             options = filters;
             this._sql = sql;
-            String qcmd = countQuery();//получить количество записей
+
+
+            String qcmd = this.countQuery();//получить количество записей
 #if DEBUG
             Debug("QCount: " + qcmd);
 #endif
@@ -47,7 +49,8 @@ namespace db.mysql
             }
             _rd.Close();
 
-            cmd.CommandText = getQuery();
+
+            cmd.CommandText = this.getQuery();
 #if DEBUG
             Debug("QGetIData:" + cmd.CommandText);
 #endif
@@ -92,7 +95,7 @@ namespace db.mysql
 
         protected abstract String getQuery();
 
-        protected abstract String countQuery();
+        protected abstract String countQuery(); //todo от этого метода нужно избавиться и все общие количества вести в Панели
 
         public abstract IData NextItem();
 
@@ -102,9 +105,12 @@ namespace db.mysql
             str += adder;
             return str;
         }
+
         internal static String addWhereOr(String str, String adder)
         {
-            if (str != "") str += " OR ";
+            if (str != "") {
+                str += " OR ";
+            }
             str += adder;
             return str;
         }

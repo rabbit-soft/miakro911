@@ -39,12 +39,12 @@ namespace db.mysql
 
         protected override string getQuery()
         {
-            return "SELECT n_id,n_sex,n_name,n_surname,n_use,n_block_date FROM names " + makeWhereClause() + "ORDER BY n_name;";
+            return "SELECT n_id, n_sex, n_name, n_surname, n_use, n_block_date FROM names " + makeWhereClause() + "ORDER BY n_name;";
         }
 
         protected override string countQuery()
         {
-            MySqlCommand cmd = new MySqlCommand("UPDATE names SET n_block_date=NULL WHERE n_use=0 AND n_block_date<NOW();", _sql);
+            MySqlCommand cmd = new MySqlCommand("UPDATE names SET n_block_date = NULL WHERE n_use = 0 AND n_block_date < NOW();", _sql);
             cmd.ExecuteNonQuery();
             return "SELECT COUNT(1) FROM names" + makeWhereClause() + ";";
         }
@@ -54,8 +54,9 @@ namespace db.mysql
             MySqlCommand cmd = new MySqlCommand(String.Format(@"INSERT INTO names(n_sex,n_name,n_surname,n_block_date) 
 VALUES('{0:s}','{1:s}','{2:s}',NULL);", (sex == Rabbit.SexType.FEMALE) ? "female" : "male", name, surname), sql);
             cmd.ExecuteNonQuery();
-            if (cmd.LastInsertedId > int.MaxValue) ///it can't be
+            if (cmd.LastInsertedId > int.MaxValue) {///it can't be
                 throw new RabNetException("ID нового имени больше максимально допустимого значения");
+            }
             return (int)cmd.LastInsertedId;
         }
         public static void changeName(MySqlConnection sql, string orgName, string name, string surname)

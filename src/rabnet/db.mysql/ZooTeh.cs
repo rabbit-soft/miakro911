@@ -254,7 +254,7 @@ namespace db.mysql
 #if !DEBUG
             try {
 #else
-            _logger.Debug(type.ToString() + " query: " + query);
+            //_logger.Debug(type.ToString() + " query: " + query);
             Stopwatch sw = new Stopwatch();
             sw.Start();
 #endif
@@ -382,7 +382,7 @@ FROM rabbits r
             IF(r3.r_farm IS NULL, '', CONCAT_WS(',', r3.r_farm, r3.r_tier_id, r3.r_area, t_type, t_delims, t_nest)) AS place 
         FROM rabbits r3
             LEFT JOIN tiers ON r3.r_tier = t_id
-        WHERE r3.r_parent IS NULL
+        WHERE r3.r_parent IS NULL AND r_sex = 'female'
     ) rp ON rp.r_id = r.r_parent
     
     LEFT JOIN (
@@ -392,7 +392,8 @@ FROM rabbits r
             COUNT(1) suckGroups, 
             AVG(DATEDIFF('{5}', r2.r_born)) aage 
         FROM rabbits r2 
-        GROUP BY r2.r_parent
+        WHERE r2.r_parent IS NOT NULL
+        GROUP BY r2.r_parent 
     ) sc ON sc.r_parent = r.r_parent
 WHERE r.r_parent IS NOT NULL 
 GROUP BY r.r_parent

@@ -89,7 +89,9 @@ namespace rabnet.forms
                         cbUser.Enabled = true;
                         tbPassword.Enabled = true;
                         foreach (sUser s in usrs) {
-                            if (s.Group == sUser.Butcher) continue;
+                            if (s.Group == sUser.Butcher) {
+                                continue;
+                            }
                             cbUser.Items.Add(s.Name);
                             if (xs.DefUser != "" && xs.DefUser == s.Name) {
                                 cbUser.SelectedIndex = cbUser.Items.Count - 1;
