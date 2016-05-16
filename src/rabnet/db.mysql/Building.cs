@@ -120,13 +120,15 @@ namespace db.mysql
     rabname(t_busy3,{0:d}) r3,
     rabname(t_busy4,{0:d}) r4
 FROM minifarms, tiers 
-WHERE (m_upper=t_id OR m_lower=t_id) {1:s} 
+WHERE (m_upper = t_id OR m_lower = t_id) {1:s} 
 ORDER BY m_id;", nm, makeWhere());
         }
 
         protected override string countQuery()
         {
-            return @"SELECT COUNT(t_id), COUNT( DISTINCT m_id ) 
+            return @"SELECT 
+    COUNT(t_id), 
+    COUNT( DISTINCT m_id ) 
 FROM minifarms, tiers 
 WHERE (m_upper=t_id OR m_lower=t_id) " + makeWhere() + ";";
         }
@@ -172,7 +174,7 @@ WHERE (m_upper=t_id OR m_lower=t_id) " + makeWhere() + ";";
     rabname(t_busy3,1) r3, 
     rabname(t_busy4,1) r4
 FROM minifarms, tiers 
-WHERE (m_upper=t_id OR m_lower=t_id) AND t_id=" + tier.ToString() + ";", con);
+WHERE (m_upper = t_id OR m_lower = t_id) AND t_id=" + tier.ToString() + ";", con);
             MySqlDataReader rd = cmd.ExecuteReader();
             Building b = null;
             if (rd.Read()) {
@@ -215,7 +217,7 @@ WHERE (m_upper=t_id OR m_lower=t_id) AND t_id=" + tier.ToString() + ";", con);
     m_id, t_type, t_delims, t_nest, t_heater, t_repair, t_notes, 
     t_busy1, t_busy2, t_busy3, t_busy4 
 FROM minifarms, tiers 
-WHERE (m_upper=t_id OR m_lower=t_id) AND t_repair=0 {0:s} 
+WHERE (m_upper = t_id OR m_lower = t_id) AND t_repair = 0 {0:s} 
 ORDER BY m_id;", busy != "" ? "AND " + busy : ""), sql);
             _logger.Debug("free Buildings cmd:" + cmd.CommandText);
             MySqlDataReader rd = cmd.ExecuteReader();
@@ -229,7 +231,7 @@ ORDER BY m_id;", busy != "" ? "AND " + busy : ""), sql);
 
         internal static void updateBuilding(Building b, MySqlConnection sql)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE tiers SET t_repair={1:d},t_delims='{2:s}',t_heater='{3:s}',t_nest='{4:s}',t_notes=@notes WHERE t_id={0:d};",
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE tiers SET t_repair={1:d}, t_delims='{2:s}', t_heater='{3:s}', t_nest='{4:s}', t_notes=@notes WHERE t_id={0:d};",
                 b.ID, b.Repair ? 1 : 0, b.Delims, b.Heaters, b.Nests), sql);
             cmd.Prepare();
             cmd.Parameters.AddWithValue("@notes", String.Join("|", b.Notes));
@@ -238,8 +240,7 @@ ORDER BY m_id;", busy != "" ? "AND " + busy : ""), sql);
 
         internal static void setBuildingName(MySqlConnection sql, int bid, String name)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE buildings SET b_name='{0:s}' WHERE b_id={1:d};",
-                name, bid), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE buildings SET b_name='{0:s}' WHERE b_id={1:d};", name, bid), sql);
             cmd.ExecuteNonQuery();
         }
 
@@ -481,8 +482,8 @@ ORDER BY m_id;", busy != "" ? "AND " + busy : ""), sql);
         internal static bool hasRabbits(MySqlConnection sql, int tid)
         {
             if (tid == 0) return false;
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT t_busy1,t_busy2,t_busy3,t_busy4 
-FROM tiers WHERE t_id={0:d};", tid), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT t_busy1, t_busy2, t_busy3, t_busy4 
+FROM tiers WHERE t_id = {0:d};", tid), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             bool busy = true;
             if (rd.Read()) {

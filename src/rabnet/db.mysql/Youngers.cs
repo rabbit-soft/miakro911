@@ -53,10 +53,11 @@ FROM rabbits WHERE r_parent!=0 ORDER BY name;", getFieldSet_Youngers(options.saf
         protected override string countQuery()
         {
             //return "SELECT COUNT(*),SUM(r_group) FROM rabbits WHERE r_parent!=0;";
-            return @"SELECT COUNT(1),
-                            SUM(r_group), 
-                            (SELECT COUNT(a) FROM (SELECT DISTINCT r_parent a FROM rabbits WHERE r_parent<>0) t)mc                            
-                    FROM rabbits WHERE r_parent != 0;";
+            return @"SELECT 
+    COUNT(1),
+    SUM(r_group), 
+    (SELECT COUNT(a) FROM (SELECT DISTINCT r_parent a FROM rabbits WHERE r_parent<>0) t)mc                            
+FROM rabbits WHERE r_parent != 0;";
         }
 
         public static YoungRabbitList GetYoungers(MySqlConnection sql, int id)//TODO проверить
