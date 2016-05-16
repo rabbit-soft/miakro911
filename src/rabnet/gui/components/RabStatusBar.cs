@@ -16,12 +16,6 @@ namespace rabnet.components
 
     public partial class RabStatusBar : StatusStrip
     {
-
-        /// <summary>
-        /// Обновлять прогрессбар каждые записей
-        /// </summary>
-        const int PROGRESS_QUANT = 100;
-
         const int IMG_STOP = 0;
         const int IMG_REFRESH = 1;
         const int IMG_FILTER_OFF = 2;
@@ -187,7 +181,7 @@ namespace rabnet.components
                     System.Threading.Thread.Sleep(100);///todo не знаю хорошее ли это решение может быть DeadLock
                 }
                 pb.Minimum = 0;
-                pb.Maximum = max / RabStatusBar.PROGRESS_QUANT;
+                pb.Maximum = max;
                 pb.Value = 0;
 
                 btRefreshStop.Image = imageList1.Images[IMG_STOP];
@@ -313,21 +307,17 @@ namespace rabnet.components
         }
 
         protected void _dataThread_onItems(IDataGetter dataGetter)
-        {            
+        {
             if (this.InvokeRequired) {
                 DTItemsHandler d = new DTItemsHandler(_dataThread_onItems);
                 this.Invoke(d, new object[] { dataGetter });
             } else {
                 IData it;
-                int progr = 0;
-                while ((it = dataGetter.GetNextItem()) != null) {                    
+                while ((it = dataGetter.GetNextItem()) != null) {
                     if (this.ItemGet != null) {
                         this.ItemGet(it);
                     }
-                    progr++;
-                    if (progr % RabStatusBar.PROGRESS_QUANT == 0){
-                        this.progress();
-                    }
+                    this.progress();
                 }
             }
         }
