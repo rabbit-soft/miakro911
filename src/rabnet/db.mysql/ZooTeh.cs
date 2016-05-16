@@ -307,7 +307,7 @@ namespace db.mysql
         {
             return String.Format(@"SELECT 
     r_id, 
-    rabname(r_id," + getnm() + @") name, 
+    rabname(r_id, {3}) name, 
 #rabplace(r_id) place,
     IF(r_farm IS NULL, '', CONCAT_WS(',', r_farm, r_tier_id, r_area, t_type, t_delims, t_nest)) AS place,
     DATEDIFF('{2}', r_event_date) srok,
@@ -316,12 +316,13 @@ namespace db.mysql
     {1:s}
 FROM rabbits 
     LEFT JOIN tiers ON r_tier = t_id
-WHERE r_sex='female'
+WHERE r_sex = 'female'
 HAVING srok >= {0:d}
 ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
                 _flt.safeInt(Filters.OKROL),
                 brd(),
-                _flt.safeValue(Filters.DATE)
+                _flt.safeValue(Filters.DATE),
+                getnm()
             );
         }
 
@@ -449,24 +450,75 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
 
         private string qBoysGirlsOut()
         {
-            return String.Format(@"SELECT DISTINCT
-    IF(r_parent != 0, r_parent, r_id) r_id,
-    DATEDIFF('{4}', r_born) age,
-    DATEDIFF('{4}', r_born) - {1:d} srok,     
-    rabname(IF(r_parent != 0, r_parent, r_id), {3:s}) name, 
-    rabplace(IF(r_parent != 0, r_parent, r_id)) place,     
-    {2:s} 
-FROM rabbits 
-WHERE {0:s} 
 
-HAVING age >= {1:d} 
-ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
-                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "(r_sex = 'female' AND r_parent IS NOT NULL)" : "(r_sex = 'void' OR (r_sex = 'male' AND r_parent IS NOT NULL))"),
+            return String.Format(@"SELECT *, {2}
+FROM (" +
+
+        // еси отсадка мальчиков, то ищем бесполые группы сидящие без мамки
+    ( _flt.safeInt("sex") == (int)Rabbit.SexType.MALE ? @"
+	#stand alone boys
+	SELECT
+		DATEDIFF('{4}', r_born) age,
+		DATEDIFF('{4}', r_born) - {1:d} srok, 
+        r_id,		    
+		rabname(r_id, {3}) name,   
+        IF(r_farm IS NULL, '', CONCAT_WS(',', r_farm, r_tier_id, r_area, t_type, t_delims, t_nest)) AS place,
+		r_breed
+	FROM rabbits 
+		LEFT JOIN tiers ON r_tier = t_id
+	WHERE r_sex = 'void' AND r_parent IS NULL
+
+	UNION " : "") +
+
+@"
+    #suckers
+	SELECT
+		DATEDIFF('{4}', r_born) age,
+		DATEDIFF('{4}', r_born) - {1:d} srok, 
+		rp.r_id,		
+		rp.name, 
+		rp.place,     
+		r_breed
+	FROM rabbits r		
+		INNER JOIN (        # подключаем родителей с адресами
+			SELECT 
+				r_id, 
+				rabname(r_id, {3}) name,
+				IF(r3.r_farm IS NULL, '', CONCAT_WS(',', r3.r_farm, r3.r_tier_id, r3.r_area, t_type, t_delims, t_nest)) AS place 
+			FROM rabbits r3
+				LEFT JOIN tiers ON r3.r_tier = t_id
+			WHERE r3.r_parent IS NULL AND r_sex = 'female'
+		) rp ON rp.r_id = r.r_parent
+	WHERE {0} AND r_parent IS NOT NULL 
+) c
+WHERE age >= {1:d} 
+ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", 
+                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "r_sex = 'female'" : "(r_sex = 'void' OR r_sex = 'male')"),
                 (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT)),
                 brd(),
                 getnm(),
-                _flt[Filters.DATE]
-            );
+                _flt[Filters.DATE]);
+
+
+
+//            return String.Format(@"SELECT DISTINCT
+//    IF(r_parent != 0, r_parent, r_id) r_id,
+//    DATEDIFF('{4}', r_born) age,
+//    DATEDIFF('{4}', r_born) - {1:d} srok,     
+//    rabname(IF(r_parent != 0, r_parent, r_id), {3:s}) name, 
+//    rabplace(IF(r_parent != 0, r_parent, r_id)) place,     
+//    {2:s} 
+//FROM rabbits 
+//WHERE {0:s} 
+//
+//HAVING age >= {1:d} 
+//ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
+//                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "(r_sex = 'female' AND r_parent IS NOT NULL)" : "(r_sex = 'void' OR (r_sex = 'male' AND r_parent IS NOT NULL))"),
+//                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT)),
+//                brd(),
+//                getnm(),
+//                _flt[Filters.DATE]
+//            );
         }
 
         private string qFuck()
@@ -482,7 +534,7 @@ CREATE TEMPORARY TABLE tPartn SELECT
 	r_breed pbreed,
 	r_genesis pgens
 FROM rabbits
-WHERE r_sex='male' 
+WHERE r_sex = 'male' 
     AND r_status > 0 
     AND (r_last_fuck_okrol IS NULL OR DATEDIFF(NOW(), r_last_fuck_okrol) >= {0:d});",
                     _flt.safeInt(Filters.MALE_REST)
