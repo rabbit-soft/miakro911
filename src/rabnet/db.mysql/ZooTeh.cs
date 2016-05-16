@@ -103,7 +103,7 @@ namespace db.mysql
 
         private void fillCounts(MySqlDataReader rd)
         {
-            int tmp = !rd.IsDBNull(rd.GetOrdinal("suckGroups")) ? rd.GetInt32("suckGroups") : 0;
+            int tmp = DBHelper.GetNullableInt(rd, "suckGroups");
             this.ID2 = tmp;
             Comment = String.Format("{0:s}{1:2,d}{2:s}",
                 (_flt.safeInt(Filters.SHORT) == 0 ? "количество: " : "+"),
@@ -114,8 +114,8 @@ namespace db.mysql
         private void fillFuck(MySqlDataReader rd)
         {
             int status = rd.GetInt32("r_status");
-            int fromok = rd.IsDBNull(rd.GetOrdinal("fromokrol")) ? 0 : rd.GetInt32("fromokrol");
-            int suck = rd.IsDBNull(rd.GetOrdinal("suckers")) ? 0 : rd.GetInt32("suckers");
+            int fromok = DBHelper.GetNullableInt(rd, "fromokrol");
+            int suck = DBHelper.GetNullableInt(rd, "suckers");
             int srok = 0;
             int group = rd.GetInt32("r_group");
 
@@ -152,7 +152,7 @@ namespace db.mysql
 
         private void fillSetNest(MySqlDataReader rd)
         {
-            int children = rd.IsDBNull(rd.GetOrdinal("children")) ? 0 : rd.GetInt32("children");
+            int children = DBHelper.GetNullableInt(rd, "children");
             int sukr = rd.GetInt32("sukr");
             Comment = "C-" + sukr.ToString();
             if (children > 0) {
@@ -458,6 +458,7 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
     {2:s} 
 FROM rabbits 
 WHERE {0:s} 
+
 HAVING age >= {1:d} 
 ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
                 (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "(r_sex = 'female' AND r_parent IS NOT NULL)" : "(r_sex = 'void' OR (r_sex = 'male' AND r_parent IS NOT NULL))"),
