@@ -238,6 +238,10 @@ namespace db.mysql
         {
             return brd("r_breed");
         }
+        public String rabplace()
+        {
+            return "IF(r_farm IS NULL, '', CONCAT_WS(',', r_farm, r_tier_id, r_area, t_type, t_delims, t_nest))";
+        }
         #endregion helpers
 
         public ZootehJob_MySql[] GetZooTechJobs(Filters f, JobType type)
@@ -309,7 +313,7 @@ namespace db.mysql
     r_id, 
     rabname(r_id, {3}) name, 
 #rabplace(r_id) place,
-    IF(r_farm IS NULL, '', CONCAT_WS(',', r_farm, r_tier_id, r_area, t_type, t_delims, t_nest)) AS place,
+    {4} AS place,
     DATEDIFF('{2}', r_event_date) srok,
     DATEDIFF('{2}', r_born) age, 
     r_status,     
@@ -322,7 +326,8 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
                 _flt.safeInt(Filters.OKROL),
                 brd(),
                 _flt.safeValue(Filters.DATE),
-                getnm()
+                getnm(),
+                rabplace()
             );
         }
 
@@ -332,7 +337,7 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
     r_id, 
     rabname(r_id,{0:s}) name, 
 #rabplace(r_id) place,
-    IF(r_farm IS NULL, '', CONCAT_WS(',', r_farm, r_tier_id, r_area, t_type, t_delims, t_nest)) AS place,
+    {5} AS place,
     DATEDIFF('{4}', r_last_fuck_okrol) srok,
     DATEDIFF('{4}', r_born) age, 
     {1:s},
@@ -356,7 +361,8 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
                 brd(),
                 _flt.safeInt(Filters.VUDVOR),
                 _flt.safeBool(Filters.NEST_OUT_IF_SUKROL) ? String.Format("OR (r_event_date IS NOT NULL AND srok < {0:d})", _flt.safeInt("nest")) : "",
-                _flt[Filters.DATE]
+                _flt[Filters.DATE],
+                rabplace()
             );
         }
 
@@ -425,7 +431,7 @@ ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
     r_id,
     rabname(r_id,{2:s}) name,
 #rabplace(r_id) place,
-    IF(r_farm IS NULL, '', CONCAT_WS(',', r_farm, r_tier_id, r_area, t_type, t_delims, t_nest)) AS place,
+    {6} AS place,
     DATEDIFF('{4}', r_event_date) srok,
     DATEDIFF('{4}', r_born) age,
     r_status,    
@@ -444,7 +450,8 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
                 getnm(),
                 brd(),
                 _flt[Filters.DATE],
-                PRE_ORROL_LOG_TYPE
+                PRE_ORROL_LOG_TYPE,
+                rabplace()
             );
         }
 
@@ -462,7 +469,7 @@ FROM (" +
 		DATEDIFF('{4}', r_born) - {1:d} srok, 
         r_id,		    
 		rabname(r_id, {3}) name,   
-        IF(r_farm IS NULL, '', CONCAT_WS(',', r_farm, r_tier_id, r_area, t_type, t_delims, t_nest)) AS place,
+        {5} AS place,
 		r_breed
 	FROM rabbits 
 		LEFT JOIN tiers ON r_tier = t_id
@@ -493,11 +500,13 @@ FROM (" +
 ) c
 WHERE age >= {1:d} 
 ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", 
-                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "r_sex = 'female'" : "(r_sex = 'void' OR r_sex = 'male')"),
-                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT)),
-                brd(),
-                getnm(),
-                _flt[Filters.DATE]);
+                    (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "r_sex = 'female'" : "(r_sex = 'void' OR r_sex = 'male')"),
+                    (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT)),
+                    brd(),
+                    getnm(),
+                    _flt[Filters.DATE],
+                    rabplace()
+                );
 
 
 
@@ -656,7 +665,7 @@ DROP TEMPORARY TABLE IF EXISTS aaa; {5:s}",
     r_id, 
     rabname(r_id,{4}) name, 
 #rabplace(r_id) place,
-    IF(r_farm IS NULL, '', CONCAT_WS(',', r_farm, r_tier_id, r_area, t_type, t_delims, t_nest)) AS place,
+    {5} AS place,
     DATEDIFF('{2}', r_born) age,
     DATEDIFF('{2}', r_event_date) sukr,
     (SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent = rabbits.r_id) children,
@@ -677,7 +686,8 @@ ORDER BY sukr DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
                 _flt.safeInt(Filters.CHILD_NEST),
                 _flt[Filters.DATE],
                 brd(),
-                getnm()
+                getnm(),
+                rabplace()
             );
         }
 
