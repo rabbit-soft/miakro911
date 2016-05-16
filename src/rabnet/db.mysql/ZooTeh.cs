@@ -375,7 +375,8 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
     sc.suckers,    
     sc.suckGroups        
 FROM rabbits r
-    INNER JOIN (
+    
+    INNER JOIN (        # поодключаем родителей с адресами
         SELECT 
             r_id, 
             rabname(r_id,{2:s}) name,
@@ -384,8 +385,8 @@ FROM rabbits r
             LEFT JOIN tiers ON r3.r_tier = t_id
         WHERE r3.r_parent IS NULL AND r_sex = 'female'
     ) rp ON rp.r_id = r.r_parent
-    
-    LEFT JOIN (
+        
+    LEFT JOIN (         # подключаем суммарное количество детей в группах
         SELECT 
             r2.r_parent, 
             SUM(r2.r_group) suckers, 
@@ -395,6 +396,7 @@ FROM rabbits r
         WHERE r2.r_parent IS NOT NULL
         GROUP BY r2.r_parent 
     ) sc ON sc.r_parent = r.r_parent
+
 WHERE r.r_parent IS NOT NULL 
 GROUP BY r.r_parent
 HAVING (srok_base >= {0:d} {1:s}) 
@@ -416,23 +418,32 @@ ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
 
         private string qPreOkrol()
         {
+            const int PRE_ORROL_LOG_TYPE = 21;
+
             return String.Format(@"SELECT 
     r_id,
     rabname(r_id,{2:s}) name,
-    rabplace(r_id) place,
+#rabplace(r_id) place,
+    IF(r_farm IS NULL, '', CONCAT_WS(',', r_farm, r_tier_id, r_area, t_type, t_delims, t_nest)) AS place,
     DATEDIFF('{4}', r_event_date) srok,
     DATEDIFF('{4}', r_born) age,
     r_status,    
     {3:s}
 FROM rabbits 
-WHERE r_sex='female' AND r_id NOT IN (SELECT l_rabbit FROM logs WHERE l_type = 21 AND DATE(l_date) >= DATE(rabbits.r_event_date)) 
+    LEFT JOIN tiers ON r_tier = t_id
+WHERE r_sex='female' AND r_id NOT IN (
+        SELECT l_rabbit 
+        FROM logs 
+        WHERE l_type = {5:d} AND DATE(l_date) >= DATE(rabbits.r_event_date)
+    ) 
 HAVING srok >= {0:d} AND srok < {1:d} 
 ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
                 _flt.safeInt(Filters.PRE_OKROL),
                 _flt.safeInt(Filters.OKROL),
                 getnm(),
                 brd(),
-                _flt[Filters.DATE]
+                _flt[Filters.DATE],
+                PRE_ORROL_LOG_TYPE
             );
         }
 
@@ -449,7 +460,7 @@ FROM rabbits
 WHERE {0:s} 
 HAVING age >= {1:d} 
 ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
-                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "(r_sex = 'female' AND r_parent <> 0)" : "(r_sex = 'void' OR (r_sex = 'male' AND r_parent <> 0))"),
+                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "(r_sex = 'female' AND r_parent IS NOT NULL)" : "(r_sex = 'void' OR (r_sex = 'male' AND r_parent IS NOT NULL))"),
                 (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT)),
                 brd(),
                 getnm(),
