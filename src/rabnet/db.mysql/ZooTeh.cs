@@ -601,13 +601,16 @@ DROP TEMPORARY TABLE IF EXISTS aaa; {5:s}",
         {
             return String.Format(@"SELECT 
     r_id, 
-    rabname(r_id," + getnm() + @") name, 
-    rabplace(r_id) place,
+    rabname(r_id,{4}) name, 
+#rabplace(r_id) place,
+    IF(r_farm IS NULL, '', CONCAT_WS(',', r_farm, r_tier_id, r_area, t_type, t_delims, t_nest)) AS place,
     DATEDIFF('{2}', r_born) age,
     DATEDIFF('{2}', r_event_date) sukr,
-    (SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent=rabbits.r_id) children," + brd() + @",
+    (SELECT SUM(r2.r_group) FROM rabbits r2 WHERE r2.r_parent = rabbits.r_id) children,
+    {3},
     0 srok 
 FROM rabbits 
+    LEFT JOIN tiers ON r_tier = t_id
 WHERE r_sex = 'female' AND r_event_date IS NOT NULL
 HAVING ((children IS NULL AND sukr >= {0:d}) OR (children > 0 AND sukr >= {1:d})) 
     AND (
@@ -619,7 +622,9 @@ HAVING ((children IS NULL AND sukr >= {0:d}) OR (children > 0 AND sukr >= {1:d})
 ORDER BY sukr DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
                 _flt.safeInt(Filters.NEST_IN),
                 _flt.safeInt(Filters.CHILD_NEST),
-                _flt[Filters.DATE]
+                _flt[Filters.DATE],
+                brd(),
+                getnm()
             );
         }
 
