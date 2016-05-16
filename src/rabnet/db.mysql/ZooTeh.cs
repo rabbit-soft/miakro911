@@ -449,7 +449,7 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
 
         private string qBoysGirlsOut()
         {
-            return String.Format(@"SELECT 
+            return String.Format(@"SELECT DISTINCT
     IF(r_parent != 0, r_parent, r_id) r_id,
     DATEDIFF('{4}', r_born) age,
     DATEDIFF('{4}', r_born) - {1:d} srok,     
