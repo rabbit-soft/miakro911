@@ -98,7 +98,7 @@ namespace rabdump
         {
             listView1.Items.Clear();
             DirectoryInfo di = new DirectoryInfo(j.DumpPath);
-            string searchName = j.Name.Replace(' ', ArchiveJobThread.SPACE_REPLACE) + "_" + db.Replace(' ', ArchiveJobThread.SPACE_REPLACE);
+            string searchName = j.Name.Replace(' ', ArchiveJobThread.SPACE_REPLACE).Replace("_", ArchiveJobThread.UNDERSCORE_REPLACE) + "_" + db.Replace(' ', ArchiveJobThread.SPACE_REPLACE).Replace("_", ArchiveJobThread.UNDERSCORE_REPLACE);
             List<sDump> servDumps = null;
 #if PROTECTED           
             if (GRD.Instance.GetFlag(GRD.FlagType.ServerDump))
@@ -119,25 +119,28 @@ namespace rabdump
             int idx;
             DateTime dtm;
             foreach (FileInfo fi in di.GetFiles()) {
-                if (Path.GetFileName(fi.FullName).StartsWith(searchName)) {
+                if (Path.GetFileName(fi.FullName).StartsWith(searchName)) {                    
                     String[] nm = ArchiveJobThread.ParseDumpName(fi.Name);
                     dtm = DateTime.Parse(String.Format("{0}-{1}-{2} {3}:{4}:{5}", nm[2], nm[3], nm[4], nm[5].Substring(0, 2), nm[5].Substring(2, 2), nm[5].Substring(4, 2)));
                     idx = 0;
                     for (int i = 0; i < listView1.Items.Count; i++) {
-                        if (DateTime.Parse(listView1.Items[i].SubItems[0].Text) > dtm)
+                        if (DateTime.Parse(listView1.Items[i].SubItems[0].Text) > dtm) {
                             idx++;
+                        }
                     }
                     ListViewItem li = listView1.Items.Insert(idx, dtm.ToShortDateString() + " " + dtm.ToLongTimeString());
                     li.SubItems.Add(fi.Name);
 
                     ///Если такой дамп имеется на сервере, то окрашиваем строку в зеленый                    
-                    if (servDumps != null && servDumps.Count > 0)
-                        for (int i = 0; i < servDumps.Count; i++)
+                    if (servDumps != null && servDumps.Count > 0) {
+                        for (int i = 0; i < servDumps.Count; i++) {
                             if (servDumps[i].FileName == fi.Name) {
                                 li.ForeColor = System.Drawing.Color.Green;
                                 servDumps.RemoveAt(i);
                                 break;
                             }
+                        }
+                    }
 
                 }
             }
@@ -197,9 +200,11 @@ namespace rabdump
                     MessageBox.Show("Выберите Резервную Копию для востановления");
                     return;
                 }
-                if (listView1.Items.Count != 0 && listView1.SelectedItems[0].Index != 0)
-                    if (MessageBox.Show("Выбранная Резервная копия не является самой поздней. Продолжить?", "Внимание!", MessageBoxButtons.YesNo) == DialogResult.No)
+                if (listView1.Items.Count != 0 && listView1.SelectedItems[0].Index != 0) {
+                    if (MessageBox.Show("Выбранная Резервная копия не является самой поздней. Продолжить?", "Внимание!", MessageBoxButtons.YesNo) == DialogResult.No) {
                         return;
+                    }
+                }
             }
             _thrRestore = new Thread(new ParameterizedThreadStart(RestoreThr));
             RestoreRarams p = new RestoreRarams();

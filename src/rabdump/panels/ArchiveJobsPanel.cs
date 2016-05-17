@@ -23,15 +23,15 @@ namespace rabdump
         public ArchiveJobsPanel()
         {
             InitializeComponent();
-            foreach (ArchiveType at in Enum.GetValues(typeof(ArchiveType)))            
-                cbArcType.Items.Add(at);           
+            foreach (ArchiveType at in Enum.GetValues(typeof(ArchiveType)))
+                cbArcType.Items.Add(at);
         }
 
         public void Init(RabnetConfig rnc)
         {
             btCancel_Click(null, null);
 
-            _rnc = rnc;                   
+            _rnc = rnc;
             init();
         }
 
@@ -42,23 +42,20 @@ namespace rabdump
             _aj_dict = new Dictionary<int, ArchiveJob>();
             cbName.Items.Clear();
             cbDataBase.Items.Clear();
-            for (int i = 0; i < _rnc.ArchiveJobs.Count; i++)
-            {
+            for (int i = 0; i < _rnc.ArchiveJobs.Count; i++) {
                 _aj_dict.Add(i, _rnc.ArchiveJobs[i]);
                 cbName.Items.Add(_rnc.ArchiveJobs[i].Name);
             }
 
-            for (int i = 0; i < _rnc.DataSources.Count; i++)
-            {
+            for (int i = 0; i < _rnc.DataSources.Count; i++) {
                 _ds_dict.Add(i, _rnc.DataSources[i]);
                 cbDataBase.Items.Add(_rnc.DataSources[i].Name);
             }
 
-            
-            if (cbName.Items.Count > 0)
-            {
+
+            if (cbName.Items.Count > 0) {
                 cbName.SelectedIndex = 0;
-                btEdit.Enabled = btDelete.Enabled = true;                
+                btEdit.Enabled = btDelete.Enabled = true;
             }
             _manual = true;
         }
@@ -86,7 +83,7 @@ namespace rabdump
             cbArcType.SelectedIndex = aj.ArcType;
             dtpDate.Value =
                 dtpTime.Value = aj.StartTime == DateTime.MinValue ? DateTime.Now : aj.StartTime;
-            cbWeekDay.SelectedIndex = (int)aj.StartTime.DayOfWeek == 0 ? 6 : (int)aj.StartTime.DayOfWeek-1;
+            cbWeekDay.SelectedIndex = (int)aj.StartTime.DayOfWeek == 0 ? 6 : (int)aj.StartTime.DayOfWeek - 1;
             aj.SendToServ = chServerSend.Checked;
         }
 
@@ -97,15 +94,11 @@ namespace rabdump
             cbName.DropDownStyle = cb.Checked ? ComboBoxStyle.Simple : ComboBoxStyle.DropDownList;
             gbAJProperties.Enabled = cb.Checked;
             showButtons(cb.Checked);
-            if (cb == btAdd)
-            {
-                if (!cb.Checked && cbName.Items.Count > 0)
-                {
+            if (cb == btAdd) {
+                if (!cb.Checked && cbName.Items.Count > 0) {
                     cbName.SelectedIndex = 0;
                     updateSelectedAJ();
-                }
-                else
-                {
+                } else {
                     cbName.Text = "";
                     tbDumpPath.Text = getDefaultDumpPath();
                     folderBrowserDialog1.RootFolder = Environment.SpecialFolder.MyDocuments;
@@ -113,38 +106,36 @@ namespace rabdump
                     nudCountLimit.Value = nudSizeLimit.Value = 0;
                 }
                 btEdit.Enabled = btDelete.Enabled = !btAdd.Checked;
-            }
-            else if (cb == btEdit)
-            {
+            } else if (cb == btEdit) {
                 btAdd.Enabled = btDelete.Enabled = !btEdit.Checked;
-                if (cb.Checked)
+                if (cb.Checked) {
                     _sInd = cbName.SelectedIndex;
-                else
+                } else {
                     cbName.SelectedIndex = _sInd;
+                }
             }
         }
 
         private void btOk_Click(object sender, EventArgs e)
         {
-            try
-            {
+            try {
                 cbName.Text = cbName.Text.Replace(ArchiveJobThread.SPACE_REPLACE, '\0');
-                if (cbName.Text == "")               
+                if (cbName.Text == "") {
                     throw new Exception("Название не должно быть пустым");
-                if (cbDataBase.SelectedIndex == -1)
-                    throw new Exception("Не выбрана \"Ферма\"");
-                ArchiveJob aj;
-                if (btAdd.Checked)
-                {
-                    if (isNameExists())                    
-                        throw new Exception("Расписание с таким именем уже существует");
-                    
-                    aj = new ArchiveJob(Guid.NewGuid().ToString(), cbName.Text, _ds_dict[cbDataBase.SelectedIndex], tbDumpPath.Text, getDT().ToLongDateString(),
-                        cbArcType.SelectedIndex, (int)nudCountLimit.Value, (int)nudSizeLimit.Value, chServerSend.Checked,(int)nudSrvDump.Value);
-                    _rnc.ArchiveJobs.Add(aj);
                 }
-                else if (btEdit.Checked)
-                {
+                if (cbDataBase.SelectedIndex == -1) {
+                    throw new Exception("Не выбрана \"Ферма\"");
+                }
+                ArchiveJob aj;
+                if (btAdd.Checked) {
+                    if (isNameExists()) {
+                        throw new Exception("Расписание с таким именем уже существует");
+                    }
+
+                    aj = new ArchiveJob(Guid.NewGuid().ToString(), cbName.Text, _ds_dict[cbDataBase.SelectedIndex], tbDumpPath.Text, getDT().ToLongDateString(),
+                        cbArcType.SelectedIndex, (int)nudCountLimit.Value, (int)nudSizeLimit.Value, chServerSend.Checked, (int)nudSrvDump.Value);
+                    _rnc.ArchiveJobs.Add(aj);
+                } else if (btEdit.Checked) {
                     aj = _aj_dict[_sInd];
                     aj.Name = cbName.Text;
                     aj.DataSrc = _ds_dict[cbDataBase.SelectedIndex];
@@ -158,16 +149,16 @@ namespace rabdump
                 //RabnetConfig.SaveDataSources();
                 btCancel_Click(null, null);
                 init();
-            }
-            catch (Exception exc)
-            {
+            } catch (Exception exc) {
                 MessageBox.Show(exc.Message);
             }
         }
 
         private void btDelete_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show(String.Format("Вы уверены что хотите удалить расписание '{0:s}' ?", _aj_dict[cbName.SelectedIndex].Name), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
+            if (MessageBox.Show(String.Format("Вы уверены что хотите удалить расписание '{0:s}' ?", _aj_dict[cbName.SelectedIndex].Name), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) {
+                return;
+            }
 
             _rnc.ArchiveJobs.Remove(_aj_dict[cbName.SelectedIndex]);
             //RabnetConfig.SaveDataSources();
@@ -176,10 +167,11 @@ namespace rabdump
 
         private void btCancel_Click(object sender, EventArgs e)
         {
-            if (btAdd.Checked)
+            if (btAdd.Checked) {
                 btAdd.Checked = false;
-            else if (btEdit.Checked)
+            } else if (btEdit.Checked) {
                 btEdit.Checked = false;
+            }
         }
 
         private DateTime getDT()
@@ -192,10 +184,8 @@ namespace rabdump
         private bool isNameExists()
         {
             bool exists = false;
-            foreach (ArchiveJob aj in _aj_dict.Values)
-            {
-                if (cbName.Text == aj.Name)
-                {
+            foreach (ArchiveJob aj in _aj_dict.Values) {
+                if (cbName.Text == aj.Name) {
                     exists = true;
                     break;
                 }
@@ -212,21 +202,18 @@ namespace rabdump
         private void cbArcType_SelectedIndexChanged(object sender, EventArgs e)
         {
             cbWeekDay.Visible = cbArcType.SelectedIndex == (int)ArchiveType.Еженедельно;
-            dtpDate.Visible = cbArcType.SelectedIndex != (int)ArchiveType.Никогда && 
-                cbArcType.SelectedIndex != (int)ArchiveType.При_Запуске && 
+            dtpDate.Visible = cbArcType.SelectedIndex != (int)ArchiveType.Никогда &&
+                cbArcType.SelectedIndex != (int)ArchiveType.При_Запуске &&
                 cbArcType.SelectedIndex != (int)ArchiveType.Еженедельно &&
                 cbArcType.SelectedIndex != (int)ArchiveType.Ежедневно;
-            dtpTime.Visible =  cbArcType.SelectedIndex != (int)ArchiveType.Никогда &&
+            dtpTime.Visible = cbArcType.SelectedIndex != (int)ArchiveType.Никогда &&
                 cbArcType.SelectedIndex != (int)ArchiveType.При_Запуске;
 
-            if (cbArcType.SelectedIndex == (int)ArchiveType.Ежемесячно)
-            {
+            if (cbArcType.SelectedIndex == (int)ArchiveType.Ежемесячно) {
                 dtpDate.Format = DateTimePickerFormat.Custom;
                 dtpDate.CustomFormat = "dd";
                 dtpDate.ShowUpDown = true;
-            }
-            else
-            {
+            } else {
                 dtpDate.ShowUpDown = false;
                 dtpDate.Format = DateTimePickerFormat.Short;
             }
@@ -234,8 +221,11 @@ namespace rabdump
 
         private void cbWeekDay_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!_manual) return;
-            int ind = cbWeekDay.SelectedIndex==6 ? 0:cbWeekDay.SelectedIndex+1;
+            if (!_manual) {
+                return;
+            }
+
+            int ind = cbWeekDay.SelectedIndex == 6 ? 0 : cbWeekDay.SelectedIndex + 1;
             //int add = (int)dtpDate.Value.DayOfWeek > ind ? 7 - (int)dtpDate.Value.DayOfWeek +ind : ind - (int)dtpDate.Value.DayOfWeek;
             int add = ind - (int)dtpDate.Value.DayOfWeek;
             dtpDate.Value = dtpDate.Value.AddDays(add);
@@ -245,9 +235,10 @@ namespace rabdump
         {
             string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             path = Helper.PathCombine(path, RabnetConfig.MY_DOCUMENTS_APP_FOLDER, RabnetConfig.MY_DUMPS_FOLDER);
-            if (!Directory.Exists(path))
+            if (!Directory.Exists(path)) {
                 Directory.CreateDirectory(path);
-            return path;            
+            }
+            return path;
         }
 
         private void chServerSend_CheckedChanged(object sender, EventArgs e)
