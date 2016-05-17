@@ -178,9 +178,9 @@ WHERE r_id != {1:d} AND r_parent IS NULL;", getOneRabbit_FieldsSet(RabAliveState
             cmd.ExecuteNonQuery();
             if (r.WasNameID != r.NameID) {
                 ///todo  проверка на используемость
-                cmd.CommandText = String.Format("UPDATE names SET n_use=0, n_block_date=NULL WHERE n_id={0:d};", r.WasNameID);
+                cmd.CommandText = String.Format("UPDATE names SET n_use = 0, n_block_date = NULL WHERE n_id={0:d};", r.WasNameID);
                 cmd.ExecuteNonQuery();
-                cmd.CommandText = String.Format("UPDATE names SET n_use={0:d} WHERE n_id={1:d};", r.ID, r.NameID);
+                cmd.CommandText = String.Format("UPDATE names SET n_use = {0:d} WHERE n_id = {1:d};", r.ID, r.NameID);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -512,7 +512,7 @@ WHERE r_id={0:d};", rabFromID, DBHelper.Nullable(mom), count), sql);
             rd.Close();
 
             if (nm > 0) {
-                cmd.CommandText = String.Format(@"UPDATE names SET n_use=0, n_block_date = NOW()+INTERVAL 1 YEAR WHERE n_id = {0:d};", nm);
+                cmd.CommandText = String.Format(@"UPDATE names SET n_use = 0, n_block_date = NOW()+INTERVAL 1 YEAR WHERE n_id = {0:d};", nm);
                 cmd.ExecuteNonQuery();
             }
         }
