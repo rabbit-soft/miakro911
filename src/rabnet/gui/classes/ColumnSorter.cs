@@ -11,7 +11,10 @@ namespace rabnet
 {
     public class ListViewColumnSorter : IComparer
     {
-        int ColumnToSort;
+        /// <summary>
+        /// Индекс колонки по которой сортируем
+        /// </summary>
+        private int sortColumn;
 
         protected SortOrder sortOrder = SortOrder.None;
 
@@ -30,7 +33,7 @@ namespace rabnet
 
         public ListViewColumnSorter(ListView lv, int[] intsorts, Options.OPT_ID op)
         {
-            ColumnToSort = 0;
+            sortColumn = 0;
             //OrderOfSort = SortOrder.None;
             ObjectCompare = new CaseInsensitiveComparer();
             _intSorts = intsorts;
@@ -94,12 +97,12 @@ namespace rabnet
             try {
                 bool alreadyCompared = false;
                 int compareResult = 0;
-                string listViewVal_X = (x as ListViewItem).SubItems[ColumnToSort].Text,
-                       listViewVal_Y = (y as ListViewItem).SubItems[ColumnToSort].Text;
+                string listViewVal_X = (x as ListViewItem).SubItems[this.sortColumn].Text,
+                       listViewVal_Y = (y as ListViewItem).SubItems[this.sortColumn].Text;
 
 
                 for (int i = 0; i < _intSorts.Length; i++) {
-                    if (_intSorts[i] == ColumnToSort) {
+                    if (_intSorts[i] == sortColumn) {
                         alreadyCompared = true;
                         int i1 = this.parseIntValue(listViewVal_X),
                             i2 = this.parseIntValue(listViewVal_Y);
@@ -147,8 +150,8 @@ namespace rabnet
 
         public int SortColumn
         {
-            set { ColumnToSort = value; }
-            get { return ColumnToSort; }
+            set { sortColumn = value; }
+            get { return sortColumn; }
         }
 
         /// <summary>
