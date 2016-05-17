@@ -37,8 +37,8 @@ namespace db.mysql
         r_status,
         r_flags,
         r_group,
-        suckers,
-        suckGroups,
+        Coalesce(sc.suckers_sum,0) AS suckers, #т.к. групируем по прививкам
+        Coalesce(sc.suckers_count,0) AS suckGroups,                
         aage,
         r_rate,
         r_bon,        
@@ -53,11 +53,12 @@ namespace db.mysql
         LEFT JOIN (
             SELECT 
                 r_parent prnt, 
-                SUM(r2.r_group) suckers,
-                COUNT(1) suckGroups, 
+                SUM(r2.r_group) suckers_sum,
+                COUNT(1) suckers_count, 
                 #AVG(TO_DAYS(NOW())-TO_DAYS(r2.r_born)) aage 
                 GROUP_CONCAT(DATEDIFF(NOW(), r2.r_born) ORDER BY r2.r_born DESC SEPARATOR '|') aage
-            FROM rabbits r2             
+            FROM rabbits r2     
+            WHERE r_parent IS NOT NULL        
             GROUP BY r_parent            
         ) sc ON prnt=r.r_id
         LEFT JOIN (

@@ -85,7 +85,7 @@ namespace rabnet.panels
             li.SubItems.Add(rab.FAddress(_runF.safeBool(Filters.SHOW_BLD_TIERS), _runF.safeBool(Filters.SHOW_BLD_DESCR)));
             li.SubItems.Add(rab.Notes);
 
-            this.rsbTotalCount += rab.Group + rab.KidsCount;
+            this.rsbTotalCount += rab.GroupFullCount();
         }
 
         protected override void onFinishUpdate()
