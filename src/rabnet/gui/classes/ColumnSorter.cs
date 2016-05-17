@@ -14,13 +14,13 @@ namespace rabnet
         /// <summary>
         /// Индекс колонки по которой сортируем
         /// </summary>
-        private int sortColumn;
+        protected int sortColumn;
 
         protected SortOrder sortOrder = SortOrder.None;
 
         protected CaseInsensitiveComparer ObjectCompare;
 
-        private ListView _listView = null;
+        protected ListView _listView = null;
 
         /// <summary>
         /// Номера столбцок, которые надо сортировать как целочисленные 
@@ -92,7 +92,7 @@ namespace rabnet
             _listView.Refresh();
         }
 
-        public int Compare(object x, object y)
+        public virtual int Compare(object x, object y)
         {
             try {
                 bool alreadyCompared = false;

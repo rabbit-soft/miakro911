@@ -13,6 +13,7 @@ using System.Diagnostics;
 
 namespace rabnet.panels
 {
+
     public partial class WorksPanel : RabNetPanel
     {
         private DateTime reportDate = DateTime.Now;
@@ -25,7 +26,7 @@ namespace rabnet.panels
         public WorksPanel(RabStatusBar sb)
             : base(sb, new ZootehFilter())
         {
-            _colSort = new ListViewColumnSorter(lvZooTech, new int[] { 0, 4 }, Options.OPT_ID.ZOO_LIST);
+            _colSort = new WorkPanelColumnSorter(lvZooTech, new int[] { 0, 4 }, Options.OPT_ID.ZOO_LIST);
             _colSort2 = new ListViewColumnSorter(lvZooTech, new int[] { 0, 4 }, Options.OPT_ID.ZOO_LIST);
             lvZooTech.ListViewItemSorter = _colSort;
             MakeExcel = new RSBEventHandler(this.makeExcel);
@@ -101,7 +102,7 @@ namespace rabnet.panels
 #endif
 
             Filters f = runF;
-            foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f, it.id)) {                
+            foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f, it.id)) {
                 ListViewItem li = lvZooTech.Items.Add(j.Days.ToString());
                 li.SubItems.Add(j.JobName);
                 li.SubItems.Add(j.Address);
@@ -457,5 +458,33 @@ namespace rabnet.panels
         }
 
 
+    }
+
+    class WorkPanelColumnSorter : ListViewColumnSorter
+    {
+        /// <summary>
+        /// Колонка содержит тип работ
+        /// </summary>
+        const int COL_TYPE = 1;
+
+        public WorkPanelColumnSorter(ListView lv, int[] intsorts, Options.OPT_ID op)
+            : base(lv, intsorts, op)
+        {
+        }
+
+        public override int Compare(object x, object y)
+        {
+
+            int listViewVal_X = (int)((x as ListViewItem).Tag as ZootehJob).Type,
+                listViewVal_Y = (int)((y as ListViewItem).Tag as ZootehJob).Type;
+
+            int result = listViewVal_X.CompareTo(listViewVal_Y);
+
+            if (result != 0 || this.sortColumn == COL_TYPE) {
+                return result;
+            }
+
+            return base.Compare(x, y);
+        }
     }
 }
