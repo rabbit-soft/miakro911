@@ -111,8 +111,8 @@ namespace db.mysql
 
         internal static String addWhereAnd(String str, String adder)
         {
-            if (str != "") {
-                str += Environment.NewLine + " AND ";
+            if (!String.IsNullOrEmpty(str)) {
+                str += " AND ";
             }
             str += adder;
             return str;
@@ -120,7 +120,7 @@ namespace db.mysql
 
         internal static String addWhereOr(String str, String adder)
         {
-            if (str != "") {
+            if (!String.IsNullOrEmpty(str)) {
                 str += " OR ";
             }
             str += adder;
