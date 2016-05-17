@@ -5,6 +5,7 @@ using MySql.Data.MySqlClient;
 using System.Text;
 using log4net;
 using rabnet;
+using System.Diagnostics;
 
 namespace db.mysql
 {
@@ -34,6 +35,8 @@ namespace db.mysql
             String qcmd = this.countQuery();//получить количество записей
 #if DEBUG
             Debug("QCount: " + qcmd);
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
 #endif
             MySqlCommand cmd = new MySqlCommand(qcmd, sql);
             _rd = cmd.ExecuteReader();
@@ -49,12 +52,19 @@ namespace db.mysql
             }
             _rd.Close();
 
+#if DEBUG                        
+            sw.Stop();
+            _logger.DebugFormat("execution time count: {0}", sw.Elapsed);
+            sw.Reset();
+            sw.Start();
+#endif
 
             cmd.CommandText = this.getQuery();
+            _rd = cmd.ExecuteReader();
 #if DEBUG
+            _logger.DebugFormat("execution time query: {0}", sw.Elapsed);
             Debug("QGetIData:" + cmd.CommandText);
 #endif
-            _rd = cmd.ExecuteReader();
         }
 
 

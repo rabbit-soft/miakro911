@@ -20,6 +20,11 @@ namespace rabnet.panels
 {
     public partial class RabbitsPanel : RabNetPanel
     {
+        /// <summary>
+        /// Сколько всего кроликов на ферме
+        /// </summary>
+        protected int rsbTotalCount = 0;
+
         private bool manual = true;
         private int gentree = 10;
         const int NFIELD = 7;
@@ -28,6 +33,7 @@ namespace rabnet.panels
         const int NAMEFIELD = 0;
 
         public RabbitsPanel() : base() { }
+
         public RabbitsPanel(RabStatusBar rsb)
             : base(rsb, new RabbitsFilter())
         {
@@ -55,6 +61,9 @@ namespace rabnet.panels
             IDataGetter dg = Engine.db2().getRabbits(f);
             _rsb.SetText(1, dg.getCount().ToString() + " записей");
             _rsb.SetText(2, dg.getCount2().ToString() + " кроликов");
+
+            this.rsbTotalCount = 0;
+
             return dg;
         }
 
@@ -75,6 +84,14 @@ namespace rabnet.panels
             li.SubItems.Add(rab.FBon(_runF.safeBool(Filters.SHORT)));
             li.SubItems.Add(rab.FAddress(_runF.safeBool(Filters.SHOW_BLD_TIERS), _runF.safeBool(Filters.SHOW_BLD_DESCR)));
             li.SubItems.Add(rab.Notes);
+
+            this.rsbTotalCount += rab.Group + rab.KidsCount;
+        }
+
+        protected override void onFinishUpdate()
+        {
+            base.onFinishUpdate();
+            _rsb.SetText(3, this.rsbTotalCount.ToString() + " всего");
         }
 
         private bool isGirl()
@@ -251,7 +268,7 @@ namespace rabnet.panels
             foreach (ListViewItem li in listView1.SelectedItems) {                
                 cnt += (li.Tag as AdultRabbit).GroupFullCount();
             }
-            _rsb.SetText(3, String.Format("Выбрано {0:d} строк - {1:d} кроликов", rows, cnt));
+            _rsb.SetText(4, String.Format("Выбрано {0:d} строк - {1:d} кроликов", rows, cnt));
         }
 
         private void listView1_MouseDown(object sender, MouseEventArgs e)

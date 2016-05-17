@@ -49,17 +49,17 @@ namespace rabnet
                     break;
                 case 4:
                     if (f.safeValue("act", "R").Contains("R")) {
-                        getBoysGirlsOut(zjobs);
+                        this.getBoysGirlsOut(zjobs);
                     }
                     break;
                 case 5:
                     if (f.safeValue("act", "F").Contains("F")) {
-                        getFucks(zjobs, 0);
+                        this.getFucks(zjobs, 0);
                     }
                     break;
                 case 6:
                     if (f.safeValue("act", "f").Contains("f")) {
-                        getFucks(zjobs, 1);
+                        this.getFucks(zjobs, 1);
                     }
                     break;
                 case 7:

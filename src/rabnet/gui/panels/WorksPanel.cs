@@ -9,6 +9,7 @@ using System.Xml;
 using rabnet.forms;
 using rabnet.filters;
 using rabnet.components;
+using System.Diagnostics;
 
 namespace rabnet.panels
 {
@@ -94,6 +95,11 @@ namespace rabnet.panels
         {
             ZooTehNullItem it = data as ZooTehNullItem;
 
+#if DEBUG
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+#endif
+
             Filters f = runF;
             foreach (ZootehJob j in Engine.get().zoo().makeZooTehPlan(f, it.id)) {                
                 ListViewItem li = lvZooTech.Items.Add(j.Days.ToString());
@@ -105,7 +111,11 @@ namespace rabnet.panels
                 li.SubItems.Add(j.Comment);
                 li.SubItems.Add(j.Partners);/// todo партнеров получать gh
                 li.Tag = j;
-            }   
+            }
+#if DEBUG
+            sw.Stop();
+            _logger.DebugFormat("processing time: {0} ZOO_{1}", sw.Elapsed, it.id);
+#endif
         }
 
         protected override void onFinishUpdate()

@@ -15,7 +15,9 @@ namespace rabnet.panels
         protected FilterPanel filterPanel = null;
         protected ListViewColumnSorter _colSort = null;
         protected ListViewColumnSorter _colSort2 = null;
+
         protected ILog _logger;
+
         /// <summary>
         /// Делегат определяющий обработчик, когда жмут на кнопку Excel.
         /// Если наследники присвоят обработчик, то кнопка Excel покажется.

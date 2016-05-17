@@ -67,7 +67,7 @@ namespace db.mysql
         ) rvac ON rv_id=r.r_id
     WHERE r_parent IS NULL 
     GROUP by r_id  #-- для вакцин
-    ORDER BY name
+#ORDER BY name
 ) c {2:s};",
             (options.safeBool("dbl") ? "2" : "1"), fld, makeWhere(),
             String.Format("IF(rvac.v_id={0:d},'S',rvac.v_id)", Vaccine.V_ID_LUST));///чтобы не перегружать текст SQL запроса
@@ -205,10 +205,7 @@ namespace db.mysql
     COUNT(1), 
     SUM(r_group) 
 FROM (
-    SELECT 
-        r_sex,r_born, rabname(r_id,{0:s}) name, r_group, 
-        r_status, r_flags, r_event_date, r_breed,
-        (SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight
+    SELECT r_id, r_group
     FROM rabbits 
     WHERE r_parent IS NULL
 ) c {1};",

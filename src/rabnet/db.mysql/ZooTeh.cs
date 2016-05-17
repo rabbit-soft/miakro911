@@ -627,9 +627,9 @@ DROP TABLE IF EXISTS aaa;",
         COALESCE(
             Date_Add(dt, INTERVAL v.v_duration DAY),
             If(
-                v_do_after=0, 
+                v_do_after = 0, 
                 Date_Add(r_born, INTERVAL v_age DAY), 
-                (SELECT Date_Add(Max(`date`), INTERVAL v_age DAY) FROM rab_vac WHERE r_id=rb.r_id AND v_id=v_do_after)    #может получиться NULL если не было сделано предыдущей прививки
+                (SELECT Date_Add(Max(`date`), INTERVAL v_age DAY) FROM rab_vac WHERE r_id = rb.r_id AND v_id = v_do_after)    #может получиться NULL если не было сделано предыдущей прививки
             )
         )
     ) srok,     #сколько дней не выполнена работа
@@ -643,12 +643,20 @@ DROP TABLE IF EXISTS aaa;",
     {1:s}
 FROM rabbits rb
 CROSS JOIN vaccines v
-LEFT JOIN (SELECT r_id rvr_id, v_id rvv_id, Max(`date`) dt, COUNT(*) rv_times FROM rab_vac rv WHERE unabled!=1 GROUP BY r_id,v_id) mxdt 
-    ON rvv_id = v.v_id AND rvr_id = rb.r_id       #AND CAST(v.v_duration as SIGNED)-CAST(to_days(NOW())-to_days(dt) AS SIGNED)>0
+LEFT JOIN (
+        SELECT 
+            r_id rvr_id, v_id rvv_id, Max(`date`) dt, COUNT(*) rv_times 
+        FROM rab_vac rv 
+        WHERE unabled != 1 
+        GROUP BY r_id,v_id
+    ) mxdt ON rvv_id = v.v_id AND rvr_id = rb.r_id
 WHERE v_id in({2:s}) AND v_id > 0;
+
 {3:s}
+
 SELECT * FROM aaa WHERE (srok IS NOT NULL AND srok>=0) AND (v_do_times=0 OR (times<v_do_times)) {4:s} ORDER BY srok;
-DROP TEMPORARY TABLE IF EXISTS aaa; {5:s}",
+
+DROP TEMPORARY TABLE IF EXISTS aaa; {5:s};",
                 getnm(),
                 brd(),
                 show,
