@@ -13,7 +13,15 @@ namespace rabnet.panels
         protected Filters _runF;
         protected RabStatusBar _rsb = null;
         protected FilterPanel filterPanel = null;
+
+        /// <summary>
+        /// Сортировщик основной таблицы
+        /// </summary>
         protected ListViewColumnSorter _colSort = null;
+
+        /// <summary>
+        /// Сортировщик дополнительной таблицы
+        /// </summary>
         protected ListViewColumnSorter _colSort2 = null;
 
         protected ILog _logger;
