@@ -58,8 +58,7 @@ namespace rabnet
         }
 
         public void RestoreAfterUpdate()
-        {
-            ListViewSaver.load(option, _listView);
+        {            
             _listView.ListViewItemSorter = this;
             _listView.Sort();
             ListViewSaver.loadItem(_listView, _selItem);
