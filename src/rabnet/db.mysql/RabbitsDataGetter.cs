@@ -22,7 +22,7 @@ namespace db.mysql
                 fld = "b_short_name";
             }
 
-            return String.Format(@"SELECT * FROM (
+            return String.Format(@"
     SELECT 
         r_id, 
         rabname(r_id,{0:s}) name,
@@ -67,41 +67,43 @@ namespace db.mysql
         ) rvac ON rv_id=r.r_id
     WHERE r_parent IS NULL 
     GROUP by r_id  #-- для вакцин
-#ORDER BY name
-) c {2:s};",
-            (options.safeBool("dbl") ? "2" : "1"), fld, makeWhere(),
-            String.Format("IF(rvac.v_id={0:d},'S',rvac.v_id)", Vaccine.V_ID_LUST));///чтобы не перегружать текст SQL запроса
+    {2:s};",
+                (options.safeBool("dbl") ? "2" : "1"), 
+                fld, 
+                makeHaving(),
+                String.Format("IF(rvac.v_id={0:d},'S',rvac.v_id)", Vaccine.V_ID_LUST)
+            );///чтобы не перегружать текст SQL запроса
         }
 
-        public String makeWhere()
+        public String makeHaving()
         {
             String res = "";
             if (options.ContainsKey("sx")) {
                 String sres = "";
                 if (options["sx"].Contains("m")) {
-                    sres = "r_sex='male'";
+                    sres = "r_sex = 'male'";
                 }
                 if (options["sx"].Contains("f")) {
-                    sres = addWhereOr(sres, "r_sex='female'");
+                    sres = addWhereOr(sres, "r_sex = 'female'");
                 }
                 if (options["sx"].Contains("v")) {
-                    sres = addWhereOr(sres, "r_sex='void'");
+                    sres = addWhereOr(sres, "r_sex = 'void'");
                 }
                 res = "(" + sres + ")";
             }
 
             if (options.ContainsKey("dt")) {
-                res = addWhereAnd(res, "(r_born<=NOW()-INTERVAL " + options["dt"] + " DAY)");//старше
+                res = addWhereAnd(res, "(r_born <= NOW()-INTERVAL " + options["dt"] + " DAY)");//старше
             }
             if (options.ContainsKey("Dt")) {
-                res = addWhereAnd(res, "(r_born>=NOW()-INTERVAL " + options["Dt"] + " DAY)");//младше         
+                res = addWhereAnd(res, "(r_born >= NOW()-INTERVAL " + options["Dt"] + " DAY)");//младше         
             }
 
             if (options.ContainsKey("wg")) {
-                res = addWhereAnd(res, "(weight>=" + options["wg"] + ")");
+                res = addWhereAnd(res, "(weight >= " + options["wg"] + ")");
             }
             if (options.ContainsKey("Wg")) {
-                res = addWhereAnd(res, "(weight<=" + options["Wg"] + ")");
+                res = addWhereAnd(res, "(weight <= " + options["Wg"] + ")");
             }
             if (options.ContainsKey(Filters.MALE) && options.safeValue("sx", "m").Contains("m")) {
                 String stat = "";
@@ -109,57 +111,57 @@ namespace db.mysql
                     stat = "r_status=0";
                 }
                 if (options[Filters.MALE].Contains("c")) {
-                    stat = addWhereOr(stat, "r_status=1");
+                    stat = addWhereOr(stat, "r_status = 1");
                 }
                 if (options[Filters.MALE].Contains("p")) {
-                    stat = addWhereOr(stat, "r_status=2");
+                    stat = addWhereOr(stat, "r_status = 2");
                 }
-                res = addWhereAnd(res, "(r_sex!='male' OR (r_sex='male' AND (" + stat + ")))");
+                res = addWhereAnd(res, "(r_sex != 'male' OR (r_sex = 'male' AND (" + stat + ")))");
             }
             if (options.ContainsKey(Filters.FEMALE) && options.safeValue("sx", "f").Contains("f")) {
                 String stat = "";
                 if (options[Filters.FEMALE].Contains("g")) {
-                    stat = "r_born>(NOW()-INTERVAL " + options["brd"] + " DAY)";
+                    stat = "r_born > (NOW() - INTERVAL " + options["brd"] + " DAY)";
                 }
                 if (options[Filters.FEMALE].Contains("b")) {
-                    stat = addWhereOr(stat, "(r_born<=(NOW()-INTERVAL " + options["brd"] + " DAY) AND (r_status=0 AND r_event_date IS NULL))");
+                    stat = addWhereOr(stat, "(r_born <= (NOW()-INTERVAL " + options["brd"] + " DAY) AND (r_status = 0 AND r_event_date IS NULL))");
                 }
                 if (options[Filters.FEMALE].Contains("f")) {
-                    stat = addWhereOr(stat, "((r_status=0 AND r_event_date IS NOT NULL)OR(r_status=1 AND r_event_date IS NULL))");
+                    stat = addWhereOr(stat, "((r_status = 0 AND r_event_date IS NOT NULL) OR (r_status = 1 AND r_event_date IS NULL))");
                 }
                 if (options[Filters.FEMALE].Contains("s")) {
-                    stat = addWhereOr(stat, "(r_status>1 OR (r_status=1 AND r_event_date IS NOT NULL))");
+                    stat = addWhereOr(stat, "(r_status > 1 OR (r_status = 1 AND r_event_date IS NOT NULL))");
                 }
-                res = addWhereAnd(res, "(r_sex!='female' OR (r_sex='female' AND (" + stat + ")))");
+                res = addWhereAnd(res, "(r_sex != 'female' OR (r_sex = 'female' AND (" + stat + ")))");
             }
             if (options.ContainsKey("ms") && options.safeValue("sx", "m").Contains("m")) {
                 String stat = "";
                 if (options["ms"] == "1") {
-                    stat = "SUBSTR(r_flags,1,1)='0' AND SUBSTR(r_flags,3,1)!='1'";
+                    stat = "SUBSTR(r_flags,1,1) = '0' AND SUBSTR(r_flags,3,1) != '1'";
                 }
                 if (options["ms"] == "2") {
-                    stat = "SUBSTR(r_flags,3,1)='1'";
+                    stat = "SUBSTR(r_flags,3,1) = '1'";
                 }
                 if (options["ms"] == "3") {
-                    stat = "SUBSTR(r_flags,1,1)='1'";
+                    stat = "SUBSTR(r_flags,1,1) = '1'";
                 }
-                res = addWhereAnd(res, "(r_sex!='male' OR (r_sex='male' AND " + stat + "))");
+                res = addWhereAnd(res, "(r_sex != 'male' OR (r_sex = 'male' AND " + stat + "))");
             }
             if (options.ContainsKey("fs") && options.safeValue("sx", "f").Contains("f")) {
                 String stat = "";
                 if (options["fs"] == "1") {
-                    stat = "SUBSTR(r_flags,1,1)='0' AND SUBSTR(r_flags,3,1)!='1'";
+                    stat = "SUBSTR(r_flags,1,1) = '0' AND SUBSTR(r_flags,3,1) != '1'";
                 }
                 if (options["fs"] == "2") {
-                    stat = "SUBSTR(r_flags,3,1)='1'";
+                    stat = "SUBSTR(r_flags,3,1) = '1'";
                 }
                 if (options["fs"] == "3") {
-                    stat = "SUBSTR(r_flags,1,1)='1'";
+                    stat = "SUBSTR(r_flags,1,1) = '1'";
                 }
-                res = addWhereAnd(res, "(r_sex!='female' OR (r_sex='female' AND " + stat + "))");
+                res = addWhereAnd(res, "(r_sex != 'female' OR (r_sex = 'female' AND " + stat + "))");
             }
             if (options.ContainsKey("ku") && options.safeValue("sx", "f").Contains("f")) {
-                res = addWhereAnd(res, "(r_sex!='female' OR (r_sex='female' AND SUBSTR(r_flags,4,1)=" + (int.Parse(options["ku"]) + 1).ToString() + "))");
+                res = addWhereAnd(res, "(r_sex != 'female' OR (r_sex = 'female' AND SUBSTR(r_flags,4,1) = " + (int.Parse(options["ku"]) + 1).ToString() + "))");
             }
             if (options.ContainsKey("nm")) {
                 res = addWhereAnd(res, "(name like '%" + options["nm"] + "%')");
@@ -172,16 +174,16 @@ namespace db.mysql
                 if (options["pr"] == "2") {
                     if (options.ContainsKey("pf") || options.ContainsKey("Pf")) {
                         if (options.ContainsKey("pf")) {
-                            stat = "(r_event_date<=NOW()-INTERVAL " + options["pf"] + " DAY)";
+                            stat = "(r_event_date <= NOW()-INTERVAL " + options["pf"] + " DAY)";
                         }
                         if (options.ContainsKey("Pf")) {
-                            stat = addWhereAnd(stat, "(r_event_date>=NOW()-INTERVAL " + (options.safeInt("Pf") + 1) + " DAY)");
+                            stat = addWhereAnd(stat, "(r_event_date >= NOW()-INTERVAL " + (options.safeInt("Pf") + 1) + " DAY)");
                         }
                     } else {
                         stat = "r_event_date IS NOT NULL";
                     }
                 }
-                res = addWhereAnd(res, "(r_sex!='female' OR (r_sex='female' AND (" + stat + ")))");
+                res = addWhereAnd(res, "(r_sex != 'female' OR (r_sex = 'female' AND (" + stat + ")))");
             }
             if (options.ContainsKey("br")) {
                 res = addWhereAnd(res, "(r_breed=" + options["br"] + ")");
@@ -196,7 +198,7 @@ namespace db.mysql
             if (res == "") {
                 return "";
             }
-            return " WHERE " + res;
+            return " HAVING " + res;
         }
 
         protected override string countQuery()
@@ -205,12 +207,16 @@ namespace db.mysql
     COUNT(1), 
     SUM(r_group) 
 FROM (
-    SELECT r_id, r_group
+    SELECT 
+        r_sex,r_born, rabname(r_id,{0:s}) name, r_group, 
+        r_status, r_flags, r_event_date, r_breed,
+        (SELECT w_weight FROM weights WHERE w_rabid=r_id AND w_date=(SELECT MAX(w_date) FROM weights WHERE w_rabid=r_id)) weight
     FROM rabbits 
     WHERE r_parent IS NULL
-) c {1};",
+    {1}
+) c ;",
                 (options.safeBool("dbl") ? "2" : "1"),
-                makeWhere()
+                makeHaving()
             );
         }
     }

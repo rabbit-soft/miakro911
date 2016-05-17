@@ -111,7 +111,9 @@ namespace db.mysql
 
         internal static String addWhereAnd(String str, String adder)
         {
-            if (str != "") str += " AND ";
+            if (str != "") {
+                str += Environment.NewLine + " AND ";
+            }
             str += adder;
             return str;
         }
