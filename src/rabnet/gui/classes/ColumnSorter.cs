@@ -12,20 +12,26 @@ namespace rabnet
     public class ListViewColumnSorter : IComparer
     {
         int ColumnToSort;
-        SortOrder OrderOfSort;
-        CaseInsensitiveComparer ObjectCompare;
+
+        protected SortOrder sortOrder = SortOrder.None;
+
+        protected CaseInsensitiveComparer ObjectCompare;
+
         private ListView _listView = null;
+
         /// <summary>
         /// Номера столбцок, которые надо сортировать как целочисленные 
         /// </summary>
         int[] _intSorts = null;
+
         int _selItem = 0;
+
         Options.OPT_ID option = Options.OPT_ID.NONE;
 
         public ListViewColumnSorter(ListView lv, int[] intsorts, Options.OPT_ID op)
         {
             ColumnToSort = 0;
-            OrderOfSort = SortOrder.None;
+            //OrderOfSort = SortOrder.None;
             ObjectCompare = new CaseInsensitiveComparer();
             _intSorts = intsorts;
             _listView = lv;
@@ -63,20 +69,21 @@ namespace rabnet
 
         public ListViewColumnSorter Clear()
         {
-            Order = SortOrder.None;
+            this.sortOrder = SortOrder.None;
             return this;
         }
+
         private void OnColumnClick(object sender, ColumnClickEventArgs e)
         {
             if (e.Column == SortColumn) {
-                if (Order == SortOrder.Ascending) {
-                    Order = SortOrder.Descending;
+                if (this.sortOrder == SortOrder.Ascending) {
+                    this.sortOrder = SortOrder.Descending;
                 } else {
-                    Order = SortOrder.Ascending;
+                    this.sortOrder = SortOrder.Ascending;
                 }
             } else {
                 SortColumn = e.Column;
-                Order = SortOrder.Ascending;
+                this.sortOrder = SortOrder.Ascending;
             }
             ListViewSaver.save(option, _listView);
             (sender as ListView).Sort();
@@ -95,7 +102,7 @@ namespace rabnet
                 for (int i = 0; i < _intSorts.Length; i++) {
                     if (_intSorts[i] == ColumnToSort) {
                         alreadyCompared = true;
-                        int i1 = this.parseIntValue(listViewVal_X), 
+                        int i1 = this.parseIntValue(listViewVal_X),
                             i2 = this.parseIntValue(listViewVal_Y);
 
                         compareResult = i1.CompareTo(i2);
@@ -112,13 +119,14 @@ namespace rabnet
                     }
                 }
 
-                if (OrderOfSort == SortOrder.Ascending) {
+                if (sortOrder == SortOrder.Ascending) {
                     return compareResult;
-                } else if (OrderOfSort == SortOrder.Descending) {
+                } else if (sortOrder == SortOrder.Descending) {
                     return (-compareResult);
                 } else {
                     return 0;
                 }
+
             } catch (Exception) {
                 return 0;
             }
@@ -129,42 +137,35 @@ namespace rabnet
             int result = -1;
             if (val == "-" || val == "") {
                 result = -1;
-            } else if (!int.TryParse(val, out result)){
+            } else if (!int.TryParse(val, out result)) {
                 string[] tmp = val.Split('|');
                 if (tmp.Length > 0) {
                     int.TryParse(tmp[0], out result);
-                }                
+                }
             }
             return result;
         }
 
         public int SortColumn
         {
-            set
-            {
-                ColumnToSort = value;
-            }
-            get
-            {
-                return ColumnToSort;
-            }
+            set { ColumnToSort = value; }
+            get { return ColumnToSort; }
         }
 
+        /// <summary>
+        /// Sort order
+        /// </summary>
         public SortOrder Order
         {
-            set
-            {
-                OrderOfSort = value;
-            }
-            get
-            {
-                return OrderOfSort;
-            }
+            set { sortOrder = value; }
+            get { return sortOrder; }
         }
 
         private void OnColumnWidthChanged(object sender, ColumnWidthChangedEventArgs e)
         {
-            if (!_listView.Focused) return;
+            if (!_listView.Focused) {
+                return;
+            }
             ListViewSaver.save(option, _listView);
         }
 
@@ -172,10 +173,15 @@ namespace rabnet
         {
             e.DrawBackground();
             e.DrawText();
-            if (SortColumn != e.ColumnIndex) return;
-            if (OrderOfSort == SortOrder.None) return;
+            if (SortColumn != e.ColumnIndex) {
+                return;
+            }
+            if (sortOrder == SortOrder.None) {
+                return;
+            }
+
             Image img = null;
-            if (OrderOfSort == SortOrder.Ascending) {
+            if (sortOrder == SortOrder.Ascending) {
                 img = ArrowDrawer.get().getImage(0);
             } else {
                 img = ArrowDrawer.get().getImage(1);

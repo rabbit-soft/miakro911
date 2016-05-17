@@ -36,6 +36,7 @@ namespace rabnet
             res = res.Trim(',');
             Engine.opt().setOption(op, res);
         }
+
         /// <summary>
         /// Устанавливает ширину колонок компонента ListView
         /// </summary>
@@ -56,6 +57,7 @@ namespace rabnet
             for (i = 0; i < lv.Columns.Count && i < cls.Length; i++) {
                 lv.Columns[i].Width = int.Parse(cls[i]); //не безопасно
             }
+
             if (lv.ListViewItemSorter != null && cls.Length > i) {
                 ListViewColumnSorter cs = lv.ListViewItemSorter as ListViewColumnSorter;
                 int sc = int.Parse(cls[i]);
@@ -69,11 +71,11 @@ namespace rabnet
                 if (i + 1 < cls.Length) {
                     int.TryParse(cls[i + 1], out sort);
                 }
+
                 cs.Order = SortOrder.None;
                 if (sort == 1) {
                     cs.Order = SortOrder.Ascending;
-                }
-                if (sort == 2) {
+                } else if (sort == 2) {
                     cs.Order = SortOrder.Descending;
                 }
                 lv.Sort();

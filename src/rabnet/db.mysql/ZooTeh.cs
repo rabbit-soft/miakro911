@@ -258,7 +258,7 @@ namespace db.mysql
 #if !DEBUG
             try {
 #else
-            //_logger.Debug(type.ToString() + " query: " + query);
+            _logger.Debug(type.ToString() + " query: " + query);
             Stopwatch sw = new Stopwatch();
             sw.Start();
 #endif
@@ -321,8 +321,7 @@ namespace db.mysql
 FROM rabbits 
     LEFT JOIN tiers ON r_tier = t_id
 WHERE r_sex = 'female'
-HAVING srok >= {0:d}
-ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
+HAVING srok >= {0:d};",
                 _flt.safeInt(Filters.OKROL),
                 brd(),
                 _flt.safeValue(Filters.DATE),
@@ -355,8 +354,7 @@ ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
 FROM rabbits
     INNER JOIN tiers ON t_id = r_tier AND ((t_busy1 = r_id AND t_nest like '1%') OR (t_busy2 = r_id AND t_nest like '%1' AND t_type='dfemale'))
 WHERE r_sex = 'female'         
-HAVING srok >= {2:d} AND (r_event_date IS NULL {3:s})
-ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
+HAVING srok >= {2:d} AND (r_event_date IS NULL {3:s});",
                 getnm(),
                 brd(),
                 _flt.safeInt(Filters.VUDVOR),
@@ -443,8 +441,7 @@ WHERE r_sex='female' AND r_id NOT IN (
         FROM logs 
         WHERE l_type = {5:d} AND DATE(l_date) >= DATE(rabbits.r_event_date)
     ) 
-HAVING srok >= {0:d} AND srok < {1:d} 
-ORDER BY srok DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
+HAVING srok >= {0:d} AND srok < {1:d};",
                 _flt.safeInt(Filters.PRE_OKROL),
                 _flt.safeInt(Filters.OKROL),
                 getnm(),
