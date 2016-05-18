@@ -12,10 +12,7 @@ namespace db.mysql
 
         public override IData NextItem()
         {
-            return new RabName(_rd.GetInt32("n_id"), _rd.GetString("n_name"), _rd.GetString("n_surname"),
-                _rd.GetString("n_sex"), DBHelper.GetNullableInt(_rd, "n_use"), 
-                _rd.IsDBNull(_rd.GetOrdinal("n_block_date")) ? DateTime.MinValue : _rd.GetDateTime("n_block_date")
-            );
+            return fillName(_rd);
         }
 
         private String makeWhereClause()
@@ -26,9 +23,9 @@ namespace db.mysql
             }
             if (options.ContainsKey("state")) {
                 if (options.safeInt("state") == 1) {
-                    w = RabbitsDataGetter.addWhereAnd(w, "(n_use = 0 AND n_block_date IS NULL)");
+                    w = RabbitsDataGetter.addWhereAnd(w, "(n_use IS NULL AND n_block_date IS NULL)");
                 } else {
-                    w = RabbitsDataGetter.addWhereAnd(w, "(n_use != 0 OR n_block_date IS NOT NULL)");
+                    w = RabbitsDataGetter.addWhereAnd(w, "(n_use IS NOT NULL OR n_block_date IS NOT NULL)");
                 }
             }
             // if (options.safeValue("name") != "")
@@ -46,7 +43,7 @@ namespace db.mysql
 
         protected override string countQuery()
         {
-            MySqlCommand cmd = new MySqlCommand("UPDATE names SET n_block_date = NULL WHERE n_use = 0 AND n_block_date < NOW();", _sql);
+            MySqlCommand cmd = new MySqlCommand("UPDATE names SET n_block_date = NULL WHERE n_use IS NULL AND n_block_date < NOW();", _sql);
             cmd.ExecuteNonQuery();
             return "SELECT COUNT(1) FROM names" + makeWhereClause() + ";";
         }
@@ -92,14 +89,20 @@ WHERE n_name='{2:s}';", name, surname, orgName), sql);
             MySqlCommand cmd = new MySqlCommand("SELECT n_id, n_sex, n_name, n_surname, n_use, n_block_date FROM names ORDER BY n_name;", sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read()) {
-                result.Add(new RabName(rd.GetInt32("n_id"), rd.GetString("n_name"), rd.GetString("n_surname"),
-                    rd.GetString("n_sex"), rd.GetInt32("n_use"), 
-                    rd.IsDBNull(rd.GetOrdinal("n_block_date")) ? DateTime.MinValue : rd.GetDateTime("n_block_date"))
-                );
+                result.Add(fillName(rd));
             }
             rd.Close();
 
             return result;
+        }
+
+        protected static RabName fillName(MySqlDataReader rd)
+        {
+            return new RabName(rd.GetInt32("n_id"), rd.GetString("n_name"), rd.GetString("n_surname"),
+                rd.GetString("n_sex"),
+                DBHelper.GetNullableInt(rd, "n_use"),
+                rd.IsDBNull(rd.GetOrdinal("n_block_date")) ? DateTime.MinValue : rd.GetDateTime("n_block_date")
+            );
         }
     }
 }

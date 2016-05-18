@@ -17,7 +17,7 @@ namespace db.mysql
         {
             return new Dead(_rd.GetInt32("r_id"), _rd.GetString("name"), _rd.GetString("place"),
                 _rd.GetInt32("age"), _rd.GetDateTime("d_date"),
-                _rd.IsDBNull(6) ? "" : _rd.GetString("reason"), 
+                _rd.IsDBNull(6) ? "" : _rd.GetString("reason"),
                 _rd.IsDBNull(7) ? "" : _rd.GetString("d_notes"),
                 _rd.GetString("breed"), _rd.GetInt32("r_group"));
         }
@@ -88,10 +88,10 @@ FROM (SELECT r_id, deadname(r_id,2), d_date, TO_DAYS(d_date)-TO_DAYS(r_born) age
             rd.Close();
 
             if (name != 0) {
-                cmd.CommandText = String.Format("SELECT n_use FROM names WHERE n_id={0:d};", name);
+                cmd.CommandText = String.Format("SELECT n_use FROM names WHERE n_id = {0:d};", name);
                 rd = cmd.ExecuteReader();
                 if (rd.Read()) {
-                    if (rd.GetInt32("n_use") != 0) {
+                    if (DBHelper.GetNullableInt(rd, "n_use") != 0) {
                         name = 0;
                     }
                 } else {

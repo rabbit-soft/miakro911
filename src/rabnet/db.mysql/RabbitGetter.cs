@@ -178,9 +178,9 @@ WHERE r_id != {1:d} AND r_parent IS NULL;", getOneRabbit_FieldsSet(RabAliveState
             cmd.ExecuteNonQuery();
             if (r.WasNameID != r.NameID) {
                 ///todo  проверка на используемость
-                cmd.CommandText = String.Format("UPDATE names SET n_use = 0, n_block_date = NULL WHERE n_id={0:d};", r.WasNameID);
+                cmd.CommandText = String.Format("UPDATE names SET n_use = NULL, n_block_date = NULL WHERE n_id={0:d};", r.WasNameID);
                 cmd.ExecuteNonQuery();
-                cmd.CommandText = String.Format("UPDATE names SET n_use = {0:d} WHERE n_id = {1:d};", r.ID, r.NameID);
+                cmd.CommandText = String.Format("UPDATE names SET n_use = {0:d} WHERE n_id = {1:d};", r.ID, DBHelper.Nullable(r.NameID));
                 cmd.ExecuteNonQuery();
             }
         }
@@ -316,8 +316,8 @@ VALUES({0}, {1}, {2}, {3}, 'void', {4}, '{5}', {6}, NULL, {7}, {8}, {9}, {10}, {
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT
 (SELECT CONCAT(n_name,' ') FROM names WHERE n_id={0:d}) name,
-(SELECT n_surname FROM names WHERE n_id={1:d}) surname,
-(SELECT n_surname FROM names WHERE n_id={2:d}) secname;
+(SELECT n_surname FROM names WHERE n_id = {1:d}) surname,
+(SELECT n_surname FROM names WHERE n_id = {2:d}) secname;
 ", nm, sur, sec), con);
             MySqlDataReader rd = cmd.ExecuteReader();
             String res = "";
@@ -503,7 +503,7 @@ WHERE r_id={0:d};", rabFromID, DBHelper.Nullable(mom), count), sql);
         /// <param name="rid">ID кролика</param>
         private static void freeName(MySqlConnection sql, int rid)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT r_name FROM rabbits WHERE r_id={0:d};", rid), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT r_name FROM rabbits WHERE r_id = {0:d};", rid), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             int nm = 0;
             if (rd.Read() && !rd.IsDBNull(0)) {
@@ -512,7 +512,7 @@ WHERE r_id={0:d};", rabFromID, DBHelper.Nullable(mom), count), sql);
             rd.Close();
 
             if (nm > 0) {
-                cmd.CommandText = String.Format(@"UPDATE names SET n_use = 0, n_block_date = NOW()+INTERVAL 1 YEAR WHERE n_id = {0:d};", nm);
+                cmd.CommandText = String.Format(@"UPDATE names SET n_use = NULL, n_block_date = NOW()+INTERVAL 1 YEAR WHERE n_id = {0:d};", nm);
                 cmd.ExecuteNonQuery();
             }
         }

@@ -14,7 +14,7 @@ namespace rabnet
         /// <summary>
         /// Необходимой  версия БД (options o_name='db',o_subname='version')
         /// </summary>
-        const int NEED_DB_VERSION = 18;
+        const int NEED_DB_VERSION = 19;
 
         private IRabNetDataLayer _data = null;
         private IRabNetDataLayer _data2 = null;

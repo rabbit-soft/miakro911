@@ -261,7 +261,7 @@ CREATE TABLE `names` (
   n_sex enum('male','female') NOT NULL,
   n_name varchar(50) NOT NULL,
   n_surname varchar(50) NOT NULL,
-  n_use int(10) unsigned NOT NULL DEFAULT '0',
+  n_use int(10) UNSIGNED NULL DEFAULT NULL
   n_block_date datetime DEFAULT NULL,
   PRIMARY KEY (n_id),
   UNIQUE KEY n_name (n_name,n_sex),
@@ -432,7 +432,11 @@ ALTER TABLE rabbits
   ADD CONSTRAINT rabbits_ibfk_6 FOREIGN KEY (r_surname) REFERENCES `names` (n_id) ON UPDATE CASCADE,
   ADD CONSTRAINT rabbits_ibfk_7 FOREIGN KEY (r_secname) REFERENCES `names` (n_id) ON UPDATE CASCADE;
 
-#DATA
+
+ALTER TABLE `names` 
+  ADD CONSTRAINT names_ifbk_1 FOREIGN KEY (n_use)  REFERENCES rabbits (r_id) ON DELETE SET NULL ON UPDATE CASCADE;  
+  
+#--DATA
 
 INSERT INTO `vaccines`(v_id,v_name,v_do_after,v_duration,v_age,v_zootech,v_do_times) VALUES(-1,'Стимуляция самки',0,3,2,0,0);
 INSERT INTO `vaccines`(v_id,v_name,v_do_after,v_duration,v_age,v_zootech,v_do_times) VALUES(1,'Прививка',0,180,45,1,0);
