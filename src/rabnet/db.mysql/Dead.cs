@@ -58,10 +58,12 @@ FROM (SELECT r_id, deadname(r_id,2), d_date, TO_DAYS(d_date)-TO_DAYS(r_born) age
     class DeadHelper
     {
         private MySqlConnection sql = null;
+
         public DeadHelper(MySqlConnection sql)
         {
             this.sql = sql;
         }
+
         /// <summary>
         /// Востановление списанного кролика
         /// </summary>
