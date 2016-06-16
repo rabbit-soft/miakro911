@@ -111,8 +111,7 @@ namespace rabnet
         {
             _logger.Fatal(ex.Message, ex);
             if (ex.Source == "MySql.Data") {
-                MessageBox.Show("Соединение с сервером было разорвано." + Environment.NewLine +
-                    "Программа будет закрыта");
+                MessageBox.Show("Ошибка БД: " + ex.Message + Environment.NewLine + "Программа будет закрыта");
                 Environment.Exit(0);
             } else {
                 MessageBox.Show("Произошла необработанная ошибка." + Environment.NewLine + ex.Message);

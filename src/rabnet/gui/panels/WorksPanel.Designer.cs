@@ -87,7 +87,6 @@
             this.lvZooTech.GridLines = true;
             this.lvZooTech.HideSelection = false;
             this.lvZooTech.Location = new System.Drawing.Point(3, 3);
-            this.lvZooTech.MultiSelect = false;
             this.lvZooTech.Name = "lvZooTech";
             this.lvZooTech.OwnerDraw = true;
             this.lvZooTech.Size = new System.Drawing.Size(677, 266);

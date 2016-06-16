@@ -152,7 +152,7 @@ namespace rabnet.panels
 
         public override ContextMenuStrip getMenu()
         {
-            setMenu(JobType.NONE);
+            this.setMenu(JobType.NONE);
             return actMenu;
         }
 
@@ -451,6 +451,7 @@ namespace rabnet.panels
                 e.Cancel = true;
                 return;
             }
+
             ZootehJob zJob = lvZooTech.SelectedItems[0].Tag as ZootehJob;
             if (zJob.Type == JobType.FUCK) {
                 miLust.Visible = zJob.Flag2 == 0;

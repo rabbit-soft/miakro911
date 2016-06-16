@@ -158,8 +158,9 @@ namespace rabnet.forms
                 if (GRD.Instance.GetFlag(GRD.FlagType.ReportPlugIns)) {
 #endif
                     ReportBase p = ReportBase.GetPluginByName((sender as ToolStripMenuItem).Tag.ToString());
-                    if (p != null)
+                    if (p != null) {
                         p.MakeReport();
+                    }
 #if PROTECTED
                 }
 #endif
@@ -171,7 +172,9 @@ namespace rabnet.forms
 #endif
         private void showTierTMenuItem_CheckedChanged(object sender, EventArgs e)
         {
-            if (_manual) return;
+            if (_manual) {
+                return;
+            }
 
             bool reshow = true;
             Options.OPT_ID id = Options.OPT_ID.SHOW_TIER_TYPE;
@@ -183,8 +186,9 @@ namespace rabnet.forms
             if (sender == shNumMenuItem) id = Options.OPT_ID.SHOW_NUMBERS;
             if (sender == shortZooMenuItem) id = Options.OPT_ID.SHORT_ZOO;
             Engine.opt().setOption(id, ((sender as ToolStripMenuItem).Checked ? 1 : 0));
-            if (reshow)
+            if (reshow) {
                 rabStatusBar1.Run();
+            }
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -193,8 +197,9 @@ namespace rabnet.forms
                 curpanel.deactivate();
                 panel1.Controls.Remove(curpanel);
             }
-            for (int i = 1; i < 5; i++)
+            for (int i = 1; i < 5; i++) {
                 rabStatusBar1.SetText(i, "");
+            }
             curpanel = panels[tabControl1.SelectedIndex];
             panel1.Controls.Add(curpanel);
             tsmiActions.DropDown = curpanel.getMenu();
@@ -206,8 +211,9 @@ namespace rabnet.forms
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             //DataThread.Get().Stop();
-            for (int i = 0; i < panels.Length; i++)
+            for (int i = 0; i < panels.Length; i++) {
                 panels[i].close();
+            }
         }
 
         private void tsmiAboutPO_Click(object sender, EventArgs e)
@@ -226,13 +232,18 @@ GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
                 //CAS.ScaleForm.StopMonitoring();
             }
 #endif
-            if (!rabStatusBar1.IsDisposed && rabStatusBar1.Working)
+            if (!rabStatusBar1.IsDisposed && rabStatusBar1.Working) {
                 rabStatusBar1.Stop();
-            if (Engine.opt().getIntOption(Options.OPT_ID.CONFIRM_EXIT) == 0 || _mustclose) return;
+            }
+            if (Engine.opt().getIntOption(Options.OPT_ID.CONFIRM_EXIT) == 0 || _mustclose) {
+                return;
+            }
 
             DialogResult dlr = MessageBox.Show("Вы уверены что хотите Выйти?", "Выход", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dlr == DialogResult.No) {
-                if (LoginForm.stop == false) LoginForm.stop = true;
+                if (LoginForm.stop == false) {
+                    LoginForm.stop = true;
+                }
                 e.Cancel = true;
             }
 
@@ -275,8 +286,9 @@ GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
         {
             TimeSpan testDelay = DateTime.Now.Subtract(_lastPTest);
             bool res = testDelay.TotalSeconds >= PTEST_DELAY_SEC;
-            if (res)
+            if (res) {
                 _lastPTest = DateTime.Now;
+            }
             return res;
 #endif
         }
@@ -314,10 +326,12 @@ GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
 #if PROTECTED
             String msg = "";
             //            GRD.Instance.ValidKey();
-            if (!GRD.Instance.ValidKey())
+            if (!GRD.Instance.ValidKey()) {
                 msg = "Ключ защиты не найден.";
-            if (farms > 0 && farms > GRD.Instance.GetFarmsCnt())
+            }
+            if (farms > 0 && farms > GRD.Instance.GetFarmsCnt()) {
                 msg = "Превышено количество разрешенных ферм.";
+            }
             if (msg != "") {
                 MessageBox.Show(this, msg + "\nПрограмма будет закрыта.", "Ошибка защиты", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 LoginForm.stop = true;
@@ -688,8 +702,9 @@ GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
         private void miRabExport_Click(object sender, EventArgs e)
         {
 #if !DEMO
-            if (new EPasportForm(true).ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+            if (new EPasportForm(true).ShowDialog() == DialogResult.OK && !MainForm.MustClose) {
                 rabStatusBar1.Run();
+            }
 #else
             DemoErr.DemoNoModuleMsg();
 #endif
