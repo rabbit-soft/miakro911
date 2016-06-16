@@ -67,21 +67,21 @@ FROM (SELECT r_id, deadname(r_id,2), d_date, TO_DAYS(d_date)-TO_DAYS(r_born) age
         /// <summary>
         /// Востановление списанного кролика
         /// </summary>
-        /// <param name="rabbit">ID кролика</param>
-        public void ResurrectRabbit(int rabbit)
+        /// <param name="rabbitId">ID кролика</param>
+        public void ResurrectRabbit(int rabbitId)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"CALL resurrectRabbit({0:d});", rabbit), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"CALL resurrectRabbit({0:d});", rabbitId), sql);
             cmd.ExecuteNonQuery();
             //OneRabbit rab = RabbitGetter.GetRabbit(sql, rabbit);
-            cmd.CommandText = String.Format("SELECT r_id, r_name, r_tier, r_farm, r_tier_id, r_area FROM rabbits WHERE r_id={0:d}", rabbit);
+            cmd.CommandText = String.Format("SELECT r_id, r_name, r_tier, r_farm, r_tier_id, r_area FROM rabbits WHERE r_id={0:d}", rabbitId);
             MySqlDataReader rd = cmd.ExecuteReader();
-            int name = 0;
+            int nameId = 0;
             int tid = 0;
             int fid = 0;
             int lev = 0;
             int sec = 0;
             if (rd.Read()) {
-                name = DBHelper.GetNullableInt(rd, "r_name");
+                nameId = DBHelper.GetNullableInt(rd, "r_name");
                 tid = DBHelper.GetNullableInt(rd, "r_tier");
                 sec = rd.GetInt32("r_area");
                 fid = DBHelper.GetNullableInt(rd, "r_farm");
@@ -89,15 +89,16 @@ FROM (SELECT r_id, deadname(r_id,2), d_date, TO_DAYS(d_date)-TO_DAYS(r_born) age
             }
             rd.Close();
 
-            if (name != 0) {
-                cmd.CommandText = String.Format("SELECT n_use FROM names WHERE n_id = {0:d};", name);
+            if (nameId != 0) {
+                cmd.CommandText = String.Format("SELECT n_use FROM names WHERE n_id = {0:d};", nameId);
                 rd = cmd.ExecuteReader();
                 if (rd.Read()) {
+                    // данное имя уже используется другим кроликом, нужно у востановленного стереть имя
                     if (DBHelper.GetNullableInt(rd, "n_use") != 0) {
-                        name = 0;
+                        nameId = 0;
                     }
                 } else {
-                    name = 0;
+                    nameId = 0;
                 }
                 rd.Close();
             }
@@ -115,19 +116,21 @@ FROM (SELECT r_id, deadname(r_id,2), d_date, TO_DAYS(d_date)-TO_DAYS(r_born) age
                 rd.Close();
             }
 
-            if (name != 0) {
-                cmd.CommandText = String.Format(@"UPDATE names SET n_use = {0:d}, n_block_date = NULL WHERE n_id = {0:d};", name);
+            // стираем у востановленного имя, т.к. оно уже используется            
+            if (nameId != 0) {
+                cmd.CommandText = String.Format(@"UPDATE names SET n_use = {0:d}, n_block_date = NULL WHERE n_id = {1:d};", rabbitId, nameId);
             } else {
-                cmd.CommandText = String.Format(@"UPDATE rabbits SET r_name = NULL WHERE r_id = {0:d};", rabbit);
+                // todo такого не может быть т.к имя блокируется на год
+                cmd.CommandText = String.Format(@"UPDATE rabbits SET r_name = NULL WHERE r_id = {0:d};", rabbitId);
             }
             cmd.ExecuteNonQuery();
 
             if (fid != 0) {
-                cmd.CommandText = String.Format(@"UPDATE tiers SET t_busy{0:d} = {1:d} WHERE t_id = {2};", sec + 1, rabbit, DBHelper.Nullable(tid));
+                cmd.CommandText = String.Format(@"UPDATE tiers SET t_busy{0:d} = {1:d} WHERE t_id = {2};", sec + 1, rabbitId, DBHelper.Nullable(tid));
                 cmd.ExecuteNonQuery();
-                cmd.CommandText = String.Format(@"UPDATE rabbits SET r_tier = {0} WHERE r_id = {1:d};", DBHelper.Nullable(tid), rabbit);
+                cmd.CommandText = String.Format(@"UPDATE rabbits SET r_tier = {0} WHERE r_id = {1:d};", DBHelper.Nullable(tid), rabbitId);
             } else {
-                cmd.CommandText = String.Format(@"UPDATE rabbits SET r_farm = NULL, r_tier_id = 0, r_area = 0, r_tier = NULL WHERE r_id = {0:d};", rabbit);
+                cmd.CommandText = String.Format(@"UPDATE rabbits SET r_farm = NULL, r_tier_id = 0, r_area = 0, r_tier = NULL WHERE r_id = {0:d};", rabbitId);
             }
             cmd.ExecuteNonQuery();
         }
