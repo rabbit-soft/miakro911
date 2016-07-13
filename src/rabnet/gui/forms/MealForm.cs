@@ -93,7 +93,9 @@ namespace rabnet.forms
 
         private bool canAddMealOut()
         {
-            if (rbIn.Checked) return false;
+            if (rbIn.Checked) {
+                return false;
+            }
             DateTime excDate = dtpStartDate.Value;
             int excAmount = int.Parse(tbAmount.Text);
             int indS = -1, indE = -1;

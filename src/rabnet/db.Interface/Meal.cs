@@ -25,6 +25,10 @@ namespace rabnet
         /// </summary>
         public readonly float Rate = 0;
 
+        public int rabDays = 0;
+        public DateTime endDate = DateTime.MaxValue;
+        public int totalAmount = 0;
+
         public sMeal(int id, DateTime start, int amount, float rate, string type)
         {
             this.Id = id;

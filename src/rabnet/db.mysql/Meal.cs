@@ -78,8 +78,9 @@ namespace db.mysql
 
         public static void DeleteMeal(MySqlConnection sql, int id)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format("DELETE FROM meal WHERE m_id={0:d};call updateMeal();", id), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format("DELETE FROM meal WHERE m_id={0:d};", id), sql);
             cmd.ExecuteNonQuery();
+            updateMeal(sql);
         }
 
         protected static void updateMeal(MySqlConnection sql)
@@ -87,27 +88,29 @@ namespace db.mysql
             MySqlCommand cmd = new MySqlCommand("", sql);
             List<sMeal> meals = getMealPeriods(sql);
 
-            int totalAmount = 0;
-            DateTime dateFrom = DateTime.MinValue;
+            sMeal lastIncome = null;
             foreach (sMeal m in meals) {
                 if (m.Type.ToString().ToLower() == "in") {
-                    if (totalAmount > 0) {
-                        int rabDays = getRabDays(dateFrom, m.StartDate, sql);
-                        float rate = (float)totalAmount / rabDays;
-                        
-                        cmd.CommandText = String.Format("UPDATE meal SET m_rate = {0} WHERE m_id = {1:d}", rate.ToString("0.0000").Replace(',','.'), m.Id);
-                        cmd.ExecuteNonQuery();
-                        
-                        totalAmount = 0;
+                    if (lastIncome != null ) {
+                        lastIncome.endDate = m.StartDate;
                     }
-                    dateFrom = m.StartDate;
-                    totalAmount += m.Amount;
-                } else {
-                    totalAmount -= m.Amount;
+                    lastIncome = m;
+
+                    lastIncome.totalAmount += m.Amount;
+                } else if (lastIncome != null ) {
+                    lastIncome.totalAmount -= m.Amount;
                 }                                
             }
 
+            foreach (sMeal m in meals) {
+                if (m.Type.ToString().ToLower() == "in" && m.endDate != DateTime.MaxValue && m.totalAmount > 0) {
+                    int rabDays = getRabDays(m.StartDate, m.endDate, sql);
+                    float rate = (float)m.totalAmount / rabDays;
 
+                    cmd.CommandText = String.Format("UPDATE meal SET m_rate = {0} WHERE m_id = {1:d}", rate.ToString("0.0000").Replace(',', '.'), m.Id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         protected static int getRabDays(DateTime from, DateTime to, MySqlConnection sql)
