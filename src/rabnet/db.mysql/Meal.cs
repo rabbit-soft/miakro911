@@ -91,7 +91,7 @@ namespace db.mysql
             DateTime dateFrom = DateTime.MinValue;
             foreach (sMeal m in meals) {
                 if (m.Type.ToString().ToLower() == "in") {
-                    if (totalAmount != 0) {
+                    if (totalAmount > 0) {
                         int rabDays = getRabDays(dateFrom, m.StartDate, sql);
                         float rate = (float)totalAmount / rabDays;
                         
@@ -112,7 +112,7 @@ namespace db.mysql
 
         protected static int getRabDays(DateTime from, DateTime to, MySqlConnection sql)
         {
-            string query = String.Format(@"SELECT SUM(DATEDIFF(end_eat, adulthood) * cnt)
+            string query = String.Format(@"SELECT Coalesce(SUM(DATEDIFF(end_eat, adulthood) * cnt), 0)
 FROM (
     SELECT Coalesce(SUM(r_group),0) cnt, DATE_ADD(Date(r_born), INTERVAL {2:d} DAY) adulthood, IFNULL(Date(d_date), {1}) AS end_eat
     FROM allrabbits 
