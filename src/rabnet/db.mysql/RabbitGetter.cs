@@ -163,8 +163,8 @@ WHERE r_id != {1:d} AND r_parent IS NULL;", getOneRabbit_FieldsSet(RabAliveState
                 query += String.Format(", r_status={0:d}, r_last_fuck_okrol={1:s}", r.Status, DBHelper.DateToSqlString(r.LastFuckOkrol));
             }
             if (r.Sex == Rabbit.SexType.FEMALE) {
-                query += String.Format(", r_event='{0:s}', r_event_date={1:s}, r_lost_babies={2:d}, r_overall_babies={3:d}", 
-                    Rabbit.GetEventName(r.EventType), DBHelper.DateToSqlString(r.EventDate), r.KidsLost, r.KidsOverAll);
+                query += String.Format(", r_event='{0:s}', r_event_date={1:s}, r_overall_babies={2:d}", 
+                    Rabbit.GetEventName(r.EventType), DBHelper.DateToSqlString(r.EventDate), r.KidsOverAll);
             }
             query += String.Format(" WHERE r_id={0:d};", r.ID);
 

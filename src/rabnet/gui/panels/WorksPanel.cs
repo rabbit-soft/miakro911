@@ -243,12 +243,8 @@ namespace rabnet.panels
             bool needUpdate = Engine.opt().getIntOption(Options.OPT_ID.UPDATE_ZOO) == 1;
             switch (job.Type) {
                 case JobType.NEST_OUT:
-                    RabNetEngBuilding b = Engine.get().getBuilding(job.ID);
-                    if (job.ID2 == 0) {
-                        b.setNest(false);
-                    } else {
-                        b.setNest2(false);
-                    }
+                    RabNetEngBuilding b = Engine.get().getBuilding(job.ID);                   
+                    b.setNest(false, (job.ID2 == 0 ? 0 : 1));                    
                     needUpdate = false;
                     break;
 
@@ -330,11 +326,18 @@ namespace rabnet.panels
                     break;
 
                 case JobType.SET_NEST://установка гнездовья    
-                    //Building.CanHaveNest();
+                    RabPlace rp = RabPlace.Parse(job.Rabplace);
+                    if (rp.CanHaveNest()) {
+                        RabNetEngBuilding rbe = RabNetEngBuilding.FromPlace(job.Rabplace, Engine.get());                          
+                        rbe.setNest(true, rp.Section);
+                        res = DialogResult.OK;
+                        needUpdate = false;
+                        break;
+                    } 
                     ReplaceForm f = new ReplaceForm();
                     f.AddRabbit(job.ID);
                     f.SetAction(ReplaceForm.Action.SET_NEST);
-                    res = f.ShowDialog();
+                    res = f.ShowDialog();                    
                     break;
 
                 case JobType.BOYS_BY_ONE:
@@ -348,12 +351,12 @@ namespace rabnet.panels
                     RabNetEngRabbit r = Engine.get().getRabbit(job.ID);
                     r.SpermTake();
                     needUpdate = false;
-
 #else
                     DemoErr.DemoNoModuleMsg();
 #endif
                     break;
             }
+
             if (res != DialogResult.Cancel) {
                 int idx = lvZooTech.SelectedItems[0].Index;
                 lvZooTech.SelectedItems[0].Remove();

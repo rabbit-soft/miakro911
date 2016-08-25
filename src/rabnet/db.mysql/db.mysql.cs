@@ -484,8 +484,9 @@ namespace db.mysql
         #region buildings
         public Building getBuilding(int tier)
         {
-            if (tier == 0)
+            if (tier == 0) {
                 return null;
+            }
             return Buildings.getTier(tier, sql);
         }
         public void updateBuilding(Building b)

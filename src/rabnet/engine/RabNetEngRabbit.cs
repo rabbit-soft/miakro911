@@ -80,7 +80,9 @@ namespace rabnet
         private void loadData()
         {
             _origin = _eng.db().GetRabbit(_id);
-            if (_origin == null) throw new ExNoRabbit();
+            if (_origin == null) {
+                throw new ExNoRabbit();
+            }
 
             cloneOnThis(_origin);
         }
@@ -94,14 +96,14 @@ namespace rabnet
         }
 
         #region own_props
-        public string TierType
-        {
-            get
-            {
-                string[] values = this.RawAddress.Split(',');
-                return values[3];
-            }
-        }
+        //public string TierType
+        //{
+        //    get
+        //    {
+        //        string[] values = this.RawAddress.Split(',');
+        //        return values[3];
+        //    }
+        //}
 
         public string Tag
         {
@@ -261,7 +263,9 @@ namespace rabnet
         /// </summary>
         public void CommitNew()
         {
-            if (_id != 0) return;
+            if (_id != 0) {
+                return;
+            }
 
             _id = _eng.db().NewRabbit(this, Mom);
             //_origin.ID = _id;

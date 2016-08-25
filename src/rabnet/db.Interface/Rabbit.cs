@@ -29,8 +29,8 @@ namespace rabnet
             _id = id;
             _nameFull = rabname;
             _sex = Rabbit.SexType.VOID;
-            if (sex == "male") { 
-                _sex = Rabbit.SexType.MALE; 
+            if (sex == "male") {
+                _sex = Rabbit.SexType.MALE;
             }
             if (sex == "female") {
                 _sex = Rabbit.SexType.FEMALE;
@@ -44,22 +44,75 @@ namespace rabnet
             _notes = notes;
         }
 
-        public virtual int ID { get { return _id; } set { _id = value; } }
-        public virtual String NameFull { get { return _nameFull; } set { _nameFull = value; } }
-        public virtual Rabbit.SexType Sex { get { return _sex; } set { _sex = value; } }
-        public virtual DateTime BirthDay { get { return _birthDay; } set { _birthDay = value; } }
-        public virtual String BreedName { get { return _breedName; } set { _breedName = value; } }
-        public virtual string Notes { get { return _notes; } set { _notes = value; } }
-        public virtual int Group { get { return _group; } set { _group = value; } }
-        public virtual int Age { get { return DateTime.Now.Subtract(BirthDay).Days; } }
-        public virtual String AddressFull { get { return _rawAddress == "" ? NULL_ADDRESS : Building.FullPlaceName(_rawAddress, false, true, true); } }
-        public virtual String Address { get { return _rawAddress == "" ? NULL_ADDRESS : Building.FullPlaceName(_rawAddress, false, true, false); } set { } }
-        public virtual String AddressSmall { get { return _rawAddress == "" ? NULL_ADDRESS : Building.FullPlaceName(_rawAddress, true, false, false); } }
+        public virtual int ID
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        public virtual String NameFull
+        {
+            get { return _nameFull; }
+            set { _nameFull = value; }
+        }
+        public virtual Rabbit.SexType Sex
+        {
+            get { return _sex; }
+            set { _sex = value; }
+        }
+        public virtual DateTime BirthDay
+        {
+            get { return _birthDay; }
+            set { _birthDay = value; }
+        }
+        public virtual String BreedName
+        {
+            get { return _breedName; }
+            set { _breedName = value; }
+        }
+        public virtual string Notes
+        {
+            get { return _notes; }
+            set { _notes = value; }
+        }
+        public virtual int Group
+        {
+            get { return _group; }
+            set { _group = value; }
+        }
+        public virtual int Age
+        {
+            get { return DateTime.Now.Subtract(BirthDay).Days; }
+        }
+        public virtual String AddressFull
+        {
+            get { return _rawAddress == "" ? NULL_ADDRESS : Building.FullPlaceName(_rawAddress, false, true, true); }
+        }
+        public virtual String Address
+        {
+            get { return _rawAddress == "" ? NULL_ADDRESS : Building.FullPlaceName(_rawAddress, false, true, false); }
+            set { }
+        }
+        public virtual String AddressSmall
+        {
+            get { return _rawAddress == "" ? NULL_ADDRESS : Building.FullPlaceName(_rawAddress, true, false, false); }
+        }
 
-        public virtual String FAddress(bool s_adrTier, bool s_adrDesc) { return Building.FullPlaceName(_rawAddress, false, s_adrTier, s_adrDesc); }
-        public virtual String FAddress() { return FAddress(false, false); }
-        public virtual string FBon(bool s_short) { return Rabbit.GetFBon(_bon, s_short); }
-        public virtual String FSex() { return SexToRU(Sex); }
+        public virtual String FAddress(bool s_adrTier, bool s_adrDesc)
+        {
+            return Building.FullPlaceName(_rawAddress, false, s_adrTier, s_adrDesc);
+        }
+        public virtual String FAddress()
+        {
+            return FAddress(false, false);
+        }
+        public virtual string FBon(bool s_short)
+        {
+            return Rabbit.GetFBon(_bon, s_short);
+        }
+        public virtual String FSex()
+        {
+            return SexToRU(Sex);
+        }
 
         #region static
         public static String SexToRU(Rabbit.SexType s)
@@ -177,10 +230,26 @@ namespace rabnet
         public AdultRabbit() { }
 
         #region properties
-        public int Rate { get { return _rate; } set { _rate = value; } }
-        public int Sukrol { get { return DateTime.Now.Subtract(_eventDate.Date).Days; } }
-        public virtual int KidsCount { get { return _kidsTotalCount; } }
-        public virtual string KidsAge { get { return _kidsTotalCount > 0 ? String.Join(" | ", _kidsAge) : ""; } }
+        public int Rate
+        {
+            get { return _rate; }
+            set { _rate = value; }
+        }
+
+        public int Sukrol
+        {
+            get { return DateTime.Now.Subtract(_eventDate.Date).Days; }
+        }
+
+        public virtual int KidsCount
+        {
+            get { return _kidsTotalCount; }
+        }
+
+        public virtual string KidsAge
+        {
+            get { return _kidsTotalCount > 0 ? String.Join(" | ", _kidsAge) : ""; }
+        }
 
         public String FGroup()
         {
@@ -192,6 +261,7 @@ namespace rabnet
             }
             return res;
         }
+
         /// <summary>
         /// Количество кроликов в клетке
         /// </summary>
@@ -204,6 +274,7 @@ namespace rabnet
             }
             return res;
         }
+
         public string FFlags()
         {
             String flg = _flags;
@@ -220,6 +291,7 @@ namespace rabnet
             }
             return res;
         }
+
         public String FStatus(bool s_short, int s_candAge, int s_brideAge)//todo сделать enum статусы
         {
             string res = "";
@@ -249,7 +321,11 @@ namespace rabnet
             }
             return res;
         }
-        public String FStatus() { return FStatus(false, 120, 122); }
+
+        public String FStatus()
+        {
+            return FStatus(false, 120, 122);
+        }
 
         public override String FSex()
         {
@@ -299,8 +375,8 @@ namespace rabnet
         #endregion prop
 
         public OneRabbit(int id, string sx, DateTime born, int rate, string flags, int nameId, int surnameId, int secnameId, string rawAddress, int group,
-            int brd, int zone, String notes, String genom, 
-            int status, DateTime lastFuckOkrol, String eventType, DateTime eventDate, int overAllBabys, int lostBabys, 
+            int brd, int zone, String notes, String genom,
+            int status, DateTime lastFuckOkrol, String eventType, DateTime eventDate, int overAllBabys, int lostBabys,
             String fullName, String breedName, String bon, int parent, int okrol, int weight, DateTime weightDate, int motherID, int fatherID, int exportFrom)
             : base(id, fullName, sx, born, breedName, group, bon, rawAddress, notes, rate, flags, weight, status, eventDate, 0, -1, "", "")
         {
@@ -327,11 +403,21 @@ namespace rabnet
         }
 
         public OneRabbit() { }
+
         /// <summary>
         /// Каким окролом родился
         /// </summary>
-        public int Okrol { get { return _okrol; } }
-        public DateTime WeightDate { get { return _weightDate; } set { _weightDate = value; } }
+        public int Okrol
+        {
+            get { return _okrol; }
+        }
+
+        public DateTime WeightDate
+        {
+            get { return _weightDate; }
+            set { _weightDate = value; }
+        }
+
         /// <summary>
         /// Бонитировка
         /// 0 - НЕ ИЗВЕСТНО
@@ -346,10 +432,22 @@ namespace rabnet
             set { _bon = value; }
         }
 
-        public string Bon_Weight { get { return Rabbit.GetFBon(_bon[1]); } }
-        public string Bon_Body { get { return Rabbit.GetFBon(_bon[2]); } }
-        public string Bon_Hair { get { return Rabbit.GetFBon(_bon[3]); } }
-        public string Bon_Color { get { return Rabbit.GetFBon(_bon[4]); } }
+        public string Bon_Weight
+        {
+            get { return Rabbit.GetFBon(_bon[1]); }
+        }
+        public string Bon_Body
+        {
+            get { return Rabbit.GetFBon(_bon[2]); }
+        }
+        public string Bon_Hair
+        {
+            get { return Rabbit.GetFBon(_bon[3]); }
+        }
+        public string Bon_Color
+        {
+            get { return Rabbit.GetFBon(_bon[4]); }
+        }
 
         /// <summary>
         /// Дато последнего соития
@@ -374,13 +472,22 @@ namespace rabnet
             get { return WeightDate.Subtract(BirthDay).Days; }
         }
 
-        public int ParentID { get { return _parentID; } }
-        public int WasNameID { get { return _wasNameID; } }
+        public int ParentID
+        {
+            get { return _parentID; }
+        }
+
+        public int WasNameID
+        {
+            get { return _wasNameID; }
+        }
+
         public int NameID
         {
             get { return _nameID; }
             set { _nameID = value; }
         }
+
         /// <summary>
         /// Фамили по отцу
         /// </summary>
@@ -397,6 +504,7 @@ namespace rabnet
             get { return _secnameID; }
             set { _secnameID = value; }
         }
+
         /// <summary>
         /// Порода кролика
         /// </summary>
@@ -405,16 +513,19 @@ namespace rabnet
             get { return _breedID; }
             set { _breedID = value; }
         }
+
         public int Zone
         {
             get { return _zone; }
             set { _zone = value; }
         }
+
         public String Genoms
         {
             get { return _genoms; }
             set { _genoms = value; }
         }
+
         /// <summary>
         /// Дата последнего окрола (для Самки) или соития (для Самца)
         /// </summary>               
@@ -423,7 +534,11 @@ namespace rabnet
             get { return _lastFuckOkrol.Date; }
             set { _lastFuckOkrol = value.Date; }
         }
-        public int EventType { get { return _eventType; } }
+        public int EventType
+        {
+            get { return _eventType; }
+        }
+
         public int KidsOverAll
         {
             get { return _kidsOverAll; }
@@ -481,17 +596,34 @@ namespace rabnet
         //public bool risk;     
         #endregion flags
 
-        public string RawAddress { get { return _rawAddress; } }
+        public string RawAddress
+        {
+            get { return _rawAddress; }
+        }
+
         public override string Address
         {
             get { return _newAddress == "" ? base.Address : _newAddress; }
             set { _newAddress = value; }
         }
 
-        public int MotherID { get { return _motherId; } set { _motherId = value; } }
-        public int FatherID { get { return _fatherId; } set { _fatherId = value; } }
+        public int MotherID
+        {
+            get { return _motherId; }
+            set { _motherId = value; }
+        }
 
-        public virtual string RabGenoms { get { return _rabGenom; } set { _rabGenom = value; } }
+        public int FatherID
+        {
+            get { return _fatherId; }
+            set { _fatherId = value; }
+        }
+
+        public virtual string RabGenoms
+        {
+            get { return _rabGenom; }
+            set { _rabGenom = value; }
+        }
 
         /// <summary>
         /// ID клиента, на ферме которого родился кролик
@@ -517,7 +649,14 @@ namespace rabnet
             _deadDate = deadDate;
         }
 
-        public DateTime DeadDate { get { return _deadDate; } }
-        public int DeadAge { get { return DeadDate.Subtract(BirthDay).Days; } }
+        public DateTime DeadDate
+        {
+            get { return _deadDate; }
+        }
+
+        public int DeadAge
+        {
+            get { return DeadDate.Subtract(BirthDay).Days; }
+        }
     }
 }

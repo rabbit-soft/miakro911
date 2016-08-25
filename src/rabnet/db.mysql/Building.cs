@@ -174,7 +174,7 @@ WHERE (m_upper=t_id OR m_lower=t_id) " + makeWhere() + ";";
     rabname(t_busy3,1) r3, 
     rabname(t_busy4,1) r4
 FROM minifarms, tiers 
-WHERE (m_upper = t_id OR m_lower = t_id) AND t_id=" + tier.ToString() + ";", con);
+WHERE (m_upper = t_id OR m_lower = t_id) AND t_id=" + tier.ToString(), con);
             MySqlDataReader rd = cmd.ExecuteReader();
             Building b = null;
             if (rd.Read()) {

@@ -185,14 +185,21 @@ namespace rabnet.forms
                             if (r.CurAddress != this.Address) continue;//если детям назначили адрес раньше матери
                             String cur = r.Address;
                             r.Address = this.CurAddress;
-                            if (!this.WithChild)
+                            if (!this.WithChild) {
                                 r.CurAddress = cur;
+                            }
                         }
                 }
             }
 
-            public bool Replaced { get { return CurAddress != Address; } }
-            public string Name { get { return (Younger ? " - " : "") + SName; } set { SName = value; } }
+            public bool Replaced 
+            { 
+                get { return CurAddress != Address; } 
+            }
+            public string Name { 
+                get { return (Younger ? " - " : "") + SName; } 
+                set { SName = value; } 
+            }
             public string Status
             {
                 get
@@ -217,6 +224,7 @@ namespace rabnet.forms
                 return new RP(this, num);
             }
         }
+
         class RPList : List<RP> { }
 
         public const int FIELD_NAME = 0;
@@ -409,8 +417,15 @@ namespace rabnet.forms
             }
         }
 
-        private void updateB() { update(true); }
-        private void update() { update(false); }
+        private void updateB() 
+        { 
+            this.update(true); 
+        }
+
+        private void update() 
+        { 
+            this.update(false); 
+        }
 
         /// <summary>
         /// Обновляет информацию dataGrid
@@ -495,13 +510,14 @@ namespace rabnet.forms
             if ((int)cbFilter.Tag == 1) {
                 return;
             }
-            updateB();
+            this.updateB();
         }
 
         private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            if (e.ColumnIndex != FIELD_NEST || (e.ColumnIndex == FIELD_NEST && !canHaveNest(e.RowIndex)))
+            if (e.ColumnIndex != FIELD_NEST || (e.ColumnIndex == FIELD_NEST && !canHaveNest(e.RowIndex))) {
                 e.Cancel = (e.ColumnIndex != FIELD_NEWPLACE);
+            }
         }
         private void ReplaceForm_Load(object sender, EventArgs e)
         {
@@ -510,7 +526,7 @@ namespace rabnet.forms
                 cbFilter.Enabled = false;
                 this.Text += " - Установка гнездовья";
             }
-            updateB();
+            this.updateB();
             //loadColumnsWidths();
             _manual = true;
         }
@@ -525,6 +541,7 @@ namespace rabnet.forms
             if ((e.ColumnIndex != FIELD_NEWPLACE && e.ColumnIndex != FIELD_NEST) || _dataSet.Rows.Count == 0) {
                 return;
             }
+
             DataRow rw = _dataSet.Rows[e.RowIndex];
             RP r = _replaceList[e.RowIndex];
             if (e.ColumnIndex == FIELD_NEWPLACE) {
@@ -571,7 +588,7 @@ namespace rabnet.forms
             string ca = r1.CurAddress;
             r1.SetCurAddress(r2.CurAddress, true);
             r2.SetCurAddress(ca, true);
-            update();
+            this.update();
         }
 
         private void dataGridView1_MultiSelectChanged(object sender, EventArgs e)
@@ -684,6 +701,7 @@ namespace rabnet.forms
                 rp.Saved = true;
                 return;
             }
+
             RabNetEngRabbit rb = Engine.get().getRabbit(id == 0 ? rp.ID : id);
             RabNetEngRabbit par = null;
 
@@ -723,12 +741,8 @@ namespace rabnet.forms
                     //BuildingType tp = Building.ParseType(vals[3]);
                     if (rbe.Type == BuildingType.Jurta || rbe.Type == BuildingType.Female) {
                         rbe.setNest(rp.SetNest);
-                    } else if (rbe.Type == BuildingType.DualFemale) {
-                        if (vals[2] == "0") {
-                            rbe.setNest(rp.SetNest);
-                        } else if (vals[2] == "1") {
-                            rbe.setNest2(rp.SetNest);
-                        }
+                    } else if (rbe.Type == BuildingType.DualFemale) {                        
+                        rbe.setNest(rp.SetNest, Int32.Parse(vals[2]));                        
                     }
                 }
             }
@@ -773,10 +787,10 @@ namespace rabnet.forms
                     }
                 }
                 foreach (RP r in _replaceList) {
-                    commitRabbit(r, 0, false);
+                    this.commitRabbit(r, 0, false);
                 }
                 foreach (RP r in _replaceList) {
-                    commitRabbit(r, 0, true);
+                    this.commitRabbit(r, 0, true);
                 }
                 Close();
             } catch (ApplicationException ex) {

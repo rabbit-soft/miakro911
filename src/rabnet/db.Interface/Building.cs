@@ -22,20 +22,28 @@ namespace rabnet
     public class RabPlace
     {
         /// <summary>
-        /// Minifarm ID
+        /// [0] Minifarm ID
         /// </summary>
         public readonly int Farm;
         /// <summary>
-        /// Тут записан этаж, но по стечению обстоятельств в базе он имеет имя tier_id
+        /// [1] Тут записан этаж, но по стечению обстоятельств в базе он имеет имя tier_id
         /// </summary>
         public readonly int Floor;        
-
+        /// <summary>
+        /// [2]
+        /// </summary>
         public readonly BuildingType Type;
-
+        /// <summary>
+        /// [3]
+        /// </summary>
         public string Delims;
-
+        /// <summary>
+        /// [4]
+        /// </summary>
         public string Heaters;
-
+        /// <summary>
+        /// [5]
+        /// </summary>
         public int Section = -1;
 
         public RabPlace(int farm, int tier_id, int sec, BuildingType type, String delims, String heaters)
@@ -44,6 +52,13 @@ namespace rabnet
             this.Floor = tier_id;
             this.Type = type;
             this.Section = sec;
+            this.Delims = delims;
+            this.Heaters = heaters;
+        }
+
+        public bool CanHaveNest()
+        {
+            return Building.CanHaveNest(this.Type, this.Section);
         }
 
         public static RabPlace Parse(String rawAddress)
@@ -51,6 +66,7 @@ namespace rabnet
             String[] dts = rawAddress.Split(',');
             return new RabPlace(int.Parse(dts[0]), int.Parse(dts[1]), int.Parse(dts[2]), Building.ParseType(dts[3]), dts[4], dts[5]);
         }
+        
     }
 
     /// <summary>
@@ -302,9 +318,9 @@ namespace rabnet
                 return false;
             }
             if (type == BuildingType.DualFemale) {
-                return (nests[sec] == '1');
+                return nests[sec] == '1';
             }
-            return (nests[0] == '1');
+            return nests[0] == '1';
         }
 
         /// <summary>
@@ -358,7 +374,9 @@ namespace rabnet
         /// <returns></returns>
         public static String GetSecRus(BuildingType type, int sec, String delims)
         {
-            if (type == BuildingType.Female || type == BuildingType.Cabin) return "";
+            if (type == BuildingType.Female || type == BuildingType.Cabin) {
+                return "";
+            }
 
             const String SECNAMES = "абвг";
             String res = "" + SECNAMES[sec];
@@ -448,20 +466,20 @@ namespace rabnet
             return res;
         }
 
-        public static String FullPlaceName(String rawAddres, bool shrt, bool showTier, bool showDescr)
-        {
-            if (rawAddres == "") {
-                return Rabbit.NULL_ADDRESS;
-            }
-
-            String[] dts = rawAddres.Split(',');
-            return FullNameRus(int.Parse(dts[0]), int.Parse(dts[1]), int.Parse(dts[2]), Building.ParseType(dts[3]), dts[4], shrt, showTier, showDescr);
-        }
-
         public static String FullPlaceName(String rawAddres)
         {
             return FullPlaceName(rawAddres, false, false, false);
         }
+
+        public static String FullPlaceName(String rawAddress, bool shrt, bool showTier, bool showDescr)
+        {
+            if (rawAddress == "") {
+                return Rabbit.NULL_ADDRESS;
+            }
+
+            RabPlace rabPlace = RabPlace.Parse(rawAddress);
+            return FullNameRus(rabPlace.Farm, rabPlace.Floor, rabPlace.Section, rabPlace.Type, rabPlace.Delims, shrt, showTier, showDescr);
+        }       
 
         public static bool HasNest(String rawAddres)
         {
