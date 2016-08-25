@@ -45,6 +45,7 @@ namespace rabnet
         public JobType Type = JobType.OKROL;
         public int Days = 0;
         public string JobName = "";
+        public string Rabplace = "";
         public string Address = "";
         public string RabName = "";
         public int RabAge = 0;

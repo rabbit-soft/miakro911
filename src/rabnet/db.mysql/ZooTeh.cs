@@ -24,7 +24,7 @@ namespace db.mysql
             _flt = f;
             this.Type = type;
             this.JobName = getRusJobName(type);
-            fillData(type, rd);
+            this.fillData(type, rd);
         }
 
         private string getRusJobName(JobType type)
@@ -47,7 +47,7 @@ namespace db.mysql
 
         private void fillData(JobType type, MySqlDataReader rd)
         {
-            fillCommonData(rd);
+            this.fillCommonData(rd);
             switch (type) {
                 case JobType.OKROL: fillOkrol(rd); break;
                 case JobType.NEST_OUT: fillVudvor(rd); break;
@@ -68,7 +68,8 @@ namespace db.mysql
             Days = rd.GetInt32("srok");
             ID = rd.GetInt32("r_id");
             RabName = rd.GetString("name");
-            Address = Building.FullPlaceName(rd.GetString("place"));
+            Rabplace = rd.GetString("place");
+            Address = Building.FullPlaceName(Rabplace);
             RabAge = rd.GetInt32("age");
             RabBreed = rd.GetString("breed");
         }
@@ -211,7 +212,7 @@ namespace db.mysql
 
         public ZooTehGetter(MySqlConnection sql)
         {
-            this.sql = sql;            
+            this.sql = sql;
         }
 
         #region helpers
@@ -262,12 +263,12 @@ namespace db.mysql
             Stopwatch sw = new Stopwatch();
             sw.Start();
 #endif
-            MySqlCommand cmd = new MySqlCommand(query, sql);
-            rd = cmd.ExecuteReader();
-            while (rd.Read()) {
-                res.Add(new ZootehJob_MySql(_flt, type, rd));
-            }
-            rd.Close();
+                MySqlCommand cmd = new MySqlCommand(query, sql);
+                rd = cmd.ExecuteReader();
+                while (rd.Read()) {
+                    res.Add(new ZootehJob_MySql(_flt, type, rd));
+                }
+                rd.Close();
 #if DEBUG
             sw.Stop();
             _logger.DebugFormat("execution time: {0} ZOO_{1}", sw.Elapsed, type);
@@ -276,9 +277,9 @@ namespace db.mysql
                 _logger.Error(err.Message);
             } finally {
 #endif
-            if (rd != null && !rd.IsClosed) {
-                rd.Close();
-            }
+                if (rd != null && !rd.IsClosed) {
+                    rd.Close();
+                }
 #if !DEBUG
             }
 #endif
@@ -306,6 +307,7 @@ namespace db.mysql
                 default: return "";
             }
         }
+
 
         private string qOkrol()
         {
@@ -459,7 +461,7 @@ HAVING srok >= {0:d} AND srok < {1:d};",
 FROM (" +
 
         // еси отсадка мальчиков, то ищем бесполые группы сидящие без мамки
-    ( _flt.safeInt("sex") == (int)Rabbit.SexType.MALE ? @"
+    (_flt.safeInt("sex") == (int)Rabbit.SexType.MALE ? @"
 	#stand alone boys
 	SELECT
 		DATEDIFF('{4}', r_born) age,
@@ -496,7 +498,7 @@ FROM (" +
 	WHERE {0} AND r_parent IS NOT NULL 
 ) c
 WHERE age >= {1:d} 
-ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;", 
+ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
                     (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "r_sex = 'female'" : "(r_sex = 'void' OR r_sex = 'male')"),
                     (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT)),
                     brd(),
@@ -507,24 +509,24 @@ ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
 
 
 
-//            return String.Format(@"SELECT DISTINCT
-//    IF(r_parent != 0, r_parent, r_id) r_id,
-//    DATEDIFF('{4}', r_born) age,
-//    DATEDIFF('{4}', r_born) - {1:d} srok,     
-//    rabname(IF(r_parent != 0, r_parent, r_id), {3:s}) name, 
-//    rabplace(IF(r_parent != 0, r_parent, r_id)) place,     
-//    {2:s} 
-//FROM rabbits 
-//WHERE {0:s} 
-//
-//HAVING age >= {1:d} 
-//ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
-//                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "(r_sex = 'female' AND r_parent IS NOT NULL)" : "(r_sex = 'void' OR (r_sex = 'male' AND r_parent IS NOT NULL))"),
-//                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT)),
-//                brd(),
-//                getnm(),
-//                _flt[Filters.DATE]
-//            );
+            //            return String.Format(@"SELECT DISTINCT
+            //    IF(r_parent != 0, r_parent, r_id) r_id,
+            //    DATEDIFF('{4}', r_born) age,
+            //    DATEDIFF('{4}', r_born) - {1:d} srok,     
+            //    rabname(IF(r_parent != 0, r_parent, r_id), {3:s}) name, 
+            //    rabplace(IF(r_parent != 0, r_parent, r_id)) place,     
+            //    {2:s} 
+            //FROM rabbits 
+            //WHERE {0:s} 
+            //
+            //HAVING age >= {1:d} 
+            //ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
+            //                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "(r_sex = 'female' AND r_parent IS NOT NULL)" : "(r_sex = 'void' OR (r_sex = 'male' AND r_parent IS NOT NULL))"),
+            //                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT)),
+            //                brd(),
+            //                getnm(),
+            //                _flt[Filters.DATE]
+            //            );
         }
 
         private string qFuck()
@@ -679,7 +681,7 @@ DROP TEMPORARY TABLE IF EXISTS aaa; {5:s};",
 FROM rabbits 
     LEFT JOIN tiers ON r_tier = t_id
 WHERE r_sex = 'female' AND r_event_date IS NOT NULL
-HAVING ((children IS NULL AND sukr >= {0:d}) OR (children > 0 AND sukr >= {1:d})) 
+HAVING ( (children IS NULL AND sukr >= {0:d}) OR (children > 0 AND sukr >= {1:d}) ) 
     AND (
         place NOT LIKE '%,%,0,jurta,%,1%' 
         AND place NOT LIKE '%,%,0,female,%,1%' 

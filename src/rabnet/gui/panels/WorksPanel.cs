@@ -234,10 +234,11 @@ namespace rabnet.panels
         private void makeJob()
         {
             DialogResult res = DialogResult.OK;
-            ZootehJob job = getCurJob();
+            ZootehJob job = this.getCurJob();
             if (job == null) {
                 return;
             }
+
             _fullUpdate = true;
             bool needUpdate = Engine.opt().getIntOption(Options.OPT_ID.UPDATE_ZOO) == 1;
             switch (job.Type) {
@@ -328,7 +329,7 @@ namespace rabnet.panels
                     needUpdate = false;
                     break;
 
-                case JobType.SET_NEST://установка гнездовья
+                case JobType.SET_NEST://установка гнездовья                    
                     ReplaceForm f = new ReplaceForm();
                     f.AddRabbit(job.ID);
                     f.SetAction(ReplaceForm.Action.SET_NEST);

@@ -522,7 +522,9 @@ namespace rabnet.panels
 
         private void treeView1_DragDrop(object sender, DragEventArgs e)
         {
-            if (!e.Data.GetDataPresent(typeof(TreeNode))) return;
+            if (!e.Data.GetDataPresent(typeof(TreeNode))) {
+                return;
+            }
 
             TreeNode child = e.Data.GetData(typeof(TreeNode)) as TreeNode;
             Point px = treeView1.PointToClient(new Point(e.X, e.Y));
