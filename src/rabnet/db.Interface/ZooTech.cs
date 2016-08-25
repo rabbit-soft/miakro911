@@ -19,19 +19,21 @@ namespace rabnet
 {
     public enum JobType
     {
-        NONE,
-        OKROL,
-        NEST_OUT,
+        None,
+        Okrol,
+        /// <summary> Выдворение </summary>
+        NestOut,
         /// <summary>Подсчет гнездовых/подсосных</summary>
-        COUNT_KIDS,
-        PRE_OKROL,
-        BOYS_OUT,
-        GIRLS_OUT,
-        FUCK,
-        VACC,
-        SET_NEST,
-        BOYS_BY_ONE,
-        SPERM_TAKE
+        CountKids,
+        /// <summary>Предокрольный осмотр</summary>
+        PreOkrol,
+        BoysOut,
+        GirlsOut,
+        Fuck,
+        Vaccine,
+        NestSet,
+        BoysByOne,
+        SpermTake
     }
 
     public class ZooTehNullItem : IData
@@ -42,7 +44,7 @@ namespace rabnet
 
     public class ZootehJob : IData
     {
-        public JobType Type = JobType.OKROL;
+        public JobType Type = JobType.Okrol;
         public int Days = 0;
         public string JobName = "";
         public string Rabplace = "";

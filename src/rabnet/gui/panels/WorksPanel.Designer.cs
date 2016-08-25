@@ -39,20 +39,20 @@
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.actMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.okrolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.vudvorMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.countsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.countChangedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.preokrolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.boysOutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.girlsOutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fuckMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miOkrol = new System.Windows.Forms.ToolStripMenuItem();
+            this.miNestOut = new System.Windows.Forms.ToolStripMenuItem();
+            this.miCountKids = new System.Windows.Forms.ToolStripMenuItem();
+            this.miCountKidsChanged = new System.Windows.Forms.ToolStripMenuItem();
+            this.miPreOkrol = new System.Windows.Forms.ToolStripMenuItem();
+            this.miBoysOut = new System.Windows.Forms.ToolStripMenuItem();
+            this.miGirlsOut = new System.Windows.Forms.ToolStripMenuItem();
+            this.miFuck = new System.Windows.Forms.ToolStripMenuItem();
             this.miLust = new System.Windows.Forms.ToolStripMenuItem();
-            this.vaccMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.setNestMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miVaccine = new System.Windows.Forms.ToolStripMenuItem();
+            this.miNestSet = new System.Windows.Forms.ToolStripMenuItem();
             this.miBoysByOne = new System.Windows.Forms.ToolStripMenuItem();
             this.miSpermTake = new System.Windows.Forms.ToolStripMenuItem();
-            this.printMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miPrint = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.label1 = new System.Windows.Forms.Label();
             this.lvLogs = new System.Windows.Forms.ListView();
@@ -131,79 +131,79 @@
             // actMenu
             // 
             this.actMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.okrolMenuItem,
-            this.vudvorMenuItem,
-            this.countsMenuItem,
-            this.countChangedMenuItem,
-            this.preokrolMenuItem,
-            this.boysOutMenuItem,
-            this.girlsOutMenuItem,
-            this.fuckMenuItem,
+            this.miOkrol,
+            this.miNestOut,
+            this.miCountKids,
+            this.miCountKidsChanged,
+            this.miPreOkrol,
+            this.miBoysOut,
+            this.miGirlsOut,
+            this.miFuck,
             this.miLust,
-            this.vaccMenuItem,
-            this.setNestMenuItem,
+            this.miVaccine,
+            this.miNestSet,
             this.miBoysByOne,
             this.miSpermTake,
-            this.printMenuItem});
+            this.miPrint});
             this.actMenu.Name = "actMenu";
             this.actMenu.Size = new System.Drawing.Size(265, 312);
             this.actMenu.Opening += new System.ComponentModel.CancelEventHandler(this.actMenu_Opening);
             // 
             // okrolMenuItem
             // 
-            this.okrolMenuItem.Name = "okrolMenuItem";
-            this.okrolMenuItem.Size = new System.Drawing.Size(264, 22);
-            this.okrolMenuItem.Text = "Принять окрол";
-            this.okrolMenuItem.Click += new System.EventHandler(this.MenuItem_Click);
+            this.miOkrol.Name = "okrolMenuItem";
+            this.miOkrol.Size = new System.Drawing.Size(264, 22);
+            this.miOkrol.Text = "Принять окрол";
+            this.miOkrol.Click += new System.EventHandler(this.MenuItem_Click);
             // 
-            // vudvorMenuItem
+            // miNEST_OUT
             // 
-            this.vudvorMenuItem.Name = "vudvorMenuItem";
-            this.vudvorMenuItem.Size = new System.Drawing.Size(264, 22);
-            this.vudvorMenuItem.Text = "Выдворение";
-            this.vudvorMenuItem.Click += new System.EventHandler(this.MenuItem_Click);
+            this.miNestOut.Name = "miNEST_OUT";
+            this.miNestOut.Size = new System.Drawing.Size(264, 22);
+            this.miNestOut.Text = "Выдворение";
+            this.miNestOut.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // countsMenuItem
             // 
-            this.countsMenuItem.Name = "countsMenuItem";
-            this.countsMenuItem.Size = new System.Drawing.Size(264, 22);
-            this.countsMenuItem.Text = "Подсчет гнездовых/подсосных";
-            this.countsMenuItem.Click += new System.EventHandler(this.MenuItem_Click);
+            this.miCountKids.Name = "countsMenuItem";
+            this.miCountKids.Size = new System.Drawing.Size(264, 22);
+            this.miCountKids.Text = "Подсчет гнездовых/подсосных";
+            this.miCountKids.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // countChangedMenuItem
             // 
-            this.countChangedMenuItem.Name = "countChangedMenuItem";
-            this.countChangedMenuItem.Size = new System.Drawing.Size(264, 22);
-            this.countChangedMenuItem.Text = "Изменилось количество крольчат";
-            this.countChangedMenuItem.Click += new System.EventHandler(this.countChangedMenuItem_Click);
+            this.miCountKidsChanged.Name = "countChangedMenuItem";
+            this.miCountKidsChanged.Size = new System.Drawing.Size(264, 22);
+            this.miCountKidsChanged.Text = "Изменилось количество крольчат";
+            this.miCountKidsChanged.Click += new System.EventHandler(this.countChangedMenuItem_Click);
             // 
             // preokrolMenuItem
             // 
-            this.preokrolMenuItem.Name = "preokrolMenuItem";
-            this.preokrolMenuItem.Size = new System.Drawing.Size(264, 22);
-            this.preokrolMenuItem.Text = "Предокрольный осмотр";
-            this.preokrolMenuItem.Click += new System.EventHandler(this.MenuItem_Click);
+            this.miPreOkrol.Name = "preokrolMenuItem";
+            this.miPreOkrol.Size = new System.Drawing.Size(264, 22);
+            this.miPreOkrol.Text = "Предокрольный осмотр";
+            this.miPreOkrol.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // boysOutMenuItem
             // 
-            this.boysOutMenuItem.Name = "boysOutMenuItem";
-            this.boysOutMenuItem.Size = new System.Drawing.Size(264, 22);
-            this.boysOutMenuItem.Text = "Отсадить мальчиков";
-            this.boysOutMenuItem.Click += new System.EventHandler(this.MenuItem_Click);
+            this.miBoysOut.Name = "boysOutMenuItem";
+            this.miBoysOut.Size = new System.Drawing.Size(264, 22);
+            this.miBoysOut.Text = "Отсадить мальчиков";
+            this.miBoysOut.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // girlsOutMenuItem
             // 
-            this.girlsOutMenuItem.Name = "girlsOutMenuItem";
-            this.girlsOutMenuItem.Size = new System.Drawing.Size(264, 22);
-            this.girlsOutMenuItem.Text = "Отсадить девочек";
-            this.girlsOutMenuItem.Click += new System.EventHandler(this.MenuItem_Click);
+            this.miGirlsOut.Name = "girlsOutMenuItem";
+            this.miGirlsOut.Size = new System.Drawing.Size(264, 22);
+            this.miGirlsOut.Text = "Отсадить девочек";
+            this.miGirlsOut.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // fuckMenuItem
             // 
-            this.fuckMenuItem.Name = "fuckMenuItem";
-            this.fuckMenuItem.Size = new System.Drawing.Size(264, 22);
-            this.fuckMenuItem.Text = "Случить";
-            this.fuckMenuItem.Click += new System.EventHandler(this.MenuItem_Click);
+            this.miFuck.Name = "fuckMenuItem";
+            this.miFuck.Size = new System.Drawing.Size(264, 22);
+            this.miFuck.Text = "Случить";
+            this.miFuck.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // miLust
             // 
@@ -214,17 +214,17 @@
             // 
             // vaccMenuItem
             // 
-            this.vaccMenuItem.Name = "vaccMenuItem";
-            this.vaccMenuItem.Size = new System.Drawing.Size(264, 22);
-            this.vaccMenuItem.Text = "Привить";
-            this.vaccMenuItem.Click += new System.EventHandler(this.MenuItem_Click);
+            this.miVaccine.Name = "vaccMenuItem";
+            this.miVaccine.Size = new System.Drawing.Size(264, 22);
+            this.miVaccine.Text = "Привить";
+            this.miVaccine.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // setNestMenuItem
             // 
-            this.setNestMenuItem.Name = "setNestMenuItem";
-            this.setNestMenuItem.Size = new System.Drawing.Size(264, 22);
-            this.setNestMenuItem.Text = "Установить гнездовье";
-            this.setNestMenuItem.Click += new System.EventHandler(this.MenuItem_Click);
+            this.miNestSet.Name = "setNestMenuItem";
+            this.miNestSet.Size = new System.Drawing.Size(264, 22);
+            this.miNestSet.Text = "Установить гнездовье";
+            this.miNestSet.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // miBoysByOne
             // 
@@ -242,10 +242,10 @@
             // 
             // printMenuItem
             // 
-            this.printMenuItem.Name = "printMenuItem";
-            this.printMenuItem.Size = new System.Drawing.Size(264, 22);
-            this.printMenuItem.Text = "Печать";
-            this.printMenuItem.Click += new System.EventHandler(this.printMenuItem_Click);
+            this.miPrint.Name = "printMenuItem";
+            this.miPrint.Size = new System.Drawing.Size(264, 22);
+            this.miPrint.Text = "Печать";
+            this.miPrint.Click += new System.EventHandler(this.printMenuItem_Click);
             // 
             // splitContainer1
             // 
@@ -356,23 +356,24 @@
         private System.Windows.Forms.ColumnHeader columnHeader13;
         private System.Windows.Forms.ColumnHeader columnHeader15;
         private System.Windows.Forms.ContextMenuStrip actMenu;
-        private System.Windows.Forms.ToolStripMenuItem okrolMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem vudvorMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem countsMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem preokrolMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem boysOutMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem girlsOutMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem fuckMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem printMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem vaccMenuItem;
-        private System.Windows.Forms.ColumnHeader columnHeader14;
-        private System.Windows.Forms.ToolStripMenuItem setNestMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem countChangedMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem miOkrol;
+        private System.Windows.Forms.ToolStripMenuItem miNestOut;
+        private System.Windows.Forms.ToolStripMenuItem miCountKids;
+        private System.Windows.Forms.ToolStripMenuItem miCountKidsChanged;
+        private System.Windows.Forms.ToolStripMenuItem miPreOkrol;
+        private System.Windows.Forms.ToolStripMenuItem miBoysOut;
+        private System.Windows.Forms.ToolStripMenuItem miGirlsOut;
+        private System.Windows.Forms.ToolStripMenuItem miFuck;
+        private System.Windows.Forms.ToolStripMenuItem miVaccine;
+        private System.Windows.Forms.ToolStripMenuItem miLust;
+        private System.Windows.Forms.ToolStripMenuItem miNestSet;
+        private System.Windows.Forms.ToolStripMenuItem miBoysByOne;        
+        private System.Windows.Forms.ToolStripMenuItem miSpermTake;
+        private System.Windows.Forms.ToolStripMenuItem miPrint;        
+        private System.Windows.Forms.ColumnHeader columnHeader14;       
         private System.Windows.Forms.ColumnHeader columnHeader7;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ToolStripMenuItem miBoysByOne;
-        private System.Windows.Forms.ToolStripMenuItem miLust;
-        private System.Windows.Forms.ToolStripMenuItem miSpermTake;
+        
 
     }
 }

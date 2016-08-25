@@ -152,7 +152,7 @@ namespace rabnet.panels
 
         public override ContextMenuStrip getMenu()
         {
-            this.setMenu(JobType.NONE);
+            this.setMenu(JobType.None);
             return actMenu;
         }
 
@@ -168,29 +168,32 @@ namespace rabnet.panels
         /// <param name="job"></param>
         public void setMenu(JobType type, ZootehJob job)
         {
-            okrolMenuItem.Visible = vudvorMenuItem.Visible = miBoysByOne.Visible =
-                countsMenuItem.Visible = preokrolMenuItem.Visible =
-                boysOutMenuItem.Visible = girlsOutMenuItem.Visible =
-                vaccMenuItem.Visible = fuckMenuItem.Visible = miLust.Visible =
-                setNestMenuItem.Visible = countChangedMenuItem.Visible = miSpermTake.Visible = false;
+            foreach (ToolStripMenuItem i in actMenu.Items) {
+                if (i == miPrint) {
+                    continue;
+                }
+                
+                i.Visible = false;
+            }
             switch (type) {
-                case JobType.OKROL: okrolMenuItem.Visible = true; break;
-                case JobType.NEST_OUT: vudvorMenuItem.Visible = true; break;
-                case JobType.COUNT_KIDS: countChangedMenuItem.Visible = countsMenuItem.Visible = true; break;
-                case JobType.PRE_OKROL: preokrolMenuItem.Visible = true; break;
-                case JobType.BOYS_OUT: boysOutMenuItem.Visible = true; break;
-                case JobType.GIRLS_OUT: girlsOutMenuItem.Visible = true; break;
-                case JobType.FUCK: fuckMenuItem.Visible = true;
-                    if (job.JobName == "Случка")
-                        fuckMenuItem.Text = "Случить";
-                    else
-                        fuckMenuItem.Text = "Вязать";
+                case JobType.Okrol: miOkrol.Visible = true; break;
+                case JobType.NestOut: miNestOut.Visible = true; break;
+                case JobType.CountKids: miCountKidsChanged.Visible = miCountKids.Visible = true; break;
+                case JobType.PreOkrol: miPreOkrol.Visible = true; break;
+                case JobType.BoysOut: miBoysOut.Visible = true; break;
+                case JobType.GirlsOut: miGirlsOut.Visible = true; break;
+                case JobType.Fuck: miFuck.Visible = true;
+                    if (job.JobName == "Случка") {
+                        miFuck.Text = "Случить";
+                    } else {
+                        miFuck.Text = "Вязать";
+                    }
                     miLust.Visible = true;
                     break;
-                case JobType.VACC: vaccMenuItem.Visible = true; break;
-                case JobType.SET_NEST: setNestMenuItem.Visible = true; break;
-                case JobType.BOYS_BY_ONE: miBoysByOne.Visible = true; break;
-                case JobType.SPERM_TAKE: miSpermTake.Visible = true; break;
+                case JobType.Vaccine: miVaccine.Visible = true; break;
+                case JobType.NestSet: miNestSet.Visible = true; break;
+                case JobType.BoysByOne: miBoysByOne.Visible = true; break;
+                case JobType.SpermTake: miSpermTake.Visible = true; break;
             }
         }
 
@@ -222,7 +225,7 @@ namespace rabnet.panels
         {
             MainForm.StillWorking();
             if (lvZooTech.SelectedItems.Count != 1) {
-                setMenu(JobType.NONE);
+                setMenu(JobType.None);
                 return;
             }
             setMenu(getCurJob().Type, getCurJob());
@@ -242,28 +245,28 @@ namespace rabnet.panels
             _fullUpdate = true;
             bool needUpdate = Engine.opt().getIntOption(Options.OPT_ID.UPDATE_ZOO) == 1;
             switch (job.Type) {
-                case JobType.NEST_OUT:
+                case JobType.NestOut:
                     RabNetEngBuilding b = Engine.get().getBuilding(job.ID);                   
                     b.setNest(false, (job.ID2 == 0 ? 0 : 1));                    
                     needUpdate = false;
                     break;
 
-                case JobType.PRE_OKROL:
+                case JobType.PreOkrol:
                     Engine.get().preOkrol(job.ID);
                     needUpdate = false;
                     break;
 
-                case JobType.BOYS_OUT:
-                case JobType.GIRLS_OUT:
+                case JobType.BoysOut:
+                case JobType.GirlsOut:
                     ReplaceForm rf = new ReplaceForm();
                     rf.AddRabbit(job.ID);
-                    if (job.Type == JobType.BOYS_OUT) {
+                    if (job.Type == JobType.BoysOut) {
                         rf.SetAction(ReplaceForm.Action.BOYSOUT);
                     }
                     res = rf.ShowDialog();
                     break;
 
-                case JobType.COUNT_KIDS:
+                case JobType.CountKids:
                     RabNetEngRabbit rrr = Engine.get().getRabbit(job.ID);
                     CountKids ck = new CountKids(job.ID);
                     int id2 = 0;
@@ -284,7 +287,7 @@ namespace rabnet.panels
                     }
                     break;
 
-                case JobType.FUCK:
+                case JobType.Fuck:
                     int id = job.ID;
                     if (_makeFlag == -1) {
                         needUpdate = false;
@@ -307,11 +310,11 @@ namespace rabnet.panels
                     }
                     break;
 
-                case JobType.OKROL:
+                case JobType.Okrol:
                     res = (new OkrolForm(job.ID)).ShowDialog();
                     break;
 
-                case JobType.VACC://прививка
+                case JobType.Vaccine://прививка
                     RabNetEngRabbit rab = Engine.get().getRabbit(job.ID);
                     AddRabVacForm dlg = new AddRabVacForm(rab, false, job.ID2);
                     res = dlg.ShowDialog();
@@ -325,7 +328,7 @@ namespace rabnet.panels
                     needUpdate = false;
                     break;
 
-                case JobType.SET_NEST://установка гнездовья    
+                case JobType.NestSet://установка гнездовья    
                     RabPlace rp = RabPlace.Parse(job.Rabplace);
                     if (rp.CanHaveNest()) {
                         RabNetEngBuilding rbe = RabNetEngBuilding.FromPlace(job.Rabplace, Engine.get());                          
@@ -340,13 +343,13 @@ namespace rabnet.panels
                     res = f.ShowDialog();                    
                     break;
 
-                case JobType.BOYS_BY_ONE:
+                case JobType.BoysByOne:
                     f = new ReplaceForm();
                     f.AddRabbit(job.ID);
                     res = f.ShowDialog();
                     break;
 
-                case JobType.SPERM_TAKE:
+                case JobType.SpermTake:
 #if !DEMO
                     RabNetEngRabbit r = Engine.get().getRabbit(job.ID);
                     r.SpermTake();
@@ -411,7 +414,7 @@ namespace rabnet.panels
                 rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(j.Address));
                 rw.AppendChild(doc.CreateElement("breed")).AppendChild(doc.CreateTextNode(j.RabBreed));
                 rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(j.RabAge.ToString()));
-                if (j.Type == JobType.FUCK) {
+                if (j.Type == JobType.Fuck) {
                     int id = getFuckerId(j.Partners, fuckers);
                     string cmt = String.Format("см. {0:d}{1:d}", (id + 1), j.Flag > 1 ? Environment.NewLine + "N" + j.Flag.ToString() : "");
                     rw.AppendChild(doc.CreateElement("comment")).AppendChild(doc.CreateTextNode(cmt));
@@ -458,7 +461,7 @@ namespace rabnet.panels
             }
 
             ZootehJob zJob = lvZooTech.SelectedItems[0].Tag as ZootehJob;
-            if (zJob.Type == JobType.FUCK) {
+            if (zJob.Type == JobType.Fuck) {
                 miLust.Visible = zJob.Flag2 == 0;
             }
         }

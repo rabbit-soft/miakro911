@@ -30,17 +30,17 @@ namespace db.mysql
         private string getRusJobName(JobType type)
         {
             switch (type) {
-                case JobType.OKROL: return !_flt.safeBool(Filters.SHORT) ? "Принять окрол" : "Окрол";
-                case JobType.NEST_OUT: return !_flt.safeBool(Filters.SHORT) ? "Выдворение" : "Вдв";
-                case JobType.COUNT_KIDS: return !_flt.safeBool(Filters.SHORT) ? "Подсчет гнездовых" : "счтГнезд";
-                case JobType.PRE_OKROL: return !_flt.safeBool(Filters.SHORT) ? "Предокрольный осмотр" : "ПредОкрОс";
-                case JobType.GIRLS_OUT: return !_flt.safeBool(Filters.SHORT) ? "Отсадка девочек" : "отсадДев";
-                case JobType.BOYS_OUT: return !_flt.safeBool(Filters.SHORT) ? "Отсадка мальчиков" : "отсадМал";
-                case JobType.FUCK: return "Вязка";//может смениться на Случку в процессе
-                case JobType.VACC: return "Прививка";
-                case JobType.SET_NEST: return !_flt.safeBool(Filters.SHORT) ? "Установка гнездовья" : "уст.Гнезд";
-                case JobType.BOYS_BY_ONE: return !_flt.safeBool(Filters.SHORT) ? "Рассадка мальчиков по одному" : "Рсд.М.по1";
-                case JobType.SPERM_TAKE: return !_flt.safeBool(Filters.SHORT) ? "Забор спермы" : "самДойк";
+                case JobType.Okrol: return !_flt.safeBool(Filters.SHORT) ? "Принять окрол" : "Окрол";
+                case JobType.NestOut: return !_flt.safeBool(Filters.SHORT) ? "Выдворение" : "Вдв";
+                case JobType.CountKids: return !_flt.safeBool(Filters.SHORT) ? "Подсчет гнездовых" : "счтГнезд";
+                case JobType.PreOkrol: return !_flt.safeBool(Filters.SHORT) ? "Предокрольный осмотр" : "ПредОкрОс";
+                case JobType.GirlsOut: return !_flt.safeBool(Filters.SHORT) ? "Отсадка девочек" : "отсадДев";
+                case JobType.BoysOut: return !_flt.safeBool(Filters.SHORT) ? "Отсадка мальчиков" : "отсадМал";
+                case JobType.Fuck: return "Вязка";//может смениться на Случку в процессе
+                case JobType.Vaccine: return "Прививка";
+                case JobType.NestSet: return !_flt.safeBool(Filters.SHORT) ? "Установка гнездовья" : "уст.Гнезд";
+                case JobType.BoysByOne: return !_flt.safeBool(Filters.SHORT) ? "Рассадка мальчиков по одному" : "Рсд.М.по1";
+                case JobType.SpermTake: return !_flt.safeBool(Filters.SHORT) ? "Забор спермы" : "самДойк";
                 default: return "[UJ]";
             }
         }
@@ -49,17 +49,17 @@ namespace db.mysql
         {
             this.fillCommonData(rd);
             switch (type) {
-                case JobType.OKROL: fillOkrol(rd); break;
-                case JobType.NEST_OUT: fillVudvor(rd); break;
-                case JobType.COUNT_KIDS: fillCounts(rd); break;
-                case JobType.PRE_OKROL: break;
-                case JobType.GIRLS_OUT: //fall through
-                case JobType.BOYS_OUT: fillBoysGirlsOut(rd); break;
-                case JobType.FUCK: fillFuck(rd); break;
-                case JobType.VACC: fillVacc(rd); break;
-                case JobType.SET_NEST: fillSetNest(rd); break;
-                case JobType.BOYS_BY_ONE: fillBoysByOne(rd); break;
-                case JobType.SPERM_TAKE: fillSpermTake(rd); break;
+                case JobType.Okrol: fillOkrol(rd); break;
+                case JobType.NestOut: fillVudvor(rd); break;
+                case JobType.CountKids: fillCounts(rd); break;
+                case JobType.PreOkrol: break;
+                case JobType.GirlsOut: //fall through
+                case JobType.BoysOut: fillBoysGirlsOut(rd); break;
+                case JobType.Fuck: fillFuck(rd); break;
+                case JobType.Vaccine: fillVacc(rd); break;
+                case JobType.NestSet: fillSetNest(rd); break;
+                case JobType.BoysByOne: fillBoysByOne(rd); break;
+                case JobType.SpermTake: fillSpermTake(rd); break;
             }
         }
 
@@ -289,21 +289,21 @@ namespace db.mysql
         private string getQuery(JobType type)
         {
             switch (type) {
-                case JobType.OKROL: return qOkrol();
-                case JobType.NEST_OUT: return qVudvod();
-                case JobType.COUNT_KIDS: return qCounts();
-                case JobType.PRE_OKROL: return qPreOkrol();
-                case JobType.GIRLS_OUT:
+                case JobType.Okrol: return qOkrol();
+                case JobType.NestOut: return qVudvod();
+                case JobType.CountKids: return qCounts();
+                case JobType.PreOkrol: return qPreOkrol();
+                case JobType.GirlsOut:
                     _flt["sex"] = ((int)Rabbit.SexType.FEMALE).ToString();
                     return qBoysGirlsOut();
-                case JobType.BOYS_OUT:
+                case JobType.BoysOut:
                     _flt["sex"] = ((int)Rabbit.SexType.MALE).ToString();
                     return qBoysGirlsOut();
-                case JobType.FUCK: return qFuck();
-                case JobType.VACC: return qVacc();
-                case JobType.SET_NEST: return qSetNest();
-                case JobType.BOYS_BY_ONE: return qBoysByOne();
-                case JobType.SPERM_TAKE: return qSpermTake();
+                case JobType.Fuck: return qFuck();
+                case JobType.Vaccine: return qVacc();
+                case JobType.NestSet: return qSetNest();
+                case JobType.BoysByOne: return qBoysByOne();
+                case JobType.SpermTake: return qSpermTake();
                 default: return "";
             }
         }

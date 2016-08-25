@@ -29,12 +29,12 @@ namespace rabnet
             switch (type) {
                 case 0:
                     if (f.safeValue("act", "O").Contains("O")) {
-                        zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.OKROL));
+                        zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.Okrol));
                     }
                     break;
                 case 1:
                     if (f.safeValue("act", "V").Contains("V")) {
-                        zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.NEST_OUT));
+                        zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.NestOut));
                     }
                     break;
                 case 2:
@@ -44,7 +44,7 @@ namespace rabnet
                     break;
                 case 3:
                     if (f.safeValue("act", "P").Contains("P")) {
-                        zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.PRE_OKROL));
+                        zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.PreOkrol));
                     }
                     break;
                 case 4:
@@ -64,22 +64,22 @@ namespace rabnet
                     break;
                 case 7:
                     if (f.safeValue("act", "v").Contains("v")) {
-                        zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.VACC));
+                        zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.Vaccine));
                     }
                     break;
                 case 8:
                     if (f.safeValue("act", "N").Contains("N")) {
-                        zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.SET_NEST));
+                        zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.NestSet));
                     }
                     break;
                 case 9:
                     if (f.safeValue("act", "B").Contains("B")) {
-                        zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.BOYS_BY_ONE));
+                        zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.BoysByOne));
                     }
                     break;
                 case 10:
                     if (f.safeValue("act", "S").Contains("S")) {
-                        zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.SPERM_TAKE));
+                        zjobs.AddRange(eng.db2().GetZooTechJobs(f, JobType.SpermTake));
                     }
                     break;
             }
@@ -92,14 +92,14 @@ namespace rabnet
             for (int i = 1; i < 4; i++) {
                 f["days"] = f.safeInt("count" + i.ToString()).ToString();
                 f["next"] = i == 3 ? "-1" : f.safeInt("count" + (i + 1).ToString()).ToString();
-                jh.AddRange(eng.db2().GetZooTechJobs(f, JobType.COUNT_KIDS));
+                jh.AddRange(eng.db2().GetZooTechJobs(f, JobType.CountKids));
             }
         }
 
         private void getBoysGirlsOut(JobHolder jh)
         {
-            jh.AddRange(eng.db2().GetZooTechJobs(f, JobType.BOYS_OUT));
-            jh.AddRange(eng.db2().GetZooTechJobs(f, JobType.GIRLS_OUT));
+            jh.AddRange(eng.db2().GetZooTechJobs(f, JobType.BoysOut));
+            jh.AddRange(eng.db2().GetZooTechJobs(f, JobType.GirlsOut));
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace rabnet
         {
             f[Filters.MAKE_BRIDE] = eng.brideAge().ToString();
             f[Filters.TYPE] = type.ToString();
-            jh.AddRange(eng.db2().GetZooTechJobs(f, JobType.FUCK));//ztGetZooFuck(f));
+            jh.AddRange(eng.db2().GetZooTechJobs(f, JobType.Fuck));//ztGetZooFuck(f));
         }
     }
 }
