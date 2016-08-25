@@ -329,7 +329,8 @@ namespace rabnet.panels
                     needUpdate = false;
                     break;
 
-                case JobType.SET_NEST://установка гнездовья                    
+                case JobType.SET_NEST://установка гнездовья    
+                    //Building.CanHaveNest();
                     ReplaceForm f = new ReplaceForm();
                     f.AddRabbit(job.ID);
                     f.SetAction(ReplaceForm.Action.SET_NEST);

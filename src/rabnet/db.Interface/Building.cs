@@ -16,7 +16,47 @@ namespace rabnet
         None, Female, DualFemale, Jurta, Quarta, Vertep, Barin, Cabin, Complex
     }
 
-    public class Building : IData
+    /// <summary>
+    /// Класс олицетворяющий Адрес кролика (его местоположение)
+    /// </summary>
+    public class RabPlace
+    {
+        /// <summary>
+        /// Minifarm ID
+        /// </summary>
+        public readonly int Farm;
+        /// <summary>
+        /// Тут записан этаж, но по стечению обстоятельств в базе он имеет имя tier_id
+        /// </summary>
+        public readonly int Floor;        
+
+        public readonly BuildingType Type;
+
+        public string Delims;
+
+        public string Heaters;
+
+        public int Section = -1;
+
+        public RabPlace(int farm, int tier_id, int sec, BuildingType type, String delims, String heaters)
+        {
+            this.Farm = farm;
+            this.Floor = tier_id;
+            this.Type = type;
+            this.Section = sec;
+        }
+
+        public static RabPlace Parse(String rawAddress)
+        {
+            String[] dts = rawAddress.Split(',');
+            return new RabPlace(int.Parse(dts[0]), int.Parse(dts[1]), int.Parse(dts[2]), Building.ParseType(dts[3]), dts[4], dts[5]);
+        }
+    }
+
+    /// <summary>
+    /// Клас олицетворяющий МИНИферму
+    /// </summary>
+    public class Building : RabPlace, IData
     {
         #region consts
         public const string FEMALE_Eng = "female";
@@ -53,39 +93,23 @@ namespace rabnet
         #endregion consts
 
         public readonly int ID;
-        /// <summary>
-        /// Minifarm ID
-        /// </summary>
-        public readonly int Farm;
-        /// <summary>
-        /// Тут записан этаж,но по стечению обстоятельств это зазывается tier_id
-        /// </summary>
-        public readonly int Floor;
-        public readonly int Sections;
-        //public String[] Areas;
-        //public String[] Descr;
-        public readonly BuildingType Type;
-        //public readonly string TypeName_Rus;
-        public string Delims;
+
         public string[] Notes;
 
         public bool Repair;
+
         public string Nests;
-        public string Heaters;
-        //public string Address;
-        //public string[] fuses;
+
+        public readonly int Sections;
+
         public readonly RabInBuild[] Busy;
-        //public int NestHeaterCount;
-        //public string[] FullName = new string[4];
-        //public string[] SmallName = new string[4];
-        //public string[] MedName = new string[4];
+
 
         public Building(int id, int farm, int tier_id, BuildingType type, string delims, string notes, bool repair, string nests, string heaters)
+            : base(farm, tier_id, -1, type, delims, heaters)
         {
             ID = id;
-            this.Farm = farm;
-            Floor = tier_id;
-            Type = type;
+            
             //TypeName_Rus = typeLoc;
             Delims = delims;
 
@@ -137,6 +161,7 @@ namespace rabnet
             }
             return Building.FullNameRus(Farm, Floor, sec, Type, Delims, false, true, true);
         }
+
         public string MedName(int sec)
         {
             if (sec > Sections) {
@@ -144,6 +169,7 @@ namespace rabnet
             }
             return Building.FullNameRus(Farm, Floor, sec, Type, Delims, false, true, false);
         }
+
         public string SmallName(int sec)
         {
             if (sec > Sections) {
@@ -185,8 +211,6 @@ namespace rabnet
             return Building.HasNest(this.Type, sec, this.Nests);
         }
 
-        //public string use(int id) { return fuses[id]; }
-
         /**
          * Гамбит не знал как лучше сделать строку, которую можно установить в начале программы,
          * ее мог использовать класс Building и BuildingPanel    
@@ -202,10 +226,16 @@ namespace rabnet
         /// <param name="defchar">Символ заполнитель</param>
         public static void SetDefFmt(int symbols, char defchar)
         {
-            if (symbols < 4) _smbls = 4;
-            else if (symbols > 10) _smbls = 10;
-            else _smbls = symbols;
-            if (defchar != '/' && defchar != '\\') _dsym = defchar;
+            if (symbols < 4) {
+                _smbls = 4;
+            } else if (symbols > 10) {
+                _smbls = 10;
+            } else {
+                _smbls = symbols;
+            }
+            if (defchar != '/' && defchar != '\\') {
+                _dsym = defchar;
+            }
         }
         public static void SetDefFmt(char defchar)
         {
@@ -221,14 +251,21 @@ namespace rabnet
         /// </summary>
         public static string Format(int farmN, int symbols, char defchar)
         {
-            if (symbols < 4) symbols = 4;
-            if (symbols > 10) symbols = 10;
-            if (defchar == '/' || defchar == '\\') defchar = _dsym;
+            if (symbols < 4) {
+                symbols = 4;
+            }
+            if (symbols > 10) {
+                symbols = 10;
+            }
+            if (defchar == '/' || defchar == '\\') {
+                defchar = _dsym;
+            }
 
             string res = farmN.ToString();
             if (res.Length < symbols) {
-                while (symbols != res.Length)
+                while (symbols != res.Length) {
                     res = defchar + res;
+                }
             }
             return res;
         }
@@ -255,18 +292,21 @@ namespace rabnet
 
         public static bool CanHaveNest(BuildingType type, int sec)
         {
-            int c = GetRNHCount(type);
+            int c = Building.GetRNHCount(type);
             return c > sec;
         }
 
         public static bool HasNest(BuildingType type, int sec, String nests)
         {
-            if (!Building.CanHaveNest(type, sec))
+            if (!Building.CanHaveNest(type, sec)) {
                 return false;
-            if (type == BuildingType.DualFemale)
+            }
+            if (type == BuildingType.DualFemale) {
                 return (nests[sec] == '1');
+            }
             return (nests[0] == '1');
         }
+
         /// <summary>
         /// Описание клетки
         /// </summary>
@@ -282,19 +322,22 @@ namespace rabnet
                 case BuildingType.Female:
                 case BuildingType.DualFemale: res = shr ? "гн+выг" : "гнездовое+выгул"; break;
                 case BuildingType.Complex:
-                    if (sec == 0)
+                    if (sec == 0) {
                         res = shr ? "гн+выг" : "гнездовое+выгул";
-                    else
+                    } else {
                         res = shr ? "отк" : "откормочное";
+                    }
                     break;
                 case BuildingType.Jurta:
                     if (sec == 0) {
-                        if (delims[0] == '0')
+                        if (delims[0] == '0') {
                             res = (shr ? "гн" : "гнездовое") + "+";
+                        }
                         res += shr ? "мвг" : "м.выгул";
                     } else {
-                        if (delims[0] == '1')
+                        if (delims[0] == '1') {
                             res = (shr ? "гн" : "гнездовое") + "+";
+                        }
                         res += shr ? "бвг" : "б.выгул";
                     }
                     break;
@@ -321,28 +364,31 @@ namespace rabnet
             String res = "" + SECNAMES[sec];
             if (type == BuildingType.Quarta && delims != "111") {
                 for (int i = sec - 1; i >= 0; i--) {
-                    if (delims[i] == '0')
+                    if (delims[i] == '0') {
                         res = SECNAMES[i] + res;
-                    else
+                    } else {
                         break;
+                    }
                 }
 
-                for (int i = sec; i < 3; i++) ///todo тройку в константу
-                {
-                    if (delims[i] == '0')
+                for (int i = sec; i < 3; i++) {
+                    ///todo тройку в константу
+                    if (delims[i] == '0') {
                         res = res + SECNAMES[i + 1];
-                    else
+                    } else {
                         break;
+                    }
                 }
 
-            } else if (type == BuildingType.Barin && delims[0] == '0')
+            } else if (type == BuildingType.Barin && delims[0] == '0') {
                 res = "аб";
+            }
             return res;
         }
+
         public static String GetSecRus(string type, int sec, String delims)
         {
             return GetSecRus(ParseType(type), sec, delims);
-
         }
 
         /// <summary>
@@ -359,11 +405,17 @@ namespace rabnet
             }
             return res;
         }
+
         public static int GetRSecCount(string type)
         {
             return GetRSecCount(ParseType(type));
         }
 
+        /// <summary>
+        /// Rab Nest Heaater
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static int GetRNHCount(BuildingType type)
         {
             int res = 1;
@@ -405,18 +457,19 @@ namespace rabnet
             String[] dts = rawAddres.Split(',');
             return FullNameRus(int.Parse(dts[0]), int.Parse(dts[1]), int.Parse(dts[2]), Building.ParseType(dts[3]), dts[4], shrt, showTier, showDescr);
         }
+
         public static String FullPlaceName(String rawAddres)
         {
             return FullPlaceName(rawAddres, false, false, false);
         }
 
-        public static bool HasNest(String rabplace)
+        public static bool HasNest(String rawAddres)
         {
-            if (rabplace == "") {
+            if (rawAddres == "") {
                 return false;
             }
 
-            String[] dts = rabplace.Split(',');
+            String[] dts = rawAddres.Split(',');
             return HasNest(ParseType(dts[3]), int.Parse(dts[2]), dts[5]);
         }
 
@@ -479,14 +532,13 @@ namespace rabnet
             }
             return res;
         }
+
         public static String GetNameRus(BuildingType type)
         {
             return GetNameRus(type, false);
         }
 
-
         #endregion static
-
 
     }
 
@@ -534,7 +586,7 @@ namespace rabnet
         /// <summary>
         /// Клетка (1,2,3,4)
         /// </summary>
-        public int Section;       
+        public int Section;
 
         public Address(int farm, int floor, int sec)
         {
@@ -559,7 +611,7 @@ namespace rabnet
         /// <param name="sec">Секция</param>
         /// <param name="tier">ID яруса</param>
         public AddressR(int farm, int floor, int sec, int tier)
-            :base(farm, floor, sec)
+            : base(farm, floor, sec)
         {
             this.TierId = tier;
         }

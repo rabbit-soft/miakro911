@@ -7,7 +7,7 @@ using log4net;
 using rabnet;
 
 namespace db.mysql
-{    
+{
 #if !DEMO
     class Reports
     {
@@ -27,8 +27,7 @@ namespace db.mysql
         public XmlDocument makeReport(myReportType type, Filters f)
         {
             String query = "";
-            switch (type)
-            {
+            switch (type) {
                 case myReportType.AGE: query = ageQuery(f); break;
                 case myReportType.BY_MONTH: query = rabByMonth(); break;
                 case myReportType.BUTCHER_PERIOD: query = butcherQuery(f); break;
@@ -37,8 +36,8 @@ namespace db.mysql
                 case myReportType.DEADREASONS: query = deadReasonsQuery(f); break;
                 case myReportType.FUCKS_BY_DATE: query = fucksByDate(f); break;
                 case myReportType.FUCKER: query = fuckerQuery(f); break;
-                case myReportType.REALIZE: query = realize(f); break;                                
-                case myReportType.REVISION: return revision(f);               
+                case myReportType.REALIZE: query = realize(f); break;
+                case myReportType.REVISION: return revision(f);
                 case myReportType.SHED: return shedReport(f);
                 case myReportType.TEST: query = testQuery(f); break;
                 case myReportType.USER_OKROLS_YEAR:
@@ -62,19 +61,16 @@ namespace db.mysql
             XmlDocument xml = new XmlDocument();
             XmlElement root = xml.CreateElement("Rows");
             xml.AppendChild(root);
-            while (rd.Read())
-            {
+            while (rd.Read()) {
                 XmlElement rw = xml.CreateElement("Row");
-                for (int i = 0; i < rd.FieldCount; i++)
-                {
+                for (int i = 0; i < rd.FieldCount; i++) {
                     String nm = rd.GetName(i);
                     string vl = rd.IsDBNull(i) ? "" : rd.GetString(i);
-                    if (nm.Length>4)
-                    if (nm.Substring(0, 4) == "adr_")
-                    {
-                        nm = nm.Substring(4);
-                        vl = Building.FullPlaceName(vl, true, false, false);
-                    }
+                    if (nm.Length > 4)
+                        if (nm.Substring(0, 4) == "adr_") {
+                            nm = nm.Substring(4);
+                            vl = Building.FullPlaceName(vl, true, false, false);
+                        }
                     XmlElement f = xml.CreateElement(nm);
                     f.AppendChild(xml.CreateTextNode(vl));
                     rw.AppendChild(f);
@@ -97,28 +93,21 @@ namespace db.mysql
             string dt = "";
             int totalChildren = 0;
             bool okrolWas = false;
-            int pCount = 0;        
-            foreach (XmlNode nd in lst)
-            {                
-                if (nd.FirstChild.FirstChild.Value == name && nd.FirstChild.NextSibling.FirstChild.Value == dt)
-                {
-                    if (nd.FirstChild.NextSibling.NextSibling.FirstChild.Value == PROH)
-                    {
+            int pCount = 0;
+            foreach (XmlNode nd in lst) {
+                if (nd.FirstChild.FirstChild.Value == name && nd.FirstChild.NextSibling.FirstChild.Value == dt) {
+                    if (nd.FirstChild.NextSibling.NextSibling.FirstChild.Value == PROH) {
                         pCount++;
-                    }
-                    else
-                    {
+                    } else {
                         totalChildren += int.Parse(nd.FirstChild.NextSibling.NextSibling.FirstChild.Value);
                         okrolWas = true;
                     }
                     continue;
-                }
-                else if(name != "" && dt != "")
-                {
+                } else if (name != "" && dt != "") {
                     XmlElement el = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
                     ReportHelper.Append(el, doc, "name", name);
                     ReportHelper.Append(el, doc, "dt", dt);
-                    ReportHelper.Append(el, doc, "state", String.Format("{0:s}{1:s}", okrolWas ? totalChildren.ToString() : "", pCount > 0 ? PROH + pCount.ToString() : "").Trim());                 
+                    ReportHelper.Append(el, doc, "state", String.Format("{0:s}{1:s}", okrolWas ? totalChildren.ToString() : "", pCount > 0 ? PROH + pCount.ToString() : "").Trim());
                 }
 
                 totalChildren = 0;
@@ -128,8 +117,7 @@ namespace db.mysql
                 dt = nd.FirstChild.NextSibling.FirstChild.Value;
                 if (nd.FirstChild.NextSibling.NextSibling.FirstChild.Value == PROH)
                     pCount++;
-                else
-                {
+                else {
                     totalChildren = int.Parse(nd.FirstChild.NextSibling.NextSibling.FirstChild.Value);
                     okrolWas = true;
                 }
@@ -137,7 +125,7 @@ namespace db.mysql
             XmlElement el2 = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
             ReportHelper.Append(el2, doc, "name", name);
             ReportHelper.Append(el2, doc, "dt", dt);
-            ReportHelper.Append(el2, doc, "state", String.Format("{0:s}{1:s}", totalChildren > 0 ? totalChildren.ToString() : "", pCount > 0 ? PROH +(pCount.ToString()) : "").Trim());                 
+            ReportHelper.Append(el2, doc, "state", String.Format("{0:s}{1:s}", totalChildren > 0 ? totalChildren.ToString() : "", pCount > 0 ? PROH + (pCount.ToString()) : "").Trim());
             return doc;
         }
 
@@ -148,7 +136,7 @@ namespace db.mysql
         /// <returns></returns>
         private XmlDocument userOkrolRpt(String query)
         {
-            const string SUMM = "C", TOTAL="итого";
+            const string SUMM = "C", TOTAL = "итого";
             XmlDocument doc = makeStdReportXml(query);
             XmlNodeList lst = doc.ChildNodes[0].ChildNodes;
             Dictionary<String, FuckerSummary> summary = new Dictionary<String, FuckerSummary>();
@@ -158,22 +146,18 @@ namespace db.mysql
             //Dictionary<String, float> firt = new Dictionary<String, float>();//фиртильность
 
             ///вычисляем общие данные по каждому самцу
-            foreach (XmlNode nd in lst)
-            {
+            foreach (XmlNode nd in lst) {
                 String name = nd.FirstChild.FirstChild.Value;
                 String date = nd.FirstChild.NextSibling.FirstChild.Value;
-                String val = nd.FirstChild.NextSibling.NextSibling.FirstChild.Value;                            
+                String val = nd.FirstChild.NextSibling.NextSibling.FirstChild.Value;
 
                 if (!summary.ContainsKey(name))
                     summary.Add(name, new FuckerSummary());
 
-                if (val == PROH)
-                {
+                if (val == PROH) {
                     summary[name].Proholosts++;
                     continue;
-                }
-                else if (val != "-")
-                {
+                } else if (val != "-") {
                     summary[name].Okrols++;
                     summary[name].Born += int.Parse(val);
                 }
@@ -187,21 +171,20 @@ namespace db.mysql
             lst = doc.ChildNodes[0].ChildNodes;
 
             ///создаем стобец "Сумма рожденных крольчат"
-            int totalBorn=0, totalOkrols=0, totalProholosts=0;
-            foreach (String k in summary.Keys)
-            {
+            int totalBorn = 0, totalOkrols = 0, totalProholosts = 0;
+            foreach (String k in summary.Keys) {
                 XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
                 ReportHelper.Append(rw, doc, "name", k);
                 ReportHelper.Append(rw, doc, "dt", SUMM);///
                 ReportHelper.Append(rw, doc, "state", summary[k].Born.ToString());
                 totalBorn += summary[k].Born;
-                
+
                 rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
                 ReportHelper.Append(rw, doc, "name", k);
                 ReportHelper.Append(rw, doc, "dt", "О");
                 ReportHelper.Append(rw, doc, "state", summary[k].Okrols.ToString());
                 totalOkrols += summary[k].Okrols;
-                
+
                 rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
                 ReportHelper.Append(rw, doc, "name", k);
                 ReportHelper.Append(rw, doc, "dt", "П");
@@ -211,7 +194,7 @@ namespace db.mysql
                 rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
                 ReportHelper.Append(rw, doc, "name", k);
                 ReportHelper.Append(rw, doc, "dt", "Ф");
-                double fert = Math.Round((double)summary[k].Okrols/(double)(summary[k].Proholosts + summary[k].Okrols),2);
+                double fert = Math.Round((double)summary[k].Okrols / (double)(summary[k].Proholosts + summary[k].Okrols), 2);
                 ReportHelper.Append(rw, doc, "state", fert.ToString());
             }
 
@@ -238,8 +221,7 @@ namespace db.mysql
             double totalFert = Math.Round((double)totalOkrols / (double)(totalProholosts + totalOkrols), 2);
             ReportHelper.Append(ttlRow, doc, "state", totalFert.ToString());
 
-            foreach (String k in dates.Keys)
-            {
+            foreach (String k in dates.Keys) {
                 XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
                 ReportHelper.Append(rw, doc, "name", TOTAL);
                 ReportHelper.Append(rw, doc, "dt", k);
@@ -248,7 +230,7 @@ namespace db.mysql
             return doc;
         }
 
-        public static XmlDocument makeReport(MySqlConnection sql,myReportType type,Filters f)
+        public static XmlDocument makeReport(MySqlConnection sql, myReportType type, Filters f)
         {
             return new Reports(sql).makeReport(type, f);
         }
@@ -279,7 +261,7 @@ namespace db.mysql
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND (r_status=0 AND r_event_date IS NULL) AND r_breed=br AND r_born<=(now()-INTERVAL {0:s} day)) nevest,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='female' AND r_status=0 AND r_breed=br and r_born>(now()-INTERVAL {0:s} day)) girl,
 (SELECT sum(r_group) FROM rabbits WHERE r_sex='void' AND r_breed=br) bezpolie,
-sum(r_group) vsego FROM rabbits GROUP BY r_breed;", f.safeValue("brd","121"),f.safeValue("cnd","120"));
+sum(r_group) vsego FROM rabbits GROUP BY r_breed;", f.safeValue("brd", "121"), f.safeValue("cnd", "120"));
         }
 
         /// <summary>
@@ -297,8 +279,8 @@ union SELECT 'Итого',sum(r_group) FROM rabbits;";
         {
             DateTime dfrom = DateTime.Parse(f.safeValue("dfr", DateTime.Now.ToShortDateString()));
             DateTime dto = DateTime.Parse(f.safeValue("dto", DateTime.Now.ToShortDateString()));
-            FROM=dfrom;
-            TO=dto;
+            FROM = dfrom;
+            TO = dto;
             DFROM = DBHelper.DateToSqlString(FROM);
             DTO = DBHelper.DateToSqlString(TO);
             return new DateTime[] { dfrom, dto };
@@ -307,7 +289,7 @@ union SELECT 'Итого',sum(r_group) FROM rabbits;";
         private string fuckerQuery(Filters f)
         {
             getDates(f);
-            int partner = f.safeInt("prt");           
+            int partner = f.safeInt("prt");
             return String.Format(@"(SELECT rabname(f_rabid,2) name,f_children,
     IF(f_type='vyazka','Вязка','случка') type,
     IF(f_state='proholost','Прохолостание','Окрол') state,
@@ -315,14 +297,14 @@ union SELECT 'Итого',sum(r_group) FROM rabbits;";
     DATE_FORMAT(f_end_date,'%d.%m.%Y') stop 
 FROM fucks 
 WHERE f_partner={0:d} AND f_end_date>={1:s} AND f_end_date<={2:s});",
-              partner,DFROM,DTO);
+              partner, DFROM, DTO);
         }
 
         private String deadQuery(Filters f)
         {
-            string where = DBHelper.MakeDatePeriod(f, "d_date");   
+            string where = DBHelper.MakeDatePeriod(f, "d_date");
 
-            where = "WHERE " + String.Format("d_reason!={0:d}", DeadReason_Static.CombineGroups) + (where!="" ? " AND "+where:"");
+            where = "WHERE " + String.Format("d_reason!={0:d}", DeadReason_Static.CombineGroups) + (where != "" ? " AND " + where : "");
 
             return String.Format(@"SELECT DATE_FORMAT(d_date,'%d.%m.%Y') date,
     deadname(r_id,2) name,
@@ -332,7 +314,7 @@ WHERE f_partner={0:d} AND f_end_date>={1:s} AND f_end_date<={2:s});",
     d_notes 
 FROM dead {0:s} 
 ORDER BY d_reason,d_date ASC;", where);
-            
+
         }
 
         private String deadReasonsQuery(Filters f)
@@ -346,7 +328,7 @@ ORDER BY d_reason,d_date ASC;", where);
     SUM(r_group) grp,
     d_reason,
     (SELECT d_name FROM deadreasons WHERE d_reason=d_id) reason 
-FROM dead {0} GROUP BY d_reason);",period);
+FROM dead {0} GROUP BY d_reason);", period);
             return s;
         }
 
@@ -380,16 +362,13 @@ WHERE {0:s} ORDER BY r_farm,r_tier_id,r_area;", where);
             int user = f.safeInt("user");
             string period = "";
             string format = "";
-            string worker = f.safeInt("user", 0)>0 ? "f_worker="+f.safeInt("user"):"";
+            string worker = f.safeInt("user", 0) > 0 ? "f_worker=" + f.safeInt("user") : "";
 
-            if (f.safeValue(Filters.DATE_PERIOD) == "m")
-            {                
+            if (f.safeValue(Filters.DATE_PERIOD) == "m") {
                 DateTime dt = DateTime.Parse(f.safeValue(Filters.DATE_VALUE));
                 period = String.Format("(MONTH(f_end_date)={0:MM} AND YEAR(f_end_date)={0:yyyy})", dt);
                 format = "%d";
-            }
-            else if (f.safeValue(Filters.DATE_PERIOD) == "y")
-            {
+            } else if (f.safeValue(Filters.DATE_PERIOD) == "y") {
                 period = String.Format("YEAR(f_end_date)={0}", f.safeValue(Filters.DATE_VALUE));
                 format = "%m";
             }
@@ -399,9 +378,9 @@ WHERE {0:s} ORDER BY r_farm,r_tier_id,r_area;", where);
             string result = String.Format(@"SELECT 
     CONCAT(' ',anyname(f_partner,0)) name,
     DATE_FORMAT(f_end_date,'{2}') dt,
-    IF (f_state='okrol',f_children,IF(f_state='proholost','п','-')) state 
+    IF (f_state='okrol', f_children, IF(f_state='proholost','п','-')) state 
 FROM fucks 
-WHERE {0:s} {1:s} ORDER BY name,dt;",worker , period, format);
+WHERE {0:s} {1:s} ORDER BY name,dt;", worker, period, format);
 
             return result;
         }
@@ -425,10 +404,10 @@ WHERE {0:s} {1:s} ORDER BY name,dt;",worker , period, format);
             return int.Parse(getValue(query));
         }
 
-        private int getBuildCount(BuildingType type,int bid)
+        private int getBuildCount(BuildingType type, int bid)
         {
             return getInt32(String.Format(@"SELECT COUNT(t_id) FROM tiers,minifarms WHERE
-(t_id=m_upper OR t_id=m_lower) AND inBuilding({0:d},m_id){1:s};",bid, type==BuildingType.None?"":" AND t_type='"+Building.GetName(type)+"'"));
+(t_id=m_upper OR t_id=m_lower) AND inBuilding({0:d},m_id){1:s};", bid, type == BuildingType.None ? "" : " AND t_type='" + Building.GetName(type) + "'"));
         }
 
         private int round(double d)
@@ -436,7 +415,7 @@ WHERE {0:s} {1:s} ORDER BY name,dt;",worker , period, format);
             return (int)Math.Round(d);
         }
 
-        private void addShedRows(XmlDocument doc,String type, int ideal, int real)
+        private void addShedRows(XmlDocument doc, String type, int ideal, int real)
         {
             XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
             ReportHelper.Append(rw, doc, "name", type);
@@ -463,7 +442,7 @@ WHERE {0:s} {1:s} ORDER BY name,dt;",worker , period, format);
             XmlDocument doc = new XmlDocument();
             doc.AppendChild(doc.CreateElement("Rows"));
             int alltiers = getBuildCount(BuildingType.None, bid);
-            int fem = getBuildCount(BuildingType.Female, bid); 
+            int fem = getBuildCount(BuildingType.Female, bid);
             int dfe = getBuildCount(BuildingType.DualFemale, bid);
             int com = getBuildCount(BuildingType.Complex, bid);
             int jur = getBuildCount(BuildingType.Jurta, bid);
@@ -471,14 +450,14 @@ WHERE {0:s} {1:s} ORDER BY name,dt;",worker , period, format);
             int ver = getBuildCount(BuildingType.Vertep, bid);
             int bar = getBuildCount(BuildingType.Barin, bid);
             int cab = getBuildCount(BuildingType.Cabin, bid);
-            int ideal=round(PER_VERTEP*(ver+bar+4*qua+2*com+cab/2)+PER_FEMALE* (2 * (dfe + jur) + fem + com + cab));
+            int ideal = round(PER_VERTEP * (ver + bar + 4 * qua + 2 * com + cab / 2) + PER_FEMALE * (2 * (dfe + jur) + fem + com + cab));
             int real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE (r_parent=0 AND inBuilding({0:d},r_farm))OR
-(r_parent!=0 AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent)));",bid));
+(r_parent!=0 AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent)));", bid));
             addShedRows(doc, "  все", ideal, real);
 
             ideal = fem + 2 * (dfe + jur) + com;
             real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits 
-WHERE r_sex='female' AND (r_status>0 OR r_event_date IS NOT NULL) AND inBuilding({0:d},r_farm);",bid));
+WHERE r_sex='female' AND (r_status>0 OR r_event_date IS NOT NULL) AND inBuilding({0:d},r_farm);", bid));
             addShedRows(doc, "  крольчихи", ideal, real);
 
             ideal = round(ideal * PREGN_PER_TIER);
@@ -489,7 +468,7 @@ WHERE r_sex='female' AND r_event_date IS NOT NULL AND inBuilding({0:d},r_farm);"
             ideal = round(alltiers * FEED_GIRLS_PER_TIER);
             real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits,tiers 
 WHERE r_tier=t_id AND (t_type='quarta' OR (r_area=1 AND (t_type='complex' OR t_type='cabin'))) 
-    AND r_parent=0 AND r_sex='female' AND r_status=0 AND r_event_date IS NULL AND inBuilding({0:d},r_farm);",bid));
+    AND r_parent=0 AND r_sex='female' AND r_status=0 AND r_event_date IS NULL AND inBuilding({0:d},r_farm);", bid));
             addShedRows(doc, " Д.откорм", ideal, real);
 
             ideal = round(alltiers * FEED_BOYS_PER_TIER);
@@ -505,7 +484,7 @@ WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)>={1:d} AND inBuilding({0:d}
 
             ideal = round(UNKN_NEST_PER_TIER * alltiers);
             real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits 
-WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d} AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent));", bid, nest_out));            
+WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d} AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent));", bid, nest_out));
             addShedRows(doc, "гнездовые", ideal, real);
 
             return doc;
@@ -514,19 +493,17 @@ WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d} AND inBuilding({0:d},
         private XmlDocument revision(Filters f)
         {
             int bld = f.safeInt("bld");
-            XmlDocument doc=new XmlDocument();
+            XmlDocument doc = new XmlDocument();
             doc.AppendChild(doc.CreateElement("Rows"));
-            MySqlCommand cmd=new MySqlCommand(String.Format(@"SELECT m_id, t_type, t_busy1, t_busy2, t_busy3, t_busy4, t_delims
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT m_id, t_type, t_busy1, t_busy2, t_busy3, t_busy4, t_delims
                 FROM tiers,minifarms 
                 WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AND (t_id=m_upper OR t_id=m_lower) AND inBuilding({0:d},m_id)
-                ORDER BY m_id;",bld),sql);
+                ORDER BY m_id;", bld), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
-            while (rd.Read())
-            {
-                for (int i = 0; i < Building.GetRSecCount(rd.GetString(1)); i++)
-                {
-                    if (rd.IsDBNull(i + 2) || rd.GetInt32(i + 2) == 0)///NULL быть не должно
-                    {
+            while (rd.Read()) {
+                for (int i = 0; i < Building.GetRSecCount(rd.GetString(1)); i++) {
+                    if (rd.IsDBNull(i + 2) || rd.GetInt32(i + 2) == 0) {
+                        ///NULL быть не должно
                         doc.DocumentElement.AppendChild(doc.CreateElement("Row")).AppendChild(
                             doc.CreateElement("address")).AppendChild(doc.CreateTextNode(rd.GetString("m_id") + Building.GetSecRus(rd.GetString("t_type"), i, rd.GetString("t_delims"))));
                     }
@@ -568,8 +545,8 @@ WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d} AND inBuilding({0:d},
         private string butcherQuery(Filters f)
         {
             string period = DBHelper.MakeDatePeriod(f, "b_date");
-             
-            if(period!="")
+
+            if (period != "")
                 period = "WHERE " + period;
             return String.Format(@"SELECT 
     DATE_FORMAT(b_date,'%d.%m.%Y')date,
