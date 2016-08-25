@@ -190,12 +190,6 @@ namespace rabnet.panels
             }
         }
 
-        public override ContextMenuStrip getMenu()
-        {
-            setMenu(-1, 0, false);
-            return actMenu;
-        }
-
         private void miPassport_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count != 1) {

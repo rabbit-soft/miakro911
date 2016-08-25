@@ -201,8 +201,7 @@ namespace rabnet.forms
                 rabStatusBar1.SetText(i, "");
             }
             curpanel = panels[tabControl1.SelectedIndex];
-            panel1.Controls.Add(curpanel);
-            tsmiActions.DropDown = curpanel.getMenu();
+            panel1.Controls.Add(curpanel);            
             curpanel.activate();
             Working();
             ProtectTest();
@@ -362,11 +361,6 @@ GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
         }
 
         #region Views
-
-        private void tsmiFilter_Click(object sender, EventArgs e)
-        {
-            rabStatusBar1.FilterSwitch();
-        }
 
         private void paramsMenuItem1_Click(object sender, EventArgs e)
         {

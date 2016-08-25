@@ -76,11 +76,6 @@ namespace rabnet.panels
 #endif
         }
 
-        public override ContextMenuStrip getMenu()
-        {
-            return miMeal;
-        }
-
         private void lvButcherDates_SelectedIndexChanged(object sender, EventArgs e)
         {
 #if !DEMO

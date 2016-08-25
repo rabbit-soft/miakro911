@@ -406,11 +406,6 @@ namespace rabnet.panels
             drawFarm(e.farm);
         }
 
-        public override ContextMenuStrip getMenu()
-        {
-            return actMenu;
-        }
-
         public void updateMenu()
         {
             killMenuItem.Visible = replaceMenuItem.Visible = tsSplitter.Visible =
@@ -459,19 +454,19 @@ namespace rabnet.panels
             }
 
             Building b = null;
-            ReplaceForm f = new ReplaceForm();
+            ReplaceForm rf = new ReplaceForm();
             foreach (ListViewItem li in listView1.SelectedItems) {
                 Building b2 = li.Tag as Building;
                 if (b2 != b) {
                     b = b2;
                     for (int i = 0; i < b.Sections; i++) {
                         if (b.Busy[i].ID > 0) {
-                            f.AddRabbit(b.Busy[i].ID);
+                            rf.AddRabbit(b.Busy[i].ID);
                         }
                     }
                 }
             }
-            if (f.ShowDialog() == DialogResult.OK) {
+            if (rf.ShowDialog() == DialogResult.OK) {
                 _rsb.Run();
             }
         }

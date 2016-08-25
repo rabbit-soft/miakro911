@@ -39,8 +39,6 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiView = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiFilter = new System.Windows.Forms.ToolStripMenuItem();
-            this.параметрыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDeadsArchive = new System.Windows.Forms.ToolStripMenuItem();
             this.miMeal = new System.Windows.Forms.ToolStripMenuItem();
             this.miLogs = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,7 +50,6 @@
             this.tsmiDeadReasonsView = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiProductTypesView = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiVaccines = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiActions = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiReports = new System.Windows.Forms.ToolStripMenuItem();
             this.тестовыйToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiBreeds = new System.Windows.Forms.ToolStripMenuItem();
@@ -100,7 +97,6 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFarm,
             this.tsmiView,
-            this.tsmiActions,
             this.tsmiReports,
             this.tsmiOptions,
             this.tsmiAbout});
@@ -152,8 +148,6 @@
             // tsmiView
             // 
             this.tsmiView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiFilter,
-            this.параметрыToolStripMenuItem,
             this.tsmiDeadsArchive,
             this.miMeal,
             this.miLogs,
@@ -166,24 +160,8 @@
             this.tsmiProductTypesView,
             this.tsmiVaccines});
             this.tsmiView.Name = "tsmiView";
-            this.tsmiView.Size = new System.Drawing.Size(39, 20);
-            this.tsmiView.Text = "Вид";
-            // 
-            // tsmiFilter
-            // 
-            this.tsmiFilter.Name = "tsmiFilter";
-            this.tsmiFilter.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.tsmiFilter.Size = new System.Drawing.Size(208, 22);
-            this.tsmiFilter.Text = "Фильтр";
-            this.tsmiFilter.Click += new System.EventHandler(this.tsmiFilter_Click);
-            // 
-            // параметрыToolStripMenuItem
-            // 
-            this.параметрыToolStripMenuItem.Name = "параметрыToolStripMenuItem";
-            this.параметрыToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-            this.параметрыToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
-            this.параметрыToolStripMenuItem.Text = "Параметры";
-            this.параметрыToolStripMenuItem.Click += new System.EventHandler(this.paramsMenuItem1_Click);
+            this.tsmiView.Size = new System.Drawing.Size(126, 20);
+            this.tsmiView.Text = "Вид / Инструменты";
             // 
             // tsmiDeadsArchive
             // 
@@ -263,12 +241,6 @@
             this.tsmiVaccines.Size = new System.Drawing.Size(208, 22);
             this.tsmiVaccines.Text = "Вакцины";
             this.tsmiVaccines.Click += new System.EventHandler(this.tsmiVaccines_Click);
-            // 
-            // tsmiActions
-            // 
-            this.tsmiActions.Name = "tsmiActions";
-            this.tsmiActions.Size = new System.Drawing.Size(70, 20);
-            this.tsmiActions.Text = "Действия";
             // 
             // tsmiReports
             // 
@@ -593,6 +565,7 @@
             this.rabStatusBar1.FilterOn = false;
             this.rabStatusBar1.FilterPanel = null;
             this.rabStatusBar1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
+            this.rabStatusBar1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.rabStatusBar1.Location = new System.Drawing.Point(0, 481);
             this.rabStatusBar1.Name = "rabStatusBar1";
             this.rabStatusBar1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
@@ -634,8 +607,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem выходToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmiView;
-        private System.Windows.Forms.ToolStripMenuItem tsmiFilter;
-        private System.Windows.Forms.ToolStripMenuItem параметрыToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmiDeadsArchive;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem namesMenuItem;
@@ -660,7 +631,6 @@
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.ToolStripMenuItem tsmiActions;
         private System.Windows.Forms.ToolStripMenuItem tsmiAreas;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem paramsMenuItem1;

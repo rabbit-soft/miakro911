@@ -92,8 +92,7 @@
             this.lvZooTech.Size = new System.Drawing.Size(677, 266);
             this.lvZooTech.TabIndex = 0;
             this.lvZooTech.UseCompatibleStateImageBehavior = false;
-            this.lvZooTech.View = System.Windows.Forms.View.Details;
-            this.lvZooTech.SelectedIndexChanged += new System.EventHandler(this.lvZooTech_SelectedIndexChanged);
+            this.lvZooTech.View = System.Windows.Forms.View.Details;            
             this.lvZooTech.DoubleClick += new System.EventHandler(this.MenuItem_Click);
             // 
             // columnHeader1
@@ -151,56 +150,56 @@
             // 
             // okrolMenuItem
             // 
-            this.miOkrol.Name = "okrolMenuItem";
+            this.miOkrol.Name = "miOkrol";
             this.miOkrol.Size = new System.Drawing.Size(264, 22);
             this.miOkrol.Text = "Принять окрол";
             this.miOkrol.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // miNEST_OUT
             // 
-            this.miNestOut.Name = "miNEST_OUT";
+            this.miNestOut.Name = "miNestOut";
             this.miNestOut.Size = new System.Drawing.Size(264, 22);
             this.miNestOut.Text = "Выдворение";
             this.miNestOut.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // countsMenuItem
             // 
-            this.miCountKids.Name = "countsMenuItem";
+            this.miCountKids.Name = "miCountKids";
             this.miCountKids.Size = new System.Drawing.Size(264, 22);
             this.miCountKids.Text = "Подсчет гнездовых/подсосных";
             this.miCountKids.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // countChangedMenuItem
             // 
-            this.miCountKidsChanged.Name = "countChangedMenuItem";
+            this.miCountKidsChanged.Name = "miCountKidsChanged";
             this.miCountKidsChanged.Size = new System.Drawing.Size(264, 22);
             this.miCountKidsChanged.Text = "Изменилось количество крольчат";
             this.miCountKidsChanged.Click += new System.EventHandler(this.countChangedMenuItem_Click);
             // 
             // preokrolMenuItem
             // 
-            this.miPreOkrol.Name = "preokrolMenuItem";
+            this.miPreOkrol.Name = "miPreOkrol";
             this.miPreOkrol.Size = new System.Drawing.Size(264, 22);
             this.miPreOkrol.Text = "Предокрольный осмотр";
             this.miPreOkrol.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // boysOutMenuItem
             // 
-            this.miBoysOut.Name = "boysOutMenuItem";
+            this.miBoysOut.Name = "miBoysOut";
             this.miBoysOut.Size = new System.Drawing.Size(264, 22);
             this.miBoysOut.Text = "Отсадить мальчиков";
             this.miBoysOut.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // girlsOutMenuItem
             // 
-            this.miGirlsOut.Name = "girlsOutMenuItem";
+            this.miGirlsOut.Name = "miGirlsOut";
             this.miGirlsOut.Size = new System.Drawing.Size(264, 22);
             this.miGirlsOut.Text = "Отсадить девочек";
             this.miGirlsOut.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // fuckMenuItem
             // 
-            this.miFuck.Name = "fuckMenuItem";
+            this.miFuck.Name = "miFuck";
             this.miFuck.Size = new System.Drawing.Size(264, 22);
             this.miFuck.Text = "Случить";
             this.miFuck.Click += new System.EventHandler(this.MenuItem_Click);
@@ -214,14 +213,14 @@
             // 
             // vaccMenuItem
             // 
-            this.miVaccine.Name = "vaccMenuItem";
+            this.miVaccine.Name = "miVaccine";
             this.miVaccine.Size = new System.Drawing.Size(264, 22);
             this.miVaccine.Text = "Привить";
             this.miVaccine.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // setNestMenuItem
             // 
-            this.miNestSet.Name = "setNestMenuItem";
+            this.miNestSet.Name = "miNestSet";
             this.miNestSet.Size = new System.Drawing.Size(264, 22);
             this.miNestSet.Text = "Установить гнездовье";
             this.miNestSet.Click += new System.EventHandler(this.MenuItem_Click);
@@ -242,7 +241,7 @@
             // 
             // printMenuItem
             // 
-            this.miPrint.Name = "printMenuItem";
+            this.miPrint.Name = "miPrint";
             this.miPrint.Size = new System.Drawing.Size(264, 22);
             this.miPrint.Text = "Печать";
             this.miPrint.Click += new System.EventHandler(this.printMenuItem_Click);
@@ -299,8 +298,7 @@
             this.lvLogs.Size = new System.Drawing.Size(677, 158);
             this.lvLogs.TabIndex = 0;
             this.lvLogs.UseCompatibleStateImageBehavior = false;
-            this.lvLogs.View = System.Windows.Forms.View.Details;
-            this.lvLogs.SelectedIndexChanged += new System.EventHandler(this.lvZooTech_SelectedIndexChanged);
+            this.lvLogs.View = System.Windows.Forms.View.Details;            
             // 
             // columnHeader11
             // 
@@ -372,8 +370,6 @@
         private System.Windows.Forms.ToolStripMenuItem miPrint;        
         private System.Windows.Forms.ColumnHeader columnHeader14;       
         private System.Windows.Forms.ColumnHeader columnHeader7;
-        private System.Windows.Forms.Label label1;
-        
-
+        private System.Windows.Forms.Label label1;        
     }
 }

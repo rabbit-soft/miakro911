@@ -234,11 +234,6 @@ namespace rabnet.components
             _filterPanel.BringToFront();
         }
 
-        public void FilterSwitch()
-        {
-            btFilter.PerformClick();
-        }
-
         #region clicks
         private void btn_Click(object sender, EventArgs e)
         {

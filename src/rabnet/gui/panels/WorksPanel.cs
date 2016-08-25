@@ -23,6 +23,9 @@ namespace rabnet.panels
         private Filters runF = null;//todo есть же parent._runF
         private int _selectedItem = -1;
 
+        protected List<JobType> _jtAllowed = new List<JobType>() { JobType.NestSet, JobType.PreOkrol, JobType.NestOut };
+
+
         public WorksPanel(RabStatusBar sb)
             : base(sb, new ZootehFilter())
         {
@@ -150,50 +153,39 @@ namespace rabnet.panels
             lvLogs.EndUpdate();
         }
 
-        public override ContextMenuStrip getMenu()
-        {
-            this.setMenu(JobType.None);
-            return actMenu;
-        }
-
-        public void setMenu(JobType type)
-        {
-            setMenu(type, null);
-        }
         /// <summary>
         /// Открывает один из пунктов(работ) в контекстном меню,
         /// когда жмут правой кнопкой на одну из строк в listView с зоотехПланом
         /// </summary>
         /// <param name="type">Тип работы</param>
         /// <param name="job"></param>
-        public void setMenu(JobType type, ZootehJob job)
+        protected void setMenu(JobType type, ZootehJob job = null)
         {
             foreach (ToolStripMenuItem i in actMenu.Items) {
                 if (i == miPrint) {
                     continue;
                 }
-                
-                i.Visible = false;
+
+                i.Visible = i.Name == "mi" + type.ToString();
             }
+
             switch (type) {
-                case JobType.Okrol: miOkrol.Visible = true; break;
-                case JobType.NestOut: miNestOut.Visible = true; break;
-                case JobType.CountKids: miCountKidsChanged.Visible = miCountKids.Visible = true; break;
-                case JobType.PreOkrol: miPreOkrol.Visible = true; break;
-                case JobType.BoysOut: miBoysOut.Visible = true; break;
-                case JobType.GirlsOut: miGirlsOut.Visible = true; break;
-                case JobType.Fuck: miFuck.Visible = true;
-                    if (job.JobName == "Случка") {
-                        miFuck.Text = "Случить";
-                    } else {
-                        miFuck.Text = "Вязать";
+                //case JobType.Okrol: miOkrol.Visible = true; break;
+                //case JobType.NestOut: miNestOut.Visible = true; break;
+                case JobType.CountKids: miCountKidsChanged.Visible = true; break;
+                //case JobType.PreOkrol: miPreOkrol.Visible = true; break;
+                //case JobType.BoysOut: miBoysOut.Visible = true; break;
+                //case JobType.GirlsOut: miGirlsOut.Visible = true; break;
+                case JobType.Fuck:
+                    if (job != null) {
+                        miFuck.Text = (job.JobName == "Случка" ? "Случить" : "Вязать");
+                        miLust.Visible = job.Flag2 == 0;
                     }
-                    miLust.Visible = true;
                     break;
-                case JobType.Vaccine: miVaccine.Visible = true; break;
-                case JobType.NestSet: miNestSet.Visible = true; break;
-                case JobType.BoysByOne: miBoysByOne.Visible = true; break;
-                case JobType.SpermTake: miSpermTake.Visible = true; break;
+                //case JobType.Vaccine: miVaccine.Visible = true; break;
+                //case JobType.NestSet: miNestSet.Visible = true; break;
+                //case JobType.BoysByOne: miBoysByOne.Visible = true; break;
+                //case JobType.SpermTake: miSpermTake.Visible = true; break;
             }
         }
 
@@ -221,39 +213,40 @@ namespace rabnet.panels
             return lst.Count - 1;
         }
 
-        private void lvZooTech_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            MainForm.StillWorking();
-            if (lvZooTech.SelectedItems.Count != 1) {
-                setMenu(JobType.None);
-                return;
-            }
-            setMenu(getCurJob().Type, getCurJob());
-        }
-
         /// <summary>
         /// Выполняет одну из зоотехнических работ
         /// </summary>
-        private void makeJob()
+        private void makeOneJob(ZootehJob job)
         {
-            DialogResult res = DialogResult.OK;
-            ZootehJob job = this.getCurJob();
             if (job == null) {
                 return;
             }
 
-            _fullUpdate = true;
-            bool needUpdate = Engine.opt().getIntOption(Options.OPT_ID.UPDATE_ZOO) == 1;
+            _fullUpdate = Engine.opt().getIntOption(Options.OPT_ID.UPDATE_ZOO) == 1;
+
+            if (this.performJob(job, ref _fullUpdate) == DialogResult.OK) {
+                int idx = lvZooTech.SelectedItems[0].Index;
+                lvZooTech.SelectedItems[0].Remove();
+                if (idx < lvZooTech.Items.Count) {
+                    lvZooTech.Items[idx].Selected = true;
+                }
+                _rsb.Run();
+            }
+        }
+
+        private DialogResult performJob(ZootehJob job, ref bool needUpdate)
+        {
+            DialogResult res = DialogResult.OK;
             switch (job.Type) {
                 case JobType.NestOut:
-                    RabNetEngBuilding b = Engine.get().getBuilding(job.ID);                   
-                    b.setNest(false, (job.ID2 == 0 ? 0 : 1));                    
+                    RabNetEngBuilding b = Engine.get().getBuilding(job.ID);
+                    b.setNest(false, (job.ID2 == 0 ? 0 : 1));
                     needUpdate = false;
                     break;
 
                 case JobType.PreOkrol:
                     Engine.get().preOkrol(job.ID);
-                    needUpdate = false;
+                    //_fullUpdate = false;
                     break;
 
                 case JobType.BoysOut:
@@ -331,16 +324,16 @@ namespace rabnet.panels
                 case JobType.NestSet://установка гнездовья    
                     RabPlace rp = RabPlace.Parse(job.Rabplace);
                     if (rp.CanHaveNest()) {
-                        RabNetEngBuilding rbe = RabNetEngBuilding.FromPlace(job.Rabplace, Engine.get());                          
+                        RabNetEngBuilding rbe = RabNetEngBuilding.FromPlace(job.Rabplace, Engine.get());
                         rbe.setNest(true, rp.Section);
                         res = DialogResult.OK;
                         needUpdate = false;
                         break;
-                    } 
+                    }
                     ReplaceForm f = new ReplaceForm();
                     f.AddRabbit(job.ID);
                     f.SetAction(ReplaceForm.Action.SET_NEST);
-                    res = f.ShowDialog();                    
+                    res = f.ShowDialog();
                     break;
 
                 case JobType.BoysByOne:
@@ -360,33 +353,30 @@ namespace rabnet.panels
                     break;
             }
 
-            if (res != DialogResult.Cancel) {
-                int idx = lvZooTech.SelectedItems[0].Index;
-                lvZooTech.SelectedItems[0].Remove();
-                if (idx < lvZooTech.Items.Count) {
-                    lvZooTech.Items[idx].Selected = true;
-                }
-                _fullUpdate = needUpdate;
-                _rsb.Run();
-            }
+            return res;
         }
 
         private void MenuItem_Click(object sender, EventArgs e)
-        {
-            _makeFlag = 0;
-            makeJob();
+        {            
+            foreach (ListViewItem lvi in lvZooTech.SelectedItems) {
+                if (performJob(lvi.Tag as ZootehJob, ref _fullUpdate) == DialogResult.OK) {
+                    lvi.Remove();
+                }
+            }
+            
+            _rsb.Run();
         }
 
         private void countChangedMenuItem_Click(object sender, EventArgs e)
         {
             _makeFlag = 1;
-            makeJob();
+            makeOneJob(this.getCurJob());
         }
 
         private void miLust_Click(object sender, EventArgs e)
         {
             _makeFlag = -1;
-            makeJob();
+            makeOneJob(this.getCurJob());
         }
 
         private void printMenuItem_Click(object sender, EventArgs e)
@@ -455,17 +445,31 @@ namespace rabnet.panels
 
         private void actMenu_Opening(object sender, CancelEventArgs e)
         {
+            ZootehJob zJob = null;
             if (lvZooTech.SelectedItems.Count == 0) {
                 e.Cancel = true;
                 return;
+            } else if (lvZooTech.SelectedItems.Count == 1) {
+                zJob = lvZooTech.SelectedItems[0].Tag as ZootehJob;
+                this.setMenu(zJob.Type, zJob);
+            } else {                
+                JobType jtAssumed = JobType.None;
+                foreach (ListViewItem lvi in lvZooTech.Items) {
+                    zJob = lvi.Tag as ZootehJob;
+                    // проверяем чтобы все выбранные записи имели один тип 
+                    if (!_jtAllowed.Contains(zJob.Type) || (jtAssumed != JobType.None && jtAssumed != zJob.Type)) {
+                        jtAssumed = JobType.None;
+                        break;
+                    }
+
+                    if (jtAssumed == JobType.None) {
+                        jtAssumed = zJob.Type;
+                    }
+                }
+                this.setMenu(jtAssumed);
             }
 
-            ZootehJob zJob = lvZooTech.SelectedItems[0].Tag as ZootehJob;
-            if (zJob.Type == JobType.Fuck) {
-                miLust.Visible = zJob.Flag2 == 0;
-            }
         }
-
 
     }
 

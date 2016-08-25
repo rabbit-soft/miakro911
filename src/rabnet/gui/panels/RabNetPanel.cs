@@ -110,26 +110,6 @@ namespace rabnet.panels
             return onPrepare(f);
         }
 
-        //private void onItem_Invoker(IData data)
-        //{
-        //    if (this.InvokeRequired) {
-        //        RSBItemEventHandler d = new RSBItemEventHandler(onItem_Invoker);
-        //        this.Invoke(d, new object[] { data });
-        //    } else {
-        //        onItem(data);
-        //    }
-        //}
-
-        //private void onFinishUpdate_Invoker()
-        //{
-        //    if (this.InvokeRequired) {
-        //        RSBEventHandler d = new RSBEventHandler(onFinishUpdate_Invoker);
-        //        this.Invoke(d);
-        //    } else {
-        //        onFinishUpdate();
-        //    }
-        //}
-
         /// <summary>
         /// Тело метода содержится в наследниках класса RabNetPanel
         /// Выполняет обработку одной строчки из результата обращения к БД
@@ -145,7 +125,7 @@ namespace rabnet.panels
         /// <returns></returns>
         protected virtual IDataGetter onPrepare(Filters f)
         {
-            _rsb.FilterOn = f.Count != 0;            
+            _rsb.FilterOn = f.Count != 0;
             _colSort.PrepareForUpdate();
             this.Enabled = false;
             return null;
@@ -156,11 +136,6 @@ namespace rabnet.panels
             _colSort.RestoreAfterUpdate();
             this.Enabled = true;
         }
-
-        public virtual ContextMenuStrip getMenu()
-        {
-            return null;
-        }
-
     }
+    
 }

@@ -81,12 +81,6 @@ namespace rabnet.panels
             }
         }
 
-        public override ContextMenuStrip getMenu()
-        {
-            setMenu();
-            return actMenu;
-        }
-
         public void setMenu()
         {
             int cnt = listView1.SelectedItems.Count;
