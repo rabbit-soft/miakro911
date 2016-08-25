@@ -23,9 +23,6 @@ namespace rabnet.panels
         private Filters runF = null;//todo есть же parent._runF
         private int _selectedItem = -1;
 
-        protected List<JobType> _jtAllowed = new List<JobType>() { JobType.NestSet, JobType.PreOkrol, JobType.NestOut };
-
-
         public WorksPanel(RabStatusBar sb)
             : base(sb, new ZootehFilter())
         {
@@ -361,6 +358,8 @@ namespace rabnet.panels
             foreach (ListViewItem lvi in lvZooTech.SelectedItems) {
                 if (performJob(lvi.Tag as ZootehJob, ref _fullUpdate) == DialogResult.OK) {
                     lvi.Remove();
+                } else {
+                    break;
                 }
             }
             
@@ -457,7 +456,7 @@ namespace rabnet.panels
                 foreach (ListViewItem lvi in lvZooTech.Items) {
                     zJob = lvi.Tag as ZootehJob;
                     // проверяем чтобы все выбранные записи имели один тип 
-                    if (!_jtAllowed.Contains(zJob.Type) || (jtAssumed != JobType.None && jtAssumed != zJob.Type)) {
+                    if (jtAssumed != JobType.None && jtAssumed != zJob.Type) {
                         jtAssumed = JobType.None;
                         break;
                     }
