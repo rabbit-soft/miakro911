@@ -22,6 +22,7 @@ namespace rabnet
         NONE,
         OKROL,
         NEST_OUT,
+        /// <summary>Подсчет гнездовых/подсосных</summary>
         COUNT_KIDS,
         PRE_OKROL,
         BOYS_OUT,

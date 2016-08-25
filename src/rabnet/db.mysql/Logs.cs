@@ -5,7 +5,7 @@ using System.Text;
 using rabnet;
 
 namespace db.mysql
-{  
+{
     class Logs
     {
         class Params
@@ -22,7 +22,7 @@ namespace db.mysql
         private MySqlConnection sql;
         public Logs(MySqlConnection sql)
         {
-            this.sql=sql;
+            this.sql = sql;
         }
 
         public static void addLog(MySqlConnection sql, int type, int user, int r1, int r2, string a1, string a2, string text)
@@ -41,22 +41,27 @@ namespace db.mysql
         private String makeWhere(Filters f)
         {
             String res = "";
-            if (f.safeValue(Filters.LOGS) != "")///если пустая то показывать все логи
-            {
+            if (f.safeValue(Filters.LOGS) != "") {
+                ///если пустая то показывать все логи
                 string tmp = "";
                 String[] tps = f.safeValue(Filters.LOGS, "").Split(',');
-                for (int i = 0; i < tps.Length - 1; i++)
+                for (int i = 0; i < tps.Length - 1; i++) {
                     tmp += String.Format("logs.l_type={0:s} OR ", tps[i]);
+                }
                 res += String.Format("({0:s} logs.l_type={1:s})", tmp, tps[tps.Length - 1]);
             }
-            if(f.ContainsKey(Filters.RAB_ID))
+            if (f.ContainsKey(Filters.RAB_ID)) {
                 res += String.Format("{0:s}(l_rabbit={1:s} OR l_rabbit2={1:s})", (res != "" ? " AND " : ""), f[Filters.RAB_ID]);
-            if(f.ContainsKey(Filters.DATE_FROM) && f.ContainsKey(Filters.DATE_TO))
+            }
+            if (f.ContainsKey(Filters.DATE_FROM) && f.ContainsKey(Filters.DATE_TO)) {
                 res += String.Format("{0:s}Date(l_date) BETWEEN '{1:s}' AND '{2:s}'", (res != "" ? " AND " : ""), f[Filters.DATE_FROM], f[Filters.DATE_TO]);
-            if(f.ContainsKey(Filters.ADDRESS))
+            }
+            if (f.ContainsKey(Filters.ADDRESS)) {
                 res += String.Format("{0:s}(Trim(l_address)='{1:s}' OR Trim(l_address2)='{1:s}')", (res != "" ? " AND " : ""), f[Filters.ADDRESS]);
-            if(res!="")
-                res = "WHERE "+res;
+            }
+            if (res != "") {
+                res = "WHERE " + res;
+            }
             return res;
         }
 
@@ -77,15 +82,12 @@ ORDER BY date DESC LIMIT {0:d};", limit, makeWhere(f));
             MySqlCommand cmd = new MySqlCommand(qry, sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             LogList ll = new LogList();
-            while (rd.Read())
-            {
+            while (rd.Read()) {
                 String np = rd.GetString("params");
-                while (np.IndexOf('$') > -1)
-                {
+                while (np.IndexOf('$') > -1) {
                     String prms = "";
                     char c = np[np.IndexOf('$') + 1];
-                    switch (c)
-                    {
+                    switch (c) {
                         case 'r': prms += rd.GetString("r1"); break;
                         case 'R': prms += rd.GetString("r2"); break;
                         case 'p': prms += Building.FullPlaceName(rd.GetString("place"), true, false, false); break;
@@ -97,8 +99,9 @@ ORDER BY date DESC LIMIT {0:d};", limit, makeWhere(f));
                     np = np.Replace("$" + c, prms);
                 }
                 String adr = rd.GetString("address");
-                if (adr == "")
+                if (adr == "") {
                     adr = Building.FullPlaceName(rd.GetString("place"), true, false, false);
+                }
                 ll.addLog(rd.GetDateTime("date"), rd.IsDBNull(2) ? "" : rd.GetString("user"), rd.GetString("name"), np, adr);
             }
             rd.Close();
@@ -110,8 +113,9 @@ ORDER BY date DESC LIMIT {0:d};", limit, makeWhere(f));
             MySqlCommand cmd = new MySqlCommand("SELECT l_name FROM logtypes ORDER BY l_type ASC;", sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             List<String> res = new List<string>();
-            while (rd.Read())
+            while (rd.Read()) {
                 res.Add(rd.GetString(0));
+            }
             rd.Close();
             return res.ToArray();
         }
@@ -124,10 +128,9 @@ ORDER BY date DESC LIMIT {0:d};", limit, makeWhere(f));
         public static DateTime getFarmStartTime(MySqlConnection sql)
         {
             DateTime result = DateTime.MaxValue;
-            MySqlCommand cmd = new MySqlCommand("SELECT l_date FROM logs ORDER BY l_id ASC LIMIT 1;",sql);
+            MySqlCommand cmd = new MySqlCommand("SELECT l_date FROM logs ORDER BY l_id ASC LIMIT 1;", sql);
             object o = cmd.ExecuteScalar();
-            if (o != null)
-            {
+            if (o != null) {
                 string res = 0.ToString();
                 DateTime.TryParse(res, out result);
             }
