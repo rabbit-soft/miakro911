@@ -5,7 +5,7 @@
 	<property name="netInstaller.path" value="${allineed.path}/dotNetInstaller" />
 	<property name="Office.path" value="${party3d.path}" />
 
-	<property name="grd_path" value="C:\Program Files (x86)\Guardant\SDK 6.3\PLAT_T+" />
+	<property name="grd_path" value="C:\Program Files (x86)\Guardant\SDK7" />
 	<property name="NSISPath" value="C:\Program Files\NSIS"/>
 
 	<target name="svn_co" description="Updating svn">

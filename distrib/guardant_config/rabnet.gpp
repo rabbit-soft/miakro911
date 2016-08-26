@@ -1646,27 +1646,27 @@
          <type name="rabnet.JobType" expanded="no">
             <field name="value__" signature="System.Int32">
             </field>
-            <field name="NONE" signature="rabnet.JobType">
+            <field name="None" signature="rabnet.JobType">
             </field>
-            <field name="OKROL" signature="rabnet.JobType">
+            <field name="Okrol" signature="rabnet.JobType">
             </field>
-            <field name="VUDVOR" signature="rabnet.JobType">
+            <field name="NestOut" signature="rabnet.JobType">
             </field>
-            <field name="COUNT_KIDS" signature="rabnet.JobType">
+            <field name="CountKids" signature="rabnet.JobType">
             </field>
-            <field name="PRE_OKROL" signature="rabnet.JobType">
+            <field name="PreOkrol" signature="rabnet.JobType">
             </field>
-            <field name="BOYS_OUT" signature="rabnet.JobType">
+            <field name="BoysOut" signature="rabnet.JobType">
             </field>
-            <field name="GIRLS_OUT" signature="rabnet.JobType">
+            <field name="GirlsOut" signature="rabnet.JobType">
             </field>
-            <field name="FUCK" signature="rabnet.JobType">
+            <field name="Fuck" signature="rabnet.JobType">
             </field>
-            <field name="VACC" signature="rabnet.JobType">
+            <field name="Vaccine" signature="rabnet.JobType">
             </field>
-            <field name="SET_NEST" signature="rabnet.JobType">
+            <field name="NestSet" signature="rabnet.JobType">
             </field>
-            <field name="BOYS_BY_ONE" signature="rabnet.JobType">
+            <field name="BoysByOne" signature="rabnet.JobType">
             </field>
          </type>
          <type name="rabnet.ZooTehNullItem" code_protection="exclude" expanded="no">
@@ -7990,8 +7990,6 @@
             </method>
             <method name="onFinishUpdate" signature="i System.Void(  )" code_protection="exclude">
             </method>
-            <method name="getMenu" signature="i System.Windows.Forms.ContextMenuStrip(  )">
-            </method>
             <method name=".ctor" signature="i System.Void(  )" code_protection="include">
             </method>
             <method name=".ctor" signature="i System.Void( rabnet.components.RabStatusBar,rabnet.filters.FilterPanel )" code_protection="include">
@@ -8041,8 +8039,6 @@
             <method name="treeView1_AfterSelect" signature="i System.Void( System.Object,System.Windows.Forms.TreeViewEventArgs )">
             </method>
             <method name="farmDrawer1_ValueChanged" signature="i System.Void( System.Object,rabnet.components.BuildingControl/BCEvent )">
-            </method>
-            <method name="getMenu" signature="i System.Windows.Forms.ContextMenuStrip(  )" code_protection="include">
             </method>
             <method name="updateMenu" signature="i System.Void(  )">
             </method>
@@ -8185,8 +8181,6 @@
             <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )" code_protection="include">
             </method>
             <method name="onItem" signature="i System.Void( rabnet.IData )" code_protection="include">
-            </method>
-            <method name="getMenu" signature="i System.Windows.Forms.ContextMenuStrip(  )" code_protection="include">
             </method>
             <method name="lvButcherDates_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )" code_protection="include">
             </method>
@@ -8378,8 +8372,6 @@
             </method>
             <method name="setMenu" signature="i System.Void( System.Int32,System.Int32,System.Boolean )" code_protection="include">
             </method>
-            <method name="getMenu" signature="i System.Windows.Forms.ContextMenuStrip(  )" code_protection="include">
-            </method>
             <method name="miPassport_Click" signature="i System.Void( System.Object,System.EventArgs )">
             </method>
             <method name="ri_Working" signature="i System.Void(  )">
@@ -8552,8 +8544,6 @@
             </method>
             <method name="fillLogs" signature="i System.Void( rabnet.Filters )" code_protection="include">
             </method>
-            <method name="getMenu" signature="i System.Windows.Forms.ContextMenuStrip(  )" code_protection="include">
-            </method>
             <method name="setMenu" signature="i System.Void( rabnet.JobType )" code_protection="include">
             </method>
             <method name="setMenu" signature="i System.Void( rabnet.JobType,rabnet.ZootehJob )" code_protection="include">
@@ -8564,8 +8554,7 @@
             </method>
             <method name="lvZooTech_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )">
             </method>
-            <method name="makeJob" signature="i System.Void(  )">
-            </method>
+            
             <method name="MenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )">
             </method>
             <method name="countChangedMenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )">
@@ -8668,11 +8657,7 @@
             </method>
             <method name="onItem" signature="i System.Void( rabnet.IData )" code_protection="exclude">
             </method>
-            <method name="insertNode" signature="i System.Void( System.Windows.Forms.TreeNode,rabnet.RabTreeData )">
-            </method>
             <method name="listView1_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )">
-            </method>
-            <method name="getMenu" signature="i System.Windows.Forms.ContextMenuStrip(  )" code_protection="include">
             </method>
             <method name="setMenu" signature="i System.Void(  )" code_protection="include">
             </method>
@@ -9146,8 +9131,7 @@
             </field>
          </type>
          <type name="rabnet.forms.CountKids" expanded="no">
-            <method name="setGrp" signature="i System.Void( System.Int32 )">
-            </method>
+            
             <method name="CountKids_Load" signature="i System.Void( System.Object,System.EventArgs )">
             </method>
             <method name="numericUpDown1_ValueChanged" signature="i System.Void( System.Object,System.EventArgs )">
@@ -9249,8 +9233,6 @@
             <method name="rsb_prepareGet" signature="i rabnet.IDataGetter(  )" code_protection="include">
             </method>
             <method name="rsb_itemGet" signature="i System.Void( rabnet.IData )" code_protection="include">
-            </method>
-            <method name="DeadForm_Activated" signature="i System.Void( System.Object,System.EventArgs )" code_protection="include">
             </method>
             <method name="miRestore_Click" signature="i System.Void( System.Object,System.EventArgs )">
             </method>
@@ -9857,7 +9839,7 @@
             <method name=".ctor" signature="i System.Void( System.Object,System.IntPtr )">
             </method>
          </type>
-         <type name="rabnet.forms.MakeFuckForm" expanded="no">
+         <type name="rabnet.forms.FuckForm" expanded="no">
             <method name="initialHints" signature="i System.Void(  )" code_protection="include">
             </method>
             <method name="fillNames" signature="i System.Void(  )" code_protection="include">
@@ -10703,9 +10685,7 @@
             <method name="addMaleTabs" signature="i System.Void(  )">
             </method>
             <method name="addFemaleTabs" signature="i System.Void(  )">
-            </method>
-            <method name="FillList" signature="i System.Void( System.Windows.Forms.ComboBox,rabnet.Catalog,System.Int32 )">
-            </method>
+            </method>            
             <method name="fillCatalogs" signature="i System.Void( System.Int32 )">
             </method>
             <method name="fillNames" signature="i System.Void( System.Int32 )">
@@ -10769,9 +10749,7 @@
             <method name="sex_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )">
             </method>
             <method name="setSex" signature="i System.Void( System.Int32 )">
-            </method>
-            <method name="maleStatus_TextChanged" signature="i System.Void( System.Object,System.EventArgs )">
-            </method>
+            </method>            
             <method name="working" signature="i System.Void(  )" code_protection="include">
             </method>
             <method name="tabControl1_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )" code_protection="include">
@@ -12587,9 +12565,7 @@
             <method name="onPrepare" signature="i rabnet.IDataGetter( rabnet.Filters )" code_protection="exclude">
             </method>
             <method name="onFinishUpdate" signature="i System.Void(  )" code_protection="exclude">
-            </method>
-            <method name="getMenu" signature="i System.Windows.Forms.ContextMenuStrip(  )">
-            </method>
+            </method>            
             <method name=".ctor" signature="i System.Void(  )">
             </method>
             <method name=".ctor" signature="i System.Void( rabnet.components.RabStatusBar,rabnet.filters.FilterPanel )">
@@ -12639,8 +12615,6 @@
             <method name="treeView1_AfterSelect" signature="i System.Void( System.Object,System.Windows.Forms.TreeViewEventArgs )">
             </method>
             <method name="farmDrawer1_ValueChanged" signature="i System.Void( System.Object,rabnet.components.BuildingControl/BCEvent )">
-            </method>
-            <method name="getMenu" signature="i System.Windows.Forms.ContextMenuStrip(  )">
             </method>
             <method name="updateMenu" signature="i System.Void(  )">
             </method>
@@ -12790,8 +12764,6 @@
             </method>
             <method name="onItem" signature="i System.Void( rabnet.IData )" code_protection="exclude">
             </method>
-            <method name="getMenu" signature="i System.Windows.Forms.ContextMenuStrip(  )">
-            </method>
             <method name="lvButcherDates_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )">
             </method>
             <method name="makeExcel" signature="i System.Void(  )">
@@ -12879,8 +12851,6 @@
             <method name="listView1_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )">
             </method>
             <method name="setMenu" signature="i System.Void( System.Int32,System.Int32,System.Boolean )">
-            </method>
-            <method name="getMenu" signature="i System.Windows.Forms.ContextMenuStrip(  )">
             </method>
             <method name="miPassport_Click" signature="i System.Void( System.Object,System.EventArgs )">
             </method>
@@ -13058,8 +13028,6 @@
             </method>
             <method name="fillLogs" signature="i System.Void( rabnet.Filters )">
             </method>
-            <method name="getMenu" signature="i System.Windows.Forms.ContextMenuStrip(  )">
-            </method>
             <method name="setMenu" signature="i System.Void( rabnet.JobType )">
             </method>
             <method name="setMenu" signature="i System.Void( rabnet.JobType,rabnet.ZootehJob )">
@@ -13069,8 +13037,6 @@
             <method name="getFuckerId" signature="i System.Int32( System.String,System.Collections.Generic.List`1&lt;System.String&gt; )">
             </method>
             <method name="lvZooTech_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )">
-            </method>
-            <method name="makeJob" signature="i System.Void(  )">
             </method>
             <method name="MenuItem_Click" signature="i System.Void( System.Object,System.EventArgs )">
             </method>
@@ -13179,8 +13145,6 @@
             <method name="insertNode" signature="i System.Void( System.Windows.Forms.TreeNode,rabnet.RabTreeData )">
             </method>
             <method name="listView1_SelectedIndexChanged" signature="i System.Void( System.Object,System.EventArgs )">
-            </method>
-            <method name="getMenu" signature="i System.Windows.Forms.ContextMenuStrip(  )">
             </method>
             <method name="setMenu" signature="i System.Void(  )">
             </method>
@@ -13322,10 +13286,6 @@
             </field>
          </type>
          <type name="rabnet.ReportHelperExt" expanded="no">
-            <method name="rabToXml" signature="s System.Xml.XmlDocument( rabnet.OneRabbit,rabnet.OneRabbit )">
-            </method>
-            <method name="rabToXml" signature="s System.Xml.XmlDocument( rabnet.OneRabbit,rabnet.OneRabbit,System.Xml.XmlDocument )">
-            </method>
             <method name="GetRabbitPlem" signature="s System.Xml.XmlDocument[]( System.Int32 )">
             </method>
          </type>

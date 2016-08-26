@@ -6,9 +6,9 @@
 	
 	<property name="grd_path.conf" value="${trunkdir}\distrib\guardant_config" />
 	<property name="grd_path.bin" value="${grd_path}\Bin" />
-	<property name="grd_path.lib" value="${grd_path}\Lib" />
-	<property name="grd_path.lib64" value="${grd_path}\Lib\x64" />	
-	<property name="grd_path.drivers" value="${grd_path}\Drivers" />	
+	<property name="grd_path.lib" value="${grd_path}\Lib\windows\x86" />
+	<property name="grd_path.lib64" value="${grd_path}\Lib\windows\x64" />	
+	<property name="grd_path.drivers" value="${grd_path}\Redistribute\Drivers" />	
 	
 	<property name="grd_lib.CS_32" value="CodeStorage32.dll" />
 	<property name="grd_lib.CS_64" value="CodeStorage64.dll" />
@@ -23,13 +23,13 @@
 	<property name="GrdTru" value="GrdTRU.exe"/>
 	<property name="GrdSrv" value="grdsrv.exe"/>
 	<property name="GrdMon" value="grdmon.exe"/>	
-	<property name="GrdTruSource" value="${grd_path.bin}/${GrdTru}"/>
+	<property name="GrdTruSource" value="${grd_path}/Redistribute/RemoteUtils/${GrdTru}"/>
 	<property name="GrdSrvSource" value="${grd_path.bin}/${GrdSrv}"/>
 	<property name="GrdMonSource" value="${grd_path.bin}/${GrdMon}"/>
 	
 	<property name="GrdDriverName" value="GrdDriversRU"/>
-	<property name="GrdDriver32Path" value="${grd_path.drivers}/x86/Windows/rus/${GrdDriverName}.msi"/>
-	<property name="GrdDriver64Path" value="${grd_path.drivers}/x64/Windows/rus/${GrdDriverName}.msi"/>
+	<property name="GrdDriver32Path" value="${grd_path.drivers}/x86/rus/${GrdDriverName}.msi"/>
+	<property name="GrdDriver64Path" value="${grd_path.drivers}/x64/rus/${GrdDriverName}.msi"/>
 	
 	
 	<target name="include_grd_tools">
@@ -37,7 +37,8 @@
 		
 		<copy file="${GrdTruSource}" tofile="${bin_grd_tools}/${GrdTru}" />
 		<copy todir="${bin_grd_tools}/Server" >
-			<fileset basedir="${grd_path}/Server">
+			<fileset basedir="${grd_path}/Redistribute/NetServer">
+				<exclude name="*/*.tar"/>
 				<include name="*/**" />				
 			</fileset>
 		</copy>
@@ -51,7 +52,7 @@
 	<target name="include_grd_libs">
 		<copy file="${grd_path.lib}/${grd_lib.Api_32}" tofile="${bin_dir_bin}/${grd_lib.Api_32}" />
 		<copy file="${grd_path.lib64}/${grd_lib.Api_64}" tofile="${bin_dir_bin}/${grd_lib.Api_64}" />
-		<copy file="${grd_path.lib}/${grd_lib.NET}" tofile="${bin_dir_bin}/${grd_lib.NET}" />		
+		<copy file="${grd_path.bin}/${grd_lib.NET}" tofile="${bin_dir_bin}/${grd_lib.NET}" />		
 	</target>
 	
 	

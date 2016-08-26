@@ -54,8 +54,8 @@
 	<property name="dotnetInstallerDest" value="${installersPath}${slash}${dotnetInstaller}" />
 	<property name="mysqlInstallerDest" value="${installersPath}${slash}${mysqlInstaller}" />
 	<property name="MSIInstallerDest" value="${installersPath}${slash}${MSIInstaller}" />
-	<property name="NSIS" value="${NSISPath}\makensis.exe" />
-	<property name="nant.settings.currentframework" value="net-2.0" />
+	<property name="NSIS" value="${NSISPath}\makensis.exe" />	
+	<property name="nant.settings.currentframework" value="net-3.5" />
 	<property name="help_setup" value="Руководство по установке программы Miakro 9.11.docx" />
 	<property name="help_rcdb" value="Создание Резервных Копий Базы Данных.docx" />
 	<property name="help_gtru" value="Руководство по обновлению Ключей Защиты.docx" />

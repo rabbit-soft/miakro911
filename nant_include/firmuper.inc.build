@@ -10,7 +10,7 @@
 		<copy file="${party3d.path}/writemask.dll" tofile="${bindir.rfd}/writemask.dll" />
 		<copy file="${grd_path.lib}/${grd_lib.Api_32}" tofile="${bindir.rfd}/${grd_lib.Api_32}" />
 		<copy file="${grd_path.lib64}/${grd_lib.Api_64}" tofile="${bindir.rfd}/${grd_lib.Api_64}" />		
-		<copy file="${grd_path.lib}/${grd_lib.NET}" tofile="${bindir.rfd}/${grd_lib.NET}" />	
+		<copy file="${grd_path.bin}/${grd_lib.NET}" tofile="${bindir.rfd}/${grd_lib.NET}" />	
 		
 		<csc target="exe" output="${bindir.rfd}/firmuper.exe" optimize="true" define="PROTECTED">
 			<sources>

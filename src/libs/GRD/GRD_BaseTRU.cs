@@ -24,11 +24,11 @@ namespace RabGRD
                             out quest.pubKey,   // pointer to dongle Public Code		4 bytes 
                             out quest.hash);    // pointer to Hash of previous data		8 bytes 
 
-            logStr += GrdApi.PrintResult((int)retCode);
+            logStr += GrdApi.PrintResult(retCode);
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if(retCode != GrdE.OK)
-                throw new GrdException(GrdApi.PrintResult((int)retCode), (uint)retCode);
+                throw new GrdException(GrdApi.PrintResult(retCode), (uint)retCode);
 
             quest.type = _keyType;
             quest.lanRes = _lanRes;
@@ -42,7 +42,7 @@ namespace RabGRD
         public void SetTRUAnswer(string base64_answer)
         {
             if (String.IsNullOrEmpty(base64_answer))
-                throw new GrdException(GrdApi.PrintResult((int)GrdE.InvalidArg),(uint)GrdE.InvalidArg);
+                throw new GrdException(GrdApi.PrintResult(GrdE.InvalidArg),(uint)GrdE.InvalidArg);
 
             byte[] buf = Convert.FromBase64String(base64_answer);
             GrdE retCode; // Error code for all Guardant API functions
@@ -52,11 +52,11 @@ namespace RabGRD
                                                             // corresponding pre-generated question 
                                                 buf);       // answer data update buffer prepared and encrypted by GrdTRU_EncryptAnswer 
 
-            logStr += GrdApi.PrintResult((int)retCode);
+            logStr += GrdApi.PrintResult(retCode);
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK)
-                throw new GrdException(GrdApi.PrintResult((int)retCode), (uint)retCode);
+                throw new GrdException(GrdApi.PrintResult(retCode), (uint)retCode);
                 
 
             byte[] buffer = new byte[16];
@@ -64,10 +64,10 @@ namespace RabGRD
 
             logStr = "Testing new mask by GrdTransform test: ";
             retCode = GrdApi.GrdTransform(_grdHandle, 0, /*8,*/ buffer, GrdAM.ECB, initVector);
-            logStr += GrdApi.PrintResult((int)retCode);
+            logStr += GrdApi.PrintResult(retCode);
             _logger.Debug(logStr);
             if (retCode != GrdE.OK)
-                throw new GrdException(GrdApi.PrintResult((int)retCode), (uint)retCode);         
+                throw new GrdException(GrdApi.PrintResult(retCode), (uint)retCode);         
         }
     }
 }

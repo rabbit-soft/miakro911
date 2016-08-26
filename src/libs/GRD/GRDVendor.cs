@@ -95,7 +95,7 @@ namespace RabGRD
 
             logStr = "Searching for the specified local or remote dongle and log in : ";
             retCode = GrdApi.GrdLogin(_grdHandle, GrdLM.PerStation);
-            logStr += GrdApi.PrintResult((int)retCode);
+            logStr += GrdApi.PrintResult(retCode);
             _logger.Debug(logStr);
             if (retCode != GrdE.OK)
             {
@@ -128,7 +128,7 @@ namespace RabGRD
         public int SetTRUKey()
         {
             GrdE retCode = GrdApi.GrdTRU_SetKey(_grdHandle, _keyTRU);
-            _logger.Debug("Setting TruKey " + retCode.ToString() + " " + GrdApi.PrintResult((byte)retCode));
+            _logger.Debug("Setting TruKey " + retCode.ToString() + " " + GrdApi.PrintResult(retCode));
             ErrorHandling(_grdHandle, retCode);
             return (int)retCode;
         }
@@ -192,11 +192,11 @@ namespace RabGRD
                                                     qq.pubKey,       // Public Code							4 bytes 
                                                     qq.hash);        // pointer to Hash of previous 16 bytes	8 bytes 
 
-            logStr += GrdApi.PrintResult((int)retCode);
+            logStr += GrdApi.PrintResult(retCode);
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK)
-                throw new GrdException(GrdApi.PrintResult((int)retCode), (uint)retCode);             
+                throw new GrdException(GrdApi.PrintResult(retCode), (uint)retCode);             
 
             uint protectLength;
             ushort wNumberOfItems;
@@ -213,11 +213,11 @@ namespace RabGRD
                                                         GrdGF.HID);                                         // Global Flags 
 
 
-            logStr += GrdApi.PrintResult((int)retCode);
+            logStr += GrdApi.PrintResult(retCode);
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK)
-                throw new GrdException(GrdApi.PrintResult((int)retCode), (uint)retCode);   
+                throw new GrdException(GrdApi.PrintResult(retCode), (uint)retCode);   
 
             byte[] answer = new byte[pbyWholeMask.Length * 3 + 128];
             int ansSize = answer.Length;
@@ -234,12 +234,12 @@ namespace RabGRD
                                                   TRUAlgoNumHash64,             // dongle HASH64 algorithm number with the same key as in remote dongle 
                                                   out answer/*,                   // pointer to the buffer for Answer data 
                                                   out ansSize*/);                 // IN: Maximum buffer size for Answer data, OUT: Size of pAnswer buffer 
-            logStr += GrdApi.PrintResult((int)retCode);
+            logStr += GrdApi.PrintResult(retCode);
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK)
             {
-                throw new GrdException(GrdApi.PrintResult((int)retCode), (uint)retCode);
+                throw new GrdException(GrdApi.PrintResult(retCode), (uint)retCode);
             }    
 
             return Convert.ToBase64String(answer, 0, ansSize, Base64FormattingOptions.InsertLineBreaks);            
@@ -412,7 +412,7 @@ namespace RabGRD
                                       //pbyWholeMask.Length,
                                       pbyWholeMask);
 
-            logStr += GrdApi.PrintResult((int)retCode);
+            logStr += GrdApi.PrintResult(retCode);
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK) return (int)retCode;
@@ -425,7 +425,7 @@ namespace RabGRD
                                         0,
                                         (uint)GrdGF.HID/*, 
                                         IntPtr.Zero*/);
-            logStr += GrdApi.PrintResult((int)retCode);
+            logStr += GrdApi.PrintResult(retCode);
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK) return (int)retCode;

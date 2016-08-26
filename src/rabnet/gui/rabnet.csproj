@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>rabnet</RootNamespace>
     <AssemblyName>rabnet</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ApplicationIcon>icon_green.ico</ApplicationIcon>
@@ -19,6 +19,11 @@
     <SignManifests>false</SignManifests>
     <TargetZone>LocalIntranet</TargetZone>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -33,10 +38,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -107,9 +108,9 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GuardantDotNetApi, Version=5.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\party3d\GuardantDotNetApi.dll</HintPath>
+    <Reference Include="GuardantDotNetApi, Version=7.0.193.0, Culture=neutral, PublicKeyToken=f52c2a12f8fa28a6, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Guardant\SDK7\Bin\GuardantDotNetApi.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -889,6 +890,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
       <Visible>False</Visible>
       <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
@@ -916,15 +922,15 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\party3d\GrdAPI32.DLL">
-      <Link>GrdAPI32.DLL</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\..\party3d\GrdAPI64.DLL">
-      <Link>GrdAPI64.DLL</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="changeLog.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="C:\Program Files %28x86%29\Guardant\SDK7\Lib\windows\x64\GrdAPI64.dll">
+      <Link>GrdAPI64.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="C:\Program Files %28x86%29\Guardant\SDK7\Lib\windows\x86\GrdAPI32.dll">
+      <Link>GrdAPI32.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="icon_green.ico" />
