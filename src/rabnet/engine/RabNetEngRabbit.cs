@@ -571,7 +571,9 @@ namespace rabnet
         public void SpermTake()
         {
 
-            if (this.Sex != SexType.MALE) throw new ExNotMale(this);
+            if (this.Sex != SexType.MALE) {
+                throw new ExNotMale(this);
+            }
             Engine.db().SpermTake(this.ID);
             ///todo логи на забор спермы
 

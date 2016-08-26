@@ -525,8 +525,9 @@ namespace db.mysql
         {
 #if DEMO
             const int DEMO_MAX_FARMS = 10;
-            if (getMFCount() >= DEMO_MAX_FARMS)
+            if (getMFCount() >= DEMO_MAX_FARMS) {
                 throw new FarmCountOverdarwException();
+            }
 #endif
             return Buildings.addFarm(sql, parent, uppertype, lowertype, name, id);
         }
