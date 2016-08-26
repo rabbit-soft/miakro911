@@ -35,9 +35,11 @@ namespace rabnet.forms
         {
             public OneCount GetByYID(int id)
             {
-                foreach (OneCount oc in this)
-                    if (oc.Younger.ID == id)
+                foreach (OneCount oc in this) {
+                    if (oc.Younger.ID == id) {
                         return oc;
+                    }
+                }
                 return null;
             }
         }
@@ -52,7 +54,7 @@ namespace rabnet.forms
             InitializeComponent();
         }
 
-        public CountKids(int id) 
+        public CountKids(int id)
             : this(Engine.get().getRabbit(id)/*,suckers*/) { }
 
         public CountKids(RabNetEngRabbit r)
@@ -63,6 +65,7 @@ namespace rabnet.forms
                 _ocList.Add(new OneCount(y, 0, 0, 0));
             }
         }
+
         public void SetGroup(int grp)
         {
             this._grp = grp;
