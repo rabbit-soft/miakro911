@@ -156,7 +156,7 @@ namespace rabnet.panels
         /// </summary>
         /// <param name="type">Тип работы</param>
         /// <param name="job"></param>
-        protected void setMenu(JobType type, ZootehJob job = null)
+        protected void setMenu(JobType type, ZootehJob job)
         {
             foreach (ToolStripMenuItem i in actMenu.Items) {
                 if (i == miPrint) {
@@ -465,7 +465,7 @@ namespace rabnet.panels
                         jtAssumed = zJob.Type;
                     }
                 }
-                this.setMenu(jtAssumed);
+                this.setMenu(jtAssumed, null);
             }
 
         }

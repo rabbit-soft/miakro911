@@ -386,9 +386,9 @@ namespace rabnet.panels
                 RabNetEngBuilding b = Engine.get().getBuilding(e.tier);
                 switch (e.type) {
                     case BuildingControl.BCEvent.EVTYPE.REPAIR: b.setRepair(e.val()); break;
-                    case BuildingControl.BCEvent.EVTYPE.NEST: b.setNest(e.val()); break;
+                    case BuildingControl.BCEvent.EVTYPE.NEST: b.setNest(e.val(), 0); break;
                     case BuildingControl.BCEvent.EVTYPE.NEST2: b.setNest(e.val(), 1); break;
-                    case BuildingControl.BCEvent.EVTYPE.HEATER: b.setHeater(e.value); break;
+                    case BuildingControl.BCEvent.EVTYPE.HEATER: b.setHeater(e.value, 0); break;
                     case BuildingControl.BCEvent.EVTYPE.HEATER2: b.setHeater(e.value, 1); break;
                     case BuildingControl.BCEvent.EVTYPE.DELIM: b.SetOneDelim(e.val()); break;
                     case BuildingControl.BCEvent.EVTYPE.DELIM1: b.SetDelim1(e.val()); break;

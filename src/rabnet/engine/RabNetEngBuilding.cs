@@ -73,7 +73,7 @@ namespace rabnet
         /// Установка гнездовья в клетку А
         /// </summary>
         /// <param name="value">установить или убрать</param>
-        public void setNest(bool value, int sec = 0)
+        public void setNest(bool value, int sec)
         {
             char newValue = value ? '1' : '0';
             if (b.Nests[sec] == newValue) {
@@ -91,7 +91,7 @@ namespace rabnet
             }
         }
 
-        public void setHeater(int value, int sec = 0)
+        public void setHeater(int value, int sec)
         {
             if (value == 2 || value > 3) { value = 3; }
             if (b.Heaters[sec] == value.ToString()[0]) {

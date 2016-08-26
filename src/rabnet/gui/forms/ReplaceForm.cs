@@ -740,7 +740,7 @@ namespace rabnet.forms
                     string[] vals = rr.RawAddress.Split(','); ///todo ГОВНОКОД нужно переделывать движок построек
                     //BuildingType tp = Building.ParseType(vals[3]);
                     if (rbe.Type == BuildingType.Jurta || rbe.Type == BuildingType.Female) {
-                        rbe.setNest(rp.SetNest);
+                        rbe.setNest(rp.SetNest, 0);
                     } else if (rbe.Type == BuildingType.DualFemale) {                        
                         rbe.setNest(rp.SetNest, Int32.Parse(vals[2]));                        
                     }
