@@ -8,7 +8,7 @@ namespace db.mysql
 {
     class Users
     {
-        private MySqlConnection sql=null;
+        private MySqlConnection sql = null;
         public Users(MySqlConnection sql)
         {
             this.sql = sql;
@@ -31,11 +31,10 @@ namespace db.mysql
         /// </summary>
         public List<sUser> getUsers()
         {
-            MySqlDataReader rd = reader("SELECT u_name,u_group,u_id,u_deleted FROM users WHERE u_deleted=0;");
+            MySqlDataReader rd = reader("SELECT u_name, u_group, u_id, u_deleted FROM users WHERE u_deleted = 0;");
             List<sUser> res = new List<sUser>();
-            while (rd.Read())
-            {
-                res.Add(new sUser(rd.GetInt32("u_id"),rd.GetString("u_name"),rd.GetString("u_group")));
+            while (rd.Read()) {
+                res.Add(new sUser(rd.GetInt32("u_id"), rd.GetString("u_name"), rd.GetString("u_group")));
             }
             rd.Close();
             return res;
@@ -47,10 +46,9 @@ namespace db.mysql
         /// <returns></returns>
         public sUser getUser(int uid)
         {
-            MySqlDataReader rd = reader(String.Format("SELECT u_name,u_group,u_id FROM users WHERE u_id={0};",uid.ToString()));
+            MySqlDataReader rd = reader(String.Format("SELECT u_name,u_group,u_id FROM users WHERE u_id={0};", uid.ToString()));
             sUser res = null;
-            while (rd.Read())
-            {
+            while (rd.Read()) {
                 res = new sUser(rd.GetInt32("u_id"), rd.GetString("u_name"), rd.GetString("u_group"));
             }
             rd.Close();
@@ -69,7 +67,7 @@ namespace db.mysql
 
         public string getUserGroup(int uid)
         {
-            MySqlDataReader rd = reader(String.Format("SELECT u_group FROM users WHERE u_id={0:d};",uid));
+            MySqlDataReader rd = reader(String.Format("SELECT u_group FROM users WHERE u_id={0:d};", uid));
             string res = "none";
             if (rd.Read())
                 res = rd.GetString(0);
@@ -83,30 +81,29 @@ namespace db.mysql
             exec(String.Format("UPDATE users SET u_deleted=1 WHERE u_id={0:d};", uid));
         }
 
-        
+
         public static string getGroup(int group)
         {
             String sgrp = sUser.Worker;
-            switch (group)
-            {
+            switch (group) {
                 case 0: sgrp = sUser.Admin; break;
                 case 1: sgrp = sUser.Zootech; break;
-                case 2: sgrp = sUser.Butcher; break;              
+                case 2: sgrp = sUser.Butcher; break;
             }
             return sgrp;
         }
 
         public void updateUser(int uid, string name, int group, string password, bool chpass)
         {
-            exec(String.Format("UPDATE users SET u_name='{0:s}',u_group='{1:s}' WHERE u_id={2:d};",name,getGroup(group),uid));
+            exec(String.Format("UPDATE users SET u_name='{0:s}',u_group='{1:s}' WHERE u_id={2:d};", name, getGroup(group), uid));
             if (chpass)
-                exec(String.Format("UPDATE users SET u_password=MD5('{0:s}') WHERE u_id={1:d};",password,uid));
+                exec(String.Format("UPDATE users SET u_password=MD5('{0:s}') WHERE u_id={1:d};", password, uid));
         }
 
         public int addUser(string name, int group, string password)
         {
             MySqlCommand cmd = exec(String.Format(@"INSERT INTO users(u_name,u_group,u_password) 
-VALUES('{0:s}','{1:s}',MD5('{2:s}'));",name,getGroup(group),password));
+VALUES('{0:s}','{1:s}',MD5('{2:s}'));", name, getGroup(group), password));
             return (int)cmd.LastInsertedId;
         }
 

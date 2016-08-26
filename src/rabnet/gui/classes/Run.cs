@@ -24,19 +24,22 @@ namespace rabnet
             prms += " зоотехник;";
 
             String prg = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), MIA_CONV);
-            if (!File.Exists(prg))
+            if (!File.Exists(prg)) {
                 throw new Exception(String.Format("Не удается найти программу {0:s}{1:s}БД не будет создана", prg, Environment.NewLine));
+            }
             Process p = Process.Start(prg, prms);
             p.WaitForExit();
-            if (p.ExitCode != 0)
+            if (p.ExitCode != 0) {
                 throw new Exception("Ошибка создания БД. " + miaExitCode.GetText(p.ExitCode));
+            }
         }
 
         public static void RabDump()
         {
             String path = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), RABDUMP);
-            if (!File.Exists(path))
+            if (!File.Exists(path)) {
                 throw new Exception("Не удается найти файл " + path);
+            }
             Process p = Process.Start(path);
             //p.WaitForExit();
         }
@@ -48,8 +51,9 @@ namespace rabnet
         public static void Rabnet()
         {
             String path = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), RABNET);
-            if (!File.Exists(path))
-                throw new Exception("Не удается найти файл "+path);
+            if (!File.Exists(path)) {
+                throw new Exception("Не удается найти файл " + path);
+            }
             Process p = Process.Start(path);
             //p.WaitForExit();
         }
